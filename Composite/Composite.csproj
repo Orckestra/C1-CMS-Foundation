@@ -2078,6 +2078,6 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)bin\"
-copy "$(TargetPath)" "$(SolutionDir)Website\bin\"</PostBuildEvent>
+copy "$(TargetPath)" "$(SolutionDir)Public\Website\bin\"</PostBuildEvent>
   </PropertyGroup>
 </Project>
