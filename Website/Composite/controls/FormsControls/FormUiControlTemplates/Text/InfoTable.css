@@ -1,0 +1,22 @@
+﻿table.infoTableUiControl {
+	border-collapse: collapse;	
+}
+table.infoTableUiControl td, 
+table.infoTableUiControl th {
+	padding: 5px;
+}
+table.infoTableUiControl td {
+	vertical-align: top;
+	cursor: text;
+}
+table.infoTableUiControl th {
+	text-align: left;
+	font-weight: bold;
+	background-color: $(color:threedface);
+}
+
+
+table.infoTableUiControl_border,
+table.infoTableUiControl_border td {
+	border: 1px solid black;
+}

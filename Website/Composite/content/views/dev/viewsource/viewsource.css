@@ -1,0 +1,25 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+textarea#raw {
+	border: none;
+	width: 100%;
+	height: 100%;
+	font-family: "Courier New", monospace;
+	font-size: 13px;
+	/*
+	#moz overflow: -moz-scrollbars-vertical;
+	#ie overflow-y: scroll;	
+	*/
+	
+}
+div#locked {
+	display: none;
+	position: absolute;
+	#moz top: 40px;
+	#ie top: 10px;
+	right: 22px;
+	width: 24px;
+	height: 24px;
+	cursor: not-allowed;
+}

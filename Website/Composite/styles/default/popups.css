@@ -1,0 +1,54 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|popupset {
+	display: block;
+	overflow: visible;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0;
+	height: 0;
+	z-index: 5; /* above dialogset */
+	/*
+	display: inline;
+	overflow: visible;
+	#moz position: absolute;
+	#ie position: static;
+	top: 0;
+	left: 0;
+	height: 0;
+	width: 0;
+	z-index: 5;
+	*/
+}
+ui|popup,
+ui|menupopup {
+	position: absolute;
+	z-index: 6;  /* above the shadow */ 
+	#moz min-width: 160px;
+	#ie width: 160px;
+	visibility: hidden;
+	-moz-transition-property: opacity;
+	-moz-transition-duration: 0.15s;
+	-moz-box-shadow: 2px 2px 4px rgba(0,0,0,0.75);
+	display: none;
+	border: 1px solid $(color:threedshadow);
+	-moz-user-select: none;
+}
+ui|popupbody { /* NOT USED ON COMMON POPUPS! */
+	display: block;
+	padding: 10px 12px 10px 12px;
+	background-color: $(color:menu);
+	color: $(color:menutext);
+	-moz-user-select: none;
+}
+
+/* OVERFLOW ................................................ */
+
+ui|popup.overflow {
+	#ie overflow-y: auto;
+	#moz overflow: -moz-scrollbars-vertical;
+	height: 211px; /* move this to script when separators are supported */
+	border-right: none;
+}

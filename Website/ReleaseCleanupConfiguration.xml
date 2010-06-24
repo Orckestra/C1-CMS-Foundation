@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Configuration>
+  <Target name="prejavascriptcompile">
+    <Directories>
+      <Directory path="\App_Code" />
+      <Directory path="\App_Data\Composite\License" />
+      <Directory path="\Spikes" />
+      <Directory path="\obj" />
+      <Directory path="\Tests" />
+      <Directory path="\Develop" />
+      <Directory path="\Bin\da" />
+      <Directory path="\Properties" />
+      <Directory path="\Composite\audio" />
+      <Directory path="\Composite\content\dialogs\querytreeeditor" />
+      <Directory path="\Composite\content\dialogs\tests" />
+      <Directory path="\Composite\content\views\dev\developer\tests" />
+      <Directory path="\Composite\content\views\help" />
+      <Directory path="\Composite\content\views\search" />
+      <Directory path="\Composite\help" />
+      <Directory path="\Composite\images\originals" />
+      <Directory path="\Composite\transformations\temp" />
+      
+
+
+      <Directory path="\Composite\images\icons\branding" />
+      <Directory path="\Composite\images\icons\harmony" />
+      <Directory path="\Composite\images\icons\mimetypes" />
+      <Directory path="\Composite\images\icons\republic" />
+      <Directory path="\Composite\images\originals" />
+    </Directories>
+    <Files>      
+      <File path="\App_Data\Composite\clean.bat" />
+      <File path="\App_Data\Composite\AddOnDescriptions_RENAME.xml" />
+      <File path="\App_Data\Composite\Composite.modified.config" />
+      <File path="\App_Data\Composite\ReleaseBuild.Composite.config.changeHistory.txt" />
+      <File path="\Renderers\ExecuteFunction.ashx" />
+      <File path="\.project" />
+      <File path="\vwd.webinfo" />
+      <File path="\WebSite.csproj" />
+      <File path="\WebSite.csproj.user" />
+      <File path="\WebSite.csproj.vspscc" />
+      <File path="\Properties\AssemblyInfo.cs" />
+    </Files>
+  </Target>
+
+  <Target name="postjavascriptcompile">
+    <Directories>
+      <Directory path="\Composite\scripts\source" />
+      <Directory path="\Composite\applets" />
+    </Directories>
+    <Files>
+      <File path="\Composite\scripts\compressed\sub-uncompressed.js" />
+      <File path="\Composite\scripts\compressed\top-uncompressed.js" />
+      <File path="\ReleaseCleanupConfiguration.xml" />
+    </Files>
+  </Target>
+</Configuration>

@@ -1,0 +1,44 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|page,
+ui|editorpage,
+ui|dialogpage,
+ui|wizardpage {
+	display: block;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	visibility: hidden; 	
+}
+ui|dialogpage.auto,
+ui|wizardpage.auto {
+	height: auto;
+}
+ui|page.dialogsubpage,
+ui|editorpage.dialogsubpage {
+	height: auto;
+	min-height: 100%; /* IE relies on flexibility instead */
+}
+
+
+
+ui|pagehead {
+	display: block;
+	width: 408px; /* matching fields! */
+	padding-left: 2px;
+	padding-bottom: 1em;
+	#moz -moz-user-select: none;
+}
+ui|pageheading {
+	display: block;
+	font-size: 120%;
+	font-weight: bold;
+	padding: 0 0 0.5em 0;
+	#moz -moz-user-select: none;	
+}
+ui|pagedescription {
+	display: block;
+	padding: 0 0 12px 0;
+	#moz -moz-user-select: none;
+}

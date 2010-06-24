@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<strings>
+  <string key="DeleteStep1.FieldGroupLabel" value="Delete visual function?" />
+  <string key="DeleteStep1.Text" value="Are you sure you wish to delete the selected function?" />
+  <string key="AddNew.DialogLabel" value="Add visual function" />
+  <string key="AddNew.NoTypesExistsErrorTitle" value="No datatypes to visualize" />
+  <string key="AddNew.NoTypesExistsErrorMessage" value="No datatypes have been created yet. You must first create a datatype to visualize before you can create a visualization." />
+  <string key="AddNew.NoDataExistsErrorTitle" value="No data to visualize and preview" />
+  <string key="AddNew.NoDataExistsErrorMessage" value="Data must exist before you can create a rendering. Add some data to this type and try again." />
+  <string key="AddNew.NoPageTemplatesExistsErrorTitle" value="No templates" />
+  <string key="AddNew.NoPageTemplatesExistsErrorMessage" value="At least one template must exist before you can create a rendering. Create one template and try again." />
+  <string key="AddNew.MissingActiveLanguageTitle" value="A language is required" />
+  <string key="AddNew.MissingActiveLanguageMessage" value="To create a visual function a language is required, but no languages have been added yet. You can add one under the System perspective." />
+  <string key="AddNewStep1.FieldGroupLabel" value="Select datatype to visualize" />
+  <string key="AddNewStep1.TypeSelectorLabel" value="Datatype" />
+  <string key="AddNewStep1.TypeSelectorHelp" value="" />
+  <string key="AddNewStep2.FieldGroupLabel" value="Visual function naming" />
+  <string key="AddNewStep2.FuncitonNameLabel" value="Function name" />
+  <string key="AddNewStep2.FuncitonNameHelp" value="" />
+  <string key="AddNewStep2.FuncitonNamespaceLabel" value="Function namespace" />
+  <string key="AddNewStep2.FuncitonNamespaceHelp" value="" />
+  <string key="Edit.PlaceHolderLabel" value="Visual function settings" />
+  <string key="Edit.HeadingTitel" value="Visual function" />
+  <string key="Edit.FieldGroupLabel" value="Visual function settings" />
+  <string key="Edit.FunctionNameLabel" value="Function name" />
+  <string key="Edit.FunctionNameHelp" value="The name of the function. Names must be unique with a namespace." />
+  <string key="Edit.FunctionNamespaceLabel" value="Function namespace" />
+  <string key="Edit.FunctionNamespaceHelp" value="The 'package' this function belongs to." />
+  <string key="Edit.FunctionDescriptionLabel" value="Description" />
+  <string key="Edit.FunctionDescriptionHelp" value="A description of the function that can help people understand what it does." />
+  <string key="Edit.ItemListLenghtLabel" value="Item list length" />
+  <string key="Edit.ItemListLenghtHelp" value="The maximum number of items to show." />
+  <string key="Edit.ItemSortingLabel" value="Item sorting" />
+  <string key="Edit.ItemSortingHelp" value="Select which field to use when sorting the list. Use '(random)' to pick randomly from the list." />
+  <string key="Edit.ListSortingLabel" value="List sort order" />
+  <string key="Edit.ListSortingTrueLabel" value="Ascending" />
+  <string key="Edit.ListSortingFalseLabel" value="Decending" />
+  <string key="Edit.ListSortingHelp" value="Select the sorted order. Ascending order is alphabetically, chronological. This field is ignored when '(random)' sorting is active." />
+  <string key="Edit.PreviewTemplateLabel" value="Preview template" />
+  <string key="Edit.PreviewTemplateHelp" value="This information is only used when previewing the function." />
+  <string key="Edit.WYSIWYGLayoutLabel" value="Visual layout" />
+  <string key="Edit.LabelPreview" value="Preview" />
+  <string key="Edit.NoPageTemplatesExistsErrorTitle" value="No templates" />
+  <string key="Edit.NoPageTemplatesExistsErrorMessage" value="At least one template must exist before you can edit a rendering. Create one template and try again." />
+  <string key="Edit.MissingActiveLanguageTitle" value="A language is required" />
+  <string key="Edit.MissingActiveLanguageMessage" value="To edit a visual function a language is required, but no languages have been added yet. You can add one under the System perspective." />
+  <string key="Select.FieldGroupLabel" value="Select a visual function" />
+  <string key="Select.FunctionFunctionsLabel" value="Select a function" />
+  <string key="Select.FunctionFunctionsHelp" value="Select a visual function to edit or delete" />
+  <string key="AddVisualFunctionWorkflow.FunctionNameValidatoinErrorMessage" value="Another function with this name exists. Names must be unique." />
+  <string key="EditVisualFunctionWorkflow.FunctionNameValidatoinErrorMessage" value="Another function with this name exists. Names must be unique." />
+  <string key="VisualFunctionElementProvider.RootFolderLabel" value="Visual functions" />
+  <string key="VisualFunctionElementProvider.RootFolderToolTip" value="Visual functions" />
+  <string key="VisualFunctionElementProvider.AddNewLabel" value="Add visual function" />
+  <string key="VisualFunctionElementProvider.AddNewToolTip" value="Add new visual function" />
+  <string key="VisualFunctionElementProvider.EditLabel" value="Edit visual function" />
+  <string key="VisualFunctionElementProvider.EditToolTip" value="Edit visual function" />
+  <string key="VisualFunctionElementProvider.DeleteLabel" value="Delete visual function" />
+  <string key="VisualFunctionElementProvider.DeleteToolTip" value="Delete visual function" />
+  <string key="VisualFunctionElementProvider.FunctionNameNotUniqueError" value="Another function with this name exists. Names must be unique." />
+  <string key="VisualFunctionElementProviderHelper.AddNewLabel" value="New visual function" />
+  <string key="VisualFunctionElementProviderHelper.AddNewToolTip" value="New visual function" />
+  <string key="VisualFunctionElementProviderHelper.EditLabel" value="Edit visual function" />
+  <string key="VisualFunctionElementProviderHelper.EditToolTip" value="Edit visual function" />
+  <string key="VisualFunctionElementProviderHelper.DeleteLabel" value="Delete visual function" />
+  <string key="VisualFunctionElementProviderHelper.DeleteToolTip" value="Delete visual function" />
+</strings>

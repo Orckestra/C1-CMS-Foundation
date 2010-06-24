@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="CultureName" type="System.String" optional="true" />
+    <cms:binding name="CultureNameList" type="System.Collections.IEnumerable" optional="true" />
+  </cms:bindings>
+	<cms:layout iconhandle="generated-type-localize" label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EnableTypeLocalizationWorkflow.Dialog.Label}">
+    <Heading
+			Title="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EnableTypeLocalizationWorkflow.Step2.Title}"
+			Description="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EnableTypeLocalizationWorkflow.Step2.Description}" />    
+  </cms:layout>
+</cms:formdefinition>

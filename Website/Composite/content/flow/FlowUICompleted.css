@@ -1,0 +1,25 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+div#layout {
+	width: 185px;
+	height: 220px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -92px;
+	margin-top: -105px;
+}
+div#layout div#image {
+	#alphabackdrop: url("${root}/images/actionended.png");
+	width: 185px;
+	height: 185px;
+}
+div#layout div#text {
+	position: absolute;
+	text-align: center;
+	bottom: 0;
+	-moz-user-select: none;
+	width: 120px;
+	left: 32px;
+}

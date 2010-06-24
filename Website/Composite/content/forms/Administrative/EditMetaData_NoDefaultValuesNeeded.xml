@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+  </cms:bindings>
+
+  <cms:layout iconhandle="generated-type-edit" label="${Composite.Management, AssociatedDataElementProviderHelper.EditMetaDataWorkflow.Layout.Label}">
+
+    <Heading
+      Title="${Composite.Management, AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoDefaultValuesNeeded.Title}"
+      Description="${Composite.Management, AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoDefaultValuesNeeded.Description}" />
+      
+  </cms:layout>
+</cms:formdefinition>

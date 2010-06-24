@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Function"
+    targetNamespace="http://www.composite.net/ns/function/1.0"
+    elementFormDefault="qualified"
+    xmlns="http://www.composite.net/ns/function/1.0"
+    xmlns:mstns="http://www.composite.net/ns/function/1.0"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <xs:element name="functions" type="Root" />
+
+  <xs:complexType name="Root">
+    <xs:choice>
+     <xs:sequence>
+       <xs:element name="function" type="FirstLevelFunction" minOccurs="0" maxOccurs="unbounded" />
+     </xs:sequence>
+
+     <xs:element name="widgetfunction" type="WidgetFunction" minOccurs="0" maxOccurs="1" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="FirstLevelFunction">
+    <xs:sequence>
+      <xs:element name="param" type="Parameter" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="localname" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="WidgetFunction">
+    <xs:sequence>
+	  <xs:element name="helpdefinition" type="WidgetFunctionHelpDefinition" minOccurs="0" maxOccurs="1" />
+
+  	  <xs:element name="param" type="Parameter" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+
+	<xs:attribute name="name" type="xs:string" use="required"/>
+	<xs:attribute name="label" type="xs:string" use="optional"/>
+	<xs:attribute name="bindingsourcename" type="xs:string" use="optional"/>
+	<xs:attribute name="localname" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="WidgetFunctionHelpDefinition">
+	  <xs:attribute name="helptext" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="Function">
+    <xs:sequence>
+      <xs:element name="param" type="Parameter" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    
+    <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType>
+
+
+  <xs:complexType name="Parameter">
+    <xs:choice>
+      <xs:element name="function" type="Function" minOccurs="0" maxOccurs="1" />
+     
+      <xs:sequence minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="paramelement" type="ParametersValueElement" />
+      </xs:sequence>
+    </xs:choice>
+
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="value" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="ParametersValueElement">
+    <xs:attribute name="value" type="xs:string" use="required"/>
+  </xs:complexType>
+  
+</xs:schema>

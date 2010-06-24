@@ -1,0 +1,21 @@
+﻿@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|pagehead,
+div#emptylabel {
+	padding: 1em;
+	border-top: 1px solid $(color:threedhighlight);
+}
+ui|pagehead {
+	border-bottom: 1px solid $(color:threedlightshadow);
+}
+ui|tree {
+	border-top: 1px solid $(color:threedhighlight);
+}
+ui|treebody {
+	background-color: $(color:threedface);
+	#alphabackdrop: url("${root}/images/ui/lighten.png");
+}
+div#description {
+	padding-top: 1em;	
+}

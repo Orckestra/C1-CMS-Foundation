@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<cms:formdefinition
+  xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0"
+  xmlns:internal="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0"
+  xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0"
+  xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+
+  <cms:bindings>
+    <cms:binding name="Form" type="Composite.Forms.IUiControl, Composite" />
+    <cms:binding name="NextEventHandler" type="System.EventHandler" optional="true" />
+    <cms:binding name="PreviousEventHandler" type="System.EventHandler" optional="true" />
+    <cms:binding name="FinishEventHandler" type="System.EventHandler" optional="true" />
+    <cms:binding name="CancelEventHandler" type="System.EventHandler" optional="true" />
+    <!-- common mistakes... warning are shown if recieved -->
+    <cms:binding name="SaveEventHandler" type="System.EventHandler" optional="true" />
+    <cms:binding name="PreviewEventHandler" type="System.EventHandler" optional="true" />
+  </cms:bindings>
+
+  <cms:layout >
+    <PlaceHolder>
+
+      <internal:ConfirmDialogCanvas>
+
+        <f:NullCheck>
+          <f:NullCheck.CheckValue>
+            <cms:read source="PreviewEventHandler" />
+          </f:NullCheck.CheckValue>
+          <f:NullCheck.WhenNotNull>
+            <Text>PREVIEW EVENT NOT EXPECTED ON CONFIRM DIALOGS</Text>
+          </f:NullCheck.WhenNotNull>
+        </f:NullCheck>
+
+        <f:NullCheck>
+          <f:NullCheck.CheckValue>
+            <cms:read source="SaveEventHandler" />
+          </f:NullCheck.CheckValue>
+          <f:NullCheck.WhenNotNull>
+            <Text>SAVE EVENT NOT EXPECTED ON CONFIRM DIALOGS</Text>
+          </f:NullCheck.WhenNotNull>
+        </f:NullCheck>
+
+
+        <f:NullCheck>
+          <f:NullCheck.CheckValue>
+            <cms:read source="PreviousEventHandler" />
+          </f:NullCheck.CheckValue>
+          <f:NullCheck.WhenNotNull>
+            <Text>PREVIOUS EVENT NOT EXPECTED ON CONFIRM DIALOGS</Text>
+          </f:NullCheck.WhenNotNull>
+        </f:NullCheck>
+
+        <f:NullCheck>
+          <f:NullCheck.CheckValue>
+            <cms:read source="NextEventHandler" />
+          </f:NullCheck.CheckValue>
+          <f:NullCheck.WhenNotNull>
+            <Text>NEXT EVENT NOT EXPECTED ON CONFIRM DIALOGS</Text>
+          </f:NullCheck.WhenNotNull>
+        </f:NullCheck>
+        
+        <f:Replicator>
+          <cms:read source="Form" />
+        </f:Replicator>
+
+      </internal:ConfirmDialogCanvas>
+
+
+      <internal:DialogToolbar>
+
+        <f:NullCheck>
+          <f:NullCheck.CheckValue>
+            <cms:read source="FinishEventHandler" />
+          </f:NullCheck.CheckValue>
+          <f:NullCheck.WhenNotNull>
+            <internal:OkButton Label="${Composite.Management, Website.Forms.Administrative.AdministrativeTemplates.ConfirmDialog.LabelOk}">
+              <internal:OkButton.ClickEventHandler>
+                <cms:read source="FinishEventHandler" />
+              </internal:OkButton.ClickEventHandler>
+            </internal:OkButton>
+          </f:NullCheck.WhenNotNull>
+        </f:NullCheck>
+
+        <f:NullCheck>
+          <f:NullCheck.CheckValue>
+            <cms:read source="CancelEventHandler" />
+          </f:NullCheck.CheckValue>
+          <f:NullCheck.WhenNotNull>
+            <internal:CancelButton Label="${Composite.Management, Website.Forms.Administrative.AdministrativeTemplates.ConfirmDialog.LabelCancel}">
+              <internal:CancelButton.ClickEventHandler>
+                <cms:read source="CancelEventHandler" />
+              </internal:CancelButton.ClickEventHandler>
+            </internal:CancelButton>
+          </f:NullCheck.WhenNotNull>
+        </f:NullCheck>
+
+      </internal:DialogToolbar>
+
+    </PlaceHolder>
+  </cms:layout>
+</cms:formdefinition>
+

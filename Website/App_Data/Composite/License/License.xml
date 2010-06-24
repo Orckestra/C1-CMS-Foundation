@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<License Expiration="Fri, 31 Dec 9999 22:59:59 GMT" Registered="true" RegisteredTo="Composite A/S" OfflineLicence="true" Id="01b08591-1e5f-4320-a914-47db01cabb08">
+  <DataTypeLicenses>
+    <DataTypeLicense AllowAdd="true" AllowDelete="true" AllowGet="true" AllowUpdate="true" AllowInAdministratedDataScope="true" AllowInDeletedDataScope="true" AllowInPublicDataScope="true" AllowInVersionedDataScope="true" />
+  </DataTypeLicenses>
+  <PluginTypeLicenses>
+    <PluginTypeLicense />
+  </PluginTypeLicenses>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>ZQkfzRgP0s2zwqtJxyn/vk6AtWg=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>okXlz/ydmwOFK/v5yeFz7/5VddX9cDLhx+jaLAdgjwKBC6ZKaHcnC6n9ndKzBV5ZJEZehn8XHw49NotviFQJS6L3g7APeZwU5VSzn9vn3OqhwoCApvw19nW3eKWB2caoSvilTIOpheW9T6ZAcZnWethxMCMn742TCr+d8JbM+kg=</SignatureValue>
+  </Signature>
+</License>

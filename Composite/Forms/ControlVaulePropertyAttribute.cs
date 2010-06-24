@@ -1,0 +1,24 @@
+using System;
+
+
+namespace Composite.Forms
+{
+    /// <summary>
+    /// Defines the default property of a UiControl that "inner values" will be assigned to.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class,AllowMultiple=false,Inherited=true)]
+    public sealed class ControlValuePropertyAttribute : Attribute
+    {
+        public ControlValuePropertyAttribute(string propertyName)
+        {
+            _propertyName = propertyName;
+        }
+
+        private string _propertyName;
+
+        public string PropertyName
+        {
+            get { return _propertyName; }
+        }
+    }
+}

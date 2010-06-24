@@ -1,0 +1,156 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Composite.Linq;
+using Composite.Data.Hierarchy;
+using Composite.Data.Hierarchy.DataAncestorProviders;
+
+
+namespace Composite.Data.Types
+{
+    public enum PageTypeHomepageRelation
+    {
+        NoRestriction = 1,
+        OnlySubPages = 2,
+        OnlyHomePages = 3
+    }
+
+
+
+    public static class PageTypeHomepageRelationExtensionMethods
+    {
+        public static PageTypeHomepageRelation GetPageTypeHomepageRelation(this string value)
+        {
+            if (string.IsNullOrEmpty(value) == true) throw new ArgumentNullException("value");
+
+            PageTypeHomepageRelation result;
+            if (Enum.TryParse<PageTypeHomepageRelation>(value, out result) == false)
+            {
+                throw new ArgumentException(string.Format("The argument is wrongly formattet"));
+            }
+
+            return result;
+        }
+
+
+
+        public static string ToPageTypeHomepageRelationString(this PageTypeHomepageRelation pageTypeHomepageRelation)
+        {
+            return pageTypeHomepageRelation.ToString();
+        }
+    }
+
+
+
+    public static class PageTypeExtensionMethods
+    {
+        public static IEnumerable<IPageType> GetChildPageSelectablePageTypes(this IPage parentPage, IPage childPage = null)
+        {
+            if (parentPage == null)
+            {
+                return
+                    DataFacade.GetData<IPageType>().
+                    Where(f => (f.Available == true) && (f.HomepageRelation != PageTypeHomepageRelation.OnlySubPages.ToString())).
+                    OrderBy(f => f.Name).
+                    Evaluate();
+            }
+            else
+            {
+                IEnumerable<IPageType> pageTypes;
+                if (childPage == null)
+                {
+                    pageTypes =
+                        DataFacade.GetData<IPageType>().
+                        Where(f => (f.Available == true) && (f.HomepageRelation != PageTypeHomepageRelation.OnlyHomePages.ToString())).
+                        OrderBy(f => f.Name).
+                        Evaluate();
+                }
+                else
+                {
+                    pageTypes =
+                        DataFacade.GetData<IPageType>().
+                        Where(f => 
+                            (f.Available == true) && 
+                            ((f.HomepageRelation != PageTypeHomepageRelation.OnlyHomePages.ToString()) || (f.Id == childPage.PageTypeId))).
+                        OrderBy(f => f.Name).
+                        Evaluate();
+                }
+
+                List<IPageType> result = new List<IPageType>();
+                foreach (IPageType pageType in pageTypes)
+                {
+                    if ((childPage != null) && (pageType.Id == childPage.PageTypeId))
+                    {
+                        result.Add(pageType); 
+                    }
+                    else if (DataFacade.GetData<IPageTypeParentRestriction>().Where(f => f.PageTypeId == pageType.Id).Any() == true)
+                    {
+                        if (DataFacade.GetData<IPageTypeParentRestriction>().Where(f => f.PageTypeId == pageType.Id && f.AllowedParentPageTypeId == parentPage.PageTypeId).Any() == true)
+                        {
+                            result.Add(pageType);
+                        }
+                    }
+                    else
+                    {
+                        result.Add(pageType);
+                    }
+                }
+
+                return result;
+            }
+        }
+    }
+
+
+
+    [AutoUpdateble]
+    [ImmutableTypeId("{867BE4ED-9C6C-49B9-AC30-35D65066BA4C}")]
+    [KeyPropertyName("Id")]
+    [DataAncestorProvider(typeof(NoAncestorDataAncestorProvider))]
+    [DataScope(DataScopeIdentifier.PublicName)]
+    [LabelPropertyName("Name")]
+    [CachingAttribute(CachingType.Full)]
+    public interface IPageType : IData
+    {
+        [StoreFieldType(PhysicalStoreFieldType.Guid)]
+        [ImmutableFieldId("{333BFEA0-ACD2-4500-A258-5305DFC72DC7}")]
+        Guid Id { get; set; }
+
+
+        [StoreFieldType(PhysicalStoreFieldType.String, 256)]
+        [ImmutableFieldId("{0170DD8F-D44D-4F84-BD79-296E75885FDD}")]
+        string Name { get; set; }
+
+
+        [StoreFieldType(PhysicalStoreFieldType.LargeString)]
+        [ImmutableFieldId("{CCAA5F15-63E4-42BF-8CDA-3AD0407520A7}")]        
+        string Description { get; set; }
+
+
+        [StoreFieldType(PhysicalStoreFieldType.Boolean)]
+        [ImmutableFieldId("{51DEADD0-7E5C-43F4-ADF5-5E092798B8DE}")]
+        [DefaultFieldBoolValue(true)]
+        bool Available { get; set; }
+
+
+        [StoreFieldType(PhysicalStoreFieldType.Boolean)]
+        [ImmutableFieldId("{A489FFEB-6D65-4ED6-84E2-3FECB8F3733D}")]
+        [DefaultFieldBoolValue(true)]
+        bool PresetMenuTitle { get; set; }
+
+
+        [StoreFieldType(PhysicalStoreFieldType.Guid)]
+        [ImmutableFieldId("{5C5A5B74-992C-4587-86C3-667B9BE22B36}")]
+        Guid DefaultTemplateId { get; set; }
+
+
+        [StoreFieldType(PhysicalStoreFieldType.String, 64)]
+        [ImmutableFieldId("{5924B690-F7CC-4110-A3AB-227BD0E87289}")]        
+        string HomepageRelation { get; set; }
+
+
+        [StoreFieldType(PhysicalStoreFieldType.Guid)]
+        [ImmutableFieldId("{4F9B76CB-5389-487C-92E3-A6DB4F1E5EFC}")]
+        Guid DefaultChildPageType { get; set; }
+    }
+}

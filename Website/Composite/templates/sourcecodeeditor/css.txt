@@ -1,0 +1,27 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+* {
+	cursor: default;
+	-moz-box-sizing: border-box;
+}
+html,
+body {
+	height: 100%;
+	border: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+body {
+	background-color: ThreeDFace;
+	color: WindowText;
+}
+form { /* assuming that all forms are standard body-childnode dot net forms! */
+	height: 100%;
+	padding: 0;
+	margin: 0;	
+}
+p {
+	margin: 0 0 1.3em 0;	
+} 

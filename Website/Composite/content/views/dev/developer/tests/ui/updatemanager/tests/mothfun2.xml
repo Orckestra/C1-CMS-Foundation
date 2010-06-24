@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<a id="a1">
+	<b id="b1">
+		<c id="c1">
+			<DIFFERENT/>
+		</c>
+	</b>
+	<b id="b2">
+		<c>
+			<d DIFFERENT="TRUE">
+				<e id="e1">
+					<f note="Not crawled"/>
+				</e>
+			</d>
+		</c>
+	</b>
+	<b id="b3">
+		<c>
+			<d name="DIFFERENT"/>
+		</c>
+	</b>
+	<b id="b4">
+		<DIFFERENT/>
+	</b>
+</a>

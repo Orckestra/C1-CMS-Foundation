@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<strings>
+  <string key="AddNewButtonLabel" value="Add New" />
+  <string key="DeleteButtonLabel" value="Delete" />
+
+  <string key="FunctionLocalNameGroupLabel" value="Function result local name" />
+  <string key="FunctionLocalNameLabel" value="Local name" />
+  <string key="FunctionLocalNameHelp" value="If you include a function multiple times this field can help you distinguish the individual results by their local name. " />
+
+  <string key="ParameterValueLabel" value="Parameter Value" />
+  <string key="ParameterValueTypeGroupLabel" value="Parameter value type" />
+  <string key="ParameterValueTypeLabel" value="Value type" />
+  <string key="ParameterValueTypeOptionDefault" value="Use default value" />
+  <string key="ParameterValueTypeOptionConstant" value="Specify a simple value" />
+  <string key="ParameterValueTypeOptionFunction" value="Execute a function call" />
+  <string key="ParameterValueTypeOptionComplex" value="Execute a complex function call" />
+
+  <string key="AddNewFunctionDialogLabel" value="Select Function" />
+  
+  <string key="ComplexFunctionCallGroupLabel" value="Nested function call settings" />
+  <string key="ComplexFunctionCallLabel" value="Nested function call" />
+  <string key="ComplexFunctionCallLaunchButtonLabel" value="Launch function designer" />
+  <string key="ComplexFunctionCallDialogLabel" value="Value for parameter '{0}'" />
+
+  <string key="InlineDesigner-NoValue" value="Specify ..." />
+  <string key="InlineDesigner-Value" value="Edit ..." />
+
+  <string key="ReturnTypeLabel" value="Return type" />
+
+  <string key="ValidationFailedAlertTitle" value="Validation failed" />
+  <string key="FunctionNotFound" value="Function '{0}' does not exist." />
+  <string key="RequiredParameterNotDefined" value="Required parameter '{0}' has not been defined." />
+  <string key="IncorrectTypeCast" value="Incorrect type cast. Parameter name: '{0}', function name: '{1}'." />
+</strings>
+
+
+

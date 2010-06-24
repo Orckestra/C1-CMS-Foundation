@@ -1,0 +1,39 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+div#layout {
+	width: 146px;
+	height: 210px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -73px;
+	margin-top: -85px;
+}
+div#layout div#image {
+	#alphabackdrop: url("${root}/images/unfortunateerror.png");
+	width: 146px;
+	height: 175px;
+}
+div#layout div#text {
+	position: absolute;
+	text-align: center;
+	bottom: 0;
+	width: 110px;
+	-moz-user-select: none;
+}
+div#layout div#msg {
+	position: absolute;
+	text-align: center;
+	top: 240px;
+	width: 110px;
+	-moz-user-select: none;
+}
+ui|dialogpage div#box {
+	position: relative;
+	height: 230px;
+}
+ui|dialogpage div#layout {
+	top: 0;
+	margin-top: 0;
+}

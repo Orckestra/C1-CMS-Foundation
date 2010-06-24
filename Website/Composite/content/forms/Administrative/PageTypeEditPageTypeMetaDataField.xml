@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <!--<cms:binding name="CompositionDescriptionName" type="System.String"/>-->
+    <cms:binding name="CompositionDescriptionLabel" type="System.String"/>
+    <cms:binding name="CompositionContainerId" type="System.Guid"/>
+    <cms:binding name="MetaDataContainerOptions" type="System.Collections.IEnumerable"/>
+  </cms:bindings>
+  <cms:layout iconhandle="pagetype-edit-metedatafield" label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeMetaDataFieldWorkflow.Layout.Label}">
+    <FieldGroup Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeMetaDataFieldWorkflow.FieldGroup.Label}">
+
+      <!--<TextBox Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeMetaDataFieldWorkflow.NameTextBox.Label}"
+               Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeMetaDataFieldWorkflow.NameTextBox.Help}">
+        <TextBox.Text>
+          <cms:bind source="CompositionDescriptionName" />
+        </TextBox.Text>
+      </TextBox>-->
+
+
+      <TextBox Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeMetaDataFieldWorkflow.LabelTextBox.Label}"
+               Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeMetaDataFieldWorkflow.LabelTextBox.Help}">
+        <TextBox.Text>
+          <cms:bind source="CompositionDescriptionLabel" />
+        </TextBox.Text>
+      </TextBox>
+
+      
+      <KeySelector Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeMetaDataFieldWorkflow.MetaDataContainerKeySelector.Label}"
+                       Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeMetaDataFieldWorkflow.MetaDataContainerKeySelector.Help}"
+                       OptionsKeyField="Key" OptionsLabelField="Value" >
+        <KeySelector.Options>
+          <cms:read source="MetaDataContainerOptions" />
+        </KeySelector.Options>
+        <KeySelector.Selected>
+          <cms:bind source="CompositionContainerId" />
+        </KeySelector.Selected>
+      </KeySelector>
+
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

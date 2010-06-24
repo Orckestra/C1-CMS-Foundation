@@ -1,0 +1,27 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+table#dialoglayout,
+td#textarea {
+	height: 100%;
+	width: 100%;
+}
+textarea {
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: transparent;
+	border: none;
+	display: block;
+}
+td#textarea {
+	border: 1px solid;
+	border-color: $(color:threeddarkshadow) $(color:threedshadow) $(color:threedshadow) $(color:threeddarkshadow);
+	background-color: white;
+	/*
+	background: white url("error.png") no-repeat 100% 100%;
+	*/
+}
+span#operationname {
+	font-weight: bold;	
+}

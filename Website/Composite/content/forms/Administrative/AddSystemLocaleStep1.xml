@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="CultureName" type="System.String" />
+    <cms:binding name="RegionLanguageList" type="System.Collections.IEnumerable" />
+		<cms:binding name="UrlMappingName" type="System.String" />
+		<cms:binding name="AccessToAllUsers" type="System.Boolean" />
+    <cms:binding name="CustomEvent01Handler" type="System.EventHandler" />
+  </cms:bindings>
+  <cms:layout iconhandle="localization-addsystemlocale" label="${Composite.StandardPlugins.LocalizationElementProvider, AddSystemLocaleWorkflow.Dialog.Label}">
+    <FieldGroup Label="${Composite.StandardPlugins.LocalizationElementProvider, AddSystemLocaleWorkflow.FieldGroup.Label}">
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" 
+									 Label="${Composite.StandardPlugins.LocalizationElementProvider, AddSystemLocaleWorkflow.CultureSelector.Label}" 
+									 Help="${Composite.StandardPlugins.LocalizationElementProvider, AddSystemLocaleWorkflow.CultureSelector.Help}">
+        <KeySelector.SelectedIndexChangedEventHandler>
+          <cms:read source="CustomEvent01Handler"/>
+        </KeySelector.SelectedIndexChangedEventHandler>
+        <KeySelector.Options>
+          <cms:read source="RegionLanguageList"/>
+        </KeySelector.Options>
+        <KeySelector.Selected>
+          <cms:bind source="CultureName" />
+        </KeySelector.Selected>
+      </KeySelector>
+
+			<TextBox Label="${Composite.StandardPlugins.LocalizationElementProvider, AddSystemLocaleWorkflow.UrlMappingName.Label}" Help="${Composite.StandardPlugins.LocalizationElementProvider, AddSystemLocaleWorkflow.UrlMappingName.Help}">
+				<TextBox.Text>
+					<cms:bind source="UrlMappingName" />
+				</TextBox.Text>
+			</TextBox>
+			
+			<CheckBox Label="${Composite.StandardPlugins.LocalizationElementProvider, AddSystemLocaleWorkflow.AllUsersAccess.Label}" 
+								ItemLabel="${Composite.StandardPlugins.LocalizationElementProvider, AddSystemLocaleWorkflow.AllUsersAccess.ItemLabel}"
+								Help="${Composite.StandardPlugins.LocalizationElementProvider, AddSystemLocaleWorkflow.AllUsersAccess.Help}">
+				<CheckBox.Checked>
+					<cms:bind source="AccessToAllUsers" />
+				</CheckBox.Checked>
+			</CheckBox>
+		</FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

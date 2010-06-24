@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+	<cms:bindings>
+		<cms:binding name="NewUser" type="Composite.Data.Types.IUser" />
+    <cms:binding name="CultureName" type="System.String" />
+    <cms:binding name="RegionLanguageList" type="System.Collections.IEnumerable" />
+  </cms:bindings>
+	<cms:layout iconhandle="users-adduser">
+		<FieldGroup Label="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.LabelFieldGroup}">
+			<TextBox Label="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.UserNameLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.UserNameHelp}">
+				<TextBox.Text>
+					<cms:bind source="NewUser.Username" />
+				</TextBox.Text>
+			</TextBox>
+			<TextBox Type="Password" Label="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.PasswordLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.PasswordHelp}">
+				<TextBox.Text>
+					<cms:bind source="NewUser.EncryptedPassword" />
+				</TextBox.Text>
+			</TextBox>
+      <TextBox Label="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.EmailLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.EmailHelp}">
+        <TextBox.Text>
+          <cms:bind source="NewUser.Email" />
+        </TextBox.Text>
+      </TextBox>
+      <TextBox Label="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.GroupLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.GroupHelp}">
+				<TextBox.Text>
+					<cms:bind source="NewUser.Group" />
+				</TextBox.Text>
+			</TextBox>
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.CultureLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.CultureHelp}">
+        <KeySelector.Options>
+          <cms:read source="RegionLanguageList"/>
+        </KeySelector.Options>
+        <KeySelector.Selected>
+          <cms:bind source="CultureName" />
+        </KeySelector.Selected>
+      </KeySelector>
+    </FieldGroup>
+	</cms:layout>
+</cms:formdefinition>

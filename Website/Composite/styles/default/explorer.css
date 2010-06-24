@@ -1,0 +1,42 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|explorer,
+ui|explorerbody,
+ui|explorerdecks,
+ui|explorerdeck,
+ui|explorersplitter,
+ui|explorermenu,
+ui|explorertoolbar,
+ui|explorertoolbarbutton,
+ui|explorerbar,
+ui|explorerbarbutton {
+	display: block;
+}
+ui|explorer {
+	height: 100%;
+	overflow: hidden;
+}
+ui|explorerbody {
+	height: 100%;
+	overflow: hidden;
+}
+ui|explorertoolbar ui|toolbarbody,
+ui|explorertoolbar ui|toolbargroup {
+	float: none;
+}
+ui|explorertoolbarbutton ui|labeltext {
+	font-weight: bold;
+}
+ui|explorersplitter {
+	height: 8px;
+	overflow: hidden;
+	background-color: $(color:threedface);
+	cursor: n-resize;
+}
+ui|explorerdecks {
+	display: none;
+}
+ui|cover#explorercover {
+	cursor: n-resize;
+}

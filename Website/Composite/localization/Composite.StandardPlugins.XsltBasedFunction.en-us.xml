@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<strings>
+  <string key="StandardPlugins.XsltBasedFunctionProviderElementProvider.RootFolderLabel" value="XSLT functions" />
+  <string key="StandardPlugins.XsltBasedFunctionProviderElementProvider.RootFolderToolTip" value="XSLT functions" />
+  <string key="AddNewXsltFunctionWorkflow.DuplicateName" value="An xslt function with the same name already exists." />
+  <string key="AddNewXsltFunctionWorkflow.MethodEmpty" value="Method name must be non-empty" />
+  <string key="AddNewXsltFunctionWorkflow.InvalidNamespace" value="Namespace must be like A.B.C - not start and end with ." />
+  <string key="AddNewXsltFunctionWorkflow.InvalidFilePath" value="XslFilePath must start with \ or /" />
+  <string key="AddNewXsltFunctionWorkflow.MissingActiveLanguageTitle" value="A language is required" />
+  <string key="AddNewXsltFunctionWorkflow.MissingActiveLanguageMessage" value="To create a XSLT function a language is required, but no languages have been added yet. You can add one under the System perspective." />
+  <string key="AddNewXsltFunctionWorkflow.MissingPageTitle" value="A page is required" />
+  <string key="AddNewXsltFunctionWorkflow.MissingPageMessage" value="To create a XSLT function at least one page has to be added." />
+  <string key="DeleteXsltFunctionWorkflow.ConfirmDeleteTitle" value="Delete XSLT?" />
+  <string key="DeleteXsltFunctionWorkflow.ConfirmDeleteMessage" value="Delete the selected XSLT?" />
+  <string key="DeleteXsltFunctionWorkflow.DeleteTitle" value="Delete" />
+  <string key="DeleteXsltFunctionWorkflow.DeleteMessage" value="Xslt Function deleted" />
+  <string key="DeleteXsltFunctionWorkflow.CascadeDeleteErrorTitle" value="Cascade delete error" />
+  <string key="DeleteXsltFunctionWorkflow.CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
+  <string key="EditXsltFunctionWorkflow.EmptyMethodName" value="Method name must be non-empty" />
+  <string key="EditXsltFunctionWorkflow.InvalidNamespace" value="Namespace must be like A.B.C - not start and end with." />
+  <string key="EditXsltFunctionWorkflow.InvalidFileName" value="XslFilePath must start with \ or /" />
+  <string key="EditXsltFunctionWorkflow.InvalidName" value="Invalid function name" />
+  <string key="EditXsltFunctionWorkflow.CannotRenameFileExists" value="Cannot rename the function, file '{0}' already exists." />
+  <string key="XsltBasedFunctionProviderElementProvider.Add" value="Add XSLT function" />
+  <string key="XsltBasedFunctionProviderElementProvider.AddToolTip" value="Add new XSLT function" />
+  <string key="XsltBasedFunctionProviderElementProvider.Edit" value="Edit" />
+  <string key="XsltBasedFunctionProviderElementProvider.EditToolTip" value="Edit XSLT function" />
+  <string key="XsltBasedFunctionProviderElementProvider.Delete" value="Delete" />
+  <string key="XsltBasedFunctionProviderElementProvider.DeleteToolTip" value="Delete XSLT function" />
+  <string key="DeleteXsltWorkflow.DeleteTitle" value="Delete" />
+  <string key="DeleteXsltWorkflow.DeleteMessage" value="XSLT function deleted" />
+  <string key="AddNewXsltFunctionStep1.LabelDialog" value="Add new XSLT function" />
+  <string key="AddNewXsltFunctionStep1.LabelFieldGroup" value="Naming and output type" />
+  <string key="AddNewXsltFunctionStep1.LabelName" value="Name" />
+  <string key="AddNewXsltFunctionStep1.HelpName" value="" />
+  <string key="AddNewXsltFunctionStep1.LabelNamespace" value="Namespace" />
+  <string key="AddNewXsltFunctionStep1.HelpNamespace" value="" />
+  <string key="AddNewXsltFunctionStep1.LabelOutputType" value="Output type" />
+  <string key="EditXsltFunction.LabelSettings" value="Settings" />
+  <string key="EditXsltFunction.LabelName" value="Name" />
+  <string key="EditXsltFunction.HelpName" value="" />
+  <string key="EditXsltFunction.LabelNamespace" value="Namespace" />
+  <string key="EditXsltFunction.HelpNamespace" value="" />
+  <string key="EditXsltFunction.LabelDescription" value="Description" />
+  <string key="EditXsltFunction.HelpDescription" value="" />
+  <string key="EditXsltFunction.LabelDebug" value="Debug" />
+  <string key="EditXsltFunction.LabelPage" value="Page" />
+  <string key="EditXsltFunction.HelpPage" value="When debugging, this page is used as context for the rendering." />
+  <string key="EditXsltFunction.LabelAdminitrativeScope" value="Adminitrative" />
+  <string key="EditXsltFunction.LabelPublicScope" value="Public" />
+  <string key="EditXsltFunction.LabelPageDataScope" value="Data scope" />
+  <string key="EditXsltFunction.HelpPageDataScope" value="Choose public or development version as context for the rendering." />
+  <string key="EditXsltFunction.LabelActiveLocales" value="Language" />
+  <string key="EditXsltFunction.HelpActiveLocales" value="Select language to be used while debugging the function." />
+  <string key="EditXsltFunction.OutputType" value="Output type" />
+  <string key="EditXsltFunction.LabelInputParameters" value="Input Parameters" />
+  <string key="EditXsltFunction.LabelFunctionCalls" value="Function calls" />
+  <string key="EditXsltFunction.LabelTemplate" value="Template" />
+  <string key="EditXsltFunction.LabelPreview" value="Preview" />
+  <string key="EditXsltFunctionWorkflow.MissingActiveLanguageTitle" value="A language is required" />
+  <string key="EditXsltFunctionWorkflow.MissingActiveLanguageMessage" value="To edit a XSLT function a language is required, but no languages have been added yet. You can add one under the System perspective." />
+  <string key="EditXsltFunctionWorkflow.MissingPageTitle" value="A page is required" />
+  <string key="EditXsltFunctionWorkflow.MissingPageMessage" value="To edit a XSLT function at least one page has to be added." />
+</strings>

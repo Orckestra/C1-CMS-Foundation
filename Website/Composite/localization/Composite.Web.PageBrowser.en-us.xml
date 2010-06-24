@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+	
+	<!-- buttons -->
+	<string key="ToolBarButton.Back.ToolTip" value="Go back one page" />
+	<string key="ToolBarButton.Forward.ToolTip" value="Go forward one page" />
+	<string key="ToolBarButton.Refresh.ToolTip" value="Refresh page" />
+	<string key="ToolBarButton.Home.ToolTip" value="Go to the Start page" /> <!-- TODO: Show URL instead! -->
+	
+	<!-- URL errors -->
+	<string key="AddressBar.Invalid.DialogTitle.External" 		value="Access denied"/>
+	<string key="AddressBar.Invalid.DialogText.External" 		value="External URL cannot loaded."/>
+	<string key="AddressBar.Invalid.DialogTitle.BadRequest" 	value="Bad URL"/>
+	<string key="AddressBar.Invalid.DialogText.BadRequest" 		value="The URL is invalid and cannot be loaded."/>
+	<string key="AddressBar.Invalid.DialogTitle.Unauthorized" 	value="Not authorized"/>
+	<string key="AddressBar.Invalid.DialogText.Unauthorized" 	value="You are not authorized to view the page on specified URL."/>
+	<string key="AddressBar.Invalid.DialogTitle.NotFound" 		value="Page not found"/>
+	<string key="AddressBar.Invalid.DialogText.NotFound" 		value="Page not found on the specified URL."/>
+	<string key="AddressBar.Invalid.DialogTitle.InternalError" 	value="Server error"/>
+	<string key="AddressBar.Invalid.DialogText.InternalError" 	value="The server has reported an error on the specified URL. The page cannot be loaded."/>
+	<string key="AddressBar.Invalid.DialogTitle.Default" 		value="Page not loaded"/>
+	<string key="AddressBar.Invalid.DialogText.Default" 		value="An error prevents the URL from being loaded."/>	
+	
+</strings>

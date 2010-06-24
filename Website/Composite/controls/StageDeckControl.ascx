@@ -1,0 +1,1 @@
+<%@ Control Language="C#" AutoEventWireup="true" CodeFile="StageDeckControl.ascx.cs" Inherits="StageDeckControl" %>

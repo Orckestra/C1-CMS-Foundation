@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="SelectedForeignKeyPropertyName" type="System.String" />
+    <cms:binding name="ForeignKeyPropertyNames" type="System.Object" />
+  </cms:bindings>
+  <cms:layout iconhandle="dataassociation-add-association">
+    <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeWorkflow.FieldGroupLabel}">
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeAddExistingSelectForeignKey.KeySelectorLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeAddExistingSelectForeignKey.KeySelectorHelp}">
+        <KeySelector.Selected>
+          <cms:bind source="SelectedForeignKeyPropertyName" />
+        </KeySelector.Selected>
+        <KeySelector.Options>
+          <cms:read source="ForeignKeyPropertyNames" />
+        </KeySelector.Options>
+      </KeySelector>
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

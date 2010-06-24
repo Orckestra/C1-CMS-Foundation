@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:fields xmlns:ui="http://www.w3.org/1999/xhtml">
+	<ui:fieldgroup label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelFlashOptions}">
+		<ui:field>
+			<ui:fielddesc>Quality</ui:fielddesc>
+			<ui:fielddata>
+				<ui:selector name="paramquality" label="(default)">
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelHigh}" value="high"/>
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelLow}" value="low"/>
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelAutohigh}" value="autoheigh"/>
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelAutolow}" value="autolow"/>
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelBest}" value="best"/>
+				</ui:selector>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>WMode</ui:fielddesc>
+			<ui:fielddata>
+				<ui:selector name="paramwmode" label="(default)">
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelWindow}" value="window"/>
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelOpaque}" value="opaque"/>
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelTransparent}" value="transparent"/>
+				</ui:selector>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>Scale</ui:fielddesc>
+			<ui:fielddata>
+				<ui:selector name="paramscale" label="(default)">
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelShowall}" value="showall"/>
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelNoborder}" value="noborder"/>
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelExactfit}" value="exactfit"/>
+				</ui:selector>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>Settings</ui:fielddesc>
+			<ui:fielddata>
+				<ui:checkboxgroup>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelAutoPlay}" name="paramplay" ischecked="true"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelLoop}" name="paramloop" ischecked="true"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelShowMenu}" name="parammenu" ischecked="true"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelSWLiveConnect}" name="paramswliveconnect"/>
+				</ui:checkboxgroup>
+			</ui:fielddata>
+		</ui:field>
+	</ui:fieldgroup>
+</ui:fields>

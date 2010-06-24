@@ -1,0 +1,83 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+/*
+ * Notice capitalization of firt-letter on these fellows: TAB, DOCKTAB and TITLEBAR.
+ */
+ui|tab ui|labeltext,
+ui|docktab ui|labeltext,
+ui|titlebar ui|labeltext {
+	text-transform: capitalize;
+}
+ui|labelbox {
+	display: block;
+	float: left;
+	white-space: nowrap;
+	-moz-user-select: none; /* See notes in DocumentManager.js */
+}
+ui|labelbox.toolbartext {
+	margin-top: 4px;	
+}
+ui|labelbody {
+	background: transparent none no-repeat 0 0;
+	display: block;
+	float: left;
+	margin-left: auto !important;
+}
+ui|labelbox.flipped ui|labelbody {
+	background-position: 100% 0;
+	padding-left: 0 !important;
+}
+ui|labelbody,
+ui|*.imagesizenormal ui|labelbody {
+	height: 16px;
+	padding-left: 16px;
+}
+ui|labelbox.flipped ui|labelbody,
+ui|*.imagesizelarge ui|labelbox.flipped ui|labelbody {
+	padding-right: 16px;
+}
+ui|*.imagesizelarge ui|labelbody {
+	height: 24px;
+	padding-top: 5px;
+	padding-left: 28px; /* 28px 4px added space */
+}
+ui|*.imagesizelarge ui|labelbox.flipped ui|labelbody {
+	padding-right: 28px;
+}
+ui|*.imagesizelarge ui|labelbox.imageonly ui|labelbody {
+	padding-left: 24px;
+}
+ui|*.imagesizexlarge ui|labelbody {
+	height: 32px;
+	padding-left: 36px; /* 36 4px added space */
+}
+ui|*.imagesizexlarge ui|labelbox.imageonly ui|labelbody {
+	padding-left: 32px;
+}
+
+ui|*.textonly ui|labelbody,
+ui|labelbox.textonly ui|labelbody {
+	padding-left: 0 !important;
+	background-position: -200px -200px; /* huh? */
+}
+ui|labeltext {
+	display: block;
+	float: left;
+	#ie text-overflow: ellipsis;
+}
+ui|*.textonly ui|labeltext,
+ui|labelbox.textonly ui|labeltext {
+	padding-left: 5px !important;
+}
+ui|*.imagesonly ui|labeltext {
+	display: none;
+	padding-left: 0 !important;
+}
+ui|labelbox.both ui|labeltext {
+	#moz margin-left: 4px; 
+	#ie margin-left: 4px;
+}
+ui|labelbox.graytext ui|labeltext {
+	color: graytext;
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<a id="a1">
+	<b id="b1">
+		<c id="c1">
+			<d/>
+		</c>
+	</b>
+	<b id="b2">
+		<c>
+			<d>
+				<e id="e1">
+					<f/>
+				</e>
+			</d>
+		</c>
+	</b>
+	<b id="b3">
+		<c>
+			<d name="value"/>
+		</c>
+	</b>
+	<b id="b4"/>
+</a>

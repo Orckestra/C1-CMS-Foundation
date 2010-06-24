@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<functions>
+  <f:function xmlns:f="http://www.composite.net/ns/function/1.0" name="Composite.Pages.SitemapXml" id="/function[1]">
+    <f:param name="PageAssociationScope" value="AncestorAndCurrentPages" id="/function[1]/@PageAssociationScope" />
+  </f:function>
+  <f:function xmlns:f="http://www.composite.net/ns/function/1.0" name="Composite.Data.Types.IPage.GetIPageXml" id="/function[2]">
+    <f:param name="PropertyNames" id="/function[2]/@PropertyNames">
+      <f:paramelement value="Id" />
+      <f:paramelement value="Title" />
+      <f:paramelement value="MenuTitle" />
+      <f:paramelement value="ChangedBy" />
+    </f:param>
+    <f:param xmlns:f="http://www.composite.net/ns/function/1.0" name="Filter" id="/function[2]/@Filter">
+      <f:function xmlns:f="http://www.composite.net/ns/function/1.0" name="Composite.Data.Types.IPage.CompoundFilter" id="/function[2]/@Filter/function">
+        <f:param name="IsAndQuery" value="False" id="/function[2]/@Filter/function/@IsAndQuery" />
+        <f:param xmlns:f="http://www.composite.net/ns/function/1.0" name="Left" id="/function[2]/@Filter/function/@Left">
+          <f:function xmlns:f="http://www.composite.net/ns/function/1.0" name="Composite.Data.Types.IPage.FieldPredicatesFilter" id="/function[2]/@Filter/function/@Left/function">
+            <f:param xmlns:f="http://www.composite.net/ns/function/1.0" name="ChangeDate" id="/function[2]/@Filter/function/@Left/function/@ChangeDate">
+              <f:function xmlns:f="http://www.composite.net/ns/function/1.0" name="Composite.Utils.Predicates.DateTimeGreaterThan" id="/function[2]/@Filter/function/@Left/function/@ChangeDate/function">
+                <f:param name="Value" value="2009-10-01T00:00:00+02:00" id="/function[2]/@Filter/function/@Left/function/@ChangeDate/function/@Value" />
+              </f:function>
+            </f:param>
+          </f:function>
+        </f:param>
+        <f:param xmlns:f="http://www.composite.net/ns/function/1.0" name="Right" id="/function[2]/@Filter/function/@Right">
+          <f:function xmlns:f="http://www.composite.net/ns/function/1.0" name="Composite.Data.Types.IPage.DataReferenceFilter" id="/function[2]/@Filter/function/@Right/function">
+            <f:param name="DataReference" value="69f9e0f1-e2ce-4b99-a1ba-5117964b0793" id="/function[2]/@Filter/function/@Right/function/@DataReference" />
+          </f:function>
+        </f:param>
+      </f:function>
+    </f:param>
+    <f:param name="PageSize" value="5" id="/function[2]/@PageSize" />
+    <f:param xmlns:f="http://www.composite.net/ns/function/1.0" name="PageNumber" id="/function[2]/@PageNumber">
+      <f:function xmlns:f="http://www.composite.net/ns/function/1.0" name="Composite.Utils.GetInputParameter" id="/function[2]/@PageNumber/function">
+        <f:param name="InputParameterName" value="pagenumber" id="/function[2]/@PageNumber/function/@InputParameterName" />
+      </f:function>
+    </f:param>
+  </f:function>
+  <f:function xmlns:f="http://www.composite.net/ns/function/1.0" name="Composite.Data.Types.IPage.GetIPageXml" id="/function[3]" />
+  <function compositename="Composite.Pages.SitemapXml" name="SitemapXml" namespace="Composite.Pages" description="Returns a hierarchical XML structure of pages. When executed as part of a page rendering XML elements representing the current and ancestor pages will be appended the attributes isopen=”true” and iscurrent=”true”" returntypelabel="IEnumerable&lt;XElement&gt;" xmlns="#functionDescription">
+    <param name="SourcePage" typelabel="DataReference&lt;C1 Page&gt;" label="Source page" required="false" description="By default the source page is the page currently being rendered. Specify a value if you want to get sitemap information relative to another page. The source page controls how page elements are annotated with 'isopen' and 'iscurrent' and is the starting point when calculating the page scope." />
+    <param name="PageAssociationScope" typelabel="PageAssociationScope" label="Page scope" required="false" description="The scope of pages to extract from the sitemap. The default is 'all pages'. You can use this parameter to extract the structure you need to complete your task." />
+  </function>
+  <function compositename="Composite.Data.Types.IPage.GetIPageXml" name="GetIPageXml" namespace="Composite.Data.Types.IPage" description="Retrieves an XML representation of the data. " returntypelabel="IEnumerable&lt;XElement&gt;" xmlns="#functionDescription">
+    <param name="PropertyNames" typelabel="IEnumerable&lt;String&gt;" label="Selected fields" required="true" description="The data fields to output in the XML. Fewer fields can yield faster renderings." />
+    <param name="Filter" typelabel="Expression&lt;Func&lt;C1 Page,Boolean&gt;&gt;" label="Filter" required="false" description="" />
+    <param name="OrderByField" typelabel="String" label="Order by" required="false" description="The field to order data by" />
+    <param name="OrderAscending" typelabel="Boolean" label="Order ascending" required="false" description="When set to true results are delivered in in ascending order, otherwise descending order is used. Default is ascending order." />
+    <param name="PageSize" typelabel="Int32" label="Page size" required="false" description="The number of items to display on one page – the maximum number of elements to return. " />
+    <param name="PageNumber" typelabel="Int32" label="Page number" required="false" description="If the number of data elements exceed the page size you can use paging to move to the other pages. See the Page size parameter." />
+    <param name="ShowReferencesInline" typelabel="Boolean" label="Show reference data inline" required="false" description="If you include reference data in the 'Selected properties' setting, you can use this option to control how the referenced data is included. 'Inline' is easy to use, but may bloat the size of the XML document." />
+    <param name="IncludePagingInfo" typelabel="Boolean" label="Include paging info" required="false" description="When selected the data XML will be preceded by a &lt;PagingInfo /&gt; element detailing number of pages, items and more." />
+    <param name="Randomized" typelabel="Boolean" label="Randomized" required="false" description="When true data can be ordered randomly. Specify the number of random results you require by setting the 'Page size'. If a filter is specified, this is applied before the random selection. If you speficy an 'Order by' value, you should specify a low 'Page size' or the randomization will become void." />
+    <param name="ElementName" typelabel="String" label="Element name" required="false" description="The name of the XML element. The detault is 'IPage'" />
+    <param name="ElementNamespace" typelabel="XNamespace" label="Element namespace" required="false" description="The namespace the XML element belongs to. The detault is ''" />
+  </function>
+  <function compositename="Composite.Data.Types.IPage.CompoundFilter" name="CompoundFilter" namespace="Composite.Data.Types.IPage" description="Defines an “and” or “or” query, combining two other filters." returntypelabel="Expression&lt;Func&lt;C1 Page,Boolean&gt;&gt;" xmlns="#functionDescription">
+    <param name="IsAndQuery" typelabel="Boolean" label="And / or filter" required="false" description="If you select “And” both filters are applied to the data. Selecting “Or” will give you the data that matches just one of the filters." />
+    <param name="Left" typelabel="Expression&lt;Func&lt;C1 Page,Boolean&gt;&gt;" label="Left filter" required="true" description="One of the two filters (the one to evaluate first)" />
+    <param name="Right" typelabel="Expression&lt;Func&lt;C1 Page,Boolean&gt;&gt;" label="Right filter" required="true" description="One of the two filters (the one to evaluate last)" />
+  </function>
+  <function compositename="Composite.Data.Types.IPage.FieldPredicatesFilter" name="FieldPredicatesFilter" namespace="Composite.Data.Types.IPage" description="Lets you specify a filter on data by specifying requirements for the individual fields. If you set requirements on multiple fields, they are all enforced (and query)." returntypelabel="Expression&lt;Func&lt;C1 Page,Boolean&gt;&gt;" xmlns="#functionDescription">
+    <param name="Id" typelabel="Expression&lt;Func&lt;Guid,Boolean&gt;&gt;" label="Id filter" required="false" description="Specify a criteria that this field must meet or use the default value (no criteria)" />
+    <param name="TemplateId" typelabel="Expression&lt;Func&lt;Guid,Boolean&gt;&gt;" label="TemplateId filter" required="false" description="Specify a criteria that this field must meet or use the default value (no criteria)" />
+    <param name="Title" typelabel="Expression&lt;Func&lt;String,Boolean&gt;&gt;" label="Title filter" required="false" description="Specify a criteria that this field must meet or use the default value (no criteria)" />
+    <param name="MenuTitle" typelabel="Expression&lt;Func&lt;String,Boolean&gt;&gt;" label="MenuTitle filter" required="false" description="Specify a criteria that this field must meet or use the default value (no criteria)" />
+    <param name="UrlTitle" typelabel="Expression&lt;Func&lt;String,Boolean&gt;&gt;" label="UrlTitle filter" required="false" description="Specify a criteria that this field must meet or use the default value (no criteria)" />
+    <param name="FriendlyUrl" typelabel="Expression&lt;Func&lt;String,Boolean&gt;&gt;" label="FriendlyUrl filter" required="false" description="Specify a criteria that this field must meet or use the default value (no criteria)" />
+    <param name="Abstract" typelabel="Expression&lt;Func&lt;String,Boolean&gt;&gt;" label="Abstract filter" required="false" description="Specify a criteria that this field must meet or use the default value (no criteria)" />
+    <param name="ChangeDate" typelabel="Expression&lt;Func&lt;DateTime,Boolean&gt;&gt;" label="ChangeDate filter" required="false" description="Specify a criteria that this field must meet or use the default value (no criteria)" />
+    <param name="ChangedBy" typelabel="Expression&lt;Func&lt;String,Boolean&gt;&gt;" label="ChangedBy filter" required="false" description="Specify a criteria that this field must meet or use the default value (no criteria)" />
+    <param name="PublicationStatus" typelabel="Expression&lt;Func&lt;String,Boolean&gt;&gt;" label="PublicationStatus filter" required="false" description="Specify a criteria that this field must meet or use the default value (no criteria)" />
+    <param name="CultureName" typelabel="Expression&lt;Func&lt;String,Boolean&gt;&gt;" label="CultureName filter" required="false" description="Specify a criteria that this field must meet or use the default value (no criteria)" />
+    <param name="SourceCultureName" typelabel="Expression&lt;Func&lt;String,Boolean&gt;&gt;" label="SourceCultureName filter" required="false" description="Specify a criteria that this field must meet or use the default value (no criteria)" />
+  </function>
+  <function compositename="Composite.Utils.Predicates.DateTimeGreaterThan" name="DateTimeGreaterThan" namespace="Composite.Utils.Predicates" description="Check if a date is greater than a certain value" returntypelabel="Expression&lt;Func&lt;DateTime,Boolean&gt;&gt;" xmlns="#functionDescription">
+    <param name="Value" typelabel="DateTime" label="The value to compare with" required="true" description="" />
+  </function>
+  <function compositename="Composite.Data.Types.IPage.DataReferenceFilter" name="DataReferenceFilter" namespace="Composite.Data.Types.IPage" description="Converts a DataReference into a single element filter. This filter will select a maximum of one item." returntypelabel="Expression&lt;Func&lt;C1 Page,Boolean&gt;&gt;" xmlns="#functionDescription">
+    <param name="DataReference" typelabel="DataReference&lt;C1 Page&gt;" label="Data Reference" required="true" description="The Data Reference to use when selecting data." />
+  </function>
+  <function compositename="Composite.Utils.GetInputParameter" name="GetInputParameter" namespace="Composite.Utils" description="Returns an input parameter from executing function context. Use this in developing to copy an input value to a new function call." returntypelabel="Object" xmlns="#functionDescription">
+    <param name="InputParameterName" typelabel="String" label="Parameter name" required="true" description="Specify the name of the input parameter which value you wish to use here." />
+  </function>
+</functions>

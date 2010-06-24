@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<strings>
+  <string key="RootFolderLabel" value="C# functions" />
+  <string key="RootFolderToolTip" value="Method functions" />
+  <string key="DeleteFunction.LabelFieldGroup" value="Delete this function" />
+  <string key="DeleteFunction.Text" value="Delete this function" />
+  <string key="Add" value="Add C# function" />
+  <string key="AddToolTip" value="Add new method based function." />
+  <string key="Edit" value="Edit" />
+  <string key="EditToolTip" value="Edit Function." />
+  <string key="Delete" value="Delete" />
+  <string key="DeleteToolTip" value="Delete Function." />
+  <string key="AddNewMethodBasedFunction.LabelFieldGroup" value="Add new method based function" />
+  <string key="AddNewMethodBasedFunctionStep1.LabelFieldGroup" value="Step 1" />
+  <string key="AddNewMethodBasedFunctionStep1.LabelType" value="Type" />
+  <string key="AddNewMethodBasedFunctionStep1.LabelTypeHelp" value="The type that contains the method in question" />
+  <string key="AddNewMethodBasedFunctionStep1.LabelError" value="Error" />
+  <string key="AddNewMethodBasedFunctionStep2.LabelMethodName" value="Method name" />
+  <string key="AddNewMethodBasedFunctionStep2.HelpMethodName" value="" />
+  <string key="AddNewMethodBasedFunctionStep3.LabelMethodName" value="Method Name" />
+  <string key="AddNewMethodBasedFunctionStep3.HelpMethodName" value="" />
+  <string key="AddNewMethodBasedFunctionStep3.LabelNamespaceName" value="Namespace Name" />
+  <string key="AddNewMethodBasedFunctionStep3.HelpNamespaceName" value="" />
+  <string key="AddNewMethodBasedFunctionStep3.LabelError" value="Error" />
+  <string key="CascadeDeleteErrorTitle" value="Cascade delete error" />
+  <string key="CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
+  <string key="AddFunction.CouldNotFindType" value="Could not find type" />
+  <string key="AddFunction.TypeHasNoValidMethod" value="The type does not contain any valid method" />
+  <string key="AddFunction.TypeIsAbstractOrStatic" value="The type is marked as either abstract or static. Calling methods on abstract or static types is not supported." />
+  <string key="AddFunction.TypeMustNotHaveOverloads" value="The type must not have overloads" />
+  <string key="AddFunction.MethodNameIsEmpty" value="Method name must be non-empty" />
+  <string key="AddFunction.InvalidNamespace" value="Namespace must be like A.B.C - not start and end with ." />
+  <string key="EditMethodBasedFunction.LabelFieldGroup" value="Edit Method Based Query" />
+  <string key="EditMethodBasedFunction.LabelMethodName" value="Method Name" />
+  <string key="EditMethodBasedFunction.LabelMethodNameHelp" value="The name that the function should be know under." />
+  <string key="EditMethodBasedFunction.LabelNamespaceName" value="Namespace Name" />
+  <string key="EditMethodBasedFunction.LabelNamespaceNameHelp" value="The namespace to place the method under." />
+  <string key="EditMethodBasedFunction.LabelType" value="Type" />
+  <string key="EditMethodBasedFunction.LabelTypeHelp" value="The type that contains the method in question." />
+  <string key="EditMethodBasedFunction.LabelMethod" value="Method" />
+  <string key="EditMethodBasedFunction.LabelMethodHelp" value="The method to invoke on the type." />
+  <string key="EditMethodBasedFunction.LabelError" value="Error" />
+  <string key="EditFunction.MethodNameEmpty" value="Method name must be non-empty" />
+  <string key="EditFunction.InvalidNamespace" value="Namespace must not start and end with . - example A.B.C" />
+  <string key="EditFunction.TypeNotFound" value="Could not find type" />
+  <string key="EditFunction.MethodNotInType" value="The type does not contain the method" />
+  <string key="EditFunction.NoValidMethod" value="The type does not contain any valid method" />
+  <string key="EditFunction.MethodOverloadsNotAllowed" value="The type must not have overloads" />
+</strings>

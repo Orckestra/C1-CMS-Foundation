@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+	<string key="UserGroupElementProvider.RootLabel" value="User Groups"/>
+  <string key="UserGroupElementProvider.RootToolTip" value="User Groups"/>
+  <string key="UserGroupElementProvider.AddNewUserGroupLabel" value="Add User Group..."/>  
+  <string key="UserGroupElementProvider.AddNewUserGroupToolTip" value="Add new User Group"/>
+  <string key="UserGroupElementProvider.EditUserGroupLabel" value="Edit User Group"/>
+  <string key="UserGroupElementProvider.EditUserGroupToolTip" value="Edit User Group"/>
+  <string key="UserGroupElementProvider.DeleteUserGroupLabel" value="Delete User Group"/>
+  <string key="UserGroupElementProvider.DeleteUserGroupToolTip" value="Delete User Group"/>
+
+  <string key="AddNewUserGroup.AddNewUserGroupStep1.LabelFieldGroup" value="Add User Group"/>
+  <string key="AddNewUserGroup.AddNewUserGroupStep1.UserGroupNameLabel" value="User group name"/>
+  <string key="AddNewUserGroup.AddNewUserGroupStep1.UserGroupNameHelp" value="The name of the new user group"/>
+  <string key="AddNewUserGroup.AddNewUserGroupStep1.UserGroupNameAlreadyExists" value="A user group with the same name already exists"/>
+
+  <string key="EditUserGroup.EditUserGroupStep1.LabelFieldGroup" value="Edit User Group"/>
+  <string key="EditUserGroup.EditUserGroupStep1.UserGroupNameLabel" value="User group name"/>
+  <string key="EditUserGroup.EditUserGroupStep1.UserGroupNameHelp" value="The name of the user group"/>
+  <string key="EditUserGroup.EditUserGroupStep1.UserGroupNameAlreadyExists" value="A user group with the same name already exists"/>
+  <string key="EditUserGroup.EditUserGroupStep1.ActivePerspectiveFieldLabel" value="Perspectives" />
+  <string key="EditUserGroup.EditUserGroupStep1.ActivePerspectiveMultiSelectLabel" value="Perspectives" />
+  <string key="EditUserGroup.EditUserGroupStep1.ActivePerspectiveMultiSelectHelp" value="Select which perspectives the user gets access to view" />
+  <string key="EditUserGroup.EditUserGroupStep1.GlobalPermissionsFieldLabel" value="Global permissions"/>
+  <string key="EditUserGroup.EditUserGroupStep1.GlobalPermissionsMultiSelectLabel" value="Global permissions"/>
+  <string key="EditUserGroup.EditUserGroupStep1.GlobalPermissionsMultiSelectHelp" value="The Administrate permission grants the user group access to manage user group permissions and execute other administrative tasks."/>
+
+
+  
+  <string key="DeleteUserGroup.DeleteUserGroupInitialStep.UserGroupHasUsersTitle" value="User Group Has Users"/>
+  <string key="DeleteUserGroup.DeleteUserGroupInitialStep.UserGroupHasUsersMessage" value="You cannot delete a user group that has users."/>
+  
+  <string key="DeleteUserGroup.DeleteUserGroupStep1.LabelFieldGroup" value="Delete User Group"/>
+  <string key="DeleteUserGroup.DeleteUserGroupStep1.Text" value="Delete the selected user group?"/>
+</strings>

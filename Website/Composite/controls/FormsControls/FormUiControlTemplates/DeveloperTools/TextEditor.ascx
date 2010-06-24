@@ -1,0 +1,50 @@
+<%@ Control Language="C#" Inherits="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.TextEditorTemplateUserControlBase" %>
+<%@ Import Namespace="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories" %>
+<%@ Import Namespace="System.Xml.Linq" %>
+
+<script type="C#" runat="server">
+
+	private string _currentStringValue = null;
+	
+	protected override void BindStateToProperties()
+	{
+        _currentStringValue = Request.Form[this.UniqueID];
+        this.Text = HttpContext.Current.Server.UrlDecode(_currentStringValue);
+	}
+	protected override void InitializeViewState()
+	{
+        _currentStringValue = HttpContext.Current.Server.UrlEncode(this.Text).Replace("+", "%20"); ;
+	}
+	public override string GetDataFieldClientName()
+	{
+	    return this.UniqueID;
+	}
+
+    private string GetFileSyntax()
+    {
+        switch (this.MimeType)
+        {
+            case "text/html":
+                return "html";
+            case "text/xml":
+                return "xml";
+            case "text/css":
+                return "css";
+            case "text/javascript":
+            case "text/js":
+                return "javascript";
+            default:
+                return "text";
+        }
+    }
+    
+    // html, text, xml, css, javascript, sql
+</script>
+
+<!-- This should be deprecated for the more generalized "SorceEditor"! -->
+
+<ui:sourceeditor syntax="<%= GetFileSyntax() %>" 
+	value="<%= _currentStringValue %>"
+	id="<%= this.UniqueID %>"
+	name="<%= this.UniqueID %>"
+	callbackid="<%= this.UniqueID %>"/>

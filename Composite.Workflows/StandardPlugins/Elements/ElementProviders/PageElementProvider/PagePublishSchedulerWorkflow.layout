@@ -1,0 +1,72 @@
+<StateMachineWorkflowDesigner xmlns:ns0="clr-namespace:System.Drawing;Assembly=System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Name="PagePublishSchedulerWorkflow" Location="30; 30" Size="1145; 974" AutoSizeMargin="16; 24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/workflow">
+	<StateMachineWorkflowDesigner.DesignerConnectors>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="finishState" SourceConnectionIndex="0" TargetConnectionEdge="Top" SetStateName="setStateActivity19" SourceStateName="PagePublishSchedulerWorkflow" SourceConnectionEdge="Right" TargetActivity="finishState" SourceActivity="PagePublishSchedulerWorkflow" EventHandlerName="eventDrivenActivity_GlobalCancel">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="240" Y="71" />
+				<ns0:Point X="1045" Y="71" />
+				<ns0:Point X="1045" Y="779" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="waitStateActivity" SourceConnectionIndex="0" TargetConnectionEdge="Top" SetStateName="setStateActivity1" SourceStateName="initializeStateActivity" SourceConnectionEdge="Right" TargetActivity="waitStateActivity" SourceActivity="initializeStateActivity" EventHandlerName="initializeStateInitializationActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="347" Y="235" />
+				<ns0:Point X="469" Y="235" />
+				<ns0:Point X="469" Y="442" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="finalizeStateActivity" SourceConnectionIndex="1" TargetConnectionEdge="Top" SetStateName="setStateActivity2" SourceStateName="waitStateActivity" SourceConnectionEdge="Right" TargetActivity="finalizeStateActivity" SourceActivity="waitStateActivity" EventHandlerName="waitEventDrivenActivity_Timeout">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="571" Y="507" />
+				<ns0:Point X="783" Y="507" />
+				<ns0:Point X="783" Y="596" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="finishState" SourceConnectionIndex="0" TargetConnectionEdge="Top" SetStateName="setStateActivity3" SourceStateName="finalizeStateActivity" SourceConnectionEdge="Right" TargetActivity="finishState" SourceActivity="finalizeStateActivity" EventHandlerName="finalizeStateInitializationActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="882" Y="637" />
+				<ns0:Point X="1045" Y="637" />
+				<ns0:Point X="1045" Y="779" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+	</StateMachineWorkflowDesigner.DesignerConnectors>
+	<StateMachineWorkflowDesigner.Designers>
+		<StateDesigner Name="finishState" Location="965; 779" Size="160; 80" AutoSizeMargin="16; 24" />
+		<EventDrivenDesigner Size="150; 194" Name="eventDrivenActivity_GlobalCancel" Location="38; 61">
+			<EventDrivenDesigner.Designers>
+				<HandleExternalEventActivityDesigner Size="130; 41" Name="cancelHandleExternalEventActivity1" Location="48; 123" />
+				<SetStateDesigner Size="130; 53" Name="setStateActivity19" Location="48; 183" />
+			</EventDrivenDesigner.Designers>
+		</EventDrivenDesigner>
+		<StateDesigner Name="initializeStateActivity" Location="141; 194" Size="210; 80" AutoSizeMargin="16; 24">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Size="150; 182" Name="initializeStateInitializationActivity" Location="149; 225">
+					<StateInitializationDesigner.Designers>
+						<CodeDesigner Size="130; 41" Name="initializeCodeActivity" Location="159; 287" />
+						<SetStateDesigner Size="130; 41" Name="setStateActivity1" Location="159; 347" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+		<StateDesigner Name="waitStateActivity" Location="363; 442" Size="212; 80" AutoSizeMargin="16; 24">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Size="150; 109" Name="waitStateInitializationActivity" Location="371; 473" />
+				<EventDrivenDesigner Size="150; 182" Name="waitEventDrivenActivity_Timeout" Location="371; 497">
+					<EventDrivenDesigner.Designers>
+						<DelayDesigner Size="130; 41" Name="waitDelayActivity" Location="381; 559" />
+						<SetStateDesigner Size="130; 41" Name="setStateActivity2" Location="381; 619" />
+					</EventDrivenDesigner.Designers>
+				</EventDrivenDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+		<StateDesigner Name="finalizeStateActivity" Location="681; 596" Size="205; 80" AutoSizeMargin="16; 24">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Size="150; 182" Name="finalizeStateInitializationActivity" Location="689; 627">
+					<StateInitializationDesigner.Designers>
+						<CodeDesigner Size="130; 41" Name="finalizeCodeActivity" Location="699; 689" />
+						<SetStateDesigner Size="130; 41" Name="setStateActivity3" Location="699; 749" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+	</StateMachineWorkflowDesigner.Designers>
+</StateMachineWorkflowDesigner>

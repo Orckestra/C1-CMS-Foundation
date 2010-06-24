@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="Url" type="System.String" />
+  </cms:bindings>
+  <cms:layout iconhandle="package-add-source" label="${Composite.StandardPlugins.PackageElementProvider, AddAddOnSource.Step1.LayoutLabel}">
+    <FieldGroup Label="${Composite.StandardPlugins.PackageElementProvider, AddAddOnSource.Step1.FieldGroupLabel}">
+      <TextBox Label="${Composite.StandardPlugins.PackageElementProvider, AddAddOnSource.Step1.UrlLabel}"
+               Help="${Composite.StandardPlugins.PackageElementProvider, AddAddOnSource.Step1.UrlHelp}">
+        <TextBox.Text>
+          <cms:bind source="Url" />
+        </TextBox.Text>
+      </TextBox>
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

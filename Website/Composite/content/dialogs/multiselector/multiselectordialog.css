@@ -1,0 +1,47 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|fields {
+	width: 100%;
+}
+ui|field {
+	float: left;
+	margin: 0;
+	width: 220px !important;
+}
+ui|box.controls {
+	float: left;
+	margin: 0 5px 0 5px;
+}
+ui|multiselector {
+	width: 220px;
+	overflow: hidden;
+}
+ui|multiselector ui|box {
+	height: 200px;
+	width: 216px;
+}
+ui|box.controls ui|clickbutton {
+	float: none;
+	margin: 0 0 3px 0;
+}
+ui|box.controls ui|clickbutton ui|labeltext {
+	font-family: "Courier New", monospace;
+}
+ui|box.controls ui|clickbutton table.matrix td.c {
+	padding: 1px 3px 2px 3px;
+}
+ui|dialogpage {
+	padding: 0;	
+}
+ui|flexbox {
+	border-bottom: 1px solid $(color:threedshadow);
+	padding-bottom: 20px;
+	padding-top: 15px;
+	padding-left: 14px;
+}
+ui|dialogtoolbar {
+	border-top: 1px solid $(color:threedhighlight);
+	padding-right: 14px;
+	padding-bottom: 14px;
+}

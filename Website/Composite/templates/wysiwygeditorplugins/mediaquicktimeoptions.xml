@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+  <ui:fields xmlns:ui="http://www.w3.org/1999/xhtml">
+
+	<!-- param overview at http://www.apple.com/quicktime/tutorials/embed2.html -->
+
+	<ui:fieldgroup label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelQuickTimeOptions}">
+		<ui:field>
+			<ui:fielddesc>Start time</ui:fielddesc>
+			<ui:fielddata>
+				<ui:datainput name="paramstarttime" type="number"/>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>End time</ui:fielddesc>
+			<ui:fielddata>
+				<ui:datainput name="paramendtime" type="number"/>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>Target</ui:fielddesc>
+			<ui:fielddata>
+				<ui:datainput name="paramtarget"/>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>Href</ui:fielddesc>
+			<ui:fielddata>
+				<ui:datainput name="paramhref"/>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>Choke speed</ui:fielddesc>
+			<ui:fielddata>
+				<ui:datainput name="paramqtsrcchokespeed" type="number"/>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>Volume</ui:fielddesc>
+			<ui:fielddata>
+				<ui:datainput name="paramvolume" type="number"/>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>QT src</ui:fielddesc>
+			<ui:fielddata>
+				<ui:datainput name="paramqtsrc"/>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>Settings</ui:fielddesc>
+			<ui:fielddata>
+				<ui:checkboxgroup>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelLoop}" name="paramloop"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelCache}" name="paramcache"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelNoCorrection}" name="paramcorrection"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelKioskMode}" name="paramkioskmode"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelPlayEveryFrame}" name="paramplayeveryframe"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelAutoPlay}" name="paramautoplay" ischecked="true"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelController}" name="paramcontroller" ischecked="true"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelEnableJavaScript}" name="paramenablejavascript"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelAutoHRef}" name="paramautohreft"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelTargetCache}" name="paramtargetcache"/>
+				</ui:checkboxgroup>
+			</ui:fielddata>
+		</ui:field>
+	</ui:fieldgroup>
+</ui:fields>

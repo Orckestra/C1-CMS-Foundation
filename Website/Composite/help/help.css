@@ -1,0 +1,151 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+html,
+body {
+	/*background-color: #F8F8F5 !important;*/
+	background-color: white !important;
+	color: black;
+	margin: 0;
+	padding: 0;
+	border: none;
+	height: 100%;
+}
+body {
+	padding: 22px 16px 22px 18px;
+	overflow: auto;
+	line-height: 1.3em;
+	#region default
+	 	font-family: Tahoma, sans-serif;
+	 	font-size: 11px;
+	 	font-size: 13px;
+	#endregion
+	#region vista
+	 	font-family: "Segoe UI", Tahoma, sans-serif;
+ 		font-size: 12px;
+ 		font-size: 13px;
+	#endregion
+	#region osx
+	 	font-family: "Lucida Grande", sans-serif;
+ 		font-size: 11px;
+ 		font-size: 12px;
+	#endregion
+	
+}
+a {
+	cursor: pointer;
+	color: blue;
+}
+a:hover {
+	text-decoration: underline !important;
+}
+p,
+ul,
+ol {
+	margin-top: 0;
+	margin-bottom: 1.3em;	
+}
+h1 {
+	font-size: 140%;
+	padding: 0;
+	margin: 0 0 20px 0;
+}
+h4 {
+	font-size: 100%;
+	margin: 1.3em 0 0 0;
+}
+h4:first-child {
+	margin-top: 0;	
+}
+div.links {
+	margin-top: 3.9em;
+}
+li {
+	margin-left: 1.4em;	
+}
+ul.nl {
+	margin: 0 0 1.3em -1.4em;
+	-moz-user-select: none;
+}
+ul.nl ul {
+	margin-left: 0em;
+	margin-bottom: 0;
+}
+ul.nl,
+ul.nl ul {
+	padding: 0;
+	list-style: none;
+}
+ul.nl a {
+	text-decoration: none;
+	padding-left: 16px;
+}
+ul.nl a.label {
+	color: black;
+	background-image: url("content/_images/navlist-plus.png");
+	background-repeat: no-repeat;
+	background-position: 0 4px;
+	#region vista
+		background-position: 0 5px;
+	#endregion
+}
+ul.nl a:focus {
+	-moz-outline: none;
+	text-decoration: underline;
+}
+ul.nl a.on {
+	background-image: url("content/_images/navlist-minus.png");	
+}
+ul.nl ul {
+	display: none;	
+}
+ul.nl ul.on {
+	display: block;
+}
+
+
+
+
+
+
+
+/* TREES */
+
+
+/*
+ui|tree {
+	display: block;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	position: relative;
+}
+ui|tree,
+ui|treebody {
+	height: auto !important;
+	width: auto;
+}
+ui|tree {
+	margin-bottom: 1.3em;	
+	margin-top: 1.3em;
+}
+ui|treebody {
+	background-color: transparent;
+	padding: 0;
+	overflow: hidden !important;
+}
+ui|treenode a {
+	color: #222222;
+}
+ui|treenode a:hover ui|labeltext {
+	color: blue !important;
+	text-decoration: underline;
+}
+ui|treenode a * {
+	#moz cursor: pointer !important;
+	#ie cursor: hand !important;	
+}
+ui|tree.focused ui|treenode a ui|labelbox.focused ui|labeltext {
+	color: white !important;
+}
+*/

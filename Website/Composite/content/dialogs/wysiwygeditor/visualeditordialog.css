@@ -1,0 +1,10 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|visualeditor {
+	border-bottom: 1px solid $(color:threedshadow);
+}
+ui|dialogtoolbar {
+	border-top: 1px solid $(color:threedhighlight) !important;
+	border-right: 1px solid $(color:threedshadow); /* should actually be removed from editor! */
+}

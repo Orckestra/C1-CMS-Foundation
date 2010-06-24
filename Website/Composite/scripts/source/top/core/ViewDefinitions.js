@@ -1,0 +1,486 @@
+/**
+ * @type {HashMap<string><ViewDefinition>}
+ */
+var ViewDefinitions = {
+		
+	/*
+	 * The "null" definition is substituted for other definitions 
+	 * when a view gets released from server control.
+	 */
+	"Composite.Management.Null" : new HostedViewDefinition ({
+		isMutable	: true,
+		handle 		: "Composite.Management.Null"
+	}),
+	
+	/*
+	 * Postback dialog.
+	 */
+	"Composite.Management.PostBackDialog" : new DialogViewDefinition ({
+		handle 		: "Composite.Management.PostBackDialog",
+		isMutable	: true,
+		position 	: Dialog.MODAL,
+		url			: "${root}/content/dialogs/postback/postbackdialog.aspx",
+		argument 	: {
+			"url"	: null,
+			"list"	: null
+		}
+	}),
+	
+	/*
+	 * Postback view. Load framework file using HTTP post (in addition to GET).  
+	 * Use this to display framework stuff. Pages with a PageBinding, that is.
+	 */
+	"Composite.Management.PostBackView" : new HostedViewDefinition ({
+		handle 		: "Composite.Management.PostBackView",
+		isMutable	: true,
+		position 	: DockBinding.MAIN,
+		url			: "${root}/postback.aspx",
+		argument 	: {
+			"url"	: null,
+			"list"	: null
+		}
+	}),
+	 
+	/*
+	 * Generic views. Load PageBinding and inject any URL into a WindowBinding. 
+	 * Use this to display non-framework stuff such as previews and thingies.
+	 */
+	"Composite.Management.GenericView" : new HostedViewDefinition ({
+		handle 		: "Composite.Management.GenericView",
+		isMutable	: true,
+		position 	: DockBinding.MAIN,
+		url 		: "${root}/content/views/generic/generic.aspx",
+		label 		: null,
+		image 		: null,
+		toolTip		: null,
+		argument 	: {
+			"url"	: null,
+			"list"	: null
+		}
+	}),
+		
+	/*
+	 * Start.
+	 */
+	"Composite.Management.Start" : new HostedViewDefinition ({
+		handle 		: "Composite.Management.Start",
+		position 	: DockBinding.START,
+		label 		: "Welcome Travellers", 
+		url 		: "${root}/content/views/start/start.aspx"
+	}),
+	
+	/*
+	 * About.
+	 */
+	"Composite.Management.About" : new DialogViewDefinition ({
+		handle 		: "Composite.Management.About",
+		position 	: Dialog.MODAL,
+		url 		: "${root}/content/dialogs/about/about.aspx"
+	}),
+	
+	/*
+	 * Permission editor.
+	 */
+	"Composite.Management.PermissionEditor" :  new HostedViewDefinition ({
+		isMutable	: true,
+		handle 		: "Composite.Management.PermissionEditor",
+		position 	: DockBinding.MAIN,
+		url 		: "${root}/content/views/editors/permissioneditor/permissioneditor.aspx",
+		argument 	: {
+			serializedEntityToken : "entityTokenType='Composite\\.StandardPlugins\\.Elements\\.ElementProviders\\.VirtualElementProvider\\.VirtualElementProviderEntityToken,Composite'entityToken='_EntityToken_Type_=\\'Composite\\\\\\.StandardPlugins\\\\\\.Elements\\\\\\.ElementProviders\\\\\\.VirtualElementProvider\\\\\\.VirtualElementProviderEntityToken,Composite\\'_EntityToken_Source_=\\'VirtualElementProvider\\'_EntityToken_Id_=\\'DesignPerspective\\''\""
+		}
+	}),
+	
+	/*
+	 * System Log.
+	 */
+	"Composite.Management.SystemLog" : new HostedViewDefinition ({
+		handle		: "Composite.Management.SystemLog",
+		position 	: DockBinding.ABSBOTTOMLEFT,
+		label 		: "System Log",
+		url 		: "${root}/content/views/dev/systemlog/systemlog.aspx"
+	}),
+	
+	/*
+	 * Developer Panel.
+	 */
+	"Composite.Management.Developer" : new HostedViewDefinition ({
+		handle 		: "Composite.Management.Developer",
+		position 	: DockBinding.ABSBOTTOMRIGHT,
+		label 		: "Developer", 
+		url 		: "${root}/content/views/dev/developer/developer.aspx"
+	}),
+	
+	/*
+	 * Icon Pack System.
+	 */
+	"Composite.Management.IconPack.System" : new HostedViewDefinition ({
+		handle 		: "Composite.Management.IconPack.System",
+		position 	: DockBinding.ABSBOTTOMLEFT,
+		label 		: "Freja",
+		image		: "${icon:icon}",
+		url 		: "${root}/content/views/dev/icons/system/Default.aspx"
+	}),
+	
+	/*
+	 * Icon Pack Republic.
+	 */
+	"Composite.Management.IconPack.Republic" : new HostedViewDefinition ({
+		handle 		: "Composite.Management.IconPack.Republic",
+		position 	: DockBinding.ABSBOTTOMLEFT,
+		label 		: "Republic",
+		image		: "${icon:icon}",
+		url 		: "${root}/content/views/dev/icons/files/republic.aspx"
+	}),
+	
+	/*
+	 * Icon Pack Harmony.
+	 */
+	"Composite.Management.IconPack.Harmony" : new HostedViewDefinition ({
+		handle 		: "Composite.Management.IconPack.Harmony",
+		position 	: DockBinding.ABSBOTTOMLEFT,
+		label 		: "Harmony",
+		image		: "${icon:icon}",
+		url 		: "${root}/content/views/dev/icons/files/harmony.aspx"
+	}),
+	
+	/*
+	 * Explorer.
+	 */
+	"Composite.Management.Explorer" : new HostedViewDefinition ({
+		handle 		: "Composite.Management.Explorer",
+		position 	: DockBinding.EXPLORER,
+		url 		: "${root}/content/views/explorer/explorer.aspx",
+		label 		: "Explorer"
+	}),
+	
+	/*
+	 * Options dialog.
+	 */
+	"Composite.Management.Options" : new DialogViewDefinition ({
+		handle 		: "Composite.Management.Options",
+		position 	: Dialog.MODAL,
+		url 		: "${root}/content/dialogs/options/options.aspx",
+		label		: "Options"
+	}),
+	
+	/*
+	 * VisualEditor dialog.
+	 */
+	"Composite.Management.VisualEditorDialog" : new DialogViewDefinition ({
+		isMutable	: true,
+		handle 		: "Composite.Management.VisualEditorDialog",
+		position 	: Dialog.MODAL,
+		url 		: "${root}/content/dialogs/wysiwygeditor/wysiwygeditordialog.aspx",
+		width		: 600, // height : 500,
+		argument	: {
+			"formattingconfiguration"	: null,
+			"elementclassconfiguration"	: null,
+			"configurationstylesheet" 	: null,
+			"presentationstylesheet" 	: null,
+			"embedablefieldstypenames"	: null
+		}
+	}),
+	
+	/*
+	 * MultiSelector dialog.
+	 */
+	"Composite.Management.MultiSelectorDialog" : new DialogViewDefinition ({
+		isMutable	: true,
+		handle 		: "Composite.Management.MultiSelectorDialog",
+		position 	: Dialog.MODAL,
+		url 		: "${root}/content/dialogs/multiselector/multiselectordialog.aspx"
+	}),
+	
+	/*
+	 * Search view.
+	 */
+	"Composite.Management.Search" : new HostedViewDefinition ({
+		handle 		: "Composite.Management.Search",
+		position	: DockBinding.RIGHTBOTTOM,
+		url			: "${root}/content/views/search/search.aspx",
+		label		: "Search",
+		image		: "${icon:view_search}",
+		argument	: null
+	}),
+	
+	/*
+	 * Page Browser.
+	 */
+	"Composite.Management.Browser" : new HostedViewDefinition ({
+		isMutable	: false,
+		handle 		: "Composite.Management.Browser",
+		position	: DockBinding.MAIN,
+		perspective	: ExplorerBinding.PERSPECTIVE_CONTENT,
+		label		: "Page Browser",
+		image		: "${icon:page-view-administrated-scope}",
+		toolTip		: "Browse unpublished pages",
+		url			: "${root}/content/views/browser/browser.aspx",
+		argument	: { "URL" : null }
+	}),
+	
+	/*
+	 * SEO Assistant.
+	 */
+	"Composite.Management.SEOAssistant" : new HostedViewDefinition ({
+		handle 		: "Composite.Management.SEOAssistant",
+		position	: DockBinding.RIGHTTOP,
+		perspective	: ExplorerBinding.PERSPECTIVE_CONTENT,
+		url			: "${root}/content/views/seoassist/seoassist.aspx",
+		label		: "${string:Composite.Web.SEOAssistant:SEOAssistant}",
+		image		: "${icon:seoassistant}",
+		toolTip		: "Search engine optimization"
+	}),
+	
+	/*
+	 * Source code viewer.
+	 */
+	"Composite.Management.SourceCodeViewer" : new HostedViewDefinition ({
+		isMutable	: true,
+		handle 		: "Composite.Management.SourceCodeViewer",
+		position	:  DockBinding.ABSBOTTOMLEFT,
+		url			: "${root}/content/views/dev/viewsource/viewsource.aspx",
+		argument 	: { 
+			"action" : null, // {string}
+			"viewBinding" : null // {ViewBinding}
+		}
+	}),
+	
+	/*
+	 * User source code viewer.
+	 */
+	"Composite.User.SourceCodeViewer" : new HostedViewDefinition ({
+		isMutable	: true,
+		handle 		: "Composite.User.SourceCodeViewer",
+		position	:  DockBinding.BOTTOMLEFT,
+		url			: "${root}/content/views/dev/viewsource/viewsource.aspx",
+		argument 	: { 
+			"action" : null, // {string}
+			"viewBinding" : null // {ViewBinding}
+		}
+	}),
+	
+	/*
+	 * Help.
+	 */
+	"Composite.Management.Help" : new HostedViewDefinition ({
+		label		: "Help",
+		image		: "${root}/images/icons/republic/republic_0534/0534_16px_Republic_32bit_PNG.png",
+		handle 		: "Composite.Management.Help",
+		position	:  DockBinding.ABSRIGHTTOP,
+		url			: "${root}/content/views/help/help.aspx"
+	}),
+	
+	/*
+	 * Translations.
+	 */
+	"Composite.Management.Dialog.Translations" : new DialogViewDefinition ({
+		handle 		: "Composite.Management.TranslationsDialog",
+		position 	: Dialog.MODAL,
+		url 		: "${root}/content/dialogs/translations/translations.aspx",
+		label		: "Translations",
+		image		: "${icon:users-changepublicculture}"
+	}),
+	
+	
+	// SELECTORS ......................................................................
+	
+	/*
+	 * Image selector.
+	 */
+    "Composite.Management.ImageSelectorDialog": new DialogViewDefinition({
+        isMutable   : true,
+		handle 		: "Composite.Management.ImageSelectorDialog",
+		position 	: Dialog.MODAL,
+		url 		: Dialog.URL_IMAGESELECTOR,
+		argument : {
+			label 				: "Select Image",
+			image				: "${icon:image}",
+			selectionProperty 	: "ElementType",
+			selectionValue		: "image/jpeg image/gif image/png image/bmp image/tiff",
+			selectionResult		: "Uri",
+			nodes : [{
+				key : "MediaFileElementProvider",
+				search : "MediaFileElementProvider.WebImages"
+			}]
+		}
+	}),
+	
+	/*
+	 * Embeddable media selector.
+	 */
+"Composite.Management.EmbeddableMediaSelectorDialog": new DialogViewDefinition({
+        isMutable   : true,
+		handle 		: "Composite.Management.EmbeddableMediaSelectorDialog",
+		position 	: Dialog.MODAL,
+		url 		: Dialog.URL_TREESELECTOR,
+		argument : {
+			label 				: "Select Media",
+			image				: "${icon:media}",
+			selectionProperty 	: "ElementType",
+			selectionValue		: null,
+			selectionResult		: "Uri",
+			nodes : [{
+				key : "MediaFileElementProvider",
+				search : null //"MediaFileElementProvider.EmbeddableMedia" - kaput!
+			}]
+		}
+	}),
+	
+	/*
+	 * Frontend file selector.
+	 */
+	"Composite.Management.FrontendFileSelectorDialog" : new DialogViewDefinition ({
+		handle 		: "Composite.Management.EmbeddableMediaSelectorDialog",
+		position 	: Dialog.MODAL,
+		url 		: Dialog.URL_TREESELECTOR,
+		argument : {
+			label 				: "Select Frontend File",
+			image				: "${icon:media}",
+			selectionProperty 	: "ElementType",
+			selectionValue		: null,
+			selectionResult		: "Uri",
+			nodes : [{
+				key : "LayoutFileElementProvider"
+			}]
+		}
+	}),
+	
+	/*
+	 * Page URL selector.
+	 */
+	"Composite.Management.PageSelectorDialog" : new DialogViewDefinition ({
+		handle 		: "Composite.Management.PageSelectorDialog",
+		position 	: Dialog.MODAL,
+		url 		: Dialog.URL_TREESELECTOR,
+		argument : {
+			label 				: "Select Page",
+			image				: "${icon:page}",
+			selectionProperty 	: "Uri",
+			selectionValue		: null, // MimeTypes.COMPOSITEPAGES
+			selectionResult		: "Uri",
+			nodes : [{
+				key : "PageElementProvider"
+			}]
+		}
+	}),
+
+    /*
+    * Page Id selector.
+    */
+    "Composite.Management.PageIdSelectorDialog": new DialogViewDefinition({
+        handle: "Composite.Management.PageIdSelectorDialog",
+        isMutable: true,
+        position: Dialog.MODAL,
+        url: Dialog.URL_TREESELECTOR,
+        argument: {
+            label: "Select Page",
+            image: "${icon:page}",
+            selectionProperty: "DataId",
+            selectionValue: null, // MimeTypes.COMPOSITEPAGES
+            selectionResult: "DataId",
+            nodes: [{
+                key: "PageElementProvider"
+            }]
+        }
+    }),
+	
+	/*
+	 * Linkable element selector (selecting pages and media files).
+	 */
+	"Composite.Management.LinkableSelectorDialog" : new DialogViewDefinition ({
+		handle 		: "Composite.Management.LinkableSelectorDialog",
+		position 	: Dialog.MODAL,
+		url 		: Dialog.URL_TREESELECTOR,
+		argument : {
+			label 				: "Select Page or File",
+			image				: "${icon:link}",
+			selectionProperty 	: "Uri",
+			selectionValue		: null,
+			selectionResult		: "Uri",
+			nodes : [
+				{ key : "PageElementProvider" },
+				{ key : "MediaFileElementProvider" }
+			]
+		}
+	}),
+	
+	/*
+	 * Media selector (images and other stuff).
+	 */
+	"Composite.Management.MediaSelectorDialog" : new DialogViewDefinition ({
+		handle 		: "Composite.Management.MediaSelectorDialog",
+		position 	: Dialog.MODAL,
+		url 		: Dialog.URL_TREESELECTOR,
+		argument : {
+			label 				: "Select Page or File",
+			image				: "${icon:link}",
+			selectionProperty 	: "Uri",
+			selectionValue		: null,
+			selectionResult		: "Uri",
+			nodes : [
+				{ key : "MediaFileElementProvider" }
+			]
+		}
+	}),
+	
+	/*
+	 * Function selector (ALL TYPES).
+	 */
+	"Composite.Management.FunctionSelectorDialog" : new DialogViewDefinition ({
+		handle 		: "Composite.Management.FunctionSelectorDialog",
+		isMutable	: true,
+		position 	: Dialog.MODAL,
+		url 		: Dialog.URL_TREESELECTOR,
+		argument : {
+			label 				: "Select Function",
+			image				: "${icon:functioncall}",
+			selectionProperty 	: "ElementType",
+			selectionValue		: MimeTypes.COMPOSITEFUNCTION,
+			selectionResult		: "ElementId",
+			nodes : [{
+				key : "AllFunctionsElementProvider"
+			}]
+		}
+	}),
+	
+	/*
+	 * Function selector (widget functions).
+	 */
+	"Composite.Management.WidgetFunctionSelectorDialog" : new DialogViewDefinition ({
+		handle 		: "Composite.Management.WidgetFunctionSelectorDialog",
+		position 	: Dialog.MODAL,
+		url 		: Dialog.URL_TREESELECTOR,
+		argument : {
+			label 				: "Select Widget",
+			image				: "${icon:functioncall}",
+			selectionProperty 	: "ElementType",
+			selectionValue		: MimeTypes.COMPOSITEFUNCTION,
+			selectionResult		: "ElementId",
+			nodes : [{
+				key : "AllWidgetFunctionsElementProvider"
+			}]
+		}
+	}),
+	
+	/*
+	 * Function selector (XHTML types).
+	 */
+	"Composite.Management.XhtmlDocumentFunctionSelectorDialog" : new DialogViewDefinition ({
+		handle 		: "Composite.Management.XhtmlDocumentFunctionSelectorDialog",
+		position 	: Dialog.MODAL,
+		url 		: Dialog.URL_TREESELECTOR,
+		argument : {
+			label 				: "Select Function",
+			image				: "${icon:functioncall}",
+			selectionProperty 	: "ElementType",
+			selectionValue		: MimeTypes.COMPOSITEFUNCTION,
+			selectionResult		: "ElementId",
+			nodes : [{
+				key : "AllFunctionsElementProvider",
+				search : "AllFunctionsElementProvider.XhtmlDocument"
+			}]
+		}
+	})
+}
+

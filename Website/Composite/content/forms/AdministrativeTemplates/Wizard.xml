@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<cms:formdefinition
+  xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0"
+  xmlns:internal="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0"
+  xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0"
+  xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+
+  <cms:bindings>
+    <cms:binding name="Form" type="Composite.Forms.IUiControl, Composite" />
+    <cms:binding name="NextEventHandler" type="System.EventHandler" optional="true" />
+    <cms:binding name="PreviousEventHandler" type="System.EventHandler" optional="true" />
+    <cms:binding name="FinishEventHandler" type="System.EventHandler" optional="true" />
+    <cms:binding name="CancelEventHandler" type="System.EventHandler" optional="true" />
+    <!-- common mistakes... warning are shown if recieved -->
+    <cms:binding name="SaveEventHandler" type="System.EventHandler" optional="true" />
+    <cms:binding name="PreviewEventHandler" type="System.EventHandler" optional="true" />
+  </cms:bindings>
+
+  <cms:layout>
+    <PlaceHolder>
+      <internal:DialogCanvas>
+
+        <f:NullCheck>
+          <f:NullCheck.CheckValue>
+            <cms:read source="PreviewEventHandler" />
+          </f:NullCheck.CheckValue>
+          <f:NullCheck.WhenNotNull>
+            <Text>PREVIEW EVENT NOT EXPECTED ON WIZARDS</Text>
+          </f:NullCheck.WhenNotNull>
+        </f:NullCheck>
+
+        <f:NullCheck>
+          <f:NullCheck.CheckValue>
+            <cms:read source="SaveEventHandler" />
+          </f:NullCheck.CheckValue>
+          <f:NullCheck.WhenNotNull>
+            <Text>SAVE EVENT NOT EXPECTED ON WIZARDS</Text>
+          </f:NullCheck.WhenNotNull>
+        </f:NullCheck>
+
+        <f:Replicator>
+          <cms:read source="Form" />
+        </f:Replicator>
+
+      </internal:DialogCanvas>
+
+
+      <internal:DialogToolbar>
+
+        <f:NullCheck>
+          <f:NullCheck.CheckValue>
+            <cms:read source="PreviousEventHandler" />
+          </f:NullCheck.CheckValue>
+          <f:NullCheck.WhenNotNull>
+            <internal:PreviousButton Label="${Composite.Management, Website.Forms.Administrative.AdministrativeTemplates.Wizard.LabelPrevious} ">
+              <internal:PreviousButton.ClickEventHandler>
+                <cms:read source="PreviousEventHandler" />
+              </internal:PreviousButton.ClickEventHandler>
+            </internal:PreviousButton>
+          </f:NullCheck.WhenNotNull>
+        </f:NullCheck>
+
+        <f:NullCheck>
+          <f:NullCheck.CheckValue>
+            <cms:read source="NextEventHandler" />
+          </f:NullCheck.CheckValue>
+          <f:NullCheck.WhenNotNull>
+            <internal:NextButton Label="${Composite.Management, Website.Forms.Administrative.AdministrativeTemplates.Wizard.LabelNext}">
+              <internal:NextButton.ClickEventHandler>
+                <cms:read source="NextEventHandler" />
+              </internal:NextButton.ClickEventHandler>
+            </internal:NextButton>
+          </f:NullCheck.WhenNotNull>
+        </f:NullCheck>
+
+        <f:NullCheck>
+          <f:NullCheck.CheckValue>
+            <cms:read source="FinishEventHandler" />
+          </f:NullCheck.CheckValue>
+          <f:NullCheck.WhenNotNull>
+            <internal:FinishButton Label="${Composite.Management, Website.Forms.Administrative.AdministrativeTemplates.Wizard.LabelFinish}">
+              <internal:FinishButton.ClickEventHandler>
+                <cms:read source="FinishEventHandler" />
+              </internal:FinishButton.ClickEventHandler>
+            </internal:FinishButton>
+          </f:NullCheck.WhenNotNull>
+        </f:NullCheck>
+
+        <f:NullCheck>
+          <f:NullCheck.CheckValue>
+            <cms:read source="CancelEventHandler" />
+          </f:NullCheck.CheckValue>
+          <f:NullCheck.WhenNotNull>
+            <internal:WizardCancelButton Label="${Composite.Management, Website.Forms.Administrative.AdministrativeTemplates.Wizard.LabelCancel}">
+              <internal:WizardCancelButton.ClickEventHandler>
+                <cms:read source="CancelEventHandler" />
+              </internal:WizardCancelButton.ClickEventHandler>
+            </internal:WizardCancelButton>
+          </f:NullCheck.WhenNotNull>
+        </f:NullCheck>
+
+      </internal:DialogToolbar>
+
+    </PlaceHolder>
+  </cms:layout>
+</cms:formdefinition>
+

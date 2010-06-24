@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml">
+	<head/>
+	<body>
+		<ui:toolbarbody xmlns:ui="http://www.w3.org/1999/xhtml">
+			<ui:toolbargroup>
+				<ui:selector binding="FormatSelectorBinding" observes="broadcasterIsActive" image="${icon:editor-formatselector}" image-disabled="${icon:editor-formatselector-disabled}" width="130">
+					<ui:selection label="${string:Website.WysiwygEditor.FormatSelector.LabelParagraph}" value="p" />
+					<ui:selection label="${string:Website.WysiwygEditor.FormatSelector.LabelAddress}" value="address" />
+					<ui:selection label="${string:Website.WysiwygEditor.FormatSelector.LabelBlockQuote}" value="blockquote" />
+					<ui:selection label="${string:Website.WysiwygEditor.FormatSelector.LabelDivision}" value="div" />
+					<ui:selection label="${string:Website.WysiwygEditor.FormatSelector.LabelHeading1}" value="h1" />
+					<ui:selection label="${string:Website.WysiwygEditor.FormatSelector.LabelHeading2}" value="h2" />
+					<ui:selection label="${string:Website.WysiwygEditor.FormatSelector.LabelHeading3}" value="h3" />
+					<ui:selection label="${string:Website.WysiwygEditor.FormatSelector.LabelHeading4}" value="h4" />
+					<ui:selection label="${string:Website.WysiwygEditor.FormatSelector.LabelHeading5}" value="h5" />
+					<ui:selection label="${string:Website.WysiwygEditor.FormatSelector.LabelHeading6}" value="h6" />
+				</ui:selector>
+				<ui:selector binding="ClassNameSelectorBinding" observes="broadcasterIsActive" image="${icon:editor-classselector}" image-disabled="${icon:editor-classselector-disabled}" label="${string:Website.WysiwygEditor.ClassSelector.LabelNone}" value="" width="130" />
+			</ui:toolbargroup>
+			<ui:toolbargroup>
+				<ui:toolbarbutton label="${string:Website.Templates.WysiwygEditorPopUp.LabelInsert}" binding="WysiwygEditorInsertToolbarButtonBinding" image="${icon:insert}" image-disabled="${icon:insert-disabled}" isdisabled="true" observes="broadcasterIsActive" popup="insertpopup" />
+			</ui:toolbargroup>
+			<ui:toolbargroup binding="WysiwygEditorPropertiesToolBarGroupBinding" hidden="true" observes="broadcasterIsActive">
+				<ui:toolbarbutton cmd="compositeInsertImage" val="update" label="${string:Website.Templates.WysiwygEditorPopUp.LabelImageProperties}" image="${icon:image}" />
+				<!-- ui:toolbarbutton cmd="compositeInsertMedia" val="update" label="${string:Website.Templates.WysiwygEditorPopUp.LabelMediaProperties}" image="${icon:perspective-media}"/ -->
+				<ui:toolbarbutton cmd="compositeInsertRendering" val="update" label="${string:Website.Templates.WysiwygEditorPopUp.LabelRenderingProperties}" image="${icon:functioncall}" />
+			</ui:toolbargroup>
+		</ui:toolbarbody>
+	</body>
+</html>

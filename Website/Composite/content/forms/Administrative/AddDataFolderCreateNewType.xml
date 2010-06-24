@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:internal="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="NewTypeName" type="System.String" />
+    <cms:binding name="NewTypeNamespace" type="System.String" />
+    <cms:binding name="NewTypeTitle" type="System.String" />
+    <cms:binding name="DataFieldDescriptors" type="System.Object" />
+    <cms:binding name="LabelFieldName" type="System.String" optional="true" />
+    <cms:binding name="HasPublishing" type="System.Boolean" />
+    <cms:binding name="HasLocalization" type="System.Boolean" />
+    <cms:binding name="ShowLocalization" type="System.Boolean" />
+  </cms:bindings>
+  <cms:layout>
+    
+    <!-- maw: the associated workflow is not available via UI any more-->
+    
+    <TabPanels Label="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.LabelNewType}">
+      <FieldGroup Label="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.LabelNewType}">
+        <TextBox Label="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.LabelTypeName}" Help="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HelpTypeName}" Type="ProgrammingIdentifier">
+          <cms:bind source="NewTypeName" />
+        </TextBox>
+        <TextBox Label="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.LabelTypeNamespace}" Help="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HelpTypeNamespace}" Type="ProgrammingNamespace">
+          <cms:bind source="NewTypeNamespace" />
+        </TextBox>
+        <TextBox Label="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.LabelTypeTitle}" Help="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HelpTypeTitle}">
+          <cms:bind source="NewTypeTitle" />
+        </TextBox>
+        <PlaceHolder Label="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.ServicesLabel}">
+          <CheckBox Label="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HasPublishing}" ItemLabel="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HasPublishing}">
+            <CheckBox.Checked>
+              <cms:bind source="HasPublishing" />
+            </CheckBox.Checked>
+          </CheckBox>
+
+          <f:BooleanCheck>
+            <f:BooleanCheck.CheckValue>
+              <cms:read source="ShowLocalization" />
+            </f:BooleanCheck.CheckValue>
+            <f:BooleanCheck.WhenTrue>
+              <CheckBox Label="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HasLocalization}" ItemLabel="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HasLocalization}">
+                <CheckBox.Checked>
+                  <cms:bind source="HasLocalization" />
+                </CheckBox.Checked>
+              </CheckBox>
+            </f:BooleanCheck.WhenTrue>
+          </f:BooleanCheck>
+        </PlaceHolder>
+      </FieldGroup>
+      <internal:TypeFieldDesigner Label="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.LabelFields}">
+        <internal:TypeFieldDesigner.Fields>
+          <cms:bind source="DataFieldDescriptors" />
+        </internal:TypeFieldDesigner.Fields>
+        <internal:TypeFieldDesigner.LabelFieldName>
+          <cms:bind source="LabelFieldName" />
+        </internal:TypeFieldDesigner.LabelFieldName>
+      </internal:TypeFieldDesigner>
+    </TabPanels>
+  </cms:layout>
+</cms:formdefinition>

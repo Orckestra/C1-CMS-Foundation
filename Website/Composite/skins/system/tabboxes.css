@@ -1,0 +1,302 @@
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|tabbox.boxed {
+	#moz border-bottom: 4px solid transparent;
+	#ie border-bottom: 4px solid $(color:threedface);
+}
+
+ui|tabs {	
+	padding-left: 3px;
+}
+ui|tabbox.boxed ui|tabs {	
+	padding-left: 0;
+}
+ui|tabs div.tabliner {
+	background-color: #FFFFFF;
+	background-color: #F6F6F2;
+	border-top: 1px solid #B5B5B5;
+	border-bottom: 1px solid #B5B5B5;
+	z-index: 2;
+}
+ui|tabbox.boxed ui|tabs div.tabliner {
+	border: 1px solid #B5B5B5;
+	background-color: #FFFFFF;
+	border-bottom: none;
+}
+ui|tab {
+	padding: 0;
+	margin-right: -1px;
+	z-index: 1;
+	color: black; /* should not default to system color because of tab graphics */
+}
+ui|tab ui|labelbox {
+	padding: 1px 5px 0 1px; /* how did this get unbalanced? */
+}
+ui|tabbox.boxed ui|tabpanels {
+	background-repeat: repeat-x;
+	background-color: #F4F3EE;
+	border: 1px solid #B5B5B5;
+	border-top: none;
+	padding: 12px;
+	padding-bottom: 16px;
+	background-image: url("${skin}/tabboxes/boxedpanelbackdrop.png");
+}
+
+/* TAB GRAPHICS .................................................................. */
+
+/* tabs on top */
+
+ui|tabbox.tabsontop ui|tab {
+	margin-top: 3px;
+}
+ui|tabbox.tabsontop ui|tab.selected {
+	margin-top: 1px;
+	z-index: 3;
+}
+#region default
+	ui|tabbox.tabsontop ui|tab table.matrix td.c,
+	ui|tabbox.tabsontop ui|tab table.matrix td.s {
+		background-color: #F6F6F2;
+	}
+	ui|tabbox.tabsontop ui|tab.selected table.matrix td.c,
+	ui|tabbox.tabsontop ui|tab.selected table.matrix td.s {
+		background-color: #FFFFFF;
+	}
+	ui|tabbox.tabsontop ui|tab table.matrix td.n {
+		#alphabackdrop: url("${skin}/tabboxes/tab-n.png");
+	}
+	ui|tabbox.tabsontop ui|tab table.matrix td.ne {
+		#alphabackdrop: url("${skin}/tabboxes/tab-ne.png");
+	}
+	ui|tabbox.tabsontop ui|tab table.matrix td.nw {
+		#alphabackdrop: url("${skin}/tabboxes/tab-nw.png");
+	}
+	ui|tabbox.tabsontop ui|tab table.matrix td.e, 
+	ui|tabbox.tabsontop ui|tab table.matrix td.se {
+		#alphabackdrop: url("${skin}/tabboxes/tab-e.png");
+	}
+	ui|tabbox.tabsontop ui|tab table.matrix td.w, 
+	ui|tabbox.tabsontop ui|tab table.matrix td.sw {
+		#alphabackdrop: url("${skin}/tabboxes/tab-w.png");
+	}
+	ui|tabbox.tabsontop ui|tab.hover table.matrix td.n,
+	ui|tabbox.tabsontop ui|tab.selected table.matrix td.n  {
+		#alphabackdrop: url("${skin}/tabboxes/tab-on-n.png");
+	}
+	ui|tabbox.tabsontop ui|tab.selected table.matrix td.e,
+	ui|tabbox.tabsontop ui|tab.selected table.matrix td.se {
+		#alphabackdrop: url("${skin}/tabboxes/tab-on-e.png");
+	}
+	ui|tabbox.tabsontop ui|tab.selected table.matrix td.w,
+	ui|tabbox.tabsontop ui|tab.selected table.matrix td.sw {
+		#alphabackdrop: url("${skin}/tabboxes/tab-on-w.png");
+	}
+	ui|tabbox.tabsontop ui|tab.hover table.matrix td.ne,
+	ui|tabbox.tabsontop ui|tab.selected table.matrix td.ne {
+		#alphabackdrop: url("${skin}/tabboxes/tab-on-ne.png");
+	}
+	ui|tabbox.tabsontop ui|tab.hover table.matrix td.nw,
+	ui|tabbox.tabsontop ui|tab.selected table.matrix td.nw {
+		#alphabackdrop: url("${skin}/tabboxes/tab-on-nw.png");
+	}
+#endregion
+
+/*
+#region osx
+	ui|tabbox.tabsontop ui|tab table.matrix td.c,
+	ui|tabbox.tabsontop ui|tab table.matrix td.s {
+		background-color: #F6F6F2;
+	}
+	ui|tabbox.tabsontop ui|tab.selected table.matrix td.c,
+	ui|tabbox.tabsontop ui|tab.selected table.matrix td.s {
+		background-color: #FFFFFF;
+	}
+	ui|tabbox.tabsontop ui|tab table.matrix td.n {
+		#alphabackdrop: url("${skin}/tabboxes/tab-n.png");
+	}
+	ui|tabbox.tabsontop ui|tab table.matrix td.ne {
+		#alphabackdrop: url("${skin}/tabboxes/tab-ne.png");
+	}
+	ui|tabbox.tabsontop ui|tab table.matrix td.nw {
+		#alphabackdrop: url("${skin}/tabboxes/tab-nw.png");
+	}
+	ui|tabbox.tabsontop ui|tab table.matrix td.e, 
+	ui|tabbox.tabsontop ui|tab table.matrix td.se {
+		#alphabackdrop: url("${skin}/tabboxes/tab-e.png");
+	}
+	ui|tabbox.tabsontop ui|tab table.matrix td.w, 
+	ui|tabbox.tabsontop ui|tab table.matrix td.sw {
+		#alphabackdrop: url("${skin}/tabboxes/tab-w.png");
+	}
+	ui|tabbox.tabsontop ui|tab.hover table.matrix td.n,
+	ui|tabbox.tabsontop ui|tab.selected table.matrix td.n  {
+		#alphabackdrop: url("${skin}/tabboxes/tab-on-n.png");
+	}
+	ui|tabbox.tabsontop ui|tab.selected table.matrix td.e,
+	ui|tabbox.tabsontop ui|tab.selected table.matrix td.se {
+		#alphabackdrop: url("${skin}/tabboxes/tab-on-e.png");
+	}
+	ui|tabbox.tabsontop ui|tab.selected table.matrix td.w,
+	ui|tabbox.tabsontop ui|tab.selected table.matrix td.sw {
+		#alphabackdrop: url("${skin}/tabboxes/tab-on-w.png");
+	}
+	ui|tabbox.tabsontop ui|tab.hover table.matrix td.ne,
+	ui|tabbox.tabsontop ui|tab.selected table.matrix td.ne {
+		#alphabackdrop: url("${skin}/tabboxes/tab-on-ne.png");
+	}
+	ui|tabbox.tabsontop ui|tab.hover table.matrix td.nw,
+	ui|tabbox.tabsontop ui|tab.selected table.matrix td.nw {
+		#alphabackdrop: url("${skin}/tabboxes/tab-on-nw.png");
+	}
+#endregion
+*/
+
+#region osx
+	ui|tabbox.tabsontop ui|tab {
+		filter: url("${root}/templates/grayscalefilter.xml#grayscale");	
+	}
+#endregion
+
+ui|tabbox.tabsontop ui|tab table.matrix td.c {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-c.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.n {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-n.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.s {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-s.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.ne {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-ne.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.nw {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-nw.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.e {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-e.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.se {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-se.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.w {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-w.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.sw {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-sw.png");
+}
+
+
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.c,
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.s {
+	background-color: white;
+	background-image: none !important;
+	_filter: none;
+}
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.n {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-active-n.png");
+}
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.ne {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-active-ne.png");
+}
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.nw {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-active-nw.png");
+}
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.e,
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.se {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-active-e.png");
+}
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.w,
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.sw {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-active-w.png");
+}
+
+
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.c {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-c.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.n {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-n.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.ne {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-ne.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.nw {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-nw.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.e {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-e.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.w {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-w.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.se {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-se.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.sw {
+	#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-sw.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.s {
+	background-color: #A7D9F5;
+	background-image: none !important;
+	_filter: none;
+}
+	
+
+/* tabs below NOT USED! */
+
+ui|tabbox.tabsbelow ui|tab {
+	margin-top: 0;
+	margin-bottom: 20px;
+}
+ui|tabbox.tabsbelow ui|tab.selected {
+	margin-top: 2px;
+	z-index: 3;
+}
+ui|tabbox.tabsbelow ui|tab table.matrix td.c,
+ui|tabbox.tabsbelow ui|tab table.matrix td.n {
+	background-color: #F6F6F2;
+}
+ui|tabbox.tabsbelow ui|tab table.matrix td.e, 
+ui|tabbox.tabsbelow ui|tab table.matrix td.ne {
+	#alphabackdrop: url("${skin}/tabboxes/tab-e.png");
+}
+ui|tabbox.tabsbelow ui|tab table.matrix td.w, 
+ui|tabbox.tabsbelow ui|tab table.matrix td.nw {
+	#alphabackdrop: url("${skin}/tabboxes/tab-w.png");
+}
+ui|tabbox.tabsbelow ui|tab table.matrix td.se {
+	#alphabackdrop: url("${skin}/tabboxes/tab-se.png");
+}
+ui|tabbox.tabsbelow ui|tab table.matrix td.sw {
+	#alphabackdrop: url("${skin}/tabboxes/tab-below-sw.png");
+}
+ui|tabbox.tabsbelow ui|tab table.matrix td.se {
+	#alphabackdrop: url("${skin}/tabboxes/tab-below-se.png");
+}
+ui|tabbox.tabsbelow ui|tab table.matrix td.s {
+	#alphabackdrop: url("${skin}/tabboxes/tab-below-s.png");
+}
+ui|tabbox.tabsbelow ui|tab.selected table.matrix td.e,
+ui|tabbox.tabsbelow ui|tab.selected table.matrix td.ne {
+	#alphabackdrop: url("${skin}/tabboxes/tab-on-e.png");
+}
+ui|tabbox.tabsbelow ui|tab.selected table.matrix td.w,
+ui|tabbox.tabsbelow ui|tab.selected table.matrix td.nw {
+	#alphabackdrop: url("${skin}/tabboxes/tab-on-w.png");
+}
+ui|tabbox.tabsbelow ui|tab.selected table.matrix td.c,
+ui|tabbox.tabsbelow ui|tab.selected table.matrix td.n {
+	background-color: #FFFFFF;
+}
+ui|tabbox.tabsbelow ui|tab.hover table.matrix td.sw,
+ui|tabbox.tabsbelow ui|tab.selected table.matrix td.sw {
+	#alphabackdrop: url("${skin}/tabboxes/tab-on-sw.png");
+}
+ui|tabbox.tabsbelow ui|tab.hover table.matrix td.se,
+ui|tabbox.tabsbelow ui|tab.selected table.matrix td.se {
+	#alphabackdrop: url("${skin}/tabboxes/tab-on-se.png");
+}
+ui|tabbox.tabsbelow ui|tab.hover table.matrix td.s,
+ui|tabbox.tabsbelow ui|tab.selected table.matrix td.s {
+	#alphabackdrop: url("${skin}/tabboxes/tab-on-s.png");
+}

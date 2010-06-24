@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ui:splitbox xmlns:ui="http://www.w3.org/1999/xhtml" orient="horizontal" layout="8:3">
+	<ui:splitpanel>
+		<ui:splitbox orient="vertical" layout="8:3">
+			<ui:splitpanel type="editors">
+				<ui:dock reference="main" type="editors">
+					<ui:docktabs>
+					</ui:docktabs>
+					<ui:dockpanels>
+					</ui:dockpanels>
+				</ui:dock>
+			</ui:splitpanel>
+			<ui:splitter/>
+			<ui:splitpanel>
+				<ui:splitbox orient="horizontal" layout="1:1">
+					<ui:splitpanel>
+						<ui:dock reference="bottomleft">
+							<ui:docktabs>
+							</ui:docktabs>
+							<ui:dockpanels>
+							</ui:dockpanels>
+						</ui:dock>
+					</ui:splitpanel>
+					<ui:splitter/>
+					<ui:splitpanel>
+						<ui:dock reference="bottomright">
+							<ui:docktabs>
+							</ui:docktabs>
+							<ui:dockpanels>
+							</ui:dockpanels>
+						</ui:dock>
+					</ui:splitpanel>
+				</ui:splitbox>
+			</ui:splitpanel>
+		</ui:splitbox>
+	</ui:splitpanel>
+	<ui:splitter collapse="after"/>
+	<ui:splitpanel>
+		<ui:splitbox orient="vertical" layout="1:1">
+			<ui:splitpanel>
+				<ui:dock reference="righttop">
+					<ui:docktabs>
+					</ui:docktabs>
+					<ui:dockpanels>
+					</ui:dockpanels>
+				</ui:dock>
+			</ui:splitpanel>
+			<ui:splitter/>
+			<ui:splitpanel>
+				<ui:dock reference="rightbottom">
+					<ui:docktabs>
+					</ui:docktabs>
+					<ui:dockpanels>
+					</ui:dockpanels>
+				</ui:dock>
+			</ui:splitpanel>
+		</ui:splitbox>
+	</ui:splitpanel>
+</ui:splitbox>

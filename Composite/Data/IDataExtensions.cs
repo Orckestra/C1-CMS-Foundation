@@ -1,0 +1,421 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Composite.Data.DynamicTypes;
+using Composite.Data.DynamicTypes.Foundation;
+using Composite.Types;
+using Composite.Data.Hierarchy;
+using System.Collections;
+
+
+namespace Composite.Data
+{
+    public static class IDataExtensions
+    {
+        /// <summary>
+        /// Copies all changed properties from sourceData to targetData.
+        /// </summary>
+        /// <param name="sourceData"></param>
+        /// <param name="targetData"></param>
+        public static void FullCopyChangedTo(this IData sourceData, IData targetData)
+        {
+            FullCopyChangedTo(sourceData, targetData, null);
+        }
+
+
+        
+        /// <summary>
+        /// Copies all changed properties from sourceData to targetData.
+        /// </summary>
+        /// <param name="sourceData"></param>
+        /// <param name="targetData"></param>
+        /// <param name="propertyNamesToIgnore"></param>
+        public static void FullCopyChangedTo(this IData sourceData, IData targetData, IEnumerable<string> propertyNamesToIgnore)
+        {
+            foreach (PropertyInfo targetPropertyInfo in targetData.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (targetPropertyInfo.Name == "DataSourceId") continue;
+                if ((propertyNamesToIgnore != null) && (propertyNamesToIgnore.Contains(targetPropertyInfo.Name)) == true) continue;
+
+                if (targetPropertyInfo.CanWrite == true)
+                {
+                    PropertyInfo sourcePropertyInfo = sourceData.GetType().GetProperty(targetPropertyInfo.Name, BindingFlags.Public | BindingFlags.Instance);
+
+                    if (sourcePropertyInfo == null) throw new InvalidOperationException(string.Format("Missing source property '{0}' on the data type '{1}'", targetPropertyInfo.Name, sourceData.DataSourceId.InterfaceType));
+
+                    object newValue = sourcePropertyInfo.GetValue(sourceData, null);
+                    object oldValue = targetPropertyInfo.GetValue(targetData, null);
+
+                    if (Equals(newValue, oldValue) == false)
+                    {
+                        targetPropertyInfo.SetValue(targetData, newValue, null);
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Copies all properties that exists on the targetData from the sourceData except the DataSourceId
+        /// If the targetData has a property that does not exist on the sourceData, the default value is used.
+        /// </summary>
+        /// <param name="sourceData"></param>
+        /// <param name="targetData"></param>
+        public static void ProjectedCopyTo(this IData sourceData, IData targetData)
+        {
+            ProjectedCopyTo(sourceData, targetData, true);
+        }
+
+
+
+
+        /// <summary>
+        /// Copies all properties that exists on the targetData from the sourceData except the DataSourceId
+        /// </summary>
+        /// <param name="sourceData"></param>
+        /// <param name="targetData"></param>
+        /// <param name="useDefaultValues"></param>
+        public static void ProjectedCopyTo(this IData sourceData, IData targetData, bool useDefaultValues)
+        {
+            foreach (PropertyInfo targetPropertyInfo in targetData.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (targetPropertyInfo.Name == "DataSourceId") continue;
+
+                if (targetPropertyInfo.CanWrite == true)
+                {
+                    PropertyInfo sourcePropertyInfo = sourceData.GetType().GetProperty(targetPropertyInfo.Name, BindingFlags.Public | BindingFlags.Instance);
+
+                    if (sourcePropertyInfo != null)
+                    {
+                        object value = sourcePropertyInfo.GetValue(sourceData, null);
+
+                        targetPropertyInfo.SetValue(targetData, value, null);
+                    }
+                    else if (useDefaultValues == true)
+                    {
+                        object oldValue = targetPropertyInfo.GetValue(targetData, null);
+
+                        if (oldValue == null)
+                        {
+                            DefaultValue defaultValue = DynamicTypeReflectionFacade.GetDefaultValue(targetPropertyInfo);
+
+                            if (defaultValue != null)
+                            {
+                                targetPropertyInfo.SetValue(targetData, defaultValue.Value, null);
+                            }
+                            else
+                            {
+                                // Do something here ?? /MRJ
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+        /// <summary>
+        /// Compares the value of the key properties of leftData and rightData
+        /// and if all the values are equals then it returns true. Otherwise false.
+        /// </summary>
+        /// <param name="leftData"></param>
+        /// <param name="rightData"></param>
+        /// <returns></returns>
+        public static bool KeyEquals(this IData leftData, IData rightData)
+        {
+            if (leftData == null) throw new ArgumentNullException("leftData");
+            if (rightData == null) throw new ArgumentNullException("rightData");
+
+            if (leftData.DataSourceId.InterfaceType != rightData.DataSourceId.InterfaceType) return false;
+
+            foreach (PropertyInfo propertyInfo in DataAttributeFacade.GetKeyPropertyInfoes(leftData.DataSourceId.InterfaceType))
+            {
+                object leftValue = propertyInfo.GetValue(leftData, null);
+                object rightValue = propertyInfo.GetValue(rightData, null);
+
+                if (leftValue.Equals(rightValue) == false) return false;
+            }
+
+            return true;
+        }
+
+
+
+        /// <summary>
+        /// This returns an enumerable where no two data elements has the same key value.
+        /// </summary>
+        /// <param name="datas"></param>
+        /// <returns></returns>
+        public static List<IData> KeyDistinct(this IEnumerable<IData> datas)
+        {
+            List<IData> result = new List<IData>();
+            foreach (IData data in datas)
+            {
+                if (result.Where(f => f.KeyEquals(data) == true).Any() == false)
+                {
+                    result.Add(data);
+                }
+            }
+
+            return result;
+        }
+
+
+
+        /// <summary>
+        /// Compares the value of the key properties of leftData and rightData
+        /// and if all the values are equals then it returns true. Otherwise false.
+        /// </summary>
+        /// <param name="leftData"></param>
+        /// <param name="rightData"></param>
+        /// <returns></returns>
+        public static object GetUniqueKey(this IData data)
+        {
+            if (data == null) throw new ArgumentNullException("data");
+
+            return DataAttributeFacade.GetKeyPropertyInfoes(data.DataSourceId.InterfaceType).Single().GetValue(data, null);
+        }
+
+
+
+        /// <summary>
+        /// Compares the value of the key properties of leftData and rightData
+        /// and if all the values are equals then it returns true. Otherwise false.
+        /// </summary>
+        /// <param name="leftData"></param>
+        /// <param name="rightData"></param>
+        /// <returns></returns>
+        public static T GetUniqueKey<T>(this IData data)
+        {
+            return (T)data.GetUniqueKey();
+        }
+
+
+
+        /// <summary>
+        /// Returns true if the child has ancestor as one of its ancestors
+        /// </summary>
+        /// <param name="child"></param>
+        /// <param name="parent"></param>
+        /// <returns></returns>
+        public static bool HasAncestor(this IData child, IData parent)
+        {
+            return HasAncestor(child, parent, int.MaxValue);
+        }
+
+
+
+        /// <summary>
+        /// Returns true if the child has ancestor as one of its ancestors
+        /// in max maxLevels ancestors
+        /// </summary>
+        /// <param name="child"></param>
+        /// <param name="parent"></param>
+        /// <returns></returns>
+        public static bool HasAncestor(this IData child, IData parent, int maxLevels)
+        {
+            if (child == null) throw new ArgumentNullException("child");
+            if (parent == null) throw new ArgumentNullException("parent");
+            if (maxLevels < 0) return false;
+
+            if (child.KeyEquals(parent) == true)
+            {
+                return true;
+            }
+            else
+            {
+                IData childParent = child.GetParent();
+
+                if (childParent == null) return false;
+
+                return HasAncestor(childParent, parent, maxLevels - 1);
+            }
+        }
+
+
+        public static IEnumerable<DataScopeIdentifier> GetSupportedDataScopes(this Type interfaceType)
+        {
+            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
+            if (typeof(IData).IsAssignableFrom(interfaceType) == false) throw new ArgumentException(string.Format("The specified type must inherit from '{0}'", typeof(IData)), "interfaceType");
+
+            var dataScopes = new List<DataScopeIdentifier>();
+            IEnumerable<DataScopeAttribute> attributes = interfaceType.GetCustomInterfaceAttributes<DataScopeAttribute>();
+
+            foreach (DataScopeAttribute attribute in attributes)
+            {
+                dataScopes.Add(attribute.Identifier);
+            }
+
+            return dataScopes.Distinct();
+        }
+
+
+        public static List<IData> ToDataList(this IQueryable queryable)
+        {
+            if (queryable == null) throw new ArgumentNullException("queryable");
+
+            List<IData> datas = new List<IData>();
+
+            foreach (object obj in queryable)
+            {
+                datas.Add((IData)obj);
+            }
+
+            return datas;
+        }
+
+
+
+        public static IEnumerable<IData> ToDataEnumerable(this IQueryable queryable)
+        {
+            if (queryable == null) throw new ArgumentNullException("queryable");
+
+
+            foreach (object obj in queryable)
+            {
+                yield return (IData)obj;
+            }
+        }
+
+
+
+        public static IEnumerable ToCastedDataEnumerable(this IEnumerable<IData> datas, Type interfaceType)
+        {
+            MethodInfo methodInfo = typeof(Enumerable).GetMethods().Where(f => f.Name == "Cast").Single();
+            methodInfo = methodInfo.MakeGenericMethod(interfaceType);
+
+            return (IEnumerable)methodInfo.Invoke(null, new object[] { datas });
+        }
+
+
+
+        public static IDictionary<string, List<T>> ToDataProviderSortedDictionary<T>(this IEnumerable<T> datas)
+            where T : class, IData
+        {
+            if (datas == null) throw new ArgumentNullException("datas");
+
+            Dictionary<string, List<T>> result = new Dictionary<string, List<T>>();
+
+            foreach (T data in datas)
+            {
+                List<T> dataList;
+
+                if (result.TryGetValue(data.DataSourceId.ProviderName, out dataList) == false)
+                {
+                    dataList = new List<T>();
+
+                    result.Add(data.DataSourceId.ProviderName, dataList);
+                }
+
+                dataList.Add(data);
+            }
+
+            return result;
+        }
+
+
+
+        public static Dictionary<string, Dictionary<Type, List<IData>>> ToDataProviderAndInterfaceTypeSortedDictionary<T>(this IEnumerable<T> datas)
+            where T : class, IData
+        {
+            if (datas == null) throw new ArgumentNullException("datas");
+
+            Dictionary<string, Dictionary<Type, List<IData>>> result = new Dictionary<string, Dictionary<Type, List<IData>>>();
+
+            foreach (IData data in datas)
+            {
+                Dictionary<Type, List<IData>> dictionary;
+                if (result.TryGetValue(data.DataSourceId.ProviderName, out dictionary) == false)
+                {
+                    dictionary = new Dictionary<Type, List<IData>>();
+
+                    result.Add(data.DataSourceId.ProviderName, dictionary);
+                }
+
+                List<IData> dataList;
+                if (dictionary.TryGetValue(data.DataSourceId.InterfaceType, out dataList) == false)
+                {
+                    dataList = new List<IData>();
+
+                    dictionary.Add(data.DataSourceId.InterfaceType, dataList);
+                }
+
+                dataList.Add(data);
+            }
+
+            return result;
+        }
+
+
+
+        public static PropertyInfo GetDataPropertyRecursivly(this Type dataType, string propertyName)
+        {
+            if (dataType == null) throw new ArgumentNullException("dataType");
+
+            PropertyInfo propertyInfo = dataType.GetProperty(propertyName);
+
+            if (propertyInfo != null) return propertyInfo;
+
+            foreach (Type superInterface in dataType.GetInterfaces())
+            {
+                if ((superInterface != typeof(IData)) &&
+                    (typeof(IData).IsAssignableFrom(superInterface) == true))
+                {
+                    PropertyInfo propInfo = superInterface.GetDataPropertyRecursivly(propertyName);
+
+                    if (propInfo != null)
+                    {
+                        return propInfo;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+
+
+        internal static List<PropertyInfo> GetAllProperties(this Type dataType)
+        {
+            if (dataType == null) throw new ArgumentNullException("dataType");
+
+            List<PropertyInfo> result = new List<PropertyInfo>();
+
+            List<PropertyInfo> properties = new List<PropertyInfo>();
+
+            result.AddRange(dataType.GetProperties());
+
+            foreach (Type superInterface in dataType.GetInterfacesRecursively())
+            {
+                if ((superInterface != typeof(IData)) &&
+                    (typeof(IData).IsAssignableFrom(superInterface) == true))
+                {
+                    result.AddRange(superInterface.GetProperties());
+                }
+            }
+
+            return result;
+        }
+
+
+
+        internal static void SetValues(this IData data, Dictionary<string, string> values)
+        {
+            if (data == null) throw new ArgumentNullException("data");
+            if (values == null) throw new ArgumentNullException("values");
+
+            List<PropertyInfo> properties = data.DataSourceId.InterfaceType.GetPropertiesRecursively();
+
+            foreach (var kvp in values)
+            {
+                PropertyInfo propertyInfo = properties.Where(f => f.Name == kvp.Key).Single();
+
+                object convertedValue = ValueTypeConverter.Convert(kvp.Value, propertyInfo.PropertyType);
+
+                propertyInfo.SetValue(data, convertedValue, null);
+            }
+        }
+    }
+}

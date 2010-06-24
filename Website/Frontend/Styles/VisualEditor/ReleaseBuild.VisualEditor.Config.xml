@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<XhtmlEditorElementClassConfigurations>
+	<!--
+		<ClassConfiguration ConfigurationName="common" ElementName="table" ClassName="tableclassname1" />
+		<ClassConfiguration ConfigurationName="common" ElementName="table" ClassName="tableclassname2" />
+		<ClassConfiguration ConfigurationName="common" ElementName="table" ClassName="tableclassname3" />
+		<ClassConfiguration ConfigurationName="common" ElementName="p" ClassName="pclassname1" />
+		<ClassConfiguration ConfigurationName="common" ElementName="p" ClassName="pclassname2" />
+		<ClassConfiguration ConfigurationName="common" ElementName="a" ClassName="aclassname" />	
+	-->
+</XhtmlEditorElementClassConfigurations>

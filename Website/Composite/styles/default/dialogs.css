@@ -1,0 +1,121 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|dialogset {
+	display: block;
+	overflow: visible;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0;
+	height: 0;
+	z-index: 4; /* below popupset */
+}
+ui|dialog {
+	display: block;
+	background-color: $(color:threedface);
+	overflow: hidden;
+	position: absolute;
+	z-index: 6; /* above shadow - adjusted by script */
+	margin-top: -10000px;
+}
+ui|dialog.minimized {
+	border: 5px solid pink;
+}
+ui|dialog.maximized {
+	border: 5px solid lime;
+}
+ui|dialoghead,
+ui|dialogbody {
+	display: block;
+	padding: 1px;
+}
+ui|dialoghead {
+	padding-bottom: 0 !important;
+}
+ui|dialogbody {
+	padding-top: 0 !important;
+	width: 100%; /* ie bug */
+	overflow: hidden;
+}
+ui|dialogmatrix {
+	display: block;
+	position: absolute;
+	z-index: -1;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+ui|dialog ui|dialogmatrix table.dialogmatrix {
+	width: 100%;
+	height: 100%;
+}
+ui|dialogmatrix td {
+	background-color: InactiveCaption;
+}
+ui|dialog.active ui|dialogmatrix td {
+	background-color: $(color:activecaption);
+}
+ui|dialogmatrix td.c {
+	height: 100%;
+	width: 100%;
+	#moz border: 1px solid $(color:threedface); /* moz bug */
+	#moz border-top: none;
+	background-color: $(color:threedface) !important;
+}
+ui|dialogborder {
+	position: absolute;
+	overflow: hidden;
+	z-index: 4;
+	#ie background-color: $(color:threedface);
+	#ie filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+}
+ui|dialogborder.n {
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 4px;
+}
+ui|dialogborder.s {
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 4px;
+}
+ui|dialogborder.w {
+	top: 0;
+	left: 0;
+	width: 4px;
+	height: 100%;
+}
+ui|dialogborder.e {
+	top: 0;
+	right: 0;
+	#ie right: -1px;
+	width: 4px;
+	height: 100%;
+}
+ui|dialog.resizable ui|dialogborder.n {
+	cursor: n-resize;
+}
+ui|dialog.resizable ui|dialogborder.s {
+	cursor: s-resize;
+}
+ui|dialog.resizable ui|dialogborder.w {
+	cursor: w-resize;
+}
+ui|dialog.resizable ui|dialogborder.e {
+	cursor: e-resize;
+} 
+ui|dialogcover {
+	position: absolute;
+	height: 100%; /* adjusted by script */
+	width: 100%; /* adjusted by script */
+	left: 0;
+	top: 0;
+	z-index: 2; /* adjusted by script */
+	#ie background-color: pink;
+	#ie filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+}

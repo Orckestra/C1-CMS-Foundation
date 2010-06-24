@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:internal="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+	<cms:bindings>    
+		<cms:binding name="PackageDescription" type="Composite.PackageSystem.PackageDescription" />
+		<cms:binding name="AddOnServerSource" type="System.String" />
+	</cms:bindings>
+	<cms:layout iconhandle="package-view-availableinfo">
+    <cms:layout.label>
+      <cms:read source="PackageDescription.Name" />
+    </cms:layout.label>
+		<FieldGroup Label="${Composite.StandardPlugins.PackageElementProvider, ViewAvailableInformation.FieldGroupLabel}">
+			<TextBox Type="ReadOnly" Label="${Composite.StandardPlugins.PackageElementProvider, ViewAvailableInformation.NameTextLabel}">
+			<!-- Help="${Composite.StandardPlugins.PackageElementProvider, ViewAvailableInformation.NameTextHelp}" -->
+				<TextBox.Text>
+					<cms:read source="PackageDescription.Name" />
+				</TextBox.Text>
+			</TextBox>
+
+			<TextBox Type="ReadOnly" Label="${Composite.StandardPlugins.PackageElementProvider, ViewAvailableInformation.VersionTextLabel}">
+			<!-- Help="${Composite.StandardPlugins.PackageElementProvider, ViewAvailableInformation.VersionTextHelp}" -->
+				<TextBox.Text>
+					<cms:read source="PackageDescription.PackageVersion" />
+				</TextBox.Text>
+			</TextBox>
+
+			<TextArea Type="ReadOnly" Label="${Composite.StandardPlugins.PackageElementProvider, ViewAvailableInformation.DescriptionTextLabel}">
+			<!-- Help="${Composite.StandardPlugins.PackageElementProvider, ViewAvailableInformation.DescriptionTextHelp}" -->
+				<TextArea.Text>
+					<cms:read source="PackageDescription.Description" />
+				</TextArea.Text>
+			</TextArea>
+
+			<TextArea Type="ReadOnly" Label="${Composite.StandardPlugins.PackageElementProvider, ViewAvailableInformation.TechicalDescriptionTextLabel}">
+			<!-- Help="${Composite.StandardPlugins.PackageElementProvider, ViewAvailableInformation.TechicalDescriptionTextHelp}" -->
+				<TextArea.Text>
+					<cms:read source="PackageDescription.TechicalDetails" />
+				</TextArea.Text>
+			</TextArea>
+
+			<TextBox Type="ReadOnly" Label="${Composite.StandardPlugins.PackageElementProvider, ViewAvailableInformation.AuthorTextLabel}">
+			<!-- Help="${Composite.StandardPlugins.PackageElementProvider, ViewAvailableInformation.AuthorTextHelp}" -->
+				<TextBox.Text>
+					<cms:read source="PackageDescription.Vendor" />
+				</TextBox.Text>
+			</TextBox>
+
+			<TextBox Type="ReadOnly" Label="${Composite.StandardPlugins.PackageElementProvider, ViewAvailableInformation.PriceTextLabel}">
+			<!-- Help="${Composite.StandardPlugins.PackageElementProvider, ViewAvailableInformation.PriceTextHelp}" -->
+				<TextBox.Text>
+					<cms:read source="PackageDescription.PriceAmmount" />
+				</TextBox.Text>
+			</TextBox>
+
+			<TextBox Type="ReadOnly" Label="${Composite.StandardPlugins.PackageElementProvider, ViewAvailableInformation.AddOnSourceTextLabel}">
+			<!-- Help="${Composite.StandardPlugins.PackageElementProvider, ViewAvailableInformation.AddOnSourceTextHelp}" -->
+				<TextBox.Text>
+					<cms:read source="AddOnServerSource" />
+				</TextBox.Text>
+			</TextBox>
+		</FieldGroup>
+	</cms:layout>
+</cms:formdefinition>

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="SelectedMetaDataDefinition" type="System.Object"/>
+    <cms:binding name="MetaDataDefinitionOptions" type="System.Collections.IEnumerable"/>
+  </cms:bindings>
+
+  <cms:layout iconhandle="generated-type-edit" label="${Composite.Management, AssociatedDataElementProviderHelper.EditMetaDataWorkflow.Layout.Label}">
+    <FieldGroup Label="${Composite.Management, AssociatedDataElementProviderHelper.EditMetaDataWorkflow.FieldGroup.Label}">
+
+      <KeySelector Label="${Composite.Management, AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataDefinitionSelector.Label}"
+                   Help="${Composite.Management, AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataDefinitionSelector.Help}"
+                   OptionsKeyField="Key" OptionsLabelField="Value">
+        <KeySelector.Options>
+          <cms:read source="MetaDataDefinitionOptions" />
+        </KeySelector.Options>
+        <KeySelector.Selected>
+          <cms:bind source="SelectedMetaDataDefinition" />
+        </KeySelector.Selected>
+      </KeySelector>
+    </FieldGroup>
+
+  </cms:layout>
+</cms:formdefinition>

@@ -1,0 +1,7 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|flexbox {
+	border: 1px solid;
+	border-color: $(color:threeddarkshadow) $(color:threedshadow) $(color:threedshadow) $(color:threeddarkshadow);
+}

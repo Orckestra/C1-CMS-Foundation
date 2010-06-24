@@ -1,0 +1,35 @@
+/*
+ * CodePress - Real Time Syntax Highlighting Editor written in JavaScript
+ */
+CodePress = {
+	range : null,
+	language : null,
+	scrolling : false,
+	
+	// set initial vars and start sh
+	initialize : function() {
+		if(typeof(editor)=='undefined'&amp;&amp;!arguments[0]) return;
+		this.detect();
+		chars = '|13|32|191|57|48|187|188|'; // charcodes that trigger syntax highlighting
+		cc = '\u2009'; // control char
+		if(browser.ff) {
+			editor = document.getElementById('ffedt');
+			document.designMode = 'on';
+			document.addEventListener('keydown', this.keyHandler, true);
+			window.addEventListener('scroll', function() { if(!CodePress.scrolling) CodePress.syntaxHighlight('scroll') }, false);
+		}
+		else if(browser.ie) {
+			editor = document.getElementById('ieedt');
+			editor.contentEditable = 'true';
+			document.attachEvent('onkeydown', this.keyHandler);
+			window.attachEvent('onscroll', function() { if(!CodePress.scrolling) CodePress.syntaxHighlight('scroll') });
+		}
+		else {
+			// TODO: textarea without syntax highlighting for non supported browsers
+			alert('your browser is not supported at the moment');
+			return;
+		}
+		this.syntaxHighlight('init');
+		setTimeout(function() { window.scroll(0,0) },50); // scroll IE to top
+	}
+}

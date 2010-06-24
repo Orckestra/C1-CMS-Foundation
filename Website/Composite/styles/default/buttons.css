@@ -1,0 +1,37 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+/* see "toolbars.css" for styles shared with toolbarbutton */
+
+/** NOTICE SHARED LAYOUT! */
+ui|toolbarbutton,
+ui|clickbutton,
+ui|radiobutton,
+ui|checkbutton,
+ui|toolbarlabel {
+	display: block;
+	position: relative;
+	float: left;
+	margin-right: 2px;
+	overflow: hidden !important; /* contain added stuff */
+}
+ui|clickbutton table.matrix td.c {
+	padding: 3px 6px 2px 6px; /*5px 8px 4px 8px;*/
+	#moz: padding-bottom: 3px;
+	#region vista
+		padding: 3px 6px 4px 6px;
+		_padding: 3px 6px 2px 6px;
+	#endregion
+}
+ui|toolbar ui|clickbutton table.matrix td.c {
+	padding: 0 2px 0 2px;
+}
+ui|toolbarbutton.active ui|labelbox,
+ui|clickbutton.active ui|labelbox {
+	position: relative;
+	top: 1px;
+	left: 1px;
+	#region osx
+		position: static;
+	#endregion
+}

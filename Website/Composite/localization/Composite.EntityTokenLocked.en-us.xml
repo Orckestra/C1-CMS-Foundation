@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<strings>
+	<string key="LayoutLabel" value="This item is currently being edited" />
+  <string key="LockedByUsername.FieldGroupLabel" value="Information" />
+  <string key="LockedByUsername.Label" value="The item is edited by:" />
+	<string key="LockedByUsername.Help" value="Another user is editing this item. Press OK to proceed or cancel to abort." />
+	<string key="SameUserHeading.Title" value="This item is already open for editing" />
+	<string key="SameUserHeading.Description" value="If you open the same item for editing more than once, data may get lost. Press OK to proceed opening the item or Cancel to abort." />
+	<string key="AnotherUserHeading.Title" value="Another user is currently editing this item" />
+	<string key="AnotherUserHeading.Description" value="If the item is changed simultaneously by multiple users changes may get lost. Press OK to proceed or cancel to abort." />
+</strings>

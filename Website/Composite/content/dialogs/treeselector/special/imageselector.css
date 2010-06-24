@@ -1,0 +1,34 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|box#treebox,
+ui|box#infobox {
+	height: 100%;
+	float: left;
+}
+ui|box#treebox {
+	width: 233px;
+	position: relative; /* contain treecover */
+}
+ui|box#infobox {
+	padding: 0 0 0 12px;
+}
+div#previewimage {
+	width: 220px;
+	height: 288px;
+	background: none transparent no-repeat 0 0;
+	background-position: center 0;
+	background-image: url("imageselector.png");
+}
+div#info ui|labelbox {
+	float: none;
+	clear: both;
+	margin-top: 4px;
+	visibility: hidden;
+}
+div#info.image ui|labelbox {
+	visibility: visible;
+}
+div#info div#labels {
+	padding-top: 4px;	
+}

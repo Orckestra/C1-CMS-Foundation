@@ -1,0 +1,312 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Xsl;
+using Composite.Collections.Generic;
+using Composite.Data;
+using Composite.Data.Streams;
+using Composite.Data.Types;
+using Composite.Functions;
+using Composite.Functions.ManagedParameters;
+using Composite.Functions.Plugins.FunctionProvider;
+using Composite.IO;
+using Composite.Localization;
+using Composite.Logging;
+using Composite.Security;
+using Composite.StringExtensions;
+using Composite.Xml;
+using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
+using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
+
+
+namespace Composite.StandardPlugins.Functions.FunctionProviders.XsltBasedFunctionProvider
+{
+    public enum OutputXmlSubType
+    {
+        XHTML,
+        XML
+    }
+
+
+    [ConfigurationElementType(typeof(XsltBasedFunctionProviderData))]
+    public sealed class XsltBasedFunctionProvider : IDynamicTypeFunctionProvider
+    {
+        private FunctionNotifier _functionNotifier;
+
+
+        public XsltBasedFunctionProvider()
+        {
+            DataEventSystemFacade.SubscribeToDataAfterAdd<IXsltFunction>(OnDataChanged);
+            DataEventSystemFacade.SubscribeToDataDeleted<IXsltFunction>(OnDataChanged);
+            DataEventSystemFacade.SubscribeToDataAfterUpdate<IXsltFunction>(OnDataChanged);
+        }
+
+
+
+        public FunctionNotifier FunctionNotifier
+        {
+            set { _functionNotifier = value; }
+        }
+
+
+
+        public IEnumerable<IFunction> DynamicTypeDependentFunctions
+        {
+            get
+            {
+                return
+                    (from f in DataFacade.GetData<IXsltFunction>().ToList()
+                     select new XsltXmlFunction(f) as IFunction).ToList();
+            }
+        }
+
+        public IEnumerable<IFunction> Functions
+        {
+            get
+            {
+                yield break;
+            }
+        }
+
+
+
+        private void OnDataChanged(DataEventArgs dataEventArgs)
+        {
+            _functionNotifier.FunctionsUpdated();
+        }
+
+
+        internal static void ResolveImportIncludePaths(XContainer doc)
+        {
+            IEnumerable<XElement> imports = doc.Descendants().Where(f => f.Name == Namespaces.Xsl + "import" || f.Name == Namespaces.Xsl + "include").ToList();
+            foreach (XElement import in imports)
+            {
+                XAttribute hrefAttribute = import.Attribute("href");
+                if (hrefAttribute != null && hrefAttribute.Value.StartsWith("~/"))
+                {
+                    hrefAttribute.Value = PathUtil.Resolve(hrefAttribute.Value);
+                }
+            }
+        }
+
+
+
+
+        private sealed class XsltXmlFunction : IFunction
+        {
+            private IXsltFunction _xsltFunction; // go through XsltFunction instead of this
+            private IEnumerable<ParameterProfile> _parameterProfiles;
+            private IEnumerable<NamedFunctionCall> _FunctionCalls = null;
+            private object _lock = new object();
+            private bool _subscribedToFileChanges = false;
+            private readonly Hashtable<CultureInfo, XslCompiledTransform> _xslTransformations = new Hashtable<CultureInfo, XslCompiledTransform>();
+
+
+            public XsltXmlFunction(IXsltFunction xsltFunction)
+            {
+                _xsltFunction = xsltFunction;
+            }
+
+
+
+
+            public object Execute(ParameterList parameters, FunctionContextContainer context)
+            {
+                Guid xsltFunctionId = this._xsltFunction.Id;
+
+                if (_FunctionCalls == null)
+                {
+                    lock (_lock)
+                    {
+                        if (_FunctionCalls == null)
+                        {
+                            _FunctionCalls = RenderHelper.GetValidatedFunctionCalls(xsltFunctionId);
+                        }
+                    }
+                }
+
+                TransformationInputs transformationInput = RenderHelper.BuildInputDocument(_FunctionCalls, parameters, false);
+
+                XDocument newTree = new XDocument();
+
+                using (XmlWriter writer = new LimitedDepthXmlWriter(newTree.CreateWriter()))
+                {
+                    XslCompiledTransform xslTransformer = GetXslCompiledTransform();
+
+                    XsltArgumentList transformArgs = new XsltArgumentList();
+                    XslExtensionsManager.Register(transformArgs);
+
+                    if (transformationInput.ExtensionDefinitions != null)
+                    {
+                        foreach (IXsltExtensionDefinition extensionDef in transformationInput.ExtensionDefinitions)
+                        {
+                            transformArgs.AddExtensionObject(extensionDef.ExtensionNamespace.ToString(), extensionDef.EntensionObjectAsObject);
+                        }
+                    }
+
+                    xslTransformer.Transform(transformationInput.InputDocument.CreateReader(), transformArgs, writer);
+                }
+
+                if (this._xsltFunction.OutputXmlSubType == "XHTML")
+                {
+
+                    return new XhtmlDocument(newTree);
+                }
+                return newTree.Root;
+            }
+
+
+
+            private XslCompiledTransform GetXslCompiledTransform()
+            {
+                CultureInfo currentCultureInfo = LocalizationScopeManager.CurrentLocalizationScope;
+                XslCompiledTransform xslCompiledTransform;
+
+                if (_xslTransformations.TryGetValue(currentCultureInfo, out xslCompiledTransform))
+                {
+                    return xslCompiledTransform;
+                }
+
+                lock (_lock)
+                {
+                    if (!_xslTransformations.TryGetValue(currentCultureInfo, out xslCompiledTransform))
+                    {
+                        using (
+                            DebugLoggingScope.CompletionTime(this.GetType(), "Loading and compiling {0}".FormatWith(_xsltFunction.XslFilePath)))
+                        {
+                            string folderPath = Path.GetDirectoryName(_xsltFunction.XslFilePath);
+                            string fileName = Path.GetFileName(_xsltFunction.XslFilePath);
+
+                            var xsltFileHandles =
+                                (from file in DataFacade.GetData<IXsltFile>()
+                                 where String.Equals(file.FolderPath, folderPath, StringComparison.OrdinalIgnoreCase)
+                                       && String.Equals(file.FileName, fileName, StringComparison.OrdinalIgnoreCase) 
+                                 select file).ToList();
+
+                            Verify.That(xsltFileHandles.Count == 1, "XSLT file path {0} found {1} times. Only one instance was expected.".FormatWith(_xsltFunction.XslFilePath, xsltFileHandles.Count));
+                            IXsltFile xsltFileHandle = xsltFileHandles[0];
+
+                            if(!_subscribedToFileChanges)
+                            {
+                                xsltFileHandle.SubscribeOnChanged(ClearCachedData);
+                                _subscribedToFileChanges = true;
+                            }
+
+                            xslCompiledTransform = new XslCompiledTransform();
+
+
+                            XDocument doc;
+                            using (Stream xsltSourceStream = xsltFileHandle.GetReadStream())
+                            {
+                                using (XmlReader xmlReader = XmlReader.Create(xsltSourceStream))
+                                {
+                                    doc = XDocument.Load(xmlReader);
+                                }
+                            }
+
+                            ResolveImportIncludePaths(doc);
+
+                            LocalizationParser.Parse(doc);
+
+                            xslCompiledTransform.Load(doc.CreateReader(), XsltSettings.TrustedXslt, new XmlUrlResolver());
+
+                            _xslTransformations.Add(currentCultureInfo, xslCompiledTransform);
+                        }
+                    }
+                }
+                return xslCompiledTransform;
+            }
+
+            private void ClearCachedData(string filePath, FileChangeType changeType)
+            {
+                lock(_lock)
+                {
+                    _xslTransformations.Clear();
+                }
+            }
+
+
+            public string Name
+            {
+                get
+                {
+                    return _xsltFunction.Name;
+                }
+            }
+
+
+
+            public string Namespace
+            {
+                get
+                {
+                    return _xsltFunction.Namespace;
+                }
+            }
+
+
+            public string Description
+            {
+                get
+                {
+                    return _xsltFunction.Description;
+                }
+            }
+
+
+
+            public Type ReturnType
+            {
+                get
+                {
+                    switch (this._xsltFunction.OutputXmlSubType)
+                    {
+                        case "XHTML":
+                            return typeof(XhtmlDocument);
+                        default:
+                            return typeof(XElement);
+                    }
+                }
+            }
+
+
+
+            public IEnumerable<ParameterProfile> ParameterProfiles
+            {
+                get
+                {
+                    lock (_lock)
+                    {
+                        if (_parameterProfiles == null)
+                        {
+                            _parameterProfiles = ManagedParameterManager.GetParameterProfiles(_xsltFunction.Id);
+                        }
+                    }
+                    return _parameterProfiles;
+                }
+            }
+
+
+
+            public EntityToken EntityToken
+            {
+                get
+                {
+                    return _xsltFunction.GetDataEntityToken();
+                }
+            }
+        }
+
+    }
+
+
+
+    [Assembler(typeof(NonConfigurableFunctionProviderAssembler))]
+    public sealed class XsltBasedFunctionProviderData : FunctionProviderData
+    {
+    }
+}

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="SelectedTreeId" type="System.String" />
+    <cms:binding name="SelectableTreeIds" type="System.Collections.IEnumerable" />
+    <cms:binding name="SelectedPosition" type="System.String" />
+    <cms:binding name="SelectablePositions" type="System.Collections.IEnumerable" />
+  </cms:bindings>
+  <cms:layout label="${Composite.Trees, AddApplication.Layout.Label}" iconhandle="tree-add-application">
+    <FieldGroup Label="${Composite.Trees, AddApplication.FieldGroup.Label}">
+
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"
+									 Label="${Composite.Trees, AddApplication.TreeIdSelector.Label}"
+									 Help="${Composite.Trees, AddApplication.TreeIdSelector.Help}">
+        <KeySelector.Options>
+          <cms:read source="SelectableTreeIds"/>
+        </KeySelector.Options>
+        <KeySelector.Selected>
+          <cms:bind source="SelectedTreeId" />
+        </KeySelector.Selected>
+      </KeySelector>
+
+
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"
+									 Label="${Composite.Trees, AddApplication.PositionSelector.Label}"
+									 Help="${Composite.Trees, AddApplication.PositionSelector.Help}">
+        <KeySelector.Options>
+          <cms:read source="SelectablePositions"/>
+        </KeySelector.Options>
+        <KeySelector.Selected>
+          <cms:bind source="SelectedPosition" />
+        </KeySelector.Selected>
+      </KeySelector>
+
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

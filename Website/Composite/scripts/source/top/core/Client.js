@@ -1,0 +1,138 @@
+/**
+ * @class
+ * Don't instantiate this class manually. Access through 
+ * instance variable "Client" declared below. This 
+ * instance should be considered a singleton class.
+ */
+function _Client () {
+	
+	var agent = navigator.userAgent.toLowerCase ();
+	var platform = navigator.platform.toLowerCase ();
+	
+	var isMozilla = typeof document.createTreeWalker != "undefined";
+	var isPrism = isMozilla && ( agent.indexOf ( "webrunner" ) >-1 || agent.indexOf ( "prism" ) >-1 );
+	var hasTransitions = history.pushState != null;
+
+	this.isMozilla = isMozilla;
+	this.isWebKit = agent.indexOf ( "webkit" ) >-1;
+	this.isExplorer = !isMozilla;
+	this.isExplorer6 = this.isExplorer && ( agent.indexOf ( "msie 6.0" ) > -1 || agent.indexOf ( "msie 6.1" ) > -1 );
+	this.isExplorer8 = this.isExplorer && window.XDomainRequest != null;
+	this.isPrism = isPrism;
+	this.isWindows = platform.indexOf ( "win" ) > -1;
+	this.isVista = this.isWindows && agent.indexOf ( "windows nt 6" ) > -1;
+	
+	var version = this._getFlashVersion ();
+	this.hasFlash = ( version && version >= 9 );
+	this.hasTransitions = hasTransitions;
+
+	return this;
+}
+
+/*
+ * Public fields.
+ */
+_Client.prototype = {
+	
+	/** 
+	 * Is Internet Explorer?
+	 * @type {boolean} 
+	 */
+	isExplorer : false,
+	
+	/**
+	 * Is Gecko derivate? 
+	 * @type {boolean} 
+	 */
+	isMozilla : false,
+	
+	/** 
+	 * True for Mozilla Prism.
+	 * @type {boolean} 
+	 */
+	isPrism : false,
+	
+	/**
+	 * Has Flash version 10 minimum? 
+	 * @type {boolean} 
+	 */
+	hasFlash : false,
+	
+	/**
+	 * Is Microsoft Windows? Macintosh and Linux 
+	 * distros uniformely treated as not-Windows.
+	 * @type {boolean}
+	 */
+	isWindows : false,
+	
+	/**
+	 * Is Vista or Windows 7? As opposed to Windows XP.
+	 * @type {boolean}
+	 */
+	isVista : false,
+	
+	/**
+	 * Supports CSS transitions?
+	 * @type {boolean}
+	 */
+	hasTransitions : false,
+
+	/**
+	 * Get Flash version.
+	 * @return {int}
+	 */
+	_getFlashVersion : function () {
+	
+		var result = null;
+		var maxversion = 10; // maximum version tested for
+		
+		// detect flash version
+		try {
+			if ( this.isMozilla == true ) {
+				if ( typeof navigator.plugins [ "Shockwave Flash" ] != "undefined" ) {
+					var plugin = navigator.plugins [ "Shockwave Flash" ];
+					if ( plugin ) {
+						var desc = plugin.description;
+						if ( desc != null ) {
+							result = desc.charAt ( desc.indexOf ( "." ) - 1 );
+						}
+					}
+				}
+			} else {
+			    for ( var i = 2; i <= maxversion; i++ ) {
+			        try {
+						new ActiveXObject ( "ShockwaveFlash.ShockwaveFlash." + i );
+						result = i;
+					} catch ( exception ) {
+						continue;
+					}
+				}
+			}
+		}
+		catch ( exception ) {};
+		return result;
+	},
+	
+	/**
+	 * Client qualified for the awesome Composite C1 experience?
+	 * @return {boolean}
+	 */
+	qualifies : function () {
+		
+		var result = true;
+		var isOldFox = false;
+		if ( this.isMozilla && !this.isWebKit ) {
+			isOldFox = ( document.documentElement.mozMatchesSelector == null );
+		}
+		if ( this.isWebKit || window.opera != null || isOldFox || this.isExplorer6 ) {
+			result = false;
+		}
+		return result;
+	}
+}
+
+/**
+ * The instance that does it.
+ * @type {_Client}
+ */
+var Client = new _Client ();

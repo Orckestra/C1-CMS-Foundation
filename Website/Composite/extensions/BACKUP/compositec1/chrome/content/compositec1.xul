@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="compositec1.css"?>
+<overlay id="compositec1" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<script type="application/javascript" src="CompositeC1.js"/>
+	<menupopup id="popup_tools">
+		<menuitem insertafter="menuitem_console" label="Clear Cache" oncommand="CompositeC1.clearCache ( true )"/>
+	</menupopup>
+</overlay>

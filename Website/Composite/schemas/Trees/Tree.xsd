@@ -1,0 +1,1376 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Tree"
+    targetNamespace="http://www.composite.net/ns/management/trees/treemarkup/1.0"
+    elementFormDefault="qualified"
+    xmlns="http://www.composite.net/ns/management/trees/treemarkup/1.0"
+    xmlns:mstns="http://www.composite.net/ns/management/trees/treemarkup/1.0"
+    xmlns:func="http://www.composite.net/ns/function/1.0"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <xs:import namespace="http://www.composite.net/ns/function/1.0" schemaLocation="../Functions/Function.xsd"/>
+
+  <!-- ========================= "Header" types ======================== -->
+
+  <xs:complexType name="ElementStructure.AutoAttachmentsType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en-us">The children of this element describes where to insert this tree in the existing tree</xs:documentation>
+    </xs:annotation>
+
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="NamedParent" type="NamedParentType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="DataType" type="DataTypeType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:choice>
+  </xs:complexType>
+
+
+  <xs:complexType name="NamedParentType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en-us">Name of the perspective</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="Name" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Content" />
+          <xs:enumeration value="Content.WebsiteItems" />
+          <xs:enumeration value="Media" />
+          <xs:enumeration value="Layout" />
+          <xs:enumeration value="Function" />
+          <xs:enumeration value="Data" />
+          <xs:enumeration value="User" />
+          <xs:enumeration value="System" />
+          <xs:enumeration value="PerspectivesRoot" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="Position" use="optional" default="Top">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Top" />
+          <xs:enumeration value="Bottom" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+
+  <xs:complexType name="ElementStructure.AllowedAttachmentsType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en-us">Using this element will add two actions add/delete application that will enable the user to add (and remove) this tree to the elements specified in the children of this element</xs:documentation>
+    </xs:annotation>
+
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="DataType" type="DataTypeType" />
+    </xs:choice>
+
+    <xs:attribute name="ApplicationName" use="required" type="xs:string" />
+  </xs:complexType>
+
+
+
+  <xs:complexType name="DataTypeType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en-us">A Composite C1 data type</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="Type" use="required" type="xs:string" />
+
+    <xs:attribute name="Position" use="optional" default="Top">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Top" />
+          <xs:enumeration value="Bottom" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <!-- ========================= Structure types ======================== -->
+
+  <xs:complexType name="ElementRootType">
+    <xs:annotation>
+      <xs:documentation>Children of this node is the root children of the points where the tree is inserted</xs:documentation>
+    </xs:annotation>
+
+    <xs:all>
+      <xs:element name="Children" type="ChildrenType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="Actions" type="ActionsType" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
+  </xs:complexType>
+
+
+  <xs:complexType name="ChildrenType">
+    <xs:annotation>
+      <xs:documentation>This element defines what children the parent element should have</xs:documentation>
+    </xs:annotation>
+
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="Element" type="ElementType" minOccurs="0" maxOccurs="unbounded" />
+      <!--<xs:element name="FunctionElementGenerator" type="FunctionElementGeneratorType" minOccurs="0" maxOccurs="unbounded" />-->
+      <xs:element name="DataFolderElements" type="DataFolderElementRootType" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="DataElements" type="DataElementsType" minOccurs="0" maxOccurs="unbounded" />
+    </xs:choice>
+  </xs:complexType>
+
+
+  <!-- This is used for data folder elements only. This is because the type attribute should only be on the most parent element -->
+  <xs:complexType name="DataFolderChildrenType">
+    <xs:annotation>
+      <xs:documentation>This element defines what children the parent element should have</xs:documentation>
+    </xs:annotation>
+
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="DataFolderElements" type="DataFolderElementType" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="DataElements" type="DataElementsType" minOccurs="0" maxOccurs="unbounded" />
+    </xs:choice>
+  </xs:complexType>
+
+
+  <xs:complexType name="ActionsType">
+    <xs:annotation>
+      <xs:documentation>This element defines actions that that should be added to the parent element</xs:documentation>
+    </xs:annotation>
+
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="AddDataAction" type="AddDataActionType" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="ReportFunctionAction" type="ReportFunctionActionType" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="MessageBoxAction" type="MessageBoxActionType" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="CustomUrlAction" type="CustomUrlActionType" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="ConfirmAction" type="ConfirmActionType" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="WorkflowAction" type="WorkflowActionType" minOccurs="0" maxOccurs="unbounded" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="DataActionsType">
+    <xs:annotation>
+      <xs:documentation>This element defines actions that that should be added to the parent element</xs:documentation>
+    </xs:annotation>
+
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="AddDataAction" type="AddDataActionType" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="EditDataAction" type="EditDataActionType" minOccurs="0" maxOccurs="1" />
+      <xs:element name="DeleteDataAction" type="DeleteDataActionType" minOccurs="0" maxOccurs="1" />
+      <xs:element name="ReportFunctionAction" type="ReportFunctionActionType" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="MessageBoxAction" type="MessageBoxActionType" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="CustomUrlAction" type="CustomUrlActionType" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="ConfirmAction" type="ConfirmActionType" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="WorkflowAction" type="WorkflowActionType" minOccurs="0" maxOccurs="unbounded" />
+    </xs:choice>
+  </xs:complexType>
+
+
+  <xs:complexType name="FiltersType">
+    <xs:annotation>
+      <xs:documentation>This element defines filters that will filter data elements of this data element</xs:documentation>
+    </xs:annotation>
+
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="ParentIdFilter" type="ParentIdFilterType" minOccurs="0" maxOccurs="1" />
+      <xs:element name="FieldFilter" type="FieldFilterType" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="FunctionFilter" type="FunctionFilterType" minOccurs="0" maxOccurs="unbounded" />
+    </xs:choice>
+  </xs:complexType>
+
+
+  <xs:complexType name="OrderByType">
+    <xs:annotation>
+      <xs:documentation>This element defines how the resulting data elements should be ordered</xs:documentation>
+    </xs:annotation>
+
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="Field" type="FieldOrderByType" minOccurs="0" maxOccurs="unbounded" />
+    </xs:choice>
+  </xs:complexType>
+
+
+  <!-- ========================= Attribute types ======================== -->
+
+
+  <xs:attributeGroup name="DisplayGroup">
+    <xs:attribute name="Display" use="optional" default="Lazy">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Compact">
+            <xs:annotation>
+              <xs:documentation>Only shows the element if it has any parent relation children</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Lazy">
+            <xs:annotation>
+              <xs:documentation>Shows all elements ragardless of parent relations of any children</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Auto">
+            <xs:annotation>
+              <xs:documentation>Shows all elements, but only shows 'plus' if the element has any parent relation children</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+
+
+  <xs:attributeGroup name="LocationGroup">
+    <xs:attribute name="Location" use="optional" default="Other">
+      <xs:annotation>
+        <xs:documentation>The location of the action in the toolbar</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Add" />
+          <xs:enumeration value="Edit" />
+          <xs:enumeration value="Delete" />
+          <xs:enumeration value="Other" />          
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="IconGroup">
+    <xs:attribute name="Icon" use="optional" type="xs:string" >
+      <xs:annotation>
+        <xs:documentation>The icon of the element(s).</xs:documentation>
+      </xs:annotation>
+      <!--<xs:simpleType>        
+        <xs:restriction base="xs:string">          
+          <xs:enumeration value="blank" />
+          <xs:enumeration value="perspective-content" />
+          <xs:enumeration value="perspective-design" />
+          <xs:enumeration value="perspective-datas" />
+          <xs:enumeration value="perspective-config" />
+          <xs:enumeration value="perspective-users" />
+          <xs:enumeration value="perspective-usergroups" />
+          <xs:enumeration value="perspective-mocks" />
+          <xs:enumeration value="perspective-media" />
+          <xs:enumeration value="perspective-system" />
+          <xs:enumeration value="perspective-developerapplication" />
+          <xs:enumeration value="perspectivetools" />
+          <xs:enumeration value="perspectivetools-disabled" />
+          <xs:enumeration value="generic-edit" />
+          <xs:enumeration value="generic-delete" />
+          <xs:enumeration value="generic-add" />
+          <xs:enumeration value="generic-search" />
+          <xs:enumeration value="generic-refresh" />
+          <xs:enumeration value="generic-set-security" />
+          <xs:enumeration value="generic-show-history" />
+          <xs:enumeration value="generic-show-report" />
+          <xs:enumeration value="refresh" />
+          <xs:enumeration value="home" />
+          <xs:enumeration value="refresh-disabled" />
+          <xs:enumeration value="recycle" />
+          <xs:enumeration value="clock" />
+          <xs:enumeration value="lock" />
+          <xs:enumeration value="data-draft" />
+          <xs:enumeration value="data-awaiting-approval" />
+          <xs:enumeration value="data-awaiting-publication" />
+          <xs:enumeration value="data-published" />
+          <xs:enumeration value="data" />
+          <xs:enumeration value="earth" />
+          <xs:enumeration value="folder-disabled" />
+          <xs:enumeration value="folder-open" />
+          <xs:enumeration value="report" />
+          <xs:enumeration value="template" />
+          <xs:enumeration value="user" />
+          <xs:enumeration value="user-disabled" />
+          <xs:enumeration value="user-group" />
+          <xs:enumeration value="cancel" />
+          <xs:enumeration value="cancel-disabled" />
+          <xs:enumeration value="close" />
+          <xs:enumeration value="popup" />
+          <xs:enumeration value="tools" />
+          <xs:enumeration value="options" />
+          <xs:enumeration value="advanced" />
+          <xs:enumeration value="up" />
+          <xs:enumeration value="up-disabled" />
+          <xs:enumeration value="down" />
+          <xs:enumeration value="down-disabled" />
+          <xs:enumeration value="forward" />
+          <xs:enumeration value="forward-disabled" />
+          <xs:enumeration value="back" />
+          <xs:enumeration value="back-disabled" />
+          <xs:enumeration value="synchronize" />
+          <xs:enumeration value="collapseall" />
+          <xs:enumeration value="page-template-root-closed" />
+          <xs:enumeration value="page-template-root-open" />
+          <xs:enumeration value="page-template-template" />
+          <xs:enumeration value="page-template-add" />
+          <xs:enumeration value="page-template-edit" />
+          <xs:enumeration value="page-template-delete" />
+          <xs:enumeration value="base-function-function" />
+          <xs:enumeration value="method-based-function-add" />
+          <xs:enumeration value="method-based-function-edit" />
+          <xs:enumeration value="method-based-function-delete" />
+          <xs:enumeration value="sql-based-function" />
+          <xs:enumeration value="sql-based-connection" />
+          <xs:enumeration value="sql-based-connection-add" />
+          <xs:enumeration value="sql-based-connection-edit" />
+          <xs:enumeration value="sql-based-connection-delete" />
+          <xs:enumeration value="sql-based-function-add" />
+          <xs:enumeration value="sql-based-function-edit" />
+          <xs:enumeration value="sql-based-function-delete" />
+          <xs:enumeration value="xslt-based-function" />
+          <xs:enumeration value="xslt-based-function-add" />
+          <xs:enumeration value="xslt-based-function-edit" />
+          <xs:enumeration value="xslt-based-function-delete" />
+          <xs:enumeration value="all-functions-generatedocumentation" />
+          <xs:enumeration value="generated-root-open" />
+          <xs:enumeration value="generated-root-closed" />
+          <xs:enumeration value="generated-interface-open" />
+          <xs:enumeration value="generated-interface-closed" />
+          <xs:enumeration value="generated-type-add" />
+          <xs:enumeration value="generated-type-edit" />
+          <xs:enumeration value="generated-type-delete" />
+          <xs:enumeration value="generated-type-localize" />
+          <xs:enumeration value="generated-type-delocalize" />
+          <xs:enumeration value="generated-type-data-add" />
+          <xs:enumeration value="generated-type-data-edit" />
+          <xs:enumeration value="generated-type-data-delete" />
+          <xs:enumeration value="generated-type-data-localize" />
+          <xs:enumeration value="generated-type-form-markup-edit" />
+          <xs:enumeration value="generated-type-to-xml" />
+          <xs:enumeration value="generated-type-list-unpublished-items" />
+          <xs:enumeration value="associated-data-add" />
+          <xs:enumeration value="associated-data-edit" />
+          <xs:enumeration value="associated-data-delete" />
+          <xs:enumeration value="generated-type-showincontentarea" />
+          <xs:enumeration value="item-send-back-to-draft" />
+          <xs:enumeration value="item-send-to-draft-disabled" />
+          <xs:enumeration value="item-send-forward-for-approval" />
+          <xs:enumeration value="item-send-back-for-approval" />
+          <xs:enumeration value="item-send-for-approval-disabled" />
+          <xs:enumeration value="item-send-forward-for-publication" />
+          <xs:enumeration value="item-send-back-for-publication" />
+          <xs:enumeration value="item-send-for-publication-disabled" />
+          <xs:enumeration value="item-publish" />
+          <xs:enumeration value="item-publish-disabled" />
+          <xs:enumeration value="item-unpublish" />
+          <xs:enumeration value="item-undo-unpublished-changes" />
+          <xs:enumeration value="page-root-open" />
+          <xs:enumeration value="page-root-closed" />
+          <xs:enumeration value="page-draft" />
+          <xs:enumeration value="page-awaiting-approval" />
+          <xs:enumeration value="page-awaiting-publication" />
+          <xs:enumeration value="page-publication" />
+          <xs:enumeration value="page-ghosted" />
+          <xs:enumeration value="page-disabled" />
+          <xs:enumeration value="page-edit-page" />
+          <xs:enumeration value="page-localize-page" />
+          <xs:enumeration value="page-add-page" />
+          <xs:enumeration value="page-delete-page" />
+          <xs:enumeration value="page-add-sub-page" />
+          <xs:enumeration value="page-view-public-scope" />
+          <xs:enumeration value="page-view-public-scope-disabled" />
+          <xs:enumeration value="page-view-administrated-scope" />
+          <xs:enumeration value="page-manage-host-names" />
+          <xs:enumeration value="page-activatelocalization" />
+          <xs:enumeration value="page-deactivatelocalization" />
+          <xs:enumeration value="page-list-unpublished-items" />
+          <xs:enumeration value="media-add-media-folder" />
+          <xs:enumeration value="media-add-media-file" />
+          <xs:enumeration value="media-replace-media-file" />
+          <xs:enumeration value="media-upload-zip-file" />
+          <xs:enumeration value="media-edit-image-file" />
+          <xs:enumeration value="media-edit-media-folder" />
+          <xs:enumeration value="media-edit-media-file" />
+          <xs:enumeration value="media-delete-media-folder" />
+          <xs:enumeration value="media-delete-media-file" />
+          <xs:enumeration value="media-download-file" />
+          <xs:enumeration value="media-read-only-folder-open" />
+          <xs:enumeration value="media-read-only-folder-closed" />
+          <xs:enumeration value="website-add-website-folder" />
+          <xs:enumeration value="website-create-website-file" />
+          <xs:enumeration value="website-upload-website-file" />
+          <xs:enumeration value="website-edit-website-file" />
+          <xs:enumeration value="website-delete-website-folder" />
+          <xs:enumeration value="website-delete-website-file" />
+          <xs:enumeration value="website-read-only-folder-open" />
+          <xs:enumeration value="website-read-only-folder-closed" />
+          <xs:enumeration value="website-add-folder-to-whitelist" />
+          <xs:enumeration value="website-remove-folder-from-whitelist" />
+          <xs:enumeration value="configuration-root-open" />
+          <xs:enumeration value="configuration-root-closed" />
+          <xs:enumeration value="unknown" />
+          <xs:enumeration value="unregistered" />
+          <xs:enumeration value="default" />
+          <xs:enumeration value="loading" />
+          <xs:enumeration value="cut" />
+          <xs:enumeration value="cut-disabled" />
+          <xs:enumeration value="copy" />
+          <xs:enumeration value="copy-disabled" />
+          <xs:enumeration value="paste" />
+          <xs:enumeration value="paste-disabled" />
+          <xs:enumeration value="delete" />
+          <xs:enumeration value="delete-disabled" />
+          <xs:enumeration value="print" />
+          <xs:enumeration value="save" />
+          <xs:enumeration value="save-disabled" />
+          <xs:enumeration value="saveas" />
+          <xs:enumeration value="saveas-disabled" />
+          <xs:enumeration value="undo" />
+          <xs:enumeration value="undo-disabled" />
+          <xs:enumeration value="redo" />
+          <xs:enumeration value="redo-disabled" />
+          <xs:enumeration value="link" />
+          <xs:enumeration value="link-disabled" />
+          <xs:enumeration value="unlink" />
+          <xs:enumeration value="unlink-disabled" />
+          <xs:enumeration value="accept" />
+          <xs:enumeration value="accept-disabled" />
+          <xs:enumeration value="sizeondisk" />
+          <xs:enumeration value="sizeonscreen" />
+          <xs:enumeration value="nodes" />
+          <xs:enumeration value="fields" />
+          <xs:enumeration value="fields-disabled" />
+          <xs:enumeration value="field" />
+          <xs:enumeration value="field-disabled" />
+          <xs:enumeration value="deletefield" />
+          <xs:enumeration value="insert" />
+          <xs:enumeration value="insert-disabled" />
+          <xs:enumeration value="help" />
+          <xs:enumeration value="composite" />
+          <xs:enumeration value="placeholder" />
+          <xs:enumeration value="input" />
+          <xs:enumeration value="input-disabled" />
+          <xs:enumeration value="output" />
+          <xs:enumeration value="browser" />
+          <xs:enumeration value="cleanup" />
+          <xs:enumeration value="cleanup-disabled" />
+          <xs:enumeration value="scale" />
+          <xs:enumeration value="crop" />
+          <xs:enumeration value="crop-disabled" />
+          <xs:enumeration value="zoom" />
+          <xs:enumeration value="zoomin" />
+          <xs:enumeration value="zoomout" />
+          <xs:enumeration value="editor-sourceview" />
+          <xs:enumeration value="editor-sourceview-disabled" />
+          <xs:enumeration value="editor-designview" />
+          <xs:enumeration value="editor-designview-disabled" />
+          <xs:enumeration value="editor-plainedit" />
+          <xs:enumeration value="editor-fancyedit" />
+          <xs:enumeration value="editor-classselector" />
+          <xs:enumeration value="editor-classselector-disabled" />
+          <xs:enumeration value="editor-formatselector" />
+          <xs:enumeration value="editor-formatselector-disabled" />
+          <xs:enumeration value="editor-formatsource" />
+          <xs:enumeration value="editor-formatsource-disabled" />
+          <xs:enumeration value="error" />
+          <xs:enumeration value="message" />
+          <xs:enumeration value="message-disabled" />
+          <xs:enumeration value="warning" />
+          <xs:enumeration value="question" />
+          <xs:enumeration value="balloon" />
+          <xs:enumeration value="wizard" />
+          <xs:enumeration value="next" />
+          <xs:enumeration value="next-disabled" />
+          <xs:enumeration value="previous" />
+          <xs:enumeration value="previous-disabled" />
+          <xs:enumeration value="finish" />
+          <xs:enumeration value="finish-disabled" />
+          <xs:enumeration value="bookmark" />
+          <xs:enumeration value="systemlog" />
+          <xs:enumeration value="developer" />
+          <xs:enumeration value="icon" />
+          <xs:enumeration value="page" />
+          <xs:enumeration value="image" />
+          <xs:enumeration value="specialchar" />
+          <xs:enumeration value="media" />
+          <xs:enumeration value="namespace_section" />
+          <xs:enumeration value="namespace_section_active" />
+          <xs:enumeration value="functioncall" />
+          <xs:enumeration value="functioncall-disabled" />
+          <xs:enumeration value="functioncall_list" />
+          <xs:enumeration value="parameter" />
+          <xs:enumeration value="parameter_missing" />
+          <xs:enumeration value="parameter_overloaded" />
+          <xs:enumeration value="deleteditems" />
+          <xs:enumeration value="folder" />
+          <xs:enumeration value="folder_active" />
+          <xs:enumeration value="seoassistant" />
+          <xs:enumeration value="mimetype-unknown" />
+          <xs:enumeration value="mimetype-asf" />
+          <xs:enumeration value="mimetype-mdb" />
+          <xs:enumeration value="mimetype-pdf" />
+          <xs:enumeration value="mimetype-ppt" />
+          <xs:enumeration value="mimetype-zip" />
+          <xs:enumeration value="mimetype-vaw" />
+          <xs:enumeration value="mimetype-exe" />
+          <xs:enumeration value="mimetype-asax" />
+          <xs:enumeration value="mimetype-ascx" />
+          <xs:enumeration value="mimetype-asm" />
+          <xs:enumeration value="mimetype-asp" />
+          <xs:enumeration value="mimetype-aspx" />
+          <xs:enumeration value="mimetype-bmp" />
+          <xs:enumeration value="mimetype-cat" />
+          <xs:enumeration value="mimetype-chm" />
+          <xs:enumeration value="mimetype-cfg" />
+          <xs:enumeration value="mimetype-css" />
+          <xs:enumeration value="mimetype-db" />
+          <xs:enumeration value="mimetype-dib" />
+          <xs:enumeration value="mimetype-disc" />
+          <xs:enumeration value="mimetype-doc" />
+          <xs:enumeration value="mimetype-docm" />
+          <xs:enumeration value="mimetype-docx" />
+          <xs:enumeration value="mimetype-dot" />
+          <xs:enumeration value="mimetype-dotm" />
+          <xs:enumeration value="mimetype-dotx" />
+          <xs:enumeration value="mimetype-dvd" />
+          <xs:enumeration value="mimetype-dwp" />
+          <xs:enumeration value="mimetype-eml" />
+          <xs:enumeration value="mimetype-est" />
+          <xs:enumeration value="mimetype-fwp" />
+          <xs:enumeration value="mimetype-gif" />
+          <xs:enumeration value="mimetype-hlp" />
+          <xs:enumeration value="mimetype-hta" />
+          <xs:enumeration value="mimetype-htm" />
+          <xs:enumeration value="mimetype-html" />
+          <xs:enumeration value="mimetype-htt" />
+          <xs:enumeration value="mimetype-inf" />
+          <xs:enumeration value="mimetype-ini" />
+          <xs:enumeration value="mimetype-jfif" />
+          <xs:enumeration value="mimetype-jpe" />
+          <xs:enumeration value="mimetype-jpeg" />
+          <xs:enumeration value="mimetype-jpg" />
+          <xs:enumeration value="mimetype-js" />
+          <xs:enumeration value="mimetype-jse" />
+          <xs:enumeration value="mimetype-log" />
+          <xs:enumeration value="mimetype-ram" />
+          <xs:enumeration value="mimetype-mht" />
+          <xs:enumeration value="mimetype-mpd" />
+          <xs:enumeration value="mimetype-mpp" />
+          <xs:enumeration value="mimetype-mps" />
+          <xs:enumeration value="mimetype-mpt" />
+          <xs:enumeration value="mimetype-mpw" />
+          <xs:enumeration value="mimetype-mpx" />
+          <xs:enumeration value="mimetype-msg" />
+          <xs:enumeration value="mimetype-msi" />
+          <xs:enumeration value="mimetype-msp" />
+          <xs:enumeration value="mimetype-ocx" />
+          <xs:enumeration value="mimetype-one" />
+          <xs:enumeration value="mimetype-png" />
+          <xs:enumeration value="mimetype-pot" />
+          <xs:enumeration value="mimetype-potm" />
+          <xs:enumeration value="mimetype-potx" />
+          <xs:enumeration value="mimetype-ppa" />
+          <xs:enumeration value="mimetype-pps" />
+          <xs:enumeration value="mimetype-ppsx" />
+          <xs:enumeration value="mimetype-psp" />
+          <xs:enumeration value="mimetype-ptm" />
+          <xs:enumeration value="mimetype-ptt" />
+          <xs:enumeration value="mimetype-pub" />
+          <xs:enumeration value="mimetype-rtf" />
+          <xs:enumeration value="mimetype-dir" />
+          <xs:enumeration value="mimetype-swf" />
+          <xs:enumeration value="mimetype-stt" />
+          <xs:enumeration value="mimetype-tif" />
+          <xs:enumeration value="mimetype-tiff" />
+          <xs:enumeration value="mimetype-css" />
+          <xs:enumeration value="mimetype-txt" />
+          <xs:enumeration value="mimetype-vbe" />
+          <xs:enumeration value="mimetype-vbs" />
+          <xs:enumeration value="mimetype-vdx" />
+          <xs:enumeration value="mimetype-vsd" />
+          <xs:enumeration value="mimetype-vaw" />
+          <xs:enumeration value="mimetype-vsl" />
+          <xs:enumeration value="mimetype-vss" />
+          <xs:enumeration value="mimetype-vst" />
+          <xs:enumeration value="mimetype-vsv" />
+          <xs:enumeration value="mimetype-vsw" />
+          <xs:enumeration value="mimetype-vsx" />
+          <xs:enumeration value="mimetype-vtx" />
+          <xs:enumeration value="mimetype-wm" />
+          <xs:enumeration value="mimetype-wma" />
+          <xs:enumeration value="mimetype-wmd" />
+          <xs:enumeration value="mimetype-wmp" />
+          <xs:enumeration value="mimetype-wms" />
+          <xs:enumeration value="mimetype-wmv" />
+          <xs:enumeration value="mimetype-wmx" />
+          <xs:enumeration value="mimetype-wmf" />
+          <xs:enumeration value="mimetype-wmz" />
+          <xs:enumeration value="mimetype-xlam" />
+          <xs:enumeration value="mimetype-xls" />
+          <xs:enumeration value="mimetype-xlsb" />
+          <xs:enumeration value="mimetype-xlsm" />
+          <xs:enumeration value="mimetype-xlt" />
+          <xs:enumeration value="mimetype-xltm" />
+          <xs:enumeration value="mimetype-xltx" />
+          <xs:enumeration value="mimetype-xml" />
+          <xs:enumeration value="mimetype-resx" />
+          <xs:enumeration value="mimetype-xsd" />
+          <xs:enumeration value="mimetype-xsl" />
+          <xs:enumeration value="mimetype-xsn" />
+          <xs:enumeration value="mimetype-xslt" />
+          <xs:enumeration value="mimetype-xlsx" />
+          <xs:enumeration value="mimetype-avi" />
+          <xs:enumeration value="mimetype-mov" />
+          <xs:enumeration value="mimetype-mpeg" />
+          <xs:enumeration value="mimetype-mp3" />
+          <xs:enumeration value="mimetype-rar" />
+          <xs:enumeration value="validationrule" />
+          <xs:enumeration value="validationrules" />
+          <xs:enumeration value="validationrules-add" />
+          <xs:enumeration value="validationrules-add-disabled" />
+          <xs:enumeration value="dataassociation-rootfolder-closed" />
+          <xs:enumeration value="dataassociation-rootfolder-open" />
+          <xs:enumeration value="dataassociation-add-association" />
+          <xs:enumeration value="dataassociation-edit-association" />
+          <xs:enumeration value="dataassociation-remove-association" />
+          <xs:enumeration value="users-changeownpassword" />
+          <xs:enumeration value="users-changeownculture" />
+          <xs:enumeration value="users-changepublicculture" />
+          <xs:enumeration value="users-changetreeculture" />
+          <xs:enumeration value="users-rootfolder-closed" />
+          <xs:enumeration value="users-rootfolder-open" />
+          <xs:enumeration value="users-group-closed" />
+          <xs:enumeration value="users-group-open" />
+          <xs:enumeration value="users-user" />
+          <xs:enumeration value="users-user-disabled" />
+          <xs:enumeration value="users-adduser" />
+          <xs:enumeration value="users-edituser" />
+          <xs:enumeration value="users-deleteuser" />
+          <xs:enumeration value="usergroups-rootfolder-closed" />
+          <xs:enumeration value="usergroups-rootfolder-open" />
+          <xs:enumeration value="usergroups-usergroup" />
+          <xs:enumeration value="usergroups-addusergroup" />
+          <xs:enumeration value="usergroups-editusergroup" />
+          <xs:enumeration value="usergroups-deleteusergroup" />
+          <xs:enumeration value="log-perspective" />
+          <xs:enumeration value="log-folder-closed" />
+          <xs:enumeration value="log-showlog" />
+          <xs:enumeration value="restart-application" />
+          <xs:enumeration value="security-manage-permissions" />
+          <xs:enumeration value="wysiwyg-function" />
+          <xs:enumeration value="visual-function-add" />
+          <xs:enumeration value="visual-function-edit" />
+          <xs:enumeration value="visual-function-delete" />
+          <xs:enumeration value="package-installer-install" />
+          <xs:enumeration value="package-installer-uninstall" />
+          <xs:enumeration value="package-installer-readmore" />
+          <xs:enumeration value="package-element-closed-root" />
+          <xs:enumeration value="package-element-opened-root" />
+          <xs:enumeration value="package-element-closed-available" />
+          <xs:enumeration value="package-element-opened-available" />
+          <xs:enumeration value="package-element-closed-installed" />
+          <xs:enumeration value="package-element-opened-installed" />
+          <xs:enumeration value="package-element-closed-sources" />
+          <xs:enumeration value="package-element-opened-sources" />
+          <xs:enumeration value="package-element-closed-sourceitem" />
+          <xs:enumeration value="package-element-closed-availablegroup" />
+          <xs:enumeration value="package-element-opened-availablegroup" />
+          <xs:enumeration value="package-element-closed-local" />
+          <xs:enumeration value="package-element-opened-local" />
+          <xs:enumeration value="package-element-closed-installedgroup" />
+          <xs:enumeration value="package-element-opened-installedgroup" />
+          <xs:enumeration value="package-element-closed-availableitem" />
+          <xs:enumeration value="package-element-closed-installeditem" />
+          <xs:enumeration value="package-clear-servercache" />
+          <xs:enumeration value="package-view-installedinfo" />
+          <xs:enumeration value="package-view-installedinfo" />
+          <xs:enumeration value="package-view-availableinfo" />
+          <xs:enumeration value="package-install-package" />
+          <xs:enumeration value="package-install-local-package" />
+          <xs:enumeration value="package-uninstall-package" />
+          <xs:enumeration value="package-uninstall-local-package" />
+          <xs:enumeration value="package-add-source" />
+          <xs:enumeration value="package-delete-source" />
+          <xs:enumeration value="datagroupinghelper-folder-closed" />
+          <xs:enumeration value="datagroupinghelper-folder-open" />
+          <xs:enumeration value="localization-element-closed-root" />
+          <xs:enumeration value="localization-element-opened-root" />
+          <xs:enumeration value="localization-element-localeitem" />
+          <xs:enumeration value="localization-element-defaultlocaleitem" />
+          <xs:enumeration value="localization-addsystemlocale" />
+          <xs:enumeration value="localization-editsystemlocale" />
+          <xs:enumeration value="localization-setasdefault" />
+          <xs:enumeration value="localization-removesystemlocale" />
+          <xs:enumeration value="localization-changelocale" />
+          <xs:enumeration value="versioning-view" />
+          <xs:enumeration value="versioning-view-disabled" />
+          <xs:enumeration value="versioning-compare" />
+          <xs:enumeration value="versioning-compare-disabled" />
+          <xs:enumeration value="versioning-restore" />
+          <xs:enumeration value="versioning-restore-disabled" />
+          <xs:enumeration value="tree-add-application" />
+          <xs:enumeration value="tree-remove-application" />
+          <xs:enumeration value="reportFunctioncction-defaulticon" />
+          <xs:enumeration value="developerapplication-treedefinitionroot" />
+          <xs:enumeration value="developerapplication-treedefinition" />
+          <xs:enumeration value="developerapplication-treedefinition-add" />
+          <xs:enumeration value="developerapplication-treedefinition-delete" />          
+        </xs:restriction>
+      </xs:simpleType>-->
+    </xs:attribute>
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="ViewIconGroup">
+    <xs:attribute name="ViewIcon" use="optional" type="xs:string" >
+      <xs:annotation>
+        <xs:documentation>The icon of the view</xs:documentation>
+      </xs:annotation>    
+    </xs:attribute>
+  </xs:attributeGroup>
+  
+  <xs:attributeGroup name="OpenedIconGroup">
+    <xs:attribute name="OpenedIcon" use="optional" type="xs:string" >
+      <xs:annotation>
+        <xs:documentation>The icon of the element(s).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+
+
+  <xs:attributeGroup name="PermissionTypeGroup">
+    <xs:attribute name="PermissionTypes" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation>
+          A comma speperated list of one or more of the following values: read, edit, add, delete, approve, publish, administrate. Default value is read
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="DataFolderElementCommonGroup">
+    <xs:attributeGroup ref="IconGroup" />
+
+    <xs:attribute name="FieldGroupingName" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>Field name of the given data interface (property name)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="DateFormat" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>Date format used when grouping. Year: y, yy, yyy, yyyy. Month: M, MM, MMM, MMM. Day: d, dd, ddd, dddd. Hour: h, H, hh, HH. Minute: m, mm. Second: s, ss</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="Range" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>Defining ranges for the folders. Ex: "0>10, 11>20, 21>" or "A>F, G>Z"</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="FirstLetterOnly" use="optional" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>This attribute will make the grouping be done with the first letter only</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+
+  <!-- ========================= Element types ======================== -->
+
+  <xs:complexType name="ElementType">
+    <xs:annotation>
+      <xs:documentation>This defines a simple element (or folder)</xs:documentation>
+    </xs:annotation>
+
+    <xs:all>
+      <xs:element name="Children" type="ChildrenType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="Actions" type="ActionsType" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
+
+    <xs:attribute name="Id" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>This should be a unique string with the tree. Changing this id will render any security settings set on the element non valid</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="Label" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The label of the element. Use ${C1:Data:[TypeName]:[FieldName]} to get a field value of a parent (or self) data element</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="ToolTip" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The tool tip of the element. Use ${C1:Data:[TypeName]:[FieldName]} to get a field value of a parent (or self) data element. Defaults to the label</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attributeGroup ref="IconGroup" />
+
+    <xs:attributeGroup ref="OpenedIconGroup" />
+    
+  </xs:complexType>
+
+
+
+
+
+  <!--<xs:complexType name="FunctionElementGeneratorType">
+    <xs:annotation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+
+    <xs:all>
+      <xs:element name="FunctionMarkup" minOccurs="1" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence minOccurs="1" maxOccurs="1">
+            <xs:element ref="func:function" minOccurs="1" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Children" type="ChildrenType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="Actions" type="ActionsType" minOccurs="0" maxOccurs="1"/>
+    </xs:all>  
+
+    <xs:attribute name="Label" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The label of the element</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="ToolTip" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The tool tip of the element. Defaults to the label</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attributeGroup ref="IconGroup" />
+  </xs:complexType>-->
+
+
+
+
+  <xs:complexType name="DataFolderElementRootType">
+    <xs:all>
+      <xs:element name="Children" type="DataFolderChildrenType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="Actions" type="DataActionsType" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
+
+    <xs:attribute name="Type" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>Data interface type name</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attributeGroup ref="DataFolderElementCommonGroup" />
+
+    <xs:attributeGroup ref="DisplayGroup" />
+  </xs:complexType>
+
+
+  <xs:complexType name="DataFolderElementType">
+    <xs:all>
+      <xs:element name="Children" type="DataFolderChildrenType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="Actions" type="DataActionsType" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
+
+    <xs:attributeGroup ref="DataFolderElementCommonGroup" />
+
+    <xs:attribute name="ShowForeignItems" use="optional" type="xs:boolean" default="true">
+      <xs:annotation>
+        <xs:documentation>When this is set to true, data items not yet localized are shown with a localize action.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    
+    <xs:attributeGroup ref="DisplayGroup" />
+  </xs:complexType>
+
+
+
+  <xs:complexType name="DataElementsType">
+    <xs:annotation>
+      <xs:documentation>This defines a simple element (or folder)</xs:documentation>
+    </xs:annotation>
+
+    <xs:all>
+      <xs:element name="OrderBy" type="OrderByType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="Filters" type="FiltersType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="Actions" type="DataActionsType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="Children" type="ChildrenType" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
+
+    <xs:attribute name="Type" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>Data interface type name</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+
+    <xs:attribute name="Label" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>Custom label for each data item. Use ${C1:Data:[TypeName]:[FieldName]} to get a field value of a parent (or self) data element. Default is the data types label field value</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+
+    <xs:attribute name="ToolTip" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>Custom tooltip for each data item. Use ${C1:Data:[TypeName]:[FieldName]} to get a field value of a parent (or self) data element. Default is the data types label field value or if specified, the value of the custom label</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+
+    <xs:attribute name="ShowForeignItems" use="optional" type="xs:boolean" default="true">
+      <xs:annotation>
+        <xs:documentation>When this is set to true, data items not yet localized are shown with a localize action.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attributeGroup ref="DisplayGroup" />
+
+    <xs:attributeGroup ref="IconGroup" />
+
+    <xs:attributeGroup ref="OpenedIconGroup" />
+    
+  </xs:complexType>
+
+
+  <!-- ========================= Action types ======================== -->
+
+  <xs:complexType name="AddDataActionType">
+    <xs:annotation>
+      <xs:documentation>This defines a simple element (or folder)</xs:documentation>
+    </xs:annotation>
+
+    <xs:attribute name="Type" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The type of the data to add</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="Label" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The label of the action. Defaults to localized version of the string 'Add'</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="ToolTip" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The tool tip of the action. Defaults to the label</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attributeGroup ref="IconGroup" />
+
+    <xs:attribute name="CustomFormMarkupPath" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>A path to an alternate C1 Form UI XML file</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+
+
+  <xs:complexType name="EditDataActionType">
+    <xs:annotation>
+      <xs:documentation>This defines a simple element (or folder)</xs:documentation>
+    </xs:annotation>
+
+    <xs:attribute name="Label" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The label of the action. Defaults to the localized version of the string 'Edit'</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="ToolTip" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The tool tip of the action. Defaults to the label</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attributeGroup ref="IconGroup" />
+
+    <xs:attribute name="CustomFormMarkupPath" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>A path to an alternate C1 Form UI XML file</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+
+  <xs:complexType name="DeleteDataActionType">
+    <xs:annotation>
+      <xs:documentation>This defines a simple element (or folder)</xs:documentation>
+    </xs:annotation>
+
+    <xs:attribute name="Label" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The label of the action. Defaults to the localized version of the string 'delete'</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="ToolTip" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The tool tip of the action. Defaults to the label</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attributeGroup ref="IconGroup" />
+  </xs:complexType>
+
+
+  <xs:complexType name="ReportFunctionActionType">
+    <xs:annotation>
+      <xs:documentation>
+        Use this element to show a document with custom conternt.
+        The content of the element should be a C1 function call that returns XHTML
+      </xs:documentation>
+    </xs:annotation>
+
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element ref="func:function" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+
+    <xs:attribute name="Label" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The label of the action</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="ToolTip" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The tool tip of the action. Defaults to the value of the Label attribute</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attributeGroup ref="IconGroup" />
+
+    <xs:attribute name="DocumentLabel" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The label of the document. Use ${C1:Data:[TypeName]:[FieldName]} to get a field value of a parent (or self) data element. Defaults to the value of the Label attribute</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="DocumentIcon" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The icon of the document. Defaults to the value of the Icon attribute</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attributeGroup ref="PermissionTypeGroup" />
+  </xs:complexType>
+
+
+
+  <xs:complexType name="MessageBoxActionType">
+    <xs:annotation>
+      <xs:documentation>
+        Use this element to show a simple message box.
+      </xs:documentation>
+    </xs:annotation>
+
+    <xs:attribute name="Label" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The label of the action</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="ToolTip" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The tool tip of the action. Defaults to the value of the Label attribute</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attributeGroup ref="IconGroup" />
+
+
+    <xs:attribute name="MessageBoxTitle" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The title of the message box</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="MessageBoxMessage" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The message of the message box</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="MessageDialogType" use="optional">
+      <xs:annotation>
+        <xs:documentation>The type of the message box</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="message" />
+          <xs:enumeration value="question" />
+          <xs:enumeration value="warning" />
+          <xs:enumeration value="error" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+
+    <xs:attributeGroup ref="PermissionTypeGroup" />
+  </xs:complexType>
+
+
+
+  <xs:complexType name="CustomUrlActionType">
+    <xs:annotation>
+      <xs:documentation>
+        Use this element to open a custom url.
+      </xs:documentation>
+    </xs:annotation>
+
+    <xs:sequence minOccurs="0" maxOccurs="1">
+      <xs:element name="PostParameters" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence minOccurs="1" maxOccurs="unbounded">
+            <xs:element name="Parameter">
+              <xs:complexType>
+
+                <xs:attribute name="Key" use="required" type="xs:string">
+                  <xs:annotation>
+                    <xs:documentation>The label of the action</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+
+                <xs:attribute name="Value" use="required" type="xs:string">
+                  <xs:annotation>
+                    <xs:documentation>The label of the action</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+
+    <xs:attribute name="Label" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The label of the action</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="ToolTip" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The tool tip of the action. Defaults to the value of the Label attribute</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attributeGroup ref="IconGroup" />
+
+    <xs:attribute name="Url" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The url to open</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="ViewLabel" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The label of the view. Defaults to the value of the Label attribute</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="ViewToolTip" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The tool tip of the view. Defaults to the value of the ToolTip attribute</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attributeGroup ref="ViewIconGroup" />    
+
+    <xs:attribute name="ViewType" use="optional" default="genericview">
+      <xs:annotation>
+        <xs:documentation>The view type</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="genericview" />
+          <xs:enumeration value="documentview" />
+          <xs:enumeration value="pagebrowser" />
+          <xs:enumeration value="filedownload" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+
+    <xs:attributeGroup ref="PermissionTypeGroup" />
+
+  </xs:complexType>
+
+
+
+  <xs:complexType name="ConfirmActionType">
+    <xs:annotation>
+      <xs:documentation>
+        Use this element to show a confirm box and if the user presses 'Ok' the embedded C1 function is executed
+      </xs:documentation>
+    </xs:annotation>
+
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element ref="func:function" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+
+    <xs:attribute name="Label" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The label of the action</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="ToolTip" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The tool tip of the action. Defaults to the value of the Label attribute</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attributeGroup ref="IconGroup" />
+
+
+    <xs:attribute name="ConfirmTitle" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The title of the confirm box</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="ConfirmMessage" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The message of the confirm box</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="RefreshTree" use="optional" type="xs:boolean" default="false">
+      <xs:annotation>
+        <xs:documentation>Make a tree refresh if the user presses 'Ok'</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+
+    <xs:attributeGroup ref="PermissionTypeGroup" />
+
+    <xs:attributeGroup ref="LocationGroup" />
+  </xs:complexType>
+
+
+
+  <xs:complexType name="WorkflowActionType">
+    <xs:annotation>
+      <xs:documentation>
+        Use this element to start an existing workflow
+      </xs:documentation>
+    </xs:annotation>
+
+    <xs:attribute name="Label" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The label of the action</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="ToolTip" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The tool tip of the action. Defaults to the value of the Label attribute</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attributeGroup ref="IconGroup" />
+
+    <xs:attribute name="WorkflowType" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The type of the workflow</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attributeGroup ref="PermissionTypeGroup" />
+
+    <xs:attributeGroup ref="LocationGroup" />
+  </xs:complexType>
+
+  <!-- ========================= Filter types ======================== -->
+
+  <xs:complexType name="ParentIdFilterType">
+    <xs:annotation>
+      <xs:documentation>This filter specifies that only those data elements that have the parent pointed to in the current tree will be shown.</xs:documentation>
+    </xs:annotation>
+
+    <xs:attribute name="ParentType" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The type of the parent to filter on</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="ReferenceFieldName" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The name of the field that is the reference to the parent type</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+
+  <xs:complexType name="FieldFilterType">
+    <xs:annotation>
+      <xs:documentation>This filter specifies that only those data elements which field given by the FieldName attribute has the value given by the FieldValue attribute will be shown</xs:documentation>
+    </xs:annotation>
+
+    <xs:attribute name="FieldName" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The name of the field to filter byon</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="FieldValue" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The value of the field for which the elements will be shown</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="Operator" use="optional" default="equal" >
+      <xs:annotation>
+        <xs:documentation>The name of the field that is the reference to the parent type</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="equal" />
+          <xs:enumeration value="inequal" />
+          <xs:enumeration value="greater" />
+          <xs:enumeration value="lesser" />
+          <xs:enumeration value="greaterequal" />
+          <xs:enumeration value="lesserequal" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+
+  <xs:complexType name="FunctionFilterType">
+    <xs:annotation>
+      <xs:documentation>Use this element to insert a C1 function as a filter function</xs:documentation>
+    </xs:annotation>
+
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element ref="func:function" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- ========================= OrderBy types ======================== -->
+
+  <xs:complexType name="FieldOrderByType">
+    <xs:annotation>
+      <xs:documentation>This will order the resulting data elements by the given field ascending or descending.</xs:documentation>
+    </xs:annotation>
+
+    <xs:attribute name="FieldName" use="required" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The name of the field that should be used to order by</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="Direction" use="optional" default="ascending" >
+      <xs:annotation>
+        <xs:documentation>The name of the field that is the reference to the parent type</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ascending" />
+          <xs:enumeration value="descending" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+
+  <!-- ========================= Main document ======================== -->
+
+  <xs:element name="ElementStructure">
+    <xs:annotation>
+      <xs:documentation xml:lang="en-us">This is the root of the tree markup</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="ElementStructure.AutoAttachments" type="ElementStructure.AutoAttachmentsType" maxOccurs="1" minOccurs="0" />
+        <xs:element name="ElementStructure.AllowedAttachments" type="ElementStructure.AllowedAttachmentsType" maxOccurs="1" minOccurs="0" />
+        <xs:element name="ElementRoot" type="ElementRootType" minOccurs="1" maxOccurs="1" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

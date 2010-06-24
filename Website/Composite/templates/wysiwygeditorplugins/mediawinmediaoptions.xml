@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:fields xmlns:ui="http://www.w3.org/1999/xhtml">
+	<ui:fieldgroup label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelQuickTimeOptions}">
+		<ui:field>
+			<ui:fielddesc>Balance</ui:fielddesc>
+			<ui:fielddata>
+				<ui:datainput name="parambalance"/>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>Captioning ID</ui:fielddesc>
+			<ui:fielddata>
+				<ui:datainput name="paramcaptioningid"/>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>Current position</ui:fielddesc>
+			<ui:fielddata>
+				<ui:datainput name="paramcurrentposition"/>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>Play count</ui:fielddesc>
+			<ui:fielddata>
+				<ui:datainput name="paramplaycount" type="number"/>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>UI Mode</ui:fielddesc>
+			<ui:fielddata>
+				<ui:datainput name="paramuimode"/>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>Base URL</ui:fielddesc>
+			<ui:fielddata>
+				<ui:datainput name="parambaseurl" type="number"/>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>Current marker</ui:fielddesc>
+			<ui:fielddata>
+				<ui:datainput name="paramcurrentmarker"/>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>Default frame</ui:fielddesc>
+			<ui:fielddata>
+				<ui:datainput name="paramdefaultframe"/>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>Rate</ui:fielddesc>
+			<ui:fielddata>
+				<ui:datainput name="paramrate" type="number"/>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>Volume</ui:fielddesc>
+			<ui:fielddata>
+				<ui:datainput name="paramvolume" type="number"/>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>Settings</ui:fielddesc>
+			<ui:fielddata>
+				<ui:checkboxgroup>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelAutoStart}" name="paramautostart" ischecked="true"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelShowMenu}" name="paramenablecontextmenu" ischecked="true"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelInvokeURLs}" name="paraminvokeurls" ischecked="true"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelStretchToFit}" name="paramstretchtofit"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelEnabled}" name="paramenabled"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelFullScreen}" name="paramfullscreen" ischecked="true"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelMute}" name="parammute" ischecked="true"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelWindowLessVideo}" name="paramwindowlessvideo"/>
+				</ui:checkboxgroup>
+			</ui:fielddata>
+		</ui:field>
+	</ui:fieldgroup>
+</ui:fields>

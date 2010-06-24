@@ -1,0 +1,68 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+/*
+ui|dialogpage,
+ui|wizardpage {
+	padding: 15px 14px 14px 14px;
+}
+*/
+
+
+ui|pagebody {
+	display: block;
+	padding: 15px 14px 0 14px;
+}
+/*
+ui|dialogpagebody { 
+	display: block;
+	padding: 2px 2px 0 2px;
+}
+*/
+ui|dialogtoolbar {
+	display: block;
+	clear: both;
+	background-color: $(color:threedface);
+	white-space: nowrap;	
+	padding: 12px 11px 14px 12px;
+	margin-right: 0;
+	margin-left: 0;
+}
+ui|dialogtoolbar ui|clickbutton.focusable {
+	padding: 2px;
+	margin: 0 !important;
+}
+ui|dialogtoolbar ui|clickbutton.focused {
+	border: 1px solid $(color:threedshadow);
+	#region osx
+		border: 1px solid -moz-mac-focusring;
+	#endregion
+	padding: 1px;	
+}
+
+/* STANDARD DIALOGS ................................................................*/
+
+table#dialoglayout {
+	margin: 0;
+	width: 306px;
+	table-layout: fixed;
+}
+table#dialoglayout td {
+	vertical-align: middle;
+	padding: 0;
+}
+table#dialoglayout td#dialogvignette {
+	padding: 0 0px 0 10px;
+	width: 60px;
+}
+table#dialoglayout td#dialogtext {
+	padding-bottom: 4px;
+	word-wrap: break-word;
+}
+ui|dialogvignette {
+	display: block;
+	width: 32px;
+	height: 32px;
+}
+
+/* standard dialog images in skin! */

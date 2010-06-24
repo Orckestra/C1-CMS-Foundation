@@ -1,0 +1,191 @@
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|dialog {
+	#moz -moz-box-shadow: 4px 4px 16px rgba(0,0,0,0.75);
+	#region osx
+		-moz-box-shadow: 4px 4px 32px rgba(0,0,0,0.75);
+	#endregion
+}
+
+ui|dialogbody {
+	border: 2px solid InactiveCaption;
+	border-top: none;
+}
+ui|dialog.active ui|dialogbody {
+	border-color: $(color:activecaption);
+}
+
+#region vista
+	
+	ui|dialog {
+		background-color: transparent;
+		#moz background-color: rgba(0,0,0,0.75);
+		#moz -moz-border-radius: 4px;
+		/*
+		-moz-transition-property: opacity;
+		-moz-transition-duration: 0.15s;
+		*/
+	}
+	ui|dialogbody,
+	ui|dialog.active ui|dialogbody,
+	ui|dialogmatrix td,
+	ui|dialog.active table.dialogmatrix td {
+		background-color: transparent;
+		border-color: transparent;
+	}
+	ui|dialogbody {
+		border-width: 3px; /* broad vista borders */
+	}
+	ui|dialog.active table.dialogmatrix td.c {
+		background-color: transparent;
+	}
+	
+	/* DEFAULT */
+	
+	ui|dialog table.dialogmatrix td.c {
+		background-color: transparent;
+	}
+	ui|dialog table.dialogmatrix td.n {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-n.png");
+	}
+	ui|dialog table.dialogmatrix td.s {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-s.png");
+	}
+	ui|dialog table.dialogmatrix td.e {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-e.png");
+	}
+	ui|dialog table.dialogmatrix td.w {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-w.png");
+	}
+	ui|dialog table.dialogmatrix td.ne {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-ne.png");
+	}
+	ui|dialog table.dialogmatrix td.nw {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-nw.png");
+	}
+	ui|dialog table.dialogmatrix td.se {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-se.png");
+	}
+	ui|dialog table.dialogmatrix td.sw {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-sw.png");
+	}
+	
+	
+	/* ACTIVE */
+	
+	ui|dialog.active table.dialogmatrix td.n {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-n.png");
+	}
+	ui|dialog.active table.dialogmatrix td.s {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-s.png");
+	}
+	ui|dialog.active table.dialogmatrix td.e {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-e.png");
+	}
+	ui|dialog.active table.dialogmatrix td.w {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-w.png");
+	}
+	ui|dialog.active table.dialogmatrix td.ne {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-ne.png");
+	}
+	ui|dialog.active table.dialogmatrix td.nw {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-nw.png");
+	}
+	ui|dialog.active table.dialogmatrix td.se {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-se.png");
+	}
+	ui|dialog.active table.dialogmatrix td.sw {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-sw.png");
+	}
+
+#endregion
+
+
+#region osx
+	
+	ui|dialog {
+		background-color: transparent;
+		-moz-border-radius: 4px;
+		/*
+		-moz-border-radius-bottomleft: 0;
+		-moz-border-radius-bottomright: 0;
+		*/
+	}
+	ui|dialogbody,
+	ui|dialog.active ui|dialogbody,
+	ui|dialogmatrix td,
+	ui|dialog.active table.dialogmatrix td {
+		background-color: transparent;
+		border-color: transparent;
+	}
+	ui|dialogbody {
+		border-width: 3px; /* no osx borders */
+		border-width: 0;
+		
+	}
+	ui|dialog.active table.dialogmatrix td.c {
+		background-color: transparent;
+	}
+	
+	/* DEFAULT */
+	
+	ui|dialog table.dialogmatrix td.c {
+		background-color: transparent;
+	}
+	ui|dialog table.dialogmatrix td.n {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-n.png");
+	}
+	ui|dialog table.dialogmatrix td.s {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-s.png");
+	}
+	ui|dialog table.dialogmatrix td.e {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-e.png");
+	}
+	ui|dialog table.dialogmatrix td.w {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-w.png");
+	}
+	ui|dialog table.dialogmatrix td.ne {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-ne.png");
+	}
+	ui|dialog table.dialogmatrix td.nw {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-nw.png");
+	}
+	ui|dialog table.dialogmatrix td.se {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-se.png");
+	}
+	ui|dialog table.dialogmatrix td.sw {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-sw.png");
+	}
+	
+	
+	/* ACTIVE */
+	
+	ui|dialog.active table.dialogmatrix td.n {
+		#alphabackdrop: url("${skin}/dialogs/osx/dialog-active-n.png");
+	}
+	ui|dialog.active table.dialogmatrix td.s {
+		#alphabackdrop: url("${skin}/dialogs/osx/dialog-active-s.png");
+	}
+	ui|dialog.active table.dialogmatrix td.e {
+		#alphabackdrop: url("${skin}/dialogs/osx/dialog-active-e.png");
+	}
+	ui|dialog.active table.dialogmatrix td.w {
+		#alphabackdrop: url("${skin}/dialogs/osx/dialog-active-w.png");
+	}
+	ui|dialog.active table.dialogmatrix td.ne {
+		#alphabackdrop: url("${skin}/dialogs/osx/dialog-active-ne.png");
+	}
+	ui|dialog.active table.dialogmatrix td.nw {
+		#alphabackdrop: url("${skin}/dialogs/osx/dialog-active-nw.png");
+	}
+	ui|dialog.active table.dialogmatrix td.se {
+		/*#alphabackdrop: url("${skin}/dialogs/osx/dialog-active-se.png");*/
+		background-color: rgb(127,127,127);
+		
+	}
+	ui|dialog.active table.dialogmatrix td.sw {
+		#alphabackdrop: url("${skin}/dialogs/osx/dialog-active-sw.png");
+		background-color: rgb(127,127,127);
+	}
+
+#endregion

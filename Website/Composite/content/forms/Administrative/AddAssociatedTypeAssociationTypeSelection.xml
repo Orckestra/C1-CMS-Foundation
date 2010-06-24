@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="SelectedAssociationType" type="System.String" />
+    <cms:binding name="AssociationTypes" type="System.Object" />
+  </cms:bindings>
+  <cms:layout iconhandle="dataassociation-add-association">
+    <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeWorkflow.FieldGroupLabel}">
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeAssociationTypeSelection.KeySelectorLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeAssociationTypeSelection.KeySelectorHelp}">
+        <KeySelector.Selected>
+          <cms:bind source="SelectedAssociationType" />
+        </KeySelector.Selected>
+        <KeySelector.Options>
+          <cms:read source="AssociationTypes" />
+        </KeySelector.Options>
+      </KeySelector>
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

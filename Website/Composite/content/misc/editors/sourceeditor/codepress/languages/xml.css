@@ -1,0 +1,17 @@
+/*
+ * CodePress color styles for XML syntax highlighting
+ */
+ 
+b {
+	color: rgb(63,127,127); /* tags */
+}
+ins, 
+ins b, 
+ins s, 
+ins em {
+	color: rgb(63,95,191); /* comments */
+}
+s, 
+s b {
+	color: rgb(0,0,255); /* attribute values */
+}

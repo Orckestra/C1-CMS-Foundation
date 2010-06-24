@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:internal="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="NewTypeName" type="System.String" />
+    <cms:binding name="NewTypeNamespace" type="System.String" />
+    <cms:binding name="NewTypeTitle" type="System.String" />
+    <cms:binding name="DataFieldDescriptors" type="System.Object" />
+    <cms:binding name="LabelFieldName" type="System.String" optional="true" />
+    <cms:binding name="UseProcessControlled" type="System.Boolean" />
+    <!--<cms:binding name="HasVersioning" type="System.Boolean" />-->
+    <cms:binding name="HasPublishing" type="System.Boolean" />
+  </cms:bindings>
+  <cms:layout>
+    <TabPanels Label="${Composite.Management, Website.Forms.Administrative.CreateNewAssociatedTypeStep1.LabelNewType}">
+      <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.CreateNewAssociatedTypeStep1.LabelNewType}">
+        <TextBox Label="${Composite.Management, Website.Forms.Administrative.CreateNewAssociatedTypeStep1.LabelTypeName}" Help="${Composite.Management, Website.Forms.Administrative.CreateNewAssociatedTypeStep1.HelpTypeName}" Type="ProgrammingIdentifier">
+          <cms:bind source="NewTypeName" />
+        </TextBox>
+        <TextBox Label="${Composite.Management, Website.Forms.Administrative.CreateNewAssociatedTypeStep1.LabelTypeNamespace}" Help="${Composite.Management, Website.Forms.Administrative.CreateNewAssociatedTypeStep1.HelpTypeNamespace}" Type="ProgrammingNamespace">
+          <cms:bind source="NewTypeNamespace" />
+        </TextBox>
+        <TextBox Label="${Composite.Management, Website.Forms.Administrative.CreateNewAssociatedTypeStep1.LabelTypeTitle}" Help="${Composite.Management, Website.Forms.Administrative.CreateNewAssociatedTypeStep1.HelpTypeTitle}">
+          <cms:bind source="NewTypeTitle" />
+        </TextBox>
+        <f:BooleanCheck>
+          <f:BooleanCheck.CheckValue>
+            <cms:read source="UseProcessControlled" />
+          </f:BooleanCheck.CheckValue>
+          <f:BooleanCheck.WhenTrue>
+            <PlaceHolder Label="${Composite.Management, Website.Forms.Administrative.CreateNewAssociatedTypeStep1.ServicesLabel}">
+              <!--<CheckBox Label="${Composite.Management, Website.Forms.Administrative.CreateNewAssociatedTypeStep1.HasVersioning}" ItemLabel="${Composite.Management, Website.Forms.Administrative.CreateNewAssociatedTypeStep1.HasVersioning}">
+								<CheckBox.Checked>
+									<cms:bind source="HasVersioning" />
+								</CheckBox.Checked>
+							</CheckBox>-->
+              <CheckBox Label="${Composite.Management, Website.Forms.Administrative.CreateNewAssociatedTypeStep1.HasPublishing}" ItemLabel="${Composite.Management, Website.Forms.Administrative.CreateNewAssociatedTypeStep1.HasPublishing}">
+                <CheckBox.Checked>
+                  <cms:bind source="HasPublishing" />
+                </CheckBox.Checked>
+              </CheckBox>
+            </PlaceHolder>
+          </f:BooleanCheck.WhenTrue>
+        </f:BooleanCheck>
+      </FieldGroup>
+      <internal:TypeFieldDesigner Label="${Composite.Management, Website.Forms.Administrative.CreateNewAssociatedTypeStep1.LabelFields}">
+        <internal:TypeFieldDesigner.Fields>
+          <cms:bind source="DataFieldDescriptors" />
+        </internal:TypeFieldDesigner.Fields>
+        <internal:TypeFieldDesigner.LabelFieldName>
+          <cms:bind source="LabelFieldName" />
+        </internal:TypeFieldDesigner.LabelFieldName>
+      </internal:TypeFieldDesigner>
+    </TabPanels>
+  </cms:layout>
+</cms:formdefinition>

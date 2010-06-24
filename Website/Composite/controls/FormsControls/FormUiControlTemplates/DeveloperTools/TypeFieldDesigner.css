@@ -1,0 +1,9 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|splitpanel#typefielddesignerleft {
+	border-right: 1px solid $(color:threedshadow);
+}
+ui|splitpanel#typefielddesignerright {
+	border-left: 1px solid $(color:threedhighlight);	
+}

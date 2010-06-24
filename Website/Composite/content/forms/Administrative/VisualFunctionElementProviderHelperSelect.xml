@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="RenderingFunctions" type="System.Collections.IEnumerable" />
+    <cms:binding name="SelectedRenderingFunction" type="System.String" />
+  </cms:bindings>
+  <cms:layout>
+    <FieldGroup Label="${Composite.StandardPlugins.VisualFunction, Select.FieldGroupLabel}">
+      <KeySelector Label="${Composite.StandardPlugins.VisualFunction, Select.FunctionFunctionsLabel}" Help="${Composite.StandardPlugins.VisualFunction, Select.FunctionFunctionsHelp}">
+        <KeySelector.Selected>
+          <cms:bind source="SelectedRenderingFunction" />
+        </KeySelector.Selected>
+        <KeySelector.Options>
+          <cms:read source="RenderingFunctions" />
+        </KeySelector.Options>
+      </KeySelector>
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

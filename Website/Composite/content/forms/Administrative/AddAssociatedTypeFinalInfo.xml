@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="FinalAssociationType" type="System.String" />
+    <cms:binding name="FinalCompositionDescriptionName" type="System.String" optional="true" />
+    <cms:binding name="FinalCompositionDescriptionLabel" type="System.String" optional="true" />
+    <cms:binding name="FinalCompositionScopeType" type="System.String" optional="true" />
+    <cms:binding name="FinalAddingType" type="System.String" />
+    <cms:binding name="FinalExistingTypeName" type="System.String" optional="true" />
+    <cms:binding name="FinalExistingForeignPropertyName" type="System.String" optional="true" />
+  </cms:bindings>
+  <cms:layout iconhandle="dataassociation-add-association">
+    <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeWorkflow.FieldGroupLabel}">
+      <TextBox Type="ReadOnly" Label="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeFinalInfo.AssociationTypeLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeFinalInfo.AssociationTypeHelp}">
+        <TextBox.Text>
+          <cms:read source="FinalAssociationType" />
+        </TextBox.Text>
+      </TextBox>
+      <f:NullCheck>
+        <f:NullCheck.CheckValue>
+          <cms:read source="FinalCompositionDescriptionName" />
+        </f:NullCheck.CheckValue>
+        <f:NullCheck.WhenNotNull>
+          <TextBox Type="ReadOnly" Label="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeRuleNameLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeRuleNameHelp}">
+            <TextBox.Text>
+              <cms:read source="FinalCompositionDescriptionName" />
+            </TextBox.Text>
+          </TextBox>
+        </f:NullCheck.WhenNotNull>
+      </f:NullCheck>
+      <f:NullCheck>
+        <f:NullCheck.CheckValue>
+          <cms:read source="FinalCompositionDescriptionLabel" />
+        </f:NullCheck.CheckValue>
+        <f:NullCheck.WhenNotNull>
+          <TextBox Type="ReadOnly" Label="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeRuleLabelLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeRuleHelpHelp}">
+            <TextBox.Text>
+              <cms:read source="FinalCompositionDescriptionLabel" />
+            </TextBox.Text>
+          </TextBox>
+        </f:NullCheck.WhenNotNull>
+      </f:NullCheck>
+      <f:NullCheck>
+        <f:NullCheck.CheckValue>
+          <cms:read source="FinalCompositionScopeType" />
+        </f:NullCheck.CheckValue>
+        <f:NullCheck.WhenNotNull>
+          <TextBox Type="ReadOnly" Label="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeHelp}">
+            <TextBox.Text>
+              <cms:read source="FinalCompositionScopeType" />
+            </TextBox.Text>
+          </TextBox>
+        </f:NullCheck.WhenNotNull>
+      </f:NullCheck>
+      <!--<TextBox Type="ReadOnly" Label="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeFinalInfo.AddingTypeLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeFinalInfo.AddingTypeHelp}">
+        <TextBox.Text>
+          <cms:read source="FinalAddingType" />
+        </TextBox.Text>
+      </TextBox>-->
+      <f:NullCheck>
+        <f:NullCheck.CheckValue>
+          <cms:read source="FinalExistingTypeName" />
+        </f:NullCheck.CheckValue>
+        <f:NullCheck.WhenNotNull>
+          <TextBox Type="ReadOnly" Label="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeFinalInfo.ExistingTypeNameLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeFinalInfo.ExistingTypeNameHelp}">
+            <TextBox.Text>
+              <cms:read source="FinalExistingTypeName" />
+            </TextBox.Text>
+          </TextBox>
+        </f:NullCheck.WhenNotNull>
+      </f:NullCheck>
+      <f:NullCheck>
+        <f:NullCheck.CheckValue>
+          <cms:read source="FinalExistingTypeName" />
+        </f:NullCheck.CheckValue>
+        <f:NullCheck.WhenNotNull>
+          <TextBox Type="ReadOnly" Label="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeFinalInfo.ForeignKeyFieldNameLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeFinalInfo.ForeignKeyFieldNameHelp}">
+            <TextBox.Text>
+              <cms:read source="FinalExistingForeignPropertyName" />
+            </TextBox.Text>
+          </TextBox>
+        </f:NullCheck.WhenNotNull>
+      </f:NullCheck>
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

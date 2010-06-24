@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<table class="matrix" xmlns="http://www.w3.org/1999/xhtml" cellspacing="0">
+	<tr>
+		<td class="nw"></td>
+		<td class="n"></td>
+		<td class="ne"></td>
+	</tr>
+	<tr>
+		<td class="w"></td>
+		<td class="c"></td>
+		<td class="e"></td>
+	</tr>
+	<tr>
+		<td class="sw"></td>
+		<td class="s"></td>
+		<td class="se"></td>
+	</tr>
+</table>

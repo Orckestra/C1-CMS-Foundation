@@ -1,0 +1,160 @@
+﻿
+body
+{
+    font-family: Arial;
+	font-size: 75%;
+}
+
+input, select, textarea, table, tr, td, th {
+	font-size: 100%;
+}
+
+body, input, select, textarea, table, tr, td, th {
+	font-family: verdana, arial, helvetica, sans-serif;
+	color: #555555;
+}
+
+h1
+{
+    font-size: 120%;
+}
+
+div.StyledBox
+{
+    width: 40em;
+    text-align: left;
+}
+
+div.StyledBoxText
+{
+    padding: 0 1.2em 0 1.2em;
+}
+
+div.Corners {
+	margin-bottom: 1em;
+	position: relative;
+}
+
+b.CornersTop, 
+b.CornersBottom {
+	background: transparent;
+	display: block;
+	font-size: 1px;
+	position: relative;
+}
+
+div.CornersContent {
+	display: block;
+}
+
+/* Colors */
+b.CornersTop b.b1 {
+	background: #C5C5C5;
+}
+
+b.CornersTop b.b2 {
+	border-left: 1px solid #C5C5C5;
+	border-right: 1px solid #C5C5C5;
+}
+
+b.CornersTop b.b3 {
+	border-left: 1px solid #C5C5C5;
+	border-right: 1px solid #C5C5C5;
+}
+
+b.CornersTop b.b4 {
+	border-left: 1px solid #C5C5C5;
+	border-right: 1px solid #C5C5C5;
+}
+
+b.CornersBottom b.b0 {
+	background-color: #E3E3E3;
+}
+
+b.CornersBottom b.b1 {
+	background-color: #C5C5C5;
+}
+
+b.CornersBottom b.b2 {
+	border-left: 1px solid #C5C5C5;
+	border-right: 2px solid #C5C5C5;
+}
+
+b.CornersBottom b.b3 {
+	border-left: 1px solid #C5C5C5;
+	border-right: 2px solid #C5C5C5;
+}
+
+b.CornersBottom b.b4 {
+	border-left: 1px solid #C5C5C5;
+	border-right: 2px solid #C5C5C5;
+}
+
+div.CornersContent {
+	background-color: #C5C5C5;
+	border-left: 1px solid #C5C5C5;
+	border-right: 1px solid #E3E3E3;
+	padding-right: 1px;
+}
+
+/* Gradient */
+div.Gradient div.CornersContentInner {
+	background-color: #F9FCFF;
+	background-image: url("BackgroundGradient.png");
+	background-position: bottom;
+	background-repeat: repeat-x;
+	padding: 0.7em 1em 0.7em 1em;
+}
+
+div.Gradient b.CornersTop b.b2,
+div.Gradient b.CornersTop b.b3,
+div.Gradient b.CornersTop b.b4 {
+	background-color: #F9FCFF;
+}
+
+div.Gradient b.CornersBottom b.b2,
+div.Gradient b.CornersBottom b.b3,
+div.Gradient b.CornersBottom b.b4 {
+	background-color: #D3EAFE;
+}
+
+/* Corner size b1 is outer horisontal line b4 is inner horisontal line */
+div.Corners b.b0, 
+div.Corners b.b1, 
+div.Corners b.b2, 
+div.Corners b.b3, 
+div.Corners b.b4 {
+	display: block;
+	overflow: hidden;
+}
+
+div.Corners b.b0 {
+	height: 1px;
+	margin: 0 7px;
+}
+
+div.Corners b.b1 {
+	height: 1px;
+	margin: 0 5px;
+}
+
+div.Corners b.b2 {
+	border-width: 0 2px;
+	height: 1px;
+	margin: 0 3px;
+}
+
+div.Corners b.b3 {
+	height: 1px;
+	margin: 0 2px;
+}
+
+div.Corners b.b4 {
+	height: 2px;
+	margin: 0 1px;
+}
+
+div.ImagesRelative img
+{
+	position:relative;
+}    

@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+	<cms:bindings>
+		<cms:binding name="LockedByUsername" type="System.String" />
+		<cms:binding name="IsSameUser" type="System.Boolean" />
+	</cms:bindings>
+	<cms:layout iconhandle="lock" label="${Composite.EntityTokenLocked, LayoutLabel}">
+		<PlaceHolder>
+
+			<f:BooleanCheck>
+				<f:BooleanCheck.CheckValue>
+					<cms:read source="IsSameUser" />
+				</f:BooleanCheck.CheckValue>
+				
+				<f:BooleanCheck.WhenTrue>
+					<Heading Title="${Composite.EntityTokenLocked, SameUserHeading.Title}"
+							 Description="${Composite.EntityTokenLocked, SameUserHeading.Description}" />
+				</f:BooleanCheck.WhenTrue>
+
+				<f:BooleanCheck.WhenFalse>
+					<PlaceHolder>
+						<Heading Title="${Composite.EntityTokenLocked, AnotherUserHeading.Title}"
+							 Description="${Composite.EntityTokenLocked, AnotherUserHeading.Description}" />
+						<FieldGroup Label="${Composite.EntityTokenLocked, LockedByUsername.FieldGroupLabel}">
+							<TextBox Type="ReadOnly" 
+									 Label="${Composite.EntityTokenLocked, LockedByUsername.Label}" 
+									 Help="${Composite.EntityTokenLocked, LockedByUsername.Help}">
+								<TextBox.Text>
+									<cms:read source="LockedByUsername" />
+								</TextBox.Text>
+							</TextBox>
+						</FieldGroup>
+					</PlaceHolder>
+				</f:BooleanCheck.WhenFalse>								
+			</f:BooleanCheck>
+		</PlaceHolder>
+	</cms:layout>
+</cms:formdefinition>

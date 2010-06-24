@@ -1,0 +1,63 @@
+html {
+	border: none;
+}
+body {
+	background: white none;
+	padding: 0 12px 12px 12px;
+	font-family: "Courier New", monospace;
+	font-size: 13px;
+	white-space: pre;
+	overflow: auto;
+}
+div {
+	white-space: nowrap;;
+}
+pre {
+	margin:0px; 
+	display:inline;
+}
+span.atts {
+	white-space: nowrap;	
+}
+div.element {
+	color: rgb(63,127,127);
+}
+div.comment {
+	color: rgb(63,95,191);
+}
+div.comment pre {
+	display: block;
+}
+div.pi {
+	color: rgb(127,0,0);
+}
+span.atts {
+	color: rgb(127,0,127);
+}
+span.attval {
+	color: rgb(0,0,255);
+}
+div.text,
+span.text {
+	color: rgb(0,0,0);
+}
+div.haschildren {
+	#moz cursor: pointer;
+	#ie cursor: hand;
+}
+div.closed div.children {
+	display: none;
+}
+span.twisty {
+	width: 8px;
+	height: 7px;
+	background: url("images/minus.png") transparent no-repeat 0 0;
+	position: absolute;
+	overflow: hidden;
+	margin-top: 5px;
+	margin-left: -12px;
+	#moz -moz-user-select: none;
+}
+div.closed span.twisty {
+	background-image: url("images/plus.png");
+}

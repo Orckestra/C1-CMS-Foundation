@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="FinalAssociationInterfaceType" type="System.String" />
+    <cms:binding name="FinalCompositionDescriptionName" type="System.String" optional="true" />
+  </cms:bindings>
+  <cms:layout iconhandle="dataassociation-remove-association">
+    <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.RemoveAssociatedType.FieldGroupLabel}">
+      <Text Label="${Composite.Management, Website.Forms.Administrative.RemoveAssociatedTypeFinalInfo.AssociationTypeLabel}">
+        <Text.Text>
+          <cms:read source="FinalAssociationInterfaceType" />
+        </Text.Text>
+      </Text>
+      <f:NullCheck>
+        <f:NullCheck.CheckValue>
+          <cms:read source="FinalCompositionDescriptionName" />
+        </f:NullCheck.CheckValue>
+        <f:NullCheck.WhenNotNull>
+          <Text Label="${Composite.Management, Website.Forms.Administrative.RemoveAssociatedTypeFinalInfo.CompositionScopeRuleNameLabel}">
+            <Text.Text>
+              <cms:read source="FinalCompositionDescriptionName" />
+            </Text.Text>
+          </Text>
+        </f:NullCheck.WhenNotNull>
+      </f:NullCheck>
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

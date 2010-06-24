@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+	<cms:bindings>
+		<cms:binding name="ReferencedData" type="System.String" optional="true"/>
+	</cms:bindings>
+	<cms:layout label="${Composite.Management, Website.Forms.Administrative.DeleteMediaFolder.LabelFieldGroup}">
+		<PlaceHolder>
+			<Text Text="${Composite.Management, Website.Forms.Administrative.DeleteMediaFile.DeleteDataConfirmationText}" />
+			<Text Text="
+						
+" />
+			<Text>
+				<Text.Text>
+					<cms:read source="ReferencedData" />
+				</Text.Text>
+			</Text>
+		</PlaceHolder>
+
+	</cms:layout>
+</cms:formdefinition>

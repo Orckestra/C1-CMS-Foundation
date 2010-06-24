@@ -1,0 +1,2584 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Icons zipfilepath="StandardIcons.zip">
+
+	<!-- Blank icon -->
+	<Icon name="blank">
+		<IconFile size="normal" path="harmony\composite\blank_16.png"/>
+		<IconFile size="large" path="harmony\composite\blank_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\blank_32.png"/>
+	</Icon>
+
+	<!-- Perspective icons -->
+	<Icon name="perspective-content">
+		<IconFile size="normal" path="harmony\composite\page_16.png"/>
+		<IconFile size="large" path="harmony\composite\page_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\page_32.png"/>
+	</Icon>
+	<Icon name="perspective-design">
+		<IconFile size="normal" path="harmony\composite\layout_16.png"/>
+		<IconFile size="large" path="harmony\composite\layout_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\layout_32.png"/>
+	</Icon>
+	<Icon name="perspective-datas">
+		<IconFile size="normal" path="harmony\composite\datatype_16.png"/>
+		<IconFile size="large" path="harmony\composite\datatype_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\datatype_32.png"/>
+	</Icon>
+	<Icon name="perspective-config">
+		<IconFile size="normal" path="harmony\basic\confg_16.png"/>
+		<IconFile size="large" path="harmony\basic\confg_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\confg_32.png"/>
+	</Icon>
+	<Icon name="perspective-users">
+		<IconFile size="normal" path="harmony\basic\group_16.png"/>
+		<IconFile size="large" path="harmony\basic\group_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\group_32.png"/>
+	</Icon>
+	<Icon name="perspective-usergroups">
+		<IconFile size="normal" path="harmony\basic\group_16.png"/>
+		<IconFile size="large" path="harmony\basic\group_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\group_32.png"/>
+	</Icon>
+	<Icon name="perspective-mocks">
+		<IconFile size="normal" path="harmony\basic\apps_16.png"/>
+		<IconFile size="large" path="harmony\basic\apps_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\apps_32.png"/>
+	</Icon>
+	<Icon name="perspective-media">
+		<IconFile size="normal" path="harmony\multimedia\video_16x16.png"/>
+		<IconFile size="large" path="harmony\multimedia\video_24x24.png"/>
+		<IconFile size="xlarge" path="harmony\multimedia\video_32x32.png"/>
+	</Icon>
+	<Icon name="perspective-system">
+		<IconFile size="normal" path="harmony\basic\smicn_16.png"/>
+		<IconFile size="large" path="harmony\basic\smicn_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\smicn_32.png"/>
+	</Icon>
+  <Icon name="perspective-developerapplication">
+    <IconFile size="normal" path="harmony\basic\tools_16.png"/>
+    <IconFile size="large" path="harmony\basic\tools_24.png"/>
+    <IconFile size="xlarge" path="harmony\basic\tools_32.png"/>
+  </Icon>
+	<!-- end perspective icons -->
+
+	<!-- perspectivetools stuff -->
+	<Icon name="perspectivetools">
+		<IconFile size="normal" path="harmony\basic\tools_16.png"/>
+		<IconFile size="large" path="harmony\basic\tools_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\tools_32.png"/>
+	</Icon>
+	<Icon name="perspectivetools-disabled">
+		<IconFile size="normal" path="harmony\basic\x-tools_16.png"/>
+		<IconFile size="large" path="harmony\basic\x-tools_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\x-tools_32.png"/>
+	</Icon>
+	<!-- end perspectivetools stuff -->
+
+	<!-- generic icons -->
+	<Icon name="generic-edit">
+		<IconFile size="normal" path="harmony\basic\edit_16.png"/>
+		<IconFile size="large" path="harmony\basic\edit_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\edit_32.png"/>
+	</Icon>
+	<Icon name="generic-delete">
+		<IconFile size="normal" path="harmony\basic\del_16.png"/>
+		<IconFile size="large" path="harmony\basic\del_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\del_32.png"/>
+	</Icon>
+	<Icon name="generic-add">
+		<IconFile size="normal" path="harmony\basic\add_16.png"/>
+		<IconFile size="large" path="harmony\basic\add_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\add_32.png"/>
+	</Icon>
+	<Icon name="generic-search">
+		<IconFile size="normal" path="harmony\basic\srch_16.png"/>
+		<IconFile size="large" path="harmony\basic\srch_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\srch_32.png"/>
+	</Icon>
+	<Icon name="generic-refresh">
+		<IconFile size="normal" path="harmony\basic\ref_16.png"/>
+		<IconFile size="large" path="harmony\basic\ref_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\ref_32.png"/>
+	</Icon>
+	<Icon name="generic-set-security">
+		<IconFile size="normal" path="harmony\basic\lock_16.png"/>
+		<IconFile size="large" path="harmony\basic\lock_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\lock_32.png"/>
+	</Icon>
+	<Icon name="generic-show-history">
+		<IconFile size="normal" path="harmony\basic\hist_16.png"/>
+		<IconFile size="large" path="harmony\basic\hist_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\hist_32.png"/>
+	</Icon>
+	<Icon name="generic-show-report">
+		<IconFile size="normal" path="harmony\finance\signin_16x16.png"/>
+		<IconFile size="large" path="harmony\finance\signin_24x24.png"/>
+		<IconFile size="xlarge" path="harmony\finance\signin_32x32.png"/>
+	</Icon>
+	<Icon name="refresh">
+		<IconFile size="normal" path="harmony\basic\ref_16.png"/>
+		<IconFile size="large" path="harmony\basic\ref_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\ref_32.png"/>
+	</Icon>
+	<Icon name="home">
+		<IconFile size="normal" path="harmony\basic\home_16.png"/>
+		<IconFile size="large" path="harmony\basic\home_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\home_32.png"/>
+	</Icon>
+	<Icon name="refresh-disabled">
+		<IconFile size="normal" path="harmony\basic\x-ref_16.png"/>
+		<IconFile size="large" path="harmony\basic\x-ref_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\x-ref_32.png"/>
+	</Icon>
+	<Icon name="recycle">
+		<IconFile size="normal" path="harmony\composite\recycle_16.png"/>
+		<IconFile size="large" path="harmony\composite\recycle_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\recycle_32.png"/>
+	</Icon>
+	<Icon name="clock">
+		<IconFile size="normal" path="harmony\basic\alarm_16.png"/>
+		<IconFile size="large" path="harmony\basic\alarm_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\alarm_32.png"/>
+	</Icon>
+	<Icon name="lock">
+		<IconFile size="normal" path="harmony\basic\lock_16.png"/>
+		<IconFile size="large" path="harmony\basic\lock_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\lock_32.png"/>
+	</Icon>
+	<Icon name="data-draft">
+		<IconFile size="normal" path="harmony\composite\dataisdraft_16.png"/>
+		<IconFile size="large" path="harmony\composite\dataisdraft_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\dataisdraft_32.png"/>
+	</Icon>
+	<Icon name="data-awaiting-approval">
+		<IconFile size="normal" path="harmony\composite\dataisapproved_16.png"/>
+		<IconFile size="large" path="harmony\composite\dataisapproved_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\dataisapproved_32.png"/>
+	</Icon>
+	<Icon name="data-awaiting-publication">
+		<IconFile size="normal" path="harmony\composite\dataispublish_16.png"/>
+		<IconFile size="large" path="harmony\composite\dataispublish_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\dataispublish_32.png"/>
+	</Icon>
+	<Icon name="data-published">
+		<IconFile size="normal" path="harmony\composite\data_16.png"/>
+		<IconFile size="large" path="harmony\composite\data_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\data_32.png"/>
+	</Icon>
+	<Icon name="data">
+		<IconFile size="normal" path="harmony\composite\data_16.png"/>
+		<IconFile size="large" path="harmony\composite\data_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\data_32.png"/>
+	</Icon>
+  <Icon name="data-ghosted">
+    <IconFile size="normal" path="harmony\basic\web_16.png"/>
+    <IconFile size="large" path="harmony\basic\web_24.png"/>
+    <IconFile size="xlarge" path="harmony\basic\web_32.png"/>
+  </Icon>
+  <Icon name="data-disabled">
+    <IconFile size="normal" path="harmony\composite\datapublishdisabled_16.png"/>
+    <IconFile size="large" path="harmony\composite\datapublishdisabled_24.png"/>
+    <IconFile size="xlarge" path="harmony\composite\datapublishdisabled_32.png"/>
+  </Icon>
+	<Icon name="earth">
+		<IconFile size="normal" path="harmony\basic\web_16.png"/>
+		<IconFile size="large" path="harmony\basic\web_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\web_32.png"/>
+	</Icon>
+	<Icon name="folder-disabled">
+		<IconFile size="normal" path="harmony\composite\datafolder_16.png"/>
+		<IconFile size="large" path="harmony\composite\datafolder_16.png"/>
+		<IconFile size="xlarge" path="harmony\composite\datafolder_16.png"/>
+	</Icon>
+	<Icon name="folder-open">
+		<IconFile size="normal" path="harmony\composite\folderopen_16.png"/>
+		<IconFile size="large" path="harmony\composite\folderopen_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folderopen_32.png"/>
+	</Icon>
+	<Icon name="report">
+		<IconFile size="normal" path="harmony\finance\signin_16x16.png"/>
+		<IconFile size="large" path="harmony\finance\signin_24x24.png"/>
+		<IconFile size="xlarge" path="harmony\finance\signin_32x32.png"/>
+	</Icon>
+	<Icon name="template">
+		<IconFile size="normal" path="harmony\composite\layout_16.png"/>
+		<IconFile size="large" path="harmony\composite\layout_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\layout_32.png"/>
+	</Icon>
+	<Icon name="user">
+		<IconFile size="normal" path="harmony\database\user_16.png"/>
+		<IconFile size="large" path="harmony\database\user_24.png"/>
+		<IconFile size="xlarge" path="harmony\database\user_32.png"/>
+	</Icon>
+	<Icon name="user-disabled">
+		<IconFile size="normal" path="harmony\basic\x-user_16.png"/>
+		<IconFile size="large" path="harmony\basic\x-user_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\x-user_32.png"/>
+	</Icon>
+	<Icon name="user-group">
+		<IconFile size="normal" path="harmony\basic\group_16.png"/>
+		<IconFile size="large" path="harmony\basic\group_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\group_32.png"/>
+	</Icon>
+	<Icon name="cancel">
+		<IconFile size="normal" path="harmony\basic\del_16.png"/>
+		<IconFile size="large" path="harmony\basic\del_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\del_32.png"/>
+	</Icon>
+	<Icon name="cancel-disabled">
+		<IconFile size="normal" path="harmony\basic\x-del_16.png"/>
+		<IconFile size="large" path="harmony\basic\x-del_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\x-del_32.png"/>
+	</Icon>
+	<Icon name="close">
+		<IconFile size="normal" path="harmony\basic\close_16.png"/>
+		<IconFile size="large" path="harmony\basic\close_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\close_32.png"/>
+	</Icon>
+	<Icon name="popup">
+		<IconFile size="normal" path="republic\republic_0490\0490_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0490\0490_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0490\0490_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="tools">
+		<IconFile size="normal" path="republic\republic_0520\0520_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0520\0520_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0520\0520_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="options">
+		<IconFile size="normal" path="republic\republic_0163\0163_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0163\0163_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0163\0163_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="advanced">
+		<IconFile size="normal" path="republic\republic_0441\0441_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0441\0441_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0441\0441_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="up">
+		<IconFile size="normal" path="harmony\basic\up_16.png"/>
+		<IconFile size="large" path="harmony\basic\up_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\up_32.png"/>
+	</Icon>
+	<Icon name="up-disabled">
+		<IconFile size="normal" path="harmony\basic\x-up_16.png"/>
+		<IconFile size="large" path="harmony\basic\x-up_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\x-up_32.png"/>
+	</Icon>
+	<Icon name="down">
+		<IconFile size="normal" path="harmony\basic\down_16.png"/>
+		<IconFile size="large" path="harmony\basic\down_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\down_32.png"/>
+	</Icon>
+	<Icon name="down-disabled">
+		<IconFile size="normal" path="harmony\basic\x-down_16.png"/>
+		<IconFile size="large" path="harmony\basic\x-down_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\x-down_32.png"/>
+	</Icon>
+	<Icon name="forward">
+		<IconFile size="normal" path="harmony\basic\forwd_16.png"/>
+		<IconFile size="large" path="harmony\basic\forwd_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\forwd_32.png"/>
+	</Icon>
+	<Icon name="forward-disabled">
+		<IconFile size="normal" path="harmony\basic\x-forwd_16.png"/>
+		<IconFile size="large" path="harmony\basic\x-forwd_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\x-forwd_32.png"/>
+	</Icon>
+	<Icon name="back">
+		<IconFile size="normal" path="harmony\basic\back_16.png"/>
+		<IconFile size="large" path="harmony\basic\back_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\back_32.png"/>
+	</Icon>
+	<Icon name="back-disabled">
+		<IconFile size="normal" path="harmony\basic\x-back_16.png"/>
+		<IconFile size="large" path="harmony\basic\x-back_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\x-back_32.png"/>
+	</Icon>
+	<!-- end generic icons -->
+
+	<!-- treeview stuff -->
+	<Icon name="synchronize">
+		<IconFile size="normal" path="harmony\composite\synchronize_16.png"/>
+		<IconFile size="large" path="harmony\composite\synchronize_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\synchronize_32.png"/>
+	</Icon>
+  
+	<Icon name="collapseall">
+		<IconFile size="normal" path="harmony\composite\collapseall_16.png"/>
+		<IconFile size="large" path="harmony\composite\collapseall_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\collapseall_32.png"/>
+	</Icon>
+
+
+	<!-- design icons -->
+	<Icon name="page-template-root-closed">
+		<IconFile size="normal" path="harmony\composite\folder_16.png"/>
+		<IconFile size="large" path="harmony\composite\folder_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folder_32.png"/>
+	</Icon>
+	<Icon name="page-template-root-open">
+		<IconFile size="normal" path="harmony\composite\folderopen_16.png"/>
+		<IconFile size="large" path="harmony\composite\folderopen_16.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folderopen_16.png"/>
+	</Icon>
+	<Icon name="page-template-template">
+		<IconFile size="normal" path="harmony\composite\layout_16.png"/>
+		<IconFile size="large" path="harmony\composite\layout_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\layout_32.png"/>
+	</Icon>
+	<Icon name="page-template-add">
+		<IconFile size="normal" path="harmony\composite\layoutadd_16.png"/>
+		<IconFile size="large" path="harmony\composite\layoutadd_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\layoutadd_32.png"/>
+	</Icon>
+	<Icon name="page-template-edit">
+		<IconFile size="normal" path="harmony\composite\layoutedit_16.png"/>
+		<IconFile size="large" path="harmony\composite\layoutedit_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\layoutedit_32.png"/>
+	</Icon>
+	<Icon name="page-template-delete">
+		<IconFile size="normal" path="harmony\composite\layoutdel_16.png"/>
+		<IconFile size="large" path="harmony\composite\layoutdel_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\layoutdel_32.png"/>
+	</Icon>
+	<!-- end design icons -->
+
+	<!-- Base Function Provider -->
+	<Icon name="base-function-function">
+		<IconFile size="normal" path="harmony\multimedia\effects_16x16.png"/>
+		<IconFile size="large" path="harmony\multimedia\effects_24x24.png"/>
+		<IconFile size="xlarge" path="harmony\multimedia\effects_32x32.png"/>
+	</Icon>
+	<!-- end Base function provider -->
+
+	<!-- Method Based Function Provider -->
+	<Icon name="method-based-function-add">
+		<IconFile size="normal" path="harmony\composite\functionadd_16.png"/>
+		<IconFile size="large" path="harmony\composite\functionadd_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\functionadd_32.png"/>
+	</Icon>
+	<Icon name="method-based-function-edit">
+		<IconFile size="normal" path="harmony\composite\functionedit_16.png"/>
+		<IconFile size="large" path="harmony\composite\functionedit_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\functionedit_32.png"/>
+	</Icon>
+	<Icon name="method-based-function-delete">
+		<IconFile size="normal" path="harmony\composite\functiondel_16.png"/>
+		<IconFile size="large" path="harmony\composite\functiondel_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\functiondel_32.png"/>
+	</Icon>
+	<!-- end Method Based Function Provider -->
+
+	<!-- Sql Based Function Provider -->
+	<Icon name="sql-based-function">
+		<IconFile size="normal" path="harmony\multimedia\effects_16x16.png"/>
+		<IconFile size="large" path="harmony\multimedia\effects_24x24.png"/>
+		<IconFile size="xlarge" path="harmony\multimedia\effects_32x32.png"/>
+	</Icon>
+	<Icon name="sql-based-connection">
+		<IconFile size="normal" path="harmony\database\database_16.png"/>
+		<IconFile size="large" path="harmony\database\database_24.png"/>
+		<IconFile size="xlarge" path="harmony\database\database_32.png"/>
+	</Icon>
+	<Icon name="sql-based-connection-add">
+		<IconFile size="normal" path="harmony\database\add_database_16.png"/>
+		<IconFile size="large" path="harmony\database\add_database_24.png"/>
+		<IconFile size="xlarge" path="harmony\database\add_database_32.png"/>
+	</Icon>
+	<Icon name="sql-based-connection-edit">
+		<IconFile size="normal" path="harmony\database\edit_database_16.png"/>
+		<IconFile size="large" path="harmony\database\edit_database_24.png"/>
+		<IconFile size="xlarge" path="harmony\database\edit_database_32.png"/>
+	</Icon>
+	<Icon name="sql-based-connection-delete">
+		<IconFile size="normal" path="harmony\database\delete_database_16.png"/>
+		<IconFile size="large" path="harmony\database\delete_database_24.png"/>
+		<IconFile size="xlarge" path="harmony\database\delete_database_32.png"/>
+	</Icon>
+	<Icon name="sql-based-function-add">
+		<IconFile size="normal" path="harmony\composite\functionadd_16.png"/>
+		<IconFile size="large" path="harmony\composite\functionadd_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\functionadd_32.png"/>
+	</Icon>
+	<Icon name="sql-based-function-edit">
+		<IconFile size="normal" path="harmony\composite\functionedit_16.png"/>
+		<IconFile size="large" path="harmony\composite\functionedit_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\functionedit_32.png"/>
+	</Icon>
+	<Icon name="sql-based-function-delete">
+		<IconFile size="normal" path="harmony\composite\functiondel_16.png"/>
+		<IconFile size="large" path="harmony\composite\functiondel_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\functiondel_32.png"/>
+	</Icon>
+	<!-- end sql based function provider -->
+
+	<!-- Xslt Function Provider -->
+	<Icon name="xslt-based-function">
+		<IconFile size="normal" path="harmony\multimedia\effects_16x16.png"/>
+		<IconFile size="large" path="harmony\multimedia\effects_24x24.png"/>
+		<IconFile size="xlarge" path="harmony\multimedia\effects_32x32.png"/>
+	</Icon>
+	<Icon name="xslt-based-function-add">
+		<IconFile size="normal" path="harmony\composite\functionadd_16.png"/>
+		<IconFile size="large" path="harmony\composite\functionadd_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\functionadd_32.png"/>
+	</Icon>
+	<Icon name="xslt-based-function-edit">
+		<IconFile size="normal" path="harmony\composite\functionedit_16.png"/>
+		<IconFile size="large" path="harmony\composite\functionedit_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\functionedit_32.png"/>
+	</Icon>
+	<Icon name="xslt-based-function-delete">
+		<IconFile size="normal" path="harmony\composite\functiondel_16.png"/>
+		<IconFile size="large" path="harmony\composite\functiondel_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\functiondel_32.png"/>
+	</Icon>
+	<!-- end Xslt function provider -->
+
+	<!-- All functions element provider -->
+	<Icon name="all-functions-generatedocumentation">
+		<IconFile size="normal" path="harmony\basic\print_16.png"/>
+		<IconFile size="large" path="harmony\basic\print_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\print_32.png"/>
+	</Icon>
+	<!-- end All functions element provider -->
+
+	<!-- Generated Data Types -->
+	<Icon name="generated-root-open">
+		<IconFile size="normal" path="harmony\composite\datatype_16.png"/>
+		<IconFile size="large" path="harmony\composite\datatype_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\datatype_32.png"/>
+	</Icon>
+	<Icon name="generated-root-closed">
+		<IconFile size="normal" path="harmony\composite\datatype_16.png"/>
+		<IconFile size="large" path="harmony\composite\datatype_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\datatype_32.png"/>
+	</Icon>		
+	<Icon name="generated-interface-open">
+		<IconFile size="normal" path="harmony\composite\datafolder_16.png"/>
+		<IconFile size="large" path="harmony\composite\datafolder_16.png"/>
+		<IconFile size="xlarge" path="harmony\composite\datafolder_16.png"/>
+	</Icon>
+	<Icon name="generated-interface-closed">
+		<IconFile size="normal" path="harmony\composite\datafolder_16.png"/>
+		<IconFile size="large" path="harmony\composite\datafolder_16.png"/>
+		<IconFile size="xlarge" path="harmony\composite\datafolder_16.png"/>
+	</Icon>
+	<Icon name="generated-type-add">
+		<IconFile size="normal" path="harmony\composite\datafolderadd_16.png"/>
+		<IconFile size="large" path="harmony\composite\datafolderadd_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\datafolderadd_32.png"/>
+	</Icon>
+	<Icon name="generated-type-edit">
+		<IconFile size="normal" path="harmony\composite\datafolderedit_16.png"/>
+		<IconFile size="large" path="harmony\composite\datafolderedit_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\datafolderedit_32.png"/>
+	</Icon>
+	<Icon name="generated-type-delete">
+		<IconFile size="normal" path="harmony\composite\datafolderdelete_16.png"/>
+		<IconFile size="large" path="harmony\composite\datafolderdelete_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\datafolderdelete_32.png"/>
+	</Icon>
+	<Icon name="generated-type-localize">
+		<IconFile size="normal" path="harmony\basic\web_16.png"/>
+		<IconFile size="large" path="harmony\basic\web_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\web_32.png"/>
+	</Icon>
+	<Icon name="generated-type-delocalize">
+		<IconFile size="normal" path="harmony\basic\web_16.png"/>
+		<IconFile size="large" path="harmony\basic\web_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\web_32.png"/>
+	</Icon>
+	<Icon name="generated-type-data-add">
+		<IconFile size="normal" path="harmony\composite\dataadd_16.png"/>
+		<IconFile size="large" path="harmony\composite\dataadd_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\dataadd_32.png"/>
+	</Icon>
+	<Icon name="generated-type-data-edit">
+		<IconFile size="normal" path="harmony\composite\dataedit_16.png"/>
+		<IconFile size="large" path="harmony\composite\dataedit_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\dataedit_32.png"/>
+	</Icon>
+	<Icon name="generated-type-data-delete">
+		<IconFile size="normal" path="harmony\composite\datadel_16.png"/>
+		<IconFile size="large" path="harmony\composite\datadel_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\datadel_32.png"/>
+	</Icon>
+	<Icon name="generated-type-data-localize">
+		<IconFile size="normal" path="harmony\composite\field_16.png"/>
+		<IconFile size="large" path="harmony\composite\field_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\field_32.png"/>
+	</Icon>
+	<Icon name="generated-type-form-markup-edit">
+		<IconFile size="normal" path="harmony\composite\pageedit_16.png"/>
+		<IconFile size="large" path="harmony\composite\pageedit_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pageedit_32.png"/>
+	</Icon>
+	<Icon name="generated-type-to-xml">
+		<IconFile size="normal" path="harmony\database\export_data_16.png"/>
+		<IconFile size="large" path="harmony\database\export_data_24.png"/>
+		<IconFile size="xlarge" path="harmony\database\export_data_32.png"/>
+	</Icon>
+	<Icon name="generated-type-list-unpublished-items">
+		<IconFile size="normal" path="harmony\finance\signin_16x16.png"/>
+		<IconFile size="large" path="harmony\finance\signin_24x24.png"/>
+		<IconFile size="xlarge" path="harmony\finance\signin_32x32.png"/>
+	</Icon>
+	<Icon name="associated-data-add">
+		<IconFile size="normal" path="harmony\composite\dataadd_16.png"/>
+		<IconFile size="large" path="harmony\composite\dataadd_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\dataadd_32.png"/>
+	</Icon>
+	<Icon name="associated-data-edit">
+		<IconFile size="normal" path="harmony\composite\dataedit_16.png"/>
+		<IconFile size="large" path="harmony\composite\dataedit_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\dataedit_32.png"/>
+	</Icon>
+	<Icon name="associated-data-delete">
+		<IconFile size="normal" path="harmony\composite\datadel_16.png"/>
+		<IconFile size="large" path="harmony\composite\datadel_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\datadel_32.png"/>
+	</Icon>
+	<Icon name="generated-type-showincontentarea">
+		<IconFile size="normal" path="harmony\composite\input_16.png"/>
+		<IconFile size="large" path="harmony\composite\input_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\input_32.png"/>
+	</Icon>
+
+	<!-- end Generated Data Types -->
+
+	<!-- Generic-->
+	<Icon name="item-send-back-to-draft">
+		<IconFile size="normal" path="harmony\composite\pagetodraftback_16.png"/>
+		<IconFile size="large" path="harmony\composite\pagetodraftback_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pagetodraftback_32.png"/>
+	</Icon>
+	<Icon name="item-send-to-draft-disabled">
+		<IconFile size="normal" path="harmony\composite\pagetodisabled_16.png"/>
+		<IconFile size="large" path="harmony\composite\pagetodisabled_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pagetodisabled_32.png"/>
+	</Icon>
+	<Icon name="item-send-forward-for-approval">
+		<IconFile size="normal" path="harmony\composite\pagetoapprove_16.png"/>
+		<IconFile size="large" path="harmony\composite\pagetoapprove_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pagetoapprove_32.png"/>
+	</Icon>
+	<Icon name="item-send-back-for-approval">
+		<IconFile size="normal" path="harmony\composite\pagetoapproveback_16.png"/>
+		<IconFile size="large" path="harmony\composite\pagetoapproveback_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pagetoapproveback_32.png"/>
+	</Icon>
+	<Icon name="item-send-for-approval-disabled">
+		<IconFile size="normal" path="harmony\composite\pagetodisabled_16.png"/>
+		<IconFile size="large" path="harmony\composite\pagetodisabled_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pagetodisabled_32.png"/>
+	</Icon>
+	<Icon name="item-send-forward-for-publication">
+		<IconFile size="normal" path="harmony\composite\pagetopublish_16.png"/>
+		<IconFile size="large" path="harmony\composite\pagetopublish_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pagetopublish_32.png"/>
+	</Icon>
+	<Icon name="item-send-back-for-publication">
+		<IconFile size="normal" path="harmony\composite\pagetopublishback_16.png"/>
+		<IconFile size="large" path="harmony\composite\pagetopublishback_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pagetopublishback_32.png"/>
+	</Icon>
+	<Icon name="item-send-for-publication-disabled">
+		<IconFile size="normal" path="harmony\composite\pagetodisabled_16.png"/>
+		<IconFile size="large" path="harmony\composite\pagetodisabled_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pagetodisabled_32.png"/>
+	</Icon>
+	<Icon name="item-publish">
+		<IconFile size="normal" path="harmony\composite\pagepublish_16.png"/>
+		<IconFile size="large" path="harmony\composite\pagepublish_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pagepublish_32.png"/>
+	</Icon>
+	<Icon name="item-publish-disabled">
+		<IconFile size="normal" path="harmony\composite\pagepublishdisabled_16.png"/>
+		<IconFile size="large" path="harmony\composite\pagepublishdisabled_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pagepublishdisabled_32.png"/>
+	</Icon>
+	<Icon name="item-unpublish">
+		<IconFile size="normal" path="harmony\composite\pagetodraftback_16.png"/>
+		<IconFile size="large" path="harmony\composite\pagetodraftback_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pagetodraftback_32.png"/>
+	</Icon>
+	<Icon name="item-undo-unpublished-changes">
+		<IconFile size="normal" path="harmony\composite\undo_16.png"/>
+		<IconFile size="large" path="harmony\composite\undo_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\undo_32.png"/>
+	</Icon>
+	<!-- end Generic -->
+
+	<!-- Page icons -->
+	<Icon name="page-root-open">
+		<IconFile size="normal" path="harmony\basic\home_16.png"/>
+		<IconFile size="large" path="harmony\basic\home_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\home_32.png"/>
+	</Icon>
+	<Icon name="page-root-closed">
+		<IconFile size="normal" path="harmony\basic\home_16.png"/>
+		<IconFile size="large" path="harmony\basic\home_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\home_32.png"/>
+	</Icon>
+	<Icon name="page-draft">
+		<IconFile size="normal" path="harmony\composite\pageisdraft_16.png"/>
+		<IconFile size="large" path="harmony\composite\pageisdraft_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pageisdraft_32.png"/>
+	</Icon>
+	<Icon name="page-awaiting-approval">
+		<IconFile size="normal" path="harmony\composite\pageisapproved_16.png"/>
+		<IconFile size="large" path="harmony\composite\pageisapproved_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pageisapproved_32.png"/>
+	</Icon>
+	<Icon name="page-awaiting-publication">
+		<IconFile size="normal" path="harmony\composite\pageispublish_16.png"/>
+		<IconFile size="large" path="harmony\composite\pageispublish_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pageispublish_32.png"/>
+	</Icon>
+	<Icon name="page-publication">
+		<IconFile size="normal" path="harmony\composite\page_16.png"/>
+		<IconFile size="large" path="harmony\composite\page_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\page_32.png"/>
+	</Icon>
+	<Icon name="page-ghosted">
+		<IconFile size="normal" path="harmony\basic\web_16.png"/>
+		<IconFile size="large" path="harmony\basic\web_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\web_32.png"/>
+	</Icon>
+	<Icon name="page-disabled">
+		<IconFile size="normal" path="harmony\composite\pageuntranslated_16.png"/>
+		<IconFile size="large" path="harmony\composite\pageuntranslated_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pageuntranslated_32.png"/>
+	</Icon>
+	<Icon name="page-edit-page">
+		<IconFile size="normal" path="harmony\composite\pageedit_16.png"/>
+		<IconFile size="large" path="harmony\composite\pageedit_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pageedit_32.png"/>
+	</Icon>
+	<Icon name="page-localize-page">
+		<IconFile size="normal" path="harmony\composite\pagelocalize_16.png"/>
+		<IconFile size="large" path="harmony\composite\pagelocalize_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pagelocalize_32.png"/>
+	</Icon>
+	<Icon name="page-add-page">
+		<IconFile size="normal" path="harmony\composite\pageadd_16.png"/>
+		<IconFile size="large" path="harmony\composite\pageadd_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pageadd_32.png"/>
+	</Icon>
+	<Icon name="page-delete-page">
+		<IconFile size="normal" path="harmony\composite\pagedel_16.png"/>
+		<IconFile size="large" path="harmony\composite\pagedel_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pagedel_32.png"/>
+	</Icon>
+	<Icon name="page-add-sub-page">
+		<IconFile size="normal" path="republic\republic_0689\0689_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0689\0689_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0689\0689_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="page-view-public-scope">
+		<IconFile size="normal" path="harmony\composite\pageview_16.png"/>
+		<IconFile size="large" path="harmony\composite\pageview_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pageview_32.png"/>
+	</Icon>
+	<Icon name="page-view-public-scope-disabled">
+		<IconFile size="normal" path="harmony\composite\pageviewdisabled_16.png"/>
+		<IconFile size="large" path="harmony\composite\pageviewdisabled_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pageviewdisabled_32.png"/>
+	</Icon>
+	<Icon name="page-view-administrated-scope">
+		<IconFile size="normal" path="harmony\composite\pageviewprivate_16.png"/>
+		<IconFile size="large" path="harmony\composite\pageviewprivate_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pageviewprivate_32.png"/>
+	</Icon>
+	<Icon name="page-manage-host-names">
+		<IconFile size="normal" path="harmony\basic\opnbr_16.png"/>
+		<IconFile size="large" path="harmony\basic\opnbr_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\opnbr_32.png"/>
+	</Icon>
+	<Icon name="page-activatelocalization">
+		<IconFile size="normal" path="harmony\basic\web_16.png"/>
+		<IconFile size="large" path="harmony\basic\web_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\web_32.png"/>
+	</Icon>
+	<Icon name="page-deactivatelocalization">
+		<IconFile size="normal" path="harmony\basic\web_16.png"/>
+		<IconFile size="large" path="harmony\basic\web_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\web_32.png"/>
+	</Icon>
+	<Icon name="page-list-unpublished-items">
+		<IconFile size="normal" path="harmony\finance\signin_16x16.png"/>
+		<IconFile size="large" path="harmony\finance\signin_24x24.png"/>
+		<IconFile size="xlarge" path="harmony\finance\signin_32x32.png"/>
+	</Icon>
+	<!-- end page icons -->
+
+
+
+	<!-- Media file element provider -->
+	<Icon name="media-add-media-folder">
+		<IconFile size="normal" path="harmony\composite\addfolder_16.png"/>
+		<IconFile size="large" path="harmony\composite\addfolder_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\addfolder_32.png"/>
+	</Icon>
+	<Icon name="media-add-media-file">
+		<IconFile size="normal" path="harmony\composite\uploadmedia_16.png"/>
+		<IconFile size="large" path="harmony\composite\uploadmedia_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\uploadmedia_32.png"/>
+	</Icon>
+	<Icon name="media-replace-media-file">
+		<IconFile size="normal" path="harmony\composite\uploadmedia_16.png"/>
+		<IconFile size="large" path="harmony\composite\uploadmedia_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\uploadmedia_32.png"/>
+	</Icon>
+	<Icon name="media-upload-zip-file">
+		<IconFile size="normal" path="harmony\composite\uploadmediamultiple_16.png"/>
+		<IconFile size="large" path="harmony\composite\uploadmediamultiple_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\uploadmediamultiple_32.png"/>
+	</Icon>
+	<Icon name="media-edit-image-file">
+		<IconFile size="normal" path="harmony\basic\paint_16.png"/>
+		<IconFile size="large" path="harmony\basic\paint_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\paint_32.png"/>
+	</Icon>
+	<Icon name="media-edit-media-folder">
+		<IconFile size="normal" path="harmony\composite\folderedit_16.png"/>
+		<IconFile size="large" path="harmony\composite\folderedit_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folderedit_32.png"/>
+	</Icon>
+	<Icon name="media-edit-media-file">
+		<IconFile size="normal" path="harmony\multimedia\editvideo_16x16.png"/>
+		<IconFile size="large" path="harmony\multimedia\editvideo_24x24.png"/>
+		<IconFile size="xlarge" path="harmony\multimedia\editvideo_32x32.png"/>
+	</Icon>
+	<Icon name="media-delete-media-folder">
+		<IconFile size="normal" path="harmony\composite\folderdelete_16.png"/>
+		<IconFile size="large" path="harmony\composite\folderdelete_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folderdelete_32.png"/>
+	</Icon>
+	<Icon name="media-delete-media-file">
+		<IconFile size="normal" path="harmony\composite\deletemedia_16.png"/>
+		<IconFile size="large" path="harmony\composite\deletemedia_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\deletemedia_32.png"/>
+	</Icon>
+  <Icon name="media-download-file">
+    <IconFile size="normal" path="harmony\basic\down_16.png"/>
+    <IconFile size="large" path="harmony\basic\down_24.png"/>
+    <IconFile size="xlarge" path="harmony\basic\down_32.png"/>
+  </Icon>
+  <Icon name="media-read-only-folder-open">
+		<IconFile size="normal" path="republic\republic_0480\0480_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0480\0480_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0480\0480_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="media-read-only-folder-closed">
+		<IconFile size="normal" path="republic\republic_0480\0480_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0480\0480_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0480\0480_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<!-- end media file provider icons -->
+
+
+
+	<!-- Website file element provider -->
+	<Icon name="website-add-website-folder">
+		<IconFile size="normal" path="harmony\composite\newfolder_16.png"/>
+		<IconFile size="large" path="harmony\composite\newfolder_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\newfolder_32.png"/>
+	</Icon>
+	<Icon name="website-create-website-file">
+		<IconFile size="normal" path="harmony\basic\new_16.png"/>
+		<IconFile size="large" path="harmony\basic\new_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\new_32.png"/>
+	</Icon>
+	<Icon name="website-upload-website-file">
+		<IconFile size="normal" path="harmony\composite\uploadfile_16.png"/>
+		<IconFile size="large" path="harmony\composite\uploadfile_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\uploadfile_32.png"/>
+	</Icon>
+	<Icon name="website-edit-website-file">
+		<IconFile size="normal" path="harmony\basic\edit_16.png"/>
+		<IconFile size="large" path="harmony\basic\edit_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\edit_32.png"/>
+	</Icon>
+	<Icon name="website-delete-website-folder">
+		<IconFile size="normal" path="harmony\basic\del_16.png"/>
+		<IconFile size="large" path="harmony\basic\del_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\del_32.png"/>
+	</Icon>
+	<Icon name="website-delete-website-file">
+		<IconFile size="normal" path="harmony\basic\del_16.png"/>
+		<IconFile size="large" path="harmony\basic\del_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\del_32.png"/>
+	</Icon>
+	<Icon name="website-read-only-folder-open">
+		<IconFile size="normal" path="republic\republic_0480\0480_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0480\0480_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0480\0480_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="website-read-only-folder-closed">
+		<IconFile size="normal" path="republic\republic_0480\0480_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0480\0480_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0480\0480_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="website-add-folder-to-whitelist">
+		<IconFile size="normal" path="harmony\composite\showinlayout_16.png"/>
+		<IconFile size="large" path="harmony\composite\showinlayout_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\showinlayout_32.png"/>
+	</Icon>
+	<Icon name="website-remove-folder-from-whitelist">
+		<IconFile size="normal" path="harmony\composite\showinlayout_16.png"/>
+		<IconFile size="large" path="harmony\composite\showinlayout_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\showinlayout_32.png"/>
+	</Icon>
+	<!-- end Website file provider icons -->
+
+
+
+	<!-- Configuration element provider icons -->
+	<Icon name="configuration-root-open">
+		<IconFile size="normal" path="republic\republic_0440\0440_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0440\0440_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0440\0440_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="configuration-root-closed">
+		<IconFile size="normal" path="republic\republic_0441\0441_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0441\0441_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0441\0441_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<!-- end configuration element provider icons -->
+
+	<!-- Miscelaneous icons -->
+	<Icon name="unknown">
+		<IconFile size="normal" path="harmony\finance\fraud_16x16.png"/>
+		<IconFile size="large" path="harmony\finance\fraud_24x24.png"/>
+		<IconFile size="xlarge" path="harmony\finance\fraud_32x32.png"/>
+	</Icon>
+	<Icon name="unregistered">
+		<IconFile size="normal" path="harmony\basic\lock_16.png"/>
+		<IconFile size="large" path="harmony\basic\lock_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\lock_32.png"/>
+	</Icon>
+	<Icon name="default">
+		<IconFile size="normal" path="harmony\composite\default_16.png"/>
+		<IconFile size="large" path="harmony\composite\default_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\default_32.png"/>
+	</Icon>
+	<Icon name="loading">
+		<IconFile size="normal" path="republic\republic_0051\0051_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0051\0051_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0051\0051_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="cut">
+		<IconFile size="normal" path="harmony\basic\cut_16.png"/>
+		<IconFile size="large" path="harmony\basic\cut_24.png"/>
+		<IconFile size="xlarge" path="basic\basic\cut_32.png"/>
+	</Icon>
+	<Icon name="cut-disabled">
+		<IconFile size="normal" path="harmony\basic\x-cut_16.png"/>
+		<IconFile size="large" path="harmony\basic\x-cut_24.png"/>
+		<IconFile size="xlarge" path="basic\basic\x-cut_32.png"/>
+	</Icon>
+	<Icon name="copy">
+		<IconFile size="normal" path="harmony\basic\copy_16.png"/>
+		<IconFile size="large" path="harmony\basic\copy_24.png"/>
+		<IconFile size="xlarge" path="basic\basic\copy_32.png"/>
+	</Icon>
+	<Icon name="copy-disabled">
+		<IconFile size="normal" path="harmony\basic\x-copy_16.png"/>
+		<IconFile size="large" path="harmony\basic\x-copy_24.png"/>
+		<IconFile size="xlarge" path="basic\basic\x-copy_32.png"/>
+	</Icon>
+	<Icon name="paste">
+		<IconFile size="normal" path="harmony\basic\paste_16.png"/>
+		<IconFile size="large" path="harmony\basic\paste_24.png"/>
+		<IconFile size="xlarge" path="basic\basic\paste_32.png"/>
+	</Icon>
+	<Icon name="paste-disabled">
+		<IconFile size="normal" path="harmony\basic\x-paste_16.png"/>
+		<IconFile size="large" path="harmony\basic\x-paste_24.png"/>
+		<IconFile size="xlarge" path="basic\basic\x-paste_32.png"/>
+	</Icon>
+	<Icon name="delete">
+		<IconFile size="normal" path="harmony\basic\del_16.png"/>
+		<IconFile size="large" path="harmony\basic\del_24.png"/>
+		<IconFile size="xlarge" path="basic\basic\del_32.png"/>
+	</Icon>
+	<Icon name="delete-disabled">
+		<IconFile size="normal" path="harmony\basic\x-del_16.png"/>
+		<IconFile size="large" path="harmony\basic\x-del_24.png"/>
+		<IconFile size="xlarge" path="basic\basic\x-del_32.png"/>
+	</Icon>
+	<Icon name="print">
+		<IconFile size="normal" path="harmony\basic\print_16.png"/>
+		<IconFile size="large" path="harmony\basic\print_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\print_32.png"/>
+	</Icon>
+	<Icon name="save">
+		<IconFile size="normal" path="harmony\composite\save_16.png"/>
+		<IconFile size="large" path="harmony\composite\save_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\save_32.png"/>
+	</Icon>
+	<Icon name="save-disabled">
+		<IconFile size="normal" path="harmony\composite\x-save_16.png"/>
+		<IconFile size="large" path="harmony\composite\x-save_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\x-save_32.png"/>
+	</Icon>
+	<Icon name="saveas">
+		<IconFile size="normal" path="harmony\composite\savas_16.png"/>
+		<IconFile size="large" path="harmony\composite\savas_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\savas_32.png"/>
+	</Icon>
+	<Icon name="saveas-disabled">
+		<IconFile size="normal" path="harmony\composite\x-savas_16.png"/>
+		<IconFile size="large" path="harmony\composite\x-savas_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\x-savas_32.png"/>
+	</Icon>
+	<Icon name="undo">
+		<IconFile size="normal" path="harmony\composite\undo_16.png"/>
+		<IconFile size="large" path="harmony\composite\undo_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\undo_32.png"/>
+	</Icon>
+	<Icon name="undo-disabled">
+		<IconFile size="normal" path="harmony\composite\x-undo_16.png"/>
+		<IconFile size="large" path="harmony\composite\x-undo_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\x-undo_32.png"/>
+	</Icon>
+	<Icon name="redo">
+		<IconFile size="normal" path="harmony\composite\redo_16.png"/>
+		<IconFile size="large" path="harmony\composite\redo_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\redo_32.png"/>
+	</Icon>
+	<Icon name="redo-disabled">
+		<IconFile size="normal" path="harmony\composite\x-redo_16.png"/>
+		<IconFile size="large" path="harmony\composite\x-redo_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\x-redo_32.png"/>
+	</Icon>
+	<Icon name="link">
+		<IconFile size="normal" path="harmony\composite\link_16.png"/>
+		<IconFile size="large" path="harmony\composite\link_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\link_32.png"/>
+	</Icon>
+	<Icon name="link-disabled">
+		<IconFile size="normal" path="harmony\composite\x-link_16.png"/>
+		<IconFile size="large" path="harmony\composite\x-link_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\x-link_32.png"/>
+	</Icon>
+	<Icon name="unlink">
+		<IconFile size="normal" path="harmony\composite\unlink_16.png"/>
+		<IconFile size="large" path="harmony\composite\unlink_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\unlink_32.png"/>
+	</Icon>
+	<Icon name="unlink-disabled">
+		<IconFile size="normal" path="harmony\composite\x-unlink_16.png"/>
+		<IconFile size="large" path="harmony\composite\x-unlink_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\x-unlink_32.png"/>
+	</Icon>
+	<Icon name="accept">
+		<IconFile size="normal" path="harmony\composite\accept_16.png"/>
+		<IconFile size="large" path="harmony\composite\accept_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\accept_32.png"/>
+	</Icon>
+	<Icon name="accept-disabled">
+		<IconFile size="normal" path="harmony\composite\x-accept_16.png"/>
+		<IconFile size="large" path="harmony\composite\x-accept_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\x-accept_32.png"/>
+	</Icon>
+	<Icon name="sizeondisk">
+		<IconFile size="normal" path="republic\republic_0268\0268_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0268\0268_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0268\0268_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="sizeonscreen">
+		<IconFile size="normal" path="republic\republic_0321\0321_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0321\0321_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0321\0321_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="nodes">
+		<IconFile size="normal" path="harmony\database\relationships_16.png"/>
+		<IconFile size="large" path="harmony\database\relationships_24.png"/>
+		<IconFile size="xlarge" path="harmony\database\relationships_32.png"/>
+	</Icon>
+	<Icon name="fields">
+		<IconFile size="normal" path="harmony\database\table_16.png"/>
+		<IconFile size="large" path="harmony\database\table_24.png"/>
+		<IconFile size="xlarge" path="harmony\database\table_32.png"/>
+	</Icon>
+	<Icon name="fields-disabled">
+		<IconFile size="normal" path="harmony\database\x-table_16.png"/>
+		<IconFile size="large" path="harmony\database\x-table_24.png"/>
+		<IconFile size="xlarge" path="harmony\database\x-table_32.png"/>
+	</Icon>
+	<Icon name="field">
+		<IconFile size="normal" path="harmony\database\fields_16.png"/>
+		<IconFile size="large" path="harmony\database\fields_24.png"/>
+		<IconFile size="xlarge" path="harmony\database\fields_32.png"/>
+	</Icon>
+	<Icon name="field-disabled">
+		<IconFile size="normal" path="harmony\database\x-fields_16.png"/>
+		<IconFile size="large" path="harmony\database\x-fields_24.png"/>
+		<IconFile size="xlarge" path="harmony\database\x-fields_32.png"/>
+	</Icon>
+	<Icon name="deletefield">
+		<IconFile size="normal" path="harmony\composite\deletefield_16.png"/>
+		<IconFile size="large" path="harmony\composite\deletefield_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\deletefield_32.png"/>
+	</Icon>
+	<Icon name="insert">
+		<IconFile size="normal" path="harmony\basic\add_16.png"/>
+		<IconFile size="large" path="harmony\basic\add_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\add_32.png"/>
+	</Icon>
+	<Icon name="insert-disabled">
+		<IconFile size="normal" path="harmony\basic\x-add_16.png"/>
+		<IconFile size="large" path="harmony\basic\x-add_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\x-add_32.png"/>
+	</Icon>
+	<Icon name="help">
+		<IconFile size="normal" path="harmony\basic\help_16.png"/>
+		<IconFile size="large" path="harmony\basic\help_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\help_32.png"/>
+	</Icon>
+	<Icon name="composite">
+		<IconFile size="normal" path="branding\composite_16.png"/>
+		<IconFile size="normal" path="branding\composite_24.png"/>
+		<IconFile size="normal" path="branding\composite_32.png"/>
+	</Icon>
+	<Icon name="placeholder">
+		<IconFile size="normal" path="harmony\finance\category_16x16.png"/>
+		<IconFile size="large" path="harmony\finance\category_24x24.png"/>
+		<IconFile size="xlarge" path="harmony\finance\category_32x32.png"/>
+	</Icon>
+	<Icon name="input">
+		<IconFile size="normal" path="harmony\composite\input_16.png"/>
+		<IconFile size="large" path="harmony\composite\input_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\input_32.png"/>
+	</Icon>
+	<Icon name="input-disabled">
+		<IconFile size="normal" path="harmony\composite\x-input_16.png"/>
+		<IconFile size="large" path="harmony\composite\x-input_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\x-input_32.png"/>
+	</Icon>
+	<Icon name="output">
+		<IconFile size="normal" path="harmony\composite\output_16.png"/>
+		<IconFile size="large" path="harmony\composite\output_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\output_32.png"/>
+	</Icon>
+	<Icon name="browser">
+		<IconFile size="normal" path="harmony\basic\opnbr_16.png"/>
+		<IconFile size="large" path="harmony\basic\opnbr_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\opnbr_32.png"/>
+	</Icon>
+	<Icon name="cleanup">
+		<IconFile size="normal" path="harmony\composite\cleanup_16.png"/>
+		<IconFile size="large" path="harmony\composite\cleanup_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\cleanup_32.png"/>
+	</Icon>
+	<Icon name="cleanup-disabled">
+		<IconFile size="normal" path="harmony\composite\x-cleanup_16.png"/>
+		<IconFile size="large" path="harmony\composite\x-cleanup_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\x-cleanup_32.png"/>
+	</Icon>
+	<!-- end miscelaneous icons -->
+
+
+
+
+	<!-- image editor -->
+	<Icon name="scale">
+		<IconFile size="normal" path="harmony\multimedia\aspectratio_16x16.png"/>
+		<IconFile size="large" path="harmony\multimedia\aspectratio_24x24.png"/>
+		<IconFile size="xlarge" path="harmony\multimedia\aspectratio_32x32.png"/>
+	</Icon>
+	<Icon name="crop">
+		<IconFile size="normal" path="harmony\multimedia\crop_16x16.png"/>
+		<IconFile size="large" path="harmony\multimedia\crop_24x24.png"/>
+		<IconFile size="xlarge" path="harmony\multimedia\crop_32x32.png"/>
+	</Icon>
+	<Icon name="crop-disabled">
+		<IconFile size="normal" path="harmony\multimedia\x-crop_16x16.png"/>
+		<IconFile size="large" path="harmony\multimedia\x-crop_24x24.png"/>
+		<IconFile size="xlarge" path="harmony\multimedia\x-crop_32x32.png"/>
+	</Icon>
+	<Icon name="zoom">
+		<IconFile size="normal" path="harmony\basic\srch_16.png"/>
+		<IconFile size="large" path="harmony\basic\srch_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\srch_32.png"/>
+	</Icon>
+	<Icon name="zoomin">
+		<IconFile size="normal" path="harmony\basic\zoomi_16.png"/>
+		<IconFile size="large" path="harmony\basic\zoomi_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\zoomi_32.png"/>
+	</Icon>
+	<Icon name="zoomout">
+		<IconFile size="normal" path="harmony\basic\zoomo_16.png"/>
+		<IconFile size="large" path="harmony\basic\zoomo_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\zoomo_32.png"/>
+	</Icon>
+	<!-- end image editor -->
+
+
+	<!-- editors -->
+	<Icon name="editor-sourceview">
+		<IconFile size="normal" path="harmony\composite\sourceedit_16.png"/>
+		<IconFile size="large" path="harmony\composite\sourceedit_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\sourceedit_32.png"/>
+	</Icon>
+	<Icon name="editor-sourceview-disabled">
+		<IconFile size="normal" path="harmony\composite\x-sourceedit_16.png"/>
+		<IconFile size="large" path="harmony\composite\x-sourceedit_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\x-sourceedit_32.png"/>
+	</Icon>
+	<Icon name="editor-designview">
+		<IconFile size="normal" path="harmony\composite\pageedit_16.png"/>
+		<IconFile size="large" path="harmony\composite\pageedit_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pageedit_32.png"/>
+	</Icon>
+	<Icon name="editor-designview-disabled">
+		<IconFile size="normal" path="harmony\composite\x-pageedit_16.png"/>
+		<IconFile size="large" path="harmony\composite\x-pageedit_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\x-pageedit_32.png"/>
+	</Icon>
+	<Icon name="editor-plainedit">
+		<IconFile size="normal" path="republic\republic_0237\0237_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0237\0237_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0237\0237_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="editor-fancyedit">
+		<IconFile size="normal" path="republic\republic_0091\0091_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0091\0091_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0091\0091_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="editor-classselector">
+		<IconFile size="normal" path="harmony\basic\paint_16.png"/>
+		<IconFile size="large" path="harmony\basic\paint_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\paint_32.png"/>
+	</Icon>
+	<Icon name="editor-classselector-disabled">
+		<IconFile size="normal" path="harmony\basic\x-paint_16.png"/>
+		<IconFile size="large" path="harmony\basic\x-paint_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\x-paint_32.png"/>
+	</Icon>
+	<Icon name="editor-formatselector">
+		<IconFile size="normal" path="harmony\database\sort_by_quantity_16.png"/>
+		<IconFile size="large" path="harmony\database\sort_by_quantity_24.png"/>
+		<IconFile size="xlarge" path="harmony\database\sort_by_quantity_32.png"/>
+	</Icon>
+	<Icon name="editor-formatselector-disabled">
+		<IconFile size="normal" path="harmony\database\x-sort_by_quantity_16.png"/>
+		<IconFile size="large" path="harmony\database\x-sort_by_quantity_24.png"/>
+		<IconFile size="xlarge" path="harmony\database\x-sort_by_quantity_32.png"/>
+	</Icon>
+	<Icon name="editor-formatsource">
+		<IconFile size="normal" path="harmony\basic\notep_16.png"/>
+		<IconFile size="large" path="harmony\basic\notep_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\notep_32.png"/>
+	</Icon>
+	<Icon name="editor-formatsource-disabled">
+		<IconFile size="normal" path="harmony\basic\x-notep_16.png"/>
+		<IconFile size="large" path="harmony\basic\x-notep_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\x-notep_32.png"/>
+	</Icon>
+	<!-- end editors -->
+
+
+	<!-- standard dialogs -->
+	<Icon name="error">
+		<IconFile size="normal" path="harmony\composite\error_16.png"/>
+		<IconFile size="large" path="harmony\composite\error_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\error_32.png"/>
+	</Icon>
+	<Icon name="message">
+		<IconFile size="normal" path="harmony\composite\message_16.png"/>
+		<IconFile size="large" path="harmony\composite\message_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\message_32.png"/>
+	</Icon>
+	<Icon name="message-disabled">
+		<IconFile size="normal" path="harmony\composite\x-message_16.png"/>
+		<IconFile size="large" path="harmony\composite\x-message_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\x-message_32.png"/>
+	</Icon>
+	<Icon name="warning">
+		<IconFile size="normal" path="harmony\composite\warning_16.png"/>
+		<IconFile size="large" path="harmony\composite\warning_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\warning_32.png"/>
+	</Icon>
+	<Icon name="question">
+		<IconFile size="normal" path="harmony\composite\question_16.png"/>
+		<IconFile size="large" path="harmony\composite\question_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\question_32.png"/>
+	</Icon>
+	<Icon name="balloon">
+		<IconFile size="normal" path="harmony\composite\balloon_16.png"/>
+		<IconFile size="large" path="harmony\composite\balloon_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\balloon_32.png"/>
+	</Icon>
+	<!-- end standard editors -->
+
+
+
+	<!-- wizard dialogs -->
+	<Icon name="wizard">
+		<IconFile size="normal" path="harmony\basic\wiz_16.png"/>
+		<IconFile size="large" path="harmony\basic\wiz_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\wiz_32.png"/>
+	</Icon>
+	<Icon name="next">
+		<IconFile size="normal" path="harmony\basic\forwd_16.png"/>
+		<IconFile size="large" path="harmony\basic\forwd_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\forwd_32.png"/>
+	</Icon>
+	<Icon name="next-disabled">
+		<IconFile size="normal" path="harmony\basic\x-forwd_16.png"/>
+		<IconFile size="large" path="harmony\basic\x-forwd_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\x-forwd_32.png"/>
+	</Icon>
+	<Icon name="previous">
+		<IconFile size="normal" path="harmony\basic\back_16.png"/>
+		<IconFile size="large" path="harmony\basic\back_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\back_32.png"/>
+	</Icon>
+	<Icon name="previous-disabled">
+		<IconFile size="normal" path="harmony\basic\x-back_16.png"/>
+		<IconFile size="large" path="harmony\basic\x-back_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\x-back_32.png"/>
+	</Icon>
+	<Icon name="finish">
+		<IconFile size="normal" path="harmony\composite\accept_16.png"/>
+		<IconFile size="large" path="harmony\composite\accept_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\accept_32.png"/>
+	</Icon>
+	<Icon name="finish-disabled">
+		<IconFile size="normal" path="harmony\composite\x-accept_16.png"/>
+		<IconFile size="large" path="harmony\composite\x-accept_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\x-accept_32.png"/>
+	</Icon>
+	<Icon name="bookmark">
+		<IconFile size="normal" path="harmony\basic\favs_16.png"/>
+		<IconFile size="large" path="harmony\basic\favs_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\favs_32.png"/>
+	</Icon>
+	<!-- end wizard dialogs -->
+
+
+
+	<!-- views and stuff -->
+	<Icon name="systemlog">
+		<IconFile size="normal" path="republic\republic_0468\0468_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0468\0468_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0468\0468_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="developer">
+		<IconFile size="normal" path="republic\republic_0536\0536_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0536\0536_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0536\0536_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="icon">
+		<IconFile size="normal" path="republic\republic_0263\0263_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0263\0263_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0263\0263_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="page">
+		<IconFile size="normal" path="harmony\composite\page_16.png"/>
+		<IconFile size="large" path="harmony\composite\page_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\page_32.png"/>
+	</Icon>
+	<Icon name="image">
+		<IconFile size="normal" path="republic\republic_0322\0322_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0322\0322_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0322\0322_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="specialchar">
+		<IconFile size="normal" path="harmony\finance\tax_16x16.png"/>
+		<IconFile size="large" path="harmony\finance\tax_24x24.png"/>
+		<IconFile size="xlarge" path="harmony\finance\tax_32x32.png"/>
+	</Icon>
+	<Icon name="media">
+		<IconFile size="normal" path="harmony\composite\folder_16.png"/>
+		<IconFile size="large" path="harmony\composite\folder_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folder_32.png"/>
+	</Icon>
+	<Icon name="namespace_section">
+		<IconFile size="normal" path="republic\republic_0473\0473_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0473\0473_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0473\0473_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="namespace_section_active">
+		<IconFile size="normal" path="republic\republic_0433\0433_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0433\0433_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0433\0433_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="functioncall">
+		<IconFile size="normal" path="harmony\multimedia\effects_16x16.png"/>
+		<IconFile size="large" path="harmony\multimedia\effects_24x24.png"/>
+		<IconFile size="xlarge" path="harmony\multimedia\effects_32x32.png"/>
+	</Icon>
+	<Icon name="functioncall-disabled">
+		<IconFile size="normal" path="harmony\multimedia\x-effects_16x16.png"/>
+		<IconFile size="large" path="harmony\multimedia\x-effects_24x24.png"/>
+		<IconFile size="xlarge" path="harmony\multimedia\x-effects_32x32.png"/>
+	</Icon>
+	<Icon name="functioncall_list">
+		<IconFile size="normal" path="republic\republic_0443\0443_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0443\0443_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0443\0443_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="parameter">
+		<IconFile size="normal" path="harmony\composite\param_16.png"/>
+		<IconFile size="large" path="harmony\composite\param_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\param_32.png"/>
+	</Icon>
+	<Icon name="parameter_missing">
+		<IconFile size="normal" path="harmony\composite\parammissing_16.png"/>
+		<IconFile size="large" path="harmony\composite\parammissing_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\parammissing_32.png"/>
+	</Icon>
+	<Icon name="parameter_overloaded">
+		<IconFile size="normal" path="harmony\composite\paramedit_16.png"/>
+		<IconFile size="large" path="harmony\composite\paramedit_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\paramedit_32.png"/>
+	</Icon>
+	<Icon name="deleteditems">
+		<IconFile size="normal" path="harmony\basic\trash_16.png"/>
+		<IconFile size="large" path="harmony\basic\trash_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\trash_32.png"/>
+	</Icon>
+	<Icon name="folder">
+		<IconFile size="normal" path="harmony\composite\folder_16.png"/>
+		<IconFile size="large" path="harmony\composite\folder_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folder_32.png"/>
+	</Icon>
+	<Icon name="folder_active">
+		<IconFile size="normal" path="harmony\composite\folderopen_16.png"/>
+		<IconFile size="large" path="harmony\composite\folderopen_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folderopen_32.png"/>
+	</Icon>
+	<Icon name="seoassistant">
+		<IconFile size="normal" path="harmony\basic\opnbr_16.png"/>
+		<IconFile size="large" path="harmony\basic\opnbr_32.png"/>
+		<IconFile size="xlarge" path="harmony\basic\opnbr_32.png"/>
+	</Icon>
+	<!-- end views and stuff -->
+
+
+	<!-- Mime Type icons -->
+	<Icon name="mimetype-unknown">
+		<IconFile size="normal" path="republic\republic_0071\0071_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0071\0071_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0071\0071_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-asf">
+		<IconFile size="normal" path="republic\republic_0670\0670_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0670\0670_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0670\0670_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-mdb">
+		<IconFile size="normal" path="republic\republic_0748\0748_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0748\0748_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0748\0748_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-pdf">
+		<IconFile size="normal" path="republic\republic_0652\0652_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0652\0652_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0652\0652_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-ppt">
+		<IconFile size="normal" path="republic\republic_0656\0656_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0656\0656_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0656\0656_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-zip">
+		<IconFile size="normal" path="republic\republic_0658\0658_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0658\0658_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0658\0658_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-vaw">
+		<IconFile size="normal" path="republic\republic_0662\0662_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0662\0662_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0662\0662_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-exe">
+		<IconFile size="normal" path="republic\republic_0659\0659_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0659\0659_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0659\0659_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-asax">
+		<IconFile size="normal" path="republic\republic_1002\1002_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1002\1002_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1002\1002_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-ascx">
+		<IconFile size="normal" path="republic\republic_1003\1003_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1003\1003_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1003\1003_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-asm">
+		<IconFile size="normal" path="republic\republic_1004\1004_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1004\1004_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1004\1004_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-asp">
+		<IconFile size="normal" path="republic\republic_1005\1005_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1005\1005_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1005\1005_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-aspx">
+		<IconFile size="normal" path="republic\republic_1006\1006_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1006\1006_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1006\1006_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-bmp">
+		<IconFile size="normal" path="republic\republic_1007\1007_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1007\1007_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1007\1007_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-cat">
+		<IconFile size="normal" path="republic\republic_1008\1008_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1008\1008_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1008\1008_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-chm">
+		<IconFile size="normal" path="republic\republic_1009\1009_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1009\1009_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1009\1009_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-cfg">
+		<IconFile size="normal" path="republic\republic_1010\1010_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1010\1010_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1010\1010_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-css">
+		<IconFile size="normal" path="republic\republic_1011\1011_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1011\1011_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1011\1011_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-db">
+		<IconFile size="normal" path="republic\republic_1012\1012_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1012\1012_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1012\1012_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-dib">
+		<IconFile size="normal" path="republic\republic_1013\1013_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1013\1013_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1013\1013_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-disc">
+		<IconFile size="normal" path="republic\republic_1014\1014_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1014\1014_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1014\1014_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-doc">
+		<IconFile size="normal" path="republic\republic_1015\1015_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1015\1015_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1015\1015_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-docm">
+		<IconFile size="normal" path="republic\republic_1016\1016_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1016\1016_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1016\1016_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-docx">
+		<IconFile size="normal" path="republic\republic_1017\1017_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1017\1017_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1017\1017_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-dot">
+		<IconFile size="normal" path="republic\republic_1018\1018_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1018\1018_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1018\1018_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-dotm">
+		<IconFile size="normal" path="republic\republic_1019\1019_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1019\1019_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1019\1019_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-dotx">
+		<IconFile size="normal" path="republic\republic_1020\1020_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1020\1020_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1020\1020_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-dvd">
+		<IconFile size="normal" path="republic\republic_1021\1021_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1021\1021_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1021\1021_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-dwp">
+		<IconFile size="normal" path="republic\republic_1022\1022_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1022\1022_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1022\1022_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-eml">
+		<IconFile size="normal" path="republic\republic_1023\1023_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1023\1023_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1023\1023_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-est">
+		<IconFile size="normal" path="republic\republic_1024\1024_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1024\1024_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1024\1024_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-fwp">
+		<IconFile size="normal" path="republic\republic_1025\1025_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1025\1025_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1025\1025_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-gif">
+		<IconFile size="normal" path="republic\republic_1026\1026_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1026\1026_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1026\1026_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-hlp">
+		<IconFile size="normal" path="republic\republic_1027\1027_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1027\1027_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1027\1027_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-hta">
+		<IconFile size="normal" path="republic\republic_1028\1028_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1028\1028_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1028\1028_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-htm">
+		<IconFile size="normal" path="republic\republic_1029\1029_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1029\1029_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1029\1029_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-html">
+		<IconFile size="normal" path="republic\republic_1030\1030_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1030\1030_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1030\1030_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-htt">
+		<IconFile size="normal" path="republic\republic_1031\1031_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1031\1031_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1031\1031_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-inf">
+		<IconFile size="normal" path="republic\republic_1032\1032_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1032\1032_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1032\1032_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-ini">
+		<IconFile size="normal" path="republic\republic_1033\1033_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1033\1033_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1033\1033_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-jfif">
+		<IconFile size="normal" path="republic\republic_1034\1034_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1034\1034_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1034\1034_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-jpe">
+		<IconFile size="normal" path="republic\republic_1035\1035_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1035\1035_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1035\1035_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-jpeg">
+		<IconFile size="normal" path="republic\republic_1036\1036_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1036\1036_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1036\1036_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-jpg">
+		<IconFile size="normal" path="republic\republic_1037\1037_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1037\1037_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1037\1037_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-js">
+		<IconFile size="normal" path="republic\republic_1038\1038_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1038\1038_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1038\1038_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-jse">
+		<IconFile size="normal" path="republic\republic_1039\1039_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1039\1039_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1039\1039_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-log">
+		<IconFile size="normal" path="republic\republic_1040\1040_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1040\1040_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1040\1040_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-ram">
+		<IconFile size="normal" path="republic\republic_0748\0748_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0748\0748_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0748\0748_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-mht">
+		<IconFile size="normal" path="republic\republic_1041\1041_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1041\1041_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1041\1041_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-mpd">
+		<IconFile size="normal" path="republic\republic_1043\1043_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1043\1043_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1043\1043_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-mpp">
+		<IconFile size="normal" path="republic\republic_1044\1044_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1044\1044_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1044\1044_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-mps">
+		<IconFile size="normal" path="republic\republic_1045\1045_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1045\1045_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1045\1045_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-mpt">
+		<IconFile size="normal" path="republic\republic_1046\1046_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1046\1046_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1046\1046_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-mpw">
+		<IconFile size="normal" path="republic\republic_1047\1047_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1047\1047_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1047\1047_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-mpx">
+		<IconFile size="normal" path="republic\republic_1048\1048_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1048\1048_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1048\1048_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-msg">
+		<IconFile size="normal" path="republic\republic_1049\1049_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1049\1049_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1049\1049_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-msi">
+		<IconFile size="normal" path="republic\republic_1050\1050_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1050\1050_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1050\1050_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-msp">
+		<IconFile size="normal" path="republic\republic_1051\1051_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1051\1051_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1051\1051_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-ocx">
+		<IconFile size="normal" path="republic\republic_1052\1052_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1052\1052_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1052\1052_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-one">
+		<IconFile size="normal" path="republic\republic_1053\1053_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1053\1053_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1053\1053_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-png">
+		<IconFile size="normal" path="republic\republic_1055\1055_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1055\1055_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1055\1055_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-pot">
+		<IconFile size="normal" path="republic\republic_1056\1056_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1056\1056_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1056\1056_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-potm">
+		<IconFile size="normal" path="republic\republic_1057\1057_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1057\1057_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1057\1057_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-potx">
+		<IconFile size="normal" path="republic\republic_1058\1058_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1058\1058_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1058\1058_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-ppa">
+		<IconFile size="normal" path="republic\republic_1059\1059_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1059\1059_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1059\1059_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-pps">
+		<IconFile size="normal" path="republic\republic_1060\1060_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1060\1060_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1060\1060_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-ppsx">
+		<IconFile size="normal" path="republic\republic_1062\1062_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1062\1062_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1062\1062_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-psp">
+		<IconFile size="normal" path="republic\republic_1066\1066_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1066\1066_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1066\1066_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-ptm">
+		<IconFile size="normal" path="republic\republic_1067\1067_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1067\1067_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1067\1067_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-ptt">
+		<IconFile size="normal" path="republic\republic_1068\1068_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1068\1068_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1068\1068_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-pub">
+		<IconFile size="normal" path="republic\republic_1069\1069_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1069\1069_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1069\1069_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-rtf">
+		<IconFile size="normal" path="republic\republic_1070\1070_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1070\1070_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1070\1070_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-dir">
+		<IconFile size="normal" path="republic\republic_0748\0748_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0748\0748_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0748\0748_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-swf">
+		<IconFile size="normal" path="republic\republic_0660\0660_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0660\0660_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0660\0660_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-stt">
+		<IconFile size="normal" path="republic\republic_1071\1071_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1071\1071_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1071\1071_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-tif">
+		<IconFile size="normal" path="republic\republic_1072\1072_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1072\1072_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1072\1072_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-tiff">
+		<IconFile size="normal" path="republic\republic_1073\1073_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1073\1073_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1073\1073_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-css">
+		<IconFile size="normal" path="republic\republic_1011\1011_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1011\1011_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1011\1011_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-txt">
+		<IconFile size="normal" path="republic\republic_1074\1074_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1074\1074_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1074\1074_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-vbe">
+		<IconFile size="normal" path="republic\republic_1075\1075_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1075\1075_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1075\1075_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-vbs">
+		<IconFile size="normal" path="republic\republic_1076\1076_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1076\1076_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1076\1076_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-vdx">
+		<IconFile size="normal" path="republic\republic_1077\1077_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1077\1077_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1077\1077_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-vsd">
+		<IconFile size="normal" path="republic\republic_1078\1078_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1078\1078_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1078\1078_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-vaw">
+		<IconFile size="normal" path="republic\republic_0662\0662_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0662\0662_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0662\0662_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-vsl">
+		<IconFile size="normal" path="republic\republic_1079\1079_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1079\1079_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1079\1079_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-vss">
+		<IconFile size="normal" path="republic\republic_1080\1080_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1080\1080_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1080\1080_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-vst">
+		<IconFile size="normal" path="republic\republic_1081\1081_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1081\1081_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1081\1081_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-vsv">
+		<IconFile size="normal" path="republic\republic_1082\1082_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1082\1082_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1082\1082_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-vsw">
+		<IconFile size="normal" path="republic\republic_1083\1083_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1083\1083_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1083\1083_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-vsx">
+		<IconFile size="normal" path="republic\republic_1084\1084_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1084\1084_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1084\1084_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-vtx">
+		<IconFile size="normal" path="republic\republic_1085\1085_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1085\1085_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1085\1085_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-wm">
+		<IconFile size="normal" path="republic\republic_1086\1086_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1086\1086_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1086\1086_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-wma">
+		<IconFile size="normal" path="republic\republic_1087\1087_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1087\1087_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1087\1087_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-wmd">
+		<IconFile size="normal" path="republic\republic_1088\1088_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1088\1088_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1088\1088_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-wmp">
+		<IconFile size="normal" path="republic\republic_1089\1089_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1089\1089_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1089\1089_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-wms">
+		<IconFile size="normal" path="republic\republic_1090\1090_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1090\1090_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1090\1090_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-wmv">
+		<IconFile size="normal" path="republic\republic_1091\1091_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1091\1091_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1091\1091_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-wmx">
+		<IconFile size="normal" path="republic\republic_1092\1092_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1092\1092_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1092\1092_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-wmf">
+		<IconFile size="normal" path="republic\republic_1093\1093_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1093\1093_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1093\1093_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-wmz">
+		<IconFile size="normal" path="republic\republic_1094\1094_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1094\1094_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1094\1094_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-xlam">
+		<IconFile size="normal" path="republic\republic_1095\1095_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1095\1095_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1095\1095_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-xls">
+		<IconFile size="normal" path="republic\republic_1096\1096_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1096\1096_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1096\1096_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-xlsb">
+		<IconFile size="normal" path="republic\republic_1097\1097_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1097\1097_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1097\1097_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-xlsm">
+		<IconFile size="normal" path="republic\republic_1098\1098_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1098\1098_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1098\1098_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-xlt">
+		<IconFile size="normal" path="republic\republic_1100\1100_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1100\1100_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1100\1100_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-xltm">
+		<IconFile size="normal" path="republic\republic_1101\1101_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1101\1101_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1101\1101_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-xltx">
+		<IconFile size="normal" path="republic\republic_1102\1102_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1102\1102_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1102\1102_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-xml">
+		<IconFile size="normal" path="republic\republic_1103\1103_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1103\1103_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1103\1103_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+  <Icon name="mimetype-resx">
+    <IconFile size="normal" path="republic\republic_1103\1103_16px_Republic_32bit_PNG.png"/>
+    <IconFile size="large" path="republic\republic_1103\1103_24px_Republic_32bit_PNG.png"/>
+    <IconFile size="xlarge" path="republic\republic_1103\1103_32px_Republic_32bit_PNG.png"/>
+  </Icon>  
+	<Icon name="mimetype-xsd">
+		<IconFile size="normal" path="republic\republic_1104\1104_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1104\1104_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1104\1104_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-xsl">
+		<IconFile size="normal" path="republic\republic_1105\1105_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1105\1105_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1105\1105_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-xsn">
+		<IconFile size="normal" path="republic\republic_1106\1106_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1106\1106_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1106\1106_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-xslt">
+		<IconFile size="normal" path="republic\republic_1107\1107_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1107\1107_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1107\1107_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-xlsx">
+		<IconFile size="normal" path="republic\republic_1109\1109_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1109\1109_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1109\1109_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-avi">
+		<IconFile size="normal" path="republic\republic_1110\1110_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1110\1110_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1110\1110_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-mov">
+		<IconFile size="normal" path="republic\republic_1111\1111_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1111\1111_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1111\1111_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-mpeg">
+		<IconFile size="normal" path="republic\republic_1112\1112_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1112\1112_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1112\1112_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-mp3">
+		<IconFile size="normal" path="republic\republic_1112\1112_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1112\1112_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1112\1112_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="mimetype-rar">
+		<IconFile size="normal" path="republic\republic_1113\1113_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_1113\1113_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_1113\1113_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<!-- end Mime Type icons -->
+
+	<!-- Type and FIeld related -->
+	<Icon name="validationrule">
+		<IconFile size="normal" path="republic\republic_0709\0709_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0709\0709_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0709\0709_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="validationrules">
+		<IconFile size="normal" path="republic\republic_0712\0712_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0712\0712_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0712\0712_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="validationrules-add">
+		<IconFile size="normal" path="republic\republic_0718\0718_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0718\0718_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0718\0718_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+	<Icon name="validationrules-add-disabled">
+		<IconFile size="normal" path="republic\republic_0718\0718_16px_Republic_32bit_PNG.png"/>
+		<IconFile size="large" path="republic\republic_0718\0718_24px_Republic_32bit_PNG.png"/>
+		<IconFile size="xlarge" path="republic\republic_0718\0718_32px_Republic_32bit_PNG.png"/>
+	</Icon>
+
+	<!-- association stuff -->
+	<Icon name="dataassociation-rootfolder-closed">
+		<!-- BUT ONLY ON CONTENT TOOLBAR! -->
+		<IconFile size="normal" path="harmony\composite\pagedata_16.png"/>
+		<IconFile size="large" path="harmony\composite\pagedata_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pagedata_32.png"/>
+	</Icon>
+	<Icon name="dataassociation-rootfolder-open">
+		<IconFile size="normal" path="harmony\composite\pagedata_16.png"/>
+		<IconFile size="large" path="harmony\composite\pagedata_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\pagedata_32.png"/>
+	</Icon>
+	<Icon name="dataassociation-add-association">
+		<IconFile size="normal" path="harmony\composite\datafolderadd_16.png"/>
+		<IconFile size="large" path="harmony\composite\datafolderadd_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\datafolderadd_32.png"/>
+	</Icon>
+	<Icon name="dataassociation-edit-association">
+		<IconFile size="normal" path="harmony\composite\datatypeedit_16.png"/>
+		<IconFile size="large" path="harmony\composite\datatypeedit_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\datatypeedit_32.png"/>
+	</Icon>
+	<Icon name="dataassociation-remove-association">
+		<IconFile size="normal" path="harmony\composite\datatypedel_16.png"/>
+		<IconFile size="large" path="harmony\composite\datatypedel_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\datatypedel_32.png"/>
+	</Icon>
+
+	<!-- end association stuff -->
+
+	<!-- Users stuff -->
+	<Icon name="users-changeownpassword">
+		<IconFile size="normal" path="harmony\basic\lock_16.png"/>
+		<IconFile size="large" path="harmony\basic\lock_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\lock_32.png"/>
+	</Icon>
+	<Icon name="users-changeownculture">
+		<IconFile size="normal" path="harmony\basic\web_16.png"/>
+		<IconFile size="large" path="harmony\basic\web_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\web_32.png"/>
+	</Icon>
+	<Icon name="users-changepublicculture">
+		<IconFile size="normal" path="harmony\basic\web_16.png"/>
+		<IconFile size="large" path="harmony\basic\web_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\web_32.png"/>
+	</Icon>
+	<Icon name="users-changetreeculture">
+		<IconFile size="normal" path="harmony\basic\web_16.png"/>
+		<IconFile size="large" path="harmony\basic\web_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\web_32.png"/>
+	</Icon>
+	<Icon name="users-rootfolder-closed">
+		<IconFile size="normal" path="harmony\composite\users_16.png"/>
+		<IconFile size="large" path="harmony\composite\users_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\users_32.png"/>
+	</Icon>
+	<Icon name="users-rootfolder-open">
+		<IconFile size="normal" path="harmony\composite\users_16.png"/>
+		<IconFile size="large" path="harmony\composite\users_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\users_32.png"/>
+	</Icon>
+	<Icon name="users-group-closed">
+		<IconFile size="normal" path="harmony\composite\folder_16.png"/>
+		<IconFile size="large" path="harmony\composite\folder_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folder_32.png"/>
+	</Icon>
+	<Icon name="users-group-open">
+		<IconFile size="normal" path="harmony\composite\folderopen_16.png"/>
+		<IconFile size="large" path="harmony\composite\folderopen_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folderopen_32.png"/>
+	</Icon>
+	<Icon name="users-user">
+		<IconFile size="normal" path="harmony\database\user_16.png"/>
+		<IconFile size="large" path="harmony\database\user_24.png"/>
+		<IconFile size="xlarge" path="harmony\database\user_32.png"/>
+	</Icon>
+	<Icon name="users-user-disabled">
+		<IconFile size="normal" path="harmony\basic\x-user_16.png"/>
+		<IconFile size="large" path="harmony\basic\x-user_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\x-user_32.png"/>
+	</Icon>
+	<Icon name="users-adduser">
+		<IconFile size="normal" path="harmony\database\add_user_16.png"/>
+		<IconFile size="large" path="harmony\database\add_user_24.png"/>
+		<IconFile size="xlarge" path="harmony\database\add_user_32.png"/>
+	</Icon>
+	<Icon name="users-edituser">
+		<IconFile size="normal" path="harmony\database\edit_user_16.png"/>
+		<IconFile size="large" path="harmony\database\edit_user_24.png"/>
+		<IconFile size="xlarge" path="harmony\database\edit_user_32.png"/>
+	</Icon>
+	<Icon name="users-deleteuser">
+		<IconFile size="normal" path="harmony\composite\userdelete_16.png"/>
+		<IconFile size="large" path="harmony\composite\userdelete_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\userdelete_32.png"/>
+	</Icon>
+
+	<!-- End users stuff -->
+
+
+	<!-- Usergroup stuff -->
+	<Icon name="usergroups-rootfolder-closed">
+		<IconFile size="normal" path="harmony\basic\group_16.png"/>
+		<IconFile size="large" path="harmony\basic\group_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\group_32.png"/>
+	</Icon>
+	<Icon name="usergroups-rootfolder-open">
+		<IconFile size="normal" path="harmony\basic\group_16.png"/>
+		<IconFile size="large" path="harmony\basic\group_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\group_32.png"/>
+	</Icon>
+	<Icon name="usergroups-usergroup">
+		<IconFile size="normal" path="harmony\basic\group_16.png"/>
+		<IconFile size="large" path="harmony\basic\group_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\group_32.png"/>
+	</Icon>
+	<Icon name="usergroups-addusergroup">
+		<IconFile size="normal" path="harmony\composite\users-add_16.png"/>
+		<IconFile size="large" path="harmony\composite\users-add_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\users-add_32.png"/>
+	</Icon>
+	<Icon name="usergroups-editusergroup">
+		<IconFile size="normal" path="harmony\composite\users-edit_16.png"/>
+		<IconFile size="large" path="harmony\composite\users-edit_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\users-edit_32.png"/>
+	</Icon>
+	<Icon name="usergroups-deleteusergroup">
+		<IconFile size="normal" path="harmony\composite\users-del_16.png"/>
+		<IconFile size="large" path="harmony\composite\users-del_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\users-del_32.png"/>
+	</Icon>
+
+
+	<!-- End users stuff -->
+
+	<!-- Log stuff -->
+	<Icon name="log-perspective">
+		<IconFile size="normal" path="harmony\basic\hist_16.png"/>
+		<IconFile size="large" path="harmony\basic\hist_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\hist_32.png"/>
+	</Icon>
+	<Icon name="log-folder-closed">
+		<IconFile size="normal" path="harmony\database\copy_record_16.png"/>
+		<IconFile size="large" path="harmony\database\copy_record_24.png"/>
+		<IconFile size="xlarge" path="harmony\database\copy_record_32.png"/>
+	</Icon>
+	<Icon name="log-showlog">
+		<IconFile size="normal" path="harmony\database\find_16.png"/>
+		<IconFile size="large" path="harmony\database\find_24.png"/>
+		<IconFile size="xlarge" path="harmony\database\find_32.png"/>
+	</Icon>
+	<Icon name="restart-application">
+		<IconFile size="normal" path="harmony\basic\ref_16.png"/>
+		<IconFile size="large" path="harmony\basic\ref_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\ref_32.png"/>
+	</Icon>
+
+	<!-- Log stuff end -->
+
+
+	<!-- Security stuff -->
+	<Icon name="security-manage-permissions">
+		<IconFile size="normal" path="harmony\basic\group_16.png"/>
+		<IconFile size="large" path="harmony\basic\group_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\group_32.png"/>
+	</Icon>
+
+	<!-- Security stuff end -->
+
+
+	<!-- WYSIWYG rendering function stuff -->
+	<Icon name="wysiwyg-function">
+		<IconFile size="normal" path="harmony\multimedia\effects_16x16.png"/>
+		<IconFile size="large" path="harmony\multimedia\effects_24x24.png"/>
+		<IconFile size="xlarge" path="harmony\multimedia\effects_32x32.png"/>
+	</Icon>
+	<Icon name="visual-function-add">
+		<IconFile size="normal" path="harmony\composite\functionadd_16.png"/>
+		<IconFile size="large" path="harmony\composite\functionadd_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\functionadd_32.png"/>
+	</Icon>
+	<Icon name="visual-function-edit">
+		<IconFile size="normal" path="harmony\composite\functionedit_16.png"/>
+		<IconFile size="large" path="harmony\composite\functionedit_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\functionedit_32.png"/>
+	</Icon>
+	<Icon name="visual-function-delete">
+		<IconFile size="normal" path="harmony\composite\functiondel_16.png"/>
+		<IconFile size="large" path="harmony\composite\functiondel_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\functiondel_32.png"/>
+	</Icon>
+
+	<!-- WYSIWYG rendering function stuff end -->
+
+	<!-- Add-on installer stuff -->
+	<Icon name="package-installer-install">
+		<IconFile size="normal" path="harmony\composite\install_16.png"/>
+		<IconFile size="large" path="harmony\composite\install_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\install_32.png"/>
+	</Icon>
+	<Icon name="package-installer-uninstall">
+		<IconFile size="normal" path="harmony\composite\uninstall_16.png"/>
+		<IconFile size="large" path="harmony\composite\uninstall_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\uninstall_32.png"/>
+	</Icon>
+	<Icon name="package-installer-readmore">
+		<IconFile size="normal" path="harmony\basic\opnbr_16.png"/>
+		<IconFile size="large" path="harmony\basic\opnbr_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\opnbr_32.png"/>
+	</Icon>
+	<Icon name="package-element-closed-root">
+		<IconFile size="normal" path="harmony\composite\folderaddons_16.png"/>
+		<IconFile size="large" path="harmony\composite\folderaddons_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folderaddons_32.png"/>
+	</Icon>
+	<Icon name="package-element-opened-root">
+		<IconFile size="normal" path="harmony\composite\folderaddons_16.png"/>
+		<IconFile size="large" path="harmony\composite\folderaddons_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folderaddons_32.png"/>
+	</Icon>
+	<Icon name="package-element-closed-available">
+		<IconFile size="normal" path="harmony\composite\folderaddonsall_16.png"/>
+		<IconFile size="large" path="harmony\composite\folderaddonsall_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folderaddonsall_32.png"/>
+	</Icon>
+	<Icon name="package-element-opened-available">
+		<IconFile size="normal" path="harmony\composite\folderaddonsall_16.png"/>
+		<IconFile size="large" path="harmony\composite\folderaddonsall_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folderaddonsall_32.png"/>
+	</Icon>
+	<Icon name="package-element-closed-installed">
+		<IconFile size="normal" path="harmony\composite\folderaccept_16.png"/>
+		<IconFile size="large" path="harmony\composite\folderaccept_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folderaccept_32.png"/>
+	</Icon>
+	<Icon name="package-element-opened-installed">
+		<IconFile size="normal" path="harmony\composite\folderaccept_16.png"/>
+		<IconFile size="large" path="harmony\composite\folderaccept_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folderaccept_32.png"/>
+	</Icon>
+	<Icon name="package-element-closed-sources">
+		<IconFile size="normal" path="harmony\composite\folderweb_16.png"/>
+		<IconFile size="large" path="harmony\composite\folderweb_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folderweb_32.png"/>
+	</Icon>
+	<Icon name="package-element-opened-sources">
+		<IconFile size="normal" path="harmony\composite\folderweb_16.png"/>
+		<IconFile size="large" path="harmony\composite\folderweb_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folderweb_32.png"/>
+	</Icon>
+	<Icon name="package-element-closed-sourceitem">
+		<IconFile size="normal" path="harmony\basic\web_16.png"/>
+		<IconFile size="large" path="harmony\basic\web_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\web_32.png"/>
+	</Icon>
+	<Icon name="package-element-closed-availablegroup">
+		<IconFile size="normal" path="harmony\composite\folder_16.png"/>
+		<IconFile size="large" path="harmony\composite\folder_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folder_32.png"/>
+	</Icon>
+	<Icon name="package-element-opened-availablegroup">
+		<IconFile size="normal" path="harmony\composite\folderopen_16.png"/>
+		<IconFile size="large" path="harmony\composite\folderopen_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folderopen_32.png"/>
+	</Icon>
+	<Icon name="package-element-closed-local">
+		<IconFile size="normal" path="harmony\composite\folder_16.png"/>
+		<IconFile size="large" path="harmony\composite\folder_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folder_32.png"/>
+	</Icon>
+	<Icon name="package-element-opened-local">
+		<IconFile size="normal" path="harmony\composite\folderopen_16.png"/>
+		<IconFile size="large" path="harmony\composite\folderopen_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folderopen_32.png"/>
+	</Icon>
+	<Icon name="package-element-closed-installedgroup">
+		<IconFile size="normal" path="harmony\composite\folder_16.png"/>
+		<IconFile size="large" path="harmony\composite\folder_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folder_32.png"/>
+	</Icon>
+	<Icon name="package-element-opened-installedgroup">
+		<IconFile size="normal" path="harmony\composite\folderopen_16.png"/>
+		<IconFile size="large" path="harmony\composite\folderopen_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folderopen_32.png"/>
+	</Icon>
+	<Icon name="package-element-closed-availableitem">
+		<IconFile size="normal" path="harmony\composite\addon_16.png"/>
+		<IconFile size="large" path="harmony\composite\addon_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\addon_32.png"/>
+	</Icon>
+	<Icon name="package-element-closed-installeditem">
+		<IconFile size="normal" path="harmony\multimedia\encoding_16x16.png"/>
+		<IconFile size="large" path="harmony\multimedia\encoding_24x24.png"/>
+		<IconFile size="xlarge" path="harmony\multimedia\encoding_32x32.png"/>
+	</Icon>
+	<Icon name="package-clear-servercache">
+		<IconFile size="normal" path="harmony\basic\ref_16.png"/>
+		<IconFile size="large" path="harmony\basic\ref_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\ref_32.png"/>
+	</Icon>
+	<Icon name="package-view-installedinfo">
+		<IconFile size="normal" path="harmony\composite\addon_16.png"/>
+		<IconFile size="large" path="harmony\composite\addon_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\addon_32.png"/>
+	</Icon>
+	<Icon name="package-view-installedinfo">
+		<IconFile size="normal" path="harmony\composite\addon_16.png"/>
+		<IconFile size="large" path="harmony\composite\addon_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\addon_32.png"/>
+	</Icon>
+	<Icon name="package-view-availableinfo">
+		<IconFile size="normal" path="harmony\composite\addon_16.png"/>
+		<IconFile size="large" path="harmony\composite\addon_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\addon_32.png"/>
+	</Icon>
+	<Icon name="package-install-package">
+		<IconFile size="normal" path="harmony\composite\install_16.png"/>
+		<IconFile size="large" path="harmony\composite\install_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\install_32.png"/>
+	</Icon>
+	<Icon name="package-install-local-package">
+		<IconFile size="normal" path="harmony\composite\install_16.png"/>
+		<IconFile size="large" path="harmony\composite\install_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\install_32.png"/>
+	</Icon>
+	<Icon name="package-uninstall-package">
+		<IconFile size="normal" path="harmony\composite\uninstall_16.png"/>
+		<IconFile size="large" path="harmony\composite\uninstall_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\uninstall_32.png"/>
+	</Icon>
+	<Icon name="package-uninstall-local-package">
+		<IconFile size="normal" path="harmony\composite\uninstall_16.png"/>
+		<IconFile size="large" path="harmony\composite\uninstall_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\uninstall_32.png"/>
+	</Icon>
+	<Icon name="package-add-source">
+		<IconFile size="normal" path="harmony\composite\web-add_16.png"/>
+		<IconFile size="large" path="harmony\composite\web-add_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\web-add_32.png"/>
+	</Icon>
+	<Icon name="package-delete-source">
+		<IconFile size="normal" path="harmony\composite\web-delete_16.png"/>
+		<IconFile size="large" path="harmony\composite\web-delete_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\web-delete_32.png"/>
+	</Icon>
+	<!-- Add-on installer stuff end -->
+
+	<!-- Data grouping folder helper -->
+	<Icon name="datagroupinghelper-folder-closed">
+		<IconFile size="normal" path="harmony\composite\folder_16.png"/>
+		<IconFile size="large" path="harmony\composite\folder_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folder_32.png"/>
+	</Icon>
+	<Icon name="datagroupinghelper-folder-open">
+		<IconFile size="normal" path="harmony\composite\folderopen_16.png"/>
+		<IconFile size="large" path="harmony\composite\folderopen_16.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folderopen_16.png"/>
+	</Icon>
+	<!-- Data group folder helper end -->
+
+
+	<!-- Localization suff -->
+	<Icon name="localization-element-closed-root">
+		<IconFile size="normal" path="harmony\composite\folderweb_16.png"/>
+		<IconFile size="large" path="harmony\composite\folderweb_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folderweb_32.png"/>
+	</Icon>
+	<Icon name="localization-element-opened-root">
+		<IconFile size="normal" path="harmony\composite\folderweb_16.png"/>
+		<IconFile size="large" path="harmony\composite\folderweb_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\folderweb_32.png"/>
+	</Icon>
+	<Icon name="localization-element-localeitem">
+		<IconFile size="normal" path="harmony\basic\web_16.png"/>
+		<IconFile size="large" path="harmony\basic\web_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\web_32.png"/>
+	</Icon>
+	<Icon name="localization-element-defaultlocaleitem">
+		<IconFile size="normal" path="harmony\composite\web-accept_16.png"/>
+		<IconFile size="large" path="harmony\composite\web-accept_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\web-accept_32.png"/>
+	</Icon>
+	<Icon name="localization-addsystemlocale">
+		<IconFile size="normal" path="harmony\composite\web-add_16.png"/>
+		<IconFile size="large" path="harmony\composite\web-add_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\web-add_32.png"/>
+	</Icon>
+	<Icon name="localization-editsystemlocale">
+		<IconFile size="normal" path="harmony\basic\web-edit_16.png"/>
+		<IconFile size="large" path="harmony\basic\web-edit_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\web-edit_32.png"/>
+	</Icon>
+	<Icon name="localization-setasdefault">
+		<IconFile size="normal" path="harmony\composite\web-accept_16.png"/>
+		<IconFile size="large" path="harmony\composite\web-accept_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\web-accept_32.png"/>
+	</Icon>
+	<Icon name="localization-removesystemlocale">
+		<IconFile size="normal" path="harmony\composite\web-delete_16.png"/>
+		<IconFile size="large" path="harmony\composite\web-delete_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\web-delete_32.png"/>
+	</Icon>
+	<Icon name="localization-changelocale">
+		<IconFile size="normal" path="harmony\basic\web_16.png"/>
+		<IconFile size="large" path="harmony\basic\web_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\web_32.png"/>
+	</Icon>
+	<!-- end localization stuff-->
+
+	<!-- versioning stuff -->
+	<Icon name="versioning-view">
+		<IconFile size="normal" path="harmony\basic\srch_16.png"/>
+		<IconFile size="large" path="harmony\basic\srch_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\srch_32.png"/>
+	</Icon>
+	<Icon name="versioning-view-disabled">
+		<IconFile size="normal" path="harmony\basic\x-srch_16.png"/>
+		<IconFile size="large" path="harmony\basic\x-srch_24.png"/>
+		<IconFile size="xlarge" path="harmony\basic\x-srch_32.png"/>
+	</Icon>
+	<Icon name="versioning-compare">
+		<IconFile size="normal" path="harmony\multimedia\convert_16x16.png"/>
+		<IconFile size="large" path="harmony\multimedia\convert_24x24.png"/>
+		<IconFile size="xlarge" path="harmony\multimedia\convert_32x32.png"/>
+	</Icon>
+	<Icon name="versioning-compare-disabled">
+		<IconFile size="normal" path="harmony\multimedia\x-convert_16x16.png"/>
+		<IconFile size="large" path="harmony\multimedia\x-convert_24x24.png"/>
+		<IconFile size="xlarge" path="harmony\multimedia\x-convert_32x32.png"/>
+	</Icon>
+	<Icon name="versioning-restore">
+		<IconFile size="normal" path="harmony\database\next_16.png"/>
+		<IconFile size="large" path="harmony\database\next_24.png"/>
+		<IconFile size="xlarge" path="harmony\database\next_32.png"/>
+	</Icon>
+	<Icon name="versioning-restore-disabled">
+		<IconFile size="normal" path="harmony\database\x-next_16.png"/>
+		<IconFile size="large" path="harmony\database\x-next_24.png"/>
+		<IconFile size="xlarge" path="harmony\database\x-next_32.png"/>
+	</Icon>
+	<!-- end versioning stuff -->
+
+
+  <!-- Tree/DeveloperApplication stuff -->
+  <Icon name="tree-add-application">
+    <IconFile size="normal" path="harmony\composite\datafolderadd_16.png"/>
+    <IconFile size="large" path="harmony\composite\datafolderadd_24.png"/>
+    <IconFile size="xlarge" path="harmony\composite\datafolderadd_32.png"/>
+  </Icon>
+  <Icon name="tree-remove-application">
+    <IconFile size="normal" path="harmony\composite\datafolderdelete_16.png"/>
+    <IconFile size="large" path="harmony\composite\datafolderdelete_24.png"/>
+    <IconFile size="xlarge" path="harmony\composite\datafolderdelete_32.png"/>
+  </Icon>
+
+    
+  <Icon name="tree-localize-data">
+    <IconFile size="normal" path="harmony\composite\pagelocalize_16.png"/>
+    <IconFile size="large" path="harmony\composite\pagelocalize_24.png"/>
+    <IconFile size="xlarge" path="harmony\composite\pagelocalize_32.png"/>
+  </Icon>  
+  
+
+  <Icon name="reportfunctionaction-defaulticon">
+    <IconFile size="normal" path="harmony\finance\signin_16x16.png"/>
+    <IconFile size="large" path="harmony\finance\signin_24x24.png"/>
+    <IconFile size="xlarge" path="harmony\finance\signin_32x32.png"/>
+  </Icon>
+  <Icon name="messageboxaction-defaulticon">
+    <IconFile size="normal" path="harmony\composite\message_16.png"/>
+    <IconFile size="large" path="harmony\composite\message_24.png"/>
+    <IconFile size="xlarge" path="harmony\composite\message_32.png"/>
+  </Icon>
+  <Icon name="customurlaction-defaulticon">
+    <IconFile size="normal" path="harmony\basic\opnbr_16.png"/>
+    <IconFile size="large" path="harmony\basic\opnbr_24.png"/>
+    <IconFile size="xlarge" path="harmony\basic\opnbr_32.png"/>
+  </Icon>
+  <Icon name="confirmaction-defaulticon">
+    <IconFile size="normal" path="harmony\composite\question_16.png"/>
+    <IconFile size="large" path="harmony\composite\question_24.png"/>
+    <IconFile size="xlarge" path="harmony\composite\question_32.png"/>
+  </Icon>
+  <Icon name="workflowaction-defaulticon">
+    <IconFile size="normal" path="republic\republic_0441\0441_16px_Republic_32bit_PNG.png"/>
+    <IconFile size="large" path="republic\republic_0441\0441_24px_Republic_32bit_PNG.png"/>
+    <IconFile size="xlarge" path="republic\republic_0441\0441_32px_Republic_32bit_PNG.png"/>
+  </Icon>
+  
+
+  <Icon name="developerapplication-treedefinitionroot">
+    <IconFile size="normal" path="harmony\database\print_mailing_labels_16.png"/>
+    <IconFile size="large" path="harmony\database\print_mailing_labels_24.png"/>
+    <IconFile size="xlarge" path="harmony\database\print_mailing_labels_32.png"/>
+  </Icon>
+  <Icon name="developerapplication-treedefinition">
+    <IconFile size="normal" path="harmony\finance\invoice_16x16.png"/>
+    <IconFile size="large" path="harmony\finance\invoice_24x24.png"/>
+    <IconFile size="xlarge" path="harmony\finance\invoice_32x32.png"/>
+  </Icon>
+  <Icon name="developerapplication-treedefinition-add">
+    <IconFile size="normal" path="harmony\finance\invoice_16x16.png"/>
+    <IconFile size="large" path="harmony\finance\invoice_24x24.png"/>
+    <IconFile size="xlarge" path="harmony\finance\invoice_32x32.png"/>
+  </Icon>
+  <Icon name="developerapplication-treedefinition-edit">
+    <IconFile size="normal" path="harmony\finance\invoice_16x16.png"/>
+    <IconFile size="large" path="harmony\finance\invoice_24x24.png"/>
+    <IconFile size="xlarge" path="harmony\finance\invoice_32x32.png"/>
+  </Icon>
+  <Icon name="developerapplication-treedefinition-delete">
+    <IconFile size="normal" path="harmony\finance\invoice_16x16.png"/>
+    <IconFile size="large" path="harmony\finance\invoice_24x24.png"/>
+    <IconFile size="xlarge" path="harmony\finance\invoice_32x32.png"/>
+  </Icon>  
+  <!-- end Tree/DeveloperApplication stuff -->
+
+
+  <!-- Page types stuff -->
+  <Icon name="pagetype-pagetype-rootfolder">
+    <IconFile size="normal" path="harmony\composite\folder_16.png"/>
+    <IconFile size="large" path="harmony\composite\folder_24.png"/>
+    <IconFile size="xlarge" path="harmony\composite\folder_32.png"/>
+  </Icon>
+
+  <Icon name="pagetype-pagetype-rootfolder-open">
+	<IconFile size="normal" path="harmony\composite\folderopen_16.png"/>
+	<IconFile size="large" path="harmony\composite\folderopen_24.png"/>
+	<IconFile size="xlarge" path="harmony\composite\folderopen_32.png"/>
+  </Icon>
+
+  <Icon name="pagetype-pagetype">
+    <IconFile size="normal" path="harmony\composite\page_16.png"/>
+	<IconFile size="large" path="harmony\composite\page_24.png"/>
+	<IconFile size="xlarge" path="harmony\composite\page_32.png"/>
+  </Icon>
+
+  <Icon name="pagetype-add-pagetype">
+    <IconFile size="normal" path="harmony\composite\pageadd_16.png"/>
+	<IconFile size="large" path="harmony\composite\pageadd_24.png"/>
+	<IconFile size="xlarge" path="harmony\composite\pageadd_32.png"/>     
+  </Icon>
+
+  <Icon name="pagetype-edit-pagetype">
+    <IconFile size="normal" path="harmony\composite\pageedit_16.png"/>
+	<IconFile size="large" path="harmony\composite\pageedit_24.png"/>
+	<IconFile size="xlarge" path="harmony\composite\pageedit_32.png"/>
+  </Icon>
+
+  <Icon name="pagetype-delete-pagetype">
+    <IconFile size="normal" path="harmony\composite\pagedel_16.png"/>
+	<IconFile size="large" path="harmony\composite\pagedel_24.png"/>
+	<IconFile size="xlarge" path="harmony\composite\pagedel_32.png"/>
+  </Icon>
+
+  <Icon name="pagetype-defaultpagecontent">
+    <IconFile size="normal" path="harmony\finance\category_16x16.png"/>
+    <IconFile size="large" path="harmony\finance\category_24x24.png"/>
+    <IconFile size="xlarge" path="harmony\finance\category_32x32.png"/>
+  </Icon>
+
+  <Icon name="pagetype-add-pagetypedefaultpagecontent">
+    <IconFile size="normal" path="harmony\composite\pageadd_16.png"/>
+	<IconFile size="large" path="harmony\composite\pageadd_24.png"/>
+	<IconFile size="xlarge" path="harmony\composite\pageadd_32.png"/>
+  </Icon>
+
+  <Icon name="pagetype-edit-pagetypedefaultpagecontent">
+    <IconFile size="normal" path="harmony\composite\pageedit_16.png"/>
+	<IconFile size="large" path="harmony\composite\pageedit_24.png"/>
+	<IconFile size="xlarge" path="harmony\composite\pageedit_32.png"/>
+  </Icon>
+
+  <Icon name="pagetype-delete-pagetypedefaultpagecontent">
+    <IconFile size="normal" path="harmony\composite\pagedel_16.png"/>
+	<IconFile size="large" path="harmony\composite\pagedel_24.png"/>
+	<IconFile size="xlarge" path="harmony\composite\pagedel_32.png"/>
+  </Icon>
+
+  <Icon name="pagetype-add-metedatafield">
+    <IconFile size="normal" path="harmony\composite\dataadd_16.png"/>
+	<IconFile size="large" path="harmony\composite\dataadd_24.png"/>
+	<IconFile size="xlarge" path="harmony\composite\dataadd_32.png"/>
+  </Icon>
+
+  <Icon name="pagetype-delete-metedatafield">
+    <IconFile size="normal" path="harmony\composite\datadel_16.png"/>
+		<IconFile size="large" path="harmony\composite\datadel_24.png"/>
+		<IconFile size="xlarge" path="harmony\composite\datadel_32.png"/>
+  </Icon>
+
+  <Icon name="pagetype-edit-metedatafield">
+    <IconFile size="normal" path="harmony\composite\dataedit_16.png"/>
+	<IconFile size="large" path="harmony\composite\dataedit_24.png"/>
+	<IconFile size="xlarge" path="harmony\composite\dataedit_32.png"/>
+  </Icon>
+  
+  <!-- end Page types stuff -->
+
+</Icons>

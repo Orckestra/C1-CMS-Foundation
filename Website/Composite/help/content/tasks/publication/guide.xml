@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/2002/06/xhtml2">
+	<head>
+		<title>Publication guide</title>
+	</head>
+	<body>
+		<h>Publication guide</h>
+		<section>
+			<p>Lorem ipsum dolor sit <a href="_contents.xml">Help Contents</a>, consectetuer adipiscing elit. Praesent sed quam sed pede iaculis mattis. Donec scelerisque. Pellentesque sit amet nisi. Vestibulum dapibus tortor a odio. Vivamus fermentum dapibus libero. Pellentesque cursus. Nam porta luctus nibh. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam interdum gravida eros. Aenean porta justo. Donec ultricies laoreet eros. Vestibulum nec odio. Sed feugiat magna eu metus. Nunc posuere, lacus sed consequat mollis, arcu odio tempor est, et fermentum massa felis in lectus. Suspendisse potenti. Proin interdum cursus nunc. Pellentesque malesuada. Quisque venenatis mi non justo. Etiam bibendum, nulla sed tempor imperdiet, eros tellus porttitor metus, ac luctus mauris lorem rutrum est.</p>
+			<ol>
+				<li>Gor dit</li>
+				<li>Gor dat</li>
+			</ol>
+			<p>Lorem ipsum dolor sit <a href="_contents.xml">Help Contents</a>, consectetuer adipiscing elit. Praesent sed quam sed pede iaculis mattis. Donec scelerisque. Pellentesque sit amet nisi. Vestibulum dapibus tortor a odio. Vivamus fermentum dapibus libero. Pellentesque cursus. Nam porta luctus nibh. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam interdum gravida eros. Aenean porta justo. Donec ultricies laoreet eros. Vestibulum nec odio. Sed feugiat magna eu metus. Nunc posuere, lacus sed consequat mollis, arcu odio tempor est, et fermentum massa felis in lectus. Suspendisse potenti. Proin interdum cursus nunc. Pellentesque malesuada. Quisque venenatis mi non justo. Etiam bibendum, nulla sed tempor imperdiet, eros tellus porttitor metus, ac luctus mauris lorem rutrum est.</p>
+			<h>Overskrift</h>
+			<p>Lorem ipsum dolor sit <a href="_contents.xml">Help Contents</a>, consectetuer adipiscing elit. Praesent sed quam sed pede iaculis mattis. Donec scelerisque. Pellentesque sit amet nisi. Vestibulum dapibus tortor a odio. Vivamus fermentum dapibus libero. Pellentesque cursus. Nam porta luctus nibh. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam interdum gravida eros. Aenean porta justo. Donec ultricies laoreet eros. Vestibulum nec odio. Sed feugiat magna eu metus. Nunc posuere, lacus sed consequat mollis, arcu odio tempor est, et fermentum massa felis in lectus. Suspendisse potenti. Proin interdum cursus nunc. Pellentesque malesuada. Quisque venenatis mi non justo. Etiam bibendum, nulla sed tempor imperdiet, eros tellus porttitor metus, ac luctus mauris lorem rutrum est.</p>
+			<h>Lirum larum</h>
+			<p>
+				<object type="image/png" data="_images/publication/actionended.png">ALT TEXT!!!</object>
+			</p>
+			<p>Etiam eu nisi non <a href="dummy2.xml">Dummy 2</a> euismod cursus. Vestibulum dictum vehicula quam. Mauris ligula. Aenean dui. Donec dui. Etiam sed nulla vel nunc porta luctus. In fringilla. Integer non velit in neque tincidunt lacinia. Sed aliquam mauris non mauris. Quisque in arcu ac massa sollicitudin eleifend. Cras vehicula consequat sapien. Quisque elementum nunc et lectus. Integer ut nulla. In hac habitasse platea dictumst.</p>
+		</section>
+	</body>
+</html>

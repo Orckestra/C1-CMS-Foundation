@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="Uninstallable" type="System.Boolean" />
+  </cms:bindings>
+  <cms:layout iconhandle="package-install-package" label="${Composite.StandardPlugins.PackageElementProvider, InstallRemoteAddOn.Step4.LayoutLabel}">
+    <PlaceHolder>
+      <f:BooleanCheck>
+        <f:BooleanCheck.CheckValue>
+          <cms:read source="Uninstallable" />
+        </f:BooleanCheck.CheckValue>
+        <f:BooleanCheck.WhenTrue>
+          <Heading
+            Title="${Composite.StandardPlugins.PackageElementProvider, InstallRemoteAddOn.Step4.NonUninstallableHeadingTitle}"
+            Description="${Composite.StandardPlugins.PackageElementProvider, InstallRemoteAddOn.Step4.NonUninstallableHeadingDescription}" />
+        </f:BooleanCheck.WhenTrue>
+        <f:BooleanCheck.WhenFalse>
+          <Heading
+            Title="${Composite.StandardPlugins.PackageElementProvider, InstallRemoteAddOn.Step4.HeadingTitle}"
+            Description="${Composite.StandardPlugins.PackageElementProvider, InstallRemoteAddOn.Step4.HeadingDescription}" />
+        </f:BooleanCheck.WhenFalse>
+      </f:BooleanCheck>
+    </PlaceHolder>
+  </cms:layout>
+</cms:formdefinition>

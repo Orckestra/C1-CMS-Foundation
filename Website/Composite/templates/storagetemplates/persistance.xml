@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistance xmlns="http://www.composite.net/ns/localstore/persistance">
+	<!-- 
+	<persist id="xxx">
+		<att name="n1" value="v1"/>
+		<att name="n2" value="v2"/>
+		<att name="n3" value="v3"/>
+	</persist>
+	<persist id="yyy">
+		<att name="n1" value="v1"/>
+		<att name="n2" value="v2"/>
+		<att name="n3" value="v3"/>
+	</persist>
+	-->
+</persistance>

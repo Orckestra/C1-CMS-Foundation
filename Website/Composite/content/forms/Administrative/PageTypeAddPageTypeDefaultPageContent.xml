@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="DefaultPageContent" type="Composite.Data.Types.IPageTypeDefaultPageContent"/>
+  </cms:bindings>
+  <cms:layout iconhandle="pagetype-add-pagetypedefaultpagecontent" label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeDefaultPageContentWorkflow.Layout.Label}">
+    <FieldGroup Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeDefaultPageContentWorkflow.FieldGroup.Label}">
+
+      <TextBox Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Label}"
+               Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Help}">
+        <TextBox.Text>
+          <cms:bind source="DefaultPageContent.PlaceHolderId" />
+        </TextBox.Text>
+      </TextBox>    
+
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

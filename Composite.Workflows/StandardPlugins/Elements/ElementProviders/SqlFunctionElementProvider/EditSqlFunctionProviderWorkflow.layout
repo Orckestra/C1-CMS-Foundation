@@ -1,0 +1,101 @@
+﻿<StateMachineWorkflowDesigner xmlns:ns0="clr-namespace:System.Drawing;Assembly=System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Name="EditSqlFunctionProviderWorkflow" Location="30, 30" Size="790, 530" AutoSizeMargin="16, 24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/workflow">
+	<StateMachineWorkflowDesigner.DesignerConnectors>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="finalStateActivity" SourceConnectionIndex="0" TargetConnectionEdge="Top" SetStateName="setStateActivity1" SourceStateName="EditSqlFunctionProviderWorkflow" SourceConnectionEdge="Right" TargetActivity="finalStateActivity" SourceActivity="EditSqlFunctionProviderWorkflow" EventHandlerName="eventDrivenActivity1">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="176" Y="71" />
+				<ns0:Point X="176" Y="93" />
+				<ns0:Point X="280" Y="93" />
+				<ns0:Point X="280" Y="329" />
+				<ns0:Point X="143" Y="329" />
+				<ns0:Point X="143" Y="335" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="editStateActivity" SourceConnectionIndex="0" TargetConnectionEdge="Top" SetStateName="setStateActivity2" SourceStateName="initialState" SourceConnectionEdge="Right" TargetActivity="editStateActivity" SourceActivity="initialState" EventHandlerName="initialStateInitializationActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="256" Y="146" />
+				<ns0:Point X="272" Y="146" />
+				<ns0:Point X="272" Y="190" />
+				<ns0:Point X="168" Y="190" />
+				<ns0:Point X="168" Y="201" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="stateActivity1" SourceConnectionIndex="1" TargetConnectionEdge="Top" SetStateName="setStateActivity3" SourceStateName="editStateActivity" SourceConnectionEdge="Right" TargetActivity="stateActivity1" SourceActivity="editStateActivity" EventHandlerName="editEventDrivenActivity_Save">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="252" Y="266" />
+				<ns0:Point X="284" Y="266" />
+				<ns0:Point X="284" Y="422" />
+				<ns0:Point X="160" Y="422" />
+				<ns0:Point X="160" Y="431" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="editStateActivity" SourceConnectionIndex="2" TargetConnectionEdge="Top" SetStateName="setStateActivity5" SourceStateName="editStateActivity" SourceConnectionEdge="Right" TargetActivity="editStateActivity" SourceActivity="editStateActivity" EventHandlerName="editEventDrivenActivity_preview">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="267" Y="290" />
+				<ns0:Point X="283" Y="290" />
+				<ns0:Point X="283" Y="194" />
+				<ns0:Point X="168" Y="194" />
+				<ns0:Point X="168" Y="201" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="editStateActivity" SourceConnectionIndex="0" TargetConnectionEdge="Top" SetStateName="setStateActivity4" SourceStateName="stateActivity1" SourceConnectionEdge="Right" TargetActivity="editStateActivity" SourceActivity="stateActivity1" EventHandlerName="saveStateInitializationActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="252" Y="472" />
+				<ns0:Point X="284" Y="472" />
+				<ns0:Point X="284" Y="193" />
+				<ns0:Point X="168" Y="193" />
+				<ns0:Point X="168" Y="201" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+	</StateMachineWorkflowDesigner.DesignerConnectors>
+	<StateMachineWorkflowDesigner.Designers>
+		<StateDesigner Name="initialState" Location="63, 105" Size="197, 80" AutoSizeMargin="16, 24">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Size="150, 182" Name="initialStateInitializationActivity" Location="71, 136">
+					<StateInitializationDesigner.Designers>
+						<CodeDesigner Size="130, 41" Name="codeActivity1" Location="81, 198" />
+						<SetStateDesigner Size="130, 41" Name="setStateActivity2" Location="81, 258" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+		<EventDrivenDesigner Size="150, 182" Name="eventDrivenActivity1" Location="38, 61">
+			<EventDrivenDesigner.Designers>
+				<HandleExternalEventActivityDesigner Size="130, 41" Name="cancelHandleExternalEventActivity1" Location="48, 123" />
+				<SetStateDesigner Size="130, 41" Name="setStateActivity1" Location="48, 183" />
+			</EventDrivenDesigner.Designers>
+		</EventDrivenDesigner>
+		<StateDesigner Name="editStateActivity" Location="63, 201" Size="210, 118" AutoSizeMargin="16, 24">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Size="150, 122" Name="editStateInitializationActivity" Location="71, 232">
+					<StateInitializationDesigner.Designers>
+						<ActivityDesigner Size="130, 41" Name="documentFormActivity1" Location="81, 294" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+				<EventDrivenDesigner Size="150, 182" Name="editEventDrivenActivity_Save" Location="71, 256">
+					<EventDrivenDesigner.Designers>
+						<HandleExternalEventActivityDesigner Size="130, 41" Name="saveHandleExternalEventActivity1" Location="81, 318" />
+						<SetStateDesigner Size="130, 41" Name="setStateActivity3" Location="81, 378" />
+					</EventDrivenDesigner.Designers>
+				</EventDrivenDesigner>
+				<EventDrivenDesigner Size="150, 242" Name="editEventDrivenActivity_preview" Location="71, 280">
+					<EventDrivenDesigner.Designers>
+						<HandleExternalEventActivityDesigner Size="130, 41" Name="previewHandleExternalEventActivity1" Location="81, 342" />
+						<CodeDesigner Size="130, 41" Name="previewCodeActivity" Location="81, 402" />
+						<SetStateDesigner Size="130, 41" Name="setStateActivity5" Location="81, 462" />
+					</EventDrivenDesigner.Designers>
+				</EventDrivenDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+		<StateDesigner Name="finalStateActivity" Location="63, 335" Size="160, 80" AutoSizeMargin="16, 24" />
+		<StateDesigner Name="stateActivity1" Location="63, 431" Size="194, 80" AutoSizeMargin="16, 24">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Size="150, 182" Name="saveStateInitializationActivity" Location="71, 462">
+					<StateInitializationDesigner.Designers>
+						<CodeDesigner Size="130, 41" Name="codeActivity3" Location="81, 524" />
+						<SetStateDesigner Size="130, 41" Name="setStateActivity4" Location="81, 584" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+	</StateMachineWorkflowDesigner.Designers>
+</StateMachineWorkflowDesigner>

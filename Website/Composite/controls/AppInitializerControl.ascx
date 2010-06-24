@@ -1,0 +1,1 @@
+<%@ Control Language="C#" AutoEventWireup="true" CodeFile="AppInitializerControl.ascx.cs" Inherits="AppInitializerControl" %>

@@ -1,0 +1,1242 @@
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+#region vista
+ui|menubar {
+background: url("menus/vistabackdrop.png") $(color:threedface) repeat-x 0 50% !important;
+}
+#endregion
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+/* HOVER */
+
+ui|toolbarbutton.hover table.matrix td.c {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-c.png");
+#region vista
+background-image: none;
+filter: none;
+#endregion
+}
+ui|toolbarbutton.hover table.matrix td.n {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-n.png");
+#region vista
+#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-hover-n.png");
+#endregion
+}
+ui|toolbarbutton.hover table.matrix td.s {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-s.png");
+#region vista
+#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-hover-s.png");
+#endregion
+}
+ui|toolbarbutton.hover table.matrix td.e {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-e.png");
+#region vista
+#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-hover-e.png");
+#endregion
+}
+ui|toolbarbutton.hover table.matrix td.w {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-w.png");
+#region vista
+#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-hover-w.png");
+#endregion
+}
+ui|toolbarbutton.hover table.matrix td.ne {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-ne.png");
+#region vista
+#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-hover-ne.png");
+#endregion
+}
+ui|toolbarbutton.hover table.matrix td.nw {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-nw.png");
+#region vista
+#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-hover-nw.png");
+#endregion
+}
+ui|toolbarbutton.hover table.matrix td.se {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-se.png");
+#region vista
+#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-hover-se.png");
+#endregion
+}
+ui|toolbarbutton.hover table.matrix td.sw {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-sw.png");
+#region vista
+#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-hover-sw.png");
+#endregion
+}
+
+/* ACTIVE */
+
+ui|toolbarbutton.active table.matrix td.c {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-on-c.png");
+#region vista
+background-image: none;
+filter: none;
+#endregion
+}
+ui|toolbarbutton.active table.matrix td.n {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-on-n.png");
+#region vista
+#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-active-n.png");
+#endregion
+}
+ui|toolbarbutton.active table.matrix td.s {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-on-s.png");
+#region vista
+#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-active-s.png");
+#endregion
+}
+ui|toolbarbutton.active table.matrix td.e {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-on-e.png");
+#region vista
+#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-active-e.png");
+#endregion
+}
+ui|toolbarbutton.active table.matrix td.w {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-on-w.png");
+#region vista
+#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-active-w.png");
+#endregion
+}
+ui|toolbarbutton.active table.matrix td.ne {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-on-ne.png");
+#region vista
+#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-active-ne.png");
+#endregion
+}
+ui|toolbarbutton.active table.matrix td.nw {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-on-nw.png");
+#region vista
+#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-active-nw.png");
+#endregion
+}
+ui|toolbarbutton.active table.matrix td.se {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-on-se.png");
+#region vista
+#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-active-se.png");
+#endregion
+}
+ui|toolbarbutton.active table.matrix td.sw {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-on-sw.png");
+#region vista
+#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-active-sw.png");
+#endregion
+}
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+
+/* FOCUS */
+
+#region vista
+ui|clickbutton.focused table.matrix,
+ui|clickbutton.default table.matrix {
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-backdrop.png");
+background-repeat: repeat-x;
+background-position: 0 50%;
+}
+#endregion
+
+ui|clickbutton.focused table.matrix td.n,
+ui|clickbutton.default table.matrix td.n {
+#alphabackdrop: url("${skin}/buttons/clickbutton-focus-n.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-n.png");
+#endregion
+}
+ui|clickbutton.focused table.matrix td.s,
+ui|clickbutton.default table.matrix td.s {
+#alphabackdrop: url("${skin}/buttons/clickbutton-focus-s.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-s.png");
+#endregion
+}
+ui|clickbutton.focused table.matrix td.e,
+ui|clickbutton.default table.matrix td.e {
+#alphabackdrop: url("${skin}/buttons/clickbutton-focus-e.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-e.png");
+#endregion
+}
+ui|clickbutton.focused table.matrix td.w,
+ui|clickbutton.default table.matrix td.w {
+#alphabackdrop: url("${skin}/buttons/clickbutton-focus-w.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-w.png");
+#endregion
+}
+ui|clickbutton.focused table.matrix td.ne,
+ui|clickbutton.default table.matrix td.ne {
+#alphabackdrop: url("${skin}/buttons/clickbutton-focus-ne.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-ne.png");
+#endregion
+}
+ui|clickbutton.focused table.matrix td.nw,
+ui|clickbutton.default table.matrix td.nw {
+#alphabackdrop: url("${skin}/buttons/clickbutton-focus-nw.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-nw.png");
+#endregion
+}
+ui|clickbutton.focused table.matrix td.se,
+ui|clickbutton.default table.matrix td.se {
+#alphabackdrop: url("${skin}/buttons/clickbutton-focus-se.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-se.png");
+#endregion
+}
+ui|clickbutton.focused table.matrix td.sw,
+ui|clickbutton.default table.matrix td.sw {
+#alphabackdrop: url("${skin}/buttons/clickbutton-focus-sw.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-sw.png");
+#endregion
+}
+
+
+/* HOVER */
+
+#region vista
+ui|clickbutton.hover table.matrix {
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-backdrop.png");
+background-repeat: repeat-x;
+background-position: 0 50%;
+}
+#endregion
+
+ui|clickbutton.hover table.matrix td.n {
+#alphabackdrop: url("${skin}/buttons/clickbutton-hover-n.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-n.png");
+#endregion
+
+}
+ui|clickbutton.hover table.matrix td.s {
+#alphabackdrop: url("${skin}/buttons/clickbutton-hover-s.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-s.png");
+#endregion
+}
+ui|clickbutton.hover table.matrix td.e {
+#alphabackdrop: url("${skin}/buttons/clickbutton-hover-e.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-e.png");
+#endregion
+}
+ui|clickbutton.hover table.matrix td.w {
+#alphabackdrop: url("${skin}/buttons/clickbutton-hover-w.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-w.png");
+#endregion
+}
+ui|clickbutton.hover table.matrix td.ne {
+#alphabackdrop: url("${skin}/buttons/clickbutton-hover-ne.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-ne.png");
+#endregion
+}
+ui|clickbutton.hover table.matrix td.nw {
+#alphabackdrop: url("${skin}/buttons/clickbutton-hover-nw.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-nw.png");
+#endregion
+}
+ui|clickbutton.hover table.matrix td.se {
+#alphabackdrop: url("${skin}/buttons/clickbutton-hover-se.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-se.png");
+#endregion
+}
+ui|clickbutton.hover table.matrix td.sw {
+#alphabackdrop: url("${skin}/buttons/clickbutton-hover-sw.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-sw.png");
+#endregion
+}
+
+
+/* ACTIVE */
+
+ui|clickbutton.active table.matrix td.c {
+#alphabackdrop: url("${skin}/buttons/clickbutton-active-c.png");
+}
+ui|clickbutton.active table.matrix td.n {
+#alphabackdrop: url("${skin}/buttons/clickbutton-active-n.png");
+}
+ui|clickbutton.active table.matrix td.s {
+#alphabackdrop: url("${skin}/buttons/clickbutton-active-s.png");
+}
+ui|clickbutton.active table.matrix td.e {
+#alphabackdrop: url("${skin}/buttons/clickbutton-active-e.png");
+}
+ui|clickbutton.active table.matrix td.w {
+#alphabackdrop: url("${skin}/buttons/clickbutton-active-w.png");
+}
+ui|clickbutton.active table.matrix td.ne {
+#alphabackdrop: url("${skin}/buttons/clickbutton-active-ne.png");
+}
+ui|clickbutton.active table.matrix td.nw {
+#alphabackdrop: url("${skin}/buttons/clickbutton-active-nw.png");
+}
+ui|clickbutton.active table.matrix td.se {
+#alphabackdrop: url("${skin}/buttons/clickbutton-active-se.png");
+}
+ui|clickbutton.active table.matrix td.sw {
+#alphabackdrop: url("${skin}/buttons/clickbutton-active-sw.png");
+}
+
+
+/* DEFAULT and DISABLED */
+
+#region vista
+ui|clickbutton table.matrix,
+ui|clickbutton.isdisabled table.matrix {
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-backdrop.png");
+background-repeat: repeat-x;
+background-position: 0 50%;
+}
+#endregion
+
+ui|clickbutton table.matrix td.c,
+ui|clickbutton.isdisabled table.matrix td.c {
+#alphabackdrop: url("${skin}/buttons/clickbutton-default-c.png");
+#region vista
+filter: none;
+background-image: none;
+#endregion
+}
+ui|clickbutton table.matrix td.n,
+ui|clickbutton.isdisabled table.matrix td.n {
+#alphabackdrop: url("${skin}/buttons/clickbutton-default-n.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-n.png");
+#endregion
+
+}
+ui|clickbutton table.matrix td.s,
+ui|clickbutton.isdisabled table.matrix td.s {
+#alphabackdrop: url("${skin}/buttons/clickbutton-default-s.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-s.png");
+#endregion
+}
+ui|clickbutton table.matrix td.e,
+ui|clickbutton.isdisabled table.matrix td.e {
+#alphabackdrop: url("${skin}/buttons/clickbutton-default-e.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-e.png");
+#endregion
+}
+ui|clickbutton table.matrix td.w,
+ui|clickbutton.isdisabled table.matrix td.w {
+#alphabackdrop: url("${skin}/buttons/clickbutton-default-w.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-w.png");
+#endregion
+}
+ui|clickbutton table.matrix td.ne,
+ui|clickbutton.isdisabled table.matrix td.ne {
+#alphabackdrop: url("${skin}/buttons/clickbutton-default-ne.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-ne.png");
+#endregion
+}
+ui|clickbutton table.matrix td.nw,
+ui|clickbutton.isdisabled table.matrix td.nw {
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-nw.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-nw.png");
+#endregion
+}
+ui|clickbutton table.matrix td.se,
+ui|clickbutton.isdisabled table.matrix td.se {
+#alphabackdrop: url("${skin}/buttons/clickbutton-default-se.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-se.png");
+#endregion
+}
+ui|clickbutton table.matrix td.sw,
+ui|clickbutton.isdisabled table.matrix td.sw {
+#alphabackdrop: url("${skin}/buttons/clickbutton-default-sw.png");
+#region vista
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-sw.png");
+#endregion
+}
+
+
+/* TOOLBAR CLICKBUTTONS ..............................................*/
+
+ui|toolbar ui|clickbutton table.matrix td.c,
+ui|toolbar ui|clickbutton.isdisabled table.matrix td.c {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-c.png");
+}
+ui|toolbar ui|clickbutton table.matrix td.n,
+ui|toolbar ui|clickbutton.isdisabled table.matrix td.n {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-n.png");
+}
+ui|toolbar ui|clickbutton table.matrix td.s,
+ui|toolbar ui|clickbutton.isdisabled table.matrix td.s {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-s.png");
+}
+ui|toolbar ui|clickbutton table.matrix td.e,
+ui|toolbar ui|clickbutton.isdisabled table.matrix td.e {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-e.png");
+}
+ui|toolbar ui|clickbutton table.matrix td.w,
+ui|toolbar ui|clickbutton.isdisabled table.matrix td.w {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-w.png");
+}
+ui|toolbar ui|clickbutton table.matrix td.ne,
+ui|toolbar ui|clickbutton.isdisabled table.matrix td.ne {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-ne.png");
+}
+ui|toolbar ui|clickbutton table.matrix td.nw,
+ui|toolbar ui|clickbutton.isdisabled table.matrix td.nw {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-nw.png");
+}
+ui|toolbar ui|clickbutton table.matrix td.se,
+ui|toolbar ui|clickbutton.isdisabled table.matrix td.se {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-se.png");
+}
+ui|toolbar ui|clickbutton table.matrix td.sw,
+ui|toolbar ui|clickbutton.isdisabled table.matrix td.sw {
+#alphabackdrop: url("${skin}/toolbars/toolbarbutton-sw.png");
+}
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|controlgroup {}
+
+ui|control {
+margin-left: 2px;
+background-color: transparent;
+}
+#region vista
+ui|control.dialogcontrol ui|labelbody { /* elongated vista controls */
+padding-left: 29px;
+}
+ui|toolbarbutton.dialogcontrol ui|labelbody { /* elongated vista controls */
+padding-left: 29px;
+}
+#endregion
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|tabbox.boxed {
+#moz border-bottom: 4px solid transparent;
+#ie border-bottom: 4px solid $(color:threedface);
+}
+
+ui|tabs {	
+padding-left: 3px;
+}
+ui|tabbox.boxed ui|tabs {	
+padding-left: 0;
+}
+ui|tabs div.tabliner {
+background-color: #FFFFFF;
+background-color: #F6F6F2;
+border-top: 1px solid #B5B5B5;
+border-bottom: 1px solid #B5B5B5;
+z-index: 2;
+}
+ui|tabbox.boxed ui|tabs div.tabliner {
+border: 1px solid #B5B5B5;
+background-color: #FFFFFF;
+border-bottom: none;
+}
+ui|tab {
+padding: 0;
+margin-right: -1px;
+z-index: 1;
+color: black; /* should not default to system color because of tab graphics */
+}
+ui|tab ui|labelbox {
+padding: 1px 5px 0 1px; /* how did this get unbalanced? */
+}
+ui|tabbox.boxed ui|tabpanels {
+background-repeat: repeat-x;
+background-color: #F4F3EE;
+border: 1px solid #B5B5B5;
+border-top: none;
+padding: 12px;
+padding-bottom: 16px;
+background-image: url("${skin}/tabboxes/boxedpanelbackdrop.png");
+}
+
+/* TAB GRAPHICS .................................................................. */
+
+/* tabs on top */
+
+ui|tabbox.tabsontop ui|tab {
+margin-top: 3px;
+}
+ui|tabbox.tabsontop ui|tab.selected {
+margin-top: 1px;
+z-index: 3;
+}
+#region default
+ui|tabbox.tabsontop ui|tab table.matrix td.c,
+ui|tabbox.tabsontop ui|tab table.matrix td.s {
+background-color: #F6F6F2;
+}
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.c,
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.s {
+background-color: #FFFFFF;
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.n {
+#alphabackdrop: url("${skin}/tabboxes/tab-n.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.ne {
+#alphabackdrop: url("${skin}/tabboxes/tab-ne.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.nw {
+#alphabackdrop: url("${skin}/tabboxes/tab-nw.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.e, 
+ui|tabbox.tabsontop ui|tab table.matrix td.se {
+#alphabackdrop: url("${skin}/tabboxes/tab-e.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.w, 
+ui|tabbox.tabsontop ui|tab table.matrix td.sw {
+#alphabackdrop: url("${skin}/tabboxes/tab-w.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.n,
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.n  {
+#alphabackdrop: url("${skin}/tabboxes/tab-on-n.png");
+}
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.e,
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.se {
+#alphabackdrop: url("${skin}/tabboxes/tab-on-e.png");
+}
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.w,
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.sw {
+#alphabackdrop: url("${skin}/tabboxes/tab-on-w.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.ne,
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.ne {
+#alphabackdrop: url("${skin}/tabboxes/tab-on-ne.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.nw,
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.nw {
+#alphabackdrop: url("${skin}/tabboxes/tab-on-nw.png");
+}
+#endregion
+
+#region osx
+ui|tabbox.tabsontop ui|tab table.matrix td.c,
+ui|tabbox.tabsontop ui|tab table.matrix td.s {
+background-color: #F6F6F2;
+}
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.c,
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.s {
+background-color: #FFFFFF;
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.n {
+#alphabackdrop: url("${skin}/tabboxes/tab-n.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.ne {
+#alphabackdrop: url("${skin}/tabboxes/tab-ne.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.nw {
+#alphabackdrop: url("${skin}/tabboxes/tab-nw.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.e, 
+ui|tabbox.tabsontop ui|tab table.matrix td.se {
+#alphabackdrop: url("${skin}/tabboxes/tab-e.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.w, 
+ui|tabbox.tabsontop ui|tab table.matrix td.sw {
+#alphabackdrop: url("${skin}/tabboxes/tab-w.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.n,
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.n  {
+#alphabackdrop: url("${skin}/tabboxes/tab-on-n.png");
+}
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.e,
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.se {
+#alphabackdrop: url("${skin}/tabboxes/tab-on-e.png");
+}
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.w,
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.sw {
+#alphabackdrop: url("${skin}/tabboxes/tab-on-w.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.ne,
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.ne {
+#alphabackdrop: url("${skin}/tabboxes/tab-on-ne.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.nw,
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.nw {
+#alphabackdrop: url("${skin}/tabboxes/tab-on-nw.png");
+}
+#endregion
+
+#region vista
+ui|tabbox.tabsontop ui|tab table.matrix td.c {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-c.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.n {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-n.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.s {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-s.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.ne {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-ne.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.nw {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-nw.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.e {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-e.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.se {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-se.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.w {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-w.png");
+}
+ui|tabbox.tabsontop ui|tab table.matrix td.sw {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-sw.png");
+}
+
+
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.c,
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.s {
+background-color: white;
+background-image: none !important;
+_filter: none;
+}
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.n {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-active-n.png");
+}
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.ne {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-active-ne.png");
+}
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.nw {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-active-nw.png");
+}
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.e,
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.se {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-active-e.png");
+}
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.w,
+ui|tabbox.tabsontop ui|tab.selected table.matrix td.sw {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-active-w.png");
+}
+
+
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.c {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-c.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.n {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-n.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.ne {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-ne.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.nw {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-nw.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.e {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-e.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.w {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-w.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.se {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-se.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.sw {
+#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-sw.png");
+}
+ui|tabbox.tabsontop ui|tab.hover table.matrix td.s {
+background-color: #A7D9F5;
+background-image: none !important;
+_filter: none;
+}
+
+#endregion
+
+/* tabs below */
+
+ui|tabbox.tabsbelow ui|tab {
+margin-top: 0;
+margin-bottom: 20px;
+}
+ui|tabbox.tabsbelow ui|tab.selected {
+margin-top: 2px;
+z-index: 3;
+}
+ui|tabbox.tabsbelow ui|tab table.matrix td.c,
+ui|tabbox.tabsbelow ui|tab table.matrix td.n {
+background-color: #F6F6F2;
+}
+ui|tabbox.tabsbelow ui|tab table.matrix td.e, 
+ui|tabbox.tabsbelow ui|tab table.matrix td.ne {
+#alphabackdrop: url("${skin}/tabboxes/tab-e.png");
+}
+ui|tabbox.tabsbelow ui|tab table.matrix td.w, 
+ui|tabbox.tabsbelow ui|tab table.matrix td.nw {
+#alphabackdrop: url("${skin}/tabboxes/tab-w.png");
+}
+ui|tabbox.tabsbelow ui|tab table.matrix td.se {
+#alphabackdrop: url("${skin}/tabboxes/tab-se.png");
+}
+ui|tabbox.tabsbelow ui|tab table.matrix td.sw {
+#alphabackdrop: url("${skin}/tabboxes/tab-below-sw.png");
+}
+ui|tabbox.tabsbelow ui|tab table.matrix td.se {
+#alphabackdrop: url("${skin}/tabboxes/tab-below-se.png");
+}
+ui|tabbox.tabsbelow ui|tab table.matrix td.s {
+#alphabackdrop: url("${skin}/tabboxes/tab-below-s.png");
+}
+ui|tabbox.tabsbelow ui|tab.selected table.matrix td.e,
+ui|tabbox.tabsbelow ui|tab.selected table.matrix td.ne {
+#alphabackdrop: url("${skin}/tabboxes/tab-on-e.png");
+}
+ui|tabbox.tabsbelow ui|tab.selected table.matrix td.w,
+ui|tabbox.tabsbelow ui|tab.selected table.matrix td.nw {
+#alphabackdrop: url("${skin}/tabboxes/tab-on-w.png");
+}
+ui|tabbox.tabsbelow ui|tab.selected table.matrix td.c,
+ui|tabbox.tabsbelow ui|tab.selected table.matrix td.n {
+background-color: #FFFFFF;
+}
+ui|tabbox.tabsbelow ui|tab.hover table.matrix td.sw,
+ui|tabbox.tabsbelow ui|tab.selected table.matrix td.sw {
+#alphabackdrop: url("${skin}/tabboxes/tab-on-sw.png");
+}
+ui|tabbox.tabsbelow ui|tab.hover table.matrix td.se,
+ui|tabbox.tabsbelow ui|tab.selected table.matrix td.se {
+#alphabackdrop: url("${skin}/tabboxes/tab-on-se.png");
+}
+ui|tabbox.tabsbelow ui|tab.hover table.matrix td.s,
+ui|tabbox.tabsbelow ui|tab.selected table.matrix td.s {
+#alphabackdrop: url("${skin}/tabboxes/tab-on-s.png");
+}
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+#region default
+ui|titlebar {
+background-color: InactiveCaption;
+color: Inactive$(color:captiontext);
+#alphabackdrop: url("${skin}/docks/tabbackdrop.png");
+}
+ui|dialog.active ui|titlebar {
+background-color: $(color:activecaption);
+color: $(color:captiontext);
+}
+#endregion
+
+#region osx
+ui|titlebar {
+background-color: InactiveCaption;
+color: Inactive$(color:captiontext);
+#alphabackdrop: url("${skin}/docks/tabbackdrop.png");
+}
+ui|dialog.active ui|titlebar {
+background-color: $(color:activecaption);
+color: $(color:captiontext);
+}
+#endregion
+
+#region vista
+ui|dialog ui|titlebar {
+margin: 3px 3px 0 3px;
+#alphabackdrop: url("${skin}/dialogs/vista/dialog-titlebar.png");
+}
+ui|dialog.active ui|titlebar {
+#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-titlebar.png");	
+}
+ui|dialog ui|titlebarbody {
+padding: 2px 3px 6px 5px;
+_padding: 5px 3px 6px 5px;
+}
+ui|dialog ui|titlebar ui|controlgroup {
+position: relative;
+top: 2px;
+}
+ui|dialog ui|titlebar ui|labeltext {
+color: white;
+position: relative;
+top: 1px;
+}
+#endregion
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|treenode ui|labelbox.open {
+background-image: url("${skin}/trees/icon-treenode-minus.png");
+}
+ui|treenode ui|labelbox.closed {
+background-image: url("${skin}/trees/icon-treenode-plus.png");
+}
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|explorersplitter,
+ui|explorertoolbarbutton {
+border-bottom: 1px solid $(color:threedshadow);
+}
+ui|explorertoolbarbutton table.matrix {
+width: 100%;
+#region default
+#alphabackdrop: url("${skin}/explorer/button.png");
+#endregion
+#region osx
+#alphabackdrop: url("${skin}/explorer/button.png");
+#endregion
+#region vista
+#alphabackdrop: url("${skin}/explorer/vista/button.png");
+#endregion
+}
+
+
+ui|explorertoolbarbutton ui|labelbox {
+padding-left: 1px;
+}
+ui|explorertoolbarbutton.hover {
+background-color: $(color:threedhighlight);
+}
+ui|explorertoolbarbutton.active {
+#region default
+background-color: $(color:highlight);
+border-bottom-color: $(color:highlight);
+#endregion
+#region osx
+background-color: $(color:highlight);
+border-bottom-color: $(color:highlight);
+#endregion
+#region vista
+border-bottom-color: #658fD5;
+#endregion
+}
+ui|explorertoolbarbutton.active ui|labeltext {
+#region osx
+color: $(color:highlighttext);
+#endregion
+#region default
+color: $(color:highlighttext);
+#endregion
+#region vista
+color: white;
+/*
+_filter:progid:DXImageTransform.Microsoft.dropshadow(color='#072785',offX='1',offY='1') progid:DXImageTransform.Microsoft.Glow(Color='#5483d0',Strength=1);
+position: relative;
+top: -2px;
+left: -2px;
+*/
+#endregion
+}
+ui|explorerbar {
+border-top: 1px solid $(color:threedhighlight);
+}
+ui|explorertoolbar ui|toolbargroup {
+margin: 0;
+padding: 0;
+}
+ui|explorermenu ui|toolbar {
+border: none;
+}
+#region vista
+ui|explorertoolbarbutton.active table.matrix td.c,
+ui|explorertoolbarbutton.active table.matrix td.e,
+ui|explorertoolbarbutton.active table.matrix td.w {
+#alphabackdrop: url("${skin}/explorer/vista/button-active-c.png");
+}
+ui|explorertoolbarbutton.active table.matrix td.n,
+ui|explorertoolbarbutton.active table.matrix td.ne,
+ui|explorertoolbarbutton.active table.matrix td.nw {
+#alphabackdrop: url("${skin}/explorer/vista/button-active-n.png");
+}
+ui|explorertoolbarbutton.active table.matrix td.s,
+ui|explorertoolbarbutton.active table.matrix td.se,
+ui|explorertoolbarbutton.active table.matrix td.sw {
+#alphabackdrop: url("${skin}/explorer/vista/button-active-s.png");
+}
+#endregion
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|dialog {
+#moz -moz-box-shadow: 4px 4px 16px rgba(0,0,0,0.75);	
+}
+
+ui|dialogbody {
+border: 2px solid InactiveCaption;
+border-top: none;
+}
+ui|dialog.active ui|dialogbody {
+border-color: $(color:activecaption);
+}
+
+/*
+ui|dialog,
+ui|dialogmatrix td,
+ui|dialog.active ui|dialogmatrix td,
+ui|dialogmatrix td.c,
+ui|dialogtitlebar {
+background-color: transparent !important;
+}
+*/
+
+#region vista
+/*
+ui|view.dialogview {
+padding: 1px;
+border: 1px solid #2264DC;
+}
+*/
+ui|dialog {
+background-color: transparent;
+#moz background-color: rgba(0,0,0,0.75);
+#moz -moz-border-radius: 4px;
+-moz-transition-property: opacity;
+-moz-transition-duration: 0.15s;
+}
+ui|dialogbody,
+ui|dialog.active ui|dialogbody,
+ui|dialogmatrix td,
+ui|dialog.active table.dialogmatrix td {
+background-color: transparent;
+border-color: transparent;
+}
+ui|dialogbody {
+border-width: 3px; /* broad vista borders */
+}
+ui|dialog.active table.dialogmatrix td.c {
+background-color: transparent;
+}
+
+/* DEFAULT */
+
+ui|dialog table.dialogmatrix td.c {
+background-color: transparent;
+}
+ui|dialog table.dialogmatrix td.n {
+#alphabackdrop: url("${skin}/dialogs/vista/dialog-n.png");
+}
+ui|dialog table.dialogmatrix td.s {
+#alphabackdrop: url("${skin}/dialogs/vista/dialog-s.png");
+}
+ui|dialog table.dialogmatrix td.e {
+#alphabackdrop: url("${skin}/dialogs/vista/dialog-e.png");
+}
+ui|dialog table.dialogmatrix td.w {
+#alphabackdrop: url("${skin}/dialogs/vista/dialog-w.png");
+}
+ui|dialog table.dialogmatrix td.ne {
+#alphabackdrop: url("${skin}/dialogs/vista/dialog-ne.png");
+}
+ui|dialog table.dialogmatrix td.nw {
+#alphabackdrop: url("${skin}/dialogs/vista/dialog-nw.png");
+}
+ui|dialog table.dialogmatrix td.se {
+#alphabackdrop: url("${skin}/dialogs/vista/dialog-se.png");
+}
+ui|dialog table.dialogmatrix td.sw {
+#alphabackdrop: url("${skin}/dialogs/vista/dialog-sw.png");
+}
+
+
+/* ACTIVE */
+
+ui|dialog.active table.dialogmatrix td.n {
+#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-n.png");
+}
+ui|dialog.active table.dialogmatrix td.s {
+#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-s.png");
+}
+ui|dialog.active table.dialogmatrix td.e {
+#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-e.png");
+}
+ui|dialog.active table.dialogmatrix td.w {
+#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-w.png");
+}
+ui|dialog.active table.dialogmatrix td.ne {
+#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-ne.png");
+}
+ui|dialog.active table.dialogmatrix td.nw {
+#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-nw.png");
+}
+ui|dialog.active table.dialogmatrix td.se {
+#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-se.png");
+}
+ui|dialog.active table.dialogmatrix td.sw {
+#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-sw.png");
+}
+
+#endregion
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+/*
+#region vista
+ui|dialogpage {
+padding: 14px 13px 13px 13px;
+}
+#endregion
+*/
+
+/* STANDARD DIALOGS ................................................................*/
+
+ui|dialogpage.question ui|dialogvignette,
+ui|dialogvignette.question {
+#alphabackdrop: url("${skin}/dialogpages/question_32.png");
+}
+ui|dialogpage.warning ui|dialogvignette,
+ui|dialogvignette.warning {
+#alphabackdrop: url("${skin}/dialogpages/warning_32.png");
+}
+ui|dialogpage.message ui|dialogvignette,
+ui|dialogvignette.message {
+#alphabackdrop: url("${skin}/dialogpages/message_32.png");
+}
+ui|dialogpage.error ui|dialogvignette,
+ui|dialogvignette.error {
+#alphabackdrop: url("${skin}/dialogpages/error_32.png");
+}
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+/* DIALOGSHADOW .........................................................*/
+
+ui|shadow.dialogshadow table.matrix td.n,
+ui|shadow.dialogshadow table.matrix td.s {
+height: 36px;
+}
+ui|shadow.dialogshadow table.matrix td.e,
+ui|shadow.dialogshadow table.matrix td.w {
+width: 36px;
+}
+ui|shadow.dialogshadow table.matrix td.ne,
+ui|shadow.dialogshadow table.matrix td.nw,
+ui|shadow.dialogshadow table.matrix td.se,
+ui|shadow.dialogshadow table.matrix td.sw {
+width: 36px;
+height: 36px;
+}
+ui|shadow.dialogshadow td.n {
+#alphabackdrop: url("${skin}/shadows/shadow-n.png");
+}
+ui|shadow.dialogshadow td.s {
+#alphabackdrop: url("${skin}/shadows/shadow-s.png");
+}
+ui|shadow.dialogshadow td.e {
+#alphabackdrop: url("${skin}/shadows/shadow-e.png");
+}
+ui|shadow.dialogshadow td.w {
+#alphabackdrop: url("${skin}/shadows/shadow-w.png");
+}
+ui|shadow.dialogshadow td.ne {
+#alphabackdrop: url("${skin}/shadows/shadow-ne.png");
+}
+ui|shadow.dialogshadow td.se {
+#alphabackdrop: url("${skin}/shadows/shadow-se.png");
+}
+ui|shadow.dialogshadow td.nw {
+#alphabackdrop: url("${skin}/shadows/shadow-nw.png");
+}
+ui|shadow.dialogshadow td.sw {
+#alphabackdrop: url("${skin}/shadows/shadow-sw.png");
+}
+ui|shadow.dialogshadow td.c {
+border: 1px solid black;
+background-color: black; 
+}
+
+
+/* POPUPSHADOW .........................................................*/
+
+ui|shadow.popupshadow table.matrix td.n,
+ui|shadow.popupshadow table.matrix td.s {
+height: 18px;
+}
+ui|shadow.popupshadow table.matrix td.e,
+ui|shadow.popupshadow table.matrix td.w {
+width: 18px;
+}
+ui|shadow.popupshadow table.matrix td.ne,
+ui|shadow.popupshadow table.matrix td.nw,
+ui|shadow.popupshadow table.matrix td.se,
+ui|shadow.popupshadow table.matrix td.sw {
+width: 18px;
+height: 18px;
+}
+ui|shadow.popupshadow td.n {
+#alphabackdrop: url("${skin}/shadows/popupshadow-n.png");
+}
+ui|shadow.popupshadow td.s {
+#alphabackdrop: url("${skin}/shadows/popupshadow-s.png");
+}
+ui|shadow.popupshadow td.e {
+#alphabackdrop: url("${skin}/shadows/popupshadow-e.png");
+}
+ui|shadow.popupshadow td.w {
+#alphabackdrop: url("${skin}/shadows/popupshadow-w.png");
+}
+ui|shadow.popupshadow td.ne {
+#alphabackdrop: url("${skin}/shadows/popupshadow-ne.png");
+}
+ui|shadow.popupshadow td.se {
+#alphabackdrop: url("${skin}/shadows/popupshadow-se.png");
+}
+ui|shadow.popupshadow td.nw {
+#alphabackdrop: url("${skin}/shadows/popupshadow-nw.png");
+}
+ui|shadow.popupshadow td.sw {
+#alphabackdrop: url("${skin}/shadows/popupshadow-sw.png");
+}
+ui|shadow.popupshadow td.c {
+border: 1px solid black;
+background-color: black; 
+}
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|radio ui|labelbody { /* radiobuttons! */
+height: 18px;
+padding-left: 18px;
+}
+ui|radio ui|datalabeltext {
+padding-top: 3px;
+}
+td.group-ne {
+#alphabackdrop: url("${skin}/fields/groupbox-inset-ne-special.png");	
+}
+td.group-nw {
+#alphabackdrop: url("${skin}/fields/groupbox-inset-nw-special.png");	
+}
+td.group-se {
+#alphabackdrop: url("${skin}/fields/groupbox-inset-se.png");	
+}
+td.group-sw {
+#alphabackdrop: url("${skin}/fields/groupbox-inset-sw.png");	
+}
+td.group-n div,
+ui|fieldgroup.nolabel td.group-n {
+#alphabackdrop: url("${skin}/fields/groupbox-inset-n.png");	
+}
+td.group-s {
+#alphabackdrop: url("${skin}/fields/groupbox-inset-s.png");	
+}
+td.group-e {
+#alphabackdrop: url("${skin}/fields/groupbox-inset-e.png");	
+}
+td.group-w {
+#alphabackdrop: url("${skin}/fields/groupbox-inset-w.png");	
+}
+
+
+ui|tabbox.boxed td.group-ne {
+#alphabackdrop: url("${skin}/fields/groupbox-ne-special.png");	
+}
+ui|tabbox.boxed td.group-nw {
+#alphabackdrop: url("${skin}/fields/groupbox-nw-special.png");	
+}
+ui|tabbox.boxed td.group-se {
+#alphabackdrop: url("${skin}/fields/groupbox-se.png");	
+}
+ui|tabbox.boxed td.group-sw {
+#alphabackdrop: url("${skin}/fields/groupbox-sw.png");	
+}
+ui|tabbox.boxed td.group-n div { /* TODO: NOLABEL! */
+#alphabackdrop: url("${skin}/fields/groupbox-n.png");	
+}
+ui|tabbox.boxed td.group-s {
+#alphabackdrop: url("${skin}/fields/groupbox-s.png");	
+}
+ui|tabbox.boxed td.group-e {
+#alphabackdrop: url("${skin}/fields/groupbox-e.png");	
+}
+ui|tabbox.boxed td.group-w {
+#alphabackdrop: url("${skin}/fields/groupbox-w.png");	
+}
+@namespace ui url("http://www.w3.org/1999/xhtml");
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+/*
+ui|splashscreen {
+background-image: url("${skin}/splash/splash.png");
+top: 45%;
+left: 50%;
+width: 340px;
+height: 440px;
+margin-left: -165px;
+margin-top: -215px;
+}
+*/
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|balloon table.matrix td {
+width: 32px;
+height: 32px;
+}
+ui|balloon table.matrix td.n,
+ui|balloon table.matrix td.s {
+width: auto;
+}
+ui|balloon table.matrix td.e,
+ui|balloon table.matrix td.w {
+height: auto;
+}
+ui|balloon table.matrix td.c {
+width: auto;
+height: auto;
+background-color: #FFFFE1;
+overflow: visible !important;
+}
+ui|balloon table.matrix td.n {
+#alphabackdrop: url("${skin}/balloons/balloon-n.png");
+}
+ui|balloon table.matrix td.s {
+#alphabackdrop: url("${skin}/balloons/balloon-s.png");
+}
+ui|balloon table.matrix td.e {
+#alphabackdrop: url("${skin}/balloons/balloon-e.png");
+}
+ui|balloon table.matrix td.w {
+#alphabackdrop: url("${skin}/balloons/balloon-w.png");
+}
+ui|balloon table.matrix td.ne {
+#alphabackdrop: url("${skin}/balloons/balloon-ne.png");
+}
+ui|balloon table.matrix td.nw {
+#alphabackdrop: url("${skin}/balloons/balloon-nw.png");
+}
+ui|balloon table.matrix td.se {
+#alphabackdrop: url("${skin}/balloons/balloon-se.png");
+}
+ui|balloon table.matrix td.sw {
+#alphabackdrop: url("${skin}/balloons/balloon-sw.png");
+}
+ui|balloontext {
+margin-bottom: -10px;
+width: 200px;
+}
+ui|balloonspeak {
+width: 50px;
+height: 50px;
+top: 100%;
+left: 0;
+#alphabackdrop: url("${skin}/balloons/balloon-sw-speak.png");
+margin-top: -34px;
+#moz margin-top: -35px;
+margin-left: -12px;
+}
+ui|balloon.left ui|balloonspeak {
+top: 100%;
+left: 100%;
+#alphabackdrop: url("${skin}/balloons/balloon-se-speak.png");
+margin-left: -37px;
+}
+ui|balloon ui|controlgroup {
+position: absolute;
+top: 0;
+left: 100%;
+margin-top: 21px;
+margin-left: -40px;
+#ie margin-bottom: -30px;
+#region vista
+margin-left: -53px;
+#endregion
+}

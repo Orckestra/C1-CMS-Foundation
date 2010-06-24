@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="NewSqlConnection" type="Composite.Data.Types.ISqlConnection, Composite" />
+    <cms:binding name="ConnectionString" type="System.String" />
+  </cms:bindings>
+  <cms:layout iconhandle="sql-based-connection-add" label="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunctionConnection.LabelDialog}">
+    <FieldGroup Label="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunctionConnection.LabelFieldGroup}">
+      <TextBox Label="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunctionConnection.LabelName}" Help="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunctionConnection.HelpName}">
+        <TextBox.Text>
+          <cms:bind source="NewSqlConnection.Name" />
+        </TextBox.Text>
+      </TextBox>
+      <TextBox Label="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunctionConnection.LabelConnectionString}" Help="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunctionConnection.HelpConnectionString}">
+        <TextBox.Text>
+          <cms:bind source="ConnectionString" />
+        </TextBox.Text>
+      </TextBox>
+      <CheckBox ItemLabel="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunctionConnection.LabelIsMSSQLCheckBox}" Label="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunctionConnection.LabelIsMSSQL}">
+        <CheckBox.Checked>
+          <cms:bind source="NewSqlConnection.IsMsSql" />
+        </CheckBox.Checked>
+      </CheckBox>
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

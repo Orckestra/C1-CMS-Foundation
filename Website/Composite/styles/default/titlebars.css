@@ -1,0 +1,15 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|titlebar {
+	display: block;
+	font-weight: bold;
+	#ie width: 100%;
+	#ie overflow: visible;
+	#moz overflow: hidden; /* why does this clear the float? */
+}
+ui|titlebarbody {
+	display: block;
+	position: relative;
+	padding: 5px 3px 4px 5px;
+}

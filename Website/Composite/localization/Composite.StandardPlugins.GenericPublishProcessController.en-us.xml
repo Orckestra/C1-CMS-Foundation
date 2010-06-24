@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<strings>
+	<string key="SendToDraft" value="Send to draft" />
+	<string key="SendToDraftToolTip" value="" />
+	<string key="Publish" value="Publish" />
+	<string key="PublishToolTip" value="Publish to site" />
+	<string key="Unpublish" value="Unpublish" />
+	<string key="UnpublishToolTip" value="Set to draft status and remove the published version" />
+	<string key="SendForApproval" value="Send for approval" />
+	<string key="SendForApprovalToolTip" value="Send for approval" />
+	<string key="SendForPublication" value="Send for publication" />
+	<string key="SendForPublicationToolTip" value="Send for publication" />
+	<string key="UndoPublishedChanges" value="Undo changes" />
+	<string key="UndoPublishedChangesToolTip" value="Undo unpublished changes" />
+	<string key="ValidationErrorTitle" value="Action not possible" />
+	<string key="ValidationErrorMessage" value="The data did not validate with the following errors:" />	
+</strings>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+
+	<!-- preload precaution -->
+	<string key="Preload.Key" value="Retrieved on SourceEditorBinding startup to make sure strings are loaded :)"/>
+	
+	<!-- validation messages -->
+	<string key="Invalid.HTML.DialogTitle" value="Invalid XHTML" />
+	<string key="Invalid.HTML.MissingHtml" value="The root &lt;html&gt; tag is missing." />
+	<string key="Invalid.HTML.MissingHead" value="The &lt;head&gt; tag is missing." />
+	<string key="Invalid.HTML.MissingBody" value="The &lt;body&gt; tag is missing." />
+	<string key="Invalid.HTML.HeadBodyIndex" value="The &lt;head&gt; tag must precede &lt;body&gt;." />
+	<string key="Invalid.HTML.NamespaceURI" value="The root namespace is wrong." />
+	<string key="Invalid.HTML.MultipleBody" value="Only one &lt;body&gt; tag allowed."/>
+	<string key="Invalid.HTML.MultipleHead" value="Only one &lt;head&gt; tag allowed."/>
+	
+	<string key="Format.XML.ErrorDialog.Title" value="Source format aborted"/> 
+	<string key="Format.XML.ErrorDialog.Text" value="XML source formatting requires a well-formed document structure."/>
+	
+	<!-- plain/colored switch button -->
+	<string key="Switch.PlainEdit.Label" value="Plain Edit"/>
+	<string key="Switch.PlainEdit.ToolTip" value="No syntax highlight, faster performance"/>
+	<string key="Switch.ColoredEdit.Label" value="Colored Edit"/>
+	<string key="Switch.ColoredEdit.ToolTip" value="Syntax highlight, slower performance"/>
+	
+	<!-- insert dropdown -->
+	<string key="Insert.PageURL.Label" value="Page URL"/>
+	<string key="Insert.ImageURL.Label" value="Image URL"/>
+	<string key="Insert.MediaURL.Label" value="Media URL"/>
+	<string key="Insert.FrontendURL.Label" value="Frontend URL"/>
+	<string key="Insert.FunctionMarkup.Label" value="Function Markup"/>
+	
+</strings>

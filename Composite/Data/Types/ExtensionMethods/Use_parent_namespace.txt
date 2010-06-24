@@ -1,0 +1,3 @@
+﻿
+
+use "Composite.Data.Types" as namespace in this folder.

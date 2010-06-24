@@ -1,0 +1,89 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+
+* {
+	-moz-box-sizing: border-box;	
+}
+html,
+input,
+textarea,
+button,
+select,
+td,
+th {
+	#region default
+	 	font-family: Tahoma, sans-serif;
+	 	font-size: 11px;
+	 	font-size: 13px;
+	#endregion
+	#region vista
+	 	font-family: "Segoe UI", Tahoma, sans-serif;
+ 		font-size: 12px;
+ 		font-size: 13px;
+	#endregion
+	#region osx
+	 	font-family: "Lucida Grande", sans-serif;
+ 		font-size: 11px;
+ 		font-size: 12px;
+	#endregion
+}
+* {
+	-moz-box-sizing: border-box;	
+}
+html,
+body {
+	background-color: #F8F8F5 !important;
+	color: #333333;
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+body {
+	overflow: auto;
+}
+a {
+	cursor: pointer;
+	color: #CC071E;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+a:hover {
+	text-decoration: underline !important;
+}
+p,
+ul,
+ol {
+	padding: 0;
+	margin-top: 0;
+	margin-bottom: 1.3em;
+}
+ul,
+ol {
+	margin-left: 1.4em;	
+}
+ul {
+	color: #CC071E;
+	list-style: square;	
+}
+ul li span {
+ 	color: #333333;	
+}
+h1 {
+	font-size: 130%;
+	padding: 0;
+	margin: 0 0 20px 0;
+	text-transform: uppercase;
+}
+h4 {
+	font-size: 100%;
+	margin: 1.3em 0 0 0;
+	color: #CC071E;
+	text-transform: uppercase;
+}
+h4:first-child {
+	margin-top: 0;	
+}
+div.clear {
+	clear: both;
+}

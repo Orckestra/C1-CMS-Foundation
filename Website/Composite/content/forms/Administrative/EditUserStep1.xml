@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="User" type="Composite.Data.Types.IUser" />
+    <cms:binding name="CultureName" type="System.String" />
+    <cms:binding name="RegionLanguageList" type="System.Collections.IEnumerable" />
+    <cms:binding name="ActiveLocaleName" type="System.String" optional="true"/>
+    <cms:binding name="ActiveLocaleList" type="System.Collections.IEnumerable" optional="true"/>
+  </cms:bindings>
+  <cms:layout iconhandle="users-edituser">
+    <cms:layout.label>
+      <cms:read source="User.Username" />
+    </cms:layout.label>
+    <TabPanels PreSelectedIndex="0">
+      <PlaceHolder Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.GenerelTabLabel}">
+        <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.LabelFieldGroup}">
+          <TextBox Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.UserNameLabel}"
+                   Help="${Composite.Management, Website.Forms.Administrative.EditUserStep1.UserNameHelp}"
+                   Type="readonly">
+            <TextBox.Text>
+              <cms:bind source="User.Username" />
+            </TextBox.Text>
+          </TextBox>
+          <TextBox Type="Password" Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.PasswordLabel}" Help="${Composite.Management, Website.Forms.Administrative.EditUserStep1.PasswordHelp}">
+            <TextBox.Text>
+              <cms:bind source="User.EncryptedPassword" />
+            </TextBox.Text>
+          </TextBox>
+          <TextBox Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.EmailLabel}" Help="${Composite.Management, Website.Forms.Administrative.EditUserStep1.EmailHelp}">
+            <TextBox.Text>
+              <cms:bind source="User.Email" />
+            </TextBox.Text>
+          </TextBox>
+          <TextBox Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.GroupLabel}" Help="${Composite.Management, Website.Forms.Administrative.EditUserStep1.GroupHelp}">
+            <TextBox.Text>
+              <cms:bind source="User.Group" />
+            </TextBox.Text>
+          </TextBox>
+          <f:NullCheck>
+            <f:NullCheck.CheckValue>
+              <cms:read source="ActiveLocaleList" />
+            </f:NullCheck.CheckValue>
+            <f:NullCheck.WhenNotNull>
+              <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.ActiveLocaleLabel}" Help="${Composite.Management, Website.Forms.Administrative.EditUserStep1.ActiveLocaleHelp}">
+                <KeySelector.Options>
+                  <cms:read source="ActiveLocaleList"/>
+                </KeySelector.Options>
+                <KeySelector.Selected>
+                  <cms:bind source="ActiveLocaleName" />
+                </KeySelector.Selected>
+              </KeySelector>
+            </f:NullCheck.WhenNotNull>
+          </f:NullCheck>
+          <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.CultureLabel}" Help="${Composite.Management, Website.Forms.Administrative.EditUserStep1.CultureHelp}">
+            <KeySelector.Options>
+              <cms:read source="RegionLanguageList"/>
+            </KeySelector.Options>
+            <KeySelector.Selected>
+              <cms:bind source="CultureName" />
+            </KeySelector.Selected>
+          </KeySelector>
+        </FieldGroup>
+      </PlaceHolder>
+      
+      
+      <PlaceHolder Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.PermissionsTabLabel}">
+      </PlaceHolder>
+
+      <PlaceHolder Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.GroupsTabLabel}">
+      </PlaceHolder>      
+    </TabPanels>
+  </cms:layout>
+</cms:formdefinition>

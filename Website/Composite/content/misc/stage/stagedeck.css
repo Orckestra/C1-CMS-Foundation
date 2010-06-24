@@ -1,0 +1,21 @@
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+
+/*
+ * These declarations are duplicated in "app.css"
+ */
+ 
+#region ie
+	ui|splitbox {
+		width: 100%;
+	}
+	ui|splitpanel.horizontal {
+		width: 100%;
+		height: 100%;
+	}
+#endregion
+
+ui|splitter.horizontal ui|splitterbody,
+ui|splitter.vertical ui|splitterbody {
+	border: none;
+}

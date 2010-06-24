@@ -1,0 +1,33 @@
+html {
+	border: none;
+}
+body {
+	background: white none;
+	padding: 0;
+	margin: 0;
+	font-family: "Courier New", monospace;
+	font-size: 13px;
+	overflow: auto;
+	white-space: nowrap;
+}
+em {
+	font-style: normal;
+}
+span {
+	display: block;
+	padding-left: 12px;
+	padding-right: 12px;
+}
+span.type1,
+span.type2 {
+	background-color: $(color:infobackground);
+	color: $(color:infotext);
+	display: block;
+}
+span.type1 em {
+	color: $(color:graytext);
+	text-decoration: line-through;
+}
+span.type2 em {
+	font-weight: bold;
+}

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="UserGroup" type="Composite.Data.Types.IUserGroup" />
+  </cms:bindings>
+  <cms:layout iconhandle="usergroups-editusergroup">
+    <cms:layout.label>
+      <cms:read source="UserGroup.Name" />
+    </cms:layout.label>
+    <PlaceHolder>
+      <FieldGroup Label="${Composite.StandardPlugins.UserGroupElementProvider, EditUserGroup.EditUserGroupStep1.LabelFieldGroup}">
+        <TextBox Label="${Composite.StandardPlugins.UserGroupElementProvider, EditUserGroup.EditUserGroupStep1.UserGroupNameLabel}" Help="${Composite.StandardPlugins.UserGroupElementProvider, EditUserGroup.EditUserGroupStep1.UserGroupNameHelp}">
+          <TextBox.Text>
+            <cms:bind source="UserGroup.Name" />
+          </TextBox.Text>
+        </TextBox>
+      </FieldGroup>
+    </PlaceHolder>
+  </cms:layout>
+</cms:formdefinition>

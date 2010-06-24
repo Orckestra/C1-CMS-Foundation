@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="CultureName" type="System.String" />
+    <cms:binding name="RegionLanguageList" type="System.Collections.IEnumerable" />
+  </cms:bindings>
+  <cms:layout iconhandle="users-changeownculture" label="${Composite.Users, ChangeOwnCultureWorkflow.Dialog.Label}">
+    <FieldGroup Label="${Composite.Users, ChangeOwnCultureWorkflow.FieldGroup.Label}">
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.Users, ChangeOwnCultureWorkflow.Dialog.CultureSelector.Label}" Help="${Composite.Users, ChangeOwnCultureWorkflow.Dialog.CultureSelector.Help}">
+        <KeySelector.Options>
+          <cms:read source="RegionLanguageList"/>
+        </KeySelector.Options>
+        <KeySelector.Selected>
+          <cms:bind source="CultureName" />
+        </KeySelector.Selected>
+      </KeySelector>
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

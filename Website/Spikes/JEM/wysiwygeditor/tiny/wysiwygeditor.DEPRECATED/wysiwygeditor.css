@@ -1,0 +1,34 @@
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+/*
+ * @see {EditorToolBarButtonBinding}
+ *
+ui|toolbarbutton,
+ui|clickbutton,
+ui|selector {
+	overflow: hidden !important;
+}
+*/
+ui|flexbox#tinyflexbox {
+	position: relative; /* contain the cover */	
+}
+ui|splitpanel#editorsplitpanel {
+	border-right: 1px solid $(color:threedshadow);	
+}
+ui|splitter.horizontal {
+	border-left-color: $(color:threedface);
+	border-right-color: $(color:threedshadow);
+}
+ui|toolbar#statusbar {
+	border-top: none;
+}
+input#focusableinput { /* synchronize with sourcecodeeditor.css */
+	background-color: transparent;
+	border: none;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	display: none;
+	background-color: red !important;
+	cursor: help;
+}

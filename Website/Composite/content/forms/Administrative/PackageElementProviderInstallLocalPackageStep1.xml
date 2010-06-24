@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="UploadedFile" type="Composite.Forms.CoreUiControls.UploadedFile, Composite" />
+  </cms:bindings>
+  <cms:layout iconhandle="package-installer-install" label="${Composite.StandardPlugins.PackageElementProvider, InstallLocalAddOn.Step1.LayoutLabel}">
+    <FieldGroup Label="${Composite.StandardPlugins.PackageElementProvider, InstallLocalAddOn.Step1.FieldGroupLabel}">
+      <FileUpload
+          Label="${Composite.StandardPlugins.PackageElementProvider, InstallLocalAddOn.Step1.FileUploadLabel}"
+          Help="${Composite.StandardPlugins.PackageElementProvider, InstallLocalAddOn.Step1.FileUploadHelp}">
+        <FileUpload.UploadedFile>
+          <cms:bind source="UploadedFile" />
+        </FileUpload.UploadedFile>
+      </FileUpload>
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

@@ -1,0 +1,93 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|tree {
+	display: block;
+	overflow: hidden;
+	position: relative;
+	
+}
+ui|treebody {
+	display: block;
+	background-color: Window;
+	color: $(color:windowtext);
+	overflow: auto !important;	
+	padding: 8px 6px 16px 6px;
+	#ie width: 100%;
+}
+ui|treenode,
+ui|treecontent {
+	display: block;
+	float: none;
+	clear: both;
+	#ie width: 100%;
+	overflow: visible;
+}
+#region moz
+	ui|treenode:after { /* moz bug */
+		content: "";
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		margin-bottom: -1px;
+		display: block;
+		clear: both;
+	}
+#endregion
+ui|treenode ui|labelbox {
+	background: none transparent no-repeat 1px 4px;
+	padding-left: 16px;
+}
+ui|treecontent {
+	padding-left: 40px;
+	-moz-user-select: none; /* hope we don't need an input field */
+}
+ui|treenode ui|labelbox.focused ui|labeltext {
+	background-color: $(color:threedface) !important; /* too light for projection */
+	background-color: $(color:threedlightshadow) !important;
+}
+ui|tree.focused ui|treenode ui|labelbox.focused ui|labeltext {
+	background-color: $(color:highlight) !important;
+	color: $(color:highlighttext);
+}
+ui|treenode ui|treenode {
+	margin-left: 18px;
+}
+ui|treenode.closed ui|treenode,
+ui|treenode.closed ui|treecontent {
+	display: none;
+}
+ui|treenode ui|labelbox { 
+	padding-bottom: 3px;
+	#ie padding-bottom: 0;
+}
+ui|treenode ui|labeltext {
+	padding: 2px 4px 3px 4px;
+	#region vista
+		padding-right: 5px;
+		position: relative;
+		top: -1px;
+	#endregion
+}
+#region moz
+	ui|treenode.dragged {
+		opacity: 0.5;
+	}
+#endregion 
+#region ie
+	ui|treenode.dragged ui|labeltext { /* text disappears on alpha filter! */
+		color: $(color:graytext);		
+	}
+}
+#endregion
+ui|treepositionindicator {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 140px;
+	height: 1px;
+	overflow: hidden;
+	background-color: $(color:highlight);
+	z-index: -1;
+}

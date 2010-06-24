@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="NewSqlQueryInfo" type="Composite.Data.Types.ISqlFunctionInfo, Composite" />
+  </cms:bindings>
+  <cms:layout iconhandle="sql-based-function" label="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunction.LabelDialog}">
+    <PlaceHolder>
+      <FieldGroup Label="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunction.LabelNamingPanel}">
+        <TextBox Label="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunction.LabelName}" Help="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunction.HelpName}" Type="ProgrammingIdentifier">
+          <TextBox.Text>
+            <cms:bind source="NewSqlQueryInfo.Name" />
+          </TextBox.Text>
+        </TextBox>
+        <TextBox Label="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunction.LabelNamespace}" Help="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunction.HelpNamespace}" Type="ProgrammingNamespace">
+          <TextBox.Text>
+            <cms:bind source="NewSqlQueryInfo.Namespace" />
+          </TextBox.Text>
+        </TextBox>
+      </FieldGroup>
+      <FieldGroup Label="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelSqlEditor}">
+        <TextArea Label="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunction.LabelQueryCOmmand}" Help="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunction.HelpQueryCOmmand}">
+          <cms:bind source="NewSqlQueryInfo.Command" />
+        </TextArea>
+      </FieldGroup>
+      <FieldGroup Label="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelCommandBehaviour}">
+        <CheckBox Label="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelIsStoredProcedure}" ItemLabel="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelIsStoredProcedureCheckBox}">
+          <CheckBox.Checked>
+            <cms:bind source="NewSqlQueryInfo.IsStoredProcedure" />
+          </CheckBox.Checked>
+        </CheckBox>
+        <CheckBox Label="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelReturnsXml}" ItemLabel="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelReturnsXmlCheckBox}">
+          <CheckBox.Checked>
+            <cms:bind source="NewSqlQueryInfo.ReturnsXml" />
+          </CheckBox.Checked>
+        </CheckBox>
+        <CheckBox Label="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelIsQuery}" ItemLabel="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelIsQueryCheckBox}">
+          <CheckBox.Checked>
+            <cms:bind source="NewSqlQueryInfo.IsQuery" />
+          </CheckBox.Checked>
+        </CheckBox>
+      </FieldGroup>
+    </PlaceHolder>
+  </cms:layout>
+</cms:formdefinition>

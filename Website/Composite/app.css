@@ -1,0 +1,150 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+
+div#splash {
+	background-color: $(color:threedface);
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	left: 0;
+	top: 0;
+}
+ui|menubar#menubar,
+ui|toolbar#toolbar {
+	#region ie6
+	 	background-color: $(color:threedface);
+	#endregion
+	#region default
+		background-image: url("${root}/skins/system/toolbars/backdrop.png");
+		background-repeat: repeat-y;
+	#endregion
+	#region vista
+		background-color: $(color:toolbar);
+		border-bottom-color: $(color:threedshadow) !important;
+	#endregion
+	#region osx
+		background-color: $(color:toolbar);
+		border-top-color: $(color:threedface) !important;
+		border-bottom-color: $(color:threedshadow) !important;
+	#endregion
+}
+ui|toolbar#statusbar {
+	border-top: 1px solid $(color:threedhighlight);
+	border-bottom: none;
+}
+ui|throbber {
+	display: block;
+	width: 38px;
+	height: 20px;
+	position: absolute;
+	right: 0;
+	#ie right: -1px;
+	z-index: 1;
+	background: none white no-repeat 100% 50%; /* see ThrobberBinding */
+	border-left: 1px solid $(color:threedshadow);
+}
+ui|throbber.active {
+	#moz cursor: pointer;
+	#ie cursor: hand;	
+}
+ui|toolbar#toolbar {
+	padding: 2px 9px 3px 7px;
+	border-bottom-color: $(color:threeddarkshadow);
+	overflow: hidden;
+}
+ui|toolbar#toolbar ui|toolbarbutton ui|labeltext {
+	text-transform: capitalize;
+}
+ui|toolbar#toolbar.imagesizelarge ui|labelbody {
+	padding-left: 24px; /* hack - overwrites labels.css */
+}
+ui|toolbar#toolbar.imagesizexlarge ui|labelbody {
+	height: 32px;
+	padding-left: 32px; /* hack - overwrites labels.css */
+}
+ui|toolbar#toolbar ui|toolbarbutton table.matrix td.c,
+ui|toolbar#toolbar ui|clickbutton table.matrix td.c {
+	padding: 2px;
+}
+ui|toolbarbody#moreactionstoolbargroup ui|toolbarbutton ui|labeltext {
+	font-weight: bold;	
+}
+/*
+ui|toolbar#toolbar ui|toolbarbutton table.matrix td.c,
+ui|toolbar#toolbar ui|clickbutton table.matrix td.c {
+	padding: 6px;
+}
+*/
+
+#region osx
+	ui|toolbar#toolbar ui|toolbarbutton {
+		filter: url("${root}/templates/grayscalefilter.xml#grayscale");	
+	}
+#endregion
+ui|stagecontainer {
+	display: block;
+	overflow: hidden;
+}
+ui|flexbox#stageflexbox {
+	padding: 10px 8px 8px 8px;
+	border-bottom: 1px solid $(color:threedshadow);
+}
+ui|stage {
+	display: block;
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+}
+
+
+/*
+ * These declarations for IE are duplicated in "stagedeck.css" 
+ */
+#region ie
+	ui|splitbox {
+		width: 100%;
+	}
+	ui|splitpanel.horizontal {
+		width: 100%;
+		height: 100%;
+	}
+#endregion
+
+ui|splitter.horizontal ui|splitterbody,
+ui|splitter.vertical ui|splitterbody {
+	border: none;
+}
+ui|stagesplitterbody {
+	display: block;
+	background-color: $(color:threedface);
+	width: 10px;
+	height: 10px;
+	overflow: hidden;
+	position: absolute;
+	display: none;
+	z-index: 4; /* above views (firefox3 alpha needs them +2 above) */
+}
+ui|cover.stagesplittercover {
+	z-index: 5;	/* above stagesplitterbody */
+}
+ui|stagesplitterbody.horizontal {
+	border-left: 1px solid $(color:threedhighlight);
+	border-right: 1px solid $(color:threeddarkshadow);
+	-moz-box-shadow: 2px 0 3px rgba(0,0,0,0.35);
+	cursor: e-resize;
+}
+ui|stagesplitterbody.vertical {
+	border-top: 1px solid $(color:threedhighlight);
+	border-bottom: 1px solid $(color:threeddarkshadow);
+	border-left: 1px solid $(color:threedface);
+	-moz-box-shadow: 0 2px 3px rgba(0,0,0,0.35);
+	cursor: n-resize;
+}
+ui|window#downloadwindow {
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	top: -100px;
+	left: -100px;
+}

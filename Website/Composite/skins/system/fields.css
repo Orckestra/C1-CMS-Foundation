@@ -1,0 +1,61 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|radio ui|labelbody { /* radiobuttons! */
+	height: 18px;
+	padding-left: 18px;
+}
+ui|radio ui|datalabeltext {
+	padding-top: 3px;
+}
+td.group-ne {
+	#alphabackdrop: url("${skin}/fields/groupbox-inset-ne-special.png");	
+}
+td.group-nw {
+	#alphabackdrop: url("${skin}/fields/groupbox-inset-nw-special.png");	
+}
+td.group-se {
+	#alphabackdrop: url("${skin}/fields/groupbox-inset-se.png");	
+}
+td.group-sw {
+	#alphabackdrop: url("${skin}/fields/groupbox-inset-sw.png");	
+}
+td.group-n div,
+ui|fieldgroup.nolabel td.group-n {
+	#alphabackdrop: url("${skin}/fields/groupbox-inset-n.png");	
+}
+td.group-s {
+	#alphabackdrop: url("${skin}/fields/groupbox-inset-s.png");	
+}
+td.group-e {
+	#alphabackdrop: url("${skin}/fields/groupbox-inset-e.png");	
+}
+td.group-w {
+	#alphabackdrop: url("${skin}/fields/groupbox-inset-w.png");	
+}
+
+
+ui|tabbox.boxed td.group-ne {
+	#alphabackdrop: url("${skin}/fields/groupbox-ne-special.png");	
+}
+ui|tabbox.boxed td.group-nw {
+	#alphabackdrop: url("${skin}/fields/groupbox-nw-special.png");	
+}
+ui|tabbox.boxed td.group-se {
+	#alphabackdrop: url("${skin}/fields/groupbox-se.png");	
+}
+ui|tabbox.boxed td.group-sw {
+	#alphabackdrop: url("${skin}/fields/groupbox-sw.png");	
+}
+ui|tabbox.boxed td.group-n div { /* TODO: NOLABEL! */
+	#alphabackdrop: url("${skin}/fields/groupbox-n.png");	
+}
+ui|tabbox.boxed td.group-s {
+	#alphabackdrop: url("${skin}/fields/groupbox-s.png");	
+}
+ui|tabbox.boxed td.group-e {
+	#alphabackdrop: url("${skin}/fields/groupbox-e.png");	
+}
+ui|tabbox.boxed td.group-w {
+	#alphabackdrop: url("${skin}/fields/groupbox-w.png");	
+}

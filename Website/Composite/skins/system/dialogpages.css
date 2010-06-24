@@ -1,0 +1,29 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+/*
+#region vista
+	ui|dialogpage {
+		padding: 14px 13px 13px 13px;
+	}
+#endregion
+*/
+
+/* STANDARD DIALOGS ................................................................*/
+
+ui|dialogpage.question ui|dialogvignette,
+ui|dialogvignette.question {
+	#alphabackdrop: url("${skin}/dialogpages/question_32.png");
+}
+ui|dialogpage.warning ui|dialogvignette,
+ui|dialogvignette.warning {
+	#alphabackdrop: url("${skin}/dialogpages/warning_32.png");
+}
+ui|dialogpage.message ui|dialogvignette,
+ui|dialogvignette.message {
+	#alphabackdrop: url("${skin}/dialogpages/message_32.png");
+}
+ui|dialogpage.error ui|dialogvignette,
+ui|dialogvignette.error {
+	#alphabackdrop: url("${skin}/dialogpages/error_32.png");
+}

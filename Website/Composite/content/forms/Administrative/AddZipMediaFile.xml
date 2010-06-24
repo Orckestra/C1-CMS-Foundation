@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="UploadedFile" type="Composite.Forms.CoreUiControls.UploadedFile, Composite" />
+    <cms:binding name="RecreateFolders" type="System.Boolean" />
+    <cms:binding name="OverwriteExisting" type="System.Boolean" />
+  </cms:bindings>
+  <cms:layout iconhandle="media-upload-zip-file" label="${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.LabelDialog}">
+    <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.LabelFieldGroup}">
+      <FileUpload Label="${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.LabelFile}" Help="${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.HelpFile}">
+        <FileUpload.UploadedFile>
+          <cms:bind source="UploadedFile" />
+        </FileUpload.UploadedFile>
+      </FileUpload>
+      <CheckBox Label="${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.LabelRecreateStructure}" Help="${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.HelpRecreateStructure}" ItemLabel="${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.LabelRecreateStructureCheckBox}">
+        <CheckBox.Checked>
+          <cms:bind source="RecreateFolders" />
+        </CheckBox.Checked>
+      </CheckBox>
+      <CheckBox Label="${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.LabelOverwriteExsisting}" Help="${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.HelpOverwriteExsisting}" ItemLabel="${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.LabelOverwriteExsistingCheckBox}">
+        <CheckBox.Checked>
+          <cms:bind source="OverwriteExisting" />
+        </CheckBox.Checked>
+      </CheckBox>
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

@@ -1,0 +1,64 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+/*
+ * Docks are absolutely positioned in explorer in order to fix a display 
+ * bug on browser resize. The bug is only noticeable on second area and 
+ * higher (remove absolute positioning, navigate to area two, open some 
+ * stuff and resize the browser). They are NOT absolute in Mozilla because 
+ * moz may update display multiple times in a single thread, temporarily 
+ * showing the dock overlaying other stuff. 
+ */
+ui|dock {
+	display: block;
+	overflow: hidden;
+	#region ie
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		heigth: 100%;
+	#endregion
+}
+ui|docktabs {
+	display: block;
+	position: relative !important;
+	overflow: hidden;
+}
+ui|docktabs ui|controlgroup.docktabscontrolgroup {
+	position: relative;
+	z-index: 2;
+}
+ui|docktab {
+	display: block;
+	float: left;
+	position: relative;
+	white-space: nowrap;
+	bottom: -100px; /* adjusted by script */
+}
+ui|docktab ui|control {
+	position: relative;	
+}
+ui|dockpanels {
+	display: block;
+	height: 100%;
+	clear: both;
+	overflow: hidden;
+}
+ui|dockpanel {  /* styles comparable to deck - please coordinate all changes! */
+	display: block;
+	height: 100%;
+	clear: both;
+	overflow: hidden;
+	position: absolute;
+	top: -10000px;
+	background-color: $(color:threedface);
+}
+
+/* CONTROVERSIAL STYLES - MAYBE MOVE TO SKIN? */
+ui|dock.tools ui|docktab.default ui|labelbody,
+ui|dock.tools ui|docktab.hover ui|labelbody {
+	padding-left: 0;
+	#moz background-position: -32px -32px;
+	#ie filter: none !important;
+}

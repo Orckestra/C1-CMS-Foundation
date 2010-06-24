@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/2002/06/xhtml2">
+	<head>
+		<title>Help Contents</title>
+	</head>
+	<body>
+		<h>Help contents</h>
+		<section>
+			<h>Tasks</h>
+			<nl>
+				<li>
+					<nl>
+						<label>Publication</label>
+						<li href="tasks/publication/guide.xml">Publication guide</li>
+					</nl>
+				</li>
+				<li>
+					<nl>
+						<label>Task number one</label>
+						<li href="dummy1.xml">Dummy 1</li>
+						<li href="dummy2.xml">Dummy 2</li>
+						<li>
+							<nl>
+								<label>Sub pages</label>
+								<li href="dummy1.xml">Dummy 1</li>
+								<li href="dummy2.xml">Dummy 2</li>
+							</nl>
+						</li>
+					</nl>
+				</li>
+				<li>
+					<nl>
+						<label>Task number two</label>
+						<li href="dummy1.xml">Dummy 1</li>
+						<li href="dummy2.xml">Dummy 2</li>
+						<li>
+							<nl>
+								<label>Sub pages</label>
+								<li href="dummy1.xml">Dummy 1</li>
+								<li href="dummy2.xml">Dummy 2</li>
+							</nl>
+						</li>
+					</nl>
+				</li>
+				<li>
+					<nl>
+						<label>Task number three</label>
+						<li href="dummy1.xml">Dummy 1</li>
+						<li href="dummy2.xml">Dummy 2</li>
+						<li>
+							<nl>
+								<label>Sub pages</label>
+								<li href="dummy1.xml">Dummy 1</li>
+								<li href="dummy2.xml">Dummy 2</li>
+							</nl>
+						</li>
+					</nl>
+				</li>
+			</nl>
+			<h>Reference</h>
+			<nl>
+				<li>
+					<nl>
+						<label>Reference one</label>
+						<li href="dummy1.xml">Dummy 1</li>
+						<li href="dummy2.xml">Dummy 2</li>
+						<li>
+							<nl>
+								<label>Sub pages</label>
+								<li href="dummy1.xml">Dummy 1</li>
+								<li href="dummy2.xml">Dummy 2</li>
+							</nl>
+						</li>
+					</nl>
+				</li>
+				<li>
+					<nl>
+						<label>Reference two</label>
+						<li href="dummy1.xml">Dummy 1</li>
+						<li href="dummy2.xml">Dummy 2</li>
+						<li>
+							<nl>
+								<label>Sub pages</label>
+								<li href="dummy1.xml">Dummy 1</li>
+								<li href="dummy2.xml">Dummy 2</li>
+							</nl>
+						</li>
+					</nl>
+				</li>
+				<li>
+					<nl>
+						<label>Reference three</label>
+						<li href="dummy1.xml">Dummy 1</li>
+						<li href="dummy2.xml">Dummy 2</li>
+						<li>
+							<nl>
+								<label>Sub pages</label>
+								<li href="dummy1.xml">Dummy 1</li>
+								<li href="dummy2.xml">Dummy 2</li>
+							</nl>
+						</li>
+					</nl>
+				</li>
+			</nl>
+		</section>
+	</body>
+</html>

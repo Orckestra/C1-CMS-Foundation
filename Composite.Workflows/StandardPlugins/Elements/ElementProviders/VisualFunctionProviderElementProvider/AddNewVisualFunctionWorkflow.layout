@@ -1,0 +1,289 @@
+﻿<StateMachineWorkflowDesigner xmlns:ns0="clr-namespace:System.Drawing;Assembly=System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Name="AddNewVisualFunctionWorkflow" Location="30; 30" Size="1145; 996" AutoSize="False" AutoSizeMargin="16; 24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/workflow">
+	<StateMachineWorkflowDesigner.DesignerConnectors>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="finishState" SourceConnectionIndex="0" TargetConnectionEdge="Top" SetStateName="setStateActivity19" SourceStateName="AddNewVisualFunctionWorkflow" SourceConnectionEdge="Right" TargetActivity="finishState" SourceActivity="AddNewVisualFunctionWorkflow" EventHandlerName="eventDrivenActivity_GlobalCancel">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="240" Y="71" />
+				<ns0:Point X="770" Y="71" />
+				<ns0:Point X="770" Y="177" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="finishState" SourceConnectionIndex="0" TargetConnectionEdge="Bottom" SetStateName="setStateActivity1" SourceStateName="finalizeActivity" SourceConnectionEdge="Right" TargetActivity="finishState" SourceActivity="finalizeActivity" EventHandlerName="finalizeStateInitializationActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="638" Y="489" />
+				<ns0:Point X="770" Y="489" />
+				<ns0:Point X="770" Y="257" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="step1State" SourceConnectionIndex="1" TargetConnectionEdge="Bottom" SetStateName="setStateActivity6" SourceStateName="step2State" SourceConnectionEdge="Right" TargetActivity="step1State" SourceActivity="step2State" EventHandlerName="step2_eventDrivenActivity_Previous">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="296" Y="531" />
+				<ns0:Point X="307" Y="531" />
+				<ns0:Point X="307" Y="422" />
+				<ns0:Point X="179" Y="422" />
+				<ns0:Point X="179" Y="410" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="finalizeActivity" SourceConnectionIndex="2" TargetConnectionEdge="Top" SetStateName="setStateActivity11" SourceStateName="step2State" SourceConnectionEdge="Right" TargetActivity="finalizeActivity" SourceActivity="step2State" EventHandlerName="step2_eventDrivenActivity_Finish">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="283" Y="555" />
+				<ns0:Point X="312" Y="555" />
+				<ns0:Point X="312" Y="440" />
+				<ns0:Point X="543" Y="440" />
+				<ns0:Point X="543" Y="448" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="step2State" SourceConnectionIndex="2" TargetConnectionEdge="Bottom" SetStateName="backTostep2" SourceStateName="step2State" SourceConnectionEdge="Right" TargetActivity="step2State" SourceActivity="step2State" EventHandlerName="step2_eventDrivenActivity_Finish">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="283" Y="555" />
+				<ns0:Point X="307" Y="555" />
+				<ns0:Point X="307" Y="600" />
+				<ns0:Point X="187" Y="600" />
+				<ns0:Point X="187" Y="592" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="finishState" SourceConnectionIndex="3" TargetConnectionEdge="Top" SetStateName="setStateActivity8" SourceStateName="step2State" SourceConnectionEdge="Right" TargetActivity="finishState" SourceActivity="step2State" EventHandlerName="step2_eventDrivenActivity_Cancel">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="287" Y="579" />
+				<ns0:Point X="312" Y="579" />
+				<ns0:Point X="312" Y="169" />
+				<ns0:Point X="770" Y="169" />
+				<ns0:Point X="770" Y="177" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="finishState" SourceConnectionIndex="0" TargetConnectionEdge="Top" SetStateName="abortFlowSetStateActivity" SourceStateName="initializeActivity" SourceConnectionEdge="Right" TargetActivity="finishState" SourceActivity="initializeActivity" EventHandlerName="initializeStateInitializationActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="257" Y="217" />
+				<ns0:Point X="273" Y="217" />
+				<ns0:Point X="273" Y="169" />
+				<ns0:Point X="770" Y="169" />
+				<ns0:Point X="770" Y="177" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="step1State" SourceConnectionIndex="0" TargetConnectionEdge="Top" SetStateName="setStateActivity4" SourceStateName="initializeActivity" SourceConnectionEdge="Right" TargetActivity="step1State" SourceActivity="initializeActivity" EventHandlerName="initializeStateInitializationActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="257" Y="217" />
+				<ns0:Point X="267" Y="217" />
+				<ns0:Point X="267" Y="296" />
+				<ns0:Point X="179" Y="296" />
+				<ns0:Point X="179" Y="308" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="finishState" SourceConnectionIndex="0" TargetConnectionEdge="Top" SetStateName="setStateActivity9" SourceStateName="initializeActivity" SourceConnectionEdge="Right" TargetActivity="finishState" SourceActivity="initializeActivity" EventHandlerName="initializeStateInitializationActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="257" Y="217" />
+				<ns0:Point X="273" Y="217" />
+				<ns0:Point X="273" Y="169" />
+				<ns0:Point X="770" Y="169" />
+				<ns0:Point X="770" Y="177" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="step1State" SourceConnectionIndex="1" TargetConnectionEdge="Bottom" SetStateName="setStateActivity2" SourceStateName="step1State" SourceConnectionEdge="Right" TargetActivity="step1State" SourceActivity="step1State" EventHandlerName="step1_eventDrivenActivity_Next">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="269" Y="373" />
+				<ns0:Point X="299" Y="373" />
+				<ns0:Point X="299" Y="418" />
+				<ns0:Point X="179" Y="418" />
+				<ns0:Point X="179" Y="410" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="step2State" SourceConnectionIndex="1" TargetConnectionEdge="Top" SetStateName="setStateActivity3" SourceStateName="step1State" SourceConnectionEdge="Right" TargetActivity="step2State" SourceActivity="step1State" EventHandlerName="step1_eventDrivenActivity_Next">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="269" Y="373" />
+				<ns0:Point X="299" Y="373" />
+				<ns0:Point X="299" Y="454" />
+				<ns0:Point X="187" Y="454" />
+				<ns0:Point X="187" Y="466" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="step1State" SourceConnectionIndex="1" TargetConnectionEdge="Top" SetStateName="setStateActivity5" SourceStateName="step1State" SourceConnectionEdge="Right" TargetActivity="step1State" SourceActivity="step1State" EventHandlerName="step1_eventDrivenActivity_Next">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="269" Y="373" />
+				<ns0:Point X="299" Y="373" />
+				<ns0:Point X="299" Y="300" />
+				<ns0:Point X="179" Y="300" />
+				<ns0:Point X="179" Y="308" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="finishState" SourceConnectionIndex="2" TargetConnectionEdge="Top" SetStateName="setStateActivity7" SourceStateName="step1State" SourceConnectionEdge="Right" TargetActivity="finishState" SourceActivity="step1State" EventHandlerName="step1_eventDrivenActivity_Cancel">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="279" Y="397" />
+				<ns0:Point X="304" Y="397" />
+				<ns0:Point X="304" Y="169" />
+				<ns0:Point X="770" Y="169" />
+				<ns0:Point X="770" Y="177" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="finishState" SourceConnectionIndex="0" TargetConnectionEdge="Top" SetStateName="setStateActivity12" SourceStateName="initializeActivity" SourceConnectionEdge="Right" TargetActivity="finishState" SourceActivity="initializeActivity" EventHandlerName="initializeStateInitializationActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="257" Y="217" />
+				<ns0:Point X="273" Y="217" />
+				<ns0:Point X="273" Y="169" />
+				<ns0:Point X="770" Y="169" />
+				<ns0:Point X="770" Y="177" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+	</StateMachineWorkflowDesigner.DesignerConnectors>
+	<StateMachineWorkflowDesigner.Designers>
+		<StateDesigner Name="finishState" Location="690; 177" Size="160; 80" AutoSizeMargin="16; 24" />
+		<StateDesigner Name="finalizeActivity" Location="437; 448" Size="213; 80" AutoSize="False" AutoSizeMargin="16; 24">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Size="150; 242" Name="finalizeStateInitializationActivity" Location="445; 479">
+					<StateInitializationDesigner.Designers>
+						<ActivityDesigner Size="130; 41" Name="closeCurrentViewActivity1" Location="455; 541" />
+						<CodeDesigner Size="130; 41" Name="stepFinalize_codeActivity" Location="455; 601" />
+						<SetStateDesigner Size="130; 41" Name="setStateActivity1" Location="455; 661" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+		<StateDesigner Name="step2State" Location="74; 466" Size="226; 126" AutoSizeMargin="16; 24">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Size="150; 122" Name="step2StateInitializationActivity" Location="82; 497">
+					<StateInitializationDesigner.Designers>
+						<ActivityDesigner Size="130; 41" Name="step2WizzardFormActivity" Location="92; 559" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+				<EventDrivenDesigner Size="150; 182" Name="step2_eventDrivenActivity_Previous" Location="82; 521">
+					<EventDrivenDesigner.Designers>
+						<HandleExternalEventActivityDesigner Size="130; 41" Name="handleExternalEventActivity2" Location="92; 583" />
+						<SetStateDesigner Size="130; 41" Name="setStateActivity6" Location="92; 643" />
+					</EventDrivenDesigner.Designers>
+				</EventDrivenDesigner>
+				<EventDrivenDesigner Size="381; 423" Name="step2_eventDrivenActivity_Finish" Location="82; 545">
+					<EventDrivenDesigner.Designers>
+						<HandleExternalEventActivityDesigner Size="130; 41" Name="handleExternalEventActivity3" Location="207; 607" />
+						<IfElseDesigner Size="361; 282" Name="ifNameUniqueActivity1" Location="92; 667">
+							<IfElseDesigner.Designers>
+								<IfElseBranchDesigner Size="150; 182" Name="ifElseBranchActivity1" Location="111; 738">
+									<IfElseBranchDesigner.Designers>
+										<SetStateDesigner Size="130; 53" Name="setStateActivity11" Location="121; 824" />
+									</IfElseBranchDesigner.Designers>
+								</IfElseBranchDesigner>
+								<IfElseBranchDesigner Size="150; 182" Name="ifElseBranchActivity2" Location="284; 738">
+									<IfElseBranchDesigner.Designers>
+										<ActivityDesigner Size="130; 41" Name="showFieldMessageActivity1" Location="294; 800" />
+										<SetStateDesigner Size="130; 41" Name="backTostep2" Location="294; 860" />
+									</IfElseBranchDesigner.Designers>
+								</IfElseBranchDesigner>
+							</IfElseDesigner.Designers>
+						</IfElseDesigner>
+					</EventDrivenDesigner.Designers>
+				</EventDrivenDesigner>
+				<EventDrivenDesigner Size="150; 182" Name="step2_eventDrivenActivity_Cancel" Location="82; 569">
+					<EventDrivenDesigner.Designers>
+						<HandleExternalEventActivityDesigner Size="130; 41" Name="cancelHandleExternalEventActivity3" Location="92; 631" />
+						<SetStateDesigner Size="130; 41" Name="setStateActivity8" Location="92; 691" />
+					</EventDrivenDesigner.Designers>
+				</EventDrivenDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+		<StateDesigner Name="initializeActivity" Location="51; 176" Size="210; 80" AutoSize="False" AutoSizeMargin="16; 24">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Size="843; 785" Name="initializeStateInitializationActivity" Location="181; 148">
+					<StateInitializationDesigner.Designers>
+						<CodeDesigner Size="130; 41" Name="initializeCodeActivity" Location="537; 210" />
+						<IfElseDesigner Size="823; 644" Name="ifElseActivity5" Location="191; 270">
+							<IfElseDesigner.Designers>
+								<IfElseBranchDesigner Size="612; 544" Name="ifElseBranchActivity10" Location="210; 341">
+									<IfElseBranchDesigner.Designers>
+										<IfElseDesigner Size="592; 463" Name="ifElseActivity3" Location="220; 403">
+											<IfElseDesigner.Designers>
+												<IfElseBranchDesigner Size="381; 363" Name="ifElseBranchActivity7" Location="239; 474">
+													<IfElseBranchDesigner.Designers>
+														<IfElseDesigner Size="361; 282" Name="ifElseActivity_CheckPageExists" Location="249; 536">
+															<IfElseDesigner.Designers>
+																<IfElseBranchDesigner Size="150; 182" Name="ifElseBranchActivity3" Location="268; 607">
+																	<IfElseBranchDesigner.Designers>
+																		<SetStateDesigner Size="130; 41" Name="setStateActivity4" Location="278; 699" />
+																	</IfElseBranchDesigner.Designers>
+																</IfElseBranchDesigner>
+																<IfElseBranchDesigner Size="150; 182" Name="ifElseBranchActivity9" Location="441; 607">
+																	<IfElseBranchDesigner.Designers>
+																		<CodeDesigner Size="130; 41" Name="MissingPageActivity" Location="451; 669" />
+																		<SetStateDesigner Size="130; 41" Name="setStateActivity9" Location="451; 729" />
+																	</IfElseBranchDesigner.Designers>
+																</IfElseBranchDesigner>
+															</IfElseDesigner.Designers>
+														</IfElseDesigner>
+													</IfElseBranchDesigner.Designers>
+												</IfElseBranchDesigner>
+												<IfElseBranchDesigner Size="150; 363" Name="ifElseBranchActivity8" Location="643; 474">
+													<IfElseBranchDesigner.Designers>
+														<ActivityDesigner Size="130; 41" Name="noTypesMessageBoxActivity" Location="653; 536" />
+														<SetStateDesigner Size="130; 53" Name="abortFlowSetStateActivity" Location="653; 596" />
+													</IfElseBranchDesigner.Designers>
+												</IfElseBranchDesigner>
+											</IfElseDesigner.Designers>
+										</IfElseDesigner>
+									</IfElseBranchDesigner.Designers>
+								</IfElseBranchDesigner>
+								<IfElseBranchDesigner Size="150; 544" Name="ifElseBranchActivity11" Location="845; 341">
+									<IfElseBranchDesigner.Designers>
+										<ActivityDesigner Size="130; 41" Name="showConsoleMessageBoxActivity_NoTemplate" Location="855; 403" />
+										<SetStateDesigner Size="130; 53" Name="setStateActivity12" Location="855; 463" />
+									</IfElseBranchDesigner.Designers>
+								</IfElseBranchDesigner>
+							</IfElseDesigner.Designers>
+						</IfElseDesigner>
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+		<EventDrivenDesigner Size="150; 194" Name="eventDrivenActivity_GlobalCancel" Location="38; 61">
+			<EventDrivenDesigner.Designers>
+				<HandleExternalEventActivityDesigner Size="130; 41" Name="cancelHandleExternalEventActivity1" Location="48; 123" />
+				<SetStateDesigner Size="130; 53" Name="setStateActivity19" Location="48; 183" />
+			</EventDrivenDesigner.Designers>
+		</EventDrivenDesigner>
+		<StateDesigner Name="step1State" Location="66; 308" Size="226; 102" AutoSizeMargin="16; 24">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Size="150; 122" Name="step1StateInitializationActivity" Location="74; 339">
+					<StateInitializationDesigner.Designers>
+						<ActivityDesigner Size="130; 41" Name="wizzardFormActivity1" Location="84; 401" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+				<EventDrivenDesigner Size="612; 604" Name="step1_eventDrivenActivity_Next" Location="74; 363">
+					<EventDrivenDesigner.Designers>
+						<HandleExternalEventActivityDesigner Size="130; 41" Name="handleExternalEventActivity1" Location="315; 425" />
+						<IfElseDesigner Size="592; 463" Name="ifElseActivity1" Location="84; 485">
+							<IfElseDesigner.Designers>
+								<IfElseBranchDesigner Size="381; 363" Name="ifElseBranch_CheckTypeNameIsDynamicType" Location="103; 556">
+									<IfElseBranchDesigner.Designers>
+										<IfElseDesigner Size="361; 282" Name="ifElseActivity2" Location="113; 618">
+											<IfElseDesigner.Designers>
+												<IfElseBranchDesigner Size="150; 182" Name="ifElseBranch_heckDataExists" Location="132; 689">
+													<IfElseBranchDesigner.Designers>
+														<CodeDesigner Size="130; 41" Name="codeActivity1" Location="142; 751" />
+														<SetStateDesigner Size="130; 41" Name="setStateActivity3" Location="142; 811" />
+													</IfElseBranchDesigner.Designers>
+												</IfElseBranchDesigner>
+												<IfElseBranchDesigner Size="150; 182" Name="ifElseBranchActivity6" Location="305; 689">
+													<IfElseBranchDesigner.Designers>
+														<ActivityDesigner Size="130; 41" Name="missingDataMessageBoxActivity" Location="315; 751" />
+														<SetStateDesigner Size="130; 41" Name="setStateActivity5" Location="315; 811" />
+													</IfElseBranchDesigner.Designers>
+												</IfElseBranchDesigner>
+											</IfElseDesigner.Designers>
+										</IfElseDesigner>
+									</IfElseBranchDesigner.Designers>
+								</IfElseBranchDesigner>
+								<IfElseBranchDesigner Size="150; 363" Name="ifElseBranchActivity4" Location="507; 556">
+									<IfElseBranchDesigner.Designers>
+										<ActivityDesigner Size="130; 41" Name="showFieldMessageActivity2" Location="517; 618" />
+										<SetStateDesigner Size="130; 41" Name="setStateActivity2" Location="517; 678" />
+									</IfElseBranchDesigner.Designers>
+								</IfElseBranchDesigner>
+							</IfElseDesigner.Designers>
+						</IfElseDesigner>
+					</EventDrivenDesigner.Designers>
+				</EventDrivenDesigner>
+				<EventDrivenDesigner Size="150; 182" Name="step1_eventDrivenActivity_Cancel" Location="74; 387">
+					<EventDrivenDesigner.Designers>
+						<HandleExternalEventActivityDesigner Size="130; 41" Name="cancelHandleExternalEventActivity2" Location="84; 449" />
+						<SetStateDesigner Size="130; 41" Name="setStateActivity7" Location="84; 509" />
+					</EventDrivenDesigner.Designers>
+				</EventDrivenDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+	</StateMachineWorkflowDesigner.Designers>
+</StateMachineWorkflowDesigner>

@@ -1,0 +1,44 @@
+<StateMachineWorkflowDesigner xmlns:ns0="clr-namespace:System.Drawing;Assembly=System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Name="FlowInformationScavengerWorkflow" Location="30; 30" Size="1182; 996" AutoSize="False" AutoSizeMargin="16; 24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/workflow">
+	<StateMachineWorkflowDesigner.DesignerConnectors>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="waitStateActivity" SourceConnectionIndex="0" TargetConnectionEdge="Top" SetStateName="setStateActivity2" SourceStateName="scavengeStateActivity" SourceConnectionEdge="Right" TargetActivity="waitStateActivity" SourceActivity="scavengeStateActivity" EventHandlerName="scavengeStateInitializationActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="678" Y="419" />
+				<ns0:Point X="694" Y="419" />
+				<ns0:Point X="694" Y="132" />
+				<ns0:Point X="318" Y="132" />
+				<ns0:Point X="318" Y="140" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="scavengeStateActivity" SourceConnectionIndex="1" TargetConnectionEdge="Top" SetStateName="setStateActivity1" SourceStateName="waitStateActivity" SourceConnectionEdge="Right" TargetActivity="scavengeStateActivity" SourceActivity="waitStateActivity" EventHandlerName="waitEventDrivenActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="384" Y="205" />
+				<ns0:Point X="573" Y="205" />
+				<ns0:Point X="573" Y="378" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+	</StateMachineWorkflowDesigner.DesignerConnectors>
+	<StateMachineWorkflowDesigner.Designers>
+		<StateDesigner Name="scavengeStateActivity" Location="465; 378" Size="217; 80" AutoSizeMargin="16; 24">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Size="150; 182" Name="scavengeStateInitializationActivity" Location="473; 409">
+					<StateInitializationDesigner.Designers>
+						<CodeDesigner Size="130; 41" Name="scavengeCodeActivity" Location="483; 471" />
+						<SetStateDesigner Size="130; 41" Name="setStateActivity2" Location="483; 531" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+		<StateDesigner Name="finalStateActivity" Location="971; 798" Size="175; 80" AutoSizeMargin="16; 24" />
+		<StateDesigner Name="waitStateActivity" Location="223; 140" Size="191; 80" AutoSize="False" AutoSizeMargin="16; 24">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Size="150; 109" Name="waitStateInitializationActivity" Location="538; 135" />
+				<EventDrivenDesigner Size="150; 182" Name="waitEventDrivenActivity" Location="546; 148">
+					<EventDrivenDesigner.Designers>
+						<DelayDesigner Size="130; 41" Name="delayActivity1" Location="556; 210" />
+						<SetStateDesigner Size="130; 41" Name="setStateActivity1" Location="556; 270" />
+					</EventDrivenDesigner.Designers>
+				</EventDrivenDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+	</StateMachineWorkflowDesigner.Designers>
+</StateMachineWorkflowDesigner>

@@ -1,0 +1,133 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+div#inputs {
+	padding-top: 6px;	
+}
+div#inputs input {
+	display: block;
+	width: 100%;
+	border: none;
+	margin: 0;
+	height: 20px;
+	padding-left: 6px;
+	overflow: hidden;
+	background-color: transparent;
+}
+ui|scrollbox#keywords {
+	background-color: white;
+	cursor: text;
+	padding-bottom: 20px;
+}
+ui|deck#resultdeck {
+	background-color: white;
+	white-space: nowrap;
+}
+span.seoresult {
+	display: block;
+	height: 1em;
+	background-color: lime;
+	float: left;
+	position: relative;
+	#moz top: 2px;
+	margin-right: 8px;
+	-moz-outline: 1px solid rgb(20,150,14);
+}
+ui|treenode ui|labelbox.focused span.seoresult {
+	-moz-outline: 1px solid white;	
+} 
+span.seoresult span {
+	width: 4px;
+	height: 1em;
+	display: block;
+	float: left;		
+}
+span.seoresult span.true {
+	background-color: rgb(20,150,14);
+}
+span.seoresult span.false {
+	background-color: rgb(123,235,82);
+}
+
+/* message ........................................................ */
+
+div#message {
+	padding: 22px;
+}
+div#icon {
+	width: 32px;
+	height: 32px;
+	#alphabackdrop: url("${root}/services/Icon/GetIcon.ashx?resourceName=message&resourceNamespace=Composite.Icons&size=xlarge");
+	float: left;
+	position: relative;
+	top: 2px;
+}
+div#text {
+	padding-left: 44px;
+	-moz-user-select: none;
+}
+div#desc {
+	clear: both;
+	padding-top: 10px;
+	color: graytext;
+}
+img#warning {
+	padding-right: 3px;	
+}
+
+/* deactivated .................................................... */
+
+body.deactivated div#score,
+body.deactivated ui|deck#resultdeck {
+	background-color: $(color:threedface);
+	color: $(color:graytext);
+}
+body.deactivated div#text {
+	color: $(color:graytext);
+}
+body.deactivated div#icon {
+	#alphabackdrop: url("${root}/services/Icon/GetIcon.ashx?resourceName=message-disabled&resourceNamespace=Composite.Icons&size=xlarge");
+}
+
+
+/* Blocked for IE because of treenode icons update */
+
+#region moz
+
+	/* Tree ................................... */
+	
+	body.deactivated ui|treebody {
+		background-color: $(color:threedface);
+	}
+	body.deactivated ui|treenode ui|labeltext {
+		color: $(color:graytext);
+	}
+	body.deactivated span.seoresult {
+		-moz-outline: 1px solid $(color:graytext);
+	}
+	body.deactivated span.seoresult span.true {
+		background-color: $(color:threedshadow);
+	}
+	body.deactivated span.seoresult span.false {
+		background-color: $(color:threedface);
+	}
+	
+	/* IE cannot handle the !important statement here... */
+	
+	body.deactivated ui|treenode.true ui|labelbody {
+		background-image: url("${root}/services/Icon/GetIcon.ashx?resourceName=accept-disabled&resourceNamespace=Composite.Icons&size=normal") !important;
+	}
+	body.deactivated ui|treenode.false ui|labelbody {
+		background-image: url("${root}/services/Icon/GetIcon.ashx?resourceName=cancel-disabled&resourceNamespace=Composite.Icons&size=normal") !important;
+	}
+	
+	/* Keywords ................................... */
+	
+	body.deactivated ui|scrollbox#keywords {
+		background-color: $(color:threedface);
+	}
+	body.deactivated div#inputs input {
+		color: $(color:graytext);
+	}
+	
+#endregion

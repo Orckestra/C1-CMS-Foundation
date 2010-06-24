@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<functions>
+  <f:function xmlns:f="http://www.composite.net/ns/function/1.0" name="Composite.Pages.SitemapXml">
+    <f:param name="PageAssociationScope" value="AncestorAndCurrentPages" />
+  </f:function>
+  <f:function xmlns:f="http://www.composite.net/ns/function/1.0" name="Composite.Data.Types.IPage.GetIPageXml">
+    <f:param name="PropertyNames">
+      <f:paramelement value="Id" />
+      <f:paramelement value="Title" />
+      <f:paramelement value="MenuTitle" />
+      <f:paramelement value="ChangedBy" />
+    </f:param>
+    <f:param xmlns:f="http://www.composite.net/ns/function/1.0" name="Filter">
+      <f:function xmlns:f="http://www.composite.net/ns/function/1.0" name="Composite.Data.Types.IPage.CompoundFilter">
+        <f:param name="IsAndQuery" value="False" />
+        <f:param xmlns:f="http://www.composite.net/ns/function/1.0" name="Left">
+          <f:function xmlns:f="http://www.composite.net/ns/function/1.0" name="Composite.Data.Types.IPage.FieldPredicatesFilter">
+            <f:param xmlns:f="http://www.composite.net/ns/function/1.0" name="ChangeDate">
+              <f:function xmlns:f="http://www.composite.net/ns/function/1.0" name="Composite.Utils.Predicates.DateTimeGreaterThan">
+                <f:param name="Value" value="2009-10-01T00:00:00+02:00" />
+              </f:function>
+            </f:param>
+          </f:function>
+        </f:param>
+        <f:param xmlns:f="http://www.composite.net/ns/function/1.0" name="Right">
+          <f:function xmlns:f="http://www.composite.net/ns/function/1.0" name="Composite.Data.Types.IPage.DataReferenceFilter">
+            <f:param name="DataReference" value="69f9e0f1-e2ce-4b99-a1ba-5117964b0793" />
+          </f:function>
+        </f:param>
+      </f:function>
+    </f:param>
+    <f:param name="PageSize" value="5" />
+    <f:param xmlns:f="http://www.composite.net/ns/function/1.0" name="PageNumber">
+      <f:function xmlns:f="http://www.composite.net/ns/function/1.0" name="Composite.Utils.GetInputParameter">
+        <f:param name="InputParameterName" value="pagenumber" />
+      </f:function>
+    </f:param>
+  </f:function>
+  <f:function xmlns:f="http://www.composite.net/ns/function/1.0" name="Composite.Data.Types.IPage.GetIPageXml" />
+  
+</functions>

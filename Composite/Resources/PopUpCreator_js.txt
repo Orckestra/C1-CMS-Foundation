@@ -1,0 +1,83 @@
+<script type="text/javascript">
+	function msieversion()
+	{
+		var ua = window.navigator.userAgent;
+		var msie = ua.indexOf ( 'MSIE ' );
+		var opera = ua.indexOf ( 'Opera ' );
+		if ( msie > 0 && opera < 0)
+		{
+			return parseInt ( ua.substring ( msie+5, ua.indexOf ( '.', msie ) ) );
+		}
+
+		return 0;
+	}
+	
+	function isFirefox()
+	{
+		return navigator.userAgent.indexOf("Firefox") != -1;
+	}
+
+	function PopUpManagementConsoleWindowImpl()
+	{
+		try
+		{
+			var managementConsoleWindowHandle = window.open( "$$AppUri;", "", "resizable=1,status=1" );
+			return managementConsoleWindowHandle;
+		} 
+		catch( e )
+		{
+			// Exception caught - Yahoo toolbar or other blocker
+			return null;
+		}
+	}
+
+	function PopUpManagementConsoleWindow()
+	{
+		if( msieversion() < 6 && (isFirefox()==false))
+		{
+			var wrongBrowserInfoSection = document.getElementById( '$$wrongBrowserInfo.ClientID;' );
+			
+			if( null != wrongBrowserInfoSection )
+			{
+				wrongBrowserInfoSection.style.display = '';
+			}
+			
+			return false;
+		}
+		
+		var popUpHandle = PopUpManagementConsoleWindowImpl();
+	
+		if( null == popUpHandle )
+		{
+			var noPopUpInfoSection = document.getElementById( '$$popUpBlockedInfo.ClientID;' );
+			
+			if( null != noPopUpInfoSection && noPopUpInfoSection.style.display != '' )
+			{
+				noPopUpInfoSection.style.display = '';
+			}
+			else
+			{
+				alert( 'Popup failed to open - please disable popup blockers' );
+			}
+		}
+		else
+		{
+			popUpHandle.focus();
+			document.location.replace( '/' );
+		}
+		
+		return false;
+	}
+	
+	if ( typeof window.addEventListener != "undefined" )
+	{
+		window.addEventListener( "load", PopUpManagementConsoleWindow, false );
+	}
+	else
+	{
+		if ( typeof window.attachEvent != "undefined" )
+		{
+			window.attachEvent( "onload", PopUpManagementConsoleWindow );
+		}
+	}
+</script>

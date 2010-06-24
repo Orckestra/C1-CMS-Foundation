@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="ExistingHostNames" type="System.Collections.Generic.List`1[[System.String]]" />
+    <cms:binding name="HostNamesToRemove" type="System.Collections.Generic.List`1[[System.String]]" />
+  </cms:bindings>
+  <cms:layout iconhandle="page-manage-host-names" label="${Composite.StandardPlugins.PageElementProvider,ManageHostNames.Remove.DialogLabel}">
+    <PlaceHolder>
+      <FieldGroup Label="${Composite.StandardPlugins.PageElementProvider,ManageHostNames.Remove.FieldGroupLabel}">
+        <MultiKeySelector Label="${Composite.StandardPlugins.PageElementProvider,ManageHostNames.Remove.MultiSelectorLabel}" Help="${Composite.StandardPlugins.PageElementProvider,ManageHostNames.Remove.MultiSelectorHelp}">
+          <MultiKeySelector.Options>
+            <cms:read source="ExistingHostNames" />
+          </MultiKeySelector.Options>
+          <MultiKeySelector.Selected>
+            <cms:bind source="HostNamesToRemove" />
+          </MultiKeySelector.Selected>
+        </MultiKeySelector>
+      </FieldGroup>
+    </PlaceHolder>
+  </cms:layout>
+</cms:formdefinition>

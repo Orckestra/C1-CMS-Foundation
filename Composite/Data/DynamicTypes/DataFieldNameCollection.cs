@@ -1,0 +1,90 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace Composite.Data.DynamicTypes
+{
+    public sealed class DataFieldNameCollection : IEnumerable<string>
+    {
+        private List<string> _dataFieldNames = new List<string>();
+        private DataFieldDescriptorCollection _validDataFieldDescriptions;
+        private bool _allowNullableFields;
+        private bool _allowListFields;
+        private bool _allowLargeStringFields;
+
+
+        internal DataFieldNameCollection(DataFieldDescriptorCollection validDataFieldDescriptions, bool allowNullableFields, bool allowListFields, bool allowLargeStringFields)
+        {
+            _validDataFieldDescriptions = validDataFieldDescriptions;
+            _allowNullableFields = allowNullableFields;
+            _allowListFields = allowListFields;
+            _allowLargeStringFields = allowLargeStringFields;
+        }
+
+
+        public void Add(string dataFieldName)
+        {
+            ValidateFieldMembership(dataFieldName);
+            _dataFieldNames.Add(dataFieldName);
+        }
+
+
+        public void Remove(string dataFieldName)
+        {
+            _dataFieldNames.Remove(dataFieldName);
+        }
+
+
+        public void Clear()
+        {
+            _dataFieldNames.Clear();
+        }
+
+
+        public bool Contains(string fieldName)
+        {
+            return _dataFieldNames.Contains(fieldName);
+        }
+
+        public int Count
+        {
+            get { return _dataFieldNames.Count; }
+        }
+
+
+        public string this[int index]
+        {
+            get { return _dataFieldNames[index]; }
+        }
+
+
+        public IEnumerator<string> GetEnumerator()
+        {
+            return _dataFieldNames.GetEnumerator();
+        }
+
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return _dataFieldNames.GetEnumerator();
+        }
+
+
+        internal void ValidateMembers()
+        {
+            foreach (string fieldName in _dataFieldNames)
+            {
+                ValidateFieldMembership(fieldName);
+            }
+        }
+
+
+        private void ValidateFieldMembership(string dataFieldName)
+        {
+            DataFieldDescriptor dataFieldDescriptor = _validDataFieldDescriptions[dataFieldName];
+            if (dataFieldDescriptor == null) throw new ArgumentException(string.Format("Unknown data field name '{0}'", dataFieldName));
+            if (_allowNullableFields == false && dataFieldDescriptor.IsNullable) throw new ArgumentException("Can not add nullable fields to this list");
+            if (dataFieldDescriptor.StoreType.PhysicalStoreType == PhysicalStoreFieldType.LargeString && _allowLargeStringFields == false) throw new ArgumentException("Can not add large string fields to this list");
+        }
+
+    }
+}

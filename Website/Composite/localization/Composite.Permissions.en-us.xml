@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<strings>
+	<string key="ReadLabel" value="Read" />
+	<string key="EditLabel" value="Edit" />
+	<string key="AddLabel" value="Add" />
+	<string key="DeleteLabel" value="Delete" />
+	<string key="ApproveLabel" value="Approve" />
+	<string key="PublishLabel" value="Publish" />
+	<string key="AdministrateLabel" value="Administrate" />
+	<string key="ClearPermissionsLabel" value="ClearPermissions" />
+</strings>

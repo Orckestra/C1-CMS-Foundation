@@ -1,0 +1,142 @@
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+/* HOVER */
+
+ui|toolbarbutton.hover table.matrix td.c {
+	#region default
+		#alphabackdrop: url("${skin}/toolbars/toolbarbutton-c.png");
+	#endregion
+	#region vista
+		background-image: none;
+		filter: none;
+	#endregion
+}
+ui|toolbarbutton.hover table.matrix td.n {
+	#region default
+		#alphabackdrop: url("${skin}/toolbars/toolbarbutton-n.png");
+	#endregion
+	#region vista
+		#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-hover-n.png");
+	#endregion
+}
+ui|toolbarbutton.hover table.matrix td.s {
+	#region default
+		#alphabackdrop: url("${skin}/toolbars/toolbarbutton-s.png");
+	#endregion
+	#region vista
+		#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-hover-s.png");
+	#endregion
+}
+ui|toolbarbutton.hover table.matrix td.e {
+	#region default
+		#alphabackdrop: url("${skin}/toolbars/toolbarbutton-e.png");
+	#endregion
+	#region vista
+		#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-hover-e.png");
+	#endregion
+}
+ui|toolbarbutton.hover table.matrix td.w {
+	#region default
+		#alphabackdrop: url("${skin}/toolbars/toolbarbutton-w.png");
+	#endregion
+	#region vista
+		#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-hover-w.png");
+	#endregion
+}
+ui|toolbarbutton.hover table.matrix td.ne {
+	#region default
+		#alphabackdrop: url("${skin}/toolbars/toolbarbutton-ne.png");
+	#endregion
+	#region vista
+		#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-hover-ne.png");
+	#endregion
+}
+ui|toolbarbutton.hover table.matrix td.nw {
+	#region default
+		#alphabackdrop: url("${skin}/toolbars/toolbarbutton-nw.png");
+	#endregion
+	#region vista
+		#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-hover-nw.png");
+	#endregion
+}
+ui|toolbarbutton.hover table.matrix td.se {
+	#region default
+		#alphabackdrop: url("${skin}/toolbars/toolbarbutton-se.png");
+	#endregion
+	#region vista
+		#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-hover-se.png");
+	#endregion
+}
+ui|toolbarbutton.hover table.matrix td.sw {
+	#region default
+		#alphabackdrop: url("${skin}/toolbars/toolbarbutton-sw.png");
+	#endregion
+	#region vista
+		#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-hover-sw.png");
+	#endregion
+}
+
+/* ACTIVE */
+
+#region osx
+	ui|toolbarbutton.active {
+		background-color: rgba(0,0,0,0.05);
+		-moz-border-radius: 4px;
+	}
+#endregion
+
+ui|toolbarbutton.active table.matrix td.c {
+	#alphabackdrop: url("${skin}/toolbars/toolbarbutton-on-c.png");
+	#region vista
+		background-image: none;
+		filter: none;
+	#endregion
+}
+ui|toolbarbutton.active table.matrix td.n {
+	#alphabackdrop: url("${skin}/toolbars/toolbarbutton-on-n.png");
+	#region vista
+		#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-active-n.png");
+	#endregion
+}
+ui|toolbarbutton.active table.matrix td.s {
+	#alphabackdrop: url("${skin}/toolbars/toolbarbutton-on-s.png");
+	#region vista
+		#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-active-s.png");
+	#endregion
+}
+ui|toolbarbutton.active table.matrix td.e {
+	#alphabackdrop: url("${skin}/toolbars/toolbarbutton-on-e.png");
+	#region vista
+		#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-active-e.png");
+	#endregion
+}
+ui|toolbarbutton.active table.matrix td.w {
+	#alphabackdrop: url("${skin}/toolbars/toolbarbutton-on-w.png");
+	#region vista
+		#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-active-w.png");
+	#endregion
+}
+ui|toolbarbutton.active table.matrix td.ne {
+	#alphabackdrop: url("${skin}/toolbars/toolbarbutton-on-ne.png");
+	#region vista
+		#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-active-ne.png");
+	#endregion
+}
+ui|toolbarbutton.active table.matrix td.nw {
+	#alphabackdrop: url("${skin}/toolbars/toolbarbutton-on-nw.png");
+	#region vista
+		#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-active-nw.png");
+	#endregion
+}
+ui|toolbarbutton.active table.matrix td.se {
+	#alphabackdrop: url("${skin}/toolbars/toolbarbutton-on-se.png");
+	#region vista
+		#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-active-se.png");
+	#endregion
+}
+ui|toolbarbutton.active table.matrix td.sw {
+	#alphabackdrop: url("${skin}/toolbars/toolbarbutton-on-sw.png");
+	#region vista
+		#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-active-sw.png");
+	#endregion
+}

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:fields xmlns:ui="http://www.w3.org/1999/xhtml">
+	<ui:fieldgroup label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelShockWaveOptions}">
+		<ui:field>
+			<ui:fielddesc>Quality</ui:fielddesc>
+			<ui:fielddata>
+				<ui:selector name="param-quality" label="(default)">
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelHigh}" value="high"/>
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelLow}" value="low"/>
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelAutoHigh}" value="autoheigh"/>
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelAutoLow}" value="autolow"/>
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelBest}" value="best"/>
+				</ui:selector>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>WMode</ui:fielddesc>
+			<ui:fielddata>
+				<ui:selector name="param-wmode" label="(default)">
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelWindow}" value="window"/>
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelOpaque}" value="opaque"/>
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelTransparent}" value="transparent"/>
+				</ui:selector>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>Scale</ui:fielddesc>
+			<ui:fielddata>
+				<ui:selector name="param-scale" label="(default)">
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelShowAll}" value="showall"/>
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelNoBorder}" value="noborder"/>
+					<ui:selection label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelExactFit}" value="exactfit"/>
+				</ui:selector>
+			</ui:fielddata>
+		</ui:field>
+		<ui:field>
+			<ui:fielddesc>Settings</ui:fielddesc>
+			<ui:fielddata>
+				<ui:checkboxgroup>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelAutoPlay}" name="param-play" ischecked="true"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelLoop}" name="param-loop" ischecked="true"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelShowMenu}" name="param-menu" ischecked="true"/>
+					<ui:checkbox label="${Composite.Management, Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelSWLiveConnect}" name="param-swliveconnect"/>
+				</ui:checkboxgroup>
+			</ui:fielddata>
+		</ui:field>
+	</ui:fieldgroup>
+</ui:fields>

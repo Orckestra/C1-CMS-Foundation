@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="SelectedExistingType" type="System.Type" />
+    <cms:binding name="ExistingCompatibleTypes" type="System.Object" />
+  </cms:bindings>
+  <cms:layout iconhandle="dataassociation-add-association">
+    <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeWorkflow.FieldGroupLabel}">
+      <TypeSelector Label="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeAddExisting.TypeSelectorLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeAddExisting.TypeSelectorHelp}">
+        <TypeSelector.TypeOptions>
+          <cms:read source="ExistingCompatibleTypes" />
+        </TypeSelector.TypeOptions>
+        <TypeSelector.SelectedType>
+          <cms:bind source="SelectedExistingType" />
+        </TypeSelector.SelectedType>
+      </TypeSelector>
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

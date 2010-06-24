@@ -1,0 +1,2 @@
+content	compositec1 chrome/content/
+overlay chrome://webrunner/content/webrunner.xul chrome://compositec1/content/compositec1.xul

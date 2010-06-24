@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<strings>
+  <string key="KeyFacade.ErrorTreeNode.Label" value="Error in tree" />
+  <string key="KeyFacade.ErrorTreeNode.ShowMessage.Label" value="Show Message" />
+  <string key="KeyFacade.ErrorTreeNode.ShowMessage.ToolTip" value="Show Error Message" />
+  <string key="KeyFacade.ErrorTreeNode.ShowMessage.Title" value="Error message" />
+  
+  <!-- Validation -->
+  <string key="TreeValidationError.Common.UnknownException" value="Unknown exception happened: '{0}'" />
+  <string key="TreeValidationError.Common.UnknownElement" value="Unknown element '{0}'" />
+  <string key="TreeValidationError.Common.MissingAttribute" value="The required attribute '{0}' is missing" />
+  <string key="TreeValidationError.Common.WrongAttributeValue" value="The attribute '{0}' has a value that is not allowed" />  
+  <string key="TreeValidationError.Common.MissingProperty" value="The type '{0}' does not contain a property named '{1}'" />
+  <string key="TreeValidationError.Common.UnkownInterfaceType" value="The type '{0}' could not be found" />
+  <string key="TreeValidationError.Common.NotImplementingIData" value="The type '{0}' does not implement the interface '{1}'" />
+  <string key="TreeValidationError.Common.WrongPermissinValue" value="The value '{0} is not allowed as a permission type value" />
+  <string key="TreeValidationError.Common.WrongLocationValue" value="The value '{0} is not allowed as a location value" />
+  <string key="TreeValidationError.Common.MissingFunctionMarkup" value="No function markedup provided as child element" />
+  <string key="TreeValidationError.Common.WrongFunctionMarkup" value="The function could not be created for the provied function markup" />
+
+  <string key="TreeValidationError.Markup.NoRootElement" value="Missing root element in tree markup" />
+  <string key="TreeValidationError.Markup.SchemaError" value="Syntax error: {0} at line {1} position {2}" />
+  
+  <string key="TreeValidationError.AutoAttachments.UnknownAttachmentPoint" value="The attachment point '{0}' is unknown" />
+  <string key="TreeValidationError.AutoAttachments.UnknownAttachmentPosition" value="The attachment position '{0}' is unknown" />
+  <string key="TreeValidationError.DataAttachments.NoElementsAllowed" value="No elements are allowed in trees that are used with data attached trees" />
+
+  <string key="TreeValidationError.SimpleElement.WrongIdValue" value="The value of the Id is not allowed. The Id should be non-empty, not start with NodeAutoId_ and not be RootTreeNode" />
+  <string key="TreeValidationError.SimpleElement.AlreadyUsedId" value="The id value '{0}' has already been used in this tree" />
+
+  <string key="TreeValidationError.DataElementsTreeNode.SameInterfaceUsedTwice" value="The data interface '{0}' is used more than once as child under the same parent element and this is not allowed" />
+  <string key="TreeValidationError.DataElementsTreeNode.SameParentFilterInterfaceUsedTwice" value="The same interface '{0}' is used as parent type as parent filter and this is not allowed" />
+  <string key="TreeValidationError.DataElementsTreeNode.MoreThanOnParentFilterIsPointingToMe" value="More than one parent filter is pointing to the interface '{0}'. Change the Dispaly value to Lazy" />
+
+  <string key="TreeValidationError.DataFolderElements.MissingInterfaceType" value="Type attribute is missing" />
+  <string key="TreeValidationError.DataFolderElements.WrongInterfaceType" value="The interface type '{0}' does not match the parent elements interface type '{1}'" />
+  <string key="TreeValidationError.DataFolderElements.DateFormetNotAllowed" value="DateFormat attribute requires that the property '{0}' should be of type '{1}' but is type '{2}'" />
+  <string key="TreeValidationError.DataFolderElements.DateFormetIsMissing" value="The property '{0}' is of type Date and this requires the DateFormat attribute to be present" />
+  <string key="TreeValidationError.DataFolderElements.RangesAndFirstLetterOnlyNotAllowed" value="Ranges and first-letter-only not allowed at the same time" />
+  <string key="TreeValidationError.DataFolderElements.WrongFirstLetterOnlyPropertyType" value="First-letter-only requires that the property '{0}' should be of type '{1}' but is type '{2}'" />
+  <string key="TreeValidationError.DataFolderElements.WrongDateChildInterfaceType" value="Only data child elements with the same interface type as the folder grouping ('{0}') are allowed" />
+  <string key="TreeValidationError.DataFolderElements.InterfaceTypeSwitchNotAllowed" value="Switching from the interface type '{0}' to a different interface type '{1}' is not allowed in the same folder grouping group" />
+  <string key="TreeValidationError.DataFolderElements.SameFieldUsedTwice" value="Using the field name '{0}' twice in the same grouping tree is not allowed" />
+  <string key="TreeValidationError.DataFolderElements.TooManyParentIdFilters" value="Maximum one parent id filter node can be used on data elements used in groupings" />
+
+  <string key="TreeValidationError.ParentIdFilterNode.TypeIsNotInParentTree" value="The type '{0}' is not in the parant tree of this node or specified as an attachment points type" />
+  <string key="TreeValidationError.FieldFilter.UnknownOperatorName" value="The operator '{0}' is unknown or not supported" />
+  <string key="TreeValidationError.FieldFilter.ValueCouldNotBeConverted" value="The string value '{0}' could not be converted to the type '{1}'" />
+  <string key="TreeValidationError.FieldFilter.OperatorNotSupportedForType" value="The operator '{0}' is not supported for the type '{1}'" />
+
+  <string key="TreeValidationError.FunctionFilter.WrongFunctionMarkup" value="The function could not be created for the provied function markup" />
+  <string key="TreeValidationError.FunctionFilter.WrongReturnValue" value="The function does not return value of the type '{0}'" />
+  <string key="TreeValidationError.FunctionFilter.WrongFunctionReturnType" value="The return type of the expression returned by the function is '{0}', '{1}' was expected" />
+  <string key="TreeValidationError.FunctionFilter.WrongFunctionParameterCount" value="The parameter count of expression returned by the function is '{0}', 1 was expected" />
+  <string key="TreeValidationError.FunctionFilter.WrongFunctionParameterType" value="The expressions parameter type returned by the function is '{0}', '{1}' was expected" />
+  
+  <string key="TreeValidationError.ReportFunctionAction.WrongReturnValue" value="The function does not return value of the type '{0}'" />
+  <string key="TreeValidationError.GenericAddDataAction.MissingMarkupFile" value="The file '{0}' does not exist" />
+  <string key="TreeValidationError.GenericAddDataAction.BadMarkupPath" value="The custom markup path '{0}' is wrongly formatted. Use ~/Dir1/Dir2/File.xml" />
+  <string key="TreeValidationError.GenericEditDataAction.OwnerIsNotDataNode" value="The edit data action only applies to elements that produces data elements" />
+  <string key="TreeValidationError.GenericEditDataAction.MissingMarkupFile" value="The file '{0}' does not exist" />
+  <string key="TreeValidationError.GenericEditDataAction.BadMarkupPath" value="The custom markup path '{0}' is wrongly formatted. Use ~/Dir1/Dir2/File.xml" />
+  <string key="TreeValidationError.GenericDeleteDataAction.OwnerIsNotDataNode" value="The delete data action only applies to elements that produces data elements" />
+  <string key="TreeValidationError.MessageBoxAction.UnknownDialogType" value="The dialog type '{0}' is not supported" />
+  <string key="TreeValidationError.CustomUrlAction.TooManyPostParameterElements" value="Too many '{0}' elements, only one is allowed" />
+  <string key="TreeValidationError.CustomUrlAction.UnknownViewType" value="The view type '{0}' is not supported" />
+
+  <string key="TreeValidationError.FieldOrderBy.UnknownDirection" value="The direction value '{0}' is wrong, should be either 'ascending' or 'descending'" />
+  <string key="TreeValidationError.FieldOrderBy.UnknownField" value="The type '{0}' does not contain a field named '{1}'" />
+
+  <string key="TreeValidationError.DataFieldValueHelper.WrongFormat" value="'{0}' is in wrong format, use the format: {1}" />
+  <string key="TreeValidationError.DataFieldValueHelper.InterfaceNotInParentTree" value="The interface '{0}' is not contained in current element or any of its parents" />
+
+  <string key="TreeValidationError.Range.WrongFormat" value="The range value is wrongly formattet" />
+  <string key="TreeValidationError.Range.UnsupportedType" value="The property '{0}' is of type '{1}' which does not support ranges" />
+
+  <string key="TreeValidationError.Range.MinMaxError" value="The value first value ({0}) in a range should be lesser than second value ({1})" />
+  <string key="TreeValidationError.Range.NextRangeError" value="The max value of a range should be less than the min value of the succeeding range" />
+
+  
+  <!-- Ranges -->
+  
+  <string key="TreeRanges.IntRange.Closed" value="From {0} to {1}" />
+  <string key="TreeRanges.IntRange.MinOpenEnded" value="{0} or less" />
+  <string key="TreeRanges.IntRange.MaxOpenEnded" value="{0} or more" />
+  <string key="TreeRanges.IntRange.Other" value="Other" />
+
+  <string key="TreeRanges.StringRange.Closed" value="From {0} to {1}" />
+  <string key="TreeRanges.StringRange.MinOpenEnded" value="{0} and before" />
+  <string key="TreeRanges.StringRange.MaxOpenEnded" value="{0} and after" />
+  <string key="TreeRanges.StringRange.Other" value="Other" />
+
+  
+  <!-- Other -->
+  <string key="GenericAddDataAction.DefaultLabel" value="Add" />
+  <string key="GenericEditDataAction.DefaultLabel" value="Edit" />
+  <string key="GenericDeleteDataAction.DefaultLabel" value="Delete" />
+  
+  
+  <string key="TreeGenericDelete.CascadeDeleteErrorTitle" value="Cascade delete error" />
+  <string key="TreeGenericDelete.CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
+  
+  <string key="TreeGenericDeleteConfirm.LabelFieldGroup" value="Delete data?" />
+  <string key="TreeGenericDeleteConfirm.Text" value="Delete" />
+  
+  <string key="TreeGenericDeleteConfirmDeletingRelatedData.LabelFieldGroup" value="Delete data?" />
+  <string key="TreeGenericDeleteConfirmDeletingRelatedData.ConfirmationText" value="There're some referenced data that will also be deleted, do you want to continue?" />
+
+
+  <string key="TreeAddTreeDefinitionWorkflow.AddNew.Label" value="Add" />
+  <string key="TreeAddTreeDefinitionWorkflow.AddNew.ToolTip" value="Add new tree definition" />           
+  <string key="TreeAddTreeDefinition.Layout.Label" value="Add new tree definition" />
+  <string key="TreeAddTreeDefinition.FieldGroup.Label" value="Add new tree definition" />
+  <string key="TreeAddTreeDefinition.NameTextBox.Label" value="Definition name" />
+  <string key="TreeAddTreeDefinition.NameTextBox.Help" value="Definition name" />
+  <string key="TreeAddTreeDefinition.TemplateSelector.Label" value="Template" />
+  <string key="TreeAddTreeDefinition.TemplateSelector.Help" value="Select a template to start with" />
+  <string key="TreeAddTreeDefinition.PositionSelector.Label" value="Position" />
+  <string key="TreeAddTreeDefinition.PositionSelector.Help" value="Position" />
+
+  <string key="TreeDeleteTreeDefinitionWorkflow.Delete.Label" value="Delete" />
+  <string key="TreeDeleteTreeDefinitionWorkflow.Delete.ToolTip" value="Delete tree definition" />
+  <string key="TreeDeleteTreeDefinition.Layout.Label" value="Delete tree definition" />
+  <string key="TreeDeleteTreeDefinition.Title" value="Delete selected tree definition" />
+  <string key="TreeDeleteTreeDefinition.Description" value="Delete selected tree definition?" />
+
+  <string key="TreeDeleteTreeDefinitionWorkflow.Edit.Label" value="Edit" />
+  <string key="TreeDeleteTreeDefinitionWorkflow.Edit.ToolTip" value="Edit tree definition" />
+
+  <string key="AddApplicationWorkflow.AddApplication.Label" value="Add application" />
+  <string key="AddApplicationWorkflow.AddApplication.ToolTip" value="Add new application" />
+  <string key="AddApplication.Layout.Label" value="Add application" />
+  <string key="AddApplication.FieldGroup.Label" value="Select application" />
+  <string key="AddApplication.TreeIdSelector.Label" value="Application" />
+  <string key="AddApplication.TreeIdSelector.Help" value="Select the application that you whish to add" />
+  <string key="AddApplication.PositionSelector.Label" value="Position" />
+  <string key="AddApplication.PositionSelector.Help" value="The position to insert this application" />
+  <string key="AddApplication.NoTrees.Title" value="No applications" />
+  <string key="AddApplication.NoTrees.Message" value="You have added all available applications" />
+
+  <string key="RemoveApplicationWorkflow.RemoveApplication.Label" value="Remove application" />
+  <string key="RemoveApplicationWorkflow.RemoveApplication.ToolTip" value="Remove existing application" />
+  <string key="RemoveApplication.Layout.Label" value="Remove application" />
+  <string key="RemoveApplication.FieldGroup.Label" value="Remove application" />
+  <string key="RemoveApplication.TreeIdSelector.Label" value="Application" />
+  <string key="RemoveApplication.TreeIdSelector.Help" value="Select the application that you whish to remove" />
+  <string key="RemoveApplication.NoTrees.Title" value="No applications" />
+  <string key="RemoveApplication.NoTrees.Message" value="You have removed all available applications" />
+
+  <string key="LocalizeDataWorkflow.LocalizeDataLabel" value="Translate data" />
+  <string key="LocalizeDataWorkflow.LocalizeDataToolTip" value="Translate data" />
+  <string key="LocalizeDataWorkflow.DisabledData" value="Not yet approved or published" />
+  <string key="LocalizeData.ShowError.Layout.Label" value="Failed to translate data" />
+  <string key="LocalizeData.ShowError.InfoTable.Caption" value="Translation errors" />  
+  <string key="LocalizeData.ShowError.Description" value="The following fields has a reference to a data type. You should translate these data items before you can translate this data item" />
+  <string key="LocalizeData.ShowError.FieldErrorFormat" value="The field '{0}' is referencing data of type '{1}' with the label '{2}'" />
+  <string key="LocalizeData.ShowError.AlreadyTranslated" value="This data has already been translated. Translated version belongs to a diffrent group." />
+</strings>

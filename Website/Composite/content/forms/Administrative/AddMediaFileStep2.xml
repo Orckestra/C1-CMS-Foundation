@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="Filename" type="System.String" />
+    <cms:binding name="Title" type="System.String" />
+    <cms:binding name="Description" type="System.String" />
+    <cms:binding name="AllowOverwrite" type="System.Boolean"/>
+  </cms:bindings>
+  <cms:layout iconhandle="media-add-media-file" label="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.Layout.Label}">
+
+    <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.FieldGroup.Label}">
+      
+      <TextBox Label="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.FilenameTextBox.Label}" 
+               Help="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.FilenameTextBox.Help}">
+        <TextBox.Text>
+          <cms:bind source="Filename" />
+        </TextBox.Text>
+      </TextBox>
+      
+      <TextBox Label="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.TitleTextBox.Label}" 
+               Help="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.TitleTextBox.Help}">
+        <TextBox.Text>
+          <cms:bind source="Title" />
+        </TextBox.Text>
+      </TextBox>     
+      
+      <TextArea Label="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.DescriptionTextBox.Label}" 
+                Help="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.DescriptionTextBox.Help}">
+        <TextArea.Text>
+          <cms:bind source="Description" />
+        </TextArea.Text>
+      </TextArea>
+
+      <CheckBox Label="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.OverwriteCheckBox.Label}"
+                ItemLabel="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.OverwriteCheckBox.Help}">
+        <CheckBox.Checked>
+          <cms:bind source="AllowOverwrite" />
+        </CheckBox.Checked>
+      </CheckBox>
+      
+    </FieldGroup>
+    
+  </cms:layout>
+</cms:formdefinition>

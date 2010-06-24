@@ -1,0 +1,118 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+/* see also popups.css for shared visual styles!!!!!!! */
+
+ui|menubar {
+	display: block;
+	border-top: 1px solid $(color:threedhighlight);
+	border-bottom: 1px solid $(color:threedshadow);
+	white-space: nowrap;
+	text-transform: capitalize; /* notice all capitalized words! */
+}
+ui|menu {
+	display: block;
+	float: left;
+	margin: 0;
+	padding: 0;
+}
+ui|menubody {
+	display: block;
+	padding: 4px 2px 4px 2px;
+	background-color: $(color:menu);
+	color: $(color:menutext);
+	/*border: 1px solid $(color:threedshadow);*/
+}
+ui|menugroup {
+	display: block;
+	border-top: 1px solid $(color:threedhighlight);
+	border-bottom: 1px solid $(color:threedshadow);
+	padding: 5px 0 5px 0;
+}
+ui|menugroup.first {
+	border-top: none;
+	padding-top: 0;
+}
+ui|menugroup.last {
+	border-bottom: none;
+	padding-bottom: 0;
+}
+ui|menu ui|labelbox.menulabel {
+	padding: 4px 6px 1px 4px;
+	position: relative; /* ie something */
+	#region vista
+		padding-top: 2px;
+		padding-bottom: 2px;
+	#endregion
+}
+ui|menu.hover ui|labelbox.menulabel {
+	background-color: $(color:highlight);
+	color: $(color:highlighttext);	
+}
+ui|menuitem {
+	white-space: nowrap;
+	display: block;
+	clear: both;
+	position: relative;
+}
+ui|menuitem ui|menupopup,
+ui|menuitem ui|shadow {
+	margin-top: -2px;
+	margin-left: -2px;
+}
+ui|menuitem.isdisabled,
+ui|menu ui|menu.isdisabled {
+	color: $(color:graytext);
+}
+ui|menuitem ui|labelbox,
+ui|menuitem ui|labelbody,
+ui|menuitem ui|labeltext {
+	float: none;
+	clear: both;
+}
+ui|menuitem ui|labelbox {
+	padding: 2px 8px 2px 8px;
+}
+ui|menubody.checkboxed ui|menuitem ui|labelbox {
+	padding: 2px 8px 2px 24px;
+}
+ui|menuitem ui|labelbox.hover {
+	background-color: $(color:highlight);
+	color: $(color:highlighttext);
+}
+ui|menuitem ui|labeltext {
+	padding-left: 4px;
+	position: relative;
+	#moz top: 1px;
+	#ie top: 2px;
+	#region vista
+		top: 0;
+		_top: 1px;
+	#endregion
+}
+ui|popup.selectorpopup ui|menuitem ui|labeltext {
+	text-transform: none; /* selectors should NOT capitalize text! */
+}
+/* TODO: enable this and remove script hack!
+ui|menuitem ui|label.textonly ui|labelbody {
+	padding-left: 16px;
+}
+*/
+ui|menuitem ui|labelbox {
+	position: relative;
+	#ie width: 100%;
+}
+div.checkboxindicator {
+	font-family: Arial, sans-serif;
+	font-size: 11px;
+	position: absolute;
+	left: 7px;
+	top: 3px;
+}
+div.submenuindicator {
+	font-family: Arial, sans-serif;
+	font-size: 11px;	
+	position: absolute;
+	right: 7px;
+	top: 3px;
+}

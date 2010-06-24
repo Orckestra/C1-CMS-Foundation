@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.composite.net/ns/management/bindingforms/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="formdefinition">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="bindings">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="binding" minOccurs="0">
+                <xs:complexType>
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                  <xs:attribute name="type" type="xs:string" use="required" />
+                  <xs:attribute name="optional" type="xs:boolean" use="optional" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="layout">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="layout.label" maxOccurs="1" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="read">
+                      <xs:complexType>
+                        <xs:attribute name="source" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="layout.iconhandle" maxOccurs="1" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="read">
+                      <xs:complexType>
+                        <xs:attribute name="source" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:sequence>
+                <xs:choice>
+                  <xs:any namespace="##other" />
+                </xs:choice>
+              </xs:sequence>
+            </xs:sequence>
+            <xs:attribute name="label" type="xs:string" use="optional" />
+            <xs:attribute name="iconhandle" type="xs:string" use="optional" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="bind">
+    <xs:complexType>
+      <xs:attribute name="source" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="read">
+    <xs:complexType>
+      <xs:attribute name="source" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

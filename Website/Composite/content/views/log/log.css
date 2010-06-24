@@ -1,0 +1,35 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|scrollbox#scrollbox {
+	background-color: white !important;
+}
+
+ui|scrollbox#scrollbox table {
+	border-collapse: collapse;	
+}
+ui|scrollbox#scrollbox td, th {
+	padding: 5px;
+	white-space: nowrap;
+}
+ui|scrollbox#scrollbox td {
+	border: 1px solid $(color:threeddarkshadow);
+	vertical-align: top;
+	cursor: text;
+}
+ui|scrollbox#scrollbox th {
+	text-align: left;
+	font-weight: bold;
+	background-color: $(color:threedface);
+}
+pre 
+{
+	padding: 0;
+	margin: 0;
+	cursor: text;
+}
+
+div#emptylabel {
+	padding: 1em;
+	border-top: 1px solid $(color:threedhighlight);
+}

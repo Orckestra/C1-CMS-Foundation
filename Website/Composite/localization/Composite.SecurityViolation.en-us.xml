@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<strings>
+	<string key="LayoutLabel" value="Security violation" />
+	<string key="Title" value="Not allowed" />
+	<string key="Description" value="You do not have permission to execute the action. Contant your adiministrator for more information." />
+</strings>

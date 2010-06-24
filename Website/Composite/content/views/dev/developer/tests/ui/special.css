@@ -1,0 +1,21 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+
+html {
+	background-color: -moz-Dialog;
+	color: -moz-DialogText;
+	font: message-box;
+}
+html,
+body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	overflow: hidden;
+}
+form {
+	display: none;
+}
+object {
+	width: 100%;
+	height: 100%;
+}

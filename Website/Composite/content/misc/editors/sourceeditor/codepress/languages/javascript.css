@@ -1,0 +1,28 @@
+/*
+ * CodePress color styles for JavaScript syntax highlighting
+ *
+b {color:#7F0055;font-weight:bold;} reserved words
+u {color:darkblue;font-weight:bold;} special words
+i, i b, i s, i u {color:green;font-weight:normal;} comments
+s, s b, s u {color:#2A00FF;font-weight:normal;} strings
+*/
+
+b {
+	color: rgb(127,0,127); /* reserved words */
+	font-weight: bold;
+}
+u {
+	color: rgb(0,0,127); /* special words */
+	font-weight: bold;
+}
+i, 
+i b, 
+i s, 
+i u {
+	color: rgb(63,95,191); /* comments */
+}
+s,
+s b,
+s u {
+	color: rgb(0,0,255);  /* strings */
+}

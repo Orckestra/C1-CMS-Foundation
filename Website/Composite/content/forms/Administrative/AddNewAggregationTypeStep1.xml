@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:internal="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="NewTypeName" type="System.String" />
+    <cms:binding name="NewTypeNamespace" type="System.String" />
+    <cms:binding name="NewTypeTitle" type="System.String" />
+    <cms:binding name="DataFieldDescriptors" type="System.Object" />
+    <cms:binding name="LabelFieldName" type="System.String" optional="true" />
+    <cms:binding name="HasCaching" type="System.Boolean" />
+    <cms:binding name="HasPublishing" type="System.Boolean" />
+		<cms:binding name="HasLocalization" type="System.Boolean" />
+    <cms:binding name="ShowLocalization" type="System.Boolean" />    
+  </cms:bindings>
+  <cms:layout>
+    <TabPanels Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, AddNewAggregationTypeWorkflow.DocumentTitle}">
+      <PlaceHolder Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.SettingsTab}">
+
+        <FieldGroup Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.LabelTitleGroup}">
+          <TextBox Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.LabelTitle}" Help="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.HelpTitle}">
+            <cms:bind source="NewTypeTitle" />
+          </TextBox>
+        </FieldGroup>
+
+
+        <FieldGroup Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.LabelProgrammaticNamingAndServices}">
+          <TextBox Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.LabelTypeName}"
+               Help="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.HelpTypeName}" Type="ProgrammingIdentifier">
+            <cms:bind source="NewTypeName" />
+          </TextBox>
+          <TextBox Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.LabelTypeNamespace}" Help="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.HelpTypeNamespace}" Type="ProgrammingNamespace">
+            <cms:bind source="NewTypeNamespace" />
+          </TextBox>
+          <PlaceHolder Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.ServicesLabel}">
+            <CheckBox Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.HasCaching}" ItemLabel="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.HasCaching}">
+              <CheckBox.Checked>
+                <cms:bind source="HasCaching" />
+              </CheckBox.Checked>
+            </CheckBox>
+            <CheckBox Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.HasPublishing}" ItemLabel="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.HasPublishing}">
+              <CheckBox.Checked>
+                <cms:bind source="HasPublishing" />
+              </CheckBox.Checked>
+            </CheckBox>
+            <f:BooleanCheck>
+              <f:BooleanCheck.CheckValue>
+                <cms:read source="ShowLocalization" />
+              </f:BooleanCheck.CheckValue>
+              <f:BooleanCheck.WhenTrue>
+                <CheckBox Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.HasLocalization}" ItemLabel="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.HasLocalization}">
+                  <CheckBox.Checked>
+                    <cms:bind source="HasLocalization" />
+                  </CheckBox.Checked>
+                </CheckBox>
+              </f:BooleanCheck.WhenTrue>
+            </f:BooleanCheck>
+          </PlaceHolder>
+        </FieldGroup>
+      </PlaceHolder>
+      <internal:TypeFieldDesigner Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.LabelFields}">
+        <internal:TypeFieldDesigner.Fields>
+          <cms:bind source="DataFieldDescriptors" />
+        </internal:TypeFieldDesigner.Fields>
+        <internal:TypeFieldDesigner.LabelFieldName>
+          <cms:bind source="LabelFieldName" />
+        </internal:TypeFieldDesigner.LabelFieldName>
+      </internal:TypeFieldDesigner>
+    </TabPanels>
+  </cms:layout>
+</cms:formdefinition>

@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="NewPage" type="Composite.Data.Types.IPage" />
+    <cms:binding name="SortOrder" type="System.Object" />
+    <cms:binding name="SelectedSortOrder" type="System.String" />
+    <cms:binding name="PageTypeOptions" type="System.Collections.IEnumerable" />
+  </cms:bindings>
+  <cms:layout iconhandle="page-add-page" label="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep1.DialogLabel}">
+    <FieldGroup Label="${Composite.StandardPlugins.PageElementProvider, GeneralSettings.FieldGroupLabel}">
+      <TextBox Label="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep1.LabelTitle}" Help="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep1.LabelTitleHelp}">
+        <TextBox.Text>
+          <cms:bind source="NewPage.Title" />
+        </TextBox.Text>
+      </TextBox>
+      <TextArea Label="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep1.LabelAbstract}" Help="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep1.LabelAbstractHelp}">
+        <TextArea.Text>
+          <cms:bind source="NewPage.Abstract" />
+        </TextArea.Text>
+      </TextArea>
+      
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"                    
+                   Label="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep1.LabelTemplate}"
+                   Help="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep1.HelpTemplate}">
+        <KeySelector.Selected>
+          <cms:bind source="NewPage.PageTypeId" />
+        </KeySelector.Selected>
+        <KeySelector.Options>
+          <cms:read source="PageTypeOptions" />
+        </KeySelector.Options>
+      </KeySelector>
+      
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Help="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep1.HelpPosition}" Label="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep1.LabelPosition}">
+        <KeySelector.Selected>
+          <cms:bind source="SelectedSortOrder" />
+        </KeySelector.Selected>
+        <KeySelector.Options>
+          <cms:read source="SortOrder" />
+        </KeySelector.Options>
+      </KeySelector>       
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

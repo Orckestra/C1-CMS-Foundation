@@ -1,0 +1,19 @@
+﻿@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+*#toolbar
+{
+	display: none;
+}
+
+*
+{
+	height: auto !important;
+	overflow: visible !important;
+}
+
+ui|scrollbox#scrollbox
+{
+	height: auto !important;
+	overflow: visible !important;
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:menubody id="source-menubody" xmlns:ui="http://www.w3.org/1999/xhtml">
+	<ui:menugroup rel="standard">
+		<ui:menuitem label="${string:Website.Templates.WysiwygEditorPopUp.LabelInsert}" image="${icon:insert}">
+			<ui:menupopup>
+				<ui:menubody>
+					<ui:menugroup>
+						<ui:menuitem cmd="compositeInsert" val="pageurl" label="Page URL" image="${icon:page}"/>
+						<ui:menuitem cmd="compositeInsert" val="imageurl" label="Image URL" image="${icon:image}"/>
+						<ui:menuitem cmd="compositeInsert" val="mediaurl" label="Media URL" image="${icon:perspective-media}"/>
+						<ui:menuitem cmd="compositeInsert" val="functionmarkup" label="Function Markup" image="${icon:functioncall}"/>
+					</ui:menugroup>
+				</ui:menubody>
+			</ui:menupopup>
+		</ui:menuitem>
+	</ui:menugroup>
+	<ui:menugroup rel="xml">
+		<ui:menuitem cmd="compositeFormat" val="" label="Format" tooltip="Format XML source" image="${icon:editor-formatsource}"/>
+	</ui:menugroup>
+</ui:menubody>

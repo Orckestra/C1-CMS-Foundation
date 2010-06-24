@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="NewPageType" type="Composite.Data.Types.IPageType"/>
+  </cms:bindings>
+  <cms:layout iconhandle="pagetype-add-pagetype" label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddNewPageTypeWorkflow.Layout.Label}">
+    <FieldGroup Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddNewPageTypeWorkflow.FieldGroup.Label}">
+
+      <TextBox Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddNewPageTypeWorkflow.NameTextBox.Label}"
+               Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddNewPageTypeWorkflow.NameTextBox.Help}">
+        <TextBox.Text>
+          <cms:bind source="NewPageType.Name" />
+        </TextBox.Text>
+      </TextBox>
+
+
+      <TextArea Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddNewPageTypeWorkflow.DescriptionTextArea.Label}"
+                Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddNewPageTypeWorkflow.DescriptionTextArea.Help}">
+        <TextArea.Text>
+          <cms:bind source="NewPageType.Description" />
+        </TextArea.Text>
+      </TextArea>
+
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

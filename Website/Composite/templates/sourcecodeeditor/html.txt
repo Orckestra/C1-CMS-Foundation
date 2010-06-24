@@ -1,0 +1,28 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://www.composite.net/ns/function/1.0" 
+	xmlns:rendering="http://www.composite.net/ns/rendering/1.0"
+	xmlns:asp="http://www.composite.net/ns/asp.net/controls">
+	<head>
+		<title>Testing!</title>
+		<style type="text/css">
+			body {
+				background-color: white;
+			}
+		</style>
+		<script type="text/javascript">
+			/*
+			 * This is the script.
+			 */
+			window.onload = function () {
+				alert ( document.getElementById ( "heading" ).innerHTML );
+			}
+		</script>
+	</head>
+	<body>
+		<!-- this is the comment -->
+		<h1 id="heading">This is the heading.</h1>
+		
+		<!-- this is the rendering -->
+		<rendering:placeholder id="test" title="Test"/>
+	</body>
+</html>

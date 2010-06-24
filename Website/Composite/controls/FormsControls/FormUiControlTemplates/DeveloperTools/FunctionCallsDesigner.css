@@ -1,0 +1,33 @@
+﻿@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|flexbox#layout {
+	border: 2px groove $(color:threedhighlight);
+}
+ui|toolbar#toolbartreebuttons {
+	border-top: none;
+}
+ui|splitpanel#splitpaneltree {
+	border-right: 1px solid $(color:threedshadow);	
+}
+
+/* fix the horrendous updatepanel that somebody planted inside the tree ... */
+
+/*
+ui|tree#treefunctionparameters ui|treebody {
+	overflow: hidden !important;
+	padding: 0;
+}
+ui|tree#treefunctionparameters ui|updatepanel {
+	width: 100%;
+	height: 100%;
+	min-height: 100%;
+	-moz-outline: 1px solid white;
+}
+ui|tree#treefunctionparameters ui|updatepanel ui|updatepanelbody {
+	width: 100%;
+	height: 100%;
+	padding: 4px 6px 16px 6px;
+	overflow: auto !important;
+}
+*/

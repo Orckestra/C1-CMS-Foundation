@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<table xmlns="http://www.w3.org/1999/xhtml" class="fieldgroupmatrix" cellspacing="0">
+	<tbody>
+		<tr>
+			<td class="group-nw"/>
+			<td class="group-n">
+				<div class="group-label1"></div>
+				<div class="group-label2"></div>
+			</td>
+			<td class="group-ne"/>
+		</tr>
+		<tr>
+			<td class="group-w"/>
+			<td class="group-c">
+				${markup}
+			</td>
+			<td class="group-e"/>
+		</tr>
+		<tr>
+			<td class="group-sw"/>
+			<td class="group-s"/>
+			<td class="group-se"/>
+		</tr>
+	</tbody>
+</table>

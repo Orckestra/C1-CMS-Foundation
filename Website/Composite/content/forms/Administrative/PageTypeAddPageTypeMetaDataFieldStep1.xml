@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="NewMetaDataTypeLink" type="Composite.Data.Types.IPageTypeMetaDataTypeLink"/>
+    <cms:binding name="CompositionDescriptionName" type="System.String"/>
+    <cms:binding name="CompositionDescriptionLabel" type="System.String"/>
+    <cms:binding name="CompositionContainerId" type="System.Guid"/>
+    <cms:binding name="MetaDataTypeOptions" type="System.Collections.IEnumerable"/>
+    <cms:binding name="MetaDataContainerOptions" type="System.Collections.IEnumerable"/>    
+  </cms:bindings>
+  <cms:layout iconhandle="pagetype-add-metedatafield" label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.Layout.Label}">
+    <FieldGroup Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.FieldGroup.Label}">
+
+	   <KeySelector Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.MetaDataTypeKeySelector.Label}"
+                       Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.MetaDataTypeKeySelector.Help}"
+                       OptionsKeyField="Key" OptionsLabelField="Value" >
+        <KeySelector.Options>
+          <cms:read source="MetaDataTypeOptions" />
+        </KeySelector.Options>
+        <KeySelector.Selected>
+          <cms:bind source="NewMetaDataTypeLink.DataTypeId" />
+        </KeySelector.Selected>
+      </KeySelector>
+
+      <TextBox Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.NameTextBox.Label}"
+               Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.NameTextBox.Help}">
+        <TextBox.Text>
+          <cms:bind source="CompositionDescriptionName" />
+        </TextBox.Text>
+      </TextBox>
+
+
+      <TextBox Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.LabelTextBox.Label}"
+               Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.LabelTextBox.Help}">
+        <TextBox.Text>
+          <cms:bind source="CompositionDescriptionLabel" />
+        </TextBox.Text>
+      </TextBox>
+
+      <KeySelector Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.MetaDataContainerKeySelector.Label}"
+                       Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.MetaDataContainerKeySelector.Help}"
+                       OptionsKeyField="Key" OptionsLabelField="Value" >
+        <KeySelector.Options>
+          <cms:read source="MetaDataContainerOptions" />
+        </KeySelector.Options>
+        <KeySelector.Selected>
+          <cms:bind source="CompositionContainerId" />
+        </KeySelector.Selected>
+      </KeySelector>
+      
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

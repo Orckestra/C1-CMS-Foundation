@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="FieldGroupName" type="System.String"  />
+    <cms:binding name="FieldGroupLabel" type="System.String" />
+    <cms:binding name="Containers" type="System.Object"  />
+    <cms:binding name="SelectedContainer" type="System.Guid" />
+    <cms:binding name="StartDisplayOptions" type="System.Object"  />
+    <cms:binding name="SelectedStartDisplay" type="System.Int32" />
+    <cms:binding name="InheritDisplayOptions" type="System.Object"  />
+    <cms:binding name="SelectedInheritDisplay" type="System.Int32" />
+  </cms:bindings>
+  <cms:layout iconhandle="generated-type-add" label="${Composite.Management, AssociatedDataElementProviderHelper.AddMetaDataSelectType.LayoutLabel}">
+    <PlaceHolder>
+      <FieldGroup Label="${Composite.Management, AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.NamingFieldLabel}">
+        <TextBox Label="${Composite.Management, AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupNameLabel}" Help="${Composite.Management, AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupNameHelp}">
+          <TextBox.Text>
+            <cms:bind source="FieldGroupName" />
+          </TextBox.Text>
+        </TextBox>
+        <TextBox Label="${Composite.Management, AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupLabelLabel}" Help="${Composite.Management, AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupLabelHelp}">
+          <TextBox.Text>
+            <cms:bind source="FieldGroupLabel" />
+          </TextBox.Text>
+        </TextBox>
+      </FieldGroup>
+
+      <FieldGroup Label="${Composite.Management, AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.VisabilityFieldLabel}">
+        <KeySelector Label="${Composite.Management, AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.ContainerSelectorLabel}" OptionsKeyField="Key" OptionsLabelField="Value" Help="${Composite.Management, AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.ContainerSelectorHelp}">
+          <KeySelector.Options>
+            <cms:read source="Containers" />
+          </KeySelector.Options>
+          <KeySelector.Selected>
+            <cms:bind source="SelectedContainer" />
+          </KeySelector.Selected>
+        </KeySelector>
+
+        <KeySelector Label="${Composite.Management, AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.StartDisplaySelectorLabel}" OptionsKeyField="Key" OptionsLabelField="Value" Help="${Composite.Management, AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.StartDisplaySelectorHelp}">
+          <KeySelector.Options>
+            <cms:read source="StartDisplayOptions" />
+          </KeySelector.Options>
+          <KeySelector.Selected>
+            <cms:bind source="SelectedStartDisplay" />
+          </KeySelector.Selected>
+        </KeySelector>
+
+        <KeySelector Label="${Composite.Management, AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.InheritDisplaySelectorLabel}" OptionsKeyField="Key" OptionsLabelField="Value" Help="${Composite.Management, AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.InheritDisplaySelectorHelp}">
+          <KeySelector.Options>
+            <cms:read source="InheritDisplayOptions" />
+          </KeySelector.Options>
+          <KeySelector.Selected>
+            <cms:bind source="SelectedInheritDisplay" />
+          </KeySelector.Selected>
+        </KeySelector>
+      </FieldGroup>
+    </PlaceHolder>
+  </cms:layout>
+</cms:formdefinition>

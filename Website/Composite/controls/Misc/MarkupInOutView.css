@@ -1,0 +1,14 @@
+div#error {
+	padding: 24px;	
+}
+div#erroricon {
+	height: 32px;
+	width: 32px;
+	float: left;
+	margin-right: 10px;
+	#alphabackdrop: url("${root}/images/icons/harmony/composite/error_32.png");
+}
+div#errortype {
+	font-weight: bold;	
+	padding-top: 3px;
+}

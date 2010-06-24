@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="Label" type="System.String"/>    
+    <cms:binding name="MetaDataContainerOptions" type="System.Collections.IEnumerable"/>
+    <cms:binding name="SelectedMetaDataContainer" type="System.Guid"/>
+    <cms:binding name="StartDisplayOptions" type="System.Collections.IEnumerable"  />
+    <cms:binding name="SelectedStartDisplay" type="System.Int32" />
+    <cms:binding name="InheritDisplayOptions" type="System.Collections.IEnumerable"  />
+    <cms:binding name="SelectedInheritDisplay" type="System.Int32" />
+  </cms:bindings>
+
+  <cms:layout iconhandle="generated-type-edit" label="${Composite.Management, AssociatedDataElementProviderHelper.EditMetaDataWorkflow.Layout.Label}">    
+    <FieldGroup Label="${Composite.Management, AssociatedDataElementProviderHelper.EditMetaDataWorkflow.FieldGroup.Label}">
+
+      <TextBox Label="${Composite.Management, AssociatedDataElementProviderHelper.EditMetaDataWorkflow.LabelTextBox.Label}"
+               Help="${Composite.Management, AssociatedDataElementProviderHelper.EditMetaDataWorkflow.LabelTextBox.Help}">
+        <TextBox.Text>
+          <cms:bind source="Label" />
+        </TextBox.Text>
+      </TextBox>
+
+      <KeySelector Label="${Composite.Management, AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataContainerSelector.Label}"
+                   Help="${Composite.Management, AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataContainerSelector.Help}"
+                   OptionsKeyField="Key" OptionsLabelField="Value">
+        <KeySelector.Options>
+          <cms:read source="MetaDataContainerOptions" />
+        </KeySelector.Options>
+        <KeySelector.Selected>
+          <cms:bind source="SelectedMetaDataContainer" />
+        </KeySelector.Selected>
+      </KeySelector>
+
+      <KeySelector Label="${Composite.Management, AssociatedDataElementProviderHelper.EditMetaDataWorkflow.StartDisplaySelectorLabel}" 
+                   Help="${Composite.Management, AssociatedDataElementProviderHelper.EditMetaDataWorkflow.StartDisplaySelectorHelp}"
+                   OptionsKeyField="Key" OptionsLabelField="Value" >
+        <KeySelector.Options>
+          <cms:read source="StartDisplayOptions" />
+        </KeySelector.Options>
+        <KeySelector.Selected>
+          <cms:bind source="SelectedStartDisplay" />
+        </KeySelector.Selected>
+      </KeySelector>
+
+      <KeySelector Label="${Composite.Management, AssociatedDataElementProviderHelper.EditMetaDataWorkflow.InheritDisplaySelectorLabel}" 
+                   Help="${Composite.Management, AssociatedDataElementProviderHelper.EditMetaDataWorkflow.InheritDisplaySelectorHelp}"
+                   OptionsKeyField="Key" OptionsLabelField="Value">
+        <KeySelector.Options>
+          <cms:read source="InheritDisplayOptions" />
+        </KeySelector.Options>
+        <KeySelector.Selected>
+          <cms:bind source="SelectedInheritDisplay" />
+        </KeySelector.Selected>
+      </KeySelector>
+      
+    </FieldGroup>       
+    
+  </cms:layout>
+</cms:formdefinition>

@@ -1,0 +1,89 @@
+<StateMachineWorkflowDesigner xmlns:ns0="clr-namespace:System.Drawing;Assembly=System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Size="1146; 986" AutoSizeMargin="16; 24" AutoSize="False" Location="30; 30" Name="SendMessageToConsolesWorkflow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/workflow">
+	<StateMachineWorkflowDesigner.Designers>
+		<EventDrivenDesigner Name="eventDrivenActivity_GlobalCancel" Size="150; 182" Location="38; 61">
+			<EventDrivenDesigner.Designers>
+				<HandleExternalEventActivityDesigner Name="cancelHandleExternalEventActivity1" Size="130; 41" Location="48; 123" />
+				<SetStateDesigner Name="setStateActivity1" Size="130; 41" Location="48; 183" />
+			</EventDrivenDesigner.Designers>
+		</EventDrivenDesigner>
+		<StateDesigner Size="210; 80" AutoSizeMargin="16; 24" Location="90; 138" Name="initializeStateActivity">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Name="initializeStateInitializationActivity" Size="150; 182" Location="98; 169">
+					<StateInitializationDesigner.Designers>
+						<CodeDesigner Name="initializeCodeActivity_InitializeBindings" Size="130; 41" Location="108; 231" />
+						<SetStateDesigner Name="setStateActivity2" Size="130; 41" Location="108; 291" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+		<StateDesigner Size="175; 80" AutoSizeMargin="16; 24" Location="971; 798" Name="finalStateActivity" />
+		<StateDesigner Size="253; 102" AutoSizeMargin="16; 24" Location="282; 345" Name="enterMessageStateActivity">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Name="enterMessageStateInitializationActivity" Size="150; 122" Location="290; 376">
+					<StateInitializationDesigner.Designers>
+						<ActivityDesigner Name="dataDialogFormActivity1" Size="130; 41" Location="300; 438" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+				<EventDrivenDesigner Name="enterMessageEventDrivenActivity_Ok" Size="150; 182" Location="290; 400">
+					<EventDrivenDesigner.Designers>
+						<HandleExternalEventActivityDesigner Name="finishHandleExternalEventActivity1" Size="130; 41" Location="300; 462" />
+						<SetStateDesigner Name="setStateActivity4" Size="130; 41" Location="300; 522" />
+					</EventDrivenDesigner.Designers>
+				</EventDrivenDesigner>
+				<EventDrivenDesigner Name="enterMessageEventDrivenActivity_Cancel" Size="150; 182" Location="290; 424">
+					<EventDrivenDesigner.Designers>
+						<HandleExternalEventActivityDesigner Name="cancelHandleExternalEventActivity2" Size="130; 41" Location="300; 486" />
+						<SetStateDesigner Name="setStateActivity3" Size="130; 41" Location="300; 546" />
+					</EventDrivenDesigner.Designers>
+				</EventDrivenDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+		<StateDesigner Size="237; 80" AutoSizeMargin="16; 24" AutoSize="False" Location="578; 573" Name="sendMessageStateActivity">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Name="sendMessageStateInitializationActivity" Size="150; 182" Location="521; 148">
+					<StateInitializationDesigner.Designers>
+						<CodeDesigner Name="sendMessageCodeActivity_SendMessage" Size="130; 41" Location="531; 210" />
+						<SetStateDesigner Name="setStateActivity5" Size="130; 41" Location="531; 270" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+	</StateMachineWorkflowDesigner.Designers>
+	<StateMachineWorkflowDesigner.DesignerConnectors>
+		<StateDesignerConnector TargetActivity="finalStateActivity" SetStateName="setStateActivity1" SourceActivity="SendMessageToConsolesWorkflow" TargetConnectionIndex="0" SourceStateName="SendMessageToConsolesWorkflow" TargetConnectionEdge="Top" SourceConnectionEdge="Right" EventHandlerName="eventDrivenActivity_GlobalCancel" SourceConnectionIndex="0" TargetStateName="finalStateActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="240" Y="71" />
+				<ns0:Point X="1058" Y="71" />
+				<ns0:Point X="1058" Y="798" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetActivity="enterMessageStateActivity" SetStateName="setStateActivity2" SourceActivity="initializeStateActivity" TargetConnectionIndex="0" SourceStateName="initializeStateActivity" TargetConnectionEdge="Top" SourceConnectionEdge="Right" EventHandlerName="initializeStateInitializationActivity" SourceConnectionIndex="0" TargetStateName="enterMessageStateActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="296" Y="179" />
+				<ns0:Point X="408" Y="179" />
+				<ns0:Point X="408" Y="345" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetActivity="finalStateActivity" SetStateName="setStateActivity3" SourceActivity="enterMessageStateActivity" TargetConnectionIndex="0" SourceStateName="enterMessageStateActivity" TargetConnectionEdge="Top" SourceConnectionEdge="Right" EventHandlerName="enterMessageEventDrivenActivity_Cancel" SourceConnectionIndex="2" TargetStateName="finalStateActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="531" Y="434" />
+				<ns0:Point X="1058" Y="434" />
+				<ns0:Point X="1058" Y="798" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetActivity="sendMessageStateActivity" SetStateName="setStateActivity4" SourceActivity="enterMessageStateActivity" TargetConnectionIndex="0" SourceStateName="enterMessageStateActivity" TargetConnectionEdge="Top" SourceConnectionEdge="Right" EventHandlerName="enterMessageEventDrivenActivity_Ok" SourceConnectionIndex="1" TargetStateName="sendMessageStateActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="512" Y="410" />
+				<ns0:Point X="696" Y="410" />
+				<ns0:Point X="696" Y="573" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetActivity="finalStateActivity" SetStateName="setStateActivity5" SourceActivity="sendMessageStateActivity" TargetConnectionIndex="0" SourceStateName="sendMessageStateActivity" TargetConnectionEdge="Top" SourceConnectionEdge="Right" EventHandlerName="sendMessageStateInitializationActivity" SourceConnectionIndex="0" TargetStateName="finalStateActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="811" Y="614" />
+				<ns0:Point X="1058" Y="614" />
+				<ns0:Point X="1058" Y="798" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+	</StateMachineWorkflowDesigner.DesignerConnectors>
+</StateMachineWorkflowDesigner>

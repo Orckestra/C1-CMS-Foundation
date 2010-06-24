@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="CompositionDescriptionName" type="System.String" />
+    <cms:binding name="CompositionDescriptionLabel" type="System.String" />
+    <cms:binding name="SelectedCompositionContainer" type="System.Guid" />
+    <cms:binding name="CompositionContainers" type="System.Object" />
+    <cms:binding name="SelectedCompositionScope" type="System.String" />
+    <cms:binding name="CompositionScopes" type="System.Object" />
+  </cms:bindings>
+  <cms:layout iconhandle="dataassociation-add-association">
+    <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeWorkflow.FieldGroupLabel}">
+      <TextBox Label="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeRuleNameLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeRuleNameHelp}">
+        <TextBox.Text>
+          <cms:bind source="CompositionDescriptionName" />
+        </TextBox.Text>
+      </TextBox>
+      <TextBox Label="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeRuleLabelLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeRuleHelpHelp}">
+        <TextBox.Text>
+          <cms:bind source="CompositionDescriptionLabel" />
+        </TextBox.Text>
+      </TextBox>
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ContainerKeySelectorLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ContainerKeySelectorHelp}">
+        <KeySelector.Selected>
+          <cms:bind source="SelectedCompositionContainer" />
+        </KeySelector.Selected>
+        <KeySelector.Options>
+          <cms:read source="CompositionContainers" />
+        </KeySelector.Options>
+      </KeySelector>
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeKeySelectorLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeKeySelectorHelp}">
+        <KeySelector.Selected>
+          <cms:bind source="SelectedCompositionScope" />
+        </KeySelector.Selected>
+        <KeySelector.Options>
+          <cms:read source="CompositionScopes" />
+        </KeySelector.Options>
+      </KeySelector>
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

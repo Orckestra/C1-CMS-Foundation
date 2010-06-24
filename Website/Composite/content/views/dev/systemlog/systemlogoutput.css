@@ -1,0 +1,84 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+
+/* BINDINGS ................................................................ */
+
+/*
+body {
+	#ie behavior: url("${root}/bindings/bindings.ashx?root");
+	#moz -moz-binding: url("${root}/bindings/bindings.xml#root");
+}
+*/
+
+/* LAYOUT .................................................................. */
+
+html,
+body {
+	height: 100%;
+	border: none !important;
+}
+html {
+	background-color: black;	
+}
+body {
+	margin: 0;
+	padding: 0;
+	overflow: auto;
+	font-size: 70%;
+}
+div {
+	color: white;
+	font-size: 1.2em;
+	border: 1px solid black;
+	padding-left: 1.5em;
+}
+pre {
+	margin: 0 0 1em 0;
+	padding: 0;
+}
+pre,
+span {
+	font-family: Arial, sans-serif;	
+}
+span {
+	font-size: 0.8em;
+	display: block;
+	margin-left: -1em;
+}
+div.info {
+	color: #77BBFF;
+}
+div.debug {
+	color: #00FF00;
+}
+div.warn {
+	color: pink;
+}
+div.error {
+	color: #FF8844;
+}
+div.fine {
+	color: #FFCC22;
+}
+div.fatal {
+	color: #FF0000;
+	font-weight: bold;	
+}
+div.info span { 
+	color: #3377BB;
+}
+div.debug span {
+	color: #008800;
+}
+div.warn span {
+	color: purple;
+}
+div.error span {
+	color: #884422;
+}
+div.fine span { 
+	color: #CC8822;
+}
+div.fatal span {
+	color: #FF0000;
+	font-weight: normal;
+}

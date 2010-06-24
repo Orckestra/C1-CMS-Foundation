@@ -1,0 +1,1923 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0" targetNamespace="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" elementFormDefault="qualified">
+  <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:import namespace="http://www.composite.net/ns/management/bindingforms/1.0" schemaLocation="bindingforms10.xsd" />
+  <xsd:element name="ToolbarButton" type="ToolbarButton" />
+  <xsd:element name="DateSelector" type="DateSelector" />
+  <xsd:element name="DateTimeSelector" type="DateTimeSelector" />
+  <xsd:element name="CheckBox" type="CheckBox" />
+  <xsd:element name="BoolSelector" type="BoolSelector" />
+  <xsd:element name="DataReferenceSelector" type="DataReferenceSelector" />
+  <xsd:element name="EnumSelector" type="EnumSelector" />
+  <xsd:element name="PlaceHolder" type="PlaceHolder" />
+  <xsd:element name="InfoBox" type="InfoBox" />
+  <xsd:element name="FileUpload" type="FileUpload" />
+  <xsd:element name="KeySelector" type="KeySelector" />
+  <xsd:element name="PageSelector" type="PageSelector" />
+  <xsd:element name="MultiKeySelector" type="MultiKeySelector" />
+  <xsd:element name="MarkupEditor" type="MarkupEditor" />
+  <xsd:element name="XsltEditor" type="XsltEditor" />
+  <xsd:element name="FieldGroup" type="FieldGroup" />
+  <xsd:element name="SqlEditor" type="SqlEditor" />
+  <xsd:element name="TabPanels" type="TabPanels" />
+  <xsd:element name="Heading" type="Heading" />
+  <xsd:element name="Text" type="Text" />
+  <xsd:element name="HtmlBlob" type="HtmlBlob" />
+  <xsd:element name="LongText" type="LongText" />
+  <xsd:element name="InfoTable" type="InfoTable" />
+  <xsd:element name="TextArea" type="TextArea" />
+  <xsd:element name="TextBox" type="TextBox" />
+  <xsd:element name="TextEditor" type="TextEditor" />
+  <xsd:element name="TypeSelector" type="TypeSelector" />
+  <xsd:element name="XhtmlEditor" type="XhtmlEditor" />
+  <xsd:element name="MultiContentXhtmlEditor" type="MultiContentXhtmlEditor" />
+  <xsd:element name="InlineXhtmlEditor" type="InlineXhtmlEditor" />
+  <xsd:group name="ElementList">
+    <xsd:sequence>
+      <xsd:choice minOccurs="0">
+        <xsd:element name="ToolbarButton" type="ToolbarButton" />
+        <xsd:element name="DateSelector" type="DateSelector" />
+        <xsd:element name="DateTimeSelector" type="DateTimeSelector" />
+        <xsd:element name="CheckBox" type="CheckBox" />
+        <xsd:element name="BoolSelector" type="BoolSelector" />
+        <xsd:element name="DataReferenceSelector" type="DataReferenceSelector" />
+        <xsd:element name="EnumSelector" type="EnumSelector" />
+        <xsd:element name="PlaceHolder" type="PlaceHolder" />
+        <xsd:element name="InfoBox" type="InfoBox" />
+        <xsd:element name="FileUpload" type="FileUpload" />
+        <xsd:element name="KeySelector" type="KeySelector" />
+        <xsd:element name="PageSelector" type="PageSelector" />
+        <xsd:element name="MultiKeySelector" type="MultiKeySelector" />
+        <xsd:element name="MarkupEditor" type="MarkupEditor" />
+        <xsd:element name="XsltEditor" type="XsltEditor" />
+        <xsd:element name="FieldGroup" type="FieldGroup" />
+        <xsd:element name="SqlEditor" type="SqlEditor" />
+        <xsd:element name="TabPanels" type="TabPanels" />
+        <xsd:element name="Heading" type="Heading" />
+        <xsd:element name="Text" type="Text" />
+        <xsd:element name="HtmlBlob" type="HtmlBlob" />
+        <xsd:element name="LongText" type="LongText" />
+        <xsd:element name="InfoTable" type="InfoTable" />
+        <xsd:element name="TextArea" type="TextArea" />
+        <xsd:element name="TextBox" type="TextBox" />
+        <xsd:element name="TextEditor" type="TextEditor" />
+        <xsd:element name="TypeSelector" type="TypeSelector" />
+        <xsd:element name="XhtmlEditor" type="XhtmlEditor" />
+        <xsd:element name="MultiContentXhtmlEditor" type="MultiContentXhtmlEditor" />
+        <xsd:element name="InlineXhtmlEditor" type="InlineXhtmlEditor" />
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:group>
+  <xsd:complexType name="ToolbarButton" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="ToolbarButton.IconHandle">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="ToolbarButton.DisabledIconHandle">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="ToolbarButton.IsDisabled">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="ToolbarButton.LaunchUrl">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="ToolbarButton.SaveBehaviour">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="ToolbarButton.ClickEventHandler">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="ToolbarButton.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="ToolbarButton.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:read" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="IconHandle" type="xsd:string" use="optional" />
+    <xsd:attribute name="DisabledIconHandle" type="xsd:string" use="optional" />
+    <xsd:attribute name="IsDisabled" type="xsd:boolean" use="optional" />
+    <xsd:attribute name="LaunchUrl" type="xsd:string" use="optional" />
+    <xsd:attribute name="SaveBehaviour" type="xsd:boolean" use="optional" />
+    <xsd:attribute name="ClickEventHandler" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="DateSelector" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="DateSelector.Date">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="DateSelector.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="DateSelector.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:bind" />
+            <xsd:element ref="cms:read" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Date" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="DateTimeSelector" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="DateTimeSelector.Date">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="DateTimeSelector.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="DateTimeSelector.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:bind" />
+            <xsd:element ref="cms:read" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Date" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="CheckBox" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="CheckBox.Checked">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="CheckBox.ItemLabel">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="CheckBox.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="CheckBox.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:bind" />
+            <xsd:element ref="cms:read" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Checked" type="xsd:boolean" use="optional" />
+    <xsd:attribute name="ItemLabel" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="BoolSelector" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="BoolSelector.IsTrue">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="BoolSelector.TrueLabel">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="BoolSelector.FalseLabel">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="BoolSelector.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="BoolSelector.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:bind" />
+            <xsd:element ref="cms:read" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="IsTrue" type="xsd:boolean" use="optional" />
+    <xsd:attribute name="TrueLabel" type="xsd:string" use="optional" />
+    <xsd:attribute name="FalseLabel" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="DataReferenceSelector" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="DataReferenceSelector.Selected">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:group ref="ElementList" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="DataReferenceSelector.DataType">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="DataReferenceSelector.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="DataReferenceSelector.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Selected" type="xsd:string" use="optional" />
+    <xsd:attribute name="DataType" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="EnumSelector" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="EnumSelector.Selected">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="EnumSelector.EnumType">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="EnumSelector.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="EnumSelector.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:bind" />
+            <xsd:element ref="cms:read" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Selected" type="xsd:string" use="optional" />
+    <xsd:attribute name="EnumType" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="PlaceHolder" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="PlaceHolder.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="PlaceHolder.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:read" />
+            <xsd:group ref="ElementList" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="InfoBox" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="InfoBox.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="InfoBox.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:read" />
+            <xsd:group ref="ElementList" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="FileUpload" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="FileUpload.UploadedFile">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="FileUpload.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="FileUpload.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:bind" />
+            <xsd:element ref="cms:read" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="UploadedFile" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="KeySelector" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="KeySelector.Selected">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:group ref="ElementList" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="KeySelector.Options">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="KeySelector.OptionsKeyField">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="KeySelector.OptionsLabelField">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="KeySelector.BindingType">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="KeySelector.Required">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="KeySelector.SelectedIndexChangedEventHandler">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="KeySelector.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="KeySelector.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Selected" type="xsd:string" use="optional" />
+    <xsd:attribute name="Options" type="xsd:string" use="optional" />
+    <xsd:attribute name="OptionsKeyField" type="xsd:string" use="optional" />
+    <xsd:attribute name="OptionsLabelField" type="xsd:string" use="optional" />
+    <xsd:attribute name="BindingType" type="xsd:string" use="optional" />
+    <xsd:attribute name="Required" type="xsd:boolean" use="optional" />
+    <xsd:attribute name="SelectedIndexChangedEventHandler" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="PageSelector" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="PageSelector.Selected">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="PageSelector.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="PageSelector.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Selected" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="MultiKeySelector" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="MultiKeySelector.Selected">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MultiKeySelector.SelectedAsString">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MultiKeySelector.CompactMode">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MultiKeySelector.Options">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MultiKeySelector.OptionsKeyField">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MultiKeySelector.OptionsLabelField">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MultiKeySelector.BindingType">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MultiKeySelector.Required">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MultiKeySelector.SelectedIndexChangedEventHandler">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MultiKeySelector.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MultiKeySelector.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Selected" type="xsd:string" use="optional" />
+    <xsd:attribute name="SelectedAsString" type="xsd:string" use="optional" />
+    <xsd:attribute name="CompactMode" type="xsd:boolean" use="optional" />
+    <xsd:attribute name="Options" type="xsd:string" use="optional" />
+    <xsd:attribute name="OptionsKeyField" type="xsd:string" use="optional" />
+    <xsd:attribute name="OptionsLabelField" type="xsd:string" use="optional" />
+    <xsd:attribute name="BindingType" type="xsd:string" use="optional" />
+    <xsd:attribute name="Required" type="xsd:boolean" use="optional" />
+    <xsd:attribute name="SelectedIndexChangedEventHandler" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="MarkupEditor" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="MarkupEditor.Xhtml">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MarkupEditor.ClassConfigurationName">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MarkupEditor.EmbedableFieldsTypes">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MarkupEditor.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MarkupEditor.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:bind" />
+            <xsd:element ref="cms:read" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Xhtml" type="xsd:string" use="optional" />
+    <xsd:attribute name="ClassConfigurationName" type="xsd:string" use="optional" />
+    <xsd:attribute name="EmbedableFieldsTypes" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="XsltEditor" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="XsltEditor.Xhtml">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="XsltEditor.ClassConfigurationName">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="XsltEditor.EmbedableFieldsTypes">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="XsltEditor.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="XsltEditor.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:bind" />
+            <xsd:element ref="cms:read" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Xhtml" type="xsd:string" use="optional" />
+    <xsd:attribute name="ClassConfigurationName" type="xsd:string" use="optional" />
+    <xsd:attribute name="EmbedableFieldsTypes" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="FieldGroup" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="FieldGroup.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="FieldGroup.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:read" />
+            <xsd:group ref="ElementList" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="SqlEditor" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="SqlEditor.Text">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="SqlEditor.MimeType">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="SqlEditor.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="SqlEditor.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:bind" />
+            <xsd:element ref="cms:read" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Text" type="xsd:string" use="optional" />
+    <xsd:attribute name="MimeType" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="TabPanels" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="TabPanels.PreSelectedIndex">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="TabPanels.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="TabPanels.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:read" />
+            <xsd:group ref="ElementList" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="PreSelectedIndex" type="xsd:int" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="Heading" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="Heading.Title">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Heading.Description">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Heading.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Heading.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:read" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Title" type="xsd:string" use="optional" />
+    <xsd:attribute name="Description" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="Text" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="Text.Text">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Text.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Text.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:read" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Text" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="HtmlBlob" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="HtmlBlob.Html">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="HtmlBlob.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="HtmlBlob.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:read" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Html" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="LongText" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="LongText.Text">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="LongText.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="LongText.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:read" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Text" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="InfoTable" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="InfoTable.Headers">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="InfoTable.Rows">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="InfoTable.Caption">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="InfoTable.Border">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="InfoTable.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="InfoTable.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:read" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Caption" type="xsd:string" use="optional" />
+    <xsd:attribute name="Border" type="xsd:boolean" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="TextArea" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="TextArea.Text">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="TextArea.Type">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="TextArea.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="TextArea.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:bind" />
+            <xsd:element ref="cms:read" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Text" type="xsd:string" use="optional" />
+    <xsd:attribute name="Type" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="TextBox" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="TextBox.Text">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="TextBox.Type">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="TextBox.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="TextBox.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:bind" />
+            <xsd:element ref="cms:read" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Text" type="xsd:string" use="optional" />
+    <xsd:attribute name="Type" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="TextEditor" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="TextEditor.Text">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="TextEditor.MimeType">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="TextEditor.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="TextEditor.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:bind" />
+            <xsd:element ref="cms:read" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Text" type="xsd:string" use="optional" />
+    <xsd:attribute name="MimeType" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="TypeSelector" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="TypeSelector.SelectedType">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="TypeSelector.TypeOptions">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="TypeSelector.AssignableTo">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="TypeSelector.Mode">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="TypeSelector.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="TypeSelector.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:bind" />
+            <xsd:element ref="cms:read" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="SelectedType" type="xsd:string" use="optional" />
+    <xsd:attribute name="TypeOptions" type="xsd:string" use="optional" />
+    <xsd:attribute name="AssignableTo" type="xsd:string" use="optional" />
+    <xsd:attribute name="Mode" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="XhtmlEditor" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="XhtmlEditor.Xhtml">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="XhtmlEditor.ClassConfigurationName">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="XhtmlEditor.EmbedableFieldsTypes">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="XhtmlEditor.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="XhtmlEditor.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:bind" />
+            <xsd:element ref="cms:read" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Xhtml" type="xsd:string" use="optional" />
+    <xsd:attribute name="ClassConfigurationName" type="xsd:string" use="optional" />
+    <xsd:attribute name="EmbedableFieldsTypes" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="MultiContentXhtmlEditor" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="MultiContentXhtmlEditor.PlaceholderDefinitions">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MultiContentXhtmlEditor.DefaultPlaceholderId">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MultiContentXhtmlEditor.NamedXhtmlFragments">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MultiContentXhtmlEditor.ClassConfigurationName">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MultiContentXhtmlEditor.EmbedableFieldsTypes">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MultiContentXhtmlEditor.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MultiContentXhtmlEditor.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="PlaceholderDefinitions" type="xsd:string" use="optional" />
+    <xsd:attribute name="DefaultPlaceholderId" type="xsd:string" use="optional" />
+    <xsd:attribute name="NamedXhtmlFragments" type="xsd:string" use="optional" />
+    <xsd:attribute name="ClassConfigurationName" type="xsd:string" use="optional" />
+    <xsd:attribute name="EmbedableFieldsTypes" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="InlineXhtmlEditor" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="InlineXhtmlEditor.Xhtml">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="InlineXhtmlEditor.ClassConfigurationName">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="InlineXhtmlEditor.EmbedableFieldsTypes">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="InlineXhtmlEditor.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="InlineXhtmlEditor.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:sequence maxOccurs="1" minOccurs="0">
+          <xsd:choice>
+            <xsd:element ref="cms:bind" />
+            <xsd:element ref="cms:read" />
+            <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="Xhtml" type="xsd:string" use="optional" />
+    <xsd:attribute name="ClassConfigurationName" type="xsd:string" use="optional" />
+    <xsd:attribute name="EmbedableFieldsTypes" type="xsd:string" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+</xsd:schema>

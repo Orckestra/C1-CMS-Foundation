@@ -1,0 +1,23 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|functioneditor {
+	border-bottom: 1px solid $(color:threedshadow);
+}
+ui|dialogtoolbar {
+	border-top: 1px solid $(color:threedhighlight) !important;
+}
+
+/*
+ui|dialogpage {
+	padding: 0 0 0 0;
+}
+ui|functioneditor {
+	border-bottom: 1px solid $(color:threedshadow);
+}
+ui|dialogtoolbar {
+	padding-right: 14px;
+	padding-bottom: 14px;
+	border-top: 1px solid $(color:threedhighlight) !important;
+}
+*/

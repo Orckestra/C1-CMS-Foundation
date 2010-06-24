@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<strings>
+	<string key="WebsiteFilesRootElement.Label" value="/" />
+	<string key="LayoutResourcesRootElement.Label" value="/" /> <!-- Layout Resources -->
+	<string key="LayoutResourcesKeyNameLabel" value="Layout" />
+	
+	<string key="DeleteFile.LabelFieldGroup" value="Delete file?" />
+	<string key="DeleteFile.Text" value="Delete file?" />
+	<string key="DeleteFolder.LabelFieldGroup" value="Delete folder?" />
+	<string key="DeleteFolder.Text" value="Delete folder?" />
+	<string key="AddNewFolder.LabelFieldGroup" value="Add new folder" />
+	<string key="AddNewFolder.Text" value="Folder name" />
+	<string key="AddNewFolder.Help" value="Enter the name of the new folder" />
+	<string key="AddNewFolder.Error.FolderExist" value="A folder with the same name already exists" />
+	<string key="AddNewFile.LabelFieldGroup" value="Add new file" />
+	<string key="AddNewFile.Text" value="File name" />
+	<string key="AddNewFile.Help" value="Enter the name of the new file" />
+	<string key="AddNewFile.Error.FileExist" value="A file with the same name already exists" />
+	<string key="UploadNewWebsiteFile.LabelFieldGroup" value="Upload file" />
+	<string key="UploadNewWebsiteFile.LabelFile" value="Select file" />
+	<string key="UploadNewWebsiteFile.HelpFile" value="Select file to upload" />
+  <string key="UploadNewWebsiteFile.ConfirmOverwriteTitle" value="Overwrite existing file" />
+  <string key="UploadNewWebsiteFile.ConfirmOverwriteDescription" value="A file with the same name already exists, overwrite?" />
+	<string key="UploadFile.Error.WrongTypeTitle" value="Wrong file type" />
+	<string key="UploadFile.Error.WrongTypeMessage" value="Wrong file type" />
+	
+
+	<string key="AddWebsiteFolderTitle" value="New folder" />
+	<string key="AddWebsiteFolderToolTip" value="Add new folder" />
+	<string key="AddWebsiteFileTitle" value="New file" />
+	<string key="AddWebsiteFileToolTip" value="Create new file" />
+	<string key="DeleteWebsiteFileTitle" value="Delete file" />
+	<string key="DeleteWebsiteFileToolTip" value="Delete file" />
+  <string key="DownloadFileTitle" value="Download" />
+  <string key="DownloadFileToolTip" value="Download file" />
+  <string key="DeleteWebsiteFolderTitle" value="Delete folder" />
+	<string key="DeleteWebsiteFolderToolTip" value="Delete folder" />
+	<string key="EditWebsiteFileTitle" value="Edit file" />
+	<string key="EditWebsiteFileToolTip" value="Edit file" />
+	<string key="UploadWebsiteFileTitle" value="Upload file" />
+	<string key="UploadWebsiteFileToolTip" value="Upload file" />
+	<string key="AddFolderToWhiteListTitle" value="Show in &quot;{0}&quot;" />
+	<string key="AddFolderToWhiteListToolTip" value="Control if this folder should be visible in &quot;{0}&quot;" />
+	<string key="RemoveFolderFromWhiteListTitle" value="Show in &quot;{0}&quot;" />
+	<string key="RemoveFolderFromWhiteListToolTip" value="Control if this folder should be visible in &quot;{0}&quot;" />
+
+	<string key="DeleteWebsiteFileWorkflow.DeleteErrorTitle" value="Error" />
+	<string key="DeleteWebsiteFileWorkflow.DeleteErrorMessage" value="Could not delete the file" />
+	<string key="DeleteWebsiteFolderWorkflow.DeleteErrorTitle" value="Error" />
+	<string key="DeleteWebsiteFolderWorkflow.DeleteErrorMessage" value="Could not delete the folder" />
+</strings>

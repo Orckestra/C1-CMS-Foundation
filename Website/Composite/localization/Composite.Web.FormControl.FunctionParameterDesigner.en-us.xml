@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<strings>
+  
+  <string key="AddNewButtonLabel" value="Add New" />
+  <string key="DeleteButtonLabel" value="Delete" />
+
+  <string key="TreeRootNodeLabel" value="List of input parameters" />
+
+  <string key="ParameterNamingGroupLabel" value="Parameter naming and help" />
+  <string key="Name" value="Parameter name" />
+  <string key="NameHelp" value="The name of the parameter. The name is used by the system to identify this parameter. Names must be unique and may not contain spaces and other special characters. Use names like 'Title', 'StartDate', 'LargeImage' etc." />
+  <string key="Label" value="Label" />
+  <string key="LabelHelp" value="The text that users should see when specifying a value for this parameter. This is the 'human name' for the parameter." />
+  <string key="Help" value="Help" />
+  <string key="HelpHelp" value="Write a short text that tells the user what to do with the parameter." />
+
+  <string key="ParameterTypeValueGroupLabel" value="Parameter type and values" />
+  <string key="Type" value="Parameter type" />
+  <string key="TypeHelp" value="The type of this parameter." />
+  <string key="DefaultValue" value="Default value" />
+  <string key="DefaultValueHelp" value="You can specify a default value for this parameter. If a parameter has a default value, users are not required to specify it when calling the function." />
+  <string key="DefaultValueSpecify" value="Specify default value" />
+  <string key="DefaultValueEdit" value="Edit default value" />
+  <string key="DefaultValueDialogLabel" value="Parameter default value" />
+  
+  <string key="TestValue" value="Test value" />
+  <string key="TestValueHelp" value="When previewing you can test with different input parameter values using this field. If this is left blank, the default value will be used for previews." />
+  <string key="TestValueSpecify" value="Specify test value" />
+  <string key="TestValueEdit" value="Edit test value" />
+  <string key="TestValueDialogLabel" value="Parameter test value" />
+
+  <string key="ParameterPresentationGroupLabel" value="Parameter presentation" />
+  <string key="Widget" value="Widget" />
+  <string key="WidgetHelp" value="You can select which type of input widget (like a textbox) to use when specifying a value for this parameter. Widgets are only available for simple types." />
+  <string key="NoWidgetSpecifiedLabel" value="(no widget specified)" />
+  <string key="WidgetDialogLabel" value="Parameter widget" />
+  <string key="Position" value="Position" />
+  <string key="PositionLast" value="Last" />
+  <string key="PositionHelp" value="The position of the parameter. This controls the order of the parameters." />
+
+  <string key="SpecifyWidgetTip" value="Remember to specify a widget..." />
+  <string key="NoWidgetsTip" value="No widgets are available for the specified type. Users must use a function call to specify this parameter." />
+
+  <string key="FieldNameSyntaxInvalid" value="The specified name is not valid." />
+  <string key="CannotSave" value="Can not save... Another parameter has the same name. Please change the name." />
+
+  <string key="SpaceInNameError" value="Invalid name. Parameter names can not contain spaces. You can write a readable name in the Label field below." />
+  <string key="NameEmptyError" value="Parameter names can not be empty. Please specify a name." />
+  <string key="NameAlreadyInUseError" value="Another parameter uses this name. Parameter names must be unique." />
+
+
+
+</strings>
+
+
+

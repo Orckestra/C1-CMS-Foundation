@@ -1,0 +1,7 @@
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+#region vista
+ui|menubar {
+	background: url("menus/vistabackdrop.png") $(color:threedface) repeat-x 0 50% !important;
+}
+#endregion

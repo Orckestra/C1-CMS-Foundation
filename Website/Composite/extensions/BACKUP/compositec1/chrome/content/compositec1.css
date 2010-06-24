@@ -1,0 +1,7 @@
+menuitem#menuitem_print,
+menuitem#menuitem_pageSetup,
+menuitem#menuitem_pageSetup + menuseparator,
+menuitem#menuitem_addons,
+menuitem#menuitem_addons + menuseparator {
+	display: none;
+}

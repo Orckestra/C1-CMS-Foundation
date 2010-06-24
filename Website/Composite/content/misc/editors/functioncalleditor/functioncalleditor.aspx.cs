@@ -1,0 +1,1428 @@
+﻿using System;
+using System.Collections;
+using System.Linq;
+using System.Web;
+using System.Web.Caching;
+using System.Web.UI;
+using System.Xml.Linq;
+using System.Xml;
+using System.Xml.Xsl;
+using System.IO;
+using Composite;
+using Composite.ConsoleEventSystem;
+using Composite.Extensions;
+using Composite.Forms.WebChannel;
+using Composite.Logging;
+using Composite.ResourceSystem;
+using Composite.StandardPlugins.Elements.ElementProviders.AllFunctionsElementProvider;
+using Composite.StandardPlugins.Forms.WebChannel.UiControlFactories;
+using Composite.WebClient;
+using Composite.WebClient.FunctionCallEditor;
+using Composite.WebClient.State;
+using Composite.Xml;
+using Composite.Functions;
+using System.Collections.Generic;
+using Composite.Types;
+
+/// <summary>
+/// Summary description for functioneditor
+/// </summary>
+public partial class functioneditor : Composite.WebClient.XhtmlPage
+{
+    private static TimeSpan SessionExprirationPeriod = TimeSpan.FromDays(4.0);
+
+    private static readonly string XsltExtensionObjectNamespace = "functioncalleditor";
+
+    private static readonly XName ParameterNodeXName = Namespaces.Function10 + "param";
+    private static readonly XName FunctionNodeXName = Namespaces.Function10 + "function";
+    private static readonly XName WidgetFunctionNodeXName = Namespaces.Function10 + "widgetfunction";
+    private static readonly XName ParameterValueElementXName = Namespaces.Function10 + "paramelement";
+
+    private static readonly string SessionStateProviderQueryKey = "StateProvider";
+    private static readonly string StateIdQueryKey = "Handle";
+
+    private static readonly string GetInputParameterFunctionName = "Composite.Utils.GetInputParameter";
+    private static readonly string GetInputParameterFunctionParameterName = "InputParameterName";
+
+    private readonly XNamespace functionDescriptionNs = "#functionDescription";
+    private static readonly string FunctionMarkupSessionKey = "fmsk";
+
+    // Localization
+    protected string ReturnTypeLabel             { get { return GetString("ReturnTypeLabel"); } } 
+    protected string AddNewFunctionDialogLabel   { get { return GetString("AddNewFunctionDialogLabel"); } } 
+    protected string SelectFunctionDialogLabel   { get { return GetString("ComplexFunctionCallDialogLabel"); }}
+    protected string FunctionLocalNameGroupLabel { get { return GetString("FunctionLocalNameGroupLabel"); }} 
+    protected string FunctionLocalNameLabel      { get { return GetString("FunctionLocalNameLabel"); }} 
+    protected string FunctionLocalNameHelp       { get { return GetString("FunctionLocalNameHelp"); }}
+
+    private enum ParameterValueType 
+    {
+        Default = 0, Constant, InputParameter, FunctionCall
+    }
+
+    private IFunctionCallEditorState _state;
+    private XDocument _functionMarkup;
+
+    private Guid? _stateId;
+    private Guid StateId
+    {
+        get
+        {
+            if (_stateId == null)
+            {
+                string stateIdStr = Request.QueryString[StateIdQueryKey];
+
+                Guid stateId;
+                if (!SessionStateProviderName.IsNullOrEmpty() 
+                    && !stateIdStr.IsNullOrEmpty() 
+                    && Guid.TryParse(stateIdStr, out stateId))
+                {
+                    _stateId = stateId;
+                }
+                else
+                {
+                    _stateId = Guid.Empty;
+                }
+            }
+
+            return _stateId.Value;
+        }
+    }
+
+    private string SessionStateProviderName
+    {
+        get
+        {
+            return Request.QueryString[SessionStateProviderQueryKey];
+        }
+    }
+
+    bool IsInTestMode
+    {
+        get { return StateId == Guid.Empty; }
+    }
+
+    protected XDocument FunctionMarkup
+    {
+        get
+        {
+            if (_functionMarkup == null)
+            {
+                if (!IsInTestMode)
+                {
+                    throw new InvalidOperationException();
+                }
+
+                string serializedMarkup = ViewState[FunctionMarkupSessionKey] as string;
+
+                byte[] bytes = System.Text.Encoding.UTF8.GetBytes(serializedMarkup);
+                using (var stream = new MemoryStream(bytes))
+                {
+                    _functionMarkup = XDocument.Load(stream);
+                }
+            }
+
+            return _functionMarkup;
+        }
+        set
+        {
+            _functionMarkup = value;
+        }
+    }
+
+    // Contains info that is used while building ID-s for treeview nodes
+    private Dictionary<XElement, string> _xElementTreeNodeIDs;
+
+    // Contains id map, an example is "/function[1]" => some guid
+    private Dictionary<string, string> TreePathToIdMapping
+    {
+        get
+        {
+            return ViewState["TreeNodePathToIdMapping"] as Dictionary<string, string>;
+        }
+        set
+        {
+            ViewState["TreeNodePathToIdMapping"] = value;
+        }
+    }
+
+    string SelectedNode
+    {
+        get
+        {
+            return ViewState["SelectedTreeNode"] as string;
+        }
+        set
+        {
+            ViewState["SelectedTreeNode"] = value;
+        }
+    }
+
+    HashSet<string> InputParameterNodeIDs
+    {
+        get { return ViewState["InputParameterNodeIDs"] as HashSet<string>; }
+        set { ViewState["InputParameterNodeIDs"] = value; }
+    }
+
+    bool InputParameterSelectorIsShown
+    {
+        get { return (bool)(ViewState["InputParameterSelectorIsShown"] ?? false); }
+        set { ViewState["InputParameterSelectorIsShown"] = value; }
+    }
+
+    bool WidgetIsShown 
+    {
+        get { return (bool)(ViewState["WidgetIsShown"] ?? false); }
+        set { ViewState["WidgetIsShown"] = value; } 
+    }
+
+    bool LocalFunctionNameIsShown
+    {
+        get { return (bool)(ViewState["LocalFunctionNameIsShown"] ?? false); }
+        set { ViewState["LocalFunctionNameIsShown"] = value; }
+    }
+
+    private void Page_Load(object sender, EventArgs args)
+    {
+        if (!IsInTestMode)
+        {
+            LoadFunctions();
+        }
+
+        if(!IsPostBack)
+        {
+            InitializeTreeView();
+            return;
+        }
+        
+        _xElementTreeNodeIDs = TreeHelper.GetElementToIdMap(FunctionMarkup, TreePathToIdMapping);
+
+        string eventTarget = HttpContext.Current.Request.Form["__EVENTTARGET"];
+        string eventArgument = HttpContext.Current.Request.Form["__EVENTARGUMENT"];
+
+        string nodePath = null;
+        Guid temp;
+        if(Guid.TryParse(eventTarget, out temp))
+        {
+            nodePath = TreePathToIdMapping.Where(pair => pair.Value == eventTarget).Select(pair => pair.Key).FirstOrDefault();
+        }
+
+        // Treeview click
+        if (nodePath != null 
+            || eventTarget == string.Empty 
+            || ctlFeedback.IsPosted
+            || (eventTarget == "switchbutton" || eventArgument == "source"))
+        {
+            bool isValid = true;
+
+            // If node is changed, updating changed parameter's value
+            if(SelectedNode != null)
+            {
+                if (WidgetIsShown)
+                {
+                    // TODO: insert validation logic
+                    UpdateParameterValueFromWidget();
+                } 
+                else if(LocalFunctionNameIsShown)
+                {
+                    UpdateFunctionLocalName();
+                }
+                else if(InputParameterSelectorIsShown)
+                {
+                    UpdateInputParameterName();
+                }
+            }
+
+            if (isValid && nodePath != null)
+            {
+                SelectedNode = nodePath;
+            }
+        }
+        else
+        {
+            ParameterValueType? newParameterValueType = null;
+
+            switch (eventTarget)
+            {
+                case "btnAddFunction": BtnAddFunctionCallClicked();
+                break;
+                case "btnDeleteFunction": BtnDeleteFunctionClicked();
+                break;
+                case "btnDefault": newParameterValueType = ParameterValueType.Default;
+                break;
+                case "btnConstant": newParameterValueType = ParameterValueType.Constant;
+                break;
+                case "btnInputParameter": newParameterValueType = ParameterValueType.InputParameter;
+                break;
+                case "btnFunctionCall": newParameterValueType = ParameterValueType.FunctionCall;
+                break;
+            }
+
+            if(newParameterValueType != null)
+            {
+                ParameterValueTypeChanged(newParameterValueType.Value);
+            }
+        }
+
+        UpdateMenu();
+    }
+
+    private void InitializeTreeView()
+    {
+        if (IsInTestMode)
+        {
+            // For testing only
+            FunctionMarkup = XDocument.Load(Request.MapPath("functioneditor-sample-function.xml"));
+        }
+
+        WidgetIsShown = false;
+        LocalFunctionNameIsShown = false;
+        InputParameterSelectorIsShown = false;
+
+        TreePathToIdMapping = TreeHelper.BuildTreePathToIdDictionary(FunctionMarkup);
+
+        if (_state.AllowSelectingInputParameters)
+        {
+            InputParameterNodeIDs = CalculateGetInputParamaterFunctionCalls(FunctionMarkup, TreePathToIdMapping);
+        }
+    }
+
+    public void OnMessage()
+    {
+        string message = ctlFeedback.GetPostedMessage();
+
+        if(message == "save")
+        {
+            ctlFeedback.SetStatus(ValidateSave());
+        } 
+        else if ( message == "persist" )
+        {
+            ctlFeedback.SetStatus(true); // PLEASE VALIDATE "failure" !
+        }
+    }
+
+    /// <summary>
+    /// Searches for parameter values that are required but not set.
+    /// </summary>
+    /// <returns></returns>
+    private bool ValidateSave()
+    {
+        return ValidateMarkup(FunctionMarkup, true);
+    }
+
+    /// <summary>
+    /// Searches for parameter values that are required but not set.
+    /// </summary>
+    /// <returns></returns>
+    private bool ValidateMarkup(XDocument markup, bool checkRequiredParameters)
+    {
+        foreach (XElement functionCall in markup.Descendants(FunctionNodeXName))
+        {
+            // Checking if function exists
+            IMetaFunction metaFunction = TreeHelper.GetFunction(functionCall);
+            if(metaFunction == null)
+            {
+                XAttribute nameAttr = functionCall.Attribute("name");
+                string functionName = nameAttr != null ? nameAttr.Value : string.Empty; 
+
+                Alert(GetString("FunctionNotFound").FormatWith(functionName));
+                FocusTreeNode(functionCall);
+                return false;
+            }
+
+            List<string> undefinedParameters = TreeHelper.GetUndefinedParameterNames(functionCall).ToList();
+
+            // Checking that all required parameters are set
+            if (checkRequiredParameters)
+            {
+                foreach (ParameterProfile parameter in metaFunction.ParameterProfiles)
+                {
+                    if (parameter.IsRequired && undefinedParameters.Contains(parameter.Name))
+                    {
+                        FocusTreeNode(functionCall, parameter.Name);
+                        Alert(GetString("RequiredParameterNotDefined").FormatWith(parameter.LabelLocalized));
+                        return false;
+                    }
+                }
+            }
+
+            // Checking type compatibility
+            XElement parentNode = functionCall.Parent;
+            if (parentNode.Name == ParameterNodeXName)
+            {
+                string parameterName = parentNode.Attribute("name").Value;
+
+                IMetaFunction parentFunctionCall = TreeHelper.GetFunction(functionCall.Parent.Parent);
+                ParameterProfile parameterProfile = parentFunctionCall.ParameterProfiles.Where(pr => pr.Name == parameterName).FirstOrDefault();
+
+                Verify.IsNotNull(parameterProfile, "Failed to get profile for parameter '{1}' on '{0}' function.".FormatWith(parentFunctionCall.Name, parameterName));
+
+                Type functionReturnType = metaFunction.ReturnType;
+                Type parameterType = parameterProfile.Type;
+                if(!parameterType.IsAssignableFrom(functionReturnType) 
+                    && !functionReturnType.IsAssignableFrom(parameterType))
+                {
+                    FocusTreeNode(functionCall);
+                    Alert(GetString("IncorrectTypeCast").FormatWith(parameterName, metaFunction.Name));
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+
+
+    private void FocusTreeNode(XElement functionNode, string parameterName)
+    {
+        string functionPath = TreeHelper.GetElementToPathMap(FunctionMarkup)[functionNode];
+
+        string parameterPath = TreeHelper.GetParameterPath(functionPath, parameterName);
+
+        SelectedNode = parameterPath;
+    }
+
+    private void FocusTreeNode(XElement node)
+    {
+        string functionPath = TreeHelper.GetElementToPathMap(FunctionMarkup)[node];
+
+        SelectedNode = functionPath;
+    }
+
+    private void Alert(string message)
+    {
+        string consoleId = _state.ConsoleId;
+        if (consoleId.IsNullOrEmpty()) return;
+
+        ConsoleMessageQueueFacade.Enqueue(
+            new MessageBoxMessageQueueItem
+                {
+                    DialogType = DialogType.Error,
+                    Message = message, 
+                    Title = GetString("ValidationFailedAlertTitle")
+                }, consoleId);
+    }
+
+    private void LoadState()
+    {
+        var stateProvider = SessionStateManager.GetProvider(SessionStateProviderName);
+
+        if (!stateProvider.TryGetState(StateId, out _state))
+        {
+            throw new InvalidOperationException("Failed to get load session state");
+        }
+    }
+
+    private void LoadFunctions()
+    {
+        LoadState();
+
+        List<NamedFunctionCall> functionCalls = _state.FunctionCalls;
+
+        Verify.IsNotNull(functionCalls, "Failed to get function calls");
+
+        XElement functionsNode = XElement.Parse("<f:functions xmlns:f=\"{0}\" />".FormatWith(Namespaces.Function10.NamespaceName));
+         // new XElement(Namespaces.Function10 + "functions");
+
+        foreach (var localNamedFunctionCall in functionCalls)
+        {
+            Guid handle = Guid.NewGuid();
+
+            BaseFunctionRuntimeTreeNode functionRuntime = localNamedFunctionCall.FunctionCall;
+
+            XElement function = functionRuntime.Serialize();
+            function.Add(new XAttribute("localname", localNamedFunctionCall.Name));
+            function.Add(new XAttribute("handle", handle));
+
+            functionsNode.Add(function);
+        }
+
+        FunctionMarkup = new XDocument(functionsNode);
+    }
+
+    private void SaveChanges()
+    {
+        if(IsInTestMode)
+        {
+            return;
+        }
+
+        List<NamedFunctionCall> functionList = new List<NamedFunctionCall>();
+
+        foreach (XElement functionElement in FunctionMarkup.Root.Elements())
+        {
+            BaseFunctionRuntimeTreeNode functionDefinition = (BaseFunctionRuntimeTreeNode)FunctionTreeBuilder.Build(functionElement);
+
+            if(_state.WidgetFunctionSelection)
+            {
+                functionList.Add(new NamedFunctionCall(string.Empty, functionDefinition));
+            }
+            else
+            {
+                var localNameAttr = functionElement.Attribute("localname");
+                string localname = localNameAttr == null ? string.Empty : localNameAttr.Value;
+
+                functionList.Add(new NamedFunctionCall(localname, functionDefinition));
+            }
+        }
+
+        var stateProvider = SessionStateManager.GetProvider(SessionStateProviderName);
+
+        _state.FunctionCalls = functionList;
+        stateProvider.SetState<IFunctionCallEditorState>(StateId, _state, DateTime.Now.Add(SessionExprirationPeriod));
+
+        // Updating tree IDs
+        Dictionary<XElement, string> newElementToPathMap = TreeHelper.GetElementToPathMap(FunctionMarkup);
+
+        var newPathToIdMap = new Dictionary<string, string>();
+
+        foreach (KeyValuePair<XElement, string> kvp in newElementToPathMap)
+        {
+            XElement node = kvp.Key;
+            string nodePath = kvp.Value;
+
+            if(_xElementTreeNodeIDs.ContainsKey(node))
+            {
+                string nodeId = _xElementTreeNodeIDs[node];
+                newPathToIdMap.Add(nodePath, nodeId);
+
+                // Copying virtual IDs 
+                if(node.Name == FunctionNodeXName || node.Name == WidgetFunctionNodeXName)
+                {
+                    foreach (string parameterName in TreeHelper.GetUndefinedParameterNames(node))
+                    {
+                        string newVirtualParameterPath = TreeHelper.GetParameterPath(nodePath, parameterName);
+
+                        string oldFunctionPath = TreePathToIdMapping.Where(p => p.Value == nodeId).Select(p => p.Key).First();
+                        string oldVirtualParameterPath = TreeHelper.GetParameterPath(oldFunctionPath, parameterName);
+
+                        if(TreePathToIdMapping.ContainsKey(oldVirtualParameterPath))
+                        {
+                            newPathToIdMap.Add(newVirtualParameterPath, TreePathToIdMapping[oldVirtualParameterPath]); 
+                        }
+                        else
+                        {
+                            newPathToIdMap.Add(newVirtualParameterPath, TreeHelper.GetNewId()); 
+                        }
+                    }
+                }
+            }
+            else
+            {
+                string nodeId;
+                if (node.Name == ParameterNodeXName && TreePathToIdMapping.ContainsKey(nodePath))
+                {
+                    nodeId = TreePathToIdMapping[nodePath];
+                }
+                else
+                {
+                    nodeId = TreeHelper.GetNewId();
+                }
+                newPathToIdMap.Add(nodePath, nodeId);
+
+                // Creating IDs for virtual parameter nodes
+                if (node.Name == FunctionNodeXName || node.Name == WidgetFunctionNodeXName)
+                {
+                    foreach (string parameterName in TreeHelper.GetUndefinedParameterNames(node))
+                    {
+                        string newVirtualParameterPath = TreeHelper.GetParameterPath(nodePath, parameterName);
+                        newPathToIdMap.Add(newVirtualParameterPath, TreeHelper.GetNewId());
+                    }
+                }
+            }
+        }
+
+        TreePathToIdMapping = newPathToIdMap;
+
+        ctlFeedback.MarkAsDirty();
+    }
+
+    private void Page_PreRender(object sender, EventArgs args)
+    {
+        // Building tree 
+        XDocument functionMarkup = Clone(FunctionMarkup);
+        XElement updatedTreeView =  UpdateTreeView(functionMarkup.Root);
+
+        // Building an editing panel
+        if (IsPostBack)
+        {
+            UpdateEditingPanel(updatedTreeView, SelectedNode);
+        }
+
+        Type[] allowedTypes = _state.AllowedResultTypes;
+        btnAddFunction.Attributes.Add("providersearch", AllFunctionsElementProviderSearchToken.Build(allowedTypes).Serialize());
+        btnAddFunction.Attributes.Add("selectwidget", _state.WidgetFunctionSelection ? "true" : "false");
+        btnAddFunction.Attributes["isdisabled"] = (_state.MaxFunctionAllowed > FunctionMarkup.Root.Elements().Count()) ? "false" : "true";
+        btnAddFunction.Attributes.Add("dialoglabel", AddNewFunctionDialogLabel);
+
+
+        // Updating "source xml" field
+        functionMarkup = Clone(FunctionMarkup);
+        foreach(XElement element in functionMarkup.Descendants().ToList())
+        {
+            var attr = element.Attribute("handle");
+            if(attr != null)
+            {
+                attr.Remove();
+            }
+        }
+
+        var utf8 = System.Text.Encoding.UTF8;
+        var xmlWriterSettings = new XmlWriterSettings();
+        xmlWriterSettings.Indent = true;
+        xmlWriterSettings.IndentChars = "\t"; 
+        xmlWriterSettings.NamespaceHandling |= NamespaceHandling.OmitDuplicates;
+        xmlWriterSettings.Encoding = utf8;
+
+        byte[] serializedXDocument;
+
+        using (MemoryStream stream = new MemoryStream())
+        {
+            using (XmlWriter writer = XmlWriter.Create(stream, xmlWriterSettings))
+            {
+                functionMarkup.Save(writer);
+            }
+            serializedXDocument = stream.ToArray();
+        }
+
+        string serializedMarkup = utf8.GetString(serializedXDocument);
+        serializedMarkup = serializedMarkup.Substring(serializedMarkup.IndexOf(Environment.NewLine) + Environment.NewLine.Length);
+
+
+        ctlSourceEditor.Attributes["value"] = Context.Server.UrlEncode(serializedMarkup).Replace("+", "%20");
+
+        if(IsInTestMode)
+        {
+            ViewState[FunctionMarkupSessionKey] = serializedMarkup;
+        }
+    }
+
+    private void UpdateInputParameterName()
+    {
+        string nodeID = SelectedNode;
+
+        XElement parameterNode = TreeHelper.FindByPath(FunctionMarkup.Root, nodeID);
+
+        string selectedParameterName = Request.Form["lstInputParameterName"];
+
+        // Updating param/function[@name='Composite.Utils.GetInputParameter']/param[@name='InputParameterName']/@value
+
+        var parameterNameNode = parameterNode.Descendants(ParameterNodeXName).First();
+        parameterNameNode.Attribute("value").Value = selectedParameterName ?? string.Empty;
+
+        SaveChanges();
+    }
+
+    private void UpdateFunctionLocalName()
+    {
+        string nodeID = SelectedNode;
+
+        XElement functionNode = TreeHelper.FindByPath(FunctionMarkup.Root, nodeID);
+
+        functionNode.SetAttributeValue("localname", txtLocalName.Text);
+
+        SaveChanges();
+    }
+
+    private void UpdateParameterValueFromWidget()
+    {
+        string nodeID = SelectedNode;
+
+        XElement parameterNode = TreeHelper.FindByPath(FunctionMarkup.Root, nodeID);
+        Verify.That(parameterNode != null, "Failed to get a parameter by path '{0}'", nodeID);
+
+        string parameterName = parameterNode.Attribute("name").Value;
+
+        XElement functionNode = parameterNode.Parent;
+        IMetaFunction function = TreeHelper.GetFunction(functionNode);
+
+        ParameterProfile parameterProfile = function.ParameterProfiles.Where(p => p.Name == parameterName).FirstOrDefault();
+
+        // Creating a widget instance
+        object defaultParameterValue = GetDefaultValue(parameterProfile);
+        var bindings = new Dictionary<string, object> { { parameterProfile.Name, defaultParameterValue } };
+
+
+        var formTreeCompiler = FunctionUiHelper.BuildWidgetForParameters(
+            new[] { parameterProfile },
+            bindings,
+            "",
+            "",
+            WebManagementChannel.Identifier);
+
+        // The control is temporary added to page, so it will get a correct ID
+        IWebUiControl webUiControl = (IWebUiControl)formTreeCompiler.UiControl;
+        plhWidget.Controls.Add(webUiControl.BuildWebControl());
+
+        formTreeCompiler.SaveControlProperties();
+
+        plhWidget.Controls.Clear();
+
+        object newValue = bindings[parameterProfile.Name];
+
+        bool newValueNotEmpty = newValue != null && newValue.ToString().Length > 0 &&
+                                (!(newValue is IList) || ((IList)newValue).Count > 0);
+
+        parameterNode.Remove();
+
+        if(newValueNotEmpty)
+        {
+            var newConstantParam = new ConstantObjectParameterRuntimeTreeNode(parameterProfile.Name, newValue);
+
+            functionNode.Add(newConstantParam.Serialize());
+        }
+
+        SaveChanges();
+    }
+
+    private void BtnDefaultClicked(XElement parameterNode)
+    {
+        if (parameterNode != null)
+        {
+            parameterNode.Remove();
+
+            SaveChanges();
+        }
+    }
+
+    private void ParameterValueTypeChanged(ParameterValueType valueType)
+    {
+        string nodePath = SelectedNode;
+
+        int parameterOffset = nodePath.LastIndexOf("@");
+        string functionPath = nodePath.Substring(0, parameterOffset - 1);
+        string parameterName = nodePath.Substring(parameterOffset + 1);
+
+        XElement functionNode = TreeHelper.FindByPath(FunctionMarkup.Root, functionPath);
+        XElement parameterNode = functionNode.Elements(ParameterNodeXName).Where(element => element.Attribute("name").Value == parameterName).FirstOrDefault();
+
+        string nodeID = TreePathToIdMapping[nodePath];
+
+        if (_state.AllowSelectingInputParameters)
+        {
+            if (valueType != ParameterValueType.InputParameter)
+            {
+                InputParameterNodeIDs.Remove(nodeID);
+            }
+            else
+            {
+                if (!InputParameterNodeIDs.Contains(nodeID))
+                {
+                    InputParameterNodeIDs.Add(nodeID);
+                }
+            }
+        }
+
+        if(valueType == ParameterValueType.Default)
+        {
+            BtnDefaultClicked(parameterNode);
+        }
+        else if (valueType == ParameterValueType.Constant)
+        {
+            BtnConstantClicked(functionNode, parameterNode, parameterName);
+        }
+        else if (valueType == ParameterValueType.FunctionCall)
+        {
+            BtnFunctionCallClicked(functionNode, parameterNode, parameterName);
+        }
+        else if (valueType == ParameterValueType.InputParameter)
+        {
+            BtnInputParameterClicked(functionNode, parameterNode, parameterName);
+        }
+    }
+
+    private void BtnConstantClicked(XElement functionNode, XElement parameterNode, string parameterName)
+    {
+        IMetaFunction function = TreeHelper.GetFunction(functionNode);
+        ParameterProfile parameterProfile = function.ParameterProfiles.Where(p => p.Name == parameterName).FirstOrDefault();
+        Verify.IsNotNull(parameterProfile, "Failed to get parameter profile");
+
+        if (parameterNode != null)
+        {
+            parameterNode.Remove();
+        }
+
+        object defaultParameterValue = GetDefaultValue(parameterProfile);
+        
+        var newConstantParam = new ConstantObjectParameterRuntimeTreeNode(parameterProfile.Name, defaultParameterValue ?? string.Empty);
+        functionNode.Add(newConstantParam.Serialize());
+
+        SaveChanges();
+    }
+
+    private void BtnAddFunctionCallClicked()
+    {
+        string selectedFunctionName = this.Request.Form["btnAddFunction"];
+
+        BaseFunctionRuntimeTreeNode functionRuntime;
+        if(_state.WidgetFunctionSelection)
+        {
+            functionRuntime = new WidgetFunctionRuntimeTreeNode(FunctionFacade.GetWidgetFunction(selectedFunctionName));
+        }
+        else
+        {
+            functionRuntime = new FunctionRuntimeTreeNode(FunctionFacade.GetFunction(selectedFunctionName));
+        }
+
+        XElement function = functionRuntime.Serialize();
+
+        if(!_state.WidgetFunctionSelection && _state.AllowLocalFunctionNameEditing)
+        {
+            string localName = selectedFunctionName;
+            int pointOffset = localName.LastIndexOf(".");
+            if (pointOffset > 0 && pointOffset < localName.Length - 1)
+            {
+                localName = localName.Substring(pointOffset + 1);
+            }
+            function.Add(new XAttribute("localname", localName));
+        }
+        
+        function.Add(new XAttribute("handle", Guid.NewGuid()));
+
+        FunctionMarkup.Root.Add(function);
+
+        SaveChanges();
+    }
+
+    private void BtnInputParameterClicked(XElement functionNode, XElement parameterNode, string parameterName)
+    {
+        if (parameterNode != null)
+        {
+            parameterNode.Remove();
+        }
+
+        // Adding function call - GetInputParameter(InputParameterName = "...")
+
+        IFunction getInputParameterFunc = FunctionFacade.GetFunction(GetInputParameterFunctionName);
+
+
+        IMetaFunction function = TreeHelper.GetFunction(functionNode);
+        ParameterProfile parameterProfile = function.ParameterProfiles.Where(p => p.Name == parameterName).FirstOrDefault();
+        var selectedParameter = _state.Parameters.First(ip => InputParameterCanBeAssigned(parameterProfile.Type, ip.Type));
+        string selectedParameterName = selectedParameter != null ? selectedParameter.Name : string.Empty;
+
+        
+        var newElement = new FunctionParameterRuntimeTreeNode(parameterName, new FunctionRuntimeTreeNode(getInputParameterFunc)).Serialize();
+        functionNode.Add(newElement);
+
+        var inputParameterNameNode = new ConstantObjectParameterRuntimeTreeNode(GetInputParameterFunctionParameterName, selectedParameterName).Serialize();
+        newElement.Elements().First().Add(inputParameterNameNode);
+
+        SaveChanges();
+    }
+
+    private void BtnFunctionCallClicked(XElement functionNode, XElement parameterNode, string parameterName)
+    {
+        if (parameterNode != null)
+        {
+            parameterNode.Remove();
+        }
+
+        // Adding function call to the xml
+        string selectedFunction = btnFunctionCall.Value;
+        IFunction newFunction = FunctionFacade.GetFunction(selectedFunction);
+        
+        functionNode.Add(new FunctionParameterRuntimeTreeNode(parameterName, new FunctionRuntimeTreeNode(newFunction)).Serialize());
+
+        SaveChanges();
+    }
+
+    private void BtnDeleteFunctionClicked()
+    {
+        string nodeID = SelectedNode;
+
+        var root = FunctionMarkup.Root;
+        XElement functionNode = TreeHelper.FindByPath(FunctionMarkup.Root, nodeID);
+
+        if (functionNode != null && functionNode.Parent == root)
+        {
+            functionNode.Remove();
+
+            SaveChanges();
+
+            SelectedNode = string.Empty; // Or something else
+        }
+    }
+
+    private void UpdateEditingPanel(XElement document, string nodeID)
+    {
+        WidgetIsShown = false;
+        LocalFunctionNameIsShown = false;
+        InputParameterSelectorIsShown = false;
+
+        if (string.IsNullOrEmpty(nodeID))
+        {
+            mlvMain.SetActiveView(viewNoSelection);
+            return;
+        }
+
+        bool isParameter = nodeID.LastIndexOf("@") > nodeID.LastIndexOf("/");
+
+        string functionID = isParameter ? nodeID.Substring(0, nodeID.LastIndexOf("/")) : nodeID;
+
+        var function = TreeHelper.FindByPath(document, functionID);
+
+        Verify.That(function != null, "Failed to get a fuction by path '{0}'", functionID);
+        
+        if(isParameter)
+        {
+            string parameterName = nodeID.Substring(nodeID.LastIndexOf("@") + 1);
+            ShowParameterData(function, parameterName, nodeID);
+            return;
+        }
+        
+        ShowFunctionData(function);
+    }
+
+    private static bool InputParameterCanBeAssigned(Type parameterType, Type inputParameterType)
+    {
+        return inputParameterType == typeof(object)
+        || (parameterType == typeof(string) 
+            && (inputParameterType == typeof(int) || inputParameterType == typeof(DateTime)))
+        || parameterType.IsAssignableFrom(inputParameterType);
+    }
+
+    private void ShowParameterData(XElement functionNode, string parameterName, string fullParameterPath)
+    {
+        mlvMain.SetActiveView(viewParameter);
+
+        IMetaFunction function = TreeHelper.GetFunction(functionNode);
+
+        ParameterProfile parameterProfile =
+            function.ParameterProfiles.Where(p => p.Name == parameterName).FirstOrDefault();
+
+        // Configuring function selection dialog
+        var searchToken = new AllFunctionsElementProviderSearchToken
+        {
+            // NOTE: shoudn't expose implementation details
+            AcceptableTypes = TypeManager.TrySerializeType(parameterProfile.Type)
+        };
+        btnFunctionCall.Attributes.Add("providersearch", searchToken.Serialize());
+        btnFunctionCall.Attributes.Add("dialoglabel", SelectFunctionDialogLabel.FormatWith(parameterProfile.Name));
+
+
+        txtFieldName.Text = StringResourceSystemFacade.ParseString(parameterProfile.Label);
+        txtFieldType.Text = Server.HtmlEncode(parameterProfile.Type.GetShortLabel());
+        txtFieldDescription.Text = StringResourceSystemFacade.ParseString(parameterProfile.HelpDefinition.HelpText);
+
+        XElement parameterNode = TreeHelper.GetParameterNode(functionNode, parameterName);
+        
+        if(!_state.AllowSelectingInputParameters)
+        {
+            btnInputParameter.Visible = false;
+        }
+        else
+        {
+            // Input parameter selector should be awaliable only if there's a parameter of an appropriate type
+            bool inputParameterSelectorAvailable = _state.Parameters.Any(ip => InputParameterCanBeAssigned(parameterProfile.Type, ip.Type));
+            if(!inputParameterSelectorAvailable)
+            {
+                btnInputParameter.Attributes["isdisabled"] = "true";
+            }
+        }
+
+        if (parameterProfile.IsRequired)
+        {
+            btnDefault.Visible = false;
+
+            // If parameter is required, has no value and a widget is available - the widget should be shown by default.
+            if (parameterNode == null
+                && parameterProfile.WidgetFunction != null)
+            {
+                ParameterValueTypeChanged(ParameterValueType.Constant);
+
+                parameterNode = TreeHelper.FindByPath(FunctionMarkup.Root, fullParameterPath);
+            }
+        }
+
+        if (parameterProfile.WidgetFunction == null)
+        {
+            btnConstant.Attributes["isdisabled"] = "true";
+        }
+
+        if (parameterNode == null)
+        {
+            mlvWidget.Visible = false;
+
+            btnDefault.Attributes["isdisabled"] = "true";
+            btnDefault.Attributes["image"] = "${icon:accept}";
+            return;
+        }
+
+        if (parameterNode.Attribute("inputParameter") != null)
+        {
+            ShowInputParameterSelector(parameterProfile, parameterNode);
+            return;
+        }
+
+        if (parameterNode.Elements(FunctionNodeXName).Any())
+        {
+            // function call should be shown
+            btnFunctionCall.Attributes["image"] = "${icon:accept}";
+
+            mlvWidget.Visible = false;
+            return;
+        }
+
+        // Constant (or input parameter), widget should be shown
+        btnConstant.Attributes["isdisabled"] = "true";
+        btnConstant.Attributes["image"] = "${icon:accept}";
+
+        object parameterValue;
+
+        List<XElement> parameterElements = parameterNode.Elements(ParameterValueElementXName).ToList();
+        if(parameterElements.Any())
+        {
+            parameterValue = parameterElements.Select(element => element.Attribute("value").Value).ToList();
+        }
+        else
+        {
+            var valueAttr = parameterNode.Attribute("value");
+            if (valueAttr != null)
+            {
+                parameterValue = ValueTypeConverter.Convert(valueAttr.Value, parameterProfile.Type);
+            }
+            else
+            {
+                parameterValue = GetDefaultValue(parameterProfile);
+            }
+        }
+
+        // Adding a widget
+        var bindings = new Dictionary<string, object> {{parameterProfile.Name, parameterValue}};
+
+        var formTreeCompiler = FunctionUiHelper.BuildWidgetForParameters(
+            new[] { parameterProfile },
+            bindings,
+            "",
+            "",
+            WebManagementChannel.Identifier);
+
+        IWebUiControl webUiControl = (IWebUiControl)formTreeCompiler.UiControl;
+
+        var fieldGroupControl = webUiControl.BuildWebControl();
+
+        // Preventing <ui:fields> tag from rendering
+        (fieldGroupControl as ContainerTemplateUserControlBase).Settings.Add("RenderFieldsTag", false);
+        // Overwriting field label
+        (fieldGroupControl as ContainerTemplateUserControlBase).Settings.Add("FieldLabel", GetString("ParameterValueLabel"));
+        
+
+        plhWidget.Controls.Add(fieldGroupControl);
+
+        if (IsPostBack && Context.Request.Form["__EVENTTARGET"].StartsWith(webUiControl.UiControlID + "$"))
+        {
+            webUiControl.BindStateToControlProperties();
+        }
+        else
+        {
+            webUiControl.InitializeViewState();
+        }
+
+        mlvWidget.SetActiveView(viewWidget_Constant);
+
+        WidgetIsShown = true;
+    }
+
+    private static bool FunctionIsOnTopLevel(XElement functionNode)
+    {
+        return functionNode.Parent.Name.LocalName == "functions";
+    }
+
+    private void ShowInputParameterSelector(ParameterProfile parameterProfile, XElement parameterName)
+    {
+        // string inputParameterName = functionNode.Elements().First().Attribute("value").Value;
+
+        btnInputParameter.Attributes["isdisabled"] = "true";
+        btnInputParameter.Attributes["image"] = "${icon:accept}"; 
+
+        mlvWidget.SetActiveView(viewWidget_InputParameter);
+
+        lstInputParameterName.Items.Clear();
+
+        foreach(var parameter in _state.Parameters)
+        {
+            if (InputParameterCanBeAssigned(parameterProfile.Type, parameter.Type))
+            {
+                lstInputParameterName.Items.Add(parameter.Name); 
+            }
+        }
+
+        lstInputParameterName.SelectedValue = parameterName.Attribute("inputParameter").Value;
+
+        InputParameterSelectorIsShown = true;
+    }
+
+    private void ShowFunctionData(XElement functionNode)
+    {
+        IMetaFunction function = TreeHelper.GetFunction(functionNode);
+
+        txtFunctionName.Text = Server.HtmlEncode(function.Name);
+        txtFunctionReturnType.Text = Server.HtmlEncode(function.ReturnType.GetShortLabel());
+        txtFunctionDescription.Text = Server.HtmlEncode(StringResourceSystemFacade.ParseString(function.Description));
+
+        if (FunctionIsOnTopLevel(functionNode) && _state.AllowLocalFunctionNameEditing)
+        {
+            plhEditLocalName.Visible = true;
+
+            string localFunctionName = functionNode.Attribute("localname").Value;
+            txtLocalName.Text = localFunctionName;
+
+            LocalFunctionNameIsShown = true;
+        }
+        else
+        {
+            plhEditLocalName.Visible = false;
+        }
+        mlvMain.SetActiveView(viewFunction);
+    }
+
+    private object GetDefaultValue(ParameterProfile parameterProfile)
+    {
+        // Initializing the binding
+        object value = null;
+
+        try
+        {
+            var fallbackValueProvider = parameterProfile.FallbackValueProvider;
+
+            if(!(fallbackValueProvider is NoValueValueProvider))
+            {
+                object defaultValue = fallbackValueProvider.GetValue();
+
+                if (defaultValue != null)
+                {
+                    value = ValueTypeConverter.Convert(defaultValue, parameterProfile.Type);
+                }
+            }
+        }
+        catch (Exception) { }
+
+        if (value == null)
+        {
+            if (parameterProfile.Type == typeof(bool))
+            {
+                value = false;
+            }
+        }
+        return value;
+    }
+
+    private XElement CopyWithId(XElement source)
+    {
+        XElement copy = new XElement(source);
+
+        Dictionary<XElement, string> elementToPathMap = TreeHelper.GetElementToPathMap(copy);
+
+        foreach (XElement element in elementToPathMap.Keys)
+        {
+            string elementPath = elementToPathMap[element];
+
+            Verify.That(TreePathToIdMapping.ContainsKey(elementPath), "There's no tree ID assigned to element '{0}'", elementPath);
+            string treeNodeId = TreePathToIdMapping[elementPath];
+
+            element.Add(new XAttribute("id", treeNodeId));
+            element.Add(new XAttribute("path", elementPath));
+        }
+
+        return copy;
+    }
+
+    private void UpdateMenu()
+    {
+        string selectedNode = SelectedNode;
+
+        bool rootFunctionSelected = selectedNode != null && !selectedNode.Contains("@");
+        btnDeleteFunction.Attributes["isdisabled"] = (!rootFunctionSelected) ? "true" : "false";
+    }
+
+    public void OnSourceMarkupChanged()
+    {
+        if (Request["__EVENTARGUMENT"] == "source")
+        {
+            return;
+        }
+
+        string markup = Context.Request.Form["ctlSourceEditor"];
+        if(markup.IsNullOrEmpty())
+        {
+            return;
+        }
+
+        markup = Context.Server.UrlDecode(markup);
+
+        XDocument newMarkup;
+        try
+        {
+            newMarkup = XDocument.Parse(markup);
+        }
+
+        catch(Exception e)
+        {
+            LoggingService.LogError("FunctionCallEditor", e);
+            Alert("Failed to parse the markup");
+            return;
+        }
+
+        try
+        {
+            if (!ValidateMarkup(newMarkup, false))
+                return;
+        }
+        catch (Exception e)
+        {
+            Alert(e.Message);
+            return;
+        }
+
+
+        FunctionMarkup = newMarkup; 
+
+        InitializeTreeView();
+        SelectedNode = "";
+
+        SaveChanges();
+    }
+
+    private XElement UpdateTreeView(XElement functionMarkupContainer)
+    {
+        // TODO: Do some compiled xslt caching
+
+        XElement treeInput = CopyWithId(functionMarkupContainer);
+
+        treeInput.Add(GetFunctionDescriptionElements(functionMarkupContainer));
+
+        if(_state.AllowSelectingInputParameters)
+        {
+            CollapseGetInputParamaterFunctionCalls(treeInput, InputParameterNodeIDs);
+        }
+
+        // treeInput.Save(Request.MapPath("out.tmp.xml"));
+
+        string xslFilePath = Request.MapPath("functioneditortree.xslt");
+        XslCompiledTransform transform = GetTransformation(xslFilePath);
+
+        var xsltTransformArguments = new XsltArgumentList();
+        xsltTransformArguments.AddExtensionObject(XsltExtensionObjectNamespace, new TreeRenderingXsltExtensionObject(TreePathToIdMapping));
+        xsltTransformArguments.AddParam("SelectedId", string.Empty, SelectedNode.IsNullOrEmpty() ? string.Empty : TreePathToIdMapping[SelectedNode]);
+
+        XDocument transformedDoc = new XDocument();
+
+        using (XmlWriter writer = transformedDoc.CreateWriter())
+        {
+            transform.Transform(treeInput.CreateReader(), xsltTransformArguments, writer);
+        }
+
+        WriteTo(transformedDoc, this.TreePlaceholder);
+
+        return treeInput;
+    }
+
+    private XslCompiledTransform GetTransformation(string xsltFilePath)
+    {
+        string transformationCacheKey = "Compiled" + xsltFilePath;
+        var cache = HttpContext.Current.Cache;
+
+        XslCompiledTransform transform = cache[transformationCacheKey] as XslCompiledTransform;
+        if (transform == null)
+        {
+            lock (this.GetType())
+            {
+                transform = cache[transformationCacheKey] as XslCompiledTransform;
+                if (transform == null)
+                {
+                    transform = XsltServices.GetCompiledXsltTransform(xsltFilePath);
+                    cache.Add(transformationCacheKey,
+                        transform,
+                        new CacheDependency(xsltFilePath),
+                        DateTime.MaxValue,
+                        TimeSpan.FromDays(1.0),
+                        CacheItemPriority.Default,
+                        null);
+                }
+            }
+        }
+        return transform;
+    }
+
+    private HashSet<string> CalculateGetInputParamaterFunctionCalls(XDocument functionCalls, Dictionary<string, string> pathToIdMapping)
+    {
+        Verify.That(_state.AllowSelectingInputParameters, "Invalid function call");
+        
+        var result = new HashSet<string>();
+
+        List<string> availableParamters = _state.Parameters.Select(parameter => parameter.Name).ToList();
+
+        var elementToPathMap = TreeHelper.GetElementToPathMap(functionCalls);
+        foreach(XElement parameterElement in functionCalls.Descendants(ParameterNodeXName))
+        {
+            XElement functionNode = parameterElement.Elements().FirstOrDefault();
+            if (functionNode == null
+                || functionNode.Attribute("name") == null
+                || functionNode.Attribute("name").Value != GetInputParameterFunctionName)
+            {
+                continue;
+            }
+
+            XElement inputParameterNameNode = functionNode.Elements(ParameterNodeXName).FirstOrDefault();
+            if(inputParameterNameNode == null)
+            {
+                continue;
+            }
+
+            var parameterNameAttr = inputParameterNameNode.Attribute("value");
+            if(parameterNameAttr == null 
+                || string.IsNullOrEmpty(parameterNameAttr.Value)
+                || !availableParamters.Contains(parameterNameAttr.Value))
+            {
+                continue;
+            }
+
+            result.Add(pathToIdMapping[elementToPathMap[parameterElement]]);
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Removes nodes that are related to "GetInputParameter" function calls, which are invisible in the tree
+    /// </summary>
+    /// <param name="root"></param>
+    private static void CollapseGetInputParamaterFunctionCalls(XElement root, HashSet<string> inputParameterNodeIDs)
+    {
+        List<XElement> parameterNodes = root.Descendants(ParameterNodeXName).ToList();
+
+        var toBeRemoved = new List<XElement>();
+
+        foreach(XElement parameterElement in parameterNodes)
+        {
+            string nodeId = parameterElement.Attribute("id").Value;
+            if(!inputParameterNodeIDs.Contains(nodeId)) continue;
+ 
+            XElement functionNode = parameterElement.Elements().FirstOrDefault();
+            if (functionNode == null 
+                || functionNode.Attribute("name") == null
+                || functionNode.Attribute("name").Value != GetInputParameterFunctionName) continue;
+
+            XAttribute parameterNameAttr = functionNode.Elements().First().Attribute("value");
+
+            // If parameter value isn't a constant - continue
+            if(parameterNameAttr == null) continue;
+
+            string parameterName = parameterNameAttr.Value;
+
+            toBeRemoved.Add(functionNode);
+            parameterElement.Add(new XAttribute("inputParameter", parameterName));
+        }
+
+        toBeRemoved.ForEach(element => element.Remove());
+    }
+
+    private IEnumerable<XElement> GetFunctionDescriptionElements(XElement functionMarkupToDescribe)
+    {
+        XElement unexpected = functionMarkupToDescribe.Elements().FirstOrDefault(f => f.Name != FunctionNodeXName && f.Name != WidgetFunctionNodeXName);
+        if (unexpected != null)
+        {
+            throw new InvalidOperationException(string.Format("Provided function markup contained unexpected element name '{0}' at root.elements level.", unexpected.Name));
+        }
+
+        foreach (XElement element in functionMarkupToDescribe.Descendants())
+        {
+            element.Add(new XAttribute("xpath", element.GetXPath()));
+        }
+        
+
+        string[] uniqueFunctionNames = functionMarkupToDescribe.Descendants(FunctionNodeXName).Select(f => f.Attribute("name").Value).Distinct().ToArray();
+        string[] uniqueWidgetFunctionNames = functionMarkupToDescribe.Descendants(WidgetFunctionNodeXName).Select(f => f.Attribute("name").Value).Distinct().ToArray();
+
+        List<IMetaFunction> toBeDescribed = 
+            uniqueFunctionNames
+            .Select(functionName => FunctionFacade.GetFunction(functionName) as IMetaFunction)
+            .Union(uniqueWidgetFunctionNames
+                  .Select(functionName => FunctionFacade.GetWidgetFunction(functionName) as IMetaFunction))
+            .ToList();
+
+
+        var allFunctionDescriptions = new List<XElement>();
+
+        foreach (IMetaFunction function in toBeDescribed)
+        {
+            XElement functionDescription = new XElement(functionDescriptionNs + "function"
+                , new XAttribute("compositename", function.CompositeName())
+                , new XAttribute("name", function.Name)
+                , new XAttribute("namespace", function.Namespace)
+                , new XAttribute("description", function.DescriptionLocalized())
+                , new XAttribute("returntypelabel", function.ReturnType.GetShortLabel()));
+
+            foreach (ParameterProfile parameter in function.ParameterProfiles)
+            {
+                XElement parameterDescription = new XElement(functionDescriptionNs + "param"
+                    , new XAttribute("name", parameter.Name)
+                    , new XAttribute("typelabel", parameter.Type.GetShortLabel())
+                    , new XAttribute("label", parameter.LabelLocalized)
+                    , new XAttribute("required", parameter.IsRequired)
+                    , new XAttribute("description", parameter.HelpDefinition.GetLocalized().HelpText));
+
+                functionDescription.Add(parameterDescription);
+            }
+
+            allFunctionDescriptions.Add(functionDescription);
+        }
+
+        return allFunctionDescriptions;
+    }
+
+    private void WriteTo(XContainer markupSource, Control targetControl)
+    {
+        targetControl.Controls.Add(new LiteralControl(markupSource.ToString()));
+    }
+
+
+    private static XDocument Clone(XDocument document)
+    {
+        return new XDocument(CloneElement(document.Root));
+    }
+
+    private static XElement CloneElement(XElement element)
+    {
+        return new XElement(element.Name, element.Attributes(),
+            element.Nodes().Select(n =>
+            {
+                XElement e = n as XElement;
+                if (e != null)
+                    return CloneElement(e);
+                return n;
+            }
+            )
+        );
+    }
+
+    protected static string GetString(string localPart)
+    {
+        return StringResourceSystemFacade.GetString("Composite.Web.FormControl.FunctionCallsDesigner", localPart);
+    }
+
+    protected string EventTarget
+    {
+        get
+        {
+            return IsPostBack ? Request.Form["__EVENTTARGET"] : string.Empty;
+        }
+    }
+
+    public class TreeRenderingXsltExtensionObject
+    {
+        private readonly Dictionary<string, string> _pathToIdMapping;
+
+        public TreeRenderingXsltExtensionObject(Dictionary<string, string> pathToIdMapping)
+        {
+            _pathToIdMapping = pathToIdMapping;
+        }
+
+        public string GetVirtualParameterId(string functionPath, string parameterName)
+        {
+            return _pathToIdMapping[TreeHelper.GetParameterPath(functionPath, parameterName)];
+        }
+    }
+}

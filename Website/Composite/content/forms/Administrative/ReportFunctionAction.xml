@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:internal="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0" xmlns:fun="http://www.composite.net/ns/function/1.0">
+  <cms:bindings>
+    <cms:binding name="Icon" type="System.String"/>
+    <cms:binding name="Label" type="System.String"/>
+    <cms:binding name="HtmlBlob" type="System.String"/>
+
+  </cms:bindings>
+  <cms:layout>
+    <cms:layout.iconhandle>
+      <cms:read source="Icon" />
+    </cms:layout.iconhandle>
+    <cms:layout.label>
+      <cms:read source="Label" />
+    </cms:layout.label>
+    <PlaceHolder>
+      <HtmlBlob>
+        <cms:read source="HtmlBlob" />
+      </HtmlBlob>
+    </PlaceHolder>
+  </cms:layout>
+</cms:formdefinition>
+
+
+<!--<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:internal="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="TreeDefinitionMarkup" type="System.String"/>
+    <cms:binding name="SamplesMarkup" type="System.String"/>
+    <cms:binding name="PreviewEventHandler" type="System.EventHandler" optional="false"/>
+  </cms:bindings>
+  <cms:layout iconhandle="xslt-based-function" label="Demo edit">
+    <TabPanels PreSelectedIndex="0" Label="Edit.......">
+
+      <TextEditor Label="Edit" MimeType="xml">
+        <cms:bind source="TreeDefinitionMarkup" />
+      </TextEditor>
+
+      <TextEditor Label="Samples" MimeType="xml">
+        <cms:bind source="SamplesMarkup" />
+      </TextEditor>
+
+      <f:NullCheck>
+        <f:NullCheck.CheckValue>
+          <cms:read source="PreviewEventHandler"/>
+        </f:NullCheck.CheckValue>
+        <f:NullCheck.WhenNotNull>
+          <internal:PreviewPanel Label="Preview">
+            <internal:PreviewPanel.ClickEventHandler>
+              <cms:read source="PreviewEventHandler"/>
+            </internal:PreviewPanel.ClickEventHandler>
+          </internal:PreviewPanel>
+        </f:NullCheck.WhenNotNull>
+      </f:NullCheck>
+
+    </TabPanels>
+  </cms:layout>
+</cms:formdefinition>-->

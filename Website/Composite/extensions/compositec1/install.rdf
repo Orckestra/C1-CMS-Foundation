@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+	<Description about="urn:mozilla:install-manifest">
+		<em:id>c1@composite.net</em:id>
+		<em:version>1.0</em:version>
+		<em:type>2</em:type>
+		<em:targetApplication>
+			<Description>
+				<em:id>prism@developer.mozilla.org</em:id>
+				<em:minVersion>0.8</em:minVersion>
+				<em:maxVersion>1.0.0.*</em:maxVersion>
+			</Description>
+		</em:targetApplication>
+		<em:name>Composite C1</em:name>
+		<em:description>Manages C1 cache settings.</em:description>
+		<em:creator>Composite</em:creator>
+		<em:homepageURL>http://www.composite.net/</em:homepageURL>
+	</Description>
+</RDF>

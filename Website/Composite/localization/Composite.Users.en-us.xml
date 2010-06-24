@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+	<!-- change password -->
+	<string key="ChangeOwnPasswordWorkflow.ElementActionLabel" value="Change password..."/>
+	<string key="ChangeOwnPasswordWorkflow.ElementActionToolTip" value="Change your password"/>
+	<string key="ChangeOwnPasswordWorkflow.Dialog.Label" value="Change password"/>
+	<string key="ChangeOwnPasswordWorkflow.Dialog.FieldGroup.Label" value="Change your password"/>
+	<string key="ChangeOwnPasswordWorkflow.Dialog.ExistingPassword.Label" value="Existing Password"/>
+	<string key="ChangeOwnPasswordWorkflow.Dialog.ExistingPassword.Help" value="For security reasons you must present your existing password before you can continue."/>
+	<string key="ChangeOwnPasswordWorkflow.Dialog.NewPassword.Label" value="New password"/>
+	<string key="ChangeOwnPasswordWorkflow.Dialog.NewPassword.Help" value="The password specified in this field must match the confirmation below."/>
+	<string key="ChangeOwnPasswordWorkflow.Dialog.NewPasswordConfirmed.Label" value="Confirm new password"/>
+	<string key="ChangeOwnPasswordWorkflow.Dialog.NewPasswordConfirmed.Help" value="The password specified in this field must match the one specified above."/>
+
+	<!-- change culture -->
+	<string key="ChangeOwnCultureWorkflow.ElementActionLabel" value="Regional settings..."/>
+	<string key="ChangeOwnCultureWorkflow.ElementActionToolTip" value="Set the display of numbers, times, and dates"/>
+	<string key="ChangeOwnCultureWorkflow.Dialog.Label" value="Regional settings and language"/>
+	<string key="ChangeOwnCultureWorkflow.Dialog.CultureSelector.Label" value="Regional settings / Language"/>
+	<string key="ChangeOwnCultureWorkflow.Dialog.CultureSelector.Help" value="To change the way numbers, times, and dates are displayed, select an entry from the list. The right most language is the language of the UI."/>
+	<string key="ChangeOwnCultureWorkflow.Dialog.Confirm.Text" value="Are your sure you wish to change the settings? The application will restart and all your unsaved changes will be lost."/>
+	<string key="ChangeOwnCultureWorkflow.FieldGroup.Label" value="Regional settings"/>
+	<string key="AdministratorAutoCreator.DefaultGroupName" value="Administrators"/>
+
+	<!-- change own active and foreign locale -->
+	<string key="ChangeForeignLocaleWorkflow.ActionLabel" value="Translation..."/>
+	<string key="ChangeForeignLocaleWorkflow.ActionToolTip" value="Change source language"/>
+	<string key="ChangeForeignLocaleWorkflow.NoForeignLocaleLabel" value="None"/>
+	<string key="ChangeForeignLocaleWorkflow.Dialog.Label" value="Translation"/>
+	<string key="ChangeForeignLocaleWorkflow.FieldGroup.Label" value="Select language to translate from"/>
+	<string key="ChangeForeignLocaleWorkflow.NoOrOneActiveLocales.Title" value="Multiple languages not installed"/>
+	<string key="ChangeForeignLocaleWorkflow.NoOrOneActiveLocales.Description" value="Two or more languages must be installed in order to support translations. Administrators can add more languages in the 'System' perspective."/>
+	<string key="ChangeForeignLocaleWorkflow.ForeignCultureSelector.Label" value="From-language"/>
+	<string key="ChangeForeignLocaleWorkflow.ForeignCultureSelector.Help" value="Pages written in the from-language will be indicated by globe-icons in the Content tree. The associated &quot;Translate Page&quot; action imports the page into the current working language."/>
+
+
+  <string key="ChangeOwnActiveLocaleWorkflow.CloseAllViews.Message" value="The active language has been changed"/>
+</strings>

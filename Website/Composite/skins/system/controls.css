@@ -1,0 +1,16 @@
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|controlgroup {}
+
+ui|control {
+	margin-left: 2px;
+	background-color: transparent;
+}
+#region vista
+	ui|control.dialogcontrol ui|labelbody { /* elongated vista controls */
+		padding-left: 29px;
+	}
+	ui|toolbarbutton.dialogcontrol ui|labelbody { /* elongated vista controls */
+		padding-left: 29px;
+	}
+#endregion

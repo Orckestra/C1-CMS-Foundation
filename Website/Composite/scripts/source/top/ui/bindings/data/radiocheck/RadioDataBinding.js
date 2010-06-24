@@ -1,0 +1,320 @@
+RadioDataBinding.prototype = new Binding;
+RadioDataBinding.prototype.constructor = RadioDataBinding;
+RadioDataBinding.superclass = Binding.prototype;
+
+/**
+ * @class
+ * TODO: note on how RadioGroupBindings handles only buttons
+ */
+function RadioDataBinding () {
+
+	/**
+	 * @type {SystemLogger}
+	 */
+	this.logger = SystemLogger.getLogger ( "RadioDataBinding" );
+	
+	/** 
+	 * This has something to do with the mechanics of the containing RadioDataGroup.
+	 * @type {boolean}
+	 */
+	this.isRadioButton = false;
+	
+	/** 
+	 * @type {boolean}
+	 */
+	this.isChecked = false;
+	
+	/** 
+	 * TODO: implement this some day!
+	 * @type {object}
+	 */
+	this._result = null;
+	
+	/**
+	 * @type {string}
+	 */
+	this.bindingRelate = null;
+	
+	/*
+	 * Returnable. 
+	 */
+	return this;
+}
+
+/**
+ * Identifies binding.
+ */
+RadioDataBinding.prototype.toString = function () {
+
+	return "[RadioDataBinding]";
+}
+
+/*
+ * Build radiobutton on REGISTER already. This because of radiogroup initialization.
+ */
+RadioDataBinding.prototype.onBindingRegister = function () {
+	
+	RadioDataBinding.superclass.onBindingRegister.call ( this );
+	
+	/*
+	 * This may not always be enough, see below...
+	 */
+	this.propertyMethodMap [ "checked" ] = function ( isChecked ) {
+		if ( isChecked != this.isChecked ) {
+			this.setChecked ( isChecked, true );
+		}
+	};
+	
+	/*
+	 * To ensure maximum synchronizity with the server,  
+	 * we check for checkedness on ALL postback responses.
+	 */
+	this.propertyMethodMap [ "checksum" ] = function () {
+		var isChecked = this.getProperty ( "ischecked" );
+		if ( isChecked != this.isChecked ) {
+			this.setChecked ( isChecked, true );
+		}
+	};
+	
+	this._buttonBinding = this.add ( 
+		RadioButtonBinding.newInstance ( this.bindingDocument )
+	);
+	this._hack ();
+	
+	if ( this.getProperty ( "ischecked" ) == true ) {
+		this.check ( true );
+	}
+	
+}
+
+/**
+ * @overloads {Binding#onBindingAttach}
+ */
+RadioDataBinding.prototype.onBindingAttach = function () {
+
+	RadioDataBinding.superclass.onBindingAttach.call ( this );
+	
+	this.attachClassName ( Binding.CLASSNAME_CLEARFLOAT );
+	this._buttonBinding.attach ();
+	this._buildDOMContent ();
+}
+
+/**
+ * Build DOM content.
+ */
+RadioDataBinding.prototype._buildDOMContent = function () {
+	
+	var relate = this.getProperty ( "relate" );
+	var oncommand = this.getProperty ( "oncommand" );
+	
+	if ( relate ) {
+		this.bindingRelate = relate;
+		this.relate ();
+	}
+	if ( oncommand ) {
+		this.oncommand = function () {
+			Binding.evaluate ( oncommand, this );
+		};
+	}
+	
+	/*
+	 * Setup ASP.NET callback.
+	 */
+	if ( this.hasCallBackID ()) {
+		Binding.dotnetify ( this );
+	}
+	
+	this._buildLabelText ();
+}
+
+/**
+ * Broadcast relation.
+ */
+RadioDataBinding.prototype.relate = function () {
+	
+	if ( this.bindingRelate != null ) {
+		this.logger.warn ( "Relations not properly implemented!" ); // see method setChecked...
+		EventBroadcaster.broadcast ( BroadcastMessages.BINDING_RELATE, {
+			relate : this.bindingRelate,
+			origin : this.bindingDocument,
+			result : this.isChecked
+		});
+	}
+}
+
+/**
+ * TODO: note on how RadioGroupBindings handles only buttons
+ * {@see RadioGroupBinding#setCheckedButtonBinding}
+ * @return {RadioButtonBinding}
+ */
+RadioDataBinding.prototype.getButton = function () {
+	
+	return this._buttonBinding;
+}
+
+/**
+ * Shameful hack, all because of Explorers CSS rendering challanges.
+ */
+RadioDataBinding.prototype._hack = function () {
+
+	var self = this;
+	var callbackid = this.getCallBackID ();
+	
+	this._buttonBinding.check = function ( isDisableCommand ) {
+		RadioButtonBinding.prototype.check.call ( this, isDisableCommand );
+		self.setProperty ( "ischecked", true );
+		self.isChecked = true;
+		self.relate ();
+		//if ( callbackid != null ) { TODO!
+			//alert ( self );
+		//}
+	}
+	
+	this._buttonBinding.uncheck = function ( isDisableCommand ) {
+		RadioButtonBinding.prototype.uncheck.call ( this, isDisableCommand );
+		self.deleteProperty ( "ischecked" );
+		self.isChecked = false;
+		self.relate ();
+		//if ( callbackid != null ) { TODO!
+			//alert ( self );
+		//}
+	}
+	
+	this._buttonBinding.oncommand = function () {
+		self.isChecked = this.isChecked;
+		self.relate ();
+		if ( Types.isFunction ( self.oncommand )) {
+			self.oncommand ();
+		}	
+	}
+}
+
+/**
+ * @param {boolean} isChecked
+ * @param {boolean} isDisableCommand Optional.
+ */
+RadioDataBinding.prototype.setChecked = function ( isChecked, isDisableCommand ) {
+	
+	//if ( this.isAttched == true ) {
+	this._buttonBinding.setChecked ( isChecked, isDisableCommand );
+	if ( this.bindingRelate != null ) {
+		this.relate (); // TOOOOOOOOOOOOOOO EARLY ON REGISTER!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	}
+	//}
+	this.setProperty ( "ischecked", isChecked );
+}
+
+/**
+ * @param {boolean} isDisableCommand Optional.
+ */
+RadioDataBinding.prototype.check = function ( isDisableCommand ) {
+	
+	this.setChecked ( true, isDisableCommand );	
+}
+
+/**
+ * @param {boolean} isDisableCommand Optional.
+ */
+RadioDataBinding.prototype.uncheck = function ( isDisableCommand ) {
+	
+	this.setChecked ( false, isDisableCommand );	
+}
+
+/**
+ * Flip disabled.
+ * @param {boolean} isDisabled
+ */
+RadioDataBinding.prototype.setDisabled = function ( isDisabled ) {
+	
+	if ( isDisabled != this.isDisabled ) {
+		this.isDisabled = isDisabled;
+		this._buttonBinding.setDisabled ( isDisabled );
+		if ( isDisabled ) {
+			this.attachClassName ( DataBinding.CLASSNAME_DISABLED );
+		} else {
+			this.detachClassName ( DataBinding.CLASSNAME_DISABLED );
+		}
+	}
+}
+
+/**
+ * Disable.
+ */
+RadioDataBinding.prototype.disable = function () {
+
+	if ( !this.isDisabled ) {
+		this.setDisabled ( true );
+	}
+}
+
+/**
+ * Enable.
+ */
+RadioDataBinding.prototype.enable = function () {
+	
+	if ( this.isDisabled ) {
+		this.setDisabled ( false );
+	}
+}
+
+/**
+ * @implements {IEventListener}
+ * @overloads {Binding#handleEvent}
+ * @param {MouseEvent} e
+ */
+RadioDataBinding.prototype.handleEvent = function ( e ) {
+	
+	RadioDataBinding.superclass.handleEvent.call ( this, e );
+	
+	if ( e.type == DOMEvents.CLICK ) {
+		var target = DOMEvents.getTarget ( e );
+		switch( target ) {
+			case this.shadowTree.labelText :
+				if ( !this.isChecked && !this.isDisabled ) {
+					this.check ();
+				}
+				break;
+		}
+	}
+}
+
+/**
+ * Explorer cannot overwrite inherited "white-space: nowrap" 
+ * in a regular button, so we need to build a special label.
+ */
+RadioDataBinding.prototype._buildLabelText = function () {
+	
+	var label = this.getProperty ( "label" );
+	if ( label ) {
+		this.shadowTree.labelText = DOMUtil.createElementNS ( 
+			Constants.NS_UI, 
+			"ui:datalabeltext", 
+			this.bindingDocument 
+		);
+		this.shadowTree.labelText.appendChild ( 
+			this.bindingDocument.createTextNode ( 
+				Resolver.resolve ( label )
+			)
+		);
+		DOMEvents.addEventListener ( 
+			this.shadowTree.labelText, 
+			DOMEvents.CLICK, 
+			this 
+		);
+		this.bindingElement.appendChild ( 
+			this.shadowTree.labelText 
+		);
+	}
+}
+
+/**
+ * Set label.
+ * @param {string} label
+ */
+RadioDataBinding.prototype.setLabel = function ( label ) {
+	
+	if ( this.shadowTree.labelText != null ) {
+		this.shadowTree.labelText.firstChild.data = label;
+	}
+	this.setProperty ( "label", label );
+}

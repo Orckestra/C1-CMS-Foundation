@@ -1,0 +1,10 @@
+html,
+body {
+	background-color: $(color:threedface);
+	border: none;
+	padding: 0;
+	margin: 0;
+}
+form {
+	visibility: hidden;
+}

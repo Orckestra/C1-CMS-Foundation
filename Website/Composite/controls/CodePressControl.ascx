@@ -1,0 +1,1 @@
+<%@ Control Language="C#" AutoEventWireup="true" CodeFile="CodePressControl.ascx.cs" Inherits="CodePressControl" %>

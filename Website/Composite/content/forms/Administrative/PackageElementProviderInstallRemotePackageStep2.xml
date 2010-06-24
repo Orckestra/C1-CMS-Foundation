@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="EulaText" type="System.String" />
+    <cms:binding name="EulaAccepted" type="System.Boolean" />
+  </cms:bindings>
+  <cms:layout iconhandle="package-install-package" label="${Composite.StandardPlugins.PackageElementProvider, InstallRemoteAddOn.Step2.LayoutLabel}">
+    <PlaceHolder>
+      
+      <Heading Title="${Composite.StandardPlugins.PackageElementProvider, InstallRemoteAddOn.Step2.HeadingTitle}"
+               Description="${Composite.StandardPlugins.PackageElementProvider, InstallRemoteAddOn.Step2.HeadingDescription}">
+      </Heading>
+
+      <LongText>
+        <cms:read source="EulaText" />
+      </LongText>
+
+      <CheckBox ItemLabel="${Composite.StandardPlugins.PackageElementProvider, InstallRemoteAddOn.Step2.IAcceptItemLabel}">
+        <CheckBox.Checked>
+          <cms:bind source="EulaAccepted"/>
+        </CheckBox.Checked>
+      </CheckBox>
+
+    </PlaceHolder>
+  </cms:layout>
+</cms:formdefinition>

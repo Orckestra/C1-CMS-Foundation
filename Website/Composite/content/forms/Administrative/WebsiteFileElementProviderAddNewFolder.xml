@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="NewFolderName" type="System.String" />
+  </cms:bindings>
+  <cms:layout>
+    <FieldGroup Label="${Composite.StandardPlugins.WebsiteFileElementProvider, AddNewFolder.LabelFieldGroup}">
+      <TextBox Label="${Composite.StandardPlugins.WebsiteFileElementProvider, AddNewFolder.Text}" 
+			   Help="${Composite.StandardPlugins.WebsiteFileElementProvider, AddNewFolder.Help}">
+        <TextBox.Text>
+          <cms:bind source="NewFolderName" />
+        </TextBox.Text>
+      </TextBox>
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

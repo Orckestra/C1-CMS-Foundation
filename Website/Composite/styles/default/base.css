@@ -1,0 +1,164 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+* {
+	cursor: default;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+html,
+body {
+	height: 100%;
+	border: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+body {
+	background-color: $(color:threedface);
+	color: $(color:windowtext);
+}
+form { /* assuming that all forms are standard body-childnode dot net forms! */
+	height: 100%;
+	padding: 0;
+	margin: 0;	
+}
+p {
+	margin: 0 0 1.3em 0;	
+}
+textarea,					
+input {
+	cursor: text;
+	-moz-user-select: text;
+	-webkit-user-select: text;
+	-moz-resize: none;
+	user-select: text;
+}
+html,
+input,
+textarea,
+button,
+select,
+td,
+th {
+	#region default
+	 	font-family: Tahoma, sans-serif;
+	 	font-size: 11px;
+	#endregion
+	#region vista
+	 	font-family: "Segoe UI", Tahoma, sans-serif;
+ 		font-size: 12px;
+	#endregion
+	#region osx
+	 	font-family: "Lucida Grande", sans-serif;
+ 		font-size: 11px;
+	#endregion
+}
+img.designmodesanitizer {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 24px; /* ie must have a fixed px height */
+	z-index: 2; /* above selectorindicator in EditorSelectorBinding */
+}
+*.padded {
+	padding: 30px 30px 30px 40px;
+}
+a.buttonurl {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	#ie height: 40px; /* cannot handle 100% */
+	#ie background-color: pink;
+	#ie filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+}
+ui|binding,
+ui|feedbackset { /* ONLY MAW USES THIS FOR NOW! */
+	display: none;	
+}
+ui|box {
+	display: block;
+}
+ui|cover {
+	display: block;
+	position: absolute;
+	overflow: hidden;
+	z-index: 5;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: $(color:threedface);
+}
+ui|cover.transparent {
+	#moz background-color: transparent;
+	#ie filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+}
+ui|*.maxboxelement,
+ui|*.flexboxelement {
+	display: block;
+	height: 100%;
+	overflow: hidden;
+}
+#region ie
+	ui|*.clearfloatelement {
+		width: 100%;
+	}
+#endregion
+#region moz
+	ui|*.clearfloatelement:after {
+		content: "";
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		margin-bottom: -1px;
+		display: block;
+		clear: both;
+	}
+#endregion
+
+ui|persistance {
+	display: none;
+	#ie behavior: url(#default#userdata);
+}
+
+ui|window {
+	display: block;
+	position: relative; /* to contain a possible cover */
+}
+iframe {
+	display: block;
+	width: 100%;
+	height: 100%;
+	overflow: auto; /*?*/
+	border: none !important;
+	border-width: 0;
+}
+ui|scrollbox {
+	display: block;
+	height: 100%;
+	overflow: auto !important;
+	position: relative; /* marks srollbox as an "offsetparent" for position calculations */
+}
+ui|scrollbox.infobox {
+	background-color: white;
+	border: 1px solid;
+	border-color: $(color:threeddarkshadow) $(color:threedshadow) $(color:threedshadow) $(color:threeddarkshadow);
+}
+a  {
+	text-decoration: none;
+	color: $(color:windowtext);
+}
+a img {
+	border: none;
+	cursor: pointer;
+}
+ui|status {
+	display: none;	
+}

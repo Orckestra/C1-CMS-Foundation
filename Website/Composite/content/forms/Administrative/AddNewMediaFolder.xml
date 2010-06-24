@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="NewFolder" type="Composite.Data.Types.IMediaFileFolder, Composite" />
+    <cms:binding name="FolderName" type="System.String" />
+    <cms:binding name="ProvidesMetaData" type="System.Boolean" />
+  </cms:bindings>
+  <cms:layout iconhandle="media-add-media-folder">
+    <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.AddNewMediaFolder.Label.AddNewMediaFolder}">
+      <TextBox Label="${Composite.Management, Website.Forms.Administrative.AddNewMediaFolder.LabelFolderName}" Help="${Composite.Management, Website.Forms.Administrative.AddNewMediaFolder.HelpFolderName}">
+        <TextBox.Text>
+          <cms:bind source="FolderName" />
+        </TextBox.Text>
+      </TextBox>
+      <f:BooleanCheck>
+        <f:BooleanCheck.CheckValue>
+          <cms:read source="ProvidesMetaData" />
+        </f:BooleanCheck.CheckValue>
+        <f:BooleanCheck.WhenTrue>
+          <TextBox Label="${Composite.Management, Website.Forms.Administrative.AddNewMediaFolder.LabelTitle}" Help="${Composite.Management, Website.Forms.Administrative.AddNewMediaFolder.HelpTitle}">
+            <TextBox.Text>
+              <cms:bind source="NewFolder.Title" />
+            </TextBox.Text>
+          </TextBox>
+        </f:BooleanCheck.WhenTrue>
+      </f:BooleanCheck>
+      <f:BooleanCheck>
+        <f:BooleanCheck.CheckValue>
+          <cms:read source="ProvidesMetaData" />
+        </f:BooleanCheck.CheckValue>
+        <f:BooleanCheck.WhenTrue>
+          <TextArea Label="${Composite.Management, Website.Forms.Administrative.AddNewMediaFolder.LabelDescription}" Help="${Composite.Management, Website.Forms.Administrative.AddNewMediaFolder.HelpDescription}">
+            <cms:bind source="NewFolder.Description" />
+          </TextArea>
+        </f:BooleanCheck.WhenTrue>
+      </f:BooleanCheck>
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

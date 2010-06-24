@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="DeleteDatas" type="System.Boolean" />
+  </cms:bindings>
+  <cms:layout label="${Composite.Management, AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.LabelFieldGroup}" iconhandle="question">
+
+    <PlaceHolder>
+      <!--<Text Text="${Composite.Management, AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.HasData}"/>-->
+
+      <FieldGroup Label="${Composite.Management, AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.FieldGroupLabel}">
+        <CheckBox Label="${Composite.Management, AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.DeleteFolderDataLabel}" Help="${Composite.Management, AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.DeleteFolderDataHelp}" ItemLabel="${Composite.Management, AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.DeleteFolderDataCheckBoxLabel}">
+          <CheckBox.Checked>
+            <cms:bind source="DeleteDatas"/>
+          </CheckBox.Checked>
+        </CheckBox>
+      </FieldGroup>
+
+    </PlaceHolder>
+
+  </cms:layout>
+</cms:formdefinition>

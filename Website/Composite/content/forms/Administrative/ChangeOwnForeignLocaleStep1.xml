@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+		<cms:binding name="ForeignCultureName" type="System.String" />
+		<cms:binding name="ForeignCulturesList" type="System.Collections.IEnumerable" />
+  </cms:bindings>
+  <cms:layout iconhandle="localization-changelocale" label="${Composite.Users, ChangeForeignLocaleWorkflow.Dialog.Label}">
+    <FieldGroup Label="${Composite.Users, ChangeForeignLocaleWorkflow.FieldGroup.Label}">
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"
+									 Label="${Composite.Users, ChangeForeignLocaleWorkflow.ForeignCultureSelector.Label}"
+									 Help="${Composite.Users, ChangeForeignLocaleWorkflow.ForeignCultureSelector.Help}">
+        <KeySelector.Options>
+          <cms:read source="ForeignCulturesList"/>
+        </KeySelector.Options>
+        <KeySelector.Selected>
+          <cms:bind source="ForeignCultureName" />
+        </KeySelector.Selected>
+      </KeySelector>           		
+		</FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

@@ -1,0 +1,18 @@
+<%@ Control Language="C#" Inherits="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.ButtonTemplateUserControlBase" %>
+<script runat="server">
+    private void Page_Init(object sender, System.EventArgs e)
+    {
+        cancelButton.Click += this.FormControlClickEventHandler;
+        cancelButton.Text = this.FormControlLabel;
+    }
+</script>
+
+<aspui:ClickButton  ID="cancelButton" 
+                    AutoPostBack="false" 
+                    client_response="cancel" 
+                    client_id="buttonCancel" 
+                    client_focusable="true" 
+                    client_image="${icon:cancel}" 
+    				client_image-disabled="${icon:cancel-disabled}" 
+                    runat="server" 
+                    client_oncommand="void(false);"/> <!-- DON'T POST AFTER WORKFLOW CANCEL; REMOVE WHEN AJAX! -->

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="NewPage" type="Composite.Data.Types.IPage" />
+    <cms:binding name="ExistingPages" type="System.Collections.IList" optional="true" />
+    <cms:binding name="RelativeSelectedPageId" type="System.Guid" optional="true" />
+  </cms:bindings>
+  <cms:layout>
+    <PlaceHolder>
+      <FieldGroup Label="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep2.LabelFieldGroup}">
+        <TextBox Label="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep2.LabelUrlTitle}" Help="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep2.HelpUrlTitle}">
+          <TextBox.Text>
+            <cms:bind source="NewPage.UrlTitle" />
+          </TextBox.Text>
+        </TextBox>
+        <TextBox Label="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep2.LabelMenuTitle}" Help="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep2.HelpMenuTitle}">
+          <TextBox.Text>
+            <cms:bind source="NewPage.MenuTitle" />
+          </TextBox.Text>
+        </TextBox>
+      </FieldGroup>
+      <f:NullCheck>
+        <f:NullCheck.CheckValue>
+          <cms:read source="ExistingPages" />
+        </f:NullCheck.CheckValue>
+        <f:NullCheck.WhenNotNull>
+          <FieldGroup Label="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep2.LabelPositionSelectorPanel}">
+            <KeySelector Label="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep2.LabelPositionSelector}" OptionsKeyField="Id" OptionsLabelField="Title" Help="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep2.HelpPositionSelector}">
+              <KeySelector.Options>
+                <cms:read source="ExistingPages" />
+              </KeySelector.Options>
+              <KeySelector.Selected>
+                <cms:bind source="RelativeSelectedPageId" />
+              </KeySelector.Selected>
+            </KeySelector>
+          </FieldGroup>
+        </f:NullCheck.WhenNotNull>
+      </f:NullCheck>
+    </PlaceHolder>
+  </cms:layout>
+</cms:formdefinition>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<strings>
+  <string key="PageTemplateElementProvider.RootLabel" value="Page Templates" />
+  <string key="PageTemplateElementProvider.RootLabelToolTip" value="You can find the sites XHTML templates here" />
+  <string key="PageTemplateElementProvider.AddTemplate" value="Add template" />
+  <string key="PageTemplateElementProvider.AddTemplateToolTip" value="Add new template" />
+  <string key="PageTemplateElementProvider.EditTemplate" value="Edit template" />
+  <string key="PageTemplateElementProvider.EditTemplateToolTip" value="Edit selected template" />
+	<string key="PageTemplateElementProvider.DeleteTemplate" value="Delete" />
+	<string key="PageTemplateElementProvider.DeleteTemplateToolTip" value="Delete this item" />
+	
+  <string key="AddNewPageTemplateStep1.LabelDialog" value="Add new Website Template" />
+  <string key="AddNewPageTemplateStep1.LabelFieldGroup" value="Website Template" />
+  <string key="AddNewPageTemplateStep1.LabelTemplateTitle" value="Template Title" />
+  <string key="AddNewPageTemplateStep1.LabelTemplateTitleHelp" value="The title identifies this templates in lists. Consider selecting a short but meaningfull name." />
+  <string key="AddNewPageTemplateStep1.TitleInUseTitle" value="Title already used" />
+
+  <string key="EditPageTemplate.LabelMarkUpCode" value="Markup code" />
+  <string key="EditPageTemplate.LabelTemplateIdentification" value="Template info" />
+  <string key="EditPageTemplate.LabelTemplateTitle" value="Template Title" />
+  <string key="EditPageTemplate.LabelTemplateTitleHelp" value="The title identifies this templates in lists. Consider selecting a short but meaningfull name." />
+
+  <string key="EditPageTemplateWorkflow.InvalidXmlTitle" value="Unable to save page" />
+  <string key="EditPageTemplateWorkflow.InvalidXmlMessage" value="The page template markup did not validate. {0}" />
+  <string key="EditPageTemplateWorkflow.CannotRenameFileExists" value="Cannot rename a template - file with name '{0}' already exist." />
+  <string key="EditPageTemplateWorkflow.TitleInUseTitle" value="Title already used" />
+
+  <string key="DeletePageTemplateStep1.LabelFieldGroup" value="Delete this page template?" />
+	<string key="DeletePageTemplateStep1.Text" value="Delete page template?" />
+	
+	<string key="DeletePageTemplateWorkflow.CascadeDeleteErrorTitle" value="Cascade delete error" />
+	<string key="DeletePageTemplateWorkflow.CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
+</strings>

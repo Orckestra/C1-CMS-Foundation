@@ -1,0 +1,772 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|datacollectorset,
+ui|datacollector {
+	position: absolute;
+	visibility: hidden;
+}
+ui|fields {
+	display: none; /* adjusted by FieldsBinding.js */
+	width: 408px; /* table.fieldgroupmatrix makes up 4px on both sides! */
+	position: relative; /* mostly because it fixes an ie bug where fieldgroup captions would hang on tabpanel changes */
+	/* padding-bottom: 9px; fixes a dialog resize problem - moved to functioncalleditor.aspx where the problem is spotted */
+}
+
+/* FIELDGROUP ......................................... */
+
+ui|fieldgroup {
+	display: block;
+	padding-top: 7px;
+	overflow: visible;
+	margin-top: 24px !important;
+}
+ui|fieldgroup.first {
+	margin-top: 0 !important;	
+}
+#region vista
+	ui|dialogpage ui|fieldgroup,
+	ui|wizardpage ui|fieldgroup {
+		border-bottom: 5px solid transparent; /* strange flex bug */
+	}
+#endregion
+table.fieldgroupmatrix td {
+	#ie overflow: hidden;
+	width: 4px;
+	height: 4px;
+	padding: 0;
+}
+table.fieldgroupmatrix td.group-n,
+table.fieldgroupmatrix td.group-s {
+	width: auto;
+}
+table.fieldgroupmatrix td.group-e,
+table.fieldgroupmatrix td.group-w {
+	height: auto;
+}
+table.fieldgroupmatrix td.group-c {
+	width: auto;
+	height: auto;
+	padding: 5px 0 16px 0;
+	width: 400px;
+}
+table.fieldgroupmatrix td.group-nw,
+table.fieldgroupmatrix td.group-ne,
+table.fieldgroupmatrix td.group-n {
+	height: 16px;
+}
+table.fieldgroupmatrix td.group-n div {
+	height: 4px;
+	overflow: hidden;
+}
+table.fieldgroupmatrix td.group-n div.group-label1 {
+	float: left;
+	width: 9px;
+}
+ui|labelbox.fieldgrouplabel {
+	padding: 0 6px 0 1px;
+	position: relative;
+	top: -7px;
+}
+ui|labelbox.fieldgrouplabel ui|labeltext {
+	#region default
+		color: $(color:activecaption);
+	#endregion
+}
+ui|fieldgroup.nolabel table.fieldgroupmatrix td.group-nw,
+ui|fieldgroup.nolabel table.fieldgroupmatrix td.group-ne,
+ui|fieldgroup.nolabel table.fieldgroupmatrix td.group-n {
+	height: 4px;
+}
+ui|fieldgroup.nolabel table.fieldgroupmatrix td.group-c {
+	padding-top: 18px;
+}
+ui|fieldgroup.nolabel table.fieldgroupmatrix td.group-n div.group-label1,
+ui|fieldgroup.nolabel table.fieldgroupmatrix td.group-n div.group-label2 {
+	display: none;	
+}
+
+
+/* FIELDS ......................................... */
+
+ui|field {
+	display: block;
+	margin: 0 16px 0 10px;
+	padding-bottom: 0;
+}
+ui|fielddesc {
+	display: block;
+	float: left;
+	width: 150px;
+	padding: 8px 0 0 5px;
+	white-space: normal;
+	-moz-user-select: none;
+}
+ui|fielddata {
+	display: block;
+	float: right;
+	width: 220px;
+	position: relative; /* because of strange fieldhelp setup for exploder */
+}
+ui|fielddata input,
+ui|fielddata select,
+ui|fielddata textarea {
+	width: 214px;
+	padding: 0;
+	margin: 0;
+	border: none;
+	display: block;
+}
+ui|fielddata input {
+	padding: 5px 0 0 7px;
+	#moz padding-bottom: 4px;
+	#ie height: 24px;
+	#ie position: relative;
+	#ie top: -1px;
+}
+ui|datainput {
+	display: block;	
+}
+ui|datainput ui|box,
+ui|datainputselector ui|box,
+ui|datainputdialog ui|box,
+ui|textbox ui|box,
+ui|editortextbox ui|box,
+ui|multiselector ui|box {
+	border: 1px solid #7F9DB9;
+	background-color: white;
+	height: 26px;
+	overflow: hidden;
+}
+ui|datainput.disabled ui|box,
+ui|datainput.readonly ui|box,
+ui|datainputselector.disabled ui|box,
+ui|datainputselector.readonly ui|box,
+ui|datainputdialog.disabled ui|box,
+ui|datainputdialog.readonly ui|box,
+ui|textbox.disabled ui|box,
+ui|textbox.readonly ui|box {
+	border-color: $(color:threedshadow);
+}
+ui|textbox ui|box,
+ui|editortextbox ui|box {
+	#ie height: 108px;
+	#moz height: 104px;
+}
+ui|datainputselector.invalid ui|box,
+ui|datainputdialog.invalid ui|box,
+ui|datainput.invalid ui|box,
+ui|textbox.invalid ui|box,
+ui|editortextbox.invalid ui|box {
+	border-color: #A40000;
+}
+ui|datainputselector input,
+ui|datainputdialog input,
+ui|datainput input,
+ui|textbox input,
+ui|editortextbox input {
+	border: none;
+}
+ui|datainputselector.readonly input,
+ui|datainputdialog.readonly input,
+ui|datainput.readonly input,
+ui|textbox.readonly textarea,
+ui|editortextbox.readonly textarea {
+	cursor: default;
+	background-color: $(color:threedface);
+	#alphabackdrop: url("${root}/images/ui/lighten.png");
+}
+ui|datainputselector.isdisabled input,
+ui|datainputdialog.isdisabled input,
+ui|datainput.isdisabled input,
+ui|textbox.isdisabled textarea,
+ui|editortextbox.isdisabled textarea {
+	cursor: default;
+	background-color: $(color:threedface);
+	-moz-user-select: none;
+	-moz-user-focus: none;
+	#alphabackdrop: url("${root}/images/ui/lighten.png");
+}
+ui|datainputselector.isdisabled ui|box,
+ui|datainputdialog.isdisabled ui|box,
+ui|datainput.isdisabled ui|box,
+ui|textbox.isdisabled ui|box,
+ui|editortextbox.isdisabled ui|box,
+ui|multiselector.isdisabled ui|box {
+	background-color: $(color:threedface);
+	border-color: $(color:threedshadow);
+}
+ui|fielddata input.warning,
+ui|fielddata textarea.warning {
+	font-weight: bold;
+	color: #A40000;
+}
+ui|field.nodesc ui|fielddata {
+	width: auto;
+	float: none;
+}
+
+/* COMMON ......................................... */
+
+ui|datainput,
+ui|datainputselector,
+ui|datainputdialog,
+ui|textbox,
+ui|selector,
+ui|simpleselector,
+ui|multiselector,
+ui|datadialog,
+ui|postbackdialog,
+ui|htmldatadialog,
+ui|editortextbox {
+	padding: 2px;
+}
+
+/* SELECTORS ......................................... */
+
+ui|selector {
+	display: block;
+	overflow: hidden !important; /* relevant for editor selectors */
+}
+ui|toolbar ui|selector { /* TODO: handle focus outline here somehow */
+	padding: 0;	
+}
+ui|toolbar ui|selector ui|clickbutton table.matrix td.c {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+ui|selection,
+ui|selector input {
+	display: none;	
+}
+ui|selector ui|clickbutton {
+	float: none;
+	margin: 0;
+}
+ui|selector ui|clickbutton table.matrix td.c {
+	padding: 0;
+	padding-right: 20px;
+}
+ui|fields ui|selector ui|clickbutton table.matrix td.c,
+ui|fields ui|multiselector ui|clickbutton table.matrix td.c {
+	padding: 2px;
+	padding-top: 1px;
+	padding-bottom: 0;
+	#moz padding-bottom: 1px;
+	width: 204px;
+	#region vista
+		padding-top: 0px;
+		padding-bottom: 2px;
+		_padding-top: 0;
+		_padding-bottom: 1px;
+	#endregion
+}
+#region vista
+	ui|fields ui|selector ui|clickbutton table.matrix td.c ui|labelbox {
+		_margin-bottom: -2px;
+	}
+#endregion
+ui|fields ui|field.fieldhelp ui|selector ui|clickbutton table.matrix td.c {
+	width: 174px;
+	overflow: hidden;
+}
+ui|fields ui|field.fieldhelp ui|selector ui|clickbutton table.matrix td.c ui|labeltext {
+	width: 132px;
+}
+ui|selector img.selectorindicatorimage {
+	position: absolute;
+	z-index: 1;
+	right: 7px;
+	top: 4px;
+	#moz -moz-user-select: none;
+}
+ui|fields ui|selector img.selectorindicatorimage {
+	top: 5px;
+}
+
+/* SIMPLESELECTORS ............................................ */
+
+ui|simpleselector {
+	display: block;
+	position: relative;
+	overflow: visible;
+	#region ie 
+		margin-top: 3px;
+	#endregion
+}
+ui|simpleselector select {
+	#moz padding: 4px;
+	display: block;
+	width: 216px;
+	border: 1px solid #7F9DB9;
+	background-color: white;
+}
+ui|simpleselector select:focus,
+ui|simpleselector select:focus * {
+	outline: none;
+}
+ui|simpleselector.invalid {
+	padding: 1px;
+	border: 1px solid #A40000 !important;
+}
+
+/* MULTISELECTORS ............................................. */
+
+ui|multiselector {
+	display: block;
+}
+ui|multiselector ui|box {
+	width: 216px;
+	-moz-user-select: none;
+	padding: 5px 0 5px 0;
+	overflow: auto;
+	#ie height: 88px;
+	#moz height: 84px;
+}
+ui|field.fieldhelp ui|multiselector ui|box {
+	width: 186px;	
+} 
+ui|multiselector ui|box div {
+	padding: 1px 5px 2px 7px;
+	width: 100%;
+}
+ui|multiselector ui|box div.selected {
+	background-color: $(color:highlight);
+	color: $(color:highlighttext);
+}
+ui|multiselector ui|datadialog,
+ui|multiselector ui|postbackdialog {
+	padding: 2px 0 0 0;
+}
+ui|multiselector input {
+	display: none;	
+}
+
+/* DATAINPUTSELECTORS ......................................... */
+
+ui|datainputselector,
+ui|datainputdialog {
+	display: block;
+	position: relative;
+}
+ui|datainputselector ui|toolbarbutton,
+ui|datainputdialog ui|toolbarbutton {
+	margin-right: 0;
+	position: absolute;
+	right: 3px;
+	top: 3px;
+}
+#region moz
+	ui|datainputselector.focused ui|toolbarbutton,
+	ui|datainputdialog.focused ui|toolbarbutton {
+		right: 2px;
+		top: 2px;
+	}
+#endregion
+ui|fielddata ui|datainputselector input,
+ui|fielddata ui|datainputdialog input {
+	width: 189px;
+}
+ui|field.fieldhelp ui|fielddata {
+	position: relative;
+	top: -1px; /* why? */
+}
+ui|field.fieldhelp ui|fielddata ui|datainputselector input,
+ui|field.fieldhelp ui|fielddata ui|datainputdialog input {
+	width: 159px;
+}
+
+/* EXOTIC STUFF ................................... */
+
+ui|nullpostbackdatadialog {
+	display: block;	
+}
+
+/* TEXTBOX ......................................... */
+
+ui|textbox,
+ui|editortextbox {
+	display: block;
+}
+ui|textbox,
+ui|editortextbox {			
+	height: 108px; /* half width */
+	position: relative;
+}
+ui|textbox textarea,
+ui|editortextbox textarea {
+	overflow: auto;
+	#ie padding: 5px 5px 5px 7px; /* moz applies padding fugt here! */
+	position: absolute;
+	#ie height: 106px;
+	#moz height: 102px;
+	#moz -moz-tab-size: 4;
+}
+
+/* FULLBLOWN EDITORTEXTBOX */
+
+ui|flexbox ui|editortextbox {
+	padding: 0;
+	border: none;
+}
+ui|flexbox ui|editortextbox,
+ui|flexbox ui|editortextbox textarea {
+	width: 100%;
+	height: 100%;
+}
+ui|flexbox ui|editortextbox textarea {
+	font-family: "Courier New", monospace;
+	font-size: 13px;
+	margin: 0;
+	border: none;
+}
+ui|flexbox ui|editortextbox ui|box {
+	border: none;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+/* FIELDHELP ......................................... */
+ 
+ui|fieldhelp { /* strange setup fixes a vanishing glitch in explorer */
+	height: 1px;
+	width: 222px;
+	overflow: visible;
+	float: right;
+	position: relative;
+}
+ 
+ui|field.fieldhelp ui|fielddata {
+	margin-right: 30px;
+	width: 190px;
+}
+ui|field.fieldhelp ui|fielddata input,
+ui|field.fieldhelp ui|fielddata select,
+ui|field.fieldhelp ui|fielddata textarea {
+	width: 184px;
+}
+ui|field.fieldhelp ui|fielddata ui|simpleselector select {
+	width: 186px;	
+}
+ui|clickbutton.fieldhelp { /* width and height needed for explorer vanishing dysfunction */
+	margin: 0;
+	margin-top: 2px;
+	right: 2px;
+	position: absolute;
+	width: 26px;
+	height: 26px;
+}
+ui|clickbutton.fieldhelp table.matrix td.c {
+	padding: 1px
+}
+ui|popup.fieldhelppopup {
+	#moz min-width: 220px;
+	#ie width: 220px;
+}
+
+/* FOCUS .............................................................. */
+
+ui|fields ui|selector.focused,
+ui|fields ui|multiselector.focused,
+ui|fields ui|simpleselector.focused,
+ui|fields ui|datainput.focused,
+ui|fields ui|datainputselector.focused,
+ui|fields ui|datainputdialog.focused,
+ui|fields ui|datadialog.focused,
+ui|fields ui|postbackdialog.focused,
+ui|fields ui|htmldatadialog.focused,
+ui|fields ui|textbox.focused,
+ui|fields ui|editortextbox.focused,
+ui|fields ui|radiodatagroup.focused,
+ui|fields ui|checkbox.focused {
+	padding: 1px;
+	border: 1px solid $(color:threedshadow);
+	#region osx
+		border-color: -moz-mac-focusring;
+	#endregion
+}
+
+
+/* RADIO & CHECKBOX .............................................. */
+
+ui|radiodatagroup {	
+	display: block;
+	margin-bottom: 3px;
+	padding: 2px;
+	padding-top: 4px;
+}
+ui|fields ui|radiodatagroup.focused {
+	padding-top: 3px;	
+}
+ui|radio {
+	display: block;
+	width: 100%;	
+}
+ui|radio {
+	display: block;
+	width: 100%;
+	padding-bottom: 1px;
+	padding-top: 1px;
+}
+ui|radio.disabled {
+	color: $(color:graytext);
+}
+ui|datalabeltext {
+	display: block;
+	float: left;
+	width: 195px;
+	padding-left: 5px;
+	padding-top: 2px;
+	-moz-user-select: none; /* See notes in DocumentManager.js */
+}
+ui|field.fieldhelp ui|datalabeltext {
+	width: 163px;
+}
+ui|checkboxgroup {
+	display: block;
+	padding-top: 4px;
+	padding-bottom: 2px;
+	margin-bottom: 3px;
+}
+ui|checkboxgroup ui|labelbox.invalid {
+	margin-bottom: 4px;	
+	margin-left: 1px;
+	margin-top: 4px;
+}
+ui|checkboxgroup ui|labelbox.invalid,
+ui|checkboxgroup ui|labelbox.invalid * {
+	float: none;
+}
+ui|checkboxgroup ui|labelbox.invalid ui|labeltext,
+ui|selector.invalid ui|clickbutton ui|labeltext {
+	font-weight: bold;
+	color: #A40000;
+}
+ui|checkbox {
+	display: block;
+	width: 100%;
+	padding: 2px;
+}
+ui|field.fieldhelp ui|datalabeltext {
+	width: 163px;
+}
+
+/* DATADIALOG ......................................................... */
+
+ui|datadialog,
+ui|postbackdialog,
+ui|htmldatadialog {
+	display: block;
+}
+ui|datadialog ui|clickbutton,
+ui|postbackdialog ui|clickbutton,
+ui|htmldatadialog ui|clickbutton {
+	float: none;
+	margin: 0;
+}
+ui|datadialog input,
+ui|postbackdialog input,
+ui|htmldatadialog input {
+	display: none;
+}
+ui|datadialog ui|clickbutton table.matrix td.c ui|labelbox,
+ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbox,
+ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbox {
+	margin-left: auto;
+	margin-right: auto;
+}
+img.dialogindicatorimage {
+	position: absolute;
+	z-index: 1;
+	right: 7px;
+	top: 5px;
+	#moz -moz-user-select: none;
+}
+ui|fields ui|datadialog ui|clickbutton table.matrix td.c,
+ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c,
+ui|fields ui|htmldatadialog ui|clickbutton table.matrix td.c {
+	padding: 2px;
+	padding-top: 1px;
+	padding-bottom: 0px;
+	#moz padding-bottom: 1px;
+	width: 204px;
+	#region vista
+		padding-top: 0px;
+		padding-bottom: 2px;
+		_padding-top: 0;
+		_padding-bottom: 1px;
+	#endregion
+}
+#region vista
+	ui|fields ui|datadialog ui|clickbutton table.matrix td.c ui|labelbox,
+	ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbox,
+	ui|fields ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbox {
+		_margin-bottom: -2px;
+	}
+#endregion
+ui|fields ui|field.fieldhelp ui|datadialog ui|clickbutton table.matrix td.c,
+ui|fields ui|field.fieldhelp ui|postbackdialog ui|clickbutton table.matrix td.c,
+ui|fields ui|field.fieldhelp ui|htmldatadialog ui|clickbutton table.matrix td.c,
+ui|fields ui|field.fieldhelp ui|filepicker ui|clickbutton table.matrix td.c {
+	width: 174px;
+}
+
+/* FILEPICKER ......................................................... */
+
+ui|filepicker {
+	display: block;
+	position: relative;
+	width: 100%;
+}
+ui|filepicker input.real {
+	display: block;
+	cursor: default !important;
+	position: absolute;
+	top: 3px;
+	left: 0;
+	cursor: default;
+	#opacity: 0;
+}
+ui|filepicker ui|datainput.fake,
+ui|filepicker ui|datainput.fake input {
+	width: 159px;
+	#ie width: 153px;
+	float: left;
+}
+ui|filepicker ui|clickbutton {
+	position: relative;
+	top: 2px;
+	left: 2px;
+}
+ui|filepicker ui|clickbutton table.matrix td.c {
+	padding: 2px;
+	padding-top: 1px;
+	padding-bottom: 0px;
+	#moz padding-bottom: 1px;
+	width: 204px;
+	#region vista
+		padding-top: 1px;
+		padding-bottom: 1px;
+	#endregion
+}
+
+/* CALENDAR ........................................................... */
+
+div.calendar {
+	border: 1px solid $(color:threedshadow);
+	background-color: $(color:threedhighlight);
+	position: relative;
+	top: -1px;
+	#ie width: 99.9%;
+}
+div.calendar table {
+	width: 100%;
+	margin: 0 !important;
+	border-collapse: collapse;
+}
+div.calendar table td {
+	padding-top: 3px;
+	padding-bottom: 3px;
+	-moz-user-select: none;
+}
+div.calendar td {
+	text-align: center;
+	vertical-align: top;
+}
+div.calendar td.active {
+	cursor: pointer;	
+}
+div.calendar td.active:hover {
+	background-color: $(color:highlight);
+	color: $(color:highlighttext);
+}
+div.calendar tr.month td {
+	border-bottom: 1px solid $(color:threedshadow);	
+}
+div.calendar td.monthbrowse {
+	font-family: "Courier New", monospace;
+	cursor: pointer;	
+}
+div.calendar td.monthbrowse:hover {
+	color: $(color:highlight);	
+}
+
+/* TOOLBARS ........................................................... */
+
+ui|toolbar ui|field {
+	margin: 0;
+	float: left;
+	#ie width: 1px !important;
+}
+ui|toolbar ui|fielddesc,
+ui|toolbar ui|fielddata {
+	float: left;
+	width: auto;
+	#ie width: 1px;
+}
+ui|toolbar ui|fielddata input,
+ui|toolbar ui|fielddata select {
+	width: 100px;
+}
+
+/* OVERFLOW SPECIALS (NOW DISABLED IN SCRIPT!) ................................................... */
+
+#region ie
+	ui|fields ui|datadialog ui|clickbutton table.matrix td.c ui|labeltext,
+	ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c ui|labeltext,
+	ui|fields ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labeltext,
+	ui|fields ui|datainputdialog ui|clickbutton table.matrix td.c ui|labeltext,
+	ui|fields ui|selector ui|clickbutton table.matrix td.c ui|labeltext {
+		width: 162px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	ui|fields ui|field.fieldhelp ui|datadialog ui|clickbutton table.matrix td.c ui|labeltext,
+	ui|fields ui|field.fieldhelp ui|postbackdialog ui|clickbutton table.matrix td.c ui|labeltext,
+	ui|fields ui|field.fieldhelp ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labeltext,
+	ui|fields ui|field.fieldhelp ui|datainputdialog ui|clickbutton table.matrix td.c ui|labeltext,
+	ui|fields ui|field.fieldhelp ui|selector ui|clickbutton table.matrix td.c ui|labeltext {
+		width: 132px;
+	}
+#endregion
+
+#region moz {
+	ui|fields ui|datadialog ui|clickbutton table.matrix td.c ui|labelbody,
+	ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbody,
+	ui|fields ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbody,
+	ui|fields ui|datainputdialog ui|clickbutton table.matrix td.c ui|labelbody,
+	ui|fields ui|selector ui|clickbutton table.matrix td.c ui|labelbody {
+		width: 180px;
+		overflow: hidden;
+	}
+	ui|fields ui|datadialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
+	ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
+	ui|fields ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
+	ui|fields ui|datainputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
+	ui|fields ui|selector ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext {
+		width: 142px;
+		overflow: hidden;
+	}
+	ui|fields ui|field.fieldhelp ui|datadialog ui|clickbutton table.matrix td.c ui|labelbody,
+	ui|fields ui|field.fieldhelp ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbody,
+	ui|fields ui|field.fieldhelp ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbody,
+	ui|fields ui|field.fieldhelp ui|datainputdialog ui|clickbutton table.matrix td.c ui|labelbody,
+	ui|fields ui|field.fieldhelp ui|selector ui|clickbutton table.matrix td.c ui|labelbody {
+		width: 150px;
+	}
+	ui|fields ui|field.fieldhelp ui|datadialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
+	ui|fields ui|field.fieldhelp ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
+	ui|fields ui|field.fieldhelp ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
+	ui|fields ui|field.fieldhelp ui|datainputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
+	ui|fields ui|field.fieldhelp ui|selector ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext {
+		width: 112px;
+	}
+	ui|fields ui|datadialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after,
+	ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after,
+	ui|fields ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after,
+	ui|fields ui|datainputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after,
+	ui|fields ui|selector ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after {
+		content: "...";
+	}
+#endregion

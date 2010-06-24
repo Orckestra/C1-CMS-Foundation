@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="PageType" type="Composite.Data.Types.IPageType"/>
+    <cms:binding name="DefaultChildPageTypeOptions" type="System.Collections.IEnumerable"/>
+    <cms:binding name="HomepageRelationOptions" type="System.Collections.IEnumerable"/>
+    <cms:binding name="DefaultTemplateOptions" type="System.Collections.IEnumerable"/>
+    <cms:binding name="TemplateRestrictionOptions" type="System.Collections.IEnumerable"/>
+    <cms:binding name="TemplateRestrictionSelected" type="System.Collections.IEnumerable"/>
+    <cms:binding name="PageTypeChildRestrictionOptions" type="System.Collections.IEnumerable"/>
+    <cms:binding name="PageTypeChildRestrictionSelected" type="System.Collections.IEnumerable"/>
+    <cms:binding name="DataFolderOptions" type="System.Collections.IEnumerable"/>
+    <cms:binding name="DataFolderSelected" type="System.Collections.IEnumerable"/>
+    <cms:binding name="ApplicationOptions" type="System.Collections.IEnumerable"/>
+    <cms:binding name="ApplicationSelected" type="System.Collections.IEnumerable"/>
+  </cms:bindings>
+  <cms:layout iconhandle="pagetype-edit-pagetype">
+    <cms:layout.label>
+      <cms:read source="PageType.Name"/>
+    </cms:layout.label>
+
+
+    <TabPanels PreSelectedIndex="0">
+      <TabPanels.Label>
+        <cms:read source="PageType.Name"/>
+      </TabPanels.Label>
+
+      <PlaceHolder Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.SettingsPlaceHolder.Label}">
+        <FieldGroup Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.SettingsFieldGroup.Label}">
+
+          <TextBox Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.NameTextBox.Label}"
+                   Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.NameTextBox.Help}">
+            <TextBox.Text>
+              <cms:bind source="PageType.Name" />
+            </TextBox.Text>
+          </TextBox>
+
+
+          <TextArea Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DescriptionTextArea.Label}"
+                    Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DescriptionTextArea.Help}">
+            <TextArea.Text>
+              <cms:bind source="PageType.Description" />
+            </TextArea.Text>
+          </TextArea>
+
+          <CheckBox Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.AvailableCheckBox.Label}"
+                    Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.AvailableCheckBox.Help}">
+            <CheckBox.Checked>
+              <cms:bind source="PageType.Available" />
+            </CheckBox.Checked>
+          </CheckBox>
+
+          <CheckBox Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PresetMenuTitleCheckBox.Label}"
+                    Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PresetMenuTitleCheckBox.Help}">
+            <CheckBox.Checked>
+              <cms:bind source="PageType.PresetMenuTitle" />
+            </CheckBox.Checked>
+          </CheckBox>
+
+          <KeySelector Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DefaultChildPageTypeKeySelector.Label}"
+                       Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DefaultChildPageTypeKeySelector.Help}"
+                       OptionsKeyField="Key" OptionsLabelField="Value" >
+            <KeySelector.Options>
+              <cms:read source="DefaultChildPageTypeOptions" />
+            </KeySelector.Options>
+            <KeySelector.Selected>
+              <cms:bind source="PageType.DefaultChildPageType" />
+            </KeySelector.Selected>
+          </KeySelector>
+          
+        </FieldGroup>
+      </PlaceHolder>
+
+      
+      <PlaceHolder Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DataFolderApplicationPlaceHolder.Label}">
+        <FieldGroup Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DataFolderFieldGroup.Label}">          
+          <MultiKeySelector Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DataFolderMultiKeySelector.Label}"
+                            Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DataFolderMultiKeySelector.Help}"
+                            OptionsKeyField="Key" OptionsLabelField="Value" >
+            <MultiKeySelector.Options>
+              <cms:read source="DataFolderOptions" />
+            </MultiKeySelector.Options>
+            <MultiKeySelector.Selected>
+              <cms:bind source="DataFolderSelected" />
+            </MultiKeySelector.Selected>
+          </MultiKeySelector>          
+        </FieldGroup>
+
+        <FieldGroup Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.ApplicationFieldGroup.Label}">
+          <MultiKeySelector Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.ApplicationMultiKeySelector.Label}"
+                            Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.ApplicationMultiKeySelector.Help}"
+                            OptionsKeyField="Key" OptionsLabelField="Value" >
+            <MultiKeySelector.Options>
+              <cms:read source="ApplicationOptions" />
+            </MultiKeySelector.Options>
+            <MultiKeySelector.Selected>
+              <cms:bind source="ApplicationSelected" />
+            </MultiKeySelector.Selected>
+          </MultiKeySelector>
+        </FieldGroup>
+      </PlaceHolder>
+      
+      
+      <PlaceHolder Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PageTemplatePlaceHolder.Label}">
+        <FieldGroup Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PageTemplateRestrictionFieldGroup.Label}">
+
+          <KeySelector Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DefaultPageTemplateKeySelector.Label}"
+                       Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DefaultPageTemplateKeySelector.Help}"
+                       OptionsKeyField="Key" OptionsLabelField="Value" >
+            <KeySelector.Options>
+              <cms:read source="DefaultTemplateOptions" />
+            </KeySelector.Options>
+            <KeySelector.Selected>
+              <cms:bind source="PageType.DefaultTemplateId" />
+            </KeySelector.Selected>
+          </KeySelector>
+          
+          <MultiKeySelector Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PageTemplateRestrictionMultiKeySelector.Label}"
+                            Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PageTemplateRestrictionMultiKeySelector.Help}" 
+                            OptionsKeyField="Key" OptionsLabelField="Value" >
+            <MultiKeySelector.Options>
+              <cms:read source="TemplateRestrictionOptions" />
+            </MultiKeySelector.Options>
+            <MultiKeySelector.Selected>
+              <cms:bind source="TemplateRestrictionSelected" />
+            </MultiKeySelector.Selected>
+          </MultiKeySelector>
+
+        </FieldGroup>
+      </PlaceHolder>
+
+      <PlaceHolder Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.AvailabilityPlaceHolder.Label}">
+        <FieldGroup Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.AvailabilityFieldGroup.Label}">
+          
+          <KeySelector Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.HomepageRelationKeySelector.Label}"
+                       Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.HomepageRelationKeySelector.Help}"
+                       OptionsKeyField="Key" OptionsLabelField="Value" >
+            <KeySelector.Options>
+              <cms:read source="HomepageRelationOptions" />
+            </KeySelector.Options>
+            <KeySelector.Selected>
+              <cms:bind source="PageType.HomepageRelation" />
+            </KeySelector.Selected>
+          </KeySelector>
+
+          <MultiKeySelector Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PageTypeChildRestrictionMultiKeySelector.Label}"
+                            Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PageTypeChildRestrictionMultiKeySelector.Help}"
+                            OptionsKeyField="Key" OptionsLabelField="Value" >
+            <MultiKeySelector.Options>
+              <cms:read source="PageTypeChildRestrictionOptions" />
+            </MultiKeySelector.Options>
+            <MultiKeySelector.Selected>
+              <cms:bind source="PageTypeChildRestrictionSelected" />
+            </MultiKeySelector.Selected>
+          </MultiKeySelector>
+          
+        </FieldGroup>
+      </PlaceHolder>
+      
+    </TabPanels>
+
+  </cms:layout>
+</cms:formdefinition>

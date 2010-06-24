@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<strings>
+  
+  <string key="AddNewButtonLabel" value="Add New" />
+  <string key="DeleteButtonLabel" value="Delete" />
+  <string key="LabelDataTypeFields" value="Datatype Fields" />
+  
+  <string key="FieldDetailsGroupLabel" value="Field properties" />
+  <string key="Name" value="Name" />
+  <string key="NameHelp" value="The name of the field is used by the system to identify this field. Names must be unique and can not contain spaces and other special characters. Use names like 'Title', 'StartDate', 'LargeImage' etc." />
+  <string key="Label" value="Label" />
+  <string key="LabelHelp" value="Label text are showed to users when adding a new item based on the datatype." />
+  <string key="Help" value="Help" />
+  <string key="HelpHelp" value="Use this entry for a short helptext to the user." />
+
+  <string key="FieldTypeGroupLabel" value="Field type and requirements" />
+  <string key="FieldType" value="Field type" />
+  <string key="FieldTypeHelp" value="Select a data type for the field. The type determine which kind of data the field can hold." />
+  <string key="System.String" value="String" />
+  <string key="System.Int32" value="Integer" />
+  <string key="System.Decimal" value="Decimal number" />
+  <string key="System.DateTime" value="Date" />
+  <string key="System.Boolean" value="Boolean" />
+  <string key="System.Guid" value="Unique Identifier (GUID)" />
+  <string key="Reference" value="Data reference" />
+  <string key="TypeDetailsHelp" value="Use this field to further configure your selected type." />
+  <string key="Optional" value="Optional" />
+  <string key="OptionalHelp" value="Optional fields may be left blank." />
+  <string key="OptionalFalseLabel" value="No" />
+  <string key="OptionalTrueLabel" value="Yes" />
+  <string key="ValidationRules" value="Validation rules" />
+  <string key="ValidationRulesHelp" value="You can specify strict rules on the data that is entered in this field, i.e. &quot;must be at least 5 characters long&quot;, &quot;must be a valid e-mail address&quot;, &quot;must be a date in the past&quot; etc." />
+  <string key="ValidationRulesAdd" value="Add validation rules..." />
+  <string key="ValidationRulesEdit" value="Edit validation rules" />
+  <string key="ValidationRulesDialogLabel" value="Field validation rules configuration" />
+
+  
+  <string key="FieldValidationGroupLabel" value="Field validation" />
+  <string key="FieldPresentationGroupLabel" value="Form field presentation" />
+  <string key="FieldStructureGroupLabel" value="Structural presentation" />
+  
+  <string key="Widget" value="Widget type" />
+  <string key="WidgetHelp" value="You can select which type of input widget (like a textbox) to use when editing this field." />
+  <string key="WidgetDialogLabel" value="Field widget configuration" />
+  <string key="Position" value="Position" />
+  <string key="PositionLast" value="Last" />
+  <string key="PositionHelp" value="The position of the field. This controls the order of the fields." />
+  <string key="GroupByPriority" value="Field grouping" />
+  <string key="GroupByPriorityNone" value="No grouping" />
+  <string key="GroupByPriorityFirst" value="Group by this field" />
+  <string key="GroupByPriorityN" value="Group as {0}. priority" />
+  <string key="GroupByPriorityHelp" value="You can specify that a field should be used to group data - this can improve readability when viewing long lists. Use priority when multiple fields are used for grouping." />
+  <string key="IsTitleField" value="Is title field" />
+  <string key="IsTitleFieldHelp" value="Check this if you wish this field to be used as the title field. Title fields are used when listing data, like in the tree to the left." />
+  <string key="IsTitleFieldLabel" value="Use this as title field in lists" />
+
+  
+  <string key="DefaultValueGroupLabel" value="Field default value" />
+  <string key="DefaultValue" value="Default value" />
+  <string key="DefaultValueHelp" value="You can define a default value for this field." />
+  <string key="DefaultValueDialogLabel" value="Field default value configuration" />
+
+  <string key="StringMaximumLength" value="String maximum length" />
+  <string key="16CharMax" value="16 character maximum" />
+  <string key="32CharMax" value="32 character maximum" />
+  <string key="64CharMax" value="64 character maximum" />
+  <string key="128CharMax" value="128 character maximum" />
+  <string key="256CharMax" value="256 character maximum" />
+  <string key="512CharMax" value="512 character maximum" />
+  <string key="1024CharMax" value="1024 character maximum" />
+  <string key="Unlimited" value="Unlimited length" />
+  
+  <string key="DecimalNumberFormat" value="Decimal number format" />
+  <string key="1DecimalPlace" value="1 decimal place" />
+  <string key="2DecimalPlace" value="2 decimal place" />
+  <string key="3DecimalPlace" value="3 decimal place" />
+  <string key="4DecimalPlace" value="4 decimal place" />
+  
+  <string key="ReferenceType" value="Reference Type" />
+  
+  <string key="FieldNameSyntaxInvalid" value="The specified name is not valid." />
+  <string key="CannotSave" value="Can not save... Another Field has the same name. Please change the name." />
+
+  <string key="SpaceInNameError" value="Invalid name. Data field names can not contain spaces. You can write a readable name in the Label field below." />
+  <string key="NameEmptyError" value="Data field names can not be empty. Please specify a name." />
+  <string key="NameAlreadyInUseError" value="Another field uses this name. Data field names must be unique." />
+  <string key="NotAnOptionalTypeError" value="The selected type can not be optional." />
+  
+
+</strings>
+
+
+

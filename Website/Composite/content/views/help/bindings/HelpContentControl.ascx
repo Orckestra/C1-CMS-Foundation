@@ -1,0 +1,1 @@
+<%@ Control Language="C#" AutoEventWireup="true" CodeFile="HelpContentControl.ascx.cs" Inherits="HelpContentControl" %>

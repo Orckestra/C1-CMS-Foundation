@@ -1,0 +1,127 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Composite.Security.Foundation.PluginFacades;
+using Composite.GlobalSettings;
+using Microsoft.Practices.EnterpriseLibrary.Validation;
+using Composite.Validation.Validators;
+using Composite.Elements;
+using Composite.Logging;
+using Composite.ResourceSystem;
+using Composite.Data;
+using Composite.Data.Types;
+using Composite.Users;
+using System.Globalization;
+using Composite.Data.DynamicTypes;
+
+
+namespace Composite.Security
+{
+    /// <summary>
+    /// Can create "the first user" on a newly installed system. This class only works if
+    ///  - no other users has been created before
+    ///  - the global configuration contains a "auto create administrator" user name
+    ///  - the provided user name matches the user name from the global configuration
+    ///  - the provided password validates as a non-weak password
+    ///  - the used login provider supports adding users
+    ///  - the used permission provider supports adding permission types
+    /// </summary>
+	public static class AdministratorAutoCreator
+	{
+        public static bool CanBeAutoCreated(string userName)
+        {
+            if (string.IsNullOrEmpty(GlobalSettingsFacade.AutoCreatedAdministratorUserName)==true)
+            {
+                return false;
+            }
+
+            if (userName != GlobalSettingsFacade.AutoCreatedAdministratorUserName)
+            {
+                return false;
+            }
+
+            if (LoginProviderPluginFacade.UsersExists == true)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Used for "first time" login on systems configured for this. A way to create the first user. This only works on systems
+        /// with no users and with a valid "auto create admin username" specified by the global settings.
+        /// </summary>
+        /// <param name="userName">The user name - must match GlobalSettingsProvider.AutoCreatedAdministratorUserName</param>
+        /// <param name="password">A password that meets a minimum requirement.</param>
+        /// <returns>true if the user was auto created. Otherwise false.</returns>
+        public static void AutoCreatedAdministrator(string userName, string password)
+        {
+            if (AdministratorAutoCreator.CanBeAutoCreated(userName) == false)
+            {
+                throw new InvalidOperationException("Unable to auto create account. Either the user name is not eligble for auto creation or other users exists in the system. This feature only works for a specific user name and when no users exists.");
+            }
+
+            if (LoginProviderPluginFacade.CanAddNewUser == false)
+            {
+                throw new InvalidOperationException("Unable to auto create account. The current login provider does not support adding users");
+            }
+
+            if (PermissionTypeFacade.CanAlterDefinitions == false)
+            {
+                throw new InvalidOperationException("Unable to auto create account. The current permission defintion provider does not support changes");
+            }
+
+            //PasswordValidator validator = new PasswordValidator();
+            //ValidationResults validationResults = validator.Validate(password);
+            //if (validationResults.IsValid == false)
+            //{
+            //    throw new InvalidOperationException("Unable to auto create account. The specified password is not strong enough.");
+            //}
+
+            
+            // All seems bo be ok green light go for auto creating the user.
+            string group = StringResourceSystemFacade.GetString("Composite.Users", "AdministratorAutoCreator.DefaultGroupName");
+
+            LoginProviderPluginFacade.FormAddNewUser(userName, password, group);
+            LoggingService.LogVerbose("AdministratorAutoCreator", String.Format("Auto Created Administrator with user name '{0}'.", userName), LoggingService.Category.Audit);
+
+            IUser user = DataFacade.GetData<IUser>().Where(f => f.Username == userName).SingleOrDefault();
+            IUserGroup userGroup = DataFacade.GetData<IUserGroup>().Where(f => f.Name == "Administrator").SingleOrDefault();
+            if ((user != null) && (userGroup != null))
+            {
+                IUserUserGroupRelation userUserGroupRelation = DataFacade.BuildNew<IUserUserGroupRelation>();
+                userUserGroupRelation.UserId = user.Id;
+                userUserGroupRelation.UserGroupId = userGroup.Id;
+                DataFacade.AddNew<IUserUserGroupRelation>(userUserGroupRelation);
+            }
+            else
+            {
+                foreach (Element appRootElement in ElementFacade.GetRootsWithNoSecurity())
+                {
+                    string serializedEntityToken = EntityTokenSerializer.Serialize(appRootElement.ElementHandle.EntityToken);
+                    LoggingService.LogVerbose("AdministratorAutoCreator", String.Format("Adding '{0}' on element '{1}' ('{2}').", userName, appRootElement.VisualData.Label ?? "(no label)", serializedEntityToken), LoggingService.Category.Audit);
+
+                    UserPermissionDefinition userPermissionDefinition = new ConstructorBasedUserPermissionDefinition(userName, PermissionTypeFacade.GrantingPermissionTypes, serializedEntityToken);
+                    PermissionTypeFacade.SetUserPermissionDefinition(userPermissionDefinition);
+                }
+
+                LoggingService.LogVerbose("AdministratorAutoCreator", string.Format("Activating all known perspectives for user '{0}'", userName));
+                IEnumerable<EntityToken> perspectiveEntityTokens = ElementFacade.GetPerspectiveElementsWithNoSecurity(null).Select(f => f.ElementHandle.EntityToken);
+                UserPerspectiveFacade.SetEntityTokens(userName, perspectiveEntityTokens);
+            }
+
+            foreach (CultureInfo cultureInfo in DataLocalizationFacade.ActiveLocalizationCultures)
+            {
+                UserSettings.AddActiveLocaleCultureInfo(userName, cultureInfo);
+
+                if (Localization.LocalizationFacade.IsDefaultLocale(cultureInfo) == true)                        
+                {
+                    UserSettings.SetCurrentActiveLocaleCultureInfo(userName, cultureInfo);                            
+                    UserSettings.SetForeignLocaleCultureInfo(userName, cultureInfo);
+                }
+            }
+        }
+	}
+}

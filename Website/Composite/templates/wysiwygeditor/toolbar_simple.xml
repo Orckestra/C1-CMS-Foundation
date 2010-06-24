@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml">
+	<head/>
+	<body>
+		<ui:toolbarbody xmlns:ui="http://www.w3.org/1999/xhtml">
+			<ui:toolbargroup>
+				<ui:toolbarbutton cmd="Bold" tooltip="${string:Website.WysiwygEditor.ToolBar.ToolTipStrong}" type="checkbox" image="${skin}/wysiwygeditor/bold.png" image-disabled="${skin}/wysiwygeditor/bold-disabled.png" isdisabled="true" />
+				<ui:toolbarbutton cmd="Italic" tooltip="${string:Website.WysiwygEditor.ToolBar.ToolTipEmphasize}" type="checkbox" image="${skin}/wysiwygeditor/italic.png" image-disabled="${skin}/wysiwygeditor/italic-disabled.png" isdisabled="true" />
+				<ui:toolbarbutton cmd="Underline" tooltip="${string:Website.WysiwygEditor.ToolBar.ToolTipUnderline}" type="checkbox" image="${skin}/wysiwygeditor/underline.png" image-disabled="${skin}/wysiwygeditor/underline-disabled.png" isdisabled="true" />
+				<ui:toolbarbutton cmd="Strikethrough" tooltip="${string:Website.WysiwygEditor.ToolBar.ToolTipStrike}" type="checkbox" image="${skin}/wysiwygeditor/strikethrough.png" image-disabled="${skin}/wysiwygeditor/strikethrough-disabled.png" isdisabled="true" />
+			</ui:toolbargroup>
+			<ui:toolbargroup>
+				<ui:toolbarbutton cmd="JustifyLeft" tooltip="${string:Website.WysiwygEditor.ToolBar.ToolTipJustifyLeft}" type="radio" image="${skin}/wysiwygeditor/justifyleft.png" image-disabled="${skin}/wysiwygeditor/justifyleft-disabled.png" isdisabled="true" />
+				<ui:toolbarbutton cmd="JustifyRight" tooltip="${string:Website.WysiwygEditor.ToolBar.ToolTipJustifyRight}" type="radio" image="${skin}/wysiwygeditor/justifyright.png" image-disabled="${skin}/wysiwygeditor/justifyright-disabled.png" isdisabled="true" />
+				<ui:toolbarbutton cmd="JustifyCenter" tooltip="${string:Website.WysiwygEditor.ToolBar.ToolTipJustifyCenter}" type="radio" image="${skin}/wysiwygeditor/justifycenter.png" image-disabled="${skin}/wysiwygeditor/justifycenter-disabled.png" isdisabled="true" />
+				<ui:toolbarbutton cmd="JustifyFull" tooltip="${string:Website.WysiwygEditor.ToolBar.ToolTipJustifyFull}" type="radio" image="${skin}/wysiwygeditor/justifyfull.png" image-disabled="${skin}/wysiwygeditor/justifyfull-disabled.png" isdisabled="true" />
+			</ui:toolbargroup>
+			<ui:toolbargroup>
+				<ui:toolbarbutton cmd="InsertUnorderedList" tooltip="${string:Website.WysiwygEditor.ToolBar.ToolTipUnorderedList}" type="checkbox" image="${skin}/wysiwygeditor/bullist.png" image-disabled="${skin}/wysiwygeditor/bullist-disabled.png" isdisabled="true" />
+				<ui:toolbarbutton cmd="InsertOrderedList" tooltip="${string:Website.WysiwygEditor.ToolBar.ToolTipOrderedList}" type="checkbox" image="${skin}/wysiwygeditor/numlist.png" image-disabled="${skin}/wysiwygeditor/numlist-disabled.png" isdisabled="true" />
+			</ui:toolbargroup>
+			<ui:toolbargroup>
+				<ui:toolbarbutton cmd="compositeInsertLink" tooltip="${string:Website.WysiwygEditor.ToolBar.ToolTipLink}" image="${icon:link}" image-disabled="${icon:link-disabled}" isdisabled="true" />
+				<ui:toolbarbutton cmd="unlink" tooltip="${string:Website.WysiwygEditor.ToolBar.ToolTipDeleteLink}" image="${icon:unlink}" image-disabled="${icon:unlink-disabled}" isdisabled="true" />
+			</ui:toolbargroup>
+			<ui:toolbargroup>
+				<ui:toolbarbutton cmd="Undo" tooltip="${string:Website.WysiwygEditor.ToolBar.ToolTipUndo}" image="${icon:undo}" image-disabled="${icon:undo-disabled}" isdisabled="true" observes="broadcasterCanUndo" />
+				<ui:toolbarbutton cmd="Redo" tooltip="${string:Website.WysiwygEditor.ToolBar.ToolTipRedo}" image="${icon:redo}" image-disabled="${icon:redo-disabled}" isdisabled="true" observes="broadcasterCanRedo" />
+			</ui:toolbargroup>
+		</ui:toolbarbody>
+		<ui:toolbarbody align="right">
+			<ui:toolbargroup>
+				<ui:toolbarbutton cmd="compositeswitchmode" hidden="false" editorcontrol="false" id="switchbutton" label="${string:Website.WysiwygEditor.LabelSource}" image="${icon:editor-sourceview}" image-disabled="${icon:editor-sourceview-disabled}" flip="true"/>
+			</ui:toolbargroup>
+		</ui:toolbarbody>
+	</body>
+</html>

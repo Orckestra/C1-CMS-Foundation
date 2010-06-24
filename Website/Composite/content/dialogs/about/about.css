@@ -1,0 +1,114 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+div#about {
+	color: #676767;
+	height: 340px;
+	position: relative;
+	overflow: hidden;
+	border-bottom: 1px solid $(color:threedlightshadow);
+}
+ui|dialogpage {
+	background-color: white;
+}
+div#info {
+	position: absolute;
+	z-index: 2;
+	padding-left: 14px;
+	padding-bottom: 18px;
+	width: 100%;
+	bottom: 0;
+	padding-top: 18px;
+	background-image: url("${root}/images/dots.png");
+	line-height: 17px;
+	width: 100%;
+}
+#infocover {
+	background-color: white;
+	width: 348px;
+	height: 160px;
+}
+div#id {
+	padding-top: 1em;
+}
+div#version, 
+div#license,
+div#copyright,
+span#id {
+	cursor: text;
+}
+span#id {
+	padding-right: 1em;
+	padding-left: 0.5em;	
+}
+ui|toolbarbody,
+ui|toolbargroup {
+	float: none;	
+}
+#buttonAccept {
+	float: right !important;
+}
+#credits {
+	
+}
+#roll {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	
+	
+	text-align: center;
+	line-height: 20px;
+	padding-top: 290px;
+	padding-bottom: 100px;
+	#ie padding-top: 326px;	
+}
+div.logo {
+	width: 203px;
+	height: 59px;
+	background: white url("${root}/images/composite.png") no-repeat 0 0;
+	position: absolute;
+	top: 70px;
+	left: 50%;
+	margin-left: -100px;
+}
+#logo2 {
+	margin-top: 66px;
+	top: auto;
+	bottom: 0;
+}
+#credits ul,
+#credits p {
+	margin: 0 0 40px 0;	
+}
+#credits h2 {
+	font-size: 100%;
+	margin: 40px 0 0 0;
+}
+#credits ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;	
+}
+#credits li {
+	display: inline;
+}
+#credits a {
+	color: $(color:highlight);
+	font-weight: bold;
+	cursor: pointer;
+}
+#credits a:hover {
+	text-decoration: underline;	
+}
+div#fade {
+	position: absolute;
+	width: 100%;
+	height: 70px;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+	
+	background: transparent url("${root}/images/about_low.png") repeat-x 0 0; 
+}

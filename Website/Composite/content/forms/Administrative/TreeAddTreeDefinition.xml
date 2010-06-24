@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="DefinitionName" type="System.String" />
+    <cms:binding name="TemplateName" type="System.String" />
+    <cms:binding name="TemplatesList" type="System.Collections.IEnumerable" />
+    <cms:binding name="PositionName" type="System.String" />
+    <cms:binding name="PositionsList" type="System.Collections.IEnumerable" />
+  </cms:bindings>
+  <cms:layout label="${Composite.Trees, TreeAddTreeDefinition.Layout.Label}" iconhandle="developerapplication-treedefinition-add">
+    <FieldGroup Label="${Composite.Trees, TreeAddTreeDefinition.FieldGroup.Label}">
+      <TextBox Label="${Composite.Trees, TreeAddTreeDefinition.NameTextBox.Label}" Help="${Composite.Trees, TreeAddTreeDefinition.NameTextBox.Help}">
+        <cms:bind source="DefinitionName" />
+      </TextBox>      
+      
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"
+									 Label="${Composite.Trees, TreeAddTreeDefinition.TemplateSelector.Label}"
+									 Help="${Composite.Trees, TreeAddTreeDefinition.TemplateSelector.Help}">
+        <KeySelector.Options>
+          <cms:read source="TemplatesList"/>
+        </KeySelector.Options>
+        <KeySelector.Selected>
+          <cms:bind source="TemplateName" />
+        </KeySelector.Selected>
+      </KeySelector>    
+
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"
+									 Label="${Composite.Trees, TreeAddTreeDefinition.PositionSelector.Label}"
+									 Help="${Composite.Trees, TreeAddTreeDefinition.PositionSelector.Help}">
+      <KeySelector.Options>
+        <cms:read source="PositionsList"/>
+      </KeySelector.Options>
+      <KeySelector.Selected>
+        <cms:bind source="PositionName" />
+      </KeySelector.Selected>
+    </KeySelector>
+      
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

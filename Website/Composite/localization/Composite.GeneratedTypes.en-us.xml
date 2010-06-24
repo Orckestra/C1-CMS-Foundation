@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<strings>
+	<string key="TypesAreReferencing" value="One or more types are referencing this type. Renaming is not possible" />
+  <string key="TypeNameInNamespace" value="The type name '{0}' appears in the namespace '{1}' - this is not allowed" />
+  <string key="TypesNameClash" value="A type with the same name already exists" />
+	<string key="MissingFields" value="No fields added" />
+	<string key="TypeNameIsInvalidIdentifier" value="The type name '{0}' is not a valid idenifier." />
+	<string key="FieldNameCannotBeUsed" value="The field name '{0}' can not be used" />
+  <string key="NameSpaceIsTypeTypeName" value="The specified 'Type namespace' is already in use as a 'Type name' (namespace + name). Consider changing the name of '{0}' to '{0}.Item'." />
+	<string key="NamespaceIsReserved" value="Type name belongs to a reserved namespace." />
+	<string key="CompileErrorWhileAddingType" value="Cannot add a data type since it will cause some compilation errors." />
+	<string key="CompileErrorWhileChangingType" value="Cannot change a data type since it will cause some compilation errors." />
+  <string key="FieldDoesNotHaveWidget" value="Field '{0}' does not have a widget provider specified." />
+</strings>

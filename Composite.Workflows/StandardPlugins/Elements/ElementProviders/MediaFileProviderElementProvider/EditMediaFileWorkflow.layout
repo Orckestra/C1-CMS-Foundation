@@ -1,0 +1,100 @@
+﻿<StateMachineWorkflowDesigner xmlns:ns0="clr-namespace:System.Drawing;Assembly=System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Size="1190; 986" AutoSizeMargin="16; 24" Location="30; 30" Name="EditMediaFileWorkflow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/workflow">
+	<StateMachineWorkflowDesigner.Designers>
+		<StateDesigner Size="197; 80" AutoSizeMargin="16; 24" Location="84; 105" Name="initialState">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Name="initialStateInitializationActivity" Size="150; 182" Location="92; 136">
+					<StateInitializationDesigner.Designers>
+						<CodeDesigner Name="initializeCodeActivity" Size="130; 41" Location="102; 198" />
+						<SetStateDesigner Name="setStateActivity2" Size="130; 41" Location="102; 258" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+		<StateDesigner Size="189; 94" AutoSizeMargin="16; 24" Location="269; 290" Name="editMediaFileStateActivity">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Name="editStateInitializationActivity" Size="150; 122" Location="277; 321">
+					<StateInitializationDesigner.Designers>
+						<ActivityDesigner Name="documentFormActivity1" Size="130; 41" Location="287; 383" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+				<EventDrivenDesigner Name="eventDrivenActivity_Save" Size="381; 363" Location="277; 345">
+					<EventDrivenDesigner.Designers>
+						<HandleExternalEventActivityDesigner Name="saveHandleExternalEventActivity1" Size="130; 41" Location="402; 407" />
+						<IfElseDesigner Name="ifElseActivity1" Size="361; 222" Location="287; 467">
+							<IfElseDesigner.Designers>
+								<IfElseBranchDesigner Name="ifElseBranchActivity1" Size="150; 122" Location="306; 538">
+									<IfElseBranchDesigner.Designers>
+										<SetStateDesigner Name="setStateActivity3" Size="130; 41" Location="316; 600" />
+									</IfElseBranchDesigner.Designers>
+								</IfElseBranchDesigner>
+								<IfElseBranchDesigner Name="ifElseBranchActivity2" Size="150; 122" Location="479; 538">
+									<IfElseBranchDesigner.Designers>
+										<SetStateDesigner Name="setStateActivity5" Size="130; 41" Location="489; 600" />
+									</IfElseBranchDesigner.Designers>
+								</IfElseBranchDesigner>
+							</IfElseDesigner.Designers>
+						</IfElseDesigner>
+					</EventDrivenDesigner.Designers>
+				</EventDrivenDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+		<StateDesigner Size="205; 80" AutoSizeMargin="16; 24" Location="608; 408" Name="finalizeStateActivity">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Name="finalizeStateInitializationActivity" Size="150; 182" Location="616; 439">
+					<StateInitializationDesigner.Designers>
+						<CodeDesigner Name="finalizeCodeActivity" Size="130; 41" Location="626; 501" />
+						<SetStateDesigner Name="setStateActivity4" Size="130; 41" Location="626; 561" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+		<StateDesigner Size="160; 80" AutoSizeMargin="16; 24" Location="1017; 853" Name="finalStateActivity" />
+		<EventDrivenDesigner Name="eventDrivenActivity1" Size="150; 182" Location="38; 61">
+			<EventDrivenDesigner.Designers>
+				<HandleExternalEventActivityDesigner Name="cancelHandleExternalEventActivity1" Size="130; 41" Location="48; 123" />
+				<SetStateDesigner Name="setStateActivity1" Size="130; 41" Location="48; 183" />
+			</EventDrivenDesigner.Designers>
+		</EventDrivenDesigner>
+	</StateMachineWorkflowDesigner.Designers>
+	<StateMachineWorkflowDesigner.DesignerConnectors>
+		<StateDesignerConnector TargetActivity="finalStateActivity" SetStateName="setStateActivity1" SourceActivity="EditMediaFileWorkflow" TargetConnectionIndex="0" SourceStateName="EditMediaFileWorkflow" TargetConnectionEdge="Top" SourceConnectionEdge="Right" EventHandlerName="eventDrivenActivity1" SourceConnectionIndex="0" TargetStateName="finalStateActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="176" Y="71" />
+				<ns0:Point X="1097" Y="71" />
+				<ns0:Point X="1097" Y="853" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetActivity="editMediaFileStateActivity" SetStateName="setStateActivity2" SourceActivity="initialState" TargetConnectionIndex="0" SourceStateName="initialState" TargetConnectionEdge="Top" SourceConnectionEdge="Right" EventHandlerName="initialStateInitializationActivity" SourceConnectionIndex="0" TargetStateName="editMediaFileStateActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="277" Y="146" />
+				<ns0:Point X="363" Y="146" />
+				<ns0:Point X="363" Y="290" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetActivity="finalizeStateActivity" SetStateName="setStateActivity3" SourceActivity="editMediaFileStateActivity" TargetConnectionIndex="0" SourceStateName="editMediaFileStateActivity" TargetConnectionEdge="Top" SourceConnectionEdge="Right" EventHandlerName="eventDrivenActivity_Save" SourceConnectionIndex="1" TargetStateName="finalizeStateActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="439" Y="355" />
+				<ns0:Point X="710" Y="355" />
+				<ns0:Point X="710" Y="408" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetActivity="editMediaFileStateActivity" SetStateName="setStateActivity5" SourceActivity="editMediaFileStateActivity" TargetConnectionIndex="0" SourceStateName="editMediaFileStateActivity" TargetConnectionEdge="Top" SourceConnectionEdge="Right" EventHandlerName="eventDrivenActivity_Save" SourceConnectionIndex="1" TargetStateName="editMediaFileStateActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="439" Y="355" />
+				<ns0:Point X="467" Y="355" />
+				<ns0:Point X="467" Y="282" />
+				<ns0:Point X="363" Y="282" />
+				<ns0:Point X="363" Y="290" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetActivity="editMediaFileStateActivity" SetStateName="setStateActivity4" SourceActivity="finalizeStateActivity" TargetConnectionIndex="0" SourceStateName="finalizeStateActivity" TargetConnectionEdge="Top" SourceConnectionEdge="Right" EventHandlerName="finalizeStateInitializationActivity" SourceConnectionIndex="0" TargetStateName="editMediaFileStateActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="809" Y="449" />
+				<ns0:Point X="819" Y="449" />
+				<ns0:Point X="819" Y="282" />
+				<ns0:Point X="363" Y="282" />
+				<ns0:Point X="363" Y="290" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+	</StateMachineWorkflowDesigner.DesignerConnectors>
+</StateMachineWorkflowDesigner>

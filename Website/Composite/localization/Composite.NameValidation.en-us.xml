@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<strings>
+	<string key="EmptyName" value="Name can not be an empty string" />
+	<string key="EmptyNamespace" value="Namespace can not be an empty string" />
+  <string key="DuplicateElementNamespace" value="Namespace can not contain the same name part multiple times" />
+  <string key="InvalidIdentifier" value="The name '{0}' is not a valid identifier" />
+	<string key="InvalidIdentifierDigit" value="The name '{0}' is not a valid identifier. Identifiers may not start with digits." />
+</strings>

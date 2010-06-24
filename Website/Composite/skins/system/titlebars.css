@@ -1,0 +1,75 @@
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+#region default
+	ui|titlebar {
+		background-color: InactiveCaption;
+		color: Inactive$(color:captiontext);
+		#alphabackdrop: url("${skin}/docks/tabbackdrop.png");
+	}
+	ui|dialog.active ui|titlebar {
+		background-color: $(color:activecaption);
+		color: $(color:captiontext);
+	}
+#endregion
+
+#region vista
+	ui|dialog ui|titlebar {
+		margin: 3px 3px 0 3px;
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-titlebar.png");
+	}
+	ui|dialog.active ui|titlebar {
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-titlebar.png");	
+	}
+	ui|dialog ui|titlebarbody {
+		padding: 2px 3px 6px 5px;
+		_padding: 5px 3px 6px 5px;
+	}
+	ui|dialog ui|titlebar ui|controlgroup {
+		position: relative;
+		top: 2px;
+	}
+	ui|dialog ui|titlebar ui|labeltext {
+		color: white;
+		position: relative;
+		top: 1px;
+	}
+#endregion
+
+#region osx
+	ui|dialog ui|titlebar {
+		margin: 3px 3px 0 3px;
+		#alphabackdrop: url("${skin}/dialogs/vista/dialog-titlebar.png");
+	}
+	ui|dialog.active ui|titlebar {
+		#alphabackdrop: url("${skin}/dialogs/osx/dialog-active-titlebar.png");	
+	}
+	ui|dialog ui|titlebarbody {
+		padding: 2px 3px 6px 5px;
+		_padding: 5px 3px 6px 5px;
+	}
+	ui|dialog ui|titlebar ui|controlgroup {
+		position: relative;
+		top: 2px;
+	}
+	ui|dialog ui|titlebar ui|labeltext {
+		position: relative;
+		top: 1px;
+	}
+	ui|dialog ui|titlebar ui|controlgroup {
+		float: left;
+		position: relative;
+		z-index: 23;
+	}
+	ui|dialog ui|titlebar ui|labelbox.dialogtitle,
+	ui|dialog ui|titlebar ui|labelbox.dialogtitle ui|labelbody,
+	ui|dialog ui|titlebar ui|labelbox.dialogtitle ui|labeltext {
+		display: block;
+		float: none;
+		width: 100%;
+		text-align: center;
+	}
+	ui|dialog ui|titlebar ui|labelbox.dialogtitle ui|labeltext {
+		position: relative;
+		left: -13px;
+	}
+#endregion

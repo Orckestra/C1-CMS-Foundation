@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:internal="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+	<cms:bindings>
+		<cms:binding name="SelectedPage" type="Composite.Data.Types.IPage" />
+    <cms:binding name="SelectablePageTypeIds" type="System.Collections.IEnumerable" />
+    <cms:binding name="SelectableTemplateIds" type="System.Collections.IEnumerable" />    
+    <cms:binding name="PublishDate" type="System.Object" optional="true" />
+		<cms:binding name="UnpublishDate" type="System.Object" optional="true" />		
+		<cms:binding name="StateOptions" type="System.Object" />
+		<cms:binding name="NamedXhtmlFragments" type="System.Object" />
+    <cms:binding name="PreviewEventHandler" type="System.EventHandler" optional="true" />
+    <cms:binding name="CustomEvent01Handler" type="System.EventHandler" />
+	</cms:bindings>
+	<cms:layout iconhandle="page-edit-page">
+		<TabPanels PreSelectedIndex="1">
+			<TabPanels.Label>
+				<cms:read source="SelectedPage.Title" />
+			</TabPanels.Label>
+			<PlaceHolder Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelPaneSettings}">
+				<FieldGroup Label="${Composite.StandardPlugins.PageElementProvider, GeneralSettings.FieldGroupLabel}">
+					<TextBox Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelPageTitle}" Help="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelPageTitleHelp}">
+						<TextBox.Text>
+							<cms:bind source="SelectedPage.Title" />
+						</TextBox.Text>
+					</TextBox>
+					<TextArea Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelAbstract}" Help="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelAbstractHelp}">
+						<TextArea.Text>
+							<cms:bind source="SelectedPage.Abstract" />
+						</TextArea.Text>
+					</TextArea>
+
+          <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"
+									 Label="${Composite.StandardPlugins.PageElementProvider, EditPage.PageTypeSelectorLabel}"
+									 Help="${Composite.StandardPlugins.PageElementProvider, EditPage.PageTypeSelectorLabel}">
+            <KeySelector.SelectedIndexChangedEventHandler>
+              <cms:read source="CustomEvent01Handler"/>
+            </KeySelector.SelectedIndexChangedEventHandler>
+            <KeySelector.Options>
+              <cms:read source="SelectablePageTypeIds"/>
+            </KeySelector.Options>
+            <KeySelector.Selected>
+              <cms:bind source="SelectedPage.PageTypeId" />
+            </KeySelector.Selected>
+          </KeySelector>
+          
+				</FieldGroup>
+				<FieldGroup Label="${Composite.StandardPlugins.PageElementProvider, PublicationSettings.FieldGroupLabel}">
+					<KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelPublicationState}" Help="${Composite.StandardPlugins.PageElementProvider, EditPage.HelpPublicationState}">
+						<KeySelector.Selected>
+							<cms:bind source="SelectedPage.PublicationStatus" />
+						</KeySelector.Selected>
+						<KeySelector.Options>
+							<cms:read source="StateOptions" />
+						</KeySelector.Options>
+					</KeySelector>
+					<DateTimeSelector Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelPublishDate}" Help="${Composite.StandardPlugins.PageElementProvider, EditPage.HelpPublishDate}">
+						<cms:bind source="PublishDate" />
+					</DateTimeSelector>
+					<DateTimeSelector Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelUnpublishDate}" Help="${Composite.StandardPlugins.PageElementProvider, EditPage.HelpUnpublishDate}">
+						<cms:bind source="UnpublishDate" />
+					</DateTimeSelector>
+				</FieldGroup>
+				<FieldGroup Label="${Composite.StandardPlugins.PageElementProvider, AdvancedSettings.FieldGroupLabel}">
+					<TextBox Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelMenuTitle}" Help="${Composite.StandardPlugins.PageElementProvider, EditPage.HelpMenuTitle}">
+						<TextBox.Text>
+							<cms:bind source="SelectedPage.MenuTitle" />
+						</TextBox.Text>
+					</TextBox>
+					<TextBox Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelUrlTitle}" Help="${Composite.StandardPlugins.PageElementProvider, EditPage.HelpUrlTitle}">
+						<TextBox.Text>
+							<cms:bind source="SelectedPage.UrlTitle" />
+						</TextBox.Text>
+					</TextBox>
+					<TextBox Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelFriendlyUrl}" Help="${Composite.StandardPlugins.PageElementProvider, EditPage.HelpFriendlyUrl}">
+						<TextBox.Text>
+							<cms:bind source="SelectedPage.FriendlyUrl" />
+						</TextBox.Text>
+					</TextBox>					
+				</FieldGroup>
+			</PlaceHolder>
+      
+			<internal:PageContentEditor Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelContent}">
+        <internal:PageContentEditor.TemplateId>
+          <cms:bind source="SelectedPage.TemplateId" />
+        </internal:PageContentEditor.TemplateId>
+        <internal:PageContentEditor.SelectableTemplateIds>
+          <cms:bind source="SelectableTemplateIds" />
+        </internal:PageContentEditor.SelectableTemplateIds>
+        <internal:PageContentEditor.NamedXhtmlFragments>
+          <cms:bind source="NamedXhtmlFragments" />
+        </internal:PageContentEditor.NamedXhtmlFragments>
+      </internal:PageContentEditor>
+      
+			<f:NullCheck>
+				<f:NullCheck.CheckValue>
+					<cms:read source="PreviewEventHandler" />
+				</f:NullCheck.CheckValue>
+				<f:NullCheck.WhenNotNull>
+					<internal:PreviewPanel Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelPreview}">
+						<internal:PreviewPanel.ClickEventHandler>
+							<cms:read source="PreviewEventHandler" />
+						</internal:PreviewPanel.ClickEventHandler>
+					</internal:PreviewPanel>
+				</f:NullCheck.WhenNotNull>
+			</f:NullCheck>
+		</TabPanels>
+	</cms:layout>
+</cms:formdefinition>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="SelectedType" type="System.Type" />
+    <cms:binding name="Types" type="System.Collections.IEnumerable" />
+  </cms:bindings>
+  <cms:layout>
+    <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.RemoveAssociatedType.FieldGroupLabel}">
+      <TypeSelector Label="${Composite.Management, Website.Forms.Administrative.RemoveAssociatedTypeSelectType.TypeSelectorLabel}" Help="${Composite.Management, Website.Forms.Administrative.RemoveAssociatedTypeSelectType.TypeSelectorHelp}">
+        <TypeSelector.TypeOptions>
+          <cms:read source="Types" />
+        </TypeSelector.TypeOptions>
+        <TypeSelector.SelectedType>
+          <cms:bind source="SelectedType" />
+        </TypeSelector.SelectedType>
+      </TypeSelector>
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

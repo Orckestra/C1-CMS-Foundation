@@ -1,0 +1,20 @@
+<h1 id="heading">Form Example</h1>
+<ui:fields>
+	<ui:fieldgroup label="Change this label!">
+		<ui:field>
+			<ui:fielddesc>Change this label!</ui:fielddesc>
+			<ui:fieldhelp>Change this help!</ui:fieldhelp>
+			<ui:fielddata>
+				<ui:selector
+					name="UNUQUE_NAME" 
+					id="UNUQUE_ID">
+					<ui:selection label="Selection 1" value="1" selected="true"/>
+					<ui:selection label="Selection 2" value="2" />
+					<ui:selection label="Selection 3" value="3" />
+					<ui:selection label="Selection 4" value="4" />
+				</ui:selector>
+			</ui:fielddata>
+		</ui:field>	
+	</ui:fieldgroup>
+</ui:fields>
+<p id="note" style="margin-top:20px;">Support for updating UI elements is extremely sketchy. But at least we know that ID attributes are automatically inserted on form elements by the XSLT layer in order to optimize updates (note that there is only one ID attribute in the markup above). You can verify generated ID attributes in the System Log (press CTRL+SHIFT+L if it's closed). The added ID attributes are generated on basis of the 'name' attribute of the selector, so make sure to change it if you add a second selector. We should probably use the ID of selector instead...</p>

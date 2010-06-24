@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<strings>
+  <string key="af-ZA" value="Afrikaans, South Africa" />
+  <string key="sq-AL" value="Albanian, Albania" />
+  <string key="ar-DZ" value="Arabic, Algeria" />
+  <string key="ar-BH" value="Arabic, Bahrain" />
+  <string key="ar-EG" value="Arabic, Egypt" />
+  <string key="ar-IQ" value="Arabic, Iraq" />
+  <string key="ar-JO" value="Arabic, Jordan" />
+  <string key="ar-KW" value="Arabic, Kuwait" />
+  <string key="ar-LB" value="Arabic, Lebanon" />
+
+  <string key="ar-LY" value="Arabic, Libya" />
+  <string key="ar-MA" value="Arabic, Morocco" />
+  <string key="ar-OM" value="Arabic, Oman" />
+  <string key="ar-QA" value="Arabic, Qatar" />
+  <string key="ar-SA" value="Arabic, Saudi Arabia" />
+  <string key="ar-SY" value="Arabic, Syria" />
+  <string key="ar-TN" value="Arabic, Tunisia" />
+  <string key="ar-AE" value="Arabic, U.A.E." />
+  <string key="ar-YE" value="Arabic, Yemen" />
+
+  <string key="hy-AM" value="Armenian, Armenia" />
+  <string key="az-Cyrl-AZ" value="Azeri, Cyrillic Azerbaijan" />
+  <string key="az-Latn-AZ" value="Azeri, Latin Azerbaijan" />
+  <string key="eu-ES" value="Basque, Basque" />
+  <string key="be-BY" value="Belarusian, Belarus" />
+  <string key="bs-Latn-BA" value="Bosnian, Bosnia and Herzegovina" />
+  <string key="bs-Cyrl-BA" value="Bosnian (Cyrillic) (Bosnia and Herzegovina)" />
+  <string key="bg-BG" value="Bulgarian, Bulgaria" />
+  <string key="ca-ES" value="Catalan, Catalan" />
+
+  <string key="zh-HK" value="Chinese, Hong Kong S.A.R." />
+  <string key="zh-MO" value="Chinese, Macao S.A.R." />
+  <string key="zh-CN" value="Chinese, People's Republic of China" />
+  <string key="zh-SG" value="Chinese, Singapore" />
+  <string key="zh-TW" value="Chinese, Taiwan" />
+  <string key="hr-BA" value="Croatian, Bosnia and Herzegovina" />
+  <string key="hr-HR" value="Croatian, Croatia" />
+  <string key="cs-CZ" value="Czech, Czech Republic" />
+  <string key="da-DK" value="Danish" />
+
+  <string key="dv-MV" value="Divehi, Maldives" />
+  <string key="nl-BE" value="Dutch, Belgium" />
+  <string key="nl-NL" value="Dutch" />
+  <string key="en-AU" value="English, Australia" />
+  <string key="en-BZ" value="English, Belize" />
+  <string key="en-CA" value="English, Canada" />
+  <string key="en-029" value="English, Caribbean" />
+  <string key="en-IE" value="English, Ireland" />
+  <string key="en-JM" value="English, Jamaica" />
+
+  <string key="en-NZ" value="English, New Zealand" />
+  <string key="en-PH" value="English, Republic of the Philippines" />
+  <string key="en-ZA" value="English, South Africa" />
+  <string key="en-TT" value="English, Trinidad and Tobago" />
+  <string key="en-GB" value="English, UK" />
+  <string key="en-US" value="English, US" />
+  <string key="en-ZW" value="English, Zimbabwe" />
+  <string key="et-EE" value="Estonian, Estonia" />
+  <string key="fo-FO" value="Faroese, Faroe Islands" />
+
+  <string key="fil-PH" value="Filipino, Philippines" />
+  <string key="fi-FI" value="Finnish" />
+  <string key="fr-BE" value="French, Belgium" />
+  <string key="fr-CA" value="French, Canada" />
+  <string key="fr-FR" value="French" />
+  <string key="fr-LU" value="French, Luxembourg" />
+  <string key="fr-MC" value="French, Principality of Monaco" />
+  <string key="fr-CH" value="French, Switzerland" />
+  <string key="fy-NL" value="Frisian, Netherlands" />
+
+  <string key="gl-ES" value="Galician, Galician" />
+  <string key="ka-GE" value="Georgian, Georgia" />
+  <string key="de-AT" value="German, Austria" />
+  <string key="de-DE" value="German" />
+  <string key="de-LI" value="German, Liechtenstein" />
+  <string key="de-LU" value="German, Luxembourg" />
+  <string key="de-CH" value="German, Switzerland" />
+  <string key="el-GR" value="Greek, Greece" />
+  <string key="kl-GL" value="Greenlandic" />
+
+  <string key="gu-IN" value="Gujarati, India" />
+  <string key="he-IL" value="Hebrew, Israel" />
+  <string key="hi-IN" value="Hindi, India" />
+  <string key="hu-HU" value="Hungarian, Hungary" />
+  <string key="is-IS" value="Icelandic, Iceland" />
+  <string key="id-ID" value="Indonesian, Indonesia" />
+  <string key="iu-Latn-CA" value="Inuktitut (Latin) (Canada)" />
+  <string key="ga-IE" value="Irish, Ireland" />
+  <string key="it-IT" value="Italian" />
+
+  <string key="it-CH" value="Italian, Switzerland" />
+  <string key="ja-JP" value="Japanese, Japan" />
+  <string key="kn-IN" value="Kannada, India" />
+  <string key="kk-KZ" value="Kazakh, Kazakhstan" />
+  <string key="sw-KE" value="Kiswahili, Kenya" />
+  <string key="kok-IN" value="Konkani, India" />
+  <string key="ko-KR" value="Korean, Korea" />
+  <string key="ky-KG" value="Kyrgyz, Kyrgyzstan" />
+  <string key="lv-LV" value="Latvian, Latvia" />
+
+  <string key="lt-LT" value="Lithuanian, Lithuania" />
+  <string key="lb-LU" value="Luxembourgish, Luxembourg" />
+  <string key="mk-MK" value="Macedonian, Former Yugoslav Republic of Macedonia" />
+  <string key="ms-BN" value="Malay, Brunei Darussalam" />
+  <string key="ms-MY" value="Malay, Malaysia" />
+  <string key="mt-MT" value="Maltese, Malta" />
+  <string key="mi-NZ" value="Maori, New Zealand" />
+  <string key="arn-CL" value="Mapudungun, Chile" />
+  <string key="mr-IN" value="Marathi, India" />
+
+  <string key="moh-CA" value="Mohawk, Canada" />
+  <string key="mn-MN" value="Mongolian, Cyrillic Mongolia" />
+  <string key="nb-NO" value="Norwegian Bokmål" />
+  <string key="nn-NO" value="Norwegian Nynorsk, Norway" />
+  <string key="fa-IR" value="Persian, Iran" />
+  <string key="pl-PL" value="Polish, Poland" />
+  <string key="pt-BR" value="Portuguese, Brazil" />
+  <string key="pt-PT" value="Portuguese, Portugal" />
+  <string key="pa-IN" value="Punjabi, India" />
+
+  <string key="quz-BO" value="Quechua, Bolivia" />
+  <string key="quz-EC" value="Quechua, Ecuador" />
+  <string key="quz-PE" value="Quechua, Peru" />
+  <string key="ro-RO" value="Romanian, Romania" />
+  <string key="rm-CH" value="Romansh, Switzerland" />
+  <string key="ru-RU" value="Russian, Russia" />
+  <string key="smn-FI" value="Sami (Inari) (Finland)" />
+  <string key="smj-NO" value="Sami (Lule) (Norway)" />
+  <string key="smj-SE" value="Sami (Lule) (Sweden)" />
+
+  <string key="se-FI" value="Sami (Northern) (Finland)" />
+  <string key="se-NO" value="Sami (Northern) (Norway)" />
+  <string key="se-SE" value="Sami" />
+  <string key="sms-FI" value="Sami (Skolt) (Finland)" />
+  <string key="sma-NO" value="Sami (Southern) (Norway)" />
+  <string key="sma-SE" value="Sami (Southern) (Sweden)" />
+  <string key="sa-IN" value="Sanskrit, India" />
+  <string key="sr-Cyrl-BA" value="Serbian (Cyrillic) (Bosnia and Herzegovina)" />
+  <string key="sr-Cyrl-CS" value="Serbian, Cyrillic Serbia" />
+
+  <string key="sr-Latn-BA" value="Serbian (Latin) (Bosnia and Herzegovina)" />
+  <string key="sr-Latn-CS" value="Serbian, Latin Serbia" />
+  <string key="ns-ZA" value="Sesotho sa Leboa, South Africa" />
+  <string key="tn-ZA" value="Setswana, South Africa" />
+  <string key="sk-SK" value="Slovak, Slovakia" />
+  <string key="sl-SI" value="Slovenian, Slovenia" />
+  <string key="es-AR" value="Spanish, Argentina" />
+  <string key="es-BO" value="Spanish, Bolivia" />
+  <string key="es-CL" value="Spanish, Chile" />
+
+  <string key="es-CO" value="Spanish, Colombia" />
+  <string key="es-CR" value="Spanish, Costa Rica" />
+  <string key="es-DO" value="Spanish, Dominican Republic" />
+  <string key="es-EC" value="Spanish, Ecuador" />
+  <string key="es-SV" value="Spanish, El Salvador" />
+  <string key="es-GT" value="Spanish, Guatemala" />
+  <string key="es-HN" value="Spanish, Honduras" />
+  <string key="es-MX" value="Spanish, Mexico" />
+  <string key="es-NI" value="Spanish, Nicaragua" />
+
+  <string key="es-PA" value="Spanish, Panama" />
+  <string key="es-PY" value="Spanish, Paraguay" />
+  <string key="es-PE" value="Spanish, Peru" />
+  <string key="es-PR" value="Spanish, Puerto Rico" />
+  <string key="es-ES" value="Spanish" />
+  <string key="es-UY" value="Spanish, Uruguay" />
+  <string key="es-VE" value="Spanish, Venezuela" />
+  <string key="sv-FI" value="Swedish, Finland" />
+  <string key="sv-SE" value="Swedish" />
+
+  <string key="syr-SY" value="Syriac, Syria" />
+  <string key="ta-IN" value="Tamil, India" />
+  <string key="tt-RU" value="Tatar, Russia" />
+  <string key="te-IN" value="Telugu, India" />
+  <string key="th-TH" value="Thai, Thailand" />
+  <string key="tr-TR" value="Turkish, Turkey" />
+  <string key="uk-UA" value="Ukrainian, Ukraine" />
+  <string key="ur-PK" value="Urdu, Islamic Republic of Pakistan" />
+  <string key="uz-Cyrl-UZ" value="Uzbek, Cyrillic Uzbekistan" />
+
+  <string key="uz-Latn-UZ" value="Uzbek, Latin Uzbekistan" />
+  <string key="vi-VN" value="Vietnamese, Vietnam" />
+  <string key="cy-GB" value="Welsh, United Kingdom" />
+  <string key="xh-ZA" value="Xhosa, South Africa" />
+  <string key="zu-ZA" value="Zulu, South Africa" />
+
+  <string key="gsw-FR" value="Alsatian, France" />
+  <string key="am-ET" value="Amharic, Ethiopia" />
+  <string key="as-IN" value="Assamese, India" />
+  <string key="ba-RU" value="Bashkir, Russia" />
+  <string key="bn-BD" value="Bengali, Bangladesh" />
+  <string key="bn-IN" value="Bengali, India" />
+  <string key="br-FR" value="Breton, France" />
+  <string key="co-FR" value="Corsican, France" />
+  <string key="prs-AF" value="Dari, Afghanistan" />
+  <string key="en-IN" value="English, India" />
+  <string key="en-MY" value="English, Malaysia" />
+  <string key="en-SG" value="English, Singapore" />
+  <string key="ha-Latn-NG" value="Hausa (Latin) (Nigeria)" />
+  <string key="ig-NG" value="Igbo, Nigeria" />
+  <string key="iu-Cans-CA" value="Inuktitut, Canada" />
+  <string key="km-KH" value="Khmer, Cambodia" />
+  <string key="qut-GT" value="K'iche, Guatemala" />
+  <string key="rw-RW" value="Kinyarwanda, Rwanda" />
+  <string key="lo-LA" value="Lao, Lao P.D.R." />
+  <string key="dsb-DE" value="Lower Sorbian, Germany" />
+  <string key="ml-IN" value="Malayalam, India" />
+  <string key="mn-Mong-CN" value="Mongolian (Traditional Mongolian) (People's Republic of China)" />
+  <string key="ne-NP" value="Nepali, Nepal" />
+  <string key="oc-FR" value="Occitan, France" />
+  <string key="or-IN" value="Oriya, India" />
+  <string key="ps-AF" value="Pashto, Afghanistan" />
+  <string key="nso-ZA" value="Sesotho sa Leboa, South Africa" />
+  <string key="si-LK" value="Sinhala, Sri Lanka" />
+  <string key="es-US" value="Spanish, United States" />
+  <string key="tg-Cyrl-TJ" value="Tajik (Cyrillic) (Tajikistan)" />
+  <string key="tzm-Latn-DZ" value="Tamazight (Latin) (Algeria)" />
+  <string key="bo-CN" value="Tibetan, People's Republic of China" />
+  <string key="tk-TM" value="Turkmen, Turkmenistan" />
+  <string key="ug-CN" value="Uighur, People's Republic of China" />
+  <string key="hsb-DE" value="Upper Sorbian, Germany" />
+  <string key="wo-SN" value="Wolof, Senegal" />
+  <string key="sah-RU" value="Yakut, Russia" />
+  <string key="ii-CN" value="Yi, People's Republic of China" />
+  <string key="yo-NG" value="Yoruba, Nigeria" />
+  
+</strings>

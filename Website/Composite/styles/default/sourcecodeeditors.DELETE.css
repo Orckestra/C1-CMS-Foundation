@@ -1,0 +1,19 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|functioneditor,
+ui|parametereditor,
+ui|sourceeditor {
+	display: block;
+	/*
+	width: 100%;
+	height: 100%;
+	*/
+	overflow: hidden;
+	position: relative; /* contain the cover */
+}
+ui|functioneditor textarea,
+ui|parametereditor textarea,
+ui|sourceeditor textarea {
+	display: none;
+}

@@ -1,0 +1,445 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Configuration>
+	<ZipfileDescriptions>
+
+		<ZipfileDescription
+		  zipFilename = "Empty (none).zip"
+		  eulaId = "00000000-0000-0000-0000-000000000001"
+		  installationRequireLicenseFileUpdate = "false"
+		  isFree = "true"
+		  isTrial = "false"
+		  licenseId = "00000000-0000-0000-0000-000000000001"
+		  priceAmmount = "0.0"
+		  priceCurrency = "Dkk"
+		  readMoreUrl = "http://www.google.dk/"
+		  requiredAddOns = "00000000-0000-0000-0000-000000000001"
+		  techicalDetails = "Just an empty add-on that can be installed and uninstalled."
+		  trialPeriodDays = "0"
+		  upgradeAgreementMandatory = "false"
+			/>
+<!--
+		<ZipfileDescription
+					zipFilename = "Empty - WrongVersion (none).zip"
+					eulaId = "00000000-0000-0000-0000-000000000001"
+					installationRequireLicenseFileUpdate = "false"
+					isFree = "true"
+					isTrial = "false"
+					licenseId = "00000000-0000-0000-0000-000000000001"
+					priceAmmount = "0.0"
+					priceCurrency = "Dkk"
+					readMoreUrl = "http://www.google.dk/"
+					requiredAddOns = "00000000-0000-0000-0000-000000000001"
+					techicalDetails = "Just an empty add-on that can be installed and uninstalled."
+					trialPeriodDays = "0"
+					upgradeAgreementMandatory = "false"
+			/>		
+
+		<ZipfileDescription
+		  zipFilename = "ConfigFailing.zip"
+		  eulaId = "00000000-0000-0000-0000-000000000001"
+		  installationRequireLicenseFileUpdate = "false"
+		  isFree = "true"
+		  isTrial = "false"
+		  licenseId = "00000000-0000-0000-0000-000000000001"
+		  priceAmmount = "0.0"
+		  priceCurrency = "Dkk"
+		  readMoreUrl = "http://www.google.dk/"
+		  requiredAddOns = "00000000-0000-0000-0000-000000000001"
+		  techicalDetails = "This add-on has an invalid configuraion file (install.xml)."
+		  trialPeriodDays = "0"
+		  upgradeAgreementMandatory = "false"
+			/>
+
+		<ZipfileDescription
+		  zipFilename = "SleeperAddOn (hard).zip"
+		  eulaId = "00000000-0000-0000-0000-000000000001"
+		  installationRequireLicenseFileUpdate = "false"
+		  isFree = "true"
+		  isTrial = "false"
+		  licenseId = "00000000-0000-0000-0000-000000000001"
+		  priceAmmount = "0.0"
+		  priceCurrency = "Dkk"
+		  readMoreUrl = "http://www.google.dk/"
+		  requiredAddOns = "00000000-0000-0000-0000-000000000001"
+		  techicalDetails = "This add-on sleeps for 60 seconds durring installation and uninstallation and performs a hard system lock."
+		  trialPeriodDays = "0"
+		  upgradeAgreementMandatory = "false"
+			/>
+
+		<ZipfileDescription
+		  zipFilename = "SleeperAddOn (soft).zip"
+		  eulaId = "00000000-0000-0000-0000-000000000001"
+		  installationRequireLicenseFileUpdate = "false"
+		  isFree = "true"
+		  isTrial = "false"
+		  licenseId = "00000000-0000-0000-0000-000000000001"
+		  priceAmmount = "0.0"
+		  priceCurrency = "Dkk"
+		  readMoreUrl = "http://www.google.dk/"
+		  requiredAddOns = "00000000-0000-0000-0000-000000000001"
+		  techicalDetails = "This add-on sleeps for 60 seconds durring installation and uninstallation and performs a soft system lock."
+		  trialPeriodDays = "0"
+		  upgradeAgreementMandatory = "false"
+			/>
+
+		<ZipfileDescription
+		  zipFilename = "SleeperAddOn (none).zip"
+		  eulaId = "00000000-0000-0000-0000-000000000001"
+		  installationRequireLicenseFileUpdate = "false"
+		  isFree = "true"
+		  isTrial = "false"
+		  licenseId = "00000000-0000-0000-0000-000000000001"
+		  priceAmmount = "0.0"
+		  priceCurrency = "Dkk"
+		  readMoreUrl = "http://www.google.dk/"
+		  requiredAddOns = "00000000-0000-0000-0000-000000000001"
+		  techicalDetails = "This add-on sleeps for 60 seconds durring installation and uninstallation and performs no system lock."
+		  trialPeriodDays = "0"
+		  upgradeAgreementMandatory = "false"
+			/>
+
+		<ZipfileDescription
+		  zipFilename = "FailingAddOn - InstallInitialize (hard).zip"
+		  eulaId = "00000000-0000-0000-0000-000000000001"
+		  installationRequireLicenseFileUpdate = "false"
+		  isFree = "true"
+		  isTrial = "false"
+		  licenseId = "00000000-0000-0000-0000-000000000001"
+		  priceAmmount = "0.0"
+		  priceCurrency = "Dkk"
+		  readMoreUrl = "http://www.google.dk/"
+		  requiredAddOns = "00000000-0000-0000-0000-000000000001"
+		  techicalDetails = "Just failing..."
+		  trialPeriodDays = "0"
+		  upgradeAgreementMandatory = "false"
+			/>
+
+		<ZipfileDescription
+		  zipFilename = "FailingAddOn - InstallInitialize (none).zip"
+		  eulaId = "00000000-0000-0000-0000-000000000001"
+		  installationRequireLicenseFileUpdate = "false"
+		  isFree = "true"
+		  isTrial = "false"
+		  licenseId = "00000000-0000-0000-0000-000000000001"
+		  priceAmmount = "0.0"
+		  priceCurrency = "Dkk"
+		  readMoreUrl = "http://www.google.dk/"
+		  requiredAddOns = "00000000-0000-0000-0000-000000000001"
+		  techicalDetails = "Just failing..."
+		  trialPeriodDays = "0"
+		  upgradeAgreementMandatory = "false"
+			/>
+
+		<ZipfileDescription
+		  zipFilename = "FailingAddOn - InstallValidate (hard).zip"
+		  eulaId = "00000000-0000-0000-0000-000000000001"
+		  installationRequireLicenseFileUpdate = "false"
+		  isFree = "true"
+		  isTrial = "false"
+		  licenseId = "00000000-0000-0000-0000-000000000001"
+		  priceAmmount = "0.0"
+		  priceCurrency = "Dkk"
+		  readMoreUrl = "http://www.google.dk/"
+		  requiredAddOns = "00000000-0000-0000-0000-000000000001"
+		  techicalDetails = "Just failing..."
+		  trialPeriodDays = "0"
+		  upgradeAgreementMandatory = "false"
+			/>
+
+		<ZipfileDescription
+		  zipFilename = "FailingAddOn - InstallValidate (none).zip"
+		  eulaId = "00000000-0000-0000-0000-000000000001"
+		  installationRequireLicenseFileUpdate = "false"
+		  isFree = "true"
+		  isTrial = "false"
+		  licenseId = "00000000-0000-0000-0000-000000000001"
+		  priceAmmount = "0.0"
+		  priceCurrency = "Dkk"
+		  readMoreUrl = "http://www.google.dk/"
+		  requiredAddOns = "00000000-0000-0000-0000-000000000001"
+		  techicalDetails = "Just failing..."
+		  trialPeriodDays = "0"
+		  upgradeAgreementMandatory = "false"
+			/>
+
+		<ZipfileDescription
+			zipFilename = "FailingAddOn - InstallInstall (hard).zip"
+			eulaId = "00000000-0000-0000-0000-000000000001"
+			installationRequireLicenseFileUpdate = "false"
+			isFree = "true"
+			isTrial = "false"
+			licenseId = "00000000-0000-0000-0000-000000000001"
+			priceAmmount = "0.0"
+			priceCurrency = "Dkk"
+			readMoreUrl = "http://www.google.dk/"
+			requiredAddOns = "00000000-0000-0000-0000-000000000001"
+			techicalDetails = "Just failing..."
+			trialPeriodDays = "0"
+			upgradeAgreementMandatory = "false"
+			/>
+
+		<ZipfileDescription
+		  zipFilename = "FailingAddOn - InstallInstall (none).zip"
+		  eulaId = "00000000-0000-0000-0000-000000000001"
+		  installationRequireLicenseFileUpdate = "false"
+		  isFree = "true"
+		  isTrial = "false"
+		  licenseId = "00000000-0000-0000-0000-000000000001"
+		  priceAmmount = "0.0"
+		  priceCurrency = "Dkk"
+		  readMoreUrl = "http://www.google.dk/"
+		  requiredAddOns = "00000000-0000-0000-0000-000000000001"
+		  techicalDetails = "Just failing..."
+		  trialPeriodDays = "0"
+		  upgradeAgreementMandatory = "false"
+			/>
+
+
+
+		<ZipfileDescription
+		  zipFilename = "FailingAddOn - UninstallInitialize (hard).zip"
+		  eulaId = "00000000-0000-0000-0000-000000000001"
+		  installationRequireLicenseFileUpdate = "false"
+		  isFree = "true"
+		  isTrial = "false"
+		  licenseId = "00000000-0000-0000-0000-000000000001"
+		  priceAmmount = "0.0"
+		  priceCurrency = "Dkk"
+		  readMoreUrl = "http://www.google.dk/"
+		  requiredAddOns = "00000000-0000-0000-0000-000000000001"
+		  techicalDetails = "Just failing..."
+		  trialPeriodDays = "0"
+		  upgradeAgreementMandatory = "false"
+			/>
+
+		<ZipfileDescription
+		  zipFilename = "FailingAddOn - UninstallInitialize (none).zip"
+		  eulaId = "00000000-0000-0000-0000-000000000001"
+		  installationRequireLicenseFileUpdate = "false"
+		  isFree = "true"
+		  isTrial = "false"
+		  licenseId = "00000000-0000-0000-0000-000000000001"
+		  priceAmmount = "0.0"
+		  priceCurrency = "Dkk"
+		  readMoreUrl = "http://www.google.dk/"
+		  requiredAddOns = "00000000-0000-0000-0000-000000000001"
+		  techicalDetails = "Just failing..."
+		  trialPeriodDays = "0"
+		  upgradeAgreementMandatory = "false"
+			/>
+
+		<ZipfileDescription
+		  zipFilename = "FailingAddOn - UninstallValidate (hard).zip"
+		  eulaId = "00000000-0000-0000-0000-000000000001"
+		  installationRequireLicenseFileUpdate = "false"
+		  isFree = "true"
+		  isTrial = "false"
+		  licenseId = "00000000-0000-0000-0000-000000000001"
+		  priceAmmount = "0.0"
+		  priceCurrency = "Dkk"
+		  readMoreUrl = "http://www.google.dk/"
+		  requiredAddOns = "00000000-0000-0000-0000-000000000001"
+		  techicalDetails = "Just failing..."
+		  trialPeriodDays = "0"
+		  upgradeAgreementMandatory = "false"
+			/>
+
+		<ZipfileDescription
+		  zipFilename = "FailingAddOn - UninstallValidate (none).zip"
+		  eulaId = "00000000-0000-0000-0000-000000000001"
+		  installationRequireLicenseFileUpdate = "false"
+		  isFree = "true"
+		  isTrial = "false"
+		  licenseId = "00000000-0000-0000-0000-000000000001"
+		  priceAmmount = "0.0"
+		  priceCurrency = "Dkk"
+		  readMoreUrl = "http://www.google.dk/"
+		  requiredAddOns = "00000000-0000-0000-0000-000000000001"
+		  techicalDetails = "Just failing..."
+		  trialPeriodDays = "0"
+		  upgradeAgreementMandatory = "false"
+			/>
+
+		<ZipfileDescription
+			zipFilename = "FailingAddOn - UninstallUninstall (hard).zip"
+			eulaId = "00000000-0000-0000-0000-000000000001"
+			installationRequireLicenseFileUpdate = "false"
+			isFree = "true"
+			isTrial = "false"
+			licenseId = "00000000-0000-0000-0000-000000000001"
+			priceAmmount = "0.0"
+			priceCurrency = "Dkk"
+			readMoreUrl = "http://www.google.dk/"
+			requiredAddOns = "00000000-0000-0000-0000-000000000001"
+			techicalDetails = "Just failing..."
+			trialPeriodDays = "0"
+			upgradeAgreementMandatory = "false"
+			/>
+
+		<ZipfileDescription
+		  zipFilename = "FailingAddOn - UninstallUninstall (none).zip"
+		  eulaId = "00000000-0000-0000-0000-000000000001"
+		  installationRequireLicenseFileUpdate = "false"
+		  isFree = "true"
+		  isTrial = "false"
+		  licenseId = "00000000-0000-0000-0000-000000000001"
+		  priceAmmount = "0.0"
+		  priceCurrency = "Dkk"
+		  readMoreUrl = "http://www.google.dk/"
+		  requiredAddOns = "00000000-0000-0000-0000-000000000001"
+		  techicalDetails = "Just failing..."
+		  trialPeriodDays = "0"
+		  upgradeAgreementMandatory = "false"
+			/>
+
+
+		<ZipfileDescription
+		  zipFilename = "DistributedNavigation_2008_v07.09_b0953.zip"
+		  eulaId = "00000000-0000-0000-0000-000000000001"
+		  installationRequireLicenseFileUpdate = "false"
+		  isFree = "true"
+		  isTrial = "false"
+		  licenseId = "00000000-0000-0000-0000-000000000001"
+		  priceAmmount = "0.0"
+		  priceCurrency = "Dkk"
+		  readMoreUrl = "http://www.google.dk/"
+		  requiredAddOns = "00000000-0000-0000-0000-000000000001"
+		  techicalDetails = ""
+		  trialPeriodDays = "0"
+		  upgradeAgreementMandatory = "false"
+			/>
+
+		<ZipfileDescription
+			zipFilename = "FormsRenderer_2008_v07.09_b1303.zip"
+			eulaId = "00000000-0000-0000-0000-000000000001"
+			installationRequireLicenseFileUpdate = "false"
+			isFree = "true"
+			isTrial = "false"
+			licenseId = "00000000-0000-0000-0000-000000000001"
+			priceAmmount = "0.0"
+			priceCurrency = "Dkk"
+			readMoreUrl = "http://www.google.dk/"
+			requiredAddOns = "00000000-0000-0000-0000-000000000001"
+			techicalDetails = ""
+			trialPeriodDays = "0"
+			upgradeAgreementMandatory = "false"
+			/>
+
+		<ZipfileDescription
+			zipFilename = "ImageRotator_2008_v07.09_b1008.zip"
+			eulaId = "00000000-0000-0000-0000-000000000001"
+			installationRequireLicenseFileUpdate = "false"
+			isFree = "true"
+			isTrial = "false"
+			licenseId = "00000000-0000-0000-0000-000000000001"
+			priceAmmount = "0.0"
+			priceCurrency = "Dkk"
+			readMoreUrl = "http://www.google.dk/"
+			requiredAddOns = "00000000-0000-0000-0000-000000000001"
+			techicalDetails = ""
+			trialPeriodDays = "0"
+			upgradeAgreementMandatory = "false"
+			/>
+
+		<ZipfileDescription
+			zipFilename = "NavigationDropdown_2008_v07.09_b1045.zip"
+			eulaId = "00000000-0000-0000-0000-000000000001"
+			installationRequireLicenseFileUpdate = "false"
+			isFree = "true"
+			isTrial = "false"
+			licenseId = "00000000-0000-0000-0000-000000000001"
+			priceAmmount = "0.0"
+			priceCurrency = "Dkk"
+			readMoreUrl = "http://www.google.dk/"
+			requiredAddOns = "00000000-0000-0000-0000-000000000001"
+			techicalDetails = ""
+			trialPeriodDays = "0"
+			upgradeAgreementMandatory = "false"
+			/>
+
+		<ZipfileDescription
+			zipFilename = "NewsList_2008_v07.10_b1039.zip"
+			eulaId = "00000000-0000-0000-0000-000000000001"
+			installationRequireLicenseFileUpdate = "false"
+			isFree = "true"
+			isTrial = "false"
+			licenseId = "00000000-0000-0000-0000-000000000001"
+			priceAmmount = "0.0"
+			priceCurrency = "Dkk"
+			readMoreUrl = "http://www.google.dk/"
+			requiredAddOns = "00000000-0000-0000-0000-000000000001"
+			techicalDetails = ""
+			trialPeriodDays = "0"
+			upgradeAgreementMandatory = "false"
+			/>
+
+		<ZipfileDescription
+			zipFilename = "IDataTypeRequiresLicense (hard).zip"
+			eulaId = "00000000-0000-0000-0000-000000000001"
+			installationRequireLicenseFileUpdate = "false"
+			isFree = "true"
+			isTrial = "false"
+			licenseId = "00000000-0000-0000-0000-000000000001"
+			priceAmmount = "0.0"
+			priceCurrency = "Dkk"
+			readMoreUrl = "http://www.google.dk/"
+			requiredAddOns = "00000000-0000-0000-0000-000000000001"
+			techicalDetails = "THIS IS FOR TESTING ONLY!"
+			trialPeriodDays = "0"
+			upgradeAgreementMandatory = "false"
+			/>
+
+		<ZipfileDescription
+			zipFilename = "IDataTypeRequiresLicense (soft).zip"
+			eulaId = "00000000-0000-0000-0000-000000000001"
+			installationRequireLicenseFileUpdate = "false"
+			isFree = "true"
+			isTrial = "false"
+			licenseId = "00000000-0000-0000-0000-000000000001"
+			priceAmmount = "0.0"
+			priceCurrency = "Dkk"
+			readMoreUrl = "http://www.google.dk/"
+			requiredAddOns = "00000000-0000-0000-0000-000000000001"
+			techicalDetails = "THIS IS FOR TESTING ONLY!"
+			trialPeriodDays = "0"
+			upgradeAgreementMandatory = "false"
+			/>
+
+    <ZipfileDescription
+			zipFilename = "ExistingDataType.zip"
+			eulaId = "00000000-0000-0000-0000-000000000001"
+			installationRequireLicenseFileUpdate = "false"
+			isFree = "true"
+			isTrial = "false"
+			licenseId = "00000000-0000-0000-0000-000000000001"
+			priceAmmount = "0.0"
+			priceCurrency = "Dkk"
+			readMoreUrl = "http://www.google.dk/"
+			requiredAddOns = "00000000-0000-0000-0000-000000000001"
+			techicalDetails = "THIS IS FOR TESTING ONLY!"
+			trialPeriodDays = "0"
+			upgradeAgreementMandatory = "false"
+			/>
+
+    <ZipfileDescription
+			zipFilename = "ExistingDynamicDataType.zip"
+			eulaId = "00000000-0000-0000-0000-000000000001"
+			installationRequireLicenseFileUpdate = "false"
+			isFree = "true"
+			isTrial = "false"
+			licenseId = "00000000-0000-0000-0000-000000000001"
+			priceAmmount = "0.0"
+			priceCurrency = "Dkk"
+			readMoreUrl = "http://www.google.dk/"
+			requiredAddOns = "00000000-0000-0000-0000-000000000001"
+			techicalDetails = "THIS IS FOR TESTING ONLY!"
+			trialPeriodDays = "0"
+			upgradeAgreementMandatory = "false"
+			/>
+			-->
+		</ZipfileDescriptions>
+	<EulaTexts>
+		<EulaText id="00000000-0000-0000-0000-000000000001" culture="en-US">Enter your eula here</EulaText>
+		<EulaText id="00000000-0000-0000-0000-000000000002" culture="da-DK">Skriv din eula her</EulaText>
+	</EulaTexts>
+</Configuration>

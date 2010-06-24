@@ -1,0 +1,338 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|window#audioloader {
+	position: absolute;
+ 	height: 215px;
+	width: 138px;
+	top: -215px;
+	left: -138px;
+	background-color: red;
+}
+ui|window#audioloader iframe { /* sized to fit any flash plugin message (not handled though) */
+	position: absolute;
+ 	height: 215px;
+	width: 138px;
+	top: -215px;
+	left: -138px;
+}
+ui|splash { /* IMPORTANT: synchronize this with updated.css! */
+	color: #B2B2B2;
+	display: block;
+	width: 315px;
+	height: 360px;
+	position: absolute;
+	overflow: hidden;
+	top: 45%;
+	left: 50%;
+	margin-left: -180px;
+	margin-top: -157px;
+}
+ui|splash ui|deck div {
+	-moz-user-select: none;	
+}
+div#backdrop { /* explorer bug when backdrop directly on deck or splash */
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	#alphabackdrop: url("${root}/images/box.png");
+}
+ui|decks {
+	width: 200px;
+	margin-left: 58px;
+	height: 180px;
+	margin-top: 140px;
+	position: relative;
+	z-index: 2;
+}
+div.errortext {
+	position: absolute;
+	font-weight: bold;
+	color: #CC071E;
+	display: none;
+}
+div#loginerror {
+	position: absolute;
+	top: -18px;
+}
+div#registrationerror,
+div#expirationerror {
+	bottom: 34px;
+	right: 7px;
+}
+div.strong {
+	color: #B2B2B2;
+	font-weight: bold;
+}
+div#progressbar {
+	color: #676767;
+	font-weight: normal;
+}
+div#progressbar {
+	position: absolute;
+	text-align: center;
+	bottom: 30px;
+	width: 100%;
+	left: 0;
+}
+ui|progressbar {
+	display: block;
+	width: 200px;
+	height: 23px;
+	margin-top: 6px;
+	position: relative;
+	text-align: right;
+	padding-top: 2px;
+	padding-right: 5px;
+	#alphabackdrop: url("${root}/images/progressbar.png");
+}
+ui|progressbar ui|cover {
+	background-color: white;
+	height: 19px;
+	width: 190px;
+	margin-left: auto;
+	margin-right: 0;
+	position: static;
+}
+ui|dialogtoolbar {
+	padding: 0;
+	background-color: transparent;
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+}
+ui|fields#loginfields {
+	width: 200px !important;
+	padding: 0 !important;
+	position: absolute;
+	bottom: 30px;
+}
+ui|fields#loginfields ui|field {
+	margin: 0;
+}
+ui|fields#loginfields ui|fielddesc {
+	width: 60px;
+	white-space: nowrap;
+	overflow: hidden;
+	padding-left: 0;
+	padding-right: 0;
+	font-weight: bold;
+	padding-top: 7px;
+}
+ui|fields#loginfields ui|fielddata {
+	width: 130px;
+}
+ui|fields#loginfields ui|fielddata input {
+	width: 130px;
+	padding-top: 4px;
+	#ie height: 21px;
+}
+ui|fields#loginfields ui|datainput ui|box {
+	height: 23px;
+}
+a#registrationlink,
+a#expirationlink {
+	text-decoration: underline;
+	color: #CC071E;
+	cursor: pointer;
+	#ie cursor: hand;
+}
+ui|block {
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	position: absolute;
+	z-index: 0; /* below cover */
+}
+
+ui|theatre {
+	display: block;
+	position: absolute;
+	z-index: 4; /* below cover */
+	top: 100%;
+	left: 100%;
+	width: 100%;
+	height: 100%;
+}
+div#offlinesplash {
+	width: 128px;
+	height: 128px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -100px;
+	margin-left: -64px;
+	z-index: 1;
+	text-align: center;
+}
+div#offlineimage {
+	width: 100%;
+	height: 100%;
+	#alphaimage: url("images/loading.png");
+}
+span#offlinetext {
+	position: relative;
+	#moz top: 6px;
+	#ie top: -4px;
+}
+span#offlinetext span.text1 {
+	color: black;
+	position: absolute;
+}
+span#offlinetext span.text2 {
+	color: white;
+	position: relative;
+	top: -1px;
+	left: -1px;	
+	#moz: visibility: hidden;
+}
+div#offlinemovie {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 0;	
+}
+object#offlineflash {
+	position:absolute;
+	top:0;
+	left:0;	
+}
+
+/* SPECIAL BUTTON! ............................................. */
+
+ui|clickbutton {
+	float: right;
+}
+ui|clickbutton table.matrix td {
+	width: 7px;
+	height: 7px;
+}
+ui|clickbutton ui|labelbox {
+	padding: 0;
+	margin-bottom: -4px;
+	position: relative;
+	top: -1px;
+}
+ui|clickbutton ui|labeltext {
+	padding: 0 4px 1px 1px;
+	color: white;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+ui|clickbutton table.matrix td.c {
+	padding: 0;
+}
+ui|cover#mastercover {
+	z-index: 1000;	
+}
+ui|cover#applockcover {
+	background-color: black;	
+}
+ui|uncover {
+	display: block;
+	position: absolute;
+	top: -100px;
+	left: -100px;
+	width: 100px;
+	height: 100px;
+	cursor: default;
+}
+
+/* HOVER */
+	
+ui|splash ui|clickbutton.hover table.matrix td.c,
+ui|splash ui|clickbutton.focused table.matrix td.c,
+ui|splash ui|clickbutton.hover table.matrix td.n,
+ui|splash ui|clickbutton.focused table.matrix td.n,
+ui|splash ui|clickbutton.hover table.matrix td.s,
+ui|splash ui|clickbutton.focused table.matrix td.s,
+ui|splash ui|clickbutton.hover table.matrix td.e,
+ui|splash ui|clickbutton.focused table.matrix td.e,
+ui|splash ui|clickbutton.hover table.matrix td.w,
+ui|splash ui|clickbutton.focused table.matrix td.w {
+	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-hover.png");
+}
+ui|clickbutton.hover table.matrix td.ne,
+ui|clickbutton.focused table.matrix td.ne {
+	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-hover-ne.png");
+}
+ui|clickbutton.hover table.matrix td.nw,
+ui|clickbutton.focused table.matrix td.nw {
+	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-hover-nw.png");
+}
+ui|clickbutton.hover table.matrix td.se,
+ui|clickbutton.focused table.matrix td.se {
+	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-hover-se.png");
+}
+ui|clickbutton.hover table.matrix td.sw,
+ui|clickbutton.focused table.matrix td.sw {
+	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-hover-sw.png");
+}
+
+
+/* ACTIVE */
+
+ui|clickbutton.active table.matrix td.c,
+ui|clickbutton.active table.matrix td.n,
+ui|clickbutton.active table.matrix td.s,
+ui|clickbutton.active table.matrix td.e,
+ui|clickbutton.active table.matrix td.w {
+	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-active.png");
+}
+ui|clickbutton.active table.matrix td.ne {
+	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-active-ne.png");
+}
+ui|clickbutton.active table.matrix td.nw {
+	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-active-nw.png");
+}
+ui|clickbutton.active table.matrix td.se {
+	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-active-se.png");
+}
+ui|clickbutton.active table.matrix td.sw {
+	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-active-sw.png");
+}
+
+
+/* DEFAULT and DISABLED */
+
+ui|clickbutton table.matrix td.c,
+ui|clickbutton.isdisabled table.matrix td.c {
+	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-default.png");
+}
+ui|clickbutton table.matrix td.n,
+ui|clickbutton.isdisabled table.matrix td.n {
+	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-default.png");
+}
+ui|clickbutton table.matrix td.s,
+ui|clickbutton.isdisabled table.matrix td.s {
+	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-default.png");
+}
+ui|clickbutton table.matrix td.e,
+ui|clickbutton.isdisabled table.matrix td.e {
+	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-default.png");
+}
+ui|clickbutton table.matrix td.w,
+ui|clickbutton.isdisabled table.matrix td.w {
+	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-default.png");
+}
+ui|clickbutton table.matrix td.ne,
+ui|clickbutton.isdisabled table.matrix td.ne {
+	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-default-ne.png");
+}
+ui|clickbutton table.matrix td.nw,
+ui|clickbutton.isdisabled table.matrix td.nw {
+	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-default-nw.png");
+}
+ui|clickbutton table.matrix td.se,
+ui|clickbutton.isdisabled table.matrix td.se {
+	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-default-se.png");
+}
+ui|clickbutton table.matrix td.sw,
+ui|clickbutton.isdisabled table.matrix td.sw {
+	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-default-sw.png");
+}

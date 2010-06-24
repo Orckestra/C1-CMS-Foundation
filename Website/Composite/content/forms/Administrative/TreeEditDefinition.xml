@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:internal="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="TreeId" type="System.String"/>
+    <cms:binding name="TreeDefinitionMarkup" type="System.String"/>
+  </cms:bindings>
+  <cms:layout iconhandle="developerapplication-treedefinition-edit">
+    <cms:layout.label>
+      <cms:read source="TreeId" />
+    </cms:layout.label>
+    <MarkupEditor Label="Edit">
+      <cms:bind source="TreeDefinitionMarkup" />
+    </MarkupEditor>
+  </cms:layout>
+</cms:formdefinition>

@@ -1,0 +1,113 @@
+﻿<StateMachineWorkflowDesigner xmlns:ns0="clr-namespace:System.Drawing;Assembly=System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Size="1190; 986" AutoSizeMargin="16; 24" AutoSize="False" Location="30; 30" Name="AddMediaZipFileWorkflow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/workflow">
+	<StateMachineWorkflowDesigner.Designers>
+		<StateDesigner Size="197; 80" AutoSizeMargin="16; 24" Location="63; 105" Name="initialState">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Name="initialStateInitializationActivity" Size="150; 182" Location="71; 136">
+					<StateInitializationDesigner.Designers>
+						<CodeDesigner Name="codeActivity1" Size="130; 41" Location="81; 198" />
+						<SetStateDesigner Name="setStateActivity2" Size="130; 41" Location="81; 258" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+		<StateDesigner Size="214; 102" AutoSizeMargin="16; 24" AutoSize="False" Location="240; 344" Name="selectZipFileStateActivity">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Name="selectZipStateInitializationActivity" Size="150; 122" Location="421; 135">
+					<StateInitializationDesigner.Designers>
+						<ActivityDesigner Name="wizzardFormActivity1" Size="130; 41" Location="431; 197" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+				<EventDrivenDesigner Name="finishEventDrivenActivity" Size="381; 423" Location="429; 148">
+					<EventDrivenDesigner.Designers>
+						<HandleExternalEventActivityDesigner Name="finishHandleExternalEventActivity1" Size="130; 41" Location="554; 210" />
+						<IfElseDesigner Name="ifElseActivity1" Size="361; 282" Location="439; 270">
+							<IfElseDesigner.Designers>
+								<IfElseBranchDesigner Name="ifElseBranchActivity1" Size="150; 182" Location="458; 341">
+									<IfElseBranchDesigner.Designers>
+										<CodeDesigner Name="codeActivity3" Size="130; 41" Location="468; 403" />
+										<SetStateDesigner Name="setStateActivity3" Size="130; 41" Location="468; 463" />
+									</IfElseBranchDesigner.Designers>
+								</IfElseBranchDesigner>
+								<IfElseBranchDesigner Name="ifElseBranchActivity2" Size="150; 182" Location="631; 341">
+									<IfElseBranchDesigner.Designers>
+										<SetStateDesigner Name="setStateActivity5" Size="130; 41" Location="641; 433" />
+									</IfElseBranchDesigner.Designers>
+								</IfElseBranchDesigner>
+							</IfElseDesigner.Designers>
+						</IfElseDesigner>
+					</EventDrivenDesigner.Designers>
+				</EventDrivenDesigner>
+				<EventDrivenDesigner Name="cancelEventDrivenActivity" Size="150; 182" Location="421; 183">
+					<EventDrivenDesigner.Designers>
+						<HandleExternalEventActivityDesigner Name="cancelHandleExternalEventActivity2" Size="130; 41" Location="431; 245" />
+						<SetStateDesigner Name="setStateActivity6" Size="130; 41" Location="431; 305" />
+					</EventDrivenDesigner.Designers>
+				</EventDrivenDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+		<StateDesigner Size="205; 80" AutoSizeMargin="16; 24" AutoSize="False" Location="534; 592" Name="finalizeStateActivity">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Name="finalizeStateInitializationActivity" Size="150; 242" Location="542; 623">
+					<StateInitializationDesigner.Designers>
+						<CodeDesigner Name="codeActivity2" Size="130; 41" Location="552; 685" />
+						<ActivityDesigner Name="closeCurrentViewActivity1" Size="130; 41" Location="552; 745" />
+						<SetStateDesigner Name="setStateActivity4" Size="130; 41" Location="552; 805" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+		<EventDrivenDesigner Name="eventDrivenActivity1" Size="150; 182" Location="38; 61">
+			<EventDrivenDesigner.Designers>
+				<HandleExternalEventActivityDesigner Name="cancelHandleExternalEventActivity1" Size="130; 41" Location="48; 123" />
+				<SetStateDesigner Name="setStateActivity1" Size="130; 41" Location="48; 183" />
+			</EventDrivenDesigner.Designers>
+		</EventDrivenDesigner>
+		<StateDesigner Size="160; 80" AutoSizeMargin="16; 24" Location="859; 784" Name="finalStateActivity" />
+	</StateMachineWorkflowDesigner.Designers>
+	<StateMachineWorkflowDesigner.DesignerConnectors>
+		<StateDesignerConnector TargetActivity="finalStateActivity" SetStateName="setStateActivity1" SourceActivity="AddMediaZipFileWorkflow" TargetConnectionIndex="0" SourceStateName="AddMediaZipFileWorkflow" TargetConnectionEdge="Top" SourceConnectionEdge="Right" EventHandlerName="eventDrivenActivity1" SourceConnectionIndex="0" TargetStateName="finalStateActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="176" Y="71" />
+				<ns0:Point X="939" Y="71" />
+				<ns0:Point X="939" Y="784" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetActivity="selectZipFileStateActivity" SetStateName="setStateActivity2" SourceActivity="initialState" TargetConnectionIndex="0" SourceStateName="initialState" TargetConnectionEdge="Top" SourceConnectionEdge="Right" EventHandlerName="initialStateInitializationActivity" SourceConnectionIndex="0" TargetStateName="selectZipFileStateActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="256" Y="146" />
+				<ns0:Point X="347" Y="146" />
+				<ns0:Point X="347" Y="344" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetActivity="finalizeStateActivity" SetStateName="setStateActivity3" SourceActivity="selectZipFileStateActivity" TargetConnectionIndex="0" SourceStateName="selectZipFileStateActivity" TargetConnectionEdge="Top" SourceConnectionEdge="Right" EventHandlerName="finishEventDrivenActivity" SourceConnectionIndex="1" TargetStateName="finalizeStateActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="407" Y="409" />
+				<ns0:Point X="636" Y="409" />
+				<ns0:Point X="636" Y="592" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetActivity="selectZipFileStateActivity" SetStateName="setStateActivity5" SourceActivity="selectZipFileStateActivity" TargetConnectionIndex="0" SourceStateName="selectZipFileStateActivity" TargetConnectionEdge="Top" SourceConnectionEdge="Right" EventHandlerName="finishEventDrivenActivity" SourceConnectionIndex="1" TargetStateName="selectZipFileStateActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="580" Y="169" />
+				<ns0:Point X="632" Y="169" />
+				<ns0:Point X="632" Y="96" />
+				<ns0:Point X="520" Y="96" />
+				<ns0:Point X="520" Y="104" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetActivity="finalStateActivity" SetStateName="setStateActivity6" SourceActivity="selectZipFileStateActivity" TargetConnectionIndex="0" SourceStateName="selectZipFileStateActivity" TargetConnectionEdge="Top" SourceConnectionEdge="Right" EventHandlerName="cancelEventDrivenActivity" SourceConnectionIndex="2" TargetStateName="finalStateActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="412" Y="433" />
+				<ns0:Point X="939" Y="433" />
+				<ns0:Point X="939" Y="784" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetActivity="finalStateActivity" SetStateName="setStateActivity4" SourceActivity="finalizeStateActivity" TargetConnectionIndex="0" SourceStateName="finalizeStateActivity" TargetConnectionEdge="Top" SourceConnectionEdge="Right" EventHandlerName="finalizeStateInitializationActivity" SourceConnectionIndex="0" TargetStateName="finalStateActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="735" Y="633" />
+				<ns0:Point X="939" Y="633" />
+				<ns0:Point X="939" Y="784" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+	</StateMachineWorkflowDesigner.DesignerConnectors>
+</StateMachineWorkflowDesigner>

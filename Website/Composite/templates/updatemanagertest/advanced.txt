@@ -1,0 +1,10 @@
+<h1 id="id1">Advanced Example</h1>
+<h3 id="id2" class="red">Insert/remove elements and update attributes</h3>
+<p id="id3">Now that things have an ID attribute specified, try this:</p>
+<ul id="id4">
+	<li id="id5">Change the CSS class on the red heading to "blue" or "green"</li>
+	<li id="id6">Remove this list item! Then insert it again!</li>
+	<li id="id7">Insert a new list item after this (with an ID!)</li>
+</ul>
+<p id="id8">The ID attribute is the key to make this happen - otherwise we replace!</p>
+<p id="id9">Insert/remove has important limitations; read about it in the scripts...</p>

@@ -1,0 +1,6 @@
+<h1>Basic Example</h1>
+<h3 class="red">Everything is replaced when you make changes</h3>
+<p>For example, try changing the CSS classname from "red" to "green".</p>
+<p>In the report window below, you'll notice that ALL is replaced.</p>
+<p>That's because elements don't have an ID atribute specified!</p>
+<p>For something more fancy, try the "Advanced Example"...</p>

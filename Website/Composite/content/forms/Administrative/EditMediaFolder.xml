@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+	<cms:bindings>
+		<cms:binding name="FolderTitle" type="System.String" optional="true"/>
+		<cms:binding name="FolderDescription" type="System.String" optional="true"/>
+		<cms:binding name="FolderName" type="System.String" />
+		<cms:binding name="ProvidesMetaData" type="System.Boolean" />
+	</cms:bindings>
+	<cms:layout>
+		<FieldGroup Label="${Composite.Management, Website.Forms.Administrative.EditMediaFolder.LabelFieldGroup}">
+			<TextBox Label="${Composite.Management, Website.Forms.Administrative.EditMediaFolder.LabelFolderName}" Help="${Composite.Management, Website.Forms.Administrative.EditMediaFolder.HelpFolderName}">
+				<TextBox.Text>
+					<cms:bind source="FolderName" />
+				</TextBox.Text>
+			</TextBox>
+			<f:BooleanCheck>
+				<f:BooleanCheck.CheckValue>
+					<cms:read source="ProvidesMetaData" />
+				</f:BooleanCheck.CheckValue>
+				<f:BooleanCheck.WhenTrue>
+					<TextBox Label="${Composite.Management, Website.Forms.Administrative.EditMediaFolder.LabelTitle}" Help="${Composite.Management, Website.Forms.Administrative.EditMediaFolder.HelpTitle}">
+						<TextBox.Text>
+							<cms:bind source="FolderTitle" />
+						</TextBox.Text>
+					</TextBox>
+				</f:BooleanCheck.WhenTrue>
+			</f:BooleanCheck>
+			<f:BooleanCheck>
+				<f:BooleanCheck.CheckValue>
+					<cms:read source="ProvidesMetaData" />
+				</f:BooleanCheck.CheckValue>
+				<f:BooleanCheck.WhenTrue>
+					<TextArea Label="${Composite.Management, Website.Forms.Administrative.EditMediaFolder.LabelDescription}" Help="${Composite.Management, Website.Forms.Administrative.EditMediaFolder.HelpDescription}">
+						<cms:bind source="FolderDescription" />
+					</TextArea>
+				</f:BooleanCheck.WhenTrue>
+			</f:BooleanCheck>
+		</FieldGroup>
+	</cms:layout>
+</cms:formdefinition>

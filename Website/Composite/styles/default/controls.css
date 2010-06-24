@@ -1,0 +1,12 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|controlgroup {
+	display: block;
+	float: right;
+	
+}
+ui|control {
+	display: block;
+	float: left;
+}

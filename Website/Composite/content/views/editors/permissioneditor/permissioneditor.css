@@ -1,0 +1,120 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+#main {
+	position: relative;  /* contain table.deco */
+}
+ui|tabpanel table {
+	border-collapse: collapse;
+	table-layout: fixed;
+	width: 100%;
+	margin: 0;
+}
+
+ui|tabpanel table.head,
+ui|tabpanel table.grid,
+ui|tabpanel table.deco {
+	display: none;	/* adjusted by page binding */
+}
+ui|tabpanel table.head {
+	border-top: 1px solid $(color:threedhighlight);	
+	#moz margin-top: 1px;
+	background-color: $(color:threedface);
+}
+ui|tabpanel td {
+	border: 1px solid $(color:threedshadow);
+	white-space: nowrap;
+	overflow: hidden;
+}
+ui|tabpanel tr.first td {
+	border-top: none !important;
+}
+ui|tabpanel table th {
+	border-bottom: 1px solid $(color:threedshadow);
+	padding: 5px 0 6px 0;
+	#ie text-overflow: ellipsis;
+}
+ui|tabpanel table td,
+ui|tabpanel table th {
+	overflow: hidden;
+	text-align: center;
+	#moz -moz-user-select: none;
+}
+ui|tabpanel th.index,
+ui|tabpanel td.index {
+	width: 20%;
+	text-align: left;
+	border-left: none;
+}
+ui|tabpanel td.edit,
+ui|tabpanel th.edit {
+	width: 21px;
+	#ie width: 25px;
+	border-right: none;
+	border-left: none;
+}
+ui|tabpanel td.last {
+	border-right: none;	
+}
+ui|checkbox {
+	margin: 0 !important;
+	#region ie /* fix jump onmouseover */
+		height: 20px;
+		overflow: hidden;
+	#endregion
+}
+ui|tabpanel th.index,
+ui|tabpanel td.index {
+	padding-left: 7px;
+}
+ui|tabpanel span.name {
+	display: block;
+	width: 100%;
+	overflow: hidden;
+	#ie text-overflow: ellipsis;
+	height: 16px;
+	padding-left: 20px;
+	padding-top: 2px;
+	#alphaimage: url("${root}/services/Icon/GetIcon.ashx?resourceName=users-user-disabled&resourceNamespace=Composite.Icons");
+}
+ui|tabpanel tr.set span.name {
+	#alphaimage: url("${root}/services/Icon/GetIcon.ashx?resourceName=users-user&resourceNamespace=Composite.Icons");
+}
+ui|tabpanel table.deco {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;	
+}
+ui|tabpanel table.deco td {
+	border-bottom: none;
+}
+ui|tabpanel table.grid {
+	position: relative;
+	z-index: 2;	 /* above table.deco */
+}
+ui|tabpanel table.grid span.x {
+	display: block;
+	width: 16px;
+	height: 16px;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	#alphaimage: url("${root}/services/Icon/GetIcon.ashx?resourceName=accept-disabled&resourceNamespace=Composite.Icons");
+}
+ui|tabpanel table.grid tr.set span.x {
+	#alphaimage: url("${root}/services/Icon/GetIcon.ashx?resourceName=accept&resourceNamespace=Composite.Icons");
+}
+ui|tabpanel table.grid tr {
+	background-color: $(color:threedface);	
+}
+ui|tabpanel table.grid tr.set {
+	font-weight: bold;
+	background-color:$(window);
+	color: $(color:windowtext);
+}
+ui|tabpanel table.grid tr.hilite {
+	background-color: $(color:infobackground);
+	color: $(color:infotext);
+}

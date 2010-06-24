@@ -1,0 +1,67 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+
+body {
+	text-align: center;
+	padding-bottom: 80px;
+	
+}
+div#layout {
+	width: 744px;
+	text-align: left;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #EDEDE9;
+	-moz-border-radius-bottomleft: 8px;
+	-moz-border-radius-bottomright: 8px;
+}
+div#page {
+	background-color: white;
+	border: 1px solid #888888;
+	border-top: none;
+	position: relative;
+	top: -3px;
+	left: -3px;
+	-moz-border-radius-bottomleft: 8px;
+	-moz-border-radius-bottomright: 8px;
+}
+div#titlebar {
+	padding: 30px 10px 0 16px;
+	position: relative;
+	background-color: #EDEDE9;
+	border-bottom: 1px solid #DDDDDD;
+	height: 100px;
+	overflow: hidden;
+	background-image: url("backdrop.jpg");
+}
+div#titlebar h1 {
+	position: absolute;
+	top: 49px;
+	left: 64px;
+	color: #505050;
+	color: black;
+	cursor: default;
+}
+div#logo {
+	width: 48px;
+	height: 48px;
+	background-image: url("logo.png");
+	_background-image: none;
+	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='logo.png',sizingMethod='crop');	
+}
+div#main {
+	padding: 60px 10px 50px 50px;
+	width: 450px;
+	float: left;
+	position: relative;
+}
+div#spots {
+	float: right;
+	position: relative;
+	width: 270px;
+	padding: 45px 20px 20px 20px;
+	margin-right: 10px;
+	_padding-top: 44px;
+}
+div.spot {
+	margin-bottom: 1.3em;
+}

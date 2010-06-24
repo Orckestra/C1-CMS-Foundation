@@ -1,0 +1,8 @@
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|treenode ui|labelbox.open {
+	background-image: url("${skin}/trees/icon-treenode-minus.png");
+}
+ui|treenode ui|labelbox.closed {
+	background-image: url("${skin}/trees/icon-treenode-plus.png");
+}

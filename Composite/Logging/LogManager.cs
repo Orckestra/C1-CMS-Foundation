@@ -1,0 +1,151 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Composite.StandardPlugins.Logging.LogTraceListeners.FileLogTraceListener;
+
+namespace Composite.Logging
+{
+	public static class LogManager
+	{
+        private static readonly string VerboseSeverity = "Verbose";
+        public static int LogLinesRequestLimit = 5000;
+
+        private static FileLogger.LogFileReader[] _logFiles;
+        private static readonly object _syncRoot = new object();
+
+        static LogManager()
+        {
+            FileLogger.OnReset += () => _logFiles = null;
+        }
+
+        private static FileLogger FileLogger
+        {
+            get
+            {
+                return FileLogTraceListener.LoggerInstance;
+            }
+        }
+
+        private static FileLogger.LogFileReader[] LogFiles
+        {
+            get
+            {
+                var result = _logFiles;
+                if (result == null)
+                {
+                    lock (_syncRoot)
+                    {
+                        if (_logFiles == null)
+                        {
+                            _logFiles = FileLogger.GetLogFiles();
+                        }
+                        result = _logFiles;
+                    }
+                }
+                return result;
+            }
+        }
+
+        public static bool DeleteLogFile(DateTime date)
+        {
+            date = date.Date;
+
+            var filesToDelete = FileLogger.GetLogFiles().Where(file => file.Date.Date == date).ToArray();
+
+            bool updated = false;
+            foreach(var file in filesToDelete)
+            {
+                updated |= file.Delete();
+            }
+
+            if(updated)
+            {
+                lock (_syncRoot)
+                {
+                    _logFiles = null;
+                }
+            }
+
+            return updated;
+        }
+
+        public static DateTime GetLastStartupTime()
+        {
+            return FileLogger.StartupTime;
+        }
+
+        public static DateTime[] GetLoggingDates()
+        {
+            return LogFiles.Select(entry => entry.Date).Distinct().OrderBy(date => date).ToArray();
+        }
+
+        public static int GetLogEntriesCount(DateTime timeFrom, DateTime timeTo, bool includeVerbose)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static int GetLogEntriesCountByDate(DateTime date, bool includeVerbose)
+        {
+            date = date.Date;
+
+            int result = 0;
+            foreach (var logFile in LogFiles.Where(logFile => logFile.Date == date))
+            {
+                result += logFile.EntriesCount;
+            }
+
+            return result;
+        }
+
+        public static LogEntry[] GetLogEntries(DateTime timeFrom, DateTime timeTo, bool includeVerbose, int maximumAmount)
+        {
+            if (maximumAmount == 0)
+            {
+                maximumAmount = LogLinesRequestLimit;
+            }
+
+            Verify.That(maximumAmount > 0 && maximumAmount <= LogLinesRequestLimit, "Maximum amount should be in range [1..{0}]", LogLinesRequestLimit);
+
+            var files = LogFiles.Where(logFile => logFile.Date >= timeFrom.Date && logFile.Date <= timeTo.Date);
+
+            var result = new List<LogEntry>();
+
+            lock (_syncRoot)
+            {
+                foreach (var logFile in files)
+                {
+                    try
+                    {
+                        if (!logFile.Open())
+                        {
+                            continue;
+                        }
+
+                        int entriesRead = 0;
+                        foreach (var entry in logFile.GetLogEntries(timeFrom, timeTo))
+                        {
+                            if (entry.TimeStamp >= timeFrom && entry.TimeStamp <= timeTo)
+                            {
+                                if (!includeVerbose && entry.Severity == VerboseSeverity)
+                                {
+                                    continue;
+                                }
+
+                                result.Add(entry);
+
+                                entriesRead++;
+                                if (entriesRead == maximumAmount) break;
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        logFile.Close();
+                    }
+                }
+            }
+
+            return result.OrderBy(entry => entry.TimeStamp).Take(maximumAmount).ToArray();
+        }
+	}
+}
