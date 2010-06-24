@@ -198,6 +198,7 @@ namespace Composite.Functions.ManagedParameters
                 {
                     _parameterProfiles = new List<ParameterProfile>();
 
+                    // NOTE: It would be nice to cache parameters collection instance in order to improve start-up time
                     var parameters =
                         (from parameter in DataFacade.GetData<IParameter>().AsEnumerable()
                          where parameter.OwnerId == _ownerId
