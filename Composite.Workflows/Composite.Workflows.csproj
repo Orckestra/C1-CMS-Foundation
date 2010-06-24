@@ -870,12 +870,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Composite\Composite.csproj">
-      <Project>{9427C500-8542-409F-A8DC-0B21E250E0FA}</Project>
-      <Name>Composite</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Actions\Workflows\EntityTokenLockedWorkflow.layout">
       <DependentUpon>EntityTokenLockedWorkflow.cs</DependentUpon>
     </EmbeddedResource>
@@ -1235,7 +1229,16 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\CompositeApplications\CompositeApplications.csproj">
+      <Project>{9427C500-8542-409F-A8DC-0B21E250E0FA}</Project>
+      <Name>CompositeApplications</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CompositeCore\CompositeCore.csproj">
+      <Project>{02BB5F33-56BB-4565-8D32-7BDF92D02CDE}</Project>
+      <Name>CompositeCore</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

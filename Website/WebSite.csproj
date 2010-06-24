@@ -109,21 +109,18 @@
     </Compile>
     <Compile Include="Composite\content\dialogs\functions\editFunctionCall.aspx.cs">
       <DependentUpon>editFunctionCall.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\content\dialogs\functions\editFunctionCall.aspx.designer.cs">
       <DependentUpon>editFunctionCall.aspx</DependentUpon>
     </Compile>
     <Compile Include="Composite\content\flow\FlowUi.aspx.cs">
       <DependentUpon>FlowUi.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\content\flow\FlowUi.aspx.designer.cs">
       <DependentUpon>FlowUi.aspx</DependentUpon>
     </Compile>
     <Compile Include="Composite\content\misc\editors\functioncalleditor\functioncalleditor.aspx.cs">
       <DependentUpon>functioncalleditor.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\content\views\dev\flushadmin\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -219,67 +216,55 @@
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\EmptyDocumentExecutionContainer.ascx.cs">
       <DependentUpon>EmptyDocumentExecutionContainer.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\EmptyDocumentExecutionContainer.ascx.designer.cs">
       <DependentUpon>EmptyDocumentExecutionContainer.ascx</DependentUpon>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\DataDialogExecutionContainer.ascx.cs">
       <DependentUpon>DataDialogExecutionContainer.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\DataDialogExecutionContainer.ascx.designer.cs">
       <DependentUpon>DataDialogExecutionContainer.ascx</DependentUpon>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\DocumentExecutionContainer.ascx.cs">
       <DependentUpon>DocumentExecutionContainer.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\FormUIStandardDialogs\StandardDialogExecutionContainer.ascx.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\FormUIStandardDialogs\StandardDialogExecutionContainer.ascx.cs" />
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\FormUIStandardDialogs\StandardDialogExecutionContainer.ascx.designer.cs">
       <DependentUpon>StandardDialogExecutionContainer.ascx.cs</DependentUpon>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\WizardExecutionContainer.ascx.cs">
       <DependentUpon>WizardExecutionContainer.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\WizardExecutionContainer.ascx.designer.cs">
       <DependentUpon>WizardExecutionContainer.ascx</DependentUpon>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\Customized\PageContentEditor.ascx.cs">
       <DependentUpon>PageContentEditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\Customized\PageContentEditor.ascx.designer.cs">
       <DependentUpon>PageContentEditor.ascx</DependentUpon>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionCallsDesigner.ascx.cs">
       <DependentUpon>FunctionCallsDesigner.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionParameterDesigner.ascx.cs">
       <DependentUpon>FunctionParameterDesigner.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionParameterDesigner.ascx.designer.cs">
       <DependentUpon>FunctionParameterDesigner.ascx</DependentUpon>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionParameterEditor.aspx.cs">
       <DependentUpon>FunctionParameterEditor.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\TypeFieldDesigner.ascx.cs">
       <DependentUpon>TypeFieldDesigner.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\TypeFieldDesigner.ascx.designer.cs">
       <DependentUpon>TypeFieldDesigner.ascx</DependentUpon>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\RichContent\MultiContentXhtmlEditor.ascx.cs">
       <DependentUpon>MultiContentXhtmlEditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\RichContent\MultiContentXhtmlEditor.ascx.designer.cs">
       <DependentUpon>MultiContentXhtmlEditor.ascx</DependentUpon>
@@ -497,7 +482,6 @@
     </Compile>
     <Compile Include="Spikes\MAW\CoolUiControl.ascx.cs">
       <DependentUpon>CoolUiControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Spikes\MAW\CoolUiControl.ascx.designer.cs">
       <DependentUpon>CoolUiControl.ascx</DependentUpon>
@@ -6110,8 +6094,12 @@
       <Project>{1FE08476-346A-4053-813D-8807C0E0FC36}</Project>
       <Name>Composite.Workflows</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CompositeCore\CompositeCore.csproj">
+      <Project>{02BB5F33-56BB-4565-8D32-7BDF92D02CDE}</Project>
+      <Name>CompositeCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Composite\Composite.csproj">
-      <Project>{9427C500-8542-409F-A8DC-0B21E250E0FA}</Project>
+      <Project>{F8D87A5F-D090-4D24-80C1-DBCD938C6CAB}</Project>
       <Name>Composite</Name>
     </ProjectReference>
   </ItemGroup>

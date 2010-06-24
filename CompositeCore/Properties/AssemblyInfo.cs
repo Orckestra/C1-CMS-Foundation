@@ -5,15 +5,14 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Composite C1 API 2.0 beta")]
-[assembly: AssemblyDescription("Composite C1 public API")]
+[assembly: AssemblyTitle("CompositeCore")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Composite A/S")]
-[assembly: AssemblyProduct("Composite C1")]
-[assembly: AssemblyCopyright("Copyright © Composite A/S 2010")]
+[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyProduct("CompositeCore")]
+[assembly: AssemblyCopyright("Copyright © Microsoft 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -21,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("3856c768-54e2-43f2-89c1-fdd18309a78b")]
+[assembly: Guid("b70eb175-36f1-4a0a-9d9a-8460175624e0")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -1,0 +1,2089 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9427C500-8542-409F-A8DC-0B21E250E0FA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Composite</RootNamespace>
+    <AssemblyName>CompositeApplications</AssemblyName>
+    <ProjectTypeGuids>{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRules>
+    </CodeAnalysisRules>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <DocumentationFile>
+    </DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRules>
+    </CodeAnalysisRules>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.81.0.1407, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Validation, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\Microsoft.Practices.EnterpriseLibrary.Validation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ObjectBuilder, Version=1.0.51206.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\Microsoft.Practices.ObjectBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="System.ServiceModel.Web">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Workflow.Activities" />
+    <Reference Include="System.Workflow.ComponentModel" />
+    <Reference Include="System.Workflow.Runtime" />
+    <Reference Include="System.WorkflowServices">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\WebSite\Bin\System.Web.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="TidyNet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\TidyNet.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Actions\ActionEventSystemFacade.cs" />
+    <Compile Include="Actions\ActionLockingException.cs" />
+    <Compile Include="Actions\ActionLockingFacade.cs" />
+    <Compile Include="Actions\AddNewTreeRefresher.cs" />
+    <Compile Include="Actions\FlowTokenSerializer.cs" />
+    <Compile Include="Actions\IElementInformationService.cs" />
+    <Compile Include="Actions\MessageBoxActionToken.cs" />
+    <Compile Include="Actions\UrlActionToken.cs" />
+    <Compile Include="Ajax\AjaxResponseHttpModule.cs" />
+    <Compile Include="Ajax\AjaxStream.cs" />
+    <Compile Include="Application\ApplicationOfflineCheckHttpModule.cs" />
+    <Compile Include="Application\ApplicationStartupFacade.cs" />
+    <Compile Include="Application\Foundation\ApplicationStartupHandlerRegistry.cs" />
+    <Compile Include="Application\Foundation\ApplicationStartupHandlerRegistryImpl.cs" />
+    <Compile Include="Application\Foundation\IApplicationStartupHandlerRegistry.cs" />
+    <Compile Include="Application\Foundation\PluginFacades\ApplicationStartupHandlerPluginFacade.cs" />
+    <Compile Include="Application\Plugins\ApplicationStartupHandler\ApplicationStartupHandlerData.cs" />
+    <Compile Include="Application\Plugins\ApplicationStartupHandler\IApplicationStartupHandler.cs" />
+    <Compile Include="Application\Plugins\ApplicationStartupHandler\NonConfigurableApplicationStartupHandler.cs" />
+    <Compile Include="Application\Plugins\ApplicationStartupHandler\Runtime\ApplicationStartupHandlerCustomFactory.cs" />
+    <Compile Include="Application\Plugins\ApplicationStartupHandler\Runtime\ApplicationStartupHandlerDefaultNameRetriever.cs" />
+    <Compile Include="Application\Plugins\ApplicationStartupHandler\Runtime\ApplicationStartupHandlerFactory.cs" />
+    <Compile Include="Application\Plugins\ApplicationStartupHandler\Runtime\ApplicationStartupHandlerSettings.cs" />
+    <Compile Include="Application\ShutdownGuard.cs" />
+    <Compile Include="Caching\CacheManager.cs" />
+    <Compile Include="Caching\CacheSettings.cs" />
+    <Compile Include="Caching\CachePriority.cs" />
+    <Compile Include="Caching\CacheStatistic.cs" />
+    <Compile Include="Caching\CacheType.cs" />
+    <Compile Include="Caching\Design\LightweightCache.cs" />
+    <Compile Include="Caching\Design\MixedCache.cs" />
+    <Compile Include="Caching\ICache.cs" />
+    <Compile Include="Collections\Generic\Hashset.cs" />
+    <Compile Include="Collections\Generic\Hashtable.cs" />
+    <Compile Include="ConsoleEventSystem\DownloadFileMessageQueueItem.cs" />
+    <Compile Include="ConsoleEventSystem\BindEntityTokenToViewQueueItem.cs" />
+    <Compile Include="ConsoleEventSystem\OpenGenericViewQueueItem.cs" />
+    <Compile Include="ConsoleEventSystem\SaveStatusConsoleMessageQueueItem.cs" />
+    <Compile Include="Data\Caching\Cache.cs" />
+    <Compile Include="Data\Caching\WeakRefCache.cs" />
+    <Compile Include="Data\Caching\TableVersion.cs" />
+    <Compile Include="Data\DataIconFacade.cs" />
+    <Compile Include="Data\DataIdKeyFacade.cs" />
+    <Compile Include="Data\DataIdKeyFacadeImpl.cs" />
+    <Compile Include="Data\DynamicTypes\TypeUpdateVersionException.cs" />
+    <Compile Include="Data\Foundation\DataWrappingFacade.cs" />
+    <Compile Include="Data\GlobalDataTypeFacade.cs" />
+    <Compile Include="Data\IDataIdKeyFacade.cs" />
+    <Compile Include="Data\PageFolderFacade.cs" />
+    <Compile Include="Data\PageMetaDataFacade.cs" />
+    <Compile Include="Data\Plugins\DataProvider\ISupportCaching.cs" />
+    <Compile Include="Data\Foundation\DeprecatedDateMetaDataFacade.cs" />
+    <Compile Include="Data\Plugins\DataProvider\Streams\FileChangeNotificator.cs" />
+    <Compile Include="Data\DataInterceptor.cs" />
+    <Compile Include="Data\NewInstanceDefaultFieldValueAttribute.cs" />
+    <Compile Include="Data\IChangeHistory.cs" />
+    <Compile Include="Data\ProcessControlled\ILocalizeProcessController.cs" />
+    <Compile Include="Data\ProcessControlled\ProcessControllers\GenericLocalizeProcessController\GenericLocalizeProcessController.cs" />
+    <Compile Include="Data\Streams\CachedMemoryStream.cs" />
+    <Compile Include="Data\Streams\FileStreamManagerAttribute.cs" />
+    <Compile Include="Data\Streams\FileStreamManagerLocator.cs" />
+    <Compile Include="Data\Streams\IFileStreamManager.cs" />
+    <Compile Include="Data\Types\IPageFolderDefinition.cs" />
+    <Compile Include="Data\Types\IPageMetaDataDefinition.cs" />
+    <Compile Include="Data\Types\IPageTypeMetaDataTypeLink.cs" />
+    <Compile Include="Data\Types\IDataItemTreeAttachmentPoint.cs" />
+    <Compile Include="Data\Types\IPageType.cs" />
+    <Compile Include="Data\Types\IPageTypeDateFolderTypeLink.cs" />
+    <Compile Include="Data\Types\IPageTypeDefaultPageContent.cs" />
+    <Compile Include="Data\Types\IPageTypePageTemplateRestriction.cs" />
+    <Compile Include="Data\Types\IPageTypeParentRestriction.cs" />
+    <Compile Include="Data\Types\IPageTypeTreeLink.cs" />
+    <Compile Include="Data\Types\IUserGroupActivePerspective.cs" />
+    <Compile Include="Data\Types\ISearchEngineOptimizationKeyword.cs" />
+    <Compile Include="Data\Types\ITaskItem.cs" />
+    <Compile Include="Data\Types\IUserGroup.cs" />
+    <Compile Include="Data\Types\IUserGroupPermissionDefinition.cs" />
+    <Compile Include="Data\Types\IUserGroupPermissionDefinitionPermissionType.cs" />
+    <Compile Include="Data\Types\IUserUserGroupRelation.cs" />
+    <Compile Include="Data\Types\PageManager.cs" />
+    <Compile Include="Data\TypeVersionAttribute.cs" />
+    <Compile Include="Elements\AttachingPoint.cs" />
+    <Compile Include="Elements\ElementAttachingPointFacade.cs" />
+    <Compile Include="Elements\ElementInformationService.cs" />
+    <Compile Include="Elements\Foundation\ElementAttachingProviderFacade.cs" />
+    <Compile Include="Elements\Foundation\ElementAttachingProviderRegistry.cs" />
+    <Compile Include="Elements\Foundation\IElementAttachingProviderRegistry.cs" />
+    <Compile Include="Elements\Foundation\ElementAttachingProviderRegistryImpl.cs" />
+    <Compile Include="Elements\Foundation\ElementActionProviderRegistry.cs" />
+    <Compile Include="Elements\Foundation\ElementActionProviderRegistryImpl.cs" />
+    <Compile Include="Elements\Foundation\IElementActionProviderRegistry.cs" />
+    <Compile Include="Elements\Foundation\PluginFacades\ElementActionProviderPluginFacade.cs" />
+    <Compile Include="Elements\Foundation\PluginFacades\ElementAttachingProviderPluginFacade.cs" />
+    <Compile Include="Elements\PiggybagSerializer.cs" />
+    <Compile Include="Elements\Plugins\ElementActionProvider\ElementActionProviderData.cs" />
+    <Compile Include="Elements\Plugins\ElementActionProvider\IElementActionProvider.cs" />
+    <Compile Include="Elements\Plugins\ElementActionProvider\NonConfigurableElementActionProvider.cs" />
+    <Compile Include="Elements\Plugins\ElementActionProvider\Runtime\ElementActionProviderCustomFactory.cs" />
+    <Compile Include="Elements\Plugins\ElementActionProvider\Runtime\ElementActionProviderDefaultNameRetriever.cs" />
+    <Compile Include="Elements\Plugins\ElementActionProvider\Runtime\ElementActionProviderFactory.cs" />
+    <Compile Include="Elements\Plugins\ElementActionProvider\Runtime\ElementActionProviderSettings.cs" />
+    <Compile Include="Actions\SpecificTreeRefresher.cs" />
+    <Compile Include="Actions\DeleteTreeRefresher.cs" />
+    <Compile Include="Actions\ParentTreeRefresher.cs" />
+    <Compile Include="Actions\IActionExecutorSerializedParameters.cs" />
+    <Compile Include="Actions\StandardUiContainerTypesSerializerHandler.cs" />
+    <Compile Include="Actions\UpdateTreeRefresher.cs" />
+    <Compile Include="Actions\VisualFlowUiDefinitionBase.cs" />
+    <Compile Include="Actions\Workflow\EntityTokenLockedEntityToken.cs" />
+    <Compile Include="Actions\Workflow\SecurityViolationWorkflowEntityToken.cs" />
+    <Compile Include="Elements\Plugins\ElementAttachingProvider\ElementAttachingProviderData.cs" />
+    <Compile Include="Elements\Plugins\ElementAttachingProvider\IElementAttachingProvider.cs" />
+    <Compile Include="Elements\Plugins\ElementAttachingProvider\IMultibleResultElementAttachingProvider.cs" />
+    <Compile Include="Elements\Plugins\ElementAttachingProvider\NonConfigurableElementAttachingProvider.cs" />
+    <Compile Include="Elements\Plugins\ElementAttachingProvider\Runtime\ElementAttachingProviderCustomFactory.cs" />
+    <Compile Include="Elements\Plugins\ElementAttachingProvider\Runtime\ElementAttachingProviderDefaultNameRetriever.cs" />
+    <Compile Include="Elements\Plugins\ElementAttachingProvider\Runtime\ElementAttachingProviderFactory.cs" />
+    <Compile Include="Elements\Plugins\ElementAttachingProvider\Runtime\ElementAttachingProviderSettings.cs" />
+    <Compile Include="Elements\Plugins\ElementProvider\HooklessElementProviderData.cs" />
+    <Compile Include="Elements\Plugins\ElementProvider\ILabeledPropertiesElementProvider.cs" />
+    <Compile Include="Elements\Plugins\ElementProvider\ILocaleAwareLabeledPropertiesElementProvider.cs" />
+    <Compile Include="Elements\Plugins\ElementProvider\NonConfigurableHooklessElementProvider.cs" />
+    <Compile Include="Elements\Plugins\ElementProvider\IHooklessElementProvider.cs" />
+    <Compile Include="Elements\Plugins\ElementProvider\Runtime\HooklessElementProviderDefaultNameRetriever.cs" />
+    <Compile Include="Elements\Plugins\ElementProvider\Runtime\HooklessElementProviderCustomFactory.cs" />
+    <Compile Include="Elements\Plugins\ElementProvider\Runtime\HooklessElementProviderFactory.cs" />
+    <Compile Include="Elements\ShowErrorElementHelper.cs" />
+    <Compile Include="Elements\TreeLockBehavior.cs" />
+    <Compile Include="EventSystem\FlushAttribute.cs" />
+    <Compile Include="Extensions\DictionaryExtensionMethods.cs" />
+    <Compile Include="Extensions\ExpressionExtensionMethods.cs" />
+    <Compile Include="Extensions\HttpContextExtensionMethods.cs" />
+    <Compile Include="Extensions\IApplicationHostExtensionMethods.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Extensions\IQueryableExtensionMethods.cs" />
+    <Compile Include="Forms\CoreUiControls\DataReferenceTreeSelectorUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\PageReferenceSelectorUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\HtmlBlobUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\MultiContentXhtmlEditorUiControl.cs" />
+    <Compile Include="Forms\StandardProducerMediators\BuildinProducers\EvalFuncProducer.cs" />
+    <Compile Include="Functions\Forms\FunctionProducerMediator.cs" />
+    <Compile Include="Functions\Forms\FunctionParameterProducer.cs" />
+    <Compile Include="Functions\Forms\FunctionProducer.cs" />
+    <Compile Include="Functions\Forms\IFunctionProducer.cs" />
+    <Compile Include="Functions\Foundation\PluginFacades\XslExtensionsProviderPluginFacade.cs" />
+    <Compile Include="Functions\Foundation\XslExtensionsProviderRegistry.cs" />
+    <Compile Include="Functions\ICompoundFunction.cs" />
+    <Compile Include="Functions\Plugins\XslExtensionsProvider\Runtime\XslExtensionsProviderCustomFactory.cs" />
+    <Compile Include="Functions\Plugins\XslExtensionsProvider\XslExtensionsProviderData.cs" />
+    <Compile Include="Functions\Plugins\XslExtensionsProvider\Runtime\XslExtensionsProviderFactory.cs" />
+    <Compile Include="Functions\Plugins\XslExtensionsProvider\IXslExtensionsProvider.cs" />
+    <Compile Include="Functions\Plugins\XslExtensionsProvider\Runtime\XslExtensionsProviderSettings.cs" />
+    <Compile Include="Functions\XslExtensionsManager.cs" />
+    <Compile Include="GlobalSettings\BuildinPlugins\GlobalSettingsProvider\BuildinCacheSettings.cs" />
+    <Compile Include="GlobalSettings\BuildinPlugins\GlobalSettingsProvider\BuildinCachingSettings.cs" />
+    <Compile Include="GlobalSettings\ICachingSettings.cs" />
+    <Compile Include="GlobalSettings\InstallationInformationFacade.cs" />
+    <Compile Include="Instrumentation\Foundation\IPerformanceCounterProviderRegistry.cs" />
+    <Compile Include="Instrumentation\Foundation\PerformanceCounterProviderRegistry.cs" />
+    <Compile Include="Instrumentation\Foundation\PerformanceCounterProviderRegistryImpl.cs" />
+    <Compile Include="Instrumentation\Foundation\PluginFacades\PerformanceCounterProviderPluginFacade.cs" />
+    <Compile Include="Instrumentation\IPerformanceCounterFacade.cs" />
+    <Compile Include="Instrumentation\PerformanceCounterFacade.cs" />
+    <Compile Include="Instrumentation\PerformanceCounterFacadeImpl.cs" />
+    <Compile Include="Instrumentation\Plugin\IPerformanceCounterProvider.cs" />
+    <Compile Include="Instrumentation\IPerformanceCounterToken.cs" />
+    <Compile Include="Instrumentation\Plugin\NonConfigurablePerformanceCounterProvider.cs" />
+    <Compile Include="Instrumentation\Plugin\PerformanceCounterProviderData.cs" />
+    <Compile Include="Instrumentation\Plugin\Runtime\PerformanceCounterProviderCustomFactory.cs" />
+    <Compile Include="Instrumentation\Plugin\Runtime\PerformanceCounterProviderDefaultNameRetriever.cs" />
+    <Compile Include="Instrumentation\Plugin\Runtime\PerformanceCounterProviderFactory.cs" />
+    <Compile Include="Instrumentation\Plugin\Runtime\PerformanceCounterProviderSettings.cs" />
+    <Compile Include="IO\DirectoryEx.cs" />
+    <Compile Include="Licensing\RequireLicenseAttribute.cs" />
+    <Compile Include="Linq\Disassembled\ExpressionStringBuilder.cs" />
+    <Compile Include="Linq\ExpressionExtensionMethods.cs" />
+    <Compile Include="Linq\ExpressionVisitors\CacheKeyBuilderExpressionVisitor.cs" />
+    <Compile Include="Linq\IEnumerableExtensionMethod.cs" />
+    <Compile Include="Localization\LocalizationFacade.cs" />
+    <Compile Include="PackageSystem\PackageFragmentInstallers\LocalePackageFragmentInstaller.cs" />
+    <Compile Include="PackageSystem\PackageFragmentInstallers\LocalePackageFragmentUninstaller.cs" />
+    <Compile Include="PackageSystem\PackageFragmentInstallers\PackageVersionBumberFragmentInstaller.cs" />
+    <Compile Include="PackageSystem\PackageFragmentInstallers\PackageVersionBumberFragmentUninstaller.cs" />
+    <Compile Include="Parallelization\IndexEnumerator.cs" />
+    <Compile Include="Logging\LogManager.cs" />
+    <Compile Include="Logging\WCF\LoggerHostnameHandler.cs" />
+    <Compile Include="Logging\WCF\LoggerServiceHostingFactory.cs" />
+    <Compile Include="Logging\WCF\ILogService.cs" />
+    <Compile Include="Logging\WCF\LogEntry.cs" />
+    <Compile Include="Logging\WCF\LogService.cs" />
+    <Compile Include="PackageSystem\PackageFragmentInstallers\FileXslTransformationPackageFragmentInstaller.cs" />
+    <Compile Include="PackageSystem\PackageFragmentInstallers\FileXslTransformationPackageFragmentUninstaller.cs" />
+    <Compile Include="Parallelization\Foundation\IParallelizationProviderRegistry.cs" />
+    <Compile Include="Parallelization\Foundation\ParallelizationProviderRegistry.cs" />
+    <Compile Include="Parallelization\Foundation\ParallelizationProviderRegistryImpl.cs" />
+    <Compile Include="Parallelization\ParallelFacade.cs" />
+    <Compile Include="Parallelization\Plugins\Runtime\ParallelizationProviderSettings.cs" />
+    <Compile Include="Renderings\Data\KeyTemplatedXhtmlRendererAttribute.cs" />
+    <Compile Include="Renderings\Foundation\IRenderingResponseHandlerRegistry.cs" />
+    <Compile Include="Renderings\Foundation\PluginFacades\RenderingResponseHandlerPluginFacade.cs" />
+    <Compile Include="Renderings\Foundation\RenderingResponseHandlerRegistry.cs" />
+    <Compile Include="Renderings\Foundation\RenderingResponseHandlerRegistryImpl.cs" />
+    <Compile Include="Renderings\IRenderingResponseHandlerFacade.cs" />
+    <Compile Include="Renderings\Plugins\RenderingResponseHandler\IDataRenderingResponseHandler.cs" />
+    <Compile Include="Renderings\Plugins\RenderingResponseHandler\IRenderingResponseHandler.cs" />
+    <Compile Include="Renderings\Plugins\RenderingResponseHandler\NonConfigurableHookRegistrator.cs" />
+    <Compile Include="Renderings\Plugins\RenderingResponseHandler\RenderingResponseHandlerData.cs" />
+    <Compile Include="Renderings\RenderingResponseHandlerResult.cs" />
+    <Compile Include="Renderings\Plugins\RenderingResponseHandler\Runtime\RenderingResponseHandlerCustomFactory.cs" />
+    <Compile Include="Renderings\Plugins\RenderingResponseHandler\Runtime\RenderingResponseHandlerFactory.cs" />
+    <Compile Include="Renderings\Plugins\RenderingResponseHandler\Runtime\RenderingResponseHandlerDefaultNameRetriever.cs" />
+    <Compile Include="Renderings\Plugins\RenderingResponseHandler\Runtime\RenderingResponseHandlerSettings.cs" />
+    <Compile Include="Renderings\RenderingResponseHandlerFacade.cs" />
+    <Compile Include="Renderings\RenderingResponseHandlerFacadeImpl.cs" />
+    <Compile Include="Security\AuxiliarySecurityAncestorFacade.cs" />
+    <Compile Include="Security\AuxiliarySecurityAncestorFacadeImpl.cs" />
+    <Compile Include="Security\ConstructorBasedUserGroupPermissionDefinition.cs" />
+    <Compile Include="Security\AuxiliarySecurityAncestorProviderAttribute.cs" />
+    <Compile Include="Security\EntityTokenCacheFacade.cs" />
+    <Compile Include="Security\EntityTokenHtmlPrettyfier.cs" />
+    <Compile Include="Security\EntityTokenHtmlPrettyfierHelper.cs" />
+    <Compile Include="Security\EntityTokenSerializerException.cs" />
+    <Compile Include="Security\Foundation\PermissionTypeFacadeCaching.cs" />
+    <Compile Include="Security\Foundation\PluginFacades\UserGroupDefinitionProviderPluginFacade.cs" />
+    <Compile Include="Security\IAuxiliarySecurityAncestorFacade.cs" />
+    <Compile Include="Security\IAuxiliarySecurityAncestorProvider.cs" />
+    <Compile Include="Security\NoSecurityEntityToken.cs" />
+    <Compile Include="Security\Plugins\UserGroupPermissionDefinitionProvider\IUserGroupPermissionDefinitionProvider.cs" />
+    <Compile Include="Security\Plugins\UserGroupPermissionDefinitionProvider\NonConfigurableUserGroupPermissionDefinitionProvider.cs" />
+    <Compile Include="Security\Plugins\UserGroupPermissionDefinitionProvider\Runtime\UserGroupPermissionDefinitionProviderCustomFactory.cs" />
+    <Compile Include="Security\Plugins\UserGroupPermissionDefinitionProvider\Runtime\UserGroupPermissionDefinitionProviderDefaultNameRetriever.cs" />
+    <Compile Include="Security\Plugins\UserGroupPermissionDefinitionProvider\Runtime\UserGroupPermissionDefinitionProviderFactory.cs" />
+    <Compile Include="Security\Plugins\UserGroupPermissionDefinitionProvider\Runtime\UserGroupPermissionDefinitionProviderSettings.cs" />
+    <Compile Include="Security\Plugins\UserGroupPermissionDefinitionProvider\UserGroupPermissionDefinitionProviderData.cs" />
+    <Compile Include="Security\UserGroupFacade.cs" />
+    <Compile Include="Security\UserGroupPermissionDefinition.cs" />
+    <Compile Include="Security\UserGroupPerspectiveFacade.cs" />
+    <Compile Include="Sql\SqlConnectionManager.cs" />
+    <Compile Include="StandardPlugins\Application\ApplicationStartupHandlers\AttributeBasedApplicationStartupHandler\AttributeBasedApplicationStartupHandler.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\XmlDataProvider\CodeGeneration\Foundation\DataProviderHelperBase.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\XmlDataProvider\Foundation\TransactionRollbackHandler.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\XmlDataProvider\Foundation\ValidationHelper.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\IGeneratedTypeWhiteList.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\DeveloperApplicationProvider\DeveloperApplicationProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\DeveloperApplicationProvider\DeveloperApplicationProviderEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\UserElementProvider\UserGroupsFormsHelper.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\UserGroupElementProvider\UserGroupElementProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\UserGroupElementProvider\UserGroupElementProviderRootEntityToken.cs" />
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\Base\UserControlBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedDataReferenceTreeSelectorUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedPageReferenceSelectorUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedHtmlBlobUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedMultiContentXhtmlEditorUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\DataReference\NullablePageReferenceSelectorWidgetFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\DataReference\PageReferenceSelectorWidgetFunction.cs" />
+    <Compile Include="StandardPlugins\WebClient\SessionStateProviders\DefaultSessionStateProvider\DefaultSessionStateProvider.cs" />
+    <Compile Include="StandardPlugins\WebClient\SessionStateProviders\DefaultSessionStateProvider\ISessionStateEntry.cs" />
+    <Compile Include="StandardPlugins\WebClient\SessionStateProviders\DefaultSessionStateProvider\SerializationUtil.cs" />
+    <Compile Include="StandardPlugins\WebClient\SessionStateProviders\DefaultSessionStateProvider\XmlSerializationWrapper.cs" />
+    <Compile Include="Trees\AttributeDynamicValuesHelper.cs" />
+    <Compile Include="Trees\ConfirmActionNode.cs" />
+    <Compile Include="Trees\CustomUrlActionNode.cs" />
+    <Compile Include="Trees\Foundation\AttachmentPoints\BaseAttachmentPoint.cs" />
+    <Compile Include="Trees\Foundation\AttachmentPoints\BasePossibleAttachmentPoint.cs" />
+    <Compile Include="Trees\Foundation\AttachmentPoints\CustomAttadchmentPoint.cs" />
+    <Compile Include="Trees\Foundation\AttachmentPoints\DataItemAttachmentPoint.cs" />
+    <Compile Include="Trees\Foundation\AttachmentPoints\DynamicDataItemAttachmentPoint.cs" />
+    <Compile Include="Trees\Foundation\AttachmentPoints\DataItemPossibleAttachmentPoint.cs" />
+    <Compile Include="Trees\Foundation\FolderRanges\BaseFolderRanges.cs" />
+    <Compile Include="Trees\Foundation\FolderRanges\IFolderRanges.cs" />
+    <Compile Include="Trees\Foundation\FolderRanges\IntFolderRanges.cs" />
+    <Compile Include="Trees\Foundation\FolderRanges\StringFolderRange.cs" />
+    <Compile Include="Trees\Foundation\FolderRanges\StringFolderRanges.cs" />
+    <Compile Include="Trees\Foundation\AttachmentPoints\IDataItemAttachmentPoint.cs" />
+    <Compile Include="Trees\Foundation\AttachmentPoints\INamedAttachmentPoint.cs" />
+    <Compile Include="Trees\Foundation\AttachmentPoints\IPossibleAttachmentPoint.cs" />
+    <Compile Include="Trees\Foundation\AttachmentPoints\NamedAttachmentPoint.cs" />
+    <Compile Include="Trees\Foundation\StringConstants.cs" />
+    <Compile Include="Trees\FunctionElementGeneratorTreeNode.cs" />
+    <Compile Include="Trees\IEntityTokenContainingParentEntityToken.cs" />
+    <Compile Include="Trees\ITreeFacade.cs" />
+    <Compile Include="Trees\LeafDisplayMode.cs" />
+    <Compile Include="Trees\FieldOrderByNode.cs" />
+    <Compile Include="Trees\Foundation\DateTimeFormater.cs" />
+    <Compile Include="Trees\Foundation\FactoryHelper.cs" />
+    <Compile Include="Trees\Foundation\FolderRanges\FolderRangesCreator.cs" />
+    <Compile Include="Trees\Foundation\FolderRanges\IFolderRange.cs" />
+    <Compile Include="Trees\Foundation\FolderRanges\IntFolderRange.cs" />
+    <Compile Include="Trees\Foundation\FolderRanges\FolderRangesFactory.cs" />
+    <Compile Include="Trees\Foundation\OrderByNodeCreatorFactory.cs" />
+    <Compile Include="Trees\Foundation\TreeException.cs" />
+    <Compile Include="Trees\Foundation\TupleIndexer.cs" />
+    <Compile Include="Trees\FunctionFilterNode.cs" />
+    <Compile Include="Trees\MessageBoxActionNode.cs" />
+    <Compile Include="Trees\OrderByNode.cs" />
+    <Compile Include="Trees\PiggybagInterfaceFinder.cs" />
+    <Compile Include="Trees\Foundation\AttachmentPoints\IAttachmentPoint.cs" />
+    <Compile Include="Trees\TreeElementActionProvider.cs" />
+    <Compile Include="Trees\TreeFacade.cs" />
+    <Compile Include="Trees\TreeFunctionElementGeneratorEntityToken.cs" />
+    <Compile Include="Trees\TreeMarkupConstants.cs" />
+    <Compile Include="Trees\WorkflowActionNode.cs" />
+    <Compile Include="Types\AssemblyExtensionMethods.cs" />
+    <Compile Include="WebClient\Captcha\Captcha.cs" />
+    <Compile Include="StandardPlugins\Functions\XslExtensionsProviders\CaptchaXslExtension.cs" />
+    <Compile Include="WebClient\Captcha\Encryption.cs" />
+    <Compile Include="WebClient\Captcha\ImageCreator.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Constant\XhtmlDocumentFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\IDataGenerated\GetXmlCachePriority.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Media\MediaFolderFilterFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\IDataGenerated\GetNullableDataReference.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Mail\SendMailFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Pages\GetForeignPageInfoFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Caching\PageObjectCacheFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\GuidInCommaSeparatedListPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\StringInCommaSeparatedListPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\StringInListPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\NullableDateTimeLessThanPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\NullableDateTimeGreaterThanPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\NullableDecimalNoValuePredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\NullableDecimalEqualsPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\NullableDateTimeNoValuePredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\NullableDateTimeEqualsPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\NullableBoolNoValuePredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\NullableBoolEqualsPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\StringNoValuePredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\NullableIntegerNoValuePredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\NullableIntegerEqualsPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\NullableGuidNoValuePredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\NullableGuidEqualsPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\String\Format.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Response\RedirectFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Xml\LoadXhtmlFileFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\MediaFolderSelectorWidget.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\String\SelectorWidgetFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\XhtmlDocument\VisualXhtmlEditorWidgetFuntion.cs" />
+    <Compile Include="StandardPlugins\Functions\XslExtensionsProviders\ConfigBasedXslExtensionsProvider\ConfigBasedXslExtensionsProvider.cs" />
+    <Compile Include="StandardPlugins\Functions\XslExtensionsProviders\StandardExtension.cs" />
+    <Compile Include="StandardPlugins\Functions\XslExtensionsProviders\ConfigBasedXslExtensionsProvider\ConfigBasedXslExtensionsProviderData.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\DataReference\GetOptionsCommon.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\DataReference\NullableDataReferenceSelectorWidgetFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\String\DataIdMultiSelectorWidgetFunction.cs" />
+    <Compile Include="StandardPlugins\Instrumentation\PerformanceCounterProviders\NoPerformanceCounterProvider\NoPerformanceCounterProvider.cs" />
+    <Compile Include="StandardPlugins\Instrumentation\PerformanceCounterProviders\WindowsPerformanceCounterProvider\PerformanceCounterInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Instrumentation\PerformanceCounterProviders\WindowsPerformanceCounterProvider\PerformanceNames.cs" />
+    <Compile Include="StandardPlugins\Instrumentation\PerformanceCounterProviders\WindowsPerformanceCounterProvider\WindowsPerformanceCounterProvider.cs">
+    </Compile>
+    <Compile Include="StandardPlugins\Logging\LogTraceListeners\FileLogTraceListener\FileLogger.cs" />
+    <Compile Include="Logging\LogEntry.cs" />
+    <Compile Include="StandardPlugins\Logging\LogTraceListeners\FileLogTraceListener\FileLogTraceListener.cs" />
+    <Compile Include="StandardPlugins\Security\UserGroupPermissionDefinitionProvider\DataBasedUserGroupPermissionDefinitionProvider\DataBasedUserGroupPermissionDefinitionProvider.cs" />
+    <Compile Include="StringExtensions\StringExtensions.cs" />
+    <Compile Include="Tasks\BaseTaskManager.cs" />
+    <Compile Include="Tasks\ITaskManager.cs" />
+    <Compile Include="Tasks\ITaskManagerFacade.cs" />
+    <Compile Include="Tasks\ITaskManagerFlowControllerService.cs" />
+    <Compile Include="Tasks\Task.cs" />
+    <Compile Include="Tasks\TaskContainer.cs" />
+    <Compile Include="Tasks\TaskManagerFacade.cs" />
+    <Compile Include="Tasks\TaskManagerFacadeImpl.cs" />
+    <Compile Include="Tasks\TaskManagerFlowControllerService.cs" />
+    <Compile Include="Threading\ThreadDataManagerData.cs" />
+    <Compile Include="Threading\ThreadDataManager.cs" />
+    <Compile Include="Threading\ThreadManager.cs" />
+    <Compile Include="Trees\ActionNode.cs" />
+    <Compile Include="Trees\BuildResult.cs" />
+    <Compile Include="Trees\DataFieldValueHelper.cs" />
+    <Compile Include="Trees\DynamicValuesHelper.cs" />
+    <Compile Include="Trees\GenericDeleteDataActionNode.cs" />
+    <Compile Include="Trees\DataElementsTreeNode.cs" />
+    <Compile Include="Trees\DataFilteringTreeNode.cs" />
+    <Compile Include="Trees\DataFolderElementsTreeNode.cs" />
+    <Compile Include="Trees\FieldFilterNode.cs" />
+    <Compile Include="Trees\FilterNode.cs" />
+    <Compile Include="Trees\Foundation\ActionNodeCreatorFactory.cs" />
+    <Compile Include="Trees\Foundation\BuildProcessContext.cs" />
+    <Compile Include="Linq\ExpressionHelper.cs" />
+    <Compile Include="Trees\Foundation\FilterNodeCreatorFactory.cs" />
+    <Compile Include="Trees\Foundation\TreeBuilder.cs" />
+    <Compile Include="Trees\Foundation\TreeNodeCreatorFactory.cs" />
+    <Compile Include="Trees\GenericAddDataActionNode.cs" />
+    <Compile Include="Trees\GenericEditDataActionNode.cs" />
+    <Compile Include="Trees\ParentIdFilterNode.cs" />
+    <Compile Include="Trees\PiggybagExtensionMethods.cs" />
+    <Compile Include="Trees\ReportFunctionActionNode.cs" />
+    <Compile Include="Trees\RootTreeNode.cs" />
+    <Compile Include="Trees\SimpleElementTreeNode.cs" />
+    <Compile Include="Trees\TreeAuxiliaryAncestorProvider.cs" />
+    <Compile Include="Trees\TreeDataFieldGroupingElementEntityToken.cs" />
+    <Compile Include="Trees\Tree.cs" />
+    <Compile Include="Trees\TreeElementAttachingProvider.cs" />
+    <Compile Include="Trees\TreeFacadeImpl.cs" />
+    <Compile Include="Trees\TreeNode.cs" />
+    <Compile Include="Trees\TreeNodeDynamicContext.cs" />
+    <Compile Include="Trees\TreeNodeExtensionMethods.cs" />
+    <Compile Include="Trees\TreeSimpleElementEntityToken.cs" />
+    <Compile Include="Trees\ValidationError.cs" />
+    <Compile Include="Types\AssemblyFacade.cs" />
+    <Compile Include="Types\CodeGenerationHelper.cs" />
+    <Compile Include="Types\CompatibilityCheckResult.cs" />
+    <Compile Include="Users\UserSettingsMock.cs" />
+    <Compile Include="Validation\Validators\SizeLengthValidatorAttribute.cs" />
+    <Compile Include="Verify.cs" />
+    <Compile Include="ConsoleEventSystem\BroadcastMessageQueueItem.cs" />
+    <Compile Include="ConsoleEventSystem\CollapseAndRefreshConsoleMessageQueueItem.cs" />
+    <Compile Include="ConsoleEventSystem\CloseAllViewsMessageQueueItem.cs" />
+    <Compile Include="Data\DataIdSerializer.cs" />
+    <Compile Include="Data\DataLocalizationFacade.cs" />
+    <Compile Include="Data\DataPropertyValueCollection.cs" />
+    <Compile Include="Data\DynamicTypes\Debug\DynamicTempTypeCreator.cs" />
+    <Compile Include="Data\GroupByPriorityAttribute.cs" />
+    <Compile Include="Data\Hierarchy\DataAncestorProviders\PageDataAncestorProvider.cs" />
+    <Compile Include="Data\DataLocalizationFacadeImpl.cs" />
+    <Compile Include="Data\IDataLocalizationFacade.cs" />
+    <Compile Include="Data\LocalizationScopeManager.cs" />
+    <Compile Include="Data\Plugins\DataProvider\ILocalizedDataProvider.cs" />
+    <Compile Include="Data\ProcessControlled\ILocalizedControlled.cs" />
+    <Compile Include="Data\Types\IWhiteListedLocale.cs" />
+    <Compile Include="Data\Types\IFlowInformation.cs" />
+    <Compile Include="Data\Types\ISystemActiveLocale.cs" />
+    <Compile Include="Data\Types\IPageStructure.cs" />
+    <Compile Include="Data\Types\IUserActiveLocale.cs" />
+    <Compile Include="Data\Types\IUserConsoleInformation.cs" />
+    <Compile Include="Elements\ElementProviderHelpers\DataGroupingProviderHelper\DataGroupingProviderHelper.cs" />
+    <Compile Include="Elements\ElementProviderHelpers\DataGroupingProviderHelper\DataGroupingProviderHelperEntityToken.cs" />
+    <Compile Include="Elements\Plugins\ElementProvider\ILocaleAwareElementProvider.cs" />
+    <Compile Include="Extensions\IEnumerableExtensionMethods.cs" />
+    <Compile Include="Extensions\MethodInfoExtensionMethods.cs" />
+    <Compile Include="Extensions\StackFrameExtensionMethods.cs" />
+    <Compile Include="Linq\PropertyInfoValueCollectioncs.cs" />
+    <Compile Include="Localization\LocalizationParser.cs" />
+    <Compile Include="Localization\LocalizationXmlConstants.cs" />
+    <Compile Include="Linq\ExpressionBuilder.cs" />
+    <Compile Include="PackageSystem\PackageDescription.cs" />
+    <Compile Include="PackageSystem\PackageFragmentInstallers\ConfigurationTransformationPackageFragmentInstaller.cs" />
+    <Compile Include="PackageSystem\PackageFragmentInstallers\ConfigurationTransformationPackageFragmentUninstaller.cs" />
+    <Compile Include="PackageSystem\PackageInstallerUninstallerFactory.cs" />
+    <Compile Include="PackageSystem\PackageManagerInstallProcess.cs" />
+    <Compile Include="PackageSystem\PackageManagerUninstallProcess.cs" />
+    <Compile Include="PackageSystem\PackageServerFacade.cs" />
+    <Compile Include="PackageSystem\PackageServerFacadeImpl.cs" />
+    <Compile Include="PackageSystem\PackageServerFacadeLocalMock.cs" />
+    <Compile Include="PackageSystem\PackageSystemServices.cs" />
+    <Compile Include="PackageSystem\PackageInformation.cs" />
+    <Compile Include="PackageSystem\Foundation\PackageManagerInstallProcessSerializerHandler.cs" />
+    <Compile Include="PackageSystem\Foundation\PackageManagerUninstallProcessSerializerHandler.cs" />
+    <Compile Include="PackageSystem\Foundation\PackageServerFacadeImplCache.cs" />
+    <Compile Include="PackageSystem\Foundation\InstalledPackageInformationSerializerHandler.cs" />
+    <Compile Include="PackageSystem\Foundation\SystemLockingType.cs" />
+    <Compile Include="PackageSystem\Foundation\VersionStringHelper.cs" />
+    <Compile Include="PackageSystem\Foundation\XmlHelper.cs" />
+    <Compile Include="PackageSystem\IPackageInstaller.cs" />
+    <Compile Include="PackageSystem\IPackageInstallerUninstallerFactory.cs" />
+    <Compile Include="PackageSystem\IPackageServerFacade.cs" />
+    <Compile Include="PackageSystem\IPackageUninstaller.cs" />
+    <Compile Include="PackageSystem\InstalledPackageInformation.cs" />
+    <Compile Include="PackageSystem\WebServiceClient\Reference.cs" />
+    <Compile Include="Application\ApplicationOnlineHandlerFacade.cs" />
+    <Compile Include="Application\ApplicationOnlineHandlerFacadeImpl.cs" />
+    <Compile Include="Application\Foundation\PluginFacades\ApplicationOnlineHandlerPluginFacade.cs" />
+    <Compile Include="Application\IApplicationOnlineHandlerFacade.cs" />
+    <Compile Include="Application\Plugins\ApplicationOnlineHandler\ApplicationOnlineHandlerData.cs" />
+    <Compile Include="Application\Plugins\ApplicationOnlineHandler\IApplicationOnlineHandler.cs" />
+    <Compile Include="Application\Plugins\ApplicationOnlineHandler\NonConfigurableApplicationOnlineHandler.cs" />
+    <Compile Include="Application\Plugins\ApplicationOnlineHandler\Runtime\ApplicationOnlineHandlerCustomFactory.cs" />
+    <Compile Include="Application\Plugins\ApplicationOnlineHandler\Runtime\ApplicationOnlineHandlerDefaultNameRetriever.cs" />
+    <Compile Include="Application\Plugins\ApplicationOnlineHandler\Runtime\ApplicationOnlineHandlerFactory.cs" />
+    <Compile Include="Application\Plugins\ApplicationOnlineHandler\Runtime\ApplicationOnlineHandlerSettings.cs" />
+    <Compile Include="Application\TempDirectoryFacade.cs" />
+    <Compile Include="ConsoleEventSystem\Foundation\ConsoleMessageQueueElementListValueXmlSerializer.cs" />
+    <Compile Include="ConsoleEventSystem\LockSystemConsoleMessageQueueItem.cs" />
+    <Compile Include="Data\DataFacade.cs" />
+    <Compile Include="Data\Foundation\DataInterfaceAutoUpdater.cs" />
+    <Compile Include="Data\DataKeyPropertyCollection.cs" />
+    <Compile Include="Data\DataKeyPropertyCollectionExtensionMethods.cs" />
+    <Compile Include="Data\DataSerializerHandler.cs" />
+    <Compile Include="Data\DynamicTypes\DataTypeDescriptorValueXmlSerializer.cs" />
+    <Compile Include="Data\DynamicTypes\DataFieldDescriptorValueXmlSerializer.cs" />
+    <Compile Include="Data\DynamicTypes\DynamicTypeManager.cs" />
+    <Compile Include="Data\DynamicTypes\IDynamicTypeManager.cs" />
+    <Compile Include="Data\Foundation\DataStoreExistenceVerifierImpl.cs" />
+    <Compile Include="Data\Foundation\DataProviderRegistryImpl.cs" />
+    <Compile Include="Data\Foundation\IDataProviderRegistry.cs" />
+    <Compile Include="Data\Foundation\IDataStoreExistenceVerifier.cs" />
+    <Compile Include="Data\GeneratedTypes\GeneratedTypesFacadeImpl.cs" />
+    <Compile Include="Data\GeneratedTypes\IGeneratedTypesFacade.cs" />
+    <Compile Include="Data\IDataFacade.cs" />
+    <Compile Include="Data\Types\Foundation\ExceptingSerializerHandler.cs" />
+    <Compile Include="Data\Types\IPackageServerSource.cs" />
+    <Compile Include="Elements\Plugins\ElementProvider\ElementProviderConfigurationServices.cs" />
+    <Compile Include="Extensions\ByteArrayExtensionMethods.cs" />
+    <Compile Include="Extensions\StackTraceExtensionMethods.cs" />
+    <Compile Include="Forms\BindablePropertyAttribute.cs" />
+    <Compile Include="Forms\ControlVaulePropertyAttribute.cs" />
+    <Compile Include="Forms\CoreFunctions\BooleanCheckFunctionFactory.cs" />
+    <Compile Include="Forms\CoreFunctions\CompositeFunctionCall.cs" />
+    <Compile Include="Forms\CoreFunctions\NamedValueFunctionFactory.cs" />
+    <Compile Include="Forms\CoreFunctions\NullCheckFunctionFactory.cs" />
+    <Compile Include="Forms\CoreFunctions\ReplicatorFunctionFactory.cs" />
+    <Compile Include="Forms\CoreFunctions\StaticMethodCallFunctionFactory.cs" />
+    <Compile Include="Forms\CoreUiControls\BaseSelectorUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\BoolSelectorUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\ButtonUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\ButtonUiControlFactoryData.cs" />
+    <Compile Include="Forms\CoreUiControls\CheckBoxUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\CheckBoxUiControlFactoryData.cs" />
+    <Compile Include="Forms\CoreUiControls\ContainerUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\ContainerUiControlFactoryData.cs" />
+    <Compile Include="Forms\CoreUiControls\InfoTableUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\DataReferenceSelectorUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\DateSelectorUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\DebugUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\DebugUiControlFactoryData.cs" />
+    <Compile Include="Forms\CoreUiControls\EnumSelectorUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\FileUploadUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\FunctionCallDesignerUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\FunctionParameterDesignerUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\HeadingUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\IContainerUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\ITabbedContainerUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\MultiSelectorUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\QueryCallDefinitionsEditorUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\SelectorUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\SelectorUiControlFactoryData.cs" />
+    <Compile Include="Forms\CoreUiControls\TextEditorUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\TextInputUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\TextUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\ToolbarButtonUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\ToolbarButtonUiControlFactoryData.cs" />
+    <Compile Include="Forms\CoreUiControls\TypeFieldDesignerUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\TypeSelectorUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\TypeSelectorUiControlFactoryData.cs" />
+    <Compile Include="Forms\CoreUiControls\XhtmlEditorUiControl.cs" />
+    <Compile Include="Forms\CoreUiControls\XhtmlEditorUiControlFactoryData.cs" />
+    <Compile Include="Forms\CoreUiControls\XmlFunctionsDefinitionsEditorUiControl.cs" />
+    <Compile Include="Forms\DataServices\FormDefinitionFileMarkupProvider.cs" />
+    <Compile Include="Forms\DataServices\Foundation\FormBuilder.cs" />
+    <Compile Include="Forms\DataServices\Functions\GetDataFunctionFactory.cs" />
+    <Compile Include="Forms\DataServices\Functions\ListDataInterfacesFunctionFactory.cs" />
+    <Compile Include="Forms\DataServices\IFormDefinitionFile.cs" />
+    <Compile Include="Forms\DataServices\UiControls\EmbeddedForm.cs" />
+    <Compile Include="Forms\Flows\FormFlowEventHandlerDelegate.cs" />
+    <Compile Include="Forms\Flows\FormFlowRenderingService.cs" />
+    <Compile Include="Forms\Flows\FormFlowUiDefinition.cs" />
+    <Compile Include="Forms\Flows\Foundation\PluginFacades\UiContainerFactoryFactoryPluginFacade.cs" />
+    <Compile Include="Forms\Flows\IBindingsProvider.cs" />
+    <Compile Include="Forms\Flows\IFormEventIdentifier.cs" />
+    <Compile Include="Forms\Flows\IFormFlowRenderingService.cs" />
+    <Compile Include="Forms\Flows\IFormMarkupProvider.cs" />
+    <Compile Include="Forms\Flows\IUiContainer.cs" />
+    <Compile Include="Forms\Flows\Plugins\UiContainerFactory\IUiContainerFactory.cs" />
+    <Compile Include="Forms\Flows\Plugins\UiContainerFactory\NonConfigurableUiContainerFactory.cs" />
+    <Compile Include="Forms\Flows\Plugins\UiContainerFactory\Runtime\UiContainerFactoryCustomFactory.cs" />
+    <Compile Include="Forms\Flows\Plugins\UiContainerFactory\Runtime\UiContainerFactoryDefaultNameRetriever.cs" />
+    <Compile Include="Forms\Flows\Plugins\UiContainerFactory\Runtime\UiContainerFactoryFactory.cs" />
+    <Compile Include="Forms\Flows\Plugins\UiContainerFactory\Runtime\UiContainerFactorySettings.cs" />
+    <Compile Include="Forms\Flows\Plugins\UiContainerFactory\UiContainerFactoryData.cs" />
+    <Compile Include="Forms\Flows\StandardEventIdentifiers.cs" />
+    <Compile Include="Forms\FormCompileException.cs" />
+    <Compile Include="Forms\FormDefinition.cs" />
+    <Compile Include="Forms\FormFactoryService.cs" />
+    <Compile Include="Forms\FormKeyTagNames.cs" />
+    <Compile Include="Forms\FormsPropertyAttribute.cs" />
+    <Compile Include="Forms\FormTreeCompiler.cs" />
+    <Compile Include="Forms\Foundation\FormTreeCompiler\CompileContext.cs" />
+    <Compile Include="Forms\Foundation\FormTreeCompiler\CompilePhases\BuildFromXmlPhase.cs" />
+    <Compile Include="Forms\Foundation\FormTreeCompiler\CompilePhases\CreateProducersPhase.cs" />
+    <Compile Include="Forms\Foundation\FormTreeCompiler\CompilePhases\EvaluatePropertiesPhase.cs" />
+    <Compile Include="Forms\Foundation\FormTreeCompiler\CompilePhases\ExtractUiArtifactsPhase.cs" />
+    <Compile Include="Forms\Foundation\FormTreeCompiler\CompilePhases\UpdateXmlInformationPhase.cs" />
+    <Compile Include="Forms\Foundation\FormTreeCompiler\CompilerGlobals.cs" />
+    <Compile Include="Forms\Foundation\FormTreeCompiler\CompileTreeNodes\CompileTreeNode.cs" />
+    <Compile Include="Forms\Foundation\FormTreeCompiler\CompileTreeNodes\ElementCompileTreeNode.cs" />
+    <Compile Include="Forms\Foundation\FormTreeCompiler\CompileTreeNodes\PropertyCompileTreeNode.cs" />
+    <Compile Include="Forms\Foundation\FormTreeCompiler\CompileTreeNodes\XmlSourceNodeInformation.cs" />
+    <Compile Include="Forms\Foundation\FormTreeCompiler\PropertyAssigner.cs" />
+    <Compile Include="Forms\Foundation\PluginFacades\FunctionFactoryPluginFacade.cs" />
+    <Compile Include="Forms\Foundation\PluginFacades\ProducerMediatorPluginFacade.cs" />
+    <Compile Include="Forms\Foundation\PluginFacades\UiControlFactoryPluginFacade.cs" />
+    <Compile Include="Forms\Foundation\UiControl.cs" />
+    <Compile Include="Forms\IFormChannelIdentifier.cs" />
+    <Compile Include="Forms\IUiControl.cs" />
+    <Compile Include="Forms\Plugins\FunctionFactory\FunctionFactoryData.cs" />
+    <Compile Include="Forms\Plugins\FunctionFactory\IFormFunction.cs" />
+    <Compile Include="Forms\Plugins\FunctionFactory\IFunctionFactory.cs" />
+    <Compile Include="Forms\Plugins\FunctionFactory\NonConfigurableFunctionFactory.cs" />
+    <Compile Include="Forms\Plugins\FunctionFactory\Runtime\FunctionFactoryCustomFactory.cs" />
+    <Compile Include="Forms\Plugins\FunctionFactory\Runtime\FunctionFactoryDefaultNameRetriever.cs" />
+    <Compile Include="Forms\Plugins\FunctionFactory\Runtime\FunctionFactoryFactory.cs" />
+    <Compile Include="Forms\Plugins\FunctionFactory\Runtime\FunctionFactorySettings.cs" />
+    <Compile Include="Forms\Plugins\ProducerMediator\IProducerMediator.cs" />
+    <Compile Include="Forms\Plugins\ProducerMediator\NonConfigurableProducerMediator.cs" />
+    <Compile Include="Forms\Plugins\ProducerMediator\ProducerMediatorData.cs" />
+    <Compile Include="Forms\Plugins\ProducerMediator\Runtime\ProducerMediatorCustomFactory.cs" />
+    <Compile Include="Forms\Plugins\ProducerMediator\Runtime\ProducerMediatorDefaultNameRetriever.cs" />
+    <Compile Include="Forms\Plugins\ProducerMediator\Runtime\ProducerMediatorFactory.cs" />
+    <Compile Include="Forms\Plugins\ProducerMediator\Runtime\ProducerMediatorSettings.cs" />
+    <Compile Include="Forms\Plugins\UiControlFactory\IUiControlFactory.cs" />
+    <Compile Include="Forms\Plugins\UiControlFactory\NonConfigurableUiControlFactoryAssembler.cs" />
+    <Compile Include="Forms\Plugins\UiControlFactory\Runtime\UiControlFactoryCustomFactory.cs" />
+    <Compile Include="Forms\Plugins\UiControlFactory\Runtime\UiControlFactoryDefaultNameRetriever.cs" />
+    <Compile Include="Forms\Plugins\UiControlFactory\Runtime\UiControlFactoryFactory.cs" />
+    <Compile Include="Forms\Plugins\UiControlFactory\Runtime\UiControlFactorySettings.cs" />
+    <Compile Include="Forms\Plugins\UiControlFactory\UiControlFactoryData.cs" />
+    <Compile Include="Forms\RequiredValueAttribute.cs" />
+    <Compile Include="Forms\SchemaBuilder.cs" />
+    <Compile Include="Forms\StandardProducerMediators\BuildinProducerMediator.cs" />
+    <Compile Include="Forms\StandardProducerMediators\BuildinProducers\BindingProducer.cs" />
+    <Compile Include="Forms\StandardProducerMediators\BuildinProducers\BindingsProducer.cs" />
+    <Compile Include="Forms\StandardProducerMediators\BuildinProducers\BindProducer.cs" />
+    <Compile Include="Forms\StandardProducerMediators\BuildinProducers\IBuildinProducer.cs" />
+    <Compile Include="Forms\StandardProducerMediators\BuildinProducers\IfConditionProducer.cs" />
+    <Compile Include="Forms\StandardProducerMediators\BuildinProducers\IfProducer.cs" />
+    <Compile Include="Forms\StandardProducerMediators\BuildinProducers\IfWhenFalseProducer.cs" />
+    <Compile Include="Forms\StandardProducerMediators\BuildinProducers\IfWhenTrueProducer.cs" />
+    <Compile Include="Forms\StandardProducerMediators\BuildinProducers\LayoutProducer.cs" />
+    <Compile Include="Forms\StandardProducerMediators\BuildinProducers\ReadProducer.cs" />
+    <Compile Include="Forms\StandardProducerMediators\FunctionProducerMediator.cs" />
+    <Compile Include="Forms\StandardProducerMediators\UiControlProducerMediator.cs" />
+    <Compile Include="Forms\Flows\StringBasedFormMarkupProvider.cs" />
+    <Compile Include="Forms\WebChannel\IClickableTabPanelControl.cs" />
+    <Compile Include="Forms\WebChannel\IWebUiContainer.cs" />
+    <Compile Include="Forms\WebChannel\IWebUiControl.cs" />
+    <Compile Include="Forms\WebChannel\WebManagementChannel.cs" />
+    <Compile Include="Forms\WebChannel\WebStandardsChannel.cs" />
+    <Compile Include="Forms\WebChannel\WebUiHelpers.cs" />
+    <Compile Include="AppDomainLocker.cs" />
+    <Compile Include="Functions\BaseRuntimeTreeNodeValueXmlSerializer.cs" />
+    <Compile Include="Functions\Foundation\IMetaFunctionProviderRegistry.cs" />
+    <Compile Include="Functions\Foundation\MetaFunctionProviderRegistry.cs" />
+    <Compile Include="Functions\NamedFunctionCallValueXmlSerializer.cs" />
+    <Compile Include="GlobalSettings\GlobalSettingsFacadeImpl.cs" />
+    <Compile Include="GlobalSettings\IGlobalSettingsFacade.cs" />
+    <Compile Include="IO\FileEx.cs" />
+    <Compile Include="IO\Zip\IZipFileSystem.cs" />
+    <Compile Include="Renderings\CultureExtrator.cs" />
+    <Compile Include="ResourceSystem\IconResourceSystemFacade.cs" />
+    <Compile Include="ResourceSystem\IIconResourceSystemFacade.cs" />
+    <Compile Include="Security\DataHookMapper.cs" />
+    <Compile Include="Serialization\CompositeCollectionValueXmlSerializer.cs" />
+    <Compile Include="Serialization\ISerializerHandlerFacade.cs" />
+    <Compile Include="Serialization\ISerializerHandler.cs" />
+    <Compile Include="Serialization\IValueXmlSerializer.cs" />
+    <Compile Include="Serialization\IXmlSerializer.cs" />
+    <Compile Include="Serialization\PropertySerializerHandler.cs" />
+    <Compile Include="Serialization\SerializerHandlerAttribute.cs" />
+    <Compile Include="Serialization\SerializerHandlerFacade.cs" />
+    <Compile Include="Serialization\SerializerHandlerFacadeImpl.cs" />
+    <Compile Include="Serialization\SerializerHandlerValueXmlSerializer.cs" />
+    <Compile Include="Serialization\SystemCollectionValueXmlSerializer.cs" />
+    <Compile Include="Serialization\SystemPrimitivValueXmlSerializer.cs" />
+    <Compile Include="Serialization\SystemSerializableValueXmlSerializer.cs" />
+    <Compile Include="Serialization\SystemTypesValueXmlSerializer.cs" />
+    <Compile Include="Serialization\XmlSerializer.cs" />
+    <Compile Include="Sql\ISqlTableInformationStore.cs" />
+    <Compile Include="Sql\SqlTableInformationStore.cs" />
+    <Compile Include="StandardPlugins\Application\ApplicationOnlineHandlers\AspNetApplicationOnlineHandler\AspNetApplicationOnlineHandler.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\AllFunctionsElementProvider\DocumentFunctionsActionToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\AllFunctionsElementProvider\AllFunctionsProviderActionExecutor.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\ViewUnpublishedItemsActionToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\LocalizationElementProvider\LocalizationElementProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\LocalizationElementProvider\LocalizationElementProviderRootEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\PackageElementProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\PackageElementProviderRootEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\PackageElementProviderInstalledPackageFolderEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\PackageElementProviderInstalledPackageGroupFolderEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\PackageElementProviderInstalledPackageItemEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\PackageElementProviderInstalledPackageLocalPackagesFolderEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\PackageElementProviderPackageSourcesFolderEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\PackageElementProviderPackageSourcesItemEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\PackageElementProviderAvailablePackagesFolderEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\PackageElementProviderAvailablePackagesGroupFolderEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\PackageElementProviderAvailablePackagesItemEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\ClearServerCacheActionExecutor.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\ClearServerCacheActionToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\WorkflowHelper.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\ViewUnpublishedItemsActionToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\UserElementProvider\ActiveLocalesFormsHelper.cs" />
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedInfoTableUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedToolbarButtonUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\ParseStringToObject.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\String\JoinTwo.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\MediaFileSelectorWidgetFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\Type\DataTypeSelectorWidgetFunction.cs" />
+    <Compile Include="StandardPlugins\Logging\LogTraceListeners\TcpLogTraceListener\TcpLogTraceListenerThread.cs" />
+    <Compile Include="StandardPlugins\Logging\LogTraceListeners\TcpLogTraceListener\TcpLogTraceListenerThreadData.cs" />
+    <Compile Include="StandardPlugins\Logging\LogTraceListeners\TcpLogTraceListener\TcpLogTraceListenerThreadDataQueueItem.cs" />
+    <Compile Include="StandardPlugins\ResourceSystem\PropertyResourceProvider\PropertyResourceProvider.cs" />
+    <Compile Include="Types\BuildManager.cs" />
+    <Compile Include="Types\Foundation\PluginFacades\ITypeManagerTypeHandlerPluginFacade.cs" />
+    <Compile Include="Types\Foundation\PluginFacades\TypeManagerTypeHandlerPluginFacade.cs" />
+    <Compile Include="Types\ITypeManager.cs" />
+    <Compile Include="Types\TypeManager.cs" />
+    <Compile Include="Types\IBuildManager.cs" />
+    <Compile Include="Users\UserSettings.cs" />
+    <Compile Include="Users\IUserSettingsFacade.cs" />
+    <Compile Include="Validation\ClientValidationRuleSerializerHandler.cs" />
+    <Compile Include="Validation\ClientValidationRuleFacade.cs" />
+    <Compile Include="Validation\Foundation\ClientValidationRuleTranslatorRegistry.cs" />
+    <Compile Include="Validation\Foundation\IClientValidationRuleTranslatorRegistry.cs" />
+    <Compile Include="Validation\Foundation\PluginFacades\ClientValidationRuleTranslatorPluginFacade.cs" />
+    <Compile Include="Validation\Foundation\PluginFacades\IClientValidationRuleTranslatorPluginFacade.cs" />
+    <Compile Include="Validation\IClientValidationRuleFacade.cs" />
+    <Compile Include="Validation\IValidationFacade.cs" />
+    <Compile Include="Validation\ValidationFacade.cs" />
+    <Compile Include="Validation\Validators\GuidNotEmptyValidator.cs" />
+    <Compile Include="Validation\Validators\GuidNotEmptyAttribute.cs" />
+    <Compile Include="WebClient\ControlCompilerService.cs" />
+    <Compile Include="WebClient\CookieHandler.cs" />
+    <Compile Include="WebClient\ElementInformation.cs" />
+    <Compile Include="WebClient\FlowPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebClient\FunctionCallEditor\FunctionCallEditorStateSimple.cs" />
+    <Compile Include="WebClient\FunctionCallEditor\IFunctionCallEditorState.cs" />
+    <Compile Include="WebClient\FunctionCallEditor\TreeHelper.cs" />
+    <Compile Include="WebClient\HttpModules\AdministrativeAuthorizationHttpModule.cs" />
+    <Compile Include="WebClient\HttpModules\AdministrativeResponseFilterHttpModule.cs" />
+    <Compile Include="WebClient\MediaUrlHelper.cs" />
+    <Compile Include="WebClient\PageUrlHelper.cs" />
+    <Compile Include="WebClient\ScriptHandler.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\BindEntityTokenToViewParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\BroadcastMessageParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\GetMessagesResult.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\OpenGenericViewParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\CloseAllViewsParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\DownloadFileParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\SaveStatusParams.cs" />
+    <Compile Include="WebClient\Services\LocalizationServiceObjects\ClientLocale.cs" />
+    <Compile Include="WebClient\Services\LocalizationServiceObjects\ClientLocales.cs" />
+    <Compile Include="WebClient\Services\LocalizationServiceObjects\PageLocale.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\RefreshChildrenInfo.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\RefreshChildrenParams.cs" />
+    <Compile Include="WebClient\State\ISessionStateProvider.cs" />
+    <Compile Include="WebClient\State\Runtime\SessionStateProviderCustomFactory.cs" />
+    <Compile Include="WebClient\State\Runtime\SessionStateProviderFactory.cs" />
+    <Compile Include="WebClient\State\Runtime\SessionStateProviderSettings.cs" />
+    <Compile Include="WebClient\State\StateManager.cs" />
+    <Compile Include="WebClient\StyleCompiler.cs" />
+    <Compile Include="WebClient\UiControlLib\ComboBox.cs" />
+    <Compile Include="WebClient\UiControlLib\Feedback.cs" />
+    <Compile Include="WebClient\UiControlLib\Foundation\BaseControl.cs" />
+    <Compile Include="WebClient\UiControlLib\Generic.cs" />
+    <Compile Include="WebClient\UiControlLib\PostBackDialog.cs" />
+    <Compile Include="WebClient\UiControlLib\TextArea.cs" />
+    <Compile Include="WebClient\UiControlLib\TextBox.cs" />
+    <Compile Include="WebClient\UrlString.cs" />
+    <Compile Include="Workflow\Activities\ConditionalSetStateActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\EmptyDocumentFormActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\WarningDialogFormActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\RerenderViewActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\CustomEvent01HandleExternalEventActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\CustomEvent02HandleExternalEventActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\CustomEvent03HandleExternalEventActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\CustomEvent04HandleExternalEventActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\CustomEvent05HandleExternalEventActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Foundation\IWorkflowRuntimeProviderRegistry.cs" />
+    <Compile Include="Workflow\Foundation\PluginFacades\IWorkflowRuntimeProviderPluginFacade.cs" />
+    <Compile Include="Workflow\Foundation\PluginFacades\WorkflowRuntimeProviderPluginFacade.cs" />
+    <Compile Include="Workflow\Foundation\WorkflowRuntimeProviderRegistry.cs" />
+    <Compile Include="Workflow\IEventHandleFilter.cs" />
+    <Compile Include="Workflow\WorkflowTaskManagerEvent.cs" />
+    <Compile Include="Xml\LimitedDepthXmlWriter.cs" />
+    <Compile Include="Xml\XAttributeExtensionMethods.cs" />
+    <Compile Include="IO\Zip\ZipFileSystem.cs" />
+    <Compile Include="PackageSystem\Foundation\PackageSystemSettings.cs" />
+    <Compile Include="PackageSystem\IPackageFragmentUninstaller.cs" />
+    <Compile Include="PackageSystem\IPackageFragmentInstaller.cs" />
+    <Compile Include="PackageSystem\PackageFragmentInstallers\BasePackageFragmentInstaller.cs" />
+    <Compile Include="PackageSystem\PackageFragmentInstallers\BasePackageFragmentUninstaller.cs" />
+    <Compile Include="PackageSystem\PackageFragmentInstallers\DataTypePackageFragmentUninstaller.cs" />
+    <Compile Include="PackageSystem\PackageFragmentInstallers\DataTypePackageFragmentInstaller.cs" />
+    <Compile Include="PackageSystem\PackageFragmentInstallers\DataPackageFragmentInstaller.cs" />
+    <Compile Include="PackageSystem\PackageFragmentInstallers\DataPackageFragmentUninstaller.cs" />
+    <Compile Include="PackageSystem\PackageFragmentInstallers\DynamicDataTypePackageFragmentInstaller.cs" />
+    <Compile Include="PackageSystem\PackageFragmentInstallers\DynamicDataTypePackageFragmentUninstaller.cs" />
+    <Compile Include="PackageSystem\PackageFragmentInstallers\FilePackageFragmentInstaller.cs" />
+    <Compile Include="PackageSystem\PackageFragmentInstallers\FilePackageFragmentUninstaller.cs" />
+    <Compile Include="PackageSystem\PackageFragmentInstallers\VirtualElementProviderNodePackageFragmentInstaller.cs" />
+    <Compile Include="PackageSystem\PackageFragmentInstallers\VirtualElementProviderNodePackageFragmentUninstaller.cs" />
+    <Compile Include="PackageSystem\PackageFragmentValidationResult.cs" />
+    <Compile Include="PackageSystem\PackageFragmentValidationResultType.cs" />
+    <Compile Include="PackageSystem\PackageInstaller.cs" />
+    <Compile Include="PackageSystem\PackageInstallerContex.cs" />
+    <Compile Include="PackageSystem\PackageManager.cs" />
+    <Compile Include="PackageSystem\PackageUninstaller.cs" />
+    <Compile Include="PackageSystem\PackageUninstallerContex.cs" />
+    <Compile Include="Renderings\Data\DataXhtmlRenderingServices.cs" />
+    <Compile Include="Renderings\Data\IDataXhtmlRenderer.cs" />
+    <Compile Include="Renderings\Data\XhtmlRendererProviderAttribute.cs" />
+    <Compile Include="Renderings\Data\XhtmlRenderingTypeEnum.cs" />
+    <Compile Include="Security\HashSigner.cs" />
+    <Compile Include="Security\HashValue.cs" />
+    <Compile Include="Security\HookingFacadeEventArgs.cs" />
+    <Compile Include="Security\HookingFacadeImpl.cs" />
+    <Compile Include="Security\IHookingFacade.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\VirtualElementProvider\VirtualElementProviderConfigurationManipulator.cs" />
+    <Compile Include="Caching\RequestLifetimeCache.cs" />
+    <Compile Include="Collections\Generic\DictionaryExtensionMethods.cs" />
+    <Compile Include="Collections\Generic\ResourceLocker.cs" />
+    <Compile Include="ConsoleEventSystem\ConsoleFacade.cs" />
+    <Compile Include="ConsoleEventSystem\RebootConsoleMessageQueueItem.cs" />
+    <Compile Include="Data\IDataWrapper.cs" />
+    <Compile Include="Data\DynamicTypes\Foundation\DynamicTypesAlternateFormFacade.cs" />
+    <Compile Include="Data\FieldPositionAttribute.cs" />
+    <Compile Include="Data\DataProviderCopier.cs" />
+    <Compile Include="Data\GeneratedTypes\GeneratedTypesHelper.cs" />
+    <Compile Include="Data\ProcessControlled\ActionRoleProviderAttribute.cs" />
+    <Compile Include="Data\ProcessControlled\ActionIconResourceHandleAttribute.cs" />
+    <Compile Include="Data\ProcessControlled\IPublishControlledAuxiliary.cs" />
+    <Compile Include="Data\ProcessControlled\IActionRoleProvider.cs" />
+    <Compile Include="Data\ProcessControlled\ProcessControllerAttributesFacade.cs" />
+    <Compile Include="Data\ProcessControlled\ProcessControllers\DummyProcessControllers\PublishDummyProcessController.cs" />
+    <Compile Include="Data\ProcessControlled\ProcessControllers\DummyProcessControllers\VersionDummyProcessController.cs" />
+    <Compile Include="Data\ProcessControlled\PublishControlledAuxiliaryAttribute.cs" />
+    <Compile Include="Data\ProcessControllerTypeAttribute.cs" />
+    <Compile Include="Data\TitleAttribute.cs" />
+    <Compile Include="Data\DynamicTypes\DataAssociationDescriptor.cs" />
+    <Compile Include="Data\PageMetaDataDescription.cs" />
+    <Compile Include="Data\Foundation\DataStoreExistenceVerifier.cs" />
+    <Compile Include="Data\Types\Foundation\IAssociationVisability.cs" />
+    <Compile Include="Data\Types\IAggregationDescription.cs" />
+    <Compile Include="Data\Types\IDynamicTypeFormDefinitionFile.cs" />
+    <Compile Include="Data\Types\ILockingInformation.cs" />
+    <Compile Include="Data\Types\Foundation\IAssociationDescription.cs" />
+    <Compile Include="Data\Types\IPageAssociationVisability.cs" />
+    <Compile Include="Data\Types\IPageHostNameBinding.cs" />
+    <Compile Include="Data\Types\Foundation\PagePublishControlledAuxiliary.cs" />
+    <Compile Include="Data\Types\IPagePlaceholderContent.cs" />
+    <Compile Include="Data\Types\IPageUnpublishSchedule.cs" />
+    <Compile Include="Data\Types\IUserActivePerspective.cs" />
+    <Compile Include="Data\Types\IUserDeveloperSettings.cs" />
+    <Compile Include="Data\Types\IUserPermissionDefinitionPermissionType.cs" />
+    <Compile Include="Data\Types\IUserSettings.cs" />
+    <Compile Include="Data\Types\IPagePublishSchedule.cs" />
+    <Compile Include="Data\Types\IUserPermissionDefinition.cs" />
+    <Compile Include="Data\NotReferenceable.cs" />
+    <Compile Include="Data\Plugins\DataProvider\CodeGeneration\PropertyInitializer\RandomIntPropertyInitializer.cs" />
+    <Compile Include="Data\Types\ExtensionMethods\IMediaFileFolderExtensions.cs" />
+    <Compile Include="Data\Types\ExtensionMethods\IMediaFileExtensions.cs" />
+    <Compile Include="Data\Types\ICompositionDescription.cs" />
+    <Compile Include="Data\Types\ICompositionContainer.cs" />
+    <Compile Include="Data\Types\IDataTypeAssociationDescriptor.cs" />
+    <Compile Include="Data\Types\ILogEntry.cs" />
+    <Compile Include="Data\Types\IUser.cs" />
+    <Compile Include="Data\Types\IPageTemplateFile.cs" />
+    <Compile Include="Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\Foundation\RenderingFunctionNames.cs" />
+    <Compile Include="Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\VisualFunctionElementProviderHelper.cs" />
+    <Compile Include="Elements\Security\ElementSecurityFacade.cs" />
+    <Compile Include="Functions\IDowncastableFunction.cs" />
+    <Compile Include="Logging\DebugLoggingScope.cs" />
+    <Compile Include="Renderings\Page\PageAssociationScopeEnum.cs" />
+    <Compile Include="Renderings\RenderingElementNames.cs" />
+    <Compile Include="Renderings\Template\TemplateInfo.cs" />
+    <Compile Include="Renderings\Template\TemplatePlaceholdersInfo.cs" />
+    <Compile Include="RuntimeInformation.cs" />
+    <Compile Include="Security\AdministratorAutoCreator.cs" />
+    <Compile Include="Security\BuildinPlugins\BuildinLoginSessionStore\BuildinLoginSessionStore.cs" />
+    <Compile Include="Security\BuildinPlugins\BuildinUserPermissionDefinitionProvider\BuildinUserRoleDefinitionProvider.cs" />
+    <Compile Include="Security\ConstructorBasedUserPermissionDefinition.cs" />
+    <Compile Include="Security\Foundation\PluginFacades\UserRoleDefinitionProviderPluginFacade.cs" />
+    <Compile Include="Security\IgnoreEntityTokenLocking.cs" />
+    <Compile Include="Security\ParentsFacade.cs" />
+    <Compile Include="Security\PermissionDescriptor.cs" />
+    <Compile Include="Security\PermissionType.cs" />
+    <Compile Include="Security\Plugins\UserPermissionDefinitionProvider\IUserPermissionDefinitionProvider.cs" />
+    <Compile Include="Security\Plugins\UserPermissionDefinitionProvider\NonConfigurableUserPermissionDefinitionProvider.cs" />
+    <Compile Include="Security\Plugins\UserPermissionDefinitionProvider\Runtime\UserPermissionDefinitionProviderCustomFactory.cs" />
+    <Compile Include="Security\Plugins\UserPermissionDefinitionProvider\Runtime\UserPermissionDefinitionProviderDefaultNameRetriever.cs" />
+    <Compile Include="Security\Plugins\UserPermissionDefinitionProvider\Runtime\UserPermissionDefinitionProviderFactory.cs" />
+    <Compile Include="Security\Plugins\UserPermissionDefinitionProvider\Runtime\UserPermissionDefinitionProviderSettings.cs" />
+    <Compile Include="Security\UserPerspectiveFacade.cs" />
+    <Compile Include="Security\UserPermissionDefinition.cs" />
+    <Compile Include="Security\Plugins\UserPermissionDefinitionProvider\UserPermissionDefinitionProviderData.cs" />
+    <Compile Include="Security\PermissionTypeFacade.cs" />
+    <Compile Include="Functions\BaseFunctionRuntimeTreeNode.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\XmlDataProvider\CodeGeneration\XmlDataProviderCodeGeneratorResult.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\XmlDataProvider\CodeGeneration\XmlDataProviderCodeGeneratorStore.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\XmlDataProvider\CodeGeneration\XmlDataProviderCodeGeneratorStoreResult.cs" />
+    <Compile Include="Data\ProcessControlled\ActionTokenProviderAttribute.cs" />
+    <Compile Include="Data\ProcessControlled\ProcessControllers\GenericPublishProcessController\GenericPublishProcessControllerActionType.cs" />
+    <Compile Include="Data\ProcessControlled\IActionTokenProvider.cs" />
+    <Compile Include="Data\ProcessControlled\IgnoreActionAttribute.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\LogElementProvider\LogElementProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\LogElementProvider\LogElementProviderActionExecutor.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\LogElementProvider\LogElementProviderEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\LogElementProvider\ShowLogActionToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\MethodBasedFunctionAttribute.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\LocalOrdering\DisplayLocalOrderingActionExecutor.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\LocalOrdering\DisplayLocalOrderingActionToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\PageElementProviderActionTokenProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\UserElementProvider\ActivePerspectiveFormsHelper.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\UserElementProvider\GlobalPermissionsFormsHelper.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\UserElementProvider\UserElementProviderGroupEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\UserElementProvider\UserElementProviderGroupEntityTokenSecurityAncestorProvider.cs" />
+    <Compile Include="Data\Types\IFolderWhiteList.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\WebsiteEntity.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\WebsiteFileElementProviderRootEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\WebsiteFile.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\WebsiteFileElementProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\WebsiteFileEntityTokenSecurityAncestorProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\WebsiteFileSearchToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\WebsiteFolder.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\WebsiteFileElementProviderEntityToken.cs" />
+    <Compile Include="StandardPlugins\Forms\WebChannel\CustomUiControls\TemplatedPageContentEditorUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiContainerFactories\Base\BaseTemplatedUiContainerFactory.cs" />
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiContainerFactories\Base\ITemplatedUiContainerFactoryData.cs" />
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\Base\BaseTemplatedUiControlFactory.cs" />
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\Base\ITemplatedUiControlFactoryData.cs" />
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\UserControlBasedUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedDateTimeSelectorUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedBoolSelectorUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedHeadingUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\Plugins\FunctionProvider\IDynamicTypeFunctionProvider.cs" />
+    <Compile Include="Functions\Plugins\WidgetFunctionProvider\IDynamicTypeWidgetFunctionProvider.cs" />
+    <Compile Include="GlobalInitializerFacade.cs" />
+    <Compile Include="Security\ActionTokenSerializer.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\UserElementProvider\UserElementProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\UserElementProvider\UserElementProviderEntityToken.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\MethodBasedFunctionProvider\FunctionParameterDescriptionAttribute.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Foundation\DowncastableStandardFunctionBase.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Foundation\StandardFunctionBase.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\AspNet\LoadUserControlFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Constant\GuidFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\IDataGenerated\GetDataReference.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\IDataGenerated\Filter\CompoundFilter.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\IDataGenerated\Filter\DataReferenceFilter.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\IDataGenerated\Filter\Foundation\ListPropertyNamesHelper.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Pages\GetPageIdFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\BoolEqualsPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\StringEndsWithPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\GuidEqualsPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\DecimalEqualsPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\DecimalGreaterThanPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\DecimalLessThanPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\IntegerEqualsPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\IntegerGreaterThanPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\IntegerLessThanPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\DateTimeEqualsPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\DateTimeGreaterThanPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\DateTimeLessThanPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\StringEqualsPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\StringStartsWithPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Globalization\AllCultures.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Globalization\CurrentCulture.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\IDataGenerated\Filter\ActivePageReferenceFilter.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\IDataGenerated\Filter\FieldPredicatesFilter.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\GetInputParameterFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Integer\IntSum.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Pages\SitemapFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\StringContainsPredicateFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Foundation\StandardFunctionParameterProfile.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\String\Join.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\String\Split.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Validation\DecimalPrecisionValidationFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Validation\PasswordValidationFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\IDataGenerated\GetXml.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\FormPostBoolValueFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\FormPostDecimalValueFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\FormPostGuidValueFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\FormPostIntegerValueFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\FormPostValueFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\FormPostXmlFormattedDateTimeValueFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\QueryStringXmlFormattedDateTimeValueFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\QueryStringBoolValueFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\QueryStringGuidValueFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\QueryStringDecimalValueFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\QueryStringIntegerValueFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Xslt\Extensions\GlobalizationXsltExtensionsFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Xslt\Extensions\DateFormattingXsltExtensionsFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Xslt\Extensions\MarkupParserXsltExtensionsFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\Bool\BoolSelectorWidgetFuntion.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\DataReference\DataReferenceSelectorWidgetFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\Date\DateTimeSelectorWidgetFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\String\VisualXhtmlEditorWidgetFuntion.cs" />
+    <Compile Include="StandardPlugins\Logging\LogTraceListeners\DataLogTraceListener\DataLogTraceListener.cs" />
+    <Compile Include="StandardPlugins\Logging\LogTraceListeners\TcpLogTraceListener\TcpLogTraceListener.cs" />
+    <Compile Include="StandardPlugins\Security\LoginProviderPlugins\DataBasedFormLoginProvider\DataBasedFormLoginProvider.cs" />
+    <Compile Include="StandardPlugins\Security\UserPermissionDefinitionProvider\ConfigBasedUserPermissionDefinitionProvider\ConfigBasedUserPermissionDefinitionProvider.cs" />
+    <Compile Include="StandardPlugins\Security\UserPermissionDefinitionProvider\DataBaseUserPermissionDefinitionProvider\DataBaseUserPermissionDefinitionProvider.cs" />
+    <Compile Include="Types\BuildManagerCompileType.cs" />
+    <Compile Include="Types\BuildManagerCompileUnitAssemblyAttribute.cs" />
+    <Compile Include="Types\BuildManagerCustomSerializerPointerAttribute.cs" />
+    <Compile Include="Types\BuildManagerEmptyClassPointerAttribute.cs" />
+    <Compile Include="Types\BuildManagerDataWrapperClassPointerAttribute.cs" />
+    <Compile Include="Types\BuildManagerAssemblyVersionAttribute.cs" />
+    <Compile Include="Types\BuildManagerPropertyInfo.cs" />
+    <Compile Include="Types\BuildManagerSiloData.cs" />
+    <Compile Include="Types\BuildManagerCompileUnitIdAttribute.cs" />
+    <Compile Include="Types\CreatedFilenameParser.cs" />
+    <Compile Include="Types\BuildManagerAttributeFacade.cs" />
+    <Compile Include="Types\Foundation\AssemblyFilenameCollection.cs" />
+    <Compile Include="Types\Foundation\BuildManagerSiloHelper.cs" />
+    <Compile Include="Types\Foundation\CompileUnitBaseTypeProber.cs" />
+    <Compile Include="Types\BuildManagerFingerprintAttribute.cs" />
+    <Compile Include="Types\DynamicBuildManagetTypeCache.cs" />
+    <Compile Include="Collections\Generic\ReadOnlyDictionary.cs" />
+    <Compile Include="Collections\Generic\ReadOnlyList.cs" />
+    <Compile Include="Collections\INamespaceTreeBuilderLeafInfo.cs" />
+    <Compile Include="Collections\NamespaceTreeBuilder.cs" />
+    <Compile Include="Collections\NamespaceTreeBuilderFolder.cs" />
+    <Compile Include="ConsoleEventSystem\OpenHandledViewMessageQueueItem.cs" />
+    <Compile Include="Data\AutoUpdatebleAttribute.cs" />
+    <Compile Include="Data\BeforeSetAttribute.cs" />
+    <Compile Include="Data\CachingAttribute.cs" />
+    <Compile Include="Data\Caching\CachingEnumerator.cs" />
+    <Compile Include="Data\Caching\CachingQueryable.cs" />
+    <Compile Include="Data\Foundation\CodeGeneration\DataWrapperGenerator.cs" />
+    <Compile Include="Data\Caching\DataCachingFacade.cs" />
+    <Compile Include="Data\Caching\Foundation\CachingQueryableCache.cs" />
+    <Compile Include="Data\Caching\Foundation\ChangeSourceExpressionVisitor.cs" />
+    <Compile Include="Data\Caching\ICachingQueryable.cs" />
+    <Compile Include="Data\CodeGeneratedAttribute.cs" />
+    <Compile Include="Data\DataAssociationAttribute.cs" />
+    <Compile Include="Data\DataAttributeFacade.cs" />
+    <Compile Include="Data\DataPropertyHandlerFacade.cs" />
+    <Compile Include="Data\ForeignKeyAttribute.cs" />
+    <Compile Include="Data\DataReferenceFacade.cs" />
+    <Compile Include="Data\ForeignPropertyInfo.cs" />
+    <Compile Include="Data\DataScope.cs" />
+    <Compile Include="Data\DataScopeAttribute.cs" />
+    <Compile Include="Data\DataScopeIdentifier.cs" />
+    <Compile Include="Data\DataScopeManager.cs" />
+    <Compile Include="Data\DefaultFieldValueAttribute.cs" />
+    <Compile Include="Data\DynamicTypes\DataTypeDescriptorFormsHelper.cs" />
+    <Compile Include="Data\DynamicTypes\DynamicTypeMarkupServices.cs" />
+    <Compile Include="Data\DynamicTypes\Foundation\DynamicTypeReflectionFacade.cs" />
+    <Compile Include="Data\Foundation\CodeGeneratedAttribute.cs" />
+    <Compile Include="Data\DynamicTypes\DataFieldFormRenderingProfile.cs" />
+    <Compile Include="Data\Foundation\DataAssociationRegistry.cs" />
+    <Compile Include="Data\Foundation\DataExpressionBuilder.cs" />
+    <Compile Include="Data\Foundation\DataReferenceRegistry.cs" />
+    <Compile Include="Data\Foundation\ProcessControllerRegistry.cs" />
+    <Compile Include="Data\IDataIdExtensions.cs" />
+    <Compile Include="Data\LabelPropertyNameAttribute.cs" />
+    <Compile Include="Data\ProcessControlled\IVersionProcessController.cs" />
+    <Compile Include="Data\ProcessControlled\PublishControlledSetPropertyHandler.cs" />
+    <Compile Include="Data\RelevantUserGroupAttribute.cs" />
+    <Compile Include="Data\Types\IDataFieldDescriptor_ValidatorFunctionMarkup.cs" />
+    <Compile Include="Data\Types\IDataTypeDescriptor_SuperInterface.cs" />
+    <Compile Include="Data\UserTypeEnum.cs" />
+    <Compile Include="Data\GeneratedTypes\Foundation\InterfaceCodeGenerator.cs" />
+    <Compile Include="Data\DataMetaDataFacade.cs" />
+    <Compile Include="Data\GeneratedTypes\GeneratedTypesFacade.cs" />
+    <Compile Include="Data\ISetPropertyHandler.cs" />
+    <Compile Include="Data\IDataExtensions.cs" />
+    <Compile Include="Data\IDataReference.cs" />
+    <Compile Include="Data\DataReference.cs" />
+    <Compile Include="Data\ProcessControlled\IVersionControlled.cs" />
+    <Compile Include="Data\ProcessControlled\IVersionControlledWritable.cs" />
+    <Compile Include="Data\Plugins\DataProvider\IGeneratedTypesDataProvider.cs" />
+    <Compile Include="Data\Plugins\DataProvider\Streams\TransactionFileSystemFileStreamManager.cs" />
+    <Compile Include="Data\ProcessControlled\IProcessControlled.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\ProcessControlled\IProcessController.cs" />
+    <Compile Include="Data\ProcessControlled\IPublishControlled.cs" />
+    <Compile Include="Data\ProcessControlled\IPublishProcessController.cs" />
+    <Compile Include="Data\ProcessControlled\ProcessControllerFacade.cs" />
+    <Compile Include="Data\StoreSortOrderAttribute.cs" />
+    <Compile Include="Data\Types\IDataFieldDescriptor.cs" />
+    <Compile Include="Data\Types\IDataFieldDescriptor_FormRenderingProfile.cs" />
+    <Compile Include="Data\Types\IDataTypeDescriptor_DataScope.cs" />
+    <Compile Include="Data\Types\IDataTypeDescriptor_StoreSortOrderFieldName.cs" />
+    <Compile Include="Data\Types\IDataTypeDescriptor_KeyFieldName.cs" />
+    <Compile Include="Data\Types\IDataTypeDescriptor.cs" />
+    <Compile Include="Data\Types\IImageFile.cs" />
+    <Compile Include="Data\Types\StoreIdFilter\Foundation\IStoreIdFilterQueryable.cs" />
+    <Compile Include="Data\Types\StoreIdFilter\Foundation\StoreIdFilterQueryableCache.cs" />
+    <Compile Include="Data\Types\StoreIdFilter\Foundation\StoreIdFilterQueryableExpressionVisitor.cs" />
+    <Compile Include="Data\Types\StoreIdFilter\Foundation\StoreIdFilterQueryableSourceChanringExpressionVisitor.cs" />
+    <Compile Include="Data\Types\StoreIdFilter\StoreIdFilterQueryable.cs" />
+    <Compile Include="Elements\Foundation\ElementActionProviderFacade.cs" />
+    <Compile Include="Elements\ElementDragAndDropInfo.cs" />
+    <Compile Include="Elements\LabeledProperty.cs" />
+    <Compile Include="Elements\LabeledPropertyList.cs" />
+    <Compile Include="Elements\Plugins\ElementProvider\ICustomSearchElementProvider.cs" />
+    <Compile Include="Elements\Plugins\ElementProvider\IDragAndDropElementProvider.cs" />
+    <Compile Include="Elements\SearchToken.cs" />
+    <Compile Include="Extensions\StreamExtensionMethods.cs" />
+    <Compile Include="Extensions\StringExtensionMethods.cs" />
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedTextEditorUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedTypeFieldDesignerUiControlFactory.cs.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedNamedFunctionCallsDesignerUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedFunctionParameterDesignerUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedDataReferenceSelectorUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\Foundation\FunctionContainer.cs" />
+    <Compile Include="Functions\Foundation\MetaFunctionContainer.cs" />
+    <Compile Include="Functions\Foundation\WidgetFunctionContainer.cs" />
+    <Compile Include="Functions\IFunctionResultToXEmbedableMapper.cs" />
+    <Compile Include="Data\Types\IParameter.cs" />
+    <Compile Include="Functions\ManagedParameters\ManagedParameterDefinition.cs" />
+    <Compile Include="Functions\ManagedParameters\ManagedParameterManager.cs" />
+    <Compile Include="Functions\NamedFunctionCall.cs" />
+    <Compile Include="Functions\Plugins\FunctionProvider\FunctionNotifier.cs" />
+    <Compile Include="Functions\Plugins\WidgetFunctionProvider\WidgetFunctionNotifier.cs" />
+    <Compile Include="Data\Types\IMediaFile.cs" />
+    <Compile Include="Data\Types\IMediaFileFolder.cs" />
+    <Compile Include="Data\Types\IMediaFileStore.cs" />
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedFileUploadUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Xml\XhtmlDocument.cs" />
+    <Compile Include="Functions\XElementParameterRuntimeTreeNode.cs" />
+    <Compile Include="Instrumentation\Foundation\NoopTimerProfiler.cs" />
+    <Compile Include="Instrumentation\Foundation\XmlTimerProfiler.cs" />
+    <Compile Include="Instrumentation\Foundation\XmlTimerProfilerFacade.cs" />
+    <Compile Include="Instrumentation\TimerProfiler.cs" />
+    <Compile Include="Instrumentation\TimerProfilerFacade.cs" />
+    <Compile Include="IO\MimeTypeInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <AppDesigner Include="Properties\" />
+    <Compile Include="Actions\ActionExecutorAttribute.cs" />
+    <Compile Include="Actions\ActionExecutorFacade.cs" />
+    <Compile Include="Actions\ActionResult.cs" />
+    <Compile Include="Actions\DataActionFacade.cs" />
+    <Compile Include="Actions\DataActionProviderContext.cs" />
+    <Compile Include="Actions\DataActionSourceId.cs" />
+    <Compile Include="Actions\FlowControllerAttribute.cs" />
+    <Compile Include="Actions\FlowControllerFacade.cs" />
+    <Compile Include="Actions\FlowControllerServicesContainer.cs" />
+    <Compile Include="Actions\FlowHandle.cs" />
+    <Compile Include="Actions\FlowToken.cs" />
+    <Compile Include="Actions\FlowUiDefinitionBase.cs" />
+    <Compile Include="Actions\Foundation\ActionExecutorCache.cs" />
+    <Compile Include="Actions\Foundation\DataActionProviderPluginRegistry.cs" />
+    <Compile Include="Actions\Foundation\FlowExecutorCache.cs" />
+    <Compile Include="Actions\Foundation\PluginFacades\DataActionProviderPluginFacade.cs" />
+    <Compile Include="Actions\IActionExecutionService.cs" />
+    <Compile Include="Actions\IActionExecutor.cs" />
+    <Compile Include="Actions\IDataAction.cs" />
+    <Compile Include="Actions\IDataActionId.cs" />
+    <Compile Include="Actions\IFlowController.cs" />
+    <Compile Include="Actions\IFlowControllerService.cs" />
+    <Compile Include="Actions\IFlowUiContainerType.cs" />
+    <Compile Include="Actions\IFlowUiDefinition.cs" />
+    <Compile Include="Actions\NullFlow.cs" />
+    <Compile Include="Actions\Plugins\DataActionProvider\DataActionProviderData.cs" />
+    <Compile Include="Actions\Plugins\DataActionProvider\IDataActionProvider.cs" />
+    <Compile Include="Actions\Plugins\DataActionProvider\NonConfigurableDataActionProvider.cs" />
+    <Compile Include="Actions\Plugins\DataActionProvider\Runtime\DataActionProviderCustomFactory.cs" />
+    <Compile Include="Actions\Plugins\DataActionProvider\Runtime\DataActionProviderDefaultNameRetriever.cs" />
+    <Compile Include="Actions\Plugins\DataActionProvider\Runtime\DataActionProviderFactory.cs" />
+    <Compile Include="Actions\Plugins\DataActionProvider\Runtime\DataActionProviderSettings.cs" />
+    <Compile Include="Actions\StandardUiContainerTypes.cs" />
+    <Compile Include="Collections\Generic\CastEnumerable.cs" />
+    <Compile Include="Collections\Generic\CastEnumerator.cs" />
+    <Compile Include="ConsoleEventSystem\CloseViewMessageQueueItem.cs" />
+    <Compile Include="ConsoleEventSystem\ConsoleMessageQueueFacade.cs" />
+    <Compile Include="ConsoleEventSystem\DialogTypeEnum.cs" />
+    <Compile Include="ConsoleEventSystem\Foundation\ConsoleMessageQueue.cs" />
+    <Compile Include="ConsoleEventSystem\Foundation\ConsoleMessageQueueElement.cs" />
+    <Compile Include="ConsoleEventSystem\IConsoleMessageQueueItem.cs" />
+    <Compile Include="ConsoleEventSystem\IManagementConsoleMessageService.cs" />
+    <Compile Include="ConsoleEventSystem\LogEntryMessageQueueItem.cs" />
+    <Compile Include="ConsoleEventSystem\ManagementConsoleMessageService.cs" />
+    <Compile Include="ConsoleEventSystem\MessageBoxMessageQueueItem.cs" />
+    <Compile Include="ConsoleEventSystem\OpenViewMessageQueueItem.cs" />
+    <Compile Include="ConsoleEventSystem\RefreshTreeMessageQueueItem.cs" />
+    <Compile Include="ConsoleEventSystem\ViewType.cs" />
+    <Compile Include="Data\BuildNewHandlerAttribute.cs" />
+    <Compile Include="Data\DataEntityToken.cs" />
+    <Compile Include="Data\DataEntityTokenExtensions.cs" />
+    <Compile Include="Data\DataEventSystemFacade.cs" />
+    <Compile Include="Data\DataFacadeImpl.cs" />
+    <Compile Include="Data\Foundation\DataProviderRegistry.cs" />
+    <Compile Include="Data\DataSourceId.cs" />
+    <Compile Include="Data\DynamicTypes\DataFieldDescriptor.cs" />
+    <Compile Include="Data\DynamicTypes\DataFieldDescriptorCollection.cs" />
+    <Compile Include="Data\DynamicTypes\DataFieldIdEqualityComparer.cs" />
+    <Compile Include="Data\DynamicTypes\DataFieldNameCollection.cs" />
+    <Compile Include="Data\DynamicTypes\DataTypeChangeDescriptor.cs" />
+    <Compile Include="Data\DynamicTypes\DataTypeDescriptor.cs" />
+    <Compile Include="Data\DynamicTypes\DefaultValue.cs" />
+    <Compile Include="Data\DynamicTypes\DynamicTypeManagerImpl.cs" />
+    <Compile Include="Data\DynamicTypes\Foundation\ReflectionBasedDataTypeDescriptorBuilder.cs" />
+    <Compile Include="Data\DynamicTypes\NameValidation.cs" />
+    <Compile Include="Data\DynamicTypes\StoreFieldType.cs" />
+    <Compile Include="Data\Foundation\BuildNewTypeCache.cs" />
+    <Compile Include="Data\Foundation\CodeGeneration\EmptyDataClassBase.cs" />
+    <Compile Include="Data\Foundation\CodeGeneration\EmptyDataClassGenerator.cs" />
+    <Compile Include="Data\Foundation\DataFacadeQueryableCache.cs" />
+    <Compile Include="Data\Foundation\DataFacadeQueryableExpressionVisitor.cs" />
+    <Compile Include="Data\Foundation\DataFacadeQueryableGathererExpressionVisitor.cs" />
+    <Compile Include="Data\Foundation\IDataFacadeQueryable.cs" />
+    <Compile Include="Data\Foundation\PluginFacades\DataProviderPluginFacade.cs" />
+    <Compile Include="Data\Foundation\SelectMethodInfoCache.cs" />
+    <Compile Include="Data\Hierarchy\DataAncestorProviders\NoAncestorDataAncestorProvider.cs" />
+    <Compile Include="Data\IBuildNewHandler.cs" />
+    <Compile Include="Data\IData.cs" />
+    <Compile Include="Data\IDataId.cs" />
+    <Compile Include="Data\ImmutableFieldIdAttribute.cs" />
+    <Compile Include="Data\ImmutableTypeIdAttribute.cs" />
+    <Compile Include="Data\KeyPropertyNameAttribute.cs" />
+    <Compile Include="Data\Plugins\DataProvider\Streams\FileSystemFileBase.cs" />
+    <Compile Include="Data\Plugins\DataProvider\Streams\FileSystemFileStreamManager.cs" />
+    <Compile Include="Data\Types\IFileBuildNewHandler.cs" />
+    <Compile Include="Drawing\ImageTemplatedBoxCreateor.cs" />
+    <Compile Include="Elements\ElementHookRegistratorFacade.cs" />
+    <Compile Include="Functions\ConstantObjectParameterRuntimeTreeNode.cs" />
+    <Compile Include="Functions\ConstantParameterRuntimeTreeNode.cs" />
+    <Compile Include="Functions\ConstantValueProvider.cs" />
+    <Compile Include="Functions\Foundation\FunctionTreeConfigurationNames.cs" />
+    <Compile Include="Functions\Foundation\MetaFunctionProviderRegistryImpl.cs" />
+    <Compile Include="Functions\Foundation\PluginFacades\FunctionProviderPluginFacade.cs" />
+    <Compile Include="Functions\Foundation\PluginFacades\FunctionWrapper.cs" />
+    <Compile Include="Functions\Foundation\PluginFacades\WidgetFunctionProviderPluginFacade.cs" />
+    <Compile Include="Functions\Foundation\PluginFacades\WidgetFunctionWrapper.cs" />
+    <Compile Include="Functions\FunctionContextContainer.cs" />
+    <Compile Include="Functions\FunctionEventSystemFacade.cs" />
+    <Compile Include="Functions\FunctionFacade.cs" />
+    <Compile Include="Functions\FunctionParameterRuntimeTreeNode.cs" />
+    <Compile Include="Functions\FunctionRuntimeTreeNode.cs" />
+    <Compile Include="Functions\FunctionTreeBuilder.cs" />
+    <Compile Include="Functions\FunctionValueProvider.cs" />
+    <Compile Include="Functions\HelpDefinition.cs" />
+    <Compile Include="Functions\IFunction.cs" />
+    <Compile Include="Functions\IMetaFunction.cs" />
+    <Compile Include="Functions\IMetaFunctionExtensionMethods.cs" />
+    <Compile Include="Functions\BaseRuntimeTreeNode.cs" />
+    <Compile Include="Functions\BaseValueProvider.cs" />
+    <Compile Include="Functions\IWidgetFunction.cs" />
+    <Compile Include="Functions\NoValueValueProvider.cs" />
+    <Compile Include="Functions\ParameterList.cs" />
+    <Compile Include="Functions\ParameterProfile.cs" />
+    <Compile Include="Functions\BaseParameterRuntimeTreeNode.cs" />
+    <Compile Include="Functions\Plugins\FunctionProvider\FunctionProviderData.cs" />
+    <Compile Include="Functions\Plugins\FunctionProvider\IFunctionProvider.cs" />
+    <Compile Include="Functions\Plugins\FunctionProvider\NonConfigurableFunctionProvider.cs" />
+    <Compile Include="Functions\Plugins\FunctionProvider\Runtime\FunctionProviderCustomFactory.cs" />
+    <Compile Include="Functions\Plugins\FunctionProvider\Runtime\FunctionProviderDefaultNameRetriever.cs" />
+    <Compile Include="Functions\Plugins\FunctionProvider\Runtime\FunctionProviderFactory.cs" />
+    <Compile Include="Functions\Plugins\FunctionProvider\Runtime\FunctionProviderSettings.cs" />
+    <Compile Include="Functions\Plugins\WidgetFunctionProvider\Runtime\WidgetFunctionProviderCustomFactory.cs" />
+    <Compile Include="Functions\Plugins\WidgetFunctionProvider\Runtime\WidgetFunctionProviderDefaultNameRetriever.cs" />
+    <Compile Include="Functions\Plugins\WidgetFunctionProvider\Runtime\WidgetFunctionProviderFactory.cs" />
+    <Compile Include="Functions\Plugins\WidgetFunctionProvider\Runtime\WidgetFunctionProviderSettings.cs" />
+    <Compile Include="Functions\Plugins\WidgetFunctionProvider\WidgetFunctionProviderData.cs" />
+    <Compile Include="Functions\Plugins\WidgetFunctionProvider\IWidgetFunctionProvider.cs" />
+    <Compile Include="Functions\Plugins\WidgetFunctionProvider\NonConfigurableWidgetFunctionProvider.cs" />
+    <Compile Include="Functions\StandardWidgetFunctions.cs" />
+    <Compile Include="Functions\WidgetFunctionProvider.cs" />
+    <Compile Include="Functions\WidgetFunctionRuntimeTreeNode.cs" />
+    <Compile Include="IO\DirectoryUtil.cs" />
+    <Compile Include="Linq\Disassembled\Error.cs" />
+    <Compile Include="Linq\Disassembled\ReadOnlyCollectionExtensions.cs" />
+    <Compile Include="Linq\Disassembled\SR.cs" />
+    <Compile Include="Linq\Disassembled\Strings.cs" />
+    <Compile Include="Linq\TypeExtensions.cs" />
+    <Compile Include="Renderings\Page\PageStructureInfo.cs" />
+    <Compile Include="Renderings\RequestInterceptorHttpModule.cs" />
+    <Compile Include="Renderings\Page\XEmbeddedControlMapper.cs" />
+    <Compile Include="Renderings\Page\IXElementToControlMapper.cs" />
+    <Compile Include="Renderings\Page\XElementToAspNetExtensions.cs" />
+    <Compile Include="ResourceSystem\Foundation\PluginFacades\ResourceProviderPluginFacade.cs" />
+    <Compile Include="ResourceSystem\Foundation\ResourceProviderRegistry.cs" />
+    <Compile Include="ResourceSystem\IconSize.cs" />
+    <Compile Include="ResourceSystem\Icons\BuildInIconProviderName.cs" />
+    <Compile Include="ResourceSystem\Plugins\ResourceProvider\IIconResourceProvider.cs" />
+    <Compile Include="ResourceSystem\Plugins\ResourceProvider\IResourceProvider.cs" />
+    <Compile Include="ResourceSystem\Plugins\ResourceProvider\IStringResourceProvider.cs" />
+    <Compile Include="ResourceSystem\Plugins\ResourceProvider\NonConfigurableResourceProvider.cs" />
+    <Compile Include="ResourceSystem\Plugins\ResourceProvider\ResourceProviderData.cs" />
+    <Compile Include="ResourceSystem\Plugins\ResourceProvider\Runtime\ResourceProviderFactory.cs" />
+    <Compile Include="ResourceSystem\Plugins\ResourceProvider\Runtime\ResourceProviderCustomFactory.cs" />
+    <Compile Include="ResourceSystem\Plugins\ResourceProvider\Runtime\ResourceProviderDefaultNameRetriever.cs" />
+    <Compile Include="ResourceSystem\Plugins\ResourceProvider\Runtime\ResourceProviderSettings.cs" />
+    <Compile Include="ResourceSystem\StringResourceSystemFacade.cs" />
+    <Compile Include="Security\ActionToken.cs" />
+    <Compile Include="Security\Cryptography\Cryptographer.cs" />
+    <Compile Include="Security\EntityToken.cs" />
+    <Compile Include="Security\EntityTokenSerializer.cs" />
+    <Compile Include="Security\Foundation\HookRegistratorRegistry.cs" />
+    <Compile Include="Security\Foundation\PluginFacades\HookRegistratorPluginFacade.cs" />
+    <Compile Include="Security\Foundation\PluginFacades\LoginProviderPluginFacade.cs" />
+    <Compile Include="Security\Foundation\RelationshipGraphLevelEnumerable.cs" />
+    <Compile Include="Security\Foundation\RelationshipGraphLevelEnumerator.cs" />
+    <Compile Include="Security\Foundation\SecurityAncestorFacade.cs" />
+    <Compile Include="Security\Foundation\SecurityAncestorProviderCache.cs" />
+    <Compile Include="Security\EntityTokenHook.cs" />
+    <Compile Include="Security\HookingFacade.cs" />
+    <Compile Include="Security\ISecurityAncestorProvider.cs" />
+    <Compile Include="Security\Plugins\HookRegistrator\HookRegistratorData.cs" />
+    <Compile Include="Security\Plugins\HookRegistrator\IHookRegistrator.cs" />
+    <Compile Include="Security\Plugins\HookRegistrator\NonConfigurableHookRegistrator.cs" />
+    <Compile Include="Security\Plugins\HookRegistrator\Runtime\HookRegistratorCustomFactory.cs" />
+    <Compile Include="Security\Plugins\HookRegistrator\Runtime\HookRegistratorDefaultNameRetriever.cs" />
+    <Compile Include="Security\Plugins\HookRegistrator\Runtime\HookRegistratorFactory.cs" />
+    <Compile Include="Security\Plugins\HookRegistrator\Runtime\HookRegistratorSettings.cs" />
+    <Compile Include="Security\Plugins\LoginProvider\IFormLoginProvider.cs" />
+    <Compile Include="Security\Plugins\LoginProvider\ILoginProvider.cs" />
+    <Compile Include="Security\Plugins\LoginProvider\IWindowsLoginProvider.cs" />
+    <Compile Include="Security\Plugins\LoginProvider\LoginProviderData.cs" />
+    <Compile Include="Security\Plugins\LoginProvider\NonConfigurableLoginProvider.cs" />
+    <Compile Include="Security\Plugins\LoginProvider\Runtime\LoginProviderCustomFactory.cs" />
+    <Compile Include="Security\Plugins\LoginProvider\Runtime\LoginProviderDefaultNameRetriever.cs" />
+    <Compile Include="Security\Plugins\LoginProvider\Runtime\LoginProviderFactory.cs" />
+    <Compile Include="Security\Plugins\LoginProvider\Runtime\LoginProviderSettings.cs" />
+    <Compile Include="Security\Plugins\LoginSessionStore\ILoginSessionStore.cs" />
+    <Compile Include="Security\Plugins\LoginSessionStore\NonConfigurableLoginSessionStore.cs" />
+    <Compile Include="Security\Plugins\LoginSessionStore\Runtime\LoginSessionStoreCustomFactory.cs" />
+    <Compile Include="Security\Plugins\LoginSessionStore\Runtime\LoginSessionStoreDefaultNameRetriever.cs" />
+    <Compile Include="Security\Plugins\LoginSessionStore\Runtime\LoginSessionStoreFactory.cs" />
+    <Compile Include="Security\Plugins\LoginSessionStore\Runtime\LoginSessionStoreSettings.cs" />
+    <Compile Include="Security\Plugins\LoginSessionStore\LoginSessionStoreData.cs" />
+    <Compile Include="Security\Foundation\PluginFacades\LoginSessionStorePluginFacade.cs" />
+    <Compile Include="Security\RefreshBeforeAfterEntityTokenFinder.cs" />
+    <Compile Include="Security\RefreshDeleteEntityTokenFinder.cs" />
+    <Compile Include="Security\RelationshipGraph.cs" />
+    <Compile Include="Security\RelationshipGraphLevel.cs" />
+    <Compile Include="Security\RelationshipGraphNode.cs" />
+    <Compile Include="Security\SecurityAncestorProviderAttribute.cs" />
+    <Compile Include="Security\SecurityAncestorProviders\NoAncestorSecurityAncestorProvider.cs" />
+    <Compile Include="Security\SecurityResolver.cs" />
+    <Compile Include="Security\SecurityResult.cs" />
+    <Compile Include="Security\SecurityToken.cs" />
+    <Compile Include="Security\UserToken.cs" />
+    <Compile Include="Security\UserValidationFacade.cs" />
+    <Compile Include="Security\Utilities.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\FileSystemMediaFileProvider\FileSystemMediaFile.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\FileSystemMediaFileProvider\FileSystemMediaFileFolder.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\FileSystemMediaFileProvider\FileSystemMediaFileProvider.cs" />
+    <Compile Include="Data\Types\IMediaFileData.cs" />
+    <Compile Include="Data\Types\IMediaFolderData.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\MediaFileProvider\MediaFile.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\MediaFileProvider\MediaFileFolder.cs" />
+    <Compile Include="Data\Types\MediaFileDataAncesorProvider.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\MemoryDataProvider\CodeGeneration\Foundation\DataIdClassGenerator.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\MemoryDataProvider\CodeGeneration\Foundation\EntityClassGenerator.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\MemoryDataProvider\CodeGeneration\Foundation\EntityKeyClassGenerator.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\MemoryDataProvider\CodeGeneration\Foundation\WrapperClassGenerator.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\MemoryDataProvider\CodeGeneration\MemoryDataProviderCodeGenerator.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\MemoryDataProvider\Foundation\IMemoryEntityKey.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\MemoryDataProvider\Foundation\IEntityWrapper.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\MemoryDataProvider\Foundation\InterfaceConfigurationManipulator.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\MemoryDataProvider\Foundation\MemoryDatabase.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\MemoryDataProvider\Foundation\MemoryEntityData.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\MemoryDataProvider\Foundation\MemoryEntityKeyBase.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\MemoryDataProvider\MemoryDataProvider.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\VirtualImageFileProvider\VirtualImageFile.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\VirtualImageFileProvider\VirtualImageFileProvider.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\XmlDataProvider\Foundation\InterfaceConfigurationManipulator.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\XmlDataProvider\Foundation\XmlDataProviderStoreManipulator.cs" />
+    <Compile Include="Data\ProcessControlled\ProcessControllers\GenericPublishProcessController\GenericPublishProcessController.cs" />
+    <Compile Include="Data\ProcessControlled\ProcessControllers\GenericVersionProcessController\GenericVersionProcessController.cs" />
+    <Compile Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AssociatedDataElementProviderHelper.cs" />
+    <Compile Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AssociatedDataElementProviderHelperEntityToken.cs" />
+    <Compile Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AssociatedDataElementProviderHelperSecurityAncestorProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\VisualFunctionProviderElementProvider\VisualFunctionProviderElementProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\GeneratedDataTypesElementProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\GeneratedDataTypesElementProviderRootEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\GeneratedDataTypesElementProviderSecurityAncestorProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\GeneratedDataTypesElementProviderTypeEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\MediaFileProviderElementProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\MediaFileProviderEntityTokenSecurityAncestorProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\MediaFileSearchToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\MediaRootFolderProviderEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\BaseFunctionProviderElementProvider\IFunctionTreeBuilderLeafInfo.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\WorkflowMediaFile.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\ZipMediaFileExtractor.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\PageElementProviderEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\AllFunctionsElementProvider\AllFunctionsElementProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\FlowUiQueryMarkupHelper.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\XsltBasedFunctionProviderElementProvider.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Compare\AreEqualFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Compare\IsLessThanFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Configuration\AppSettingsValueFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Constant\BooleanFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Constant\DateTimeFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Constant\DecimalFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Constant\IntegerFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Constant\StringFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Date\AddDaysFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Date\NowFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Foundation\EntityTokenFactory.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Pages\SitemapXmlFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Validation\NotNullValidationFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Validation\IntegerRangeValidationFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Validation\RegexValidationFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\StandardFunctionProvider.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\StandardFunctionProviderEntityToken.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Validation\StringLengthValidationFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Server\ApplicationVariableFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Client\BrowserStringFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Client\BrowserTypeFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\CookieValueFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Client\BrowserVersionFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Client\BrowserPlatformFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Client\IsMobileDeviceFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Client\EcmaScriptVersionFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Client\IsCrawlerFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\QueryStringValueFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Server\ServerVariableFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\SessionVariableFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Response\SetCookieValueFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Response\SetSessionVariableFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Xml\LoadFileFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\StandardFunctionProvider\Xml\LoadUrlFunction.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\MediaFileProvider\MediaFileProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\SqlFunctionProviderElementProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\SqlFunctionProviderEntityTokenSecurityAncestorProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\SqlFunctionProviderFolderEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\SqlFunctionProviderRootEntityToken.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\MethodBasedFunctionProvider\MethodBasedFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\SqlFunctionProvider\SqlFunction.cs" />
+    <Compile Include="Data\Types\ISqlConnection.cs" />
+    <Compile Include="Data\Types\ISqlFunctionInfo.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\SqlFunctionProvider\SqlFunctionProvider.cs" />
+    <Compile Include="Data\Types\IVisualFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\VisualFunctionProvider\RenderingHelper.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\VisualFunctionProvider\VisualFunctionProvider.cs" />
+    <Compile Include="Data\Types\INamedFunctionCall.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\XsltBasedFunctionProvider\RenderHelper.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\Bool\CheckBoxWidgetFuntion.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\Decimal\DecimalTextBoxWidgetFuntion.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\Foundation\CompositeWidgetFunctionBase.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\BaseFunctionProviderElementProvider\BaseFunctionFolderElementEntityTokenSecurityAncestorProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\BaseFunctionProviderElementProvider\BaseFunctionFolderElementEntityTokenExtensions.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\VirtualElementProvider\VirtualElementProviderSecurityAncestorProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\BaseFunctionProviderElementProvider\BaseFunctionProviderElementProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\BaseFunctionProviderElementProvider\BaseFunctionFolderElementEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\MethodBasedFunctionProviderElementProvider.cs" />
+    <Compile Include="Data\Types\IMethodBasedFunctionInfo.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\MethodBasedFunctionProvider\MethodBasedDefaultValueAttribute.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\MethodBasedFunctionProvider\MethodBasedFunctionProvider.cs" />
+    <Compile Include="Data\Types\IXsltFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\FunctionProviders\XsltBasedFunctionProvider\XsltBasedFunctionProvider.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\Date\DateSelectorWidgetFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\Foundation\EntityTokenFactory.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\Foundation\FormFunctionMarkupBuilder.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\Guid\GuidTextBoxWidgetFuntion.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\ImageSelectorWidgetFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\Integer\IntegerTextBoxWidgetFuntion.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\StandardWidgetFunctionProviderEntityToken.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\StandardWidgetFunctionProvider.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\String\TextAreaWidgetFunction.cs" />
+    <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\String\TextBoxWidgetFuntion.cs" />
+    <Compile Include="StandardPlugins\GlobalSettings\GlobalSettingsProviders\ConfigBasedGlobalSettingsProvider.cs" />
+    <Compile Include="Data\Foundation\DataFacadeQueryable.cs" />
+    <Compile Include="Data\StoreFieldTypeAttribute.cs" />
+    <Compile Include="Data\PhysicalStoreFieldType.cs" />
+    <Compile Include="Data\Plugins\DataProvider\CodeGeneration\IPropertyInitializer.cs" />
+    <Compile Include="Data\Plugins\DataProvider\CodeGeneration\Property.cs" />
+    <Compile Include="Data\Plugins\DataProvider\CodeGeneration\PropertyInitializerDictionaryArgumentValidator.cs" />
+    <Compile Include="Data\Plugins\DataProvider\CodeGeneration\PropertyInitializer\RandomGuidPropertyInitializer.cs" />
+    <Compile Include="Data\Plugins\DataProvider\CodeGeneration\PropertyList.cs" />
+    <Compile Include="Data\Plugins\DataProvider\DataInterfaceValidator.cs" />
+    <Compile Include="Data\Plugins\DataProvider\DataProviderConfigurationServices.cs" />
+    <Compile Include="Data\Plugins\DataProvider\DataProviderContext.cs" />
+    <Compile Include="Data\Plugins\DataProvider\DataProviderData.cs" />
+    <Compile Include="Data\Plugins\DataProvider\IDataProvider.cs" />
+    <Compile Include="Data\Plugins\DataProvider\IDynamicDataProvider.cs" />
+    <Compile Include="Data\Plugins\DataProvider\IWritableDataProvider.cs" />
+    <Compile Include="Data\Plugins\DataProvider\NonConfigurableDataProvider.cs" />
+    <Compile Include="Data\Plugins\DataProvider\Runtime\DataProviderCustomFactory.cs" />
+    <Compile Include="Data\Plugins\DataProvider\Runtime\DataProviderDefaultNameRetriever.cs" />
+    <Compile Include="Data\Plugins\DataProvider\Runtime\DataProviderFactory.cs" />
+    <Compile Include="Data\Plugins\DataProvider\Runtime\DataProviderSettings.cs" />
+    <Compile Include="Data\Types\IFile.cs" />
+    <Compile Include="Data\Types\ExtensionMethods\IFileExtensions.cs" />
+    <Compile Include="Data\Types\IFileServices.cs" />
+    <Compile Include="Data\Types\IHostHeaderBinding.cs" />
+    <Compile Include="Data\Types\IPage.cs" />
+    <Compile Include="Data\Types\IPageTemplate.cs" />
+    <Compile Include="Data\Types\IXhtmlEditorElementClassConfiguration.cs" />
+    <Compile Include="Data\Types\PageServices.cs" />
+    <Compile Include="Data\Visualization\DataVisualizationFacade.cs" />
+    <Compile Include="Data\Visualization\DataVisualizerAttribute.cs" />
+    <Compile Include="Data\Visualization\Foundation\DataVisualizerCache.cs" />
+    <Compile Include="Data\Visualization\IDataVisualizer.cs" />
+    <Compile Include="Data\Visualization\IVisualizedData.cs" />
+    <Compile Include="Data\Visualization\MinimalVisualizer.cs" />
+    <Compile Include="Data\Visualization\PageVisualizer.cs" />
+    <Compile Include="Data\Visualization\TemplateVisualizer.cs" />
+    <Compile Include="Elements\ElementAction.cs" />
+    <Compile Include="Elements\ActionCategory.cs" />
+    <Compile Include="Elements\ActionHandle.cs" />
+    <Compile Include="Elements\ActionVisualizedData.cs" />
+    <Compile Include="Elements\Element.cs" />
+    <Compile Include="Elements\ElementDataExchangeService.cs" />
+    <Compile Include="Elements\ElementFacade.cs" />
+    <Compile Include="Elements\ElementHandle.cs" />
+    <Compile Include="Elements\ElementProviderContext.cs" />
+    <Compile Include="Elements\ElementProviderHandle.cs" />
+    <Compile Include="Elements\ElementVisualizedData.cs" />
+    <Compile Include="Elements\Foundation\ElementProviderRegistry.cs" />
+    <Compile Include="Elements\Foundation\PluginFacades\ElementProviderPluginFacade.cs" />
+    <Compile Include="Elements\IElementDataExchangeService.cs" />
+    <Compile Include="Elements\Plugins\ElementProvider\ElementProviderData.cs" />
+    <Compile Include="Elements\Plugins\ElementProvider\IDataExchangingElementProvider.cs" />
+    <Compile Include="Elements\Plugins\ElementProvider\IElementProvider.cs" />
+    <Compile Include="Elements\Plugins\ElementProvider\NonConfigurableElementProvider.cs" />
+    <Compile Include="Elements\Plugins\ElementProvider\Runtime\ElementProviderCustomFactory.cs" />
+    <Compile Include="Elements\Plugins\ElementProvider\Runtime\ElementProviderDefaultNameRetriever.cs" />
+    <Compile Include="Elements\Plugins\ElementProvider\Runtime\ElementProviderFactory.cs" />
+    <Compile Include="Elements\Plugins\ElementProvider\Runtime\ElementProviderSettings.cs" />
+    <Compile Include="StandardPlugins\Forms\WebChannel\Foundation\UserControlUtils.cs" />
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiContainerFactories\TemplatedUiContainer.cs" />
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiContainerFactories\TemplatedUiContainerBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiContainerFactories\TemplatedUiContainerFactory.cs" />
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedButtonUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedCheckBoxUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedContainerUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedEnumSelectorUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedPreviewTabPanelUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedQueryCallDefinitionsEditorUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedSelectorUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedTextInputUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedTextUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedTypeSelectorUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\TemplatedXhtmlEditorUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\WebDebugUiControlFactory.cs" />
+    <Compile Include="StandardPlugins\Forms\WebChannel\UiControlFactories\WebEmbeddedFormUiControlFactory.cs" />
+    <Compile Include="HashCodeGenerator.cs" />
+    <Compile Include="Data\Hierarchy\DataAncestorFacade.cs" />
+    <Compile Include="Data\Hierarchy\DataAncestorProviderAttribute.cs" />
+    <Compile Include="Data\Hierarchy\DataAncestorProviders\PropertyDataAncestorProvider.cs" />
+    <Compile Include="Data\Hierarchy\Foundation\DataAncestorProviderCache.cs" />
+    <Compile Include="Data\Hierarchy\IDataAncestorProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\PageElementProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTemplateElementProvider\PageTemplateElementProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTemplateElementProvider\PageTemplateRootEntityToken.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\VirtualElementProvider\BaseElementConfigurationElement.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\VirtualElementProvider\BaseElementNode.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\VirtualElementProvider\FolderElementConfigurationElement.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\VirtualElementProvider\FolderElementNode.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\VirtualElementProvider\ProviderHookingElementConfigurationElement.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\VirtualElementProvider\ProviderHookingElementNode.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\VirtualElementProvider\VirtualElementProvider.cs" />
+    <Compile Include="StandardPlugins\Elements\ElementProviders\VirtualElementProvider\VirtualElementProviderEntityToken.cs" />
+    <Compile Include="Linq\Disassembled\ExpressionVisitor.cs" />
+    <Compile Include="Linq\ExpressionCreator.cs" />
+    <Compile Include="Linq\ExpressionExtractor.cs" />
+    <Compile Include="Linq\ExpressionVisitors\FindFirstParameterExpressionVisitor.cs" />
+    <Compile Include="Linq\Extensions.cs" />
+    <Compile Include="Linq\TypeHelpers.cs" />
+    <Compile Include="Compare.cs" />
+    <Compile Include="Renderings\Page\PageRenderer.cs" />
+    <Compile Include="ResourceSystem\IconResourceSystemFacadeImpl.cs" />
+    <Compile Include="ResourceSystem\Icons\CommonCommandIcons.cs" />
+    <Compile Include="ResourceSystem\Icons\CommonElementIcons.cs" />
+    <Compile Include="ResourceSystem\ResourceHandle.cs" />
+    <Compile Include="Security\DataSecurityAncestorProvider.cs" />
+    <Compile Include="Sql\ISqlTableInformation.cs" />
+    <Compile Include="Sql\SqlColumnInformation.cs" />
+    <Compile Include="Sql\SqlTableInformation.cs" />
+    <Compile Include="Sql\SqlTableInformationStoreImpl.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\Common\PropertyNameMappingConfigurationElement.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\Common\PropertyNameMappingConfigurationElementCollection.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\FileSystemDataProvider\FileSystemDataProvider.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\FileSystemDataProvider\Foundation\FileSystemFile.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\FileSystemDataProvider\Foundation\FileSystemFileDataId.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\FileSystemDataProvider\Foundation\FileSystemFileGenerator.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\XmlDataProvider\CodeGeneration\Foundation\Common\CodeExpressionHelper.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\XmlDataProvider\CodeGeneration\Foundation\GeneretedClassesMethodCache.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\XmlDataProvider\CodeGeneration\Foundation\XmlDataIdClassGenerator.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\XmlDataProvider\CodeGeneration\Foundation\XmlDataProviderHelperClassGenerator.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\XmlDataProvider\CodeGeneration\Foundation\XmlDataWrapperClassGenerator.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\XmlDataProvider\CodeGeneration\XmlDataProviderHelperGenerator.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\XmlDataProvider\Foundation\XmlDataProviderDocumentCache.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\XmlDataProvider\IXElementWrapper.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\XmlDataProvider\IXmlDataProviderHelper.cs" />
+    <Compile Include="StandardPlugins\Data\DataProviders\XmlDataProvider\XmlDataProvider.cs" />
+    <Compile Include="StandardPlugins\Logging\LogTraceListeners\ManagementConsoleLogTracer\ManagementConsoleLogTracer.cs" />
+    <Compile Include="StandardPlugins\ResourceSystem\FileSystemBasedIconResourceProvider\FileSystemBasedIconResourceProvider.cs" />
+    <Compile Include="StandardPlugins\ResourceSystem\FileSystemBasedIconResourceProvider\Foundation\FileSystemBasedIconResourceProviderHelper.cs" />
+    <Compile Include="StandardPlugins\ResourceSystem\XmlStringResourceProvider\XmlStringResourceProvider.cs" />
+    <Compile Include="StandardPlugins\Security\HookRegistrators\ElementHookRegistrator\ElementHookRegistrator.cs" />
+    <Compile Include="StandardPlugins\Security\LoginProviderPlugins\ConfigBasedFormLoginProvider\ConfigBasedFormLoginProvider.cs" />
+    <Compile Include="StandardPlugins\Security\LoginProviderPlugins\ValidateAllWindowsLoginProvider\ValidateAllWindowsLoginProvider.cs" />
+    <Compile Include="StandardPlugins\Security\LoginSessionStores\HttpContextBasedLoginSessionStore\HttpContextBasedLoginSessionStore.cs" />
+    <Compile Include="StandardPlugins\Validation\ClientValidationRuleTranslators\StandardClientValidationRuleTranslator\StandardClientValidationRuleTranslator.cs" />
+    <Compile Include="StandardPlugins\WebClient\WebRequestHandlers\LoginWebRequestHandler\LoginWebRequestHandler.cs" />
+    <Compile Include="StandardPlugins\WebClient\WebRequestHandlers\LoginWebRequestHandler\PathUtils.cs" />
+    <Compile Include="StandardPlugins\WebClient\WebRequestHandlers\LoginWebRequestHandler\Resources\LoginHandlerResources.da.Designer.cs" />
+    <Compile Include="StandardPlugins\WebClient\WebRequestHandlers\LoginWebRequestHandler\Resources\LoginHandlerResources.Designer.cs" />
+    <Compile Include="StandardPlugins\Workflow\WorkflowRuntimeProviders\StandardWorkflowRuntimeProvider\StandardWorkflowRuntimeProvider.cs" />
+    <Compile Include="Data\Types\IXsltFile.cs" />
+    <Compile Include="Transactions\TransactionsFacade.cs" />
+    <Compile Include="Types\DataReferenceLabelPair.cs" />
+    <Compile Include="Types\BuildManagerCompileUnit.cs" />
+    <Compile Include="Types\ExtendedNullable.cs" />
+    <Compile Include="Types\GenericComparer.cs" />
+    <Compile Include="Types\KeyValuePair.cs" />
+    <Compile Include="Types\NameTypePair.cs" />
+    <Compile Include="ConfigurationSystem\ConfigurationServices.cs" />
+    <Compile Include="Configuration\NameTypeManagerTypeConfigurationElement.cs" />
+    <Compile Include="Configuration\NameTypeManagerTypeConfigurationElementCollection.cs" />
+    <Compile Include="Configuration\SimpleNameTypeConfigurationElement.cs" />
+    <Compile Include="Configuration\SimpleNameTypeConfigurationElementCollection.cs" />
+    <Compile Include="EventSystem\GlobalEventSystemFacade.cs" />
+    <Compile Include="GlobalSettings\BuildinPlugins\GlobalSettingsProvider\BuildinGlobalSettingsProvider.cs" />
+    <Compile Include="GlobalSettings\BuildinPlugins\GlobalSettingsProvider\BuildinResourceCacheSettings.cs" />
+    <Compile Include="GlobalSettings\GlobalSettingsFacade.cs" />
+    <Compile Include="GlobalSettings\Plugins\GlobalSettingsProvider\GlobalSettingsProviderData.cs" />
+    <Compile Include="GlobalSettings\Foundation\PluginFacades\GlobalSettingsProviderPluginFacade.cs" />
+    <Compile Include="GlobalSettings\Plugins\GlobalSettingsProvider\IGlobalSettingsProvider.cs" />
+    <Compile Include="GlobalSettings\Plugins\GlobalSettingsProvider\NonConfigurableGlobalSettingsProvider.cs" />
+    <Compile Include="GlobalSettings\Plugins\GlobalSettingsProvider\Runtime\GlobalSettingsProviderCustomFactory.cs" />
+    <Compile Include="GlobalSettings\Plugins\GlobalSettingsProvider\Runtime\GlobalSettingsProviderDefaultNameRetriever.cs" />
+    <Compile Include="GlobalSettings\Plugins\GlobalSettingsProvider\Runtime\GlobalSettingsProviderFactory.cs" />
+    <Compile Include="GlobalSettings\Plugins\GlobalSettingsProvider\Runtime\GlobalSettingsProviderSettings.cs" />
+    <Compile Include="GlobalSettings\IResourceCacheSettings.cs" />
+    <Compile Include="IO\PathUtil.cs" />
+    <Compile Include="Logging\LoggingService.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
+    <Compile Include="Logging\NullLogTraceListener.cs" />
+    <Compile Include="Serialization\CodeGeneration\Foundation\ISerializer.cs" />
+    <Compile Include="Serialization\CodeGeneration\SerializerGenerator.cs" />
+    <Compile Include="Serialization\SerializationFacade.cs" />
+    <Compile Include="Serialization\StringConversionServices.cs" />
+    <Compile Include="StandardPlugins\Types\TypeManagerTypeHandler\DynamicBuildManagerTypeManagerTypeHandler\DynamicBuildManagerTypeManagerTypeHandler.cs" />
+    <Compile Include="StandardPlugins\Types\TypeManagerTypeHandler\SystemTypeManagerTypeHandler\SystemTypeManagerTypeHandler.cs" />
+    <Compile Include="Configuration\TypeManagerTypeNameConverter.cs" />
+    <Compile Include="Types\BuildinPlugins\BuildinTypeManagerTypeHandler\BuildinTypeManagerTypeHandler.cs" />
+    <Compile Include="Types\BuildManagerImpl.cs" />
+    <Compile Include="Types\Pair.cs" />
+    <Compile Include="Types\Plugins\TypeManagerTypeHandler\ITypeManagerTypeHandler.cs" />
+    <Compile Include="Types\Plugins\TypeManagerTypeHandler\NonConfigurableTypeManagerTypeHandler.cs" />
+    <Compile Include="Types\Plugins\TypeManagerTypeHandler\Runtime\TypeManagerTypeHandlerCustomFactory.cs" />
+    <Compile Include="Types\Plugins\TypeManagerTypeHandler\Runtime\TypeManagerTypeHandlerDefaultNameRetriever.cs" />
+    <Compile Include="Types\Plugins\TypeManagerTypeHandler\Runtime\TypeManagerTypeHandlerFactory.cs" />
+    <Compile Include="Types\Plugins\TypeManagerTypeHandler\Runtime\TypeManagerTypeHandlerSettings.cs" />
+    <Compile Include="Types\Plugins\TypeManagerTypeHandler\TypeManagerTypeHandlerData.cs" />
+    <Compile Include="Types\Foundation\PluginFacades\TypeManagerTypeHandlerPluginFacadeImpl.cs" />
+    <Compile Include="Types\PrimitiveTypes.cs" />
+    <Compile Include="Types\TypeExtensionMethods.cs" />
+    <Compile Include="Types\TypeLocator.cs" />
+    <Compile Include="Types\TypeManagerImpl.cs" />
+    <Compile Include="Types\ValueTypeConverter.cs" />
+    <Compile Include="Types\ValueTypeConverterHelperAttribute.cs" />
+    <Compile Include="Users\UserSettingsImpl.cs" />
+    <Compile Include="Validation\ClientValidationRuleFacadeImpl.cs" />
+    <Compile Include="Validation\ClientValidationRules\ClientValidationRule.cs" />
+    <Compile Include="Validation\ClientValidationRules\NotNullClientValidationRule.cs" />
+    <Compile Include="Validation\ClientValidationRules\RegexClientValidationRule.cs" />
+    <Compile Include="Validation\ClientValidationRules\StringLengthClientValidationRule.cs" />
+    <Compile Include="Validation\ConstrucorBasedPropertyValidatorBuilder.cs" />
+    <Compile Include="Validation\DataValidationResult.cs" />
+    <Compile Include="Validation\Foundation\ClientValidationRuleTranslatorRegistryImpl.cs" />
+    <Compile Include="Validation\Foundation\PluginFacades\ClientValidationRuleTranslatorPluginFacadeImpl.cs" />
+    <Compile Include="Validation\IPropertyValidatorBuilder.cs" />
+    <Compile Include="Validation\Plugins\ClientValidationRuleTranslator\ClientValidationRuleTranslatorData.cs" />
+    <Compile Include="Validation\Plugins\ClientValidationRuleTranslator\IClientValidationRuleTranslator.cs" />
+    <Compile Include="Validation\Plugins\ClientValidationRuleTranslator\NonConfigurableClientValidationRuleTranslator.cs" />
+    <Compile Include="Validation\Plugins\ClientValidationRuleTranslator\Runtime\ClientValidationRuleTranslatorCustomFactory.cs" />
+    <Compile Include="Validation\Plugins\ClientValidationRuleTranslator\Runtime\ClientValidationRuleTranslatorDefaultNameRetriever.cs" />
+    <Compile Include="Validation\Plugins\ClientValidationRuleTranslator\Runtime\ClientValidationRuleTranslatorFactory.cs" />
+    <Compile Include="Validation\Plugins\ClientValidationRuleTranslator\Runtime\ClientValidationRuleTranslatorSettings.cs" />
+    <Compile Include="Validation\PropertyValidatorBuilder.cs" />
+    <Compile Include="Validation\ValidationFacadeImpl.cs" />
+    <Compile Include="Validation\DataValidationResults.cs" />
+    <Compile Include="Validation\Validators\DecimalPrecisionValidator.cs" />
+    <Compile Include="Validation\Validators\DecimalPrecisionValidatorAttribute.cs" />
+    <Compile Include="Validation\Validators\NullStringLengthValidator.cs" />
+    <Compile Include="Validation\Validators\NullStringLengthValidatorAttribute.cs" />
+    <Compile Include="Validation\Validators\PasswordValidator.cs" />
+    <Compile Include="Validation\Validators\PasswordValidatorAttribute.cs" />
+    <Compile Include="Validation\Validators\IntegerRangeValidatorAttribute.cs" />
+    <Compile Include="Validation\Validators\RegexValidatorAttribute.cs" />
+    <Compile Include="Validation\Validators\StringLengthValidatorAttribute.cs" />
+    <Compile Include="WebClient\ConsoleInfo.cs" />
+    <Compile Include="WebClient\ErrorServices.cs" />
+    <Compile Include="WebClient\HttpModules\AdministrativeOutputGZipperHttpModule.cs" />
+    <Compile Include="WebClient\HttpModules\AdministrativeCultureSetterHttpModule.cs" />
+    <Compile Include="WebClient\HttpModules\AdministrativeDataScopeSetterHttpModule.cs" />
+    <Compile Include="WebClient\Presentation\JsRequestHandler.cs" />
+    <Compile Include="WebClient\Presentation\OutputTransformationManager.cs" />
+    <Compile Include="WebClient\Services\SecurityServiceObjets\EntityPermissionDetails.cs" />
+    <Compile Include="WebClient\Services\SecurityServiceObjets\UserPermissions.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\ClientProviderNameEntityTokenPair.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\ClientProviderNameEntityTokenClientElementsTriple.cs" />
+    <Compile Include="WebClient\UiControlLib\HtmlEncodedPlaceHolder.cs" />
+    <Compile Include="WebClient\UrlUtils.cs" />
+    <Compile Include="WebClient\FlowMediators\ActionExecutionMediator.cs" />
+    <Compile Include="WebClient\FlowMediators\ActionExecutionService.cs" />
+    <Compile Include="WebClient\FlowMediators\FormFlowRendering\FormFlowRenderingService.cs" />
+    <Compile Include="WebClient\FlowMediators\FormFlowRendering\FormFlowUiDefinitionRenderer.cs" />
+    <Compile Include="WebClient\FlowMediators\FormFlowRendering\IFormFlowWebRenderingService.cs" />
+    <Compile Include="WebClient\FlowMediators\TreeServicesFacade.cs" />
+    <Compile Include="WebClient\FlowMediators\ViewTransitionHelper.cs" />
+    <Compile Include="WebClient\FlowMediators\WebFlowUiMediator.cs" />
+    <Compile Include="StandardPlugins\Types\TypeManagerTypeHandler\AspNetBuildManagerTypeManagerTypeHandler\AspNetBuildManagerTypeManagerTypeHandler.cs" />
+    <Compile Include="WebClient\FunctionUiHelper.cs" />
+    <Compile Include="WebClient\Plugins\WebRequestHandler\NonConfigurableWebRequestHandler.cs" />
+    <Compile Include="WebClient\Plugins\WebRequestHandler\Runtime\WebRequestHandlerCustomFactory.cs" />
+    <Compile Include="WebClient\Plugins\WebRequestHandler\Runtime\WebRequestHandlerDefaultNameRetriever.cs" />
+    <Compile Include="WebClient\Plugins\WebRequestHandler\Runtime\WebRequestHandlerFactory.cs" />
+    <Compile Include="WebClient\Plugins\WebRequestHandler\Runtime\WebRequestHandlerSettings.cs" />
+    <Compile Include="WebClient\Plugins\WebRequestHandler\WebRequestHandler.cs" />
+    <Compile Include="WebClient\Plugins\WebRequestHandler\WebRequestHandlerData.cs" />
+    <Compile Include="WebClient\Foundation\PluginFacades\WebRequestHandlerPluginFacade.cs" />
+    <Compile Include="WebClient\Presentation\CssRequestHandler.cs" />
+    <Compile Include="WebClient\RequestHandler.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebClient\Services\ConsoleMessageService\ActionTypeEnum.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\CloseViewParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\ConsoleAction.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\ConsoleMessageServiceFacade.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\DialogTypeEnum.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\LogEntryParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\LogLevelEnum.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\MessageBoxParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\OpenViewParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\RefreshTreeParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\ViewTypeEnum.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\OpenViewDefinitionParams.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\ClientAction.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\ClientActionCategory.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\ClientElement.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\ClientElementChangeDescriptor.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\ClientLabeledProperty.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\ExtensionMethods\ElementActionExtensionMethods.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\ExtensionMethods\ElementExtensionMethods.cs" />
+    <Compile Include="WebClient\Services\WysiwygEditor\HtmlTransformationServices.cs" />
+    <Compile Include="WebClient\UiControlLib\CheckBox.cs" />
+    <Compile Include="WebClient\UiControlLib\ClickButton.cs" />
+    <Compile Include="WebClient\UiControlLib\DataInput.cs" />
+    <Compile Include="WebClient\UiControlLib\FieldMessage.cs" />
+    <Compile Include="WebClient\UiControlLib\Foundation\ClientAttributes.cs" />
+    <Compile Include="WebClient\UiControlLib\Selector.cs" />
+    <Compile Include="WebClient\UiControlLib\ToolbarButton.cs" />
+    <Compile Include="WebClient\UiControlLib\TreeNode.cs" />
+    <Compile Include="WebClient\UiControlLib\BindingUpdatePanel.cs" />
+    <Compile Include="WebClient\XhtmlPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebClient\XsltServices.cs" />
+    <Compile Include="Workflow\Activities\CancelHandleExternalEventActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\CloseCurrentViewActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\ChildWorkflowDoneHandleExternalEventActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\ExecuteChildWorkflowActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\DataDialogFormActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\ConfirmDialogFormActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\Foundation\FormsWorkflowBindingCache.cs" />
+    <Compile Include="Workflow\Activities\ShowFieldMessageActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\ShowConsoleMessageBoxActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\DocumentFormActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\FinishHandleExternalEventActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\FormsWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\NextHandleExternalEventActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\PreviewHandleExternalEventActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\PreviousHandleExternalEventActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\SaveHandleExternalEventActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\Activities\WizardFormActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Workflow\ActivityExtensionMethods.cs" />
+    <Compile Include="Workflow\AllowPersistingWorkflowAttribute.cs" />
+    <Compile Include="Workflow\EntityTokenLockAttribute.cs" />
+    <Compile Include="Workflow\FilePersisetenceService.cs" />
+    <Compile Include="Workflow\FormsEventArgs.cs" />
+    <Compile Include="Workflow\Foundation\FormData.cs" />
+    <Compile Include="Workflow\Foundation\FormsWorkflowActivityService.cs" />
+    <Compile Include="Workflow\Foundation\FormsWorkflowEventService.cs" />
+    <Compile Include="Workflow\Foundation\PluginFacades\WorkflowRuntimeProviderPluginFacadeImpl.cs" />
+    <Compile Include="Workflow\Foundation\WorkflowRuntimeProviderRegistryImpl.cs" />
+    <Compile Include="Workflow\IFormsWorkflowActivityService.cs" />
+    <Compile Include="Workflow\IFormsWorkflowEventService.cs" />
+    <Compile Include="Workflow\IWorkflowFacade.cs" />
+    <Compile Include="Workflow\Plugins\WorkflowRuntimeProvider\IWorkflowRuntimeProvider.cs" />
+    <Compile Include="Workflow\Plugins\WorkflowRuntimeProvider\NonConfigurableWorkflowRuntimeProvider.cs" />
+    <Compile Include="Workflow\Plugins\WorkflowRuntimeProvider\Runtime\WorkflowRuntimeProviderCustomFactory.cs" />
+    <Compile Include="Workflow\Plugins\WorkflowRuntimeProvider\Runtime\WorkflowRuntimeProviderDefaultNameRetriever.cs" />
+    <Compile Include="Workflow\Plugins\WorkflowRuntimeProvider\Runtime\WorkflowRuntimeProviderFactory.cs" />
+    <Compile Include="Workflow\Plugins\WorkflowRuntimeProvider\Runtime\WorkflowRuntimeProviderSettings.cs" />
+    <Compile Include="Workflow\Plugins\WorkflowRuntimeProvider\WorkflowRuntimeProviderData.cs" />
+    <Compile Include="Workflow\StateMachineWorkflowInstanceExtensionMethods.cs" />
+    <Compile Include="Workflow\WorkflowActionExecutor.cs" />
+    <Compile Include="Workflow\WorkflowActionToken.cs" />
+    <Compile Include="Workflow\WorkflowFacade.cs" />
+    <Compile Include="Workflow\WorkflowFacadeImpl.cs" />
+    <Compile Include="Workflow\WorkflowFlowController.cs" />
+    <Compile Include="Workflow\WorkflowFlowToken.cs" />
+    <Compile Include="Xml\Namespaces.cs" />
+    <Compile Include="Xml\XDocumentExtensionMethods.cs" />
+    <Compile Include="Xml\XElementExtensionMethods.cs" />
+    <Compile Include="Xml\XhtmlPrettifier.cs" />
+    <Compile Include="Xml\XmlUtils.cs" />
+    <Compile Include="Xml\XNodeExtensionMethods.cs" />
+    <Compile Include="Xml\XsltExtensionDefinition.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="StandardPlugins\WebClient\WebRequestHandlers\LoginWebRequestHandler\Resources\LoginHandlerResources.da.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StandardPlugins\WebClient\WebRequestHandlers\LoginWebRequestHandler\Resources\LoginHandlerResources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PopUpCreator_js.txt" />
+    <None Include="StandardPlugins\Functions\FunctionProviders\app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\Types\ExtensionMethods\Use_parent_namespace.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Functions\ManagedParameters\Types\" />
+    <Folder Include="Functions\Types\" />
+    <Folder Include="StandardPlugins\Elements\Design\" />
+    <Folder Include="StandardPlugins\Functions\FunctionProviders\XsltBasedFunctionProvider\XsltExtensions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VisualBasic.PowerPacks.10.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CompositeCore\CompositeCore.csproj">
+      <Project>{02BB5F33-56BB-4565-8D32-7BDF92D02CDE}</Project>
+      <Name>CompositeCore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Windows Workflow Foundation\v3.5\Workflow.Targets" />
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">    
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)Public\bin\"
+copy "$(TargetPath)" "$(SolutionDir)Public\Website\bin\"</PostBuildEvent>
+  </PropertyGroup>
+</Project>
