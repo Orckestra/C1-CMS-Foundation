@@ -36,4 +36,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("2.0.*")]
 
 [assembly: InternalsVisibleTo("Composite.Tests")]
+[assembly: InternalsVisibleTo("Composite.Tfs")]
 [assembly: InternalsVisibleTo("Composite.Workflows")]
+[assembly: InternalsVisibleTo("Composite.MSSqlServer")]
+
+
