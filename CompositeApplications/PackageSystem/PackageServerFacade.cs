@@ -19,7 +19,7 @@ namespace Composite.PackageSystem
 
 
 
-    public static class PackageServerFacade 
+    internal static class PackageServerFacade 
 	{
         private static IPackageServerFacade _packageServerFacade;
 

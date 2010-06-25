@@ -14,7 +14,7 @@ namespace Composite.WebClient.Services.ConsoleMessageService
     }
 
 
-    public static class InternalLogLevelConvertExtensions
+    internal static class InternalLogLevelConvertExtensions
     {
         internal static LogLevel AsConsoleType(this Composite.Logging.LogLevel internalLogLevel)
         {

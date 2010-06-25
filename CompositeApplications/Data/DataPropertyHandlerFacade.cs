@@ -6,7 +6,7 @@ using Composite.Logging;
 
 namespace Composite.Data
 {
-    public static class DataPropertyHandlerFacade
+    internal static class DataPropertyHandlerFacade
     {
         private static Dictionary<Type, ISetPropertyHandler> _setPropertyHandlers = new Dictionary<Type, ISetPropertyHandler>();
 

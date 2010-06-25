@@ -40,7 +40,7 @@ namespace Composite.Elements
 
 
 
-    public static class SeachTokenExtensionMethods
+    internal static class SeachTokenExtensionMethods
     {
         /// <summary>
         /// This method return true if the searchToken is NOT null and the keyword is NOT null or empty

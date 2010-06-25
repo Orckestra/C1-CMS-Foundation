@@ -3,7 +3,7 @@ using System.Workflow.ComponentModel;
 
 namespace Composite.Workflow
 {
-    public static class ActivityExtensionMethods
+    internal static class ActivityExtensionMethods
     {
         public static Activity GetRoot(this Activity activity)
         {

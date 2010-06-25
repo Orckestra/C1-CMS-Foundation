@@ -15,7 +15,7 @@ using Composite.Logging;
 
 namespace Composite.PackageSystem
 {
-    public static class PackageManager
+    internal static class PackageManager
     {
         public static IEnumerable<InstalledPackageInformation> GetInstalledPackages()
         {

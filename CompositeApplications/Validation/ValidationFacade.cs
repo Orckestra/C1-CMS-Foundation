@@ -6,7 +6,7 @@ using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 namespace Composite.Validation
 {
-    public static class ValidationFacade
+    internal static class ValidationFacade
     {
         private static IValidationFacade _implementation = new ValidationFacadeImpl();
 

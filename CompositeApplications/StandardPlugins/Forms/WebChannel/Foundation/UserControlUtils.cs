@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Composite.StandardPlugins.Forms.WebChannel.Foundation
 {
-    public static class UserControlUtils
+    internal static class UserControlUtils
     {
         public static TBase ActivateAsUserControl<TBase>(this Type userControlType, string uniqueUserControlId)
             where TBase : UserControl

@@ -2,7 +2,7 @@
 
 namespace Composite.Types
 {
-	public static class CodeGenerationHelper
+	internal static class CodeGenerationHelper
 	{
         public static string GetTypeAlias(Type type)
         {

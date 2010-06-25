@@ -9,7 +9,7 @@ using Composite.Security;
 
 namespace Composite.Trees
 {
-    public static class TreeFacade
+    internal static class TreeFacade
     {
         private static ITreeFacade _implementation = new TreeFacadeImpl();
         private static object _lock = new object();

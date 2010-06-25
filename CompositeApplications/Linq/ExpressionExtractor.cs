@@ -3,7 +3,7 @@
 
 namespace Composite.Linq
 {
-    public static class ExpressionExtractor
+    internal static class ExpressionExtractor
     {
         public static LambdaExpression GetLambdaExpression(Expression expression)
         {

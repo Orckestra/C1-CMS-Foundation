@@ -3,7 +3,7 @@
 
 namespace Composite.Sql
 {
-    public static class SqlTableInformationStore
+    internal static class SqlTableInformationStore
     {
         private static ISqlTableInformationStore _implementation = new SqlTableInformationStoreImpl();
 

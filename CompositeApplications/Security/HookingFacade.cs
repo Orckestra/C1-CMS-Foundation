@@ -14,7 +14,7 @@ namespace Composite.Security
     public delegate void DirtyHooksCallbackDelegate();
 
 
-    public static class HookingFacade
+    internal static class HookingFacade
     {
         public delegate void NewElementProviderRootEntitiesDelegate(HookingFacadeEventArgs hookingFacadeEventArgs);
 

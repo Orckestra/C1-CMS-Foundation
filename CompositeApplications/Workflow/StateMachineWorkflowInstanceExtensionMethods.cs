@@ -6,7 +6,7 @@ using System.Workflow.ComponentModel;
 
 namespace Composite.Workflow
 {
-	public static class StateMachineWorkflowInstanceExtensionMethods
+	internal static class StateMachineWorkflowInstanceExtensionMethods
 	{
         public static IEnumerable<string> GetCurrentEventNames(this StateMachineWorkflowInstance stateMachineWorkflowInstance, Type eventServiceType)
         {

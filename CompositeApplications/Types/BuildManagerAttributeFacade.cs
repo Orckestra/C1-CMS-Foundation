@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Composite.Types
 {
-    public static class BuildManagerAttributeFacade
+    internal static class BuildManagerAttributeFacade
     {
         private static Dictionary<string, bool> _isDynamicBuildLookup = new Dictionary<string, bool>();
         private static Dictionary<Assembly, Dictionary<Type, Attribute>> _assemblyAttributesLookup = new Dictionary<Assembly, Dictionary<Type, Attribute>>();

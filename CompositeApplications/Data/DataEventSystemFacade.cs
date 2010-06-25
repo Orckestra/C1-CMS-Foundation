@@ -61,7 +61,7 @@ namespace Composite.Data
     }
 
 
-    public static class DataEventSystemFacade
+    internal static class DataEventSystemFacade
     {
         public delegate void DataBeforeAddDelegate(DataEventArgs dataEventArgs);
         public delegate void DataAfterAddDelegate(DataEventArgs dataEventArgs);

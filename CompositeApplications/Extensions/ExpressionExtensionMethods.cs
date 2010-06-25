@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Composite.Extensions
 {
-    public static class ExpressionExtensionMethods
+    internal static class ExpressionExtensionMethods
     {
         public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> expression1,
                                                             Expression<Func<T, bool>> expression2)

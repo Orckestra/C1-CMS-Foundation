@@ -9,7 +9,7 @@ using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessC
 
 namespace Composite.Data
 {
-    public static class DataIconFacade
+    internal static class DataIconFacade
     {
         public static ResourceHandle DataIcon = GetIconHandle("data");
         public static ResourceHandle DataDraftIcon { get { return GetIconHandle("data-draft"); } }

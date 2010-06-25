@@ -3,7 +3,7 @@ using Composite.Data.Foundation.CodeGeneration;
 
 namespace Composite.Data.Foundation
 {
-	public static class DataWrappingFacade
+	internal static class DataWrappingFacade
 	{
 	    public static T Wrap<T>(T value) where T: class, IData
         {

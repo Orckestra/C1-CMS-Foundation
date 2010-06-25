@@ -9,7 +9,7 @@ using Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider;
 
 namespace Composite.Elements.Security
 {
-    public static class ElementSecurityFacade
+    internal static class ElementSecurityFacade
     {
         public static IEnumerable<Element> FilterActions(this IEnumerable<Element> elements)
         {

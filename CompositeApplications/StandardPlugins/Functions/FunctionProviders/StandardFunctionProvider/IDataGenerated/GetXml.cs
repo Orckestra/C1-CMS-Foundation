@@ -415,7 +415,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunction
         }
     }
 
-    public static class DataToXElements<T> where T : class, IData
+    internal static class DataToXElements<T> where T : class, IData
     {
         private static readonly Dictionary<Type, IOrderByTypeFixer<T>> __orderByTypeFixers = new Dictionary<Type, IOrderByTypeFixer<T>>();
         private static readonly object _lock = new object();
@@ -713,7 +713,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunction
 
 
 
-    public static class ReferencedDataHelperBuilder<SOURCE>
+    internal static class ReferencedDataHelperBuilder<SOURCE>
             where SOURCE : class, IData
     {
         private static readonly Hashtable<string, IReferencedDataHelper<SOURCE>> __preBuildHelpers = new Hashtable<string, IReferencedDataHelper<SOURCE>>();
@@ -854,7 +854,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunction
     }
 
 
-    public static class XElementSelectHelper<T>
+    internal static class XElementSelectHelper<T>
     {
         private static readonly Hashtable<string, Expression<Func<T, XElement>>> __preBuildSelectors = new Hashtable<string, Expression<Func<T, XElement>>>();
         private static readonly Hashtable<Expression<Func<T, XElement>>, Func<T, XElement>> _compiledExpressions = new Hashtable<Expression<Func<T, XElement>>, Func<T, XElement>>();

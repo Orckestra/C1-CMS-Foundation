@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Composite.IO
 {
-	public static class DirectoryEx
+	internal static class DirectoryEx
 	{
         public static void RemoveReadOnlyRecursively(string directoryPath)
         {

@@ -5,7 +5,7 @@ using Composite.Collections.Generic;
 
 namespace Composite.Linq
 {
-    public static class TypeExtensions
+    internal static class TypeExtensions
     {
         private static readonly Hashtable<string, bool?> _typeIsCompiledCache = new Hashtable<string, bool?>();
 

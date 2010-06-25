@@ -8,7 +8,7 @@ using Composite.Types;
 
 namespace Composite.Data
 {
-	public static class DataIdSerializer
+	internal static class DataIdSerializer
 	{
         public static string Serialize(this IDataId dataId)
         {

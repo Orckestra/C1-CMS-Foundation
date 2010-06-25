@@ -3,7 +3,7 @@
 
 namespace Composite.Elements
 {
-    public static class ElementAttachingPointFacade
+    internal static class ElementAttachingPointFacade
     {
         public static bool IsAttachingPoint(EntityToken entityToken, AttachingPoint attachingPoint)
         {

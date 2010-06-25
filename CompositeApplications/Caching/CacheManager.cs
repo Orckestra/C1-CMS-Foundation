@@ -4,7 +4,7 @@ using Composite.Caching.Design;
 
 namespace Composite.Caching
 {
-    public static class CacheManager
+    internal static class CacheManager
     {
         private static readonly Dictionary<string, ICache> _cacheCollection = new Dictionary<string, ICache>();
 

@@ -4,7 +4,7 @@ using System.Web.Hosting;
 
 namespace Composite.Extensions
 {
-    public static class IApplicationHostExtensionMethods
+    internal static class IApplicationHostExtensionMethods
     {
         static readonly PropertyInfo _shutdownInitiatedPropertyInfo = typeof(HostingEnvironment).GetProperty("ShutdownInitiated", BindingFlags.NonPublic | BindingFlags.Static);
 

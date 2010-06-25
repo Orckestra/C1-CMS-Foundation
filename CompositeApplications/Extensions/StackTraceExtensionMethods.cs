@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Composite.Extensions
 {
-	public static class StackTraceExtensionMethods
+	internal static class StackTraceExtensionMethods
 	{
         public static IEnumerable<StackFrame> AsEnumerable(this StackTrace stackTrace)
         {

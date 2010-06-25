@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Composite.Extensions
 {
-    public static class DictionaryExtensionMethods
+    internal static class DictionaryExtensionMethods
     {
         public static TValue EnsureValue<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, Func<TValue> createValue)
         {

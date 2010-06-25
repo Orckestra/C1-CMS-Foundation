@@ -7,7 +7,7 @@ using Composite.Types;
 
 namespace Composite.Security
 {
-    public static class RefreshBeforeAfterEntityTokenFinder
+    internal static class RefreshBeforeAfterEntityTokenFinder
     {
         public static IEnumerable<EntityToken> FindEntityTokens(RelationshipGraph beforeGraph, RelationshipGraph afterGraph)
         {

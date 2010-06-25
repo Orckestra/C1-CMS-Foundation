@@ -12,7 +12,7 @@ using Composite.Users;
 
 namespace Composite.PackageSystem
 {
-    public static class PackageSystemServices
+    internal static class PackageSystemServices
     {
         public static IEnumerable<PackageDescription> GetFilteredAllAvailablePackages()
         {

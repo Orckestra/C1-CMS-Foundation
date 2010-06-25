@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Composite.Extensions
 {
-	public static class ByteArrayExtensionMethods
+	internal static class ByteArrayExtensionMethods
 	{
         public static IEnumerable<byte[]> Split(this byte[] bytes, byte splitByte)
         {

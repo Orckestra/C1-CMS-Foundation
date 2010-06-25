@@ -7,7 +7,7 @@ using Composite.Elements.Plugins.ElementProvider;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProvider
 {
-	public static class VirtualElementProviderConfigurationManipulator
+	internal static class VirtualElementProviderConfigurationManipulator
 	{
         public static void AddNewArea(string providerName, int order, string label, string closeFolderIconName, string openFolderIconName)
         {

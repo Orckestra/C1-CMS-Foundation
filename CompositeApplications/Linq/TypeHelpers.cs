@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Composite.Linq
 {
-    public static class TypeHelpers
+    internal static class TypeHelpers
     {        
         public static Type FindElementType(Expression expression)
         {

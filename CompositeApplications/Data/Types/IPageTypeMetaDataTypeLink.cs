@@ -48,7 +48,7 @@ namespace Composite.Data.Types
 
 
 
-    public static class IPageTypeMetaDataTypeLinkExtensionMethods
+    internal static class IPageTypeMetaDataTypeLinkExtensionMethods
     {
         public static IEnumerable<IPageTypeMetaDataTypeLink> RemoveDeadLinks(this IEnumerable<IPageTypeMetaDataTypeLink> pageTypeMetaDataTypeLinks)
         {

@@ -18,7 +18,7 @@ namespace Composite.Data
         /// </summary>
         /// <param name="sourceData"></param>
         /// <param name="targetData"></param>
-        public static void FullCopyChangedTo(this IData sourceData, IData targetData)
+        internal static void FullCopyChangedTo(this IData sourceData, IData targetData)
         {
             FullCopyChangedTo(sourceData, targetData, null);
         }
@@ -31,7 +31,7 @@ namespace Composite.Data
         /// <param name="sourceData"></param>
         /// <param name="targetData"></param>
         /// <param name="propertyNamesToIgnore"></param>
-        public static void FullCopyChangedTo(this IData sourceData, IData targetData, IEnumerable<string> propertyNamesToIgnore)
+        internal static void FullCopyChangedTo(this IData sourceData, IData targetData, IEnumerable<string> propertyNamesToIgnore)
         {
             foreach (PropertyInfo targetPropertyInfo in targetData.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
@@ -62,7 +62,7 @@ namespace Composite.Data
         /// </summary>
         /// <param name="sourceData"></param>
         /// <param name="targetData"></param>
-        public static void ProjectedCopyTo(this IData sourceData, IData targetData)
+        internal static void ProjectedCopyTo(this IData sourceData, IData targetData)
         {
             ProjectedCopyTo(sourceData, targetData, true);
         }
@@ -76,7 +76,7 @@ namespace Composite.Data
         /// <param name="sourceData"></param>
         /// <param name="targetData"></param>
         /// <param name="useDefaultValues"></param>
-        public static void ProjectedCopyTo(this IData sourceData, IData targetData, bool useDefaultValues)
+        internal static void ProjectedCopyTo(this IData sourceData, IData targetData, bool useDefaultValues)
         {
             foreach (PropertyInfo targetPropertyInfo in targetData.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
@@ -123,7 +123,7 @@ namespace Composite.Data
         /// <param name="leftData"></param>
         /// <param name="rightData"></param>
         /// <returns></returns>
-        public static bool KeyEquals(this IData leftData, IData rightData)
+        internal static bool KeyEquals(this IData leftData, IData rightData)
         {
             if (leftData == null) throw new ArgumentNullException("leftData");
             if (rightData == null) throw new ArgumentNullException("rightData");
@@ -148,7 +148,7 @@ namespace Composite.Data
         /// </summary>
         /// <param name="datas"></param>
         /// <returns></returns>
-        public static List<IData> KeyDistinct(this IEnumerable<IData> datas)
+        internal static List<IData> KeyDistinct(this IEnumerable<IData> datas)
         {
             List<IData> result = new List<IData>();
             foreach (IData data in datas)
@@ -171,7 +171,7 @@ namespace Composite.Data
         /// <param name="leftData"></param>
         /// <param name="rightData"></param>
         /// <returns></returns>
-        public static object GetUniqueKey(this IData data)
+        internal static object GetUniqueKey(this IData data)
         {
             if (data == null) throw new ArgumentNullException("data");
 
@@ -187,7 +187,7 @@ namespace Composite.Data
         /// <param name="leftData"></param>
         /// <param name="rightData"></param>
         /// <returns></returns>
-        public static T GetUniqueKey<T>(this IData data)
+        internal static T GetUniqueKey<T>(this IData data)
         {
             return (T)data.GetUniqueKey();
         }
@@ -200,7 +200,7 @@ namespace Composite.Data
         /// <param name="child"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        public static bool HasAncestor(this IData child, IData parent)
+        internal static bool HasAncestor(this IData child, IData parent)
         {
             return HasAncestor(child, parent, int.MaxValue);
         }
@@ -214,7 +214,7 @@ namespace Composite.Data
         /// <param name="child"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        public static bool HasAncestor(this IData child, IData parent, int maxLevels)
+        internal static bool HasAncestor(this IData child, IData parent, int maxLevels)
         {
             if (child == null) throw new ArgumentNullException("child");
             if (parent == null) throw new ArgumentNullException("parent");
@@ -235,7 +235,7 @@ namespace Composite.Data
         }
 
 
-        public static IEnumerable<DataScopeIdentifier> GetSupportedDataScopes(this Type interfaceType)
+        internal static IEnumerable<DataScopeIdentifier> GetSupportedDataScopes(this Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
             if (typeof(IData).IsAssignableFrom(interfaceType) == false) throw new ArgumentException(string.Format("The specified type must inherit from '{0}'", typeof(IData)), "interfaceType");
@@ -252,7 +252,7 @@ namespace Composite.Data
         }
 
 
-        public static List<IData> ToDataList(this IQueryable queryable)
+        internal static List<IData> ToDataList(this IQueryable queryable)
         {
             if (queryable == null) throw new ArgumentNullException("queryable");
 
@@ -268,7 +268,7 @@ namespace Composite.Data
 
 
 
-        public static IEnumerable<IData> ToDataEnumerable(this IQueryable queryable)
+        internal static IEnumerable<IData> ToDataEnumerable(this IQueryable queryable)
         {
             if (queryable == null) throw new ArgumentNullException("queryable");
 
@@ -281,7 +281,7 @@ namespace Composite.Data
 
 
 
-        public static IEnumerable ToCastedDataEnumerable(this IEnumerable<IData> datas, Type interfaceType)
+        internal static IEnumerable ToCastedDataEnumerable(this IEnumerable<IData> datas, Type interfaceType)
         {
             MethodInfo methodInfo = typeof(Enumerable).GetMethods().Where(f => f.Name == "Cast").Single();
             methodInfo = methodInfo.MakeGenericMethod(interfaceType);
@@ -291,7 +291,7 @@ namespace Composite.Data
 
 
 
-        public static IDictionary<string, List<T>> ToDataProviderSortedDictionary<T>(this IEnumerable<T> datas)
+        internal static IDictionary<string, List<T>> ToDataProviderSortedDictionary<T>(this IEnumerable<T> datas)
             where T : class, IData
         {
             if (datas == null) throw new ArgumentNullException("datas");
@@ -317,7 +317,7 @@ namespace Composite.Data
 
 
 
-        public static Dictionary<string, Dictionary<Type, List<IData>>> ToDataProviderAndInterfaceTypeSortedDictionary<T>(this IEnumerable<T> datas)
+        internal static Dictionary<string, Dictionary<Type, List<IData>>> ToDataProviderAndInterfaceTypeSortedDictionary<T>(this IEnumerable<T> datas)
             where T : class, IData
         {
             if (datas == null) throw new ArgumentNullException("datas");

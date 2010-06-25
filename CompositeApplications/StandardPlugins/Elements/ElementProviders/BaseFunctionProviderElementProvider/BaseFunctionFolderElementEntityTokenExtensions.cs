@@ -1,6 +1,6 @@
 namespace Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider
 {
-    public static class BaseFunctionFolderElementEntityTokenExtensions
+    internal static class BaseFunctionFolderElementEntityTokenExtensions
 	{
         public static string GetNamespace(this BaseFunctionFolderElementEntityToken entityToken)
         {

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Composite.Linq.Disassembled
 {
-    public static class Error
+    internal static class Error
     {
         // Methods
         public static Exception ArgumentMemberNotDeclOnType(object p0, object p1)

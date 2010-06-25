@@ -8,7 +8,7 @@ namespace Composite.Data
     /// <summary>
     /// This facade is used for handlign genereted/dynamic global data types
     /// </summary>
-    public static class GlobalDataTypeFacade
+    internal static class GlobalDataTypeFacade
     {
         public static IEnumerable<Type> GetAllGlobalDataTypes()
         {

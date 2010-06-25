@@ -3,7 +3,7 @@ using System.Web;
 
 namespace Composite.Extensions
 {
-    public static class HttpContextExtensionMethods
+    internal static class HttpContextExtensionMethods
     {
         private static readonly FieldInfo HideRequestResponseFieldInfo = typeof(HttpContext).GetField("HideRequestResponse", BindingFlags.Instance | BindingFlags.NonPublic);
 

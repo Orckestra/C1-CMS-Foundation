@@ -15,7 +15,7 @@
         <script runat="server">
             void Page_Init(object sender, EventArgs e)
             {
-                using (DataScope dataScope = new DataScope(Composite.Data.DataLocalizationFacade.DefaultLocalizationCulture))
+                using (new DataScope(Composite.Data.DataLocalizationFacade.DefaultLocalizationCulture))
                 {
                     IEnumerable<IPageHostNameBinding> hostNameMatches =
                         from binding in DataFacade.GetData<IPageHostNameBinding>()
@@ -41,7 +41,7 @@
 
                     if (pageId == Guid.Empty)
                     {
-                        pageId = PageServices.GetChildren(Guid.Empty).Select(f => f.Id).FirstOrDefault();
+                        pageId = PageManager.GetChildrenIDs(Guid.Empty).FirstOrDefault(rootPageId => PageManager.GetPageById(rootPageId) != null);
                     }
 
                     PageStructureInfo.GetIdToUrlLookup().TryGetValue(pageId, out url);

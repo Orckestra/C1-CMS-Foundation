@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Composite.Collections.Generic
 {
-	public static class DictionaryExtensionMethods
+	internal static class DictionaryExtensionMethods
 	{
         public static void AddDictionary<TKey, TValue>(this Dictionary<TKey, TValue> targetDictionary, Dictionary<TKey, TValue> sourceDictionary)
         {

@@ -12,7 +12,7 @@ using Composite.Data.Streams;
 
 namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.Foundation
 {
-    public static class XmlDataProviderDocumentCache
+    internal static class XmlDataProviderDocumentCache
     {
         public class FileRecord
         {

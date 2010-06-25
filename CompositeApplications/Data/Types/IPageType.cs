@@ -17,7 +17,7 @@ namespace Composite.Data.Types
 
 
 
-    public static class PageTypeHomepageRelationExtensionMethods
+    internal static class PageTypeHomepageRelationExtensionMethods
     {
         public static PageTypeHomepageRelation GetPageTypeHomepageRelation(this string value)
         {
@@ -42,7 +42,7 @@ namespace Composite.Data.Types
 
 
 
-    public static class PageTypeExtensionMethods
+    internal static class PageTypeExtensionMethods
     {
         public static IEnumerable<IPageType> GetChildPageSelectablePageTypes(this IPage parentPage, IPage childPage = null)
         {

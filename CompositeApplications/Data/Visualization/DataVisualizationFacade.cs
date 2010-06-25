@@ -6,7 +6,7 @@ using Composite.Data.Visualization.Foundation;
 
 namespace Composite.Data.Visualization
 {
-    public static class DataVisualizationFacade
+    internal static class DataVisualizationFacade
     {
         public static IEnumerable<IVisualizedData> Visualize<T>(IQueryable<T> data)
             where T : class, IData

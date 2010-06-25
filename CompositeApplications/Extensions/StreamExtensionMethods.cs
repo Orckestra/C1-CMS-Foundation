@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Composite.Extensions
 {
-    public static class StreamExtensionMethods
+    internal static class StreamExtensionMethods
     {
         public static void CopyTo(this Stream stream, Stream toStream)
         {

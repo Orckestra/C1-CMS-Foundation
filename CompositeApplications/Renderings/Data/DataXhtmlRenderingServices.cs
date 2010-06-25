@@ -8,7 +8,7 @@ using Composite.Xml;
 
 namespace Composite.Renderings.Data
 {
-	public static class DataXhtmlRenderingServices
+	internal static class DataXhtmlRenderingServices
 	{
         public static bool CanRender(Type dataTypeToRender, XhtmlRenderingType renderingType)
         {

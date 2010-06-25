@@ -6,7 +6,7 @@ using Composite.Data.Plugins.DataProvider.Runtime;
 
 namespace Composite.Data.Plugins.DataProvider
 {    
-    public static class DataProviderConfigurationServices
+    internal static class DataProviderConfigurationServices
     {
         public static DataProviderData GetDataProviderConfiguration(string providerName)
         {

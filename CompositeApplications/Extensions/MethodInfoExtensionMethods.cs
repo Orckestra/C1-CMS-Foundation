@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Composite.Extensions
 {
-    public static class MethodInfoExtensionMethods
+    internal static class MethodInfoExtensionMethods
     {
         public static string ToExceptionString(this MethodInfo methodInfo)
         {

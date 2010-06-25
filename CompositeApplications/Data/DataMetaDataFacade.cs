@@ -11,7 +11,7 @@ using Composite.IO;
 
 namespace Composite.Data
 {
-    public static class DataMetaDataFacade
+    internal static class DataMetaDataFacade
     {
         private static Dictionary<Guid, DataTypeDescriptor> _dataTypeDescriptorCache = null;
         private static Dictionary<Guid, string> _dataTypeDescriptorFilesnamesCache = null;

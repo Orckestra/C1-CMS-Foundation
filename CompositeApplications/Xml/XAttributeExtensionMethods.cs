@@ -4,7 +4,7 @@ using System.Xml.Linq;
 
 namespace Composite.Xml
 {
-	public static class XAttributeExtensionMethods
+	internal static class XAttributeExtensionMethods
 	{
         public static string GetValueOrDefault(this XAttribute attribute, string defaultValue)
         {

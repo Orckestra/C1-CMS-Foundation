@@ -8,7 +8,7 @@ using Composite.WebClient;
 namespace Composite.Renderings
 {
     [Obsolete("No longer used")]
-    public static class CultureExtrator
+    internal static class CultureExtrator
     {
         public static CultureInfo GetCultureInfo(string requestPath)
         {

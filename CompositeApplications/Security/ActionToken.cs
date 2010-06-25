@@ -15,7 +15,7 @@ namespace Composite.Security
 
 
 
-    public static class ActionTokenExtensionMethods
+    internal static class ActionTokenExtensionMethods
     {
         private static Dictionary<Type, bool> _ignoreEntityTokenLockingCache = new Dictionary<Type, bool>();
         private static readonly object _lock = new object();

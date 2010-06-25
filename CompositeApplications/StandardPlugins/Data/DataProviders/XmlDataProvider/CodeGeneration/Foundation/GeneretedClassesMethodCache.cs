@@ -9,7 +9,7 @@ using Composite.Data;
 
 namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation
 {
-    public static class GeneretedClassesMethodCache
+    internal static class GeneretedClassesMethodCache
     {
         private static MethodInfo _xElementElementMethod = typeof(XElement).GetMethod("Element");
         private static MethodInfo _xElementAttributeMethod = typeof(XElement).GetMethod("Attribute");

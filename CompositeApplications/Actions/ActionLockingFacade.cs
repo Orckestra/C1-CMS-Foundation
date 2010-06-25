@@ -15,7 +15,7 @@ using System.Threading;
 
 namespace Composite.Actions
 {    
-    public static class ActionLockingFacade
+    internal static class ActionLockingFacade
     {
         private static Dictionary<EntityToken, LockingInformation> _lockingInformations = null;
         private static object _lock = new object();

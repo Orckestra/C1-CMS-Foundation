@@ -10,7 +10,7 @@ using Composite.Types;
 
 namespace Composite.Actions
 {
-	public static class FlowTokenSerializer
+	internal static class FlowTokenSerializer
 	{
         public static string Serialize(FlowToken flowToken)
         {

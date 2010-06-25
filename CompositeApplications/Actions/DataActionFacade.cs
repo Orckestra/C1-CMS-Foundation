@@ -10,7 +10,7 @@ using Composite.Linq;
 
 namespace Composite.Actions
 {
-    public static class DataActionFacade
+    internal static class DataActionFacade
     {
         public static Dictionary<DataSourceId, List<DataActionSourceId>> GetActions<T>(IQueryable<T> data)
             where T : class, IData

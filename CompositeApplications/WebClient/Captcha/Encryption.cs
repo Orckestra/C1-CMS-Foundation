@@ -8,7 +8,7 @@ using System.Web.Hosting;
 
 namespace Composite.WebClient.Captcha
 {
-	public static class Encryption
+	internal static class Encryption
 	{
         private static readonly byte[] _encryptionKey;
         private static readonly byte[] RijndaelIV = { 1, 84, 22, 19, 154, 221, 4, 30, 56, 4, 114, 59, 90, 2, 5, 10 };

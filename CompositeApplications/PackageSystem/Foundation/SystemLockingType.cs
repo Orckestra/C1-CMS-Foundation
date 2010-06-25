@@ -11,7 +11,7 @@ namespace Composite.PackageSystem.Foundation
     }
 
 
-    public static class SystemLockingTypeExtensionMethods
+    internal static class SystemLockingTypeExtensionMethods
     {
         public static bool TryDeserialize(this XAttribute attribute, out SystemLockingType systemLockingType)
         {

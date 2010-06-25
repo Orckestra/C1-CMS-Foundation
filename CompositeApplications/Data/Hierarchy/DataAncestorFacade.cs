@@ -4,7 +4,7 @@ using Composite.Data.Hierarchy.Foundation;
 
 namespace Composite.Data.Hierarchy
 {
-    public static class DataAncestorFacade
+    internal static class DataAncestorFacade
     {
         public static IData GetParent(this IData data)
         {

@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace Composite.StandardPlugins.WebClient.SessionStateProviders.DefaultSessionStateProvider
 {
-    public static class SerializationUtil
+    internal static class SerializationUtil
     {
         internal static readonly Encoding Encoding = Encoding.UTF8;
 

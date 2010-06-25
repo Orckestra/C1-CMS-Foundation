@@ -9,7 +9,7 @@ using Composite.Types;
 
 namespace Composite.Functions
 {
-	public static class XslExtensionsManager
+	internal static class XslExtensionsManager
 	{
         public static void Register(XsltArgumentList argumentList)
         {

@@ -4,7 +4,7 @@ using System;
 
 namespace Composite.Data
 {
-    public static class IDataIdExtensions
+    internal static class IDataIdExtensions
     {
         public static void FullCopyTo(this IDataId sourceDataId, IDataId targetDataId)
         {

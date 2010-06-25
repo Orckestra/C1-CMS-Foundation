@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Composite.Data.Types
 {
-    public static class IFileServices
+    internal static class IFileServices
     {
         public static T GetFile<T>(string filePath)
             where T : class, IFile

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Composite.Linq
 {
-    public static class DictionaryExtensions
+    internal static class DictionaryExtensions
     {
         public static int GetContentHashCode(this IDictionary dictionary)
         {
@@ -54,7 +54,7 @@ namespace Composite.Linq
 
 
 
-    public static class ListExtensions
+    internal static class ListExtensions
     {
         public static List<U> ToList<T, U>(this IEnumerable<T> source, Func<T, U> convertor)
         {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Composite.Extensions
 {
-	public static class IEnumerableExtensionMethods
+	internal static class IEnumerableExtensionMethods
 	{
         public static List<TTarget> ToList<TSource, TTarget>(this IEnumerable<TSource> source, Func<TSource, TTarget> objectCreator)
         {

@@ -1,7 +1,7 @@
 
 namespace Composite.ResourceSystem.Icons
 {
-    public static class CommonElementIcons
+    internal static class CommonElementIcons
     {
         public static ResourceHandle Advanced { get { return GetIconHandle("advanced"); } }
         public static ResourceHandle Clock { get { return GetIconHandle("clock"); } }

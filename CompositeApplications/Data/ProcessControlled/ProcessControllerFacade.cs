@@ -17,7 +17,7 @@ using Composite.Linq;
 
 namespace Composite.Data.ProcessControlled
 {
-    public static class ProcessControllerFacade
+    internal static class ProcessControllerFacade
     {
         private static Dictionary<Type, Type> _controlledTypes = new Dictionary<Type, Type>();
 

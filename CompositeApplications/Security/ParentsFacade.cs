@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Composite.Security
 {
-    public static class ParentsFacade
+    internal static class ParentsFacade
     {
         public static List<EntityToken> GetAllParents(EntityToken entityToken)
         {

@@ -9,7 +9,7 @@ using Composite.Actions;
 
 namespace Composite.Elements
 {
-    public static class ShowErrorElementHelper
+    internal static class ShowErrorElementHelper
     {
         public static Element CreateErrorElement(string label, string toolTip, string message)
         {

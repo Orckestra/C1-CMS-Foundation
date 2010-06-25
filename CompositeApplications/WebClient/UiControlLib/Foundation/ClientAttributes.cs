@@ -3,7 +3,7 @@ using System.Web.UI;
 
 namespace Composite.WebClient.UiControlLib.Foundation
 {
-	public static class ClientAttributes
+	internal static class ClientAttributes
 	{
         public static void WriteClientAttributes(this WebControl uiControl, HtmlTextWriter writer)
         {

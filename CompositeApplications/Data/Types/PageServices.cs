@@ -7,7 +7,7 @@ using Composite.Users;
 
 namespace Composite.Data.Types
 {
-    public static class PageServices
+    internal static class PageServices
     {
         private static readonly object _lock = new object();
 

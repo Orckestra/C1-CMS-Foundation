@@ -3,7 +3,7 @@
 
 namespace Composite.Forms.Flows
 {
-    public static class StandardEventIdentifiers
+    internal static class StandardEventIdentifiers
     {
         public static IFormEventIdentifier Save { get { return new SaveEvent(); } }
         public static IFormEventIdentifier SaveAs { get { return new SaveAsEvent(); } }

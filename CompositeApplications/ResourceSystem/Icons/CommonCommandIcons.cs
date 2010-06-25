@@ -1,6 +1,6 @@
 namespace Composite.ResourceSystem.Icons
 {
-    public static class CommonCommandIcons
+    internal static class CommonCommandIcons
     {
         public static ResourceHandle AddNew { get { return GetIconHandle("generic-add"); } }
         public static ResourceHandle Edit { get { return GetIconHandle("generic-edit"); } }

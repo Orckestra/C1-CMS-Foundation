@@ -10,7 +10,7 @@ using Composite.Logging;
 
 namespace Composite.Data.ProcessControlled
 {
-    public static class ProcessControllerAttributesFacade
+    internal static class ProcessControllerAttributesFacade
     {
         private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.DoInitialize);
 

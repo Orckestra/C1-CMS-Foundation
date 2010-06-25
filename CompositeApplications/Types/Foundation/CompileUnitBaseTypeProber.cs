@@ -9,7 +9,7 @@ using System.Reflection;
 namespace Composite.Types.Foundation
 {
     // This code do NOT take generic base types into account. See http://msdn2.microsoft.com/en-us/library/system.codedom.codetypereference.basetype.aspx
-    public static class CompileUnitBaseTypeProber
+    internal static class CompileUnitBaseTypeProber
     {
         /// <summary>
         /// Probes all class declarations, locates types with base types and return a map from found base types to all type declarations having this base type.

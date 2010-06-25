@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace Composite.Xml
 {
-    public static class XElementExtensionMethods
+    internal static class XElementExtensionMethods
     {
         public static bool HasSameSiblings(this XElement element)
         {

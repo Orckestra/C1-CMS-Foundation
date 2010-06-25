@@ -2,7 +2,7 @@ using System;
 
 namespace Composite.Security
 {
-    public static class Utilities
+    internal static class Utilities
     {
         public static void ParseUserLoginString(string windowsAuthenticatedFullName, out string userName, out string domainName)
         {

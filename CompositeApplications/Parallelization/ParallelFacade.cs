@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Composite.Parallelization
 {
-	public static class ParallelFacade
+	internal static class ParallelFacade
 	{
         private static bool ParralelizationPointEnabled(string parallelizationPointName)
         {

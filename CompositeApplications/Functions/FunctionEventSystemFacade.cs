@@ -7,7 +7,7 @@ using Composite.Logging;
 
 namespace Composite.Functions
 {
-    public static class FunctionEventSystemFacade
+    internal static class FunctionEventSystemFacade
     {
         public delegate void FunctionsAddedEventDelegate(FunctionsAddedEventArgs args);
         public delegate void FunctionsRemovedEventDelegate(FunctionsRemovedEventArgs args);

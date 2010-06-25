@@ -8,10 +8,9 @@ using System.Web;
 using Composite;
 using Composite.IO;
 using Composite.Security;
-using Composite.StringExtensions;
 using Composite.Logging;
 using Composite.Users;
-using Composite.StringExtensions;
+using Composite.Extensions;
 using Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider;
 
 

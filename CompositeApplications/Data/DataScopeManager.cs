@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Composite.Data
 {
-    public static class DataScopeManager
+    internal static class DataScopeManager
     {
         public static DataScopeIdentifier CurrentDataScope
         {

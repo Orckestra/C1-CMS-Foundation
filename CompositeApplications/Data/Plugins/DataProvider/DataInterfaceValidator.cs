@@ -8,7 +8,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.Data.Plugins.DataProvider
 {
-    public static class DataInterfaceValidator
+    internal static class DataInterfaceValidator
     {
         public static bool TryValidate(Type interfaceType, out IEnumerable<string> errorMessages)
         {

@@ -1,6 +1,6 @@
 ﻿namespace Composite.Linq.Disassembled
 {
-    public static class Strings
+    internal static class Strings
     {
         // Methods
         public static string ArgumentMemberNotDeclOnType(object p0, object p1)

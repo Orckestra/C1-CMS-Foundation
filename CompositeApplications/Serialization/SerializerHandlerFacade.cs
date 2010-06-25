@@ -4,7 +4,7 @@ using System;
 
 namespace Composite.Serialization
 {
-    public static class SerializerHandlerFacade
+    internal static class SerializerHandlerFacade
     {
         private static ISerializerHandlerFacade _implementation = new SerializerHandlerFacadeImpl();
 

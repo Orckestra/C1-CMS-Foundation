@@ -15,7 +15,7 @@ namespace Composite.Data.Foundation
     /// long run. The MigrateMetaData() method will migrate all meta data to the new store model.
     /// </summary>
     [Obsolete]
-    public static class DeprecatedDateMetaDataFacade
+    internal static class DeprecatedDateMetaDataFacade
     {
         private static Dictionary<Guid, DataTypeDescriptor> _dataTypeDescriptorCache = new Dictionary<Guid, DataTypeDescriptor>();
         private static readonly object _lock = new object();

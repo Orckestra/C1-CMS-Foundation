@@ -18,7 +18,7 @@ using System.Web;
 namespace Composite.StandardPlugins.Functions.FunctionProviders.VisualFunctionProvider
 {
 
-    public static class RenderingHelper
+    internal static class RenderingHelper
     {
         public static XhtmlDocument RenderCompleteDataList(IVisualFunction function, XhtmlDocument xhtmlDocument, DataTypeDescriptor typeDescriptor, FunctionContextContainer functionContextContainer)
         {

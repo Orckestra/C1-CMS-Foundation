@@ -4,7 +4,7 @@ using System.Web;
 
 namespace Composite.Caching
 {
-	public static class RequestLifetimeCache
+	internal static class RequestLifetimeCache
 	{
         private static Dictionary<object, object> _unitTestCahce = new Dictionary<object,object>();
 

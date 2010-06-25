@@ -1,6 +1,6 @@
 namespace Composite.ResourceSystem.Icons
 {
-	public static class BuildInIconProviderName
+	internal static class BuildInIconProviderName
 	{
         public const string ProviderName = "Composite.Icons";
 	}

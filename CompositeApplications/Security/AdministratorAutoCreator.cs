@@ -27,7 +27,7 @@ namespace Composite.Security
     ///  - the used login provider supports adding users
     ///  - the used permission provider supports adding permission types
     /// </summary>
-	public static class AdministratorAutoCreator
+	internal static class AdministratorAutoCreator
 	{
         public static bool CanBeAutoCreated(string userName)
         {

@@ -3,7 +3,7 @@
 
 namespace Composite.Threading
 {
-    public static class ThreadManager
+    internal static class ThreadManager
     {
         public static ParameterizedThreadStart CreateThreadStart(ThreadStart threadStart)
         {

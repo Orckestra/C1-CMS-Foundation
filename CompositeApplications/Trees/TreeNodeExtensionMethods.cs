@@ -9,7 +9,7 @@ using Composite.Security;
 
 namespace Composite.Trees
 {
-    public static class TreeNodeExtensions
+    internal static class TreeNodeExtensions
     {
         public static IEnumerable<T> OfType<T>(this IEnumerable<FilterNode> filterNodes)
             where T : FilterNode

@@ -5,7 +5,7 @@ using Composite.Logging;
 
 namespace Composite.IO
 {
-    public static class DirectoryUtil
+    internal static class DirectoryUtil
     {
         /// <summary>
         /// Ensures that the directories in the path exists and if they dont they will be created

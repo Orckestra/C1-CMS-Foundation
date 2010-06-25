@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace Composite.Tasks
 {
-    public static class TaskManagerFacade
+    internal static class TaskManagerFacade
     {
         private static ITaskManagerFacade _implementation = new TaskManagerFacadeImpl();
 

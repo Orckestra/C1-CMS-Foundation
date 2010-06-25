@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace Composite.Xml
 {
-	public static class XDocumentExtensionMethods
+	internal static class XDocumentExtensionMethods
 	{
         public static string GetDocumentAsString(this XDocument document)
         {

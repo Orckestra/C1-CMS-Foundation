@@ -27,7 +27,7 @@ namespace Composite.Data.Types
 
 
 
-    public static class IFolderWhiteListExtensions
+    internal static class IFolderWhiteListExtensions
     {
         public static string GetTildePath(string fullPath)
         {

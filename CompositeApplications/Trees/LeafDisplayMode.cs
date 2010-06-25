@@ -13,7 +13,7 @@ namespace Composite.Trees
 
 
 
-    public static class LeafDisplayModeHelper
+    internal static class LeafDisplayModeHelper
     {
         public static LeafDisplayMode ParseDisplayMode(XAttribute attribute, Tree tree)
         {

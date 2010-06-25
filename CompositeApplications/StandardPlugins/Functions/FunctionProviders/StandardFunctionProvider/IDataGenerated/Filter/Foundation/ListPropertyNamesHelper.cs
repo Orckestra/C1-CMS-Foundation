@@ -9,7 +9,7 @@ using Composite.Data;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated.Filter.Foundation
 {
-    public static class ListPropertyNamesHelper
+    internal static class ListPropertyNamesHelper
     {
         public static IEnumerable GetOptionsWithReferences(string typeManagerName)
         {

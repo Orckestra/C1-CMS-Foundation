@@ -4,7 +4,7 @@ using Composite.Forms.Plugins.FunctionFactory;
 
 namespace Composite.Forms
 {
-	public static class FormFactoryService
+	internal static class FormFactoryService
 	{
         public static IFormFunction GetFunction(string namespaceName, string name)
         {

@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Composite.Data
 {
-	public static class DataKeyPropertyCollectionExtensionMethods
+	internal static class DataKeyPropertyCollectionExtensionMethods
 	{
         public static DataKeyPropertyCollection CreateDataKeyPropertyCollection(this IData data)
         {

@@ -12,7 +12,7 @@ namespace Composite.WebClient.Services.ConsoleMessageService
         BottomRight
     }
 
-    public static class InternalViewTypeConvertExtensions
+    internal static class InternalViewTypeConvertExtensions
     {
         internal static ViewType AsConsoleType( this Composite.ConsoleEventSystem.ViewType internalViewType )
         {

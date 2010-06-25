@@ -4,7 +4,7 @@ using System.Globalization;
 namespace Composite.StringExtensions
 {
     [Obsolete("Use Composite.Extensions.StringExtensionMethods instead")]
-	public static class StringExtensions
+	internal static class StringExtensions
 	{
         public static string FormatWith(this string format, params object[] args)
         {

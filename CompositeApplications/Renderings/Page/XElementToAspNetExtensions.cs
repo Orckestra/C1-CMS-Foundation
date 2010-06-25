@@ -13,7 +13,7 @@ using System.Web;
 
 namespace Composite.Renderings.Page
 {
-    public static class XElementToAspNetExtensions
+    internal static class XElementToAspNetExtensions
     {
         public static Control AsAspNetControl(this XhtmlDocument xhtmlDocument)
         {

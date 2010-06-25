@@ -3,7 +3,7 @@
 
 namespace Composite.Xml
 {
-	public static class XmlUtils
+	internal static class XmlUtils
 	{
         public static XName GetXName(string namespaceName, string localName)
         {

@@ -3,7 +3,7 @@
 
 namespace Composite.Actions
 {    
-    public static class StandardUiContainerTypes
+    internal static class StandardUiContainerTypes
     {
         public static IFlowUiContainerType Document { get { return _document; } }
         public static IFlowUiContainerType EmptyDocument { get { return _emptyDocument; } }

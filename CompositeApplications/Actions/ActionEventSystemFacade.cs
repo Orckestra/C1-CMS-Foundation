@@ -40,7 +40,7 @@ namespace Composite.Actions
 
 
 
-    public static class ActionEventSystemFacade
+    internal static class ActionEventSystemFacade
     {
         public delegate void OnBeforeActionExecutionDelegate(BeforeActionEventArgs actionEventArgs);
         public delegate void OnAfterActionExecutionDelegate(AfterActionEventArgs actionEventArgs);

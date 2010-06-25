@@ -6,7 +6,7 @@ using Composite.Data.Foundation;
 
 namespace Composite.Extensions
 {
-	public static class IQueryableExtensionMethods
+	internal static class IQueryableExtensionMethods
 	{
 	    private static readonly MethodInfo _miQueryableAny =
 	        (from methodInfo in typeof (Queryable).GetMethods(BindingFlags.Static | BindingFlags.Public)

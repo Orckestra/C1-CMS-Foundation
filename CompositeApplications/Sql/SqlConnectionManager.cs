@@ -3,7 +3,7 @@ using Composite.Threading;
 
 namespace Composite.Sql
 {
-	public static class SqlConnectionManager
+	internal static class SqlConnectionManager
 	{
         public static SqlConnection GetConnection(string connectionString)
         {

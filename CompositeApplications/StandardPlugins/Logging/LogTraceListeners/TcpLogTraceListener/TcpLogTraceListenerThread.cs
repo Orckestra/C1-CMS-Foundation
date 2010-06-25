@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Composite.StandardPlugins.Logging.LogTraceListeners.TcpLogTraceListener
 {
-    public static class TcpLogTraceListenerThread
+    internal static class TcpLogTraceListenerThread
     {
 
         public static void ThreadMethod(object tcpLogTraceListenerThreadDataObject)

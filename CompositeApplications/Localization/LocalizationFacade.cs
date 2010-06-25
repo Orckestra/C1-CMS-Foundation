@@ -12,7 +12,7 @@ using Composite.Users;
 
 namespace Composite.Localization
 {
-    public static class LocalizationFacade
+    internal static class LocalizationFacade
     {
         /// <summary>
         /// Returns true if the given locale is already installed

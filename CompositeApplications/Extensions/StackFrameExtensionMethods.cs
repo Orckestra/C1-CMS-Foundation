@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Composite.Extensions
 {
-	public static class StackFrameExtensionMethods
+	internal static class StackFrameExtensionMethods
 	{
         public static string ToExceptionString(this StackFrame stackFrame)
         {

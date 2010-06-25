@@ -8,7 +8,7 @@ using Composite.Functions;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider
 {
-	public static class FlowUiQueryMarkupHelper
+	internal static class FlowUiQueryMarkupHelper
 	{
         private static readonly XNamespace ui = "http://www.w3.org/1999/xhtml";
 

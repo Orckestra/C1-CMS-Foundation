@@ -26,7 +26,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
-    public static class GeneratedTypesFacade
+    internal static class GeneratedTypesFacade
     {
         public delegate void GenerateNewTypeDelegate(GenerateNewTypeEventArgs args);
         public delegate void UpdateTypeDelegate(UpdateTypeEventArgs args);

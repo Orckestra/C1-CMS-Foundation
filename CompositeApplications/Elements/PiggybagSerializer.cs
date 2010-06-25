@@ -5,7 +5,7 @@ using Composite.Serialization;
 
 namespace Composite.Elements
 {
-	public static class PiggybagSerializer
+	internal static class PiggybagSerializer
 	{
         public static string Serialize(Dictionary<string, string> piggybag)
         {

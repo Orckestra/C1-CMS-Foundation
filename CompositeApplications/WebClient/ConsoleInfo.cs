@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Composite.WebClient
 {
-	public static class ConsoleInfo
+	internal static class ConsoleInfo
 	{
         public static string TryGetConsoleId()
         {

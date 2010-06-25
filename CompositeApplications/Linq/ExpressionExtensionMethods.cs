@@ -6,7 +6,7 @@ using Composite.Logging;
 
 namespace Composite.Linq
 {
-    public static class ExpressionExtensionMethods
+    internal static class ExpressionExtensionMethods
     {
         public static Expression NestedAnd(this Expression leftExpression, Expression rightExpression)
         {

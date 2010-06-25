@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Composite.Security.Cryptography
 {
-	public static class Cryptographer
+	internal static class Cryptographer
 	{
         private static string _secretKey;
         private static Encoding _encoding = Encoding.Unicode;

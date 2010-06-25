@@ -6,7 +6,7 @@ using Composite.Security.Foundation;
 
 namespace Composite.Security
 {
-    public static class RefreshDeleteEntityTokenFinder
+    internal static class RefreshDeleteEntityTokenFinder
     {
         public static IEnumerable<EntityToken> FindEntityTokens(RelationshipGraph beforeGraph)
         {

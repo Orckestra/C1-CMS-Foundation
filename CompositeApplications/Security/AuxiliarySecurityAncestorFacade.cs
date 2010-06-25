@@ -5,7 +5,7 @@ using Composite.EventSystem;
 
 namespace Composite.Security
 {
-	public static class AuxiliarySecurityAncestorFacade
+	internal static class AuxiliarySecurityAncestorFacade
 	{
         private static IAuxiliarySecurityAncestorFacade _implementation = new AuxiliarySecurityAncestorFacadeImpl();
 

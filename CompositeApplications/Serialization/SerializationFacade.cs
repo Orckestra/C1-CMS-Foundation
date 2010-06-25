@@ -12,7 +12,7 @@ using Composite.Logging;
 
 namespace Composite.Serialization
 {
-    public static class SerializationFacade
+    internal static class SerializationFacade
     {
         private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
 

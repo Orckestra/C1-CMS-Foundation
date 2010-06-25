@@ -6,7 +6,7 @@ using Composite.Data.Types;
 
 namespace Composite.Data.DynamicTypes.Foundation
 {
-    public static class DynamicTypesAlternateFormFacade
+    internal static class DynamicTypesAlternateFormFacade
     {
         // returns null if no alternate form exists
         public static string GetAlternateFormMarkup(DataTypeDescriptor dataTypeDescriptor)

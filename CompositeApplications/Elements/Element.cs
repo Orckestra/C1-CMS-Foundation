@@ -16,7 +16,7 @@ namespace Composite.Elements
 
 
 
-    public static class ElementExternalActionAddingExtensions
+    internal static class ElementExternalActionAddingExtensions
     {
         public static ElementExternalActionAdding Remove(this ElementExternalActionAdding currentValue, ElementExternalActionAdding valueToRemove)
         {

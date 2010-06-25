@@ -6,7 +6,7 @@ using System;
 
 namespace Composite.Trees
 {
-    public static class PiggybagExtensionMethods
+    internal static class PiggybagExtensionMethods
     {
         private const string ParrentEntityTokenPiggybagString = "ParentEntityToken";
         private const string ParrentNodeIdPiggybagString = "ParentId";

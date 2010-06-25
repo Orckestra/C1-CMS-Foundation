@@ -4,7 +4,7 @@ using Composite.Instrumentation.Foundation;
 
 namespace Composite.Instrumentation
 {
-    public static class TimerProfilerFacade
+    internal static class TimerProfilerFacade
     {
         public static TimerProfiler CreateTimerProfiler()
         {

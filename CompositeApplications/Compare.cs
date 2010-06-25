@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Composite
 {
-    public static class Compare
+    internal static class Compare
     {
         /// <summary>
         /// Compares to objects by comparing all public getters value recursive.

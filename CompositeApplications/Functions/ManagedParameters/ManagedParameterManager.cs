@@ -13,7 +13,7 @@ using Composite.Types;
 
 namespace Composite.Functions.ManagedParameters
 {
-    public static class ManagedParameterManager
+    internal static class ManagedParameterManager
     {
         public static IEnumerable<ManagedParameterDefinition> Load(Guid ownerId)
         {

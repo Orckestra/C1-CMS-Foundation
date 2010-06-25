@@ -1,6 +1,6 @@
 ﻿namespace Composite.Data.Types
 {
-	public static class IMediaFileExtensions
+	internal static class IMediaFileExtensions
 	{
         public static string GetKeyPath(this IMediaFile mediaFile)
         {

@@ -7,7 +7,7 @@ using Composite.Logging;
 
 namespace Composite.Data.Streams
 {
-    public static class FileStreamManagerLocator
+    internal static class FileStreamManagerLocator
     {
         private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
 

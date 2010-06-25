@@ -3,7 +3,7 @@
 
 namespace Composite.Forms
 {
-	public static class FormKeyTagNames
+	internal static class FormKeyTagNames
 	{
         public static readonly string DefaultPropertyName = CompilerGlobals.DefaultPropertyName;
         public static readonly string FormDefinition = CompilerGlobals.FormDefinition_TagName;

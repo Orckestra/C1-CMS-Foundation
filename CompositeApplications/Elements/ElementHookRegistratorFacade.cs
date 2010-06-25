@@ -7,7 +7,7 @@ using Composite.Instrumentation;
 
 namespace Composite.Elements
 {
-    public static class ElementHookRegistratorFacade
+    internal static class ElementHookRegistratorFacade
     {
         public static IEnumerable<EntityTokenHook> GetHooks()
         {

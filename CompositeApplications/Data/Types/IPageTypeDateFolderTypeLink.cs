@@ -33,7 +33,7 @@ namespace Composite.Data.Types
 
 
 
-    public static class IPageTypeDataFolderTypeLinkExtensionMethods
+    internal static class IPageTypeDataFolderTypeLinkExtensionMethods
     {
         public static IEnumerable<IPageTypeDataFolderTypeLink> RemoveDeadLinks(this IEnumerable<IPageTypeDataFolderTypeLink> pageTypeDataFolderTypeLinks)
         {

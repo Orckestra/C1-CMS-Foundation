@@ -4,7 +4,7 @@ using Composite.Validation.ClientValidationRules;
 
 namespace Composite.Validation
 {
-    public static class ClientValidationRuleFacade
+    internal static class ClientValidationRuleFacade
     {
         private static IClientValidationRuleFacade _implementation = new ClientValidationRuleFacadeImpl();
 

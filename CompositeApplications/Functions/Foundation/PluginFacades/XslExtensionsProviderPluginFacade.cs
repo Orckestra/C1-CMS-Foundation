@@ -6,7 +6,7 @@ using Composite.Types;
 
 namespace Composite.Functions.Foundation.PluginFacades
 {
-	public static class XslExtensionsProviderPluginFacade
+	internal static class XslExtensionsProviderPluginFacade
 	{
         static Resources _resources = new Resources();
 

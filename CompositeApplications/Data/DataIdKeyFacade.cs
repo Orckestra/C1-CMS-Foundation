@@ -4,7 +4,7 @@ using Composite.EventSystem;
 
 namespace Composite.Data
 {
-    public static class DataIdKeyFacade
+    internal static class DataIdKeyFacade
     {
         private static IDataIdKeyFacade _implementation = new DataIdKeyFacadeImpl();
 

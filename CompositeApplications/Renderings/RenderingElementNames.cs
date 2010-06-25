@@ -7,7 +7,7 @@ using Composite.Xml;
 
 namespace Composite.Renderings
 {
-	public static class RenderingElementNames
+	internal static class RenderingElementNames
 	{
         public static XName PlaceHolder { get { return _placeholder; } }
         public static XName PlaceHolderIdAttribute { get { return "id"; } }

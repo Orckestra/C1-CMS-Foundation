@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 
 namespace Composite.Linq.Disassembled
 {
-    public static class ReadOnlyCollectionExtensions
+    internal static class ReadOnlyCollectionExtensions
     {
         // Methods
         public static ReadOnlyCollection<T> ToReadOnlyCollection<T>(this IEnumerable<T> sequence)

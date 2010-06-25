@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Composite.Types
 {
-    public static class PrimitiveTypes
+    internal static class PrimitiveTypes
     {
         private static readonly Type[] _primitiveTypes = 
                 {

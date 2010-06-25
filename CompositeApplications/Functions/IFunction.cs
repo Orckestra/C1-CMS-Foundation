@@ -11,7 +11,7 @@ namespace Composite.Functions
 	}
 
 
-    public static class IFunctionOverloads
+    internal static class IFunctionOverloads
     {
         public static T Execute<T>(this IFunction function, NameValueCollection parameters)
         {

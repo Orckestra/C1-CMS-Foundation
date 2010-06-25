@@ -19,7 +19,7 @@ namespace Composite.Security
 
 
 
-    public static class PermissionTypePredefined
+    internal static class PermissionTypePredefined
     {
         public static readonly IEnumerable<PermissionType> Add = new PermissionType[] { PermissionType.Add };
         public static readonly IEnumerable<PermissionType> Delete = new PermissionType[] { PermissionType.Delete };
@@ -28,7 +28,7 @@ namespace Composite.Security
 
 
 
-    public static class PermissionTypeExtensionMethods
+    internal static class PermissionTypeExtensionMethods
     {
         public static IEnumerable<PermissionType> FromListOfStrings(this IEnumerable<string> permissionTypeNames)
         {

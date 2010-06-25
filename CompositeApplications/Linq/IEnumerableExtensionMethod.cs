@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Composite.Linq
 {
-    public static class IEnumerableExtensionMethod
+    internal static class IEnumerableExtensionMethod
     {
         public static IEnumerable<T> ConcatOrDefault<T>(this IEnumerable<T> enumerable, IEnumerable<T> enumerableToAppend)
         {

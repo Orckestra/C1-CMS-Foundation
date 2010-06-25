@@ -7,7 +7,7 @@ using System;
 
 namespace Composite.WebClient.Services.TreeServiceObjects.ExtensionMethods
 {
-    public static class ElementActionExtensionMethods
+    internal static class ElementActionExtensionMethods
     {
         public static List<ClientAction> ToClientActionList(this IEnumerable<ElementAction> actions)
         {
