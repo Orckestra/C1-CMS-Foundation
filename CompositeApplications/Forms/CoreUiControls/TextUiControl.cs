@@ -8,7 +8,7 @@ using Composite.Forms.Foundation;
 namespace Composite.Forms.CoreUiControls
 {
     [ControlValueProperty("Text")]
-    public abstract class TextUiControl : UiControl
+    internal abstract class TextUiControl : UiControl
     {
         private string _text = "";
 

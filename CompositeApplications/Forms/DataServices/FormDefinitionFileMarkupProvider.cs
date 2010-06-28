@@ -11,7 +11,7 @@ using System.IO;
 
 namespace Composite.Forms.DataServices
 {
-    public class FormDefinitionFileMarkupProvider : IFormMarkupProvider
+    internal class FormDefinitionFileMarkupProvider : IFormMarkupProvider
     {
         private string _formPath;
 

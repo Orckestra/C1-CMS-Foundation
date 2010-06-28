@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace Composite.ResourceSystem.Plugins.ResourceProvider
 {
-	public interface IStringResourceProvider : IResourceProvider
+	internal interface IStringResourceProvider : IResourceProvider
 	{
         string GetStringValue(string stringId, CultureInfo cultureInfo);
 

@@ -7,7 +7,7 @@ using Composite.Forms.Foundation;
 
 namespace Composite.Forms.CoreUiControls
 {
-    public class QueryCallDefinitionsEditorUiControl : UiControl
+    internal class QueryCallDefinitionsEditorUiControl : UiControl
     {
         /// <summary>
         /// List of "Local name" and "Query Id" elements

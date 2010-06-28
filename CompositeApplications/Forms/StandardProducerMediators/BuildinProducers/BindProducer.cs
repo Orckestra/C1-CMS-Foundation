@@ -1,6 +1,6 @@
 namespace Composite.Forms.StandardProducerMediators.BuildinProducers
 {
-    public sealed class BindProducer : IBuildinProducer
+    internal sealed class BindProducer : IBuildinProducer
     {
         private string _source;
 

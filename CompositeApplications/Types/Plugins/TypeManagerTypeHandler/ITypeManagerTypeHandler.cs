@@ -7,7 +7,7 @@ namespace Composite.Types.Plugins.TypeManagerTypeHandler
 {
     [CustomFactory(typeof(TypeManagerTypeHandlerCustomFactory))]
     [ConfigurationNameMapper(typeof(TypeManagerTypeHandlerDefaultNameRetriever))]
-    public interface ITypeManagerTypeHandler
+    internal interface ITypeManagerTypeHandler
     {        
         Type GetType(string serializedType);
         string SerializeType(Type type);

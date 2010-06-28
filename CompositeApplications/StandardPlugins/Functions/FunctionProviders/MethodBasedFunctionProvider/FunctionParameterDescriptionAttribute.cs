@@ -6,7 +6,7 @@ using System.Text;
 namespace Composite.StandardPlugins.Functions.FunctionProviders.MethodBasedFunctionProvider
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-	public sealed class FunctionParameterDescriptionAttribute : Attribute
+	internal sealed class FunctionParameterDescriptionAttribute : Attribute
 	{
         public FunctionParameterDescriptionAttribute(string parameterName, string parameterLabel, string parameterHelpText)
         {

@@ -8,7 +8,7 @@ namespace Composite.Elements.Plugins.ElementActionProvider
 {
     [CustomFactory(typeof(ElementActionProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(ElementActionProviderDefaultNameRetriever))]
-	public interface IElementActionProvider
+	internal interface IElementActionProvider
 	{
         IEnumerable<ElementAction> GetActions(EntityToken entityToken);
 	}

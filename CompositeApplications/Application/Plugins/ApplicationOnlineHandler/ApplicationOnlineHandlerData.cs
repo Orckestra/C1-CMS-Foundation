@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.Application.Plugins.ApplicationOnlineHandler
 {
     [ConfigurationElementType(typeof(NonConfigurableApplicationOnlineHandler))]
-    public class ApplicationOnlineHandlerData : NameTypeManagerTypeConfigurationElement
+    internal class ApplicationOnlineHandlerData : NameTypeManagerTypeConfigurationElement
 	{
 	}
 }

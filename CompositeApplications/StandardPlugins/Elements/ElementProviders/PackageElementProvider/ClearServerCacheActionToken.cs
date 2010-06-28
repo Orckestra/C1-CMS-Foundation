@@ -6,7 +6,7 @@ using Composite.Security;
 namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider
 {
     [ActionExecutor(typeof(ClearServerCacheActionExecutor))]
-    public sealed class ClearServerCacheActionToken : ActionToken
+    internal sealed class ClearServerCacheActionToken : ActionToken
     {
         private static PermissionType[] _permissionTypes = new PermissionType[] { PermissionType.Administrate };
 

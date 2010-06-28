@@ -4,7 +4,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Security.Plugins.LoginProvider
 {
-    public class LoginProviderData : NameTypeConfigurationElement
+    internal class LoginProviderData : NameTypeConfigurationElement
     {
         public LoginProviderData() : base("Unnamed", typeof(ILoginProvider)) { }
 

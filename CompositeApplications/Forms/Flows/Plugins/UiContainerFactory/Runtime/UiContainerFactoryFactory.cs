@@ -6,7 +6,7 @@ using Composite.ConfigurationSystem;
 
 namespace Composite.Forms.Flows.Plugins.UiContainerFactory.Runtime
 {
-    public sealed class UiContainerFactoryFactory : NameTypeFactoryBase<IUiContainerFactory>
+    internal sealed class UiContainerFactoryFactory : NameTypeFactoryBase<IUiContainerFactory>
     {
         public UiContainerFactoryFactory()
             : base(ConfigurationServices.ConfigurationSource)

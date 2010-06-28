@@ -17,7 +17,7 @@ using Composite.Data.Foundation;
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider
 {
     [ConfigurationElementType(typeof(StandardFunctionProviderData))]
-    public class StandardFunctionProvider : IDynamicTypeFunctionProvider
+    internal class StandardFunctionProvider : IDynamicTypeFunctionProvider
 	{
         private EntityTokenFactory _entityTokenFactory;
         private List<IFunction> _standardStaticTypeFunctions = null;
@@ -263,14 +263,14 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunction
 
 
     [Assembler(typeof(StandardFunctionProviderAssembler))]
-    public sealed class StandardFunctionProviderData : FunctionProviderData
+    internal sealed class StandardFunctionProviderData : FunctionProviderData
     {
     }
 
 
 
 
-    public sealed class StandardFunctionProviderAssembler : IAssembler<IFunctionProvider, FunctionProviderData>
+    internal sealed class StandardFunctionProviderAssembler : IAssembler<IFunctionProvider, FunctionProviderData>
     {
         public IFunctionProvider Assemble(IBuilderContext context, FunctionProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {

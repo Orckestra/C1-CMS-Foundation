@@ -21,7 +21,7 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider
 {
     [ConfigurationElementType(typeof(StandardWidgetFunctionProviderData))]
-    public sealed class StandardWidgetFunctionProvider : IDynamicTypeWidgetFunctionProvider
+    internal sealed class StandardWidgetFunctionProvider : IDynamicTypeWidgetFunctionProvider
 	{
         private EntityTokenFactory _entityTokenFactory;
         private WidgetFunctionNotifier _widgetFunctionNotifier;
@@ -134,14 +134,14 @@ namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWi
 
 
     [Assembler(typeof(StandardWidgetFunctionProviderrAssembler))]
-    public sealed class StandardWidgetFunctionProviderData : WidgetFunctionProviderData
+    internal sealed class StandardWidgetFunctionProviderData : WidgetFunctionProviderData
     {
     }
 
 
 
 
-    public sealed class StandardWidgetFunctionProviderrAssembler : IAssembler<IWidgetFunctionProvider, WidgetFunctionProviderData>
+    internal sealed class StandardWidgetFunctionProviderrAssembler : IAssembler<IWidgetFunctionProvider, WidgetFunctionProviderData>
     {
         public IWidgetFunctionProvider Assemble(IBuilderContext context, WidgetFunctionProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {

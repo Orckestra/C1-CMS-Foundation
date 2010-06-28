@@ -7,7 +7,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.Trees.Foundation
 {
-	public class TreeException : Exception
+	internal class TreeException : Exception
 	{
         public static TreeException CreateException(string stringName, params object[] args)
         {

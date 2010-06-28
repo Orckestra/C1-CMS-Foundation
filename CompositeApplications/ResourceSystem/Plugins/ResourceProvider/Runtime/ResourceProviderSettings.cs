@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.ResourceSystem.Plugins.ResourceProvider.Runtime
 {
-    public sealed class ResourceProviderSettings : SerializableConfigurationSection
+    internal sealed class ResourceProviderSettings : SerializableConfigurationSection
 	{
         public const string SectionName = "Composite.ResourceSystem.Plugins.ResourceProviderConfiguration";
 

@@ -9,7 +9,7 @@ using Composite.Extensions;
 
 namespace Data.Types
 {
-    public sealed class MediaFileDataAncesorProvider : IDataAncestorProvider
+    internal sealed class MediaFileDataAncesorProvider : IDataAncestorProvider
 	{
 
         public IData GetParent(IData data)

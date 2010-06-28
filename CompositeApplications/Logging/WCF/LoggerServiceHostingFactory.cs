@@ -5,7 +5,7 @@ using System.ServiceModel.Activation;
 
 namespace Composite.Logging.WCF
 {
-    public class LoggerServiceHostingFactory : ServiceHostFactory 
+    internal class LoggerServiceHostingFactory : ServiceHostFactory 
     {
         protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
         {

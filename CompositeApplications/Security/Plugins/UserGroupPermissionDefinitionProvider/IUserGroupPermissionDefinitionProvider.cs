@@ -10,7 +10,7 @@ namespace Composite.Security.Plugins.UserGroupPermissionDefinitionProvider
 {
     [CustomFactory(typeof(UserGroupPermissionDefinitionProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(UserGroupPermissionDefinitionProviderDefaultNameRetriever))]
-	public interface IUserGroupPermissionDefinitionProvider
+	internal interface IUserGroupPermissionDefinitionProvider
 	{
         IEnumerable<UserGroupPermissionDefinition> AllUserGroupPermissionDefinitions { get; }
         bool CanAlterDefinitions { get; }

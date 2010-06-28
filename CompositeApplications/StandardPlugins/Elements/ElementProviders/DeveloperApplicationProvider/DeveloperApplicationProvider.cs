@@ -18,7 +18,7 @@ using Composite.Trees;
 namespace Composite.StandardPlugins.Elements.ElementProviders.DeveloperApplicationProvider
 {
     [ConfigurationElementType(typeof(NonConfigurableHooklessElementProvider))]
-    public sealed class DeveloperApplicationProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
+    internal sealed class DeveloperApplicationProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
     {
         private ElementProviderContext _context;
 

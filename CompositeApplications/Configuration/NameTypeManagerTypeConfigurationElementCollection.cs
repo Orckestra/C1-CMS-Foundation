@@ -7,7 +7,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Configuration
 {
-    public sealed class NameTypeManagerTypeConfigurationElementCollection<T> : PolymorphicConfigurationElementCollection<T>
+    internal sealed class NameTypeManagerTypeConfigurationElementCollection<T> : PolymorphicConfigurationElementCollection<T>
         where T : NameTypeManagerTypeConfigurationElement, new()
     {
         private const string typeAttribute = "type";

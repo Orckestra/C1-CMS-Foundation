@@ -1,6 +1,6 @@
 ﻿namespace Composite.GlobalSettings.BuildinPlugins.GlobalSettingsProvider
 {
-	public class BuildinCacheSettings: ICacheSettings
+	internal class BuildinCacheSettings: ICacheSettings
 	{
         public BuildinCacheSettings(string name, bool enabled, int size)
         {

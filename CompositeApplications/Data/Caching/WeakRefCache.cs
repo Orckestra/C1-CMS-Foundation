@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Composite.Data.Caching
 {
-    public class WeakRefCache<K, V> : Cache where V : class
+    internal class WeakRefCache<K, V> : Cache where V : class
     {
         private int _counter;
 

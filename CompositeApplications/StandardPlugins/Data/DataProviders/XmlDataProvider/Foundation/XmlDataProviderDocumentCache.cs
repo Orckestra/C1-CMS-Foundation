@@ -14,7 +14,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.Foundatio
 {
     internal static class XmlDataProviderDocumentCache
     {
-        public class FileRecord
+        internal class FileRecord
         {
             public string FileName;
             public string ElementName;
@@ -27,7 +27,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.Foundatio
             public bool Dirty = false; // Determines whether the inner XElement list is dirty
         }
 
-        public class RecordSet
+        internal class RecordSet
         {
             public Hashtable<IDataId, XElement> Index;
         }

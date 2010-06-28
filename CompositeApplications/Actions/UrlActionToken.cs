@@ -10,7 +10,7 @@ using System.Web;
 namespace Composite.Actions
 {
     [ActionExecutor(typeof(UrlActionTokenActionExecutor))]
-    public sealed class UrlActionToken : ActionToken
+    internal sealed class UrlActionToken : ActionToken
     {
         private IEnumerable<PermissionType> _permissionTypes;
 
@@ -48,7 +48,7 @@ namespace Composite.Actions
 
 
 
-    public sealed class UrlActionTokenActionExecutor : IActionExecutor
+    internal sealed class UrlActionTokenActionExecutor : IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {

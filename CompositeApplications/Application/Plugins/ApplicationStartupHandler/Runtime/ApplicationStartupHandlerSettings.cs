@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Application.Plugins.ApplicationStartupHandler.Runtime
 {
-    public sealed class ApplicationStartupHandlerSettings : SerializableConfigurationSection
+    internal sealed class ApplicationStartupHandlerSettings : SerializableConfigurationSection
 	{
         public const string SectionName = "Composite.Application.Plugins.ApplicationStartupHandlerConfiguration";
 

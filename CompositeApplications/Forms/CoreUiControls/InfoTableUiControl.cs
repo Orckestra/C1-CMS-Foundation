@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace Composite.Forms.CoreUiControls
 {
     [ControlValueProperty("Rows")]
-    public abstract class InfoTableUiControl : UiControl
+    internal abstract class InfoTableUiControl : UiControl
     {
         [FormsProperty()]
         public List<string> Headers { get; set; }

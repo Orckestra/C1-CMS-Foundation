@@ -5,7 +5,7 @@ using Composite.Data;
 
 namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 {
-	public sealed class XmlDataProviderCodeGeneratorStoreResult
+	internal sealed class XmlDataProviderCodeGeneratorStoreResult
 	{
         private IXmlDataProviderHelper _helper = null;
         private readonly object _lock = new object();
@@ -54,7 +54,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.CodeGener
             }
         }
 
-        public sealed class StoreInformaion
+        internal sealed class StoreInformaion
         {
             internal string Filename { get; set; }
             internal string ElementName { get; set; }

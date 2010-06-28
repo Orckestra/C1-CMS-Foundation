@@ -1,6 +1,6 @@
 ﻿namespace Composite.Caching
 {
-    public abstract class CacheStatistic
+    internal abstract class CacheStatistic
     {
         public virtual string CacheName { get { return string.Empty; } }
         public virtual int Size { get { return -1; } }

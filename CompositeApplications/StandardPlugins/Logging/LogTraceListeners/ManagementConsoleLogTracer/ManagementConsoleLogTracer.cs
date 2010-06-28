@@ -10,7 +10,7 @@ using Microsoft.Practices.EnterpriseLibrary.Logging.TraceListeners;
 namespace Composite.StandardPlugins.Logging.LogTraceListeners.ManagementConsoleLogTracer
 {
     [ConfigurationElementType(typeof(CustomTraceListenerData))]
-    public sealed class ManagementConsoleLogTracer : CustomTraceListener
+    internal sealed class ManagementConsoleLogTracer : CustomTraceListener
     {
         private LogLevel _logLevel;
 

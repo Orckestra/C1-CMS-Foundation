@@ -7,7 +7,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Date
 {
-    public sealed class AddDaysFunction : StandardFunctionBase
+    internal sealed class AddDaysFunction : StandardFunctionBase
     {
         public AddDaysFunction(EntityTokenFactory entityTokenFactory)
             : base("AddDays", "Composite.Utils.Date", typeof(DateTime), entityTokenFactory)

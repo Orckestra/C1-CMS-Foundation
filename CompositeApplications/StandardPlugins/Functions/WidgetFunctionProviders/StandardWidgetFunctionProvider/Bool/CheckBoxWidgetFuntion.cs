@@ -9,7 +9,7 @@ using Composite.Forms.CoreUiControls;
 
 namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Bool
 {
-    public sealed class CheckBoxWidgetFuntion : CompositeWidgetFunctionBase
+    internal sealed class CheckBoxWidgetFuntion : CompositeWidgetFunctionBase
     {
         private const string _functionName = "CheckBox";
         public const string CompositeName = CompositeWidgetFunctionBase.CommonNamespace + ".Bool." + _functionName;

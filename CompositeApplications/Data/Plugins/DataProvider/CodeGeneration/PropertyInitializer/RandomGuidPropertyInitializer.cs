@@ -3,7 +3,7 @@ using System;
 
 namespace Composite.Data.Plugins.DataProvider.CodeGeneration.PropertyInitializer
 {
-    public sealed class RandomGuidPropertyInitializer : IPropertyInitializer
+    internal sealed class RandomGuidPropertyInitializer : IPropertyInitializer
     {
         public Type ValueType
         {

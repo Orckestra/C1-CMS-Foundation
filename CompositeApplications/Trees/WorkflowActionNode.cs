@@ -9,7 +9,7 @@ using Composite.Workflow;
 
 namespace Composite.Trees
 {
-    public sealed class WorkflowActionNode : ActionNode
+    internal sealed class WorkflowActionNode : ActionNode
     {
         public Type WorkflowType { get; internal set; }     // Requried
 

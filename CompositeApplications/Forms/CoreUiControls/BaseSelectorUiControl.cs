@@ -6,7 +6,7 @@ using Composite.Forms.Foundation;
 
 namespace Composite.Forms.CoreUiControls
 {
-    public abstract class BaseSelectorUiControl : UiControl
+    internal abstract class BaseSelectorUiControl : UiControl
     {
         public BaseSelectorUiControl()
         {
@@ -38,14 +38,14 @@ namespace Composite.Forms.CoreUiControls
 
 
     [TypeConverter(typeof(SelectorBindingTypeConverter))]
-    public enum SelectorBindingType
+    internal enum SelectorBindingType
     {
         BindToObject,
         BindToKeyFieldValue
     }
 
 
-    public class SelectorBindingTypeConverter : TypeConverter
+    internal class SelectorBindingTypeConverter : TypeConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {

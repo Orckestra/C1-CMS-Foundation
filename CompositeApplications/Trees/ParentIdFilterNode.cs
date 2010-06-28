@@ -13,7 +13,7 @@ using Composite.Types;
 
 namespace Composite.Trees
 {
-    public class ParentIdFilterNode : FilterNode
+    internal class ParentIdFilterNode : FilterNode
     {
         public Type ParentFilterType { get; internal set; }     // Required
         public string ReferenceFieldName { get; internal set; } // Required

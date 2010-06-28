@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace Composite.Forms.CoreUiControls
 {
     [ControlValueProperty("Xhtml")]
-    public abstract class XhtmlEditorUiControl : UiControl
+    internal abstract class XhtmlEditorUiControl : UiControl
     {
         private string _xhtml = "";
 

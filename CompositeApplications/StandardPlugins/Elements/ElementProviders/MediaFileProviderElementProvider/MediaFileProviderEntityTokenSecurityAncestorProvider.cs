@@ -4,7 +4,7 @@ using Composite.Security;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
-    public sealed class MediaFileProviderEntityTokenSecurityAncestorProvider : ISecurityAncestorProvider
+    internal sealed class MediaFileProviderEntityTokenSecurityAncestorProvider : ISecurityAncestorProvider
 	{
         public IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {

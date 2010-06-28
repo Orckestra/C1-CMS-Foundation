@@ -17,7 +17,7 @@ using Composite.Workflow;
 
 namespace Composite.Trees
 {
-    public sealed class GenericAddDataActionNode : ActionNode
+    internal sealed class GenericAddDataActionNode : ActionNode
 	{
         public static string InterfaceTypeWorkflowPayloadKeyName = "_InterfaceType_";
         public static string CustomFormMarkupPathWorkflowPayloadKeyName = "_CustomFormMarkupPath_";

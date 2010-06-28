@@ -1,6 +1,6 @@
 ﻿namespace Composite.Tasks
 {
-    public sealed class TaskManagerFlowControllerService : ITaskManagerFlowControllerService
+    internal sealed class TaskManagerFlowControllerService : ITaskManagerFlowControllerService
 	{
         private TaskContainer TaskContainer { get; set; }
 

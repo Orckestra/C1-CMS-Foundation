@@ -3,7 +3,7 @@
 
 namespace Composite.Data.ProcessControlled
 {
-    public class PublishControlledAuxiliaryAttribute : Attribute
+    internal class PublishControlledAuxiliaryAttribute : Attribute
     {
         public PublishControlledAuxiliaryAttribute(Type publishControlledAuxiliaryType)
         {

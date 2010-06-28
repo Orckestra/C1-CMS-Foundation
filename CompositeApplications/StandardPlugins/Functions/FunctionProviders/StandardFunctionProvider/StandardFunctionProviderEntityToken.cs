@@ -5,7 +5,7 @@ using Composite.Security.SecurityAncestorProviders;
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider
 {
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
-	public sealed class StandardFunctionProviderEntityToken : EntityToken
+	internal sealed class StandardFunctionProviderEntityToken : EntityToken
 	{
         private string _id;
         private string _source;

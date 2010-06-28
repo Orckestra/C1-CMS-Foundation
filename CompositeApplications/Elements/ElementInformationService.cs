@@ -4,7 +4,7 @@ using Composite.Actions;
 
 namespace Composite.Elements
 {
-    public class ElementInformationService : IElementInformationService
+    internal class ElementInformationService : IElementInformationService
 	{
         private ElementHandle _elementHandle;
 

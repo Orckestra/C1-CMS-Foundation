@@ -10,7 +10,7 @@ namespace Composite.StandardPlugins.Instrumentation.PerformanceCounterProviders.
 {
 
     [ConfigurationElementType(typeof(NonConfigurablePerformanceCounterProvider))]
-    public sealed class WindowsPerformanceCounterProvider : IPerformanceCounterProvider
+    internal sealed class WindowsPerformanceCounterProvider : IPerformanceCounterProvider
     {
         private PerformanceCounter _systemStartupCount = null;
         private PerformanceCounter _elementResultCreationAverageTime = null;
@@ -175,7 +175,7 @@ namespace Composite.StandardPlugins.Instrumentation.PerformanceCounterProviders.
 
         private sealed class WindowsPerformanceCounterProviderToken : IPerformanceCounterToken
         {
-            public delegate void OnComplete();
+            internal delegate void OnComplete();
 
             public long StartTicks { get; set; }
             public long StopTicks { get; set; }

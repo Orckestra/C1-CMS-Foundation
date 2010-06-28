@@ -4,7 +4,7 @@ using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 namespace Composite.Validation
 {
-	public sealed class DataValidationResults
+	internal sealed class DataValidationResults
 	{
         internal DataValidationResults()
         {

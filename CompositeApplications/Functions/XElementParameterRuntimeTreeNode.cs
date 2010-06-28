@@ -13,7 +13,7 @@ using Composite.Xml;
 
 namespace Composite.Functions
 {
-	public sealed class XElementParameterRuntimeTreeNode : BaseParameterRuntimeTreeNode
+	internal sealed class XElementParameterRuntimeTreeNode : BaseParameterRuntimeTreeNode
     {
         private XElement _element;
 

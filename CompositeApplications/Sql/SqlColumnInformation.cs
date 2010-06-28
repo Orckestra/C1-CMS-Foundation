@@ -4,7 +4,7 @@ using System.Data;
 
 namespace Composite.Sql
 {
-    public sealed class SqlColumnInformation
+    internal sealed class SqlColumnInformation
     {
         private static readonly char[] _trimChars = new char[] { ' ' };
 

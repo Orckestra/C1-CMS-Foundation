@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace Composite.Linq
 {
-    internal static class ExpressionCreator
+    public static class ExpressionCreator
     {
         public static Expression Select(Expression source, LambdaExpression selector)
         {

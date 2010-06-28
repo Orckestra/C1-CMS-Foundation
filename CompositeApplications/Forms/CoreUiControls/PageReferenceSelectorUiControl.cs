@@ -9,7 +9,7 @@ using Composite.Data.Types;
 namespace Composite.Forms.CoreUiControls
 {
     [DefaultBindingProperty("Selected")]
-    public class PageReferenceSelectorUiControl : UiControl
+    internal class PageReferenceSelectorUiControl : UiControl
     {
         private DataReference<IPage> _selected = null;
 

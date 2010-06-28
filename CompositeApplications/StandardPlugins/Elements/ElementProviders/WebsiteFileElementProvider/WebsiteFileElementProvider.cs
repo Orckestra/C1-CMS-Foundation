@@ -23,7 +23,7 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
     [ConfigurationElementType(typeof(WebsiteFileElementProviderData))]
-    public sealed class WebsiteFileElementProvider : IHooklessElementProvider, IDataExchangingElementProvider
+    internal sealed class WebsiteFileElementProvider : IHooklessElementProvider, IDataExchangingElementProvider
     {
         private ElementProviderContext _context;
         private string _rootPath;
@@ -665,7 +665,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
         }
     }
 
-    public sealed class DownloadFileActionExecutor : IActionExecutor
+    internal sealed class DownloadFileActionExecutor : IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
@@ -687,7 +687,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
     }
 
     [ActionExecutor(typeof(DownloadFileActionExecutor))]
-    public sealed class DownloadFileActionToken : ActionToken
+    internal sealed class DownloadFileActionToken : ActionToken
     {
         private static readonly IEnumerable<PermissionType> _permissionTypes = new[] { PermissionType.Administrate, PermissionType.Edit };
 
@@ -720,7 +720,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
 
 
     [Assembler(typeof(WebsiteFileElementProviderAssembler))]
-    public sealed class WebsiteFileElementProviderData : HooklessElementProviderData
+    internal sealed class WebsiteFileElementProviderData : HooklessElementProviderData
     {
         private const string _rootLabel = "rootLabel";
         [ConfigurationProperty(_rootLabel, IsRequired = true)]

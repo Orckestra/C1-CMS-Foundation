@@ -3,7 +3,7 @@
 
 namespace Composite.StandardPlugins.Logging.LogTraceListeners.TcpLogTraceListener
 {
-    public sealed class TcpLogTraceListenerThreadDataQueueItem
+    internal sealed class TcpLogTraceListenerThreadDataQueueItem
     {
         public string Message { get; set; }
         public TraceEventType TraceEventType { get; set; }

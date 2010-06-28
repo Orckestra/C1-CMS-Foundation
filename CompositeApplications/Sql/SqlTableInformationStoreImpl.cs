@@ -9,7 +9,7 @@ using Composite.Extensions;
 
 namespace Composite.Sql
 {
-    public class SqlTableInformationStoreImpl : ISqlTableInformationStore
+    internal class SqlTableInformationStoreImpl : ISqlTableInformationStore
     {
         private static Dictionary<string, ISqlTableInformation> _tableInformationCache = new Dictionary<string, ISqlTableInformation>();
 

@@ -5,7 +5,7 @@ using Composite.Data;
 
 namespace Composite.StandardPlugins.Data.DataProviders.FileSystemDataProvider.Foundation
 {
-    public sealed class FileSystemFileDataId : IDataId
+    internal sealed class FileSystemFileDataId : IDataId
     {
         private string _fullPath = null;
 

@@ -12,7 +12,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.StandardPlugins.WebClient.SessionStateProviders.DefaultSessionStateProvider
 {
     [ConfigurationElementType(typeof(SessionStateProviderData))]
-    public class DefaultSessionStateProvider : ISessionStateProvider
+    internal class DefaultSessionStateProvider : ISessionStateProvider
     {
         private static int _counter = 0;
 

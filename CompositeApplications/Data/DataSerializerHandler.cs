@@ -9,7 +9,7 @@ using Composite.Types;
 
 namespace Composite.Data
 {
-    public sealed class DataSerilizationException : Exception
+    internal sealed class DataSerilizationException : Exception
     {
         public DataSerilizationException(string message)
             : base(message)
@@ -19,7 +19,7 @@ namespace Composite.Data
 
 
 
-    public sealed class DataSerializerHandler : ISerializerHandler
+    internal sealed class DataSerializerHandler : ISerializerHandler
     {
         public string Serialize(object objectToSerialize)
         {

@@ -5,7 +5,7 @@ using Composite.Functions;
 
 namespace Composite.Renderings.Page
 {
-	public interface IXElementToControlMapper
+	internal interface IXElementToControlMapper
 	{
         bool TryGetControlFromXElement(XElement element, out Control control);
 	}

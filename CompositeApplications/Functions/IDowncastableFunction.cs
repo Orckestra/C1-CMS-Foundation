@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Composite.Functions
 {
-	public interface IDowncastableFunction : IFunction
+	internal interface IDowncastableFunction : IFunction
 	{
         bool ReturnValueIsDowncastable { get; }
 	}

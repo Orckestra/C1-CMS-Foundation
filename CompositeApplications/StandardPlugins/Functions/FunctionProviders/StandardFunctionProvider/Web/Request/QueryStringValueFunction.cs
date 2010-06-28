@@ -8,7 +8,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Request
 {
-	public sealed class QueryStringValueFunction :  StandardFunctionBase
+	internal sealed class QueryStringValueFunction :  StandardFunctionBase
 	{
         public QueryStringValueFunction(EntityTokenFactory entityTokenFactory)
             : base("QueryStringValue", "Composite.Web.Request", typeof(string), entityTokenFactory)

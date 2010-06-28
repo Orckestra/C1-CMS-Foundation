@@ -8,7 +8,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Request
 {
-	public sealed class QueryStringDecimalValueFunction :  StandardFunctionBase
+	internal sealed class QueryStringDecimalValueFunction :  StandardFunctionBase
 	{
         public QueryStringDecimalValueFunction(EntityTokenFactory entityTokenFactory)
             : base("QueryStringDecimalValue", "Composite.Web.Request", typeof(decimal), entityTokenFactory)

@@ -4,7 +4,7 @@ using Composite.ResourceSystem;
 namespace Composite.Data.ProcessControlled
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public sealed class ActionResourceHandleAttribute : Attribute
+    internal sealed class ActionResourceHandleAttribute : Attribute
     {
         public ActionResourceHandleAttribute(string actionTypeName, string resourceNamespace, string resourceName)
         {

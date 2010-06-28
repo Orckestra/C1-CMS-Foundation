@@ -6,7 +6,7 @@ using Composite.Security;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider
 {
-    public sealed class BaseFunctionFolderElementEntityTokenSecurityAncestorProvider : ISecurityAncestorProvider
+    internal sealed class BaseFunctionFolderElementEntityTokenSecurityAncestorProvider : ISecurityAncestorProvider
     {
         public IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {

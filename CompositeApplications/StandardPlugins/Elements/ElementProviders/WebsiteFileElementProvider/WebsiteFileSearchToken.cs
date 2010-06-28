@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
-	public class WebsiteFileSearchToken : SearchToken
+	internal class WebsiteFileSearchToken : SearchToken
 	{
         public string[] MimeTypes { get; set; }
 	}

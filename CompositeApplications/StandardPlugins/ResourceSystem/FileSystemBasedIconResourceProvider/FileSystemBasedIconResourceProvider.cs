@@ -14,7 +14,7 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.StandardPlugins.ResourceSystem.FileSystemBasedIconResourceProvider
 {
     [ConfigurationElementType(typeof(FileSystemBasedIconResourceProviderData))]
-	public sealed class FileSystemBasedIconResourceProvider : IIconResourceProvider
+	internal sealed class FileSystemBasedIconResourceProvider : IIconResourceProvider
 	{
         private FileSystemBasedIconResourceProviderHelper _helper;
 
@@ -47,7 +47,7 @@ namespace Composite.StandardPlugins.ResourceSystem.FileSystemBasedIconResourcePr
 
 
     [Assembler(typeof(FileSystemBasedIconResourceProviderAssembler))]
-    public sealed class FileSystemBasedIconResourceProviderData : ResourceProviderData
+    internal sealed class FileSystemBasedIconResourceProviderData : ResourceProviderData
     {
         private const string _baseDirectoryPathPropertyName = "baseDirectoryPath";
         [ConfigurationProperty(_baseDirectoryPathPropertyName, IsRequired = true)]
@@ -69,7 +69,7 @@ namespace Composite.StandardPlugins.ResourceSystem.FileSystemBasedIconResourcePr
 
 
 
-    public sealed class FileSystemBasedIconResourceProviderAssembler : IAssembler<IResourceProvider, ResourceProviderData>
+    internal sealed class FileSystemBasedIconResourceProviderAssembler : IAssembler<IResourceProvider, ResourceProviderData>
     {
         public IResourceProvider Assemble(IBuilderContext context, ResourceProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {

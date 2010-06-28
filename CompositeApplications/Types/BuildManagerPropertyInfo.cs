@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Composite.Types
 {
     [DebuggerDisplay("Name = {Name}, Type = {PropertyType}, DeclaringType={DeclaringTypeFullName}")]
-    public sealed class BuildManagerPropertyInfo
+    internal sealed class BuildManagerPropertyInfo
     {
         private Type _declaringType = null;
         private string _declaringTypeFullName = null;

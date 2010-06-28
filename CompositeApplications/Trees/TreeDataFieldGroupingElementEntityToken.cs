@@ -13,7 +13,7 @@ using Composite.Trees.Foundation;
 namespace Composite.Trees
 {
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
-    public sealed class TreeDataFieldGroupingElementEntityToken : EntityToken
+    internal sealed class TreeDataFieldGroupingElementEntityToken : EntityToken
     {
         private const string _magicNullValue = "·NULL·";
 

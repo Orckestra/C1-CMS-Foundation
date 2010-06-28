@@ -16,7 +16,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.Trees
 {
     [ConfigurationElementType(typeof(NonConfigurableElementAttachingProvider))]
-    public class TreeElementAttachingProvider : IMultibleResultElementAttachingProvider
+    internal class TreeElementAttachingProvider : IMultibleResultElementAttachingProvider
     {
         public ElementProviderContext Context
         {

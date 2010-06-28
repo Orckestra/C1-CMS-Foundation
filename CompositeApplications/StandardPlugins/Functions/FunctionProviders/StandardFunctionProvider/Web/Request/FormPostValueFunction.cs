@@ -8,7 +8,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Request
 {
-	public sealed class FormPostValueFunction :  StandardFunctionBase
+	internal sealed class FormPostValueFunction :  StandardFunctionBase
 	{
         public FormPostValueFunction(EntityTokenFactory entityTokenFactory)
             : base("FormPostValue", "Composite.Web.Request", typeof(string), entityTokenFactory)

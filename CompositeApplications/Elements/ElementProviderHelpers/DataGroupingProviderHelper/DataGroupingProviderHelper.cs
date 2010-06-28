@@ -17,7 +17,7 @@ using Composite.Users;
 
 namespace Composite.Elements.ElementProviderHelpers.DataGroupingProviderHelper
 {
-    public sealed class DataGroupingProviderHelper : IAuxiliarySecurityAncestorProvider
+    internal sealed class DataGroupingProviderHelper : IAuxiliarySecurityAncestorProvider
     {
         private ElementProviderContext _elementProviderContext;
         private string _undefinedLableValue;

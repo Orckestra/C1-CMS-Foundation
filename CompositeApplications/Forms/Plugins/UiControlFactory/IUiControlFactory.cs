@@ -7,7 +7,7 @@ namespace Composite.Forms.Plugins.UiControlFactory
 {
     [CustomFactory(typeof(UiControlFactoryCustomFactory))]
     [ConfigurationNameMapper(typeof(UiControlFactoryDefaultNameRetriever))]
-    public interface IUiControlFactory
+    internal interface IUiControlFactory
     {
         IUiControl CreateControl();
     }

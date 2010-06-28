@@ -9,7 +9,7 @@ using Composite.Security;
 namespace Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider
 {
     [SecurityAncestorProvider(typeof(BaseFunctionFolderElementEntityTokenSecurityAncestorProvider))]
-	public sealed class BaseFunctionFolderElementEntityToken : EntityToken
+	internal sealed class BaseFunctionFolderElementEntityToken : EntityToken
 	{
         private string _id;
 

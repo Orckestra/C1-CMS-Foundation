@@ -10,12 +10,12 @@ namespace Composite.Elements.Plugins.ElementProvider
 
     [Obsolete]
     [Assembler(typeof(NonConfigurableElementProviderAssembler))]
-    public class NonConfigurableElementProvider : ElementProviderData
+    internal class NonConfigurableElementProvider : ElementProviderData
     {
     }
 
     [Obsolete]
-    public sealed class NonConfigurableElementProviderAssembler : IAssembler<IElementProvider, ElementProviderData>
+    internal sealed class NonConfigurableElementProviderAssembler : IAssembler<IElementProvider, ElementProviderData>
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         public IElementProvider Assemble(IBuilderContext context, ElementProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)

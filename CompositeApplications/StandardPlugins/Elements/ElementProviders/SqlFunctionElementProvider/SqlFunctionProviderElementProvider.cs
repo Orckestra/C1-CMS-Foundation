@@ -21,7 +21,7 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElementProvider
 {
     [ConfigurationElementType(typeof(SqlFunctionElementProviderData))]
-    public sealed class SqlFunctionElementProvider : IHooklessElementProvider, IDataExchangingElementProvider, IAuxiliarySecurityAncestorProvider
+    internal sealed class SqlFunctionElementProvider : IHooklessElementProvider, IDataExchangingElementProvider, IAuxiliarySecurityAncestorProvider
     {
         private ElementProviderContext _context;
 
@@ -506,7 +506,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElement
 
 
     [Assembler(typeof(SqlFunctionElementProviderAssembler))]
-    public sealed class SqlFunctionElementProviderData : HooklessElementProviderData
+    internal sealed class SqlFunctionElementProviderData : HooklessElementProviderData
     {
     }
 

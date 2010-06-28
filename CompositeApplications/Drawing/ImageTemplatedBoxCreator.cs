@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Composite.Drawing
 {
-    public sealed class ImageTemplatedBoxCreateor
+    public sealed class ImageTemplatedBoxCreator
     {
         private Point _topLeftResize;
         private Point _bottomRightResize;
@@ -21,7 +21,7 @@ namespace Composite.Drawing
         private Bitmap _currentBitmap;
 
 
-        public ImageTemplatedBoxCreateor(Bitmap templateBitmap, Point topLeftResize, Point bottomRightResize)
+        public ImageTemplatedBoxCreator(Bitmap templateBitmap, Point topLeftResize, Point bottomRightResize)
         {
             _topLeftResize = topLeftResize;
             _bottomRightResize = bottomRightResize;

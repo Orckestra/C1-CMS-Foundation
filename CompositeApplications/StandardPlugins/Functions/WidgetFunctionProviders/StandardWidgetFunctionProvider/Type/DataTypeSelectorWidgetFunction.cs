@@ -10,7 +10,7 @@ using Composite.Types;
 
 namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.DataType
 {
-    public sealed class DataTypeSelectorWidgetFunction : CompositeWidgetFunctionBase
+    internal sealed class DataTypeSelectorWidgetFunction : CompositeWidgetFunctionBase
     {
         public static IEnumerable GetOptions()
         {

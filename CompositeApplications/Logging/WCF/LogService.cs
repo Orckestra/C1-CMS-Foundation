@@ -12,7 +12,7 @@ namespace Composite.Logging.WCF
 {
     [ServiceBehavior(InstanceContextMode=InstanceContextMode.Single)]
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
-	public class LogService: ILogService
+	internal class LogService: ILogService
 	{
         private static readonly string LoggerConfigurationFilePath = @"Composite\services\LogService\Logger.config";
         private static readonly object _syncRoot = new object();

@@ -20,7 +20,7 @@ using Composite.Data.DynamicTypes.Foundation;
 
 namespace Composite.Data.DynamicTypes
 {
-    public sealed class DataTypeDescriptorFormsHelper
+    internal sealed class DataTypeDescriptorFormsHelper
     {
         private DataTypeDescriptor _dataTypeDescriptor;
         private List<string> _readOnlyFields = new List<string>();

@@ -8,7 +8,7 @@ using Composite.GlobalSettings;
 namespace Composite.StandardPlugins.Elements.ElementProviders.DeveloperApplicationProvider
 {
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
-    public sealed class DeveloperApplicationProviderEntityToken : EntityToken
+    internal sealed class DeveloperApplicationProviderEntityToken : EntityToken
     {        
         private string _id;
         private string _source;

@@ -18,7 +18,7 @@ namespace Composite.WebClient.HttpModules
     ///  Http Module that ensures that only authenticated users can access /Composite/* files 
     ///  not explicitly allowed to everyone.
     /// </summary>
-    public class AdministrativeAuthorizationHttpModule : IHttpModule
+    internal class AdministrativeAuthorizationHttpModule : IHttpModule
     {
         private static List<string> _allAllowedPaths = new List<string>();
         private static string _adminRootPath;

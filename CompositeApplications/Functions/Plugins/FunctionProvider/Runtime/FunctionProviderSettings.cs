@@ -7,7 +7,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Functions.Plugins.FunctionProvider.Runtime
 {
-    public sealed class FunctionProviderSettings : SerializableConfigurationSection
+    internal sealed class FunctionProviderSettings : SerializableConfigurationSection
     {
         public const string SectionName = "Composite.Functions.Plugins.FunctionProviderConfiguration";
 

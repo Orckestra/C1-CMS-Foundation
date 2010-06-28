@@ -10,7 +10,7 @@ using System.Xml;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Request
 {
-	public sealed class FormPostXmlFormattedDateTimeValueFunction :  StandardFunctionBase
+	internal sealed class FormPostXmlFormattedDateTimeValueFunction :  StandardFunctionBase
 	{
         public FormPostXmlFormattedDateTimeValueFunction(EntityTokenFactory entityTokenFactory)
             : base("FormPostXmlFormattedDateTimeValue", "Composite.Web.Request", typeof(DateTime), entityTokenFactory)

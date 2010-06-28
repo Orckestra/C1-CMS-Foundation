@@ -8,11 +8,11 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.Forms.Plugins.ProducerMediator
 {
     [Assembler(typeof(NonConfigurableProducerMediatorAssembler))]
-    public sealed class NonConfigurableProducerMediator : ProducerMediatorData
+    internal sealed class NonConfigurableProducerMediator : ProducerMediatorData
     {
     }
 
-    public sealed class NonConfigurableProducerMediatorAssembler : IAssembler<IProducerMediator, ProducerMediatorData>
+    internal sealed class NonConfigurableProducerMediatorAssembler : IAssembler<IProducerMediator, ProducerMediatorData>
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         public IProducerMediator Assemble(IBuilderContext context, ProducerMediatorData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Composite.Collections
 {
     [DebuggerDisplay("Name = {Name}, Namespace = {Namespace}")]
-    public sealed class NamespaceTreeBuilderFolder
+    internal sealed class NamespaceTreeBuilderFolder
     {
         internal NamespaceTreeBuilderFolder(string name, string namespaceName)
         {

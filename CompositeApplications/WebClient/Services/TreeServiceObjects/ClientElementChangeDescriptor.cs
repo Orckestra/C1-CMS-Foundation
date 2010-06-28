@@ -9,7 +9,7 @@ using System.Text;
 /// </summary>
 namespace Composite.WebClient.Services.TreeServiceObjects
 {
-    public class ClientElementChangeDescriptor
+    internal class ClientElementChangeDescriptor
     {
         public ClientElementChangeDescriptor()
         {

@@ -3,7 +3,7 @@
 
 namespace Composite.Data.Plugins.DataProvider
 {
-    public interface ILocalizedDataProvider : IDataProvider
+    internal interface ILocalizedDataProvider : IDataProvider
 	{
         void AddLocale(CultureInfo cultureInfo);
 

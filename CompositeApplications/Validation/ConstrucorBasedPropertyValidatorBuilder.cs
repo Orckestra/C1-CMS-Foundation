@@ -3,7 +3,7 @@ using System.CodeDom;
 
 namespace Composite.Validation
 {
-    public sealed class ConstrucorBasedPropertyValidatorBuilder<T> : PropertyValidatorBuilder<T>
+    internal sealed class ConstrucorBasedPropertyValidatorBuilder<T> : PropertyValidatorBuilder<T>
     {
         private CodeAttributeDeclaration _codeAttributeDeclaration;
         private Attribute _attribute;

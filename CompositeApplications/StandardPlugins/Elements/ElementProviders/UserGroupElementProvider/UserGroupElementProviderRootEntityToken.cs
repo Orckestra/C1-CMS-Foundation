@@ -9,7 +9,7 @@ using Composite.Security.SecurityAncestorProviders;
 namespace Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementProvider
 {
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
-    public sealed class UserGroupElementProviderRootEntityToken : EntityToken
+    internal sealed class UserGroupElementProviderRootEntityToken : EntityToken
 	{
         public override string Type
         {

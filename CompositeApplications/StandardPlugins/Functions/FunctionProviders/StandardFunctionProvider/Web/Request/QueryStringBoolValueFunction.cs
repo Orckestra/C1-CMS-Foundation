@@ -8,7 +8,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Request
 {
-	public sealed class QueryStringBoolValueFunction :  StandardFunctionBase
+	internal sealed class QueryStringBoolValueFunction :  StandardFunctionBase
 	{
         public QueryStringBoolValueFunction(EntityTokenFactory entityTokenFactory)
             : base("QueryStringBoolValue", "Composite.Web.Request", typeof(bool), entityTokenFactory)

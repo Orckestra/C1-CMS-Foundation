@@ -8,7 +8,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Request
 {
-	public sealed class FormPostDecimalValueFunction :  StandardFunctionBase
+	internal sealed class FormPostDecimalValueFunction :  StandardFunctionBase
 	{
         public FormPostDecimalValueFunction(EntityTokenFactory entityTokenFactory)
             : base("FormPostDecimalValue", "Composite.Web.Request", typeof(decimal), entityTokenFactory)

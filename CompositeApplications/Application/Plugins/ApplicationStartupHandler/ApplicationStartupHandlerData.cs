@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.Application.Plugins.ApplicationStartupHandler
 {
     [ConfigurationElementType(typeof(NonConfigurableApplicationStartupHandler))]
-    public class ApplicationStartupHandlerData : NameTypeManagerTypeConfigurationElement
+    internal class ApplicationStartupHandlerData : NameTypeManagerTypeConfigurationElement
 	{
 	}
 }

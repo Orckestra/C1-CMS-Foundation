@@ -9,7 +9,7 @@ using Composite.Forms.CoreUiControls;
 
 namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Guid
 {
-	public sealed class GuidTextBoxWidgetFuntion : CompositeWidgetFunctionBase
+	internal sealed class GuidTextBoxWidgetFuntion : CompositeWidgetFunctionBase
     {
         private const string _functionName = "TextBox";
         public const string CompositeName = CompositeWidgetFunctionBase.CommonNamespace + ".Guid." + _functionName;

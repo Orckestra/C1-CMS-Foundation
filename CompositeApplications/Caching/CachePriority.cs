@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Composite.Caching
 {
-    public enum CachePriority
+    internal enum CachePriority
     {
         Undefined = 0,
         WeakReference = 1,

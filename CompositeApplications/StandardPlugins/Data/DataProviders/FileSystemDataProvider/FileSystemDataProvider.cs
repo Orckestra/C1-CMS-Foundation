@@ -20,7 +20,7 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.StandardPlugins.Data.DataProviders.FileSystemDataProvider
 {
     [ConfigurationElementType(typeof(FileSystemDataProviderData))]
-    public class FileSystemDataProvider : IWritableDataProvider
+    internal class FileSystemDataProvider : IWritableDataProvider
     {
         private DataProviderContext _context;
 
@@ -238,7 +238,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.FileSystemDataProvider
 
 
     [Assembler(typeof(FileSystemDataProviderAssembler))]
-    public sealed class FileSystemDataProviderData : DataProviderData
+    internal sealed class FileSystemDataProviderData : DataProviderData
     {
         private const string _rootDirectoryProperty = "rootDirectory";
         [ConfigurationProperty(_rootDirectoryProperty, IsRequired = true)]

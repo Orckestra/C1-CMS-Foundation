@@ -4,7 +4,7 @@ using System;
 namespace Composite.Actions
 {
     [AttributeUsageAttribute(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
-    public sealed class FlowControllerAttribute : Attribute
+    internal sealed class FlowControllerAttribute : Attribute
     {
         private Type _flowControllerType;
 

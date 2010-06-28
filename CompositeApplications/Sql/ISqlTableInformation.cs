@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Composite.Sql
 {
-    public interface ISqlTableInformation
+    internal interface ISqlTableInformation
     {
         string TableName { get; }
         bool HasIdentityColumn { get; }

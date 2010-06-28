@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Composite.Elements
 {
-    public class LabeledPropertyList : IEnumerable<LabeledProperty>
+    internal class LabeledPropertyList : IEnumerable<LabeledProperty>
     {
         private List<LabeledProperty> _list = new List<LabeledProperty>();
 

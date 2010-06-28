@@ -7,7 +7,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 namespace Composite.Forms.DataServices.Functions
 {
-    public sealed class GetData : IFormFunction 
+    internal sealed class GetData : IFormFunction 
     {
         private Type _type;
 
@@ -26,7 +26,7 @@ namespace Composite.Forms.DataServices.Functions
 
 
     [ConfigurationElementType(typeof(GetDataFunctionFactoryData))]
-    public sealed class GetDataFunctionFactory : IFormFunctionFactory 
+    internal sealed class GetDataFunctionFactory : IFormFunctionFactory 
     {
         public IFormFunction CreateFunction()
         {
@@ -37,7 +37,7 @@ namespace Composite.Forms.DataServices.Functions
 
 
     [Assembler(typeof(NonConfigurableFunctionFactoryAssembler))]
-    public sealed class GetDataFunctionFactoryData : FunctionFactoryData
+    internal sealed class GetDataFunctionFactoryData : FunctionFactoryData
     {        
     }
 }

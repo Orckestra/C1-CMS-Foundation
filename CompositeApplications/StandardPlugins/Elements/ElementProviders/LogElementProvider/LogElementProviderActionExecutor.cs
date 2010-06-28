@@ -8,7 +8,7 @@ using Composite.WebClient;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.LogElementProvider
 {
-    public sealed class LogElementProviderActionExecutor : IActionExecutor
+    internal sealed class LogElementProviderActionExecutor : IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {

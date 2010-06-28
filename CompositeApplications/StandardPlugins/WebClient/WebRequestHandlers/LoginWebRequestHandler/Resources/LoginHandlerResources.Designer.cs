@@ -21,7 +21,7 @@ namespace Composite.StandardPlugins.WebClient.WebRequestHandlers.LoginWebRequest
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("DMKSoftware.CodeGenerators.Tools.StronglyTypedResourceBuilderEx", "2.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public sealed class LoginHandlerResources {
+    internal sealed class LoginHandlerResources {
         
         private static global::System.Resources.ResourceManager _resourceManager;
         

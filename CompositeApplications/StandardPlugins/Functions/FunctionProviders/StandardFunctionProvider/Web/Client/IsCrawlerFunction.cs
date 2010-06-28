@@ -9,7 +9,7 @@ using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProv
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Client
 {
-    public sealed class IsCrawlerFunction :  StandardFunctionBase
+    internal sealed class IsCrawlerFunction :  StandardFunctionBase
 	{
         public IsCrawlerFunction(EntityTokenFactory entityTokenFactory)
             : base("IsCrawler", "Composite.Web.Client", typeof(bool), entityTokenFactory)

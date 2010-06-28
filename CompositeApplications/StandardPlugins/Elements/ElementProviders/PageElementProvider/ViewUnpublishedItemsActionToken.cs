@@ -11,7 +11,7 @@ using Composite.ResourceSystem;
 namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider
 {
     [ActionExecutor(typeof(ViewUnpublishedItemsActionExecutor))]
-    public sealed class ViewUnpublishedItemsActionToken : ActionToken
+    internal sealed class ViewUnpublishedItemsActionToken : ActionToken
     {
         private static IEnumerable<PermissionType> _permissionType = new PermissionType[] { PermissionType.Read };
 
@@ -39,7 +39,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
 
 
-    public sealed class ViewUnpublishedItemsActionExecutor : Composite.Actions.IActionExecutor
+    internal sealed class ViewUnpublishedItemsActionExecutor : Composite.Actions.IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {

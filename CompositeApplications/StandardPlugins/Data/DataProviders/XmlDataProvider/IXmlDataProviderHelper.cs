@@ -6,7 +6,7 @@ using Composite.Data;
 
 namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider
 {
-    public interface IXmlDataProviderHelper
+    internal interface IXmlDataProviderHelper
     {
         Type _InterfaceType { get; }
         Type _DataIdType { get; }        

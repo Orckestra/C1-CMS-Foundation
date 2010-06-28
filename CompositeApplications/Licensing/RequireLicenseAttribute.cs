@@ -9,7 +9,7 @@ namespace Composite.Licensing
     /// </summary>
     [Obsolete]
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public sealed class RequireLicenseAttribute : Attribute
+    internal sealed class RequireLicenseAttribute : Attribute
     {
         public RequireLicenseAttribute()
         {

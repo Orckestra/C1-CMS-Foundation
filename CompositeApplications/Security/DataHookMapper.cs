@@ -6,7 +6,7 @@ using Composite.Data;
 
 namespace Composite.Security
 {
-    public sealed class DataHookMapper<T>
+    internal sealed class DataHookMapper<T>
         where T : class, IData
     {
         private EntityTokenHook _currentEntityTokenHook;

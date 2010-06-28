@@ -8,7 +8,7 @@ using Composite.Data;
 
 namespace Composite.Trees
 {
-    public sealed class PiggybagDataFinder
+    internal sealed class PiggybagDataFinder
     {
         private List<EntityToken> _parentEntityTokens = null;
 

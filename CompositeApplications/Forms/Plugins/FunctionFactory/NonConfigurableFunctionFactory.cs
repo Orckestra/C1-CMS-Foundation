@@ -8,13 +8,13 @@ using System;
 namespace Composite.Forms.Plugins.FunctionFactory
 {
     [Assembler(typeof(NonConfigurableFunctionFactoryAssembler))]
-    public sealed class NonConfigurableFunctionFactory : FunctionFactoryData
+    internal sealed class NonConfigurableFunctionFactory : FunctionFactoryData
     {
     }
 
 
 
-    public sealed class NonConfigurableFunctionFactoryAssembler : IAssembler<IFormFunctionFactory, FunctionFactoryData>
+    internal sealed class NonConfigurableFunctionFactoryAssembler : IAssembler<IFormFunctionFactory, FunctionFactoryData>
     {
         public IFormFunctionFactory Assemble(IBuilderContext context, FunctionFactoryData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {

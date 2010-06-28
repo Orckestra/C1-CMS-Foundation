@@ -4,7 +4,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Security.Plugins.LoginSessionStore
 {
-    public class LoginSessionStoreData : NameTypeConfigurationElement
+    internal class LoginSessionStoreData : NameTypeConfigurationElement
     {
         public LoginSessionStoreData() : base("Unnamed", typeof(ILoginSessionStore)) { }
 

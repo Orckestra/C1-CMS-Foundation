@@ -16,7 +16,7 @@ namespace Composite.Data.Streams
 
     public delegate void OnFileChangedDelegate(string filePath, FileChangeType changeType);
 
-    public interface IFileStreamManager
+    internal interface IFileStreamManager
     {
         Stream GetReadStream(IFile file);
         Stream GetNewWriteStream(IFile file);

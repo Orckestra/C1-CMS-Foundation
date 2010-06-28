@@ -4,7 +4,7 @@ using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 namespace Composite.Validation.Validators
 {
-    public class GuidNotEmptyValidator : Validator
+    internal class GuidNotEmptyValidator : Validator
 	{
         public GuidNotEmptyValidator()
             : base("Empty guid value not allowed", "value")

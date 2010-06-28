@@ -30,7 +30,7 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
     [ConfigurationElementType(typeof(MediaFileElementProviderData))]
-    public sealed class MediaFileProviderElementProvider : IHooklessElementProvider, IDragAndDropElementProvider, ILabeledPropertiesElementProvider, IAuxiliarySecurityAncestorProvider
+    internal sealed class MediaFileProviderElementProvider : IHooklessElementProvider, IDragAndDropElementProvider, ILabeledPropertiesElementProvider, IAuxiliarySecurityAncestorProvider
     {
         private ElementProviderContext _context;
         private bool _showOnlyImages = false;
@@ -1052,7 +1052,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
 
 
 
-    public sealed class EditImageActionExecutor : Composite.Actions.IActionExecutor
+    internal sealed class EditImageActionExecutor : Composite.Actions.IActionExecutor
     {
         public Composite.Actions.FlowToken Execute(Composite.Security.EntityToken entityToken, Composite.Security.ActionToken actionToken, Composite.Actions.FlowControllerServicesContainer flowControllerServicesContainer)
         {
@@ -1077,7 +1077,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
     }
 
 
-    public sealed class DownloadFileActionExecutor : IActionExecutor
+    internal sealed class DownloadFileActionExecutor : IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
@@ -1096,7 +1096,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
 
 
     [ActionExecutor(typeof(EditImageActionExecutor))]
-    public sealed class EditImageActionToken : ActionToken
+    internal sealed class EditImageActionToken : ActionToken
     {
         static private IEnumerable<PermissionType> _permissionTypes = new PermissionType[] { PermissionType.Edit };
 
@@ -1119,7 +1119,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
     }
 
     [ActionExecutor(typeof(DownloadFileActionExecutor))]
-    public sealed class DownloadFileActionToken : ActionToken
+    internal sealed class DownloadFileActionToken : ActionToken
     {
         static private IEnumerable<PermissionType> _permissionTypes = new [] { PermissionType.Read };
 
@@ -1144,7 +1144,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
 
 
     [Assembler(typeof(MediaFileElementProviderAssembler))]
-    public sealed class MediaFileElementProviderData : HooklessElementProviderData
+    internal sealed class MediaFileElementProviderData : HooklessElementProviderData
     {
         private const string _showOnlyImagesProperty = "showOnlyImages";
         [ConfigurationProperty(_showOnlyImagesProperty, IsRequired = true)]

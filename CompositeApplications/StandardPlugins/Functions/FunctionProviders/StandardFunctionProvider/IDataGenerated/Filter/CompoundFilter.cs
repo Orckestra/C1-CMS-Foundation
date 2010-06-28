@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated.Filter
 {
-	public sealed class CompoundFilter<T> : StandardFunctionBase, ICompoundFunction
+	internal sealed class CompoundFilter<T> : StandardFunctionBase, ICompoundFunction
         where T : class, IData
 	{
         private static readonly ParameterExpression _dataItem = Expression.Parameter(typeof(T), "data");

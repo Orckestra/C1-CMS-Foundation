@@ -688,13 +688,13 @@ namespace Composite.Workflow.Activities
 
 
 
-        protected DynamicValuesHelperReplaceContext CreateDynamicValuesHelperReplaceContext()
+        internal DynamicValuesHelperReplaceContext CreateDynamicValuesHelperReplaceContext()
         {
             return CreateDynamicValuesHelperReplaceContext(this.ExtraPayload);
         }
 
 
-        protected DynamicValuesHelperReplaceContext CreateDynamicValuesHelperReplaceContext(string serializedPiggybag)
+        internal DynamicValuesHelperReplaceContext CreateDynamicValuesHelperReplaceContext(string serializedPiggybag)
         {
             Dictionary<string, string> piggybag = PiggybagSerializer.Deserialize(serializedPiggybag);
 
@@ -702,7 +702,7 @@ namespace Composite.Workflow.Activities
         }
 
 
-        protected DynamicValuesHelperReplaceContext CreateDynamicValuesHelperReplaceContext(Dictionary<string, string> piggybag)
+        internal DynamicValuesHelperReplaceContext CreateDynamicValuesHelperReplaceContext(Dictionary<string, string> piggybag)
         {
             IData dataItem = null;
             if ((this.EntityToken is DataEntityToken) == true)

@@ -10,7 +10,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Server
 {
-    public sealed class ApplicationVariableFunction :  StandardFunctionBase
+    internal sealed class ApplicationVariableFunction :  StandardFunctionBase
 	{
         public ApplicationVariableFunction(EntityTokenFactory entityTokenFactory)
             : base("ApplicationVariable", "Composite.Web.Server", typeof(string), entityTokenFactory)

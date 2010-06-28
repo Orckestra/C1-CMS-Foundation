@@ -9,7 +9,7 @@ using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProv
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Client
 {
-	public sealed class BrowserVersionFunction  :  StandardFunctionBase
+	internal sealed class BrowserVersionFunction  :  StandardFunctionBase
 	{
         public BrowserVersionFunction(EntityTokenFactory entityTokenFactory)
             : base("BrowserVersion", "Composite.Web.Client", typeof(string), entityTokenFactory)

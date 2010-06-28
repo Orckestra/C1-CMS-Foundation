@@ -30,7 +30,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 {
     [ActionTokenProvider(GenericPublishProcessControllerActionTypeNames.UndoUnpublishedChanges, typeof(PageElementProviderActionTokenProvider))]
     [ConfigurationElementType(typeof(PageElementProviderData))]
-    public class PageElementProvider : IHooklessElementProvider, IDataExchangingElementProvider, IDragAndDropElementProvider, ILocaleAwareElementProvider, IAuxiliarySecurityAncestorProvider
+    internal class PageElementProvider : IHooklessElementProvider, IDataExchangingElementProvider, IDragAndDropElementProvider, ILocaleAwareElementProvider, IAuxiliarySecurityAncestorProvider
     {
         private ElementProviderContext _context;
         private AssociatedDataElementProviderHelper<IPage> _pageAccociatedHelper;
@@ -950,7 +950,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
 
 
-    public sealed class PreviewActionExecutor : Composite.Actions.IActionExecutor
+    internal sealed class PreviewActionExecutor : Composite.Actions.IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
@@ -1011,7 +1011,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
     [IgnoreEntityTokenLocking]
     [ActionExecutor(typeof(PreviewActionExecutor))]
-    public sealed class ViewPublicActionToken : ActionToken
+    internal sealed class ViewPublicActionToken : ActionToken
     {
         private static IEnumerable<PermissionType> _permissionTypes = new PermissionType[] { PermissionType.Read };
 
@@ -1040,7 +1040,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
     [IgnoreEntityTokenLocking]
     [ActionExecutor(typeof(PreviewActionExecutor))]
-    public sealed class ViewDraftActionToken : ActionToken
+    internal sealed class ViewDraftActionToken : ActionToken
     {
         private static IEnumerable<PermissionType> _permissionTypes = new PermissionType[] { PermissionType.Read };
 
@@ -1078,7 +1078,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
 
     [Assembler(typeof(PageElementProviderAssembler))]
-    public sealed class PageElementProviderData : HooklessElementProviderData
+    internal sealed class PageElementProviderData : HooklessElementProviderData
     {
     }
 

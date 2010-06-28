@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Composite.Linq
 {
-    public sealed class PropertyInfoValueCollection
+    internal sealed class PropertyInfoValueCollection
     {
         private Dictionary<PropertyInfo, object> _propertyValues = new Dictionary<PropertyInfo, object>();
 

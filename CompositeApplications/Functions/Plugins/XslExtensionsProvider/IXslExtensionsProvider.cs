@@ -8,7 +8,7 @@ namespace Composite.Functions.Plugins.XslExtensionsProvider
 {
     [CustomFactory(typeof(XslExtensionsProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(FunctionProviderDefaultNameRetriever))]
-	public interface IXslExtensionsProvider
+	internal interface IXslExtensionsProvider
 	{
 	    List<Pair<string, object>> CreateExtensions();
 	}

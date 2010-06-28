@@ -6,7 +6,7 @@ namespace Composite.Data
     /// Interfaces that uses this attribute can not be referenced by any
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
-    public sealed class NotReferenceableAttribute : Attribute
+    internal sealed class NotReferenceableAttribute : Attribute
     {
     }
 }

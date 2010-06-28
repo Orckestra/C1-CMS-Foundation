@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Composite.Logging.WCF
 {
     [DataContract]
-	public class LogEntry
+	internal class LogEntry
 	{
         public LogEntry()
         {

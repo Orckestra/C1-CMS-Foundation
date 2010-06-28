@@ -6,7 +6,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.Forms.Flows.Plugins.UiContainerFactory
 {
     [ConfigurationElementType(typeof(NonConfigurableUiContainerFactory))]
-    public class UiContainerFactoryData : NameTypeManagerTypeConfigurationElement
+    internal class UiContainerFactoryData : NameTypeManagerTypeConfigurationElement
     {
         private const string _templateFormVirtualPathPropertyName = "templateFormVirtualPath";
         [ConfigurationProperty(_templateFormVirtualPathPropertyName, IsRequired = true)]

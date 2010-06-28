@@ -7,12 +7,12 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.Elements.Plugins.ElementProvider
 {
     [Assembler(typeof(NonConfigurableHooklessElementProviderAssembler))]
-    public class NonConfigurableHooklessElementProvider : HooklessElementProviderData
+    internal class NonConfigurableHooklessElementProvider : HooklessElementProviderData
     {
     }
 
 
-    public sealed class NonConfigurableHooklessElementProviderAssembler : IAssembler<IHooklessElementProvider, HooklessElementProviderData>
+    internal sealed class NonConfigurableHooklessElementProviderAssembler : IAssembler<IHooklessElementProvider, HooklessElementProviderData>
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         public IHooklessElementProvider Assemble(IBuilderContext context, HooklessElementProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)

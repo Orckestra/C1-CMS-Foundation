@@ -7,7 +7,7 @@ using Composite.Functions.Foundation;
 namespace Composite.Functions.Forms
 {
     [ControlValueProperty("Producers")]
-    public sealed class FunctionProducer : IFunctionProducer
+    internal sealed class FunctionProducer : IFunctionProducer
     {
         public FunctionProducer()
         {

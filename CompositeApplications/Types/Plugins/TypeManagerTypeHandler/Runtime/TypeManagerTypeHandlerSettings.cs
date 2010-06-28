@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Types.Plugins.TypeManagerTypeHandler.Runtime
 {
-    public sealed class TypeManagerTypeHandlerSettings : SerializableConfigurationSection
+    internal sealed class TypeManagerTypeHandlerSettings : SerializableConfigurationSection
     {
         public const string SectionName = "Composite.Types.Plugins.TypeManagerTypeHandler";
         

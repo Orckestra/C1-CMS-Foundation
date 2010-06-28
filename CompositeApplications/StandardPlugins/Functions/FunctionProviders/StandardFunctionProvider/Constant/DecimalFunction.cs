@@ -9,7 +9,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Constant
 {
-    public sealed class DecimalFunction : StandardFunctionBase
+    internal sealed class DecimalFunction : StandardFunctionBase
     {
         public DecimalFunction(EntityTokenFactory entityTokenFactory)
             : base("Decimal", "Composite.Constant", typeof(decimal), entityTokenFactory)

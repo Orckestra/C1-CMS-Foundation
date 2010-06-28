@@ -7,7 +7,7 @@ using Composite.Security;
 
 namespace Composite.Trees
 {
-    public interface IEntityTokenContainingParentEntityToken
+    internal interface IEntityTokenContainingParentEntityToken
     {
         EntityToken GetParentEntityToken();
     }

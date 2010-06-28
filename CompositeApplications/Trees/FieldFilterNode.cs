@@ -8,7 +8,7 @@ using Composite.Types;
 
 namespace Composite.Trees
 {
-    public enum FieldFilterNodeOperator
+    internal enum FieldFilterNodeOperator
     {
         Equal = 0,
         Inequal = 1,
@@ -20,7 +20,7 @@ namespace Composite.Trees
 
 
 
-    public class FieldFilterNode : FilterNode
+    internal class FieldFilterNode : FilterNode
 	{
         private PropertyInfo PropertyInfo { get; set; }
         private object ConvertedValue { get; set ;}

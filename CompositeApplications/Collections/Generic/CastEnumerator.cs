@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Composite.Collections.Generic
 {
-    public sealed class CastEnumerator<T> : IEnumerator<T>
+    internal sealed class CastEnumerator<T> : IEnumerator<T>
     {
         IEnumerator _enumerator;
 

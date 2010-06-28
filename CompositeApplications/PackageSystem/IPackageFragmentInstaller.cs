@@ -4,9 +4,9 @@ using System.Xml.Linq;
 
 namespace Composite.PackageSystem
 {
-    public interface IPackageFragmentInstaller
+    internal interface IPackageFragmentInstaller
     {
-        void Initialize(PackageInstallerContex packageInstallerContex, IEnumerable<XElement> configuration, XElement configurationParent);
+        void Initialize(PackageInstallerContext packageInstallerContex, IEnumerable<XElement> configuration, XElement configurationParent);
         IEnumerable<PackageFragmentValidationResult> Validate();
 
         /// <summary>

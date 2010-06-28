@@ -5,7 +5,7 @@ using Composite.Data.Caching;
 
 namespace Composite.Caching.Design
 {
-    public class MixedCache<TValue> : ICache<string, TValue> where TValue : class
+    internal class MixedCache<TValue> : ICache<string, TValue> where TValue : class
     {
         private readonly WeakRefCache<string, TValue> _weakReferenceCache;
         private readonly CachePriority _defaultPriority;

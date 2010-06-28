@@ -10,7 +10,7 @@ using Composite.Extensions;
 
 namespace Composite.Data.Plugins.DataProvider.Streams
 {
-    public sealed class FileSystemFileStreamManager : IFileStreamManager
+    internal sealed class FileSystemFileStreamManager : IFileStreamManager
     {
         public Stream GetReadStream(IFile file)
         {

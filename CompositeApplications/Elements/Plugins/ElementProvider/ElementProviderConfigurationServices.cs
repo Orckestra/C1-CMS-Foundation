@@ -8,7 +8,7 @@ using Composite.ConfigurationSystem;
 
 namespace Composite.Elements.Plugins.ElementProvider
 {
-    public sealed class ElementProviderConfigurationServices
+    internal sealed class ElementProviderConfigurationServices
     {
         public static HooklessElementProviderData GetElementProviderConfiguration(string providerName)
         {

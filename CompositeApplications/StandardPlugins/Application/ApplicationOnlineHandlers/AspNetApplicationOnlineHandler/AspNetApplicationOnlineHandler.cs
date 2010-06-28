@@ -12,7 +12,7 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.StandardPlugins.Application.ApplicationOnlineHandlers.AspNetApplicationOnlineHandler
 {
     [ConfigurationElementType(typeof(AspNetApplicationOnlineHandlerData))]
-    public sealed class AspNetApplicationOnlineHandler : IApplicationOnlineHandler
+    internal sealed class AspNetApplicationOnlineHandler : IApplicationOnlineHandler
     {
         private string _sourceFilename;
         private string _targetFilename;
@@ -60,7 +60,7 @@ namespace Composite.StandardPlugins.Application.ApplicationOnlineHandlers.AspNet
 
 
     [Assembler(typeof(AspNetApplicationOnlineHandlerAssembler))]
-    public class AspNetApplicationOnlineHandlerData : ApplicationOnlineHandlerData
+    internal class AspNetApplicationOnlineHandlerData : ApplicationOnlineHandlerData
     {
         private const string _appOfflineFilenamePropertyName = "appOfflineFilename";
         [ConfigurationProperty(_appOfflineFilenamePropertyName, IsRequired = true)]
@@ -74,7 +74,7 @@ namespace Composite.StandardPlugins.Application.ApplicationOnlineHandlers.AspNet
 
 
 
-    public sealed class AspNetApplicationOnlineHandlerAssembler : IAssembler<IApplicationOnlineHandler, ApplicationOnlineHandlerData>
+    internal sealed class AspNetApplicationOnlineHandlerAssembler : IAssembler<IApplicationOnlineHandler, ApplicationOnlineHandlerData>
     {
         public IApplicationOnlineHandler Assemble(IBuilderContext context, ApplicationOnlineHandlerData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {

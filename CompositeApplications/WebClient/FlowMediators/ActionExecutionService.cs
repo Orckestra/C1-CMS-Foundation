@@ -7,7 +7,7 @@ using Composite.Tasks;
 
 namespace Composite.WebClient.FlowMediators
 {
-    public sealed class ActionExecutionService : IActionExecutionService
+    internal sealed class ActionExecutionService : IActionExecutionService
     {
         public ActionExecutionService(string elementProviderName, string consoleId)
         {

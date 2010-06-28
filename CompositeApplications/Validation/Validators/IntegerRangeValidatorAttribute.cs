@@ -4,7 +4,7 @@
 namespace Composite.Validation.Validators
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Parameter, AllowMultiple = true, Inherited = false)]
-    public sealed class IntegerRangeValidatorAttribute : Microsoft.Practices.EnterpriseLibrary.Validation.Validators.ValueValidatorAttribute
+    internal sealed class IntegerRangeValidatorAttribute : Microsoft.Practices.EnterpriseLibrary.Validation.Validators.ValueValidatorAttribute
     {
         public IntegerRangeValidatorAttribute(int lowerBound, int upperBound)
         {

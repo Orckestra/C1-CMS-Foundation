@@ -10,7 +10,7 @@ using System.Xml;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Xslt.Extensions
 {
-    public sealed class GlobalizationXsltExtensionsFunction : StandardFunctionBase
+    internal sealed class GlobalizationXsltExtensionsFunction : StandardFunctionBase
     {
         public GlobalizationXsltExtensionsFunction(EntityTokenFactory entityTokenFactory)
             : base("Globalization", "Composite.Xslt.Extensions", typeof(IXsltExtensionDefinition), entityTokenFactory)
@@ -28,7 +28,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunction
         }
 
 
-        public class GlobalizationXsltExtensions
+        internal class GlobalizationXsltExtensions
         {
             public string GetGlobalResourceString(string resourceClassKey, string resourceKey)
             {

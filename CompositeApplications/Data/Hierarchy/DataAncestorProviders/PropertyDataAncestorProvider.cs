@@ -10,7 +10,7 @@ using Composite.Types;
 
 namespace Composite.Data.Hierarchy.DataAncestorProviders
 {
-    public sealed class PropertyDataAncestorProviderAttribute : Attribute
+    internal sealed class PropertyDataAncestorProviderAttribute : Attribute
     {
         private string _idPropertyName;
         private string _parentIdPropertyName;
@@ -57,7 +57,7 @@ namespace Composite.Data.Hierarchy.DataAncestorProviders
 
 
 
-    public sealed class PropertyDataAncestorProvider : IDataAncestorProvider
+    internal sealed class PropertyDataAncestorProvider : IDataAncestorProvider
     {
         private Dictionary<Type, Entry> _methodInfoCache = new Dictionary<Type, Entry>();
 

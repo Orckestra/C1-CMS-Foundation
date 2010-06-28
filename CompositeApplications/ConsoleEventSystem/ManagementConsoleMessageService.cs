@@ -7,7 +7,7 @@ using Composite.Security;
 
 namespace Composite.ConsoleEventSystem
 {
-    public sealed class ManagementConsoleMessageService : IManagementConsoleMessageService
+    internal sealed class ManagementConsoleMessageService : IManagementConsoleMessageService
     {
         private bool _closeCurrentViewRequested = false;
 

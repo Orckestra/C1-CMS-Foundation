@@ -9,7 +9,7 @@ using Composite.GlobalSettings;
 namespace Composite.Types
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public sealed class BaseTypeIncludesAttribute : Attribute
+    internal sealed class BaseTypeIncludesAttribute : Attribute
     {
         private Type _baseType;
         private TypeIncludes _includes;
@@ -35,7 +35,7 @@ namespace Composite.Types
     }
 
     [Flags]
-    public enum TypeIncludes
+    internal enum TypeIncludes
     {
         /// <summary>
         /// Include interfaces in the result.
@@ -53,7 +53,7 @@ namespace Composite.Types
 
 
 
-    public sealed class TypeLocator
+    internal sealed class TypeLocator
     {
         public static IEnumerable<Type> FindTypes(TypeIncludes flags)
         {

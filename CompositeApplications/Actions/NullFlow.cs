@@ -6,7 +6,7 @@ using System.Text;
 namespace Composite.Actions
 {
     [FlowController(typeof(NullFlowController))]
-    public class NullFlowToken : FlowToken
+    internal class NullFlowToken : FlowToken
     {
         public static FlowToken Deserialize(string serialized)
         {
@@ -14,7 +14,7 @@ namespace Composite.Actions
         }
     }
 
-    public class NullFlowController : IFlowController
+    internal class NullFlowController : IFlowController
     {
         public FlowControllerServicesContainer ServicesContainer
         {
@@ -32,7 +32,7 @@ namespace Composite.Actions
         }
     }
 
-    public class NullFlowUiDefinition : FlowUiDefinitionBase
+    internal class NullFlowUiDefinition : FlowUiDefinitionBase
     {
         public NullFlowUiDefinition() 
         { 

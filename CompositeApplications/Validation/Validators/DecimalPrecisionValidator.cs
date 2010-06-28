@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Composite.Validation.Validators
 {
-    public sealed class DecimalPrecisionValidator : Validator
+    internal sealed class DecimalPrecisionValidator : Validator
     {
         public DecimalPrecisionValidator()
             : base("To many digits", "decimal")

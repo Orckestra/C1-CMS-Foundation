@@ -6,7 +6,7 @@ using System.Xml;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Xslt.Extensions
 {
-    public sealed class DateFormattingXsltExtensionsFunction : StandardFunctionBase
+    internal sealed class DateFormattingXsltExtensionsFunction : StandardFunctionBase
     {
         public DateFormattingXsltExtensionsFunction(EntityTokenFactory entityTokenFactory)
             : base("DateFormatting", "Composite.Xslt.Extensions", typeof(IXsltExtensionDefinition), entityTokenFactory)
@@ -24,7 +24,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunction
         }
 
 
-        public class DateFormattingXsltExtensions
+        internal class DateFormattingXsltExtensions
         {
             public string Now()
             {

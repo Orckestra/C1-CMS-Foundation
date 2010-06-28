@@ -4,7 +4,7 @@ using System.Xml.Linq;
 
 namespace Composite.Trees
 {
-    public sealed class AttributeDynamicValuesHelper
+    internal sealed class AttributeDynamicValuesHelper
     {
         private Dictionary<string, DynamicValuesHelper> _dynamicValuesHelpers = new Dictionary<string, DynamicValuesHelper>();
 

@@ -215,12 +215,12 @@ namespace Composite.PackageSystem
 
         private IEnumerable<PackageFragmentValidationResult> LoadAddOnFramentUninstallers(XElement packageFragmentInstallersElement)
         {
-            PackageUninstallerContex packageUninstallerContex = null;
+            PackageUninstallerContext packageUninstallerContex = null;
 
             Exception exception = null;
             try
             {
-                packageUninstallerContex = new PackageUninstallerContex(new ZipFileSystem(this.ZipFilename));
+                packageUninstallerContex = new PackageUninstallerContext(new ZipFileSystem(this.ZipFilename));
             }
             catch (Exception ex)
             {

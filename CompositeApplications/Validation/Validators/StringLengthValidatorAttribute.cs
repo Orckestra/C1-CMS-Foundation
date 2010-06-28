@@ -5,7 +5,7 @@ namespace Composite.Validation.Validators
 {
     [Obsolete]
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Parameter, AllowMultiple = true, Inherited = false)]
-    public sealed class StringLengthValidatorAttribute : Microsoft.Practices.EnterpriseLibrary.Validation.Validators.ValueValidatorAttribute
+    internal sealed class StringLengthValidatorAttribute : Microsoft.Practices.EnterpriseLibrary.Validation.Validators.ValueValidatorAttribute
 	{
         public StringLengthValidatorAttribute(int lowerBound, int upperBound)
         {

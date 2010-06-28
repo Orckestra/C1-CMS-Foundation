@@ -12,7 +12,7 @@ using Composite.Serialization;
 
 namespace Composite.Trees
 {
-    public enum CustomUrlActionNodeViewType
+    internal enum CustomUrlActionNodeViewType
     {
         GenericView = 0,
         PageBrowser = 1,
@@ -23,7 +23,7 @@ namespace Composite.Trees
 
 
 
-    public sealed class CustomUrlActionNode : ActionNode
+    internal sealed class CustomUrlActionNode : ActionNode
     {        
         public string Url { get; internal set; }                                    // Requried        
         public CustomUrlActionNodeViewType ViewType { get; internal set; }          // Optional
@@ -67,7 +67,7 @@ namespace Composite.Trees
 
 
 
-    public sealed class CustomUrlActionNodeActionExecutor : IActionExecutor
+    internal sealed class CustomUrlActionNodeActionExecutor : IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
@@ -136,7 +136,7 @@ namespace Composite.Trees
 
 
     [ActionExecutor(typeof(CustomUrlActionNodeActionExecutor))]
-    public sealed class CustomUrlActionNodeActionToken : ActionToken
+    internal sealed class CustomUrlActionNodeActionToken : ActionToken
     {
         private List<PermissionType> _permissionTypes;
 

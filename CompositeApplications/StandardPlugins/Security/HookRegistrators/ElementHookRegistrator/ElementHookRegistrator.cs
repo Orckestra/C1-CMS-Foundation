@@ -9,7 +9,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.StandardPlugins.Security.HookRegistrators.ElementHookRegistrator
 {
     [ConfigurationElementType(typeof(ElementHookRegistratorData))]
-    public sealed class ElementHookRegistrator : IHookRegistrator
+    internal sealed class ElementHookRegistrator : IHookRegistrator
 	{
         public IEnumerable<EntityTokenHook> GetHooks()
         {
@@ -20,7 +20,7 @@ namespace Composite.StandardPlugins.Security.HookRegistrators.ElementHookRegistr
 
 
     [Assembler(typeof(NonConfigurableHookRegistratorAssembler))]
-    public sealed class ElementHookRegistratorData : HookRegistratorData
+    internal sealed class ElementHookRegistratorData : HookRegistratorData
     {
     }
 }

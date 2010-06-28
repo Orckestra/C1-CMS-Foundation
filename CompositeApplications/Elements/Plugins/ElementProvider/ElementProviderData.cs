@@ -6,7 +6,7 @@ namespace Composite.Elements.Plugins.ElementProvider
 {
     [Obsolete]
     [ConfigurationElementType(typeof(NonConfigurableElementProvider))]
-    public class ElementProviderData : HooklessElementProviderData
+    internal class ElementProviderData : HooklessElementProviderData
     {
     }
 }

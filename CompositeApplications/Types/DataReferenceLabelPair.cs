@@ -3,7 +3,7 @@ using Composite.Data;
 
 namespace Composite.Types
 {
-    public sealed class DataReferenceLabelPair<T> where T : class, IData
+    internal sealed class DataReferenceLabelPair<T> where T : class, IData
     {
         public DataReferenceLabelPair(DataReference<T> reference, string label)
         {

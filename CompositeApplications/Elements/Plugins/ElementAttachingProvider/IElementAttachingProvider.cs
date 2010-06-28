@@ -6,7 +6,7 @@ using Composite.Elements.Plugins.ElementAttachingProvider.Runtime;
 
 namespace Composite.Elements.Plugins.ElementAttachingProvider
 {
-    public enum ElementAttachingProviderPosition
+    internal enum ElementAttachingProviderPosition
     {
         /// <summary>
         /// At the top
@@ -21,7 +21,7 @@ namespace Composite.Elements.Plugins.ElementAttachingProvider
 
 
 
-    public sealed class ElementAttachingProviderResult
+    internal sealed class ElementAttachingProviderResult
     {
         public ElementAttachingProviderResult()
         {
@@ -48,7 +48,7 @@ namespace Composite.Elements.Plugins.ElementAttachingProvider
 
     [CustomFactory(typeof(ElementAttachingProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(ElementAttachingProviderDefaultNameRetriever))]
-	public interface IElementAttachingProvider
+	internal interface IElementAttachingProvider
 	{
         /// <summary>
         /// The system will supply an ElementProviderContext to the provider

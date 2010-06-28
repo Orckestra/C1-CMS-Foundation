@@ -7,7 +7,7 @@ using Composite.WebClient;
 
 namespace Composite.Logging.WCF
 {
-	public class LoggerHostnameHandler: IHttpModule
+	internal class LoggerHostnameHandler: IHttpModule
 	{
 	    private static readonly string ServiceFolderPath = "/services/LogService";
         private static readonly string ServiceFileName = "LogService.svc";

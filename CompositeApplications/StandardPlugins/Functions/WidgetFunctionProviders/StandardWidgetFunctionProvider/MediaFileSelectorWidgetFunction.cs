@@ -17,7 +17,7 @@ using Composite.Types;
 
 namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider
 {
-    public sealed class MediaFileSelectorWidgetFunction : CompositeWidgetFunctionBase
+    internal sealed class MediaFileSelectorWidgetFunction : CompositeWidgetFunctionBase
     {
         private static readonly string LogTitle = "MediaFileSelectorWidgetFunction";
         private const string _functionName = "MediaFileSelector";

@@ -10,7 +10,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Response
 {
-    public sealed class SetCookieValueFunction : StandardFunctionBase
+    internal sealed class SetCookieValueFunction : StandardFunctionBase
     {
         public SetCookieValueFunction(EntityTokenFactory entityTokenFactory)
             : base("SetCookieValue", "Composite.Web.Response", typeof(string), entityTokenFactory)

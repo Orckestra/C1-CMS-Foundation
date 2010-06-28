@@ -18,7 +18,7 @@ using Composite.Workflow;
 
 namespace Composite.Trees
 {   
-    public class DataElementsTreeNode : DataFilteringTreeNode
+    internal class DataElementsTreeNode : DataFilteringTreeNode
     {             
         public Type InterfaceType { get; internal set; }        // Requried        
         public string Label { get; internal set; }              // Optional

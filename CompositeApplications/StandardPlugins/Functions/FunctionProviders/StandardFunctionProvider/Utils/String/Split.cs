@@ -8,7 +8,7 @@ using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProv
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.String
 {
-    public sealed class Split : StandardFunctionBase
+    internal sealed class Split : StandardFunctionBase
     {
         public Split(EntityTokenFactory entityTokenFactory)
             : base("Split", "Composite.Utils.String", typeof(IEnumerable<string>), entityTokenFactory)

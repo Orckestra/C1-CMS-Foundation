@@ -6,7 +6,7 @@ using Composite.Security;
 
 namespace Composite.Workflow
 {
-    public sealed class WorkflowActionExecutor : IActionExecutorSerializedParameters
+    internal sealed class WorkflowActionExecutor : IActionExecutorSerializedParameters
     {
         public FlowToken Execute(string serializedEntityToken, string serializedActionToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {

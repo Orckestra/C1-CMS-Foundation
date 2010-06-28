@@ -20,10 +20,10 @@ using Composite.Data.Types;
 
 namespace Composite.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper
 {
-    public sealed class AssociatedDataElementProviderHelper<T> : IAuxiliarySecurityAncestorProvider
+    internal sealed class AssociatedDataElementProviderHelper<T> : IAuxiliarySecurityAncestorProvider
         where T : class, IData
     {
-        public delegate void HooksChangedCallbackDelegate();
+        internal delegate void HooksChangedCallbackDelegate();
 
         private ElementProviderContext _elementProviderContext;
         private EntityToken _rootEntityToken;

@@ -4,7 +4,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Parallelization.Plugins.Runtime
 {
-    public sealed class ParallelizationProviderSettings : SerializableConfigurationSection
+    internal sealed class ParallelizationProviderSettings : SerializableConfigurationSection
     {
         public const string SectionName = "Composite.Parallelization.Plugins.ParallelizationProviderConfiguration";
 
@@ -17,7 +17,7 @@ namespace Composite.Parallelization.Plugins.Runtime
         }
     }
 
-    public sealed class ParallelizationConfigurationElement : ConfigurationElementCollection
+    internal sealed class ParallelizationConfigurationElement : ConfigurationElementCollection
     {
         private const string _enabledPropertyName = "enabled";
         [ConfigurationProperty(_enabledPropertyName, DefaultValue = "true")]
@@ -39,7 +39,7 @@ namespace Composite.Parallelization.Plugins.Runtime
         }
     }
 
-    public sealed class ParallelizationSettingsElement : ConfigurationElement
+    internal sealed class ParallelizationSettingsElement : ConfigurationElement
     {
         private const string _namePropertyName = "name";
         [ConfigurationProperty(_namePropertyName)]

@@ -8,11 +8,11 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.GlobalSettings.Plugins.GlobalSettingsProvider
 {
     [Assembler(typeof(NonConfigurableGlobalSettingsProviderAssembler))]
-    public sealed class NonConfigurableGlobalSettingsProvider : GlobalSettingsProviderData
+    internal sealed class NonConfigurableGlobalSettingsProvider : GlobalSettingsProviderData
     {
     }
 
-    public sealed class NonConfigurableGlobalSettingsProviderAssembler : IAssembler<IGlobalSettingsProvider, GlobalSettingsProviderData>
+    internal sealed class NonConfigurableGlobalSettingsProviderAssembler : IAssembler<IGlobalSettingsProvider, GlobalSettingsProviderData>
     {
         public IGlobalSettingsProvider Assemble(IBuilderContext context, GlobalSettingsProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {

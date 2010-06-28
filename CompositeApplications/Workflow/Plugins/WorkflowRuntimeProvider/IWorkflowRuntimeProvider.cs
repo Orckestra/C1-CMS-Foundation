@@ -9,7 +9,7 @@ namespace Composite.Workflow.Plugins.WorkflowRuntimeProvider
 {
     [CustomFactory(typeof(WorkflowRuntimeProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(WorkflowRuntimeProviderDefaultNameRetriever))]
-    public interface IWorkflowRuntimeProvider
+    internal interface IWorkflowRuntimeProvider
     {
         WorkflowRuntime GetWorkflowRuntime();
     }

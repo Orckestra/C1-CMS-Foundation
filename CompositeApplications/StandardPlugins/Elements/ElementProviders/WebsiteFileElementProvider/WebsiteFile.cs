@@ -5,7 +5,7 @@ using Composite.IO;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
-    public class WebsiteFile : WebsiteEntity
+    internal class WebsiteFile : WebsiteEntity
 	{
         private string _filename = null;
         private string _mimeTypeInfo = null;

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Composite.StandardPlugins.Elements.ElementProviders.AllFunctionsElementProvider
 {
     [ActionExecutor(typeof(AllFunctionsProviderActionExecutor))]
-	public sealed class DocumentFunctionsActionToken : ActionToken
+	internal sealed class DocumentFunctionsActionToken : ActionToken
 	{
         private IEnumerable<PermissionType> _permissionTypes = new PermissionType[] { PermissionType.Read };
 

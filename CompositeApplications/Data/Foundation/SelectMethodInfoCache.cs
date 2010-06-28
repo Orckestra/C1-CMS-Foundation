@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Composite.Data.Foundation
 {
-    public sealed class SelectMethodInfoCache
+    internal sealed class SelectMethodInfoCache
     {
         private static Dictionary<CacheEntry, MethodInfo> _methodInfoCache = new Dictionary<CacheEntry, MethodInfo>();
 

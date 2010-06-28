@@ -2,7 +2,7 @@
 
 namespace Composite.Forms.CoreUiControls
 {
-    public class MultiSelectorUiControl : BaseSelectorUiControl
+    internal class MultiSelectorUiControl : BaseSelectorUiControl
     {
         [BindableProperty()]
         [FormsProperty()]

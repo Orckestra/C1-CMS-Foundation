@@ -7,7 +7,7 @@ using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProv
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Predicates
 {
-    public sealed class NullableGuidEqualsPredicateFunction : StandardFunctionBase
+    internal sealed class NullableGuidEqualsPredicateFunction : StandardFunctionBase
     {
         public NullableGuidEqualsPredicateFunction(EntityTokenFactory entityTokenFactory)
             : base("NullableGuidEquals", "Composite.Utils.Predicates", typeof(Expression<Func<Guid?, bool>>), entityTokenFactory)

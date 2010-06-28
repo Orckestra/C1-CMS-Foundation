@@ -9,7 +9,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.StandardPlugins.Types.TypeManagerTypeHandler.DynamicBuildManagerTypeManagerTypeHandler
 {    
     [ConfigurationElementType(typeof(DynamicBuildManagerTypeManagerTypeHandlerData))]
-    public sealed class DynamicBuildManagerTypeManagerTypeHandler : ITypeManagerTypeHandler
+    internal sealed class DynamicBuildManagerTypeManagerTypeHandler : ITypeManagerTypeHandler
     {
         private static readonly string _prefix = "DynamicType:";
 
@@ -78,7 +78,7 @@ namespace Composite.StandardPlugins.Types.TypeManagerTypeHandler.DynamicBuildMan
 
 
     [Assembler(typeof(NonConfigurableTypeManagerTypeHandlerAssembler))]
-    public sealed class DynamicBuildManagerTypeManagerTypeHandlerData : TypeManagerTypeHandlerData
+    internal sealed class DynamicBuildManagerTypeManagerTypeHandlerData : TypeManagerTypeHandlerData
     {        
     }
 }

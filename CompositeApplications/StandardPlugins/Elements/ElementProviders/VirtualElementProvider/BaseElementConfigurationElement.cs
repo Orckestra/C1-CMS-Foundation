@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProvider
 {
-    public class BaseElementConfigurationElement : NameTypeConfigurationElement
+    internal class BaseElementConfigurationElement : NameTypeConfigurationElement
     {
         private const string _idProperty = "id";
         [ConfigurationProperty(_idProperty, IsRequired = true, IsKey = true)]

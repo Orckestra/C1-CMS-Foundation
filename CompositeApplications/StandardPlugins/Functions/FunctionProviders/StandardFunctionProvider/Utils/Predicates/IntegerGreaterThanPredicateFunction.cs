@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Predicates
 {
-    public sealed class IntegerGreaterThanPredicateFunction : StandardFunctionBase
+    internal sealed class IntegerGreaterThanPredicateFunction : StandardFunctionBase
     {
         public IntegerGreaterThanPredicateFunction(EntityTokenFactory entityTokenFactory)
             : base("IntegerGreaterThan", "Composite.Utils.Predicates", typeof(Expression<Func<int, bool>>), entityTokenFactory)

@@ -1,6 +1,6 @@
 ﻿namespace Composite.Caching
 {
-    public enum CacheType
+    internal enum CacheType
     {
         Undefined = 0,
         /// <summary>

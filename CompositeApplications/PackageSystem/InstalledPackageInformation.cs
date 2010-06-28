@@ -6,7 +6,7 @@ using Composite.Serialization;
 namespace Composite.PackageSystem
 {
     [SerializerHandler(typeof(InstalledPackageInformationSerializerHandler))]
-    public sealed class InstalledPackageInformation
+    internal sealed class InstalledPackageInformation
     {
         public Guid Id { get; internal set; }
         public string Name { get; internal set; }

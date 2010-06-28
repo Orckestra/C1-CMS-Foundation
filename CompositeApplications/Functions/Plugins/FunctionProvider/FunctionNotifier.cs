@@ -7,7 +7,7 @@ namespace Composite.Functions.Plugins.FunctionProvider
     /// A function provider can use this class to notify if the providers list of functions
     /// has been changed.
     /// </summary>
-	public sealed class FunctionNotifier
+	internal sealed class FunctionNotifier
 	{        
         internal FunctionNotifier(string providerName)
         {

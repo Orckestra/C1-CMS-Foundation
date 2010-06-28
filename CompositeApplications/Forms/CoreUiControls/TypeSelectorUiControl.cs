@@ -9,7 +9,7 @@ namespace Composite.Forms.CoreUiControls
 {
     [Flags]
     [TypeConverter(typeof(UiControlTypeSelectorModeConverter))]
-    public enum UiControlTypeSelectorMode 
+    internal enum UiControlTypeSelectorMode 
     {
         // Composite selector types
         /// <summary>
@@ -26,7 +26,7 @@ namespace Composite.Forms.CoreUiControls
         PrimitiveTypes = 0x04,
     }
 
-    public class UiControlTypeSelectorModeConverter : TypeConverter
+    internal class UiControlTypeSelectorModeConverter : TypeConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
@@ -65,7 +65,7 @@ namespace Composite.Forms.CoreUiControls
     }
 
     [ControlValueProperty("SelectedType")]
-    public abstract class TypeSelectorUiControl : UiControl
+    internal abstract class TypeSelectorUiControl : UiControl
     {
 
 

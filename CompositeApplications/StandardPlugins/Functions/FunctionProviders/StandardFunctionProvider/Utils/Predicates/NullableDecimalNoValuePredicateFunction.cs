@@ -7,7 +7,7 @@ using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProv
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Predicates
 {
-    public sealed class NullableDecimalNoValuePredicateFunction : StandardFunctionBase
+    internal sealed class NullableDecimalNoValuePredicateFunction : StandardFunctionBase
     {
         public NullableDecimalNoValuePredicateFunction(EntityTokenFactory entityTokenFactory)
             : base("NullableDecimalNoValue", "Composite.Utils.Predicates", typeof(Expression<Func<decimal?, bool>>), entityTokenFactory)

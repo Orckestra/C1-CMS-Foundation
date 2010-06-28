@@ -5,7 +5,7 @@ using Composite.WebClient.Plugins.WebRequestHandler;
 
 namespace Composite.WebClient.Plugins.WebRequestHandler.Runtime
 {
-    public class WebRequestHandlerCustomFactory : AssemblerBasedCustomFactory<WebRequestHandler, WebRequestHandlerData>
+    internal class WebRequestHandlerCustomFactory : AssemblerBasedCustomFactory<WebRequestHandler, WebRequestHandlerData>
     {
         protected override WebRequestHandlerData GetConfiguration(string name, IConfigurationSource configurationSource)
         {

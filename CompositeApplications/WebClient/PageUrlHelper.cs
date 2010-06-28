@@ -73,7 +73,7 @@ namespace Composite.WebClient
         private static readonly string RenredingLinkRegExPattern = string.Format(@"{0}/Renderers/Page.aspx([^\""']*)", UrlUtils.PublicRootPath);
         private static readonly Regex RenredingLinkRegex = new Regex(RenredingLinkRegExPattern);
 
-        public class UrlBuildingCache
+        internal class UrlBuildingCache
         {
             public Hashtable<Guid, string> FolderPaths = new Hashtable<Guid, string>();
         }

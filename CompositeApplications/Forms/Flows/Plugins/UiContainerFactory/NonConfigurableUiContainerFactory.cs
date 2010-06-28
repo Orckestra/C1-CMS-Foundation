@@ -8,7 +8,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.Forms.Flows.Plugins.UiContainerFactory
 {
     [Assembler(typeof(NonConfigurableUiContainerFactoryAssembler))]
-    public sealed class NonConfigurableUiContainerFactory : UiContainerFactoryData
+    internal sealed class NonConfigurableUiContainerFactory : UiContainerFactoryData
     {
     }
 

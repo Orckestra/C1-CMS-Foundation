@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Composite.Ajax
 {
-	public class AjaxStream: Stream
+	internal class AjaxStream: Stream
 	{
         private static readonly string ScriptManagerJS = "UpdateManager.xhtml = null;";
 

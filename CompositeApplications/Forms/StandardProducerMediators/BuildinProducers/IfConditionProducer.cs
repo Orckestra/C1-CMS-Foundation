@@ -1,7 +1,7 @@
 namespace Composite.Forms.StandardProducerMediators.BuildinProducers
 {
     [ControlValueProperty("Condition")]
-    public sealed class IfConditionProducer : IBuildinProducer
+    internal sealed class IfConditionProducer : IBuildinProducer
     {
         private bool _condition;
 

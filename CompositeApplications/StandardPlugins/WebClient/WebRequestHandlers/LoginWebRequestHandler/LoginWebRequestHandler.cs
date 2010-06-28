@@ -15,7 +15,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.StandardPlugins.WebClient.WebRequestHandlers.LoginWebRequestHandler
 {
     [ConfigurationElementType(typeof(LoginHandlerData))]
-    public class LoginWebRequestHandler : WebRequestHandler
+    internal class LoginWebRequestHandler : WebRequestHandler
     {
         static LoginWebRequestHandler()
         {
@@ -152,7 +152,7 @@ namespace Composite.StandardPlugins.WebClient.WebRequestHandlers.LoginWebRequest
         }
     }
 
-    public sealed class LoginForm : Control
+    internal sealed class LoginForm : Control
     {
         private TextBox userNameTextBox;
         private TextBox passwordTextBox;
@@ -289,7 +289,7 @@ namespace Composite.StandardPlugins.WebClient.WebRequestHandlers.LoginWebRequest
 
 
     [Assembler(typeof(NonConfigurableWebRequestHandlerAssembler))]
-    public class LoginHandlerData : WebRequestHandlerData
+    internal class LoginHandlerData : WebRequestHandlerData
     {
     }
 }

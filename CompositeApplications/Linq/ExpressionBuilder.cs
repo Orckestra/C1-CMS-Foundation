@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Composite.Linq
 {
-    public class ExpressionBuilder
+    internal class ExpressionBuilder
     {
         private Type _currentQueryableType;
         private IQueryable _sourceQueryable;

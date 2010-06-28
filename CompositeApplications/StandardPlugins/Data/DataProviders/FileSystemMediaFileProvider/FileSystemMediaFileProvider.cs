@@ -16,7 +16,7 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.StandardPlugins.Data.DataProviders.FileSystemMediaFileProvider
 {
     [ConfigurationElementType(typeof(MediaArchiveDataProviderData))]
-    public sealed class FileSystemMediaFileProvider : IWritableDataProvider
+    internal sealed class FileSystemMediaFileProvider : IWritableDataProvider
     {
         private string _storeId;
         private string _storeDescription;
@@ -297,7 +297,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.FileSystemMediaFileProvid
 
 
 
-        public sealed class MediaDataId : IDataId
+        internal sealed class MediaDataId : IDataId
         {
             public int MediaType { get; set; }
             public string Path { get; set; }
@@ -463,7 +463,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.FileSystemMediaFileProvid
     }
 
     [Assembler(typeof(FileSystemMediaFileProviderAssembler))]
-    public sealed class MediaArchiveDataProviderData : DataProviderData
+    internal sealed class MediaArchiveDataProviderData : DataProviderData
     {
         private const string _rootDirectoryProperty = "rootDirectory";
         [ConfigurationProperty(_rootDirectoryProperty, IsRequired = true)]

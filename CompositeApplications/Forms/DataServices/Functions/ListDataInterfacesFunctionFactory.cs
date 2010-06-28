@@ -6,7 +6,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 namespace Composite.Forms.DataServices.Functions
 {
-    public sealed class ListDataInterfacesFunction : IFormFunction
+    internal sealed class ListDataInterfacesFunction : IFormFunction
     {
         public object Execute()
         {
@@ -17,7 +17,7 @@ namespace Composite.Forms.DataServices.Functions
 
 
     [ConfigurationElementType(typeof(ListDataInterfacesFunctionFactoryData))]
-    public sealed class ListDataInterfacesFunctionFactory : IFormFunctionFactory
+    internal sealed class ListDataInterfacesFunctionFactory : IFormFunctionFactory
     {
         public IFormFunction CreateFunction()
         {
@@ -26,7 +26,7 @@ namespace Composite.Forms.DataServices.Functions
     }
 
     [Assembler(typeof(NonConfigurableFunctionFactoryAssembler))]
-    public sealed class ListDataInterfacesFunctionFactoryData : FunctionFactoryData
+    internal sealed class ListDataInterfacesFunctionFactoryData : FunctionFactoryData
     {
     }
 }

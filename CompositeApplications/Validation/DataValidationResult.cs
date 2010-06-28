@@ -3,7 +3,7 @@ using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 namespace Composite.Validation
 {
-	public sealed class DataValidationResult
+	internal sealed class DataValidationResult
 	{
         internal DataValidationResult(IData data, ValidationResults validationResults)
         {

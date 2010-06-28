@@ -5,7 +5,7 @@ using Composite.Security;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
-    public sealed class WebsiteFileProviderEntityTokenSecurityAncestorProvider : ISecurityAncestorProvider
+    internal sealed class WebsiteFileProviderEntityTokenSecurityAncestorProvider : ISecurityAncestorProvider
     {
         public IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {

@@ -18,7 +18,7 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProviderElementProvider
 {
     [ConfigurationElementType(typeof(VisualFunctionProviderElementProviderData))]
-    public sealed class VisualFunctionProviderElementProvider : BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider
+    internal sealed class VisualFunctionProviderElementProvider : BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider
     {
         public static ResourceHandle AddFunction { get { return GetIconHandle("visual-function-add"); } }
         public static ResourceHandle EditFunction { get { return GetIconHandle("visual-function-edit"); } }
@@ -203,7 +203,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProv
 
 
     [Assembler(typeof(VisualFunctionProviderElementProviderAssembler))]
-    public sealed class VisualFunctionProviderElementProviderData : HooklessElementProviderData
+    internal sealed class VisualFunctionProviderElementProviderData : HooklessElementProviderData
     {
     }
 

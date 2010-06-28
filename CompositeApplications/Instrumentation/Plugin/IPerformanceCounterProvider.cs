@@ -6,7 +6,7 @@ namespace Composite.Instrumentation.Plugin
 {
     [CustomFactory(typeof(PerformanceCounterProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(PerformanceCounterProviderDefaultNameRetriever))]
-	public interface IPerformanceCounterProvider
+	internal interface IPerformanceCounterProvider
 	{
         void SystemStartupIncrement();
 

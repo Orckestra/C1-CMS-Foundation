@@ -7,7 +7,7 @@ using Composite.Types;
 
 namespace Composite.Functions
 {
-    public sealed class ConstantParameterRuntimeTreeNode : BaseParameterRuntimeTreeNode
+    internal sealed class ConstantParameterRuntimeTreeNode : BaseParameterRuntimeTreeNode
     {
         private object _constantValue;
         private bool _isEnumerable = false;

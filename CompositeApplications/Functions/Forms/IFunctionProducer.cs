@@ -3,7 +3,7 @@
 
 namespace Composite.Functions.Forms
 {
-    public interface IFunctionProducer
+    internal interface IFunctionProducer
 	{
         XElement GetResult();
 	}

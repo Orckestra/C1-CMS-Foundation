@@ -4,7 +4,7 @@ using Composite.Xml;
 
 namespace Composite.Trees
 {
-    public enum LeafDisplayMode
+    internal enum LeafDisplayMode
     {
         Compact = 0,
         Lazy = 1,

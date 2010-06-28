@@ -9,7 +9,7 @@ namespace Composite.StandardPlugins.WebClient.SessionStateProviders.DefaultSessi
     [KeyPropertyName("Id")]
     [DataScope(DataScopeIdentifier.AdministratedName)]
     [Caching(CachingType.Full)]
-    public interface ISessionStateEntry : IData
+    internal interface ISessionStateEntry : IData
     {
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{8e0f00dc-a364-4bdc-bed4-0fa771cce148}")]

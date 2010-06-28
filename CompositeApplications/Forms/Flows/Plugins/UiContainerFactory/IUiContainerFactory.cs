@@ -7,7 +7,7 @@ namespace Composite.Forms.Flows.Plugins.UiContainerFactory
 {
     [CustomFactory(typeof(UiContainerFactoryCustomFactory))]
     [ConfigurationNameMapper(typeof(UiContainerFactoryDefaultNameRetriever))]
-    public interface IUiContainerFactory
+    internal interface IUiContainerFactory
     {
         IUiContainer CreateContainer();
     }

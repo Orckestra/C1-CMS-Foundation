@@ -8,7 +8,7 @@ using System;
 namespace Composite.Forms.CoreUiControls
 {
     [DefaultBindingProperty("Selected")]
-    public class DataReferenceSelectorUiControl : UiControl
+    internal class DataReferenceSelectorUiControl : UiControl
     {
         private object _selected = null;
 

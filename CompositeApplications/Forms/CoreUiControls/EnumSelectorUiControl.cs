@@ -3,7 +3,7 @@ using Composite.Forms.Foundation;
 namespace Composite.Forms.CoreUiControls
 {
     [ControlValueProperty("Selected")]
-    public abstract class EnumSelectorUiControl : UiControl
+    internal abstract class EnumSelectorUiControl : UiControl
     {
         private string _selected;
 

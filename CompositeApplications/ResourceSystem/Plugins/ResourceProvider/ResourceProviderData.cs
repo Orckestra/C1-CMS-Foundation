@@ -7,7 +7,7 @@ namespace Composite.ResourceSystem.Plugins.ResourceProvider
 {
     [Assembler(typeof(NonConfigurableResourceProviderAssembler))]
     [ConfigurationElementType(typeof(NonConfigurableResourceProvider))]
-    public class ResourceProviderData : NameTypeManagerTypeConfigurationElement
+    internal class ResourceProviderData : NameTypeManagerTypeConfigurationElement
 	{
 	}
 }

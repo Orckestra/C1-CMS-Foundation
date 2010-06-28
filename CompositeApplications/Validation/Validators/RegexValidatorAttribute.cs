@@ -8,7 +8,7 @@ namespace Composite.Validation.Validators
     /// Represents a <see cref="RegexValidator"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Parameter, AllowMultiple = true, Inherited = false)]
-    public sealed class RegexValidatorAttribute : Microsoft.Practices.EnterpriseLibrary.Validation.Validators.ValueValidatorAttribute
+    internal sealed class RegexValidatorAttribute : Microsoft.Practices.EnterpriseLibrary.Validation.Validators.ValueValidatorAttribute
     {
         public RegexValidatorAttribute(string pattern)
         {

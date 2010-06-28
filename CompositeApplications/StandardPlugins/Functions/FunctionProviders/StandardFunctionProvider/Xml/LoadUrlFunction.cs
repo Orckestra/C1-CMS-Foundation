@@ -11,7 +11,7 @@ using Composite.Instrumentation;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Xml
 {
-    public sealed class LoadUrlFunction : StandardFunctionBase
+    internal sealed class LoadUrlFunction : StandardFunctionBase
     {
         public LoadUrlFunction(EntityTokenFactory entityTokenFactory)
             : base("LoadUrl", "Composite.Xml", typeof(XElement), entityTokenFactory)

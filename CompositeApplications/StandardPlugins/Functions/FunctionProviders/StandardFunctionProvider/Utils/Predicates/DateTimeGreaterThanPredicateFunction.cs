@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Predicates
 {
-    public sealed class DateTimeGreaterThanPredicateFunction : StandardFunctionBase
+    internal sealed class DateTimeGreaterThanPredicateFunction : StandardFunctionBase
     {
         public DateTimeGreaterThanPredicateFunction(EntityTokenFactory entityTokenFactory)
             : base("DateTimeGreaterThan", "Composite.Utils.Predicates", typeof(Expression<Func<DateTime, bool>>), entityTokenFactory)

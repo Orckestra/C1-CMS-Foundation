@@ -32,7 +32,7 @@ namespace Composite.Data.Caching
         }
     }
 
-    public interface ICachedQuery
+    internal interface ICachedQuery
     {
         IQueryable GetOriginalQuery();
     }

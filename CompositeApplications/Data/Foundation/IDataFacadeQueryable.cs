@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Composite.Data.Foundation
 {
-    public interface IDataFacadeQueryable
+    internal interface IDataFacadeQueryable
     {
         IEnumerable<IQueryable> Sources { get; }
     }

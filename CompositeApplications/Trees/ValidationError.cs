@@ -3,7 +3,7 @@
 
 namespace Composite.Trees
 {
-    public sealed class ValidationError
+    internal sealed class ValidationError
     {
         public static ValidationError Create(string xPath, string stringName, params object[] args)
         {

@@ -12,7 +12,7 @@ using Composite.Security;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider
 {
-    public abstract class BaseFunctionProviderElementProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
+    internal abstract class BaseFunctionProviderElementProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
     {
         private ElementProviderContext _context;
 

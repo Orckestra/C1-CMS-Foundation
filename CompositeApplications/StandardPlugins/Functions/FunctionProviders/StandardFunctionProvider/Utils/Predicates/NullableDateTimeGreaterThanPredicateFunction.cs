@@ -7,7 +7,7 @@ using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProv
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Predicates
 {
-    public sealed class NullableDateTimeGreaterThanPredicateFunction : StandardFunctionBase
+    internal sealed class NullableDateTimeGreaterThanPredicateFunction : StandardFunctionBase
     {
         public NullableDateTimeGreaterThanPredicateFunction(EntityTokenFactory entityTokenFactory)
             : base("NullableDateTimeGreaterThan", "Composite.Utils.Predicates", typeof(Expression<Func<DateTime?, bool>>), entityTokenFactory)

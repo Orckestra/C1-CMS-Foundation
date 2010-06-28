@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Composite.Trees.Foundation
 {
-    public sealed class DateTimeFormater
+    internal sealed class DateTimeFormater
     {
         private string _fieldName;
         private string _format;

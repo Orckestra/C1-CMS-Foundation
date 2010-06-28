@@ -11,7 +11,7 @@ using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProv
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Media
 {
-    public sealed class MediaFolderFilterFunction<TMedia> : StandardFunctionBase where TMedia : IMediaFile
+    internal sealed class MediaFolderFilterFunction<TMedia> : StandardFunctionBase where TMedia : IMediaFile
     {
         private static readonly MethodInfo MethodInfoGetFolderPath = typeof(IFile).GetProperty("FolderPath").GetGetMethod();
         private static readonly MethodInfo MethodInfoStringStartsWith = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });

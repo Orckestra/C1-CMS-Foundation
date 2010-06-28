@@ -3,7 +3,7 @@ using System;
 
 namespace Composite.Instrumentation
 {
-    public abstract class TimerProfiler : IDisposable
+    internal abstract class TimerProfiler : IDisposable
     {
         internal TimerProfiler()
         {

@@ -15,7 +15,7 @@ using Composite.Data.Foundation;
 
 namespace Composite.Users
 {
-    public class UserSettingsImpl : IUserSettingsFacade
+    internal class UserSettingsImpl : IUserSettingsFacade
     {
         private static object _lock = new object();
 

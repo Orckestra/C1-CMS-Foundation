@@ -10,7 +10,7 @@ using Composite.Serialization;
 namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElementProvider
 {
     [SecurityAncestorProvider(typeof(SqlFunctionProviderEntityTokenSecurityAncestorProvider))]
-    public sealed class SqlFunctionProviderRootEntityToken : EntityToken
+    internal sealed class SqlFunctionProviderRootEntityToken : EntityToken
     {
         private string _id;
         private string _source;

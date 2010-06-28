@@ -17,7 +17,7 @@ using Composite.StringExtensions;
 
 namespace Composite.Data
 {
-    public sealed class DataProviderCopier
+    internal sealed class DataProviderCopier
     {
         private delegate void HandleSpecialTypeDelegate(List<IData> datas, string sourceProviderName, string targetProviderName);
         private static readonly string LogTitle = "Database copying";

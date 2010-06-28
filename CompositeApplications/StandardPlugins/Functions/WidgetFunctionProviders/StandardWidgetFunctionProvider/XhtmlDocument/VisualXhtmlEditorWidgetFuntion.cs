@@ -10,7 +10,7 @@ using Composite.Xml;
 
 namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.XhtmlDocument
 {
-	public sealed class VisualXhtmlEditorFuntion : CompositeWidgetFunctionBase
+	internal sealed class VisualXhtmlEditorFuntion : CompositeWidgetFunctionBase
     {
         public static IEnumerable<Type> GetOptions(object typeManagerTypeName)
         {

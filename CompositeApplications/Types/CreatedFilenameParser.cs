@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Composite.Types
 {
-    public sealed class CreatedFilenameParser
+    internal sealed class CreatedFilenameParser
     {
         public static readonly string PrefixString = "CMS";
         private static readonly string VersionString = "v";

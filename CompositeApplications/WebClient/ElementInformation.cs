@@ -6,7 +6,7 @@ using Composite.Security;
 namespace Composite.WebClient
 {
     [Obsolete]
-    public sealed class ElementInformation
+    internal sealed class ElementInformation
     {
         public EntityToken EntityToken { get; set; }
         public Dictionary<string, string> Piggyback { get; set; }

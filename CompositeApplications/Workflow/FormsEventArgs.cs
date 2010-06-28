@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Composite.Workflow
 {
     [Serializable]
-    public sealed class FormEventArgs : ExternalDataEventArgs
+    internal sealed class FormEventArgs : ExternalDataEventArgs
     {
         private string _workflowResult;
 

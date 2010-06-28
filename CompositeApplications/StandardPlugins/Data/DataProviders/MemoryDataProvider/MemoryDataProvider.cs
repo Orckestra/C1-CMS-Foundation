@@ -18,7 +18,7 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider
 {
     [ConfigurationElementType(typeof(MemoryDataProviderData))]
-    public sealed class MemoryDataProvider : IGeneratedTypesDataProvider
+    internal sealed class MemoryDataProvider : IGeneratedTypesDataProvider
     {
         private DataProviderContext _context;
         private List<MemoryEntityData> _memoryDataEntities = new List<MemoryEntityData>();
@@ -256,7 +256,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider
 
 
 
-    public sealed class MemoryDataProviderAssembler : IAssembler<IDataProvider, DataProviderData>
+    internal sealed class MemoryDataProviderAssembler : IAssembler<IDataProvider, DataProviderData>
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         public IDataProvider Assemble(IBuilderContext context, DataProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
@@ -287,7 +287,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider
 
 
     [Assembler(typeof(MemoryDataProviderAssembler))]
-    public sealed class MemoryDataProviderData : DataProviderData
+    internal sealed class MemoryDataProviderData : DataProviderData
     {
         private const string _interfaceTypesProperty = "Interfaces";
         [ConfigurationProperty(_interfaceTypesProperty)]
@@ -300,7 +300,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider
 
 
 
-    public sealed class MemoryDataProviderInterfaceTypeConfigurationElement : ConfigurationElement
+    internal sealed class MemoryDataProviderInterfaceTypeConfigurationElement : ConfigurationElement
     {
         public List<string> Stores
         {
@@ -376,7 +376,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider
 
 
 
-    public sealed class MemoryDataProviderInterfaceTypeConfigurationElementCollection : ConfigurationElementCollection
+    internal sealed class MemoryDataProviderInterfaceTypeConfigurationElementCollection : ConfigurationElementCollection
     {
         public void Add(MemoryDataProviderInterfaceTypeConfigurationElement element)
         {
@@ -412,7 +412,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider
 
 
 
-    public sealed class StoreConfigurationElement : ConfigurationElement
+    internal sealed class StoreConfigurationElement : ConfigurationElement
     {
         private const string _dataScopePropertyName = "dataScope";
         [ConfigurationProperty(_dataScopePropertyName, IsKey = true, IsRequired = true)]
@@ -425,7 +425,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider
 
 
 
-    public sealed class StoreConfigurationElementCollection : ConfigurationElementCollection
+    internal sealed class StoreConfigurationElementCollection : ConfigurationElementCollection
     {
         public void Add(StoreConfigurationElement element)
         {

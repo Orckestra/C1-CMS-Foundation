@@ -8,12 +8,12 @@ using Composite.IO.Zip;
 
 namespace Composite.PackageSystem
 {
-    public sealed class PackageUninstallerContex
+    public sealed class PackageUninstallerContext
     {
         private Dictionary<Type, Dictionary<DataScopeIdentifier, Dictionary<CultureInfo, List<DataKeyPropertyCollection>>>> _dataPendingForDeletion = new Dictionary<Type, Dictionary<DataScopeIdentifier, Dictionary<CultureInfo, List<DataKeyPropertyCollection>>>>();
 
 
-        internal PackageUninstallerContex(IZipFileSystem zipFileSystem)
+        internal PackageUninstallerContext(IZipFileSystem zipFileSystem)
         {
             if (zipFileSystem == null) throw new ArgumentNullException("zipFileSystem");
 

@@ -9,7 +9,7 @@ namespace Composite.Functions.Foundation.PluginFacades
     /// <summary>
     /// This class is used for caching exceptions from plugins and hadling them correcty
     /// </summary>
-    public sealed class WidgetFunctionWrapper : IWidgetFunction
+    internal sealed class WidgetFunctionWrapper : IWidgetFunction
     {
         private IWidgetFunction _widgetFunctionToWrap;
 

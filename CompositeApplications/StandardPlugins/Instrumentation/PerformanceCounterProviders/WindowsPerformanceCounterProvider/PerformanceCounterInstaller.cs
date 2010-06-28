@@ -11,7 +11,7 @@ namespace Composite.StandardPlugins.Instrumentation.PerformanceCounterProviders.
     /// Use Installutil.exe to install performance counters
     /// </summary>
     [RunInstallerAttribute(true)]
-    public sealed class PerformanceCounterInstaller : Installer
+    internal sealed class PerformanceCounterInstaller : Installer
 	{
         public override void Install(IDictionary stateSaver)
         {

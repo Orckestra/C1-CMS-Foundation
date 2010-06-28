@@ -5,7 +5,7 @@ using Composite.Data.Plugins.DataProvider.CodeGeneration;
 
 namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 {
-	public sealed class XmlDataProviderCodeGeneratorStore
+	internal sealed class XmlDataProviderCodeGeneratorStore
 	{
         private List<string> _errors = new List<string>();
 
@@ -29,7 +29,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.CodeGener
         internal string DataIdClassName { get; set; }
         internal string DataProviderHelperClassName { get; set; }        
 
-        public sealed class StoreInformaion
+        internal sealed class StoreInformaion
         {
             public string Filename { get; set; }
             public string ElementName { get; set; }            

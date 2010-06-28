@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Predicates
 {
-    public sealed class GuidInCommaSeparatedListPredicateFunction : StandardFunctionBase
+    internal sealed class GuidInCommaSeparatedListPredicateFunction : StandardFunctionBase
     {
         public GuidInCommaSeparatedListPredicateFunction(EntityTokenFactory entityTokenFactory)
             : base("GuidInCommaSeparatedList", "Composite.Utils.Predicates", typeof(Expression<Func<Guid, bool>>), entityTokenFactory)

@@ -20,7 +20,7 @@ using Microsoft.CSharp;
 
 namespace Composite.Data.GeneratedTypes
 {
-    public sealed class GeneratedTypesHelper
+    internal sealed class GeneratedTypesHelper
     {
         private static readonly string[] ReservedNamespaces = new[] { "System", "Composite.Data.GeneratedTypes", "GeneratedTypes" };
         private static readonly string CompositeNamespace = "Composite";

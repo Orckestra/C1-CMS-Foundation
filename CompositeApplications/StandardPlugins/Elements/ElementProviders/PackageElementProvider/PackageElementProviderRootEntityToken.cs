@@ -5,7 +5,7 @@ using Composite.Security.SecurityAncestorProviders;
 namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider
 {
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
-    public sealed class PackageElementProviderRootEntityToken : EntityToken
+    internal sealed class PackageElementProviderRootEntityToken : EntityToken
 	{
         public override string Type
         {

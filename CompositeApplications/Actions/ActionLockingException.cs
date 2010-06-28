@@ -3,7 +3,7 @@
 
 namespace Composite.Actions
 {
-    public sealed class ActionLockingException : Exception
+    internal sealed class ActionLockingException : Exception
 	{
         public ActionLockingException(string message)
             : base(message)

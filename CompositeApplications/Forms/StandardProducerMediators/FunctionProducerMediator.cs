@@ -9,7 +9,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.Forms.StandardProducerMediators
 {
     [ConfigurationElementType(typeof(FunctionProducerMediatorData))]
-    public sealed class FunctionProducerMediator : IProducerMediator
+    internal sealed class FunctionProducerMediator : IProducerMediator
     {
         public object CreateProducer(IFormChannelIdentifier channel, string namespaceName, string name)
         {
@@ -31,7 +31,7 @@ namespace Composite.Forms.StandardProducerMediators
 
 
     [Assembler(typeof(NonConfigurableProducerMediatorAssembler))]
-    public sealed class FunctionProducerMediatorData : ProducerMediatorData
+    internal sealed class FunctionProducerMediatorData : ProducerMediatorData
     {        
     }
 }

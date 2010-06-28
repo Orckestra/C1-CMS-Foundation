@@ -16,7 +16,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.StandardPlugins.Security.UserPermissionDefinitionProvider.DataBaseUserPermissionDefinitionProvider
 {
     [ConfigurationElementType(typeof(DataBaseUserPermissionDefinitionProviderData))]
-    public sealed class DataBaseUserPermissionDefinitionProvider : IUserPermissionDefinitionProvider
+    internal sealed class DataBaseUserPermissionDefinitionProvider : IUserPermissionDefinitionProvider
     {
         private static readonly int PermissionCacheSize = 50;
 
@@ -149,7 +149,7 @@ namespace Composite.StandardPlugins.Security.UserPermissionDefinitionProvider.Da
 
 
 
-        public sealed class DataUserPermissionDefinition : UserPermissionDefinition
+        internal sealed class DataUserPermissionDefinition : UserPermissionDefinition
         {
             private IUserPermissionDefinition _userPermissionDefinition;
             private List<PermissionType> _permissionTypes;
@@ -217,7 +217,7 @@ namespace Composite.StandardPlugins.Security.UserPermissionDefinitionProvider.Da
 
 
     [Assembler(typeof(NonConfigurableUserPermissionDefinitionProviderAssembler))]
-    public sealed class DataBaseUserPermissionDefinitionProviderData : UserPermissionDefinitionProviderData
+    internal sealed class DataBaseUserPermissionDefinitionProviderData : UserPermissionDefinitionProviderData
     {
     }
 }

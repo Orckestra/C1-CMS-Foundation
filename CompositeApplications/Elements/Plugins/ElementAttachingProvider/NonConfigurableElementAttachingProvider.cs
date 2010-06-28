@@ -7,11 +7,11 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.Elements.Plugins.ElementAttachingProvider
 {
     [Assembler(typeof(NonConfigurableElementAttachingProviderAssembler))]
-    public class NonConfigurableElementAttachingProvider : ElementAttachingProviderData
+    internal class NonConfigurableElementAttachingProvider : ElementAttachingProviderData
     {
     }
 
-    public sealed class NonConfigurableElementAttachingProviderAssembler : IAssembler<IElementAttachingProvider, ElementAttachingProviderData>
+    internal sealed class NonConfigurableElementAttachingProviderAssembler : IAssembler<IElementAttachingProvider, ElementAttachingProviderData>
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         public IElementAttachingProvider Assemble(IBuilderContext context, ElementAttachingProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)

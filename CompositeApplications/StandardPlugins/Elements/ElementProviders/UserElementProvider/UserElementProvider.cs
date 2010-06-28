@@ -16,7 +16,7 @@ using Microsoft.Practices.ObjectBuilder;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider
 {
-    public sealed class UserElementProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
+    internal sealed class UserElementProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
     {
         private ElementProviderContext _elementProviderContext;
 

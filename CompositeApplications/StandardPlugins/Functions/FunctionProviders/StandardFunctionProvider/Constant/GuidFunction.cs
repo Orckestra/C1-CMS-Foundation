@@ -9,7 +9,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Constant
 {
-    public sealed class GuidFunction : StandardFunctionBase
+    internal sealed class GuidFunction : StandardFunctionBase
     {
         public GuidFunction(EntityTokenFactory entityTokenFactory)
             : base("Guid", "Composite.Constant", typeof(Guid), entityTokenFactory)

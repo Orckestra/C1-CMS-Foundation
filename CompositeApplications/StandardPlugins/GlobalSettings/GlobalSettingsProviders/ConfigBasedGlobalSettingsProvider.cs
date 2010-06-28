@@ -13,7 +13,7 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.StandardPlugins.GlobalSettings.GlobalSettingsProviders
 {    
     [ConfigurationElementType(typeof(ConfigBasedGlobalSettingsProviderData))]
-    public sealed class ConfigBasedGlobalSettingsProvider : IGlobalSettingsProvider
+    internal sealed class ConfigBasedGlobalSettingsProvider : IGlobalSettingsProvider
     {
         private readonly ConfigBasedGlobalSettingsProviderData _configurationData;
         private readonly ICachingSettings _cachingSettings;
@@ -199,7 +199,7 @@ namespace Composite.StandardPlugins.GlobalSettings.GlobalSettingsProviders
         }
     }
 
-    public class ConfigCachingSettings: ICachingSettings
+    internal class ConfigCachingSettings: ICachingSettings
     {
         private readonly CachingConfigurationElement _data;
 
@@ -227,7 +227,7 @@ namespace Composite.StandardPlugins.GlobalSettings.GlobalSettingsProviders
 
     
     
-    public class ConfigCacheSettings: ICacheSettings
+    internal class ConfigCacheSettings: ICacheSettings
     {
         public ConfigCacheSettings(CacheSettingsElement data)
         {
@@ -244,7 +244,7 @@ namespace Composite.StandardPlugins.GlobalSettings.GlobalSettingsProviders
 
 
 
-    public class ConfigResourceCacheSettings : IResourceCacheSettings
+    internal class ConfigResourceCacheSettings : IResourceCacheSettings
     {
         private readonly string _cachePath;
         private readonly int _serverChacheMinutes;
@@ -291,7 +291,7 @@ namespace Composite.StandardPlugins.GlobalSettings.GlobalSettingsProviders
 
 
     [Assembler(typeof(ConfigBasedGlobalSettingsProviderAssembler))]
-    public sealed class ConfigBasedGlobalSettingsProviderData : GlobalSettingsProviderData
+    internal sealed class ConfigBasedGlobalSettingsProviderData : GlobalSettingsProviderData
     {
         private const string _applicationNamePropertyName = "applicationName";
         [ConfigurationProperty(_applicationNamePropertyName, IsRequired = true, DefaultValue = "Composite Management Console")]
@@ -551,7 +551,7 @@ namespace Composite.StandardPlugins.GlobalSettings.GlobalSettingsProviders
     }
 
 
-    public sealed class CachingConfigurationElement : ConfigurationElementCollection
+    internal sealed class CachingConfigurationElement : ConfigurationElementCollection
     {
         private const string _enabledPropertyName = "enabled";
         [ConfigurationProperty(_enabledPropertyName, DefaultValue = "true")]
@@ -573,7 +573,7 @@ namespace Composite.StandardPlugins.GlobalSettings.GlobalSettingsProviders
         }
     }
 
-    public sealed class CacheSettingsElement: ConfigurationElement
+    internal sealed class CacheSettingsElement: ConfigurationElement
     {
         private const string _namePropertyName = "name";
         [ConfigurationProperty(_namePropertyName)]

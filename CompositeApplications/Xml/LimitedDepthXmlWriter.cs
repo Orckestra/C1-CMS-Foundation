@@ -3,7 +3,7 @@ using System.Xml;
 
 namespace Composite.Xml
 {
-	public class LimitedDepthXmlWriter : XmlWriter
+	internal class LimitedDepthXmlWriter : XmlWriter
 	{
         private readonly XmlWriter _innerWriter;
         private readonly int _maxDepth;

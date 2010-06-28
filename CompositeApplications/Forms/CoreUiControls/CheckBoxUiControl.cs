@@ -6,7 +6,7 @@ using Composite.Forms.Foundation;
 namespace Composite.Forms.CoreUiControls
 {
     [ControlValueProperty("Checked")]
-    public abstract class CheckBoxUiControl : UiControl
+    internal abstract class CheckBoxUiControl : UiControl
     {
         private bool _checked = false;
 

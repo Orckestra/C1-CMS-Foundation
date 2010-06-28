@@ -9,7 +9,7 @@ using Composite.Forms.CoreUiControls;
 
 namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Bool
 {
-    public sealed class BoolSelectorWidgetFuntion : CompositeWidgetFunctionBase
+    internal sealed class BoolSelectorWidgetFuntion : CompositeWidgetFunctionBase
     {
         private const string _functionName = "BoolSelector";
         public const string CompositeName = CompositeWidgetFunctionBase.CommonNamespace + ".Bool." + _functionName;

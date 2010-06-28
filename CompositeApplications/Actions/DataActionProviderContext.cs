@@ -1,6 +1,6 @@
 namespace Composite.Actions
 {
-    public sealed class DataActionProviderContext
+    internal sealed class DataActionProviderContext
     {
         private string _providerName; 
 

@@ -5,7 +5,7 @@ using Composite.Security.SecurityAncestorProviders;
 namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElementProvider
 {
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
-	public sealed class LocalizationElementProviderRootEntityToken : EntityToken
+	internal sealed class LocalizationElementProviderRootEntityToken : EntityToken
 	{
         public override string Type
         {

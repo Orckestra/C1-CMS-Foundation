@@ -3,7 +3,7 @@
 
 namespace Composite.Elements
 {
-    public interface IElementDataExchangeService : IFlowControllerService
+    internal interface IElementDataExchangeService : IFlowControllerService
     {
         object GetData(string name);
     }

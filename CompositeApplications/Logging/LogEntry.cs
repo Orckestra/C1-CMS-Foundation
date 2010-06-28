@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace Composite.Logging
 {
-    public class LogEntry
+    public sealed class LogEntry
     {
         const char NonBreakingSpace = (char)160;
         private static readonly string DateTimeFormat = "yyyyMMdd" + NonBreakingSpace + "HH:mm:ss.ffff";

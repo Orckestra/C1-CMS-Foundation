@@ -11,7 +11,7 @@ using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 
 namespace Composite.Validation
 {
-    public sealed class ClientValidationRuleFacadeImpl : IClientValidationRuleFacade
+    internal sealed class ClientValidationRuleFacadeImpl : IClientValidationRuleFacade
     {
         public List<ClientValidationRule> GetClientValidationRules(object objectForValidation, string propertyName)
         {

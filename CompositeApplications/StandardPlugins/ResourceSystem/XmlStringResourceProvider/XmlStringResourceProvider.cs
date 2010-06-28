@@ -17,7 +17,7 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.StandardPlugins.ResourceSystem.XmlStringResourceProvider
 {
     [ConfigurationElementType(typeof(XmlStringResourceProviderData))]
-    public sealed class XmlStringResourceProvider : IStringResourceProvider
+    internal sealed class XmlStringResourceProvider : IStringResourceProvider
     {
         private ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize, false);
 
@@ -217,7 +217,7 @@ namespace Composite.StandardPlugins.ResourceSystem.XmlStringResourceProvider
 
 
     [Assembler(typeof(XmlStringResourceProviderAssembler))]
-    public sealed class XmlStringResourceProviderData : ResourceProviderData
+    internal sealed class XmlStringResourceProviderData : ResourceProviderData
     {
         private const string _defaultCultureNameProperty = "defaultCultureName";
         [ConfigurationProperty(_defaultCultureNameProperty, IsRequired = true)]
@@ -242,7 +242,7 @@ namespace Composite.StandardPlugins.ResourceSystem.XmlStringResourceProvider
 
 
 
-    public sealed class CulturenameConfigurationElement : ConfigurationElement
+    internal sealed class CulturenameConfigurationElement : ConfigurationElement
     {
         private const string _cultureNameProperty = "cultureName";
         [ConfigurationProperty(_cultureNameProperty, IsKey = true)]
@@ -275,7 +275,7 @@ namespace Composite.StandardPlugins.ResourceSystem.XmlStringResourceProvider
 
 
 
-    public sealed class CultureElementCollection : ConfigurationElementCollection
+    internal sealed class CultureElementCollection : ConfigurationElementCollection
     {
         public void Add(CulturenameConfigurationElement element)
         {

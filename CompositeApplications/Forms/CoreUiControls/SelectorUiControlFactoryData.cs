@@ -5,7 +5,7 @@ using Composite.Forms.Plugins.UiControlFactory;
 
 namespace Composite.Forms.CoreUiControls
 {
-    public class SelectorUiControlFactoryData : UiControlFactoryData
+    internal class SelectorUiControlFactoryData : UiControlFactoryData
     {
         private const string _bindingTypePropertyName = "BindingType";
         [ConfigurationProperty(_bindingTypePropertyName, DefaultValue=SelectorBindingType.BindToObject, IsRequired=true)]

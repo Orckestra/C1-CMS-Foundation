@@ -3,7 +3,7 @@
 
 namespace Composite.Validation.Validators
 {
-    public class PasswordValidator : Validator
+    internal class PasswordValidator : Validator
 	{
         public PasswordValidator()
             : base("The password is not good enough", "password")

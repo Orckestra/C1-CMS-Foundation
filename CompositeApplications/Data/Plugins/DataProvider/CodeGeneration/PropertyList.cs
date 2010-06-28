@@ -7,7 +7,7 @@ using Composite.Validation.Validators;
 
 namespace Composite.Data.Plugins.DataProvider.CodeGeneration
 {
-    public sealed class PropertyList
+    internal sealed class PropertyList
     {
         private Dictionary<string, Property> _properties = new Dictionary<string, Property>();
 

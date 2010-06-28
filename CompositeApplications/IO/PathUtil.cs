@@ -5,7 +5,7 @@ using System.Web.Hosting;
 
 namespace Composite.IO
 {
-    public class PathUtil
+    public static class PathUtil
     {
         private static readonly string _appBasePath;
 

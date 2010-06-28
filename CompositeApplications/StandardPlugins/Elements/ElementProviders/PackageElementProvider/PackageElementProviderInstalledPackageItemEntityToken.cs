@@ -7,7 +7,7 @@ using Composite.Serialization;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider
 {
-    public sealed class AddOnElementProviderInstalledAddOnItemEntityTokenAncestorProvider : ISecurityAncestorProvider
+    internal sealed class AddOnElementProviderInstalledAddOnItemEntityTokenAncestorProvider : ISecurityAncestorProvider
     {
         public IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {
@@ -22,7 +22,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
 
 
     [SecurityAncestorProvider(typeof(AddOnElementProviderInstalledAddOnItemEntityTokenAncestorProvider))]
-    public sealed class PackageElementProviderInstalledPackageItemEntityToken : EntityToken
+    internal sealed class PackageElementProviderInstalledPackageItemEntityToken : EntityToken
     {
         public PackageElementProviderInstalledPackageItemEntityToken(Guid packageId, string groupName, bool isLocalInstalled, bool canBeUninstalled)
         {

@@ -17,7 +17,7 @@ namespace Composite.Threading
         {
         }
 
-        public delegate void OnThreadDataDisposedDelegate();
+        internal delegate void OnThreadDataDisposedDelegate();
 
         public event ThreadStart OnDispose;
 

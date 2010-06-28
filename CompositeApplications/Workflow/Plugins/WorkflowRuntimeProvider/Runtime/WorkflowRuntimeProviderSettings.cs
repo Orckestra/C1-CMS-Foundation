@@ -7,7 +7,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Workflow.Plugins.WorkflowRuntimeProvider.Runtime
 {
-    public sealed class WorkflowRuntimeProviderSettings : SerializableConfigurationSection
+    internal sealed class WorkflowRuntimeProviderSettings : SerializableConfigurationSection
     {
         public const string SectionName = "Composite.Workflow.Plugins.WorkflowRuntimeProviderConfiguration";
 

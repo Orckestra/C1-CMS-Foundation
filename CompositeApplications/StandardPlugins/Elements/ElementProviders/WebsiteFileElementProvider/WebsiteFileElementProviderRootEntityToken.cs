@@ -4,7 +4,7 @@ using Composite.Security.SecurityAncestorProviders;
 namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
-    public sealed class WebsiteFileElementProviderRootEntityToken : EntityToken
+    internal sealed class WebsiteFileElementProviderRootEntityToken : EntityToken
 	{
         private string _providerName;
 

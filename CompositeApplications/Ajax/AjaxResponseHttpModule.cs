@@ -4,7 +4,7 @@ using System.Web.UI;
 
 namespace Composite.Ajax
 {
-    public class AjaxResponseHttpModule : IHttpModule
+    internal class AjaxResponseHttpModule : IHttpModule
 	{
         public void Init(HttpApplication context)
         {

@@ -9,7 +9,7 @@ using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProv
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Client
 {
-	public sealed class IsMobileDeviceFunction  :  StandardFunctionBase
+	internal sealed class IsMobileDeviceFunction  :  StandardFunctionBase
 	{
         public IsMobileDeviceFunction(EntityTokenFactory entityTokenFactory)
             : base("IsMobileDevice", "Composite.Web.Client", typeof(bool), entityTokenFactory)

@@ -7,7 +7,7 @@ using Composite.Forms.Foundation;
 
 namespace Composite.Forms.CoreUiControls
 {
-    public class XmlFunctionsDefinitionsEditorUiControl : UiControl
+    internal class XmlFunctionsDefinitionsEditorUiControl : UiControl
     {
         /// <summary>
         /// List of "CompositeFuntionName" and "Result Name" pairs

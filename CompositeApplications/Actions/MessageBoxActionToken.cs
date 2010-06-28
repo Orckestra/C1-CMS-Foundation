@@ -9,7 +9,7 @@ using Composite.Serialization;
 namespace Composite.Actions
 {
 
-    public sealed class MessageBoxActionTokenActionExecutor : IActionExecutor
+    internal sealed class MessageBoxActionTokenActionExecutor : IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
@@ -26,7 +26,7 @@ namespace Composite.Actions
 
 
     [ActionExecutor(typeof(MessageBoxActionTokenActionExecutor))]
-    public sealed class MessageBoxActionToken : ActionToken
+    internal sealed class MessageBoxActionToken : ActionToken
     {
         private List<PermissionType> _permissionTypes;
 

@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Predicates
 {
-    public sealed class StringStartsWithPredicateFunction : StandardFunctionBase
+    internal sealed class StringStartsWithPredicateFunction : StandardFunctionBase
     {
         public StringStartsWithPredicateFunction(EntityTokenFactory entityTokenFactory)
             : base("StringStartsWith", "Composite.Utils.Predicates", typeof(Expression<Func<string, bool>>), entityTokenFactory)

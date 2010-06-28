@@ -25,7 +25,7 @@ public class YellowBox : IHttpHandler
 
             Bitmap bitmap = (Bitmap)Bitmap.FromFile(filePath);
 
-            ImageTemplatedBoxCreateor imageCreator = new ImageTemplatedBoxCreateor(bitmap, new Point(30, 13), new Point(43, 0));
+            ImageTemplatedBoxCreator imageCreator = new ImageTemplatedBoxCreator(bitmap, new Point(30, 13), new Point(43, 0));
 
             imageCreator.MinHeight = 26;
             imageCreator.SetTitle(label, new Point(26, 6), new Point(38, 1), Color.Black, "Tahoma", 8.0f, FontStyle.Bold);

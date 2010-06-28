@@ -17,7 +17,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider
 {
     [ConfigurationElementType(typeof(AddOnElementProviderData))]
-    public sealed class PackageElementProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
+    internal sealed class PackageElementProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
     {
         private ElementProviderContext _context;
 
@@ -501,7 +501,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
 
 
     [Assembler(typeof(NonConfigurableHooklessElementProviderAssembler))]
-    public sealed class AddOnElementProviderData : HooklessElementProviderData
+    internal sealed class AddOnElementProviderData : HooklessElementProviderData
     {
     }
 }

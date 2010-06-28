@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace Composite.StandardPlugins.Logging.LogTraceListeners.TcpLogTraceListener
 {    
-	public class TcpLogTraceListenerThreadData
+	internal class TcpLogTraceListenerThreadData
 	{
         public TcpLogTraceListenerThreadData()
         {

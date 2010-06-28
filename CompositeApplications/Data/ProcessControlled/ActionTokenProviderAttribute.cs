@@ -3,7 +3,7 @@
 namespace Composite.Data.ProcessControlled
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public sealed class ActionTokenProviderAttribute : Attribute
+    internal sealed class ActionTokenProviderAttribute : Attribute
     {
         public ActionTokenProviderAttribute(string actionTypeName, Type actionTokenProviderType)
         {

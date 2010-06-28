@@ -16,7 +16,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.StandardPlugins.Functions.XslExtensionsProviders
 {
     [ConfigurationElementType(typeof(ConfigBasedXslExtensionInfo))]
-	public class StandardExtension
+	internal class StandardExtension
 	{
 	    public static readonly string XmlNamespace = "http://c1.composite.net/StandardFunctions";
 
@@ -208,7 +208,7 @@ namespace Composite.StandardPlugins.Functions.XslExtensionsProviders
 
         #region Nested classes
 
-        public class FunctionResultNodeIterator: XPathNodeIterator
+        internal class FunctionResultNodeIterator: XPathNodeIterator
         {
             private readonly IEnumerable<XElement> _innerEnumerable;
             private readonly IEnumerator<XElement> _iterator;

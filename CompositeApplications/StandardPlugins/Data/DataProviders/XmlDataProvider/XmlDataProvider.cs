@@ -29,7 +29,7 @@ using Composite.Collections.Generic;
 namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider
 {    
     [ConfigurationElementType(typeof(XmlDataProviderData))]
-    public class XmlDataProvider : IWritableDataProvider, IDynamicDataProvider, IGeneratedTypesDataProvider, ILocalizedDataProvider, ISupportCachingDataProvider
+    internal class XmlDataProvider : IWritableDataProvider, IDynamicDataProvider, IGeneratedTypesDataProvider, ILocalizedDataProvider, ISupportCachingDataProvider
     {
         private string _storeDirectory;
 
@@ -514,7 +514,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider
 
 
 
-    public sealed class XmlDataProviderAssembler : IAssembler<IDataProvider, DataProviderData>
+    internal sealed class XmlDataProviderAssembler : IAssembler<IDataProvider, DataProviderData>
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         public IDataProvider Assemble(IBuilderContext context, DataProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
@@ -567,7 +567,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider
 
 
     [Assembler(typeof(XmlDataProviderAssembler))]
-    public sealed class XmlDataProviderData : DataProviderData
+    internal sealed class XmlDataProviderData : DataProviderData
     {
         private const string _storeDirectoryPropertyName = "storeDirectory";
         [ConfigurationProperty(_storeDirectoryPropertyName, IsRequired = true)]
@@ -580,7 +580,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider
 
 
 
-    public sealed class XmlDataProviderConfigurationSection : ConfigurationSection
+    internal sealed class XmlDataProviderConfigurationSection : ConfigurationSection
     {
         public const string SectionName = "Composite.Data.Plugins.XmlDataProviderConfiguration";
 
@@ -597,7 +597,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider
 
 
 
-    public sealed class XmlProviderInterfaceConfigurationElementCollection : ConfigurationElementCollection
+    internal sealed class XmlProviderInterfaceConfigurationElementCollection : ConfigurationElementCollection
     {
         internal void Add(XmlProviderInterfaceConfigurationElement element)
         {
@@ -641,7 +641,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider
 
 
 
-    public sealed class XmlProviderInterfaceConfigurationElement : ConfigurationElement
+    internal sealed class XmlProviderInterfaceConfigurationElement : ConfigurationElement
     {
         public Dictionary<string, Dictionary<string, DataScopeConfigurationElement>> DataScopes
         {
@@ -780,7 +780,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider
 
 
 
-    public sealed class DataScopeConfigurationElement : ConfigurationElement
+    internal sealed class DataScopeConfigurationElement : ConfigurationElement
     {
         private const string _dataScopePropertyName = "dataScope";
         [ConfigurationProperty(_dataScopePropertyName, IsRequired = true)]
@@ -821,7 +821,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider
 
 
 
-    public sealed class DataScopeConfigurationElementCollection : ConfigurationElementCollection
+    internal sealed class DataScopeConfigurationElementCollection : ConfigurationElementCollection
     {
         internal void Add(DataScopeConfigurationElement element)
         {

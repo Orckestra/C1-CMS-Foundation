@@ -9,7 +9,7 @@ using Composite.Data.Types;
 
 namespace Composite.Data.Visualization
 {
-    public class VisualizedTemplateData : IVisualizedData
+    internal class VisualizedTemplateData : IVisualizedData
     {
         public VisualizedTemplateData(DataSourceId dataSourceId, string label, string toolTip)
         {
@@ -24,7 +24,7 @@ namespace Composite.Data.Visualization
     }
 
 
-    public class TemplateVisualizer : IDataVisualizer
+    internal class TemplateVisualizer : IDataVisualizer
     {
         public IEnumerable<IVisualizedData> Visualize<T>(IQueryable<T> data) where T : class, Composite.Data.IData
         {

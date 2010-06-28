@@ -8,7 +8,7 @@ using Composite.Validation.Validators;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Validation
 {
-    public sealed class IntegerRangeValidationFunction : StandardFunctionBase
+    internal sealed class IntegerRangeValidationFunction : StandardFunctionBase
 	{
         public IntegerRangeValidationFunction(EntityTokenFactory entityTokenFactory)
             : base("IntegerRangeValidation", "Composite.Utils.Validation", typeof(PropertyValidatorBuilder<int>), entityTokenFactory)

@@ -6,7 +6,7 @@ namespace Composite.Application.Plugins.ApplicationOnlineHandler
 {
     [CustomFactory(typeof(ApplicationOnlineHandlerCustomFactory))]
     [ConfigurationNameMapper(typeof(ApplicationOnlineHandlerDefaultNameRetriever))]
-	public interface IApplicationOnlineHandler
+	internal interface IApplicationOnlineHandler
 	{
         void TurnApplicationOffline();
         void TurnApplicationOnline();

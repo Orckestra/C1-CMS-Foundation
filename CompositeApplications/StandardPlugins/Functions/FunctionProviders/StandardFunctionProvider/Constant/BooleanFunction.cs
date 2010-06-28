@@ -9,7 +9,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Constant
 {
-    public sealed class BooleanFunction : StandardFunctionBase
+    internal sealed class BooleanFunction : StandardFunctionBase
     {
         public BooleanFunction(EntityTokenFactory entityTokenFactory)
             : base("Boolean", "Composite.Constant", typeof(bool), entityTokenFactory)

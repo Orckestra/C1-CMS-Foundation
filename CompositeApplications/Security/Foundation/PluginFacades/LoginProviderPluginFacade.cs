@@ -9,7 +9,7 @@ using Composite.Security.Plugins.LoginProvider.Runtime;
 
 namespace Composite.Security.Foundation.PluginFacades
 {
-    public class LoginProviderPluginFacade
+    internal class LoginProviderPluginFacade
     {
         private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.DoInitializeResources);
 

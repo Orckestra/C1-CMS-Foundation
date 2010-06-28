@@ -5,7 +5,7 @@ using Composite.Elements.Foundation.PluginFacades;
 
 namespace Composite.Elements
 {
-    public sealed class ElementDataExchangeService : IElementDataExchangeService
+    internal sealed class ElementDataExchangeService : IElementDataExchangeService
     {
         public ElementDataExchangeService(string elementProviderName)
         {

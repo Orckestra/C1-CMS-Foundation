@@ -4,7 +4,7 @@ using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProv
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Compare
 {
-	public sealed class AreEqualFunction : StandardFunctionBase
+	internal sealed class AreEqualFunction : StandardFunctionBase
 	{
         public AreEqualFunction(EntityTokenFactory entityTokenFactory)
             : base("AreEqual", "Composite.Utils.Compare", typeof(bool), entityTokenFactory)

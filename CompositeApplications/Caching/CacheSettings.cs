@@ -2,7 +2,7 @@
 
 namespace Composite.Caching
 {
-    public sealed class CacheSettings
+    internal sealed class CacheSettings
     {
         public CacheType CacheType { get; private set; }
         public CachePriority DefaultPriority { get; private set; }

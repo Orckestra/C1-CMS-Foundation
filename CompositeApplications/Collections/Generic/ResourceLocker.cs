@@ -4,10 +4,10 @@ using System.Threading;
 
 namespace Composite.Collections.Generic
 {
-    public sealed class ResourceLocker<T>
+    internal sealed class ResourceLocker<T>
         where T : class
     {
-        public delegate void InitializerDelegate(T resources);
+        internal delegate void InitializerDelegate(T resources);
 
         private readonly T _resources;
         private InitializerDelegate _initializerDelegate;

@@ -8,7 +8,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Request
 {
-	public sealed class FormPostBoolValueFunction :  StandardFunctionBase
+	internal sealed class FormPostBoolValueFunction :  StandardFunctionBase
 	{
         public FormPostBoolValueFunction(EntityTokenFactory entityTokenFactory)
             : base("FormPostBoolValue", "Composite.Web.Request", typeof(bool), entityTokenFactory)

@@ -4,7 +4,7 @@ using Composite.Security;
 namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider
 {
     [SecurityAncestorProvider(typeof(UserElementProviderGroupEntityTokenSecurityAncestorProvider))]
-    public sealed class UserElementProviderGroupEntityToken : EntityToken
+    internal sealed class UserElementProviderGroupEntityToken : EntityToken
 	{
         private string _id;
 

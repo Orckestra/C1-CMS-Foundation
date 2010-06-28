@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Composite.Data.DynamicTypes
 {
-    public sealed class DataFieldIdEqualityComparer : EqualityComparer<DataFieldDescriptor>
+    internal sealed class DataFieldIdEqualityComparer : EqualityComparer<DataFieldDescriptor>
     {
         public override bool Equals(DataFieldDescriptor x, DataFieldDescriptor y)
         {

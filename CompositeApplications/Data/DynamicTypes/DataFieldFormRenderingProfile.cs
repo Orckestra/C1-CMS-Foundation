@@ -14,7 +14,7 @@ namespace Composite.Data.DynamicTypes
 
 
     [Serializable()]
-    public class LazyDataFieldFormRenderingProfile : DataFieldFormRenderingProfile
+    internal class LazyDataFieldFormRenderingProfile : DataFieldFormRenderingProfile
     {
         [NonSerialized]
         private string _widgetFunctionMarkup = null;

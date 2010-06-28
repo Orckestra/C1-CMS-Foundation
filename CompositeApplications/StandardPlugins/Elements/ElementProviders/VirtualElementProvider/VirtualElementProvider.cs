@@ -23,7 +23,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProv
     [ConfigurationElementType(typeof(VirtualElementProviderData))]
 
 #pragma warning disable 612 // There is no easy/fast way to make this hookless /MRJ
-    public sealed class VirtualElementProvider : IElementProvider, IDataExchangingElementProvider, ILocaleAwareElementProvider
+    internal sealed class VirtualElementProvider : IElementProvider, IDataExchangingElementProvider, ILocaleAwareElementProvider
 #pragma warning restore 612
     {
 
@@ -677,7 +677,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProv
 
     [Assembler(typeof(VirtualElementProviderAssembler))]
 #pragma warning disable 612
-    public sealed class VirtualElementProviderData : ElementProviderData
+    internal sealed class VirtualElementProviderData : ElementProviderData
 #pragma warning restore 612
     {
         private const string _virtualElementsProperty = "VirtualElements";
@@ -698,7 +698,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProv
 
 
     [ActionExecutor(typeof(ViewLogActionExecutor))]
-    public sealed class ViewLogActionToken : ActionToken
+    internal sealed class ViewLogActionToken : ActionToken
     {
         private static IEnumerable<PermissionType> _permissionType = new PermissionType[] { PermissionType.Administrate };
 
@@ -725,7 +725,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProv
 
 
 
-    public sealed class ViewLogActionExecutor : Composite.Actions.IActionExecutor
+    internal sealed class ViewLogActionExecutor : Composite.Actions.IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
@@ -754,7 +754,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProv
 
 
     [ActionExecutor(typeof(RestartApplicationActionExecutor))]
-    public sealed class RestartApplicationActionToken : ActionToken
+    internal sealed class RestartApplicationActionToken : ActionToken
     {
         private static IEnumerable<PermissionType> _permissionType = new PermissionType[] { PermissionType.Administrate };
 
@@ -781,7 +781,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProv
 
 
 
-    public sealed class RestartApplicationActionExecutor : Composite.Actions.IActionExecutor
+    internal sealed class RestartApplicationActionExecutor : Composite.Actions.IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {

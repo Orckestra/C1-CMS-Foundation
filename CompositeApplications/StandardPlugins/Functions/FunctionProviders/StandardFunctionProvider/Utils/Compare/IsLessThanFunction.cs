@@ -9,7 +9,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Compare
 {
-	public sealed class IsLessThanFunction : StandardFunctionBase
+	internal sealed class IsLessThanFunction : StandardFunctionBase
 	{
         public IsLessThanFunction(EntityTokenFactory entityTokenFactory)
             : base("IsLessThan", "Composite.Utils.Compare", typeof(bool), entityTokenFactory)

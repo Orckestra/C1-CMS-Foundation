@@ -14,7 +14,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunction
     /// <summary>
     /// Gets information about current page in all the languages.
     /// </summary>
-	public class GetForeignPageInfoFunction: StandardFunctionBase
+	internal class GetForeignPageInfoFunction: StandardFunctionBase
 	{
         public GetForeignPageInfoFunction(EntityTokenFactory entityTokenFactory)
             : base("GetForeignPageInfo", "Composite.Pages", typeof(IEnumerable<XElement>), entityTokenFactory)

@@ -8,7 +8,7 @@ using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidget
 
 namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.String
 {
-	public sealed class VisualXhtmlEditorFuntion : CompositeWidgetFunctionBase
+	internal sealed class VisualXhtmlEditorFuntion : CompositeWidgetFunctionBase
     {
         private const string _functionName = "VisualXhtmlEditor";
         public const string CompositeName = CompositeWidgetFunctionBase.CommonNamespace + ".String." +_functionName;

@@ -12,7 +12,7 @@ namespace Composite.Actions.Plugins.DataActionProvider
 {
     [CustomFactory(typeof(DataActionProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(DataActionProviderDefaultNameRetriever))]
-    public interface IDataActionProvider
+    internal interface IDataActionProvider
     {
         /// <summary>
         /// This property will be called by the system. 

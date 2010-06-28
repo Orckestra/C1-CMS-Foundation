@@ -15,7 +15,7 @@ using Composite.Linq;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated.Filter
 {
-	public sealed class DataReferenceFilter<T> : StandardFunctionBase
+	internal sealed class DataReferenceFilter<T> : StandardFunctionBase
         where T : class, IData
 	{
         private static readonly ParameterExpression _dataItem = Expression.Parameter(typeof(T), "data");

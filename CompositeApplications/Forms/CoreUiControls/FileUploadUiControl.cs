@@ -11,7 +11,7 @@ namespace Composite.Forms.CoreUiControls
     /// <summary>
     /// </summary>
     [ControlValueProperty("UploadedFile")]
-    public abstract class FileUploadUiControl : UiControl
+    internal abstract class FileUploadUiControl : UiControl
     {
         /// <summary>
         /// </summary>

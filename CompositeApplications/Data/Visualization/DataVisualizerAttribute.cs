@@ -4,7 +4,7 @@ using System;
 namespace Composite.Data.Visualization
 {
     [AttributeUsageAttribute(AttributeTargets.Interface, Inherited = true, AllowMultiple = false)]
-    public sealed class DataVisualizerAttribute: Attribute
+    internal sealed class DataVisualizerAttribute: Attribute
     {
         private Type _dataVisualizerAttributeType;
 

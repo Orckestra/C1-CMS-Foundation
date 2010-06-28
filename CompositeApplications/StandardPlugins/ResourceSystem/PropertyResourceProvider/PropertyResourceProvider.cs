@@ -10,7 +10,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.StandardPlugins.ResourceSystem.PropertyResourceProvider
 {
     [ConfigurationElementType(typeof(NonConfigurableResourceProvider))]
-    public sealed class PropertyResourceProvider : IStringResourceProvider
+    internal sealed class PropertyResourceProvider : IStringResourceProvider
 	{
         public string GetStringValue(string stringId, CultureInfo cultureInfo)
         {

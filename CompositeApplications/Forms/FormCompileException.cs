@@ -5,7 +5,7 @@ using Composite.Forms.Foundation.FormTreeCompiler.CompileTreeNodes;
 
 namespace Composite.Forms
 {
-    public class FormCompileException : ApplicationException
+    internal class FormCompileException : ApplicationException
     {
         private XmlSourceNodeInformation _xmlInformation = null;
         private XmlSourceNodeInformation _propertyXmlInformation = null;

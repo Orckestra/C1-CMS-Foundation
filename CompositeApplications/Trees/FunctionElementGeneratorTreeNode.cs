@@ -12,7 +12,7 @@ using Composite.Functions;
 
 namespace Composite.Trees
 {    
-    public sealed class FunctionElementGeneratorTreeNode : TreeNode
+    internal sealed class FunctionElementGeneratorTreeNode : TreeNode
     {
         public XElement FunctionMarkup { get; internal set; }   // Requried
         public string Label { get; internal set; }              // Requried

@@ -9,7 +9,7 @@ using Composite.Types;
 
 namespace Composite.Trees
 {
-    public sealed class FieldOrderByNode : OrderByNode
+    internal sealed class FieldOrderByNode : OrderByNode
     {
         private PropertyInfo PropertyInfo { get; set; }
 

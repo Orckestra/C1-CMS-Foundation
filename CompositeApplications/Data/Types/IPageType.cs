@@ -8,7 +8,7 @@ using Composite.Data.Hierarchy.DataAncestorProviders;
 
 namespace Composite.Data.Types
 {
-    public enum PageTypeHomepageRelation
+    internal enum PageTypeHomepageRelation
     {
         NoRestriction = 1,
         OnlySubPages = 2,

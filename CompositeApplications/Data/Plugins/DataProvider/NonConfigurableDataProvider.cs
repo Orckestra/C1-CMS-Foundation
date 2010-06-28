@@ -8,11 +8,11 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.Data.Plugins.DataProvider
 {
     [Assembler(typeof(NonConfigurableDataProviderAssembler))]
-    public sealed class NonConfigurableDataProvider : DataProviderData
+    internal sealed class NonConfigurableDataProvider : DataProviderData
     {
     }
 
-    public sealed class NonConfigurableDataProviderAssembler : IAssembler<IDataProvider, DataProviderData>
+    internal sealed class NonConfigurableDataProviderAssembler : IAssembler<IDataProvider, DataProviderData>
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         public IDataProvider Assemble(IBuilderContext context, DataProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)

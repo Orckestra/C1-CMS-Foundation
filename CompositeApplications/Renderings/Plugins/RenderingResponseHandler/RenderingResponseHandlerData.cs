@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.Renderings.Plugins.RenderingResponseHandler
 {
     [ConfigurationElementType(typeof(NonConfigurableRenderingResponseHandler))]
-    public class RenderingResponseHandlerData : NameTypeManagerTypeConfigurationElement
+    internal class RenderingResponseHandlerData : NameTypeManagerTypeConfigurationElement
 	{
 	}
 }

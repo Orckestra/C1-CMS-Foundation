@@ -6,7 +6,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.Forms.CoreFunctions
 {
     [ControlValueProperty("Value")]
-    public sealed class Replicator : IFormFunction
+    internal sealed class Replicator : IFormFunction
     {
         [BindableProperty()]
         [FormsProperty()]
@@ -22,7 +22,7 @@ namespace Composite.Forms.CoreFunctions
 
 
     [ConfigurationElementType(typeof(ReplicatorFunctionFactoryData))]
-    public sealed class ReplicatorFunctionFactory : IFormFunctionFactory
+    internal sealed class ReplicatorFunctionFactory : IFormFunctionFactory
     {
         public IFormFunction CreateFunction()
         {
@@ -32,7 +32,7 @@ namespace Composite.Forms.CoreFunctions
 
 
     [Assembler(typeof(NonConfigurableFunctionFactoryAssembler))]
-    public sealed class ReplicatorFunctionFactoryData : FunctionFactoryData
+    internal sealed class ReplicatorFunctionFactoryData : FunctionFactoryData
     {
     }
 }

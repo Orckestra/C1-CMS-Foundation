@@ -8,7 +8,7 @@ namespace Composite.Forms.CoreUiControls
     /// Base class for UiControl containers. 
     /// </summary>
     [ControlValueProperty("UiControls")]
-    public abstract class ContainerUiControlBase : UiControl, IContainerUiControl
+    internal abstract class ContainerUiControlBase : UiControl, IContainerUiControl
     {
         public ContainerUiControlBase()
         {

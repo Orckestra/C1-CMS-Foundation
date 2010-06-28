@@ -6,7 +6,7 @@ using System.Text;
 namespace Composite.StandardPlugins.Functions.FunctionProviders.MethodBasedFunctionProvider
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-	public sealed class MethodBasedDefaultValueAttribute : Attribute
+	internal sealed class MethodBasedDefaultValueAttribute : Attribute
 	{
         public MethodBasedDefaultValueAttribute(string parameterName, object defaultValue)
         {

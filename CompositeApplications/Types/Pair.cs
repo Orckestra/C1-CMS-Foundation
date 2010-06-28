@@ -2,7 +2,7 @@
 
 namespace Composite.Types
 {
-	public sealed class Pair<TFirst, TSecond>
+	internal sealed class Pair<TFirst, TSecond>
 	{
 
         public Pair(TFirst firstValue, TSecond secondValue)

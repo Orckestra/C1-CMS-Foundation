@@ -6,7 +6,7 @@ using Composite.Forms.Foundation;
 namespace Composite.Forms.CoreUiControls
 {
     [ControlValueProperty("IsTrue")]
-    public abstract class BoolSelectorUiControl : UiControl
+    internal abstract class BoolSelectorUiControl : UiControl
     {
         [BindableProperty()]
         [FormsProperty()]

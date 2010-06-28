@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace Composite.Forms.StandardProducerMediators.BuildinProducers
 {
     [ControlValueProperty("Result")]
-    public sealed class IfWhenFalseProducer : IBuildinProducer
+    internal sealed class IfWhenFalseProducer : IBuildinProducer
     {
         private List<object> _result = new List<object>();
 

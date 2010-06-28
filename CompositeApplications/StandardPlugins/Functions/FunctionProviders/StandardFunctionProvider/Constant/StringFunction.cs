@@ -8,7 +8,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Constant
 {
-    public sealed class StringFunction : StandardFunctionBase
+    internal sealed class StringFunction : StandardFunctionBase
     {
         public StringFunction(EntityTokenFactory entityTokenFactory)
             : base("String", "Composite.Constant", typeof(string), entityTokenFactory)

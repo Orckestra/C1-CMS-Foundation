@@ -72,7 +72,7 @@ namespace Composite.Xml
 
 
 
-    public sealed class XhtmlDocumentConverterAttribute : ValueTypeConverterHelperAttribute
+    internal sealed class XhtmlDocumentConverterAttribute : ValueTypeConverterHelperAttribute
     {
         public override bool TryConvert(object value, Type targetType, out object targetValue)
         {

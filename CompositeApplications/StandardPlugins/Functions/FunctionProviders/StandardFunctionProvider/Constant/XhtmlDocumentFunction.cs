@@ -9,7 +9,7 @@ using Composite.Xml;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Constant
 {
-    public sealed class XhtmlDocumentFunction : StandardFunctionBase
+    internal sealed class XhtmlDocumentFunction : StandardFunctionBase
     {
         public XhtmlDocumentFunction(EntityTokenFactory entityTokenFactory)
             : base("XhtmlDocument", "Composite.Constant", typeof(XhtmlDocument), entityTokenFactory)

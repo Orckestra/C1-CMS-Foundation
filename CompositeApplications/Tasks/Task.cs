@@ -5,7 +5,7 @@ using Composite.Actions;
 
 namespace Composite.Tasks
 {
-    public sealed class Task
+    internal sealed class Task
     {
         public Task(string id, Type taskManagerType)
         {

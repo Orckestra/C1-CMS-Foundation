@@ -13,7 +13,7 @@ using Composite.Elements.ElementProviderHelpers.VisualFunctionElementProviderHel
 
 namespace Composite.Elements.ElementProviderHelpers.VisualFunctionElementProviderHelper
 {
-    public sealed class VisualFunctionElementProviderHelper
+    internal sealed class VisualFunctionElementProviderHelper
     {
         private ResourceHandle AddRenderingFunctionIcon { get { return GetIconHandle("visual-function-add"); } }
         private ResourceHandle EditRenderingFunctionIcon { get { return GetIconHandle("visual-function-edit"); } }

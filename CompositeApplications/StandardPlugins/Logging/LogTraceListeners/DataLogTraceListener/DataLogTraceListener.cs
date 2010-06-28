@@ -21,7 +21,7 @@ namespace Composite.StandardPlugins.Logging.LogTraceListeners.DataLogTraceListen
 {
     [Obsolete]
     [ConfigurationElementType(typeof(CustomTraceListenerData))]
-    public sealed class DataLogTraceListener : CustomTraceListener
+    internal sealed class DataLogTraceListener : CustomTraceListener
     {
         private static readonly object _lock = new object();
         private static bool _addingInterface = false;

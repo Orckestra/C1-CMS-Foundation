@@ -5,7 +5,7 @@ using Composite.Security.SecurityAncestorProviders;
 namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElementProvider
 {
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
-    public class PageTemplateRootEntityToken : EntityToken
+    internal class PageTemplateRootEntityToken : EntityToken
     {
         public PageTemplateRootEntityToken()
         {

@@ -25,7 +25,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.AllFunctionsElemen
 {
     [ConfigurationElementType(typeof(AllFunctionsElementProviderData))]
 #pragma warning disable 612
-    public sealed class AllFunctionsElementProvider : BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider, ICustomSearchElementProvider, IElementProvider
+    internal sealed class AllFunctionsElementProvider : BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider, ICustomSearchElementProvider, IElementProvider
 #pragma warning restore 612
     {
         private List<EntityTokenHook> _currentEntityTokenHooks = null;
@@ -451,7 +451,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.AllFunctionsElemen
 
     [Assembler(typeof(AllFunctionsElementProviderAssembler))]
 #pragma warning disable 612
-    public sealed class AllFunctionsElementProviderData : ElementProviderData
+    internal sealed class AllFunctionsElementProviderData : ElementProviderData
 #pragma warning restore 612
     {
         private const string _providerTypePropertyName = "providerType";
@@ -466,7 +466,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.AllFunctionsElemen
 
 
 #pragma warning disable 612
-    public sealed class AllFunctionsElementProviderAssembler : IAssembler<IElementProvider, ElementProviderData>
+    internal sealed class AllFunctionsElementProviderAssembler : IAssembler<IElementProvider, ElementProviderData>
     {
         public IElementProvider Assemble(IBuilderContext context, ElementProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {

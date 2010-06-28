@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Composite.Elements.Plugins.ElementProvider
 {
-    public interface ICustomSearchElementProvider : IHooklessElementProvider
+    internal interface ICustomSearchElementProvider : IHooklessElementProvider
     {
         SearchToken GetNewSearchToken(EntityToken entityToken);
         XmlReader GetSearchFormDefinition(EntityToken entityToken);

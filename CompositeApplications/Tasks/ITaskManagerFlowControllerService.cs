@@ -3,7 +3,7 @@
 
 namespace Composite.Tasks
 {
-    public interface ITaskManagerFlowControllerService : IFlowControllerService
+    internal interface ITaskManagerFlowControllerService : IFlowControllerService
 	{
         void OnStatus(TaskManagerEvent taskManagerEvent);
 	}

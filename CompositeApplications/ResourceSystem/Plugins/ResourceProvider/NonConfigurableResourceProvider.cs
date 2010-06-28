@@ -7,12 +7,12 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.ResourceSystem.Plugins.ResourceProvider
 {
     [Assembler(typeof(NonConfigurableResourceProviderAssembler))]
-    public class NonConfigurableResourceProvider : ResourceProviderData
+    internal class NonConfigurableResourceProvider : ResourceProviderData
     {
     }
 
 
-    public sealed class NonConfigurableResourceProviderAssembler : IAssembler<IResourceProvider, ResourceProviderData>
+    internal sealed class NonConfigurableResourceProviderAssembler : IAssembler<IResourceProvider, ResourceProviderData>
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         public IResourceProvider Assemble(IBuilderContext context, ResourceProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)

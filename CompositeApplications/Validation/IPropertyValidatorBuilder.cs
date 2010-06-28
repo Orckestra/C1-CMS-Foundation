@@ -4,7 +4,7 @@ using System.CodeDom;
 
 namespace Composite.Validation
 {
-	public interface IPropertyValidatorBuilder
+	internal interface IPropertyValidatorBuilder
 	{
         /// <summary>
         /// This method should return a CodeAttributeDeclaration that will beused for 

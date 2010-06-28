@@ -11,7 +11,7 @@ using System.Globalization;
 
 namespace Composite.WebClient.HttpModules
 {
-    public class AdministrativeCultureSetterHttpModule : IHttpModule
+    internal class AdministrativeCultureSetterHttpModule : IHttpModule
     {
         public void Init(HttpApplication context)
         {

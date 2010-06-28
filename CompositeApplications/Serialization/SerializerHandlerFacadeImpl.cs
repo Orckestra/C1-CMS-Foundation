@@ -7,7 +7,7 @@ using Composite.Types;
 
 namespace Composite.Serialization
 {
-    public sealed class SerializerHandlerFacadeImpl : ISerializerHandlerFacade
+    internal sealed class SerializerHandlerFacadeImpl : ISerializerHandlerFacade
 	{
         private Dictionary<Type, ISerializerHandler> _serializeHandlers = new Dictionary<Type, ISerializerHandler>();
         private readonly object _lock = new object();

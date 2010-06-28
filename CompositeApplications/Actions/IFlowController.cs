@@ -1,6 +1,6 @@
 namespace Composite.Actions
 {
-    public interface IFlowController
+    internal interface IFlowController
     {
         /// <summary>
         /// Set by the the system (mediator)

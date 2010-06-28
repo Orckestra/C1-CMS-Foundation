@@ -10,7 +10,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.Trees
 {
     [ConfigurationElementType(typeof(NonConfigurableElementActionProvider))]
-    public sealed class TreeElementActionProvider : IElementActionProvider
+    internal sealed class TreeElementActionProvider : IElementActionProvider
     {
         private static readonly ResourceHandle AddApplicationIcon = ResourceHandle.BuildIconFromDefaultProvider("tree-add-application");
         private static readonly ResourceHandle RemoveApplicationIcon = ResourceHandle.BuildIconFromDefaultProvider("tree-remove-application");

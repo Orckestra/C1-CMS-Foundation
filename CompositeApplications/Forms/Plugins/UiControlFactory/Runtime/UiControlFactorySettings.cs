@@ -6,7 +6,7 @@ using Composite.Configuration;
 
 namespace Composite.Forms.Plugins.UiControlFactory.Runtime
 {
-    public sealed class UiControlFactorySettings : SerializableConfigurationSection
+    internal sealed class UiControlFactorySettings : SerializableConfigurationSection
     {
         public const string SectionName = "Composite.Forms.Plugins.UiControlFactoryConfiguration";
 
@@ -24,7 +24,7 @@ namespace Composite.Forms.Plugins.UiControlFactory.Runtime
 
 
 
-    public sealed class NamespaceConfigurationElement : NamedConfigurationElement
+    internal sealed class NamespaceConfigurationElement : NamedConfigurationElement
     {
         private const string _factoriesPropertyName = "Factories";
         [ConfigurationProperty(_factoriesPropertyName, IsRequired = true)]
@@ -36,7 +36,7 @@ namespace Composite.Forms.Plugins.UiControlFactory.Runtime
 
 
 
-    public sealed class NamespaceConfigurationElementCollection : ConfigurationElementCollection
+    internal sealed class NamespaceConfigurationElementCollection : ConfigurationElementCollection
     {
         public NamespaceConfigurationElementCollection()
             : base()
@@ -70,7 +70,7 @@ namespace Composite.Forms.Plugins.UiControlFactory.Runtime
 
 
 
-    public sealed class ChannelConfigurationElement : NamedConfigurationElement
+    internal sealed class ChannelConfigurationElement : NamedConfigurationElement
     {
         private const string _debugControlNamespacePropertyName = "debugControlNamespace";
         [ConfigurationProperty(_debugControlNamespacePropertyName, IsRequired = true)]
@@ -103,7 +103,7 @@ namespace Composite.Forms.Plugins.UiControlFactory.Runtime
 
 
 
-    public sealed class ChannelConfigurationElementCollection : ConfigurationElementCollection
+    internal sealed class ChannelConfigurationElementCollection : ConfigurationElementCollection
     {
         public ChannelConfigurationElementCollection()
             : base()

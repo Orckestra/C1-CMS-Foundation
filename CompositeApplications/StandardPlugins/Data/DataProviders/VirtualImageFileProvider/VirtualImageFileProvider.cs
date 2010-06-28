@@ -10,7 +10,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.StandardPlugins.Data.DataProviders.VirtualImageFileProvider
 {
     [ConfigurationElementType(typeof(NonConfigurableDataProvider))]
-    public sealed class VirtualImageFileProvider : IDataProvider
+    internal sealed class VirtualImageFileProvider : IDataProvider
 	{
         public DataProviderContext Context
         {

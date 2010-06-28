@@ -11,7 +11,7 @@ using Composite.Types;
 
 namespace Composite.Serialization
 {
-    public sealed class SystemSerializableValueXmlSerializer : IValueXmlSerializer
+    internal sealed class SystemSerializableValueXmlSerializer : IValueXmlSerializer
     {
         public bool TrySerialize(Type objectToSerializeType, object objectToSerialize, IXmlSerializer xmlSerializer, out XElement serializedObject)
         {

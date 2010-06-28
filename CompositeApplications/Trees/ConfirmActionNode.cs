@@ -10,7 +10,7 @@ using Composite.Workflow;
 
 namespace Composite.Trees
 {
-    public sealed class ConfirmActionNode : ActionNode
+    internal sealed class ConfirmActionNode : ActionNode
     {
         public string ConfirmTitle { get; internal set; }                           // Requried
         public string ConfirmMessage { get; internal set; }                         // Requried

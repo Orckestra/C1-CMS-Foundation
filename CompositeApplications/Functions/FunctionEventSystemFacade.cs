@@ -9,10 +9,10 @@ namespace Composite.Functions
 {
     internal static class FunctionEventSystemFacade
     {
-        public delegate void FunctionsAddedEventDelegate(FunctionsAddedEventArgs args);
-        public delegate void FunctionsRemovedEventDelegate(FunctionsRemovedEventArgs args);
-        public delegate void WidgetFunctionsAddedEventDelegate(WidgetFunctionsAddedEventArgs args);
-        public delegate void WidgetFunctionsRemovedEventDelegate(WidgetFunctionsRemovedEventArgs args);
+        internal delegate void FunctionsAddedEventDelegate(FunctionsAddedEventArgs args);
+        internal delegate void FunctionsRemovedEventDelegate(FunctionsRemovedEventArgs args);
+        internal delegate void WidgetFunctionsAddedEventDelegate(WidgetFunctionsAddedEventArgs args);
+        internal delegate void WidgetFunctionsRemovedEventDelegate(WidgetFunctionsRemovedEventArgs args);
 
         private static event FunctionsAddedEventDelegate _functionsAddedEvent;
         private static event FunctionsRemovedEventDelegate _functionsRemovedEvent;
@@ -152,7 +152,7 @@ namespace Composite.Functions
 
 
 
-    public sealed class FunctionsAddedEventArgs : EventArgs
+    internal sealed class FunctionsAddedEventArgs : EventArgs
     {
         internal FunctionsAddedEventArgs(List<string> functionsAdded)
         {
@@ -169,7 +169,7 @@ namespace Composite.Functions
 
 
 
-    public sealed class FunctionsRemovedEventArgs : EventArgs
+    internal sealed class FunctionsRemovedEventArgs : EventArgs
     {
         internal FunctionsRemovedEventArgs(List<string> functionsRemoved)
         {
@@ -186,7 +186,7 @@ namespace Composite.Functions
 
 
 
-    public sealed class WidgetFunctionsAddedEventArgs : EventArgs
+    internal sealed class WidgetFunctionsAddedEventArgs : EventArgs
     {
         internal WidgetFunctionsAddedEventArgs(List<string> widgetFunctionsAdded)
         {
@@ -203,7 +203,7 @@ namespace Composite.Functions
 
 
 
-    public sealed class WidgetFunctionsRemovedEventArgs : EventArgs
+    internal sealed class WidgetFunctionsRemovedEventArgs : EventArgs
     {
         internal WidgetFunctionsRemovedEventArgs(List<string> widgetFunctionsRemoved)
         {

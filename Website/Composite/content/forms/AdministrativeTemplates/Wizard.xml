@@ -7,7 +7,7 @@
   xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
 
   <cms:bindings>
-    <cms:binding name="Form" type="Composite.Forms.IUiControl, Composite" />
+    <cms:binding name="Form" type="Composite.Forms.IUiControl, CompositeApplications" />
     <cms:binding name="NextEventHandler" type="System.EventHandler" optional="true" />
     <cms:binding name="PreviousEventHandler" type="System.EventHandler" optional="true" />
     <cms:binding name="FinishEventHandler" type="System.EventHandler" optional="true" />

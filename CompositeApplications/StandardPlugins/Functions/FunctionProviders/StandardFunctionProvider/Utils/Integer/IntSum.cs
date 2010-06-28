@@ -9,7 +9,7 @@ using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProv
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Integer
 {
-    public sealed class Sum : StandardFunctionBase
+    internal sealed class Sum : StandardFunctionBase
 	{
         public Sum(EntityTokenFactory entityTokenFactory)
             : base("Sum", "Composite.Utils.Integer", typeof(int), entityTokenFactory)

@@ -12,7 +12,7 @@ using Microsoft.Practices.EnterpriseLibrary.Logging.TraceListeners;
 namespace Composite.StandardPlugins.Logging.LogTraceListeners.TcpLogTraceListener
 {
     [ConfigurationElementType(typeof(TcpLogTraceListenerData))]
-    public sealed class TcpLogTraceListener : CustomTraceListener
+    internal sealed class TcpLogTraceListener : CustomTraceListener
     {
         private TcpLogTraceListenerThreadData _tcpLogTraceListenerThreadData = new TcpLogTraceListenerThreadData();
         private Thread _tcpLogTraceListenerThread = null;
@@ -105,7 +105,7 @@ namespace Composite.StandardPlugins.Logging.LogTraceListeners.TcpLogTraceListene
     }
 
 
-    public sealed class TcpLogTraceListenerData : CustomTraceListenerData
+    internal sealed class TcpLogTraceListenerData : CustomTraceListenerData
     {
     }
 }

@@ -10,7 +10,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Response
 {
-    public sealed class SetSessionVariableFunction :  StandardFunctionBase
+    internal sealed class SetSessionVariableFunction :  StandardFunctionBase
 	{
         public SetSessionVariableFunction(EntityTokenFactory entityTokenFactory)
             : base("SetSessionVariable", "Composite.Web.Response", typeof(string), entityTokenFactory)

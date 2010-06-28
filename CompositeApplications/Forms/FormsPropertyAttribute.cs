@@ -7,7 +7,7 @@ namespace Composite.Forms
     /// Defines that a property should be visuble / accessible in the forms environment.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property,AllowMultiple=false,Inherited=true)]
-    public sealed class FormsPropertyAttribute : Attribute
+    internal sealed class FormsPropertyAttribute : Attribute
     {
     }
 }

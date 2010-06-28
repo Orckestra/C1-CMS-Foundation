@@ -17,7 +17,7 @@ using Composite.Localization;
 namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElementProvider
 {
     [ConfigurationElementType(typeof(NonConfigurableHooklessElementProvider))]
-    public sealed class LocalizationElementProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
+    internal sealed class LocalizationElementProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
     {
         private ElementProviderContext _context;
 

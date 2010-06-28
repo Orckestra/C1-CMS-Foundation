@@ -5,7 +5,7 @@ using Composite.Forms.Plugins.UiControlFactory;
 
 namespace Composite.Forms.CoreUiControls
 {
-    public class TypeSelectorUiControlFactoryData : UiControlFactoryData
+    internal class TypeSelectorUiControlFactoryData : UiControlFactoryData
     {
     }
 }

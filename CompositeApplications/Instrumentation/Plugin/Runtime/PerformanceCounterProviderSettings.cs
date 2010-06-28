@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Instrumentation.Plugin.Runtime
 {
-	public sealed class PerformanceCounterProviderSettings : SerializableConfigurationSection
+	internal sealed class PerformanceCounterProviderSettings : SerializableConfigurationSection
 	{
         public const string SectionName = "Composite.Instrumentation.Plugin.Runtime.PerformanceCounterProviderConfiguration";
 

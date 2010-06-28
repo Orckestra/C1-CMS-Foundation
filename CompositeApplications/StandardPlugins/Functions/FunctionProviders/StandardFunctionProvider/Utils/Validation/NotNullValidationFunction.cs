@@ -9,7 +9,7 @@ using Composite.Validation;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Validation
 {
-    public sealed class NotNullValidationFunction<T> : StandardFunctionBase
+    internal sealed class NotNullValidationFunction<T> : StandardFunctionBase
     {
         public NotNullValidationFunction(EntityTokenFactory entityTokenFactory)
             : base(typeof(T).Name + "NotNullValidation", "Composite.Utils.Validation", typeof(PropertyValidatorBuilder<T>), entityTokenFactory)

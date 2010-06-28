@@ -9,7 +9,7 @@ using Composite.Forms.CoreUiControls;
 
 namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Integer
 {
-	public sealed class IntegerTextBoxWidgetFuntion : CompositeWidgetFunctionBase
+	internal sealed class IntegerTextBoxWidgetFuntion : CompositeWidgetFunctionBase
     {
         private const string _functionName = "TextBox";
         public const string CompositeName = CompositeWidgetFunctionBase.CommonNamespace + ".Integer." + _functionName;

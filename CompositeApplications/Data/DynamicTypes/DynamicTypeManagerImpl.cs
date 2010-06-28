@@ -10,7 +10,7 @@ using Composite.Transactions;
 
 namespace Composite.Data.DynamicTypes
 {
-    public sealed class DynamicTypeManagerImpl : IDynamicTypeManager
+    internal sealed class DynamicTypeManagerImpl : IDynamicTypeManager
     {
         public DataTypeDescriptor BuildNewDataTypeDescriptor(Type typeToDescript)
         {

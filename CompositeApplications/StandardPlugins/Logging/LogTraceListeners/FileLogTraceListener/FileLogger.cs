@@ -16,7 +16,7 @@ namespace Composite.StandardPlugins.Logging.LogTraceListeners.FileLogTraceListen
     /// <summary>
     /// File logger
     /// </summary>
-	public class FileLogger: IDisposable
+	internal class FileLogger: IDisposable
 	{
         private readonly string _logDirectoryPath;
         private readonly bool _flushImmediately;
@@ -292,7 +292,7 @@ namespace Composite.StandardPlugins.Logging.LogTraceListeners.FileLogTraceListen
             stream.Write(preamble, 0, preamble.Length);
         }
 
-        public abstract class LogFileReader
+        internal abstract class LogFileReader
         {
 
             public DateTime Date { get; protected set; }

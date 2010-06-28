@@ -6,7 +6,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Functions.Plugins.XslExtensionsProvider.Runtime
 {
-    public sealed class XslExtensionsProviderSettings : SerializableConfigurationSection
+    internal sealed class XslExtensionsProviderSettings : SerializableConfigurationSection
     {
         public const string SectionName = "Composite.Functions.Plugins.XslExtensionsProviderConfiguration";
 

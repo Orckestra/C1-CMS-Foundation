@@ -3,7 +3,7 @@ using Composite.Functions;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation
 {
-	public sealed class StandardFunctionParameterProfile
+	internal sealed class StandardFunctionParameterProfile
 	{
         public StandardFunctionParameterProfile(
             string name, Type type, bool isRequired, BaseValueProvider fallbackValueProvider, 

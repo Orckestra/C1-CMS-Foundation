@@ -7,11 +7,11 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.Application.Plugins.ApplicationOnlineHandler
 {
     [Assembler(typeof(NonConfigurableApplicationOnlineHandlerAssembler))]
-    public class NonConfigurableApplicationOnlineHandler : ApplicationOnlineHandlerData
+    internal class NonConfigurableApplicationOnlineHandler : ApplicationOnlineHandlerData
 	{
 	}
 
-    public sealed class NonConfigurableApplicationOnlineHandlerAssembler : IAssembler<IApplicationOnlineHandler, ApplicationOnlineHandlerData>
+    internal sealed class NonConfigurableApplicationOnlineHandlerAssembler : IAssembler<IApplicationOnlineHandler, ApplicationOnlineHandlerData>
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         public IApplicationOnlineHandler Assemble(IBuilderContext context, ApplicationOnlineHandlerData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)

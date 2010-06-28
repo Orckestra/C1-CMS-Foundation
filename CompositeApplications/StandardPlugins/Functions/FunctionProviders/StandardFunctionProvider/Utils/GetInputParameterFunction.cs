@@ -7,7 +7,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils
 {
-    public sealed class GetInputParameterFunction : DowncastableStandardFunctionBase
+    internal sealed class GetInputParameterFunction : DowncastableStandardFunctionBase
     {
         public GetInputParameterFunction(EntityTokenFactory entityTokenFactory)
             : base("GetInputParameter", "Composite.Utils", typeof(object), entityTokenFactory)

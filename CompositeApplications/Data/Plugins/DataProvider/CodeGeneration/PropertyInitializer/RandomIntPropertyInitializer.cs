@@ -3,7 +3,7 @@
 
 namespace Composite.Data.Plugins.DataProvider.CodeGeneration.PropertyInitializer
 {
-    public sealed class RandomIntPropertyInitializer : IPropertyInitializer
+    internal sealed class RandomIntPropertyInitializer : IPropertyInitializer
 	{
         public Type ValueType
         {

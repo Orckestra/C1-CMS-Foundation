@@ -4,7 +4,7 @@ using Composite.Security;
 
 namespace Composite.Data.ProcessControlled
 {
-	public interface IActionPermissionTypeProvider
+	internal interface IActionPermissionTypeProvider
 	{
         IEnumerable<PermissionType> GetActionPermissionTypes(string actionTypeName, IData data);
 	}

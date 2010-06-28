@@ -8,7 +8,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.StandardPlugins.Types.TypeManagerTypeHandler.SystemTypeManagerTypeHandler
 {
     [ConfigurationElementType(typeof(SystemTypeManagerTypeHandlerData))]
-    public sealed class SystemTypeManagerTypeHandler : ITypeManagerTypeHandler
+    internal sealed class SystemTypeManagerTypeHandler : ITypeManagerTypeHandler
     {
         public Type GetType(string fullName)
         {
@@ -50,7 +50,7 @@ namespace Composite.StandardPlugins.Types.TypeManagerTypeHandler.SystemTypeManag
 
 
     [Assembler(typeof(NonConfigurableTypeManagerTypeHandlerAssembler))]
-    public sealed class SystemTypeManagerTypeHandlerData : TypeManagerTypeHandlerData
+    internal sealed class SystemTypeManagerTypeHandlerData : TypeManagerTypeHandlerData
     {
     }
 }

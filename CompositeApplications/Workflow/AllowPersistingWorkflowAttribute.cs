@@ -2,7 +2,7 @@
 
 namespace Composite.Workflow
 {
-    public enum WorkflowPersistingType
+    internal enum WorkflowPersistingType
     {
         /// <summary>
         /// Never persisted
@@ -23,7 +23,7 @@ namespace Composite.Workflow
 
 
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public sealed class AllowPersistingWorkflowAttribute : Attribute
+    internal sealed class AllowPersistingWorkflowAttribute : Attribute
     {
         public AllowPersistingWorkflowAttribute(WorkflowPersistingType workflowPersistingType)
         {

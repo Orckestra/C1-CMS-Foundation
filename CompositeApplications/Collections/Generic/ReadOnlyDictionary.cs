@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Composite.Collections.Generic
 {
-    public sealed class ReadOnlyDictionary<TKey, TValue> : IDictionary<TKey, TValue>
+    internal sealed class ReadOnlyDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
         Dictionary<TKey, TValue> _dictionary;
 

@@ -4,7 +4,7 @@ using System;
 namespace Composite.Security
 {
     [AttributeUsageAttribute(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
-    public sealed class AuxiliarySecurityAncestorProviderAttribute : Attribute
+    internal sealed class AuxiliarySecurityAncestorProviderAttribute : Attribute
     {
         private Type _auxiliarySecurityAncestorProviderType;
 

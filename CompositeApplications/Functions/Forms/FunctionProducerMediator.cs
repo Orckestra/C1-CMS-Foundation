@@ -10,7 +10,7 @@ using Composite.Forms;
 namespace Composite.Functions.Forms
 {
     [ConfigurationElementType(typeof(NonConfigurableProducerMediator))]
-    public sealed class FunctionProducerMediator : IProducerMediator
+    internal sealed class FunctionProducerMediator : IProducerMediator
     {
         public object CreateProducer(IFormChannelIdentifier channel, string namespaceName, string name)
         {

@@ -6,7 +6,7 @@ using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProv
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.String
 {
-    public sealed class JoinTwo : StandardFunctionBase, ICompoundFunction
+    internal sealed class JoinTwo : StandardFunctionBase, ICompoundFunction
     {
         public JoinTwo(EntityTokenFactory entityTokenFactory)
             : base("JoinTwo", "Composite.Utils.String", typeof(string), entityTokenFactory)

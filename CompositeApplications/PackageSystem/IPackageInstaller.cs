@@ -4,7 +4,7 @@ using Composite.PackageSystem.Foundation;
 
 namespace Composite.PackageSystem
 {
-	public interface IPackageInstaller
+	internal interface IPackageInstaller
 	{
         bool CanBeUninstalled { get; }
         bool FlushOnCompletion { get; }

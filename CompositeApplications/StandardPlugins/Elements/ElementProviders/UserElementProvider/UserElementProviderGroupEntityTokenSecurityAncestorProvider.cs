@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider
 {
-    public sealed class UserElementProviderGroupEntityTokenSecurityAncestorProvider : ISecurityAncestorProvider
+    internal sealed class UserElementProviderGroupEntityTokenSecurityAncestorProvider : ISecurityAncestorProvider
     {
         public IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {

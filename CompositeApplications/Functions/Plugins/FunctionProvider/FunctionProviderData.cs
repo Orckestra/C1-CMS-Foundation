@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.Functions.Plugins.FunctionProvider
 {
     [ConfigurationElementType(typeof(NonConfigurableFunctionProvider))]
-    public class FunctionProviderData : NameTypeManagerTypeConfigurationElement
+    internal class FunctionProviderData : NameTypeManagerTypeConfigurationElement
     {
     }
 }

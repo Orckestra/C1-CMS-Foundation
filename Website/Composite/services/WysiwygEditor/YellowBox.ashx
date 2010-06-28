@@ -2,14 +2,11 @@
 
 using System;
 using System.Web;
-using System.Xml.Linq;
 using System.Drawing;
-using System.Xml;
-using System.Text;
-using Composite.Functions;
-using Composite.Drawing;
 using System.Drawing.Imaging;
 using System.Collections.Generic;
+
+using Composite.Drawing;
 using Composite.WebClient;
  
 public class YellowBox : IHttpHandler
@@ -56,8 +53,8 @@ public class YellowBox : IHttpHandler
             string filePath = context.Server.MapPath(UrlUtils.ResolveAdminUrl("images/functionbox.png"));
 
             Bitmap bitmap = (Bitmap)Bitmap.FromFile(filePath);
-           
-            ImageTemplatedBoxCreateor imageCreator = new ImageTemplatedBoxCreateor(bitmap, new Point(55, 40), new Point(176, 78));
+
+            ImageTemplatedBoxCreator imageCreator = new ImageTemplatedBoxCreator(bitmap, new Point(55, 40), new Point(176, 78));
 
             imageCreator.MinHeight = 50;
            

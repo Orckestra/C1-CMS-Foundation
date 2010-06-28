@@ -13,7 +13,7 @@ namespace Composite.Data.Types.StoreIdFilter
         string StoreId { get; }
     }
 
-    public sealed class StoreIdFilterQueryable<T> : IStoreIdFilterQueryable, IOrderedQueryable<T>, IQueryProvider, IStorageFilter
+    internal sealed class StoreIdFilterQueryable<T> : IStoreIdFilterQueryable, IOrderedQueryable<T>, IQueryProvider, IStorageFilter
     {
         private IQueryable<T> _originalQueryable;
         private string _storeId;

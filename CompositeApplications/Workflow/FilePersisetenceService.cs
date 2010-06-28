@@ -13,7 +13,7 @@ using Composite.Logging;
 
 namespace Composite.Workflow
 {
-    public class FileWorkFlowPersisetenceService : WorkflowPersistenceService
+    internal class FileWorkFlowPersisetenceService : WorkflowPersistenceService
     {
         private static readonly string LogTitle = "Workflow File Persisting Service";
         private string _baseDirectory;

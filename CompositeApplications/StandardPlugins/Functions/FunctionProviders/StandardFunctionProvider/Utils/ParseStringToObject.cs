@@ -7,7 +7,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils
 {
-    public sealed class ParseStringToObjectFunction : DowncastableStandardFunctionBase
+    internal sealed class ParseStringToObjectFunction : DowncastableStandardFunctionBase
     {
         public ParseStringToObjectFunction(EntityTokenFactory entityTokenFactory)
             : base("ParseStringToObject", "Composite.Utils", typeof(object), entityTokenFactory)

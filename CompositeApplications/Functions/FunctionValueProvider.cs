@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Composite.Functions
 {
-    public sealed class FunctionValueProvider : BaseValueProvider
+    internal sealed class FunctionValueProvider : BaseValueProvider
     {
         private FunctionRuntimeTreeNode _functionFunctionRuntimeNode = null;
 

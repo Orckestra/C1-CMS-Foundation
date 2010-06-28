@@ -10,7 +10,7 @@ using Composite.Trees.Foundation.AttachmentPoints;
 
 namespace Composite.Trees
 {
-    public sealed class DataFieldValueHelper
+    internal sealed class DataFieldValueHelper
     {
         private const string PreFix = "${C1:Data:";
         private static Regex TemplateRegex = new Regex(@"\$\{(?<string>[^\}]+)}", RegexOptions.Compiled);

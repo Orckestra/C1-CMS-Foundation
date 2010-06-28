@@ -4,7 +4,7 @@ using Composite.Serialization;
 
 namespace Composite.Actions
 {
-    public sealed class StandardUiContainerTypesSerializerHandler : ISerializerHandler
+    internal sealed class StandardUiContainerTypesSerializerHandler : ISerializerHandler
     {
         public string Serialize(object objectToSerialize)
         {

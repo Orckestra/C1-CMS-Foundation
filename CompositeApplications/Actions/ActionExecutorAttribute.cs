@@ -4,7 +4,7 @@ using System;
 namespace Composite.Actions
 {
     [AttributeUsageAttribute(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
-    public sealed class ActionExecutorAttribute : Attribute
+    internal sealed class ActionExecutorAttribute : Attribute
     {
         private Type _actionExecutorType;
 

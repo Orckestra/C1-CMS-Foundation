@@ -1,7 +1,7 @@
 ﻿
 namespace Composite.Forms.WebChannel
 {
-    public class WebStandardsChannel : IFormChannelIdentifier
+    internal class WebStandardsChannel : IFormChannelIdentifier
     {
         private static IFormChannelIdentifier _instance = new WebStandardsChannel();
 

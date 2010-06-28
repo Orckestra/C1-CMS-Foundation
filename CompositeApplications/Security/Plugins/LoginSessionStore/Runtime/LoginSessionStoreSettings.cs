@@ -6,7 +6,7 @@ using Composite.Security.Plugins.LoginSessionStore;
 
 namespace Composite.Security.Plugins.LoginSessionStore.Runtime
 {
-    public class LoginSessionStoreSettings : SerializableConfigurationSection
+    internal class LoginSessionStoreSettings : SerializableConfigurationSection
     {
         public const string SectionName = "Composite.Security.Plugins.LoginSessionStoreConfiguration";
 

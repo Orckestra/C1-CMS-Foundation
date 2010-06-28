@@ -8,7 +8,7 @@ using Composite.Xml;
 
 namespace Composite.Renderings.Data
 {
-    public interface IDataXhtmlRenderer
+    internal interface IDataXhtmlRenderer
     {
         XhtmlDocument Render(IDataReference dataToRender);
     }

@@ -13,7 +13,7 @@ using System.Xml;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Xml
 {
-    public sealed class LoadFileFunction : StandardFunctionBase
+    internal sealed class LoadFileFunction : StandardFunctionBase
     {
         public LoadFileFunction(EntityTokenFactory entityTokenFactory)
             : base("LoadFile", "Composite.Xml", typeof(XElement), entityTokenFactory)

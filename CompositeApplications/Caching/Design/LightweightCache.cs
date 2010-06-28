@@ -2,7 +2,7 @@
 
 namespace Composite.Caching.Design
 {
-    public class LightweightCache<TKey, TValue> : ICache<TKey, TValue> where TValue : class
+    internal class LightweightCache<TKey, TValue> : ICache<TKey, TValue> where TValue : class
     {
         protected readonly Data.Caching.Cache<TKey, TValue> _innerCache;
 

@@ -7,11 +7,11 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.Renderings.Plugins.RenderingResponseHandler
 {
     [Assembler(typeof(NonConfigurableRenderingResponseHandlerAssembler))]
-    public sealed class NonConfigurableRenderingResponseHandler : RenderingResponseHandlerData
+    internal sealed class NonConfigurableRenderingResponseHandler : RenderingResponseHandlerData
     {
     }
 
-    public sealed class NonConfigurableRenderingResponseHandlerAssembler : IAssembler<IRenderingResponseHandler, RenderingResponseHandlerData>
+    internal sealed class NonConfigurableRenderingResponseHandlerAssembler : IAssembler<IRenderingResponseHandler, RenderingResponseHandlerData>
 	{
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         public IRenderingResponseHandler Assemble(IBuilderContext context, RenderingResponseHandlerData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)

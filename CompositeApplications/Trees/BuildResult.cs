@@ -3,7 +3,7 @@
 
 namespace Composite.Trees
 {
-	public sealed class BuildResult
+	internal sealed class BuildResult
 	{
         private List<ValidationError> _validationError = new List<ValidationError>();
 

@@ -9,7 +9,7 @@ using Composite.Forms;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider
 {
-	public sealed class GlobalPermissionsFormsHelper
+	internal sealed class GlobalPermissionsFormsHelper
 	{
         private List<XElement> _bindingElements = null;
         private XElement _fieldGroupElement = null;

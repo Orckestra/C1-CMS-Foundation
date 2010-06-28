@@ -12,7 +12,7 @@ using Composite.Workflow;
 
 namespace Composite.Trees
 {    
-	public sealed class ReportFunctionActionNode : ActionNode
+	internal sealed class ReportFunctionActionNode : ActionNode
 	{        
         public XElement FunctionMarkup { get; set; }                            // Required
         public string DocumentLabel { get; set; }                               // Optional, defaults to Label

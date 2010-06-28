@@ -8,7 +8,7 @@ namespace Composite.Elements.Plugins.ElementProvider
 { 
     [CustomFactory(typeof(HooklessElementProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(HooklessElementProviderDefaultNameRetriever))]
-    public interface IHooklessElementProvider
+    internal interface IHooklessElementProvider
     {
         /// <summary>
         /// The system will supply an ElementProviderContext to the provider

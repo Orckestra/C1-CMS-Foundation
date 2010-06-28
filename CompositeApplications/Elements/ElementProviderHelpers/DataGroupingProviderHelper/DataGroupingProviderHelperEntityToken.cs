@@ -13,7 +13,7 @@ using Composite.Types;
 namespace Composite.Elements.ElementProviderHelpers.DataGroupingProviderHelper
 {
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
-    public sealed class DataGroupingProviderHelperEntityToken : EntityToken
+    internal sealed class DataGroupingProviderHelperEntityToken : EntityToken
     {
         private const string _magicNullValue = "·NULL·";
         private string _type;

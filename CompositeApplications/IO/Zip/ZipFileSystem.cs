@@ -7,7 +7,7 @@ using ICSharpCode.SharpZipLib.Zip;
 
 namespace Composite.IO.Zip
 {
-    public sealed class ZipFileSystem : IZipFileSystem
+    internal sealed class ZipFileSystem : IZipFileSystem
     {
         private Dictionary<string, ZipEntry> _existingFilenamesInZip = new Dictionary<string, ZipEntry>();
         private string ZipFilename { get; set; }

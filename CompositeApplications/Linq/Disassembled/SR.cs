@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace Composite.Linq.Disassembled
 {
-    public sealed class SR
+    internal sealed class SR
     {
         // Fields
         public const string ArgumentMemberNotDeclOnType = "ArgumentMemberNotDeclOnType";

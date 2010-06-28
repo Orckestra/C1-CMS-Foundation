@@ -7,7 +7,7 @@ using Composite.Workflow;
 
 namespace Composite.Trees
 {
-	public sealed class GenericDeleteDataActionNode : ActionNode
+	internal sealed class GenericDeleteDataActionNode : ActionNode
 	{
         protected override void OnAddAction(Action<ElementAction> actionAdder, EntityToken entityToken, TreeNodeDynamicContext dynamicContext, DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext)
         {

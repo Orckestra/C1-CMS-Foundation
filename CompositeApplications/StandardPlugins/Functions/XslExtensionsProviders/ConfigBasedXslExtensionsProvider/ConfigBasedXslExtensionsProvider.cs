@@ -9,7 +9,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.StandardPlugins.Functions.XslExtensionsProviders.ConfigBasedXslExtensionsProvider
 {
     [ConfigurationElementType(typeof(ConfigBasedXslExtensionsProviderData))]
-    public class ConfigBasedXslExtensionsProvider : IXslExtensionsProvider
+    internal class ConfigBasedXslExtensionsProvider : IXslExtensionsProvider
 	{
         private object _syncRoot = new object();
         private List<KeyValuePair<string, ConstructorInfo>> _constructors;

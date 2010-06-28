@@ -6,7 +6,7 @@ using Composite.Extensions;
 
 namespace Composite.Collections
 {
-    public sealed class NamespaceTreeBuilder
+    internal sealed class NamespaceTreeBuilder
     {
         private NamespaceTreeBuilderFolder _rootFolder;
         private char _namespaceSeparator;

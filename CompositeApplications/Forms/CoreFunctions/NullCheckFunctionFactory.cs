@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 namespace Composite.Forms.CoreFunctions
 {
-    public sealed class NullCheck : IFormFunction
+    internal sealed class NullCheck : IFormFunction
     {
         public NullCheck()
         {
@@ -37,7 +37,7 @@ namespace Composite.Forms.CoreFunctions
 
 
     [ConfigurationElementType(typeof(NullCheckFunctionFactoryData))]
-    public sealed class NullCheckFunctionFactory : IFormFunctionFactory
+    internal sealed class NullCheckFunctionFactory : IFormFunctionFactory
     {
         public IFormFunction CreateFunction()
         {
@@ -47,7 +47,7 @@ namespace Composite.Forms.CoreFunctions
 
 
     [Assembler(typeof(NonConfigurableFunctionFactoryAssembler))]
-    public sealed class NullCheckFunctionFactoryData : FunctionFactoryData
+    internal sealed class NullCheckFunctionFactoryData : FunctionFactoryData
     {
     }
 }

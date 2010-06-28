@@ -8,7 +8,7 @@ namespace Composite.ResourceSystem.Plugins.ResourceProvider
 {
     [CustomFactory(typeof(ResourceProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(ResourceProviderDefaultNameRetriever))]
-	public interface IResourceProvider
+	internal interface IResourceProvider
 	{
 	}
 }

@@ -9,7 +9,7 @@ using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProv
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Client
 {
-	public sealed class EcmaScriptVersionFunction  :  StandardFunctionBase
+	internal sealed class EcmaScriptVersionFunction  :  StandardFunctionBase
 	{
         public EcmaScriptVersionFunction(EntityTokenFactory entityTokenFactory)
             : base("EcmaScriptVersion", "Composite.Web.Client", typeof(string), entityTokenFactory)

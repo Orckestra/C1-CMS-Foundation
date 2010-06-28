@@ -4,9 +4,9 @@ using System.Xml.Linq;
 
 namespace Composite.PackageSystem
 {
-    public interface IPackageFragmentUninstaller
+    internal interface IPackageFragmentUninstaller
     {
-        void Initialize(IEnumerable<XElement> configuration, PackageUninstallerContex packageUninstallerContex);
+        void Initialize(IEnumerable<XElement> configuration, PackageUninstallerContext packageUninstallerContex);
         IEnumerable<PackageFragmentValidationResult> Validate();
         void Uninstall();
     }

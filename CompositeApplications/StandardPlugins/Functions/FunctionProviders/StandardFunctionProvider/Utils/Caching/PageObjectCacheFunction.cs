@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Caching
 {
-    public sealed class PageObjectCacheFunction : DowncastableStandardFunctionBase
+    internal sealed class PageObjectCacheFunction : DowncastableStandardFunctionBase
     {
         public PageObjectCacheFunction(EntityTokenFactory entityTokenFactory)
             : base("PageObjectCache", "Composite.Utils.Caching", typeof(object), entityTokenFactory)

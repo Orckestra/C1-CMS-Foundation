@@ -8,7 +8,7 @@ using System.Globalization;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Globalization
 {
-    public sealed class AllCultures : StandardFunctionBase
+    internal sealed class AllCultures : StandardFunctionBase
     {
         public AllCultures(EntityTokenFactory entityTokenFactory)
             : base("AllCultures", "Composite.Utils.Globalization", typeof(IEnumerable<CultureInfo>), entityTokenFactory)

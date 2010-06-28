@@ -2,7 +2,6 @@ using System;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using Composite.Caching;
 using Composite.Collections.Generic;
 using Composite.ConfigurationSystem;
 using Composite.EventSystem;

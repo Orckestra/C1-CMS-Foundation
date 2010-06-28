@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace Composite.Serialization
 {
-    public sealed class SystemTypesValueXmlSerializer : IValueXmlSerializer
+    internal sealed class SystemTypesValueXmlSerializer : IValueXmlSerializer
     {
         public bool TrySerialize(Type objectToSerializeType, object objectToSerialize, IXmlSerializer xmlSerializer, out XElement serializedObject)
         {

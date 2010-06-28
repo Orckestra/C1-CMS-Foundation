@@ -6,7 +6,7 @@ using Composite.Configuration;
 
 namespace Composite.Forms.Flows.Plugins.UiContainerFactory.Runtime
 {
-    public sealed class UiContainerFactorySettings : SerializableConfigurationSection
+    internal sealed class UiContainerFactorySettings : SerializableConfigurationSection
     {
         public const string SectionName = "Composite.Forms.Flows.Plugins.UiContainerFactoryConfiguration";
 
@@ -24,7 +24,7 @@ namespace Composite.Forms.Flows.Plugins.UiContainerFactory.Runtime
 
 
 
-    public sealed class ChannelConfigurationElement : NamedConfigurationElement
+    internal sealed class ChannelConfigurationElement : NamedConfigurationElement
     {
         private const string _factoriesPropertyName = "Factories";
         [ConfigurationProperty(_factoriesPropertyName, IsRequired = true)]
@@ -36,7 +36,7 @@ namespace Composite.Forms.Flows.Plugins.UiContainerFactory.Runtime
 
 
 
-    public sealed class ChannelConfigurationElementCollection : ConfigurationElementCollection
+    internal sealed class ChannelConfigurationElementCollection : ConfigurationElementCollection
     {
         public ChannelConfigurationElementCollection()
             : base()

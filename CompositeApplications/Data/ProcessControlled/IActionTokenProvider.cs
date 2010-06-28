@@ -3,7 +3,7 @@
 
 namespace Composite.Data.ProcessControlled
 {
-	public interface IActionTokenProvider
+	internal interface IActionTokenProvider
 	{
         ActionToken GetActionToken(string actionTypeName, IData data);
 	}

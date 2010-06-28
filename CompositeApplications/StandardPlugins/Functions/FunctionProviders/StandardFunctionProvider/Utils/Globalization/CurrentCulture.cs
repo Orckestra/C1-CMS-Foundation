@@ -7,7 +7,7 @@ using System.Globalization;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Globalization
 {
-    public sealed class CurrentCulture : StandardFunctionBase
+    internal sealed class CurrentCulture : StandardFunctionBase
     {
         public CurrentCulture(EntityTokenFactory entityTokenFactory)
             : base("CurrentCulture", "Composite.Utils.Globalization", typeof(CultureInfo), entityTokenFactory)

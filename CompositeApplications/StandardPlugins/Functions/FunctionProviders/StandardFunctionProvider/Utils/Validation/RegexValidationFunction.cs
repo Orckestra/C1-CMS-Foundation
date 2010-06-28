@@ -10,7 +10,7 @@ using Composite.Validation.Validators;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Validation
 {
-    public sealed class RegexValidationFunction : StandardFunctionBase
+    internal sealed class RegexValidationFunction : StandardFunctionBase
     {
         public RegexValidationFunction(EntityTokenFactory entityTokenFactory)
             : base("RegularExpressionValidation", "Composite.Utils.Validation", typeof(PropertyValidatorBuilder<string>), entityTokenFactory)

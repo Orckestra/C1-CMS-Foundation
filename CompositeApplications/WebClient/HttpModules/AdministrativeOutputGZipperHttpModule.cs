@@ -6,7 +6,7 @@ using System.IO;
 namespace Composite.WebClient.HttpModules
 {
     [Obsolete("This feature is build-in on IIS7", true)]
-    public class AdministrativeOutputGZipperHttpModule : IHttpModule
+    internal class AdministrativeOutputGZipperHttpModule : IHttpModule
     {
         private static PropertyInfo _headersWrittenPropertyInfo;
         

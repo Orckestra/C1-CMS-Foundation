@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.Elements.Plugins.ElementActionProvider
 {
     [ConfigurationElementType(typeof(NonConfigurableElementActionProvider))]
-    public class ElementActionProviderData : NameTypeManagerTypeConfigurationElement
+    internal class ElementActionProviderData : NameTypeManagerTypeConfigurationElement
 	{
 	}
 }

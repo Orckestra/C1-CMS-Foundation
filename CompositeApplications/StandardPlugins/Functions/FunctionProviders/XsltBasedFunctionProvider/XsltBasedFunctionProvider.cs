@@ -25,7 +25,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.XsltBasedFunctionProvider
 {
-    public enum OutputXmlSubType
+    internal enum OutputXmlSubType
     {
         XHTML,
         XML
@@ -33,7 +33,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.XsltBasedFunctio
 
 
     [ConfigurationElementType(typeof(XsltBasedFunctionProviderData))]
-    public sealed class XsltBasedFunctionProvider : IDynamicTypeFunctionProvider
+    internal sealed class XsltBasedFunctionProvider : IDynamicTypeFunctionProvider
     {
         private FunctionNotifier _functionNotifier;
 
@@ -306,7 +306,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.XsltBasedFunctio
 
 
     [Assembler(typeof(NonConfigurableFunctionProviderAssembler))]
-    public sealed class XsltBasedFunctionProviderData : FunctionProviderData
+    internal sealed class XsltBasedFunctionProviderData : FunctionProviderData
     {
     }
 }

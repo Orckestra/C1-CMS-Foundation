@@ -14,7 +14,7 @@ using Composite.Xml;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Xml
 {
-    public sealed class LoadXhtmlFileFunction : StandardFunctionBase
+    internal sealed class LoadXhtmlFileFunction : StandardFunctionBase
     {
         public LoadXhtmlFileFunction(EntityTokenFactory entityTokenFactory)
             : base("LoadXhtmlFile", "Composite.Xml", typeof(XhtmlDocument), entityTokenFactory)

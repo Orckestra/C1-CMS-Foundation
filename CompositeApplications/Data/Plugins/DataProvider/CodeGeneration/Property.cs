@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Composite.Data.Plugins.DataProvider.CodeGeneration
 {
-    public sealed class Property
+    internal sealed class Property
     {
         public string Name { get; internal set; }
         public string MappedName { get; internal set; }

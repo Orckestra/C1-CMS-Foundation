@@ -7,7 +7,7 @@ using Composite.Security.Plugins.LoginProvider;
 
 namespace Composite.Security.Plugins.LoginProvider.Runtime
 {
-    public class LoginProviderSettings : SerializableConfigurationSection
+    internal class LoginProviderSettings : SerializableConfigurationSection
     {
         public const string SectionName = "Composite.Security.Plugins.LoginProviderConfiguration";
 

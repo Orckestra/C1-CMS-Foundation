@@ -7,7 +7,7 @@ using System.Xml;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Request
 {
-	public sealed class QueryStringXmlFormattedDateTimeValueFunction :  StandardFunctionBase
+	internal sealed class QueryStringXmlFormattedDateTimeValueFunction :  StandardFunctionBase
 	{
         public QueryStringXmlFormattedDateTimeValueFunction(EntityTokenFactory entityTokenFactory)
             : base("QueryStringXmlFormattedDateTimeValue", "Composite.Web.Request", typeof(DateTime), entityTokenFactory)

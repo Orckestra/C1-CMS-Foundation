@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Elements.Plugins.ElementAttachingProvider.Runtime
 {
-    public sealed class ElementAttachingProviderSettings : SerializableConfigurationSection
+    internal sealed class ElementAttachingProviderSettings : SerializableConfigurationSection
 	{
         public const string SectionName = "Composite.Elements.Plugins.ElementAttachingProviderConfiguration";
 

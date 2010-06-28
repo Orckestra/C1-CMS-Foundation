@@ -12,7 +12,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.ConfigurationSystem
 {
-    public class ConfigurationServices
+    internal class ConfigurationServices
     {
         private static IConfigurationSource _configurationSource = null;
         private static string _fileConfigurationSourcePath;

@@ -5,7 +5,7 @@ using Composite.Actions;
 
 namespace Composite.Workflow
 {
-    public class WorkflowTaskManagerEvent : FlowTaskManagerEvent
+    internal class WorkflowTaskManagerEvent : FlowTaskManagerEvent
     {
         public WorkflowTaskManagerEvent(FlowToken flowToken, Guid workflowInstanceId)
             : base(flowToken)
@@ -20,7 +20,7 @@ namespace Composite.Workflow
         public Guid WorkflowInstanceId { get; private set; }
     }
 
-    public class WorkflowCreationTaskManagerEvent : TaskManagerEvent
+    internal class WorkflowCreationTaskManagerEvent : TaskManagerEvent
     {
         public WorkflowCreationTaskManagerEvent(Guid parentWorkflowInstanceId)
         {
@@ -30,7 +30,7 @@ namespace Composite.Workflow
         public Guid ParentWorkflowInstanceId { get; private set; }
     }
 
-    public class SaveWorklowTaskManagerEvent : WorkflowTaskManagerEvent
+    internal class SaveWorklowTaskManagerEvent : WorkflowTaskManagerEvent
     {
         public SaveWorklowTaskManagerEvent(FlowToken flowToken, Guid workflowInstanceId, bool succeeded)
             : base(flowToken, workflowInstanceId)

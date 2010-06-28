@@ -13,7 +13,7 @@ using Composite.WebClient.Services.TreeServiceObjects.ExtensionMethods;
 
 namespace Composite.WebClient.FlowMediators
 {
-    public class NullRootEntityToken : EntityToken
+    internal class NullRootEntityToken : EntityToken
     {
         public override string Type { get { return "null"; } }
         public override string Source { get { return "null"; } }

@@ -947,10 +947,10 @@
     <Compile Include="PackageSystem\PackageFragmentValidationResult.cs" />
     <Compile Include="PackageSystem\PackageFragmentValidationResultType.cs" />
     <Compile Include="PackageSystem\PackageInstaller.cs" />
-    <Compile Include="PackageSystem\PackageInstallerContex.cs" />
+    <Compile Include="PackageSystem\PackageInstallerContext.cs" />
     <Compile Include="PackageSystem\PackageManager.cs" />
     <Compile Include="PackageSystem\PackageUninstaller.cs" />
-    <Compile Include="PackageSystem\PackageUninstallerContex.cs" />
+    <Compile Include="PackageSystem\PackageUninstallerContext.cs" />
     <Compile Include="Renderings\Data\DataXhtmlRenderingServices.cs" />
     <Compile Include="Renderings\Data\IDataXhtmlRenderer.cs" />
     <Compile Include="Renderings\Data\XhtmlRendererProviderAttribute.cs" />
@@ -1381,7 +1381,7 @@
     <Compile Include="Data\Plugins\DataProvider\Streams\FileSystemFileBase.cs" />
     <Compile Include="Data\Plugins\DataProvider\Streams\FileSystemFileStreamManager.cs" />
     <Compile Include="Data\Types\IFileBuildNewHandler.cs" />
-    <Compile Include="Drawing\ImageTemplatedBoxCreateor.cs" />
+    <Compile Include="Drawing\ImageTemplatedBoxCreator.cs" />
     <Compile Include="Elements\ElementHookRegistratorFacade.cs" />
     <Compile Include="Functions\ConstantObjectParameterRuntimeTreeNode.cs" />
     <Compile Include="Functions\ConstantParameterRuntimeTreeNode.cs" />

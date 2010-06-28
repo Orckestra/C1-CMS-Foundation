@@ -9,7 +9,7 @@ using Composite.Validation.Validators;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Validation
 {
-    public sealed class DecimalPrecisionValidationFunction : StandardFunctionBase
+    internal sealed class DecimalPrecisionValidationFunction : StandardFunctionBase
 	{
         public DecimalPrecisionValidationFunction(EntityTokenFactory entityTokenFactory)
             : base("DecimalPrecisionValidation", "Composite.Utils.Validation", typeof(PropertyValidatorBuilder<decimal>), entityTokenFactory)

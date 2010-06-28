@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Composite.StandardPlugins.Elements.ElementProviders.LogElementProvider
 {
     [ActionExecutor(typeof(LogElementProviderActionExecutor))]
-	public sealed class ShowLogActionToken : ActionToken
+	internal sealed class ShowLogActionToken : ActionToken
 	{
         private IEnumerable<PermissionType> _permissionTypes = new PermissionType[] { PermissionType.Administrate };
 

@@ -3,7 +3,7 @@
 
 namespace Composite.Renderings.Plugins.RenderingResponseHandler
 {
-    public interface IDataRenderingResponseHandler : IRenderingResponseHandler
+    internal interface IDataRenderingResponseHandler : IRenderingResponseHandler
 	{
         /// <summary>
         /// 

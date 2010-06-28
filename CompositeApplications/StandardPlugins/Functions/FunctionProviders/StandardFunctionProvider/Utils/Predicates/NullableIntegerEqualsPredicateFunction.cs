@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Predicates
 {
-    public sealed class NullableIntegerEqualsPredicateFunction : StandardFunctionBase
+    internal sealed class NullableIntegerEqualsPredicateFunction : StandardFunctionBase
     {
         public NullableIntegerEqualsPredicateFunction(EntityTokenFactory entityTokenFactory)
             : base("NullableIntegerEquals", "Composite.Utils.Predicates", typeof(Expression<Func<int?, bool>>), entityTokenFactory)

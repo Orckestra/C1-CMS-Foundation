@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Predicates
 {
-    public sealed class StringEndsWithPredicateFunction : StandardFunctionBase
+    internal sealed class StringEndsWithPredicateFunction : StandardFunctionBase
     {
         public StringEndsWithPredicateFunction(EntityTokenFactory entityTokenFactory)
             : base("StringEndsWith", "Composite.Utils.Predicates", typeof(Expression<Func<string, bool>>), entityTokenFactory)

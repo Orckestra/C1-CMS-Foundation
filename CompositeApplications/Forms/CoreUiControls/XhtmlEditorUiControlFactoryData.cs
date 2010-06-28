@@ -6,7 +6,7 @@ using Composite.Forms.Plugins.UiControlFactory;
 
 namespace Composite.Forms.CoreUiControls
 {
-    public class XhtmlEditorUiControlFactoryData : UiControlFactoryData
+    internal class XhtmlEditorUiControlFactoryData : UiControlFactoryData
     {
         private const string _classConfigurationNamePropertyName = "ClassConfigurationName";
         [ConfigurationProperty(_classConfigurationNamePropertyName,IsRequired=false,DefaultValue="common")]

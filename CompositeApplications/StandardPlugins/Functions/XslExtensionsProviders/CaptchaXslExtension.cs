@@ -7,7 +7,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.StandardPlugins.Functions.XslExtensionsProviders
 {
     [ConfigurationElementType(typeof(ConfigBasedXslExtensionInfo))]
-    public class CaptchaXslExtension
+    internal class CaptchaXslExtension
     {
         public string GetEncryptedValue(string oldValue)
         {

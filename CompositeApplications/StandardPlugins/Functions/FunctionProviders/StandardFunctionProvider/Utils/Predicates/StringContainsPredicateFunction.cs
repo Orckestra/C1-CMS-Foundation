@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Predicates
 {
-    public sealed class StringContainsPredicateFunction : StandardFunctionBase
+    internal sealed class StringContainsPredicateFunction : StandardFunctionBase
     {
         public StringContainsPredicateFunction(EntityTokenFactory entityTokenFactory)
             : base("StringContains", "Composite.Utils.Predicates", typeof(Expression<Func<string, bool>>), entityTokenFactory)

@@ -5,7 +5,7 @@ using Composite.Security.SecurityAncestorProviders;
 namespace Composite.Trees
 {
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
-    public sealed class TreeSimpleElementEntityToken : EntityToken, IEntityTokenContainingParentEntityToken
+    internal sealed class TreeSimpleElementEntityToken : EntityToken, IEntityTokenContainingParentEntityToken
 	{
         private EntityToken _parentEntityToken;
         private string _treeNodeId;

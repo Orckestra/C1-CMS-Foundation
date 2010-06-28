@@ -11,12 +11,12 @@ using Composite.Logging;
 
 namespace Composite.Security
 {
-    public delegate void DirtyHooksCallbackDelegate();
+    internal delegate void DirtyHooksCallbackDelegate();
 
 
     internal static class HookingFacade
     {
-        public delegate void NewElementProviderRootEntitiesDelegate(HookingFacadeEventArgs hookingFacadeEventArgs);
+        internal delegate void NewElementProviderRootEntitiesDelegate(HookingFacadeEventArgs hookingFacadeEventArgs);
 
 
         private static IHookingFacade _hookingFacade = new HookingFacadeImpl();

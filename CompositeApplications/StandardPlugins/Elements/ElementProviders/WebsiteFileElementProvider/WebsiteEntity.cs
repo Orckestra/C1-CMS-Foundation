@@ -1,6 +1,6 @@
 ﻿namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
-	public abstract class WebsiteEntity
+	internal abstract class WebsiteEntity
 	{
         public WebsiteEntity(string fullPath, bool isFolder)
         {

@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.Validation.Plugins.ClientValidationRuleTranslator
 {
     [ConfigurationElementType(typeof(NonConfigurableClientValidationRuleTranslator))]
-    public class ClientValidationRuleTranslatorData : NameTypeManagerTypeConfigurationElement
+    internal class ClientValidationRuleTranslatorData : NameTypeManagerTypeConfigurationElement
 	{
 	}
 }

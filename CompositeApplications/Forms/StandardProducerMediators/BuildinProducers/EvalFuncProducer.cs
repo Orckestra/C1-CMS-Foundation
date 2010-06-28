@@ -7,7 +7,7 @@ using System.Text;
 namespace Composite.Forms.StandardProducerMediators.BuildinProducers
 {
     [ControlValueProperty("Markup")]
-    public sealed class EvalFuncProducer : IBuildinProducer
+    internal sealed class EvalFuncProducer : IBuildinProducer
 	{
         public XElement Markup { get; set; }
 

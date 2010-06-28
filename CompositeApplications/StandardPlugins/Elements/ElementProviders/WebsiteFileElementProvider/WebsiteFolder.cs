@@ -3,7 +3,7 @@
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
-	public sealed class WebsiteFolder : WebsiteEntity
+	internal sealed class WebsiteFolder : WebsiteEntity
 	{
         private string _folderName = null;
 

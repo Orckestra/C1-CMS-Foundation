@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.GlobalSettings.Plugins.GlobalSettingsProvider.Runtime
 {
-    public sealed class GlobalSettingsProviderSettings : SerializableConfigurationSection
+    internal sealed class GlobalSettingsProviderSettings : SerializableConfigurationSection
     {
         public const string SectionName = "Composite.GlobalSettings.Plugins.GlobalSettingsProviderConfiguration";
 

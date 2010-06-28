@@ -13,7 +13,7 @@ using Composite.Data.Types;
 
 namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider
 {
-	public sealed class MediaFileFolderSelectorWidget : CompositeWidgetFunctionBase
+	internal sealed class MediaFileFolderSelectorWidget : CompositeWidgetFunctionBase
     {
         private const string _functionName = "MediaFileFolderSelector";
         public const string CompositeName = CompositeWidgetFunctionBase.CommonNamespace + "." + _functionName;

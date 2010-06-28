@@ -2,7 +2,7 @@
 
 namespace Composite.Forms.CoreUiControls
 {
-    public class ToolbarButtonUiControlFactoryData : UiControlFactoryData
+    internal class ToolbarButtonUiControlFactoryData : UiControlFactoryData
 	{
 	}
 }

@@ -3,7 +3,7 @@
 
 namespace Composite.Trees
 {
-    public abstract class OrderByNode
+    internal abstract class OrderByNode
     {
         public string XPath { get; internal set; }
         public DataElementsTreeNode OwnerNode { get; internal set; }

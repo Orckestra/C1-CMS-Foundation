@@ -11,7 +11,7 @@ using Composite.Xml;
 
 namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.String
 {
-    public sealed class DataIdMultiSelectorWidgetFunction : CompositeWidgetFunctionBase
+    internal sealed class DataIdMultiSelectorWidgetFunction : CompositeWidgetFunctionBase
     {
         private const string _functionName = "DataIdMultiSelector";
         public const string CompositeName = CompositeWidgetFunctionBase.CommonNamespace + ".String." + _functionName;

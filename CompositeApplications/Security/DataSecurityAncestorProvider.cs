@@ -6,7 +6,7 @@ using Composite.Data;
 
 namespace Composite.Security
 {
-    public sealed class DataSecurityAncestorProvider : ISecurityAncestorProvider
+    internal sealed class DataSecurityAncestorProvider : ISecurityAncestorProvider
     {
         public IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {

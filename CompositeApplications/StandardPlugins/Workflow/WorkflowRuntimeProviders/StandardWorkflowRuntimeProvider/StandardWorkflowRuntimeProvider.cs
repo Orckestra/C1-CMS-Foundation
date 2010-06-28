@@ -7,7 +7,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.StandardPlugins.Workflow.WorkflowRuntimeProviders.StandardWorkflowRuntimeProvider
 {
     [ConfigurationElementType(typeof(StandardWorkflowRuntimeProviderData))]
-    public sealed class StandardWorkflowRuntimeProvider : IWorkflowRuntimeProvider
+    internal sealed class StandardWorkflowRuntimeProvider : IWorkflowRuntimeProvider
     {
         public WorkflowRuntime GetWorkflowRuntime()
         {
@@ -18,7 +18,7 @@ namespace Composite.StandardPlugins.Workflow.WorkflowRuntimeProviders.StandardWo
 
 
     [Assembler(typeof(NonConfigurableWorkflowRuntimeProviderAssembler))]
-    public sealed class StandardWorkflowRuntimeProviderData : WorkflowRuntimeProviderData
+    internal sealed class StandardWorkflowRuntimeProviderData : WorkflowRuntimeProviderData
     {
     }
 }

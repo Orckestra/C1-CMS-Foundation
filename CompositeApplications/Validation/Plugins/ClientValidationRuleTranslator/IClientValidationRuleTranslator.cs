@@ -9,7 +9,7 @@ namespace Composite.Validation.Plugins.ClientValidationRuleTranslator
 {
     [CustomFactory(typeof(ClientValidationRuleTranslatorCustomFactory))]
     [ConfigurationNameMapper(typeof(ClientValidationRuleTranslatorDefaultNameRetriever))]
-	public interface IClientValidationRuleTranslator
+	internal interface IClientValidationRuleTranslator
 	{
         IEnumerable<Type> GetSupportedAttributeTypes();
 

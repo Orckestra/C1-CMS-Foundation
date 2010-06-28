@@ -2,7 +2,7 @@
 
 namespace Composite.Forms.Flows
 {
-    public interface IFormFlowRenderingService : IFlowControllerService
+    internal interface IFormFlowRenderingService : IFlowControllerService
     {
         void RerenderView();
         bool RerenderViewRequested { get; }

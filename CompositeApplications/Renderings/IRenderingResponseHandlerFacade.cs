@@ -3,7 +3,7 @@
 
 namespace Composite.Renderings
 {
-	public interface IRenderingResponseHandlerFacade
+	internal interface IRenderingResponseHandlerFacade
 	{
         RenderingResponseHandlerResult GetDataResponseHandling(DataEntityToken requestedItemEntityToken);
 	}

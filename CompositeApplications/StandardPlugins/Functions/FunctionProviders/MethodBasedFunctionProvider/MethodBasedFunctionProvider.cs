@@ -11,7 +11,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.StandardPlugins.Functions.FunctionProviders.MethodBasedFunctionProvider
 {
     [ConfigurationElementType(typeof(MethodBasedFunctionProviderData))]
-    public sealed class MethodBasedFunctionProvider : IFunctionProvider
+    internal sealed class MethodBasedFunctionProvider : IFunctionProvider
     {
         private FunctionNotifier _functionNotifier;
 
@@ -65,7 +65,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.MethodBasedFunct
 
 
     [Assembler(typeof(NonConfigurableFunctionProviderAssembler))]
-    public sealed class MethodBasedFunctionProviderData : FunctionProviderData
+    internal sealed class MethodBasedFunctionProviderData : FunctionProviderData
     {
     }
 }

@@ -9,7 +9,7 @@ namespace Composite.Tasks
     }
 
 
-    public class FlowTaskManagerEvent : TaskManagerEvent
+    internal class FlowTaskManagerEvent : TaskManagerEvent
     {
         public FlowTaskManagerEvent(FlowToken flowToken)
         {
@@ -22,7 +22,7 @@ namespace Composite.Tasks
 
 
 
-	public interface ITaskManager
+	internal interface ITaskManager
 	{
 
         /// <summary>

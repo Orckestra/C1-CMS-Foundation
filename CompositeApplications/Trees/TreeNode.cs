@@ -16,7 +16,7 @@ using Composite.Types;
 
 namespace Composite.Trees
 {   
-    public sealed class AncestorResult
+    internal sealed class AncestorResult
     {
         public AncestorResult(TreeNode treeNode, EntityToken entityToken)
         {
@@ -33,7 +33,7 @@ namespace Composite.Trees
 
 
 
-    public abstract class TreeNode
+    internal abstract class TreeNode
     {       
         protected List<TreeNode> _childNodes = new List<TreeNode>();
         protected List<ActionNode> _actionNodes = new List<ActionNode>();

@@ -8,7 +8,7 @@ using Composite.Data;
 
 namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation
 {
-    public abstract class DataProviderHelperBase : IXmlDataProviderHelper
+    internal abstract class DataProviderHelperBase : IXmlDataProviderHelper
     {
         protected ConstructorInfo _idClassConstructor;
         protected ConstructorInfo _wrapperClassConstructor;

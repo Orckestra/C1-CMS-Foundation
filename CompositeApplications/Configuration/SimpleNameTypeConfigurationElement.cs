@@ -7,7 +7,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Configuration
 {
-    public sealed class SimpleNameTypeConfigurationElement : ConfigurationElement
+    internal sealed class SimpleNameTypeConfigurationElement : ConfigurationElement
     {
         private const string _namePropertyName = "name";
         [ConfigurationProperty(_namePropertyName, IsRequired=true)]

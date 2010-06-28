@@ -1,7 +1,7 @@
 ﻿
 namespace Composite.Data.ProcessControlled
 {
-	public interface IPublishControlledAuxiliary
+	internal interface IPublishControlledAuxiliary
 	{
         /// <summary>
         /// This method will be called after the IPublishProcessController.OnAfterDataUpdated has been called

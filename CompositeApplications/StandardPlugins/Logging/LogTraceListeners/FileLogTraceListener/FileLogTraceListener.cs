@@ -7,7 +7,7 @@ using Microsoft.Practices.EnterpriseLibrary.Logging.TraceListeners;
 namespace Composite.StandardPlugins.Logging.LogTraceListeners.FileLogTraceListener
 {
     [ConfigurationElementType(typeof(CustomTraceListenerData))]
-	public class FileLogTraceListener: CustomTraceListener
+	internal class FileLogTraceListener: CustomTraceListener
 	{
         private static readonly TimeSpan TimeZoneAdjustment = TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
 

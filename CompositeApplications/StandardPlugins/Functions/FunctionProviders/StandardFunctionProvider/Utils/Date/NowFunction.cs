@@ -6,7 +6,7 @@ using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProv
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Date
 {
-    public sealed class NowFunction : StandardFunctionBase
+    internal sealed class NowFunction : StandardFunctionBase
     {
         public NowFunction(EntityTokenFactory entityTokenFactory)
             : base("Now", "Composite.Utils.Date", typeof(DateTime), entityTokenFactory)

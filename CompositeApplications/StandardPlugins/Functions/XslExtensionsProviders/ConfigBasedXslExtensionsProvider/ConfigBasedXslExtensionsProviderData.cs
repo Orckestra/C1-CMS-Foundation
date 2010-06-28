@@ -7,7 +7,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.StandardPlugins.Functions.XslExtensionsProviders.ConfigBasedXslExtensionsProvider
 {
     [Assembler(typeof(ConfigBasedXslExtensionsProviderAssembler))]
-	public sealed class ConfigBasedXslExtensionsProviderData: XslExtensionsProviderData
+	internal sealed class ConfigBasedXslExtensionsProviderData: XslExtensionsProviderData
 	{
 
         public const string SectionName = "Composite.XslExtensions";
@@ -23,7 +23,7 @@ namespace Composite.StandardPlugins.Functions.XslExtensionsProviders.ConfigBased
         }
 	}
 
-    public sealed class ConfigBasedXslExtensionsProviderAssembler : IAssembler<IXslExtensionsProvider, XslExtensionsProviderData>
+    internal sealed class ConfigBasedXslExtensionsProviderAssembler : IAssembler<IXslExtensionsProvider, XslExtensionsProviderData>
     {
         public IXslExtensionsProvider Assemble(Microsoft.Practices.ObjectBuilder.IBuilderContext context, XslExtensionsProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {

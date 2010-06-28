@@ -8,7 +8,7 @@ using Composite.Forms.Foundation;
 namespace Composite.Forms.CoreUiControls
 {
     [ControlValueProperty("Text")]
-    public abstract class TextEditorUiControl : UiControl
+    internal abstract class TextEditorUiControl : UiControl
     {
         public TextEditorUiControl()
         {

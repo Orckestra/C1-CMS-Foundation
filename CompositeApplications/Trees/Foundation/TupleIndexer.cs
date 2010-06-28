@@ -3,7 +3,7 @@
 
 namespace Composite.Trees.Foundation
 {
-    public sealed class TupleIndexer
+    internal sealed class TupleIndexer
     {
         private dynamic _tuple;
 

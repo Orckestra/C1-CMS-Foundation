@@ -5,7 +5,7 @@ using Composite.Linq;
 
 namespace Composite.Sql
 {
-    public sealed class SqlTableInformation : ISqlTableInformation
+    internal sealed class SqlTableInformation : ISqlTableInformation
     {
         private string _tableName;
         private bool _hasIdentityColumn;

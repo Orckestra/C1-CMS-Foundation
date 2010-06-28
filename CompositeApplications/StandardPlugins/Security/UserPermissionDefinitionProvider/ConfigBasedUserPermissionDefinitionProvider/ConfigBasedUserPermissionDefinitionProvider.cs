@@ -12,7 +12,7 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.StandardPlugins.Security.UserPermissionDefinitionProvider.ConfigBasedUserPermissionDefinitionProvider
 {
     [ConfigurationElementType(typeof(ConfigBasedUserPermissionDefinitionProviderData))]
-    public sealed class ConfigBasedUserPermissionDefinitionProvider : IUserPermissionDefinitionProvider
+    internal sealed class ConfigBasedUserPermissionDefinitionProvider : IUserPermissionDefinitionProvider
 	{
         List<UserPermissionDefinition> _userPermissionDefinitions = new List<UserPermissionDefinition>();
 
@@ -60,7 +60,7 @@ namespace Composite.StandardPlugins.Security.UserPermissionDefinitionProvider.Co
 
 
 
-        public sealed class ConfigUserPermissionDefinition : UserPermissionDefinition
+        internal sealed class ConfigUserPermissionDefinition : UserPermissionDefinition
         {
             UserPermissionDefinitionConfigurationElement _element;
 
@@ -115,7 +115,7 @@ namespace Composite.StandardPlugins.Security.UserPermissionDefinitionProvider.Co
 
 
     [Assembler(typeof(ConfigBasedUserPermissionDefinitionProviderAssembler))]
-    public sealed class ConfigBasedUserPermissionDefinitionProviderData : UserPermissionDefinitionProviderData
+    internal sealed class ConfigBasedUserPermissionDefinitionProviderData : UserPermissionDefinitionProviderData
     {
         private const string _userPermissionDefinitionsProperty = "UserPermissionDefinitions";
         [ConfigurationProperty(_userPermissionDefinitionsProperty, IsRequired = true)]
@@ -130,7 +130,7 @@ namespace Composite.StandardPlugins.Security.UserPermissionDefinitionProvider.Co
 
 
 
-    public sealed class UserPermissionDefinitionConfigurationElement : ConfigurationElement
+    internal sealed class UserPermissionDefinitionConfigurationElement : ConfigurationElement
     {
         private const string _usernameProperty = "username";
         [ConfigurationProperty(_usernameProperty, IsRequired = true)]
@@ -173,7 +173,7 @@ namespace Composite.StandardPlugins.Security.UserPermissionDefinitionProvider.Co
 
 
 
-    public sealed class UserPermissionDefinitionConfigurationElementCollection : ConfigurationElementCollection
+    internal sealed class UserPermissionDefinitionConfigurationElementCollection : ConfigurationElementCollection
     {
         public void Add(UserPermissionDefinitionConfigurationElement element)
         {
@@ -196,7 +196,7 @@ namespace Composite.StandardPlugins.Security.UserPermissionDefinitionProvider.Co
 
 
 
-    public sealed class ConfigBasedUserPermissionDefinitionProviderAssembler : IAssembler<IUserPermissionDefinitionProvider, UserPermissionDefinitionProviderData>
+    internal sealed class ConfigBasedUserPermissionDefinitionProviderAssembler : IAssembler<IUserPermissionDefinitionProvider, UserPermissionDefinitionProviderData>
     {
         public IUserPermissionDefinitionProvider Assemble(IBuilderContext context, UserPermissionDefinitionProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {

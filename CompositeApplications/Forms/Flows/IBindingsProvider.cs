@@ -3,7 +3,7 @@
 
 namespace Composite.Forms.Flows
 {
-    public interface IBindingsProvider
+    internal interface IBindingsProvider
     {
         Dictionary<string, object> GetBindings();
     }

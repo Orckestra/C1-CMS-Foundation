@@ -2,7 +2,7 @@
 
 namespace Composite.WebClient.FlowMediators.FormFlowRendering
 {
-    public class FormFlowWebRenderingService : IFormFlowWebRenderingService
+    internal class FormFlowWebRenderingService : IFormFlowWebRenderingService
     {
         public void SetNewPageOutput(Control pageOutput)
         {

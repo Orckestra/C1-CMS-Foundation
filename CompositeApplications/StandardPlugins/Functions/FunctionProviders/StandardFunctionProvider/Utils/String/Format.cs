@@ -7,7 +7,7 @@ using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProv
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.String
 {
-    public sealed class Format : StandardFunctionBase, ICompoundFunction
+    internal sealed class Format : StandardFunctionBase, ICompoundFunction
     {
         public Format(EntityTokenFactory entityTokenFactory)
             : base("Format", "Composite.Utils.String", typeof(string), entityTokenFactory)

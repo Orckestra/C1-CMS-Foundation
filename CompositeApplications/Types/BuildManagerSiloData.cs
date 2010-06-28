@@ -13,7 +13,7 @@ using Composite.Logging;
 namespace Composite.Types
 {
     [DebuggerDisplay("TargetTypeFullName = {TargetTypeFullName}")]
-    public sealed class BuildManagerSiloData
+    internal sealed class BuildManagerSiloData
     {
         public BuildManagerSiloData(CodeNamespace codeNamespace, CodeTypeDeclaration codeTypeDeclaration, CompilerParameters compilerParameters)
         {

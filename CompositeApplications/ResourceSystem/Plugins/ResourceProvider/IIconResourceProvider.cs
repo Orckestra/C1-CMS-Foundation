@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace Composite.ResourceSystem.Plugins.ResourceProvider
 {
-	public interface IIconResourceProvider : IResourceProvider
+	internal interface IIconResourceProvider : IResourceProvider
 	{
         IEnumerable<string> GetIconNames();
 

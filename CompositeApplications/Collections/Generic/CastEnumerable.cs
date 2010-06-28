@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Composite.Collections.Generic
 {
-    public sealed class CastEnumerable<T> : IEnumerable<T>
+    internal sealed class CastEnumerable<T> : IEnumerable<T>
     {
         IEnumerable _enumerable;
 

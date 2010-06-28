@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Security.Plugins.UserPermissionDefinitionProvider.Runtime
 {
-    public class UserPermissionDefinitionProviderSettings : SerializableConfigurationSection
+    internal class UserPermissionDefinitionProviderSettings : SerializableConfigurationSection
     {
         public const string SectionName = "Composite.Security.Plugins.UserPermissionDefinitionProviderConfiguration";
 

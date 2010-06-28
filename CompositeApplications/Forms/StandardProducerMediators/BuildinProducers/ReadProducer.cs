@@ -1,6 +1,6 @@
 namespace Composite.Forms.StandardProducerMediators.BuildinProducers
 {
-    public sealed class ReadProducer : IBuildinProducer
+    internal sealed class ReadProducer : IBuildinProducer
     {
         private string _source;
 

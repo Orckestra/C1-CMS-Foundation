@@ -9,7 +9,7 @@ namespace Composite.Security.Plugins.HookRegistrator
 {
     [CustomFactory(typeof(HookRegistratorCustomFactory))]
     [ConfigurationNameMapper(typeof(HookRegistratorDefaultNameRetriever))]
-	public interface IHookRegistrator
+	internal interface IHookRegistrator
 	{
         IEnumerable<EntityTokenHook> GetHooks();
 	}

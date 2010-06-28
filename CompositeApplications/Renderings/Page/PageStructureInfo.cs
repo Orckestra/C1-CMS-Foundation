@@ -15,7 +15,7 @@ using Composite.StringExtensions;
 
 namespace Composite.Renderings.Page
 {
-    public sealed class PageStructureInfo
+    public static class PageStructureInfo
     {
         private class Version
         {

@@ -10,7 +10,7 @@ using Composite.Collections;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.AllFunctionsElementProvider
 {
-    public sealed class AllFunctionsProviderActionExecutor : IActionExecutor
+    internal sealed class AllFunctionsProviderActionExecutor : IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {

@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace Composite.Serialization
 {
-    public sealed class XmlSerializer : IXmlSerializer
+    internal sealed class XmlSerializer : IXmlSerializer
     {
         IEnumerable<IValueXmlSerializer> _valueXmlSerializers;
 

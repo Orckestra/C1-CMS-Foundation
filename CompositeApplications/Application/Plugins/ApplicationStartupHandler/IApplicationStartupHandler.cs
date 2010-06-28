@@ -10,7 +10,7 @@ namespace Composite.Application.Plugins.ApplicationStartupHandler
 {
     [CustomFactory(typeof(ApplicationStartupHandlerCustomFactory))]
     [ConfigurationNameMapper(typeof(ApplicationStartupHandlerDefaultNameRetriever))]
-	public interface IApplicationStartupHandler
+	internal interface IApplicationStartupHandler
 	{
         /// <summary>
         /// This handler will be called before Composite initialization. The data layer cannot be used here.

@@ -7,7 +7,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Security.Plugins.HookRegistrator.Runtime
 {
-    public sealed class HookRegistratorSettings : SerializableConfigurationSection
+    internal sealed class HookRegistratorSettings : SerializableConfigurationSection
     {
         public const string SectionName = "Composite.Security.Plugins.HookRegistratorConfiguration";
 

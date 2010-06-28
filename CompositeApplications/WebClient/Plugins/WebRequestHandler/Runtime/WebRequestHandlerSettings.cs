@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.WebClient.Plugins.WebRequestHandler.Runtime
 {
-    public class WebRequestHandlerSettings : SerializableConfigurationSection
+    internal class WebRequestHandlerSettings : SerializableConfigurationSection
     {
         public const string SectionName = "Composite.WebClient.Plugins.WebRequestConfiguration";
 

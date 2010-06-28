@@ -2,7 +2,7 @@
 
 namespace Composite.GlobalSettings.BuildinPlugins.GlobalSettingsProvider
 {
-	public class BuildinCachingSettings: ICachingSettings
+	internal class BuildinCachingSettings: ICachingSettings
 	{
 	    private bool _enabled;
         private IEnumerable<ICacheSettings> _cacheSettingsCollection = new ICacheSettings[0];

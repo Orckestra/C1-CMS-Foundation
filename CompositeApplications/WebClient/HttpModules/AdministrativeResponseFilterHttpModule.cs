@@ -7,7 +7,7 @@ using Composite.Types;
 
 namespace Composite.WebClient.HttpModules
 {
-    public class AdministrativeResponseFilterHttpModule : IHttpModule
+    internal class AdministrativeResponseFilterHttpModule : IHttpModule
     {
         private static readonly Pair<string, string>[] ReplacementRules = new []
        {
@@ -37,7 +37,7 @@ namespace Composite.WebClient.HttpModules
         {
         }
 
-        public class ReplacementStream : Stream
+        internal class ReplacementStream : Stream
         {
             private readonly Stream _innerStream;
             private MemoryStream _ms = new MemoryStream();

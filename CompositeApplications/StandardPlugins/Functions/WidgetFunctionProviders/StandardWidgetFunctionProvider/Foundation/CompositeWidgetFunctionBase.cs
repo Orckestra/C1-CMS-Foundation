@@ -9,7 +9,7 @@ using Composite.Security;
 
 namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation
 {
-    public abstract class CompositeWidgetFunctionBase : IWidgetFunction
+    internal abstract class CompositeWidgetFunctionBase : IWidgetFunction
 	{
         protected const string CommonNamespace = "Composite.Widgets";
         protected const string InternalCommonNamespace = "Composite.Widgets.Internal"; // not exposed by provider

@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Composite.Security
 {
-    public class EntityTokenSerializerHandler : ISerializerHandler
+    internal class EntityTokenSerializerHandler : ISerializerHandler
     {
         public string Serialize(object objectToSerialize)
         {

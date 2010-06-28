@@ -5,7 +5,7 @@ using Composite.Serialization;
 namespace Composite.PackageSystem
 {
     [SerializerHandler(typeof(PropertySerializerHandler))]
-	public sealed class PackageDescription
+	internal sealed class PackageDescription
 	{
         public string PackageFileDownloadUrl { get; set; }
         public string PackageVersion { get; set; }

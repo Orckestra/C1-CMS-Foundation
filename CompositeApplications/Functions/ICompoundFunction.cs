@@ -3,7 +3,7 @@
     /// <summary>
     /// Indicates that a function is allowed to have recursive calls.
     /// </summary>
-	public interface ICompoundFunction: IMetaFunction
+	internal interface ICompoundFunction: IMetaFunction
 	{
         bool AllowRecursiveCall { get; }
 	}

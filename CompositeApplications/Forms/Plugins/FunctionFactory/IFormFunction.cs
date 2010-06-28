@@ -1,6 +1,6 @@
 namespace Composite.Forms.Plugins.FunctionFactory
 {
-    public interface IFormFunction
+    internal interface IFormFunction
     {
         object Execute();
     }

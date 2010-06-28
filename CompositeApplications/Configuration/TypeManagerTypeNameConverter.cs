@@ -11,7 +11,7 @@ namespace Composite.Configuration
 	/// <summary>
 	/// Represents a configuration converter that converts a string to <see cref="Type"/> using the Composite Type Manager.
 	/// </summary>
-	public class TypeManagerTypeNameConverter : ConfigurationConverterBase
+	internal class TypeManagerTypeNameConverter : ConfigurationConverterBase
 	{
 		/// <summary>
 		/// Returns the name for the passed in Type.

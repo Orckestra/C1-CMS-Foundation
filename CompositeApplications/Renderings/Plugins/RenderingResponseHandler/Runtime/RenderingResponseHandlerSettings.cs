@@ -9,7 +9,7 @@ using Composite.Configuration;
 
 namespace Composite.Renderings.Plugins.RenderingResponseHandler.Runtime
 {
-    public sealed class RenderingResponseHandlerSettings : SerializableConfigurationSection
+    internal sealed class RenderingResponseHandlerSettings : SerializableConfigurationSection
 	{
         public const string SectionName = "Composite.Renderings.Plugins.RenderingResponseHandlerConfiguration";
 

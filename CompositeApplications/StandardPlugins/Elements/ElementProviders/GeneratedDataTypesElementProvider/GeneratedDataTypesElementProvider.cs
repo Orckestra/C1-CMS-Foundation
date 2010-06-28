@@ -32,7 +32,7 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
     #region ToXml
-    public sealed class DataTypeDescriptorToXmlActionExecutor : IActionExecutor
+    internal sealed class DataTypeDescriptorToXmlActionExecutor : IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
@@ -63,7 +63,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
 
 
     [ActionExecutor(typeof(DataTypeDescriptorToXmlActionExecutor))]
-    public sealed class DataTypeDescriptorToXmlActionToken : ActionToken
+    internal sealed class DataTypeDescriptorToXmlActionToken : ActionToken
     {
         private static PermissionType[] _permissionTypes = new PermissionType[] { PermissionType.Administrate };
 
@@ -88,7 +88,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
 
 
     [ConfigurationElementType(typeof(GeneratedDataTypesElementProviderData))]
-    public sealed class GeneratedDataTypesElementProvider : IHooklessElementProvider, ILocaleAwareElementProvider
+    internal sealed class GeneratedDataTypesElementProvider : IHooklessElementProvider, ILocaleAwareElementProvider
     {
         private ElementProviderContext _providerContext;
         private bool _onlyShowGlobalDatas;
@@ -1134,7 +1134,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
 
 
     [Assembler(typeof(GeneratedDataTypesElementProviderAssembler))]
-    public sealed class GeneratedDataTypesElementProviderData : HooklessElementProviderData
+    internal sealed class GeneratedDataTypesElementProviderData : HooklessElementProviderData
     {
         private const string _onlyShowGlobalDatasPropertyName = "onlyShowGlobalDatas";
         [ConfigurationProperty(_onlyShowGlobalDatasPropertyName, IsRequired = false, DefaultValue = false)]

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:internal="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
   <cms:bindings>
-    <cms:binding name="Function" type="Composite.Data.Types.IVisualFunction, Composite" />
+    <cms:binding name="Function" type="Composite.Data.Types.IVisualFunction, CompositeApplications" />
     <cms:binding name="PreviewEventHandler" type="System.EventHandler" optional="true" />
     <cms:binding name="XhtmlBody" type="System.String" />
     <cms:binding name="EmbedableFieldsTypes" type="System.Collections.IEnumerable" />

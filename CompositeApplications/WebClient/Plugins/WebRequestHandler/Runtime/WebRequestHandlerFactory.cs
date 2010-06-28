@@ -7,7 +7,7 @@ using Composite.ConfigurationSystem;
 
 namespace Composite.WebClient.Plugins.WebRequestHandler.Runtime
 {
-    public class WebRequestHandlerFactory : NameTypeFactoryBase<WebRequestHandler>
+    internal class WebRequestHandlerFactory : NameTypeFactoryBase<WebRequestHandler>
     {
         public WebRequestHandlerFactory()            
             : base(ConfigurationServices.ConfigurationSource)

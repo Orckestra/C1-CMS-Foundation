@@ -9,7 +9,7 @@ using Composite.Extensions;
 
 namespace Composite.Renderings
 {
-    public class RequestInterceptorHttpModule : IHttpModule
+    internal class RequestInterceptorHttpModule : IHttpModule
     {
         public void Init(HttpApplication context)
         {

@@ -11,7 +11,7 @@ using Composite.IO;
 namespace Composite.PackageSystem
 {
     [SerializerHandler(typeof(PackageManagerUninstallProcessSerializerHandler))]
-    public sealed class PackageManagerUninstallProcess
+    internal sealed class PackageManagerUninstallProcess
     {
         private IPackageUninstaller _packageUninstaller = null;
         private string _packageInstallDirectory = null;

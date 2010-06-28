@@ -9,7 +9,7 @@ using Subscriptions = Composite.Collections.Generic.Hashtable<System.Type, Syste
 
 namespace Composite.Data
 {
-    public class DataEventArgs : EventArgs
+    internal class DataEventArgs : EventArgs
     {
         private readonly Type _dataType;
         private readonly IData _data;
@@ -44,7 +44,7 @@ namespace Composite.Data
 
 
 
-    public class DataMoveEventArgs : DataEventArgs
+    internal class DataMoveEventArgs : DataEventArgs
     {
         internal DataMoveEventArgs(Type dataType, IData data, DataScopeIdentifier targetDataScopeIdentifier)
             : base(dataType, data)
@@ -63,13 +63,13 @@ namespace Composite.Data
 
     internal static class DataEventSystemFacade
     {
-        public delegate void DataBeforeAddDelegate(DataEventArgs dataEventArgs);
-        public delegate void DataAfterAddDelegate(DataEventArgs dataEventArgs);
-        public delegate void DataBeforeUpdateDelegate(DataEventArgs dataEventArgs);
-        public delegate void DataAfterUpdateDelegate(DataEventArgs dataEventArgs);
-        public delegate void DataDeletedDelegate(DataEventArgs dataEventArgs);
-        public delegate void DataAfterBuildNewDelegate(DataEventArgs dataEventArgs);
-        public delegate void DataAfterMoveDelegate(DataMoveEventArgs dataMoveEventArgs);
+        internal delegate void DataBeforeAddDelegate(DataEventArgs dataEventArgs);
+        internal delegate void DataAfterAddDelegate(DataEventArgs dataEventArgs);
+        internal delegate void DataBeforeUpdateDelegate(DataEventArgs dataEventArgs);
+        internal delegate void DataAfterUpdateDelegate(DataEventArgs dataEventArgs);
+        internal delegate void DataDeletedDelegate(DataEventArgs dataEventArgs);
+        internal delegate void DataAfterBuildNewDelegate(DataEventArgs dataEventArgs);
+        internal delegate void DataAfterMoveDelegate(DataMoveEventArgs dataMoveEventArgs);
 
         private static readonly Subscriptions _dataBeforeAddEventDictionary = new Subscriptions();
         private static readonly Subscriptions _dataAfterAddEventDictionary = new Subscriptions();

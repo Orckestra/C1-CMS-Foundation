@@ -12,7 +12,7 @@ using Composite.GlobalSettings.Plugins.GlobalSettingsProvider.Runtime;
 
 namespace Composite.GlobalSettings.Foundation.PluginFacades
 {
-    public sealed class GlobalSettingsProviderPluginFacade
+    internal sealed class GlobalSettingsProviderPluginFacade
     {
         private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize, false);
 

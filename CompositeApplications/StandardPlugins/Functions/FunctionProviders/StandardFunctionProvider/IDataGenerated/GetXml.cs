@@ -33,7 +33,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunction
     }
 
 
-    public sealed class GetXml<T> : StandardFunctionBase
+    internal sealed class GetXml<T> : StandardFunctionBase
         where T : class, IData
     {
         private static readonly ICache<string, GetXmlCacheRecord> ResultCache =
@@ -761,7 +761,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunction
 
 
 
-    public interface IReferencedDataHelper<SOURCE>
+    internal interface IReferencedDataHelper<SOURCE>
         where SOURCE : class, IData
     {
         IEnumerable<XElement> GetReferencedXElements(IQueryable<SOURCE> sourceTypeIqueryable, List<string> destinationPropertyNames, XName elementName, string propertyNamePrefix);
@@ -776,7 +776,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunction
 
 
 
-    public class ReferencedDataHelper<SOURCE, DEST, KEY> : IReferencedDataHelper<SOURCE>
+    internal class ReferencedDataHelper<SOURCE, DEST, KEY> : IReferencedDataHelper<SOURCE>
         where SOURCE : class, IData
         where DEST : class, IData
     {

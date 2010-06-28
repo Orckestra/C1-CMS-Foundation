@@ -5,7 +5,7 @@ using Composite.Actions;
 
 namespace Composite.Tasks
 {
-    public sealed class TaskContainer : IDisposable
+    internal sealed class TaskContainer : IDisposable
     {
         private List<Task> _tasks;
         private bool _disposed = false;

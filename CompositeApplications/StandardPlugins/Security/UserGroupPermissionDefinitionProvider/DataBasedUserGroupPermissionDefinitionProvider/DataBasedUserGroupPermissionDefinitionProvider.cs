@@ -153,7 +153,7 @@ namespace Composite.StandardPlugins.Security.UserGroupPermissionDefinitionProvid
 
 
 
-        public sealed class DataUserGroupPermissionDefinition : UserGroupPermissionDefinition
+        internal sealed class DataUserGroupPermissionDefinition : UserGroupPermissionDefinition
         {
             private IUserGroupPermissionDefinition _userGroupPermissionDefinition;
             private List<PermissionType> _permissionTypes;

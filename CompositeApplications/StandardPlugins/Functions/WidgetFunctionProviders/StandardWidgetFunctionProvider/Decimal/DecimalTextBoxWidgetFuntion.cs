@@ -9,7 +9,7 @@ using Composite.Forms.CoreUiControls;
 
 namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Decimal
 {
-	public sealed class DecimalTextBoxWidgetFuntion : CompositeWidgetFunctionBase
+	internal sealed class DecimalTextBoxWidgetFuntion : CompositeWidgetFunctionBase
     {
         private const string _functionName = "TextBox";
         public const string CompositeName = CompositeWidgetFunctionBase.CommonNamespace + ".Decimal." + _functionName;

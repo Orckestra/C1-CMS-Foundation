@@ -6,7 +6,7 @@ using Composite.Serialization;
 
 namespace Composite.Functions
 {
-    public sealed class NamedFunctionCallValueXmlSerializer : IValueXmlSerializer
+    internal sealed class NamedFunctionCallValueXmlSerializer : IValueXmlSerializer
     {
         public bool TrySerialize(Type objectToSerializeType, object objectToSerialize, IXmlSerializer xmlSerializer, out XElement serializedObject)
         {

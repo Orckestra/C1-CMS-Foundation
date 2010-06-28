@@ -6,7 +6,7 @@ using Composite.Serialization;
 
 namespace Composite.Data
 {
-    public sealed class PageMetaDataDescriptionSerializerHandler : ISerializerHandler
+    internal sealed class PageMetaDataDescriptionSerializerHandler : ISerializerHandler
     {
         public string Serialize(object objectToSerialize)
         {
@@ -27,7 +27,7 @@ namespace Composite.Data
     /// This class is used when adding a new page metadata type to a given page. In other words, in workflow only.
     /// </summary>
     [SerializerHandler(typeof(PageMetaDataDescriptionSerializerHandler))]
-    public sealed class PageMetaDataDescription
+    internal sealed class PageMetaDataDescription
     {
         public static PageMetaDataDescription OneToOne() { return new PageMetaDataDescription(PageMetaDataDescriptionType.OneToOne); }
         public static PageMetaDataDescription Branch() { return new PageMetaDataDescription(PageMetaDataDescriptionType.Branch, 0, 100000); }
@@ -149,7 +149,7 @@ namespace Composite.Data
 
 
 
-    public enum PageMetaDataDescriptionType
+    internal enum PageMetaDataDescriptionType
     {
         OneToOne = 0,
         Branch = 1,

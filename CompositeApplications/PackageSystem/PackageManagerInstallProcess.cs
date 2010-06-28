@@ -11,7 +11,7 @@ using Composite.Logging;
 namespace Composite.PackageSystem
 {
     [SerializerHandler(typeof(PackageManagerInstallProcessSerializerHandler))]
-    public sealed class PackageManagerInstallProcess
+    internal sealed class PackageManagerInstallProcess
     {
         private IPackageInstaller _packageInstaller = null;
         private SystemLockingType _systemLockingType;

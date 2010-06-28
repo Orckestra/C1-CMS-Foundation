@@ -7,7 +7,7 @@ using Composite.Workflow;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider
 {
-    public sealed class PageElementProviderActionTokenProvider : IActionTokenProvider
+    internal sealed class PageElementProviderActionTokenProvider : IActionTokenProvider
     {
         public ActionToken GetActionToken(string actionTypeName, IData data)
         {

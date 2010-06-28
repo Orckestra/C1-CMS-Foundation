@@ -10,7 +10,7 @@ using Composite.Validation.Validators;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Validation
 {
-    public sealed class StringLengthValidationFunction : StandardFunctionBase
+    internal sealed class StringLengthValidationFunction : StandardFunctionBase
 	{
         public StringLengthValidationFunction(EntityTokenFactory entityTokenFactory)
             : base("StringLengthValidation", "Composite.Utils.Validation", typeof(PropertyValidatorBuilder<string>), entityTokenFactory)

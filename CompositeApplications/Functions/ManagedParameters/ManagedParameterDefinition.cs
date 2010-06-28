@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using Composite.Data.DynamicTypes;
 
 
 namespace Composite.Functions.ManagedParameters

@@ -9,7 +9,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Request
 {
-    public sealed class SessionVariableFunction :  StandardFunctionBase
+    internal sealed class SessionVariableFunction :  StandardFunctionBase
 	{
         public SessionVariableFunction(EntityTokenFactory entityTokenFactory)
             : base("SessionVariable", "Composite.Web.Request", typeof(string), entityTokenFactory)

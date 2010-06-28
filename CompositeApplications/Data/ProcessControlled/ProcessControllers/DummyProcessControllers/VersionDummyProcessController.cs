@@ -5,7 +5,7 @@ using Composite.Elements;
 namespace Composite.Data.ProcessControlled.ProcessControllers.DummyProcessControllers
 {
     [Obsolete("To be removed")]
-	public sealed class VersionDummyProcessController : IVersionProcessController
+	internal sealed class VersionDummyProcessController : IVersionProcessController
 	{
         public void OnBeforeDataAdded(IData data)
         {

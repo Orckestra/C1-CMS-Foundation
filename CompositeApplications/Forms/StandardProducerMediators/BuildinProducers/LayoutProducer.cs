@@ -1,7 +1,7 @@
 namespace Composite.Forms.StandardProducerMediators.BuildinProducers
 {
     [ControlValueProperty("UiControl")]
-    public sealed class LayoutProducer : IBuildinProducer
+    internal sealed class LayoutProducer : IBuildinProducer
     {
         private IUiControl _uiControl;
 

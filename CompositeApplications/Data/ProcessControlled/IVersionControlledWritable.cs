@@ -4,7 +4,7 @@ using System;
 namespace Composite.Data.ProcessControlled
 {
     [Obsolete("To be removed")]
-    public interface IVersionControlledWritable
+    internal interface IVersionControlledWritable
     {
         /// <summary>
         /// Setter version of the IVersioned.MajorVersionNumber property

@@ -8,7 +8,7 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
 {
     public abstract class BasePackageFragmentUninstaller : IPackageFragmentUninstaller
 	{
-        public void Initialize(IEnumerable<XElement> configuration, PackageUninstallerContex packageUninstallerContex)
+        public void Initialize(IEnumerable<XElement> configuration, PackageUninstallerContext packageUninstallerContex)
         {
             if (configuration == null) throw new ArgumentNullException("configuration");
             if (packageUninstallerContex == null) throw new ArgumentNullException("packageUninstallerContex");
@@ -22,7 +22,7 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
         public abstract void Uninstall();
 
         protected IEnumerable<XElement> Configuration { get; set; }
-        protected PackageUninstallerContex AddOnUninstallerContex { get; private set; }
+        protected PackageUninstallerContext AddOnUninstallerContex { get; private set; }
 
         internal static string GetResourceString(string key)
         {

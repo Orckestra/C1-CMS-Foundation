@@ -4,7 +4,7 @@ using Composite.Security;
 
 namespace Composite.Elements.Plugins.ElementProvider
 {
-	public interface ILabeledPropertiesElementProvider : IHooklessElementProvider
+	internal interface ILabeledPropertiesElementProvider : IHooklessElementProvider
 	{
         IEnumerable<LabeledProperty> GetLabeledProperties(EntityToken entityToken);        
 	}

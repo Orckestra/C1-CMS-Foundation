@@ -16,7 +16,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElementProvider
 {
     [ConfigurationElementType(typeof(PageTemplateElementProviderData))]
-    public sealed class PageTemplateElementProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
+    internal sealed class PageTemplateElementProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
     {
         private ElementProviderContext _context;
 
@@ -205,7 +205,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElemen
 
 
     [Assembler(typeof(NonConfigurableHooklessElementProviderAssembler))]
-    public sealed class PageTemplateElementProviderData : HooklessElementProviderData
+    internal sealed class PageTemplateElementProviderData : HooklessElementProviderData
     {
     }
 }

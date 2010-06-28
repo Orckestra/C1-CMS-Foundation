@@ -2,7 +2,7 @@
 
 namespace Composite.Security
 {
-    public class EntityTokenSerializerException : Exception
+    internal class EntityTokenSerializerException : Exception
     {
         public EntityTokenSerializerException(string message) : base(message)
         {

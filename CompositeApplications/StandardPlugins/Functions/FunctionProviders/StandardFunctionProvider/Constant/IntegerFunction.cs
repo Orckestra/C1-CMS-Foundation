@@ -9,7 +9,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Constant
 {
-    public sealed class IntegerFunction : StandardFunctionBase
+    internal sealed class IntegerFunction : StandardFunctionBase
     {
         public IntegerFunction(EntityTokenFactory entityTokenFactory)
             : base("Integer", "Composite.Constant", typeof(int), entityTokenFactory)

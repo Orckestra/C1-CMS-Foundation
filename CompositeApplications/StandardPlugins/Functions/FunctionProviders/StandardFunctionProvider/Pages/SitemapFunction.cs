@@ -15,7 +15,7 @@ using Composite.Xml;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Pages
 {
-	public sealed class SitemapFunction : StandardFunctionBase
+	internal sealed class SitemapFunction : StandardFunctionBase
     {
         #region XSLT constants
         const string _sitemapXslTemplate = @"<?xml version=""1.0"" encoding=""UTF-8""?>

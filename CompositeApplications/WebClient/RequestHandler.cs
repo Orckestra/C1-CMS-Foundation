@@ -7,7 +7,7 @@ using Composite.WebClient.Plugins.WebRequestHandler;
 
 namespace Composite.WebClient
 {
-    public class PathToWebRequestHandlerMappingPage : System.Web.UI.Page
+    internal class PathToWebRequestHandlerMappingPage : System.Web.UI.Page
     {
 
         public PathToWebRequestHandlerMappingPage()

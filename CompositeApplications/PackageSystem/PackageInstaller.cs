@@ -20,7 +20,7 @@ namespace Composite.PackageSystem
         private static readonly string LogTitle = "PackageInstaller";
 
         private bool _isInitialized = false;
-        private PackageInstallerContex _packageInstallerContex;
+        private PackageInstallerContext _packageInstallerContex;
         // IAddOnFragmentInstaller -> uninstall type, null is allowed
         private Dictionary<IPackageFragmentInstaller, Type> _packageFramentInstallers = new Dictionary<IPackageFragmentInstaller, Type>();
 
@@ -234,7 +234,7 @@ namespace Composite.PackageSystem
             Exception exception = null;
             try
             {
-                _packageInstallerContex = new PackageInstallerContex(new ZipFileSystem(this.ZipFilename), this.TempDirectory, this.AddOnInformation);
+                _packageInstallerContex = new PackageInstallerContext(new ZipFileSystem(this.ZipFilename), this.TempDirectory, this.AddOnInformation);
             }
             catch (Exception ex)
             {

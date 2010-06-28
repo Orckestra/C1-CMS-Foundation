@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Validation.Plugins.ClientValidationRuleTranslator.Runtime
 {
-    public sealed class ClientValidationRuleTranslatorSettings : SerializableConfigurationSection
+    internal sealed class ClientValidationRuleTranslatorSettings : SerializableConfigurationSection
 	{
         public const string SectionName = "Composite.Validation.Plugins.ClientValidationRuleTranslatorConfiguration";
 

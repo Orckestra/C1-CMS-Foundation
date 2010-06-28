@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 namespace Composite.Forms.CoreFunctions
 {
-    public sealed class BooleanCheckFunction : IFormFunction
+    internal sealed class BooleanCheckFunction : IFormFunction
     {
         public BooleanCheckFunction()
         {
@@ -38,7 +38,7 @@ namespace Composite.Forms.CoreFunctions
 
 
     [ConfigurationElementType(typeof(BooleanCheckFunctionFactoryData))]
-    public sealed class BooleanCheckFunctionFactory : IFormFunctionFactory
+    internal sealed class BooleanCheckFunctionFactory : IFormFunctionFactory
     {
         public IFormFunction CreateFunction()
         {
@@ -48,7 +48,7 @@ namespace Composite.Forms.CoreFunctions
 
 
     [Assembler(typeof(NonConfigurableFunctionFactoryAssembler))]
-    public sealed class BooleanCheckFunctionFactoryData : FunctionFactoryData
+    internal sealed class BooleanCheckFunctionFactoryData : FunctionFactoryData
     {
     }
 }

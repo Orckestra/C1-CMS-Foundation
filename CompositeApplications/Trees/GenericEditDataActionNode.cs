@@ -10,7 +10,7 @@ using Composite.Workflow;
 
 namespace Composite.Trees
 {
-	public sealed class GenericEditDataActionNode : ActionNode
+	internal sealed class GenericEditDataActionNode : ActionNode
 	{
         public string CustomFormMarkupPath { get; internal set; }   // Optional
 

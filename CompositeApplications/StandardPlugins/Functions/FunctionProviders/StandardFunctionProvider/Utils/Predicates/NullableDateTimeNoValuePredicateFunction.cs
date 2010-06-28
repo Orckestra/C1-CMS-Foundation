@@ -7,7 +7,7 @@ using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProv
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Predicates
 {
-    public sealed class NullableDateTimeNoValuePredicateFunction : StandardFunctionBase
+    internal sealed class NullableDateTimeNoValuePredicateFunction : StandardFunctionBase
     {
         public NullableDateTimeNoValuePredicateFunction(EntityTokenFactory entityTokenFactory)
             : base("NullableDateTimeNoValue", "Composite.Utils.Predicates", typeof(Expression<Func<DateTime?, bool>>), entityTokenFactory)

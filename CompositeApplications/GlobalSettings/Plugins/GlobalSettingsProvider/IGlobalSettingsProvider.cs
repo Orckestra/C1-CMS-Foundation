@@ -8,7 +8,7 @@ namespace Composite.GlobalSettings.Plugins.GlobalSettingsProvider
 {
     [CustomFactory(typeof(GlobalSettingsProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(GlobalSettingsProviderDefaultNameRetriever))]
-    public interface IGlobalSettingsProvider
+    internal interface IGlobalSettingsProvider
     {        
         string ApplicationName { get; } 
 

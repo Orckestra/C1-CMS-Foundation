@@ -7,7 +7,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 namespace Composite.Forms.Plugins.UiControlFactory
 {
-    public sealed class NonConfigurableUiControlFactoryAssembler : IAssembler<IUiControlFactory, UiControlFactoryData>
+    internal sealed class NonConfigurableUiControlFactoryAssembler : IAssembler<IUiControlFactory, UiControlFactoryData>
     {
         public IUiControlFactory Assemble(IBuilderContext context, UiControlFactoryData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {

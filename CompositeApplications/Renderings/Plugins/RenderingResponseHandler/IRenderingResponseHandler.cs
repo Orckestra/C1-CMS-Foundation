@@ -6,7 +6,7 @@ namespace Composite.Renderings.Plugins.RenderingResponseHandler
 {
     [CustomFactory(typeof(RenderingResponseHandlerCustomFactory))]
     [ConfigurationNameMapper(typeof(RenderingResponseHandlerDefaultNameRetriever))]
-	public interface IRenderingResponseHandler
+	internal interface IRenderingResponseHandler
 	{
 	}
 }

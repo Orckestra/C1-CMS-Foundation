@@ -3,7 +3,7 @@
 
 namespace Composite.Security
 {
-    public sealed class HookingFacadeEventArgs : EventArgs
+    internal sealed class HookingFacadeEventArgs : EventArgs
     {
         public HookingFacadeEventArgs(string providerName)
         {

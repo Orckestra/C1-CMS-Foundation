@@ -8,7 +8,7 @@ using Composite.Security;
 
 namespace Composite.Trees
 {    
-    public class SimpleElementTreeNode : TreeNode
+    internal class SimpleElementTreeNode : TreeNode
     {
         public string Label { get; internal set; }              // Requried
         public string ToolTip { get; internal set; }            // Defaults to Label

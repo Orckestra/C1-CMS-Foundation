@@ -4,7 +4,7 @@ using Composite.Security.Plugins.LoginSessionStore;
 
 namespace Composite.Security.BuildinPlugins.BuildinLoginSessionStore
 {
-    public class BuildinLoginSessionStore : ILoginSessionStore
+    internal class BuildinLoginSessionStore : ILoginSessionStore
 	{
         public static string Username { get { return "testUser"; } }
 

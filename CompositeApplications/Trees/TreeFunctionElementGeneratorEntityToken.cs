@@ -10,7 +10,7 @@ using Composite.Serialization;
 namespace Composite.Trees
 {
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
-    public sealed class TreeFunctionElementGeneratorEntityToken : EntityToken, IEntityTokenContainingParentEntityToken
+    internal sealed class TreeFunctionElementGeneratorEntityToken : EntityToken, IEntityTokenContainingParentEntityToken
     {
         private EntityToken _parentEntityToken;
         private string _treeNodeId;

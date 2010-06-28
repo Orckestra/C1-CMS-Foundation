@@ -6,11 +6,11 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.Security.Plugins.LoginProvider
 {
     [Assembler(typeof(NonConfigurableLoginProviderAssembler))]
-    public class NonConfigurableLoginProvider : LoginProviderData
+    internal class NonConfigurableLoginProvider : LoginProviderData
     {
     }
 
-    public sealed class NonConfigurableLoginProviderAssembler : IAssembler<ILoginProvider, LoginProviderData>
+    internal sealed class NonConfigurableLoginProviderAssembler : IAssembler<ILoginProvider, LoginProviderData>
     {
         public ILoginProvider Assemble(Microsoft.Practices.ObjectBuilder.IBuilderContext context, LoginProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {

@@ -11,7 +11,7 @@ using Composite.Renderings.Page;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Pages
 {
-    public sealed class GetPageIdFunction : StandardFunctionBase
+    internal sealed class GetPageIdFunction : StandardFunctionBase
     {
         public GetPageIdFunction(EntityTokenFactory entityTokenFactory)
             : base("GetPageId", "Composite.Pages", typeof(Guid), entityTokenFactory)

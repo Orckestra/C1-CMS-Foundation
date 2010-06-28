@@ -6,7 +6,7 @@ using Composite.Serialization;
 
 namespace Composite.Functions
 {
-    public sealed class BaseRuntimeTreeNodeValueXmlSerializer : IValueXmlSerializer
+    internal sealed class BaseRuntimeTreeNodeValueXmlSerializer : IValueXmlSerializer
     {
         public bool TrySerialize(Type objectToSerializeType, object objectToSerialize, IXmlSerializer xmlSerializer, out XElement serializedObject)
         {

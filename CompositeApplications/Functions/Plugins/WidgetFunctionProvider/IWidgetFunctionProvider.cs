@@ -9,7 +9,7 @@ namespace Composite.Functions.Plugins.WidgetFunctionProvider
 {
     [CustomFactory(typeof(WidgetFunctionProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(WidgetFunctionProviderDefaultNameRetriever))]
-	public interface IWidgetFunctionProvider
+	internal interface IWidgetFunctionProvider
 	{
         WidgetFunctionNotifier WidgetFunctionNotifier { set; }
         IEnumerable<IWidgetFunction> Functions { get; }

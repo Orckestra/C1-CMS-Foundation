@@ -10,7 +10,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.StandardPlugins.Security.LoginProviderPlugins.ConfigBasedFormLoginProvider
 {
     [ConfigurationElementType(typeof(ConfigBasedFormLoginProviderData))]
-    public sealed class ConfigBasedFormLoginProvider : IFormLoginProvider
+    internal sealed class ConfigBasedFormLoginProvider : IFormLoginProvider
     {
         private NamedElementCollection<ValidLoginConfigurationElement> _validLogins;
 
@@ -73,7 +73,7 @@ namespace Composite.StandardPlugins.Security.LoginProviderPlugins.ConfigBasedFor
 
 
     [Assembler(typeof(ConfigBasedFormLoginProviderAssembler))]
-    public sealed class ConfigBasedFormLoginProviderData : LoginProviderData
+    internal sealed class ConfigBasedFormLoginProviderData : LoginProviderData
     {
         private const string _validLoginsProperty = "ValidLogins";
         [ConfigurationProperty(_validLoginsProperty, IsRequired = true)]
@@ -86,7 +86,7 @@ namespace Composite.StandardPlugins.Security.LoginProviderPlugins.ConfigBasedFor
         }        
     }
 
-    public sealed class ConfigBasedFormLoginProviderAssembler : IAssembler<ILoginProvider, LoginProviderData>
+    internal sealed class ConfigBasedFormLoginProviderAssembler : IAssembler<ILoginProvider, LoginProviderData>
     {
         public ILoginProvider Assemble(Microsoft.Practices.ObjectBuilder.IBuilderContext context, LoginProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {
@@ -95,7 +95,7 @@ namespace Composite.StandardPlugins.Security.LoginProviderPlugins.ConfigBasedFor
         }
     }
 
-    public sealed class ValidLoginConfigurationElement : NamedConfigurationElement
+    internal sealed class ValidLoginConfigurationElement : NamedConfigurationElement
     {
         private const string _passwordProperty = "password";
         [ConfigurationProperty(_passwordProperty, IsRequired = true)]

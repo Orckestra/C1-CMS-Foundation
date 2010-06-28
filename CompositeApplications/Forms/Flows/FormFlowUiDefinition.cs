@@ -6,12 +6,12 @@ using Composite.Validation.ClientValidationRules;
 
 namespace Composite.Forms.Flows
 {
-    public delegate Dictionary<string, object> DelegatedBindingsProvider();
+    internal delegate Dictionary<string, object> DelegatedBindingsProvider();
 
-    public delegate XmlReader DelegatedMarkupProvider();
+    internal delegate XmlReader DelegatedMarkupProvider();
 
 
-    public class FormFlowUiDefinition : VisualFlowUiDefinitionBase
+    internal class FormFlowUiDefinition : VisualFlowUiDefinitionBase
     {
         private Dictionary<IFormEventIdentifier, FormFlowEventHandler> _eventHandlers = new Dictionary<IFormEventIdentifier, FormFlowEventHandler>();
 

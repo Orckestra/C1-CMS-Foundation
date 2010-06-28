@@ -7,7 +7,7 @@ namespace Composite.Security.Plugins.LoginSessionStore
 {
     [CustomFactory(typeof(LoginSessionStoreCustomFactory))]
     [ConfigurationNameMapper(typeof(LoginSessionStoreDefaultNameRetriever))]
-    public interface ILoginSessionStore
+    internal interface ILoginSessionStore
     {
         bool CanPersistAcrossSessions { get; }
 

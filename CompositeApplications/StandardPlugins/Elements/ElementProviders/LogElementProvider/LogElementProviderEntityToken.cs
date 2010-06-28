@@ -5,7 +5,7 @@ using Composite.Security.SecurityAncestorProviders;
 namespace Composite.StandardPlugins.Elements.ElementProviders.LogElementProvider
 {
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
-    public sealed class LogElementProviderEntityToken : EntityToken
+    internal sealed class LogElementProviderEntityToken : EntityToken
 	{
         public static string RootFolderId { get { return "Root"; } }
 

@@ -15,7 +15,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.StandardPlugins.Security.LoginProviderPlugins.DataBasedFormLoginProvider
 {
     [ConfigurationElementType(typeof(DataBasedFormLoginProviderData))]
-    public sealed class DataBasedFormLoginProvider : IFormLoginProvider
+    internal sealed class DataBasedFormLoginProvider : IFormLoginProvider
 	{
         public IEnumerable<string> AllUsernames
         {

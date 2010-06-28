@@ -8,7 +8,7 @@ using Composite.EventSystem;
 
 namespace Composite.Actions
 {
-    public class BeforeActionEventArgs : EventArgs
+    internal class BeforeActionEventArgs : EventArgs
     {
         public BeforeActionEventArgs(EntityToken entityToken, ActionToken actionToken)
         {
@@ -23,7 +23,7 @@ namespace Composite.Actions
 
 
 
-    public class AfterActionEventArgs : EventArgs
+    internal class AfterActionEventArgs : EventArgs
     {
         public AfterActionEventArgs(EntityToken entityToken, ActionToken actionToken, FlowToken flowToken)
         {
@@ -42,8 +42,8 @@ namespace Composite.Actions
 
     internal static class ActionEventSystemFacade
     {
-        public delegate void OnBeforeActionExecutionDelegate(BeforeActionEventArgs actionEventArgs);
-        public delegate void OnAfterActionExecutionDelegate(AfterActionEventArgs actionEventArgs);
+        internal delegate void OnBeforeActionExecutionDelegate(BeforeActionEventArgs actionEventArgs);
+        internal delegate void OnAfterActionExecutionDelegate(AfterActionEventArgs actionEventArgs);
 
 
         private static OnBeforeActionExecutionDelegate _onBeforeActionExecutionDelegates = null;

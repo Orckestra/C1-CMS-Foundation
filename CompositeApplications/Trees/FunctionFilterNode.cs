@@ -6,7 +6,7 @@ using Composite.Functions;
 
 namespace Composite.Trees
 {
-    public sealed class FunctionFilterNode : FilterNode
+    internal sealed class FunctionFilterNode : FilterNode
     {
         public XElement FunctionMarkup { get; set; } // Required
 

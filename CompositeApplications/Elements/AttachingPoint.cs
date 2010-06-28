@@ -7,7 +7,7 @@ using Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElem
 namespace Composite.Elements
 {
     // This class is dependend on the values in the configuration
-    public sealed class AttachingPoint
+    internal sealed class AttachingPoint
     {
         private static AttachingPoint _rootPerspectiveAttachingPoint = new AttachingPoint { EntityTokenType = typeof(VirtualElementProviderEntityToken), Id = "ID01", Source = "VirtualElementProvider" };
 

@@ -8,7 +8,7 @@ using Composite.Security;
 
 namespace Composite.Trees
 {
-    public sealed class TreeAuxiliaryAncestorProvider : IAuxiliarySecurityAncestorProvider
+    internal sealed class TreeAuxiliaryAncestorProvider : IAuxiliarySecurityAncestorProvider
     {
         public Dictionary<EntityToken, IEnumerable<EntityToken>> GetParents(IEnumerable<EntityToken> entityTokens)
         {

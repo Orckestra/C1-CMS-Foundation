@@ -8,7 +8,7 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
 {
     public abstract class BasePackageFragmentInstaller : IPackageFragmentInstaller
 	{
-        public void Initialize(PackageInstallerContex packageInstallerContex, IEnumerable<XElement> configuration, XElement configurationParent)
+        public void Initialize(PackageInstallerContext packageInstallerContex, IEnumerable<XElement> configuration, XElement configurationParent)
         {
             if (packageInstallerContex == null) throw new ArgumentNullException("packageInstallerContex");
             if (configuration == null) throw new ArgumentNullException("configuration");
@@ -23,7 +23,7 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
         public abstract IEnumerable<PackageFragmentValidationResult> Validate();
         public abstract IEnumerable<XElement> Install();
 
-        protected PackageInstallerContex AddOnInstallerContex { get; private set; }        
+        protected PackageInstallerContext AddOnInstallerContex { get; private set; }        
         protected IEnumerable<XElement> Configuration { get; set; }
         protected XElement ConfigurationParent { get; set; }
 

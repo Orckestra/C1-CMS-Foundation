@@ -1,7 +1,7 @@
 
 namespace Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider.Foundation
 {
-    public interface IEntityWrapper
+    internal interface IEntityWrapper
     {
         void CommitData();
     }

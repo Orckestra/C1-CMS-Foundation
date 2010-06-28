@@ -6,7 +6,7 @@ using Composite.Serialization;
 
 namespace Composite.Validation
 {
-    public sealed class ClientValidationRuleSerializerHandler : ISerializerHandler
+    internal sealed class ClientValidationRuleSerializerHandler : ISerializerHandler
 	{
         public string Serialize(object objectToSerialize)
         {            

@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Types.Plugins.TypeManagerTypeHandler
 {
-    public class TypeManagerTypeHandlerData : NameTypeConfigurationElement
+    internal class TypeManagerTypeHandlerData : NameTypeConfigurationElement
     {
         private const string _priorityPropertyName = "priority";
         [ConfigurationProperty(_priorityPropertyName, IsRequired = true, IsKey = true)]

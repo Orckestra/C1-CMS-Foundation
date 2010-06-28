@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Composite.Trees
 {
-    public abstract class DataFilteringTreeNode : TreeNode
+    internal abstract class DataFilteringTreeNode : TreeNode
     {
         internal abstract Type CurrentDataInterfaceType { get; }
 

@@ -7,17 +7,17 @@ using Composite.Types;
 
 namespace Composite.Data.GeneratedTypes
 {
-    public class GenerateNewTypeEventArgs : EventArgs
+    internal class GenerateNewTypeEventArgs : EventArgs
     {
     }
 
 
-    public class UpdateTypeEventArgs : EventArgs
+    internal class UpdateTypeEventArgs : EventArgs
     {
     }
 
 
-    public class DeleteTypeEventArgs : EventArgs
+    internal class DeleteTypeEventArgs : EventArgs
     {
     }
 
@@ -28,9 +28,9 @@ namespace Composite.Data.GeneratedTypes
 
     internal static class GeneratedTypesFacade
     {
-        public delegate void GenerateNewTypeDelegate(GenerateNewTypeEventArgs args);
-        public delegate void UpdateTypeDelegate(UpdateTypeEventArgs args);
-        public delegate void DeleteTypeDelegate(DeleteTypeEventArgs args);
+        internal delegate void GenerateNewTypeDelegate(GenerateNewTypeEventArgs args);
+        internal delegate void UpdateTypeDelegate(UpdateTypeEventArgs args);
+        internal delegate void DeleteTypeDelegate(DeleteTypeEventArgs args);
 
 
         private static event GenerateNewTypeDelegate _generateNewTypeDelegate;

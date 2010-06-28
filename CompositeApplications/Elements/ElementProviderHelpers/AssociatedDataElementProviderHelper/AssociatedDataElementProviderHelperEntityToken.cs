@@ -10,7 +10,7 @@ using Composite.Types;
 namespace Composite.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper
 {
     [SecurityAncestorProvider(typeof(AssociatedDataElementProviderHelperSecurityAncestorProvider))]
-    public sealed class AssociatedDataElementProviderHelperEntityToken : EntityToken
+    internal sealed class AssociatedDataElementProviderHelperEntityToken : EntityToken
     {
         private string _type;
         private string _providerName;

@@ -7,7 +7,7 @@ using Composite.Logging;
 namespace Composite.Data.ProcessControlled.ProcessControllers.GenericVersionProcessController
 {
     [Obsolete("To be removed")]
-    public sealed class GenericVersionProcessController : IVersionProcessController
+    internal sealed class GenericVersionProcessController : IVersionProcessController
     {
         private static readonly ActionGroup AppendedActionGroup = new ActionGroup("Versioning", ActionGroupPriority.TargetedAppendLow);
 

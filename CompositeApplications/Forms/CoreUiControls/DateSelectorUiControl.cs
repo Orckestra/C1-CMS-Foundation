@@ -6,7 +6,7 @@ using Composite.Forms.Foundation;
 namespace Composite.Forms.CoreUiControls
 {
     [ControlValueProperty("Date")]
-    public abstract class DateTimeSelectorUiControl : UiControl
+    internal abstract class DateTimeSelectorUiControl : UiControl
     {
         [BindableProperty()]
         [FormsProperty()]

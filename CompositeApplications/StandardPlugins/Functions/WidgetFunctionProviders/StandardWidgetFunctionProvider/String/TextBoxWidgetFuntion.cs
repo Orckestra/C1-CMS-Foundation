@@ -8,7 +8,7 @@ using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidget
 
 namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.String
 {
-	public sealed class TextBoxWidgetFuntion : CompositeWidgetFunctionBase
+	internal sealed class TextBoxWidgetFuntion : CompositeWidgetFunctionBase
     {
         private const string _functionName = "TextBox";
         public const string CompositeName = CompositeWidgetFunctionBase.CommonNamespace + ".String." +_functionName;

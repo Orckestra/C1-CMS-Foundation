@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Composite.Forms.CoreUiControls
 {
-    public abstract class MultiContentXhtmlEditorUiControl : UiControl
+    internal abstract class MultiContentXhtmlEditorUiControl : UiControl
     {
         [FormsProperty()]
         public Dictionary<string, string> PlaceholderDefinitions { get; set; }

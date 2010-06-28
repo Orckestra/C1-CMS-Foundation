@@ -11,7 +11,7 @@ using Composite.Security;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElementProvider
 {
-    public sealed class SqlFunctionProviderEntityTokenSecurityAncestorProvider : ISecurityAncestorProvider
+    internal sealed class SqlFunctionProviderEntityTokenSecurityAncestorProvider : ISecurityAncestorProvider
     {
         public IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {

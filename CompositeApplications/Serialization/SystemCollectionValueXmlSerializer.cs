@@ -9,7 +9,7 @@ using Composite.Data;
 
 namespace Composite.Serialization
 {
-    public sealed class SystemCollectionValueXmlSerializer : IValueXmlSerializer
+    internal sealed class SystemCollectionValueXmlSerializer : IValueXmlSerializer
     {
         public bool TrySerialize(Type objectToSerializeType, object objectToSerialize, IXmlSerializer xmlSerializer, out XElement serializedObject)
         {

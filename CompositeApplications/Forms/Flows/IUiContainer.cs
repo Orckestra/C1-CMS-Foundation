@@ -4,7 +4,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.Forms.Flows
 {
-    public interface IUiContainer
+    internal interface IUiContainer
     {
         IUiControl Render(
             IUiControl innerForm,

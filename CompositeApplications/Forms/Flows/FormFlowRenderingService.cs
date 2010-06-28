@@ -6,7 +6,7 @@ using Composite.WebClient;
 
 namespace Composite.Forms.Flows
 {
-    public class FormFlowRenderingService : IFormFlowRenderingService
+    internal class FormFlowRenderingService : IFormFlowRenderingService
     {
         private Dictionary<string, string> _bindingPathedMessages = null;
 

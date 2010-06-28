@@ -6,7 +6,7 @@ using System.Drawing.Imaging;
 
 namespace Composite.WebClient.Captcha
 {
-    public class ImageCreator
+    internal class ImageCreator
     {
         #region private members
         int Height;
@@ -427,11 +427,11 @@ namespace Composite.WebClient.Captcha
         }
         #endregion
     }
-    #region public enums
+    #region internal enums
     /// <summary>
     /// Amount of random font warping to apply to rendered text
     /// </summary>
-    public enum FontWarpFactor
+    internal enum FontWarpFactor
     {
         None,
         Low,
@@ -442,7 +442,7 @@ namespace Composite.WebClient.Captcha
     /// <summary>
     /// Amount of background noise to add to rendered image
     /// </summary>
-    public enum NoiseLevel
+    internal enum NoiseLevel
     {
         None,
         Low,
@@ -453,7 +453,7 @@ namespace Composite.WebClient.Captcha
     /// <summary>
     /// Amount of curved line noise to add to rendered image
     /// </summary>
-    public enum LineNoiseLevel
+    internal enum LineNoiseLevel
     {
         None,
         Low,

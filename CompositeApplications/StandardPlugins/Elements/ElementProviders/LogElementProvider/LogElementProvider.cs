@@ -11,7 +11,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.StandardPlugins.Elements.ElementProviders.LogElementProvider
 {
     [ConfigurationElementType(typeof(LogElementProviderData))]
-    public sealed class LogElementProvider : IHooklessElementProvider
+    internal sealed class LogElementProvider : IHooklessElementProvider
     {
         private ElementProviderContext _elementProviderContext;
 
@@ -79,7 +79,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.LogElementProvider
 
 
     [Assembler(typeof(NonConfigurableHooklessElementProviderAssembler))]
-    public sealed class LogElementProviderData : HooklessElementProviderData
+    internal sealed class LogElementProviderData : HooklessElementProviderData
     {
     }
 }

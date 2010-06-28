@@ -9,7 +9,7 @@ using Composite.Data.Types;
 
 namespace Composite.Data.Visualization
 {
-    public class VisualizedPageData : IVisualizedData
+    internal class VisualizedPageData : IVisualizedData
     {
         public VisualizedPageData(DataSourceId dataSourceId, string label, string toolTip)
         {
@@ -23,7 +23,7 @@ namespace Composite.Data.Visualization
         public string ToolTip { get; internal set; }
     }
 
-    public class PageVisualizer : IDataVisualizer
+    internal class PageVisualizer : IDataVisualizer
     {
         public IEnumerable<IVisualizedData> Visualize<T>(IQueryable<T> data) where T : class, Composite.Data.IData
         {

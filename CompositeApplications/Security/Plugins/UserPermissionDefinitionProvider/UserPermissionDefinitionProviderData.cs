@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.Security.Plugins.UserPermissionDefinitionProvider
 {
     [ConfigurationElementType(typeof(NonConfigurableUserPermissionDefinitionProvider))]
-    public class UserPermissionDefinitionProviderData : NameTypeManagerTypeConfigurationElement
+    internal class UserPermissionDefinitionProviderData : NameTypeManagerTypeConfigurationElement
 	{
 	}
 }

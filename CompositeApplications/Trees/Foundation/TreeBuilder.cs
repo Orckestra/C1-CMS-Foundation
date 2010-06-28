@@ -15,7 +15,7 @@ using Composite.Xml;
 
 namespace Martin
 {
-    public sealed class Maffe
+    internal sealed class Maffe
     {
         public static System.Linq.Expressions.Expression<Func<Composite.Data.Types.IPage, bool>> Func1()
         {

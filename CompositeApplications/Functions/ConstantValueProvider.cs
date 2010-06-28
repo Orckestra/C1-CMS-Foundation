@@ -7,7 +7,7 @@ using Composite.Types;
 
 namespace Composite.Functions
 {
-    public sealed class ConstantValueProvider : BaseValueProvider
+    internal sealed class ConstantValueProvider : BaseValueProvider
     {
         private object _value;
 

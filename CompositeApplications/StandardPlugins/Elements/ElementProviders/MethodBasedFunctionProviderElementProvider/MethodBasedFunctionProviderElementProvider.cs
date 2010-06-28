@@ -19,7 +19,7 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
 {
     [ConfigurationElementType(typeof(MethodBasedFunctionProviderElementProviderData))]
-    public sealed class MethodBasedFunctionProviderElementProvider : BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider
+    internal sealed class MethodBasedFunctionProviderElementProvider : BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider
     {
         private string _providerName;
 
@@ -206,7 +206,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctio
 
 
     [Assembler(typeof(MethodBasedFunctionProviderElementProviderAssembler))]
-    public sealed class MethodBasedFunctionProviderElementProviderData : HooklessElementProviderData
+    internal sealed class MethodBasedFunctionProviderElementProviderData : HooklessElementProviderData
     {
         private const string _methodBasedFunctionProviderNameProperty = "methodBasedFunctionProviderName";
         [ConfigurationProperty(_methodBasedFunctionProviderNameProperty, IsRequired = true)]

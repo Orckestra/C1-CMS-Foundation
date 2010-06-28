@@ -14,7 +14,7 @@ namespace Composite.StandardPlugins.Security.LoginProviderPlugins.ValidateAllWin
 
 
     [ConfigurationElementType(typeof(ValidateAllWindowsLoginProviderData))]
-    public class ValidateAllWindowsLoginProvider : IWindowsLoginProvider
+    internal class ValidateAllWindowsLoginProvider : IWindowsLoginProvider
     {
         private List<string> _usernames = null;
 

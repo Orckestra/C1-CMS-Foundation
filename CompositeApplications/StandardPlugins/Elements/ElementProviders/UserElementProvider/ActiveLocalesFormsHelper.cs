@@ -10,7 +10,7 @@ using Composite.Xml;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider
 {
-	public sealed class ActiveLocalesFormsHelper
+	internal sealed class ActiveLocalesFormsHelper
 	{
         private List<XElement> _bindingElements = null;
         private XElement _fieldGroupElement = null;

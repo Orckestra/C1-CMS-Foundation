@@ -7,11 +7,11 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.WebClient.Plugins.WebRequestHandler
 {
     [Assembler(typeof(NonConfigurableWebRequestHandlerAssembler))]
-    public class NonConfigurableWebRequestHandler : WebRequestHandlerData
+    internal class NonConfigurableWebRequestHandler : WebRequestHandlerData
     {
     }
 
-    public class NonConfigurableWebRequestHandlerAssembler : IAssembler<WebRequestHandler, WebRequestHandlerData>
+    internal class NonConfigurableWebRequestHandlerAssembler : IAssembler<WebRequestHandler, WebRequestHandlerData>
     {
         public WebRequestHandler Assemble(Microsoft.Practices.ObjectBuilder.IBuilderContext context, WebRequestHandlerData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {

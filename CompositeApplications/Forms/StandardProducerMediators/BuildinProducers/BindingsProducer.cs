@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Composite.Forms.StandardProducerMediators.BuildinProducers
 {
     [ControlValueProperty("bindings")]
-    public sealed class BindingsProducer : IBuildinProducer
+    internal sealed class BindingsProducer : IBuildinProducer
     {
         private List<BindingProducer> _bindings = new List<BindingProducer>();
 

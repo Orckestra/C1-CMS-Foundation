@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Predicates
 {
-    public sealed class BoolEqualsPredicateFunction : StandardFunctionBase
+    internal sealed class BoolEqualsPredicateFunction : StandardFunctionBase
     {
         public BoolEqualsPredicateFunction(EntityTokenFactory entityTokenFactory)
             : base("BoolEquals", "Composite.Utils.Predicates", typeof(Expression<Func<bool, bool>>), entityTokenFactory)

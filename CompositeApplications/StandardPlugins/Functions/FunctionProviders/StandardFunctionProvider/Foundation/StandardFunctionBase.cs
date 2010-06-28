@@ -6,7 +6,7 @@ using Composite.Logging;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation
 {
-    public abstract class StandardFunctionBase : IFunction
+    internal abstract class StandardFunctionBase : IFunction
     {
         private EntityTokenFactory _entityTokenFactory;
 

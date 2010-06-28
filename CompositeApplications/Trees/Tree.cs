@@ -10,7 +10,7 @@ using Composite.Trees.Foundation.AttachmentPoints;
 namespace Composite.Trees
 {
     [DebuggerDisplay("{TreeId}")]
-    public sealed class Tree
+    internal sealed class Tree
     {
         public string TreeId { get; private set ;}
         public string AllowedAttachmentApplicationName { get; internal set; }

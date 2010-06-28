@@ -5,7 +5,7 @@
 
 //namespace Composite.Forms.WebChannel
 //{
-//    public sealed class WebUiHelpers
+//    internal sealed class WebUiHelpers
 //    {
 //        public static Control WrapInUpdatePanel( Control content, bool childrenAsUpdateTriggers )
 //        {

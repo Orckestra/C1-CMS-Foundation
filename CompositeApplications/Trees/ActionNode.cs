@@ -10,7 +10,7 @@ using Composite.Serialization;
 
 namespace Composite.Trees
 {
-	public abstract class ActionNode
+	internal abstract class ActionNode
 	{
         private static string TreeIdSerializedKeyName = "_TreeId_";
         private static string ActionNodeIdSerializedKeyName = "_ActionNodeId_";

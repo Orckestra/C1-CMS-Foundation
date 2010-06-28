@@ -11,7 +11,7 @@ using Composite.Validation.ClientValidationRules;
 namespace Composite.Workflow
 {
     [ExternalDataExchange()]
-    public interface IFormsWorkflowActivityService
+    internal interface IFormsWorkflowActivityService
     {
         void DeliverFormData(Guid instanceId, string containerLabel, IFlowUiContainerType containerType, string formMarkup, Dictionary<string, object> bindings);
         void DeliverFormData(Guid instanceId, string containerLabel, IFlowUiContainerType containerType, IFormMarkupProvider formMarkupProvider, Dictionary<string, object> bindings);

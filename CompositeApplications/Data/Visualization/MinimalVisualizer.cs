@@ -8,7 +8,7 @@ using Composite.Data;
 
 namespace Composite.Data.Visualization
 {
-    public class MinimalVisualizedData : IVisualizedData
+    internal class MinimalVisualizedData : IVisualizedData
     {
         public MinimalVisualizedData(DataSourceId dataSourceId)
         {
@@ -22,7 +22,7 @@ namespace Composite.Data.Visualization
         public string ToolTip  { get; internal set; }
     }
 
-    public class MinimalVisualizer : IDataVisualizer
+    internal class MinimalVisualizer : IDataVisualizer
     {
         public IEnumerable<IVisualizedData> Visualize<T>(IQueryable<T> data) where T : class, Composite.Data.IData
         {

@@ -12,7 +12,7 @@ using Composite.Workflow.Foundation;
 
 namespace Composite.Workflow
 {
-    public sealed class WorkflowFlowController : IFlowController
+    internal sealed class WorkflowFlowController : IFlowController
     {
         private FlowControllerServicesContainer _servicesContainer;
 

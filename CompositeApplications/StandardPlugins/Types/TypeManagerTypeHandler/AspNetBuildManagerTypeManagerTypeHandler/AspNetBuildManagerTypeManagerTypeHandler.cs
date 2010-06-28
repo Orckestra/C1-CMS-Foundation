@@ -10,7 +10,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.StandardPlugins.Types.TypeManagerTypeHandler.AspNetBuildManagerTypeManagerTypeHandler
 {    
     [ConfigurationElementType(typeof(AspNetBuildManagerTypeManagerTypeHandlerData))]
-    public sealed class AspNetBuildManagerTypeManagerTypeHandler : ITypeManagerTypeHandler
+    internal sealed class AspNetBuildManagerTypeManagerTypeHandler : ITypeManagerTypeHandler
     {
         private const string _typeNamePrefix = "AspNetType:";
 
@@ -60,7 +60,7 @@ namespace Composite.StandardPlugins.Types.TypeManagerTypeHandler.AspNetBuildMana
     }
 
     [Assembler(typeof(NonConfigurableTypeManagerTypeHandlerAssembler))]
-    public sealed class AspNetBuildManagerTypeManagerTypeHandlerData : TypeManagerTypeHandlerData
+    internal sealed class AspNetBuildManagerTypeManagerTypeHandlerData : TypeManagerTypeHandlerData
     {
     }
 }

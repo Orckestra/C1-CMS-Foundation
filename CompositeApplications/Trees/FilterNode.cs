@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Composite.Trees
 {
-    public abstract class FilterNode
+    internal abstract class FilterNode
     {
         public string XPath { get; internal set; }
         public int Id { get; internal set; }

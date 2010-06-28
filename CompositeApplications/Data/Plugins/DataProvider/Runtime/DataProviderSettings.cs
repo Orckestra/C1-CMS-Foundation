@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Data.Plugins.DataProvider.Runtime
 {
-    public sealed class DataProviderSettings : SerializableConfigurationSection
+    internal sealed class DataProviderSettings : SerializableConfigurationSection
     {
         public const string SectionName = "Composite.Data.Plugins.DataProviderConfiguration";
 

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Composite.Data.Caching
 {
-    public interface ICachingQueryable
+    internal interface ICachingQueryable
     {
         IQueryable Source { get; }
     }

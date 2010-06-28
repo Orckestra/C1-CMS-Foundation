@@ -13,7 +13,7 @@ namespace Composite.ResourceSystem
     }
 
 
-    public class IconSizeConverter : TypeConverter
+    internal class IconSizeConverter : TypeConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {

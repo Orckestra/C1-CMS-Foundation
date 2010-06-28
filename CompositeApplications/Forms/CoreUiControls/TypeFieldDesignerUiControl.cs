@@ -10,7 +10,7 @@ namespace Composite.Forms.CoreUiControls
     /// <summary>
     /// Provides editing functionality for DataFieldDescriptor elements
     /// </summary>
-    public abstract class TypeFieldDesignerUiControl : UiControl
+    internal abstract class TypeFieldDesignerUiControl : UiControl
     {
         /// <summary>
         /// </summary>

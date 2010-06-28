@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Composite.Parallelization
 {
     [Obsolete("To be removed.")]
-    public class IndexEnumerator: IEnumerable<int>
+    internal class IndexEnumerator: IEnumerable<int>
     {
         private readonly int _elementsCount;
 

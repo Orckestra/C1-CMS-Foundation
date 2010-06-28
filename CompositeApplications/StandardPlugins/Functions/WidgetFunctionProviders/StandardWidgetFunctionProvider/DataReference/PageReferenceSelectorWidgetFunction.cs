@@ -9,7 +9,7 @@ using Composite.Data.Types;
 
 namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.DataReference
 {
-    public sealed class PageReferenceSelectorWidgetFunction: CompositeWidgetFunctionBase
+    internal sealed class PageReferenceSelectorWidgetFunction: CompositeWidgetFunctionBase
     {
         public static string CompositeName
         {

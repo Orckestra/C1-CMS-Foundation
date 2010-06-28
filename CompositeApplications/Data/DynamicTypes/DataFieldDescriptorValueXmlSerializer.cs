@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace Composite.Data.DynamicTypes
 {
-    public sealed class DataFieldDescriptorValueXmlSerializer : IValueXmlSerializer
+    internal sealed class DataFieldDescriptorValueXmlSerializer : IValueXmlSerializer
 	{
         public bool TrySerialize(Type objectToSerializeType, object objectToSerialize, IXmlSerializer xmlSerializer, out XElement serializedObject)
         {

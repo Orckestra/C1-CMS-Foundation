@@ -10,7 +10,7 @@ using Composite.Xml;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider
 {
-	public sealed class ActivePerspectiveFormsHelper
+	internal sealed class ActivePerspectiveFormsHelper
 	{
         private List<Element> _perspectiveElements;
         private List<XElement> _bindingElements = null;

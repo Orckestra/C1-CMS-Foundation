@@ -4,7 +4,7 @@ using Composite.Elements;
 
 namespace Composite.Data.ProcessControlled.ProcessControllers.DummyProcessControllers
 {
-	public sealed class PublishDummyProcessController : IPublishProcessController
+	internal sealed class PublishDummyProcessController : IPublishProcessController
 	{
         public void SetStartStatus(IData data)
         {

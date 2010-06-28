@@ -1,7 +1,7 @@
 
 namespace Composite.Data.Visualization
 {
-    public interface IVisualizedData
+    internal interface IVisualizedData
     {
         DataSourceId DataSourceId { get; }
         string Label { get; }

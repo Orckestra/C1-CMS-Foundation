@@ -3,7 +3,7 @@ using System;
 
 namespace Composite.Data.Hierarchy.DataAncestorProviders
 {
-	public sealed class NoAncestorDataAncestorProvider : IDataAncestorProvider
+	internal sealed class NoAncestorDataAncestorProvider : IDataAncestorProvider
 	{
         public IData GetParent(IData data)
         {

@@ -8,7 +8,7 @@ using Composite.Data.Foundation.CodeGeneration;
 
 namespace Composite.Data.Types
 {
-    public sealed class IFileBuildNewHandler : IBuildNewHandler
+    internal sealed class IFileBuildNewHandler : IBuildNewHandler
     {
         public Type GetTypeToBuild(Type dataType)
         {
@@ -24,7 +24,7 @@ namespace Composite.Data.Types
 
 
 
-    public class IFileEmptyDataClassBase : EmptyDataClassBase
+    internal class IFileEmptyDataClassBase : EmptyDataClassBase
     {
         private CachedMemoryStream _currentWriteStream;
         private Type _interfaceType;
@@ -48,7 +48,7 @@ namespace Composite.Data.Types
 
 
 
-    public sealed class IFileEmptyDataClassFileStreamManager : IFileStreamManager
+    internal sealed class IFileEmptyDataClassFileStreamManager : IFileStreamManager
     {
         public Stream GetReadStream(IFile file)
         {

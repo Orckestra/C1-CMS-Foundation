@@ -8,7 +8,7 @@ using Composite.Validation.Validators;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Validation
 {
-    public sealed class PasswordValidationValidationFunction : StandardFunctionBase
+    internal sealed class PasswordValidationValidationFunction : StandardFunctionBase
 	{
         public PasswordValidationValidationFunction(EntityTokenFactory entityTokenFactory)
             : base("PasswordValidation", "Composite.Utils.Validation", typeof(PropertyValidatorBuilder<string>), entityTokenFactory)

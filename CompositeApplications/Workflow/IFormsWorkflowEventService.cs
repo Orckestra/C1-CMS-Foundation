@@ -5,7 +5,7 @@ using System.Workflow.Activities;
 namespace Composite.Workflow
 {
     [ExternalDataExchange()]
-    public interface IFormsWorkflowEventService
+    internal interface IFormsWorkflowEventService
     {
         event EventHandler<FormEventArgs> Save;
         event EventHandler<FormEventArgs> Next;

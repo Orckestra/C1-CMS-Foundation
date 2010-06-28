@@ -8,11 +8,11 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.Functions.Plugins.FunctionProvider
 {
     [Assembler(typeof(NonConfigurableFunctionProviderAssembler))]
-    public sealed class NonConfigurableFunctionProvider : FunctionProviderData
+    internal sealed class NonConfigurableFunctionProvider : FunctionProviderData
     {
     }
 
-    public sealed class NonConfigurableFunctionProviderAssembler : IAssembler<IFunctionProvider, FunctionProviderData>
+    internal sealed class NonConfigurableFunctionProviderAssembler : IAssembler<IFunctionProvider, FunctionProviderData>
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         public IFunctionProvider Assemble(IBuilderContext context, FunctionProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)

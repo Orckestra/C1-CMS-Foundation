@@ -7,7 +7,7 @@ namespace Composite.Functions.Plugins.WidgetFunctionProvider
     /// A widget function provider can use this class to notify if the providers list of functions
     /// has been changed.
     /// </summary>
-    public sealed class WidgetFunctionNotifier
+    internal sealed class WidgetFunctionNotifier
     {
         internal WidgetFunctionNotifier(string providerName)
         {

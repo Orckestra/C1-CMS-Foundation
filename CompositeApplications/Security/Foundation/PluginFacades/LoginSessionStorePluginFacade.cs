@@ -11,7 +11,7 @@ using Composite.Security.Plugins.LoginSessionStore.Runtime;
 
 namespace Composite.Security.Foundation.PluginFacades
 {
-    public class LoginSessionStorePluginFacade
+    internal class LoginSessionStorePluginFacade
     {
         private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.DoInitializeResources);
 

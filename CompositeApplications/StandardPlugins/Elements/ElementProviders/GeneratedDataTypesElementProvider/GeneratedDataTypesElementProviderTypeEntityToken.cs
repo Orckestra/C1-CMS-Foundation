@@ -8,7 +8,7 @@ using Composite.Serialization;
 namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
     [SecurityAncestorProvider(typeof(GeneratedDataTypesElementProviderSecurityAncestorProvider))]
-    public sealed class GeneratedDataTypesElementProviderTypeEntityToken : EntityToken
+    internal sealed class GeneratedDataTypesElementProviderTypeEntityToken : EntityToken
     {
         private string _id;
         private string _providerName;

@@ -6,7 +6,7 @@ using Microsoft.Practices.ObjectBuilder;
 
 namespace Composite.WebClient.State.Runtime
 {
-    public sealed class SessionStateProviderSettings :  SerializableConfigurationSection
+    internal sealed class SessionStateProviderSettings :  SerializableConfigurationSection
     {
         public const string SectionName = "Composite.WebClient.Plugins.SessionStateProviderConfiguration";
 
@@ -19,11 +19,11 @@ namespace Composite.WebClient.State.Runtime
     }
 
     [Assembler(typeof(NonConfigurableSessionStateProviderDataAssembler))]
-    public class SessionStateProviderData : NameTypeConfigurationElement
+    internal class SessionStateProviderData : NameTypeConfigurationElement
     {
     }
 
-    public sealed class NonConfigurableSessionStateProviderDataAssembler : IAssembler<ISessionStateProvider, SessionStateProviderData>
+    internal sealed class NonConfigurableSessionStateProviderDataAssembler : IAssembler<ISessionStateProvider, SessionStateProviderData>
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         public ISessionStateProvider Assemble(IBuilderContext context, SessionStateProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)

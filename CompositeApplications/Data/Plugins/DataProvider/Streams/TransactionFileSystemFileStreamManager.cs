@@ -9,7 +9,7 @@ using System.Transactions;
 
 namespace Composite.Data.Plugins.DataProvider.Streams
 {
-    public sealed class TransactionFileSystemFileStreamManager : IFileStreamManager
+    internal sealed class TransactionFileSystemFileStreamManager : IFileStreamManager
     {
         public Stream GetReadStream(IFile file)
         {

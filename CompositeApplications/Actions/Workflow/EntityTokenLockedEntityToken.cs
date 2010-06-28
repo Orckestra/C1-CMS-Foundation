@@ -4,7 +4,7 @@
 namespace Composite.Actions.Workflows
 {
     // This is a dummy token, no elements using this token exists!
-    public sealed class EntityTokenLockedEntityToken : EntityToken
+    internal sealed class EntityTokenLockedEntityToken : EntityToken
 	{
         private string _lockedByUsername;
         private string _serializedLockedActionToken;

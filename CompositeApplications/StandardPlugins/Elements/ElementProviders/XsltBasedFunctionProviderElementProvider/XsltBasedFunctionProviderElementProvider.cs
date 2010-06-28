@@ -19,7 +19,7 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider
 {
     [ConfigurationElementType(typeof(XsltBasedFunctionProviderElementProviderData))]
-    public sealed class XsltBasedFunctionProviderElementProvider : BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider
+    internal sealed class XsltBasedFunctionProviderElementProvider : BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider
     {
         private string _providerName;
 
@@ -206,7 +206,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionP
 
 
     [Assembler(typeof(XsltBasedFunctionProviderElementProviderAssembler))]
-    public sealed class XsltBasedFunctionProviderElementProviderData : HooklessElementProviderData
+    internal sealed class XsltBasedFunctionProviderElementProviderData : HooklessElementProviderData
     {
         private const string _codeDomQueryResultProviderNameProperty = "XsltBasedFunctionProviderName";
         [ConfigurationProperty(_codeDomQueryResultProviderNameProperty, IsRequired = true)]

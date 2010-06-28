@@ -14,7 +14,7 @@ using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProv
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated.Filter
 {
-	public sealed class ActivePageReferenceFilter<T> : StandardFunctionBase
+	internal sealed class ActivePageReferenceFilter<T> : StandardFunctionBase
 	{
         private static readonly ParameterExpression _parameterExpression = Expression.Parameter(typeof(T), "data");
         private static readonly Expression _foreignKeyPropertyExpression;

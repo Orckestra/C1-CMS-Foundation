@@ -3,7 +3,7 @@ using Composite.Forms.Foundation;
 
 namespace Composite.Forms.CoreUiControls
 {
-    public abstract class FunctionParameterDesignerUiControl : UiControl
+    internal abstract class FunctionParameterDesignerUiControl : UiControl
     {
         /// <summary>
         /// </summary>

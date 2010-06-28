@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Predicates
 {
-    public sealed class StringInCommaSeparatedListPredicateFunction : StandardFunctionBase
+    internal sealed class StringInCommaSeparatedListPredicateFunction : StandardFunctionBase
     {
         public StringInCommaSeparatedListPredicateFunction(EntityTokenFactory entityTokenFactory)
             : base("StringInCommaSeparatedList", "Composite.Utils.Predicates", typeof(Expression<Func<string, bool>>), entityTokenFactory)

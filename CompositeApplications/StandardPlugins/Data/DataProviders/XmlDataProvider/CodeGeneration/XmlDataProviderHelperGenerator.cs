@@ -15,7 +15,7 @@ using Composite.Parallelization;
 
 namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 {
-    public sealed class XmlDataProviderHelperGenerator
+    internal sealed class XmlDataProviderHelperGenerator
     {
         private const string _namespacePrefix = "GeneratedTypes";
 

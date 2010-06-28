@@ -4,7 +4,7 @@
 namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
     [SecurityAncestorProvider(typeof(MediaFileProviderEntityTokenSecurityAncestorProvider))]
-    public sealed class MediaRootFolderProviderEntityToken : EntityToken
+    internal sealed class MediaRootFolderProviderEntityToken : EntityToken
 	{
         private string _id;
 

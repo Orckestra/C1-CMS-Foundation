@@ -4,7 +4,7 @@ using Composite.Elements;
 
 namespace Composite.Data.ProcessControlled
 {
-    public interface IPublishProcessController : IProcessController
+    internal interface IPublishProcessController : IProcessController
 	{
         void SetStartStatus(IData data);
 

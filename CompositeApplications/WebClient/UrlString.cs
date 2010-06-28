@@ -9,7 +9,7 @@ using Composite.StringExtensions;
 
 namespace Composite.WebClient
 {
-    public class UrlString
+    public sealed class UrlString
     {
         private static readonly string IncorrectValueParam = "__***IncorrectValue***__";
 

@@ -4,7 +4,7 @@ using Composite.Forms.Foundation;
 namespace Composite.Forms.CoreUiControls
 {
     [ControlValueProperty("Html")]
-    public abstract class HtmlBlobUiControl : UiControl
+    internal abstract class HtmlBlobUiControl : UiControl
     {
         private string _html = "";
 

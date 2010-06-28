@@ -16,7 +16,7 @@ using Composite.Types;
 
 namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider
 {
-	public sealed class ImageSelectorWidgetFunction : CompositeWidgetFunctionBase
+	internal sealed class ImageSelectorWidgetFunction : CompositeWidgetFunctionBase
     {
         private static readonly string LogTitle = "ImageSelectorWidgetFunction";
         private const string _functionName = "ImageSelector";

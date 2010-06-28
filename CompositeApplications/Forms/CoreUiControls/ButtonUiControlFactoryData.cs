@@ -4,7 +4,7 @@ using Composite.Forms.Plugins.UiControlFactory;
 
 namespace Composite.Forms.CoreUiControls
 {
-    public class ButtonUiControlFactoryData : UiControlFactoryData
+    internal class ButtonUiControlFactoryData : UiControlFactoryData
     {
     }
 }

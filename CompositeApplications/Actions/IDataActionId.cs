@@ -1,6 +1,6 @@
 namespace Composite.Actions
 {
-    public interface IDataActionId
+    internal interface IDataActionId
     {
     }
 }

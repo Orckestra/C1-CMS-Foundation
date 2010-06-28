@@ -2,7 +2,7 @@ using System;
 
 namespace Composite.Types
 {
-    public sealed class NameTypePair
+    internal sealed class NameTypePair
     {
         private string _name;
         private Type _type;

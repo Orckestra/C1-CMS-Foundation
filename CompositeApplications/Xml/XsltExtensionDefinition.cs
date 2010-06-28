@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace Composite.Xml
 {
-    public interface IXsltExtensionDefinition
+    internal interface IXsltExtensionDefinition
     {
         XNamespace ExtensionNamespace { get; }
         object EntensionObjectAsObject { get; }
@@ -14,7 +14,7 @@ namespace Composite.Xml
 
 
 
-	public class XsltExtensionDefinition<T> : IXsltExtensionDefinition
+	internal class XsltExtensionDefinition<T> : IXsltExtensionDefinition
 	{
         public XNamespace ExtensionNamespace { get; set; }
         public T EntensionObject { get; set; }

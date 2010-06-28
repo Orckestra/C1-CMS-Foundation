@@ -11,7 +11,7 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.StandardPlugins.Functions.FunctionProviders.SqlFunctionProvider
 {
     [ConfigurationElementType(typeof(SqlFunctionProviderData))]
-    public sealed class SqlFunctionProvider : IFunctionProvider
+    internal sealed class SqlFunctionProvider : IFunctionProvider
     {
         private FunctionNotifier _functionNotifier;
 
@@ -58,7 +58,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.SqlFunctionProvi
 
 
     [Assembler(typeof(SqlFunctionProviderAssembler))]
-    public sealed class SqlFunctionProviderData : FunctionProviderData
+    internal sealed class SqlFunctionProviderData : FunctionProviderData
     {
     }
 

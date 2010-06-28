@@ -18,7 +18,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.StandardPlugins.Functions.FunctionProviders.VisualFunctionProvider
 {
     [ConfigurationElementType(typeof(VisualFunctionProviderData))]
-    public sealed class VisualFunctionProvider : IDynamicTypeFunctionProvider
+    internal sealed class VisualFunctionProvider : IDynamicTypeFunctionProvider
     {
         private FunctionNotifier _functionNotifier;
 
@@ -375,7 +375,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.VisualFunctionPr
 
 
     [Assembler(typeof(NonConfigurableFunctionProviderAssembler))]
-    public sealed class VisualFunctionProviderData : FunctionProviderData
+    internal sealed class VisualFunctionProviderData : FunctionProviderData
     {
     }
 }

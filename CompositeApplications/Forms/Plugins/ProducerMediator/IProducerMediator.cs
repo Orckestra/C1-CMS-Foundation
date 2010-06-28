@@ -7,7 +7,7 @@ namespace Composite.Forms.Plugins.ProducerMediator
 {
     [CustomFactory(typeof(ProducerMediatorCustomFactory))]
     [ConfigurationNameMapper(typeof(ProducerMediatorDefaultNameRetriever))]
-    public interface IProducerMediator
+    internal interface IProducerMediator
     {
         object CreateProducer(IFormChannelIdentifier channel, string namespaceName, string name);
         object EvaluateProducer(object producer);

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 {
-    public sealed class XmlDataProviderCodeGeneratorResult
+    internal sealed class XmlDataProviderCodeGeneratorResult
     {
         private Dictionary<Type, XmlDataProviderCodeGeneratorStoreResult> _storeResults = new Dictionary<Type, XmlDataProviderCodeGeneratorStoreResult>();
         private List<KeyValuePair<Type, List<string>>> _storeErrors = new List<KeyValuePair<Type, List<string>>>();

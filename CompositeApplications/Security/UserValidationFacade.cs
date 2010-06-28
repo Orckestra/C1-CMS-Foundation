@@ -2,10 +2,7 @@ using System;
 using Composite.Logging;
 using Composite.Security.Foundation.PluginFacades;
 using Composite.Security.Plugins.LoginProvider;
-using Composite.Security.Plugins.LoginSessionStore;
-using Composite.GlobalSettings;
 using System.Collections.Generic;
-using System.Linq;
 
 
 namespace Composite.Security

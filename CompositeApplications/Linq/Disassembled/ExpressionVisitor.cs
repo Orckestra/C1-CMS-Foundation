@@ -9,7 +9,7 @@ using Composite.Data;
 
 namespace Composite.Linq.Disassembled
 {
-    public abstract class ExpressionVisitor
+    internal abstract class ExpressionVisitor
     {
         public static BinaryExpression MakeBinaryExpression(ExpressionType eType, Expression left, Expression right)
         {
@@ -553,7 +553,7 @@ namespace Composite.Linq.Disassembled
 
 
     /*
-    public abstract class ExpressionVisitor
+    internal abstract class ExpressionVisitor
     {
         public ExpressionVisitor()
         {

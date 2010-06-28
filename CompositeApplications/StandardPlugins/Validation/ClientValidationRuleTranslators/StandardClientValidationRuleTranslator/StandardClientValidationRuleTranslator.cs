@@ -11,7 +11,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.StandardPlugins.Validation.ClientValidationRuleTranslators.StandardClientValidationRuleTranslator
 {
     [ConfigurationElementType(typeof(StandardClientValidationRuleTranslatorData))]
-    public sealed class StandardClientValidationRuleTranslator : IClientValidationRuleTranslator
+    internal sealed class StandardClientValidationRuleTranslator : IClientValidationRuleTranslator
     {
         private List<Type> _supportedTypes = new List<Type>
             {
@@ -64,7 +64,7 @@ namespace Composite.StandardPlugins.Validation.ClientValidationRuleTranslators.S
 
 
     [Assembler(typeof(NonConfigurableClientValidationRuleTranslatorAssembler))]
-    public sealed class StandardClientValidationRuleTranslatorData : ClientValidationRuleTranslatorData
+    internal sealed class StandardClientValidationRuleTranslatorData : ClientValidationRuleTranslatorData
     {
     }
 }

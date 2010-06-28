@@ -13,7 +13,7 @@ using System.IO;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Xslt.Extensions
 {
-    public sealed class MarkupParserXsltExtensionsFunction : StandardFunctionBase
+    internal sealed class MarkupParserXsltExtensionsFunction : StandardFunctionBase
     {
         public MarkupParserXsltExtensionsFunction(EntityTokenFactory entityTokenFactory)
             : base("MarkupParser", "Composite.Xslt.Extensions", typeof(IXsltExtensionDefinition), entityTokenFactory)
@@ -31,7 +31,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunction
         }
 
 
-        public class MarkupParserXsltExtensions
+        internal class MarkupParserXsltExtensions
         {
             public XPathNavigator ParseWellformedDocumentMarkup(string wellformedMarkupString)
             {

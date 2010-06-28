@@ -11,7 +11,7 @@ namespace Composite.Trees
     /// <summary>
     /// This node is a virtual node represending the element that the tree is attached under.
     /// </summary>    
-    public class RootTreeNode : TreeNode
+    internal class RootTreeNode : TreeNode
     {
         public RootTreeNode()
         {

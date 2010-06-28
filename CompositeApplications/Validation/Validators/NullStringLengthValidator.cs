@@ -3,7 +3,7 @@
 
 namespace Composite.Validation.Validators
 {
-    public sealed class NullStringLengthValidator : Validator
+    internal sealed class NullStringLengthValidator : Validator
     {
         private int _lowerBound;
         private int _upperBound;

@@ -4,7 +4,7 @@ using System.Configuration;
 
 namespace Composite.Configuration
 {
-    public sealed class SimpleNameTypeConfigurationElementCollection : ConfigurationElementCollection
+    internal sealed class SimpleNameTypeConfigurationElementCollection : ConfigurationElementCollection
     {
         public void Add(string name, Type type)
         {

@@ -15,7 +15,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Types
 {
-    public sealed class TypeManagerImpl : ITypeManager
+    internal sealed class TypeManagerImpl : ITypeManager
     {
         private ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize, false);
         private ConcurrentDictionary<Type, string> _serializedTypeLookup = new ConcurrentDictionary<Type, string>();

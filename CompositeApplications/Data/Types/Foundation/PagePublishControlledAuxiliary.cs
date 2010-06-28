@@ -8,7 +8,7 @@ using Composite.Transactions;
 
 namespace Composite.Data.Types.Foundation
 {
-    public sealed class PagePublishControlledAuxiliary : IPublishControlledAuxiliary
+    internal sealed class PagePublishControlledAuxiliary : IPublishControlledAuxiliary
     {
         public void OnAfterDataUpdated(IData data)
         {

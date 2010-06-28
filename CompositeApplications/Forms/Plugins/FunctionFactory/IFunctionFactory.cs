@@ -7,7 +7,7 @@ namespace Composite.Forms.Plugins.FunctionFactory
 {
     [CustomFactory(typeof(FunctionFactoryCustomFactory))]
     [ConfigurationNameMapper(typeof(FunctionFactoryDefaultNameRetriever))]
-    public interface IFormFunctionFactory
+    internal interface IFormFunctionFactory
     {
         IFormFunction CreateFunction();
     }

@@ -5,7 +5,7 @@ using Composite.Security;
 
 namespace Composite.Trees
 {
-    public enum TreeNodeDynamicContextDirection
+    internal enum TreeNodeDynamicContextDirection
     {
         Down, // Creating elements
         Up // Creating entity tokens
@@ -13,7 +13,7 @@ namespace Composite.Trees
 
 
 
-    public sealed class TreeNodeDynamicContext
+    internal sealed class TreeNodeDynamicContext
     {
         private Dictionary<string, object> _fieldGroupingValues;
         private Dictionary<string, int> _fieldFolderRangeValues;

@@ -12,7 +12,7 @@ using Composite.Serialization;
 
 namespace Composite.Trees
 {
-    public class MessageBoxActionNode : ActionNode
+    internal class MessageBoxActionNode : ActionNode
     {
         public string Title { get; set; }                                   // Required
         public string Message { get; set; }                                 // Required
@@ -56,7 +56,7 @@ namespace Composite.Trees
 
 
 
-    public sealed class MessageBoxActionNodeActionExecutor : IActionExecutor
+    internal sealed class MessageBoxActionNodeActionExecutor : IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
@@ -78,7 +78,7 @@ namespace Composite.Trees
 
 
     [ActionExecutor(typeof(MessageBoxActionNodeActionExecutor))]
-    public sealed class MessageBoxActionNodeActionToken : ActionToken
+    internal sealed class MessageBoxActionNodeActionToken : ActionToken
     {
         private List<PermissionType> _permissionTypes;
 

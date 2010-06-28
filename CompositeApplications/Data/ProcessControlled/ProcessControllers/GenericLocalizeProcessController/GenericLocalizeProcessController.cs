@@ -10,7 +10,7 @@ using Composite.Security;
 
 namespace Composite.Data.ProcessControlled.ProcessControllers.GenericLocalizeProcessController
 {
-	public sealed class GenericLocalizeProcessController : ILocalizeProcessController
+	internal sealed class GenericLocalizeProcessController : ILocalizeProcessController
 	{
         public bool OnAfterBuildNew(IData data)
         {

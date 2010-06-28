@@ -10,7 +10,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Configuration
 {
-    public sealed class AppSettingsValueFunction : StandardFunctionBase
+    internal sealed class AppSettingsValueFunction : StandardFunctionBase
 	{
         public AppSettingsValueFunction(EntityTokenFactory entityTokenFactory)
             : base("AppSettingsValue", "Composite.Utils.Configuration", typeof(string), entityTokenFactory)

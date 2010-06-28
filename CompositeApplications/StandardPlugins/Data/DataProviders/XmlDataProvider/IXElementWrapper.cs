@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider
 {
-    public interface IXElementWrapper
+    internal interface IXElementWrapper
     {
         void CommitData(XElement element);
     }

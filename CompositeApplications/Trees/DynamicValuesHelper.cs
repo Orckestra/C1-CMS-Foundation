@@ -4,7 +4,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.Trees
 {
-    public sealed class DynamicValuesHelperReplaceContext
+    internal sealed class DynamicValuesHelperReplaceContext
     {
         public PiggybagDataFinder PiggybagDataFinder { get; set; }
         public IData CurrentDataItem { get; set; }
@@ -13,7 +13,7 @@ namespace Composite.Trees
 
 
 
-    public sealed class DynamicValuesHelper
+    internal sealed class DynamicValuesHelper
     {
         private DataFieldValueHelper DataFieldValueHelper { get; set; }
 

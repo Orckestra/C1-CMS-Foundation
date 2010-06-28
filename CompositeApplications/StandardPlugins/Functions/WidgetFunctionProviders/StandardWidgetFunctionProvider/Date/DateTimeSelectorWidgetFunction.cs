@@ -8,7 +8,7 @@ using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidget
 
 namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Date
 {
-    public sealed class DateTimeSelectorWidgetFunction : CompositeWidgetFunctionBase
+    internal sealed class DateTimeSelectorWidgetFunction : CompositeWidgetFunctionBase
     {
         private const string _functionName = "DateTimeSelector";
         public const string CompositeName = CompositeWidgetFunctionBase.CommonNamespace + ".Date." + _functionName;

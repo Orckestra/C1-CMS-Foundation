@@ -7,7 +7,7 @@ using Composite.Security;
 
 namespace Composite.Trees
 {
-    public interface ITreeFacade
+    internal interface ITreeFacade
     {
         void Initialize();
         Tree GetTree(string treeId);

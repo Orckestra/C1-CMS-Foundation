@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Composite.Forms.CoreUiControls
 {
-    public abstract class ToolbarButtonUiControl : ButtonUiControl
+    internal abstract class ToolbarButtonUiControl : ButtonUiControl
 	{
         public ToolbarButtonUiControl()
         {

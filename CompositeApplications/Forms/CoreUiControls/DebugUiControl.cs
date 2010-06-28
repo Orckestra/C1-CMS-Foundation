@@ -7,7 +7,7 @@ using Composite.Forms.Foundation;
 namespace Composite.Forms.CoreUiControls
 {
     [ControlValueProperty("UiControl")]
-    public abstract class DebugUiControl : UiControl
+    internal abstract class DebugUiControl : UiControl
     {
         private IUiControl _uiControl;
         private string _tagName;
@@ -52,7 +52,7 @@ namespace Composite.Forms.CoreUiControls
         }
 
 
-        public class BindingInformation
+        internal class BindingInformation
         {
             private string _bindingObjectName;
             private Type _bindingObjectType;

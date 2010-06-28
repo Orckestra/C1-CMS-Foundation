@@ -13,7 +13,7 @@ using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProv
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Mail
 {
-    public class SendMailFunction : StandardFunctionBase
+    internal class SendMailFunction : StandardFunctionBase
 	{
         private static readonly string LogTitle = "SendMailFunction";
         private static readonly string CompositeMediaAttachmentPrefix = "Composite/";

@@ -6,7 +6,7 @@ using Composite.Data.Foundation.CodeGeneration;
 
 namespace Composite.Data.Caching
 {
-    public sealed class CachingEnumerator<T> : IEnumerator<T>
+    internal sealed class CachingEnumerator<T> : IEnumerator<T>
     {
         private IEnumerator<T> _enumerator;
         private Type _wrapperType;

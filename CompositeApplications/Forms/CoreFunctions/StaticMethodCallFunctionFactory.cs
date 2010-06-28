@@ -11,7 +11,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.Forms.CoreFunctions
 {
     [ControlValueProperty("Parameters")]
-    public sealed class StaticMethodCall : IFormFunction
+    internal sealed class StaticMethodCall : IFormFunction
     {
         public StaticMethodCall()
         {
@@ -105,7 +105,7 @@ namespace Composite.Forms.CoreFunctions
 
 
     [ConfigurationElementType(typeof(StaticMethodCallFunctionFactoryData))]
-    public sealed class StaticMethodCallFunctionFactory : IFormFunctionFactory
+    internal sealed class StaticMethodCallFunctionFactory : IFormFunctionFactory
     {
         public IFormFunction CreateFunction()
         {
@@ -115,7 +115,7 @@ namespace Composite.Forms.CoreFunctions
 
 
     [Assembler(typeof(NonConfigurableFunctionFactoryAssembler))]
-    public sealed class StaticMethodCallFunctionFactoryData : FunctionFactoryData
+    internal sealed class StaticMethodCallFunctionFactoryData : FunctionFactoryData
     {
     }
 }

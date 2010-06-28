@@ -10,7 +10,7 @@ namespace Composite.Elements.Plugins.ElementProvider
     [Obsolete]
     [CustomFactory(typeof(ElementProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(ElementProviderDefaultNameRetriever))]
-    public interface IElementProvider : IHooklessElementProvider
+    internal interface IElementProvider : IHooklessElementProvider
     {
         /// <summary>
         /// Hooks are not affected by searches.

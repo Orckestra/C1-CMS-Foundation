@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Composite.Security
 {
-    public interface ISecurityAncestorProvider
+    internal interface ISecurityAncestorProvider
     {
         /// <summary>
         /// If the entityToken does not exists, this method should return null.

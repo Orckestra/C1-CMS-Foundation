@@ -7,7 +7,7 @@ using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProv
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.AspNet
 {
-    public sealed class LoadUserControlFunction : StandardFunctionBase
+    internal sealed class LoadUserControlFunction : StandardFunctionBase
     {
         public LoadUserControlFunction(EntityTokenFactory entityTokenFactory)
             : base("LoadUserControl", "Composite.AspNet", typeof(UserControl), entityTokenFactory)

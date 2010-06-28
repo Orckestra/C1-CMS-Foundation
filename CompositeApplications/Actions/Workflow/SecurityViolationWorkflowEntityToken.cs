@@ -2,7 +2,7 @@
 
 namespace Composite.Actions.Workflows
 {
-    public sealed class SecurityViolationWorkflowEntityToken : EntityToken
+    internal sealed class SecurityViolationWorkflowEntityToken : EntityToken
 	{
         public override string Type
         {

@@ -8,7 +8,7 @@ using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProv
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated
 {
-	public sealed class GetNullableDataReference<T> : StandardFunctionBase
+	internal sealed class GetNullableDataReference<T> : StandardFunctionBase
         where T : class, IData
 	{
         private static readonly ParameterExpression _dataItem = Expression.Parameter(typeof(T), "data");

@@ -7,7 +7,7 @@ using Composite.Security.Plugins.UserPermissionDefinitionProvider;
 
 namespace Composite.Security.BuildinPlugins.BuildinUserPermissionDefinitionProvider
 {
-    public sealed class BuildinUserPermissionDefinitionProvider : IUserPermissionDefinitionProvider
+    internal sealed class BuildinUserPermissionDefinitionProvider : IUserPermissionDefinitionProvider
 	{
         private List<UserPermissionDefinition> _userPermissionDefinitions = new List<UserPermissionDefinition>();
 

@@ -17,7 +17,7 @@ using Composite.Types;
 namespace Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementProvider
 {
     [ConfigurationElementType(typeof(NonConfigurableHooklessElementProvider))]
-    public sealed class UserGroupElementProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
+    internal sealed class UserGroupElementProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
     {
         private ElementProviderContext _elementProviderContext;
 

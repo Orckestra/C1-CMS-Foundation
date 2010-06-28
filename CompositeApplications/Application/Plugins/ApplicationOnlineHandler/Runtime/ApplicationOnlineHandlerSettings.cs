@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Application.Plugins.ApplicationOnlineHandler.Runtime
 {
-    public sealed class ApplicationOnlineHandlerSettings : SerializableConfigurationSection
+    internal sealed class ApplicationOnlineHandlerSettings : SerializableConfigurationSection
 	{
         public const string SectionName = "Composite.Application.Plugins.ApplicationOnlineHandlerConfiguration";
 

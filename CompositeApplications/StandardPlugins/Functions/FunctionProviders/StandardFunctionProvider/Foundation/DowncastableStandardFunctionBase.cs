@@ -6,7 +6,7 @@ using Composite.Functions;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation
 {
-    public abstract class DowncastableStandardFunctionBase : StandardFunctionBase, IDowncastableFunction
+    internal abstract class DowncastableStandardFunctionBase : StandardFunctionBase, IDowncastableFunction
 	{
         public DowncastableStandardFunctionBase(string name, string namespaceName, Type returnType, EntityTokenFactory entityTokenFactory)
             : base(name,namespaceName, returnType, entityTokenFactory)

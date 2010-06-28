@@ -3,7 +3,7 @@
 
 namespace Composite.Forms.CoreUiControls
 {
-    public class SelectorUiControl : BaseSelectorUiControl
+    internal class SelectorUiControl : BaseSelectorUiControl
     {
         [BindableProperty()]
         [FormsProperty()]

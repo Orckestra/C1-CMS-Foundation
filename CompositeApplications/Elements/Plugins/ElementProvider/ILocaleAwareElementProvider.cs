@@ -5,7 +5,7 @@ using Composite.Security;
 // The namespace is wrong but is left for backwards compatibility
 namespace Composite.Elements
 {
-    public interface ILocaleAwareElementProvider : IHooklessElementProvider
+    internal interface ILocaleAwareElementProvider : IHooklessElementProvider
     {
         bool ContainsLocalizedData { get; }
 

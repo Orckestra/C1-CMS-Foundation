@@ -6,7 +6,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.StandardPlugins.Instrumentation.PerformanceCounterProviders.NoPerformanceCounterProvider
 {
     [ConfigurationElementType(typeof(NonConfigurablePerformanceCounterProvider))]
-    public sealed class NoPerformanceCounterProvider : IPerformanceCounterProvider
+    internal sealed class NoPerformanceCounterProvider : IPerformanceCounterProvider
     {
         NoPerformanceCounterProviderPerformanceToken _noPerformanceCounterProviderPerformanceToken = new NoPerformanceCounterProviderPerformanceToken();
 

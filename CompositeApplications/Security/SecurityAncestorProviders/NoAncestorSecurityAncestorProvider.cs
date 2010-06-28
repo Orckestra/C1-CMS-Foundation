@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Composite.Security.SecurityAncestorProviders
 {
-    public sealed class NoAncestorSecurityAncestorProvider : ISecurityAncestorProvider
+    internal sealed class NoAncestorSecurityAncestorProvider : ISecurityAncestorProvider
 	{
         public IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {

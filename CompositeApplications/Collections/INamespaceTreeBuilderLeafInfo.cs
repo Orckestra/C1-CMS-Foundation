@@ -1,6 +1,6 @@
 namespace Composite.Collections
 {
-    public interface INamespaceTreeBuilderLeafInfo
+    internal interface INamespaceTreeBuilderLeafInfo
     {
         string Name { get; }
         string Namespace { get; }

@@ -3,7 +3,7 @@
 namespace Composite.Data.ProcessControlled
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public sealed class ActionPermissionTypeProviderAttribute : Attribute
+    internal sealed class ActionPermissionTypeProviderAttribute : Attribute
     {
         public ActionPermissionTypeProviderAttribute(string actionTypeName, Type actionPermissionTypeProviderType)
         {

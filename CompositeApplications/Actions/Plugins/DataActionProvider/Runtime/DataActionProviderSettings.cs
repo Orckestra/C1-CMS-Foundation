@@ -7,7 +7,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Actions.Plugins.DataActionProvider.Runtime
 {
-    public sealed class DataActionProviderSettings : SerializableConfigurationSection
+    internal sealed class DataActionProviderSettings : SerializableConfigurationSection
     {
         public const string SectionName = "Composite.Actions.Plugins.DataActionProviderConfiguration";
 

@@ -7,7 +7,7 @@ using Composite.Serialization;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider
 {
-    public sealed class AddOnElementProviderAvailableAddOnsItemEntityTokenAncestorProvider : ISecurityAncestorProvider
+    internal sealed class AddOnElementProviderAvailableAddOnsItemEntityTokenAncestorProvider : ISecurityAncestorProvider
     {
         public IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {
@@ -20,7 +20,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
 
 
     [SecurityAncestorProvider(typeof(AddOnElementProviderAvailableAddOnsItemEntityTokenAncestorProvider))]
-    public sealed class PackageElementProviderAvailablePackagesItemEntityToken : EntityToken
+    internal sealed class PackageElementProviderAvailablePackagesItemEntityToken : EntityToken
     {
         private string _id;
 

@@ -9,7 +9,7 @@ using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProv
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.String
 {
-    public sealed class Join : StandardFunctionBase
+    internal sealed class Join : StandardFunctionBase
 	{
         public Join(EntityTokenFactory entityTokenFactory)
             : base("Join", "Composite.Utils.String", typeof(string), entityTokenFactory)

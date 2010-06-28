@@ -7,7 +7,7 @@ namespace Composite.Security.Plugins.UserPermissionDefinitionProvider
 {
     [CustomFactory(typeof(UserPermissionDefinitionProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(UserPermissionDefinitionProviderDefaultNameRetriever))]
-	public interface IUserPermissionDefinitionProvider
+	internal interface IUserPermissionDefinitionProvider
 	{
         IEnumerable<UserPermissionDefinition> AllUserPermissionDefinitions { get; }
         bool CanAlterDefinitions { get; }

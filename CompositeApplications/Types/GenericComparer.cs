@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace Composite.Types
 {
-    public class GenericComparer<T> : IComparer, IComparer<T> 
+    internal class GenericComparer<T> : IComparer, IComparer<T> 
     {
         public static GenericComparer<T> Build(Type type, string propertyName)
         {

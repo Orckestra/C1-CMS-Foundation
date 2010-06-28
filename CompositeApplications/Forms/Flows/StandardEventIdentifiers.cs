@@ -23,7 +23,7 @@ namespace Composite.Forms.Flows
     }
 
 
-    public class SaveEvent : IFormEventIdentifier
+    internal class SaveEvent : IFormEventIdentifier
     {
         public SaveEvent() { }
 
@@ -31,7 +31,7 @@ namespace Composite.Forms.Flows
 
     }
 
-    public class SaveAsEvent : IFormEventIdentifier
+    internal class SaveAsEvent : IFormEventIdentifier
     {
         public SaveAsEvent() { }
 
@@ -39,7 +39,7 @@ namespace Composite.Forms.Flows
 
     }
 
-    public class PreviewEvent : IFormEventIdentifier
+    internal class PreviewEvent : IFormEventIdentifier
     {
         public PreviewEvent() { }
 
@@ -48,7 +48,7 @@ namespace Composite.Forms.Flows
     }
 
 
-    public class NextEvent : IFormEventIdentifier
+    internal class NextEvent : IFormEventIdentifier
     {
         public NextEvent() { }
 
@@ -57,7 +57,7 @@ namespace Composite.Forms.Flows
     }
 
 
-    public class PreviousEvent : IFormEventIdentifier
+    internal class PreviousEvent : IFormEventIdentifier
     {
         public PreviousEvent() { }
 
@@ -66,7 +66,7 @@ namespace Composite.Forms.Flows
     }
 
 
-    public class FinishEvent : IFormEventIdentifier
+    internal class FinishEvent : IFormEventIdentifier
     {
         public FinishEvent() { }
 
@@ -75,7 +75,7 @@ namespace Composite.Forms.Flows
     }
 
 
-    public class CancelEvent : IFormEventIdentifier
+    internal class CancelEvent : IFormEventIdentifier
     {
         public CancelEvent() { }
 

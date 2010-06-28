@@ -4,7 +4,7 @@ using Composite.Extensions;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation
 {
-	public sealed class EntityTokenFactory
+	internal sealed class EntityTokenFactory
 	{
         private string _providerName;
 

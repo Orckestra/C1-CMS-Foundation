@@ -826,7 +826,7 @@ namespace Composite.Types
                 {
                     string line = codeLines[i];
 
-                    if (line.Contains("public interface"))
+                    if (line.Contains("internal interface"))
                     {
                         if (GetImmutableTypeId(codeLines) == immutableTypeId)
                         {
@@ -1131,7 +1131,7 @@ namespace Composite.Types
                 string[] codeLines = File.ReadAllLines(fileName);
                 for (int i = 0; i < 50 && i < codeLines.Length; i++)
                 {
-                    if (codeLines[i].Contains("public interface"))
+                    if (codeLines[i].Contains("internal interface"))
                     {
                         interfaceLine = codeLines[i];
                         containsInterface = true;

@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Composite.Instrumentation.Foundation
 {
-    public sealed class XmlTimerProfiler : TimerProfiler
+    internal sealed class XmlTimerProfiler : TimerProfiler
 	{
         private int _startTime;
         private bool _disposed = false;

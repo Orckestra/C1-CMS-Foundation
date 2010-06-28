@@ -18,7 +18,7 @@ using Composite.Users;
 
 namespace Composite.Trees
 {
-    public class DataFolderElementsTreeNode : DataFilteringTreeNode
+    internal class DataFolderElementsTreeNode : DataFilteringTreeNode
     {
         private readonly MethodInfo StringStartsWithMethodInfo = typeof(String).GetMethods().Where(f => f.Name == "StartsWith").First();
         private readonly MethodInfo StringSubstringMethodInfo = typeof(String).GetMethods().Where(f => f.Name == "Substring").Skip(1).First();

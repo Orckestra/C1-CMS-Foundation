@@ -20,7 +20,7 @@ namespace Composite.Forms.CoreUiControls
     }
 
     [ControlValueProperty("Text")]
-    public abstract class TextInputUiControl : UiControl
+    internal abstract class TextInputUiControl : UiControl
     {
         public TextInputUiControl()
         {

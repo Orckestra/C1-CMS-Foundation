@@ -12,7 +12,7 @@ using Composite.WebClient;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Response
 {
-    public sealed class RedirectFunction : StandardFunctionBase
+    internal sealed class RedirectFunction : StandardFunctionBase
     {
         public RedirectFunction(EntityTokenFactory entityTokenFactory)
             : base("Redirect", "Composite.Web.Response", typeof(void), entityTokenFactory)

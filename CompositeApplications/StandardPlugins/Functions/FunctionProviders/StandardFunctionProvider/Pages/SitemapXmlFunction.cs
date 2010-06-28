@@ -13,7 +13,7 @@ using Composite.Data.Types;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Pages
 {
-    public sealed class SitemapXmlFunction : StandardFunctionBase
+    internal sealed class SitemapXmlFunction : StandardFunctionBase
     {
         public SitemapXmlFunction(EntityTokenFactory entityTokenFactory)
             : base("SitemapXml", "Composite.Pages", typeof(IEnumerable<XElement>), entityTokenFactory)

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Composite.Collections.Generic
 {
-	public class Hashtable<TKey, TValue>//: Hashtable
+	internal class Hashtable<TKey, TValue>//: Hashtable
 	{
 	    private readonly Hashtable _table = new Hashtable();
 

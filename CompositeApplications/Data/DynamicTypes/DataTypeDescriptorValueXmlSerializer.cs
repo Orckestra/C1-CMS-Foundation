@@ -6,7 +6,7 @@ using Composite.Serialization;
 
 namespace Composite.Data.DynamicTypes
 {
-    public sealed class DataTypeDescriptorValueXmlSerializer : IValueXmlSerializer
+    internal sealed class DataTypeDescriptorValueXmlSerializer : IValueXmlSerializer
 	{
         public bool TrySerialize(Type objectToSerializeType, object objectToSerialize, IXmlSerializer xmlSerializer, out XElement serializedObject)
         {

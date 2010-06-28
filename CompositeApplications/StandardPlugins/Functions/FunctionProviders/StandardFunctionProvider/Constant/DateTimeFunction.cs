@@ -9,7 +9,7 @@ using Composite.ResourceSystem;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Constant
 {
-    public sealed class DateTimeFunction : StandardFunctionBase
+    internal sealed class DateTimeFunction : StandardFunctionBase
     {
         public DateTimeFunction(EntityTokenFactory entityTokenFactory)
             : base("DateTime", "Composite.Constant", typeof(DateTime), entityTokenFactory)

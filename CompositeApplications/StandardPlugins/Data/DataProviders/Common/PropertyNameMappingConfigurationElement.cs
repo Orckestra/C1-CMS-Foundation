@@ -3,7 +3,7 @@ using System.Configuration;
 
 namespace Composite.StandardPlugins.Data.DataProviders.Common
 {
-    public sealed class PropertyNameMappingConfigurationElement : ConfigurationElement
+    internal sealed class PropertyNameMappingConfigurationElement : ConfigurationElement
     {
         private const string _propertyNamePropertyName = "propertyName";
         [ConfigurationProperty(_propertyNamePropertyName, IsRequired=true)]

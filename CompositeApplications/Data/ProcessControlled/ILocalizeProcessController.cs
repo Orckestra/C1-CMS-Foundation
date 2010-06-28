@@ -3,7 +3,7 @@
 
 namespace Composite.Data.ProcessControlled
 {    
-	public interface ILocalizeProcessController : IProcessController
+	internal interface ILocalizeProcessController : IProcessController
 	{
         bool OnAfterBuildNew(IData data);
 	}

@@ -7,7 +7,7 @@ namespace Composite.Security.Plugins.LoginProvider
 {
     [CustomFactory(typeof(LoginProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(LoginProviderDefaultNameRetriever))]
-    public interface ILoginProvider
+    internal interface ILoginProvider
     {
         IEnumerable<string> AllUsernames { get; }
         bool CanSetUserPassword { get; }

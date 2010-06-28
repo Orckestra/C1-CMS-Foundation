@@ -6,7 +6,7 @@ using Composite.Extensions;
 
 namespace Composite.Application
 {
-	public class ApplicationOfflineCheckHttpModule: IHttpModule
+	internal class ApplicationOfflineCheckHttpModule: IHttpModule
 	{
 	    private static bool _isOffline;
         private static string _responceHtml;

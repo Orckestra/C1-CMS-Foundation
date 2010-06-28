@@ -308,7 +308,7 @@ namespace Composite.Types.Foundation
         }
 
 
-        public sealed class BuildManagerSiloHelperToken
+        internal sealed class BuildManagerSiloHelperToken
         {
             internal BuildManagerSiloHelperToken()
             {

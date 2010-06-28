@@ -6,7 +6,7 @@ using Composite.Linq;
 namespace Composite.Security
 {
     [DebuggerDisplay("Hooker = {Hooker}")]
-	public sealed class EntityTokenHook
+	internal sealed class EntityTokenHook
 	{
         private List<EntityToken> _hooks = new List<EntityToken>();
 

@@ -5,7 +5,7 @@ using System.ServiceModel.Web;
 namespace Composite.Logging.WCF
 {
     [ServiceContract]
-	public interface ILogService
+	internal interface ILogService
 	{
         [OperationContract]
         [WebInvoke(BodyStyle = WebMessageBodyStyle.Wrapped)]

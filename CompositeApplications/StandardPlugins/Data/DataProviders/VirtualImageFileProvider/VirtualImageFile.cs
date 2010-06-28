@@ -4,7 +4,7 @@ using Composite.Data;
 
 namespace Composite.StandardPlugins.Data.DataProviders.VirtualImageFileProvider
 {
-	public sealed class VirtualImageFile : IImageFile
+	internal sealed class VirtualImageFile : IImageFile
 	{
         private IMediaFile _sourceFile;
 

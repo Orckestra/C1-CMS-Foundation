@@ -7,13 +7,13 @@ using Composite.IO.Zip;
 
 namespace Composite.PackageSystem
 {
-    public sealed class PackageInstallerContex
+    public sealed class PackageInstallerContext
     {
         private Dictionary<string, DataTypeDescriptor> _pendingDataTypeDescriptors = new Dictionary<string, DataTypeDescriptor>();
         private List<Type> _pendingDataTypes = new List<Type>();
         private List<Assembly> _pendingAssemblies = new List<Assembly>();
 
-        internal PackageInstallerContex(IZipFileSystem zipFileSystem, string tempDirectory, PackageInformation packageInformation)
+        internal PackageInstallerContext(IZipFileSystem zipFileSystem, string tempDirectory, PackageInformation packageInformation)
         {
             if (zipFileSystem == null) throw new ArgumentNullException("zipFileSystem");
             if (string.IsNullOrEmpty(tempDirectory) == true) throw new ArgumentNullException("tempDirectory");

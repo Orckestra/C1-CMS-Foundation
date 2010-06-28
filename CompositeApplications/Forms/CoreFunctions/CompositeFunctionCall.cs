@@ -7,7 +7,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.Forms.CoreFunctions
 {
     [ControlValueProperty("Parameters")]
-    public sealed class CompositeFunctionCall : IFormFunction
+    internal sealed class CompositeFunctionCall : IFormFunction
     {
         public CompositeFunctionCall()
         {
@@ -26,7 +26,7 @@ namespace Composite.Forms.CoreFunctions
 
 
     [ConfigurationElementType(typeof(CompositeFunctionCallFunctionFactoryData))]
-    public sealed class CompositeFunctionCallFunctionFactory : IFormFunctionFactory
+    internal sealed class CompositeFunctionCallFunctionFactory : IFormFunctionFactory
     {
         public IFormFunction CreateFunction()
         {
@@ -36,7 +36,7 @@ namespace Composite.Forms.CoreFunctions
 
 
     [Assembler(typeof(NonConfigurableFunctionFactoryAssembler))]
-    public sealed class CompositeFunctionCallFunctionFactoryData : FunctionFactoryData
+    internal sealed class CompositeFunctionCallFunctionFactoryData : FunctionFactoryData
     {
     }
 }

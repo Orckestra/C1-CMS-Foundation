@@ -6,7 +6,7 @@ using Composite.Forms.Foundation;
 namespace Composite.Forms.CoreUiControls
 {
     [DefaultBindingProperty("Selected")]
-    public class DataReferenceTreeSelectorUiControl : UiControl
+    internal class DataReferenceTreeSelectorUiControl : UiControl
     {
         public DataReferenceTreeSelectorUiControl()
         {

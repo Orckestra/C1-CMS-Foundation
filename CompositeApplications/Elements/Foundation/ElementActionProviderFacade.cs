@@ -22,7 +22,7 @@ using Composite.Logging;
 namespace Composite.Elements.Foundation
 {
     #region ManageUserPermissions
-    public sealed class ManageUserPermissionsActionExecutor : IActionExecutor
+    internal sealed class ManageUserPermissionsActionExecutor : IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
@@ -42,7 +42,7 @@ namespace Composite.Elements.Foundation
 
 
     [ActionExecutor(typeof(ManageUserPermissionsActionExecutor))]
-    public sealed class ManageUserPermissionsActionToken : ActionToken
+    internal sealed class ManageUserPermissionsActionToken : ActionToken
     {
         private static PermissionType[] _permissionTypes = new PermissionType[] { PermissionType.Administrate };
 
@@ -67,7 +67,7 @@ namespace Composite.Elements.Foundation
 
 
     #region ShowGraph
-    public sealed class RelationshipGraphActionExecutor : IActionExecutor
+    internal sealed class RelationshipGraphActionExecutor : IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
@@ -100,7 +100,7 @@ namespace Composite.Elements.Foundation
 
 
     [ActionExecutor(typeof(RelationshipGraphActionExecutor))]
-    public sealed class RelationshipGraphActionToken : ActionToken
+    internal sealed class RelationshipGraphActionToken : ActionToken
     {
         private static PermissionType[] _permissionTypes = new PermissionType[] { PermissionType.Administrate };
 
@@ -139,7 +139,7 @@ namespace Composite.Elements.Foundation
 
 
     #region ShowElementInformation
-    public sealed class ShowElementInformationActionExecutor : IActionExecutor
+    internal sealed class ShowElementInformationActionExecutor : IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
@@ -177,7 +177,7 @@ namespace Composite.Elements.Foundation
 
 
     [ActionExecutor(typeof(ShowElementInformationActionExecutor))]
-    public sealed class ShowElementInformationActionToken : ActionToken
+    internal sealed class ShowElementInformationActionToken : ActionToken
     {
         private static PermissionType[] _permissionTypes = new PermissionType[] { PermissionType.Administrate };
 
@@ -203,7 +203,7 @@ namespace Composite.Elements.Foundation
 
 
     #region Search
-    public sealed class SearchActionExecutor : IActionExecutor
+    internal sealed class SearchActionExecutor : IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
@@ -238,7 +238,7 @@ namespace Composite.Elements.Foundation
 
 
     [ActionExecutor(typeof(SearchActionExecutor))]
-    public sealed class SearchActionToken : ActionToken
+    internal sealed class SearchActionToken : ActionToken
     {
         private const string _serializePrefix = "Search:";
 

@@ -18,7 +18,7 @@ using Composite.Renderings.Page;
 
 namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.DataReference
 {
-    public sealed class NullableDataReferenceSelectorWidgetFunction<T> : CompositeWidgetFunctionBase
+    internal sealed class NullableDataReferenceSelectorWidgetFunction<T> : CompositeWidgetFunctionBase
          where T : class, IData
     {
         public static IEnumerable GetOptions(string typeManagerName)

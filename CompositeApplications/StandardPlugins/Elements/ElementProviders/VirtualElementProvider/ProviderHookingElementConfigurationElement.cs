@@ -8,7 +8,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProv
 
 
     [ConfigurationElementType(typeof(ProviderHookingElementConfigurationElement))]
-    public sealed class ProviderHookingElementConfigurationElement : BaseElementConfigurationElement
+    internal sealed class ProviderHookingElementConfigurationElement : BaseElementConfigurationElement
     {
         private const string _providerNameProperty = "providerName";
         [ConfigurationProperty(_providerNameProperty, IsRequired = true)]
@@ -20,7 +20,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProv
     }
 
     /*[ConfigurationElementType(typeof(ProviderHookingElementConfigurationElement))]
-    public sealed class ProviderHookingElementConfigurationElement : BaseElementConfigurationElement
+    internal sealed class ProviderHookingElementConfigurationElement : BaseElementConfigurationElement
     {                                                
         private const string _providerNameProperty = "providerName";
         [ConfigurationProperty(_providerNameProperty, IsRequired = true)]

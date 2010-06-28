@@ -11,7 +11,7 @@ using Composite.Users;
 
 namespace Composite.WebClient.HttpModules
 {
-    public class AdministrativeDataScopeSetterHttpModule : IHttpModule
+    internal class AdministrativeDataScopeSetterHttpModule : IHttpModule
     {
         public void Init(HttpApplication context)
         {

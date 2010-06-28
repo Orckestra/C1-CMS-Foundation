@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.String
 {
-    public sealed class SelectorWidgetFunction : CompositeWidgetFunctionBase
+    internal sealed class SelectorWidgetFunction : CompositeWidgetFunctionBase
     {
         private const string _functionName = "Selector";
         public const string CompositeName = CompositeWidgetFunctionBase.CommonNamespace + ".String." + _functionName;
