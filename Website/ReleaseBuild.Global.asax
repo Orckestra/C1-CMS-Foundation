@@ -15,11 +15,16 @@
        
     void Application_Start(object sender, EventArgs e)
     {
-        if (_systemIsInitialized == false) return;        
+        if (_systemIsInitialized == true) return;        
+
+        if (AppDomain.CurrentDomain.BaseDirectory.Length > 70)
+        {
+            throw new InvalidOperationException("Windows limitation problem detected! You have installed the website at a place where the total path length of the file with the longest filename exceeds the maximum allowed in Windows. See http://msdn.microsoft.com/en-us/library/aa365247%28VS.85%29.aspx#paths");
+        }
 
         lock (_syncRoot)
         {
-            if (_systemIsInitialized == false) return;
+            if (_systemIsInitialized == true) return;
 
             ThreadDataManager.InitializeThroughHttpContext();
             
@@ -43,11 +48,11 @@
 
     void Application_End(object sender, EventArgs e)
     {
-        if (_systemIsFinalized == false) return;
+        if (_systemIsFinalized == true) return;
 
         lock (_syncRoot)
         {
-            if (_systemIsFinalized == false) return;    
+            if (_systemIsFinalized == true) return;    
     
             using (ThreadDataManager.Initialize())
             {
