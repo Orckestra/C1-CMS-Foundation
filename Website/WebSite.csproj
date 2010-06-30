@@ -109,18 +109,21 @@
     </Compile>
     <Compile Include="Composite\content\dialogs\functions\editFunctionCall.aspx.cs">
       <DependentUpon>editFunctionCall.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\content\dialogs\functions\editFunctionCall.aspx.designer.cs">
       <DependentUpon>editFunctionCall.aspx</DependentUpon>
     </Compile>
     <Compile Include="Composite\content\flow\FlowUi.aspx.cs">
       <DependentUpon>FlowUi.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\content\flow\FlowUi.aspx.designer.cs">
       <DependentUpon>FlowUi.aspx</DependentUpon>
     </Compile>
     <Compile Include="Composite\content\misc\editors\functioncalleditor\functioncalleditor.aspx.cs">
       <DependentUpon>functioncalleditor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\content\views\dev\flushadmin\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -216,55 +219,67 @@
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\EmptyDocumentExecutionContainer.ascx.cs">
       <DependentUpon>EmptyDocumentExecutionContainer.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\EmptyDocumentExecutionContainer.ascx.designer.cs">
       <DependentUpon>EmptyDocumentExecutionContainer.ascx</DependentUpon>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\DataDialogExecutionContainer.ascx.cs">
       <DependentUpon>DataDialogExecutionContainer.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\DataDialogExecutionContainer.ascx.designer.cs">
       <DependentUpon>DataDialogExecutionContainer.ascx</DependentUpon>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\DocumentExecutionContainer.ascx.cs">
       <DependentUpon>DocumentExecutionContainer.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\FormUIStandardDialogs\StandardDialogExecutionContainer.ascx.cs" />
+    <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\FormUIStandardDialogs\StandardDialogExecutionContainer.ascx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\FormUIStandardDialogs\StandardDialogExecutionContainer.ascx.designer.cs">
       <DependentUpon>StandardDialogExecutionContainer.ascx.cs</DependentUpon>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\WizardExecutionContainer.ascx.cs">
       <DependentUpon>WizardExecutionContainer.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\WizardExecutionContainer.ascx.designer.cs">
       <DependentUpon>WizardExecutionContainer.ascx</DependentUpon>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\Customized\PageContentEditor.ascx.cs">
       <DependentUpon>PageContentEditor.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\Customized\PageContentEditor.ascx.designer.cs">
       <DependentUpon>PageContentEditor.ascx</DependentUpon>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionCallsDesigner.ascx.cs">
       <DependentUpon>FunctionCallsDesigner.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionParameterDesigner.ascx.cs">
       <DependentUpon>FunctionParameterDesigner.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionParameterDesigner.ascx.designer.cs">
       <DependentUpon>FunctionParameterDesigner.ascx</DependentUpon>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionParameterEditor.aspx.cs">
       <DependentUpon>FunctionParameterEditor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\TypeFieldDesigner.ascx.cs">
       <DependentUpon>TypeFieldDesigner.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\TypeFieldDesigner.ascx.designer.cs">
       <DependentUpon>TypeFieldDesigner.ascx</DependentUpon>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\RichContent\MultiContentXhtmlEditor.ascx.cs">
       <DependentUpon>MultiContentXhtmlEditor.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\RichContent\MultiContentXhtmlEditor.ascx.designer.cs">
       <DependentUpon>MultiContentXhtmlEditor.ascx</DependentUpon>
@@ -368,344 +383,9 @@
       <DependentUpon>Page.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Spikes\BackendStatus\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\BackendStatus\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\BackendStatus\Flush.aspx.cs">
-      <DependentUpon>Flush.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\BackendStatus\Flush.aspx.designer.cs">
-      <DependentUpon>Flush.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\CreateDataLayer\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\CreateDataLayer\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\CustomControls\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\CustomControls\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\DataProviderCopier\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\DataProviderCopier\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\DDZ\CaptchaTest.aspx.cs">
-      <DependentUpon>CaptchaTest.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\DDZ\CaptchaTest.aspx.designer.cs">
-      <DependentUpon>CaptchaTest.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\DDZ\MakeDeveloperPerspectiveActive.aspx.cs">
-      <DependentUpon>MakeDeveloperPerspectiveActive.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\DDZ\MakeDeveloperPerspectiveActive.aspx.designer.cs">
-      <DependentUpon>MakeDeveloperPerspectiveActive.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\DDZ\DataLayerTest.aspx.cs">
-      <DependentUpon>DataLayerTest.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\DDZ\DataLayerTest.aspx.designer.cs">
-      <DependentUpon>DataLayerTest.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\DynamicTypes\ClearAll.aspx.cs">
-      <DependentUpon>ClearAll.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\DynamicTypes\ClearAll.aspx.designer.cs">
-      <DependentUpon>ClearAll.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\Icons\ApiIcons.aspx.cs">
-      <DependentUpon>ApiIcons.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\Icons\ApiIcons.aspx.designer.cs">
-      <DependentUpon>ApiIcons.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\Icons\Republic.aspx.cs">
-      <DependentUpon>Republic.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\Icons\Republic.aspx.designer.cs">
-      <DependentUpon>Republic.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\AddMissingHelpStringsToForms.aspx.cs">
-      <DependentUpon>AddMissingHelpStringsToForms.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\AddMissingHelpStringsToForms.aspx.designer.cs">
-      <DependentUpon>AddMissingHelpStringsToForms.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\CheckBox.aspx.cs">
-      <DependentUpon>CheckBox.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\CheckBox.aspx.designer.cs">
-      <DependentUpon>CheckBox.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\CompositePathTest.aspx.cs">
-      <DependentUpon>CompositePathTest.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\CompositePathTest.aspx.designer.cs">
-      <DependentUpon>CompositePathTest.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\ConfigurationTransformation.aspx.cs">
-      <DependentUpon>ConfigurationTransformation.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\ConfigurationTransformation.aspx.designer.cs">
-      <DependentUpon>ConfigurationTransformation.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\CoolUiControl.ascx.cs">
-      <DependentUpon>CoolUiControl.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\CoolUiControl.ascx.designer.cs">
-      <DependentUpon>CoolUiControl.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\CreateInlineDynamicType.aspx.cs">
-      <DependentUpon>CreateInlineDynamicType.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\CreateInlineDynamicType.aspx.designer.cs">
-      <DependentUpon>CreateInlineDynamicType.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\CreatePage.aspx.cs">
-      <DependentUpon>CreatePage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\CreatePage.aspx.designer.cs">
-      <DependentUpon>CreatePage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\Default2.aspx.cs">
-      <DependentUpon>Default2.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\Default2.aspx.designer.cs">
-      <DependentUpon>Default2.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\evi.ascx.cs">
-      <DependentUpon>evi.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\evi.ascx.designer.cs">
-      <DependentUpon>evi.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\Expressions.aspx.cs">
-      <DependentUpon>Expressions.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\Expressions.aspx.designer.cs">
-      <DependentUpon>Expressions.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\GenericsSerialization.aspx.cs">
-      <DependentUpon>GenericsSerialization.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\GenericsSerialization.aspx.designer.cs">
-      <DependentUpon>GenericsSerialization.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\GetFunctionData.aspx.cs">
-      <DependentUpon>GetFunctionData.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\GetFunctionData.aspx.designer.cs">
-      <DependentUpon>GetFunctionData.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\GetPageDataXml.aspx.cs">
-      <DependentUpon>GetPageDataXml.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\GetPageDataXml.aspx.designer.cs">
-      <DependentUpon>GetPageDataXml.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\HtmlHead.aspx.cs">
-      <DependentUpon>HtmlHead.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\HtmlHead.aspx.designer.cs">
-      <DependentUpon>HtmlHead.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\InvokeBasedFiltering.aspx.cs">
-      <DependentUpon>InvokeBasedFiltering.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\InvokeBasedFiltering.aspx.designer.cs">
-      <DependentUpon>InvokeBasedFiltering.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\LocalizationList.aspx.cs">
-      <DependentUpon>LocalizationList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\LocalizationList.aspx.designer.cs">
-      <DependentUpon>LocalizationList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\Person.aspx.cs">
-      <DependentUpon>Person.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\Person.aspx.designer.cs">
-      <DependentUpon>Person.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\Reference.aspx.cs">
-      <DependentUpon>Reference.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\Reference.aspx.designer.cs">
-      <DependentUpon>Reference.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\SetCulture.aspx.cs">
-      <DependentUpon>SetCulture.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\SetCulture.aspx.designer.cs">
-      <DependentUpon>SetCulture.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\TouchCompositeConfig.aspx.cs">
-      <DependentUpon>TouchCompositeConfig.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\TouchCompositeConfig.aspx.designer.cs">
-      <DependentUpon>TouchCompositeConfig.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\WidgetEditor.aspx.cs">
-      <DependentUpon>WidgetEditor.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\WidgetEditor.aspx.designer.cs">
-      <DependentUpon>WidgetEditor.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\XElementBuilder.aspx.cs">
-      <DependentUpon>XElementBuilder.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\XElementBuilder.aspx.designer.cs">
-      <DependentUpon>XElementBuilder.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\XPath.aspx.cs">
-      <DependentUpon>XPath.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\XPath.aspx.designer.cs">
-      <DependentUpon>XPath.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MAW\XsltExtensions.aspx.cs">
-      <DependentUpon>XsltExtensions.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MAW\XsltExtensions.aspx.designer.cs">
-      <DependentUpon>XsltExtensions.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MRJ\AspNetCompile.aspx.cs">
-      <DependentUpon>AspNetCompile.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MRJ\AspNetCompile.aspx.designer.cs">
-      <DependentUpon>AspNetCompile.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MRJ\Automation\AddPageTemplate.aspx.cs">
-      <DependentUpon>AddPageTemplate.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MRJ\Automation\AddPageTemplate.aspx.designer.cs">
-      <DependentUpon>AddPageTemplate.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MRJ\CreateNewInterfaceType.aspx.cs">
-      <DependentUpon>CreateNewInterfaceType.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MRJ\CreateNewInterfaceType.aspx.designer.cs">
-      <DependentUpon>CreateNewInterfaceType.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MRJ\Flush.aspx.cs">
-      <DependentUpon>Flush.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MRJ\Flush.aspx.designer.cs">
-      <DependentUpon>Flush.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MRJ\Automation\InstallBaseConfigurationPacakge.aspx.cs">
-      <DependentUpon>InstallBaseConfigurationPacakge.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MRJ\Automation\InstallBaseConfigurationPacakge.aspx.designer.cs">
-      <DependentUpon>InstallBaseConfigurationPacakge.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MRJ\MyDataMockSpike.aspx.cs">
-      <DependentUpon>MyDataMockSpike.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MRJ\MyDataMockSpike.aspx.designer.cs">
-      <DependentUpon>MyDataMockSpike.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\MRJ\Spike.aspx.cs">
-      <DependentUpon>Spike.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\MRJ\Spike.aspx.designer.cs">
-      <DependentUpon>Spike.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\PageLocalOrdering\ShowLocalOrdering.aspx.cs">
-      <DependentUpon>ShowLocalOrdering.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\PageLocalOrdering\ShowLocalOrdering.aspx.designer.cs">
-      <DependentUpon>ShowLocalOrdering.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\ShowAllActionTokenTypes\ShowAllActionTokenTypes.aspx.cs">
-      <DependentUpon>ShowAllActionTokenTypes.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\ShowAllActionTokenTypes\ShowAllActionTokenTypes.aspx.designer.cs">
-      <DependentUpon>ShowAllActionTokenTypes.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Spikes\Tidy\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\Tidy\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Tests\AspNetControlCompiling.aspx.cs">
       <DependentUpon>AspNetControlCompiling.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\DDZ\Linq\LinqTest.aspx.cs">
-      <DependentUpon>LinqTest.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Spikes\DDZ\Linq\LinqTest.aspx.designer.cs">
-      <DependentUpon>LinqTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="Tests\PageElementProviderHooks.aspx.cs">
       <DependentUpon>PageElementProviderHooks.aspx</DependentUpon>
@@ -794,9 +474,6 @@
     <Content Include="Composite\scripts\source\top\core\ViewDefinitions.js" />
     <Content Include="Composite\services\Installation\InstallationService.asmx" />
     <Content Include="Composite\skins\dynamicskin.css" />
-    <Content Include="Spikes\DDZ\MakeDeveloperPerspectiveActive.aspx" />
-    <Content Include="Spikes\MRJ\Automation\AddPageTemplate.aspx" />
-    <Content Include="Spikes\MRJ\Automation\InstallBaseConfigurationPacakge.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -5989,65 +5666,7 @@
     <Content Include="Composite\web.config" />
     <Content Include="Frontend\Composite\Controls\Captcha.ascx" />
     <Content Include="ReleaseCleanupConfiguration.xml" />
-    <Content Include="Spikes\BackendStatus\Default.aspx" />
-    <Content Include="Spikes\BackendStatus\Flush.aspx" />
-    <Content Include="Spikes\CreateDataLayer\Default.aspx" />
-    <Content Include="Spikes\CustomControls\Default.aspx" />
-    <Content Include="Spikes\DataProviderCopier\Default.aspx" />
-    <Content Include="Spikes\DataProviderCopier\install.xml" />
-    <Content Include="Spikes\DDZ\CaptchaTest.aspx" />
-    <Content Include="Spikes\DDZ\DataLayerTest.aspx" />
-    <Content Include="Spikes\Default.aspx" />
-    <Content Include="Spikes\DynamicTypes\ClearAll.aspx" />
-    <Content Include="Spikes\Icons\ApiIcons.aspx" />
-    <Content Include="Spikes\Icons\Republic.aspx" />
-    <Content Include="Spikes\MAW\AddMissingHelpStringsToForms.aspx" />
-    <Content Include="Spikes\MAW\CheckBox.aspx" />
-    <Content Include="Spikes\MAW\CompositePathTest.aspx" />
-    <Content Include="Spikes\MAW\ConfigurationTransformation.aspx" />
-    <Content Include="Spikes\MAW\ConfigurationTransformation.xslt" />
-    <Content Include="Spikes\MAW\CoolUiControl.ascx" />
-    <Content Include="Spikes\MAW\CreateInlineDynamicType.aspx" />
-    <Content Include="Spikes\MAW\CreatePage.aspx" />
-    <Content Include="Spikes\MAW\Default.aspx" />
-    <Content Include="Spikes\MAW\Default2.aspx" />
-    <Content Include="Spikes\MAW\Default3.aspx" />
-    <Content Include="Spikes\MAW\evi.ascx" />
-    <Content Include="Spikes\MAW\Expressions.aspx" />
-    <Content Include="Spikes\MAW\GenericsSerialization.aspx" />
-    <Content Include="Spikes\MAW\GetFunctionData.aspx" />
-    <Content Include="Spikes\MAW\GetPageDataXml.aspx" />
-    <Content Include="Spikes\MAW\HtmlHead.aspx" />
-    <Content Include="Spikes\MAW\InvokeBasedFiltering.aspx" />
-    <Content Include="Spikes\MAW\LocalizationList.aspx" />
-    <Content Include="Spikes\MAW\Person.aspx" />
-    <Content Include="Spikes\MAW\Reference.aspx" />
-    <Content Include="Spikes\MAW\SetCulture.aspx" />
-    <Content Include="Spikes\MAW\static.html" />
-    <Content Include="Spikes\MAW\TinyMissingGulKasse.htm" />
-    <Content Include="Spikes\MAW\TouchCompositeConfig.aspx" />
-    <Content Include="Spikes\MAW\WidgetEditor.aspx" />
-    <Content Include="Spikes\MAW\XElementBuilder.aspx" />
-    <Content Include="Spikes\MAW\XPath.aspx" />
-    <Content Include="Spikes\MAW\XsltExtensions.aspx" />
-    <Content Include="Spikes\MAW\XSLTFile.xslt" />
-    <Content Include="Spikes\MRJ\AspNetCompile.aspx" />
-    <Content Include="Spikes\MRJ\Composite.Data.GeneratedTypes.GeneratedDataInterfaces.IMyType.IMyType.xml" />
-    <Content Include="Spikes\MRJ\CreateNewInterfaceType.aspx" />
-    <Content Include="Spikes\MRJ\Flush.aspx" />
-    <Content Include="Spikes\MRJ\Martin.aspx" />
-    <Content Include="Spikes\MRJ\MyDataMockSpike.aspx" />
-    <Content Include="Spikes\MRJ\MyWebService.asmx" />
-    <Content Include="Spikes\MRJ\Spike.aspx" />
-    <Content Include="Spikes\PageLocalOrdering\ShowLocalOrdering.aspx" />
-    <Content Include="Spikes\ShowAllActionTokenTypes\ShowAllActionTokenTypes.aspx" />
-    <Content Include="Spikes\Tidy\Default.aspx" />
-    <Content Include="Spikes\Tidy\ExtractBodyDescendants.xslt" />
-    <Content Include="Spikes\Tidy\SampleFUnctionMarkup.xml" />
-    <Content Include="Spikes\Tidy\StructuredContentToTinyContent.xslt" />
-    <Content Include="Spikes\Tidy\TinyContentToStructuredContent.xslt" />
     <Content Include="Tests\AspNetControlCompiling.aspx" />
-    <Content Include="Spikes\DDZ\Linq\LinqTest.aspx" />
     <Content Include="Tests\PageElementProviderHooks.aspx" />
     <Content Include="Tests\ScenarioServices\DataFacadeService.asmx" />
     <Content Include="Tests\ScenarioServices\ExecuteActionService.asmx" />
@@ -6081,12 +5700,7 @@
     <None Include="Develop\PackageServer\SleeperAddOn %28hard%29.zip" />
     <None Include="Develop\PackageServer\SleeperAddOn %28none%29.zip" />
     <None Include="Develop\PackageServer\SleeperAddOn %28soft%29.zip" />
-    <Content Include="Spikes\MAW\FetchPage.ashx" />
-    <Content Include="Spikes\MAW\GetIcon.ashx" />
     <Content Include="Renderers\Captcha.ashx" />
-    <None Include="Spikes\MAW\Icons.zip" />
-    <Content Include="Spikes\MRJ\Handler.ashx" />
-    <Content Include="Spikes\Web.config" />
     <None Include="Tests\Web.config.new" />
   </ItemGroup>
   <ItemGroup>
@@ -6122,8 +5736,6 @@
     <Folder Include="Frontend\Controls\" />
     <Folder Include="Frontend\Images\" />
     <Folder Include="Frontend\Scripts\" />
-    <Folder Include="Spikes\CleanConfigurations\" />
-    <Folder Include="Spikes\RelationshipGraph\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
