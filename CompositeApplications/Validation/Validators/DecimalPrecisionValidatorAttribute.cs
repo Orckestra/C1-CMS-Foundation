@@ -4,7 +4,7 @@
 namespace Composite.Validation.Validators
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Parameter, AllowMultiple = true, Inherited = false)]
-    internal sealed class DecimalPrecisionValidatorAttribute : Microsoft.Practices.EnterpriseLibrary.Validation.Validators.ValueValidatorAttribute
+    public sealed class DecimalPrecisionValidatorAttribute : Microsoft.Practices.EnterpriseLibrary.Validation.Validators.ValueValidatorAttribute
     {
         public DecimalPrecisionValidatorAttribute(int digits)
         {

@@ -12,7 +12,7 @@ using System.Web;
 
 namespace Composite.Renderings.Data
 {
-    internal class KeyTemplatedXhtmlRendererAttribute : XhtmlRendererProviderAttribute
+    public class KeyTemplatedXhtmlRendererAttribute : XhtmlRendererProviderAttribute
     {
         private XhtmlRenderingType _supportedRenderingType;
         private IDataXhtmlRenderer _renderer;

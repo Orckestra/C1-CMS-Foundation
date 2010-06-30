@@ -268,7 +268,7 @@ namespace Composite.Data
 
 
 
-        internal static IEnumerable<IData> ToDataEnumerable(this IQueryable queryable)
+        public static IEnumerable<IData> ToDataEnumerable(this IQueryable queryable)
         {
             if (queryable == null) throw new ArgumentNullException("queryable");
 

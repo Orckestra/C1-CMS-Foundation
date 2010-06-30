@@ -1,7 +1,7 @@
 using Composite.Data;
 namespace Composite.Data.Hierarchy
 {
-    internal interface IDataAncestorProvider
+    public interface IDataAncestorProvider
     {
         IData GetParent(IData data);
     }

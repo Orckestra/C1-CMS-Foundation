@@ -3,7 +3,7 @@ using System;
 namespace Composite.Data.Hierarchy
 {
     [AttributeUsageAttribute(AttributeTargets.Interface, Inherited = true, AllowMultiple = false)]
-    internal sealed class DataAncestorProviderAttribute : Attribute
+    public sealed class DataAncestorProviderAttribute : Attribute
     {
         private Type _dataAncestorProviderType;
 

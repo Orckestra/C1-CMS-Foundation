@@ -4,7 +4,7 @@ using System;
 namespace Composite.Validation.Validators
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Parameter, AllowMultiple = true, Inherited = false)]
-    internal sealed class StringSizeValidatorAttribute : Microsoft.Practices.EnterpriseLibrary.Validation.Validators.ValueValidatorAttribute
+    public sealed class StringSizeValidatorAttribute : Microsoft.Practices.EnterpriseLibrary.Validation.Validators.ValueValidatorAttribute
 	{
         public StringSizeValidatorAttribute(int lowerBound, int upperBound)
         {

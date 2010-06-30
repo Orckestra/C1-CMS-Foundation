@@ -3,7 +3,7 @@ using Composite.Security;
 
 namespace Composite.Elements
 {
-    internal sealed class ElementProviderContext
+    public sealed class ElementProviderContext
     {
         private string _providerName;
 
