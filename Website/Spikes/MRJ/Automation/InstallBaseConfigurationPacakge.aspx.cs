@@ -118,7 +118,7 @@ namespace Composite.Spikes.MRJ
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            WorkflowActionExecutor workflowActionExecutor = new WorkflowActionExecutor();
+           /* WorkflowActionExecutor workflowActionExecutor = new WorkflowActionExecutor();
 
             FlowControllerServicesContainer flowControllerServicesContainer = new FlowControllerServicesContainer();
             flowControllerServicesContainer.AddService(new DummyManagementConsoleMessageService());
@@ -145,7 +145,7 @@ namespace Composite.Spikes.MRJ
             WorkflowFacade.FireFinishEvent(flowToken.WorkflowInstanceId, formData.Bindings);
             
 
-            FlowControllerFacade.CancelFlow(flowToken);
+            FlowControllerFacade.CancelFlow(flowToken);*/
         }
     }
 }

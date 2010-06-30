@@ -31,11 +31,11 @@ public partial class Spikes_MAW_CoolUiControl : UserControlBasedUiControl
         this.Value = this.Text.Text;
     }
 
-    [BindableProperty()]
-    [FormsProperty()]
+   // [BindableProperty()]
+   // [FormsProperty()]
     public string Value { get; set; }
 
-    [FormsProperty()]
+   // [FormsProperty()]
     public string Caption { get; set; }
-
+    
 }
