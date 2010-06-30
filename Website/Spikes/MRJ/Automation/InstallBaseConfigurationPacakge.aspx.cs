@@ -87,7 +87,7 @@ namespace Composite.Spikes.MRJ
 
     
     
-    public sealed class DummyFormFlowRenderingService : IFormFlowRenderingService
+  /*  public sealed class DummyFormFlowRenderingService : IFormFlowRenderingService
     {
         public void RerenderView()
         {            
@@ -110,7 +110,7 @@ namespace Composite.Spikes.MRJ
         public void SetSaveStatus(bool succeeded)
         {            
         }
-    }
+    }*/
 
 
 
