@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.MethodBasedFunctionProvider
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-	internal sealed class FunctionParameterDescriptionAttribute : Attribute
+	public sealed class FunctionParameterDescriptionAttribute : Attribute
 	{
         public FunctionParameterDescriptionAttribute(string parameterName, string parameterLabel, string parameterHelpText)
         {
