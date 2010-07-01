@@ -44,9 +44,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementation\ImplementationBase.cs" />
+    <Compile Include="Implementation\ImplementationContainer.cs" />
+    <Compile Include="Implementation\LogBase.cs" />
+    <Compile Include="Implementation\LogDefaultImplementation.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CompositeApplications\CompositeApplications.csproj">
+      <Project>{9427C500-8542-409F-A8DC-0B21E250E0FA}</Project>
+      <Name>CompositeApplications</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CompositeCore\CompositeCore.csproj">
       <Project>{02BB5F33-56BB-4565-8D32-7BDF92D02CDE}</Project>
       <Name>CompositeCore</Name>
