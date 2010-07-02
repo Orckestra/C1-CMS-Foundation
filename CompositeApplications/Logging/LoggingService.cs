@@ -299,9 +299,9 @@ namespace Composite.Logging
 
                     using (System.IO.StreamWriter writer = new System.IO.StreamWriter(path))
                     {
-#warning ASSEMBLY RENAME: This string should be renamed as well
-                        Type type = Type.GetType("Composite.StandardPlugins.Logging.LogTraceListeners.TcpLogTraceListener.TcpLogTraceListener, Composite");
-                        //   if (type != null)
+                        Type type = typeof(LoggingService).Assembly
+                            .GetType("Composite.StandardPlugins.Logging.LogTraceListeners.TcpLogTraceListener.TcpLogTraceListener", false);
+
                         if ((type != null) && (RuntimeInformation.IsUnittest == false))
                         {
                             #region config file
