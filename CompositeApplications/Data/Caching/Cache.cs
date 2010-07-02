@@ -6,7 +6,7 @@ using Composite.GlobalSettings;
 
 namespace Composite.Data.Caching
 {
-    internal class Cache<K, V>: Cache where V: class
+    public class Cache<K, V>: Cache where V: class
     {
         public Cache(string name)
             : base(name)
@@ -50,7 +50,7 @@ namespace Composite.Data.Caching
     /// <summary>
     /// Represents a cache.
     /// </summary>
-	internal class Cache
+    public class Cache
     {
         private const int _defaultMaxSize = 1000;
         protected readonly Hashtable _table = new Hashtable();

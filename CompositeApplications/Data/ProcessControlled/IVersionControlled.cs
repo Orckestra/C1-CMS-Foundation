@@ -7,7 +7,7 @@ namespace Composite.Data.ProcessControlled
     /// Use this interface to get versioning on a given data type.
     /// </summary>
     [Obsolete("To be removed")]
-    internal interface IVersionControlled : IProcessControlled
+    public interface IVersionControlled : IProcessControlled
     {
         [StoreFieldType(PhysicalStoreFieldType.Integer)]
         [ImmutableFieldId("{CB60E5FD-C07E-42ce-925F-C4877CA0F2A6}")]

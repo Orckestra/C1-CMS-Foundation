@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace Composite.Data
 {
-    internal static class LocalizationScopeManager
+    public static class LocalizationScopeManager
     {
         public static CultureInfo CurrentLocalizationScope
         {
