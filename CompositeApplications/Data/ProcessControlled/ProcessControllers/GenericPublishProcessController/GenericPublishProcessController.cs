@@ -18,7 +18,7 @@ using Composite.Data.Types;
 
 namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController
 {
-    internal sealed class GenericPublishProcessController : IPublishProcessController
+    public sealed class GenericPublishProcessController : IPublishProcessController
     {
         private static readonly string _oldPublishedStatusTag = "OldPublishedStatus";
 

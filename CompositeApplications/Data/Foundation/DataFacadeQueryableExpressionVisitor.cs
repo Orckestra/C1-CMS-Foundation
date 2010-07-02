@@ -122,7 +122,18 @@ namespace Composite.Data.Foundation
             }
             else
             {
-                Type elementType = multibleSourceQueryable.Sources.First().ElementType;                
+                IQueryable[] sources = multibleSourceQueryable.Sources.ToArray();
+
+                // Choosing element type which is the "highest" in hierarhy. F.e. if we have IQueryable<IPage> and IQueryable<IData>, 
+                // the "highest" element type would be IData
+                Type elementType = sources[0].ElementType;
+                for(int i=1; i<sources.Length; i++)
+                {
+                    if(elementType != sources[i].ElementType && sources[i].ElementType.IsAssignableFrom(elementType))
+                    {
+                        elementType = sources[i].ElementType;
+                    }
+                }
 
                 MethodInfo addRangeToListMethodInfo = DataFacadeQueryableCache.GetAddRangeToListMethodInfo(elementType);
                 MethodInfo toListMethodInfo = DataFacadeQueryableCache.GetToListMethodInfo(elementType);
@@ -130,7 +141,7 @@ namespace Composite.Data.Foundation
                 Type listType = DataFacadeQueryableCache.GetListType(elementType);
                 var listedData = Activator.CreateInstance(listType);
 
-                foreach (IQueryable query in multibleSourceQueryable.Sources)
+                foreach (IQueryable query in sources)
                 {
                     var subList = toListMethodInfo.Invoke(null, new object[] { query });
 
