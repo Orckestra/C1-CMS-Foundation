@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
 namespace Composite.Xml
 {
-    internal interface IXsltExtensionDefinition
+    public interface IXsltExtensionDefinition
     {
         XNamespace ExtensionNamespace { get; }
         object EntensionObjectAsObject { get; }
@@ -14,7 +11,7 @@ namespace Composite.Xml
 
 
 
-	internal class XsltExtensionDefinition<T> : IXsltExtensionDefinition
+    public class XsltExtensionDefinition<T> : IXsltExtensionDefinition
 	{
         public XNamespace ExtensionNamespace { get; set; }
         public T EntensionObject { get; set; }
