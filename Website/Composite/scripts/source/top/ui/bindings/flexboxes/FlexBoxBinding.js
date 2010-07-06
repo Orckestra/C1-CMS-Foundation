@@ -276,13 +276,14 @@ FlexBoxBinding.prototype.setFlexibility = function ( isFlexible ) {
  */
 FlexBoxBinding.prototype.flex = function ( ) {
 	
-	if ( this.isFlexible == true ) {
-		
-		var height = this._getSiblingsSpan ();
-		height = this._getCalculatedHeight () - height;
-		if ( !isNaN ( height ) && height >= 0 ) {
-			if ( height != this.bindingElement.offsetHeight ) {
-				this.bindingElement.style.height = String ( height ) + "px";
+	if ( Binding.exists ( this )) {
+		if ( this.isFlexible == true ) {
+			var height = this._getSiblingsSpan ();
+			height = this._getCalculatedHeight () - height;
+			if ( !isNaN ( height ) && height >= 0 ) {
+				if ( height != this.bindingElement.offsetHeight ) {
+					this.bindingElement.style.height = String ( height ) + "px";
+				}
 			}
 		}
 	}

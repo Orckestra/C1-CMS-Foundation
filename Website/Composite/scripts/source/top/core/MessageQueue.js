@@ -145,18 +145,24 @@ window.MessageQueue = new function () {
 			 * will RESET the actionindex on restart.  
 			 */
 			var response = service.GetMessages ( Application.CONSOLE_ID, this.index );
-			var newindex = response.CurrentSequenceNumber;
-			if ( newindex < this.index ) {
-				logger.debug ( "SERVER WAS RESTARTED! old messagequeue index: " + this.index + ", new messagequeue index: " + newindex );
-				// the server was restarted!
-			}
-			this.index = newindex;
-			
-			var actions = new List ( response.ConsoleActions );
-			if ( actions.hasEntries ()) {
-				this.evaluate ( actions );
-			} else if ( !this._actions.hasEntries ()) {
-				broadcastUpdateEvaluated ();
+			if ( response != null ) {
+				if ( response.CurrentSequenceNumber != null ) {
+					var newindex = response.CurrentSequenceNumber;
+					if ( newindex < this.index ) {
+						logger.debug ( "SERVER WAS RESTARTED! old messagequeue index: " + this.index + ", new messagequeue index: " + newindex );
+						// the server was restarted!
+					}
+					this.index = newindex;
+					
+					var actions = new List ( response.ConsoleActions );
+					if ( actions.hasEntries ()) {
+						this.evaluate ( actions );
+					} else if ( !this._actions.hasEntries ()) {
+						broadcastUpdateEvaluated ();
+					}
+				} else {
+					logger.error ( "No sequencenumber in MessageQueue response!" );
+				}
 			}
 		}
 	}
