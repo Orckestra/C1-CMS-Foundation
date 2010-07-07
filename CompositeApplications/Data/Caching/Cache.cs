@@ -52,29 +52,32 @@ namespace Composite.Data.Caching
     /// </summary>
     public class Cache
     {
-        private const int _defaultMaxSize = 1000;
+        private static readonly int DefaultMaximumCacheSize = 1000;
+
         protected readonly Hashtable _table = new Hashtable();
         protected readonly object _syncRoot = new object();
         private bool _enabled = true;
         private bool _clearOnFlush = true;
         private int _maxSize;
-        //private bool _basedOnWeakReferences = false;
+        private int _defaultMaximumSize;
 
 
-        public Cache(string name) {
+        public Cache(string name): this(name, DefaultMaximumCacheSize)
+        {
+        }
+
+        public Cache(string name, int defaultMaximumSize)
+        {
+            Verify.ArgumentCondition(defaultMaximumSize >= 10, "maximumSize", "Maximum cache size should be at least 10 element.");
             Verify.ArgumentNotNullOrEmpty(name, "name");
-            Name = name;
 
+            Name = name;
+            _defaultMaximumSize = defaultMaximumSize;
+           
             ReadConfiguration();
 
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlush);
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnPostFlush);
-        }
-
-        public Cache(string name, int maximumSize): this(name)
-        {
-            Verify.ArgumentCondition(maximumSize >= 10, "maximumSize", "Maximum cache size should be at least 10 element.");
-            _maxSize = maximumSize;
         }
 
         public bool Enabled
@@ -157,13 +160,11 @@ namespace Composite.Data.Caching
             set { _clearOnFlush = value; }
         }
 
-
-
         protected void ReadConfiguration()
         {
             CachingSettings cachingSettings = GlobalSettingsFacade.GetNamedCaching(this.Name);
             _enabled = cachingSettings.Enabled;
-            _maxSize = cachingSettings.GetSize(_defaultMaxSize);
+            _maxSize = cachingSettings.GetSize(_defaultMaximumSize);
         }
 	}
 }
