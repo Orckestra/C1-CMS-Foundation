@@ -131,7 +131,7 @@ window.MessageQueue = new function () {
 	 */
 	this.update = function () {
 		
-		if ( Application.isLoggedIn ) { // otherwise no servie...
+		if ( Application.isLoggedIn ) { // otherwise no service...
 		
 			/*
 			 * Note that we broadcast the boolean argument: isAutoUpdate 
@@ -146,7 +146,7 @@ window.MessageQueue = new function () {
 			 */
 			var response = service.GetMessages ( Application.CONSOLE_ID, this.index );
 			if ( response != null ) {
-				if ( response.CurrentSequenceNumber != null ) {
+				if ( Types.isDefined ( response.CurrentSequenceNumber )) {
 					var newindex = response.CurrentSequenceNumber;
 					if ( newindex < this.index ) {
 						logger.debug ( "SERVER WAS RESTARTED! old messagequeue index: " + this.index + ", new messagequeue index: " + newindex );

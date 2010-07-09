@@ -35,19 +35,20 @@ FlexBoxBinding.reflex = function ( startBinding, isForce ) {
 	 */
 	list.each ( function ( binding ) {
 		binding.flex ();
-		binding.isFlexSuspended = true;
 	});
 	
 	/*
-	 * This is ultra lame, but so is Internet Explorer. Note that 
+	 * This is ultra lame. But so is Internet Explorer. Note that 
 	 * we don't respect the significance of suspended flex here,  
 	 * We simply flex again. The longer the timeout, the better  
-	 * are the odds of IE computing an exact layout calculation.
+	 * the odds of IE computing an exact layout calculation...
 	 */
 	if ( Client.isExplorer ) {
 		setTimeout ( function () {
 			list.each ( function ( binding ) {
-				binding.flex ();
+				if ( Binding.exists ( binding )) {
+					binding.flex ();
+				}
 			});
 		}, 0.5 * FlexBoxBinding.TIMEOUT );
 	}
@@ -57,7 +58,9 @@ FlexBoxBinding.reflex = function ( startBinding, isForce ) {
 	 */
 	setTimeout ( function () {
 		list.each ( function ( binding ) {
-			binding.isFlexSuspended = false;
+			if ( Binding.exists ( binding )) {
+				binding.isFlexSuspended = false;
+			}
 		});
 		list.dispose ();
 	}, FlexBoxBinding.TIMEOUT );
