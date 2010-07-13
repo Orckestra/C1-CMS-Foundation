@@ -214,9 +214,7 @@ CodePressTabManager.prototype = {
 			this._space = this._getLeadingSpace_line ( nodes );
 			this._isNewing = true;
 		}
-		
 		this._injectMarkup ( "<br>" + ( isPreserveIndent ? this._space : "" ));
-		
 		if ( this._isLastLine == true ) {
 			this._insertLastLine ();
 		}
@@ -325,7 +323,7 @@ CodePressTabManager.prototype = {
 		 * We cannot locate the current line using the Range spec in this scenario, 
 		 * so we inject a reference node and simply traverse ahead until we find it.
 		 */
-		this._injectMarkup ( "<marker/>" );
+		this._injectMarkup ( "<abbr/>" );
 		var type = NodeFilter.SHOW_TEXT + NodeFilter.SHOW_ELEMENT;
 		var walker = document.createTreeWalker ( this._doc.body, type, null, false );
 		
@@ -342,7 +340,7 @@ CodePressTabManager.prototype = {
 					break;
 				case Node.ELEMENT_NODE :
 					switch ( node.localName.toLowerCase ()) {
-						case "marker" :
+						case "abbr" :
 							marker = node;
 							break;
 						case "br" :
