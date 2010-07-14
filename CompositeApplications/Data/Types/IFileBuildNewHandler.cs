@@ -24,7 +24,7 @@ namespace Composite.Data.Types
 
 
 
-    internal class IFileEmptyDataClassBase : EmptyDataClassBase
+    public class IFileEmptyDataClassBase : EmptyDataClassBase
     {
         private CachedMemoryStream _currentWriteStream;
         private Type _interfaceType;
@@ -48,7 +48,7 @@ namespace Composite.Data.Types
 
 
 
-    internal sealed class IFileEmptyDataClassFileStreamManager : IFileStreamManager
+    public sealed class IFileEmptyDataClassFileStreamManager : IFileStreamManager
     {
         public Stream GetReadStream(IFile file)
         {
