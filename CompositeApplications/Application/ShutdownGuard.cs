@@ -8,7 +8,7 @@ namespace Composite.Application
     /// <summary>
     /// Postpones raising of shutdown event for ASP.NET
     /// </summary>
-    internal class ShutdownGuard : IDisposable
+    public class ShutdownGuard : IDisposable
     {
         private readonly HttpRuntime _runtime;
         private readonly FieldInfo _shutdownWebEventRaised_FieldInfo;

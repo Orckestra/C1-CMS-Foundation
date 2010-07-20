@@ -10,7 +10,7 @@ using Composite.IO;
 
 namespace Composite.PackageSystem
 {
-    internal enum ServerUrlValidationResult
+    public enum ServerUrlValidationResult
     {
         Http,
         Https,
@@ -19,7 +19,7 @@ namespace Composite.PackageSystem
 
 
 
-    internal static class PackageServerFacade 
+    public static class PackageServerFacade 
 	{
         private static IPackageServerFacade _packageServerFacade;
 

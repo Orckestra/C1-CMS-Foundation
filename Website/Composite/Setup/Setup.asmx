@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Web.Services;
 using System.Web.Services.Protocols;
 using Composite.Data;
@@ -16,6 +17,8 @@ namespace Composite.WebClient.Setup
     [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
     public class Setup : System.Web.Services.WebService
     {
+        private int _started = 0;
+        
         [DllImport("kernel32", CharSet = CharSet.Auto)]
         static extern int GetDiskFreeSpaceEx(
          string lpDirectoryName,
@@ -28,6 +31,22 @@ namespace Composite.WebClient.Setup
             public string Title { get; set; }
             public bool Success { get; set; }
             public string ReadMore { get; set; }
+        }
+        
+        public enum InstallationStatus
+        {
+            NotStarted,
+            Started,
+            Completed
+        }
+        
+        public class StarterSite
+        {
+            public Guid ID { get; set; }
+            public string Title { get; set; }
+            public string ShortDescription { get; set; }            
+            public string Description { get; set; }
+            public string ScreenshotUrl { get; set; }                        
         }
 
         [WebMethod]
@@ -69,6 +88,8 @@ namespace Composite.WebClient.Setup
                 }
             };
         }
+
+        #region Checking if setup meets requirements
 
         private bool HasWritePermission()
         {
@@ -153,18 +174,83 @@ namespace Composite.WebClient.Setup
             return lpFreeBytesAvailable > 5 * 1024 * 1024 /* 5 MB */; 
         }
 
+        #endregion Checking if installation meets necessary requirements
+
         [WebMethod]
-        public void StartInstallation(
+        public void SetUp(
             string adminPassword, 
             string language,
-            string packageList)
+            string starterSiteId)
         {
+            AssertServiceAvailable();
+
+            int started = Interlocked.Increment(ref _started);
+            if(started != 1)
+            {
+                throw new InvalidOperationException("Already started");
+            }
+
+            Thread.Sleep(5 * 1000);
+            
+            //var installThread = new Thread(() => Process(adminPassword, language, starterSiteId));
+            //installThread.Start();
         }
+
+        //private static void Process(string adminPassword,
+        //    string language,
+        //    string starterSiteId)
+        //{
+        //    using(new ShutdownGuard())
+        //    {
+        //        Thread.Sleep(10 * 1000);
+        //    }
+        //}
         
         [WebMethod]
-        public string GetInstallationStatus()
+        public StarterSite[] GetStarterSites()
         {
-            return "finished";
+            AssertServiceAvailable();
+
+            // NOTE: to be implemented
+
+            return new[]
+                       {
+                           new StarterSite
+                               {
+                                   ID = Guid.Empty,
+                                   Title = "None",
+                                   ShortDescription = "",
+                                   Description = "",
+                                   ScreenshotUrl = null
+                               },
+                           new StarterSite
+                               {
+                                   ID = new Guid("c6cf5137-afbb-462e-a357-9aa55327e675"),
+                                   Title = "Basic Site",
+                                   ShortDescription = "Cum sociis natoque penatibus et magnis dis parturient montes",
+                                   Description = "Quisque ut malesuada turpis. Sed ac est justo, id lobortis orci. Maecenas ac tempor turpis. In hac habitasse platea dictumst.",
+                                   ScreenshotUrl = null
+                               },    
+                           new StarterSite
+                               {
+                                   ID = new Guid("5f35ce50-6174-42e2-bcdf-9e259ab15350"),
+                                   Title = "Basic Site + Design",
+                                   ShortDescription = "Praesent mattis lectus a justo fringilla in aliquet",
+                                   Description = "Donec non lorem ac tellus lobortis tristique eu vel magna. Donec vel magna enim. Sed lobortis malesuada lobortis.",
+                                   ScreenshotUrl = null
+                               }                               
+                       };
+        }
+
+        //[WebMethod]
+        //public bool Ping()
+        //{
+        //    return true;
+        //}
+        
+        private static void AssertServiceAvailable()
+        {
+            // NOTE: to be implemented
         }
     }
 }
