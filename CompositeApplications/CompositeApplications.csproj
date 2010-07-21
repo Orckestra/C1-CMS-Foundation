@@ -309,6 +309,7 @@
     <Compile Include="Linq\ExpressionVisitors\CacheKeyBuilderExpressionVisitor.cs" />
     <Compile Include="Linq\IEnumerableExtensionMethod.cs" />
     <Compile Include="Localization\LocalizationFacade.cs" />
+    <Compile Include="Logging\WCF\LoggerServiceHostingFactory.cs" />
     <Compile Include="PackageSystem\PackageFragmentInstallers\LocalePackageFragmentInstaller.cs" />
     <Compile Include="PackageSystem\PackageFragmentInstallers\LocalePackageFragmentUninstaller.cs" />
     <Compile Include="PackageSystem\PackageFragmentInstallers\PackageVersionBumberFragmentInstaller.cs" />
@@ -316,7 +317,6 @@
     <Compile Include="Parallelization\IndexEnumerator.cs" />
     <Compile Include="Logging\LogManager.cs" />
     <Compile Include="Logging\WCF\LoggerHostnameHandler.cs" />
-    <Compile Include="Logging\WCF\LoggerServiceHostingFactory.cs" />
     <Compile Include="Logging\WCF\ILogService.cs" />
     <Compile Include="Logging\WCF\LogEntry.cs" />
     <Compile Include="Logging\WCF\LogService.cs" />
@@ -885,6 +885,8 @@
     <Compile Include="WebClient\State\Runtime\SessionStateProviderSettings.cs" />
     <Compile Include="WebClient\State\StateManager.cs" />
     <Compile Include="WebClient\StyleCompiler.cs" />
+    <Compile Include="WebClient\WCF\ServiceHostFactoryHelper.cs" />
+    <Compile Include="WebClient\WCF\MultipleHostnameHandler.cs" />
     <Compile Include="WebClient\UiControlLib\ComboBox.cs" />
     <Compile Include="WebClient\UiControlLib\Feedback.cs" />
     <Compile Include="WebClient\UiControlLib\Foundation\BaseControl.cs" />
