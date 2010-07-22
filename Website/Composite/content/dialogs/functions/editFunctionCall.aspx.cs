@@ -46,6 +46,7 @@ namespace CompositeEditFunctionCall
                 state.MaxFunctionAllowed = MultiMode ? 1000 : 1;
                 state.AllowedResultTypes = new [] { resultType };
                 state.WidgetFunctionSelection = IsWidgetSelection;
+                state.ConsoleId = Request.QueryString["consoleid"] ?? string.Empty;
 
                 SessionStateManager.DefaultProvider.AddState<IFunctionCallEditorState>(stateId, state, DateTime.Now.AddDays(7.0));
 

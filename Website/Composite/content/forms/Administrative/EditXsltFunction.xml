@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:internal="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
   <cms:bindings>
-    <cms:binding name="CurrentXslt" type="Composite.Data.Types.IXsltFunction, Composite"/>
+    <cms:binding name="CurrentXslt" type="Composite.Data.Types.IXsltFunction, CompositeApplications"/>
     <cms:binding name="XslTemplate" type="System.String"/>
-    <cms:binding name="Parameters" type="System.Collections.Generic.IEnumerable`1[[Composite.Functions.ManagedParameters.ManagedParameterDefinition, Composite]]"/>
+    <cms:binding name="Parameters" type="System.Collections.Generic.IEnumerable`1[[Composite.Functions.ManagedParameters.ManagedParameterDefinition, CompositeApplications]]"/>
     <cms:binding name="ParameterTypeOptions" type="System.Collections.Generic.IEnumerable`1[[System.Type]]"/>
-    <cms:binding name="FunctionCalls" type="System.Collections.Generic.IEnumerable`1[[Composite.Functions.NamedFunctionCall, Composite]]"/>
+    <cms:binding name="FunctionCalls" type="System.Collections.Generic.IEnumerable`1[[Composite.Functions.NamedFunctionCall, CompositeApplications]]"/>
     <cms:binding name="PreviewEventHandler" type="System.EventHandler" optional="false"/>
     <cms:binding name="PageId" type="System.Guid" optional="true"/>
     <cms:binding name="PageList" type="System.Collections.IEnumerable" optional="true"/>
