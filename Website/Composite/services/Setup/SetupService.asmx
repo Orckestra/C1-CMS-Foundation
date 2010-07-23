@@ -1,8 +1,9 @@
-﻿<%@ WebService Language="C#"  Class="Composite.WebClient.Setup.Setup" %>
+﻿<%@ WebService Language="C#"  Class="Composite.WebClient.Setup.SetupService" %>
 
 using System;
 using System.IO;
 using System.Linq;
+using System.Xml;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Web.Services;
@@ -11,11 +12,12 @@ using Composite.Data;
 using Composite.Data.Types;
 using Composite.PackageSystem;
 
+
 namespace Composite.WebClient.Setup
 {
     [WebService(Namespace = "http://www.composite.net/ns/management")]
     [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
-    public class Setup : System.Web.Services.WebService
+    public class SetupService : System.Web.Services.WebService
     {
         private int _started = 0;
         
@@ -28,9 +30,10 @@ namespace Composite.WebClient.Setup
 
         public class CheckResult
         {
+        	public string Key { get; set; }
             public string Title { get; set; }
             public bool Success { get; set; }
-            public string ReadMore { get; set; }
+            //public string ReadMore { get; set; }
         }
         
         public enum InstallationStatus
@@ -42,48 +45,56 @@ namespace Composite.WebClient.Setup
         
         public class StarterSite
         {
-            public Guid ID { get; set; }
+            public String ID { get; set; }
             public string Title { get; set; }
             public string ShortDescription { get; set; }            
             public string Description { get; set; }
             public string ScreenshotUrl { get; set; }                        
         }
 
+        public class LanguageDef
+        {
+            public String Title { get; set; }
+            public String Key { get; set; }
+            public bool Selected { get; set; }
+        }
+		/*
         [WebMethod]
-        public string GetLicenseText()
+        public string GetLicenseText( bool dummy )
         {
             // TODO: To be implemented...
             return "Property of Composite A/S";
         }
+        */
         
         [WebMethod]
-        public CheckResult[] CheckRequirements()
+        public CheckResult[] CheckRequirements( bool dummy )
         {
             return new []
             {
                 new CheckResult {
-                    Title = "Write permissions to the web directory",
-                    ReadMore = "http://docs.composite.net/WritePermissionsToWebFolder",
+                	Key = "permissions",
+                    Title = "Web directory permissions",
                     Success = HasWritePermission()
                 },
                 new CheckResult {
-                    Title = "Base path not to long",
-                    ReadMore = "http://docs.composite.net/BasePathToLong",
+                	Key = "pathlength",
+                    Title = "Base path length",
                     Success = BasePathNotToLong()
                 },
                 new CheckResult {
-                    Title = "Connection to package server",
-                    ReadMore = "http://docs.composite.net/NoConnectionToPackageServer",
+                	Key = "connection",
+                    Title = "Outbound server connection",
                     Success = HasConnectionToPackageServer()
                 },
                 new CheckResult {
-                    Title = "The web browser currently used  is the correct type and version",
-                    ReadMore = "http://docs.composite.net/BrowserCheck",
+                	Key = "browser",
+                    Title = "Browser type and version",
                     Success = BrowserCheck()
                 },
                 new CheckResult {
-                    Title = "There's enough disk space",
-                    ReadMore = "http://docs.composite.net/BrowserCheck",
+                	Key = "diskspace",
+                    Title = "Disk space requirements",
                     Success = DiskSpaceCheck()
                 }
             };
@@ -154,11 +165,12 @@ namespace Composite.WebClient.Setup
             }
         }
 
-
-        
         private bool BrowserCheck()
         {
-            // TODO: To be implemented...
+           	/*
+           	 * Fake! This check is made by the client 
+           	 * before this service is even invoked.
+           	 */
             return true;
         }
 
@@ -176,6 +188,43 @@ namespace Composite.WebClient.Setup
 
         #endregion Checking if installation meets necessary requirements
 
+        [WebMethod]
+        public XmlDocument GetSetupDescription ( bool dummy )
+        {
+            XmlDocument doc = new System.Xml.XmlDocument();
+            doc.Load ( Server.MapPath ( "dummy.xml" ));
+            return doc;
+        }
+
+        [WebMethod]
+        public LanguageDef[] GetLanguages(bool dummy)
+        {
+            return new[]
+            {
+                new LanguageDef {
+                    Title = "Hebrew",
+                    Key = "no-GO",
+                    Selected = false
+                },
+                new LanguageDef {
+                    Title = "Latin",
+                    Key = "da-DK",
+                    Selected = true
+                },
+                new LanguageDef {
+                    Title = "Klingon",
+                    Key = "en-US",
+                    Selected = false
+                },
+                new LanguageDef {
+                    Title = "Navi",
+                    Key = "na-VI",
+                    Selected = false
+                }
+            };
+        }
+        
+		/*
         [WebMethod]
         public void SetUp(
             string adminPassword, 
@@ -207,7 +256,7 @@ namespace Composite.WebClient.Setup
         //}
         
         [WebMethod]
-        public StarterSite[] GetStarterSites()
+        public StarterSite[] GetStarterSites( bool dummy )
         {
             AssertServiceAvailable();
 
@@ -217,7 +266,7 @@ namespace Composite.WebClient.Setup
                        {
                            new StarterSite
                                {
-                                   ID = Guid.Empty,
+                                   ID = Guid.Empty.ToString (),
                                    Title = "None",
                                    ShortDescription = "",
                                    Description = "",
@@ -225,7 +274,7 @@ namespace Composite.WebClient.Setup
                                },
                            new StarterSite
                                {
-                                   ID = new Guid("c6cf5137-afbb-462e-a357-9aa55327e675"),
+                                   ID = new Guid("c6cf5137-afbb-462e-a357-9aa55327e675").ToString (),
                                    Title = "Basic Site",
                                    ShortDescription = "Cum sociis natoque penatibus et magnis dis parturient montes",
                                    Description = "Quisque ut malesuada turpis. Sed ac est justo, id lobortis orci. Maecenas ac tempor turpis. In hac habitasse platea dictumst.",
@@ -233,7 +282,7 @@ namespace Composite.WebClient.Setup
                                },    
                            new StarterSite
                                {
-                                   ID = new Guid("5f35ce50-6174-42e2-bcdf-9e259ab15350"),
+                                   ID = new Guid("5f35ce50-6174-42e2-bcdf-9e259ab15350").ToString (),
                                    Title = "Basic Site + Design",
                                    ShortDescription = "Praesent mattis lectus a justo fringilla in aliquet",
                                    Description = "Donec non lorem ac tellus lobortis tristique eu vel magna. Donec vel magna enim. Sed lobortis malesuada lobortis.",
@@ -247,6 +296,7 @@ namespace Composite.WebClient.Setup
         //{
         //    return true;
         //}
+        */
         
         private static void AssertServiceAvailable()
         {
