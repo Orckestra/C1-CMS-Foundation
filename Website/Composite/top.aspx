@@ -10,6 +10,10 @@
 		<link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon16.ico"/>
 		<control:scriptloader type="top" runat="server"/>
 		
+		<script type="text/javascript">
+			DocumentManager.hasNativeContextMenu = true;
+		</script>
+		
 		<ui:keyset>
 			
 			<!-- general keycombos -->
@@ -38,7 +42,7 @@
 		<ui:cover id="mastercover" transparent="true" busy="true" blockevents="true"/>
 		<ui:cover id="logoutcover" busy="false" blockevents="true" hidden="true"/>
 		<ui:uncover id="uncover"/>
-			
+		
 		<ui:theatre id="offlinetheatre">
 			<div id="offlinesplash">
 				<div id="offlineimage"></div>
@@ -54,74 +58,15 @@
 		<ui:window id="audioloader" binding="AudioWindowBinding"/>
 		
 		<ui:page id="toppage" strongfocusmanager="false" flex="false">
+		
+			<!-- show intro splash or normal splash? -->
 			<ui:cover id="cover" busy="false">
-				<ui:splash id="splash">
-					<ui:decks id="decks" flex="false">
-					
-						<!-- intro -->
-						<ui:deck id="introdeck">
-							 <!-- this is supposed to be empty! -->
-						</ui:deck>
-						
-						<!-- login -->
-						<ui:deck id="logindeck">
-							<!-- 
-							<div class="buzzwords">
-								<div id="version"><ui:text label="${version}"/></div>
-								<div id="registration"><ui:text label="Registered to: ${registration}"/></div>
-								<div><ui:text label="2010 Composite A/S"/></div>
-							</div>
-							-->
-							<ui:fields id="loginfields">
-								<div id="loginerror" class="errortext">
-									<ui:text label="Username or password incorrect!"/>
-								</div>
-								<ui:field>
-									<ui:fielddesc>Username</ui:fielddesc>
-									<ui:fielddata>
-										<ui:datainput name="username" required="true" autoselect="true"/>
-									</ui:fielddata>
-								</ui:field>
-								<ui:field>
-									<ui:fielddesc>Password</ui:fielddesc>
-									<ui:fielddata>
-										<ui:datainput name="password" password="true" required="true" minlength="6" autoselect="true"/>
-									</ui:fielddata>
-								</ui:field>
-							</ui:fields>
-							<ui:dialogtoolbar>
-								<ui:clickbutton label="Login" image="${skin}/splash/button.png" focusable="true" oncommand="KickStart.login()"/>
-							</ui:dialogtoolbar>
-						</ui:deck>
-						
-						<!-- loading -->
-						<ui:deck id="loadingdeck">
-							<div class="strong">
-								<div>Depending on your internet connection speed, Composite C1 may take a few moments to load.</div>
-								<div id="progressbar">
-									<ui:text label="Initializing Composite C1"/>
-									<ui:progressbar/>
-								</div>
-							</div>
-						</ui:deck>
-						
-						<!-- first time? -->
-						<ui:deck id="firsttimedeck">
-							<div class="strong">
-								<div>Preparing first time startup...</div>
-							</div>
-						</ui:deck>
-						
-						<!-- shutdown -->
-						<ui:deck id="shutdowndeck">
-							<div class="strong">
-								<div>Shutting down...</div>
-							</div>
-						</ui:deck>
-						
-					</ui:decks>
-					<div id="backdrop"></div>
-				</ui:splash>
+				<asp:PlaceHolder ID="introholder" runat="server" Visible="false">
+					<% Response.WriteFile ( "welcome.inc" ) %>
+				</asp:PlaceHolder>
+				<asp:PlaceHolder ID="splashholder" runat="server" Visible="true">
+					<% Response.WriteFile ( "top.inc" ) %>
+				</asp:PlaceHolder>
 			</ui:cover>
 			
 			<!-- app loaded here! -->

@@ -15,21 +15,22 @@
 		</xsl:copy>
 	</xsl:template>
 
-  <!-- pull up head content from nested documents -->
-  <xsl:template match="/x:html/x:head">
-    <xsl:copy>
-      <xsl:apply-templates select="*|@*|text()|processing-instruction()|comment()" />
-      <!-- pull up nested head markup -->
-      <xsl:apply-templates select="/x:html/x:body//x:head/*" />
-    </xsl:copy>
-  </xsl:template>
+	<!-- pull up head content from nested documents -->
+	<xsl:template match="/x:html/x:head">
+		<xsl:copy>
+			<xsl:apply-templates select="*|@*|text()|processing-instruction()|comment()" />
+	    	<!-- pull up nested head markup -->
+	    	<xsl:apply-templates select="/x:html/x:body//x:head/*" />
+		</xsl:copy>
+	</xsl:template>
 
-  <!-- supress nested documents head elements (see above) -->
-  <xsl:template match="/x:html/x:body//x:html">
-    <xsl:apply-templates select="x:body/*" />
-  </xsl:template>
+	<!-- supress nested documents head elements (see above) -->
+	<xsl:template match="/x:html/x:body//x:html">
+		<xsl:apply-templates select="x:body/*" />
+	</xsl:template>
 
-  <xsl:template match="ui:region">
+	<!-- resolve browser and platform regions -->
+	<xsl:template match="ui:region">
   		<xsl:choose>
   			<xsl:when test="not(@platform)">
 				<xsl:if test="@match=$browser">
@@ -49,7 +50,7 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<!-- remove empty attributes -->
+	<!-- remove empty attributes [which is what the ASPX file is trying to say] -->
 	<xsl:template match="@*[.='']" />
 
 	<!-- filter developermode content -->
@@ -75,13 +76,14 @@
 		</xsl:attribute>
 	</xsl:template>
 	
-	<!-- TEMP: Nuking ASP.NET AJAX crap -->
+	<!-- TEMP: Nuking ASP.NET AJAX crap 
 	<xsl:template match="x:script[contains(@src,'Microsoft') or contains(@src,'WebResource')]"/>
 	<xsl:template match="x:script[contains(@src,'BindingForm.js')]"/>
 	<xsl:template match="x:script[contains(text(),'ASP.NET') or contains(text(),'Sys.')]"/>
 	<xsl:template match="ui:updatepanel">
 		<xsl:apply-templates select="ui:updatepanelbody/*"/>
 	</xsl:template>
+	-->
 		
 	<!-- generate id to optimize UpdateManager performance -->
 	<xsl:template match="ui:fields[not(@id)]|ui:fieldgroup[not(@id)]">
@@ -255,5 +257,42 @@
  			<xsl:apply-templates select="@*[name()!='id']"/>
  		</ui:lazybinding>
  	</xsl:template>
+ 	
+ 	<!-- 
+ 	<setup>
+ 		<radio name="Clean slate" key="1"/>
+ 		<radio name="Basic Website" key="2">
+ 			<radio name="Johns Website" key="21"/>
+ 		</radio>
+ 		<radio name="Demo Website" key="3">
+ 			<radio name="The Daily Demosite" key="31"/>
+ 			<radio name="Omnicorp Corporate Site" key="32"/>
+ 		</radio>
+ 	</setup>
+ 	-->
+ 	
+ 	<!-- wraps content in a table structure ... somewhat lamely -->
+ 	<xsl:template match="ui:tableframe">
+	 	<table cellspacing="0">
+	 		<xsl:apply-templates select="@*"/>
+			<tr>
+				<td class="xnw"></td> <!-- prefix with "x" to fix CSS on nested tables -->
+				<td class="xn"></td>
+				<td class="xne"></td>
+			</tr>
+			<tr>
+				<td class="xw"></td>
+				<td class="xc">
+					<xsl:apply-templates/>
+				</td>
+				<td class="xe"></td>
+			</tr>
+			<tr>
+				<td class="xsw"></td>
+				<td class="xs"></td>
+				<td class="xse"></td>
+			</tr>
+		</table>
+	</xsl:template>
  	
 </xsl:stylesheet>

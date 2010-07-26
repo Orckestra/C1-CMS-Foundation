@@ -1,0 +1,415 @@
+var Welcome = new function () {
+	
+	var TIME = 750;
+	var setup = null;
+	var heyho = null;
+	
+	var hasSetup = false;
+	var hasLogin = false;
+	var hasBlock = false;
+	var hasLength = false;
+	
+	var tabindex = 0;
+	
+	/**
+	 * @type {String}
+	 */
+	this.params = new String ( "" );
+	
+	/**
+	 * Results are real. UI is fake ;)
+	 */
+	this.test = function () {
+		
+		var ul = document.getElementById ( "introtest" );
+		var lis = ul.getElementsByTagName ( "li" );
+		var result = {};
+		
+		var response = new List ( SetupService.CheckRequirements ( true ));
+		response.each ( function ( res ) {
+			
+			var li = document.createElement ( "li" );
+			if ( !ul.hasChildNodes ()) {
+				li.className = "on";
+			}
+			li.rel = res.Key;
+			li.appendChild ( document.createTextNode ( res.Title ));
+			ul.appendChild ( li );
+			result [ res.Key ] = res.Success;
+		})
+		
+		var i = 0;
+		var isSuccess = true;
+		
+		setTimeout ( function () {
+			doit ( result );
+		}, TIME * 2 );
+		
+		function doit ( res ) {
+			
+			var li = lis.item ( i );
+			var rel = li.rel;
+			li.className += res [ rel ] ? " ok" : " bad";
+			
+			var is = res [ rel ];
+			if ( !is ) {
+				Welcome.params += ( Welcome.params.length > 0 ? ";" : "" ) + li.rel;
+			}
+			if ( isSuccess ) {
+				isSuccess = is;
+			}
+			
+			var next = lis.item ( i + 1 );
+			if ( next != null ) {
+				next.className = "on";
+			}
+			
+			var wait = TIME * Math.random ();
+			if ( i++ < lis.length - 1 ) {
+				setTimeout ( function () {
+					doit ( res );
+				}, wait );
+			} else {
+				setTimeout ( function () {
+					Welcome.result ( isSuccess );
+				}, wait );
+			}
+		}
+	}
+	
+	/**
+	 * Test result.
+	 */
+	this.result = function ( isSuccess ) {
+		
+		var successtext = document.getElementById ( "introtestsuccess" );
+		var failuretext = document.getElementById ( "introtestfailure" );
+		
+		var successbutton = bindingMap.introtestsuccessbutton;
+		var failurebutton = bindingMap.introtestfailurebutton;
+		
+		if ( isSuccess ) {
+			successtext.style.visibility = "visible";
+			successbutton.getBindingElement ().style.visibility = "visible";
+		} else {
+			successtext.style.display = "none";
+			failuretext.style.display = "block";
+			successbutton.hide ();
+			failurebutton.setURL ( failurebutton.getURL () + Welcome.params );
+			failurebutton.show ();
+		}
+		
+	}
+	
+	/**
+	 * Switch to deck.
+	 * @param {String} id
+	 */
+	this.switchTo = function ( id ) {
+		
+		switch ( id ) {
+			case "setup" :
+				EventBroadcaster.unsubscribe ( BroadcastMessages.KEY_TAB, this );
+				if ( !hasSetup ) {
+					getSetup ();
+					hasSetup = true;
+				}
+				break;
+			case "login" :
+				EventBroadcaster.subscribe ( BroadcastMessages.KEY_TAB, this );
+				updateSetup ();
+				var form = document.getElementById ( "loginform" );
+				var elements = new List ( form.elements );
+				if ( !hasLogin ) {
+					prepareLogin ( elements );
+					hasLogin = true;
+				}
+				elements.get ( 0 ).focus ();
+				break;
+		}
+		
+		relax ( true ) 
+		bindingMap.introdecks.select ( id );
+		bindingMap.navdecks.select ( "nav" + id );
+		relax ( false );
+	}
+	
+	/**
+	 * @param {List<Element>}
+	 */
+	function prepareLogin ( elements ) {
+		
+		var langs = new List ( SetupService.GetLanguages ( true ));
+		var markup = "<select id=\"language\">";
+		
+		langs.each ( function ( lang ) {
+			markup += "<option value=\"" + lang.Key + "\"" + ( lang.Selected ? " selected=\"selected\"" : "" ) + ">" + lang.Title + "</option>";
+		});
+		
+		var selector = document.getElementById ( "language" );
+		selector.parentNode.innerHTML = markup + "</select>";
+		
+		elements.each ( function ( element, index ) {
+			
+			element.onfocus = function () {
+				
+				window.standardEventHandler.enableNativeKeys ();
+				
+				tabindex = index;
+				if ( this.id == "language" ) {
+					// StandardEventHandler.hasNativeKeys = true;
+				}
+				if ( this.type == "text" || this.type == "password" ) {
+					var input = this;
+					setTimeout ( function () {
+						if ( Client.isExplorer) {
+							var range = input.createTextRange();
+							range.moveStart ( "character", 0 );
+							range.moveEnd ( "character", input.value.length );
+							range.select ();
+						} else {
+					    	input.setSelectionRange ( 0, input.value.length );
+						}
+					}, 0 );
+				}
+			}
+			
+			element.onblur = function () {
+				
+				window.standardEventHandler.disableNativeKeys ();
+				
+				switch ( this.id ) {
+					case "password" :
+						if ( this.value != "" && this.value.length < 6 ) {
+							badPassLength ( true );
+						} else if ( hasLength ) {
+							badPassLength ( false );
+						}
+						break;
+					case "passcheck" :
+						var password = document.getElementById ( "password" );
+						if ( password.value != "" ) {
+							if ( password.value != this.value ) {
+								noneShallPass ( true );
+							} else if ( hasBlock ) {
+								noneShallPass ( false );
+							}
+						}
+						break;
+				}
+			}
+			
+			element.onkeyup = function () {
+				
+				validate ();
+			}
+			
+		});
+		
+	}
+	
+	function validate () {
+		
+		var username = document.getElementById ( "username" );
+		var password = document.getElementById ( "password" );
+		var passcheck = document.getElementById ( "passcheck" );
+		
+		var isValid = false;
+		
+		if ( username.value != "" ) {
+			if ( password.value.length >= 6 && passcheck.value.length >= 6 ) {
+				if ( password.value == passcheck.value ) {
+					isValid = true;
+				}
+			}
+		}
+		
+		if ( isValid ) {
+			bindingMap.startbutton.enable ();
+			if ( hasBlock ) {
+				noneShallPass ( false );
+			}
+		} else {
+			bindingMap.startbutton.disable ();
+		}
+	}
+	
+	/**
+	 * @param {boolean} isBad
+	 */
+	function badPassLength ( isBad ) {
+		
+		if ( hasBlock ) {
+			noneShallPass ( false );
+		}
+		
+		var p = document.getElementById ( "lengthbad" );
+		if ( isBad ) {
+			p.style.display = "block";
+		} else {
+			p.style.display = "none";
+		}		
+		hasLength = isBad;
+	}
+	
+	/**
+	 * @param {boolean} isBlock
+	 */
+	function noneShallPass ( isBlock ) {
+		
+		if ( hasLength ) {
+			badPassLength ( false );
+		}	
+		
+		var p = document.getElementById ( "loginbad" );
+		if ( isBlock ) {
+			p.style.display = "block";
+		} else {
+			p.style.display = "none";
+		}
+		hasBlock = isBlock;
+	}
+	
+	/**
+	 * @implements {IBroadcastListener}
+	 * @param {String} broadcast
+	 */
+	this.handleBroadcast = function ( broadcast ) {
+		
+		switch ( broadcast ) {
+			
+			case BroadcastMessages.KEY_TAB :
+				
+				var index = 0;
+				var form = document.getElementById ( "loginform" );
+				var elements = form.elements;
+				
+				if ( Keyboard.isShiftPressed ) {
+					if ( tabindex == 0 ) {
+						index = elements.length - 1;
+					} else {
+						index = -- tabindex;
+					}
+				} else {
+					if ( tabindex != elements.length - 1 ) {
+						index = ++ tabindex ; 
+					}
+				}
+				elements [ index ].focus ();
+				tabindex = index;
+				break;
+		}
+	}
+	
+	/**
+	 * Mount setup options.
+	 */
+	function getSetup () {
+		
+		var transformer = new XSLTransformer ();
+		transformer.importStylesheet ( "${root}/welcome.xsl" );
+		
+		setup = SetupService.GetSetupDescription ( true );
+		var html = transformer.transformToString ( setup, true );
+		
+		var target = document.getElementById ( "setupfields" );
+		target.innerHTML = html.replace ( /xmlns:ui=\"urn:HACKED\"/g, "" );
+		DocumentManager.attachBindings ( target );
+	}
+	
+	function updateSetup () {
+		
+		// reset setup result
+		heyho = setup.cloneNode ( true );
+		var keys = {};
+		var radios = new List ( heyho.getElementsByTagName ( "radio" ));
+		radios.each ( function ( radio ) {
+			radio.removeAttribute ( "selected" );
+			keys [ radio.getAttribute ( "key" )] = radio;
+		});
+		
+		var target = document.getElementById ( "setupfields" );
+		var groups = new List ( target.getElementsByTagName ( "ui:radiodatagroup" ));
+		
+		// update setup result
+		groups.each ( function ( group ) {
+			group = UserInterface.getBinding ( group );
+			var key = group.getValue ();
+			var radio = keys [ key ];
+			radio.setAttribute ( "selected", "true" );
+		});
+		
+		// remove unselected elements
+		radios.each ( function ( radio ) {
+			if ( radio.getAttribute ( "selected" ) == null ) {
+				radio.parentNode.removeChild ( radio );
+			} else {
+				radio.removeAttribute ( "selected" );
+			}
+		});
+		
+		// alert ( DOMSerializer.serialize ( heyho, true ));
+	}
+	
+	/**
+	 * Relax layout while we check if new content should expand the box...
+	 * @param {boolean} isRelaxed
+	 */
+	function relax ( isRelaxed ) {
+		
+		var table = document.getElementById ( "intro" );
+		var c = table.getElementsByTagName ( "td" ).item ( 4 );
+		
+		if ( isRelaxed ) {
+			c.setAttribute ( "_height", c.offsetHeight );
+			c.style.height = "auto";
+		} else {
+			var h = c.getAttribute ( "_height" );
+			if ( c.offsetHeight < parseInt ( h )) {
+				c.style.height = h + "px";
+			}
+		}
+	}
+	
+	this.update = function ( binding ) {
+		
+		switch ( binding.constructor ) {
+			case RadioDataBinding :
+				updateRadio ( binding );
+				break;
+		}
+	}
+	
+	function updateRadio ( binding ) {
+		
+		var parent = binding.bindingElement.parentNode;
+		var group = UserInterface.getBinding ( parent );
+		var radios = group.getChildBindingsByLocalName ( "radio" );
+		
+		setTimeout ( function () {
+			radios.each ( function ( radio ) {
+				var id = "div" + radio.getProperty ( "value" );
+				var div = document.getElementById ( id );
+				if ( div != null ) {
+					if ( radio.isChecked ) {
+						CSSUtil.attachClassName ( div, "visible" );
+					} else {
+						CSSUtil.detachClassName ( div, "visible" );
+					}
+				}
+			});
+		}, 0 );
+	}
+	
+	/**
+	 * Login!
+	 */
+	this.login = function () {
+		
+		KickStart.doLogin ( 
+			document.getElementById ( "username" ).value,
+			document.getElementById ( "password" ).value
+		);
+		
+	}
+}

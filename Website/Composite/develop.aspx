@@ -35,10 +35,8 @@
         </div>
         <div id="buzzwords">
             <div id="developermodeprb">
-                <p>
-                    C1 DeveloperMode has not been installed on this site.</p>
-                <p>
-                    Press SHIFT for OperationalMode</p>
+                <p>C1 DeveloperMode has not been installed on this site.</p>
+                <p>Press <kbd>SHIFT</kbd> for OperationalMode</p>
             </div>
             <div id="developermodeok">
                 <a href="javascript:Composite.start(true);"><span><img alt="" src="images/blank.png" />Start Developer Mode</span></a>

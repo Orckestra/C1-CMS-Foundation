@@ -30,7 +30,7 @@ _Installation.prototype = {
 	versionString : null,
 	
 	/**
-	 * Human readable product version "C1 1.2 SP2".
+	 * Human readable product version "Composite C1 1.2 SP2".
 	 * @type {string}
 	 */
 	versionPrettyString : null,

@@ -12,7 +12,7 @@
 	</xsl:template>
 	
 	<!-- TODO: CDATA SECTION SCRIPTS AND STYLES IN ALL TRANSFORMATIONS! -->
-	<xsl:template match="x:textarea | x:div | x:a | x:title | x:script | x:style | x:iframe">
+	<xsl:template match="x:textarea | x:div | x:a | x:ul | x:select | x:title | x:script | x:style | x:iframe">
 		<xsl:element name="{local-name()}">
 			<xsl:apply-templates select="*|@*|text()|processing-instruction()|comment()" />
 			<xsl:call-template name="uncollapse" />

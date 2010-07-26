@@ -39,7 +39,7 @@ div#backdrop { /* explorer bug when backdrop directly on deck or splash */
 	left: 0;
 	#alphabackdrop: url("${root}/images/box.png");
 }
-ui|decks {
+ui|splash ui|decks {
 	width: 200px;
 	margin-left: 58px;
 	height: 180px;
@@ -96,7 +96,7 @@ ui|progressbar ui|cover {
 	margin-right: 0;
 	position: static;
 }
-ui|dialogtoolbar {
+#splash ui|dialogtoolbar {
 	padding: 0;
 	background-color: transparent;
 	position: absolute;
@@ -243,18 +243,19 @@ ui|uncover {
 	cursor: default;
 }
 
+
 /* HOVER */
 	
-ui|splash ui|clickbutton.hover table.matrix td.c,
-ui|splash ui|clickbutton.focused table.matrix td.c,
-ui|splash ui|clickbutton.hover table.matrix td.n,
-ui|splash ui|clickbutton.focused table.matrix td.n,
-ui|splash ui|clickbutton.hover table.matrix td.s,
-ui|splash ui|clickbutton.focused table.matrix td.s,
-ui|splash ui|clickbutton.hover table.matrix td.e,
-ui|splash ui|clickbutton.focused table.matrix td.e,
-ui|splash ui|clickbutton.hover table.matrix td.w,
-ui|splash ui|clickbutton.focused table.matrix td.w {
+.splash ui|clickbutton.hover table.matrix td.c,
+.splash ui|clickbutton.focused table.matrix td.c,
+.splash ui|clickbutton.hover table.matrix td.n,
+.splash ui|clickbutton.focused table.matrix td.n,
+.splash ui|clickbutton.hover table.matrix td.s,
+.splash ui|clickbutton.focused table.matrix td.s,
+.splash ui|clickbutton.hover table.matrix td.e,
+.splash ui|clickbutton.focused table.matrix td.e,
+.splash ui|clickbutton.hover table.matrix td.w,
+.splash ui|clickbutton.focused table.matrix td.w {
 	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-hover.png");
 }
 ui|clickbutton.hover table.matrix td.ne,

@@ -1,6 +1,6 @@
 /**
  * Animated when KickStart kicks in.
- * @see {KickStart#fireOnDOM}
+ * @see {KickStart#fireOnLoad}
  * @type {WebServiceProxy}
  */
-var LicensingService = null;
+var SetupService = null;

@@ -55,29 +55,6 @@ RadioGroupBinding.prototype.onBindingRegister = function () {
 	this.addActionListener ( ButtonBinding.ACTION_COMMAND, this );
 }
 
-/** 
- * @overloads {Binding#onBindingAttach}
- */
-RadioGroupBinding.prototype.onBindingAttach = function () {
-
-	RadioGroupBinding.superclass.onBindingAttach.call ( this );
-	
-	/*
-	var checkedRadioBinding = null;
-	this._getRadioButtonBindings ().each ( function ( binding ) {
-		if ( binding.getProperty ( "ischecked" )) {
-			checkedRadioBinding = binding;
-			return false;
-		} else {
-			return true;
-		}
-	});
-	if ( checkedRadioBinding ) {
-		this._checkedRadioBinding = checkedRadioBinding;
-	}
-	*/
-}
-
 /**
  * @overloads {Binding#onBindingInitialize}
  */
@@ -189,6 +166,28 @@ RadioGroupBinding.prototype._unCheckRadioBindingsExcept = function ( selectedBin
 RadioGroupBinding.prototype._getRadioButtonBindings = function () {
 	
 	if ( this._radioButtonBindings === null || !this._isUpToDate ) {
+		
+		var crawler = new Crawler ();
+		var list = new List ();
+		
+		crawler.addFilter ( function ( element ) {
+			
+			var result = true;
+			var binding = UserInterface.getBinding ( element );
+			if ( binding instanceof RadioGroupBinding ) {
+				result = NodeCrawler.SKIP_CHILDREN;
+			} else {
+				if ( binding instanceof ButtonBinding && binding.isRadioButton ) {
+					list.add ( binding );
+				}
+			}
+			return result;
+		});
+		
+		crawler.crawl ( this.bindingElement );
+		this._radioButtonBindings = list;
+		
+		/*
 		var result = new List ();
 		var descendants = this.getDescendantBindingsByLocalName ( "*" );
 		descendants.each ( function ( binding ) {
@@ -197,6 +196,7 @@ RadioGroupBinding.prototype._getRadioButtonBindings = function () {
 			}
 		});
 		this._radioButtonBindings = result;
+		*/
 	}
 	return this._radioButtonBindings;
 

@@ -30,6 +30,7 @@ _Constants.prototype = {
 	/*
 	 * Web service desciptions.
 	 */
+	URL_WSDL_SETUPSERVICE		: temproot + "/services/Setup/SetupService.asmx?WSDL",
 	URL_WSDL_CONFIGURATION		: temproot + "/services/Configuration/ConfigurationService.asmx?WSDL", 
 	URL_WSDL_LOGINSERVICE		: temproot + "/services/Login/Login.asmx?WSDL",
 	URL_WSDL_INSTALLSERVICE		: temproot + "/services/Installation/InstallationService.asmx?WSDL",

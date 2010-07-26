@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setup xmlns="urn:Composte.C1.Setup">
+	<radio label="Clean slate" key="1" desc="Lorem ipsum lirum larum skibet gaar til aabenraa."/>
+	<radio label="Basic Website" key="2" desc="Lorem ipsum lirum larum skibet gaar til aabenraa.">
+		<radio label="Johns Website" key="21" desc="Lorem ipsum lirum larum skibet gaar til aabenraa."/>
+	</radio>
+	<radio label="Demo Website" key="3" desc="Lorem ipsum lirum larum skibet gaar til aabenraa.">
+		<radio label="The Daily Demosite" key="31" desc="Lorem ipsum lirum larum skibet gaar til aabenraa."/>
+		<radio label="Omnicorp Website" key="32" desc="Lorem ipsum lirum larum skibet gaar til aabenraa."/>
+	</radio>
+</setup>

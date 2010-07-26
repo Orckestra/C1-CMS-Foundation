@@ -714,7 +714,7 @@
 								<ui:fielddata>
 									<ui:selector name="selector3" label="(vg farve)" type="integer">
 										<ui:selection label="Sporvognsaktieselskabskinneskidtsraberpersonalebeklningsmagasinforvalter" value="1" />
-										<ui:selection label="Bl value="2" />
+										<ui:selection label="Bl" value="2" />
 										<ui:selection label="Gr" value="3" />
 										<ui:selection label="Sort" value="4" selected="true" />
 										<ui:selection label="Pink" value="5" />

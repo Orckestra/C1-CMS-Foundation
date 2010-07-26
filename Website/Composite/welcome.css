@@ -1,0 +1,192 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|cover#cover {
+	text-align: center;	
+}
+table#intro {
+	margin-top: 60px;
+	margin-left: auto;
+	margin-right: auto;
+}
+table#intro {
+	border-collapse: collapse;
+}
+table#intro td {
+	background-repeat: repeat;
+	padding: 0;
+}
+table#intro td.xn,
+table#intro td.xne,
+table#intro td.xnw,
+table#intro td.xs,
+table#intro td.xse,
+table#intro td.xsw {
+	height: 60px;
+}
+table#intro td.xe,
+table#intro td.xne,
+table#intro td.xnw,
+table#intro td.xw,
+table#intro td.xse,
+table#intro td.xsw {
+	width: 58px;
+}
+table#intro td.xn {
+	#alphabackdrop: url("${root}/images/ui/box-n.png");	
+}
+table#intro td.xs {
+	#alphabackdrop: url("${root}/images/ui/box-s.png");	
+}
+table#intro td.xe {
+	#alphabackdrop: url("${root}/images/ui/box-e.png");
+}
+table#intro td.xw {
+	#alphabackdrop: url("${root}/images/ui/box-w.png");	
+}
+table#intro td.xne {
+	#alphabackdrop: url("${root}/images/ui/box-ne.png");	
+}
+table#intro td.xnw {
+	#alphabackdrop: url("${root}/images/ui/box-nw.png");	
+}
+table#intro td.xse {
+	#alphabackdrop: url("${root}/images/ui/box-se.png");	
+}
+table#intro td.xsw {
+	#alphabackdrop: url("${root}/images/ui/box-sw.png");	
+}
+table#intro td.xc {
+	background-color: rgb(255,255,255);
+	width: 320px;
+	text-align: left;
+	vertical-align: top;
+	padding-bottom: 50px;
+}
+
+/* ............................................................. */
+
+ui|decks#navdecks {
+	width: 497px;
+	width: 399px;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	top: -90px;
+}
+ui|decks#navdecks ui|dialogtoolbar {
+	background-color: transparent;
+	padding: 0 35px 0 35px;
+}
+table#intro {
+	color: black;
+}
+p#introtestsuccess,
+ui|clickbutton#introtestsuccessbutton {
+	visibility: hidden;
+}
+p#introtestfailure {
+	display: none;	
+}
+table#intro ui|dialogtoolbar {
+	position: relative;
+	z-index: 100;
+	top: 20px;
+}
+table#intro h1 {
+	margin: 0 0 1.5em 0;
+	font-size: 200%;
+	border-bottom: 1px solid #B2B2B2;
+}
+table#intro p {
+	margin: 0 0 1em 0;	
+}
+ul#introtest {
+	list-style: none;
+	margin: 0 0 1em 0;
+	padding: 0;
+	line-height: 1.5em;
+}
+ul#introtest li {
+	padding-left: 20px;	
+	background-repeat: no-repeat;
+	color: #B2B2B2;
+}
+ul#introtest li.on {
+	color: black;	
+}
+ul#introtest li.ok {
+	background-image: url("${root}/services/Icon/GetIcon.ashx?resourceName=accept&resourceNamespace=Composite.Icons");
+}
+ul#introtest li.bad {
+	background-image: url("${root}/services/Icon/GetIcon.ashx?resourceName=cancel&resourceNamespace=Composite.Icons");
+}
+
+
+table#intro ui|radio,
+table#intro ui|checkbox {
+	font-weight: bold !important;	
+}
+table#intro ui|radiodatagroup p,
+table#intro ui|checkboxgroup p {
+	padding-left: 25px;
+}
+table#intro ui|checkboxgroup {
+	padding-left: 2px;
+	margin-top: -11px;
+}
+table#intro ui|checkbutton {
+	position: relative;
+	left: -1px;	
+}
+table#intro div.options {
+	padding-left: 25px;
+	display: none;
+}
+table#intro div.options.visible {
+	display: block;	
+}
+
+table#intro form {
+	text-align: right;
+}
+table#intro form div {
+	padding-bottom: 4px;	
+}
+table#intro form label {
+	float: left;
+	position: relative;
+	top: 6px;
+}
+table#intro form input,
+table#intro form select {
+	width: 170px;
+	#region moz
+		padding: 5px;
+		border: 1px solid #B2B2B2;
+	#endregion
+}
+table#intro form input:focus,
+table#intro form select:focus {
+	border-color: black;
+}
+p#loginok {
+	visibility: hidden;	
+}
+p#lengthbad,
+p#loginbad {
+ 	display: none;
+ 	position: absolute;
+ 	top: 0;
+ 	left: 0;
+}
+ui|clickbutton#startbutton.isdisabled {
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50) progid:DXImageTransform.Microsoft.BasicImage(grayScale=1);
+	#region moz
+		opacity: 0.5;
+		filter: url("${root}/templates/grayscalefilter.xml#grayscale");
+	#endregion
+}
+ui|clickbutton#startbutton.isdisabled ui|labeltext {
+	color: white;
+}

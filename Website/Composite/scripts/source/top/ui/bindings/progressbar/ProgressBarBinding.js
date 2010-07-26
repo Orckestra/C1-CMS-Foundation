@@ -17,7 +17,10 @@ ProgressBarBinding._bindingInstance = null;
  */
 ProgressBarBinding.notch = function ( notches ) {
 	
-	ProgressBarBinding._bindingInstance.notch ( notches );
+	var bar = ProgressBarBinding._bindingInstance;
+	if ( bar != null ) {
+		bar.notch ( notches );
+	}
 }
 
 /**

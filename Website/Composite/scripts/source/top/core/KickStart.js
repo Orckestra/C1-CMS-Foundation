@@ -13,7 +13,7 @@ var KickStart = new function () {
 	var DEVPASSWORD = "123456";
 	
 	/*
-	 * Fire on load.
+	 * Fire on load!
 	 */
 	this.fireOnLoad = function () {
 		
@@ -23,6 +23,7 @@ var KickStart = new function () {
 			fileEventBroadcasterSubscriptions ( true );
 			EventBroadcaster.subscribe ( BroadcastMessages.APPLICATION_SHUTDOWN, this );
 			
+			SetupService = WebServiceProxy.createProxy ( Constants.URL_WSDL_SETUPSERVICE );
 			ReadyService = WebServiceProxy.createProxy ( Constants.URL_WSDL_READYSERVICE );
 			LoginService =  WebServiceProxy.createProxy ( Constants.URL_WSDL_LOGINSERVICE );
 			InstallationService = WebServiceProxy.createProxy ( Constants.URL_WSDL_INSTALLSERVICE );
@@ -66,7 +67,9 @@ var KickStart = new function () {
 				break;
 				
 			case BroadcastMessages.APPLICATION_SHUTDOWN :
-				bindingMap.decks.select ( "shutdowndeck" );
+				if ( bindingMap.decks != null ) {
+					bindingMap.decks.select ( "shutdowndeck" );
+				}
 				bindingMap.cover.show ();
 				break;
 		}
@@ -120,8 +123,12 @@ var KickStart = new function () {
 			if ( LoginService.IsLoggedIn ( true )) {
 				accessGranted ();
 			} else {
-				//splashScreenData ();
-				showLogin ();
+				// splashScreenData ();
+				if ( bindingMap.decks != null ) {
+					showLogin ();
+				} else {
+					showWelcome ();
+				}
 			}
 		}
 	}
@@ -131,13 +138,24 @@ var KickStart = new function () {
 	 *
 	function splashScreenData () {
 		
-		var ver = document.getElementById ( "version" );
+		var ver = document.getElementById ( "version" );	
+		ver.firstChild.data = ver.firstChild.data.replace ( "${version}", Installation.versionPrettyString );
+	
 		var reg = document.getElementById ( "registration" );
-		
-		ver.firstChild.data = ver.firstChild.data.replace ( "${version}", License.versionPrettyString );
-		reg.firstChild.data = reg.firstChild.data.replace ( "${registration}", License.registrationName );
+		reg.firstChild.data = reg.firstChild.data.replace ( "${registration}", Installation.registrationName );
 	}
 	*/
+	
+	/*
+	 * Show welcome screens on first time startup.
+	 */
+	function showWelcome () {
+		
+		Application.unlock ( KickStart );
+		if ( window.Welcome != null ) {
+			Welcome.test ();
+		}
+	}
 	
 	/*
 	 * Show login screen.
@@ -154,7 +172,7 @@ var KickStart = new function () {
 			} 
 			setTimeout ( function () {
 				DataManager.getDataBinding ( "username" ).focus ();
-			}, 250 ); // ?
+			}, 250 );
 		}, 0 );
 	}
 	
@@ -189,7 +207,6 @@ var KickStart = new function () {
 	 * Note that we disable SOAP debugging during login. 
 	 * Note that we may be able to do something intelligent with the SOAP response.
 	 * Note that we didn't manage to come up with intelligent handling of the SOAP response.
-	 * @return {boolean} TODO: NOT ANY MORE!
 	 */
 	this.login = function () {
 		
@@ -201,34 +218,10 @@ var KickStart = new function () {
 		setTimeout ( function () {
 		
 			if ( bindingMap.toppage.validateAllDataBindings ()) {
-				
-				var username = DataManager.getDataBinding ( "username" ).getResult ();
-				var password = DataManager.getDataBinding ( "password" ).getResult ();
-				
-				var wasEnabled = WebServiceProxy.isLoggingEnabled;
-				WebServiceProxy.isLoggingEnabled = false;
-				WebServiceProxy.isFaultHandler = false;
-				
-				var isAllowed = false;
-				var result = LoginService.ValidateAndLogin ( username, password );
-				if ( result instanceof SOAPFault ) {
-					alert ( result.getFaultString ());
-				} else {
-					isAllowed = result;
-				}
-				
-				if ( isAllowed ) {
-					EventBroadcaster.unsubscribe ( BroadcastMessages.KEY_ENTER, KickStart );
-					accessGranted ();
-				} else {
-					Application.unlock ( KickStart );
-					accesssDenied ();
-				}
-				WebServiceProxy.isFaultHandler = true;
-				if ( wasEnabled ) {
-					WebServiceProxy.isLoggingEnabled = true;
-				}
-				
+				KickStart.doLogin ( 
+					DataManager.getDataBinding ( "username" ).getResult (), 
+					DataManager.getDataBinding ( "password" ).getResult ()
+				);
 			} else {
 				Application.unlock ( KickStart );
 			}
@@ -237,12 +230,48 @@ var KickStart = new function () {
 	}
 	
 	/**
+	 * Isolated in order to be invoked by {@link Welcome}
+	 * @param {String} username
+	 * @param {String} password
+	 */
+	this.doLogin = function ( username, password ) {
+		
+		var wasEnabled = WebServiceProxy.isLoggingEnabled;
+		WebServiceProxy.isLoggingEnabled = false;
+		WebServiceProxy.isFaultHandler = false;
+		
+		var isAllowed = false;
+		var result = LoginService.ValidateAndLogin ( username, password );
+		if ( result instanceof SOAPFault ) {
+			alert ( result.getFaultString ());
+		} else {
+			isAllowed = result;
+		}
+		
+		if ( isAllowed ) {
+			EventBroadcaster.unsubscribe ( BroadcastMessages.KEY_ENTER, KickStart );
+			accessGranted ();
+		} else {
+			Application.unlock ( KickStart );
+			if ( bindingMap.decks != null ) { // on Welcome we may get trapped here!
+				accesssDenied ();
+			}
+		}
+		WebServiceProxy.isFaultHandler = true;
+		if ( wasEnabled ) {
+			WebServiceProxy.isLoggingEnabled = true;
+		}
+	}
+	
+	/**
 	 * Access granted.
 	 */
 	function accessGranted () {
 		
 		setTimeout ( function () {
-			bindingMap.decks.select ( "loadingdeck" );
+			if ( bindingMap.decks != null ) {
+				bindingMap.decks.select ( "loadingdeck" );
+			}
 			setTimeout ( function () {
 				Application.login ();
 			}, 0 );

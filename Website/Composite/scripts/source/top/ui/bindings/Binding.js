@@ -83,6 +83,7 @@ Binding.evaluate = function ( script, binding ) {
  * Due to differences in the implementation of "eval" in different browsers, it may be 
  * nescessary to replace the "this" keyword in a script string with a global pointer. 
  * This is needed for all versions of IE and for Firefox starting from version 3.7
+ * TODO: Doesn't handle string "alert(this)" !!!
  * @see {ButtonBinding}
  * @see {TreeNodeBinding}
  * @param {String} script

@@ -7,8 +7,7 @@ var config = {
 	elements : "editor",
 	theme : "composite",
 	browsers : "msie,gecko",
-	plugins : "compositelink,compositetable,compositeimage,compositerendering,compositecharmap,compositefield,compositetext,compositeword",
-	//plugins : "compositetable,compositeimage,compositecharmap,compositerendering,compositelink,compositemedia,compositefield,compositeword,compositetext"	
+	plugins : "compositelink,compositetable,compositeimage,compositerendering,compositecharmap,compositefield,compositetext,compositeword",	
 	verify_html : false,
 	entity_encoding : "raw",
 	convert_fonts_to_spans : false,
@@ -19,6 +18,7 @@ var config = {
 	force_p_newlines : false,
 	force_br_newlines: false,
 	visual : true,
+	object_resizing : false,
 	
 	init_instance_callback 	: onInstanceInitialize
 };
