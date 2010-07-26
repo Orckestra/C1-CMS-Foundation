@@ -48,11 +48,17 @@
     <Compile Include="Implementation\ImplementationContainer.cs" />
     <Compile Include="Implementation\LogBase.cs" />
     <Compile Include="Implementation\LogDefaultImplementation.cs" />
+    <Compile Include="Implementation\NavigationBase.cs" />
+    <Compile Include="Implementation\NavigationDefaultImplementation.cs" />
     <Compile Include="Implementation\StorageAccessDefaultImplementation.cs" />
     <Compile Include="Implementation\StorageBase.cs" />
     <Compile Include="Implementation\StorageDefaultImplementation.cs" />
     <Compile Include="Implementation\StorageEventDefaultImplementation.cs" />
     <Compile Include="Log.cs" />
+    <Compile Include="Pages\Navigation.cs" />
+    <Compile Include="Pages\PageSelection.cs" />
+    <Compile Include="Pages\XPage.cs" />
+    <Compile Include="Pages\XSiteMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage.cs" />
     <Compile Include="StorageAccess.cs" />
@@ -68,6 +74,7 @@
       <Name>CompositeCore</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)Public\bin\"

@@ -9,7 +9,7 @@ namespace Composite.StandardPlugins.WebClient.SessionStateProviders.DefaultSessi
 {
     [Serializable]
     [XmlRootAttribute(ElementName = "root")]
-    internal sealed class XmlSerializationWrapper
+    public sealed class XmlSerializationWrapper
     {
         public string TypeName; 
         public string AssebmlyName; 

@@ -407,7 +407,7 @@ namespace Composite.Data
 
 
 
-        internal static IDataReference BuildDataReference(Type referencedType, object keyValue)
+        public static IDataReference BuildDataReference(Type referencedType, object keyValue)
         {
             if (keyValue == null) throw new ArgumentNullException("keyValue");
             if (referencedType == null) throw new ArgumentNullException("referencedType");

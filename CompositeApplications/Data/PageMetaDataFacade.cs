@@ -104,14 +104,13 @@ namespace Composite.Data
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static ICompositionContainer GetMetaDataContainerByDefnintionName(string name)
+        public static ICompositionContainer GetMetaDataContainerByDefinitionName(string name)
         {
             return
                 DataFacade.GetData<IPageMetaDataDefinition>().
                 Join(DataFacade.GetData<ICompositionContainer>(), o => o.MetaDataContainerId, i => i.Id, (def, con) => new { def, con }).
                 Where(f => f.def.Name == name).
                 Select(f => f.con).
-                Distinct().
                 Single(); // Its an error if multible exists on this point
         }
 
@@ -321,8 +320,13 @@ namespace Composite.Data
         }
 
 
-
         public static IData GetMetaData(this IPage page, string definitionName, Type metaDataType)
+        {
+            return GetMetaData(page.Id, definitionName, metaDataType);
+        }
+
+
+        public static IData GetMetaData(Guid pageId, string definitionName, Type metaDataType)
         {
             //TODO: Consider caching here            
             ParameterExpression parameterExpression = Expression.Parameter(metaDataType);
@@ -345,7 +349,7 @@ namespace Composite.Data
                             GetDefinitionPageReferencePropertyInfo(metaDataType)
                         ),
                         Expression.Constant(
-                            page.Id,
+                            pageId,
                             typeof(Guid)
                         )
                     )

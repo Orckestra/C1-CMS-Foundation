@@ -204,6 +204,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionP
                     cultureInfo = CultureInfo.CreateSpecificCulture(cultureName);
                 }
 
+                IPage page;
 
                 TransformationInputs transformationInput;
                 using (new DataScope(DataScopeIdentifier.Deserialize(dataScopeName), cultureInfo))
@@ -211,7 +212,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionP
                     Thread.CurrentThread.CurrentCulture = cultureInfo;
                     Thread.CurrentThread.CurrentUICulture = cultureInfo;
 
-                    IPage page = DataFacade.GetData<IPage>(f => f.Id == pageId).FirstOrDefault();
+                    page = DataFacade.GetData<IPage>(f => f.Id == pageId).FirstOrDefault();
                     if (page != null)
                     {
                         PageRenderer.CurrentPage = page;
@@ -258,32 +259,37 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionP
                         }
 
                         Exception exception = null;
+                        HttpContext httpContext = HttpContext.Current;
 
                         Thread thread = new Thread(delegate()
                            {
-                               Stopwatch transformationStopwatch = Stopwatch.StartNew();
-
                                Thread.CurrentThread.CurrentCulture = cultureInfo;
                                Thread.CurrentThread.CurrentUICulture = cultureInfo;
+
+                               Stopwatch transformationStopwatch = Stopwatch.StartNew();
+
                                try
                                {
-                                   using (ThreadDataManager.Initialize())
-                                   {
-                                       var reader = transformationInput.InputDocument.CreateReader();
-                                       xslTransformer.Transform(reader, transformArgs, writer);
-                                   }
-                               }
-                               catch (ThreadAbortException ex)
-                               {
-                                   exception = ex;
-                                   Thread.ResetAbort();
-                               }
-                               catch (Exception ex)
-                               {
-                                   exception = ex;
-                               }
+                                    using (ThreadDataManager.Initialize())
+                                    using (new DataScope(DataScopeIdentifier.Deserialize(dataScopeName), cultureInfo))
+                                    {
+                                        HttpContext.Current = httpContext;
 
-                               transformationStopwatch.Stop();
+                                        var reader = transformationInput.InputDocument.CreateReader();
+                                        xslTransformer.Transform(reader, transformArgs, writer);
+                                    }
+                                }
+                                catch (ThreadAbortException ex)
+                                {
+                                    exception = ex;
+                                    Thread.ResetAbort();
+                                }
+                                catch (Exception ex)
+                                {
+                                    exception = ex;
+                                }
+
+                                transformationStopwatch.Stop();
 
                                millisecondsToken = transformationStopwatch.ElapsedMilliseconds;
                            });

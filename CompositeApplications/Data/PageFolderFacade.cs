@@ -134,6 +134,17 @@ namespace Composite.Data
         /// <returns></returns>
         public static IEnumerable<IData> GetFolderData(this IPage page, Type pageFolderType)
         {
+            return GetFolderData(page.Id, pageFolderType);
+        }
+
+        /// <summary>
+        /// Returns all folder data given the page id and folder data type
+        /// </summary>
+        /// <param name="pageId"></param>
+        /// <param name="pageFolderType"></param>
+        /// <returns></returns>
+        public static IEnumerable<IData> GetFolderData(Guid pageId, Type pageFolderType)
+        {
             //TODO: Consider caching here            
             ParameterExpression parameterExpression = Expression.Parameter(pageFolderType);
 
@@ -144,7 +155,7 @@ namespace Composite.Data
                         PageMetaDataFacade.GetDefinitionPageReferencePropertyInfo(pageFolderType)
                     ),
                     Expression.Constant(
-                        page.Id,
+                        pageId,
                         typeof(Guid)
                     )
                 ),
