@@ -58,7 +58,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
             //this.UpdateBinding("CompositionDescriptionName", compositionDescription.Name);
             this.UpdateBinding("CompositionDescriptionLabel", pageMetaDataDefinition.Label);
 
-            ICompositionContainer metaDataContainer = PageMetaDataFacade.GetMetaDataContainerByDefnintionName(pageTypeMetaDataTypeLink.Name);
+            ICompositionContainer metaDataContainer = PageMetaDataFacade.GetMetaDataContainerByDefinitionName(pageTypeMetaDataTypeLink.Name);
 
             List<KeyValuePair<Guid, string>> metaDataContainerOptions = PageMetaDataFacade.GetAllMetaDataContainers();
 
