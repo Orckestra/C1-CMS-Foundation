@@ -64,12 +64,12 @@
 	<system.webServer>
 		<validation validateIntegratedModeConfiguration="false"/>
 		<modules>
-			<add name="ApplicationOfflineCheck" type="Composite.Application.ApplicationOfflineCheckHttpModule, CompositeApplications"/>
-			<add name="CompositeAdministrativeAuthorization" type="Composite.WebClient.HttpModules.AdministrativeAuthorizationHttpModule, CompositeApplications"/>
-			<add name="CompositeRequestInterceptor" type="Composite.Renderings.RequestInterceptorHttpModule, CompositeApplications"/>
-			<add name="CompositeAdministrativeOutputGZipper" type="Composite.WebClient.HttpModules.AdministrativeOutputGZipperHttpModule, CompositeApplications"/>
-			<add name="CompositeAdministrativeDataScopeSetter" type="Composite.WebClient.HttpModules.AdministrativeDataScopeSetterHttpModule, CompositeApplications"/>
-			<add name="CompositeAdministrativeCultureSetter" type="Composite.WebClient.HttpModules.AdministrativeCultureSetterHttpModule, CompositeApplications"/>
+			<add name="ApplicationOfflineCheck" type="Composite.Application.ApplicationOfflineCheckHttpModule, Composite"/>
+			<add name="CompositeAdministrativeAuthorization" type="Composite.WebClient.HttpModules.AdministrativeAuthorizationHttpModule, Composite"/>
+			<add name="CompositeRequestInterceptor" type="Composite.Renderings.RequestInterceptorHttpModule, Composite"/>
+			<add name="CompositeAdministrativeOutputGZipper" type="Composite.WebClient.HttpModules.AdministrativeOutputGZipperHttpModule, Composite"/>
+			<add name="CompositeAdministrativeDataScopeSetter" type="Composite.WebClient.HttpModules.AdministrativeDataScopeSetterHttpModule, Composite"/>
+			<add name="CompositeAdministrativeCultureSetter" type="Composite.WebClient.HttpModules.AdministrativeCultureSetterHttpModule, Composite"/>
 			<add name="ScriptModule" preCondition="managedHandler" type="System.Web.Handlers.ScriptModule, System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35"/>
 		</modules>
 		<handlers>

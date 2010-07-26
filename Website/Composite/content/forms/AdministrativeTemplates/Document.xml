@@ -7,8 +7,8 @@
   xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
 
   <cms:bindings>
-    <cms:binding name="Form" type="Composite.Forms.IUiControl, CompositeApplications" />
-    <cms:binding name="CustomToolbarItems" type="Composite.Forms.IUiControl, CompositeApplications" optional="true" />
+    <cms:binding name="Form" type="Composite.Forms.IUiControl, Composite" />
+    <cms:binding name="CustomToolbarItems" type="Composite.Forms.IUiControl, Composite" optional="true" />
     <cms:binding name="SaveEventHandler" type="System.EventHandler" optional="true" />
     <cms:binding name="SaveAsEventHandler" type="System.EventHandler" optional="true" />
     <cms:binding name="NextEventHandler" type="System.EventHandler" optional="true" />

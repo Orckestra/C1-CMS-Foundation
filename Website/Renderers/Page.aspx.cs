@@ -8,13 +8,13 @@ using System.Web.UI;
 
 using Composite.Data;
 using Composite.Data.Types;
+using Composite.Pages;
 using Composite.Renderings;
 using Composite.Renderings.Page;
 using Composite.Security;
 using Composite.WebClient;
 
 using TidyNet;
-using System.Collections;
 
 
 public partial class Renderers_Page : System.Web.UI.Page
@@ -62,7 +62,7 @@ public partial class Renderers_Page : System.Web.UI.Page
 
         _dataScope = new DataScope(_urlOptions.DataScopeIdentifier, _urlOptions.Locale); // IDisposable, Disposed in OnUnload
 
-        IPage page = PageManager.GetPageById(_urlOptions.PageId);
+        IPage page = PageManager.GetPageByID(_urlOptions.PageId);
 
         if (page != null)
         {
@@ -85,7 +85,7 @@ public partial class Renderers_Page : System.Web.UI.Page
                 return;
             }
 
-            IEnumerable<IPagePlaceholderContent> contents = PageManager.GetPlaceholderContent(page.Id);
+            IEnumerable<IPagePlaceholderContent> contents = PageManager.GetPlaceholdersContent(page.Id);
             Control renderedPage = PageRenderer.Render(page, contents);
             this.Controls.Add(renderedPage);
             if (this.Form != null) this.Form.Action = Request.RawUrl;

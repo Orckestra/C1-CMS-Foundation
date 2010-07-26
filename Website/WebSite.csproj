@@ -5709,7 +5709,7 @@
       <Project>{1FE08476-346A-4053-813D-8807C0E0FC36}</Project>
       <Name>Composite.Workflows</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CompositeApplications\CompositeApplications.csproj">
+    <ProjectReference Include="..\Composite\Composite.csproj">
       <Project>{9427C500-8542-409F-A8DC-0B21E250E0FA}</Project>
       <Name>CompositeApplications</Name>
     </ProjectReference>

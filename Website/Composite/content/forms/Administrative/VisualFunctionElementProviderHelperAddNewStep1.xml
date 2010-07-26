@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
   <cms:bindings>
-    <cms:binding name="Function" type="Composite.Data.Types.IVisualFunction, CompositeApplications" />
+    <cms:binding name="Function" type="Composite.Data.Types.IVisualFunction, Composite" />
   </cms:bindings>
   <cms:layout iconhandle="wysiwyg-function" label="${Composite.StandardPlugins.VisualFunction, AddNew.DialogLabel}">
     <FieldGroup Label="${Composite.StandardPlugins.VisualFunction, AddNewStep2.FieldGroupLabel}">

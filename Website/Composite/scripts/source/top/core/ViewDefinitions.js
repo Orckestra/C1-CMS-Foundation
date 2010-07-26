@@ -87,7 +87,7 @@ var ViewDefinitions = {
 		position 	: DockBinding.MAIN,
 		url 		: "${root}/content/views/editors/permissioneditor/permissioneditor.aspx",
 		argument 	: {
-			serializedEntityToken : "entityTokenType='Composite\\.StandardPlugins\\.Elements\\.ElementProviders\\.VirtualElementProvider\\.VirtualElementProviderEntityToken,Composite'entityToken='_EntityToken_Type_=\\'Composite\\\\\\.StandardPlugins\\\\\\.Elements\\\\\\.ElementProviders\\\\\\.VirtualElementProvider\\\\\\.VirtualElementProviderEntityToken,CompositeApplications\\'_EntityToken_Source_=\\'VirtualElementProvider\\'_EntityToken_Id_=\\'DesignPerspective\\''\""
+			serializedEntityToken : "entityTokenType='Composite\\.StandardPlugins\\.Elements\\.ElementProviders\\.VirtualElementProvider\\.VirtualElementProviderEntityToken,Composite'entityToken='_EntityToken_Type_=\\'Composite\\\\\\.StandardPlugins\\\\\\.Elements\\\\\\.ElementProviders\\\\\\.VirtualElementProvider\\\\\\.VirtualElementProviderEntityToken,Composite\\'_EntityToken_Source_=\\'VirtualElementProvider\\'_EntityToken_Id_=\\'DesignPerspective\\''\""
 		}
 	}),
 	
