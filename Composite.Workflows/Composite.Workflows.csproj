@@ -1230,7 +1230,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CompositeApplications\Composite.csproj">
+    <ProjectReference Include="..\Composite\Composite.csproj">
       <Project>{9427C500-8542-409F-A8DC-0B21E250E0FA}</Project>
       <Name>Composite</Name>
     </ProjectReference>

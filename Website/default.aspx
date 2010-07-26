@@ -8,6 +8,8 @@
 <%@ Import Namespace="Composite.Data" %>
 <%@ Import Namespace="Composite.Data.Types" %>
 <%@ Import Namespace="Composite.Renderings.Page" %>
+<%@ Import Namespace="Composite.Pages" %>
+
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>Under Construction</title>
@@ -41,7 +43,7 @@
 
                     if (pageId == Guid.Empty)
                     {
-                        pageId = PageManager.GetChildrenIDs(Guid.Empty).FirstOrDefault(rootPageId => PageManager.GetPageById(rootPageId) != null);
+                        pageId = PageManager.GetChildrenIDs(Guid.Empty).FirstOrDefault(rootPageId => PageManager.GetPageByID(rootPageId) != null);
                     }
 
                     PageStructureInfo.GetIdToUrlLookup().TryGetValue(pageId, out url);

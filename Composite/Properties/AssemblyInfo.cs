@@ -39,6 +39,7 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Composite.Tfs")]
 [assembly: InternalsVisibleTo("Composite.Workflows")]
 [assembly: InternalsVisibleTo("Composite.MSSqlServer")]
+[assembly: InternalsVisibleTo("Composite.WebClient")]
 
 [assembly: InternalsVisibleTo("Composite.Community.Answers")]
 [assembly: InternalsVisibleTo("Composite.Community.Blog")]
