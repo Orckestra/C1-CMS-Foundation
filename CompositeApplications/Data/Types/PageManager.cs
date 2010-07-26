@@ -14,7 +14,7 @@ namespace Composite.Data.Types
     /// <summary>
     /// Provides basic data access to IPage and IPageStructure data
     /// </summary>
-	public static class PageManager
+	internal static class PageManager
 	{
         private static readonly string LogTitle = "PageManager";
 

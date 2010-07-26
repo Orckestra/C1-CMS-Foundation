@@ -18,11 +18,11 @@ namespace Composite.Implementation
         public virtual StorageAccess Open(PublicationState publicationState, CultureInfo locale) { return null; }
         public virtual StorageAccess Open(CultureInfo locale) { return null; }
 
-        public virtual T New<T>() where T : class, IFAKEData { return null; }
+        public virtual T New<T>() where T : class, IData { return null; }
 
         public virtual IEnumerable<CultureInfo> Locales { get { yield break; } }
 
-        public virtual StorageEvent Events<T>() where T : class, IFAKEData { return null; }
+        public virtual StorageEvent Events<T>() where T : class, IData { return null; }
         public virtual StorageEvent Events(Type interfaceType) { return null; }
     }
 }

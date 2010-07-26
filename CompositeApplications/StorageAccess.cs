@@ -27,16 +27,16 @@ namespace Composite
             this.ValidateForeignKeys = true;*/
         }
 
-        public virtual IQueryable<T> Get<T>() where T : class, IFAKEData { return null; }                
+        public virtual IQueryable<T> Get<T>() where T : class, IData { return null; }
 
-        public virtual void Add<T>(T item) where T : class, IFAKEData { }
-        public virtual void Add<T>(IEnumerable<T> items) where T : class, IFAKEData { }
-        
-        public virtual void Update<T>(T item) where T : class, IFAKEData { }
-        public virtual void Update<T>(IEnumerable<T> items) where T : class, IFAKEData { }
-        
-        public virtual void Delete<T>(T item) where T : class, IFAKEData { }
-        public virtual void Delete<T>(IEnumerable<T> items) where T : class, IFAKEData { }               
+        public virtual void Add<T>(T item) where T : class, IData { }
+        public virtual void Add<T>(IEnumerable<T> items) where T : class, IData { }
+
+        public virtual void Update<T>(T item) where T : class, IData { }
+        public virtual void Update<T>(IEnumerable<T> items) where T : class, IData { }
+
+        public virtual void Delete<T>(T item) where T : class, IData { }
+        public virtual void Delete<T>(IEnumerable<T> items) where T : class, IData { }               
 
 
         // These methods should not be in the API - to advanced

@@ -1230,13 +1230,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CompositeApplications\CompositeApplications.csproj">
+    <ProjectReference Include="..\CompositeApplications\Composite.csproj">
       <Project>{9427C500-8542-409F-A8DC-0B21E250E0FA}</Project>
-      <Name>CompositeApplications</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CompositeCore\CompositeCore.csproj">
-      <Project>{02BB5F33-56BB-4565-8D32-7BDF92D02CDE}</Project>
-      <Name>CompositeCore</Name>
+      <Name>Composite</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

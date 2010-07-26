@@ -23,12 +23,12 @@ namespace Composite.Implementation
             return null;
         }
 
-        public virtual TMetaData GetMeta<TMetaData>(XPage page, string name) where TMetaData : class, IFAKEData
+        public virtual TMetaData GetMeta<TMetaData>(XPage page, string name) where TMetaData : class, IData
         {
             return null;
         }
 
-        public virtual IEnumerable<TPageData> GetData<TPageData>(XPage page) where TPageData : class, IFAKEData
+        public virtual IEnumerable<TPageData> GetData<TPageData>(XPage page) where TPageData : class, IData
         {
             return new TPageData[0];
         }

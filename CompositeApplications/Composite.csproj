@@ -287,6 +287,18 @@
     <Compile Include="GlobalSettings\BuildinPlugins\GlobalSettingsProvider\BuildinCachingSettings.cs" />
     <Compile Include="GlobalSettings\ICachingSettings.cs" />
     <Compile Include="GlobalSettings\InstallationInformationFacade.cs" />
+    <Compile Include="Implementation\ImplementationBase.cs" />
+    <Compile Include="Implementation\ImplementationContainer.cs" />
+    <Compile Include="Implementation\LogBase.cs" />
+    <Compile Include="Implementation\LogDefaultImplementation.cs" />
+    <Compile Include="Implementation\NavigationBase.cs" />
+    <Compile Include="Implementation\NavigationDefaultImplementation.cs" />
+    <Compile Include="Implementation\PageManagerBase.cs" />
+    <Compile Include="Implementation\PageManagerDefaultImplementation.cs" />
+    <Compile Include="Implementation\StorageAccessDefaultImplementation.cs" />
+    <Compile Include="Implementation\StorageBase.cs" />
+    <Compile Include="Implementation\StorageDefaultImplementation.cs" />
+    <Compile Include="Implementation\StorageEventDefaultImplementation.cs" />
     <Compile Include="Instrumentation\Foundation\IPerformanceCounterProviderRegistry.cs" />
     <Compile Include="Instrumentation\Foundation\PerformanceCounterProviderRegistry.cs" />
     <Compile Include="Instrumentation\Foundation\PerformanceCounterProviderRegistryImpl.cs" />
@@ -309,11 +321,17 @@
     <Compile Include="Linq\ExpressionVisitors\CacheKeyBuilderExpressionVisitor.cs" />
     <Compile Include="Linq\IEnumerableExtensionMethod.cs" />
     <Compile Include="Localization\LocalizationFacade.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="Logging\WCF\LoggerServiceHostingFactory.cs" />
     <Compile Include="PackageSystem\PackageFragmentInstallers\LocalePackageFragmentInstaller.cs" />
     <Compile Include="PackageSystem\PackageFragmentInstallers\LocalePackageFragmentUninstaller.cs" />
     <Compile Include="PackageSystem\PackageFragmentInstallers\PackageVersionBumberFragmentInstaller.cs" />
     <Compile Include="PackageSystem\PackageFragmentInstallers\PackageVersionBumberFragmentUninstaller.cs" />
+    <Compile Include="Pages\Navigation.cs" />
+    <Compile Include="Pages\PageManager.cs" />
+    <Compile Include="Pages\PageSelection.cs" />
+    <Compile Include="Pages\XPage.cs" />
+    <Compile Include="Pages\XSiteMap.cs" />
     <Compile Include="Parallelization\IndexEnumerator.cs" />
     <Compile Include="Logging\LogManager.cs" />
     <Compile Include="Logging\WCF\LoggerHostnameHandler.cs" />
@@ -399,6 +417,9 @@
     <Compile Include="StandardPlugins\WebClient\SessionStateProviders\DefaultSessionStateProvider\ISessionStateEntry.cs" />
     <Compile Include="StandardPlugins\WebClient\SessionStateProviders\DefaultSessionStateProvider\SerializationUtil.cs" />
     <Compile Include="StandardPlugins\WebClient\SessionStateProviders\DefaultSessionStateProvider\XmlSerializationWrapper.cs" />
+    <Compile Include="Storage.cs" />
+    <Compile Include="StorageAccess.cs" />
+    <Compile Include="StorageEvent.cs" />
     <Compile Include="Trees\AttributeDynamicValuesHelper.cs" />
     <Compile Include="Trees\ConfirmActionNode.cs" />
     <Compile Include="Trees\CustomUrlActionNode.cs" />
@@ -2068,12 +2089,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CompositeCore\CompositeCore.csproj">
-      <Project>{02BB5F33-56BB-4565-8D32-7BDF92D02CDE}</Project>
-      <Name>CompositeCore</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -113,12 +113,12 @@ namespace Composite.Pages
             return result;
         }
 
-        public virtual TMetaData GetMeta<TMetaData>(string groupName) where TMetaData : class, IFAKEData
+        public virtual TMetaData GetMeta<TMetaData>(string groupName) where TMetaData : class, IData
         {
             return ImplementationContainer.GetImplementation<NavigationBase>().GetMeta<TMetaData>(this, groupName);
         }
 
-        public virtual IEnumerable<TPageData> GetData<TPageData>() where TPageData : class, IFAKEData
+        public virtual IEnumerable<TPageData> GetData<TPageData>() where TPageData : class, IData
         {
             return ImplementationContainer.GetImplementation<NavigationBase>().GetData<TPageData>(this);
         }

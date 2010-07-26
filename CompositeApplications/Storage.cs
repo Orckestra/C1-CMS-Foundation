@@ -52,7 +52,7 @@ namespace Composite
         }
 
 
-        public static T New<T>() where T : class, IFAKEData 
+        public static T New<T>() where T : class, IData 
         {
             return ImplementationContainer.GetImplementation<StorageBase>().New<T>();
         }
@@ -67,7 +67,7 @@ namespace Composite
         }
 
 
-        public static StorageEvent Events<T>() where T : class, IFAKEData 
+        public static StorageEvent Events<T>() where T : class, IData 
         {
             return ImplementationContainer.GetImplementation<StorageBase>().Events<T>();
         }
