@@ -1064,8 +1064,7 @@ namespace Composite.Types
         /// <summary>
         /// Generates a package dll.
         /// </summary>
-        /// <param name="targetFileName">The output file's path.</param>
-        /// <param name="chekIfSourcesWereUpdated">If true, there's a check whether last package is "older" than sources.</param>
+        /// <param name="targetFileName">The output file's path.</param>        
         /// <param name="filenames">C# files to be compiled</param>
         /// <param name="assemblyReferences">Additional assembly references.</param>
         /// <returns>Null value, if no package has been generated, or compiler results otherwise.</returns>

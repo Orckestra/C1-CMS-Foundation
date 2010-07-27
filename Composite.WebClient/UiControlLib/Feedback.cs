@@ -8,28 +8,31 @@ namespace Composite.WebClient.UiControlLib
     /// Creates a few tags that are responsible for communiation with C1 backend UI's javascript.
     /// </summary>
     /// <example>
-    ///   <aspui:Feedback runat="server"  OnCommand="MethodToBeExecutedOnCommand" ResponseStatus="ResponseStatus" />
+    /// <code>
+    ///   &lt;aspui:Feedback runat="server"  OnCommand="MethodToBeExecutedOnCommand" ResponseStatus="ResponseStatus" /&gt;
+    /// </code>  
     /// 
     ///   is an equivalent to the following markup:
-    /// 
-    ///  <ui:feedbackset id="feedback">
-    ///    <!-- request -->
-    ///    <aspui:Generic runat="server"
+    /// <code>    
+    ///  &lt;ui:feedbackset id="feedback"&gt;
+    ///    &lt;!-- request --&gt;
+    ///    &lt;aspui:Generic runat="server"
     ///        ID="btnRequest"
     ///        OnCommand="MethodToBeExecutedOnCommand"
     ///        TagName="ui:request"
     ///        clientid="request"
     ///        callbackid="request"
-    ///        value=""/>
+    ///        value=""/&gt;
     ///		
-    ///    <!-- response -->
-    ///    <aspui:Generic runat="server"
+    ///    &lt;!-- response --&gt;
+    ///    &lt;aspui:Generic runat="server"
     ///        ID="tagResponse"
     ///        TagName="ui:response"
     ///        clientid="response"
-    ///        status="ResponseStatus"/>
+    ///        status="ResponseStatus"/&gt;
 	///	
-    ///  </ui:feedbackset>
+    ///  &lt;/ui:feedbackset&gt;
+    /// </code> 
     /// </example>
     /// 
     public class Feedback : Generic

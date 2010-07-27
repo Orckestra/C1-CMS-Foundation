@@ -225,6 +225,7 @@ namespace Composite.Data.DynamicTypes
         /// This method will create the store if the interfaceType has not been configured.
         /// </summary>
         /// <param name="interfaceType"></param>
+        /// <param name="providerName"></param>
         // Helper
         public static void EnsureCreateStore(Type interfaceType, string providerName)
         {

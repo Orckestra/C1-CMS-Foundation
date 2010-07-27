@@ -216,7 +216,7 @@ namespace Composite.Data
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="queryable"></param>
-        /// <param name="foreignPropertyInfo"></param>
+        /// <param name="propertyInfo"></param>
         /// <param name="keyValue"></param>
         /// <param name="justOne"></param>
         /// <returns></returns>

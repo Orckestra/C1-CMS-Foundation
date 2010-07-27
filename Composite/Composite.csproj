@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9427C500-8542-409F-A8DC-0B21E250E0FA}</ProjectGuid>
+    <ProjectGuid>{F8D87A5F-D090-4D24-80C1-DBCD938C6CAB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Composite</RootNamespace>
     <AssemblyName>Composite</AssemblyName>
@@ -42,14 +42,14 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRules>
     </CodeAnalysisRules>
     <RunCodeAnalysis>false</RunCodeAnalysis>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>bin\Debug\Composite.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>

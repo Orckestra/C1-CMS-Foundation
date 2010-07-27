@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Composite.Data;
 
 
 namespace Composite.Implementation
 {
-    // Our implementation of the Storage API
     public class StorageDefaultImplementation : StorageBase
     {
         public override StorageAccess Open() 
@@ -14,10 +14,12 @@ namespace Composite.Implementation
         }
 
 
+
         public override StorageAccess Open(PublicationState publicationState) 
         { 
             return new StorageAccessDefaultImplementation(publicationState, null); 
         }
+
 
 
         public override StorageAccess Open(PublicationState publicationState, CultureInfo locale) 
@@ -26,16 +28,19 @@ namespace Composite.Implementation
         }
 
 
+
         public override StorageAccess Open(CultureInfo locale) 
         { 
             return new StorageAccessDefaultImplementation(PublicationState.Public, locale); 
         }
 
 
+
         public override T New<T>()
-        { 
-            return null; 
+        {
+            return DataFacade.BuildNew<T>();
         }
+
 
 
         public override IEnumerable<CultureInfo> Locales 
@@ -45,6 +50,7 @@ namespace Composite.Implementation
                 throw new NotImplementedException(); 
             } 
         }
+
 
 
         public override StorageEvent Events<T>()

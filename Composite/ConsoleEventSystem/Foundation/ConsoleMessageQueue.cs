@@ -40,7 +40,8 @@ namespace Composite.ConsoleEventSystem.Foundation
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="receiverConsoleId">null or empty string is a broardcast</param>
+        /// <param name="queueItem"></param>
+        /// <param name="receiverConsoleId">null or empty string is a broardcast</param>        
         public void Enqueue(IConsoleMessageQueueItem queueItem, string receiverConsoleId)
         {
             if (queueItem == null) throw new ArgumentNullException("queueItem");

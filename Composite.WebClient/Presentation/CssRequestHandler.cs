@@ -5,12 +5,14 @@ using System.Web;
 using System.Collections.Generic;
 using Composite.Logging;
 
-/**
+/*
  * Important notice: This setup has been hardwired to handle MY personal 
  * CSS authoring preferences (formatting and indentation etc). Also notice 
  * that the excecptionhanding is currently miserable, CSS author can easily 
  * fire an indexOutOfBounds and stuff. For now, please use my precise syntax.
  */
+
+
 namespace Composite.WebClient.Presentation
 {
     class CssRequestHandler : IHttpHandler
@@ -378,7 +380,7 @@ namespace Composite.WebClient.Presentation
             return two.Trim();
         }
 		
-        ///**
+        // *
         // * Isolate $ notation part of a line
         // */
         //private string getVarPart (string line)

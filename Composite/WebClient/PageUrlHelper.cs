@@ -343,7 +343,12 @@ namespace Composite.WebClient
         /// To be used for recursive building of page url-s.
         /// </summary>
         /// <param name="page"></param>
-        /// <param name="pageStructureBuilderCache"></param>
+        /// <param name="dataScopeIdentifier"></param>
+        /// <param name="cultureInfo"></param>
+        /// <param name="parentPageId"></param>
+        /// <param name="lookupUrl"></param>
+        /// <param name="url"></param>
+        /// <param name="urlBuildingCache"></param>
         /// <returns></returns>
         internal static void BuildUrlInternal(IPage page, DataScopeIdentifier dataScopeIdentifier, CultureInfo cultureInfo, Guid parentPageId, out string url, out string lookupUrl, UrlBuildingCache urlBuildingCache)
         {

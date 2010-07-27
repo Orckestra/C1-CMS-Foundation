@@ -58,11 +58,13 @@ namespace Composite.PackageSystem
 
 
         /// <summary>
-        /// Given a cleaned url, returns a series of AddOnDescriptions <see cref="AddOnDescription"/>
+        /// Given a cleaned url, returns a series of AddOnDescriptions 
         /// </summary>
         /// <param name="packageServerUrl">
         /// Cleaned url (ex: www.composite.net)
         /// </param>
+        /// <param name="installationId"></param>
+        /// <param name="userCulture"></param>
         /// <returns></returns>
         public static IEnumerable<PackageDescription> GetPackageDescriptions(string packageServerUrl, Guid installationId, CultureInfo userCulture)
         {

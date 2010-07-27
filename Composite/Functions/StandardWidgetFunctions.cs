@@ -266,6 +266,8 @@ namespace Composite.Functions
         /// <param name="optionsGeneratingStaticMethodName">The name of the static method to call. The method should take no parameters and return an IEnumerable.</param>
         /// <param name="optionsObjectKeyPropertyName">The name of the property on the return item type to use as key in the drop down</param>
         /// <param name="optionsObjectLabelPropertyName">The name of the property on the return item type to use as label in the drop down</param>
+        /// <param name="multiSelector"></param>
+        /// <param name="required"></param>
         /// <returns></returns>
         public static WidgetFunctionProvider DropDownList(Type optionsGeneratingStaticType, string optionsGeneratingStaticMethodName, string optionsObjectKeyPropertyName, string optionsObjectLabelPropertyName, bool multiSelector, bool required)
         {
@@ -281,6 +283,7 @@ namespace Composite.Functions
         /// <param name="optionsGeneratingStaticMethodName">The name of the static method to call. The method should take no parameters and return an IEnumerable.</param>
         /// <param name="optionsObjectKeyPropertyName">The name of the property on the return item type to use as key in the drop down</param>
         /// <param name="optionsObjectLabelPropertyName">The name of the property on the return item type to use as label in the drop down</param>
+        /// <param name="multiSelector"></param>
         /// <returns></returns>
         public static WidgetFunctionProvider DropDownList(Type optionsGeneratingStaticType, string optionsGeneratingStaticMethodName, string optionsObjectKeyPropertyName, string optionsObjectLabelPropertyName, bool multiSelector)
         {

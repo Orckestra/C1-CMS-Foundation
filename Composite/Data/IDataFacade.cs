@@ -29,6 +29,7 @@ namespace Composite.Data
         /// <param name="allowStoreCreation"></param>
         /// <param name="suppressEventing"></param>
         /// <param name="performForeignKeyIntegrityCheck"></param>
+        /// <param name="performeValidation"></param>
         /// <param name="writeableProviders">null is allowed</param>
         /// <returns></returns>
         List<T> AddNew<T>(IEnumerable<T> datas, bool allowStoreCreation, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performeValidation, List<string> writeableProviders) where T : class, IData;

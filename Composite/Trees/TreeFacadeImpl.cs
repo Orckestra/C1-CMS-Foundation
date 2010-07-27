@@ -464,7 +464,9 @@ namespace Composite.Trees
         /// This will add a attachment point until the system flushes.
         /// This can be used by element provider implementors to attach trees to their exising trees.
         /// </summary>
+        /// <param name="treeId"></param>
         /// <param name="entityToken"></param>
+        /// <param name="position"></param>
         public bool AddCustomAttachmentPoint(string treeId, EntityToken entityToken, ElementAttachingProviderPosition position = ElementAttachingProviderPosition.Top)
         {
             Tree tree = GetTree(treeId);

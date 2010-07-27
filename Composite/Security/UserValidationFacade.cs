@@ -108,7 +108,7 @@ namespace Composite.Security
         /// Validates and persists a windows based login. Actual Windows username / password validation should precede this call.
         /// </summary>
         /// <param name="userName"></param>
-        /// <param name="password"></param>
+        /// <param name="domainName"></param>
         /// <returns>True if the user was validated</returns>
         public static bool WindowsValidateUser(string userName, string domainName)
         {

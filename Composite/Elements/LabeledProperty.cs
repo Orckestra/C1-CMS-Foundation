@@ -16,6 +16,7 @@ namespace Composite.Elements
         /// Initializes a new instance of the LabeledProperty class.
         /// </summary>
         /// <param name="name"></param>
+        /// <param name="label"></param>
         /// <param name="value"></param>
         public LabeledProperty(string name, string label, string value)
         {

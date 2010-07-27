@@ -33,6 +33,7 @@ namespace Composite.Threading
         /// This method will find the first one that contains the key and return the value
         /// </summary>
         /// <param name="key"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
         public bool TryGetParentValue(object key, out object value)
         {

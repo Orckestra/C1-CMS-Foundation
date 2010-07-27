@@ -120,7 +120,7 @@ namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWi
         /// <summary>
         /// Provides data for the drop down list. Left here only for backwards compatibility
         /// </summary>
-        /// <param name="folderReference"></param>
+        /// <param name="key"></param>
         /// <returns></returns>
         [Obsolete("Was used only in old media file widget's markup.")]
         public static IEnumerable<DataReferenceLabelPair<IMediaFile>> GenerateSelectorOptions(string key)

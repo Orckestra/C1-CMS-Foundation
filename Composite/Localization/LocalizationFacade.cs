@@ -119,6 +119,7 @@ namespace Composite.Localization
         /// <param name="cultureInfo"></param>
         /// <param name="urlMappingName"></param>
         /// <param name="addAccessToAllUsers"></param>
+        /// <param name="makeFlush"></param>
         public static void AddLocale(CultureInfo cultureInfo, string urlMappingName, bool addAccessToAllUsers = true, bool makeFlush = true)
         {            
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
@@ -299,6 +300,7 @@ namespace Composite.Localization
         /// Removes the given locale, all data is lost
         /// </summary>
         /// <param name="cultureInfo"></param>
+        /// <param name="makeFlush"></param>
         public static void RemoveLocale(CultureInfo cultureInfo, bool makeFlush = true)
         {
             if (LocalizationFacade.IsDefaultLocale(cultureInfo) == true) throw new InvalidOperationException(string.Format("The locale '{0}' is the default locale and can not be removed", cultureInfo));

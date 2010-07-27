@@ -10,6 +10,7 @@ namespace Composite.Trees.Foundation.FolderRanges
         /// This is called by DataFolderElementsTreeNode when finding folders
         /// </summary>
         /// <param name="fieldExpression"></param>
+        /// <param name="parameterExpression"></param>
         /// <returns>
         /// This should return an expression that gives a list of bools foreach folder range
         /// whether folder range is containing data or not.

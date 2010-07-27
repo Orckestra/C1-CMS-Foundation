@@ -88,6 +88,7 @@ namespace Composite.Data
         /// Returns a pagemeta data definition given the defining item id or null if none exists.
         /// </summary>
         /// <param name="definingItemId"></param>
+        /// <param name="name"></param>
         /// <returns></returns>
         public static IPageMetaDataDefinition GetMetaDataDefinition(Guid definingItemId, string name)
         {
@@ -385,7 +386,7 @@ namespace Composite.Data
         /// Gets all existing pages that are affected by the given meta data definition
         /// </summary>
         /// <param name="definingPage"></param>
-        /// <param name="startPage"></param>
+        /// <param name="startLevel"></param>
         /// <param name="levels"></param>
         /// <returns></returns>
         public static IEnumerable<IPage> GetMetaDataAffectedPages(this IPage definingPage, int startLevel, int levels)
@@ -510,8 +511,7 @@ namespace Composite.Data
         /// <param name="metaDataTypeId"></param>
         /// <param name="metaDataContainerId"></param>
         /// <param name="startLevel"></param>
-        /// <param name="levels"></param>
-        /// <param name="sortOrder"></param>
+        /// <param name="levels"></param>        
         public static void AddMetaDataDefinition(this IPage definingPage, string name, string label, Guid metaDataTypeId, Guid metaDataContainerId, int startLevel = 0, int levels = 100000)
         {
             AddDefinition(definingPage.GetPageIdOrNull(), name, label, metaDataTypeId, metaDataContainerId, startLevel, levels);
@@ -527,9 +527,6 @@ namespace Composite.Data
         /// <param name="label"></param>
         /// <param name="metaDataTypeId"></param>
         /// <param name="metaDataContainerId"></param>
-        /// <param name="startLevel"></param>
-        /// <param name="levels"></param>
-        /// <param name="sortOrder"></param>
         public static void AddMetaDataDefinition(this IPageType definingPageType, string name, string label, Guid metaDataTypeId, Guid metaDataContainerId)
         {
             AddDefinition(definingPageType.Id, name, label, metaDataTypeId, metaDataContainerId, 0, 0);
@@ -546,8 +543,7 @@ namespace Composite.Data
         /// <param name="metaDataTypeId"></param>
         /// <param name="metaDataContainerId"></param>
         /// <param name="startLevel"></param>
-        /// <param name="levels"></param>
-        /// <param name="sortOrder"></param>
+        /// <param name="levels"></param>        
         public static void AddDefinition(Guid definingItemId, string name, string label, Guid metaDataTypeId, Guid metaDataContainerId, int startLevel = 0, int levels = 100000)
         {
             IPageMetaDataDefinition pageMetaDataDefinition = DataFacade.BuildNew<IPageMetaDataDefinition>();
@@ -670,7 +666,7 @@ namespace Composite.Data
         /// Update an existing metadata definition with possible new label and container id
         /// </summary>
         /// <param name="definingItemId"></param>
-        /// <param name="metaDataTypeId"></param>
+        /// <param name="definitionName"></param>
         /// <param name="newLabel"></param>
         /// <param name="newMetaDataContainerId"></param>
         public static void UpdateDefinition(Guid definingItemId, string definitionName, string newLabel, Guid newMetaDataContainerId)
@@ -701,8 +697,10 @@ namespace Composite.Data
         /// Update an existing metadata definition with possible new label and container id
         /// </summary>
         /// <param name="definingItemId"></param>
-        /// <param name="metaDataTypeId"></param>
+        /// <param name="definitionName"></param>
         /// <param name="newLabel"></param>
+        /// <param name="newLevels"></param>
+        /// <param name="newStartLevel"></param>
         /// <param name="newMetaDataContainerId"></param>
         public static void UpdateDefinition(Guid definingItemId, string definitionName, string newLabel, int newStartLevel, int newLevels, Guid newMetaDataContainerId)
         {
@@ -732,8 +730,7 @@ namespace Composite.Data
         /// Removes a metadata definition and possibly deletes all data items that are defined by it
         /// </summary>
         /// <param name="definingPage"></param>
-        /// <param name="definitionName"></param>
-        /// <param name="metaDataTypeId"></param>
+        /// <param name="definitionName"></param>        
         /// <param name="deleteExistingMetaData"></param>
         public static void RemoveMetaDataDefinition(this IPage definingPage, string definitionName, bool deleteExistingMetaData = true)
         {
@@ -746,8 +743,7 @@ namespace Composite.Data
         /// Removes a metadata definition and possibly deletes all data items that are defined by it
         /// </summary>
         /// <param name="definingPageType"></param>
-        /// <param name="definitionName"></param>
-        /// <param name="metaDataTypeId"></param>
+        /// <param name="definitionName"></param>        
         /// <param name="deleteExistingMetaData"></param>
         public static void RemoveMetaDataDefinition(this IPageType definingPageType, string definitionName, bool deleteExistingMetaData = true)
         {
@@ -760,8 +756,7 @@ namespace Composite.Data
         /// Removes a metadata definition and possibly deletes all data items that are defined by it
         /// </summary>
         /// <param name="definingItemId"></param>
-        /// <param name="definitionName"></param>
-        /// <param name="metaDataTypeId"></param>
+        /// <param name="definitionName"></param>        
         /// <param name="deleteExistingMetaData"></param>
         public static void RemoveDefinition(Guid definingItemId, string definitionName, bool deleteExistingMetaData = true)
         {

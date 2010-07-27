@@ -3,10 +3,11 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 
-/// <summary>
-/// Describes a set of changed elements by listing their ElementHandles
-/// The latest sequence change number is returned as well.
-/// </summary>
+
+// Describes a set of changed elements by listing their ElementHandles
+// The latest sequence change number is returned as well.
+
+
 namespace Composite.WebClient.Services.TreeServiceObjects
 {
     internal class ClientElementChangeDescriptor

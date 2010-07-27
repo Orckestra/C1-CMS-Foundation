@@ -240,7 +240,7 @@ namespace Composite.Forms
             /// <summary>
             /// Generate XSD file by  List of ElementDescriptor
             /// </summary>
-            /// <param name="xmlnss">List of ElementDescriptor </param>
+            /// <param name="xmlns">List of ElementDescriptor </param>
             /// <param name="targetNamespace">Namespace</param>
             /// <returns>XSD File</returns>
             public XDocument GetXsd(IEnumerable<ElementDescriptor> xmlns, XNamespace targetNamespace/*, List<string> functionNss*/)
@@ -339,7 +339,7 @@ namespace Composite.Forms
 
 
             /// <summary>
-            /// For all channels & namespaces of elements generate XSD file
+            /// For all channels and namespaces of elements generate XSD file
             /// </summary>
             /// 
             public void GenerateUiControls()

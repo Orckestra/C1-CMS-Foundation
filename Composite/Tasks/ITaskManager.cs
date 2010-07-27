@@ -31,6 +31,7 @@ namespace Composite.Tasks
         /// no more events on the task mananger will get called.
         /// </summary>
         /// <param name="taskId"></param>
+        /// <param name="taskManagerEvent"></param>
         /// <returns></returns>
         bool OnCreated(string taskId, TaskManagerEvent taskManagerEvent);
 

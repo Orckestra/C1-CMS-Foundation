@@ -939,6 +939,7 @@ namespace Composite.Data
         /// cause serious foreign key corruption.
         /// </summary>
         /// <param name="data"></param>
+        /// <param name="suppressEventing"></param>
         /// <param name="performForeignKeyIntegrityCheck"></param>
         /// <returns></returns>
         public static T AddNew<T>(T data, bool suppressEventing, bool performForeignKeyIntegrityCheck)
@@ -959,6 +960,8 @@ namespace Composite.Data
         /// cause serious foreign key corruption.
         /// </summary>
         /// <param name="data"></param>
+        /// <param name="suppressEventing"></param>
+        /// <param name="performeValidation"></param>
         /// <param name="performForeignKeyIntegrityCheck"></param>
         /// <returns></returns>
         public static T AddNew<T>(T data, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performeValidation)
@@ -1012,6 +1015,7 @@ namespace Composite.Data
         /// WARNING: Setting <paramref name="performForeignKeyIntegrityCheck"/> to 'false' can cause serious foreign key corruption.
         /// </summary>
         /// <param name="data"></param>
+        /// <param name="interfaceType"></param>
         /// <param name="suppressEventing"></param>
         /// <param name="performForeignKeyIntegrityCheck"></param>
         /// <param name="providerName"></param>
@@ -1035,6 +1039,7 @@ namespace Composite.Data
         /// <param name="data"></param>
         /// <param name="suppressEventing"></param>
         /// <param name="performForeignKeyIntegrityCheck"></param>        
+        /// <param name="performeValidation"></param>
         /// <returns></returns>
         public static IData AddNew(IData data, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performeValidation)
         {
@@ -1054,8 +1059,10 @@ namespace Composite.Data
         /// WARNING: Setting <paramref name="performForeignKeyIntegrityCheck"/> to 'false' can cause serious foreign key corruption.
         /// </summary>
         /// <param name="data"></param>
+        /// <param name="interfaceType"></param>
         /// <param name="suppressEventing"></param>
         /// <param name="performForeignKeyIntegrityCheck"></param>        
+        /// <param name="performeValidation"></param>
         /// <returns></returns>
         public static IData AddNew(IData data, Type interfaceType, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performeValidation)
         {
@@ -1076,6 +1083,7 @@ namespace Composite.Data
         /// <param name="data"></param>
         /// <param name="suppressEventing"></param>
         /// <param name="performForeignKeyIntegrityCheck"></param>
+        /// <param name="performeValidation"></param>
         /// <param name="providerName"></param>
         /// <returns></returns>
         public static IData AddNew(IData data, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performeValidation, string providerName)
@@ -1222,10 +1230,11 @@ namespace Composite.Data
         /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="data"></param>
+        /// <param name="datas"></param>
+        /// <param name="suppressEventing"></param>
         /// <param name="referencesFromAllScopes">
         /// If this is true then cascade delete is performed on all data scopes.
-        /// If this is false then cascade delete is only performed in the same scope as <paramref name="data"/>
+        /// If this is false then cascade delete is only performed in the same scope as <paramref name="datas"/>
         /// </param>
         public static void Delete<T>(IEnumerable<T> datas, bool suppressEventing, bool referencesFromAllScopes)
             where T : class, IData
@@ -1254,6 +1263,7 @@ namespace Composite.Data
         /// to 'Disable' can cause serious foreign key corruption.
         /// </summary>
         /// <param name="datas"></param>
+        /// <param name="suppressEventing"></param>
         /// <param name="cascadeDeleteType"></param>
         public static void Delete<T>(IEnumerable<T> datas, bool suppressEventing, CascadeDeleteType cascadeDeleteType)
             where T : class, IData
@@ -1313,7 +1323,7 @@ namespace Composite.Data
         /// Deletes the given datas. WARNING: Setting <paramref name="cascadeDeleteType"/> 
         /// to 'Disable' can cause serious foreign key corruption.
         /// </summary>
-        /// <param name="datas"></param>
+        /// <param name="data"></param>
         /// <param name="cascadeDeleteType"></param>
         public static void Delete(IData data, CascadeDeleteType cascadeDeleteType)
         {
@@ -1330,6 +1340,7 @@ namespace Composite.Data
         /// to 'Disable' can cause serious foreign key corruption.
         /// </summary>
         /// <param name="datas"></param>
+        /// <param name="suppressEventing"></param>
         /// <param name="cascadeDeleteType"></param>
         public static void Delete(IEnumerable<IData> datas, bool suppressEventing, CascadeDeleteType cascadeDeleteType)
         {
@@ -1361,7 +1372,8 @@ namespace Composite.Data
         /// Deletes the given datas. WARNING: Setting <paramref name="cascadeDeleteType"/> 
         /// to 'Disable' can cause serious foreign key corruption.
         /// </summary>
-        /// <param name="datas"></param>
+        /// <param name="data"></param>
+        /// <param name="suppressEventing"></param>
         /// <param name="cascadeDeleteType"></param>
         public static void Delete<T>(T data, bool suppressEventing, CascadeDeleteType cascadeDeleteType)
           where T : class, IData

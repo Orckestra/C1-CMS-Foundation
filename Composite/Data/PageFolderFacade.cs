@@ -310,6 +310,7 @@ namespace Composite.Data
         /// Removes all data folder definitions given the folder type id
         /// </summary>
         /// <param name="dataFolderTypeId"></param>
+        /// <param name="deleteExistingFolderData"></param>
         public static void RemoveAllFolderDefinitions(Guid dataFolderTypeId, bool deleteExistingFolderData = true)
         {
             if (deleteExistingFolderData == true)
@@ -342,8 +343,7 @@ namespace Composite.Data
         /// <summary>
         /// Updates the given page folder item with new Id and setting the page folder defintion id and defining item id
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="metaDataDefinitionName"></param>
+        /// <param name="pageFolderData"></param>        
         /// <param name="definingPage"></param>
         public static void AssignFolderDataSpecificValues(IData pageFolderData, IPage definingPage)
         {

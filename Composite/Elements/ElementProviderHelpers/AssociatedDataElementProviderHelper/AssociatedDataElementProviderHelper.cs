@@ -89,7 +89,7 @@ namespace Composite.Elements.ElementProviderHelpers.AssociatedDataElementProvide
         /// <summary>
         /// Call this method to add actions to the element which represents the data of type T
         /// </summary>
-        /// <param name="associatedDataElements"></param>
+        /// <param name="associatedDataElement"></param>
         /// <param name="data">Null is allowed</param>
         public void AttachElementActions(Element associatedDataElement, T data)
         {

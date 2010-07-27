@@ -10,11 +10,14 @@ namespace Composite
     public enum PublicationState
     {
         Public,
-        NotPublic
+        Internal
     }
 
 
 
+    /// <summary>
+    /// This class provies the main access to the C1 storage. This could be based on SQL, XML or some other kind of storage.
+    /// </summary>
     public static class Storage
     {
 
@@ -23,6 +26,7 @@ namespace Composite
             ImplementationContainer.SetImplementation<StorageBase>(new StorageDefaultImplementation());
         }
         
+
 
 
         public static StorageAccess Open() 
@@ -52,10 +56,12 @@ namespace Composite
         }
 
 
+
         public static T New<T>() where T : class, IData 
         {
             return ImplementationContainer.GetImplementation<StorageBase>().New<T>();
         }
+
 
 
         public static IEnumerable<CultureInfo> Locales 
@@ -67,10 +73,13 @@ namespace Composite
         }
 
 
+
         public static StorageEvent Events<T>() where T : class, IData 
         {
             return ImplementationContainer.GetImplementation<StorageBase>().Events<T>();
         }
+
+
 
         public static StorageEvent Events(Type interfaceType)
         {

@@ -217,8 +217,7 @@ namespace Composite.Actions
         /// <summary>
         /// This is a "non-safe" release of a lock. For safe use, use ReleaseLock
         /// </summary>
-        /// <param name="entityToken"></param>
-        /// <param name="ownerId"></param>
+        /// <param name="entityToken"></param>        
         internal static void RemoveLock(EntityToken entityToken)
         {
             using (GlobalInitializerFacade.CoreIsInitializedScope)

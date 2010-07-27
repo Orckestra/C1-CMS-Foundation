@@ -61,7 +61,8 @@ namespace Composite.Elements.Plugins.ElementAttachingProvider
         /// <summary>
         /// This is only called when rendering root nodes. Used to switch HasChildren from false to true.
         /// </summary>
-        /// <param name="parentElement"></param>
+        /// <param name="parentEntityToken"></param>
+        /// /// <param name="piggybag"></param>
         /// <returns></returns>
         bool HaveCustomChildElements(EntityToken parentEntityToken, Dictionary<string, string> piggybag);
 
@@ -70,6 +71,7 @@ namespace Composite.Elements.Plugins.ElementAttachingProvider
         /// If null is returned, the result is ignored
         /// </summary>
         /// <param name="parentEntityToken"></param>
+        /// <param name="piggybag"></param>
         /// <returns></returns>
         ElementAttachingProviderResult GetAlternateElementList(EntityToken parentEntityToken, Dictionary<string, string> piggybag);
 

@@ -168,8 +168,7 @@ namespace Composite.Data
         /// Compares the value of the key properties of leftData and rightData
         /// and if all the values are equals then it returns true. Otherwise false.
         /// </summary>
-        /// <param name="leftData"></param>
-        /// <param name="rightData"></param>
+        /// <param name="data"></param>        
         /// <returns></returns>
         internal static object GetUniqueKey(this IData data)
         {
@@ -184,8 +183,7 @@ namespace Composite.Data
         /// Compares the value of the key properties of leftData and rightData
         /// and if all the values are equals then it returns true. Otherwise false.
         /// </summary>
-        /// <param name="leftData"></param>
-        /// <param name="rightData"></param>
+        /// <param name="data"></param>       
         /// <returns></returns>
         internal static T GetUniqueKey<T>(this IData data)
         {
@@ -213,7 +211,8 @@ namespace Composite.Data
         /// </summary>
         /// <param name="child"></param>
         /// <param name="parent"></param>
-        /// <returns></returns>
+        /// <param name="maxLevels"></param>
+        /// <returns></returns>        
         internal static bool HasAncestor(this IData child, IData parent, int maxLevels)
         {
             if (child == null) throw new ArgumentNullException("child");

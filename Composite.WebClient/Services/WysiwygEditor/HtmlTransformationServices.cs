@@ -69,9 +69,8 @@ namespace Composite.WebClient.Services.WysiwygEditor
         /// <summary>
         /// Repairs an html fragment (makes it Xhtml) and executes a transformation on it.
         /// </summary>
-        /// <param name="html">The html to repair</param>
-        /// <param name="xsltPath">The path to the XSLT to use for transformation</param>
-        /// <param name="errorSummary">out value - warnings generated while repairing the html</param>
+        /// <param name="xml">The xml to repair</param>
+        /// <param name="xsltPath">The path to the XSLT to use for transformation</param>        
         /// <returns></returns>
         public static XDocument RepairXmlAndTransform(string xml, string xsltPath)
         {
@@ -96,7 +95,7 @@ namespace Composite.WebClient.Services.WysiwygEditor
         /// <summary>
         /// Cleans HTML documents or fragments into XHTML conformant markup
         /// </summary>
-        /// <param name="markup">The html to clean</param>
+        /// <param name="htmlMarkup">The html to clean</param>
         /// <returns>A fully structured XHTML document, incl. html, head and body elements.</returns>
         public static TidyHtmlResult TidyHtml(string htmlMarkup)
         {
@@ -178,7 +177,7 @@ namespace Composite.WebClient.Services.WysiwygEditor
         /// <summary>
         /// Cleans HTML documents or fragments into XHTML conformant markup
         /// </summary>
-        /// <param name="markup">The html to clean</param>
+        /// <param name="xmlMarkup">The html to clean</param>
         /// <returns></returns>
         public static XDocument TidyXml(string xmlMarkup)
         {

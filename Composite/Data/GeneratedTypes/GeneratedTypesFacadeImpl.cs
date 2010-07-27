@@ -131,6 +131,7 @@ namespace Composite.Data.GeneratedTypes
         /// new meta data system (IPageMetaDataDefinition)
         /// </summary>
         /// <param name="dataTypeDescriptor"></param>
+        /// <param name="dataStoreExists"></param>
         private void UpdateWithNewPageFolderForeignKeySystem(DataTypeDescriptor dataTypeDescriptor, bool dataStoreExists)
         {            
             if (dataTypeDescriptor.IsPageFolderDataType == false)

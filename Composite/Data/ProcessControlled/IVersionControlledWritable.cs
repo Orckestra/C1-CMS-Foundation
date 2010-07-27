@@ -23,14 +23,14 @@ namespace Composite.Data.ProcessControlled
         /// <summary>
         /// Setter version of the IVersioned.ChangeDate property
         /// </summary>
-        /// <param name="versionNumber"></param>
+        /// <param name="changeDate"></param>
         void SetChangeDate(DateTime changeDate);
 
 
         /// <summary>
         /// Setter version of the IVersioned.ChangedBy property
         /// </summary>
-        /// <param name="versionNumber"></param>
+        /// <param name="changeBy"></param>
         void SetChangedBy(string changeBy);
     }
 }
