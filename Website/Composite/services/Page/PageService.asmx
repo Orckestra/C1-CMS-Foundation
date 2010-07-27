@@ -2,13 +2,10 @@
 
 using System;
 using System.Linq;
-using System.Web;
 using System.Web.Services;
 using System.Web.Services.Protocols;
-using System.Globalization;
-using Composite.Renderings;
 using Composite.Renderings.Page;
-using System.Text;
+using Composite.Pages;
 using Composite.WebClient;
 using Composite.Data;
 using System.Collections.Generic;
@@ -50,26 +47,22 @@ public class PageService : System.Web.Services.WebService
 
             if (pageId == Guid.Empty)
             {
-                pageId = PageManager.GetChildrenIDs(Guid.Empty).FirstOrDefault(rootPageId => PageManager.GetPageById(rootPageId) != null);
+                pageId = PageManager.GetChildrenIDs(Guid.Empty).FirstOrDefault(rootPageId => PageManager.GetPageByID(rootPageId) != null);
             }
 
             if (pageId == Guid.Empty)
             {
                 return "/";
             }
-            else
-            {
-                PageStructureInfo.GetIdToUrlLookup().TryGetValue(pageId, out url);
+            
+            PageStructureInfo.GetIdToUrlLookup().TryGetValue(pageId, out url);
                                 
-                if (url != null)
-                {
-                    return url + "?dataScope=administrated";
-                }
-                else
-                {
-                    return "/";
-                }
+            if (url == null)
+            {
+                return "/";
             }
+                    
+            return url + "?dataScope=administrated";
         }
     }
 

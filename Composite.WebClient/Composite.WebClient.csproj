@@ -35,22 +35,161 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ObjectBuilder, Version=1.0.51206.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\Microsoft.Practices.ObjectBuilder.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="TidyNet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\TidyNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleInfo.cs" />
+    <Compile Include="ControlCompilerService.cs" />
+    <Compile Include="CookieHandler.cs" />
+    <Compile Include="ElementInformation.cs" />
+    <Compile Include="ErrorServices.cs" />
+    <Compile Include="FlowMediators\ActionExecutionMediator.cs" />
+    <Compile Include="FlowMediators\ActionExecutionService.cs" />
+    <Compile Include="FlowMediators\FormFlowRendering\FormFlowRenderingService.cs" />
+    <Compile Include="FlowMediators\FormFlowRendering\FormFlowUiDefinitionRenderer.cs" />
+    <Compile Include="FlowMediators\FormFlowRendering\IFormFlowWebRenderingService.cs" />
+    <Compile Include="FlowMediators\TreeServicesFacade.cs" />
+    <Compile Include="FlowMediators\ViewTransitionHelper.cs" />
+    <Compile Include="FlowMediators\WebFlowUiMediator.cs" />
+    <Compile Include="Foundation\PluginFacades\WebRequestHandlerPluginFacade.cs" />
+    <Compile Include="FunctionCallEditor\FunctionCallEditorStateSimple.cs" />
+    <Compile Include="FunctionCallEditor\IFunctionCallEditorState.cs" />
+    <Compile Include="FunctionCallEditor\TreeHelper.cs" />
+    <Compile Include="FunctionUiHelper.cs" />
+    <Compile Include="HttpModules\AdministrativeAuthorizationHttpModule.cs" />
+    <Compile Include="HttpModules\AdministrativeCultureSetterHttpModule.cs" />
+    <Compile Include="HttpModules\AdministrativeDataScopeSetterHttpModule.cs" />
+    <Compile Include="HttpModules\AdministrativeOutputGZipperHttpModule.cs" />
+    <Compile Include="HttpModules\AdministrativeResponseFilterHttpModule.cs" />
+    <Compile Include="Plugins\WebRequestHandler\NonConfigurableWebRequestHandler.cs" />
+    <Compile Include="Plugins\WebRequestHandler\Runtime\WebRequestHandlerCustomFactory.cs" />
+    <Compile Include="Plugins\WebRequestHandler\Runtime\WebRequestHandlerDefaultNameRetriever.cs" />
+    <Compile Include="Plugins\WebRequestHandler\Runtime\WebRequestHandlerFactory.cs" />
+    <Compile Include="Plugins\WebRequestHandler\Runtime\WebRequestHandlerSettings.cs" />
+    <Compile Include="Plugins\WebRequestHandler\WebRequestHandler.cs" />
+    <Compile Include="Plugins\WebRequestHandler\WebRequestHandlerData.cs" />
+    <Compile Include="Presentation\CssRequestHandler.cs" />
+    <Compile Include="Presentation\JsRequestHandler.cs" />
+    <Compile Include="Presentation\OutputTransformationManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequestHandler.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ScriptHandler.cs" />
+    <Compile Include="Services\ConsoleMessageService\ActionTypeEnum.cs" />
+    <Compile Include="Services\ConsoleMessageService\BindEntityTokenToViewParams.cs" />
+    <Compile Include="Services\ConsoleMessageService\BroadcastMessageParams.cs" />
+    <Compile Include="Services\ConsoleMessageService\CloseAllViewsParams.cs" />
+    <Compile Include="Services\ConsoleMessageService\CloseViewParams.cs" />
+    <Compile Include="Services\ConsoleMessageService\ConsoleAction.cs" />
+    <Compile Include="Services\ConsoleMessageService\ConsoleMessageServiceFacade.cs" />
+    <Compile Include="Services\ConsoleMessageService\DialogTypeEnum.cs" />
+    <Compile Include="Services\ConsoleMessageService\DownloadFileParams.cs" />
+    <Compile Include="Services\ConsoleMessageService\GetMessagesResult.cs" />
+    <Compile Include="Services\ConsoleMessageService\LogEntryParams.cs" />
+    <Compile Include="Services\ConsoleMessageService\LogLevelEnum.cs" />
+    <Compile Include="Services\ConsoleMessageService\MessageBoxParams.cs" />
+    <Compile Include="Services\ConsoleMessageService\OpenGenericViewParams.cs" />
+    <Compile Include="Services\ConsoleMessageService\OpenViewDefinitionParams.cs" />
+    <Compile Include="Services\ConsoleMessageService\OpenViewParams.cs" />
+    <Compile Include="Services\ConsoleMessageService\RefreshTreeParams.cs" />
+    <Compile Include="Services\ConsoleMessageService\SaveStatusParams.cs" />
+    <Compile Include="Services\ConsoleMessageService\ViewTypeEnum.cs" />
+    <Compile Include="Services\LocalizationServiceObjects\ClientLocale.cs" />
+    <Compile Include="Services\LocalizationServiceObjects\ClientLocales.cs" />
+    <Compile Include="Services\LocalizationServiceObjects\PageLocale.cs" />
+    <Compile Include="Services\SecurityServiceObjets\EntityPermissionDetails.cs" />
+    <Compile Include="Services\SecurityServiceObjets\UserPermissions.cs" />
+    <Compile Include="Services\TreeServiceObjects\ClientAction.cs" />
+    <Compile Include="Services\TreeServiceObjects\ClientActionCategory.cs" />
+    <Compile Include="Services\TreeServiceObjects\ClientElement.cs" />
+    <Compile Include="Services\TreeServiceObjects\ClientElementChangeDescriptor.cs" />
+    <Compile Include="Services\TreeServiceObjects\ClientLabeledProperty.cs" />
+    <Compile Include="Services\TreeServiceObjects\ClientProviderNameEntityTokenClientElementsTriple.cs" />
+    <Compile Include="Services\TreeServiceObjects\ClientProviderNameEntityTokenPair.cs" />
+    <Compile Include="Services\TreeServiceObjects\ExtensionMethods\ElementActionExtensionMethods.cs" />
+    <Compile Include="Services\TreeServiceObjects\ExtensionMethods\ElementExtensionMethods.cs" />
+    <Compile Include="Services\TreeServiceObjects\RefreshChildrenInfo.cs" />
+    <Compile Include="Services\TreeServiceObjects\RefreshChildrenParams.cs" />
+    <Compile Include="Services\WysiwygEditor\HtmlTransformationServices.cs" />
+    <Compile Include="StandardPlugins\SessionStateProviders\DefaultSessionStateProvider\DefaultSessionStateProvider.cs" />
+    <Compile Include="StandardPlugins\SessionStateProviders\DefaultSessionStateProvider\ISessionStateEntry.cs" />
+    <Compile Include="StandardPlugins\SessionStateProviders\DefaultSessionStateProvider\SerializationUtil.cs" />
+    <Compile Include="StandardPlugins\SessionStateProviders\DefaultSessionStateProvider\XmlSerializationWrapper.cs" />
+    <Compile Include="StandardPlugins\WebRequestHandlers\LoginWebRequestHandler\LoginWebRequestHandler.cs" />
+    <Compile Include="StandardPlugins\WebRequestHandlers\LoginWebRequestHandler\PathUtils.cs" />
+    <Compile Include="StandardPlugins\WebRequestHandlers\LoginWebRequestHandler\Resources\LoginHandlerResources.da.Designer.cs" />
+    <Compile Include="StandardPlugins\WebRequestHandlers\LoginWebRequestHandler\Resources\LoginHandlerResources.Designer.cs" />
+    <Compile Include="State\ISessionStateProvider.cs" />
+    <Compile Include="State\Runtime\SessionStateProviderCustomFactory.cs" />
+    <Compile Include="State\Runtime\SessionStateProviderFactory.cs" />
+    <Compile Include="State\Runtime\SessionStateProviderSettings.cs" />
+    <Compile Include="State\StateManager.cs" />
+    <Compile Include="StyleCompiler.cs" />
+    <Compile Include="UiControlLib\BindingUpdatePanel.cs" />
+    <Compile Include="UiControlLib\CheckBox.cs" />
+    <Compile Include="UiControlLib\ClickButton.cs" />
+    <Compile Include="UiControlLib\ComboBox.cs" />
+    <Compile Include="UiControlLib\DataInput.cs" />
+    <Compile Include="UiControlLib\Feedback.cs" />
+    <Compile Include="UiControlLib\FieldMessage.cs" />
+    <Compile Include="UiControlLib\Foundation\BaseControl.cs" />
+    <Compile Include="UiControlLib\Foundation\ClientAttributes.cs" />
+    <Compile Include="UiControlLib\Generic.cs" />
+    <Compile Include="UiControlLib\HtmlEncodedPlaceHolder.cs" />
+    <Compile Include="UiControlLib\PostBackDialog.cs" />
+    <Compile Include="UiControlLib\Selector.cs" />
+    <Compile Include="UiControlLib\TextArea.cs" />
+    <Compile Include="UiControlLib\TextBox.cs" />
+    <Compile Include="UiControlLib\ToolbarButton.cs" />
+    <Compile Include="UiControlLib\TreeNode.cs" />
+    <Compile Include="WCF\Logger\ILogService.cs" />
+    <Compile Include="WCF\Logger\LogEntry.cs" />
+    <Compile Include="WCF\Logger\LoggerHostnameHandler.cs" />
+    <Compile Include="WCF\Logger\LoggerServiceHostingFactory.cs" />
+    <Compile Include="WCF\Logger\LogService.cs" />
+    <Compile Include="WCF\MultipleHostnameHandler.cs" />
+    <Compile Include="WCF\ServiceHostFactoryHelper.cs" />
+    <Compile Include="XhtmlPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="XsltServices.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Composite\Composite.csproj">
       <Project>{9427C500-8542-409F-A8DC-0B21E250E0FA}</Project>
       <Name>Composite</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="StandardPlugins\WebRequestHandlers\LoginWebRequestHandler\Resources\LoginHandlerResources.da.resx" />
+    <EmbeddedResource Include="StandardPlugins\WebRequestHandlers\LoginWebRequestHandler\Resources\LoginHandlerResources.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
