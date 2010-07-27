@@ -474,7 +474,6 @@
     <Content Include="Composite\scripts\source\top\core\ViewDefinitions.js" />
     <Content Include="Composite\services\Installation\InstallationService.asmx" />
     <Content Include="Composite\skins\dynamicskin.css" />
-    <Content Include="Composite\Setup\Setup.asmx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

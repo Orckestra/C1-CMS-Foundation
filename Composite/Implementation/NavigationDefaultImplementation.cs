@@ -231,34 +231,9 @@ namespace Composite.Implementation
             return result;
         }
 
-        private IEnumerable<XPage> Wrap(XPage page)
+        private static IEnumerable<XPage> Wrap(XPage page)
         {
             return page != null ? new[] {page} : EmptyPagesList;
-        }
-
-        public override TMetaData GetMeta<TMetaData>(XPage page, string name) 
-        {
-            Verify.ArgumentNotNull(page, "page");
-            Verify.ArgumentNotNullOrEmpty(name, "name");
-
-            // TODO: caching
-            var siteMap = page.SiteMap;
-            using (new DataScope(siteMap.DataScope, siteMap.CultureInfo))
-            {
-                return PageMetaDataFacade.GetMetaData(page.Id, name, typeof(TMetaData)) as TMetaData;
-            }
-        }
-
-        public override IEnumerable<TPageData> GetData<TPageData>(XPage page) 
-        {
-            Verify.ArgumentNotNull(page, "page");
-
-            // TODO: caching
-            var siteMap = page.SiteMap;
-            using (new DataScope(siteMap.DataScope, siteMap.CultureInfo))
-            {
-                return PageFolderFacade.GetFolderData(page.Id, typeof(TPageData)) as IEnumerable<TPageData>;
-            }
         }
     }
 }

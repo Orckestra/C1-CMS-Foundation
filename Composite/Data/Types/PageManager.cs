@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Composite.Collections.Generic;
 using Composite.Data.Caching;
@@ -27,13 +28,11 @@ namespace Composite.Data.Types
         private static readonly int PageCacheSize = 5000;
         private static readonly int PageStructureCacheSize = 3000;
         private static readonly int ChildrenCacheSize = 2000;
-        private static readonly int VisibilityAssociationCacheSize = 2000;
         private static readonly int PagePlaceholderCacheSize = 500;
 
         private static readonly Cache<string, ExtendedNullable<IPage>> _pageCache = new Cache<string, ExtendedNullable<IPage>>("Pages", PageCacheSize);
         private static readonly Cache<string, ExtendedNullable<PageStructureRecord>> _pageStructureCache = new Cache<string, ExtendedNullable<PageStructureRecord>>("Page structure", PageStructureCacheSize);
-        private static readonly Cache<string, ReadOnlyList<Guid>> _childrenCache = new Cache<string, ReadOnlyList<Guid>>("Child pages", ChildrenCacheSize);
-        private static readonly Cache<string, ReadOnlyList<Guid>> _visiblityAssociationCache = new Cache<string, ReadOnlyList<Guid>>("Page associations", VisibilityAssociationCacheSize);
+        private static readonly Cache<string, ReadOnlyCollection<Guid>> _childrenCache = new Cache<string, ReadOnlyCollection<Guid>>("Child pages", ChildrenCacheSize);
         private static readonly Cache<string, ReadOnlyList<IPagePlaceholderContent>> _placeholderCache = new Cache<string, ReadOnlyList<IPagePlaceholderContent>>("Page placeholders", PagePlaceholderCacheSize);
 
         static PageManager()
@@ -95,7 +94,7 @@ namespace Composite.Data.Types
         /// </summary>
         /// <param name="parentPageId">Empty guild will yield all root pages</param>
         /// <returns></returns>
-        public static ReadOnlyList<Guid> GetChildrenIDs(Guid parentPageId)
+        public static ReadOnlyCollection<Guid> GetChildrenIDs(Guid parentPageId)
         {
             var cacheKey = GetCacheKey<IPageStructure>(parentPageId);
             var cachedValue = _childrenCache.Get(cacheKey);
@@ -110,7 +109,7 @@ namespace Composite.Data.Types
                                    orderby ps.LocalOrdering
                                    select ps.Id).ToList();
 
-            var readonlyList = new ReadOnlyList<Guid>(children);
+            var readonlyList = new ReadOnlyCollection<Guid>(children);
 
             _childrenCache.Add(cacheKey, readonlyList);
 

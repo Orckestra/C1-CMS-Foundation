@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Composite.Data;
-using Composite.Implementation;
 
 namespace Composite.Pages
 {
@@ -111,16 +109,6 @@ namespace Composite.Pages
             result.Add(additionalContent);
 
             return result;
-        }
-
-        public virtual TMetaData GetMeta<TMetaData>(string groupName) where TMetaData : class, IData
-        {
-            return ImplementationContainer.GetImplementation<NavigationBase>().GetMeta<TMetaData>(this, groupName);
-        }
-
-        public virtual IEnumerable<TPageData> GetData<TPageData>() where TPageData : class, IData
-        {
-            return ImplementationContainer.GetImplementation<NavigationBase>().GetData<TPageData>(this);
         }
 
         #region Hiding XElement methods
