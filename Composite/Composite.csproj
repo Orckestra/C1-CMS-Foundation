@@ -856,14 +856,6 @@
     <Compile Include="Validation\ValidationFacade.cs" />
     <Compile Include="Validation\Validators\GuidNotEmptyValidator.cs" />
     <Compile Include="Validation\Validators\GuidNotEmptyAttribute.cs" />
-    <Compile Include="WebClient\FlowMediators\ActionExecutionMediator.cs" />
-    <Compile Include="WebClient\FlowMediators\ActionExecutionService.cs" />
-    <Compile Include="WebClient\FlowMediators\FormFlowRendering\FormFlowRenderingService.cs" />
-    <Compile Include="WebClient\FlowMediators\FormFlowRendering\FormFlowUiDefinitionRenderer.cs" />
-    <Compile Include="WebClient\FlowMediators\FormFlowRendering\IFormFlowWebRenderingService.cs" />
-    <Compile Include="WebClient\FlowMediators\TreeServicesFacade.cs" />
-    <Compile Include="WebClient\FlowMediators\ViewTransitionHelper.cs" />
-    <Compile Include="WebClient\FlowMediators\WebFlowUiMediator.cs" />
     <Compile Include="WebClient\FlowPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
