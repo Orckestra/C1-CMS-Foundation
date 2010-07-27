@@ -5710,14 +5710,6 @@
       <Name>Composite.Workflows</Name>
     </ProjectReference>
     <ProjectReference Include="..\Composite\Composite.csproj">
-      <Project>{9427C500-8542-409F-A8DC-0B21E250E0FA}</Project>
-      <Name>CompositeApplications</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CompositeCore\CompositeCore.csproj">
-      <Project>{02BB5F33-56BB-4565-8D32-7BDF92D02CDE}</Project>
-      <Name>CompositeCore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Composite\Composite.csproj">
       <Project>{F8D87A5F-D090-4D24-80C1-DBCD938C6CAB}</Project>
       <Name>Composite</Name>
     </ProjectReference>
