@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Composite.Data.Types;
 
 namespace Composite.Implementation
 {
     public class PageManagerBase : ImplementationBase
     {
-        public virtual IPage GetPageByID(Guid id)
+        public virtual IPage GetPageById(Guid id)
         {
             return null;
         }
 
-        public virtual Guid GetParentID(Guid pageId)
+        public virtual Guid GetParentId(Guid pageId)
         {
             return Guid.Empty;
         }
@@ -21,9 +22,9 @@ namespace Composite.Implementation
             return 0;
         }
 
-        public virtual IEnumerable<Guid> GetChildrenIDs(Guid pageId)
+        public virtual ReadOnlyCollection<Guid> GetChildrenIds(Guid pageId)
         {
-            return new Guid[0];
+            return new ReadOnlyCollection<Guid>(new Guid[0]);
         }
 
         public virtual IEnumerable<IPagePlaceholderContent> GetPlaceholdersContent(Guid pageId)

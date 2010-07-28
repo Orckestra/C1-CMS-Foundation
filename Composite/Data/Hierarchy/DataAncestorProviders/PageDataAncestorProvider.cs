@@ -15,7 +15,7 @@ namespace Composite.Data.Hierarchy.DataAncestorProviders
             Verify.IsNotNull(page, "Only '{0}' type is supported.".FormatWith(typeof(IPage).FullName));
 
 
-            Guid parentId = PageManager.GetParentID(page.Id);
+            Guid parentId = PageManager.GetParentId(page.Id);
 
             if (parentId == Guid.Empty)
             {

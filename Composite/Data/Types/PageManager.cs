@@ -75,7 +75,13 @@ namespace Composite.Data.Types
             return readonlyValue ? result : CreateWrapper(result);
         }
 
+        [Obsolete("Use GetParentId(..)")]
         public static Guid GetParentID(Guid pageId)
+        {
+            return GetParentId(pageId);
+        }
+
+        public static Guid GetParentId(Guid pageId)
         {
             PageStructureRecord pageStructure = GetPageStructureRecord(pageId);
             return pageStructure != null ? pageStructure.ParentId : Guid.Empty;

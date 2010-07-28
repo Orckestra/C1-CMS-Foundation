@@ -16,7 +16,7 @@ namespace Composite.Data.Types
             Verify.ArgumentNotNull(page, "page");
             Verify.ArgumentCondition(page.DataSourceId.ExistsInStore, "page", "The given data have not been added yet");
 
-            return PageManager.GetParentID(page.Id);
+            return PageManager.GetParentId(page.Id);
         }
 
         public static int GetLocalOrdering(this IPage page)

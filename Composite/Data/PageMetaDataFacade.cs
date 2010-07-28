@@ -246,7 +246,7 @@ namespace Composite.Data
 
             while (definingPageId != pageId)
             {
-                Guid parentPageId = PageManager.GetParentID(pageId);
+                Guid parentPageId = PageManager.GetParentId(pageId);
 
                 if ((definingPageId != Guid.Empty) && (parentPageId == Guid.Empty)) return -1; // Page is not a (sub)child of _pageId                
 
