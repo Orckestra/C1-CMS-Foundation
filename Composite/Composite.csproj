@@ -401,7 +401,7 @@
     <Compile Include="StandardPlugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\DataReference\PageReferenceSelectorWidgetFunction.cs" />
     <Compile Include="Storage.cs" />
     <Compile Include="StorageAccess.cs" />
-    <Compile Include="StorageEvent.cs" />
+    <Compile Include="StorageEvents.cs" />
     <Compile Include="Trees\AttributeDynamicValuesHelper.cs" />
     <Compile Include="Trees\ConfirmActionNode.cs" />
     <Compile Include="Trees\CustomUrlActionNode.cs" />
@@ -771,7 +771,7 @@
     <Compile Include="Forms\WebChannel\WebManagementChannel.cs" />
     <Compile Include="Forms\WebChannel\WebStandardsChannel.cs" />
     <Compile Include="Forms\WebChannel\WebUiHelpers.cs" />
-    <Compile Include="AppDomainLocker.cs" />
+    <Compile Include="Application\AppDomainLocker.cs" />
     <Compile Include="Functions\BaseRuntimeTreeNodeValueXmlSerializer.cs" />
     <Compile Include="Functions\Foundation\IMetaFunctionProviderRegistry.cs" />
     <Compile Include="Functions\Foundation\MetaFunctionProviderRegistry.cs" />
@@ -1938,15 +1938,6 @@
     <Folder Include="StandardPlugins\Functions\FunctionProviders\XsltBasedFunctionProvider\XsltExtensions\" />
     <Folder Include="StandardPlugins\WebClient\SessionStateProviders\DefaultSessionStateProvider\" />
     <Folder Include="StandardPlugins\WebClient\WebRequestHandlers\LoginWebRequestHandler\Resources\" />
-    <Folder Include="WebClient\Foundation\" />
-    <Folder Include="WebClient\FunctionCallEditor\" />
-    <Folder Include="WebClient\HttpModules\" />
-    <Folder Include="WebClient\Plugins\" />
-    <Folder Include="WebClient\Presentation\" />
-    <Folder Include="WebClient\Services\" />
-    <Folder Include="WebClient\State\" />
-    <Folder Include="WebClient\UiControlLib\" />
-    <Folder Include="WebClient\WCF\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

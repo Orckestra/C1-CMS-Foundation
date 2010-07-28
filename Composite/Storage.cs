@@ -74,14 +74,14 @@ namespace Composite
 
 
 
-        public static StorageEvent Events<T>() where T : class, IData 
+        public static StorageEvents Events<T>() where T : class, IData 
         {
             return ImplementationContainer.GetImplementation<StorageBase>().Events<T>();
         }
 
 
 
-        public static StorageEvent Events(Type interfaceType)
+        public static StorageEvents Events(Type interfaceType)
         {
             return ImplementationContainer.GetImplementation<StorageBase>().Events(interfaceType);
         }

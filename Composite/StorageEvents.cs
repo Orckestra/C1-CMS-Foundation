@@ -7,9 +7,9 @@ namespace Composite
     /// This class contains all the event fired by C1 when changes are made 
     /// in the storage. To obtain a instance of the class see <see cref="Composite.Storage"/>
     /// </summary>
-    public class StorageEvent
+    public class StorageEvents
     {
-        protected StorageEvent()
+        protected StorageEvents()
         {            
         }
 

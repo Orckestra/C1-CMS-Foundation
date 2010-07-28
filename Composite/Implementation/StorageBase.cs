@@ -22,7 +22,7 @@ namespace Composite.Implementation
 
         public virtual IEnumerable<CultureInfo> Locales { get { yield break; } }
 
-        public virtual StorageEvent Events<T>() where T : class, IData { return null; }
-        public virtual StorageEvent Events(Type interfaceType) { return null; }
+        public virtual StorageEvents Events<T>() where T : class, IData { return null; }
+        public virtual StorageEvents Events(Type interfaceType) { return null; }
     }
 }

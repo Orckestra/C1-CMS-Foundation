@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Threading;
 using Composite.Logging;
-using Composite.IO;
 
 
-namespace Composite
+namespace Composite.Application
 {
     public static class AppDomainLocker
     {

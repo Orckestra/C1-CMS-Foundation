@@ -47,7 +47,7 @@ public class PageService : System.Web.Services.WebService
 
             if (pageId == Guid.Empty)
             {
-                pageId = PageManager.GetChildrenIDs(Guid.Empty).FirstOrDefault(rootPageId => PageManager.GetPageByID(rootPageId) != null);
+                pageId = PageManager.GetChildrenIds(Guid.Empty).FirstOrDefault(rootPageId => PageManager.GetPageById(rootPageId) != null);
             }
 
             if (pageId == Guid.Empty)

@@ -62,7 +62,7 @@ public partial class Renderers_Page : System.Web.UI.Page
 
         _dataScope = new DataScope(_urlOptions.DataScopeIdentifier, _urlOptions.Locale); // IDisposable, Disposed in OnUnload
 
-        IPage page = PageManager.GetPageByID(_urlOptions.PageId);
+        IPage page = PageManager.GetPageById(_urlOptions.PageId);
 
         if (page != null)
         {

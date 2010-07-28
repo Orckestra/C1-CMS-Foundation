@@ -43,7 +43,7 @@
 
                     if (pageId == Guid.Empty)
                     {
-                        pageId = PageManager.GetChildrenIDs(Guid.Empty).FirstOrDefault(rootPageId => PageManager.GetPageByID(rootPageId) != null);
+                        pageId = PageManager.GetChildrenIds(Guid.Empty).FirstOrDefault(rootPageId => PageManager.GetPageById(rootPageId) != null);
                     }
 
                     PageStructureInfo.GetIdToUrlLookup().TryGetValue(pageId, out url);

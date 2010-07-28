@@ -53,14 +53,14 @@ namespace Composite.Implementation
 
 
 
-        public override StorageEvent Events<T>()
+        public override StorageEvents Events<T>()
         { 
             throw new NotImplementedException(); 
         }
 
 
 
-        public override StorageEvent Events(Type interfaceType)
+        public override StorageEvents Events(Type interfaceType)
         {
             throw new NotImplementedException();
         }

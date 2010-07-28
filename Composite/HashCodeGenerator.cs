@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 
 namespace Composite
 {
+    [Obsolete("To be removed")]
     internal sealed class HashCodeGenerator
     {
         private StringBuilder stringToHash = new StringBuilder();
