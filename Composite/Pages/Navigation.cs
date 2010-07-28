@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using Composite.Implementation;
+using Composite.Implementation.Pages;
 
 namespace Composite.Pages
 {
@@ -9,16 +9,6 @@ namespace Composite.Pages
         static Navigation()
         {
             ImplementationContainer.SetImplementation<NavigationBase>(new NavigationDefaultImplementation());
-        }
-
-        public static IEnumerable<XPage> SelectPages(PageSelection pageSelection)
-        {
-            return ImplementationContainer.GetImplementation<NavigationBase>().SelectPages(CurrentPage, pageSelection);
-        }
-
-        public static IEnumerable<XPage> SelectPages(XPage currentPage, PageSelection pageSelection)
-        {
-            return ImplementationContainer.GetImplementation<NavigationBase>().SelectPages(currentPage, pageSelection);
         }
 
         public static XSiteMap GetSiteMap()

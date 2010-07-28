@@ -4,13 +4,11 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Web;
+using Composite.Extensions;
 
-using Composite.StringExtensions;
-
-namespace Composite.WebClient
+namespace Composite
 {
-    [Obsolete("Use Composite.UrlBuilder")]
-    public sealed class UrlString
+    public sealed class UrlBuilder
     {
         private static readonly string IncorrectValueParam = "__***IncorrectValue***__";
 
@@ -18,7 +16,7 @@ namespace Composite.WebClient
         private string _filePath;
         private List<KeyValuePair<string, string>> _queryParameters;
 
-        public UrlString(string url)
+        public UrlBuilder(string url)
         {
             _queryParameters = new List<KeyValuePair<string, string>>();
 
@@ -243,6 +241,11 @@ namespace Composite.WebClient
 
                 return sb.ToString();
             }
+        }
+
+        public static implicit operator string(UrlBuilder builder)
+        {
+            return builder.ToString();
         }
     }
 }

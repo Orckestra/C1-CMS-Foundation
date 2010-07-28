@@ -10,28 +10,28 @@ namespace Composite.Implementation
     {
         public override StorageAccess Open() 
         { 
-            return new StorageAccessDefaultImplementation(PublicationState.Public, null); 
+            return new StorageAccessDefaultImplementation(PublicationScope.Public, null); 
         }
 
 
 
-        public override StorageAccess Open(PublicationState publicationState) 
+        public override StorageAccess Open(PublicationScope publicationScope) 
         { 
-            return new StorageAccessDefaultImplementation(publicationState, null); 
+            return new StorageAccessDefaultImplementation(publicationScope, null); 
         }
 
 
 
-        public override StorageAccess Open(PublicationState publicationState, CultureInfo locale) 
+        public override StorageAccess Open(PublicationScope publicationScope, CultureInfo locale) 
         { 
-            return new StorageAccessDefaultImplementation(publicationState, locale); 
+            return new StorageAccessDefaultImplementation(publicationScope, locale); 
         }
 
 
 
         public override StorageAccess Open(CultureInfo locale) 
         { 
-            return new StorageAccessDefaultImplementation(PublicationState.Public, locale); 
+            return new StorageAccessDefaultImplementation(PublicationScope.Public, locale); 
         }
 
 

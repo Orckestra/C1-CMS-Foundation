@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Composite.Implementation;
+using Composite.Implementation.Pages;
 
 namespace Composite.Pages
 {
@@ -96,6 +98,11 @@ namespace Composite.Pages
 
                 return pos as XSiteMap;
             }
+        }
+
+        public IEnumerable<XPage> SelectPages(PageSelection pageSelection)
+        {
+            return ImplementationContainer.GetImplementation<NavigationBase>().SelectPages(this, pageSelection);
         }
 
         public XElement ElementClone()

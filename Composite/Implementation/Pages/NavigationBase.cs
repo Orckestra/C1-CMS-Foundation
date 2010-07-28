@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Composite.Pages;
 
-namespace Composite.Implementation
+namespace Composite.Implementation.Pages
 {
     public class NavigationBase : ImplementationBase
     {

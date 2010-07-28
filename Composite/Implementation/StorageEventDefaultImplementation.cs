@@ -3,7 +3,7 @@
 namespace Composite.Implementation
 {
     // Our implementation of StorageEvent
-    public class StorageEventDefaultImplementation : StorageEvents
+    public class StorageEventsDefaultImplementation : StorageEvents
     {
         private EventHandler _onAddEvent;
         private EventHandler _onUpdateEvent;

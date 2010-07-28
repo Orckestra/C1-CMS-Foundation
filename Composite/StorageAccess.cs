@@ -13,15 +13,15 @@ namespace Composite
     public abstract class StorageAccess : IDisposable
     {
         protected StorageAccess()
-            : this(PublicationState.Public, null)
+            : this(PublicationScope.Public, null)
         {
         }
 
 
 
-        protected StorageAccess(PublicationState state, CultureInfo locale)
+        protected StorageAccess(PublicationScope scope, CultureInfo locale)
         {
-            this.PublicationState = state;
+            this.PublicationScope = scope;
             this.Locale = locale;
         }
 
@@ -106,12 +106,12 @@ namespace Composite
         /// <summary>
         /// The current publication state
         /// </summary>
-        public virtual PublicationState PublicationState { get; private set; }
+        public virtual PublicationScope PublicationScope { get; private set; }
 
 
 
         /// <summary>
-        /// The current locale. See <see cref="Storage"/> and <seealso cref="PublicationState"/>
+        /// The current locale. See <see cref="Storage"/> and <seealso cref="PublicationScope"/>
         /// </summary>
         public virtual CultureInfo Locale { get; private set; }
 

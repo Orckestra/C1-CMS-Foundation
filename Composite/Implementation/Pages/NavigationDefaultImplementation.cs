@@ -8,7 +8,7 @@ using Composite.Data;
 using Composite.Pages;
 using Composite.Renderings.Page;
 
-namespace Composite.Implementation
+namespace Composite.Implementation.Pages
 {
     public class NavigationDefaultImplementation : NavigationBase
     {

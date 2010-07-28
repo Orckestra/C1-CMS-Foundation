@@ -33,7 +33,7 @@ namespace Composite.Data.Types
         private static readonly Cache<string, ExtendedNullable<IPage>> _pageCache = new Cache<string, ExtendedNullable<IPage>>("Pages", PageCacheSize);
         private static readonly Cache<string, ExtendedNullable<PageStructureRecord>> _pageStructureCache = new Cache<string, ExtendedNullable<PageStructureRecord>>("Page structure", PageStructureCacheSize);
         private static readonly Cache<string, ReadOnlyCollection<Guid>> _childrenCache = new Cache<string, ReadOnlyCollection<Guid>>("Child pages", ChildrenCacheSize);
-        private static readonly Cache<string, ReadOnlyList<IPagePlaceholderContent>> _placeholderCache = new Cache<string, ReadOnlyList<IPagePlaceholderContent>>("Page placeholders", PagePlaceholderCacheSize);
+        private static readonly Cache<string, ReadOnlyCollection<IPagePlaceholderContent>> _placeholderCache = new Cache<string, ReadOnlyCollection<IPagePlaceholderContent>>("Page placeholders", PagePlaceholderCacheSize);
 
         static PageManager()
         {
@@ -124,7 +124,7 @@ namespace Composite.Data.Types
 
 
 
-        public static IEnumerable<IPagePlaceholderContent> GetPlaceholderContent(Guid pageId)
+        public static ReadOnlyCollection<IPagePlaceholderContent> GetPlaceholderContent(Guid pageId)
         {
             string cacheKey = GetCacheKey<IPagePlaceholderContent>(pageId);
             var cachedValue = _placeholderCache.Get(cacheKey);
@@ -133,9 +133,13 @@ namespace Composite.Data.Types
                 return cachedValue;
             }
 
-            var result = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == pageId).ToList();
-            _placeholderCache.Add(cacheKey, new ReadOnlyList<IPagePlaceholderContent>(result));
-            return result;
+            var list = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == pageId).ToList();
+
+            var readonlyList = new ReadOnlyCollection<IPagePlaceholderContent>(list);
+
+            _placeholderCache.Add(cacheKey, readonlyList);
+
+            return readonlyList;
         }
 
         #endregion Public

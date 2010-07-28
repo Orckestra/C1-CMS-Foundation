@@ -3,11 +3,9 @@
 
 <%@ Page Language="C#" %>
 
-<%@ Import Namespace="System.Collections.Generic" %>
-<%@ Import Namespace="System.Linq" %>
+<%@ Import Namespace="Composite" %>
 <%@ Import Namespace="Composite.Data" %>
 <%@ Import Namespace="Composite.Data.Types" %>
-<%@ Import Namespace="Composite.Renderings.Page" %>
 <%@ Import Namespace="Composite.Pages" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -17,16 +15,16 @@
         <script runat="server">
             void Page_Init(object sender, EventArgs e)
             {
-                using (new DataScope(Composite.Data.DataLocalizationFacade.DefaultLocalizationCulture))
+                var defaultLocale = DataLocalizationFacade.DefaultLocalizationCulture;
+                
+                using (var storage = Storage.Open())
                 {
                     IEnumerable<IPageHostNameBinding> hostNameMatches =
-                        from binding in DataFacade.GetData<IPageHostNameBinding>()
+                        from binding in storage.Get<IPageHostNameBinding>()
                         where binding.HostName != null
                                 && binding.HostName != string.Empty
                         orderby binding.HostName.Length descending
                         select binding;
-
-                    string url = null;
 
                     Guid pageId = Guid.Empty;
 
@@ -43,16 +41,21 @@
 
                     if (pageId == Guid.Empty)
                     {
-                        pageId = PageManager.GetChildrenIds(Guid.Empty).FirstOrDefault(rootPageId => PageManager.GetPageById(rootPageId) != null);
-                    }
+                        var pageManager = PageManager.Create(PublicationScope.Public, defaultLocale);
 
-                    PageStructureInfo.GetIdToUrlLookup().TryGetValue(pageId, out url);
+                        pageId = pageManager.GetChildrenIds(Guid.Empty).FirstOrDefault(rootPageId => pageManager.GetPageById(rootPageId) != null);
 
-                    if (url != null)
-                    {
-                        Response.AddHeader("Location", url);
-                        Response.StatusCode = 301;
-                        ApplicationInstance.CompleteRequest();
+                        if (pageId != Guid.Empty)
+                        {
+                            string url = new PageUrl(PublicationScope.Public, defaultLocale, pageId, PageUrlType.Public).Build();
+
+                            if (url != null)
+                            {
+                                Response.AddHeader("Location", url);
+                                Response.StatusCode = 301; //  "Moved Permanently"
+                                ApplicationInstance.CompleteRequest();
+                            }
+                        }
                     }
                 }                
             }

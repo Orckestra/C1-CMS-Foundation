@@ -7,7 +7,7 @@ using Composite.Implementation;
 
 namespace Composite
 {
-    public enum PublicationState
+    public enum PublicationScope
     {
         Public,
         Internal
@@ -36,16 +36,16 @@ namespace Composite
 
 
 
-        public static StorageAccess Open(PublicationState publicationState) 
+        public static StorageAccess Open(PublicationScope publicationScope) 
         {
-            return ImplementationContainer.GetImplementation<StorageBase>().Open(publicationState);            
+            return ImplementationContainer.GetImplementation<StorageBase>().Open(publicationScope);            
         }
 
 
 
-        public static StorageAccess Open(PublicationState publicationState, CultureInfo locale) 
+        public static StorageAccess Open(PublicationScope publicationScope, CultureInfo locale) 
         {
-            return ImplementationContainer.GetImplementation<StorageBase>().Open(publicationState, locale);        
+            return ImplementationContainer.GetImplementation<StorageBase>().Open(publicationScope, locale);        
         }
 
 

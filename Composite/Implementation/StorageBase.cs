@@ -14,8 +14,8 @@ namespace Composite.Implementation
     public class StorageBase : ImplementationBase
     {
         public virtual StorageAccess Open() { return null; }
-        public virtual StorageAccess Open(PublicationState publicationState) { return null; }
-        public virtual StorageAccess Open(PublicationState publicationState, CultureInfo locale) { return null; }
+        public virtual StorageAccess Open(PublicationScope publicationScope) { return null; }
+        public virtual StorageAccess Open(PublicationScope publicationScope, CultureInfo locale) { return null; }
         public virtual StorageAccess Open(CultureInfo locale) { return null; }
 
         public virtual T New<T>() where T : class, IData { return null; }

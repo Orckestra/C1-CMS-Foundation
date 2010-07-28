@@ -282,10 +282,11 @@
     <Compile Include="Implementation\ImplementationContainer.cs" />
     <Compile Include="Implementation\LogBase.cs" />
     <Compile Include="Implementation\LogDefaultImplementation.cs" />
-    <Compile Include="Implementation\NavigationBase.cs" />
-    <Compile Include="Implementation\NavigationDefaultImplementation.cs" />
-    <Compile Include="Implementation\PageManagerBase.cs" />
-    <Compile Include="Implementation\PageManagerDefaultImplementation.cs" />
+    <Compile Include="Implementation\Pages\DefaultPageManager.cs" />
+    <Compile Include="Implementation\Pages\NavigationBase.cs" />
+    <Compile Include="Implementation\Pages\NavigationDefaultImplementation.cs" />
+    <Compile Include="Implementation\Pages\PageManagerBase.cs" />
+    <Compile Include="Implementation\Pages\PageManagerDefaultImplementation.cs" />
     <Compile Include="Implementation\StorageAccessDefaultImplementation.cs" />
     <Compile Include="Implementation\StorageBase.cs" />
     <Compile Include="Implementation\StorageDefaultImplementation.cs" />
@@ -317,9 +318,11 @@
     <Compile Include="PackageSystem\PackageFragmentInstallers\LocalePackageFragmentUninstaller.cs" />
     <Compile Include="PackageSystem\PackageFragmentInstallers\PackageVersionBumberFragmentInstaller.cs" />
     <Compile Include="PackageSystem\PackageFragmentInstallers\PackageVersionBumberFragmentUninstaller.cs" />
+    <Compile Include="Pages\IPageManager.cs" />
     <Compile Include="Pages\Navigation.cs" />
     <Compile Include="Pages\PageManager.cs" />
     <Compile Include="Pages\PageSelection.cs" />
+    <Compile Include="Pages\PageUrl.cs" />
     <Compile Include="Pages\XPage.cs" />
     <Compile Include="Pages\XSiteMap.cs" />
     <Compile Include="Parallelization\IndexEnumerator.cs" />
@@ -446,6 +449,7 @@
     <Compile Include="Trees\TreeMarkupConstants.cs" />
     <Compile Include="Trees\WorkflowActionNode.cs" />
     <Compile Include="Types\AssemblyExtensionMethods.cs" />
+    <Compile Include="UrlBuilder.cs" />
     <Compile Include="WebClient\Captcha\Captcha.cs" />
     <Compile Include="StandardPlugins\Functions\XslExtensionsProviders\CaptchaXslExtension.cs" />
     <Compile Include="WebClient\Captcha\Encryption.cs" />

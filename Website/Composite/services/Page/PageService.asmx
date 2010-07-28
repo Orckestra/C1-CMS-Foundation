@@ -1,14 +1,14 @@
 ﻿<%@ WebService Language="C#" Class="PageService" %>
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Services;
 using System.Web.Services.Protocols;
-using Composite.Renderings.Page;
+
+using Composite;
 using Composite.Pages;
 using Composite.WebClient;
-using Composite.Data;
-using System.Collections.Generic;
 using Composite.Data.Types;
 
 
@@ -19,20 +19,17 @@ public class PageService : System.Web.Services.WebService
     [WebMethod]
     public string GetPageBrowserDefaultUrl(bool dummy)
     {
-        using (new DataScope(DataScopeIdentifier.Administrated))
+        using (var storage = Storage.Open(PublicationScope.Internal))
         {
             // NOTE: linq2sql conversion doesn't support string.EndsWith() function, when we have a parameter as an argument.
             IEnumerable<IPageHostNameBinding> hostNameMatches =
-                from binding in DataFacade.GetData<IPageHostNameBinding>()
+                from binding in storage.Get<IPageHostNameBinding>()
                 where binding.HostName != null
                       && binding.HostName != string.Empty
                 orderby binding.HostName.Length descending
                 select binding;
 
-            string url = null;
-
             Guid pageId = Guid.Empty;
-
 
             string hostname = this.Context.Request.Url.Host.ToLower();
 
@@ -45,24 +42,21 @@ public class PageService : System.Web.Services.WebService
                 }
             }
 
+            var pageManager = PageManager.Create(PublicationScope.Internal);
+            
             if (pageId == Guid.Empty)
             {
-                pageId = PageManager.GetChildrenIds(Guid.Empty).FirstOrDefault(rootPageId => PageManager.GetPageById(rootPageId) != null);
+                pageId = pageManager.GetChildrenIds(Guid.Empty).FirstOrDefault(rootPageId => pageManager.GetPageById(rootPageId) != null);
             }
 
             if (pageId == Guid.Empty)
             {
                 return "/";
             }
-            
-            PageStructureInfo.GetIdToUrlLookup().TryGetValue(pageId, out url);
-                                
-            if (url == null)
-            {
-                return "/";
-            }
-                    
-            return url + "?dataScope=administrated";
+
+            string url = new PageUrl(PublicationScope.Internal, storage.Locale, pageId).Build(PageUrlType.Public);
+
+            return url ?? "/";
         }
     }
 

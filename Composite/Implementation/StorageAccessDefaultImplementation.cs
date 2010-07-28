@@ -8,12 +8,12 @@ namespace Composite.Implementation
 {
     internal sealed class StorageAccessDefaultImplementation : StorageAccess
     {
-        public StorageAccessDefaultImplementation(PublicationState scope, CultureInfo locale)
+        public StorageAccessDefaultImplementation(PublicationScope scope, CultureInfo locale)
             : base(scope, locale)
         {
             this.DataScopeIdentifier = DataScopeIdentifier.Administrated;
 
-            if (scope == PublicationState.Public)
+            if (scope == PublicationScope.Public)
             {
                 this.DataScopeIdentifier = DataScopeIdentifier.Public;
             }

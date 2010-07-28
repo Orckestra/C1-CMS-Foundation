@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Web;
 using System.Web.UI;
-
+using Composite;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Pages;
@@ -29,7 +29,7 @@ public partial class Renderers_Page : System.Web.UI.Page
     public Renderers_Page()
     {
         string query = HttpContext.Current.Request.Url.OriginalString;
-        NameValueCollection queryParameters = new UrlString(query).GetQueryParameters();
+        NameValueCollection queryParameters = new UrlBuilder(query).GetQueryParameters();
 
         _urlOptions = PageUrlHelper.ParseQueryString(queryParameters, out _foreignQueryStringParameters);
 
@@ -37,8 +37,8 @@ public partial class Renderers_Page : System.Web.UI.Page
         {
             if (UserValidationFacade.IsLoggedIn() == false)
             {
-                HttpContext.Current.Response.Redirect(string.Format("/Composite/Login.aspx?ReturnUrl={0}", HttpUtility.UrlEncodeUnicode(HttpContext.Current.Request.Url.OriginalString)));
-                HttpContext.Current.Response.End();
+                HttpContext.Current.Response.Redirect(string.Format("/Composite/Login.aspx?ReturnUrl={0}", HttpUtility.UrlEncodeUnicode(HttpContext.Current.Request.Url.OriginalString)), false);
+                HttpContext.Current.ApplicationInstance.CompleteRequest();
                 return;
             }
         }
@@ -62,7 +62,9 @@ public partial class Renderers_Page : System.Web.UI.Page
 
         _dataScope = new DataScope(_urlOptions.DataScopeIdentifier, _urlOptions.Locale); // IDisposable, Disposed in OnUnload
 
-        IPage page = PageManager.GetPageById(_urlOptions.PageId);
+        var pageManager = PageManager.Create();
+
+        IPage page = pageManager.GetPageById(_urlOptions.PageId);
 
         if (page != null)
         {
@@ -85,7 +87,7 @@ public partial class Renderers_Page : System.Web.UI.Page
                 return;
             }
 
-            IEnumerable<IPagePlaceholderContent> contents = PageManager.GetPlaceholdersContent(page.Id);
+            IEnumerable<IPagePlaceholderContent> contents = pageManager.GetPlaceholdersContent(page.Id);
             Control renderedPage = PageRenderer.Render(page, contents);
             this.Controls.Add(renderedPage);
             if (this.Form != null) this.Form.Action = Request.RawUrl;
