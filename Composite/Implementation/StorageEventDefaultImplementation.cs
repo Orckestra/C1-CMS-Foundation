@@ -10,7 +10,7 @@ namespace Composite.Implementation
         private EventHandler _onDeleteEvent;
 
     
-        public override event EventHandler OnAdd
+        public override event EventHandler OnBeforeAdd
         {
             add
             {
@@ -26,7 +26,7 @@ namespace Composite.Implementation
 
 
 
-        public override event EventHandler OnUpdate
+        public override event EventHandler OnBeforeUpdate
         {
             add
             {
@@ -42,7 +42,7 @@ namespace Composite.Implementation
 
 
 
-        public override event EventHandler OnDelete
+        public override event EventHandler OnDeleted
         {
             add
             {
