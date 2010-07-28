@@ -340,6 +340,7 @@
     <Compile Include="Renderings\Foundation\RenderingResponseHandlerRegistry.cs" />
     <Compile Include="Renderings\Foundation\RenderingResponseHandlerRegistryImpl.cs" />
     <Compile Include="Renderings\IRenderingResponseHandlerFacade.cs" />
+    <Compile Include="Renderings\Page\PageUrlBuilder.cs" />
     <Compile Include="Renderings\Plugins\RenderingResponseHandler\IDataRenderingResponseHandler.cs" />
     <Compile Include="Renderings\Plugins\RenderingResponseHandler\IRenderingResponseHandler.cs" />
     <Compile Include="Renderings\Plugins\RenderingResponseHandler\NonConfigurableHookRegistrator.cs" />
@@ -864,7 +865,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WebClient\MediaUrlHelper.cs" />
-    <Compile Include="WebClient\PageUrlHelper.cs" />
     <Compile Include="WebClient\UrlString.cs" />
     <Compile Include="Workflow\Activities\ConditionalSetStateActivity.cs">
       <SubType>Component</SubType>

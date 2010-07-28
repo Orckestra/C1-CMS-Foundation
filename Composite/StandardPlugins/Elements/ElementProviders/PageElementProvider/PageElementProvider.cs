@@ -13,6 +13,7 @@ using Composite.Elements.ElementProviderHelpers.AssociatedDataElementProviderHel
 using Composite.Elements.Plugins.ElementProvider;
 using Composite.Extensions;
 using Composite.Linq;
+using Composite.Pages;
 using Composite.Parallelization;
 using Composite.ResourceSystem;
 using Composite.ResourceSystem.Icons;
@@ -24,6 +25,7 @@ using Composite.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
+using PageManager = Composite.Data.Types.PageManager;
 
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider
@@ -957,17 +959,16 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
             DataEntityToken token = (DataEntityToken)entityToken;
             IPage page = token.Data as IPage;
 
-            string dataScopeName = DataScopeIdentifier.Administrated.Name;
+            PublicationScope publicationScope = PublicationScope.Internal;
             if (actionToken is ViewPublicActionToken)
             {
-                dataScopeName = DataScopeIdentifier.Public.Name;
+                publicationScope = PublicationScope.Public;
 
-
-                // does the public page exsist
-                using (DataScope dataScope = new DataScope(DataScopeIdentifier.Public, page.DataSourceId.LocaleScope))
+                // Checking whether the page exist in 'Public' scope
+                using (new DataScope(DataScopeIdentifier.Public, page.DataSourceId.LocaleScope))
                 {
-                    int count = DataFacade.GetData<IPage>(x => x.Id == page.Id).Count();
-                    if (count < 1)
+                    bool exist = DataFacade.GetData<IPage>(x => x.Id == page.Id).Any();
+                    if (!exist)
                     {
                         var managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
 
@@ -980,13 +981,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
                 }
             }
 
-            var urlOptions = new PageUrlOptions(dataScopeName, page.DataSourceId.LocaleScope, page.Id);
+            var pageUrl = new PageUrl(publicationScope, page.DataSourceId.LocaleScope, page.Id);
 
-            UrlString url = PageUrlHelper.BuildUrl(UrlType.Public, urlOptions)
-                            ?? PageUrlHelper.BuildUrl(UrlType.Internal, urlOptions);
+            string url = pageUrl.Build(PageUrlType.Public) ?? pageUrl.Build(PageUrlType.Internal); 
 
             var arguments = new Dictionary<string, string>();
-            arguments.Add("URL", url.ToString());
+            arguments.Add("URL", url);
             IManagementConsoleMessageService consoleServices = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
             ConsoleMessageQueueFacade.Enqueue(new OpenHandledViewMessageQueueItem(EntityTokenSerializer.Serialize(entityToken, true), "Composite.Management.Browser", arguments), consoleServices.CurrentConsoleId);
 

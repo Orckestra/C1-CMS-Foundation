@@ -9,7 +9,6 @@ using Composite.Data;
 using Composite.Data.Types;
 using Composite.Logging;
 using Composite.Types;
-using Composite.WebClient;
 using Composite.StringExtensions;
 
 
@@ -538,10 +537,10 @@ namespace Composite.Renderings.Page
 
         private static void BuildFolderPaths(SitemapBuildingData pagesData, IEnumerable<XElement> roots, IDictionary<string, Guid> urlToIdLookup)
         {
-            BuildFolderPaths(pagesData, roots, urlToIdLookup, new PageUrlHelper.UrlBuildingCache());
+            BuildFolderPaths(pagesData, roots, urlToIdLookup, new PageUrlBuilder());
         }
 
-        private static void BuildFolderPaths(SitemapBuildingData pagesData, IEnumerable<XElement> elements, IDictionary<string, Guid> urlToIdLookup, PageUrlHelper.UrlBuildingCache urlBuildingCache)
+        private static void BuildFolderPaths(SitemapBuildingData pagesData, IEnumerable<XElement> elements, IDictionary<string, Guid> urlToIdLookup, PageUrlBuilder builder)
         {
             foreach (XElement element in elements)
             {
@@ -557,16 +556,16 @@ namespace Composite.Renderings.Page
                 Guid parentId = pageStructure.ParentId;
 
                 string pageUrl, lookupUrl;
-                PageUrlHelper.BuildUrlInternal(page,
+                builder.BuildUrlInternal(page,
                     DataScopeManager.CurrentDataScope,
                     LocalizationScopeManager.CurrentLocalizationScope,
                     parentId,
-                    out pageUrl, out lookupUrl, urlBuildingCache);
+                    out pageUrl, out lookupUrl);
 
                 element.Add(new XAttribute("URL", pageUrl));
 
                 // TODO: This attribute is to be removed
-                element.Add(new XAttribute("FolderPath", urlBuildingCache.FolderPaths[pageId]));
+                element.Add(new XAttribute("FolderPath", builder.FolderPaths[pageId]));
 
                 element.Add(new XAttribute("Depth", 1+ element.Ancestors(PageElementName).Count()));
 
@@ -574,7 +573,7 @@ namespace Composite.Renderings.Page
                 {
                     urlToIdLookup.Add(lookupUrl, pageId);
 
-                    BuildFolderPaths(pagesData, element.Elements(), urlToIdLookup, urlBuildingCache);
+                    BuildFolderPaths(pagesData, element.Elements(), urlToIdLookup, builder);
                 }
                 else
                 {

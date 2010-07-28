@@ -9,14 +9,17 @@ using Composite.Collections.Generic;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Logging;
+using Composite.Pages;
 using Composite.Renderings.Page;
 using Composite.StringExtensions;
 using System.Web;
 using System.Collections.Specialized;
+using PageManager = Composite.Data.Types.PageManager;
 
 
 namespace Composite.WebClient
 {
+    [Obsolete("Use 'Composite.Pages' namespace instead")]
     public sealed class PageUrlOptions
     {
         public PageUrlOptions(string dataScopeIdentifierName, CultureInfo locale, Guid pageId) :
@@ -56,6 +59,7 @@ namespace Composite.WebClient
         }
     }
 
+    [Obsolete("Use 'Composite.Pages' namespace instead")]
     public enum UrlType
     {
         Undefined = 0,
@@ -72,11 +76,6 @@ namespace Composite.WebClient
 
         private static readonly string RenredingLinkRegExPattern = string.Format(@"{0}/Renderers/Page.aspx([^\""']*)", UrlUtils.PublicRootPath);
         private static readonly Regex RenredingLinkRegex = new Regex(RenredingLinkRegExPattern);
-
-        internal class UrlBuildingCache
-        {
-            public Hashtable<Guid, string> FolderPaths = new Hashtable<Guid, string>();
-        }
 
         public static PageUrlOptions ParseUrl(string url)
         {
@@ -138,7 +137,7 @@ namespace Composite.WebClient
             }
 
             string requestPathWithoutUrlMappingName;
-            CultureInfo locale = GetCultureInfo(requestPath, out requestPathWithoutUrlMappingName);
+            CultureInfo locale = PageUrl.GetCultureInfo(requestPath, out requestPathWithoutUrlMappingName);
 
             if (locale == null)
             {
@@ -174,45 +173,15 @@ namespace Composite.WebClient
         {
             string newRequestPath;
 
-            return GetCultureInfo(requestPath, out newRequestPath);
+            return PageUrl.GetCultureInfo(requestPath, out newRequestPath);
         }
 
 
 
         public static CultureInfo GetCultureInfo(string requestPath, out string requestPathWithoutUrlMappingName)
         {
-            requestPathWithoutUrlMappingName = requestPath;            
-
-            int startIndex = requestPath.IndexOf('/', UrlUtils.PublicRootPath.Length) + 1;
-            if (startIndex >= 0 && requestPath.Length > startIndex)
-            {
-                int endIndex = requestPath.IndexOf('/', startIndex + 1) - 1;
-                if (endIndex >= 0)
-                {
-                    string urlMappingName = requestPath.Substring(startIndex, endIndex - startIndex + 1);
-
-                    if (DataLocalizationFacade.UrlMappingNames.Contains(urlMappingName) == true)
-                    {
-                        CultureInfo cultureInfo = DataLocalizationFacade.GetCultureInfoByUrlMappingName(urlMappingName);
-
-                        bool exists = DataLocalizationFacade.ActiveLocalizationNames.Contains(cultureInfo.Name);
-
-                        if (exists == true)
-                        {
-                            requestPathWithoutUrlMappingName = requestPath.Remove(startIndex - 1, endIndex - startIndex + 2);
-
-                            return cultureInfo;
-                        }
-
-                        return null;
-                    }
-                }
-            }
-
-            return DataLocalizationFacade.DefaultUrlMappingCulture;
+            return PageUrl.GetCultureInfo(requestPath, out requestPathWithoutUrlMappingName);
         }
-
-
 
         public static bool IsPublicUrl(string relativePath)
         {
@@ -238,7 +207,7 @@ namespace Composite.WebClient
             return url.FilePath.EndsWith("Renderers/Page.aspx", true);
         }
 
-
+        [Obsolete("Use Composite.Pages.PageUrl.Build() instead")]
         public static UrlString BuildUrl(PageUrlOptions options)
         {
             Verify.ArgumentNotNull(options, "options");
@@ -253,6 +222,7 @@ namespace Composite.WebClient
                    || relativeUrl.StartsWith(UrlUtils.AdminRootPath + "/", true);
         }
 
+        [Obsolete("Use Composite.Pages.PageUrl.Build() instead")]
         public static UrlString BuildUrl(UrlType urlType, PageUrlOptions options)
         {
             Verify.ArgumentNotNull(options, "options");
@@ -292,6 +262,7 @@ namespace Composite.WebClient
             throw new NotImplementedException("BuildUrl function suppors only 'Public' and 'Unternal' urls.");
         }
 
+        [Obsolete("To be removed, use Composite.Pages.PageUrl.TryParseFriendlyUrl(...) instead")]
         public static bool TryParseFriendlyUrl(string relativeUrl, out PageUrlOptions urlOptions)
         {
             if (IsAdminPath(relativeUrl))
@@ -301,7 +272,7 @@ namespace Composite.WebClient
             }
 
             string path;
-            CultureInfo cultureInfo = GetCultureInfo(relativeUrl, out path);
+            CultureInfo cultureInfo = PageUrl.GetCultureInfo(relativeUrl, out path);
             if (cultureInfo == null)
             {
                 urlOptions = null;
@@ -337,63 +308,6 @@ namespace Composite.WebClient
 
             urlOptions = new PageUrlOptions(dataScope.Name, cultureInfo, pageId, UrlType.Friendly);
             return true;
-        }
-
-        /// <summary>
-        /// To be used for recursive building of page url-s.
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="dataScopeIdentifier"></param>
-        /// <param name="cultureInfo"></param>
-        /// <param name="parentPageId"></param>
-        /// <param name="lookupUrl"></param>
-        /// <param name="url"></param>
-        /// <param name="urlBuildingCache"></param>
-        /// <returns></returns>
-        internal static void BuildUrlInternal(IPage page, DataScopeIdentifier dataScopeIdentifier, CultureInfo cultureInfo, Guid parentPageId, out string url, out string lookupUrl, UrlBuildingCache urlBuildingCache)
-        {
-            Verify.ArgumentNotNull(page, "page");
-            Verify.ArgumentNotNull(dataScopeIdentifier, "dataScopeIdentifier");
-            Verify.ArgumentNotNull(cultureInfo, "cultureInfo");
-            Verify.ArgumentNotNull(urlBuildingCache, "urlBuildingCache");
-
-            string argsAppend = string.Empty;
-
-            string parentPath;
-            if (parentPageId == Guid.Empty)
-            {
-                parentPath = string.Empty;
-            } 
-            else
-            {
-                Verify.That(urlBuildingCache.FolderPaths.ContainsKey(parentPageId), "Method BuildUrlInternal() should be called for parent page before running for childildren, so 'urlBuildingCache' parameter will contains parent pages data.");
-                parentPath = urlBuildingCache.FolderPaths[parentPageId];
-            }
-
-
-            string folderPath = string.Format("{0}/{1}", parentPath, page.UrlTitle);
-
-            urlBuildingCache.FolderPaths.Add(page.Id, folderPath);
-
-            string baseUrl;
-            string urlMappingName = DataLocalizationFacade.GetUrlMappingName(LocalizationScopeManager.CurrentLocalizationScope);
-            if (urlMappingName != "")
-            {
-                baseUrl = string.Format("{0}/{1}{2}", UrlUtils.PublicRootPath, urlMappingName, folderPath);
-            }
-            else
-            {
-                baseUrl = UrlUtils.PublicRootPath + folderPath;
-            }
-
-            lookupUrl = string.Format("{0}.aspx{1}", baseUrl, argsAppend);
-
-
-            url = lookupUrl;
-            if (dataScopeIdentifier.Name != DataScopeIdentifier.GetDefault().Name)
-            {
-                url += "?dataScope=" + dataScopeIdentifier.Name;
-            }
         }
 
         /// <summary>

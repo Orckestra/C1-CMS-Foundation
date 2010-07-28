@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Web;
+using Composite.Pages;
 using Composite.Threading;
 using Composite.WebClient;
-
 using Composite.Extensions;
 
 
@@ -23,6 +23,14 @@ namespace Composite.Renderings
             HttpApplication application = (HttpApplication) sender;
             HttpContext context = application.Context;
 
+            string localPath = context.Request.Url.LocalPath;
+
+            if (IsAdminPath(localPath)
+                || PageUrl.IsInternalUrl(localPath))
+            {
+                return;
+            }
+
             if(HandlePublicPageUrl(context))
             {
                 return;
@@ -37,26 +45,19 @@ namespace Composite.Renderings
         {
             try
             {
-                if (!PageUrlHelper.IsPublicUrl(context.Request.Path))
-                {
-                    return false;
-                }
+                NameValueCollection notInvolvedQueryParameters;
 
                 string currentUrl = context.Request.Url.OriginalString;
 
-                NameValueCollection notInvolvedQueryParameters;
-                PageUrlOptions urlOptions = PageUrlHelper.ParsePublicUrl(currentUrl, out notInvolvedQueryParameters);
+                PageUrl pageUrl = PageUrl.ParsePublicUrl(new UrlBuilder(currentUrl), out notInvolvedQueryParameters);
 
-                if (urlOptions == null)
+                if (pageUrl == null || pageUrl.UrlType != PageUrlType.Public)
                 {
                     return false;
                 }
 
-                UrlString originalUrlString = new UrlString(context.Request.Path);
-
-                UrlString correctUrl = PageUrlHelper.BuildUrl(urlOptions);
-
-
+                UrlBuilder originalUrlString = new UrlBuilder(context.Request.Path);
+                UrlBuilder correctUrl = pageUrl.Build();
 
                 if (string.Compare(originalUrlString.FilePath, correctUrl.FilePath, false) != 0 &&
                     string.Compare(originalUrlString.FilePath, correctUrl.FilePath, true) == 0)
@@ -65,13 +66,11 @@ namespace Composite.Renderings
                     correctUrl.AddQueryParameters(notInvolvedQueryParameters);
                     correctUrl.PathInfo = originalUrlString.PathInfo;
 
-                    SEOFriednlyRedirect(context, correctUrl.ToString());
+                    SeoFriendlyRedirect(context, correctUrl.ToString());
                     return true;
                 }
 
-
-
-                UrlString internalPageUrl = PageUrlHelper.BuildUrl(UrlType.Internal, urlOptions);
+                UrlBuilder internalPageUrl = pageUrl.Build(PageUrlType.Internal);
 
                 internalPageUrl.AddQueryParameters(notInvolvedQueryParameters);
 
@@ -92,60 +91,42 @@ namespace Composite.Renderings
 
         private static bool HandleFriendlyUrl(HttpContext context)
         {
-            PageUrlOptions urlOptions;
+            PageUrl pageUrl;
+
             Uri requestUrl = context.Request.Url;
 
-            if (!PageUrlHelper.TryParseFriendlyUrl(requestUrl.LocalPath, out urlOptions))
+            if (!PageUrl.TryParseFriendlyUrl(requestUrl.LocalPath, out pageUrl))
             {
                 return false;
             }
-            //// Renreding page directly to response 
-            //UrlString internalPageUrl1 = PageUrlHelper.BuildUrl(UrlType.Public, urlOptions);
 
-
-            //string newQueryString = internalPageUrl1.QueryString;
-            //if (!requestUrl.Query.IsNullOrEmpty())
-            //{
-            //    if(!newQueryString.IsNullOrEmpty())
-            //    {
-            //        newQueryString += "&";
-            //    }
-            //    newQueryString += RemoveLeadingQuestionMark(requestUrl.Query);
-            //}
-
-            // context.RewritePath(internalPageUrl1.FilePath, null, newQueryString);
-
-
-            UrlString defaultPageUrl = PageUrlHelper.BuildUrl(UrlType.Public, urlOptions);
+            UrlBuilder defaultPageUrl = pageUrl.Build(PageUrlType.Public);
             if(defaultPageUrl == null)
             {
                 return false;
             }
 
-            var parameters = new UrlString(requestUrl.ToString()).GetQueryParameters();
+            var parameters = new UrlBuilder(requestUrl.ToString()).GetQueryParameters();
             defaultPageUrl.AddQueryParameters(parameters);
 
-            SEOFriednlyRedirect(context, defaultPageUrl.ToString());
+            SeoFriendlyRedirect(context, defaultPageUrl.ToString());
             return true;
         }
-
-        //static string RemoveLeadingQuestionMark(string str)
-        //{
-        //    if(str.StartsWith("?"))
-        //    {
-        //        return str.Substring(1);
-        //    }
-        //    return str;
-        //}
 
         public void Dispose()
         {
         }
 
-        private static void SEOFriednlyRedirect(HttpContext context, string url)
+        private static bool IsAdminPath(string relativeUrl)
+        {
+            return string.Compare(relativeUrl, UrlUtils.AdminRootPath, true) == 0
+                   || relativeUrl.StartsWith(UrlUtils.AdminRootPath + "/", true);
+        }
+
+        private static void SeoFriendlyRedirect(HttpContext context, string url)
         {
             context.Response.AddHeader("Location", url);
-            context.Response.StatusCode = 301; // Http 301 - Permanently moved
+            context.Response.StatusCode = 301; // Http 301 - "Permanently moved"
             context.ApplicationInstance.CompleteRequest();
         }
     }

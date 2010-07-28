@@ -87,6 +87,7 @@
     <Compile Include="HttpModules\AdministrativeDataScopeSetterHttpModule.cs" />
     <Compile Include="HttpModules\AdministrativeOutputGZipperHttpModule.cs" />
     <Compile Include="HttpModules\AdministrativeResponseFilterHttpModule.cs" />
+    <Compile Include="PageUrlHelper.cs" />
     <Compile Include="Plugins\WebRequestHandler\NonConfigurableWebRequestHandler.cs" />
     <Compile Include="Plugins\WebRequestHandler\Runtime\WebRequestHandlerCustomFactory.cs" />
     <Compile Include="Plugins\WebRequestHandler\Runtime\WebRequestHandlerDefaultNameRetriever.cs" />
