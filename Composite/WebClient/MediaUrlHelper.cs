@@ -27,22 +27,22 @@ namespace Composite.WebClient
 
         public static string GetUrl(IMediaFile file, bool isInternal)
         {
-            UrlString urlString = new UrlString(UrlUtils.ResolvePublicUrl("Renderers/ShowMedia.ashx"));
+            var urlBuilder = new UrlBuilder(UrlUtils.ResolvePublicUrl("Renderers/ShowMedia.ashx"));
 
             if(!isInternal)
             {
-                urlString["i"] = file.CompositePath;
+                urlBuilder["i"] = file.CompositePath;
             }
             else
             {
                 if(file.StoreId != DefaultMediaStore)
                 {
-                    urlString["store"] = file.StoreId;
+                    urlBuilder["store"] = file.StoreId;
                 }
-                urlString["id"] = file.Id.ToString();
+                urlBuilder["id"] = file.Id.ToString();
             }
 
-            return urlString.ToString();
+            return urlBuilder.ToString();
         }
 
         public static IMediaFile GetFileFromQueryString(NameValueCollection queryParameters)

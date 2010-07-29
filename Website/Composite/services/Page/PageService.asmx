@@ -70,14 +70,14 @@ public class PageService : System.Web.Services.WebService
             return url;
         }
 
-        var pageUrlOptions = PageUrlHelper.ParsePublicUrl(url);
+        var pageUrlOptions = PageUrl.Parse(url);
 
         if (pageUrlOptions == null)
         {
             return string.Empty;
         }
 
-        return PageUrlHelper.BuildUrl(UrlType.Internal, pageUrlOptions).ToString();
+        return pageUrlOptions.Build(PageUrlType.Internal);
     }
 }
 

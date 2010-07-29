@@ -99,6 +99,13 @@ namespace Composite.Pages
             throw new NotImplementedException("Only 'Public' and 'Internal' url types are supported.");
         }
 
+        public static PageUrl Parse(string url)
+        {
+            NameValueCollection queryParameters;
+
+            return Parse(url, out queryParameters);
+        }
+
         public static PageUrl Parse(string url, out NameValueCollection queryParameters)
         {
             Verify.ArgumentNotNull(url, "url");

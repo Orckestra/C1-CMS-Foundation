@@ -21,7 +21,7 @@ public partial class Renderers_Page : System.Web.UI.Page
 {
     private IDisposable _dataScope;
 
-    private PageUrlOptions _urlOptions;
+    private PageUrl _url;
     private NameValueCollection _foreignQueryStringParameters;
     private string _cacheUrl = null;
 
@@ -29,11 +29,10 @@ public partial class Renderers_Page : System.Web.UI.Page
     public Renderers_Page()
     {
         string query = HttpContext.Current.Request.Url.OriginalString;
-        NameValueCollection queryParameters = new UrlBuilder(query).GetQueryParameters();
 
-        _urlOptions = PageUrlHelper.ParseQueryString(queryParameters, out _foreignQueryStringParameters);
+        _url = PageUrl.Parse(query, out _foreignQueryStringParameters);
 
-        if (_urlOptions.DataScopeIdentifierName != DataScopeIdentifier.PublicName)
+        if (_url.PublicationScope != PublicationScope.Public)
         {
             if (UserValidationFacade.IsLoggedIn() == false)
             {
@@ -55,16 +54,16 @@ public partial class Renderers_Page : System.Web.UI.Page
 
     protected void Page_Init(object sender, EventArgs e)
     {
-        if (_urlOptions.DataScopeIdentifierName != DataScopeIdentifier.PublicName)
+        if (_url.PublicationScope != PublicationScope.Public)
         {
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
         }
 
-        _dataScope = new DataScope(_urlOptions.DataScopeIdentifier, _urlOptions.Locale); // IDisposable, Disposed in OnUnload
+        _dataScope = new DataScope(DataScopeIdentifier.FromPublicationScope(_url.PublicationScope), _url.Locale); // IDisposable, Disposed in OnUnload
 
         var pageManager = PageManager.Create();
 
-        IPage page = pageManager.GetPageById(_urlOptions.PageId);
+        IPage page = pageManager.GetPageById(_url.PageId);
 
         if (page != null)
         {
@@ -102,7 +101,7 @@ public partial class Renderers_Page : System.Web.UI.Page
 
     private void RewritePath()
     {
-        UrlString structuredUrl = PageUrlHelper.BuildUrl(UrlType.Public, _urlOptions);
+        UrlBuilder structuredUrl =  _url.Build(PageUrlType.Public);
 
         if (structuredUrl == null)
         {

@@ -25,7 +25,7 @@ namespace Composite.StandardPlugins.Functions.XslExtensionsProviders
 
         public string GetImageUrl(string encryptedCaptchaValue)
         {
-            var url = new UrlString("/Renderers/Captcha.ashx");
+            var url = new UrlBuilder("/Renderers/Captcha.ashx");
             url["value"] = encryptedCaptchaValue;
             return url.ToString();
         }

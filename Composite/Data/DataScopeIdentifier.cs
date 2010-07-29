@@ -66,16 +66,15 @@ namespace Composite.Data
             }
         }
 
-        internal PublicationScope ToPublicationScope()
+        public PublicationScope ToPublicationScope()
         {
             return Name == "public" ? PublicationScope.Public : PublicationScope.Internal;
         }
 
-        internal static DataScopeIdentifier FromPublicationScope(PublicationScope publicationScope)
+        public static DataScopeIdentifier FromPublicationScope(PublicationScope publicationScope)
         {
             return publicationScope == PublicationScope.Public ? Public : Administrated;
         }
-
 
         public static bool IsLegasyDataScope(string name)
         {

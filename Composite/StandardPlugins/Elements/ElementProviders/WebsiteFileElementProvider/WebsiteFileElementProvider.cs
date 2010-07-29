@@ -671,7 +671,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
         {
             var fileToken = (WebsiteFileElementProviderEntityToken)entityToken;
 
-            var urlString = new UrlString(UrlUtils.AdminRootPath + "/services/Admin/DownloadFile.ashx");
+            var urlString = new UrlBuilder(UrlUtils.AdminRootPath + "/services/Admin/DownloadFile.ashx");
 
             string relativeFilePath = fileToken.Path.Substring(fileToken.RootPath.Length);
 

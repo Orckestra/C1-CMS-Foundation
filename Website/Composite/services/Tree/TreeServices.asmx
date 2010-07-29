@@ -13,6 +13,7 @@ using Composite.Data;
 using Composite.Data.Types;
 using Composite.ConsoleEventSystem;
 using Composite.Elements;
+using Composite.Pages;
 using Composite.Security;
 using Composite.IO;
 using Composite.Xml;
@@ -160,15 +161,15 @@ public class TreeServices : WebService
     [WebMethod]
     public string GetEntityTokenByPageUrl(string pageUrl)
     {
-        PageUrlOptions pageOptions = PageUrlHelper.ParseUrl(pageUrl);
-        if (pageOptions == null) return string.Empty;
+        PageUrl pageUrlOptions = PageUrl.Parse(pageUrl);
+        if (pageUrlOptions == null) return string.Empty;
 
-        if (pageOptions.DataScopeIdentifier.Name == DataScopeIdentifier.PublicName)
+        if (pageUrlOptions.PublicationScope == PublicationScope.Public)
         {
-            pageOptions = new PageUrlOptions(DataScopeIdentifier.AdministratedName, pageOptions.Locale, pageOptions.PageId);
+            pageUrlOptions = new PageUrl(PublicationScope.Internal, pageUrlOptions.Locale, pageUrlOptions.PageId);
         }
 
-        IPage page = pageOptions.GetPage();
+        IPage page = pageUrlOptions.GetPage();
         if (page == null) return string.Empty;
 
         return EntityTokenSerializer.Serialize(page.GetDataEntityToken(), true);

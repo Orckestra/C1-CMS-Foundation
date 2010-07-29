@@ -20,7 +20,6 @@ namespace Composite.Renderings.Page
         /// <param name="parentPageId"></param>
         /// <param name="lookupUrl"></param>
         /// <param name="url"></param>
-        /// <param name="urlBuildingCache"></param>
         /// <returns></returns>
         public void BuildUrlInternal(IPage page, DataScopeIdentifier dataScopeIdentifier, CultureInfo cultureInfo, Guid parentPageId, out string url, out string lookupUrl)
         {

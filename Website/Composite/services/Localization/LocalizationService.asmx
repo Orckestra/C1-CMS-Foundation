@@ -1,26 +1,21 @@
 ﻿<%@ WebService Language="C#" Class="LocalizationService" %>
 
 using System;
-using System.Collections;
 using System.Linq;
-using System.Web;
 using System.Web.Services;
 using System.Web.Services.Protocols;
-using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
-using System.Text.RegularExpressions;
+using Composite;
+using Composite.Pages;
 using Composite.WebClient.Services.LocalizationServiceObjects;
 using Composite.Users;
 using Composite.ResourceSystem;
-using Composite.WebClient;
 using Composite.WebClient.FlowMediators;
 using Composite.Data;
 using Composite.Workflow;
 using Composite.Security;
 using Composite.Data.Types;
-using Composite.Renderings.Page;
 
 
 [WebService(Namespace = "http://www.composite.net/ns/management")]
@@ -89,22 +84,22 @@ public class LocalizationService : System.Web.Services.WebService
     [WebMethod]
     public List<PageLocale> GetPageOtherLocales(string url)
     {
-        var pageUrlOptions = PageUrlHelper.ParseUrl(url);
-        if (pageUrlOptions == null)
+        var pageUrl = PageUrl.Parse(url);
+        if (pageUrl == null)
         {
             return new List<PageLocale>(); 
         }
 
-        var urlString = new UrlString(url);
+        var urlBuilder = new UrlBuilder(url);
         
         List<PageLocale> pageLocales = new List<PageLocale>();
 
         foreach (CultureInfo locale in UserSettings.ActiveLocaleCultureInfos)
         {
             bool exists = false;
-            using (new DataScope(pageUrlOptions.DataScopeIdentifier, locale))
+            using (var storage = Storage.Open(pageUrl.PublicationScope, locale))
             {
-                exists = DataFacade.GetData<IPage>(f => f.Id == pageUrlOptions.PageId).Any();
+                exists = storage.Get<IPage>().Any(page => page.Id == pageUrl.PageId);
             }
 
             if (!exists) continue;
@@ -114,14 +109,14 @@ public class LocalizationService : System.Web.Services.WebService
             pageLocale.Name = StringResourceSystemFacade.GetString("Composite.Cultures", locale.Name);
             pageLocale.IsoName = locale.Name;
             pageLocale.UrlMappingName = DataLocalizationFacade.GetUrlMappingName(locale);
-            pageLocale.IsCurrent = locale.Equals(pageUrlOptions.Locale);
+            pageLocale.IsCurrent = locale.Equals(pageUrl.Locale);
 
-            var options = new PageUrlOptions(pageUrlOptions.DataScopeIdentifierName, locale, pageUrlOptions.PageId);
-            UrlString newPageUrl = PageUrlHelper.BuildUrl(UrlType.Public, options)
-                ?? PageUrlHelper.BuildUrl(UrlType.Internal, options);
+            PageUrl pageUrl2 = new PageUrl(pageUrl.PublicationScope, locale, pageUrl.PageId);
 
-            newPageUrl.ServerUrl = urlString.ServerUrl;
-            pageLocale.Url = newPageUrl.ToString();
+            UrlBuilder newUrlBuilder = pageUrl2.Build(PageUrlType.Public) ?? pageUrl2.Build(PageUrlType.Internal);
+            newUrlBuilder.ServerUrl = urlBuilder.ServerUrl;
+            
+            pageLocale.Url = newUrlBuilder.ToString();
 
             pageLocales.Add(pageLocale);
         }

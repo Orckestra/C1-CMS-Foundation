@@ -77,12 +77,14 @@ namespace Composite.WebClient
         private static readonly string RenredingLinkRegExPattern = string.Format(@"{0}/Renderers/Page.aspx([^\""']*)", UrlUtils.PublicRootPath);
         private static readonly Regex RenredingLinkRegex = new Regex(RenredingLinkRegExPattern);
 
+        [Obsolete("Use Composite.Pages.PageUrl instead")]
         public static PageUrlOptions ParseUrl(string url)
         {
             var urlString = new UrlString(url);
             return IsPublicUrl(urlString) ? ParsePublicUrl(url) : ParseInternalUrl(url);
         }
 
+        [Obsolete("Use Composite.Pages.PageUrl instead")]
         public static PageUrlOptions ParseUrl(string url, out NameValueCollection notUsedQueryStringParameters)
         {
             return IsPublicUrl(url) 
@@ -90,13 +92,14 @@ namespace Composite.WebClient
                 : ParseInternalUrl(url, out notUsedQueryStringParameters);
         }
 
+        [Obsolete("Use Composite.Pages.PageUrl instead")]
         public static PageUrlOptions ParseInternalUrl(string url)
         {
             NameValueCollection notUsedQueryStringParameters;
             return ParseInternalUrl(url, out notUsedQueryStringParameters);
         }
 
-
+        [Obsolete("Use Composite.Pages.PageUrl instead")]
         public static PageUrlOptions ParseInternalUrl(string url, out NameValueCollection notUsedQueryStringParameters)
         {
             var urlString = new UrlString(url);
@@ -104,8 +107,7 @@ namespace Composite.WebClient
             return ParseQueryString(urlString.GetQueryParameters(), out notUsedQueryStringParameters);
         }
 
-
-
+        [Obsolete("Use Composite.Pages.PageUrl instead")]
         public static PageUrlOptions ParsePublicUrl(string url)
         {
             NameValueCollection notUsedQueryParameters;
@@ -113,7 +115,7 @@ namespace Composite.WebClient
         }
 
 
-
+        [Obsolete("Use Composite.Pages.PageUrl instead")]
         public static PageUrlOptions ParsePublicUrl(string url, out NameValueCollection notUsedQueryParameters)
         {
             var urlString = new UrlString(url);
@@ -168,7 +170,7 @@ namespace Composite.WebClient
         }
 
 
-
+        [Obsolete("To be removed")]
         public static CultureInfo GetCultureInfo(string requestPath)
         {
             string newRequestPath;
@@ -177,12 +179,13 @@ namespace Composite.WebClient
         }
 
 
-
+        [Obsolete("To be removed")]
         public static CultureInfo GetCultureInfo(string requestPath, out string requestPathWithoutUrlMappingName)
         {
             return PageUrl.GetCultureInfo(requestPath, out requestPathWithoutUrlMappingName);
         }
 
+        [Obsolete("To be removed")]
         public static bool IsPublicUrl(string relativePath)
         {
             relativePath = relativePath.ToLower();
@@ -192,6 +195,7 @@ namespace Composite.WebClient
                    && !IsAdminPath(relativePath);
         }
 
+        [Obsolete("To be removed")]
         public static bool IsPublicUrl(UrlString url)
         {
             return IsPublicUrl(url.FilePath);
@@ -199,10 +203,16 @@ namespace Composite.WebClient
 
         public static bool IsInternalUrl(string url)
         {
-            return IsInternalUrl(new UrlString(url));
+            return IsInternalUrl(new UrlBuilder(url));
         }
 
+        [Obsolete("To be removed")]
         public static bool IsInternalUrl(UrlString url)
+        {
+            return url.FilePath.EndsWith("Renderers/Page.aspx", true);
+        }
+
+        private static bool IsInternalUrl(UrlBuilder url)
         {
             return url.FilePath.EndsWith("Renderers/Page.aspx", true);
         }
@@ -216,6 +226,7 @@ namespace Composite.WebClient
             return BuildUrl(options.UrlType, options);
         }
 
+        [Obsolete("To be removed")]
         public static bool IsAdminPath(string relativeUrl)
         {
             return string.Compare(relativeUrl, UrlUtils.AdminRootPath, true) == 0
@@ -316,6 +327,7 @@ namespace Composite.WebClient
         /// <param name="queryString">Query string.</param>
         /// <param name="notUsedQueryParameters">Query string parameters that were not used.</param>
         /// <returns></returns>
+        [Obsolete("To be removed. Use Composite.Pages.PageLink instead.")]
         public static PageUrlOptions ParseQueryString(NameValueCollection queryString, out NameValueCollection notUsedQueryParameters)
         {
             if (string.IsNullOrEmpty(queryString["pageId"])) throw new InvalidOperationException("Illigal query string. Expected param 'pageId' with guid.");
