@@ -1,11 +1,12 @@
 ﻿using System.Web.UI;
 using System.Text.RegularExpressions;
 using System.IO;
-using Composite.ConsoleEventSystem;
 
 
 namespace Composite.WebClient
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public abstract class XhtmlPage : Page
 	{
         protected override void Render(HtmlTextWriter writer)

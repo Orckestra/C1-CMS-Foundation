@@ -8,6 +8,8 @@ namespace Composite.WebClient.UiControlLib.Foundation
     /// <summary>
     /// A generic control with support for client identifiers.
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class BaseControl : HtmlGenericControl
     {
         private string _clientID;

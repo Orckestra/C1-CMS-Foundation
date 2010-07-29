@@ -6,6 +6,8 @@ using Composite.Functions.ManagedParameters;
 
 namespace Composite.WebClient.FunctionCallEditor
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IParameterEditorState
     {
         [XmlIgnore]
@@ -15,6 +17,8 @@ namespace Composite.WebClient.FunctionCallEditor
         List<Type> ParameterTypeOptions { get; set; }
     }
 
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IFunctionCallEditorState : IParameterEditorState
     {
         [XmlIgnore]

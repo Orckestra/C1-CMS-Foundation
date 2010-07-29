@@ -8,6 +8,8 @@ using Composite.Types;
 
 namespace Composite.WebClient.FunctionCallEditor
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Serializable]
     public sealed class FunctionCallEditorStateSimple : IFunctionCallEditorState
     {

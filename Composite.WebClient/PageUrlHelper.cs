@@ -19,6 +19,8 @@ using PageManager = Composite.Data.Types.PageManager;
 
 namespace Composite.WebClient
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Obsolete("Use 'Composite.Pages' namespace instead")]
     public sealed class PageUrlOptions
     {
@@ -59,6 +61,8 @@ namespace Composite.WebClient
         }
     }
 
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Obsolete("Use 'Composite.Pages' namespace instead")]
     public enum UrlType
     {

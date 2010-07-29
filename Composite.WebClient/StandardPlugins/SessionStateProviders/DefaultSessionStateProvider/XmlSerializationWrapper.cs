@@ -7,6 +7,8 @@ using Composite.Extensions;
 
 namespace Composite.StandardPlugins.WebClient.SessionStateProviders.DefaultSessionStateProvider
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Serializable]
     [XmlRootAttribute(ElementName = "root")]
     public sealed class XmlSerializationWrapper

@@ -1,5 +1,7 @@
 namespace Composite.WebClient.Services.TreeServiceObjects
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ClientActionCategory
     {
         public string GroupId { get; set; }

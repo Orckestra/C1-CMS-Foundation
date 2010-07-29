@@ -3,6 +3,8 @@ using Composite.Data;
 
 namespace Composite.StandardPlugins.WebClient.SessionStateProviders.DefaultSessionStateProvider
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Title("Session State Entry")]
     [AutoUpdateble]
     [ImmutableTypeId("{91964c1b-35c1-446c-9e47-6b8d8e65997f}")]

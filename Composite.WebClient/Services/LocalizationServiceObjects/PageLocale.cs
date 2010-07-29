@@ -7,6 +7,8 @@ using System.Diagnostics;
 
 namespace Composite.WebClient.Services.LocalizationServiceObjects
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [DebuggerDisplay("Culture = {Name}, IsCurrent = {IsCurrent}, Url = {Url}")]
 	public sealed class PageLocale
 	{

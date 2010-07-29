@@ -37,6 +37,8 @@ namespace Composite.WebClient.UiControlLib
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class Feedback : Generic
     {
+        /// <exclude />
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
         public enum Status
         {
             Empty = 0,

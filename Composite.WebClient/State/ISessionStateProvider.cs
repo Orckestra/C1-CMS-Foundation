@@ -7,6 +7,8 @@ namespace Composite.WebClient.State
     /// <summary>
     /// Defines access to a session state
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [CustomFactory(typeof(SessionStateProviderCustomFactory))]
     public interface ISessionStateProvider 
     {

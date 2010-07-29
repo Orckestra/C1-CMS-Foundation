@@ -1,5 +1,7 @@
 ﻿namespace Composite.WebClient.Services.LocalizationServiceObjects
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ClientLocale
     {
         public string Name { get; set; }

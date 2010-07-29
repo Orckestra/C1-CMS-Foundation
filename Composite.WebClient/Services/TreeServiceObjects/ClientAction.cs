@@ -4,6 +4,8 @@ using System;
 
 namespace Composite.WebClient.Services.TreeServiceObjects
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ClientAction
     {
         public string ActionToken { get; set; }
