@@ -1230,10 +1230,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Composite.WebClient\Composite.WebClient.csproj">
-      <Project>{68D2463E-5709-42C7-9256-1612281DAA87}</Project>
-      <Name>Composite.WebClient</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Composite\Composite.csproj">
       <Project>{F8D87A5F-D090-4D24-80C1-DBCD938C6CAB}</Project>
       <Name>Composite</Name>

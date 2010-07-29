@@ -5706,10 +5706,6 @@
     <None Include="Tests\Web.config.new" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Composite.WebClient\Composite.WebClient.csproj">
-      <Project>{68D2463E-5709-42C7-9256-1612281DAA87}</Project>
-      <Name>Composite.WebClient</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Composite.Workflows\Composite.Workflows.csproj">
       <Project>{1FE08476-346A-4053-813D-8807C0E0FC36}</Project>
       <Name>Composite.Workflows</Name>
