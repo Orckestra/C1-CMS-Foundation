@@ -7,6 +7,8 @@ using Composite.WebClient.UiControlLib.Foundation;
 
 namespace Composite.WebClient.UiControlLib
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum DataInputType
     {
         Default,
@@ -18,7 +20,8 @@ namespace Composite.WebClient.UiControlLib
         ReadOnly
     }
 
-
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class DataInput : TextBox
     {
         public DataInput()

@@ -6,6 +6,8 @@ using Composite.Extensions;
 
 namespace Composite.WebClient.WCF
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class MultipleHostnameHandler : IHttpModule
     {
         private readonly string _serviceFolderPath;

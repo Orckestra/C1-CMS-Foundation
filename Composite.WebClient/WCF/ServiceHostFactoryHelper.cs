@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace Composite.WebClient.WCF
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ServiceHostFactoryHelper 
     {
         public static Uri[] GetFixedBaseAddresses(Uri[]  baseAddresses)

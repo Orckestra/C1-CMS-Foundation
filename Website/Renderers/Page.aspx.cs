@@ -44,10 +44,7 @@ public partial class Renderers_Page : System.Web.UI.Page
 
        _cacheUrl = HttpContext.Current.Request.Url.PathAndQuery;
 
-        using (new DataScope(_urlOptions.DataScopeIdentifier, _urlOptions.Locale))
-        {
-            RewritePath();
-        }
+       RewritePath();
     }
 
 

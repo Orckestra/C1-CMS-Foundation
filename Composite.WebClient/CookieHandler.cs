@@ -4,6 +4,8 @@ using System.Web;
 
 namespace Composite.WebClient
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class CookieHandler
     {
         /// <summary>

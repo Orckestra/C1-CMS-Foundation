@@ -13,7 +13,8 @@ using Composite.Xml;
 
 namespace Composite.WebClient.Services.WysiwygEditor
 {
-
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class TidyHtmlResult
     {
         public XDocument Output { get; set; }
@@ -23,6 +24,8 @@ namespace Composite.WebClient.Services.WysiwygEditor
     /// <summary>
     /// Summary description for HtmlTidyServices
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class MarkupTransformationServices
     {
         /// <summary>

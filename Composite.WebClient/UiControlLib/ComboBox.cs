@@ -8,6 +8,8 @@ using Composite.WebClient.UiControlLib.Foundation;
 
 namespace Composite.WebClient.UiControlLib
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class ComboBox : DropDownList
     {
         private static readonly string ReservedKey = "___reserved value";

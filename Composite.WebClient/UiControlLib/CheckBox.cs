@@ -1,15 +1,14 @@
-﻿
-using System.ComponentModel;
+﻿using System;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using Composite.WebClient.UiControlLib.Foundation;
-using System;
 using Composite.ResourceSystem;
+using Composite.WebClient.UiControlLib.Foundation;
+
 
 
 namespace Composite.WebClient.UiControlLib
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class CheckBox : System.Web.UI.WebControls.CheckBox
     {
         public string ItemLabel { get; set; }

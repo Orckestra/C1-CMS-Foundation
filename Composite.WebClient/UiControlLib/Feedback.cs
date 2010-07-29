@@ -34,7 +34,7 @@ namespace Composite.WebClient.UiControlLib
     ///  &lt;/ui:feedbackset&gt;
     /// </code> 
     /// </example>
-    /// 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class Feedback : Generic
     {
         public enum Status

@@ -10,6 +10,8 @@ namespace Composite.WebClient.FunctionCallEditor
     /// <summary>
     /// Contains helper methods to work with serialized function calls tree
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]  
     public static class TreeHelper
     {
         public static readonly string PathSeparator = "/";

@@ -10,6 +10,8 @@ using System;
 
 namespace Composite.WebClient
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum CompositeScriptMode
     {
         OPERATE,
@@ -18,7 +20,8 @@ namespace Composite.WebClient
     };
 
 
-
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ScriptHandler
     {
         private static string _compileScriptsFilename = "CompileScripts.xml";

@@ -9,6 +9,8 @@ using Composite.WebClient.Plugins.WebRequestHandler.Runtime;
 
 namespace Composite.WebClient.Foundation.PluginFacades
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class WebRequestHandlerPluginFacade
     {
         private static ResourceLocker<Resources> _resources = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);

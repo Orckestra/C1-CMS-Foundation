@@ -1,14 +1,16 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using Composite.WebClient.UiControlLib.Foundation;
 using Composite.ResourceSystem;
-using System;
-using System.Web;
+
 
 namespace Composite.WebClient.UiControlLib
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class Selector : DropDownList
     {
         public Selector()

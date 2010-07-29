@@ -7,7 +7,8 @@ using Composite.WebClient.State.Runtime;
 
 namespace Composite.WebClient.State
 {
-    // TODO: refactor 
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class SessionStateManager
     {
         public static readonly string DefaultProviderName = "Default"; 

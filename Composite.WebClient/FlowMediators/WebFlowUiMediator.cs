@@ -11,6 +11,8 @@ using Composite.WebClient.FlowMediators.FormFlowRendering;
 
 namespace Composite.WebClient.FlowMediators
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class WebFlowUiMediator
     {
         public static Control GetFlowUi(FlowHandle flowHandle, string elementProviderName, string consoleId, out string uiContainerName)

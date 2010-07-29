@@ -8,6 +8,8 @@ using Composite.ResourceSystem;
 
 namespace Composite.WebClient.UiControlLib
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class TreeNode : LinkButton
     {
         [Category("Appearance"), DefaultValue(""), Description("Image to show as tree node bullet")]

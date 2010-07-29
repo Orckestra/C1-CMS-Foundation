@@ -8,6 +8,8 @@ using Composite.Types;
 
 namespace Composite.WebClient.Services.TreeServiceObjects.ExtensionMethods
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ElementExtensionMethods
     {
         public static ClientElement GetClientElement(this Element element)

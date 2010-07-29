@@ -1,15 +1,15 @@
 ﻿
 using System;
-using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-using Composite.WebClient.UiControlLib.Foundation;
 using System.Web;
 using Composite.ResourceSystem;
 
 namespace Composite.WebClient.UiControlLib
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class FieldMessage : Label
     {
         public FieldMessage(string targetName, string text)

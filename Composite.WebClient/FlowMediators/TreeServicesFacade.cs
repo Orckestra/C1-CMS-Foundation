@@ -21,6 +21,8 @@ namespace Composite.WebClient.FlowMediators
         public override string Serialize() { return "NullRootEntiryToken"; }
     }
 
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class TreeServicesFacade
     {
         public static ClientElement GetRoot()

@@ -13,6 +13,8 @@ using Composite.Validation.ClientValidationRules;
 
 namespace Composite.WebClient
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class FunctionUiHelper
 	{
         public static FormTreeCompiler AttachAndCompileParameterWidgets(Control attachmentControl, IEnumerable<ParameterProfile> parameterProfiles, Dictionary<string, object> bindings, string uniqueName, string panelLabel, IFormChannelIdentifier channelIdentifier, bool reset)

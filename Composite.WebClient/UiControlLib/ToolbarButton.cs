@@ -7,6 +7,8 @@ using Composite.ResourceSystem;
 
 namespace Composite.WebClient.UiControlLib
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class ToolbarButton : LinkButton
     {
         [Category("Behavior"), DefaultValue(""), Description("The id as the ui client should see")]

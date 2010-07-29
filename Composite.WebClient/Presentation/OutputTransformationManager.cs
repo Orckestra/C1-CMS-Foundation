@@ -13,6 +13,8 @@ using Composite.Extensions;
 
 namespace Composite.WebClient.Presentation
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class OutputTransformationManager
     {
         private const string _contextItemKey = "AdministrativeOutputTransformationHttpModule.TransformationList";

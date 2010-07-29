@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Xsl;
 using System.Xml;
 using System.IO;
@@ -9,6 +7,8 @@ using System.Xml.Linq;
 
 namespace Composite.WebClient
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class XsltServices
 	{
         private static Dictionary<string, XslCompiledTransform> _xsltLookup = new Dictionary<string, XslCompiledTransform>();

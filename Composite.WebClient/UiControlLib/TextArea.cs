@@ -5,6 +5,8 @@ using Composite.WebClient.UiControlLib.Foundation;
 
 namespace Composite.WebClient.UiControlLib
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class TextArea : BaseControl
     {
         public TextArea(string tagName): base("ui:textbox")

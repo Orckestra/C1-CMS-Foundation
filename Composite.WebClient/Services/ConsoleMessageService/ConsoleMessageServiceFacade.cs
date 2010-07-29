@@ -13,6 +13,8 @@ using Composite.GlobalSettings;
 
 namespace Composite.WebClient.Services.ConsoleMessageService
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ConsoleMessageServiceFacade
     {
         public static int CurrentChangeNumber

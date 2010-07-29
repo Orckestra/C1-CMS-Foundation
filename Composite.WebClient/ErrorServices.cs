@@ -9,6 +9,8 @@ using Composite.ConsoleEventSystem;
 
 namespace Composite.WebClient
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ErrorServices
     {
         public static void DocumentAdministrativeError(Exception exception)

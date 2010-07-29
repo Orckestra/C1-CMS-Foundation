@@ -2,6 +2,8 @@
 using Composite.Elements;
 namespace Composite.WebClient.Services.TreeServiceObjects
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public class ClientLabeledProperty
 	{
         public ClientLabeledProperty()

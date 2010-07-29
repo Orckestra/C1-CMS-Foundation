@@ -5,6 +5,8 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.WebClient.Plugins.WebRequestHandler
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [ConfigurationElementType(typeof(NonConfigurableWebRequestHandler))]
     public class WebRequestHandlerData : NameTypeManagerTypeConfigurationElement
     {

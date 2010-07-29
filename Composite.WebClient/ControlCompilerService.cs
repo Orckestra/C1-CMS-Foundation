@@ -7,7 +7,6 @@ using Composite.Forms.Flows.Plugins.UiContainerFactory;
 using Composite.Forms.Flows.Plugins.UiContainerFactory.Runtime;
 using Composite.Forms.Plugins.UiControlFactory;
 using Composite.Forms.Plugins.UiControlFactory.Runtime;
-using Composite.Parallelization;
 using Composite.Instrumentation;
 using Composite.Logging;
 using System.Collections;
@@ -15,6 +14,8 @@ using System.Collections;
 
 namespace Composite.WebClient
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ControlCompilerService
     {
         public static IEnumerable<string> GetControlPaths()

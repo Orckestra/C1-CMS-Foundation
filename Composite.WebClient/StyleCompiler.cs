@@ -3,6 +3,8 @@ using System.IO;
 
 namespace Composite.WebClient
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class StyleCompiler
     {
         public static void Compile(string sourceFile, string targetFile)

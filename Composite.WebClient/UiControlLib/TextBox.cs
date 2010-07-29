@@ -8,6 +8,7 @@ namespace Composite.WebClient.UiControlLib
     /// <summary>
     /// Fixes a basic 'System.Web.UI.WebControls.TextBox' control, so it renders correctly in 'MultiLine' mode
     /// </summary>
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class TextBox : System.Web.UI.WebControls.TextBox
     {
         protected override void Render(HtmlTextWriter writer)

@@ -68,6 +68,8 @@ namespace Composite.WebClient
         Friendly
     }
 
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class PageUrlHelper
     {
         private static readonly string LogTitle = "PageUrlHelper";

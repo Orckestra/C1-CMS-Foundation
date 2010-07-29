@@ -7,6 +7,8 @@ using Composite.ResourceSystem;
 
 namespace Composite.WebClient.UiControlLib
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class ClickButton : LinkButton
     {
         public ClickButton()

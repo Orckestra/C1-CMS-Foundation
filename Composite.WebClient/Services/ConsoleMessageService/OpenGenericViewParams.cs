@@ -4,6 +4,8 @@ using Composite.Types;
 
 namespace Composite.WebClient.Services.ConsoleMessageService
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class OpenGenericViewParams
     {
         public string ViewId { get; set; }

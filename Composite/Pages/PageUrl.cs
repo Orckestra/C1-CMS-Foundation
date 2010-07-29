@@ -112,8 +112,8 @@ namespace Composite.Pages
 
             var urlBuilder = new UrlBuilder(url);
             return IsInternalUrl(urlBuilder)
-                       ? ParsePublicUrl(urlBuilder, out queryParameters)
-                       : ParseInternalUrl(urlBuilder, out queryParameters);
+                       ? ParseInternalUrl(urlBuilder, out queryParameters)
+                       : ParsePublicUrl(urlBuilder, out queryParameters);
         }
 
         internal static PageUrl ParsePublicUrl(UrlBuilder urlBuilder, out NameValueCollection notUsedQueryParameters)
