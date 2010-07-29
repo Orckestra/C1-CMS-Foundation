@@ -103,6 +103,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Workflow.Activities" />
     <Reference Include="System.Workflow.ComponentModel" />
     <Reference Include="System.Workflow.Runtime" />
@@ -118,6 +119,9 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="TidyNet">
+      <HintPath>..\bin\TidyNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\ActionEventSystemFacade.cs" />
@@ -861,11 +865,127 @@
     <Compile Include="Validation\ValidationFacade.cs" />
     <Compile Include="Validation\Validators\GuidNotEmptyValidator.cs" />
     <Compile Include="Validation\Validators\GuidNotEmptyAttribute.cs" />
+    <Compile Include="WebClient\ConsoleInfo.cs" />
+    <Compile Include="WebClient\ControlCompilerService.cs" />
+    <Compile Include="WebClient\CookieHandler.cs" />
+    <Compile Include="WebClient\ElementInformation.cs" />
+    <Compile Include="WebClient\ErrorServices.cs" />
+    <Compile Include="WebClient\FlowMediators\ActionExecutionMediator.cs" />
+    <Compile Include="WebClient\FlowMediators\ActionExecutionService.cs" />
+    <Compile Include="WebClient\FlowMediators\FormFlowRendering\FormFlowRenderingService.cs" />
+    <Compile Include="WebClient\FlowMediators\FormFlowRendering\FormFlowUiDefinitionRenderer.cs" />
+    <Compile Include="WebClient\FlowMediators\FormFlowRendering\IFormFlowWebRenderingService.cs" />
+    <Compile Include="WebClient\FlowMediators\TreeServicesFacade.cs" />
+    <Compile Include="WebClient\FlowMediators\ViewTransitionHelper.cs" />
+    <Compile Include="WebClient\FlowMediators\WebFlowUiMediator.cs" />
     <Compile Include="WebClient\FlowPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="WebClient\Foundation\PluginFacades\WebRequestHandlerPluginFacade.cs" />
+    <Compile Include="WebClient\FunctionCallEditor\FunctionCallEditorStateSimple.cs" />
+    <Compile Include="WebClient\FunctionCallEditor\IFunctionCallEditorState.cs" />
+    <Compile Include="WebClient\FunctionCallEditor\TreeHelper.cs" />
+    <Compile Include="WebClient\FunctionUiHelper.cs" />
+    <Compile Include="WebClient\HttpModules\AdministrativeAuthorizationHttpModule.cs" />
+    <Compile Include="WebClient\HttpModules\AdministrativeCultureSetterHttpModule.cs" />
+    <Compile Include="WebClient\HttpModules\AdministrativeDataScopeSetterHttpModule.cs" />
+    <Compile Include="WebClient\HttpModules\AdministrativeOutputGZipperHttpModule.cs" />
+    <Compile Include="WebClient\HttpModules\AdministrativeResponseFilterHttpModule.cs" />
     <Compile Include="WebClient\MediaUrlHelper.cs" />
+    <Compile Include="WebClient\PageUrlHelper.cs" />
+    <Compile Include="WebClient\Plugins\WebRequestHandler\NonConfigurableWebRequestHandler.cs" />
+    <Compile Include="WebClient\Plugins\WebRequestHandler\Runtime\WebRequestHandlerCustomFactory.cs" />
+    <Compile Include="WebClient\Plugins\WebRequestHandler\Runtime\WebRequestHandlerDefaultNameRetriever.cs" />
+    <Compile Include="WebClient\Plugins\WebRequestHandler\Runtime\WebRequestHandlerFactory.cs" />
+    <Compile Include="WebClient\Plugins\WebRequestHandler\Runtime\WebRequestHandlerSettings.cs" />
+    <Compile Include="WebClient\Plugins\WebRequestHandler\WebRequestHandler.cs" />
+    <Compile Include="WebClient\Plugins\WebRequestHandler\WebRequestHandlerData.cs" />
+    <Compile Include="WebClient\Presentation\CssRequestHandler.cs" />
+    <Compile Include="WebClient\Presentation\JsRequestHandler.cs" />
+    <Compile Include="WebClient\Presentation\OutputTransformationManager.cs" />
+    <Compile Include="WebClient\RequestHandler.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebClient\ScriptHandler.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\ActionTypeEnum.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\BindEntityTokenToViewParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\BroadcastMessageParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\CloseAllViewsParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\CloseViewParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\ConsoleAction.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\ConsoleMessageServiceFacade.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\DialogTypeEnum.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\DownloadFileParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\GetMessagesResult.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\LogEntryParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\LogLevelEnum.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\MessageBoxParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\OpenGenericViewParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\OpenViewDefinitionParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\OpenViewParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\RefreshTreeParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\SaveStatusParams.cs" />
+    <Compile Include="WebClient\Services\ConsoleMessageService\ViewTypeEnum.cs" />
+    <Compile Include="WebClient\Services\LocalizationServiceObjects\ClientLocale.cs" />
+    <Compile Include="WebClient\Services\LocalizationServiceObjects\ClientLocales.cs" />
+    <Compile Include="WebClient\Services\LocalizationServiceObjects\PageLocale.cs" />
+    <Compile Include="WebClient\Services\SecurityServiceObjets\EntityPermissionDetails.cs" />
+    <Compile Include="WebClient\Services\SecurityServiceObjets\UserPermissions.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\ClientAction.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\ClientActionCategory.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\ClientElement.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\ClientElementChangeDescriptor.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\ClientLabeledProperty.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\ClientProviderNameEntityTokenClientElementsTriple.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\ClientProviderNameEntityTokenPair.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\ExtensionMethods\ElementActionExtensionMethods.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\ExtensionMethods\ElementExtensionMethods.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\RefreshChildrenInfo.cs" />
+    <Compile Include="WebClient\Services\TreeServiceObjects\RefreshChildrenParams.cs" />
+    <Compile Include="WebClient\Services\WysiwygEditor\HtmlTransformationServices.cs" />
+    <Compile Include="WebClient\StandardPlugins\SessionStateProviders\DefaultSessionStateProvider\DefaultSessionStateProvider.cs" />
+    <Compile Include="WebClient\StandardPlugins\SessionStateProviders\DefaultSessionStateProvider\ISessionStateEntry.cs" />
+    <Compile Include="WebClient\StandardPlugins\SessionStateProviders\DefaultSessionStateProvider\SerializationUtil.cs" />
+    <Compile Include="WebClient\StandardPlugins\SessionStateProviders\DefaultSessionStateProvider\XmlSerializationWrapper.cs" />
+    <Compile Include="WebClient\StandardPlugins\WebRequestHandlers\LoginWebRequestHandler\LoginWebRequestHandler.cs" />
+    <Compile Include="WebClient\StandardPlugins\WebRequestHandlers\LoginWebRequestHandler\PathUtils.cs" />
+    <Compile Include="WebClient\StandardPlugins\WebRequestHandlers\LoginWebRequestHandler\Resources\LoginHandlerResources.da.Designer.cs" />
+    <Compile Include="WebClient\StandardPlugins\WebRequestHandlers\LoginWebRequestHandler\Resources\LoginHandlerResources.Designer.cs" />
+    <Compile Include="WebClient\State\ISessionStateProvider.cs" />
+    <Compile Include="WebClient\State\Runtime\SessionStateProviderCustomFactory.cs" />
+    <Compile Include="WebClient\State\Runtime\SessionStateProviderFactory.cs" />
+    <Compile Include="WebClient\State\Runtime\SessionStateProviderSettings.cs" />
+    <Compile Include="WebClient\State\StateManager.cs" />
+    <Compile Include="WebClient\StyleCompiler.cs" />
+    <Compile Include="WebClient\UiControlLib\BindingUpdatePanel.cs" />
+    <Compile Include="WebClient\UiControlLib\CheckBox.cs" />
+    <Compile Include="WebClient\UiControlLib\ClickButton.cs" />
+    <Compile Include="WebClient\UiControlLib\ComboBox.cs" />
+    <Compile Include="WebClient\UiControlLib\DataInput.cs" />
+    <Compile Include="WebClient\UiControlLib\Feedback.cs" />
+    <Compile Include="WebClient\UiControlLib\FieldMessage.cs" />
+    <Compile Include="WebClient\UiControlLib\Foundation\BaseControl.cs" />
+    <Compile Include="WebClient\UiControlLib\Foundation\ClientAttributes.cs" />
+    <Compile Include="WebClient\UiControlLib\Generic.cs" />
+    <Compile Include="WebClient\UiControlLib\HtmlEncodedPlaceHolder.cs" />
+    <Compile Include="WebClient\UiControlLib\PostBackDialog.cs" />
+    <Compile Include="WebClient\UiControlLib\Selector.cs" />
+    <Compile Include="WebClient\UiControlLib\TextArea.cs" />
+    <Compile Include="WebClient\UiControlLib\TextBox.cs" />
+    <Compile Include="WebClient\UiControlLib\ToolbarButton.cs" />
+    <Compile Include="WebClient\UiControlLib\TreeNode.cs" />
     <Compile Include="WebClient\UrlString.cs" />
+    <Compile Include="WebClient\WCF\Logger\ILogService.cs" />
+    <Compile Include="WebClient\WCF\Logger\LogEntry.cs" />
+    <Compile Include="WebClient\WCF\Logger\LoggerHostnameHandler.cs" />
+    <Compile Include="WebClient\WCF\Logger\LoggerServiceHostingFactory.cs" />
+    <Compile Include="WebClient\WCF\Logger\LogService.cs" />
+    <Compile Include="WebClient\WCF\MultipleHostnameHandler.cs" />
+    <Compile Include="WebClient\WCF\ServiceHostFactoryHelper.cs" />
+    <Compile Include="WebClient\XhtmlPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebClient\XsltServices.cs" />
     <Compile Include="Workflow\Activities\ConditionalSetStateActivity.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1964,6 +2084,10 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="WebClient\StandardPlugins\WebRequestHandlers\LoginWebRequestHandler\Resources\LoginHandlerResources.da.resx" />
+    <EmbeddedResource Include="WebClient\StandardPlugins\WebRequestHandlers\LoginWebRequestHandler\Resources\LoginHandlerResources.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
