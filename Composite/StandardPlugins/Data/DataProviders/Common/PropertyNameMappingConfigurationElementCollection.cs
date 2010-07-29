@@ -3,6 +3,10 @@ using System.Configuration;
 
 namespace Composite.StandardPlugins.Data.DataProviders.Common
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class PropertyNameMappingConfigurationElementCollection : ConfigurationElementCollection
     {
         public void Add(string propertyName, string sourcePropertyName)

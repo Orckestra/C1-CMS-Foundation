@@ -6,6 +6,10 @@ using Composite.ResourceSystem;
 
 namespace Composite.Functions
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class IMetaFunctionExtensionMethods
 	{
         public static string CompositeName(this IMetaFunction metaFunction)

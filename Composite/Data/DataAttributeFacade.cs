@@ -15,6 +15,8 @@ namespace Composite.Data
     /// <summary>
     /// This facade is used to obtain attribute informations for IData's and IData subinterface types
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class DataAttributeFacade
     {
         private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize, false);

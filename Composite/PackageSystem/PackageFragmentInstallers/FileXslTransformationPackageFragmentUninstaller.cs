@@ -5,15 +5,18 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Xsl;
 using System.Xml.Linq;
-
 using Composite.IO;
 using Composite.Logging;
 using Composite.StringExtensions;
-
 using Installer = Composite.PackageSystem.PackageFragmentInstallers.FileXslTransformationPackageFragmentInstaller;
+
 
 namespace Composite.PackageSystem.PackageFragmentInstallers
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public sealed class FileXslTransformationPackageFragmentUninstaller : BasePackageFragmentUninstaller
 	{
         private List<XslTransformation> _xsls;

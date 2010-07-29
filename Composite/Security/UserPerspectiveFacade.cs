@@ -5,8 +5,13 @@ using System.Text;
 using Composite.Data;
 using Composite.Data.Types;
 
+
 namespace Composite.Security
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class UserPerspectiveFacade
 	{
         public static IEnumerable<string> GetSerializedEntityTokens(string username)

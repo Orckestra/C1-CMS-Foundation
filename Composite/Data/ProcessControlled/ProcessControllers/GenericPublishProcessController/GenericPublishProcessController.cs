@@ -18,6 +18,10 @@ using Composite.Data.Types;
 
 namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class GenericPublishProcessController : IPublishProcessController
     {
         private static readonly string _oldPublishedStatusTag = "OldPublishedStatus";

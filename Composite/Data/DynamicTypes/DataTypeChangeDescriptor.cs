@@ -4,8 +4,13 @@ using System.Collections.Generic;
 using System.Text;
 using Composite.StringExtensions;
 
+
 namespace Composite.Data.DynamicTypes
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataTypeChangeDescriptor
     {
         private DataTypeDescriptor _original;

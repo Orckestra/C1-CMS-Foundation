@@ -6,6 +6,10 @@ using Composite.Types;
 
 namespace Composite.Renderings.Template
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public class TemplatePlaceholdersInfo
 	{
         public IEnumerable<KeyValuePair> Placeholders { get; set; }

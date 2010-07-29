@@ -1,7 +1,13 @@
 using Composite.Validation.ClientValidationRules;
 using System.Collections.Generic;
+
+
 namespace Composite.Forms.Foundation.FormTreeCompiler.CompileTreeNodes
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class PropertyCompileTreeNode : CompileTreeNode
     {
         private string _name = "";

@@ -23,6 +23,10 @@ using Microsoft.Practices.ObjectBuilder;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.AllFunctionsElementProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [ConfigurationElementType(typeof(AllFunctionsElementProviderData))]
 #pragma warning disable 612
     internal sealed class AllFunctionsElementProvider : BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider, ICustomSearchElementProvider, IElementProvider

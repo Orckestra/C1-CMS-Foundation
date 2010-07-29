@@ -5,13 +5,17 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Xsl;
 using System.Xml.Linq;
-
 using Composite.IO;
 using Composite.Logging;
 using Composite.StringExtensions;
 
+
 namespace Composite.PackageSystem.PackageFragmentInstallers
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public class FileXslTransformationPackageFragmentInstaller : BasePackageFragmentInstaller
 	{
         internal static readonly string TargetXmlAttributeName = "pathXml";

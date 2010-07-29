@@ -13,6 +13,10 @@ using Composite.Types;
 
 namespace Composite.Workflow
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class WorkflowFacade
     {
         private static IWorkflowFacade _workflowFacade = new WorkflowFacadeImpl();

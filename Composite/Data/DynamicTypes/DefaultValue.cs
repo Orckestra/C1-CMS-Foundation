@@ -6,8 +6,13 @@ using Composite.Serialization;
 using Composite.Instrumentation;
 using System.CodeDom;
 
+
 namespace Composite.Data.DynamicTypes
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Serializable()]
     public sealed class DefaultValue : IComparable
     {

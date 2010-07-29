@@ -1,5 +1,9 @@
 ﻿namespace Composite.Security
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class HashSigner
 	{
         private const int _privateKey = 180226750;

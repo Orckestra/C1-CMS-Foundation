@@ -100,6 +100,10 @@ namespace Composite.Forms.CoreUiControls
     }
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SerializerHandler(typeof(UploadedFileSerializerHandler))]
     public sealed class UploadedFile
     {

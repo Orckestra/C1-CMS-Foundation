@@ -1,5 +1,9 @@
 namespace Composite.Forms.Foundation.FormTreeCompiler.CompileTreeNodes
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class XmlSourceNodeInformation
     {
         private int _depth;

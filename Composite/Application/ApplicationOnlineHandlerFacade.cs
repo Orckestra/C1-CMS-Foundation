@@ -7,6 +7,10 @@ using Composite.Application.Plugins.ApplicationOnlineHandler;
 
 namespace Composite.Application
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ApplicationOnlineHandlerFacade
     {
         private static IApplicationOnlineHandlerFacade _applicationOnlineHandlerFacade = new ApplicationOnlineHandlerFacadeImpl();

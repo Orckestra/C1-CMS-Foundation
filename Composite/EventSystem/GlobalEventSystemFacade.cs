@@ -4,22 +4,50 @@ using Composite.Logging;
 
 namespace Composite.EventSystem
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class FlushEventArgs : EventArgs
     {
     }
 
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class PostFlushEventArgs : EventArgs
     {
     }
 
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class ShutDownEventArgs : EventArgs
     {
     }
 
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class PrepareForShutDownEventArgs : EventArgs
     {
     }
 
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class GlobalEventSystemFacade
     {
         public delegate void FlushEventDelegate(FlushEventArgs args);

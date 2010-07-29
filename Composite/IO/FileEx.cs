@@ -3,6 +3,10 @@
 
 namespace Composite.IO
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class FileEx
     {
         public static bool RemoveReadOnly(string filePath)

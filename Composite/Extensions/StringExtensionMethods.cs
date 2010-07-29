@@ -4,6 +4,10 @@ using System.IO;
 
 namespace Composite.Extensions
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class StringExtensionMethods
     {
         public static string FormatWith(this string format, params object[] args)

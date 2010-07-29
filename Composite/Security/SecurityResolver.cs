@@ -6,6 +6,10 @@ using Composite.Linq;
 
 namespace Composite.Security
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class SecurityResolver
     {
         public static SecurityResult Resolve(UserToken userToken, ActionToken actionToken, EntityToken entityToken, IEnumerable<UserPermissionDefinition> userPermissionDefinitions, IEnumerable<UserGroupPermissionDefinition> userGroupPermissionDefinition)

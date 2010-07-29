@@ -4,6 +4,10 @@ using System.Globalization;
 
 namespace Composite.Data
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataScope : IDisposable
     {
         private bool _dataScopePushed = false;

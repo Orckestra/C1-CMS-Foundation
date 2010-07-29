@@ -7,6 +7,10 @@ using Composite.Functions.Foundation;
 
 namespace Composite.Functions
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class WidgetFunctionRuntimeTreeNode : BaseFunctionRuntimeTreeNode
     {
         private IWidgetFunction _widgetFunction;

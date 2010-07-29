@@ -1,16 +1,20 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Composite.Data.DynamicTypes;
 using Composite.Data.DynamicTypes.Foundation;
-using Composite.Types;
 using Composite.Data.Hierarchy;
-using System.Collections;
+using Composite.Types;
 
 
 namespace Composite.Data
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class IDataExtensions
     {
         /// <summary>

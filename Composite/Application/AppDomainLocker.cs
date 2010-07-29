@@ -5,6 +5,10 @@ using Composite.Logging;
 
 namespace Composite.Application
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class AppDomainLocker
     {
         private static EventWaitHandle _eventWaitHandle = null;

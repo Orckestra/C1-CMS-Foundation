@@ -14,6 +14,10 @@ using Composite.Workflow;
 
 namespace Composite.Actions
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class FlowControllerFacade
     {
         private static TimeSpan? _timeout = null;

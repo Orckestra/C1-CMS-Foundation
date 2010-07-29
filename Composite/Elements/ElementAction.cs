@@ -3,6 +3,10 @@ using System;
 
 namespace Composite.Elements
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ElementAction
     {
         private ActionHandle _actionHandle;        

@@ -1,5 +1,9 @@
 ﻿namespace Composite.Functions
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class NamedFunctionCall
     {
         public NamedFunctionCall(string name, BaseFunctionRuntimeTreeNode functionCall)

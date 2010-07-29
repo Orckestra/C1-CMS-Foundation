@@ -6,6 +6,10 @@ using Composite.Forms.Flows;
 
 namespace Composite.Workflow.Activities
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class RerenderViewActivity : Activity
     {
         public RerenderViewActivity()

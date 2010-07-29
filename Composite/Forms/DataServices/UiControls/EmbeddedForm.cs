@@ -6,6 +6,10 @@ using Composite.Forms.Foundation;
 
 namespace Composite.Forms.DataServices.UiControls
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [ControlValueProperty("Bindings")]
     public class EmbeddedFormUiControl : UiControl
     {

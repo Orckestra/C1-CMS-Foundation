@@ -7,6 +7,10 @@ using Composite.PackageSystem.Foundation;
 
 namespace Composite.PackageSystem
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class PackageInformation
     {
         public Guid Id { get; set; }

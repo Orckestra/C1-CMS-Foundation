@@ -8,6 +8,10 @@ using Composite.Types;
 
 namespace Composite.Functions
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public sealed class ConstantObjectParameterRuntimeTreeNode : BaseParameterRuntimeTreeNode
     {
         private object _constantValue;

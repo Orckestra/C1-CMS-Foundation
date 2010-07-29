@@ -1,10 +1,13 @@
 using System;
-
 using Composite.Data;
 
 
 namespace Composite.StandardPlugins.Data.DataProviders.FileSystemDataProvider.Foundation
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class FileSystemFileDataId : IDataId
     {
         private string _fullPath = null;

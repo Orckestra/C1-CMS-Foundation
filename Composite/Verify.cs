@@ -4,6 +4,10 @@ using Composite.StringExtensions;
 
 namespace Composite
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class Verify
 	{
         /// <summary>
@@ -15,8 +19,8 @@ namespace Composite
         public static void ArgumentNotNull(object value, string paramName)
         {
             if(value == null)
-            {
-               ThrowArgumentNullException(paramName);
+            {                
+               ThrowArgumentNullException(paramName);                
             }
         }
 

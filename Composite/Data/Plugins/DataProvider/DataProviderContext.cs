@@ -5,6 +5,10 @@ using Composite.Data.Foundation.CodeGeneration;
 
 namespace Composite.Data.Plugins.DataProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataProviderContext
     {
         private string _providerName;

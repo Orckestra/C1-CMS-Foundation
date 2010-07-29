@@ -6,6 +6,10 @@ using Composite.Renderings.Page;
 
 namespace Composite.Linq.ExpressionVisitors
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class CacheKeyBuilderExpressionVisitor : ExpressionStringBuilder
     {
         public interface ICacheKeyProvider

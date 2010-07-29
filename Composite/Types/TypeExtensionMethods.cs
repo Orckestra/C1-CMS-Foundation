@@ -11,6 +11,10 @@ using Composite.Collections.Generic;
 
 namespace Composite.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class TypeExtensionMethods
     {
         private static Dictionary<PropertyInfo, List<Attribute>> _propertyAttributeCache = new Dictionary<PropertyInfo, List<Attribute>>();

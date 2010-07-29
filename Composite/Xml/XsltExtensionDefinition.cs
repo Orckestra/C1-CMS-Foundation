@@ -3,6 +3,10 @@ using System.Xml.Linq;
 
 namespace Composite.Xml
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IXsltExtensionDefinition
     {
         XNamespace ExtensionNamespace { get; }
@@ -11,6 +15,10 @@ namespace Composite.Xml
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class XsltExtensionDefinition<T> : IXsltExtensionDefinition
 	{
         public XNamespace ExtensionNamespace { get; set; }

@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
-using Composite.Data.DynamicTypes.Foundation;
 using Composite.Data.Foundation;
 using Composite.Instrumentation;
 using Composite.Logging;
 using Composite.Types;
-using System.Globalization;
 
 
 namespace Composite.Data.DynamicTypes
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class DynamicTypeManager
     {
         private static IDynamicTypeManager _dynamicTypeManager = new DynamicTypeManagerImpl();

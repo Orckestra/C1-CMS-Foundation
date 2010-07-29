@@ -6,6 +6,10 @@ using Composite.Actions;
 
 namespace Composite.Workflow.Activities
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ExecuteChildWorkflowActivity : Activity
     {
         public static readonly DependencyProperty ChildWorkflowTypeProperty = DependencyProperty.Register("ChildWorkflowType", typeof(Type), typeof(ExecuteChildWorkflowActivity));

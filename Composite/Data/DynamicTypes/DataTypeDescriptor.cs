@@ -15,6 +15,10 @@ using Composite.Types;
 
 namespace Composite.Data.DynamicTypes
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [DebuggerDisplay("Name = {Name}")]
     public class DataTypeDescriptor
     {

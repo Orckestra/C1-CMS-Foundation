@@ -10,6 +10,10 @@ using Composite.Users;
 
 namespace Composite.Security
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class RelationshipOrientedGraphNodeExtensions
     {
         public static IEnumerable<IEnumerable<EntityToken>> GetAllPaths(this RelationshipOrientedGraphNode node)

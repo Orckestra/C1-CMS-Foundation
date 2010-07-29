@@ -4,7 +4,10 @@ using Composite.Data.DynamicTypes;
 
 namespace Composite.Data
 {
-    
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]     
     public abstract class DefaultFieldValueAttribute : Attribute
 	{
         internal DefaultFieldValueAttribute() { }
@@ -13,6 +16,11 @@ namespace Composite.Data
 	}
 
 
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldStringValueAttribute : DefaultFieldValueAttribute
     {
@@ -32,6 +40,10 @@ namespace Composite.Data
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldIntValueAttribute : DefaultFieldValueAttribute
     {
@@ -50,6 +62,10 @@ namespace Composite.Data
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldDecimalValueAttribute : DefaultFieldValueAttribute
     {
@@ -73,6 +89,10 @@ namespace Composite.Data
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldBoolValueAttribute : DefaultFieldValueAttribute
     {
@@ -91,7 +111,10 @@ namespace Composite.Data
 
 
 
-
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldGuidValueAttribute : DefaultFieldValueAttribute
     {
@@ -110,6 +133,10 @@ namespace Composite.Data
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldNewGuidValueAttribute : DefaultFieldValueAttribute
     {
@@ -125,6 +152,10 @@ namespace Composite.Data
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldNowDateTimeValueAttribute : DefaultFieldValueAttribute
     {

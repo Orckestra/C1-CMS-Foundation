@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 namespace Composite.ConsoleEventSystem
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Serializable]
     public sealed class OpenViewMessageQueueItem : IConsoleMessageQueueItem
     {

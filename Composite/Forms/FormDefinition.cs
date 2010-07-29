@@ -4,8 +4,10 @@ using System.Xml;
 
 namespace Composite.Forms
 {
-    /// <summary>
+    /// <summary>    
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class FormDefinition
     {
         public FormDefinition(XmlReader formMarkup, Dictionary<string, object> bindings)

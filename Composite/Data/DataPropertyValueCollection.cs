@@ -4,8 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 
+
 namespace Composite.Data
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public sealed class DataPropertyValueCollection
 	{
         private Dictionary<PropertyInfo, object> _propertyValues = new Dictionary<PropertyInfo, object>();

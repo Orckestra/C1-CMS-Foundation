@@ -7,6 +7,10 @@ using System.Reflection;
 
 namespace Composite.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class BuildManager
 	{
         private static IBuildManager _buildManager = new BuildManagerImpl();

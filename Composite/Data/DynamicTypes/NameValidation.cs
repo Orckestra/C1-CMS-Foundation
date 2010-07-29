@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Globalization;
-using Composite.ResourceSystem;
 using System.Linq;
+using Composite.ResourceSystem;
 
 
 namespace Composite.Data.DynamicTypes
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class NameValidation
     {
         public static string ValidateNamespace(string namespaceString)

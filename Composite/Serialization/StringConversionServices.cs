@@ -11,6 +11,10 @@ using System.Collections.Concurrent;
 
 namespace Composite.Serialization
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class StringConversionServices
     {
         private const string _unencodedValueMarker = "'";

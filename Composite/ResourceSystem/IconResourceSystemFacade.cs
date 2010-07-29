@@ -4,6 +4,10 @@ using System.Drawing;
 
 namespace Composite.ResourceSystem
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class IconResourceSystemFacade
     {
         private static IIconResourceSystemFacade _iconResourceSystemFacade = new IconResourceSystemFacadeImpl();

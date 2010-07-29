@@ -8,6 +8,10 @@ using Composite.Types;
 
 namespace Composite.Data
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataKeyPropertyCollection
     {
         private Dictionary<string, object> _keyProperties = new Dictionary<string, object>();

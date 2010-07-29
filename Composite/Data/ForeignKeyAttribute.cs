@@ -8,7 +8,9 @@ namespace Composite.Data
 {
     /// <summary>
     /// The attribute will tell the system that this property is a reference to an nother IData
-    /// </summary>
+    /// </summary>    
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class ForeignKeyAttribute : Attribute
     {

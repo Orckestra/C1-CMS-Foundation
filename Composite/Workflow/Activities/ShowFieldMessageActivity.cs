@@ -1,15 +1,15 @@
-using System.Workflow.Runtime;
-using System.Workflow.Activities;
 using System.Workflow.ComponentModel;
-
+using System.Workflow.Runtime;
 using Composite.Actions;
 using Composite.Forms.Flows;
-using Composite.Forms.DataServices;
-using Composite.ConsoleEventSystem;
 
 
 namespace Composite.Workflow.Activities
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ShowFieldMessageActivity : Activity
     {
         public static readonly DependencyProperty FieldBindingPathProperty = DependencyProperty.Register("FieldBindingPath", typeof(string), typeof(ShowFieldMessageActivity));

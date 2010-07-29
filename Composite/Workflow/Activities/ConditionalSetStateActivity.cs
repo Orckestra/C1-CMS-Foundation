@@ -1,15 +1,16 @@
 using System;
-using System.Workflow.ComponentModel;
-using System.Workflow.Runtime;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
-using System.Workflow.ComponentModel.Compiler;
 using System.ComponentModel;
 using System.Workflow.Activities;
+using System.Workflow.ComponentModel;
+using System.Workflow.ComponentModel.Compiler;
 
 
 namespace Composite.Workflow.Activities
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ConditionalSetStateActivity : Activity
     {
         public static readonly DependencyProperty ConditionProperty = DependencyProperty.Register("Condition", typeof(ActivityCondition), typeof(ConditionalSetStateActivity), new PropertyMetadata(DependencyPropertyOptions.Metadata));

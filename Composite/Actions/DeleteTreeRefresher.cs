@@ -6,6 +6,10 @@ using Composite.Security;
 
 namespace Composite.Actions
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DeleteTreeRefresher
     {
         private RelationshipGraph _beforeGraph;

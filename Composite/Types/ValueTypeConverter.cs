@@ -13,6 +13,10 @@ using System.Globalization;
 
 namespace Composite.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ValueTypeConverter
     {
         public static object Convert(object value, Type targetType)

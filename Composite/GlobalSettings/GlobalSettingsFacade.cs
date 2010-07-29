@@ -6,6 +6,10 @@ using System.Globalization;
 
 namespace Composite.GlobalSettings
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class CachingSettings
     {
         public const int DefaultCacheSize = -1;
@@ -48,7 +52,10 @@ namespace Composite.GlobalSettings
 
 
 
-
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class GlobalSettingsFacade
     {
         private static IGlobalSettingsFacade _globalSettingsFacade = new GlobalSettingsFacadeImpl();

@@ -16,6 +16,10 @@ using Composite.Users;
 
 namespace Composite.PackageSystem.PackageFragmentInstallers
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataPackageFragmentInstaller : BasePackageFragmentInstaller
     {
         private List<DataType> _dataTypes = null;

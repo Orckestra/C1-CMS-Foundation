@@ -1,18 +1,15 @@
 ﻿using System;
 using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.Drawing.Design;
-using System.Workflow.ComponentModel;
-using System.Workflow.ComponentModel.Compiler;
-using System.Workflow.ComponentModel.Design;
-using System.Workflow.Runtime;
 using System.Workflow.Activities;
-
-
+using System.Workflow.ComponentModel.Compiler;
 
 
 namespace Composite.Workflow.Activities
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [DefaultEvent("Invoked")]
     [ActivityValidator(typeof(HandleExternalEventActivityValidator))]
     public sealed class CustomEvent03HandleExternalEventActivity : HandleExternalEventActivity

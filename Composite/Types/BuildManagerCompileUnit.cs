@@ -8,6 +8,10 @@ using Composite.Collections.Generic;
 
 namespace Composite.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [DebuggerDisplay("Id = {Id}")]
     public sealed class BuildManagerCompileUnit
     {

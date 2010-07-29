@@ -9,6 +9,10 @@ using System.Xml;
 
 namespace Composite.Xml
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class XhtmlPrettifier
     {
         private static string _ampersandWord = "C1AMPERSAND";

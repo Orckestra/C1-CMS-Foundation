@@ -5,6 +5,10 @@ using System.Web.Hosting;
 
 namespace Composite.IO
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class PathUtil
     {
         private static readonly string _appBasePath;

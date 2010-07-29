@@ -1,4 +1,3 @@
-using System;
 using System.Workflow.ComponentModel;
 using System.Workflow.Runtime;
 using Composite.Actions;
@@ -7,6 +6,10 @@ using Composite.ConsoleEventSystem;
 
 namespace Composite.Workflow.Activities
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class CloseCurrentViewActivity : Activity
     {
         public CloseCurrentViewActivity()

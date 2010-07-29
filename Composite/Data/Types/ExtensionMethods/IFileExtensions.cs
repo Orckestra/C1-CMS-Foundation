@@ -1,6 +1,4 @@
-using System;
 using System.IO;
-
 using Composite.Data.Streams;
 
 
@@ -9,6 +7,8 @@ namespace Composite.Data.Types
     /// <summary>
     /// Extension methods for IFile
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class IFileExtensions
     {
         public static Stream GetReadStream(this IFile file)

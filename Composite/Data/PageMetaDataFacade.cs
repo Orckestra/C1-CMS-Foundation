@@ -22,6 +22,8 @@ namespace Composite.Data
     /// Using the same name for a metadata definition is allowed iff metadata type and label are the same
     /// on all instances.
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class PageMetaDataFacade
     {
         internal static readonly string MetaDataType_IdFieldName = "Id";

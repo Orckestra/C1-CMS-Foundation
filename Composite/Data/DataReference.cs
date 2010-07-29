@@ -8,8 +8,13 @@ using Composite.Types;
 using System.Reflection;
 using System.Linq.Expressions;
 
+
 namespace Composite.Data
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [DataReferenceConverter()]
     public class NullableDataReference<T> : DataReference<T> where T : class, IData
     {
@@ -25,6 +30,12 @@ namespace Composite.Data
         }
     }
 
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [DataReferenceConverter()]
     public class DataReference<T> : IDataReference where T : class, IData
     {
@@ -159,6 +170,11 @@ namespace Composite.Data
 
 
 
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataReferenceConverterAttribute : ValueTypeConverterHelperAttribute
     {
         public override bool TryConvert(object value, Type targetType, out object targetValue)

@@ -9,6 +9,10 @@ using Composite.Types;
 
 namespace Composite.Workflow
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [ActionExecutor(typeof(WorkflowActionExecutor))]
     public class WorkflowActionToken : ActionToken
     {

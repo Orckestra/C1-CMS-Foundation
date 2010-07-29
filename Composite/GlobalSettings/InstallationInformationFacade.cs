@@ -6,6 +6,10 @@ using Composite.IO;
 
 namespace Composite.GlobalSettings
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class InstallationInformationFacade
     {
         private static Guid _installationId;

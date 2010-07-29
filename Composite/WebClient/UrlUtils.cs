@@ -8,6 +8,10 @@ using System.IO;
 
 namespace Composite.WebClient
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class UrlUtils
 	{
         private const string _adminFolderName = "Composite";

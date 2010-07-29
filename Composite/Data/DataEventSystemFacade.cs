@@ -7,8 +7,13 @@ using Composite.Types;
 using Subscription = Composite.Types.Pair<System.Delegate, bool>;
 using Subscriptions = Composite.Collections.Generic.Hashtable<System.Type, System.Collections.Generic.List<Composite.Types.Pair<System.Delegate, bool>>>;
 
+
 namespace Composite.Data
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class DataEventArgs : EventArgs
     {
         private readonly Type _dataType;
@@ -44,6 +49,10 @@ namespace Composite.Data
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class DataMoveEventArgs : DataEventArgs
     {
         internal DataMoveEventArgs(Type dataType, IData data, DataScopeIdentifier targetDataScopeIdentifier)
@@ -61,6 +70,11 @@ namespace Composite.Data
     }
 
 
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class DataEventSystemFacade
     {
         public delegate void DataBeforeAddDelegate(DataEventArgs dataEventArgs);

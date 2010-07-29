@@ -5,11 +5,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using Composite.Data.DynamicTypes.Foundation;
 using Composite.Data.Foundation;
-using Composite.Data.ProcessControlled;
 using Composite.StringExtensions;
 using Composite.Types;
-using Composite.Data.DynamicTypes.Foundation;
 
 
 namespace Composite.Data
@@ -18,6 +17,8 @@ namespace Composite.Data
     /// Referenced type: The type that is "pointed" to by another type
     /// Referee type: The type that is "pointing" to a nother type
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class DataReferenceFacade
     {
         private static Dictionary<PropertyInfo, Type> _propertyReferenceTargetTypeLookup = new Dictionary<PropertyInfo, Type>();

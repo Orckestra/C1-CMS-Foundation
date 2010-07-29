@@ -3,6 +3,10 @@ using System;
 
 namespace Composite.Security
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsageAttribute(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
     public sealed class SecurityAncestorProviderAttribute : Attribute
     {

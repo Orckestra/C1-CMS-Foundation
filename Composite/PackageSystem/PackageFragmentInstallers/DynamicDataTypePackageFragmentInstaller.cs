@@ -14,6 +14,10 @@ using Composite.Types;
 
 namespace Composite.PackageSystem.PackageFragmentInstallers
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DynamicDataTypePackageFragmentInstaller : BasePackageFragmentInstaller
     {
         private List<DataTypeDescriptor> _dataTypeDescriptors = null;

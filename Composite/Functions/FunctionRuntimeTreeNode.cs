@@ -10,6 +10,10 @@ using Composite.StringExtensions;
 
 namespace Composite.Functions
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class FunctionRuntimeTreeNode : BaseFunctionRuntimeTreeNode
     {
         private IFunction _function;

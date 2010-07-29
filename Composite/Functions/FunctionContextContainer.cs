@@ -2,8 +2,14 @@ using System.Collections.Generic;
 using System;
 using Composite.Types;
 using System.Xml.Linq;
+
+
 namespace Composite.Functions
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class FunctionContextContainer
     {
         private ParameterList _parameterList = null;

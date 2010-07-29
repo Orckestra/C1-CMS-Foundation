@@ -10,6 +10,10 @@ using Composite.IO;
 
 namespace Composite.PackageSystem
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum ServerUrlValidationResult
     {
         Http,
@@ -19,6 +23,10 @@ namespace Composite.PackageSystem
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class PackageServerFacade 
 	{
         private static IPackageServerFacade _packageServerFacade;

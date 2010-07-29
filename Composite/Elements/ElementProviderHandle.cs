@@ -1,12 +1,15 @@
 using System;
 using System.Text;
 using System.Collections.Generic;
-
 using Composite.Serialization;
 
 
 namespace Composite.Elements
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ElementProviderHandle
     {
         private string _serializedData = null;

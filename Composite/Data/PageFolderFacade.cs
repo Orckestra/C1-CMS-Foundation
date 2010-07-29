@@ -15,6 +15,10 @@ using Composite.Types;
 
 namespace Composite.Data
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class PageFolderFacade
     {
         private static readonly string PageFolderType_IdFieldName = "Id";

@@ -6,6 +6,10 @@ using System.Linq.Expressions;
 
 namespace Composite.Linq
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ExpressionCreator
     {
         public static Expression Select(Expression source, LambdaExpression selector)

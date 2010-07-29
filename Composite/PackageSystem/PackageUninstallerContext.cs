@@ -5,9 +5,12 @@ using Composite.Data;
 using Composite.IO.Zip;
 
 
-
 namespace Composite.PackageSystem
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class PackageUninstallerContext
     {
         private Dictionary<Type, Dictionary<DataScopeIdentifier, Dictionary<CultureInfo, List<DataKeyPropertyCollection>>>> _dataPendingForDeletion = new Dictionary<Type, Dictionary<DataScopeIdentifier, Dictionary<CultureInfo, List<DataKeyPropertyCollection>>>>();

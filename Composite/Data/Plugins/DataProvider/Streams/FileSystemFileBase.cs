@@ -1,10 +1,13 @@
 using System.IO;
-
 using Composite.Data.Streams;
 
 
 namespace Composite.Data.Plugins.DataProvider.Streams
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class FileSystemFileBase
     {
         private CachedMemoryStream _currentWriteStream;

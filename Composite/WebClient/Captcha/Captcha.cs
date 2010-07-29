@@ -8,6 +8,10 @@ using Composite.StringExtensions;
 
 namespace Composite.WebClient.Captcha
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class Captcha
     {
         private static readonly string DateTimeFormat = "yyyyMMddHHmmss";

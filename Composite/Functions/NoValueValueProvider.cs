@@ -4,7 +4,11 @@ using System.Xml.Linq;
 
 namespace Composite.Functions
 {
-	public sealed class NoValueValueProvider : BaseValueProvider
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class NoValueValueProvider : BaseValueProvider
 	{
         public override object GetValue(FunctionContextContainer contextContainer)
         {

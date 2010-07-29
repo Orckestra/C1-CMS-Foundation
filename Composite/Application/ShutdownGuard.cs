@@ -8,6 +8,8 @@ namespace Composite.Application
     /// <summary>
     /// Postpones raising of shutdown event for ASP.NET
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class ShutdownGuard : IDisposable
     {
         private readonly HttpRuntime _runtime;

@@ -16,6 +16,10 @@ using Composite.Logging;
 
 namespace Composite.Data
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum CascadeDeleteType
     {
         Allow, // Cascade delete are performed if the references allows it, if referees dont allow it and exception is thrown
@@ -23,6 +27,12 @@ namespace Composite.Data
         Disable // No check on existens of referees is done. This might result in foreign key violation
     }
 
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataMoveResult
     {
         internal DataMoveResult(IData movedData, IEnumerable<IData> movedRefereeDatas)
@@ -46,7 +56,10 @@ namespace Composite.Data
 
 
 
-
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class DataFacade
     {
         private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.DoInitializeResources);

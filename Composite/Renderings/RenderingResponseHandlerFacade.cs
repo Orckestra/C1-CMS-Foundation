@@ -3,6 +3,10 @@
 
 namespace Composite.Renderings
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class RenderingResponseHandlerFacade
 	{
         private static IRenderingResponseHandlerFacade _implementation = new RenderingResponseHandlerFacadeImpl();

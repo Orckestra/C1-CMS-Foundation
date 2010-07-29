@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Composite.Linq;
 
+
 namespace Composite.Security
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [DebuggerDisplay("Hooker = {Hooker}")]
 	public sealed class EntityTokenHook
 	{

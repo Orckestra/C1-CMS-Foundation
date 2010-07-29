@@ -1,20 +1,24 @@
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System;
-using Composite.Data.Caching;
-using Composite.Types;
-using Composite.ResourceSystem.Foundation;
-using System.Linq;
-using Composite.ResourceSystem.Foundation.PluginFacades;
-using Composite.Logging;
+using System.Collections.Generic;
 using System.Globalization;
-using Composite.GlobalSettings;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
+using Composite.Data.Caching;
+using Composite.GlobalSettings;
+using Composite.Logging;
+using Composite.ResourceSystem.Foundation;
+using Composite.ResourceSystem.Foundation.PluginFacades;
+using Composite.Types;
 
 
 namespace Composite.ResourceSystem
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class StringResourceSystemFacade
 	{
         private static Regex _regex = new Regex(@"\$\{(?<id>.+?)\}", RegexOptions.Compiled);

@@ -4,6 +4,10 @@ using Composite.Serialization;
 
 namespace Composite.PackageSystem
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SerializerHandler(typeof(PropertySerializerHandler))]
 	public sealed class PackageDescription
 	{

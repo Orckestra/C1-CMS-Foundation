@@ -20,6 +20,10 @@ using Composite.Data.Types;
 
 namespace Composite.Functions
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class StandardWidgetFunctions
     {
         public static string GetDefaultWidgetFunctionNameByType(Type type)

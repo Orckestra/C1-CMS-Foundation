@@ -13,6 +13,10 @@ using Composite.ResourceSystem;
 
 namespace Composite.PackageSystem.PackageFragmentInstallers
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class VirtualElementProviderNodePackageFragmentInstaller : BasePackageFragmentInstaller
     {
         private List<Area> _areasToInstall = null;

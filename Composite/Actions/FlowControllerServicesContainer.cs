@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 namespace Composite.Actions
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class FlowControllerServicesContainer
     {
         private Dictionary<Type, List<object>> _services = new Dictionary<Type, List<object>>();

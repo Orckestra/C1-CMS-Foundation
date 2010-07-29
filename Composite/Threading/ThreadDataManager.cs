@@ -5,6 +5,10 @@ using Composite.Security.Foundation.PluginFacades;
 
 namespace Composite.Threading
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ThreadDataManager
     {
         private static readonly string LogTitle = "ThreadDataManager";

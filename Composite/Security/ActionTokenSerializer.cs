@@ -9,6 +9,10 @@ using Composite.Types;
 
 namespace Composite.Security
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ActionTokenSerializer
     {
         public static string Serialize(ActionToken actionToken)

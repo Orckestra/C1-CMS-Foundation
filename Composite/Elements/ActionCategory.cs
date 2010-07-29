@@ -1,6 +1,12 @@
 using System;
+
+
 namespace Composite.Elements
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum ActionType
     {
         Edit,
@@ -12,6 +18,10 @@ namespace Composite.Elements
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum ActionGroupPriority
     {
         PrimaryHigh = 0,
@@ -27,6 +37,10 @@ namespace Composite.Elements
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum ActionCheckedStatus
     {
         Uncheckable,
@@ -36,6 +50,10 @@ namespace Composite.Elements
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ActionGroup
     {
         public ActionGroup(ActionGroupPriority priority)
@@ -71,6 +89,10 @@ namespace Composite.Elements
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ActionLocation
     {
         public readonly static ActionLocation AddPrimaryActionLocation = new ActionLocation { ActionType = ActionType.Add, IsInFolder = false, IsInToolbar = true, ActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh) };

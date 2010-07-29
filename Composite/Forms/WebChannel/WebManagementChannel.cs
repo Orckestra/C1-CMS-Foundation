@@ -1,6 +1,10 @@
 ﻿
 namespace Composite.Forms.WebChannel
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class WebManagementChannel : IFormChannelIdentifier
     {
         private static IFormChannelIdentifier _instance = new WebManagementChannel();

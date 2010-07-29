@@ -7,6 +7,10 @@ using System.Reflection;
 
 namespace Composite.Security
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public sealed class EntityTokenHtmlPrettyfier
     {
         private Dictionary<string, Action<string, object, EntityTokenHtmlPrettyfierHelper>> _customProperties = new Dictionary<string, Action<string, object, EntityTokenHtmlPrettyfierHelper>>();

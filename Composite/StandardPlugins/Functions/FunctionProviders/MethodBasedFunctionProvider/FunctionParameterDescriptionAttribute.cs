@@ -1,7 +1,12 @@
 ﻿using System;
 
+
 namespace Composite.StandardPlugins.Functions.FunctionProviders.MethodBasedFunctionProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 	public sealed class FunctionParameterDescriptionAttribute : Attribute
 	{

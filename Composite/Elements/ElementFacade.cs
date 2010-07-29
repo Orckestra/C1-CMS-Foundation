@@ -16,6 +16,10 @@ using Composite.Instrumentation;
 
 namespace Composite.Elements
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ElementFacade
     {
         public static IEnumerable<Element> GetRoots(SearchToken searchToken)

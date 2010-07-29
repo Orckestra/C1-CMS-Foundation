@@ -381,6 +381,10 @@ namespace Composite.Data
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ReferenceFailingPropertyInfo
     {
         public ReferenceFailingPropertyInfo(DataFieldDescriptor dataFieldDescriptor, Type referencedType, IData originLocaleDataValue, bool optionalReferenceWithValue)

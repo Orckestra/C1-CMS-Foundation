@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 namespace Composite.Collections.Generic
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public class Hashtable<TKey, TValue>//: Hashtable
 	{
 	    private readonly Hashtable _table = new Hashtable();

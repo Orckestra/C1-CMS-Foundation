@@ -7,7 +7,9 @@ namespace Composite.Functions.Plugins.FunctionProvider
     /// A function provider can use this class to notify if the providers list of functions
     /// has been changed.
     /// </summary>
-	public sealed class FunctionNotifier
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class FunctionNotifier
 	{        
         internal FunctionNotifier(string providerName)
         {

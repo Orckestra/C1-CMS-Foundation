@@ -6,6 +6,10 @@ using System.Collections.Generic;
 
 namespace Composite.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [DebuggerDisplay("{Fullname}, IsCompiled = {IsCompiled}")]
     public sealed class BuildManagerCompileType
     {

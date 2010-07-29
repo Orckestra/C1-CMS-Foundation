@@ -4,6 +4,10 @@ using Composite.EventSystem;
 
 namespace Composite.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class TypeManager
     {
         private static ITypeManager _implementation = new TypeManagerImpl();

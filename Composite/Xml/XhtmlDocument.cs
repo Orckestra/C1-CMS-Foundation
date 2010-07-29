@@ -6,6 +6,10 @@ using Composite.Types;
 
 namespace Composite.Xml
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [XhtmlDocumentConverter()]
 	public sealed class XhtmlDocument : XDocument
 	{

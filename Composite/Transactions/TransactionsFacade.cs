@@ -6,6 +6,8 @@ namespace Composite.Transactions
     /// <summary>
     /// Ensures C1 compiant System.Transactions.TransactionScope services.
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class TransactionsFacade
 	{
         public static TimeSpan DefaultTransactionTimeout { get { return TimeSpan.FromMinutes(3); } }

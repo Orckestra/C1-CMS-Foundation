@@ -9,6 +9,10 @@ using System.Text;
 
 namespace Composite.Linq.Disassembled
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class ExpressionStringBuilder : System.Linq.Expressions.ExpressionVisitor
     {
         // Fields

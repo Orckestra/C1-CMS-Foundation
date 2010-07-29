@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Xml.Linq;
 using System.Reflection;
+using System.Xml.Linq;
 using Composite.ConfigurationSystem;
+
 
 namespace Composite.Forms
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class SchemaInfo
     {
         public enum FormSchemaType
@@ -39,6 +43,10 @@ namespace Composite.Forms
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class SchemaBuilder
     {
         public static IEnumerable<SchemaInfo> GenerateAllDynamicSchemas()

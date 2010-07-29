@@ -7,6 +7,10 @@ using Composite.GlobalSettings;
 
 namespace Composite.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class AssemblyFacade
 	{
         public static IEnumerable<Assembly> GetAssembliesFromBin()

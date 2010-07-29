@@ -13,6 +13,10 @@ using Microsoft.Practices.ObjectBuilder;
 
 namespace Composite.StandardPlugins.Forms.WebChannel.UiControlFactories
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class ToolbarButtonTemplateUserControlBase : UserControl
     {
         public EventHandler FormControlClickEventHandler { get; set; }
@@ -31,6 +35,8 @@ namespace Composite.StandardPlugins.Forms.WebChannel.UiControlFactories
 
         public bool FormControlSaveBehaviour { get; set; }
     }
+
+
 
     internal sealed class TemplatedToolbarButtonUiControl : ToolbarButtonUiControl, IWebUiControl
     {
@@ -113,6 +119,4 @@ namespace Composite.StandardPlugins.Forms.WebChannel.UiControlFactories
             return new TemplatedToolbarButtonUiControlFactory(objectConfiguration as TemplatedToolbarButtonUiControlFactoryData);
         }
     }
-
-
 }

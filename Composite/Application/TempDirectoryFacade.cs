@@ -6,6 +6,10 @@ using Composite.IO;
 
 namespace Composite.Application
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class TempDirectoryFacade
     {
         public static string CreateTempDirectory()

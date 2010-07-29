@@ -21,6 +21,10 @@ namespace Composite.Linq
     }
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class IEnumerableExtensions
     {
         /// <summary>

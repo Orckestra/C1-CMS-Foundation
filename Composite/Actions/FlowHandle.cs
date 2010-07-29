@@ -1,14 +1,17 @@
 using System;
-using System.Text;
-using System.Reflection;
 using System.Collections.Generic;
-
-using Composite.Types;
+using System.Reflection;
+using System.Text;
 using Composite.Serialization;
+using Composite.Types;
 
 
 namespace Composite.Actions
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class FlowHandle
     {
         private FlowToken _flowToken;

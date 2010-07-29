@@ -9,6 +9,10 @@ using Composite.Logging;
 
 namespace Composite.PackageSystem.PackageFragmentInstallers
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class FilePackageFragmentUninstaller : BasePackageFragmentUninstaller
     {
         private List<string> _filesToDelete;

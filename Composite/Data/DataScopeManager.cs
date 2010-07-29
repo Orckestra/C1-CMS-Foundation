@@ -5,6 +5,10 @@ using System.Linq;
 
 namespace Composite.Data
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class DataScopeManager
     {
         public static DataScopeIdentifier CurrentDataScope

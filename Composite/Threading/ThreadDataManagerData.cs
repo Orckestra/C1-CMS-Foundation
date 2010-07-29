@@ -5,6 +5,10 @@ using System;
 
 namespace Composite.Threading
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ThreadDataManagerData: IDisposable
     {
         private ThreadDataManagerData Parrent { get; set; }

@@ -1,5 +1,9 @@
 namespace Composite.Actions
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ActionResult
     {
         public ActionResultResponseType ResponseType { get; set; }
@@ -7,6 +11,11 @@ namespace Composite.Actions
     }
 
 
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum ActionResultResponseType
     {
         None,

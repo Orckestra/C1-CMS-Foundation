@@ -5,6 +5,10 @@ using System.Net;
 
 namespace Composite.Users
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class UserSettings
     {
         private static IUserSettingsFacade _implementation = new UserSettingsImpl();

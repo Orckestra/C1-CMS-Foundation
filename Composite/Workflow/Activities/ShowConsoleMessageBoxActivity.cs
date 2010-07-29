@@ -1,16 +1,16 @@
-using System.Workflow.Runtime;
-using System.Workflow.Activities;
 using System.Workflow.ComponentModel;
-
+using System.Workflow.Runtime;
 using Composite.Actions;
-using Composite.Forms.Flows;
-using Composite.Forms.DataServices;
 using Composite.ConsoleEventSystem;
 using Composite.ResourceSystem;
 
 
 namespace Composite.Workflow.Activities
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ShowConsoleMessageBoxActivity : Activity
     {
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(ShowConsoleMessageBoxActivity));

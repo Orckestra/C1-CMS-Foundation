@@ -6,6 +6,10 @@ using Composite.Data.ProcessControlled;
 
 namespace Composite.Data
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class DataLocalizationFacade
     {
         private static IDataLocalizationFacade _dataLocalizationFacade = new DataLocalizationFacadeImpl();

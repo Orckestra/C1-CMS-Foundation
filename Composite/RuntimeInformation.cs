@@ -5,6 +5,10 @@ using System.Reflection;
 
 namespace Composite
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class RuntimeInformation
 	{
         private static bool _isUnitTestDetermined = false;

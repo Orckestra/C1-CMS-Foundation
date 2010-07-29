@@ -5,6 +5,10 @@ using System.Reflection;
 
 namespace Composite.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class AssemblyExtensionMethods
     {
         public static IEnumerable<Type> GetTypes(this IEnumerable<Assembly> assemblies)

@@ -4,11 +4,15 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Web;
-
 using Composite.StringExtensions;
+
 
 namespace Composite.WebClient
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Obsolete("Use Composite.UrlBuilder")]
     public sealed class UrlString
     {

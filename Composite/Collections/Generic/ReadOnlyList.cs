@@ -5,6 +5,10 @@ using System.Collections.Generic;
 
 namespace Composite.Collections.Generic
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ReadOnlyList<T> : IList<T>
     {
         private List<T> _list;

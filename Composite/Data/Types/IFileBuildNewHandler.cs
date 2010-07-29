@@ -1,9 +1,8 @@
 using System;
-using System.IO;
 using System.CodeDom;
-
-using Composite.Data.Streams;
+using System.IO;
 using Composite.Data.Foundation.CodeGeneration;
+using Composite.Data.Streams;
 
 
 namespace Composite.Data.Types
@@ -24,6 +23,10 @@ namespace Composite.Data.Types
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class IFileEmptyDataClassBase : EmptyDataClassBase
     {
         private CachedMemoryStream _currentWriteStream;
@@ -48,6 +51,11 @@ namespace Composite.Data.Types
 
 
 
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class IFileEmptyDataClassFileStreamManager : IFileStreamManager
     {
         public Stream GetReadStream(IFile file)

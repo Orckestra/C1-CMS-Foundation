@@ -1,10 +1,13 @@
 using System;
-
 using Composite.Actions;
 
 
 namespace Composite.Workflow
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [FlowController(typeof(WorkflowFlowController))]
     public sealed class WorkflowFlowToken : FlowToken
     {

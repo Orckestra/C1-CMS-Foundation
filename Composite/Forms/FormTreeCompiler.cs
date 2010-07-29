@@ -1,20 +1,20 @@
-using System.Xml;
+using System;
 using System.Collections.Generic;
-
+using System.Xml;
 using Composite.Forms.Foundation.FormTreeCompiler;
 using Composite.Forms.Foundation.FormTreeCompiler.CompilePhases;
 using Composite.Forms.Foundation.FormTreeCompiler.CompileTreeNodes;
-using Composite.Validation.ClientValidationRules;
-using System.Xml.Linq;
-using Composite.Xml;
-using System.Linq;
 using Composite.ResourceSystem;
-using System;
 using Composite.ResourceSystem.Icons;
+using Composite.Validation.ClientValidationRules;
 
 
 namespace Composite.Forms
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class FormTreeCompiler
     {
         private CompileContext _context;

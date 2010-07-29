@@ -10,7 +10,6 @@ using System.Xml.Serialization;
 using System.Reflection;
 using Composite.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
-
 using Composite.Application;
 using Composite.Application.Plugins.ApplicationStartupHandler;
 using Composite.Extensions;
@@ -26,6 +25,8 @@ namespace Composite.Application
     /// public static void OnBeforeInitialize() {}
     /// public static void OnInitialized() {}
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public sealed class ApplicationStartupAttribute : Attribute
     {        
@@ -35,6 +36,10 @@ namespace Composite.Application
 
 namespace Composite.StandardPlugins.Application.ApplicationStartupHandlers.AttributeBasedApplicationStartupHandler
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [ConfigurationElementType(typeof(NonConfigurableApplicationStartupHandler))]
     public sealed class AttributeBasedApplicationStartupHandler : IApplicationStartupHandler
     {

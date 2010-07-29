@@ -5,6 +5,10 @@ using System.Collections.Generic;
 
 namespace Composite.Drawing
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ImageTemplatedBoxCreator
     {
         private Point _topLeftResize;

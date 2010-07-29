@@ -6,8 +6,13 @@ using System.Text;
 using System.Web;
 using Composite.Extensions;
 
+
 namespace Composite
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class UrlBuilder
     {
         private static readonly string IncorrectValueParam = "__***IncorrectValue***__";

@@ -8,6 +8,10 @@ using Composite.Collections.Generic;
 
 namespace Composite.Security
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class UserGroupFacade
 	{
         private static Hashtable<string, List<Guid>> _cache = new Hashtable<string, List<Guid>>();

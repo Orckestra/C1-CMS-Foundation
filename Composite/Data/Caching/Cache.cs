@@ -6,6 +6,10 @@ using Composite.GlobalSettings;
 
 namespace Composite.Data.Caching
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class Cache<K, V>: Cache where V: class
     {
         public Cache(string name)
@@ -50,6 +54,8 @@ namespace Composite.Data.Caching
     /// <summary>
     /// Represents a cache.
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class Cache
     {
         private static readonly int DefaultMaximumCacheSize = 1000;

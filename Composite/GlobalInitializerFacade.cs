@@ -30,6 +30,10 @@ using Composite.Trees;
 
 namespace Composite
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class GlobalInitializerFacade
     {
         private static readonly string LogTitle = "RGB(194, 252, 131)GlobalInitializerFacade";

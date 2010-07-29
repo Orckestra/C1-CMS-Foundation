@@ -1,7 +1,6 @@
 using System;
 using System.Xml.Linq;
 using System.Collections.Generic;
-
 using Composite.Functions;
 using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
 using Composite.Forms.CoreUiControls;
@@ -9,6 +8,10 @@ using Composite.Forms.CoreUiControls;
 
 namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Integer
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public sealed class IntegerTextBoxWidgetFuntion : CompositeWidgetFunctionBase
     {
         private const string _functionName = "TextBox";

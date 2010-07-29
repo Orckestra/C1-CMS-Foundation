@@ -6,6 +6,10 @@ using Composite.ResourceSystem;
 
 namespace Composite.Functions
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public sealed class HelpDefinition
 	{
         public HelpDefinition GetLocalized()

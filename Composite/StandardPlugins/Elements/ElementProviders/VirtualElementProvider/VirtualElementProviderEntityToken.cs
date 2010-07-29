@@ -5,6 +5,10 @@ using Composite.Types;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(VirtualElementProviderSecurityAncestorProvider))]
     public sealed class VirtualElementProviderEntityToken : EntityToken
     {

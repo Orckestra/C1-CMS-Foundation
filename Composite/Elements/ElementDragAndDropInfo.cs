@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 namespace Composite.Elements
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ElementDragAndDropInfo
     {
         private List<string> _dropHashTypeIdentifiers = null;

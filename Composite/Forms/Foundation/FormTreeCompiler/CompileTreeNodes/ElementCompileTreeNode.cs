@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace Composite.Forms.Foundation.FormTreeCompiler.CompileTreeNodes
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class ElementCompileTreeNode : CompileTreeNode
     {
         private object _producer = null;

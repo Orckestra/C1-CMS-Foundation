@@ -7,6 +7,10 @@ using Composite.Serialization;
 
 namespace Composite.Elements
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ElementHandle
     {
         private readonly string _providerName;

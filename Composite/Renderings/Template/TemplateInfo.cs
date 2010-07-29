@@ -11,6 +11,10 @@ using Composite.Types;
 
 namespace Composite.Renderings.Template
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class TemplateInfo
 	{
         private static readonly Cache<Guid, IPageTemplate> PageTemplateCache = new Cache<Guid, IPageTemplate>("Page templates", 100);

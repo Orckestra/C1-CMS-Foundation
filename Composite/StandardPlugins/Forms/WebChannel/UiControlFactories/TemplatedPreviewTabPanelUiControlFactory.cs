@@ -18,6 +18,8 @@ namespace Composite.StandardPlugins.Forms.WebChannel.UiControlFactories
     /// Use this as base type for User Controls that render a Forms UiControl PreviewTabPanel.
     /// Access details about child elements through the FormControlDefinitions property.
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class PreviewTabPanelTemplateUserControlBase : UserControl, IClickableTabPanelControl
     {
         private string _formControlLabel;

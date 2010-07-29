@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-
 using Composite.Xml;
 using System.IO;
 using Composite.ConfigurationSystem;
@@ -11,8 +10,13 @@ using System.Configuration;
 using Composite.IO.Zip;
 using Composite.ResourceSystem;
 
+
 namespace Composite.PackageSystem.PackageFragmentInstallers
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ConfigurationTransformationPackageFragmentInstaller : BasePackageFragmentInstaller
     {
         private const string _installElementName = "Install";

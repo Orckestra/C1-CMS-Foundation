@@ -2,6 +2,10 @@
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public class MediaFileSearchToken : SearchToken
 	{
         public string[] MimeTypes { get; set; }

@@ -3,6 +3,10 @@ using System.IO;
 
 namespace Composite.Data.Streams
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class CachedMemoryStream : MemoryStream
     {
         private byte[] _data = null;

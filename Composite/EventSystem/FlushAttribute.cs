@@ -9,6 +9,8 @@ namespace Composite.EventSystem
     /// <summary>
     /// This attribute registres a method that can be called to make a local flush
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Class)]
     public class FlushAttribute : Attribute
     {

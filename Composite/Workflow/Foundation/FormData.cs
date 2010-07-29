@@ -1,20 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using Composite.Actions;
 using Composite.Data.DynamicTypes;
 using Composite.Forms.Flows;
+using Composite.Functions;
 using Composite.Serialization;
+using Composite.Types;
 using Composite.Validation.ClientValidationRules;
 using Composite.Xml;
-using Composite.Functions;
-using System;
-using Composite.Types;
 
 
 namespace Composite.Workflow.Foundation
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class FormData
     {
         public string ContainerLabel { get; set; }

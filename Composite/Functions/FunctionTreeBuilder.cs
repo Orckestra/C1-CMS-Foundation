@@ -1,14 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using System.Collections.Generic;
-
 using Composite.Functions.Foundation;
-using Composite.Xml;
 
 
 namespace Composite.Functions
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class FunctionTreeBuilder
     {
         public static BaseRuntimeTreeNode Build(XElement element)

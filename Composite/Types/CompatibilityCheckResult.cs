@@ -2,8 +2,13 @@
 using System.CodeDom.Compiler;
 using Composite.StringExtensions;
 
+
 namespace Composite.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public class CompatibilityCheckResult
 	{
         internal CompatibilityCheckResult()

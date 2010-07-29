@@ -6,6 +6,10 @@ using Composite.Logging;
 
 namespace Composite.Elements
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Flags]
     public enum ElementExternalActionAdding
     {        
@@ -30,6 +34,11 @@ namespace Composite.Elements
     }
 
 
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [DebuggerDisplay("{VisualData.Label}")]
     public sealed class Element
     {

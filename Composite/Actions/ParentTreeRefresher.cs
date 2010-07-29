@@ -7,6 +7,10 @@ using Composite.Security;
 
 namespace Composite.Actions
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ParentTreeRefresher
 	{
         private bool _postRefreshMessegesCalled = false;

@@ -7,7 +7,9 @@ namespace Composite.Validation.Validators
 {
     /// <summary>
     /// Represents a <see cref="RegexValidator"/>.
-    /// </summary>
+    /// </summary>    
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Parameter, AllowMultiple = true, Inherited = false)]
     public sealed class RegexValidatorAttribute : Microsoft.Practices.EnterpriseLibrary.Validation.Validators.ValueValidatorAttribute
     {

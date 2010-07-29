@@ -12,6 +12,10 @@ using Composite.GlobalSettings;
 
 namespace Composite.ConsoleEventSystem
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class ConsoleClosedEventArgs : EventArgs
     {
         public ConsoleClosedEventArgs(string consoleId)
@@ -29,6 +33,10 @@ namespace Composite.ConsoleEventSystem
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ConsoleFacade
     {
         public delegate void ConsoleClosedEventDelegate(ConsoleClosedEventArgs args);

@@ -1,13 +1,17 @@
 ﻿using System;
-using System.Xml.Linq;
-using System.Linq;
-using Composite.Xml;
-using Composite.Types;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
+using Composite.Types;
+using Composite.Xml;
 
 
 namespace Composite.Data.DynamicTypes
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class DynamicTypeMarkupServices
 	{
         private static readonly XName _fieldReferenceElementName = Namespaces.DynamicData10 + "fieldreference";

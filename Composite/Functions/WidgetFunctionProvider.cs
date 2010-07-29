@@ -6,6 +6,10 @@ using System.Collections.Generic;
 
 namespace Composite.Functions
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public sealed class WidgetFunctionProvider
 	{
         public static WidgetFunctionProvider BuildNoWidgetProvider()

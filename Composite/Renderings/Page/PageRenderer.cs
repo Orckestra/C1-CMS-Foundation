@@ -23,6 +23,10 @@ using Composite.Security;
 
 namespace Composite.Renderings.Page
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class PageRenderer
     {
         private static readonly XNamespace _aspNetControlReferenceNamespace = "#asp.net.control";

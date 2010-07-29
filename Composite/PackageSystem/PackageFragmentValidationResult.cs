@@ -10,6 +10,10 @@ using System.Reflection;
 
 namespace Composite.PackageSystem
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [DebuggerDisplay("ValidationResult = {ValidationResult}, Message = {Message}")]
 	public sealed class PackageFragmentValidationResult
 	{

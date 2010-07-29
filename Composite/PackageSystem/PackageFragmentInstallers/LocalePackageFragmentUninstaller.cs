@@ -11,6 +11,10 @@ using Composite.Logging;
 
 namespace Composite.PackageSystem.PackageFragmentInstallers
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class LocalePackageFragmentUninstaller : BasePackageFragmentUninstaller
     {
         private List<CultureInfo> _culturesToUninstall = null;

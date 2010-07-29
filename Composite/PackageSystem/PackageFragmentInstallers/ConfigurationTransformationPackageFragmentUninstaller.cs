@@ -9,6 +9,10 @@ using Composite.Xml;
 
 namespace Composite.PackageSystem.PackageFragmentInstallers
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ConfigurationTransformationPackageFragmentUninstaller : BasePackageFragmentUninstaller
 	{
         private const string _uninstallElementName = "Uninstall";

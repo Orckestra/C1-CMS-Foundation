@@ -10,6 +10,10 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 namespace Composite.StandardPlugins.Forms.WebChannel.UiControlFactories
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Composite.Forms.ControlValueProperty("Bindings")]
     public class WebEmbeddedFormUiControl : EmbeddedFormUiControl, IWebUiControl
     {

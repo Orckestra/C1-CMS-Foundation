@@ -73,6 +73,10 @@ namespace Composite.Data.Types
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class PageMetaDataDefinitionEqualityComparer : IEqualityComparer<IPageMetaDataDefinition>
     {
         public bool Equals(IPageMetaDataDefinition x, IPageMetaDataDefinition y)

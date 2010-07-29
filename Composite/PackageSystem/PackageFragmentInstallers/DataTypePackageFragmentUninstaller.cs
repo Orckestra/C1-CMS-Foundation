@@ -14,6 +14,10 @@ using Composite.Data;
 
 namespace Composite.PackageSystem.PackageFragmentInstallers
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataTypePackageFragmentUninstaller : BasePackageFragmentUninstaller
     {
         private List<DataTypeDescriptor> _dataTypeDescriptorsToDelete = null;

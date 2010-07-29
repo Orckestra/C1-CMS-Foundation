@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 namespace Composite.Security
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class RelationshipGraphLevel
     {
         private List<RelationshipGraphNode> _relationshipGraphNodes;

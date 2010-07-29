@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
+
 namespace Composite.Data.DynamicTypes
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataFieldNameCollection : IEnumerable<string>
     {
         private List<string> _dataFieldNames = new List<string>();

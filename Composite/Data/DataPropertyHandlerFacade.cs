@@ -6,6 +6,10 @@ using Composite.Logging;
 
 namespace Composite.Data
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class DataPropertyHandlerFacade
     {
         private static Dictionary<Type, ISetPropertyHandler> _setPropertyHandlers = new Dictionary<Type, ISetPropertyHandler>();

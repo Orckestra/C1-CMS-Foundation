@@ -8,8 +8,13 @@ using Composite.Data;
 using Composite.Data.Types;
 using Composite.Extensions;
 
+
 namespace Composite.WebClient
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class MediaUrlHelper
 	{
 	    private static readonly string DefaultMediaStore = "MediaArchive";

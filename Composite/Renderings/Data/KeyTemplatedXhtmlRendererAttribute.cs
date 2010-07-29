@@ -12,6 +12,10 @@ using System.Web;
 
 namespace Composite.Renderings.Data
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class KeyTemplatedXhtmlRendererAttribute : XhtmlRendererProviderAttribute
     {
         private XhtmlRenderingType _supportedRenderingType;

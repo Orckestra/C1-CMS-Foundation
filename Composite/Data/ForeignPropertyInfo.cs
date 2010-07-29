@@ -4,6 +4,10 @@ using System.Reflection;
 
 namespace Composite.Data
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public sealed class ForeignPropertyInfo
 	{
         internal ForeignPropertyInfo(PropertyInfo sourcePropertyInfo, Type targetType, string targetKeyPropertyName, bool allowCascadeDeletes, object nullReferenceValue, Type nullReferenceValueType, bool isNullableString)

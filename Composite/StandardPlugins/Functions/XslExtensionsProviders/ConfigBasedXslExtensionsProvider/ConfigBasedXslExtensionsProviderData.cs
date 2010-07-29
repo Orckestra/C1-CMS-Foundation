@@ -6,6 +6,10 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 namespace Composite.StandardPlugins.Functions.XslExtensionsProviders.ConfigBasedXslExtensionsProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Assembler(typeof(ConfigBasedXslExtensionsProviderAssembler))]
 	internal sealed class ConfigBasedXslExtensionsProviderData: XslExtensionsProviderData
 	{
@@ -23,6 +27,8 @@ namespace Composite.StandardPlugins.Functions.XslExtensionsProviders.ConfigBased
         }
 	}
 
+
+
     internal sealed class ConfigBasedXslExtensionsProviderAssembler : IAssembler<IXslExtensionsProvider, XslExtensionsProviderData>
     {
         public IXslExtensionsProvider Assemble(Microsoft.Practices.ObjectBuilder.IBuilderContext context, XslExtensionsProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
@@ -31,8 +37,13 @@ namespace Composite.StandardPlugins.Functions.XslExtensionsProviders.ConfigBased
             return new ConfigBasedXslExtensionsProvider(myConfiguration);
         }
     }
-    
-    
+
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class ConfigBasedXslExtensionInfo : NameTypeManagerTypeConfigurationElement
     {
     }

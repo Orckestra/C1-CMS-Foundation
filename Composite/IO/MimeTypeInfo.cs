@@ -8,6 +8,10 @@ using Composite.ResourceSystem.Icons;
 
 namespace Composite.IO
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class MimeTypeInfo
 	{
         private static IDictionary<string, string> _toCanonical = new Dictionary<string, string>();

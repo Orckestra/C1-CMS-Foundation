@@ -4,6 +4,10 @@ using Composite.ResourceSystem.Icons;
 
 namespace Composite.ResourceSystem
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Serializable]
     public sealed class ResourceHandle
     {

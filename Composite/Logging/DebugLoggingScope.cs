@@ -4,8 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 
+
 namespace Composite.Logging
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public sealed class DebugLoggingScope : IDisposable
 	{
         private static IDisposable _noActionDisposable = new NoActionDisposable();

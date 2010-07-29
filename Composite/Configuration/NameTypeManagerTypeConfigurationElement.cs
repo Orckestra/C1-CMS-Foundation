@@ -10,6 +10,8 @@ namespace Composite.Configuration
     /// <summary>
     /// Represents a <see cref="ConfigurationElement"/> that has a name and type known to <see cref="Composite.Types.TypeManager"/>.
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class NameTypeManagerTypeConfigurationElement : NamedConfigurationElement, IObjectWithNameAndType
     {
         private const string _typePropertyName = "type";

@@ -23,6 +23,10 @@ using Composite.Trees;
 
 namespace Composite.Workflow.Activities
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [ToolboxItem(false)]
     [ToolboxBitmap(typeof(StateMachineWorkflowActivity), "Resources.StateMachineWorkflowActivity.png")]
     [ActivityValidator(typeof(StateActivityValidator))]
