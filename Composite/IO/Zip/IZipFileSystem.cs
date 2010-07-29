@@ -6,6 +6,10 @@ using System.IO;
 
 namespace Composite.IO.Zip
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public interface IZipFileSystem
 	{
         bool ContainsFile(string filePath);

@@ -6,6 +6,10 @@ using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 
 namespace Composite.Data.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
     [ImmutableTypeId("{C326C3F7-81C4-47BD-9C17-83BE2CF980BA}")]
     [KeyPropertyName("Id")]

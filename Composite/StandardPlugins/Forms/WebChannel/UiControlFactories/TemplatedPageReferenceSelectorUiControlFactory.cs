@@ -18,6 +18,10 @@ using Composite.Data;
 
 namespace Composite.StandardPlugins.Forms.WebChannel.UiControlFactories
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class PageReferenceSelectorTemplateUserControlBase : UserControlBase
     {
         private DataReference<IPage> _selected;

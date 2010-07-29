@@ -10,16 +10,14 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-
-using Microsoft.CSharp;
-
+using Composite.Collections.Generic;
+using Composite.Extensions;
 using Composite.GlobalSettings;
 using Composite.IO;
 using Composite.Linq;
 using Composite.Logging;
-using Composite.Extensions;
 using Composite.Types.Foundation;
-using Composite.Collections.Generic;
+using Microsoft.CSharp;
 
 
 namespace Composite.Types

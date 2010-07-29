@@ -7,6 +7,10 @@ using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 
 namespace Composite.Data.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
     [TypeVersion(2)]
     [KeyPropertyName("Id")]

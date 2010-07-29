@@ -14,6 +14,10 @@ using Microsoft.Practices.ObjectBuilder;
 
 namespace Composite.StandardPlugins.Forms.WebChannel.UiControlFactories
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class XhtmlEditorTemplateUserControlBase : UserControl
     {
         private string _formControlLabel;

@@ -103,6 +103,10 @@ namespace Composite.Data.Types
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
     [ImmutableTypeId("{867BE4ED-9C6C-49B9-AC30-35D65066BA4C}")]
     [KeyPropertyName("Id")]

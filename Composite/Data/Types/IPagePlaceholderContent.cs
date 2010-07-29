@@ -9,6 +9,10 @@ using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 
 namespace Composite.Data.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
     [ImmutableTypeId("{3EAA3814-04E6-4c7f-8F1A-004A89BB0848}")]
     [KeyPropertyName("PageId")]

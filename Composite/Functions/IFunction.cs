@@ -4,7 +4,11 @@ using System.Collections.Specialized;
 
 
 namespace Composite.Functions
-{    
+{
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IFunction : IMetaFunction
 	{
         object Execute(ParameterList parameters, FunctionContextContainer context);

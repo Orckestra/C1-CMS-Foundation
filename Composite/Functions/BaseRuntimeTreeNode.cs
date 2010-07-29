@@ -6,6 +6,10 @@ using Composite.Types;
 
 namespace Composite.Functions
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class BaseRuntimeTreeNode
     {
         internal BaseRuntimeTreeNode() { }

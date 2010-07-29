@@ -70,7 +70,10 @@ namespace Composite.Security
 
 
 
-
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [DebuggerDisplay("EntityToken = {EntityToken}")]
     public sealed class RelationshipOrientedGraphNode
     {
@@ -151,6 +154,10 @@ namespace Composite.Security
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class RelationshipOrientedGraph
     {
         private List<RelationshipOrientedGraphNode> _nodes = new List<RelationshipOrientedGraphNode>();
@@ -240,7 +247,10 @@ namespace Composite.Security
 
 
 
-
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum RelationshipGraphSearchOption
     {
         Native,
@@ -250,6 +260,10 @@ namespace Composite.Security
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class RelationshipGraph
     {
         private RelationshipGraphSearchOption _searchOption;

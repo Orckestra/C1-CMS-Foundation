@@ -4,6 +4,10 @@ using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 
 namespace Composite.Data.ProcessControlled
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [LocalizeProcessControllerType(typeof(GenericLocalizeProcessController))]
     public interface ILocalizedControlled : IProcessControlled
     {

@@ -4,6 +4,10 @@ using Composite.Validation.ClientValidationRules;
 
 namespace Composite.Forms.Foundation
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class UiControl : IUiControl
     {
         private string _label = "";

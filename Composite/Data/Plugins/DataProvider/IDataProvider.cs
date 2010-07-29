@@ -1,13 +1,16 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
-
+using System.Linq;
 using Composite.Data.Plugins.DataProvider.Runtime;
-
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
+
 
 namespace Composite.Data.Plugins.DataProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [CustomFactory(typeof(DataProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(DataProviderDefaultNameRetriever))]
     public interface IDataProvider

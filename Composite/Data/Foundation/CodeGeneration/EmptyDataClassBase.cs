@@ -3,6 +3,10 @@ using System;
 
 namespace Composite.Data.Foundation.CodeGeneration
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Serializable]
     public abstract class EmptyDataClassBase : IData
     {

@@ -426,6 +426,10 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.AllFunctionsElemen
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class AllFunctionsElementProviderSearchToken : SearchToken
     {
         public static AllFunctionsElementProviderSearchToken Build(Type[] functionReturnValueAccetableTypes)

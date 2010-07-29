@@ -8,6 +8,10 @@ using Composite.Data.DynamicTypes;
 
 namespace Composite.Data.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
     [ImmutableTypeId("{37A346A5-8776-4765-9D57-A3F2CD8E459D}")]
     [LabelPropertyName("Name")]

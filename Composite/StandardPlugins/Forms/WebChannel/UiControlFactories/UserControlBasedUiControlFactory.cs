@@ -13,6 +13,10 @@ using Microsoft.Practices.ObjectBuilder;
 
 namespace Composite.StandardPlugins.Forms.WebChannel.UiControlFactories
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class UserControlBasedUiControl : UserControl, IWebUiControl
     {
         private string _uiControlId = "IdNotSet";

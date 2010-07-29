@@ -5,6 +5,10 @@ using Composite.Data.Hierarchy.DataAncestorProviders;
 
 namespace Composite.Data.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
     [ImmutableTypeId("{24CDC117-4510-41C4-8A73-D1B4CD85FE2A}")]
     [KeyPropertyName("Id")]

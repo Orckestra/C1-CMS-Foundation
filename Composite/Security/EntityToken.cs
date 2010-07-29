@@ -31,6 +31,8 @@ namespace Composite.Security
     /// When subclassing this class and adding properties that have an impack when identity (equiallity)
     /// of the subclass, remember to overload Equal and GetHashCode!
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [DebuggerDisplay("Type = {Type}, Source = {Source}, Id = {Id}")]
     [SerializerHandler(typeof(EntityTokenSerializerHandler))]
     public abstract class EntityToken

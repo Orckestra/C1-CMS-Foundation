@@ -15,6 +15,10 @@ using Microsoft.Practices.ObjectBuilder;
 
 namespace Composite.StandardPlugins.Forms.WebChannel.CustomUiControls
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class PageContentEditorTemplateUserControlBase : UserControl
     {
         protected abstract void BindStateToProperties();

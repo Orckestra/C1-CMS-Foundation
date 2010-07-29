@@ -6,6 +6,10 @@ using Data.Types;
 
 namespace Composite.Data.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [TypeVersion(2)]
     [Title("C1 Media File")]
     [KeyPropertyName("KeyPath")]

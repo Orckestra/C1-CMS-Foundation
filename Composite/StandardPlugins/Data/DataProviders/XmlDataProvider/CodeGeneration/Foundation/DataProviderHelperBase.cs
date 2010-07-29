@@ -8,6 +8,10 @@ using Composite.Data;
 
 namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class DataProviderHelperBase : IXmlDataProviderHelper
     {
         protected ConstructorInfo _idClassConstructor;

@@ -5,6 +5,10 @@ using Composite.Validation.Validators;
 
 namespace Composite.Data.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
     [KeyPropertyName("Id")]
     [ImmutableTypeId("{545F5E10-31A2-40df-9FE8-DBAD1CFB9824}")]

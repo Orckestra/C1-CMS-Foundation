@@ -5,7 +5,11 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 
 namespace Composite.Elements.Plugins.ElementProvider
-{ 
+{
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [CustomFactory(typeof(HooklessElementProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(HooklessElementProviderDefaultNameRetriever))]
     public interface IHooklessElementProvider

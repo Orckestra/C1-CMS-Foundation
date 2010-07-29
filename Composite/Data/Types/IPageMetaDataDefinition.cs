@@ -6,6 +6,10 @@ namespace Composite.Data.Types
 {
     /// Using the same name for a metadata definition is allowed iff metadata type and label are the same
     /// on all instances.
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
     [KeyPropertyName("Id")]
     [ImmutableTypeId("{F0101D4E-2EC2-4D24-B0BD-BE367DC7C3E1}")]

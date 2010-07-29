@@ -6,6 +6,10 @@ using Composite.Data.Plugins.DataProvider.Streams;
 
 namespace Composite.StandardPlugins.Data.DataProviders.FileSystemDataProvider.Foundation
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [FileStreamManager(typeof(FileSystemFileStreamManager))]
     public abstract class FileSystemFile : FileSystemFileBase, IFile
     {

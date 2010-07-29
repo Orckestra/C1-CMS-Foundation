@@ -1,5 +1,9 @@
 ﻿namespace Composite.Data.ProcessControlled
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [DataScope(DataScopeIdentifier.PublicName)]
     [DataScope(DataScopeIdentifier.AdministratedName)]    
 	public interface IPublishControlled : IProcessControlled

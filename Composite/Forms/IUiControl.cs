@@ -1,7 +1,13 @@
 using Composite.Validation.ClientValidationRules;
 using System.Collections.Generic;
+
+
 namespace Composite.Forms
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IUiControl
     {
         /// <summary>

@@ -2,6 +2,10 @@
 
 namespace Composite.Data.Types.Foundation
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Obsolete("See IPageMetaDataDesciption or IPageMetaDataDesciption")]
 	public interface IAssociationDescription : IData
 	{

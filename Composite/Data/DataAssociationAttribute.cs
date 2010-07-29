@@ -3,11 +3,11 @@
 
 namespace Composite.Data
 {
-    [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true, Inherited = true)]
     /// <summary>    
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true, Inherited = true)]    
     public sealed class DataAssociationAttribute : Attribute
 	{
         public DataAssociationAttribute(Type associatedInterfaceType, string foreignKeyPropertyName, DataAssociationType dataAssociationType)
@@ -41,6 +41,10 @@ namespace Composite.Data
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum DataAssociationType
     {
         None,

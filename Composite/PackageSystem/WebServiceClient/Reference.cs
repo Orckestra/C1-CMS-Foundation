@@ -11,8 +11,12 @@
 namespace Composite.PackageSystem.WebServiceClient {
     using System.Runtime.Serialization;
     using System;
-    
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="PackageDescriptor", Namespace="http://package.composite.net/package.asmx")]
@@ -384,7 +388,12 @@ namespace Composite.PackageSystem.WebServiceClient {
             }
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="PackageReference", Namespace="http://package.composite.net/package.asmx")]
@@ -444,7 +453,11 @@ namespace Composite.PackageSystem.WebServiceClient {
             }
         }
     }
-    
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(Namespace="http://package.composite.net/package.asmx", ConfigurationName="ServiceReference1.PackagesSoap")]
     public interface PackagesSoap {
@@ -476,7 +489,12 @@ namespace Composite.PackageSystem.WebServiceClient {
         [System.ServiceModel.OperationContractAttribute(Action="http://package.composite.net/package.asmx/RegisterPackageInstallationFailure", ReplyAction="*")]
         Composite.PackageSystem.WebServiceClient.RegisterPackageInstallationFailureResponse RegisterPackageInstallationFailure(Composite.PackageSystem.WebServiceClient.RegisterPackageInstallationFailureRequest request);
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
@@ -492,7 +510,12 @@ namespace Composite.PackageSystem.WebServiceClient {
             this.Body = Body;
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://package.composite.net/package.asmx")]
@@ -512,7 +535,12 @@ namespace Composite.PackageSystem.WebServiceClient {
             this.Culture = Culture;
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
@@ -528,7 +556,12 @@ namespace Composite.PackageSystem.WebServiceClient {
             this.Body = Body;
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://package.composite.net/package.asmx")]
@@ -544,7 +577,12 @@ namespace Composite.PackageSystem.WebServiceClient {
             this.GetPackageListResult = GetPackageListResult;
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
@@ -560,7 +598,12 @@ namespace Composite.PackageSystem.WebServiceClient {
             this.Body = Body;
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://package.composite.net/package.asmx")]
@@ -580,7 +623,12 @@ namespace Composite.PackageSystem.WebServiceClient {
             this.userCulture = userCulture;
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
@@ -596,7 +644,12 @@ namespace Composite.PackageSystem.WebServiceClient {
             this.Body = Body;
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://package.composite.net/package.asmx")]
@@ -612,7 +665,13 @@ namespace Composite.PackageSystem.WebServiceClient {
             this.GetEulaTextResult = GetEulaTextResult;
         }
     }
-    
+
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
@@ -628,7 +687,12 @@ namespace Composite.PackageSystem.WebServiceClient {
             this.Body = Body;
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://package.composite.net/package.asmx")]
@@ -656,7 +720,12 @@ namespace Composite.PackageSystem.WebServiceClient {
             this.localUserIp = localUserIp;
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
@@ -672,7 +741,12 @@ namespace Composite.PackageSystem.WebServiceClient {
             this.Body = Body;
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute()]
@@ -681,7 +755,12 @@ namespace Composite.PackageSystem.WebServiceClient {
         public RegisterPackageUninstallResponseBody() {
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
@@ -697,7 +776,12 @@ namespace Composite.PackageSystem.WebServiceClient {
             this.Body = Body;
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://package.composite.net/package.asmx")]
@@ -725,7 +809,12 @@ namespace Composite.PackageSystem.WebServiceClient {
             this.localUserIp = localUserIp;
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
@@ -741,7 +830,12 @@ namespace Composite.PackageSystem.WebServiceClient {
             this.Body = Body;
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://package.composite.net/package.asmx")]
@@ -757,7 +851,12 @@ namespace Composite.PackageSystem.WebServiceClient {
             this.RequestLicenseUpdateResult = RequestLicenseUpdateResult;
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
@@ -773,7 +872,12 @@ namespace Composite.PackageSystem.WebServiceClient {
             this.Body = Body;
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://package.composite.net/package.asmx")]
@@ -801,7 +905,12 @@ namespace Composite.PackageSystem.WebServiceClient {
             this.localUserIp = localUserIp;
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
@@ -817,7 +926,12 @@ namespace Composite.PackageSystem.WebServiceClient {
             this.Body = Body;
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute()]
@@ -826,7 +940,12 @@ namespace Composite.PackageSystem.WebServiceClient {
         public RegisterPackageInstallationCompletionResponseBody() {
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
@@ -842,7 +961,12 @@ namespace Composite.PackageSystem.WebServiceClient {
             this.Body = Body;
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://package.composite.net/package.asmx")]
@@ -874,7 +998,12 @@ namespace Composite.PackageSystem.WebServiceClient {
             this.exceptionString = exceptionString;
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
@@ -890,7 +1019,12 @@ namespace Composite.PackageSystem.WebServiceClient {
             this.Body = Body;
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute()]
@@ -899,11 +1033,21 @@ namespace Composite.PackageSystem.WebServiceClient {
         public RegisterPackageInstallationFailureResponseBody() {
         }
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     public interface PackagesSoapChannel : Composite.PackageSystem.WebServiceClient.PackagesSoap, System.ServiceModel.IClientChannel {
     }
-    
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     public partial class PackagesSoapClient : System.ServiceModel.ClientBase<Composite.PackageSystem.WebServiceClient.PackagesSoap>, Composite.PackageSystem.WebServiceClient.PackagesSoap {

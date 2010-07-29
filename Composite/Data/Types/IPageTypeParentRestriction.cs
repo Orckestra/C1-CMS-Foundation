@@ -8,6 +8,10 @@ using Composite.Data.Hierarchy;
 
 namespace Composite.Data.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
     [ImmutableTypeId("{776694C8-0074-45FD-9358-41D61113EA34}")]
     [KeyPropertyName("Id")]

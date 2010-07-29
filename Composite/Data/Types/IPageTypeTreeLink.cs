@@ -8,6 +8,10 @@ using Composite.Trees;
 
 namespace Composite.Data.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
     [ImmutableTypeId("{5B4A6EF1-B3AF-4862-AA21-DAC96EAE300B}")]
     [KeyPropertyName("Id")]    

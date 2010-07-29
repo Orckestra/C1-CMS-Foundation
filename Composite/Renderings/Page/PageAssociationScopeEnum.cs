@@ -1,5 +1,9 @@
 ﻿namespace Composite.Renderings.Page
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum PageAssociationScope
     {
         CurrentPage = 0,

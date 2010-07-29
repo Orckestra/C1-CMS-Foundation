@@ -16,6 +16,10 @@ using Composite.Validation.ClientValidationRules;
 
 namespace Composite.StandardPlugins.Forms.WebChannel.UiControlFactories
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class DataReferenceTreeSelectorTemplateUserControlBase : UserControlBase
     {
         public string Selected { get; set; }

@@ -8,6 +8,10 @@ using Composite.Validation.Validators;
 
 namespace Composite.Data.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
     [ImmutableTypeId("{F6F0B424-0AFA-4d9a-9DF1-C57F2B7F7C8D}")]
     [KeyPropertyName("Id")]

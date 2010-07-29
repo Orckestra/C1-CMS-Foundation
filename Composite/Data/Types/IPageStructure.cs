@@ -6,6 +6,10 @@ using System.Text;
 
 namespace Composite.Data.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
     [ImmutableTypeId("{797A1A98-6E5C-4a1e-B346-AE547A1F4E90}")]
     [KeyPropertyName("Id")]

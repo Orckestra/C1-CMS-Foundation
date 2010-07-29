@@ -3,6 +3,10 @@
 
 namespace Composite.Data.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Obsolete("DataLogTraceListener isn't used any more")]
     [ImmutableTypeId("{EF5063AE-E686-426d-8FA1-6EC589C91EA9}")]
     [AutoUpdateble]

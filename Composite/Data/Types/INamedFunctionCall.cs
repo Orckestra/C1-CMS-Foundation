@@ -5,6 +5,10 @@ using Composite.Data.Hierarchy.DataAncestorProviders;
 
 namespace Composite.Data.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
     [ImmutableTypeId("{7eccf947-1abd-43d5-b28b-551a44a3fe96}")]
     [KeyPropertyName("XsltFunctionId")]

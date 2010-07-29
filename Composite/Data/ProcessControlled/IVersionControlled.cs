@@ -3,6 +3,10 @@ using System;
 
 namespace Composite.Data.ProcessControlled
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     /// <summary>
     /// Use this interface to get versioning on a given data type.
     /// </summary>

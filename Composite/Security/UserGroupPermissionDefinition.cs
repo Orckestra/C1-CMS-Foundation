@@ -4,6 +4,10 @@ using System;
 
 namespace Composite.Security
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public abstract class UserGroupPermissionDefinition
 	{
         private EntityToken _entityToken = null;

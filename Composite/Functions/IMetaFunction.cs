@@ -5,6 +5,10 @@ using Composite.Security;
 
 namespace Composite.Functions
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public interface IMetaFunction
 	{
         string Name { get; }

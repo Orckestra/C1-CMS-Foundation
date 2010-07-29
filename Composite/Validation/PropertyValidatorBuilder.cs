@@ -1,8 +1,13 @@
 using System;
 using System.CodeDom;
 
+
 namespace Composite.Validation
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public abstract class PropertyValidatorBuilder<T> : IPropertyValidatorBuilder
 	{
         /// <summary>

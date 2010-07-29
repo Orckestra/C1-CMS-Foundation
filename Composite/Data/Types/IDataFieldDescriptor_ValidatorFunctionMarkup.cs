@@ -2,6 +2,10 @@ using System;
 
 namespace Composite.Data.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Obsolete]
     [ImmutableTypeId("{A64230E3-63C3-4c2a-BF4B-23FFD2B92E2E}")]
     [AutoUpdateble]

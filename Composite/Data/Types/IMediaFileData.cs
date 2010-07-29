@@ -3,6 +3,10 @@
 
 namespace Composite.Data.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
     [TypeVersion(2)]
     [ImmutableTypeId("{56916e07-6e3c-4488-8b46-78f6cb74ac2e}")]

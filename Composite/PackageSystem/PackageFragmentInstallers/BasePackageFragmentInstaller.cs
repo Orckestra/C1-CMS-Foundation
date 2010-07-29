@@ -6,6 +6,10 @@ using Composite.ResourceSystem;
 
 namespace Composite.PackageSystem.PackageFragmentInstallers
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class BasePackageFragmentInstaller : IPackageFragmentInstaller
 	{
         public void Initialize(PackageInstallerContext packageInstallerContex, IEnumerable<XElement> configuration, XElement configurationParent)

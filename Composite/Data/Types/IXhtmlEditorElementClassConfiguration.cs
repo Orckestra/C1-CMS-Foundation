@@ -2,7 +2,9 @@ namespace Composite.Data.Types
 {
     /// <summary>
     /// Describes a concrete element class name configuration for an XHTML Editor
-    /// </summary>
+    /// </summary>    
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [ImmutableTypeId("{E73D643F-D8D4-45ff-B757-D0149F43D24C}")]
     [KeyPropertyName("ConfigurationName")]
     [KeyPropertyName("ElementName")]

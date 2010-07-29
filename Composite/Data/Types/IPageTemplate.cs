@@ -8,6 +8,10 @@ using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 
 namespace Composite.Data.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
     [ImmutableTypeId("{7B54D7D2-6BE6-48a6-9AE1-2E0373073D1D}")]
     [DataVisualizer(typeof(Composite.Data.Visualization.TemplateVisualizer))]

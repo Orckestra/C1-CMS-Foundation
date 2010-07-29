@@ -4,6 +4,10 @@ using Composite.Data.Types.Foundation;
 
 namespace Composite.Data.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Obsolete("See IPageFolderDesciption")]
     [AutoUpdateble]
     [KeyPropertyName("Id")]

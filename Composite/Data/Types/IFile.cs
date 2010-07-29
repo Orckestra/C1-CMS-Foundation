@@ -4,6 +4,10 @@ using Composite.Serialization;
 
 namespace Composite.Data.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [BuildNewHandler(typeof(IFileBuildNewHandler))]
     [DataScope(DataScopeIdentifier.PublicName)]
     [SerializerHandler(typeof(ExceptingSerializerHandler))]

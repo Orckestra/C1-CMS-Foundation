@@ -17,6 +17,10 @@ namespace Composite.Security
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [DebuggerDisplay("Level = {Level}, Type = {NodeType}, EntityToken = {EntityToken}")]
     public sealed class RelationshipGraphNode
     {

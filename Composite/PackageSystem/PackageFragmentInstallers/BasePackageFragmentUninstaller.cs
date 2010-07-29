@@ -6,6 +6,10 @@ using Composite.ResourceSystem;
 
 namespace Composite.PackageSystem.PackageFragmentInstallers
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class BasePackageFragmentUninstaller : IPackageFragmentUninstaller
 	{
         public void Initialize(IEnumerable<XElement> configuration, PackageUninstallerContext packageUninstallerContex)

@@ -4,6 +4,10 @@ using Composite.Data.Hierarchy.DataAncestorProviders;
 
 namespace Composite.Data.Types
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
     [ImmutableTypeId("{C447589F-B6DE-4f52-A520-F20E05BA2DB5}")]
     [KeyPropertyName("TypeManagerTypeName")]

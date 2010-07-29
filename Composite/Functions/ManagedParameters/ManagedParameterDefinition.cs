@@ -3,11 +3,11 @@
 
 namespace Composite.Functions.ManagedParameters
 {
-    [Serializable()]
     /// <summary>    
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [Serializable()]    
     public sealed class ManagedParameterDefinition
     {
         public ManagedParameterDefinition()

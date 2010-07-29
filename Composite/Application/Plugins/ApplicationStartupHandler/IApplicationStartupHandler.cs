@@ -4,6 +4,10 @@ using Composite.Application.Plugins.ApplicationStartupHandler.Runtime;
 
 namespace Composite.Application.Plugins.ApplicationStartupHandler
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [CustomFactory(typeof(ApplicationStartupHandlerCustomFactory))]
     [ConfigurationNameMapper(typeof(ApplicationStartupHandlerDefaultNameRetriever))]
 	public interface IApplicationStartupHandler

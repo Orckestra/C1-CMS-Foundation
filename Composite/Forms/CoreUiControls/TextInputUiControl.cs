@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Globalization;
 using System.ComponentModel;
-
-
 using Composite.Forms.Foundation;
+
 
 namespace Composite.Forms.CoreUiControls
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum TextBoxType
     {
         String,
@@ -18,6 +21,8 @@ namespace Composite.Forms.CoreUiControls
         ReadOnly,
         Guid
     }
+
+
 
     [ControlValueProperty("Text")]
     internal abstract class TextInputUiControl : UiControl

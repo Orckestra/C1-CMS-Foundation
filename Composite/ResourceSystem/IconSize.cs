@@ -4,6 +4,10 @@ using System.Globalization;
 
 namespace Composite.ResourceSystem
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [TypeConverter(typeof(IconSizeConverter))]
     public enum IconSize
     {
