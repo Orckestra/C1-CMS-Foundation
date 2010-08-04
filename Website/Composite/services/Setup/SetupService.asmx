@@ -137,7 +137,7 @@ namespace Composite.WebClient.Setup
         }
 
         [WebMethod]
-        public bool SetUp( XmlDocument setupDescription, string username, string password, string language )
+        public bool SetUp( string setupDescriptionXML, string username, string password, string language )
         {
             // When did we "initlialize"? Have we done it yet?
             

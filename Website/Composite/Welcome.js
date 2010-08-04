@@ -446,7 +446,7 @@ var Welcome = new function () {
 		var select = document.getElementById ( "language" );
 		var language = select.options [ select.selectedIndex ].value;
 		
-		SetupService.SetUp ( setup, username, password, language );
+		SetupService.SetUp ( "setup", username, password, language );
 		/*
 		KickStart.doLogin ( 
 			document.getElementById ( "username" ).value,
