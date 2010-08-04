@@ -139,6 +139,23 @@ namespace Composite.WebClient.Setup
         [WebMethod]
         public bool SetUp( XmlDocument setupDescription, string username, string password, string language )
         {
+            // When did we "initlialize"? Have we done it yet?
+            
+            // Go to offline mode
+            
+            // Validate
+                // Check that input values exists
+
+            // Locate packages related to the setupDescription 
+            
+            // If all is well
+            
+                // Initialize ?
+                // Create user
+                // Create language
+                // Setup packages
+            
+            // Go to online mode;
             return true;
         }
         

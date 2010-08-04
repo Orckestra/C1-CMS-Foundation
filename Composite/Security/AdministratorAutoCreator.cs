@@ -55,10 +55,11 @@ namespace Composite.Security
         /// </summary>
         /// <param name="userName">The user name - must match GlobalSettingsProvider.AutoCreatedAdministratorUserName</param>
         /// <param name="password">A password that meets a minimum requirement.</param>
+        /// <param name="validateAutoCreateUserName">When true only the username specified in Composite.config as auto createable (usually 'admin') is allowed. Set to false to use a different user name.</param>
         /// <returns>true if the user was auto created. Otherwise false.</returns>
-        public static void AutoCreatedAdministrator(string userName, string password)
+        public static void AutoCreatedAdministrator(string userName, string password, bool validateAutoCreateUserName = true)
         {
-            if (AdministratorAutoCreator.CanBeAutoCreated(userName) == false)
+            if (validateAutoCreateUserName == true && AdministratorAutoCreator.CanBeAutoCreated(userName) == false)
             {
                 throw new InvalidOperationException("Unable to auto create account. Either the user name is not eligble for auto creation or other users exists in the system. This feature only works for a specific user name and when no users exists.");
             }
