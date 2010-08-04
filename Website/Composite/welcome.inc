@@ -28,7 +28,7 @@
 					<h1>License</h1>
 					<div>
 						<div id="licensetext"/>
-						<form id="loginform" action="javascript://" method="get">
+						<form id="licenseform" action="javascript://" method="get">
 							<div>
 								<input id="username" type="checkbox" class="checkbox" onclick="Welcome.acceptLicense(this)"/>
 								<label>Accept</label>
