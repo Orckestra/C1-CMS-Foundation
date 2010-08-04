@@ -36,10 +36,10 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
                 _installElementName,
                 () => this.InstallElement.Attribute(_xsltFilePathAttributeName),
                 () => this.InstallXsltFilePath,
-                this.AddOnInstallerContex.ZipFileSystem,
+                this.InstallerContex.ZipFileSystem,
                 true);
 
-            if (this.AddOnInstallerContex.AddOnInformation.CanBeUninstalled == true)
+            if (this.InstallerContex.AddOnInformation.CanBeUninstalled == true)
             {
 
                 ValidateXslt(
@@ -48,7 +48,7 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
                     _uninstallElementName,
                     () => this.UninstallElement.Attribute(_xsltFilePathAttributeName),
                     () => this.UninstallXsltFilePath,
-                    this.AddOnInstallerContex.ZipFileSystem,
+                    this.InstallerContex.ZipFileSystem,
                     false);
 
             }
@@ -60,7 +60,7 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
 
         public override IEnumerable<XElement> Install()
         {
-            using (Stream xsltFileStream = this.AddOnInstallerContex.ZipFileSystem.GetFileStream(this.InstallXsltFilePath))
+            using (Stream xsltFileStream = this.InstallerContex.ZipFileSystem.GetFileStream(this.InstallXsltFilePath))
             {
                 using (TextReader xsltTextReader = new StreamReader(xsltFileStream))
                 {
@@ -70,7 +70,7 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
                 }
             }
 
-            if (this.AddOnInstallerContex.AddOnInformation.CanBeUninstalled == true)
+            if (this.InstallerContex.AddOnInformation.CanBeUninstalled == true)
             {
                 yield return this.UninstallElement;
             }

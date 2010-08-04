@@ -15,6 +15,7 @@ namespace Composite.Data.Types
     /// <summary>
     /// Provides basic data access to IPage and IPageStructure data
     /// </summary>
+    /// <exclude />
     // Made public for Base site in App_Code/Composite/BasicSearch.cs
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class PageManager

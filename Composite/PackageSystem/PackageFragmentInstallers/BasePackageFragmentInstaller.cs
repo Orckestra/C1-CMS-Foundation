@@ -18,7 +18,7 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
             if (configuration == null) throw new ArgumentNullException("configuration");
             if (configurationParent == null) throw new ArgumentNullException("configurationParent");
 
-            this.AddOnInstallerContex = packageInstallerContex;
+            this.InstallerContex = packageInstallerContex;
             this.Configuration = configuration;
             this.ConfigurationParent = configurationParent;
         }
@@ -27,7 +27,7 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
         public abstract IEnumerable<PackageFragmentValidationResult> Validate();
         public abstract IEnumerable<XElement> Install();
 
-        protected PackageInstallerContext AddOnInstallerContex { get; private set; }        
+        protected PackageInstallerContext InstallerContex { get; private set; }        
         protected IEnumerable<XElement> Configuration { get; set; }
         protected XElement ConfigurationParent { get; set; }
 

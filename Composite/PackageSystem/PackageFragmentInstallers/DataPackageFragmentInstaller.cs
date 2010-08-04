@@ -118,8 +118,11 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
                     }
                     else
                     {
-                        XElement element = AddDatas(dataType, null);
-                        typeElement.Add(element);
+                        using (DataScope localeScope = new DataScope(UserSettings.ActiveLocaleCultureInfo))
+                        {
+                            XElement element = AddDatas(dataType, null);
+                            typeElement.Add(element);
+                        }
                     }
                 }
 
@@ -267,7 +270,7 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
                     }
 
 
-                    if (this.AddOnInstallerContex.ZipFileSystem.ContainsFile(dataFilenameAttribute.Value) == false)
+                    if (this.InstallerContex.ZipFileSystem.ContainsFile(dataFilenameAttribute.Value) == false)
                     {
                         _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentInstaller.MissingFile"), dataFilenameAttribute.Value), dataFilenameAttribute));
                         continue;
@@ -277,7 +280,7 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
                     XDocument doc = null;
                     try
                     {
-                        using (StreamReader sr = new StreamReader(this.AddOnInstallerContex.ZipFileSystem.GetFileStream(dataFilenameAttribute.Value)))
+                        using (StreamReader sr = new StreamReader(this.InstallerContex.ZipFileSystem.GetFileStream(dataFilenameAttribute.Value)))
                         {
                             doc = XDocument.Load(sr);
                         }
@@ -319,7 +322,7 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
                 return;
             }
             else if ((DataFacade.GetAllInterfaces().Contains(dataType.InterfaceType) == false) &&
-                     (this.AddOnInstallerContex.IsDataTypePending(dataType.InterfaceType) == false))
+                     (this.InstallerContex.IsDataTypePending(dataType.InterfaceType) == false))
             {
                 _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentInstaller.TypeNotConfigured"), dataType.InterfaceType)));
                 return;
@@ -428,13 +431,19 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
                         continue;
                     }
 
-                    using (DataScope dataScope = new DataScope(dataType.DataScopeIdentifier, dataType.Locale))
+                    
+                    if ((DataLocalizationFacade.IsLocalized(dataType.InterfaceType) == false) || 
+                        ((dataType.AddToAllLocales == false) && (dataType.AddToCurrentLoacle == false)) ||                          
+                        ((dataType.Locale != null) && (this.InstallerContex.IsLocalePending(dataType.Locale) == false)))
                     {
-                        IData data = DataFacade.TryGetDataByUniqueKey(dataType.InterfaceType, dataKeyPropertyCollection);
-
-                        if (data != null)
+                        using (DataScope dataScope = new DataScope(dataType.DataScopeIdentifier, dataType.Locale))
                         {
-                            _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentInstaller.DataExists"), dataType.InterfaceType)));
+                            IData data = DataFacade.TryGetDataByUniqueKey(dataType.InterfaceType, dataKeyPropertyCollection);
+
+                            if (data != null)
+                            {
+                                _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentInstaller.DataExists"), dataType.InterfaceType)));
+                            }
                         }
                     }
                 }
@@ -445,7 +454,7 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
 
         private void ValidateDynamicAddedType(DataType dataType)
         {
-            DataTypeDescriptor dataTypeDescriptor = this.AddOnInstallerContex.GetPendingDataTypeDescriptor(dataType.InterfaceTypeName);
+            DataTypeDescriptor dataTypeDescriptor = this.InstallerContex.GetPendingDataTypeDescriptor(dataType.InterfaceTypeName);
 
             if (dataTypeDescriptor == null)
             {

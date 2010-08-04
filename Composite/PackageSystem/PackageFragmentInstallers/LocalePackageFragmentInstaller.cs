@@ -107,6 +107,8 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
                 }                
 
                 _localesToInstall.Add(new Tuple<CultureInfo,string,bool>(cultureInfo, urlMappingName, isDefault));
+
+                this.InstallerContex.AddPendingLocale(cultureInfo);
             }
 
 

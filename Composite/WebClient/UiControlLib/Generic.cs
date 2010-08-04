@@ -11,6 +11,7 @@ namespace Composite.WebClient.UiControlLib
     /// To be used for creating stateless tags. Copies all the attributes from markup to the generated tag,
     /// the "clientid" attribute will be transformed to "id" attribute.
     /// </summary>
+    /// <exclude />    
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class Generic : HtmlGenericControl 
     {

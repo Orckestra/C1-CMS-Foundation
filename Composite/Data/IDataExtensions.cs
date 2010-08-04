@@ -174,6 +174,7 @@ namespace Composite.Data
         /// </summary>
         /// <param name="data"></param>        
         /// <returns></returns>
+        /// <exclude />
         // Made public for Base site in App_Code/Composite/BasicSearch.cs
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
         public static object GetUniqueKey(this IData data)
@@ -258,6 +259,9 @@ namespace Composite.Data
 
 
 
+        /// <summary>    
+        /// </summary>
+        /// <exclude />
         // Made public for Base site in App_Code/Composite/BasicSearch.cs
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
         public static List<IData> ToDataList(this IQueryable queryable)

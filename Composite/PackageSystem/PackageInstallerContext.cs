@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Composite.Data.DynamicTypes;
 using Composite.IO.Zip;
+using System.Globalization;
 
 
 namespace Composite.PackageSystem
@@ -16,6 +17,8 @@ namespace Composite.PackageSystem
         private Dictionary<string, DataTypeDescriptor> _pendingDataTypeDescriptors = new Dictionary<string, DataTypeDescriptor>();
         private List<Type> _pendingDataTypes = new List<Type>();
         private List<Assembly> _pendingAssemblies = new List<Assembly>();
+        private List<CultureInfo> _pendingLocales = new List<CultureInfo>();
+
 
         internal PackageInstallerContext(IZipFileSystem zipFileSystem, string tempDirectory, PackageInformation packageInformation)
         {
@@ -88,6 +91,24 @@ namespace Composite.PackageSystem
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
 
             return _pendingDataTypes.Contains(interfaceType);
+        }
+
+
+
+        public void AddPendingLocale(CultureInfo locale)
+        {
+            if (locale == null) throw new ArgumentNullException("locale");
+
+            _pendingLocales.Add(locale);
+        }
+
+
+
+        public bool IsLocalePending(CultureInfo locale)
+        {
+            if (locale == null) throw new ArgumentNullException("locale");
+
+            return _pendingLocales.Contains(locale);
         }
     }
 }

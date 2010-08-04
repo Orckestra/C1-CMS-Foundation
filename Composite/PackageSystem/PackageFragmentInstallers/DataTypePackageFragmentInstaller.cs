@@ -77,7 +77,7 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
                     if (dataTypeDescriptor != null)
                     {
                         _typesToInstall.Add(dataTypeDescriptor);
-                        this.AddOnInstallerContex.AddPendingDataType(type);
+                        this.InstallerContex.AddPendingDataType(type);
                     }
                 }
             }

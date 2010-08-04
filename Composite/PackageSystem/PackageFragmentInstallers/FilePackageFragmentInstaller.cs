@@ -96,7 +96,7 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
                     }
 
                     string sourceFilename = sourceFilenameAttribute.Value;
-                    if (this.AddOnInstallerContex.ZipFileSystem.ContainsFile(sourceFilename) == false)
+                    if (this.InstallerContex.ZipFileSystem.ContainsFile(sourceFilename) == false)
                     {
                         validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.MissingFile"), sourceFilename), sourceFilenameAttribute));
                         continue;
@@ -149,9 +149,9 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
 
                     if (loadAssembly == true)
                     {
-                        string tempFilename = Path.Combine(this.AddOnInstallerContex.TempDirectory, Path.GetFileName(targetFilename));
+                        string tempFilename = Path.Combine(this.InstallerContex.TempDirectory, Path.GetFileName(targetFilename));
 
-                        this.AddOnInstallerContex.ZipFileSystem.WriteFileToDisk(sourceFilename, tempFilename);
+                        this.InstallerContex.ZipFileSystem.WriteFileToDisk(sourceFilename, tempFilename);
 
                         BuildManager.LoadAssemlby(tempFilename);
                     }
@@ -208,7 +208,7 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
                     }
 
                     string sourceDirectory = sourceDirectoryAttribute.Value;
-                    if (this.AddOnInstallerContex.ZipFileSystem.ContainsDirectory(sourceDirectory) == false)
+                    if (this.InstallerContex.ZipFileSystem.ContainsDirectory(sourceDirectory) == false)
                     {
                         validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.MissingDirectory"), sourceDirectory), sourceDirectoryAttribute));
                         continue;
@@ -224,7 +224,7 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
                         }
                     }
 
-                    foreach (string sourceFilename in this.AddOnInstallerContex.ZipFileSystem.GetFilenames(sourceDirectory))
+                    foreach (string sourceFilename in this.InstallerContex.ZipFileSystem.GetFilenames(sourceDirectory))
                     {
                         string resolvedSourceFilename = sourceFilename.Remove(0, sourceDirectory.Length);
                         if (resolvedSourceFilename.StartsWith("/") == true)
@@ -283,7 +283,7 @@ namespace Composite.PackageSystem.PackageFragmentInstallers
                     Directory.CreateDirectory(targetDirectory);
                 }
 
-                this.AddOnInstallerContex.ZipFileSystem.WriteFileToDisk(fileToCopy.SourceFilename, fileToCopy.TargetFilePath);
+                this.InstallerContex.ZipFileSystem.WriteFileToDisk(fileToCopy.SourceFilename, fileToCopy.TargetFilePath);
 
                 XElement fileElement = new XElement("File", new XAttribute("filename", fileToCopy.TargetRelativeFilePath));
 

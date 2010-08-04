@@ -10,6 +10,7 @@ namespace Composite.WebClient.UiControlLib
     /// &lt;ui:postbackdialog id="uniqueID" callbackid="uniqueCallbackID" label="Hello" tooltip="Hello Master!" handle="Composite.Management.PageSelectorDialog" value="DEFAULT VALUE!" /&gt;
     /// and persists "value" attribute.
     /// </summary>
+    /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class PostBackDialog : BaseControl
     {

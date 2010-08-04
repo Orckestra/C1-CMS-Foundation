@@ -4,7 +4,10 @@ using System.Web;
 
 
 namespace Composite.Caching
-{
+{    
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
     // Made public for Base site in App_Code/Composite/BasicSearch.cs
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class RequestLifetimeCache
