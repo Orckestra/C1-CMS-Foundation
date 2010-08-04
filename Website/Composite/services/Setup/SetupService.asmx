@@ -58,14 +58,14 @@ namespace Composite.WebClient.Setup
             public String Key { get; set; }
             public bool Selected { get; set; }
         }
-		/*
+
         [WebMethod]
-        public string GetLicenseText( bool dummy )
+        public XmlDocument GetLicenseHtml(bool dummy)
         {
-            // TODO: To be implemented...
-            return "Property of Composite A/S";
+            XmlDocument doc = new System.Xml.XmlDocument();
+            doc.Load(Server.MapPath("licensedummy.xml"));
+            return doc;
         }
-        */
         
         [WebMethod]
         public CheckResult[] CheckRequirements( bool dummy )
@@ -75,33 +75,77 @@ namespace Composite.WebClient.Setup
                 new CheckResult {
                 	Key = "permissions",
                     Title = "Web directory permissions",
-                    Success = HasWritePermission()
+                    Success = true //HasWritePermission()
                 },
                 new CheckResult {
                 	Key = "pathlength",
                     Title = "Base path length",
-                    Success = BasePathNotToLong()
+                    Success = true //BasePathNotToLong()
                 },
                 new CheckResult {
                 	Key = "connection",
                     Title = "Outbound server connection",
-                    Success = HasConnectionToPackageServer()
+                    Success = true //HasConnectionToPackageServer()
                 },
                 new CheckResult {
                 	Key = "browser",
                     Title = "Browser type and version",
-                    Success = BrowserCheck()
+                    Success = true //BrowserCheck()
                 },
                 new CheckResult {
                 	Key = "diskspace",
                     Title = "Disk space requirements",
-                    Success = DiskSpaceCheck()
+                    Success = true //DiskSpaceCheck()
                 }
             };
         }
 
-        #region Checking if setup meets requirements
+        [WebMethod]
+        public XmlDocument GetSetupDescription(bool dummy)
+        {
+            XmlDocument doc = new System.Xml.XmlDocument();
+            doc.Load(Server.MapPath("dummy.xml"));
+            return doc;
+        }
 
+        [WebMethod]
+        public LanguageDef[] GetLanguages(bool dummy)
+        {
+            return new[]
+            {
+                new LanguageDef {
+                    Title = "Hebrew",
+                    Key = "no-GO",
+                    Selected = false
+                },
+                new LanguageDef {
+                    Title = "Latin",
+                    Key = "da-DK",
+                    Selected = true
+                },
+                new LanguageDef {
+                    Title = "Klingon",
+                    Key = "en-US",
+                    Selected = false
+                },
+                new LanguageDef {
+                    Title = "Navi",
+                    Key = "na-VI",
+                    Selected = false
+                }
+            };
+        }
+
+        [WebMethod]
+        public bool SetUp( XmlDocument setupDescription, string password, string language )
+        {
+            return true;
+        }
+        
+                
+        
+        
+        
         private bool HasWritePermission()
         {
             string filePath = Context.Server.MapPath("/Composite/Setup/NtfsSecurityTest.xml");
@@ -186,118 +230,6 @@ namespace Composite.WebClient.Setup
             return lpFreeBytesAvailable > 5 * 1024 * 1024 /* 5 MB */; 
         }
 
-        #endregion Checking if installation meets necessary requirements
-
-        [WebMethod]
-        public XmlDocument GetSetupDescription ( bool dummy )
-        {
-            XmlDocument doc = new System.Xml.XmlDocument();
-            doc.Load ( Server.MapPath ( "dummy.xml" ));
-            return doc;
-        }
-
-        [WebMethod]
-        public LanguageDef[] GetLanguages(bool dummy)
-        {
-            return new[]
-            {
-                new LanguageDef {
-                    Title = "Hebrew",
-                    Key = "no-GO",
-                    Selected = false
-                },
-                new LanguageDef {
-                    Title = "Latin",
-                    Key = "da-DK",
-                    Selected = true
-                },
-                new LanguageDef {
-                    Title = "Klingon",
-                    Key = "en-US",
-                    Selected = false
-                },
-                new LanguageDef {
-                    Title = "Navi",
-                    Key = "na-VI",
-                    Selected = false
-                }
-            };
-        }
-        
-		/*
-        [WebMethod]
-        public void SetUp(
-            string adminPassword, 
-            string language,
-            string starterSiteId)
-        {
-            AssertServiceAvailable();
-
-            int started = Interlocked.Increment(ref _started);
-            if(started != 1)
-            {
-                throw new InvalidOperationException("Already started");
-            }
-
-            Thread.Sleep(5 * 1000);
-            
-            //var installThread = new Thread(() => Process(adminPassword, language, starterSiteId));
-            //installThread.Start();
-        }
-
-        //private static void Process(string adminPassword,
-        //    string language,
-        //    string starterSiteId)
-        //{
-        //    using(new ShutdownGuard())
-        //    {
-        //        Thread.Sleep(10 * 1000);
-        //    }
-        //}
-        
-        [WebMethod]
-        public StarterSite[] GetStarterSites( bool dummy )
-        {
-            AssertServiceAvailable();
-
-            // NOTE: to be implemented
-
-            return new[]
-                       {
-                           new StarterSite
-                               {
-                                   ID = Guid.Empty.ToString (),
-                                   Title = "None",
-                                   ShortDescription = "",
-                                   Description = "",
-                                   ScreenshotUrl = null
-                               },
-                           new StarterSite
-                               {
-                                   ID = new Guid("c6cf5137-afbb-462e-a357-9aa55327e675").ToString (),
-                                   Title = "Basic Site",
-                                   ShortDescription = "Cum sociis natoque penatibus et magnis dis parturient montes",
-                                   Description = "Quisque ut malesuada turpis. Sed ac est justo, id lobortis orci. Maecenas ac tempor turpis. In hac habitasse platea dictumst.",
-                                   ScreenshotUrl = null
-                               },    
-                           new StarterSite
-                               {
-                                   ID = new Guid("5f35ce50-6174-42e2-bcdf-9e259ab15350").ToString (),
-                                   Title = "Basic Site + Design",
-                                   ShortDescription = "Praesent mattis lectus a justo fringilla in aliquet",
-                                   Description = "Donec non lorem ac tellus lobortis tristique eu vel magna. Donec vel magna enim. Sed lobortis malesuada lobortis.",
-                                   ScreenshotUrl = null
-                               }                               
-                       };
-        }
-
-        //[WebMethod]
-        //public bool Ping()
-        //{
-        //    return true;
-        //}
-        */
-        
         private static void AssertServiceAvailable()
         {
             // NOTE: to be implemented

@@ -61,10 +61,10 @@
 		
 			<!-- show intro splash or normal splash? -->
 			<ui:cover id="cover" busy="false">
-				<asp:PlaceHolder ID="introholder" runat="server" Visible="false">
+				<asp:PlaceHolder ID="introholder" runat="server" Visible="true">
 					<% Response.WriteFile ( "welcome.inc" ) %>
 				</asp:PlaceHolder>
-				<asp:PlaceHolder ID="splashholder" runat="server" Visible="true">
+				<asp:PlaceHolder ID="splashholder" runat="server" Visible="false">
 					<% Response.WriteFile ( "top.inc" ) %>
 				</asp:PlaceHolder>
 			</ui:cover>
