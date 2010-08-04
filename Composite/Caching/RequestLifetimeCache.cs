@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Web;
 
+
 namespace Composite.Caching
 {
-	internal static class RequestLifetimeCache
+    // Made public for Base site in App_Code/Composite/BasicSearch.cs
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public static class RequestLifetimeCache
 	{
         private static Dictionary<object, object> _unitTestCahce = new Dictionary<object,object>();
 

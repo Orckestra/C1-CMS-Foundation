@@ -42,7 +42,7 @@ public class PageService : System.Web.Services.WebService
                 }
             }
 
-            var pageManager = PageManager.Create(PublicationScope.Internal);
+            var pageManager = Composite.Pages.PageManager.Create(PublicationScope.Internal);
             
             if (pageId == Guid.Empty)
             {

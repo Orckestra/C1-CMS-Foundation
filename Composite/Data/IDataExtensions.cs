@@ -174,7 +174,9 @@ namespace Composite.Data
         /// </summary>
         /// <param name="data"></param>        
         /// <returns></returns>
-        internal static object GetUniqueKey(this IData data)
+        // Made public for Base site in App_Code/Composite/BasicSearch.cs
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+        public static object GetUniqueKey(this IData data)
         {
             if (data == null) throw new ArgumentNullException("data");
 
@@ -255,7 +257,10 @@ namespace Composite.Data
         }
 
 
-        internal static List<IData> ToDataList(this IQueryable queryable)
+
+        // Made public for Base site in App_Code/Composite/BasicSearch.cs
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+        public static List<IData> ToDataList(this IQueryable queryable)
         {
             if (queryable == null) throw new ArgumentNullException("queryable");
 

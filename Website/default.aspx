@@ -41,7 +41,7 @@
 
                     if (pageId == Guid.Empty)
                     {
-                        var pageManager = PageManager.Create(PublicationScope.Public, defaultLocale);
+                        var pageManager = Composite.Pages.PageManager.Create(PublicationScope.Public, defaultLocale);
 
                         pageId = pageManager.GetChildrenIds(Guid.Empty).FirstOrDefault(rootPageId => pageManager.GetPageById(rootPageId) != null);
 
