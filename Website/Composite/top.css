@@ -151,11 +151,12 @@ ui|block {
 ui|theatre {
 	display: block;
 	position: absolute;
-	z-index: 4; /* below cover */
 	top: 100%;
 	left: 100%;
 	width: 100%;
 	height: 100%;
+	z-index: 4; /* below cover */
+	z-index: 6; /* above cover! */
 }
 div#offlinesplash {
 	width: 128px;

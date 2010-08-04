@@ -447,12 +447,9 @@ var Welcome = new function () {
 		var language = select.options [ select.selectedIndex ].value;
 		
 		var serial = DOMSerializer.serialize ( setup );
-		SetupService.SetUp ( serial, username, password, language );
-		/*
-		KickStart.doLogin ( 
-			document.getElementById ( "username" ).value,
-			document.getElementById ( "password" ).value
-		);
-		*/
+		if ( SetupService.SetUp ( serial, username, password, language )) {
+			CoverBinding.fadeIn ( top.bindingMap.introcover );
+			top.bindingMap.offlinetheatre.play ();
+		}
 	}
 }
