@@ -108,6 +108,7 @@ var Welcome = new function () {
 	this.switchTo = function ( id ) {
 		
 		switch ( id ) {
+			
 			case "setup" :
 				EventBroadcaster.unsubscribe ( BroadcastMessages.KEY_TAB, this );
 				if ( !hasSetup ) {
@@ -115,6 +116,13 @@ var Welcome = new function () {
 					hasSetup = true;
 				}
 				break;
+				
+			case "license" :
+				var doc = SetupService.GetLicenseHtml ( true );
+				var markup = DOMSerializer.serialize ( doc );
+				document.getElementById ( "licensetext" ).innerHTML = markup;
+				break;
+				 
 			case "login" :
 				EventBroadcaster.subscribe ( BroadcastMessages.KEY_TAB, this );
 				updateSetup ();
@@ -131,6 +139,16 @@ var Welcome = new function () {
 		relax ( true ) 
 		bindingMap.introdecks.select ( id );
 		bindingMap.navdecks.select ( "nav" + id );
+		
+		var p = document.getElementById ( "crumbs" );
+		var spans = new List ( p.getElementsByTagName ( "span" ));
+		spans.each ( function ( span ) {
+			if ( span.id == "crumb" + id ) {
+				span.className = "selected";
+			} else {
+				span.className = "";
+			}
+		});
 		relax ( false );
 	}
 	
@@ -312,7 +330,10 @@ var Welcome = new function () {
 		setup = SetupService.GetSetupDescription ( true );
 		var html = transformer.transformToString ( setup, true );
 		
-		var target = document.getElementById ( "setupfields" );
+		var target = document.getElementById ( "setuptext" );
+		target.innerHTML = setup.documentElement.getAttribute ( "desc" );
+		
+		target = document.getElementById ( "setupfields" );
 		target.innerHTML = html.replace ( /xmlns:ui=\"urn:HACKED\"/g, "" );
 		DocumentManager.attachBindings ( target );
 	}
@@ -402,14 +423,35 @@ var Welcome = new function () {
 	}
 	
 	/**
+	 * @param {HTMLInputElement} input
+	 */
+	this.acceptLicense = function ( input ) {
+		
+		var button = bindingMap.setupbutton;
+		if ( input.checked ) {
+			button.enable ();
+		} else {
+			button.disable ();
+		}
+	}
+	
+	/**
 	 * Login!
 	 */
 	this.login = function () {
 		
+		var username = document.getElementById ( "username" ).value;
+		var password = document.getElementById ( "password" ).value;
+		
+		var select = document.getElementById ( "language" );
+		var language = select.options [ select.selectedIndex ].value;
+		
+		SetupService.SetUp ( setup, username, password, language );
+		/*
 		KickStart.doLogin ( 
 			document.getElementById ( "username" ).value,
 			document.getElementById ( "password" ).value
 		);
-		
+		*/
 	}
 }

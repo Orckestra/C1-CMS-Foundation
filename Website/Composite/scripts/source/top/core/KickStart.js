@@ -120,7 +120,7 @@ var KickStart = new function () {
 		}
 		
 		if ( isLocalStoreReady && isAudioReady ) {
-			if ( LoginService.IsLoggedIn ( true )) {
+			if ( bindingMap.decks != null && LoginService.IsLoggedIn ( true )) {
 				accessGranted ();
 			} else {
 				// splashScreenData ();

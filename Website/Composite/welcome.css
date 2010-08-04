@@ -147,28 +147,32 @@ table#intro div.options.visible {
 	display: block;	
 }
 
-table#intro form {
+ui|deck#login form {
 	text-align: right;
 }
-table#intro form div {
+ui|deck#login form div {
 	padding-bottom: 4px;	
 }
-table#intro form label {
+ui|deck#login form label {
 	float: left;
 	position: relative;
 	top: 6px;
 }
-table#intro form input,
-table#intro form select {
+ui|deck#login form input,
+ui|deck#login form select {
 	width: 170px;
 	#region moz
 		padding: 5px;
 		border: 1px solid #B2B2B2;
 	#endregion
 }
-table#intro form input:focus,
-table#intro form select:focus {
+ui|deck#login form input:focus,
+ui|deck#login form select:focus {
 	border-color: black;
+}
+ui|deck#login form input.disabled {
+	background-color: ThreeDFace; 
+	color: GrayText;
 }
 p#loginok {
 	visibility: hidden;	
@@ -180,13 +184,51 @@ p#loginbad {
  	top: 0;
  	left: 0;
 }
-ui|clickbutton#startbutton.isdisabled {
+ui|clickbutton.isdisabled {
 	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50) progid:DXImageTransform.Microsoft.BasicImage(grayScale=1);
 	#region moz
 		opacity: 0.5;
 		filter: url("${root}/templates/grayscalefilter.xml#grayscale");
 	#endregion
 }
-ui|clickbutton#startbutton.isdisabled ui|labeltext {
+ui|clickbutton.isdisabled ui|labeltext {
 	color: white;
+}
+div#licensetext {
+	padding: 1em 1em 0 1em;
+	height: 150px;
+	overflow: auto;
+	border: 1px solid #B2B2B2;
+}
+table#intro a {
+	color: blue;
+	text-decoration: underline;
+	cursor: pointer;	
+}
+ui|deck#license form {
+	padding-top: 1em;
+}
+ui|deck#license input {
+	position: relative;
+	top: 1px;
+	cursor: default;	
+}
+p#crumbs {
+	color: GrayText;
+	text-align: right;
+	position: relative;
+	top: -10px;	
+}
+p#crumbs em {
+	font-family: Arial, sans-serif;
+	font-size: 10px;
+	opacity: 0.75;
+}
+p#crumbs span {
+	font-weight: bold;
+	opacity: 0.75;	
+}
+p#crumbs span.selected {
+	color: #CC071E;
+	opacity: 1;             
 }
