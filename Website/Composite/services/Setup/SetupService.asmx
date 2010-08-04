@@ -137,7 +137,7 @@ namespace Composite.WebClient.Setup
         }
 
         [WebMethod]
-        public bool SetUp( XmlDocument setupDescription, string password, string language )
+        public bool SetUp( XmlDocument setupDescription, string username, string password, string language )
         {
             return true;
         }
