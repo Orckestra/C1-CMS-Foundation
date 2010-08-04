@@ -151,6 +151,7 @@ namespace Composite.WebClient.Setup
             // If all is well
             
                 // Initialize ?
+                // Write inst now?
                 // Create user
                 // Create language
                 // Setup packages
