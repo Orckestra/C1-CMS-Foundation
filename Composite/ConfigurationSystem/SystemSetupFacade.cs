@@ -31,7 +31,7 @@ namespace Composite.ConfigurationSystem
                 {
                     try
                     {
-                        _isSystemFirstTimeInitializedValue = File.Exists(FilePath);
+                        _isSystemFirstTimeInitializedValue = File.Exists(SystemInitializedFilePath);
                     }
                     catch (Exception)
                     {
@@ -46,13 +46,13 @@ namespace Composite.ConfigurationSystem
             {
                 lock (_lock)
                 {
-                    if (File.Exists(FilePath) == false)
+                    if (File.Exists(SystemInitializedFilePath) == false)
                     {
                         XDocument doc = new XDocument(
                             new XElement("Root", new XAttribute("Status", true))
                         );
 
-                        doc.Save(FilePath);
+                        doc.Save(SystemInitializedFilePath);
                     }
 
                     _isSystemFirstTimeInitializedValue = true;
@@ -62,7 +62,7 @@ namespace Composite.ConfigurationSystem
 
 
 
-        private static string FilePath
+        private static string SystemInitializedFilePath
         {
             get
             {
