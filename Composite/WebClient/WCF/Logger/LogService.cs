@@ -6,14 +6,15 @@ using System.Xml;
 using Composite.Security.Foundation.PluginFacades;
 using Composite.StringExtensions;
 using Composite.Threading;
+using Composite.ConfigurationSystem;
 
 
 namespace Composite.Logging.WCF
 {
-    [ServiceBehavior(InstanceContextMode=InstanceContextMode.Single)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
-	internal class LogService: ILogService
-	{
+    internal class LogService : ILogService
+    {
         private static readonly string LoggerConfigurationFilePath = @"Composite\services\LogService\Logger.config";
         private static readonly object _syncRoot = new object();
 
@@ -42,13 +43,13 @@ namespace Composite.Logging.WCF
                                         doc.Load(sr);
                                     }
 
-                                    var passwordNode = doc.SelectSingleNode("logger/password"); 
-                                    if(passwordNode != null && !string.IsNullOrEmpty(passwordNode.InnerText))
+                                    var passwordNode = doc.SelectSingleNode("logger/password");
+                                    if (passwordNode != null && !string.IsNullOrEmpty(passwordNode.InnerText))
                                     {
                                         _loggerPassword = passwordNode.InnerText;
                                     }
                                 }
-                                catch(Exception)
+                                catch (Exception)
                                 {
                                     // Do nothing
                                 }
@@ -60,7 +61,7 @@ namespace Composite.Logging.WCF
                                 }
                             }
 
-                            if (_loggerPassword == null) 
+                            if (_loggerPassword == null)
                             {
                                 _loggerPassword = Guid.NewGuid().ToString();
 
@@ -78,9 +79,11 @@ namespace Composite.Logging.WCF
 
         public string Authenticate(string adminPassword)
         {
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized == false) return "";
+
             bool userIsValid;
 
-            using(ThreadDataManager.Initialize())
+            using (ThreadDataManager.Initialize())
             {
                 userIsValid = LoginProviderPluginFacade.FormValidateUser("admin", adminPassword);
             }
@@ -90,6 +93,8 @@ namespace Composite.Logging.WCF
 
         public DateTime GetLastStartupTime()
         {
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized == false) return DateTime.MinValue;
+
             CheckSecurity();
 
             return LogManager.GetLastStartupTime();
@@ -97,6 +102,8 @@ namespace Composite.Logging.WCF
 
         public DateTime GetServerTime()
         {
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized == false) return DateTime.MinValue;
+
             CheckSecurity();
 
             return DateTime.Now;
@@ -104,6 +111,8 @@ namespace Composite.Logging.WCF
 
         public DateTime[] GetLoggingDates()
         {
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized == false) return new DateTime[] { };
+
             CheckSecurity();
 
             return LogManager.GetLoggingDates();
@@ -111,6 +120,8 @@ namespace Composite.Logging.WCF
 
         public int GetLogEntriesCount(DateTime timeFrom, DateTime timeTo, bool includeVerbose)
         {
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized == false) return 0;
+
             CheckSecurity();
 
             return LogManager.GetLogEntriesCount(timeFrom, timeTo, includeVerbose);
@@ -118,6 +129,8 @@ namespace Composite.Logging.WCF
 
         public int GetLogEntriesCountByDate(DateTime date, bool includeVerbose)
         {
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized == false) return 0;
+
             CheckSecurity();
 
             return LogManager.GetLogEntriesCountByDate(date, includeVerbose);
@@ -125,6 +138,8 @@ namespace Composite.Logging.WCF
 
         public LogEntry[] GetLogEntries(DateTime timeFrom, DateTime timeTo, bool includeVerbose, int maximumAmount)
         {
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized == false) return new LogEntry[] { };
+
             CheckSecurity();
 
             return Wrap(LogManager.GetLogEntries(timeFrom, timeTo, includeVerbose, maximumAmount));
@@ -132,6 +147,8 @@ namespace Composite.Logging.WCF
 
         public LogEntry[] GetLogEntriesFrom(DateTime timeFrom, bool includeVerbose, int maximumAmount)
         {
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized == false) return new LogEntry[] { };
+
             CheckSecurity();
 
             return GetLogEntries(timeFrom, DateTime.MaxValue, includeVerbose, maximumAmount);
@@ -139,6 +156,8 @@ namespace Composite.Logging.WCF
 
         private static void CheckSecurity()
         {
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized == false) return;
+
             string header = OperationContext.Current.IncomingMessageHeaders.GetHeader<string>("AuthToken", "Composite.Logger");
 
             Verify.That(header == LoggerPassword, "User hasn't been authentificated");

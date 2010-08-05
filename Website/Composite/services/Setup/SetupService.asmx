@@ -8,9 +8,12 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Web.Services;
 using System.Web.Services.Protocols;
+using System.Globalization;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.PackageSystem;
+using Composite.ConfigurationSystem;
+using Composite.WebClient;
 
 
 namespace Composite.WebClient.Setup
@@ -137,26 +140,17 @@ namespace Composite.WebClient.Setup
         }
 
         [WebMethod]
-        public bool SetUp( string setupDescriptionXML, string username, string password, string language )
+        public bool SetUp(string setupDescriptionXML, string username, string password, string language)
         {
+            CultureInfo locale = new CultureInfo(language);
+                        
             // When did we "initlialize"? Have we done it yet?
-            
-            // Go to offline mode
-            
-            // Validate
-                // Check that input values exists
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized == true) return true;
 
-            // Locate packages related to the setupDescription 
+            SystemSetupFacade.IsSystemFirstTimeInitialized = true;
+
+            SetupServiceFacade.SetUp(setupDescriptionXML, username, password, locale);
             
-            // If all is well
-            
-                // Initialize ?
-                // Write inst now?
-                // Create user
-                // Create language
-                // Setup packages
-            
-            // Go to online mode;
             return true;
         }
         

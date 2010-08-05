@@ -7,6 +7,7 @@
 <%@ Import Namespace="Composite.Data" %>
 <%@ Import Namespace="Composite.Data.Types" %>
 <%@ Import Namespace="Composite.Pages" %>
+<%@ Import Namespace="Composite.ConfigurationSystem" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -15,6 +16,12 @@
         <script runat="server">
             void Page_Init(object sender, EventArgs e)
             {
+                if (SystemSetupFacade.IsSystemFirstTimeInitialized == false)
+                {
+                    Response.Redirect("Composite");
+                }
+                
+                
                 var defaultLocale = DataLocalizationFacade.DefaultLocalizationCulture;
                 
                 using (var storage = Storage.Open())

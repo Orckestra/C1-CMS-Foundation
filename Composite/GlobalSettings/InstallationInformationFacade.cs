@@ -28,6 +28,7 @@ namespace Composite.GlobalSettings
             }
             else
             {
+                InitializeNewFile(filepath);
             }
         }
 

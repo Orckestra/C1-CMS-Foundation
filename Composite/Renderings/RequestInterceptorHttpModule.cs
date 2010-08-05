@@ -5,6 +5,7 @@ using Composite.Pages;
 using Composite.Threading;
 using Composite.WebClient;
 using Composite.Extensions;
+using Composite.ConfigurationSystem;
 
 
 namespace Composite.Renderings
@@ -18,6 +19,8 @@ namespace Composite.Renderings
 
         void context_BeginRequest(object sender, EventArgs e)
         {
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized == false) return;
+
             ThreadDataManager.InitializeThroughHttpContext(true);
 
             HttpApplication application = (HttpApplication) sender;

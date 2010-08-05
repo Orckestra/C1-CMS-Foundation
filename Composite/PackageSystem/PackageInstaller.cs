@@ -88,12 +88,12 @@ namespace Composite.PackageSystem
             {
                 using (GlobalInitializerFacade.CoreLockScope)
                 {
-                    if (systemLockingType == SystemLockingType.None)
+                    if ((systemLockingType == SystemLockingType.None) || (ApplicationOnlineHandlerFacade.IsApplicationOnline == false))
                     {
                         return DoInstall();
                     }
-                    else
-                    {
+                    else 
+                    {                        
                         using (ApplicationOnlineHandlerFacade.TurnOffScope(systemLockingType == SystemLockingType.Soft))
                         {
                             return DoInstall();

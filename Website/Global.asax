@@ -5,6 +5,7 @@
 <%@ Import Namespace="Composite.Application" %>
 <%@ Import Namespace="Composite.Instrumentation" %>
 <%@ Import Namespace="Composite.Threading" %>
+<%@ Import Namespace="Composite.WebClient" %>
 
 
 <script RunAt="server">
@@ -24,6 +25,11 @@
 
     void Application_Start(object sender, EventArgs e)
     {
+        if (Composite.ConfigurationSystem.SystemSetupFacade.IsSystemFirstTimeInitialized == false)
+        {
+            return;
+        }
+        
         if (_systemIsInitialized == true)
         {
             return;
@@ -35,39 +41,10 @@
         }
         
         lock (_syncRoot)
-        {            
-            if (_systemIsInitialized == true)
-            {
-                return;
-            }
+        {
+            if (_systemIsInitialized == true) return;
 
-            ThreadDataManager.InitializeThroughHttpContext();
-
-            LoggingService.LogVerbose("Global.asax", "cmd_clear_view");
-            LoggingService.LogVerbose("Global.asax",
-                                      string.Format("--- Web Application Start, {0} Id = {1} ---",
-                                                    DateTime.Now.ToLongTimeString(), AppDomain.CurrentDomain.Id));    
-            
-            //Thread aspNetControlCompileThread = new Thread(delegate()
-            //{
-            //    int t1 = Environment.TickCount;
-            //    ControlCompilerService.CompileAll();
-            //    int t2 = Environment.TickCount;
-
-            //    LoggingService.LogVerbose("RGB(180, 180, 255)Global.asax", string.Format("Compiling asp.net controls done in {0} ms", t2 - t1));
-            //});
-            //aspNetControlCompileThread.Start();
-
-            
-            PerformanceCounterFacade.SystemStartupIncrement();
-            ApplicationStartupFacade.FireBeforeSystemInitialize();
-
-            TempDirectoryFacade.OnApplicationStart();
-            Composite.Types.BuildManager.InitializeCachingSytem();            
-
-            ApplicationStartupFacade.FireSystemInitialized();
-
-            ThreadDataManager.FinalizeThroughHttpContext();
+            GlobalAsaxHelper.ApplicationStartInitialize(true);
 
             _systemIsInitialized = true;
         }
@@ -76,6 +53,12 @@
 
     void Application_End(object sender, EventArgs e)
     {
+        if (Composite.ConfigurationSystem.SystemSetupFacade.IsSystemFirstTimeInitialized == false)
+        {
+            return;
+        }
+        
+        
         if (_systemIsFinalized == true) return;
             
 

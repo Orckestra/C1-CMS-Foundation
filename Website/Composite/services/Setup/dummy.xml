@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <setup xmlns="urn:Composte.C1.Setup" desc="&lt;p&gt;Choose your default setup.&lt;/p&gt;">
-	<radio label="Clean slate" key="1" desc="Lorem ipsum lirum larum skibet gaar til aabenraa."/>
-    <!-- server relateret pakke info -->
-	<radio label="Basic Website" key="2" desc="Lorem ipsum lirum larum skibet gaar til aabenraa.">
-		<radio label="Johns Website" key="21" desc="Lorem ipsum lirum larum skibet gaar til aabenraa."/>
-	</radio>
-	<radio label="Demo Website" key="3" desc="Lorem ipsum lirum larum skibet gaar til aabenraa.">
-		<radio label="The Daily Demosite" key="31" desc="Lorem ipsum lirum larum skibet gaar til aabenraa."/>
-		<radio label="Omnicorp Website" key="32" desc="Lorem ipsum lirum larum skibet gaar til aabenraa."/>
-	</radio>
+  <radio label="Clean slate" key="1" desc="Lorem ipsum lirum larum skibet gaar til aabenraa."/>
+  <!-- server relateret pakke info -->
+  <radio label="Basic Website" key="2" desc="Lorem ipsum lirum larum skibet gaar til aabenraa.">
+    <radio label="Johns Website" key="21" desc="Lorem ipsum lirum larum skibet gaar til aabenraa."/>
+  </radio>
+  <radio label="Demo Website" key="3" desc="Lorem ipsum lirum larum skibet gaar til aabenraa.">
+    <radio label="The Daily Demosite" key="31" desc="Lorem ipsum lirum larum skibet gaar til aabenraa.">
+      <packages>
+        <package url="http://docs.composite.net/Downloads/Composite.TemplateSites.Base01.zip" />
+      </packages>
+    </radio>
+    <radio label="Omnicorp Website" key="32" desc="Lorem ipsum lirum larum skibet gaar til aabenraa."/>
+  </radio>
 </setup>

@@ -371,6 +371,9 @@
     <Compile Include="Composite\schemas\FormsControls\GenerateDynamicSchemas.aspx.designer.cs">
       <DependentUpon>GenerateDynamicSchemas.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Composite\top.aspx.designer.cs">
+      <DependentUpon>top.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Frontend\Composite\Controls\Captcha.ascx.cs">
       <DependentUpon>Captcha.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -463,6 +466,10 @@
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\ComboBox.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\PageSelector.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\DataReferenceTreeSelector.ascx" />
+    <Compile Include="Composite\top.aspx.cs">
+      <DependentUpon>top.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Content Include="Composite\default.js" />
     <Content Include="Composite\localization\Composite.StandardPlugins.DeveloperApplicationProvider.en-us.xml">
       <SubType>Designer</SubType>

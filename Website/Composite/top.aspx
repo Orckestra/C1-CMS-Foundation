@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<%@ Page Language="C#" AutoEventWireup="true" Inherits="Composite_Management_Top" CodeFile="Top.aspx.cs" %>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml" xmlns:control="http://www.composite.net/ns/uicontrol">
 	<control:appinitializer runat="server"/>
 	<control:httpheaders runat="server"/>
@@ -60,12 +61,12 @@
 		<ui:page id="toppage" strongfocusmanager="false" flex="false">
 		
 			<!-- show intro splash or normal splash? -->
-			<ui:cover id="cover" busy="false">
-				<asp:PlaceHolder ID="introholder" runat="server" Visible="true">
-					<% Response.WriteFile ( "welcome.inc" ) %>
+			<ui:cover id="cover" busy="false">                
+				<asp:PlaceHolder ID="introholder" runat="server">
+					<% Response.WriteFile("welcome.inc"); %>
 				</asp:PlaceHolder>
-				<asp:PlaceHolder ID="splashholder" runat="server" Visible="false">
-					<% Response.WriteFile ( "top.inc" ) %>
+				<asp:PlaceHolder ID="splashholder" runat="server">
+					<% Response.WriteFile("top.inc"); %>
 				</asp:PlaceHolder>
 			</ui:cover>
 			

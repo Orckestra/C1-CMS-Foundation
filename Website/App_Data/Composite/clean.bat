@@ -2,7 +2,9 @@ del DataMetaData\*.xml
 del DataStores\*.xml
 del Configuration\DynamicSqlDataProvider.config
 del Configuration\DynamicXmlDataProvider.config
+del Configuration\SystemInitialized.xml
 del ..\..\Bin\Composite.Generated.dll 
+del ..\..\app_offline.htm /F
 rd Packages /S /Q
 md Packages
 rd Cache\Assemblies /S /Q
@@ -18,7 +20,6 @@ rd ..\Media /S /Q
 md ..\Media
 rd ..\PageTemplates /S /Q
 md ..\PageTemplates
-
 
 
 copy TreeDefinitions\PageType.xml TreeDefinitions\PageType.xml.backup /y

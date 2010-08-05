@@ -5,7 +5,8 @@
 <%@ Import Namespace="Composite.Application" %>
 <%@ Import Namespace="Composite.Instrumentation" %>
 <%@ Import Namespace="Composite.Threading" %>
-
+<%@ Import Namespace="Composite.Types" %>
+<%@ Import Namespace="Composite.WebClient" %>
 
 <script RunAt="server">
        
@@ -15,6 +16,11 @@
        
     void Application_Start(object sender, EventArgs e)
     {
+        if (Composite.ConfigurationSystem.SystemSetupFacade.IsSystemFirstTimeInitialized == false)
+        {
+            return;
+        }
+
         if (_systemIsInitialized == true) return;        
 
         if (AppDomain.CurrentDomain.BaseDirectory.Length > 70)
@@ -26,20 +32,7 @@
         {
             if (_systemIsInitialized == true) return;
 
-            ThreadDataManager.InitializeThroughHttpContext();
-            
-            PerformanceCounterFacade.SystemStartupIncrement();
-            ApplicationStartupFacade.FireBeforeSystemInitialize();
-
-            TempDirectoryFacade.OnApplicationStart();
-            Composite.Types.BuildManager.InitializeCachingSytem();
-
-            Composite.GlobalInitializerFacade.InitializeTheSystem();
-            LoggingService.LogInformation("Global.asax", "Application started");
-            
-            ApplicationStartupFacade.FireSystemInitialized();
-
-            ThreadDataManager.FinalizeThroughHttpContext();
+            GlobalAsaxHelper.ApplicationStartInitialize();
 
             _systemIsInitialized = true;
         }
@@ -48,6 +41,12 @@
 
     void Application_End(object sender, EventArgs e)
     {
+        if (Composite.ConfigurationSystem.SystemSetupFacade.IsSystemFirstTimeInitialized == false)
+        {
+            return;
+        }
+
+
         if (_systemIsFinalized == true) return;
 
         lock (_syncRoot)

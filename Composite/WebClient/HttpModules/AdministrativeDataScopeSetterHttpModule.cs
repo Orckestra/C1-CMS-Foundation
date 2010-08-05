@@ -7,6 +7,7 @@ using Composite.Security;
 using Composite.Logging;
 using Composite.Data;
 using Composite.Users;
+using Composite.ConfigurationSystem;
 
 
 namespace Composite.WebClient.HttpModules
@@ -23,6 +24,8 @@ namespace Composite.WebClient.HttpModules
 
         void context_AuthenticateRequest(object sender, EventArgs e)
         {
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized == false) return;
+
             HttpApplication application = (HttpApplication)sender;
             HttpContext context = application.Context;
 
@@ -39,6 +42,8 @@ namespace Composite.WebClient.HttpModules
 
         void context_EndRequest(object sender, EventArgs e)
         {
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized == false) return;
+
             HttpApplication application = (HttpApplication)sender;
             HttpContext context = application.Context;
 

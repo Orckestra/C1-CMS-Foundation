@@ -26,6 +26,7 @@ using Composite.Threading;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Trees;
+using Composite.ConfigurationSystem;
 
 
 namespace Composite
@@ -102,6 +103,11 @@ namespace Composite
             if (_exceptionThrownDurringInitialization != null)
             {
                 throw _exceptionThrownDurringInitialization;
+            }
+
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized == false)
+            {
+                LoggingService.LogWarning("GlobalInitializerFacade", new InvalidOperationException("System is initializing, yet missing first time initialization"));                
             }
 
             if ((_initializing == false) && (_coreInitialized == false))
@@ -421,7 +427,9 @@ namespace Composite
 
             int startTime = Environment.TickCount;
 
-            LoggingService.LogVerbose(LogTitle, "Initializing the system core");
+            Guid installationId = InstallationInformationFacade.InstallationId;
+
+            LoggingService.LogVerbose(LogTitle, string.Format("Initializing the system core - installation id = ", installationId));            
 
             using (new TimeMeasurement("Initialization of the static data types"))
             {

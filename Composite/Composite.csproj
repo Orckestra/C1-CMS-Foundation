@@ -158,6 +158,7 @@
     <Compile Include="Caching\ICache.cs" />
     <Compile Include="Collections\Generic\Hashset.cs" />
     <Compile Include="Collections\Generic\Hashtable.cs" />
+    <Compile Include="ConfigurationSystem\SystemSetupFacade.cs" />
     <Compile Include="ConsoleEventSystem\DownloadFileMessageQueueItem.cs" />
     <Compile Include="ConsoleEventSystem\BindEntityTokenToViewQueueItem.cs" />
     <Compile Include="ConsoleEventSystem\OpenGenericViewQueueItem.cs" />
@@ -886,6 +887,7 @@
     <Compile Include="WebClient\FunctionCallEditor\IFunctionCallEditorState.cs" />
     <Compile Include="WebClient\FunctionCallEditor\TreeHelper.cs" />
     <Compile Include="WebClient\FunctionUiHelper.cs" />
+    <Compile Include="WebClient\GlobalAsaxHelper.cs" />
     <Compile Include="WebClient\HttpModules\AdministrativeAuthorizationHttpModule.cs" />
     <Compile Include="WebClient\HttpModules\AdministrativeCultureSetterHttpModule.cs" />
     <Compile Include="WebClient\HttpModules\AdministrativeDataScopeSetterHttpModule.cs" />
@@ -943,6 +945,7 @@
     <Compile Include="WebClient\Services\TreeServiceObjects\RefreshChildrenInfo.cs" />
     <Compile Include="WebClient\Services\TreeServiceObjects\RefreshChildrenParams.cs" />
     <Compile Include="WebClient\Services\WysiwygEditor\HtmlTransformationServices.cs" />
+    <Compile Include="WebClient\SetupServiceFacade.cs" />
     <Compile Include="WebClient\StandardPlugins\SessionStateProviders\DefaultSessionStateProvider\DefaultSessionStateProvider.cs" />
     <Compile Include="WebClient\StandardPlugins\SessionStateProviders\DefaultSessionStateProvider\ISessionStateEntry.cs" />
     <Compile Include="WebClient\StandardPlugins\SessionStateProviders\DefaultSessionStateProvider\SerializationUtil.cs" />
