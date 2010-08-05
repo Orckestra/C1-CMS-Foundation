@@ -20,6 +20,10 @@ rd ..\Media /S /Q
 md ..\Media
 rd ..\PageTemplates /S /Q
 md ..\PageTemplates
+rd ApplicationState\SerializedConsoleMessages /S /Q
+md ApplicationState\SerializedConsoleMessages
+rd ApplicationState\SerializedWorkflows /S /Q
+md ApplicationState\SerializedWorkflows
 
 
 copy TreeDefinitions\PageType.xml TreeDefinitions\PageType.xml.backup /y
