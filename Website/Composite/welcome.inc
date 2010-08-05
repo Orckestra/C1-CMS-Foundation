@@ -5,7 +5,7 @@
 	</head>
 	<body>
 		<ui:tableframe id="intro" class="splash">
-			<ui:cover id="introcover" hidden="true"/>
+			<ui:cover id="introcover" hidden="true" busy="false"/>
 			<p id="crumbs">
 				<span id="crumbtest" class="selected">Welcome</span>
 				<em>►</em>

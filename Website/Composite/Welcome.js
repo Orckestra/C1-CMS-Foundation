@@ -2,7 +2,7 @@ var Welcome = new function () {
 	
 	var TIME = 750;
 	var setup = null;
-	var heyho = null;
+	var clone = null;
 	
 	var hasSetup = false;
 	var hasLogin = false;
@@ -341,9 +341,10 @@ var Welcome = new function () {
 	function updateSetup () {
 		
 		// reset setup result
-		heyho = setup.cloneNode ( true );
+		clone = setup.cloneNode ( true );
+		
 		var keys = {};
-		var radios = new List ( heyho.getElementsByTagName ( "radio" ));
+		var radios = new List ( clone.getElementsByTagName ( "radio" ));
 		radios.each ( function ( radio ) {
 			radio.removeAttribute ( "selected" );
 			keys [ radio.getAttribute ( "key" )] = radio;
@@ -368,8 +369,6 @@ var Welcome = new function () {
 				radio.removeAttribute ( "selected" );
 			}
 		});
-		
-		// alert ( DOMSerializer.serialize ( heyho, true ));
 	}
 	
 	/**
@@ -446,17 +445,19 @@ var Welcome = new function () {
 		var select = document.getElementById ( "language" );
 		var language = select.options [ select.selectedIndex ].value;
 		
-		var serial = DOMSerializer.serialize ( setup );
+		var serial = DOMSerializer.serialize ( clone );
 		
-		CoverBinding.fadeIn ( top.bindingMap.introcover );
 		top.bindingMap.offlinetheatre.play ();
+		CoverBinding.fadeIn ( top.bindingMap.introcover );
 		
-		if ( SetupService.SetUp ( serial, username, password, language )) {
-			Application.reload ( true );
-		} else {
-			top.bindingMap.introcover.hide ();
-			top.bindingMap.offlinetheatre.stop ();
-			alert ( "An unfortunate error has occured." );
-		}
+		setTimeout ( function () {
+			if ( SetupService.SetUp ( serial, username, password, language )) {
+				Application.reload ( true );
+			} else {
+				top.bindingMap.introcover.hide ();
+				top.bindingMap.offlinetheatre.stop ();
+				alert ( "An unfortunate error has occured." );
+			}
+		}, 500 );
 	}
 }
