@@ -123,7 +123,7 @@ TheatreBinding.prototype._fadeInFlash = function () {
  */
 TheatreBinding.prototype.stop = function () {
 	
-	if ( this._isPlaying == true ) {
+	if ( this._isPlaying ) {
 		Application.unlock ( this, true ); // boolean arg because Explorer may stay locked...
 		this.hide ();
 		this._isPlaying = false;

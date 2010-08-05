@@ -31,7 +31,7 @@
 						<div id="licensetext"/>
 						<form id="licenseform" action="javascript://" method="get">
 							<div>
-								<input id="username" type="checkbox" class="checkbox" onclick="Welcome.acceptLicense(this)"/>
+								<input id="licenseaccept" type="checkbox" class="checkbox" onclick="Welcome.acceptLicense(this)"/>
 								<label>Accept</label>
 							</div>
 						</form>
@@ -80,25 +80,25 @@
 		<ui:decks id="navdecks" class="splash">
 			<ui:deck id="navtest">
 				<ui:dialogtoolbar>
-					<ui:clickbutton id="introtestsuccessbutton" label="License" image="${skin}/splash/button.png" focusable="true" oncommand="Welcome.switchTo('license')"/>
+					<ui:clickbutton id="introtestsuccessbutton" label="Next" image="${skin}/splash/button.png" focusable="true" oncommand="Welcome.switchTo('license')"/>
 					<ui:clickbutton id="introtestfailurebutton" label="Read more" image="${skin}/splash/button.png" focusable="true" url="http://docs.composite.net/installationfailed?errors=" hidden="true"/>
 				</ui:dialogtoolbar>
 			</ui:deck>
 			<ui:deck id="navlicense">
 				<ui:dialogtoolbar>
-					<ui:clickbutton style="float:left;" label="Welcome" image="${skin}/splash/buttonback.png" focusable="true" oncommand="Welcome.switchTo('test')"/>
-					<ui:clickbutton id="setupbutton" label="Setup" image="${skin}/splash/button.png" focusable="true" oncommand="Welcome.switchTo('setup')" isdisabled="true"/>
+					<ui:clickbutton style="float:left;" label="Back" image="${skin}/splash/buttonback.png" focusable="true" oncommand="Welcome.switchTo('test')"/>
+					<ui:clickbutton id="setupbutton" label="Next" image="${skin}/splash/button.png" focusable="true" oncommand="Welcome.switchTo('setup')" isdisabled="true"/>
 				</ui:dialogtoolbar>
 			</ui:deck>
 			<ui:deck id="navsetup">
 				<ui:dialogtoolbar>
-					<ui:clickbutton style="float:left;" label="License" image="${skin}/splash/buttonback.png" focusable="true" oncommand="Welcome.switchTo('license')"/>
-					<ui:clickbutton label="Login" image="${skin}/splash/button.png" focusable="true" oncommand="Welcome.switchTo('login')"/>
+					<ui:clickbutton style="float:left;" label="Back" image="${skin}/splash/buttonback.png" focusable="true" oncommand="Welcome.switchTo('license')"/>
+					<ui:clickbutton label="Next" image="${skin}/splash/button.png" focusable="true" oncommand="Welcome.switchTo('login')"/>
 				</ui:dialogtoolbar>
 			</ui:deck>
 			<ui:deck id="navlogin">
 				<ui:dialogtoolbar>
-					<ui:clickbutton style="float:left;" label="Setup" image="${skin}/splash/buttonback.png" focusable="true" oncommand="Welcome.switchTo('setup')"/>
+					<ui:clickbutton style="float:left;" label="Back" image="${skin}/splash/buttonback.png" focusable="true" oncommand="Welcome.switchTo('setup')"/>
 					<ui:clickbutton id="startbutton" isdisabled="true" label="Start C1" image="${skin}/splash/button.png" focusable="true" oncommand="Welcome.login()"/>
 				</ui:dialogtoolbar>
 			</ui:deck>

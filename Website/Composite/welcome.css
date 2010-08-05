@@ -196,7 +196,7 @@ ui|clickbutton.isdisabled ui|labeltext {
 }
 div#licensetext {
 	padding: 1em 1em 0 1em;
-	height: 150px;
+	height: 120px;
 	overflow: auto;
 	border: 1px solid #B2B2B2;
 }

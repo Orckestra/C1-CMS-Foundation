@@ -447,9 +447,16 @@ var Welcome = new function () {
 		var language = select.options [ select.selectedIndex ].value;
 		
 		var serial = DOMSerializer.serialize ( setup );
+		
+		CoverBinding.fadeIn ( top.bindingMap.introcover );
+		top.bindingMap.offlinetheatre.play ();
+		
 		if ( SetupService.SetUp ( serial, username, password, language )) {
-			CoverBinding.fadeIn ( top.bindingMap.introcover );
-			top.bindingMap.offlinetheatre.play ();
+			Application.reload ( true );
+		} else {
+			top.bindingMap.introcover.hide ();
+			top.bindingMap.offlinetheatre.stop ();
+			alert ( "An unfortunate error has occured." );
 		}
 	}
 }
