@@ -607,7 +607,7 @@ window.MessageQueue = new function () {
 		var theatre = top.bindingMap.offlinetheatre;
 		
 		if ( isLock ) {
-			theatre.play ();
+			theatre.play ( true );
 			window.clearInterval ( window.messageQueueInterval ); 
 			window.messageQueueInterval = window.setInterval ( 
 				MessageQueue._pokeserver, 

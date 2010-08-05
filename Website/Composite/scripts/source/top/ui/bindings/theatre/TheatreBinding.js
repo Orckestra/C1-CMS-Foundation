@@ -15,6 +15,17 @@ function TheatreBinding () {
 	 */
 	this._isPlaying = false;
 	
+	/**
+	 * Don't use fade while the browser is negoatiating a HTTP connection.
+	 * @type {boolean}
+	 */
+	this._isFading = false;
+	
+	/**
+	 * @type {HTMLCanvasElement}
+	 */
+	this._canvas = null;
+	
 	/*
 	 * Returnable 
 	 */
@@ -37,84 +48,52 @@ TheatreBinding.prototype.onBindingAttach = function () {
 	
 	TheatreBinding.superclass.onBindingAttach.call ( this );
 	
-	/*
-	 * The bindingElement has to be displayed for 
-	 * ActionScript to initialize properly. But 
-	 * Explorer shows a "flash loading" indicator, 
-	 * so it was moved off-screen with CSS.
-	 */
-	var self = this;
-	function init () {
-		self.hide ();
-		self.bindingElement.style.top = "0";
-		self.bindingElement.style.left = "0";
+	this._canvas = document.createElement ( "canvas" );
+	if ( Client.isExplorer ) {
+		this._canvas.style.filter = "progid:DXImageTransform.Microsoft.Fade(duration=30) progid:DXImageTransform.Microsoft.Alpha(opacity=50)";
 	}
-	
-	/*
-	 * Bypass silly security warnings in Explorer by injecting markup. 
-	 * Mozilla, on the other hand, seems to require onload markup in 
-	 * order to enable scripting (this may be a cache issue, though). 
-	 * Remember that the markup string is mirrored in file "top.aspx".
-	 * UPDATE: This whole setup doesn't work in Firefox 3.0! Cannot 
-	 * scan Flash object for externalInterface methods!
-	 * TODO: Replace all this with canvas and stuff!
-	 */
-	if ( Client.isExplorer && Client.hasFlash ) {
-		
-		var html = '';
-		html += '<object id="offlineflash" type="application/x-shockwave-flash" data="flash/CompositeMasterBlock2.swf" height="100%" width="100%">';
-		html += '<param name="movie" value="flash/CompositeMasterBlock2.swf"/>';
-		html += '<param name="scale" value="exactfit"/>';
-		html += '<param name="wmode" value="transparent"/>';
-		html += '<param name="allowScriptAccess" value="always"/>';
-		html += '</object>';
-		
-		/*
-		 * This gets broadcasted by the Flash movie.
-		 */
-		var self = this;
-		EventBroadcaster.subscribe ( BroadcastMessages.OFFLINE_FLASH_INITIALIZED, {
-			handleBroadcast : function () {
-				init ();
-			}
-		})
-		
-		/*
-		 * Injecting markup.
-		 */
-		var div = this.bindingDocument.getElementById ( "offlinemovie" );
-		div.innerHTML = html;
-		
-	} else {
-		init ();
-	}
+	this.bindingElement.appendChild ( this._canvas );
 }
 
 /**
  * Play.
  */
-TheatreBinding.prototype.play = function () {
+TheatreBinding.prototype.play = function ( isFading ) {
+	
+	this._isFading = isFading == true;
 	
 	if ( !this._isPlaying ) {
 		Application.lock ( this );
 		this.show ();
-		this._fadeInFlash ();
 		this._isPlaying = true;
+		if ( this._isFading ) {
+			this._fade ();
+		}
 	}
 }
 
-/**
- * Fade in Flash.
- */
-TheatreBinding.prototype._fadeInFlash = function () {
+TheatreBinding.prototype._fade = function () {
 	
-	if ( Client.isExplorer && Client.hasFlash ) {
-		var flash = this.bindingDocument.getElementById ( "offlineflash" ); 
-		if ( typeof flash.fadeIn != Types.UNDEFINED ) {
-			flash.fadeIn ();
-		} else {
-			this.logger.error ( "Flash object could not be scripted!" );
-		}
+	if ( Client.isMozilla ) {
+		
+		var context = this._canvas.getContext ( "2d" );
+		var alpha = parseInt ( 0 );
+
+		TheatreBinding._interval = top.setInterval ( function () {
+			if ( alpha < 0.5 ) {
+				context.fillStyle = "rgba(0,0,0," + new String ( alpha ) + ")";
+				context.clearRect ( 0, 0, 300, 150 );
+				context.fillRect ( 0, 0, 300, 150 );
+				alpha += 0.002;
+			} else {
+				top.clearInterval ( TheatreBinding._interval );
+				TheatreBinding._interval = null;
+			}
+		}, 50 );
+	} else {
+		this._canvas.filters [ 0 ].Apply ();
+		this._canvas.style.backgroundColor = "black";
+		this._canvas.filters [ 0 ].Play ();
 	}
 }
 
@@ -124,6 +103,19 @@ TheatreBinding.prototype._fadeInFlash = function () {
 TheatreBinding.prototype.stop = function () {
 	
 	if ( this._isPlaying ) {
+		
+		if ( this._isFading ) {
+			if ( TheatreBinding._interval != null ) {
+				top.clearInterval ( TheatreBinding._interval );
+			}
+			if ( Client.isExplorer ) {
+				this._canvas.style.backgroundColor = "transparent";
+			} else {
+				var context = this._canvas.getContext ( "2d" );
+				context.clearRect ( 0, 0, 300, 150 );
+			}
+		}
+		
 		Application.unlock ( this, true ); // boolean arg because Explorer may stay locked...
 		this.hide ();
 		this._isPlaying = false;

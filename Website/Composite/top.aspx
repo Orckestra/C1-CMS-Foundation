@@ -44,15 +44,17 @@
 		<ui:cover id="logoutcover" busy="false" blockevents="true" hidden="true"/>
 		<ui:uncover id="uncover"/>
 		
-		<ui:theatre id="offlinetheatre">
+		<ui:theatre id="offlinetheatre" hidden="true">
 			<div id="offlinesplash">
-				<div id="offlineimage"></div>
+				<div id="offlineimage"/>
+				<div id="offlinetext">Working</div>
+				<!-- 
 				<span id="offlinetext">
 					<span class="text1">Working</span>
 					<span class="text2">Working</span>
 				</span>
+				-->
 			</div>
-			<div id="offlinemovie"/>
 		</ui:theatre>
 		
 		<ui:persistance id="persistance"/>

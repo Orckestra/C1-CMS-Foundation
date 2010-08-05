@@ -140,7 +140,7 @@ namespace Composite.WebClient.Setup
         }
 
         [WebMethod]
-        public bool SetUp(string setupDescriptionXML, string username, string password, string language)
+        public bool SetUp(string setupDescriptionXML, string username, string password, string language, string consolelanguage )
         {
             CultureInfo locale = new CultureInfo(language);
                         

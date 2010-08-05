@@ -4,6 +4,12 @@
 ui|cover#cover {
 	text-align: center;	
 }
+ui|cover#introcover {
+	height: 100%;
+	width: 440px;
+	left: 50%;
+	margin-left: -220px;
+}
 table#intro {
 	margin-top: 60px;
 	margin-left: auto;
@@ -62,6 +68,7 @@ table#intro td.xc {
 	text-align: left;
 	vertical-align: top;
 	padding-bottom: 50px;
+	overflow: visible;
 }
 
 /* ............................................................. */
@@ -147,32 +154,45 @@ table#intro div.options.visible {
 	display: block;	
 }
 
-ui|deck#login form {
+form.fields {
 	text-align: right;
 }
-ui|deck#login form div {
-	padding-bottom: 4px;	
+form.fields div {
+	padding-bottom: 4px;
+	clear: both;	
 }
-ui|deck#login form label {
+form.fields label {
 	float: left;
 	position: relative;
 	top: 6px;
 }
-ui|deck#login form input,
-ui|deck#login form select {
+form.fields input,
+form.fields select {
 	width: 170px;
 	#region moz
 		padding: 5px;
 		border: 1px solid #B2B2B2;
 	#endregion
 }
-ui|deck#login form input:focus,
-ui|deck#login form select:focus {
+form.fields input:focus,
+form.fields select:focus {
 	border-color: black;
 }
-ui|deck#login form input.disabled {
+form.fields input.disabled {
 	background-color: ThreeDFace; 
 	color: GrayText;
+}
+/*
+form#languageform p {
+	padding-top: 1em;
+	height: 3em;
+	text-align: left;
+}
+*/
+p#websitehelp,
+p#consolehelp {
+	padding-bottom: 1em;
+	height: 3.5em;
 }
 p#loginok {
 	visibility: hidden;	
@@ -195,7 +215,7 @@ ui|clickbutton.isdisabled ui|labeltext {
 	color: white;
 }
 div#licensetext {
-	padding: 1em 1em 0 1em;
+	padding: 7px;
 	height: 120px;
 	overflow: auto;
 	border: 1px solid #B2B2B2;
@@ -207,6 +227,8 @@ table#intro a {
 }
 ui|deck#license form {
 	padding-top: 1em;
+	position: relative;
+	left: -4px;
 }
 ui|deck#license input {
 	position: relative;
@@ -215,7 +237,6 @@ ui|deck#license input {
 }
 p#crumbs {
 	color: GrayText;
-	text-align: right;
 	position: relative;
 	top: -10px;	
 }

@@ -4,15 +4,17 @@
 		<link rel="stylesheet" type="text/css" href="welcome.css.aspx"/>
 	</head>
 	<body>
+		<ui:cover id="introcover" hidden="true" busy="false"/>
 		<ui:tableframe id="intro" class="splash">
-			<ui:cover id="introcover" hidden="true" busy="false"/>
 			<p id="crumbs">
 				<span id="crumbtest" class="selected">Welcome</span>
 				<em>►</em>
 				<span id="crumblicense">License</span> 
 				<em>►</em> 
 				<span id="crumbsetup">Setup</span> 
-				<em>►</em> 
+				<em>►</em>
+				<span id="crumblanguage">Language</span> 
+				<em>►</em>
 				<span id="crumblogin">Login</span>
 			</p>
 			<ui:decks id="introdecks" flex="false">
@@ -32,7 +34,7 @@
 						<form id="licenseform" action="javascript://" method="get">
 							<div>
 								<input id="licenseaccept" type="checkbox" class="checkbox" onclick="Welcome.acceptLicense(this)"/>
-								<label>Accept</label>
+								<label for="licenseaccept">Accept</label>
 							</div>
 						</form>
 					</div>
@@ -44,10 +46,35 @@
 						<div id="setupfields"/>
 					</div>			
 				</ui:deck>
+				<ui:deck id="language">
+					<h1>Language</h1>
+					<div>
+						<!-- p id="consolehelp">The "console language" is the language used in the administration of your website. You can change this later.</p-->
+						<p id="websitehelp">Select the default public language of your website. You can add more languages later.</p>
+						<form id="languageform" class="fields" action="javascript://" method="get">
+							<!-- 
+							<div>
+								<label>Console language</label>
+								<span>
+									<select id="consolelanguage">
+										<option value="en-UK">English UK</option>
+									</select>
+								</span>
+							</div>
+							-->
+							<div>
+								<label>Website language</label>
+								<span>
+									<select id="websitelanguage"/>
+								</span>
+							</div>
+						</form>
+					</div>			
+				</ui:deck>
 				<ui:deck id="login">
 					<h1>Create Login</h1>
 					<div>
-						<form id="loginform" action="javascript://" method="get">
+						<form id="loginform" class="fields" action="javascript://" method="get">
 							<div>
 								<label>Username</label>
 								<input id="username" class="text" type="text" value="admin"/>
@@ -61,11 +88,19 @@
 								<input id="passcheck" class="text" type="password"/>
 							</div>
 							<div>
+								<label>Regional settings</label>
+								<span>
+									<select id="consolelanguage"/>
+								</span>
+							</div>
+							<!-- 
+							<div>
 								<label>Website language</label>
 								<span>
 									<select id="language"/>
 								</span>
 							</div>
+							-->
 						</form>
 						<br/>
 						<div style="position:relative;">
@@ -93,12 +128,18 @@
 			<ui:deck id="navsetup">
 				<ui:dialogtoolbar>
 					<ui:clickbutton style="float:left;" label="Back" image="${skin}/splash/buttonback.png" focusable="true" oncommand="Welcome.switchTo('license')"/>
+					<ui:clickbutton label="Next" image="${skin}/splash/button.png" focusable="true" oncommand="Welcome.switchTo('language')"/>
+				</ui:dialogtoolbar>
+			</ui:deck>
+			<ui:deck id="navlanguage">
+				<ui:dialogtoolbar>
+					<ui:clickbutton style="float:left;" label="Back" image="${skin}/splash/buttonback.png" focusable="true" oncommand="Welcome.switchTo('setup')"/>
 					<ui:clickbutton label="Next" image="${skin}/splash/button.png" focusable="true" oncommand="Welcome.switchTo('login')"/>
 				</ui:dialogtoolbar>
 			</ui:deck>
 			<ui:deck id="navlogin">
 				<ui:dialogtoolbar>
-					<ui:clickbutton style="float:left;" label="Back" image="${skin}/splash/buttonback.png" focusable="true" oncommand="Welcome.switchTo('setup')"/>
+					<ui:clickbutton style="float:left;" label="Back" image="${skin}/splash/buttonback.png" focusable="true" oncommand="Welcome.switchTo('language')"/>
 					<ui:clickbutton id="startbutton" isdisabled="true" label="Start C1" image="${skin}/splash/button.png" focusable="true" oncommand="Welcome.login()"/>
 				</ui:dialogtoolbar>
 			</ui:deck>

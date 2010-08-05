@@ -147,7 +147,10 @@ ui|block {
 	position: absolute;
 	z-index: 0; /* below cover */
 }
-
+ui|theatre,
+ui|theatre * {
+	cursor: wait;	
+}
 ui|theatre {
 	display: block;
 	position: absolute;
@@ -155,8 +158,16 @@ ui|theatre {
 	left: 100%;
 	width: 100%;
 	height: 100%;
+	top: 0;
+	left: 0;
 	z-index: 4; /* below cover */
 	z-index: 6; /* above cover! */
+	z-index: 1001; /* above mastercover! */
+	background-color: transparent;
+}
+ui|theatre canvas {
+	width: 100%;
+	height: 100%;	
 }
 div#offlinesplash {
 	width: 128px;
@@ -174,14 +185,25 @@ div#offlineimage {
 	height: 100%;
 	#alphaimage: url("images/loading.png");
 }
+div#offlinetext {
+	color: rgb(255,255,255);
+	font-weight: bold;
+	text-shadow: 2px 2px 5px rgb(0,0,0);
+	#ie position: relative;
+	#ie top: -10px;
+}
+/*
 span#offlinetext {
+	font-weight: bold;
 	position: relative;
 	#moz top: 6px;
 	#ie top: -4px;
+	#moz: display: none;
 }
 span#offlinetext span.text1 {
 	color: black;
 	position: absolute;
+	#moz: display: none;
 }
 span#offlinetext span.text2 {
 	color: white;
@@ -189,6 +211,7 @@ span#offlinetext span.text2 {
 	top: -1px;
 	left: -1px;	
 	#moz: visibility: hidden;
+	#moz: display: none;
 }
 div#offlinemovie {
 	position: absolute;
@@ -203,6 +226,7 @@ object#offlineflash {
 	top:0;
 	left:0;	
 }
+*/
 
 /* SPECIAL BUTTON! ............................................. */
 
