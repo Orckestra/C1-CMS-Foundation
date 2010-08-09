@@ -480,8 +480,6 @@
     <Content Include="Composite\scripts\source\top\core\Dialog.js" />
     <Content Include="Composite\scripts\source\top\core\ViewDefinitions.js" />
     <Content Include="Composite\services\Installation\InstallationService.asmx" />
-    <Content Include="Composite\services\Setup\licensedummy.xml" />
-    <Content Include="Composite\services\Setup\dummy.xml" />
     <Content Include="Composite\services\Setup\SetupService.asmx" />
     <Content Include="Composite\skins\dynamicskin.css" />
     <Content Include="Web.config">

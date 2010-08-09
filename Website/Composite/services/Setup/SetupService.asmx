@@ -117,7 +117,7 @@ namespace Composite.WebClient.Setup
                 LanguageDef languageDef = new LanguageDef
                 {
                     Title = element.Attribute("Title").Value,
-                    Key = element.Attribute("Title").Value,
+                    Key = element.Attribute("Key").Value,
                     Selected = selected
                 };
 
@@ -134,9 +134,7 @@ namespace Composite.WebClient.Setup
         {                        
             if (SystemSetupFacade.IsSystemFirstTimeInitialized == true) return true;
 
-            SystemSetupFacade.IsSystemFirstTimeInitialized = true;
-
-            language = "da-DK"; // FIX FOR MOTH BUG :(
+            SystemSetupFacade.IsSystemFirstTimeInitialized = true;         
 
             SetupServiceFacade.SetUp(setupDescriptionXML, username, password, language);
 
@@ -217,8 +215,7 @@ namespace Composite.WebClient.Setup
 
         private bool BrowserCheck()
         {
-            // Fake! This check is made by the client before this service is even invoked.
-            return true;
+            return true; // Fake! This check is made by the client before this service is even invoked.
         }
 
 
@@ -234,7 +231,7 @@ namespace Composite.WebClient.Setup
 
                 GetDiskFreeSpaceEx(diskRoot, out lpFreeBytesAvailable, out lpTotalNumberOfBytes, out lpTotalNumberOfFreeBytes);
 
-                return lpFreeBytesAvailable > 20 * 1024 * 1024 /* 5 MB */;
+                return lpFreeBytesAvailable > 20 * 1024 * 1024;
             }
             catch (Exception)
             {
