@@ -2054,7 +2054,6 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="Resources\PopUpCreator_js.txt" />
     <None Include="StandardPlugins\Functions\FunctionProviders\app.config" />
   </ItemGroup>
