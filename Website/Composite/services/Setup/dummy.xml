@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<setup xmlns="urn:Composte.C1.Setup" desc="&lt;p&gt;Choose your default setup.&lt;/p&gt;">
+<setup xmlns="urn:Composte.C1.Setup" desc="&lt;p&gt;Choose your default setup - &lt;a href='http://docs.composite.net/' target='_blank'&gt;read about them online&lt;/a&gt;. &lt;/p&gt;">
   <radio label="Clean slate" key="1" desc="Lorem ipsum lirum larum skibet gaar til aabenraa."/>
   <!-- server relateret pakke info -->
   <radio label="Basic Website" key="2" desc="Lorem ipsum lirum larum skibet gaar til aabenraa.">
