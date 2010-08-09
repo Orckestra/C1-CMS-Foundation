@@ -48,6 +48,12 @@ namespace Composite.ConfigurationSystem
                 {
                     if (File.Exists(SystemInitializedFilePath) == false)
                     {
+                        string directory = Path.GetDirectoryName(SystemInitializedFilePath);
+                        if (Directory.Exists(directory) == false)
+                        {
+                            Directory.CreateDirectory(directory);
+                        }
+
                         XDocument doc = new XDocument(
                             new XElement("Root", new XAttribute("Status", true))
                         );

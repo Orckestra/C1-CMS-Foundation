@@ -48,6 +48,12 @@ namespace Composite.GlobalSettings
         {
             _installationId = Guid.NewGuid();
 
+            string directory = Path.GetDirectoryName(filepath);
+            if (Directory.Exists(directory) == false)
+            {
+                Directory.CreateDirectory(directory);
+            }
+
             XDocument doc = new XDocument(
                         new XElement("InstallationInformation",
                             new XAttribute("installationId", _installationId)

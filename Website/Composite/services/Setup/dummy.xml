@@ -8,7 +8,7 @@
   <radio label="Demo Website" key="3" desc="Lorem ipsum lirum larum skibet gaar til aabenraa.">
     <radio label="The Daily Demosite" key="31" desc="Lorem ipsum lirum larum skibet gaar til aabenraa.">
       <packages>
-        <package url="http://docs.composite.net/Downloads/Composite.TemplateSites.Base01.zip" />
+        <package id="B6D7F0E0-8E91-4873-8B90-B66D77B931AF" />
       </packages>
     </radio>
     <radio label="Omnicorp Website" key="32" desc="Lorem ipsum lirum larum skibet gaar til aabenraa."/>

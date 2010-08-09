@@ -2,6 +2,7 @@ del DataMetaData\*.xml
 del DataStores\*.xml
 del Configuration\DynamicSqlDataProvider.config
 del Configuration\DynamicXmlDataProvider.config
+del Configuration\InstallationInformation.xml
 del Configuration\SystemInitialized.xml
 del ..\..\Bin\Composite.Generated.dll 
 del ..\..\app_offline.htm /F
