@@ -13,6 +13,7 @@ using Composite.Logging;
 using Composite.PackageSystem;
 using Composite.Security;
 using Composite.WebClient.Setup.WebServiceClient;
+using Composite.IO;
 
 
 namespace Composite.WebClient.Setup
@@ -22,8 +23,7 @@ namespace Composite.WebClient.Setup
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class SetupServiceFacade
-    {        
-        public static string PackageServerUrl = "package.composite.net";
+    {                
         public static XNamespace XmlNamespace = (XNamespace)"urn:Composte.C1.Setup";
         public static XName PackageElementName = XmlNamespace + "package";
         public static string UrlAttributeName = "url";
@@ -33,7 +33,25 @@ namespace Composite.WebClient.Setup
         public static string PackageServicePingUrlFormat = "https://{0}/C1.asmx";
         private static string SetupServiceUrl = "https://{0}/Setup/Setup.asmx"; 
         private static string PackageUrlFormat = "https://{0}{1}";
-     
+
+        private static string _packageServerUrl = null;
+        public static string PackageServerUrl 
+        {
+            get
+            {
+                if (_packageServerUrl == null)
+                {
+                    string filepath = PathUtil.Resolve(@"~/App_Data/Composite/Composite.config");
+
+                    XDocument doc = XDocument.Load(filepath);
+                    XElement element = doc.Root.Descendants("Composite.SetupConfiguration").Single();
+
+                    _packageServerUrl = element.Attribute("PackageServerUrl").Value;
+                }
+
+                return _packageServerUrl;
+            }            
+        }
 
 
         public static void SetUp(string setupDescriptionXml, string username, string password, string language)
