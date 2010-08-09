@@ -103,17 +103,24 @@ namespace Composite.WebClient.Setup
         {
             XDocument languagesXml = SetupServiceFacade.GetLanguages();
 
+            string clientPreferredCultureName = (this.Context.Request.UserLanguages.FirstOrDefault() ?? "").ToLower();
+
             List<LanguageDef> languages = new List<LanguageDef>();
             foreach (XElement element in languagesXml.Root.Elements("Language"))
             {
                 
                 bool selected = false;
-                XAttribute selectedAttribute = element.Attribute("Selected");
-                if (selectedAttribute != null) 
-                {
-                    selected = (bool)selectedAttribute;
-                }
 
+                if (string.IsNullOrEmpty(clientPreferredCultureName)==true)
+                {
+                    XAttribute selectedAttribute = element.Attribute("Selected");
+                    selected = (selectedAttribute != null && (bool)selectedAttribute);
+                }
+                else
+                {
+                    selected = (element.Attribute("Key").Value.ToLower() == clientPreferredCultureName);
+                }
+                
                 LanguageDef languageDef = new LanguageDef
                 {
                     Title = element.Attribute("Title").Value,
