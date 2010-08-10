@@ -75,7 +75,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.VisualFunctionPr
 
 
 
-        private void OnDataChanged(DataEventArgs dataEventArgs)
+        private void OnDataChanged(StorageEventArgs dataEventArgs)
         {
             _functionNotifier.FunctionsUpdated();
         }

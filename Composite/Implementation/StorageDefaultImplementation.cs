@@ -88,7 +88,7 @@ namespace Composite.Implementation
         /// <returns></returns>
         public override StorageEvents Events<T>()
         {
-            return new StorageEventsDefaultImplementation();
+            return new StorageEventsDefaultImplementation<T>();
         }
     }
 }

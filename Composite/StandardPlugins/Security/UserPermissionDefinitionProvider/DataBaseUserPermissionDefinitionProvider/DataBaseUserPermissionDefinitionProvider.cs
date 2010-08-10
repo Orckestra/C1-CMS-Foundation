@@ -202,7 +202,7 @@ namespace Composite.StandardPlugins.Security.UserPermissionDefinitionProvider.Da
 
 
 
-        private static void OnUserPermissionChanged(DataEventArgs args)
+        private static void OnUserPermissionChanged(StorageEventArgs args)
         {
             var permission = args.Data as IUserPermissionDefinition;
             if (permission == null)

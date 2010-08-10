@@ -194,7 +194,7 @@ namespace Composite.Data.Types
             return id + dataScope + localizationInfo;
         }
 
-        private static void OnPageChanged(DataEventArgs args)
+        private static void OnPageChanged(StorageEventArgs args)
         {
             IPage page = args.Data as IPage;
             if (page == null)
@@ -205,7 +205,7 @@ namespace Composite.Data.Types
             _pageCache.Remove(GetCacheKey(page.Id, page.DataSourceId));
         }        
         
-        private static void OnPagePlaceholderChanged(DataEventArgs args)
+        private static void OnPagePlaceholderChanged(StorageEventArgs args)
         {
             var placeHolder = args.Data as IPagePlaceholderContent;
             if (placeHolder == null)
@@ -216,7 +216,7 @@ namespace Composite.Data.Types
             _placeholderCache.Remove(GetCacheKey(placeHolder.PageId, placeHolder.DataSourceId));
         }
 
-        private static void OnPageStructureChanged(DataEventArgs args)
+        private static void OnPageStructureChanged(StorageEventArgs args)
         {
             var ps = args.Data as IPageStructure;
             if (ps == null)

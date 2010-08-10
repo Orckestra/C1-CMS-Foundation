@@ -13,15 +13,14 @@ namespace Composite
         Public,
         Internal
     }
-
+    
 
 
     /// <summary>
     /// This class provies the main access to the C1 storage. This could be based on SQL, XML or some other kind of storage.
     /// </summary>
     public static class Storage
-    {
-
+    {        
         static Storage()
         {
             ImplementationContainer.SetImplementation<StorageBase>(new StorageDefaultImplementation());

@@ -34,7 +34,7 @@ namespace Composite.Data
             DataEventSystemFacade.SubscribeToDataDeleted<ISystemActiveLocale>(OnSystemActiveLocaleChanged, true);
         }
 
-        private static void OnSystemActiveLocaleChanged(DataEventArgs dataEventArgs)
+        private static void OnSystemActiveLocaleChanged(StorageEventArgs dataEventArgs)
         {
             var locale = dataEventArgs.Data as ISystemActiveLocale;
             

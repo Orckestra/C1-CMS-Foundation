@@ -29,7 +29,7 @@ namespace Composite.Users
         }
 
 
-        private static void OnUserSettingsChanged(DataEventArgs dataEventArgs)
+        private static void OnUserSettingsChanged(StorageEventArgs dataEventArgs)
         {
             IUserSettings settings = dataEventArgs.Data as IUserSettings;
             if(settings != null)

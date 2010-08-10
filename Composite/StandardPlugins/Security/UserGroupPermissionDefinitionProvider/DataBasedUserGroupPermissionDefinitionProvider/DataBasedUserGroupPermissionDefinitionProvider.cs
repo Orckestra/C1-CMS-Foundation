@@ -137,7 +137,7 @@ namespace Composite.StandardPlugins.Security.UserGroupPermissionDefinitionProvid
 
 
 
-        private static void OnUserGroupPermissionChanged(DataEventArgs args)
+        private static void OnUserGroupPermissionChanged(StorageEventArgs args)
         {
             var userGroupPermissionDefinition = args.Data as IUserGroupPermissionDefinition;
             if (userGroupPermissionDefinition == null)

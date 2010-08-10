@@ -56,7 +56,7 @@ namespace Composite.Security
 
 
 
-        private void OnDataAddedOrDeleted(DataEventArgs dataEventArgs)
+        private void OnDataAddedOrDeleted(StorageEventArgs dataEventArgs)
         {
             HookingFacade.RemoveHook(this.CurrentEntityTokenHook);
 

@@ -9,51 +9,12 @@ using Subscriptions = Composite.Collections.Generic.Hashtable<System.Type, Syste
 
 
 namespace Composite.Data
-{
+{   
     /// <summary>    
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    public class DataEventArgs : EventArgs
-    {
-        private readonly Type _dataType;
-        private readonly IData _data;
-
-        internal DataEventArgs(Type dataType, IData data)
-        {
-            _dataType = dataType;
-            _data = data;
-        }
-
-
-        public IData Data
-        {
-            get { return _data; }
-        }
-
-
-        public Type DataType
-        {
-            get { return _dataType; }
-        }
-
-
-        public T GetData<T>()
-            where T : IData
-        {
-            if (_dataType.IsAssignableFrom(typeof(T)) == false) throw new ArgumentException(string.Format("T is of wrong type ('{0}'). Data type is '{1}'", typeof(T), _dataType));
-
-            return (T)_data;
-        }
-    }
-
-
-
-    /// <summary>    
-    /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    public class DataMoveEventArgs : DataEventArgs
+    public class DataMoveEventArgs : StorageEventArgs
     {
         internal DataMoveEventArgs(Type dataType, IData data, DataScopeIdentifier targetDataScopeIdentifier)
             : base(dataType, data)
@@ -76,14 +37,13 @@ namespace Composite.Data
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class DataEventSystemFacade
-    {
-        public delegate void DataBeforeAddDelegate(DataEventArgs dataEventArgs);
-        public delegate void DataAfterAddDelegate(DataEventArgs dataEventArgs);
-        public delegate void DataBeforeUpdateDelegate(DataEventArgs dataEventArgs);
-        public delegate void DataAfterUpdateDelegate(DataEventArgs dataEventArgs);
-        public delegate void DataDeletedDelegate(DataEventArgs dataEventArgs);
-        public delegate void DataAfterBuildNewDelegate(DataEventArgs dataEventArgs);
-        public delegate void DataAfterMoveDelegate(DataMoveEventArgs dataMoveEventArgs);
+    {        
+      //  public delegate void StorageEventHandler(DataEventArgs dataEventArgs);
+        //public delegate void StorageEventHandler(DataEventArgs dataEventArgs);
+        //public delegate void StorageEventHandler(DataEventArgs dataEventArgs);
+        //public delegate void StorageEventHandler(DataEventArgs dataEventArgs);
+        //public delegate void StorageEventHandler(DataEventArgs dataEventArgs);
+        internal delegate void DataAfterMoveDelegate(DataMoveEventArgs dataMoveEventArgs);
 
         private static readonly Subscriptions _dataBeforeAddEventDictionary = new Subscriptions();
         private static readonly Subscriptions _dataAfterAddEventDictionary = new Subscriptions();
@@ -196,24 +156,24 @@ namespace Composite.Data
         }
 
 
-        public static void SubscribeToDataBeforeAdd<T>(DataBeforeAddDelegate dataBeforeAddDelegate, bool flushPersistent)
+        public static void SubscribeToDataBeforeAdd<T>(StorageEventHandler dataBeforeAddDelegate, bool flushPersistent)
             where T : IData
         {
             SubscribeToDataBeforeAdd(typeof(T), dataBeforeAddDelegate, flushPersistent);
         }        
         
-        public static void SubscribeToDataBeforeAdd<T>(DataBeforeAddDelegate dataBeforeAddDelegate)
+        public static void SubscribeToDataBeforeAdd<T>(StorageEventHandler dataBeforeAddDelegate)
             where T : IData
         {
             SubscribeToDataBeforeAdd(typeof(T), dataBeforeAddDelegate);
         }        
         
-        public static void SubscribeToDataBeforeAdd(Type dataType, DataBeforeAddDelegate dataBeforeAddDelegate) {
+        public static void SubscribeToDataBeforeAdd(Type dataType, StorageEventHandler dataBeforeAddDelegate) {
             SubscribeToDataBeforeAdd(dataType, dataBeforeAddDelegate, false);
         }
 
 
-        public static void SubscribeToDataBeforeAdd(Type dataType, DataBeforeAddDelegate dataBeforeAddDelegate, bool flushPersistent)
+        public static void SubscribeToDataBeforeAdd(Type dataType, StorageEventHandler dataBeforeAddDelegate, bool flushPersistent)
         {
             Verify.ArgumentNotNull(dataType, "dataType");
             Verify.ArgumentNotNull(dataBeforeAddDelegate, "dataBeforeAddDelegate");
@@ -222,7 +182,7 @@ namespace Composite.Data
         }
 
 
-        public static void UnsubscribeToDataBeforeAdd(Type dataType, DataBeforeAddDelegate dataBeforeAddDelegate)
+        public static void UnsubscribeToDataBeforeAdd(Type dataType, StorageEventHandler dataBeforeAddDelegate)
         {
             Verify.ArgumentNotNull(dataType, "dataType");
             Verify.ArgumentNotNull(dataBeforeAddDelegate, "dataBeforeAddDelegate");
@@ -230,7 +190,7 @@ namespace Composite.Data
             _dataBeforeAddEventDictionary.Remove(dataType, dataBeforeAddDelegate);
         }
 
-        public static void SubscribeToDataAfterAdd(Type dataType, DataAfterAddDelegate dataAfterAddDelegate, bool flushPersistent)
+        public static void SubscribeToDataAfterAdd(Type dataType, StorageEventHandler dataAfterAddDelegate, bool flushPersistent)
         {
             Verify.ArgumentNotNull(dataType, "dataType");
             Verify.ArgumentNotNull(dataAfterAddDelegate, "dataAfterAddDelegate");
@@ -238,19 +198,19 @@ namespace Composite.Data
             _dataAfterAddEventDictionary.Add(dataType, dataAfterAddDelegate, flushPersistent);
         }
 
-        public static void SubscribeToDataAfterAdd(Type dataType, DataAfterAddDelegate dataAfterAddDelegate)
+        public static void SubscribeToDataAfterAdd(Type dataType, StorageEventHandler dataAfterAddDelegate)
         {
             SubscribeToDataAfterAdd(dataType, dataAfterAddDelegate, false);
         }
 
 
-        public static void SubscribeToDataAfterAdd<T>(DataAfterAddDelegate dataAfterAddDelegate, bool flushPersistent)
+        public static void SubscribeToDataAfterAdd<T>(StorageEventHandler dataAfterAddDelegate, bool flushPersistent)
         {
             SubscribeToDataAfterAdd(typeof(T), dataAfterAddDelegate, flushPersistent);
         }
 
 
-        public static void SubscribeToDataAfterAdd<T>(DataAfterAddDelegate dataAfterAddDelegate)
+        public static void SubscribeToDataAfterAdd<T>(StorageEventHandler dataAfterAddDelegate)
             where T : IData
         {
             SubscribeToDataAfterAdd(typeof(T), dataAfterAddDelegate);
@@ -258,7 +218,7 @@ namespace Composite.Data
 
 
 
-        public static void UnsubscribeToDataAfterAdd(Type dataType, DataAfterAddDelegate dataAfterAddDelegate)
+        public static void UnsubscribeToDataAfterAdd(Type dataType, StorageEventHandler dataAfterAddDelegate)
         {
             if (dataType == null) throw new ArgumentNullException("dataType");
             if (dataAfterAddDelegate == null) throw new ArgumentNullException("dataAfterAddDelegate");
@@ -266,25 +226,25 @@ namespace Composite.Data
             _dataAfterAddEventDictionary.Remove(dataType, dataAfterAddDelegate);
         }
 
-        public static void SubscribeToDataBeforeUpdate(Type dataType, DataBeforeUpdateDelegate dataBeforeUpdateDelegate)
+        public static void SubscribeToDataBeforeUpdate(Type dataType, StorageEventHandler dataBeforeUpdateDelegate)
         {
             SubscribeToDataBeforeUpdate(dataType, dataBeforeUpdateDelegate, false);
         }
 
-        public static void SubscribeToDataBeforeUpdate(Type dataType, DataBeforeUpdateDelegate dataBeforeUpdateDelegate, bool flushPersistent)
+        public static void SubscribeToDataBeforeUpdate(Type dataType, StorageEventHandler dataBeforeUpdateDelegate, bool flushPersistent)
         {
             _dataBeforeUpdateEventDictionary.Add(dataType, dataBeforeUpdateDelegate, flushPersistent);
         }
 
 
 
-        public static void SubscribeToDataBeforeUpdate<T>(DataBeforeUpdateDelegate dataBeforeUpdateDelegate)
+        public static void SubscribeToDataBeforeUpdate<T>(StorageEventHandler dataBeforeUpdateDelegate)
             where T : IData
         {
             SubscribeToDataBeforeUpdate(typeof(T), dataBeforeUpdateDelegate);
         }
 
-        public static void SubscribeToDataBeforeUpdate<T>(DataBeforeUpdateDelegate dataBeforeUpdateDelegate, bool flushPersistent)
+        public static void SubscribeToDataBeforeUpdate<T>(StorageEventHandler dataBeforeUpdateDelegate, bool flushPersistent)
             where T : IData
         {
             SubscribeToDataBeforeUpdate(typeof(T), dataBeforeUpdateDelegate, flushPersistent);
@@ -292,31 +252,31 @@ namespace Composite.Data
 
 
 
-        public static void UnsubscribeToDataBeforeUpdate(Type dataType, DataBeforeUpdateDelegate dataBeforeUpdateDelegate)
+        public static void UnsubscribeToDataBeforeUpdate(Type dataType, StorageEventHandler dataBeforeUpdateDelegate)
         {
             _dataBeforeUpdateEventDictionary.Remove(dataType, dataBeforeUpdateDelegate);
         }
 
 
 
-        public static void SubscribeToDataAfterUpdate(Type dataType, DataAfterUpdateDelegate dataAfterUpdateDelegate)
+        public static void SubscribeToDataAfterUpdate(Type dataType, StorageEventHandler dataAfterUpdateDelegate)
         {
             SubscribeToDataAfterUpdate(dataType, dataAfterUpdateDelegate, false);
         }
 
-        public static void SubscribeToDataAfterUpdate(Type dataType, DataAfterUpdateDelegate dataAfterUpdateDelegate, bool flushPersistent)
+        public static void SubscribeToDataAfterUpdate(Type dataType, StorageEventHandler dataAfterUpdateDelegate, bool flushPersistent)
         {
             _dataAfterUpdateEventDictionary.Add(dataType, dataAfterUpdateDelegate, flushPersistent);
         }
 
-        public static void SubscribeToDataAfterUpdate<T>(DataAfterUpdateDelegate dataAfterUpdateDelegate)
+        public static void SubscribeToDataAfterUpdate<T>(StorageEventHandler dataAfterUpdateDelegate)
             where T : IData
         {
             SubscribeToDataAfterUpdate(typeof(T), dataAfterUpdateDelegate);
         }
 
 
-        public static void SubscribeToDataAfterUpdate<T>(DataAfterUpdateDelegate dataAfterUpdateDelegate, bool flushPersistent)
+        public static void SubscribeToDataAfterUpdate<T>(StorageEventHandler dataAfterUpdateDelegate, bool flushPersistent)
             where T : IData
         {
             SubscribeToDataAfterUpdate(typeof(T), dataAfterUpdateDelegate, flushPersistent);
@@ -324,32 +284,32 @@ namespace Composite.Data
 
 
 
-        public static void UnsubscribeToDataAfterUpdate(Type dataType, DataAfterUpdateDelegate dataAfterUpdateDelegate)
+        public static void UnsubscribeToDataAfterUpdate(Type dataType, StorageEventHandler dataAfterUpdateDelegate)
         {
             _dataAfterUpdateEventDictionary.Remove(dataType, dataAfterUpdateDelegate);
         }
 
 
 
-        public static void SubscribeToDataDeleted(Type dataType, DataDeletedDelegate dataDeletedDelegate)
+        public static void SubscribeToDataDeleted(Type dataType, StorageEventHandler dataDeletedDelegate)
         {
             SubscribeToDataDeleted(dataType, dataDeletedDelegate, false);
         }
 
-        public static void SubscribeToDataDeleted(Type dataType, DataDeletedDelegate dataDeletedDelegate, bool flushPersistent)
+        public static void SubscribeToDataDeleted(Type dataType, StorageEventHandler dataDeletedDelegate, bool flushPersistent)
         {
             _dataDeletedEventDictionary.Add(dataType, dataDeletedDelegate, flushPersistent);
         }
 
 
 
-        public static void SubscribeToDataDeleted<T>(DataDeletedDelegate dataDeletedDelegate)
+        public static void SubscribeToDataDeleted<T>(StorageEventHandler dataDeletedDelegate)
             where T : IData
         {
             SubscribeToDataDeleted(typeof(T), dataDeletedDelegate);
         }
 
-        public static void SubscribeToDataDeleted<T>(DataDeletedDelegate dataDeletedDelegate, bool flushPersistent)
+        public static void SubscribeToDataDeleted<T>(StorageEventHandler dataDeletedDelegate, bool flushPersistent)
             where T : IData
         {
             SubscribeToDataDeleted(typeof(T), dataDeletedDelegate, flushPersistent);
@@ -357,25 +317,25 @@ namespace Composite.Data
 
 
 
-        public static void UnsubscribeToDataDeleted(Type dataType, DataDeletedDelegate dataDeletedDelegate)
+        public static void UnsubscribeToDataDeleted(Type dataType, StorageEventHandler dataDeletedDelegate)
         {
             _dataDeletedEventDictionary.Remove(dataType, dataDeletedDelegate);
         }
 
 
-        public static void SubscribeToDataAfterBuildNew(Type dataType, DataAfterBuildNewDelegate dataAfterBuildNewDelegate)
+        public static void SubscribeToDataAfterBuildNew(Type dataType, StorageEventHandler dataAfterBuildNewDelegate)
         {
             SubscribeToDataAfterBuildNew(dataType, dataAfterBuildNewDelegate, false);
         }
 
-        public static void SubscribeToDataAfterBuildNew(Type dataType, DataAfterBuildNewDelegate dataAfterBuildNewDelegate, bool flushPersistent)
+        public static void SubscribeToDataAfterBuildNew(Type dataType, StorageEventHandler dataAfterBuildNewDelegate, bool flushPersistent)
         {
             _dataAfterBuildNewEventDictionary.Add(dataType, dataAfterBuildNewDelegate, flushPersistent);
         }
 
 
 
-        public static void SubscribeToDataAfterBuildNew<T>(DataAfterBuildNewDelegate dataAfterBuildNewDelegate)
+        public static void SubscribeToDataAfterBuildNew<T>(StorageEventHandler dataAfterBuildNewDelegate)
             where T : IData
         {
             SubscribeToDataAfterBuildNew(typeof(T), dataAfterBuildNewDelegate);
@@ -383,21 +343,21 @@ namespace Composite.Data
 
 
 
-        public static void UnsubscribeToDataAfterBuildNew(Type dataType, DataAfterBuildNewDelegate dataAfterBuildNewDelegate)
+        public static void UnsubscribeToDataAfterBuildNew(Type dataType, StorageEventHandler dataAfterBuildNewDelegate)
         {
             _dataAfterBuildNewEventDictionary.Remove(dataType, dataAfterBuildNewDelegate);
         }
 
 
 
-        public static void SubscribeToDataAfterMove(Type dataType, DataAfterMoveDelegate dataAfterMoveDelegate)
+        internal static void SubscribeToDataAfterMove(Type dataType, DataAfterMoveDelegate dataAfterMoveDelegate)
         {
             _dataAfterMoveEventDictionary.Add(dataType, dataAfterMoveDelegate, false);
         }
 
 
 
-        public static void SubscribeToDataAfterMove<T>(DataAfterMoveDelegate dataAfterMoveDelegate)
+        internal static void SubscribeToDataAfterMove<T>(DataAfterMoveDelegate dataAfterMoveDelegate)
             where T : IData
         {
             SubscribeToDataAfterMove(typeof(T), dataAfterMoveDelegate);
@@ -405,7 +365,7 @@ namespace Composite.Data
 
 
 
-        public static void UnsubscribeToDataAfterMove(Type dataType, DataAfterMoveDelegate dataAfterMoveDelegate)
+        internal static void UnsubscribeToDataAfterMove(Type dataType, DataAfterMoveDelegate dataAfterMoveDelegate)
         {
             _dataAfterMoveEventDictionary.Remove(dataType, dataAfterMoveDelegate);
         }
@@ -414,8 +374,8 @@ namespace Composite.Data
 
         internal static void FireDataBeforeAddEvent(Type dataType, IData data)
         {
-            var args = new DataEventArgs(dataType, data);
-            _dataBeforeAddEventDictionary.Fire <DataBeforeAddDelegate>(dataType, callback => callback(args));
+            var args = new StorageEventArgs(dataType, data);
+            _dataBeforeAddEventDictionary.Fire <StorageEventHandler>(dataType, callback => callback(args));
         }
 
 
@@ -430,9 +390,9 @@ namespace Composite.Data
 
         internal static void FireDataAfterAddEvent(Type dataType, IData data)
         {
-            var args = new DataEventArgs(dataType, data);
+            var args = new StorageEventArgs(dataType, data);
 
-            _dataAfterAddEventDictionary.Fire<DataAfterAddDelegate>(dataType, callback => callback(args));
+            _dataAfterAddEventDictionary.Fire<StorageEventHandler>(dataType, callback => callback(args));
         }
 
 
@@ -447,9 +407,9 @@ namespace Composite.Data
 
         internal static void FireDataBeforeUpdateEvent(Type dataType, IData data)
         {
-            var args = new DataEventArgs(dataType, data);
+            var args = new StorageEventArgs(dataType, data);
 
-            _dataBeforeUpdateEventDictionary.Fire <DataBeforeUpdateDelegate>(dataType, callback => callback(args));
+            _dataBeforeUpdateEventDictionary.Fire <StorageEventHandler>(dataType, callback => callback(args));
         }
 
 
@@ -464,9 +424,9 @@ namespace Composite.Data
 
         internal static void FireDataAfterUpdateEvent(Type dataType, IData data)
         {
-            var args = new DataEventArgs(dataType, data);
+            var args = new StorageEventArgs(dataType, data);
 
-            _dataAfterUpdateEventDictionary.Fire<DataAfterUpdateDelegate>(dataType, callback => callback(args));
+            _dataAfterUpdateEventDictionary.Fire<StorageEventHandler>(dataType, callback => callback(args));
         }
 
 
@@ -481,8 +441,8 @@ namespace Composite.Data
 
         internal static void FireDataDeletedEvent(Type dataType, IData data)
         {
-            var args = new DataEventArgs(dataType, data);
-            _dataDeletedEventDictionary.Fire<DataDeletedDelegate>(dataType, callback => callback(args));
+            var args = new StorageEventArgs(dataType, data);
+            _dataDeletedEventDictionary.Fire<StorageEventHandler>(dataType, callback => callback(args));
         }
 
 
@@ -497,8 +457,8 @@ namespace Composite.Data
 
         internal static void FireDataAfterBuildNewEvent(Type dataType, IData data)
         {
-            var args = new DataEventArgs(dataType, data);
-            _dataAfterBuildNewEventDictionary.Fire <DataAfterBuildNewDelegate>(dataType, callback => callback(args));
+            var args = new StorageEventArgs(dataType, data);
+            _dataAfterBuildNewEventDictionary.Fire <StorageEventHandler>(dataType, callback => callback(args));
         }
 
 

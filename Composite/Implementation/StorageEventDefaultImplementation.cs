@@ -5,56 +5,88 @@ using Composite.Data;
 namespace Composite.Implementation
 {
 #warning RELEASE: Missing documentation
-    public class StorageEventsDefaultImplementation : StorageEvents
-    {
-        private EventHandler _onAddEvent;
-        private EventHandler _onUpdateEvent;
-        private EventHandler _onDeleteEvent;
-
-    
-        public override event EventHandler OnBeforeAdd
+    public class StorageEventsDefaultImplementation<T> : StorageEvents
+        where T: class, IData
+    {    
+        public override event StorageEventHandler OnBeforeAdd
         {
             add
             {
-                // This is were we can handle syncronizations
-                _onAddEvent = (EventHandler)Delegate.Combine(_onAddEvent, value);
+                DataEventSystemFacade.SubscribeToDataBeforeAdd<T>(value);
             }
             remove
             {
-                // This is were we can handle syncronizations
-                _onAddEvent = (EventHandler)Delegate.Remove(_onAddEvent, value);
+                DataEventSystemFacade.UnsubscribeToDataBeforeAdd(typeof(T), value);
             }
         }
 
 
 
-        public override event EventHandler OnBeforeUpdate
+        public override event StorageEventHandler OnAfterAdd
         {
             add
             {
-                // This is were we can handle syncronizations
-                _onUpdateEvent = (EventHandler)Delegate.Combine(_onUpdateEvent, value);
+                DataEventSystemFacade.SubscribeToDataAfterAdd<T>(value);
             }
             remove
             {
-                // This is were we can handle syncronizations
-                _onUpdateEvent = (EventHandler)Delegate.Remove(_onUpdateEvent, value);
+                DataEventSystemFacade.UnsubscribeToDataAfterAdd(typeof(T), value);
             }
         }
 
 
 
-        public override event EventHandler OnDeleted
+        public override event StorageEventHandler OnBeforeUpdate
         {
             add
             {
-                // This is were we can handle syncronizations
-                _onDeleteEvent = (EventHandler)Delegate.Combine(_onDeleteEvent, value);
+                DataEventSystemFacade.SubscribeToDataBeforeUpdate<T>(value);
             }
             remove
             {
-                // This is were we can handle syncronizations
-                _onDeleteEvent = (EventHandler)Delegate.Remove(_onDeleteEvent, value);
+                DataEventSystemFacade.UnsubscribeToDataBeforeUpdate(typeof(T), value);
+            }
+        }
+
+
+
+        public override event StorageEventHandler OnAfterUpdate
+        {
+            add
+            {
+                DataEventSystemFacade.SubscribeToDataAfterUpdate<T>(value);
+            }
+            remove
+            {
+                DataEventSystemFacade.UnsubscribeToDataAfterUpdate(typeof(T), value);
+            }
+        }
+
+
+
+        public override event StorageEventHandler OnDeleted
+        {
+            add
+            {
+                DataEventSystemFacade.SubscribeToDataDeleted<T>(value);
+            }
+            remove
+            {
+                DataEventSystemFacade.UnsubscribeToDataDeleted(typeof(T), value);
+            }
+        }
+
+
+
+        public override event StorageEventHandler OnNew
+        {
+            add
+            {
+                DataEventSystemFacade.SubscribeToDataAfterBuildNew<T>(value);
+            }
+            remove
+            {
+                DataEventSystemFacade.UnsubscribeToDataAfterBuildNew(typeof(T), value);
             }
         }
     }

@@ -60,7 +60,7 @@ namespace Composite.Security
 
 
 
-        private static void OnDataChanged(DataEventArgs dataEventArgs)
+        private static void OnDataChanged(StorageEventArgs dataEventArgs)
         {
             lock (_lock)
             {

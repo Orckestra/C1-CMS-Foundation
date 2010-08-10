@@ -394,7 +394,7 @@ namespace Composite.Trees
 
 
 
-        private void OnUpdateTreeAttachmentPoints(DataEventArgs dataEventArgs)
+        private void OnUpdateTreeAttachmentPoints(StorageEventArgs dataEventArgs)
         {
             InitializeTreeAttachmentPoints();
         }
@@ -564,7 +564,7 @@ namespace Composite.Trees
 
 
 
-        private static void OnDataItemDeleted(DataEventArgs dataEventArgs)
+        private static void OnDataItemDeleted(StorageEventArgs dataEventArgs)
         {
             Type interfaceType = dataEventArgs.Data.DataSourceId.InterfaceType;
 

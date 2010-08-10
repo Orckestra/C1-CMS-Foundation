@@ -588,12 +588,12 @@ namespace Composite.Renderings.Page
 
 
 
-        private static void OnPagesChanged(DataEventArgs args)
+        private static void OnPagesChanged(StorageEventArgs args)
         {
             IncrementVersion(args.Data.DataSourceId.DataScopeIdentifier);
         }
 
-        private static void OnPageStructureChanged(DataEventArgs args)
+        private static void OnPageStructureChanged(StorageEventArgs args)
         {
             IncrementVersion(DataScopeIdentifier.Public);
             IncrementVersion(DataScopeIdentifier.Administrated);
@@ -621,7 +621,7 @@ namespace Composite.Renderings.Page
             }
         }
 
-        private static void OnLocaleChanged(DataEventArgs args)
+        private static void OnLocaleChanged(StorageEventArgs args)
         {
             var localeInfo = args.Data as ISystemActiveLocale;
 
