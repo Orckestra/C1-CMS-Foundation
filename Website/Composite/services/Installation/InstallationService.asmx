@@ -99,8 +99,8 @@ public class Licensing : System.Web.Services.WebService
 
         pair = new KeyValuePair();
         pair.Key = "Special Thanks To";
-        pair.Value = "Scott Gu;Steve Balmer;Bill Gates;Ted Kaczynski;Mohammaed Atta;";*/
-        list.Add(pair);
+        pair.Value = "Scott Gu;Steve Balmer;Bill Gates;Ted Kaczynski;Mohammaed Atta;";
+        list.Add(pair);*/
 
         return list.ToArray();
     }
