@@ -8,7 +8,7 @@ using Composite.Data;
 namespace Composite
 {
     /// <summary>
-    /// This class provides access to the C1 storage.
+    /// This class provides read/write access to the C1 storage.
     /// </summary>
     public abstract class StorageAccess : IDisposable
     {
@@ -31,6 +31,17 @@ namespace Composite
         /// Returns an IQueryable of the given IData interface. 
         /// If no storage supports the given IData interface, an exception is thrown.
         /// </summary>
+        /// <example>
+        /// <code>
+        /// using (StorageAccess access = Storage.Open())
+        /// {
+        ///    var q = 
+        ///       from d in access.Get&lt;IMyDataType&gt;()
+        ///       where d.Name == "Foo"
+        ///       select d;
+        /// }
+        /// </code>
+        /// </example>
         /// <typeparam name="T">An IData interface</typeparam>
         /// <returns>Returns an IQueryable of the given IData interface for further querying</returns>
         public virtual IQueryable<T> Get<T>() where T : class, IData { return null; }
@@ -42,6 +53,22 @@ namespace Composite
         /// If the storage does not exist, then one is created.
         /// This method triggers the events OnBeforeAdd and OnAfterAdd for the item <paramref name="item"/>
         /// </summary>
+        /// <example>
+        /// <code>
+        /// using (StorageAccess access = Storage.Open())
+        /// {
+        ///    IMyDataType myDataType = Storage.New&lt;IMyDataType&gt;();
+        ///    myDataType.Name = "John Doe";
+        ///    myDataType = access.Add&lt;IMyDataType&gt;(myDataType); 
+        /// 
+        ///    // Note that the reassigned of myDataType is important here
+        ///    // if its used for an later update.
+        /// 
+        ///    myDataType.Name = "Jane Doe";
+        ///    acess.Update&lt;IMyDataType&gt;(myDataType);
+        /// }
+        /// </code>
+        /// </example>
         /// <typeparam name="T">An IData interface</typeparam>
         /// <param name="item">The data item to add</param>
         /// <returns>The newly added data item. Note: This could differ from the <paramref name="item"/></returns>
@@ -54,6 +81,24 @@ namespace Composite
         /// If the storage does not exist, then one is created.
         /// This method triggers the events OnBeforeAdd and OnAfterAdd for each item in <paramref name="items"/>
         /// </summary>
+        /// <example>
+        /// <code>
+        /// using (StorageAccess access = Storage.Open())
+        /// {
+        ///    List&lt;IMyDataType&gt; items = new List&lt;IMyDataType&gt;();
+        ///    
+        ///    for (int i = 0; i &lt; 10; i++)
+        ///    {
+        ///       IMyDataType myDataType = Storage.New&lt;IMyDataType&gt;();
+        ///       myDataType.Name = "John Doe";
+        ///       myDataType.Number = i;
+        ///       items.Add(myDataType);
+        ///    }   
+        ///    
+        ///    access.Add&lt;IMyDataType&gt;(items);
+        /// }
+        /// </code>
+        /// </example>
         /// <typeparam name="T">An IData interface</typeparam>
         /// <param name="items">The data items to add</param>
         /// <returns>The newly added data items. Note: These could differ from the items in <paramref name="items"/></returns>
@@ -66,6 +111,21 @@ namespace Composite
         /// If any property values has been changed, these would be saved into the storage.
         /// This method triggers the events OnBeforeUpdate and OnAfterUpdate for the item <paramref name="item"/>
         /// </summary>
+        /// <example>
+        /// <code>
+        /// using (StorageAccess access = Storage.Open())
+        /// {
+        ///    IMyDataType myDataType = 
+        ///       (from d in access.Get&lt;IMyDataType&gt;()
+        ///        where d.Name == "Foo"
+        ///        select d).First();
+        ///    
+        ///    myDataType.Name = "Bar";
+        ///    
+        ///    acess.Update&lt;IMyDataType&gt;(myDataType);
+        /// }
+        /// </code>
+        /// </example>
         /// <typeparam name="T">An IData interface</typeparam>
         /// <param name="item">The item to update in the C1 storage</param>
         public virtual void Update<T>(T item) where T : class, IData { }
@@ -77,6 +137,24 @@ namespace Composite
         /// If any property values in any of the <typeparamref name="T"/> instances, these would be saved into the storage.
         /// This method triggers the events OnBeforeUpdate and OnAfterUpdate for each item in <paramref name="items"/>
         /// </summary>
+        /// <example>
+        /// <code>
+        /// using (StorageAccess access = Storage.Open())
+        /// {
+        ///    IEnumerable&lt;IMyDataType&gt; myDataTypes = 
+        ///       from d in access.Get&lt;IMyDataType&gt;()
+        ///       where d.Value > 10
+        ///       select d;
+        ///    
+        ///    foreach (IMyDataType in myDataTypes)
+        ///    {
+        ///       myDataType.Value += 10;
+        ///    }   
+        ///    
+        ///    acess.Update&lt;IMyDataType&gt;(myDataTypes);
+        /// }
+        /// </code>
+        /// </example>
         /// <typeparam name="T">An IData interface</typeparam>
         /// <param name="items">The items to update in the C1 storage</param>
         public virtual void Update<T>(IEnumerable<T> items) where T : class, IData { }
@@ -87,6 +165,20 @@ namespace Composite
         /// Deletes the given <typeparamref name="T"/> instance permently from the C1 storage.        
         /// This method triggers the event OnDeleted for the item <paramref name="item"/>
         /// </summary>
+        /// <example>
+        /// <code>
+        /// using (StorageAccess access = Storage.Open())
+        /// {
+        ///    IMyDataType myDataType = 
+        ///       (from d in access.Get&lt;IMyDataType&gt;()
+        ///        where d.Name == "Foo"
+        ///        select d).First();
+        ///    
+        ///    
+        ///    acess.Delete&lt;IMyDataType&gt;(myDataType);
+        /// }
+        /// </code>
+        /// </example>
         /// <typeparam name="T">An IData interface</typeparam>
         /// <param name="item">The item to delete</param>
         public virtual void Delete<T>(T item) where T : class, IData { }
@@ -97,6 +189,20 @@ namespace Composite
         /// Deletes the given <typeparamref name="T"/> instances permently from the C1 storage.
         /// This method triggers the event OnDeleted for each item in <paramref name="items"/>
         /// </summary>
+        /// <example>
+        /// <code>
+        /// using (StorageAccess access = Storage.Open())
+        /// {
+        ///    IMyDataType myDataTypes = 
+        ///       from d in access.Get&lt;IMyDataType&gt;()
+        ///       where d.Name == "Foo"
+        ///       select d;
+        ///    
+        ///    
+        ///    acess.Delete&lt;IMyDataType&gt;(myDataTypes);
+        /// }
+        /// </code>
+        /// </example>
         /// <typeparam name="T">An IData interface</typeparam>
         /// <param name="items">The items to delete</param>
         public virtual void Delete<T>(IEnumerable<T> items) where T : class, IData { }
