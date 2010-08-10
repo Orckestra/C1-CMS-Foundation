@@ -326,6 +326,7 @@ namespace Composite.WebClient.FlowMediators
         /// <param name="piggybag"></param>
         /// <param name="entityTokensToBeExpanded"></param>
         /// <param name="resultList"></param>
+        /// <param name="keyNodes"></param>
         /// <returns>Returns false, if there's a key node, that has [element.TreeLockBehavior == None]</returns>
         private static bool ExpandNodesRec(string entityToken, string elementProviderName, string piggybag, List<string> entityTokensToBeExpanded, List<RefreshChildrenInfo> resultList, List<string> keyNodes)
         {

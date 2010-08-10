@@ -33,6 +33,7 @@ namespace Composite.WebClient.Services.WysiwygEditor
         /// </summary>
         /// <param name="html">The html to repair</param>
         /// <param name="xsltPath">The path to the XSLT to use for transformation</param>
+        /// <param name="xsltParameters"></param> 
         /// <param name="errorSummary">out value - warnings generated while repairing the html</param>
         /// <returns></returns>
         public static XDocument RepairXhtmlAndTransform(string html, string xsltPath, Dictionary<string, string> xsltParameters, out string errorSummary)

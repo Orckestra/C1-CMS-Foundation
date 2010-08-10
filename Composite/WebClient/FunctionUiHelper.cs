@@ -87,8 +87,7 @@ namespace Composite.WebClient
         /// </summary>
         /// <param name="bindingsDeclarationMarkup">Bining declarations - a list of elements like &lt;binding name="..." type="..." optional="false" xmlns="http://www.composite.net/ns/management/bindingforms/1.0" /></param>
         /// <param name="uiControlMarkup">The visual content of the form. All namespaces that controls and functions belong to must be declared.</param>
-        /// <param name="bindings"></param>        
-        /// <param name=""
+        /// <param name="bindings"></param>                
         /// <returns></returns>
         private static FormDefinition BuildFormDefinition(XNode bindingsDeclarationMarkup, XNode uiControlMarkup, Dictionary<string, object> bindings)
         {

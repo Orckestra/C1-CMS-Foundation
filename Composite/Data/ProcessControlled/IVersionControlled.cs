@@ -4,12 +4,10 @@ using System;
 namespace Composite.Data.ProcessControlled
 {
     /// <summary>    
+    /// Use this interface to get versioning on a given data type.
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    /// <summary>
-    /// Use this interface to get versioning on a given data type.
-    /// </summary>
     [Obsolete("To be removed")]
     public interface IVersionControlled : IProcessControlled
     {
