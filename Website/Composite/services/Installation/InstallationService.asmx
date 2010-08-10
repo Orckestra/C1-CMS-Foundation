@@ -87,7 +87,7 @@ public class Licensing : System.Web.Services.WebService
         pair.Value = "Marcus Wendt;Martin Jensen;Dmitry Dzygin;Jesper Moth";
         list.Add(pair);
 
-        pair = new KeyValuePair();
+        /*pair = new KeyValuePair();
         pair.Key = "Package Development";
         pair.Value = "Jens Olaf Jersild;Dronning Margrethe;Anders Trentemøller;Adolf Hitler";
         list.Add(pair);
@@ -99,7 +99,7 @@ public class Licensing : System.Web.Services.WebService
 
         pair = new KeyValuePair();
         pair.Key = "Special Thanks To";
-        pair.Value = "Scott Gu;Steve Balmer;Bill Gates;Ted Kaczynski;Mohammaed Atta;";
+        pair.Value = "Scott Gu;Steve Balmer;Bill Gates;Ted Kaczynski;Mohammaed Atta;";*/
         list.Add(pair);
 
         return list.ToArray();
