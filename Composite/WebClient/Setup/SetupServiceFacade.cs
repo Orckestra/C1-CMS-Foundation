@@ -5,15 +5,16 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.ServiceModel;
+using System.Xml;
 using System.Xml.Linq;
 using Composite.Application;
 using Composite.GlobalSettings;
+using Composite.IO;
 using Composite.Localization;
 using Composite.Logging;
 using Composite.PackageSystem;
 using Composite.Security;
 using Composite.WebClient.Setup.WebServiceClient;
-using Composite.IO;
 
 
 namespace Composite.WebClient.Setup
@@ -21,21 +22,22 @@ namespace Composite.WebClient.Setup
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class SetupServiceFacade
-    {                
+    {
         public static XNamespace XmlNamespace = (XNamespace)"urn:Composte.C1.Setup";
         public static XName PackageElementName = XmlNamespace + "package";
         public static string UrlAttributeName = "url";
         public static string IdAttributeName = "id";
         public static string KeyAttributeName = "key";
 
-        public static string PackageServicePingUrlFormat = "https://{0}/C1.asmx";
-        private static string SetupServiceUrl = "https://{0}/Setup/Setup.asmx"; 
-        private static string PackageUrlFormat = "https://{0}{1}";
+        public static string PackageServicePingUrlFormat = "{0}/C1.asmx";
+        private static string SetupServiceUrl = "{0}/Setup/Setup.asmx";
+        private static string PackageUrlFormat = "{0}{1}";
+
 
         private static string _packageServerUrl = null;
-        public static string PackageServerUrl 
+        public static string PackageServerUrl
         {
             get
             {
@@ -50,12 +52,13 @@ namespace Composite.WebClient.Setup
                 }
 
                 return _packageServerUrl;
-            }            
+            }
         }
 
 
+
         public static void SetUp(string setupDescriptionXml, string username, string password, string language)
-        {            
+        {
             ApplicationOnlineHandlerFacade.TurnApplicationOffline(false);
 
             try
@@ -63,15 +66,15 @@ namespace Composite.WebClient.Setup
                 CultureInfo locale = new CultureInfo(language);
 
                 GlobalAsaxHelper.ApplicationStartInitialize();
-                
+
                 AdministratorAutoCreator.AutoCreatedAdministrator(username, password, false);
                 UserValidationFacade.FormValidateUser(username, password);
-                
+
                 LocalizationFacade.AddLocale(locale, "", true, false);
                 LocalizationFacade.SetDefaultLocale(locale);
-                
+
                 XElement setupDescription = XElement.Parse(setupDescriptionXml);
-                
+
                 foreach (string packageUrl in GetPackageUrls(setupDescription))
                 {
                     InstallPackage(packageUrl);
@@ -83,43 +86,59 @@ namespace Composite.WebClient.Setup
             {
                 RegisterSetup(setupDescriptionXml, ex.ToString());
 
-                if (RuntimeInformation.IsDebugBuild == true) throw;                
+                if (RuntimeInformation.IsDebugBuild == true) throw;
             }
-                        
-            ApplicationOnlineHandlerFacade.TurnApplicationOnline();            
+
+            ApplicationOnlineHandlerFacade.TurnApplicationOnline();
         }
 
 
 
-        public static XDocument GetSetupDescription()
+        public static bool PingServer()
         {
             SetupSoapClient client = CreateClient();
 
-            string xml = client.GetSetupDescription(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString());            
-
-            return XDocument.Parse(xml);
+            return client.Ping();
         }
 
 
 
-        public static XDocument GetLanguages()
+
+        public static XElement GetSetupDescription()
         {
             SetupSoapClient client = CreateClient();
 
-            string xml = client.GetLanguages(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString());
+            XElement xml = client.GetSetupDescription(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString());
 
-            return XDocument.Parse(xml);
+            return xml;
         }
 
 
 
-        public static XDocument GetGetLicense()
+        public static XElement GetLanguages()
         {
             SetupSoapClient client = CreateClient();
 
-            string xml = client.GetGetLicense(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString());
+            XElement xml = client.GetLanguages(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString());
 
-            return XDocument.Parse(xml);
+            return xml;
+        }
+
+
+
+        public static XmlDocument GetGetLicense()
+        {
+            SetupSoapClient client = CreateClient();
+
+            XElement xml = client.GetGetLicense(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString());
+
+            XmlDocument doc = new XmlDocument();
+            using (XmlReader reader = xml.CreateReader())
+            {
+                doc.Load(reader);
+            }
+
+            return doc;
         }
 
 
@@ -137,7 +156,7 @@ namespace Composite.WebClient.Setup
         {
             bool result = false;
             try
-            {                
+            {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(packageUrl);
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
@@ -149,7 +168,7 @@ namespace Composite.WebClient.Setup
                         int read;
                         while ((read = inputStream.Read(buffer, 0, 32768)) > 0)
                         {
-                            outputStream.Write(buffer, 0, read);                            
+                            outputStream.Write(buffer, 0, read);
                         }
 
                         outputStream.Seek(0, SeekOrigin.Begin);
@@ -181,11 +200,13 @@ namespace Composite.WebClient.Setup
                             }
                         }
                     }
-                }                
+                }
             }
             catch (Exception ex)
             {
                 LoggingService.LogCritical("SetupServiceFacade", ex);
+
+                throw;
             }
 
             return result;
@@ -213,11 +234,15 @@ namespace Composite.WebClient.Setup
 
             basicHttpBinding.MaxReceivedMessageSize = int.MaxValue;
 
-            basicHttpBinding.Security.Mode = BasicHttpSecurityMode.Transport;
+            string url = PackageServerUrl;
+            if (PackageServerUrl.StartsWith("https://") == true)
+            {
+                basicHttpBinding.Security.Mode = BasicHttpSecurityMode.Transport;
+
+                url = url.Remove(0, 8);
+            }           
 
             SetupSoapClient client = new SetupSoapClient(basicHttpBinding, new EndpointAddress(string.Format(SetupServiceUrl, PackageServerUrl)));
-
-            //SetupSoapClient client = new SetupSoapClient(basicHttpBinding, new EndpointAddress("http://localhost:25000/WebSite1/Setup/Setup.asmx"));
 
             return client;
         }
@@ -229,11 +254,11 @@ namespace Composite.WebClient.Setup
             int maxkey = setupDescription.Descendants().Attributes(KeyAttributeName).Select(f => (int)f).Max();
 
             SetupSoapClient client = CreateClient();
-
-            XDocument originalSetupDescription = XDocument.Parse(client.GetSetupDescription(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString()));
+            
+            XElement originalSetupDescription = client.GetSetupDescription(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString());
 
             var element =
-                (from elm in originalSetupDescription.Root.Descendants()
+                (from elm in originalSetupDescription.Descendants()
                  where elm.Attribute(KeyAttributeName) != null && (int)elm.Attribute(KeyAttributeName) == maxkey
                  select elm).Single();
 
@@ -241,7 +266,7 @@ namespace Composite.WebClient.Setup
             {
                 XAttribute idAttribute = packageElement.Attribute(IdAttributeName);
                 if (idAttribute == null) throw new InvalidOperationException("Setup XML malformed");
-                
+
                 string url =
                     (from elm in element.Descendants(PackageElementName)
                      where elm.Attribute(IdAttributeName).Value == idAttribute.Value
@@ -257,7 +282,8 @@ namespace Composite.WebClient.Setup
         {
             foreach (PackageFragmentValidationResult packageFragmentValidationResult in packageFragmentValidationResults)
             {
-                LoggingService.LogCritical("SetupServiceFacade", packageFragmentValidationResult.Message);
+                throw new InvalidOperationException(packageFragmentValidationResult.Message);
+                //LoggingService.LogCritical("SetupServiceFacade", packageFragmentValidationResult.Message);
             }
         }
     }

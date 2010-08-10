@@ -15,6 +15,9 @@ namespace Composite.WebClient.Setup.WebServiceClient
     internal interface SetupSoap
     {
 
+        [System.ServiceModel.OperationContractAttribute(Action = "http://www.composite.net/ns/management/Ping", ReplyAction = "*")]
+        bool Ping();
+
         // CODEGEN: Generating message contract since element name version from namespace http://www.composite.net/ns/management is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action = "http://www.composite.net/ns/management/GetSetupDescription", ReplyAction = "*")]
         Composite.WebClient.Setup.WebServiceClient.GetSetupDescriptionResponse GetSetupDescription(Composite.WebClient.Setup.WebServiceClient.GetSetupDescriptionRequest request);
@@ -104,13 +107,13 @@ namespace Composite.WebClient.Setup.WebServiceClient
     {
 
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 0)]
-        public string GetSetupDescriptionResult;
+        public System.Xml.Linq.XElement GetSetupDescriptionResult;
 
         public GetSetupDescriptionResponseBody()
         {
         }
 
-        public GetSetupDescriptionResponseBody(string GetSetupDescriptionResult)
+        public GetSetupDescriptionResponseBody(System.Xml.Linq.XElement GetSetupDescriptionResult)
         {
             this.GetSetupDescriptionResult = GetSetupDescriptionResult;
         }
@@ -188,13 +191,13 @@ namespace Composite.WebClient.Setup.WebServiceClient
     {
 
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 0)]
-        public string GetGetLicenseResult;
+        public System.Xml.Linq.XElement GetGetLicenseResult;
 
         public GetGetLicenseResponseBody()
         {
         }
 
-        public GetGetLicenseResponseBody(string GetGetLicenseResult)
+        public GetGetLicenseResponseBody(System.Xml.Linq.XElement GetGetLicenseResult)
         {
             this.GetGetLicenseResult = GetGetLicenseResult;
         }
@@ -272,13 +275,13 @@ namespace Composite.WebClient.Setup.WebServiceClient
     {
 
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 0)]
-        public string GetLanguagesResult;
+        public System.Xml.Linq.XElement GetLanguagesResult;
 
         public GetLanguagesResponseBody()
         {
         }
 
-        public GetLanguagesResponseBody(string GetLanguagesResult)
+        public GetLanguagesResponseBody(System.Xml.Linq.XElement GetLanguagesResult)
         {
             this.GetLanguagesResult = GetLanguagesResult;
         }
@@ -321,18 +324,18 @@ namespace Composite.WebClient.Setup.WebServiceClient
         public string setupDescriptionXml;
 
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 3)]
-        public string excecption;        
+        public string exception;
 
         public RegisterSetupRequestBody()
         {
         }
 
-        public RegisterSetupRequestBody(string version, string installationId, string setupDescriptionXml, string excecption)
+        public RegisterSetupRequestBody(string version, string installationId, string setupDescriptionXml, string exception)
         {
             this.version = version;
             this.installationId = installationId;
             this.setupDescriptionXml = setupDescriptionXml;
-            this.excecption = excecption;
+            this.exception = exception;
         }
     }
 
@@ -410,13 +413,18 @@ namespace Composite.WebClient.Setup.WebServiceClient
         {
         }
 
+        public bool Ping()
+        {
+            return base.Channel.Ping();
+        }
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Composite.WebClient.Setup.WebServiceClient.GetSetupDescriptionResponse Composite.WebClient.Setup.WebServiceClient.SetupSoap.GetSetupDescription(Composite.WebClient.Setup.WebServiceClient.GetSetupDescriptionRequest request)
         {
             return base.Channel.GetSetupDescription(request);
         }
 
-        public string GetSetupDescription(string version, string installationId)
+        public System.Xml.Linq.XElement GetSetupDescription(string version, string installationId)
         {
             Composite.WebClient.Setup.WebServiceClient.GetSetupDescriptionRequest inValue = new Composite.WebClient.Setup.WebServiceClient.GetSetupDescriptionRequest();
             inValue.Body = new Composite.WebClient.Setup.WebServiceClient.GetSetupDescriptionRequestBody();
@@ -432,7 +440,7 @@ namespace Composite.WebClient.Setup.WebServiceClient
             return base.Channel.GetGetLicense(request);
         }
 
-        public string GetGetLicense(string version, string installationId)
+        public System.Xml.Linq.XElement GetGetLicense(string version, string installationId)
         {
             Composite.WebClient.Setup.WebServiceClient.GetGetLicenseRequest inValue = new Composite.WebClient.Setup.WebServiceClient.GetGetLicenseRequest();
             inValue.Body = new Composite.WebClient.Setup.WebServiceClient.GetGetLicenseRequestBody();
@@ -448,7 +456,7 @@ namespace Composite.WebClient.Setup.WebServiceClient
             return base.Channel.GetLanguages(request);
         }
 
-        public string GetLanguages(string version, string installationId)
+        public System.Xml.Linq.XElement GetLanguages(string version, string installationId)
         {
             Composite.WebClient.Setup.WebServiceClient.GetLanguagesRequest inValue = new Composite.WebClient.Setup.WebServiceClient.GetLanguagesRequest();
             inValue.Body = new Composite.WebClient.Setup.WebServiceClient.GetLanguagesRequestBody();
@@ -471,7 +479,7 @@ namespace Composite.WebClient.Setup.WebServiceClient
             inValue.Body.version = version;
             inValue.Body.installationId = installationId;
             inValue.Body.setupDescriptionXml = setupDescriptionXml;
-            inValue.Body.excecption = exception;
+            inValue.Body.exception = exception;
             Composite.WebClient.Setup.WebServiceClient.RegisterSetupResponse retVal = ((Composite.WebClient.Setup.WebServiceClient.SetupSoap)(this)).RegisterSetup(inValue);
             return retVal.Body.RegisterSetupResult;
         }

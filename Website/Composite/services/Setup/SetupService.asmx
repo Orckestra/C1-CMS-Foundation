@@ -65,10 +65,11 @@ namespace Composite.WebClient.Setup
         [WebMethod]
         public XmlDocument GetSetupDescription(bool dummy)
         {
-            XDocument setupDescription = SetupServiceFacade.GetSetupDescription();
+            XElement setupDescription = SetupServiceFacade.GetSetupDescription();
 
+            
             // Remove urls 
-            foreach (XElement element in setupDescription.Root.Descendants(SetupServiceFacade.PackageElementName))
+            foreach (XElement element in setupDescription.Descendants(SetupServiceFacade.PackageElementName))
             {
                 XAttribute urlAttribute = element.Attribute(SetupServiceFacade.UrlAttributeName);
                 if (urlAttribute != null)
@@ -89,11 +90,7 @@ namespace Composite.WebClient.Setup
         [WebMethod]
         public XmlDocument GetLicenseHtml(bool dummy)
         {
-            XmlDocument doc = new XmlDocument();
-
-            doc.LoadXml(SetupServiceFacade.GetGetLicense().ToString());
-            
-            return doc;
+            return SetupServiceFacade.GetGetLicense();
         }
         
         
@@ -101,12 +98,13 @@ namespace Composite.WebClient.Setup
         [WebMethod]
         public LanguageDef[] GetLanguages(bool dummy)
         {
-            XDocument languagesXml = SetupServiceFacade.GetLanguages();
+            XElement languagesXml = SetupServiceFacade.GetLanguages();
 
+            
             string clientPreferredCultureName = (this.Context.Request.UserLanguages.FirstOrDefault() ?? "").ToLower();
 
             List<LanguageDef> languages = new List<LanguageDef>();
-            foreach (XElement element in languagesXml.Root.Elements("Language"))
+            foreach (XElement element in languagesXml.Elements("Language"))
             {
                 
                 bool selected = false;
@@ -201,14 +199,7 @@ namespace Composite.WebClient.Setup
         {
             try
             {
-                BasicHttpBinding basicHttpBinding = new BasicHttpBinding();
-                basicHttpBinding.Security.Mode = BasicHttpSecurityMode.Transport;
-                basicHttpBinding.MaxReceivedMessageSize = int.MaxValue;
-                PackagesSoapClient client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress(string.Format(SetupServiceFacade.PackageServicePingUrlFormat, SetupServiceFacade.PackageServerUrl)));
-                
-                client.IsOperational();
-
-                return true;
+                return SetupServiceFacade.PingServer();
             }
             catch (Exception)
             {
