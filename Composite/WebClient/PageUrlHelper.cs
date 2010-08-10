@@ -376,6 +376,8 @@ namespace Composite.WebClient
         }
 
 
+
+#pragma warning disable 618
         public static string ChangeRenderingPageUrlsToPublic(string html)
         {
             StringBuilder result = null;
@@ -449,6 +451,9 @@ namespace Composite.WebClient
 
             return result != null ? result.ToString() : html;
         }
+#pragma warning restore 618
+
+
 
         /// <summary>
         /// "PathInfo" it is a part between aspx page path
