@@ -1,8 +1,10 @@
 ﻿using System;
 using Composite.Logging;
 
+
 namespace Composite.Implementation
 {
+#warning RELEASE: Missing documentation
     public class LogDefaultImplementation : LogBase
     {
         public override void LogCritical(string title, Exception exception)

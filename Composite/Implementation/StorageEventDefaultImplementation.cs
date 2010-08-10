@@ -1,8 +1,10 @@
 ﻿using System;
+using Composite.Data;
+
 
 namespace Composite.Implementation
 {
-    // Our implementation of StorageEvent
+#warning RELEASE: Missing documentation
     public class StorageEventsDefaultImplementation : StorageEvents
     {
         private EventHandler _onAddEvent;

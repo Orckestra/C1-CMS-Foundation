@@ -9,7 +9,7 @@ namespace Composite.Implementation
     /// <summary>
     /// This is the base for implementations of the Storage API. 
     /// This is used for implementing mocks/stubs in tests
-    /// Base is used because of name clashing
+    /// See <see cref="Composite.Storage"/> for documentation of each method.
     /// </summary>
     public class StorageBase : ImplementationBase
     {

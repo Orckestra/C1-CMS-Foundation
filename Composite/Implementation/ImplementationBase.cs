@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
 
 namespace Composite.Implementation
 {
-    // Other name?
+#warning RELEASE: Missing documentation
     public class ImplementationBase
     {
     }

@@ -48,6 +48,10 @@ namespace Composite
 
 
 
+        /// <summary>
+        /// This event is fired just before a data item is deleted from the C1 store.
+        /// See <see cref="Composite.StorageAccess.Delete"/>
+        /// </summary>
         public virtual event EventHandler OnDeleted { add { } remove { } }
     }
 }

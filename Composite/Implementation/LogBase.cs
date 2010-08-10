@@ -3,6 +3,7 @@
 
 namespace Composite.Implementation
 {
+#warning RELEASE: Missing documentation
     public class LogBase : ImplementationBase
     {
         public virtual void LogInformation(string title, string messageFormat, params object[] args) { }

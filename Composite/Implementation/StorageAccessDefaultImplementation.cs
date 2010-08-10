@@ -6,7 +6,8 @@ using Composite.Data;
 
 namespace Composite.Implementation
 {
-    internal sealed class StorageAccessDefaultImplementation : StorageAccess
+#warning RELEASE: Missing documentation
+    public class StorageAccessDefaultImplementation : StorageAccess
     {
         public StorageAccessDefaultImplementation(PublicationScope scope, CultureInfo locale)
             : base(scope, locale)
