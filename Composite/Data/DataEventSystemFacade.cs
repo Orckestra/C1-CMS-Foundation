@@ -77,7 +77,7 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class DataEventSystemFacade
     {
-        public delegate void DataBeforeAddDelegate(EventArgs dataEventArgs);
+        public delegate void DataBeforeAddDelegate(DataEventArgs dataEventArgs);
         public delegate void DataAfterAddDelegate(DataEventArgs dataEventArgs);
         public delegate void DataBeforeUpdateDelegate(DataEventArgs dataEventArgs);
         public delegate void DataAfterUpdateDelegate(DataEventArgs dataEventArgs);
