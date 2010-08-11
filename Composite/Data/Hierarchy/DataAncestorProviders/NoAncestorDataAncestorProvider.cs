@@ -3,6 +3,7 @@ using System;
 
 namespace Composite.Data.Hierarchy.DataAncestorProviders
 {
+#warning RELEASE: Missing documentation
     /// <summary>    
     /// </summary>
     /// <exclude />

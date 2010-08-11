@@ -2,6 +2,7 @@ using System;
 
 namespace Composite.Data.Hierarchy
 {
+#warning RELEASE: Missing documentation
     /// <summary>    
     /// </summary>
     /// <exclude />

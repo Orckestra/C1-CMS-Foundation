@@ -3,6 +3,7 @@
 
 namespace Composite.Data
 {
+#warning RELEASE: Missing documentation
     /// <summary>    
     /// </summary>
     /// <exclude />

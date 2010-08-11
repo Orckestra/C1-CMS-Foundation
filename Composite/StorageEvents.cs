@@ -4,9 +4,8 @@ using Composite.Data;
 
 namespace Composite
 {
-#warning RELEASE: Missing documentation
     /// <summary>
-    /// 
+    /// The event handle type for several storage events. See <see cref="StorageEvents"/> and <see cref="Storage"/>.
     /// </summary>
     /// <param name="dataEventArgs"></param>
     public delegate void StorageEventHandler(StorageEventArgs dataEventArgs);
@@ -14,8 +13,10 @@ namespace Composite
 
 
 
-#warning RELEASE: Missing documentation
-    /// <summary>    
+
+
+    /// <summary>
+    /// This class contains information for several storage events.
     /// </summary>
     public class StorageEventArgs : EventArgs
     {
@@ -29,18 +30,33 @@ namespace Composite
         }
 
 
+
+        /// <summary>
+        /// This is the data item that is the subject of the event fired.
+        /// </summary>
         public IData Data
         {
             get { return _data; }
         }
 
 
+
+        /// <summary>
+        /// This is the type of the data item that is the subject of the event fired.
+        /// </summary>
         public Type DataType
         {
             get { return _dataType; }
         }
 
 
+
+
+        /// <summary>
+        /// This is the data item that is the subject of the event fired.
+        /// </summary>
+        /// <typeparam name="T">An IData interface</typeparam>
+        /// <returns>Returns a casted version of the data item that is the suvject of the event fired.</returns>
         public T GetData<T>()
             where T : IData
         {
@@ -49,6 +65,8 @@ namespace Composite
             return (T)_data;
         }
     }
+
+
 
 
     

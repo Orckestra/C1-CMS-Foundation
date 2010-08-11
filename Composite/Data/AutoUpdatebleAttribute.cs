@@ -3,6 +3,7 @@ using System;
 
 namespace Composite.Data
 {
+#warning RELEASE: Missing documentation
     /// <summary>
     /// IData types decorated with this attribute will be have their store auto created
     /// and updated if the interface changes.
