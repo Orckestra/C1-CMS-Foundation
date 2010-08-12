@@ -15,7 +15,7 @@
 					<div id="roll">
 						<div class="logo" id="logo1"/>
 						<div class="logo" id="logo2"/>
-						<h2>Visuel Editor</h2>
+						<h2>Visual Editor</h2>
 						<p>powered by<br/><a href="http://tinymce.moxiecode.com/" title="Visit Moxicode" target="_blank">TinyMCE</a></p>
 						<h2>Source Editor</h2>
 						<p>powered by<br/><a href="http://bobdawg.org/codepress/" title="Visit Sourceforge" target="_blank">Codepress</a></p>
