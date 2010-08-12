@@ -325,17 +325,17 @@
 	<string key="VirtualElementProviderElementProvider.LogPerspective" value="Log" />
 	<string key="VirtualElementProviderElementProvider.RootActions.ViewSystemLogLabel" value="Server log" />
 	<string key="VirtualElementProviderElementProvider.RootActions.ViewSystemLogTooltip" value="View recent server events" />
-  <string key="VirtualElementProviderElementProvider.RootActions.SendMessageLabel" value="Send message" />
-  <string key="VirtualElementProviderElementProvider.RootActions.SendMessageTooltip" value="Send a message to consoles" />
+  <string key="VirtualElementProviderElementProvider.RootActions.SendMessageLabel" value="Broadcast message" />
+  <string key="VirtualElementProviderElementProvider.RootActions.SendMessageTooltip" value="Send a message to all running consoles" />
   <string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationLabel" value="Restart server" />
   <string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationTooltip" value="Restart the server" />
 
-  <string key="SendMessageToConsolesWorkflow.Layout.Label" value="Send message" />
-  <string key="SendMessageToConsolesWorkflow.FieldGroup.Label" value="Send message settings" />  
+  <string key="SendMessageToConsolesWorkflow.Layout.Label" value="Broadcast message to all C1 Consoles" />
+  <string key="SendMessageToConsolesWorkflow.FieldGroup.Label" value="Message to broadcast" />  
   <string key="SendMessageToConsolesWorkflow.TitleTextBox.Label" value="Title" />
-  <string key="SendMessageToConsolesWorkflow.TitleTextBox.Help" value="The title of the messge" />
+  <string key="SendMessageToConsolesWorkflow.TitleTextBox.Help" value="Dialog title of broadcast message" />
   <string key="SendMessageToConsolesWorkflow.MessageTextArea.Label" value="Message" />
-  <string key="SendMessageToConsolesWorkflow.MessageTextArea.Help" value="The message it self" />
+  <string key="SendMessageToConsolesWorkflow.MessageTextArea.Help" value="The message to broadcast" />
   
 
   <!--<string key="InputParameterFunction.ParameterName" value="Parameter Name" />
