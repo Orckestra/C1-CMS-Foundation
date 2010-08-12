@@ -696,9 +696,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
 
         internal static string GetMediaUrl(IMediaFile file)
         {
-            return MediaUrlHelper.GetUrl(file, true);
-
-            //return UrlUtils.ResolvePublicUrl("Renderers/ShowMedia.ashx?i=" + HttpUtility.UrlEncodeUnicode(file.CompositePath));
+            return MediaUrlHelper.GetUrl(file, true, true);
         }
 
 

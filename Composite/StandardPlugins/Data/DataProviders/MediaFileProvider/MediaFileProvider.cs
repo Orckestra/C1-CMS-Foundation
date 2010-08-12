@@ -18,7 +18,8 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
 {
     [ConfigurationElementType(typeof(MediaFileDataProviderData))]
-	internal sealed class MediaFileProvider : IWritableDataProvider
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public sealed class MediaFileProvider : IWritableDataProvider
 	{
         private DataProviderContext _context;
         private IMediaFileStore _store;
@@ -532,7 +533,8 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
 
 
 
-        internal sealed class MediaDataId : IDataId
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public sealed class MediaDataId : IDataId
         {
             public int MediaType { get; set; }
             public Guid Id { get; set; }

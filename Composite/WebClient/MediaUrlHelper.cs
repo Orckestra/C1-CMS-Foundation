@@ -22,10 +22,16 @@ namespace Composite.WebClient
 
         public static string GetUrl(IMediaFile file)
         {
-            return GetUrl(file, true);
+            return GetUrl(file, true, false);
         }
 
+
         public static string GetUrl(IMediaFile file, bool isInternal)
+        {
+            return GetUrl(file, true, false);
+        }
+
+        public static string GetUrl(IMediaFile file, bool isInternal, bool downloadableMedia)
         {
             var urlBuilder = new UrlBuilder(UrlUtils.ResolvePublicUrl("Renderers/ShowMedia.ashx"));
 
@@ -42,8 +48,15 @@ namespace Composite.WebClient
                 urlBuilder["id"] = file.Id.ToString();
             }
 
+            if (downloadableMedia == true)
+            {
+                urlBuilder["download"] = "true";
+            }
+
             return urlBuilder.ToString();
         }
+
+
 
         public static IMediaFile GetFileFromQueryString(NameValueCollection queryParameters)
         {
