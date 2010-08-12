@@ -70,6 +70,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunction
             yield return "HTTP_ACCEPT";
             yield return "HTTP_ACCEPT_LANGUAGE";
             yield return "HTTP_COOKIE";
+            yield return "HTTP_HOST";
             yield return "HTTP_REFERER";
             yield return "HTTP_USER_AGENT";
             yield return "HTTPS";
