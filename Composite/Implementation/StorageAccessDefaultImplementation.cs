@@ -6,7 +6,10 @@ using Composite.Data;
 
 namespace Composite.Implementation
 {
-#warning RELEASE: Missing documentation
+    /// <summary>
+    /// The is the default implementation of storage access in C1.
+    /// See <see cref="StorageAccess"/> for more information.
+    /// </summary>
     public class StorageAccessDefaultImplementation : StorageAccess
     {
         public StorageAccessDefaultImplementation(PublicationScope scope, CultureInfo locale)

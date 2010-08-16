@@ -4,7 +4,11 @@ using Composite.Data;
 
 namespace Composite.Implementation
 {
-#warning RELEASE: Missing documentation
+    /// <summary>
+    /// This is the default implementation for storage events in C1.
+    /// See <see cref="StorageEvents"/> for more information.
+    /// </summary>
+    /// <typeparam name="T">An IData interface</typeparam>
     public class StorageEventsDefaultImplementation<T> : StorageEvents
         where T: class, IData
     {    
