@@ -375,49 +375,45 @@ namespace Composite.WebClient
             return new PageUrlOptions(dataScopeName, cultureInfo, pageId, UrlType.Internal);
         }
 
-
-
-#pragma warning disable 618
         public static string ChangeRenderingPageUrlsToPublic(string html)
         {
             StringBuilder result = null;
 
             IEnumerable<Match> pageUrlMatchCollection = RenredingLinkRegex.Matches(html).OfType<Match>().Reverse();
 
-            var resolvedURLs = new Dictionary<string, string>();
+            var resolvedUrls = new Dictionary<string, string>();
             foreach (Match pageUrlMatch in pageUrlMatchCollection)
             {
                 string internalPageUrl = pageUrlMatch.Value;
                 string publicPageUrl;
 
-                if (!resolvedURLs.TryGetValue(internalPageUrl, out publicPageUrl))
+                if (!resolvedUrls.TryGetValue(internalPageUrl, out publicPageUrl))
                 {
-                    PageUrlOptions pageUrlOptions = null;
-
-                    NameValueCollection notUsedQueryStringParameters = null;
+                    NameValueCollection notUsedQueryStringParameters;
+                    PageUrl pageUrl;
 
                     try
                     {
-                        pageUrlOptions = ParseUrl(internalPageUrl, out notUsedQueryStringParameters);
+                        pageUrl = PageUrl.ParseInternalUrl(new UrlBuilder(internalPageUrl), out notUsedQueryStringParameters);
                     }
                     catch
                     {
                         LoggingService.LogWarning(LogTitle, "Failed to parse url '{0}'".FormatWith(internalPageUrl));
-                        resolvedURLs.Add(internalPageUrl, null); 
+                        resolvedUrls.Add(internalPageUrl, null); 
                         continue;
                     }
 
-                    if (pageUrlOptions == null)
+                    if (pageUrl == null)
                     {
-                        resolvedURLs.Add(internalPageUrl, null); 
+                        resolvedUrls.Add(internalPageUrl, null); 
                         continue;
                     }
 
-                    UrlString newUrl = BuildUrl(UrlType.Public, pageUrlOptions);
+                    UrlBuilder newUrl = pageUrl.Build(PageUrlType.Public);
                     if (newUrl == null)
                     {
                         // We have this situation if page does not exist
-                        resolvedURLs.Add(internalPageUrl, null); 
+                        resolvedUrls.Add(internalPageUrl, null); 
                         continue;
                     }
 
@@ -433,7 +429,7 @@ namespace Composite.WebClient
                     // Encoding xml attribute value
                     publicPageUrl = publicPageUrl.Replace("&", "&amp;");
 
-                    resolvedURLs.Add(internalPageUrl, publicPageUrl); 
+                    resolvedUrls.Add(internalPageUrl, publicPageUrl); 
                 }
                 else
                 {
@@ -451,8 +447,6 @@ namespace Composite.WebClient
 
             return result != null ? result.ToString() : html;
         }
-#pragma warning restore 618
-
 
 
         /// <summary>

@@ -57,7 +57,7 @@ namespace Composite.Frontend.Controls
         {
             hdnEncryptedValue.Value = _encryptedValue;
 
-            var imageUrl = new UrlString("/Renderers/Captcha.ashx");
+            var imageUrl = new UrlBuilder("/Renderers/Captcha.ashx");
             imageUrl["value"] = _encryptedValue;
             imgCaptcha.Src = imageUrl.ToString();
 
