@@ -5,20 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Runtime.InteropServices;
-using System.Threading;
 using System.Web.Services;
 using System.Web.Services.Protocols;
-using System.Globalization;
-using System.ServiceModel;
 using System.Xml.Linq;
 using System.Collections.Generic;
-using Composite.Data;
-using Composite.Data.Types;
-using Composite.PackageSystem;
 using Composite.ConfigurationSystem;
-using Composite.WebClient;
 using Composite.IO;
-using Composite.PackageSystem.WebServiceClient;
 
 
 namespace Composite.WebClient.Setup
@@ -159,7 +151,7 @@ namespace Composite.WebClient.Setup
                     FileEx.Delete(filePath);
                 }
 
-                string directory = Path.GetDirectoryName(filePath);
+                string directory = Path.Combine(Path.GetDirectoryName(filePath), "NtfsSecurityTest");
                 if (Directory.Exists(directory) == false)
                 {
                     Directory.CreateDirectory(directory);
