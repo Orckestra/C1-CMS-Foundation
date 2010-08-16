@@ -20,8 +20,8 @@ ui|balloon {
 	display: block;
 	position: absolute;
 	overflow: visible;
-	-moz-transition-property: top, left;
-	-moz-transition-duration: 0.25s;
+	-vendor-transition-property: top, left;
+	-vendor-transition-duration: 0.25s;
 }
 ui|balloon table.matrix {
 	width: 100%;
@@ -29,9 +29,7 @@ ui|balloon table.matrix {
 }
 ui|balloontext {
 	display: block;
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	user-select: none;
+	-vendor-user-select: none;
 	position: relative;
 	z-index: 2;
 	padding-bottom: 4px;

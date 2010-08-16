@@ -1,9 +1,9 @@
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
 ui|dialog {
-	#moz -moz-box-shadow: 4px 4px 16px rgba(0,0,0,0.75);
+	-vendor-box-shadow: 4px 4px 16px rgba(0,0,0,0.75);
 	#region osx
-		-moz-box-shadow: 4px 4px 32px rgba(0,0,0,0.75);
+		-vendor-box-shadow: 4px 4px 32px rgba(0,0,0,0.75);
 	#endregion
 }
 
@@ -20,10 +20,10 @@ ui|dialog.active ui|dialogbody {
 	ui|dialog {
 		background-color: transparent;
 		#moz background-color: rgba(0,0,0,0.75);
-		#moz -moz-border-radius: 4px;
+		-vendor-border-radius: 4px;
 		/*
-		-moz-transition-property: opacity;
-		-moz-transition-duration: 0.15s;
+		-vendor-transition-property: opacity;
+		-vendor-transition-duration: 0.15s;
 		*/
 	}
 	ui|dialogbody,
@@ -105,10 +105,10 @@ ui|dialog.active ui|dialogbody {
 	
 	ui|dialog {
 		background-color: transparent;
-		-moz-border-radius: 4px;
+		-vendor-border-radius: 4px;
 		/*
-		-moz-border-radius-bottomleft: 0;
-		-moz-border-radius-bottomright: 0;
+		-vendor-border-radius-bottomleft: 0;
+		-vendor-border-radius-bottomright: 0;
 		*/
 	}
 	ui|dialogbody,

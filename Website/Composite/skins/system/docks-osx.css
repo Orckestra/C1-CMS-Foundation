@@ -138,8 +138,8 @@ ui|dock.start ui|docktabs ui|controlgroup {
 }
 ui|dock.start ui|docktabs {
 	height: 2px;
-	-moz-border-radius-topleft: 3x;
-	-moz-border-radius-topright: 3px;
+	-vendor-border-radius-topleft: 3x;
+	-vendor-border-radius-topright: 3px;
 }
 ui|dock.start ui|docktabs div.tabliner {
 	visibility: hidden; /* ie doesn't respect a height of zero */

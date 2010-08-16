@@ -11,10 +11,6 @@
 		<link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon16.ico"/>
 		<control:scriptloader type="top" runat="server"/>
 		
-		<script type="text/javascript">
-			DocumentManager.hasNativeContextMenu = true;
-		</script>
-		
 		<ui:keyset>
 			
 			<!-- general keycombos -->

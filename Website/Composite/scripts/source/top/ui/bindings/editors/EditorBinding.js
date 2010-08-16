@@ -6,8 +6,6 @@ EditorBinding.superclass = WindowBinding.prototype;
  * Subclasses should define these.
  */
 EditorBinding.ACTION_ATTACHED = null;
-//EditorBinding.URL_DEFAULT = null;
-//EditorBinding.ACTION_INITIALIZED = null;
 
 /**
  * Clipboard security configuration dialog URL.
@@ -125,14 +123,6 @@ function EditorBinding () {
 	 * @type {EditorPopupBinding}
 	 */
 	this._popupBinding = null;
-	
-	/**
-	 * This is the (optional) textarea in page markup  
-	 * that get's submitted to server on postback.
-	 * @type {HTMLTextAreaElement}
-	 *
-	this._textarea = null;
-	*/
 	
 	/**
 	 * This is the string value of postbackable textarea.
@@ -497,17 +487,6 @@ EditorBinding.prototype.handleEvent = function ( e ) {
 				}
 			}
 			break;
-		
-		/*
-		 * Update from builder textarea.
-		 *
-		case DOMEvents.AFTERUPDATE :
-			if ( target.id == this.getProperty ( "builder" )) {
-				this.setValue ( target.value );
-				this._textarea = target;
-			}
-			break;
-		*/
 	}
 }
 
@@ -587,21 +566,20 @@ EditorBinding.prototype._activateEditor = function ( isActivate ) {
 					this.deleteBookmark (); // no need to keep old bookmarks around
 				}
 				broadcaster.enable ();
+				
 				handler.enableNativeKeys ( true );
+				
 				
 				if ( Client.isExplorer ) { // Fixes a glitch where Explorer needed multiple activations.
 					this._sanitizeExplorer ();
 				}
 				
-				// EXPERIMENTAL!
 				this.focus ();
 				
 			} else {
 				
 				broadcaster.disable ();
 				handler.disableNativeKeys ();
-				
-				// EXPERIMANTAL!
 				this.blur ();
 			}
 		} else {
@@ -629,7 +607,7 @@ EditorBinding.prototype._sanitizeExplorer = function () {
 EditorBinding.prototype.hasSelection = function () {
 	
 	var result = false;
-	if ( Client.isMozilla == true ) {
+	if ( Client.isMozilla ) {
 	 	var selection = this.getEditorWindow ().getSelection ();
 		if ( selection != null ) {
 			 result = selection.toString ().length > 0;

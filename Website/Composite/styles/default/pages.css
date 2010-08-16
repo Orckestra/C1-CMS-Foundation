@@ -28,17 +28,17 @@ ui|pagehead {
 	width: 408px; /* matching fields! */
 	padding-left: 2px;
 	padding-bottom: 1em;
-	#moz -moz-user-select: none;
+	-vendor-user-select: none;
 }
 ui|pageheading {
 	display: block;
 	font-size: 120%;
 	font-weight: bold;
 	padding: 0 0 0.5em 0;
-	#moz -moz-user-select: none;	
+	-vendor-user-select: none;	
 }
 ui|pagedescription {
 	display: block;
 	padding: 0 0 12px 0;
-	#moz -moz-user-select: none;
+	-vendor-user-select: none;
 }

@@ -40,7 +40,7 @@ ui|treenode ui|labelbox {
 }
 ui|treecontent {
 	padding-left: 40px;
-	-moz-user-select: none; /* hope we don't need an input field */
+	-vendor-user-select: none; /* hope we don't need an input field */
 }
 ui|treenode ui|labelbox.focused ui|labeltext {
 	background-color: $(color:threedface) !important; /* too light for projection */

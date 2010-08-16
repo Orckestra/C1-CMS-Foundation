@@ -81,7 +81,7 @@ ui|toolbarbutton.hover table.matrix td.sw {
 #region osx
 	ui|toolbarbutton.active {
 		background-color: rgba(0,0,0,0.05);
-		-moz-border-radius: 4px;
+		-vendor-border-radius: 4px;
 	}
 #endregion
 

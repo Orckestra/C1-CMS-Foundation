@@ -100,7 +100,7 @@ ui|fielddesc {
 	width: 150px;
 	padding: 8px 0 0 5px;
 	white-space: normal;
-	-moz-user-select: none;
+	-vendor-user-select: none;
 }
 ui|fielddata {
 	display: block;
@@ -183,8 +183,8 @@ ui|textbox.isdisabled textarea,
 ui|editortextbox.isdisabled textarea {
 	cursor: default;
 	background-color: $(color:threedface);
-	-moz-user-select: none;
-	-moz-user-focus: none;
+	-vendor-user-select: none;
+	-vendor-user-focus: none;
 	#alphabackdrop: url("${root}/images/ui/lighten.png");
 }
 ui|datainputselector.isdisabled ui|box,
@@ -278,7 +278,7 @@ ui|selector img.selectorindicatorimage {
 	z-index: 1;
 	right: 7px;
 	top: 4px;
-	#moz -moz-user-select: none;
+	-vendor-user-select: none;
 }
 ui|fields ui|selector img.selectorindicatorimage {
 	top: 5px;
@@ -317,7 +317,7 @@ ui|multiselector {
 }
 ui|multiselector ui|box {
 	width: 216px;
-	-moz-user-select: none;
+	-vendor-user-select: none;
 	padding: 5px 0 5px 0;
 	overflow: auto;
 	#ie height: 88px;
@@ -400,7 +400,7 @@ ui|editortextbox textarea {
 	position: absolute;
 	#ie height: 106px;
 	#moz height: 102px;
-	#moz -moz-tab-size: 4;
+	-vendor-tab-size: 4;
 }
 
 /* FULLBLOWN EDITORTEXTBOX */
@@ -518,7 +518,7 @@ ui|datalabeltext {
 	width: 195px;
 	padding-left: 5px;
 	padding-top: 2px;
-	-moz-user-select: none; /* See notes in DocumentManager.js */
+	-vendor-user-select: none; /* See notes in DocumentManager.js */
 }
 ui|field.fieldhelp ui|datalabeltext {
 	width: 163px;
@@ -581,7 +581,7 @@ img.dialogindicatorimage {
 	z-index: 1;
 	right: 7px;
 	top: 5px;
-	#moz -moz-user-select: none;
+	-vendor-user-select: none;
 }
 ui|fields ui|datadialog ui|clickbutton table.matrix td.c,
 ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c,
@@ -668,7 +668,7 @@ div.calendar table {
 div.calendar table td {
 	padding-top: 3px;
 	padding-bottom: 3px;
-	-moz-user-select: none;
+	-vendor-user-select: none;
 }
 div.calendar td {
 	text-align: center;

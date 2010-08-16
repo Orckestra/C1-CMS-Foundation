@@ -13,7 +13,7 @@ ui|labelbox {
 	display: block;
 	float: left;
 	white-space: nowrap;
-	-moz-user-select: none; /* See notes in DocumentManager.js */
+	-vendor-user-select: none; /* See notes in DocumentManager.js */
 }
 ui|labelbox.toolbartext {
 	margin-top: 4px;	

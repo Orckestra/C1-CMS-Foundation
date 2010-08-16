@@ -3,9 +3,7 @@
 
 * {
 	cursor: default;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	box-sizing: border-box;
+	-vendor-box-sizing: border-box;
 }
 html,
 body {
@@ -30,10 +28,8 @@ p {
 textarea,					
 input {
 	cursor: text;
-	-moz-user-select: text;
-	-webkit-user-select: text;
-	-moz-resize: none;
-	user-select: text;
+	-vendor-user-select: text;
+	-vendor-resize: none;
 }
 html,
 input,

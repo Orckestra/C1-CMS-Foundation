@@ -138,8 +138,8 @@ ui|dock.start ui|docktabs ui|controlgroup {
 }
 ui|dock.start ui|docktabs {
 	height: 2px;
-	-moz-border-radius-topleft: 3x;
-	-moz-border-radius-topright: 3px;
+	-vendor-border-radius-topleft: 3x;
+	-vendor-border-radius-topright: 3px;
 }
 ui|dock.start ui|docktabs div.tabliner {
 	visibility: hidden; /* ie doesn't respect a height of zero */
@@ -239,8 +239,8 @@ ui|dock.active div.tabliner {
 }
 /*
 ui|dock div.tabliner  {
-	-moz-transition-property: background-color;
-	-moz-transition-duration: 0.25s;	
+	-vendor-transition-property: background-color;
+	-vendor-transition-duration: 0.25s;	
 }
 */
 ui|dock.active ui|docktabs {
@@ -248,8 +248,8 @@ ui|dock.active ui|docktabs {
 }
 /*
 ui|dock ui|docktabs {
-	-moz-transition-property: border-color;
-	-moz-transition-duration: 0.25s;
+	-vendor-transition-property: border-color;
+	-vendor-transition-duration: 0.25s;
 }
 */
 ui|dock.active ui|docktab.selected ui|labeltext {
@@ -260,8 +260,8 @@ ui|dock.active ui|dockpanels {
 }
 /*
 ui|dock ui|dockpanels {
-	-moz-transition-property: border-color;
-	-moz-transition-duration: 0.25s;
+	-vendor-transition-property: border-color;
+	-vendor-transition-duration: 0.25s;
 }
 */
 ui|dock.active ui|dockpanel {
@@ -269,8 +269,8 @@ ui|dock.active ui|dockpanel {
 }
 /*
 ui|dock ui|dockpanel {
-	-moz-transition-property: border-color;
-	-moz-transition-duration: 0.25s;
+	-vendor-transition-property: border-color;
+	-vendor-transition-duration: 0.25s;
 }
 */
 ui|dock.active ui|docktab.selected table.matrix td.c {

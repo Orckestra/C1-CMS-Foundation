@@ -23,6 +23,8 @@ namespace Composite.WebClient.Presentation
 		{
             public bool
                 isMozilla = false,
+                isWebKit = false,
+                isOpera = false,
                 isIE = false,
                 isIE6 = false,
                 isIE7 = false,
@@ -192,6 +194,29 @@ namespace Composite.WebClient.Presentation
 			{
 			    return null;
 			}
+
+            if (trim.StartsWith("-vendor-") == true)
+            {
+                String was = line;
+                if (user.isMozilla)
+                {
+                    line = line.Replace("-vendor-", "-moz-");
+                }
+                else if (user.isWebKit)
+                {
+                    line = line.Replace("-vendor-", "-webkit-");
+                }
+                else if (user.isOpera)
+                {
+                    line = line.Replace("-vendor-", "-o-");
+                }
+                else
+                {
+                    line = line.Replace("-vendor-", "-ms-");
+                }
+                line += "\n" + was.Replace("-vendor-", "");
+            }
+            
 
 		    if (trim.StartsWith("#region") == true )
             {

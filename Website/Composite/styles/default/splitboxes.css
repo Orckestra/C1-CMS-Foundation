@@ -69,7 +69,7 @@ ui|splitter.horizontal ui|splitterbody {
 }
 ui|splitter.horizontal ui|splitterbody.hover,
 ui|splitter.horizontal ui|splitterbody.active {
-	-moz-box-shadow: 2px 0 3px rgba(0,0,0,0.35);
+	-vendor-box-shadow: 2px 0 3px rgba(0,0,0,0.35);
 }
 ui|splitter.vertical ui|splitterbody {
 	height: 8px;
@@ -81,5 +81,5 @@ ui|splitter.vertical ui|splitterbody {
 }
 ui|splitter.vertical ui|splitterbody.hover,
 ui|splitter.vertical ui|splitterbody.active {
-	-moz-box-shadow: 0 2px 3px rgba(0,0,0,0.35);
+	-vendor-box-shadow: 0 2px 3px rgba(0,0,0,0.35);
 }

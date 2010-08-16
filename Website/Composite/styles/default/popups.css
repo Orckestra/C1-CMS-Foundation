@@ -29,26 +29,25 @@ ui|menupopup {
 	#moz min-width: 160px;
 	#ie width: 160px;
 	visibility: hidden;
-	-moz-transition-property: opacity;
-	-moz-transition-duration: 0.15s;
-	-moz-box-shadow: 2px 2px 4px rgba(0,0,0,0.75);
+	-vendor-transition-property: opacity;
+	-vendor-transition-duration: 0.15s;
+	-vendor-box-shadow: 2px 2px 4px rgba(0,0,0,0.75);
 	display: none;
 	border: 1px solid $(color:threedshadow);
-	-moz-user-select: none;
+	-vendor-user-select: none;
 }
 ui|popupbody { /* NOT USED ON COMMON POPUPS! */
 	display: block;
 	padding: 10px 12px 10px 12px;
 	background-color: $(color:menu);
 	color: $(color:menutext);
-	-moz-user-select: none;
+	-vendor-user-select: none;
 }
 
 /* OVERFLOW ................................................ */
 
 ui|popup.overflow {
-	#ie overflow-y: auto;
-	#moz overflow: -moz-scrollbars-vertical;
+	overflow-y: auto;
 	height: 211px; /* move this to script when separators are supported */
 	border-right: none;
 }
