@@ -1,0 +1,6 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|window#treewindow {
+	border: 1px solid $(color:threedshadow);
+}

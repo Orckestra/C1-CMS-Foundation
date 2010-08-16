@@ -1,8 +1,11 @@
 /**
- * $Id: editor_plugin_src.js 787 2008-04-10 11:40:57Z spocke $
+ * editor_plugin_src.js
  *
- * @author Moxiecode
- * @copyright Copyright © 2004-2008, Moxiecode Systems AB, All rights reserved.
+ * Copyright 2009, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://tinymce.moxiecode.com/license
+ * Contributing: http://tinymce.moxiecode.com/contributing
  */
 
 (function() {
@@ -68,7 +71,7 @@
 					}
 
 					if (el) {
-						if (ed = tinymce.EditorManager.get(el.id || el.name))
+						if (ed = tinymce.get(el.id || el.name))
 							ed.focus();
 						else
 							window.setTimeout(function() {window.focus();el.focus();}, 10);
@@ -87,7 +90,7 @@
 				ed.onKeyDown.add(tabHandler);
 
 			ed.onInit.add(function() {
-				each(DOM.select('a:first,a:last', tinyMCE.activeEditor.getContainer()), function(n) {
+				each(DOM.select('a:first,a:last', ed.getContainer()), function(n) {
 					Event.add(n, 'focus', function() {ed.focus();});
 				});
 			});
