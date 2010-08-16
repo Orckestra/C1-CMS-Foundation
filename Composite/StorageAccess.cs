@@ -12,22 +12,12 @@ namespace Composite
     /// To obtain a instance of this class, see <see cref="Storage.Open"/>
     /// </summary>
     public abstract class StorageAccess : IDisposable
-    {
-        /// <summary>        
-        /// </summary>
-        /// <exclude />
-        protected StorageAccess()
-            : this(PublicationScope.Public, null)
-        {
-        }
-
-
-
+    {      
         /// <summary>
+        /// Initializes the instances with scope and locale.
         /// </summary>
-        /// <param name="scope"></param>
-        /// <param name="locale"></param>
-        /// <exclude />
+        /// <param name="scope"><see cref="PublicationScope"/> to use in methods called on this instance</param>
+        /// <param name="locale">Locale to use in methods called on this instance</param>        
         protected StorageAccess(PublicationScope scope, CultureInfo locale)
         {
             this.PublicationScope = scope;

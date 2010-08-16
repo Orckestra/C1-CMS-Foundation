@@ -150,6 +150,9 @@ namespace Composite
     /// </summary>
     public class StorageEvents
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StorageEvents"/> class
+        /// </summary>
         protected StorageEvents()
         {            
         }

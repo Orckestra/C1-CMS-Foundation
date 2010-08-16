@@ -16,43 +16,31 @@ namespace Composite.Implementation
 
 
         /// <summary>
-        /// 
+        /// Use this method to replace the current implementation for the given <typeparamref name="T"/>.
+        /// This could be used for mocking/stubbing.
         /// </summary>
         /// <typeparam name="T">A <see cref="ImplementationBase"/> type. Could be: LogBase, NavigationBase, PageManagerBase, StorageBase</typeparam>
-        /// <param name="implementation"></param>
-        public static void SetImplementation<T>(T implementation) where T : ImplementationBase
-        {
-            lock(_implementations)
-            {
-                _implementations[typeof (T)] = implementation;
-            }
-        }
-
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T">A <see cref="ImplementationBase"/> type. Could be: LogBase, NavigationBase, PageManagerBase, StorageBase</typeparam>
-        /// <returns></returns>
-        public static T GetImplementation<T>() where T : ImplementationBase
-        {
-            return _implementations[typeof (T)] as T;
-        }
-
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T">A <see cref="ImplementationBase"/> type. Could be: LogBase, NavigationBase, PageManagerBase, StorageBase</typeparam>
-        /// <param name="implementation"></param>
-        public static void ResetImplementation<T>(T implementation) where T : ImplementationBase
+        /// <param name="implementation">The new implementation for <typeparamref name="T"/></param>
+        public static void SetImplementation<T>(T implementation)
+            where T : ImplementationBase
         {
             lock (_implementations)
             {
-                _implementations[typeof(T)] = null;
+                _implementations[typeof(T)] = implementation;
             }
+        }
+        
+
+
+        /// <summary>
+        /// This method returns the current implementation for the given <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">A <see cref="ImplementationBase"/> type. Could be: LogBase, NavigationBase, PageManagerBase, StorageBase</typeparam>
+        /// <returns>Returns the current implementation for for <typeparamref name="T"/></returns>
+        public static T GetImplementation<T>()
+            where T : ImplementationBase
+        {
+            return _implementations[typeof(T)] as T;
         }
     }
 }
