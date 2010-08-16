@@ -27,7 +27,7 @@ namespace Composite.Data
     public static class PageMetaDataFacade
     {
         internal static readonly string MetaDataType_IdFieldName = "Id";
-        internal static readonly string MetaDataType_PageReferenceFieldName = "IPageIdForeignKey";
+        internal static readonly string MetaDataType_PageReferenceFieldName = "PageId";
         internal static readonly string MetaDataType_MetaDataDefinitionFieldName = "ICompositionDescriptionNameForeignKey";
 
         /// <summary>

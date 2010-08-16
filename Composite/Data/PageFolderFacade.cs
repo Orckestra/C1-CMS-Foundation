@@ -22,7 +22,7 @@ namespace Composite.Data
     public static class PageFolderFacade
     {
         private static readonly string PageFolderType_IdFieldName = "Id";
-        private static readonly string PageFolderType_PageReferenceFieldName = "IPageIdForeignKey";
+        private static readonly string PageFolderType_PageReferenceFieldName = "PageId";
 
 
         /// <summary>

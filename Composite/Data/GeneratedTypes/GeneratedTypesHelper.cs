@@ -47,7 +47,7 @@ namespace Composite.Data.GeneratedTypes
         private bool _typeCreated = false;
 
         private static readonly string IdFieldName = "Id";
-        private static readonly string PageReferenceFieldName = "IPageIdForeignKey";
+        private static readonly string PageReferenceFieldName = "PageId";
         private static readonly string CompositionDescriptionFieldName = "ICompositionDescriptionNameForeignKey";
 
 
