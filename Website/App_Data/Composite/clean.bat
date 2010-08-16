@@ -53,3 +53,13 @@ del ..\..\Composite\InstalledPackages\localization\Composite.TemplateSites.Base0
 del ..\..\Composite\InstalledPackages\localization\Composite.TemplateSites.Base01.TeaserSpot.en-us.xml
 del TreeDefinitions\Composite.TemplateSites.Base01.News.NewsItem.xml 
 del TreeDefinitions\Composite.TemplateSites.Base01.TeaserSpot.xml
+
+
+
+:: Composite2.0.TemplateSites.Base01.zip
+
+del ..\..\Frontend\Styles\Print.css /F
+del ..\..\Frontend\Styles\Screen.css /F
+del ..\..\Frontend\Styles\VisualEditor\VisualEditor.Config.css /F
+del ..\..\Frontend\Styles\VisualEditor\VisualEditor.Config.xml /F
+del ..\..\Frontend\Styles\VisualEditor\VisualEditor.Default.css /F

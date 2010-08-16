@@ -58,7 +58,6 @@ namespace Composite.WebClient.Setup
         public XmlDocument GetSetupDescription(bool dummy)
         {
             XElement setupDescription = SetupServiceFacade.GetSetupDescription();
-
             
             // Remove urls 
             foreach (XElement element in setupDescription.Descendants(SetupServiceFacade.PackageElementName))

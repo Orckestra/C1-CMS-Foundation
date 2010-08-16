@@ -86,7 +86,12 @@ namespace Composite.WebClient.Setup
             {
                 RegisterSetup(setupDescriptionXml, ex.ToString());
 
-                if (RuntimeInformation.IsDebugBuild == true) throw;
+                if (RuntimeInformation.IsDebugBuild == true)
+                {
+                    ApplicationOnlineHandlerFacade.TurnApplicationOnline();
+                    throw;
+                }
+
             }
 
             ApplicationOnlineHandlerFacade.TurnApplicationOnline();
