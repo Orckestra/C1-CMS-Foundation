@@ -9,9 +9,13 @@ namespace Composite
 {
     /// <summary>
     /// This class provides read/write access to the C1 storage.
+    /// To obtain a instance of this class, see <see cref="Storage.Open"/>
     /// </summary>
     public abstract class StorageAccess : IDisposable
     {
+        /// <summary>        
+        /// </summary>
+        /// <exclude />
         protected StorageAccess()
             : this(PublicationScope.Public, null)
         {
@@ -19,6 +23,11 @@ namespace Composite
 
 
 
+        /// <summary>
+        /// </summary>
+        /// <param name="scope"></param>
+        /// <param name="locale"></param>
+        /// <exclude />
         protected StorageAccess(PublicationScope scope, CultureInfo locale)
         {
             this.PublicationScope = scope;

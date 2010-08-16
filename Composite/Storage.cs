@@ -14,6 +14,7 @@ namespace Composite
     /// Correct setting of the PublicationScope is typically handled by Composite C1 and should in general not be changed by developers. 
     /// Setting an explicit PublicationScope is typically only needed on new service end-points or 
     /// if specific features relating to data updating / publication is desired.
+    /// See <see cref="Storage.Open"/>
     /// </summary>
     public enum PublicationScope
     {
@@ -151,6 +152,7 @@ namespace Composite
         /// Create a new <typeparamref name="T"/> that can be added using <see cref="Composite.StorageAccess.Add"/>.
         /// </summary>
         /// <example>
+        /// Here is an example of how to create a new IData instance and add it to the C1 storage.
         /// <code>
         /// using (StorageAccess access = Storage.Open())
         /// {
@@ -173,6 +175,7 @@ namespace Composite
         /// All locales added to C1.
         /// </summary>
         /// <example>
+        /// Here is an example of how to enumerate all locales added to C1.
         /// <code>
         /// foreach (CultureInfo locale in Storage.Locales)
         /// {
@@ -195,6 +198,7 @@ namespace Composite
         /// storage related events in C1.
         /// </summary>
         /// <example>
+        /// Here is a simple example of how to subscribe to a storage event in C1.
         /// <code>
         /// void MyMethod()
         /// {
