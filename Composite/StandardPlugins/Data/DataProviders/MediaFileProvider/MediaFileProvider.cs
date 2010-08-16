@@ -17,10 +17,13 @@ using Microsoft.Practices.ObjectBuilder;
 
 namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
     [ConfigurationElementType(typeof(MediaFileDataProviderData))]
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public sealed class MediaFileProvider : IWritableDataProvider
-	{
+    {
         private DataProviderContext _context;
         private IMediaFileStore _store;
         private string _storeId;
@@ -36,13 +39,13 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
         private IQueryable<IMediaFileFolder> _mediaFoldersCachedQuery = null;
 
         internal MediaFileProvider(string rootDirectory, string storeId, string storeDescription, string storeTitle)
-        { 
+        {
             _workingDirectory = PathUtil.Resolve(rootDirectory);
             if (!Directory.Exists(_workingDirectory))
             {
                 Directory.CreateDirectory(_workingDirectory);
             }
- 
+
             _storeId = storeId;
             _storeTitle = storeTitle;
             _storeDescription = storeDescription;
@@ -58,7 +61,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
 
         private void ClearQueryCache(StorageEventArgs dataeventargs)
         {
-            lock(_syncRoot)
+            lock (_syncRoot)
             {
                 _mediaFilesCachedQuery = null;
                 _mediaFoldersCachedQuery = null;
@@ -71,8 +74,8 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
             set { _context = value; }
         }
 
-        
-        
+
+
         public void Update(IEnumerable<IData> datas)
         {
             foreach (IData data in datas)
@@ -83,10 +86,10 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
                 }
             }
 
-            foreach(IData data in datas)
+            foreach (IData data in datas)
             {
                 MediaDataId dataId = data.DataSourceId.DataId as MediaDataId;
-                if(dataId == null)
+                if (dataId == null)
                 {
                     throw new ArgumentException("Invalid IData");
                 }
@@ -98,7 +101,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
                     if ((updatedFile.FolderPath != currentFileData.FolderPath) || (updatedFile.FileName != currentFileData.FileName))
                     {
                         ValidateMediaFileData(updatedFile);
-                    } 
+                    }
                     CopyFileData(updatedFile, currentFileData);
                     currentFileData.LastWriteTime = DateTime.Now;
                     using (Stream stream = updatedFile.GetReadStream())
@@ -108,16 +111,16 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
                     TransactionFileSystemFileStreamManager.WriteFileToDisk(updatedFile);
                     DataFacade.Update(currentFileData);
                 }
-                else 
+                else
                 {
                     IMediaFileFolder updatedFolder = (IMediaFileFolder)data;
                     IMediaFolderData currentFolderData = DataFacade.GetData<IMediaFolderData>(x => x.Id == dataId.Id).First();
-                    
-                    if(updatedFolder.Path != currentFolderData.Path)
+
+                    if (updatedFolder.Path != currentFolderData.Path)
                     {
                         ValidateFolderData(updatedFolder);
                     }
-                    
+
                     string oldPath = currentFolderData.Path;
                     string oldPathWithSlash = oldPath + "/";
                     List<IMediaFolderData> foldersToUpdatePath =
@@ -138,11 +141,11 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
 
                     List<IMediaFileData> filesToUpdatePath =
                         (from item in DataFacade.GetData<IMediaFileData>()
-                         where item.FolderPath == oldPath 
+                         where item.FolderPath == oldPath
                             || item.FolderPath.StartsWith(oldPathWithSlash)
                          select item).ToList();
 
-                    if(filesToUpdatePath.Count > 0)
+                    if (filesToUpdatePath.Count > 0)
                     {
                         foreach (IMediaFileData mediaFileData in filesToUpdatePath)
                         {
@@ -159,7 +162,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
         }
 
 
-      
+
         public List<T> AddNew<T>(IEnumerable<T> datas) where T : class, IData
         {
             List<T> result = new List<T>();
@@ -175,7 +178,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
 
             foreach (IData data in datas)
             {
-                
+
                 if (typeof(T) == typeof(IMediaFile))
                 {
                     IMediaFile mediaFile = (IMediaFile)data;
@@ -207,7 +210,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
                 }
                 else if (typeof(T) == typeof(IMediaFileFolder))
                 {
-                    IMediaFileFolder mediaFolder = (IMediaFileFolder) data;
+                    IMediaFileFolder mediaFolder = (IMediaFileFolder)data;
                     ValidateFolderData(mediaFolder);
                     IMediaFolderData folderData = DataFacade.BuildNew<IMediaFolderData>();
                     folderData.Id = Guid.NewGuid();
@@ -226,7 +229,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
         {
             if (dataSourceIds.Any(f => f == null)) throw new ArgumentException("DataSourceIds must be non-null");
 
-            foreach(DataSourceId dataSourceId in dataSourceIds)
+            foreach (DataSourceId dataSourceId in dataSourceIds)
             {
                 MediaDataId dataId = dataSourceId.DataId as MediaDataId;
                 if (dataId.MediaType == _folderType)
@@ -258,7 +261,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
 
         public IEnumerable<Type> GetSupportedInterfaces()
         {
-            return new List<Type>() {typeof(IMediaFile), typeof(IMediaFileFolder), typeof(IMediaFileStore)};
+            return new List<Type>() { typeof(IMediaFile), typeof(IMediaFileFolder), typeof(IMediaFileStore) };
         }
 
 
@@ -270,9 +273,9 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
             if (typeof(T) == typeof(IMediaFile))
             {
                 IQueryable<IMediaFile> mediaFilesQuery = _mediaFilesCachedQuery;
-                if(mediaFilesQuery == null)
+                if (mediaFilesQuery == null)
                 {
-                    lock(_syncRoot)
+                    lock (_syncRoot)
                     {
                         if (_mediaFilesCachedQuery == null)
                         {
@@ -295,15 +298,15 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
                 return mediaFilesQuery as IQueryable<T>;
             }
 
-            
+
             if (typeof(T) == typeof(IMediaFileFolder))
             {
                 IQueryable<IMediaFileFolder> mediaFoldersQuery = _mediaFoldersCachedQuery;
-                if(mediaFoldersQuery == null)
+                if (mediaFoldersQuery == null)
                 {
-                    lock(_syncRoot)
+                    lock (_syncRoot)
                     {
-                        if(_mediaFoldersCachedQuery == null)
+                        if (_mediaFoldersCachedQuery == null)
                         {
                             var mediaFolderItems = new List<IMediaFileFolder>();
 
@@ -312,7 +315,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
                             var publicDataScope = DataScopeIdentifier.Public;
                             foreach (IMediaFolderData folder in folders)
                             {
-                                var dataId = new MediaDataId {MediaType = _folderType, Id = folder.Id};
+                                var dataId = new MediaDataId { MediaType = _folderType, Id = folder.Id };
                                 var dataSourceId = _context.CreateDataSourceId(dataId, typeof(IMediaFileFolder), publicDataScope, CultureInfo.InvariantCulture);
                                 mediaFolderItems.Add(new MediaFileFolder(folder, Store.Id, dataSourceId));
                             }
@@ -326,7 +329,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
             }
 
             // an IMediaFileStore query
-            return new[] {Store as T}.AsQueryable();
+            return new[] { Store as T }.AsQueryable();
         }
 
 
@@ -339,7 +342,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
             }
             CheckInterface(typeof(T));
             MediaDataId mediaDataId = dataId as MediaDataId;
-            if(mediaDataId == null)
+            if (mediaDataId == null)
             {
                 return null;
             }
@@ -359,7 +362,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
                 return new MediaFileFolder(folder, Store.Id,
                         _context.CreateDataSourceId(new MediaDataId() { MediaType = _folderType, Id = folder.Id }, typeof(IMediaFileFolder))) as T;
             }
-            else if(mediaDataId.MediaType == _fileType)
+            else if (mediaDataId.MediaType == _fileType)
             {
                 if (typeof(T) != typeof(IMediaFile))
                 {
@@ -370,7 +373,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
                 {
                     return null;
                 }
-                
+
                 string internalPath = Path.Combine(_workingDirectory, file.Id.ToString());
                 return new MediaFile(file, Store.Id,
                        _context.CreateDataSourceId(new MediaDataId() { MediaType = _fileType, Id = file.Id }, typeof(IMediaFile)), internalPath) as T;
@@ -390,7 +393,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
             {
                 if (_store == null)
                 {
-                    _store = new MediaFileStore(_storeId, _storeTitle, _storeDescription, _context.CreateDataSourceId(new MediaDataId() { MediaType = _storeType}, typeof(IMediaFileStore)));
+                    _store = new MediaFileStore(_storeId, _storeTitle, _storeDescription, _context.CreateDataSourceId(new MediaDataId() { MediaType = _storeType }, typeof(IMediaFileStore)));
                 }
                 return _store;
             }
@@ -472,9 +475,9 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
             }
             return true;
         }
-        
-        
-        
+
+
+
         private void CopyFileData(IMediaFile from, IMediaFileData to)
         {
             to.CultureInfo = from.Culture;
@@ -533,6 +536,9 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
 
 
 
+        /// <summary>    
+        /// </summary>
+        /// <exclude />
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public sealed class MediaDataId : IDataId
         {
@@ -619,7 +625,7 @@ namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
 
 
         private const string _dataProviderProperty = "dataProvider";
-        [ConfigurationProperty(_dataProviderProperty, IsRequired = false, DefaultValue="")]
+        [ConfigurationProperty(_dataProviderProperty, IsRequired = false, DefaultValue = "")]
         public string DataProvider
         {
             get { return (string)base[_dataProviderProperty]; }
