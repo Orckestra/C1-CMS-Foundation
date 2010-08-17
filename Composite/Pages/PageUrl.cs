@@ -14,14 +14,29 @@ using Composite.Extensions;
 
 namespace Composite.Pages
 {
+    /// <summary>
+    /// Page url type
+    /// </summary>
     public enum PageUrlType
     {
         Undefined = 0,
+        /// <summary>
+        /// A main url by with a C1 page is accessed. F.e. "/Home/About.aspx"
+        /// </summary>
         Public = 1,
+        /// <summary>
+        /// Internal reference to a page. F.e. "/Renderers/Page.ashx?id=7446ceda-df90-49f0-a183-4e02ed6f6eec"
+        /// </summary>
         Internal = 2,
+        /// <summary>
+        /// Friendly url. A short url, by accessing which C1 will make a redirect to related "public" url
+        /// </summary>
         Friendly = 3
     }
 
+    /// <summary>
+    /// Represents a page url
+    /// </summary>
     public sealed class PageUrl
     {
         public PageUrl(PublicationScope publicationScope, CultureInfo locale, Guid pageId) :
@@ -40,11 +55,34 @@ namespace Composite.Pages
             UrlType = urlType;
         }
 
+        /// <summary>
+        /// Gets the type of the URL.
+        /// </summary>
+        /// <value>The type of the URL.</value>
         public PageUrlType UrlType { get; private set; }
+
+        /// <summary>
+        /// Gets the publication scope.
+        /// </summary>
+        /// <value>The publication scope.</value>
         public PublicationScope PublicationScope { get; private set; }
+
+        /// <summary>
+        /// Gets the locale.
+        /// </summary>
+        /// <value>The locale.</value>
         public CultureInfo Locale { get; private set; }
+
+        /// <summary>
+        /// Gets the page id.
+        /// </summary>
+        /// <value>The page id.</value>
         public Guid PageId { get; private set; }
 
+        /// <summary>
+        /// Gets the page.
+        /// </summary>
+        /// <returns></returns>
         public IPage GetPage()
         {
             using(Storage.Open(PublicationScope, Locale))
@@ -53,6 +91,10 @@ namespace Composite.Pages
             }
         }
 
+        /// <summary>
+        /// Builds a url.
+        /// </summary>
+        /// <returns></returns>
         public UrlBuilder Build()
         {
             Verify.That(UrlType != PageUrlType.Undefined, "Url type is undefined");
@@ -60,6 +102,11 @@ namespace Composite.Pages
             return Build(UrlType);
         }
 
+        /// <summary>
+        /// Builds a url of the the specified URL type.
+        /// </summary>
+        /// <param name="urlType">Type of the URL.</param>
+        /// <returns></returns>
         public UrlBuilder Build(PageUrlType urlType)
         {
             Verify.ArgumentCondition(urlType != PageUrlType.Undefined, "urlType", "Url type is undefined");
@@ -99,6 +146,11 @@ namespace Composite.Pages
             throw new NotImplementedException("Only 'Public' and 'Internal' url types are supported.");
         }
 
+        /// <summary>
+        /// Parses the specified URL.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns></returns>
         public static PageUrl Parse(string url)
         {
             NameValueCollection queryParameters;
@@ -106,6 +158,12 @@ namespace Composite.Pages
             return Parse(url, out queryParameters);
         }
 
+        /// <summary>
+        /// Parses the specified URL.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <param name="queryParameters">The query parameters that weren't used to define which page was accessed.</param>
+        /// <returns></returns>
         public static PageUrl Parse(string url, out NameValueCollection queryParameters)
         {
             Verify.ArgumentNotNull(url, "url");
