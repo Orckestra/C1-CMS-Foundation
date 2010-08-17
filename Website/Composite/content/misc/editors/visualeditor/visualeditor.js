@@ -19,6 +19,7 @@ var config = {
 	force_br_newlines: false,
 	visual : true,
 	object_resizing : false,
+	auto_reset_designmode : true,
 	
 	init_instance_callback 	: onInstanceInitialize
 };

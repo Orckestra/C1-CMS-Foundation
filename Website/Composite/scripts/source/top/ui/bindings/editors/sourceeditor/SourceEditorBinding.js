@@ -119,14 +119,22 @@ SourceEditorBinding.prototype.toString = function () {
 }
 
 /**
+ * @overloads {EditorBinding#onBindingRegister}
+ */
+SourceEditorBinding.prototype.onBindingRegister = function () {
+	
+	/* 
+	 * Force an early indexation of SourceEditorBinding strings  
+	 * to supress occasional glitches in string fetching.
+	 */
+	SourceEditorBinding.superclass.onBindingRegister.call ( this );
+	StringBundle.getString ( "Composite.Web.SourceEditor", "Preload.Key" );
+}
+
+/**
  * @overloads {Binding#onBindingAttach}
  */
 SourceEditorBinding.prototype.onBindingAttach = function () {
-	
-	/* 
-	 * Force an early indexation of SourceEditorBinding strings to supress occasional glitches
-	 */
-	StringBundle.getString ( "Composite.Web.SourceEditor", "Preload.Key" );
 	
 	/*
 	 * Only Mozilla loads CodePress.

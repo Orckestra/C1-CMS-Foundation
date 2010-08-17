@@ -302,12 +302,6 @@ EditorBinding.prototype.onBindingDispose = function () {
 		var dataManager = this.bindingWindow.DataManager;
 		dataManager.unRegisterDataBinding ( name ); // TODO: PAGEEDITOR???
 	}
-	/*
-	if ( this._textarea != null ) {
-	 	var dataManager = this.bindingWindow.DataManager;
-		dataManager.unRegisterDataBinding ( this._textarea.name ); // TODO: PAGEEDITOR???
-	}
-	*/
 }
 
 /**
@@ -315,6 +309,7 @@ EditorBinding.prototype.onBindingDispose = function () {
  */
 EditorBinding.prototype._initialize = function () {
 	
+	this.subscribe ( BroadcastMessages.APPLICATION_BLURRED );
 	this.subscribe ( BroadcastMessages.MOUSEEVENT_MOUSEUP );
 	
 	// if all else failed, at least we have a string
@@ -475,6 +470,9 @@ EditorBinding.prototype.handleEvent = function ( e ) {
 		 */
 		case DOMEvents.KEYPRESS :
 			this.checkForDirty ();
+			if ( !this._isActivated ) {
+				this._activateEditor ( true );
+			}
 			break;
 			
 		/*
@@ -511,11 +509,28 @@ EditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 	
 	var target = null;
 	
-	/*
-	 * When a mouseup was performed on something, we need to analyze 
-	 * whether or not this something should deactivate the editor. 
-	 */
 	switch ( broadcast ) {
+		
+		/*
+		 * Global blur event should deactivate the editor. In IE, 
+		 * global blur may occur spontaneously, causing the 
+		 * conteneditable document to become unstable.
+		 */
+		case BroadcastMessages.APPLICATION_BLURRED :
+			
+			if ( this._isActivated ) {
+				this._activateEditor ( false );
+			} else {
+				if ( Client.isExplorer ) {
+					this._sanitizeExplorer ( true );
+				}
+			}
+			break;
+			
+		/*
+		 * When a mouseup was performed on something, we need to analyze 
+		 * whether or not this something should deactivate the editor. 
+		 */
 		case BroadcastMessages.MOUSEEVENT_MOUSEUP :
 			if ( !this.isDialogMode ) {
 				try {
@@ -560,27 +575,25 @@ EditorBinding.prototype._activateEditor = function ( isActivate ) {
 		var broadcaster = this.getContentWindow ().bindingMap.broadcasterIsActive;
 		
 		if ( broadcaster != null ) {
-			if ( isActivate == true ) {
+			if ( isActivate ) {
 				 
 				if ( this.hasBookmark ()) {
 					this.deleteBookmark (); // no need to keep old bookmarks around
 				}
 				broadcaster.enable ();
 				
-				handler.enableNativeKeys ( true );
-				
-				
-				if ( Client.isExplorer ) { // Fixes a glitch where Explorer needed multiple activations.
+				if ( Client.isExplorer ) { // fixes a glitch where Explorer needs multiple activations.
 					this._sanitizeExplorer ();
 				}
 				
 				this.focus ();
+				handler.enableNativeKeys ( true );
 				
 			} else {
 				
 				broadcaster.disable ();
 				handler.disableNativeKeys ();
-				this.blur ();
+				this.blur (); 
 			}
 		} else {
 			throw "Required broadcaster not found";
@@ -590,12 +603,62 @@ EditorBinding.prototype._activateEditor = function ( isActivate ) {
 
 /**
  * Invoke this whenever Explorer appears not to fully 
- * realize its existence within the edited document.
+ * realize that we are in contentEditable mode.
+ * @param @optional {boolean} isCompletlyInsane
  */
-EditorBinding.prototype._sanitizeExplorer = function () {
+EditorBinding.prototype._sanitizeExplorer = function ( isCompletlyInsane ) {
 	
-	var range = this.getEditorDocument ().selection.createRange ();
-	range.select (); 
+	if ( Client.isExplorer ) {
+		
+		if ( isCompletlyInsane == true ) { 
+			
+			/*
+			 * In this case, IE thinks that all windows are blurred, 
+			 * causing SPACE and BACKSPACE keys to stop working. Note 
+			 * that a mousedown on a conteneditable doesn't change this. 
+			 * The fix for this has been moved to StandardEventHandler.
+			 * @see {StandardEventHandler#._handleMouseMove}
+			 */
+			
+		} else {
+			
+			/*
+			 * In this case, we simply need to create a selection 
+			 * in order to nudge IE into true contentediable mode.
+			 */
+			var range = this.getEditorDocument ().selection.createRange ();
+			range.select (); 
+		}
+	}
+}
+
+/**
+ * Invoke this whenever Mozilla appears not to fully 
+ * realize that we are in contentEditable mode.
+ * 
+ * @see {https://bugzilla.mozilla.org/show_bug.cgi?id=520395}
+ * @see {https://bugzilla.mozilla.org/show_bug.cgi?id=429308}
+ * @see {https://bugzilla.mozilla.org/show_bug.cgi?id=454191}
+ * @see {https://bugzilla.mozilla.org/show_bug.cgi?id=571694}
+ * @see {https://bugzilla.mozilla.org/show_bug.cgi?id=439808}
+ * @see {http://tinymce.moxiecode.com/punbb/viewtopic.php?pid=73988}
+ * @see {http://tinymce.moxiecode.com/punbb/viewtopic.php?id=9153}
+ * @see {http://tinymce.moxiecode.com/punbb/viewtopic.php?pid=2860}
+ * @see {http://tinymce.moxiecode.com/punbb/viewtopic.php?pid=3278}
+ * @see {http://tinymce.moxiecode.com/punbb/viewtopic.php?pid=604}
+ * @see {http://tinymce.moxiecode.com/punbb/viewtopic.php?pid=3556}
+ * @see {http://tinymce.moxiecode.com/punbb/viewtopic.php?pid=13366}
+ */
+EditorBinding.prototype._sanitizeMozilla = function () {
+	
+	/*
+	 * This has now been hacked into TinyMCE source code by 
+	 * adding a timeout to the place in "Editor.js" where it says:
+	 * 
+	 * // Design mode must be set here once again to fix a bug where
+	 * // Ctrl+A/Delete/Backspace didn't work if the editor was added 
+	 * // using mceAddControl then removed then added again
+	 */
 }
 
 /**

@@ -108,6 +108,21 @@ _Application.prototype = {
  	 */
  	isOffLine : false,
  	
+ 	/**
+ 	 * True when any window has the focus. To check if NO window has focus, 
+ 	 * ie the C1 Console has lost focus, better use property "isBlurred". 
+ 	 * @type {boolean}
+ 	 */
+ 	isFocused : true,
+ 	
+ 	/**
+ 	 * True when NO window has had focus for 100 milliseconds. This will 
+ 	 * trigger a broadcast of message BroadcastMessages.APPLIATION_BLURRED.
+ 	 * @type {boolean}
+ 	 */
+ 	isBlurred : false,
+ 	
+ 	
  	// PRIVATE ..........................................................
  	
 	/**
@@ -477,6 +492,28 @@ _Application.prototype = {
 	},
 	
 	/**
+	 * Tracking global focused status. 
+	 * @param isFocused
+	 */
+	focused : function ( isFocused ) {
+		
+		this.isFocused = isFocused;
+		if ( isFocused ) {
+			if ( this.isBlurred ) {
+				this.isBlurred = false;
+				EventBroadcaster.broadcast ( BroadcastMessages.APPLICATION_FOCUSED );
+			}
+		} else {
+			setTimeout ( function () {
+				if ( !Application.isFocused ) {
+					Application.isBlurred = true;
+					EventBroadcaster.broadcast ( BroadcastMessages.APPLICATION_BLURRED );
+				}
+			}, 100 )
+		}
+	},
+	
+	/**
 	 * Initialize.
 	 */
 	initialize : function () {
@@ -501,6 +538,20 @@ _Application.prototype = {
 
 			}
 		});
+		
+		/*
+		DOMEvents.addEventListener ( top, DOMEvents.BLUR, {
+			handleEvent : function ( e ) {
+				Application.logger.debug ( Math.random ())
+			}
+		});
+		*/
+		
+		/*
+		top.onblur = function () {
+			Application.logger.debug ( Math.random ())
+		}
+		*/
 		
 		// broadcast startup
 		EventBroadcaster.broadcast ( 

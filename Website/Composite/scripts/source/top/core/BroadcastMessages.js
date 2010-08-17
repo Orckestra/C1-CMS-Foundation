@@ -24,8 +24,8 @@ _BroadcastMessages.prototype = {
 	APPLICATION_ONSHUTDOWN				: "application onshutdown",
 	APPLICATION_SHUTDOWN				: "application shutdown",
 	APPLICATION_ERROR					: "application error",
-	APPLICATION_BLURRED					: "application blurred", // TODO
-	APPLICATION_FOCUSED					: "application focused", // TODO
+	APPLICATION_BLURRED					: "application blurred",
+	APPLICATION_FOCUSED					: "application focused",
 	APPLICATION_KICKSTART				: "application kickstart",
 
 	/*

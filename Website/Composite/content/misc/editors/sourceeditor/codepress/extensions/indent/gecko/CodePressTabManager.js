@@ -323,7 +323,7 @@ CodePressTabManager.prototype = {
 		 * We cannot locate the current line using the Range spec in this scenario, 
 		 * so we inject a reference node and simply traverse ahead until we find it.
 		 */
-		this._injectMarkup ( "<abbr/>" );
+		this._injectMarkup ( "<abbr id=\"tabber\"/>" );
 		var type = NodeFilter.SHOW_TEXT + NodeFilter.SHOW_ELEMENT;
 		var walker = document.createTreeWalker ( this._doc.body, type, null, false );
 		
@@ -341,7 +341,9 @@ CodePressTabManager.prototype = {
 				case Node.ELEMENT_NODE :
 					switch ( node.localName.toLowerCase ()) {
 						case "abbr" :
-							marker = node;
+							if ( node.id == "tabber" ) {
+								marker = node;
+							}
 							break;
 						case "br" :
 							if ( marker != null ) {

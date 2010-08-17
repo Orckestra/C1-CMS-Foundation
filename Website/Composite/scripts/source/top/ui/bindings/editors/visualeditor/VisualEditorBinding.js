@@ -264,16 +264,24 @@ function VisualEditorBinding () {
 }
 
 /**
+ * @overloads {EditorBinding#onBindingRegister}
+ */
+VisualEditorBinding.prototype.onBindingRegister = function () {
+	
+	/* 
+	 * Force an early indexation of VisualEditorBinding strings  
+	 * to supress occasional glitches in string fetching.
+	 */
+	VisualEditorBinding.superclass.onBindingRegister.call ( this );
+	StringBundle.getString ( "Composite.Web.VisualEditor", "Preload.Key" );
+}
+
+/**
  * @overloads {WindowBinding#onBindingAttach}
  */
 VisualEditorBinding.prototype.onBindingAttach = function () {
 	
 	VisualEditorBinding.superclass.onBindingAttach.call ( this );
-	 
-	/* 
-	 * Force an early indexation of VisualEditorBinding strings to supress occasional glitches
-	 */
-	StringBundle.getString ( "Composite.Web.VisualEditor", "Preload.Key" );
 	
 	this.subscribe ( BroadcastMessages.TINYMCE_INITIALIZED );
 	this.subscribe ( BroadcastMessages.VISUALEDITOR_HACKED );

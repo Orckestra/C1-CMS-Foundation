@@ -50,13 +50,18 @@ CodePressUndoManager.prototype = {
 	_hasSnapShot : false,
 	
 	_CONTROLCHAR : '\u2009',
-	_MAXHISTORY : 40,
-	_BACKKEY : 8,
-	_DELKEY : 46,
-	_TABKEY : 9,
-	_NEWKEY : 13,
-	_UNDOKEY : 90,
-	_REDOKEY : 89,
+	_MAXHISTORY : 100,
+	
+	_BACKKEY 	: 8,
+	_DELKEY 	: 46,
+	_TABKEY 	: 9,
+	_NEWKEY 	: 13,
+	_UNDOKEY 	: 90,
+	_REDOKEY 	: 89,
+	_LEFTKEY 	: 37,
+	_UPKEY 		: 38,
+	_RIGHTKEY 	: 39,
+	_DOWNKEY 	: 40,
 	
 	/**
 	 * Initialize tab management.
@@ -96,10 +101,10 @@ CodePressUndoManager.prototype = {
 		/*
 		 * Used to restore caret position after undo.
 		 */
-		this._marker = this._doc.createElement ( "MARKER" );
+		this._marker = this._doc.createElement ( "abbr" );
 		this._marker.id = "marker";
 		
-		this._helper = this._doc.createElement ( "HELPER" );
+		this._helper = this._doc.createElement ( "abbr" );
 		this._helper.id = "helper";
 	},
 	
@@ -140,6 +145,10 @@ CodePressUndoManager.prototype = {
 					case this._BACKKEY :
 					case this._DELKEY :	
 					case this._NEWKEY :
+					case this._UPKEY :
+					case this._DOWNKEY :
+					case this._LEFTKEY :
+					case this._RIGHTKEY :
 						isSnapShot = true;
 						if ( !this._hasSnapShot ) {
 							this._snapshot ();
@@ -223,7 +232,7 @@ CodePressUndoManager.prototype = {
 			/*
 			 * The easy way out.
 			 */
-			this._doc.execCommand ( "inserthtml", false, "<marker id=\"marker\"/>" );
+			this._doc.execCommand ( "inserthtml", false, "<abbr id=\"marker\"/>" );
 			
 		} else {
 			
@@ -290,6 +299,7 @@ CodePressUndoManager.prototype = {
 	_restore : function () {
 		
 		var marker = this._doc.getElementById ( "marker" );
+		
 		if ( marker != null ) {
 			marker.textContent = this._CONTROLCHAR;
 			this._win.find ( this._CONTROLCHAR );

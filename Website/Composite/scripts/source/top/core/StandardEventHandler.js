@@ -76,12 +76,32 @@ StandardEventHandler.prototype._addListeners = function () {
 				}
 			}
 		}
+		
+		var handler = {
+			handleEvent : function ( e ){
+				switch ( e.type ) {
+					case DOMEvents.BLUR : 
+						Application.focused ( false );
+						break;
+					case DOMEvents.FOCUS :
+						Application.focused ( true );
+						break;
+				}
+			}
+		}
+		
+		DOMEvents.addEventListener ( this._contextWindow, DOMEvents.FOCUS, handler );
+		DOMEvents.addEventListener ( this._contextWindow, DOMEvents.BLUR, handler );
 	}
 	
+	/*
+	 * Supress CTRL+S (TODO: handle elsewhere!)
+	 */
 	if ( Client.isMozilla ) {
 		doc.addEventListener ( DOMEvents.KEYDOWN, {
 			handleEvent : function ( e ) {
-				if ( e.ctrlKey && e.keyCode == 83 ) {
+				var s = 83;
+				if ( e.ctrlKey && e.keyCode == s ) {
 					e.preventDefault ();
 				}
 			}
@@ -166,7 +186,7 @@ StandardEventHandler.prototype._handleMouseUp = function ( e ) {
 	EventBroadcaster.broadcast ( BroadcastMessages.MOUSEEVENT_MOUSEUP, e );
 }
 	
-/*
+/**
  * Broadcast mousemove globally *only* while mousetracking.
  * TODO: Broadcast mouseup if button is not pressed!
  * @param {MouseEvent} e
@@ -174,10 +194,36 @@ StandardEventHandler.prototype._handleMouseUp = function ( e ) {
 StandardEventHandler.prototype._handleMouseMove = function ( e ) {
 	
 	try {
+		
 		var isTracking = Application.trackMousePosition ( e );
 		if ( isTracking ) {
 			EventBroadcaster.broadcast ( BroadcastMessages.MOUSEEVENT_MOUSEMOVE, e );
 		}
+		
+		/*
+		 * IE may spontaneously believe that no window has focus. If the   
+		 * mousemove event is registered, this is not obviously not the case. 
+		 * Therefore we can safely FOCUS our window, kicking IE back on track. 
+		 * This fixes a bug where the backspace key stopped working.
+		 */
+		if ( Client.isExplorer ) {
+			if ( Application.isBlurred ) {
+				
+				var doc = this._contextDocument;
+				var win = this._contextWindow;
+				
+				/*
+				 * The contentEditable document MUST be activated by a 
+				 * mousedown WHEN another window has the focus. That's 
+				 * why we focus the parent window in this case.
+				 */
+				if ( doc.body.contentEditable == "true" ) {
+					win = DOMUtil.getParentWindow ( win.frameElement );
+				}
+				win.focus ();
+			}
+		}
+		
 	} catch ( exception ) { // don't want to throw errors continually onmousemove
 		DOMEvents.removeEventListener ( 
 			this._contextDocument, 
@@ -295,13 +341,17 @@ StandardEventHandler.prototype._handleFocus = function ( e ) {
 			break;
 	}
 	
-	if ( name != "select" ) {
+	if ( name == "input" || name == "textarea" ) {
 		StandardEventHandler.isBackAllowed = isFocus;
 	}
 	if ( isFocus ) {
-		this.enableNativeKeys ();
+		if ( !this.hasNativeKeys ) {
+			this.enableNativeKeys ();
+		}
 	} else {
-		this.disableNativeKeys ();
+		if ( this.hasNativeKeys ) {
+			this.disableNativeKeys ();
+		}
 	}
 }
 
