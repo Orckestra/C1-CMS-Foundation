@@ -3,7 +3,10 @@ using Composite.Data;
 
 namespace Composite.Data.Hierarchy
 {
+#warning RELEASE: Missing documentation
     /// <summary>    
+    /// Implementations of this interface is used for determining hierarchy when
+    /// data items are used as elements in trees. 
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 

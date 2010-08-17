@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using Composite.Data;
+using System;
 
 
 namespace Composite.Implementation
@@ -12,6 +13,8 @@ namespace Composite.Implementation
     /// </summary>
     public class StorageAccessDefaultImplementation : StorageAccess
     {
+        private bool _disposed;
+
         public StorageAccessDefaultImplementation(PublicationScope scope, CultureInfo locale)
             : base(scope, locale)
         {
@@ -47,7 +50,7 @@ namespace Composite.Implementation
 
 
 
-        public override List<T> Add<T>(IEnumerable<T> items)
+        public override IList<T> Add<T>(IEnumerable<T> items)
         {
             using (new DataScope(this.DataScopeIdentifier, this.Locale))
             {
@@ -97,8 +100,32 @@ namespace Composite.Implementation
 
 
 
-        public override void Dispose()
+        public override sealed void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+
+
+        ~StorageAccessDefaultImplementation() 
+        {        
+            Dispose(false);
+        }
+
+
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed == false)
+            {                                
+                _disposed = true;
+                
+                //if (disposing == true)
+                //{
+                    
+                //}
+            }
         }
     }
 }

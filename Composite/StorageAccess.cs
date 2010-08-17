@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Composite.Data;
@@ -12,7 +13,7 @@ namespace Composite
     /// To obtain a instance of this class, see <see cref="Storage.Open"/>
     /// </summary>
     public abstract class StorageAccess : IDisposable
-    {      
+    {
         /// <summary>
         /// Initializes the instances with scope and locale.
         /// </summary>
@@ -43,6 +44,7 @@ namespace Composite
         /// </example>
         /// <typeparam name="T">An IData interface</typeparam>
         /// <returns>Returns an IQueryable of the given IData interface for further querying</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Get", Justification = "We want to use this name because it short and saying")]
         public virtual IQueryable<T> Get<T>() where T : class, IData { return null; }
 
 
@@ -101,7 +103,7 @@ namespace Composite
         /// <typeparam name="T">An IData interface</typeparam>
         /// <param name="items">The data items to add</param>
         /// <returns>The newly added data items. Note: These could differ from the items in <paramref name="items"/></returns>
-        public virtual List<T> Add<T>(IEnumerable<T> items) where T : class, IData { return null; }
+        public virtual IList<T> Add<T>(IEnumerable<T> items) where T : class, IData { return null; }
 
 
 
@@ -223,8 +225,9 @@ namespace Composite
 
 
         /// <summary>
-        /// Implement this if needed when created a mock/stup of this class
+        /// Implement this created a mock/stup of this class
         /// </summary>
+        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "We want to implement this in the non abstract implementations")]
         public abstract void Dispose();
     }
 }

@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Composite.Data;
 
@@ -18,6 +18,8 @@ namespace Composite.Implementation
         public virtual StorageAccess Open(PublicationScope publicationScope, CultureInfo locale) { return null; }
         public virtual StorageAccess Open(CultureInfo locale) { return null; }
 
+
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "New", Justification = "We want to use new because its short and nice")]
         public virtual T New<T>() where T : class, IData { return null; }
 
         public virtual IEnumerable<CultureInfo> Locales { get { yield break; } }
