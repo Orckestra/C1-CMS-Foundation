@@ -7,6 +7,9 @@ using Composite.Implementation.Pages;
 
 namespace Composite.Pages
 {
+    /// <summary>
+    /// An XElement that represents a page in Composite C1's site map.
+    /// </summary>
     public class XPage : XElement
     {
         protected static readonly XName ElementName = XName.Get("Page");
@@ -19,6 +22,10 @@ namespace Composite.Pages
             this.Add(content);
         }
 
+        /// <summary>
+        /// Gets the id.
+        /// </summary>
+        /// <value>The id.</value>
         public Guid Id
         {
             get
@@ -31,36 +38,67 @@ namespace Composite.Pages
             }
         }
 
+        /// <summary>
+        /// Gets the title.
+        /// </summary>
+        /// <value>The title.</value>
         public string Title
         {
             get { return Attribute("Title").Value; }
         }
 
+        /// <summary>
+        /// Gets the menu title.
+        /// </summary>
+        /// <value>The menu title.</value>
         public string MenuTitle
         {
             get { return Attribute("Title").Value; }
         }
 
-        public string URL
+        /// <summary>
+        /// Gets the URL.
+        /// </summary>
+        /// <value>The URL.</value>
+        public string Url
         {
             get { return this.Attribute("URL").Value; }
         }
 
+        /// <summary>
+        /// Gets the URL title.
+        /// </summary>
+        /// <value>The URL title.</value>
         public string UrlTitle
         {
             get { return Attribute("UrlTitle").Value; }
         }
 
+        /// <summary>
+        /// Gets a friendly url. Can be null.
+        /// </summary>
         public string FriendlyUrl
         {
-            get { return Attribute("UrlTitle").Value; }
+            get
+            {
+                var attr = Attribute("FriendlyUrl");
+                return attr != null ? attr.Value : null;
+            }
         }
 
+        /// <summary>
+        /// Gets the abstract.
+        /// </summary>
+        /// <value>The abstract.</value>
         public string Abstract
         {
             get { return Attribute("Abstract").Value; }
         }
 
+        /// <summary>
+        /// Gets the page level. Root pages have 0 level, their children 1, ....
+        /// </summary>
+        /// <value>The page level.</value>
         public int Level
         {
             get
@@ -69,6 +107,10 @@ namespace Composite.Pages
             }
         }
 
+        /// <summary>
+        /// Gets the parent page.
+        /// </summary>
+        /// <value>The parent page.</value>
         public XPage ParentPage
         {
             get
@@ -78,6 +120,10 @@ namespace Composite.Pages
             }
         }
 
+        /// <summary>
+        /// Gets the child pages.
+        /// </summary>
+        /// <value>The child pages.</value>
         public IEnumerable<XPage> ChildPages
         {
             get
@@ -86,6 +132,9 @@ namespace Composite.Pages
             }
         }
 
+        /// <summary>
+        /// Gets the site map root node.
+        /// </summary>
         public XSiteMap SiteMap
         {
             get
@@ -100,19 +149,51 @@ namespace Composite.Pages
             }
         }
 
+        /// <summary>
+        /// Selects the pages.
+        /// </summary>
+        /// <param name="pageSelection">The page selection.</param>
+        /// <returns></returns>
         public IEnumerable<XPage> SelectPages(PageSelection pageSelection)
         {
             return ImplementationContainer.GetImplementation<NavigationBase>().SelectPages(this, pageSelection);
         }
 
-        public XElement ElementClone()
+        /// <summary>
+        /// Creates a new XElement that will have the same name and the same attributes as the current one.
+        /// </summary>
+        /// <returns></returns>
+        /// <example>
+        /// <code>
+        /// public XElement GetChildPagesXml()
+        /// {
+        ///     return new XElement("ChildPages",
+        ///                         from page in Navigation.CurrentPage.ChildPages
+        ///                         select page.CloneElement());
+        /// }
+        /// </code>
+        /// </example>
+        public XElement CloneElement()
         {
             return new XElement(ElementName, this.Attributes().Select(attr => new XAttribute(attr)));
         }
 
-        public virtual XElement ElementClone(params object[] additionalContent)
+        public XElement GetChildPagesXml()
         {
-            var result = ElementClone();
+            return new XElement("ChildPages",
+                                from page in Navigation.CurrentPage.ChildPages
+                                select page.CloneElement());
+        }
+
+
+        /// <summary>
+        /// Creates a new XElement that will have the same name and the same attributes as the current one.
+        /// </summary>
+        /// <param name="additionalContent">Additional .</param>
+        /// <returns></returns>
+        public virtual XElement CloneElement(params object[] additionalContent)
+        {
+            var result = CloneElement();
             result.Add(additionalContent);
 
             return result;

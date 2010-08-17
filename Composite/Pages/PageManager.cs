@@ -6,8 +6,28 @@ using Composite.Implementation.Pages;
 namespace Composite.Pages
 {
     /// <summary>
-    /// Provides read-only access to pages, page structure and placeholders content 
+    /// Provides access to pages, page structure and placeholders content 
     /// </summary>
+    /// <example>
+    /// <code>
+    ///  public static string GetPageTitle(Guid pageId, CultureInfo locale)
+    ///  {
+    ///      var pageManager = PageManager.Create(locale);
+    ///      var page = pageManager.GetPageById(pageId);
+    /// 
+    ///      return page != null ? page.Title : string.Empty;
+    ///  }
+    /// 
+    ///  public static string GetPagePlaceholderContent(Guid pageId, string placeholderName)
+    ///  {
+    ///      var pageManager = PageManager.Create();
+    /// 
+    ///      var placeholder = pageManager.GetPlaceholdersContent(pageId).FirstOrDefault(p => p.PlaceHolderId == placeholderName);
+    /// 
+    ///      return placeholder != null ? placeholder.Content : string.Empty;
+    ///  }
+    /// </code>
+    /// </example>
     public static class PageManager
     {
         static PageManager()

@@ -85,9 +85,10 @@ namespace Composite.Implementation.Pages
                 XPage page = new XPage();
 
                 // Copying all the attributes except for "Depth"
-                page.Add(xElement.Attributes().Where(attr => attr.Name != "Depth").Select(attr => new XAttribute(attr)));
+                page.Add(xElement.Attributes().Where(attr => attr.Name != "Depth" && attr.Name != "URL").Select(attr => new XAttribute(attr)));
 
                 page.Add(new XAttribute("Level", xElement.Attribute("Depth").Value));
+                page.Add(new XAttribute("Url", xElement.Attribute("Url").Value));
 
                 node.Add(page);
 

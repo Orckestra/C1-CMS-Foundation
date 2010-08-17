@@ -7,6 +7,9 @@ using Composite.Data;
 
 namespace Composite.Pages
 {
+    /// <summary>
+    /// An XElement that represents the root node in Composite C1's site map.
+    /// </summary>
     public class XSiteMap : XElement
     {
         protected internal XSiteMap(DataScopeIdentifier dataScope, CultureInfo cultureInfo): base("SiteMap")
@@ -15,6 +18,10 @@ namespace Composite.Pages
             CultureInfo = cultureInfo;
         }
 
+        /// <summary>
+        /// Gets the root pages.
+        /// </summary>
+        /// <value>The root pages.</value>
         public IEnumerable<XPage> RootPages
         {
             get
