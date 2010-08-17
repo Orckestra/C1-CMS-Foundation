@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Implementation;
@@ -12,8 +14,10 @@ namespace Composite.Pages
     /// </summary>
     public class XPage : XElement
     {
+        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "System.Xml.Linq.XName is immutable")]
         protected static readonly XName ElementName = XName.Get("Page");
-        protected Guid? _id;
+
+        private Guid? _id;
         
 
         protected internal XPage(params object[] content)
@@ -60,6 +64,7 @@ namespace Composite.Pages
         /// Gets the URL.
         /// </summary>
         /// <value>The URL.</value>
+        [SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings")]
         public string Url
         {
             get { return this.Attribute("URL").Value; }
@@ -69,6 +74,7 @@ namespace Composite.Pages
         /// Gets the URL title.
         /// </summary>
         /// <value>The URL title.</value>
+        [SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings")]
         public string UrlTitle
         {
             get { return Attribute("UrlTitle").Value; }
@@ -77,6 +83,7 @@ namespace Composite.Pages
         /// <summary>
         /// Gets a friendly url. Can be null.
         /// </summary>
+        [SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings")]
         public string FriendlyUrl
         {
             get
@@ -103,7 +110,7 @@ namespace Composite.Pages
         {
             get
             {
-                return int.Parse(this.Attribute("Depth").Value);
+                return int.Parse(this.Attribute("Depth").Value, CultureInfo.InvariantCulture);
             }
         }
 
@@ -115,8 +122,7 @@ namespace Composite.Pages
         {
             get
             {
-                XElement parent = this.Parent;
-                return parent is XPage ? parent as XPage : null;
+                return this.Parent as XPage;
             }
         }
 
@@ -178,18 +184,10 @@ namespace Composite.Pages
             return new XElement(ElementName, this.Attributes().Select(attr => new XAttribute(attr)));
         }
 
-        public XElement GetChildPagesXml()
-        {
-            return new XElement("ChildPages",
-                                from page in Navigation.CurrentPage.ChildPages
-                                select page.CloneElement());
-        }
-
-
         /// <summary>
         /// Creates a new XElement that will have the same name and the same attributes as the current one.
         /// </summary>
-        /// <param name="additionalContent">Additional .</param>
+        /// <param name="additionalContent">Attributes and elements to be added to the new element.</param>
         /// <returns></returns>
         public virtual XElement CloneElement(params object[] additionalContent)
         {

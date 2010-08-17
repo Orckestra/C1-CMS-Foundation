@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -25,7 +26,7 @@ namespace Composite.Pages
         /// </summary>
         Public = 1,
         /// <summary>
-        /// Internal reference to a page. F.e. "/Renderers/Page.ashx?id=7446ceda-df90-49f0-a183-4e02ed6f6eec"
+        /// Internal reference to a page. F.e. "/Renderers/Page.aspx?id=7446ceda-df90-49f0-a183-4e02ed6f6eec"
         /// </summary>
         Internal = 2,
         /// <summary>
@@ -164,6 +165,7 @@ namespace Composite.Pages
         /// <param name="url">The URL.</param>
         /// <param name="queryParameters">The query parameters that weren't used to define which page was accessed.</param>
         /// <returns></returns>
+        [SuppressMessage("Microsoft.Globalization", "CA1304:SpecifyCultureInfo", MessageId = "System.String.Compare(System.String,System.String,System.Boolean)")]
         public static PageUrl Parse(string url, out NameValueCollection queryParameters)
         {
             Verify.ArgumentNotNull(url, "url");
@@ -173,6 +175,7 @@ namespace Composite.Pages
                        ? ParseInternalUrl(urlBuilder, out queryParameters)
                        : ParsePublicUrl(urlBuilder, out queryParameters);
         }
+
 
         internal static PageUrl ParsePublicUrl(UrlBuilder urlBuilder, out NameValueCollection notUsedQueryParameters)
         {
@@ -201,7 +204,7 @@ namespace Composite.Pages
             PublicationScope publicationScope = PublicationScope.Public;
 
             string dataScopeName = urlBuilder["dataScope"];
-            if (!dataScopeName.IsNullOrEmpty() && string.Compare(dataScopeName, DataScopeIdentifier.AdministratedName, true) == 0)
+            if (!dataScopeName.IsNullOrEmpty() && string.Compare(dataScopeName, DataScopeIdentifier.AdministratedName, StringComparison.OrdinalIgnoreCase) == 0)
             {
                 publicationScope = PublicationScope.Internal;
             }
@@ -274,7 +277,7 @@ namespace Composite.Pages
             PublicationScope publicationScope = PublicationScope.Public;
 
             if(dataScopeName != null 
-                && string.Compare(dataScopeName, DataScopeIdentifier.AdministratedName, true) == 0)
+                && string.Compare(dataScopeName, DataScopeIdentifier.AdministratedName, StringComparison.OrdinalIgnoreCase) == 0)
             {
                 publicationScope = PublicationScope.Internal;
             }
@@ -305,7 +308,8 @@ namespace Composite.Pages
             notUsedQueryParameters = new NameValueCollection();
 
             var queryKeys = new[] { "pageId", "dataScope", "cultureInfo", "CultureInfo" };
-            var notUsedKeys = queryString.AllKeys.Where(key => !queryKeys.Contains(key, StringComparer.InvariantCultureIgnoreCase));
+
+            var notUsedKeys = queryString.AllKeys.Where(key => !queryKeys.Contains(key, StringComparer.OrdinalIgnoreCase));
 
             foreach (string key in notUsedKeys)
             {
@@ -325,7 +329,9 @@ namespace Composite.Pages
                 return false;
             }
 
-            string loweredFriendlyPath = path.ToLower();
+            var invariantCulture = CultureInfo.InvariantCulture;
+
+            string loweredFriendlyPath = path.ToLower(invariantCulture);
 
             // Getting the site map
             IEnumerable<XElement> siteMap;
@@ -338,7 +344,7 @@ namespace Composite.Pages
             // TODO: Optimize
             XAttribute matchingAttributeNode = siteMap.DescendantsAndSelf()
                         .Attributes("FriendlyUrl")
-                        .Where(f => f.Value.ToLower() == loweredFriendlyPath).FirstOrDefault();
+                        .Where(f => f.Value.ToLower(invariantCulture) == loweredFriendlyPath).FirstOrDefault();
 
             if (matchingAttributeNode == null)
             {

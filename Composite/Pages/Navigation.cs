@@ -23,16 +23,19 @@ namespace Composite.Pages
         /// public XElement GetTopMenuXml()
         /// {
         ///     return new XElement("TopLevelPages",
-        ///                         from page in Navigation.GetSiteMap().RootPages 
+        ///                         from page in Navigation.SiteMap.RootPages 
         ///                         select new XElement("Page",
         ///                                             new XAttribute("MenuTitle", page.MenuTitle),
         ///                                             new XAttribute("Url", page.Url)));
         /// }
         /// </code>
         /// </example>
-        public static XSiteMap GetSiteMap()
+        public static XSiteMap SiteMap
         {
-            return ImplementationContainer.GetImplementation<NavigationBase>().GetSiteMap();
+            get
+            {
+                return ImplementationContainer.GetImplementation<NavigationBase>().GetSiteMap();
+            }
         }
 
         /// <summary>
