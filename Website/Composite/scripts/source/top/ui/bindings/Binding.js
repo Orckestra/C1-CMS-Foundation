@@ -1800,8 +1800,6 @@ Binding.prototype.wakeUp = function ( action, timeout ) {
 	
 	if ( this.isLazy == true ) {
 		
-		// this.logger.fine ( this.toString () + " awakens..." ) ;
-		
 		this.deleteProperty ( "lazy" );
 		this.isLazy = false;
 		Application.lock ( this );
@@ -1818,12 +1816,17 @@ Binding.prototype.wakeUp = function ( action, timeout ) {
 		setTimeout ( function () {
 			self.attachRecursive ();
 			setTimeout ( function () {
-				if ( action ) {
+				if ( action !== undefined ) {
 					self [ action ] ();
 				}
 				// Update any related LazyBindingDataBinding so that the server knows we are awake.
 				LazyBindingBinding.wakeUp ( self );
 				Application.unlock ( self );
+				/*
+				setTimeout ( function () {
+					Application.focused ( true );
+				},  Application._TIMEOUT_LOSTFOCUS * 2 );
+				*/
 			}, timeout ); // explorer cannot flex unless we timeout here - look into this!
 		}, 0 );
 	}

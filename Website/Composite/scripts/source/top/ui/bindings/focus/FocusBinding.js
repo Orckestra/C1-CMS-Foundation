@@ -33,6 +33,7 @@ FocusBinding.focusElement = function ( element ) {
 	
 	try {
 		element.focus ();
+		Application.focused ( true );
 	} catch ( exception ) {
 		var binding = UserInterface.getBinding ( element );
 		var logger = SystemLogger.getLogger ( "FocusBinding.focusElement" );

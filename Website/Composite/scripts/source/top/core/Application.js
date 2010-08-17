@@ -34,6 +34,12 @@ _Application.prototype = {
 	 */
 	CONSOLE_ID : KeyMaster.getUniqueKey (),
 	
+	/**
+	 * Timeout in milliseconds before we proclaim a global application blur event.
+	 * @type {number}
+	 */
+	_TIMEOUT_LOSTFOCUS : 250,
+	
 	/** 
 	 * @type {SystemLogger} 
 	 */
@@ -116,8 +122,9 @@ _Application.prototype = {
  	isFocused : true,
  	
  	/**
- 	 * True when NO window has had focus for 100 milliseconds. This will 
- 	 * trigger a broadcast of message BroadcastMessages.APPLIATION_BLURRED.
+ 	 * True when NO window has had focus for some milliseconds. This will 
+ 	 * trigger a broadcast of message BroadcastMessages.APPLIATION_BLURRED. 
+ 	 * Be advised, however, that this setup is highly dysfunctional in IE.
  	 * @type {boolean}
  	 */
  	isBlurred : false,
@@ -492,12 +499,15 @@ _Application.prototype = {
 	},
 	
 	/**
-	 * Tracking global focused status. 
+	 * Tracking global focused status. NOTE that you cannot trust these things in IE. 
+	 * Specifically because IE may decide to declare a blur event (one one object) 
+	 * AFTER the focus event (of another object). You should in fact never trust IE.
 	 * @param isFocused
 	 */
 	focused : function ( isFocused ) {
 		
 		this.isFocused = isFocused;
+		
 		if ( isFocused ) {
 			if ( this.isBlurred ) {
 				this.isBlurred = false;
@@ -509,7 +519,7 @@ _Application.prototype = {
 					Application.isBlurred = true;
 					EventBroadcaster.broadcast ( BroadcastMessages.APPLICATION_BLURRED );
 				}
-			}, 100 )
+			}, Application._TIMEOUT_LOSTFOCUS )
 		}
 	},
 	

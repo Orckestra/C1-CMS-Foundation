@@ -77,10 +77,15 @@ StandardEventHandler.prototype._addListeners = function () {
 			}
 		}
 		
+		/*
+		 * Setup global focus listeners.
+		 * TODO: Make reliable for IE!
+		 * @see {Application#focused}
+		 */
 		var handler = {
 			handleEvent : function ( e ){
 				switch ( e.type ) {
-					case DOMEvents.BLUR : 
+					case DOMEvents.BLUR :
 						Application.focused ( false );
 						break;
 					case DOMEvents.FOCUS :
@@ -90,12 +95,12 @@ StandardEventHandler.prototype._addListeners = function () {
 			}
 		}
 		
-		DOMEvents.addEventListener ( this._contextWindow, DOMEvents.FOCUS, handler );
 		DOMEvents.addEventListener ( this._contextWindow, DOMEvents.BLUR, handler );
+		DOMEvents.addEventListener ( this._contextWindow, DOMEvents.FOCUS, handler );
 	}
 	
 	/*
-	 * Supress CTRL+S (TODO: handle elsewhere!)
+	 * Supress CTRL+S (TODO: handle this elsewhere!)
 	 */
 	if ( Client.isMozilla ) {
 		doc.addEventListener ( DOMEvents.KEYDOWN, {
@@ -161,7 +166,7 @@ StandardEventHandler.prototype._handleMouseDown = function ( e ) {
 			switch ( node.nodeType ) {
 				case Node.ELEMENT_NODE :
 					var binding = UserInterface.getBinding ( node );
-					if ( binding ) {
+					if ( binding != null ) {
 						binding.dispatchAction ( 
 							Binding.ACTION_ACTIVATED 
 						);
@@ -206,7 +211,8 @@ StandardEventHandler.prototype._handleMouseMove = function ( e ) {
 		 * Therefore we can safely FOCUS our window, kicking IE back on track. 
 		 * This fixes a bug where the backspace key stopped working.
 		 */
-		if ( Client.isExplorer ) {
+		if ( Client.isExplorer && false ) {
+			
 			if ( Application.isBlurred ) {
 				
 				var doc = this._contextDocument;
@@ -338,20 +344,19 @@ StandardEventHandler.prototype._handleFocus = function ( e ) {
 		case "textarea" :
 		case "select" :
 			isFocus = ( e.type == DOMEvents.FOCUS || e.type == DOMEvents.FOCUSIN );
+			if ( name == "input" || name == "textarea" ) {
+				StandardEventHandler.isBackAllowed = isFocus;
+			}
+			if ( isFocus ) {
+				if ( !this.hasNativeKeys ) {
+					this.enableNativeKeys ();
+				}
+			} else {
+				if ( this.hasNativeKeys ) {
+					this.disableNativeKeys ();
+				}
+			}
 			break;
-	}
-	
-	if ( name == "input" || name == "textarea" ) {
-		StandardEventHandler.isBackAllowed = isFocus;
-	}
-	if ( isFocus ) {
-		if ( !this.hasNativeKeys ) {
-			this.enableNativeKeys ();
-		}
-	} else {
-		if ( this.hasNativeKeys ) {
-			this.disableNativeKeys ();
-		}
 	}
 }
 
@@ -373,40 +378,25 @@ StandardEventHandler.prototype._handleKeyUp = function ( e ) {
  */
 StandardEventHandler.prototype.enableNativeKeys = function ( isAllowTabs ) {
 	
-	/*
-	 * This reverse-flag-check has been supressed because 
-	 * this fixes a bug where visual editor would not 
-	 * allow backspace after dialog mode... 
+	this._isAllowTabs = ( isAllowTabs == true ? true : false );
+	
+	/* Timeout hack prevents open dialogs from closing when  
+	 * a SelectBoxBinding changes selection. Also, it allows  
+	 * one control to disable keys *before* another enables it.
 	 */
-	//if ( !this.hasNativeKeys ) {
-		
-		this._isAllowTabs = ( isAllowTabs == true ? true : false );
-		
-		/* Timeout hack prevents open dialogs from closing when  
-		 * a SelectBoxBinding changes selection. Also, it allows  
-		 * one control to disable keys *before* another enables it.
-		 */
-		var self = this;
-		top.setTimeout ( function () {
-			self.hasNativeKeys = true;
-			StandardEventHandler.isBackAllowed = true;
-		}, 0 );	
-	//}
+	var self = this;
+	top.setTimeout ( function () {
+		self.hasNativeKeys = true;
+		StandardEventHandler.isBackAllowed = true;
+	}, 0 );
 }
 	
 /**
  * Disable native keys. This will always dissalow tabs.
  */
 StandardEventHandler.prototype.disableNativeKeys = function () {
-	
-	/*
-	 * This reverse-flag-check has been supressed because 
-	 * this fixes a bug where visual editor would not 
-	 * allow backspace after dialog mode... 
-	 */
-	//if ( this.hasNativeKeys ) {
-		this._isAllowTabs = false;
-		this.hasNativeKeys = false;
-		StandardEventHandler.isBackAllowed = false;
-	//}
+
+	this._isAllowTabs = false;
+	this.hasNativeKeys = false;
+	StandardEventHandler.isBackAllowed = false;
 }

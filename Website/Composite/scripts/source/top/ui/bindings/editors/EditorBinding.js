@@ -383,6 +383,7 @@ EditorBinding.prototype.addEditorEvents = function () {
 		DOMEvents.addEventListener ( editorDocument, DOMEvents.CONTEXTMENU, this );
 		DOMEvents.addEventListener ( editorDocument, DOMEvents.KEYPRESS, this );
 		DOMEvents.addEventListener ( editorDocument, DOMEvents.MOUSEDOWN, this );
+		DOMEvents.addEventListener ( editorDocument, DOMEvents.MOUSEMOVE, this );
 	}
 	
 	/*
@@ -485,6 +486,21 @@ EditorBinding.prototype.handleEvent = function ( e ) {
 				}
 			}
 			break;
+		
+		/*
+		 * A pityful and desperate attempt to fix the case where IE thinks 
+		 * that no window has the current focus combined with IE's assumption 
+		 * that mousedown on a contenteditable document should not invoke focus. 
+		 */
+		case DOMEvents.MOUSEMOVE :
+			if ( Client.isExplorer ) {
+				if ( Application.isBlurred ) {
+					if ( !this._isActivated ) {
+						this.getContentWindow ().focus ();
+					}
+				}
+			}
+			break;
 	}
 }
 
@@ -512,18 +528,12 @@ EditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 	switch ( broadcast ) {
 		
 		/*
-		 * Global blur event should deactivate the editor. In IE, 
-		 * global blur may occur spontaneously, causing the 
-		 * conteneditable document to become unstable.
+		 * Global blur event should deactivate the editor.
 		 */
 		case BroadcastMessages.APPLICATION_BLURRED :
 			
 			if ( this._isActivated ) {
 				this._activateEditor ( false );
-			} else {
-				if ( Client.isExplorer ) {
-					this._sanitizeExplorer ( true );
-				}
 			}
 			break;
 			
@@ -532,6 +542,7 @@ EditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 		 * whether or not this something should deactivate the editor. 
 		 */
 		case BroadcastMessages.MOUSEEVENT_MOUSEUP :
+			
 			if ( !this.isDialogMode ) {
 				try {
 					var isDeactivate = true;
@@ -604,31 +615,12 @@ EditorBinding.prototype._activateEditor = function ( isActivate ) {
 /**
  * Invoke this whenever Explorer appears not to fully 
  * realize that we are in contentEditable mode.
- * @param @optional {boolean} isCompletlyInsane
  */
-EditorBinding.prototype._sanitizeExplorer = function ( isCompletlyInsane ) {
+EditorBinding.prototype._sanitizeExplorer = function () {
 	
 	if ( Client.isExplorer ) {
-		
-		if ( isCompletlyInsane == true ) { 
-			
-			/*
-			 * In this case, IE thinks that all windows are blurred, 
-			 * causing SPACE and BACKSPACE keys to stop working. Note 
-			 * that a mousedown on a conteneditable doesn't change this. 
-			 * The fix for this has been moved to StandardEventHandler.
-			 * @see {StandardEventHandler#._handleMouseMove}
-			 */
-			
-		} else {
-			
-			/*
-			 * In this case, we simply need to create a selection 
-			 * in order to nudge IE into true contentediable mode.
-			 */
-			var range = this.getEditorDocument ().selection.createRange ();
-			range.select (); 
-		}
+		var range = this.getEditorDocument ().selection.createRange ();
+		range.select ();
 	}
 }
 
