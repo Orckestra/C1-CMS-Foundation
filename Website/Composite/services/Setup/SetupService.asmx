@@ -95,6 +95,7 @@ namespace Composite.WebClient.Setup
             string clientPreferredCultureName = (this.Context.Request.UserLanguages.FirstOrDefault() ?? "").ToLower();
 
             List<LanguageDef> languages = new List<LanguageDef>();
+            bool selectionDone = false;
             foreach (XElement element in languagesXml.Elements("Language"))
             {
                 
@@ -107,7 +108,11 @@ namespace Composite.WebClient.Setup
                 }
                 else
                 {
-                    selected = (element.Attribute("Key").Value.ToLower() == clientPreferredCultureName);
+                    if (selectionDone==false)
+                    {
+                        selected = (element.Attribute("Key").Value.ToLower().StartsWith(clientPreferredCultureName));
+                        selectionDone = selected;
+                    }
                 }
                 
                 LanguageDef languageDef = new LanguageDef
