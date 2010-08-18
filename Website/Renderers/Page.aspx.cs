@@ -58,7 +58,7 @@ public partial class Renderers_Page : System.Web.UI.Page
 
         _dataScope = new DataScope(DataScopeIdentifier.FromPublicationScope(_url.PublicationScope), _url.Locale); // IDisposable, Disposed in OnUnload
 
-        var pageManager = Composite.Pages.PageManager.Create();
+        var pageManager = Composite.Pages.PageManager.Create(_url.PublicationScope, _url.Locale);
 
         IPage page = pageManager.GetPageById(_url.PageId);
 

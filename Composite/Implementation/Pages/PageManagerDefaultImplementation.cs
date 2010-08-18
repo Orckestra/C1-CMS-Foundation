@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using Composite.Data;
 using Composite.Pages;
 
 
@@ -9,14 +10,14 @@ namespace Composite.Implementation.Pages
     {
         public override IPageManager Create()
         {
-            return new DefaultPageManager(PublicationScope.Public, null);
+            return new DefaultPageManager(PublicationScope.Public, GetCurrentCulture());
         }
 
 
 
         public override IPageManager Create(PublicationScope publicationScope)
         {
-            return new DefaultPageManager(publicationScope, null);
+            return new DefaultPageManager(publicationScope, GetCurrentCulture());
         }
 
 
@@ -31,6 +32,17 @@ namespace Composite.Implementation.Pages
         public override IPageManager Create(CultureInfo locale)
         {
             return new DefaultPageManager(PublicationScope.Public, locale);
+        }
+
+        private static CultureInfo GetCurrentCulture()
+        {
+            var currentCulture = LocalizationScopeManager.CurrentLocalizationScope;
+            if (currentCulture == CultureInfo.InvariantCulture && LocalizationScopeManager.IsEmpty)
+            {
+                return DataLocalizationFacade.DefaultLocalizationCulture;
+            }
+
+            return currentCulture;
         }
     }
 }
