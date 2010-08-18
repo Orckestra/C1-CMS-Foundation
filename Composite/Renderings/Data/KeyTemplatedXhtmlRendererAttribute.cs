@@ -4,6 +4,7 @@ using System.Reflection;
 using Composite.Collections.Generic;
 using Composite.Data;
 using System.Xml.Linq;
+using Composite.Data.Types;
 using Composite.Logging;
 using Composite.StringExtensions;
 using Composite.Xml;
@@ -106,11 +107,18 @@ namespace Composite.Renderings.Data
 
             public XhtmlDocument Render(IDataReference dataReferenceToRender)
             {
+                IData dataToRender;
+
+                if (!dataReferenceToRender.IsSet || 
+                    (dataToRender = DataFacade.TryGetDataByUniqueKey<IPage>(dataReferenceToRender.KeyValue)) == null)
+                {
+                    return new XhtmlDocument();
+                }
+
                 string markup = _templateString;
                 string labelEncoded = "";
                 string keyValue = "";
 
-                IData dataToRender = dataReferenceToRender.Data;
 
                 if (_labelHasToBeEvaluated)
                 {
