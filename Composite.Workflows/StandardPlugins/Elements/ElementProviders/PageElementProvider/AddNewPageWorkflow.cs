@@ -505,6 +505,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
         private string GenerateUrlTitleFromTitle(string title)
         {
+            title = title.Trim().Replace(" ", "-");
+
             RegexClientValidationRule regexClientValidationRule = ClientValidationRuleFacade.GetClientValidationRules(this.GetBinding<IPage>("NewPage"), "UrlTitle").OfType<RegexClientValidationRule>().Single();
 
             StringBuilder generated = new StringBuilder();
@@ -520,9 +522,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
                 }
             }
 
-            string urlTitle = generated.ToString().Replace(" ", "-");
-
-            return urlTitle;
+            return generated.ToString();
         }
 
 
