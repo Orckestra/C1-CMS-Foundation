@@ -32,7 +32,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
 
         public override string Id
         {
-            get { return ""; }
+            get { return "PackageElementProviderInstalledPackageLocalPackagesFolderEntityToken"; }
         }
 
         public override string Serialize()

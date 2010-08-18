@@ -19,7 +19,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElemen
 
         public override string Id
         {
-            get { return ""; }
+            get { return "LocalizationElementProviderRootEntityToken"; }
         }
 
         public override string Serialize()

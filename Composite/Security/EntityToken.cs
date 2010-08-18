@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Composite.Serialization;
-using Composite.Types;
-using System.Linq;
 
 
 namespace Composite.Security
@@ -24,7 +22,7 @@ namespace Composite.Security
     }
 
 
-    
+
 
 
     /// <summary>
@@ -32,11 +30,13 @@ namespace Composite.Security
     /// of the subclass, remember to overload Equal and GetHashCode!
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     [DebuggerDisplay("Type = {Type}, Source = {Source}, Id = {Id}")]
     [SerializerHandler(typeof(EntityTokenSerializerHandler))]
     public abstract class EntityToken
     {
+        private bool _entityTokenUniquenessValidated;
+
         public abstract string Type { get; }
         public abstract string Source { get; }
         public abstract string Id { get; }
@@ -66,6 +66,7 @@ namespace Composite.Security
 
             return sb.ToString();
         }
+
 
 
         protected static void DoDeserialize(string serializedEntityToken, out string type, out string source, out string id)
@@ -128,11 +129,14 @@ namespace Composite.Security
         }
 
 
+
         public bool Equals(EntityToken entityToken)
         {
             if (entityToken == null) return false;
 
-            if (entityToken.GetHashCode() != GetHashCode()) return false;
+            ValidateEntityToken();
+
+            if (entityToken.GetHashCode() != GetHashCode()) return false; 
 
             return entityToken.Type == this.Type &&
                    entityToken.Source == this.Source &&
@@ -140,19 +144,37 @@ namespace Composite.Security
         }
 
 
+
         public override int GetHashCode()
         {
             if (this.HashCode == 0)
             {
+                ValidateEntityToken();
                 this.HashCode = this.Type.GetHashCode() ^ this.Source.GetHashCode() ^ this.Id.GetHashCode();
             }
+
             return this.HashCode;
         }
 
 
+
         public override string ToString()
-        {            
+        {
             return string.Format("Source = {0}, Type = {1}, Id = {2}", this.Source, this.Type, this.Id);
-        }        
-    }    
+        }
+
+
+
+        private void ValidateEntityToken()
+        {
+            if (_entityTokenUniquenessValidated == true) return;
+
+            if ((string.IsNullOrEmpty(this.Type) == true) &&
+                    (string.IsNullOrEmpty(this.Source) == true) &&
+                    (string.IsNullOrEmpty(this.Id) == true))
+            {
+                throw new InvalidOperationException(string.Format("EntityTokens should be unique for the given element. The properties Type, Source and Id may not all be empty string. This is not the case for this type {0}", GetType()));
+            }
+        }
+    }
 }

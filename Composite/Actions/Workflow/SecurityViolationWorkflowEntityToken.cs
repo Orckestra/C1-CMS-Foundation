@@ -16,7 +16,7 @@ namespace Composite.Actions.Workflows
 
         public override string Id
         {
-            get { return ""; }
+            get { return "SecurityViolationWorkflowEntityToken"; }
         }
 
         public override string Serialize()

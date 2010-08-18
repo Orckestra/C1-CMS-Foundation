@@ -19,7 +19,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
 
         public override string Id
         {
-            get { return ""; }
+            get { return "PackageElementProviderRootEntityToken"; }
         }
 
         public override string Serialize()

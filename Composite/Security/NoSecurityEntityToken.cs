@@ -23,7 +23,7 @@ namespace Composite.Security
 
         public override string Id
         {
-            get { return ""; }
+            get { return "NoSecurityEntityToken"; }
         }
 
         public override string Serialize()

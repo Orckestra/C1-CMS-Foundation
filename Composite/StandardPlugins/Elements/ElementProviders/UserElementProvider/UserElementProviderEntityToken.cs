@@ -19,7 +19,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvide
 
         public override string Id
         {
-            get { return ""; }
+            get { return "UserElementProviderEntityToken"; }
         }
 
         public override string Serialize()

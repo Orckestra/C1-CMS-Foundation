@@ -23,7 +23,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElemen
 
         public override string Id
         {
-            get { return ""; }
+            get { return "PageTemplateRootEntityToken"; }
         }
 
         public override string Serialize()

@@ -23,7 +23,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementPr
 
         public override string Id
         {
-            get { return ""; }
+            get { return "UserGroupElementProviderRootEntityToken"; }
         }
 
         public override string Serialize()
