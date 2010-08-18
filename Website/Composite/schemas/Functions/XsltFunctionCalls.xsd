@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema id="Function"
+<xs:schema id="XsltFunctionCalls"
     targetNamespace="http://www.composite.net/ns/function/1.0"
     elementFormDefault="qualified"
     xmlns="http://www.composite.net/ns/function/1.0"
