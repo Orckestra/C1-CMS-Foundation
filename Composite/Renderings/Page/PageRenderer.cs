@@ -458,79 +458,51 @@ namespace Composite.Renderings.Page
             }
         }
 
-
-        private class HeadSectionElementComparer : IEqualityComparer<XNode>
+        private class HeadNodeFilter
         {
-            private int _counter;
-            private Hashtable<XElement, string> _toStringCache = new Hashtable<XElement,string>();
+            readonly HashSet<string> _alreadyUsed = new HashSet<string>();
 
-            public bool Equals(XNode a, XNode b)
+            public  IEnumerable<XNode> Filter(IEnumerable<XNode> headElements)
             {
-                if (!a.GetType().Equals(b.GetType()))
+                foreach (XNode node in headElements)
                 {
-                    return false;
-                }
+                    var element = node as XElement;
 
-                if (a is XElement)
-                {
-                    var aEl = a as XElement;
-                    var bEl = b as XElement;
-
-                    string tagName = aEl.Name.LocalName;
-                    if (tagName == "link")
+                    if (element != null)
                     {
-                        if (bEl.Name.LocalName == tagName)
+                        // Skipping elements with already used "id" attributes
+                        var idAttr = element.Attribute("id");
+                        if (idAttr != null)
                         {
-                            return ToStringOptimized(aEl) == ToStringOptimized(bEl);
+                            string id = idAttr.Value;
+
+                            if (_alreadyUsed.Contains(id))
+                            {
+                                continue;
+                            }
+
+                            _alreadyUsed.Add(id);
                         }
+                        //else
+                        //{
+                        //    string localName = element.Name.LocalName;
+                        //    if (localName == "link" || (localName == "script" && element.Attribute("src") != null))
+                        //    {
+                        //        string text = element.ToString();
+                        //        if (_alreadyUsed.Contains(text))
+                        //        {
+                        //            continue;
+                        //        }
+
+                        //        _alreadyUsed.Add(text);
+                        //    }
+                        //}
                     }
-                    else if (tagName == "script"
-                        && bEl.Name.LocalName == tagName
-                        && aEl.Attribute("src") != null)
-                    {
-                        return ToStringOptimized(aEl) == ToStringOptimized(bEl);
-                    }
-
-                    XAttribute aIdAttribute = aEl.Attribute("id");
-                    if (aIdAttribute == null) return false;
-
-                    XAttribute bIdAttribute = bEl.Attribute("id");
-                    if (bIdAttribute == null) return false;
-
-                    return (aIdAttribute.Value == bIdAttribute.Value);
+                    yield return node;
                 }
-
-                return false;
-            }
-
-
-            private string ToStringOptimized(XElement xElement)
-            {
-                string value = _toStringCache[xElement];
-                if(value == null)
-                {
-                    value = xElement.ToString();
-                    _toStringCache.Add(xElement, value);
-                }
-
-                return value;
-            }
-
-            public int GetHashCode(XNode obj)
-            {
-                if (obj is XElement)
-                {
-                    XAttribute idAttribute = ((XElement)obj).Attribute("id");
-                    if (idAttribute != null)
-                    {
-                        return idAttribute.Value.GetHashCode();
-                    }
-                }
-
-                // Creating a random number
-                return _counter++;
             }
         }
+
 
         private class NameBasedAttributeComparer : IEqualityComparer<XAttribute>
         {
@@ -545,11 +517,12 @@ namespace Composite.Renderings.Page
             }
         }
 
-
-
         private static void NormalizeXhtmlDocument(XhtmlDocument rootDocument)
         {
-            using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
+            var headNodeFilter = new HeadNodeFilter();
+            
+
+            using (TimerProfilerFacade.CreateTimerProfiler())
             {
                 XElement nestedDocument = rootDocument.Root.Descendants(Namespaces.Xhtml + "html").FirstOrDefault();
 
@@ -558,7 +531,7 @@ namespace Composite.Renderings.Page
                     XhtmlDocument nestedXhtml = new XhtmlDocument(nestedDocument);
 
                     rootDocument.Root.Add(nestedXhtml.Root.Attributes().Except(rootDocument.Root.Attributes(), _nameBasedAttributeComparer));
-                    rootDocument.Head.Add(nestedXhtml.Head.Nodes().Except(rootDocument.Head.Nodes(), new HeadSectionElementComparer()));
+                    rootDocument.Head.Add(headNodeFilter.Filter(nestedXhtml.Head.Nodes()));
                     rootDocument.Head.Add(nestedXhtml.Head.Attributes().Except(rootDocument.Head.Attributes(), _nameBasedAttributeComparer));
                     rootDocument.Body.Add(nestedXhtml.Body.Attributes().Except(rootDocument.Body.Attributes(), _nameBasedAttributeComparer));
 
