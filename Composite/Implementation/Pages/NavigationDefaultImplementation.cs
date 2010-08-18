@@ -64,7 +64,7 @@ namespace Composite.Implementation.Pages
             return newRecord;
         }
 
-        private MapRecord BuildMap(IEnumerable<XElement> legasySiteMap)
+        private static MapRecord BuildMap(IEnumerable<XElement> legasySiteMap)
         {
             MapRecord record = new MapRecord();
             record.LegasySiteMap = legasySiteMap;
@@ -107,51 +107,51 @@ namespace Composite.Implementation.Pages
             return record == null ? null : record.IdToPage[pageId];
         }
 
-        public override IEnumerable<XPage> SelectPages(XPage currentPage, PageSelection selectionType)
+        public override IEnumerable<XPage> SelectPages(XPage page, PageSelection selectionType)
         {
-            Verify.ArgumentNotNull(currentPage, "currentPage");
+            Verify.ArgumentNotNull(page, "page");
 
-            XSiteMap siteMap = currentPage.SiteMap;
-            Verify.ArgumentCondition(siteMap != null, "currentPage", "Page is detached from site map.");
+            XSiteMap siteMap = page.SiteMap;
+            Verify.ArgumentCondition(siteMap != null, "page", "Page is detached from site map.");
 
             switch(selectionType)
             {
                 case PageSelection.Current:
-                    return Wrap(currentPage);
+                    return Wrap(page);
 
                 case PageSelection.Children:
-                    return currentPage.ChildPages;
+                    return page.ChildPages;
 
                 case PageSelection.Descendants:
-                    return currentPage.Descendants();
+                    return page.Descendants();
                 
                 case PageSelection.DescendantsAndCurrent:
-                    return currentPage.DescendantsAndSelf();
+                    return page.DescendantsAndSelf();
 
                 case PageSelection.Parent:
-                    return Wrap(currentPage.ParentPage);
+                    return Wrap(page.ParentPage);
 
                 case PageSelection.Siblings:
-                    return currentPage.Parent.Elements().Where(el => el != currentPage).Select(el => el as XPage);
+                    return page.Parent.Elements().Where(el => el != page).Select(el => el as XPage);
 
                 case PageSelection.SiblingsAndSelf:
-                    return currentPage.Parent.Elements().Select(el => el as XPage);
+                    return page.Parent.Elements().Select(el => el as XPage);
 
                 case PageSelection.All:
                     return siteMap.Descendants();
                 
                 case PageSelection.Ancestors:
-                    return currentPage.Ancestors().Where(a => a is XPage).Select(a => a as XPage);
+                    return page.Ancestors().Where(a => a is XPage).Select(a => a as XPage);
 
                 case PageSelection.AncestorsAndCurrent:
-                    return currentPage.AncestorsAndSelf().Where(a => a is XPage).Select(a => a as XPage);
+                    return page.AncestorsAndSelf().Where(a => a is XPage).Select(a => a as XPage);
 
                 case PageSelection.Level1:
                 case PageSelection.Level2:
                 case PageSelection.Level3:
                 case PageSelection.Level4:
                     {
-                        List<XPage> levels = GetLevels(currentPage);
+                        List<XPage> levels = GetLevels(page);
                         int level = GetLevel(selectionType);
 
                         return levels.Count < level ? EmptyPagesList : Wrap(levels[level - 1]);
@@ -161,7 +161,7 @@ namespace Composite.Implementation.Pages
                 case PageSelection.Level3AndDescendants:
                 case PageSelection.Level4AndDescendants:
                     {
-                        List<XPage> levels = GetLevels(currentPage);
+                        List<XPage> levels = GetLevels(page);
                         int level = GetLevel(selectionType);
 
                         if (levels.Count < level) return EmptyPagesList;
@@ -170,13 +170,13 @@ namespace Composite.Implementation.Pages
                     }
 
                 case PageSelection.Level1AndSiblings:
-                    return currentPage.SiteMap.RootPages;
+                    return page.SiteMap.RootPages;
 
                 case PageSelection.Level2AndSiblings:
                 case PageSelection.Level3AndSiblings:
                 case PageSelection.Level4AndSiblings:
                     {
-                        List<XPage> levels = GetLevels(currentPage);
+                        List<XPage> levels = GetLevels(page);
                         int level = GetLevel(selectionType);
 
                         if (levels.Count < level - 1) return EmptyPagesList;

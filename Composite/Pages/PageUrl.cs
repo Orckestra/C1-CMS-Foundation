@@ -151,7 +151,6 @@ namespace Composite.Pages
         /// Parses the specified URL.
         /// </summary>
         /// <param name="url">The URL.</param>
-        /// <returns></returns>
         public static PageUrl Parse(string url)
         {
             NameValueCollection queryParameters;
@@ -166,6 +165,7 @@ namespace Composite.Pages
         /// <param name="queryParameters">The query parameters that weren't used to define which page was accessed.</param>
         /// <returns></returns>
         [SuppressMessage("Microsoft.Globalization", "CA1304:SpecifyCultureInfo", MessageId = "System.String.Compare(System.String,System.String,System.Boolean)")]
+        [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "1#")]
         public static PageUrl Parse(string url, out NameValueCollection queryParameters)
         {
             Verify.ArgumentNotNull(url, "url");

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Composite.Logging;
 
 
@@ -12,6 +13,7 @@ namespace Composite.Implementation
             LoggingService.LogCritical(title, exception);
         }
 
+        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object[])")]
         public override void LogCritical(string title, string messageFormat, params object[] args)
         {
             LoggingService.LogCritical(title, string.Format(messageFormat, args));
@@ -22,16 +24,19 @@ namespace Composite.Implementation
             LoggingService.LogError(title, exception);
         }
 
+        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object[])")]
         public override void LogError(string title, string messageFormat, params object[] args)
         {
             LoggingService.LogError(title, string.Format(messageFormat, args));
         }
 
+        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object[])")]
         public override void LogInformation(string title, string messageFormat, params object[] args)
         {
             LoggingService.LogInformation(title, string.Format(messageFormat, args));
         }
 
+        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object[])")]
         public override void LogVerbose(string title, string messageFormat, params object[] args)
         {
             LoggingService.LogVerbose(title, string.Format(messageFormat, args));
@@ -42,6 +47,7 @@ namespace Composite.Implementation
             LoggingService.LogWarning(title, exception);
         }
 
+        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object[])")]
         public override void LogWarning(string title, string messageFormat, params object[] args)
         {
             LoggingService.LogWarning(title, string.Format(messageFormat, args));
