@@ -19,11 +19,20 @@ namespace Composite
 
         private string _pathInfo;
         private string _filePath;
+        private string _anchor;
         private List<KeyValuePair<string, string>> _queryParameters;
 
         public UrlBuilder(string url)
         {
             _queryParameters = new List<KeyValuePair<string, string>>();
+
+            int anchorIndex = url.IndexOf("#");
+            if(anchorIndex > -1)
+            {
+                Anchor = (anchorIndex == url.Length - 1) ? string.Empty : url.Substring(anchorIndex + 1);
+
+                url = url.Substring(0, anchorIndex);
+            }
 
             int questionMarkIndex = url.IndexOf("?");
             if (questionMarkIndex < 0)
@@ -40,6 +49,7 @@ namespace Composite
             }
 
             string queryParamStr = url.Substring(questionMarkIndex + 1, url.Length - questionMarkIndex - 1);
+
             foreach (string queryParam in queryParamStr.Split(new[] { "&amp;", "&" }, StringSplitOptions.RemoveEmptyEntries))
             {
                 string[] parts = queryParam.Split(new[] { '=' });
@@ -67,7 +77,7 @@ namespace Composite
             }
         }
 
-        private void ExtractPathInfo(string relativePath, out string filePath, out string pathInfo)
+        private static void ExtractPathInfo(string relativePath, out string filePath, out string pathInfo)
         {
             int aspxExtOffset = relativePath.IndexOf(".aspx");
             if (aspxExtOffset < 0 || aspxExtOffset == relativePath.Length - 5)
@@ -82,7 +92,7 @@ namespace Composite
 
         public override string ToString()
         {
-            // NOTE: StringBuilder shouldn't be used - it is to slow
+            // NOTE: StringBuilder shouldn't be used here - it is to slow
             string queryString = QueryString;
 
             string result = _filePath;
@@ -96,7 +106,12 @@ namespace Composite
                 result += "?" + queryString;
             }
 
-            return result; // _filePath + _pathInfo + "?" + queryString
+            if(_anchor != null)
+            {
+                result += "#" + _anchor;
+            }
+
+            return result; // _filePath + _pathInfo + "?" + queryString + ("#" + _anchor)"
         }
 
         public void AddQueryParameters(NameValueCollection parameters)
@@ -251,6 +266,18 @@ namespace Composite
         public static implicit operator string(UrlBuilder builder)
         {
             return builder.ToString();
+        }
+
+        public string Anchor
+        {
+            get
+            {
+                return _anchor;
+            }
+            set
+            {
+                _anchor = value;
+            }
         }
     }
 }

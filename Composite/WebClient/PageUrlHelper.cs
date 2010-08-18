@@ -391,10 +391,12 @@ namespace Composite.WebClient
                 {
                     NameValueCollection notUsedQueryStringParameters;
                     PageUrl pageUrl;
+                    UrlBuilder urlBuilderInternalUrl;
 
                     try
                     {
-                        pageUrl = PageUrl.ParseInternalUrl(new UrlBuilder(internalPageUrl), out notUsedQueryStringParameters);
+                        urlBuilderInternalUrl = new UrlBuilder(internalPageUrl);
+                        pageUrl = PageUrl.ParseInternalUrl(urlBuilderInternalUrl, out notUsedQueryStringParameters);
                     }
                     catch
                     {
@@ -422,7 +424,8 @@ namespace Composite.WebClient
                         newUrl.AddQueryParameters(notUsedQueryStringParameters);
                     }
 
-                    newUrl.PathInfo = GetPathInfoFromInternalUrl(internalPageUrl);
+                    newUrl.Anchor = urlBuilderInternalUrl.Anchor;
+                    newUrl.PathInfo = urlBuilderInternalUrl.PathInfo;
 
                     publicPageUrl = newUrl.ToString();
 
