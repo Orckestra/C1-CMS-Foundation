@@ -442,6 +442,15 @@ namespace Composite.Data.GeneratedTypes.Foundation
                 codeMemberProperty.CustomAttributes.Add(stringLengthAttribute);
             }
 
+            if (dataFieldDescriptor.StoreType.IsNumeric == true)
+            {
+                CodeAttributeDeclaration integerRangeValidatorAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(IntegerRangeValidatorAttribute)));
+                integerRangeValidatorAttribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(Int32.MinValue)));
+                integerRangeValidatorAttribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(Int32.MaxValue)));
+
+                codeMemberProperty.CustomAttributes.Add(integerRangeValidatorAttribute);
+            }
+
             if (dataFieldDescriptor.StoreType.IsDecimal == true)
             {
                 CodeAttributeDeclaration decimalPrecisionAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DecimalPrecisionValidatorAttribute)));
