@@ -16,6 +16,7 @@ using Composite.ResourceSystem;
 using Composite.Transactions;
 using Composite.Types;
 using Composite.Users;
+using Composite.Security;
 
 
 namespace Composite.Workflows.Trees.Workflows
@@ -134,6 +135,9 @@ namespace Composite.Workflows.Trees.Workflows
 
                     newData = DataFacade.AddNew(newData);
                 }
+
+                EntityTokenCacheFacade.ClearCache(data.GetDataEntityToken());
+                EntityTokenCacheFacade.ClearCache(newData.GetDataEntityToken());
 
                 transactionScope.Complete();
             }
