@@ -18,7 +18,7 @@
             {
                 if (SystemSetupFacade.IsSystemFirstTimeInitialized == false)
                 {
-                    Response.Redirect("Composite");
+                    Response.Redirect("Composite/top.aspx" + (Composite.RuntimeInformation.IsDebugBuild ? "?mode=develop" : ""));
                 }
                 
                 
