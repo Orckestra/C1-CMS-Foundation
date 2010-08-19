@@ -12,6 +12,7 @@ using Composite.Linq;
 using Composite.Logging;
 using Composite.Transactions;
 using Composite.Users;
+using Composite.Security;
 
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider
@@ -116,6 +117,9 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
                         }
                     }
                 }
+
+                EntityTokenCacheFacade.ClearCache(sourcePage.GetDataEntityToken());
+                EntityTokenCacheFacade.ClearCache(newPage.GetDataEntityToken());
 
                 transactionScope.Complete();
             }

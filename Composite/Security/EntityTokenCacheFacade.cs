@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define DISABLE_ENTITYTOKEN_CACHE
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,6 +68,9 @@ namespace Composite.Security
 
         public static void AddNativeCache(EntityToken entityToken, IEnumerable<EntityToken> parentEntityTokens)
         {
+#if DISABLE_ENTITYTOKEN_CACHE
+            return;
+#else
             if ((Enabled == false) || (UserValidationFacade.IsLoggedIn() == false)) return;
 
             CacheEntry cacheEntry = new CacheEntry(entityToken)
@@ -83,12 +87,16 @@ namespace Composite.Security
             {
                 _nativeCache = new ConcurrentDictionary<CacheKey, CacheEntry>();
             }
+#endif
         }
 
 
 
         public static void AddHookingCache(EntityToken entityToken, IEnumerable<EntityToken> parentEntityTokens)
         {
+#if DISABLE_ENTITYTOKEN_CACHE
+            return;
+#else
             if ((Enabled == false) || (UserValidationFacade.IsLoggedIn() == false)) return;
 
             CacheEntry cacheEntry = new CacheEntry(entityToken)
@@ -105,13 +113,18 @@ namespace Composite.Security
             {
                 _hookingCache = new ConcurrentDictionary<CacheKey, CacheEntry>();
             }
+#endif
         }
 
 
 
         public static bool GetCachedNativeParents(EntityToken entityToken, out IEnumerable<EntityToken> parentEntityTokens)
         {
-            if (!Enabled == false)
+#if DISABLE_ENTITYTOKEN_CACHE
+            parentEntityTokens = null;
+            return false;
+#else
+            if (Enabled == false)
             {
                 parentEntityTokens = null;
                 return false;
@@ -120,11 +133,18 @@ namespace Composite.Security
             string userName = UserValidationFacade.IsLoggedIn() ? ResolveUsername() : null;
 
             return GetCachedNativeParents(entityToken, out parentEntityTokens, userName);
+#endif
         }
+
+
 
         internal static bool GetCachedNativeParents(EntityToken entityToken, out IEnumerable<EntityToken> parentEntityTokens, string userName)
         {
-            if (!Enabled || userName == null)
+#if DISABLE_ENTITYTOKEN_CACHE
+            parentEntityTokens = null;
+            return false;
+#else
+            if ((Enabled == false) || (userName == null))
             {
                 parentEntityTokens = null;
                 return false;
@@ -145,12 +165,18 @@ namespace Composite.Security
                 parentEntityTokens = null;
                 return false;
             }
+#endif
         }
+
 
 
         public static bool GetCachedHookingParents(EntityToken entityToken, out IEnumerable<EntityToken> parentEntityTokens)
         {
-            if (!Enabled == false)
+#if DISABLE_ENTITYTOKEN_CACHE
+            parentEntityTokens = null;
+            return false;
+#else
+            if (Enabled == false)
             {
                 parentEntityTokens = null;
                 return false;
@@ -159,12 +185,18 @@ namespace Composite.Security
             string userName = UserValidationFacade.IsLoggedIn() ? ResolveUsername() : null;
 
             return GetCachedHookingParents(entityToken, out parentEntityTokens, userName);
+#endif
         }
+
 
 
         internal static bool GetCachedHookingParents(EntityToken entityToken, out IEnumerable<EntityToken> parentEntityTokens, string userName)
         {
-            if (!Enabled || userName == null)
+#if DISABLE_ENTITYTOKEN_CACHE
+            parentEntityTokens = null;
+            return false;
+#else
+            if ((Enabled == false) || (userName == null))
             {
                 parentEntityTokens = null;
                 return false;
@@ -185,7 +217,52 @@ namespace Composite.Security
                 parentEntityTokens = null;
                 return false;
             }
-        }        
+#endif
+        }
+
+
+
+        public static void ClearCache(EntityToken entityToken)
+        {
+#if DISABLE_ENTITYTOKEN_CACHE            
+            return;
+#else
+            if (Enabled == false)
+            {
+                return;
+            }
+
+            string userName = UserValidationFacade.IsLoggedIn() ? ResolveUsername() : null;
+
+            ClearCache(entityToken, userName);
+#endif
+        }
+
+
+
+        public static void ClearCache(EntityToken entityToken, string userName)
+        {
+#if DISABLE_ENTITYTOKEN_CACHE            
+            return;
+#else
+
+            if ((Enabled == false) || (userName == null))
+            {
+                return;
+            }
+
+            CacheKey cacheKey = new CacheKey { Username = userName, EntityToken = entityToken };
+
+            CacheEntry nativeCacheEntry;
+            _nativeCache.TryRemove(cacheKey, out nativeCacheEntry);
+
+            CacheEntry hookingCacheEntry;
+            _hookingCache.TryRemove(cacheKey, out hookingCacheEntry);
+            {
+                _hookingCache = new ConcurrentDictionary<CacheKey,CacheEntry>();
+            }
+#endif
+        }
 
 
 

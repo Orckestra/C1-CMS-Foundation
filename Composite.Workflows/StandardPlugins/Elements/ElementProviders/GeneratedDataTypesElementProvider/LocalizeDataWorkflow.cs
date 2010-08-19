@@ -18,6 +18,7 @@ using Composite.Users;
 using Composite.Linq;
 using Composite.Workflow;
 using System.Reflection;
+using Composite.Security;
 
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
@@ -142,6 +143,9 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
 
                     newData = DataFacade.AddNew(newData);
                 }
+
+                EntityTokenCacheFacade.ClearCache(data.GetDataEntityToken());
+                EntityTokenCacheFacade.ClearCache(newData.GetDataEntityToken());
 
                 transactionScope.Complete();
             }
