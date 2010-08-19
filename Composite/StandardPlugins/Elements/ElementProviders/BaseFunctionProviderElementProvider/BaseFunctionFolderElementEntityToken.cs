@@ -8,8 +8,12 @@ using Composite.Security;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(BaseFunctionFolderElementEntityTokenSecurityAncestorProvider))]
-	internal sealed class BaseFunctionFolderElementEntityToken : EntityToken
+	public sealed class BaseFunctionFolderElementEntityToken : EntityToken
 	{
         private string _id;
 

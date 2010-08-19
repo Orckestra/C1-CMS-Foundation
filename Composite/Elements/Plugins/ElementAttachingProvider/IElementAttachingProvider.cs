@@ -1,12 +1,16 @@
 ﻿using System.Collections.Generic;
+using Composite.Elements.Plugins.ElementAttachingProvider.Runtime;
 using Composite.Security;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
-using Composite.Elements.Plugins.ElementAttachingProvider.Runtime;
 
 
 namespace Composite.Elements.Plugins.ElementAttachingProvider
 {
-    internal enum ElementAttachingProviderPosition
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public enum ElementAttachingProviderPosition
     {
         /// <summary>
         /// At the top

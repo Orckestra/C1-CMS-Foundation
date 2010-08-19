@@ -2,7 +2,11 @@
 
 namespace Composite.Forms.Flows
 {
-    internal interface IFormFlowRenderingService : IFlowControllerService
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public interface IFormFlowRenderingService : IFlowControllerService
     {
         void RerenderView();
         bool RerenderViewRequested { get; }

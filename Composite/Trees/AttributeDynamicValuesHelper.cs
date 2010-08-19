@@ -4,7 +4,11 @@ using System.Xml.Linq;
 
 namespace Composite.Trees
 {
-    internal sealed class AttributeDynamicValuesHelper
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class AttributeDynamicValuesHelper
     {
         private Dictionary<string, DynamicValuesHelper> _dynamicValuesHelpers = new Dictionary<string, DynamicValuesHelper>();
 

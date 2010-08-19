@@ -9,11 +9,23 @@ using Composite.Data.Types.StoreIdFilter.Foundation;
 
 namespace Composite.Data.Types.StoreIdFilter
 {
-    internal interface IStorageFilter {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public interface IStorageFilter 
+    {
         string StoreId { get; }
     }
 
-    internal sealed class StoreIdFilterQueryable<T> : IStoreIdFilterQueryable, IOrderedQueryable<T>, IQueryProvider, IStorageFilter
+
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class StoreIdFilterQueryable<T> : IStoreIdFilterQueryable, IOrderedQueryable<T>, IQueryProvider, IStorageFilter
     {
         private IQueryable<T> _originalQueryable;
         private string _storeId;

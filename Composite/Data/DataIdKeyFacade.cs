@@ -4,7 +4,11 @@ using Composite.EventSystem;
 
 namespace Composite.Data
 {
-    internal static class DataIdKeyFacade
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class DataIdKeyFacade
     {
         private static IDataIdKeyFacade _implementation = new DataIdKeyFacadeImpl();
 

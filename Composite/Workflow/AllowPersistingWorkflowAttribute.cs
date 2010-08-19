@@ -2,7 +2,11 @@
 
 namespace Composite.Workflow
 {
-    internal enum WorkflowPersistingType
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public enum WorkflowPersistingType
     {
         /// <summary>
         /// Never persisted
@@ -21,9 +25,12 @@ namespace Composite.Workflow
     }
 
 
-
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    internal sealed class AllowPersistingWorkflowAttribute : Attribute
+    public sealed class AllowPersistingWorkflowAttribute : Attribute
     {
         public AllowPersistingWorkflowAttribute(WorkflowPersistingType workflowPersistingType)
         {

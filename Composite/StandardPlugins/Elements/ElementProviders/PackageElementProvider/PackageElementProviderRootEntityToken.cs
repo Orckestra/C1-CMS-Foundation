@@ -4,8 +4,12 @@ using Composite.Security.SecurityAncestorProviders;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
-    internal sealed class PackageElementProviderRootEntityToken : EntityToken
+    public sealed class PackageElementProviderRootEntityToken : EntityToken
 	{
         public override string Type
         {

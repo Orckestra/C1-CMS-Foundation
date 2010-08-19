@@ -9,7 +9,11 @@ using Composite.Security;
 
 namespace Composite.Trees
 {
-    internal static class TreeFacade
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class TreeFacade
     {
         private static ITreeFacade _implementation = new TreeFacadeImpl();
         private static object _lock = new object();

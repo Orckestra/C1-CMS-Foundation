@@ -3,8 +3,12 @@ using Composite.Security.SecurityAncestorProviders;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
-    internal sealed class WebsiteFileElementProviderRootEntityToken : EntityToken
+    public sealed class WebsiteFileElementProviderRootEntityToken : EntityToken
 	{
         private string _providerName;
 

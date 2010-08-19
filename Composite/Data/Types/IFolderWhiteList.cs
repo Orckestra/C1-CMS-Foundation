@@ -31,7 +31,11 @@ namespace Composite.Data.Types
 
 
 
-    internal static class IFolderWhiteListExtensions
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class IFolderWhiteListExtensions
     {
         public static string GetTildePath(string fullPath)
         {

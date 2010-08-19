@@ -7,8 +7,12 @@ using Composite.Data.Types;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [FileStreamManager(typeof(FileSystemFileStreamManager))]
-    internal sealed class WorkflowMediaFile : FileSystemFileBase, IMediaFile
+    public sealed class WorkflowMediaFile : FileSystemFileBase, IMediaFile
     {
         public WorkflowMediaFile()
         {

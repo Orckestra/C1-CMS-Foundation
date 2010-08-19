@@ -4,8 +4,12 @@ using Composite.Security.SecurityAncestorProviders;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
-    internal sealed class PageElementProviderEntityToken : EntityToken
+    public sealed class PageElementProviderEntityToken : EntityToken
 	{
         private string _source;
 

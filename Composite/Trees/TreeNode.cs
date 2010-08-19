@@ -15,8 +15,12 @@ using Composite.Types;
 
 
 namespace Composite.Trees
-{   
-    internal sealed class AncestorResult
+{
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class AncestorResult
     {
         public AncestorResult(TreeNode treeNode, EntityToken entityToken)
         {
@@ -33,7 +37,11 @@ namespace Composite.Trees
 
 
 
-    internal abstract class TreeNode
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public abstract class TreeNode
     {       
         protected List<TreeNode> _childNodes = new List<TreeNode>();
         protected List<ActionNode> _actionNodes = new List<ActionNode>();

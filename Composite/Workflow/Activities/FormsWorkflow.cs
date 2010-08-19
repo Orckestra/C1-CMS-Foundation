@@ -692,7 +692,7 @@ namespace Composite.Workflow.Activities
 
 
 
-        internal DynamicValuesHelperReplaceContext CreateDynamicValuesHelperReplaceContext()
+        public DynamicValuesHelperReplaceContext CreateDynamicValuesHelperReplaceContext()
         {
             return CreateDynamicValuesHelperReplaceContext(this.ExtraPayload);
         }

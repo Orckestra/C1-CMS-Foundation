@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
-using Composite.Security;
+﻿using System;
+using System.Collections.Generic;
 using Composite.Data;
-using System;
+using Composite.Security;
 
 
 namespace Composite.Trees
 {
-    internal static class PiggybagExtensionMethods
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class PiggybagExtensionMethods
     {
         private const string ParrentEntityTokenPiggybagString = "ParentEntityToken";
         private const string ParrentNodeIdPiggybagString = "ParentId";

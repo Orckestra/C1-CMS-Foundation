@@ -3,8 +3,12 @@
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(MediaFileProviderEntityTokenSecurityAncestorProvider))]
-    internal sealed class MediaRootFolderProviderEntityToken : EntityToken
+    public sealed class MediaRootFolderProviderEntityToken : EntityToken
 	{
         private string _id;
 

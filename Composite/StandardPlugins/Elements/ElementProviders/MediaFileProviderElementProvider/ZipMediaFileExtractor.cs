@@ -14,7 +14,11 @@ using Composite.Transactions;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
-    internal sealed class ZipMediaFileExtractor
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class ZipMediaFileExtractor
     {
         private static readonly TimeSpan extrationTimeout = TimeSpan.FromMinutes(15);
 

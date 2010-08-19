@@ -25,15 +25,23 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.XsltBasedFunctionProvider
 {
-    internal enum OutputXmlSubType
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public enum OutputXmlSubType
     {
         XHTML,
         XML
     }
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [ConfigurationElementType(typeof(XsltBasedFunctionProviderData))]
-    internal sealed class XsltBasedFunctionProvider : IDynamicTypeFunctionProvider
+    public sealed class XsltBasedFunctionProvider : IDynamicTypeFunctionProvider
     {
         private FunctionNotifier _functionNotifier;
 
@@ -80,7 +88,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.XsltBasedFunctio
         }
 
 
-        internal static void ResolveImportIncludePaths(XContainer doc)
+        public static void ResolveImportIncludePaths(XContainer doc)
         {
             IEnumerable<XElement> imports = doc.Descendants().Where(f => f.Name == Namespaces.Xsl + "import" || f.Name == Namespaces.Xsl + "include").ToList();
             foreach (XElement import in imports)

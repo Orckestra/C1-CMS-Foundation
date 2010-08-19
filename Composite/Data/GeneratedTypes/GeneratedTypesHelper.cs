@@ -20,7 +20,11 @@ using Microsoft.CSharp;
 
 namespace Composite.Data.GeneratedTypes
 {
-    internal sealed class GeneratedTypesHelper
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class GeneratedTypesHelper
     {
         private static readonly string[] ReservedNamespaces = new[] { "System", "Composite.Data.GeneratedTypes", "GeneratedTypes" };
         private static readonly string CompositeNamespace = "Composite";

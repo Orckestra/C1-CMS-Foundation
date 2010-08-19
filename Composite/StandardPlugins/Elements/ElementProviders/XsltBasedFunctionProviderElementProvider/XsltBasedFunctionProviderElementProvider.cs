@@ -18,8 +18,12 @@ using Microsoft.Practices.ObjectBuilder;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [ConfigurationElementType(typeof(XsltBasedFunctionProviderElementProviderData))]
-    internal sealed class XsltBasedFunctionProviderElementProvider : BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider
+    public sealed class XsltBasedFunctionProviderElementProvider : BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider
     {
         private string _providerName;
 

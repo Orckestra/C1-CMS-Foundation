@@ -17,7 +17,7 @@ namespace Composite.Data.DynamicTypes
     {
         private static IDynamicTypeManager _dynamicTypeManager = new DynamicTypeManagerImpl();
 
-        internal static IDynamicTypeManager Implementation { get { return _dynamicTypeManager; } set { _dynamicTypeManager = value; } }
+        public static IDynamicTypeManager Implementation { get { return _dynamicTypeManager; } set { _dynamicTypeManager = value; } }
 
 
 

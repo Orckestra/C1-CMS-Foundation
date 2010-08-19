@@ -4,7 +4,11 @@ using System.Globalization;
 
 namespace Composite.Data.DynamicTypes
 {
-	internal interface IDynamicTypeManager
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public interface IDynamicTypeManager
 	{
         DataTypeDescriptor BuildNewDataTypeDescriptor(Type typeToDescript);
         bool TryGetDataTypeDescriptor(Guid immuteableTypeId, out DataTypeDescriptor dataTypeDescriptor);

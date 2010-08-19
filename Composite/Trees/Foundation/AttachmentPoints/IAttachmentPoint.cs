@@ -5,7 +5,11 @@ using Composite.Security;
 
 namespace Composite.Trees.Foundation.AttachmentPoints
 {
-    internal interface IBaseAttachmentPoint
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public interface IBaseAttachmentPoint
     {
         ElementAttachingProviderPosition Position { get; set; }
 
@@ -14,7 +18,12 @@ namespace Composite.Trees.Foundation.AttachmentPoints
 
 
 
-    internal interface IAttachmentPoint : IBaseAttachmentPoint
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public interface IAttachmentPoint : IBaseAttachmentPoint
     {
         bool IsAttachmentPoint(EntityToken parentEntityToken);                
        

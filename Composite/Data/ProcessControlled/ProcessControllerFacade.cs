@@ -17,7 +17,11 @@ using Composite.Linq;
 
 namespace Composite.Data.ProcessControlled
 {
-    internal static class ProcessControllerFacade
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class ProcessControllerFacade
     {
         private static Dictionary<Type, Type> _controlledTypes = new Dictionary<Type, Type>();
 

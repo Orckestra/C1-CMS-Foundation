@@ -3,7 +3,11 @@
 
 namespace Composite.Trees
 {
-	internal sealed class BuildResult
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public sealed class BuildResult
 	{
         private List<ValidationError> _validationError = new List<ValidationError>();
 

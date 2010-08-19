@@ -13,7 +13,11 @@ using Composite.Types;
 
 namespace Composite.Functions.ManagedParameters
 {
-    internal static class ManagedParameterManager
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class ManagedParameterManager
     {
         public static IEnumerable<ManagedParameterDefinition> Load(Guid ownerId)
         {

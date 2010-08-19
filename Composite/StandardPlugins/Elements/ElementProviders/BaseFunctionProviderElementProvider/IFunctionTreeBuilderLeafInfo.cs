@@ -4,7 +4,11 @@ using Composite.Collections;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider
 {
-    internal interface IFunctionTreeBuilderLeafInfo : INamespaceTreeBuilderLeafInfo
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public interface IFunctionTreeBuilderLeafInfo : INamespaceTreeBuilderLeafInfo
 	{
         EntityToken EntityToken { get; }
 	}

@@ -9,7 +9,11 @@ using Composite.Forms.Flows;
 
 namespace Composite.Forms.Flows
 {
-    internal sealed class StringBasedFormMarkupProvider : IFormMarkupProvider
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class StringBasedFormMarkupProvider : IFormMarkupProvider
     {
         private string Document { get; set; }
 

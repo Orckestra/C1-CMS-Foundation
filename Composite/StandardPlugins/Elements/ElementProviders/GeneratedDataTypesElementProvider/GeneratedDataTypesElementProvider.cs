@@ -62,8 +62,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [ActionExecutor(typeof(DataTypeDescriptorToXmlActionExecutor))]
-    internal sealed class DataTypeDescriptorToXmlActionToken : ActionToken
+    public sealed class DataTypeDescriptorToXmlActionToken : ActionToken
     {
         private static PermissionType[] _permissionTypes = new PermissionType[] { PermissionType.Administrate };
 

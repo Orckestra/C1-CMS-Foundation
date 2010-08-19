@@ -8,7 +8,11 @@ using Composite.Data.Foundation;
 
 namespace Composite.Data.ExtendedDataType.Debug
 {
-    internal sealed class DynamicTempTypeCreator
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class DynamicTempTypeCreator
     {
         private string _namePrefix;
         private List<DataFieldDescriptor> _dataFieldDescriptors;

@@ -7,7 +7,11 @@ using Composite.Data.DynamicTypes;
 
 namespace Composite.Data.Plugins.DataProvider
 {
-    internal interface IDynamicDataProvider : IDataProvider
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public interface IDynamicDataProvider : IDataProvider
     {
         /// <summary>
         /// This method should return ALL data interface that the provider knows. Including

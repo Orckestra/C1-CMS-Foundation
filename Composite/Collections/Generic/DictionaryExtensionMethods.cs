@@ -4,7 +4,11 @@ using System.Collections.Generic;
 
 namespace Composite.Collections.Generic
 {
-	internal static class DictionaryExtensionMethods
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public static class DictionaryExtensionMethods
 	{
         public static void AddDictionary<TKey, TValue>(this Dictionary<TKey, TValue> targetDictionary, Dictionary<TKey, TValue> sourceDictionary)
         {

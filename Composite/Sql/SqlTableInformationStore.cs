@@ -3,7 +3,11 @@
 
 namespace Composite.Sql
 {
-    internal static class SqlTableInformationStore
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class SqlTableInformationStore
     {
         private static ISqlTableInformationStore _implementation = new SqlTableInformationStoreImpl();
 

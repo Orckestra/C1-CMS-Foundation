@@ -23,7 +23,11 @@ using Composite.Types;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.SqlFunctionProvider
 {
-    internal sealed class SqlFunction : IFunction
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class SqlFunction : IFunction
     {
         ISqlFunctionInfo _functionInfo;
         IEnumerable<ParameterProfile> _parameterProfiles;

@@ -19,8 +19,13 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
 
 
 
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(AddOnElementProviderAvailableAddOnsItemEntityTokenAncestorProvider))]
-    internal sealed class PackageElementProviderAvailablePackagesItemEntityToken : EntityToken
+    public sealed class PackageElementProviderAvailablePackagesItemEntityToken : EntityToken
     {
         private string _id;
 

@@ -26,8 +26,10 @@ namespace Composite.Data
     /// <summary>
     /// This class is used when adding a new page metadata type to a given page. In other words, in workflow only.
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SerializerHandler(typeof(PageMetaDataDescriptionSerializerHandler))]
-    internal sealed class PageMetaDataDescription
+    public sealed class PageMetaDataDescription
     {
         public static PageMetaDataDescription OneToOne() { return new PageMetaDataDescription(PageMetaDataDescriptionType.OneToOne); }
         public static PageMetaDataDescription Branch() { return new PageMetaDataDescription(PageMetaDataDescriptionType.Branch, 0, 100000); }
@@ -149,7 +151,11 @@ namespace Composite.Data
 
 
 
-    internal enum PageMetaDataDescriptionType
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public enum PageMetaDataDescriptionType
     {
         OneToOne = 0,
         Branch = 1,

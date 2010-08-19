@@ -169,6 +169,8 @@ namespace Composite.Security
         {
             if (_entityTokenUniquenessValidated == true) return;
 
+            _entityTokenUniquenessValidated = true;
+
             if ((string.IsNullOrEmpty(this.Type) == true) &&
                     (string.IsNullOrEmpty(this.Source) == true) &&
                     (string.IsNullOrEmpty(this.Id) == true))

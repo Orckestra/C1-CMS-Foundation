@@ -9,7 +9,11 @@ using Composite.Types;
 
 namespace Composite.Functions
 {
-	internal static class XslExtensionsManager
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public static class XslExtensionsManager
 	{
         public static void Register(XsltArgumentList argumentList)
         {

@@ -1,6 +1,10 @@
 ﻿namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
-	internal abstract class WebsiteEntity
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public abstract class WebsiteEntity
 	{
         public WebsiteEntity(string fullPath, bool isFolder)
         {

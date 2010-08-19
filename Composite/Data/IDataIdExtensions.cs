@@ -4,7 +4,11 @@ using System;
 
 namespace Composite.Data
 {
-    internal static class IDataIdExtensions
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class IDataIdExtensions
     {
         public static void FullCopyTo(this IDataId sourceDataId, IDataId targetDataId)
         {

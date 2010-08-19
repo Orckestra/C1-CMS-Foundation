@@ -6,7 +6,11 @@ using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 namespace Composite.Validation
 {
-    internal static class ValidationFacade
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class ValidationFacade
     {
         private static IValidationFacade _implementation = new ValidationFacadeImpl();
 

@@ -7,8 +7,12 @@ using Composite.GlobalSettings;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.DeveloperApplicationProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
-    internal sealed class DeveloperApplicationProviderEntityToken : EntityToken
+    public sealed class DeveloperApplicationProviderEntityToken : EntityToken
     {        
         private string _id;
         private string _source;

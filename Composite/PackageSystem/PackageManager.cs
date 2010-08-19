@@ -15,7 +15,11 @@ using Composite.Logging;
 
 namespace Composite.PackageSystem
 {
-    internal static class PackageManager
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class PackageManager
     {
         public static IEnumerable<InstalledPackageInformation> GetInstalledPackages()
         {

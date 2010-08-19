@@ -9,7 +9,11 @@ using Composite.Forms;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider
 {
-	internal sealed class GlobalPermissionsFormsHelper
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public sealed class GlobalPermissionsFormsHelper
 	{
         private List<XElement> _bindingElements = null;
         private XElement _fieldGroupElement = null;

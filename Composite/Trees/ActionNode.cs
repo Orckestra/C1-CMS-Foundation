@@ -10,7 +10,11 @@ using Composite.Serialization;
 
 namespace Composite.Trees
 {
-	internal abstract class ActionNode
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public abstract class ActionNode
 	{
         private static string TreeIdSerializedKeyName = "_TreeId_";
         private static string ActionNodeIdSerializedKeyName = "_ActionNodeId_";

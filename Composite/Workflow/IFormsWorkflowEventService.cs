@@ -4,8 +4,12 @@ using System.Workflow.Activities;
 
 namespace Composite.Workflow
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [ExternalDataExchange()]
-    internal interface IFormsWorkflowEventService
+    public interface IFormsWorkflowEventService
     {
         event EventHandler<FormEventArgs> Save;
         event EventHandler<FormEventArgs> Next;

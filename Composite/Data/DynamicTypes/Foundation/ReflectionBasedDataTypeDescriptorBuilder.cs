@@ -8,9 +8,13 @@ using Composite.Types;
 
 namespace Composite.Data.DynamicTypes.Foundation
 {
-    internal class ReflectionBasedDescriptorBuilder
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class ReflectionBasedDescriptorBuilder
     {
-        internal static DataTypeDescriptor Build(Type type)
+        public static DataTypeDescriptor Build(Type type)
         {
             if (type == null) throw new ArgumentNullException("type");
             if (typeof(IData).IsAssignableFrom(type) == false) throw new ArgumentException(string.Format("{0} does not implement {1}", type.FullName, typeof(IData).FullName));

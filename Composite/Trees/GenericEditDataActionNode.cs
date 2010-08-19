@@ -10,7 +10,11 @@ using Composite.Workflow;
 
 namespace Composite.Trees
 {
-	internal sealed class GenericEditDataActionNode : ActionNode
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public sealed class GenericEditDataActionNode : ActionNode
 	{
         public string CustomFormMarkupPath { get; internal set; }   // Optional
 

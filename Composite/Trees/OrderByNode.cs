@@ -3,7 +3,11 @@
 
 namespace Composite.Trees
 {
-    internal abstract class OrderByNode
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public abstract class OrderByNode
     {
         public string XPath { get; internal set; }
         public DataElementsTreeNode OwnerNode { get; internal set; }

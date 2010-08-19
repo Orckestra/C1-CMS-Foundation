@@ -17,7 +17,11 @@ using Composite.Workflow;
 
 namespace Composite.Trees
 {
-    internal sealed class GenericAddDataActionNode : ActionNode
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class GenericAddDataActionNode : ActionNode
 	{
         public static string InterfaceTypeWorkflowPayloadKeyName = "_InterfaceType_";
         public static string CustomFormMarkupPathWorkflowPayloadKeyName = "_CustomFormMarkupPath_";

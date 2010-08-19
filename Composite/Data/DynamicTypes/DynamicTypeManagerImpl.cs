@@ -10,7 +10,11 @@ using Composite.Transactions;
 
 namespace Composite.Data.DynamicTypes
 {
-    internal sealed class DynamicTypeManagerImpl : IDynamicTypeManager
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class DynamicTypeManagerImpl : IDynamicTypeManager
     {
         public DataTypeDescriptor BuildNewDataTypeDescriptor(Type typeToDescript)
         {

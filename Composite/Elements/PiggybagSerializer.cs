@@ -5,7 +5,11 @@ using Composite.Serialization;
 
 namespace Composite.Elements
 {
-	internal static class PiggybagSerializer
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public static class PiggybagSerializer
 	{
         public static string Serialize(Dictionary<string, string> piggybag)
         {

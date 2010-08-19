@@ -12,8 +12,12 @@ using Composite.Types;
 
 namespace Composite.Elements.ElementProviderHelpers.DataGroupingProviderHelper
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
-    internal sealed class DataGroupingProviderHelperEntityToken : EntityToken
+    public sealed class DataGroupingProviderHelperEntityToken : EntityToken
     {
         private const string _magicNullValue = "·NULL·";
         private string _type;

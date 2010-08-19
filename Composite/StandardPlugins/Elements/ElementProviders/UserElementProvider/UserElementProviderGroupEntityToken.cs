@@ -3,8 +3,12 @@ using Composite.Security;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(UserElementProviderGroupEntityTokenSecurityAncestorProvider))]
-    internal sealed class UserElementProviderGroupEntityToken : EntityToken
+    public sealed class UserElementProviderGroupEntityToken : EntityToken
 	{
         private string _id;
 

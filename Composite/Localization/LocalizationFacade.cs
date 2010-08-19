@@ -12,7 +12,11 @@ using Composite.Users;
 
 namespace Composite.Localization
 {
-    internal static class LocalizationFacade
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class LocalizationFacade
     {
         /// <summary>
         /// Returns true if the given locale is already installed

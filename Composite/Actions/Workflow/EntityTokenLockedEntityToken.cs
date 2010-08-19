@@ -3,8 +3,12 @@
 
 namespace Composite.Actions.Workflows
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     // This is a dummy token, no elements using this token exists!
-    internal sealed class EntityTokenLockedEntityToken : EntityToken
+    public sealed class EntityTokenLockedEntityToken : EntityToken
 	{
         private string _lockedByUsername;
         private string _serializedLockedActionToken;

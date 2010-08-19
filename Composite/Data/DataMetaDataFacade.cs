@@ -11,7 +11,11 @@ using Composite.IO;
 
 namespace Composite.Data
 {
-    internal static class DataMetaDataFacade
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class DataMetaDataFacade
     {
         private static Dictionary<Guid, DataTypeDescriptor> _dataTypeDescriptorCache = null;
         private static Dictionary<Guid, string> _dataTypeDescriptorFilesnamesCache = null;

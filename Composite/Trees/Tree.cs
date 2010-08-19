@@ -9,16 +9,20 @@ using Composite.Trees.Foundation.AttachmentPoints;
 
 namespace Composite.Trees
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     [DebuggerDisplay("{TreeId}")]
-    internal sealed class Tree
+    public sealed class Tree
     {
-        public string TreeId { get; private set ;}
+        public string TreeId { get; private set; }
         public string AllowedAttachmentApplicationName { get; internal set; }
         public TreeNode RootTreeNode { get; internal set; }
 
 
         internal BuildProcessContext BuildProcessContext { get; set; }
-        internal BuildResult BuildResult { get; set; }
+        public BuildResult BuildResult { get; set; }
 
 
         // These are used to attach this tree at current/existing places
@@ -61,21 +65,21 @@ namespace Composite.Trees
 
 
 
-        internal bool HasAttachmentPoints(EntityToken parentEntityToken)
+        public bool HasAttachmentPoints(EntityToken parentEntityToken)
         {
             return this.AttachmentPoints.Where(f => f.IsAttachmentPoint(parentEntityToken) == true).Any();
         }
 
 
 
-        internal bool HasPossibleAttachmentPoints(EntityToken parentEntityToken)
+        public bool HasPossibleAttachmentPoints(EntityToken parentEntityToken)
         {
             return this.PossibleAttachmentPoints.Where(f => f.IsPossibleAttachmentPoint(parentEntityToken) == true).Any();
         }
 
 
 
-        internal IEnumerable<IAttachmentPoint> GetAttachmentPoints(EntityToken parentEntityToken)
+        public IEnumerable<IAttachmentPoint> GetAttachmentPoints(EntityToken parentEntityToken)
         {
             return this.AttachmentPoints.Where(f => f.IsAttachmentPoint(parentEntityToken));
         }
@@ -154,5 +158,5 @@ namespace Composite.Trees
             LoggingService.LogVerbose("TreeFacade", "Tree nodes:");
             this.RootTreeNode.LogTree(1);
         }
-    }    
+    }
 }

@@ -3,8 +3,12 @@ using System.Globalization;
 
 namespace Composite.StringExtensions
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Obsolete("Use Composite.Extensions.StringExtensionMethods instead")]
-	internal static class StringExtensions
+	public static class StringExtensions
 	{
         public static string FormatWith(this string format, params object[] args)
         {

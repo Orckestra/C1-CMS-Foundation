@@ -4,7 +4,11 @@ using System.Data;
 
 namespace Composite.Sql
 {
-    internal sealed class SqlColumnInformation
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class SqlColumnInformation
     {
         private static readonly char[] _trimChars = new char[] { ' ' };
 

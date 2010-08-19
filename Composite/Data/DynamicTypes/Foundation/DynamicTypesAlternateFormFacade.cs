@@ -6,7 +6,11 @@ using Composite.Data.Types;
 
 namespace Composite.Data.DynamicTypes.Foundation
 {
-    internal static class DynamicTypesAlternateFormFacade
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class DynamicTypesAlternateFormFacade
     {
         // returns null if no alternate form exists
         public static string GetAlternateFormMarkup(DataTypeDescriptor dataTypeDescriptor)

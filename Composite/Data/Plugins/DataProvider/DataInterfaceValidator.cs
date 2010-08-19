@@ -8,7 +8,11 @@ using Composite.ResourceSystem;
 
 namespace Composite.Data.Plugins.DataProvider
 {
-    internal static class DataInterfaceValidator
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class DataInterfaceValidator
     {
         public static bool TryValidate(Type interfaceType, out IEnumerable<string> errorMessages)
         {

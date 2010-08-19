@@ -4,7 +4,11 @@ using Composite.Validation.ClientValidationRules;
 
 namespace Composite.Validation
 {
-    internal static class ClientValidationRuleFacade
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class ClientValidationRuleFacade
     {
         private static IClientValidationRuleFacade _implementation = new ClientValidationRuleFacadeImpl();
 

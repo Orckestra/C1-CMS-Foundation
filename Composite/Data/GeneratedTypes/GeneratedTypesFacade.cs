@@ -7,30 +7,47 @@ using Composite.Types;
 
 namespace Composite.Data.GeneratedTypes
 {
-    internal class GenerateNewTypeEventArgs : EventArgs
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class GenerateNewTypeEventArgs : EventArgs
     {
     }
 
 
-    internal class UpdateTypeEventArgs : EventArgs
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class UpdateTypeEventArgs : EventArgs
     {
     }
 
 
-    internal class DeleteTypeEventArgs : EventArgs
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class DeleteTypeEventArgs : EventArgs
     {
     }
 
 
-    
 
 
 
-    internal static class GeneratedTypesFacade
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class GeneratedTypesFacade
     {
-        internal delegate void GenerateNewTypeDelegate(GenerateNewTypeEventArgs args);
-        internal delegate void UpdateTypeDelegate(UpdateTypeEventArgs args);
-        internal delegate void DeleteTypeDelegate(DeleteTypeEventArgs args);
+        public delegate void GenerateNewTypeDelegate(GenerateNewTypeEventArgs args);
+        public delegate void UpdateTypeDelegate(UpdateTypeEventArgs args);
+        public delegate void DeleteTypeDelegate(DeleteTypeEventArgs args);
 
 
         private static event GenerateNewTypeDelegate _generateNewTypeDelegate;

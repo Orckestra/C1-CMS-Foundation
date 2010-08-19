@@ -10,7 +10,11 @@ using Composite.Xml;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider
 {
-	internal sealed class ActivePerspectiveFormsHelper
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public sealed class ActivePerspectiveFormsHelper
 	{
         private List<Element> _perspectiveElements;
         private List<XElement> _bindingElements = null;

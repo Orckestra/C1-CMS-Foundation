@@ -5,8 +5,12 @@ using System.Collections.Generic;
 
 namespace Composite.Workflow
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Serializable]
-    internal sealed class FormEventArgs : ExternalDataEventArgs
+    public sealed class FormEventArgs : ExternalDataEventArgs
     {
         private string _workflowResult;
 

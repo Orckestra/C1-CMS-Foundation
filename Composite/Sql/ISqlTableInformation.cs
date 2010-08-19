@@ -2,7 +2,11 @@ using System.Collections.Generic;
 
 namespace Composite.Sql
 {
-    internal interface ISqlTableInformation
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public interface ISqlTableInformation
     {
         string TableName { get; }
         bool HasIdentityColumn { get; }

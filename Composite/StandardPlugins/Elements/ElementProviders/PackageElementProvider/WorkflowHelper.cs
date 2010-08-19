@@ -5,7 +5,11 @@ using Composite.PackageSystem;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider
 {
-	internal static class WorkflowHelper
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public static class WorkflowHelper
 	{
         public static object ValidationResultToBinding(List<PackageFragmentValidationResult> packageFragmentValidationResults)
         {

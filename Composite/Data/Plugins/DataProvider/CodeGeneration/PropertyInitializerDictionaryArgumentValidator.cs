@@ -4,7 +4,11 @@ using System.Collections.Generic;
 
 namespace Composite.Data.Plugins.DataProvider.CodeGeneration
 {
-    internal static class PropertyInitializerDictionaryArgumentValidator
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class PropertyInitializerDictionaryArgumentValidator
     {
         public static void Validate(Dictionary<string, Type> propertyInitializers)
         {

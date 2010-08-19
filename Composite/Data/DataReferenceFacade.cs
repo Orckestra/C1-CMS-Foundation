@@ -27,7 +27,7 @@ namespace Composite.Data
         private static object _lock = new object();
 
 
-        internal static List<Type> GetRefereeTypes(this Type referencedType)
+        public static List<Type> GetRefereeTypes(this Type referencedType)
         {
             if (referencedType == null) throw new ArgumentNullException("referencedType");
 
@@ -100,7 +100,7 @@ namespace Composite.Data
 
 
 
-        internal static bool TryValidateForeignKeyIntegrity(this IData refereeData)
+        public static bool TryValidateForeignKeyIntegrity(this IData refereeData)
         {
             if (refereeData == null) throw new ArgumentNullException("refereeData");
 
@@ -109,7 +109,7 @@ namespace Composite.Data
 
 
 
-        internal static bool TryValidateForeignKeyIntegrity(this IData refereeData, List<string> invalidForeignKeyPropertyNames)
+        public static bool TryValidateForeignKeyIntegrity(this IData refereeData, List<string> invalidForeignKeyPropertyNames)
         {
             if (refereeData == null) throw new ArgumentNullException("refereeData");
 
@@ -324,7 +324,7 @@ namespace Composite.Data
 
 
 
-        internal static List<IData> GetNotOptionalReferences<T>(T data) where T : IData
+        public static List<IData> GetNotOptionalReferences<T>(T data) where T : IData
         {
             Verify.ArgumentNotNull(data, "data");
 
@@ -732,7 +732,7 @@ namespace Composite.Data
 
 
 
-        internal static string GetBrokenReferencesReport(List<IData> brokenReferences)
+        public static string GetBrokenReferencesReport(List<IData> brokenReferences)
         {
             var sb = new StringBuilder();
 

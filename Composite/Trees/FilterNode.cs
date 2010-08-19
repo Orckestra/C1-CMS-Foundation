@@ -4,7 +4,11 @@ using System.Collections.Generic;
 
 namespace Composite.Trees
 {
-    internal abstract class FilterNode
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public abstract class FilterNode
     {
         public string XPath { get; internal set; }
         public int Id { get; internal set; }

@@ -15,21 +15,31 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Collections;
 
+
 namespace Composite.StandardPlugins.Functions.FunctionProviders.XsltBasedFunctionProvider
 {
-    internal class TransformationInputs
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class TransformationInputs
     {
         public XContainer InputDocument { get; set; }
         public List<IXsltExtensionDefinition> ExtensionDefinitions { get; set; }
     }
 
-    internal static class RenderHelper
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class RenderHelper
     {
-        internal static readonly XNamespace XsltInput10 = "http://www.composite.net/ns/transformation/input/1.0";
+        public static readonly XNamespace XsltInput10 = "http://www.composite.net/ns/transformation/input/1.0";
 
 
 
-        internal static TransformationInputs BuildInputDocument(IEnumerable<NamedFunctionCall> FunctionCalls, List<ManagedParameterDefinition> parameterDefinitions, bool addDetailedComments)
+        public static TransformationInputs BuildInputDocument(IEnumerable<NamedFunctionCall> FunctionCalls, List<ManagedParameterDefinition> parameterDefinitions, bool addDetailedComments)
         {
             Dictionary<string, object> inputParameters = BuildTestParameterInput(parameterDefinitions);
             return BuildInputDocument(FunctionCalls.ToList(), inputParameters, addDetailedComments);
@@ -37,7 +47,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.XsltBasedFunctio
 
 
 
-        internal static TransformationInputs BuildInputDocument(IEnumerable<NamedFunctionCall> FunctionCalls, ParameterList parameterList, bool addDetailedComments)
+        public static TransformationInputs BuildInputDocument(IEnumerable<NamedFunctionCall> FunctionCalls, ParameterList parameterList, bool addDetailedComments)
         {
             Dictionary<string, object> inputParameters = new Dictionary<string, object>();
             List<string> parameterNames = parameterList.AllParameterNames.ToList();
@@ -281,7 +291,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.XsltBasedFunctio
             return result;
         }
 
-        internal static IEnumerable<NamedFunctionCall> GetValidFunctionCalls(Guid xsltFunctionId, out List<string> errors)
+        public static IEnumerable<NamedFunctionCall> GetValidFunctionCalls(Guid xsltFunctionId, out List<string> errors)
         {
             errors = null;
             List<NamedFunctionCall> result = new List<NamedFunctionCall>();

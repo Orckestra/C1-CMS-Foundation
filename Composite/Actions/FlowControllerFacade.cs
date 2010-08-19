@@ -153,7 +153,7 @@ namespace Composite.Actions
 
 
 
-        internal static void Scavenge()
+        public static void Scavenge()
         {
             LoggingService.LogVerbose("FlowControllerFacade", "Starting scavenger run");
 

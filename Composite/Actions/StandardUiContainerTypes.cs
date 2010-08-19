@@ -2,8 +2,12 @@
 
 
 namespace Composite.Actions
-{    
-    internal static class StandardUiContainerTypes
+{
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class StandardUiContainerTypes
     {
         public static IFlowUiContainerType Document { get { return _document; } }
         public static IFlowUiContainerType EmptyDocument { get { return _emptyDocument; } }

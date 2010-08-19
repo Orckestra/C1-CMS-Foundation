@@ -7,7 +7,11 @@ using System.Text;
 
 namespace Composite.Security.Cryptography
 {
-	internal static class Cryptographer
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public static class Cryptographer
 	{
         private static string _secretKey;
         private static Encoding _encoding = Encoding.Unicode;

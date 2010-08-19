@@ -7,7 +7,11 @@ using Composite.Validation.Validators;
 
 namespace Composite.Data.Plugins.DataProvider.CodeGeneration
 {
-    internal sealed class PropertyList
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class PropertyList
     {
         private Dictionary<string, Property> _properties = new Dictionary<string, Property>();
 

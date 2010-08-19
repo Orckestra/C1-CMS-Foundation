@@ -4,8 +4,12 @@ using System.Collections.Generic;
 
 namespace Composite.Collections
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [DebuggerDisplay("Name = {Name}, Namespace = {Namespace}")]
-    internal sealed class NamespaceTreeBuilderFolder
+    public sealed class NamespaceTreeBuilderFolder
     {
         internal NamespaceTreeBuilderFolder(string name, string namespaceName)
         {

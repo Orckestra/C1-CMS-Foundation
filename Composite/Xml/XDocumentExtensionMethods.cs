@@ -5,7 +5,11 @@ using System.Xml.Linq;
 
 namespace Composite.Xml
 {
-	internal static class XDocumentExtensionMethods
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public static class XDocumentExtensionMethods
 	{
         public static string GetDocumentAsString(this XDocument document)
         {

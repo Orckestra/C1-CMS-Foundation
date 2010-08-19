@@ -4,7 +4,11 @@ using System.Web.Hosting;
 
 namespace Composite.Extensions
 {
-    internal static class IApplicationHostExtensionMethods
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class IApplicationHostExtensionMethods
     {
         static readonly PropertyInfo _shutdownInitiatedPropertyInfo = typeof(HostingEnvironment).GetProperty("ShutdownInitiated", BindingFlags.NonPublic | BindingFlags.Static);
 

@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml;
-
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Forms.Flows;
-using System.IO;
 
 
 namespace Composite.Forms.DataServices
 {
-    internal class FormDefinitionFileMarkupProvider : IFormMarkupProvider
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class FormDefinitionFileMarkupProvider : IFormMarkupProvider
     {
         private string _formPath;
 

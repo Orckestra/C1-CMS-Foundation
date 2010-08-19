@@ -65,7 +65,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
         }
 
 
-        internal string Path
+        public string Path
         {
             get;
             private set;

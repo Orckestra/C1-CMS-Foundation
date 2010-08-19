@@ -17,8 +17,12 @@ using Composite.Workflow;
 
 
 namespace Composite.Trees
-{   
-    internal class DataElementsTreeNode : DataFilteringTreeNode
+{
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class DataElementsTreeNode : DataFilteringTreeNode
     {             
         public Type InterfaceType { get; internal set; }        // Requried        
         public string Label { get; internal set; }              // Optional

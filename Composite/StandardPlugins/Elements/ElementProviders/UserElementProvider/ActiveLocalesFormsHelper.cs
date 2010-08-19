@@ -10,7 +10,11 @@ using Composite.Xml;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider
 {
-	internal sealed class ActiveLocalesFormsHelper
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public sealed class ActiveLocalesFormsHelper
 	{
         private List<XElement> _bindingElements = null;
         private XElement _fieldGroupElement = null;

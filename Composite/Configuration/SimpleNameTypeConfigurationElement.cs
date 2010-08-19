@@ -1,13 +1,16 @@
 using System;
 using System.Configuration;
 using System.ComponentModel;
-
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 
 namespace Composite.Configuration
 {
-    internal sealed class SimpleNameTypeConfigurationElement : ConfigurationElement
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class SimpleNameTypeConfigurationElement : ConfigurationElement
     {
         private const string _namePropertyName = "name";
         [ConfigurationProperty(_namePropertyName, IsRequired=true)]

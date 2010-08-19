@@ -10,8 +10,12 @@ using Composite.Logging;
 
 namespace Composite.PackageSystem
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SerializerHandler(typeof(PackageManagerInstallProcessSerializerHandler))]
-    internal sealed class PackageManagerInstallProcess
+    public sealed class PackageManagerInstallProcess
     {
         private IPackageInstaller _packageInstaller = null;
         private SystemLockingType _systemLockingType;

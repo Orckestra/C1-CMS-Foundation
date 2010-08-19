@@ -4,7 +4,11 @@ using Composite.Xml;
 
 namespace Composite.Trees
 {
-    internal enum LeafDisplayMode
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public enum LeafDisplayMode
     {
         Compact = 0,
         Lazy = 1,
@@ -13,7 +17,11 @@ namespace Composite.Trees
 
 
 
-    internal static class LeafDisplayModeHelper
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class LeafDisplayModeHelper
     {
         public static LeafDisplayMode ParseDisplayMode(XAttribute attribute, Tree tree)
         {

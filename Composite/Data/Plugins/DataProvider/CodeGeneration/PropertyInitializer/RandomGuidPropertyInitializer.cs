@@ -3,7 +3,11 @@ using System;
 
 namespace Composite.Data.Plugins.DataProvider.CodeGeneration.PropertyInitializer
 {
-    internal sealed class RandomGuidPropertyInitializer : IPropertyInitializer
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class RandomGuidPropertyInitializer : IPropertyInitializer
     {
         public Type ValueType
         {

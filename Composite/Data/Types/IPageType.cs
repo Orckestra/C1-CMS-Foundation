@@ -8,7 +8,11 @@ using Composite.Data.Hierarchy.DataAncestorProviders;
 
 namespace Composite.Data.Types
 {
-    internal enum PageTypeHomepageRelation
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public enum PageTypeHomepageRelation
     {
         NoRestriction = 1,
         OnlySubPages = 2,
@@ -17,7 +21,12 @@ namespace Composite.Data.Types
 
 
 
-    internal static class PageTypeHomepageRelationExtensionMethods
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class PageTypeHomepageRelationExtensionMethods
     {
         public static PageTypeHomepageRelation GetPageTypeHomepageRelation(this string value)
         {
@@ -42,7 +51,12 @@ namespace Composite.Data.Types
 
 
 
-    internal static class PageTypeExtensionMethods
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class PageTypeExtensionMethods
     {
         public static IEnumerable<IPageType> GetChildPageSelectablePageTypes(this IPage parentPage, IPage childPage = null)
         {

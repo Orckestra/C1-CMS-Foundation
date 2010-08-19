@@ -7,8 +7,12 @@ using Composite.Serialization;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(GeneratedDataTypesElementProviderSecurityAncestorProvider))]
-    internal sealed class GeneratedDataTypesElementProviderTypeEntityToken : EntityToken
+    public sealed class GeneratedDataTypesElementProviderTypeEntityToken : EntityToken
     {
         private string _id;
         private string _providerName;

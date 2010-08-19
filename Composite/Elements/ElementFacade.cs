@@ -194,14 +194,14 @@ namespace Composite.Elements
 
 
 
-        internal static IEnumerable<Element> GetRootsWithNoSecurity()
+        public static IEnumerable<Element> GetRootsWithNoSecurity()
         {
             return GetRoots(ElementProviderRegistry.RootElementProviderName, null, false, false);
         }
 
 
 
-        internal static IEnumerable<Element> GetRootsWithNoSecurity(ElementProviderHandle elementProviderHandle, SearchToken searchToken)
+        public static IEnumerable<Element> GetRootsWithNoSecurity(ElementProviderHandle elementProviderHandle, SearchToken searchToken)
         {
             if (elementProviderHandle == null) throw new ArgumentNullException("elementProviderHandle");
 

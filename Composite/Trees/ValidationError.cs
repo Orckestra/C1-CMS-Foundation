@@ -3,7 +3,11 @@
 
 namespace Composite.Trees
 {
-    internal sealed class ValidationError
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class ValidationError
     {
         public static ValidationError Create(string xPath, string stringName, params object[] args)
         {

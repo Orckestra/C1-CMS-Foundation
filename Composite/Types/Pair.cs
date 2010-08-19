@@ -2,7 +2,11 @@
 
 namespace Composite.Types
 {
-	internal sealed class Pair<TFirst, TSecond>
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public sealed class Pair<TFirst, TSecond>
 	{
 
         public Pair(TFirst firstValue, TSecond secondValue)

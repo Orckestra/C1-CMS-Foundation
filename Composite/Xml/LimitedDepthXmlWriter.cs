@@ -3,7 +3,11 @@ using System.Xml;
 
 namespace Composite.Xml
 {
-	internal class LimitedDepthXmlWriter : XmlWriter
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public class LimitedDepthXmlWriter : XmlWriter
 	{
         private readonly XmlWriter _innerWriter;
         private readonly int _maxDepth;

@@ -1,14 +1,17 @@
-using System.Text;
 using System.Collections.Generic;
-
+using System.Text;
 using Composite.Security;
 using Composite.Serialization;
 
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElementProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(SqlFunctionProviderEntityTokenSecurityAncestorProvider))]
-    internal sealed class SqlFunctionProviderFolderEntityToken : EntityToken
+    public sealed class SqlFunctionProviderFolderEntityToken : EntityToken
 	{
         private string _id;
         private string _source;

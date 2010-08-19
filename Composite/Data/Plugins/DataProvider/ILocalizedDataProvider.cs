@@ -3,7 +3,11 @@
 
 namespace Composite.Data.Plugins.DataProvider
 {
-    internal interface ILocalizedDataProvider : IDataProvider
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public interface ILocalizedDataProvider : IDataProvider
 	{
         void AddLocale(CultureInfo cultureInfo);
 

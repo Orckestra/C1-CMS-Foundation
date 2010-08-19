@@ -10,8 +10,12 @@ using Composite.IO;
 
 namespace Composite.PackageSystem
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SerializerHandler(typeof(PackageManagerUninstallProcessSerializerHandler))]
-    internal sealed class PackageManagerUninstallProcess
+    public sealed class PackageManagerUninstallProcess
     {
         private IPackageUninstaller _packageUninstaller = null;
         private string _packageInstallDirectory = null;

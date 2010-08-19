@@ -2,7 +2,11 @@
 
 namespace Composite.Types
 {
-	internal static class CodeGenerationHelper
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public static class CodeGenerationHelper
 	{
         public static string GetTypeAlias(Type type)
         {

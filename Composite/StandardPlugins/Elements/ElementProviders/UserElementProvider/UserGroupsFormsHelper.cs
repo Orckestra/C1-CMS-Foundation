@@ -10,7 +10,11 @@ using Composite.Data;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider
 {
-	internal sealed class UserGroupsFormsHelper
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public sealed class UserGroupsFormsHelper
 	{
         private List<XElement> _bindingElements = null;
         private XElement _fieldGroupElement = null;

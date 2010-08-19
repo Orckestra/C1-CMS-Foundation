@@ -6,7 +6,11 @@ using Composite.Data.Foundation;
 
 namespace Composite.Extensions
 {
-	internal static class IQueryableExtensionMethods
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public static class IQueryableExtensionMethods
 	{
 	    private static readonly MethodInfo _miQueryableAny =
 	        (from methodInfo in typeof (Queryable).GetMethods(BindingFlags.Static | BindingFlags.Public)

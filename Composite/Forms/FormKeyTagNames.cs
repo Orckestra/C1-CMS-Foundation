@@ -3,7 +3,11 @@
 
 namespace Composite.Forms
 {
-	internal static class FormKeyTagNames
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public static class FormKeyTagNames
 	{
         public static readonly string DefaultPropertyName = CompilerGlobals.DefaultPropertyName;
         public static readonly string FormDefinition = CompilerGlobals.FormDefinition_TagName;

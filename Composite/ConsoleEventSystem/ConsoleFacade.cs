@@ -157,7 +157,7 @@ namespace Composite.ConsoleEventSystem
 
 
 
-        internal static void Scavenge()
+        public static void Scavenge()
         {
             LoggingService.LogVerbose("ConsoleFacade", "Starting scavenger run");
 

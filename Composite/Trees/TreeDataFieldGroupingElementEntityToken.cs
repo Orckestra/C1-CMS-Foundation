@@ -12,8 +12,12 @@ using Composite.Trees.Foundation;
 
 namespace Composite.Trees
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
-    internal sealed class TreeDataFieldGroupingElementEntityToken : EntityToken
+    public sealed class TreeDataFieldGroupingElementEntityToken : EntityToken
     {
         private const string _magicNullValue = "·NULL·";
 

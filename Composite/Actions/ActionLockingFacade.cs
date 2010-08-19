@@ -14,8 +14,12 @@ using System.Threading;
 
 
 namespace Composite.Actions
-{    
-    internal static class ActionLockingFacade
+{
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class ActionLockingFacade
     {
         private static Dictionary<EntityToken, LockingInformation> _lockingInformations = null;
         private static object _lock = new object();
@@ -218,7 +222,7 @@ namespace Composite.Actions
         /// This is a "non-safe" release of a lock. For safe use, use ReleaseLock
         /// </summary>
         /// <param name="entityToken"></param>        
-        internal static void RemoveLock(EntityToken entityToken)
+        public static void RemoveLock(EntityToken entityToken)
         {
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {

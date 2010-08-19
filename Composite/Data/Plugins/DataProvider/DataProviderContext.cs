@@ -15,7 +15,7 @@ namespace Composite.Data.Plugins.DataProvider
 
 
 
-        internal DataProviderContext(string providerName)
+        public DataProviderContext(string providerName)
         {
             if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
 

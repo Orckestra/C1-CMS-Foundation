@@ -22,7 +22,7 @@ namespace Composite.Data
         /// </summary>
         /// <param name="sourceData"></param>
         /// <param name="targetData"></param>
-        internal static void FullCopyChangedTo(this IData sourceData, IData targetData)
+        public static void FullCopyChangedTo(this IData sourceData, IData targetData)
         {
             FullCopyChangedTo(sourceData, targetData, null);
         }
@@ -35,7 +35,7 @@ namespace Composite.Data
         /// <param name="sourceData"></param>
         /// <param name="targetData"></param>
         /// <param name="propertyNamesToIgnore"></param>
-        internal static void FullCopyChangedTo(this IData sourceData, IData targetData, IEnumerable<string> propertyNamesToIgnore)
+        public static void FullCopyChangedTo(this IData sourceData, IData targetData, IEnumerable<string> propertyNamesToIgnore)
         {
             foreach (PropertyInfo targetPropertyInfo in targetData.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
@@ -66,7 +66,7 @@ namespace Composite.Data
         /// </summary>
         /// <param name="sourceData"></param>
         /// <param name="targetData"></param>
-        internal static void ProjectedCopyTo(this IData sourceData, IData targetData)
+        public static void ProjectedCopyTo(this IData sourceData, IData targetData)
         {
             ProjectedCopyTo(sourceData, targetData, true);
         }
@@ -80,7 +80,7 @@ namespace Composite.Data
         /// <param name="sourceData"></param>
         /// <param name="targetData"></param>
         /// <param name="useDefaultValues"></param>
-        internal static void ProjectedCopyTo(this IData sourceData, IData targetData, bool useDefaultValues)
+        public  static void ProjectedCopyTo(this IData sourceData, IData targetData, bool useDefaultValues)
         {
             foreach (PropertyInfo targetPropertyInfo in targetData.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
@@ -413,7 +413,7 @@ namespace Composite.Data
 
 
 
-        internal static void SetValues(this IData data, Dictionary<string, string> values)
+        public static void SetValues(this IData data, Dictionary<string, string> values)
         {
             if (data == null) throw new ArgumentNullException("data");
             if (values == null) throw new ArgumentNullException("values");

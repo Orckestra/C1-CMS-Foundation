@@ -7,7 +7,11 @@ using Composite.Users;
 
 namespace Composite.Data.Types
 {
-    internal static class PageServices
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class PageServices
     {
         private static readonly object _lock = new object();
 

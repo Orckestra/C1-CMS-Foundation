@@ -7,7 +7,11 @@ using System.Collections.Generic;
 
 namespace Composite.Trees
 {
-    internal abstract class DataFilteringTreeNode : TreeNode
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public abstract class DataFilteringTreeNode : TreeNode
     {
         internal abstract Type CurrentDataInterfaceType { get; }
 

@@ -3,7 +3,11 @@ using System.Configuration;
 
 namespace Composite.StandardPlugins.Data.DataProviders.Common
 {
-    internal sealed class PropertyNameMappingConfigurationElement : ConfigurationElement
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class PropertyNameMappingConfigurationElement : ConfigurationElement
     {
         private const string _propertyNamePropertyName = "propertyName";
         [ConfigurationProperty(_propertyNamePropertyName, IsRequired=true)]

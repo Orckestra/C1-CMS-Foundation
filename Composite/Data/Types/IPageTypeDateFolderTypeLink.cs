@@ -37,7 +37,11 @@ namespace Composite.Data.Types
 
 
 
-    internal static class IPageTypeDataFolderTypeLinkExtensionMethods
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class IPageTypeDataFolderTypeLinkExtensionMethods
     {
         public static IEnumerable<IPageTypeDataFolderTypeLink> RemoveDeadLinks(this IEnumerable<IPageTypeDataFolderTypeLink> pageTypeDataFolderTypeLinks)
         {

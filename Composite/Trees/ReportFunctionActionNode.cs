@@ -11,8 +11,12 @@ using Composite.Workflow;
 
 
 namespace Composite.Trees
-{    
-	internal sealed class ReportFunctionActionNode : ActionNode
+{
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public sealed class ReportFunctionActionNode : ActionNode
 	{        
         public XElement FunctionMarkup { get; set; }                            // Required
         public string DocumentLabel { get; set; }                               // Optional, defaults to Label

@@ -3,7 +3,11 @@ using System.Workflow.ComponentModel;
 
 namespace Composite.Workflow
 {
-    internal static class ActivityExtensionMethods
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class ActivityExtensionMethods
     {
         public static Activity GetRoot(this Activity activity)
         {

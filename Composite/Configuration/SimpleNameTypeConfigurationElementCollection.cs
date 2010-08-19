@@ -4,7 +4,11 @@ using System.Configuration;
 
 namespace Composite.Configuration
 {
-    internal sealed class SimpleNameTypeConfigurationElementCollection : ConfigurationElementCollection
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class SimpleNameTypeConfigurationElementCollection : ConfigurationElementCollection
     {
         public void Add(string name, Type type)
         {

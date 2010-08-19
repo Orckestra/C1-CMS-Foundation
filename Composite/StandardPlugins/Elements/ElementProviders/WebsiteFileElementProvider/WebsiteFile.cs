@@ -5,7 +5,11 @@ using Composite.IO;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
-    internal class WebsiteFile : WebsiteEntity
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class WebsiteFile : WebsiteEntity
 	{
         private string _filename = null;
         private string _mimeTypeInfo = null;

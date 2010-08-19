@@ -14,7 +14,11 @@ using Composite.Users;
 
 namespace Composite.Security
 {
-    internal static class EntityTokenCacheFacade
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class EntityTokenCacheFacade
     {
         private sealed class CacheKey
         {

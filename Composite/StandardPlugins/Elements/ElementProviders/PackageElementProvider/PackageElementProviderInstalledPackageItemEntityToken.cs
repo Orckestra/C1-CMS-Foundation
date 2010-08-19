@@ -21,8 +21,13 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
 
 
 
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(AddOnElementProviderInstalledAddOnItemEntityTokenAncestorProvider))]
-    internal sealed class PackageElementProviderInstalledPackageItemEntityToken : EntityToken
+    public sealed class PackageElementProviderInstalledPackageItemEntityToken : EntityToken
     {
         public PackageElementProviderInstalledPackageItemEntityToken(Guid packageId, string groupName, bool isLocalInstalled, bool canBeUninstalled)
         {

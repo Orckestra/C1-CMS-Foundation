@@ -12,7 +12,11 @@ using Composite.Security;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider
 {
-    internal abstract class BaseFunctionProviderElementProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public abstract class BaseFunctionProviderElementProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
     {
         private ElementProviderContext _context;
 

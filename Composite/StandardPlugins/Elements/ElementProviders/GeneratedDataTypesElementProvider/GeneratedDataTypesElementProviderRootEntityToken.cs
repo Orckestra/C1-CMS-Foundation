@@ -4,8 +4,12 @@ using Composite.Security.SecurityAncestorProviders;
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
-	internal sealed class GeneratedDataTypesElementProviderRootEntityToken : EntityToken
+	public sealed class GeneratedDataTypesElementProviderRootEntityToken : EntityToken
 	{
         private string _source;
         private string _id;

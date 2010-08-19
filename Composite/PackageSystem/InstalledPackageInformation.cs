@@ -5,8 +5,12 @@ using Composite.Serialization;
 
 namespace Composite.PackageSystem
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SerializerHandler(typeof(InstalledPackageInformationSerializerHandler))]
-    internal sealed class InstalledPackageInformation
+    public sealed class InstalledPackageInformation
     {
         public Guid Id { get; internal set; }
         public string Name { get; internal set; }

@@ -13,7 +13,11 @@ using Composite.Elements.ElementProviderHelpers.VisualFunctionElementProviderHel
 
 namespace Composite.Elements.ElementProviderHelpers.VisualFunctionElementProviderHelper
 {
-    internal sealed class VisualFunctionElementProviderHelper
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class VisualFunctionElementProviderHelper
     {
         private ResourceHandle AddRenderingFunctionIcon { get { return GetIconHandle("visual-function-add"); } }
         private ResourceHandle EditRenderingFunctionIcon { get { return GetIconHandle("visual-function-edit"); } }

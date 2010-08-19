@@ -4,7 +4,11 @@ using Composite.Instrumentation.Foundation;
 
 namespace Composite.Instrumentation
 {
-    internal static class TimerProfilerFacade
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class TimerProfilerFacade
     {
         public static TimerProfiler CreateTimerProfiler()
         {

@@ -17,8 +17,11 @@ using System.Web;
 
 namespace Composite.StandardPlugins.Functions.FunctionProviders.VisualFunctionProvider
 {
-
-    internal static class RenderingHelper
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class RenderingHelper
     {
         public static XhtmlDocument RenderCompleteDataList(IVisualFunction function, XhtmlDocument xhtmlDocument, DataTypeDescriptor typeDescriptor, FunctionContextContainer functionContextContainer)
         {

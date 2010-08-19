@@ -8,7 +8,11 @@ using Composite.Data;
 
 namespace Composite.Trees
 {
-    internal sealed class PiggybagDataFinder
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class PiggybagDataFinder
     {
         private List<EntityToken> _parentEntityTokens = null;
 

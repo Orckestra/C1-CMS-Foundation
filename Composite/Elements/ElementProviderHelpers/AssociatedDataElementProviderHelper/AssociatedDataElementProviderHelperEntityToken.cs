@@ -9,8 +9,12 @@ using Composite.Types;
 
 namespace Composite.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(AssociatedDataElementProviderHelperSecurityAncestorProvider))]
-    internal sealed class AssociatedDataElementProviderHelperEntityToken : EntityToken
+    public sealed class AssociatedDataElementProviderHelperEntityToken : EntityToken
     {
         private string _type;
         private string _providerName;
@@ -18,7 +22,7 @@ namespace Composite.Elements.ElementProviderHelpers.AssociatedDataElementProvide
 
         private int _hashCode = 0;
 
-        internal AssociatedDataElementProviderHelperEntityToken(string type, string providerName, string id, string payload)
+        public AssociatedDataElementProviderHelperEntityToken(string type, string providerName, string id, string payload)
         {
             _type = type;
             _providerName = providerName;

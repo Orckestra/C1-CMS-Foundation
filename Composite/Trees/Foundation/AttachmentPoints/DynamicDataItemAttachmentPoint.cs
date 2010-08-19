@@ -12,8 +12,10 @@ namespace Composite.Trees.Foundation.AttachmentPoints
     /// <summary>
     /// This class is used when the user adds trees dynamicly
     /// Used as a dual with Composite.Data.Types.IDataItemTreeAttachmentPoint
-    /// </summary>
-    internal sealed class DynamicDataItemAttachmentPoint : BaseAttachmentPoint, IDataItemAttachmentPoint
+    /// </summary>    
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class DynamicDataItemAttachmentPoint : BaseAttachmentPoint, IDataItemAttachmentPoint
     {
         public Type InterfaceType { get; set; }
         public object KeyValue { get; set; }

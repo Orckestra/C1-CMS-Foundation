@@ -5,7 +5,11 @@ using System.IO;
 
 namespace Composite.Data.Types
 {
-    internal static class IFileServices
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class IFileServices
     {
         public static T GetFile<T>(string filePath)
             where T : class, IFile

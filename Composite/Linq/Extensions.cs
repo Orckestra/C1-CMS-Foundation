@@ -58,7 +58,11 @@ namespace Composite.Linq
 
 
 
-    internal static class ListExtensions
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class ListExtensions
     {
         public static List<U> ToList<T, U>(this IEnumerable<T> source, Func<T, U> convertor)
         {

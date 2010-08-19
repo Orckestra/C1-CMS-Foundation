@@ -10,7 +10,11 @@ using Composite.ResourceSystem;
 
 namespace Composite.Localization
 {
-    internal static class LocalizationParser
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class LocalizationParser
     {
         private static Regex _attributRegex = new Regex(@"\$\((?<type>[^:]+):(?<id>[^\)]+)\)");
 

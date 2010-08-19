@@ -3,7 +3,11 @@ using System;
 
 namespace Composite.Instrumentation
 {
-    internal abstract class TimerProfiler : IDisposable
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public abstract class TimerProfiler : IDisposable
     {
         internal TimerProfiler()
         {

@@ -10,7 +10,11 @@ using Composite.Workflow;
 
 namespace Composite.Trees
 {
-    internal sealed class ConfirmActionNode : ActionNode
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class ConfirmActionNode : ActionNode
     {
         public string ConfirmTitle { get; internal set; }                           // Requried
         public string ConfirmMessage { get; internal set; }                         // Requried
@@ -18,8 +22,8 @@ namespace Composite.Trees
         public bool RefreshTree { get; internal set; }                              // Optional
 
         // Cached values
-        internal DynamicValuesHelper ConfirmTitleDynamicValuesHelper { get; set; }
-        internal DynamicValuesHelper ConfirmMessageDynamicValuesHelper { get; set; }
+        public DynamicValuesHelper ConfirmTitleDynamicValuesHelper { get; set; }
+        public DynamicValuesHelper ConfirmMessageDynamicValuesHelper { get; set; }
 
         public AttributeDynamicValuesHelper FunctionMarkupDynamicValuesHelper { get; private set; }
 

@@ -3,7 +3,11 @@ using Composite.Threading;
 
 namespace Composite.Sql
 {
-	internal static class SqlConnectionManager
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public static class SqlConnectionManager
 	{
         public static SqlConnection GetConnection(string connectionString)
         {

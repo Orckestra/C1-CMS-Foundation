@@ -12,7 +12,11 @@ using Composite.Users;
 
 namespace Composite.PackageSystem
 {
-    internal static class PackageSystemServices
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class PackageSystemServices
     {
         public static IEnumerable<PackageDescription> GetFilteredAllAvailablePackages()
         {
