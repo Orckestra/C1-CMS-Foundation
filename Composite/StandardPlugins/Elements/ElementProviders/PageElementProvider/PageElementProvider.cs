@@ -560,6 +560,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
                     // but MoveTo method requires index for pages from all the languages
                     draggedPage.MoveTo(newParentPageId, dropIndex, false);
 
+                    EntityTokenCacheFacade.ClearCache(draggedPage.GetDataEntityToken());
+
                     transationScope.Complete();
                 }
             }
