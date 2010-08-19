@@ -26,5 +26,5 @@
 </script>
 
 <ui:checkboxgroup>
-	<ui:checkbox label="<%= this.ItemLabel %>" name="<%= this.ClientID %>" ischecked="<%= this.Checked.ToString().ToLower() %>" checksum="<%= DateTime.Now.Ticks %>"/>
+	<ui:checkbox label="<%= this.ItemLabel %>" name="<%= this.ClientID %>" ischecked="<%= this._isChecked.ToString().ToLower() %>" checksum="<%= DateTime.Now.Ticks %>"/>
 </ui:checkboxgroup>

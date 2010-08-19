@@ -9,6 +9,7 @@ namespace Composite.WebClient.Captcha
     /// <summary>
     /// Image creator
     /// </summary>
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public class ImageCreator
     {
         #region private members
@@ -434,6 +435,7 @@ namespace Composite.WebClient.Captcha
     /// <summary>
     /// Amount of random font warping to apply to rendered text
     /// </summary>
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public enum FontWarpFactor
     {
         None,
@@ -446,6 +448,7 @@ namespace Composite.WebClient.Captcha
     /// <summary>
     /// Amount of background noise to add to rendered image
     /// </summary>
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public enum NoiseLevel
     {
         None,
@@ -458,6 +461,7 @@ namespace Composite.WebClient.Captcha
     /// <summary>
     /// Amount of curved line noise to add to rendered image
     /// </summary>
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public enum LineNoiseLevel
     {
         None,
