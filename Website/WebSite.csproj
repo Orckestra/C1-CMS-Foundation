@@ -374,13 +374,6 @@
     <Compile Include="Composite\top.aspx.designer.cs">
       <DependentUpon>top.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Frontend\Composite\Controls\Captcha.ascx.cs">
-      <DependentUpon>Captcha.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Frontend\Composite\Controls\Captcha.ascx.designer.cs">
-      <DependentUpon>Captcha.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderers\Page.aspx.cs">
       <DependentUpon>Page.aspx</DependentUpon>
@@ -5672,7 +5665,6 @@
     </None>
     <None Include="Composite\skins\system\docks\vista\Thumbs.db" />
     <Content Include="Composite\web.config" />
-    <Content Include="Frontend\Composite\Controls\Captcha.ascx" />
     <Content Include="ReleaseCleanupConfiguration.xml" />
     <Content Include="Tests\AspNetControlCompiling.aspx" />
     <Content Include="Tests\PageElementProviderHooks.aspx" />
