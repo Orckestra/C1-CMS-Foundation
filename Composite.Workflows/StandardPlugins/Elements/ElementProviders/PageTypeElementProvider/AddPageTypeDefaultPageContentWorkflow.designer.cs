@@ -182,26 +182,52 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
         #endregion
 
         private Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+
         private StateInitializationActivity initializeStateInitializationActivity;
+
         private SetStateActivity setStateActivity1;
+
         private StateActivity finalStateActivity;
+
         private StateActivity initializeStateActivity;
+
         private SetStateActivity setStateActivity2;
+
         private SetStateActivity setStateActivity4;
+
         private SetStateActivity setStateActivity3;
+
         private Workflow.Activities.WizardFormActivity step1WizardFormActivity;
+
         private SetStateActivity setStateActivity5;
+
         private CodeActivity initializeCodeActivity_UpdateBindings;
+
         private StateInitializationActivity finalizeStateInitializationActivity;
+
         private EventDrivenActivity step1EventDrivenActivity_Cancel;
+
         private EventDrivenActivity step1EventDrivenActivity_Finish;
+
         private StateInitializationActivity step1StateInitializationActivity;
+
         private StateActivity finalizeStateActivity;
+
         private StateActivity step1StateActivity;
+
         private CodeActivity finalizeCodeActivity_Finalize;
+
         private Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
+
         private Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
+
         private EventDrivenActivity eventDrivenActivity_GlobalCancel;
+
+
+
+
+
+
 
 
 

@@ -7,7 +7,11 @@ using Composite.Xml;
 
 namespace Composite.Renderings
 {
-	internal static class RenderingElementNames
+    /// <summary>
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public static class RenderingElementNames
 	{
         public static XName PlaceHolder { get { return _placeholder; } }
         public static XName PlaceHolderIdAttribute { get { return "id"; } }

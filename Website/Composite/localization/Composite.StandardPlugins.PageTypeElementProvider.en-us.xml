@@ -91,6 +91,8 @@
   <string key="PageType.AddPageTypeDefaultPageContentWorkflow.FieldGroup.Label" value="Choose placeholder" />
   <string key="PageType.AddPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Label" value="Placeholder ID" />
   <string key="PageType.AddPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Help" value="The ID of the placeholder. You can write a non-existing ID and create the placeholder afterwards (by editing Page Template markup)." />
+  <string key="PageType.AddPageTypeDefaultPageContentWorkflow.NonExistingPlaceholderId.Title" value="No templates with {0}" />
+  <string key="PageType.AddPageTypeDefaultPageContentWorkflow.NonExistingPlaceholderId.Message" value="Please note that the Placeholder ID you specified '{0}', is currently not in any Layout Template." />
 
   <string key="PageType.EditPageTypeDefaultPageContentWorkflow.Layout.Label" value="Edit default content" />
   <string key="PageType.EditPageTypeDefaultPageContentWorkflow.SettingsPlaceHolder.Label" value="Settings" />
