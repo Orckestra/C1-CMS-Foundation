@@ -39,7 +39,7 @@ namespace Composite.Security
 
             if (_cache.TryGetValue(username, out userGroupIds) == false)
             {
-                IUser user = DataFacade.GetData<IUser>().Where(f => f.Username == username).Single();
+                IUser user = DataFacade.GetData<IUser>().Where(f => string.Compare(f.Username, username, StringComparison.InvariantCultureIgnoreCase) == 0).Single();
 
                 userGroupIds =
                     (from ur in DataFacade.GetData<IUserUserGroupRelation>()

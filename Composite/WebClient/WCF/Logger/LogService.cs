@@ -1,8 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.Xml;
+using Composite.Data;
+using Composite.Data.Types;
+using Composite.Security;
 using Composite.Security.Foundation.PluginFacades;
 using Composite.StringExtensions;
 using Composite.Threading;
@@ -77,18 +81,44 @@ namespace Composite.Logging.WCF
             }
         }
 
-        public string Authenticate(string adminPassword)
+        public string Authenticate(string loginAndPassword)
         {
             if (SystemSetupFacade.IsSystemFirstTimeInitialized == false) return "";
 
             bool userIsValid;
 
-            using (ThreadDataManager.Initialize())
+            string login;
+            string password;
+
+            int separatorOffset = loginAndPassword.IndexOf("|");
+            if(separatorOffset > 0 && separatorOffset < loginAndPassword.Length - 1)
             {
-                userIsValid = LoginProviderPluginFacade.FormValidateUser("admin", adminPassword);
+                login = loginAndPassword.Substring(0, separatorOffset);
+                password = loginAndPassword.Substring(separatorOffset + 1);
+            }
+            else
+            {
+                // Backward compatibility with old LogViewer
+                login = "admin";
+                password = loginAndPassword;
             }
 
-            return userIsValid ? LoggerPassword : string.Empty;
+            bool userIsAdmin = false;
+
+            using (ThreadDataManager.Initialize())
+            {
+                userIsValid = LoginProviderPluginFacade.FormValidateUser(login, password);
+
+                // Checking whether the user is an administrator
+                if(userIsValid)
+                {
+                    IUserGroup adminGroup = DataFacade.GetData<IUserGroup>().Where(f => f.Name == "Administrator").SingleOrDefault();
+
+                    userIsAdmin = adminGroup != null && UserGroupFacade.GetUserGroupIds(login).Any(groupId => groupId == adminGroup.Id);
+                }
+            }
+
+            return (userIsValid && userIsAdmin) ? LoggerPassword : string.Empty;
         }
 
         public DateTime GetLastStartupTime()
