@@ -1,6 +1,7 @@
 <%@ WebHandler Language="C#" Class="HelpHandler" %>
 
 using System;
+using System.Configuration;
 using System.Text;
 using System.IO;
 using System.Net;
@@ -9,49 +10,73 @@ using System.Web;
 using System.Xml;
 using System.Xml.Xsl;
 using System.Xml.XPath;
+using System.Web.Configuration;
+using Composite.GlobalSettings;
+using Composite;
+using Composite.Users;
+using Composite.WebClient;
 
 public class HelpHandler : IHttpHandler 
 {
     public void ProcessRequest (HttpContext context) 
     {
+        ResponseContent responseContent = RequestHelpPage(context);
 
-        if (context.Request.UserAgent.IndexOf("Gecko") > -1){
-            context.Response.ContentType = "application/xhtml+xml";
+        context.Response.ContentType = responseContent.ContentType;
+        context.Response.Write(responseContent.Content);
+    }
+
+
+
+    private ResponseContent RequestHelpPage(HttpContext context)
+    {
+        string baseUriString = null;  // add logic with deep urls here
+        
+        if (string.IsNullOrEmpty(baseUriString))
+        {
+            baseUriString = ConfigurationManager.AppSettings["Composite.HelpPage.Url"];
         }
-
-        string urlfragment = context.Request.QueryString["id"];
-        if (urlfragment == null){
-            urlfragment = "_contents.xml";
-        }
-
-        string file = System.Web.HttpContext.Current.Server.MapPath("~/Composite/help/content/" + urlfragment);
-        string xslt = System.Web.HttpContext.Current.Server.MapPath("~/Composite/help/help.xsl");
-
-        XmlDocument doc = new XmlDocument();
-        XslCompiledTransform transform = new XslCompiledTransform();
-        XmlReaderSettings settings = new XmlReaderSettings();
-        settings.IgnoreComments = true;
-           
-        /*
-         * Transform.
-         */
-        using (XmlReader reader = XmlReader.Create(file, settings)){
-            StringBuilder sb = new StringBuilder();
-            XmlWriter writer = XmlWriter.Create(sb);
-            transform.Load(xslt);
-            transform.Transform(reader, writer);
-            doc.LoadXml(sb.ToString());
+        else
+        {
+            Uri checkUri = new Uri(baseUriString);
+            bool isCompositeServerRequest = checkUri.Host.ToLower().EndsWith("composite.net");
+            if (!isCompositeServerRequest)
+            {
+                throw new InvalidOperationException("For security reasons I will only route requests to composite.net hosts");
+            }
         }
         
-        /*
-         * Prettyprint.
-         */
-        using (XmlNodeReader nodeReader = new XmlNodeReader(doc)){
-            nodeReader.MoveToContent();
-            XDocument xdoc = XDocument.Load(nodeReader);
-            context.Response.Write( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + xdoc.ToString());
+        string userCultureName = Composite.Users.UserSettings.CultureInfo.Name;
+        string productVersion = RuntimeInformation.ProductVersion.ToString(4);
+        string installationId = InstallationInformationFacade.InstallationId.ToString();
+        string browser = context.Request.UserAgent.IndexOf("Gecko") > -1 ? "mozilla" : "explorer";
+        string platform = context.Request.Browser.Platform;
+
+        string sourceUriString = string.Format("{0}?culture={1}&version={2}&installation={3}&browser={4}&platform={5}",
+            baseUriString,
+            HttpUtility.UrlEncodeUnicode(userCultureName),
+            HttpUtility.UrlEncodeUnicode(productVersion),
+            HttpUtility.UrlEncodeUnicode(installationId),
+            HttpUtility.UrlEncodeUnicode(browser),
+            HttpUtility.UrlEncodeUnicode(platform));
+
+        Uri sourceUri = new Uri(sourceUriString);
+
+        HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(sourceUri);
+        request.UserAgent = context.Request.Headers["User-Agent"];
+        request.Timeout = 2000;
+
+        WebResponse webResponse = request.GetResponse();
+
+        using (Stream responseStream = webResponse.GetResponseStream())
+        {
+            using( StreamReader sr = new StreamReader(responseStream))
+            {
+                return new ResponseContent { Content = sr.ReadToEnd(), ContentType = webResponse.ContentType };
+            }
         }
     }
+    
  
     public bool IsReusable 
     {
@@ -59,6 +84,13 @@ public class HelpHandler : IHttpHandler
         {
             return false;
         }
+    }
+
+
+    private class ResponseContent
+    {
+        public string Content { get; set; }
+        public string ContentType { get; set; }
     }
 
 }
