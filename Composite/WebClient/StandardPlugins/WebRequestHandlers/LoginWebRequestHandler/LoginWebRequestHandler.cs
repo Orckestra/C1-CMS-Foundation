@@ -205,7 +205,7 @@ namespace Composite.StandardPlugins.WebClient.WebRequestHandlers.LoginWebRequest
 
             HtmlTable table = new HtmlTable();
 
-            AddRow(table, LoginHandlerResources.UserName, userNameTextBox);
+            AddRow(table, LoginHandlerResources.Username, userNameTextBox);
             AddRow(table, LoginHandlerResources.Password, passwordTextBox);
             AddRow(table, "", loginButton);
 

@@ -98,9 +98,9 @@ namespace Composite.StandardPlugins.WebClient.WebRequestHandlers.LoginWebRequest
         /// <summary>
         /// Looks up a localized string similar to 'Username'.
         /// </summary>
-        public static string UserName {
+        public static string Username {
             get {
-                return ResourceManager.GetString("UserName", _resourceCulture);
+                return ResourceManager.GetString("Username", _resourceCulture);
             }
         }
         
