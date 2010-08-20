@@ -3,10 +3,13 @@
 
 ui|scrollbox#scrollbox {
 	background-color: white !important;
+	overflow: scroll !important;
+	height: 100%;
+	width: 100%;
 }
-
 ui|scrollbox#scrollbox table {
-	border-collapse: collapse;	
+	border-collapse: collapse;
+	width: 100%;
 }
 ui|scrollbox#scrollbox td, th {
 	padding: 5px;

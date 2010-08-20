@@ -2,7 +2,8 @@
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
 ui|cover#cover {
-	text-align: center;	
+	text-align: center;
+	overflow-y: scroll;
 }
 ui|cover#introcover {
 	height: 100%;
@@ -76,10 +77,12 @@ table#intro td.xc {
 ui|decks#navdecks {
 	width: 497px;
 	width: 399px;
+	height: 100px;
 	margin-left: auto;
 	margin-right: auto;
 	position: relative;
 	top: -90px;
+	
 }
 ui|decks#navdecks ui|dialogtoolbar {
 	background-color: transparent;

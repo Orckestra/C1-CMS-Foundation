@@ -22,7 +22,7 @@ body {
 	line-height: 1.1em;
 	color: #676767;
 	font-weight: bold;
-	#moz -moz-user-select: none;
+	vendor-user-select: none;
 	#region default
 	 	font-family: Tahoma, sans-serif;
 	 	font-size: 11px;
@@ -65,7 +65,7 @@ div#buzzwords {
 	margin-top: 0px;
 	top: 130px;
 }
-a {
+div#start a {
 	display: block;
 	position: absolute;
 	bottom: 0;
@@ -77,27 +77,31 @@ a {
 	text-align: center;
 	background-image: url("${root}/images/startcomposite.png");
 }
-a:hover {
+div#start a:hover {
 	background-position: 0 -23px;
 }
-a:active {
+div#start a:active {
 	background-position: 0 -46px;
 }
-a,
-a span {
+div#buzzwords a {
+	color: rgb(210,35,42);
 	cursor: pointer;
-	font-weight: bold;
 }
-a span img {
+div#start a,
+div#start a span {
+	font-weight: bold;
+	cursor: pointer;
+}
+div#start a span img {
 	background-image: url("skins/system/splash/button.png");
 }
-a img {
+div#start a img {
 	border: none;
 	position: absolute;
 	left: 0;
 	top: 1px;
 }
-a span {
+div#start a span {
 	position: relative;
 	top: 5px;
 	#moz top: 4px;

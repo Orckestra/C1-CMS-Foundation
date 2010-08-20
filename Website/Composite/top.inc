@@ -2,7 +2,11 @@
 	<ui:decks id="decks" flex="false">
 		<ui:deck id="introdeck"/>
 		<ui:deck id="logindeck">
-			<!-- <div class="buzzwords"><div id="version" style="text-align:center;"><ui:text label="${version}"/></div><div id="registration"><ui:text label="Registered to: ${registration}"/></div><div><ui:text label="2010 Composite A/S"/></div></div> -->
+			<div class="buzzwords">
+				<div id="version"><ui:text label="${version}"/></div>
+				<div id="build"><ui:text label="Build ${build}"/></div>
+				<div><ui:text label="© 2010 Composite A/S"/></div>
+			</div>
 			<ui:fields id="loginfields">
 				<div id="loginerror" class="errortext">
 					<ui:text label="Username or password incorrect!"/>

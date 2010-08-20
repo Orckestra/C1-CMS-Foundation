@@ -123,7 +123,7 @@ var KickStart = new function () {
 			if ( bindingMap.decks != null && LoginService.IsLoggedIn ( true )) {
 				accessGranted ();
 			} else {
-				// splashScreenData ();
+				splashScreenData ();
 				if ( bindingMap.decks != null ) {
 					showLogin ();
 				} else {
@@ -135,16 +135,15 @@ var KickStart = new function () {
 	
 	/**
 	 * Splash screen data.
-	 *
+	 */
 	function splashScreenData () {
 		
 		var ver = document.getElementById ( "version" );	
 		ver.firstChild.data = ver.firstChild.data.replace ( "${version}", Installation.versionPrettyString );
-	
-		var reg = document.getElementById ( "registration" );
-		reg.firstChild.data = reg.firstChild.data.replace ( "${registration}", Installation.registrationName );
+		
+		var build = document.getElementById ( "build" );
+		build.firstChild.data = build.firstChild.data.replace ( "${build}", Installation.versionString );
 	}
-	*/
 	
 	/*
 	 * Show welcome screens on first time startup.
