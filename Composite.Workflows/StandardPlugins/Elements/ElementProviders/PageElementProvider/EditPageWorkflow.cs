@@ -16,10 +16,12 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.GeneratedTypes;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
+using Composite.Extensions;
 using Composite.Forms;
 using Composite.Forms.DataServices;
 using Composite.Forms.Flows;
 using Composite.Linq;
+using Composite.Localization;
 using Composite.Renderings.Page;
 using Composite.ResourceSystem;
 using Composite.Security;
@@ -683,12 +685,33 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
         }
 
 
+        private bool FieldHasValidLength(string fieldValue, string fieldName, int maximumLength)
+        {
+            if (fieldValue.Length <= maximumLength)
+            {
+                return true;
+            }
+
+            string bindingName = "SelectedPage." + fieldName;
+
+            this.ShowFieldMessage(bindingName, GetText("EditPage.MaxLength").FormatWith(maximumLength));
+            return false;
+        }
 
         private void ValidateSave(object sender, ConditionalEventArgs e)
         {
             IPage selectedPage = this.GetBinding<IPage>("SelectedPage");
 
             TrimFieldValues(selectedPage);
+
+            if (!FieldHasValidLength(selectedPage.Title, "Title", 255)
+                || !FieldHasValidLength(selectedPage.MenuTitle, "MenuTitle", 64)
+                || !FieldHasValidLength(selectedPage.UrlTitle, "UrlTitle", 64)
+                || !FieldHasValidLength(selectedPage.FriendlyUrl, "FriendlyUrl", 64))
+            {
+                e.Result = false;
+                return;
+            }
 
             e.Result = true;
 
@@ -741,7 +764,10 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
         }
 
-
+        private static string GetText(string key)
+        {
+            return StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", key);
+        }
 
         private class FixLinksFilter : Stream
         {
