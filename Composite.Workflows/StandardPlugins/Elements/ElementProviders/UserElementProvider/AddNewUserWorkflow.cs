@@ -40,17 +40,30 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvide
         private void IsUserValid(object sender, ConditionalEventArgs e)
         {
             IUser newUser = this.GetBinding<IUser>(NewUserBindingName);
+            newUser.Username = newUser.Username.Trim();
 
             ValidationResults validationResults = ValidationFacade.Validate(newUser);
 
-            int count =
-                (from user in DataFacade.GetData<IUser>()
-                 where user.Username == newUser.Username
-                 select user).Count();
+            bool isValid = validationResults.IsValid;
 
-            e.Result = validationResults.IsValid && (count == 0);
+            if(isValid)
+            {
+                IQueryable<IUser> usersWithTheSameName =
+                    from user in DataFacade.GetData<IUser>()
+                    where string.Compare(user.Username, newUser.Username, StringComparison.InvariantCultureIgnoreCase) == 0
+                    select user;
+
+                if(usersWithTheSameName.Any())
+                {
+                    ShowFieldMessage(NewUserBindingName + ".Username",
+                        StringResourceSystemFacade.GetString("Composite.Management", "UserElementProvider.UserLoginIsAlreadyUsed"));
+
+                    isValid = false;
+                }
+            }
+
+            e.Result = isValid;
         }
-
 
 
         private void MissingActiveLanguageCodeActivity_ExecuteCode(object sender, EventArgs e)

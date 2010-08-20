@@ -83,9 +83,10 @@
   <string key="Website.Forms.Administrative.AddNewUserStep1.CultureLabel" value="Regional settings" />
 	<string key="Website.Forms.Administrative.AddNewUserStep1.CultureHelp" value="To change the way numbers, times, and dates are displayed, select an entry from the list. Entries marked with a star (*) have been translated. Unmarked entries will use English as language." />
 
-  <string key="UserElementProvider.MissingActiveLanguageTitle" value="A language is required" />
-  <string key="UserElementProvider.MissingActiveLanguageMessage" value="To create a user a language is required, but no languages have been added yet. You can add one under the System perspective." />
-  
+	<string key="UserElementProvider.MissingActiveLanguageTitle" value="A language is required" />
+	<string key="UserElementProvider.MissingActiveLanguageMessage" value="To create a user a language is required, but no languages have been added yet. You can add one under the System perspective." />
+	<string key="UserElementProvider.UserLoginIsAlreadyUsed" value="User with the same login already exist" />
+
 	<string key="AssociatedDataElementProviderHelper.RootFolderLabel" value="Inline data" />
 	<string key="AssociatedDataElementProviderHelper.RootFolderToolTip" value="Inline data" />
 	<string key="AssociatedDataElementProviderHelper.AddAssociatedDataTypeLabel" value="Add page datatype" />

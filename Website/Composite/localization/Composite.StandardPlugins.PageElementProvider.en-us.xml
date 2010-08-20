@@ -50,7 +50,10 @@
   <string key="EditPage.PageTypeSelectorLabel" value="Page type" />
   <string key="EditPage.PageTypeSelectorHelp" value="Select a page type for this page" />
   <string key="EditPage.AwaitingApprovalTransition" value="Awaiting Approval" />
-  <string key="EditPage.AwaitingPublicationTransition" value="Awaiting Publication" />	
+  <string key="EditPage.AwaitingPublicationTransition" value="Awaiting Publication" />
+
+  <string key="EditPage.MaxLength" value="{0} characters maximum" />
+
 	<string key="DeletePage.LabelFieldGroup" value="Delete page?" />
 	
   <string key="DeletePageStep1.Title" value="Delete page and all subpages" />

@@ -47,13 +47,13 @@ namespace Composite.StandardPlugins.Security.LoginProviderPlugins.DataBasedFormL
         {
             string encryptedPasswrod = password.Encrypt();
 
-            IUser user =
-                (from u in DataFacade.GetData<IUser>()
-                 where u.Username == username &&
-                       u.EncryptedPassword == encryptedPasswrod
-                 select u).FirstOrDefault();
+            IQueryable<IUser> matchingUsers =
+                from u in DataFacade.GetData<IUser>()
+                 where string.Compare(u.Username, username, StringComparison.InvariantCultureIgnoreCase) == 0 
+                       && u.EncryptedPassword == encryptedPasswrod
+                 select u;
 
-            return user != null;
+            return matchingUsers.Any();
         }
 
 
