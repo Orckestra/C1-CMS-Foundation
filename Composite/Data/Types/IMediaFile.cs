@@ -1,7 +1,7 @@
 ﻿using System;
 using Composite.Data.Hierarchy;
 using Composite.Renderings.Data;
-using Data.Types;
+using Composite.Data.Types;
 
 
 namespace Composite.Data.Types

@@ -7,7 +7,7 @@ using Composite.Data;
 using Composite.Data.Types;
 using Composite.Extensions;
 
-namespace Data.Types
+namespace Composite.Data.Types
 {
     internal sealed class MediaFileDataAncesorProvider : IDataAncestorProvider
 	{

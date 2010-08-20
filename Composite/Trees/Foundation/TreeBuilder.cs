@@ -13,18 +13,6 @@ using Composite.Types;
 using Composite.Xml;
 
 
-namespace Martin
-{
-    internal sealed class Maffe
-    {
-        public static System.Linq.Expressions.Expression<Func<Composite.Data.Types.IPage, bool>> Func1()
-        {
-            return f => true;
-        }
-    }
-}
-
-
 namespace Composite.Trees.Foundation
 {
     internal static class TreeBuilder

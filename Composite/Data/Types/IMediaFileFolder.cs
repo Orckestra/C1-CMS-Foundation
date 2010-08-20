@@ -1,6 +1,6 @@
 ﻿using System;
 using Composite.Data.Hierarchy;
-using Data.Types;
+using Composite.Data.Types;
 
 
 namespace Composite.Data.Types
