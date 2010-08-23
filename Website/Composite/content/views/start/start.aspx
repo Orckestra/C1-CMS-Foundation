@@ -14,7 +14,7 @@
 				<ui:toolbarbutton binding="DialogControlBinding" id="closecontrol" controltype="close"/>
 			</ui:controlgroup>
 			<ui:cover id="cover" busy="false" transparent="true"/>
-			<ui:window id="start" alienwatch="true"/>
+			<ui:window id="start"/>
 		</ui:page>
 	</body>
 </html>

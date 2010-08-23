@@ -19,6 +19,9 @@
 			<ui:key key="R" modifiers="control" oncommand="Application.reload ()" preventdefault="true"/>
 			<ui:key key="D" modifiers="control" oncommand="// disable bookmarking!" preventdefault="true"/>
 			
+			<!-- help view -->
+			<ui:key key="VK_F1" oncommand="Commands.help ()" preventdefault="true"/>
+			
 			<!-- globally broadcasting special keystrokes -->
 			<ui:key key="VK_ENTER" 		oncommand="Keyboard.keyEnter ()" modifiers="*"/>
 			<ui:key key="VK_ESCAPE"		oncommand="Keyboard.keyEscape ()" modifiers="*"/>

@@ -15,8 +15,6 @@ HelpPageBinding.hasRemoteConnection = false;
  */
 HelpPageBinding.HELPURL = Resolver.resolve ( "${root}/help/help.ashx" );
 
-//HelpPageBinding.HELPROOT = Resolver.resolve ( "${root}/help/content/" );
-
 /**
  * Special pages mapped to special buttons.
  * @type {HashMap<string><string>}
@@ -137,11 +135,17 @@ HelpPageBinding.prototype.onBeforePageInitialize = function () {
 	this._toolbarBinding.addActionListener ( ButtonBinding.ACTION_COMMAND, this )
 	
 	this._statusbarBinding = bindingMap.statusbar;
-	this._statusbarBinding.addActionListener ( ButtonBinding.ACTION_COMMAND, this );
+	if ( this._statusbarBinding != null ) {
+		this._statusbarBinding.addActionListener ( ButtonBinding.ACTION_COMMAND, this );
+	}
 	
 	this._popupBinding = bindingMap.textsizepopup;
-	this._popupBinding.addActionListener ( MenuItemBinding.ACTION_COMMAND, this );
+	if ( this._popupBinding != null ) {
+		this._popupBinding.addActionListener ( MenuItemBinding.ACTION_COMMAND, this );
+	}
 }
+
+
 
 /**
  * Page load delayed in order to present GUI faster.

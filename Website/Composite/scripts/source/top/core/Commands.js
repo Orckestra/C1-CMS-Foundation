@@ -179,6 +179,17 @@ _Commands.prototype = {
 				EventBroadcaster.broadcast ( BroadcastMessages.SYSTEMLOG_OPENED, this );
 			}
 		}
+	},
+	
+	/**
+	 * Launch the Help view.
+	 */
+	help : function () {
+		
+		var handle = "Composite.Management.Help";
+		if ( !StageBinding.isViewOpen ( handle )) {
+			StageBinding.handleViewPresentation ( handle );
+		}
 	}
 }
 

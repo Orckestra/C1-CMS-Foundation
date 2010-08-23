@@ -45,7 +45,8 @@ window.KeyEventCodes = {
 	VK_PLUS						: 187,
 	VK_MINUS					: 189,
 	VK_NUMPLUS					: 107,
-	VK_NUMMINUS					: 109
+	VK_NUMMINUS					: 109,
+	VK_F1						: 112
 };
 
 /**

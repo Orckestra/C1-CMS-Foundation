@@ -166,7 +166,7 @@
 					<ui:menubody>
 						<ui:menugroup rel="developermode">
 							<ui:menuitem label="${string:Website.App.LabelHelpContents}" rel="developermode" binding="StageViewMenuItemBinding" handle="Composite.Management.Help"/>
-							<!-- ui:menuitem label="${string:Website.App.LabelFeedback}" oncommand="window.open('http://pf.composite.net/c1/feedback.aspx')"/ -->
+							<ui:menuitem label="${string:Website.App.LabelFeedback}" oncommand="window.open('http://users.composite.net/Feedback')"/>
 						</ui:menugroup>
 						<ui:menugroup>
 							<ui:menuitem label="${string:Website.App.LabelAboutComposite}" oncommand="Commands.about()" image="${icon:composite}"/>

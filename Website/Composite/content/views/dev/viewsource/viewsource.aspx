@@ -18,7 +18,7 @@
 				</ui:tabs>
 				<ui:tabpanels>
 					<ui:tabpanel id="fancypanel">
-						<ui:window id="fancy" url="viewsourcecontent.html" alienwatch="true"/>
+						<ui:window id="fancy" url="viewsourcecontent.html"/>
 					</ui:tabpanel>
 					<ui:tabpanel>
 						<textarea id="raw" wrap="off" readonly="true"></textarea>
