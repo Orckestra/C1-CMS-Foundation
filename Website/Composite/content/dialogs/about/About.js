@@ -19,12 +19,10 @@ var About = new function () {
 		
 		var div0 = document.getElementById ( "prettyversion" );
 		var div1 = document.getElementById ( "version" );
-		var div2 = document.getElementById ( "license" );
 		var div3 = document.getElementById ( "id" );
 		
 		div0.firstChild.data = div0.firstChild.data.replace ( "${pretty}", Installation.versionPrettyString );
 		div1.firstChild.data = div1.firstChild.data.replace ( "${version}", Installation.versionString );
-		div2.firstChild.data = div2.firstChild.data.replace ( "${license}", Installation.registrationName );
 		div3.firstChild.data = div3.firstChild.data.replace ( "${id}", Installation.installationID );
 		
 		DOMEvents.addEventListener ( window, DOMEvents.UNLOAD, this );

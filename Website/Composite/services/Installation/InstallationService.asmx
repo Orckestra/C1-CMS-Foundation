@@ -35,21 +35,11 @@ public class Licensing : System.Web.Services.WebService
     }
     
     [WebMethod]
-    public KeyValuePair[] GetLicenseInfo(bool dummy)
+    public KeyValuePair[] GetInstallationInfo(bool dummy)
     {
         List<KeyValuePair> list = new List<KeyValuePair>();
-        
+
         KeyValuePair pair = new KeyValuePair();
-        pair.Key = "RegistrationURL";
-        pair.Value = String.Format("https://license.composite.net/Registration.aspx?InstallationId={0}", Composite.GlobalSettings.InstallationInformationFacade.InstallationId);
-        list.Add(pair);
-
-        pair = new KeyValuePair();
-        pair.Key = "StatusURL";
-        pair.Value = String.Format("https://license.composite.net/Status.aspx?InstallationId={0}", Composite.GlobalSettings.InstallationInformationFacade.InstallationId);
-        list.Add(pair);
-
-        pair = new KeyValuePair();
         pair.Key = "ProductVersion";
         pair.Value = Composite.RuntimeInformation.ProductVersion.ToString();
         list.Add(pair);
@@ -60,18 +50,8 @@ public class Licensing : System.Web.Services.WebService
         list.Add(pair);
 
         pair = new KeyValuePair();
-        pair.Key = "Expired";
-        pair.Value = DateTime.MaxValue.ToString();
-        list.Add(pair);
-
-        pair = new KeyValuePair();
         pair.Key = "InstallationId";
         pair.Value = Composite.GlobalSettings.InstallationInformationFacade.InstallationId.ToString();
-        list.Add(pair);
-
-        pair = new KeyValuePair();
-        pair.Key = "RegisteredTo";
-        pair.Value = "NO BODY";
         list.Add(pair);
         
         return list.ToArray();
@@ -89,17 +69,17 @@ public class Licensing : System.Web.Services.WebService
 
         /*pair = new KeyValuePair();
         pair.Key = "Package Development";
-        pair.Value = "Jens Olaf Jersild;Dronning Margrethe;Anders Trentemøller;Adolf Hitler";
+        pair.Value = "";
         list.Add(pair);
 
         pair = new KeyValuePair();
         pair.Key = "Localization";
-        pair.Value = "Knud Piloqutinnguaq;Alingnaluk-ole Najattaannguaq;John Eqariusarsuaq Tavfinnguaq;Kajakob";
+        pair.Value = "";
         list.Add(pair);
 
         pair = new KeyValuePair();
         pair.Key = "Special Thanks To";
-        pair.Value = "Scott Gu;Steve Balmer;Bill Gates;Ted Kaczynski;Mohammaed Atta;";
+        pair.Value = "";
         list.Add(pair);*/
 
         return list.ToArray();
