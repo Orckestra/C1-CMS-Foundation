@@ -23,7 +23,7 @@ HelpPageBinding.PAGES = {
 	
 	"contentsbutton"	: "Composite.Help.Contents.Url",
 	"searchbutton" 		: "Composite.Help.Search.Url",
-	"bookmarksbutton" 	: "Composite.Help.Bookmarks.Url"
+	"bookmarksbutton" 	: "Composite.Help.Bookmarks.Url",
 	"indexbutton" 		: "Composite.Help.Index.Url"
 }
 
