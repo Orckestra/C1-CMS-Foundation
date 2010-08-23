@@ -13,6 +13,7 @@ using System.Xml.XPath;
 using System.Web.Configuration;
 using Composite.GlobalSettings;
 using Composite;
+using Composite.Extensions;
 using Composite.Users;
 using Composite.WebClient;
 
@@ -30,20 +31,14 @@ public class HelpHandler : IHttpHandler
 
     private ResponseContent RequestHelpPage(HttpContext context)
     {
-        string baseUriString = null;  // add logic with deep urls here
-        
-        if (string.IsNullOrEmpty(baseUriString))
+        string baseUriString = ConfigurationManager.AppSettings["Composite.HelpPage.Url"];
+
+        bool isStartPageRequest = context.Request.QueryString["id"].IsNullOrEmpty();
+
+        if (!isStartPageRequest)
         {
-            baseUriString = ConfigurationManager.AppSettings["Composite.HelpPage.Url"];
-        }
-        else
-        {
-            Uri checkUri = new Uri(baseUriString);
-            bool isCompositeServerRequest = checkUri.Host.ToLower().EndsWith("composite.net");
-            if (!isCompositeServerRequest)
-            {
-                throw new InvalidOperationException("For security reasons I will only route requests to composite.net hosts");
-            }
+            Uri helpPageUri = new Uri(baseUriString);
+            baseUriString = string.Format("{0}://{1}/{2}", helpPageUri.Scheme, helpPageUri.Host, context.Request.QueryString["id"]);
         }
         
         string userCultureName = Composite.Users.UserSettings.CultureInfo.Name;
