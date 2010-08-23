@@ -31,7 +31,7 @@ public class HelpHandler : IHttpHandler
 
     private ResponseContent RequestHelpPage(HttpContext context)
     {
-        string baseUriString = ConfigurationManager.AppSettings["Composite.HelpPage.Url"];
+        string baseUriString = ConfigurationManager.AppSettings["Composite.Help.Contents.Url"];
 
         bool isStartPageRequest = context.Request.QueryString["id"].IsNullOrEmpty();
 
