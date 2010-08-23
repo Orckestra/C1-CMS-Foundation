@@ -21,9 +21,10 @@ HelpPageBinding.HELPURL = Resolver.resolve ( "${root}/help/help.ashx" );
  */
 HelpPageBinding.PAGES = {
 	
-	"contentsbutton"	: "_contents.xml",
-	"searchbutton" 		: "_search.xml",
-	"bookmarksbutton" 	: "_bookmarks.xml"
+	"contentsbutton"	: "Composite.Help.Contents.Url",
+	"searchbutton" 		: "Composite.Help.Search.Url",
+	"bookmarksbutton" 	: "Composite.Help.Bookmarks.Url"
+	"indexbutton" 		: "Composite.Help.Index.Url"
 }
 
 /**
@@ -174,7 +175,7 @@ HelpPageBinding.prototype.onBeforePageInitialize = function () {
 HelpPageBinding.prototype.onAfterPageInitialize = function () {
 	
 	HelpPageBinding.superclass.onAfterPageInitialize.call ( this );
-	this.setLocalURL ( "Help.aspx" );
+	this.setLocalURL ( "" );
 }
 
 /**
@@ -219,8 +220,9 @@ HelpPageBinding.prototype.handleAction = function ( action ) {
  */
 HelpPageBinding.prototype.setLocalURL = function ( urlfragment ) {
 	
-	//this._windowBinding.setURL ( HelpPageBinding.HELPROOT + urlfragment );
-	
+	if ( urlfragment == null ) {
+		urlfragment = "";
+	}
 	this._windowBinding.setURL ( HelpPageBinding.HELPURL + "?id=" + urlfragment );
 }
 
