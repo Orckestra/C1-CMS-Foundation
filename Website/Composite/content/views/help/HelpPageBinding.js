@@ -32,12 +32,14 @@ HelpPageBinding.PAGES = {
  */
 HelpPageBinding.navigate = function () {
 	
+	/*
+	
 	var href = this.href.split ( "?id=" )[ 1 ];
 	
 	/*
 	 * Change window location. Patching an 
 	 * exotic WindowBinding exception in moz.
-	 */
+	 *
 	var page = bindingMap.page;
 	if ( Client.isExplorer ) {
 		page.setLocalURL ( href );
@@ -46,6 +48,24 @@ HelpPageBinding.navigate = function () {
 			page.setLocalURL ( href );
 		}, 0 );
 	}
+	*/
+	
+	var domain = "c1console.composite.net/";
+	var location = this.href.split ( domain )[ 1 ];
+	
+	/*
+	 * Change window location. Patching an 
+	 * exotic WindowBinding exception in moz.
+	 */
+	var page = bindingMap.page;
+	if ( Client.isExplorer ) {
+		page.setLocalURL ( location );
+	} else {
+		setTimeout ( function () {
+			page.setLocalURL ( location );
+		}, 0 );
+	}
+	
 	
 	/*
 	 * Onclick action can 
@@ -154,7 +174,7 @@ HelpPageBinding.prototype.onBeforePageInitialize = function () {
 HelpPageBinding.prototype.onAfterPageInitialize = function () {
 	
 	HelpPageBinding.superclass.onAfterPageInitialize.call ( this );
-	this.setLocalURL ( "_contents.xml" );
+	this.setLocalURL ( "Help.aspx" );
 }
 
 /**

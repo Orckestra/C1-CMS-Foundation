@@ -44,7 +44,9 @@
 					</ui:toolbargroup>
 				</ui:toolbarbody>
 			</ui:toolbar>
-			<ui:window id="helpwindow"/>
+			<ui:flexbox>
+				<ui:window id="helpwindow"/>
+			</ui:flexbox>
 			<ui:toolbar id="statusbar" class="statusbar" rel="developermode">
 				<ui:toolbarbody>
 					<ui:toolbargroup>
