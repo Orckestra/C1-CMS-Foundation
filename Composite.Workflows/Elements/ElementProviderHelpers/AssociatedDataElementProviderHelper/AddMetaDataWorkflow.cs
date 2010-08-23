@@ -88,6 +88,18 @@ namespace Composite.Elements.ElementProviderHelpers.AssociatedDataElementProvide
 
 
 
+        private bool IsAnyPagesAffected()
+        {
+            PageMetaDataDescription dataAssociationVisabilityRule = this.GetBinding<PageMetaDataDescription>(DataAssociationVisabilityDescriptionBindingName);
+
+            IPage page = GetCurrentPage();
+
+            return page.GetMetaDataAffectedPages(dataAssociationVisabilityRule.StartLevel, dataAssociationVisabilityRule.Levels).Any();
+        }
+
+
+
+
         private void DoesTypesToAddExists(object sender, ConditionalEventArgs e)
         {
             e.Result = GetAddebleTypes().FirstOrDefault() != null;
@@ -102,15 +114,11 @@ namespace Composite.Elements.ElementProviderHelpers.AssociatedDataElementProvide
             e.Result = dataAssociationVisabilityRule != null;
         }
 
-
+        
 
         private void DoesTargetDataExists(object sender, ConditionalEventArgs e)
         {
-            PageMetaDataDescription dataAssociationVisabilityRule = this.GetBinding<PageMetaDataDescription>(DataAssociationVisabilityDescriptionBindingName);
-
-            IPage page = GetCurrentPage();
-
-            e.Result = page.GetMetaDataAffectedPages(dataAssociationVisabilityRule.StartLevel, dataAssociationVisabilityRule.Levels).Any();
+            e.Result = IsAnyPagesAffected();
         }
 
 
@@ -235,6 +243,8 @@ namespace Composite.Elements.ElementProviderHelpers.AssociatedDataElementProvide
                 );
         }
 
+
+
         private void finalizeCodeActivity_Finalize_ExecuteCode(object sender, EventArgs e)
         {
             Type selectedMetaDataType = this.GetBinding<Type>(SelectedTypeBindingName);
@@ -245,13 +255,18 @@ namespace Composite.Elements.ElementProviderHelpers.AssociatedDataElementProvide
             string metaDataDefinitionName = this.GetBinding<string>(FieldGroupNameBindingName);
             string metaDataDefinitionLabel = this.GetBinding<string>(FieldGroupLabelBindingName);
 
-            DataTypeDescriptorFormsHelper helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor);
+            IData newDataTemplate = null;
+            if (IsAnyPagesAffected())
+            {
+                DataTypeDescriptorFormsHelper helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor);
 
-            GeneratedTypesHelper generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor);
-            helper.AddReadOnlyFields(generatedTypesHelper.NotEditableDataFieldDescriptorNames);
+                GeneratedTypesHelper generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor);
+                helper.AddReadOnlyFields(generatedTypesHelper.NotEditableDataFieldDescriptorNames);
 
-            IData newDataTemplate = DataFacade.BuildNew(selectedMetaDataType);
-            helper.BindingsToObject(this.Bindings, newDataTemplate);
+                newDataTemplate = DataFacade.BuildNew(selectedMetaDataType);
+                helper.BindingsToObject(this.Bindings, newDataTemplate);
+            }
+            
 
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
             {
@@ -259,7 +274,10 @@ namespace Composite.Elements.ElementProviderHelpers.AssociatedDataElementProvide
 
                 page.AddMetaDataDefinition(metaDataDefinitionName, metaDataDefinitionLabel, selectedMetaDataType.GetImmutableTypeId(), metaDataContainerId, dataAssociationVisabilityRule.StartLevel, dataAssociationVisabilityRule.Levels);
 
-                page.AddNewMetaDataToExistingPages(metaDataDefinitionName, newDataTemplate);
+                if (newDataTemplate != null)
+                {
+                    page.AddNewMetaDataToExistingPages(metaDataDefinitionName, newDataTemplate);
+                }
 
                 transactionScope.Complete();
             }
@@ -267,6 +285,7 @@ namespace Composite.Elements.ElementProviderHelpers.AssociatedDataElementProvide
             ParentTreeRefresher parentTreeRefresher = this.CreateParentTreeRefresher();
             parentTreeRefresher.PostRefreshMesseges(this.EntityToken);
         }
+
 
 
         private void MetaDataValid(object sender, ConditionalEventArgs e)
@@ -296,13 +315,13 @@ namespace Composite.Elements.ElementProviderHelpers.AssociatedDataElementProvide
                 }
             }
 
-            if(valid)
+            if (valid)
             {
                 var fieldsWithInvalidForeginKey = new List<string>();
                 DataReferenceFacade.TryValidateForeignKeyIntegrity(newDataTemplate, fieldsWithInvalidForeginKey);
                 if (fieldsWithInvalidForeginKey.Count > 0)
                 {
-                    foreach(string fieldName in fieldsWithInvalidForeginKey)
+                    foreach (string fieldName in fieldsWithInvalidForeginKey)
                     {
                         if (!generatedTypesHelper.NotEditableDataFieldDescriptorNames.Contains(fieldName))
                         {
@@ -310,7 +329,7 @@ namespace Composite.Elements.ElementProviderHelpers.AssociatedDataElementProvide
                             valid = false;
                         }
                     }
-                    
+
                 }
             }
 
