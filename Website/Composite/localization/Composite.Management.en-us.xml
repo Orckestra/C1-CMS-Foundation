@@ -407,6 +407,11 @@
 	<string key="IntegerRangeValidationFunction.Min.Help" value="The minimum number allowed in this field." />
 	<string key="IntegerRangeValidationFunction.Max.Label" value="Maximum number" />
 	<string key="IntegerRangeValidationFunction.Max.Help" value="The maximum number allowed in this field." />
+	<string key="LoginWebRequestHandler.Header" value="Login to {0}" />
+	<string key="LoginWebRequestHandler.Login" value="Login" />
+	<string key="LoginWebRequestHandler.LoginFailed" value="Incorrect user name or password" />
+	<string key="LoginWebRequestHandler.Password" value="Password" />
+	<string key="LoginWebRequestHandler.Username" value="Username" />
 	<string key="LoginWebRequestHandler.LogInAsOtherUser" value="Log in as another user." />
 	<string key="LoginWebRequestHandler.WrongUserNameOrPassword" value="Wrong username or password." />
 	<string key="LoginWebRequestHandler.UserNameNotRegistered" value="The supplied Windows login, {0}\{1} is not registered in the user database. You must use a different login." />

@@ -3,11 +3,13 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+
+using Composite.Extensions;
 using Composite.GlobalSettings;
 using Composite.ResourceSystem;
 using Composite.Security;
-using Composite.StandardPlugins.WebClient.WebRequestHandlers.LoginWebRequestHandler.Resources;
 using Composite.WebClient.Plugins.WebRequestHandler;
+
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
@@ -189,14 +191,14 @@ namespace Composite.StandardPlugins.WebClient.WebRequestHandlers.LoginWebRequest
             passwordTextBox.TextMode = TextBoxMode.Password;
 
             loginButton = new Button();
-            loginButton.Text = String.Format(" {0} ", LoginHandlerResources.Login);
+            loginButton.Text = String.Format(" {0} ", GetText("Login"));
 
             loginButton.Click += new EventHandler(loginButton_Click);
 
             string headerImgUrl = PathUtils.GetResourceUrl(@"AllUsersAllowedFiles\Arrow.png");
 
             string headerImgTag = "<img src='" + headerImgUrl + "' style='position: relative; top: 5px; left: -5px;'/>";
-            LiteralControl header = new LiteralControl(String.Format("<h1>{0} {1}</h1>", headerImgTag, LoginHandlerResources.HeaderFormat(appName)));
+            LiteralControl header = new LiteralControl(String.Format("<h1>{0} {1}</h1>", headerImgTag, GetText("Header").FormatWith(appName)));
 
             _image = new HtmlImage();
             _image.Src = PathUtils.GetResourceUrl("AllUsersAllowedFiles\\IconLock.png");
@@ -205,8 +207,8 @@ namespace Composite.StandardPlugins.WebClient.WebRequestHandlers.LoginWebRequest
 
             HtmlTable table = new HtmlTable();
 
-            AddRow(table, LoginHandlerResources.Username, userNameTextBox);
-            AddRow(table, LoginHandlerResources.Password, passwordTextBox);
+            AddRow(table, GetText("Username"), userNameTextBox);
+            AddRow(table, GetText("Password"), passwordTextBox);
             AddRow(table, "", loginButton);
 
             _msgPlaceholder = new Panel();
@@ -268,7 +270,7 @@ namespace Composite.StandardPlugins.WebClient.WebRequestHandlers.LoginWebRequest
                 {
                     _image.Src = PathUtils.GetResourceUrl("AllUsersAllowedFiles\\IconExclamation.png");
                     _image.Alt = "Logged " + Page.Request.UserHostName;
-                    string failAlert = String.Format("<strong>{0}</strong>", LoginHandlerResources.LoginFailed);
+                    string failAlert = String.Format("<strong>{0}</strong>", GetText("LoginFailed"));
 
                     _msgPlaceholder.Controls.Add(new LiteralControl(failAlert));
                 }
@@ -283,6 +285,11 @@ namespace Composite.StandardPlugins.WebClient.WebRequestHandlers.LoginWebRequest
                 returnUrl = "~";
             }
             this.Page.Response.Redirect(returnUrl);
+        }
+
+        private static string GetText(string key)
+        {
+            return StringResourceSystemFacade.GetString("Composite.Management", "LoginWebRequestHandler." + key);
         }
     }
 

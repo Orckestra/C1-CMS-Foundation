@@ -955,8 +955,6 @@
     <Compile Include="WebClient\StandardPlugins\SessionStateProviders\DefaultSessionStateProvider\XmlSerializationWrapper.cs" />
     <Compile Include="WebClient\StandardPlugins\WebRequestHandlers\LoginWebRequestHandler\LoginWebRequestHandler.cs" />
     <Compile Include="WebClient\StandardPlugins\WebRequestHandlers\LoginWebRequestHandler\PathUtils.cs" />
-    <Compile Include="WebClient\StandardPlugins\WebRequestHandlers\LoginWebRequestHandler\Resources\LoginHandlerResources.da.Designer.cs" />
-    <Compile Include="WebClient\StandardPlugins\WebRequestHandlers\LoginWebRequestHandler\Resources\LoginHandlerResources.Designer.cs" />
     <Compile Include="WebClient\State\ISessionStateProvider.cs" />
     <Compile Include="WebClient\State\Runtime\SessionStateProviderCustomFactory.cs" />
     <Compile Include="WebClient\State\Runtime\SessionStateProviderFactory.cs" />
@@ -2090,10 +2088,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="WebClient\StandardPlugins\WebRequestHandlers\LoginWebRequestHandler\Resources\LoginHandlerResources.da.resx" />
-    <EmbeddedResource Include="WebClient\StandardPlugins\WebRequestHandlers\LoginWebRequestHandler\Resources\LoginHandlerResources.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
