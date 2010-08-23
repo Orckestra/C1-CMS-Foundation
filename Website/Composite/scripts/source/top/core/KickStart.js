@@ -123,8 +123,8 @@ var KickStart = new function () {
 			if ( bindingMap.decks != null && LoginService.IsLoggedIn ( true )) {
 				accessGranted ();
 			} else {
-				splashScreenData ();
 				if ( bindingMap.decks != null ) {
+					splashScreenData ();
 					showLogin ();
 				} else {
 					showWelcome ();
