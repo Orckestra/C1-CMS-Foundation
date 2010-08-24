@@ -261,7 +261,7 @@ namespace CompositeTypeFieldDesigner
 
             if (widgetFunctionMarkup == "")
             {
-                Baloon(btnWidgetFunctionMarkup.ClientID, "Remember to specify a widget..."); // TODO: localization  
+                Baloon(btnWidgetFunctionMarkup.ClientID, GetString("NoWidgetSelected")); 
             }
         }
 
@@ -726,7 +726,7 @@ namespace CompositeTypeFieldDesigner
                     }
                 }
 
-                return "(no widget specified)"; // TODO: localization ???
+                return GetString("NoWidgetSelectedLabel");
             }
         }
 

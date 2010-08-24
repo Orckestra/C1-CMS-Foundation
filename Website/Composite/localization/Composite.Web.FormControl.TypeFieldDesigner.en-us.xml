@@ -86,8 +86,8 @@
   <string key="NameEmptyError" value="Data field names can not be empty. Please specify a name." />
   <string key="NameAlreadyInUseError" value="Another field uses this name. Data field names must be unique." />
   <string key="NotAnOptionalTypeError" value="The selected type can not be optional." />
-  
-
+  <string key="NoWidgetSelected" value="Remember to specify a widget..." />
+  <string key="NoWidgetSelectedLabel" value="(no widget specified)" />
 </strings>
 
 

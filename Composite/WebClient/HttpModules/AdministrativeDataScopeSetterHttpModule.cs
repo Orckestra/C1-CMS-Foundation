@@ -33,7 +33,6 @@ namespace Composite.WebClient.HttpModules
 
             if (adminRootRequest == true && UserValidationFacade.IsLoggedIn() == true)
             {
-                // TODO: Optimaze, getting UserSettings.ActiveLocaleCultureInfo takes 5ms for every request.
                 context.Items.Add("AdministrativeDataScopeSetterHttpModule.DataScope", new DataScope(DataScopeIdentifier.Administrated, UserSettings.ActiveLocaleCultureInfo));
             }
         }

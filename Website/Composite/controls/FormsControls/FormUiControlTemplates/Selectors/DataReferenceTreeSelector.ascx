@@ -95,8 +95,7 @@
 
         if (label == null)
         {
-            // TODO: Localization ???
-            ctlSelectorDialog.Attributes["label"] = "(no selection)";
+            ctlSelectorDialog.Attributes["label"] = StringResourceSystemFacade.GetString("Composite.Management", "AspNetUiControl.Selector.NoSelection");
             ctlSelectorDialog.Attributes["tooltip"] = "";
             return;
         }

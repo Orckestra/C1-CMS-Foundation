@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using Composite.Extensions;
+using Composite.ResourceSystem;
 using Composite.Types;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
 using System.Collections.Generic;
@@ -24,8 +25,6 @@ namespace Composite.Validation.Validators
 
         protected override void DoValidate(object objectToValidate, object currentTarget, string key, ValidationResults validationResults)
         {
-            // TODO: localize validation messages
-
             decimal number = (decimal)objectToValidate;
 
             List<DecimalPrecisionValidatorAttribute> attributes = currentTarget.GetType().GetProperty(key).GetCustomAttributesRecursively<DecimalPrecisionValidatorAttribute>().ToList();
@@ -33,7 +32,8 @@ namespace Composite.Validation.Validators
 
             if (number != Decimal.Round(number, validatiorAttribute.Digits))
             {
-                LogValidationResult(validationResults, "Only {0} digit(s) after decimal point allowed".FormatWith(attributes[0].Digits), currentTarget, key);
+                
+                LogValidationResult(validationResults, GetString("Validation.Decimal.SymbolsAfterPointAllowed").FormatWith(attributes[0].Digits), currentTarget, key);
                 return;
             }
 
@@ -49,8 +49,13 @@ namespace Composite.Validation.Validators
             int allowedDigitsBeforeSeparator = validatiorAttribute.Precision - validatiorAttribute.Digits;
             if (str.Length > allowedDigitsBeforeSeparator)
             {
-                LogValidationResult(validationResults, "Only {0} digit(s) before decimal point allowed".FormatWith(allowedDigitsBeforeSeparator), currentTarget, key);
+                LogValidationResult(validationResults, GetString("Validation.Decimal.SymbolsBeforePointAllowed").FormatWith(allowedDigitsBeforeSeparator), currentTarget, key);
             }
+        }
+
+        private static string GetString(string key)
+        {
+            return StringResourceSystemFacade.GetString("Composite.Management", key);
         }
     }
 }

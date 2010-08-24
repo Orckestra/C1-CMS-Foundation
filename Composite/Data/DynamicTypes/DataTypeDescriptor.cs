@@ -332,19 +332,6 @@ namespace Composite.Data.DynamicTypes
                 if (this.DataScopes.Count == 0) throw new InvalidOperationException("The DataScopes list containing the list of data scopes this type must support can not be empty. Please provide at least one data scopes.");
                 if (this.DataScopes.Select(f => f.Name).Distinct().Count() != this.DataScopes.Count) throw new InvalidOperationException("The DataScopes list contains redundant data scopes");
 
-                // TODO: DDZ - ???? 
-                //if (this.DataScopes.Where(f => f.Equals(DataScopeIdentifier.Versioned)).Count() > 0)
-                //{
-                //    foreach (PropertyInfo propertyInfo in typeof(IVersionControlled).GetProperties())
-                //    {
-                //        if (this.Fields.Where(f => f.Name == propertyInfo.Name).Count() == 0)
-                //        {
-                //            throw new InvalidOperationException(string.Format("DataScope '{0}' require you to implement '{1}' and a field named '{2} is missing", DataScopeIdentifier.Versioned, typeof(IVersionControlled), propertyInfo.Name));
-                //        }
-                //    }
-                //}
-
-                
                 if (this.DataScopes.Where(f => f.Equals(DataScopeIdentifier.PublicName)).Count() > 0)
                 {
                     foreach (PropertyInfo propertyInfo in typeof(IPublishControlled).GetProperties())
