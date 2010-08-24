@@ -1358,7 +1358,7 @@ namespace Composite.Types
         }
 
 
-
+        [DebuggerStepThrough]
         private void DeleteTempAssemblies()
         {
             try

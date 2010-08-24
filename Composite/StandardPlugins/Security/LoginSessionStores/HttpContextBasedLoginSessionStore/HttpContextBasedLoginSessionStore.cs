@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Net;
 using System.Security.Cryptography;
 using System.Web;
@@ -30,10 +31,9 @@ namespace Composite.StandardPlugins.Security.LoginSessionStores.HttpContextBased
 
         public void StoreUsername(string userName, bool persistAcrossSessions)
         {
-            if (string.IsNullOrEmpty(userName))
-            {
-                throw new ArgumentException("Can not store empty user name", "userName");
-            }
+            Verify.ArgumentNotNullOrEmpty(userName, "userName");
+
+            userName = userName.ToLower(CultureInfo.InvariantCulture);
 
             HttpCookie authCookie = FormsAuthentication.GetAuthCookie(userName, persistAcrossSessions);
             authCookie.Name = this.AuthCookieName;

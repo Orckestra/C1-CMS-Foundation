@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Workflow.Runtime;
 using System.Workflow.Activities;
+
 using Composite.Actions;
 using Composite.Data;
 using Composite.Data.Types;
@@ -12,9 +14,9 @@ using Composite.Types;
 using Composite.Users;
 using Composite.Validation;
 using Composite.Workflow;
-using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Composite.ConsoleEventSystem;
-using System.Workflow.Runtime;
+
+using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider
@@ -40,8 +42,9 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvide
         private void IsUserValid(object sender, ConditionalEventArgs e)
         {
             IUser newUser = this.GetBinding<IUser>(NewUserBindingName);
-            newUser.Username = newUser.Username.Trim();
 
+            NormalizeUsername(newUser);
+            
             ValidationResults validationResults = ValidationFacade.Validate(newUser);
 
             bool isValid = validationResults.IsValid;
@@ -104,6 +107,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvide
         private void step1CodeActivity_ExecuteCode(object sender, EventArgs e)
         {
             IUser newUser = this.GetBinding<IUser>(NewUserBindingName);
+            NormalizeUsername(newUser);
 
             ValidationResults validationResults = ValidationFacade.Validate(newUser);
 
@@ -112,12 +116,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvide
                 this.ShowFieldMessage(string.Format("{0}.{1}", NewUserBindingName, result.Key), result.Message);
             }
 
-            int count =
-                (from user in DataFacade.GetData<IUser>()
-                 where user.Username == newUser.Username
-                 select user).Count();
+            IQueryable<IUser> usersWithTheSameName =
+                 from user in DataFacade.GetData<IUser>()
+                 where string.Compare(user.Username, newUser.Username, StringComparison.InvariantCultureIgnoreCase) == 0
+                 select user;
 
-            if (count > 0)
+            if (usersWithTheSameName.Any())
             {
                 this.ShowFieldMessage(string.Format("{0}.{1}", NewUserBindingName, "Username"), StringResourceSystemFacade.GetString("Composite.Management", "AddNewUserWorkflow.UsernameDuplicateError"));
             }
@@ -130,6 +134,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvide
             AddNewTreeRefresher addNewTreeRefresher = this.CreateAddNewTreeRefresher(this.EntityToken);
 
             IUser newUser = this.GetBinding<IUser>(NewUserBindingName);
+            NormalizeUsername(newUser);
+
             newUser.EncryptedPassword = newUser.EncryptedPassword.Encrypt();
             newUser = DataFacade.AddNew<IUser>(newUser);
 
@@ -148,6 +154,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvide
             addNewTreeRefresher.PostRefreshMesseges(newUser.GetDataEntityToken());
 
             this.ExecuteWorklow(newUser.GetDataEntityToken(), typeof(EditUserWorkflow));
+        }
+
+        private static void NormalizeUsername(IUser user)
+        {
+            // User names are lower-cased
+            user.Username =  user.Username.Trim().ToLowerInvariant();
         }
     }
 }

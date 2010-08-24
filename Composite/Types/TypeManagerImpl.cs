@@ -171,9 +171,6 @@ namespace Composite.Types
                 Type compositeType = TryGetNonGenericType(fullName + ", CompositeCore");
                 if (compositeType != null) return compositeType;
 
-                compositeType = TryGetNonGenericType(fullName + ", CompositeApplications");
-                if (compositeType != null) return compositeType;
-
                 if (fullName.StartsWith("DynamicType:") == false)
                 {
                     Type dynamicType = TryGetNonGenericType("DynamicType:" + fullName);
