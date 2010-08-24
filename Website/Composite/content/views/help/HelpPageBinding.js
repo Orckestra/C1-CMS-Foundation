@@ -33,24 +33,6 @@ HelpPageBinding.PAGES = {
  */
 HelpPageBinding.navigate = function () {
 	
-	/*
-	
-	var href = this.href.split ( "?id=" )[ 1 ];
-	
-	/*
-	 * Change window location. Patching an 
-	 * exotic WindowBinding exception in moz.
-	 *
-	var page = bindingMap.page;
-	if ( Client.isExplorer ) {
-		page.setLocalURL ( href );
-	} else {
-		setTimeout ( function () {
-			page.setLocalURL ( href );
-		}, 0 );
-	}
-	*/
-	
 	var domain = "c1console.composite.net/";
 	var location = this.href.split ( domain )[ 1 ];
 	
@@ -175,7 +157,7 @@ HelpPageBinding.prototype.onBeforePageInitialize = function () {
 HelpPageBinding.prototype.onAfterPageInitialize = function () {
 	
 	HelpPageBinding.superclass.onAfterPageInitialize.call ( this );
-	this.setLocalURL ( "" );
+	this.setLocalURL ( "Composite.Help.Contents.Url" );
 }
 
 /**
@@ -289,7 +271,9 @@ HelpPageBinding.prototype._onWindowLoaded = function () {
 	var links = new List ( doc.links );
 	links.each ( function ( link ) {
 		if ( link.href != Constants.DUMMY_LINK ) {
-			link.onclick = HelpPageBinding.navigate;
+			if ( link.href.indexOf ( doc.domain ) >-1 ) {
+				link.onclick = HelpPageBinding.navigate;
+			}
 		}
 	});
 }

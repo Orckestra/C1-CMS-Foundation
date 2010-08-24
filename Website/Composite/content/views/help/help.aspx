@@ -40,20 +40,20 @@
 				<ui:toolbarbody align="right" rel="developermode">
 					<ui:toolbargroup>
 						<ui:toolbarbutton id="bookmarkbutton" label="Bookmark" rel="developermode" image="${icon:bookmark}" tooltip="Bookmark this page"/>
-						<ui:toolbarbutton id="textsizebutton" label="Text Size" rel="developermode" image="${icon:zoom}" tooltip="Change text size" popup="textsizepopup"/>
+						<ui:toolbarbutton id="textsizebutton" label="Text Size" rel="developermode" image="${icon:zoomin}" tooltip="Change text size" popup="textsizepopup"/>
 					</ui:toolbargroup>
 				</ui:toolbarbody>
 			</ui:toolbar>
 			<ui:flexbox>
 				<ui:window id="helpwindow"/>
 			</ui:flexbox>
-			<ui:toolbar id="statusbar" class="statusbar" rel="developermode">
+			<ui:toolbar id="statusbar" class="statusbar">
 				<ui:toolbarbody>
 					<ui:toolbargroup>
-						<ui:toolbarbutton id="contentsbutton" label="Contents" image="${icon:page}" tooltip="Help contents"/>
-						<ui:toolbarbutton id="searchbutton" rel="developermode" label="Search" image="${icon:zoom}" tooltip="Search Help"/>
-						<ui:toolbarbutton id="bookmarksbutton" rel="developermode" label="Bookmarks" image="${icon:bookmark}" tooltip="Your bookmarked pages"/>
-						<!-- <ui:toolbarbutton id="navindex" label="Index" tooltip="Alphabetic index"/>-->
+						<ui:toolbarbutton id="contentsbutton" label="Contents" image="${icon:contents}" image-disabled="${icon:contents-disabled}" tooltip="Help contents"/>
+						<ui:toolbarbutton id="searchbutton" rel="developermode" label="Search" image="${icon:zoom}" image-disabled="${icon:zoom-disabled}" tooltip="Search Help"/>
+						<ui:toolbarbutton id="bookmarksbutton" rel="developermode" label="Bookmarks" image="${icon:bookmark}" image-disabled="${icon:bookmark-disabled}" tooltip="Your bookmarked pages"/>
+						<ui:toolbarbutton id="indexbutton" rel="developermode" label="Index" image="${icon:alphbeticindex}" image-disabled="${icon:alphbeticindex-disabled}" tooltip="Alphabetic index"/>
 					</ui:toolbargroup>
 				</ui:toolbarbody>
 			</ui:toolbar>

@@ -2,6 +2,6 @@
 
 #region vista
 ui|menubar {
-	background: url("menus/vistabackdrop.png") $(color:threedface) repeat-x 0 50% !important;
+	background: url("${skin}/menus/vistabackdrop.png") $(color:threedface) repeat-x 0 50% !important;
 }
 #endregion

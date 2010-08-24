@@ -164,9 +164,9 @@
 			<ui:menu label="${string:Website.App.LabelHelp}">
 				<ui:menupopup>
 					<ui:menubody>
-						<ui:menugroup rel="developermode">
-							<ui:menuitem label="${string:Website.App.LabelHelpContents}" rel="developermode" binding="StageViewMenuItemBinding" handle="Composite.Management.Help"/>
-							<ui:menuitem label="${string:Website.App.LabelFeedback}" oncommand="window.open('http://users.composite.net/Feedback')"/>
+						<ui:menugroup>
+							<ui:menuitem label="${string:Website.App.LabelHelpContents}" image="${icon:help}" binding="StageViewMenuItemBinding" handle="Composite.Management.Help"/>
+							<ui:menuitem label="${string:Website.App.LabelFeedback}" image="${icon:feedback}" oncommand="window.open('http://users.composite.net/Feedback')"/>
 						</ui:menugroup>
 						<ui:menugroup>
 							<ui:menuitem label="${string:Website.App.LabelAboutComposite}" oncommand="Commands.about()" image="${icon:composite}"/>

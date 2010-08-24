@@ -3,9 +3,7 @@
 
 * {
 cursor: default;
--moz-box-sizing: border-box;
--webkit-box-sizing: border-box;
-box-sizing: border-box;
+-vendor-box-sizing: border-box;
 }
 html,
 body {
@@ -30,9 +28,8 @@ margin: 0 0 1.3em 0;
 textarea,					
 input {
 cursor: text;
--moz-user-select: text;
--webkit-user-select: text;
-user-select: text;
+-vendor-user-select: text;
+-vendor-resize: none;
 }
 html,
 input,
@@ -184,7 +181,7 @@ display: inline;
 ui|text,
 ui|header {
 display: block;
--moz-user-select: none; /* See notes in DocumentManager.js */	
+-vendor-user-select: none; /* See notes in DocumentManager.js */	
 }
 ui|text {
 margin: 0 0 1em 0;
@@ -207,7 +204,7 @@ ui|labelbox {
 display: block;
 float: left;
 white-space: nowrap;
--moz-user-select: none; /* See notes in DocumentManager.js */
+-vendor-user-select: none; /* See notes in DocumentManager.js */
 }
 ui|labelbox.toolbartext {
 margin-top: 4px;	
@@ -432,7 +429,10 @@ margin: 0 !important;
 }
 ui|dialogtoolbar ui|clickbutton.focused {
 border: 1px solid $(color:threedshadow);
-padding: 1px;
+#region osx
+border: 1px solid -moz-mac-focusring;
+#endregion
+padding: 1px;	
 }
 
 /* STANDARD DIALOGS ................................................................*/
@@ -492,26 +492,25 @@ z-index: 6;  /* above the shadow */
 #moz min-width: 160px;
 #ie width: 160px;
 visibility: hidden;
--moz-transition-property: opacity;
--moz-transition-duration: 0.15s;
--moz-box-shadow: 2px 2px 4px rgba(0,0,0,0.75);
+-vendor-transition-property: opacity;
+-vendor-transition-duration: 0.15s;
+-vendor-box-shadow: 2px 2px 4px rgba(0,0,0,0.75);
 display: none;
 border: 1px solid $(color:threedshadow);
--moz-user-select: none;
+-vendor-user-select: none;
 }
 ui|popupbody { /* NOT USED ON COMMON POPUPS! */
 display: block;
 padding: 10px 12px 10px 12px;
-background-color: Menu;
+background-color: $(color:menu);
 color: $(color:menutext);
--moz-user-select: none;
+-vendor-user-select: none;
 }
 
 /* OVERFLOW ................................................ */
 
 ui|popup.overflow {
-#ie overflow-y: auto;
-#moz overflow: -moz-scrollbars-vertical;
+overflow-y: auto;
 height: 211px; /* move this to script when separators are supported */
 border-right: none;
 }
@@ -536,7 +535,7 @@ padding: 0;
 ui|menubody {
 display: block;
 padding: 4px 2px 4px 2px;
-background-color: Menu;
+background-color: $(color:menu);
 color: $(color:menutext);
 /*border: 1px solid $(color:threedshadow);*/
 }
@@ -682,6 +681,9 @@ ui|clickbutton.active ui|labelbox {
 position: relative;
 top: 1px;
 left: 1px;
+#region osx
+position: static;
+#endregion
 }
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
@@ -1009,7 +1011,7 @@ border-right: 1px solid $(color:threeddarkshadow);
 }
 ui|splitter.horizontal ui|splitterbody.hover,
 ui|splitter.horizontal ui|splitterbody.active {
--moz-box-shadow: 2px 0 3px rgba(0,0,0,0.35);
+-vendor-box-shadow: 2px 0 3px rgba(0,0,0,0.35);
 }
 ui|splitter.vertical ui|splitterbody {
 height: 8px;
@@ -1021,7 +1023,7 @@ border-bottom: 1px solid $(color:threeddarkshadow);
 }
 ui|splitter.vertical ui|splitterbody.hover,
 ui|splitter.vertical ui|splitterbody.active {
--moz-box-shadow: 0 2px 3px rgba(0,0,0,0.35);
+-vendor-box-shadow: 0 2px 3px rgba(0,0,0,0.35);
 }
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
@@ -1082,10 +1084,11 @@ padding-left: 16px;
 }
 ui|treecontent {
 padding-left: 40px;
--moz-user-select: none; /* hope we don't need an input field */
+-vendor-user-select: none; /* hope we don't need an input field */
 }
 ui|treenode ui|labelbox.focused ui|labeltext {
-background-color: $(color:threedface) !important;
+background-color: $(color:threedface) !important; /* too light for projection */
+background-color: $(color:threedlightshadow) !important;
 }
 ui|tree.focused ui|treenode ui|labelbox.focused ui|labeltext {
 background-color: $(color:highlight) !important;
@@ -1226,19 +1229,19 @@ display: block;
 width: 408px; /* matching fields! */
 padding-left: 2px;
 padding-bottom: 1em;
-#moz -moz-user-select: none;
+-vendor-user-select: none;
 }
 ui|pageheading {
 display: block;
 font-size: 120%;
 font-weight: bold;
 padding: 0 0 0.5em 0;
-#moz -moz-user-select: none;	
+-vendor-user-select: none;	
 }
 ui|pagedescription {
 display: block;
 padding: 0 0 12px 0;
-#moz -moz-user-select: none;
+-vendor-user-select: none;
 }
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
@@ -1362,6 +1365,7 @@ ui|fields {
 display: none; /* adjusted by FieldsBinding.js */
 width: 408px; /* table.fieldgroupmatrix makes up 4px on both sides! */
 position: relative; /* mostly because it fixes an ie bug where fieldgroup captions would hang on tabpanel changes */
+/* padding-bottom: 9px; fixes a dialog resize problem - moved to functioncalleditor.aspx where the problem is spotted */
 }
 
 /* FIELDGROUP ......................................... */
@@ -1370,7 +1374,6 @@ ui|fieldgroup {
 display: block;
 padding-top: 7px;
 overflow: visible;
-/* margin-bottom: 24px; damnation! */
 margin-top: 24px !important;
 }
 ui|fieldgroup.first {
@@ -1425,13 +1428,6 @@ ui|labelbox.fieldgrouplabel ui|labeltext {
 color: $(color:activecaption);
 #endregion
 }
-/*
-ui|fieldgroupseparator {
-display: block;
-height: 24px;
-overflow: hidden;
-}
-*/
 ui|fieldgroup.nolabel table.fieldgroupmatrix td.group-nw,
 ui|fieldgroup.nolabel table.fieldgroupmatrix td.group-ne,
 ui|fieldgroup.nolabel table.fieldgroupmatrix td.group-n {
@@ -1459,7 +1455,7 @@ float: left;
 width: 150px;
 padding: 8px 0 0 5px;
 white-space: normal;
--moz-user-select: none;
+-vendor-user-select: none;
 }
 ui|fielddata {
 display: block;
@@ -1542,8 +1538,8 @@ ui|textbox.isdisabled textarea,
 ui|editortextbox.isdisabled textarea {
 cursor: default;
 background-color: $(color:threedface);
--moz-user-select: none;
--moz-user-focus: none;
+-vendor-user-select: none;
+-vendor-user-focus: none;
 #alphabackdrop: url("${root}/images/ui/lighten.png");
 }
 ui|datainputselector.isdisabled ui|box,
@@ -1637,7 +1633,7 @@ position: absolute;
 z-index: 1;
 right: 7px;
 top: 4px;
-#moz -moz-user-select: none;
+-vendor-user-select: none;
 }
 ui|fields ui|selector img.selectorindicatorimage {
 top: 5px;
@@ -1676,7 +1672,7 @@ display: block;
 }
 ui|multiselector ui|box {
 width: 216px;
--moz-user-select: none;
+-vendor-user-select: none;
 padding: 5px 0 5px 0;
 overflow: auto;
 #ie height: 88px;
@@ -1735,6 +1731,12 @@ ui|field.fieldhelp ui|fielddata ui|datainputdialog input {
 width: 159px;
 }
 
+/* EXOTIC STUFF ................................... */
+
+ui|nullpostbackdatadialog {
+display: block;	
+}
+
 /* TEXTBOX ......................................... */
 
 ui|textbox,
@@ -1753,7 +1755,7 @@ overflow: auto;
 position: absolute;
 #ie height: 106px;
 #moz height: 102px;
-#moz -moz-tab-size: 4;
+-vendor-tab-size: 4;
 }
 
 /* FULLBLOWN EDITORTEXTBOX */
@@ -1836,7 +1838,7 @@ ui|fields ui|checkbox.focused {
 padding: 1px;
 border: 1px solid $(color:threedshadow);
 #region osx
-border-color: $(color:highlight);
+border-color: -moz-mac-focusring;
 #endregion
 }
 
@@ -1871,7 +1873,7 @@ float: left;
 width: 195px;
 padding-left: 5px;
 padding-top: 2px;
--moz-user-select: none; /* See notes in DocumentManager.js */
+-vendor-user-select: none; /* See notes in DocumentManager.js */
 }
 ui|field.fieldhelp ui|datalabeltext {
 width: 163px;
@@ -1934,7 +1936,7 @@ position: absolute;
 z-index: 1;
 right: 7px;
 top: 5px;
-#moz -moz-user-select: none;
+-vendor-user-select: none;
 }
 ui|fields ui|datadialog ui|clickbutton table.matrix td.c,
 ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c,
@@ -1976,21 +1978,21 @@ ui|filepicker input.real {
 display: block;
 cursor: default !important;
 position: absolute;
-top: 1px;
+top: 3px;
 left: 0;
-#ie left: 3px;
-#moz left: -10px;
+cursor: default;
 #opacity: 0;
 }
 ui|filepicker ui|datainput.fake,
 ui|filepicker ui|datainput.fake input {
-width: 160px;
+width: 159px;
 #ie width: 153px;
 float: left;
 }
 ui|filepicker ui|clickbutton {
 position: relative;
 top: 2px;
+left: 2px;
 }
 ui|filepicker ui|clickbutton table.matrix td.c {
 padding: 2px;
@@ -2002,6 +2004,47 @@ width: 204px;
 padding-top: 1px;
 padding-bottom: 1px;
 #endregion
+}
+
+/* CALENDAR ........................................................... */
+
+div.calendar {
+border: 1px solid $(color:threedshadow);
+background-color: $(color:threedhighlight);
+position: relative;
+top: -1px;
+#ie width: 99.9%;
+}
+div.calendar table {
+width: 100%;
+margin: 0 !important;
+border-collapse: collapse;
+}
+div.calendar table td {
+padding-top: 3px;
+padding-bottom: 3px;
+-vendor-user-select: none;
+}
+div.calendar td {
+text-align: center;
+vertical-align: top;
+}
+div.calendar td.active {
+cursor: pointer;	
+}
+div.calendar td.active:hover {
+background-color: $(color:highlight);
+color: $(color:highlighttext);
+}
+div.calendar tr.month td {
+border-bottom: 1px solid $(color:threedshadow);	
+}
+div.calendar td.monthbrowse {
+font-family: "Courier New", monospace;
+cursor: pointer;	
+}
+div.calendar td.monthbrowse:hover {
+color: $(color:highlight);	
 }
 
 /* TOOLBARS ........................................................... */
@@ -2156,8 +2199,8 @@ ui|balloon {
 display: block;
 position: absolute;
 overflow: visible;
--moz-transition-property: top, left;
--moz-transition-duration: 0.25s;
+-vendor-transition-property: top, left;
+-vendor-transition-duration: 0.25s;
 }
 ui|balloon table.matrix {
 width: 100%;
@@ -2165,9 +2208,7 @@ height: 100%;
 }
 ui|balloontext {
 display: block;
--moz-user-select: none;
--webkit-user-select: none;
-user-select: none;
+-vendor-user-select: none;
 position: relative;
 z-index: 2;
 padding-bottom: 4px;
