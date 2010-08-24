@@ -80,7 +80,7 @@ public partial class Composite_content_views_log_log : System.Web.UI.Page
 
             table.Add(tableHeader);
 
-            foreach (LogEntry logEntry in entries)
+            foreach (LogEntry logEntry in entries.Reverse())
             {
                 TraceEventType eventType;
 
