@@ -284,7 +284,9 @@ EditorBinding.prototype._setup = function () {
 	 */
 	var value = this.getProperty ( "value" );
 	if ( value != null ) {
-		this._startContent = decodeURIComponent ( value );
+		value = decodeURIComponent ( value );
+		value = value.replace ( /\&#xA;/g, "LINE.BREAK.ENTITY" );
+		this._startContent = value;
 	}
 }
 

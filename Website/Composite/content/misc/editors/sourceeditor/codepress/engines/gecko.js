@@ -261,6 +261,9 @@ CodePress = {
 		code = code.replace(/&/gi,'&amp;');
 		code = code.replace(/</g,'&lt;');
 		code = code.replace(/>/g,'&gt;');
+		
+		code = code.replace ( /LINE.BREAK.ENTITY/g, "&amp;#xA;" ); // // ADDED BY COMPOSITE!
+		
 		editor.innerHTML = code;
 		if (code == '')
 			document.getElementsByTagName('body')[0].innerHTML = '';
