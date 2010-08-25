@@ -14,8 +14,6 @@ using Composite.Renderings.Page;
 using Composite.Security;
 using Composite.WebClient;
 
-using TidyNet;
-
 
 public partial class Renderers_Page : System.Web.UI.Page
 {
@@ -126,50 +124,8 @@ public partial class Renderers_Page : System.Web.UI.Page
         StringWriter sw = new StringWriter(markupBuilder);
         base.Render(new HtmlTextWriter(sw));
 
-        bool tidyOutput = true;
-        if (tidyOutput)
-        {
-            markupBuilder = markupBuilder.Replace("</SCRIPT>", "</script>"); // Fix for a TidyNet issue with parsing of <SCRIPT></SCRIPT> tags
-        }
-
         string xhtml = PageUrlHelper.ChangeRenderingPageUrlsToPublic(markupBuilder.ToString());
-
-        if (tidyOutput)
-        {
-            string declarations = "";
-            int htmlElementStart = xhtml.IndexOf("<html", StringComparison.InvariantCultureIgnoreCase);
-            if (htmlElementStart > 0) declarations = xhtml.Substring(0, htmlElementStart) + "\n";
-
-            byte[] htmlByteArray = Encoding.UTF8.GetBytes(xhtml);
-            using (MemoryStream inputStream = new MemoryStream(htmlByteArray))
-            {
-                using (MemoryStream outputStream = new MemoryStream())
-                {
-                    Tidy tidy = GetXhtmlConfiguredTidy();
-                    TidyMessageCollection tidyMessages = new TidyMessageCollection();
-
-                    try
-                    {
-                        tidy.Parse(inputStream, outputStream, tidyMessages);
-                        if (tidyMessages.Errors == 0)
-                        {
-                            outputStream.Position = 0;
-                            StreamReader sr = new StreamReader(outputStream);
-                            xhtml = declarations + sr.ReadToEnd();
-                        }
-                    }
-                    catch (Exception) { } // Tidy clean up failures supressed
-                }
-            }
-        }
-
-        // Request.UserAgent is null when the request is called from custom code
-        if (Composite.RuntimeInformation.IsDebugBuild == true 
-            && Request.UserAgent != null 
-            && Request.UserAgent.Contains("Gecko"))
-        {
-            Response.ContentType = "application/xhtml+xml";
-        }
+        xhtml = Composite.Xml.XhtmlPrettifier.Prettify(xhtml);
 
         writer.Write(xhtml);
     }
@@ -185,34 +141,4 @@ public partial class Renderers_Page : System.Web.UI.Page
         HttpContext.Current.RewritePath(_cacheUrl);
     }
 
-
-
-    private static Tidy GetXhtmlConfiguredTidy()
-    {
-        Tidy t = new Tidy();
-
-        t.Options.RawOut = true;
-        t.Options.TidyMark = false;
-
-        t.Options.CharEncoding = CharEncoding.UTF8;
-        t.Options.DocType = DocType.Omit;
-        t.Options.AllowElementPruning = false;
-        t.Options.WrapLen = 0;
-        t.Options.TabSize = 2;
-        t.Options.Spaces = 4;
-        t.Options.SmartIndent = true;
-
-        t.Options.BreakBeforeBR = false;
-        t.Options.DropEmptyParas = false;
-        t.Options.Word2000 = false;
-        t.Options.MakeClean = false;
-        t.Options.Xhtml = true;
-        t.Options.XmlOut = false;
-        t.Options.XmlTags = false;
-
-        t.Options.QuoteNbsp = false;
-        t.Options.NumEntities = true;
-
-        return t;
-    }
 }
