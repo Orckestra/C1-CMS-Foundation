@@ -268,7 +268,7 @@ CodePress = {
        	code = code.replace(/</g,'&lt;');
         code = code.replace(/>/g,'&gt;');
         
-        code = code.replace ( /LINE.BREAK.ENTITY/g, "&amp;#xA;" ); // ADDED BY COMPOSITE!
+        code = code.replace ( /C1.LINE.BREAK.ENTITY.HACK/g, "&amp;#xA;" ); // ADDED BY COMPOSITE!
         
 		editor.innerHTML = '<pre>'+code+'</pre>';
 	},

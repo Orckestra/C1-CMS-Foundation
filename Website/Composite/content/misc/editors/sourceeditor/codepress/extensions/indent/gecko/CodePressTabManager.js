@@ -158,6 +158,7 @@ CodePressTabManager.prototype = {
 	
 	/**
 	 * Get the root PRE tag (not available on startup).
+	 * Matches this._engine.getEditor ();
 	 * @return {HTMLPREElement}
 	 */
 	_getRoot : function () {
@@ -165,7 +166,7 @@ CodePressTabManager.prototype = {
 		if ( this._root == null ) {
 			this._root = this._doc.getElementsByTagName ( "pre" ).item ( 0 );
 		}
-		return this._root; 
+		return this._root;
 	},
 	
 	/**

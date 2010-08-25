@@ -8,7 +8,7 @@
 	var language = 'generic';
 	var engine = 'older';
 	var ua = navigator.userAgent;
-	var ts = (new Date).getTime(); // timestamp to avoid cache
+	var ts = top.Application != null && top.Application.isDeveloperMode ? (new Date).getTime() : "cached"; // cached in operational mode
 	var lh = location.href;
 	
 	if(ua.match('MSIE')) engine = 'msie';
@@ -17,8 +17,6 @@
 	else if(ua.match('Gecko')) engine = 'gecko';
 
 	if(lh.match('language=')) language = lh.replace(/.*language=(.*?)(&.*)?$/,'$1');
-
-	// TODO: WHY NOT USE LANGUAGE INSTEAD OF TIMESTAMP?
 	
 	document.write('<link type="text/css" href="codepress.css?ts='+ts+'" rel="stylesheet" />');
 	document.write('<link type="text/css" href="languages/'+language+'.css?ts='+ts+'" rel="stylesheet" id="cp-lang-style" />');
@@ -33,11 +31,21 @@
 	</script>
 
 </head>
+<body spellcheck="false">
+	<pre></pre>
+</body>
 
+<!-- 
 <script type="text/javascript">
-if(engine == "msie" || engine == "gecko") document.write('<body spellcheck="false"><pre> </pre></body>');
-else if(engine == "opera") document.write('<body></body>');
-// else if(engine == "khtml") document.write('<body> </body>');
+if( engine == "msie" || engine == "gecko" ) {
+	document.write( '<body spellcheck="false"><pre> </pre></body>' );
+	alert ( document.body.innerHTML );
+} else if ( engine == "opera" ) {
+	document.write( '<body></body>' );
+} else if ( engine == "khtml" ) {
+	document.write( '<body> </body>' );
+}
 </script>
+-->
 
 </html>

@@ -18,6 +18,12 @@ EditorBinding.URL_DIALOG_MOZ_CONFIGURE = "${root}/content/dialogs/wysiwygeditor/
  */
 EditorBinding.ABSURD_NUMBER = -999999999;
 
+/**
+ * Used to preserve line-break entity &#xA; in source code. 
+ * @type {String}
+ */
+EditorBinding.LINE_BREAK_ENTITY_HACK = "C1.LINE.BREAK.ENTITY.HACK";
+
 
 
 // EDITITOR COMPONENT STUFF ..............................................
@@ -285,7 +291,7 @@ EditorBinding.prototype._setup = function () {
 	var value = this.getProperty ( "value" );
 	if ( value != null ) {
 		value = decodeURIComponent ( value );
-		value = value.replace ( /\&#xA;/g, "LINE.BREAK.ENTITY" );
+		value = value.replace ( /\&#xA;/g, EditorBinding.LINE_BREAK_ENTITY_HACK );
 		this._startContent = value;
 	}
 }
@@ -316,7 +322,7 @@ EditorBinding.prototype._initialize = function () {
 	
 	// if all else failed, at least we have a string
 	if ( this._startContent == null ) {
-		this._startContent = "";
+		this._startContent = new String ( "" );
 	}
 	
 	// setup internal events

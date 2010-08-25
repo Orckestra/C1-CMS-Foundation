@@ -104,6 +104,15 @@ function SourceEditorBinding () {
 	 */
 	this._validator = null;
 	
+	/**
+	 * Firefox 4 beta seems to have a problem with completely empty 
+	 * documents (the root PRE tag is missing) so we will fallback 
+	 * to this zero-width-space. Removed again on save.
+	 * @see {SourceEditorBinding#getContent}
+	 * @overwrites {EditorBinding#_startContent}
+	 */
+	this._startContent = "\u200B";
+	
 	/*
 	 * Returnable.
 	 */
@@ -406,11 +415,15 @@ SourceEditorBinding.prototype.setContent = function ( string ) {
 }
 
 /**
+ * Get content.
  * @return {string}
  */
 SourceEditorBinding.prototype.getContent = function () {
 	
 	var result = this.getContentWindow ().bindingMap.editorpage.getContent ();
+	if ( result != null ) {
+		result = result.replace ( /\u200B/g, "" ); // Firefox 4 beta bug hack.
+	}
 	return result ? result : "";
 }
 
