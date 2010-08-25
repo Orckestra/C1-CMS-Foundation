@@ -223,32 +223,59 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElemen
         #endregion
 
         private SetStateActivity setStateActivity2;
+
         private SetStateActivity setStateActivity1;
+
         private StateInitializationActivity finalizeStateInitializationActivity;
+
         private EventDrivenActivity step1EventDrivenActivity_Finish;
+
         private StateInitializationActivity step1StateInitializationActivity;
+
         private StateInitializationActivity initializeStateInitializationActivity;
+
         private StateActivity finalStateActivity;
+
         private StateActivity finializeStateActivity;
+
         private StateActivity step1StateActivity;
+
         private SetStateActivity setStateActivity6;
+
         private Composite.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
+
         private CodeActivity codeActivity1;
+
         private Composite.Workflow.Activities.DataDialogFormActivity wizzardFormActivity1;
+
         private CodeActivity codeActivity2;
+
         private SetStateActivity setStateActivity3;
+
         private Composite.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+
         private EventDrivenActivity eventDrivenActivity_GlobalCancel;
+
         private SetStateActivity setStateActivity4;
+
         private Composite.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
+
         private EventDrivenActivity step1EventDrivenActivity_Cancel;
+
         private Composite.Workflow.Activities.CloseCurrentViewActivity closeCurrentViewActivity1;
+
         private IfElseBranchActivity ifElseBranchActivity2;
+
         private IfElseBranchActivity ifElseBranchActivity1;
+
         private IfElseActivity ifElseActivity1;
+
         private CodeActivity showFieldErrorCodeActivity;
+
         private SetStateActivity setStateActivity5;
+
         private StateActivity initalizeStateActivity;
+
 
 
 

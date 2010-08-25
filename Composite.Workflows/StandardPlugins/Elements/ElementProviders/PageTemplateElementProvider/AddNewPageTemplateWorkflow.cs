@@ -8,6 +8,9 @@ using Composite.Workflow;
 using Composite.Localization;
 using System.Workflow.Activities;
 using Composite.ResourceSystem;
+using System.Collections.Generic;
+using Composite.Renderings.Template;
+using System.Xml.Linq;
 
 
 namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElementProvider
@@ -54,6 +57,16 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElemen
             newPageTemplate.Title = "";
 
             this.Bindings.Add("NewPageTemplate", newPageTemplate);
+
+            List<KeyValuePair<Guid, string>> templatesOptions =
+                (from template in DataFacade.GetData<IPageTemplate>()
+                 orderby template.Title
+                 select new KeyValuePair<Guid, string>(template.Id, template.Title)).ToList();
+
+            templatesOptions.Insert(0, new KeyValuePair<Guid, string>(Guid.Empty, StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTemplateElementProvider", "AddNewPageTemplateStep1.LabelCopyFromEmptyOption")));
+
+            this.Bindings.Add("CopyOfOptions", templatesOptions);
+            this.Bindings.Add("CopyOfId", Guid.Empty);
         }
 
 
@@ -64,7 +77,17 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElemen
 
             IPageTemplate newPageTemplate = this.GetBinding<IPageTemplate>("NewPageTemplate");
 
-            string newPageTemplateMarkup = _defaultTemplateMarkup.Replace("    ", "\t");
+            string newPageTemplateMarkup = null;
+            Guid copyOfId = this.GetBinding<Guid>("CopyOfId");
+            if (copyOfId == Guid.Empty)
+            {
+                newPageTemplateMarkup = _defaultTemplateMarkup.Replace("    ", "\t");
+            }
+            else
+            {
+                XDocument copyDocument = TemplateInfo.GetTemplateDocument(copyOfId);
+                newPageTemplateMarkup = copyDocument.ToString();
+            }
 
             IPageTemplateFile pageTemplateFile = DataFacade.BuildNew<IPageTemplateFile>();
             pageTemplateFile.FolderPath = "/";
@@ -88,7 +111,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElemen
         {
             IPageTemplate newPageTemplate = this.GetBinding<IPageTemplate>("NewPageTemplate");
 
-            e.Result = DataFacade.GetData<IPageTemplate>(f => f.Title == newPageTemplate.Title).Any();
+            e.Result = DataFacade.GetData<IPageTemplate>(f => f.Title.Equals(newPageTemplate.Title,StringComparison.InvariantCultureIgnoreCase)).Any();
         }
 
 

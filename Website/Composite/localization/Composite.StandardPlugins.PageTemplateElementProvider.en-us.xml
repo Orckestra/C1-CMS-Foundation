@@ -13,6 +13,9 @@
   <string key="AddNewPageTemplateStep1.LabelFieldGroup" value="Website Template" />
   <string key="AddNewPageTemplateStep1.LabelTemplateTitle" value="Template Title" />
   <string key="AddNewPageTemplateStep1.LabelTemplateTitleHelp" value="The title identifies this templates in lists. Consider selecting a short but meaningfull name." />
+  <string key="AddNewPageTemplateStep1.LabelCopyFrom" value="Copy from" />
+  <string key="AddNewPageTemplateStep1.LabelCopyFromHelp" value="You can copy the markup from another Layout Template by selecting it in this list." />
+  <string key="AddNewPageTemplateStep1.LabelCopyFromEmptyOption" value="(raw template)" />
   <string key="AddNewPageTemplateStep1.TitleInUseTitle" value="Title already used" />
 
   <string key="EditPageTemplate.LabelMarkUpCode" value="Markup code" />

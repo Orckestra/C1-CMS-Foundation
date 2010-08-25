@@ -2,6 +2,9 @@
 <cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
   <cms:bindings>
     <cms:binding name="NewPageTemplate" type="Composite.Data.Types.IPageTemplate" />
+    <cms:binding name="CopyOfOptions" type="System.Object" />
+    <cms:binding name="CopyOfId" type="System.Guid" />
+    
   </cms:bindings>
   <cms:layout iconhandle="generic-add" label="${Composite.StandardPlugins.PageTemplateElementProvider, AddNewPageTemplateStep1.LabelDialog}">
     <FieldGroup Label="${Composite.StandardPlugins.PageTemplateElementProvider, AddNewPageTemplateStep1.LabelFieldGroup}">
@@ -10,6 +13,14 @@
           <cms:bind source="NewPageTemplate.Title" />
         </TextBox.Text>
       </TextBox>
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Help="${Composite.StandardPlugins.PageTemplateElementProvider, AddNewPageTemplateStep1.LabelCopyFromHelp}" Label="${Composite.StandardPlugins.PageTemplateElementProvider, AddNewPageTemplateStep1.LabelCopyFrom}">
+        <KeySelector.Selected>
+          <cms:bind source="CopyOfId" />
+        </KeySelector.Selected>
+        <KeySelector.Options>
+          <cms:read source="CopyOfOptions" />
+        </KeySelector.Options>
+      </KeySelector>
     </FieldGroup>
   </cms:layout>
 </cms:formdefinition>
