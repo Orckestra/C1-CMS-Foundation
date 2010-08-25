@@ -77,11 +77,17 @@ namespace Composite.WebClient
     public static class PageUrlHelper
     {
         private static readonly string LogTitle = "PageUrlHelper";
-        // private static readonly string QuidCapturingRegEx = @"{?(?<PageId>([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}))}?";
-        // private static readonly string RenredingLinkRegExPattern = string.Format(@"({0}/Renderers/)?Page.aspx\?(?<UrlParamsBefore>([^""']*))?pageId={1}(&amp;)?(?<UrlParamsAfter>([^""']*))", UrlUtils.PublicRootPath, QuidCapturingRegEx);
+        // private static readonly string RenredingLinkRegExPattern = string.Format(@"{0}/Renderers/Page.aspx([^\""']*)", UrlUtils.PublicRootPath);
+        // private static readonly Regex RenredingLinkRegex = new Regex(RenredingLinkRegExPattern + "");
 
-        private static readonly string RenredingLinkRegExPattern = string.Format(@"{0}/Renderers/Page.aspx([^\""']*)", UrlUtils.PublicRootPath);
-        private static readonly Regex RenredingLinkRegex = new Regex(RenredingLinkRegExPattern);
+        private class Match
+        {
+            public int Index;
+            public string Value;
+        }
+
+        private static readonly string InternalUrlPrefix = UrlUtils.PublicRootPath + "/Renderers/Page.aspx";
+       
 
         [Obsolete("Use Composite.Pages.PageUrl instead")]
         public static PageUrlOptions ParseUrl(string url)
@@ -379,10 +385,46 @@ namespace Composite.WebClient
         {
             StringBuilder result = null;
 
-            IEnumerable<Match> pageUrlMatchCollection = RenredingLinkRegex.Matches(html).OfType<Match>().Reverse();
+            var internalUrls = new List<Match>();
+
+            int startIndex = 0;
+
+            // We assuming that url starts with "{virtual folder path}/Renderers/Page.aspx" and ends with 
+            // double quote, single quote, or &#39; which is single quote mark (') encoded in xml attribute 
+
+            while(true)
+            {
+                int urlOffset = html.IndexOf(InternalUrlPrefix, startIndex, StringComparison.OrdinalIgnoreCase);
+                if(urlOffset < 0) break;
+
+                int prefixEndOffset = urlOffset + InternalUrlPrefix.Length;
+
+                int endOffset = html.IndexOf('\"', prefixEndOffset);
+                if (endOffset < 0) break;
+
+                int singleQuoteIndex = html.IndexOf('\'', prefixEndOffset, endOffset - prefixEndOffset);
+                if (singleQuoteIndex > 0)
+                {
+                    endOffset = singleQuoteIndex;
+                }
+
+                int encodedSingleQuoteIndex = html.IndexOf("&#39;", prefixEndOffset, endOffset - prefixEndOffset);
+                if (encodedSingleQuoteIndex > 0) endOffset = encodedSingleQuoteIndex;
+
+                internalUrls.Add(new Match
+                                     {
+                                         Index = urlOffset,
+                                         Value = html.Substring(urlOffset, endOffset - urlOffset)
+                                     });
+
+                startIndex = endOffset;
+            }
+
+
+            internalUrls.Reverse();
 
             var resolvedUrls = new Dictionary<string, string>();
-            foreach (Match pageUrlMatch in pageUrlMatchCollection)
+            foreach (Match pageUrlMatch in internalUrls)
             {
                 string internalPageUrl = pageUrlMatch.Value;
                 string publicPageUrl;
@@ -444,7 +486,7 @@ namespace Composite.WebClient
                     result = new StringBuilder(html);
                 }
 
-                result.Remove(pageUrlMatch.Index, pageUrlMatch.Length);
+                result.Remove(pageUrlMatch.Index, pageUrlMatch.Value.Length);
                 result.Insert(pageUrlMatch.Index, publicPageUrl);
             }
 
