@@ -389,7 +389,7 @@ namespace Composite.WebClient
 
             int startIndex = 0;
 
-            // We assuming that url starts with "{virtual folder path}/Renderers/Page.aspx" and ends with 
+            // We assume that url starts with "{virtual folder path}/Renderers/Page.aspx" and ends with 
             // double quote, single quote, or &#39; which is single quote mark (') encoded in xml attribute 
 
             while(true)

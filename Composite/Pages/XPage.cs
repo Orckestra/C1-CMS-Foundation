@@ -67,7 +67,7 @@ namespace Composite.Pages
         [SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings")]
         public string Url
         {
-            get { return this.Attribute("URL").Value; }
+            get { return this.Attribute("Url").Value; }
         }
 
         /// <summary>

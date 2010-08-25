@@ -88,7 +88,7 @@ namespace Composite.Implementation.Pages
                 page.Add(xElement.Attributes().Where(attr => attr.Name != "Depth" && attr.Name != "URL").Select(attr => new XAttribute(attr)));
 
                 page.Add(new XAttribute("Level", xElement.Attribute("Depth").Value));
-                page.Add(new XAttribute("Url", xElement.Attribute("Url").Value));
+                page.Add(new XAttribute("Url", xElement.Attribute("URL").Value));
 
                 node.Add(page);
 
