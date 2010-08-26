@@ -92,7 +92,7 @@ namespace Composite.Core.WebClient
 
             FileEx.RemoveReadOnly(classesFilename);
 
-            File.WriteAllText(classesFilename, GetTimestampString());
+            File.WriteAllText(classesFilename, string.Empty /* GetTimestampString() */);
             File.AppendAllText(classesFilename, classes.ToString());
 
             return classesFilename;
