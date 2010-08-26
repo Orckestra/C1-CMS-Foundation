@@ -1,3 +1,8 @@
+/*
+ * Created: 26. august 2010 12:55:21
+ */
+
+
 var IAcceptable=new function(){
 this.dragAccept="type1 type2 type3";
 this.accept=function(_1){
@@ -3565,29 +3570,17 @@ var Application=new _Application();
 function _Installation(){
 EventBroadcaster.subscribe(BroadcastMessages.APPLICATION_KICKSTART,this);
 }
-_Installation.prototype={registrationName:null,registrationURL:null,statusURL:null,versionString:null,versionPrettyString:null,installationID:null,handleBroadcast:function(_348){
+_Installation.prototype={versionString:null,versionPrettyString:null,installationID:null,handleBroadcast:function(_348){
 switch(_348){
 case BroadcastMessages.APPLICATION_KICKSTART:
-var list=new List(InstallationService.GetLicenseInfo(true));
+var list=new List(InstallationService.GetInstallationInfo(true));
 list.each(function(_34a){
 switch(_34a.Key){
-case "RegistrationURL":
-this.registrationURL=_34a.Value;
-break;
-case "StatusURL":
-this.statusURL=_34a.Value;
-break;
 case "ProductVersion":
 this.versionString=_34a.Value;
 break;
 case "ProductTitle":
 this.versionPrettyString=_34a.Value;
-break;
-case "RegisteredTo":
-this.registrationName=_34a.Value;
-break;
-case "Expired":
-this.isExpired=_34a.Value=="True";
 break;
 case "InstallationId":
 this.installationID=_34a.Value;
@@ -25333,6 +25326,7 @@ EditorBinding.superclass=WindowBinding.prototype;
 EditorBinding.ACTION_ATTACHED=null;
 EditorBinding.URL_DIALOG_MOZ_CONFIGURE="${root}/content/dialogs/wysiwygeditor/mozsecuritynote/mozsecuritynote.aspx";
 EditorBinding.ABSURD_NUMBER=-999999999;
+EditorBinding.LINE_BREAK_ENTITY_HACK="C1.LINE.BREAK.ENTITY.HACK";
 EditorBinding._components=new Map();
 EditorBinding._editors=new Map();
 EditorBinding.registerComponent=function(_f2e,_f2f){
@@ -25414,7 +25408,9 @@ name="generated"+KeyMaster.getUniqueKey();
 this._registerWithDataManager(name);
 var _f3b=this.getProperty("value");
 if(_f3b!=null){
-this._startContent=decodeURIComponent(_f3b);
+_f3b=decodeURIComponent(_f3b);
+_f3b=_f3b.replace(/\&#xA;/g,EditorBinding.LINE_BREAK_ENTITY_HACK);
+this._startContent=_f3b;
 }
 };
 EditorBinding.prototype.onBindingDispose=function(){
@@ -25429,7 +25425,7 @@ EditorBinding.prototype._initialize=function(){
 this.subscribe(BroadcastMessages.APPLICATION_BLURRED);
 this.subscribe(BroadcastMessages.MOUSEEVENT_MOUSEUP);
 if(this._startContent==null){
-this._startContent="";
+this._startContent=new String("");
 }
 this.addEditorEvents();
 var self=this;
@@ -26957,6 +26953,7 @@ this.isFocusable=true;
 this._isEmbedded=false;
 this._hasStrictValidation=false;
 this._validator=null;
+this._startContent="\u200b";
 return this;
 }
 SourceEditorBinding.prototype.toString=function(){
@@ -27085,6 +27082,9 @@ return true;
 };
 SourceEditorBinding.prototype.getContent=function(){
 var _1067=this.getContentWindow().bindingMap.editorpage.getContent();
+if(_1067!=null){
+_1067=_1067.replace(/\u200B/g,"");
+}
 return _1067?_1067:"";
 };
 SourceEditorBinding.prototype.resetUndoRedo=function(){

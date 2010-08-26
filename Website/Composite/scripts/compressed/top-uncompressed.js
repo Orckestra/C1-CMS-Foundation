@@ -1,5 +1,5 @@
 /*
- * Created: Tuesday, August 24, 2010 2:41:14 PM
+ * Created: 26. august 2010 12:55:15
  */
 
 
@@ -8760,76 +8760,49 @@ function _Installation () {
 }
 
 _Installation.prototype = {
-	
-	/**
-	 * @type {string}
-	 */
-	registrationName : null,
-	
-	/**
-	 * @type {string}
-	 */
-	registrationURL : null,
-	
-	/**
-	 * @type {string}
-	 */
-	statusURL : null,
-	
-	/**
-	 * Robot readable build version "1.2.3505.18361".
-	 * @type {string}
-	 */
-	versionString : null,
-	
-	/**
-	 * Human readable product version "Composite C1 1.2 SP2".
-	 * @type {string}
-	 */
-	versionPrettyString : null,
-	
-	/**
-	 * @type {string}
-	 */
-	installationID : null,
-	
-	/**
-	 * Constructor action: Get installation info.
-	 * @return {_Installation}
-	 */
-	handleBroadcast : function ( broadcast ) {
-		
-		switch ( broadcast ) {
-			case BroadcastMessages.APPLICATION_KICKSTART :
-				var list = new List ( InstallationService.GetLicenseInfo ( true ));
-				list.each ( function ( entry ) {
-					switch ( entry.Key ) {
-						case "RegistrationURL" :
-							this.registrationURL = entry.Value;
-							break;
-						case "StatusURL" :
-							this.statusURL = entry.Value;
-							break;
-						case "ProductVersion" :
-							this.versionString = entry.Value;
-							break;
-						case "ProductTitle" :
-							this.versionPrettyString = entry.Value;
-							break;
-						case "RegisteredTo" :
-							this.registrationName = entry.Value;
-							break;
-						case "Expired" :
-							this.isExpired = entry.Value == "True";
-							break;
-						case "InstallationId" :
-							this.installationID = entry.Value;
-							break;
-					}
-				}, this );
-				break;
-		}
-	}
+
+    /**
+    * Robot readable build version "1.2.3505.18361".
+    * @type {string}
+    */
+    versionString: null,
+
+    /**
+    * Human readable product version "Composite C1 1.2 SP2".
+    * @type {string}
+    */
+    versionPrettyString: null,
+
+    /**
+    * @type {string}
+    */
+    installationID: null,
+
+    /**
+    * Constructor action: Get installation info.
+    * @return {_Installation}
+    */
+    handleBroadcast: function (broadcast) {
+
+        switch (broadcast) {
+            case BroadcastMessages.APPLICATION_KICKSTART:
+                var list = new List(InstallationService.GetInstallationInfo(true));
+                list.each(function (entry) {
+                    switch (entry.Key) {
+                        case "ProductVersion":
+                            this.versionString = entry.Value;
+                            break;
+                        case "ProductTitle":
+                            this.versionPrettyString = entry.Value;
+                            break;
+                        case "InstallationId":
+                            this.installationID = entry.Value;
+                            break;
+                    }
+                }, this);
+                break;
+        }
+    }
 };
 
 /*
@@ -53952,6 +53925,12 @@ EditorBinding.URL_DIALOG_MOZ_CONFIGURE = "${root}/content/dialogs/wysiwygeditor/
  */
 EditorBinding.ABSURD_NUMBER = -999999999;
 
+/**
+ * Used to preserve line-break entity &#xA; in source code. 
+ * @type {String}
+ */
+EditorBinding.LINE_BREAK_ENTITY_HACK = "C1.LINE.BREAK.ENTITY.HACK";
+
 
 
 // EDITITOR COMPONENT STUFF ..............................................
@@ -54218,7 +54197,9 @@ EditorBinding.prototype._setup = function () {
 	 */
 	var value = this.getProperty ( "value" );
 	if ( value != null ) {
-		this._startContent = decodeURIComponent ( value );
+		value = decodeURIComponent ( value );
+		value = value.replace ( /\&#xA;/g, EditorBinding.LINE_BREAK_ENTITY_HACK );
+		this._startContent = value;
 	}
 }
 
@@ -54248,7 +54229,7 @@ EditorBinding.prototype._initialize = function () {
 	
 	// if all else failed, at least we have a string
 	if ( this._startContent == null ) {
-		this._startContent = "";
+		this._startContent = new String ( "" );
 	}
 	
 	// setup internal events
@@ -57802,6 +57783,15 @@ function SourceEditorBinding () {
 	 */
 	this._validator = null;
 	
+	/**
+	 * Firefox 4 beta seems to have a problem with completely empty 
+	 * documents (the root PRE tag is missing) so we will fallback 
+	 * to this zero-width-space. Removed again on save.
+	 * @see {SourceEditorBinding#getContent}
+	 * @overwrites {EditorBinding#_startContent}
+	 */
+	this._startContent = "\u200B";
+	
 	/*
 	 * Returnable.
 	 */
@@ -58104,11 +58094,15 @@ SourceEditorBinding.prototype.setContent = function ( string ) {
 }
 
 /**
+ * Get content.
  * @return {string}
  */
 SourceEditorBinding.prototype.getContent = function () {
 	
 	var result = this.getContentWindow ().bindingMap.editorpage.getContent ();
+	if ( result != null ) {
+		result = result.replace ( /\u200B/g, "" ); // Firefox 4 beta bug hack.
+	}
 	return result ? result : "";
 }
 
