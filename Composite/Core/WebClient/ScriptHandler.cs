@@ -38,7 +38,7 @@ namespace Composite.Core.WebClient
 
             FileEx.RemoveReadOnly(sourcesFilename);
 
-            File.WriteAllText(sourcesFilename, GetTimestampString());
+            File.WriteAllText(sourcesFilename, string.Empty /* GetTimestampString() */);
 
             foreach (string scriptFilename in scriptFilenames)
             {
