@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Web;
-using Composite.EventSystem;
-using Composite.StringExtensions;
-using Composite.Types;
-using Subscription = Composite.Types.Pair<System.Delegate, bool>;
-using Subscriptions = Composite.Collections.Generic.Hashtable<System.Type, System.Collections.Generic.List<Composite.Types.Pair<System.Delegate, bool>>>;
+using Composite.C1Console.Events;
+using Composite.Core.Extensions;
+using Composite.Core.Types;
+using Subscription = Composite.Core.Types.Pair<System.Delegate, bool>;
+using Subscriptions = Composite.Core.Collections.Generic.Hashtable<System.Type, System.Collections.Generic.List<Composite.Core.Types.Pair<System.Delegate, bool>>>;
 
 
 namespace Composite.Data

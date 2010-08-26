@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.Linq;
-using Composite.GlobalSettings;
-using Composite.GlobalSettings.Plugins.GlobalSettingsProvider;
+using Composite.Core.Configuration;
+using Composite.Core.Configuration.Plugins.GlobalSettingsProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.GlobalSettings.GlobalSettingsProviders
+namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
 {    
     [ConfigurationElementType(typeof(ConfigBasedGlobalSettingsProviderData))]
     internal sealed class ConfigBasedGlobalSettingsProvider : IGlobalSettingsProvider

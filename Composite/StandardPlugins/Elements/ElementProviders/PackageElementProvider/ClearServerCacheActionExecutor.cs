@@ -1,9 +1,9 @@
-﻿using Composite.Actions;
-using Composite.PackageSystem;
-using Composite.Security;
+﻿using Composite.C1Console.Actions;
+using Composite.Core.PackageSystem;
+using Composite.C1Console.Security;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 {
     internal sealed class ClearServerCacheActionExecutor : IActionExecutor
     {

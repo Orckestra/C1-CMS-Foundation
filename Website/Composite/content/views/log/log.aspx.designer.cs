@@ -37,7 +37,7 @@ public partial class Composite_content_views_log_log {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::Composite.WebClient.UiControlLib.Selector Pager;
+    protected global::Composite.Core.WebClient.UiControlLib.Selector Pager;
     
     /// <summary>
     /// DeleteOlderButton control.
@@ -46,7 +46,7 @@ public partial class Composite_content_views_log_log {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::Composite.WebClient.UiControlLib.ClickButton DeleteOlderButton;
+    protected global::Composite.Core.WebClient.UiControlLib.ClickButton DeleteOlderButton;
     
     /// <summary>
     /// LogHolder control.

@@ -3,7 +3,7 @@ using System.Workflow.Activities;
 using System.Collections.Generic;
 
 
-namespace Composite.Workflow
+namespace Composite.C1Console.Workflow
 {
     /// <summary>    
     /// </summary>

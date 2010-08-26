@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using System.Threading;
 
 
-namespace Composite.StandardPlugins.Logging.LogTraceListeners.TcpLogTraceListener
+namespace Composite.Plugins.Logging.LogTraceListeners.TcpLogTraceListener
 {    
 	internal class TcpLogTraceListenerThreadData
 	{

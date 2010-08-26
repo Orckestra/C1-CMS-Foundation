@@ -24,7 +24,7 @@ namespace Composite.Data.Types
 
 
         [NotNullValidator()]
-        [Composite.Validation.Validators.StringSizeValidator(2, 64)]
+        [Composite.Data.Validation.Validators.StringSizeValidator(2, 64)]
         [StoreFieldType(PhysicalStoreFieldType.String, 64)]
         [ImmutableFieldId("{86C65F7F-64EA-4fcc-980D-AAF79C32CEC6}")]
         string Name { get; set; }

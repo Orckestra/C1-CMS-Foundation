@@ -3,9 +3,9 @@
   <cms:bindings>
 		<cms:binding name="ReferencedData" type="System.String" optional="true"/>
   </cms:bindings>
-  <cms:layout iconhandle="page-delete-page" label="${Composite.StandardPlugins.PageElementProvider, DeletePage.LabelFieldGroup}">
+  <cms:layout iconhandle="page-delete-page" label="${Composite.Plugins.PageElementProvider, DeletePage.LabelFieldGroup}">
 		<PlaceHolder>
-			<Text Text="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, DeleteDataConfirmationText}" />
+			<Text Text="${Composite.Plugins.GeneratedDataTypesElementProvider, DeleteDataConfirmationText}" />
 			<Text Text="
 						
 " />

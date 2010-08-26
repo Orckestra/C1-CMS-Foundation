@@ -1,8 +1,8 @@
-using Composite.Security;
-using Composite.Security.SecurityAncestorProviders;
+using Composite.C1Console.Security;
+using Composite.C1Console.Security.SecurityAncestorProviders;
 
 
-namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider
+namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider
 {
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
     internal sealed class StandardWidgetFunctionProviderEntityToken : EntityToken

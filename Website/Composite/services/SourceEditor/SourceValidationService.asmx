@@ -9,8 +9,8 @@ using System.Web.Services.Protocols;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
-using Composite.Logging;
-using Composite.Xml;
+using Composite.Core.Logging;
+using Composite.Core.Xml;
 
 [WebService(Namespace = "http://www.composite.net/ns/management")]
 [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]

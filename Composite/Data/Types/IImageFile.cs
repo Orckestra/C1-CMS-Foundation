@@ -1,4 +1,4 @@
-﻿using Composite.Renderings.Data;
+﻿using Composite.Core.WebClient.Renderings.Data;
 
 
 namespace Composite.Data.Types

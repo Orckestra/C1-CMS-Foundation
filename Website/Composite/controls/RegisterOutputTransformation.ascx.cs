@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.UI;
-using Composite.WebClient;
-using Composite.WebClient.Presentation;
+using Composite.Core.WebClient;
+using Composite.Core.WebClient.Presentation;
 
 public partial class Composite_controls_RegisterOutputTransformation : System.Web.UI.UserControl
 {

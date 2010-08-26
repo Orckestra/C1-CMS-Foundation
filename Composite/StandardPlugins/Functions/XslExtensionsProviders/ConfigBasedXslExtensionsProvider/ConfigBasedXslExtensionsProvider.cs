@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Reflection;
 using Composite.Functions.Plugins.XslExtensionsProvider;
-using Composite.Types;
+using Composite.Core.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
-namespace Composite.StandardPlugins.Functions.XslExtensionsProviders.ConfigBasedXslExtensionsProvider
+namespace Composite.Plugins.Functions.XslExtensionsProviders.ConfigBasedXslExtensionsProvider
 {
     [ConfigurationElementType(typeof(ConfigBasedXslExtensionsProviderData))]
     internal class ConfigBasedXslExtensionsProvider : IXslExtensionsProvider

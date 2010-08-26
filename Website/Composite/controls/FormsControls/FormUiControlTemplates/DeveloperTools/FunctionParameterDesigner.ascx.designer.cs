@@ -20,7 +20,7 @@ namespace CompositeFunctionParameterDesigner {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.ToolbarButton EnterCreateModeButton;
+        protected global::Composite.Core.WebClient.UiControlLib.ToolbarButton EnterCreateModeButton;
         
         /// <summary>
         /// DeleteButton control.
@@ -29,7 +29,7 @@ namespace CompositeFunctionParameterDesigner {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.ToolbarButton DeleteButton;
+        protected global::Composite.Core.WebClient.UiControlLib.ToolbarButton DeleteButton;
         
         /// <summary>
         /// FieldListRepeater control.
@@ -58,7 +58,7 @@ namespace CompositeFunctionParameterDesigner {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.DataInput NameField;
+        protected global::Composite.Core.WebClient.UiControlLib.DataInput NameField;
         
         /// <summary>
         /// LabelField control.
@@ -67,7 +67,7 @@ namespace CompositeFunctionParameterDesigner {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.DataInput LabelField;
+        protected global::Composite.Core.WebClient.UiControlLib.DataInput LabelField;
         
         /// <summary>
         /// HelpField control.
@@ -76,7 +76,7 @@ namespace CompositeFunctionParameterDesigner {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.DataInput HelpField;
+        protected global::Composite.Core.WebClient.UiControlLib.DataInput HelpField;
         
         /// <summary>
         /// TypeSelector control.
@@ -85,7 +85,7 @@ namespace CompositeFunctionParameterDesigner {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.Selector TypeSelector;
+        protected global::Composite.Core.WebClient.UiControlLib.Selector TypeSelector;
         
         /// <summary>
         /// DefaultValueFunctionMarkup control.
@@ -121,7 +121,7 @@ namespace CompositeFunctionParameterDesigner {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.Selector PositionField;
+        protected global::Composite.Core.WebClient.UiControlLib.Selector PositionField;
         
         /// <summary>
         /// BaloonPlaceHolder control.

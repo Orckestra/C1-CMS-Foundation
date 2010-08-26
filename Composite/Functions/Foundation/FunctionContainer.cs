@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Composite.ConfigurationSystem;
+using Composite.Core.Configuration;
 using Composite.Functions.Foundation.PluginFacades;
 using Composite.Functions.Plugins.FunctionProvider.Runtime;
-using Composite.Logging;
+using Composite.Core.Logging;
 
 
 namespace Composite.Functions.Foundation

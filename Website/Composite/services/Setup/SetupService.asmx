@@ -1,4 +1,4 @@
-﻿<%@ WebService Language="C#" Class="Composite.WebClient.Setup.SetupService" %>
+﻿<%@ WebService Language="C#" Class="Composite.Core.WebClient.Setup.SetupService" %>
 
 using System;
 using System.IO;
@@ -9,11 +9,11 @@ using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Xml.Linq;
 using System.Collections.Generic;
-using Composite.ConfigurationSystem;
-using Composite.IO;
+using Composite.Core.Configuration;
+using Composite.Core.IO;
 
 
-namespace Composite.WebClient.Setup
+namespace Composite.Core.WebClient.Setup
 {
     [WebService(Namespace = "http://www.composite.net/ns/management")]
     [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]

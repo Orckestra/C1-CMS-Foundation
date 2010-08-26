@@ -12,7 +12,7 @@ using System.Workflow.Runtime;
 using System.Workflow.Activities;
 using System.Workflow.Activities.Rules;
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
     partial class DeleteWebsiteFileWorkflow
     {
@@ -27,16 +27,16 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
         {
             this.CanModifyActivities = true;
             this.setStateActivity2 = new System.Workflow.Activities.SetStateActivity();
-            this.closeCurrentViewActivity1 = new Composite.Workflow.Activities.CloseCurrentViewActivity();
+            this.closeCurrentViewActivity1 = new Composite.C1Console.Workflow.Activities.CloseCurrentViewActivity();
             this.deleteCodeActivity = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity4 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity2 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
-            this.wizzardFormActivity1 = new Composite.Workflow.Activities.ConfirmDialogFormActivity();
+            this.cancelHandleExternalEventActivity2 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.wizzardFormActivity1 = new Composite.C1Console.Workflow.Activities.ConfirmDialogFormActivity();
             this.setStateActivity3 = new System.Workflow.Activities.SetStateActivity();
-            this.finishHandleExternalEventActivity1 = new Composite.Workflow.Activities.FinishHandleExternalEventActivity();
+            this.finishHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity();
             this.stateInitializationActivity1 = new System.Workflow.Activities.StateInitializationActivity();
             this.setStateActivity1 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity1 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.deleteEventDrivenActivity_Cancel = new System.Workflow.Activities.EventDrivenActivity();
             this.initializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.deleteEventDrivenActivity_Finish = new System.Workflow.Activities.EventDrivenActivity();
@@ -67,7 +67,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
             // cancelHandleExternalEventActivity2
             // 
             this.cancelHandleExternalEventActivity2.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity2.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity2.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity2.Name = "cancelHandleExternalEventActivity2";
             // 
             // wizzardFormActivity1
@@ -84,7 +84,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
             // finishHandleExternalEventActivity1
             // 
             this.finishHandleExternalEventActivity1.EventName = "Finish";
-            this.finishHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.finishHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.finishHandleExternalEventActivity1.Name = "finishHandleExternalEventActivity1";
             // 
             // stateInitializationActivity1
@@ -102,7 +102,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
             // cancelHandleExternalEventActivity1
             // 
             this.cancelHandleExternalEventActivity1.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity1.Name = "cancelHandleExternalEventActivity1";
             // 
             // deleteEventDrivenActivity_Cancel
@@ -162,7 +162,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
 
         private EventDrivenActivity eventDrivenActivity1;
         private StateActivity finalStateActivity;
-        private Composite.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
         private CodeActivity deleteCodeActivity;
         private SetStateActivity setStateActivity1;
         private StateInitializationActivity stateInitializationActivity1;
@@ -170,12 +170,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
         private EventDrivenActivity deleteEventDrivenActivity_Finish;
         private StateActivity finalizeStateActivity;
         private SetStateActivity setStateActivity3;
-        private Composite.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
-        private Composite.Workflow.Activities.ConfirmDialogFormActivity wizzardFormActivity1;
+        private Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.ConfirmDialogFormActivity wizzardFormActivity1;
         private StateInitializationActivity initializationActivity;
-        private Composite.Workflow.Activities.CloseCurrentViewActivity closeCurrentViewActivity1;
+        private Composite.C1Console.Workflow.Activities.CloseCurrentViewActivity closeCurrentViewActivity1;
         private SetStateActivity setStateActivity4;
-        private Composite.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
+        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
         private EventDrivenActivity deleteEventDrivenActivity_Cancel;
         private StateActivity DeleteWebsiteFileWorkflowInitialState;
 

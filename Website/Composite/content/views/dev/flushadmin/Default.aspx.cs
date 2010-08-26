@@ -4,8 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Composite.Types;
-using Composite.EventSystem;
+using Composite.Core.Types;
+using Composite.C1Console.Events;
 using System.Reflection;
 
 

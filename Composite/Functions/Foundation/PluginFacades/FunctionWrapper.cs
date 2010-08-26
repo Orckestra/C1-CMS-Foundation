@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Composite.Security;
+using Composite.C1Console.Security;
 
 
 namespace Composite.Functions.Foundation.PluginFacades

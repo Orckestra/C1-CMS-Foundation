@@ -12,7 +12,7 @@ using System.Workflow.Runtime;
 using System.Workflow.Activities;
 using System.Workflow.Activities.Rules;
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
     partial class DeleteMediaFileWorkflow
     {
@@ -28,28 +28,28 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
             this.CanModifyActivities = true;
             System.Workflow.Activities.CodeCondition codecondition1 = new System.Workflow.Activities.CodeCondition();
             this.setStateActivity6 = new System.Workflow.Activities.SetStateActivity();
-            this.confirmDialogFormActivity1 = new Composite.Workflow.Activities.ConfirmDialogFormActivity();
+            this.confirmDialogFormActivity1 = new Composite.C1Console.Workflow.Activities.ConfirmDialogFormActivity();
             this.branchHasNoRelatedData = new System.Workflow.Activities.IfElseBranchActivity();
             this.branchHasRelatedData = new System.Workflow.Activities.IfElseBranchActivity();
             this.setStateActivity7 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity3 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity3 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.setStateActivity5 = new System.Workflow.Activities.SetStateActivity();
-            this.finishHandleExternalEventActivity2 = new Composite.Workflow.Activities.FinishHandleExternalEventActivity();
+            this.finishHandleExternalEventActivity2 = new Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity();
             this.ifElseHasRelatedData = new System.Workflow.Activities.IfElseActivity();
             this.setStateActivity2 = new System.Workflow.Activities.SetStateActivity();
-            this.closeCurrentViewActivity1 = new Composite.Workflow.Activities.CloseCurrentViewActivity();
+            this.closeCurrentViewActivity1 = new Composite.C1Console.Workflow.Activities.CloseCurrentViewActivity();
             this.deleteCodeActivity = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity4 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity2 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
-            this.wizzardFormActivity1 = new Composite.Workflow.Activities.ConfirmDialogFormActivity();
+            this.cancelHandleExternalEventActivity2 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.wizzardFormActivity1 = new Composite.C1Console.Workflow.Activities.ConfirmDialogFormActivity();
             this.setStateActivity3 = new System.Workflow.Activities.SetStateActivity();
-            this.finishHandleExternalEventActivity1 = new Composite.Workflow.Activities.FinishHandleExternalEventActivity();
+            this.finishHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity();
             this.eventDrivenActivity2 = new System.Workflow.Activities.EventDrivenActivity();
             this.eventDrivenActivity_Finish = new System.Workflow.Activities.EventDrivenActivity();
             this.stateInitializationActivity2 = new System.Workflow.Activities.StateInitializationActivity();
             this.stateInitializationActivity1 = new System.Workflow.Activities.StateInitializationActivity();
             this.setStateActivity1 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity1 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.deleteEventDrivenActivity_Cancel = new System.Workflow.Activities.EventDrivenActivity();
             this.initializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.deleteEventDrivenActivity_Finish = new System.Workflow.Activities.EventDrivenActivity();
@@ -90,7 +90,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
             // cancelHandleExternalEventActivity3
             // 
             this.cancelHandleExternalEventActivity3.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity3.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity3.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity3.Name = "cancelHandleExternalEventActivity3";
             // 
             // setStateActivity5
@@ -101,7 +101,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
             // finishHandleExternalEventActivity2
             // 
             this.finishHandleExternalEventActivity2.EventName = "Finish";
-            this.finishHandleExternalEventActivity2.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.finishHandleExternalEventActivity2.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.finishHandleExternalEventActivity2.Name = "finishHandleExternalEventActivity2";
             // 
             // ifElseHasRelatedData
@@ -132,7 +132,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
             // cancelHandleExternalEventActivity2
             // 
             this.cancelHandleExternalEventActivity2.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity2.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity2.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity2.Name = "cancelHandleExternalEventActivity2";
             // 
             // wizzardFormActivity1
@@ -149,7 +149,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
             // finishHandleExternalEventActivity1
             // 
             this.finishHandleExternalEventActivity1.EventName = "Finish";
-            this.finishHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.finishHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.finishHandleExternalEventActivity1.Name = "finishHandleExternalEventActivity1";
             // 
             // eventDrivenActivity2
@@ -184,7 +184,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
             // cancelHandleExternalEventActivity1
             // 
             this.cancelHandleExternalEventActivity1.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity1.Name = "cancelHandleExternalEventActivity1";
             // 
             // deleteEventDrivenActivity_Cancel
@@ -252,7 +252,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
 
         private EventDrivenActivity eventDrivenActivity1;
         private StateActivity finalStateActivity;
-        private Composite.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
         private CodeActivity deleteCodeActivity;
         private SetStateActivity setStateActivity1;
         private StateInitializationActivity stateInitializationActivity1;
@@ -260,12 +260,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
         private EventDrivenActivity deleteEventDrivenActivity_Finish;
         private StateActivity finalizeStateActivity;
         private SetStateActivity setStateActivity3;
-        private Composite.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
-        private Composite.Workflow.Activities.ConfirmDialogFormActivity wizzardFormActivity1;
+        private Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.ConfirmDialogFormActivity wizzardFormActivity1;
         private StateInitializationActivity initializationActivity;
-        private Composite.Workflow.Activities.CloseCurrentViewActivity closeCurrentViewActivity1;
+        private Composite.C1Console.Workflow.Activities.CloseCurrentViewActivity closeCurrentViewActivity1;
         private SetStateActivity setStateActivity4;
-        private Composite.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
+        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
         private EventDrivenActivity deleteEventDrivenActivity_Cancel;
         private SetStateActivity setStateActivity6;
         private IfElseBranchActivity branchHasNoRelatedData;
@@ -274,12 +274,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
         private StateInitializationActivity stateInitializationActivity2;
         private StateActivity checkRelatedDataStateActivity;
         private SetStateActivity setStateActivity5;
-        private Composite.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity2;
+        private Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity2;
         private EventDrivenActivity eventDrivenActivity_Finish;
         private SetStateActivity setStateActivity7;
-        private Composite.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity3;
+        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity3;
         private EventDrivenActivity eventDrivenActivity2;
-        private Composite.Workflow.Activities.ConfirmDialogFormActivity confirmDialogFormActivity1;
+        private Composite.C1Console.Workflow.Activities.ConfirmDialogFormActivity confirmDialogFormActivity1;
         private StateActivity DeleteMediaFileWorkflowInitialState;
 
 

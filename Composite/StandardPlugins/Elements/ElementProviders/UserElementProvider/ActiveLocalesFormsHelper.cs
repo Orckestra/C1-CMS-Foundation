@@ -3,12 +3,12 @@ using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Data;
-using Composite.Forms;
-using Composite.ResourceSystem;
-using Composite.Xml;
+using Composite.C1Console.Forms;
+using Composite.Core.ResourceSystem;
+using Composite.Core.Xml;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 {
     /// <summary>    
     /// </summary>

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Composite.Functions;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.String
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.String
 {
     internal sealed class JoinTwo : StandardFunctionBase, ICompoundFunction
     {

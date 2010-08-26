@@ -4,7 +4,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
-using Composite.Extensions;
+using Composite.Core.Extensions;
 
 
 namespace Composite.Sql

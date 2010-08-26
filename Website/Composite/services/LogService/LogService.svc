@@ -1,1 +1,1 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="Composite.Logging.WCF.LogService" Factory="Composite.Logging.WCF.LoggerServiceHostingFactory" %>
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="Composite.Core.Logging.WCF.LogService" Factory="Composite.Core.Logging.WCF.LoggerServiceHostingFactory" %>

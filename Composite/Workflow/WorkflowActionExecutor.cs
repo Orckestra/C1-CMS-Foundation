@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Workflow.Runtime;
-using Composite.Actions;
-using Composite.Security;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Security;
 
 
-namespace Composite.Workflow
+namespace Composite.C1Console.Workflow
 {
     internal sealed class WorkflowActionExecutor : IActionExecutorSerializedParameters
     {

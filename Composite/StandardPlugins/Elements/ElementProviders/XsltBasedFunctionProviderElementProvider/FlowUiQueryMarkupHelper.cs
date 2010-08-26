@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using Composite.Functions;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider
 {
 	internal static class FlowUiQueryMarkupHelper
 	{

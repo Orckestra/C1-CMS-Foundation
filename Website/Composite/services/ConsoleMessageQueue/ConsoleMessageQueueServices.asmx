@@ -6,10 +6,10 @@ using System.Linq;
 using System.Web.Services;
 using System.Web.Services.Protocols;
 
-using Composite.WebClient.FlowMediators;
-using Composite.WebClient.Services.TreeServiceObjects;
-using Composite.WebClient.Services.ConsoleMessageService;
-using Composite.ConsoleEventSystem;
+using Composite.Core.WebClient.FlowMediators;
+using Composite.Core.WebClient.Services.TreeServiceObjects;
+using Composite.Core.WebClient.Services.ConsoleMessageService;
+using Composite.C1Console.Events;
 
 
 [WebService(Namespace = "http://www.composite.net/ns/management")]

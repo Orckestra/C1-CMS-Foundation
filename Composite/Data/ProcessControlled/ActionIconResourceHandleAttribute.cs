@@ -1,5 +1,5 @@
 ﻿using System;
-using Composite.ResourceSystem;
+using Composite.Core.ResourceSystem;
 
 namespace Composite.Data.ProcessControlled
 {

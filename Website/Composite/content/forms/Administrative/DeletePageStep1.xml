@@ -3,9 +3,9 @@
   <cms:bindings>
     <cms:binding name="DeleteAllSubPages" type="System.Boolean" />
   </cms:bindings>
-  <cms:layout iconhandle="page-delete-page" label="${Composite.StandardPlugins.PageElementProvider, DeletePage.LabelFieldGroup}">
+  <cms:layout iconhandle="page-delete-page" label="${Composite.Plugins.PageElementProvider, DeletePage.LabelFieldGroup}">
     <Heading
-        Title="${Composite.StandardPlugins.PageElementProvider, DeletePageStep1.Title}"
-        Description="${Composite.StandardPlugins.PageElementProvider, DeletePageStep1.Description}" />
+        Title="${Composite.Plugins.PageElementProvider, DeletePageStep1.Title}"
+        Description="${Composite.Plugins.PageElementProvider, DeletePageStep1.Description}" />
     </cms:layout>
 </cms:formdefinition>

@@ -1,22 +1,22 @@
 ﻿using System;
 using System.IO;
 using System.Workflow.Runtime;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Extensions;
-using Composite.Forms.CoreUiControls;
-using Composite.IO;
-using Composite.Workflow;
-using Composite.Workflow.Activities;
-using Composite.ResourceSystem;
+using Composite.Core.Extensions;
+using Composite.C1Console.Forms.CoreUiControls;
+using Composite.Core.IO;
+using Composite.C1Console.Workflow;
+using Composite.C1Console.Workflow.Activities;
+using Composite.Core.ResourceSystem;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Never)]
-    public sealed partial class UploadNewMediaFileWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class UploadNewMediaFileWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public UploadNewMediaFileWorkflow()
         {

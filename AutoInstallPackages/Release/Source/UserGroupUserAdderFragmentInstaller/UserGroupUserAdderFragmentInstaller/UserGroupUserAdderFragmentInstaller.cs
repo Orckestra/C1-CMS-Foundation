@@ -3,9 +3,9 @@ using System.Xml.Linq;
 using System.Linq;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Linq;
-using Composite.PackageSystem;
-using Composite.PackageSystem.PackageFragmentInstallers;
+using Composite.Core.Linq;
+using Composite.Core.PackageSystem;
+using Composite.Core.PackageSystem.PackageFragmentInstallers;
 
 
 namespace Composite

@@ -1,10 +1,10 @@
 using System.Workflow.Runtime;
-using Composite.Workflow.Plugins.WorkflowRuntimeProvider;
+using Composite.C1Console.Workflow.Plugins.WorkflowRuntimeProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Workflow.WorkflowRuntimeProviders.StandardWorkflowRuntimeProvider
+namespace Composite.Plugins.Workflow.WorkflowRuntimeProviders.StandardWorkflowRuntimeProvider
 {
     [ConfigurationElementType(typeof(StandardWorkflowRuntimeProviderData))]
     internal sealed class StandardWorkflowRuntimeProvider : IWorkflowRuntimeProvider

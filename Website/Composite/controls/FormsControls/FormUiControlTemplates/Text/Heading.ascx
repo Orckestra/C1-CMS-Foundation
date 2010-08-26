@@ -1,5 +1,5 @@
-<%@ Control Language="C#" Inherits="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.HeadingTemplateUserControlBase"  %>
-<%@ Import Namespace="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories" %>
+<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.HeadingTemplateUserControlBase"  %>
+<%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
 
 <script runat="server">    
     protected override void InitializeViewState(){}

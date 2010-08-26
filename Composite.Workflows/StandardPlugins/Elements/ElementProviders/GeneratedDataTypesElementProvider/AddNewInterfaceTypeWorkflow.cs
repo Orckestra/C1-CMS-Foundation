@@ -1,25 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.ExtendedDataType.Debug;
 using Composite.Data.GeneratedTypes;
-using Composite.Logging;
-using Composite.ResourceSystem;
-using Composite.Security;
-using Composite.Types;
-using Composite.Users;
-using Composite.Validation.ClientValidationRules;
-using Composite.Workflow;
+using Composite.Core.Logging;
+using Composite.Core.ResourceSystem;
+using Composite.C1Console.Security;
+using Composite.Core.Types;
+using Composite.C1Console.Users;
+using Composite.Data.Validation.ClientValidationRules;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddNewInterfaceTypeWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddNewInterfaceTypeWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public AddNewInterfaceTypeWorkflow()
         {
@@ -199,7 +199,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
 
         private static string GetString(string key)
         {
-            return StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", key);
+            return StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", key);
         }
     }
 }

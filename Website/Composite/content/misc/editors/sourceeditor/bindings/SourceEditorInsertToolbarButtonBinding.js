@@ -160,7 +160,7 @@ SourceEditorInsertToolbarButtonBinding.prototype._injectFunction = function () {
  */
 SourceEditorInsertToolbarButtonBinding.prototype._injectFunctionConfiguration = function ( markup ) {
 	
-	var url = "${root}/content/dialogs/functions/editFunctionCall.aspx?functionmarkup=" + markup; // type=Composite.Xml.XhtmlDocument,Composite&
+	var url = "${root}/content/dialogs/functions/editFunctionCall.aspx?functionmarkup=" + markup; // type=Composite.Core.Xml.XhtmlDocument,Composite&
 	
 	var self = this;
 	var handler = {

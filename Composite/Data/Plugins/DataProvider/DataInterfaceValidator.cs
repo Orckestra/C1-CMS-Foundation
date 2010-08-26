@@ -2,8 +2,8 @@ using System;
 using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
-using Composite.Types;
-using Composite.ResourceSystem;
+using Composite.Core.Types;
+using Composite.Core.ResourceSystem;
 
 
 namespace Composite.Data.Plugins.DataProvider

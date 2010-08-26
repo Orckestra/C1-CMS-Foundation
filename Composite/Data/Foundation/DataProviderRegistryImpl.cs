@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Composite.ConfigurationSystem;
+using Composite.Core.Configuration;
 using Composite.Data.Foundation.PluginFacades;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Data.Plugins.DataProvider.Runtime;
-using Composite.Instrumentation;
-using Composite.Logging;
-using Composite.Types;
+using Composite.Core.Instrumentation;
+using Composite.Core.Logging;
+using Composite.Core.Types;
 
 
 namespace Composite.Data.Foundation
@@ -222,7 +222,7 @@ namespace Composite.Data.Foundation
                     if (containsBadAttribute == false) continue;
 
 #pragma warning disable 0612
-                    LoggingService.LogWarning("DataProviderRegistry", string.Format("The property named '{0}' on the type '{1}' has an attribute of type '{2}' wich is not supported, use '{3}'", typeToAdd, propertyInfo.Name, typeof(Microsoft.Practices.EnterpriseLibrary.Validation.Validators.StringLengthValidatorAttribute), typeof(Composite.Validation.Validators.StringLengthValidatorAttribute)));
+                    LoggingService.LogWarning("DataProviderRegistry", string.Format("The property named '{0}' on the type '{1}' has an attribute of type '{2}' wich is not supported, use '{3}'", typeToAdd, propertyInfo.Name, typeof(Microsoft.Practices.EnterpriseLibrary.Validation.Validators.StringLengthValidatorAttribute), typeof(Composite.Data.Validation.Validators.StringLengthValidatorAttribute)));
 #pragma warning restore 0612
                 }
 
@@ -231,7 +231,7 @@ namespace Composite.Data.Foundation
                 {
                     _interfaceTypeToReadableProviderNamesDictionary.Add(typeToAdd, new List<string>());
 
-                    Logging.LoggingService.LogVerbose("DataProviderRegistry", string.Format("Adding supported IData interface: {0}", typeToAdd));
+                    Core.Logging.LoggingService.LogVerbose("DataProviderRegistry", string.Format("Adding supported IData interface: {0}", typeToAdd));
                 }
 
                 if (false == _interfaceTypeToReadableProviderNamesDictionary[typeToAdd].Contains(providerName))
@@ -312,7 +312,7 @@ namespace Composite.Data.Foundation
 
                                     _knownInterfaceTypeToDynamicProviderNamesDictionary.Add(knownType, providerNames);
 
-                                    Logging.LoggingService.LogVerbose("DataProviderRegistry", string.Format("Adding known IData interface: {0}", knownType));
+                                    Core.Logging.LoggingService.LogVerbose("DataProviderRegistry", string.Format("Adding known IData interface: {0}", knownType));
                                 }
 
                                 providerNames.Add(providerName);

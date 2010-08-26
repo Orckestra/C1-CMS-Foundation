@@ -20,7 +20,7 @@ namespace CompositeMultiContentXhtmlEditor {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.Selector TemplateSelector;
+        protected global::Composite.Core.WebClient.UiControlLib.Selector TemplateSelector;
         
         /// <summary>
         /// ContentsPlaceHolder control.

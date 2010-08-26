@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace Composite.Workflow.Activities.Foundation
+namespace Composite.C1Console.Workflow.Activities.Foundation
 {
 	internal static class FormsWorkflowBindingCache
 	{

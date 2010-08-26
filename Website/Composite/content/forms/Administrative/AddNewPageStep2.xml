@@ -7,13 +7,13 @@
   </cms:bindings>
   <cms:layout>
     <PlaceHolder>
-      <FieldGroup Label="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep2.LabelFieldGroup}">
-        <TextBox Label="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep2.LabelUrlTitle}" Help="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep2.HelpUrlTitle}">
+      <FieldGroup Label="${Composite.Plugins.PageElementProvider, AddNewPageStep2.LabelFieldGroup}">
+        <TextBox Label="${Composite.Plugins.PageElementProvider, AddNewPageStep2.LabelUrlTitle}" Help="${Composite.Plugins.PageElementProvider, AddNewPageStep2.HelpUrlTitle}">
           <TextBox.Text>
             <cms:bind source="NewPage.UrlTitle" />
           </TextBox.Text>
         </TextBox>
-        <TextBox Label="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep2.LabelMenuTitle}" Help="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep2.HelpMenuTitle}">
+        <TextBox Label="${Composite.Plugins.PageElementProvider, AddNewPageStep2.LabelMenuTitle}" Help="${Composite.Plugins.PageElementProvider, AddNewPageStep2.HelpMenuTitle}">
           <TextBox.Text>
             <cms:bind source="NewPage.MenuTitle" />
           </TextBox.Text>
@@ -24,8 +24,8 @@
           <cms:read source="ExistingPages" />
         </f:NullCheck.CheckValue>
         <f:NullCheck.WhenNotNull>
-          <FieldGroup Label="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep2.LabelPositionSelectorPanel}">
-            <KeySelector Label="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep2.LabelPositionSelector}" OptionsKeyField="Id" OptionsLabelField="Title" Help="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep2.HelpPositionSelector}">
+          <FieldGroup Label="${Composite.Plugins.PageElementProvider, AddNewPageStep2.LabelPositionSelectorPanel}">
+            <KeySelector Label="${Composite.Plugins.PageElementProvider, AddNewPageStep2.LabelPositionSelector}" OptionsKeyField="Id" OptionsLabelField="Title" Help="${Composite.Plugins.PageElementProvider, AddNewPageStep2.HelpPositionSelector}">
               <KeySelector.Options>
                 <cms:read source="ExistingPages" />
               </KeySelector.Options>

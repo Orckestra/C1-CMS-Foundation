@@ -1,8 +1,8 @@
-using Composite.Security;
+using Composite.C1Console.Security;
 using System.Collections.Generic;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 {
     internal sealed class UserElementProviderGroupEntityTokenSecurityAncestorProvider : ISecurityAncestorProvider
     {

@@ -15,34 +15,34 @@
       <TabPanels.Label>
         <cms:read source="Function.Name" />
       </TabPanels.Label>
-      <PlaceHolder Label="${Composite.StandardPlugins.VisualFunction, Edit.PlaceHolderLabel}">
-        <Heading Title="${Composite.StandardPlugins.VisualFunction, Edit.HeadingTitel}">
+      <PlaceHolder Label="${Composite.Plugins.VisualFunction, Edit.PlaceHolderLabel}">
+        <Heading Title="${Composite.Plugins.VisualFunction, Edit.HeadingTitel}">
           <Heading.Description>
             <cms:read source="SourceTypeFullName" />
           </Heading.Description>
         </Heading>
-        <FieldGroup Label="${Composite.StandardPlugins.VisualFunction, Edit.FieldGroupLabel}">
-          <TextBox Label="${Composite.StandardPlugins.VisualFunction, Edit.FunctionNameLabel}" Help="${Composite.StandardPlugins.VisualFunction, Edit.FunctionNameHelp}">
+        <FieldGroup Label="${Composite.Plugins.VisualFunction, Edit.FieldGroupLabel}">
+          <TextBox Label="${Composite.Plugins.VisualFunction, Edit.FunctionNameLabel}" Help="${Composite.Plugins.VisualFunction, Edit.FunctionNameHelp}">
             <TextBox.Text>
               <cms:bind source="Function.Name" />
             </TextBox.Text>
           </TextBox>
-          <TextBox Label="${Composite.StandardPlugins.VisualFunction, Edit.FunctionNamespaceLabel}" Help="${Composite.StandardPlugins.VisualFunction, Edit.FunctionNamespaceHelp}">
+          <TextBox Label="${Composite.Plugins.VisualFunction, Edit.FunctionNamespaceLabel}" Help="${Composite.Plugins.VisualFunction, Edit.FunctionNamespaceHelp}">
             <TextBox.Text>
               <cms:bind source="Function.Namespace" />
             </TextBox.Text>
           </TextBox>
-          <TextArea Label="${Composite.StandardPlugins.VisualFunction, Edit.FunctionDescriptionLabel}" Help="${Composite.StandardPlugins.VisualFunction, Edit.FunctionDescriptionHelp}">
+          <TextArea Label="${Composite.Plugins.VisualFunction, Edit.FunctionDescriptionLabel}" Help="${Composite.Plugins.VisualFunction, Edit.FunctionDescriptionHelp}">
             <TextArea.Text>
               <cms:bind source="Function.Description" />
             </TextArea.Text>
           </TextArea>
-          <TextBox Label="${Composite.StandardPlugins.VisualFunction, Edit.ItemListLenghtLabel}" Help="${Composite.StandardPlugins.VisualFunction, Edit.ItemListLenghtHelp}" Type="integer">
+          <TextBox Label="${Composite.Plugins.VisualFunction, Edit.ItemListLenghtLabel}" Help="${Composite.Plugins.VisualFunction, Edit.ItemListLenghtHelp}" Type="integer">
             <TextBox.Text>
               <cms:bind source="Function.MaximumItemsToList" />
             </TextBox.Text>
           </TextBox>
-          <KeySelector Label="${Composite.StandardPlugins.VisualFunction, Edit.ItemSortingLabel}" Help="${Composite.StandardPlugins.VisualFunction, Edit.ItemSortingHelp}">
+          <KeySelector Label="${Composite.Plugins.VisualFunction, Edit.ItemSortingLabel}" Help="${Composite.Plugins.VisualFunction, Edit.ItemSortingHelp}">
             <KeySelector.Selected>
               <cms:bind source="Function.OrderbyFieldName" />
             </KeySelector.Selected>
@@ -50,10 +50,10 @@
               <cms:read source="FieldNameList" />
             </KeySelector.Options>
           </KeySelector>
-          <BoolSelector TrueLabel="${Composite.StandardPlugins.VisualFunction, Edit.ListSortingTrueLabel}" FalseLabel="${Composite.StandardPlugins.VisualFunction, Edit.ListSortingFalseLabel}" Label="${Composite.StandardPlugins.VisualFunction, Edit.ListSortingLabel}" Help="${Composite.StandardPlugins.VisualFunction, Edit.ListSortingHelp}">
+          <BoolSelector TrueLabel="${Composite.Plugins.VisualFunction, Edit.ListSortingTrueLabel}" FalseLabel="${Composite.Plugins.VisualFunction, Edit.ListSortingFalseLabel}" Label="${Composite.Plugins.VisualFunction, Edit.ListSortingLabel}" Help="${Composite.Plugins.VisualFunction, Edit.ListSortingHelp}">
             <cms:bind source="Function.OrderbyAscending" />
           </BoolSelector>
-          <KeySelector OptionsKeyField="Id" OptionsLabelField="Title" Label="${Composite.StandardPlugins.VisualFunction, Edit.PreviewTemplateLabel}" Help="${Composite.StandardPlugins.VisualFunction, Edit.PreviewTemplateHelp}">
+          <KeySelector OptionsKeyField="Id" OptionsLabelField="Title" Label="${Composite.Plugins.VisualFunction, Edit.PreviewTemplateLabel}" Help="${Composite.Plugins.VisualFunction, Edit.PreviewTemplateHelp}">
             <KeySelector.Selected>
               <cms:bind source="PreviewTemplateId" />
             </KeySelector.Selected>
@@ -63,7 +63,7 @@
           </KeySelector>
         </FieldGroup>
       </PlaceHolder>
-      <XhtmlEditor Label="${Composite.StandardPlugins.VisualFunction, Edit.WYSIWYGLayoutLabel}">
+      <XhtmlEditor Label="${Composite.Plugins.VisualFunction, Edit.WYSIWYGLayoutLabel}">
         <XhtmlEditor.EmbedableFieldsTypes>
           <cms:read source="EmbedableFieldsTypes" />
         </XhtmlEditor.EmbedableFieldsTypes>
@@ -74,7 +74,7 @@
           <cms:read source="PreviewEventHandler" />
         </f:NullCheck.CheckValue>
         <f:NullCheck.WhenNotNull>
-          <internal:PreviewPanel Label="${Composite.StandardPlugins.VisualFunction, Edit.LabelPreview}">
+          <internal:PreviewPanel Label="${Composite.Plugins.VisualFunction, Edit.LabelPreview}">
             <internal:PreviewPanel.ClickEventHandler>
               <cms:read source="PreviewEventHandler" />
             </internal:PreviewPanel.ClickEventHandler>

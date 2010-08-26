@@ -6,9 +6,9 @@ using System.Xml.Linq;
 using System.Linq;
 using Composite.Data;
 using Composite.Functions.Foundation;
-using Composite.Parallelization;
-using Composite.Types;
-using Composite.Xml;
+using Composite.Core.Parallelization;
+using Composite.Core.Types;
+using Composite.Core.Xml;
 
 
 namespace Composite.Functions

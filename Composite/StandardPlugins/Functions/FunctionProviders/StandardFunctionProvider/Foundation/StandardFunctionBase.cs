@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Composite.Functions;
-using Composite.Security;
-using Composite.Logging;
+using Composite.C1Console.Security;
+using Composite.Core.Logging;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation
 {
     internal abstract class StandardFunctionBase : IFunction
     {
@@ -93,7 +93,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunction
 
         private string LocalizationToken(string functionLocalPart)
         {
-            return string.Format( "${{Composite.StandardPlugins.StandardFunctions,{0}.{1}}}", this.ResourceHandleNameStem, functionLocalPart ); 
+            return string.Format( "${{Composite.Plugins.StandardFunctions,{0}.{1}}}", this.ResourceHandleNameStem, functionLocalPart ); 
         }
 
         public string ResourceHandleNameStem {get; protected set; }

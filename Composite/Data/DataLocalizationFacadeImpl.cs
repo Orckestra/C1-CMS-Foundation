@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Composite.Collections.Generic;
+using Composite.Core.Collections.Generic;
 using Composite.Data.Caching;
 using Composite.Data.ProcessControlled;
 using Composite.Data.Types;
-using Composite.Logging;
+using Composite.Core.Logging;
 using Composite.Data.DynamicTypes;
-using Composite.StringExtensions;
-using Composite.Types;
+using Composite.Core.Extensions;
+using Composite.Core.Types;
 using System.Reflection;
 
 
@@ -155,7 +155,7 @@ namespace Composite.Data
 
                 lock (_syncRoot)
                 {
-                    using(var transactionScope = Transactions.TransactionsFacade.CreateNewScope())
+                    using(var transactionScope = Data.Transactions.TransactionsFacade.CreateNewScope())
                     {
                         List<ISystemActiveLocale> systemLocalesMarkedAsDefault =
                         (from data in DataFacade.GetData<ISystemActiveLocale>()

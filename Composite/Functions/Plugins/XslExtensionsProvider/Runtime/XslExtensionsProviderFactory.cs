@@ -1,4 +1,4 @@
-﻿using Composite.ConfigurationSystem;
+﻿using Composite.Core.Configuration;
 using Composite.Functions.Plugins.XslExtensionsProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 

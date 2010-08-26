@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
-using Composite.Elements;
-using Composite.Elements.Plugins.ElementProvider;
-using Composite.ResourceSystem;
-using Composite.ResourceSystem.Icons;
-using Composite.Security;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Elements.Plugins.ElementProvider;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.C1Console.Security;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.LogElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.LogElementProvider
 {
     [ConfigurationElementType(typeof(LogElementProviderData))]
     internal sealed class LogElementProvider : IHooklessElementProvider

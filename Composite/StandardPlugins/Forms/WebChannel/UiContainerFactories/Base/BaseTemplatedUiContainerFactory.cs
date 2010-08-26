@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Composite.Forms;
-using Composite.Logging;
-using Composite.Forms.Flows.Plugins.UiContainerFactory;
-using Composite.Forms.Flows;
+using Composite.C1Console.Forms;
+using Composite.Core.Logging;
+using Composite.C1Console.Forms.Flows.Plugins.UiContainerFactory;
+using Composite.C1Console.Forms.Flows;
 
-namespace Composite.StandardPlugins.Forms.WebChannel.UiContainerFactories.Base
+namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories.Base
 {
     internal abstract class BaseTemplatedUiContainerFactory : IUiContainerFactory
     {

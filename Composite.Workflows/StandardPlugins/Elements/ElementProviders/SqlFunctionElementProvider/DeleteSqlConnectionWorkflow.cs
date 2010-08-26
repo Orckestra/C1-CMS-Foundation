@@ -1,18 +1,18 @@
 using System;
 using System.Linq;
 using System.Transactions;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Transactions;
-using Composite.Workflow;
+using Composite.Data.Transactions;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class DeleteSqlConnectionWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class DeleteSqlConnectionWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public DeleteSqlConnectionWorkflow()
         {

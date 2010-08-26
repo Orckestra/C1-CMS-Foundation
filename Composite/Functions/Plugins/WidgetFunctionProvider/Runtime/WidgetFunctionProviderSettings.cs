@@ -1,6 +1,6 @@
 using System.Configuration;
 
-using Composite.Configuration;
+using Composite.Core.Configuration;
 
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 

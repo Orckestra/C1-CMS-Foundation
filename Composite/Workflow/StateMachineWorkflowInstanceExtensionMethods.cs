@@ -4,7 +4,7 @@ using System.Workflow.Activities;
 using System.Workflow.ComponentModel;
 
 
-namespace Composite.Workflow
+namespace Composite.C1Console.Workflow
 {
 	internal static class StateMachineWorkflowInstanceExtensionMethods
 	{

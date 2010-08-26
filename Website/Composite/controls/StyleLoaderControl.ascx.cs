@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Web.Hosting;
 using System.Web.UI;
-using Composite.WebClient;
+using Composite.Core.WebClient;
 
 public partial class StyleLoaderControl : System.Web.UI.UserControl
 {

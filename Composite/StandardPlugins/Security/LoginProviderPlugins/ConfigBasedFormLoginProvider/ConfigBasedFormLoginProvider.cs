@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using Composite.Security.Plugins.LoginProvider;
+using Composite.C1Console.Security.Plugins.LoginProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Security.LoginProviderPlugins.ConfigBasedFormLoginProvider
+namespace Composite.Plugins.Security.LoginProviderPlugins.ConfigBasedFormLoginProvider
 {
     [ConfigurationElementType(typeof(ConfigBasedFormLoginProviderData))]
     internal sealed class ConfigBasedFormLoginProvider : IFormLoginProvider

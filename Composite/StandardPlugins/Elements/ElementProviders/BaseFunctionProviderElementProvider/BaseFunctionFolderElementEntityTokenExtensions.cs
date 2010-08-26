@@ -1,4 +1,4 @@
-namespace Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider
 {
     internal static class BaseFunctionFolderElementEntityTokenExtensions
 	{

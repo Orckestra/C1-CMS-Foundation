@@ -5,7 +5,7 @@ using System.Diagnostics;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.Manageability;
 
 
-namespace Composite.StandardPlugins.Instrumentation.PerformanceCounterProviders.WindowsPerformanceCounterProvider
+namespace Composite.Plugins.Instrumentation.PerformanceCounterProviders.WindowsPerformanceCounterProvider
 {
     /// <summary>
     /// Use Installutil.exe to install performance counters

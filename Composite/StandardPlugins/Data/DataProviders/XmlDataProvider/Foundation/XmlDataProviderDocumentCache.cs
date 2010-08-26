@@ -4,13 +4,13 @@ using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
 using System.Collections.Generic;
-using Composite.Collections.Generic;
+using Composite.Core.Collections.Generic;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Streams;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.Foundation
+namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 {
     internal static class XmlDataProviderDocumentCache
     {

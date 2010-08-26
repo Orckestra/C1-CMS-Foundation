@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Composite.EventSystem;
+using Composite.C1Console.Events;
 
 
 namespace Composite.Data.Foundation

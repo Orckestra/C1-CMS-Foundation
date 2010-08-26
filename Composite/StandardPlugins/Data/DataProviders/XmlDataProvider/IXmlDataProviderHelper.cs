@@ -4,7 +4,7 @@ using System.Xml.Linq;
 using Composite.Data;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider
+namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 {
     internal interface IXmlDataProviderHelper
     {

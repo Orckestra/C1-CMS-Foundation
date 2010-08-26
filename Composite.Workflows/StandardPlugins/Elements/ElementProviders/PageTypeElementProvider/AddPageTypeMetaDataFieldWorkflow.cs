@@ -4,28 +4,28 @@ using System.Linq;
 using System.Reflection;
 using System.Transactions;
 using System.Workflow.Activities;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
 using Composite.Data.GeneratedTypes;
 using Composite.Data.Types;
-using Composite.Elements;
-using Composite.Linq;
-using Composite.ResourceSystem;
-using Composite.Transactions;
-using Composite.Trees;
-using Composite.Types;
-using Composite.Validation.ClientValidationRules;
-using Composite.Workflow;
+using Composite.C1Console.Elements;
+using Composite.Core.Linq;
+using Composite.Core.ResourceSystem;
+using Composite.Data.Transactions;
+using Composite.C1Console.Trees;
+using Composite.Core.Types;
+using Composite.Data.Validation.ClientValidationRules;
+using Composite.C1Console.Workflow;
 using Composite.Data.ProcessControlled;
-using Composite.Users;
+using Composite.C1Console.Users;
 
 
-namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageTypeElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddPageTypeMetaDataFieldWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddPageTypeMetaDataFieldWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public AddPageTypeMetaDataFieldWorkflow()
         {
@@ -87,7 +87,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
 
             if (e.Result == false)
             {
-                ShowFieldMessage("CompositionDescriptionName", "${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.ValidationError.MetaDataFieldNameAlreadyUsed}");
+                ShowFieldMessage("CompositionDescriptionName", "${Composite.Plugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.ValidationError.MetaDataFieldNameAlreadyUsed}");
             }
         }
 
@@ -101,7 +101,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
             Type metaDataType = TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName);
 
             DataTypeDescriptorFormsHelper helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor);
-            helper.LayoutLabel = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTypeElementProvider", "PageType.AddPageTypeMetaDataFieldWorkflow.AddingDefaultMetaData.Title");
+            helper.LayoutLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", "PageType.AddPageTypeMetaDataFieldWorkflow.AddingDefaultMetaData.Title");
             helper.LayoutIconHandle = "pagetype-add-metedatafield";
 
             GeneratedTypesHelper generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor);

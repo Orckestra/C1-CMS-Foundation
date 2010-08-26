@@ -10,7 +10,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
-using Composite.Types;
+using Composite.Core.Types;
 using Composite.Data.DynamicTypes;
 
 

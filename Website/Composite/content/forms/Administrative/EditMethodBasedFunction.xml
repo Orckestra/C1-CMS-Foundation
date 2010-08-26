@@ -9,23 +9,23 @@
       <cms:read source="CurrentMethodFunctionInfo.UserMethodName" />
     </cms:layout.label>
 
-    <FieldGroup Label="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelFieldGroup}">
-      <TextBox Label="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelMethodName}" Help="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelMethodNameHelp}" Type="ProgrammingIdentifier">
+    <FieldGroup Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelFieldGroup}">
+      <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelMethodName}" Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelMethodNameHelp}" Type="ProgrammingIdentifier">
         <TextBox.Text>
           <cms:bind source="CurrentMethodFunctionInfo.UserMethodName" />
         </TextBox.Text>
       </TextBox>
-      <TextBox Label="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelNamespaceName}" Help="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelNamespaceNameHelp}" Type="ProgrammingNamespace">
+      <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelNamespaceName}" Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelNamespaceNameHelp}" Type="ProgrammingNamespace">
         <TextBox.Text>
           <cms:bind source="CurrentMethodFunctionInfo.Namespace" />
         </TextBox.Text>
       </TextBox>
-      <TextBox Label="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelType}" Help="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelTypeHelp}">
+      <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelType}" Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelTypeHelp}">
         <TextBox.Text>
           <cms:bind source="CurrentMethodFunctionInfo.Type" />
         </TextBox.Text>
       </TextBox>
-      <TextBox Label="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelMethod}" Help="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelMethodHelp}">
+      <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelMethod}" Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelMethodHelp}">
         <TextBox.Text>
           <cms:bind source="CurrentMethodFunctionInfo.MethodName" />
         </TextBox.Text>
@@ -35,7 +35,7 @@
           <cms:read source="ErrorMessage" />
         </f:NullCheck.CheckValue>
         <f:NullCheck.WhenNotNull>
-          <Text Label="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelError}">
+          <Text Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelError}">
             <Text.Text>
               <cms:read source="ErrorMessage" />
             </Text.Text>

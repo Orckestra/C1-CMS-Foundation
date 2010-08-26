@@ -3,18 +3,18 @@
   <cms:bindings>
     <cms:binding name="DefaultPageContent" type="Composite.Data.Types.IPageTypeDefaultPageContent"/>
   </cms:bindings>
-  <cms:layout iconhandle="pagetype-edit-pagetypedefaultpagecontent" label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeDefaultPageContentWorkflow.Layout.Label}">
+  <cms:layout iconhandle="pagetype-edit-pagetypedefaultpagecontent" label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeDefaultPageContentWorkflow.Layout.Label}">
 
     <TabPanels PreSelectedIndex="1">
       <TabPanels.Label>
         <cms:read source="DefaultPageContent.PlaceHolderId" />
       </TabPanels.Label>
 
-      <PlaceHolder Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeDefaultPageContentWorkflow.SettingsPlaceHolder.Label}">
-        <FieldGroup Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeDefaultPageContentWorkflow.SettingsFieldGroup.Label}">
+      <PlaceHolder Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeDefaultPageContentWorkflow.SettingsPlaceHolder.Label}">
+        <FieldGroup Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeDefaultPageContentWorkflow.SettingsFieldGroup.Label}">
 
-          <TextBox Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Label}"
-                   Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Help}">
+          <TextBox Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Label}"
+                   Help="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Help}">
             <TextBox.Text>
               <cms:bind source="DefaultPageContent.PlaceHolderId" />
             </TextBox.Text>
@@ -23,7 +23,7 @@
         </FieldGroup>
       </PlaceHolder>
 
-      <XhtmlEditor Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeDefaultPageContentWorkflow.ContentXhtmlEditor.Label}">
+      <XhtmlEditor Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeDefaultPageContentWorkflow.ContentXhtmlEditor.Label}">
         <cms:bind source="DefaultPageContent.Content" />
       </XhtmlEditor>      
       

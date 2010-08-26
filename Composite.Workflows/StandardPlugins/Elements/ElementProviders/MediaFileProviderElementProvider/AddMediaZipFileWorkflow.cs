@@ -1,18 +1,18 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Forms.CoreUiControls;
-using Composite.Workflow;
-using Composite.Workflow.Activities;
+using Composite.C1Console.Forms.CoreUiControls;
+using Composite.C1Console.Workflow;
+using Composite.C1Console.Workflow.Activities;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Never)]
-    public sealed partial class AddMediaZipFileWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddMediaZipFileWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public AddMediaZipFileWorkflow()
         {

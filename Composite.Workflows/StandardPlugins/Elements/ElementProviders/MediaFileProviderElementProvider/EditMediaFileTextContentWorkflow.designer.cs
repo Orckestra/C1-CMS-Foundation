@@ -12,7 +12,7 @@ using System.Workflow.Runtime;
 using System.Workflow.Activities;
 using System.Workflow.Activities.Rules;
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
     partial class EditMediaFileTextContentWorkflow
     {
@@ -29,12 +29,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
             this.setStateActivity4 = new System.Workflow.Activities.SetStateActivity();
             this.saveCodeActivity = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity3 = new System.Workflow.Activities.SetStateActivity();
-            this.saveHandleExternalEventActivity1 = new Composite.Workflow.Activities.SaveHandleExternalEventActivity();
-            this.documentFormActivity1 = new Composite.Workflow.Activities.DocumentFormActivity();
+            this.saveHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.SaveHandleExternalEventActivity();
+            this.documentFormActivity1 = new Composite.C1Console.Workflow.Activities.DocumentFormActivity();
             this.setStateActivity2 = new System.Workflow.Activities.SetStateActivity();
             this.initializeCodeActivity = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity1 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity1 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.finalizeStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.eventDrivenActivity_Save = new System.Workflow.Activities.EventDrivenActivity();
             this.editStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
@@ -63,7 +63,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
             // saveHandleExternalEventActivity1
             // 
             this.saveHandleExternalEventActivity1.EventName = "Save";
-            this.saveHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.saveHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.saveHandleExternalEventActivity1.Name = "saveHandleExternalEventActivity1";
             // 
             // documentFormActivity1
@@ -90,7 +90,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
             // cancelHandleExternalEventActivity1
             // 
             this.cancelHandleExternalEventActivity1.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity1.Name = "cancelHandleExternalEventActivity1";
             // 
             // finalizeStateInitializationActivity
@@ -161,18 +161,18 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
 
         private CodeActivity initializeCodeActivity;
         private SetStateActivity setStateActivity1;
-        private Composite.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
         private StateInitializationActivity initialStateInitializationActivity;
         private EventDrivenActivity cancelEventDrivenActivity;
         private StateActivity finalStateActivity;
         private StateActivity saveStateActivity;
         private StateActivity editStateActivity;
-        private Composite.Workflow.Activities.DocumentFormActivity documentFormActivity1;
+        private Composite.C1Console.Workflow.Activities.DocumentFormActivity documentFormActivity1;
         private StateInitializationActivity editStateInitializationActivity;
         private StateInitializationActivity finalizeStateInitializationActivity;
         private CodeActivity saveCodeActivity;
         private SetStateActivity setStateActivity3;
-        private Composite.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
         private SetStateActivity setStateActivity2;
         private EventDrivenActivity eventDrivenActivity_Save;
         private SetStateActivity setStateActivity4;

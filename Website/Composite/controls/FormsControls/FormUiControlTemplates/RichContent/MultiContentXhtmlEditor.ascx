@@ -1,9 +1,9 @@
 <%@ Control Language="C#" Inherits="CompositeMultiContentXhtmlEditor.MultiContentXhtmlEditor" CodeFile="MultiContentXhtmlEditor.ascx.cs" %>
-<%@ Import Namespace="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories" %>
+<%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
 <%@ Import Namespace="System.Xml.Linq" %>
 <%@ Import Namespace="System.Linq" %>
-<%@ Import Namespace="Composite.WebClient.Services.WysiwygEditor" %>
-<%@ Import Namespace="Composite.Types" %>
+<%@ Import Namespace="Composite.Core.WebClient.Services.WysiwygEditor" %>
+<%@ Import Namespace="Composite.Core.Types" %>
 
 <script runat="server">
     private string EmbedableFieldsTypesString
@@ -30,8 +30,8 @@
 	formattingconfiguration="common"
 	elementclassconfiguration="<%= this.ClassConfigurationName %>" 
     embedablefieldstypenames="<%= HttpUtility.HtmlAttributeEncode(this.EmbedableFieldsTypesString) %>"
-	configurationstylesheet="<%= Composite.WebClient.UrlUtils.ResolvePublicUrl( "Frontend/Styles/VisualEditor/VisualEditor.Config.css" ) %>"  
-	presentationstylesheet="<%= Composite.WebClient.UrlUtils.ResolvePublicUrl( "Frontend/Styles/VisualEditor/VisualEditor.Default.css" ) %>"
+	configurationstylesheet="<%= Composite.Core.WebClient.UrlUtils.ResolvePublicUrl( "Frontend/Styles/VisualEditor/VisualEditor.Config.css" ) %>"  
+	presentationstylesheet="<%= Composite.Core.WebClient.UrlUtils.ResolvePublicUrl( "Frontend/Styles/VisualEditor/VisualEditor.Default.css" ) %>"
 	id="<%= this.UniqueID %>">
     <!-- THIS CAN NOW BE REMOVED (INCLUDING CODEBEHIND SUPPORT!) -->
    	<aspui:Selector SimpleSelectorMode="false" ID="TemplateSelector" runat="server">

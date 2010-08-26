@@ -1,10 +1,10 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="CompositeTypeFieldDesigner.TypeFieldDesigner" CodeFile="TypeFieldDesigner.ascx.cs" %> 
 <%@ Register TagPrefix="asphtml" Namespace="System.Web.UI.HtmlControls" Assembly="System.Web" %>
-<%@ Register TagPrefix="aspui" Namespace="Composite.WebClient.UiControlLib" Assembly="Composite" %> 
+<%@ Register TagPrefix="aspui" Namespace="Composite.Core.WebClient.UiControlLib" Assembly="Composite" %> 
 <%@ Import Namespace="Composite.Data.DynamicTypes" %> 
 <%@ Import Namespace="Composite.Functions.ManagedParameters" %>  
 <%@ Import Namespace="System.Linq" %> 
-<%@ Import Namespace="Composite.ResourceSystem" %>
+<%@ Import Namespace="Composite.Core.ResourceSystem" %>
 
 <formscontrol:styleloader adminrelativepath="controls/FormsControls/FormUiControlTemplates/DeveloperTools/TypeFieldDesigner.css.aspx" runat="server" />
 

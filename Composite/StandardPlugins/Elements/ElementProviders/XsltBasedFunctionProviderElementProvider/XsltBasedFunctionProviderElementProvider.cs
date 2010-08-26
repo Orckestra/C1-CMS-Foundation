@@ -4,19 +4,19 @@ using System.Configuration;
 using System.Linq;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Elements;
-using Composite.Elements.Plugins.ElementProvider;
-using Composite.ResourceSystem;
-using Composite.ResourceSystem.Icons;
-using Composite.Security;
-using Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
-using Composite.Workflow;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Elements.Plugins.ElementProvider;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.C1Console.Security;
+using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
+using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider
 {
     /// <summary>    
     /// </summary>
@@ -49,7 +49,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionP
         {
             get
             {
-                return StringResourceSystemFacade.GetString("Composite.StandardPlugins.XsltBasedFunction", "StandardPlugins.XsltBasedFunctionProviderElementProvider.RootFolderLabel");
+                return StringResourceSystemFacade.GetString("Composite.Plugins.XsltBasedFunction", "Plugins.XsltBasedFunctionProviderElementProvider.RootFolderLabel");
             }
         }
 
@@ -58,7 +58,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionP
         {
             get
             {
-                return StringResourceSystemFacade.GetString("Composite.StandardPlugins.XsltBasedFunction", "StandardPlugins.XsltBasedFunctionProviderElementProvider.RootFolderToolTip");
+                return StringResourceSystemFacade.GetString("Composite.Plugins.XsltBasedFunction", "Plugins.XsltBasedFunctionProviderElementProvider.RootFolderToolTip");
             }
         }
 
@@ -113,12 +113,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionP
                 {
                     new ElementAction(new ActionHandle(
                         new WorkflowActionToken(
-                            WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider.AddNewXsltFunctionWorkflow"),
+                            WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider.AddNewXsltFunctionWorkflow"),
                             new PermissionType[] { PermissionType.Add }
                         ))) {
                          VisualData = new ActionVisualizedData { 
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.XsltBasedFunction", "XsltBasedFunctionProviderElementProvider.Add"), 
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.XsltBasedFunction", "XsltBasedFunctionProviderElementProvider.AddToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.XsltBasedFunction", "XsltBasedFunctionProviderElementProvider.Add"), 
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.XsltBasedFunction", "XsltBasedFunctionProviderElementProvider.AddToolTip"),
                             Icon = XsltBasedFunctionProviderElementProvider.AddFunction,
                             Disabled = false, 
                             ActionLocation = new ActionLocation { 
@@ -140,12 +140,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionP
                 {
                     new ElementAction(new ActionHandle(
                         new WorkflowActionToken(
-                            WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider.EditXsltFunctionWorkflow"),
+                            WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider.EditXsltFunctionWorkflow"),
                             new PermissionType[] { PermissionType.Edit }
                         ))) {
                         VisualData = new ActionVisualizedData { 
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.XsltBasedFunction", "XsltBasedFunctionProviderElementProvider.Edit"), 
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.XsltBasedFunction", "XsltBasedFunctionProviderElementProvider.EditToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.XsltBasedFunction", "XsltBasedFunctionProviderElementProvider.Edit"), 
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.XsltBasedFunction", "XsltBasedFunctionProviderElementProvider.EditToolTip"),
                             Icon = XsltBasedFunctionProviderElementProvider.EditFunction,
                             Disabled = false, 
                             ActionLocation = new ActionLocation { 
@@ -159,12 +159,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionP
 
                     new ElementAction(new ActionHandle(
                         new WorkflowActionToken(
-                            WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider.DeleteXsltFunctionWorkflow"),
+                            WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider.DeleteXsltFunctionWorkflow"),
                             new PermissionType[] { PermissionType.Delete }
                         ){Payload = GetContext().ProviderName})) {
                         VisualData = new ActionVisualizedData { 
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.XsltBasedFunction", "XsltBasedFunctionProviderElementProvider.Delete"), 
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.XsltBasedFunction", "XsltBasedFunctionProviderElementProvider.DeleteToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.XsltBasedFunction", "XsltBasedFunctionProviderElementProvider.Delete"), 
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.XsltBasedFunction", "XsltBasedFunctionProviderElementProvider.DeleteToolTip"),
                             Icon = XsltBasedFunctionProviderElementProvider.DeleteFunction,
                             Disabled = false, 
                             ActionLocation = new ActionLocation { 

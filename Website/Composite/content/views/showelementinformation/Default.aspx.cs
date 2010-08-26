@@ -9,18 +9,18 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
-using Composite.Serialization;
+using Composite.Core.Serialization;
 using System.Collections.Generic;
-using Composite.Types;
+using Composite.Core.Types;
 using System.Reflection;
-using Composite.Security;
+using Composite.C1Console.Security;
 using System.Xml.Linq;
 using System.Text;
 using Composite.Data.Types;
 using Composite.Data;
-using Composite.WebClient;
-using Composite.IO;
-using Composite.GlobalSettings;
+using Composite.Core.WebClient;
+using Composite.Core.IO;
+using Composite.Core.Configuration;
 using System.IO;
 
 

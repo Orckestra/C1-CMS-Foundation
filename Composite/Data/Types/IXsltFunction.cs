@@ -3,7 +3,7 @@ using Composite.Data;
 using Composite.Data.Hierarchy;
 using Composite.Data.Hierarchy.DataAncestorProviders;
 using Composite.Data.Caching;
-using Composite.Validation.Validators;
+using Composite.Data.Validation.Validators;
 
 
 namespace Composite.Data.Types
@@ -26,13 +26,13 @@ namespace Composite.Data.Types
 
         [ImmutableFieldId("{8DD6A2E7-CDCE-46b9-B517-36D633B98311}")]
         [StoreFieldType(PhysicalStoreFieldType.String, 256)]
-        [Composite.Validation.Validators.StringSizeValidator(1, 256)]
+        [Composite.Data.Validation.Validators.StringSizeValidator(1, 256)]
         string Name { get; set; }
 
 
         [ImmutableFieldId("{DC241562-2B30-4d06-852D-12E5CFF81EE8}")]
         [StoreFieldType(PhysicalStoreFieldType.String, 512)]
-        [Composite.Validation.Validators.StringSizeValidator(1, 512)]
+        [Composite.Data.Validation.Validators.StringSizeValidator(1, 512)]
         string Namespace { get; set; }
 
 

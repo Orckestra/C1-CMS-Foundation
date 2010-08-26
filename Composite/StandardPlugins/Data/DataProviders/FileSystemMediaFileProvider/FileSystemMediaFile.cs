@@ -6,10 +6,10 @@ using Composite.Data;
 using System.Globalization;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Streams;
-using Composite.IO;
+using Composite.Core.IO;
 using System.IO;
 
-namespace Composite.StandardPlugins.Data.DataProviders.FileSystemMediaFileProvider
+namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
 {
     [FileStreamManager(typeof(FileSystemFileStreamManager))]
     internal sealed class FileSystemMediaFile : FileSystemFileBase, IMediaFile

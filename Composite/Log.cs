@@ -1,5 +1,5 @@
 ﻿using System;
-using Composite.Implementation;
+using Composite.Core.Implementation;
 
 namespace Composite
 {

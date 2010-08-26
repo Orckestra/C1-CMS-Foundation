@@ -1,5 +1,5 @@
-<%@ Control Language="C#" Inherits="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.SelectorTemplateUserControlBase"  %>
-<%@ Import Namespace="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories" %>
+<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.SelectorTemplateUserControlBase"  %>
+<%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
 <%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="System.Collections.Generic" %>
 

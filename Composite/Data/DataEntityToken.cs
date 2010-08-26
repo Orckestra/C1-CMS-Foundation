@@ -1,8 +1,8 @@
 using System;
 using System.Reflection;
 using System.Text;
-using Composite.Security;
-using Composite.Types;
+using Composite.C1Console.Security;
+using Composite.Core.Types;
 
 
 namespace Composite.Data

@@ -10,7 +10,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
-using Composite.ResourceSystem;
+using Composite.Core.ResourceSystem;
 
 public partial class Spikes_Icons_Default : System.Web.UI.Page
 {

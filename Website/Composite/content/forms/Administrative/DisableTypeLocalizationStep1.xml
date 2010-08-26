@@ -4,11 +4,11 @@
     <cms:binding name="CultureName" type="System.String" />
     <cms:binding name="CultureNameList" type="System.Collections.IEnumerable" />
   </cms:bindings>
-	<cms:layout iconhandle="generated-type-delocalize" label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, DisableTypeLocalizationWorkflow.Dialog.Label}">
-    <FieldGroup Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, DisableTypeLocalizationWorkflow.Step1.FieldGroup.Label}">
+	<cms:layout iconhandle="generated-type-delocalize" label="${Composite.Plugins.GeneratedDataTypesElementProvider, DisableTypeLocalizationWorkflow.Dialog.Label}">
+    <FieldGroup Label="${Composite.Plugins.GeneratedDataTypesElementProvider, DisableTypeLocalizationWorkflow.Step1.FieldGroup.Label}">
       <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" 
-									 Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, DisableTypeLocalizationWorkflow.Step1.CultureSelector.Label}" 
-									 Help="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, DisableTypeLocalizationWorkflow.Step1.CultureSelector.Help}">
+									 Label="${Composite.Plugins.GeneratedDataTypesElementProvider, DisableTypeLocalizationWorkflow.Step1.CultureSelector.Label}" 
+									 Help="${Composite.Plugins.GeneratedDataTypesElementProvider, DisableTypeLocalizationWorkflow.Step1.CultureSelector.Help}">
         <KeySelector.Options>
           <cms:read source="CultureNameList"/>
         </KeySelector.Options>

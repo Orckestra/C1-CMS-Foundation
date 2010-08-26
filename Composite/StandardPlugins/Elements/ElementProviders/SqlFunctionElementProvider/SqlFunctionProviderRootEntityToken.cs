@@ -2,12 +2,12 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
-using Composite.Security;
+using Composite.C1Console.Security;
 using Composite.Data;
-using Composite.Types;
-using Composite.Serialization;
+using Composite.Core.Types;
+using Composite.Core.Serialization;
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
 {
     [SecurityAncestorProvider(typeof(SqlFunctionProviderEntityTokenSecurityAncestorProvider))]
     internal sealed class SqlFunctionProviderRootEntityToken : EntityToken

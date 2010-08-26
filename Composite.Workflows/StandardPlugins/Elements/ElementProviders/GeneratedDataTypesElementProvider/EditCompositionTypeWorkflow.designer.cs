@@ -11,9 +11,9 @@ using System.Workflow.ComponentModel.Design;
 using System.Workflow.Runtime;
 using System.Workflow.Activities;
 using System.Workflow.Activities.Rules;
-using Composite.Workflow;
+using Composite.C1Console.Workflow;
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
     partial class EditCompositionTypeWorkflow
     {
@@ -30,8 +30,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
             this.setStateActivity3 = new System.Workflow.Activities.SetStateActivity();
             this.saveTypeCodeActivity_Save = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity2 = new System.Workflow.Activities.SetStateActivity();
-            this.saveHandleExternalEventActivity1 = new Composite.Workflow.Activities.SaveHandleExternalEventActivity();
-            this.editTypeDocumentFormActivity = new Composite.Workflow.Activities.DocumentFormActivity();
+            this.saveHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.SaveHandleExternalEventActivity();
+            this.editTypeDocumentFormActivity = new Composite.C1Console.Workflow.Activities.DocumentFormActivity();
             this.setStateActivity4 = new System.Workflow.Activities.SetStateActivity();
             this.initializeStateCodeActivity_Initialize = new System.Workflow.Activities.CodeActivity();
             this.saveTypeStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
@@ -39,7 +39,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
             this.editTypeStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.initializeStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.setStateActivity1 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity1 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.saveTypeStateActivity = new System.Workflow.Activities.StateActivity();
             this.editTypeStateActivity = new System.Workflow.Activities.StateActivity();
             this.finalStateActivity = new System.Workflow.Activities.StateActivity();
@@ -64,7 +64,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
             // saveHandleExternalEventActivity1
             // 
             this.saveHandleExternalEventActivity1.EventName = "Save";
-            this.saveHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.saveHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.saveHandleExternalEventActivity1.Name = "saveHandleExternalEventActivity1";
             // 
             // editTypeDocumentFormActivity
@@ -114,7 +114,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
             // cancelHandleExternalEventActivity1
             // 
             this.cancelHandleExternalEventActivity1.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity1.Name = "cancelHandleExternalEventActivity1";
             // 
             // saveTypeStateActivity
@@ -160,14 +160,14 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
 
         #endregion
 
-        private Composite.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
         private StateInitializationActivity initializeStateInitializationActivity;
         private SetStateActivity setStateActivity1;
         private StateActivity finalStateActivity;
         private StateActivity initializeStateActivity;
         private SetStateActivity setStateActivity3;
         private SetStateActivity setStateActivity2;
-        private Composite.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
         private SetStateActivity setStateActivity4;
         private StateInitializationActivity saveTypeStateInitializationActivity;
         private EventDrivenActivity editTypeEventDrivenActivity_Save;
@@ -175,7 +175,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
         private StateActivity saveTypeStateActivity;
         private StateActivity editTypeStateActivity;
         private CodeActivity initializeStateCodeActivity_Initialize;
-        private Composite.Workflow.Activities.DocumentFormActivity editTypeDocumentFormActivity;
+        private Composite.C1Console.Workflow.Activities.DocumentFormActivity editTypeDocumentFormActivity;
         private CodeActivity saveTypeCodeActivity_Save;
         private EventDrivenActivity eventDrivenActivity_GlobalCancel;
 

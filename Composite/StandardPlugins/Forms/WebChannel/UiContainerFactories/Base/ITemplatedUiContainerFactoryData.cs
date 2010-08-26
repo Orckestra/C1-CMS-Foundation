@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Configuration;
 
-namespace Composite.StandardPlugins.Forms.WebChannel.UiContainerFactories.Base
+namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories.Base
 {
     internal interface ITemplatedUiContainerFactoryData
     {

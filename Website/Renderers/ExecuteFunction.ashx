@@ -27,7 +27,7 @@ public class ExecuteFunction : IHttpHandler
 
         if (result is XNode)
         {
-            if (result is Composite.Xml.XhtmlDocument)
+            if (result is Composite.Core.Xml.XhtmlDocument)
                 context.Response.ContentType = "text/html";
             else
                 context.Response.ContentType = "text/xml";

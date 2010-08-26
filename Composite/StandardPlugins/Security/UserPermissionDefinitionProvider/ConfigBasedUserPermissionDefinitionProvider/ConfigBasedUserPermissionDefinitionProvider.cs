@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using Composite.Security;
-using Composite.Security.Plugins.UserPermissionDefinitionProvider;
+using Composite.C1Console.Security;
+using Composite.C1Console.Security.Plugins.UserPermissionDefinitionProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Security.UserPermissionDefinitionProvider.ConfigBasedUserPermissionDefinitionProvider
+namespace Composite.Plugins.Security.UserPermissionDefinitionProvider.ConfigBasedUserPermissionDefinitionProvider
 {
     [ConfigurationElementType(typeof(ConfigBasedUserPermissionDefinitionProviderData))]
     internal sealed class ConfigBasedUserPermissionDefinitionProvider : IUserPermissionDefinitionProvider

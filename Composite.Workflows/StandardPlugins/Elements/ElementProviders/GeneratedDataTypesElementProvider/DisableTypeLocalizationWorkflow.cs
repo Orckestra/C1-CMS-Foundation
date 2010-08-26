@@ -8,18 +8,18 @@ using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.GeneratedTypes;
 using Composite.Data.ProcessControlled;
-using Composite.ResourceSystem;
-using Composite.Security;
-using Composite.Transactions;
-using Composite.Types;
-using Composite.Workflow;
+using Composite.Core.ResourceSystem;
+using Composite.C1Console.Security;
+using Composite.Data.Transactions;
+using Composite.Core.Types;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class DisableTypeLocalizationWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class DisableTypeLocalizationWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public DisableTypeLocalizationWorkflow()
         {
@@ -31,9 +31,9 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
         {
             Type type;
 
-            if ((this.EntityToken is Composite.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AssociatedDataElementProviderHelperEntityToken) == true)
+            if ((this.EntityToken is Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AssociatedDataElementProviderHelperEntityToken) == true)
             {
-                Composite.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AssociatedDataElementProviderHelperEntityToken castedEntityToken = this.EntityToken as Composite.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AssociatedDataElementProviderHelperEntityToken;
+                Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AssociatedDataElementProviderHelperEntityToken castedEntityToken = this.EntityToken as Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AssociatedDataElementProviderHelperEntityToken;
 
                 type = TypeManager.GetType(castedEntityToken.Payload);
             }

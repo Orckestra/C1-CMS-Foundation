@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <%@ Page Language="C#" AutoEventWireup="true" Inherits="Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools.FunctionParameterEditor" ValidateRequest="false" CodeFile="FunctionParameterEditor.aspx.cs" %>
-<%@ Register TagPrefix="aspui" Namespace="Composite.WebClient.UiControlLib" Assembly="Composite" %>
+<%@ Register TagPrefix="aspui" Namespace="Composite.Core.WebClient.UiControlLib" Assembly="Composite" %>
 <%@ Import Namespace="Composite.Functions.ManagedParameters" %>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml">
 	<head>

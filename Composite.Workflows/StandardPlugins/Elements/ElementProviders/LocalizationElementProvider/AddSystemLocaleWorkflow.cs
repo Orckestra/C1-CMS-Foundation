@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Workflow.Activities;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Types;
-using Composite.ResourceSystem;
-using Composite.Users;
-using Composite.Workflow;
-using Composite.Localization;
+using Composite.Core.ResourceSystem;
+using Composite.C1Console.Users;
+using Composite.C1Console.Workflow;
+using Composite.Core.Localization;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddSystemLocaleWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddSystemLocaleWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public AddSystemLocaleWorkflow()
         {
@@ -111,7 +111,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElemen
 
         private void codeActivity_ShowBalloon_ExecuteCode(object sender, EventArgs e)
         {
-            this.ShowFieldMessage("UrlMappingName", StringResourceSystemFacade.GetString("Composite.StandardPlugins.LocalizationElementProvider", "AddSystemLocaleWorkflow.UrlMappingName.InUseMessage"));
+            this.ShowFieldMessage("UrlMappingName", StringResourceSystemFacade.GetString("Composite.Plugins.LocalizationElementProvider", "AddSystemLocaleWorkflow.UrlMappingName.InUseMessage"));
         }
     }
 }

@@ -6,27 +6,27 @@ using System.Web.UI;
 using System.Workflow.Runtime;
 using System.Xml.Linq;
 using System.Xml.Serialization;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Functions;
 using Composite.Functions.ManagedParameters;
-using Composite.Logging;
-using Composite.StandardPlugins.Functions.FunctionProviders.SqlFunctionProvider;
-using Composite.WebClient;
-using Composite.WebClient.FlowMediators.FormFlowRendering;
-using Composite.WebClient.FunctionCallEditor;
-using Composite.WebClient.State;
-using Composite.Workflow;
-using Composite.Workflow.Foundation;
+using Composite.Core.Logging;
+using Composite.Plugins.Functions.FunctionProviders.SqlFunctionProvider;
+using Composite.Core.WebClient;
+using Composite.Core.WebClient.FlowMediators.FormFlowRendering;
+using Composite.Core.WebClient.FunctionCallEditor;
+using Composite.Core.WebClient.State;
+using Composite.C1Console.Workflow;
+using Composite.C1Console.Workflow.Foundation;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class EditSqlFunctionProviderWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class EditSqlFunctionProviderWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public EditSqlFunctionProviderWorkflow()
         {

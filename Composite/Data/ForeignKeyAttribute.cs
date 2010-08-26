@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Composite.Types;
+using Composite.Core.Types;
 using Composite.Data.DynamicTypes;
 
 

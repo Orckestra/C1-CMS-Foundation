@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using Composite.Collections.Generic;
-using Composite.Validation.ClientValidationRules;
-using Composite.Validation.Plugins.ClientValidationRuleTranslator;
-using Composite.Validation.Validators;
+using Composite.Core.Collections.Generic;
+using Composite.Data.Validation.ClientValidationRules;
+using Composite.Data.Validation.Plugins.ClientValidationRuleTranslator;
+using Composite.Data.Validation.Validators;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Validation.ClientValidationRuleTranslators.StandardClientValidationRuleTranslator
+namespace Composite.Plugins.Validation.ClientValidationRuleTranslators.StandardClientValidationRuleTranslator
 {
     [ConfigurationElementType(typeof(StandardClientValidationRuleTranslatorData))]
     internal sealed class StandardClientValidationRuleTranslator : IClientValidationRuleTranslator

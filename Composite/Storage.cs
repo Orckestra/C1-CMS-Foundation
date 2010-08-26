@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Composite.Data;
-using Composite.Implementation;
+using Composite.Core.Implementation;
 
 
 namespace Composite
@@ -59,7 +59,7 @@ namespace Composite
         /// </code>
         /// </example>
         /// <returns>A <see cref="StorageAccess"/> instance with the default locale and <see cref="PublicationScope"/></returns>
-        [SuppressMessage("Microsoft.Globalization", "CA1304:SpecifyCultureInfo", MessageId = "Composite.Implementation.StorageBase.Open")]
+        [SuppressMessage("Microsoft.Globalization", "CA1304:SpecifyCultureInfo", MessageId = "Composite.Core.Implementation.StorageBase.Open")]
         public static StorageAccess Open()
         {
             return ImplementationContainer.GetImplementation<StorageBase>().Open();
@@ -87,7 +87,7 @@ namespace Composite
         /// </example>
         /// <param name="publicationScope">The desired <see cref="PublicationScope"/></param>
         /// <returns>A <see cref="StorageAccess"/> instance with the default locale and the given <paramref name="publicationScope"/></returns>
-        [SuppressMessage("Microsoft.Globalization", "CA1304:SpecifyCultureInfo", MessageId = "Composite.Implementation.StorageBase.Open(Composite.PublicationScope)")]
+        [SuppressMessage("Microsoft.Globalization", "CA1304:SpecifyCultureInfo", MessageId = "Composite.Core.Implementation.StorageBase.Open(Composite.PublicationScope)")]
         public static StorageAccess Open(PublicationScope publicationScope)
         {
             return ImplementationContainer.GetImplementation<StorageBase>().Open(publicationScope);

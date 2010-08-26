@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Web.UI;
-using Composite.Forms;
-using Composite.Forms.CoreUiControls;
-using Composite.Forms.Plugins.UiControlFactory;
-using Composite.Forms.WebChannel;
-using Composite.StandardPlugins.Forms.WebChannel.Foundation;
-using Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.Base;
-using Composite.Validation.ClientValidationRules;
+using Composite.C1Console.Forms;
+using Composite.C1Console.Forms.CoreUiControls;
+using Composite.C1Console.Forms.Plugins.UiControlFactory;
+using Composite.C1Console.Forms.WebChannel;
+using Composite.Plugins.Forms.WebChannel.Foundation;
+using Composite.Plugins.Forms.WebChannel.UiControlFactories.Base;
+using Composite.Data.Validation.ClientValidationRules;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
@@ -16,7 +16,7 @@ using Composite.Data.Types;
 using Composite.Data;
 
 
-namespace Composite.StandardPlugins.Forms.WebChannel.UiControlFactories
+namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 {
     /// <summary>    
     /// </summary>

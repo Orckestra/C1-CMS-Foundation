@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
   <cms:bindings>
-    <cms:binding name="UploadedFile" type="Composite.Forms.CoreUiControls.UploadedFile, Composite" />
+    <cms:binding name="UploadedFile" type="Composite.C1Console.Forms.CoreUiControls.UploadedFile, Composite" />
   </cms:bindings>
 	<cms:layout iconhandle="media-add-media-file">
     <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.UploadNewMediaFile.LabelFieldGroup}">

@@ -7,16 +7,16 @@ using System.Reflection;
 using System.Xml.Linq;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
-using Composite.EventSystem;
+using Composite.C1Console.Events;
 using Composite.Functions;
-using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
-using Composite.Types;
-using Composite.Logging;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
+using Composite.Core.Types;
+using Composite.Core.Logging;
 using Composite.Data.Types;
-using Composite.Renderings.Page;
+using Composite.Core.WebClient.Renderings.Page;
 
 
-namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.DataReference
+namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.DataReference
 {
     internal sealed class NullableDataReferenceSelectorWidgetFunction<T> : CompositeWidgetFunctionBase
          where T : class, IData

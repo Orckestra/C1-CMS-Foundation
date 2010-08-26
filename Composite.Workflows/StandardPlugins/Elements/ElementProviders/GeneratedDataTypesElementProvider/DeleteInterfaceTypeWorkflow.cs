@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Linq;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.GeneratedTypes;
-using Composite.Extensions;
-using Composite.ResourceSystem;
-using Composite.Types;
-using Composite.Workflow;
+using Composite.Core.Extensions;
+using Composite.Core.ResourceSystem;
+using Composite.Core.Types;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class DeleteInterfaceTypeWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class DeleteInterfaceTypeWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public DeleteInterfaceTypeWorkflow()
         {
@@ -58,7 +58,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
 
             string interfaceName = StringExtensionMethods.CreateNamespace(dataTypeDescriptor.Namespace, dataTypeDescriptor.Name, '.');
 
-            interfaceName = string.Format("{0} {1}?", StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "DeleteGeneratedInterfaceStep1.Text"), interfaceName);
+            interfaceName = string.Format("{0} {1}?", StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DeleteGeneratedInterfaceStep1.Text"), interfaceName);
 
             this.Bindings.Add("InterfaceType", interfaceName);
         }
@@ -84,7 +84,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
             if (!GeneratedTypesFacade.CanDeleteType(dataTypeDescriptor, out errorMessage))
             {
                 this.ShowMessage(DialogType.Warning,
-                                "${Composite.StandardPlugins.GeneratedDataTypesElementProvider, DeleteCompositionTypeWorkflow.ErrorTitle}",
+                                "${Composite.Plugins.GeneratedDataTypesElementProvider, DeleteCompositionTypeWorkflow.ErrorTitle}",
                                 errorMessage);
                 return;
             }
@@ -99,7 +99,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
 
         private static string GetLocalizedText(string key)
         {
-            return StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", key);
+            return StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", key);
         }
     }
 }

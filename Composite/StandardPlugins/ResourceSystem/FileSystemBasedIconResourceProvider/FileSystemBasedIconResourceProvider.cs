@@ -2,16 +2,16 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
 using System.Globalization;
-using Composite.ResourceSystem;
-using Composite.ResourceSystem.Plugins.ResourceProvider;
-using Composite.StandardPlugins.ResourceSystem.FileSystemBasedIconResourceProvider.Foundation;
-using Composite.WebClient;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Plugins.ResourceProvider;
+using Composite.Plugins.ResourceSystem.FileSystemBasedIconResourceProvider.Foundation;
+using Composite.Core.WebClient;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.ResourceSystem.FileSystemBasedIconResourceProvider
+namespace Composite.Plugins.ResourceSystem.FileSystemBasedIconResourceProvider
 {
     [ConfigurationElementType(typeof(FileSystemBasedIconResourceProviderData))]
 	internal sealed class FileSystemBasedIconResourceProvider : IIconResourceProvider

@@ -3,11 +3,11 @@
   <cms:bindings>
     <cms:binding name="DefaultPageContent" type="Composite.Data.Types.IPageTypeDefaultPageContent"/>
   </cms:bindings>
-  <cms:layout iconhandle="pagetype-add-pagetypedefaultpagecontent" label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeDefaultPageContentWorkflow.Layout.Label}">
-    <FieldGroup Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeDefaultPageContentWorkflow.FieldGroup.Label}">
+  <cms:layout iconhandle="pagetype-add-pagetypedefaultpagecontent" label="${Composite.Plugins.PageTypeElementProvider, PageType.AddPageTypeDefaultPageContentWorkflow.Layout.Label}">
+    <FieldGroup Label="${Composite.Plugins.PageTypeElementProvider, PageType.AddPageTypeDefaultPageContentWorkflow.FieldGroup.Label}">
 
-      <TextBox Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Label}"
-               Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Help}">
+      <TextBox Label="${Composite.Plugins.PageTypeElementProvider, PageType.AddPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Label}"
+               Help="${Composite.Plugins.PageTypeElementProvider, PageType.AddPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Help}">
         <TextBox.Text>
           <cms:bind source="DefaultPageContent.PlaceHolderId" />
         </TextBox.Text>

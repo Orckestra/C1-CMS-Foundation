@@ -11,11 +11,11 @@ using System.Xml;
 using System.Xml.Xsl;
 using System.Xml.XPath;
 using System.Web.Configuration;
-using Composite.GlobalSettings;
+using Composite.Core.Configuration;
 using Composite;
-using Composite.Extensions;
-using Composite.Users;
-using Composite.WebClient;
+using Composite.Core.Extensions;
+using Composite.C1Console.Users;
+using Composite.Core.WebClient;
 
 public class HelpHandler : IHttpHandler 
 {
@@ -84,7 +84,7 @@ public class HelpHandler : IHttpHandler
             baseUriString = string.Format("{0}://{1}/{2}", helpPageUri.Scheme, helpPageUri.Host, context.Request.QueryString["id"]);
         }
 
-        string userCultureName = Composite.Users.UserSettings.CultureInfo.Name;
+        string userCultureName = Composite.C1Console.Users.UserSettings.CultureInfo.Name;
         string productVersion = RuntimeInformation.ProductVersion.ToString(4);
         string installationId = InstallationInformationFacade.InstallationId.ToString();
         string browser = context.Request.UserAgent.IndexOf("Gecko") > -1 ? "mozilla" : "explorer";

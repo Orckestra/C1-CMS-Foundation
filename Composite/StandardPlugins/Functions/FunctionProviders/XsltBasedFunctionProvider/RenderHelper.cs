@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Composite.Extensions;
+using Composite.Core.Extensions;
 using Composite.Functions;
 using Composite.Functions.ManagedParameters;
-using Composite.Parallelization;
-using Composite.Types;
+using Composite.Core.Parallelization;
+using Composite.Core.Types;
 using Composite.Data;
-using Composite.Logging;
-using Composite.Xml;
+using Composite.Core.Logging;
+using Composite.Core.Xml;
 using Composite.Data.Types;
 using System.Reflection;
 using System.Diagnostics;
 using System.Collections;
 
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.XsltBasedFunctionProvider
+namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvider
 {
     /// <summary>    
     /// </summary>

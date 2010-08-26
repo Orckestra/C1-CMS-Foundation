@@ -3,11 +3,11 @@
   <cms:bindings>
     <cms:binding name="HostName" type="System.String" />
   </cms:bindings>
-  <cms:layout iconhandle="page-manage-host-names" label="${Composite.StandardPlugins.PageElementProvider,ManageHostNames.Add.DialogLabel}">
+  <cms:layout iconhandle="page-manage-host-names" label="${Composite.Plugins.PageElementProvider,ManageHostNames.Add.DialogLabel}">
     <PlaceHolder>
-      <Heading Title="${Composite.StandardPlugins.PageElementProvider,ManageHostNames.Add.HeadingTitle}" Description="${Composite.StandardPlugins.PageElementProvider,ManageHostNames.Add.HeadingDescription}" />
-      <FieldGroup Label="${Composite.StandardPlugins.PageElementProvider,ManageHostNames.Add.FieldGroupLabel}">
-        <TextBox Label="${Composite.StandardPlugins.PageElementProvider,ManageHostNames.Add.HostNameTextBoxLabel}" Help="${Composite.StandardPlugins.PageElementProvider,ManageHostNames.Add.HostNametextBoxHelp}">
+      <Heading Title="${Composite.Plugins.PageElementProvider,ManageHostNames.Add.HeadingTitle}" Description="${Composite.Plugins.PageElementProvider,ManageHostNames.Add.HeadingDescription}" />
+      <FieldGroup Label="${Composite.Plugins.PageElementProvider,ManageHostNames.Add.FieldGroupLabel}">
+        <TextBox Label="${Composite.Plugins.PageElementProvider,ManageHostNames.Add.HostNameTextBoxLabel}" Help="${Composite.Plugins.PageElementProvider,ManageHostNames.Add.HostNametextBoxHelp}">
           <TextBox.Text>
             <cms:bind source="HostName" />
           </TextBox.Text>

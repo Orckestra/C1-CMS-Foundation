@@ -2,7 +2,7 @@ using System;
 using Composite.Data;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.FileSystemDataProvider.Foundation
+namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider.Foundation
 {
     /// <summary>    
     /// </summary>

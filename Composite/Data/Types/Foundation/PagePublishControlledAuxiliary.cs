@@ -3,7 +3,7 @@ using System.Linq;
 using System.Transactions;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.Transactions;
+using Composite.Data.Transactions;
 
 
 namespace Composite.Data.Types.Foundation

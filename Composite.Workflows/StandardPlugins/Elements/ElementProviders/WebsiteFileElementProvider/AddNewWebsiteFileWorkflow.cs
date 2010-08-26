@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Workflow.Activities;
-using Composite.Actions;
-using Composite.Elements;
-using Composite.Workflow;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddNewWebsiteFileWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddNewWebsiteFileWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public AddNewWebsiteFileWorkflow()
         {
@@ -59,7 +59,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
 
         private void step1CodeActivity_ShowError_ExecuteCode(object sender, EventArgs e)
         {
-            this.ShowFieldMessage("NewFileName", "${Composite.StandardPlugins.WebsiteFileElementProvider, AddNewFile.Error.FileExist}");
+            this.ShowFieldMessage("NewFileName", "${Composite.Plugins.WebsiteFileElementProvider, AddNewFile.Error.FileExist}");
         }
 
 

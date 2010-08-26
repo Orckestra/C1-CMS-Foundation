@@ -1,9 +1,9 @@
 using System;
 using System.IO;
-using Composite.IO;
+using Composite.Core.IO;
 using Composite.Data.Types;
 using Composite.Data.Streams;
-using Composite.Extensions;
+using Composite.Core.Extensions;
 using System.Transactions;
 
 
@@ -71,7 +71,7 @@ namespace Composite.Data.Plugins.DataProvider.Streams
 
             if (Transaction.Current == null)
             {
-                Logging.LoggingService.LogWarning("Transaction not active", "There is no current transaction that the File System File Stream manager can attach to - going ahead with delete without transactional support.");
+                Core.Logging.LoggingService.LogWarning("Transaction not active", "There is no current transaction that the File System File Stream manager can attach to - going ahead with delete without transactional support.");
                 DeleteFile(baseFile.SystemPath);
             }
             else
@@ -92,7 +92,7 @@ namespace Composite.Data.Plugins.DataProvider.Streams
 
             if (Transaction.Current == null)
             {
-                Logging.LoggingService.LogWarning("Transaction not active", "There is no current transaction that the File System File Stream manager can attach to - going ahead with write to disk without transactional support.");
+                Core.Logging.LoggingService.LogWarning("Transaction not active", "There is no current transaction that the File System File Stream manager can attach to - going ahead with write to disk without transactional support.");
 
                 if (baseFile.CurrentWriteStream != null)
                 {

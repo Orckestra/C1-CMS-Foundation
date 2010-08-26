@@ -4,13 +4,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using Composite.Collections.Generic;
+using Composite.Core.Collections.Generic;
 using Composite.Data.DynamicTypes.Foundation;
 using Composite.Data.ProcessControlled;
 using Composite.Data.Types;
-using Composite.Logging;
-using Composite.StringExtensions;
-using Composite.Types;
+using Composite.Core.Logging;
+using Composite.Core.Extensions;
+using Composite.Core.Types;
 
 
 namespace Composite.Data.DynamicTypes

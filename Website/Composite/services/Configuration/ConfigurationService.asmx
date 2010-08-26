@@ -8,13 +8,13 @@ using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Xml.Serialization;
 
-using Composite.Types;
-using Composite.Users;
+using Composite.Core.Types;
+using Composite.C1Console.Users;
 
 
 [WebService(Namespace = "http://www.composite.net/ns/management")]
 [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
-[XmlInclude(typeof(Composite.WebClient.Services.TreeServiceObjects.ClientElement))]
+[XmlInclude(typeof(Composite.Core.WebClient.Services.TreeServiceObjects.ClientElement))]
 public class ConfigurationService : WebService
 {
     public class ConfigurationElement
@@ -25,7 +25,7 @@ public class ConfigurationService : WebService
     
 
     [WebMethod]
-    [XmlInclude(typeof(Composite.WebClient.Services.TreeServiceObjects.ClientElement))]
+    [XmlInclude(typeof(Composite.Core.WebClient.Services.TreeServiceObjects.ClientElement))]
     public List<KeyValuePair> GetValidatingRegularExpressions(string dummyToPreventClientSoapBreak)
     {
         CultureInfo userCulture = UserSettings.CultureInfo;

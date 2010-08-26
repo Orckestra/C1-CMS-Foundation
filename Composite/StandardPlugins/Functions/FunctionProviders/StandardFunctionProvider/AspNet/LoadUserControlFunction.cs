@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.UI;
 using Composite.Functions;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.AspNet
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.AspNet
 {
     internal sealed class LoadUserControlFunction : StandardFunctionBase
     {

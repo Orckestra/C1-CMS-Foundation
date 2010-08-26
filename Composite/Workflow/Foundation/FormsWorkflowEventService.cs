@@ -1,7 +1,7 @@
 using System;
 
 
-namespace Composite.Workflow.Foundation
+namespace Composite.C1Console.Workflow.Foundation
 {
     internal sealed class FormsWorkflowEventService : IFormsWorkflowEventService
     {

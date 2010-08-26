@@ -7,13 +7,13 @@ using System.Text;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Data.Plugins.DataProvider.CodeGeneration;
-using Composite.Logging;
-using Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation;
-using Composite.Types;
-using Composite.Parallelization;
+using Composite.Core.Logging;
+using Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation;
+using Composite.Core.Types;
+using Composite.Core.Parallelization;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.CodeGeneration
+namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 {
     internal sealed class XmlDataProviderHelperGenerator
     {
@@ -91,11 +91,11 @@ namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.CodeGener
             buildManagerCompileUnit.AddAssemblyReference(typeof(System.Linq.IQueryable).Assembly);
             buildManagerCompileUnit.AddAssemblyReference(typeof(System.Xml.Linq.XName).Assembly);
             buildManagerCompileUnit.AddAssemblyReference(typeof(System.Xml.XmlReader).Assembly);
-            buildManagerCompileUnit.AddAssemblyReference(typeof(Composite.Linq.ExpressionCreator).Assembly);
-            buildManagerCompileUnit.AddAssemblyReference(typeof(Composite.Types.ExtendedNullable<>).Assembly);
+            buildManagerCompileUnit.AddAssemblyReference(typeof(Composite.Core.Linq.ExpressionCreator).Assembly);
+            buildManagerCompileUnit.AddAssemblyReference(typeof(Composite.Core.Types.ExtendedNullable<>).Assembly);
             buildManagerCompileUnit.AddAssemblyReference(typeof(Composite.Data.DataSourceId).Assembly);
             buildManagerCompileUnit.AddAssemblyReference(typeof(Composite.Data.ProcessControlled.IProcessControlled).Assembly);
-            buildManagerCompileUnit.AddAssemblyReference(typeof(Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.XmlDataProvider).Assembly);
+            buildManagerCompileUnit.AddAssemblyReference(typeof(Composite.Plugins.Data.DataProviders.XmlDataProvider.XmlDataProvider).Assembly);
             buildManagerCompileUnit.AddAssemblyReference(store.InterfaceType.Assembly);
 
             buildManagerCompileUnit.AddType(new BuildManagerCompileType(_namespaceName, new KeyValuePair<string, Func<CodeTypeDeclaration>>(store.DataProviderHelperClassName, () => CreateHelperClass(store))));

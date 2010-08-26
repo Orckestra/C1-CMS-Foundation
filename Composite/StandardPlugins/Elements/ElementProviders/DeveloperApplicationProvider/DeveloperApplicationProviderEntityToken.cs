@@ -1,11 +1,11 @@
-﻿using Composite.Security;
-using Composite.Security.SecurityAncestorProviders;
+﻿using Composite.C1Console.Security;
+using Composite.C1Console.Security.SecurityAncestorProviders;
 using System.IO;
-using Composite.IO;
-using Composite.GlobalSettings;
+using Composite.Core.IO;
+using Composite.Core.Configuration;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.DeveloperApplicationProvider
+namespace Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvider
 {
     /// <summary>    
     /// </summary>

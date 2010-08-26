@@ -4,15 +4,15 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Transactions;
-using Composite.Caching;
+using Composite.Core.Caching;
 using Composite.Data.Foundation;
 using Composite.Data.ProcessControlled.ProcessControllers.DummyProcessControllers;
-using Composite.Elements;
-using Composite.EventSystem;
-using Composite.Logging;
-using Composite.Transactions;
-using Composite.Types;
-using Composite.Linq;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Events;
+using Composite.Core.Logging;
+using Composite.Data.Transactions;
+using Composite.Core.Types;
+using Composite.Core.Linq;
 
 
 namespace Composite.Data.ProcessControlled

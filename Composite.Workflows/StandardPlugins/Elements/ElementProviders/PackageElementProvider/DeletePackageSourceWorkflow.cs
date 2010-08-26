@@ -1,13 +1,13 @@
 using System;
 using Composite.Data;
-using Composite.Workflow;
-using Composite.Actions;
+using Composite.C1Console.Workflow;
+using Composite.C1Console.Actions;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class DeletePackageSourceWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class DeletePackageSourceWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public DeletePackageSourceWorkflow()
         {

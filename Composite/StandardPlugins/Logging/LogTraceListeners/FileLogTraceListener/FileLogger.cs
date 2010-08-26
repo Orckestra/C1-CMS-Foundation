@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Web.Hosting;
-using Composite.Logging;
-using Composite.StringExtensions;
+using Composite.Core.Logging;
+using Composite.Core.Extensions;
 
 
-namespace Composite.StandardPlugins.Logging.LogTraceListeners.FileLogTraceListener
+namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 {
     /// <summary>
     /// File logger

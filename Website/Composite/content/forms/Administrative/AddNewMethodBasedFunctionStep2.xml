@@ -5,8 +5,8 @@
     <cms:binding name="SelectedMethodName" type="System.String" />
   </cms:bindings>
   <cms:layout>
-    <FieldGroup Label="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunction.LabelFieldGroup}">
-      <KeySelector Label="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep2.LabelMethodName}" OptionsKeyField="" OptionsLabelField="" Help="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep2.HelpMethodName}">
+    <FieldGroup Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunction.LabelFieldGroup}">
+      <KeySelector Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep2.LabelMethodName}" OptionsKeyField="" OptionsLabelField="" Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep2.HelpMethodName}">
         <KeySelector.Options>
           <cms:read source="MethodNames" />
         </KeySelector.Options>

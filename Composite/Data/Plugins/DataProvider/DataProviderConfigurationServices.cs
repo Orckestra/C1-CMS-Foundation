@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Composite.ConfigurationSystem;
+using Composite.Core.Configuration;
 using Composite.Data.Plugins.DataProvider.Runtime;
 
 

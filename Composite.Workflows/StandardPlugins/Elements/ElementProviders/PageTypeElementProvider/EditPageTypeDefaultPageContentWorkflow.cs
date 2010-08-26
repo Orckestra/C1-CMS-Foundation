@@ -2,14 +2,14 @@ using System;
 using System.Linq;
 using Composite.Data.Types;
 using Composite.Data;
-using Composite.Workflow;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageTypeElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class EditPageTypeDefaultPageContentWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class EditPageTypeDefaultPageContentWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public EditPageTypeDefaultPageContentWorkflow()
         {

@@ -1,12 +1,12 @@
 ﻿using System.Web.UI;
 using System.Collections.Generic;
-using Composite.Forms.DataServices.UiControls;
-using Composite.Forms.WebChannel;
-using Composite.ResourceSystem;
-using Composite.StandardPlugins.Forms.WebChannel.UiControlFactories;
+using Composite.C1Console.Forms.DataServices.UiControls;
+using Composite.C1Console.Forms.WebChannel;
+using Composite.Core.ResourceSystem;
+using Composite.Plugins.Forms.WebChannel.UiControlFactories;
 
 
-namespace Composite.StandardPlugins.Forms.WebChannel.UiContainerFactories
+namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
 {
     /// <summary>    
     /// </summary>

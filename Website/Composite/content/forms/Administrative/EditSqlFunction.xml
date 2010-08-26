@@ -13,43 +13,43 @@
       <TabPanels.Label>
         <cms:read source="SqlQuery.Name" />
       </TabPanels.Label>
-      <PlaceHolder Label="${Composite.StandardPlugins.SqlFunction, EditSqlFunction.LabelSettings}">
-        <FieldGroup Label="${Composite.StandardPlugins.SqlFunction, EditSqlFunction.LabelNamingAndDescription}">
-          <TextBox Label="${Composite.StandardPlugins.SqlFunction, EditSqlFunction.LabelName}" Help="${Composite.StandardPlugins.SqlFunction, EditSqlFunction.HelpName}" Type="ProgrammingIdentifier">
+      <PlaceHolder Label="${Composite.Plugins.SqlFunction, EditSqlFunction.LabelSettings}">
+        <FieldGroup Label="${Composite.Plugins.SqlFunction, EditSqlFunction.LabelNamingAndDescription}">
+          <TextBox Label="${Composite.Plugins.SqlFunction, EditSqlFunction.LabelName}" Help="${Composite.Plugins.SqlFunction, EditSqlFunction.HelpName}" Type="ProgrammingIdentifier">
             <TextBox.Text>
               <cms:bind source="SqlQuery.Name" />
             </TextBox.Text>
           </TextBox>
-          <TextBox Label="${Composite.StandardPlugins.SqlFunction, EditSqlFunction.LabelNamespace}" Help="${Composite.StandardPlugins.SqlFunction, EditSqlFunction.HelpNamespace}" Type="ProgrammingNamespace">
+          <TextBox Label="${Composite.Plugins.SqlFunction, EditSqlFunction.LabelNamespace}" Help="${Composite.Plugins.SqlFunction, EditSqlFunction.HelpNamespace}" Type="ProgrammingNamespace">
             <TextBox.Text>
               <cms:bind source="SqlQuery.Namespace" />
             </TextBox.Text>
           </TextBox>
-          <TextArea Label="${Composite.StandardPlugins.SqlFunction, EditSqlFunction.LabelDescription}" Help="${Composite.StandardPlugins.SqlFunction, EditSqlFunction.HelpDescription}">
+          <TextArea Label="${Composite.Plugins.SqlFunction, EditSqlFunction.LabelDescription}" Help="${Composite.Plugins.SqlFunction, EditSqlFunction.HelpDescription}">
             <TextArea.Text>
               <cms:bind source="SqlQuery.Description" />
             </TextArea.Text>
           </TextArea>
         </FieldGroup>
-        <FieldGroup Label="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelCommandBehaviour}">
-          <CheckBox Label="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelIsStoredProcedure}" ItemLabel="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelIsStoredProcedureCheckBox}">
+        <FieldGroup Label="${Composite.Plugins.SqlFunction, AddEditSqlFunction.LabelCommandBehaviour}">
+          <CheckBox Label="${Composite.Plugins.SqlFunction, AddEditSqlFunction.LabelIsStoredProcedure}" ItemLabel="${Composite.Plugins.SqlFunction, AddEditSqlFunction.LabelIsStoredProcedureCheckBox}">
             <CheckBox.Checked>
               <cms:bind source="SqlQuery.IsStoredProcedure" />
             </CheckBox.Checked>
           </CheckBox>
-          <CheckBox Label="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelReturnsXml}" ItemLabel="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelReturnsXmlCheckBox}">
+          <CheckBox Label="${Composite.Plugins.SqlFunction, AddEditSqlFunction.LabelReturnsXml}" ItemLabel="${Composite.Plugins.SqlFunction, AddEditSqlFunction.LabelReturnsXmlCheckBox}">
             <CheckBox.Checked>
               <cms:bind source="SqlQuery.ReturnsXml" />
             </CheckBox.Checked>
           </CheckBox>
-          <CheckBox Label="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelIsQuery}" ItemLabel="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelIsQueryCheckBox}">
+          <CheckBox Label="${Composite.Plugins.SqlFunction, AddEditSqlFunction.LabelIsQuery}" ItemLabel="${Composite.Plugins.SqlFunction, AddEditSqlFunction.LabelIsQueryCheckBox}">
             <CheckBox.Checked>
               <cms:bind source="SqlQuery.IsQuery" />
             </CheckBox.Checked>
           </CheckBox>
         </FieldGroup>
       </PlaceHolder>
-      <internal:ParameterDesigner Label="${Composite.StandardPlugins.SqlFunction, EditSqlFunction.LabelInputParameters}">
+      <internal:ParameterDesigner Label="${Composite.Plugins.SqlFunction, EditSqlFunction.LabelInputParameters}">
 		  <internal:ParameterDesigner.SessionStateProvider>
 			  <cms:read source="SessionStateProvider"/>
 		  </internal:ParameterDesigner.SessionStateProvider>
@@ -57,7 +57,7 @@
 			  <cms:read source="SessionStateId"/>
 		  </internal:ParameterDesigner.SessionStateId>
       </internal:ParameterDesigner>
-      <SqlEditor Label="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelSqlEditor}">
+      <SqlEditor Label="${Composite.Plugins.SqlFunction, AddEditSqlFunction.LabelSqlEditor}">
         <cms:bind source="SqlQuery.Command" />
       </SqlEditor>
       <f:NullCheck>
@@ -65,7 +65,7 @@
           <cms:read source="PreviewEventHandler" />
         </f:NullCheck.CheckValue>
         <f:NullCheck.WhenNotNull>
-          <internal:PreviewPanel Label="${Composite.StandardPlugins.SqlFunction, EditSqlFunction.LabelPreview}">
+          <internal:PreviewPanel Label="${Composite.Plugins.SqlFunction, EditSqlFunction.LabelPreview}">
             <internal:PreviewPanel.ClickEventHandler>
               <cms:read source="PreviewEventHandler" />
             </internal:PreviewPanel.ClickEventHandler>

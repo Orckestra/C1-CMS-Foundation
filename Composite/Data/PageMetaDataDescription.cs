@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Composite.Serialization;
+using Composite.Core.Serialization;
 
 
 namespace Composite.Data

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using Composite.Functions;
 
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.Extensions;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Core.Extensions;
 using System.Linq.Expressions;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Predicates
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Predicates
 {
     internal sealed class GuidInCommaSeparatedListPredicateFunction : StandardFunctionBase
     {

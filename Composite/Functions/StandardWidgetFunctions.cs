@@ -2,19 +2,19 @@ using System;
 using System.Xml.Linq;
 using System.Linq;
 using System.Collections.Generic;
-using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider;
-using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Date;
-using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.String;
-using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Integer;
-using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Decimal;
-using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Bool;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Date;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.String;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Integer;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Decimal;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Bool;
 using System.Reflection;
-using Composite.Xml;
+using Composite.Core.Xml;
 using Composite.Data;
-using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.DataReference;
-using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.DataType;
-using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Guid;
-using Composite.Types;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.DataReference;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.DataType;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Guid;
+using Composite.Core.Types;
 using Composite.Data.Types;
 
 
@@ -392,7 +392,7 @@ namespace Composite.Functions
                 get { yield break; }
             }
 
-            public Composite.Security.EntityToken EntityToken
+            public Composite.C1Console.Security.EntityToken EntityToken
             {
                 get { throw new NotImplementedException(); }
             }

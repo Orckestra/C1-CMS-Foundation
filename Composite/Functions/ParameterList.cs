@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Composite.Types;
+using Composite.Core.Types;
 
 
 namespace Composite.Functions

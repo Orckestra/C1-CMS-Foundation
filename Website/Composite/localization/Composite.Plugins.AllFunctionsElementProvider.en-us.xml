@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<strings>
+	<string key="Plugins.AllFunctionsElementProvider.FunctionRootFolderLabel" value="All functions" />
+	<string key="Plugins.AllFunctionsElementProvider.FunctionRootFolderToolTip" value="All functions" />
+	<string key="Plugins.AllFunctionsElementProvider.WidgetFunctionRootFolderLabel" value="All widget functions" />
+	<string key="Plugins.AllFunctionsElementProvider.WidgetFunctionRootFolderToolTip" value="All widget functions" />
+	<string key="AllFunctionsElementProvider.GenerateDocumentation" value="Generate Documentation" />
+	<string key="AllFunctionsElementProvider.GenerateDocumentationTooltip" value="Generate documentation for all functions below this folder" />
+</strings>

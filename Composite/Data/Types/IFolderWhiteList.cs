@@ -1,7 +1,7 @@
 using System;
 using Composite.Data.Hierarchy;
 using Composite.Data.Hierarchy.DataAncestorProviders;
-using Composite.IO;
+using Composite.Core.IO;
 
 
 namespace Composite.Data.Types

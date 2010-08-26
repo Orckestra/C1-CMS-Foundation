@@ -11,9 +11,9 @@ using System.Workflow.ComponentModel.Design;
 using System.Workflow.Runtime;
 using System.Workflow.Activities;
 using System.Workflow.Activities.Rules;
-using Composite.Workflow;
+using Composite.C1Console.Workflow;
 
-namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageTypeElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
 {
     partial class AddPageTypeMetaDataFieldWorkflow
     {
@@ -43,22 +43,22 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
             this.ifElseBranchActivity2 = new System.Workflow.Activities.IfElseBranchActivity();
             this.ifElseBranchActivity1 = new System.Workflow.Activities.IfElseBranchActivity();
             this.setStateActivity7 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity4 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity4 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.setStateActivity8 = new System.Workflow.Activities.SetStateActivity();
-            this.finishHandleExternalEventActivity2 = new Composite.Workflow.Activities.FinishHandleExternalEventActivity();
+            this.finishHandleExternalEventActivity2 = new Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity();
             this.step2CodeActivity_ShowWizzard = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity5 = new System.Workflow.Activities.SetStateActivity();
             this.finalizeCodeActivity_Finalize = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity2 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity3 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity3 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.step1ifElseActivity_Finish_ValidateMetaDataName = new System.Workflow.Activities.IfElseActivity();
-            this.finishHandleExternalEventActivity1 = new Composite.Workflow.Activities.FinishHandleExternalEventActivity();
-            this.step1WizardFormActivity_Finish = new Composite.Workflow.Activities.WizardFormActivity();
-            this.wizardFormActivity1 = new Composite.Workflow.Activities.WizardFormActivity();
+            this.finishHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity();
+            this.step1WizardFormActivity_Finish = new Composite.C1Console.Workflow.Activities.WizardFormActivity();
+            this.wizardFormActivity1 = new Composite.C1Console.Workflow.Activities.WizardFormActivity();
             this.setStateActivity3 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity2 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity2 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.step1IfElseActivity_ValidateMetaDataName = new System.Workflow.Activities.IfElseActivity();
-            this.nextHandleExternalEventActivity1 = new Composite.Workflow.Activities.NextHandleExternalEventActivity();
+            this.nextHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.NextHandleExternalEventActivity();
             this.ifElseActivity1 = new System.Workflow.Activities.IfElseActivity();
             this.initializeCodeActivity_UpdateBindings = new System.Workflow.Activities.CodeActivity();
             this.step2EventDrivenActivity_Cancel = new System.Workflow.Activities.EventDrivenActivity();
@@ -73,7 +73,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
             this.step1EventDrivenActivity_Next_Next = new System.Workflow.Activities.EventDrivenActivity();
             this.initializeStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.setStateActivity1 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity1 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.step2StateActivity = new System.Workflow.Activities.StateActivity();
             this.finalizeStateActivity = new System.Workflow.Activities.StateActivity();
             this.step1StateActivity_Finish = new System.Workflow.Activities.StateActivity();
@@ -156,7 +156,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
             // cancelHandleExternalEventActivity4
             // 
             this.cancelHandleExternalEventActivity4.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity4.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity4.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity4.Name = "cancelHandleExternalEventActivity4";
             // 
             // setStateActivity8
@@ -167,7 +167,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
             // finishHandleExternalEventActivity2
             // 
             this.finishHandleExternalEventActivity2.EventName = "Finish";
-            this.finishHandleExternalEventActivity2.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.finishHandleExternalEventActivity2.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.finishHandleExternalEventActivity2.Name = "finishHandleExternalEventActivity2";
             // 
             // step2CodeActivity_ShowWizzard
@@ -193,7 +193,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
             // cancelHandleExternalEventActivity3
             // 
             this.cancelHandleExternalEventActivity3.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity3.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity3.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity3.Name = "cancelHandleExternalEventActivity3";
             // 
             // step1ifElseActivity_Finish_ValidateMetaDataName
@@ -205,7 +205,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
             // finishHandleExternalEventActivity1
             // 
             this.finishHandleExternalEventActivity1.EventName = "Finish";
-            this.finishHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.finishHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.finishHandleExternalEventActivity1.Name = "finishHandleExternalEventActivity1";
             // 
             // step1WizardFormActivity_Finish
@@ -228,7 +228,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
             // cancelHandleExternalEventActivity2
             // 
             this.cancelHandleExternalEventActivity2.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity2.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity2.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity2.Name = "cancelHandleExternalEventActivity2";
             // 
             // step1IfElseActivity_ValidateMetaDataName
@@ -240,7 +240,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
             // nextHandleExternalEventActivity1
             // 
             this.nextHandleExternalEventActivity1.EventName = "Next";
-            this.nextHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.nextHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.nextHandleExternalEventActivity1.Name = "nextHandleExternalEventActivity1";
             // 
             // ifElseActivity1
@@ -325,7 +325,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
             // cancelHandleExternalEventActivity1
             // 
             this.cancelHandleExternalEventActivity1.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity1.Name = "cancelHandleExternalEventActivity1";
             // 
             // step2StateActivity
@@ -388,14 +388,14 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
 
         #endregion
 
-        private Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
         private StateInitializationActivity initializeStateInitializationActivity;
         private SetStateActivity setStateActivity1;
         private StateActivity finalStateActivity;
         private StateActivity initializeStateActivity;
         private SetStateActivity setStateActivity3;
-        private Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
-        private Workflow.Activities.NextHandleExternalEventActivity nextHandleExternalEventActivity1;
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
+        private C1Console.Workflow.Activities.NextHandleExternalEventActivity nextHandleExternalEventActivity1;
         private CodeActivity initializeCodeActivity_UpdateBindings;
         private EventDrivenActivity step1EventDrivenActivity_Next_Cancel;
         private EventDrivenActivity step1EventDrivenActivity_Next_Next;
@@ -403,14 +403,14 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
         private IfElseBranchActivity ifElseBranchActivity2;
         private IfElseBranchActivity ifElseBranchActivity1;
         private SetStateActivity setStateActivity7;
-        private Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity4;
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity4;
         private SetStateActivity setStateActivity8;
-        private Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity2;
+        private C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity2;
         private SetStateActivity setStateActivity5;
         private SetStateActivity setStateActivity2;
-        private Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity3;
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity3;
         private SetStateActivity setStateActivity4;
-        private Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
+        private C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
         private SetStateActivity setStateActivity6;
         private IfElseActivity ifElseActivity1;
         private EventDrivenActivity step2EventDrivenActivity_Cancel;
@@ -426,7 +426,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
         private StateActivity step1StateActivity_Finish;
         private SetStateActivity setStateActivity10;
         private SetStateActivity setStateActivity9;
-        private Workflow.Activities.WizardFormActivity step1WizardFormActivity_Finish;
+        private C1Console.Workflow.Activities.WizardFormActivity step1WizardFormActivity_Finish;
         private IfElseBranchActivity ifElseBranchActivity4;
         private IfElseBranchActivity ifElseBranchActivity3;
         private IfElseActivity step1ifElseActivity_Finish_ValidateMetaDataName;
@@ -435,7 +435,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
         private IfElseBranchActivity ifElseBranchActivity6;
         private IfElseBranchActivity ifElseBranchActivity5;
         private IfElseActivity step1IfElseActivity_ValidateMetaDataName;
-        private Workflow.Activities.WizardFormActivity wizardFormActivity1;
+        private C1Console.Workflow.Activities.WizardFormActivity wizardFormActivity1;
         private CodeActivity step2CodeActivity_ShowWizzard;
         private CodeActivity finalizeCodeActivity_Finalize;
         private EventDrivenActivity eventDrivenActivity_GlobalCancel;

@@ -16,12 +16,12 @@ using System.Xml.Xsl;
 
 using Composite.Data.DynamicTypes;
 using Composite.Functions;
-using Composite.Logging;
-using Composite.ResourceSystem;
-using Composite.WebClient.Services.WysiwygEditor;
-using Composite.Xml;
+using Composite.Core.Logging;
+using Composite.Core.ResourceSystem;
+using Composite.Core.WebClient.Services.WysiwygEditor;
+using Composite.Core.Xml;
 using Composite.Data;
-using Composite.Types;
+using Composite.Core.Types;
 
 
 public class XhtmlTransformationResult
@@ -284,7 +284,7 @@ public class XhtmlTransformations : System.Web.Services.WebService
         string imageUrl = string.Format("services/WysiwygEditor/FieldImage.ashx?name={0}&groupname={1}", HttpUtility.UrlEncodeUnicode(fieldLabel), HttpUtility.UrlEncodeUnicode(dataTypeDescriptor.Name));
 
         return new XElement(Namespaces.Xhtml + "img",
-            new XAttribute("src", Composite.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
+            new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
             new XAttribute("class", "compositeFieldReferenceWysiwygRepresentation"),
             new XAttribute("referencedtypemanagername", dataTypeDescriptor.TypeManagerTypeName),
             new XAttribute("referencedfieldname", dataField.Name));
@@ -372,7 +372,7 @@ public class XhtmlTransformations : System.Web.Services.WebService
 
         string tmpUrl = string.Format("services/WysiwygEditor/YellowBox.ashx?title={0}&description={1}", HttpUtility.UrlEncodeUnicode(title), HttpUtility.UrlEncodeUnicode(description));
 
-        string yellowBoxUrl = Composite.WebClient.UrlUtils.ResolveAdminUrl(tmpUrl);
+        string yellowBoxUrl = Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(tmpUrl);
 
         XElement imagetag = new XElement("img"
             , new XAttribute("functionmarkup", HttpUtility.UrlEncodeUnicode(compactMarkup))

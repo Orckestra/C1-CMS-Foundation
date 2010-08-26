@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Composite.Forms.Plugins.UiControlFactory;
-using Composite.Forms;
-using Composite.Logging;
+using Composite.C1Console.Forms.Plugins.UiControlFactory;
+using Composite.C1Console.Forms;
+using Composite.Core.Logging;
 
-namespace Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.Base
+namespace Composite.Plugins.Forms.WebChannel.UiControlFactories.Base
 {
     internal abstract class BaseTemplatedUiControlFactory : IUiControlFactory
     {

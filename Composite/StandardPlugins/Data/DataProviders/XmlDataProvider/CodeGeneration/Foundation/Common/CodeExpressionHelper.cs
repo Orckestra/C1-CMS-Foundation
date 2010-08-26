@@ -5,7 +5,7 @@ using System.Xml.Linq;
 using Composite.Data.Plugins.DataProvider.CodeGeneration;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation.Common
+namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation.Common
 {
     internal static class CodeExpressionHelper
     {

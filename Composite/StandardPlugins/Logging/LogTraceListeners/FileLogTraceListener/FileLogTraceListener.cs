@@ -1,10 +1,10 @@
 ﻿using System;
-using Composite.Logging;
+using Composite.Core.Logging;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Logging.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Logging.TraceListeners;
 
-namespace Composite.StandardPlugins.Logging.LogTraceListeners.FileLogTraceListener
+namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 {
     [ConfigurationElementType(typeof(CustomTraceListenerData))]
 	internal class FileLogTraceListener: CustomTraceListener

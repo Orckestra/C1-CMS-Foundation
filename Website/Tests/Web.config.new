@@ -31,19 +31,19 @@
 			<controls>
 				<add tagPrefix="asp" namespace="System.Web.UI" assembly="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35"/>
 				<add tagPrefix="asp" namespace="System.Web.UI.WebControls" assembly="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35"/>
-				<add tagPrefix="aspui" namespace="Composite.WebClient.UiControlLib" assembly="Composite"/>
+				<add tagPrefix="aspui" namespace="Composite.Core.WebClient.UiControlLib" assembly="Composite"/>
 			</controls>
 		</pages>
 		<httpHandlers>
 			<add verb="GET,HEAD" path="ScriptResource.axd" type="System.Web.Handlers.ScriptResourceHandler, System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35" validate="false"/>
 		</httpHandlers>
 		<httpModules>
-			<add name="ApplicationOfflineCheck" type="Composite.Application.ApplicationOfflineCheckHttpModule"/>
-			<add name="CompositeAdministrativeAuthorization" type="Composite.WebClient.HttpModules.AdministrativeAuthorizationHttpModule"/>
-			<add name="CompositeRequestInterceptor" type="Composite.Renderings.RequestInterceptorHttpModule"/>
-			<add name="CompositeAdministrativeOutputGZipper" type="Composite.WebClient.HttpModules.AdministrativeOutputGZipperHttpModule"/>
-			<add name="CompositeAdministrativeDataScopeSetter" type="Composite.WebClient.HttpModules.AdministrativeDataScopeSetterHttpModule"/>
-			<add name="CompositeAdministrativeCultureSetter" type="Composite.WebClient.HttpModules.AdministrativeCultureSetterHttpModule"/>
+			<add name="ApplicationOfflineCheck" type="Composite.Core.Application.ApplicationOfflineCheckHttpModule"/>
+			<add name="CompositeAdministrativeAuthorization" type="Composite.Core.WebClient.HttpModules.AdministrativeAuthorizationHttpModule"/>
+			<add name="CompositeRequestInterceptor" type="Composite.Core.WebClient.Renderings.RequestInterceptorHttpModule"/>
+			<add name="CompositeAdministrativeOutputGZipper" type="Composite.Core.WebClient.HttpModules.AdministrativeOutputGZipperHttpModule"/>
+			<add name="CompositeAdministrativeDataScopeSetter" type="Composite.Core.WebClient.HttpModules.AdministrativeDataScopeSetterHttpModule"/>
+			<add name="CompositeAdministrativeCultureSetter" type="Composite.Core.WebClient.HttpModules.AdministrativeCultureSetterHttpModule"/>
 			<add name="ScriptModule" type="System.Web.Handlers.ScriptModule, System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35"/>
 		</httpModules>
 	</system.web>
@@ -64,12 +64,12 @@
 	<system.webServer>
 		<validation validateIntegratedModeConfiguration="false"/>
 		<modules>
-			<add name="ApplicationOfflineCheck" type="Composite.Application.ApplicationOfflineCheckHttpModule, Composite"/>
-			<add name="CompositeAdministrativeAuthorization" type="Composite.WebClient.HttpModules.AdministrativeAuthorizationHttpModule, Composite"/>
-			<add name="CompositeRequestInterceptor" type="Composite.Renderings.RequestInterceptorHttpModule, Composite"/>
-			<add name="CompositeAdministrativeOutputGZipper" type="Composite.WebClient.HttpModules.AdministrativeOutputGZipperHttpModule, Composite"/>
-			<add name="CompositeAdministrativeDataScopeSetter" type="Composite.WebClient.HttpModules.AdministrativeDataScopeSetterHttpModule, Composite"/>
-			<add name="CompositeAdministrativeCultureSetter" type="Composite.WebClient.HttpModules.AdministrativeCultureSetterHttpModule, Composite"/>
+			<add name="ApplicationOfflineCheck" type="Composite.Core.Application.ApplicationOfflineCheckHttpModule, Composite"/>
+			<add name="CompositeAdministrativeAuthorization" type="Composite.Core.WebClient.HttpModules.AdministrativeAuthorizationHttpModule, Composite"/>
+			<add name="CompositeRequestInterceptor" type="Composite.Core.WebClient.Renderings.RequestInterceptorHttpModule, Composite"/>
+			<add name="CompositeAdministrativeOutputGZipper" type="Composite.Core.WebClient.HttpModules.AdministrativeOutputGZipperHttpModule, Composite"/>
+			<add name="CompositeAdministrativeDataScopeSetter" type="Composite.Core.WebClient.HttpModules.AdministrativeDataScopeSetterHttpModule, Composite"/>
+			<add name="CompositeAdministrativeCultureSetter" type="Composite.Core.WebClient.HttpModules.AdministrativeCultureSetterHttpModule, Composite"/>
 			<add name="ScriptModule" preCondition="managedHandler" type="System.Web.Handlers.ScriptModule, System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35"/>
 		</modules>
 		<handlers>

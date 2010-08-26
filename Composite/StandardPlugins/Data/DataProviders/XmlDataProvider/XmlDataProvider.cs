@@ -7,26 +7,25 @@ using System.Linq;
 using System.Threading;
 using System.Transactions;
 using System.Xml.Linq;
-using Composite.Configuration;
+using Composite.Core.Collections.Generic;
+using Composite.Core.Configuration;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Plugins.DataProvider;
-using Composite.GlobalSettings;
-using Composite.IO;
-using Composite.Logging;
-using Composite.StandardPlugins.Data.DataProviders.Common;
-using Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.CodeGeneration;
-using Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.Foundation;
-using Composite.StringExtensions;
-using Composite.Threading;
-using Composite.Types;
+using Composite.Core.IO;
+using Composite.Core.Logging;
+using Composite.Plugins.Data.DataProviders.Common;
+using Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration;
+using Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation;
+using Composite.Core.Extensions;
+using Composite.Core.Threading;
+using Composite.Core.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
-using Composite.Collections.Generic;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider
+namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 {    
     [ConfigurationElementType(typeof(XmlDataProviderData))]
     internal class XmlDataProvider : IWritableDataProvider, IDynamicDataProvider, IGeneratedTypesDataProvider, ILocalizedDataProvider, ISupportCachingDataProvider

@@ -11,9 +11,9 @@ using System.Workflow.ComponentModel.Design;
 using System.Workflow.Runtime;
 using System.Workflow.Activities;
 using System.Workflow.Activities.Rules;
-using Composite.Workflow;
+using Composite.C1Console.Workflow;
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
     partial class EditPageWorkflow
     {
@@ -29,7 +29,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
             this.CanModifyActivities = true;
             System.Workflow.Activities.CodeCondition codecondition1 = new System.Workflow.Activities.CodeCondition();
             System.Workflow.Activities.CodeCondition codecondition2 = new System.Workflow.Activities.CodeCondition();
-            this.showConsoleMessageBoxActivity1 = new Composite.Workflow.Activities.ShowConsoleMessageBoxActivity();
+            this.showConsoleMessageBoxActivity1 = new Composite.C1Console.Workflow.Activities.ShowConsoleMessageBoxActivity();
             this.saveCodeActivity = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity8 = new System.Workflow.Activities.SetStateActivity();
             this.setStateActivity2 = new System.Workflow.Activities.SetStateActivity();
@@ -42,17 +42,17 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
             this.setStateActivity1 = new System.Workflow.Activities.SetStateActivity();
             this.ifElseActivity1 = new System.Workflow.Activities.IfElseActivity();
             this.setStateActivity6 = new System.Workflow.Activities.SetStateActivity();
-            this.customEvent01HandleExternalEventActivity1 = new Composite.Workflow.Activities.CustomEvent01HandleExternalEventActivity();
+            this.customEvent01HandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CustomEvent01HandleExternalEventActivity();
             this.setStateActivity4 = new System.Workflow.Activities.SetStateActivity();
             this.editPreviewCodeActivity = new System.Workflow.Activities.CodeActivity();
-            this.previewHandleExternalEventActivity1 = new Composite.Workflow.Activities.PreviewHandleExternalEventActivity();
+            this.previewHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.PreviewHandleExternalEventActivity();
             this.ifElseActivity2_PageStillExists = new System.Workflow.Activities.IfElseActivity();
-            this.saveHandleExternalEventActivity1 = new Composite.Workflow.Activities.SaveHandleExternalEventActivity();
+            this.saveHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.SaveHandleExternalEventActivity();
             this.editStateCodeActivity = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity3 = new System.Workflow.Activities.SetStateActivity();
             this.newPageTypeSelectedStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.setStateActivity5 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity1 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.saveStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.editEventDrivenActivity_PageTypeChanged = new System.Workflow.Activities.EventDrivenActivity();
             this.editEventDrivenActivity_Preview = new System.Workflow.Activities.EventDrivenActivity();
@@ -68,11 +68,11 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
             // 
             // showConsoleMessageBoxActivity1
             // 
-            this.showConsoleMessageBoxActivity1.DialogType = Composite.ConsoleEventSystem.DialogType.Message;
-            this.showConsoleMessageBoxActivity1.Message = "${Composite.StandardPlugins.PageElementProvider, PageSaveValidationFailedMessage}" +
+            this.showConsoleMessageBoxActivity1.DialogType = Composite.C1Console.Events.DialogType.Message;
+            this.showConsoleMessageBoxActivity1.Message = "${Composite.Plugins.PageElementProvider, PageSaveValidationFailedMessage}" +
                 "";
             this.showConsoleMessageBoxActivity1.Name = "showConsoleMessageBoxActivity1";
-            this.showConsoleMessageBoxActivity1.Title = "${Composite.StandardPlugins.PageElementProvider, PageSaveValidationFailedTitle}";
+            this.showConsoleMessageBoxActivity1.Title = "${Composite.Plugins.PageElementProvider, PageSaveValidationFailedTitle}";
             // 
             // saveCodeActivity
             // 
@@ -142,7 +142,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
             // customEvent01HandleExternalEventActivity1
             // 
             this.customEvent01HandleExternalEventActivity1.EventName = "CustomEvent01";
-            this.customEvent01HandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.customEvent01HandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.customEvent01HandleExternalEventActivity1.Name = "customEvent01HandleExternalEventActivity1";
             // 
             // setStateActivity4
@@ -158,7 +158,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
             // previewHandleExternalEventActivity1
             // 
             this.previewHandleExternalEventActivity1.EventName = "Preview";
-            this.previewHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.previewHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.previewHandleExternalEventActivity1.Name = "previewHandleExternalEventActivity1";
             // 
             // ifElseActivity2_PageStillExists
@@ -170,7 +170,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
             // saveHandleExternalEventActivity1
             // 
             this.saveHandleExternalEventActivity1.EventName = "Save";
-            this.saveHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.saveHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.saveHandleExternalEventActivity1.Name = "saveHandleExternalEventActivity1";
             // 
             // editStateCodeActivity
@@ -197,7 +197,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
             // cancelHandleExternalEventActivity1
             // 
             this.cancelHandleExternalEventActivity1.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity1.Name = "cancelHandleExternalEventActivity1";
             // 
             // saveStateInitializationActivity
@@ -304,7 +304,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
         private SetStateActivity setStateActivity2;
 
-        private Composite.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
 
         private SetStateActivity setStateActivity3;
 
@@ -312,13 +312,13 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
         private EventDrivenActivity editEventDrivenActivity_Preview;
 
-        private Composite.Workflow.Activities.PreviewHandleExternalEventActivity previewHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.PreviewHandleExternalEventActivity previewHandleExternalEventActivity1;
 
         private CodeActivity editPreviewCodeActivity;
 
         private SetStateActivity setStateActivity5;
 
-        private Composite.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
 
         private StateActivity finalStateActivity;
 
@@ -332,7 +332,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
         private IfElseActivity ifElseActivity1;
 
-        private Composite.Workflow.Activities.ShowConsoleMessageBoxActivity showConsoleMessageBoxActivity1;
+        private Composite.C1Console.Workflow.Activities.ShowConsoleMessageBoxActivity showConsoleMessageBoxActivity1;
 
         private SetStateActivity setStateActivity7;
 
@@ -340,7 +340,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
         private SetStateActivity setStateActivity6;
 
-        private Composite.Workflow.Activities.CustomEvent01HandleExternalEventActivity customEvent01HandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.CustomEvent01HandleExternalEventActivity customEvent01HandleExternalEventActivity1;
 
         private StateInitializationActivity newPageTypeSelectedStateInitializationActivity;
 

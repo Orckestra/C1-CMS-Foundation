@@ -6,28 +6,28 @@ using System.Web.UI;
 using System.Workflow.Activities;
 using System.Workflow.Runtime;
 using System.Xml.Linq;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Types;
 using Composite.Functions;
-using Composite.Renderings.Page;
-using Composite.Renderings.Template;
-using Composite.StandardPlugins.Functions.FunctionProviders.VisualFunctionProvider;
-using Composite.Types;
-using Composite.Users;
-using Composite.WebClient.FlowMediators.FormFlowRendering;
-using Composite.Workflow;
-using Composite.Xml;
-using Composite.ConsoleEventSystem;
-using Composite.ResourceSystem;
+using Composite.Core.WebClient.Renderings.Page;
+using Composite.Core.WebClient.Renderings.Template;
+using Composite.Plugins.Functions.FunctionProviders.VisualFunctionProvider;
+using Composite.Core.Types;
+using Composite.C1Console.Users;
+using Composite.Core.WebClient.FlowMediators.FormFlowRendering;
+using Composite.C1Console.Workflow;
+using Composite.Core.Xml;
+using Composite.C1Console.Events;
+using Composite.Core.ResourceSystem;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class EditVisualFunctionWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class EditVisualFunctionWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public EditVisualFunctionWorkflow()
         {
@@ -53,8 +53,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProv
         {
             ShowMessage(
                 DialogType.Message,
-                StringResourceSystemFacade.GetString("Composite.StandardPlugins.VisualFunction", "Edit.MissingActiveLanguageTitle"),
-                StringResourceSystemFacade.GetString("Composite.StandardPlugins.VisualFunction", "Edit.MissingActiveLanguageMessage"));
+                StringResourceSystemFacade.GetString("Composite.Plugins.VisualFunction", "Edit.MissingActiveLanguageTitle"),
+                StringResourceSystemFacade.GetString("Composite.Plugins.VisualFunction", "Edit.MissingActiveLanguageMessage"));
         }
 
 
@@ -62,8 +62,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProv
         {
             ShowMessage(
                 DialogType.Message,
-                StringResourceSystemFacade.GetString("Composite.StandardPlugins.VisualFunction", "Edit.NoPageTemplatesExistsErrorTitle"),
-                StringResourceSystemFacade.GetString("Composite.StandardPlugins.VisualFunction", "Edit.NoPageTemplatesExistsErrorMessage"));
+                StringResourceSystemFacade.GetString("Composite.Plugins.VisualFunction", "Edit.NoPageTemplatesExistsErrorTitle"),
+                StringResourceSystemFacade.GetString("Composite.Plugins.VisualFunction", "Edit.NoPageTemplatesExistsErrorMessage"));
         }
 
 
@@ -179,7 +179,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProv
 
                 DataTypeDescriptor typeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(interfaceType);
 
-                this.LogMessage(Composite.Logging.LogLevel.Info, DataScopeManager.CurrentDataScope.Name);
+                this.LogMessage(Composite.Core.Logging.LogLevel.Info, DataScopeManager.CurrentDataScope.Name);
 
                 FunctionContextContainer fcc = PageRenderer.GetPageRenderFunctionContextContainer();
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Composite.Data;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.CodeGeneration
+namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 {
 	internal sealed class XmlDataProviderCodeGeneratorStoreResult
 	{

@@ -5,11 +5,11 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Composite.Data;
-using Composite.Types;
+using Composite.Core.Types;
 using Composite.Data.Plugins.DataProvider.CodeGeneration;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation
+namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation
 {
     internal sealed class XmlDataWrapperClassGenerator
     {

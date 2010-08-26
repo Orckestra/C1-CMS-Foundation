@@ -1,18 +1,18 @@
 using System;
 using System.Linq;
 using System.Workflow.Activities;
-using Composite.ConsoleEventSystem;
-using Composite.Forms.DataServices;
-using Composite.GlobalSettings;
-using Composite.PackageSystem;
-using Composite.Users;
-using Composite.Workflow;
+using Composite.C1Console.Events;
+using Composite.C1Console.Forms.DataServices;
+using Composite.Core.Configuration;
+using Composite.Core.PackageSystem;
+using Composite.C1Console.Users;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class ViewAvailablePackageInfoWorkflowWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class ViewAvailablePackageInfoWorkflowWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public ViewAvailablePackageInfoWorkflowWorkflow()
         {
@@ -71,8 +71,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
             {
                 this.ShowMessage(
                     DialogType.Message,
-                    "${Composite.StandardPlugins.PackageElementProvider, ViewAvailableInformation.ShowError.MessageTitle}",
-                    "${Composite.StandardPlugins.PackageElementProvider, ViewAvailableInformation.ShowError.MessageMessage}");
+                    "${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.ShowError.MessageTitle}",
+                    "${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.ShowError.MessageMessage}");
             }
         }
 
@@ -81,8 +81,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
         {
             this.ShowMessage(
                 DialogType.Error,
-                "${Composite.StandardPlugins.PackageElementProvider, ViewAvailableInformation.ShowServerError.MessageTitle}",
-                "${Composite.StandardPlugins.PackageElementProvider, ViewAvailableInformation.ShowServerError.MessageMessage}");
+                "${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.ShowServerError.MessageTitle}",
+                "${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.ShowServerError.MessageMessage}");
         }
     }
 }

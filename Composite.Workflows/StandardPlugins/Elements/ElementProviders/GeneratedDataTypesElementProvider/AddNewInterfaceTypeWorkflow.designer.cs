@@ -12,7 +12,7 @@ using System.Workflow.Runtime;
 using System.Workflow.Activities;
 using System.Workflow.Activities.Rules;
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
     partial class AddNewInterfaceTypeWorkflow
     {
@@ -29,12 +29,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
             this.setStateActivity5 = new System.Workflow.Activities.SetStateActivity();
             this.finalizeStateCodeActivity = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity2 = new System.Workflow.Activities.SetStateActivity();
-            this.saveHandleExternalEventActivity1 = new Composite.Workflow.Activities.SaveHandleExternalEventActivity();
-            this.documentFormActivity1 = new Composite.Workflow.Activities.DocumentFormActivity();
+            this.saveHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.SaveHandleExternalEventActivity();
+            this.documentFormActivity1 = new Composite.C1Console.Workflow.Activities.DocumentFormActivity();
             this.setStateActivity3 = new System.Workflow.Activities.SetStateActivity();
             this.initialStateCodeActivity = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity4 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity1 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.finalizeStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.saveStep1EventDrivenActivity = new System.Workflow.Activities.EventDrivenActivity();
             this.step1StateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
@@ -63,7 +63,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
             // saveHandleExternalEventActivity1
             // 
             this.saveHandleExternalEventActivity1.EventName = "Save";
-            this.saveHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.saveHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.saveHandleExternalEventActivity1.Name = "saveHandleExternalEventActivity1";
             // 
             // documentFormActivity1
@@ -91,7 +91,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
             // cancelHandleExternalEventActivity1
             // 
             this.cancelHandleExternalEventActivity1.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity1.Name = "cancelHandleExternalEventActivity1";
             // 
             // finalizeStateInitializationActivity
@@ -168,13 +168,13 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
         private StateInitializationActivity finalizeStateInitializationActivity;
         private StateActivity finalStateActivity;
         private SetStateActivity setStateActivity3;
-        private Composite.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
         private StateInitializationActivity initialStateInitializationActivity;
         private EventDrivenActivity cancelEventDrivenActivity;
         private SetStateActivity setStateActivity4;
         private CodeActivity initialStateCodeActivity;
-        private Composite.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
-        private Composite.Workflow.Activities.DocumentFormActivity documentFormActivity1;
+        private Composite.C1Console.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.DocumentFormActivity documentFormActivity1;
         private EventDrivenActivity saveStep1EventDrivenActivity;
         private CodeActivity finalizeStateCodeActivity;
         private StateActivity initialStateActivity;

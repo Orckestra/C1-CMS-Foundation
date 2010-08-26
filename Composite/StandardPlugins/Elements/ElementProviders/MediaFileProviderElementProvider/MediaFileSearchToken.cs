@@ -1,6 +1,6 @@
-﻿using Composite.Elements;
+﻿using Composite.C1Console.Elements;
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
     /// <summary>    
     /// </summary>

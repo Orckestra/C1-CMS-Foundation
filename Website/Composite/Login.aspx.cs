@@ -1,7 +1,7 @@
 using System;
-using Composite.ConfigurationSystem;
-using Composite.WebClient.Foundation.PluginFacades;
-using Composite.WebClient.Plugins.WebRequestHandler;
+using Composite.Core.Configuration;
+using Composite.Core.WebClient.Foundation.PluginFacades;
+using Composite.Core.WebClient.Plugins.WebRequestHandler;
 
 
 public partial class Composite_Management_Login : System.Web.UI.Page

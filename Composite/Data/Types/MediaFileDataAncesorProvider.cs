@@ -5,7 +5,7 @@ using System.Text;
 using Composite.Data.Hierarchy;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Extensions;
+using Composite.Core.Extensions;
 
 namespace Composite.Data.Types
 {

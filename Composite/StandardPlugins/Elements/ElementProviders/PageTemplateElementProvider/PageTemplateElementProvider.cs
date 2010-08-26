@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Elements;
-using Composite.Elements.Plugins.ElementProvider;
-using Composite.ResourceSystem;
-using Composite.ResourceSystem.Icons;
-using Composite.Security;
-using Composite.Workflow;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Elements.Plugins.ElementProvider;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.C1Console.Security;
+using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider
 {
     [ConfigurationElementType(typeof(PageTemplateElementProviderData))]
     internal sealed class PageTemplateElementProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
@@ -57,8 +57,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElemen
 
             element.VisualData = new ElementVisualizedData
                          {
-                             Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTemplateElementProvider", "PageTemplateElementProvider.RootLabel"),
-                             ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTemplateElementProvider", "PageTemplateElementProvider.RootLabelToolTip"),
+                             Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.RootLabel"),
+                             ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.RootLabelToolTip"),
                              HasChildren = hasChildren,
                              Icon = PageTemplateElementProvider.RootClosed,
                              OpenedIcon = PageTemplateElementProvider.RootOpen
@@ -66,12 +66,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElemen
 
             element.AddAction(new ElementAction(new ActionHandle(
                 new WorkflowActionToken(
-                    WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElementProvider.AddNewPageTemplateWorkflow"),
+                    WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider.AddNewPageTemplateWorkflow"),
                     new PermissionType[] { PermissionType.Add }
                 ))) {
                     VisualData = new ActionVisualizedData {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTemplateElementProvider", "PageTemplateElementProvider.AddTemplate"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTemplateElementProvider", "PageTemplateElementProvider.AddTemplateToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.AddTemplate"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.AddTemplateToolTip"),
                         Icon = PageTemplateElementProvider.AddTemplate,
                         Disabled = false,
                         ActionLocation = new ActionLocation {
@@ -156,13 +156,13 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElemen
 
                 element.AddAction(new ElementAction(new ActionHandle(
                     new WorkflowActionToken(
-                        WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElementProvider.EditPageTemplateWorkflow"),
+                        WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider.EditPageTemplateWorkflow"),
                         new PermissionType[] { PermissionType.Edit }
                     )))
                 {
                     VisualData = new ActionVisualizedData {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTemplateElementProvider", "PageTemplateElementProvider.EditTemplate"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTemplateElementProvider", "PageTemplateElementProvider.EditTemplateToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.EditTemplate"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.EditTemplateToolTip"),
                         Icon = PageTemplateElementProvider.EditTemplate,
                         Disabled = false,
                         ActionLocation = new ActionLocation {
@@ -174,12 +174,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElemen
                     }});
 
 
-                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElementProvider.DeletePageTemplateWorkflow"), new [] { PermissionType.Delete })))
+                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider.DeletePageTemplateWorkflow"), new [] { PermissionType.Delete })))
                 {
                     VisualData = new ActionVisualizedData
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTemplateElementProvider", "PageTemplateElementProvider.DeleteTemplate"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTemplateElementProvider", "PageTemplateElementProvider.DeleteTemplateToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.DeleteTemplate"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.DeleteTemplateToolTip"),
                         Icon = DeleteTemplate,
                         Disabled = false,
                         ActionLocation = new ActionLocation

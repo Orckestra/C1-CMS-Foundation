@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 using Composite.Functions;
 using Composite.Data;
 using System.Linq.Expressions;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated.Filter
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated.Filter
 {
 	internal sealed class CompoundFilter<T> : StandardFunctionBase, ICompoundFunction
         where T : class, IData

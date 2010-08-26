@@ -1,6 +1,6 @@
 ﻿
 
-namespace Composite.StandardPlugins.Instrumentation.PerformanceCounterProviders.WindowsPerformanceCounterProvider
+namespace Composite.Plugins.Instrumentation.PerformanceCounterProviders.WindowsPerformanceCounterProvider
 {
 	internal static class PerformanceNames
 	{

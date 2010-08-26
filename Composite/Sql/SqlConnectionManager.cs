@@ -1,5 +1,5 @@
 ﻿using System.Data.SqlClient;
-using Composite.Threading;
+using Composite.Core.Threading;
 
 namespace Composite.Sql
 {

@@ -1,9 +1,9 @@
-﻿<%@ Control Language="C#" Inherits="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.DataReferenceTreeSelectorTemplateUserControlBase" %>
+﻿<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.DataReferenceTreeSelectorTemplateUserControlBase" %>
 <%@ Import Namespace="Composite.Data" %>
 <%@ Import Namespace="Composite.Data.Types" %>
-<%@ Import Namespace="Composite.Logging" %>
-<%@ Import Namespace="Composite.Extensions" %>
-<%@ Import Namespace="Composite.ResourceSystem" %>
+<%@ Import Namespace="Composite.Core.Logging" %>
+<%@ Import Namespace="Composite.Core.Extensions" %>
+<%@ Import Namespace="Composite.Core.ResourceSystem" %>
 
 <script runat="server">
     private bool _loaded;

@@ -2,17 +2,17 @@
 <cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
 	<cms:bindings>
 		<cms:binding name="CustomEvent01Handler" type="System.EventHandler" />
-		<cms:binding name="PackageDescription" type="Composite.PackageSystem.PackageDescription" />
+		<cms:binding name="PackageDescription" type="Composite.Core.PackageSystem.PackageDescription" />
 	</cms:bindings>
 	<cms:layout>
 		<PlaceHolder>
-			<ToolbarButton Label="${Composite.StandardPlugins.PackageElementProvider, ViewAvailableInformation.Toolbar.InstallLabel}" IconHandle="package-install-package">
+			<ToolbarButton Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.Toolbar.InstallLabel}" IconHandle="package-install-package">
 				<ToolbarButton.ClickEventHandler>
 					<cms:read source="CustomEvent01Handler" />
 				</ToolbarButton.ClickEventHandler>
 			</ToolbarButton>
 
-			<ToolbarButton Label="${Composite.StandardPlugins.PackageElementProvider, ViewAvailableInformation.Toolbar.ReadMoreLabel}" IconHandle="package-installer-readmore">
+			<ToolbarButton Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.Toolbar.ReadMoreLabel}" IconHandle="package-installer-readmore">
 				<ToolbarButton.LaunchUrl>
 					<cms:read source="PackageDescription.ReadMoreUrl" />
 				</ToolbarButton.LaunchUrl>

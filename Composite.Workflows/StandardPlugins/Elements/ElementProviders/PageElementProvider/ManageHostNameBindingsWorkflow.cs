@@ -4,14 +4,14 @@ using System.Linq;
 using System.Workflow.Activities;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Validation.ClientValidationRules;
-using Composite.Workflow;
+using Composite.Data.Validation.ClientValidationRules;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class ManageHostNameBindingsWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class ManageHostNameBindingsWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public ManageHostNameBindingsWorkflow()
         {

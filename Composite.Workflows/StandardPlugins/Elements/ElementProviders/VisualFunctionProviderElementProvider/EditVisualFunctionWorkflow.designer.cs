@@ -12,7 +12,7 @@ using System.Workflow.Runtime;
 using System.Workflow.Activities;
 using System.Workflow.Activities.Rules;
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElementProvider
 {
     partial class EditVisualFunctionWorkflow
     {
@@ -36,7 +36,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProv
             this.ifElseBranchActivity6 = new System.Workflow.Activities.IfElseBranchActivity();
             this.ifElseBranchActivity5 = new System.Workflow.Activities.IfElseBranchActivity();
             this.noSaveSetStateActivity = new System.Workflow.Activities.SetStateActivity();
-            this.showFieldMessageActivity1 = new Composite.Workflow.Activities.ShowFieldMessageActivity();
+            this.showFieldMessageActivity1 = new Composite.C1Console.Workflow.Activities.ShowFieldMessageActivity();
             this.setStateActivity3 = new System.Workflow.Activities.SetStateActivity();
             this.setStateActivity7 = new System.Workflow.Activities.SetStateActivity();
             this.MissingActiveLanguageActivity = new System.Workflow.Activities.CodeActivity();
@@ -49,13 +49,13 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProv
             this.saveCodeActivity = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity5 = new System.Workflow.Activities.SetStateActivity();
             this.editPreviewCodeActivity = new System.Workflow.Activities.CodeActivity();
-            this.previewHandleExternalEventActivity1 = new Composite.Workflow.Activities.PreviewHandleExternalEventActivity();
+            this.previewHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.PreviewHandleExternalEventActivity();
             this.ifElseActivity1 = new System.Workflow.Activities.IfElseActivity();
-            this.saveHandleExternalEventActivity1 = new Composite.Workflow.Activities.SaveHandleExternalEventActivity();
-            this.documentFormActivity1 = new Composite.Workflow.Activities.DocumentFormActivity();
+            this.saveHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.SaveHandleExternalEventActivity();
+            this.documentFormActivity1 = new Composite.C1Console.Workflow.Activities.DocumentFormActivity();
             this.ifElseActivity_CheckActiveLanguageExists = new System.Workflow.Activities.IfElseActivity();
             this.setStateActivity1 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity1 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.finalizeStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.eventDrivenActivity_Preview = new System.Workflow.Activities.EventDrivenActivity();
             this.eventDrivenActivity_Save = new System.Workflow.Activities.EventDrivenActivity();
@@ -109,7 +109,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProv
             // showFieldMessageActivity1
             // 
             this.showFieldMessageActivity1.FieldBindingPath = "Function.Name";
-            this.showFieldMessageActivity1.Message = "${Composite.StandardPlugins.VisualFunction, VisualFunctionElementProvider.Functio" +
+            this.showFieldMessageActivity1.Message = "${Composite.Plugins.VisualFunction, VisualFunctionElementProvider.Functio" +
                 "nNameNotUniqueError}";
             this.showFieldMessageActivity1.Name = "showFieldMessageActivity1";
             // 
@@ -183,7 +183,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProv
             // previewHandleExternalEventActivity1
             // 
             this.previewHandleExternalEventActivity1.EventName = "Preview";
-            this.previewHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.previewHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.previewHandleExternalEventActivity1.Name = "previewHandleExternalEventActivity1";
             this.previewHandleExternalEventActivity1.Invoked += new System.EventHandler<System.Workflow.Activities.ExternalDataEventArgs>(this.previewHandleExternalEventActivity1_Invoked);
             // 
@@ -196,7 +196,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProv
             // saveHandleExternalEventActivity1
             // 
             this.saveHandleExternalEventActivity1.EventName = "Save";
-            this.saveHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.saveHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.saveHandleExternalEventActivity1.Name = "saveHandleExternalEventActivity1";
             // 
             // documentFormActivity1
@@ -220,7 +220,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProv
             // cancelHandleExternalEventActivity1
             // 
             this.cancelHandleExternalEventActivity1.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity1.Name = "cancelHandleExternalEventActivity1";
             // 
             // finalizeStateInitializationActivity
@@ -298,29 +298,29 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProv
 
         private CodeActivity initializeCodeActivity;
         private SetStateActivity setStateActivity1;
-        private Composite.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
         private StateInitializationActivity initialStateInitializationActivity;
         private EventDrivenActivity cancelEventDrivenActivity;
         private StateActivity finalStateActivity;
         private StateActivity saveStateActivity;
         private StateActivity editStateActivity;
-        private Composite.Workflow.Activities.DocumentFormActivity documentFormActivity1;
+        private Composite.C1Console.Workflow.Activities.DocumentFormActivity documentFormActivity1;
         private StateInitializationActivity editStateInitializationActivity;
         private StateInitializationActivity finalizeStateInitializationActivity;
         private CodeActivity saveCodeActivity;
         private SetStateActivity setStateActivity3;
-        private Composite.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
         private SetStateActivity setStateActivity2;
         private EventDrivenActivity eventDrivenActivity_Save;
         private SetStateActivity setStateActivity4;
         private SetStateActivity setStateActivity5;
         private EventDrivenActivity eventDrivenActivity_Preview;
         private CodeActivity editPreviewCodeActivity;
-        private Composite.Workflow.Activities.PreviewHandleExternalEventActivity previewHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.PreviewHandleExternalEventActivity previewHandleExternalEventActivity1;
         private IfElseBranchActivity ifElseBranchActivity2;
         private IfElseBranchActivity ifElseBranchActivity1;
         private IfElseActivity ifElseActivity1;
-        private Composite.Workflow.Activities.ShowFieldMessageActivity showFieldMessageActivity1;
+        private Composite.C1Console.Workflow.Activities.ShowFieldMessageActivity showFieldMessageActivity1;
         private SetStateActivity noSaveSetStateActivity;
         private IfElseBranchActivity ifElseBranchActivity4;
         private IfElseBranchActivity ifElseBranchActivity3;

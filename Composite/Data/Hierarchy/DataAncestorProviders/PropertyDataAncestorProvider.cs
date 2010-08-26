@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Composite.Linq;
-using Composite.Types;
+using Composite.Core.Linq;
+using Composite.Core.Types;
 
 
 namespace Composite.Data.Hierarchy.DataAncestorProviders

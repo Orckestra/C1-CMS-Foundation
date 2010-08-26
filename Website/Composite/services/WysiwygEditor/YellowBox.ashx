@@ -6,8 +6,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Collections.Generic;
 
-using Composite.Drawing;
-using Composite.WebClient;
+using Composite.C1Console.Drawing;
+using Composite.Core.WebClient;
  
 public class YellowBox : IHttpHandler
 {
@@ -71,7 +71,7 @@ public class YellowBox : IHttpHandler
         }
         catch (Exception ex)
         {
-            Composite.Logging.LoggingService.LogError(this.GetType().ToString(), ex.ToString());
+            Composite.Core.Logging.LoggingService.LogError(this.GetType().ToString(), ex.ToString());
             throw;
         }
     }

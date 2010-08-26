@@ -1,5 +1,5 @@
 using Composite.Data.Types.Foundation;
-using Composite.Serialization;
+using Composite.Core.Serialization;
 
 
 namespace Composite.Data.Types

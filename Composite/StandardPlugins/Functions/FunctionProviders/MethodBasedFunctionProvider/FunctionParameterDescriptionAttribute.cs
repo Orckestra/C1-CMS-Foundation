@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.MethodBasedFunctionProvider
+namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvider
 {
     /// <summary>    
     /// </summary>

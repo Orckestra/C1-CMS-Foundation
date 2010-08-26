@@ -1,9 +1,9 @@
-﻿using Composite.Instrumentation;
-using Composite.Instrumentation.Plugin;
+﻿using Composite.Core.Instrumentation;
+using Composite.Core.Instrumentation.Plugin;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 
-namespace Composite.StandardPlugins.Instrumentation.PerformanceCounterProviders.NoPerformanceCounterProvider
+namespace Composite.Plugins.Instrumentation.PerformanceCounterProviders.NoPerformanceCounterProvider
 {
     [ConfigurationElementType(typeof(NonConfigurablePerformanceCounterProvider))]
     internal sealed class NoPerformanceCounterProvider : IPerformanceCounterProvider

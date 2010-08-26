@@ -3,10 +3,10 @@ using Composite.Functions;
 
 using System.Collections.Generic;
 using System.Web;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.ResourceSystem;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Core.ResourceSystem;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Request
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Request
 {
 	internal sealed class QueryStringGuidValueFunction :  StandardFunctionBase
 	{

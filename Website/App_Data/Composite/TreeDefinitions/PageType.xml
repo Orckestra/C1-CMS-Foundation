@@ -8,26 +8,26 @@
   <ElementRoot>
     <Children>
       
-      <Element Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.Tree.Root.Label}" Id="PageTypes" Icon="pagetype-pagetype-rootfolder" OpenedIcon="pagetype-pagetype-rootfolder-open">
+      <Element Label="${Composite.Plugins.PageTypeElementProvider, PageType.Tree.Root.Label}" Id="PageTypes" Icon="pagetype-pagetype-rootfolder" OpenedIcon="pagetype-pagetype-rootfolder-open">
         <Actions>
-          <WorkflowAction Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.Tree.AddNewPageType.Label}" 
-                          ToolTip="${Composite.StandardPlugins.PageTypeElementProvider, PageType.Tree.AddNewPageType.ToolTip}" 
+          <WorkflowAction Label="${Composite.Plugins.PageTypeElementProvider, PageType.Tree.AddNewPageType.Label}" 
+                          ToolTip="${Composite.Plugins.PageTypeElementProvider, PageType.Tree.AddNewPageType.ToolTip}" 
                           Icon="pagetype-add-pagetype" PermissionTypes="administrate, add"  Location="Add"
-                          WorkflowType="Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageTypeElementProvider.AddNewPageTypeWorkflow" />
+                          WorkflowType="Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider.AddNewPageTypeWorkflow" />
         </Actions>
         
         <Children>
           <DataElements Type="Composite.Data.Types.IPageType" Icon="pagetype-pagetype">
             <Actions>
-              <WorkflowAction Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.Tree.EditPageType.Label}"
-                              ToolTip="${Composite.StandardPlugins.PageTypeElementProvider, PageType.Tree.EditPageType.ToolTip}"
+              <WorkflowAction Label="${Composite.Plugins.PageTypeElementProvider, PageType.Tree.EditPageType.Label}"
+                              ToolTip="${Composite.Plugins.PageTypeElementProvider, PageType.Tree.EditPageType.ToolTip}"
                               Icon="pagetype-edit-pagetype" PermissionTypes="administrate, edit" Location="Edit"
-                              WorkflowType="Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageTypeElementProvider.EditPageTypeWorkflow" />
+                              WorkflowType="Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider.EditPageTypeWorkflow" />
 
-              <WorkflowAction Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.Tree.DeletePageType.Label}"
-                              ToolTip="${Composite.StandardPlugins.PageTypeElementProvider, PageType.Tree.DeletePageType.ToolTip}"
+              <WorkflowAction Label="${Composite.Plugins.PageTypeElementProvider, PageType.Tree.DeletePageType.Label}"
+                              ToolTip="${Composite.Plugins.PageTypeElementProvider, PageType.Tree.DeletePageType.ToolTip}"
                               Icon="pagetype-delete-pagetype" PermissionTypes="administrate, delete" Location="Delete"
-                              WorkflowType="Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageTypeElementProvider.DeletePageTypeWorkflow" />              
+                              WorkflowType="Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider.DeletePageTypeWorkflow" />              
             </Actions>
             
             <OrderBy>
@@ -36,26 +36,26 @@
             
             <Children>
 
-              <Element Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.Tree.MetaDataFieldsElement.Label}" Id="MetaDataFields">
+              <Element Label="${Composite.Plugins.PageTypeElementProvider, PageType.Tree.MetaDataFieldsElement.Label}" Id="MetaDataFields">
                 <Actions>
-                  <WorkflowAction Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.Tree.AddMetaDataField.Label}"
-                                  ToolTip="${Composite.StandardPlugins.PageTypeElementProvider, PageType.Tree.AddMetaDataField.ToolTip}"
+                  <WorkflowAction Label="${Composite.Plugins.PageTypeElementProvider, PageType.Tree.AddMetaDataField.Label}"
+                                  ToolTip="${Composite.Plugins.PageTypeElementProvider, PageType.Tree.AddMetaDataField.ToolTip}"
                                   Icon="pagetype-add-metedatafield" PermissionTypes="administrate, add" Location="Add" 
-                                  WorkflowType="Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageTypeElementProvider.AddPageTypeMetaDataFieldWorkflow" />                  
+                                  WorkflowType="Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider.AddPageTypeMetaDataFieldWorkflow" />                  
                 </Actions>
 
                 <Children>
                   <DataElements Type="Composite.Data.Types.IPageTypeMetaDataTypeLink">
                     <Actions>
-                      <WorkflowAction Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.Tree.EditMetaDataField.Label}"
-                                      ToolTip="${Composite.StandardPlugins.PageTypeElementProvider, PageType.Tree.EditMetaDataField.ToolTip}"
+                      <WorkflowAction Label="${Composite.Plugins.PageTypeElementProvider, PageType.Tree.EditMetaDataField.Label}"
+                                      ToolTip="${Composite.Plugins.PageTypeElementProvider, PageType.Tree.EditMetaDataField.ToolTip}"
                                       Icon="pagetype-edit-metedatafield" PermissionTypes="administrate, edit" Location="Edit"
-                                      WorkflowType="Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageTypeElementProvider.EditPageTypeMetaDataFieldWorkflow" />
+                                      WorkflowType="Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider.EditPageTypeMetaDataFieldWorkflow" />
                       
-                      <WorkflowAction Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.Tree.DeleteMetaDataField.Label}"
-                                      ToolTip="${Composite.StandardPlugins.PageTypeElementProvider, PageType.Tree.DeleteMetaDataField.ToolTip}"
+                      <WorkflowAction Label="${Composite.Plugins.PageTypeElementProvider, PageType.Tree.DeleteMetaDataField.Label}"
+                                      ToolTip="${Composite.Plugins.PageTypeElementProvider, PageType.Tree.DeleteMetaDataField.ToolTip}"
                                       Icon="pagetype-delete-metedatafield" PermissionTypes="administrate, delete" Location="Delete"                                      
-                                      WorkflowType="Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageTypeElementProvider.DeletePageTypeMetaDataFieldWorkflow" />
+                                      WorkflowType="Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider.DeletePageTypeMetaDataFieldWorkflow" />
                     </Actions>
 
                     <Filters>
@@ -69,25 +69,25 @@
                 </Children>
               </Element>
               
-              <Element Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.Tree.DefaultContentElement.Label}" Id="DefaultContent">
+              <Element Label="${Composite.Plugins.PageTypeElementProvider, PageType.Tree.DefaultContentElement.Label}" Id="DefaultContent">
                 <Actions>
-                  <WorkflowAction Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.Tree.AddDefaultPageContent.Label}"
-                                            ToolTip="${Composite.StandardPlugins.PageTypeElementProvider, PageType.Tree.AddDefaultPageContent.ToolTip}"
+                  <WorkflowAction Label="${Composite.Plugins.PageTypeElementProvider, PageType.Tree.AddDefaultPageContent.Label}"
+                                            ToolTip="${Composite.Plugins.PageTypeElementProvider, PageType.Tree.AddDefaultPageContent.ToolTip}"
                                             Icon="pagetype-add-pagetypedefaultpagecontent" PermissionTypes="administrate, add" Location="Add"
-                                            WorkflowType="Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageTypeElementProvider.AddPageTypeDefaultPageContentWorkflow" />
+                                            WorkflowType="Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider.AddPageTypeDefaultPageContentWorkflow" />
                 </Actions>
                 <Children>
                   <DataElements Type="Composite.Data.Types.IPageTypeDefaultPageContent" 
                                 Label="${C1:Data:Composite.Data.Types.IPageTypeDefaultPageContent:PlaceHolderId}"
                                 Icon="pagetype-defaultpagecontent">
                     <Actions>
-                      <WorkflowAction Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.Tree.EditDefaultPageContent.Label}"
-                                      ToolTip="${Composite.StandardPlugins.PageTypeElementProvider, PageType.Tree.EditDefaultPageContent.ToolTip}"
+                      <WorkflowAction Label="${Composite.Plugins.PageTypeElementProvider, PageType.Tree.EditDefaultPageContent.Label}"
+                                      ToolTip="${Composite.Plugins.PageTypeElementProvider, PageType.Tree.EditDefaultPageContent.ToolTip}"
                                       Icon="pagetype-edit-pagetypedefaultpagecontent" PermissionTypes="administrate, edit" Location="Edit"
-                                      WorkflowType="Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageTypeElementProvider.EditPageTypeDefaultPageContentWorkflow" />
+                                      WorkflowType="Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider.EditPageTypeDefaultPageContentWorkflow" />
                       
-                      <DeleteDataAction Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.Tree.DeleteDefaultPageContent.Label}"
-                                        ToolTip="${Composite.StandardPlugins.PageTypeElementProvider, PageType.Tree.DeleteDefaultPageContent.ToolTip}"
+                      <DeleteDataAction Label="${Composite.Plugins.PageTypeElementProvider, PageType.Tree.DeleteDefaultPageContent.Label}"
+                                        ToolTip="${Composite.Plugins.PageTypeElementProvider, PageType.Tree.DeleteDefaultPageContent.ToolTip}"
                                         Icon="pagetype-delete-pagetypedefaultpagecontent"/>
                     </Actions>
                     

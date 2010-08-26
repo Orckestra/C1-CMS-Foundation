@@ -1,5 +1,5 @@
-<%@ Control Language="C#" Inherits="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.TextEditorTemplateUserControlBase" %>
-<%@ Import Namespace="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories" %>
+<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.TextEditorTemplateUserControlBase" %>
+<%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
 <%@ Import Namespace="System.Xml.Linq" %>
 
 <script type="C#" runat="server">

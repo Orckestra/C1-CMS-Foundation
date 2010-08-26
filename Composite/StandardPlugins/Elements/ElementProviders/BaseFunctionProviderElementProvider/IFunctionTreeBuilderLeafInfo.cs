@@ -1,8 +1,8 @@
-using Composite.Security;
-using Composite.Collections;
+using Composite.C1Console.Security;
+using Composite.Core.Collections;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider
 {
     /// <summary>    
     /// </summary>

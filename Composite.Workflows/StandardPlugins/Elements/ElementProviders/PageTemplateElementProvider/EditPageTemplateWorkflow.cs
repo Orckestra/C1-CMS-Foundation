@@ -4,23 +4,23 @@ using System.IO;
 using System.Linq;
 using System.Workflow.Runtime;
 using System.Xml.Linq;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Types;
-using Composite.StringExtensions;
-using Composite.Workflow;
-using Composite.ResourceSystem;
-using Composite.Xml;
+using Composite.Core.Extensions;
+using Composite.C1Console.Workflow;
+using Composite.Core.ResourceSystem;
+using Composite.Core.Xml;
 using Composite.Functions;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class EditPageTemplateWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class EditPageTemplateWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public EditPageTemplateWorkflow()
         {
@@ -112,7 +112,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElemen
 
         private static string GetString(string key)
         {
-            return StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTemplateElementProvider", key);
+            return StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", key);
         }
 
         private void ValidatePageTemplate(XDocument xDocument)
@@ -198,7 +198,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElemen
 
         private void ShowMessageCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            ShowFieldMessage("PageTemplate.Title", StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTemplateElementProvider", "EditPageTemplateWorkflow.TitleInUseTitle"));
+            ShowFieldMessage("PageTemplate.Title", StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "EditPageTemplateWorkflow.TitleInUseTitle"));
         }
     }
 }

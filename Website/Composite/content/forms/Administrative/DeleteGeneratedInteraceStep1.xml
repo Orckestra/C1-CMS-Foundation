@@ -3,7 +3,7 @@
   <cms:bindings>
     <cms:binding name="InterfaceType" type="System.String" />
   </cms:bindings>
-  <cms:layout label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, DeleteGeneratedInterfaceStep1.LabelFieldGroup}">
+  <cms:layout label="${Composite.Plugins.GeneratedDataTypesElementProvider, DeleteGeneratedInterfaceStep1.LabelFieldGroup}">
     <Text>
       <Text.Text>
         <cms:read source="InterfaceType" />

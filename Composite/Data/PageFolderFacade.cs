@@ -8,9 +8,9 @@ using System.Transactions;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
 using Composite.Data.Types;
-using Composite.Linq;
-using Composite.Transactions;
-using Composite.Types;
+using Composite.Core.Linq;
+using Composite.Data.Transactions;
+using Composite.Core.Types;
 
 
 namespace Composite.Data
@@ -203,7 +203,7 @@ namespace Composite.Data
         {
             Guid pageId = (Guid)GetDefinitionPageReferencePropertyInfo(folderData.DataSourceId.InterfaceType).GetValue(folderData, null);
 
-            return PageManager.GetPageById(pageId);
+            return Composite.Data.Types.PageManager.GetPageById(pageId);
         }
 
 
@@ -325,7 +325,7 @@ namespace Composite.Data
 
                 foreach (IPageFolderDefinition pageFolderDefinition in pageFolderDefinitions)
                 {
-                    IPage page = PageManager.GetPageById(pageFolderDefinition.Id);
+                    IPage page = Composite.Data.Types.PageManager.GetPageById(pageFolderDefinition.Id);
 
                     page.RemoveFolderDefinition(pageFolderDefinition.FolderTypeId);
                 }

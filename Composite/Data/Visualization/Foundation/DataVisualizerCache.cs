@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Composite.EventSystem;
-using Composite.Types;
+using Composite.C1Console.Events;
+using Composite.Core.Types;
 
 
 namespace Composite.Data.Visualization.Foundation

@@ -2,10 +2,10 @@
 using Composite.Functions;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.ResourceSystem;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Core.ResourceSystem;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Date
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Date
 {
     internal sealed class AddDaysFunction : StandardFunctionBase
     {

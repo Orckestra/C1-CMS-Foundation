@@ -1,7 +1,7 @@
 using System;
 using System.Web;
 using Composite;
-using Composite.WebClient;
+using Composite.Core.WebClient;
 
 /**
  * Simply store developermode on session. 

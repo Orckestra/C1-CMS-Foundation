@@ -7,15 +7,15 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.Types;
 using Composite.Functions;
 using Composite.Functions.Plugins.FunctionProvider;
-using Composite.Logging;
-using Composite.Security;
-using Composite.Types;
-using Composite.Xml;
+using Composite.Core.Logging;
+using Composite.C1Console.Security;
+using Composite.Core.Types;
+using Composite.Core.Xml;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.VisualFunctionProvider
+namespace Composite.Plugins.Functions.FunctionProviders.VisualFunctionProvider
 {
     [ConfigurationElementType(typeof(VisualFunctionProviderData))]
     internal sealed class VisualFunctionProvider : IDynamicTypeFunctionProvider

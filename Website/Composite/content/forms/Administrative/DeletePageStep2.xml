@@ -3,7 +3,7 @@
   <cms:bindings>
 	  <cms:binding name="DeleteMessageText" type="System.String" />
   </cms:bindings>
-  <cms:layout iconhandle="page-delete-page" label="${Composite.StandardPlugins.PageElementProvider, DeletePage.LabelFieldGroup}">
+  <cms:layout iconhandle="page-delete-page" label="${Composite.Plugins.PageElementProvider, DeletePage.LabelFieldGroup}">
 	  <Text>
 		  <Text.Text>
 			  <cms:read source="DeleteMessageText" />

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
-using Composite.Forms;
+using Composite.C1Console.Forms;
 using Composite.Functions.Foundation;
 
 

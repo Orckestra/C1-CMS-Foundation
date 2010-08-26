@@ -1,10 +1,10 @@
 ﻿using System;
-using Composite.StandardPlugins.Functions.XslExtensionsProviders.ConfigBasedXslExtensionsProvider;
-using Composite.WebClient;
-using Composite.WebClient.Captcha;
+using Composite.Plugins.Functions.XslExtensionsProviders.ConfigBasedXslExtensionsProvider;
+using Composite.Core.WebClient;
+using Composite.Core.WebClient.Captcha;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
-namespace Composite.StandardPlugins.Functions.XslExtensionsProviders
+namespace Composite.Plugins.Functions.XslExtensionsProviders
 {
     [ConfigurationElementType(typeof(ConfigBasedXslExtensionInfo))]
     internal class CaptchaXslExtension

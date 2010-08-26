@@ -6,12 +6,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Transactions;
-using Composite.Collections.Generic;
+using Composite.Core.Collections.Generic;
 using Composite.Data.Foundation;
-using Composite.EventSystem;
-using Composite.Transactions;
-using Composite.Types;
-using Composite.Logging;
+using Composite.C1Console.Events;
+using Composite.Data.Transactions;
+using Composite.Core.Types;
+using Composite.Core.Logging;
 
 
 namespace Composite.Data

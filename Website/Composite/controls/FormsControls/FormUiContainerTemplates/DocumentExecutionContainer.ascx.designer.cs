@@ -63,7 +63,7 @@ public partial class Composite_Forms_DocumentExecutionContainer {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::Composite.WebClient.UiControlLib.Feedback ctlFeedback;
+    protected global::Composite.Core.WebClient.UiControlLib.Feedback ctlFeedback;
     
     /// <summary>
     /// customBroadcasterSets control.

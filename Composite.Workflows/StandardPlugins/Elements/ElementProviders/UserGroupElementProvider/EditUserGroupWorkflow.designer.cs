@@ -11,9 +11,9 @@ using System.Workflow.ComponentModel.Design;
 using System.Workflow.Runtime;
 using System.Workflow.Activities;
 using System.Workflow.Activities.Rules;
-using Composite.Workflow;
+using Composite.C1Console.Workflow;
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
 {
     partial class EditUserGroupWorkflow
     {
@@ -42,11 +42,11 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementPr
             this.ifElseBranchActivity1 = new System.Workflow.Activities.IfElseBranchActivity();
             this.setStateActivity5 = new System.Workflow.Activities.SetStateActivity();
             this.saveCodeActivity_Save = new System.Workflow.Activities.CodeActivity();
-            this.step1DocumentFormActivity = new Composite.Workflow.Activities.DocumentFormActivity();
+            this.step1DocumentFormActivity = new Composite.C1Console.Workflow.Activities.DocumentFormActivity();
             this.step1CodeActivity_ShowDocument = new System.Workflow.Activities.CodeActivity();
             this.ifElseActivity1 = new System.Workflow.Activities.IfElseActivity();
-            this.conditionalSetStateActivity1 = new Composite.Workflow.Activities.ConditionalSetStateActivity();
-            this.saveHandleExternalEventActivity1 = new Composite.Workflow.Activities.SaveHandleExternalEventActivity();
+            this.conditionalSetStateActivity1 = new Composite.C1Console.Workflow.Activities.ConditionalSetStateActivity();
+            this.saveHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.SaveHandleExternalEventActivity();
             this.setStateActivity3 = new System.Workflow.Activities.SetStateActivity();
             this.initalizeCodeActivity_Initialize = new System.Workflow.Activities.CodeActivity();
             this.saveStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
@@ -54,7 +54,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementPr
             this.step1EventDrivenActivity_Save = new System.Workflow.Activities.EventDrivenActivity();
             this.initializeStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.setStateActivity1 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity1 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.saveStateActivity = new System.Workflow.Activities.StateActivity();
             this.step1StateActivity = new System.Workflow.Activities.StateActivity();
             this.finalStateActivity = new System.Workflow.Activities.StateActivity();
@@ -158,7 +158,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementPr
             // saveHandleExternalEventActivity1
             // 
             this.saveHandleExternalEventActivity1.EventName = "Save";
-            this.saveHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.saveHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.saveHandleExternalEventActivity1.Name = "saveHandleExternalEventActivity1";
             // 
             // setStateActivity3
@@ -204,7 +204,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementPr
             // cancelHandleExternalEventActivity1
             // 
             this.cancelHandleExternalEventActivity1.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity1.Name = "cancelHandleExternalEventActivity1";
             // 
             // saveStateActivity
@@ -250,7 +250,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementPr
 
         #endregion
 
-        private Composite.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
         private StateInitializationActivity initializeStateInitializationActivity;
         private SetStateActivity setStateActivity1;
         private StateActivity finalStateActivity;
@@ -258,7 +258,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementPr
         private IfElseBranchActivity ifElseBranchActivity2;
         private IfElseBranchActivity ifElseBranchActivity1;
         private IfElseActivity ifElseActivity1;
-        private Composite.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
         private EventDrivenActivity step1EventDrivenActivity_Save;
         private StateActivity step1StateActivity;
         private CodeActivity step1CodeActivity_ShowErrorMessage;
@@ -269,7 +269,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementPr
         private StateInitializationActivity saveStateInitializationActivity;
         private StateInitializationActivity step1StateInitializationActivity;
         private StateActivity saveStateActivity;
-        private Composite.Workflow.Activities.DocumentFormActivity step1DocumentFormActivity;
+        private Composite.C1Console.Workflow.Activities.DocumentFormActivity step1DocumentFormActivity;
         private CodeActivity initalizeCodeActivity_Initialize;
         private CodeActivity saveCodeActivity_Save;
         private CodeActivity step1CodeActivity_ShowDocument;
@@ -278,7 +278,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementPr
         private IfElseBranchActivity ifElseBranchActivity4;
         private IfElseBranchActivity ifElseBranchActivity3;
         private IfElseActivity ifElseActivity2;
-        private Composite.Workflow.Activities.ConditionalSetStateActivity conditionalSetStateActivity1;
+        private Composite.C1Console.Workflow.Activities.ConditionalSetStateActivity conditionalSetStateActivity1;
         private EventDrivenActivity eventDrivenActivity_GlobalCancel;
 
 

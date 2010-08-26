@@ -1,5 +1,5 @@
 ﻿using System;
-using Composite.StringExtensions;
+using Composite.Core.Extensions;
 
 
 namespace Composite

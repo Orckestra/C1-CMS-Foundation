@@ -5,23 +5,23 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using Composite.Collections;
-using Composite.Elements;
-using Composite.Elements.Plugins.ElementProvider;
-using Composite.Forms.DataServices;
-using Composite.Forms.Flows;
+using Composite.Core.Collections;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Elements.Plugins.ElementProvider;
+using Composite.C1Console.Forms.DataServices;
+using Composite.C1Console.Forms.Flows;
 using Composite.Functions;
-using Composite.ResourceSystem;
-using Composite.ResourceSystem.Icons;
-using Composite.Security;
-using Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
-using Composite.Types;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.C1Console.Security;
+using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
+using Composite.Core.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.AllFunctionsElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvider
 {
     /// <summary>    
     /// </summary>
@@ -68,11 +68,11 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.AllFunctionsElemen
             {
                 if (_providerType == _functionsProviderType)
                 {
-                    return StringResourceSystemFacade.GetString("Composite.StandardPlugins.AllFunctionsElementProvider", "StandardPlugins.AllFunctionsElementProvider.FunctionRootFolderLabel");
+                    return StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "Plugins.AllFunctionsElementProvider.FunctionRootFolderLabel");
                 }
                 else if (_providerType == _widgetFunctionsProviderType)
                 {
-                    return StringResourceSystemFacade.GetString("Composite.StandardPlugins.AllFunctionsElementProvider", "StandardPlugins.AllFunctionsElementProvider.WidgetFunctionRootFolderLabel");
+                    return StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "Plugins.AllFunctionsElementProvider.WidgetFunctionRootFolderLabel");
                 }
                 else
                 {
@@ -88,11 +88,11 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.AllFunctionsElemen
             {
                 if (_providerType == _functionsProviderType)
                 {
-                    return StringResourceSystemFacade.GetString("Composite.StandardPlugins.AllFunctionsElementProvider", "StandardPlugins.AllFunctionsElementProvider.FunctionRootFolderToolTip");
+                    return StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "Plugins.AllFunctionsElementProvider.FunctionRootFolderToolTip");
                 }
                 if (_providerType == _widgetFunctionsProviderType)
                 {
-                    return StringResourceSystemFacade.GetString("Composite.StandardPlugins.AllFunctionsElementProvider", "StandardPlugins.AllFunctionsElementProvider.WidgetFunctionRootFolderToolTip");
+                    return StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "Plugins.AllFunctionsElementProvider.WidgetFunctionRootFolderToolTip");
                 }
                 throw new NotImplementedException();
             }
@@ -196,8 +196,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.AllFunctionsElemen
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.AllFunctionsElementProvider", "AllFunctionsElementProvider.GenerateDocumentation"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.AllFunctionsElementProvider", "AllFunctionsElementProvider.GenerateDocumentationTooltip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "AllFunctionsElementProvider.GenerateDocumentation"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "AllFunctionsElementProvider.GenerateDocumentationTooltip"),
                     Icon = AllFunctionsElementProvider.DocumentFunctionsIcon,
                     Disabled = false,
                     ActionLocation = new ActionLocation

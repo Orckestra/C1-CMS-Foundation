@@ -4,9 +4,9 @@
     <cms:binding name="NewFolderName" type="System.String" />
   </cms:bindings>
   <cms:layout>
-    <FieldGroup Label="${Composite.StandardPlugins.WebsiteFileElementProvider, AddNewFolder.LabelFieldGroup}">
-      <TextBox Label="${Composite.StandardPlugins.WebsiteFileElementProvider, AddNewFolder.Text}" 
-			   Help="${Composite.StandardPlugins.WebsiteFileElementProvider, AddNewFolder.Help}">
+    <FieldGroup Label="${Composite.Plugins.WebsiteFileElementProvider, AddNewFolder.LabelFieldGroup}">
+      <TextBox Label="${Composite.Plugins.WebsiteFileElementProvider, AddNewFolder.Text}" 
+			   Help="${Composite.Plugins.WebsiteFileElementProvider, AddNewFolder.Help}">
         <TextBox.Text>
           <cms:bind source="NewFolderName" />
         </TextBox.Text>

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Composite.Actions;
-using Composite.Security;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Security;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider.LocalOrdering
+namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider.LocalOrdering
 {
     [IgnoreEntityTokenLocking()]
     [ActionExecutor(typeof(DisplayLocalOrderingActionExecutor))]

@@ -1,7 +1,7 @@
 using System.Xml.Linq;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider
+namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 {
     /// <summary>    
     /// </summary>

@@ -3,10 +3,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using Composite.Data;
 using Composite.Functions;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated
 {
 	internal sealed class GetNullableDataReference<T> : StandardFunctionBase
         where T : class, IData

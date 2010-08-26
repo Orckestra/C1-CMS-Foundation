@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
 using Composite.Data.GeneratedTypes;
-using Composite.ResourceSystem;
-using Composite.Types;
-using Composite.Validation.ClientValidationRules;
-using Composite.Workflow;
+using Composite.Core.ResourceSystem;
+using Composite.Core.Types;
+using Composite.Data.Validation.ClientValidationRules;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class EditInterfaceTypeWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class EditInterfaceTypeWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public EditInterfaceTypeWorkflow()
         {
@@ -109,7 +109,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
             {
                 this.ShowMessage(
                         DialogType.Warning,
-                        StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "EditInterfaceTypeStep1.ErrorTitle"),
+                        StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditInterfaceTypeStep1.ErrorTitle"),
                         errorMessage
                     );
                 return;
@@ -133,7 +133,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
             {
                 this.ShowMessage(
                         DialogType.Warning,
-                        StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "EditInterfaceTypeStep1.ErrorTitle"),
+                        StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditInterfaceTypeStep1.ErrorTitle"),
                         errorMessage
                     );
                 return;

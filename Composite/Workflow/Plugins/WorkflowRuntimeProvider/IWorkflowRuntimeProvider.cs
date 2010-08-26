@@ -1,11 +1,11 @@
 using System.Workflow.Runtime;
 
-using Composite.Workflow.Plugins.WorkflowRuntimeProvider.Runtime;
+using Composite.C1Console.Workflow.Plugins.WorkflowRuntimeProvider.Runtime;
 
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 
-namespace Composite.Workflow.Plugins.WorkflowRuntimeProvider
+namespace Composite.C1Console.Workflow.Plugins.WorkflowRuntimeProvider
 {
     [CustomFactory(typeof(WorkflowRuntimeProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(WorkflowRuntimeProviderDefaultNameRetriever))]

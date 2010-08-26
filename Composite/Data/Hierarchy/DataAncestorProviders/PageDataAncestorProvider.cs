@@ -1,6 +1,6 @@
 ﻿using System;
 using Composite.Data.Types;
-using Composite.StringExtensions;
+using Composite.Core.Extensions;
 
 
 namespace Composite.Data.Hierarchy.DataAncestorProviders
@@ -15,14 +15,14 @@ namespace Composite.Data.Hierarchy.DataAncestorProviders
             Verify.IsNotNull(page, "Only '{0}' type is supported.".FormatWith(typeof(IPage).FullName));
 
 
-            Guid parentId = PageManager.GetParentId(page.Id);
+            Guid parentId = Composite.Data.Types.PageManager.GetParentId(page.Id);
 
             if (parentId == Guid.Empty)
             {
                 return null;
             }
 
-            return PageManager.GetPageById(parentId);
+            return Composite.Data.Types.PageManager.GetPageById(parentId);
         }
     }
 }

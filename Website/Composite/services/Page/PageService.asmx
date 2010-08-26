@@ -7,8 +7,8 @@ using System.Web.Services;
 using System.Web.Services.Protocols;
 
 using Composite;
-using Composite.Pages;
-using Composite.WebClient;
+using Composite.Data;
+using Composite.Core.WebClient;
 using Composite.Data.Types;
 
 
@@ -44,7 +44,7 @@ public class PageService : System.Web.Services.WebService
 
             if (pageId == Guid.Empty)
             {
-                var pageManager = Composite.Pages.PageManager.Create(PublicationScope.Internal);
+                var pageManager = Composite.Data.PageManager.Create(PublicationScope.Internal);
                 
                 pageId = pageManager.GetChildrenIds(Guid.Empty).FirstOrDefault(rootPageId => pageManager.GetPageById(rootPageId) != null);
             }

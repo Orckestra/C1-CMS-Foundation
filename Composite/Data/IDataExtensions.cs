@@ -6,7 +6,7 @@ using System.Reflection;
 using Composite.Data.DynamicTypes;
 using Composite.Data.DynamicTypes.Foundation;
 using Composite.Data.Hierarchy;
-using Composite.Types;
+using Composite.Core.Types;
 
 
 namespace Composite.Data

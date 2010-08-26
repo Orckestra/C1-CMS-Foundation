@@ -1,8 +1,8 @@
 using System.Workflow.Runtime;
-using Composite.EventSystem;
+using Composite.C1Console.Events;
 
 
-namespace Composite.Workflow.Foundation.PluginFacades
+namespace Composite.C1Console.Workflow.Foundation.PluginFacades
 {
     internal static class WorkflowRuntimeProviderPluginFacade
     {

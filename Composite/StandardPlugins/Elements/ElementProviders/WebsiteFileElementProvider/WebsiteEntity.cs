@@ -1,4 +1,4 @@
-﻿namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
+﻿namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
     /// <summary>    
     /// </summary>

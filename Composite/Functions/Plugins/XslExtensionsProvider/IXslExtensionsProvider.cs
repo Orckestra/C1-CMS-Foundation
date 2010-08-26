@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Composite.Functions.Plugins.FunctionProvider.Runtime;
 using Composite.Functions.Plugins.XslExtensionsProvider.Runtime;
-using Composite.Types;
+using Composite.Core.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 namespace Composite.Functions.Plugins.XslExtensionsProvider

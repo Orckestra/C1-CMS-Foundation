@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using Composite.Collections.Generic;
+using Composite.Core.Collections.Generic;
 using Composite.Data.Streams;
-using Composite.Types;
+using Composite.Core.Types;
 
 namespace Composite.Data.Plugins.DataProvider.Streams
 {

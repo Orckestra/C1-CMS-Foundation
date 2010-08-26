@@ -8,11 +8,11 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation.PluginFacades;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Data.ProcessControlled;
-using Composite.EventSystem;
-using Composite.Transactions;
+using Composite.C1Console.Events;
+using Composite.Data.Transactions;
 using System.Transactions;
-using Composite.Logging;
-using Composite.StringExtensions;
+using Composite.Core.Logging;
+using Composite.Core.Extensions;
 
 
 namespace Composite.Data

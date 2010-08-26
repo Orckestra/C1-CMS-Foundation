@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Linq;
-using Composite.Serialization;
+using Composite.Core.Serialization;
 
 
 namespace Composite.Data.DynamicTypes

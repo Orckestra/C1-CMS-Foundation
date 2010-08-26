@@ -2,10 +2,10 @@
 using Composite.Functions;
 using System.Collections.Generic;
 using System.Web;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 using System.Xml;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Request
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Request
 {
 	internal sealed class QueryStringXmlFormattedDateTimeValueFunction :  StandardFunctionBase
 	{

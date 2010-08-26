@@ -3,13 +3,13 @@ using System.Linq;
 using Composite.Data.Types;
 using Composite.Data;
 using System.Workflow.Activities;
-using Composite.Workflow;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageTypeElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddNewPageTypeWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddNewPageTypeWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public AddNewPageTypeWorkflow()
         {
@@ -50,7 +50,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
 
             this.CloseCurrentView();
             this.RefreshCurrentEntityToken();
-            this.ExecuteWorklow(pageType.GetDataEntityToken(), WorkflowFacade.GetWorkflowType("Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageTypeElementProvider.EditPageTypeWorkflow"));
+            this.ExecuteWorklow(pageType.GetDataEntityToken(), WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider.EditPageTypeWorkflow"));
         }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using System.Configuration;
-using Composite.Forms.Flows;
-using Composite.Forms.Flows.Plugins.UiContainerFactory;
+using Composite.C1Console.Forms.Flows;
+using Composite.C1Console.Forms.Flows.Plugins.UiContainerFactory;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Forms.WebChannel.UiContainerFactories
+namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
 {
     [ConfigurationElementType(typeof(TemplatedUiContainerFactoryData))]
     internal sealed class TemplatedUiContainerFactory : Base.BaseTemplatedUiContainerFactory

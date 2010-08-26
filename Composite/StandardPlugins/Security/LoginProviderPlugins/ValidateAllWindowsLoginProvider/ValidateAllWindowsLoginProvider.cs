@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Management;
-using Composite.Security.Plugins.LoginProvider;
+using Composite.C1Console.Security.Plugins.LoginProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Security.LoginProviderPlugins.ValidateAllWindowsLoginProvider
+namespace Composite.Plugins.Security.LoginProviderPlugins.ValidateAllWindowsLoginProvider
 {
     [Assembler(typeof(NonConfigurableLoginProviderAssembler))]
     internal sealed class ValidateAllWindowsLoginProviderData : LoginProviderData

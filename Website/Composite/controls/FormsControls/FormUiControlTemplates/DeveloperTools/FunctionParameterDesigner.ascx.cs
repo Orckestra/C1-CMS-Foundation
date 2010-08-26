@@ -1,5 +1,5 @@
 using System;
-using Composite.StandardPlugins.Forms.WebChannel.UiControlFactories;
+using Composite.Plugins.Forms.WebChannel.UiControlFactories;
 
 
 namespace CompositeFunctionParameterDesigner

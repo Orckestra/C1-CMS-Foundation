@@ -8,24 +8,24 @@ using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Xml.Linq;
 using Composite;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.ConsoleEventSystem;
-using Composite.Elements;
-using Composite.Pages;
-using Composite.Security;
-using Composite.IO;
-using Composite.Xml;
-using Composite.Types;
-using Composite.WebClient;
-using Composite.WebClient.Services.TreeServiceObjects;
-using Composite.WebClient.FlowMediators;
-using Composite.WebClient.Services.TreeServiceObjects.ExtensionMethods;
+using Composite.C1Console.Events;
+using Composite.C1Console.Elements;
+using Composite.Data;
+using Composite.C1Console.Security;
+using Composite.Core.IO;
+using Composite.Core.Xml;
+using Composite.Core.Types;
+using Composite.Core.WebClient;
+using Composite.Core.WebClient.Services.TreeServiceObjects;
+using Composite.Core.WebClient.FlowMediators;
+using Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods;
 
 // Search token stuff
-using Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider;
-using Composite.StandardPlugins.Elements.ElementProviders.AllFunctionsElementProvider;
+using Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider;
+using Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvider;
 
 
 [WebService(Namespace = "http://www.composite.net/ns/management")]
@@ -197,7 +197,7 @@ public class TreeServices : WebService
         catch (Exception ex)
         {
 
-            IConsoleMessageQueueItem errorLogEntry = new LogEntryMessageQueueItem { Sender = typeof(TreeServices), Level = Composite.Logging.LogLevel.Error, Message = ex.ToString() };
+            IConsoleMessageQueueItem errorLogEntry = new LogEntryMessageQueueItem { Sender = typeof(TreeServices), Level = Composite.Core.Logging.LogLevel.Error, Message = ex.ToString() };
             ConsoleMessageQueueFacade.Enqueue(errorLogEntry, consoleId);
             IConsoleMessageQueueItem msgBoxEntry = new MessageBoxMessageQueueItem { DialogType = DialogType.Error, Title = "Error executing action", Message = "An error occured executing the action. Please contact your system administrator or consult the log for help" };
             ConsoleMessageQueueFacade.Enqueue(msgBoxEntry, consoleId);
@@ -221,7 +221,7 @@ public class TreeServices : WebService
         }
         catch (Exception ex)
         {
-            IConsoleMessageQueueItem errorLogEntry = new LogEntryMessageQueueItem { Sender = typeof(TreeServices), Level = Composite.Logging.LogLevel.Error, Message = ex.Message };
+            IConsoleMessageQueueItem errorLogEntry = new LogEntryMessageQueueItem { Sender = typeof(TreeServices), Level = Composite.Core.Logging.LogLevel.Error, Message = ex.Message };
             ConsoleMessageQueueFacade.Enqueue(errorLogEntry, consoleId);
 
             throw;
@@ -231,7 +231,7 @@ public class TreeServices : WebService
         //}
         //else
         //{
-        //    Composite.Logging.LoggingService.LogWarning("TreeService", "Copy action from client ignored by asmx. Remember to refresh tree...");
+        //    Composite.Core.Logging.LoggingService.LogWarning("TreeService", "Copy action from client ignored by asmx. Remember to refresh tree...");
         //    return false;
         //}
     }

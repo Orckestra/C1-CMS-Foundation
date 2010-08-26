@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Workflow.Activities;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Forms.CoreUiControls;
-using Composite.IO;
-using Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider;
-using Composite.Validation.ClientValidationRules;
-using Composite.Workflow;
+using Composite.C1Console.Forms.CoreUiControls;
+using Composite.Core.IO;
+using Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider;
+using Composite.Data.Validation.ClientValidationRules;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Never)]
-    public sealed partial class AddNewMediaFileWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddNewMediaFileWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public AddNewMediaFileWorkflow()
         {
@@ -216,7 +216,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.MediaFil
                 mediaFile.FolderPath = this.FolderPath;
                 mediaFile.Title = this.GetBinding<string>("Title");
                 mediaFile.Description = this.GetBinding<string>("Description");
-                mediaFile.Culture = Users.UserSettings.CultureInfo.Name;                
+                mediaFile.Culture = C1Console.Users.UserSettings.CultureInfo.Name;                
                 mediaFile.Length = uploadedFile.ContentLength;
                 mediaFile.MimeType = MimeTypeInfo.GetCanonical(uploadedFile.ContentType);
                 

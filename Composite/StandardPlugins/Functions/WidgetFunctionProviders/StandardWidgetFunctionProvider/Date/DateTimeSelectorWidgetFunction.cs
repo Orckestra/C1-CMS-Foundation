@@ -3,10 +3,10 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 
 using Composite.Functions;
-using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
 
 
-namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Date
+namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Date
 {
     internal sealed class DateTimeSelectorWidgetFunction : CompositeWidgetFunctionBase
     {

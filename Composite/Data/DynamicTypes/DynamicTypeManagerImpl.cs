@@ -4,8 +4,8 @@ using System.Transactions;
 using Composite.Data.DynamicTypes.Foundation;
 using Composite.Data.Foundation;
 using Composite.Data.Foundation.PluginFacades;
-using Composite.EventSystem;
-using Composite.Transactions;
+using Composite.C1Console.Events;
+using Composite.Data.Transactions;
 
 
 namespace Composite.Data.DynamicTypes

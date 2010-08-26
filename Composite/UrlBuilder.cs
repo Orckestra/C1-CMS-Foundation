@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Web;
-using Composite.Extensions;
+using Composite.Core.Extensions;
 
 
 namespace Composite

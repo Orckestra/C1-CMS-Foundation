@@ -1,13 +1,13 @@
 using System.Configuration;
-using Composite.Collections.Generic;
-using Composite.ConfigurationSystem;
-using Composite.EventSystem;
-using Composite.Workflow.Plugins.WorkflowRuntimeProvider.Runtime;
+using Composite.Core.Collections.Generic;
+using Composite.Core.Configuration;
+using Composite.C1Console.Events;
+using Composite.C1Console.Workflow.Plugins.WorkflowRuntimeProvider.Runtime;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
-using Composite.Logging;
+using Composite.Core.Logging;
 
 
-namespace Composite.Workflow.Foundation
+namespace Composite.C1Console.Workflow.Foundation
 {
     internal class WorkflowRuntimeProviderRegistryImpl : IWorkflowRuntimeProviderRegistry
     {

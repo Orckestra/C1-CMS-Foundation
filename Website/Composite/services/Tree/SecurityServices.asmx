@@ -8,13 +8,13 @@ using System.Web;
 using System.Web.Services;
 using System.Web.Services.Protocols;
 
-using Composite.Types;
+using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Security;
-using Composite.WebClient;
-using Composite.WebClient.Services.SecurityServiceObjets;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Security;
+using Composite.Core.WebClient;
+using Composite.Core.WebClient.Services.SecurityServiceObjets;
+using Composite.C1Console.Events;
 
 
 [WebService(Namespace = "http://www.composite.net/ns/management")]

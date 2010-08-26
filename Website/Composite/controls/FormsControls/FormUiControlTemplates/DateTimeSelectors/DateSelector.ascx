@@ -1,7 +1,7 @@
-<%@ Control Language="C#" Inherits="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.DateTimeSelectorTemplateUserControlBase" %>
+<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.DateTimeSelectorTemplateUserControlBase" %>
 <%@ Import Namespace="System.Globalization" %>
-<%@ Import Namespace="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories" %>
-<%@ Import Namespace="Composite.Extensions" %>
+<%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
+<%@ Import Namespace="Composite.Core.Extensions" %>
 
 <script runat="server">
     bool _stateLoaded;

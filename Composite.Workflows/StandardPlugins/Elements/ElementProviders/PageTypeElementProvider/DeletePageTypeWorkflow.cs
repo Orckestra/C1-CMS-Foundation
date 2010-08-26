@@ -2,19 +2,19 @@ using System;
 using System.Linq;
 using System.Workflow.Activities;
 using Composite.Data.Types;
-using Composite.Workflow;
+using Composite.C1Console.Workflow;
 using Composite.Data;
-using Composite.ResourceSystem;
-using Composite.Actions;
-using Composite.Linq;
+using Composite.Core.ResourceSystem;
+using Composite.C1Console.Actions;
+using Composite.Core.Linq;
 using System.Collections.Generic;
 
 
-namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageTypeElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class DeletePageTypeWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class DeletePageTypeWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public DeletePageTypeWorkflow()
         {
@@ -36,7 +36,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
         {
             IPageType pageType = (IPageType)((DataEntityToken)this.EntityToken).Data;
 
-            this.Bindings.Add("MessageText", string.Format(StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTypeElementProvider", "PageType.DeletePageTypeWorkflow.Confirm.Layout.Messeage"), pageType.Name));
+            this.Bindings.Add("MessageText", string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", "PageType.DeletePageTypeWorkflow.Confirm.Layout.Messeage"), pageType.Name));
         }
 
 
@@ -45,7 +45,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
         {
             IPageType pageType = (IPageType)((DataEntityToken)this.EntityToken).Data;
 
-            this.Bindings.Add("MessageText", string.Format(StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTypeElementProvider", "PageType.DeletePageTypeWorkflow.PagesRefering.Layout.Message"), pageType.Name));
+            this.Bindings.Add("MessageText", string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", "PageType.DeletePageTypeWorkflow.PagesRefering.Layout.Message"), pageType.Name));
         }
 
 

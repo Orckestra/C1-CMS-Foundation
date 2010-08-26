@@ -2,23 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using Composite.Actions;
-using Composite.Application;
-using Composite.ConsoleEventSystem;
-using Composite.Elements;
-using Composite.Elements.Foundation;
-using Composite.Elements.Plugins.ElementProvider;
-using Composite.ResourceSystem;
-using Composite.ResourceSystem.Icons;
-using Composite.Security;
-using Composite.WebClient;
-using Composite.Workflow;
+using Composite.C1Console.Actions;
+using Composite.Core.Application;
+using Composite.C1Console.Events;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Elements.Foundation;
+using Composite.C1Console.Elements.Plugins.ElementProvider;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.C1Console.Security;
+using Composite.Core.WebClient;
+using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 {
     [ConfigurationElementType(typeof(VirtualElementProviderData))]
 
@@ -126,14 +126,14 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProv
 
             element.AddAction(new ElementAction(new ActionHandle(
                 new WorkflowActionToken(
-                    WorkflowFacade.GetWorkflowType("Composite.Users.Workflows.ChangeOwnPasswordWorkflow"),
+                    WorkflowFacade.GetWorkflowType("Composite.C1Console.Users.Workflows.ChangeOwnPasswordWorkflow"),
                     new PermissionType[] {  }
                 )))
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.Users", "ChangeOwnPasswordWorkflow.ElementActionLabel"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.Users", "ChangeOwnPasswordWorkflow.ElementActionToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.C1Console.Users", "ChangeOwnPasswordWorkflow.ElementActionLabel"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.C1Console.Users", "ChangeOwnPasswordWorkflow.ElementActionToolTip"),
                     Icon = VirtualElementProvider.ChangeOwnPasswordIcon,
                     Disabled = false,
                     ActionLocation = new ActionLocation
@@ -149,14 +149,14 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProv
 
             element.AddAction(new ElementAction(new ActionHandle(
                 new WorkflowActionToken(
-                    WorkflowFacade.GetWorkflowType("Composite.Users.Workflows.ChangeOwnCultureWorkflow"),
+                    WorkflowFacade.GetWorkflowType("Composite.C1Console.Users.Workflows.ChangeOwnCultureWorkflow"),
                     new PermissionType[] {  }
                 )))
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.Users", "ChangeOwnCultureWorkflow.ElementActionLabel"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.Users", "ChangeOwnCultureWorkflow.ElementActionToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.C1Console.Users", "ChangeOwnCultureWorkflow.ElementActionLabel"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.C1Console.Users", "ChangeOwnCultureWorkflow.ElementActionToolTip"),
                     Icon = VirtualElementProvider.ChangeOwnCultureIcon,
                     Disabled = false,
                     ActionLocation = new ActionLocation
@@ -174,14 +174,14 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProv
 
             element.AddAction(new ElementAction(new ActionHandle(
                 new WorkflowActionToken(
-                    WorkflowFacade.GetWorkflowType("Composite.Users.Workflows.ChangeOwnForeignLocaleWorkflow"),
+                    WorkflowFacade.GetWorkflowType("Composite.C1Console.Users.Workflows.ChangeOwnForeignLocaleWorkflow"),
                     new PermissionType[] {  }
                 )))
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.Users", "ChangeForeignLocaleWorkflow.ActionLabel"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.Users", "ChangeForeignLocaleWorkflow.ActionToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.C1Console.Users", "ChangeForeignLocaleWorkflow.ActionLabel"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.C1Console.Users", "ChangeForeignLocaleWorkflow.ActionToolTip"),
                     Icon = VirtualElementProvider.ChangeOwnActiveAndForeignLocaleIcon,
                     Disabled = false,
                     ActionLocation = new ActionLocation
@@ -197,7 +197,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProv
 
 
             
-            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Workflows.Tools.SendMessageToConsolesWorkflow"))))
+            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Tools.SendMessageToConsolesWorkflow"))))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -725,7 +725,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProv
 
 
 
-    internal sealed class ViewLogActionExecutor : Composite.Actions.IActionExecutor
+    internal sealed class ViewLogActionExecutor : Composite.C1Console.Actions.IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
@@ -781,7 +781,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProv
 
 
 
-    internal sealed class RestartApplicationActionExecutor : Composite.Actions.IActionExecutor
+    internal sealed class RestartApplicationActionExecutor : Composite.C1Console.Actions.IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {

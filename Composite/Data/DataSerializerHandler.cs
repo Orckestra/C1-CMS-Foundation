@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Composite.Serialization;
-using Composite.Types;
+using Composite.Core.Serialization;
+using Composite.Core.Types;
 
 
 namespace Composite.Data

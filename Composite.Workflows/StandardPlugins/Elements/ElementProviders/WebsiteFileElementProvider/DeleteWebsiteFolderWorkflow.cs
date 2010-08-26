@@ -1,16 +1,16 @@
 ﻿using System;
 using System.IO;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
-using Composite.ResourceSystem;
-using Composite.Workflow;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
+using Composite.Core.ResourceSystem;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class DeleteWebsiteFolderWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class DeleteWebsiteFolderWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public DeleteWebsiteFolderWorkflow()
         {
@@ -33,8 +33,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
             {
                 this.ShowMessage(
                         DialogType.Error,
-                        StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "DeleteWebsiteFolderWorkflow.DeleteErrorTitle"),
-                        StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "DeleteWebsiteFolderWorkflow.DeleteErrorMessage")
+                        StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "DeleteWebsiteFolderWorkflow.DeleteErrorTitle"),
+                        StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "DeleteWebsiteFolderWorkflow.DeleteErrorMessage")
                     );
             }
         }

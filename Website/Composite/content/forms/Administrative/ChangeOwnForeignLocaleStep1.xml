@@ -4,11 +4,11 @@
 		<cms:binding name="ForeignCultureName" type="System.String" />
 		<cms:binding name="ForeignCulturesList" type="System.Collections.IEnumerable" />
   </cms:bindings>
-  <cms:layout iconhandle="localization-changelocale" label="${Composite.Users, ChangeForeignLocaleWorkflow.Dialog.Label}">
-    <FieldGroup Label="${Composite.Users, ChangeForeignLocaleWorkflow.FieldGroup.Label}">
+  <cms:layout iconhandle="localization-changelocale" label="${Composite.C1Console.Users, ChangeForeignLocaleWorkflow.Dialog.Label}">
+    <FieldGroup Label="${Composite.C1Console.Users, ChangeForeignLocaleWorkflow.FieldGroup.Label}">
       <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"
-									 Label="${Composite.Users, ChangeForeignLocaleWorkflow.ForeignCultureSelector.Label}"
-									 Help="${Composite.Users, ChangeForeignLocaleWorkflow.ForeignCultureSelector.Help}">
+									 Label="${Composite.C1Console.Users, ChangeForeignLocaleWorkflow.ForeignCultureSelector.Label}"
+									 Help="${Composite.C1Console.Users, ChangeForeignLocaleWorkflow.ForeignCultureSelector.Help}">
         <KeySelector.Options>
           <cms:read source="ForeignCulturesList"/>
         </KeySelector.Options>

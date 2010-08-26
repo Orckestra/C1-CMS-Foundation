@@ -1,10 +1,10 @@
 ﻿using System.Configuration;
-using Composite.Configuration;
+using Composite.Core.Configuration;
 using Composite.Functions.Plugins.XslExtensionsProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
-namespace Composite.StandardPlugins.Functions.XslExtensionsProviders.ConfigBasedXslExtensionsProvider
+namespace Composite.Plugins.Functions.XslExtensionsProviders.ConfigBasedXslExtensionsProvider
 {
     /// <summary>    
     /// </summary>

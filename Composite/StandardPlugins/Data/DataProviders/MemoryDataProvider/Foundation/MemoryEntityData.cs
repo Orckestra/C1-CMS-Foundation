@@ -3,11 +3,11 @@ using Composite.Data;
 using System.Collections.Generic;
 using Composite.Data.Plugins.DataProvider.CodeGeneration;
 using Composite.Data.Plugins.DataProvider;
-using Composite.Types;
+using Composite.Core.Types;
 using Composite.Data.ProcessControlled;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider.Foundation
+namespace Composite.Plugins.Data.DataProviders.MemoryDataProvider.Foundation
 {
     internal sealed class MemoryEntityData
     {

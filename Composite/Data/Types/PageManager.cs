@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Composite.Collections.Generic;
+using Composite.Core.Collections.Generic;
 using Composite.Data.Caching;
 using Composite.Data.Foundation;
-using Composite.Logging;
-using Composite.StringExtensions;
-using Composite.Types;
-using NullableGuid = Composite.Types.ExtendedNullable<System.Guid>;
+using Composite.Core.Logging;
+using Composite.Core.Extensions;
+using Composite.Core.Types;
+using NullableGuid = Composite.Core.Types.ExtendedNullable<System.Guid>;
 
 namespace Composite.Data.Types
 {

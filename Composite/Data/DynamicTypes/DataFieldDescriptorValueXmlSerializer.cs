@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Composite.Serialization;
+using Composite.Core.Serialization;
 using System.Xml.Linq;
 
 

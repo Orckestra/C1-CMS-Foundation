@@ -1,6 +1,6 @@
 ﻿using System;
 using Composite.Data.Hierarchy;
-using Composite.Renderings.Data;
+using Composite.Core.WebClient.Renderings.Data;
 using Composite.Data.Types;
 
 

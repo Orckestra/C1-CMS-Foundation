@@ -12,8 +12,8 @@ using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using Composite.Functions;
 using System.Collections.Generic;
-using Composite.ResourceSystem;
-using Composite.Types;
+using Composite.Core.ResourceSystem;
+using Composite.Core.Types;
 
 public partial class Spikes_MAW_FunctionDocumentation : System.Web.UI.Page
 {

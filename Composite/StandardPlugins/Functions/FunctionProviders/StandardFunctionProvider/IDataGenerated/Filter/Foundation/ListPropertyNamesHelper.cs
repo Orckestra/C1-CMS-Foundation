@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Collections;
-using Composite.Types;
+using Composite.Core.Types;
 using Composite.Data;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated.Filter.Foundation
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated.Filter.Foundation
 {
     internal static class ListPropertyNamesHelper
     {

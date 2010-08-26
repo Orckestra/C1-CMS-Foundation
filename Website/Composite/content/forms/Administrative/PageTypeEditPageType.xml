@@ -25,40 +25,40 @@
         <cms:read source="PageType.Name"/>
       </TabPanels.Label>
 
-      <PlaceHolder Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.SettingsPlaceHolder.Label}">
-        <FieldGroup Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.SettingsFieldGroup.Label}">
+      <PlaceHolder Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.SettingsPlaceHolder.Label}">
+        <FieldGroup Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.SettingsFieldGroup.Label}">
 
-          <TextBox Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.NameTextBox.Label}"
-                   Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.NameTextBox.Help}">
+          <TextBox Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.NameTextBox.Label}"
+                   Help="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.NameTextBox.Help}">
             <TextBox.Text>
               <cms:bind source="PageType.Name" />
             </TextBox.Text>
           </TextBox>
 
 
-          <TextArea Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DescriptionTextArea.Label}"
-                    Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DescriptionTextArea.Help}">
+          <TextArea Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DescriptionTextArea.Label}"
+                    Help="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DescriptionTextArea.Help}">
             <TextArea.Text>
               <cms:bind source="PageType.Description" />
             </TextArea.Text>
           </TextArea>
 
-          <CheckBox Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.AvailableCheckBox.Label}"
-                    Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.AvailableCheckBox.Help}">
+          <CheckBox Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.AvailableCheckBox.Label}"
+                    Help="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.AvailableCheckBox.Help}">
             <CheckBox.Checked>
               <cms:bind source="PageType.Available" />
             </CheckBox.Checked>
           </CheckBox>
 
-          <CheckBox Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PresetMenuTitleCheckBox.Label}"
-                    Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PresetMenuTitleCheckBox.Help}">
+          <CheckBox Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PresetMenuTitleCheckBox.Label}"
+                    Help="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PresetMenuTitleCheckBox.Help}">
             <CheckBox.Checked>
               <cms:bind source="PageType.PresetMenuTitle" />
             </CheckBox.Checked>
           </CheckBox>
 
-          <KeySelector Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DefaultChildPageTypeKeySelector.Label}"
-                       Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DefaultChildPageTypeKeySelector.Help}"
+          <KeySelector Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DefaultChildPageTypeKeySelector.Label}"
+                       Help="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DefaultChildPageTypeKeySelector.Help}"
                        OptionsKeyField="Key" OptionsLabelField="Value" >
             <KeySelector.Options>
               <cms:read source="DefaultChildPageTypeOptions" />
@@ -72,10 +72,10 @@
       </PlaceHolder>
 
       
-      <PlaceHolder Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DataFolderApplicationPlaceHolder.Label}">
-        <FieldGroup Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DataFolderFieldGroup.Label}">          
-          <MultiKeySelector Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DataFolderMultiKeySelector.Label}"
-                            Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DataFolderMultiKeySelector.Help}"
+      <PlaceHolder Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DataFolderApplicationPlaceHolder.Label}">
+        <FieldGroup Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DataFolderFieldGroup.Label}">          
+          <MultiKeySelector Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DataFolderMultiKeySelector.Label}"
+                            Help="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DataFolderMultiKeySelector.Help}"
                             OptionsKeyField="Key" OptionsLabelField="Value" >
             <MultiKeySelector.Options>
               <cms:read source="DataFolderOptions" />
@@ -86,9 +86,9 @@
           </MultiKeySelector>          
         </FieldGroup>
 
-        <FieldGroup Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.ApplicationFieldGroup.Label}">
-          <MultiKeySelector Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.ApplicationMultiKeySelector.Label}"
-                            Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.ApplicationMultiKeySelector.Help}"
+        <FieldGroup Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.ApplicationFieldGroup.Label}">
+          <MultiKeySelector Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.ApplicationMultiKeySelector.Label}"
+                            Help="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.ApplicationMultiKeySelector.Help}"
                             OptionsKeyField="Key" OptionsLabelField="Value" >
             <MultiKeySelector.Options>
               <cms:read source="ApplicationOptions" />
@@ -101,11 +101,11 @@
       </PlaceHolder>
       
       
-      <PlaceHolder Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PageTemplatePlaceHolder.Label}">
-        <FieldGroup Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PageTemplateRestrictionFieldGroup.Label}">
+      <PlaceHolder Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PageTemplatePlaceHolder.Label}">
+        <FieldGroup Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PageTemplateRestrictionFieldGroup.Label}">
 
-          <KeySelector Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DefaultPageTemplateKeySelector.Label}"
-                       Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DefaultPageTemplateKeySelector.Help}"
+          <KeySelector Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DefaultPageTemplateKeySelector.Label}"
+                       Help="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DefaultPageTemplateKeySelector.Help}"
                        OptionsKeyField="Key" OptionsLabelField="Value" >
             <KeySelector.Options>
               <cms:read source="DefaultTemplateOptions" />
@@ -115,8 +115,8 @@
             </KeySelector.Selected>
           </KeySelector>
           
-          <MultiKeySelector Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PageTemplateRestrictionMultiKeySelector.Label}"
-                            Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PageTemplateRestrictionMultiKeySelector.Help}" 
+          <MultiKeySelector Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PageTemplateRestrictionMultiKeySelector.Label}"
+                            Help="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PageTemplateRestrictionMultiKeySelector.Help}" 
                             OptionsKeyField="Key" OptionsLabelField="Value" >
             <MultiKeySelector.Options>
               <cms:read source="TemplateRestrictionOptions" />
@@ -129,11 +129,11 @@
         </FieldGroup>
       </PlaceHolder>
 
-      <PlaceHolder Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.AvailabilityPlaceHolder.Label}">
-        <FieldGroup Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.AvailabilityFieldGroup.Label}">
+      <PlaceHolder Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.AvailabilityPlaceHolder.Label}">
+        <FieldGroup Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.AvailabilityFieldGroup.Label}">
           
-          <KeySelector Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.HomepageRelationKeySelector.Label}"
-                       Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.HomepageRelationKeySelector.Help}"
+          <KeySelector Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.HomepageRelationKeySelector.Label}"
+                       Help="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.HomepageRelationKeySelector.Help}"
                        OptionsKeyField="Key" OptionsLabelField="Value" >
             <KeySelector.Options>
               <cms:read source="HomepageRelationOptions" />
@@ -143,8 +143,8 @@
             </KeySelector.Selected>
           </KeySelector>
 
-          <MultiKeySelector Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PageTypeChildRestrictionMultiKeySelector.Label}"
-                            Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PageTypeChildRestrictionMultiKeySelector.Help}"
+          <MultiKeySelector Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PageTypeChildRestrictionMultiKeySelector.Label}"
+                            Help="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.PageTypeChildRestrictionMultiKeySelector.Help}"
                             OptionsKeyField="Key" OptionsLabelField="Value" >
             <MultiKeySelector.Options>
               <cms:read source="PageTypeChildRestrictionOptions" />

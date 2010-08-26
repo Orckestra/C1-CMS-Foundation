@@ -4,8 +4,8 @@ using System.Linq;
 using System.Transactions;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Types;
-using Composite.Transactions;
-using Composite.Types;
+using Composite.Data.Transactions;
+using Composite.Core.Types;
 
 
 namespace Composite.Data.Foundation

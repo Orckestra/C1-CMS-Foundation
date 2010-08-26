@@ -13,15 +13,15 @@ using System.Management;
 using System.IO;
 using System.Globalization;
 using System.Xml.Linq;
-using Composite.ConfigurationSystem;
+using Composite.Core.Configuration;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Elements;
-using Composite.Security;
-using Composite.Users;
-using Composite.PackageSystem;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Security;
+using Composite.C1Console.Users;
+using Composite.Core.PackageSystem;
 using Composite.Data.DynamicTypes;
-using Composite.Application;
+using Composite.Core.Application;
 
 
 [WebService(Namespace = "http://tempuri.org/")]
@@ -84,7 +84,7 @@ public class ServerConfig : System.Web.Services.WebService
         ConfigurationServices.TransformConfiguration(
             delegate(XDocument doc)
             {
-                XElement element = doc.Descendants("Composite.Instrumentation.Plugin.Runtime.PerformanceCounterProviderConfiguration").Single();
+                XElement element = doc.Descendants("Composite.Core.Instrumentation.Plugin.Runtime.PerformanceCounterProviderConfiguration").Single();
                 XAttribute attribute = element.Attribute("defaultPerformanceCounterProviderName");
 
                 if (attribute.Value == "WindowsPerformanceCounterProvider") return false;
@@ -103,7 +103,7 @@ public class ServerConfig : System.Web.Services.WebService
         ConfigurationServices.TransformConfiguration(
             delegate(XDocument doc)
             {
-                XElement element = doc.Descendants("Composite.Parallelization.Plugins.ParallelizationProviderConfiguration").Single();
+                XElement element = doc.Descendants("Composite.Core.Parallelization.Plugins.ParallelizationProviderConfiguration").Single();
                 XAttribute attribute = element.Attribute("defaultParallelizationProviderName");
                 
                 if (attribute.Value == "ParallelParallelizationProvider40") return false;
@@ -139,7 +139,7 @@ public class ServerConfig : System.Web.Services.WebService
         ConfigurationServices.TransformConfiguration(
             delegate(XDocument doc)
             {
-                XElement element = doc.Descendants("Composite.Parallelization.Plugins.ParallelizationProviderConfiguration").Single();
+                XElement element = doc.Descendants("Composite.Core.Parallelization.Plugins.ParallelizationProviderConfiguration").Single();
                 XAttribute attribute = element.Attribute("defaultParallelizationProviderName");
 
                 if (attribute.Value == "SerialParallelizationProvider") return false;

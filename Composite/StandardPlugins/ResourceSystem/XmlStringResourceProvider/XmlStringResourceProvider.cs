@@ -5,16 +5,16 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using Composite.Collections.Generic;
-using Composite.IO;
-using Composite.Logging;
-using Composite.ResourceSystem.Plugins.ResourceProvider;
+using Composite.Core.Collections.Generic;
+using Composite.Core.IO;
+using Composite.Core.Logging;
+using Composite.Core.ResourceSystem.Plugins.ResourceProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.ResourceSystem.XmlStringResourceProvider
+namespace Composite.Plugins.ResourceSystem.XmlStringResourceProvider
 {
     [ConfigurationElementType(typeof(XmlStringResourceProviderData))]
     internal sealed class XmlStringResourceProvider : IStringResourceProvider

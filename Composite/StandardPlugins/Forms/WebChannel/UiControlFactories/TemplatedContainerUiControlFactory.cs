@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web.UI;
-using Composite.Extensions;
-using Composite.Forms;
-using Composite.Forms.CoreUiControls;
-using Composite.Forms.Plugins.UiControlFactory;
-using Composite.Forms.WebChannel;
-using Composite.Logging;
-using Composite.StandardPlugins.Forms.WebChannel.Foundation;
+using Composite.Core.Extensions;
+using Composite.C1Console.Forms;
+using Composite.C1Console.Forms.CoreUiControls;
+using Composite.C1Console.Forms.Plugins.UiControlFactory;
+using Composite.C1Console.Forms.WebChannel;
+using Composite.Core.Logging;
+using Composite.Plugins.Forms.WebChannel.Foundation;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Forms.WebChannel.UiControlFactories
+namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 {
     /// <summary>
     /// Use this as base type for User Controls that render a Forms UiControl Container.

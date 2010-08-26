@@ -4,26 +4,26 @@ using System.IO;
 using System.Transactions;
 using System.Workflow.Activities;
 using System.Workflow.Runtime;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Extensions;
-using Composite.Forms.Flows;
-using Composite.ResourceSystem;
-using Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
-using Composite.Transactions;
-using Composite.Users;
-using Composite.Workflow;
-using Composite.Localization;
-using Composite.Xml;
-using Composite.StandardPlugins.Functions.FunctionProviders.XsltBasedFunctionProvider;
-using Composite.ConsoleEventSystem;
+using Composite.Core.Extensions;
+using Composite.C1Console.Forms.Flows;
+using Composite.Core.ResourceSystem;
+using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
+using Composite.Data.Transactions;
+using Composite.C1Console.Users;
+using Composite.C1Console.Workflow;
+using Composite.Core.Localization;
+using Composite.Core.Xml;
+using Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvider;
+using Composite.C1Console.Events;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddNewXsltFunctionWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddNewXsltFunctionWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         private static string _newXsltMarkup = string.Format(@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <xsl:stylesheet version=""1.0"" xmlns:xsl=""http://www.w3.org/1999/XSL/Transform""
@@ -198,7 +198,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionP
 
         private static string GetText(string key)
         {
-            return StringResourceSystemFacade.GetString("Composite.StandardPlugins.XsltBasedFunction", key);
+            return StringResourceSystemFacade.GetString("Composite.Plugins.XsltBasedFunction", key);
         }
 
         internal static string CreateXslFilePath(IXsltFunction xsltFunction)

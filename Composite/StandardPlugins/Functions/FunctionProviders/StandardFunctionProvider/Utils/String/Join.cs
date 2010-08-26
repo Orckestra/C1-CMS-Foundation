@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Composite.Functions;
-using Composite.Security;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.C1Console.Security;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.String
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.String
 {
     internal sealed class Join : StandardFunctionBase
 	{

@@ -10,8 +10,8 @@ using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Xml.Linq;
 using Composite;
-using Composite.Threading;
-using Composite.Types;
+using Composite.Core.Threading;
+using Composite.Core.Types;
 
 [WebService(Namespace = "http://www.composite.net/ns/management")]
 [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
@@ -51,7 +51,7 @@ public class Licensing : System.Web.Services.WebService
 
         pair = new KeyValuePair();
         pair.Key = "InstallationId";
-        pair.Value = Composite.GlobalSettings.InstallationInformationFacade.InstallationId.ToString();
+        pair.Value = Composite.Core.Configuration.InstallationInformationFacade.InstallationId.ToString();
         list.Add(pair);
         
         return list.ToArray();

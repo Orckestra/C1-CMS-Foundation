@@ -7,7 +7,7 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Xml;
-using Composite.WebClient;
+using Composite.Core.WebClient;
 
 
 public partial class ScriptLoaderControl : System.Web.UI.UserControl
@@ -91,7 +91,7 @@ public partial class ScriptLoaderControl : System.Web.UI.UserControl
         }
         catch (Exception e)
         {
-            Composite.Logging.LoggingService.LogError(typeof(ScriptLoaderControl).FullName, new InvalidOperationException("Failed to compile scripts", e));
+            Composite.Core.Logging.LoggingService.LogError(typeof(ScriptLoaderControl).FullName, new InvalidOperationException("Failed to compile scripts", e));
 
             writer.Write("<p> Failed to compile scripts. Exception text:");
             writer.Write(HttpUtility.HtmlEncode(e.ToString()));
@@ -110,7 +110,7 @@ public partial class ScriptLoaderControl : System.Web.UI.UserControl
         //string parentVirtualFolder = thisVirtualFolder.Substring(0, thisVirtualFolder.LastIndexOf(System.IO.Path.DirectorySeparatorChar));
         //string fullPathWindowsStyle = parentVirtualFolder.Replace( "~", HttpContext.Current.Request.ApplicationPath );
 
-        string _root = Composite.WebClient.UrlUtils.AdminRootPath;
+        string _root = Composite.Core.WebClient.UrlUtils.AdminRootPath;
 
         string _scriptmarkup = _getScriptMarkup();
         string _scriptsource = null;

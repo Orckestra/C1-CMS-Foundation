@@ -4,18 +4,18 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml.Linq;
 using System.Collections.Generic;
-using Composite.Collections.Generic;
-using Composite.Extensions;
+using Composite.Core.Collections.Generic;
+using Composite.Core.Extensions;
 using Composite.Functions;
-using Composite.Logging;
-using Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider;
-using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
+using Composite.Core.Logging;
+using Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Types;
+using Composite.Core.Types;
 
 
-namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider
+namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider
 {
     internal sealed class MediaFileSelectorWidgetFunction : CompositeWidgetFunctionBase
     {

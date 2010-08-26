@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Transactions;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
-using Composite.Elements;
-using Composite.ResourceSystem;
-using Composite.ResourceSystem.Icons;
-using Composite.Security;
-using Composite.Transactions;
-using Composite.Users;
-using Composite.Validation;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
+using Composite.C1Console.Elements;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.C1Console.Security;
+using Composite.Data.Transactions;
+using Composite.C1Console.Users;
+using Composite.Data.Validation;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Composite.Data.Types;
 
@@ -90,8 +90,8 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             {
                 VisualData = new ActionVisualizedData()
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GenericPublishProcessController", "SendToDraft"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GenericPublishProcessController", "SendToDraftToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendToDraft"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendToDraftToolTip"),
                     Icon = GenericPublishProcessController.SendBackToDraft,
                     Disabled = false,
                     ActionLocation = new ActionLocation
@@ -108,8 +108,8 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             {
                 VisualData = new ActionVisualizedData()
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GenericPublishProcessController", "SendForApproval"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GenericPublishProcessController", "SendForApprovalToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForApproval"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForApprovalToolTip"),
                     Icon = GenericPublishProcessController.SendForwardForApproval,
                     Disabled = false,
                     ActionLocation = new ActionLocation
@@ -126,8 +126,8 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             {
                 VisualData = new ActionVisualizedData()
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GenericPublishProcessController", "SendForPublication"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GenericPublishProcessController", "SendForPublicationToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForPublication"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForPublicationToolTip"),
                     Icon = GenericPublishProcessController.SendForwardForPublication,
                     Disabled = false,
                     ActionLocation = new ActionLocation
@@ -144,8 +144,8 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             {
                 VisualData = new ActionVisualizedData()
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GenericPublishProcessController", "Publish"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GenericPublishProcessController", "PublishToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "Publish"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "PublishToolTip"),
                     Icon = GenericPublishProcessController.Publish,
                     Disabled = false,
                     ActionLocation = new ActionLocation
@@ -233,8 +233,8 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 {
                     VisualData = new ActionVisualizedData()
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GenericPublishProcessController", "Unpublish"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GenericPublishProcessController", "UnpublishToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "Unpublish"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "UnpublishToolTip"),
                         Icon = GenericPublishProcessController.Unpublish,
                         Disabled = false,
                         ActionLocation = new ActionLocation
@@ -271,8 +271,8 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         {
                             VisualData = new ActionVisualizedData()
                             {
-                                Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GenericPublishProcessController", "UndoPublishedChanges"),
-                                ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GenericPublishProcessController", "UndoPublishedChangesToolTip"),
+                                Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "UndoPublishedChanges"),
+                                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "UndoPublishedChangesToolTip"),
                                 Icon = GenericPublishProcessController.UndoUnpublishedChanges,
                                 Disabled = false,
                                 ActionLocation = new ActionLocation
@@ -494,13 +494,13 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                     IManagementConsoleMessageService managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
 
                     StringBuilder sb = new System.Text.StringBuilder();
-                    sb.AppendLine(StringResourceSystemFacade.GetString("Composite.StandardPlugins.GenericPublishProcessController", "ValidationErrorMessage"));
+                    sb.AppendLine(StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "ValidationErrorMessage"));
                     foreach (ValidationResult result in validationResults)
                     {
                         sb.AppendLine(result.Message);
                     }
 
-                    managementConsoleMessageService.ShowMessage(DialogType.Error, StringResourceSystemFacade.GetString("Composite.StandardPlugins.GenericPublishProcessController", "ValidationErrorTitle"), sb.ToString());
+                    managementConsoleMessageService.ShowMessage(DialogType.Error, StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "ValidationErrorTitle"), sb.ToString());
                 }
 
                 return null;
@@ -648,7 +648,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             }
 
 
-            public static Composite.Security.ActionToken Deserialize(string serializedData)
+            public static Composite.C1Console.Security.ActionToken Deserialize(string serializedData)
             {
                 return new AwaitingApprovalActionToken();
             }
@@ -673,7 +673,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             }
 
 
-            public static Composite.Security.ActionToken Deserialize(string serializedData)
+            public static Composite.C1Console.Security.ActionToken Deserialize(string serializedData)
             {
                 return new AwaitingPublicationActionToken();
             }

@@ -16,22 +16,22 @@
 			<TabPanels.Label>
 				<cms:read source="SelectedPage.Title" />
 			</TabPanels.Label>
-			<PlaceHolder Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelPaneSettings}">
-				<FieldGroup Label="${Composite.StandardPlugins.PageElementProvider, GeneralSettings.FieldGroupLabel}">
-					<TextBox Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelPageTitle}" Help="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelPageTitleHelp}">
+			<PlaceHolder Label="${Composite.Plugins.PageElementProvider, EditPage.LabelPaneSettings}">
+				<FieldGroup Label="${Composite.Plugins.PageElementProvider, GeneralSettings.FieldGroupLabel}">
+					<TextBox Label="${Composite.Plugins.PageElementProvider, EditPage.LabelPageTitle}" Help="${Composite.Plugins.PageElementProvider, EditPage.LabelPageTitleHelp}">
 						<TextBox.Text>
 							<cms:bind source="SelectedPage.Title" />
 						</TextBox.Text>
 					</TextBox>
-					<TextArea Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelAbstract}" Help="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelAbstractHelp}">
+					<TextArea Label="${Composite.Plugins.PageElementProvider, EditPage.LabelAbstract}" Help="${Composite.Plugins.PageElementProvider, EditPage.LabelAbstractHelp}">
 						<TextArea.Text>
 							<cms:bind source="SelectedPage.Abstract" />
 						</TextArea.Text>
 					</TextArea>
 
           <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"
-									 Label="${Composite.StandardPlugins.PageElementProvider, EditPage.PageTypeSelectorLabel}"
-									 Help="${Composite.StandardPlugins.PageElementProvider, EditPage.PageTypeSelectorLabel}">
+									 Label="${Composite.Plugins.PageElementProvider, EditPage.PageTypeSelectorLabel}"
+									 Help="${Composite.Plugins.PageElementProvider, EditPage.PageTypeSelectorLabel}">
             <KeySelector.SelectedIndexChangedEventHandler>
               <cms:read source="CustomEvent01Handler"/>
             </KeySelector.SelectedIndexChangedEventHandler>
@@ -44,8 +44,8 @@
           </KeySelector>
           
 				</FieldGroup>
-				<FieldGroup Label="${Composite.StandardPlugins.PageElementProvider, PublicationSettings.FieldGroupLabel}">
-					<KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelPublicationState}" Help="${Composite.StandardPlugins.PageElementProvider, EditPage.HelpPublicationState}">
+				<FieldGroup Label="${Composite.Plugins.PageElementProvider, PublicationSettings.FieldGroupLabel}">
+					<KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.Plugins.PageElementProvider, EditPage.LabelPublicationState}" Help="${Composite.Plugins.PageElementProvider, EditPage.HelpPublicationState}">
 						<KeySelector.Selected>
 							<cms:bind source="SelectedPage.PublicationStatus" />
 						</KeySelector.Selected>
@@ -53,25 +53,25 @@
 							<cms:read source="StateOptions" />
 						</KeySelector.Options>
 					</KeySelector>
-					<DateTimeSelector Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelPublishDate}" Help="${Composite.StandardPlugins.PageElementProvider, EditPage.HelpPublishDate}">
+					<DateTimeSelector Label="${Composite.Plugins.PageElementProvider, EditPage.LabelPublishDate}" Help="${Composite.Plugins.PageElementProvider, EditPage.HelpPublishDate}">
 						<cms:bind source="PublishDate" />
 					</DateTimeSelector>
-					<DateTimeSelector Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelUnpublishDate}" Help="${Composite.StandardPlugins.PageElementProvider, EditPage.HelpUnpublishDate}">
+					<DateTimeSelector Label="${Composite.Plugins.PageElementProvider, EditPage.LabelUnpublishDate}" Help="${Composite.Plugins.PageElementProvider, EditPage.HelpUnpublishDate}">
 						<cms:bind source="UnpublishDate" />
 					</DateTimeSelector>
 				</FieldGroup>
-				<FieldGroup Label="${Composite.StandardPlugins.PageElementProvider, AdvancedSettings.FieldGroupLabel}">
-					<TextBox Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelMenuTitle}" Help="${Composite.StandardPlugins.PageElementProvider, EditPage.HelpMenuTitle}">
+				<FieldGroup Label="${Composite.Plugins.PageElementProvider, AdvancedSettings.FieldGroupLabel}">
+					<TextBox Label="${Composite.Plugins.PageElementProvider, EditPage.LabelMenuTitle}" Help="${Composite.Plugins.PageElementProvider, EditPage.HelpMenuTitle}">
 						<TextBox.Text>
 							<cms:bind source="SelectedPage.MenuTitle" />
 						</TextBox.Text>
 					</TextBox>
-					<TextBox Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelUrlTitle}" Help="${Composite.StandardPlugins.PageElementProvider, EditPage.HelpUrlTitle}">
+					<TextBox Label="${Composite.Plugins.PageElementProvider, EditPage.LabelUrlTitle}" Help="${Composite.Plugins.PageElementProvider, EditPage.HelpUrlTitle}">
 						<TextBox.Text>
 							<cms:bind source="SelectedPage.UrlTitle" />
 						</TextBox.Text>
 					</TextBox>
-					<TextBox Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelFriendlyUrl}" Help="${Composite.StandardPlugins.PageElementProvider, EditPage.HelpFriendlyUrl}">
+					<TextBox Label="${Composite.Plugins.PageElementProvider, EditPage.LabelFriendlyUrl}" Help="${Composite.Plugins.PageElementProvider, EditPage.HelpFriendlyUrl}">
 						<TextBox.Text>
 							<cms:bind source="SelectedPage.FriendlyUrl" />
 						</TextBox.Text>
@@ -79,7 +79,7 @@
 				</FieldGroup>
 			</PlaceHolder>
       
-			<internal:PageContentEditor Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelContent}">
+			<internal:PageContentEditor Label="${Composite.Plugins.PageElementProvider, EditPage.LabelContent}">
         <internal:PageContentEditor.TemplateId>
           <cms:bind source="SelectedPage.TemplateId" />
         </internal:PageContentEditor.TemplateId>
@@ -96,7 +96,7 @@
 					<cms:read source="PreviewEventHandler" />
 				</f:NullCheck.CheckValue>
 				<f:NullCheck.WhenNotNull>
-					<internal:PreviewPanel Label="${Composite.StandardPlugins.PageElementProvider, EditPage.LabelPreview}">
+					<internal:PreviewPanel Label="${Composite.Plugins.PageElementProvider, EditPage.LabelPreview}">
 						<internal:PreviewPanel.ClickEventHandler>
 							<cms:read source="PreviewEventHandler" />
 						</internal:PreviewPanel.ClickEventHandler>

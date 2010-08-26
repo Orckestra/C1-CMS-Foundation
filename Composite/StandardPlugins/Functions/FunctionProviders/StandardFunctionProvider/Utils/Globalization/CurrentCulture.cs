@@ -2,10 +2,10 @@
 using Composite.Functions;
 
 using System.Collections.Generic;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 using System.Globalization;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Globalization
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Globalization
 {
     internal sealed class CurrentCulture : StandardFunctionBase
     {

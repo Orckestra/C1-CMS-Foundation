@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Composite.EventSystem;
-using Composite.GlobalSettings;
+using Composite.C1Console.Events;
+using Composite.Core.Configuration;
 
 
 namespace Composite.Data.Caching

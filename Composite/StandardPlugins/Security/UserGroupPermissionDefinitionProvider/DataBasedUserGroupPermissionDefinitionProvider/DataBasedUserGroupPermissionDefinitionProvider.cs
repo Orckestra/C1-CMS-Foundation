@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
-using Composite.Collections.Generic;
+using Composite.Core.Collections.Generic;
 using Composite.Data;
 using Composite.Data.Caching;
 using Composite.Data.Types;
-using Composite.Security;
-using Composite.Security.Plugins.UserGroupPermissionDefinitionProvider;
-using Composite.Transactions;
+using Composite.C1Console.Security;
+using Composite.C1Console.Security.Plugins.UserGroupPermissionDefinitionProvider;
+using Composite.Data.Transactions;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 
-namespace Composite.StandardPlugins.Security.UserGroupPermissionDefinitionProvider.DataBasedUserGroupPermissionDefinitionProvider
+namespace Composite.Plugins.Security.UserGroupPermissionDefinitionProvider.DataBasedUserGroupPermissionDefinitionProvider
 {
     [ConfigurationElementType(typeof(NonConfigurableUserGroupPermissionDefinitionProvider))]
     class DataBasedUserGroupPermissionDefinitionProvider : IUserGroupPermissionDefinitionProvider

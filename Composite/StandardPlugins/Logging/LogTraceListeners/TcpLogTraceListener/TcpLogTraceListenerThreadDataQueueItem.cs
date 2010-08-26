@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 
 
-namespace Composite.StandardPlugins.Logging.LogTraceListeners.TcpLogTraceListener
+namespace Composite.Plugins.Logging.LogTraceListeners.TcpLogTraceListener
 {
     internal sealed class TcpLogTraceListenerThreadDataQueueItem
     {

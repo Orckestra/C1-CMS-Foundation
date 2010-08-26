@@ -1,6 +1,6 @@
 ﻿using System.Web.UI;
 
-namespace Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.Base
+namespace Composite.Plugins.Forms.WebChannel.UiControlFactories.Base
 {
     /// <summary>    
     /// </summary>

@@ -6,14 +6,14 @@ using System.Reflection;
 using System.Xml.Linq;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.Forms;
+using Composite.C1Console.Forms;
 using Composite.Functions;
-using Composite.ResourceSystem;
-using Composite.Types;
-using Composite.Validation;
-using Composite.Validation.ClientValidationRules;
-using Composite.Xml;
-using Composite.Security;
+using Composite.Core.ResourceSystem;
+using Composite.Core.Types;
+using Composite.Data.Validation;
+using Composite.Data.Validation.ClientValidationRules;
+using Composite.Core.Xml;
+using Composite.C1Console.Security;
 using Composite.Data.Types;
 using Composite.Data.DynamicTypes.Foundation;
 
@@ -237,8 +237,8 @@ namespace Composite.Data.DynamicTypes
                 newBindings.Add(this.PublicationStatusBindingName, GenericPublishProcessController.Draft);
 
                 IDictionary<string, string> transitionNames = new Dictionary<string, string>();
-                transitionNames.Add(GenericPublishProcessController.Draft, StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "DraftTransition"));
-                transitionNames.Add(GenericPublishProcessController.AwaitingApproval, StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "AwaitingApprovalTransition"));
+                transitionNames.Add(GenericPublishProcessController.Draft, StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DraftTransition"));
+                transitionNames.Add(GenericPublishProcessController.AwaitingApproval, StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "AwaitingApprovalTransition"));
 
                 string username = UserValidationFacade.GetUsername();
                 IEnumerable<UserPermissionDefinition> userPermissionDefinitions = PermissionTypeFacade.GetUserPermissionDefinitions(username);
@@ -356,8 +356,8 @@ namespace Composite.Data.DynamicTypes
                 bindings.Add(this.PublicationStatusBindingName, ((IPublishControlled)dataObject).PublicationStatus);
 
                 IDictionary<string, string> transitionNames = new Dictionary<string, string>();
-                transitionNames.Add(GenericPublishProcessController.Draft, StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "DraftTransition"));
-                transitionNames.Add(GenericPublishProcessController.AwaitingApproval, StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "AwaitingApprovalTransition"));
+                transitionNames.Add(GenericPublishProcessController.Draft, StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DraftTransition"));
+                transitionNames.Add(GenericPublishProcessController.AwaitingApproval, StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "AwaitingApprovalTransition"));
 
                 string username = UserValidationFacade.GetUsername();
                 IEnumerable<UserPermissionDefinition> userPermissionDefinitions = PermissionTypeFacade.GetUserPermissionDefinitions(username);
@@ -690,7 +690,7 @@ namespace Composite.Data.DynamicTypes
                     new XElement(mainNamespace + "KeySelector",
                         new XAttribute("OptionsKeyField", "Key"),
                         new XAttribute("OptionsLabelField", "Value"),
-                        new XAttribute("Label", "${Composite.StandardPlugins.GeneratedDataTypesElementProvider, LabelPublicationState}"),
+                        new XAttribute("Label", "${Composite.Plugins.GeneratedDataTypesElementProvider, LabelPublicationState}"),
                         new XElement(mainNamespace + "KeySelector.Selected",
                             new XElement(cmsNamespace + "bind",
                                 new XAttribute("source", this.PublicationStatusBindingName)

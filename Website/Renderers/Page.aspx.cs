@@ -8,11 +8,11 @@ using System.Web.UI;
 using Composite;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Pages;
-using Composite.Renderings;
-using Composite.Renderings.Page;
-using Composite.Security;
-using Composite.WebClient;
+using Composite.Data;
+using Composite.Core.WebClient.Renderings;
+using Composite.Core.WebClient.Renderings.Page;
+using Composite.C1Console.Security;
+using Composite.Core.WebClient;
 
 
 public partial class Renderers_Page : System.Web.UI.Page
@@ -56,7 +56,7 @@ public partial class Renderers_Page : System.Web.UI.Page
 
         _dataScope = new DataScope(DataScopeIdentifier.FromPublicationScope(_url.PublicationScope), _url.Locale); // IDisposable, Disposed in OnUnload
 
-        var pageManager = Composite.Pages.PageManager.Create(_url.PublicationScope, _url.Locale);
+        var pageManager = Composite.Data.PageManager.Create(_url.PublicationScope, _url.Locale);
 
         IPage page = pageManager.GetPageById(_url.PageId);
 
@@ -125,7 +125,7 @@ public partial class Renderers_Page : System.Web.UI.Page
         base.Render(new HtmlTextWriter(sw));
 
         string xhtml = PageUrlHelper.ChangeRenderingPageUrlsToPublic(markupBuilder.ToString());
-        xhtml = Composite.Xml.XhtmlPrettifier.Prettify(xhtml);
+        xhtml = Composite.Core.Xml.XhtmlPrettifier.Prettify(xhtml);
 
         writer.Write(xhtml);
     }

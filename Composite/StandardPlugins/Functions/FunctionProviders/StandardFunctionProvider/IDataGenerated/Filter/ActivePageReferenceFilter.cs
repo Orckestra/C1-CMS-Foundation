@@ -7,12 +7,12 @@ using Composite.Data.Caching;
 using Composite.Data.Foundation;
 using Composite.Data.Types;
 using Composite.Functions;
-using Composite.Linq.ExpressionVisitors;
-using Composite.Renderings.Page;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Core.Linq.ExpressionVisitors;
+using Composite.Core.WebClient.Renderings.Page;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated.Filter
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated.Filter
 {
 	internal sealed class ActivePageReferenceFilter<T> : StandardFunctionBase
 	{

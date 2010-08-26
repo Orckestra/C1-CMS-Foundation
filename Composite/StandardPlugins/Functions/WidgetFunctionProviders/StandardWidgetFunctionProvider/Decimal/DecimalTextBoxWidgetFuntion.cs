@@ -3,11 +3,11 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 
 using Composite.Functions;
-using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
-using Composite.Forms.CoreUiControls;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
+using Composite.C1Console.Forms.CoreUiControls;
 
 
-namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Decimal
+namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Decimal
 {
 	internal sealed class DecimalTextBoxWidgetFuntion : CompositeWidgetFunctionBase
     {

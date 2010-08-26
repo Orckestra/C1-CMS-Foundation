@@ -1,16 +1,16 @@
 using System;
 using System.Linq;
-using Composite.Workflow;
-using Composite.PackageSystem;
+using Composite.C1Console.Workflow;
+using Composite.Core.PackageSystem;
 using Composite.Data.Types;
 using Composite.Data;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddPackageSourceWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddPackageSourceWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         private bool _urlIsValid = false;
 
@@ -56,7 +56,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
                 _urlIsValid = true;
                 if (serverUrlValidationResult == ServerUrlValidationResult.Invalid)
                 {
-                    this.ShowFieldMessage("Url", "${Composite.StandardPlugins.PackageElementProvider, AddAddOnSource.Step1.UrlNonAddOnServer}");
+                    this.ShowFieldMessage("Url", "${Composite.Plugins.PackageElementProvider, AddAddOnSource.Step1.UrlNonAddOnServer}");
                     _urlIsValid = false;
                 }
                 else if (serverUrlValidationResult == ServerUrlValidationResult.Https)
@@ -73,7 +73,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
             }
             catch (Exception)
             {
-                this.ShowFieldMessage("Url", "${Composite.StandardPlugins.PackageElementProvider, AddAddOnSource.Step1.UrlNotValid}");
+                this.ShowFieldMessage("Url", "${Composite.Plugins.PackageElementProvider, AddAddOnSource.Step1.UrlNotValid}");
             }
         }
 

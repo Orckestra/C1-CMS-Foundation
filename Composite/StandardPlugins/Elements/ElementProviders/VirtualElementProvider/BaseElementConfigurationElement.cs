@@ -3,7 +3,7 @@ using System.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 {
     internal class BaseElementConfigurationElement : NameTypeConfigurationElement
     {

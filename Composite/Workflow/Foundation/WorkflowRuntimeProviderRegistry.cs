@@ -1,7 +1,7 @@
-using Composite.EventSystem;
+using Composite.C1Console.Events;
 
 
-namespace Composite.Workflow.Foundation
+namespace Composite.C1Console.Workflow.Foundation
 {
     internal static class WorkflowRuntimeProviderRegistry
     {

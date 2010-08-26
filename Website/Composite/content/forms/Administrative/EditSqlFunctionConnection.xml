@@ -8,18 +8,18 @@
     <cms:layout.label>
       <cms:read source="SqlConnection.Name" />
     </cms:layout.label>
-    <FieldGroup Label="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunctionConnection.LabelFieldGroup}">
-      <TextBox Label="${Composite.StandardPlugins.SqlFunction, EditSqlFunctionConnection.LabelName}" Help="${Composite.StandardPlugins.SqlFunction, EditSqlFunctionConnection.HelpName}">
+    <FieldGroup Label="${Composite.Plugins.SqlFunction, AddEditSqlFunctionConnection.LabelFieldGroup}">
+      <TextBox Label="${Composite.Plugins.SqlFunction, EditSqlFunctionConnection.LabelName}" Help="${Composite.Plugins.SqlFunction, EditSqlFunctionConnection.HelpName}">
         <TextBox.Text>
           <cms:bind source="SqlConnection.Name" />
         </TextBox.Text>
       </TextBox>
-      <TextBox Label="${Composite.StandardPlugins.SqlFunction, EditSqlFunctionConnection.LabelConnectionString}" Help="${Composite.StandardPlugins.SqlFunction, EditSqlFunctionConnection.HelpConnectionString}">
+      <TextBox Label="${Composite.Plugins.SqlFunction, EditSqlFunctionConnection.LabelConnectionString}" Help="${Composite.Plugins.SqlFunction, EditSqlFunctionConnection.HelpConnectionString}">
         <TextBox.Text>
           <cms:bind source="ConnectionString" />
         </TextBox.Text>
       </TextBox>
-      <CheckBox ItemLabel="${Composite.StandardPlugins.SqlFunction, EditSqlFunctionConnection.LabelIsMSSQLCheckBox}" Label="${Composite.StandardPlugins.SqlFunction, EditSqlFunctionConnection.LabelIsMSSQL}">
+      <CheckBox ItemLabel="${Composite.Plugins.SqlFunction, EditSqlFunctionConnection.LabelIsMSSQLCheckBox}" Label="${Composite.Plugins.SqlFunction, EditSqlFunctionConnection.LabelIsMSSQL}">
         <CheckBox.Checked>
           <cms:bind source="SqlConnection.IsMsSql" />
         </CheckBox.Checked>

@@ -12,13 +12,13 @@ using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Security;
-using Composite.Renderings.Page;
+using Composite.C1Console.Security;
+using Composite.Core.WebClient.Renderings.Page;
 using System.Globalization;
 using System.Xml.Xsl;
 using System.Xml;
 using Composite.Data.ProcessControlled;
-using Composite.Users;
+using Composite.C1Console.Users;
 
 public partial class ViewUnpublishedItems : System.Web.UI.Page
 {

@@ -1,4 +1,4 @@
-using Composite.Serialization;
+using Composite.Core.Serialization;
 
 
 namespace Composite.Data

@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
-using Composite.Validation.Validators;
+using Composite.Data.Validation.Validators;
 
 
 namespace Composite.Data.Plugins.DataProvider.CodeGeneration
@@ -102,7 +102,7 @@ namespace Composite.Data.Plugins.DataProvider.CodeGeneration
                 }
                 else if (superInterface != typeof(IData))
                 {
-                    Logging.LoggingService.LogWarning("PropertyList", string.Format("The interface '{0}' does not inherit '{1}'", superInterface, typeof(IData)));
+                    Core.Logging.LoggingService.LogWarning("PropertyList", string.Format("The interface '{0}' does not inherit '{1}'", superInterface, typeof(IData)));
                 }
             }
         }

@@ -1,7 +1,7 @@
 ﻿using System;
 using Composite.Data.Hierarchy;
 using Composite.Data.Hierarchy.DataAncestorProviders;
-using Composite.Validation.Validators;
+using Composite.Data.Validation.Validators;
 using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 
 
@@ -34,7 +34,7 @@ namespace Composite.Data.Types
 
 
         [NotNullValidator()]
-        [Composite.Validation.Validators.PasswordValidator()]
+        [Composite.Data.Validation.Validators.PasswordValidator()]
         [StoreFieldType(PhysicalStoreFieldType.String, 256)]
         [ImmutableFieldId("{C0230DEB-5394-4819-BE18-A60CF5FA69F0}")]
         string EncryptedPassword { get; set; }

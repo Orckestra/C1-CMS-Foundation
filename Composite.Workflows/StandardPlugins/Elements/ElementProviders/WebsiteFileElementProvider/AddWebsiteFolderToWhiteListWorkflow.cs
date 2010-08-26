@@ -1,14 +1,14 @@
 using System;
 using System.Linq;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Workflow;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
-    public sealed partial class AddWebsiteFolderToWhiteListWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddWebsiteFolderToWhiteListWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public AddWebsiteFolderToWhiteListWorkflow()
         {

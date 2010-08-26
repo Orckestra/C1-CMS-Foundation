@@ -1,12 +1,12 @@
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
-using Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider.CodeGeneration.Foundation;
-using Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider.Foundation;
-using Composite.Types;
+using Composite.Plugins.Data.DataProviders.MemoryDataProvider.CodeGeneration.Foundation;
+using Composite.Plugins.Data.DataProviders.MemoryDataProvider.Foundation;
+using Composite.Core.Types;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider.CodeGeneration
+namespace Composite.Plugins.Data.DataProviders.MemoryDataProvider.CodeGeneration
 {
     internal sealed class MemoryDataProviderCodeGenerator
     {
@@ -49,12 +49,12 @@ namespace Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider.CodeGe
             buildManagerCompileUnit.AddTypes(_namespaceName, CreateDataIdClasses());
 
             buildManagerCompileUnit.AddAssemblyReference(typeof(System.Linq.IQueryable).Assembly);
-            buildManagerCompileUnit.AddAssemblyReference(typeof(Composite.Linq.ExpressionCreator).Assembly);
-            buildManagerCompileUnit.AddAssemblyReference(typeof(Composite.Types.ExtendedNullable<>).Assembly);
+            buildManagerCompileUnit.AddAssemblyReference(typeof(Composite.Core.Linq.ExpressionCreator).Assembly);
+            buildManagerCompileUnit.AddAssemblyReference(typeof(Composite.Core.Types.ExtendedNullable<>).Assembly);
             buildManagerCompileUnit.AddAssemblyReference(typeof(Composite.Data.DataSourceId).Assembly);
             buildManagerCompileUnit.AddAssemblyReference(typeof(Composite.Data.ProcessControlled.IProcessControlled).Assembly);
-            buildManagerCompileUnit.AddAssemblyReference(typeof(Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider.MemoryDataProvider).Assembly);
-            buildManagerCompileUnit.AddAssemblyReference(typeof(Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider.Foundation.IMemoryEntityKey).Assembly);
+            buildManagerCompileUnit.AddAssemblyReference(typeof(Composite.Plugins.Data.DataProviders.MemoryDataProvider.MemoryDataProvider).Assembly);
+            buildManagerCompileUnit.AddAssemblyReference(typeof(Composite.Plugins.Data.DataProviders.MemoryDataProvider.Foundation.IMemoryEntityKey).Assembly);
 
 
             foreach (MemoryEntityData memoryEntityData in _memoryEntityDatas)

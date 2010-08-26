@@ -13,11 +13,11 @@ using System.Xml.Linq;
 using Composite;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider.Streams;
-using Composite.Extensions;
+using Composite.Core.Extensions;
 using Composite.Data.Types;
-using Composite.Logging;
-using Composite.Renderings;
-using Composite.WebClient;
+using Composite.Core.Logging;
+using Composite.Core.WebClient.Renderings;
+using Composite.Core.WebClient;
 
 
 public class ShowMedia : IHttpHandler, IReadOnlySessionState
@@ -94,7 +94,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
         context.Response.AddHeader("Content-Disposition", "{0};filename=\"{1}\"".FormatWith((download ? "attachment" : "inline"), encodedFileName));
 
-        if (Composite.Security.UserValidationFacade.IsLoggedIn() == false)
+        if (Composite.C1Console.Security.UserValidationFacade.IsLoggedIn() == false)
         {
             context.Response.Cache.SetExpires(DateTime.Now.AddMinutes(60));
             context.Response.Cache.SetCacheability(HttpCacheability.Private);

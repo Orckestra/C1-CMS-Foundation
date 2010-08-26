@@ -1,16 +1,16 @@
 using System;
 using System.Linq;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Users;
-using Composite.Workflow;
+using Composite.C1Console.Users;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddNewSqlFunctionProviderWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddNewSqlFunctionProviderWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public AddNewSqlFunctionProviderWorkflow()
         {

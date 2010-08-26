@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Composite.StringExtensions;
+using Composite.Core.Extensions;
 
 namespace Composite.Functions
 {

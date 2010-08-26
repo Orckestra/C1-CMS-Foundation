@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Composite;
-using Composite.ResourceSystem;
-using Composite.StandardPlugins.Forms.WebChannel.UiContainerFactories;
-using Composite.StandardPlugins.Forms.WebChannel.UiControlFactories;
-using Composite.WebClient;
-using Composite.WebClient.UiControlLib;
+using Composite.Core.ResourceSystem;
+using Composite.Plugins.Forms.WebChannel.UiContainerFactories;
+using Composite.Plugins.Forms.WebChannel.UiControlFactories;
+using Composite.Core.WebClient;
+using Composite.Core.WebClient.UiControlLib;
 
 public partial class Composite_Forms_DocumentExecutionContainer : TemplatedUiContainerBase
 {

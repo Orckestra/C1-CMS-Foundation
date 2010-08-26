@@ -9,19 +9,19 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
-using Composite.Caching;
+using Composite.Core.Caching;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Extensions;
+using Composite.Core.Extensions;
 using Composite.Functions;
 using Composite.Functions.ManagedParameters;
-using Composite.Security;
-using Composite.Security.Cryptography;
+using Composite.C1Console.Security;
+using Composite.C1Console.Security.Cryptography;
 using Composite.Sql;
-using Composite.Types;
+using Composite.Core.Types;
 
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.SqlFunctionProvider
+namespace Composite.Plugins.Functions.FunctionProviders.SqlFunctionProvider
 {
     /// <summary>    
     /// </summary>

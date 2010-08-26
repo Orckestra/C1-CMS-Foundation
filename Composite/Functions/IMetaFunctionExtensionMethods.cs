@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using Composite.Extensions;
-using Composite.ResourceSystem;
+using Composite.Core.Extensions;
+using Composite.Core.ResourceSystem;
 
 
 namespace Composite.Functions

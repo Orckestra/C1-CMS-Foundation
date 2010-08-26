@@ -4,19 +4,19 @@
     <cms:binding name="NewSqlConnection" type="Composite.Data.Types.ISqlConnection, Composite" />
     <cms:binding name="ConnectionString" type="System.String" />
   </cms:bindings>
-  <cms:layout iconhandle="sql-based-connection-add" label="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunctionConnection.LabelDialog}">
-    <FieldGroup Label="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunctionConnection.LabelFieldGroup}">
-      <TextBox Label="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunctionConnection.LabelName}" Help="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunctionConnection.HelpName}">
+  <cms:layout iconhandle="sql-based-connection-add" label="${Composite.Plugins.SqlFunction, AddNewSqlFunctionConnection.LabelDialog}">
+    <FieldGroup Label="${Composite.Plugins.SqlFunction, AddEditSqlFunctionConnection.LabelFieldGroup}">
+      <TextBox Label="${Composite.Plugins.SqlFunction, AddNewSqlFunctionConnection.LabelName}" Help="${Composite.Plugins.SqlFunction, AddNewSqlFunctionConnection.HelpName}">
         <TextBox.Text>
           <cms:bind source="NewSqlConnection.Name" />
         </TextBox.Text>
       </TextBox>
-      <TextBox Label="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunctionConnection.LabelConnectionString}" Help="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunctionConnection.HelpConnectionString}">
+      <TextBox Label="${Composite.Plugins.SqlFunction, AddNewSqlFunctionConnection.LabelConnectionString}" Help="${Composite.Plugins.SqlFunction, AddNewSqlFunctionConnection.HelpConnectionString}">
         <TextBox.Text>
           <cms:bind source="ConnectionString" />
         </TextBox.Text>
       </TextBox>
-      <CheckBox ItemLabel="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunctionConnection.LabelIsMSSQLCheckBox}" Label="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunctionConnection.LabelIsMSSQL}">
+      <CheckBox ItemLabel="${Composite.Plugins.SqlFunction, AddNewSqlFunctionConnection.LabelIsMSSQLCheckBox}" Label="${Composite.Plugins.SqlFunction, AddNewSqlFunctionConnection.LabelIsMSSQL}">
         <CheckBox.Checked>
           <cms:bind source="NewSqlConnection.IsMsSql" />
         </CheckBox.Checked>

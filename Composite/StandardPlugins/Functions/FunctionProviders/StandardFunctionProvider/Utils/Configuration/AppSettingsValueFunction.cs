@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using Composite.Functions;
 using System.Configuration;
-using Composite.Security;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.ResourceSystem;
+using Composite.C1Console.Security;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Core.ResourceSystem;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Configuration
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Configuration
 {
     internal sealed class AppSettingsValueFunction : StandardFunctionBase
 	{

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 
-using Composite.Elements;
+using Composite.C1Console.Elements;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 {
     internal sealed class FolderElementNode : BaseElementNode
     {

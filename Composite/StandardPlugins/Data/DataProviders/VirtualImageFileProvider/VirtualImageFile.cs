@@ -2,7 +2,7 @@
 using Composite.Data.Types;
 using Composite.Data;
 
-namespace Composite.StandardPlugins.Data.DataProviders.VirtualImageFileProvider
+namespace Composite.Plugins.Data.DataProviders.VirtualImageFileProvider
 {
 	internal sealed class VirtualImageFile : IImageFile
 	{

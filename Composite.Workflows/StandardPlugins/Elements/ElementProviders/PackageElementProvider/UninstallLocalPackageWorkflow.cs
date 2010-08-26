@@ -1,18 +1,16 @@
 using System;
-using System.Linq;
-using Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider;
 using System.Collections.Generic;
-using Composite.Workflow;
-using Composite.Actions;
-using Composite.ResourceSystem;
-using Composite.ConsoleEventSystem;
-using Composite.EventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
+using Composite.Core.ResourceSystem;
+using Composite.Plugins.Elements.ElementProviders.PackageElementProvider;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.PackageSystem.Workflow
+namespace Composite.Core.PackageSystem.Workflow
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class UninstallLocalAddOnWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class UninstallLocalAddOnWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public UninstallLocalAddOnWorkflow()
         {
@@ -89,7 +87,7 @@ namespace Composite.PackageSystem.Workflow
         private void showErrorCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
             List<string> rowHeader = new List<string>();
-            rowHeader.Add(StringResourceSystemFacade.ParseString("${Composite.StandardPlugins.PackageElementProvider, UninstallLocalAddOn.ShowError.MessageTitle}"));
+            rowHeader.Add(StringResourceSystemFacade.ParseString("${Composite.Plugins.PackageElementProvider, UninstallLocalAddOn.ShowError.MessageTitle}"));
 
             this.UpdateBinding("ErrorHeader", rowHeader);
         }

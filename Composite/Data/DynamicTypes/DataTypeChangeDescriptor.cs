@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
-using Composite.StringExtensions;
+using Composite.Core.Extensions;
 
 
 namespace Composite.Data.DynamicTypes

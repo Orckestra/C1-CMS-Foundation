@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Workflow.Activities;
 using System.Xml.Linq;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Types;
 using Composite.Functions;
-using Composite.Extensions;
-using Composite.ResourceSystem;
-using Composite.Types;
-using Composite.Users;
-using Composite.Workflow;
-using Composite.Xml;
+using Composite.Core.Extensions;
+using Composite.Core.ResourceSystem;
+using Composite.Core.Types;
+using Composite.C1Console.Users;
+using Composite.C1Console.Workflow;
+using Composite.Core.Xml;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddNewVisualFunctionWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddNewVisualFunctionWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public AddNewVisualFunctionWorkflow()
         {
@@ -48,8 +48,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProv
         {
             ShowMessage(
                 DialogType.Message,
-                StringResourceSystemFacade.GetString("Composite.StandardPlugins.VisualFunction", "AddNew.MissingActiveLanguageTitle"),
-                StringResourceSystemFacade.GetString("Composite.StandardPlugins.VisualFunction", "AddNew.MissingActiveLanguageMessage"));
+                StringResourceSystemFacade.GetString("Composite.Plugins.VisualFunction", "AddNew.MissingActiveLanguageTitle"),
+                StringResourceSystemFacade.GetString("Composite.Plugins.VisualFunction", "AddNew.MissingActiveLanguageMessage"));
         }
 
 

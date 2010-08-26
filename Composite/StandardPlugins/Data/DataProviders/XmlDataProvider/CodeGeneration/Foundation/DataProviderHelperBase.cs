@@ -3,10 +3,10 @@ using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml.Linq;
-using Composite.Collections.Generic;
+using Composite.Core.Collections.Generic;
 using Composite.Data;
 
-namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation
+namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation
 {
     /// <summary>    
     /// </summary>

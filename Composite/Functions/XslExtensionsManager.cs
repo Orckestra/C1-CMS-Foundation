@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Xml.Xsl;
 using Composite.Functions.Foundation;
 using Composite.Functions.Foundation.PluginFacades;
-using Composite.Logging;
-using Composite.StringExtensions;
-using Composite.Types;
+using Composite.Core.Logging;
+using Composite.Core.Extensions;
+using Composite.Core.Types;
 
 namespace Composite.Functions
 {

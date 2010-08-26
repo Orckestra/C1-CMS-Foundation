@@ -2,7 +2,7 @@ using System;
 using System.Workflow.Activities;
 
 
-namespace Composite.Workflow
+namespace Composite.C1Console.Workflow
 {
     /// <summary>    
     /// </summary>

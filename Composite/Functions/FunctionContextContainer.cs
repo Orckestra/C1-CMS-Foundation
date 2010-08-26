@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System;
-using Composite.Types;
+using Composite.Core.Types;
 using System.Xml.Linq;
 
 

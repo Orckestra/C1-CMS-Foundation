@@ -4,9 +4,9 @@
     <cms:binding name="ErrorHeader" type="System.Object" />
     <cms:binding name="Errors" type="System.Object" />
   </cms:bindings>
-  <cms:layout iconhandle="package-install-package" label="${Composite.StandardPlugins.PackageElementProvider, InstallRemoteAddOn.ShowError.LayoutLabel}">
+  <cms:layout iconhandle="package-install-package" label="${Composite.Plugins.PackageElementProvider, InstallRemoteAddOn.ShowError.LayoutLabel}">
     <PlaceHolder>
-      <InfoBox Label="${Composite.StandardPlugins.PackageElementProvider, InstallRemoteAddOn.ShowError.InfoTableCaption}">
+      <InfoBox Label="${Composite.Plugins.PackageElementProvider, InstallRemoteAddOn.ShowError.InfoTableCaption}">
         <InfoTable>
           <InfoTable.Headers>
             <cms:read source="ErrorHeader" />

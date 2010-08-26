@@ -1,7 +1,7 @@
 ﻿using System;
 using Composite.Functions;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation
 {
 	internal sealed class StandardFunctionParameterProfile
 	{

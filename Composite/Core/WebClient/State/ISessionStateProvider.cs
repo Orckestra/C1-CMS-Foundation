@@ -1,0 +1,20 @@
+﻿using System;
+using Composite.Core.WebClient.State.Runtime;
+using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
+
+namespace Composite.Core.WebClient.State
+{
+    /// <summary>
+    /// Defines access to a session state
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [CustomFactory(typeof(SessionStateProviderCustomFactory))]
+    public interface ISessionStateProvider 
+    {
+        void AddState<T>(Guid stateId, T value, DateTime exirationDate);
+        bool TryGetState<T>(Guid stateId, out T state);
+        void SetState<T>(Guid stateId, T value, DateTime exirationDate);
+        void RemoveState(Guid stateId);
+    }
+}

@@ -3,33 +3,33 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
-using Composite.Elements;
-using Composite.Elements.ElementProviderHelpers.DataGroupingProviderHelper;
-using Composite.Elements.Plugins.ElementProvider;
-using Composite.Extensions;
-using Composite.Linq;
-using Composite.Logging;
-using Composite.ResourceSystem;
-using Composite.ResourceSystem.Icons;
-using Composite.Security;
-using Composite.Serialization;
-using Composite.Types;
-using Composite.Users;
-using Composite.WebClient;
-using Composite.Workflow;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProviderHelper;
+using Composite.C1Console.Elements.Plugins.ElementProvider;
+using Composite.Core.Extensions;
+using Composite.Core.Linq;
+using Composite.Core.Logging;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.C1Console.Security;
+using Composite.Core.Serialization;
+using Composite.Core.Types;
+using Composite.C1Console.Users;
+using Composite.Core.WebClient;
+using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
     #region ToXml
     internal sealed class DataTypeDescriptorToXmlActionExecutor : IActionExecutor
@@ -51,7 +51,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                     Url = url,
                     ViewId = Guid.NewGuid().ToString(),
                     ViewType = ViewType.Main,
-                    Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "DataTypeDescriptorToXmlLabel")
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DataTypeDescriptorToXmlLabel")
                 },
                 currentConsoleId
             );
@@ -220,8 +220,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                 {
                     VisualData = new ElementVisualizedData
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "GlobalDataFolderLabel_OnlyGlobalData"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "GlobalDataFolderToolTip_OnlyGlobalData"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "GlobalDataFolderLabel_OnlyGlobalData"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "GlobalDataFolderToolTip_OnlyGlobalData"),
                         HasChildren = true,
                         Icon = GeneratedDataTypesElementProvider.InterfaceClosed,
                         OpenedIcon = GeneratedDataTypesElementProvider.InterfaceOpen
@@ -234,8 +234,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                     {
                         VisualData = new ElementVisualizedData
                         {
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "GlobalDataFolderLabel"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "GlobalDataFolderToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "GlobalDataFolderLabel"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "GlobalDataFolderToolTip"),
                             HasChildren = GlobalDataTypeFacade.GetAllGlobalDataTypes().Any(),
                             Icon = GeneratedDataTypesElementProvider.RootClosed,
                             OpenedIcon = GeneratedDataTypesElementProvider.RootOpen
@@ -246,12 +246,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
             if (_onlyShowGlobalDatas == false)
             {
                 globalDataElement.AddAction(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.AddNewInterfaceTypeWorkflow"), _addNewInterfaceTypePermissionTypes) { Payload = _providerContext.ProviderName }))
+                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.AddNewInterfaceTypeWorkflow"), _addNewInterfaceTypePermissionTypes) { Payload = _providerContext.ProviderName }))
                     {
                         VisualData = new ActionVisualizedData
                         {
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "Add"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "AddToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "Add"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "AddToolTip"),
                             Icon = GeneratedDataTypesElementProvider.AddDataTypeIcon,
                             Disabled = false,
                             ActionLocation = new ActionLocation
@@ -270,8 +270,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                 {
                     VisualData = new ActionVisualizedData
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "ViewUnpublishedItems"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "ViewUnpublishedItemsToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "ViewUnpublishedItems"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "ViewUnpublishedItemsToolTip"),
                         Icon = GeneratedDataTypesElementProvider.ListUnpublishedItemsIcon,
                         Disabled = false,
                         ActionLocation = new ActionLocation
@@ -296,8 +296,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                 {
                     VisualData = new ElementVisualizedData
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "PageDataFolderDataFolderLabel"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "PageDataFolderDataFolderToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "PageDataFolderDataFolderLabel"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "PageDataFolderDataFolderToolTip"),
                         HasChildren = pageDataFolderHasChildren,
                         Icon = GeneratedDataTypesElementProvider.RootClosed,
                         OpenedIcon = GeneratedDataTypesElementProvider.RootOpen
@@ -305,12 +305,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                 };
 
                 pageDataFolderElement.AddAction(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.AddNewAggregationTypeWorkflow"), _addNewInterfaceTypePermissionTypes) { Payload = TypeManager.SerializeType(typeof(IPage)) }))
+                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.AddNewAggregationTypeWorkflow"), _addNewInterfaceTypePermissionTypes) { Payload = TypeManager.SerializeType(typeof(IPage)) }))
                     {
                         VisualData = new ActionVisualizedData
                         {
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "AddDataFolder"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "AddDataFolderToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "AddDataFolder"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "AddDataFolderToolTip"),
                             Icon = GeneratedDataTypesElementProvider.AddDataTypeIcon,
                             Disabled = false,
                             ActionLocation = new ActionLocation
@@ -332,8 +332,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                 {
                     VisualData = new ElementVisualizedData
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "PageMetaDataFolderLabel"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "PageMetaDataFolderToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "PageMetaDataFolderLabel"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "PageMetaDataFolderToolTip"),
                         HasChildren = pageMetaDataHasChildren,
                         Icon = GeneratedDataTypesElementProvider.RootClosed,
                         OpenedIcon = GeneratedDataTypesElementProvider.RootOpen
@@ -341,12 +341,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                 };
 
                 pageMetaDataElement.AddAction(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.AddNewCompositionTypeWorkflow"), _addNewInterfaceTypePermissionTypes) { Payload = TypeManager.SerializeType(typeof(IPage)) }))
+                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.AddNewCompositionTypeWorkflow"), _addNewInterfaceTypePermissionTypes) { Payload = TypeManager.SerializeType(typeof(IPage)) }))
                     {
                         VisualData = new ActionVisualizedData
                         {
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "AddMetaDataLabel"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "AddMetaDataToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "AddMetaDataLabel"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "AddMetaDataToolTip"),
                             Icon = GeneratedDataTypesElementProvider.AddDataTypeIcon,
                             Disabled = false,
                             ActionLocation = new ActionLocation
@@ -544,12 +544,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
 
 
                 element.AddAction(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.AddNewDataWorkflow"), _addNewDataPermissionTypes) { DoIgnoreEntityTokenLocking = true }))
+                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.AddNewDataWorkflow"), _addNewDataPermissionTypes) { DoIgnoreEntityTokenLocking = true }))
                     {
                         VisualData = new ActionVisualizedData
                         {
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "AddData"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "AddDataToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "AddData"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "AddDataToolTip"),
                             Icon = GeneratedDataTypesElementProvider.AddDataIcon,
                             Disabled = false,
                             ActionLocation = new ActionLocation
@@ -569,8 +569,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                     {
                         VisualData = new ActionVisualizedData
                         {
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "ToXmlLabel"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "ToXmlToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "ToXmlLabel"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "ToXmlToolTip"),
                             Icon = GeneratedDataTypesElementProvider.ToXmlIcon,
                             Disabled = false,
                             ActionLocation = new ActionLocation
@@ -601,12 +601,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                 if (DataLocalizationFacade.IsLocalized(type) == false)
                 {
                     element.AddAction(
-                        new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EnableTypeLocalizationWorkflow"), _editInterfaceTypePermissionTypes)))
+                        new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EnableTypeLocalizationWorkflow"), _editInterfaceTypePermissionTypes)))
                         {
                             VisualData = new ActionVisualizedData
                             {
-                                Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "EnableLocalization"),
-                                ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "EnableLocalizationToolTip"),
+                                Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EnableLocalization"),
+                                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EnableLocalizationToolTip"),
                                 Icon = GeneratedDataTypesElementProvider.LocalizeDataTypeIcon,
                                 Disabled = DataLocalizationFacade.ActiveLocalizationCultures.Any() == false,
                                 ActionLocation = new ActionLocation
@@ -622,12 +622,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                 else
                 {
                     element.AddAction(
-                        new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.DisableTypeLocalizationWorkflow"), _editInterfaceTypePermissionTypes)))
+                        new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.DisableTypeLocalizationWorkflow"), _editInterfaceTypePermissionTypes)))
                         {
                             VisualData = new ActionVisualizedData
                             {
-                                Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "DisableLocalization"),
-                                ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "DisableLocalizationToolTip"),
+                                Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DisableLocalization"),
+                                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DisableLocalizationToolTip"),
                                 Icon = GeneratedDataTypesElementProvider.DelocalizeDataTypeIcon,
                                 Disabled = false,
                                 ActionLocation = new ActionLocation
@@ -643,12 +643,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
             }
 
             element.AddAction(
-                new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditInterfaceTypeWorkflow"), _editInterfaceTypePermissionTypes) { Payload = _providerContext.ProviderName }))
+                new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditInterfaceTypeWorkflow"), _editInterfaceTypePermissionTypes) { Payload = _providerContext.ProviderName }))
                 {
                     VisualData = new ActionVisualizedData
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "Edit"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "EditToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "Edit"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditToolTip"),
                         Icon = GeneratedDataTypesElementProvider.EditDataTypeIcon,
                         Disabled = false,
                         ActionLocation = new ActionLocation
@@ -662,12 +662,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                 });
 
             element.AddAction(
-                new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.DeleteInterfaceTypeWorkflow"), _deleteInterfaceTypePermissionTypes) { Payload = _providerContext.ProviderName }))
+                new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.DeleteInterfaceTypeWorkflow"), _deleteInterfaceTypePermissionTypes) { Payload = _providerContext.ProviderName }))
                 {
                     VisualData = new ActionVisualizedData
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "Delete"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "DeleteToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "Delete"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DeleteToolTip"),
                         Icon = GeneratedDataTypesElementProvider.DeleteDataTypeIcon,
                         Disabled = false,
                         ActionLocation = new ActionLocation
@@ -681,12 +681,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                 });
 
             element.AddAction(
-                new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditFormWorkflow"), _editFormMarkupPermissionTypes) { Payload = _providerContext.ProviderName, DoIgnoreEntityTokenLocking = true }))
+                new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditFormWorkflow"), _editFormMarkupPermissionTypes) { Payload = _providerContext.ProviderName, DoIgnoreEntityTokenLocking = true }))
                 {
                     VisualData = new ActionVisualizedData
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "EditFormMarkup"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "EditFormMarkupToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditFormMarkup"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditFormMarkupToolTip"),
                         Icon = GeneratedDataTypesElementProvider.EditFormMarkupIcon,
                         Disabled = false,
                         ActionLocation = new ActionLocation
@@ -706,14 +706,14 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
             element.AddAction(
                 new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType(
                     exists == false ?
-                        "Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.AddTypeToWhiteListWorkflow" :
-                        "Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.RemoveTypeFromWhiteListWorkflow"
+                        "Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.AddTypeToWhiteListWorkflow" :
+                        "Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.RemoveTypeFromWhiteListWorkflow"
                     ), _addNewInterfaceTypePermissionTypes) { DoIgnoreEntityTokenLocking = true }))
                 {
                     VisualData = new ActionVisualizedData
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "ShowInContent"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "ShowInContentToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "ShowInContent"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "ShowInContentToolTip"),
                         Icon = GeneratedDataTypesElementProvider.ShowincontentareaIcon,
                         Disabled = false,
                         ActionCheckedStatus = exists == false ? ActionCheckedStatus.Unchecked : ActionCheckedStatus.Checked,
@@ -764,12 +764,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                     if (DataLocalizationFacade.IsLocalized(type) == false)
                     {
                         element.AddAction(
-                            new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EnableTypeLocalizationWorkflow"), _editInterfaceTypePermissionTypes)))
+                            new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EnableTypeLocalizationWorkflow"), _editInterfaceTypePermissionTypes)))
                             {
                                 VisualData = new ActionVisualizedData
                                 {
-                                    Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "EnableLocalization"),
-                                    ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "EnableLocalizationToolTip"),
+                                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EnableLocalization"),
+                                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EnableLocalizationToolTip"),
                                     Icon = GeneratedDataTypesElementProvider.LocalizeDataTypeIcon,
                                     Disabled = DataLocalizationFacade.ActiveLocalizationCultures.Any() == false,
                                     ActionLocation = new ActionLocation
@@ -785,12 +785,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                     else
                     {
                         element.AddAction(
-                            new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.DisableTypeLocalizationWorkflow"), _editInterfaceTypePermissionTypes)))
+                            new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.DisableTypeLocalizationWorkflow"), _editInterfaceTypePermissionTypes)))
                             {
                                 VisualData = new ActionVisualizedData
                                 {
-                                    Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "DisableLocalization"),
-                                    ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "DisableLocalizationToolTip"),
+                                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DisableLocalization"),
+                                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DisableLocalizationToolTip"),
                                     Icon = GeneratedDataTypesElementProvider.DelocalizeDataTypeIcon,
                                     Disabled = false,
                                     ActionLocation = new ActionLocation
@@ -808,12 +808,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                 if (type.IsGenerated() == true)
                 {
                     element.AddAction(
-                        new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditAggregationTypeWorkflow"), _editInterfaceTypePermissionTypes) { Payload = typeName }))
+                        new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditAggregationTypeWorkflow"), _editInterfaceTypePermissionTypes) { Payload = typeName }))
                         {
                             VisualData = new ActionVisualizedData
                             {
-                                Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "EditDataFolderTypeLabel"),
-                                ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "EditDataFolderTypeToolTip"),
+                                Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditDataFolderTypeLabel"),
+                                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditDataFolderTypeToolTip"),
                                 Icon = GeneratedDataTypesElementProvider.EditDataTypeIcon,
                                 Disabled = false,
                                 ActionLocation = new ActionLocation
@@ -827,12 +827,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                         });
 
                     element.AddAction(
-                        new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.DeleteAggregationTypeWorkflow"), _deleteInterfaceTypePermissionTypes) { Payload = typeName }))
+                        new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.DeleteAggregationTypeWorkflow"), _deleteInterfaceTypePermissionTypes) { Payload = typeName }))
                         {
                             VisualData = new ActionVisualizedData
                             {
-                                Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "DeleteDataFolderTypeLabel"),
-                                ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "DeleteDataFolderTypeToolTip"),
+                                Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DeleteDataFolderTypeLabel"),
+                                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DeleteDataFolderTypeToolTip"),
                                 Icon = GeneratedDataTypesElementProvider.DeleteDataTypeIcon,
                                 Disabled = false,
                                 ActionLocation = new ActionLocation
@@ -847,12 +847,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                 }
 
                 element.AddAction(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditFormWorkflow"), _editFormMarkupPermissionTypes) { Payload = _providerContext.ProviderName, DoIgnoreEntityTokenLocking = true }))
+                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditFormWorkflow"), _editFormMarkupPermissionTypes) { Payload = _providerContext.ProviderName, DoIgnoreEntityTokenLocking = true }))
                     {
                         VisualData = new ActionVisualizedData
                         {
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "EditFormMarkup"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "EditFormMarkupToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditFormMarkup"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditFormMarkupToolTip"),
                             Icon = GeneratedDataTypesElementProvider.EditFormMarkupIcon,
                             Disabled = false,
                             ActionLocation = new ActionLocation
@@ -903,12 +903,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                 };
 
                 element.AddAction(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditCompositionTypeWorkflow"), _editInterfaceTypePermissionTypes) { Payload = typeName }))
+                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditCompositionTypeWorkflow"), _editInterfaceTypePermissionTypes) { Payload = typeName }))
                     {
                         VisualData = new ActionVisualizedData
                         {
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "EditMetaDataTypeLabel"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "EditMetaDataTypeToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditMetaDataTypeLabel"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditMetaDataTypeToolTip"),
                             Icon = GeneratedDataTypesElementProvider.EditDataTypeIcon,
                             Disabled = false,
                             ActionLocation = new ActionLocation
@@ -922,12 +922,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                     });
 
                 element.AddAction(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.DeleteCompositionTypeWorkflow"), _deleteInterfaceTypePermissionTypes) { Payload = typeName }))
+                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.DeleteCompositionTypeWorkflow"), _deleteInterfaceTypePermissionTypes) { Payload = typeName }))
                     {
                         VisualData = new ActionVisualizedData
                         {
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "DeleteMetaDataTypeLabel"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "DeleteMetaDataTypeToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DeleteMetaDataTypeLabel"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DeleteMetaDataTypeToolTip"),
                             Icon = GeneratedDataTypesElementProvider.DeleteDataTypeIcon,
                             Disabled = false,
                             ActionLocation = new ActionLocation
@@ -941,12 +941,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                     });
 
                 element.AddAction(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditFormWorkflow"), _editFormMarkupPermissionTypes) { DoIgnoreEntityTokenLocking = true }))
+                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditFormWorkflow"), _editFormMarkupPermissionTypes) { DoIgnoreEntityTokenLocking = true }))
                     {
                         VisualData = new ActionVisualizedData
                         {
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "EditFormMarkup"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "EditFormMarkupToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditFormMarkup"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditFormMarkupToolTip"),
                             Icon = GeneratedDataTypesElementProvider.EditFormMarkupIcon,
                             Disabled = false,
                             ActionLocation = new ActionLocation
@@ -989,12 +989,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
             if ( PageMetaDataFacade.GetAllMetaDataTypes().Contains(type) == false)
             {
                 element.AddAction(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditDataWorkflow"), _editDataPermissionTypes)))
+                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditDataWorkflow"), _editDataPermissionTypes)))
                     {
                         VisualData = new ActionVisualizedData
                         {
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "EditData"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "EditDataToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditData"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditDataToolTip"),
                             Icon = GeneratedDataTypesElementProvider.EditDataIcon,
                             Disabled = false,
                             ActionLocation = new ActionLocation
@@ -1009,12 +1009,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
 
 
                 element.AddAction(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.DeleteDataWorkflow"), _deleteDataPermissionTypes)))
+                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.DeleteDataWorkflow"), _deleteDataPermissionTypes)))
                     {
                         VisualData = new ActionVisualizedData
                         {
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "DeleteData"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "DeleteDataToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DeleteData"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DeleteDataToolTip"),
                             Icon = GeneratedDataTypesElementProvider.DeleteDataIcon,
                             Disabled = false,
                             ActionLocation = new ActionLocation
@@ -1051,12 +1051,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                 }
             };
 
-            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.LocalizeDataWorkflow"), _localizeDataPermissionTypes) { Payload = "Global" }))
+            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.LocalizeDataWorkflow"), _localizeDataPermissionTypes) { Payload = "Global" }))
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "LocalizeData"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "LocalizeDataToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "LocalizeData"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "LocalizeDataToolTip"),
                     Icon = GeneratedDataTypesElementProvider.LocalizeDataIcon,
                     Disabled = false,
                     ActionLocation = new ActionLocation
@@ -1085,7 +1085,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                 VisualData = new ElementVisualizedData
                 {
                     Label = label,
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "DisabledData"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DisabledData"),
                     HasChildren = false,
                     Icon = DataIconFacade.DataDisabledIcon,
                     IsDisabled = true
@@ -1107,12 +1107,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
             }
 
             element.AddAction(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.AddNewDataWorkflow"), _addNewDataPermissionTypes) { DoIgnoreEntityTokenLocking = true, Payload = sb.ToString() }))
+                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.AddNewDataWorkflow"), _addNewDataPermissionTypes) { DoIgnoreEntityTokenLocking = true, Payload = sb.ToString() }))
                     {
                         VisualData = new ActionVisualizedData
                         {
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "AddData"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "AddDataToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "AddData"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "AddDataToolTip"),
                             Icon = GeneratedDataTypesElementProvider.AddDataIcon,
                             Disabled = false,
                             ActionLocation = new ActionLocation

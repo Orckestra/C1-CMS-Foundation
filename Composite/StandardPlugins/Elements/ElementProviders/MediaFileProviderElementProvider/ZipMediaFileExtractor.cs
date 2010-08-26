@@ -5,14 +5,14 @@ using System.IO;
 using System.Linq;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Extensions;
-using Composite.IO;
+using Composite.Core.Extensions;
+using Composite.Core.IO;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Transactions;
-using Composite.Transactions;
+using Composite.Data.Transactions;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
     /// <summary>    
     /// </summary>
@@ -143,7 +143,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
                         mediaFile.FolderPath = parentPath.Combine(theEntry.Name.GetDirectory('/'), '/');
 
                         mediaFile.CreationTime = DateTime.Now;
-                        mediaFile.Culture = Users.UserSettings.CultureInfo.Name;
+                        mediaFile.Culture = C1Console.Users.UserSettings.CultureInfo.Name;
                         mediaFile.LastWriteTime = DateTime.Now;
                         mediaFile.Length = length;
                         mediaFile.MimeType = MimeTypeInfo.GetCanonicalFromExtension(Path.GetExtension(theEntry.Name));

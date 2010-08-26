@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
 {
     /// <summary>    
     /// </summary>

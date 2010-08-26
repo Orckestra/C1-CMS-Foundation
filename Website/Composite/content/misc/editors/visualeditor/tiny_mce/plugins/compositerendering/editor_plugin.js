@@ -3,8 +3,8 @@
  */
 new function () {
 	
-	//var URL_UPDATERENDERING = "${root}/content/dialogs/functions/editFunctionCall.aspx?type=Composite.Xml.XhtmlDocument,Composite&functionmarkup=${functionmarkup}";
-	var URL_UPDATERENDERING = "${root}/content/dialogs/functions/editFunctionCall.aspx?type=Composite.Xml.XhtmlDocument,Composite";
+	//var URL_UPDATERENDERING = "${root}/content/dialogs/functions/editFunctionCall.aspx?type=Composite.Core.Xml.XhtmlDocument,Composite&functionmarkup=${functionmarkup}";
+	var URL_UPDATERENDERING = "${root}/content/dialogs/functions/editFunctionCall.aspx?type=Composite.Core.Xml.XhtmlDocument,Composite";
 	
 	tinymce.create ( "tinymce.plugins.CompositeRenderingPlugin", {
 		
@@ -148,7 +148,7 @@ new function () {
 			}
 			
 			/*
-			URL_UPDATERENDERING = "${root}/content/dialogs/functions/editFunctionCall.aspx?type=Composite.Xml.XhtmlDocument,Composite&functionmarkup=${functionmarkup}";
+			URL_UPDATERENDERING = "${root}/content/dialogs/functions/editFunctionCall.aspx?type=Composite.Core.Xml.XhtmlDocument,Composite&functionmarkup=${functionmarkup}";
 			var url = URL_UPDATERENDERING.replace ( 
 				"${functionmarkup}", 
 				markup

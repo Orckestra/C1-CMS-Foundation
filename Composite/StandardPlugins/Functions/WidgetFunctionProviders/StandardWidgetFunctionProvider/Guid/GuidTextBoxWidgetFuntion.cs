@@ -3,11 +3,11 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 
 using Composite.Functions;
-using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
-using Composite.Forms.CoreUiControls;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
+using Composite.C1Console.Forms.CoreUiControls;
 
 
-namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Guid
+namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Guid
 {
 	internal sealed class GuidTextBoxWidgetFuntion : CompositeWidgetFunctionBase
     {

@@ -1,24 +1,24 @@
 using System;
 using System.IO;
 using System.Linq;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Types;
-using Composite.Logging;
-using Composite.ResourceSystem;
-using Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
-using Composite.StringExtensions;
-using Composite.Workflow;
+using Composite.Core.Logging;
+using Composite.Core.ResourceSystem;
+using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
+using Composite.Core.Extensions;
+using Composite.C1Console.Workflow;
 using System.Collections.Generic;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class DeleteXsltFunctionWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class DeleteXsltFunctionWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public DeleteXsltFunctionWorkflow()
         {
@@ -84,8 +84,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionP
             {
                 this.ShowMessage(
                         DialogType.Error,
-                        StringResourceSystemFacade.GetString("Composite.StandardPlugins.XsltBasedFunction", "DeleteXsltFunctionWorkflow.CascadeDeleteErrorTitle"),
-                        StringResourceSystemFacade.GetString("Composite.StandardPlugins.XsltBasedFunction", "DeleteXsltFunctionWorkflow.CascadeDeleteErrorMessage")
+                        StringResourceSystemFacade.GetString("Composite.Plugins.XsltBasedFunction", "DeleteXsltFunctionWorkflow.CascadeDeleteErrorTitle"),
+                        StringResourceSystemFacade.GetString("Composite.Plugins.XsltBasedFunction", "DeleteXsltFunctionWorkflow.CascadeDeleteErrorMessage")
                     );
             }
         }

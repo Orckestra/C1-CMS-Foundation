@@ -3,11 +3,11 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using Composite.Functions;
-using Composite.Security;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.C1Console.Security;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Integer
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Integer
 {
     internal sealed class Sum : StandardFunctionBase
 	{

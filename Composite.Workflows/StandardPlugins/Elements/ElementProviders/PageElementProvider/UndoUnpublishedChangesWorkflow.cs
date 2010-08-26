@@ -4,13 +4,13 @@ using Composite.Data;
 using Composite.Data.Types;
 using System.Collections.Generic;
 using System.Transactions;
-using Composite.Transactions;
+using Composite.Data.Transactions;
 using Composite.Data.ProcessControlled;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
-    public sealed partial class UndoUnpublishedChangesWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class UndoUnpublishedChangesWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public UndoUnpublishedChangesWorkflow()
         {

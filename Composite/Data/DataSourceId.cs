@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Composite.Serialization;
-using Composite.Types;
+using Composite.Core.Serialization;
+using Composite.Core.Types;
 using Composite.Data.Foundation;
 
 

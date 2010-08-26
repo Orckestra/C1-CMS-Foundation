@@ -4,20 +4,20 @@ using System.ComponentModel;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using Composite.Configuration;
+using Composite.Core.Configuration;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Types;
-using Composite.IO;
-using Composite.StandardPlugins.Data.DataProviders.FileSystemDataProvider.Foundation;
-using Composite.Types;
+using Composite.Core.IO;
+using Composite.Plugins.Data.DataProviders.FileSystemDataProvider.Foundation;
+using Composite.Core.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.FileSystemDataProvider
+namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
 {
     [ConfigurationElementType(typeof(FileSystemDataProviderData))]
     internal class FileSystemDataProvider : IWritableDataProvider

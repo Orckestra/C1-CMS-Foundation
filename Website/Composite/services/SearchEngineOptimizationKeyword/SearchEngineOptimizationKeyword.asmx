@@ -9,9 +9,9 @@ using System.Collections.Generic;
 using System.Transactions;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Users;
-using Composite.Linq;
-using Composite.Transactions;
+using Composite.C1Console.Users;
+using Composite.Core.Linq;
+using Composite.Data.Transactions;
 
 
 [WebService(Namespace = "http://www.composite.net/ns/management")]

@@ -1,0 +1,22 @@
+using System.Configuration;
+using Composite.Core.Configuration;
+using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
+
+
+namespace Composite.Core.WebClient.Plugins.WebRequestHandler.Runtime
+{
+    internal class WebRequestHandlerSettings : SerializableConfigurationSection
+    {
+        public const string SectionName = "Composite.Core.WebClient.Plugins.WebRequestConfiguration";
+
+        private const string _webRequestHandlersProperty = "WebRequestHandlers";
+        [ConfigurationProperty(_webRequestHandlersProperty, IsRequired = true)]
+        public NameTypeManagerTypeConfigurationElementCollection<WebRequestHandlerData> WebRequestHandlers
+        {
+            get
+            {
+                return (NameTypeManagerTypeConfigurationElementCollection<WebRequestHandlerData>)base[_webRequestHandlersProperty];
+            }
+        }
+    }
+}

@@ -6,18 +6,18 @@ using System.Web;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Types;
-using Composite.Logging;
+using Composite.Core.Logging;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Logging.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Logging.TraceListeners;
 using System.Transactions;
-using Composite.Transactions;
-using Composite.Linq;
+using Composite.Data.Transactions;
+using Composite.Core.Linq;
 using System.Collections.Generic;
 
 using LogEntry = Microsoft.Practices.EnterpriseLibrary.Logging.LogEntry;
 
-namespace Composite.StandardPlugins.Logging.LogTraceListeners.DataLogTraceListener
+namespace Composite.Plugins.Logging.LogTraceListeners.DataLogTraceListener
 {
     [Obsolete]
     [ConfigurationElementType(typeof(CustomTraceListenerData))]

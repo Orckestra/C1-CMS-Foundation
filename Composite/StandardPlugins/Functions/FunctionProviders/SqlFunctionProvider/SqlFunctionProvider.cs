@@ -8,7 +8,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.SqlFunctionProvider
+namespace Composite.Plugins.Functions.FunctionProviders.SqlFunctionProvider
 {
     [ConfigurationElementType(typeof(SqlFunctionProviderData))]
     internal sealed class SqlFunctionProvider : IFunctionProvider

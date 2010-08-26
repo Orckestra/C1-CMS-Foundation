@@ -1,7 +1,7 @@
 using System.Xml.Linq;
 using System;
 using Composite.Functions.Foundation;
-using Composite.ResourceSystem;
+using Composite.Core.ResourceSystem;
 
 
 namespace Composite.Functions

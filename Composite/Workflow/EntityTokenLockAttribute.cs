@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace Composite.Workflow
+namespace Composite.C1Console.Workflow
 {
     /// <summary>
     /// If this attribute is specified on a workflow, then the EntityToken will be locked

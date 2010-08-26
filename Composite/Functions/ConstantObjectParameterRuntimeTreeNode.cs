@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Composite.Functions.Foundation;
-using Composite.Types;
+using Composite.Core.Types;
 
 
 namespace Composite.Functions

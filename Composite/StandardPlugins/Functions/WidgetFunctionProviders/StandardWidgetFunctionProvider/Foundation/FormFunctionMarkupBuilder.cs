@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
 using System.Reflection;
-using Composite.Xml;
-using Composite.Types;
+using Composite.Core.Xml;
+using Composite.Core.Types;
 
-namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation
+namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation
 {
     internal static class FormFunctionMarkupBuilder
     {

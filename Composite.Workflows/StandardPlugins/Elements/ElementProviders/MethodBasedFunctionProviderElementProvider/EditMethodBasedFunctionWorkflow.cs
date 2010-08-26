@@ -2,19 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Workflow.Activities;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Extensions;
-using Composite.Types;
-using Composite.Workflow;
+using Composite.Core.Extensions;
+using Composite.Core.Types;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class EditMethodBasedFunctionWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class EditMethodBasedFunctionWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public EditMethodBasedFunctionWorkflow()
         {
@@ -40,13 +40,13 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctio
 
             if (function.UserMethodName == String.Empty)
             {
-                this.ShowFieldMessage("CurrentMethodFunctionInfo.UserMethodName", "${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, EditFunction.MethodNameEmpty}");
+                this.ShowFieldMessage("CurrentMethodFunctionInfo.UserMethodName", "${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditFunction.MethodNameEmpty}");
                 return;
             }
 
             if (!function.Namespace.IsCorrectNamespace('.'))
             {
-                this.ShowFieldMessage("CurrentMethodFunctionInfo.UserMethodName", "${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, EditFunction.InvalidNamespace}");
+                this.ShowFieldMessage("CurrentMethodFunctionInfo.UserMethodName", "${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditFunction.InvalidNamespace}");
                 return;
             }
 
@@ -54,7 +54,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctio
 
             if (type == null)
             {
-                this.ShowFieldMessage("CurrentMethodFunctionInfo.Type", "${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, EditFunction.TypeNotFound}");
+                this.ShowFieldMessage("CurrentMethodFunctionInfo.Type", "${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditFunction.TypeNotFound}");
                 return;
             }
 
@@ -65,21 +65,21 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctio
 
             if (!methodNames.Contains(function.MethodName))
             {
-                this.ShowFieldMessage("CurrentMethodFunctionInfo.MethodName", "${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, EditFunction.MethodNotInType}");
+                this.ShowFieldMessage("CurrentMethodFunctionInfo.MethodName", "${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditFunction.MethodNotInType}");
                 return;
             }
 
 
             if (methodNames.Count == 0)
             {
-                this.ShowFieldMessage("CurrentMethodFunctionInfo.Type", "${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, EditFunction.NoValidMethod}");
+                this.ShowFieldMessage("CurrentMethodFunctionInfo.Type", "${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditFunction.NoValidMethod}");
                 return;
             }
 
             int destinctCount = methodNames.Distinct().Count();
             if (destinctCount != methodNames.Count)
             {
-                this.ShowFieldMessage("CurrentMethodFunctionInfo.Type", "${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, EditFunction.MethodOverloadsNotAllowed}");
+                this.ShowFieldMessage("CurrentMethodFunctionInfo.Type", "${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditFunction.MethodOverloadsNotAllowed}");
                 return;
             }           
 

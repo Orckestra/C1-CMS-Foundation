@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
-using Composite.WebClient.UiControlLib;
-using Composite.ResourceSystem;
-using Composite.StandardPlugins.Forms.WebChannel.UiContainerFactories;
+using Composite.Core.WebClient.UiControlLib;
+using Composite.Core.ResourceSystem;
+using Composite.Plugins.Forms.WebChannel.UiContainerFactories;
 
 
 public partial class Composite_Forms_DataDialogExecutionContainer : TemplatedUiContainerBase

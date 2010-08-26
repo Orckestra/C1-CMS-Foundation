@@ -6,8 +6,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Composite.Data.Caching;
-using Composite.Extensions;
-using Composite.Linq;
+using Composite.Core.Extensions;
+using Composite.Core.Linq;
 
 
 namespace Composite.Data.Foundation

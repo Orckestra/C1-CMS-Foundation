@@ -3,12 +3,12 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using Composite.Functions;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.ResourceSystem;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Core.ResourceSystem;
 using System.Linq.Expressions;
 
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Predicates
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Predicates
 {
     internal sealed class NullableIntegerEqualsPredicateFunction : StandardFunctionBase
     {

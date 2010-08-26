@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Elements;
-using Composite.Elements.Plugins.ElementProvider;
-using Composite.IO;
-using Composite.ResourceSystem;
-using Composite.ResourceSystem.Icons;
-using Composite.Security;
-using Composite.WebClient;
-using Composite.Workflow;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Elements.Plugins.ElementProvider;
+using Composite.Core.IO;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.C1Console.Security;
+using Composite.Core.WebClient;
+using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
     [ConfigurationElementType(typeof(WebsiteFileElementProviderData))]
     internal sealed class WebsiteFileElementProvider : IHooklessElementProvider, IDataExchangingElementProvider
@@ -114,12 +114,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
             if (string.IsNullOrEmpty(_folderWhiteListKeyName) == true || DataFacade.GetData<IFolderWhiteList>(f => f.KeyName == _folderWhiteListKeyName && f.TildeBasedPath == "~\\").Any())
             {
                 element.AddAction(
-                   new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider.AddNewWebsiteFolderWorkflow"), _addNewWebsiteFolderPermissionTypes)))
+                   new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.AddNewWebsiteFolderWorkflow"), _addNewWebsiteFolderPermissionTypes)))
                    {
                        VisualData = new ActionVisualizedData
                        {
-                           Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "AddWebsiteFolderTitle"),
-                           ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "AddWebsiteFolderToolTip"),
+                           Label = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "AddWebsiteFolderTitle"),
+                           ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "AddWebsiteFolderToolTip"),
                            Icon = WebsiteFileElementProvider.AddWebsiteFolder,
                            Disabled = false,
                            ActionLocation = new ActionLocation
@@ -133,12 +133,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
                    });
 
                 element.AddAction(
-                   new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider.AddNewWebsiteFileWorkflow"), _addNewWebsiteFilePermissionTypes)))
+                   new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.AddNewWebsiteFileWorkflow"), _addNewWebsiteFilePermissionTypes)))
                    {
                        VisualData = new ActionVisualizedData
                        {
-                           Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "AddWebsiteFileTitle"),
-                           ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "AddWebsiteFileToolTip"),
+                           Label = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "AddWebsiteFileTitle"),
+                           ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "AddWebsiteFileToolTip"),
                            Icon = WebsiteFileElementProvider.AddWebsiteFile,
                            Disabled = false,
                            ActionLocation = new ActionLocation
@@ -152,12 +152,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
                    });
 
                 element.AddAction(
-                   new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider.UploadWebsiteFileWorkflow"), _uploadWebsiteFilePermissionTypes)))
+                   new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.UploadWebsiteFileWorkflow"), _uploadWebsiteFilePermissionTypes)))
                    {
                        VisualData = new ActionVisualizedData
                        {
-                           Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "UploadWebsiteFileTitle"),
-                           ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "UploadWebsiteFileToolTip"),
+                           Label = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "UploadWebsiteFileTitle"),
+                           ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "UploadWebsiteFileToolTip"),
                            Icon = WebsiteFileElementProvider.UploadWebsiteFile,
                            Disabled = false,
                            ActionLocation = new ActionLocation
@@ -382,12 +382,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
             IList<ElementAction> folderActions = new List<ElementAction>();
 
             folderActions.Add(
-                new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider.AddNewWebsiteFolderWorkflow"), _addNewWebsiteFolderPermissionTypes)))
+                new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.AddNewWebsiteFolderWorkflow"), _addNewWebsiteFolderPermissionTypes)))
                 {
                     VisualData = new ActionVisualizedData
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "AddWebsiteFolderTitle"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "AddWebsiteFolderToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "AddWebsiteFolderTitle"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "AddWebsiteFolderToolTip"),
                         Icon = WebsiteFileElementProvider.AddWebsiteFolder,
                         Disabled = false,
                         ActionLocation = new ActionLocation
@@ -401,12 +401,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
                 });
 
             folderActions.Add(
-               new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider.AddNewWebsiteFileWorkflow"), _addNewWebsiteFilePermissionTypes)))
+               new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.AddNewWebsiteFileWorkflow"), _addNewWebsiteFilePermissionTypes)))
                {
                    VisualData = new ActionVisualizedData
                    {
-                       Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "AddWebsiteFileTitle"),
-                       ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "AddWebsiteFileToolTip"),
+                       Label = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "AddWebsiteFileTitle"),
+                       ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "AddWebsiteFileToolTip"),
                        Icon = WebsiteFileElementProvider.AddWebsiteFile,
                        Disabled = false,
                        ActionLocation = new ActionLocation
@@ -420,12 +420,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
                });
 
             folderActions.Add(
-               new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider.UploadWebsiteFileWorkflow"), _uploadWebsiteFilePermissionTypes)))
+               new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.UploadWebsiteFileWorkflow"), _uploadWebsiteFilePermissionTypes)))
                {
                    VisualData = new ActionVisualizedData
                    {
-                       Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "UploadWebsiteFileTitle"),
-                       ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "UploadWebsiteFileToolTip"),
+                       Label = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "UploadWebsiteFileTitle"),
+                       ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "UploadWebsiteFileToolTip"),
                        Icon = WebsiteFileElementProvider.UploadWebsiteFile,
                        Disabled = false,
                        ActionLocation = new ActionLocation
@@ -443,12 +443,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
             if (IsDeleteActionAllowed(websiteFolder) == true)
             {
                 folderActions.Add(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider.DeleteWebsiteFolderWorkflow"), _deleteWebsiteFolderPermissionTypes)))
+                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.DeleteWebsiteFolderWorkflow"), _deleteWebsiteFolderPermissionTypes)))
                      {
                          VisualData = new ActionVisualizedData
                          {
-                             Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "DeleteWebsiteFolderTitle"),
-                             ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "DeleteWebsiteFolderToolTip"),
+                             Label = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "DeleteWebsiteFolderTitle"),
+                             ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "DeleteWebsiteFolderToolTip"),
                              Icon = DeleteWebsiteFolder,
                              Disabled = false,
                              ActionLocation = new ActionLocation
@@ -484,17 +484,17 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
 
                 if (manageableFolderWhiteLists.Where(f => f.KeyName == keyName && f.TildeBasedPath == IFolderWhiteListExtensions.GetTildePath(websiteFolderPath)).Any() == true)
                 {
-                    workflowActionToken = new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider.RemoveWebsiteFolderFromWhiteListWorkflow"), _changeWhiteListPermissionTypes);
-                    label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "RemoveFolderFromWhiteListTitle");
-                    tooltip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "RemoveFolderFromWhiteListToolTip");
+                    workflowActionToken = new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.RemoveWebsiteFolderFromWhiteListWorkflow"), _changeWhiteListPermissionTypes);
+                    label = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "RemoveFolderFromWhiteListTitle");
+                    tooltip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "RemoveFolderFromWhiteListToolTip");
                     icon = WebsiteFileElementProvider.RemoveFolderFromWhiteList;
                     checkedStatus = ActionCheckedStatus.Checked;
                 }
                 else
                 {
-                    workflowActionToken = new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider.AddWebsiteFolderToWhiteListWorkflow"), _changeWhiteListPermissionTypes);
-                    label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "AddFolderToWhiteListTitle");
-                    tooltip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "AddFolderToWhiteListToolTip");
+                    workflowActionToken = new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.AddWebsiteFolderToWhiteListWorkflow"), _changeWhiteListPermissionTypes);
+                    label = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "AddFolderToWhiteListTitle");
+                    tooltip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "AddFolderToWhiteListToolTip");
                     icon = WebsiteFileElementProvider.AddFolderToWhiteList;
                     checkedStatus = ActionCheckedStatus.Unchecked;
                 }
@@ -536,12 +536,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
             if (IsDeleteActionAllowed(websiteFile) == true)
             {
                 fileActions.Add(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider.DeleteWebsiteFileWorkflow"), _deleteWebsiteFilePermissionTypes)))
+                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.DeleteWebsiteFileWorkflow"), _deleteWebsiteFilePermissionTypes)))
                      {
                          VisualData = new ActionVisualizedData
                          {
-                             Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "DeleteWebsiteFileTitle"),
-                             ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "DeleteWebsiteFileToolTip"),
+                             Label = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "DeleteWebsiteFileTitle"),
+                             ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "DeleteWebsiteFileToolTip"),
                              Icon = DeleteWebsiteFile,
                              Disabled = false,
                              ActionLocation = new ActionLocation
@@ -561,8 +561,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
                 {
                     VisualData = new ActionVisualizedData
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "DownloadFileTitle"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "DownloadFileToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "DownloadFileTitle"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "DownloadFileToolTip"),
                         Icon = DownloadWebsiteFile,
                         Disabled = false,
                         ActionLocation = new ActionLocation
@@ -578,12 +578,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
             if (IsEditActionAllowed(websiteFile) == true)
             {
                 fileActions.Add(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider.EditWebsiteFileTextContentWorkflow"), _editWebsiteFilePermissionTypes)))
+                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.EditWebsiteFileTextContentWorkflow"), _editWebsiteFilePermissionTypes)))
                      {
                          VisualData = new ActionVisualizedData
                          {
-                             Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "EditWebsiteFileTitle"),
-                             ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.WebsiteFileElementProvider", "EditWebsiteFileToolTip"),
+                             Label = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "EditWebsiteFileTitle"),
+                             ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "EditWebsiteFileToolTip"),
                              Icon = EditWebsiteFile,
                              Disabled = websiteFile.IsReadOnly,
                              ActionLocation = new ActionLocation

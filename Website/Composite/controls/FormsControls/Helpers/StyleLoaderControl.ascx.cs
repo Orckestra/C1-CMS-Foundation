@@ -19,7 +19,7 @@ public partial class StyleLoaderControl : System.Web.UI.UserControl
 
 	protected void Page_Load ( object sender, EventArgs e )
 	{
-        string path = Composite.WebClient.UrlUtils.ResolveAdminUrl(adminRelativePath);
+        string path = Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(adminRelativePath);
         string tagGoo = string.Format("<link rel='stylesheet' type='text/css' href='{0}'/>\n", path);
 
         Control headerElementsPlaceHolder = this.FindControl(this.Page, "HeaderPlaceHolder");

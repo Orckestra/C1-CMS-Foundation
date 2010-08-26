@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
-using Composite.Types;
+using Composite.Core.Types;
 
 
 namespace Composite.Data

@@ -5,7 +5,7 @@ using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Streams;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
+namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 {
     [FileStreamManager(typeof(FileSystemFileStreamManager))]
     internal class MediaFile : FileSystemFileBase, IMediaFile 

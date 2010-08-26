@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using Composite.ResourceSystem;
+using Composite.Core.ResourceSystem;
 
 
 namespace Composite.Data.DynamicTypes

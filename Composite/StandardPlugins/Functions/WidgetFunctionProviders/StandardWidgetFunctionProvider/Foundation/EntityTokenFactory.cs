@@ -1,8 +1,8 @@
-using Composite.Security;
+using Composite.C1Console.Security;
 using Composite.Functions;
-using Composite.Extensions;
+using Composite.Core.Extensions;
 
-namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation
+namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation
 {
 	internal sealed class EntityTokenFactory
 	{

@@ -27,7 +27,7 @@ public partial class functioneditor {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::Composite.WebClient.UiControlLib.Feedback ctlFeedback;
+    protected global::Composite.Core.WebClient.UiControlLib.Feedback ctlFeedback;
     
     /// <summary>
     /// btnAddFunction control.
@@ -36,7 +36,7 @@ public partial class functioneditor {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::Composite.WebClient.UiControlLib.Generic btnAddFunction;
+    protected global::Composite.Core.WebClient.UiControlLib.Generic btnAddFunction;
     
     /// <summary>
     /// btnDeleteFunction control.
@@ -45,7 +45,7 @@ public partial class functioneditor {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::Composite.WebClient.UiControlLib.Generic btnDeleteFunction;
+    protected global::Composite.Core.WebClient.UiControlLib.Generic btnDeleteFunction;
     
     /// <summary>
     /// TreePlaceholder control.
@@ -108,7 +108,7 @@ public partial class functioneditor {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::Composite.WebClient.UiControlLib.Generic btnDefault;
+    protected global::Composite.Core.WebClient.UiControlLib.Generic btnDefault;
     
     /// <summary>
     /// btnConstant control.
@@ -117,7 +117,7 @@ public partial class functioneditor {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::Composite.WebClient.UiControlLib.Generic btnConstant;
+    protected global::Composite.Core.WebClient.UiControlLib.Generic btnConstant;
     
     /// <summary>
     /// btnInputParameter control.
@@ -126,7 +126,7 @@ public partial class functioneditor {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::Composite.WebClient.UiControlLib.Generic btnInputParameter;
+    protected global::Composite.Core.WebClient.UiControlLib.Generic btnInputParameter;
     
     /// <summary>
     /// btnFunctionCall control.
@@ -135,7 +135,7 @@ public partial class functioneditor {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::Composite.WebClient.UiControlLib.PostBackDialog btnFunctionCall;
+    protected global::Composite.Core.WebClient.UiControlLib.PostBackDialog btnFunctionCall;
     
     /// <summary>
     /// mlvWidget control.
@@ -180,7 +180,7 @@ public partial class functioneditor {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::Composite.WebClient.UiControlLib.Selector lstInputParameterName;
+    protected global::Composite.Core.WebClient.UiControlLib.Selector lstInputParameterName;
     
     /// <summary>
     /// viewFunction control.
@@ -234,7 +234,7 @@ public partial class functioneditor {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::Composite.WebClient.UiControlLib.DataInput txtLocalName;
+    protected global::Composite.Core.WebClient.UiControlLib.DataInput txtLocalName;
     
     /// <summary>
     /// viewNoSelection control.
@@ -252,5 +252,5 @@ public partial class functioneditor {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::Composite.WebClient.UiControlLib.Generic ctlSourceEditor;
+    protected global::Composite.Core.WebClient.UiControlLib.Generic ctlSourceEditor;
 }

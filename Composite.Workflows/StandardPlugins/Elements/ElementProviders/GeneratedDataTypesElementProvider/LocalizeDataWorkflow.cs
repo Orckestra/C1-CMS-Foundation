@@ -5,25 +5,25 @@ using System.Globalization;
 using System.Linq;
 using System.Transactions;
 using System.Workflow.Activities;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.ResourceSystem;
-using Composite.Transactions;
-using Composite.Types;
-using Composite.Users;
-using Composite.Linq;
-using Composite.Workflow;
+using Composite.Core.ResourceSystem;
+using Composite.Data.Transactions;
+using Composite.Core.Types;
+using Composite.C1Console.Users;
+using Composite.Core.Linq;
+using Composite.C1Console.Workflow;
 using System.Reflection;
-using Composite.Security;
+using Composite.C1Console.Security;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
-    public sealed partial class LocalizeDataWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class LocalizeDataWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public LocalizeDataWorkflow()
         {
@@ -43,11 +43,11 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
             {
                 List<string> row = new List<string>();
 
-                row.Add(StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "LocalizeDataWorkflow.ShowError.Description"));
+                row.Add(StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "LocalizeDataWorkflow.ShowError.Description"));
 
                 foreach (ReferenceFailingPropertyInfo referenceFailingPropertyInfo in referenceFailingPropertyInfos.Where(f => f.OptionalReferenceWithValue == false))
                 {
-                    row.Add(string.Format(StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "LocalizeDataWorkflow.ShowError.FieldErrorFormat"), referenceFailingPropertyInfo.DataFieldDescriptor.Name, referenceFailingPropertyInfo.ReferencedType.GetTypeTitle(), referenceFailingPropertyInfo.OriginLocaleDataValue.GetLabel()));
+                    row.Add(string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "LocalizeDataWorkflow.ShowError.FieldErrorFormat"), referenceFailingPropertyInfo.DataFieldDescriptor.Name, referenceFailingPropertyInfo.ReferencedType.GetTypeTitle(), referenceFailingPropertyInfo.OriginLocaleDataValue.GetLabel()));
                 }
 
                 List<List<string>> rows = new List<List<string>> { row };
@@ -74,10 +74,10 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
 
             if (ExistsInLocale(data, targetCultureInfo))
             {
-                string title = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider",
+                string title = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider",
                                                                     "LocalizeDataWorkflow.ShowError.LayoutLabel");
 
-                string description = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider",
+                string description = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider",
                                                                     "LocalizeDataWorkflow.ShowError.AlreadyTranslated");
                 var messageBox = new MessageBoxMessageQueueItem
                                      {
@@ -159,7 +159,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
             }
             else if (this.Payload == "Pagefolder")
             {
-                this.ExecuteWorklow(newData.GetDataEntityToken(), WorkflowFacade.GetWorkflowType("Composite.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.EditAssociatedDataWorkflow"));
+                this.ExecuteWorklow(newData.GetDataEntityToken(), WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.EditAssociatedDataWorkflow"));
             }
         }
 

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using Composite.Data;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation
+namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation
 {
     internal static class GeneretedClassesMethodCache
     {

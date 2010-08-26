@@ -7,9 +7,9 @@ using System.Web.Services;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Xml.Linq;
-using Composite.IO;
-using Composite.PackageSystem;
-using Composite.Logging;
+using Composite.Core.IO;
+using Composite.Core.PackageSystem;
+using Composite.Core.Logging;
 
 
 namespace PackageServerServiceMock

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Composite.Collections.Generic;
-using Composite.Logging;
+using Composite.Core.Collections.Generic;
+using Composite.Core.Logging;
 
 
 namespace Composite.Functions.Foundation

@@ -1,11 +1,11 @@
 <%@ Application Language="C#" %>
 <%@ Import Namespace="Composite" %>
-<%@ Import Namespace="Composite.Extensions" %>
-<%@ Import Namespace="Composite.Logging" %>
-<%@ Import Namespace="Composite.Application" %>
-<%@ Import Namespace="Composite.Instrumentation" %>
-<%@ Import Namespace="Composite.Threading" %>
-<%@ Import Namespace="Composite.WebClient" %>
+<%@ Import Namespace="Composite.Core.Extensions" %>
+<%@ Import Namespace="Composite.Core.Logging" %>
+<%@ Import Namespace="Composite.Core.Application" %>
+<%@ Import Namespace="Composite.Core.Instrumentation" %>
+<%@ Import Namespace="Composite.Core.Threading" %>
+<%@ Import Namespace="Composite.Core.WebClient" %>
 
 
 <script RunAt="server">
@@ -25,7 +25,7 @@
 
     void Application_Start(object sender, EventArgs e)
     {
-        if (Composite.ConfigurationSystem.SystemSetupFacade.IsSystemFirstTimeInitialized == false)
+        if (Composite.Core.Configuration.SystemSetupFacade.IsSystemFirstTimeInitialized == false)
         {
             return;
         }
@@ -53,7 +53,7 @@
 
     void Application_End(object sender, EventArgs e)
     {
-        if (Composite.ConfigurationSystem.SystemSetupFacade.IsSystemFirstTimeInitialized == false)
+        if (Composite.Core.Configuration.SystemSetupFacade.IsSystemFirstTimeInitialized == false)
         {
             return;
         }
@@ -70,9 +70,9 @@
             {
                 try
                 {
-                    Composite.EventSystem.GlobalEventSystemFacade.PrepareForShutDown();
+                    Composite.C1Console.Events.GlobalEventSystemFacade.PrepareForShutDown();
                     LogShutDownReason();
-                    Composite.EventSystem.GlobalEventSystemFacade.ShutDownTheSystem();
+                    Composite.C1Console.Events.GlobalEventSystemFacade.ShutDownTheSystem();
 
                     // Checking if another app domain holds the lock
                     bool haveLock = true;
@@ -88,7 +88,7 @@
                         
                     if(haveLock)
                     {
-                        Composite.Types.BuildManager.FinalizeCachingSytem();
+                        Composite.Core.Types.BuildManager.FinalizeCachingSytem();
                         TempDirectoryFacade.OnApplicationEnd();
                     }
 

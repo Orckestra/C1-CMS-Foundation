@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Workflow.Runtime;
-using Composite.Collections.Generic;
-using Composite.ConfigurationSystem;
-using Composite.Workflow.Plugins.WorkflowRuntimeProvider;
-using Composite.Workflow.Plugins.WorkflowRuntimeProvider.Runtime;
+using Composite.Core.Collections.Generic;
+using Composite.Core.Configuration;
+using Composite.C1Console.Workflow.Plugins.WorkflowRuntimeProvider;
+using Composite.C1Console.Workflow.Plugins.WorkflowRuntimeProvider.Runtime;
 
 
-namespace Composite.Workflow.Foundation.PluginFacades
+namespace Composite.C1Console.Workflow.Foundation.PluginFacades
 {
     internal class WorkflowRuntimeProviderPluginFacadeImpl : IWorkflowRuntimeProviderPluginFacade
     {

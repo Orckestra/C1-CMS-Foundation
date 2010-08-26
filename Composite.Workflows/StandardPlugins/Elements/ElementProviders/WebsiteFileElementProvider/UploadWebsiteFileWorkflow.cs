@@ -1,19 +1,19 @@
 using System;
 using System.IO;
 using System.Workflow.Activities;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
-using Composite.Elements;
-using Composite.Extensions;
-using Composite.Forms.CoreUiControls;
-using Composite.Workflow;
-using Composite.IO;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
+using Composite.C1Console.Elements;
+using Composite.Core.Extensions;
+using Composite.C1Console.Forms.CoreUiControls;
+using Composite.C1Console.Workflow;
+using Composite.Core.IO;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class UploadWebsiteFileWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class UploadWebsiteFileWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public UploadWebsiteFileWorkflow()
         {
@@ -107,8 +107,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
         {
             this.ShowMessage(
                 DialogType.Error,
-                "${Composite.StandardPlugins.WebsiteFileElementProvider, UploadFile.Error.WrongTypeTitle}",
-                "${Composite.StandardPlugins.WebsiteFileElementProvider, UploadFile.Error.WrongTypeMessage}"
+                "${Composite.Plugins.WebsiteFileElementProvider, UploadFile.Error.WrongTypeTitle}",
+                "${Composite.Plugins.WebsiteFileElementProvider, UploadFile.Error.WrongTypeMessage}"
             );
         }
 
@@ -118,8 +118,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
         {
             this.ShowMessage(
                 DialogType.Error,
-                "${Composite.StandardPlugins.WebsiteFileElementProvider, UploadFile.Error.FileExistTitle}",
-                "${Composite.StandardPlugins.WebsiteFileElementProvider, UploadFile.Error.FileExistMessage}"
+                "${Composite.Plugins.WebsiteFileElementProvider, UploadFile.Error.FileExistTitle}",
+                "${Composite.Plugins.WebsiteFileElementProvider, UploadFile.Error.FileExistMessage}"
             );
         }
     }

@@ -4,27 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Workflow.Activities;
 using System.Workflow.Runtime;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
-using Composite.ResourceSystem;
-using Composite.StringExtensions;
-using Composite.Users;
-using Composite.Validation;
-using Composite.Workflow;
-using Composite.Linq;
+using Composite.Core.ResourceSystem;
+using Composite.Core.Extensions;
+using Composite.C1Console.Users;
+using Composite.Data.Validation;
+using Composite.C1Console.Workflow;
+using Composite.Core.Linq;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
-using Composite.Validation.ClientValidationRules;
+using Composite.Data.Validation.ClientValidationRules;
 using System.Text.RegularExpressions;
-using Composite.Trees;
+using Composite.C1Console.Trees;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddNewPageWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddNewPageWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public AddNewPageWorkflow()
         {
@@ -109,8 +109,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
             managementConsoleMessageService.ShowMessage(
                 DialogType.Message,
-                StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.MissingTemplateTitle"),
-                StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.MissingTemplateMessage"));
+                StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingTemplateTitle"),
+                StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingTemplateMessage"));
         }
 
 
@@ -122,8 +122,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
             managementConsoleMessageService.ShowMessage(
                 DialogType.Message,
-                StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.MissingActiveLanguageTitle"),
-                StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.MissingActiveLanguageMessage"));
+                StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingActiveLanguageTitle"),
+                StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingActiveLanguageMessage"));
         }
 
 
@@ -134,15 +134,15 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
             {
                 ShowMessage(
                     DialogType.Message,
-                    StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.MissingPageTypeTitle"),
-                    StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.MissingPageTypeHomepageMessage"));
+                    StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingPageTypeTitle"),
+                    StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingPageTypeHomepageMessage"));
             }
             else
             {
                 ShowMessage(
                     DialogType.Message,
-                    StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.MissingPageTypeTitle"),
-                    StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.MissingPageTypeSubpageMessage"));
+                    StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingPageTypeTitle"),
+                    StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingPageTypeSubpageMessage"));
             }
         }
 
@@ -245,19 +245,19 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
             int existingPagesCount = PageServices.GetChildrenCount(parentId);
             Dictionary<string, string> sortOrder = new Dictionary<string, string>();
-            sortOrder.Add("Bottom", StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "AddNewPageStep1.LabelAddToBottom"));
+            sortOrder.Add("Bottom", StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "AddNewPageStep1.LabelAddToBottom"));
             if (existingPagesCount > 0)
             {
-                sortOrder.Add("Top", StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "AddNewPageStep1.LabelAddToTop"));
+                sortOrder.Add("Top", StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "AddNewPageStep1.LabelAddToTop"));
                 if (existingPagesCount > 1)
                 {
-                    sortOrder.Add("Relative", StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "AddNewPageStep1.LabelAddBelowOtherPage"));
+                    sortOrder.Add("Relative", StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "AddNewPageStep1.LabelAddBelowOtherPage"));
                 }
 
                 bool isAlpabeticOrdered = PageServices.IsChildrenAlphabeticOrdered(parentId);
                 if (isAlpabeticOrdered == true)
                 {
-                    sortOrder.Add("Alphabetic", StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "AddNewPageStep1.LabelAddAlphabetic"));
+                    sortOrder.Add("Alphabetic", StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "AddNewPageStep1.LabelAddAlphabetic"));
                 }
             }
             bindings.Add("SortOrder", sortOrder);
@@ -315,7 +315,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
                     fieldName = "NewPage.Title";
                 }
 
-                this.ShowFieldMessage(fieldName, "${Composite.StandardPlugins.PageElementProvider, UrlTitleNotUniqueError}");
+                this.ShowFieldMessage(fieldName, "${Composite.Plugins.PageElementProvider, UrlTitleNotUniqueError}");
                 e.Result = false;
             }
             else
@@ -324,7 +324,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
                 if (validationResults.IsValid == false && validationResults.Any(f => f.Key == "UrlTitle"))
                 {
-                    this.ShowFieldMessage("NewPage.Title", "${Composite.StandardPlugins.PageElementProvider, UrlTitleNotValidError}");
+                    this.ShowFieldMessage("NewPage.Title", "${Composite.Plugins.PageElementProvider, UrlTitleNotValidError}");
                     e.Result = false;
                 }
                 else

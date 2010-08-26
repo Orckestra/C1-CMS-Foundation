@@ -4,7 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 
 
-namespace Composite.StandardPlugins.Logging.LogTraceListeners.TcpLogTraceListener
+namespace Composite.Plugins.Logging.LogTraceListeners.TcpLogTraceListener
 {
     internal static class TcpLogTraceListenerThread
     {

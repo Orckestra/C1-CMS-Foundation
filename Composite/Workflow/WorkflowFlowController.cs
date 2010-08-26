@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Xml;
-using Composite.Actions;
-using Composite.Forms.Flows;
-using Composite.Logging;
-using Composite.Tasks;
-using Composite.Workflow.Foundation;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Forms.Flows;
+using Composite.Core.Logging;
+using Composite.C1Console.Tasks;
+using Composite.C1Console.Workflow.Foundation;
 
 
-namespace Composite.Workflow
+namespace Composite.C1Console.Workflow
 {
     internal sealed class WorkflowFlowController : IFlowController
     {
@@ -271,7 +271,7 @@ namespace Composite.Workflow
             }
             else
             {
-                Logging.LoggingService.LogVerbose("Workflow", string.Format("Cancel event suppressed because the workflow was terminated ({0})", workflowFlowToken.WorkflowInstanceId));
+                Core.Logging.LoggingService.LogVerbose("Workflow", string.Format("Cancel event suppressed because the workflow was terminated ({0})", workflowFlowToken.WorkflowInstanceId));
             }
 
             if (serviceContainer != null)

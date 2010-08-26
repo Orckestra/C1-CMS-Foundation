@@ -2,23 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Composite.Collections;
+using Composite.Core.Collections;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Elements;
-using Composite.Elements.Plugins.ElementProvider;
-using Composite.Extensions;
-using Composite.ResourceSystem;
-using Composite.ResourceSystem.Icons;
-using Composite.Security;
-using Composite.Security.Cryptography;
-using Composite.Workflow;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Elements.Plugins.ElementProvider;
+using Composite.Core.Extensions;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.C1Console.Security;
+using Composite.C1Console.Security.Cryptography;
+using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
 {
     [ConfigurationElementType(typeof(SqlFunctionElementProviderData))]
     internal sealed class SqlFunctionElementProvider : IHooklessElementProvider, IDataExchangingElementProvider, IAuxiliarySecurityAncestorProvider
@@ -74,8 +74,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElement
             {
                 VisualData = new ElementVisualizedData()
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.SqlFunction", "SqlFunctionElementProvider.RootLabel"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.SqlFunction", "SqlFunctionElementProvider.RootLabelToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", "SqlFunctionElementProvider.RootLabel"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", "SqlFunctionElementProvider.RootLabelToolTip"),
                         HasChildren = hasChildren,
                         Icon = hasChildren == true ? this.FolderIcon : this.EmptyFolderIcon,
                         OpenedIcon = OpenFolderIcon
@@ -85,14 +85,14 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElement
             element.AddAction(
                 new ElementAction(new ActionHandle(
                     new WorkflowActionToken(
-                        WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElementProvider.AddNewSqlConnectionWorkflow"),
+                        WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider.AddNewSqlConnectionWorkflow"),
                         new PermissionType[] { PermissionType.Add }
                     )))
                 {
                     VisualData = new ActionVisualizedData
                                  {
-                                     Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.SqlFunction", "SqlFunctionElementProvider.AddConnection"),
-                                     ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.SqlFunction", "SqlFunctionElementProvider.AddConnectionToolTip"),
+                                     Label = StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", "SqlFunctionElementProvider.AddConnection"),
+                                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", "SqlFunctionElementProvider.AddConnectionToolTip"),
                                      Icon = AddConnection,
                                      Disabled = false,
                                      ActionLocation = new ActionLocation
@@ -154,14 +154,14 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElement
                 element.AddAction(
                     new ElementAction(new ActionHandle(
                         new WorkflowActionToken(
-                            WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElementProvider.EditSqlConnectionWorkflow"),
+                            WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider.EditSqlConnectionWorkflow"),
                             new PermissionType[] { PermissionType.Edit }
                         )))
                     {
                         VisualData = new ActionVisualizedData
                         {
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.SqlFunction", "SqlFunctionElementProvider.EditConnection"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.SqlFunction", "SqlFunctionElementProvider.EditConnectionToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", "SqlFunctionElementProvider.EditConnection"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", "SqlFunctionElementProvider.EditConnectionToolTip"),
                             Icon = EditConnection,
                             Disabled = false,
                             ActionLocation = new ActionLocation
@@ -177,14 +177,14 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElement
                 element.AddAction(
                     new ElementAction(new ActionHandle(
                         new WorkflowActionToken(
-                            WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElementProvider.DeleteSqlConnectionWorkflow"),
+                            WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider.DeleteSqlConnectionWorkflow"),
                             new PermissionType[] { PermissionType.Delete }
                         )))
                     {
                         VisualData = new ActionVisualizedData
                         {
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.SqlFunction", "SqlFunctionElementProvider.DeleteConnection"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.SqlFunction", "SqlFunctionElementProvider.DeleteConnectionToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", "SqlFunctionElementProvider.DeleteConnection"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", "SqlFunctionElementProvider.DeleteConnectionToolTip"),
                             Icon = DeleteConnection,
                             Disabled = false,
                             ActionLocation = new ActionLocation
@@ -200,14 +200,14 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElement
                 element.AddAction(
                     new ElementAction(new ActionHandle(
                         new WorkflowActionToken(
-                            WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElementProvider.AddNewSqlFunctionProviderWorkflow"),
+                            WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider.AddNewSqlFunctionProviderWorkflow"),
                             new PermissionType[] { PermissionType.Add }
                         )))
                     {
                         VisualData = new ActionVisualizedData
                         {
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.SqlFunction", "SqlFunctionElementProvider.AddQuery"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.SqlFunction", "SqlFunctionElementProvider.AddQueryToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", "SqlFunctionElementProvider.AddQuery"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", "SqlFunctionElementProvider.AddQueryToolTip"),
                             Icon = AddConnection,
                             Disabled = false,
                             ActionLocation = new ActionLocation
@@ -341,14 +341,14 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElement
 
             element.AddAction(new ElementAction(new ActionHandle(
                 new WorkflowActionToken(
-                    WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElementProvider.AddNewSqlFunctionProviderWorkflow"),
+                    WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider.AddNewSqlFunctionProviderWorkflow"),
                     new PermissionType[] { PermissionType.Add }
                 )))
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.SqlFunction", "SqlFunctionElementProvider.AddQuery"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.SqlFunction", "SqlFunctionElementProvider.AddQueryToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", "SqlFunctionElementProvider.AddQuery"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", "SqlFunctionElementProvider.AddQueryToolTip"),
                     Icon = SqlFunctionElementProvider.AddFunction,
                     Disabled = false,
                     ActionLocation = new ActionLocation
@@ -382,14 +382,14 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElement
             element.AddAction(
                 new ElementAction(new ActionHandle(
                     new WorkflowActionToken(
-                        WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElementProvider.EditSqlFunctionProviderWorkflow"),
+                        WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider.EditSqlFunctionProviderWorkflow"),
                         new PermissionType[] { PermissionType.Edit }
                     )))
                 {
                     VisualData = new ActionVisualizedData
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.SqlFunction", "SqlFunctionElementProvider.EditQuery"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.SqlFunction", "SqlFunctionElementProvider.EditQueryToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", "SqlFunctionElementProvider.EditQuery"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", "SqlFunctionElementProvider.EditQueryToolTip"),
                         Icon = SqlFunctionElementProvider.EditFunction,
                         Disabled = false,
                         ActionLocation = new ActionLocation
@@ -405,14 +405,14 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElement
             element.AddAction(
                 new ElementAction(new ActionHandle(
                     new WorkflowActionToken(
-                        WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElementProvider.DeleteSqlFunctionProviderWorkflow"),
+                        WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider.DeleteSqlFunctionProviderWorkflow"),
                         new PermissionType[] { PermissionType.Delete }
                     )))
                 {
                     VisualData = new ActionVisualizedData
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.SqlFunction", "SqlFunctionElementProvider.DeleteQuery"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.SqlFunction", "SqlFunctionElementProvider.DeleteQueryToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", "SqlFunctionElementProvider.DeleteQuery"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", "SqlFunctionElementProvider.DeleteQueryToolTip"),
                         Icon = SqlFunctionElementProvider.DeleteFunction,
                         Disabled = false,
                         ActionLocation = new ActionLocation

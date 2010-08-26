@@ -8,8 +8,8 @@
       <cms:read source="UserGroup.Name" />
     </cms:layout.label>
     <PlaceHolder>
-      <FieldGroup Label="${Composite.StandardPlugins.UserGroupElementProvider, EditUserGroup.EditUserGroupStep1.LabelFieldGroup}">
-        <TextBox Label="${Composite.StandardPlugins.UserGroupElementProvider, EditUserGroup.EditUserGroupStep1.UserGroupNameLabel}" Help="${Composite.StandardPlugins.UserGroupElementProvider, EditUserGroup.EditUserGroupStep1.UserGroupNameHelp}">
+      <FieldGroup Label="${Composite.Plugins.UserGroupElementProvider, EditUserGroup.EditUserGroupStep1.LabelFieldGroup}">
+        <TextBox Label="${Composite.Plugins.UserGroupElementProvider, EditUserGroup.EditUserGroupStep1.UserGroupNameLabel}" Help="${Composite.Plugins.UserGroupElementProvider, EditUserGroup.EditUserGroupStep1.UserGroupNameHelp}">
           <TextBox.Text>
             <cms:bind source="UserGroup.Name" />
           </TextBox.Text>

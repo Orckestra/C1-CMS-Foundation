@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using Composite.Data;
-using Composite.Linq;
+using Composite.Core.Linq;
 using Composite.Data.Types;
-using Composite.Elements;
-using Composite.Elements.Plugins.ElementProvider;
-using Composite.ResourceSystem;
-using Composite.ResourceSystem.Icons;
-using Composite.Security;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Elements.Plugins.ElementProvider;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.C1Console.Security;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
-using Composite.Workflow;
-using Composite.Types;
+using Composite.C1Console.Workflow;
+using Composite.Core.Types;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
 {
     [ConfigurationElementType(typeof(NonConfigurableHooklessElementProvider))]
     internal sealed class UserGroupElementProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
@@ -59,20 +59,20 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementPr
             {
                 VisualData = new ElementVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.UserGroupElementProvider", "UserGroupElementProvider.RootLabel"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.UserGroupElementProvider", "UserGroupElementProvider.RootToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", "UserGroupElementProvider.RootLabel"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", "UserGroupElementProvider.RootToolTip"),
                     HasChildren = userGroupCount > 0,
                     Icon = UserGroupElementProvider.RootClosedIcon,
                     OpenedIcon = UserGroupElementProvider.RootOpenIcon
                 }
             };
 
-            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementProvider.AddNewUserGroupWorkflow"), AddNewUserGroupPermissionTypes)))
+            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider.AddNewUserGroupWorkflow"), AddNewUserGroupPermissionTypes)))
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.UserGroupElementProvider", "UserGroupElementProvider.AddNewUserGroupLabel"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.UserGroupElementProvider", "UserGroupElementProvider.AddNewUserGroupToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", "UserGroupElementProvider.AddNewUserGroupLabel"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", "UserGroupElementProvider.AddNewUserGroupToolTip"),
                     Icon = UserGroupElementProvider.AddUserGroupIcon,
                     Disabled = false,
                     ActionLocation = new ActionLocation
@@ -115,12 +115,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementPr
                     }
                 };
 
-                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementProvider.EditUserGroupWorkflow"), EditUserGroupPermissionTypes)))
+                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider.EditUserGroupWorkflow"), EditUserGroupPermissionTypes)))
                 {
                     VisualData = new ActionVisualizedData
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.UserGroupElementProvider", "UserGroupElementProvider.EditUserGroupLabel"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.UserGroupElementProvider", "UserGroupElementProvider.EditUserGroupToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", "UserGroupElementProvider.EditUserGroupLabel"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", "UserGroupElementProvider.EditUserGroupToolTip"),
                         Icon = UserGroupElementProvider.EditUserGroupIcon,
                         Disabled = false,
                         ActionLocation = new ActionLocation
@@ -133,12 +133,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementPr
                     }
                 });
 
-                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementProvider.DeleteUserGroupWorkflow"), DeleteUserGroupPermissionTypes)))
+                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider.DeleteUserGroupWorkflow"), DeleteUserGroupPermissionTypes)))
                 {
                     VisualData = new ActionVisualizedData
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.UserGroupElementProvider", "UserGroupElementProvider.DeleteUserGroupLabel"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.UserGroupElementProvider", "UserGroupElementProvider.DeleteUserGroupToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", "UserGroupElementProvider.DeleteUserGroupLabel"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", "UserGroupElementProvider.DeleteUserGroupToolTip"),
                         Icon = UserGroupElementProvider.DeleteUserGroupIcon,
                         Disabled = false,
                         ActionLocation = new ActionLocation

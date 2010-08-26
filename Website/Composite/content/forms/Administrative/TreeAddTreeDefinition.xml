@@ -7,15 +7,15 @@
     <cms:binding name="PositionName" type="System.String" />
     <cms:binding name="PositionsList" type="System.Collections.IEnumerable" />
   </cms:bindings>
-  <cms:layout label="${Composite.Trees, TreeAddTreeDefinition.Layout.Label}" iconhandle="developerapplication-treedefinition-add">
-    <FieldGroup Label="${Composite.Trees, TreeAddTreeDefinition.FieldGroup.Label}">
-      <TextBox Label="${Composite.Trees, TreeAddTreeDefinition.NameTextBox.Label}" Help="${Composite.Trees, TreeAddTreeDefinition.NameTextBox.Help}">
+  <cms:layout label="${Composite.C1Console.Trees, TreeAddTreeDefinition.Layout.Label}" iconhandle="developerapplication-treedefinition-add">
+    <FieldGroup Label="${Composite.C1Console.Trees, TreeAddTreeDefinition.FieldGroup.Label}">
+      <TextBox Label="${Composite.C1Console.Trees, TreeAddTreeDefinition.NameTextBox.Label}" Help="${Composite.C1Console.Trees, TreeAddTreeDefinition.NameTextBox.Help}">
         <cms:bind source="DefinitionName" />
       </TextBox>      
       
       <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"
-									 Label="${Composite.Trees, TreeAddTreeDefinition.TemplateSelector.Label}"
-									 Help="${Composite.Trees, TreeAddTreeDefinition.TemplateSelector.Help}">
+									 Label="${Composite.C1Console.Trees, TreeAddTreeDefinition.TemplateSelector.Label}"
+									 Help="${Composite.C1Console.Trees, TreeAddTreeDefinition.TemplateSelector.Help}">
         <KeySelector.Options>
           <cms:read source="TemplatesList"/>
         </KeySelector.Options>
@@ -25,8 +25,8 @@
       </KeySelector>    
 
       <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"
-									 Label="${Composite.Trees, TreeAddTreeDefinition.PositionSelector.Label}"
-									 Help="${Composite.Trees, TreeAddTreeDefinition.PositionSelector.Help}">
+									 Label="${Composite.C1Console.Trees, TreeAddTreeDefinition.PositionSelector.Label}"
+									 Help="${Composite.C1Console.Trees, TreeAddTreeDefinition.PositionSelector.Help}">
       <KeySelector.Options>
         <cms:read source="PositionsList"/>
       </KeySelector.Options>

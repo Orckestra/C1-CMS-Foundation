@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Composite.Users;
+using Composite.C1Console.Users;
 
 
 namespace Composite.Data.Types

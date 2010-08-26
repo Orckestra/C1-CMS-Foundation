@@ -8,7 +8,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.MethodBasedFunctionProvider
+namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvider
 {
     [ConfigurationElementType(typeof(MethodBasedFunctionProviderData))]
     internal sealed class MethodBasedFunctionProvider : IFunctionProvider

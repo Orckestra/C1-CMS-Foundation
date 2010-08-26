@@ -1,15 +1,15 @@
 using System.Configuration;
 
-using Composite.Configuration;
+using Composite.Core.Configuration;
 
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 
-namespace Composite.Workflow.Plugins.WorkflowRuntimeProvider.Runtime
+namespace Composite.C1Console.Workflow.Plugins.WorkflowRuntimeProvider.Runtime
 {
     internal sealed class WorkflowRuntimeProviderSettings : SerializableConfigurationSection
     {
-        public const string SectionName = "Composite.Workflow.Plugins.WorkflowRuntimeProviderConfiguration";
+        public const string SectionName = "Composite.C1Console.Workflow.Plugins.WorkflowRuntimeProviderConfiguration";
 
 
         private const string _defaultProviderNameProperty = "defaultProviderName";

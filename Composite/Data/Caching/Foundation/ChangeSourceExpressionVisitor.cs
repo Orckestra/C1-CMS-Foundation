@@ -1,11 +1,11 @@
 using System.Linq.Expressions;
-using Composite.Linq.Disassembled;
+using Composite.Core.Linq.Disassembled;
 
 
 namespace Composite.Data.Caching.Foundation
 {
     //MRJ: 4.0 Upgrade
-    internal sealed class ChangeSourceExpressionVisitor : Composite.Linq.Disassembled.ExpressionVisitor
+    internal sealed class ChangeSourceExpressionVisitor : Composite.Core.Linq.Disassembled.ExpressionVisitor
     {
         private Expression _newSourceExpression;
 

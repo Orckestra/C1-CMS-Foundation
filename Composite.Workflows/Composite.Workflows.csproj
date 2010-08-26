@@ -141,82 +141,76 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actions\Workflows\EntityTokenLockedWorkflow.cs">
+    <Compile Include="C1Console\Actions\Workflows\EntityTokenLockedWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Actions\Workflows\EntityTokenLockedWorkflow.designer.cs">
+    <Compile Include="C1Console\Actions\Workflows\EntityTokenLockedWorkflow.designer.cs">
       <DependentUpon>EntityTokenLockedWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Actions\Workflows\FlowInformationScavengerWorkflow.cs">
+    <Compile Include="C1Console\Actions\Workflows\FlowInformationScavengerWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Actions\Workflows\FlowInformationScavengerWorkflow.designer.cs">
+    <Compile Include="C1Console\Actions\Workflows\FlowInformationScavengerWorkflow.designer.cs">
       <DependentUpon>FlowInformationScavengerWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Actions\Workflows\SecurityViolationWorkflow.cs">
+    <Compile Include="C1Console\Actions\Workflows\SecurityViolationWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Actions\Workflows\SecurityViolationWorkflow.designer.cs">
+    <Compile Include="C1Console\Actions\Workflows\SecurityViolationWorkflow.designer.cs">
       <DependentUpon>SecurityViolationWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConsoleEventSystem\Workflows\UserConsoleInformationScavengerWorkflow.cs">
+    <Compile Include="C1Console\Events\Workflows\UserConsoleInformationScavengerWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ConsoleEventSystem\Workflows\UserConsoleInformationScavengerWorkflow.designer.cs">
+    <Compile Include="C1Console\Events\Workflows\UserConsoleInformationScavengerWorkflow.designer.cs">
       <DependentUpon>UserConsoleInformationScavengerWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Develop\Workflows\DevelopWorkflow.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AddAssociatedDataWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Develop\Workflows\DevelopWorkflow.designer.cs">
-      <DependentUpon>DevelopWorkflow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AddAssociatedDataWorkflow.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AddAssociatedDataWorkflow.designer.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AddAssociatedDataWorkflow.designer.cs">
       <DependentUpon>AddAssociatedDataWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AddDataFolderExWorkflow.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AddDataFolderExWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AddDataFolderExWorkflow.designer.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AddDataFolderExWorkflow.designer.cs">
       <DependentUpon>AddDataFolderExWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AddMetaDataWorkflow.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AddMetaDataWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AddMetaDataWorkflow.designer.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AddMetaDataWorkflow.designer.cs">
       <DependentUpon>AddMetaDataWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\DeleteAssociatedDataWorkflow.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\DeleteAssociatedDataWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\DeleteAssociatedDataWorkflow.designer.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\DeleteAssociatedDataWorkflow.designer.cs">
       <DependentUpon>DeleteAssociatedDataWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\DeleteDataFolderWorkflow.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\DeleteDataFolderWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\DeleteDataFolderWorkflow.designer.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\DeleteDataFolderWorkflow.designer.cs">
       <DependentUpon>DeleteDataFolderWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\DeleteMetaDataWorkflow.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\DeleteMetaDataWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\DeleteMetaDataWorkflow.designer.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\DeleteMetaDataWorkflow.designer.cs">
       <DependentUpon>DeleteMetaDataWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\EditAssociatedDataWorkflow.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\EditAssociatedDataWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\EditAssociatedDataWorkflow.designer.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\EditAssociatedDataWorkflow.designer.cs">
       <DependentUpon>EditAssociatedDataWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\EditMetaDataWorkflow.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\EditMetaDataWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\EditMetaDataWorkflow.designer.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\EditMetaDataWorkflow.designer.cs">
       <DependentUpon>EditMetaDataWorkflow.cs</DependentUpon>
     </Compile>
     <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddTypeToWhiteListWorkflow.cs">
@@ -549,28 +543,28 @@
     <Compile Include="StandardPlugins\Elements\ElementProviders\UserElementProvider\EditUserWorkflow.designer.cs">
       <DependentUpon>EditUserWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\AddVisualFunctionWorkflow.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\AddVisualFunctionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\AddVisualFunctionWorkflow.designer.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\AddVisualFunctionWorkflow.designer.cs">
       <DependentUpon>AddVisualFunctionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\DeleteVisualFunctionWorkflow.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\DeleteVisualFunctionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\DeleteVisualFunctionWorkflow.designer.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\DeleteVisualFunctionWorkflow.designer.cs">
       <DependentUpon>DeleteVisualFunctionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\EditVisualFunctionWorkflow.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\EditVisualFunctionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\EditVisualFunctionWorkflow.designer.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\EditVisualFunctionWorkflow.designer.cs">
       <DependentUpon>EditVisualFunctionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\SelectVisualFunctionWorkflow.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\SelectVisualFunctionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\SelectVisualFunctionWorkflow.designer.cs">
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\SelectVisualFunctionWorkflow.designer.cs">
       <DependentUpon>SelectVisualFunctionWorkflow.cs</DependentUpon>
     </Compile>
     <Compile Include="StandardPlugins\Elements\ElementProviders\UserGroupElementProvider\AddNewUserGroupWorkflow.cs">
@@ -772,141 +766,138 @@
     <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\LocalizeDataWorkflow.designer.cs">
       <DependentUpon>LocalizeDataWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tools\SendMessageToConsolesWorkflow.cs">
+    <Compile Include="C1Console\Tools\SendMessageToConsolesWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tools\SendMessageToConsolesWorkflow.designer.cs">
+    <Compile Include="C1Console\Tools\SendMessageToConsolesWorkflow.designer.cs">
       <DependentUpon>SendMessageToConsolesWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Trees\Workflows\AddApplicationWorkflow.cs">
+    <Compile Include="C1Console\Trees\Workflows\AddApplicationWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Trees\Workflows\AddApplicationWorkflow.designer.cs">
+    <Compile Include="C1Console\Trees\Workflows\AddApplicationWorkflow.designer.cs">
       <DependentUpon>AddApplicationWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Trees\Workflows\AddTreeDefinitionWorkflow.cs">
+    <Compile Include="C1Console\Trees\Workflows\AddTreeDefinitionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Trees\Workflows\AddTreeDefinitionWorkflow.designer.cs">
+    <Compile Include="C1Console\Trees\Workflows\AddTreeDefinitionWorkflow.designer.cs">
       <DependentUpon>AddTreeDefinitionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Trees\Workflows\ConfirmActionWorkflow.cs">
+    <Compile Include="C1Console\Trees\Workflows\ConfirmActionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Trees\Workflows\ConfirmActionWorkflow.designer.cs">
+    <Compile Include="C1Console\Trees\Workflows\ConfirmActionWorkflow.designer.cs">
       <DependentUpon>ConfirmActionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Trees\Workflows\DeleteTreeDefinitionWorkflow.cs">
+    <Compile Include="C1Console\Trees\Workflows\DeleteTreeDefinitionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Trees\Workflows\DeleteTreeDefinitionWorkflow.designer.cs">
+    <Compile Include="C1Console\Trees\Workflows\DeleteTreeDefinitionWorkflow.designer.cs">
       <DependentUpon>DeleteTreeDefinitionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Trees\Workflows\EditTreeDefinitionWorkflow.cs">
+    <Compile Include="C1Console\Trees\Workflows\EditTreeDefinitionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Trees\Workflows\EditTreeDefinitionWorkflow.designer.cs">
+    <Compile Include="C1Console\Trees\Workflows\EditTreeDefinitionWorkflow.designer.cs">
       <DependentUpon>EditTreeDefinitionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Trees\Workflows\GenericAddDataWorkflow.cs">
+    <Compile Include="C1Console\Trees\Workflows\GenericAddDataWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Trees\Workflows\GenericAddDataWorkflow.designer.cs">
+    <Compile Include="C1Console\Trees\Workflows\GenericAddDataWorkflow.designer.cs">
       <DependentUpon>GenericAddDataWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Trees\Workflows\GenericDeleteDataWorkflow.cs">
+    <Compile Include="C1Console\Trees\Workflows\GenericDeleteDataWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Trees\Workflows\GenericDeleteDataWorkflow.designer.cs">
+    <Compile Include="C1Console\Trees\Workflows\GenericDeleteDataWorkflow.designer.cs">
       <DependentUpon>GenericDeleteDataWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Trees\Workflows\GenericEditDataWorkflow.cs">
+    <Compile Include="C1Console\Trees\Workflows\GenericEditDataWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Trees\Workflows\GenericEditDataWorkflow.designer.cs">
+    <Compile Include="C1Console\Trees\Workflows\GenericEditDataWorkflow.designer.cs">
       <DependentUpon>GenericEditDataWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Trees\Workflows\LocalizeDataWorkflow.cs">
+    <Compile Include="C1Console\Trees\Workflows\LocalizeDataWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Trees\Workflows\LocalizeDataWorkflow.designer.cs">
+    <Compile Include="C1Console\Trees\Workflows\LocalizeDataWorkflow.designer.cs">
       <DependentUpon>LocalizeDataWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Trees\Workflows\RemoveApplicationWorkflow.cs">
+    <Compile Include="C1Console\Trees\Workflows\RemoveApplicationWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Trees\Workflows\RemoveApplicationWorkflow.designer.cs">
+    <Compile Include="C1Console\Trees\Workflows\RemoveApplicationWorkflow.designer.cs">
       <DependentUpon>RemoveApplicationWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Trees\Workflows\ReportFunctionActionWorkflow.cs">
+    <Compile Include="C1Console\Trees\Workflows\ReportFunctionActionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Trees\Workflows\ReportFunctionActionWorkflow.designer.cs">
+    <Compile Include="C1Console\Trees\Workflows\ReportFunctionActionWorkflow.designer.cs">
       <DependentUpon>ReportFunctionActionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Users\Workflows\ChangeOwnActiveLocaleWorkflow.cs">
+    <Compile Include="C1Console\Users\Workflows\ChangeOwnActiveLocaleWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Users\Workflows\ChangeOwnActiveLocaleWorkflow.designer.cs">
+    <Compile Include="C1Console\Users\Workflows\ChangeOwnActiveLocaleWorkflow.designer.cs">
       <DependentUpon>ChangeOwnActiveLocaleWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Users\Workflows\ChangeOwnCultureWorkflow.cs">
+    <Compile Include="C1Console\Users\Workflows\ChangeOwnCultureWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Users\Workflows\ChangeOwnCultureWorkflow.designer.cs">
+    <Compile Include="C1Console\Users\Workflows\ChangeOwnCultureWorkflow.designer.cs">
       <DependentUpon>ChangeOwnCultureWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Users\Workflows\ChangeOwnForeignLocaleWorkflow.cs">
+    <Compile Include="C1Console\Users\Workflows\ChangeOwnForeignLocaleWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Users\Workflows\ChangeOwnForeignLocaleWorkflow.designer.cs">
+    <Compile Include="C1Console\Users\Workflows\ChangeOwnForeignLocaleWorkflow.designer.cs">
       <DependentUpon>ChangeOwnForeignLocaleWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Users\Workflows\ChangeOwnPasswordWorkflow.cs">
+    <Compile Include="C1Console\Users\Workflows\ChangeOwnPasswordWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Users\Workflows\ChangeOwnPasswordWorkflow.designer.cs">
+    <Compile Include="C1Console\Users\Workflows\ChangeOwnPasswordWorkflow.designer.cs">
       <DependentUpon>ChangeOwnPasswordWorkflow.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Actions\Workflows\EntityTokenLockedWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Actions\Workflows\EntityTokenLockedWorkflow.layout">
       <DependentUpon>EntityTokenLockedWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Actions\Workflows\FlowInformationScavengerWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Actions\Workflows\FlowInformationScavengerWorkflow.layout">
       <DependentUpon>FlowInformationScavengerWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Actions\Workflows\SecurityViolationWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Actions\Workflows\SecurityViolationWorkflow.layout">
       <DependentUpon>SecurityViolationWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ConsoleEventSystem\Workflows\UserConsoleInformationScavengerWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Events\Workflows\UserConsoleInformationScavengerWorkflow.layout">
       <DependentUpon>UserConsoleInformationScavengerWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Develop\Workflows\DevelopWorkflow.layout">
-      <DependentUpon>DevelopWorkflow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AddAssociatedDataWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AddAssociatedDataWorkflow.layout">
       <DependentUpon>AddAssociatedDataWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AddDataFolderExWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AddDataFolderExWorkflow.layout">
       <DependentUpon>AddDataFolderExWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AddMetaDataWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AddMetaDataWorkflow.layout">
       <DependentUpon>AddMetaDataWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\DeleteAssociatedDataWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\DeleteAssociatedDataWorkflow.layout">
       <DependentUpon>DeleteAssociatedDataWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\DeleteDataFolderWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\DeleteDataFolderWorkflow.layout">
       <DependentUpon>DeleteDataFolderWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\DeleteMetaDataWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\DeleteMetaDataWorkflow.layout">
       <DependentUpon>DeleteMetaDataWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\EditAssociatedDataWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\EditAssociatedDataWorkflow.layout">
       <DependentUpon>EditAssociatedDataWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\EditMetaDataWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\EditMetaDataWorkflow.layout">
       <DependentUpon>EditMetaDataWorkflow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddTypeToWhiteListWorkflow.layout">
@@ -1071,16 +1062,16 @@
     <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\UserElementProvider\EditUserWorkflow.layout">
       <DependentUpon>EditUserWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\AddVisualFunctionWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\AddVisualFunctionWorkflow.layout">
       <DependentUpon>AddVisualFunctionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\DeleteVisualFunctionWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\DeleteVisualFunctionWorkflow.layout">
       <DependentUpon>DeleteVisualFunctionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\EditVisualFunctionWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\EditVisualFunctionWorkflow.layout">
       <DependentUpon>EditVisualFunctionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\SelectVisualFunctionWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\SelectVisualFunctionWorkflow.layout">
       <DependentUpon>SelectVisualFunctionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\UserGroupElementProvider\AddNewUserGroupWorkflow.layout">
@@ -1164,46 +1155,46 @@
     <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\EditXsltFunctionWorkflow.layout">
       <DependentUpon>EditXsltFunctionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tools\SendMessageToConsolesWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Tools\SendMessageToConsolesWorkflow.layout">
       <DependentUpon>SendMessageToConsolesWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Trees\Workflows\AddApplicationWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Trees\Workflows\AddApplicationWorkflow.layout">
       <DependentUpon>AddApplicationWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Trees\Workflows\AddTreeDefinitionWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Trees\Workflows\AddTreeDefinitionWorkflow.layout">
       <DependentUpon>AddTreeDefinitionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Trees\Workflows\ConfirmActionWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Trees\Workflows\ConfirmActionWorkflow.layout">
       <DependentUpon>ConfirmActionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Trees\Workflows\DeleteTreeDefinitionWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Trees\Workflows\DeleteTreeDefinitionWorkflow.layout">
       <DependentUpon>DeleteTreeDefinitionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Trees\Workflows\EditTreeDefinitionWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Trees\Workflows\EditTreeDefinitionWorkflow.layout">
       <DependentUpon>EditTreeDefinitionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Trees\Workflows\GenericAddDataWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Trees\Workflows\GenericAddDataWorkflow.layout">
       <DependentUpon>GenericAddDataWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Trees\Workflows\GenericDeleteDataWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Trees\Workflows\GenericDeleteDataWorkflow.layout">
       <DependentUpon>GenericDeleteDataWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Trees\Workflows\GenericEditDataWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Trees\Workflows\GenericEditDataWorkflow.layout">
       <DependentUpon>GenericEditDataWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Trees\Workflows\LocalizeDataWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Trees\Workflows\LocalizeDataWorkflow.layout">
       <DependentUpon>LocalizeDataWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Trees\Workflows\RemoveApplicationWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Trees\Workflows\RemoveApplicationWorkflow.layout">
       <DependentUpon>RemoveApplicationWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Trees\Workflows\ReportFunctionActionWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Trees\Workflows\ReportFunctionActionWorkflow.layout">
       <DependentUpon>ReportFunctionActionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Users\Workflows\ChangeOwnActiveLocaleWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Users\Workflows\ChangeOwnActiveLocaleWorkflow.layout">
       <DependentUpon>ChangeOwnActiveLocaleWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Users\Workflows\ChangeOwnForeignLocaleWorkflow.layout">
+    <EmbeddedResource Include="C1Console\Users\Workflows\ChangeOwnForeignLocaleWorkflow.layout">
       <DependentUpon>ChangeOwnForeignLocaleWorkflow.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
@@ -1234,6 +1225,9 @@
       <Project>{F8D87A5F-D090-4D24-80C1-DBCD938C6CAB}</Project>
       <Name>Composite</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ConsoleEventSystem\Workflows\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

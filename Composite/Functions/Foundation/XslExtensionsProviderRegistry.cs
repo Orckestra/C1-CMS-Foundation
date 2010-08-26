@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Composite.ConfigurationSystem;
+using Composite.Core.Configuration;
 using Composite.Functions.Plugins.XslExtensionsProvider.Runtime;
 
 namespace Composite.Functions.Foundation

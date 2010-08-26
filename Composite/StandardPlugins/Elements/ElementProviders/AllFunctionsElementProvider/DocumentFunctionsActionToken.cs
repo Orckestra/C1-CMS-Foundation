@@ -1,9 +1,9 @@
-﻿using Composite.Security;
-using Composite.Actions;
+﻿using Composite.C1Console.Security;
+using Composite.C1Console.Actions;
 using System.Collections.Generic;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.AllFunctionsElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvider
 {
     [ActionExecutor(typeof(AllFunctionsProviderActionExecutor))]
 	internal sealed class DocumentFunctionsActionToken : ActionToken

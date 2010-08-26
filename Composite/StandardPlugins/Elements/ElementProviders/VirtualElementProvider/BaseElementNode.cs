@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 {
     [DebuggerDisplay("Id = {Id}, Label={Label}")]
     internal class BaseElementNode

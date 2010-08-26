@@ -1,13 +1,13 @@
 using System.Linq;
 using System.Xml.Linq;
 using System.Collections.Generic;
-using Composite.Security;
+using Composite.C1Console.Security;
 using System;
-using Composite.Xml;
-using Composite.Forms;
+using Composite.Core.Xml;
+using Composite.C1Console.Forms;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 {
     /// <summary>    
     /// </summary>

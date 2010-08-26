@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Composite.Collections;
-using Composite.Elements;
-using Composite.Elements.Plugins.ElementProvider;
+using Composite.Core.Collections;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Elements.Plugins.ElementProvider;
 using Composite.Functions;
-using Composite.ResourceSystem;
-using Composite.ResourceSystem.Icons;
-using Composite.Security;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.C1Console.Security;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider
 {
     /// <summary>    
     /// </summary>

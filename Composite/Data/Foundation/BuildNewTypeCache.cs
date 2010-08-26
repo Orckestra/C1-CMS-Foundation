@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Composite.Collections.Generic;
+using Composite.Core.Collections.Generic;
 using Composite.Data.Foundation.CodeGeneration;
-using Composite.EventSystem;
-using Composite.StringExtensions;
-using Composite.Types;
+using Composite.C1Console.Events;
+using Composite.Core.Extensions;
+using Composite.Core.Types;
 
 
 namespace Composite.Data.Foundation

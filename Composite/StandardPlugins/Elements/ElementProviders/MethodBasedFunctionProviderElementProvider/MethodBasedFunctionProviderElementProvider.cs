@@ -4,19 +4,19 @@ using System.Configuration;
 using System.Linq;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Elements;
-using Composite.Elements.Plugins.ElementProvider;
-using Composite.ResourceSystem;
-using Composite.ResourceSystem.Icons;
-using Composite.Security;
-using Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
-using Composite.Workflow;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Elements.Plugins.ElementProvider;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.C1Console.Security;
+using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
+using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
 {
     [ConfigurationElementType(typeof(MethodBasedFunctionProviderElementProviderData))]
     internal sealed class MethodBasedFunctionProviderElementProvider : BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider
@@ -45,7 +45,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctio
         {
             get
             {
-                return StringResourceSystemFacade.GetString("Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider", "RootFolderLabel");
+                return StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "RootFolderLabel");
             }
         }
 
@@ -54,7 +54,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctio
         {
             get
             {
-                return StringResourceSystemFacade.GetString("Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider", "RootFolderToolTip");
+                return StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "RootFolderToolTip");
             }
         }
 
@@ -108,12 +108,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctio
                 {
                     new ElementAction(new ActionHandle(
                         new WorkflowActionToken(
-                            WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider.AddNewMethodBasedFunctionWorkflow"),
+                            WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider.AddNewMethodBasedFunctionWorkflow"),
                             new PermissionType[] { PermissionType.Add }
                         ))) {
                          VisualData = new ActionVisualizedData { 
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider", "Add"), 
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider", "AddToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "Add"), 
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "AddToolTip"),
                             Icon = MethodBasedFunctionProviderElementProvider.AddIcon,
                             Disabled = false, 
                             ActionLocation = new ActionLocation { 
@@ -134,12 +134,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctio
                 {
                     new ElementAction(new ActionHandle(
                         new WorkflowActionToken(
-                            WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider.EditMethodBasedFunctionWorkflow"),
+                            WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider.EditMethodBasedFunctionWorkflow"),
                             new PermissionType[] { PermissionType.Edit }
                         ))) {
                         VisualData = new ActionVisualizedData { 
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider", "Edit"), 
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider", "EditToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "Edit"), 
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "EditToolTip"),
                             Icon = MethodBasedFunctionProviderElementProvider.EditIcon,
                             Disabled = false, 
                             ActionLocation = new ActionLocation { 
@@ -153,14 +153,14 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctio
 
                     new ElementAction(new ActionHandle(
                         new WorkflowActionToken(
-                            WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider.DeleteMethodBasedFunctionWorkflow"),
+                            WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider.DeleteMethodBasedFunctionWorkflow"),
                             new PermissionType[] { PermissionType.Delete }
                         ) { 
                             Payload = GetContext().ProviderName
                         })) {
                         VisualData = new ActionVisualizedData { 
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider", "Delete"), 
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider", "DeleteToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "Delete"), 
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "DeleteToolTip"),
                             Icon = MethodBasedFunctionProviderElementProvider.DeleteIcon,
                             Disabled = false, 
                             ActionLocation = new ActionLocation { 

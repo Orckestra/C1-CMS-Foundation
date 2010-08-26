@@ -1,15 +1,15 @@
 using System;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Security.Cryptography;
-using Composite.Workflow;
+using Composite.C1Console.Security.Cryptography;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddNewSqlConnectionWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddNewSqlConnectionWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public AddNewSqlConnectionWorkflow()
         {

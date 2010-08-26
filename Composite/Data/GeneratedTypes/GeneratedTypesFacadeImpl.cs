@@ -6,12 +6,12 @@ using Composite.Data.Foundation.PluginFacades;
 using Composite.Data.GeneratedTypes.Foundation;
 using Composite.Data.Plugins.DataProvider.Runtime;
 using Composite.Data.Types;
-using Composite.Extensions;
-using Composite.Instrumentation;
-using Composite.Linq;
-using Composite.Logging;
-using Composite.Transactions;
-using Composite.Types;
+using Composite.Core.Extensions;
+using Composite.Core.Instrumentation;
+using Composite.Core.Linq;
+using Composite.Core.Logging;
+using Composite.Data.Transactions;
+using Composite.Core.Types;
 
 
 namespace Composite.Data.GeneratedTypes
@@ -96,7 +96,7 @@ namespace Composite.Data.GeneratedTypes
                 // Re create Composite.Genereted.dll to ensure that App_Code, compiled assemblies that is referring the 
                 // the genereted type is referring the newst version - the newest version might only be in a temp assembly at this point
                 LoggingService.LogVerbose("GeneratedTypesFacade", "Recreating Composite.Genereted.dll");
-                Composite.Types.BuildManager.CreateCompositeGeneretedAssembly();
+                Composite.Core.Types.BuildManager.CreateCompositeGeneretedAssembly();
             }
         }
 

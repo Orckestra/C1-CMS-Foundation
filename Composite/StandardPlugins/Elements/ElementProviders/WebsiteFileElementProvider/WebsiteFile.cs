@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using System.Text;
-using Composite.IO;
+using Composite.Core.IO;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
     /// <summary>    
     /// </summary>

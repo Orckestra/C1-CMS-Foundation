@@ -12,7 +12,7 @@ using System.Workflow.Runtime;
 using System.Workflow.Activities;
 using System.Workflow.Activities.Rules;
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
     partial class UploadNewMediaFileWorkflow
     {
@@ -28,21 +28,21 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
             this.CanModifyActivities = true;
             System.Workflow.Activities.CodeCondition codecondition1 = new System.Workflow.Activities.CodeCondition();
             this.setStateActivity4 = new System.Workflow.Activities.SetStateActivity();
-            this.showConsoleMessageBoxActivity1 = new Composite.Workflow.Activities.ShowConsoleMessageBoxActivity();
+            this.showConsoleMessageBoxActivity1 = new Composite.C1Console.Workflow.Activities.ShowConsoleMessageBoxActivity();
             this.setStateActivity3 = new System.Workflow.Activities.SetStateActivity();
-            this.closeCurrentViewActivity1 = new Composite.Workflow.Activities.CloseCurrentViewActivity();
+            this.closeCurrentViewActivity1 = new Composite.C1Console.Workflow.Activities.CloseCurrentViewActivity();
             this.codeActivity1 = new System.Workflow.Activities.CodeActivity();
             this.ifElseBranchActivity2 = new System.Workflow.Activities.IfElseBranchActivity();
             this.ifElseBranchActivity1 = new System.Workflow.Activities.IfElseBranchActivity();
             this.setStateActivity5 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity2 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity2 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.ifElseActivity1 = new System.Workflow.Activities.IfElseActivity();
-            this.finishHandleExternalEventActivity1 = new Composite.Workflow.Activities.FinishHandleExternalEventActivity();
-            this.wizzardFormActivity1 = new Composite.Workflow.Activities.DataDialogFormActivity();
+            this.finishHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity();
+            this.wizzardFormActivity1 = new Composite.C1Console.Workflow.Activities.DataDialogFormActivity();
             this.setStateActivity2 = new System.Workflow.Activities.SetStateActivity();
             this.codeActivity2 = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity1 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity1 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.cancelEventDrivenActivity = new System.Workflow.Activities.EventDrivenActivity();
             this.finishEventDrivenActivity = new System.Workflow.Activities.EventDrivenActivity();
             this.stateInitializationActivity2 = new System.Workflow.Activities.StateInitializationActivity();
@@ -59,7 +59,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
             // 
             // showConsoleMessageBoxActivity1
             // 
-            this.showConsoleMessageBoxActivity1.DialogType = Composite.ConsoleEventSystem.DialogType.Error;
+            this.showConsoleMessageBoxActivity1.DialogType = Composite.C1Console.Events.DialogType.Error;
             this.showConsoleMessageBoxActivity1.Message = "${Composite.Management,Website.Forms.Administrative.UploadMediaFile.EmptyFileErro" +
                 "rMessage}";
             this.showConsoleMessageBoxActivity1.Name = "showConsoleMessageBoxActivity1";
@@ -103,7 +103,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
             // cancelHandleExternalEventActivity2
             // 
             this.cancelHandleExternalEventActivity2.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity2.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity2.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity2.Name = "cancelHandleExternalEventActivity2";
             // 
             // ifElseActivity1
@@ -115,7 +115,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
             // finishHandleExternalEventActivity1
             // 
             this.finishHandleExternalEventActivity1.EventName = "Finish";
-            this.finishHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.finishHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.finishHandleExternalEventActivity1.Name = "finishHandleExternalEventActivity1";
             // 
             // wizzardFormActivity1
@@ -142,7 +142,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
             // cancelHandleExternalEventActivity1
             // 
             this.cancelHandleExternalEventActivity1.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity1.Name = "cancelHandleExternalEventActivity1";
             // 
             // cancelEventDrivenActivity
@@ -210,12 +210,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
         private StateActivity showUploadStateActivity;
         private StateInitializationActivity stateInitializationActivity1;
         private CodeActivity codeActivity1;
-        private Composite.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
-        private Composite.Workflow.Activities.DataDialogFormActivity wizzardFormActivity1;
+        private Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.DataDialogFormActivity wizzardFormActivity1;
         private SetStateActivity setStateActivity2;
         private CodeActivity codeActivity2;
         private SetStateActivity setStateActivity1;
-        private Composite.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
         private EventDrivenActivity finishEventDrivenActivity;
         private StateInitializationActivity stateInitializationActivity2;
         private EventDrivenActivity eventDrivenActivity1;
@@ -225,10 +225,10 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
         private IfElseBranchActivity ifElseBranchActivity1;
         private IfElseActivity ifElseActivity1;
         private SetStateActivity setStateActivity5;
-        private Composite.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
+        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
         private EventDrivenActivity cancelEventDrivenActivity;
-        private Composite.Workflow.Activities.CloseCurrentViewActivity closeCurrentViewActivity1;
-        private Composite.Workflow.Activities.ShowConsoleMessageBoxActivity showConsoleMessageBoxActivity1;
+        private Composite.C1Console.Workflow.Activities.CloseCurrentViewActivity closeCurrentViewActivity1;
+        private Composite.C1Console.Workflow.Activities.ShowConsoleMessageBoxActivity showConsoleMessageBoxActivity1;
         private StateActivity initialState;
 
 

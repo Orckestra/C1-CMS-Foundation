@@ -3,14 +3,14 @@
   <cms:bindings>
     <cms:binding name="Function" type="Composite.Data.Types.IVisualFunction, Composite" />
   </cms:bindings>
-  <cms:layout iconhandle="wysiwyg-function" label="${Composite.StandardPlugins.VisualFunction, AddNew.DialogLabel}">
-    <FieldGroup Label="${Composite.StandardPlugins.VisualFunction, AddNewStep2.FieldGroupLabel}">
-      <TextBox Label="${Composite.StandardPlugins.VisualFunction, AddNewStep2.FuncitonNameLabel}" Help="${Composite.StandardPlugins.VisualFunction, AddNewStep2.FuncitonNameHelp}">
+  <cms:layout iconhandle="wysiwyg-function" label="${Composite.Plugins.VisualFunction, AddNew.DialogLabel}">
+    <FieldGroup Label="${Composite.Plugins.VisualFunction, AddNewStep2.FieldGroupLabel}">
+      <TextBox Label="${Composite.Plugins.VisualFunction, AddNewStep2.FuncitonNameLabel}" Help="${Composite.Plugins.VisualFunction, AddNewStep2.FuncitonNameHelp}">
         <TextBox.Text>
           <cms:bind source="Function.Name" />
         </TextBox.Text>
       </TextBox>
-      <TextBox Label="${Composite.StandardPlugins.VisualFunction, AddNewStep2.FuncitonNamespaceLabel}" Help="${Composite.StandardPlugins.VisualFunction, AddNewStep2.FuncitonNamespaceHelp}">
+      <TextBox Label="${Composite.Plugins.VisualFunction, AddNewStep2.FuncitonNamespaceLabel}" Help="${Composite.Plugins.VisualFunction, AddNewStep2.FuncitonNamespaceHelp}">
         <TextBox.Text>
           <cms:bind source="Function.Namespace" />
         </TextBox.Text>

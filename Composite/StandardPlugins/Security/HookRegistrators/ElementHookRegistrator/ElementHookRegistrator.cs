@@ -1,12 +1,12 @@
 using System.Collections.Generic;
-using Composite.Elements;
-using Composite.Security;
-using Composite.Security.Plugins.HookRegistrator;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Security;
+using Composite.C1Console.Security.Plugins.HookRegistrator;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Security.HookRegistrators.ElementHookRegistrator
+namespace Composite.Plugins.Security.HookRegistrators.ElementHookRegistrator
 {
     [ConfigurationElementType(typeof(ElementHookRegistratorData))]
     internal sealed class ElementHookRegistrator : IHookRegistrator

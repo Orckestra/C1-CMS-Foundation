@@ -1,11 +1,11 @@
 using System;
 using System.Web;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
-using Composite.Security;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
+using Composite.C1Console.Security;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider.LocalOrdering
+namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider.LocalOrdering
 {
     internal sealed class DisplayLocalOrderingActionExecutor : IActionExecutor
 	{
@@ -13,7 +13,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
-            string currentConsoleId = flowControllerServicesContainer.GetService<Composite.ConsoleEventSystem.IManagementConsoleMessageService>().CurrentConsoleId;
+            string currentConsoleId = flowControllerServicesContainer.GetService<Composite.C1Console.Events.IManagementConsoleMessageService>().CurrentConsoleId;
 
             DisplayLocalOrderingActionToken castedActionToken = (DisplayLocalOrderingActionToken)actionToken;
 

@@ -4,7 +4,7 @@
     <cms:binding name="Url" type="System.String" />
     <cms:binding name="HttpOnly" type="System.Boolean"/>
   </cms:bindings>
-  <cms:layout iconhandle="package-add-source" label="${Composite.StandardPlugins.PackageElementProvider, AddAddOnSource.Step2.LayoutLabel}">
+  <cms:layout iconhandle="package-add-source" label="${Composite.Plugins.PackageElementProvider, AddAddOnSource.Step2.LayoutLabel}">
     <PlaceHolder>
       <f:BooleanCheck>
         <f:BooleanCheck.CheckValue>
@@ -12,13 +12,13 @@
         </f:BooleanCheck.CheckValue>
         <f:BooleanCheck.WhenTrue>
           <Heading
-            Title="${Composite.StandardPlugins.PackageElementProvider, AddAddOnSource.Step2.HeadingTitle}"
-            Description="${Composite.StandardPlugins.PackageElementProvider, AddAddOnSource.Step2.HeadingNoHttpsDescription}" />
+            Title="${Composite.Plugins.PackageElementProvider, AddAddOnSource.Step2.HeadingTitle}"
+            Description="${Composite.Plugins.PackageElementProvider, AddAddOnSource.Step2.HeadingNoHttpsDescription}" />
         </f:BooleanCheck.WhenTrue>
         <f:BooleanCheck.WhenFalse>
           <Heading
-            Title="${Composite.StandardPlugins.PackageElementProvider, AddAddOnSource.Step2.HeadingTitle}"
-            Description="${Composite.StandardPlugins.PackageElementProvider, AddAddOnSource.Step2.HeadingWithHttpsDescription}" />
+            Title="${Composite.Plugins.PackageElementProvider, AddAddOnSource.Step2.HeadingTitle}"
+            Description="${Composite.Plugins.PackageElementProvider, AddAddOnSource.Step2.HeadingWithHttpsDescription}" />
         </f:BooleanCheck.WhenFalse>
       </f:BooleanCheck>
     </PlaceHolder>

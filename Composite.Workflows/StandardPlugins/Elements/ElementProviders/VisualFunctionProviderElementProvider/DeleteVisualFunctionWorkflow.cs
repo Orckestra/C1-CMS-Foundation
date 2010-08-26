@@ -1,17 +1,17 @@
 using System;
 using System.Linq;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
-using Composite.Workflow;
+using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class DeleteVisualFunctionWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class DeleteVisualFunctionWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public DeleteVisualFunctionWorkflow()
         {

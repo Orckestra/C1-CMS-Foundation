@@ -1,7 +1,7 @@
-<%@ Control Language="C#" Inherits="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.TextInputTemplateUserControlBase"  %>
-<%@ Import Namespace="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories" %>
-<%@ Import Namespace="Composite.Forms.CoreUiControls" %>
-<%@ Import Namespace="Composite.Validation.ClientValidationRules" %>
+<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.TextInputTemplateUserControlBase"  %>
+<%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
+<%@ Import Namespace="Composite.C1Console.Forms.CoreUiControls" %>
+<%@ Import Namespace="Composite.Data.Validation.ClientValidationRules" %>
 
 <script runat="server">
     private string _currentStringValue = null;
@@ -33,21 +33,21 @@
     {
         switch (this.Type)
         {
-            case Composite.Forms.CoreUiControls.TextBoxType.Password:
+            case Composite.C1Console.Forms.CoreUiControls.TextBoxType.Password:
                 return @"password=""true""";
-            case Composite.Forms.CoreUiControls.TextBoxType.Integer:
+            case Composite.C1Console.Forms.CoreUiControls.TextBoxType.Integer:
                 return @"type=""integer""";
-            case Composite.Forms.CoreUiControls.TextBoxType.Decimal:
+            case Composite.C1Console.Forms.CoreUiControls.TextBoxType.Decimal:
                 return @"type=""number""";
-            case Composite.Forms.CoreUiControls.TextBoxType.Guid:
+            case Composite.C1Console.Forms.CoreUiControls.TextBoxType.Guid:
                 return @"type=""guid""";
-            case Composite.Forms.CoreUiControls.TextBoxType.ProgrammingIdentifier:
+            case Composite.C1Console.Forms.CoreUiControls.TextBoxType.ProgrammingIdentifier:
                 return @"type=""programmingidentifier""";
-            case Composite.Forms.CoreUiControls.TextBoxType.ProgrammingNamespace:
+            case Composite.C1Console.Forms.CoreUiControls.TextBoxType.ProgrammingNamespace:
                 return @"type=""programmingnamespace""";
-            case Composite.Forms.CoreUiControls.TextBoxType.ReadOnly:
+            case Composite.C1Console.Forms.CoreUiControls.TextBoxType.ReadOnly:
                 return @"readonly=""true""";
-            case Composite.Forms.CoreUiControls.TextBoxType.String:
+            case Composite.C1Console.Forms.CoreUiControls.TextBoxType.String:
             default:
                 return "";
         }        

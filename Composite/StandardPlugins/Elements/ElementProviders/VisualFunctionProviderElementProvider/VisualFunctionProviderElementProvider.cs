@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Elements;
-using Composite.Elements.Plugins.ElementProvider;
-using Composite.ResourceSystem;
-using Composite.ResourceSystem.Icons;
-using Composite.Security;
-using Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
-using Composite.Workflow;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Elements.Plugins.ElementProvider;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.C1Console.Security;
+using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
+using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElementProvider
 {
     [ConfigurationElementType(typeof(VisualFunctionProviderElementProviderData))]
     internal sealed class VisualFunctionProviderElementProvider : BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider
@@ -41,7 +41,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProv
         {
             get
             {
-                return StringResourceSystemFacade.GetString("Composite.StandardPlugins.VisualFunction", "VisualFunctionElementProvider.RootFolderLabel");
+                return StringResourceSystemFacade.GetString("Composite.Plugins.VisualFunction", "VisualFunctionElementProvider.RootFolderLabel");
             }
         }
 
@@ -50,7 +50,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProv
         {
             get
             {
-                return StringResourceSystemFacade.GetString("Composite.StandardPlugins.VisualFunction", "VisualFunctionElementProvider.RootFolderToolTip");
+                return StringResourceSystemFacade.GetString("Composite.Plugins.VisualFunction", "VisualFunctionElementProvider.RootFolderToolTip");
             }
         }
 
@@ -103,14 +103,14 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProv
                 {
                     new ElementAction(new ActionHandle(
                         new WorkflowActionToken(
-                            WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProviderElementProvider.AddNewVisualFunctionWorkflow"),
+                            WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElementProvider.AddNewVisualFunctionWorkflow"),
                             new PermissionType[] { PermissionType.Add }
                         )))
                     {
                         VisualData = new ActionVisualizedData
                         {
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.VisualFunction", "VisualFunctionElementProvider.AddNewLabel"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.VisualFunction", "VisualFunctionElementProvider.AddNewToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.VisualFunction", "VisualFunctionElementProvider.AddNewLabel"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.VisualFunction", "VisualFunctionElementProvider.AddNewToolTip"),
                             Icon = VisualFunctionProviderElementProvider.AddFunction,
                             Disabled = false,
                             ActionLocation = new ActionLocation
@@ -133,12 +133,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProv
                 {
                     new ElementAction(new ActionHandle(
                         new WorkflowActionToken(
-                            WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProviderElementProvider.EditVisualFunctionWorkflow"),
+                            WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElementProvider.EditVisualFunctionWorkflow"),
                             new PermissionType[] { PermissionType.Edit }
                         ))) {
                         VisualData = new ActionVisualizedData { 
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.VisualFunction", "VisualFunctionElementProvider.EditLabel"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.VisualFunction", "VisualFunctionElementProvider.EditToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.VisualFunction", "VisualFunctionElementProvider.EditLabel"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.VisualFunction", "VisualFunctionElementProvider.EditToolTip"),
                             Icon = VisualFunctionProviderElementProvider.EditFunction,
                             Disabled = false, 
                             ActionLocation = new ActionLocation { 
@@ -151,12 +151,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProv
                     },
                     new ElementAction(new ActionHandle(
                         new WorkflowActionToken(
-                            WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.VisualFunctionProviderElementProvider.DeleteVisualFunctionWorkflow"),
+                            WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElementProvider.DeleteVisualFunctionWorkflow"),
                             new PermissionType[] { PermissionType.Delete }
                         ) { Payload = GetContext().ProviderName })) {
                         VisualData = new ActionVisualizedData { 
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.VisualFunction", "VisualFunctionElementProvider.DeleteLabel"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.VisualFunction", "VisualFunctionElementProvider.DeleteToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.VisualFunction", "VisualFunctionElementProvider.DeleteLabel"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.VisualFunction", "VisualFunctionElementProvider.DeleteToolTip"),
                             Icon = VisualFunctionProviderElementProvider.DeleteFunction,
                             Disabled = false, 
                             ActionLocation = new ActionLocation { 

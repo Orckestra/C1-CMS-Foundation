@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Elements;
-using Composite.Elements.Plugins.ElementProvider;
-using Composite.PackageSystem;
-using Composite.ResourceSystem;
-using Composite.ResourceSystem.Icons;
-using Composite.Security;
-using Composite.Workflow;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Elements.Plugins.ElementProvider;
+using Composite.Core.PackageSystem;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.C1Console.Security;
+using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 {
     [ConfigurationElementType(typeof(AddOnElementProviderData))]
     internal sealed class PackageElementProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
@@ -68,8 +68,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
             Element element = new Element(_context.CreateElementHandle(new PackageElementProviderRootEntityToken()));
             element.VisualData = new ElementVisualizedData
             {
-                Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "RootFolderLabel"),
-                ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "RootFolderToolTip"),
+                Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "RootFolderLabel"),
+                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "RootFolderToolTip"),
                 HasChildren = true,
                 Icon = RootClosedIcon,
                 OpenedIcon = RootOpenedIcon
@@ -146,8 +146,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
             Element availableAddOnsElement = new Element(_context.CreateElementHandle(new PackageElementProviderAvailablePackagesFolderEntityToken()));
             availableAddOnsElement.VisualData = new ElementVisualizedData
             {
-                Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "AvailableAddOnsFolderLabel"),
-                ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "AvailableAddOnsFolderToolTip"),
+                Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "AvailableAddOnsFolderLabel"),
+                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "AvailableAddOnsFolderToolTip"),
                 HasChildren = true,
                 Icon = AvailablePackagesClosedIcon,
                 OpenedIcon = AvailablePackagesOpenedIcon
@@ -156,8 +156,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "ClearServerCacheLabel"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "ClearServerCacheToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "ClearServerCacheLabel"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "ClearServerCacheToolTip"),
                     Disabled = false,
                     Icon = ClearServerCacheIcon,
                     ActionLocation = new ActionLocation
@@ -176,8 +176,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
             Element installedAddOnsElement = new Element(_context.CreateElementHandle(new PackageElementProviderInstalledPackageFolderEntityToken()));
             installedAddOnsElement.VisualData = new ElementVisualizedData
             {
-                Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "InstalledAddOnFolderLabel"),
-                ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "InstalledAddOnFolderToolTip"),
+                Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstalledAddOnFolderLabel"),
+                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstalledAddOnFolderToolTip"),
                 HasChildren = true,
                 Icon = InstalledPackagesClosedIcon,
                 OpenedIcon = InstalledPackagesOpenedIcon
@@ -189,18 +189,18 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
             Element packageSourcesElement = new Element(_context.CreateElementHandle(new PackageElementProviderPackageSourcesFolderEntityToken()));
             packageSourcesElement.VisualData = new ElementVisualizedData
             {
-                Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "AddOnSourcesFolderLabel"),
-                ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "AddOnSourcesFolderToolTip"),
+                Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "AddOnSourcesFolderLabel"),
+                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "AddOnSourcesFolderToolTip"),
                 HasChildren = DataFacade.GetData<IPackageServerSource>().Count() > 0,
                 Icon = PackageSourcesClosedIcon,
                 OpenedIcon = PackageSourcesOpenedIcon
             };
-            packageSourcesElement.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider.AddPackageSourceWorkflow"), new PermissionType[] { PermissionType.Administrate })))
+            packageSourcesElement.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.AddPackageSourceWorkflow"), new PermissionType[] { PermissionType.Administrate })))
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "AddAddOnSourceLabel"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "AddAddOnSourceToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "AddAddOnSourceLabel"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "AddAddOnSourceToolTip"),
                     Disabled = false,
                     Icon = AddPackageSourceIcon,
                     ActionLocation = new ActionLocation
@@ -264,12 +264,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
                     Icon = AvailablePackageItemIcon,
                 };
 
-                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider.ViewAvailablePackageInfoWorkflowWorkflow"), new PermissionType[] { PermissionType.Administrate })))
+                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.ViewAvailablePackageInfoWorkflowWorkflow"), new PermissionType[] { PermissionType.Administrate })))
                 {
                     VisualData = new ActionVisualizedData
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "ViewAvailableInformationLabel"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "ViewAvailableInformationToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "ViewAvailableInformationLabel"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "ViewAvailableInformationToolTip"),
                         Icon = ViewInstalledInformationIcon,
                         Disabled = false,
                         ActionLocation = new ActionLocation
@@ -299,19 +299,19 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
             Element localAddOnsElement = new Element(_context.CreateElementHandle(new PackageElementProviderInstalledPackageLocalPackagesFolderEntityToken()));
             localAddOnsElement.VisualData = new ElementVisualizedData
             {
-                Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "LocalAddOnsFolderLabel"),
-                ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "LocalAddOnsFolderToolTip"),
+                Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "LocalAddOnsFolderLabel"),
+                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "LocalAddOnsFolderToolTip"),
                 HasChildren = hasLocalAddonChildren,
                 Icon = LocalPackagesClosedIcon,
                 OpenedIcon = LocalPackagesOpenedIcon
             };
 
-            localAddOnsElement.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider.InstallLocalPackageWorkflow"), new PermissionType[] { PermissionType.Administrate })))
+            localAddOnsElement.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.InstallLocalPackageWorkflow"), new PermissionType[] { PermissionType.Administrate })))
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "InstallLocalAddOnLabel"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "InstallLocalAddOnToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalAddOnLabel"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalAddOnToolTip"),
                     Disabled = false,
                     Icon = InstallLocalPackageIcon,
                     ActionLocation = new ActionLocation
@@ -370,12 +370,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
                     Icon = PackageSourceItemClosedIcon
                 };
 
-                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider.DeletePackageSourceWorkflow"), new PermissionType[] { PermissionType.Administrate })))
+                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.DeletePackageSourceWorkflow"), new PermissionType[] { PermissionType.Administrate })))
                 {
                     VisualData = new ActionVisualizedData
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "DeleteAddOnSourceLabel"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "DeleteAddOnSourceToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "DeleteAddOnSourceLabel"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "DeleteAddOnSourceToolTip"),
                         Icon = DeletePackageSourceIcon,
                         Disabled = false,
                         ActionLocation = new ActionLocation
@@ -418,12 +418,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
                     Icon = InstalledPackageItemIcon,
                 };
 
-                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider.ViewInstalledPackageInfoWorkflow"), new PermissionType[] { PermissionType.Administrate })))
+                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.ViewInstalledPackageInfoWorkflow"), new PermissionType[] { PermissionType.Administrate })))
                 {
                     VisualData = new ActionVisualizedData
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "ViewInstalledInformationLabel"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "ViewInstalledInformationToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "ViewInstalledInformationLabel"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "ViewInstalledInformationToolTip"),
                         Icon = ViewInstalledInformationIcon,
                         Disabled = false,
                         ActionLocation = new ActionLocation
@@ -467,12 +467,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
                     Icon = InstalledPackageItemIcon,
                 };
 
-                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider.ViewInstalledPackageInfoWorkflow"), new PermissionType[] { PermissionType.Administrate })))
+                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.ViewInstalledPackageInfoWorkflow"), new PermissionType[] { PermissionType.Administrate })))
                 {
                     VisualData = new ActionVisualizedData
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "ViewInstalledInformationLabel"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PackageElementProvider", "ViewInstalledInformationToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "ViewInstalledInformationLabel"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "ViewInstalledInformationToolTip"),
                         Icon = ViewInstalledInformationIcon,
                         Disabled = false,
                         ActionLocation = new ActionLocation

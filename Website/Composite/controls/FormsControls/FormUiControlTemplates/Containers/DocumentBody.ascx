@@ -1,4 +1,4 @@
-<%@ Control Language="C#" Inherits="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.ContainerTemplateUserControlBase" %>
+<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.ContainerTemplateUserControlBase" %>
 
 <script runat="server">
     private void Page_Init(object sender, System.EventArgs e)

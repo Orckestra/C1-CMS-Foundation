@@ -6,12 +6,12 @@ using System.IO;
 using System.Web;
 
 using Composite;
-using Composite.IO;
-using Composite.Security;
-using Composite.Logging;
-using Composite.Users;
-using Composite.Extensions;
-using Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider;
+using Composite.Core.IO;
+using Composite.C1Console.Security;
+using Composite.Core.Logging;
+using Composite.C1Console.Users;
+using Composite.Core.Extensions;
+using Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider;
 
 
 public class ImageManipulator : IHttpHandler

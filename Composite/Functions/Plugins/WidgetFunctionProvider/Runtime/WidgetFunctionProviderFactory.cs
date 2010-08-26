@@ -1,6 +1,4 @@
-using Composite.Configuration;
-using Composite.ConfigurationSystem;
-
+using Composite.Core.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 

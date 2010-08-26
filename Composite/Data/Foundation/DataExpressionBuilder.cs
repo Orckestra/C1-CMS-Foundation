@@ -3,8 +3,8 @@ using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 using System;
-using Composite.Linq;
-using Composite.EventSystem;
+using Composite.Core.Linq;
+using Composite.C1Console.Events;
 using Composite.Data.ProcessControlled;
 
 

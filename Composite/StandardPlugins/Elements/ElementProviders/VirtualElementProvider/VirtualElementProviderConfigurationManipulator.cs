@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Composite.Elements.Plugins.ElementProvider;
+using Composite.C1Console.Elements.Plugins.ElementProvider;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 {
 	internal static class VirtualElementProviderConfigurationManipulator
 	{

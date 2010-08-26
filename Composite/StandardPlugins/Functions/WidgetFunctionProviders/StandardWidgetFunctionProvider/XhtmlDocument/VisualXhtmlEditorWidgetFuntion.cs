@@ -3,12 +3,12 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 
 using Composite.Functions;
-using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
-using Composite.Types;
-using Composite.Xml;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
+using Composite.Core.Types;
+using Composite.Core.Xml;
 
 
-namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.XhtmlDocument
+namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.XhtmlDocument
 {
 	internal sealed class VisualXhtmlEditorFuntion : CompositeWidgetFunctionBase
     {
@@ -25,7 +25,7 @@ namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWi
 
 
         public VisualXhtmlEditorFuntion(EntityTokenFactory entityTokenFactory)
-            : base(CompositeName, typeof(Composite.Xml.XhtmlDocument), entityTokenFactory)
+            : base(CompositeName, typeof(Composite.Core.Xml.XhtmlDocument), entityTokenFactory)
         {
             SetParameterProfiles("common");
         }

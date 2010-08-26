@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using System.Transactions;
-using Composite.Logging;
+using Composite.Core.Logging;
 
-namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.Foundation
+namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 {
     internal class TransactionRollbackHandler : IEnlistmentNotification
     {

@@ -12,13 +12,13 @@ using System.Globalization;
 using System.Security.Cryptography;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Elements;
-using Composite.Security;
-using Composite.Users;
-using Composite.PackageSystem;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Security;
+using Composite.C1Console.Users;
+using Composite.Core.PackageSystem;
 using Composite.Data.DynamicTypes;
-using Composite.WebClient;
-using Composite.IO;
+using Composite.Core.WebClient;
+using Composite.Core.IO;
 
 
 

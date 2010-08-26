@@ -4,10 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Composite.Data.ProcessControlled;
-using Composite.EventSystem;
-using Composite.Linq;
-using Composite.Logging;
-using Composite.Types;
+using Composite.C1Console.Events;
+using Composite.Core.Linq;
+using Composite.Core.Logging;
+using Composite.Core.Types;
 using Composite.Data.Types;
 
 

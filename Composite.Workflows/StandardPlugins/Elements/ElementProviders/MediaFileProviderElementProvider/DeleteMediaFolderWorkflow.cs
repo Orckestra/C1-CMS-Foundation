@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
 using System.Workflow.Activities;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Data.Types.StoreIdFilter;
-using Composite.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper;
-using Composite.Linq;
-using Composite.ResourceSystem;
-using Composite.Transactions;
-using Composite.Workflow;
+using Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper;
+using Composite.Core.Linq;
+using Composite.Core.ResourceSystem;
+using Composite.Data.Transactions;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class DeleteMediaFolderWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class DeleteMediaFolderWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public DeleteMediaFolderWorkflow()
         {

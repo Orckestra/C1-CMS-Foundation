@@ -3,7 +3,7 @@ using System.Web;
 using System.Web.UI;
 using System.Text;
 using System.IO;
-using Composite.IO;
+using Composite.Core.IO;
 
 public partial class IconRendererControl : System.Web.UI.UserControl
 {
@@ -36,7 +36,7 @@ public partial class IconRendererControl : System.Web.UI.UserControl
 		   				);
 		   				string3 = string3.Substring ( 0, 4 );
 
-                        builder.AppendLine(string.Format(@"<div class=""img""><img src=""{0}/{1}"" /><span>{2}</span></div>", Composite.WebClient.UrlUtils.AdminRootPath, HttpUtility.HtmlAttributeEncode(string2), HttpUtility.HtmlEncode(string3)));
+                        builder.AppendLine(string.Format(@"<div class=""img""><img src=""{0}/{1}"" /><span>{2}</span></div>", Composite.Core.WebClient.UrlUtils.AdminRootPath, HttpUtility.HtmlAttributeEncode(string2), HttpUtility.HtmlEncode(string3)));
 			   		}
 		   		}
 		   }

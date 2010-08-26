@@ -4,17 +4,16 @@ using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Composite.Configuration;
+using Composite.Core.Configuration;
+using Composite.Core.Extensions;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
-using Composite.Extensions;
-using Composite.GlobalSettings;
-using Composite.IO;
-using Composite.StandardPlugins.Data.DataProviders.Common;
-using Composite.Types;
+using Composite.Core.IO;
+using Composite.Plugins.Data.DataProviders.Common;
+using Composite.Core.Types;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.Foundation
+namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 {
     internal static class InterfaceConfigurationManipulator
     {

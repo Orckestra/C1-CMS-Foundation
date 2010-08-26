@@ -1,7 +1,7 @@
 using System.Workflow.ComponentModel;
 
 
-namespace Composite.Workflow
+namespace Composite.C1Console.Workflow
 {
     /// <summary>    
     /// </summary>

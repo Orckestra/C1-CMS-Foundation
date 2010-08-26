@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Composite.ResourceSystem;
+using Composite.Core.ResourceSystem;
 using Composite.Data.ProcessControlled;
-using Composite.ResourceSystem.Icons;
+using Composite.Core.ResourceSystem.Icons;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 
 namespace Composite.Data

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Composite.Functions;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation
 {
     internal abstract class DowncastableStandardFunctionBase : StandardFunctionBase, IDowncastableFunction
 	{

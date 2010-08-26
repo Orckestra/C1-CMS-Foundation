@@ -1,24 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data.Plugins.DataProvider.Streams;
-using Composite.IO;
-using Composite.Logging;
-using Composite.ResourceSystem;
-using Composite.StringExtensions;
-using Composite.Workflow;
+using Composite.Core.IO;
+using Composite.Core.Logging;
+using Composite.Core.ResourceSystem;
+using Composite.Core.Extensions;
+using Composite.C1Console.Workflow;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Data.ProcessControlled;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class DeletePageTemplateWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class DeletePageTemplateWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         private static readonly string LogTitle = "DeletePageTemplateWorkflow";
 
@@ -64,8 +64,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElemen
             {
                 this.ShowMessage(
                         DialogType.Error,
-                        StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTemplateElementProvider", "DeletePageTemplateWorkflow.CascadeDeleteErrorTitle"),
-                        StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTemplateElementProvider", "DeletePageTemplateWorkflow.CascadeDeleteErrorMessage")
+                        StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "DeletePageTemplateWorkflow.CascadeDeleteErrorTitle"),
+                        StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "DeletePageTemplateWorkflow.CascadeDeleteErrorMessage")
                     );
             }
         }

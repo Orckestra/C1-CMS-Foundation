@@ -9,16 +9,16 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
-using Composite.Serialization;
+using Composite.Core.Serialization;
 using System.Collections.Generic;
-using Composite.Types;
+using Composite.Core.Types;
 using System.Reflection;
-using Composite.Security;
+using Composite.C1Console.Security;
 using System.Xml.Linq;
 using System.Text;
 using Composite.Data.Types;
 using Composite.Data;
-using Composite.WebClient;
+using Composite.Core.WebClient;
 
 
 public partial class Spikes_RelationshipGraph_Default : System.Web.UI.Page
@@ -35,7 +35,7 @@ public partial class Spikes_RelationshipGraph_Default : System.Web.UI.Page
         string serializedEntityToken = Request.QueryString["EntityToken"];
 
         EntityToken entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
-        //Composite.WebClient.ElementInformation elementInformation = ElementInformationSerializer.Deserialize(serializedEntityToken);
+        //Composite.Core.WebClient.ElementInformation elementInformation = ElementInformationSerializer.Deserialize(serializedEntityToken);
 
         RelationshipGraph graph = new RelationshipGraph(entityToken, RelationshipGraphSearchOption.Both);
 

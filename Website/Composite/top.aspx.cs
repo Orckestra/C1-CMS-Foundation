@@ -1,5 +1,5 @@
 using System;
-using Composite.ConfigurationSystem;
+using Composite.Core.Configuration;
 
 
 

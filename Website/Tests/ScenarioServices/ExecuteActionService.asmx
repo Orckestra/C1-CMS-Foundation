@@ -5,13 +5,13 @@ using System.Web;
 using System.Web.Services;
 using System.Web.Services.Protocols;
 
-using Composite.Actions;
-using Composite.Security;
-using Composite.ConsoleEventSystem;
-using Composite.Elements;
-using Composite.Workflow;
-using Composite.Workflow.Foundation;
-using Composite.Tasks;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Security;
+using Composite.C1Console.Events;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Workflow;
+using Composite.C1Console.Workflow.Foundation;
+using Composite.C1Console.Tasks;
 
 [WebService(Namespace = "http://www.composite.net/ns/test")]
 [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
@@ -23,8 +23,8 @@ public class ExecuteActionService  : WebService
     [WebMethod]
     public string ExecuteAction(string providerName, string serializedEntityToken, string serializedActionToken)
     {
-        serializedEntityToken = @"entityTokenType='Composite\.StandardPlugins\.Elements\.ElementProviders\.PageElementProvider\.PageElementProviderEntityToken,Composite'entityToken='_EntityToken_Type_=\'\'_EntityToken_Source_=\'PageElementProvider\'_EntityToken_Id_=\'\''entityTokenHash='1610858203'";
-        serializedActionToken = @"actionTokenType='Composite\.Workflow\.WorkflowActionToken,Composite'actionToken='_WorkflowType_=\'Composite\\\.StandardPlugins\\\.Elements\\\.ElementProviders\\\.PageElementProvider\\\.AddNewPageWorkflow,Composite\\\.Workflows\'_Payload_=\'\'_ExtraPayload_=\'\'_Ignore_=\'True\'_PermissionTypes_=\'Add\''actionTokenHash='1930371641'";
+        serializedEntityToken = @"entityTokenType='Composite\.Plugins\.Elements\.ElementProviders\.PageElementProvider\.PageElementProviderEntityToken,Composite'entityToken='_EntityToken_Type_=\'\'_EntityToken_Source_=\'PageElementProvider\'_EntityToken_Id_=\'\''entityTokenHash='1610858203'";
+        serializedActionToken = @"actionTokenType='Composite\.Workflow\.WorkflowActionToken,Composite'actionToken='_WorkflowType_=\'Composite\\\.Plugins\\\.Elements\\\.ElementProviders\\\.PageElementProvider\\\.AddNewPageWorkflow,Composite\\\.Workflows\'_Payload_=\'\'_ExtraPayload_=\'\'_Ignore_=\'True\'_PermissionTypes_=\'Add\''actionTokenHash='1930371641'";
         
         UserValidationFacade.FormValidateUser("admin", "123456");
         
@@ -35,7 +35,7 @@ public class ExecuteActionService  : WebService
         FlowControllerServicesContainer flowControllerServiceContainer = new FlowControllerServicesContainer();
         flowControllerServiceContainer.AddService(new ManagementConsoleMessageService(_consoleId, _viewId));
         flowControllerServiceContainer.AddService(new ElementDataExchangeService(providerName));
-        flowControllerServiceContainer.AddService(new Composite.WebClient.FlowMediators.ActionExecutionService(providerName, _consoleId));
+        flowControllerServiceContainer.AddService(new Composite.Core.WebClient.FlowMediators.ActionExecutionService(providerName, _consoleId));
 
         FlowToken flowToken = ActionExecutorFacade.Execute(entityToken, actionToken, flowControllerServiceContainer);
         string serializedFlowToken = FlowTokenSerializer.Serialize(flowToken);
@@ -60,7 +60,7 @@ public class ExecuteActionService  : WebService
         FlowControllerServicesContainer flowControllerServiceContainer = new FlowControllerServicesContainer();
         flowControllerServiceContainer.AddService(new ManagementConsoleMessageService(_consoleId, _viewId));
         flowControllerServiceContainer.AddService(new ElementDataExchangeService(providerName));
-        flowControllerServiceContainer.AddService(new Composite.WebClient.FlowMediators.ActionExecutionService(providerName, _consoleId));
+        flowControllerServiceContainer.AddService(new Composite.Core.WebClient.FlowMediators.ActionExecutionService(providerName, _consoleId));
 
         FormData formData = WorkflowFacade.GetFormData(workflowFlowToken.WorkflowInstanceId);
         

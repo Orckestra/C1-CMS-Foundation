@@ -6,12 +6,12 @@ using Composite.Data.Caching;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
 using Composite.Data.Foundation.PluginFacades;
-using Composite.Linq;
-using Composite.Logging;
-using Composite.Security;
-using Composite.Threading;
-using Composite.Types;
-using Composite.Validation;
+using Composite.Core.Linq;
+using Composite.Core.Logging;
+using Composite.C1Console.Security;
+using Composite.Core.Threading;
+using Composite.Core.Types;
+using Composite.Data.Validation;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 
-using Composite.Security;
-using Composite.Elements;
+using Composite.C1Console.Security;
+using Composite.C1Console.Elements;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 {
     internal sealed class VirtualElementProviderSecurityAncestorProvider : ISecurityAncestorProvider
 	{

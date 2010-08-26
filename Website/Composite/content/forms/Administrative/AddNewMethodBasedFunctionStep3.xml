@@ -5,13 +5,13 @@
     <cms:binding optional="true" name="ErrorMessage" type="System.String" />
   </cms:bindings>
   <cms:layout>
-    <FieldGroup Label="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunction.LabelFieldGroup}">
-      <TextBox Label="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep3.LabelMethodName}" Help="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep3.HelpMethodName}" Type="ProgrammingIdentifier">
+    <FieldGroup Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunction.LabelFieldGroup}">
+      <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep3.LabelMethodName}" Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep3.HelpMethodName}" Type="ProgrammingIdentifier">
         <TextBox.Text>
           <cms:bind source="NewMethodBasedFunction.UserMethodName" />
         </TextBox.Text>
       </TextBox>
-      <TextBox Label="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep3.LabelNamespaceName}" Help="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep3.HelpNamespaceName}" Type="ProgrammingNamespace">
+      <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep3.LabelNamespaceName}" Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep3.HelpNamespaceName}" Type="ProgrammingNamespace">
         <TextBox.Text>
           <cms:bind source="NewMethodBasedFunction.Namespace" />
         </TextBox.Text>
@@ -21,7 +21,7 @@
           <cms:read source="ErrorMessage" />
         </f:NullCheck.CheckValue>
         <f:NullCheck.WhenNotNull>
-          <Text Label="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep3.LabelError}">
+          <Text Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep3.LabelError}">
             <Text.Text>
               <cms:read source="ErrorMessage" />
             </Text.Text>

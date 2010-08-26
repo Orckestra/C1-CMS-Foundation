@@ -2,7 +2,7 @@
 using Composite.Data.Types;
 using Composite.Data;
 
-namespace Composite.StandardPlugins.Data.DataProviders.FileSystemMediaFileProvider
+namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
 {
 	internal sealed class FileSystemMediaFileFolder : IMediaFileFolder
 	{

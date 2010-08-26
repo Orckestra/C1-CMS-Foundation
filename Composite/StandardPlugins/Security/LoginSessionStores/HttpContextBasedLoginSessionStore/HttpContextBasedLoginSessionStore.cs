@@ -5,17 +5,17 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Web;
 using System.Web.Security;
-using Composite.Caching;
-using Composite.Extensions;
-using Composite.Logging;
-using Composite.Security.Plugins.LoginSessionStore;
-using Composite.Threading;
-using Composite.WebClient;
+using Composite.Core.Caching;
+using Composite.Core.Extensions;
+using Composite.Core.Logging;
+using Composite.C1Console.Security.Plugins.LoginSessionStore;
+using Composite.Core.Threading;
+using Composite.Core.WebClient;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Security.LoginSessionStores.HttpContextBasedLoginSessionStore
+namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSessionStore
 {
     [ConfigurationElementType(typeof(HttpContextBasedSessionDataProviderData))]
     internal sealed class HttpContextBasedLoginSessionStore : ILoginSessionStore

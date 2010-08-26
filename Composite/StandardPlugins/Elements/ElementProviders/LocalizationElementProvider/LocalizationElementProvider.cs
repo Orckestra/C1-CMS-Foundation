@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Elements;
-using Composite.Elements.Plugins.ElementProvider;
-using Composite.ResourceSystem;
-using Composite.ResourceSystem.Icons;
-using Composite.Security;
-using Composite.Workflow;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Elements.Plugins.ElementProvider;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.C1Console.Security;
+using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
-using Composite.Types;
-using Composite.Localization;
+using Composite.Core.Types;
+using Composite.Core.Localization;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvider
 {
     [ConfigurationElementType(typeof(NonConfigurableHooklessElementProvider))]
     internal sealed class LocalizationElementProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
@@ -54,8 +54,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElemen
             Element element = new Element(_context.CreateElementHandle(new LocalizationElementProviderRootEntityToken()));
             element.VisualData = new ElementVisualizedData
             {
-                Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.LocalizationElementProvider", "ElementProvider.RootFolderLabel"),
-                ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.LocalizationElementProvider", "ElementProvider.RootFolderToolTip"),
+                Label = StringResourceSystemFacade.GetString("Composite.Plugins.LocalizationElementProvider", "ElementProvider.RootFolderLabel"),
+                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.LocalizationElementProvider", "ElementProvider.RootFolderToolTip"),
                 HasChildren = true,
                 Icon = RootClosedIcon,
                 OpenedIcon = RootOpenedIcon
@@ -64,14 +64,14 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElemen
 
             element.AddAction(new ElementAction(new ActionHandle(
                 new WorkflowActionToken(
-                    WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.LocalizationElementProvider.AddSystemLocaleWorkflow"),
+                    WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.LocalizationElementProvider.AddSystemLocaleWorkflow"),
                     new PermissionType[] { PermissionType.Administrate }
                 )))
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.LocalizationElementProvider", "AddSystemLocaleWorkflow.AddElementActionLabel"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.LocalizationElementProvider", "AddSystemLocaleWorkflow.AddElementActionToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.LocalizationElementProvider", "AddSystemLocaleWorkflow.AddElementActionLabel"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.LocalizationElementProvider", "AddSystemLocaleWorkflow.AddElementActionToolTip"),
                     Icon = AddSystemLocaleIcon,
                     Disabled = false,
                     ActionLocation = new ActionLocation
@@ -106,7 +106,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElemen
                 ResourceHandle iconHandle = LocaleItemIcon;
                 if (isDefault)
                 {
-                    //lable = string.Format("{0} ({1})", lable, StringResourceSystemFacade.GetString("Composite.StandardPlugins.LocalizationElementProvider", "ElementProvider.DefaultLabel"));
+                    //lable = string.Format("{0} ({1})", lable, StringResourceSystemFacade.GetString("Composite.Plugins.LocalizationElementProvider", "ElementProvider.DefaultLabel"));
                     iconHandle = DefaultLocaleItemIcon;
                 }
 
@@ -122,14 +122,14 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElemen
 
                 element.AddAction(new ElementAction(new ActionHandle(
                     new WorkflowActionToken(
-                        WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.LocalizationElementProvider.EditSystemLocaleWorkflow"),
+                        WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.LocalizationElementProvider.EditSystemLocaleWorkflow"),
                         new PermissionType[] { PermissionType.Administrate }
                     )))
                 {
                     VisualData = new ActionVisualizedData
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.LocalizationElementProvider", "EditSystemLocaleWorkflow.EditElementActionLabel"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.LocalizationElementProvider", "EditSystemLocaleWorkflow.EditElementActionToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.LocalizationElementProvider", "EditSystemLocaleWorkflow.EditElementActionLabel"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.LocalizationElementProvider", "EditSystemLocaleWorkflow.EditElementActionToolTip"),
                         Icon = EditSystemLocaleIcon,
                         Disabled = false,
                         ActionLocation = new ActionLocation
@@ -147,14 +147,14 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElemen
                 {
                     element.AddAction(new ElementAction(new ActionHandle(
                         new WorkflowActionToken(
-                            WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.LocalizationElementProvider.DefineDefaultActiveLocaleWorkflow"),
+                            WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.LocalizationElementProvider.DefineDefaultActiveLocaleWorkflow"),
                             new PermissionType[] { PermissionType.Administrate }
                         )))
                     {
                         VisualData = new ActionVisualizedData
                         {
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.LocalizationElementProvider", "DefineDefaultActiveLocaleWorkflow.ElementActionLabel"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.LocalizationElementProvider", "DefineDefaultActiveLocaleWorkflow.ElementActionToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.LocalizationElementProvider", "DefineDefaultActiveLocaleWorkflow.ElementActionLabel"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.LocalizationElementProvider", "DefineDefaultActiveLocaleWorkflow.ElementActionToolTip"),
                             Icon = SetAsDefaultIcon,
                             Disabled = false,
                             ActionLocation = new ActionLocation
@@ -170,14 +170,14 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElemen
 
                     element.AddAction(new ElementAction(new ActionHandle(
                         new WorkflowActionToken(
-                            WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.LocalizationElementProvider.RemoveSystemLocaleWorkflow"),
+                            WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.LocalizationElementProvider.RemoveSystemLocaleWorkflow"),
                             new PermissionType[] { PermissionType.Administrate }
                         )))
                     {
                         VisualData = new ActionVisualizedData
                         {
-                            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.LocalizationElementProvider", "RemoveSystemLocaleWorkflow.RemoveElementActionLabel"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.LocalizationElementProvider", "RemoveSystemLocaleWorkflow.RemoveElementActionToolTip"),
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.LocalizationElementProvider", "RemoveSystemLocaleWorkflow.RemoveElementActionLabel"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.LocalizationElementProvider", "RemoveSystemLocaleWorkflow.RemoveElementActionToolTip"),
                             Icon = RemoveSystemLocaleIcon,
                             Disabled = false,
                             ActionLocation = new ActionLocation

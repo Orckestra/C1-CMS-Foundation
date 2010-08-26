@@ -3,12 +3,12 @@ using System.Collections;
 using System.Xml.Linq;
 using Composite.Data;
 using Composite.Functions;
-using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
-using Composite.Xml;
-using Composite.Types;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
+using Composite.Core.Xml;
+using Composite.Core.Types;
 
 
-namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.DataType
+namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.DataType
 {
     internal sealed class DataTypeSelectorWidgetFunction : CompositeWidgetFunctionBase
     {

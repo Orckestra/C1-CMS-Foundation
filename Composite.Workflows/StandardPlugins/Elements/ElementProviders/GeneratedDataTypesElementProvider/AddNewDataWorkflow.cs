@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
 using Composite.Data.GeneratedTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.Elements.ElementProviderHelpers.DataGroupingProviderHelper;
-using Composite.Serialization;
-using Composite.Types;
-using Composite.Validation;
-using Composite.Workflow;
+using Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProviderHelper;
+using Composite.Core.Serialization;
+using Composite.Core.Types;
+using Composite.Data.Validation;
+using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddNewDataWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddNewDataWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         [NonSerialized]
         private DataTypeDescriptorFormsHelper _helper = null;

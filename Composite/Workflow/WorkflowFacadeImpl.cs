@@ -9,23 +9,23 @@ using System.Workflow.ComponentModel.Compiler;
 using System.Workflow.Runtime;
 using System.Workflow.Runtime.Hosting;
 using System.Xml.Linq;
-using Composite.Actions;
-using Composite.Collections.Generic;
-using Composite.ConsoleEventSystem;
-using Composite.GlobalSettings;
-using Composite.IO;
-using Composite.Logging;
-using Composite.Security;
-using Composite.Tasks;
-using Composite.Threading;
-using Composite.Types;
-using Composite.Workflow.Activities.Foundation;
-using Composite.Workflow.Foundation;
-using Composite.Workflow.Foundation.PluginFacades;
+using Composite.C1Console.Actions;
+using Composite.Core.Collections.Generic;
+using Composite.C1Console.Events;
+using Composite.Core.Configuration;
+using Composite.Core.IO;
+using Composite.Core.Logging;
+using Composite.C1Console.Security;
+using Composite.C1Console.Tasks;
+using Composite.Core.Threading;
+using Composite.Core.Types;
+using Composite.C1Console.Workflow.Activities.Foundation;
+using Composite.C1Console.Workflow.Foundation;
+using Composite.C1Console.Workflow.Foundation.PluginFacades;
 using Composite.Data;
 
 
-namespace Composite.Workflow
+namespace Composite.C1Console.Workflow
 {
     internal sealed class WorkflowFacadeImpl : IWorkflowFacade
     {
@@ -498,7 +498,7 @@ namespace Composite.Workflow
 
         public IEnumerable<string> GetCurrentFormEvents(Guid instanceId)
         {
-            var q = ((Composite.Workflow.Activities.FormsWorkflow)(new StateMachineWorkflowInstance(WorkflowFacade.WorkflowRuntime, instanceId)).StateMachineWorkflow).ActionToken;
+            var q = ((Composite.C1Console.Workflow.Activities.FormsWorkflow)(new StateMachineWorkflowInstance(WorkflowFacade.WorkflowRuntime, instanceId)).StateMachineWorkflow).ActionToken;
 
             IEnumerable<string> eventNames = new StateMachineWorkflowInstance(WorkflowFacade.WorkflowRuntime, instanceId).GetCurrentEventNames(typeof(IFormsWorkflowEventService));
 

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Composite.Functions;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.Security;
-using Composite.ResourceSystem;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.C1Console.Security;
+using Composite.Core.ResourceSystem;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Compare
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Compare
 {
 	internal sealed class IsLessThanFunction : StandardFunctionBase
 	{

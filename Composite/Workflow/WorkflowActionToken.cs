@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Composite.Actions;
-using Composite.Security;
-using Composite.Serialization;
-using Composite.Types;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Security;
+using Composite.Core.Serialization;
+using Composite.Core.Types;
 
 
-namespace Composite.Workflow
+namespace Composite.C1Console.Workflow
 {
     /// <summary>    
     /// </summary>

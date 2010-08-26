@@ -6,22 +6,22 @@
     <cms:binding name="SelectedSortOrder" type="System.String" />
     <cms:binding name="PageTypeOptions" type="System.Collections.IEnumerable" />
   </cms:bindings>
-  <cms:layout iconhandle="page-add-page" label="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep1.DialogLabel}">
-    <FieldGroup Label="${Composite.StandardPlugins.PageElementProvider, GeneralSettings.FieldGroupLabel}">
-      <TextBox Label="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep1.LabelTitle}" Help="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep1.LabelTitleHelp}">
+  <cms:layout iconhandle="page-add-page" label="${Composite.Plugins.PageElementProvider, AddNewPageStep1.DialogLabel}">
+    <FieldGroup Label="${Composite.Plugins.PageElementProvider, GeneralSettings.FieldGroupLabel}">
+      <TextBox Label="${Composite.Plugins.PageElementProvider, AddNewPageStep1.LabelTitle}" Help="${Composite.Plugins.PageElementProvider, AddNewPageStep1.LabelTitleHelp}">
         <TextBox.Text>
           <cms:bind source="NewPage.Title" />
         </TextBox.Text>
       </TextBox>
-      <TextArea Label="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep1.LabelAbstract}" Help="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep1.LabelAbstractHelp}">
+      <TextArea Label="${Composite.Plugins.PageElementProvider, AddNewPageStep1.LabelAbstract}" Help="${Composite.Plugins.PageElementProvider, AddNewPageStep1.LabelAbstractHelp}">
         <TextArea.Text>
           <cms:bind source="NewPage.Abstract" />
         </TextArea.Text>
       </TextArea>
       
       <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"                    
-                   Label="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep1.LabelTemplate}"
-                   Help="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep1.HelpTemplate}">
+                   Label="${Composite.Plugins.PageElementProvider, AddNewPageStep1.LabelTemplate}"
+                   Help="${Composite.Plugins.PageElementProvider, AddNewPageStep1.HelpTemplate}">
         <KeySelector.Selected>
           <cms:bind source="NewPage.PageTypeId" />
         </KeySelector.Selected>
@@ -30,7 +30,7 @@
         </KeySelector.Options>
       </KeySelector>
       
-      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Help="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep1.HelpPosition}" Label="${Composite.StandardPlugins.PageElementProvider, AddNewPageStep1.LabelPosition}">
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Help="${Composite.Plugins.PageElementProvider, AddNewPageStep1.HelpPosition}" Label="${Composite.Plugins.PageElementProvider, AddNewPageStep1.LabelPosition}">
         <KeySelector.Selected>
           <cms:bind source="SelectedSortOrder" />
         </KeySelector.Selected>

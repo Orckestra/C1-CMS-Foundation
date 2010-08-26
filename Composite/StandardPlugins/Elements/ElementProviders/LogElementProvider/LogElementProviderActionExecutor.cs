@@ -1,12 +1,12 @@
 ﻿using System;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
-using Composite.ResourceSystem;
-using Composite.Security;
-using Composite.WebClient;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
+using Composite.Core.ResourceSystem;
+using Composite.C1Console.Security;
+using Composite.Core.WebClient;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.LogElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.LogElementProvider
 {
     internal sealed class LogElementProviderActionExecutor : IActionExecutor
     {

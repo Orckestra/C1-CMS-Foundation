@@ -11,9 +11,9 @@ using System.Workflow.ComponentModel.Design;
 using System.Workflow.Runtime;
 using System.Workflow.Activities;
 using System.Workflow.Activities.Rules;
-using Composite.Workflow;
+using Composite.C1Console.Workflow;
 
-namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
     partial class AddNewMediaFileWorkflow
     {
@@ -45,20 +45,20 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.MediaFil
             this.setStateActivity3 = new System.Workflow.Activities.SetStateActivity();
             this.finalizeCodeActivity_Finalize = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity5 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity3 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity3 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.step2IfElseActivity_ValidateStep2Bindings = new System.Workflow.Activities.IfElseActivity();
-            this.finishHandleExternalEventActivity2 = new Composite.Workflow.Activities.FinishHandleExternalEventActivity();
+            this.finishHandleExternalEventActivity2 = new Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity();
             this.setStateActivity9 = new System.Workflow.Activities.SetStateActivity();
-            this.previousHandleExternalEventActivity1 = new Composite.Workflow.Activities.PreviousHandleExternalEventActivity();
-            this.wizardFormActivity2 = new Composite.Workflow.Activities.WizardFormActivity();
+            this.previousHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.PreviousHandleExternalEventActivity();
+            this.wizardFormActivity2 = new Composite.C1Console.Workflow.Activities.WizardFormActivity();
             this.step2CodeActivity_UpdateBindings = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity6 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity2 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity2 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.step1IfElseActivity_Finish_ValidateStep1Bindings = new System.Workflow.Activities.IfElseActivity();
-            this.finishHandleExternalEventActivity1 = new Composite.Workflow.Activities.FinishHandleExternalEventActivity();
+            this.finishHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity();
             this.step1IfElseActivity_Next_ValidateStep1Bindings = new System.Workflow.Activities.IfElseActivity();
-            this.nextHandleExternalEventActivity1 = new Composite.Workflow.Activities.NextHandleExternalEventActivity();
-            this.wizardFormActivity1 = new Composite.Workflow.Activities.WizardFormActivity();
+            this.nextHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.NextHandleExternalEventActivity();
+            this.wizardFormActivity1 = new Composite.C1Console.Workflow.Activities.WizardFormActivity();
             this.setStateActivity2 = new System.Workflow.Activities.SetStateActivity();
             this.initializeCodeActivity_InitializeBindings = new System.Workflow.Activities.CodeActivity();
             this.finalizeStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
@@ -72,7 +72,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.MediaFil
             this.step1StateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.initializeStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.setStateActivity1 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity1 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.finalizeStateActivity = new System.Workflow.Activities.StateActivity();
             this.step2StateActivity = new System.Workflow.Activities.StateActivity();
             this.step1StateActivity = new System.Workflow.Activities.StateActivity();
@@ -165,7 +165,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.MediaFil
             // cancelHandleExternalEventActivity3
             // 
             this.cancelHandleExternalEventActivity3.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity3.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity3.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity3.Name = "cancelHandleExternalEventActivity3";
             // 
             // step2IfElseActivity_ValidateStep2Bindings
@@ -177,7 +177,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.MediaFil
             // finishHandleExternalEventActivity2
             // 
             this.finishHandleExternalEventActivity2.EventName = "Finish";
-            this.finishHandleExternalEventActivity2.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.finishHandleExternalEventActivity2.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.finishHandleExternalEventActivity2.Name = "finishHandleExternalEventActivity2";
             // 
             // setStateActivity9
@@ -188,7 +188,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.MediaFil
             // previousHandleExternalEventActivity1
             // 
             this.previousHandleExternalEventActivity1.EventName = "Previous";
-            this.previousHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.previousHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.previousHandleExternalEventActivity1.Name = "previousHandleExternalEventActivity1";
             // 
             // wizardFormActivity2
@@ -210,7 +210,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.MediaFil
             // cancelHandleExternalEventActivity2
             // 
             this.cancelHandleExternalEventActivity2.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity2.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity2.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity2.Name = "cancelHandleExternalEventActivity2";
             // 
             // step1IfElseActivity_Finish_ValidateStep1Bindings
@@ -222,7 +222,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.MediaFil
             // finishHandleExternalEventActivity1
             // 
             this.finishHandleExternalEventActivity1.EventName = "Finish";
-            this.finishHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.finishHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.finishHandleExternalEventActivity1.Name = "finishHandleExternalEventActivity1";
             // 
             // step1IfElseActivity_Next_ValidateStep1Bindings
@@ -234,7 +234,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.MediaFil
             // nextHandleExternalEventActivity1
             // 
             this.nextHandleExternalEventActivity1.EventName = "Next";
-            this.nextHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.nextHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.nextHandleExternalEventActivity1.Name = "nextHandleExternalEventActivity1";
             // 
             // wizardFormActivity1
@@ -320,7 +320,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.MediaFil
             // cancelHandleExternalEventActivity1
             // 
             this.cancelHandleExternalEventActivity1.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity1.Name = "cancelHandleExternalEventActivity1";
             // 
             // finalizeStateActivity
@@ -379,7 +379,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.MediaFil
 
         private CodeActivity step2CodeActivity_UpdateBindings;
 
-        private Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
 
         private StateInitializationActivity initializeStateInitializationActivity;
 
@@ -437,7 +437,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.MediaFil
 
         private IfElseActivity step1IfElseActivity_Next_ValidateStep1Bindings;
 
-        private Workflow.Activities.NextHandleExternalEventActivity nextHandleExternalEventActivity1;
+        private C1Console.Workflow.Activities.NextHandleExternalEventActivity nextHandleExternalEventActivity1;
 
         private SetStateActivity setStateActivity12;
 
@@ -455,23 +455,23 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.MediaFil
 
         private IfElseActivity step2IfElseActivity_ValidateStep2Bindings;
 
-        private Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity2;
+        private C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity2;
 
-        private Workflow.Activities.PreviousHandleExternalEventActivity previousHandleExternalEventActivity1;
+        private C1Console.Workflow.Activities.PreviousHandleExternalEventActivity previousHandleExternalEventActivity1;
 
-        private Workflow.Activities.WizardFormActivity wizardFormActivity2;
+        private C1Console.Workflow.Activities.WizardFormActivity wizardFormActivity2;
 
-        private Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
 
         private IfElseActivity step1IfElseActivity_Finish_ValidateStep1Bindings;
 
-        private Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
+        private C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
 
-        private Workflow.Activities.WizardFormActivity wizardFormActivity1;
+        private C1Console.Workflow.Activities.WizardFormActivity wizardFormActivity1;
 
         private CodeActivity finalizeCodeActivity_Finalize;
 
-        private Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity3;
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity3;
 
         private EventDrivenActivity eventDrivenActivity_GlobalCancel;
 

@@ -7,11 +7,11 @@ using System.Linq;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Functions;
-using Composite.Logging;
-using Composite.StringExtensions;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Core.Logging;
+using Composite.Core.Extensions;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Mail
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Mail
 {
     internal class SendMailFunction : StandardFunctionBase
 	{

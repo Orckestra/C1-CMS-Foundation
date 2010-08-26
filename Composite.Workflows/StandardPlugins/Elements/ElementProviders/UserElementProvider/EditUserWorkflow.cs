@@ -5,33 +5,33 @@ using System.Linq;
 using System.Transactions;
 using System.Workflow.Runtime;
 using System.Xml.Linq;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Types;
-using Composite.Elements;
-using Composite.Forms;
-using Composite.Forms.DataServices;
-using Composite.Forms.Flows;
-using Composite.ResourceSystem;
-using Composite.Security;
-using Composite.Security.Cryptography;
-using Composite.Transactions;
-using Composite.Types;
-using Composite.Users;
-using Composite.Validation;
-using Composite.Validation.ClientValidationRules;
-using Composite.Workflow;
-using Composite.Xml;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Forms;
+using Composite.C1Console.Forms.DataServices;
+using Composite.C1Console.Forms.Flows;
+using Composite.Core.ResourceSystem;
+using Composite.C1Console.Security;
+using Composite.C1Console.Security.Cryptography;
+using Composite.Data.Transactions;
+using Composite.Core.Types;
+using Composite.C1Console.Users;
+using Composite.Data.Validation;
+using Composite.Data.Validation.ClientValidationRules;
+using Composite.C1Console.Workflow;
+using Composite.Core.Xml;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class EditUserWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class EditUserWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         private static string UserBindingName { get { return "User"; } }
 

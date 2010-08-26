@@ -1,8 +1,8 @@
 using System;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 
 
-namespace Composite.Workflow
+namespace Composite.C1Console.Workflow
 {
     /// <summary>    
     /// </summary>

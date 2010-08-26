@@ -3,37 +3,37 @@
   <cms:bindings>
     <cms:binding name="NewSqlQueryInfo" type="Composite.Data.Types.ISqlFunctionInfo, Composite" />
   </cms:bindings>
-  <cms:layout iconhandle="sql-based-function" label="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunction.LabelDialog}">
+  <cms:layout iconhandle="sql-based-function" label="${Composite.Plugins.SqlFunction, AddNewSqlFunction.LabelDialog}">
     <PlaceHolder>
-      <FieldGroup Label="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunction.LabelNamingPanel}">
-        <TextBox Label="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunction.LabelName}" Help="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunction.HelpName}" Type="ProgrammingIdentifier">
+      <FieldGroup Label="${Composite.Plugins.SqlFunction, AddNewSqlFunction.LabelNamingPanel}">
+        <TextBox Label="${Composite.Plugins.SqlFunction, AddNewSqlFunction.LabelName}" Help="${Composite.Plugins.SqlFunction, AddNewSqlFunction.HelpName}" Type="ProgrammingIdentifier">
           <TextBox.Text>
             <cms:bind source="NewSqlQueryInfo.Name" />
           </TextBox.Text>
         </TextBox>
-        <TextBox Label="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunction.LabelNamespace}" Help="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunction.HelpNamespace}" Type="ProgrammingNamespace">
+        <TextBox Label="${Composite.Plugins.SqlFunction, AddNewSqlFunction.LabelNamespace}" Help="${Composite.Plugins.SqlFunction, AddNewSqlFunction.HelpNamespace}" Type="ProgrammingNamespace">
           <TextBox.Text>
             <cms:bind source="NewSqlQueryInfo.Namespace" />
           </TextBox.Text>
         </TextBox>
       </FieldGroup>
-      <FieldGroup Label="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelSqlEditor}">
-        <TextArea Label="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunction.LabelQueryCOmmand}" Help="${Composite.StandardPlugins.SqlFunction, AddNewSqlFunction.HelpQueryCOmmand}">
+      <FieldGroup Label="${Composite.Plugins.SqlFunction, AddEditSqlFunction.LabelSqlEditor}">
+        <TextArea Label="${Composite.Plugins.SqlFunction, AddNewSqlFunction.LabelQueryCOmmand}" Help="${Composite.Plugins.SqlFunction, AddNewSqlFunction.HelpQueryCOmmand}">
           <cms:bind source="NewSqlQueryInfo.Command" />
         </TextArea>
       </FieldGroup>
-      <FieldGroup Label="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelCommandBehaviour}">
-        <CheckBox Label="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelIsStoredProcedure}" ItemLabel="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelIsStoredProcedureCheckBox}">
+      <FieldGroup Label="${Composite.Plugins.SqlFunction, AddEditSqlFunction.LabelCommandBehaviour}">
+        <CheckBox Label="${Composite.Plugins.SqlFunction, AddEditSqlFunction.LabelIsStoredProcedure}" ItemLabel="${Composite.Plugins.SqlFunction, AddEditSqlFunction.LabelIsStoredProcedureCheckBox}">
           <CheckBox.Checked>
             <cms:bind source="NewSqlQueryInfo.IsStoredProcedure" />
           </CheckBox.Checked>
         </CheckBox>
-        <CheckBox Label="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelReturnsXml}" ItemLabel="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelReturnsXmlCheckBox}">
+        <CheckBox Label="${Composite.Plugins.SqlFunction, AddEditSqlFunction.LabelReturnsXml}" ItemLabel="${Composite.Plugins.SqlFunction, AddEditSqlFunction.LabelReturnsXmlCheckBox}">
           <CheckBox.Checked>
             <cms:bind source="NewSqlQueryInfo.ReturnsXml" />
           </CheckBox.Checked>
         </CheckBox>
-        <CheckBox Label="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelIsQuery}" ItemLabel="${Composite.StandardPlugins.SqlFunction, AddEditSqlFunction.LabelIsQueryCheckBox}">
+        <CheckBox Label="${Composite.Plugins.SqlFunction, AddEditSqlFunction.LabelIsQuery}" ItemLabel="${Composite.Plugins.SqlFunction, AddEditSqlFunction.LabelIsQueryCheckBox}">
           <CheckBox.Checked>
             <cms:bind source="NewSqlQueryInfo.IsQuery" />
           </CheckBox.Checked>

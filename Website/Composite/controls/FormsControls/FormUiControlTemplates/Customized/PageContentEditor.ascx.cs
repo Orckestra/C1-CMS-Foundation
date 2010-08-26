@@ -6,14 +6,14 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
-using Composite.StandardPlugins.Forms.WebChannel.CustomUiControls;
-using Composite.Xml;
+using Composite.Plugins.Forms.WebChannel.CustomUiControls;
+using Composite.Core.Xml;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Renderings.Template;
+using Composite.Core.WebClient.Renderings.Template;
 using System.Collections.Generic;
-using Composite.Types;
-using Composite.Logging;
+using Composite.Core.Types;
+using Composite.Core.Logging;
 
 namespace CompositePageContentEditor
 {
@@ -85,7 +85,7 @@ namespace CompositePageContentEditor
             {
                 if (handledIds.Contains(placeHolderInfo.Key) == false)
                 {
-                    TextBox contentTextBox = new Composite.WebClient.UiControlLib.TextBox();
+                    TextBox contentTextBox = new Composite.Core.WebClient.UiControlLib.TextBox();
                     contentTextBox.TextMode = TextBoxMode.MultiLine;
                     contentTextBox.ID = placeHolderInfo.Key;
                     contentTextBox.Attributes.Add("placeholderid", placeHolderInfo.Key);

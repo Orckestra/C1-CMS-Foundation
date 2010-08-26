@@ -1,5 +1,5 @@
-<%@ Control Language="C#" Inherits="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.TextInputTemplateUserControlBase"  %>
-<%@ Import Namespace="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories" %>
+<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.TextInputTemplateUserControlBase"  %>
+<%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
 
 <script runat="server">
     private string _currentStringValue = null;
@@ -31,7 +31,7 @@
     {
         switch (this.Type)
         {
-            case Composite.Forms.CoreUiControls.TextBoxType.ReadOnly:
+            case Composite.C1Console.Forms.CoreUiControls.TextBoxType.ReadOnly:
                 return @"readonly=""true""";
             default:
                 return "";

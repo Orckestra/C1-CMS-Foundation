@@ -1,15 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Workflow.Activities;
-using Composite.Actions;
-using Composite.Elements;
-using Composite.Workflow;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddNewWebsiteFolderWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddNewWebsiteFolderWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public AddNewWebsiteFolderWorkflow()
         {
@@ -72,7 +72,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElement
 
         private void finalizeCodeActivity_ShowError_ExecuteCode(object sender, EventArgs e)
         {
-            this.ShowFieldMessage("NewFolderName", "${Composite.StandardPlugins.WebsiteFileElementProvider, AddNewFolder.Error.FolderExist}");
+            this.ShowFieldMessage("NewFolderName", "${Composite.Plugins.WebsiteFileElementProvider, AddNewFolder.Error.FolderExist}");
         }
     }
 }

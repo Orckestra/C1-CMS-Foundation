@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using Composite.Functions;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.ResourceSystem;
-using Composite.Xml;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Core.ResourceSystem;
+using Composite.Core.Xml;
 
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Constant
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Constant
 {
     internal sealed class XhtmlDocumentFunction : StandardFunctionBase
     {

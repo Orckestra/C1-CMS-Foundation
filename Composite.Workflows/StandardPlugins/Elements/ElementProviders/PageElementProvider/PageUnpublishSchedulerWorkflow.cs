@@ -9,15 +9,15 @@ using Composite.Data;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
-using Composite.Logging;
-using Composite.Transactions;
-using Composite.Workflow;
-using Composite.Threading;
-using Composite.Linq;
+using Composite.Core.Logging;
+using Composite.Data.Transactions;
+using Composite.C1Console.Workflow;
+using Composite.Core.Threading;
+using Composite.Core.Linq;
 
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Shutdown)]
     public sealed partial class PageUnpublishSchedulerWorkflow : StateMachineWorkflowActivity

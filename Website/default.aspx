@@ -6,8 +6,7 @@
 <%@ Import Namespace="Composite" %>
 <%@ Import Namespace="Composite.Data" %>
 <%@ Import Namespace="Composite.Data.Types" %>
-<%@ Import Namespace="Composite.Pages" %>
-<%@ Import Namespace="Composite.ConfigurationSystem" %>
+<%@ Import Namespace="Composite.Core.Configuration" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -48,7 +47,7 @@
 
                     if (pageId == Guid.Empty)
                     {
-                        var pageManager = Composite.Pages.PageManager.Create(PublicationScope.Public, defaultLocale);
+                        var pageManager = Composite.Data.PageManager.Create(PublicationScope.Public, defaultLocale);
 
                         pageId = pageManager.GetChildrenIds(Guid.Empty).FirstOrDefault(rootPageId => pageManager.GetPageById(rootPageId) != null);
 

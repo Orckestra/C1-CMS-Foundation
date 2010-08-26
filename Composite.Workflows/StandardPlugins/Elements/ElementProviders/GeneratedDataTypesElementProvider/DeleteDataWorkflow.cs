@@ -4,22 +4,22 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Workflow.Activities;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.DynamicTypes.Foundation;
 using Composite.Data.ProcessControlled;
-using Composite.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper;
-using Composite.ResourceSystem;
-using Composite.Workflow;
-using Composite.StringExtensions; 
+using Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper;
+using Composite.Core.ResourceSystem;
+using Composite.C1Console.Workflow;
+using Composite.Core.Extensions; 
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class DeleteDataWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class DeleteDataWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public DeleteDataWorkflow()
         {
@@ -69,8 +69,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
             {
                 this.ShowMessage(
                         DialogType.Error,
-                        StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "CascadeDeleteErrorTitle"),
-                        StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "CascadeDeleteErrorMessage")
+                        StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "CascadeDeleteErrorTitle"),
+                        StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "CascadeDeleteErrorMessage")
                     );
             }
         }

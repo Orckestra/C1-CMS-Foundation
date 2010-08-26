@@ -1,14 +1,14 @@
 ﻿using System;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
-using Composite.ResourceSystem;
-using Composite.Security;
-using Composite.WebClient;
-using Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
-using Composite.Collections;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
+using Composite.Core.ResourceSystem;
+using Composite.C1Console.Security;
+using Composite.Core.WebClient;
+using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
+using Composite.Core.Collections;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.AllFunctionsElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvider
 {
     internal sealed class AllFunctionsProviderActionExecutor : IActionExecutor
     {

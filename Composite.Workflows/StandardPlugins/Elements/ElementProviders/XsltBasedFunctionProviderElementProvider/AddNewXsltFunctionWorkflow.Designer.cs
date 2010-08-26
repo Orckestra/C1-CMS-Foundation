@@ -11,9 +11,9 @@ using System.Workflow.ComponentModel.Design;
 using System.Workflow.Runtime;
 using System.Workflow.Activities;
 using System.Workflow.Activities.Rules;
-using Composite.Workflow;
+using Composite.C1Console.Workflow;
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider
 {
     partial class AddNewXsltFunctionWorkflow
     {
@@ -48,16 +48,16 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionP
             this.ifElseActivity1 = new System.Workflow.Activities.IfElseActivity();
             this.setStateActivity1 = new System.Workflow.Activities.SetStateActivity();
             this.finalizecodeActivity = new System.Workflow.Activities.CodeActivity();
-            this.closeCurrentViewActivity1 = new Composite.Workflow.Activities.CloseCurrentViewActivity();
+            this.closeCurrentViewActivity1 = new Composite.C1Console.Workflow.Activities.CloseCurrentViewActivity();
             this.setStateActivity6 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity2 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity2 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.setStateActivity5 = new System.Workflow.Activities.SetStateActivity();
-            this.finishHandleExternalEventActivity1 = new Composite.Workflow.Activities.FinishHandleExternalEventActivity();
-            this.dialogFormActivity1 = new Composite.Workflow.Activities.DataDialogFormActivity();
+            this.finishHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity();
+            this.dialogFormActivity1 = new Composite.C1Console.Workflow.Activities.DataDialogFormActivity();
             this.ifElseActivity_CheckActiveLanguagesExists = new System.Workflow.Activities.IfElseActivity();
             this.validateStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.setStateActivity7 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity1 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.stateInitializationActivity4 = new System.Workflow.Activities.StateInitializationActivity();
             this.step1EventDrivenActivity_Cancel = new System.Workflow.Activities.EventDrivenActivity();
             this.step1EventDrivenActivity_Finish = new System.Workflow.Activities.EventDrivenActivity();
@@ -183,7 +183,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionP
             // cancelHandleExternalEventActivity2
             // 
             this.cancelHandleExternalEventActivity2.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity2.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity2.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity2.Name = "cancelHandleExternalEventActivity2";
             // 
             // setStateActivity5
@@ -194,7 +194,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionP
             // finishHandleExternalEventActivity1
             // 
             this.finishHandleExternalEventActivity1.EventName = "Finish";
-            this.finishHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.finishHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.finishHandleExternalEventActivity1.Name = "finishHandleExternalEventActivity1";
             // 
             // dialogFormActivity1
@@ -222,7 +222,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionP
             // cancelHandleExternalEventActivity1
             // 
             this.cancelHandleExternalEventActivity1.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity1.Name = "cancelHandleExternalEventActivity1";
             // 
             // stateInitializationActivity4
@@ -311,15 +311,15 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionP
         private StateInitializationActivity stateInitializationActivity2;
         private StateInitializationActivity stateInitializationActivity1;
         private SetStateActivity setStateActivity1;
-        private Composite.Workflow.Activities.CloseCurrentViewActivity closeCurrentViewActivity1;
+        private Composite.C1Console.Workflow.Activities.CloseCurrentViewActivity closeCurrentViewActivity1;
         private SetStateActivity setStateActivity5;
-        private Composite.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
         private CodeActivity initializeCodeActivity;
         private EventDrivenActivity step1EventDrivenActivity_Finish;
-        private Composite.Workflow.Activities.DataDialogFormActivity dialogFormActivity1;
+        private Composite.C1Console.Workflow.Activities.DataDialogFormActivity dialogFormActivity1;
         private CodeActivity finalizecodeActivity;
         private SetStateActivity setStateActivity7;
-        private Composite.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
         private EventDrivenActivity eventDrivenActivity_GlobalCancel;
         private SetStateActivity setStateActivity2;
         private IfElseBranchActivity ifElseBranchActivity2;
@@ -330,7 +330,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionP
         private SetStateActivity setStateActivity4;
         private SetStateActivity setStateActivity3;
         private SetStateActivity setStateActivity6;
-        private Composite.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
+        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
         private EventDrivenActivity step1EventDrivenActivity_Cancel;
         private IfElseBranchActivity ifElseBranchActivity4;
         private IfElseBranchActivity ifElseBranchActivity3;

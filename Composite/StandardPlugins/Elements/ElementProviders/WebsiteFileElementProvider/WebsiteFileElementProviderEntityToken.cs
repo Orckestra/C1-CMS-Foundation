@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using Composite.Security;
-using Composite.Serialization;
+using Composite.C1Console.Security;
+using Composite.Core.Serialization;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
     /// <summary>    
     /// </summary>

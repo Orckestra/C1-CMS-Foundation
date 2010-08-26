@@ -6,14 +6,14 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Web.Services;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
-using Composite.Collections.Generic;
-using Composite.Security;
-using Composite.StringExtensions;
-using Composite.Workflow;
-using Composite.Workflow.Foundation;
-//using Composite.Workflow.Logger;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
+using Composite.Core.Collections.Generic;
+using Composite.C1Console.Security;
+using Composite.Core.Extensions;
+using Composite.C1Console.Workflow;
+using Composite.C1Console.Workflow.Foundation;
+//using Composite.C1Console.Workflow.Logger;
 
 namespace Composite.Tests.ScenarioServices
 {
@@ -230,7 +230,7 @@ namespace Composite.Tests.ScenarioServices
             
             flowControllerServiceContainer.AddService(new ManagementConsoleMessageService(_consoleId, _viewId));
             flowControllerServiceContainer.AddService(new TaskManagerFlowControllerServiceStub());
-            flowControllerServiceContainer.AddService(new Composite.Forms.Flows.FormFlowRenderingService());
+            flowControllerServiceContainer.AddService(new Composite.C1Console.Forms.Flows.FormFlowRenderingService());
             // flowControllerServiceContainer.AddService(new ElementDataExchangeService(providerName));
             flowControllerServiceContainer.AddService(new ActionExecutionServiceWrapper(string.Empty, _consoleId));
             return flowControllerServiceContainer;
@@ -250,7 +250,7 @@ namespace Composite.Tests.ScenarioServices
             private string ElementProviderName { get; set; }
             private string ConsoleId { get; set; }
 
-            public void Execute(EntityToken entityToken, ActionToken actionToken, Composite.Tasks.TaskManagerEvent taskManagerEvent)
+            public void Execute(EntityToken entityToken, ActionToken actionToken, Composite.C1Console.Tasks.TaskManagerEvent taskManagerEvent)
             {
                 // We aren't running child workflows, just remebering referenced entity tokens
                 Guid workflowId = (taskManagerEvent as WorkflowCreationTaskManagerEvent).ParentWorkflowInstanceId;
@@ -269,9 +269,9 @@ namespace Composite.Tests.ScenarioServices
             return new Composite.Data.DataScope(Composite.Data.DataScopeIdentifier.Administrated, Composite.Data.DataLocalizationFacade.DefaultLocalizationCulture);
         }
         
-        private class TaskManagerFlowControllerServiceStub : Composite.Tasks.ITaskManagerFlowControllerService
+        private class TaskManagerFlowControllerServiceStub : Composite.C1Console.Tasks.ITaskManagerFlowControllerService
         {
-            public void OnStatus(Composite.Tasks.TaskManagerEvent taskManagerEvent)
+            public void OnStatus(Composite.C1Console.Tasks.TaskManagerEvent taskManagerEvent)
             {
             }
         }

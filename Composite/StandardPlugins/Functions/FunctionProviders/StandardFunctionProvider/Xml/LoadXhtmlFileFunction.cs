@@ -5,19 +5,19 @@ using System.Text;
 using Composite.Functions;
 using System.Xml.Linq;
 using System.IO;
-using Composite.IO;
-using Composite.Security;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.ResourceSystem;
+using Composite.Core.IO;
+using Composite.C1Console.Security;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Core.ResourceSystem;
 using System.Xml;
-using Composite.Xml;
+using Composite.Core.Xml;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Xml
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Xml
 {
     internal sealed class LoadXhtmlFileFunction : StandardFunctionBase
     {
         public LoadXhtmlFileFunction(EntityTokenFactory entityTokenFactory)
-            : base("LoadXhtmlFile", "Composite.Xml", typeof(XhtmlDocument), entityTokenFactory)
+            : base("LoadXhtmlFile", "Composite.Core.Xml", typeof(XhtmlDocument), entityTokenFactory)
         {
         }
 

@@ -8,11 +8,11 @@
     <cms:binding name="MetaDataTypeOptions" type="System.Collections.IEnumerable"/>
     <cms:binding name="MetaDataContainerOptions" type="System.Collections.IEnumerable"/>    
   </cms:bindings>
-  <cms:layout iconhandle="pagetype-add-metedatafield" label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.Layout.Label}">
-    <FieldGroup Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.FieldGroup.Label}">
+  <cms:layout iconhandle="pagetype-add-metedatafield" label="${Composite.Plugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.Layout.Label}">
+    <FieldGroup Label="${Composite.Plugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.FieldGroup.Label}">
 
-	   <KeySelector Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.MetaDataTypeKeySelector.Label}"
-                       Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.MetaDataTypeKeySelector.Help}"
+	   <KeySelector Label="${Composite.Plugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.MetaDataTypeKeySelector.Label}"
+                       Help="${Composite.Plugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.MetaDataTypeKeySelector.Help}"
                        OptionsKeyField="Key" OptionsLabelField="Value" >
         <KeySelector.Options>
           <cms:read source="MetaDataTypeOptions" />
@@ -22,23 +22,23 @@
         </KeySelector.Selected>
       </KeySelector>
 
-      <TextBox Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.NameTextBox.Label}"
-               Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.NameTextBox.Help}">
+      <TextBox Label="${Composite.Plugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.NameTextBox.Label}"
+               Help="${Composite.Plugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.NameTextBox.Help}">
         <TextBox.Text>
           <cms:bind source="CompositionDescriptionName" />
         </TextBox.Text>
       </TextBox>
 
 
-      <TextBox Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.LabelTextBox.Label}"
-               Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.LabelTextBox.Help}">
+      <TextBox Label="${Composite.Plugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.LabelTextBox.Label}"
+               Help="${Composite.Plugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.LabelTextBox.Help}">
         <TextBox.Text>
           <cms:bind source="CompositionDescriptionLabel" />
         </TextBox.Text>
       </TextBox>
 
-      <KeySelector Label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.MetaDataContainerKeySelector.Label}"
-                       Help="${Composite.StandardPlugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.MetaDataContainerKeySelector.Help}"
+      <KeySelector Label="${Composite.Plugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.MetaDataContainerKeySelector.Label}"
+                       Help="${Composite.Plugins.PageTypeElementProvider, PageType.AddPageTypeMetaDataFieldWorkflow.MetaDataContainerKeySelector.Help}"
                        OptionsKeyField="Key" OptionsLabelField="Value" >
         <KeySelector.Options>
           <cms:read source="MetaDataContainerOptions" />

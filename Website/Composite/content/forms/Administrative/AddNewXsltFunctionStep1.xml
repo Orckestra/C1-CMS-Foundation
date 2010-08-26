@@ -3,19 +3,19 @@
   <cms:bindings>
     <cms:binding name="NewXslt" type="Composite.Data.Types.IXsltFunction, Composite" />
   </cms:bindings>
-  <cms:layout label="${Composite.StandardPlugins.XsltBasedFunction, AddNewXsltFunctionStep1.LabelDialog}" iconhandle="xslt-based-function">
-    <FieldGroup Label="${Composite.StandardPlugins.XsltBasedFunction, AddNewXsltFunctionStep1.LabelFieldGroup}">
-      <TextBox Label="${Composite.StandardPlugins.XsltBasedFunction, AddNewXsltFunctionStep1.LabelName}" Help="${Composite.StandardPlugins.XsltBasedFunction, AddNewXsltFunctionStep1.HelpName}" Type="ProgrammingIdentifier">
+  <cms:layout label="${Composite.Plugins.XsltBasedFunction, AddNewXsltFunctionStep1.LabelDialog}" iconhandle="xslt-based-function">
+    <FieldGroup Label="${Composite.Plugins.XsltBasedFunction, AddNewXsltFunctionStep1.LabelFieldGroup}">
+      <TextBox Label="${Composite.Plugins.XsltBasedFunction, AddNewXsltFunctionStep1.LabelName}" Help="${Composite.Plugins.XsltBasedFunction, AddNewXsltFunctionStep1.HelpName}" Type="ProgrammingIdentifier">
         <TextBox.Text>
           <cms:bind source="NewXslt.Name" />
         </TextBox.Text>
       </TextBox>
-      <TextBox Label="${Composite.StandardPlugins.XsltBasedFunction, AddNewXsltFunctionStep1.LabelNamespace}" Help="${Composite.StandardPlugins.XsltBasedFunction, AddNewXsltFunctionStep1.HelpNamespace}" Type="ProgrammingNamespace">
+      <TextBox Label="${Composite.Plugins.XsltBasedFunction, AddNewXsltFunctionStep1.LabelNamespace}" Help="${Composite.Plugins.XsltBasedFunction, AddNewXsltFunctionStep1.HelpNamespace}" Type="ProgrammingNamespace">
         <TextBox.Text>
           <cms:bind source="NewXslt.Namespace" />
         </TextBox.Text>
       </TextBox>
-      <EnumSelector EnumType="Composite.StandardPlugins.Functions.FunctionProviders.XsltBasedFunctionProvider.OutputXmlSubType" Label="${Composite.StandardPlugins.XsltBasedFunction, AddNewXsltFunctionStep1.LabelOutputType}">
+      <EnumSelector EnumType="Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvider.OutputXmlSubType" Label="${Composite.Plugins.XsltBasedFunction, AddNewXsltFunctionStep1.LabelOutputType}">
         <EnumSelector.Selected>
           <cms:bind source="NewXslt.OutputXmlSubType" />
         </EnumSelector.Selected>

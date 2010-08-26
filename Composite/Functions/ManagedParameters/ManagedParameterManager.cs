@@ -6,9 +6,9 @@ using System.Transactions;
 using System.Xml.Linq;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Extensions;
-using Composite.Transactions;
-using Composite.Types;
+using Composite.Core.Extensions;
+using Composite.Data.Transactions;
+using Composite.Core.Types;
 
 
 namespace Composite.Functions.ManagedParameters

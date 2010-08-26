@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.PageReferenceSelectorTemplateUserControlBase" %>
+﻿<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.PageReferenceSelectorTemplateUserControlBase" %>
 <%@ Import Namespace="Composite.Data" %>
 <%@ Import Namespace="Composite.Data.Types" %>
 
@@ -54,7 +54,7 @@
             pageSelectorDialog.Attributes["label"] = pageTitle;
 
             string pageUrl;
-            if (Composite.Renderings.Page.PageStructureInfo.TryGetPageUrl(pageId, out pageUrl))
+            if (Composite.Core.WebClient.Renderings.Page.PageStructureInfo.TryGetPageUrl(pageId, out pageUrl))
             {
                 if (pageUrl.IndexOf(".aspx") > -1)
                 {

@@ -7,10 +7,10 @@ using System.Drawing.Imaging;
 using System.Drawing;
 using System.Threading;
 
-using Composite.GlobalSettings;
-using Composite.ResourceSystem;
-using Composite.ResourceSystem.Icons;
-using Composite.Collections.Generic;
+using Composite.Core.Configuration;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.Core.Collections.Generic;
 
 public class GetIcon : IHttpHandler
 {

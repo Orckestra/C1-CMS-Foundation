@@ -4,19 +4,19 @@ using System.Collections.Generic;
 using System.Workflow.Activities;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Elements;
-using Composite.Trees;
-using Composite.Workflow;
-using Composite.Linq;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Trees;
+using Composite.C1Console.Workflow;
+using Composite.Core.Linq;
 using System.Xml.Linq;
-using Composite.Xml;
-using Composite.ResourceSystem;
+using Composite.Core.Xml;
+using Composite.Core.ResourceSystem;
 
 
-namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageTypeElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddPageTypeDefaultPageContentWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddPageTypeDefaultPageContentWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public AddPageTypeDefaultPageContentWorkflow()
         {
@@ -54,12 +54,12 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
 
             if (!AnyTemplatesContainingId())
             {
-                ShowMessage(ConsoleEventSystem.DialogType.Message,
-                    string.Format(StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTypeElementProvider", "PageType.AddPageTypeDefaultPageContentWorkflow.NonExistingPlaceholderId.Title"), defaultPageContent.PlaceHolderId),
-                    string.Format(StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTypeElementProvider", "PageType.AddPageTypeDefaultPageContentWorkflow.NonExistingPlaceholderId.Message"), defaultPageContent.PlaceHolderId));
+                ShowMessage(C1Console.Events.DialogType.Message,
+                    string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", "PageType.AddPageTypeDefaultPageContentWorkflow.NonExistingPlaceholderId.Title"), defaultPageContent.PlaceHolderId),
+                    string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", "PageType.AddPageTypeDefaultPageContentWorkflow.NonExistingPlaceholderId.Message"), defaultPageContent.PlaceHolderId));
             }
 
-            this.ExecuteWorklow(defaultPageContent.GetDataEntityToken(), WorkflowFacade.GetWorkflowType("Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageTypeElementProvider.EditPageTypeDefaultPageContentWorkflow"));
+            this.ExecuteWorklow(defaultPageContent.GetDataEntityToken(), WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider.EditPageTypeDefaultPageContentWorkflow"));
         }
 
 
@@ -75,7 +75,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
 
                 XDocument doc = XDocument.Parse(fileContent);
 
-                XName elementName = Namespaces.Rendering10 + Composite.Renderings.RenderingElementNames.PlaceHolder.LocalName;
+                XName elementName = Namespaces.Rendering10 + Composite.Core.WebClient.Renderings.RenderingElementNames.PlaceHolder.LocalName;
 
                 bool contained = doc.Descendants(elementName).Where(
                     f => f.Attribute("id") != null &&

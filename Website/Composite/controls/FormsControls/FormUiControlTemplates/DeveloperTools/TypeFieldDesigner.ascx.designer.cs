@@ -37,7 +37,7 @@ namespace CompositeTypeFieldDesigner {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.ToolbarButton EnterCreateModeButton;
+        protected global::Composite.Core.WebClient.UiControlLib.ToolbarButton EnterCreateModeButton;
         
         /// <summary>
         /// DeleteButton control.
@@ -46,7 +46,7 @@ namespace CompositeTypeFieldDesigner {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.ToolbarButton DeleteButton;
+        protected global::Composite.Core.WebClient.UiControlLib.ToolbarButton DeleteButton;
         
         /// <summary>
         /// FieldListRepeater control.
@@ -73,7 +73,7 @@ namespace CompositeTypeFieldDesigner {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.DataInput NameField;
+        protected global::Composite.Core.WebClient.UiControlLib.DataInput NameField;
         
         /// <summary>
         /// LabelField control.
@@ -82,7 +82,7 @@ namespace CompositeTypeFieldDesigner {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.DataInput LabelField;
+        protected global::Composite.Core.WebClient.UiControlLib.DataInput LabelField;
         
         /// <summary>
         /// HelpField control.
@@ -91,7 +91,7 @@ namespace CompositeTypeFieldDesigner {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.DataInput HelpField;
+        protected global::Composite.Core.WebClient.UiControlLib.DataInput HelpField;
         
         /// <summary>
         /// PositionField control.
@@ -100,7 +100,7 @@ namespace CompositeTypeFieldDesigner {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.Selector PositionField;
+        protected global::Composite.Core.WebClient.UiControlLib.Selector PositionField;
         
         /// <summary>
         /// TypeSelector control.
@@ -109,7 +109,7 @@ namespace CompositeTypeFieldDesigner {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.Selector TypeSelector;
+        protected global::Composite.Core.WebClient.UiControlLib.Selector TypeSelector;
         
         /// <summary>
         /// TypeDetailsPlaceHolder control.
@@ -136,7 +136,7 @@ namespace CompositeTypeFieldDesigner {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.Selector TypeDetailsSelector;
+        protected global::Composite.Core.WebClient.UiControlLib.Selector TypeDetailsSelector;
         
         /// <summary>
         /// OptionalSelector control.
@@ -145,7 +145,7 @@ namespace CompositeTypeFieldDesigner {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.Selector OptionalSelector;
+        protected global::Composite.Core.WebClient.UiControlLib.Selector OptionalSelector;
         
         /// <summary>
         /// btnWidgetFunctionMarkup control.
@@ -154,7 +154,7 @@ namespace CompositeTypeFieldDesigner {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.PostBackDialog btnWidgetFunctionMarkup;
+        protected global::Composite.Core.WebClient.UiControlLib.PostBackDialog btnWidgetFunctionMarkup;
         
         /// <summary>
         /// btnValidationRulesFunctionMarkup control.
@@ -163,7 +163,7 @@ namespace CompositeTypeFieldDesigner {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.PostBackDialog btnValidationRulesFunctionMarkup;
+        protected global::Composite.Core.WebClient.UiControlLib.PostBackDialog btnValidationRulesFunctionMarkup;
         
         /// <summary>
         /// IsTitleFieldDateTimeSelector control.
@@ -172,7 +172,7 @@ namespace CompositeTypeFieldDesigner {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.CheckBox IsTitleFieldDateTimeSelector;
+        protected global::Composite.Core.WebClient.UiControlLib.CheckBox IsTitleFieldDateTimeSelector;
         
         /// <summary>
         /// GroupByPriorityField control.
@@ -181,7 +181,7 @@ namespace CompositeTypeFieldDesigner {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.Selector GroupByPriorityField;
+        protected global::Composite.Core.WebClient.UiControlLib.Selector GroupByPriorityField;
         
         /// <summary>
         /// btnDefaultValueFunctionMarkup control.
@@ -190,6 +190,6 @@ namespace CompositeTypeFieldDesigner {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Composite.WebClient.UiControlLib.PostBackDialog btnDefaultValueFunctionMarkup;
+        protected global::Composite.Core.WebClient.UiControlLib.PostBackDialog btnDefaultValueFunctionMarkup;
     }
 }

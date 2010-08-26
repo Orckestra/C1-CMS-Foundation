@@ -1,7 +1,7 @@
-﻿using Composite.Security;
+﻿using Composite.C1Console.Security;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
     /// <summary>    
     /// </summary>

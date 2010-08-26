@@ -7,13 +7,13 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Composite.Functions;
-using Composite.Logging;
-using Composite.StandardPlugins.Functions.XslExtensionsProviders.ConfigBasedXslExtensionsProvider;
-using Composite.StringExtensions;
-using Composite.Xml;
+using Composite.Core.Logging;
+using Composite.Plugins.Functions.XslExtensionsProviders.ConfigBasedXslExtensionsProvider;
+using Composite.Core.Extensions;
+using Composite.Core.Xml;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
-namespace Composite.StandardPlugins.Functions.XslExtensionsProviders
+namespace Composite.Plugins.Functions.XslExtensionsProviders
 {
     [ConfigurationElementType(typeof(ConfigBasedXslExtensionInfo))]
 	internal class StandardExtension

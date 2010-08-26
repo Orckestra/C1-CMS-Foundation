@@ -6,7 +6,7 @@ using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessC
 using Composite.Data.Types.Foundation;
 using Composite.Data.Visualization;
 using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
-using Composite.Renderings.Data;
+using Composite.Core.WebClient.Renderings.Data;
 
 
 namespace Composite.Data.Types
@@ -61,7 +61,7 @@ namespace Composite.Data.Types
         [StoreFieldType(PhysicalStoreFieldType.String, 192)]
         [ImmutableFieldId("{C9A81ADE-DAD5-4740-A891-DF1CE2FAB498}")]
         [NotNullValidator()]
-        [Composite.Validation.Validators.RegexValidator(@"^[-\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Pc}\p{Lm}]*$")]
+        [Composite.Data.Validation.Validators.RegexValidator(@"^[-\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Pc}\p{Lm}]*$")]
         string UrlTitle { get; set; }
 
         [StoreFieldType(PhysicalStoreFieldType.String, 192, IsNullable = true)]

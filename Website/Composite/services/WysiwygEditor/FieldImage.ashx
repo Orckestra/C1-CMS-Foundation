@@ -7,10 +7,10 @@ using System.Drawing;
 using System.Xml;
 using System.Text;
 using Composite.Functions;
-using Composite.Drawing;
+using Composite.C1Console.Drawing;
 using System.Drawing.Imaging;
 using System.Collections.Generic;
-using Composite.WebClient;
+using Composite.Core.WebClient;
  
 public class YellowBox : IHttpHandler
 {
@@ -40,7 +40,7 @@ public class YellowBox : IHttpHandler
         }
         catch (Exception ex)
         {
-            Composite.Logging.LoggingService.LogError(this.GetType().ToString(), ex.ToString());
+            Composite.Core.Logging.LoggingService.LogError(this.GetType().ToString(), ex.ToString());
             throw;
         }
     }

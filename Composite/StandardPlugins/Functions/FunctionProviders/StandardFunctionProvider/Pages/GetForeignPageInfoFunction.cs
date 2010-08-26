@@ -6,10 +6,10 @@ using System.Threading;
 using System.Xml.Linq;
 using Composite.Data;
 using Composite.Functions;
-using Composite.Renderings.Page;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Core.WebClient.Renderings.Page;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Pages
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Pages
 {
     /// <summary>
     /// Gets information about current page in all the languages.
@@ -17,7 +17,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunction
 	internal class GetForeignPageInfoFunction: StandardFunctionBase
 	{
         public GetForeignPageInfoFunction(EntityTokenFactory entityTokenFactory)
-            : base("GetForeignPageInfo", "Composite.Pages", typeof(IEnumerable<XElement>), entityTokenFactory)
+            : base("GetForeignPageInfo", "Composite.Data", typeof(IEnumerable<XElement>), entityTokenFactory)
         {
         }
 

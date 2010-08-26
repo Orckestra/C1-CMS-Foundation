@@ -3,12 +3,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-using Composite.Linq;
+using Composite.Core.Linq;
 
 
 namespace Composite.Data.Foundation
 {
-    internal sealed class DataFacadeQueryableExpressionVisitor : Composite.Linq.Disassembled.ExpressionVisitor
+    internal sealed class DataFacadeQueryableExpressionVisitor : Composite.Core.Linq.Disassembled.ExpressionVisitor
     {
         private static readonly MethodInfo _genericGetDataMethodInfo = typeof(DataFacade).GetMethods().Where(x => x.Name == "GetData" && x.IsGenericMethod == true).First();
 

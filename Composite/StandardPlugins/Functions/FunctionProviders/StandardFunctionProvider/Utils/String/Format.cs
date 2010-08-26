@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Composite.Functions;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.String
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.String
 {
     internal sealed class Format : StandardFunctionBase, ICompoundFunction
     {

@@ -3,9 +3,9 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Composite.Collections.Generic;
-using Composite.EventSystem;
-using Composite.Types;
+using Composite.Core.Collections.Generic;
+using Composite.C1Console.Events;
+using Composite.Core.Types;
 
 
 namespace Composite.Data.Foundation.CodeGeneration

@@ -1,7 +1,7 @@
-﻿using Composite.Elements;
+﻿using Composite.C1Console.Elements;
 using System.Collections.Generic;
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
 	internal class WebsiteFileSearchToken : SearchToken
 	{

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Composite.Actions;
-using Composite.Security;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Security;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 {
     [ActionExecutor(typeof(ClearServerCacheActionExecutor))]
     internal sealed class ClearServerCacheActionToken : ActionToken

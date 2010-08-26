@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Hierarchy;
 using Composite.Data.Hierarchy.DataAncestorProviders;
-using Composite.Trees;
+using Composite.C1Console.Trees;
 
 
 namespace Composite.Data.Types

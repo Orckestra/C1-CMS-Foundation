@@ -3,7 +3,7 @@
   <cms:bindings>
     <cms:binding name="MessageText" type="System.String" />
   </cms:bindings>  
-  <cms:layout label="${Composite.StandardPlugins.PageTypeElementProvider, PageType.DeletePageTypeWorkflow.Confirm.Layout.Label}">
+  <cms:layout label="${Composite.Plugins.PageTypeElementProvider, PageType.DeletePageTypeWorkflow.Confirm.Layout.Label}">
     <Text>
       <Text.Text>
         <cms:read source="MessageText"/>

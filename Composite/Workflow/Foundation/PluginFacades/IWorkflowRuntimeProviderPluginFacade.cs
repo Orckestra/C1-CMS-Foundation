@@ -5,7 +5,7 @@ using System.Text;
 using System.Workflow.Runtime;
 
 
-namespace Composite.Workflow.Foundation.PluginFacades
+namespace Composite.C1Console.Workflow.Foundation.PluginFacades
 {
 	internal interface IWorkflowRuntimeProviderPluginFacade
 	{

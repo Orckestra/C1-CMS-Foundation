@@ -1,16 +1,16 @@
 using System;
 using System.Linq;
-using Composite.PackageSystem;
-using Composite.PackageSystem.Workflow;
-using Composite.Forms.DataServices;
-using Composite.Workflow;
-using Composite.ConsoleEventSystem;
+using Composite.Core.PackageSystem;
+using Composite.Core.PackageSystem.Workflow;
+using Composite.C1Console.Forms.DataServices;
+using Composite.C1Console.Workflow;
+using Composite.C1Console.Events;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class ViewInstalledPackageInfoWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class ViewInstalledPackageInfoWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public ViewInstalledPackageInfoWorkflow()
         {
@@ -66,8 +66,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
             {
                 this.ShowMessage(
                     DialogType.Message,
-                    "${Composite.StandardPlugins.PackageElementProvider, ViewInstalledInformation.ShowError.MessageTitle}",
-                    "${Composite.StandardPlugins.PackageElementProvider, ViewInstalledInformation.ShowError.MessageMessage}");
+                    "${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.ShowError.MessageTitle}",
+                    "${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.ShowError.MessageMessage}");
             }   
         }
     }

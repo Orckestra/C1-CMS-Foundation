@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Composite.EventSystem;
+using Composite.C1Console.Events;
 
 
 namespace Composite.Functions.Foundation

@@ -6,7 +6,7 @@
 		<title>Composite.Management.FunctionEditor.InputOutputMarkup</title>
 		<control:styleloader runat="server" />
 		<control:scriptloader type="sub" runat="server" />
-		<link rel="stylesheet" type="text/css" href="<%= Composite.WebClient.UrlUtils.ResolveAdminUrl("controls/Misc/MarkupInOutView.css.aspx" ) %>"/>
+		<link rel="stylesheet" type="text/css" href="<%= Composite.Core.WebClient.UrlUtils.ResolveAdminUrl("controls/Misc/MarkupInOutView.css.aspx" ) %>"/>
 	</head>
 	<body>
 		<form id="Form1" runat="server">

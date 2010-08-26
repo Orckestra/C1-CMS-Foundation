@@ -8,14 +8,14 @@ using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Types;
 using Composite.Functions;
-using Composite.Renderings.Page;
-using Composite.Types;
-using Composite.Renderings.Data;
-using Composite.Xml;
+using Composite.Core.WebClient.Renderings.Page;
+using Composite.Core.Types;
+using Composite.Core.WebClient.Renderings.Data;
+using Composite.Core.Xml;
 using System.Web;
 
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.VisualFunctionProvider
+namespace Composite.Plugins.Functions.FunctionProviders.VisualFunctionProvider
 {
     /// <summary>    
     /// </summary>

@@ -4,9 +4,9 @@
     <cms:binding name="ErrorHeader" type="System.Object" />
     <cms:binding name="Errors" type="System.Object" />
   </cms:bindings>
-  <cms:layout iconhandle="generated-type-data-localize" label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, LocalizeDataWorkflow.ShowError.LayoutLabel}">
+  <cms:layout iconhandle="generated-type-data-localize" label="${Composite.Plugins.GeneratedDataTypesElementProvider, LocalizeDataWorkflow.ShowError.LayoutLabel}">
     <PlaceHolder>
-      <InfoBox Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, LocalizeDataWorkflow.ShowError.InfoTableCaption}">
+      <InfoBox Label="${Composite.Plugins.GeneratedDataTypesElementProvider, LocalizeDataWorkflow.ShowError.InfoTableCaption}">
         <InfoTable>
           <InfoTable.Headers>
             <cms:read source="ErrorHeader" />

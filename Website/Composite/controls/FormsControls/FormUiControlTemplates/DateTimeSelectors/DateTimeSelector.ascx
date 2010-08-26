@@ -1,7 +1,7 @@
-<%@ Control Language="C#" Inherits="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.DateTimeSelectorTemplateUserControlBase" %>
-<%@ Import Namespace="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories" %>
+<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.DateTimeSelectorTemplateUserControlBase" %>
+<%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
 <%@ Import Namespace="System.Globalization" %>
-<%@ Import Namespace="Composite.Extensions" %>
+<%@ Import Namespace="Composite.Core.Extensions" %>
 <script runat="server">
     bool _dateLoaded;
     private DateTime? _currentlySelectedDate;

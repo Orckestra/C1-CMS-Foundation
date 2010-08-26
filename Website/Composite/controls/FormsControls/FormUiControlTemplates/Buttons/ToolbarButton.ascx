@@ -1,4 +1,4 @@
-<%@ Control Language="C#" Inherits="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.ToolbarButtonTemplateUserControlBase" %>
+<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.ToolbarButtonTemplateUserControlBase" %>
 <script runat="server">
     private void Page_Init(object sender, System.EventArgs e)
     {

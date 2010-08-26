@@ -13,26 +13,26 @@
       <TabPanels.Label>
         <cms:read source="TypeName"/>
       </TabPanels.Label>
-      <PlaceHolder Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.SettingsTab}">
+      <PlaceHolder Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.SettingsTab}">
 
-        <FieldGroup Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.LabelTitleGroup}">
-          <TextBox Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.LabelTitle}" Help="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.HelpTitle}">
+        <FieldGroup Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.LabelTitleGroup}">
+          <TextBox Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.LabelTitle}" Help="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.HelpTitle}">
             <cms:bind source="TypeTitle" />
           </TextBox>
         </FieldGroup>
 
 
-        <FieldGroup Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.LabelProgrammaticNaming}">
-          <TextBox Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.LabelTypeName}"
-               Help="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.HelpTypeName}" Type="ProgrammingIdentifier">
+        <FieldGroup Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.LabelProgrammaticNaming}">
+          <TextBox Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.LabelTypeName}"
+               Help="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.HelpTypeName}" Type="ProgrammingIdentifier">
             <cms:bind source="TypeName" />
           </TextBox>
-          <TextBox Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.LabelTypeNamespace}" Help="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.HelpTypeNamespace}" Type="ProgrammingNamespace">
+          <TextBox Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.LabelTypeNamespace}" Help="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.HelpTypeNamespace}" Type="ProgrammingNamespace">
             <cms:bind source="TypeNamespace" />
           </TextBox>
 
-          <PlaceHolder Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.ServicesLabel}">
-            <CheckBox Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.HasCaching}" ItemLabel="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.HasCaching}">
+          <PlaceHolder Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.ServicesLabel}">
+            <CheckBox Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.HasCaching}" ItemLabel="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.HasCaching}">
               <CheckBox.Checked>
                 <cms:bind source="HasCaching" />
               </CheckBox.Checked>
@@ -40,7 +40,7 @@
           </PlaceHolder>
         </FieldGroup>
       </PlaceHolder>
-      <internal:TypeFieldDesigner Label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditorCommon.LabelFields}">
+      <internal:TypeFieldDesigner Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.LabelFields}">
         <internal:TypeFieldDesigner.Fields>
           <cms:bind source="DataFieldDescriptors" />
         </internal:TypeFieldDesigner.Fields>

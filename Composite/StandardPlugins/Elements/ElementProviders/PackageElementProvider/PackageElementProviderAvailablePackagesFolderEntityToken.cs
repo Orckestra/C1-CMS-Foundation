@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Composite.Security;
+using Composite.C1Console.Security;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 {
     internal sealed class AddOnElementProviderAvailableAddOnsFolderEntityTokenAncestorProvider : ISecurityAncestorProvider
     {

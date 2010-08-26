@@ -10,11 +10,11 @@ using Composite.Data.GeneratedTypes.Foundation;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
-using Composite.Extensions;
+using Composite.Core.Extensions;
 using Composite.Functions;
-using Composite.ResourceSystem;
-using Composite.Transactions;
-using Composite.Types;
+using Composite.Core.ResourceSystem;
+using Composite.Data.Transactions;
+using Composite.Core.Types;
 using Microsoft.CSharp;
 
 

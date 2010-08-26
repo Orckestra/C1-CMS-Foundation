@@ -8,26 +8,26 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml.Linq;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Data.Types.StoreIdFilter;
-using Composite.Elements;
-using Composite.Elements.Plugins.ElementProvider;
-using Composite.Extensions;
-using Composite.IO;
-using Composite.ResourceSystem;
-using Composite.ResourceSystem.Icons;
-using Composite.Security;
-using Composite.WebClient;
-using Composite.Workflow;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Elements.Plugins.ElementProvider;
+using Composite.Core.Extensions;
+using Composite.Core.IO;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.C1Console.Security;
+using Composite.Core.WebClient;
+using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
     [ConfigurationElementType(typeof(MediaFileElementProviderData))]
     internal sealed class MediaFileProviderElementProvider : IHooklessElementProvider, IDragAndDropElementProvider, ILabeledPropertiesElementProvider, IAuxiliarySecurityAncestorProvider
@@ -103,7 +103,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
                 element.AddAction(
                    new ElementAction(new ActionHandle(
                        new WorkflowActionToken(
-                           WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider.AddNewMediaFolderWorkflow"),
+                           WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider.AddNewMediaFolderWorkflow"),
                            new PermissionType[] { PermissionType.Add }
                         )))
                    {
@@ -126,7 +126,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
                 element.AddAction(
                  new ElementAction(new ActionHandle(
                      new WorkflowActionToken(
-                         WorkflowFacade.GetWorkflowType("Composite.Workflows.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider.AddNewMediaFileWorkflow"),
+                         WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider.AddNewMediaFileWorkflow"),
                          new PermissionType[] { PermissionType.Add }
                     )))
                  {
@@ -149,7 +149,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
                 element.AddAction(
                    new ElementAction(new ActionHandle(
                        new WorkflowActionToken(
-                           WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider.AddMediaZipFileWorkflow"),
+                           WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider.AddMediaZipFileWorkflow"),
                            new PermissionType[] { PermissionType.Add }
                         ) { DoIgnoreEntityTokenLocking = true } ))
                    {
@@ -380,7 +380,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
 
                     string targetPath = string.Format("{0}{1}", newPath, draggedFolderName);
 
-                    using (var scope = Transactions.TransactionsFacade.CreateNewScope())
+                    using (var scope = Composite.Data.Transactions.TransactionsFacade.CreateNewScope())
                     {
                         draggedFolder.Path = targetPath;
                         DataFacade.Update(draggedFolder);
@@ -764,7 +764,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
             fileActions.Add(
              new ElementAction(new ActionHandle(
                  new WorkflowActionToken(
-                     WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider.DeleteMediaFileWorkflow"),
+                     WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider.DeleteMediaFileWorkflow"),
                      new PermissionType[] { PermissionType.Delete }
                 )))
              {
@@ -787,7 +787,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
             fileActions.Add(
              new ElementAction(new ActionHandle(
                  new WorkflowActionToken(
-                     WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider.EditMediaFileWorkflow"),
+                     WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider.EditMediaFileWorkflow"),
                      new PermissionType[] { PermissionType.Edit }
                 )))
              {
@@ -812,7 +812,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
                 fileActions.Add(
                  new ElementAction(new ActionHandle(
                      new WorkflowActionToken(
-                         WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider.EditMediaFileTextContentWorkflow"),
+                         WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider.EditMediaFileTextContentWorkflow"),
                          new PermissionType[] { PermissionType.Edit }
                     )))
                  {
@@ -880,7 +880,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
             fileActions.Add(
           new ElementAction(new ActionHandle(
               new WorkflowActionToken(
-                  WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider.UploadNewMediaFileWorkflow"),
+                  WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider.UploadNewMediaFileWorkflow"),
                   new PermissionType[] { PermissionType.Edit }
                 )))
           {
@@ -914,7 +914,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
                 folderActions.Add(
                  new ElementAction(new ActionHandle(
                      new WorkflowActionToken(
-                         WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider.AddNewMediaFolderWorkflow"),
+                         WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider.AddNewMediaFolderWorkflow"),
                          new PermissionType[] { PermissionType.Add }
                     )))
                     {
@@ -937,7 +937,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
                 folderActions.Add(
                      new ElementAction(new ActionHandle(
                          new WorkflowActionToken(
-                             WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider.DeleteMediaFolderWorkflow"),
+                             WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider.DeleteMediaFolderWorkflow"),
                              new PermissionType[] { PermissionType.Delete }
                         )))
                     {
@@ -960,7 +960,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
                 folderActions.Add(
                         new ElementAction(new ActionHandle(
                             new WorkflowActionToken(
-                                WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider.EditMediaFolderWorkflow"),
+                                WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider.EditMediaFolderWorkflow"),
                                 new PermissionType[] { PermissionType.Edit }
                             )))
                        {
@@ -983,7 +983,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
                 folderActions.Add(
                     new ElementAction(new ActionHandle(
                         new WorkflowActionToken(
-                            WorkflowFacade.GetWorkflowType("Composite.Workflows.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider.AddNewMediaFileWorkflow"),
+                            WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider.AddNewMediaFileWorkflow"),
                             new PermissionType[] { PermissionType.Add }
                         )))
                     {
@@ -1006,7 +1006,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
                 folderActions.Add(
                      new ElementAction(new ActionHandle(
                          new WorkflowActionToken(
-                             WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider.AddMediaZipFileWorkflow"),
+                             WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider.AddMediaZipFileWorkflow"),
                              new PermissionType[] { PermissionType.Add }
                          )))
                      {
@@ -1050,9 +1050,9 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
 
 
 
-    internal sealed class EditImageActionExecutor : Composite.Actions.IActionExecutor
+    internal sealed class EditImageActionExecutor : Composite.C1Console.Actions.IActionExecutor
     {
-        public Composite.Actions.FlowToken Execute(Composite.Security.EntityToken entityToken, Composite.Security.ActionToken actionToken, Composite.Actions.FlowControllerServicesContainer flowControllerServicesContainer)
+        public Composite.C1Console.Actions.FlowToken Execute(Composite.C1Console.Security.EntityToken entityToken, Composite.C1Console.Security.ActionToken actionToken, Composite.C1Console.Actions.FlowControllerServicesContainer flowControllerServicesContainer)
         {
             DataEntityToken token = (DataEntityToken)entityToken;
             IMediaFile mediaFile = (IMediaFile)token.Data;
@@ -1060,13 +1060,13 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
             string currentConsoleId = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>().CurrentConsoleId;
             string url = UrlUtils.ResolveAdminUrl(string.Format("content/views/editors/imageeditor/ImageEditor.aspx?src={0}&lastWriteTime={1}", System.Web.HttpUtility.UrlEncode(mediaFile.CompositePath), System.Web.HttpUtility.UrlEncode(mediaFile.LastWriteTime.ToString())));
 
-            Composite.ConsoleEventSystem.ConsoleMessageQueueFacade.Enqueue(
-                new Composite.ConsoleEventSystem.OpenViewMessageQueueItem 
+            Composite.C1Console.Events.ConsoleMessageQueueFacade.Enqueue(
+                new Composite.C1Console.Events.OpenViewMessageQueueItem 
                 { 
                     EntityToken = EntityTokenSerializer.Serialize(entityToken, true),
                     Url = url, 
                     ViewId = Guid.NewGuid().ToString(), 
-                    ViewType = Composite.ConsoleEventSystem.ViewType.Main 
+                    ViewType = Composite.C1Console.Events.ViewType.Main 
                 }, 
             currentConsoleId);
 

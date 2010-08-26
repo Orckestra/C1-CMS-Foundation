@@ -5,10 +5,10 @@ using System.IO;
 using System.Net;
 using System.Xml.Linq;
 using System.Web;
-using Composite.GlobalSettings;
+using Composite.Core.Configuration;
 using Composite;
-using Composite.Users;
-using Composite.WebClient;
+using Composite.C1Console.Users;
+using Composite.Core.WebClient;
 
 public class FetchPage : IHttpHandler 
 {

@@ -14,8 +14,8 @@ using System.Xml.Xsl;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Data.DynamicTypes;
-using Composite.Types;
-using Composite.Xml;
+using Composite.Core.Types;
+using Composite.Core.Xml;
 
 
 [WebService(Namespace = "http://www.composite.net/ns/management")]
@@ -151,7 +151,7 @@ public class WysiwygEditorConfigurationServices : System.Web.Services.WebService
         string imageUrl = string.Format("services/WysiwygEditor/FieldImage.ashx?name={0}&groupname={1}", HttpUtility.UrlEncodeUnicode(fieldName), HttpUtility.UrlEncodeUnicode(dataType.Name));
 
         return new XElement(Namespaces.Xhtml + "img",
-            new XAttribute("src", Composite.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
+            new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
             new XAttribute("class", "compositeFieldReferenceWysiwygRepresentation"),
             new XAttribute("referencedtypemanagername", TypeManager.SerializeType(dataType)),
             new XAttribute("referencedfieldname", fieldName));
@@ -163,7 +163,7 @@ public class WysiwygEditorConfigurationServices : System.Web.Services.WebService
         string imageUrl = string.Format("services/WysiwygEditor/FieldImage.ashx?name={0}&groupname={1}", HttpUtility.UrlEncodeUnicode(dataField.Name), HttpUtility.UrlEncodeUnicode(dataTypeDescriptor.Name));
 
         return new XElement(Namespaces.Xhtml + "img",
-            new XAttribute("src", Composite.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
+            new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
             new XAttribute("class", "compositeFieldReferenceWysiwygRepresentation"),
             new XAttribute("referencedtypemanagername", dataTypeDescriptor.TypeManagerTypeName),
             new XAttribute("referencedfieldname", dataField.Name));

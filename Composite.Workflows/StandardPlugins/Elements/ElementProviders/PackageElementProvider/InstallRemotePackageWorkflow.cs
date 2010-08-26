@@ -4,21 +4,20 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Workflow.Activities;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
-using Composite.EventSystem;
-using Composite.GlobalSettings;
-using Composite.Logging;
-using Composite.PackageSystem;
-using Composite.ResourceSystem;
-using Composite.Users;
-using Composite.Workflow;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
+using Composite.Core.Configuration;
+using Composite.Core.Logging;
+using Composite.Core.PackageSystem;
+using Composite.Core.ResourceSystem;
+using Composite.C1Console.Users;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class InstallRemotePackageWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class InstallRemotePackageWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         bool _packageIsFree = false;
 
@@ -155,7 +154,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
         private void showErrorCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
             List<string> rowHeader = new List<string>();
-            rowHeader.Add(StringResourceSystemFacade.ParseString("${Composite.StandardPlugins.PackageElementProvider, InstallRemoteAddOn.ShowError.MessageTitle}"));
+            rowHeader.Add(StringResourceSystemFacade.ParseString("${Composite.Plugins.PackageElementProvider, InstallRemoteAddOn.ShowError.MessageTitle}"));
 
             this.UpdateBinding("ErrorHeader", rowHeader);
         }

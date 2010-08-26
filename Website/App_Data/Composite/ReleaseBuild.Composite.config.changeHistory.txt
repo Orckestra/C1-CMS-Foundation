@@ -1,11 +1,11 @@
 ﻿Changes since released 1.0.3070.24011 (Nightly build 20080528.5)
  - <ToolbarButton /> added to std. Form UI Markup.
- - Composite.Application.Plugins.ApplicationOnlineHandlerConfiguration added
+ - Composite.Core.Application.Plugins.ApplicationOnlineHandlerConfiguration added
  - <InfoBox /> added to std. Form UI Markup.
  - <InfoTable /> added to std. Form UI Markup.
  - serializedConsoleMessagesDirectory property added to ConfigBasedGlobalSettingsProvider element
  - Removed unused "dataConfiguration" sction declaration (EntLib Data Configuration)
- - Removed unused "Composite.Configuration" section declaration (legacy residue)
+ - Removed unused "Composite.Core.Configuration" section declaration (legacy residue)
  - Removed unused "Composite.Data.Actions.Plugins.DataActionProviderConfiguration" section declaration and section (legacy residue)
  - tempDirectory ("~/App_Data/Composite/Temp") added
  - addOnDirectory ("~/App_Data/Composite/AddOns") added
@@ -13,12 +13,12 @@
  - autoPackageInstallDirectory ("~/App_Data/Composite/AutoInstallPackages") added
 
  - defaultLocalizationCultureName ("en-US") added
- - <add type="Composite.StandardPlugins.ResourceSystem.PropertyResourceProvider.PropertyResourceProvider, Composite" name="Resource" /> added
- - Composite.Localization.en-us.xml added
- - Composite.Localization.en-us.xml deleted
- - Composite.StandardPlugins.LocalizationElementProvider added under the system area
- - Composite.StandardPlugins.LocalizationElementProvider.en-us.xml added
- - Composite.StandardPlugins.RecyclebinElementProvider removed
+ - <add type="Composite.Plugins.ResourceSystem.PropertyResourceProvider.PropertyResourceProvider, Composite" name="Resource" /> added
+ - Composite.Core.Localization.en-us.xml added
+ - Composite.Core.Localization.en-us.xml deleted
+ - Composite.Plugins.LocalizationElementProvider added under the system area
+ - Composite.Plugins.LocalizationElementProvider.en-us.xml added
+ - Composite.Plugins.RecyclebinElementProvider removed
  
  Changes since patchet!
  - ConfirmDialog folder path updated (file moved to subfolder)
@@ -28,27 +28,27 @@ Changes since released 1.1.3232.41235 (Branch Patch1.1.1 Build_20081106.7) - Com
  - removed attribute setting dataProvider="DynamicXmlDataProvider" from MediaFileDataProvider
  
 Changes since released 1.2.3321.23866 - Composite C1 1.2
- - Composite.Elements.Plugins.ElementActionProviderConfiguration section added
- - Composite.Parallelization.Plugins.ParallelizationProviderConfiguration section added
- - Composite.Instrumentation.Plugin.Runtime.PerformanceCounterProviderConfiguration added
+ - Composite.C1Console.Elements.Plugins.ElementActionProviderConfiguration section added
+ - Composite.Core.Parallelization.Plugins.ParallelizationProviderConfiguration section added
+ - Composite.Core.Instrumentation.Plugin.Runtime.PerformanceCounterProviderConfiguration added
  - GlobalSettingsProviderPlugins.Caching node added
  - GlobalSettingsProviderPlugins: Attribute added: configurationDirectory="~/App_Data/Composite/Configuration"
  - Interface element removed from the DataProvider named 'XmlDataProvider'
- - Composite.Application.Plugins.ApplicationStartupHandlerConfiguration section added
+ - Composite.Core.Application.Plugins.ApplicationStartupHandlerConfiguration section added
  - <XsltEditor /> added to std. Form UI Markup.
  - Added localization file Composite.Web.SEOAssistant
- - Composite.Renderings.Plugins.RenderingResponseHandlerConfiguration section added
+ - Composite.Core.WebClient.Renderings.Plugins.RenderingResponseHandlerConfiguration section added
  
  
  Change since Composite C1 1.2
  - DataLogTraceListener min and max entries added min = 500, max = 750
- - Composite.Renderings.Plugins.RenderingResponseHandlerConfiguration section added
- - Composite.Security.Plugins.UserGroupPermissionDefinitionProviderConfiguration section added
- - Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementProvider.UserGroupElementProvider element provider added and added to the virtual element provider
- - Composite.StandardPlugins.UserGroupElementProvider.en-us.xml culture resource added
- - Composite.Security.Plugins.UserGroupPermissionDefinitionProviderConfiguration section added
- - Composite.Elements.Plugins.ElementAttachingProviderConfiguration section added
- - Added UiForm tag <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/Text/LongText.ascx" cacheCompiledUserControlType="false" type="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.TemplatedTextUiControlFactory, Composite" name="LongText" />
+ - Composite.Core.WebClient.Renderings.Plugins.RenderingResponseHandlerConfiguration section added
+ - Composite.C1Console.Security.Plugins.UserGroupPermissionDefinitionProviderConfiguration section added
+ - Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider.UserGroupElementProvider element provider added and added to the virtual element provider
+ - Composite.Plugins.UserGroupElementProvider.en-us.xml culture resource added
+ - Composite.C1Console.Security.Plugins.UserGroupPermissionDefinitionProviderConfiguration section added
+ - Composite.C1Console.Elements.Plugins.ElementAttachingProviderConfiguration section added
+ - Added UiForm tag <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/Text/LongText.ascx" cacheCompiledUserControlType="false" type="Composite.Plugins.Forms.WebChannel.UiControlFactories.TemplatedTextUiControlFactory, Composite" name="LongText" />
  - treeDefinitionsDirectory attribute added to the GlobalSettingsProviderPlugins section
  - Added localization entry for "Composite.Web.VisualEditor" (Composite.Web.VisualEditor.en-us.xml)
  - Changed folders for "Generated" and "Temp" - the following params was changed:
@@ -61,7 +61,7 @@ Changes since released 1.2.3321.23866 - Composite C1 1.2
  - Composite.Functions.Plugins.XslExtensionsProviderConfiguration section added
  
 Changes since C1 1.2 SP2
- - Added <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/DeveloperTools/InlineFunctionCallsDesigner.ascx" cacheCompiledUserControlType="true" type="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.TemplatedFunctionCallsDesignerUiControlFactory, Composite" name="InlineFunctionCallsDesigner" />
+ - Added <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/DeveloperTools/InlineFunctionCallsDesigner.ascx" cacheCompiledUserControlType="true" type="Composite.Plugins.Forms.WebChannel.UiControlFactories.TemplatedFunctionCallsDesignerUiControlFactory, Composite" name="InlineFunctionCallsDesigner" />
  
 Changes since C1 1.2 SP2 Patch 1
  - FileLogTraceListener added
@@ -69,26 +69,26 @@ Changes since C1 1.2 SP2 Patch 1
  - DataLogTraceListener removed 
  
 Changes since C1 1.2 SP2 Patch 3
- - Added: <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/Text/HtmlBlob.ascx" cacheCompiledUserControlType="false" type="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.TemplatedHtmlBlobUiControlFactory, Composite" name="HtmlBlob" /> 
+ - Added: <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/Text/HtmlBlob.ascx" cacheCompiledUserControlType="false" type="Composite.Plugins.Forms.WebChannel.UiControlFactories.TemplatedHtmlBlobUiControlFactory, Composite" name="HtmlBlob" /> 
  - Added: <add type="Composite.Functions.Forms.FunctionProducerMediator, Composite" name="http://www.composite.net/ns/function/1.0" />
- - Resource provider added: Composite.Trees: ~/Composite/localization/Composite.Trees.en-us.xml
- - Resource provider added: Composite.StandardPlugins.DeveloperApplicationProvider: ~/Composite/localization/Composite.StandardPlugins.DeveloperApplicationProvider.en-us.xml
+ - Resource provider added: Composite.C1Console.Trees: ~/Composite/localization/Composite.C1Console.Trees.en-us.xml
+ - Resource provider added: Composite.Plugins.DeveloperApplicationProvider: ~/Composite/localization/Composite.Plugins.DeveloperApplicationProvider.en-us.xml
  - Adding "http://c1.composite.net/Captcha" xsl extension
  - DataLogTraceListener removed 
- - TreeElementAttachingProvider added to Composite.Elements.Plugins.ElementAttachingProviderConfiguration
- - Composite.StandardPlugins.Elements.ElementProviders.DeveloperApplicationProvider.DeveloperApplicationProvider added as element provider in its own perspective
- - Content and structure of Composite.Parallelization.Plugins.ParallelizationProviderConfiguration section have been changed
- - Add "Composite.WebClient.Plugins.SessionStateProviderConfiguration" section
+ - TreeElementAttachingProvider added to Composite.C1Console.Elements.Plugins.ElementAttachingProviderConfiguration
+ - Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvider.DeveloperApplicationProvider added as element provider in its own perspective
+ - Content and structure of Composite.Core.Parallelization.Plugins.ParallelizationProviderConfiguration section have been changed
+ - Add "Composite.Core.WebClient.Plugins.SessionStateProviderConfiguration" section
  - sqlQueryLoggingEnabled="false" attribute added to the DynamicSqlDataProvider
- - <add name="TreeElementActionProvider" type="Composite.Trees.TreeElementActionProvider" /> added
- - <add cacheCompiledUserControlType="false" templateFormVirtualPath="/AdministrativeTemplates/EmptyDocument.xml" userControlVirtualPath="~/Composite/controls/FormsControls/FormUiContainerTemplates/EmptyDocumentExecutionContainer.ascx" type="Composite.StandardPlugins.Forms.WebChannel.UiContainerFactories.TemplatedUiContainerFactory, Composite" name="EmptyDocument" /> added
+ - <add name="TreeElementActionProvider" type="Composite.C1Console.Trees.TreeElementActionProvider" /> added
+ - <add cacheCompiledUserControlType="false" templateFormVirtualPath="/AdministrativeTemplates/EmptyDocument.xml" userControlVirtualPath="~/Composite/controls/FormsControls/FormUiContainerTemplates/EmptyDocumentExecutionContainer.ascx" type="Composite.Plugins.Forms.WebChannel.UiContainerFactories.TemplatedUiContainerFactory, Composite" name="EmptyDocument" /> added
 
  Changes in 1.3 trunk:
- - Added: <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/Selectors/PageSelector.ascx" cacheCompiledUserControlType="false" type="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.TemplatedPageReferenceSelectorUiControlFactory, Composite" name="PageSelector" />
+ - Added: <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/Selectors/PageSelector.ascx" cacheCompiledUserControlType="false" type="Composite.Plugins.Forms.WebChannel.UiControlFactories.TemplatedPageReferenceSelectorUiControlFactory, Composite" name="PageSelector" />
  - Added: Caching for "Entity token parents"
- - Resource provider added: Composite.StandardPlugins.PageTypeElementProvider
+ - Resource provider added: Composite.Plugins.PageTypeElementProvider
  - Removed ", Culture=neutral, PublicKeyToken=null" from EntLib assembly names.
- - Removed: Composite.StandardPlugins.Elements.ElementProviders.DeveloperApplicationProvider.DeveloperApplicationProvider 
+ - Removed: Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvider.DeveloperApplicationProvider 
  - Removed InlineFunctionCallsDesigner.ascx
  - Added: broadcastConsoleElementChanges="true" in GlobalSettings
 

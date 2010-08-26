@@ -4,21 +4,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using Composite.Collections.Generic;
+using Composite.Core.Collections.Generic;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Hierarchy;
 using Composite.Data.Hierarchy.DataAncestorProviders;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericVersionProcessController;
-using Composite.EventSystem;
+using Composite.C1Console.Events;
 using Composite.Functions;
-using Composite.Types;
-using Composite.Validation;
-using Composite.Validation.Validators;
+using Composite.Core.Types;
+using Composite.Data.Validation;
+using Composite.Data.Validation.Validators;
 using System.Text;
-using Composite.Logging;
-using Composite.Renderings.Data;
+using Composite.Core.Logging;
+using Composite.Core.WebClient.Renderings.Data;
 
 
 namespace Composite.Data.GeneratedTypes.Foundation
@@ -377,7 +377,7 @@ namespace Composite.Data.GeneratedTypes.Foundation
                     catch (Exception ex)
                     {
                         string errMsg = string.Format("Validator function markup parse / execution failed with the following error: '{0}'. The validator attribute is dropped.", ex.Message);
-                        Logging.LoggingService.LogError("InterfaceCodeGenerator", errMsg);
+                        Core.Logging.LoggingService.LogError("InterfaceCodeGenerator", errMsg);
                     }
 
                     if (propertyValidatorBuilder != null)
@@ -428,7 +428,7 @@ namespace Composite.Data.GeneratedTypes.Foundation
                 CodeAttributeDeclaration stringLengthAttribute;
                 if (dataFieldDescriptor.IsNullable == false)
                 {
-                    stringLengthAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(Composite.Validation.Validators.StringSizeValidatorAttribute)));
+                    stringLengthAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(Composite.Data.Validation.Validators.StringSizeValidatorAttribute)));
                 }
                 else
                 {

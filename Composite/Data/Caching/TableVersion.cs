@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading;
-using Composite.Collections.Generic;
+using Composite.Core.Collections.Generic;
 using Composite.Data.Types;
-using Composite.EventSystem;
-using Composite.Types;
+using Composite.C1Console.Events;
+using Composite.Core.Types;
 
 namespace Composite.Data.Caching
 {

@@ -4,9 +4,9 @@
     <cms:binding name="CultureName" type="System.String" />
     <cms:binding name="RegionLanguageList" type="System.Collections.IEnumerable" />
   </cms:bindings>
-  <cms:layout iconhandle="users-changeownculture" label="${Composite.Users, ChangeOwnCultureWorkflow.Dialog.Label}">
-    <FieldGroup Label="${Composite.Users, ChangeOwnCultureWorkflow.FieldGroup.Label}">
-      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.Users, ChangeOwnCultureWorkflow.Dialog.CultureSelector.Label}" Help="${Composite.Users, ChangeOwnCultureWorkflow.Dialog.CultureSelector.Help}">
+  <cms:layout iconhandle="users-changeownculture" label="${Composite.C1Console.Users, ChangeOwnCultureWorkflow.Dialog.Label}">
+    <FieldGroup Label="${Composite.C1Console.Users, ChangeOwnCultureWorkflow.FieldGroup.Label}">
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.C1Console.Users, ChangeOwnCultureWorkflow.Dialog.CultureSelector.Label}" Help="${Composite.C1Console.Users, ChangeOwnCultureWorkflow.Dialog.CultureSelector.Help}">
         <KeySelector.Options>
           <cms:read source="RegionLanguageList"/>
         </KeySelector.Options>

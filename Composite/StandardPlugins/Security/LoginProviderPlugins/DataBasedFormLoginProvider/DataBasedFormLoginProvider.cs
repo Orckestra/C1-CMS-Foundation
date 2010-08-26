@@ -4,15 +4,15 @@ using System.Linq;
 using System.Transactions;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Logging;
-using Composite.Security.Cryptography;
-using Composite.Security.Plugins.LoginProvider;
-using Composite.Transactions;
+using Composite.Core.Logging;
+using Composite.C1Console.Security.Cryptography;
+using Composite.C1Console.Security.Plugins.LoginProvider;
+using Composite.Data.Transactions;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Security.LoginProviderPlugins.DataBasedFormLoginProvider
+namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProvider
 {
     [ConfigurationElementType(typeof(DataBasedFormLoginProviderData))]
     internal sealed class DataBasedFormLoginProvider : IFormLoginProvider

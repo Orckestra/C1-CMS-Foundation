@@ -4,7 +4,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 
-namespace Composite.Workflow.Plugins.WorkflowRuntimeProvider.Runtime
+namespace Composite.C1Console.Workflow.Plugins.WorkflowRuntimeProvider.Runtime
 {
     internal sealed class WorkflowRuntimeProviderCustomFactory : AssemblerBasedCustomFactory<IWorkflowRuntimeProvider, WorkflowRuntimeProviderData>
     {

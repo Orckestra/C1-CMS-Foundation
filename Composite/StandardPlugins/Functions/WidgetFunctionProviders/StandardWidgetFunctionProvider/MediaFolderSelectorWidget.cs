@@ -4,14 +4,14 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 
 using Composite.Functions;
-using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
 using Composite.Data;
 using System.Reflection;
-using Composite.Types;
+using Composite.Core.Types;
 using Composite.Data.Types;
 
 
-namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider
+namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider
 {
 	internal sealed class MediaFileFolderSelectorWidget : CompositeWidgetFunctionBase
     {

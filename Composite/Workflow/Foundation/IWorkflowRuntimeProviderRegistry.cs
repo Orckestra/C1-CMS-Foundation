@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Composite.Workflow.Foundation
+namespace Composite.C1Console.Workflow.Foundation
 {
 	internal interface IWorkflowRuntimeProviderRegistry
 	{

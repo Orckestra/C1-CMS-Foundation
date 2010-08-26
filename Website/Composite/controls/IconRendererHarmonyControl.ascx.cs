@@ -10,8 +10,8 @@ using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using System.Text;
 using System.IO;
-using Composite.IO;
-using Composite.GlobalSettings;
+using Composite.Core.IO;
+using Composite.Core.Configuration;
 
 
 public partial class IconRendererHarmonyControl : System.Web.UI.UserControl
@@ -48,7 +48,7 @@ public partial class IconRendererHarmonyControl : System.Web.UI.UserControl
                 {
                     string url = fileName.Remove(0, PathUtil.Resolve(PathUtil.BaseDirectory).Length).Replace("\\", "/");
 
-                    url = Composite.WebClient.UrlUtils.ResolvePublicUrl(url);
+                    url = Composite.Core.WebClient.UrlUtils.ResolvePublicUrl(url);
 
                     string s = url.Substring(url.LastIndexOf("/") + 1);
                     s = s.Substring(0, (s.LastIndexOf("_")));

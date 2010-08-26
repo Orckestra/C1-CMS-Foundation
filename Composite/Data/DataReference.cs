@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using System.Globalization;
-using Composite.Types;
+using Composite.Core.Types;
 using System.Reflection;
 using System.Linq.Expressions;
 
@@ -58,7 +58,7 @@ namespace Composite.Data
                 Type realKeyType = typeof(T).GetKeyPropertyInfoes().Single().PropertyType;
                 if (keyValue.GetType().Equals(realKeyType) == false)
                 {
-                    _keyValue = Composite.Types.ValueTypeConverter.Convert(keyValue, realKeyType);
+                    _keyValue = Composite.Core.Types.ValueTypeConverter.Convert(keyValue, realKeyType);
                 }
                 else
                 {
@@ -159,7 +159,7 @@ namespace Composite.Data
         {
             if (_keyValue == null) return "";
 
-            return Composite.Types.ValueTypeConverter.Convert<string>(_keyValue);
+            return Composite.Core.Types.ValueTypeConverter.Convert<string>(_keyValue);
         }
 
         public override string ToString()

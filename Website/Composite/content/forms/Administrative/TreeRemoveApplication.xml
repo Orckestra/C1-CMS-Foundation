@@ -4,12 +4,12 @@
     <cms:binding name="SelectedTreeId" type="System.String" />
     <cms:binding name="SelectableTreeIds" type="System.Collections.IEnumerable" />
   </cms:bindings>
-  <cms:layout label="${Composite.Trees, RemoveApplication.Layout.Label}" iconhandle="tree-remove-application">
-    <FieldGroup Label="${Composite.Trees, RemoveApplication.FieldGroup.Label}">
+  <cms:layout label="${Composite.C1Console.Trees, RemoveApplication.Layout.Label}" iconhandle="tree-remove-application">
+    <FieldGroup Label="${Composite.C1Console.Trees, RemoveApplication.FieldGroup.Label}">
 
       <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"
-									 Label="${Composite.Trees, RemoveApplication.TreeIdSelector.Label}"
-									 Help="${Composite.Trees, RemoveApplication.TreeIdSelector.Help}">
+									 Label="${Composite.C1Console.Trees, RemoveApplication.TreeIdSelector.Label}"
+									 Help="${Composite.C1Console.Trees, RemoveApplication.TreeIdSelector.Help}">
         <KeySelector.Options>
           <cms:read source="SelectableTreeIds"/>
         </KeySelector.Options>

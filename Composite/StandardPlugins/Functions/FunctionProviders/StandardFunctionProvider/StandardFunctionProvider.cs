@@ -5,16 +5,16 @@ using Composite.Data;
 using Composite.Data.Types;
 using Composite.Functions;
 using Composite.Functions.Plugins.FunctionProvider;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated.Filter;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated.Filter;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 using Composite.Data.Foundation;
 
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 {
     [ConfigurationElementType(typeof(StandardFunctionProviderData))]
     internal class StandardFunctionProvider : IDynamicTypeFunctionProvider

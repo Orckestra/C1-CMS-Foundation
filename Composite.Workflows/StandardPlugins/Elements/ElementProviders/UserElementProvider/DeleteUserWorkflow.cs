@@ -1,19 +1,19 @@
 using System;
 using System.Workflow.Activities;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.ResourceSystem;
-using Composite.Security;
-using Composite.Workflow;
+using Composite.Core.ResourceSystem;
+using Composite.C1Console.Security;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class DeleteUserWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class DeleteUserWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         private bool _deleteSelf = false;
 

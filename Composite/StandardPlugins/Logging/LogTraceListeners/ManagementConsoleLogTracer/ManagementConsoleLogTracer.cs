@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using Composite.ConsoleEventSystem;
-using Composite.Logging;
+using Composite.C1Console.Events;
+using Composite.Core.Logging;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Logging.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Logging.TraceListeners;
 
 
-namespace Composite.StandardPlugins.Logging.LogTraceListeners.ManagementConsoleLogTracer
+namespace Composite.Plugins.Logging.LogTraceListeners.ManagementConsoleLogTracer
 {
     [ConfigurationElementType(typeof(CustomTraceListenerData))]
     internal sealed class ManagementConsoleLogTracer : CustomTraceListener

@@ -5,7 +5,7 @@ using Composite.Data.Streams;
 using Composite.Data.Types;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
     /// <summary>    
     /// </summary>

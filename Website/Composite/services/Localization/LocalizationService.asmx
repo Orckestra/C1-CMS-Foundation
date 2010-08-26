@@ -7,14 +7,14 @@ using System.Web.Services.Protocols;
 using System.Collections.Generic;
 using System.Globalization;
 using Composite;
-using Composite.Pages;
-using Composite.WebClient.Services.LocalizationServiceObjects;
-using Composite.Users;
-using Composite.ResourceSystem;
-using Composite.WebClient.FlowMediators;
 using Composite.Data;
-using Composite.Workflow;
-using Composite.Security;
+using Composite.Core.WebClient.Services.LocalizationServiceObjects;
+using Composite.C1Console.Users;
+using Composite.Core.ResourceSystem;
+using Composite.Core.WebClient.FlowMediators;
+using Composite.Data;
+using Composite.C1Console.Workflow;
+using Composite.C1Console.Security;
 using Composite.Data.Types;
 
 
@@ -62,7 +62,7 @@ public class LocalizationService : System.Web.Services.WebService
             clientLocale.UrlMappingName = DataLocalizationFacade.GetUrlMappingName(cultureInfo);
             clientLocale.IsCurrent = cultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo);
 
-            ActionToken actionToken = new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Users.Workflows.ChangeOwnActiveLocaleWorkflow"), _changeOwnActiveLocalePermissionType) { Payload = cultureInfo.Name };
+            ActionToken actionToken = new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Users.Workflows.ChangeOwnActiveLocaleWorkflow"), _changeOwnActiveLocalePermissionType) { Payload = cultureInfo.Name };
             clientLocale.SerializedActionToken = ActionTokenSerializer.Serialize(actionToken, true);
             
             clientLocales.Add(clientLocale);

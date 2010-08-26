@@ -2,12 +2,12 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Web.Compilation;
-using Composite.Types.Plugins.TypeManagerTypeHandler;
+using Composite.Core.Types.Plugins.TypeManagerTypeHandler;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Types.TypeManagerTypeHandler.AspNetBuildManagerTypeManagerTypeHandler
+namespace Composite.Plugins.Types.TypeManagerTypeHandler.AspNetBuildManagerTypeManagerTypeHandler
 {    
     [ConfigurationElementType(typeof(AspNetBuildManagerTypeManagerTypeHandlerData))]
     internal sealed class AspNetBuildManagerTypeManagerTypeHandler : ITypeManagerTypeHandler

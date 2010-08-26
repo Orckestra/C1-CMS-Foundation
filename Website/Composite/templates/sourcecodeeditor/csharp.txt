@@ -4,14 +4,14 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 
-using Composite.WebClient.Plugins.WebRequestHandler;
-using Composite.WebClient.Plugins.WebRequestHandler.Runtime;
-using Composite.WebClient.Foundation.PluginFacades;
+using Composite.Core.WebClient.Plugins.WebRequestHandler;
+using Composite.Core.WebClient.Plugins.WebRequestHandler.Runtime;
+using Composite.Core.WebClient.Foundation.PluginFacades;
 
 /**
  * This is the comment. 
  */
-namespace Composite.WebClient
+namespace Composite.Core.WebClient
 {
     public class PathToWebRequestHandlerMappingPage : System.Web.UI.Page
     {

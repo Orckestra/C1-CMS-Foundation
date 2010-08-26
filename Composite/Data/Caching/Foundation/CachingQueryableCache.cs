@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Composite.EventSystem;
-using Composite.Logging;
+using Composite.C1Console.Events;
+using Composite.Core.Logging;
 
 
 namespace Composite.Data.Caching.Foundation

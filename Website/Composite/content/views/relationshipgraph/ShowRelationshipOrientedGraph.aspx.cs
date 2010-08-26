@@ -4,11 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Composite.Security;
-using Composite.Types;
+using Composite.C1Console.Security;
+using Composite.Core.Types;
 using System.IO;
-using Composite.IO;
-using Composite.GlobalSettings;
+using Composite.Core.IO;
+using Composite.Core.Configuration;
 
 
 namespace Composite.content.views.relationshipgraph

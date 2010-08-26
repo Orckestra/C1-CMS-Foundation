@@ -1,4 +1,4 @@
-<%@ Control Language="C#" Inherits="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.FileUploadTemplateUserControlBase" %>
+<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.FileUploadTemplateUserControlBase" %>
 
 <script runat="server">
     protected override void BindStateToProperties()

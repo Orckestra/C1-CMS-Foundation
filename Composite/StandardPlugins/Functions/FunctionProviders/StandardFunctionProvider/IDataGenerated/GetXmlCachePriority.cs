@@ -1,4 +1,4 @@
-﻿namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated
+﻿namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated
 {
     internal enum GetXmlCachePriority
     {

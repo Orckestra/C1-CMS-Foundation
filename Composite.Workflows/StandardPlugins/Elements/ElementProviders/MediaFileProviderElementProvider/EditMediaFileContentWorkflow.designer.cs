@@ -12,7 +12,7 @@ using System.Workflow.Runtime;
 using System.Workflow.Activities;
 using System.Workflow.Activities.Rules;
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
     partial class EditMediaFileContentWorkflow
     {
@@ -29,7 +29,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
             this.setStateActivity2 = new System.Workflow.Activities.SetStateActivity();
             this.initializeCodeActivity = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity1 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity1 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.initialStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.cancelEventDrivenActivity = new System.Workflow.Activities.EventDrivenActivity();
             this.finalStateActivity = new System.Workflow.Activities.StateActivity();
@@ -53,7 +53,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
             // cancelHandleExternalEventActivity1
             // 
             this.cancelHandleExternalEventActivity1.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity1.Name = "cancelHandleExternalEventActivity1";
             // 
             // initialStateInitializationActivity
@@ -94,7 +94,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderE
 
         private CodeActivity initializeCodeActivity;
         private SetStateActivity setStateActivity1;
-        private Composite.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
         private StateInitializationActivity initialStateInitializationActivity;
         private EventDrivenActivity cancelEventDrivenActivity;
         private StateActivity finalStateActivity;

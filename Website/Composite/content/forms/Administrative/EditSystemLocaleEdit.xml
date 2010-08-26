@@ -3,9 +3,9 @@
 	<cms:bindings>
 		<cms:binding name="SystemActiveLocale" type="Composite.Data.Types.ISystemActiveLocale" />
 	</cms:bindings>
-	<cms:layout iconhandle="localization-editsystemlocale" label="${Composite.StandardPlugins.LocalizationElementProvider, EditSystemLocaleWorkflow.Dialog.Label}">
-		<FieldGroup Label="${Composite.StandardPlugins.LocalizationElementProvider, EditSystemLocaleWorkflow.FieldGroup.Label}">
-			<TextBox Label="${Composite.StandardPlugins.LocalizationElementProvider, EditSystemLocaleWorkflow.UrlMappingName.Label}" Help="${Composite.StandardPlugins.LocalizationElementProvider, EditSystemLocaleWorkflow.UrlMappingName.Help}">
+	<cms:layout iconhandle="localization-editsystemlocale" label="${Composite.Plugins.LocalizationElementProvider, EditSystemLocaleWorkflow.Dialog.Label}">
+		<FieldGroup Label="${Composite.Plugins.LocalizationElementProvider, EditSystemLocaleWorkflow.FieldGroup.Label}">
+			<TextBox Label="${Composite.Plugins.LocalizationElementProvider, EditSystemLocaleWorkflow.UrlMappingName.Label}" Help="${Composite.Plugins.LocalizationElementProvider, EditSystemLocaleWorkflow.UrlMappingName.Help}">
 				<TextBox.Text>
 					<cms:bind source="SystemActiveLocale.UrlMappingName" />
 				</TextBox.Text>

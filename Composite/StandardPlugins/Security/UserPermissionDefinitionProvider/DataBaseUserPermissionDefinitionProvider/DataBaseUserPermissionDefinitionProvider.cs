@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
-using Composite.Collections.Generic;
+using Composite.Core.Collections.Generic;
 using Composite.Data;
 using Composite.Data.Caching;
 using Composite.Data.Types;
-using Composite.Security;
-using Composite.Security.Plugins.UserPermissionDefinitionProvider;
-using Composite.Transactions;
+using Composite.C1Console.Security;
+using Composite.C1Console.Security.Plugins.UserPermissionDefinitionProvider;
+using Composite.Data.Transactions;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Security.UserPermissionDefinitionProvider.DataBaseUserPermissionDefinitionProvider
+namespace Composite.Plugins.Security.UserPermissionDefinitionProvider.DataBaseUserPermissionDefinitionProvider
 {
     [ConfigurationElementType(typeof(DataBaseUserPermissionDefinitionProviderData))]
     internal sealed class DataBaseUserPermissionDefinitionProvider : IUserPermissionDefinitionProvider

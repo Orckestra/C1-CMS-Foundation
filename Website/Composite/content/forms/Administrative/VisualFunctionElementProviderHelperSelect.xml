@@ -5,8 +5,8 @@
     <cms:binding name="SelectedRenderingFunction" type="System.String" />
   </cms:bindings>
   <cms:layout>
-    <FieldGroup Label="${Composite.StandardPlugins.VisualFunction, Select.FieldGroupLabel}">
-      <KeySelector Label="${Composite.StandardPlugins.VisualFunction, Select.FunctionFunctionsLabel}" Help="${Composite.StandardPlugins.VisualFunction, Select.FunctionFunctionsHelp}">
+    <FieldGroup Label="${Composite.Plugins.VisualFunction, Select.FieldGroupLabel}">
+      <KeySelector Label="${Composite.Plugins.VisualFunction, Select.FunctionFunctionsLabel}" Help="${Composite.Plugins.VisualFunction, Select.FunctionFunctionsHelp}">
         <KeySelector.Selected>
           <cms:bind source="SelectedRenderingFunction" />
         </KeySelector.Selected>

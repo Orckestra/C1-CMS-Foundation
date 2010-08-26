@@ -5,19 +5,19 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
-using Composite.Caching;
+using Composite.Core.Caching;
 using Composite.Data;
 using Composite.Data.Caching;
 using Composite.Functions;
-using Composite.Linq;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated.Filter.Foundation;
-using Composite.Types;
-using Composite.Extensions;
-using Composite.Collections.Generic;
+using Composite.Core.Linq;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated.Filter.Foundation;
+using Composite.Core.Types;
+using Composite.Core.Extensions;
+using Composite.Core.Collections.Generic;
 
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated
 {
     internal class GetXmlCacheRecord
     {

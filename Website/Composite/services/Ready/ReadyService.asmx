@@ -17,7 +17,7 @@ public class ReadyService : System.Web.Services.WebService
     [WebMethod]
     public bool IsServerReady(bool dummy)
     {
-        return GlobalInitializerFacade.SystemCoreInitialized && Composite.Application.ApplicationOnlineHandlerFacade.IsApplicationOnline;
+        return GlobalInitializerFacade.SystemCoreInitialized && Composite.Core.Application.ApplicationOnlineHandlerFacade.IsApplicationOnline;
     }
 
 }

@@ -2,15 +2,15 @@ using System;
 using System.Linq;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using System.Workflow.Activities;
-using Composite.ConsoleEventSystem;
-using Composite.ResourceSystem;
+using Composite.C1Console.Events;
+using Composite.Core.ResourceSystem;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
 {
-    public sealed partial class DeleteUserGroupWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class DeleteUserGroupWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public DeleteUserGroupWorkflow()
         {
@@ -33,8 +33,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementPr
         private void initializeCodeActivity_ShowMessage_ExecuteCode(object sender, EventArgs e)
         {
             ShowMessage(DialogType.Message,
-                StringResourceSystemFacade.GetString("Composite.StandardPlugins.UserGroupElementProvider", "DeleteUserGroup.DeleteUserGroupInitialStep.UserGroupHasUsersTitle"),
-                StringResourceSystemFacade.GetString("Composite.StandardPlugins.UserGroupElementProvider", "DeleteUserGroup.DeleteUserGroupInitialStep.UserGroupHasUsersMessage")
+                StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", "DeleteUserGroup.DeleteUserGroupInitialStep.UserGroupHasUsersTitle"),
+                StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", "DeleteUserGroup.DeleteUserGroupInitialStep.UserGroupHasUsersMessage")
                 );
         }
 

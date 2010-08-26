@@ -9,42 +9,42 @@ using System.Web.UI;
 using System.Workflow.Activities;
 using System.Workflow.Runtime;
 using System.Xml.Linq;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.GeneratedTypes;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
-using Composite.Extensions;
-using Composite.Forms;
-using Composite.Forms.DataServices;
-using Composite.Forms.Flows;
-using Composite.Linq;
-using Composite.Localization;
-using Composite.Renderings.Page;
-using Composite.ResourceSystem;
-using Composite.Security;
-using Composite.Transactions;
-using Composite.Users;
-using Composite.Validation;
-using Composite.Validation.ClientValidationRules;
-using Composite.WebClient;
-using Composite.WebClient.FlowMediators.FormFlowRendering;
-using Composite.Workflow;
-using Composite.Xml;
+using Composite.Core.Extensions;
+using Composite.C1Console.Forms;
+using Composite.C1Console.Forms.DataServices;
+using Composite.C1Console.Forms.Flows;
+using Composite.Core.Linq;
+using Composite.Core.Localization;
+using Composite.Core.WebClient.Renderings.Page;
+using Composite.Core.ResourceSystem;
+using Composite.C1Console.Security;
+using Composite.Data.Transactions;
+using Composite.C1Console.Users;
+using Composite.Data.Validation;
+using Composite.Data.Validation.ClientValidationRules;
+using Composite.Core.WebClient;
+using Composite.Core.WebClient.FlowMediators.FormFlowRendering;
+using Composite.C1Console.Workflow;
+using Composite.Core.Xml;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
-using Composite.Types;
-using Composite.Collections.Generic;
+using Composite.Core.Types;
+using Composite.Core.Collections.Generic;
 using Composite.Data.ProcessControlled;
-using Composite.Trees;
+using Composite.C1Console.Trees;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class EditPageWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class EditPageWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public EditPageWorkflow()
         {
@@ -77,7 +77,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
             IPage parentPage = null;
             if (parentPageId != Guid.Empty)
             {
-                parentPage = PageManager.GetPageById(parentPageId);
+                parentPage = Composite.Data.Types.PageManager.GetPageById(parentPageId);
             }
 
             return
@@ -468,7 +468,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
                 Exception mostSpecificException = ex;
                 while (mostSpecificException.InnerException != null) mostSpecificException = mostSpecificException.InnerException;
                 this.ShowMessage(DialogType.Error, "Save failed", string.Format("Save failed: {0}", mostSpecificException.Message));
-                Composite.Logging.LoggingService.LogError("Page save", ex);
+                Composite.Core.Logging.LoggingService.LogError("Page save", ex);
             }
             finally
             {
@@ -724,7 +724,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
             {
                 if (siblingUrlTitle.ToLower() == selectedPage.UrlTitle.ToLower())
                 {
-                    this.ShowFieldMessage("SelectedPage.UrlTitle", "${Composite.StandardPlugins.PageElementProvider, UrlTitleNotUniqueError}");
+                    this.ShowFieldMessage("SelectedPage.UrlTitle", "${Composite.Plugins.PageElementProvider, UrlTitleNotUniqueError}");
                     e.Result = false;
                     break;
                 }
@@ -736,14 +736,14 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
                 if (usedFrendlyUrls.Any(f => f.ToLower() == selectedPage.FriendlyUrl.ToLower()))
                 {
-                    this.ShowFieldMessage("SelectedPage.FriendlyUrl", "${Composite.StandardPlugins.PageElementProvider, FriendlyUrlNotUniqueError}");
+                    this.ShowFieldMessage("SelectedPage.FriendlyUrl", "${Composite.Plugins.PageElementProvider, FriendlyUrlNotUniqueError}");
                     e.Result = false;
                 }
             }
 
             if (string.IsNullOrEmpty(selectedPage.Title) == true)
             {
-                this.ShowFieldMessage("SelectedPage.Title", "${Composite.StandardPlugins.PageElementProvider, TitleMissingError}");
+                this.ShowFieldMessage("SelectedPage.Title", "${Composite.Plugins.PageElementProvider, TitleMissingError}");
                 e.Result = false;
             }
 
@@ -752,7 +752,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
             {
                 if (validationResults.Any(f => f.Key == "UrlTitle"))
                 {
-                    this.ShowFieldMessage("SelectedPage.UrlTitle", "${Composite.StandardPlugins.PageElementProvider, UrlTitleNotValidError}");
+                    this.ShowFieldMessage("SelectedPage.UrlTitle", "${Composite.Plugins.PageElementProvider, UrlTitleNotValidError}");
                     e.Result = false;
                 }
 
@@ -766,7 +766,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
         private static string GetText(string key)
         {
-            return StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", key);
+            return StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", key);
         }
 
         private class FixLinksFilter : Stream

@@ -5,7 +5,7 @@ using System.Workflow.ComponentModel;
 using System.Workflow.ComponentModel.Compiler;
 
 
-namespace Composite.Workflow.Activities
+namespace Composite.C1Console.Workflow.Activities
 {
     /// <summary>    
     /// </summary>

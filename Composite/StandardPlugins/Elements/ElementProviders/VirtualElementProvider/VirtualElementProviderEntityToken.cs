@@ -1,9 +1,9 @@
 using System;
-using Composite.Security;
-using Composite.Types;
+using Composite.C1Console.Security;
+using Composite.Core.Types;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 {
     /// <summary>    
     /// </summary>

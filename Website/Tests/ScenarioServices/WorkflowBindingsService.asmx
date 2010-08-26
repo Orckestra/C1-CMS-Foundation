@@ -9,13 +9,13 @@ using System.Reflection;
 using System.Collections.Generic;
 
 using Composite;
-using Composite.Actions;
-using Composite.Security;
-using Composite.ConsoleEventSystem;
-using Composite.Elements;
-using Composite.Workflow;
-using Composite.Workflow.Foundation;
-using Composite.Tasks;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Security;
+using Composite.C1Console.Events;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Workflow;
+using Composite.C1Console.Workflow.Foundation;
+using Composite.C1Console.Tasks;
 
 
 

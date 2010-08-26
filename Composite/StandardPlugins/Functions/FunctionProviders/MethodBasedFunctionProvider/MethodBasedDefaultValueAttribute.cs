@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.MethodBasedFunctionProvider
+namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvider
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 	internal sealed class MethodBasedDefaultValueAttribute : Attribute

@@ -1,9 +1,9 @@
-﻿using Composite.Tasks;
+﻿using Composite.C1Console.Tasks;
 using System;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 
 
-namespace Composite.Workflow
+namespace Composite.C1Console.Workflow
 {
     internal class WorkflowTaskManagerEvent : FlowTaskManagerEvent
     {

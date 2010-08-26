@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
-using Composite.Serialization;
-using Composite.Instrumentation;
+using Composite.Core.Serialization;
+using Composite.Core.Instrumentation;
 using System.CodeDom;
 
 

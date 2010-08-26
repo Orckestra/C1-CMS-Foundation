@@ -1,6 +1,6 @@
-<%@ Control Language="C#" Inherits="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.SelectorTemplateUserControlBase" %>
-<%@ Import Namespace="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories" %>
-<%@ Import Namespace="Composite.Types" %>
+<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.SelectorTemplateUserControlBase" %>
+<%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
+<%@ Import Namespace="Composite.Core.Types" %>
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Linq" %>
 
@@ -44,7 +44,7 @@
         e.Item.ID = definition.Key.GetHashCode().ToString();
         Control c = e.Item.FindControl("CheckBox");
 
-        Composite.WebClient.UiControlLib.CheckBox cb = (Composite.WebClient.UiControlLib.CheckBox)c;
+        Composite.Core.WebClient.UiControlLib.CheckBox cb = (Composite.Core.WebClient.UiControlLib.CheckBox)c;
 
         List<string> selectedKeys = new List<string>(this.SelectedKeys);
 
@@ -68,7 +68,7 @@
 
                 EnsurePostDataLoaded(c);
 
-                var cb = (Composite.WebClient.UiControlLib.CheckBox)c;
+                var cb = (Composite.Core.WebClient.UiControlLib.CheckBox)c;
 
                 if (cb.Checked) result.Add(HttpUtility.HtmlDecode(cb.Text));
             }

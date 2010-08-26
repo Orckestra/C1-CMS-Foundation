@@ -4,7 +4,7 @@ using System.Web.UI;
 using System.Xml.Linq;
 using System.Diagnostics;
 using System.Linq;
-using Composite.Logging;
+using Composite.Core.Logging;
 
 
 public partial class Composite_content_views_log_log : System.Web.UI.Page

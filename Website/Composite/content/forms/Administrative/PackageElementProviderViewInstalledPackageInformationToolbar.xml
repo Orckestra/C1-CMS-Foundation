@@ -5,7 +5,7 @@
 	</cms:bindings>
 	<cms:layout>
 		<PlaceHolder>
-			<ToolbarButton Label="${Composite.StandardPlugins.PackageElementProvider, ViewInstalledInformation.Toolbar.UninstallLabel}" IconHandle="package-installer-uninstall">
+			<ToolbarButton Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.Toolbar.UninstallLabel}" IconHandle="package-installer-uninstall">
 				<ToolbarButton.ClickEventHandler>
 					<cms:read source="CustomEvent01Handler" />
 				</ToolbarButton.ClickEventHandler>

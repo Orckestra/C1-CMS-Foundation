@@ -1,19 +1,19 @@
 using System;
 using System.Globalization;
 using System.Workflow.Activities;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Localization;
-using Composite.Workflow;
+using Composite.Core.Localization;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class RemoveSystemLocaleWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class RemoveSystemLocaleWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public RemoveSystemLocaleWorkflow()
         {

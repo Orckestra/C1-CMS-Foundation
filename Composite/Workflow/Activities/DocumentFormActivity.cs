@@ -1,12 +1,12 @@
 using System.Workflow.Activities;
 using System.Workflow.ComponentModel;
 using System.Workflow.Runtime;
-using Composite.Actions;
-using Composite.Forms.DataServices;
-using Composite.Forms.Flows;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Forms.DataServices;
+using Composite.C1Console.Forms.Flows;
 
 
-namespace Composite.Workflow.Activities
+namespace Composite.C1Console.Workflow.Activities
 {
     /// <summary>    
     /// </summary>

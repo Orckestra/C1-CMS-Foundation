@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data.DynamicTypes;
-using Composite.Forms.Flows;
+using Composite.C1Console.Forms.Flows;
 using Composite.Functions;
-using Composite.Serialization;
-using Composite.Types;
-using Composite.Validation.ClientValidationRules;
-using Composite.Xml;
+using Composite.Core.Serialization;
+using Composite.Core.Types;
+using Composite.Data.Validation.ClientValidationRules;
+using Composite.Core.Xml;
 
 
-namespace Composite.Workflow.Foundation
+namespace Composite.C1Console.Workflow.Foundation
 {
     /// <summary>    
     /// </summary>

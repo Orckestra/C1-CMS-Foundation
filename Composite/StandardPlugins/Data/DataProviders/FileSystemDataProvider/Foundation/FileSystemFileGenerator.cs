@@ -10,7 +10,7 @@ using Composite.Data.Types;
 using Microsoft.CSharp;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.FileSystemDataProvider.Foundation
+namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider.Foundation
 {
     internal static class FileSystemFileGenerator
     {

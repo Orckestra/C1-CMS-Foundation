@@ -3,8 +3,8 @@
   <cms:bindings>
     <cms:binding name="Text" type="System.String" />
   </cms:bindings>
-  <cms:layout label="${Composite.Trees, TreeGenericDeleteConfirm.LabelFieldGroup}">
-    <!--Text="${Composite.Trees, TreeGenericDeleteConfirm.Text}"-->
+  <cms:layout label="${Composite.C1Console.Trees, TreeGenericDeleteConfirm.LabelFieldGroup}">
+    <!--Text="${Composite.C1Console.Trees, TreeGenericDeleteConfirm.Text}"-->
     <Text>
       <Text.Text>
         <cms:read source="Text" />

@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Composite.Types;
-using Composite.Types.Plugins.TypeManagerTypeHandler;
+using Composite.Core.Types;
+using Composite.Core.Types.Plugins.TypeManagerTypeHandler;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Types.TypeManagerTypeHandler.DynamicBuildManagerTypeManagerTypeHandler
+namespace Composite.Plugins.Types.TypeManagerTypeHandler.DynamicBuildManagerTypeManagerTypeHandler
 {    
     [ConfigurationElementType(typeof(DynamicBuildManagerTypeManagerTypeHandlerData))]
     internal sealed class DynamicBuildManagerTypeManagerTypeHandler : ITypeManagerTypeHandler

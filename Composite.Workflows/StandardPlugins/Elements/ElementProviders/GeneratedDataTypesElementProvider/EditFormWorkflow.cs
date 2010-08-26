@@ -1,20 +1,20 @@
 using System;
 using System.Workflow.Runtime;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.DynamicTypes.Foundation;
 using Composite.Data.Foundation;
 using Composite.Data.GeneratedTypes;
-using Composite.Types;
-using Composite.Workflow;
+using Composite.Core.Types;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class EditFormWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class EditFormWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public EditFormWorkflow()
         {

@@ -1,6 +1,6 @@
-<%@ Control Language="C#" Inherits="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.ContainerTemplateUserControlBase" %>
-<%@ Import Namespace="Composite.Forms.WebChannel" %>
-<%@ Import Namespace="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories" %>
+<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.ContainerTemplateUserControlBase" %>
+<%@ Import Namespace="Composite.C1Console.Forms.WebChannel" %>
+<%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
 <%@ Import Namespace="System.ComponentModel" %>
 
 <script runat="server">

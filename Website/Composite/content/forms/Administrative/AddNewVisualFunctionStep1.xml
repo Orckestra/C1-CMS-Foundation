@@ -4,9 +4,9 @@
     <cms:binding name="SelectedType" type="System.Type" />
     <cms:binding name="TypeOptions" type="System.Object" />
   </cms:bindings>
-  <cms:layout iconhandle="wysiwyg-function" label="${Composite.StandardPlugins.VisualFunction, AddNew.DialogLabel}">
-    <FieldGroup Label="${Composite.StandardPlugins.VisualFunction, AddNewStep1.FieldGroupLabel}">
-      <TypeSelector Label="${Composite.StandardPlugins.VisualFunction, AddNewStep1.TypeSelectorLabel}" Help="${Composite.StandardPlugins.VisualFunction, AddNewStep1.TypeSelectorHelp}">
+  <cms:layout iconhandle="wysiwyg-function" label="${Composite.Plugins.VisualFunction, AddNew.DialogLabel}">
+    <FieldGroup Label="${Composite.Plugins.VisualFunction, AddNewStep1.FieldGroupLabel}">
+      <TypeSelector Label="${Composite.Plugins.VisualFunction, AddNewStep1.TypeSelectorLabel}" Help="${Composite.Plugins.VisualFunction, AddNewStep1.TypeSelectorHelp}">
         <TypeSelector.TypeOptions>
           <cms:read source="TypeOptions" />
         </TypeSelector.TypeOptions>

@@ -2,13 +2,13 @@ using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using Composite.Functions;
-using Composite.ResourceSystem;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.Validation;
-using Composite.Validation.Validators;
+using Composite.Core.ResourceSystem;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Data.Validation;
+using Composite.Data.Validation.Validators;
 
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Validation
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Validation
 {
     internal sealed class RegexValidationFunction : StandardFunctionBase
     {

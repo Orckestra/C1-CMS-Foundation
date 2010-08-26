@@ -1,25 +1,25 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.GeneratedTypes;
 using Composite.Data.ProcessControlled;
-using Composite.Logging;
-using Composite.Security;
-using Composite.Types;
-using Composite.Users;
-using Composite.Validation.ClientValidationRules;
-using Composite.Workflow;
+using Composite.Core.Logging;
+using Composite.C1Console.Security;
+using Composite.Core.Types;
+using Composite.C1Console.Users;
+using Composite.Data.Validation.ClientValidationRules;
+using Composite.C1Console.Workflow;
 using Composite.Data.ExtendedDataType.Debug;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddNewCompositionTypeWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddNewCompositionTypeWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         private string NewTypeNameBindingName { get { return "NewTypeName"; } }
         private string NewTypeNamespaceBindingName { get { return "NewTypeNamespace"; } }
@@ -115,7 +115,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                 {
                     this.ShowMessage(
                             DialogType.Warning,
-                            "${Composite.StandardPlugins.GeneratedDataTypesElementProvider, AddNewCompositionTypeWorkflow.ErrorTitle}",
+                            "${Composite.Plugins.GeneratedDataTypesElementProvider, AddNewCompositionTypeWorkflow.ErrorTitle}",
                             errorMessage
                         );
                     return;
@@ -149,7 +149,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                 {
                     this.ShowMessage(
                             DialogType.Warning,
-                            "${Composite.StandardPlugins.GeneratedDataTypesElementProvider, AddNewCompositionTypeWorkflow.ErrorTitle}",
+                            "${Composite.Plugins.GeneratedDataTypesElementProvider, AddNewCompositionTypeWorkflow.ErrorTitle}",
                             errorMessage
                         );
                     return;

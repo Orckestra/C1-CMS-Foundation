@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Composite.Instrumentation;
-using Composite.Serialization;
+using Composite.Core.Instrumentation;
+using Composite.Core.Serialization;
 
 
 namespace Composite.Data.DynamicTypes

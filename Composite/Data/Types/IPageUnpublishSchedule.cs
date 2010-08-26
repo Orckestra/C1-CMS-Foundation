@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
-using Composite.Validation.Validators;
+using Composite.Data.Validation.Validators;
 
 
 namespace Composite.Data.Types

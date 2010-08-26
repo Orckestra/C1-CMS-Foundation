@@ -1,5 +1,5 @@
-<%@ Control Language="C#" Inherits="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.ButtonTemplateUserControlBase" %>
-<%@ Import Namespace="Composite.WebClient" %>
+<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.ButtonTemplateUserControlBase" %>
+<%@ Import Namespace="Composite.Core.WebClient" %>
 
 <script runat="server">
     private void Page_Init(object sender, System.EventArgs e)

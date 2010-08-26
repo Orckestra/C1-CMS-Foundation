@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using Composite.Collections.Generic;
-using Composite.Types;
-using Composite.EventSystem;
+using Composite.Core.Collections.Generic;
+using Composite.Core.Types;
+using Composite.C1Console.Events;
 
 
 namespace Composite.Data.Hierarchy.Foundation

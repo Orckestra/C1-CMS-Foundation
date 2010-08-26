@@ -8,7 +8,7 @@ using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Xml.Linq;
 using System.Collections.Generic;
-using Composite.Types;
+using Composite.Core.Types;
 
 [WebService(Namespace = "http://www.composite.net/ns/management")]
 [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
@@ -27,6 +27,6 @@ public class StringService : System.Web.Services.WebService
     [WebMethod]
     public List<KeyValuePair> GetLocalisation(string resourceStoreName)
     {
-        return Composite.ResourceSystem.StringResourceSystemFacade.GetLocalization(resourceStoreName);
+        return Composite.Core.ResourceSystem.StringResourceSystemFacade.GetLocalization(resourceStoreName);
     }
 }

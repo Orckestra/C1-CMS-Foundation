@@ -4,7 +4,7 @@ using Microsoft.Practices.ObjectBuilder;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
-namespace Composite.Workflow.Plugins.WorkflowRuntimeProvider
+namespace Composite.C1Console.Workflow.Plugins.WorkflowRuntimeProvider
 {
     [Assembler(typeof(NonConfigurableWorkflowRuntimeProviderAssembler))]
     internal class NonConfigurableWorkflowRuntimeProvider : WorkflowRuntimeProviderData

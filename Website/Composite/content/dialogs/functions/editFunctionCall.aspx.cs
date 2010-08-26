@@ -4,15 +4,15 @@ using System.Linq;
 using System.Web;
 using System.Xml.Linq;
 using Composite.Functions;
-using Composite.Types;
-using Composite.WebClient.FunctionCallEditor;
-using Composite.WebClient.State;
-using Composite.Xml;
+using Composite.Core.Types;
+using Composite.Core.WebClient.FunctionCallEditor;
+using Composite.Core.WebClient.State;
+using Composite.Core.Xml;
 
 
 namespace CompositeEditFunctionCall
 {
-    public partial class EditFunctionCall : Composite.WebClient.XhtmlPage
+    public partial class EditFunctionCall : Composite.Core.WebClient.XhtmlPage
     {
         protected void Page_Load(object sender, EventArgs e)
         {

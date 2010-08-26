@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Data.DynamicTypes;
-using Composite.EventSystem;
-using Composite.GlobalSettings;
-using Composite.IO;
+using Composite.C1Console.Events;
+using Composite.Core.Configuration;
+using Composite.Core.IO;
 
 
 namespace Composite.Data

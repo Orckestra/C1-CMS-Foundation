@@ -11,40 +11,40 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.Xml.Xsl;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Types;
-using Composite.Extensions;
+using Composite.Core.Extensions;
 using Composite.Functions;
 using Composite.Functions.ManagedParameters;
-using Composite.Logging;
-using Composite.ResourceSystem;
-using Composite.StandardPlugins.Functions.FunctionProviders.XsltBasedFunctionProvider;
-using Composite.Threading;
-using Composite.Transactions;
-using Composite.WebClient;
-using Composite.WebClient.FlowMediators.FormFlowRendering;
-using Composite.WebClient.FunctionCallEditor;
-using Composite.WebClient.State;
-using Composite.Workflow;
-using Composite.Workflow.Foundation;
-using Composite.Xml;
-using Composite.Localization;
-using Composite.Users;
-using Composite.Renderings.Page;
+using Composite.Core.Logging;
+using Composite.Core.ResourceSystem;
+using Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvider;
+using Composite.Core.Threading;
+using Composite.Data.Transactions;
+using Composite.Core.WebClient;
+using Composite.Core.WebClient.FlowMediators.FormFlowRendering;
+using Composite.Core.WebClient.FunctionCallEditor;
+using Composite.Core.WebClient.State;
+using Composite.C1Console.Workflow;
+using Composite.C1Console.Workflow.Foundation;
+using Composite.Core.Xml;
+using Composite.Core.Localization;
+using Composite.C1Console.Users;
+using Composite.Core.WebClient.Renderings.Page;
 using System.Globalization;
 using System.Threading;
 using System.Diagnostics;
-using Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
+using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class EditXsltFunctionWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class EditXsltFunctionWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public EditXsltFunctionWorkflow()
         {
@@ -475,7 +475,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.XsltBasedFunctionP
 
         private static string GetString(string key)
         {
-            return StringResourceSystemFacade.GetString("Composite.StandardPlugins.XsltBasedFunction", key);
+            return StringResourceSystemFacade.GetString("Composite.Plugins.XsltBasedFunction", key);
         }
 
         // This is for propergating error message with never ending recursive calls

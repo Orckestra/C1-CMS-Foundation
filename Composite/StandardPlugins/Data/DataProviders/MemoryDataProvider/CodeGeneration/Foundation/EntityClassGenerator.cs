@@ -1,13 +1,13 @@
 using System.Linq;
 using System.CodeDom;
-using Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider.Foundation;
+using Composite.Plugins.Data.DataProviders.MemoryDataProvider.Foundation;
 using System.Reflection;
 using Composite.Data;
-using Composite.Types;
+using Composite.Core.Types;
 using System.Collections.Generic;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider.CodeGeneration.Foundation
+namespace Composite.Plugins.Data.DataProviders.MemoryDataProvider.CodeGeneration.Foundation
 {
     internal sealed class EntityClassGenerator
     {

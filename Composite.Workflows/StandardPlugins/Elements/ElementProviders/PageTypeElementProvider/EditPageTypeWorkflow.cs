@@ -5,19 +5,19 @@ using System.Transactions;
 using System.Workflow.Activities;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Linq;
-using Composite.ResourceSystem;
-using Composite.Transactions;
-using Composite.Trees;
-using Composite.Workflow;
+using Composite.Core.Linq;
+using Composite.Core.ResourceSystem;
+using Composite.Data.Transactions;
+using Composite.C1Console.Trees;
+using Composite.C1Console.Workflow;
 using Composite.Data.DynamicTypes;
 
 
-namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageTypeElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
 {
     [EntityTokenLock]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class EditPageTypeWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class EditPageTypeWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public EditPageTypeWorkflow()
         {
@@ -64,7 +64,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
                 ToList(f => new KeyValuePair<Guid, string>(f.Id, f.Name));
 
             List<KeyValuePair<Guid, string>> defaultPageTypeOptions = new List<KeyValuePair<Guid, string>>();
-            defaultPageTypeOptions.Add(new KeyValuePair<Guid, string>(Guid.Empty, StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTypeElementProvider", "PageType.EditPageTypeWorkflow.DefaultChildPageTypeKeySelector.NoneSelectedLabel")));
+            defaultPageTypeOptions.Add(new KeyValuePair<Guid, string>(Guid.Empty, StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", "PageType.EditPageTypeWorkflow.DefaultChildPageTypeKeySelector.NoneSelectedLabel")));
             defaultPageTypeOptions.AddRange(pageTypes);
 
             this.Bindings.Add("DefaultChildPageTypeOptions", defaultPageTypeOptions);
@@ -73,9 +73,9 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
 
 
             this.Bindings.Add("HomepageRelationOptions", new List<KeyValuePair<string, string>> { 
-               new KeyValuePair<string, string>(PageTypeHomepageRelation.NoRestriction.ToPageTypeHomepageRelationString(), StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTypeElementProvider", string.Format("PageType.EditPageTypeWorkflow.HomepageRelationKeySelector.{0}Label", PageTypeHomepageRelation.NoRestriction))),
-               new KeyValuePair<string, string>(PageTypeHomepageRelation.OnlyHomePages.ToPageTypeHomepageRelationString(), StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTypeElementProvider", string.Format("PageType.EditPageTypeWorkflow.HomepageRelationKeySelector.{0}Label", PageTypeHomepageRelation.OnlyHomePages))),
-               new KeyValuePair<string, string>(PageTypeHomepageRelation.OnlySubPages.ToPageTypeHomepageRelationString(), StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTypeElementProvider", string.Format("PageType.EditPageTypeWorkflow.HomepageRelationKeySelector.{0}Label", PageTypeHomepageRelation.OnlySubPages))),
+               new KeyValuePair<string, string>(PageTypeHomepageRelation.NoRestriction.ToPageTypeHomepageRelationString(), StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", string.Format("PageType.EditPageTypeWorkflow.HomepageRelationKeySelector.{0}Label", PageTypeHomepageRelation.NoRestriction))),
+               new KeyValuePair<string, string>(PageTypeHomepageRelation.OnlyHomePages.ToPageTypeHomepageRelationString(), StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", string.Format("PageType.EditPageTypeWorkflow.HomepageRelationKeySelector.{0}Label", PageTypeHomepageRelation.OnlyHomePages))),
+               new KeyValuePair<string, string>(PageTypeHomepageRelation.OnlySubPages.ToPageTypeHomepageRelationString(), StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", string.Format("PageType.EditPageTypeWorkflow.HomepageRelationKeySelector.{0}Label", PageTypeHomepageRelation.OnlySubPages))),
             });
 
 
@@ -85,7 +85,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
                 ToList(f => new KeyValuePair<Guid, string>(f.Id, f.Title));
 
             List<KeyValuePair<Guid, string>> defaultPageTempatesOptions = new List<KeyValuePair<Guid, string>>();
-            defaultPageTempatesOptions.Add(new KeyValuePair<Guid, string>(Guid.Empty, StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTypeElementProvider", "PageType.EditPageTypeWorkflow.DefaultPageTemplateKeySelector.NoneSelectedLabel")));
+            defaultPageTempatesOptions.Add(new KeyValuePair<Guid, string>(Guid.Empty, StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", "PageType.EditPageTypeWorkflow.DefaultPageTemplateKeySelector.NoneSelectedLabel")));
             defaultPageTempatesOptions.AddRange(pageTemplates);
 
             this.Bindings.Add("DefaultTemplateOptions", defaultPageTempatesOptions);
@@ -165,7 +165,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
 
             if ((pageType.DefaultTemplateId != Guid.Empty) && (selectedPageTemplateIds.Count > 0) && (selectedPageTemplateIds.Contains(pageType.DefaultTemplateId) == false))
             {
-                this.ShowFieldMessage("DefaultTemplateSelected", "${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.ValidationError.DefaultTemplateNotInRestrictions}");
+                this.ShowFieldMessage("DefaultTemplateSelected", "${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.ValidationError.DefaultTemplateNotInRestrictions}");
                 SetSaveStatus(false);
                 e.Result = false;
                 return;
@@ -173,7 +173,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
 
             if ((pageType.HomepageRelation == PageTypeHomepageRelation.OnlyHomePages.ToPageTypeHomepageRelationString()) && (selectedPageTypeParentRestrictions.Count > 0))
             {
-                this.ShowFieldMessage("PageType.HomepageRelation", "${Composite.StandardPlugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.ValidationError.HomepageRelationConflictsWithParentRestrictions}");
+                this.ShowFieldMessage("PageType.HomepageRelation", "${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.ValidationError.HomepageRelationConflictsWithParentRestrictions}");
                 SetSaveStatus(false);
                 e.Result = false;
                 return;

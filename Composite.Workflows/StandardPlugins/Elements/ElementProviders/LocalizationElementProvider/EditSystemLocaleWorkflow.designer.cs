@@ -11,9 +11,9 @@ using System.Workflow.ComponentModel.Design;
 using System.Workflow.Runtime;
 using System.Workflow.Activities;
 using System.Workflow.Activities.Rules;
-using Composite.Workflow;
+using Composite.C1Console.Workflow;
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvider
 {
     partial class EditSystemLocaleWorkflow
     {
@@ -36,8 +36,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElemen
             this.setStateActivity3 = new System.Workflow.Activities.SetStateActivity();
             this.saveCodeActivity_Save = new System.Workflow.Activities.CodeActivity();
             this.ifElse_UrlMappingNameInUse = new System.Workflow.Activities.IfElseActivity();
-            this.saveHandleExternalEventActivity1 = new Composite.Workflow.Activities.SaveHandleExternalEventActivity();
-            this.editDocumentFormActivity = new Composite.Workflow.Activities.DocumentFormActivity();
+            this.saveHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.SaveHandleExternalEventActivity();
+            this.editDocumentFormActivity = new Composite.C1Console.Workflow.Activities.DocumentFormActivity();
             this.setStateActivity4 = new System.Workflow.Activities.SetStateActivity();
             this.initializeCodeActivity_Initialize = new System.Workflow.Activities.CodeActivity();
             this.saveStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
@@ -45,7 +45,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElemen
             this.editStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.initializeStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.setStateActivity1 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity1 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.saveStateActivity = new System.Workflow.Activities.StateActivity();
             this.editStateActivity = new System.Workflow.Activities.StateActivity();
             this.finalStateActivity = new System.Workflow.Activities.StateActivity();
@@ -99,7 +99,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElemen
             // saveHandleExternalEventActivity1
             // 
             this.saveHandleExternalEventActivity1.EventName = "Save";
-            this.saveHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.saveHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.saveHandleExternalEventActivity1.Name = "saveHandleExternalEventActivity1";
             // 
             // editDocumentFormActivity
@@ -150,7 +150,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElemen
             // cancelHandleExternalEventActivity1
             // 
             this.cancelHandleExternalEventActivity1.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity1.Name = "cancelHandleExternalEventActivity1";
             // 
             // saveStateActivity
@@ -196,14 +196,14 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElemen
 
         #endregion
 
-        private Composite.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
         private StateInitializationActivity initializeStateInitializationActivity;
         private SetStateActivity setStateActivity1;
         private StateActivity finalStateActivity;
         private StateActivity initializeStateActivity;
         private SetStateActivity setStateActivity3;
         private SetStateActivity setStateActivity2;
-        private Composite.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
         private SetStateActivity setStateActivity4;
         private CodeActivity initializeCodeActivity_Initialize;
         private StateInitializationActivity saveStateInitializationActivity;
@@ -212,7 +212,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElemen
         private StateActivity saveStateActivity;
         private StateActivity editStateActivity;
         private CodeActivity saveCodeActivity_Save;
-        private Composite.Workflow.Activities.DocumentFormActivity editDocumentFormActivity;
+        private Composite.C1Console.Workflow.Activities.DocumentFormActivity editDocumentFormActivity;
         private IfElseBranchActivity ifElseBranchActivity2;
         private IfElseBranchActivity ifElseBranchActivity1;
         private IfElseActivity ifElse_UrlMappingNameInUse;

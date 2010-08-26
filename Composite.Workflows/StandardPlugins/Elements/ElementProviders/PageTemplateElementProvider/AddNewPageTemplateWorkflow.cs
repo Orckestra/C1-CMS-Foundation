@@ -1,22 +1,22 @@
 using System;
 using System.Linq;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.IO;
-using Composite.Workflow;
-using Composite.Localization;
+using Composite.Core.IO;
+using Composite.C1Console.Workflow;
+using Composite.Core.Localization;
 using System.Workflow.Activities;
-using Composite.ResourceSystem;
+using Composite.Core.ResourceSystem;
 using System.Collections.Generic;
-using Composite.Renderings.Template;
+using Composite.Core.WebClient.Renderings.Template;
 using System.Xml.Linq;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddNewPageTemplateWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddNewPageTemplateWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         private static string _defaultTemplateMarkup = string.Format(
 @"<?xml version=""1.0"" encoding=""UTF-8""?>
@@ -30,7 +30,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElemen
     <body>
         <asp:form>
             <div style=""float:right; width:10em"">
-                <f:function name=""Composite.Pages.QuickSitemap"" />
+                <f:function name=""Composite.Data.QuickSitemap"" />
             </div>
             <h1><rendering:page.title /></h1>
             <h2><rendering:page.abstract /></h2>
@@ -63,7 +63,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElemen
                  orderby template.Title
                  select new KeyValuePair<Guid, string>(template.Id, template.Title)).ToList();
 
-            templatesOptions.Insert(0, new KeyValuePair<Guid, string>(Guid.Empty, StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTemplateElementProvider", "AddNewPageTemplateStep1.LabelCopyFromEmptyOption")));
+            templatesOptions.Insert(0, new KeyValuePair<Guid, string>(Guid.Empty, StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "AddNewPageTemplateStep1.LabelCopyFromEmptyOption")));
 
             this.Bindings.Add("CopyOfOptions", templatesOptions);
             this.Bindings.Add("CopyOfId", Guid.Empty);
@@ -118,7 +118,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageTemplateElemen
 
         private void showFieldErrorCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            ShowFieldMessage("NewPageTemplate.Title", StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTemplateElementProvider", "AddNewPageTemplateStep1.TitleInUseTitle"));
+            ShowFieldMessage("NewPageTemplate.Title", StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "AddNewPageTemplateStep1.TitleInUseTitle"));
         }
     }
 }

@@ -6,17 +6,17 @@ using System.Web;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
 using Composite.Data;
-using Composite.Forms;
+using Composite.C1Console.Forms;
 using Composite.Functions;
 using Composite.Functions.ManagedParameters;
-using Composite.Types;
-using Composite.WebClient;
-using Composite.WebClient.FunctionCallEditor;
-using Composite.WebClient.State;
-using Composite.Xml;
-using Composite.ResourceSystem;
-using Composite.WebClient.UiControlLib;
-using Composite.Extensions;
+using Composite.Core.Types;
+using Composite.Core.WebClient;
+using Composite.Core.WebClient.FunctionCallEditor;
+using Composite.Core.WebClient.State;
+using Composite.Core.Xml;
+using Composite.Core.ResourceSystem;
+using Composite.Core.WebClient.UiControlLib;
+using Composite.Core.Extensions;
 
 
 namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
@@ -526,7 +526,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
         //            }
         //            else
         //            {
-        //                string value = Composite.Types.ValueTypeConverter.Convert<string>(sourceParam.Value);
+        //                string value = Composite.Core.Types.ValueTypeConverter.Convert<string>(sourceParam.Value);
         //                result.Add(sourceParam.Key, value);
         //            }
         //        }

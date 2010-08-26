@@ -1,14 +1,14 @@
 using System;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Workflow;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Shutdown)]
-    public sealed partial class RemoveTypeFromWhiteListWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class RemoveTypeFromWhiteListWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public RemoveTypeFromWhiteListWorkflow()
         {

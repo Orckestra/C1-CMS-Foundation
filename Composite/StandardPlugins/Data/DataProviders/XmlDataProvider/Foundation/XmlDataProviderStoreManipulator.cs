@@ -7,10 +7,10 @@ using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Data.Plugins.DataProvider.CodeGeneration.PropertyInitializer;
-using Composite.IO;
+using Composite.Core.IO;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.Foundation
+namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 {
     internal static class XmlDataProviderStoreManipulator
     {

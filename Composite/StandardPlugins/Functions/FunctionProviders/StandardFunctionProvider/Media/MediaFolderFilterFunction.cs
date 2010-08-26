@@ -5,11 +5,11 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Extensions;
+using Composite.Core.Extensions;
 using Composite.Functions;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Media
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Media
 {
     internal sealed class MediaFolderFilterFunction<TMedia> : StandardFunctionBase where TMedia : IMediaFile
     {

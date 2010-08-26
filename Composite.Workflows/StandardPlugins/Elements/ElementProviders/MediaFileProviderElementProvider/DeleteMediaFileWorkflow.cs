@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Workflow.Activities;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper;
-using Composite.ResourceSystem;
-using Composite.Workflow;
+using Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper;
+using Composite.Core.ResourceSystem;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class DeleteMediaFileWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class DeleteMediaFileWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public DeleteMediaFileWorkflow()
         {

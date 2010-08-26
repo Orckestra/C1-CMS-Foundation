@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Web;
 
-using Composite.WebClient.Captcha;
+using Composite.Core.WebClient.Captcha;
 
 public class CaptchaImageCreator : IHttpHandler
 {

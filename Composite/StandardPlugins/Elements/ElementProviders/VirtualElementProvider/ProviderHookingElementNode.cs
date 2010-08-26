@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 {
     internal sealed class ProviderHookingElementNode : BaseElementNode
     {

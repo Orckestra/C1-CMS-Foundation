@@ -4,8 +4,8 @@
     <cms:binding name="NewMethodBasedFunction" type="Composite.Data.Types.IMethodBasedFunctionInfo, Composite" />
   </cms:bindings>
   <cms:layout iconhandle="functioncall">
-    <FieldGroup Label="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunction.LabelFieldGroup}">
-      <TextBox Label="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep1.LabelType}" Help="${Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep1.LabelTypeHelp}">
+    <FieldGroup Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunction.LabelFieldGroup}">
+      <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep1.LabelType}" Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep1.LabelTypeHelp}">
         <TextBox.Text>
           <cms:bind source="NewMethodBasedFunction.Type" />
         </TextBox.Text>

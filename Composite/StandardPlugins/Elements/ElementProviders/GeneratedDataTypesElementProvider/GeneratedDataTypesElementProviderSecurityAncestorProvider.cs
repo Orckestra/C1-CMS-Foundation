@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Composite.Security;
-using Composite.Types;
+using Composite.C1Console.Security;
+using Composite.Core.Types;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
     internal sealed class GeneratedDataTypesElementProviderSecurityAncestorProvider : ISecurityAncestorProvider
     {

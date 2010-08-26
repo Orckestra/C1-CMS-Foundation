@@ -9,25 +9,25 @@ using System.Xml;
 using System.Xml.Xsl;
 using System.IO;
 using Composite;
-using Composite.ConsoleEventSystem;
-using Composite.Extensions;
-using Composite.Forms.WebChannel;
-using Composite.Logging;
-using Composite.ResourceSystem;
-using Composite.StandardPlugins.Elements.ElementProviders.AllFunctionsElementProvider;
-using Composite.StandardPlugins.Forms.WebChannel.UiControlFactories;
-using Composite.WebClient;
-using Composite.WebClient.FunctionCallEditor;
-using Composite.WebClient.State;
-using Composite.Xml;
+using Composite.C1Console.Events;
+using Composite.Core.Extensions;
+using Composite.C1Console.Forms.WebChannel;
+using Composite.Core.Logging;
+using Composite.Core.ResourceSystem;
+using Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvider;
+using Composite.Plugins.Forms.WebChannel.UiControlFactories;
+using Composite.Core.WebClient;
+using Composite.Core.WebClient.FunctionCallEditor;
+using Composite.Core.WebClient.State;
+using Composite.Core.Xml;
 using Composite.Functions;
 using System.Collections.Generic;
-using Composite.Types;
+using Composite.Core.Types;
 
 /// <summary>
 /// Summary description for functioneditor
 /// </summary>
-public partial class functioneditor : Composite.WebClient.XhtmlPage
+public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 {
     private static TimeSpan SessionExprirationPeriod = TimeSpan.FromDays(4.0);
 

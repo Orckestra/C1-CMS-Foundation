@@ -6,11 +6,11 @@ using System.Linq;
 using System.Web.Services;
 using System.Web.Services.Protocols;
 
-using Composite.WebClient.FlowMediators;
-using Composite.WebClient.Services.TreeServiceObjects;
-using Composite.WebClient.Services.ConsoleMessageService;
-using Composite.ConsoleEventSystem;
-using Composite.Actions;
+using Composite.Core.WebClient.FlowMediators;
+using Composite.Core.WebClient.Services.TreeServiceObjects;
+using Composite.Core.WebClient.Services.ConsoleMessageService;
+using Composite.C1Console.Events;
+using Composite.C1Console.Actions;
 
 
 [WebService(Namespace = "http://www.composite.net/ns/management")]
@@ -40,7 +40,7 @@ public class FlowControllerServices  : System.Web.Services.WebService {
     {
         if (string.IsNullOrEmpty(consoleId)) throw new ArgumentNullException("consoleId");
 
-        Composite.Logging.LoggingService.LogVerbose("FlowControllerServices.asmx", "ReleaseAllConsoleResources for " + consoleId);
+        Composite.Core.Logging.LoggingService.LogVerbose("FlowControllerServices.asmx", "ReleaseAllConsoleResources for " + consoleId);
         ConsoleFacade.CloseConsole(consoleId);        
 
         return true;

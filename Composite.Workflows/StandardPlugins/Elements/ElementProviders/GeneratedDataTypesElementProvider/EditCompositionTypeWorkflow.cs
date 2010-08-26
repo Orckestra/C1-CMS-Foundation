@@ -1,23 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
 using Composite.Data.GeneratedTypes;
-using Composite.Logging;
-using Composite.Types;
-using Composite.Validation.ClientValidationRules;
-using Composite.Workflow;
+using Composite.Core.Logging;
+using Composite.Core.Types;
+using Composite.Data.Validation.ClientValidationRules;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class EditCompositionTypeWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class EditCompositionTypeWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         private string NewTypeNameBindingName { get { return "NewTypeName"; } }
         private string NewTypeNamespaceBindingName { get { return "NewTypeNamespace"; } }
@@ -112,7 +112,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                 {
                     this.ShowMessage(
                             DialogType.Warning,
-                            "${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditCompositionTypeWorkflow.ErrorTitle}",
+                            "${Composite.Plugins.GeneratedDataTypesElementProvider, EditCompositionTypeWorkflow.ErrorTitle}",
                             errorMessage
                         );
                     return;
@@ -134,7 +134,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
                 {
                     this.ShowMessage(
                             DialogType.Warning,
-                            "${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EditCompositionTypeWorkflow.ErrorTitle}",
+                            "${Composite.Plugins.GeneratedDataTypesElementProvider, EditCompositionTypeWorkflow.ErrorTitle}",
                             errorMessage
                         );
                     return;

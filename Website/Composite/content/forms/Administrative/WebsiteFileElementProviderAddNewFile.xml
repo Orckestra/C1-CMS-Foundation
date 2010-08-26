@@ -4,9 +4,9 @@
 		<cms:binding name="NewFileName" type="System.String" />
 	</cms:bindings>
 	<cms:layout>
-		<FieldGroup Label="${Composite.StandardPlugins.WebsiteFileElementProvider, AddNewFile.LabelFieldGroup}">
-			<TextBox Label="${Composite.StandardPlugins.WebsiteFileElementProvider, AddNewFile.Text}"
-					 Help="${Composite.StandardPlugins.WebsiteFileElementProvider, AddNewFile.Help}">
+		<FieldGroup Label="${Composite.Plugins.WebsiteFileElementProvider, AddNewFile.LabelFieldGroup}">
+			<TextBox Label="${Composite.Plugins.WebsiteFileElementProvider, AddNewFile.Text}"
+					 Help="${Composite.Plugins.WebsiteFileElementProvider, AddNewFile.Help}">
 				<TextBox.Text>
 					<cms:bind source="NewFileName" />
 				</TextBox.Text>

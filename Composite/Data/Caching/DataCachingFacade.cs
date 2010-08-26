@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using Composite.Collections.Generic;
+using Composite.Core.Collections.Generic;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
 using Composite.Data.Foundation.PluginFacades;
-using Composite.EventSystem;
-using Composite.GlobalSettings;
-using Composite.Types;
+using Composite.C1Console.Events;
+using Composite.Core.Configuration;
+using Composite.Core.Types;
 
 
 namespace Composite.Data.Caching

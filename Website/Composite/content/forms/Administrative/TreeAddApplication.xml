@@ -6,12 +6,12 @@
     <cms:binding name="SelectedPosition" type="System.String" />
     <cms:binding name="SelectablePositions" type="System.Collections.IEnumerable" />
   </cms:bindings>
-  <cms:layout label="${Composite.Trees, AddApplication.Layout.Label}" iconhandle="tree-add-application">
-    <FieldGroup Label="${Composite.Trees, AddApplication.FieldGroup.Label}">
+  <cms:layout label="${Composite.C1Console.Trees, AddApplication.Layout.Label}" iconhandle="tree-add-application">
+    <FieldGroup Label="${Composite.C1Console.Trees, AddApplication.FieldGroup.Label}">
 
       <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"
-									 Label="${Composite.Trees, AddApplication.TreeIdSelector.Label}"
-									 Help="${Composite.Trees, AddApplication.TreeIdSelector.Help}">
+									 Label="${Composite.C1Console.Trees, AddApplication.TreeIdSelector.Label}"
+									 Help="${Composite.C1Console.Trees, AddApplication.TreeIdSelector.Help}">
         <KeySelector.Options>
           <cms:read source="SelectableTreeIds"/>
         </KeySelector.Options>
@@ -22,8 +22,8 @@
 
 
       <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"
-									 Label="${Composite.Trees, AddApplication.PositionSelector.Label}"
-									 Help="${Composite.Trees, AddApplication.PositionSelector.Help}">
+									 Label="${Composite.C1Console.Trees, AddApplication.PositionSelector.Label}"
+									 Help="${Composite.C1Console.Trees, AddApplication.PositionSelector.Help}">
         <KeySelector.Options>
           <cms:read source="SelectablePositions"/>
         </KeySelector.Options>

@@ -6,7 +6,7 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation.PluginFacades;
 using Composite.Data.Plugins.DataProvider.Runtime;
 using Composite.Data.Types;
-using Composite.Logging;
+using Composite.Core.Logging;
 
 
 

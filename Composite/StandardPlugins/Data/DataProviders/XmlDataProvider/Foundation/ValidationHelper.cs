@@ -4,11 +4,11 @@ using System.Reflection;
 using Composite.Data;
 using Composite.Data.Caching;
 using Composite.Data.DynamicTypes;
-using Composite.Logging;
-using Composite.Extensions;
-using Composite.Types;
+using Composite.Core.Logging;
+using Composite.Core.Extensions;
+using Composite.Core.Types;
 
-namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.Foundation
+namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 {
     internal static class ValidationHelper
     {

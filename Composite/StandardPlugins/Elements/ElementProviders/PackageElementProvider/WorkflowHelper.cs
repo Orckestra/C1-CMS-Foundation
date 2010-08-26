@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using Composite.PackageSystem;
+using Composite.Core.PackageSystem;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 {
     /// <summary>    
     /// </summary>

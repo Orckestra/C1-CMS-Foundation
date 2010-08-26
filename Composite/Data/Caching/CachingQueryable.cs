@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Composite.Data.Caching.Foundation;
 using System.Reflection;
-using Composite.Linq;
+using Composite.Core.Linq;
 
 
 namespace Composite.Data.Caching

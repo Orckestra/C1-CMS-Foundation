@@ -11,9 +11,9 @@ using System.Workflow.ComponentModel.Design;
 using System.Workflow.Runtime;
 using System.Workflow.Activities;
 using System.Workflow.Activities.Rules;
-using Composite.Workflow;
+using Composite.C1Console.Workflow;
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 {
     partial class ViewInstalledPackageInfoWorkflow
     {
@@ -30,8 +30,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
             this.setStateActivity4 = new System.Workflow.Activities.SetStateActivity();
             this.uninstallCodeActivity = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity3 = new System.Workflow.Activities.SetStateActivity();
-            this.customEvent01HandleExternalEventActivity1 = new Composite.Workflow.Activities.CustomEvent01HandleExternalEventActivity();
-            this.viewDocumentFormActivity = new Composite.Workflow.Activities.DocumentFormActivity();
+            this.customEvent01HandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CustomEvent01HandleExternalEventActivity();
+            this.viewDocumentFormActivity = new Composite.C1Console.Workflow.Activities.DocumentFormActivity();
             this.viewStateCodeActivity_Initialize = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity2 = new System.Workflow.Activities.SetStateActivity();
             this.uninstallStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
@@ -39,7 +39,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
             this.viewStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.initializeStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.setStateActivity1 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity1 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.uninstallStateActivity = new System.Workflow.Activities.StateActivity();
             this.viewStateActivity = new System.Workflow.Activities.StateActivity();
             this.finalStateActivity = new System.Workflow.Activities.StateActivity();
@@ -64,7 +64,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
             // customEvent01HandleExternalEventActivity1
             // 
             this.customEvent01HandleExternalEventActivity1.EventName = "CustomEvent01";
-            this.customEvent01HandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.customEvent01HandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.customEvent01HandleExternalEventActivity1.Name = "customEvent01HandleExternalEventActivity1";
             // 
             // viewDocumentFormActivity
@@ -115,7 +115,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
             // cancelHandleExternalEventActivity1
             // 
             this.cancelHandleExternalEventActivity1.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity1.Name = "cancelHandleExternalEventActivity1";
             // 
             // uninstallStateActivity
@@ -161,19 +161,19 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
 
         #endregion
 
-        private Composite.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
         private StateInitializationActivity initializeStateInitializationActivity;
         private SetStateActivity setStateActivity1;
         private StateActivity finalStateActivity;
         private StateActivity initializeStateActivity;
-        private Composite.Workflow.Activities.DocumentFormActivity viewDocumentFormActivity;
+        private Composite.C1Console.Workflow.Activities.DocumentFormActivity viewDocumentFormActivity;
         private SetStateActivity setStateActivity2;
         private StateInitializationActivity viewStateInitializationActivity;
         private StateActivity viewStateActivity;
         private CodeActivity viewStateCodeActivity_Initialize;
         private EventDrivenActivity eventDrivenActivity_Uninstall;
         private SetStateActivity setStateActivity3;
-        private Composite.Workflow.Activities.CustomEvent01HandleExternalEventActivity customEvent01HandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.CustomEvent01HandleExternalEventActivity customEvent01HandleExternalEventActivity1;
         private StateInitializationActivity uninstallStateInitializationActivity;
         private StateActivity uninstallStateActivity;
         private CodeActivity uninstallCodeActivity;

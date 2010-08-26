@@ -1,7 +1,7 @@
 ﻿using System;
 using Composite.Data.Hierarchy;
 using Composite.Data.Hierarchy.DataAncestorProviders;
-using Composite.Validation.Validators;
+using Composite.Data.Validation.Validators;
 using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 
 

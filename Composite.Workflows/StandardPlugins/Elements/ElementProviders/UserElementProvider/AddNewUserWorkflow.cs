@@ -5,24 +5,24 @@ using System.Linq;
 using System.Workflow.Runtime;
 using System.Workflow.Activities;
 
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.ResourceSystem;
-using Composite.Security.Cryptography;
-using Composite.Types;
-using Composite.Users;
-using Composite.Validation;
-using Composite.Workflow;
-using Composite.ConsoleEventSystem;
+using Composite.Core.ResourceSystem;
+using Composite.C1Console.Security.Cryptography;
+using Composite.Core.Types;
+using Composite.C1Console.Users;
+using Composite.Data.Validation;
+using Composite.C1Console.Workflow;
+using Composite.C1Console.Events;
 
 using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddNewUserWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddNewUserWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         private static string NewUserBindingName { get { return "NewUser"; } }
 

@@ -2,20 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using Composite.Configuration;
+using Composite.Core.Configuration;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Data.Plugins.DataProvider.CodeGeneration;
-using Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider.CodeGeneration;
-using Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider.Foundation;
-using Composite.Types;
+using Composite.Plugins.Data.DataProviders.MemoryDataProvider.CodeGeneration;
+using Composite.Plugins.Data.DataProviders.MemoryDataProvider.Foundation;
+using Composite.Core.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider
+namespace Composite.Plugins.Data.DataProviders.MemoryDataProvider
 {
     [ConfigurationElementType(typeof(MemoryDataProviderData))]
     internal sealed class MemoryDataProvider : IGeneratedTypesDataProvider

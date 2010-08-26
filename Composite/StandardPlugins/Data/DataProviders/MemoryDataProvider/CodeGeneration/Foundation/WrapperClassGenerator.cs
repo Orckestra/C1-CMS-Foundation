@@ -5,13 +5,13 @@ using System.Linq;
 using System.Reflection;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider.CodeGeneration;
-using Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider.Foundation;
-using Composite.Types;
+using Composite.Plugins.Data.DataProviders.MemoryDataProvider.Foundation;
+using Composite.Core.Types;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Data.ProcessControlled;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider.CodeGeneration.Foundation
+namespace Composite.Plugins.Data.DataProviders.MemoryDataProvider.CodeGeneration.Foundation
 {
     internal sealed class WrapperClassGenerator
     {

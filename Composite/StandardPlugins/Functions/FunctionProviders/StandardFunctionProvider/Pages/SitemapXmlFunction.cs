@@ -4,19 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using Composite.Functions;
-using Composite.Security;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.ResourceSystem;
-using Composite.Renderings.Page;
+using Composite.C1Console.Security;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Core.ResourceSystem;
+using Composite.Core.WebClient.Renderings.Page;
 using Composite.Data;
 using Composite.Data.Types;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Pages
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Pages
 {
     internal sealed class SitemapXmlFunction : StandardFunctionBase
     {
         public SitemapXmlFunction(EntityTokenFactory entityTokenFactory)
-            : base("SitemapXml", "Composite.Pages", typeof(IEnumerable<XElement>), entityTokenFactory)
+            : base("SitemapXml", "Composite.Data", typeof(IEnumerable<XElement>), entityTokenFactory)
         {
         }
 

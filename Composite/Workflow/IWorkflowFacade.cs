@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Workflow.Activities;
 using System.Workflow.Runtime;
-using Composite.Actions;
-using Composite.Security;
-using Composite.Workflow.Foundation;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Security;
+using Composite.C1Console.Workflow.Foundation;
+using Composite.C1Console.Events;
 
 
-namespace Composite.Workflow
+namespace Composite.C1Console.Workflow
 {
 	internal interface IWorkflowFacade
 	{

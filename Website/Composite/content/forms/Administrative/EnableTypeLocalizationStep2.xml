@@ -4,9 +4,9 @@
     <cms:binding name="CultureName" type="System.String" optional="true" />
     <cms:binding name="CultureNameList" type="System.Collections.IEnumerable" optional="true" />
   </cms:bindings>
-	<cms:layout iconhandle="generated-type-localize" label="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EnableTypeLocalizationWorkflow.Dialog.Label}">
+	<cms:layout iconhandle="generated-type-localize" label="${Composite.Plugins.GeneratedDataTypesElementProvider, EnableTypeLocalizationWorkflow.Dialog.Label}">
     <Heading
-			Title="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EnableTypeLocalizationWorkflow.Step2.Title}"
-			Description="${Composite.StandardPlugins.GeneratedDataTypesElementProvider, EnableTypeLocalizationWorkflow.Step2.Description}" />    
+			Title="${Composite.Plugins.GeneratedDataTypesElementProvider, EnableTypeLocalizationWorkflow.Step2.Title}"
+			Description="${Composite.Plugins.GeneratedDataTypesElementProvider, EnableTypeLocalizationWorkflow.Step2.Description}" />    
   </cms:layout>
 </cms:formdefinition>

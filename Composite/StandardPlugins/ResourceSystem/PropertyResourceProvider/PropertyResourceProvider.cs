@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
-using Composite.ResourceSystem.Plugins.ResourceProvider;
-using Composite.Types;
+using Composite.Core.ResourceSystem.Plugins.ResourceProvider;
+using Composite.Core.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 
-namespace Composite.StandardPlugins.ResourceSystem.PropertyResourceProvider
+namespace Composite.Plugins.ResourceSystem.PropertyResourceProvider
 {
     [ConfigurationElementType(typeof(NonConfigurableResourceProvider))]
     internal sealed class PropertyResourceProvider : IStringResourceProvider

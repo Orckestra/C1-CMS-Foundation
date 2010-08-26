@@ -7,21 +7,21 @@ using System.Workflow.Activities;
 using System.Workflow.ComponentModel;
 using System.Workflow.ComponentModel.Compiler;
 using System.Workflow.Runtime;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
-using Composite.Elements;
-using Composite.Forms.Flows;
-using Composite.Logging;
-using Composite.ResourceSystem;
-using Composite.Security;
-using Composite.Tasks;
-using Composite.Validation.ClientValidationRules;
-using Composite.Workflow.Activities.Foundation;
-using Composite.Trees;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Forms.Flows;
+using Composite.Core.Logging;
+using Composite.Core.ResourceSystem;
+using Composite.C1Console.Security;
+using Composite.C1Console.Tasks;
+using Composite.Data.Validation.ClientValidationRules;
+using Composite.C1Console.Workflow.Activities.Foundation;
+using Composite.C1Console.Trees;
 
 
-namespace Composite.Workflow.Activities
+namespace Composite.C1Console.Workflow.Activities
 {
     /// <summary>    
     /// </summary>
@@ -378,7 +378,7 @@ namespace Composite.Workflow.Activities
 
             this.ShowMessage(DialogType.Error, "An error occured", string.Format("Sorry, but an error has occured, preventing the opperation from completing as expected. The error has been documented in details so a technican may follow up on this issue.\n\nThe error message is: {0}", ex.Message));
 
-            Composite.Logging.LoggingService.LogCritical(this.GetType().Name, ex);
+            Composite.Core.Logging.LoggingService.LogCritical(this.GetType().Name, ex);
 
             FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
             IManagementConsoleMessageService service = container.GetService<IManagementConsoleMessageService>();

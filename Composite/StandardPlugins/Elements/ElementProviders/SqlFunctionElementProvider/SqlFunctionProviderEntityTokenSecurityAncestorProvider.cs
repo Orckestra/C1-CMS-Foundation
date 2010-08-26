@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Composite.Collections;
+using Composite.Core.Collections;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Elements;
-using Composite.Extensions;
-using Composite.Security;
+using Composite.C1Console.Elements;
+using Composite.Core.Extensions;
+using Composite.C1Console.Security;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
 {
     internal sealed class SqlFunctionProviderEntityTokenSecurityAncestorProvider : ISecurityAncestorProvider
     {

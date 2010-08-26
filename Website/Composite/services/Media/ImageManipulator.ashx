@@ -9,18 +9,18 @@ using System.Drawing.Imaging;
 using System.Drawing;
 using System.Workflow.Runtime;
 
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.IO;
-using Composite.Workflow;
-using Composite.WebClient;
-using Composite.Tasks;
-using Composite.Security;
-using Composite.StringExtensions;
-using Composite.Logging;
-using Composite.ConsoleEventSystem;
-using Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider;
+using Composite.Core.IO;
+using Composite.C1Console.Workflow;
+using Composite.Core.WebClient;
+using Composite.C1Console.Tasks;
+using Composite.C1Console.Security;
+using Composite.Core.Extensions;
+using Composite.Core.Logging;
+using Composite.C1Console.Events;
+using Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider;
 
 
 public class ImageManipulator : IHttpHandler
@@ -461,7 +461,7 @@ public class ImageManipulator : IHttpHandler
         {
         }
 
-        public void ShowLogEntry(Type sender, Composite.Logging.LogLevel logLevel, string message)
+        public void ShowLogEntry(Type sender, Composite.Core.Logging.LogLevel logLevel, string message)
         {
         }
 

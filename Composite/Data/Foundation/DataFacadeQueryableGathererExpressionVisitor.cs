@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Composite.Data.Foundation
 {
-    internal sealed class DataFacadeQueryableGathererExpressionVisitor : Composite.Linq.Disassembled.ExpressionVisitor
+    internal sealed class DataFacadeQueryableGathererExpressionVisitor : Composite.Core.Linq.Disassembled.ExpressionVisitor
     {
         private List<IDataFacadeQueryable> _multibleSourceQueryables = new List<IDataFacadeQueryable>();
         private int _sourceCount = 0;

@@ -3,7 +3,7 @@ using System;
 using System.Web;
 
 
-namespace Composite.StandardPlugins.Forms.WebChannel.Foundation
+namespace Composite.Plugins.Forms.WebChannel.Foundation
 {
     internal static class UserControlUtils
     {

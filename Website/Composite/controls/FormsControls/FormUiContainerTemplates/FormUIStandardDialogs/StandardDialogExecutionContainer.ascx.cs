@@ -1,13 +1,13 @@
 using System.Web.UI;
 
-using Composite.StandardPlugins.Forms.WebChannel.UiContainerFactories;
+using Composite.Plugins.Forms.WebChannel.UiContainerFactories;
 using System.Web.UI.WebControls;
 using System;
 using System.Web;
 using System.Collections.Generic;
-using Composite.WebClient.UiControlLib;
-using Composite.Logging;
-using Composite.ResourceSystem;
+using Composite.Core.WebClient.UiControlLib;
+using Composite.Core.Logging;
+using Composite.Core.ResourceSystem;
 
 
 public partial class Composite_Forms_StandardDataDialogExecutionContainer : TemplatedUiContainerBase

@@ -4,7 +4,7 @@ using Composite.Data.Streams;
 using Composite.Data.Plugins.DataProvider.Streams;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.FileSystemDataProvider.Foundation
+namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider.Foundation
 {
     /// <summary>    
     /// </summary>

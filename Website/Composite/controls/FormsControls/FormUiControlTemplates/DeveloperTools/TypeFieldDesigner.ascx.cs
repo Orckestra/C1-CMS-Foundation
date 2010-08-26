@@ -9,16 +9,16 @@ using System.Xml.Linq;
 
 using Composite.Data;
 using Composite.Data.DynamicTypes;
-using Composite.Extensions;
-using Composite.Forms;
-using Composite.StandardPlugins.Forms.WebChannel.UiControlFactories;
+using Composite.Core.Extensions;
+using Composite.C1Console.Forms;
+using Composite.Plugins.Forms.WebChannel.UiControlFactories;
 using Composite.Functions;
-using Composite.Types;
-using Composite.Xml;
-using Composite.ResourceSystem;
-using Composite.Validation;
-using Composite.Logging;
-using Composite.WebClient.UiControlLib;
+using Composite.Core.Types;
+using Composite.Core.Xml;
+using Composite.Core.ResourceSystem;
+using Composite.Data.Validation;
+using Composite.Core.Logging;
+using Composite.Core.WebClient.UiControlLib;
 
 
 namespace CompositeTypeFieldDesigner
@@ -858,7 +858,7 @@ namespace CompositeTypeFieldDesigner
                     else
                     {
 
-                        string value = Composite.Types.ValueTypeConverter.Convert<string>(sourceParam.Value);
+                        string value = Composite.Core.Types.ValueTypeConverter.Convert<string>(sourceParam.Value);
                         result.Add(sourceParam.Key, value);
                     }
                 }

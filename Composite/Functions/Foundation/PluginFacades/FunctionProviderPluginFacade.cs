@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using Composite.Collections.Generic;
-using Composite.EventSystem;
+using Composite.Core.Collections.Generic;
+using Composite.C1Console.Events;
 using Composite.Functions.Plugins.FunctionProvider;
 using Composite.Functions.Plugins.FunctionProvider.Runtime;
 

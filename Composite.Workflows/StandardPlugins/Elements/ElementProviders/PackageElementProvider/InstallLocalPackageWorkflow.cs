@@ -1,18 +1,17 @@
 using System;
 using System.Collections.Generic;
-using Composite.Actions;
-using Composite.PackageSystem;
-using Composite.Forms.CoreUiControls;
-using Composite.Workflow;
-using Composite.ResourceSystem;
-using Composite.ConsoleEventSystem;
-using Composite.EventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
+using Composite.C1Console.Forms.CoreUiControls;
+using Composite.Core.PackageSystem;
+using Composite.Core.ResourceSystem;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class InstallLocalPackageWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class InstallLocalPackageWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public InstallLocalPackageWorkflow()
         {
@@ -133,7 +132,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PackageElementProv
         private void showErrorCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
             List<string> rowHeader = new List<string>();
-            rowHeader.Add(StringResourceSystemFacade.ParseString("${Composite.StandardPlugins.PackageElementProvider, InstallLocalAddOn.ShowError.MessageTitle}"));
+            rowHeader.Add(StringResourceSystemFacade.ParseString("${Composite.Plugins.PackageElementProvider, InstallLocalAddOn.ShowError.MessageTitle}"));
 
             this.UpdateBinding("ErrorHeader", rowHeader);
         }

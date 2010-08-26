@@ -1,6 +1,6 @@
-﻿<%@ Control Language="C#" Inherits="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.DataReferenceSelectorTemplateUserControlBase"  %>
-<%@ Register TagPrefix="ui" Namespace="Composite.WebClient.UiControlLib" Assembly="Composite" %>
-<%@ Import Namespace="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories" %>
+﻿<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.DataReferenceSelectorTemplateUserControlBase"  %>
+<%@ Register TagPrefix="ui" Namespace="Composite.Core.WebClient.UiControlLib" Assembly="Composite" %>
+<%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
 <%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="Composite.Data" %>

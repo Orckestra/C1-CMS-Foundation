@@ -4,14 +4,14 @@ using Composite.Functions;
 
 using System.Collections.Generic;
 using System.Data.SqlTypes;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.Xml;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Core.Xml;
 using System.Xml.Linq;
 using System.Xml;
 using System.Xml.XPath;
 using System.IO;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Xslt.Extensions
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Xslt.Extensions
 {
     internal sealed class MarkupParserXsltExtensionsFunction : StandardFunctionBase
     {

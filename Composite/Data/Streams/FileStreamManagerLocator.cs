@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Composite.Collections.Generic;
-using Composite.EventSystem;
-using Composite.Logging;
+using Composite.Core.Collections.Generic;
+using Composite.C1Console.Events;
+using Composite.Core.Logging;
 
 
 namespace Composite.Data.Streams

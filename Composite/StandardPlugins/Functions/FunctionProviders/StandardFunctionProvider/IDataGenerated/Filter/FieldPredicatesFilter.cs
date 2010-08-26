@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 using Composite.Functions;
 using Composite.Data;
 using System.Reflection;
 using System.Linq.Expressions;
-using Composite.Linq;
+using Composite.Core.Linq;
 
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated.Filter
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated.Filter
 {
     internal sealed class FieldPredicatesFilter<T> : StandardFunctionBase
         where T : class, IData

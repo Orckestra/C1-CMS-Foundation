@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq.Expressions;
 using System.Transactions;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Types;
-using Composite.Linq;
-using Composite.ResourceSystem;
-using Composite.Transactions;
-using Composite.Types;
-using Composite.Workflow;
+using Composite.Core.Linq;
+using Composite.Core.ResourceSystem;
+using Composite.Data.Transactions;
+using Composite.Core.Types;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageTypeElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class DeletePageTypeMetaDataFieldWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class DeletePageTypeMetaDataFieldWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public DeletePageTypeMetaDataFieldWorkflow()
         {
@@ -31,7 +31,7 @@ namespace Composite.Workflows.StandardPlugins.Elements.ElementProviders.PageType
         {
             IPageTypeMetaDataTypeLink pageTypeMetaDataTypeLink = this.GetDataItemFromEntityToken<IPageTypeMetaDataTypeLink>();
 
-            this.Bindings.Add("MessageText", string.Format(StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageTypeElementProvider", "PageType.DeletePageTypeMetaDataFieldWorkflow.Confirm.Layout.Message"), pageTypeMetaDataTypeLink.Name));
+            this.Bindings.Add("MessageText", string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", "PageType.DeletePageTypeMetaDataFieldWorkflow.Confirm.Layout.Message"), pageTypeMetaDataTypeLink.Name));
         }
 
 

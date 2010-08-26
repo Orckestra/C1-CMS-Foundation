@@ -2,9 +2,9 @@
 using System.Globalization;
 using System.Linq;
 using Composite.Data.Foundation;
-using Composite.Instrumentation;
-using Composite.Logging;
-using Composite.Types;
+using Composite.Core.Instrumentation;
+using Composite.Core.Logging;
+using Composite.Core.Types;
 
 
 namespace Composite.Data.DynamicTypes

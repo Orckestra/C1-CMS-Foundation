@@ -1,5 +1,5 @@
 ﻿using System;
-using Composite.EventSystem;
+using Composite.C1Console.Events;
 
 
 namespace Composite.Data

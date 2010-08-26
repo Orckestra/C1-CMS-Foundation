@@ -4,10 +4,10 @@
     <cms:binding name="ExistingHostNames" type="System.Collections.Generic.List`1[[System.String]]" />
     <cms:binding name="HostNamesToRemove" type="System.Collections.Generic.List`1[[System.String]]" />
   </cms:bindings>
-  <cms:layout iconhandle="page-manage-host-names" label="${Composite.StandardPlugins.PageElementProvider,ManageHostNames.Remove.DialogLabel}">
+  <cms:layout iconhandle="page-manage-host-names" label="${Composite.Plugins.PageElementProvider,ManageHostNames.Remove.DialogLabel}">
     <PlaceHolder>
-      <FieldGroup Label="${Composite.StandardPlugins.PageElementProvider,ManageHostNames.Remove.FieldGroupLabel}">
-        <MultiKeySelector Label="${Composite.StandardPlugins.PageElementProvider,ManageHostNames.Remove.MultiSelectorLabel}" Help="${Composite.StandardPlugins.PageElementProvider,ManageHostNames.Remove.MultiSelectorHelp}">
+      <FieldGroup Label="${Composite.Plugins.PageElementProvider,ManageHostNames.Remove.FieldGroupLabel}">
+        <MultiKeySelector Label="${Composite.Plugins.PageElementProvider,ManageHostNames.Remove.MultiSelectorLabel}" Help="${Composite.Plugins.PageElementProvider,ManageHostNames.Remove.MultiSelectorHelp}">
           <MultiKeySelector.Options>
             <cms:read source="ExistingHostNames" />
           </MultiKeySelector.Options>

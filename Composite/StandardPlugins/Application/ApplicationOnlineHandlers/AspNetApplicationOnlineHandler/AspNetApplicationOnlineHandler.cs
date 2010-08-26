@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
-using Composite.Application;
-using Composite.Application.Plugins.ApplicationOnlineHandler;
-using Composite.IO;
+using Composite.Core.Application;
+using Composite.Core.Application.Plugins.ApplicationOnlineHandler;
+using Composite.Core.IO;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Application.ApplicationOnlineHandlers.AspNetApplicationOnlineHandler
+namespace Composite.Plugins.Application.ApplicationOnlineHandlers.AspNetApplicationOnlineHandler
 {
     [ConfigurationElementType(typeof(AspNetApplicationOnlineHandlerData))]
     internal sealed class AspNetApplicationOnlineHandler : IApplicationOnlineHandler

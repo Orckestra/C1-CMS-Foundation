@@ -9,7 +9,7 @@ using Microsoft.Practices.EnterpriseLibrary.Logging.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Logging.TraceListeners;
 
 
-namespace Composite.StandardPlugins.Logging.LogTraceListeners.TcpLogTraceListener
+namespace Composite.Plugins.Logging.LogTraceListeners.TcpLogTraceListener
 {
     [ConfigurationElementType(typeof(TcpLogTraceListenerData))]
     internal sealed class TcpLogTraceListener : CustomTraceListener

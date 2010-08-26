@@ -8,14 +8,14 @@ using Composite.Data;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Types;
-using Composite.Extensions;
-using Composite.IO;
+using Composite.Core.Extensions;
+using Composite.Core.IO;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.MediaFileProvider
+namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 {
     /// <summary>    
     /// </summary>

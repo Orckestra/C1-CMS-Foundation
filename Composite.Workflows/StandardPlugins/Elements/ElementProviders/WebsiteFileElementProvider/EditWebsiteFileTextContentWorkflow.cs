@@ -1,12 +1,12 @@
 using System;
-using Composite.Workflow;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class EditWebsiteFileTextContentWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class EditWebsiteFileTextContentWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public EditWebsiteFileTextContentWorkflow()
         {

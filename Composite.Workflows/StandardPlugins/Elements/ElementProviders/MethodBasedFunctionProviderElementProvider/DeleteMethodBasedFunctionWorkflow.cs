@@ -1,19 +1,19 @@
 using System;
 using System.Linq;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.ResourceSystem;
-using Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
-using Composite.Workflow;
+using Composite.Core.ResourceSystem;
+using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class DeleteMethodBasedFunctionWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class DeleteMethodBasedFunctionWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public DeleteMethodBasedFunctionWorkflow()
         {
@@ -59,8 +59,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctio
             {
                 this.ShowMessage(
                         DialogType.Error,
-                        StringResourceSystemFacade.GetString("Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider", "CascadeDeleteErrorTitle"),
-                        StringResourceSystemFacade.GetString("Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider", "CascadeDeleteErrorMessage")
+                        StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "CascadeDeleteErrorTitle"),
+                        StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "CascadeDeleteErrorMessage")
                     );
             }
         }

@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using Composite.Collections.Generic;
-using Composite.ConfigurationSystem;
-using Composite.EventSystem;
-using Composite.Logging;
-using Composite.Types;
+using Composite.Core.Collections.Generic;
+using Composite.Core.Configuration;
+using Composite.C1Console.Events;
+using Composite.Core.Logging;
+using Composite.Core.Types;
 using Composite.Data.Types;
 using Composite.Data.ProcessControlled;
 

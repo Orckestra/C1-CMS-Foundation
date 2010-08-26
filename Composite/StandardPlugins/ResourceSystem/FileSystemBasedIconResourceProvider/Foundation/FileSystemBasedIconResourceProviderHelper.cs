@@ -5,12 +5,12 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using Composite.IO;
-using Composite.ResourceSystem;
+using Composite.Core.IO;
+using Composite.Core.ResourceSystem;
 using ICSharpCode.SharpZipLib.Zip;
 
 
-namespace Composite.StandardPlugins.ResourceSystem.FileSystemBasedIconResourceProvider.Foundation
+namespace Composite.Plugins.ResourceSystem.FileSystemBasedIconResourceProvider.Foundation
 {
     internal sealed class FileSystemBasedIconResourceProviderHelper
     {

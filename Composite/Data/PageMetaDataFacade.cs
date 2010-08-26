@@ -10,10 +10,10 @@ using Composite.Data.Foundation;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
-using Composite.Linq;
-using Composite.Transactions;
-using Composite.Types;
-using Composite.Users;
+using Composite.Core.Linq;
+using Composite.Data.Transactions;
+using Composite.Core.Types;
+using Composite.C1Console.Users;
 
 
 namespace Composite.Data
@@ -248,7 +248,7 @@ namespace Composite.Data
 
             while (definingPageId != pageId)
             {
-                Guid parentPageId = PageManager.GetParentId(pageId);
+                Guid parentPageId = Composite.Data.Types.PageManager.GetParentId(pageId);
 
                 if ((definingPageId != Guid.Empty) && (parentPageId == Guid.Empty)) return -1; // Page is not a (sub)child of _pageId                
 
@@ -402,9 +402,9 @@ namespace Composite.Data
             {
                 pages = new List<IPage>();
 
-                foreach (Guid pageId in PageManager.GetChildrenIDs(Guid.Empty))
-                { 
-                    pages.Add(PageManager.GetPageById(pageId));
+                foreach (Guid pageId in Composite.Data.Types.PageManager.GetChildrenIDs(Guid.Empty))
+                {
+                    pages.Add(Composite.Data.Types.PageManager.GetPageById(pageId));
                 }
                                         
                 startLevel--; // We have just taken one level
@@ -905,7 +905,7 @@ namespace Composite.Data
         {
             Guid pageId = GetMetaDataReferencedPageId(metaData);
 
-            return PageManager.GetPageById(pageId);
+            return Composite.Data.Types.PageManager.GetPageById(pageId);
         }
 
 

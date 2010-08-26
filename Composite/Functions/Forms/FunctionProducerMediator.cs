@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
-using Composite.Forms.Plugins.ProducerMediator;
-using Composite.Forms;
+using Composite.C1Console.Forms.Plugins.ProducerMediator;
+using Composite.C1Console.Forms;
 
 
 namespace Composite.Functions.Forms

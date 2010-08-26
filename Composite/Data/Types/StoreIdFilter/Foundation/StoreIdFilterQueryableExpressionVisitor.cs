@@ -1,14 +1,14 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Composite.Linq.Disassembled;
+using Composite.Core.Linq.Disassembled;
 using System;
 
 
 namespace Composite.Data.Types.StoreIdFilter.Foundation
 {
     //MRJ: 4.0 Upgrade
-    internal sealed class StoreIdFilterQueryableExpressionVisitor : Composite.Linq.Disassembled.ExpressionVisitor
+    internal sealed class StoreIdFilterQueryableExpressionVisitor : Composite.Core.Linq.Disassembled.ExpressionVisitor
     {
         private static readonly MemberInfo _mediaFileStoreIdMemberInfo = typeof(IMediaFile).GetMember("StoreId")[0];
         private static readonly MemberInfo _mediaFileFOlderStoreIdMemberInfo = typeof(IMediaFileFolder).GetMember("StoreId")[0];

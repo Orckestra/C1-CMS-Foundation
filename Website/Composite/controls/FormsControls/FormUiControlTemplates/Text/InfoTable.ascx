@@ -1,7 +1,7 @@
-<%@ Control Language="C#" Inherits="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.InfoTableTemplateUserControlBase"  %>
+<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.InfoTableTemplateUserControlBase"  %>
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Xml.Linq" %>
-<%@ Import Namespace="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories" %>
+<%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
 <%@ Register Src="../../Helpers/StyleLoaderControl.ascx" TagPrefix="control" TagName="StyleLoader" %>
 
 <control:StyleLoader adminRelativePath="controls/FormsControls/FormUiControlTemplates/Text/InfoTable.css" runat="server" />

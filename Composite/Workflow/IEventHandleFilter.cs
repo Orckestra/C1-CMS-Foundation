@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Composite.Forms.Flows;
+using Composite.C1Console.Forms.Flows;
 
 
-namespace Composite.Workflow
+namespace Composite.C1Console.Workflow
 {
     /// <summary>    
     /// </summary>

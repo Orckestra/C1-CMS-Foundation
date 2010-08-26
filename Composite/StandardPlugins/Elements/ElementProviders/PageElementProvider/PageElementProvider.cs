@@ -2,33 +2,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper;
+using Composite.C1Console.Elements.Plugins.ElementProvider;
+using Composite.C1Console.Events;
+using Composite.Core.Extensions;
+using Composite.Core.Linq;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
-using Composite.Elements;
-using Composite.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper;
-using Composite.Elements.Plugins.ElementProvider;
-using Composite.Extensions;
-using Composite.Linq;
-using Composite.Pages;
-using Composite.Parallelization;
-using Composite.ResourceSystem;
-using Composite.ResourceSystem.Icons;
-using Composite.Security;
-using Composite.Transactions;
-using Composite.Users;
-using Composite.WebClient;
-using Composite.Workflow;
+using Composite.Core.Parallelization;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.C1Console.Security;
+using Composite.Data.Transactions;
+using Composite.C1Console.Users;
+using Composite.Core.WebClient;
+using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 using PageManager = Composite.Data.Types.PageManager;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
     [ActionTokenProvider(GenericPublishProcessControllerActionTypeNames.UndoUnpublishedChanges, typeof(PageElementProviderActionTokenProvider))]
     [ConfigurationElementType(typeof(PageElementProviderData))]
@@ -131,20 +130,20 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
             {
                 VisualData = new ElementVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.RootLabel"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.RootLabelToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.RootLabel"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.RootLabelToolTip"),
                     HasChildren = pages != 0,
                     Icon = PageElementProvider.RootClosed,
                     OpenedIcon = PageElementProvider.RootOpen
                 }
             };
 
-            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider.AddNewPageWorkflow"), AddPermissionTypes) { DoIgnoreEntityTokenLocking = true }))
+            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.AddNewPageWorkflow"), AddPermissionTypes) { DoIgnoreEntityTokenLocking = true }))
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.AddPageAtRoot"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.AddPageAtRootToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.AddPageAtRoot"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.AddPageAtRootToolTip"),
                     Icon = PageElementProvider.AddPage,
                     Disabled = false,
                     ActionLocation = new ActionLocation
@@ -164,8 +163,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
                 {
                     //Label = "List unpublished Pages and Folder Data",
                     //ToolTip = "Get an overview of pages and page folder data that haven't been published yet.",
-                    Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.ViewUnpublishedItems"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.ViewUnpublishedItemsToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.ViewUnpublishedItems"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.ViewUnpublishedItemsToolTip"),
                     Icon = PageElementProvider.ListUnpublishedItems,
                     Disabled = false,
                     ActionLocation = new ActionLocation
@@ -179,7 +178,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
             });
 
 
-            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AddMetaDataWorkflow"), AddAssociatedTypePermissionTypes) { DoIgnoreEntityTokenLocking = true }))
+            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AddMetaDataWorkflow"), AddAssociatedTypePermissionTypes) { DoIgnoreEntityTokenLocking = true }))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -198,7 +197,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
             });
 
 
-            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Workflows.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.EditMetaDataWorkflow"), EditAssociatedTypePermissionTypes)))
+            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.EditMetaDataWorkflow"), EditAssociatedTypePermissionTypes)))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -217,7 +216,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
             });
 
 
-            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.DeleteMetaDataWorkflow"), RemoveAssociatedTypePermissionTypes)))
+            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.DeleteMetaDataWorkflow"), RemoveAssociatedTypePermissionTypes)))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -243,8 +242,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
             //    {
             //        VisualData = new ActionVisualizedData
             //        {
-            //            Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.DisplayLocalOrderingLabel"),
-            //            ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.DisplayLocalOrderingToolTip"),
+            //            Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.DisplayLocalOrderingLabel"),
+            //            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.DisplayLocalOrderingToolTip"),
             //            Icon = CommonElementIcons.Nodes,
             //            Disabled = false,
             //            ActionLocation = new ActionLocation
@@ -612,20 +611,20 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
 
 
-            string editPageLabel = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.EditPage");
-            string editPageToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.EditPageToolTip");
-            string localizePageLabel = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.LocalizePage");
-            string localizePageToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.LocalizePageToolTip");
-            string addNewPageLabel = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.AddSubPage");
-            string addNewPageToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.AddSubPageToolTip");
-            string deletePageLabel = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.Delete");
-            string deletePageToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.DeleteToolTip");
-            string viewPublicPageLabel = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.ViewPublicPage");
-            string viewPublicPageToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.ViewPublicToolTip");
-            string viewDraftPageLabel = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.ViewDraftPage");
-            string viewDraftPageToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.ViewDraftToolTip");
-            //string displayLocalOrderingLabel = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.DisplayLocalOrderingLabel");
-            //string displayLocalOrderingToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.DisplayLocalOrderingToolTip");
+            string editPageLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.EditPage");
+            string editPageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.EditPageToolTip");
+            string localizePageLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.LocalizePage");
+            string localizePageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.LocalizePageToolTip");
+            string addNewPageLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.AddSubPage");
+            string addNewPageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.AddSubPageToolTip");
+            string deletePageLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.Delete");
+            string deletePageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.DeleteToolTip");
+            string viewPublicPageLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.ViewPublicPage");
+            string viewPublicPageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.ViewPublicToolTip");
+            string viewDraftPageLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.ViewDraftPage");
+            string viewDraftPageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.ViewDraftToolTip");
+            //string displayLocalOrderingLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.DisplayLocalOrderingLabel");
+            //string displayLocalOrderingToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.DisplayLocalOrderingToolTip");
 
             string urlMappingName = null;
             if (UserSettings.ForeignLocaleCultureInfo != null)
@@ -661,12 +660,12 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
                     if (page.GetParentId() == Guid.Empty)
                     {
                         PermissionType[] managerPermissionTypes = new PermissionType[] { PermissionType.Administrate };
-                        element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider.ManageHostNameBindingsWorkflow"), managerPermissionTypes)))
+                        element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.ManageHostNameBindingsWorkflow"), managerPermissionTypes)))
                         {
                             VisualData = new ActionVisualizedData
                             {
-                                Label = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.ManageHostNames"),
-                                ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.ManageHostNamesToolTip"),
+                                Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.ManageHostNames"),
+                                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.ManageHostNamesToolTip"),
                                 Icon = PageElementProvider.ManageHostNames,
                                 Disabled = false,
                                 ActionLocation = new ActionLocation
@@ -680,7 +679,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
                         });
                     }
 
-                    element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider.EditPageWorkflow"), EditPermissionTypes)))
+                    element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.EditPageWorkflow"), EditPermissionTypes)))
                     {
                         VisualData = new ActionVisualizedData
                         {
@@ -698,7 +697,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
                         }
                     });
 
-                    element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider.AddNewPageWorkflow"), AddPermissionTypes) { DoIgnoreEntityTokenLocking = true }))
+                    element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.AddNewPageWorkflow"), AddPermissionTypes) { DoIgnoreEntityTokenLocking = true }))
                     {
                         VisualData = new ActionVisualizedData
                         {
@@ -716,7 +715,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
                         }
                     });
 
-                    element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider.DeletePageWorkflow"), DeletePermissionTypes)))
+                    element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.DeletePageWorkflow"), DeletePermissionTypes)))
                     {
                         VisualData = new ActionVisualizedData
                         {
@@ -822,7 +821,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
                     if (addAction == true)
                     {
-                        element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider.LocalizePageWorkflow"), LocalizePermissionTypes)))
+                        element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.LocalizePageWorkflow"), LocalizePermissionTypes)))
                         {
                             VisualData = new ActionVisualizedData
                             {
@@ -934,7 +933,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
                 visualizedElement.Icon = PageElementProvider.PageDisabled;
                 visualizedElement.OpenedIcon = PageElementProvider.PageDisabled;
                 visualizedElement.IsDisabled = true;
-                visualizedElement.ToolTip = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.DisabledPage");
+                visualizedElement.ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.DisabledPage");
                 visualizedElement.Label = string.Format("{0} ({1})", visualizedElement.Label, urlMappingName);
             }
 
@@ -954,7 +953,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
 
 
-    internal sealed class PreviewActionExecutor : Composite.Actions.IActionExecutor
+    internal sealed class PreviewActionExecutor : Composite.C1Console.Actions.IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
@@ -975,8 +974,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
                         var managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
 
                         managementConsoleMessageService.ShowMessage(DialogType.Message,
-                            StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "Preview.PublishedPage.NotPublishedTitle"),
-                            StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "Preview.PublishedPage.NotPublishedMessage"));
+                            StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "Preview.PublishedPage.NotPublishedTitle"),
+                            StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "Preview.PublishedPage.NotPublishedMessage"));
 
                         return null;
                     }

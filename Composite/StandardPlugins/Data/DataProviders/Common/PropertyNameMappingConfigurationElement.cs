@@ -1,7 +1,7 @@
 using System.Configuration;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.Common
+namespace Composite.Plugins.Data.DataProviders.Common
 {
     /// <summary>    
     /// </summary>

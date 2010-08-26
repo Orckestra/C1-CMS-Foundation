@@ -3,12 +3,12 @@ using System.Xml;
 using System.Workflow.Activities;
 using System.Collections.Generic;
 
-using Composite.Actions;
-using Composite.Forms.Flows;
-using Composite.Validation.ClientValidationRules;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Forms.Flows;
+using Composite.Data.Validation.ClientValidationRules;
 
 
-namespace Composite.Workflow
+namespace Composite.C1Console.Workflow
 {
     [ExternalDataExchange()]
     internal interface IFormsWorkflowActivityService

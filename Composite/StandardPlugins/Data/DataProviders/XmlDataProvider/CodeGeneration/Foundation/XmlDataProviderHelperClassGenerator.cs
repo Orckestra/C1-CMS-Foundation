@@ -6,10 +6,10 @@ using System.Reflection;
 using System.Xml.Linq;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider.CodeGeneration;
-using Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation.Common;
+using Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation.Common;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation
+namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation
 {
     internal sealed class XmlDataProviderHelperClassGenerator
     {

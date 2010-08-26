@@ -36,9 +36,9 @@
         <Type Name="StorageEvents" Analyze="True" AnalyzeAllChildren="True" />
        </Types>
       </Namespace>
-      <Namespace Name="Composite.Implementation" Analyze="True" AnalyzeAllChildren="True" />
-      <Namespace Name="Composite.Implementation.Pages" Analyze="True" AnalyzeAllChildren="True" />
-      <Namespace Name="Composite.Pages" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="Composite.Core.Implementation" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="Composite.Core.Implementation.Pages" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="Composite.Data" Analyze="True" AnalyzeAllChildren="True" />
      </Namespaces>
      <Resources AnalyzeAllChildren="True" />
     </Module>

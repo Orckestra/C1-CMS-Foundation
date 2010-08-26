@@ -4,16 +4,16 @@ using System.Linq;
 using System.Workflow.Activities;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.ResourceSystem;
-using Composite.Workflow;
-using Composite.Localization;
+using Composite.Core.ResourceSystem;
+using Composite.C1Console.Workflow;
+using Composite.Core.Localization;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class EditSystemLocaleWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class EditSystemLocaleWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public EditSystemLocaleWorkflow()
         {
@@ -55,7 +55,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.LocalizationElemen
 
         private void editCodeActivity_ShowBaloon_ExecuteCode(object sender, EventArgs e)
         {
-            this.ShowFieldMessage("SystemActiveLocale.UrlMappingName", StringResourceSystemFacade.GetString("Composite.StandardPlugins.LocalizationElementProvider", "EditSystemLocaleWorkflow.UrlMappingName.InUseMessage"));
+            this.ShowFieldMessage("SystemActiveLocale.UrlMappingName", StringResourceSystemFacade.GetString("Composite.Plugins.LocalizationElementProvider", "EditSystemLocaleWorkflow.UrlMappingName.InUseMessage"));
         }
     }
 }

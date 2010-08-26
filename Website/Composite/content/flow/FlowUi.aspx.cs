@@ -2,11 +2,11 @@ using System;
 using System.Web.UI;
 
 using Composite;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
-using Composite.Logging;
-using Composite.WebClient;
-using Composite.WebClient.FlowMediators;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
+using Composite.Core.Logging;
+using Composite.Core.WebClient;
+using Composite.Core.WebClient.FlowMediators;
 
 
 public partial class Composite_Management_FlowUi : FlowPage
@@ -51,7 +51,7 @@ public partial class Composite_Management_FlowUi : FlowPage
         }
         catch (Exception ex)
         {
-            IConsoleMessageQueueItem errorLogEntry = new LogEntryMessageQueueItem { Sender = typeof(System.Web.UI.Page), Level = Composite.Logging.LogLevel.Error, Message = ex.Message };
+            IConsoleMessageQueueItem errorLogEntry = new LogEntryMessageQueueItem { Sender = typeof(System.Web.UI.Page), Level = Composite.Core.Logging.LogLevel.Error, Message = ex.Message };
             ConsoleMessageQueueFacade.Enqueue(errorLogEntry, _consoleId);
             throw;
         }
@@ -60,8 +60,8 @@ public partial class Composite_Management_FlowUi : FlowPage
 
     void Composite_Management_FlowUi_Error(object sender, EventArgs e)
     {
-        Composite.WebClient.ErrorServices.DocumentAdministrativeError(Server.GetLastError().GetBaseException());
-        Composite.WebClient.ErrorServices.RedirectUserToErrorPage(_uiContainerName, Server.GetLastError().GetBaseException());
+        Composite.Core.WebClient.ErrorServices.DocumentAdministrativeError(Server.GetLastError().GetBaseException());
+        Composite.Core.WebClient.ErrorServices.RedirectUserToErrorPage(_uiContainerName, Server.GetLastError().GetBaseException());
     }
 
 

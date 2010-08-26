@@ -6,10 +6,10 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
-using Composite.Xml;
+using Composite.Core.Xml;
 using System.Collections.Generic;
-using Composite.Logging;
-using Composite.StandardPlugins.Forms.WebChannel.UiControlFactories;
+using Composite.Core.Logging;
+using Composite.Plugins.Forms.WebChannel.UiControlFactories;
 
 namespace CompositeMultiContentXhtmlEditor
 {
@@ -61,7 +61,7 @@ namespace CompositeMultiContentXhtmlEditor
             {
                 if (handledIds.Contains(placeHolderId) == false)
                 {
-                    TextBox contentTextBox = new Composite.WebClient.UiControlLib.TextBox();
+                    TextBox contentTextBox = new Composite.Core.WebClient.UiControlLib.TextBox();
                     contentTextBox.TextMode = TextBoxMode.MultiLine;
                     contentTextBox.ID = placeHolderId;
                     contentTextBox.Attributes.Add("placeholderid", placeHolderId);

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Composite.Security;
-using Composite.Security.SecurityAncestorProviders;
+using Composite.C1Console.Security;
+using Composite.C1Console.Security.SecurityAncestorProviders;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
 {
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
     internal sealed class UserGroupElementProviderRootEntityToken : EntityToken

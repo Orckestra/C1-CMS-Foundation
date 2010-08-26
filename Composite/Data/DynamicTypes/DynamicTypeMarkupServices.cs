@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Composite.Types;
-using Composite.Xml;
+using Composite.Core.Types;
+using Composite.Core.Xml;
 
 
 namespace Composite.Data.DynamicTypes

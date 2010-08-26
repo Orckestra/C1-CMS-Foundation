@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 
-using Composite.Actions;
-using Composite.Security;
-using Composite.StandardPlugins.Elements.ElementProviders.VirtualElementProvider;
-using Composite.ConsoleEventSystem;
-using Composite.WebClient;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Security;
+using Composite.Plugins.Elements.ElementProviders.VirtualElementProvider;
+using Composite.C1Console.Events;
+using Composite.Core.WebClient;
 using System.Web;
-using Composite.ResourceSystem;
+using Composite.Core.ResourceSystem;
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
     [ActionExecutor(typeof(ViewUnpublishedItemsActionExecutor))]
     internal sealed class ViewUnpublishedItemsActionToken : ActionToken
@@ -39,15 +39,15 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
 
 
-    internal sealed class ViewUnpublishedItemsActionExecutor : Composite.Actions.IActionExecutor
+    internal sealed class ViewUnpublishedItemsActionExecutor : Composite.C1Console.Actions.IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
             //string documentTitle = "Unpublished Pages and Page Folder Data";
             //string description = "The list below display pages and page data which are currently being edited or are ready to be approved / published.";
-            string documentTitle = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.ViewUnpublishedItems-document-title");
-            string description = StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "PageElementProvider.ViewUnpublishedItems-document-description");
-            string emptyLabel = StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "ViewUnpublishedItems-document-empty-label");
+            string documentTitle = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.ViewUnpublishedItems-document-title");
+            string description = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.ViewUnpublishedItems-document-description");
+            string emptyLabel = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "ViewUnpublishedItems-document-empty-label");
             string url = string.Format("{0}?showpagedata=true&title={1}&description={2}&emptyLabel={3}",
                 UrlUtils.ResolveAdminUrl(string.Format("content/views/publishworkflowstatus/ViewUnpublishedItems.aspx")),
                 HttpUtility.UrlEncodeUnicode(documentTitle),

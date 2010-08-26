@@ -4,16 +4,16 @@ using System.Linq;
 using System.Collections;
 using Composite.Data.Caching;
 using Composite.Data.DynamicTypes;
-using Composite.StringExtensions;
-using Composite.Types;
-using Composite.Renderings.Page;
+using Composite.Core.Extensions;
+using Composite.Core.Types;
+using Composite.Core.WebClient.Renderings.Page;
 using Composite.Data;
 using System.Reflection;
 
 
-using TypeInfo = Composite.Types.Pair<System.Type, Composite.Data.DynamicTypes.DataTypeDescriptor>;
+using TypeInfo = Composite.Core.Types.Pair<System.Type, Composite.Data.DynamicTypes.DataTypeDescriptor>;
 
-namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.DataReference
+namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.DataReference
 {
 	internal static class GetOptionsCommon
 	{

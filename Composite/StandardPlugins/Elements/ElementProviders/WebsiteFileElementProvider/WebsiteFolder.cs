@@ -1,7 +1,7 @@
 ﻿using System.IO;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.WebsiteFileElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
 	internal sealed class WebsiteFolder : WebsiteEntity
 	{

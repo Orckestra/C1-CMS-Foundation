@@ -4,9 +4,9 @@ using System;
 using System.Web;
 using System.Globalization;
 using Composite.Data;
-using Composite.Renderings;
-using Composite.Renderings.Page;
-using Composite.WebClient;
+using Composite.Core.WebClient.Renderings;
+using Composite.Core.WebClient.Renderings.Page;
+using Composite.Core.WebClient;
 
 
 public class FileNotFoundHandler : IHttpHandler

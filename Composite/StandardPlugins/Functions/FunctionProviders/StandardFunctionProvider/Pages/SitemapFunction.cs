@@ -7,13 +7,13 @@ using System.Xml.Linq;
 using System.Xml.Xsl;
 using System.Xml;
 using System.IO;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.Security;
-using Composite.Renderings.Page;
-using Composite.Logging;
-using Composite.Xml;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.C1Console.Security;
+using Composite.Core.WebClient.Renderings.Page;
+using Composite.Core.Logging;
+using Composite.Core.Xml;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Pages
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Pages
 {
 	internal sealed class SitemapFunction : StandardFunctionBase
     {
@@ -122,7 +122,7 @@ namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunction
         private EntityTokenFactory _entityTokenFactory;
 
         public SitemapFunction(EntityTokenFactory entityTokenFactory)
-            : base("QuickSitemap", "Composite.Pages", typeof(XhtmlDocument), entityTokenFactory)
+            : base("QuickSitemap", "Composite.Data", typeof(XhtmlDocument), entityTokenFactory)
         {
             _entityTokenFactory = entityTokenFactory;
         }

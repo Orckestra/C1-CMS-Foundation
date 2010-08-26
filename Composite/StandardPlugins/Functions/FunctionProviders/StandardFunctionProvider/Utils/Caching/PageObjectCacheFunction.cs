@@ -4,13 +4,13 @@ using System.Linq;
 using System.Web;
 using System.Xml.Linq;
 using Composite.Functions;
-using Composite.Linq;
-using Composite.Renderings.Page;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Core.Linq;
+using Composite.Core.WebClient.Renderings.Page;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 using Composite.Data;
 using System.Threading;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Caching
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Caching
 {
     internal sealed class PageObjectCacheFunction : DowncastableStandardFunctionBase
     {

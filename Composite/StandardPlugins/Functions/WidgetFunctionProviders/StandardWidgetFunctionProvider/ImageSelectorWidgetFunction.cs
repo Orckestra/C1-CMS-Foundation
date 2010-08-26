@@ -4,17 +4,17 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using Composite.Data.DynamicTypes;
 using Composite.Functions;
-using Composite.IO;
-using Composite.Logging;
-using Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider;
-using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
+using Composite.Core.IO;
+using Composite.Core.Logging;
+using Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
 using Composite.Data;
-using Composite.StringExtensions;
+using Composite.Core.Extensions;
 using Composite.Data.Types;
-using Composite.Types;
+using Composite.Core.Types;
 
 
-namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider
+namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider
 {
 	internal sealed class ImageSelectorWidgetFunction : CompositeWidgetFunctionBase
     {

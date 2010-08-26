@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Composite.Elements;
-using Composite.Logging;
+using Composite.C1Console.Elements;
+using Composite.Core.Logging;
 
 
 namespace Composite.Data.ProcessControlled.ProcessControllers.GenericVersionProcessController

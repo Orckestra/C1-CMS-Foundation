@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Workflow.Activities;
 using System.Workflow.Runtime;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Extensions;
-using Composite.ResourceSystem;
-using Composite.Validation.ClientValidationRules;
-using Composite.Workflow;
-using Composite.Workflow.Activities;
+using Composite.Core.Extensions;
+using Composite.Core.ResourceSystem;
+using Composite.Data.Validation.ClientValidationRules;
+using Composite.C1Console.Workflow;
+using Composite.C1Console.Workflow.Activities;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddNewMediaFolderWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddNewMediaFolderWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public AddNewMediaFolderWorkflow()
         {

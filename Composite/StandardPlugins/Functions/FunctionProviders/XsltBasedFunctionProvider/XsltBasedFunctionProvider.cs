@@ -6,24 +6,24 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Xsl;
-using Composite.Collections.Generic;
+using Composite.Core.Collections.Generic;
 using Composite.Data;
 using Composite.Data.Streams;
 using Composite.Data.Types;
 using Composite.Functions;
 using Composite.Functions.ManagedParameters;
 using Composite.Functions.Plugins.FunctionProvider;
-using Composite.IO;
-using Composite.Localization;
-using Composite.Logging;
-using Composite.Security;
-using Composite.StringExtensions;
-using Composite.Xml;
+using Composite.Core.IO;
+using Composite.Core.Localization;
+using Composite.Core.Logging;
+using Composite.C1Console.Security;
+using Composite.Core.Extensions;
+using Composite.Core.Xml;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.XsltBasedFunctionProvider
+namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvider
 {
     /// <summary>    
     /// </summary>

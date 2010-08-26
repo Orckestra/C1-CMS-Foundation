@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Composite.Forms.Plugins.UiControlFactory;
+using Composite.C1Console.Forms.Plugins.UiControlFactory;
 using System.Configuration;
 
-namespace Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.Base
+namespace Composite.Plugins.Forms.WebChannel.UiControlFactories.Base
 {
     internal interface ITemplatedUiControlFactoryData
     {

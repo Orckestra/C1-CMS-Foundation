@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Transactions;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
-using Composite.Linq;
-using Composite.Logging;
-using Composite.Transactions;
-using Composite.Users;
-using Composite.Security;
+using Composite.Core.Linq;
+using Composite.Core.Logging;
+using Composite.Data.Transactions;
+using Composite.C1Console.Users;
+using Composite.C1Console.Security;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
-    public sealed partial class LocalizePageWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class LocalizePageWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public LocalizePageWorkflow()
         {

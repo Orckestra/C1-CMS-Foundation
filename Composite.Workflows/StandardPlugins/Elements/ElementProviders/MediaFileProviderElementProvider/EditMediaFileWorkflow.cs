@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Linq;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Workflow;
+using Composite.C1Console.Workflow;
 using System.Workflow.Activities;
 using System.Collections.Generic;
-using Composite.Validation.ClientValidationRules;
-using Composite.Validation;
+using Composite.Data.Validation.ClientValidationRules;
+using Composite.Data.Validation;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.MediaFileProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class EditMediaFileWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class EditMediaFileWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public EditMediaFileWorkflow()
         {

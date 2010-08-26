@@ -2,9 +2,9 @@
 using Composite.Functions;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Date
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Date
 {
     internal sealed class NowFunction : StandardFunctionBase
     {

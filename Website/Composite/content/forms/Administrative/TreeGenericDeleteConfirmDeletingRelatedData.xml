@@ -3,9 +3,9 @@
   <cms:bindings>
     <cms:binding name="ReferencedData" type="System.String" optional="true"/>
   </cms:bindings>
-  <cms:layout label="${Composite.Trees, TreeGenericDeleteConfirmDeletingRelatedData.LabelFieldGroup}">
+  <cms:layout label="${Composite.C1Console.Trees, TreeGenericDeleteConfirmDeletingRelatedData.LabelFieldGroup}">
     <PlaceHolder>
-      <Text Text="${Composite.Trees, TreeGenericDeleteConfirmDeletingRelatedData.ConfirmationText}" />
+      <Text Text="${Composite.C1Console.Trees, TreeGenericDeleteConfirmDeletingRelatedData.ConfirmationText}" />
       <Text Text="
 						
 " />

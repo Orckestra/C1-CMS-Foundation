@@ -7,7 +7,7 @@ using Composite.Data;
 using Composite.Data.Plugins.DataProvider.CodeGeneration;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation
+namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation
 {
     internal sealed class XmlDataIdClassGenerator
     {

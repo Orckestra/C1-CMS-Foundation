@@ -11,19 +11,19 @@ using System.Workflow.ComponentModel.Design;
 using System.Workflow.Runtime;
 using System.Workflow.Activities;
 using System.Workflow.Activities.Rules;
-using Composite.Workflow;
+using Composite.C1Console.Workflow;
 using Composite.Data.Types;
 using Composite.Data;
-using Composite.ResourceSystem;
-using Composite.Actions;
-using Composite.Validation;
+using Composite.Core.ResourceSystem;
+using Composite.C1Console.Actions;
+using Composite.Data.Validation;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddNewUserGroupWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddNewUserGroupWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public AddNewUserGroupWorkflow()
         {
@@ -60,7 +60,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserGroupElementPr
         {
             this.ShowFieldMessage(
                 "NewUserGroup.Name",
-                StringResourceSystemFacade.GetString("Composite.StandardPlugins.UserGroupElementProvider", "AddNewUserGroup.AddNewUserGroupStep1.UserGroupNameAlreadyExists"));
+                StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", "AddNewUserGroup.AddNewUserGroupStep1.UserGroupNameAlreadyExists"));
         }
 
 

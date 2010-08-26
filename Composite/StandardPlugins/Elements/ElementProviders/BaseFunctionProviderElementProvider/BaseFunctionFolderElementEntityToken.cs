@@ -3,10 +3,10 @@ using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 
-using Composite.Security;
+using Composite.C1Console.Security;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider
 {
     /// <summary>    
     /// </summary>

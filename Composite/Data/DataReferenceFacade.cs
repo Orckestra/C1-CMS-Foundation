@@ -7,8 +7,8 @@ using System.Reflection;
 using System.Text;
 using Composite.Data.DynamicTypes.Foundation;
 using Composite.Data.Foundation;
-using Composite.StringExtensions;
-using Composite.Types;
+using Composite.Core.Extensions;
+using Composite.Core.Types;
 
 
 namespace Composite.Data

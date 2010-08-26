@@ -1,20 +1,20 @@
 ﻿using System.IO;
 using System.Web.UI;
-using Composite.Forms;
-using Composite.Forms.DataServices.UiControls;
-using Composite.Forms.Plugins.UiControlFactory;
-using Composite.Forms.WebChannel;
+using Composite.C1Console.Forms;
+using Composite.C1Console.Forms.DataServices.UiControls;
+using Composite.C1Console.Forms.Plugins.UiControlFactory;
+using Composite.C1Console.Forms.WebChannel;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Forms.WebChannel.UiControlFactories
+namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 {
     /// <summary>    
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    [Composite.Forms.ControlValueProperty("Bindings")]
+    [Composite.C1Console.Forms.ControlValueProperty("Bindings")]
     public class WebEmbeddedFormUiControl : EmbeddedFormUiControl, IWebUiControl
     {
         internal WebEmbeddedFormUiControl()

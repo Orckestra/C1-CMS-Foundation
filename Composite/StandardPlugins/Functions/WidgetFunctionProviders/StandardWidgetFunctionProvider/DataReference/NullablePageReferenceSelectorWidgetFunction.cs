@@ -2,12 +2,12 @@
 using System.Xml.Linq;
 using Composite.Data;
 using Composite.Functions;
-using Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
-using Composite.Types;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
+using Composite.Core.Types;
 using Composite.Data.Types;
 
 
-namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.DataReference
+namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.DataReference
 {
     internal sealed class NullablePageReferenceSelectorWidgetFunction : CompositeWidgetFunctionBase
     {

@@ -10,10 +10,10 @@ using System.Xml.Linq;
 using System.Reflection;
 
 using Composite.Data;
-using Composite.Types;
+using Composite.Core.Types;
 using Composite.Data.DynamicTypes;
-using Composite.Security;
-using Composite.Linq;
+using Composite.C1Console.Security;
+using Composite.Core.Linq;
 
 
 [WebService(Namespace = "http://www.composite.net/ns/test")]
@@ -132,7 +132,7 @@ public class DataFacadeService : WebService
 
             if (value != null)
             {
-                string serializedValue = Composite.Types.ValueTypeConverter.Convert<string>(value);
+                string serializedValue = Composite.Core.Types.ValueTypeConverter.Convert<string>(value);
 
                 element.Add(new XAttribute(dataFieldDescriptor.Name, serializedValue));
             }

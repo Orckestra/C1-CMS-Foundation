@@ -2,23 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.GeneratedTypes;
-using Composite.Extensions;
-using Composite.ResourceSystem;
-using Composite.Transactions;
-using Composite.Types;
-using Composite.Workflow;
+using Composite.Core.Extensions;
+using Composite.Core.ResourceSystem;
+using Composite.Data.Transactions;
+using Composite.Core.Types;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class DeleteAggregationTypeWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class DeleteAggregationTypeWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public DeleteAggregationTypeWorkflow()
         {
@@ -64,7 +64,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
 
         private static string GetLocalizedText(string key)
         {
-            return StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", key);
+            return StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", key);
         }
 
         private void initializeStateCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
@@ -73,7 +73,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
 
             string interfaceName = StringExtensionMethods.CreateNamespace(dataTypeDescriptor.Namespace, dataTypeDescriptor.Name, '.');
 
-            interfaceName = string.Format("{0} {1}?", StringResourceSystemFacade.GetString("Composite.StandardPlugins.GeneratedDataTypesElementProvider", "DeleteAggregationTypeWorkflow.Text"), interfaceName);
+            interfaceName = string.Format("{0} {1}?", StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DeleteAggregationTypeWorkflow.Text"), interfaceName);
 
             this.Bindings.Add("InterfaceName", interfaceName);
         }
@@ -88,7 +88,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.GeneratedDataTypes
             if (!GeneratedTypesFacade.CanDeleteType(dataTypeDescriptor, out errorMessage))
             {
                 this.ShowMessage(DialogType.Warning,
-                                "${Composite.StandardPlugins.GeneratedDataTypesElementProvider, DeleteCompositionTypeWorkflow.ErrorTitle}",
+                                "${Composite.Plugins.GeneratedDataTypesElementProvider, DeleteCompositionTypeWorkflow.ErrorTitle}",
                                 errorMessage);
                 return;
             }           

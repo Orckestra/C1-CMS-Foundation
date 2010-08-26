@@ -7,11 +7,11 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Workflow.ComponentModel;
 using System.Workflow.ComponentModel.Serialization;
 using System.Workflow.Runtime.Hosting;
-using Composite.Types;
-using Composite.Logging;
+using Composite.Core.Types;
+using Composite.Core.Logging;
 
 
-namespace Composite.Workflow
+namespace Composite.C1Console.Workflow
 {
     internal class FileWorkFlowPersisetenceService : WorkflowPersistenceService
     {

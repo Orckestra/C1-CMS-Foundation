@@ -3,11 +3,11 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 
 using Composite.Functions;
-using Composite.Xml;
-using Composite.Security;
+using Composite.Core.Xml;
+using Composite.C1Console.Security;
 
 
-namespace Composite.StandardPlugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation
+namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation
 {
     internal abstract class CompositeWidgetFunctionBase : IWidgetFunction
 	{

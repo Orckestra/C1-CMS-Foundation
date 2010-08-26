@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.Linq;
-using Composite.Collections.Generic;
-using Composite.ConfigurationSystem;
+using Composite.Core.Collections.Generic;
+using Composite.Core.Configuration;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Data.Plugins.DataProvider.Runtime;
-using Composite.EventSystem;
-using Composite.Instrumentation;
-using Composite.Logging;
+using Composite.C1Console.Events;
+using Composite.Core.Instrumentation;
+using Composite.Core.Logging;
 
 
 namespace Composite.Data.Foundation.PluginFacades
@@ -485,7 +485,7 @@ namespace Composite.Data.Foundation.PluginFacades
 
         private static IDataProvider BuildFallbackUnittestDataProvider()
         {
-            Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider.MemoryDataProvider provider = new Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider.MemoryDataProvider();
+            Composite.Plugins.Data.DataProviders.MemoryDataProvider.MemoryDataProvider provider = new Composite.Plugins.Data.DataProviders.MemoryDataProvider.MemoryDataProvider();
 
             foreach (Type interfaceType in DataStoreExistenceVerifier.InterfaceTypes)
             {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Composite.Data.DynamicTypes;
-using Composite.Instrumentation;
-using Composite.Logging;
+using Composite.Core.Instrumentation;
+using Composite.Core.Logging;
 
 
 namespace Composite.Data.Foundation

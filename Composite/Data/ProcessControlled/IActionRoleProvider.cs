@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Composite.Security;
+using Composite.C1Console.Security;
 
 
 namespace Composite.Data.ProcessControlled

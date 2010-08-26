@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Composite.Collections.Generic;
+using Composite.Core.Collections.Generic;
 using Composite.Functions.Foundation.PluginFacades.Runtime;
 using Composite.Functions.Plugins.XslExtensionsProvider;
-using Composite.Types;
+using Composite.Core.Types;
 
 namespace Composite.Functions.Foundation.PluginFacades
 {

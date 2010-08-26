@@ -8,17 +8,17 @@ using System.Web.Hosting;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Reflection;
-using Composite.Types;
+using Composite.Core.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
-using Composite.Application;
-using Composite.Application.Plugins.ApplicationStartupHandler;
-using Composite.Extensions;
-using Composite.GlobalSettings;
-using Composite.IO;
-using Composite.Logging;
+using Composite.Core.Application;
+using Composite.Core.Application.Plugins.ApplicationStartupHandler;
+using Composite.Core.Extensions;
+using Composite.Core.Configuration;
+using Composite.Core.IO;
+using Composite.Core.Logging;
 
 
-namespace Composite.Application
+namespace Composite.Core.Application
 {
     /// <summary>
     /// Use the attribute on a static class with the following two static methods:
@@ -34,7 +34,7 @@ namespace Composite.Application
 }
 
 
-namespace Composite.StandardPlugins.Application.ApplicationStartupHandlers.AttributeBasedApplicationStartupHandler
+namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBasedApplicationStartupHandler
 {
     /// <summary>    
     /// </summary>
@@ -319,7 +319,7 @@ namespace Composite.StandardPlugins.Application.ApplicationStartupHandlers.Attri
 
         private static XmlSerializer GetSerializer()
         {
-            // NOTE: Performance critical to have serializer inside Composite.XmlSerializers.dll
+            // NOTE: Performance critical to have serializer inside Composite.Core.XmlSerializers.dll
             if (_xmlSerializer == null)
             {
                 _xmlSerializer = new XmlSerializer(typeof(SubscribedTypesCache), new [] {typeof(AssemblyInfo)});

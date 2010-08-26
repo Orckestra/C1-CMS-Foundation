@@ -3,10 +3,10 @@
   <cms:bindings>
     <cms:binding name="Url" type="System.String" />
   </cms:bindings>
-  <cms:layout iconhandle="package-add-source" label="${Composite.StandardPlugins.PackageElementProvider, AddAddOnSource.Step1.LayoutLabel}">
-    <FieldGroup Label="${Composite.StandardPlugins.PackageElementProvider, AddAddOnSource.Step1.FieldGroupLabel}">
-      <TextBox Label="${Composite.StandardPlugins.PackageElementProvider, AddAddOnSource.Step1.UrlLabel}"
-               Help="${Composite.StandardPlugins.PackageElementProvider, AddAddOnSource.Step1.UrlHelp}">
+  <cms:layout iconhandle="package-add-source" label="${Composite.Plugins.PackageElementProvider, AddAddOnSource.Step1.LayoutLabel}">
+    <FieldGroup Label="${Composite.Plugins.PackageElementProvider, AddAddOnSource.Step1.FieldGroupLabel}">
+      <TextBox Label="${Composite.Plugins.PackageElementProvider, AddAddOnSource.Step1.UrlLabel}"
+               Help="${Composite.Plugins.PackageElementProvider, AddAddOnSource.Step1.UrlHelp}">
         <TextBox.Text>
           <cms:bind source="Url" />
         </TextBox.Text>

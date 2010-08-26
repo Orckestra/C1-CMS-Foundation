@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Composite.Extensions;
-using Composite.Logging;
-using Composite.Types;
+using Composite.Core.Extensions;
+using Composite.Core.Logging;
+using Composite.Core.Types;
 using Composite.Functions.Plugins.FunctionProvider;
 using System.Collections;
 

@@ -5,9 +5,9 @@ using System.Text;
 
 using Composite.Functions;
 using System.Web;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Client
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Client
 {
 	internal sealed class BrowserVersionFunction  :  StandardFunctionBase
 	{

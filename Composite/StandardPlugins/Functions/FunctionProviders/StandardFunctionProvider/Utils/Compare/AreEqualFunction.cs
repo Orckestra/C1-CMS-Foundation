@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Composite.Functions;
-using Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Compare
+namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Compare
 {
 	internal sealed class AreEqualFunction : StandardFunctionBase
 	{

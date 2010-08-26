@@ -11,9 +11,9 @@ using System.Workflow.ComponentModel.Design;
 using System.Workflow.Runtime;
 using System.Workflow.Activities;
 using System.Workflow.Activities.Rules;
-using Composite.Workflow;
+using Composite.C1Console.Workflow;
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 {
     partial class EditUserWorkflow
     {
@@ -30,7 +30,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvide
             System.Workflow.Activities.CodeCondition codecondition1 = new System.Workflow.Activities.CodeCondition();
             System.Workflow.Activities.CodeCondition codecondition2 = new System.Workflow.Activities.CodeCondition();
             System.Workflow.Activities.CodeCondition codecondition3 = new System.Workflow.Activities.CodeCondition();
-            this.showConsoleMessageBoxActivity2 = new Composite.Workflow.Activities.ShowConsoleMessageBoxActivity();
+            this.showConsoleMessageBoxActivity2 = new Composite.C1Console.Workflow.Activities.ShowConsoleMessageBoxActivity();
             this.ifElseBranchActivity4 = new System.Workflow.Activities.IfElseBranchActivity();
             this.ifElseBranchActivity3 = new System.Workflow.Activities.IfElseBranchActivity();
             this.ifElseActivity_IsUserLoggedOn = new System.Workflow.Activities.IfElseActivity();
@@ -46,13 +46,13 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvide
             this.saveCodeActivity = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity3 = new System.Workflow.Activities.SetStateActivity();
             this.ifElseActivity1 = new System.Workflow.Activities.IfElseActivity();
-            this.saveHandleExternalEventActivity1 = new Composite.Workflow.Activities.SaveHandleExternalEventActivity();
+            this.saveHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.SaveHandleExternalEventActivity();
             this.ifElseActivity_ActiveLanguagesExists = new System.Workflow.Activities.IfElseActivity();
             this.saveStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.step1SventDrivenActivity_Save = new System.Workflow.Activities.EventDrivenActivity();
             this.step1StateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.setStateActivity1 = new System.Workflow.Activities.SetStateActivity();
-            this.cancelHandleExternalEventActivity1 = new Composite.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.cancelHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.initializeStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.saveStateActivity = new System.Workflow.Activities.StateActivity();
             this.step1StateActivity = new System.Workflow.Activities.StateActivity();
@@ -62,7 +62,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvide
             // 
             // showConsoleMessageBoxActivity2
             // 
-            this.showConsoleMessageBoxActivity2.DialogType = Composite.ConsoleEventSystem.DialogType.Message;
+            this.showConsoleMessageBoxActivity2.DialogType = Composite.C1Console.Events.DialogType.Message;
             this.showConsoleMessageBoxActivity2.Message = "${Composite.Management, UserElementProvider.ChangeOtherActiveLocaleMessage}";
             this.showConsoleMessageBoxActivity2.Name = "showConsoleMessageBoxActivity2";
             this.showConsoleMessageBoxActivity2.Title = "${Composite.Management, UserElementProvider.ChangeOtherActiveLocaleTitle}";
@@ -153,7 +153,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvide
             // saveHandleExternalEventActivity1
             // 
             this.saveHandleExternalEventActivity1.EventName = "Save";
-            this.saveHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.saveHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.saveHandleExternalEventActivity1.Name = "saveHandleExternalEventActivity1";
             // 
             // ifElseActivity_ActiveLanguagesExists
@@ -187,7 +187,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvide
             // cancelHandleExternalEventActivity1
             // 
             this.cancelHandleExternalEventActivity1.EventName = "Cancel";
-            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.Workflow.IFormsWorkflowEventService);
+            this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity1.Name = "cancelHandleExternalEventActivity1";
             // 
             // initializeStateInitializationActivity
@@ -241,7 +241,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvide
         private StateActivity finishState;
         private StateInitializationActivity initializeStateInitializationActivity;
         private StateActivity initializeActivity;
-        private Composite.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
         private EventDrivenActivity eventDrivenActivity_GlobalCancel;
         private SetStateActivity setStateActivity1;
         private StateActivity saveStateActivity;
@@ -253,11 +253,11 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvide
         private SetStateActivity setStateActivity2;
         private SetStateActivity setStateActivity4;
         private SetStateActivity setStateActivity3;
-        private Composite.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
+        private Composite.C1Console.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
         private IfElseBranchActivity ifElseBranchActivity4;
         private IfElseBranchActivity ifElseBranchActivity3;
         private IfElseActivity ifElseActivity_IsUserLoggedOn;
-        private Composite.Workflow.Activities.ShowConsoleMessageBoxActivity showConsoleMessageBoxActivity2;
+        private Composite.C1Console.Workflow.Activities.ShowConsoleMessageBoxActivity showConsoleMessageBoxActivity2;
         private IfElseBranchActivity ifElseBranchActivity2;
         private IfElseBranchActivity ifElseBranchActivity1;
         private IfElseActivity ifElseActivity1;

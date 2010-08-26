@@ -1,18 +1,18 @@
 using System;
 using System.Linq;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.ResourceSystem;
-using Composite.Workflow;
+using Composite.Core.ResourceSystem;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class DeleteSqlFunctionProviderWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class DeleteSqlFunctionProviderWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public DeleteSqlFunctionProviderWorkflow()
         {
@@ -58,8 +58,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.SqlFunctionElement
             {
                 this.ShowMessage(
                         DialogType.Error,
-                        StringResourceSystemFacade.GetString("Composite.StandardPlugins.SqlFunction", "CascadeDeleteErrorTitle"),
-                        StringResourceSystemFacade.GetString("Composite.StandardPlugins.SqlFunction", "CascadeDeleteErrorMessage")
+                        StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", "CascadeDeleteErrorTitle"),
+                        StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", "CascadeDeleteErrorMessage")
                     );
             }            
         }

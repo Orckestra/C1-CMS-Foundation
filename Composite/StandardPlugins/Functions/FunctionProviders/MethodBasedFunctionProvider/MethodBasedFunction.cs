@@ -5,12 +5,12 @@ using System.Reflection;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Functions;
-using Composite.Security;
-using Composite.Types;
-using Composite.Logging;
+using Composite.C1Console.Security;
+using Composite.Core.Types;
+using Composite.Core.Logging;
 
 
-namespace Composite.StandardPlugins.Functions.FunctionProviders.MethodBasedFunctionProvider
+namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvider
 {
     internal sealed class MethodBasedFunction : IFunction
     {

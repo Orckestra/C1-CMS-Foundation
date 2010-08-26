@@ -5,7 +5,7 @@ using Composite.Data.Plugins.DataProvider;
 using System.Linq;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider.Foundation
+namespace Composite.Plugins.Data.DataProviders.MemoryDataProvider.Foundation
 {
     internal sealed class MemoryDatabase
     {

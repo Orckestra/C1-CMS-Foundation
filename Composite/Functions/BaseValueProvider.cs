@@ -1,6 +1,6 @@
 using System;
 using System.Xml.Linq;
-using Composite.Types;
+using Composite.Core.Types;
 
 
 namespace Composite.Functions

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-using Composite.Linq;
+using Composite.Core.Linq;
 
 
 namespace Composite.Sql

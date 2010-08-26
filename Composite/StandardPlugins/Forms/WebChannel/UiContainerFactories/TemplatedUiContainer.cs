@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Web.UI;
 
-using Composite.Forms;
-using Composite.Forms.Foundation;
-using Composite.Forms.WebChannel;
-using Composite.StandardPlugins.Forms.WebChannel.Foundation;
-using Composite.StandardPlugins.Forms.WebChannel.UiControlFactories;
-using Composite.ResourceSystem;
+using Composite.C1Console.Forms;
+using Composite.C1Console.Forms.Foundation;
+using Composite.C1Console.Forms.WebChannel;
+using Composite.Plugins.Forms.WebChannel.Foundation;
+using Composite.Plugins.Forms.WebChannel.UiControlFactories;
+using Composite.Core.ResourceSystem;
 
 
-namespace Composite.StandardPlugins.Forms.WebChannel.UiContainerFactories
+namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
 {
     internal class TemplatedUiContainer : IWebUiContainer
     {

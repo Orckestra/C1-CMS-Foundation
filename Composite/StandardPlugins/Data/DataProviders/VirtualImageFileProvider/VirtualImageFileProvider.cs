@@ -7,7 +7,7 @@ using Composite.Data.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 
-namespace Composite.StandardPlugins.Data.DataProviders.VirtualImageFileProvider
+namespace Composite.Plugins.Data.DataProviders.VirtualImageFileProvider
 {
     [ConfigurationElementType(typeof(NonConfigurableDataProvider))]
     internal sealed class VirtualImageFileProvider : IDataProvider

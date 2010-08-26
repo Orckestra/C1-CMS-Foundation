@@ -4,9 +4,9 @@
     <cms:binding name="ErrorHeader" type="System.Object" />
     <cms:binding name="Errors" type="System.Object" />
   </cms:bindings>
-  <cms:layout iconhandle="tree-localize-data" label="${Composite.Trees, LocalizeData.ShowError.Layout.Label}">
+  <cms:layout iconhandle="tree-localize-data" label="${Composite.C1Console.Trees, LocalizeData.ShowError.Layout.Label}">
     <PlaceHolder>
-      <InfoBox Label="${Composite.Trees, LocalizeData.ShowError.InfoTable.Caption}">
+      <InfoBox Label="${Composite.C1Console.Trees, LocalizeData.ShowError.InfoTable.Caption}">
         <InfoTable>
           <InfoTable.Headers>
             <cms:read source="ErrorHeader" />

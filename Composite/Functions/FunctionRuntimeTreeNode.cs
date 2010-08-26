@@ -4,8 +4,8 @@ using System.Linq;
 using System.Xml.Linq;
 using Composite.Data;
 using Composite.Functions.Foundation;
-using Composite.Instrumentation;
-using Composite.StringExtensions;
+using Composite.Core.Instrumentation;
+using Composite.Core.Extensions;
 
 
 namespace Composite.Functions

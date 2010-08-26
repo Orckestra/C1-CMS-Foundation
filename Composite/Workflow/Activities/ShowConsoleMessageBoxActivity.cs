@@ -1,11 +1,11 @@
 using System.Workflow.ComponentModel;
 using System.Workflow.Runtime;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
-using Composite.ResourceSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
+using Composite.Core.ResourceSystem;
 
 
-namespace Composite.Workflow.Activities
+namespace Composite.C1Console.Workflow.Activities
 {
     /// <summary>    
     /// </summary>

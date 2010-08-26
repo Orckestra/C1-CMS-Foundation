@@ -4,21 +4,21 @@ using System.Globalization;
 using System.Linq;
 using System.Transactions;
 using System.Workflow.Activities;
-using Composite.Actions;
-using Composite.ConsoleEventSystem;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
 using Composite.Data.Types;
-using Composite.ResourceSystem;
-using Composite.Transactions;
-using Composite.Workflow;
+using Composite.Core.ResourceSystem;
+using Composite.Data.Transactions;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class DeletePageWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class DeletePageWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public DeletePageWorkflow()
         {
@@ -104,7 +104,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
             Dictionary<string, object> bindings = new Dictionary<string, object>();
             bindings.Add("HasSubPages", hasChildren);
             bindings.Add("DeleteAllSubPages", false);
-            bindings.Add("DeleteMessageText", string.Format(StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "DeletePageStep2.Text"), selectedPage.Title));
+            bindings.Add("DeleteMessageText", string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "DeletePageStep2.Text"), selectedPage.Title));
             this.Bindings = bindings;
         }
 
@@ -112,7 +112,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
 
         private void step1CodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            this.ShowFieldMessage("DeleteAllSubPages", StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "DeletePageWorkflow.MissingConfirmErrorMessage"));
+            this.ShowFieldMessage("DeleteAllSubPages", StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "DeletePageWorkflow.MissingConfirmErrorMessage"));
         }
 
 
@@ -130,8 +130,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
                 {
                     this.ShowMessage(
                         DialogType.Error,
-                        StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "DeletePageWorkflow.CascadeDeleteErrorTitle"),
-                        StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "DeletePageWorkflow.CascadeDeleteErrorMessage")
+                        StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "DeletePageWorkflow.CascadeDeleteErrorTitle"),
+                        StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "DeletePageWorkflow.CascadeDeleteErrorMessage")
                     );
 
                     return;
@@ -150,8 +150,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
                         {
                             this.ShowMessage(
                                 DialogType.Error,
-                                StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "DeletePageWorkflow.CascadeDeleteErrorTitle"),
-                                StringResourceSystemFacade.GetString("Composite.StandardPlugins.PageElementProvider", "DeletePageWorkflow.CascadeDeleteErrorMessage")
+                                StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "DeletePageWorkflow.CascadeDeleteErrorTitle"),
+                                StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "DeletePageWorkflow.CascadeDeleteErrorMessage")
                             );
 
                             return;
@@ -192,7 +192,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
             {
                 using (new DataScope(localeCultureInfo))
                 {
-                    if (PageManager.GetPageById(page.Id) != null)
+                    if (Composite.Data.Types.PageManager.GetPageById(page.Id) != null)
                     {
                         return true;
                     }
@@ -221,8 +221,8 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.PageElementProvide
         {
             this.ShowMessage(
                 DialogType.Error,
-                "${Composite.StandardPlugins.PageElementProvider, DeletePageWorkflow.HasCompositionsTitle}",
-                "${Composite.StandardPlugins.PageElementProvider, DeletePageWorkflow.HasCompositionsMessage}"
+                "${Composite.Plugins.PageElementProvider, DeletePageWorkflow.HasCompositionsTitle}",
+                "${Composite.Plugins.PageElementProvider, DeletePageWorkflow.HasCompositionsMessage}"
             );
         }
 

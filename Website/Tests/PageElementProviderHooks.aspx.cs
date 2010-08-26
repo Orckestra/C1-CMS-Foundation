@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Composite.Security;
+using Composite.C1Console.Security;
 using Composite.Data.Types;
 using Composite.Data;
 using System.Globalization;

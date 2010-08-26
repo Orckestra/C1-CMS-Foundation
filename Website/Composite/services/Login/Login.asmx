@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Xml.Linq;
-using Composite.Security;
+using Composite.C1Console.Security;
 
 [WebService(Namespace = "http://www.composite.net/ns/management")]
 [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
@@ -42,7 +42,7 @@ public class Login : System.Web.Services.WebService
         if (UserValidationFacade.IsLoggedIn() == true
             && UserValidationFacade.AllUsernames.Contains(UserValidationFacade.GetUsername()) == false)
         {
-            Composite.Logging.LoggingService.LogInformation("Security", String.Format("Automatic logout executed. Username '{0}' not found in list of usernames", UserValidationFacade.GetUsername()));
+            Composite.Core.Logging.LoggingService.LogInformation("Security", String.Format("Automatic logout executed. Username '{0}' not found in list of usernames", UserValidationFacade.GetUsername()));
             UserValidationFacade.Logout();
 
             return false;

@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Elements;
-using Composite.Elements.Plugins.ElementProvider;
-using Composite.ResourceSystem;
-using Composite.ResourceSystem.Icons;
-using Composite.Security;
-using Composite.Workflow;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Elements.Plugins.ElementProvider;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.C1Console.Security;
+using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 {
     internal sealed class UserElementProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
     {
@@ -66,7 +66,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvide
                 }
             };
 
-            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider.AddNewUserWorkflow"), AddNewUserPermissionTypes)))
+            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.UserElementProvider.AddNewUserWorkflow"), AddNewUserPermissionTypes)))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -168,7 +168,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvide
                     }
                 };
 
-                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider.AddNewUserWorkflow"), AddNewUserPermissionTypes)))
+                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.UserElementProvider.AddNewUserWorkflow"), AddNewUserPermissionTypes)))
                 {
                     VisualData = new ActionVisualizedData
                     {
@@ -236,7 +236,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvide
                 // Making "Edit permissions" not show up on user elements - it's confusing :)
                 element.ElementExternalActionAdding = ElementExternalActionAddingExtensions.Remove(element.ElementExternalActionAdding, ElementExternalActionAdding.AllowManageUserPermissions);
 
-                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider.EditUserWorkflow"), new PermissionType[] { PermissionType.Administrate })))
+                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.UserElementProvider.EditUserWorkflow"), new PermissionType[] { PermissionType.Administrate })))
                 {
                     VisualData = new ActionVisualizedData
                     {
@@ -254,7 +254,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.UserElementProvide
                     }
                 });
 
-                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.StandardPlugins.Elements.ElementProviders.UserElementProvider.DeleteUserWorkflow"), new PermissionType[] { PermissionType.Administrate })))
+                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.UserElementProvider.DeleteUserWorkflow"), new PermissionType[] { PermissionType.Administrate })))
                 {
                     VisualData = new ActionVisualizedData
                     {

@@ -86,7 +86,7 @@ public partial class StyleLoaderControl2 : System.Web.UI.UserControl
 			"skins/system/balloons.css"
     	};
     	
-    	string root = Composite.WebClient.UrlUtils.AdminRootPath; // fullPathWindowsStyle.Replace('\\', '/',
+    	string root = Composite.Core.WebClient.UrlUtils.AdminRootPath; // fullPathWindowsStyle.Replace('\\', '/',
 		StringBuilder _builder = new StringBuilder ();
 
         // TODO: Check if we need this class at all. 

@@ -4,21 +4,21 @@ using System.Linq;
 using System.Reflection;
 using System.Workflow.Activities;
 using System.Workflow.Runtime;
-using Composite.Actions;
+using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Extensions;
-using Composite.Forms.Flows;
-using Composite.ResourceSystem;
-using Composite.StandardPlugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
-using Composite.Types;
-using Composite.Workflow;
+using Composite.Core.Extensions;
+using Composite.C1Console.Forms.Flows;
+using Composite.Core.ResourceSystem;
+using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
+using Composite.Core.Types;
+using Composite.C1Console.Workflow;
 
 
-namespace Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddNewMethodBasedFunctionWorkflow : Composite.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddNewMethodBasedFunctionWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public AddNewMethodBasedFunctionWorkflow()
         {
@@ -59,7 +59,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctio
 
             if (type == null)
             {
-                string errorMessage = StringResourceSystemFacade.GetString("Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider", "AddFunction.CouldNotFindType");
+                string errorMessage = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "AddFunction.CouldNotFindType");
                 ShowFieldMessage("NewMethodBasedFunction.Type", errorMessage);
                 e.Result = false;
                 return;
@@ -68,7 +68,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctio
 
             if (type.IsAbstract == true)
             {
-                string errorMessage = StringResourceSystemFacade.GetString("Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider", "AddFunction.TypeIsAbstractOrStatic");
+                string errorMessage = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "AddFunction.TypeIsAbstractOrStatic");
                 ShowFieldMessage("NewMethodBasedFunction.Type", errorMessage);
                 e.Result = false;
                 return;
@@ -81,7 +81,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctio
 
             if (methodNames.Count == 0)
             {
-                string errorMessage = StringResourceSystemFacade.GetString("Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider", "AddFunction.TypeHasNoValidMethod");
+                string errorMessage = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "AddFunction.TypeHasNoValidMethod");
                 ShowFieldMessage("NewMethodBasedFunction.Type", errorMessage);
                 e.Result = false;
                 return;
@@ -91,7 +91,7 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctio
             int destinctCount = methodNames.Distinct().Count();
             if (destinctCount != methodNames.Count)
             {
-                string errorMessage = StringResourceSystemFacade.GetString("Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider", "AddFunction.TypeMustNotHaveOverloads");
+                string errorMessage = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "AddFunction.TypeMustNotHaveOverloads");
                 ShowFieldMessage("NewMethodBasedFunction.Type", errorMessage);
                 e.Result = false;
                 return;
@@ -134,14 +134,14 @@ namespace Composite.StandardPlugins.Elements.ElementProviders.MethodBasedFunctio
 
             if (function.UserMethodName == String.Empty)
             {
-                string errorMessage = StringResourceSystemFacade.GetString("Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider", "AddFunction.MethodNameIsEmpty");
+                string errorMessage = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "AddFunction.MethodNameIsEmpty");
                 ShowFieldMessage("SelectedMethodName", errorMessage);
                 e.Result = false;
                 return;
             }
             if (!function.Namespace.IsCorrectNamespace('.'))
             {
-                string errorMessage = StringResourceSystemFacade.GetString("Composite.StandardPlugins.MethodBasedFunctionProviderElementProvider", "AddFunction.InvalidNamespace");
+                string errorMessage = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "AddFunction.InvalidNamespace");
                 ShowFieldMessage("SelectedMethodName", errorMessage);
                 e.Result = false;
                 return;

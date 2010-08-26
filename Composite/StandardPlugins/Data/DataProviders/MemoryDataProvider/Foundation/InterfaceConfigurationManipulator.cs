@@ -4,12 +4,12 @@ using System.Linq;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Plugins.DataProvider;
 using System.Collections.Generic;
-using Composite.StandardPlugins.Data.DataProviders.Common;
-using Composite.Configuration;
+using Composite.Plugins.Data.DataProviders.Common;
+using Composite.Core.Configuration;
 using Composite.Data;
-using Composite.Types;
+using Composite.Core.Types;
 
-namespace Composite.StandardPlugins.Data.DataProviders.MemoryDataProvider.Foundation
+namespace Composite.Plugins.Data.DataProviders.MemoryDataProvider.Foundation
 {
     /// <summary>
     /// Add, change and remove type-to-table mapping information

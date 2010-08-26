@@ -1,9 +1,9 @@
-<%@ Control Language="C#" Inherits="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories.XhtmlEditorTemplateUserControlBase" %>
-<%@ Import Namespace="Composite.StandardPlugins.Forms.WebChannel.UiControlFactories" %>
+<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.XhtmlEditorTemplateUserControlBase" %>
+<%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
 <%@ Import Namespace="System.Xml.Linq" %>
 <%@ Import Namespace="System.Linq" %>
-<%@ Import Namespace="Composite.WebClient.Services.WysiwygEditor" %>
-<%@ Import Namespace="Composite.Types" %>
+<%@ Import Namespace="Composite.Core.WebClient.Services.WysiwygEditor" %>
+<%@ Import Namespace="Composite.Core.Types" %>
 
 <script language="C#" runat="server">
 
@@ -58,8 +58,8 @@
 	formattingconfiguration="common"
 	elementclassconfiguration="<%= this.ClassConfigurationName %>" 
     embedablefieldstypenames="<%= HttpUtility.HtmlAttributeEncode(this.EmbedableFieldsTypesString) %>"
-	configurationstylesheet="<%= Composite.WebClient.UrlUtils.ResolvePublicUrl( "Frontend/Styles/VisualEditor/VisualEditor.Config.css" ) %>"  
-	presentationstylesheet="<%= Composite.WebClient.UrlUtils.ResolvePublicUrl( "Frontend/Styles/VisualEditor/VisualEditor.Default.css" ) %>"
+	configurationstylesheet="<%= Composite.Core.WebClient.UrlUtils.ResolvePublicUrl( "Frontend/Styles/VisualEditor/VisualEditor.Config.css" ) %>"  
+	presentationstylesheet="<%= Composite.Core.WebClient.UrlUtils.ResolvePublicUrl( "Frontend/Styles/VisualEditor/VisualEditor.Default.css" ) %>"
 	value="<%= _currentStringValue %>"
 	id="<%= this.UniqueID %>"
 	name="<%= this.UniqueID %>"

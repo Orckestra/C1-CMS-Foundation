@@ -12,7 +12,7 @@ using System.Web.Services.Protocols;
 using System.Xml;
 using System.Xml.Linq;
 
-using Composite.Xml;
+using Composite.Core.Xml;
 using TidyNet;
 
 [WebService(Namespace = "http://www.composite.net/ns/management")]

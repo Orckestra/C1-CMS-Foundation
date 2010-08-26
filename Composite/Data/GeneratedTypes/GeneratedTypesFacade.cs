@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
-using Composite.Types;
+using Composite.Core.Types;
 
 
 namespace Composite.Data.GeneratedTypes

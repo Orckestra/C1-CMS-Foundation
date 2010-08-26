@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
-using Composite.Instrumentation;
-using Composite.Instrumentation.Plugin;
-using Composite.Logging;
+using Composite.Core.Instrumentation;
+using Composite.Core.Instrumentation.Plugin;
+using Composite.Core.Logging;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 
-namespace Composite.StandardPlugins.Instrumentation.PerformanceCounterProviders.WindowsPerformanceCounterProvider
+namespace Composite.Plugins.Instrumentation.PerformanceCounterProviders.WindowsPerformanceCounterProvider
 {
 
     [ConfigurationElementType(typeof(NonConfigurablePerformanceCounterProvider))]
