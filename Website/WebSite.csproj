@@ -164,13 +164,6 @@
     <Compile Include="Composite\content\views\functiondoc\FunctionDocumentation.aspx.designer.cs">
       <DependentUpon>FunctionDocumentation.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Composite\content\views\help\bindings\HelpContentControl.ascx.cs">
-      <DependentUpon>HelpContentControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Composite\content\views\help\bindings\HelpContentControl.ascx.designer.cs">
-      <DependentUpon>HelpContentControl.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Composite\content\views\log\log.aspx.cs">
       <DependentUpon>log.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -867,11 +860,6 @@
     <Content Include="Composite\content\views\functiondoc\FunctionDocumentation-print.css" />
     <Content Include="Composite\content\views\functiondoc\FunctionDocumentation.aspx" />
     <Content Include="Composite\content\views\functiondoc\FunctionDocumentation.css" />
-    <Content Include="Composite\content\views\help\bindings\helpcontent.aspx" />
-    <Content Include="Composite\content\views\help\bindings\helpcontent.css" />
-    <Content Include="Composite\content\views\help\bindings\helpcontent.js" />
-    <Content Include="Composite\content\views\help\bindings\helpcontent.xsl" />
-    <Content Include="Composite\content\views\help\bindings\HelpContentControl.ascx" />
     <Content Include="Composite\content\views\help\help.aspx" />
     <Content Include="Composite\content\views\help\HelpPageBinding.js" />
     <Content Include="Composite\content\views\help\pages\dummy1.aspx" />
