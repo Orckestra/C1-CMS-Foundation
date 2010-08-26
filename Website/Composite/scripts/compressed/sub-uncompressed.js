@@ -1,9 +1,4 @@
 /*
- * Created: 26. august 2010 16:36:46
- */
-
-
-/*
  * ----------------------------------------------------------------------------
  * "THE BEER-WARE LICENSE" (Revised):
  * Composite.NET wrote this file. As long as you retain this notice 
