@@ -213,334 +213,334 @@
     <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\EditMetaDataWorkflow.designer.cs">
       <DependentUpon>EditMetaDataWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddTypeToWhiteListWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddTypeToWhiteListWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddTypeToWhiteListWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddTypeToWhiteListWorkflow.designer.cs">
       <DependentUpon>AddTypeToWhiteListWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\RemoveTypeFromWhiteListWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\RemoveTypeFromWhiteListWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\RemoveTypeFromWhiteListWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\RemoveTypeFromWhiteListWorkflow.designer.cs">
       <DependentUpon>RemoveTypeFromWhiteListWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\LocalizationElementProvider\AddSystemLocaleWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\LocalizationElementProvider\AddSystemLocaleWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\LocalizationElementProvider\AddSystemLocaleWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\LocalizationElementProvider\AddSystemLocaleWorkflow.designer.cs">
       <DependentUpon>AddSystemLocaleWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\LocalizationElementProvider\DefineDefaultActiveLocaleWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\LocalizationElementProvider\DefineDefaultActiveLocaleWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\LocalizationElementProvider\DefineDefaultActiveLocaleWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\LocalizationElementProvider\DefineDefaultActiveLocaleWorkflow.designer.cs">
       <DependentUpon>DefineDefaultActiveLocaleWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\LocalizationElementProvider\EditSystemLocaleWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\LocalizationElementProvider\EditSystemLocaleWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\LocalizationElementProvider\EditSystemLocaleWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\LocalizationElementProvider\EditSystemLocaleWorkflow.designer.cs">
       <DependentUpon>EditSystemLocaleWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\LocalizationElementProvider\RemoveSystemLocaleWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\LocalizationElementProvider\RemoveSystemLocaleWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\LocalizationElementProvider\RemoveSystemLocaleWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\LocalizationElementProvider\RemoveSystemLocaleWorkflow.designer.cs">
       <DependentUpon>RemoveSystemLocaleWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\AddMediaZipFileWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\AddMediaZipFileWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\AddMediaZipFileWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\AddMediaZipFileWorkflow.Designer.cs">
       <DependentUpon>AddMediaZipFileWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\AddNewMediaFileWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\AddNewMediaFileWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\AddNewMediaFileWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\AddNewMediaFileWorkflow.designer.cs">
       <DependentUpon>AddNewMediaFileWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\AddNewMediaFolderWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\AddNewMediaFolderWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\AddNewMediaFolderWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\AddNewMediaFolderWorkflow.Designer.cs">
       <DependentUpon>AddNewMediaFolderWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFileContentWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFileContentWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFileContentWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFileContentWorkflow.designer.cs">
       <DependentUpon>EditMediaFileContentWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\DeleteMediaFileWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\DeleteMediaFileWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\DeleteMediaFileWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\DeleteMediaFileWorkflow.Designer.cs">
       <DependentUpon>DeleteMediaFileWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\DeleteMediaFolderWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\DeleteMediaFolderWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\DeleteMediaFolderWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\DeleteMediaFolderWorkflow.Designer.cs">
       <DependentUpon>DeleteMediaFolderWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFileTextContentWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFileTextContentWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFileTextContentWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFileTextContentWorkflow.designer.cs">
       <DependentUpon>EditMediaFileTextContentWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFileWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFileWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFileWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFileWorkflow.Designer.cs">
       <DependentUpon>EditMediaFileWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFolderWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFolderWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFolderWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFolderWorkflow.Designer.cs">
       <DependentUpon>EditMediaFolderWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\UploadNewMediaFileWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\UploadNewMediaFileWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\UploadNewMediaFileWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\UploadNewMediaFileWorkflow.Designer.cs">
       <DependentUpon>UploadNewMediaFileWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\AddNewMethodBasedFunctionWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\AddNewMethodBasedFunctionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\AddNewMethodBasedFunctionWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\AddNewMethodBasedFunctionWorkflow.Designer.cs">
       <DependentUpon>AddNewMethodBasedFunctionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\DeleteMethodBasedFunctionWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\DeleteMethodBasedFunctionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\DeleteMethodBasedFunctionWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\DeleteMethodBasedFunctionWorkflow.Designer.cs">
       <DependentUpon>DeleteMethodBasedFunctionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\EditMethodBasedFunctionWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\EditMethodBasedFunctionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\EditMethodBasedFunctionWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\EditMethodBasedFunctionWorkflow.Designer.cs">
       <DependentUpon>EditMethodBasedFunctionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\AddPackageSourceWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PackageElementProvider\AddPackageSourceWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\AddPackageSourceWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PackageElementProvider\AddPackageSourceWorkflow.designer.cs">
       <DependentUpon>AddPackageSourceWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\DeletePackageSourceWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PackageElementProvider\DeletePackageSourceWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\DeletePackageSourceWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PackageElementProvider\DeletePackageSourceWorkflow.designer.cs">
       <DependentUpon>DeletePackageSourceWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\InstallLocalPackageWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PackageElementProvider\InstallLocalPackageWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\InstallLocalPackageWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PackageElementProvider\InstallLocalPackageWorkflow.designer.cs">
       <DependentUpon>InstallLocalPackageWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\InstallRemotePackageWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PackageElementProvider\InstallRemotePackageWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\InstallRemotePackageWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PackageElementProvider\InstallRemotePackageWorkflow.designer.cs">
       <DependentUpon>InstallRemotePackageWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\UninstallLocalPackageWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PackageElementProvider\UninstallLocalPackageWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\UninstallLocalPackageWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PackageElementProvider\UninstallLocalPackageWorkflow.designer.cs">
       <DependentUpon>UninstallLocalPackageWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\UninstallRemotePackageWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PackageElementProvider\UninstallRemotePackageWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\UninstallRemotePackageWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PackageElementProvider\UninstallRemotePackageWorkflow.designer.cs">
       <DependentUpon>UninstallRemotePackageWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\ViewAvailablePackageInfoWorkflowWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PackageElementProvider\ViewAvailablePackageInfoWorkflowWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\ViewAvailablePackageInfoWorkflowWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PackageElementProvider\ViewAvailablePackageInfoWorkflowWorkflow.designer.cs">
       <DependentUpon>ViewAvailablePackageInfoWorkflowWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\ViewInstalledPackageInfoWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PackageElementProvider\ViewInstalledPackageInfoWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\ViewInstalledPackageInfoWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PackageElementProvider\ViewInstalledPackageInfoWorkflow.designer.cs">
       <DependentUpon>ViewInstalledPackageInfoWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\AddNewPageWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\AddNewPageWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\AddNewPageWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\AddNewPageWorkflow.Designer.cs">
       <DependentUpon>AddNewPageWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\DeletePageWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\DeletePageWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\DeletePageWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\DeletePageWorkflow.Designer.cs">
       <DependentUpon>DeletePageWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\EditPageWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\EditPageWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\EditPageWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\EditPageWorkflow.Designer.cs">
       <DependentUpon>EditPageWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\LocalizePageWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\LocalizePageWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\LocalizePageWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\LocalizePageWorkflow.designer.cs">
       <DependentUpon>LocalizePageWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\ManageHostNameBindingsWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\ManageHostNameBindingsWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\ManageHostNameBindingsWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\ManageHostNameBindingsWorkflow.designer.cs">
       <DependentUpon>ManageHostNameBindingsWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\PagePublishSchedulerWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PagePublishSchedulerWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\PagePublishSchedulerWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PagePublishSchedulerWorkflow.designer.cs">
       <DependentUpon>PagePublishSchedulerWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\PageUnpublishSchedulerWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageUnpublishSchedulerWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\PageUnpublishSchedulerWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageUnpublishSchedulerWorkflow.designer.cs">
       <DependentUpon>PageUnpublishSchedulerWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\UndoUnpublishedChangesWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\UndoUnpublishedChangesWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\UndoUnpublishedChangesWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\UndoUnpublishedChangesWorkflow.designer.cs">
       <DependentUpon>UndoUnpublishedChangesWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTemplateElementProvider\AddNewPageTemplateWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\AddNewPageTemplateWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTemplateElementProvider\AddNewPageTemplateWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\AddNewPageTemplateWorkflow.Designer.cs">
       <DependentUpon>AddNewPageTemplateWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTemplateElementProvider\DeletePageTemplateWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\DeletePageTemplateWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTemplateElementProvider\DeletePageTemplateWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\DeletePageTemplateWorkflow.Designer.cs">
       <DependentUpon>DeletePageTemplateWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTemplateElementProvider\EditPageTemplateWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditPageTemplateWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTemplateElementProvider\EditPageTemplateWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditPageTemplateWorkflow.Designer.cs">
       <DependentUpon>EditPageTemplateWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\AddNewPageTypeWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\AddNewPageTypeWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\AddNewPageTypeWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\AddNewPageTypeWorkflow.designer.cs">
       <DependentUpon>AddNewPageTypeWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\AddPageTypeDefaultPageContentWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\AddPageTypeDefaultPageContentWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\AddPageTypeDefaultPageContentWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\AddPageTypeDefaultPageContentWorkflow.designer.cs">
       <DependentUpon>AddPageTypeDefaultPageContentWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\AddPageTypeMetaDataFieldWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\AddPageTypeMetaDataFieldWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\AddPageTypeMetaDataFieldWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\AddPageTypeMetaDataFieldWorkflow.designer.cs">
       <DependentUpon>AddPageTypeMetaDataFieldWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\DeletePageTypeMetaDataFieldWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\DeletePageTypeMetaDataFieldWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\DeletePageTypeMetaDataFieldWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\DeletePageTypeMetaDataFieldWorkflow.designer.cs">
       <DependentUpon>DeletePageTypeMetaDataFieldWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\DeletePageTypeWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\DeletePageTypeWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\DeletePageTypeWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\DeletePageTypeWorkflow.designer.cs">
       <DependentUpon>DeletePageTypeWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\EditPageTypeDefaultPageContentWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\EditPageTypeDefaultPageContentWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\EditPageTypeDefaultPageContentWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\EditPageTypeDefaultPageContentWorkflow.designer.cs">
       <DependentUpon>EditPageTypeDefaultPageContentWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\EditPageTypeMetaDataFieldWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\EditPageTypeMetaDataFieldWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\EditPageTypeMetaDataFieldWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\EditPageTypeMetaDataFieldWorkflow.designer.cs">
       <DependentUpon>EditPageTypeMetaDataFieldWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\EditPageTypeWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\EditPageTypeWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\EditPageTypeWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\EditPageTypeWorkflow.designer.cs">
       <DependentUpon>EditPageTypeWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\AddNewSqlConnectionWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\AddNewSqlConnectionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\AddNewSqlConnectionWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\AddNewSqlConnectionWorkflow.Designer.cs">
       <DependentUpon>AddNewSqlConnectionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\AddNewSqlFunctionProviderWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\AddNewSqlFunctionProviderWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\AddNewSqlFunctionProviderWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\AddNewSqlFunctionProviderWorkflow.Designer.cs">
       <DependentUpon>AddNewSqlFunctionProviderWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\DeleteSqlConnectionWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\DeleteSqlConnectionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\DeleteSqlConnectionWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\DeleteSqlConnectionWorkflow.Designer.cs">
       <DependentUpon>DeleteSqlConnectionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\DeleteSqlFunctionProviderWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\DeleteSqlFunctionProviderWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\DeleteSqlFunctionProviderWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\DeleteSqlFunctionProviderWorkflow.Designer.cs">
       <DependentUpon>DeleteSqlFunctionProviderWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\EditSqlConnectionWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\EditSqlConnectionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\EditSqlConnectionWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\EditSqlConnectionWorkflow.Designer.cs">
       <DependentUpon>EditSqlConnectionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\EditSqlFunctionProviderWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\EditSqlFunctionProviderWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\EditSqlFunctionProviderWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\EditSqlFunctionProviderWorkflow.Designer.cs">
       <DependentUpon>EditSqlFunctionProviderWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\UserElementProvider\AddNewUserWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\UserElementProvider\AddNewUserWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\UserElementProvider\AddNewUserWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\UserElementProvider\AddNewUserWorkflow.designer.cs">
       <DependentUpon>AddNewUserWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\UserElementProvider\DeleteUserWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\UserElementProvider\DeleteUserWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\UserElementProvider\DeleteUserWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\UserElementProvider\DeleteUserWorkflow.designer.cs">
       <DependentUpon>DeleteUserWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\UserElementProvider\EditUserWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\UserElementProvider\EditUserWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\UserElementProvider\EditUserWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\UserElementProvider\EditUserWorkflow.designer.cs">
       <DependentUpon>EditUserWorkflow.cs</DependentUpon>
     </Compile>
     <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\AddVisualFunctionWorkflow.cs">
@@ -567,203 +567,203 @@
     <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\SelectVisualFunctionWorkflow.designer.cs">
       <DependentUpon>SelectVisualFunctionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\UserGroupElementProvider\AddNewUserGroupWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\UserGroupElementProvider\AddNewUserGroupWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\UserGroupElementProvider\AddNewUserGroupWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\UserGroupElementProvider\AddNewUserGroupWorkflow.Designer.cs">
       <DependentUpon>AddNewUserGroupWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\UserGroupElementProvider\DeleteUserGroupWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\UserGroupElementProvider\DeleteUserGroupWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\UserGroupElementProvider\DeleteUserGroupWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\UserGroupElementProvider\DeleteUserGroupWorkflow.designer.cs">
       <DependentUpon>DeleteUserGroupWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\UserGroupElementProvider\EditUserGroupWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\UserGroupElementProvider\EditUserGroupWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\UserGroupElementProvider\EditUserGroupWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\UserGroupElementProvider\EditUserGroupWorkflow.designer.cs">
       <DependentUpon>EditUserGroupWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\VisualFunctionProviderElementProvider\AddNewVisualFunctionWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\VisualFunctionProviderElementProvider\AddNewVisualFunctionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\VisualFunctionProviderElementProvider\AddNewVisualFunctionWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\VisualFunctionProviderElementProvider\AddNewVisualFunctionWorkflow.designer.cs">
       <DependentUpon>AddNewVisualFunctionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\VisualFunctionProviderElementProvider\DeleteVisualFunctionWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\VisualFunctionProviderElementProvider\DeleteVisualFunctionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\VisualFunctionProviderElementProvider\DeleteVisualFunctionWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\VisualFunctionProviderElementProvider\DeleteVisualFunctionWorkflow.designer.cs">
       <DependentUpon>DeleteVisualFunctionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\VisualFunctionProviderElementProvider\EditVisualFunctionWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\VisualFunctionProviderElementProvider\EditVisualFunctionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\VisualFunctionProviderElementProvider\EditVisualFunctionWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\VisualFunctionProviderElementProvider\EditVisualFunctionWorkflow.designer.cs">
       <DependentUpon>EditVisualFunctionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\AddNewWebsiteFileWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\AddNewWebsiteFileWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\AddNewWebsiteFileWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\AddNewWebsiteFileWorkflow.designer.cs">
       <DependentUpon>AddNewWebsiteFileWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\AddNewWebsiteFolderWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\AddNewWebsiteFolderWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\AddNewWebsiteFolderWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\AddNewWebsiteFolderWorkflow.designer.cs">
       <DependentUpon>AddNewWebsiteFolderWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\AddWebsiteFolderToWhiteListWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\AddWebsiteFolderToWhiteListWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\AddWebsiteFolderToWhiteListWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\AddWebsiteFolderToWhiteListWorkflow.designer.cs">
       <DependentUpon>AddWebsiteFolderToWhiteListWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\DeleteWebsiteFileWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\DeleteWebsiteFileWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\DeleteWebsiteFileWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\DeleteWebsiteFileWorkflow.designer.cs">
       <DependentUpon>DeleteWebsiteFileWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\DeleteWebsiteFolderWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\DeleteWebsiteFolderWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\DeleteWebsiteFolderWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\DeleteWebsiteFolderWorkflow.designer.cs">
       <DependentUpon>DeleteWebsiteFolderWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\EditWebsiteFileTextContentWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\EditWebsiteFileTextContentWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\EditWebsiteFileTextContentWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\EditWebsiteFileTextContentWorkflow.designer.cs">
       <DependentUpon>EditWebsiteFileTextContentWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\RemoveWebsiteFolderFromWhiteListWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\RemoveWebsiteFolderFromWhiteListWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\RemoveWebsiteFolderFromWhiteListWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\RemoveWebsiteFolderFromWhiteListWorkflow.designer.cs">
       <DependentUpon>RemoveWebsiteFolderFromWhiteListWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\UploadWebsiteFileWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\UploadWebsiteFileWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\UploadWebsiteFileWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\UploadWebsiteFileWorkflow.designer.cs">
       <DependentUpon>UploadWebsiteFileWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\AddNewXsltFunctionWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\AddNewXsltFunctionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\AddNewXsltFunctionWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\AddNewXsltFunctionWorkflow.Designer.cs">
       <DependentUpon>AddNewXsltFunctionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\DeleteXsltFunctionWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\DeleteXsltFunctionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\DeleteXsltFunctionWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\DeleteXsltFunctionWorkflow.Designer.cs">
       <DependentUpon>DeleteXsltFunctionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\EditXsltFunctionWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\EditXsltFunctionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\EditXsltFunctionWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\EditXsltFunctionWorkflow.Designer.cs">
       <DependentUpon>EditXsltFunctionWorkflow.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewAggregationTypeWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewAggregationTypeWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewAggregationTypeWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewAggregationTypeWorkflow.designer.cs">
       <DependentUpon>AddNewAggregationTypeWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewCompositionTypeWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewCompositionTypeWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewCompositionTypeWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewCompositionTypeWorkflow.designer.cs">
       <DependentUpon>AddNewCompositionTypeWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewDataWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewDataWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewDataWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewDataWorkflow.Designer.cs">
       <DependentUpon>AddNewDataWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewInterfaceTypeWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewInterfaceTypeWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewInterfaceTypeWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewInterfaceTypeWorkflow.designer.cs">
       <DependentUpon>AddNewInterfaceTypeWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteAggregationTypeWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteAggregationTypeWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteAggregationTypeWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteAggregationTypeWorkflow.designer.cs">
       <DependentUpon>DeleteAggregationTypeWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteCompositionTypeWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteCompositionTypeWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteCompositionTypeWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteCompositionTypeWorkflow.designer.cs">
       <DependentUpon>DeleteCompositionTypeWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteDataWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteDataWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteDataWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteDataWorkflow.designer.cs">
       <DependentUpon>DeleteDataWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteInterfaceTypeWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteInterfaceTypeWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteInterfaceTypeWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteInterfaceTypeWorkflow.designer.cs">
       <DependentUpon>DeleteInterfaceTypeWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DisableTypeLocalizationWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DisableTypeLocalizationWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DisableTypeLocalizationWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DisableTypeLocalizationWorkflow.designer.cs">
       <DependentUpon>DisableTypeLocalizationWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditAggregationTypeWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditAggregationTypeWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditAggregationTypeWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditAggregationTypeWorkflow.designer.cs">
       <DependentUpon>EditAggregationTypeWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditCompositionTypeWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditCompositionTypeWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditCompositionTypeWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditCompositionTypeWorkflow.designer.cs">
       <DependentUpon>EditCompositionTypeWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditDataWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditDataWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditDataWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditDataWorkflow.Designer.cs">
       <DependentUpon>EditDataWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditFormWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditFormWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditFormWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditFormWorkflow.designer.cs">
       <DependentUpon>EditFormWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditInterfaceTypeWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditInterfaceTypeWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditInterfaceTypeWorkflow.Designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditInterfaceTypeWorkflow.Designer.cs">
       <DependentUpon>EditInterfaceTypeWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EnableTypeLocalizationWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EnableTypeLocalizationWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EnableTypeLocalizationWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EnableTypeLocalizationWorkflow.designer.cs">
       <DependentUpon>EnableTypeLocalizationWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\LocalizeDataWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\LocalizeDataWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\LocalizeDataWorkflow.designer.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\LocalizeDataWorkflow.designer.cs">
       <DependentUpon>LocalizeDataWorkflow.cs</DependentUpon>
     </Compile>
     <Compile Include="C1Console\Tools\SendMessageToConsolesWorkflow.cs">
@@ -900,166 +900,166 @@
     <EmbeddedResource Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\EditMetaDataWorkflow.layout">
       <DependentUpon>EditMetaDataWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddTypeToWhiteListWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddTypeToWhiteListWorkflow.layout">
       <DependentUpon>AddTypeToWhiteListWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteDataWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteDataWorkflow.layout">
       <DependentUpon>DeleteDataWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\RemoveTypeFromWhiteListWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\RemoveTypeFromWhiteListWorkflow.layout">
       <DependentUpon>RemoveTypeFromWhiteListWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\LocalizationElementProvider\AddSystemLocaleWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\LocalizationElementProvider\AddSystemLocaleWorkflow.layout">
       <DependentUpon>AddSystemLocaleWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\LocalizationElementProvider\DefineDefaultActiveLocaleWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\LocalizationElementProvider\DefineDefaultActiveLocaleWorkflow.layout">
       <DependentUpon>DefineDefaultActiveLocaleWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\LocalizationElementProvider\EditSystemLocaleWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\LocalizationElementProvider\EditSystemLocaleWorkflow.layout">
       <DependentUpon>EditSystemLocaleWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\LocalizationElementProvider\RemoveSystemLocaleWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\LocalizationElementProvider\RemoveSystemLocaleWorkflow.layout">
       <DependentUpon>RemoveSystemLocaleWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\AddMediaZipFileWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\AddMediaZipFileWorkflow.layout">
       <DependentUpon>AddMediaZipFileWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\AddNewMediaFileWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\AddNewMediaFileWorkflow.layout">
       <DependentUpon>AddNewMediaFileWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\AddNewMediaFolderWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\AddNewMediaFolderWorkflow.layout">
       <DependentUpon>AddNewMediaFolderWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\DeleteMediaFileWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\DeleteMediaFileWorkflow.layout">
       <DependentUpon>DeleteMediaFileWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\DeleteMediaFolderWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\DeleteMediaFolderWorkflow.layout">
       <DependentUpon>DeleteMediaFolderWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFileContentWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFileContentWorkflow.layout">
       <DependentUpon>EditMediaFileContentWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFileWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFileWorkflow.layout">
       <DependentUpon>EditMediaFileWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFolderWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\EditMediaFolderWorkflow.layout">
       <DependentUpon>EditMediaFolderWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\MediaFileProviderElementProvider\UploadNewMediaFileWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\UploadNewMediaFileWorkflow.layout">
       <DependentUpon>UploadNewMediaFileWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\AddNewMethodBasedFunctionWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\AddNewMethodBasedFunctionWorkflow.layout">
       <DependentUpon>AddNewMethodBasedFunctionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\DeleteMethodBasedFunctionWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\DeleteMethodBasedFunctionWorkflow.layout">
       <DependentUpon>DeleteMethodBasedFunctionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\EditMethodBasedFunctionWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\EditMethodBasedFunctionWorkflow.layout">
       <DependentUpon>EditMethodBasedFunctionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\AddPackageSourceWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PackageElementProvider\AddPackageSourceWorkflow.layout">
       <DependentUpon>AddPackageSourceWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\DeletePackageSourceWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PackageElementProvider\DeletePackageSourceWorkflow.layout">
       <DependentUpon>DeletePackageSourceWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\InstallLocalPackageWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PackageElementProvider\InstallLocalPackageWorkflow.layout">
       <DependentUpon>InstallLocalPackageWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\InstallRemotePackageWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PackageElementProvider\InstallRemotePackageWorkflow.layout">
       <DependentUpon>InstallRemotePackageWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\UninstallLocalPackageWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PackageElementProvider\UninstallLocalPackageWorkflow.layout">
       <DependentUpon>UninstallLocalPackageWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\UninstallRemotePackageWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PackageElementProvider\UninstallRemotePackageWorkflow.layout">
       <DependentUpon>UninstallRemotePackageWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\ViewAvailablePackageInfoWorkflowWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PackageElementProvider\ViewAvailablePackageInfoWorkflowWorkflow.layout">
       <DependentUpon>ViewAvailablePackageInfoWorkflowWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PackageElementProvider\ViewInstalledPackageInfoWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PackageElementProvider\ViewInstalledPackageInfoWorkflow.layout">
       <DependentUpon>ViewInstalledPackageInfoWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\AddNewPageWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageElementProvider\AddNewPageWorkflow.layout">
       <DependentUpon>AddNewPageWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\DeletePageWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageElementProvider\DeletePageWorkflow.layout">
       <DependentUpon>DeletePageWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\EditPageWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageElementProvider\EditPageWorkflow.layout">
       <DependentUpon>EditPageWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\LocalizePageWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageElementProvider\LocalizePageWorkflow.layout">
       <DependentUpon>LocalizePageWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\PagePublishSchedulerWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageElementProvider\PagePublishSchedulerWorkflow.layout">
       <DependentUpon>PagePublishSchedulerWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\PageUnpublishSchedulerWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageElementProvider\PageUnpublishSchedulerWorkflow.layout">
       <DependentUpon>PageUnpublishSchedulerWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PageElementProvider\UndoUnpublishedChangesWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageElementProvider\UndoUnpublishedChangesWorkflow.layout">
       <DependentUpon>UndoUnpublishedChangesWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PageTemplateElementProvider\AddNewPageTemplateWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\AddNewPageTemplateWorkflow.layout">
       <DependentUpon>AddNewPageTemplateWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PageTemplateElementProvider\DeletePageTemplateWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\DeletePageTemplateWorkflow.layout">
       <DependentUpon>DeletePageTemplateWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PageTemplateElementProvider\EditPageTemplateWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditPageTemplateWorkflow.layout">
       <DependentUpon>EditPageTemplateWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\AddNewPageTypeWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\AddNewPageTypeWorkflow.layout">
       <DependentUpon>AddNewPageTypeWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\AddPageTypeDefaultPageContentWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\AddPageTypeDefaultPageContentWorkflow.layout">
       <DependentUpon>AddPageTypeDefaultPageContentWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\AddPageTypeMetaDataFieldWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\AddPageTypeMetaDataFieldWorkflow.layout">
       <DependentUpon>AddPageTypeMetaDataFieldWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\DeletePageTypeMetaDataFieldWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\DeletePageTypeMetaDataFieldWorkflow.layout">
       <DependentUpon>DeletePageTypeMetaDataFieldWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\DeletePageTypeWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\DeletePageTypeWorkflow.layout">
       <DependentUpon>DeletePageTypeWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\EditPageTypeDefaultPageContentWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\EditPageTypeDefaultPageContentWorkflow.layout">
       <DependentUpon>EditPageTypeDefaultPageContentWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\EditPageTypeMetaDataFieldWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\EditPageTypeMetaDataFieldWorkflow.layout">
       <DependentUpon>EditPageTypeMetaDataFieldWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\PageTypeElementProvider\EditPageTypeWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\EditPageTypeWorkflow.layout">
       <DependentUpon>EditPageTypeWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\AddNewSqlConnectionWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\AddNewSqlConnectionWorkflow.layout">
       <DependentUpon>AddNewSqlConnectionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\AddNewSqlFunctionProviderWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\AddNewSqlFunctionProviderWorkflow.layout">
       <DependentUpon>AddNewSqlFunctionProviderWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\DeleteSqlConnectionWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\DeleteSqlConnectionWorkflow.layout">
       <DependentUpon>DeleteSqlConnectionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\DeleteSqlFunctionProviderWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\DeleteSqlFunctionProviderWorkflow.layout">
       <DependentUpon>DeleteSqlFunctionProviderWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\EditSqlConnectionWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\EditSqlConnectionWorkflow.layout">
       <DependentUpon>EditSqlConnectionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\SqlFunctionElementProvider\EditSqlFunctionProviderWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\EditSqlFunctionProviderWorkflow.layout">
       <DependentUpon>EditSqlFunctionProviderWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\UserElementProvider\AddNewUserWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\UserElementProvider\AddNewUserWorkflow.layout">
       <DependentUpon>AddNewUserWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\UserElementProvider\DeleteUserWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\UserElementProvider\DeleteUserWorkflow.layout">
       <DependentUpon>DeleteUserWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\UserElementProvider\EditUserWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\UserElementProvider\EditUserWorkflow.layout">
       <DependentUpon>EditUserWorkflow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\AddVisualFunctionWorkflow.layout">
@@ -1074,85 +1074,85 @@
     <EmbeddedResource Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\SelectVisualFunctionWorkflow.layout">
       <DependentUpon>SelectVisualFunctionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\UserGroupElementProvider\AddNewUserGroupWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\UserGroupElementProvider\AddNewUserGroupWorkflow.layout">
       <DependentUpon>AddNewUserGroupWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\UserGroupElementProvider\DeleteUserGroupWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\UserGroupElementProvider\DeleteUserGroupWorkflow.layout">
       <DependentUpon>DeleteUserGroupWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\UserGroupElementProvider\EditUserGroupWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\UserGroupElementProvider\EditUserGroupWorkflow.layout">
       <DependentUpon>EditUserGroupWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\VisualFunctionProviderElementProvider\AddNewVisualFunctionWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\VisualFunctionProviderElementProvider\AddNewVisualFunctionWorkflow.layout">
       <DependentUpon>AddNewVisualFunctionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\VisualFunctionProviderElementProvider\EditVisualFunctionWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\VisualFunctionProviderElementProvider\EditVisualFunctionWorkflow.layout">
       <DependentUpon>EditVisualFunctionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\AddNewWebsiteFileWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\AddNewWebsiteFileWorkflow.layout">
       <DependentUpon>AddNewWebsiteFileWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\AddNewWebsiteFolderWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\AddNewWebsiteFolderWorkflow.layout">
       <DependentUpon>AddNewWebsiteFolderWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\DeleteWebsiteFileWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\DeleteWebsiteFileWorkflow.layout">
       <DependentUpon>DeleteWebsiteFileWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\DeleteWebsiteFolderWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\DeleteWebsiteFolderWorkflow.layout">
       <DependentUpon>DeleteWebsiteFolderWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\EditWebsiteFileTextContentWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\EditWebsiteFileTextContentWorkflow.layout">
       <DependentUpon>EditWebsiteFileTextContentWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\WebsiteFileElementProvider\UploadWebsiteFileWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\UploadWebsiteFileWorkflow.layout">
       <DependentUpon>UploadWebsiteFileWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewAggregationTypeWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewAggregationTypeWorkflow.layout">
       <DependentUpon>AddNewAggregationTypeWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewCompositionTypeWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewCompositionTypeWorkflow.layout">
       <DependentUpon>AddNewCompositionTypeWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewDataWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewDataWorkflow.layout">
       <DependentUpon>AddNewDataWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewInterfaceTypeWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewInterfaceTypeWorkflow.layout">
       <DependentUpon>AddNewInterfaceTypeWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteAggregationTypeWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteAggregationTypeWorkflow.layout">
       <DependentUpon>DeleteAggregationTypeWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteCompositionTypeWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteCompositionTypeWorkflow.layout">
       <DependentUpon>DeleteCompositionTypeWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteInterfaceTypeWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DeleteInterfaceTypeWorkflow.layout">
       <DependentUpon>DeleteInterfaceTypeWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DisableTypeLocalizationWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DisableTypeLocalizationWorkflow.layout">
       <DependentUpon>DisableTypeLocalizationWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditAggregationTypeWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditAggregationTypeWorkflow.layout">
       <DependentUpon>EditAggregationTypeWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditCompositionTypeWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditCompositionTypeWorkflow.layout">
       <DependentUpon>EditCompositionTypeWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditDataWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditDataWorkflow.layout">
       <DependentUpon>EditDataWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditInterfaceTypeWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditInterfaceTypeWorkflow.layout">
       <DependentUpon>EditInterfaceTypeWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EnableTypeLocalizationWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EnableTypeLocalizationWorkflow.layout">
       <DependentUpon>EnableTypeLocalizationWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\LocalizeDataWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\LocalizeDataWorkflow.layout">
       <DependentUpon>LocalizeDataWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\AddNewXsltFunctionWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\AddNewXsltFunctionWorkflow.layout">
       <DependentUpon>AddNewXsltFunctionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandardPlugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\EditXsltFunctionWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\EditXsltFunctionWorkflow.layout">
       <DependentUpon>EditXsltFunctionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="C1Console\Tools\SendMessageToConsolesWorkflow.layout">
@@ -1226,9 +1226,7 @@
       <Name>Composite</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ConsoleEventSystem\Workflows\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
