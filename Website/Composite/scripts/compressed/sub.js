@@ -1,8 +1,3 @@
-/*
- * Created: 26. august 2010 14:08:21
- */
-
-
 function _UpdateManager(){
 var _1=null;
 if(!window.UpdateManager){

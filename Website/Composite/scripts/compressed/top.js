@@ -1,8 +1,3 @@
-/*
- * Created: 26. august 2010 14:08:21
- */
-
-
 var IAcceptable=new function(){
 this.dragAccept="type1 type2 type3";
 this.accept=function(_1){
