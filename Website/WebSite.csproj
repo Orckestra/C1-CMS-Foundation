@@ -862,13 +862,6 @@
     <Content Include="Composite\content\views\functiondoc\FunctionDocumentation.css" />
     <Content Include="Composite\content\views\help\help.aspx" />
     <Content Include="Composite\content\views\help\HelpPageBinding.js" />
-    <Content Include="Composite\content\views\help\pages\dummy1.aspx" />
-    <Content Include="Composite\content\views\help\pages\dummy2.aspx" />
-    <Content Include="Composite\content\views\help\pages\_bookmarks.aspx" />
-    <Content Include="Composite\content\views\help\pages\_contents.aspx" />
-    <Content Include="Composite\content\views\help\pages\_frontend\templates\standard.aspx" />
-    <Content Include="Composite\content\views\help\pages\_index.aspx" />
-    <Content Include="Composite\content\views\help\pages\_search.aspx" />
     <Content Include="Composite\content\views\log\log.aspx" />
     <Content Include="Composite\content\views\log\log.css" />
     <Content Include="Composite\content\views\publishworkflowstatus\BACKUP.xslt" />
@@ -5706,9 +5699,6 @@
     <Folder Include="Composite\audio\" />
     <Folder Include="Composite\content\dialogs\querytreeeditor\" />
     <Folder Include="Composite\content\misc\editors\visualeditor\bindings\" />
-    <Folder Include="Composite\content\views\help\pages\_frontend\images\" />
-    <Folder Include="Composite\content\views\help\pages\_frontend\scripts\" />
-    <Folder Include="Composite\content\views\help\pages\_frontend\styles\" />
     <Folder Include="Composite\controls\FormsControls\FormUiControlTemplates\ElementSelectors\" />
     <Folder Include="Composite\help\content\reference\" />
     <Folder Include="Composite\images\icons\republic\Zip files\" />
