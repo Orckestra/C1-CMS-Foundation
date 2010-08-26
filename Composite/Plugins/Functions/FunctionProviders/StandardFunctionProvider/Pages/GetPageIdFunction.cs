@@ -14,7 +14,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
     internal sealed class GetPageIdFunction : StandardFunctionBase
     {
         public GetPageIdFunction(EntityTokenFactory entityTokenFactory)
-            : base("GetPageId", "Composite.Data", typeof(Guid), entityTokenFactory)
+            : base("GetPageId", "Composite.Pages", typeof(Guid), entityTokenFactory)
         {
         }
 

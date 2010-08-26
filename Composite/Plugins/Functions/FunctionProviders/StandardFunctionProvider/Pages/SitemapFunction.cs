@@ -122,7 +122,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         private EntityTokenFactory _entityTokenFactory;
 
         public SitemapFunction(EntityTokenFactory entityTokenFactory)
-            : base("QuickSitemap", "Composite.Data", typeof(XhtmlDocument), entityTokenFactory)
+            : base("QuickSitemap", "Composite.Pages", typeof(XhtmlDocument), entityTokenFactory)
         {
             _entityTokenFactory = entityTokenFactory;
         }

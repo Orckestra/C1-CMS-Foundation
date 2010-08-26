@@ -16,7 +16,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
     internal sealed class SitemapXmlFunction : StandardFunctionBase
     {
         public SitemapXmlFunction(EntityTokenFactory entityTokenFactory)
-            : base("SitemapXml", "Composite.Data", typeof(IEnumerable<XElement>), entityTokenFactory)
+            : base("SitemapXml", "Composite.Pages", typeof(IEnumerable<XElement>), entityTokenFactory)
         {
         }
 

@@ -17,7 +17,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 	internal class GetForeignPageInfoFunction: StandardFunctionBase
 	{
         public GetForeignPageInfoFunction(EntityTokenFactory entityTokenFactory)
-            : base("GetForeignPageInfo", "Composite.Data", typeof(IEnumerable<XElement>), entityTokenFactory)
+            : base("GetForeignPageInfo", "Composite.Pages", typeof(IEnumerable<XElement>), entityTokenFactory)
         {
         }
 
