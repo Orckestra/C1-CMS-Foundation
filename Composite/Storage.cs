@@ -6,7 +6,7 @@ using Composite.Data;
 using Composite.Core.Implementation;
 
 
-namespace Composite
+namespace Composite.Data
 {
     /// <summary>
     /// Define the scope of data in relation to publication status. Data which support publication should always be maintained 
@@ -34,6 +34,8 @@ namespace Composite
     /// <summary>
     /// This class provies the main access to the C1 storage. This could be based on SQL, XML or some other kind of storage.
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class Storage
     {
         static Storage()

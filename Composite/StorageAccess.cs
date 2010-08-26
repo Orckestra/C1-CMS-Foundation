@@ -6,12 +6,187 @@ using System.Linq;
 using Composite.Data;
 
 
-namespace Composite
+namespace Composite.Data
 {
+    public class C1DataConnection : IDisposable
+    {
+        public C1DataConnection()
+            : this(PublicationScope.Public, null)
+        {
+        }
+
+        public C1DataConnection(PublicationScope scope)
+            : this(scope, null)
+        {
+        }
+
+
+        public C1DataConnection(CultureInfo locale)
+            : this(PublicationScope.Public, locale)
+        {
+        }
+
+
+        public C1DataConnection(PublicationScope scope, CultureInfo locale)
+        {
+            this.PublicationScope = scope;
+
+            this.DataScopeIdentifier = DataScopeIdentifier.Administrated;
+            if (this.PublicationScope == PublicationScope.Public)
+            {
+                this.DataScopeIdentifier = DataScopeIdentifier.Public;
+            }
+
+            if (locale == null)
+            {
+                CultureInfo currentCulture = LocalizationScopeManager.CurrentLocalizationScope;
+
+                if (currentCulture == CultureInfo.InvariantCulture && LocalizationScopeManager.IsEmpty)
+                {
+                    locale = DataLocalizationFacade.DefaultLocalizationCulture;
+                }
+            }
+
+            this.Locale = locale;
+        }
+
+        
+
+       public IQueryable<T> Get<T>()
+            where T : class, IData
+        {
+            using (new DataScope(this.DataScopeIdentifier, this.Locale))
+            {
+                return DataFacade.GetData<T>();
+            }
+        }
+
+       
+        public T Add<T>(T item)
+            where T : class, IData
+        {
+            using (new DataScope(this.DataScopeIdentifier, this.Locale))
+            {
+                return DataFacade.AddNew<T>(item);
+            }
+        }
+
+
+
+        public IList<T> Add<T>(IEnumerable<T> items)
+            where T : class, IData
+        {
+            using (new DataScope(this.DataScopeIdentifier, this.Locale))
+            {
+                return DataFacade.AddNew<T>(items);
+            }
+        }
+
+
+
+        public void Update<T>(T item)
+            where T : class, IData
+        {
+            using (new DataScope(this.DataScopeIdentifier, this.Locale))
+            {
+                DataFacade.Update(item);
+            }
+        }
+
+
+
+        public void Update<T>(IEnumerable<T> items)
+            where T : class, IData
+        {
+            using (new DataScope(this.DataScopeIdentifier, this.Locale))
+            {
+                DataFacade.Update(items);
+            }
+        }
+
+
+
+        public void Delete<T>(T item)
+            where T : class, IData
+        {
+            using (new DataScope(this.DataScopeIdentifier, this.Locale))
+            {
+                DataFacade.Delete<T>(item);
+            }
+        }
+
+
+
+        public void Delete<T>(IEnumerable<T> items)
+            where T : class, IData
+        {
+            using (new DataScope(this.DataScopeIdentifier, this.Locale))
+            {
+                DataFacade.Delete<T>(items);
+            }
+        }
+
+
+
+        public T New<T>()
+            where T : class, IData
+        {
+            return DataFacade.BuildNew<T>();
+        }
+
+
+        public PublicationScope PublicationScope { get; private set; }
+
+
+        public CultureInfo Locale { get; private set; }
+
+
+
+        public static IEnumerable<CultureInfo> AllLocales
+        {
+            get
+            {
+                return DataLocalizationFacade.ActiveLocalizationCultures;
+            }
+        }
+
+
+
+        // Only for mocking
+        private DataScopeIdentifier DataScopeIdentifier { get; set; }        
+
+
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+
+
+        ~C1DataConnection() 
+        {        
+            Dispose(false);
+        }
+
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+            }
+        }
+    }
+
+
+
     /// <summary>
     /// This class provides read/write access to the C1 storage.
     /// To obtain a instance of this class, see <see cref="Storage.Open"/>
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class StorageAccess : IDisposable
     {
         /// <summary>

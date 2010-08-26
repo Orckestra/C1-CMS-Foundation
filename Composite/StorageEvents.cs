@@ -8,6 +8,8 @@ namespace Composite
     /// The event handle type for several storage events. See <see cref="StorageEvents"/> and <see cref="Storage.Events"/>.
     /// </summary>
     /// <param name="dataEventArgs"></param>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public delegate void StorageEventHandler(StorageEventArgs dataEventArgs);
 
 
@@ -18,6 +20,8 @@ namespace Composite
     /// <summary>
     /// This class contains information for several storage events.
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class StorageEventArgs : EventArgs
     {
         private readonly Type _dataType;
@@ -148,6 +152,8 @@ namespace Composite
     /// This class contains all the event fired by C1 when changes are made 
     /// in the storage. To obtain a instance of the class see <see cref="Composite.Storage.Events"/>
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class StorageEvents
     {
         /// <summary>
