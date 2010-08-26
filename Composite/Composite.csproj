@@ -2065,7 +2065,6 @@
     <Folder Include="Plugins\Functions\FunctionProviders\XsltBasedFunctionProvider\XsltExtensions\" />
     <Folder Include="Plugins\WebClient\SessionStateProviders\DefaultSessionStateProvider\" />
     <Folder Include="Plugins\WebClient\WebRequestHandlers\LoginWebRequestHandler\Resources\" />
-    <Folder Include="StandardPlugins\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

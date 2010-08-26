@@ -928,7 +928,7 @@
     <Content Include="Composite\localization\Composite.Plugins.VisualFunction.en-us.xml" />
     <Content Include="Composite\localization\Composite.Plugins.WebsiteFileElementProvider.en-us.xml" />
     <Content Include="Composite\localization\Composite.Plugins.XsltBasedFunction.en-us.xml" />
-    <Content Include="Composite\localization\Composite.Users.en-us.xml" />
+    <Content Include="Composite\localization\Composite.C1Console.Users.en-us.xml" />
     <Content Include="Composite\localization\Composite.Web.FormControl.FunctionCallsDesigner.en-us.xml" />
     <Content Include="Composite\localization\Composite.Web.FormControl.FunctionParameterDesigner.en-us.xml" />
     <Content Include="Composite\localization\Composite.Web.FormControl.TypeFieldDesigner.en-us.xml" />
@@ -5004,7 +5004,7 @@
     <Content Include="Composite\localization\Composite.Web.PageBrowser.en-us.xml" />
     <Content Include="Composite\localization\Composite.Web.SourceEditor.en-us.xml" />
     <Content Include="Composite\localization\Composite.Web.VisualEditor.en-us.xml" />
-    <Content Include="Composite\localization\Composite.Trees.en-us.xml">
+    <Content Include="Composite\localization\Composite.C1Console.Trees.en-us.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Composite\Login.aspx" />
