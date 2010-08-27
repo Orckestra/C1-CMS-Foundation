@@ -9,6 +9,10 @@ namespace Composite.Core.WebClient.Logging.WCF
 	{
         [OperationContract]
         [WebInvoke(BodyStyle = WebMessageBodyStyle.Wrapped)]
+        string GetVersion();
+
+        [OperationContract]
+        [WebInvoke(BodyStyle = WebMessageBodyStyle.Wrapped)]
         string Authenticate(string adminPassword);
 
         [OperationContract]

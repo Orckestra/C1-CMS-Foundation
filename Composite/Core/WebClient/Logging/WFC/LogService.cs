@@ -82,6 +82,11 @@ namespace Composite.Core.WebClient.Logging.WCF
             }
         }
 
+        public string GetVersion()
+        {
+            return "2.0";
+        }
+
         public string Authenticate(string loginAndPassword)
         {
             if (SystemSetupFacade.IsSystemFirstTimeInitialized == false) return "";

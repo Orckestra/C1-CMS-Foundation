@@ -52,17 +52,17 @@ namespace Composite.Data.Types
 
 
         [ImmutableFieldId("{21DADDA0-BFAE-4f9d-A3BC-9099771DE73A}")]
-        [StoreFieldType(PhysicalStoreFieldType.String, 1024, IsNullable = true)]
+        [StoreFieldType(PhysicalStoreFieldType.LargeString, IsNullable = true)]
         string WidgetFunctionMarkup { get; set; }
 
 
         [ImmutableFieldId("{16D47452-7933-46fd-A192-C2D10B695C0A}")]
-        [StoreFieldType(PhysicalStoreFieldType.String, 1024, IsNullable = true)]
+        [StoreFieldType(PhysicalStoreFieldType.LargeString, IsNullable = true)]
         string DefaultValueFunctionMarkup { get; set; }
 
 
         [ImmutableFieldId("{11E5E571-8927-414c-8528-40E6876B0613}")]
-        [StoreFieldType(PhysicalStoreFieldType.String, 1024, IsNullable = true)]
+        [StoreFieldType(PhysicalStoreFieldType.LargeString, IsNullable = true)]
         string TestValueFunctionMarkup { get; set; }
     }
 }
