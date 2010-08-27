@@ -103,6 +103,9 @@ FormatSelectorBinding.prototype.handleAction = function ( action ) {
 	switch ( action.type ) {
 		case SelectorBinding.ACTION_SELECTIONCHANGED :
 			var format = this.getResult ();
+			/*
+			 * Seems to be fixed in IE8, though...
+			 */ 
 			if ( Client.isExplorer ) {
 				if ( format == "" ) {
 					this.logger.error ( "TODO: Problem with no format in Explorer!" );
@@ -114,6 +117,7 @@ FormatSelectorBinding.prototype.handleAction = function ( action ) {
 				false,
 				format
 			);
+			
 			this._tinyInstance.execCommand (
 				"mceSetCSSClass",
 				false,

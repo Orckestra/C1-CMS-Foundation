@@ -4,7 +4,7 @@
 		<script type="text/javascript">
 			top.Application.declareTopLocal ( window );
 		</script>
-		<script type="text/javascript" src="tiny_mce/tiny_mce.js"></script>
+		<script type="text/javascript" src="tiny_mce_OLD/tiny_mce.js"></script>
 		<script type="text/javascript" src="visualeditor.js"></script>
 		<style type="text/css">
 			html,
