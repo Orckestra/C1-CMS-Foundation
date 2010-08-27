@@ -398,14 +398,22 @@ var Welcome = new function () {
 		clone = setup.cloneNode ( true );
 		
 		var keys = {};
-		var radios = new List ( clone.getElementsByTagName ( "radio" ));
+		var radios = new List ();
+		var elements = new List ( clone.getElementsByTagName ( "*" ));
+		
+		elements.each ( function ( element ) { // IE no speak getElementsByTagName ( "radio" )!
+			if ( element.nodeName == "radio" ) {
+				radios.add ( element );
+			}
+		});
+		
 		radios.each ( function ( radio ) {
 			radio.removeAttribute ( "selected" );
 			keys [ radio.getAttribute ( "key" )] = radio;
 		});
 		
 		var target = document.getElementById ( "setupfields" );
-		var groups = new List ( target.getElementsByTagName ( "ui:radiodatagroup" ));
+		var groups = new List ( target.getElementsByTagName ( Client.isExplorer ? "radiodatagroup" : "ui:radiodatagroup" ));
 		
 		// update setup result
 		groups.each ( function ( group ) {
@@ -512,6 +520,12 @@ var Welcome = new function () {
 		}
 		
 		setTimeout ( function () {
+			
+			/*
+			alert ( serial ); 	
+			alert ( username + "\n" + password + "\n" + websitelanguage + "\n" + consolelanguage );
+			*/
+			
 			if ( SetupService.SetUp ( serial, username, password, websitelanguage, consolelanguage )) {
 				Application.reload ( true );
 			} else {
