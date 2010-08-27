@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Diagnostics;
 
@@ -9,7 +10,8 @@ namespace Composite.Core.Logging
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    [DataContract(Name = "LogEntry", Namespace = "http://schemas.datacontract.org/2004/07/Composite.Logging.WCF")]
     public sealed class LogEntry
     {
         const char NonBreakingSpace = (char)160;
