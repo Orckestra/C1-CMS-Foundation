@@ -54,7 +54,7 @@ FieldGroupBinding.prototype.onBindingRegister = function () {
 FieldGroupBinding.prototype._innerHTML = function () {
 	
 	var template = Templates.getTemplateElementText ( "fieldgroupmatrix.xml" );
-	var markup = template.replace ( "${markup}", this.bindingElement.innerHTML );	
+	var markup = template.replace ( "MARKUP :)", this.bindingElement.innerHTML );	
 	
 	try {
 		this.bindingElement.innerHTML = markup;
