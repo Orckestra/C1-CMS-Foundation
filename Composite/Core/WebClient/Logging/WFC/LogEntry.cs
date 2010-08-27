@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Composite.Core.WebClient.Logging.WCF
 {
-    [DataContract]
+    [DataContract(Name = "LogEntry", Namespace = "http://schemas.datacontract.org/2004/07/Composite.Logging.WCF")]
 	internal class LogEntry
 	{
         public LogEntry()
