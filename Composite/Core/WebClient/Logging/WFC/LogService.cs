@@ -11,9 +11,10 @@ using Composite.C1Console.Security.Foundation.PluginFacades;
 using Composite.Core.Extensions;
 using Composite.Core.Threading;
 using Composite.Core.Configuration;
+using Composite.Core.Logging;
 
 
-namespace Composite.Core.Logging.WCF
+namespace Composite.Core.WebClient.Logging.WCF
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]

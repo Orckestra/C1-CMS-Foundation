@@ -2,7 +2,7 @@
 using System.ServiceModel;
 using System.ServiceModel.Web;
 
-namespace Composite.Core.Logging.WCF
+namespace Composite.Core.WebClient.Logging.WCF
 {
     [ServiceContract]
 	internal interface ILogService

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Composite.Core.Logging.WCF
+namespace Composite.Core.WebClient.Logging.WCF
 {
     [DataContract]
 	internal class LogEntry

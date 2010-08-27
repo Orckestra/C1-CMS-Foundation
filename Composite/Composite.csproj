@@ -979,11 +979,11 @@
     <Compile Include="Core\WebClient\UiControlLib\ToolbarButton.cs" />
     <Compile Include="Core\WebClient\UiControlLib\TreeNode.cs" />
     <Compile Include="Core\WebClient\UrlString.cs" />
-    <Compile Include="Core\WebClient\WCF\Logger\ILogService.cs" />
-    <Compile Include="Core\WebClient\WCF\Logger\LogEntry.cs" />
-    <Compile Include="Core\WebClient\WCF\Logger\LoggerHostnameHandler.cs" />
-    <Compile Include="Core\WebClient\WCF\Logger\LoggerServiceHostingFactory.cs" />
-    <Compile Include="Core\WebClient\WCF\Logger\LogService.cs" />
+    <Compile Include="Core\WebClient\Logging\WFC\ILogService.cs" />
+    <Compile Include="Core\WebClient\Logging\WFC\LogEntry.cs" />
+    <Compile Include="Core\WebClient\Logging\WFC\LoggerHostnameHandler.cs" />
+    <Compile Include="Core\WebClient\Logging\WFC\LoggerServiceHostingFactory.cs" />
+    <Compile Include="Core\WebClient\Logging\WFC\LogService.cs" />
     <Compile Include="Core\WebClient\WCF\MultipleHostnameHandler.cs" />
     <Compile Include="Core\WebClient\WCF\ServiceHostFactoryHelper.cs" />
     <Compile Include="Core\WebClient\XhtmlPage.cs">
@@ -2059,6 +2059,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\Logging\WCF\" />
+    <Folder Include="Core\WebClient\WCF\Logger\" />
     <Folder Include="Functions\ManagedParameters\Types\" />
     <Folder Include="Functions\Types\" />
     <Folder Include="Plugins\Elements\Design\" />

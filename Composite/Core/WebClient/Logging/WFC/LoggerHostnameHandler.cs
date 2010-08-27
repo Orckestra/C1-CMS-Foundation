@@ -1,6 +1,6 @@
 ﻿using Composite.Core.WebClient;
 
-namespace Composite.Core.Logging.WCF
+namespace Composite.Core.WebClient.Logging.WCF
 {
 	internal class LoggerHostnameHandler: Composite.Core.WebClient.WCF.MultipleHostnameHandler
 	{

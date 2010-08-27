@@ -3,7 +3,7 @@ using System.ServiceModel;
 using System.ServiceModel.Activation;
 using Composite.Core.WebClient.WCF;
 
-namespace Composite.Core.Logging.WCF
+namespace Composite.Core.WebClient.Logging.WCF
 {
     internal class LoggerServiceHostingFactory : ServiceHostFactory 
     {
