@@ -41,9 +41,8 @@ namespace Composite.Core.WebClient.Renderings.Page
         private static readonly object _updatingLock = new object();
         private static readonly object[] _buildingLock = new[] { new object(), new object() }; // Separated objects for 'Public' and 'Administrated' scopes
 
-        public const string SitemapNamespaceString = "http://www.composite.net/ns/data/sitemap/1.0";
-        private static XNamespace SitemapNamespace = XNamespace.Get(SitemapNamespaceString);
-        private static XName PageElementName = SitemapNamespace + "Page";
+        public const string SitemapNamespaceString = "";
+        private static XName PageElementName = "Page";
 
         private static readonly string LogTitle = "PageStructureInfo";
 
@@ -461,8 +460,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                     int localOrdering = pageStructure.LocalOrdering;
 
-                    XElement pageElement = XElement.Parse(string.Format("<sitemap:Page xmlns:sitemap='{0}' />", SitemapNamespace));
-                    pageElement.Add(
+                    XElement pageElement = new XElement("Page",
                          new XAttribute("Id", page.Id),
                          new XAttribute("Title", page.Title),
                          (string.IsNullOrEmpty(page.MenuTitle) ? null : new XAttribute("MenuTitle", page.MenuTitle)),

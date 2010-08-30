@@ -53,7 +53,7 @@ public partial class ViewUnpublishedItems : System.Web.UI.Page
 
     private void AttachPageElements(XElement infoDocumentRoot)
     {
-        XName pageName = ((XNamespace)"http://www.composite.net/ns/data/sitemap/1.0}") + "Page";
+        XName pageName = "Page";
 
         List<IPage> actionRequiredPages =
             (from page in DataFacade.GetData<IPage>()
