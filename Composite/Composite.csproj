@@ -188,6 +188,7 @@
     <Compile Include="Data\IChangeHistory.cs" />
     <Compile Include="Data\ProcessControlled\ILocalizeProcessController.cs" />
     <Compile Include="Data\ProcessControlled\ProcessControllers\GenericLocalizeProcessController\GenericLocalizeProcessController.cs" />
+    <Compile Include="Data\PublicationScope.cs" />
     <Compile Include="Data\Streams\CachedMemoryStream.cs" />
     <Compile Include="Data\Streams\FileStreamManagerAttribute.cs" />
     <Compile Include="Data\Streams\FileStreamManagerLocator.cs" />
