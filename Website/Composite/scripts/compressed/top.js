@@ -14083,7 +14083,7 @@ this._buildDOMContent();
 };
 FieldGroupBinding.prototype._innerHTML=function(){
 var _95a=Templates.getTemplateElementText("fieldgroupmatrix.xml");
-var _95b=_95a.replace("${markup}",this.bindingElement.innerHTML);
+var _95b=_95a.replace("MARKUP :)",this.bindingElement.innerHTML);
 try{
 this.bindingElement.innerHTML=_95b;
 }
