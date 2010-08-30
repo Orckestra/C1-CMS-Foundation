@@ -17,7 +17,7 @@ namespace Composite.Core.Implementation
         /// <returns></returns>
         public override StorageAccess Open() 
         {
-            return new StorageAccessDefaultImplementation(PublicationScope.Public, GetCurrentCulture()); 
+            return new StorageAccessDefaultImplementation(PublicationScope.Published, GetCurrentCulture()); 
         }
 
 
@@ -50,7 +50,7 @@ namespace Composite.Core.Implementation
         /// <returns></returns>
         public override StorageAccess Open(CultureInfo locale) 
         { 
-            return new StorageAccessDefaultImplementation(PublicationScope.Public, locale); 
+            return new StorageAccessDefaultImplementation(PublicationScope.Published, locale); 
         }
 
 

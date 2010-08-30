@@ -30,7 +30,7 @@ public partial class Renderers_Page : System.Web.UI.Page
 
         _url = PageUrl.Parse(query, out _foreignQueryStringParameters);
 
-        if (_url.PublicationScope != PublicationScope.Public)
+        if (_url.PublicationScope != PublicationScope.Published)
         {
             if (UserValidationFacade.IsLoggedIn() == false)
             {
@@ -49,7 +49,7 @@ public partial class Renderers_Page : System.Web.UI.Page
 
     protected void Page_Init(object sender, EventArgs e)
     {
-        if (_url.PublicationScope != PublicationScope.Public)
+        if (_url.PublicationScope != PublicationScope.Published)
         {
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
         }
@@ -96,7 +96,7 @@ public partial class Renderers_Page : System.Web.UI.Page
 
     private void RewritePath()
     {
-        UrlBuilder structuredUrl =  _url.Build(PageUrlType.Public);
+        UrlBuilder structuredUrl =  _url.Build(PageUrlType.Published);
 
         if (structuredUrl == null)
         {

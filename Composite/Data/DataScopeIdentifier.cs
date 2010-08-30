@@ -68,12 +68,12 @@ namespace Composite.Data
 
         public PublicationScope ToPublicationScope()
         {
-            return Name == "public" ? PublicationScope.Public : PublicationScope.Internal;
+            return Name == "public" ? PublicationScope.Published : PublicationScope.Unpublihed;
         }
 
         public static DataScopeIdentifier FromPublicationScope(PublicationScope publicationScope)
         {
-            return publicationScope == PublicationScope.Public ? Public : Administrated;
+            return publicationScope == PublicationScope.Published ? Public : Administrated;
         }
 
         public static bool IsLegasyDataScope(string name)

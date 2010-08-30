@@ -8,7 +8,7 @@ namespace Composite.Core.Implementation.Pages
     {
         public override IPageManager Create()
         {
-            return new DefaultPageManager(PublicationScope.Public, GetCurrentCulture());
+            return new DefaultPageManager(PublicationScope.Published, GetCurrentCulture());
         }
 
 
@@ -29,7 +29,7 @@ namespace Composite.Core.Implementation.Pages
 
         public override IPageManager Create(CultureInfo locale)
         {
-            return new DefaultPageManager(PublicationScope.Public, locale);
+            return new DefaultPageManager(PublicationScope.Published, locale);
         }
 
         private static CultureInfo GetCurrentCulture()

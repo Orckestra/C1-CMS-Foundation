@@ -960,10 +960,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             DataEntityToken token = (DataEntityToken)entityToken;
             IPage page = token.Data as IPage;
 
-            PublicationScope publicationScope = PublicationScope.Internal;
+            PublicationScope publicationScope = PublicationScope.Unpublihed;
             if (actionToken is ViewPublicActionToken)
             {
-                publicationScope = PublicationScope.Public;
+                publicationScope = PublicationScope.Published;
 
                 // Checking whether the page exist in 'Public' scope
                 using (new DataScope(DataScopeIdentifier.Public, page.DataSourceId.LocaleScope))
@@ -984,7 +984,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             var pageUrl = new PageUrl(publicationScope, page.DataSourceId.LocaleScope, page.Id);
 
-            string url = pageUrl.Build(PageUrlType.Public) ?? pageUrl.Build(PageUrlType.Internal); 
+            string url = pageUrl.Build(PageUrlType.Published) ?? pageUrl.Build(PageUrlType.Unpublihed); 
 
             var arguments = new Dictionary<string, string>();
             arguments.Add("URL", url);

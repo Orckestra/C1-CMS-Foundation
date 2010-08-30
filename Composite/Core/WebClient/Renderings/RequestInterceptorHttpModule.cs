@@ -54,7 +54,7 @@ namespace Composite.Core.WebClient.Renderings
 
                 PageUrl pageUrl = PageUrl.ParsePublicUrl(new UrlBuilder(currentUrl), out notInvolvedQueryParameters);
 
-                if (pageUrl == null || pageUrl.UrlType != PageUrlType.Public)
+                if (pageUrl == null || pageUrl.UrlType != PageUrlType.Published)
                 {
                     return false;
                 }
@@ -73,7 +73,7 @@ namespace Composite.Core.WebClient.Renderings
                     return true;
                 }
 
-                UrlBuilder internalPageUrl = pageUrl.Build(PageUrlType.Internal);
+                UrlBuilder internalPageUrl = pageUrl.Build(PageUrlType.Unpublihed);
 
                 internalPageUrl.AddQueryParameters(notInvolvedQueryParameters);
 
@@ -103,7 +103,7 @@ namespace Composite.Core.WebClient.Renderings
                 return false;
             }
 
-            UrlBuilder defaultPageUrl = pageUrl.Build(PageUrlType.Public);
+            UrlBuilder defaultPageUrl = pageUrl.Build(PageUrlType.Published);
             if(defaultPageUrl == null)
             {
                 return false;

@@ -170,6 +170,7 @@
     <Compile Include="Data\Caching\Cache.cs" />
     <Compile Include="Data\Caching\WeakRefCache.cs" />
     <Compile Include="Data\Caching\TableVersion.cs" />
+    <Compile Include="Data\DataConnection.cs" />
     <Compile Include="Data\DataIconFacade.cs" />
     <Compile Include="Data\DataIdKeyFacade.cs" />
     <Compile Include="Data\DataIdKeyFacadeImpl.cs" />
@@ -2062,6 +2063,7 @@
     <Folder Include="Core\WebClient\WCF\Logger\" />
     <Folder Include="Functions\ManagedParameters\Types\" />
     <Folder Include="Functions\Types\" />
+    <Folder Include="NewFolder1\" />
     <Folder Include="Plugins\Elements\Design\" />
     <Folder Include="Plugins\Functions\FunctionProviders\XsltBasedFunctionProvider\XsltExtensions\" />
     <Folder Include="Plugins\WebClient\SessionStateProviders\DefaultSessionStateProvider\" />

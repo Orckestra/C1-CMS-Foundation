@@ -21,14 +21,17 @@ namespace Composite.Data
     public enum PageUrlType
     {
         Undefined = 0,
+
         /// <summary>
         /// A main url by with a C1 page is accessed. F.e. "/Home/About.aspx"
         /// </summary>
-        Public = 1,
+        Published = 1,
+
         /// <summary>
-        /// Internal reference to a page. F.e. "/Renderers/Page.aspx?id=7446ceda-df90-49f0-a183-4e02ed6f6eec"
+        /// Unpublihed reference to a page. F.e. "/Renderers/Page.aspx?id=7446ceda-df90-49f0-a183-4e02ed6f6eec"
         /// </summary>
-        Internal = 2,
+        Unpublihed = 2,
+
         /// <summary>
         /// Friendly url. A short url, by accessing which C1 will make a redirect to related "public" url
         /// </summary>
@@ -114,7 +117,7 @@ namespace Composite.Data
 
             string legasyScopeName = GetLegasyPublicationScopeIdentifier(PublicationScope);
 
-            if (urlType == PageUrlType.Public)
+            if (urlType == PageUrlType.Published)
             {
                 var lookupTable = PageStructureInfo.GetIdToUrlLookup(legasyScopeName, Locale);
 
@@ -124,7 +127,7 @@ namespace Composite.Data
                 }
 
                 var publicUrl = new UrlBuilder(lookupTable[PageId]);
-                if (PublicationScope != PublicationScope.Public)
+                if (PublicationScope != PublicationScope.Published)
                 {
                     publicUrl["dataScope"] = GetLegasyPublicationScopeIdentifier(PublicationScope);
                 }
@@ -132,7 +135,7 @@ namespace Composite.Data
                 return publicUrl;
             }
 
-            if (urlType == PageUrlType.Internal)
+            if (urlType == PageUrlType.Unpublihed)
             {
                 string basePath = UrlUtils.ResolvePublicUrl("Renderers/Page.aspx");
                 UrlBuilder result = new UrlBuilder(basePath);
@@ -201,12 +204,12 @@ namespace Composite.Data
                 return null;
             }
 
-            PublicationScope publicationScope = PublicationScope.Public;
+            PublicationScope publicationScope = PublicationScope.Published;
 
             string dataScopeName = urlBuilder["dataScope"];
             if (!dataScopeName.IsNullOrEmpty() && string.Compare(dataScopeName, DataScopeIdentifier.AdministratedName, StringComparison.OrdinalIgnoreCase) == 0)
             {
-                publicationScope = PublicationScope.Internal;
+                publicationScope = PublicationScope.Unpublihed;
             }
 
             Guid pageId = Guid.Empty;
@@ -221,7 +224,7 @@ namespace Composite.Data
             notUsedQueryParameters = new NameValueCollection(urlBuilder.GetQueryParameters());
             notUsedQueryParameters.Remove("dataScope");
 
-            return new PageUrl(publicationScope, locale, pageId, PageUrlType.Public);
+            return new PageUrl(publicationScope, locale, pageId, PageUrlType.Published);
         }
 
         internal static CultureInfo GetCultureInfo(string requestPath, out string requestPathWithoutUrlMappingName)
@@ -274,12 +277,12 @@ namespace Composite.Data
 
             string dataScopeName = queryString["dataScope"];
 
-            PublicationScope publicationScope = PublicationScope.Public;
+            PublicationScope publicationScope = PublicationScope.Published;
 
             if(dataScopeName != null 
                 && string.Compare(dataScopeName, DataScopeIdentifier.AdministratedName, StringComparison.OrdinalIgnoreCase) == 0)
             {
-                publicationScope = PublicationScope.Internal;
+                publicationScope = PublicationScope.Unpublihed;
             }
             
 
@@ -316,7 +319,7 @@ namespace Composite.Data
                 notUsedQueryParameters.Add(key, queryString[key]);
             }
 
-            return new PageUrl(publicationScope, cultureInfo, pageId, PageUrlType.Internal);
+            return new PageUrl(publicationScope, cultureInfo, pageId, PageUrlType.Unpublihed);
         }
 
         internal static bool TryParseFriendlyUrl(string relativeUrl, out PageUrl pageUrl)
@@ -374,7 +377,7 @@ namespace Composite.Data
 
         private static string GetLegasyPublicationScopeIdentifier(PublicationScope publicationScope)
         {
-            return publicationScope == PublicationScope.Public ? "public" : "administrated";
+            return publicationScope == PublicationScope.Published ? "public" : "administrated";
         }
     }
 }

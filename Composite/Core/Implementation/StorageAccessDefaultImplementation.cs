@@ -20,7 +20,7 @@ namespace Composite.Core.Implementation
         {
             this.DataScopeIdentifier = DataScopeIdentifier.Administrated;
 
-            if (scope == PublicationScope.Public)
+            if (scope == PublicationScope.Published)
             {
                 this.DataScopeIdentifier = DataScopeIdentifier.Public;
             }

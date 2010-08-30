@@ -10,7 +10,7 @@ namespace Composite.Data
 {
     /// <summary>
     /// Define the scope of data in relation to publication status. Data which support publication should always be maintained 
-    /// in the “Internal” scope, while reading data on the public website should always be done in the “Public” scope. 
+    /// in the “Unpublihed” scope, while reading data on the public website should always be done in the “Published” scope. 
     /// Correct setting of the PublicationScope is typically handled by Composite C1 and should in general not be changed by developers. 
     /// Setting an explicit PublicationScope is typically only needed on new service end-points or 
     /// if specific features relating to data updating / publication is desired.
@@ -21,12 +21,12 @@ namespace Composite.Data
         /// <summary>
         /// Only show data that has been published.
         /// </summary>
-        Public,
+        Published,
 
         /// <summary>
         /// Show / update unpublished data.
         /// </summary>
-        Internal
+        Unpublihed
     }
 
 
@@ -78,7 +78,7 @@ namespace Composite.Data
         /// In this example the data items returned by the <see cref="StorageAccess"/> is from the
         /// internal scope.
         /// <code>
-        /// using (StorageAccess access = Storage.Open(PublicationScope.Internal))
+        /// using (StorageAccess access = Storage.Open(PublicationScope.Unpublihed))
         /// {
         ///    var q = 
         ///       from d in access.Get&lt;IMyDataType&gt;()
@@ -105,7 +105,7 @@ namespace Composite.Data
         /// In this example the data items returned by the <see cref="StorageAccess"/> is from the
         /// internal scope and the danish locale
         /// <code>
-        /// using (StorageAccess access = Storage.Open(PublicationScope.Internal, new CultureInfo("da-DK")))
+        /// using (StorageAccess access = Storage.Open(PublicationScope.Unpublihed, new CultureInfo("da-DK")))
         /// {
         ///    var q = 
         ///       from d in access.Get&lt;IMyDataType&gt;()
