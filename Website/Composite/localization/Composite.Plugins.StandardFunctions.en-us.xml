@@ -69,16 +69,16 @@
   <string key="Composite.IDataGenerated.GetXml.param.Randomized.label" value="Randomized" />
   <string key="Composite.IDataGenerated.GetXml.param.CachePriority.help" value="Determines if result XML has to be cached, and what priority those cache records should have" />
   <string key="Composite.IDataGenerated.GetXml.param.CachePriority.label" value="Cache Priority" />  
-  <string key="Composite.Data.GetPageId.description" value="Fetches the ID of the current page or a page relative to the current page." />
-  <string key="Composite.Data.GetPageId.param.PageAssociationScope.help" value="What page to get id from. The default is from the current page." />
-  <string key="Composite.Data.GetPageId.param.PageAssociationScope.label" value="Page association" />
-  <string key="Composite.Data.QuickSitemap.description" value="Quick and raw sitemap xhtml." />
-  <string key="Composite.Data.SitemapXml.description" value="Returns a hierarchical XML structure of pages. When executed as part of a page rendering XML elements representing the current and ancestor pages will be appended the attributes isopen=”true” and iscurrent=”true”" />
-  <string key="Composite.Data.SitemapXml.param.SourcePage.label" value="Source page" />
-  <string key="Composite.Data.SitemapXml.param.SourcePage.help" value="By default the source page is the page currently being rendered. Specify a value if you want to get sitemap information relative to another page. The source page controls how page elements are annotated with 'isopen' and 'iscurrent' and is the starting point when calculating the page scope." />
-  <string key="Composite.Data.SitemapXml.param.PageAssociationScope.label" value="Page scope" />
-  <string key="Composite.Data.SitemapXml.param.PageAssociationScope.help" value="The scope of pages to extract from the sitemap. The default is 'all pages'. You can use this parameter to extract the structure you need to complete your task." />
-  <string key="Composite.Data.GetForeignPageInfo.description" value="Gets information about current page in all the languages." />
+  <string key="Composite.Pages.GetPageId.description" value="Fetches the ID of the current page or a page relative to the current page." />
+  <string key="Composite.Pages.GetPageId.param.PageAssociationScope.help" value="What page to get id from. The default is from the current page." />
+  <string key="Composite.Pages.GetPageId.param.PageAssociationScope.label" value="Page association" />
+  <string key="Composite.Pages.QuickSitemap.description" value="Quick and raw sitemap xhtml." />
+  <string key="Composite.Pages.SitemapXml.description" value="Returns a hierarchical XML structure of pages. When executed as part of a page rendering XML elements representing the current and ancestor pages will be appended the attributes isopen=”true” and iscurrent=”true”" />
+  <string key="Composite.Pages.SitemapXml.param.SourcePage.label" value="Source page" />
+  <string key="Composite.Pages.SitemapXml.param.SourcePage.help" value="By default the source page is the page currently being rendered. Specify a value if you want to get sitemap information relative to another page. The source page controls how page elements are annotated with 'isopen' and 'iscurrent' and is the starting point when calculating the page scope." />
+  <string key="Composite.Pages.SitemapXml.param.PageAssociationScope.label" value="Page scope" />
+  <string key="Composite.Pages.SitemapXml.param.PageAssociationScope.help" value="The scope of pages to extract from the sitemap. The default is 'all pages'. You can use this parameter to extract the structure you need to complete your task." />
+  <string key="Composite.Pages.GetForeignPageInfo.description" value="Gets information about current page in all the languages." />
 
   <string key="Composite.Utils.Caching.PageObjectCache.description" value="Defines a 'cache zone' around a function call or markup (typically containing function calls). This function can be used to enhance page rendering performance by caching sections of a web page. The 'Object Cache Id' value should be unique to the content being cached." />
   <string key="Composite.Utils.Caching.PageObjectCache.param.ObjectToCache.label" value="Object to cache" />
