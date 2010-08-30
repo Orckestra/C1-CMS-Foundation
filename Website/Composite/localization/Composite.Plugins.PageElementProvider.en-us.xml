@@ -71,7 +71,7 @@
   <string key="PageElementProvider.RootLabelToolTip" value="Websites" />
   <string key="PageElementProvider.AddPage" value="Add Page..." />
   <string key="PageElementProvider.AddPageToolTip" value="Add new page" />
-  <string key="PageElementProvider.AddPageAtRoot" value="Add Homepage..." />
+  <string key="PageElementProvider.AddPageAtRoot" value="Add Website..." />
   <string key="PageElementProvider.AddPageAtRootToolTip" value="Add new homepage" />
 	<string key="PageElementProvider.ViewUnpublishedItems" value="List unpublished pages" />
 	<string key="PageElementProvider.ViewUnpublishedItemsToolTip" value="Get an overview of pages and page folder data that haven't been published yet." />
