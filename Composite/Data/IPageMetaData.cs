@@ -1,5 +1,5 @@
 ﻿
-namespace Composite.Data.Types
+namespace Composite.Data
 {
     /// <summary>    
     /// </summary>

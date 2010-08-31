@@ -210,15 +210,22 @@ namespace Composite.Data.GeneratedTypes.Foundation
                         }
                 ));
 
-            foreach (string keyFieldName in dataTypeDescriptor.KeyPropertyNames.Except(dataTypeDescriptor.SuperInterfaceKeyPropertyNames))
+            
+
+            foreach (string keyFieldName in dataTypeDescriptor.KeyPropertyNames)
             {
-                codeTypeDeclaration.CustomAttributes.Add(
-                    new CodeAttributeDeclaration(
-                        typeof(KeyPropertyNameAttribute).FullName,
-                        new CodeAttributeArgument[] {
+                bool isDefinedOnSuperInterface = dataTypeDescriptor.SuperInterfaces.Where(f => f.GetProperty(keyFieldName) != null).Any();
+
+                if (!isDefinedOnSuperInterface)
+                {
+                    codeTypeDeclaration.CustomAttributes.Add(
+                        new CodeAttributeDeclaration(
+                            typeof(KeyPropertyNameAttribute).FullName,
+                            new CodeAttributeArgument[] {
                             new CodeAttributeArgument(new CodePrimitiveExpression(keyFieldName))
                         }
-                    ));
+                        ));
+                }
             }
 
             if (dataTypeDescriptor.StoreSortOrderFieldNames.Count > 0)

@@ -1,7 +1,7 @@
 ﻿using System;
 using Composite.Core.Serialization;
 
-namespace Composite.Data.Types
+namespace Composite.Data
 {
     /// <summary>    
     /// </summary>
