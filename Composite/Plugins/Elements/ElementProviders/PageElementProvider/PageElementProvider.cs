@@ -960,7 +960,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             DataEntityToken token = (DataEntityToken)entityToken;
             IPage page = token.Data as IPage;
 
-            PublicationScope publicationScope = PublicationScope.Unpublihed;
+            PublicationScope publicationScope = PublicationScope.Unpublished;
             if (actionToken is ViewPublicActionToken)
             {
                 publicationScope = PublicationScope.Published;

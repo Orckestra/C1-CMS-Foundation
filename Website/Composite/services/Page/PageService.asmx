@@ -19,7 +19,7 @@ public class PageService : System.Web.Services.WebService
     [WebMethod]
     public string GetPageBrowserDefaultUrl(bool dummy)
     {
-        using (var storage = Storage.Open(PublicationScope.Unpublihed))
+        using (var storage = Storage.Open(PublicationScope.Unpublished))
         {
             // NOTE: linq2sql conversion doesn't support string.EndsWith() function, when we have a parameter as an argument.
             IEnumerable<IPageHostNameBinding> hostNameMatches =
@@ -44,7 +44,7 @@ public class PageService : System.Web.Services.WebService
 
             if (pageId == Guid.Empty)
             {
-                var pageManager = Composite.Data.PageManager.Create(PublicationScope.Unpublihed);
+                var pageManager = Composite.Data.PageManager.Create(PublicationScope.Unpublished);
                 
                 pageId = pageManager.GetChildrenIds(Guid.Empty).FirstOrDefault(rootPageId => pageManager.GetPageById(rootPageId) != null);
             }
@@ -54,7 +54,7 @@ public class PageService : System.Web.Services.WebService
                 return "/";
             }
 
-            string url = new PageUrl(PublicationScope.Unpublihed, storage.Locale, pageId).Build(PageUrlType.Published);
+            string url = new PageUrl(PublicationScope.Unpublished, storage.Locale, pageId).Build(PageUrlType.Published);
 
             return url ?? "/";
         }

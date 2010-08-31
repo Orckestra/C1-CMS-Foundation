@@ -23,6 +23,6 @@ namespace Composite.Data
         /// <summary>
         /// Show / update unpublished data.
         /// </summary>
-        Unpublihed
+        Unpublished
     }
 }

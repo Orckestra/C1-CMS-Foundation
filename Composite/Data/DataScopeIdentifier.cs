@@ -68,7 +68,7 @@ namespace Composite.Data
 
         public PublicationScope ToPublicationScope()
         {
-            return Name == "public" ? PublicationScope.Published : PublicationScope.Unpublihed;
+            return Name == "public" ? PublicationScope.Published : PublicationScope.Unpublished;
         }
 
         public static DataScopeIdentifier FromPublicationScope(PublicationScope publicationScope)

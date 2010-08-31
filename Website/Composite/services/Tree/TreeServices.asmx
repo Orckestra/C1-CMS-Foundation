@@ -166,7 +166,7 @@ public class TreeServices : WebService
 
         if (pageUrlOptions.PublicationScope == PublicationScope.Published)
         {
-            pageUrlOptions = new PageUrl(PublicationScope.Unpublihed, pageUrlOptions.Locale, pageUrlOptions.PageId);
+            pageUrlOptions = new PageUrl(PublicationScope.Unpublished, pageUrlOptions.Locale, pageUrlOptions.PageId);
         }
 
         IPage page = pageUrlOptions.GetPage();

@@ -209,7 +209,7 @@ namespace Composite.Data
             string dataScopeName = urlBuilder["dataScope"];
             if (!dataScopeName.IsNullOrEmpty() && string.Compare(dataScopeName, DataScopeIdentifier.AdministratedName, StringComparison.OrdinalIgnoreCase) == 0)
             {
-                publicationScope = PublicationScope.Unpublihed;
+                publicationScope = PublicationScope.Unpublished;
             }
 
             Guid pageId = Guid.Empty;
@@ -282,7 +282,7 @@ namespace Composite.Data
             if(dataScopeName != null 
                 && string.Compare(dataScopeName, DataScopeIdentifier.AdministratedName, StringComparison.OrdinalIgnoreCase) == 0)
             {
-                publicationScope = PublicationScope.Unpublihed;
+                publicationScope = PublicationScope.Unpublished;
             }
             
 

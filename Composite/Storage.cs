@@ -55,7 +55,7 @@ namespace Composite.Data
         /// In this example the data items returned by the <see cref="StorageAccess"/> is from the
         /// internal scope.
         /// <code>
-        /// using (StorageAccess access = Storage.Open(PublicationScope.Unpublihed))
+        /// using (StorageAccess access = Storage.Open(PublicationScope.Unpublished))
         /// {
         ///    var q = 
         ///       from d in access.Get&lt;IMyDataType&gt;()
@@ -82,7 +82,7 @@ namespace Composite.Data
         /// In this example the data items returned by the <see cref="StorageAccess"/> is from the
         /// internal scope and the danish locale
         /// <code>
-        /// using (StorageAccess access = Storage.Open(PublicationScope.Unpublihed, new CultureInfo("da-DK")))
+        /// using (StorageAccess access = Storage.Open(PublicationScope.Unpublished, new CultureInfo("da-DK")))
         /// {
         ///    var q = 
         ///       from d in access.Get&lt;IMyDataType&gt;()

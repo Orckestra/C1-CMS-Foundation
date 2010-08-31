@@ -99,7 +99,7 @@ namespace Composite.Data
         /// In this example the data items returned by the <see cref="DataConnection"/> is from the
         /// internal scope - data that has not yet been published.
         /// <code>
-        /// using (C1DataConnection connection = new C1DataConnection(PublicationScope.Unpublihed))
+        /// using (C1DataConnection connection = new C1DataConnection(PublicationScope.Unpublished))
         /// {
         ///    var q = 
         ///       from d in connection.Get&lt;IMyDataType&gt;()
@@ -148,7 +148,7 @@ namespace Composite.Data
         /// In this example the data items returned by the <see cref="DataConnection"/> is from the
         /// internal scope and the Danish locale - unpublished data for the Danish website.
         /// <code>
-        /// using (C1DataConnection connection = new C1DataConnection(PublicationScope.Unpublihed, new CultureInfo("da-DK")))
+        /// using (C1DataConnection connection = new C1DataConnection(PublicationScope.Unpublished, new CultureInfo("da-DK")))
         /// {
         ///    var q = 
         ///       from d in connection.Get&lt;IMyDataType&gt;()
