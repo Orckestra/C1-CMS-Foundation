@@ -30,7 +30,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
     <body>
         <asp:form>
             <div style=""float:right; width:10em"">
-                <f:function name=""Composite.Data.QuickSitemap"" />
+                <f:function name=""Composite.Pages.QuickSitemap"" />
             </div>
             <h1><rendering:page.title /></h1>
             <h2><rendering:page.abstract /></h2>
