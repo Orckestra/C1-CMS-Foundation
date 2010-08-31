@@ -37,6 +37,7 @@ namespace Composite.Data.DynamicTypes
             this.StoreSortOrderFieldNames = new DataFieldNameCollection(this.Fields, true, false, false);
             this.IsCodeGenerated = false;
             this.DataScopes = new List<DataScopeIdentifier>();
+            this.SuperInterfaceKeyPropertyNames = new List<string>();
         }
 
 
@@ -48,6 +49,7 @@ namespace Composite.Data.DynamicTypes
             this.Name = dataTypeName;
             this.Version = 1;
             this.IsCodeGenerated = isCodeGenerated;
+            this.SuperInterfaceKeyPropertyNames = new List<string>();
         }
 
 
@@ -60,6 +62,7 @@ namespace Composite.Data.DynamicTypes
             this.TypeManagerTypeName = typeManagerTypeName;
             this.Version = 1;
             this.IsCodeGenerated = false;
+            this.SuperInterfaceKeyPropertyNames = new List<string>();
         }
 
 
@@ -72,6 +75,7 @@ namespace Composite.Data.DynamicTypes
             this.TypeManagerTypeName = typeManagerTypeName;
             this.Version = 1;
             this.IsCodeGenerated = isCodeGenerated;
+            this.SuperInterfaceKeyPropertyNames = new List<string>();
         }
 
 
@@ -91,6 +95,7 @@ namespace Composite.Data.DynamicTypes
 
 
         public DataFieldNameCollection KeyPropertyNames { get; set; }
+        public List<string> SuperInterfaceKeyPropertyNames { get; set; } 
 
 
         public Type GetInterfaceType()
@@ -195,6 +200,7 @@ namespace Composite.Data.DynamicTypes
                     if (DynamicTypeReflectionFacade.IsKeyField(propertyInfo) == true)
                     {
                         this.KeyPropertyNames.Add(propertyInfo.Name);
+                        this.SuperInterfaceKeyPropertyNames.Add(propertyInfo.Name);
                     }
                 }
 
@@ -474,6 +480,13 @@ namespace Composite.Data.DynamicTypes
             }
             element.Add(keyPropertyNamesElement);
 
+            XElement superInterfaceKeyPropertyNamesElement = new XElement("SuperInterfaceKeyPropertyNames");
+            foreach (string keyPropertyName in this.SuperInterfaceKeyPropertyNames)
+            {
+                superInterfaceKeyPropertyNamesElement.Add(new XElement("KeyPropertyName", new XAttribute("name", keyPropertyName)));
+            }
+            element.Add(superInterfaceKeyPropertyNamesElement);
+
             XElement superInterfacesElement = new XElement("SuperInterfaces");
             foreach (Type superInterface in this.SuperInterfaces)
             {
@@ -508,6 +521,7 @@ namespace Composite.Data.DynamicTypes
             XElement dataAssociationsElement = element.Element("DataAssociations");
             XElement dataScopesElement = element.Element("DataScopes");
             XElement keyPropertyNamesElement = element.Element("KeyPropertyNames");
+            XElement superInterfaceKeyPropertyNamesElement = element.Element("SuperInterfaceKeyPropertyNames");
             XElement superInterfacesElement = element.Element("SuperInterfaces");
             XElement fieldsElement = element.Element("Fields");
 
@@ -609,6 +623,15 @@ namespace Composite.Data.DynamicTypes
                 if (keyPropertyNameAttribute == null) throw new ArgumentException("The xml is not correctly formattet");
 
                 dataTypeDescriptor.KeyPropertyNames.Add(keyPropertyNameAttribute.Value);
+            }
+
+            foreach (XElement elm in superInterfaceKeyPropertyNamesElement.Elements("KeyPropertyName"))
+            {
+                XAttribute keyPropertyNameAttribute = elm.Attribute("name");
+
+                if (keyPropertyNameAttribute == null) throw new ArgumentException("The xml is not correctly formattet");
+
+                dataTypeDescriptor.SuperInterfaceKeyPropertyNames.Add(keyPropertyNameAttribute.Value);
             }
 
             return dataTypeDescriptor;

@@ -210,7 +210,7 @@ namespace Composite.Data.GeneratedTypes.Foundation
                         }
                 ));
 
-            foreach (string keyFieldName in dataTypeDescriptor.KeyPropertyNames)
+            foreach (string keyFieldName in dataTypeDescriptor.KeyPropertyNames.Except(dataTypeDescriptor.SuperInterfaceKeyPropertyNames))
             {
                 codeTypeDeclaration.CustomAttributes.Add(
                     new CodeAttributeDeclaration(

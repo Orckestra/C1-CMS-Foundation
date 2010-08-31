@@ -193,7 +193,10 @@
     <Compile Include="Data\Streams\FileStreamManagerAttribute.cs" />
     <Compile Include="Data\Streams\FileStreamManagerLocator.cs" />
     <Compile Include="Data\Streams\IFileStreamManager.cs" />
+    <Compile Include="Data\Types\IPageData.cs" />
+    <Compile Include="Data\Types\IPageFolderData.cs" />
     <Compile Include="Data\Types\IPageFolderDefinition.cs" />
+    <Compile Include="Data\Types\IPageMetaData.cs" />
     <Compile Include="Data\Types\IPageMetaDataDefinition.cs" />
     <Compile Include="Data\Types\IPageTypeMetaDataTypeLink.cs" />
     <Compile Include="Data\Types\IDataItemTreeAttachmentPoint.cs" />
