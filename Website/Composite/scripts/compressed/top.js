@@ -3838,17 +3838,20 @@ Application.trackMousePosition(e);
 EventBroadcaster.broadcast(BroadcastMessages.MOUSEEVENT_MOUSEDOWN,e);
 if(e.button!=ButtonStateManager.RIGHT_BUTTON){
 var node=DOMEvents.getTarget(e);
-while(node){
+while(node!=null){
 switch(node.nodeType){
 case Node.ELEMENT_NODE:
 var _371=UserInterface.getBinding(node);
 if(_371!=null){
 _371.dispatchAction(Binding.ACTION_ACTIVATED);
 }
-node=_371?false:node.parentNode;
+node=_371!=null?null:node.parentNode;
 break;
 case Node.DOCUMENT_NODE:
 node=DOMUtil.getParentWindow(node).frameElement;
+break;
+default:
+node=null;
 break;
 }
 }
@@ -14083,7 +14086,7 @@ this._buildDOMContent();
 };
 FieldGroupBinding.prototype._innerHTML=function(){
 var _95a=Templates.getTemplateElementText("fieldgroupmatrix.xml");
-var _95b=_95a.replace("MARKUP :)",this.bindingElement.innerHTML);
+var _95b=_95a.replace("MARKUP",this.bindingElement.innerHTML);
 try{
 this.bindingElement.innerHTML=_95b;
 }
