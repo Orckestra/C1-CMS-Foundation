@@ -20,7 +20,6 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         #region XSLT constants
         const string _sitemapXslTemplate = @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <xsl:stylesheet version=""1.0"" xmlns:xsl=""http://www.w3.org/1999/XSL/Transform"" exclude-result-prefixes=""xsl""
-	xmlns:data=""" + PageStructureInfo.SitemapNamespaceString + @"""
 	xmlns=""http://www.w3.org/1999/xhtml"">
 
 	<xsl:template match=""/"">
@@ -59,29 +58,29 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 			</head>
 			<body>
 				<ul id=""Sitemap"">
-					<xsl:apply-templates select=""/sitemap/data:Page"" />
+					<xsl:apply-templates select=""/sitemap/Page"" />
 				</ul>
 			</body>
 		</html>
 	</xsl:template>
 	
-	<xsl:template match=""data:Page[@MenuTitle]"">
+	<xsl:template match=""Page[@MenuTitle]"">
 		<li>
 			<xsl:apply-templates mode=""classAttribute"" select=""."" />
 			<a href=""{@URL}"">
 				<xsl:apply-templates mode=""classAttribute"" select=""."" />
 				<xsl:value-of select=""@MenuTitle"" />
 			</a>
-			<xsl:if test=""count(data:Page)&gt;0"">
+			<xsl:if test=""count(Page)&gt;0"">
 				<ul>
-					<xsl:apply-templates select=""data:Page"" />
+					<xsl:apply-templates select=""Page"" />
 				</ul>
 			</xsl:if>
 		</li>
 	</xsl:template>
 
 
-	<xsl:template mode=""classAttribute"" match=""data:Page"">
+	<xsl:template mode=""classAttribute"" match=""Page"">
 		<xsl:choose>
 			<xsl:when test=""@iscurrent='true'"">
 				<xsl:attribute name=""class"">sitemapCurrentPage</xsl:attribute>

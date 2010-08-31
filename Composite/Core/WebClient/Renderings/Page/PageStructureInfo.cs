@@ -41,7 +41,6 @@ namespace Composite.Core.WebClient.Renderings.Page
         private static readonly object _updatingLock = new object();
         private static readonly object[] _buildingLock = new[] { new object(), new object() }; // Separated objects for 'Public' and 'Administrated' scopes
 
-        public const string SitemapNamespaceString = "";
         private static XName PageElementName = "Page";
 
         private static readonly string LogTitle = "PageStructureInfo";
