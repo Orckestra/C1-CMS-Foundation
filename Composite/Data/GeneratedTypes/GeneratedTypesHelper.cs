@@ -52,7 +52,7 @@ namespace Composite.Data.GeneratedTypes
 
         private static readonly string IdFieldName = "Id";
         private static readonly string PageReferenceFieldName = "PageId";
-        private static readonly string CompositionDescriptionFieldName = "ICompositionDescriptionNameForeignKey";
+        private static readonly string CompositionDescriptionFieldName = "FieldName";
 
 
         public GeneratedTypesHelper()
