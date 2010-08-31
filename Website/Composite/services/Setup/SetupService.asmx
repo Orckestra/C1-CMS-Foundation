@@ -148,7 +148,7 @@ namespace Composite.Core.WebClient.Setup
         {
             try
             {
-                string filePath = Context.Server.MapPath("/Composite/Setup/NtfsSecurityTest.xml");
+                string filePath = Context.Server.MapPath("~/Composite/Setup/NtfsSecurityTest.xml");
 
                 if (File.Exists(filePath) == true)
                 {
@@ -186,7 +186,7 @@ namespace Composite.Core.WebClient.Setup
 
         private bool BasePathNotToLong()
         {
-            return Context.Server.MapPath("\\").Length <= 70; 
+            return Context.Server.MapPath("~\\").Length <= 70;
         }
 
 
@@ -218,7 +218,7 @@ namespace Composite.Core.WebClient.Setup
         {
             try
             {
-                string siteRoot = Context.Server.MapPath("\\");
+                string siteRoot = Context.Server.MapPath("~\\");
                 string diskRoot = Directory.GetDirectoryRoot(siteRoot);
 
                 ulong lpFreeBytesAvailable, lpTotalNumberOfBytes, lpTotalNumberOfFreeBytes;
