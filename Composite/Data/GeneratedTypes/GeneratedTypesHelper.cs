@@ -895,12 +895,7 @@ namespace Composite.Data.GeneratedTypes
                     dataTypeDescriptor.DataAssociations.Add(dataTypeAssociationDescriptor);
                 }
             }
-
-            /* if (_pageMetaDataDescriptionForeignKeyDataFieldDescriptor != null)
-             {
-                 _pageMetaDataDescriptionForeignKeyDataFieldDescriptor.Position = position++;
-                 dataTypeDescriptor.Fields.Add(compositionRuleForeignKeyDataFieldDescriptor);
-             }*/
+            
 
             return dataTypeDescriptor;
         }
@@ -957,13 +952,7 @@ namespace Composite.Data.GeneratedTypes
                 {
                     dataTypeDescriptor.Fields.Add(_foreignKeyDataFieldDescriptor);
                 }
-            }
-
-            /*if (_pageMetaDataDescriptionForeignKeyDataFieldDescriptor != null)
-            {
-                _pageMetaDataDescriptionForeignKeyDataFieldDescriptor.Position = position++;
-                dataTypeDescriptor.Fields.Add(_pageMetaDataDescriptionForeignKeyDataFieldDescriptor);
-            }*/
+            }            
 
             return dataTypeDescriptor;
         }
