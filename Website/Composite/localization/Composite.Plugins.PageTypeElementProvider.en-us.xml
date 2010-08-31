@@ -7,10 +7,10 @@
 
   <string key="PageType.Tree.AddNewPageType.Label" value="Add Page Type" />
   <string key="PageType.Tree.AddNewPageType.ToolTip" value="Add new page type" />
-  <string key="PageType.Tree.EditPageType.Label" value="Edit" />
-  <string key="PageType.Tree.EditPageType.ToolTip" value="Edit page type" />
+  <string key="PageType.Tree.EditPageType.Label" value="Edit page type" />
+  <string key="PageType.Tree.EditPageType.ToolTip" value="Edit seleted page type" />
   <string key="PageType.Tree.DeletePageType.Label" value="Delete page type" />
-  <string key="PageType.Tree.DeletePageType.ToolTip" value="Delete page type" />
+  <string key="PageType.Tree.DeletePageType.ToolTip" value="Delete seleted page type" />
   <string key="PageType.Tree.AddDefaultPageContent.Label" value="Add default content" />
   <string key="PageType.Tree.AddDefaultPageContent.ToolTip" value="Add placeholder default content" />
   <string key="PageType.Tree.EditDefaultPageContent.Label" value="Edit default content" />

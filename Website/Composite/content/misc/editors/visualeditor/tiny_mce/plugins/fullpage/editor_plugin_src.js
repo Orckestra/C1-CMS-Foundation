@@ -1,11 +1,8 @@
 /**
- * editor_plugin_src.js
+ * $Id: editor_plugin_src.js 1029 2009-02-24 22:32:21Z spocke $
  *
- * Copyright 2009, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://tinymce.moxiecode.com/license
- * Contributing: http://tinymce.moxiecode.com/contributing
+ * @author Moxiecode
+ * @copyright Copyright © 2004-2008, Moxiecode Systems AB, All rights reserved.
  */
 
 (function() {
@@ -84,10 +81,6 @@
 
 		_setContent : function(ed, o) {
 			var t = this, sp, ep, c = o.content, v, st = '';
-
-			// Ignore raw updated if we already have a head, this will fix issues with undo/redo keeping the head/foot separate
-			if (o.format == 'raw' && t.head)
-				return;
 
 			if (o.source_view && ed.getParam('fullpage_hide_in_source_view'))
 				return;

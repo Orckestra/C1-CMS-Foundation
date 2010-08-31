@@ -37,7 +37,25 @@ namespace Composite.Core.WebClient.Presentation
 			public User(HttpContext context)
 			{
                 string agent = context.Request.UserAgent;
-
+				
+				this.isIE = agent.Contains("MSIE");
+                this.isIE6 = agent.Contains("MSIE 6");
+                this.isIE7 = agent.Contains("MSIE 7");
+                this.isIE8 = agent.Contains("MSIE 8");
+                this.isIE9 = agent.Contains("MSIE 9");
+                
+                this.isWebKit = agent.Contains ( "WebKit" );
+                this.isOpera = agent.Contains ( "Opera" );
+                
+                // NOTE: WEBKIT AND OPERA IS MOZILLA FOR NOW!!!
+                this.isMozilla = !this.isIE; // && !this.isWebKit && !this.isOpera;
+				
+				// analyze os
+                this.isVista = agent.Contains("NT 6"); // Windows7 now counts as Vista!
+                this.isOSX = agent.Contains("OS X");
+				this.isDefault = !this.isVista && !this.isOSX;
+				
+				/*
                 // analyze browser
 				this.isMozilla = agent.Contains("Gecko");
                 this.isIE = !this.isMozilla;
@@ -45,11 +63,7 @@ namespace Composite.Core.WebClient.Presentation
                 this.isIE7 = this.isIE && agent.Contains("MSIE 7");
                 this.isIE8 = this.isIE && agent.Contains("MSIE 8");
                 this.isIE9 = this.isIE && agent.Contains("MSIE 9");
-
-                // analyze os
-                this.isVista = agent.Contains("NT 6"); // Windows7 now counts as Vista!
-                this.isOSX = agent.Contains("OS X");
-				this.isDefault = !this.isVista && !this.isOSX;
+				*/
 			}
 		}
 		
@@ -198,13 +212,13 @@ namespace Composite.Core.WebClient.Presentation
             if (trim.StartsWith("-vendor-") == true)
             {
                 String was = line;
-                if (user.isMozilla)
-                {
-                    line = line.Replace("-vendor-", "-moz-");
-                }
-                else if (user.isWebKit)
+                if (user.isWebKit)
                 {
                     line = line.Replace("-vendor-", "-webkit-");
+                }
+                else if (user.isMozilla)
+                {
+                	line = line.Replace("-vendor-", "-moz-");
                 }
                 else if (user.isOpera)
                 {

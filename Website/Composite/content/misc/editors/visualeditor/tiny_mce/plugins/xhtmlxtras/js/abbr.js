@@ -1,11 +1,8 @@
-/**
- * abbr.js
+ /**
+ * $Id: editor_plugin_src.js 42 2006-08-08 14:32:24Z spocke $
  *
- * Copyright 2009, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://tinymce.moxiecode.com/license
- * Contributing: http://tinymce.moxiecode.com/contributing
+ * @author Moxiecode - based on work by Andrew Tetlaw
+ * @copyright Copyright © 2004-2008, Moxiecode Systems AB, All rights reserved.
  */
 
 function init() {
@@ -16,7 +13,7 @@ function init() {
 }
 
 function insertAbbr() {
-	SXE.insertElement('abbr');
+	SXE.insertElement(tinymce.isIE ? 'html:abbr' : 'abbr');
 	tinyMCEPopup.close();
 }
 

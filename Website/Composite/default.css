@@ -56,7 +56,7 @@ div#backdrop {
 	background-image: url("${root}/images/box.png");	
 }
 div#buzzwords {
-	color: #808080;
+	color: #A0A0A0;
 	position: absolute;	
 	top: 0;
 	left: 0;

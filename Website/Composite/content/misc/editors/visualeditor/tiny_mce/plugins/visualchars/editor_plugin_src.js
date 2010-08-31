@@ -1,11 +1,8 @@
 /**
- * editor_plugin_src.js
+ * $Id: editor_plugin_src.js 201 2007-02-12 15:56:56Z spocke $
  *
- * Copyright 2009, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://tinymce.moxiecode.com/license
- * Contributing: http://tinymce.moxiecode.com/contributing
+ * @author Moxiecode
+ * @copyright Copyright © 2004-2008, Moxiecode Systems AB, All rights reserved.
  */
 
 (function() {
@@ -22,9 +19,9 @@
 			ed.addButton('visualchars', {title : 'visualchars.desc', cmd : 'mceVisualChars'});
 
 			ed.onBeforeGetContent.add(function(ed, o) {
-				if (t.state && o.format != 'raw' && !o.draft) {
+				if (t.state) {
 					t.state = true;
-					t._toggleVisualChars(false);
+					t._toggleVisualChars();
 				}
 			});
 		},
@@ -41,14 +38,11 @@
 
 		// Private methods
 
-		_toggleVisualChars : function(bookmark) {
-			var t = this, ed = t.editor, nl, i, h, d = ed.getDoc(), b = ed.getBody(), nv, s = ed.selection, bo, div, bm;
+		_toggleVisualChars : function() {
+			var t = this, ed = t.editor, nl, i, h, d = ed.getDoc(), b = ed.getBody(), nv, s = ed.selection, bo;
 
 			t.state = !t.state;
 			ed.controlManager.setActive('visualchars', t.state);
-
-			if (bookmark)
-				bm = s.getBookmark();
 
 			if (t.state) {
 				nl = [];
@@ -57,24 +51,20 @@
 						nl.push(n);
 				}, 'childNodes');
 
-				for (i = 0; i < nl.length; i++) {
+				for (i=0; i<nl.length; i++) {
 					nv = nl[i].nodeValue;
-					nv = nv.replace(/(\u00a0)/g, '<span _mce_bogus="1" class="mceItemHidden mceItemNbsp">$1</span>');
-
-					div = ed.dom.create('div', null, nv);
-					while (node = div.lastChild)
-						ed.dom.insertAfter(node, nl[i]);
-
-					ed.dom.remove(nl[i]);
+					nv = nv.replace(/(\u00a0+)/g, '<span class="mceItemHidden mceVisualNbsp">$1</span>');
+					nv = nv.replace(/\u00a0/g, '\u00b7');
+					ed.dom.setOuterHTML(nl[i], nv, d);
 				}
 			} else {
-				nl = ed.dom.select('span.mceItemNbsp', b);
+				nl = tinymce.grep(ed.dom.select('span', b), function(n) {
+					return ed.dom.hasClass(n, 'mceVisualNbsp');
+				});
 
-				for (i = nl.length - 1; i >= 0; i--)
-					ed.dom.remove(nl[i], 1);
+				for (i=0; i<nl.length; i++)
+					ed.dom.setOuterHTML(nl[i], nl[i].innerHTML.replace(/(&middot;|\u00b7)/g, '&nbsp;'), d);
 			}
-
-			s.moveToBookmark(bm);
 		}
 	});
 

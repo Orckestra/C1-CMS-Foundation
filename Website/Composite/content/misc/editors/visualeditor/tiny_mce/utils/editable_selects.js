@@ -1,11 +1,10 @@
 /**
- * editable_selects.js
+ * $Id: editable_selects.js 867 2008-06-09 20:33:40Z spocke $
  *
- * Copyright 2009, Moxiecode Systems AB
- * Released under LGPL License.
+ * Makes select boxes editable.
  *
- * License: http://tinymce.moxiecode.com/license
- * Contributing: http://tinymce.moxiecode.com/contributing
+ * @author Moxiecode
+ * @copyright Copyright © 2004-2008, Moxiecode Systems AB, All rights reserved.
  */
 
 var TinyMCE_EditableSelects = {
