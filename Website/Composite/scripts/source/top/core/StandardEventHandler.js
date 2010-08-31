@@ -162,7 +162,7 @@ StandardEventHandler.prototype._handleMouseDown = function ( e ) {
 	if ( e.button != ButtonStateManager.RIGHT_BUTTON ) {
 		
 		var node = DOMEvents.getTarget ( e );
-		while ( node ) {
+		while ( node != null ) {
 			switch ( node.nodeType ) {
 				case Node.ELEMENT_NODE :
 					var binding = UserInterface.getBinding ( node );
@@ -171,10 +171,13 @@ StandardEventHandler.prototype._handleMouseDown = function ( e ) {
 							Binding.ACTION_ACTIVATED 
 						);
 					}
-					node = binding ? false : node.parentNode;
+					node = binding != null ? null : node.parentNode;
 					break;
 				case Node.DOCUMENT_NODE :
 					node = DOMUtil.getParentWindow ( node ).frameElement;
+					break;
+				default :
+					node = null;
 					break;
 			}
 		}
