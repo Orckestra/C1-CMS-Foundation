@@ -984,7 +984,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             var pageUrl = new PageUrl(publicationScope, page.DataSourceId.LocaleScope, page.Id);
 
-            string url = pageUrl.Build(PageUrlType.Published) ?? pageUrl.Build(PageUrlType.Unpublihed); 
+            string url = pageUrl.Build(PageUrlType.Published) ?? pageUrl.Build(PageUrlType.Unpublished); 
 
             var arguments = new Dictionary<string, string>();
             arguments.Add("URL", url);

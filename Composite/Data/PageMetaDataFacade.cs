@@ -28,7 +28,7 @@ namespace Composite.Data
     {
         internal static readonly string MetaDataType_IdFieldName = "Id";
         internal static readonly string MetaDataType_PageReferenceFieldName = "PageId";
-        internal static readonly string MetaDataType_MetaDataDefinitionFieldName = "ICompositionDescriptionNameForeignKey";
+        internal static readonly string MetaDataType_MetaDataDefinitionFieldName = "FieldName";
 
         /// <summary>
         /// Returns all possible meta data types. This is NOT types that only have been defined on any pages or page type

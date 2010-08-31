@@ -113,7 +113,7 @@ public class LocalizationService : System.Web.Services.WebService
 
             PageUrl pageUrl2 = new PageUrl(pageUrl.PublicationScope, locale, pageUrl.PageId);
 
-            UrlBuilder newUrlBuilder = pageUrl2.Build(PageUrlType.Public) ?? pageUrl2.Build(PageUrlType.Internal);
+            UrlBuilder newUrlBuilder = pageUrl2.Build(PageUrlType.Published) ?? pageUrl2.Build(PageUrlType.Unpublished);
             newUrlBuilder.ServerUrl = urlBuilder.ServerUrl;
             
             pageLocale.Url = newUrlBuilder.ToString();

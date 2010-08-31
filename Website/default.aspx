@@ -47,13 +47,13 @@
 
                     if (pageId == Guid.Empty)
                     {
-                        var pageManager = Composite.Data.PageManager.Create(PublicationScope.Public, defaultLocale);
+                        var pageManager = Composite.Data.PageManager.Create(PublicationScope.Published, defaultLocale);
 
                         pageId = pageManager.GetChildrenIds(Guid.Empty).FirstOrDefault(rootPageId => pageManager.GetPageById(rootPageId) != null);
 
                         if (pageId != Guid.Empty)
                         {
-                            string url = new PageUrl(PublicationScope.Public, defaultLocale, pageId, PageUrlType.Public).Build();
+                            string url = new PageUrl(PublicationScope.Published, defaultLocale, pageId, PageUrlType.Published).Build();
 
                             if (url != null)
                             {

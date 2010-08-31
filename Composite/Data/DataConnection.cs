@@ -7,8 +7,69 @@ using System.Globalization;
 
 namespace Composite.Data
 {
+    public class DataConnectionImplementation
+    {
+        public DataConnectionImplementation(PublicationScope scope, CultureInfo locale)
+        {            
+        }
+
+        // API members goes here
+    }
+
+
+
+    /*public class DefaultConnectionImplementation : DataConnectionImplementation
+    {
+    }*/
+
+
+
+    public class ImplementationFactory
+    {
+        static ImplementationFactory()
+        {
+            CurrentFactory = new ImplementationFactory();
+        }
+
+
+        /// <summary>
+        /// Use this to change the current factory;
+        /// </summary>
+        public static ImplementationFactory CurrentFactory { get; set; }
+
+
+        public DataConnectionImplementation CreateDataConnection(PublicationScope? scope, CultureInfo locale)
+        {
+            PublicationScope scopeToUse = PublicationScope.Published;
+            if (scope.HasValue)
+            {
+                scopeToUse = scope.Value;
+                
+            }
+            else
+            {
+                // Use current scope
+                // scopeToUse = current;
+            }
+
+            CultureInfo localeToUse = locale;
+            if ((locale == null) || (locale == CultureInfo.InvariantCulture))
+            {
+                // Use current locale
+                // localeToUse = current;
+            }
+
+            return new DataConnectionImplementation(scopeToUse, localeToUse);
+        }
+    }
+
+
     public class DataConnection : IDisposable
     {
+        private DataConnectionImplementation implemenation;
+
+       
+
         /// <summary>
         /// Creates a new <see cref="DataConnection"/> instance that can be used to access data stored in Composite C1.
         /// </summary>
@@ -38,7 +99,7 @@ namespace Composite.Data
         /// In this example the data items returned by the <see cref="DataConnection"/> is from the
         /// internal scope - data that has not yet been published.
         /// <code>
-        /// using (C1DataConnection connection = new C1DataConnection(PublicationScope.Internal))
+        /// using (C1DataConnection connection = new C1DataConnection(PublicationScope.Unpublihed))
         /// {
         ///    var q = 
         ///       from d in connection.Get&lt;IMyDataType&gt;()
@@ -87,7 +148,7 @@ namespace Composite.Data
         /// In this example the data items returned by the <see cref="DataConnection"/> is from the
         /// internal scope and the Danish locale - unpublished data for the Danish website.
         /// <code>
-        /// using (C1DataConnection connection = new C1DataConnection(PublicationScope.Internal, new CultureInfo("da-DK")))
+        /// using (C1DataConnection connection = new C1DataConnection(PublicationScope.Unpublihed, new CultureInfo("da-DK")))
         /// {
         ///    var q = 
         ///       from d in connection.Get&lt;IMyDataType&gt;()
@@ -121,7 +182,7 @@ namespace Composite.Data
             this.Locale = locale;
         }
 
-
+        
 
         public IQueryable<T> Get<T>()
              where T : class, IData
@@ -131,6 +192,7 @@ namespace Composite.Data
                 return DataFacade.GetData<T>();
             }
         }
+
 
 
         public T Add<T>(T item)
@@ -206,6 +268,7 @@ namespace Composite.Data
         }
 
 
+
         public PublicationScope PublicationScope { get; private set; }
 
 
@@ -229,7 +292,7 @@ namespace Composite.Data
 
 
         public void Dispose()
-        {
+        {            
             Dispose(true);
             GC.SuppressFinalize(this);
         }

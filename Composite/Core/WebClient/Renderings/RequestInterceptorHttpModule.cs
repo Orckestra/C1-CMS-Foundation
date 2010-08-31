@@ -73,7 +73,7 @@ namespace Composite.Core.WebClient.Renderings
                     return true;
                 }
 
-                UrlBuilder internalPageUrl = pageUrl.Build(PageUrlType.Unpublihed);
+                UrlBuilder internalPageUrl = pageUrl.Build(PageUrlType.Unpublished);
 
                 internalPageUrl.AddQueryParameters(notInvolvedQueryParameters);
 

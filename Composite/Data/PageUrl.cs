@@ -30,7 +30,7 @@ namespace Composite.Data
         /// <summary>
         /// Unpublihed reference to a page. F.e. "/Renderers/Page.aspx?id=7446ceda-df90-49f0-a183-4e02ed6f6eec"
         /// </summary>
-        Unpublihed = 2,
+        Unpublished = 2,
 
         /// <summary>
         /// Friendly url. A short url, by accessing which C1 will make a redirect to related "public" url
@@ -135,7 +135,7 @@ namespace Composite.Data
                 return publicUrl;
             }
 
-            if (urlType == PageUrlType.Unpublihed)
+            if (urlType == PageUrlType.Unpublished)
             {
                 string basePath = UrlUtils.ResolvePublicUrl("Renderers/Page.aspx");
                 UrlBuilder result = new UrlBuilder(basePath);
@@ -319,7 +319,7 @@ namespace Composite.Data
                 notUsedQueryParameters.Add(key, queryString[key]);
             }
 
-            return new PageUrl(publicationScope, cultureInfo, pageId, PageUrlType.Unpublihed);
+            return new PageUrl(publicationScope, cultureInfo, pageId, PageUrlType.Unpublished);
         }
 
         internal static bool TryParseFriendlyUrl(string relativeUrl, out PageUrl pageUrl)

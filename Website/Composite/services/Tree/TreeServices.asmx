@@ -164,9 +164,9 @@ public class TreeServices : WebService
         PageUrl pageUrlOptions = PageUrl.Parse(pageUrl);
         if (pageUrlOptions == null) return string.Empty;
 
-        if (pageUrlOptions.PublicationScope == PublicationScope.Public)
+        if (pageUrlOptions.PublicationScope == PublicationScope.Published)
         {
-            pageUrlOptions = new PageUrl(PublicationScope.Internal, pageUrlOptions.Locale, pageUrlOptions.PageId);
+            pageUrlOptions = new PageUrl(PublicationScope.Unpublihed, pageUrlOptions.Locale, pageUrlOptions.PageId);
         }
 
         IPage page = pageUrlOptions.GetPage();
