@@ -6,6 +6,25 @@ namespace Composite.Functions
     /// <summary>
     /// Add information about parameters to functions callable via the "C# Function" feature. 
     /// </summary>
+    /// <example>
+    /// Here is an example of how to use <see cref="FunctionParameterDescriptionAttribute" />
+    /// <code>
+    /// [FunctionParameterDescription("searchTerm", "Search term", "One or more keywords to search for")]
+    /// [FunctionParameterDescription("filter", "Filter", "Filter to apply to data before searching for search term", null)]
+    /// public static int GetItemCount( string searchTerm, Expression&lt;Func&lt;IMyDataType,bool&gt;&gt; filter ) 
+    /// { 
+    ///     if (filter == null ) filter = _defaultFilter;
+    ///     // more code here
+    /// }
+    /// using (StorageAccess access = Storage.Open())
+    /// {
+    ///    var q = 
+    ///       from d in access.Get&lt;IMyDataType&gt;()
+    ///       where d.Name == "Foo"
+    ///       select d;
+    /// }
+    /// </code>
+    /// </example>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 	public sealed class FunctionParameterDescriptionAttribute : Attribute
 	{
