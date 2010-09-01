@@ -11,6 +11,7 @@ using Composite.Data.Types;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.WebClient;
 using Composite.Core.Extensions;
+using Composite.Core;
 
 
 namespace Composite.Data

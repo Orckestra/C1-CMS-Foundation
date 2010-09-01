@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Composite;
 using Composite.Data;
+using Composite.Core;
 using Composite.Core.WebClient.Services.LocalizationServiceObjects;
 using Composite.C1Console.Users;
 using Composite.Core.ResourceSystem;

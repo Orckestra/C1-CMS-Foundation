@@ -7,7 +7,7 @@ using System.Web;
 using Composite.Core.Extensions;
 
 
-namespace Composite
+namespace Composite.Core
 {
     /// <summary>    
     /// </summary>

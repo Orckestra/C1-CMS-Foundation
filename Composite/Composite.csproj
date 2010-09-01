@@ -471,7 +471,7 @@
     <Compile Include="C1Console\Trees\TreeMarkupConstants.cs" />
     <Compile Include="C1Console\Trees\WorkflowActionNode.cs" />
     <Compile Include="Core\Types\AssemblyExtensionMethods.cs" />
-    <Compile Include="UrlBuilder.cs" />
+    <Compile Include="Core\UrlBuilder.cs" />
     <Compile Include="Core\WebClient\Captcha\Captcha.cs" />
     <Compile Include="Plugins\Functions\XslExtensionsProviders\CaptchaXslExtension.cs" />
     <Compile Include="Core\WebClient\Captcha\Encryption.cs" />

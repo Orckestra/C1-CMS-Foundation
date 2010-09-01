@@ -1,7 +1,7 @@
 ﻿using System;
-using Composite.Plugins.Functions.XslExtensionsProviders.ConfigBasedXslExtensionsProvider;
-using Composite.Core.WebClient;
+using Composite.Core;
 using Composite.Core.WebClient.Captcha;
+using Composite.Plugins.Functions.XslExtensionsProviders.ConfigBasedXslExtensionsProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Plugins.Functions.XslExtensionsProviders
