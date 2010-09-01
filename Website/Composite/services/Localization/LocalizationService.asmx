@@ -98,9 +98,9 @@ public class LocalizationService : System.Web.Services.WebService
         foreach (CultureInfo locale in UserSettings.ActiveLocaleCultureInfos)
         {
             bool exists = false;
-            using (var storage = Storage.Open(pageUrl.PublicationScope, locale))
+            using (DataConnection dataConnection = new DataConnection(pageUrl.PublicationScope, locale))
             {
-                exists = storage.Get<IPage>().Any(page => page.Id == pageUrl.PageId);
+                exists = dataConnection.Get<IPage>().Any(page => page.Id == pageUrl.PageId);
             }
 
             if (!exists) continue;

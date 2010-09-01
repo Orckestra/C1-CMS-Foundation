@@ -19,11 +19,11 @@ public class PageService : System.Web.Services.WebService
     [WebMethod]
     public string GetPageBrowserDefaultUrl(bool dummy)
     {
-        using (var storage = Storage.Open(PublicationScope.Unpublished))
+        using (DataConnection dataConnection = new DataConnection(PublicationScope.Unpublished))
         {
             // NOTE: linq2sql conversion doesn't support string.EndsWith() function, when we have a parameter as an argument.
             IEnumerable<IPageHostNameBinding> hostNameMatches =
-                from binding in storage.Get<IPageHostNameBinding>()
+                from binding in dataConnection.Get<IPageHostNameBinding>()
                 where binding.HostName != null
                       && binding.HostName != string.Empty
                 orderby binding.HostName.Length descending
