@@ -19,7 +19,6 @@
 			<Directory path="\Composite\help" />
 			<Directory path="\Composite\images\originals" />
 			<Directory path="\Composite\transformations\temp" />
-			<Directory path="\Composite\content\misc\editors\visualeditor\tiny_mce" />
 			<Directory path="\Composite\images\icons\harmony" />
 			<Directory path="\Composite\images\icons\mimetypes" />
 			<Directory path="\Composite\images\icons\republic" />
