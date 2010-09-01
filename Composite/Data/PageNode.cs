@@ -22,8 +22,16 @@ namespace Composite.Data
         public PageNode ParentPage { get; private set; }
         public ReadOnlyCollection<PageNode> ChildPages { get; private set; }
 
-        public IEnumerable<PageNode> GetPageNodes(SitemapScope scope) { throw new NotImplementedException(); }
-        public IEnumerable<Guid> GetPageIds(SitemapScope scope) { throw new NotImplementedException(); }
+        public IEnumerable<PageNode> GetPageNodes(SitemapScope scope) 
+        {
+            if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
+            throw new NotImplementedException(); 
+        }
+        public IEnumerable<Guid> GetPageIds(SitemapScope scope) 
+        {
+            if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
+            throw new NotImplementedException(); 
+        }
 
         public SitemapNavigator SitemapNavigator { get; private set; }
 

@@ -2,7 +2,6 @@ using System;
 
 namespace Composite.Data.Hierarchy
 {
-#warning RELEASE: Missing documentation
     /// <summary> 
     /// This attribute is requried if data items of this type is used as elements in a tree view.
     /// This attribute points to a type that can resolve parent relations. 

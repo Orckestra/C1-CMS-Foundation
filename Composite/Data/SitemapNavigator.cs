@@ -8,7 +8,10 @@ namespace Composite.Data
 {
     public class SitemapNavigator
     {
-        public SitemapNavigator(DataConnection connection) { }
+        public SitemapNavigator(DataConnection connection) 
+        {
+            if (connection == null) throw new ArgumentNullException("connection");
+        }
 
         public PageNode GetPageNodeById(Guid id) { throw new NotImplementedException(); }
 

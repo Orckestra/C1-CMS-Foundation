@@ -5,8 +5,8 @@ using Composite.Data;
 namespace Composite
 {
 #warning MRJ: Delete this file
-    /// <summary>
-    /// The event handle type for several storage events. See <see cref="StorageEvents"/> and <see cref="Storage.Events"/>.
+    // The event handle type for several storage events. See <see cref="StorageEvents"/> and <see cref="Storage.Events"/>.
+    /// <summary>    
     /// </summary>
     /// <param name="dataEventArgs"></param>
     /// <exclude />

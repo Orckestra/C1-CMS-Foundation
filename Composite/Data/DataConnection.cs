@@ -15,7 +15,7 @@ namespace Composite.Data
 
         public DataConnection()
             : base(() => ImplementationFactory.CurrentFactory.CreateDataConnection(null, null))
-        {
+        {            
             _pageDataConnection = new ImplementationContainer<PageDataConnection>(() => new PageDataConnection());
         }
 
@@ -25,6 +25,8 @@ namespace Composite.Data
             : base(() => ImplementationFactory.CurrentFactory.CreateDataConnection(scope, null))
         {
             _pageDataConnection = new ImplementationContainer<PageDataConnection>(() => new PageDataConnection(scope));
+
+            if ((scope < PublicationScope.Unpublished) || (scope > PublicationScope.Published)) throw new ArgumentOutOfRangeException("scope");
         }
 
 
@@ -40,6 +42,8 @@ namespace Composite.Data
         public DataConnection(PublicationScope scope, CultureInfo locale)
             : base(() => ImplementationFactory.CurrentFactory.CreateDataConnection(scope, locale))
         {
+            if ((scope < PublicationScope.Unpublished) || (scope > PublicationScope.Published)) throw new ArgumentOutOfRangeException("scope");
+
             _pageDataConnection = new ImplementationContainer<PageDataConnection>(() => new PageDataConnection(scope, locale));
         }
 

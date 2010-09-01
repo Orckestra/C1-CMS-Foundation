@@ -25,6 +25,8 @@ namespace Composite.Data
         public PageDataConnection(PublicationScope scope)
             : base(() => ImplementationFactory.CurrentFactory.CreatePageDataConnection(scope, null))
         {
+            if ((scope < PublicationScope.Unpublished) || (scope > PublicationScope.Published)) throw new ArgumentOutOfRangeException("scope");
+
             _dataConnection = new ImplementationContainer<DataConnection>(() => new DataConnection(scope));
             _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this.DataConnection));
         }
@@ -43,6 +45,8 @@ namespace Composite.Data
         public PageDataConnection(PublicationScope scope, CultureInfo locale)
             : base(() => ImplementationFactory.CurrentFactory.CreatePageDataConnection(scope, locale))
         {
+            if ((scope < PublicationScope.Unpublished) || (scope > PublicationScope.Published)) throw new ArgumentOutOfRangeException("scope");
+
             _dataConnection = new ImplementationContainer<DataConnection>(() => new DataConnection(scope, locale));
             _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this.DataConnection));
         }
@@ -52,6 +56,8 @@ namespace Composite.Data
         public T GetPageMetaData<T>(string fieldName)
             where T : IPageMetaData
         {
+            if (string.IsNullOrWhiteSpace(fieldName)) throw new ArgumentNullException("fieldName");
+
             return this.Implementation.GetPageMetaData<T>(fieldName);
         }
 
@@ -60,6 +66,8 @@ namespace Composite.Data
         public T GetPageMetaData<T>(string fieldName, Guid pageId)
             where T : IPageMetaData
         {
+            if (string.IsNullOrWhiteSpace(fieldName)) throw new ArgumentNullException("fieldName");
+
             return this.Implementation.GetPageMetaData<T>(fieldName, pageId);
         }
 
@@ -68,6 +76,9 @@ namespace Composite.Data
         public IQueryable<T> GetPageMetaData<T>(string fieldName, SitemapScope scope)
             where T : IPageMetaData
         {
+            if (string.IsNullOrWhiteSpace(fieldName)) throw new ArgumentNullException("fieldName");
+            if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
+
             return this.Implementation.GetPageMetaData<T>(fieldName, scope);
         }
 
@@ -76,6 +87,9 @@ namespace Composite.Data
         public IQueryable<T> GetPageMetaData<T>(string fieldName, SitemapScope scope, Guid pageId)
             where T : IPageMetaData
         {
+            if (string.IsNullOrWhiteSpace(fieldName)) throw new ArgumentNullException("fieldName");
+            if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
+
             return this.Implementation.GetPageMetaData<T>(fieldName, scope, pageId);
         }
 
@@ -92,6 +106,8 @@ namespace Composite.Data
         public IQueryable<T> GetPageData<T>(SitemapScope scope)
             where T : IPageData
         {
+            if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
+
             return this.Implementation.GetPageData<T>(scope);
         }
 
@@ -100,6 +116,8 @@ namespace Composite.Data
         public IQueryable<T> GetPageData<T>(SitemapScope scope, Guid sourcePageId)
             where T : IPageData
         {
+            if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
+
             return this.Implementation.GetPageData<T>(scope, sourcePageId);
         }
 
