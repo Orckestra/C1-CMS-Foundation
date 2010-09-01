@@ -1195,7 +1195,7 @@
     <Compile Include="C1Console\Security\ActionTokenSerializer.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\UserElementProvider\UserElementProvider.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\UserElementProvider\UserElementProviderEntityToken.cs" />
-    <Compile Include="Plugins\Functions\FunctionProviders\MethodBasedFunctionProvider\FunctionParameterDescriptionAttribute.cs" />
+    <Compile Include="Functions\FunctionParameterDescriptionAttribute.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Foundation\DowncastableStandardFunctionBase.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Foundation\StandardFunctionBase.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\AspNet\LoadUserControlFunction.cs" />
