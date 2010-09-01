@@ -4,6 +4,7 @@
   <string key="Plugins.XsltBasedFunctionProviderElementProvider.RootFolderToolTip" value="XSLT functions" />
   <string key="AddNewXsltFunctionWorkflow.DuplicateName" value="An xslt function with the same name already exists." />
   <string key="AddNewXsltFunctionWorkflow.MethodEmpty" value="Method name must be non-empty" />
+  <string key="AddNewXsltFunctionWorkflow.NamespaceEmpty" value="Namespace must be non-empty" />
   <string key="AddNewXsltFunctionWorkflow.InvalidNamespace" value="Namespace must be like A.B.C - not start and end with ." />
   <string key="AddNewXsltFunctionWorkflow.InvalidFilePath" value="XslFilePath must start with \ or /" />
   <string key="AddNewXsltFunctionWorkflow.MissingActiveLanguageTitle" value="A language is required" />

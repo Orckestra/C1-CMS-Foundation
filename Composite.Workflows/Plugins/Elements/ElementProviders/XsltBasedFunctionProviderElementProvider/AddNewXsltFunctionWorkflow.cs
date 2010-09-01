@@ -135,6 +135,12 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                 return;
             }
 
+            if (string.IsNullOrWhiteSpace(function.Namespace))
+            {
+                this.ShowFieldMessage("NewXslt.Namespace", GetText("AddNewXsltFunctionWorkflow.NamespaceEmpty"));
+                return;
+            }
+            
             if (!function.Namespace.IsCorrectNamespace('.'))
             {
                 this.ShowFieldMessage("NewXslt.Namespace", GetText("AddNewXsltFunctionWorkflow.InvalidNamespace"));
