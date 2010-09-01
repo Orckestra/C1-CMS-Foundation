@@ -41,21 +41,21 @@
 	<string key="Website.Forms.Administrative.EditUserStep1.CultureHelp" value="To change the way numbers, times, and dates are displayed, select an entry from the list. Entries marked with a star (*) have been translated. Unmarked entries will use English as language." />
 	<string key="Website.Forms.Administrative.EditUserStep1.ActivePerspectiveFieldLabel" value="Perspectives" />
 	<string key="Website.Forms.Administrative.EditUserStep1.ActivePerspectiveMultiSelectLabel" value="Visible perspectives" />
-	<string key="Website.Forms.Administrative.EditUserStep1.ActivePerspectiveMultiSelectHelp" value="Select which perspectives the user gets access to view" />
+	<string key="Website.Forms.Administrative.EditUserStep1.ActivePerspectiveMultiSelectHelp" value="Select which perspectives should be visible when the user starts the C1 Console." />
 	<string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissionsFieldLabel" value="Global permissions" />
 	<string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissionsMultiSelectLabel" value="Global permissions" />
 	<string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissionsMultiSelectHelp" value="The Administrate permission grants the user access to manage user permissions and execute other administrative tasks." />
 	<string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissions.IgnoredOwnAdministrativeRemoval" value="The removal of your own administrative permission has been ignored. You still have administrative priviledges." />
   <string key="Website.Forms.Administrative.EditUserStep1.ActiveLocalesFieldLabel" value="Data language access" />
-  <string key="Website.Forms.Administrative.EditUserStep1.ActiveLocalesMultiSelectLabel" value="Data language access" />
-  <string key="Website.Forms.Administrative.EditUserStep1.ActiveLocalesMultiSelectHelp" value="Data language access" />
+  <string key="Website.Forms.Administrative.EditUserStep1.ActiveLocalesMultiSelectLabel" value="Data Languages" />
+  <string key="Website.Forms.Administrative.EditUserStep1.ActiveLocalesMultiSelectHelp" value="User has access to manage data in the selected languages." />
   <string key="Website.Forms.Administrative.EditUserStep1.ActiveLocaleLabel" value="Active language" />
   <string key="Website.Forms.Administrative.EditUserStep1.ActiveLocaleHelp" value="Active language" />
   <string key="Website.Forms.Administrative.EditUserStep1.ActiveLocaleNotChecked" value="The selected language is not checked in the data language section." />
   <string key="Website.Forms.Administrative.EditUserStep1.NoActiveLocaleSelected" value="You must select at least one active language." />
   <string key="Website.Forms.Administrative.EditUserStep1.GenerelTabLabel" value="General" />
   <string key="Website.Forms.Administrative.EditUserStep1.PermissionsTabLabel" value="Permissions" />
-  <string key="Website.Forms.Administrative.EditUserStep1.GroupsTabLabel" value="Groups" />
+  <string key="Website.Forms.Administrative.EditUserStep1.PerspectivesTabLabel" value="Perspectives" />
   <string key="Website.Forms.Administrative.EditUserStep1.UserGroupsFieldLabel" value="User Groups" />
   <string key="Website.Forms.Administrative.EditUserStep1.UserGroupsMultiSelectHelp" value="Select the user groups that the selected user should be a member of." />  
   <string key="UserElementProvider.RootLabel" value="Users" />

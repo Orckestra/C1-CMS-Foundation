@@ -87,9 +87,9 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             XElement tabPanelsElement = layoutElement.Element(DataTypeDescriptorFormsHelper.MainNamespace + "TabPanels");
             List<XElement> placeHolderElements = tabPanelsElement.Elements(DataTypeDescriptorFormsHelper.MainNamespace + "PlaceHolder").ToList();
 
-            UpdateFormDefinitionWithActivePerspectives(user, bindingsElement, placeHolderElements[1]);
+            UpdateFormDefinitionWithUserGroups(user, bindingsElement, placeHolderElements[1]);
+            UpdateFormDefinitionWithActivePerspectives(user, bindingsElement, placeHolderElements[2]);
             //UpdateFormDefinitionWithGlobalPermissions(user, bindingsElement, placeHolderElements[1]);
-            UpdateFormDefinitionWithUserGroups(user, bindingsElement, placeHolderElements[2]);
 
             if (DataLocalizationFacade.ActiveLocalizationCultures.Count() > 0)
             {

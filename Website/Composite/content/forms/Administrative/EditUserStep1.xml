@@ -61,13 +61,14 @@
           </KeySelector>
         </FieldGroup>
       </PlaceHolder>
-      
-      
+
+
       <PlaceHolder Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.PermissionsTabLabel}">
       </PlaceHolder>
 
-      <PlaceHolder Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.GroupsTabLabel}">
-      </PlaceHolder>      
+      <PlaceHolder Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.PerspectivesTabLabel}">
+      </PlaceHolder>
+
     </TabPanels>
   </cms:layout>
 </cms:formdefinition>
