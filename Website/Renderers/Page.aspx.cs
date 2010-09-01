@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.UI;
 using Composite;
+using Composite.Core;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Data;
 using Composite.Core.WebClient.Renderings;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.C1Console.Security;
@@ -40,9 +41,9 @@ public partial class Renderers_Page : System.Web.UI.Page
             }
         }
 
-       _cacheUrl = HttpContext.Current.Request.Url.PathAndQuery;
+        _cacheUrl = HttpContext.Current.Request.Url.PathAndQuery;
 
-       RewritePath();
+        RewritePath();
     }
 
 
@@ -56,47 +57,48 @@ public partial class Renderers_Page : System.Web.UI.Page
 
         _dataScope = new DataScope(DataScopeIdentifier.FromPublicationScope(_url.PublicationScope), _url.Locale); // IDisposable, Disposed in OnUnload
 
-        var pageManager = Composite.Data.PageManager.Create(_url.PublicationScope, _url.Locale);
-
-        IPage page = pageManager.GetPageById(_url.PageId);
-
-        if (page != null)
+        using (DataConnection dataConnection = new DataConnection(_url.PublicationScope, _url.Locale))
         {
-            RenderingResponseHandlerResult responseHandling = RenderingResponseHandlerFacade.GetDataResponseHandling(page.GetDataEntityToken());
+            IPage page = dataConnection.Get<IPage>().Where(f => f.Id == _url.PageId).FirstOrDefault();
 
-            if ((responseHandling != null) && (responseHandling.PreventPublicCaching == true))
+            if (page != null)
             {
-                Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            }
+                RenderingResponseHandlerResult responseHandling = RenderingResponseHandlerFacade.GetDataResponseHandling(page.GetDataEntityToken());
 
-            if ((responseHandling != null) &&
-                (responseHandling.EndRequest || responseHandling.RedirectRequesterTo != null))
-            {
-                if (responseHandling.RedirectRequesterTo != null)
+                if ((responseHandling != null) && (responseHandling.PreventPublicCaching == true))
                 {
-                    Response.Redirect(responseHandling.RedirectRequesterTo.AbsoluteUri, false);
+                    Response.Cache.SetCacheability(HttpCacheability.NoCache);
                 }
 
-                Context.ApplicationInstance.CompleteRequest();
-                return;
-            }
+                if ((responseHandling != null) &&
+                    (responseHandling.EndRequest || responseHandling.RedirectRequesterTo != null))
+                {
+                    if (responseHandling.RedirectRequesterTo != null)
+                    {
+                        Response.Redirect(responseHandling.RedirectRequesterTo.AbsoluteUri, false);
+                    }
 
-            IEnumerable<IPagePlaceholderContent> contents = pageManager.GetPlaceholdersContent(page.Id);
-            Control renderedPage = PageRenderer.Render(page, contents);
-            this.Controls.Add(renderedPage);
-            if (this.Form != null) this.Form.Action = Request.RawUrl;
-        }
-        else
-        {
-            // GUID not found in lookup
-            this.Controls.Add(new LiteralControl("<div>Unknown page id - either this page has not been published yet or it has been deleted.</div>"));
+                    Context.ApplicationInstance.CompleteRequest();
+                    return;
+                }
+
+                IEnumerable<IPagePlaceholderContent> contents = dataConnection.Get<IPagePlaceholderContent>().Where(f=>f.PageId==page.Id);
+                Control renderedPage = PageRenderer.Render(page, contents);
+                this.Controls.Add(renderedPage);
+                if (this.Form != null) this.Form.Action = Request.RawUrl;
+            }
+            else
+            {
+                // GUID not found in lookup
+                this.Controls.Add(new LiteralControl("<div>Unknown page id - either this page has not been published yet or it has been deleted.</div>"));
+            }
         }
     }
 
 
     private void RewritePath()
     {
-        UrlBuilder structuredUrl =  _url.Build(PageUrlType.Published);
+        UrlBuilder structuredUrl = _url.Build(PageUrlType.Published);
 
         if (structuredUrl == null)
         {

@@ -940,7 +940,6 @@
     <Content Include="Frontend\Styles\VisualEditor\VisualEditor.Config.css" />
     <Content Include="Frontend\Styles\VisualEditor\VisualEditor.Config.xml" />
     <Content Include="Frontend\Styles\VisualEditor\VisualEditor.Default.css" />
-    <Content Include="Renderers\ExecuteFunction.ashx" />
     <Content Include="Renderers\FileNotFoundHandler.ashx" />
     <Content Include="Renderers\ShowMedia.ashx" />
   </ItemGroup>

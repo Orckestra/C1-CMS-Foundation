@@ -7,6 +7,7 @@
 <%@ Import Namespace="Composite.Data" %>
 <%@ Import Namespace="Composite.Data.Types" %>
 <%@ Import Namespace="Composite.Core.Configuration" %>
+<%@ Import Namespace="System.Globalization" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -21,12 +22,12 @@
                 }
                 
                 
-                var defaultLocale = DataLocalizationFacade.DefaultLocalizationCulture;
-                
-                using (var storage = Storage.Open())
+                CultureInfo defaultLocale = DataLocalizationFacade.DefaultLocalizationCulture;
+
+                using (DataConnection dataConnection = new DataConnection(defaultLocale))
                 {
                     IEnumerable<IPageHostNameBinding> hostNameMatches =
-                        from binding in storage.Get<IPageHostNameBinding>()
+                        from binding in dataConnection.Get<IPageHostNameBinding>()
                         where binding.HostName != null
                                 && binding.HostName != string.Empty
                         orderby binding.HostName.Length descending
@@ -47,9 +48,8 @@
 
                     if (pageId == Guid.Empty)
                     {
-                        var pageManager = Composite.Data.PageManager.Create(PublicationScope.Published, defaultLocale);
-
-                        pageId = pageManager.GetChildrenIds(Guid.Empty).FirstOrDefault(rootPageId => pageManager.GetPageById(rootPageId) != null);
+#warning MAW: Bind to sitemap stuff here - make sure we only find a published page
+                        pageId = dataConnection.Get<IPageStructure>().Where(f=>f.ParentId==Guid.Empty).OrderBy(f=>f.LocalOrdering).Select(f=>f.Id).FirstOrDefault();
 
                         if (pageId != Guid.Empty)
                         {
