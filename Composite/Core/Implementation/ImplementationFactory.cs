@@ -84,6 +84,7 @@ namespace Composite.Core.Implementation
                 // Use current locale
                 // localeToUse = current;
 #warning MRJ: FIX THIS!!!!!!
+                localeToUse = DataLocalizationFacade.DefaultLocalizationCulture; // MAW FIX - Check it MRJ :)
             }
 
             return localeToUse;

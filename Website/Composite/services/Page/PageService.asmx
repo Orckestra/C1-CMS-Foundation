@@ -44,9 +44,8 @@ public class PageService : System.Web.Services.WebService
 
             if (pageId == Guid.Empty)
             {
-                var pageManager = Composite.Data.PageManager.Create(PublicationScope.Unpublished);
-                
-                pageId = pageManager.GetChildrenIds(Guid.Empty).FirstOrDefault(rootPageId => pageManager.GetPageById(rootPageId) != null);
+#warning MAW: Bind to sitemap stuff here - make sure we only find a published page. also look into hostnames
+                pageId = dataConnection.Get<IPageStructure>().Where(f => f.ParentId == Guid.Empty).OrderBy(f => f.LocalOrdering).Select(f => f.Id).FirstOrDefault();
             }
 
             if (pageId == Guid.Empty)
@@ -54,7 +53,7 @@ public class PageService : System.Web.Services.WebService
                 return "/";
             }
 
-            string url = new PageUrl(PublicationScope.Unpublished, storage.Locale, pageId).Build(PageUrlType.Published);
+            string url = new PageUrl(PublicationScope.Unpublished, dataConnection.CurrentLocale, pageId).Build(PageUrlType.Published);
 
             return url ?? "/";
         }
