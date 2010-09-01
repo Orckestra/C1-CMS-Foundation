@@ -4,7 +4,8 @@ using Composite.Data;
 
 namespace Composite.Core.Implementation.Pages
 {
-    public class NavigationBase : ImplementationBase
+#warning MRJ: Delete this file
+    /*  public class NavigationBase : ImplementationBase
     {
         [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public virtual XSiteMap GetSiteMap()
@@ -22,5 +23,5 @@ namespace Composite.Core.Implementation.Pages
         {
             return null;
         }
-    }
+    }*/
 }

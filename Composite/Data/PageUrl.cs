@@ -15,9 +15,12 @@ using Composite.Core.Extensions;
 
 namespace Composite.Data
 {
+#warning MRJ: Delete this file ????????
     /// <summary>
     /// Page url type
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum PageUrlType
     {
         Undefined = 0,
@@ -41,6 +44,8 @@ namespace Composite.Data
     /// <summary>
     /// Represents a page url
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class PageUrl
     {
         public PageUrl(PublicationScope publicationScope, CultureInfo locale, Guid pageId) :
@@ -89,10 +94,12 @@ namespace Composite.Data
         /// <returns></returns>
         public IPage GetPage()
         {
-            using(Storage.Open(PublicationScope, Locale))
+#warning MRJ: WHAT TO DO HERE??
+            throw new NotImplementedException();
+            /*using(Storage.Open(PublicationScope, Locale))
             {
                 return Data.Types.PageManager.GetPageById(PageId);
-            }
+            }*/
         }
 
         /// <summary>

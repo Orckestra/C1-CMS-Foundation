@@ -7,8 +7,9 @@ using Composite.Data;
 
 
 namespace Composite.Data
-{   
-    /// <summary>
+{
+#warning MRJ: Delete this file
+   /* /// <summary>
     /// This class provides read/write access to the C1 storage.
     /// To obtain a instance of this class, see <see cref="Storage.Open"/>
     /// </summary>
@@ -231,5 +232,5 @@ namespace Composite.Data
         /// </summary>
         [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "We want to implement this in the non abstract implementations")]
         public abstract void Dispose();
-    }
+    }*/
 }

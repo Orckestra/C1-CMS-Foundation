@@ -4,7 +4,60 @@ using Composite.Core.Collections.Generic;
 
 namespace Composite.Core.Implementation
 {
-    /// <summary>
+    public class ImplementationContainer<T>
+        where T : class
+    {
+        private T _implementation = null;
+        private bool _disposed = false;
+        private Func<T> _create;
+
+
+
+        internal ImplementationContainer(Func<T> create)
+        {
+            _create = create;
+        }
+
+
+
+        internal T Implementation
+        {
+            get
+            {
+                if (_implementation == null)
+                {
+                    if (_disposed) throw new InvalidOperationException("Already disposed");
+
+                    _implementation = _create();
+                }
+
+                return _implementation;
+            }
+        }
+
+
+
+        internal void DisposeImplementation()
+        {
+            _disposed = true;
+
+            IDisposable disposable = _implementation as IDisposable;
+
+            if (disposable != null)
+            {
+                disposable.Dispose();
+            }
+
+            _implementation = null;
+        }
+    }
+
+
+
+
+#warning MRJ: Delete this stuff
+
+   /* /// <summary>
     /// This static class provides mean for change the implementation of all static classes in the C1 API. 
     /// This can be used for mocking/stubbing when creating unittests or need to have control over 
     /// behaviour durring development.
@@ -42,5 +95,5 @@ namespace Composite.Core.Implementation
         {
             return _implementations[typeof(T)] as T;
         }
-    }
+    }*/
 }

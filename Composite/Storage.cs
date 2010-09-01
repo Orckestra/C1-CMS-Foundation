@@ -8,7 +8,8 @@ using Composite.Core.Implementation;
 
 namespace Composite.Data
 {
-    /// <summary>
+#warning MRJ: Delete this file
+  /*  /// <summary>
     /// This class provies the main access to the C1 storage. This could be based on SQL, XML or some other kind of storage.
     /// </summary>
     /// <exclude />
@@ -17,7 +18,7 @@ namespace Composite.Data
     {
         static Storage()
         {
-            ImplementationContainer.SetImplementation<StorageBase>(new StorageDefaultImplementation());
+           // ImplementationContainer.SetImplementation<StorageBase>(new StorageDefaultImplementation());
         }
 
 
@@ -41,7 +42,7 @@ namespace Composite.Data
         [SuppressMessage("Microsoft.Globalization", "CA1304:SpecifyCultureInfo", MessageId = "Composite.Core.Implementation.StorageBase.Open")]
         public static StorageAccess Open()
         {
-            return ImplementationContainer.GetImplementation<StorageBase>().Open();
+          //  return ImplementationContainer.GetImplementation<StorageBase>().Open();
         }
 
 
@@ -69,7 +70,7 @@ namespace Composite.Data
         [SuppressMessage("Microsoft.Globalization", "CA1304:SpecifyCultureInfo", MessageId = "Composite.Core.Implementation.StorageBase.Open(Composite.PublicationScope)")]
         public static StorageAccess Open(PublicationScope publicationScope)
         {
-            return ImplementationContainer.GetImplementation<StorageBase>().Open(publicationScope);
+          //  return ImplementationContainer.GetImplementation<StorageBase>().Open(publicationScope);
         }
 
 
@@ -96,7 +97,7 @@ namespace Composite.Data
         /// <returns>A <see cref="StorageAccess"/> instance with the given <paramref name="locale"/> and <paramref name="publicationScope"/></returns>
         public static StorageAccess Open(PublicationScope publicationScope, CultureInfo locale)
         {
-            return ImplementationContainer.GetImplementation<StorageBase>().Open(publicationScope, locale);
+           // return ImplementationContainer.GetImplementation<StorageBase>().Open(publicationScope, locale);
         }
 
 
@@ -122,7 +123,7 @@ namespace Composite.Data
         /// <returns>A <see cref="StorageAccess"/> instance with the default <see cref="PublicationScope"/> and the given <paramref name="locale"/></returns>
         public static StorageAccess Open(CultureInfo locale)
         {
-            return ImplementationContainer.GetImplementation<StorageBase>().Open(locale);
+          //  return ImplementationContainer.GetImplementation<StorageBase>().Open(locale);
         }
 
 
@@ -145,7 +146,7 @@ namespace Composite.Data
         /// <returns>Returns a new instance of the <typeparamref name="T"/></returns>
         public static T New<T>() where T : class, IData
         {
-            return ImplementationContainer.GetImplementation<StorageBase>().New<T>();
+          ///  return ImplementationContainer.GetImplementation<StorageBase>().New<T>();
         }
 
 
@@ -196,5 +197,5 @@ namespace Composite.Data
         {
             return ImplementationContainer.GetImplementation<StorageBase>().Events<T>();
         }
-    }
+    }*/
 }

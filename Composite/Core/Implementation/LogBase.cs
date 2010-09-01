@@ -3,7 +3,9 @@
 
 namespace Composite.Core.Implementation
 {
-#warning RELEASE: Missing documentation
+#warning MRJ: Delete this file
+    
+    /*#warning RELEASE: Missing documentation
     public class LogBase : ImplementationBase
     {
         public virtual void LogInformation(string title, string messageFormat, params object[] args) { }
@@ -16,5 +18,5 @@ namespace Composite.Core.Implementation
         public virtual void LogWarning(string title, Exception exception) { }
         public virtual void LogError(string title, Exception exception) { }
         public virtual void LogCritical(string title, Exception exception) { }
-    }
+    }*/
 }

@@ -5,7 +5,8 @@ using Composite.Core.Logging;
 
 namespace Composite.Core.Implementation
 {
-#warning RELEASE: Missing documentation
+#warning MRJ: Delete this file
+    /*#warning RELEASE: Missing documentation
     public class LogDefaultImplementation : LogBase
     {
         public override void LogCritical(string title, Exception exception)
@@ -52,5 +53,5 @@ namespace Composite.Core.Implementation
         {
             LoggingService.LogWarning(title, string.Format(messageFormat, args));
         }
-    }
+    }*/
 }

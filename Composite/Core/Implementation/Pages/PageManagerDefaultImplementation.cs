@@ -4,7 +4,8 @@ using Composite.Data;
 
 namespace Composite.Core.Implementation.Pages
 {
-    public class PageManagerDefaultImplementation : PageManagerBase
+#warning MRJ: Delete this file
+    /*  public class PageManagerDefaultImplementation : PageManagerBase
     {
         public override IPageManager Create()
         {
@@ -42,7 +43,7 @@ namespace Composite.Core.Implementation.Pages
 
             return currentCulture;
         }
-    }
+    }*/
 }
 
 

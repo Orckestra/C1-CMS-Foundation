@@ -4,6 +4,8 @@ using Composite.Core.Implementation.Pages;
 
 namespace Composite.Data
 {
+#warning MRJ: Delete this file
+    /*
     /// <summary>
     /// Provides access to the site map
     /// </summary>
@@ -49,5 +51,5 @@ namespace Composite.Data
                 return ImplementationContainer.GetImplementation<NavigationBase>().GetCurrentPage();
             }
         }
-    }
+    }*/
 }

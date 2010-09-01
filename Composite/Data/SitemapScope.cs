@@ -1,10 +1,8 @@
-﻿namespace Composite.Data
+﻿
+
+namespace Composite.Data
 {
-    /// <summary>    
-    /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    public enum PageSelection
+    public enum SitemapScope
     {
         Current = 0,
         Children = 2,

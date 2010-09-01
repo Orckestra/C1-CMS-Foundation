@@ -8,6 +8,10 @@ using Composite.Data.Types;
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class UserGroupUserAdderFragmentInstaller : BasePackageFragmentInstaller
     {
         private List<string> _names = new List<string>();

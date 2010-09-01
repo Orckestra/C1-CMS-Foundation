@@ -7,7 +7,8 @@ using System;
 
 namespace Composite.Core.Implementation
 {
-    /// <summary>
+#warning MRJ: Delete this file
+    /*  /// <summary>
     /// The is the default implementation of storage access in C1.
     /// See <see cref="StorageAccess"/> for more information.
     /// </summary>
@@ -127,5 +128,5 @@ namespace Composite.Core.Implementation
                 //}
             }
         }
-    }
+    }*/
 }

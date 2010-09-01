@@ -5,6 +5,8 @@ using Composite.Core.Implementation.Pages;
 
 namespace Composite.Data
 {
+#warning MRJ: Delete this file
+    /*
     /// <summary>
     /// Provides access to pages, page structure and placeholders content 
     /// </summary>
@@ -54,5 +56,5 @@ namespace Composite.Data
         {
             return ImplementationContainer.GetImplementation<PageManagerBase>().Create(locale);
         }
-    }
+    }*/
 }

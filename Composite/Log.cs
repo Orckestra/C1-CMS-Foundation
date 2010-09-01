@@ -3,6 +3,8 @@ using Composite.Core.Implementation;
 
 namespace Composite
 {
+#warning MRJ: Delete this file
+    /*
     public static class Log
     {
 
@@ -65,5 +67,5 @@ namespace Composite
         {
             ImplementationContainer.GetImplementation<LogBase>().LogCritical(title, exception);
         }
-    }
+    }*/
 }

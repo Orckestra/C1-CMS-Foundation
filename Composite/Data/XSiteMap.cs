@@ -7,6 +7,8 @@ using Composite.Data;
 
 namespace Composite.Data
 {
+#warning MRJ: Delete this file
+    /*
     /// <summary>
     /// An XElement that represents the root node in Composite C1's site map.
     /// </summary>
@@ -43,6 +45,6 @@ namespace Composite.Data
         {
             return base.Descendants().Select(element => element as XPage);
         }
-    }
+    }*/
 }
 

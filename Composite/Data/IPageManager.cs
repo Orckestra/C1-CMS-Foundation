@@ -4,9 +4,12 @@ using Composite.Data.Types;
 
 namespace Composite.Data
 {
+#warning MRJ: What about this interface?
     /// <summary>
     /// Provides access to pages, page structure and placeholder's content 
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IPageManager
     {
         /// <summary>

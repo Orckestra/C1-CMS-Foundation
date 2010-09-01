@@ -9,7 +9,8 @@ using Composite.Core.WebClient.Renderings.Page;
 
 namespace Composite.Core.Implementation.Pages
 {
-    public class NavigationDefaultImplementation : NavigationBase
+#warning MRJ: Delete this file
+    /*  public class NavigationDefaultImplementation : NavigationBase
     {
         private class MapRecord
         {
@@ -235,5 +236,5 @@ namespace Composite.Core.Implementation.Pages
         {
             return page != null ? new[] {page} : EmptyPagesList;
         }
-    }
+    }*/
 }

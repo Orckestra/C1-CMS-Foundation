@@ -4,7 +4,8 @@ using Composite.Data;
 
 namespace Composite.Core.Implementation
 {
-    /// <summary>
+#warning MRJ: Delete this file
+    /*/// <summary>
     /// This is the default implementation for storage events in C1.
     /// See <see cref="StorageEvents"/> for more information.
     /// </summary>
@@ -93,5 +94,5 @@ namespace Composite.Core.Implementation
                 DataEventSystemFacade.UnsubscribeToDataAfterBuildNew(typeof(T), value);
             }
         }
-    }
+    }*/
 }

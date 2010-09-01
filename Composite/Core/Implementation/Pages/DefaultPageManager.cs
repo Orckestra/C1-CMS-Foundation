@@ -8,7 +8,8 @@ using OriginalPageManager = Composite.Data.Types.PageManager;
 
 namespace Composite.Core.Implementation.Pages
 {
-    internal sealed class DefaultPageManager : IPageManager
+#warning MRJ: Delete this file
+    /*internal sealed class DefaultPageManager : IPageManager
     {
         private readonly DataScopeIdentifier _dataScopeIdentifier;
         private readonly CultureInfo _locale;
@@ -60,5 +61,5 @@ namespace Composite.Core.Implementation.Pages
                 return OriginalPageManager.GetPlaceholderContent(pageId);
             }
         }
-    }
+    }*/
 }

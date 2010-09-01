@@ -4,6 +4,7 @@ using Composite.Data;
 
 namespace Composite
 {
+#warning MRJ: Delete this file
     /// <summary>
     /// The event handle type for several storage events. See <see cref="StorageEvents"/> and <see cref="Storage.Events"/>.
     /// </summary>
@@ -145,7 +146,7 @@ namespace Composite
 
 
 
-
+    /*
     
 
     /// <summary>
@@ -341,5 +342,5 @@ namespace Composite
         /// </code>
         /// </example>
         public virtual event StorageEventHandler OnNew { add { } remove { } }
-    }
+    }*/
 }

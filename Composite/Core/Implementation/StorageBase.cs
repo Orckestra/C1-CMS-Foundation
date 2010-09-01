@@ -6,7 +6,8 @@ using Composite.Data;
 
 namespace Composite.Core.Implementation
 {
-    /// <summary>
+#warning MRJ: Delete this file
+    /*/// <summary>
     /// This is the base for implementations of the Storage API. 
     /// This is used for implementing mocks/stubs in tests
     /// See <see cref="Composite.Storage"/> for documentation of each method.
@@ -25,5 +26,5 @@ namespace Composite.Core.Implementation
         public virtual IEnumerable<CultureInfo> Locales { get { yield break; } }
 
         public virtual StorageEvents Events<T>() where T : class, IData { return null; }
-    }
+    }*/
 }

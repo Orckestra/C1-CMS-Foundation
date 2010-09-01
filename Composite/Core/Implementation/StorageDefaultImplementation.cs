@@ -5,7 +5,8 @@ using Composite.Data;
 
 namespace Composite.Core.Implementation
 {
-    /// <summary>
+#warning MRJ: Delete this file
+    /* /// <summary>
     /// This is the  implementations of the Storage API.     
     /// See <see cref="Composite.Storage"/> for documentation of each method.
     /// </summary>
@@ -101,5 +102,5 @@ namespace Composite.Core.Implementation
 
             return currentCulture;
         }
-    }
+    }*/
 }

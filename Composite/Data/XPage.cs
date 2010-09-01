@@ -9,7 +9,8 @@ using Composite.Core.Implementation.Pages;
 
 namespace Composite.Data
 {
-    /// <summary>
+#warning MRJ: Delete this file
+  /*  /// <summary>
     /// An XElement that represents a page in Composite C1's site map.
     /// </summary>
     public class XPage : XElement
@@ -225,5 +226,5 @@ namespace Composite.Data
         }
 
         #endregion Hiding XElement methods
-    }
+    }*/
 }

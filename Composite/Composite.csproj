@@ -134,6 +134,11 @@
     <Compile Include="C1Console\Actions\IElementInformationService.cs" />
     <Compile Include="C1Console\Actions\MessageBoxActionToken.cs" />
     <Compile Include="C1Console\Actions\UrlActionToken.cs" />
+    <Compile Include="Core\Implementation\DataConnectionBase.cs" />
+    <Compile Include="Core\Implementation\DataConnectionImplementation.cs" />
+    <Compile Include="Core\Implementation\ImplementationFactory.cs" />
+    <Compile Include="Core\Implementation\PageDataConnectionImplementation.cs" />
+    <Compile Include="Data\SitemapNavigator.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\UserGroupUserAdderFragmentInstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\UserGroupUserAdderFragmentUninstaller.cs" />
     <Compile Include="Core\WebClient\Ajax\AjaxResponseHttpModule.cs" />
@@ -178,8 +183,10 @@
     <Compile Include="Data\Foundation\DataWrappingFacade.cs" />
     <Compile Include="Data\GlobalDataTypeFacade.cs" />
     <Compile Include="Data\IDataIdKeyFacade.cs" />
+    <Compile Include="Data\PageDataConnection.cs" />
     <Compile Include="Data\PageFolderFacade.cs" />
     <Compile Include="Data\PageMetaDataFacade.cs" />
+    <Compile Include="Data\PageNode.cs" />
     <Compile Include="Data\Plugins\DataProvider\ISupportCaching.cs" />
     <Compile Include="Data\Foundation\DeprecatedDateMetaDataFacade.cs" />
     <Compile Include="Data\Plugins\DataProvider\Streams\FileChangeNotificator.cs" />
@@ -189,6 +196,7 @@
     <Compile Include="Data\ProcessControlled\ILocalizeProcessController.cs" />
     <Compile Include="Data\ProcessControlled\ProcessControllers\GenericLocalizeProcessController\GenericLocalizeProcessController.cs" />
     <Compile Include="Data\PublicationScope.cs" />
+    <Compile Include="Data\SitemapScope.cs" />
     <Compile Include="Data\Streams\CachedMemoryStream.cs" />
     <Compile Include="Data\Streams\FileStreamManagerAttribute.cs" />
     <Compile Include="Data\Streams\FileStreamManagerLocator.cs" />
