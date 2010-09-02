@@ -26,6 +26,18 @@ namespace Composite.Core.Implementation
             return new DataConnectionImplementation(scopeToUse, localeToUse);
         }
 
+
+
+        public virtual LogImplementation StatelessLog
+        {
+            get
+            {
+                return new LogImplementation();
+            }
+        }
+
+
+
         public virtual DataConnectionImplementation StatelessDataConnection
         {
             get
@@ -36,7 +48,6 @@ namespace Composite.Core.Implementation
 
 
 
-
         public virtual PageDataConnectionImplementation CreatePageDataConnection(PublicationScope? scope, CultureInfo locale)
         {
             PublicationScope scopeToUse = ResolvePublicationScope(scope);
@@ -44,6 +55,7 @@ namespace Composite.Core.Implementation
 
             return new PageDataConnectionImplementation(scopeToUse, localeToUse);
         }
+
 
 
         public virtual PageDataConnectionImplementation StatelessPageDataConnection
@@ -62,13 +74,17 @@ namespace Composite.Core.Implementation
             if (scope.HasValue)
             {
                 scopeToUse = scope.Value;
-
             }
             else
             {
-                // Use current scope
-                // scopeToUse = current;
-#warning MRJ: FIX THIS!!!!!!
+                if (DataScopeManager.CurrentDataScope == DataScopeIdentifier.Administrated)
+                {
+                    scopeToUse = PublicationScope.Unpublished;
+                }
+                else if (DataScopeManager.CurrentDataScope == DataScopeIdentifier.Public)
+                {
+                    scopeToUse = PublicationScope.Published;
+                }
             }
 
             return scopeToUse;
@@ -80,11 +96,8 @@ namespace Composite.Core.Implementation
         {
             CultureInfo localeToUse = locale;
             if ((locale == null) || (locale == CultureInfo.InvariantCulture))
-            {
-                // Use current locale
-                // localeToUse = current;
-#warning MRJ: FIX THIS!!!!!!
-                localeToUse = DataLocalizationFacade.DefaultLocalizationCulture; // MAW FIX - Check it MRJ :)
+            {                
+                localeToUse = DataLocalizationFacade.DefaultLocalizationCulture;
             }
 
             return localeToUse;

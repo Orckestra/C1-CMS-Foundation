@@ -137,7 +137,9 @@
     <Compile Include="Core\Implementation\DataConnectionBase.cs" />
     <Compile Include="Core\Implementation\DataConnectionImplementation.cs" />
     <Compile Include="Core\Implementation\ImplementationFactory.cs" />
+    <Compile Include="Core\Implementation\LogImplementation.cs" />
     <Compile Include="Core\Implementation\PageDataConnectionImplementation.cs" />
+    <Compile Include="Core\Log.cs" />
     <Compile Include="Data\SitemapNavigator.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\UserGroupUserAdderFragmentInstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\UserGroupUserAdderFragmentUninstaller.cs" />
