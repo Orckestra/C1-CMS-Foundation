@@ -53,72 +53,72 @@ namespace Composite.Data
 
 
 
-        public T GetPageMetaData<T>(string fieldName)
-            where T : IPageMetaData
+        public TData GetPageMetaData<TData>(string fieldName)
+            where TData : IPageMetaData
         {
             if (string.IsNullOrWhiteSpace(fieldName)) throw new ArgumentNullException("fieldName");
 
-            return this.Implementation.GetPageMetaData<T>(fieldName);
+            return this.Implementation.GetPageMetaData<TData>(fieldName);
         }
 
 
 
-        public T GetPageMetaData<T>(string fieldName, Guid pageId)
-            where T : IPageMetaData
+        public TData GetPageMetaData<TData>(string fieldName, Guid pageId)
+            where TData : IPageMetaData
         {
             if (string.IsNullOrWhiteSpace(fieldName)) throw new ArgumentNullException("fieldName");
 
-            return this.Implementation.GetPageMetaData<T>(fieldName, pageId);
+            return this.Implementation.GetPageMetaData<TData>(fieldName, pageId);
         }
 
 
 
-        public IQueryable<T> GetPageMetaData<T>(string fieldName, SitemapScope scope)
-            where T : IPageMetaData
-        {
-            if (string.IsNullOrWhiteSpace(fieldName)) throw new ArgumentNullException("fieldName");
-            if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
-
-            return this.Implementation.GetPageMetaData<T>(fieldName, scope);
-        }
-
-
-
-        public IQueryable<T> GetPageMetaData<T>(string fieldName, SitemapScope scope, Guid pageId)
-            where T : IPageMetaData
+        public IQueryable<TData> GetPageMetaData<TData>(string fieldName, SitemapScope scope)
+            where TData : IPageMetaData
         {
             if (string.IsNullOrWhiteSpace(fieldName)) throw new ArgumentNullException("fieldName");
             if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
 
-            return this.Implementation.GetPageMetaData<T>(fieldName, scope, pageId);
+            return this.Implementation.GetPageMetaData<TData>(fieldName, scope);
         }
 
 
 
-        public IQueryable<T> GetPageData<T>()
-            where T : IPageData
+        public IQueryable<TData> GetPageMetaData<TData>(string fieldName, SitemapScope scope, Guid pageId)
+            where TData : IPageMetaData
         {
-            return this.Implementation.GetPageData<T>();
+            if (string.IsNullOrWhiteSpace(fieldName)) throw new ArgumentNullException("fieldName");
+            if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
+
+            return this.Implementation.GetPageMetaData<TData>(fieldName, scope, pageId);
         }
 
 
 
-        public IQueryable<T> GetPageData<T>(SitemapScope scope)
-            where T : IPageData
+        public IQueryable<TData> GetPageData<TData>()
+            where TData : IPageData
+        {
+            return this.Implementation.GetPageData<TData>();
+        }
+
+
+
+        public IQueryable<TData> GetPageData<TData>(SitemapScope scope)
+            where TData : IPageData
         {
             if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
 
-            return this.Implementation.GetPageData<T>(scope);
+            return this.Implementation.GetPageData<TData>(scope);
         }
 
 
 
-        public IQueryable<T> GetPageData<T>(SitemapScope scope, Guid sourcePageId)
-            where T : IPageData
+        public IQueryable<TData> GetPageData<TData>(SitemapScope scope, Guid sourcePageId)
+            where TData : IPageData
         {
             if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
 
-            return this.Implementation.GetPageData<T>(scope, sourcePageId);
+            return this.Implementation.GetPageData<TData>(scope, sourcePageId);
         }
 
 

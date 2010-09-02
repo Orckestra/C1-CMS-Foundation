@@ -18,15 +18,6 @@ namespace Composite.Core.Implementation
         public static ImplementationFactory CurrentFactory { get; set; }
 
 
-        public virtual DataConnectionImplementation CreateDataConnection(PublicationScope? scope, CultureInfo locale)
-        {
-            PublicationScope scopeToUse = ResolvePublicationScope(scope);
-            CultureInfo localeToUse = ResolveLocale(locale);
-
-            return new DataConnectionImplementation(scopeToUse, localeToUse);
-        }
-
-
 
         public virtual LogImplementation StatelessLog
         {
@@ -48,12 +39,20 @@ namespace Composite.Core.Implementation
 
 
 
-        public virtual PageDataConnectionImplementation CreatePageDataConnection(PublicationScope? scope, CultureInfo locale)
+        public virtual DataConnectionImplementation CreateDataConnection(PublicationScope? scope, CultureInfo locale)
         {
             PublicationScope scopeToUse = ResolvePublicationScope(scope);
             CultureInfo localeToUse = ResolveLocale(locale);
 
-            return new PageDataConnectionImplementation(scopeToUse, localeToUse);
+            return new DataConnectionImplementation(scopeToUse, localeToUse);
+        }
+
+
+
+        public virtual DataTypeEventsImplementation<T> CreateStatelessDataTypeEvents<T>()
+            where T : class, IData
+        {
+            return new DataTypeEventsImplementation<T>();
         }
 
 
@@ -65,6 +64,16 @@ namespace Composite.Core.Implementation
                 return new PageDataConnectionImplementation();
             }
         }
+
+
+
+        public virtual PageDataConnectionImplementation CreatePageDataConnection(PublicationScope? scope, CultureInfo locale)
+        {
+            PublicationScope scopeToUse = ResolvePublicationScope(scope);
+            CultureInfo localeToUse = ResolveLocale(locale);
+
+            return new PageDataConnectionImplementation(scopeToUse, localeToUse);
+        }        
 
 
 

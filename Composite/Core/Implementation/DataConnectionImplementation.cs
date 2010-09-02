@@ -26,41 +26,41 @@ namespace Composite.Core.Implementation
 
 
 
-        public virtual IQueryable<T> Get<T>()
-            where T : class, IData
+        public virtual IQueryable<TData> Get<TData>()
+            where TData : class, IData
         {
             using (new DataScope(this.DataScopeIdentifier, this.Locale))
             {
-                return DataFacade.GetData<T>();
+                return DataFacade.GetData<TData>();
             }
         }
 
 
 
-        public virtual T Add<T>(T item)
-            where T : class, IData
+        public virtual TData Add<TData>(TData item)
+            where TData : class, IData
         {
             using (new DataScope(this.DataScopeIdentifier, this.Locale))
             {
-                return DataFacade.AddNew<T>(item);
+                return DataFacade.AddNew<TData>(item);
             }
         }
 
 
 
-        public virtual IList<T> Add<T>(IEnumerable<T> items)
-            where T : class, IData
+        public virtual IList<TData> Add<TData>(IEnumerable<TData> items)
+            where TData : class, IData
         {
             using (new DataScope(this.DataScopeIdentifier, this.Locale))
             {
-                return DataFacade.AddNew<T>(items);
+                return DataFacade.AddNew<TData>(items);
             }
         }
 
 
 
-        public virtual void Update<T>(T item)
-            where T : class, IData
+        public virtual void Update<TData>(TData item)
+            where TData : class, IData
         {
             using (new DataScope(this.DataScopeIdentifier, this.Locale))
             {
@@ -70,8 +70,8 @@ namespace Composite.Core.Implementation
 
 
 
-        public virtual void Update<T>(IEnumerable<T> items)
-            where T : class, IData
+        public virtual void Update<TData>(IEnumerable<TData> items)
+            where TData : class, IData
         {
             using (new DataScope(this.DataScopeIdentifier, this.Locale))
             {
@@ -81,33 +81,33 @@ namespace Composite.Core.Implementation
 
 
 
-        public virtual void Delete<T>(T item)
-            where T : class, IData
+        public virtual void Delete<TData>(TData item)
+            where TData : class, IData
         {
             using (new DataScope(this.DataScopeIdentifier, this.Locale))
             {
-                DataFacade.Delete<T>(item);
+                DataFacade.Delete<TData>(item);
             }
         }
 
 
 
-        public virtual void Delete<T>(IEnumerable<T> items)
-            where T : class, IData
+        public virtual void Delete<TData>(IEnumerable<TData> items)
+            where TData : class, IData
         {
             using (new DataScope(this.DataScopeIdentifier, this.Locale))
             {
-                DataFacade.Delete<T>(items);
+                DataFacade.Delete<TData>(items);
             }
         }
 
 
 
         // This is a static on the actual class, but non-static here to allow mocking
-        public virtual T New<T>()
-            where T : class, IData
+        public virtual TData New<TData>()
+            where TData : class, IData
         {
-            return DataFacade.BuildNew<T>();
+            return DataFacade.BuildNew<TData>();
         }
 
 

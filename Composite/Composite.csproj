@@ -136,6 +136,7 @@
     <Compile Include="C1Console\Actions\UrlActionToken.cs" />
     <Compile Include="Core\Implementation\DataConnectionBase.cs" />
     <Compile Include="Core\Implementation\DataConnectionImplementation.cs" />
+    <Compile Include="Core\Implementation\DataEventsImplementation.cs" />
     <Compile Include="Core\Implementation\ImplementationFactory.cs" />
     <Compile Include="Core\Implementation\LogImplementation.cs" />
     <Compile Include="Core\Implementation\PageDataConnectionImplementation.cs" />
