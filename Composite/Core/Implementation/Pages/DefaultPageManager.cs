@@ -4,7 +4,7 @@ using System.Globalization;
 using Composite.Data;
 using Composite.Data.Types;
 
-using OriginalPageManager = Composite.Data.Types.PageManager;
+//using OriginalPageManager = Composite.Data.PageManager;
 
 namespace Composite.Core.Implementation.Pages
 {

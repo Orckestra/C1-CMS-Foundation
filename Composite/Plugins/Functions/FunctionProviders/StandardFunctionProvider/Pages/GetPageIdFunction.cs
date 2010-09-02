@@ -8,6 +8,7 @@ using Composite.C1Console.Security;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 using Composite.Core.ResourceSystem;
 using Composite.Core.WebClient.Renderings.Page;
+using Composite.Data;
 
 namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Pages
 {
@@ -20,29 +21,29 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
-            PageAssociationScope pageAssociationScope;
-            if (parameters.TryGetParameter<PageAssociationScope>("PageAssociationScope", out pageAssociationScope) == false)
+            SitemapScope SitemapScope;
+            if (parameters.TryGetParameter<SitemapScope>("SitemapScope", out SitemapScope) == false)
             {
-                pageAssociationScope = PageAssociationScope.CurrentPage;
+                SitemapScope = SitemapScope.Current;
             }
 
             Guid pageId = Guid.Empty;
 
-            switch (pageAssociationScope)
+            switch (SitemapScope)
             {
-                case PageAssociationScope.CurrentPage:
+                case SitemapScope.Current:
                     pageId = PageRenderer.CurrentPageId;
                     break;
-                case PageAssociationScope.ParentPage:
-                case PageAssociationScope.Level1Page:
-                case PageAssociationScope.Level2Page:
-                case PageAssociationScope.Level3Page:
-                case PageAssociationScope.Level4Page:
-                    IEnumerable<Guid> pageIds = PageStructureInfo.GetAssociatedPageIds(PageRenderer.CurrentPageId, pageAssociationScope);
+                case SitemapScope.Parent:
+                case SitemapScope.Level1:
+                case SitemapScope.Level2:
+                case SitemapScope.Level3:
+                case SitemapScope.Level4:
+                    IEnumerable<Guid> pageIds = PageStructureInfo.GetAssociatedPageIds(PageRenderer.CurrentPageId, SitemapScope);
                     pageId = pageIds.FirstOrDefault();
                     break;
                 default:
-                    throw new NotImplementedException("Unhandled PageAssociationScope type: " + pageAssociationScope.ToString());
+                    throw new NotImplementedException("Unhandled SitemapScope type: " + SitemapScope.ToString());
             }
 
             return pageId;
@@ -57,23 +58,23 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                     this.GetType(), "PageAssociationRestrictions", "Key", "Value", false, true);
 
                 yield return new StandardFunctionParameterProfile(
-                    "PageAssociationScope",
-                    typeof(PageAssociationScope),
+                    "SitemapScope",
+                    typeof(SitemapScope),
                     false,
-                    new ConstantValueProvider(PageAssociationScope.CurrentPage),
+                    new ConstantValueProvider(SitemapScope.Current),
                     associationDropDown);
             }
         }
 
 
-        public static IEnumerable<KeyValuePair<PageAssociationScope, string>> PageAssociationRestrictions()
+        public static IEnumerable<KeyValuePair<SitemapScope, string>> PageAssociationRestrictions()
         {
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.CurrentPage, "Current page");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.ParentPage, "Parent page");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.Level1Page, "Level 1 page (homepage)");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.Level2Page, "Level 2 page");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.Level3Page, "Level 3 page");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.Level4Page, "Level 4 page");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Current, "Current page");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Parent, "Parent page");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Level1, "Level 1 page (homepage)");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Level2, "Level 2 page");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Level3, "Level 3 page");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Level4, "Level 4 page");
         }
 
     }

@@ -21,7 +21,7 @@ public partial class Tests_PageElementProviderHooks : System.Web.UI.Page
         using (new DataScope(DataScopeIdentifier.Administrated, CultureInfo.CreateSpecificCulture("en-US")))
         {
             IPage page = DataFacade.GetData<IPage>().First();
-            page.Abstract = rand.Next().ToString();
+            page.Description = rand.Next().ToString();
             DataFacade.Update(page);
         }
 

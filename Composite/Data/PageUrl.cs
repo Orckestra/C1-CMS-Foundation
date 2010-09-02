@@ -95,12 +95,11 @@ namespace Composite.Data
         /// <returns></returns>
         public IPage GetPage()
         {
-#warning MRJ: WHAT TO DO HERE??
-            throw new NotImplementedException();
-            /*using(Storage.Open(PublicationScope, Locale))
+#warning MRJ: WHAT TO DO HERE?? // MAW: reintrocuced this code - any issues with it?
+            using(DataConnection connection = new DataConnection(PublicationScope, Locale))
             {
-                return Data.Types.PageManager.GetPageById(PageId);
-            }*/
+                return Data.PageManager.GetPageById(PageId);
+            }
         }
 
         /// <summary>

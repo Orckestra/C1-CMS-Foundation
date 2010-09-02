@@ -36,8 +36,8 @@
   <string key="Composite.IDataGenerated.Filter.DataReferenceFilter.param.DataReference.help" value="The Data Reference to use when selecting data." />
   <string key="Composite.IDataGenerated.Filter.DataReferenceFilter.param.DataReference.label" value="Data Reference" />
   <string key="Composite.IDataGenerated.Filter.ActivePageReferenceFilter.description" value="Lets you select data based on its reference to the currently rendered page." />
-  <string key="Composite.IDataGenerated.Filter.ActivePageReferenceFilter.param.PageAssociationScope.help" value="Select what relation the current page must have with the data you wish to retrieve." />
-  <string key="Composite.IDataGenerated.Filter.ActivePageReferenceFilter.param.PageAssociationScope.label" value="Page scope" />
+  <string key="Composite.IDataGenerated.Filter.ActivePageReferenceFilter.param.SitemapScope.help" value="Select what relation the current page must have with the data you wish to retrieve." />
+  <string key="Composite.IDataGenerated.Filter.ActivePageReferenceFilter.param.SitemapScope.label" value="Page scope" />
   <string key="Composite.IDataGenerated.Filter.CompoundFilter.description" value="Defines an “and” or “or” query, combining two other filters." />
   <string key="Composite.IDataGenerated.Filter.CompoundFilter.param.IsAndQuery.label" value="And / or filter" />
   <string key="Composite.IDataGenerated.Filter.CompoundFilter.param.IsAndQuery.help" value="If you select “And” both filters are applied to the data. Selecting “Or” will give you the data that matches just one of the filters." />
@@ -70,14 +70,14 @@
   <string key="Composite.IDataGenerated.GetXml.param.CachePriority.help" value="Determines if result XML has to be cached, and what priority those cache records should have" />
   <string key="Composite.IDataGenerated.GetXml.param.CachePriority.label" value="Cache Priority" />  
   <string key="Composite.Pages.GetPageId.description" value="Fetches the ID of the current page or a page relative to the current page." />
-  <string key="Composite.Pages.GetPageId.param.PageAssociationScope.help" value="What page to get id from. The default is from the current page." />
-  <string key="Composite.Pages.GetPageId.param.PageAssociationScope.label" value="Page association" />
+  <string key="Composite.Pages.GetPageId.param.SitemapScope.help" value="What page to get id from. The default is from the current page." />
+  <string key="Composite.Pages.GetPageId.param.SitemapScope.label" value="Page association" />
   <string key="Composite.Pages.QuickSitemap.description" value="Quick and raw sitemap xhtml." />
   <string key="Composite.Pages.SitemapXml.description" value="Returns a hierarchical XML structure of pages. When executed as part of a page rendering XML elements representing the current and ancestor pages will be appended the attributes isopen=”true” and iscurrent=”true”" />
   <string key="Composite.Pages.SitemapXml.param.SourcePage.label" value="Source page" />
   <string key="Composite.Pages.SitemapXml.param.SourcePage.help" value="By default the source page is the page currently being rendered. Specify a value if you want to get sitemap information relative to another page. The source page controls how page elements are annotated with 'isopen' and 'iscurrent' and is the starting point when calculating the page scope." />
-  <string key="Composite.Pages.SitemapXml.param.PageAssociationScope.label" value="Page scope" />
-  <string key="Composite.Pages.SitemapXml.param.PageAssociationScope.help" value="The scope of pages to extract from the sitemap. The default is 'all pages'. You can use this parameter to extract the structure you need to complete your task." />
+  <string key="Composite.Pages.SitemapXml.param.SitemapScope.label" value="Page scope" />
+  <string key="Composite.Pages.SitemapXml.param.SitemapScope.help" value="The scope of pages to extract from the sitemap. The default is 'all pages'. You can use this parameter to extract the structure you need to complete your task." />
   <string key="Composite.Pages.GetForeignPageInfo.description" value="Gets information about current page in all the languages." />
 
   <string key="Composite.Utils.Caching.PageObjectCache.description" value="Defines a 'cache zone' around a function call or markup (typically containing function calls). This function can be used to enhance page rendering performance by caching sections of a web page. The 'Object Cache Id' value should be unique to the content being cached." />
@@ -85,8 +85,8 @@
   <string key="Composite.Utils.Caching.PageObjectCache.param.ObjectToCache.help" value="What you want to cache - this can be a single function call or a section of markup containing one or more function calls." />
   <string key="Composite.Utils.Caching.PageObjectCache.param.ObjectCacheId.label" value="Unique cache id" />
   <string key="Composite.Utils.Caching.PageObjectCache.param.ObjectCacheId.help" value="Specify an ID unique to the content being cached. This value is used - in conjunction with the Page scope - to define a unique cache key." />
-  <string key="Composite.Utils.Caching.PageObjectCache.param.PageAssociationScope.label" value="Page scope" />
-  <string key="Composite.Utils.Caching.PageObjectCache.param.PageAssociationScope.help" value="The page scope the cached data should be shared on. By default the page scope is 'this website', but you can change it to page specific caching and more." />
+  <string key="Composite.Utils.Caching.PageObjectCache.param.SitemapScope.label" value="Page scope" />
+  <string key="Composite.Utils.Caching.PageObjectCache.param.SitemapScope.help" value="The page scope the cached data should be shared on. By default the page scope is 'this website', but you can change it to page specific caching and more." />
   <string key="Composite.Utils.Caching.PageObjectCache.param.SecondsToCache.label" value="Cache duration (seconds)" />
   <string key="Composite.Utils.Caching.PageObjectCache.param.SecondsToCache.help" value="The number of seconds the cached object should be reused. Default is 1 minute (60 seconds)." />
   <string key="Composite.Utils.Caching.PageObjectCache.param.LanguageSpecific.label" value="Language specific" />

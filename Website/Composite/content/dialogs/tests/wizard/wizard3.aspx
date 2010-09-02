@@ -19,7 +19,7 @@
 							</ui:fielddata>
 						</ui:field>
 						<ui:field>
-							<ui:fielddesc>Abstract</ui:fielddesc>
+							<ui:fielddesc>Description</ui:fielddesc>
 							<ui:fieldhelp>Use this field for at short description of the page</ui:fieldhelp>
 							<ui:fielddata>
 								<ui:textbox required="false" name="FlowUI$Wizard$DialogCanvas1$repeater$ctl00$FieldGroup0$TextArea2">

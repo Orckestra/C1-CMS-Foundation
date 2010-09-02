@@ -192,7 +192,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             {
                 using (new DataScope(localeCultureInfo))
                 {
-                    if (Composite.Data.Types.PageManager.GetPageById(page.Id) != null)
+                    if (Composite.Data.PageManager.GetPageById(page.Id) != null)
                     {
                         return true;
                     }

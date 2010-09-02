@@ -33,7 +33,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 <f:function name=""Composite.Pages.QuickSitemap"" />
             </div>
             <h1><rendering:page.title /></h1>
-            <h2><rendering:page.abstract /></h2>
+            <h2><rendering:page.description /></h2>
             <div id=""content"">
                 <rendering:placeholder id=""contentplaceholder"" title=""Content"" default=""true"" />
             </div>

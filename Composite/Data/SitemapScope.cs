@@ -1,7 +1,9 @@
-﻿
-
-namespace Composite.Data
+﻿namespace Composite.Data
 {
+
+    /// <summary>
+    /// Define a set of elements in a tree structure, relative to a particular node.
+    /// </summary>
     public enum SitemapScope
     {
         Current = 0,

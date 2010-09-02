@@ -15,7 +15,7 @@
       </TextBox>
       <TextArea Label="${Composite.Plugins.PageElementProvider, AddNewPageStep1.LabelAbstract}" Help="${Composite.Plugins.PageElementProvider, AddNewPageStep1.LabelAbstractHelp}">
         <TextArea.Text>
-          <cms:bind source="NewPage.Abstract" />
+          <cms:bind source="NewPage.Description" />
         </TextArea.Text>
       </TextArea>
       

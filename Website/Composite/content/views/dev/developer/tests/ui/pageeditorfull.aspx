@@ -48,7 +48,7 @@
 													</ui:fielddata>
 												</ui:field>
 												<ui:field>
-													<ui:fielddesc>Abstract</ui:fielddesc>
+													<ui:fielddesc>Description</ui:fielddesc>
 													<ui:fieldhelp>Use this field for at short description of the page</ui:fieldhelp>
 													<ui:fielddata>
 														<ui:textbox required="false" name="ctl00_/AdministrativeTemplates/Document.xml_repeater_ctl01_UiControl8_repeater_ctl00_UiControl0_tabpanelRepeater_ctl00_UiControl1_repeater_ctl00_UiControl2_repeater_ctl01_UiControl4" />

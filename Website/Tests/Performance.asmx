@@ -105,7 +105,7 @@ public class Performance : System.Web.Services.WebService
             Random rand = new Random();
 
             IPage page = DataFacade.GetData<IPage>().First();
-            page.Abstract = rand.Next().ToString();
+            page.Description = rand.Next().ToString();
             DataFacade.Update(page);
         }
     }

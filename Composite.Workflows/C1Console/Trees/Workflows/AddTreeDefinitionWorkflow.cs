@@ -87,7 +87,7 @@ namespace Composite.C1Console.Trees.Workflows
             <Children>              
               <DataFolderElements Type=""Composite.Data.Types.IPage"" FieldGroupingName=""ChangeDate"" DateFormat=""yyyy - MMMM"">
                 <Children>
-                  <DataFolderElements FieldGroupingName=""Abstract"">
+                  <DataFolderElements FieldGroupingName=""Description"">
                     <Children>
                       <DataElements Type=""Composite.Data.Types.IPage"">
                       </DataElements>

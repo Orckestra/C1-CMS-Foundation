@@ -26,7 +26,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         {
             AssociatedDataElementProviderHelperEntityToken entityToken = (AssociatedDataElementProviderHelperEntityToken)this.EntityToken;
 
-            return Composite.Data.Types.PageManager.GetPageById(new Guid(entityToken.Id));
+            return Composite.Data.PageManager.GetPageById(new Guid(entityToken.Id));
         }
 
 

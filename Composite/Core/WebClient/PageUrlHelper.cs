@@ -11,7 +11,7 @@ using Composite.Data;
 using Composite.Data.Types;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.Extensions;
-using PageManager = Composite.Data.Types.PageManager;
+//using PageManager = Composite.Data.PageManager;
 
 
 namespace Composite.Core.WebClient

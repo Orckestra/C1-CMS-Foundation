@@ -17,7 +17,7 @@ namespace Composite.Data.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Title("C1 Page")]
     [AutoUpdateble]
-    [TypeVersion(3)]
+    [TypeVersion(4)]
     [ImmutableTypeId("{C046F704-D3E4-4b3d-8CB9-77564FB0B9E7}")]
     [KeyPropertyName("Id")]
     [DataVisualizer(typeof(Composite.Data.Visualization.PageVisualizer))]
@@ -70,6 +70,6 @@ namespace Composite.Data.Types
 
         [StoreFieldType(PhysicalStoreFieldType.String, 1024, IsNullable = true)]
         [ImmutableFieldId("{3EECB770-1D8F-45e0-9B4D-2CA67A278FA3}")]
-        string Abstract { get; set; }
+        string Description { get; set; }
     }
 }

@@ -77,7 +77,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             IPage parentPage = null;
             if (parentPageId != Guid.Empty)
             {
-                parentPage = Composite.Data.Types.PageManager.GetPageById(parentPageId);
+                parentPage = Composite.Data.PageManager.GetPageById(parentPageId);
             }
 
             return
@@ -394,7 +394,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         }
 
                         treeviewRequiresRefreshing = (originalPage.Title != selectedPage.Title) ||
-                                                   (originalPage.Abstract != selectedPage.Abstract) ||
+                                                   (originalPage.Description != selectedPage.Description) ||
                                                    (originalPage.PublicationStatus != selectedPage.PublicationStatus);
 
                         // NOTE: updating originalPage object, in order to make XML & SQL provider work in the same way
@@ -404,7 +404,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         originalPage.MenuTitle = selectedPage.MenuTitle;
                         originalPage.UrlTitle = selectedPage.UrlTitle;
                         originalPage.FriendlyUrl = selectedPage.FriendlyUrl;
-                        originalPage.Abstract = selectedPage.Abstract;
+                        originalPage.Description = selectedPage.Description;
                         originalPage.PublicationStatus = selectedPage.PublicationStatus;
                         originalPage.CultureName = selectedPage.CultureName;
                         originalPage.SourceCultureName = selectedPage.SourceCultureName;

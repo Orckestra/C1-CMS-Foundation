@@ -15,14 +15,14 @@ namespace Composite.Data.Hierarchy.DataAncestorProviders
             Verify.IsNotNull(page, "Only '{0}' type is supported.".FormatWith(typeof(IPage).FullName));
 
 
-            Guid parentId = Composite.Data.Types.PageManager.GetParentId(page.Id);
+            Guid parentId = Composite.Data.PageManager.GetParentId(page.Id);
 
             if (parentId == Guid.Empty)
             {
                 return null;
             }
 
-            return Composite.Data.Types.PageManager.GetPageById(parentId);
+            return Composite.Data.PageManager.GetPageById(parentId);
         }
     }
 }

@@ -36,7 +36,7 @@
 	<string key="RemoveSystemLocaleWorkflow.Dialog.Label" value="Remove language?" />
 	<string key="RemoveSystemLocaleWorkflow.FieldGroup.Label" value="Remove language" />
 	<string key="RemoveSystemLocaleWorkflow.Abort.Title" value="Can not remove last language" />
-	<string key="RemoveSystemLocaleWorkflow.Abort.Description" value="You are about to remove a language that is the only language for one or more users. Pleace add other languages to theese users and try again." />
+	<string key="RemoveSystemLocaleWorkflow.Abort.Description" value="You are about to remove a language that is the only language for one or more users. Please add other languages to theese users and try again." />
 	<string key="RemoveSystemLocaleWorkflow.Confirm.Title" value="Confirmation" />
 	<string key="RemoveSystemLocaleWorkflow.Confirm.Description" value="Remove this language?" />
 </strings>

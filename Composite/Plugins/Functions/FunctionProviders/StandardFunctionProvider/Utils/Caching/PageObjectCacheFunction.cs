@@ -35,10 +35,10 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                 yield return new StandardFunctionParameterProfile(
                     "ObjectCacheId", typeof(string), true, new NoValueValueProvider(), textboxWidget);
                 yield return new StandardFunctionParameterProfile(
-                    "PageAssociationScope",
-                    typeof(PageAssociationScope),
+                    "SitemapScope",
+                    typeof(SitemapScope),
                     false,
-                    new ConstantValueProvider(PageAssociationScope.Level1Page),
+                    new ConstantValueProvider(SitemapScope.Level1),
                     associationDropDown);
                 yield return new StandardFunctionParameterProfile(
                     "SecondsToCache", typeof(int), false, new ConstantValueProvider(60), textboxWidget);
@@ -117,25 +117,25 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                 cacheKey = string.Format("{0}:{1}", cacheKey, Thread.CurrentThread.CurrentCulture);
             }
 
-            PageAssociationScope pageAssociationScope = parameters.GetParameter<PageAssociationScope>("PageAssociationScope");
-            if (pageAssociationScope != PageAssociationScope.AllPages)
+            SitemapScope SitemapScope = parameters.GetParameter<SitemapScope>("SitemapScope");
+            if (SitemapScope != SitemapScope.All)
             {
-                Guid associatedPageId = PageStructureInfo.GetAssociatedPageIds(PageRenderer.CurrentPageId, pageAssociationScope).FirstOrDefault();
+                Guid associatedPageId = PageStructureInfo.GetAssociatedPageIds(PageRenderer.CurrentPageId, SitemapScope).FirstOrDefault();
                 associatedPageId = (associatedPageId == Guid.Empty ? PageRenderer.CurrentPageId : associatedPageId);
                 cacheKey = string.Format("{0}:{1}", cacheKey, associatedPageId);
             }
             return cacheKey;
         }
 
-        public static IEnumerable<KeyValuePair<PageAssociationScope, string>> PageAssociationRestrictions()
+        public static IEnumerable<KeyValuePair<SitemapScope, string>> PageAssociationRestrictions()
         {
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.CurrentPage, "Current page");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.AllPages, "All pages (use everywhere)");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.ParentPage, "Parent page");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.Level1Page, "Level 1 page (this website)");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.Level2Page, "Level 2 page");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.Level3Page, "Level 3 page");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.Level4Page, "Level 4 page");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Current, "Current page");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.All, "All pages (use everywhere)");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Parent, "Parent page");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Level1, "Level 1 page (this website)");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Level2, "Level 2 page");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Level3, "Level 3 page");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Level4, "Level 4 page");
         }
 
     }

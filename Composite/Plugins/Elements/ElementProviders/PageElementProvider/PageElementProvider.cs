@@ -24,7 +24,7 @@ using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
-using PageManager = Composite.Data.Types.PageManager;
+//using PageManager = Composite.Data.PageManager;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
@@ -451,7 +451,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             var predicateItems =
                 from page in DataFacade.GetData<IPage>()
-                where ((page.Abstract != null) && (page.Abstract.ToLower().Contains(keyword))) ||
+                where ((page.Description != null) && (page.Description.ToLower().Contains(keyword))) ||
                       ((page.Title != null) && (page.Title.ToLower().Contains(keyword)))
                 select new TreeNode() { Key = page.Id, ParentKey = page.GetParentId() };
 
@@ -896,7 +896,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             visualizedElement.HasChildren = hasChildren;
             visualizedElement.Label = page.Title;
-            visualizedElement.ToolTip = page.Abstract;
+            visualizedElement.ToolTip = page.Description;
 
             if (pageLocaleState == PageLocaleState.Own)
             {

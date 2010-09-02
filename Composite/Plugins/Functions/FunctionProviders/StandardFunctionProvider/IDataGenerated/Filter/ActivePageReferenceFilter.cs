@@ -10,6 +10,7 @@ using Composite.Functions;
 using Composite.Core.Linq.ExpressionVisitors;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Composite.Data;
 
 
 namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.IDataGenerated.Filter
@@ -40,10 +41,10 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                     this.GetType(), "PageAssociationRestrictions", "Key", "Value", false, true);
 
                 yield return new StandardFunctionParameterProfile(
-                    "PageAssociationScope",
-                    typeof(PageAssociationScope),
+                    "SitemapScope",
+                    typeof(SitemapScope),
                     false,
-                    new ConstantValueProvider(PageAssociationScope.CurrentPage),
+                    new ConstantValueProvider(SitemapScope.Current),
                     associationDropDown);
             }
         }
@@ -52,21 +53,21 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
-            PageAssociationScope pageAssociationScope;
+            SitemapScope SitemapScope;
             Expression filter;
 
-            if (parameters.TryGetParameter<PageAssociationScope>("PageAssociationScope", out pageAssociationScope) == false)
+            if (parameters.TryGetParameter<SitemapScope>("SitemapScope", out SitemapScope) == false)
             {
-                pageAssociationScope = PageAssociationScope.CurrentPage;
+                SitemapScope = SitemapScope.Current;
             }
 
-            switch (pageAssociationScope)
+            switch (SitemapScope)
             {
-                case PageAssociationScope.CurrentPage:
+                case SitemapScope.Current:
                     Guid currentPageId = PageRenderer.CurrentPageId;
                     filter = Expression.Equal(_foreignKeyPropertyExpression, Expression.Constant(currentPageId));
                     break;
-                case PageAssociationScope.AllPages:
+                case SitemapScope.All:
                     filter = Expression.Constant(true);
                     break;
                 default:
@@ -74,8 +75,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
                     IEnumerable<Guid> pageIds = new FilterWrapper(
                         pageId, 
-                        pageAssociationScope, TableVersion.Get(typeof(IPageStructure)),
-                        PageStructureInfo.GetAssociatedPageIds(pageId, pageAssociationScope));
+                        SitemapScope, TableVersion.Get(typeof(IPageStructure)),
+                        PageStructureInfo.GetAssociatedPageIds(pageId, SitemapScope));
 
                     Expression<Func<Guid, bool>> containsExpression = f => pageIds.Contains(f);
                     filter = Expression.Invoke(containsExpression, _foreignKeyPropertyExpression);
@@ -86,39 +87,39 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         }
 
 
-        public static IEnumerable<KeyValuePair<PageAssociationScope, string>> PageAssociationRestrictions()
+        public static IEnumerable<KeyValuePair<SitemapScope, string>> PageAssociationRestrictions()
         {
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.CurrentPage, "Current page");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.AllPages, "All pages (no filter)");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.AncestorAndCurrentPages, "Ancestors and current (breadcrumb)");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.AncestorPages, "Ancestor pages");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.ParentPage, "Parent page");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.CurrentAndDescendantPages, "Current and descendant pages");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.ChildPages, "Child pages");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.SiblingPages, "Sibling pages");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.Level1Page, "Level 1 page (homepage)");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.Level1AndDescendantPages, "Level 1 and descendant pages (current site)");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.Level1AndSiblingPages, "Level 1 and sibling pages (all homepages)");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.Level2Page, "Level 2 page");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.Level2AndDescendantPages, "Level 2 and descendant pages");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.Level2AndSiblingPages, "Level 2 and sibling pages (site main areas)");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.Level3Page, "Level 3 page");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.Level3AndDescendantPages, "Level 3 and descendant pages");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.Level3AndSiblingPages, "Level 3 and sibling pages");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.Level4Page, "Level 4 page");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.Level4AndDescendantPages, "Level 4 and descendant pages");
-            yield return new KeyValuePair<PageAssociationScope, string>(PageAssociationScope.Level4AndSiblingPages, "Level 4 and sibling pages");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Current, "Current page");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.All, "All pages (no filter)");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.AncestorsAndCurrent, "Ancestors and current (breadcrumb)");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Ancestors, "Ancestor pages");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Parent, "Parent page");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.DescendantsAndCurrent, "Current and descendant pages");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Children, "Child pages");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Siblings, "Sibling pages");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Level1, "Level 1 page (homepage)");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Level1AndDescendants, "Level 1 and descendant pages (current site)");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Level1AndSiblings, "Level 1 and sibling pages (all homepages)");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Level2, "Level 2 page");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Level2AndDescendants, "Level 2 and descendant pages");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Level2AndSiblings, "Level 2 and sibling pages (site main areas)");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Level3, "Level 3 page");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Level3AndDescendants, "Level 3 and descendant pages");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Level3AndSiblings, "Level 3 and sibling pages");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Level4, "Level 4 page");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Level4AndDescendants, "Level 4 and descendant pages");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Level4AndSiblings, "Level 4 and sibling pages");
         }
 
 
         private class FilterWrapper : CacheKeyBuilderExpressionVisitor.ICacheKeyProvider, IEnumerable<Guid>
         {
             private Guid _pageId;
-            private PageAssociationScope _associationScope;
+            private SitemapScope _associationScope;
             private int _tableVersion;
             private IEnumerable<Guid> _innerEnumerator;
 
-            public FilterWrapper(Guid pageId, PageAssociationScope associationScope, int tableVersion, IEnumerable<Guid> innerEnumerator)
+            public FilterWrapper(Guid pageId, SitemapScope associationScope, int tableVersion, IEnumerable<Guid> innerEnumerator)
             {
                 _pageId = pageId;
                 _associationScope = associationScope;

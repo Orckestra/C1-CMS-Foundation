@@ -315,18 +315,18 @@ namespace Composite.Core.WebClient.Renderings.Page
 
             foreach (XElement elem in document.Descendants(RenderingElementNames.PageAbstract).ToList())
             {
-                elem.ReplaceWith(page.Abstract);
+                elem.ReplaceWith(page.Description);
             }
 
 
             foreach (XElement elem in document.Descendants(RenderingElementNames.PageMetaTagDescription).ToList())
             {
-                if (string.IsNullOrEmpty(page.Abstract) == false)
+                if (string.IsNullOrEmpty(page.Description) == false)
                 {
                     elem.ReplaceWith(
                         new XElement(Namespaces.Xhtml + "meta",
                             new XAttribute("name", "Description"),
-                            new XAttribute("content", page.Abstract)));
+                            new XAttribute("content", page.Description)));
                 }
                 else
                 {

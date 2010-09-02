@@ -25,7 +25,7 @@ namespace Composite.Core.WebClient.Renderings
 
         private static XName _placeholder = Namespaces.Rendering10 + "placeholder";
         private static XName _pageTitle = Namespaces.Rendering10 + "page.title";
-        private static XName _pageAbstract = Namespaces.Rendering10 + "page.abstract";
+        private static XName _pageAbstract = Namespaces.Rendering10 + "page.description";
         private static XName _pageMetaTagDescription = Namespaces.Rendering10 + "page.metatag.description";
     }
 }

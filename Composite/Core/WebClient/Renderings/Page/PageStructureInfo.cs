@@ -116,7 +116,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
         public static IEnumerable<XElement> GetSiteMapWithActivePageAnnotations(Guid pageId)
         {
-            return GetSitemapByScope(PageAssociationScope.AllPages, pageId);
+            return GetSitemapByScope(SitemapScope.All, pageId);
         }
 
 
@@ -128,7 +128,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         /// <param name="associationScope">The scope of pages to return. This is relative to the specified pageId.</param>
         /// <param name="pageId">The C1 Page ID to use when defining the scope. This must be a valid page id.</param>
         /// <returns></returns>
-        public static IEnumerable<XElement> GetSitemapByScope(PageAssociationScope associationScope, Guid pageId)
+        public static IEnumerable<XElement> GetSitemapByScope(SitemapScope associationScope, Guid pageId)
         {
             List<XElement> pageElements = GetSitemapByScopeUnannotated(associationScope, pageId).ToList();
             AnnotatePagesWithOpenAndCurrent(pageId, pageElements);
@@ -140,40 +140,44 @@ namespace Composite.Core.WebClient.Renderings.Page
         }
 
 
+        public static IEnumerable<Guid> GetAssociatedPageIds(Guid pageId, SitemapScope associationScope)
+        {
+            return GetAssociatedPageIds(pageId, associationScope, PageStructureInfo.GetSiteMap());
+        }
 
-        public static IEnumerable<Guid> GetAssociatedPageIds(Guid pageId, PageAssociationScope associationScope)
+        public static IEnumerable<Guid> GetAssociatedPageIds(Guid pageId, SitemapScope associationScope, IEnumerable<XElement> sitemaps)
         {
             switch (associationScope)
             {
-                case PageAssociationScope.CurrentPage:
+                case SitemapScope.Current:
                     yield return pageId;
                     break;
-                case PageAssociationScope.AllPages:
+                case SitemapScope.All:
                     foreach (Guid id in GetIdToUrlLookup().Keys)
                     {
                         yield return id;
                     }
                     break;
-                case PageAssociationScope.CurrentAndDescendantPages:
-                case PageAssociationScope.ChildPages:
-                case PageAssociationScope.SiblingPages:
-                case PageAssociationScope.AncestorPages:
-                case PageAssociationScope.AncestorAndCurrentPages:
-                case PageAssociationScope.ParentPage:
-                case PageAssociationScope.Level1Page:
-                case PageAssociationScope.Level2Page:
-                case PageAssociationScope.Level3Page:
-                case PageAssociationScope.Level4Page:
-                case PageAssociationScope.Level1AndDescendantPages:
-                case PageAssociationScope.Level2AndDescendantPages:
-                case PageAssociationScope.Level3AndDescendantPages:
-                case PageAssociationScope.Level4AndDescendantPages:
-                case PageAssociationScope.Level1AndSiblingPages:
-                case PageAssociationScope.Level2AndSiblingPages:
-                case PageAssociationScope.Level3AndSiblingPages:
-                case PageAssociationScope.Level4AndSiblingPages:
+                case SitemapScope.DescendantsAndCurrent:
+                case SitemapScope.Children:
+                case SitemapScope.Siblings:
+                case SitemapScope.Ancestors:
+                case SitemapScope.AncestorsAndCurrent:
+                case SitemapScope.Parent:
+                case SitemapScope.Level1:
+                case SitemapScope.Level2:
+                case SitemapScope.Level3:
+                case SitemapScope.Level4:
+                case SitemapScope.Level1AndDescendants:
+                case SitemapScope.Level2AndDescendants:
+                case SitemapScope.Level3AndDescendants:
+                case SitemapScope.Level4AndDescendants:
+                case SitemapScope.Level1AndSiblings:
+                case SitemapScope.Level2AndSiblings:
+                case SitemapScope.Level3AndSiblings:
+                case SitemapScope.Level4AndSiblings:
                     string pageIdString = pageId.ToString();
-                    XAttribute idMatchAttrib = PageStructureInfo.GetSiteMap().DescendantsAndSelf().Attributes("Id").Where(id => id.Value == pageIdString).FirstOrDefault();
+                    XAttribute idMatchAttrib = sitemaps.DescendantsAndSelf().Attributes("Id").Where(id => id.Value == pageIdString).FirstOrDefault();
                     if (idMatchAttrib != null)
                     {
                         XElement currentPageElement = idMatchAttrib.Parent;
@@ -186,7 +190,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                     }
                     break;
                 default:
-                    throw new NotImplementedException("Unhandled PageAssociationScope type: " + associationScope.ToString());
+                    throw new NotImplementedException("Unhandled SitemapScope type: " + associationScope.ToString());
             }
         }
 
@@ -195,7 +199,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             if(System.Transactions.Transaction.Current != null)
             {
-                var exceptionToLog = new Exception("It is not safe to use PageStructureInfo/SiteMap functionality in transactional context. Method Composite.Data.Types.PageManager can be used instead.");
+                var exceptionToLog = new Exception("It is not safe to use PageStructureInfo/SiteMap functionality in transactional context. Method Composite.Data.PageManager can be used instead.");
                 LoggingService.LogWarning(typeof(PageStructureInfo).Name, exceptionToLog);
             }
 
@@ -307,80 +311,80 @@ namespace Composite.Core.WebClient.Renderings.Page
             }
         }
 
-        private static IEnumerable<XElement> GetPageElementsByScope(PageAssociationScope associationScope, XElement currentPageElement)
+        internal static IEnumerable<XElement> GetPageElementsByScope(SitemapScope associationScope, XElement currentPageElement)
         {
             IEnumerable<XElement> scopeElements = null;
             XElement matchPage;
 
             switch (associationScope)
             {
-                case PageAssociationScope.ParentPage:
+                case SitemapScope.Parent:
                     if (currentPageElement.Parent != null && currentPageElement.Parent.Name == PageElementName)
                     {
                         yield return currentPageElement.Parent;
                     }
                     break;
-                case PageAssociationScope.CurrentAndDescendantPages:
+                case SitemapScope.DescendantsAndCurrent:
                     scopeElements = currentPageElement.DescendantsAndSelf(PageElementName);
                     break;
-                case PageAssociationScope.ChildPages:
+                case SitemapScope.Children:
                     scopeElements = currentPageElement.Elements(PageElementName);
                     break;
-                case PageAssociationScope.SiblingPages:
+                case SitemapScope.Siblings:
                     scopeElements = currentPageElement.Parent.Elements(PageElementName);
                     break;
-                case PageAssociationScope.AncestorPages:
+                case SitemapScope.Ancestors:
                     scopeElements = currentPageElement.Ancestors(PageElementName);
                     break;
-                case PageAssociationScope.AncestorAndCurrentPages:
+                case SitemapScope.AncestorsAndCurrent:
                     scopeElements = currentPageElement.AncestorsAndSelf(PageElementName);
                     break;
-                case PageAssociationScope.Level1Page:
+                case SitemapScope.Level1:
                     scopeElements = GetPageElementBySiteDepth(currentPageElement, 1);
                     break;
-                case PageAssociationScope.Level2Page:
+                case SitemapScope.Level2:
                     scopeElements = GetPageElementBySiteDepth(currentPageElement, 2);
                     break;
-                case PageAssociationScope.Level3Page:
+                case SitemapScope.Level3:
                     scopeElements = GetPageElementBySiteDepth(currentPageElement, 3);
                     break;
-                case PageAssociationScope.Level4Page:
+                case SitemapScope.Level4:
                     scopeElements = GetPageElementBySiteDepth(currentPageElement, 4);
                     break;
-                case PageAssociationScope.Level1AndDescendantPages:
+                case SitemapScope.Level1AndDescendants:
                     scopeElements = GetPageElementBySiteDepth(currentPageElement, 1).DescendantsAndSelf();
                     break;
-                case PageAssociationScope.Level2AndDescendantPages:
+                case SitemapScope.Level2AndDescendants:
                     scopeElements = GetPageElementBySiteDepth(currentPageElement, 2).DescendantsAndSelf();
                     break;
-                case PageAssociationScope.Level3AndDescendantPages:
+                case SitemapScope.Level3AndDescendants:
                     scopeElements = GetPageElementBySiteDepth(currentPageElement, 3).DescendantsAndSelf();
                     break;
-                case PageAssociationScope.Level4AndDescendantPages:
+                case SitemapScope.Level4AndDescendants:
                     scopeElements = GetPageElementBySiteDepth(currentPageElement, 4).DescendantsAndSelf();
                     break;
-                case PageAssociationScope.Level1AndSiblingPages:
+                case SitemapScope.Level1AndSiblings:
                     matchPage = GetPageElementBySiteDepth(currentPageElement, 1).FirstOrDefault();
                     if (matchPage != null && matchPage.Parent != null)
                     {
                         scopeElements = matchPage.Parent.Elements(PageElementName);
                     }
                     break;
-                case PageAssociationScope.Level2AndSiblingPages:
+                case SitemapScope.Level2AndSiblings:
                     matchPage = GetPageElementBySiteDepth(currentPageElement, 1).FirstOrDefault();
                     if (matchPage != null)
                     {
                         scopeElements = matchPage.Elements(PageElementName);
                     }
                     break;
-                case PageAssociationScope.Level3AndSiblingPages:
+                case SitemapScope.Level3AndSiblings:
                     matchPage = GetPageElementBySiteDepth(currentPageElement, 2).FirstOrDefault();
                     if (matchPage != null)
                     {
                         scopeElements = matchPage.Elements(PageElementName);
                     }
                     break;
-                case PageAssociationScope.Level4AndSiblingPages:
+                case SitemapScope.Level4AndSiblings:
                     matchPage = GetPageElementBySiteDepth(currentPageElement, 3).FirstOrDefault();
                     if (matchPage != null)
                     {
@@ -388,7 +392,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                     }
                     break;
                 default:
-                    throw new NotImplementedException("Unhandled PageAssociationScope type: " + associationScope);
+                    throw new NotImplementedException("Unhandled SitemapScope type: " + associationScope);
             }
 
             if (scopeElements != null)
@@ -465,7 +469,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                          (string.IsNullOrEmpty(page.MenuTitle) ? null : new XAttribute("MenuTitle", page.MenuTitle)),
                          new XAttribute("UrlTitle", page.UrlTitle),
                          (string.IsNullOrEmpty(page.FriendlyUrl) ? null : new XAttribute("FriendlyUrl", MakeRelativeUrl(page.FriendlyUrl))),
-                         new XAttribute("Abstract", page.Abstract),
+                         new XAttribute("Description", page.Description),
                          new XAttribute("ChangedDate", page.ChangeDate),
                          new XAttribute("ChangedBy", page.ChangedBy ?? string.Empty));
 
@@ -669,9 +673,9 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
 
-        private static IEnumerable<XElement> GetSitemapByScopeUnannotated(PageAssociationScope associationScope, Guid pageId)
+        private static IEnumerable<XElement> GetSitemapByScopeUnannotated(SitemapScope associationScope, Guid pageId)
         {
-            if (associationScope == PageAssociationScope.AllPages)
+            if (associationScope == SitemapScope.All)
             {
                 foreach (XElement homepage in PageStructureInfo.GetSiteMap())
                 {
@@ -691,118 +695,118 @@ namespace Composite.Core.WebClient.Renderings.Page
 
             switch (associationScope)
             {
-                case PageAssociationScope.CurrentPage:
+                case SitemapScope.Current:
                     yield return new XElement(currentPageElement.Name, currentPageElement.Attributes());
                     break;
-                case PageAssociationScope.ParentPage:
+                case SitemapScope.Parent:
                     if (currentPageElement.Parent != null && currentPageElement.Parent.Name == PageElementName)
                     {
                         yield return new XElement(currentPageElement.Parent.Name, currentPageElement.Parent.Attributes());
                     }
                     break;
-                case PageAssociationScope.CurrentAndDescendantPages:
+                case SitemapScope.DescendantsAndCurrent:
                     yield return new XElement(currentPageElement);
                     break;
-                case PageAssociationScope.ChildPages:
+                case SitemapScope.Children:
                     foreach (XElement page in currentPageElement.Elements(PageElementName))
                     {
                         yield return new XElement(page.Name, page.Attributes());
                     }
                     break;
-                case PageAssociationScope.SiblingPages:
+                case SitemapScope.Siblings:
                     foreach (XElement page in currentPageElement.Parent.Elements(PageElementName))
                     {
                         yield return new XElement(page.Name, page.Attributes());
                     }
                     break;
-                case PageAssociationScope.AncestorPages:
+                case SitemapScope.Ancestors:
                     foreach (XElement page in currentPageElement.Ancestors(PageElementName))
                     {
                         pageCopy = new XElement(page.Name, page.Attributes(), pageCopy);
                     }
                     yield return pageCopy;
                     break;
-                case PageAssociationScope.AncestorAndCurrentPages:
+                case SitemapScope.AncestorsAndCurrent:
                     foreach (XElement page in currentPageElement.AncestorsAndSelf(PageElementName))
                     {
                         pageCopy = new XElement(page.Name, page.Attributes(), pageCopy);
                     }
                     yield return pageCopy;
                     break;
-                case PageAssociationScope.Level1Page:
+                case SitemapScope.Level1:
                     pageCopy = GetPageCopyBySiteDepth(currentPageElement, 1, true);
                     if (pageCopy != null)
                     {
                         yield return pageCopy;
                     }
                     break;
-                case PageAssociationScope.Level2Page:
+                case SitemapScope.Level2:
                     pageCopy = GetPageCopyBySiteDepth(currentPageElement, 2, true);
                     if (pageCopy != null)
                     {
                         yield return pageCopy;
                     }
                     break;
-                case PageAssociationScope.Level3Page:
+                case SitemapScope.Level3:
                     pageCopy = GetPageCopyBySiteDepth(currentPageElement, 3, true);
                     if (pageCopy != null)
                     {
                         yield return pageCopy;
                     }
                     break;
-                case PageAssociationScope.Level4Page:
+                case SitemapScope.Level4:
                     pageCopy = GetPageCopyBySiteDepth(currentPageElement, 4, true);
                     if (pageCopy != null)
                     {
                         yield return pageCopy;
                     }
                     break;
-                case PageAssociationScope.Level1AndSiblingPages:
+                case SitemapScope.Level1AndSiblings:
                     foreach (XElement page in GetSiblingsCopyBySiteDepth(currentPageElement, 1))
                     {
                         yield return page;
                     }
                     break;
-                case PageAssociationScope.Level2AndSiblingPages:
+                case SitemapScope.Level2AndSiblings:
                     foreach (XElement page in GetSiblingsCopyBySiteDepth(currentPageElement, 2))
                     {
                         yield return page;
                     }
                     break;
-                case PageAssociationScope.Level3AndSiblingPages:
+                case SitemapScope.Level3AndSiblings:
                     foreach (XElement page in GetSiblingsCopyBySiteDepth(currentPageElement, 3))
                     {
                         yield return page;
                     }
                     break;
-                case PageAssociationScope.Level4AndSiblingPages:
+                case SitemapScope.Level4AndSiblings:
                     foreach (XElement page in GetSiblingsCopyBySiteDepth(currentPageElement, 4))
                     {
                         yield return page;
                     }
                     break;
-                case PageAssociationScope.Level1AndDescendantPages:
+                case SitemapScope.Level1AndDescendants:
                     pageCopy = GetPageCopyBySiteDepth(currentPageElement, 1, false);
                     if (pageCopy != null)
                     {
                         yield return pageCopy;
                     }
                     break;
-                case PageAssociationScope.Level2AndDescendantPages:
+                case SitemapScope.Level2AndDescendants:
                     pageCopy = GetPageCopyBySiteDepth(currentPageElement, 2, false);
                     if (pageCopy != null)
                     {
                         yield return pageCopy;
                     }
                     break;
-                case PageAssociationScope.Level3AndDescendantPages:
+                case SitemapScope.Level3AndDescendants:
                     pageCopy = GetPageCopyBySiteDepth(currentPageElement, 3, false);
                     if (pageCopy != null)
                     {
                         yield return pageCopy;
                     }
                     break;
-                case PageAssociationScope.Level4AndDescendantPages:
+                case SitemapScope.Level4AndDescendants:
                     pageCopy = GetPageCopyBySiteDepth(currentPageElement, 4, false);
                     if (pageCopy != null)
                     {
@@ -810,7 +814,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                     }
                     break;
                 default:
-                    throw new NotImplementedException("Unhandled PageAssociationScope type: " + associationScope.ToString());
+                    throw new NotImplementedException("Unhandled SitemapScope type: " + associationScope.ToString());
             }
         }
 

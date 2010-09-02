@@ -203,7 +203,7 @@ namespace Composite.Data
         {
             Guid pageId = (Guid)GetDefinitionPageReferencePropertyInfo(folderData.DataSourceId.InterfaceType).GetValue(folderData, null);
 
-            return Composite.Data.Types.PageManager.GetPageById(pageId);
+            return Composite.Data.PageManager.GetPageById(pageId);
         }
 
 
@@ -325,7 +325,7 @@ namespace Composite.Data
 
                 foreach (IPageFolderDefinition pageFolderDefinition in pageFolderDefinitions)
                 {
-                    IPage page = Composite.Data.Types.PageManager.GetPageById(pageFolderDefinition.Id);
+                    IPage page = Composite.Data.PageManager.GetPageById(pageFolderDefinition.Id);
 
                     page.RemoveFolderDefinition(pageFolderDefinition.FolderTypeId);
                 }

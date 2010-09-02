@@ -25,7 +25,7 @@
 					</TextBox>
 					<TextArea Label="${Composite.Plugins.PageElementProvider, EditPage.LabelAbstract}" Help="${Composite.Plugins.PageElementProvider, EditPage.LabelAbstractHelp}">
 						<TextArea.Text>
-							<cms:bind source="SelectedPage.Abstract" />
+							<cms:bind source="SelectedPage.Description" />
 						</TextArea.Text>
 					</TextArea>
 

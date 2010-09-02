@@ -59,7 +59,7 @@ namespace Composite.Core.Xml
             new NamespaceName { Name = "var", Namespace = "" },
             new NamespaceName { Name = "fieldreference", Namespace = Namespaces.DynamicData10.NamespaceName },
             new NamespaceName { Name = "page.title", Namespace = Namespaces.Rendering10.NamespaceName },
-            new NamespaceName { Name = "page.abstract", Namespace = Namespaces.Rendering10.NamespaceName },
+            new NamespaceName { Name = "page.description", Namespace = Namespaces.Rendering10.NamespaceName },
         };
 
 

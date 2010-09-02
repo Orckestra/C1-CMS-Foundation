@@ -52,7 +52,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                             , new XAttribute("Title", match.Attribute("Title").Value)
                             , (match.Attribute("MenuTitle") == null ? null : new XAttribute("MenuTitle", match.Attribute("MenuTitle").Value))
                             , new XAttribute("UrlTitle", match.Attribute("UrlTitle").Value)
-                            , new XAttribute("Abstract", match.Attribute("Abstract").Value)
+                            , new XAttribute("Description", match.Attribute("Description").Value)
                             , new XAttribute("URL", match.Attribute("URL").Value)
                             );
 

@@ -7,8 +7,9 @@ using System.Web.Services;
 using System.Web.Services.Protocols;
 
 using Composite;
-using Composite.Data;
+using Composite.C1Console.Users;
 using Composite.Core.WebClient;
+using Composite.Data;
 using Composite.Data.Types;
 
 
@@ -19,43 +20,23 @@ public class PageService : System.Web.Services.WebService
     [WebMethod]
     public string GetPageBrowserDefaultUrl(bool dummy)
     {
-        using (DataConnection dataConnection = new DataConnection(PublicationScope.Unpublished))
+#warning Remove outer using when bug fixing allow it
+        using (DataScope dc = new DataScope(UserSettings.ActiveLocaleCultureInfo))
         {
-            // NOTE: linq2sql conversion doesn't support string.EndsWith() function, when we have a parameter as an argument.
-            IEnumerable<IPageHostNameBinding> hostNameMatches =
-                from binding in dataConnection.Get<IPageHostNameBinding>()
-                where binding.HostName != null
-                      && binding.HostName != string.Empty
-                orderby binding.HostName.Length descending
-                select binding;
-
-            Guid pageId = Guid.Empty;
-
-            string hostname = this.Context.Request.Url.Host.ToLower();
-
-            foreach (var binding in hostNameMatches)
+            using (DataConnection dataConnection = new DataConnection(PublicationScope.Unpublished, UserSettings.ActiveLocaleCultureInfo))
             {
-                if (hostname.EndsWith(binding.HostName))
+                SitemapNavigator sitemapNavigator = new SitemapNavigator(dataConnection);
+                PageNode homePageNode = sitemapNavigator.GetPageNodeByHostname(this.Context.Request.Url.Host);
+
+                if (homePageNode != null)
                 {
-                    pageId = binding.PageId;
-                    break;
+                    return homePageNode.Url;
+                }
+                else
+                {
+                    return "/";
                 }
             }
-
-            if (pageId == Guid.Empty)
-            {
-#warning MAW: Bind to sitemap stuff here - make sure we only find a published page. also look into hostnames
-                pageId = dataConnection.Get<IPageStructure>().Where(f => f.ParentId == Guid.Empty).OrderBy(f => f.LocalOrdering).Select(f => f.Id).FirstOrDefault();
-            }
-
-            if (pageId == Guid.Empty)
-            {
-                return "/";
-            }
-
-            string url = new PageUrl(PublicationScope.Unpublished, dataConnection.CurrentLocale, pageId).Build(PageUrlType.Published);
-
-            return url ?? "/";
         }
     }
 

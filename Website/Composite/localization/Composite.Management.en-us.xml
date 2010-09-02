@@ -1076,8 +1076,8 @@
 	<string key="Website.Forms.Administrative.EditPage.LabelPageTitleHelp" value="" />
 	<string key="Website.Forms.Administrative.EditPage.LabelMenuTitle" value="Menu title" />
 	<string key="Website.Forms.Administrative.EditPage.LabelUrlTitle" value="URL title" />
-	<string key="Website.Forms.Administrative.EditPage.LabelAbstract" value="Abstract" />
-	<string key="Website.Forms.Administrative.EditPage.LabelAbstractHelp" value="" />
+	<string key="Website.Forms.Administrative.EditPage.LabelDescription" value="Description" />
+	<string key="Website.Forms.Administrative.EditPage.LabelDescriptiontHelp" value="" />
 	<string key="Website.Forms.Administrative.EditPage.LabelPublishDate" value="Publish date" />
 	<string key="Website.Forms.Administrative.EditPage.LabelUnpublishDate" value="Unpublish date" />
 	<string key="Website.Forms.Administrative.EditPage.LabelContent" value="Content" />

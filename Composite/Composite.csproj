@@ -229,7 +229,6 @@
     <Compile Include="Data\Types\IUserGroupPermissionDefinition.cs" />
     <Compile Include="Data\Types\IUserGroupPermissionDefinitionPermissionType.cs" />
     <Compile Include="Data\Types\IUserUserGroupRelation.cs" />
-    <Compile Include="Data\Types\PageManager.cs" />
     <Compile Include="Data\TypeVersionAttribute.cs" />
     <Compile Include="C1Console\Elements\AttachingPoint.cs" />
     <Compile Include="C1Console\Elements\ElementAttachingPointFacade.cs" />
@@ -342,7 +341,6 @@
     <Compile Include="Data\IPageManager.cs" />
     <Compile Include="Data\Navigation.cs" />
     <Compile Include="Data\PageManager.cs" />
-    <Compile Include="Data\PageSelection.cs" />
     <Compile Include="Data\PageUrl.cs" />
     <Compile Include="Data\XPage.cs" />
     <Compile Include="Data\XSiteMap.cs" />

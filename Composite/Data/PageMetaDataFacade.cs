@@ -248,7 +248,7 @@ namespace Composite.Data
 
             while (definingPageId != pageId)
             {
-                Guid parentPageId = Composite.Data.Types.PageManager.GetParentId(pageId);
+                Guid parentPageId = Composite.Data.PageManager.GetParentId(pageId);
 
                 if ((definingPageId != Guid.Empty) && (parentPageId == Guid.Empty)) return -1; // Page is not a (sub)child of _pageId                
 
@@ -402,9 +402,9 @@ namespace Composite.Data
             {
                 pages = new List<IPage>();
 
-                foreach (Guid pageId in Composite.Data.Types.PageManager.GetChildrenIDs(Guid.Empty))
+                foreach (Guid pageId in Composite.Data.PageManager.GetChildrenIDs(Guid.Empty))
                 {
-                    pages.Add(Composite.Data.Types.PageManager.GetPageById(pageId));
+                    pages.Add(Composite.Data.PageManager.GetPageById(pageId));
                 }
                                         
                 startLevel--; // We have just taken one level
@@ -905,7 +905,7 @@ namespace Composite.Data
         {
             Guid pageId = GetMetaDataReferencedPageId(metaData);
 
-            return Composite.Data.Types.PageManager.GetPageById(pageId);
+            return Composite.Data.PageManager.GetPageById(pageId);
         }
 
 

@@ -159,7 +159,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 switch (element.Name.LocalName)
                 {
                     case "page.title":
-                    case "page.abstract":
+                    case "page.description":
                     case "page.metatag.description":
                     case "placeholder":
                         break;

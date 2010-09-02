@@ -97,7 +97,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             IEnumerable<Guid> newPageIdsToAdd = newPageIds.Except(oldPageIds);
             foreach (Guid id in newPageIdsToAdd)
             {
-                IPage page = Composite.Data.Types.PageManager.GetPageById(id);
+                IPage page = Composite.Data.PageManager.GetPageById(id);
 
                 if (page.GetMetaData(metaDataPair.First, metaDataPair.Second) == null)
                 {
@@ -261,7 +261,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                 IEnumerable<Guid> oldPageIdsToRemove = oldPageIds.Except(newPageIds);
                 foreach (Guid id in oldPageIdsToRemove)
                 {
-                    IPage page = Composite.Data.Types.PageManager.GetPageById(id);
+                    IPage page = Composite.Data.PageManager.GetPageById(id);
                     
                     bool otherDefinitionExists = page.GetAllowedMetaDataDefinitions().Where(f => f.Name == metaDataPair.First).Any();
 
@@ -301,7 +301,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                 IEnumerable<Guid> newPageIdsToAdd = newPageIds.Except(oldPageIds);
                 foreach (Guid id in newPageIdsToAdd)
                 {
-                    IPage page = Composite.Data.Types.PageManager.GetPageById(id);
+                    IPage page = Composite.Data.PageManager.GetPageById(id);
 
                     page.AddNewMetaDataToExistingPage(metaDataPair.First, metaDataPair.Second, newDataTemplate);
                 }
