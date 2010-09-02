@@ -67,7 +67,7 @@ namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvide
 
             Dictionary<string, string> culturesDictionary = cultures.ToDictionary(f => f.Name, f => StringResourceSystemFacade.GetString("Composite.Cultures", f.Name));
 
-            string urlMappingName = culturesDictionary.First().Key;
+            string urlMappingName = GetDefaultUrlMappingNameFromCultureName(culturesDictionary.First().Key);
             if (DataLocalizationFacade.ActiveLocalizationCultures.Count() == 0)
             {
                 urlMappingName = "";
@@ -103,8 +103,21 @@ namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvide
 
         private void updateRulMappingNameCodeActivity_Update_ExecuteCode(object sender, EventArgs e)
         {
-            string cultureName = this.GetBinding<string>("CultureName");
-            this.UpdateBinding("UrlMappingName", cultureName);
+            string urlMappingName = GetDefaultUrlMappingNameFromCultureName( this.GetBinding<string>("CultureName") );
+
+            this.UpdateBinding("UrlMappingName", urlMappingName);
+        }
+
+
+
+        private string GetDefaultUrlMappingNameFromCultureName(string cultureName)
+        {
+            string urlMappingName = cultureName;
+            if (urlMappingName.Contains("-"))
+            {
+                urlMappingName = urlMappingName.Substring(0, urlMappingName.IndexOf("-"));
+            }
+            return urlMappingName;
         }
 
 
