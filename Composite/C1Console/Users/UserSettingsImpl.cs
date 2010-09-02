@@ -29,7 +29,7 @@ namespace Composite.C1Console.Users
         }
 
 
-        private static void OnUserSettingsChanged(StorageEventArgs dataEventArgs)
+        private static void OnUserSettingsChanged(object sender, DataEventArgs dataEventArgs)
         {
             IUserSettings settings = dataEventArgs.Data as IUserSettings;
             if(settings != null)

@@ -55,7 +55,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
 
 
-        private void OnDataChanged(StorageEventArgs dataEventArgs)
+        private void OnDataChanged(object sender, DataEventArgs dataEventArgs)
         {
             _functionNotifier.FunctionsUpdated();
         }

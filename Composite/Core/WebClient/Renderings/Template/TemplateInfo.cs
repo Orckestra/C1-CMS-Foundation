@@ -24,7 +24,7 @@ namespace Composite.Core.WebClient.Renderings.Template
           DataEventSystemFacade.SubscribeToDataDeleted<IPageTemplate>(PageTemplate_Changed);
 	    }
 
-	    private static void PageTemplate_Changed(StorageEventArgs dataEventArgs)
+        private static void PageTemplate_Changed(object sender, DataEventArgs dataEventArgs)
 	    {
             var pageTemplate = dataEventArgs.Data as IPageTemplate;
             Verify.ArgumentCondition(pageTemplate != null, "dataEventArgs", "Data is null or has an incorrect data type.");

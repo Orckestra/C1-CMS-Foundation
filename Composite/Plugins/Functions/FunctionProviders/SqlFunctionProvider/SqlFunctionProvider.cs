@@ -49,7 +49,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.SqlFunctionProvider
 
 
 
-        private void OnDataChanged(StorageEventArgs dataEventArgs)
+        private void OnDataChanged(object sender, DataEventArgs dataEventArgs)
         {
             _functionNotifier.FunctionsUpdated();
         }

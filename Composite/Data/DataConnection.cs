@@ -10,6 +10,7 @@ namespace Composite.Data
     public class DataConnection : ImplementationContainer<DataConnectionImplementation>, IDisposable
     {
         private ImplementationContainer<PageDataConnection> _pageDataConnection;
+        private ImplementationContainer<SitemapNavigator> _sitemapNavigator;
 
 
 
@@ -33,6 +34,7 @@ namespace Composite.Data
             : base(() => ImplementationFactory.CurrentFactory.CreateDataConnection(null, null))
         {            
             _pageDataConnection = new ImplementationContainer<PageDataConnection>(() => new PageDataConnection());
+            _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this));
         }
 
 
@@ -57,9 +59,10 @@ namespace Composite.Data
         public DataConnection(PublicationScope scope)
             : base(() => ImplementationFactory.CurrentFactory.CreateDataConnection(scope, null))
         {
-            _pageDataConnection = new ImplementationContainer<PageDataConnection>(() => new PageDataConnection(scope));
-
             if ((scope < PublicationScope.Unpublished) || (scope > PublicationScope.Published)) throw new ArgumentOutOfRangeException("scope");
+
+            _pageDataConnection = new ImplementationContainer<PageDataConnection>(() => new PageDataConnection(scope));
+            _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this));            
         }
 
 
@@ -85,6 +88,7 @@ namespace Composite.Data
             : base(() => ImplementationFactory.CurrentFactory.CreateDataConnection(null, locale))
         {
             _pageDataConnection = new ImplementationContainer<PageDataConnection>(() => new PageDataConnection(locale));
+            _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this));
         }
 
 
@@ -113,6 +117,7 @@ namespace Composite.Data
             if ((scope < PublicationScope.Unpublished) || (scope > PublicationScope.Published)) throw new ArgumentOutOfRangeException("scope");
 
             _pageDataConnection = new ImplementationContainer<PageDataConnection>(() => new PageDataConnection(scope, locale));
+            _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this));
         }
 
 
@@ -141,11 +146,11 @@ namespace Composite.Data
         }
 
 
-#warning MRJ: Event documentation
+
         /// <summary>
         /// Adds the <typeparamref name="TData"/> instance to the default C1 storage.
         /// If the storage does not exist, then one is created.
-        /// This method triggers the events OnBeforeAdd and OnAfterAdd for the item <paramref name="item"/>
+        /// This method triggers the events OnBeforeAdd and OnAfterAdd for the item <paramref name="item"/>. 
         /// </summary>
         /// <example>
         /// <code>
@@ -174,6 +179,32 @@ namespace Composite.Data
 
 
 
+        /// <summary>
+        /// Adds the <typeparamref name="TData"/> instances to the default C1 storage.
+        /// If the storage does not exist, then one is created.
+        /// This method triggers the events OnBeforeAdd and OnAfterAdd for each item in <paramref name="items"/>
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// using (DataConnection connection = new DataConnection())
+        /// {
+        ///    List&lt;IMyDataType&gt; items = new List&lt;IMyDataType&gt;();
+        ///    
+        ///    for (int i = 0; i &lt; 10; i++)
+        ///    {
+        ///       IMyDataType myDataType = DataConnection.New&lt;IMyDataType&gt;();
+        ///       myDataType.Name = "John Doe";
+        ///       myDataType.Number = i;
+        ///       items.Add(myDataType);
+        ///    }   
+        ///    
+        ///    connection.Add&lt;IMyDataType&gt;(items);
+        /// }
+        /// </code>
+        /// </example>
+        /// <typeparam name="TData">An IData interface</typeparam>
+        /// <param name="items">The data items to add</param>
+        /// <returns>The newly added data items. Note: These could differ from the items in <paramref name="items"/></returns>
         public IList<TData> Add<TData>(IEnumerable<TData> items)
             where TData : class, IData
         {
@@ -182,6 +213,28 @@ namespace Composite.Data
 
 
 
+        /// <summary>
+        /// Updates the given <typeparamref name="TData"/> instance in the C1 storage. 
+        /// If any property values has been changed, these would be saved into the storage.
+        /// This method triggers the events OnBeforeUpdate and OnAfterUpdate for the item <paramref name="item"/>
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// using (DataConnection connection = new DataConnection())
+        /// {
+        ///    IMyDataType myDataType = 
+        ///       (from d in connection.Get&lt;IMyDataType&gt;()
+        ///        where d.Name == "Foo"
+        ///        select d).First();
+        ///    
+        ///    myDataType.Name = "Bar";
+        ///    
+        ///    connection.Update&lt;IMyDataType&gt;(myDataType);
+        /// }
+        /// </code>
+        /// </example>
+        /// <typeparam name="TData">An IData interface</typeparam>
+        /// <param name="item">The item to update in the C1 storage</param>
         public void Update<TData>(TData item)
             where TData : class, IData
         {
@@ -190,6 +243,31 @@ namespace Composite.Data
 
 
 
+        /// <summary>
+        /// Updates the geven <typeparamref name="TData"/> instances in the C1 storage.
+        /// If any property values in any of the <typeparamref name="TData"/> instances, these would be saved into the storage.
+        /// This method triggers the events OnBeforeUpdate and OnAfterUpdate for each item in <paramref name="items"/>
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// using (DataConnection connection = new DataConnection())
+        /// {
+        ///    IEnumerable&lt;IMyDataType&gt; myDataTypes = 
+        ///       from d in connection.Get&lt;IMyDataType&gt;()
+        ///       where d.Value > 10
+        ///       select d;
+        ///    
+        ///    foreach (IMyDataType in myDataTypes)
+        ///    {
+        ///       myDataType.Value += 10;
+        ///    }   
+        ///    
+        ///    connection.Update&lt;IMyDataType&gt;(myDataTypes);
+        /// }
+        /// </code>
+        /// </example>
+        /// <typeparam name="TData">An IData interface</typeparam>
+        /// <param name="items">The items to update in the C1 storage</param>
         public void Update<TData>(IEnumerable<TData> items)
             where TData : class, IData
         {
@@ -198,6 +276,26 @@ namespace Composite.Data
 
 
 
+        /// <summary>
+        /// Deletes the given <typeparamref name="TData"/> instance permently from the C1 storage.        
+        /// This method triggers the event OnDeleted for the item <paramref name="item"/>
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// using (DataConnection connection = new DataConnection())
+        /// {
+        ///    IMyDataType myDataType = 
+        ///       (from d in connection.Get&lt;IMyDataType&gt;()
+        ///        where d.Name == "Foo"
+        ///        select d).First();
+        ///    
+        ///    
+        ///    connection.Delete&lt;IMyDataType&gt;(myDataType);
+        /// }
+        /// </code>
+        /// </example>
+        /// <typeparam name="TData">An IData interface</typeparam>
+        /// <param name="item">The item to delete</param>
         public void Delete<TData>(TData item)
             where TData : class, IData
         {
@@ -206,6 +304,26 @@ namespace Composite.Data
 
 
 
+        /// <summary>
+        /// Deletes the given <typeparamref name="TData"/> instances permently from the C1 storage.
+        /// This method triggers the event OnDeleted for each item in <paramref name="items"/>
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// using (DataConnection connection = new DataConnection())
+        /// {
+        ///    IMyDataType myDataTypes = 
+        ///       from d in connection.Get&lt;IMyDataType&gt;()
+        ///       where d.Name == "Foo"
+        ///       select d;
+        ///    
+        ///    
+        ///    connection.Delete&lt;IMyDataType&gt;(myDataTypes);
+        /// }
+        /// </code>
+        /// </example>
+        /// <typeparam name="TData">An IData interface</typeparam>
+        /// <param name="items">The items to delete</param>
         public void Delete<TData>(IEnumerable<TData> items)
             where TData : class, IData
         {
@@ -214,6 +332,23 @@ namespace Composite.Data
 
 
 
+        /// <summary>
+        /// Create a new <typeparamref name="TData"/> that can be added using <see cref="Composite.Data.DataConnection.Add"/>.
+        /// This method triggers the event OnNew for the return value of the method.
+        /// </summary>
+        /// <example>
+        /// Here is an example of how to create a new IData instance and add it to the C1 storage.
+        /// <code>
+        /// using (DataConnection connection = new DataConnection())
+        /// {
+        ///    IMyDataType myDataType = DataConnection.New&lt;IMyDataType&gt;();
+        ///    myDataType.Name = "John Doe";
+        ///    connection.Add&lt;IMyDataType&gt;(myDataType);        
+        /// }
+        /// </code>
+        /// </example>
+        /// <typeparam name="TData">An IData interface</typeparam>
+        /// <returns>Returns a new instance of the <typeparamref name="TData"/></returns>
         public static TData New<TData>()
             where TData : class, IData
         {
@@ -222,6 +357,9 @@ namespace Composite.Data
 
 
 
+        /// <summary>
+        /// The current publication scope.
+        /// </summary>
         public PublicationScope CurrentPublicationScope
         {
             get
@@ -229,9 +367,12 @@ namespace Composite.Data
                 return this.Implementation.CurrentPublicationScope;
             }
         }
+        
 
 
-
+        /// <summary>
+        /// The current locale.
+        /// </summary>
         public CultureInfo CurrentLocale
         {
             get
@@ -242,6 +383,18 @@ namespace Composite.Data
 
 
 
+        /// <summary>
+        /// All locales added to C1.
+        /// </summary>
+        /// <example>
+        /// Here is an example of how to enumerate all locales added to C1.
+        /// <code>
+        /// foreach (CultureInfo locale in DataConnection.Locales)
+        /// {
+        ///    // Use the locale
+        /// }
+        /// </code>
+        /// </example>
         public static IEnumerable<CultureInfo> AllLocales
         {
             get
@@ -252,11 +405,27 @@ namespace Composite.Data
 
 
 
+        /// <summary>
+        /// A PageDataConnection instanse. See <see cref="Composite.Data.PageDataConnection"/>
+        /// </summary>
         public PageDataConnection PageDataConnection
         {
             get
             {
                 return _pageDataConnection.Implementation;
+            }
+        }
+
+
+
+        /// <summary>
+        /// A SitemapNavigator instance. See <see cref="Composite.Data.SitemapNavigator"/>
+        /// </summary>
+        public SitemapNavigator SitemapNavigator 
+        {
+            get
+            {
+                return _sitemapNavigator.Implementation;
             }
         }
 
@@ -283,6 +452,7 @@ namespace Composite.Data
             {
                 this.DisposeImplementation();
                 _pageDataConnection.Implementation.DisposeImplementation();
+                _sitemapNavigator.Implementation.DisposeImplementation();
             }
         }
     }

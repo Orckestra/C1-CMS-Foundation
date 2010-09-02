@@ -49,10 +49,10 @@ namespace Composite.Core.Implementation
 
 
 
-        public virtual DataTypeEventsImplementation<T> CreateStatelessDataTypeEvents<T>()
+        public virtual DataEventsImplementation<T> CreateStatelessDataEvents<T>()
             where T : class, IData
         {
-            return new DataTypeEventsImplementation<T>();
+            return new DataEventsImplementation<T>();
         }
 
 

@@ -59,7 +59,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
             DataEventSystemFacade.SubscribeToDataDeleted<IMediaFolderData>(ClearQueryCache, false);
         }
 
-        private void ClearQueryCache(StorageEventArgs dataeventargs)
+        private void ClearQueryCache(object sender, DataEventArgs dataeventargs)
         {
             lock (_syncRoot)
             {

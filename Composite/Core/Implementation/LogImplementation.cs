@@ -1,6 +1,7 @@
 ﻿using System;
 using Composite.Core.Logging;
 
+
 namespace Composite.Core.Implementation
 {
     public class LogImplementation

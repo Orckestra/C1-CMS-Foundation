@@ -393,7 +393,7 @@ namespace Composite.C1Console.Trees
 
 
 
-        private void OnUpdateTreeAttachmentPoints(StorageEventArgs dataEventArgs)
+        private void OnUpdateTreeAttachmentPoints(object sender, DataEventArgs dataEventArgs)
         {
             InitializeTreeAttachmentPoints();
         }
@@ -563,7 +563,7 @@ namespace Composite.C1Console.Trees
 
 
 
-        private static void OnDataItemDeleted(StorageEventArgs dataEventArgs)
+        private static void OnDataItemDeleted(object sender, DataEventArgs dataEventArgs)
         {
             Type interfaceType = dataEventArgs.Data.DataSourceId.InterfaceType;
 

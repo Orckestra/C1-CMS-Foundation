@@ -264,7 +264,7 @@ namespace Composite.Data.Foundation
 
 
 
-        private static void OnAfterDataUpdated(StorageEventArgs dataEventArgs)
+        private static void OnAfterDataUpdated(object sender, DataEventArgs dataEventArgs)
         {
             IPublishControlled publishControlled = dataEventArgs.Data as IPublishControlled;
             if (publishControlled == null) return;

@@ -82,7 +82,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
 
 
 
-        private void OnDataChanged(StorageEventArgs dataEventArgs)
+        private void OnDataChanged(object sender, DataEventArgs dataEventArgs)
         {
             _functionNotifier.FunctionsUpdated();
         }

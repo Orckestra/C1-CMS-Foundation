@@ -548,14 +548,14 @@ namespace Composite.Data
 
 
 
-        private static void OnDataChanged(StorageEventArgs dataEventArgs)
+        private static void OnDataChanged(object sender, DataEventArgs dataEventArgs)
         {
             _dataBySourceIdCache.Remove(dataEventArgs.Data.DataSourceId.ToString());
         }
 
 
 
-        private static void SetChangeHistoryInformation(StorageEventArgs dataEventArgs)
+        private static void SetChangeHistoryInformation(object sender, DataEventArgs dataEventArgs)
         {
             IData data = dataEventArgs.Data;
             if (data != null && data is IChangeHistory)

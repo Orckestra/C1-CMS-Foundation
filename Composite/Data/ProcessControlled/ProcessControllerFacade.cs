@@ -193,7 +193,7 @@ namespace Composite.Data.ProcessControlled
         }
 
 
-        private static void OnAfterDataUpdated(StorageEventArgs dataEventArgs)
+        private static void OnAfterDataUpdated(object sender, DataEventArgs dataEventArgs)
         {
             if (GetProcessControllersCounter() > 0) return;
 
@@ -220,7 +220,7 @@ namespace Composite.Data.ProcessControlled
 
 
 
-        private static void OnDataBuildNew(StorageEventArgs dataEventArgs)
+        private static void OnDataBuildNew(object sender, DataEventArgs dataEventArgs)
         {
             if (GetProcessControllersCounter() > 0) return;
 

@@ -143,6 +143,9 @@
     <Compile Include="Core\Implementation\SitemapNavigatorImplementation.cs" />
     <Compile Include="Core\Log.cs" />
     <Compile Include="Core\WebClient\ApplicationLevelEventHandlers.cs" />
+    <Compile Include="Data\DataEventArgs.cs" />
+    <Compile Include="Data\DataEventHandler.cs" />
+    <Compile Include="Data\DataEvents.cs" />
     <Compile Include="Data\SitemapNavigator.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\UserGroupUserAdderFragmentInstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\UserGroupUserAdderFragmentUninstaller.cs" />
@@ -305,19 +308,12 @@
     <Compile Include="Core\Configuration\BuildinPlugins\GlobalSettingsProvider\BuildinCachingSettings.cs" />
     <Compile Include="Core\Configuration\ICachingSettings.cs" />
     <Compile Include="Core\Configuration\InstallationInformationFacade.cs" />
-    <Compile Include="Core\Implementation\ImplementationBase.cs" />
     <Compile Include="Core\Implementation\ImplementationContainer.cs" />
-    <Compile Include="Core\Implementation\LogBase.cs" />
-    <Compile Include="Core\Implementation\LogDefaultImplementation.cs" />
     <Compile Include="Core\Implementation\Pages\DefaultPageManager.cs" />
     <Compile Include="Core\Implementation\Pages\NavigationBase.cs" />
     <Compile Include="Core\Implementation\Pages\NavigationDefaultImplementation.cs" />
     <Compile Include="Core\Implementation\Pages\PageManagerBase.cs" />
     <Compile Include="Core\Implementation\Pages\PageManagerDefaultImplementation.cs" />
-    <Compile Include="Core\Implementation\StorageAccessDefaultImplementation.cs" />
-    <Compile Include="Core\Implementation\StorageBase.cs" />
-    <Compile Include="Core\Implementation\StorageDefaultImplementation.cs" />
-    <Compile Include="Core\Implementation\StorageEventDefaultImplementation.cs" />
     <Compile Include="Core\Instrumentation\Foundation\IPerformanceCounterProviderRegistry.cs" />
     <Compile Include="Core\Instrumentation\Foundation\PerformanceCounterProviderRegistry.cs" />
     <Compile Include="Core\Instrumentation\Foundation\PerformanceCounterProviderRegistryImpl.cs" />
@@ -339,7 +335,6 @@
     <Compile Include="Core\Linq\ExpressionVisitors\CacheKeyBuilderExpressionVisitor.cs" />
     <Compile Include="Core\Linq\IEnumerableExtensionMethod.cs" />
     <Compile Include="Core\Localization\LocalizationFacade.cs" />
-    <Compile Include="Log.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\LocalePackageFragmentInstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\LocalePackageFragmentUninstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\PackageVersionBumberFragmentInstaller.cs" />
@@ -429,9 +424,6 @@
     </Compile>
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\DataReference\NullablePageReferenceSelectorWidgetFunction.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\DataReference\PageReferenceSelectorWidgetFunction.cs" />
-    <Compile Include="Storage.cs" />
-    <Compile Include="StorageAccess.cs" />
-    <Compile Include="StorageEvents.cs" />
     <Compile Include="C1Console\Trees\AttributeDynamicValuesHelper.cs" />
     <Compile Include="C1Console\Trees\ConfirmActionNode.cs" />
     <Compile Include="C1Console\Trees\CustomUrlActionNode.cs" />

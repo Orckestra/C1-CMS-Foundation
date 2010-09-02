@@ -56,13 +56,13 @@ namespace Composite.C1Console.Security
 
 
 
-        private void OnDataAddedOrDeleted(StorageEventArgs dataEventArgs)
+        private void OnDataAddedOrDeleted(object sender, DataEventArgs dataEventArgs)
         {
             HookingFacade.RemoveHook(this.CurrentEntityTokenHook);
 
             UpdateCurrentEntityTokenHook();
 
             HookingFacade.AddHook(this.CurrentEntityTokenHook);
-        }
+        }      
     }
 }

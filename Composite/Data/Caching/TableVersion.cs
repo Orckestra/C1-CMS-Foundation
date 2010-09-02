@@ -74,9 +74,9 @@ namespace Composite.Data.Caching
                     {
                         _subscribedTo.Add(type);
 
-                        DataEventSystemFacade.SubscribeToDataAfterAdd(type, dataEventArgs => IncreaseTableVersion(type, dataEventArgs.Data));
-                        DataEventSystemFacade.SubscribeToDataAfterUpdate(type, dataEventArgs => IncreaseTableVersion(type, dataEventArgs.Data));
-                        DataEventSystemFacade.SubscribeToDataDeleted(type, dataEventArgs => IncreaseTableVersion(type, dataEventArgs.Data));
+                        DataEventSystemFacade.SubscribeToDataAfterAdd(type, (sender, dataEventArgs) => IncreaseTableVersion(type, dataEventArgs.Data));
+                        DataEventSystemFacade.SubscribeToDataAfterUpdate(type, (sender, dataEventArgs) => IncreaseTableVersion(type, dataEventArgs.Data));
+                        DataEventSystemFacade.SubscribeToDataDeleted(type, (sender, dataEventArgs) => IncreaseTableVersion(type, dataEventArgs.Data));
                     }
                 }
             }

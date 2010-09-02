@@ -60,7 +60,7 @@ namespace Composite.C1Console.Security
 
 
 
-        private static void OnDataChanged(StorageEventArgs dataEventArgs)
+        private static void OnDataChanged(object sender, DataEventArgs dataEventArgs)
         {
             lock (_lock)
             {

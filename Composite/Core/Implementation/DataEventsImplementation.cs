@@ -1,88 +1,92 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Composite.Data;
+﻿using Composite.Data;
+
 
 
 namespace Composite.Core.Implementation
 {
-    public class Abe
-    {
-        public void Kurt()
-        {
-            DataEvents.Events<IData>().OnBeforeAdd += new StorageEventHandler(Abe_OnBeforeAdd);
-        }
-
-        void Abe_OnBeforeAdd(StorageEventArgs dataEventArgs)
-        {
-            throw new NotImplementedException();
-        }       
-    }
-
-
-
-    public class DataTypeEventsImplementation<TData>
+    public class DataEventsImplementation<TData>
         where TData : class, IData
     {
-        public virtual event StorageEventHandler OnBeforeAdd 
+        public virtual event DataEventHandler OnBeforeAdd 
         { 
             add 
             {
-                DataEventSystemFacade.SubscribeToDataBeforeAdd<TData>(value);
+                DataEventSystemFacade.SubscribeToDataBeforeAdd<TData>(value, true);
             } 
             remove 
             {
                 DataEventSystemFacade.UnsubscribeToDataBeforeAdd(typeof(TData), value);
             } 
-        }
-    }
+        }        
 
 
 
-    public class DataTypeEvents<TData> : ImplementationContainer<DataTypeEventsImplementation<TData>>        
-        where TData : class, IData
-        
-    {
-        public DataTypeEvents()
-            : base(() => ImplementationFactory.CurrentFactory.CreateStatelessDataTypeEvents<TData>())
-        {
-        }
-
-
-
-        public event StorageEventHandler OnBeforeAdd
+        public virtual event DataEventHandler OnAfterAdd
         {
             add
             {
-                this.Implementation.OnBeforeAdd += value;
+                DataEventSystemFacade.SubscribeToDataAfterAdd<TData>(value, true);
             }
             remove
             {
-                this.Implementation.OnBeforeAdd -= value;
+                DataEventSystemFacade.UnsubscribeToDataAfterAdd(typeof(TData), value);
             }
         }
-    }
 
 
 
-    public class DataEventsImplementation
-    {
-        public DataTypeEvents<TData> Events<TData>()
-            where TData : class, IData
+        public virtual event DataEventHandler OnBeforeUpdate
         {
-            throw new NotImplementedException();
+            add
+            {
+                DataEventSystemFacade.SubscribeToDataBeforeUpdate<TData>(value, true);
+            }
+            remove
+            {
+                DataEventSystemFacade.UnsubscribeToDataBeforeUpdate(typeof(TData), value);
+            }
         }
-    }
 
 
 
-    public static class DataEvents
-    {
-        public static DataTypeEvents<TData> Events<TData>()
-            where TData : class, IData
+        public virtual event DataEventHandler OnAfterUpdate
         {
-            throw new NotImplementedException();
+            add
+            {
+                DataEventSystemFacade.SubscribeToDataAfterUpdate<TData>(value, true);
+            }
+            remove
+            {
+                DataEventSystemFacade.UnsubscribeToDataAfterUpdate(typeof(TData), value);
+            }
         }
-    }
+
+
+
+        public virtual event DataEventHandler OnDeleted
+        {
+            add
+            {
+                DataEventSystemFacade.SubscribeToDataDeleted<TData>(value, true);
+            }
+            remove
+            {
+                DataEventSystemFacade.UnsubscribeToDataDeleted(typeof(TData), value);
+            }
+        }
+
+
+
+        public virtual event DataEventHandler OnNew
+        {
+            add
+            {
+                DataEventSystemFacade.SubscribeToDataAfterBuildNew<TData>(value);
+            }
+            remove
+            {
+                DataEventSystemFacade.UnsubscribeToDataAfterBuildNew(typeof(TData), value);
+            }
+        }
+    }    
 }
