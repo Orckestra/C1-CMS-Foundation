@@ -65,7 +65,7 @@ namespace Composite.Core.WebClient.Setup
             {
                 CultureInfo locale = new CultureInfo(language);
 
-                GlobalAsaxHelper.ApplicationStartInitialize();
+                ApplicationLevelEventHandlers.ApplicationStartInitialize();
 
                 AdministratorAutoCreator.AutoCreatedAdministrator(username, password, false);
                 UserValidationFacade.FormValidateUser(username, password);

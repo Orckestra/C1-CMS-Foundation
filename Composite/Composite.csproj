@@ -141,6 +141,7 @@
     <Compile Include="Core\Implementation\LogImplementation.cs" />
     <Compile Include="Core\Implementation\PageDataConnectionImplementation.cs" />
     <Compile Include="Core\Log.cs" />
+    <Compile Include="Core\WebClient\ApplicationLevelEventHandlers.cs" />
     <Compile Include="Data\SitemapNavigator.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\UserGroupUserAdderFragmentInstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\UserGroupUserAdderFragmentUninstaller.cs" />
@@ -905,7 +906,6 @@
     <Compile Include="Core\WebClient\FunctionCallEditor\IFunctionCallEditorState.cs" />
     <Compile Include="Core\WebClient\FunctionCallEditor\TreeHelper.cs" />
     <Compile Include="Core\WebClient\FunctionUiHelper.cs" />
-    <Compile Include="Core\WebClient\GlobalAsaxHelper.cs" />
     <Compile Include="Core\WebClient\HttpModules\AdministrativeAuthorizationHttpModule.cs" />
     <Compile Include="Core\WebClient\HttpModules\AdministrativeCultureSetterHttpModule.cs" />
     <Compile Include="Core\WebClient\HttpModules\AdministrativeDataScopeSetterHttpModule.cs" />
