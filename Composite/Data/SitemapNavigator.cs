@@ -1,29 +1,93 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Xml.Linq;
-using Composite.Data;
+using Composite.Core.Implementation;
 
 
 namespace Composite.Data
 {
-    public class SitemapNavigator
+    public class SitemapNavigator : ImplementationContainer<SitemapNavigatorImplementation>
     {
         public SitemapNavigator(DataConnection connection) 
+            : base(() => ImplementationFactory.CurrentFactory.CreateSitemapNavigator(connection))
         {
             if (connection == null) throw new ArgumentNullException("connection");
         }
 
-        public PageNode GetPageNodeById(Guid id) { throw new NotImplementedException(); }
 
-        public ReadOnlyCollection<PageNode> HomePageNodes { get; private set; }
-        public ReadOnlyCollection<Guid> HomePageIds { get; private set; }
 
-        public PageNode CurrentPageNode { get; private set; }
-        public PageNode CurrentHomePageNode { get; private set; }
+        public PageNode GetPageNodeById(Guid id) 
+        {
+            return this.Implementation.GetPageNodeById(id);
+        }
 
-        public static Guid CurrentPageId { get; private set; }
-        public static Guid CurrentHomePageId { get; private set; }
 
-        public ReadOnlyCollection<XElement> SitemapXml { get; private set; }
+
+        public ReadOnlyCollection<PageNode> HomePageNodes 
+        {
+            get
+            {
+                return this.Implementation.HomePageNodes;
+            }
+        }
+
+
+
+        public ReadOnlyCollection<Guid> HomePageIds
+        {
+            get
+            {
+                return this.Implementation.HomePageIds;
+            }
+        }
+
+
+
+        public PageNode CurrentPageNode 
+        {
+            get
+            {
+                return this.Implementation.CurrentPageNode;
+            }
+        }
+
+
+
+        public PageNode CurrentHomePageNode
+        {
+            get
+            {
+                return this.Implementation.CurrentHomePageNode;
+            }
+        }
+
+
+        
+        public ReadOnlyCollection<XElement> SitemapXml
+        {
+            get
+            {
+                return this.Implementation.SitemapXml;
+            }
+        }
+
+
+        public static Guid CurrentPageId
+        {
+            get
+            {
+                return ImplementationFactory.CurrentFactory.StatelessSitemapNavigator.CurrentPageId;
+            }
+        }
+
+
+
+        public static Guid CurrentHomePageId
+        {
+            get
+            {
+                return ImplementationFactory.CurrentFactory.StatelessSitemapNavigator.CurrentHomePageId;
+            }
+        }
     }
 }

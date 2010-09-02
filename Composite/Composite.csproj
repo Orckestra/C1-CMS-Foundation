@@ -140,6 +140,7 @@
     <Compile Include="Core\Implementation\ImplementationFactory.cs" />
     <Compile Include="Core\Implementation\LogImplementation.cs" />
     <Compile Include="Core\Implementation\PageDataConnectionImplementation.cs" />
+    <Compile Include="Core\Implementation\SitemapNavigatorImplementation.cs" />
     <Compile Include="Core\Log.cs" />
     <Compile Include="Core\WebClient\ApplicationLevelEventHandlers.cs" />
     <Compile Include="Data\SitemapNavigator.cs" />

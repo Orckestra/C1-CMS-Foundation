@@ -73,7 +73,24 @@ namespace Composite.Core.Implementation
             CultureInfo localeToUse = ResolveLocale(locale);
 
             return new PageDataConnectionImplementation(scopeToUse, localeToUse);
-        }        
+        }
+
+
+
+        public virtual SitemapNavigatorImplementation StatelessSitemapNavigator
+        {
+            get
+            {
+                return new SitemapNavigatorImplementation();
+            }
+        }
+
+
+
+        public virtual SitemapNavigatorImplementation CreateSitemapNavigator(DataConnection connection)
+        {
+            return new SitemapNavigatorImplementation(connection);
+        }
 
 
 
@@ -110,6 +127,6 @@ namespace Composite.Core.Implementation
             }
 
             return localeToUse;
-        }
+        }        
     }
 }

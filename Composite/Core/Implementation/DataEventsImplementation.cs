@@ -45,7 +45,7 @@ namespace Composite.Core.Implementation
         
     {
         public DataTypeEvents()
-            : base(() => new DataTypeEventsImplementation<TData>())
+            : base(() => ImplementationFactory.CurrentFactory.CreateStatelessDataTypeEvents<TData>())
         {
         }
 
