@@ -49,7 +49,6 @@ HelpPageBinding.navigate = function () {
 		}, 0 );
 	}
 	
-	
 	/*
 	 * Onclick action can 
 	 * be removed now.
@@ -271,9 +270,7 @@ HelpPageBinding.prototype._onWindowLoaded = function () {
 	var links = new List ( doc.links );
 	links.each ( function ( link ) {
 		if ( link.href != Constants.DUMMY_LINK ) {
-			if ( link.href.indexOf ( doc.domain ) >-1 ) {
-				link.onclick = HelpPageBinding.navigate;
-			}
+			link.onclick = HelpPageBinding.navigate;
 		}
 	});
 }

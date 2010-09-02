@@ -60,6 +60,15 @@ StandardEventHandler.prototype._addListeners = function () {
 	DOMEvents.addEventListener ( doc, DOMEvents.MOUSEUP, this );
 	DOMEvents.addEventListener ( doc, DOMEvents.MOUSEMOVE, this );
 	
+	/*
+	 * Disable F1 to launch OS help in IE.
+	 */
+	if ( Client.isExplorer ) {
+		function supress () { return false; }
+		this._contextDocument.onhelp = supress;
+		this._contextWindow.onhelp = supress;
+	}
+	
 	if ( !this._isMouseHandlerOnly ) {
 		
 		DOMEvents.addEventListener ( doc, DOMEvents.KEYDOWN, this );

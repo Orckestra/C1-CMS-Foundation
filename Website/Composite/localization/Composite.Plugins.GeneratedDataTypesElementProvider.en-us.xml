@@ -17,8 +17,8 @@
   <string key="ViewUnpublishedItems-document-empty-label" value="No unpublished data." />
   <string key="AddDataFolder" value="Add datatype" />
   <string key="AddDataFolderToolTip" value="Add new datafolder" />
-  <string key="AddMetaDataLabel" value="Add" />
-  <string key="AddMetaDataToolTip" value="Add new metadatafolder" />
+  <string key="AddMetaDataLabel" value="Add metatype" />
+  <string key="AddMetaDataToolTip" value="Add metatype" />
   <string key="Edit" value="Edit datatype" />
   <string key="EditToolTip" value="Edit selected datatype" />
   <string key="EditDataFolderTypeLabel" value="Edit" />

@@ -170,6 +170,7 @@ WindowBinding.prototype.onBindingRegister = function () {
  */
 WindowBinding.prototype.onBindingAttach = function () {
 
+	this.buildDOMContent ();
 	WindowBinding.superclass.onBindingAttach.call ( this );
 	this.setURL ( this.getURL ());
 };
@@ -304,10 +305,12 @@ WindowBinding.prototype._onPageInitialize = function ( binding ) {
  */
 WindowBinding.prototype.buildDOMContent = function () {
 
+	/*
 	if ( this.shadowTree.iframe != null ) {
 		this.bindingElement.removeChild ( this.shadowTree.iframe );
 		this.shadowTree.iframe = null;
 	}
+	*/
 
 	this.shadowTree.iframe = DOMUtil.createElementNS ( Constants.NS_XHTML, "iframe", this.bindingDocument );
 	this.shadowTree.iframe.setAttribute ( "frameborder", "0" );
@@ -401,9 +404,11 @@ WindowBinding.prototype.onWindowLoaded = function ( win ) {
 		this.logger.error ( "WindowBinding#onWindowLoaded: Bad argument: " + this.getURL ());
 	} else if ( this.getURL () != WindowBinding.DEFAULT_URL ) {
 		if ( !this._hasLoadActionFired ) {
-			if ( win != null && win.WindowManager == null && win.document != null && win.document.body != null ) {
-				Application.framework ( win.document );
+			if ( win != null && win.document != null && win.document.body != null ) {
 				win.document.body.style.border = "none";
+				if ( win.WindowManager == undefined ) {
+					Application.framework ( win.document );
+				}
 				if ( this._isReloading == true ) {
 					this._isReloading = false;
 					if ( Client.isPrism ) {
@@ -435,10 +440,11 @@ WindowBinding.prototype.setURL = function ( url ) {
 		 * apparently not documented anywhere!
 		 * TODO: File this hideous bug.
 		 * UPDATE: The bug seems to have been fixed...?
-		 */
-		if ( this.shadowTree.iframe == null ) { // || Client.isMozilla
+		 *
+		if ( this.shadowTree.iframe == null ) {
 			this.buildDOMContent ();
-		}
+		} 
+		*/
 		
 		/*
 		 * Dispose possible contained bindings.
