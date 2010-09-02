@@ -86,7 +86,7 @@ namespace Composite.Core.Implementation
 
         public virtual void LogCritical(string title, string message)
         {
-            LogCritical(title, messageFormat);
+            LoggingService.LogCritical(title, message);
         }
 
 

@@ -13,6 +13,22 @@ namespace Composite.Data
 
 
 
+        /// <summary>
+        /// Creates a new <see cref="DataConnection"/> instance with default <see cref="Composite.Data.PublicationScope"/>
+        /// and default locale. It can be used to access the C1 storage.
+        /// </summary>
+        /// <example>
+        /// Here is an example of how to use it
+        /// <code>
+        /// using (DataConnection connection = new DataConnection())
+        /// {
+        ///    var q = 
+        ///       from d in connection.Get&lt;IMyDataType&gt;()
+        ///       where d.Name == "Foo"
+        ///       select d;
+        /// }
+        /// </code>
+        /// </example>
         public DataConnection()
             : base(() => ImplementationFactory.CurrentFactory.CreateDataConnection(null, null))
         {            
@@ -21,6 +37,23 @@ namespace Composite.Data
 
 
 
+        /// <summary>
+        /// Creates a new <see cref="DataConnection"/> instance with the given <paramref name="scope"/>
+        /// and default locale. It can be used to access the C1 storage.
+        /// </summary>
+        /// <param name="scope"><see cref="Composite.Data.PublicationScope"/></param>
+        /// <example>
+        /// Here is an example of how to use it
+        /// <code>
+        /// using (DataConnection connection = new DataConnection())
+        /// {
+        ///    var q = 
+        ///       from d in connection.Get&lt;IMyDataType&gt;()
+        ///       where d.Name == "Foo"
+        ///       select d;
+        /// }
+        /// </code>
+        /// </example>
         public DataConnection(PublicationScope scope)
             : base(() => ImplementationFactory.CurrentFactory.CreateDataConnection(scope, null))
         {
@@ -31,6 +64,23 @@ namespace Composite.Data
 
 
 
+        /// <summary>
+        /// Creates a new <see cref="DataConnection"/> instance with default <see cref="Composite.Data.PublicationScope"/>
+        /// and the given <paramref name="locale"/>. It can be used to access the C1 storage.
+        /// </summary>
+        /// <param name="locale">The desired locale. This should be one of the locale found in <see cref="Composite.Data.DataConnection.AllLocales"/></param>
+        /// <example>
+        /// Here is an example of how to use it
+        /// <code>
+        /// using (DataConnection connection = new DataConnection())
+        /// {
+        ///    var q = 
+        ///       from d in connection.Get&lt;IMyDataType&gt;()
+        ///       where d.Name == "Foo"
+        ///       select d;
+        /// }
+        /// </code>
+        /// </example>
         public DataConnection(CultureInfo locale)
             : base(() => ImplementationFactory.CurrentFactory.CreateDataConnection(null, locale))
         {
@@ -39,6 +89,23 @@ namespace Composite.Data
 
 
 
+        /// <summary>
+        /// Creates a new <see cref="DataConnection"/> instance with the given <paramref name="scope"/>
+        /// and default locale. It can be used to access the C1 storage.
+        /// </summary>
+        /// <param name="scope"><see cref="Composite.Data.PublicationScope"/></param>
+        /// <example>
+        /// Here is an example of how to use it
+        /// <code>
+        /// using (DataConnection connection = new DataConnection())
+        /// {
+        ///    var q = 
+        ///       from d in connection.Get&lt;IMyDataType&gt;()
+        ///       where d.Name == "Foo"
+        ///       select d;
+        /// }
+        /// </code>
+        /// </example>
         public DataConnection(PublicationScope scope, CultureInfo locale)
             : base(() => ImplementationFactory.CurrentFactory.CreateDataConnection(scope, locale))
         {
