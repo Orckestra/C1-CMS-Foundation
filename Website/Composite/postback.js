@@ -38,7 +38,11 @@ function submit ( list, url ) {
 		var input = document.createElement ( "input" );
 		input.name = object.name;
 		input.value = object.value;
-		input.type = "hidden";
+		
+		// DELETE THIS NOW???
+		input.setAttribute ( "name", new String ( object.name )); // FF4.0 beta bug!!!
+		input.setAttribute ( "value", new String ( object.value )); // FF4.0 beta bug!!!
+		
 		form.appendChild ( input );
 		debug += object.name + ": " + object.value  + "\n";
 	});
@@ -59,7 +63,9 @@ function submit ( list, url ) {
 	 * window.load event, we submit on a short timeout. Otherwise this document  
 	 * may cease to exist before they get a chance to handle it...
 	 */
+	alert ( form.method )
 	setTimeout ( function () {
+		top.Application.logger.debug ( DOMSerializer.serialize ( document.documentElement, true ));
 		form.submit ();
-	}, 0 );
+	}, 5000 );
 }
