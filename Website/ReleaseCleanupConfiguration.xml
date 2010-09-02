@@ -14,7 +14,6 @@
 			<Directory path="\Composite\content\dialogs\querytreeeditor" />
 			<Directory path="\Composite\content\dialogs\tests" />
 			<Directory path="\Composite\content\views\dev\developer\tests" />
-			<Directory path="\Composite\content\views\help" />
 			<Directory path="\Composite\content\views\search" />
 			<Directory path="\Composite\images\icons\harmony" />
 			<Directory path="\Composite\images\icons\mimetypes" />
