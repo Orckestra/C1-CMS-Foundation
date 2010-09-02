@@ -1039,7 +1039,13 @@ Binding.prototype.deleteProperty = function ( prop ) {
  */
 Binding.prototype.getID = function () {
 	
-	return this.bindingElement.id;
+	var result = null;
+	if ( Binding.exists ( this )) {
+		result = this.bindingElement.id;
+	} else {
+		SystemDebug.stack ( arguments );
+	}
+	return result;
 }
 
 /**
