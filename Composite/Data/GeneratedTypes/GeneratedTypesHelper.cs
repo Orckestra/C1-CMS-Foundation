@@ -920,14 +920,29 @@ namespace Composite.Data.GeneratedTypes
                 dataTypeDescriptor.AddSuperInterface(typeof(ILocalizedControlled));
             }
 
+#warning Critical bug fix HACK - MRJ, please make pretty
+            if (_oldDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPageFolderData)))
+            {
+                dataTypeDescriptor.AddSuperInterface(typeof(IPageData));
+                dataTypeDescriptor.AddSuperInterface(typeof(IPageFolderData));
+            }
+            else if (_oldDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPageMetaData)))
+            {
+                dataTypeDescriptor.AddSuperInterface(typeof(IPageData));
+                dataTypeDescriptor.AddSuperInterface(typeof(IPageMetaData));
+            }
+            else
+            {
+                DataFieldDescriptor idDataFieldDescriptor =
+                    (from dfd in _oldDataTypeDescriptor.Fields
+                     where dfd.Name == IdFieldName
+                     select dfd).Single();
 
-            DataFieldDescriptor idDataFieldDescriptor =
-                (from dfd in _oldDataTypeDescriptor.Fields
-                 where dfd.Name == IdFieldName
-                 select dfd).Single();
+                dataTypeDescriptor.Title = _newTypeTitle;
+                dataTypeDescriptor.Fields.Add(idDataFieldDescriptor);
+            }
 
-            dataTypeDescriptor.Title = _newTypeTitle;
-            dataTypeDescriptor.Fields.Add(idDataFieldDescriptor);
+
 
 
             if (_dataAssociationType == DataAssociationType.None)

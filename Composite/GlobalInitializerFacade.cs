@@ -101,7 +101,7 @@ namespace Composite
                 throw _exceptionThrownDurringInitialization;
             }
 
-            if (SystemSetupFacade.IsSystemFirstTimeInitialized == false)
+            if (!SystemSetupFacade.IsSystemFirstTimeInitialized && RuntimeInformation.IsDebugBuild)
             {
                 LoggingService.LogWarning("GlobalInitializerFacade", new InvalidOperationException("System is initializing, yet missing first time initialization"));                
             }
