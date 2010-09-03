@@ -7,11 +7,22 @@ using System.Collections.Generic;
 
 namespace Composite.Data
 {
+    /// <summary>
+    /// Provide access to the Composite C1 sitemap structure and primary page attributes.
+    /// </summary>
     public class SitemapNavigator : ImplementationContainer<SitemapNavigatorImplementation>
     {
         /// <summary>
-        /// Initialize a new instance of the <see cref="SitemapNavigator"/> class using sitemap data from the connection given.
+        /// Initialize a new instance of the <see cref="SitemapNavigator"/> class using sitemap data from the provided <see cref="DataConnection"/>.
         /// </summary>
+        /// <example>
+        /// using (DataConnection dataConnection = new DataConnection())
+        /// {
+        ///     SitemapNavigator sitemapNavigator = new SitemapNavigator(dataConnection);
+        ///     string thisPageTitle = sitemapNavigator.CurrentPageNode.Title;
+        /// }
+        /// </example>
+        /// <param name="connection">The <see cref="DataConnection"/> to read sitemap data from</param>
         public SitemapNavigator(DataConnection connection)
             : base(() => ImplementationFactory.CurrentFactory.CreateSitemapNavigator(connection))
         {
@@ -23,6 +34,8 @@ namespace Composite.Data
         /// <summary>
         /// Gets a <see cref="PageNode"/> for a specific page id.
         /// </summary>
+        /// <param name="id">Id of page to find.</param>
+        /// <returns><see cref="PageNode"/> for the page or null if no page was found with the given id.</returns>
         public PageNode GetPageNodeById(Guid id)
         {
             return this.Implementation.GetPageNodeById(id);
@@ -82,6 +95,8 @@ namespace Composite.Data
         /// <summary>
         /// Gets the <see cref="PageNode"/> relating to the hostname.
         /// </summary>
+        /// <param name="hostname">Hostname string to resolve to a <see cref="PageNode"/>.</param>
+        /// <returns>The homepage <see cref="PageNode"/> element matching the specified hostname or the default homepage.</returns>
         public PageNode GetPageNodeByHostname(string hostname)
         {
             return this.Implementation.GetPageNodeByHostname(hostname);
