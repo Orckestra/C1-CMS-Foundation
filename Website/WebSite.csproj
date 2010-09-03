@@ -5653,6 +5653,9 @@
     <Content Include="Tests\ScenarioServices\WorkflowAuthomationService.asmx" />
     <Content Include="Tests\ScenarioServices\WorkflowBindingsService.asmx" />
     <Content Include="Composite\webauthorization.config" />
+    <Content Include="ReleaseBuild.Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Develop\PackageServer\ConfigFailing.zip" />
     <None Include="Develop\PackageServer\DistributedNavigation_2008_v07.09_b0953.zip" />
     <None Include="Develop\PackageServer\Empty %28none%29.zip" />
