@@ -267,7 +267,7 @@ _Application.prototype = {
 						Application.isOperational = true;
 						EventBroadcaster.broadcast ( BroadcastMessages.APPLICATION_OPERATIONAL );
 						
-						top.bindingMap.offlinetheatre.play ();
+//						top.bindingMap.offlinetheatre.play ();
 						
 					} catch ( exception ) {
 						alert ( "Application operational NOT" );
