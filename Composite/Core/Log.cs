@@ -4,8 +4,16 @@ using Composite.Core.Implementation;
 
 namespace Composite.Core
 {
+    /// <summary>
+    /// Provide write access to the Composite C1 log. Note that 'verbose' messages are typically only shown in run-time log viewers.
+    /// </summary>
     public static class Log
     {
+        /// <summary>
+        /// Logs a 'information' message to the Composite C1 log.
+        /// </summary>
+        /// <param name="title">Title of log message</param>
+        /// <param name="message">Message to log</param>
         public static void LogInformation(string title, string message)
         {
             ImplementationFactory.CurrentFactory.StatelessLog.LogInformation(title, message);
@@ -13,6 +21,12 @@ namespace Composite.Core
 
 
 
+        /// <summary>
+        /// Logs a 'information' message to the Composite C1 log.
+        /// </summary>
+        /// <param name="title">Title of log message</param>
+        /// <param name="messageFormat">Message to log in a String.Format() style using {0} etc.</param>
+        /// <param name="args">Arguments to put into the message</param>
         public static void LogInformation(string title, string messageFormat, params object[] args)
         {
             ImplementationFactory.CurrentFactory.StatelessLog.LogInformation(title, messageFormat, args);
@@ -20,6 +34,11 @@ namespace Composite.Core
 
 
 
+        /// <summary>
+        /// Logs a 'verbose' message to the Composite C1 log. Verbose messages are typically only shown in developer log viewers.
+        /// </summary>
+        /// <param name="title">Title of log message</param>
+        /// <param name="message">Message to log</param>
         public static void LogVerbose(string title, string message)
         {
             ImplementationFactory.CurrentFactory.StatelessLog.LogVerbose(title, message);
@@ -27,6 +46,12 @@ namespace Composite.Core
 
 
 
+        /// <summary>
+        /// Logs a 'verbose' message to the Composite C1 log.
+        /// </summary>
+        /// <param name="title">Title of log message</param>
+        /// <param name="messageFormat">Message to log in a String.Format() style using {0} etc.</param>
+        /// <param name="args">Arguments to put into the message</param>
         public static void LogVerbose(string title, string messageFormat, params object[] args)
         {
             ImplementationFactory.CurrentFactory.StatelessLog.LogVerbose(title, string.Format(messageFormat, args));
@@ -34,6 +59,11 @@ namespace Composite.Core
 
 
 
+        /// <summary>
+        /// Logs a 'warning' message to the Composite C1 log. 
+        /// </summary>
+        /// <param name="title">Title of log message</param>
+        /// <param name="message">Message to log</param>
         public static void LogWarning(string title, string message)
         {
             ImplementationFactory.CurrentFactory.StatelessLog.LogWarning(title, message);
@@ -41,6 +71,12 @@ namespace Composite.Core
 
 
 
+        /// <summary>
+        /// Logs a 'warning' message to the Composite C1 log.
+        /// </summary>
+        /// <param name="title">Title of log message</param>
+        /// <param name="messageFormat">Message to log in a String.Format() style using {0} etc.</param>
+        /// <param name="args">Arguments to put into the message</param>
         public static void LogWarning(string title, string messageFormat, params object[] args)
         {
             ImplementationFactory.CurrentFactory.StatelessLog.LogWarning(title, messageFormat, args);
@@ -48,6 +84,11 @@ namespace Composite.Core
 
 
 
+        /// <summary>
+        /// Logs a 'verbose' message to the Composite C1 log. 
+        /// </summary>
+        /// <param name="title">Title of log message</param>
+        /// <param name="exception">Exception to log</param>
         public static void LogWarning(string title, Exception exception)
         {
             ImplementationFactory.CurrentFactory.StatelessLog.LogWarning(title, exception);
@@ -55,6 +96,11 @@ namespace Composite.Core
 
 
 
+        /// <summary>
+        /// Logs a 'error' message to the Composite C1 log. 
+        /// </summary>
+        /// <param name="title">Title of log message</param>
+        /// <param name="message">Message to log</param>
         public static void LogError(string title, string message)
         {
             ImplementationFactory.CurrentFactory.StatelessLog.LogError(title, message);
@@ -62,6 +108,12 @@ namespace Composite.Core
 
 
 
+        /// <summary>
+        /// Logs a 'error' message to the Composite C1 log.
+        /// </summary>
+        /// <param name="title">Title of log message</param>
+        /// <param name="messageFormat">Message to log in a String.Format() style using {0} etc.</param>
+        /// <param name="args">Arguments to put into the message</param>
         public static void LogError(string title, string messageFormat, params object[] args)
         {
             ImplementationFactory.CurrentFactory.StatelessLog.LogError(title, messageFormat, args);
@@ -69,6 +121,11 @@ namespace Composite.Core
 
 
 
+        /// <summary>
+        /// Logs a 'error' message to the Composite C1 log. 
+        /// </summary>
+        /// <param name="title">Title of log message</param>
+        /// <param name="exception">Exception to log</param>
         public static void LogError(string title, Exception exception)
         {
             ImplementationFactory.CurrentFactory.StatelessLog.LogError(title, exception);
@@ -76,6 +133,11 @@ namespace Composite.Core
 
 
 
+        /// <summary>
+        /// Logs a 'critical' message to the Composite C1 log. You should only use 'critical' when a major system failure occur.
+        /// </summary>
+        /// <param name="title">Title of log message</param>
+        /// <param name="message">Message to log</param>
         public static void LogCritical(string title, string message)
         {
             ImplementationFactory.CurrentFactory.StatelessLog.LogCritical(title, message);
@@ -83,6 +145,12 @@ namespace Composite.Core
 
 
 
+        /// <summary>
+        /// Logs a 'critical' message to the Composite C1 log. You should only use 'critical' when a major system failure occur.
+        /// </summary>
+        /// <param name="title">Title of log message</param>
+        /// <param name="messageFormat">Message to log in a String.Format() style using {0} etc.</param>
+        /// <param name="args">Arguments to put into the message</param>
         public static void LogCritical(string title, string messageFormat, params object[] args)
         {
             ImplementationFactory.CurrentFactory.StatelessLog.LogCritical(title, messageFormat, args);
@@ -90,6 +158,11 @@ namespace Composite.Core
 
 
 
+        /// <summary>
+        /// Logs a 'critical' message to the Composite C1 log. You should only use 'critical' when a major system failure occur.
+        /// </summary>
+        /// <param name="title">Title of log message</param>
+        /// <param name="exception">Exception to log</param>
         public static void LogCritical(string title, Exception exception)
         {
             ImplementationFactory.CurrentFactory.StatelessLog.LogCritical(title, exception);
