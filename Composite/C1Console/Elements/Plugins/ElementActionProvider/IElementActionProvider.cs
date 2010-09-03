@@ -6,9 +6,13 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 namespace Composite.C1Console.Elements.Plugins.ElementActionProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [CustomFactory(typeof(ElementActionProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(ElementActionProviderDefaultNameRetriever))]
-	internal interface IElementActionProvider
+	public interface IElementActionProvider
 	{
         IEnumerable<ElementAction> GetActions(EntityToken entityToken);
 	}

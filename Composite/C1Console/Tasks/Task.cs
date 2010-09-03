@@ -5,7 +5,11 @@ using Composite.C1Console.Actions;
 
 namespace Composite.C1Console.Tasks
 {
-    internal sealed class Task
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class Task
     {
         public Task(string id, Type taskManagerType)
         {

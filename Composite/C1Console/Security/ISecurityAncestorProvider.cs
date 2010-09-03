@@ -3,7 +3,11 @@ using System.Collections.Generic;
 
 namespace Composite.C1Console.Security
 {
-    internal interface ISecurityAncestorProvider
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public interface ISecurityAncestorProvider
     {
         /// <summary>
         /// If the entityToken does not exists, this method should return null.

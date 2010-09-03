@@ -25,7 +25,11 @@ namespace Composite.C1Console.Elements.Plugins.ElementAttachingProvider
 
 
 
-    internal sealed class ElementAttachingProviderResult
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class ElementAttachingProviderResult
     {
         public ElementAttachingProviderResult()
         {
@@ -50,9 +54,13 @@ namespace Composite.C1Console.Elements.Plugins.ElementAttachingProvider
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [CustomFactory(typeof(ElementAttachingProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(ElementAttachingProviderDefaultNameRetriever))]
-	internal interface IElementAttachingProvider
+	public interface IElementAttachingProvider
 	{
         /// <summary>
         /// The system will supply an ElementProviderContext to the provider

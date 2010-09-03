@@ -3,8 +3,12 @@ using System;
 
 namespace Composite.C1Console.Actions
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsageAttribute(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
-    internal sealed class ActionExecutorAttribute : Attribute
+    public sealed class ActionExecutorAttribute : Attribute
     {
         private Type _actionExecutorType;
 

@@ -13,7 +13,12 @@ namespace Composite.C1Console.Tasks
     }
 
 
-    internal class FlowTaskManagerEvent : TaskManagerEvent
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class FlowTaskManagerEvent : TaskManagerEvent
     {
         public FlowTaskManagerEvent(FlowToken flowToken)
         {
@@ -26,7 +31,11 @@ namespace Composite.C1Console.Tasks
 
 
 
-	internal interface ITaskManager
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public interface ITaskManager
 	{
 
         /// <summary>
