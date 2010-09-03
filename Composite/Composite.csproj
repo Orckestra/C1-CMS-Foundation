@@ -338,7 +338,6 @@
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\LocalePackageFragmentUninstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\PackageVersionBumberFragmentInstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\PackageVersionBumberFragmentUninstaller.cs" />
-    <Compile Include="Data\IPageManager.cs" />
     <Compile Include="Data\Navigation.cs" />
     <Compile Include="Data\PageManager.cs" />
     <Compile Include="Data\PageUrl.cs" />
