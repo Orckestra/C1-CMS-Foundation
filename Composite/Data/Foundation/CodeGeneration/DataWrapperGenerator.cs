@@ -7,6 +7,7 @@ using Composite.Core.Collections.Generic;
 using Composite.C1Console.Events;
 using Composite.Core.Types;
 using Composite.Data.DynamicTypes;
+using System.ComponentModel;
 
 
 namespace Composite.Data.Foundation.CodeGeneration
@@ -87,8 +88,10 @@ namespace Composite.Data.Foundation.CodeGeneration
                 new KeyValuePair<string, Func<CodeTypeDeclaration>>(
                     CreateWrapperClassName(interfaceType.FullName),
                     () => CreateCodeTypeDeclaration(interfaceType))));
+            
 
             buildManagerCompileUnit.AddAssemblyReference(typeof(IDataWrapper).Assembly);
+            buildManagerCompileUnit.AddAssemblyReference(typeof(EditorBrowsableAttribute).Assembly);
             buildManagerCompileUnit.AddAssemblyReference(interfaceType.Assembly);
 
             BuildManager.GetCompiledTypes(buildManagerCompileUnit);
@@ -119,7 +122,7 @@ namespace Composite.Data.Foundation.CodeGeneration
             List<BuildManagerPropertyInfo> buildManagerPropertyInfos =
                 (from bmpi in buildManagerSiloData.TargetTypeRecursiveInterfaceProperties
                  where (bmpi.DeclaringType == null || (bmpi.DeclaringType != null && typeof(IData).IsAssignableFrom(bmpi.DeclaringType)))
-                 select bmpi).ToList();
+                 select bmpi).ToList();                       
 
             return CreateCodeTypeDeclaration(
                 buildManagerSiloData.TargetTypeFullName,
@@ -136,6 +139,17 @@ namespace Composite.Data.Foundation.CodeGeneration
             declaration.TypeAttributes = TypeAttributes.Public | TypeAttributes.Sealed;
             declaration.BaseTypes.Add(interfaceTypeFullName);
             declaration.BaseTypes.Add(typeof(IDataWrapper));
+            declaration.CustomAttributes.Add(
+                new CodeAttributeDeclaration(
+                    new CodeTypeReference(typeof(EditorBrowsableAttribute)),
+                    new CodeAttributeArgument(
+                        new CodeFieldReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(EditorBrowsableState)),
+                            EditorBrowsableState.Never.ToString()
+                        )
+                    )
+                )
+            );
 
             declaration.Members.Add(new CodeMemberField(interfaceTypeFullName, _wrappedObjectName));
 

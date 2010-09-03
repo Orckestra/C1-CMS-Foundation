@@ -1,11 +1,11 @@
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using System.Reflection;
 using System.Xml.Linq;
-using Composite.Data;
 using Composite.Core.Types;
+using Composite.Data;
 using Composite.Data.Plugins.DataProvider.CodeGeneration;
 
 
@@ -41,6 +41,17 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Fo
             declaration.TypeAttributes = TypeAttributes.Public | TypeAttributes.Sealed;
             declaration.BaseTypes.Add(_interfaceType);
             declaration.BaseTypes.Add(typeof(IXElementWrapper));
+            declaration.CustomAttributes.Add(
+                new CodeAttributeDeclaration(
+                    new CodeTypeReference(typeof(EditorBrowsableAttribute)),
+                    new CodeAttributeArgument(
+                        new CodeFieldReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(EditorBrowsableState)),
+                            EditorBrowsableState.Never.ToString()
+                        )
+                    )
+                )
+            );
             declaration.Members.Add(new CodeMemberField(new CodeTypeReference(typeof(XElement)), _wrappedElementFieldName));
             declaration.Members.Add(new CodeMemberField(typeof(DataSourceId), _dataSourceIdFieldName));
 

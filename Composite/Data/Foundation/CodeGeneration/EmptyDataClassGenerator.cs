@@ -6,6 +6,7 @@ using System.Reflection;
 using Composite.Core.Collections.Generic;
 using Composite.C1Console.Events;
 using Composite.Core.Types;
+using System.ComponentModel;
 
 
 namespace Composite.Data.Foundation.CodeGeneration
@@ -68,6 +69,7 @@ namespace Composite.Data.Foundation.CodeGeneration
 
                 buildManagerCompileUnit.AddType(NamespaceName, new KeyValuePair<string, Func<CodeTypeDeclaration>>(CreateClassName(interfaceType.FullName), () => CreateCodeTypeDeclaration(interfaceType, baseClass, codeAttributeDeclaration)));
 
+                buildManagerCompileUnit.AddAssemblyReference(typeof(EditorBrowsableAttribute).Assembly);
                 buildManagerCompileUnit.AddAssemblyReference(interfaceType.Assembly);
                 if (baseClass != null)
                 {
@@ -139,6 +141,18 @@ namespace Composite.Data.Foundation.CodeGeneration
             declaration.IsClass = true;
             declaration.TypeAttributes = TypeAttributes.Public | TypeAttributes.Sealed;
             declaration.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(SerializableAttribute))));
+            declaration.CustomAttributes.Add(
+                new CodeAttributeDeclaration(
+                    new CodeTypeReference(typeof(EditorBrowsableAttribute)),
+                    new CodeAttributeArgument(
+                        new CodeFieldReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(EditorBrowsableState)),
+                            EditorBrowsableState.Never.ToString()
+                        )
+                    )
+                )
+            );
+
             if (baseClass != null)
             {
                 declaration.BaseTypes.Add(baseClass);

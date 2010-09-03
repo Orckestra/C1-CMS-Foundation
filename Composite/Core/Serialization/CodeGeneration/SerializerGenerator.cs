@@ -10,6 +10,7 @@ using Composite.C1Console.Events;
 using Composite.Core.Serialization.CodeGeneration.Foundation;
 using Composite.Core.Types;
 using Composite.Core.Logging;
+using System.ComponentModel;
 
 
 namespace Composite.Core.Serialization.CodeGeneration
@@ -90,12 +91,14 @@ namespace Composite.Core.Serialization.CodeGeneration
                         CreateSerializerClassName(propertyClassType.FullName),
                         () => CreateCodeTypeDeclaration(propertyClassType))));
 
+            buildManagerCompileUnit.AddAssemblyReference(typeof(EditorBrowsableAttribute).Assembly);
             buildManagerCompileUnit.AddAssemblyReference(typeof(StringConversionServices).Assembly);
             buildManagerCompileUnit.AddAssemblyReference(propertyClassType.Assembly);
             foreach (Type superInterfaceType in propertyClassType.GetInterfaces())
             {
                 buildManagerCompileUnit.AddAssemblyReference(superInterfaceType.Assembly);
             }
+
 
             BuildManager.GetCompiledTypes(buildManagerCompileUnit);
 
@@ -132,6 +135,17 @@ namespace Composite.Core.Serialization.CodeGeneration
             declaration.IsClass = true;
             declaration.TypeAttributes = TypeAttributes.Public | TypeAttributes.Sealed;
             declaration.BaseTypes.Add(typeof(ISerializer));
+            declaration.CustomAttributes.Add(
+                new CodeAttributeDeclaration(
+                    new CodeTypeReference(typeof(EditorBrowsableAttribute)),
+                    new CodeAttributeArgument(
+                        new CodeFieldReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(EditorBrowsableState)),
+                            EditorBrowsableState.Never.ToString()
+                        )
+                    )
+                )
+            );
 
             AddSerializeMethod(declaration, propertyClassTypeName, properties);
             AddDeserializeMethod(declaration, propertyClassTypeName, properties);

@@ -5,14 +5,15 @@ using System.CodeDom.Compiler;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using Composite.Core.Collections.Generic;
-using Composite.Core.Extensions;
 using Composite.Core.Configuration;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Linq;
 using Composite.Core.Logging;
@@ -256,8 +257,6 @@ namespace Composite.Core.Types
 
             try
             {
-
-
                 string sourceFilename = null;
                 if (buildManagerCompileUnit.IsCacheble == true)
                 {
@@ -324,6 +323,7 @@ namespace Composite.Core.Types
                     }
                     else
                     {
+                        compilerParameters.ReferencedAssemblies.Add(typeof(EditorBrowsableAttribute).Assembly.Location); // This is a small hach /MRJ                        
                         compileResult = compiler.CompileAssemblyFromDom(compilerParameters, codeCompileUnit);
                     }
 

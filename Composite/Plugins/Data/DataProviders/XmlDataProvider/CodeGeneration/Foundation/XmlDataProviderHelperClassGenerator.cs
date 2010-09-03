@@ -1,12 +1,11 @@
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
-using System.Linq.Expressions;
+using System.ComponentModel;
 using System.Reflection;
 using System.Xml.Linq;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider.CodeGeneration;
-using Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation.Common;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation
@@ -48,6 +47,17 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Fo
             declaration.IsClass = true;
             declaration.TypeAttributes = TypeAttributes.Public | TypeAttributes.Sealed;
             declaration.BaseTypes.Add(typeof(DataProviderHelperBase));
+            declaration.CustomAttributes.Add(
+                new CodeAttributeDeclaration(
+                    new CodeTypeReference(typeof(EditorBrowsableAttribute)),
+                    new CodeAttributeArgument(
+                        new CodeFieldReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(EditorBrowsableState)),
+                            EditorBrowsableState.Never.ToString()
+                        )
+                    )
+                )
+            );
 
             AddConstructor(declaration);
             AddInterfaceTypeProperty(declaration);

@@ -1,6 +1,7 @@
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
 using System.Xml.Linq;
 using Composite.Data;
@@ -31,6 +32,17 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Fo
             declaration.IsClass = true;
             declaration.TypeAttributes = TypeAttributes.Public | TypeAttributes.Sealed;
             declaration.BaseTypes.Add(typeof(IDataId));
+            declaration.CustomAttributes.Add(
+                new CodeAttributeDeclaration(
+                    new CodeTypeReference(typeof(EditorBrowsableAttribute)),
+                    new CodeAttributeArgument(
+                        new CodeFieldReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(EditorBrowsableState)),
+                            EditorBrowsableState.Never.ToString()
+                        )
+                    )
+                )
+            );
             
             
             AddDefaultConstructor(declaration);

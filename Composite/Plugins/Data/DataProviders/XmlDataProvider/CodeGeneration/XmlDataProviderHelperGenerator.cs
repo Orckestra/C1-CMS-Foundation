@@ -86,11 +86,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
             string fingerprint = CreateFingerprint(dataTypeDescriptor, store);
 
             BuildManagerCompileUnit buildManagerCompileUnit = new BuildManagerCompileUnit(compileUnitId, fingerprint);
-
+            
             buildManagerCompileUnit.AddAssemblyReference(typeof(System.Exception).Assembly);
             buildManagerCompileUnit.AddAssemblyReference(typeof(System.Linq.IQueryable).Assembly);
             buildManagerCompileUnit.AddAssemblyReference(typeof(System.Xml.Linq.XName).Assembly);
             buildManagerCompileUnit.AddAssemblyReference(typeof(System.Xml.XmlReader).Assembly);
+            buildManagerCompileUnit.AddAssemblyReference(typeof(System.ComponentModel.EditorBrowsableAttribute).Assembly);
             buildManagerCompileUnit.AddAssemblyReference(typeof(Composite.Core.Linq.ExpressionCreator).Assembly);
             buildManagerCompileUnit.AddAssemblyReference(typeof(Composite.Core.Types.ExtendedNullable<>).Assembly);
             buildManagerCompileUnit.AddAssemblyReference(typeof(Composite.Data.DataSourceId).Assembly);
