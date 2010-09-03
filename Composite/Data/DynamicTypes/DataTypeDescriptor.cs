@@ -609,7 +609,13 @@ namespace Composite.Data.DynamicTypes
 
                 if (keyPropertyNameAttribute == null) throw new ArgumentException("The xml is not correctly formattet");
 
-                dataTypeDescriptor.KeyPropertyNames.Add(keyPropertyNameAttribute.Value);
+                string propertyName = keyPropertyNameAttribute.Value;
+
+                bool isDefinedOnSuperInterface = dataTypeDescriptor.SuperInterfaces.Where(f => f.GetProperty(propertyName) != null).Any();
+                if (!isDefinedOnSuperInterface)
+                {
+                    dataTypeDescriptor.KeyPropertyNames.Add(propertyName);
+                }
             }            
 
             return dataTypeDescriptor;
