@@ -140,7 +140,7 @@ public partial class Renderers_Page : System.Web.UI.Page
             _dataScope.Dispose();
 
         // Rewrite path to what it was when this page was constructed. This ensure full page caching can work.
-        HttpContext.Current.RewritePath(_cacheUrl.Replace("%20", ""));
+        HttpContext.Current.RewritePath(_cacheUrl.Replace("%20", " "));
     }
 
 }
