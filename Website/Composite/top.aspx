@@ -46,11 +46,11 @@
 		<ui:theatre id="offlinetheatre" hidden="true">
 			<div id="offlinesplash">
 				<div id="offlineimage"/>
-				<div id="offlinetext">Working</div>
+				<div id="offlinetext">Installing</div>
 				<!-- 
 				<span id="offlinetext">
-					<span class="text1">Working</span>
-					<span class="text2">Working</span>
+					<span class="text1">Installing</span>
+					<span class="text2">Installing</span>
 				</span>
 				-->
 			</div>

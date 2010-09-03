@@ -188,9 +188,17 @@ div#offlineimage {
 div#offlinetext {
 	color: rgb(255,255,255);
 	font-weight: bold;
-	text-shadow: 2px 2px 5px rgb(0,0,0);
-	#ie position: relative;
-	#ie top: -10px;
+	-vendor-text-shadow: 2px 2px 5px rgb(0,0,0);
+	#region ie
+		position: relative;
+		top: -10px;
+		/*
+		 * WHY NOT WORK?
+		filter: progid:DXImageTransform.Microsoft.Shadow(color=#0000FF,direction=45);
+		-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(color=#0000FF,direction=45)";
+		*/
+		color: rgb(0,0,0);
+	#endregion
 }
 /*
 span#offlinetext {
