@@ -30,8 +30,10 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// Creates a new <see cref="DataConnection"/> instance with default <see cref="Composite.Data.PublicationScope"/>
-        /// and default locale. It can be used to access the C1 storage.
+        /// Creates a new <see cref="DataConnection"/> instance inheriting the <see cref="Composite.Data.PublicationScope"/>
+        /// and locale set on the call stack. When outside an existing scope this default to PublicationScope,Published and the
+        /// default language on the website. You should use this constructure unless you need to force data to come from an alternative 
+        /// scope. <see cref="DataConnection"/> can be used to access the Composite C1 storage.
         /// </summary>
         /// <example>
         /// Here is an example of how to use it
@@ -58,7 +60,7 @@ namespace Composite.Data
 
         /// <summary>
         /// Creates a new <see cref="DataConnection"/> instance with the given <paramref name="scope"/>
-        /// and default locale. It can be used to access the C1 storage.
+        /// and current (or default) locale. <see cref="DataConnection"/> can be used to access the Composite C1 storage.
         /// </summary>
         /// <param name="scope">The <see cref="Composite.Data.PublicationScope"/> data should be read from.</param>
         /// <example>
@@ -87,8 +89,8 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// Creates a new <see cref="DataConnection"/> instance with default <see cref="Composite.Data.PublicationScope"/>
-        /// and the given <paramref name="locale"/>. It can be used to access the C1 storage.
+        /// Creates a new <see cref="DataConnection"/> instance with current or default <see cref="Composite.Data.PublicationScope"/>
+        /// and the given <paramref name="locale"/>. <see cref="DataConnection"/> can be used to access the Composite C1 storage.
         /// </summary>
         /// <param name="locale">The desired locale. This should be one of the locale found in <see cref="Composite.Data.DataConnection.AllLocales"/></param>
         /// <example>
@@ -116,7 +118,7 @@ namespace Composite.Data
 
         /// <summary>
         /// Creates a new <see cref="DataConnection"/> instance with the given <paramref name="scope"/>
-        /// and the given <paramref name="locale"/>. It can be used to access the C1 storage.
+        /// and the given <paramref name="locale"/>. <see cref="DataConnection"/> can be used to access the Composite C1 storage.
         /// </summary>
         /// <param name="scope">The <see cref="Composite.Data.PublicationScope"/> data should be read from.</param>
         /// <param name="locale">The desired locale. This should be one of the locale found in <see cref="Composite.Data.DataConnection.AllLocales"/></param>
