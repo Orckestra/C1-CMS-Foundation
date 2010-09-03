@@ -3263,6 +3263,7 @@ try{
 ProgressBarBinding.notch(4);
 Application.isOperational=true;
 EventBroadcaster.broadcast(BroadcastMessages.APPLICATION_OPERATIONAL);
+top.bindingMap.offlinetheatre.play();
 }
 catch(exception){
 alert("Application operational NOT");
@@ -4478,9 +4479,11 @@ throw ouch;
 return _3dd;
 },getAncestorBindingByType:function(_3e2,impl,_3e4){
 var _3e5=null;
+if(Binding.exists(_3e2)){
 var node=_3e2.bindingElement;
-while(!_3e5&&node){
+while(_3e5==null&&node!=null){
 node=node.parentNode;
+if(node!=null){
 if(UserInterface.hasBinding(node)){
 var _3e7=UserInterface.getBinding(node);
 if(_3e7 instanceof impl){
@@ -4494,6 +4497,8 @@ node=win.frameElement;
 }else{
 SystemDebug.stack(arguments);
 break;
+}
+}
 }
 }
 }
@@ -17791,9 +17796,10 @@ DialogToolBarBinding.superclass.handleBroadcast.call(this,_b61,arg);
 switch(_b61){
 case BroadcastMessages.KEY_ENTER:
 if(!PopupBinding.hasActiveInstances()){
+if(Binding.exists(this)){
 var _b63=this.getAncestorBindingByType(DialogBinding,true);
-if(_b63&&_b63.isActive){
-if(this._focusedButton){
+if(_b63!=null&&_b63.isActive){
+if(this._focusedButton!=null){
 if(!this._focusedButton.isDisabled){
 this.unsubscribe(BroadcastMessages.KEY_ENTER);
 this._focusedButton.fireCommand();
@@ -17804,6 +17810,9 @@ this.unsubscribe(BroadcastMessages.KEY_ENTER);
 this._defaultButton.fireCommand();
 }
 }
+}
+}else{
+this.logger.error("Ouch: DialogToolBarBinding#handleBroadcast");
 }
 }
 break;
