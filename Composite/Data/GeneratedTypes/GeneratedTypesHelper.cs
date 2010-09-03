@@ -938,10 +938,10 @@ namespace Composite.Data.GeneratedTypes
                      where dfd.Name == IdFieldName
                      select dfd).Single();
 
-                dataTypeDescriptor.Title = _newTypeTitle;
                 dataTypeDescriptor.Fields.Add(idDataFieldDescriptor);
             }
 
+            dataTypeDescriptor.Title = _newTypeTitle;
 
 
 
