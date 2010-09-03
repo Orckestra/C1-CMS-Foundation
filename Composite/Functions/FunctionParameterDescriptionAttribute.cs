@@ -16,13 +16,6 @@ namespace Composite.Functions
     ///     if (filter == null ) filter = _defaultFilter;
     ///     // more code here
     /// }
-    /// using (StorageAccess access = Storage.Open())
-    /// {
-    ///    var q = 
-    ///       from d in access.Get&lt;IMyDataType&gt;()
-    ///       where d.Name == "Foo"
-    ///       select d;
-    /// }
     /// </code>
     /// </example>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]

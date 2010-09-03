@@ -7,6 +7,7 @@ namespace Composite.Data
     /// This class contains all the event fired by C1 when changes are made 
     /// to data items. 
     /// </summary>
+    /// <typeparam name="TData">Data type to attach events to</typeparam>
     public static class DataEvents<TData>
         where TData : class, IData
     {

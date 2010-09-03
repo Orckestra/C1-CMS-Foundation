@@ -7,6 +7,21 @@ using Composite.Core.Implementation;
 
 namespace Composite.Data
 {
+    /// <summary>
+    /// Represents a connection to the Composite C1 data system.
+    /// </summary>
+    /// <example>
+    /// Here is an example of how to use it
+    /// <code>
+    /// using (DataConnection connection = new DataConnection())
+    /// {
+    ///    var q = 
+    ///       from d in connection.Get&lt;IMyDataType&gt;()
+    ///       where d.Name == "Foo"
+    ///       select d;
+    /// }
+    /// </code>
+    /// </example>
     public class DataConnection : ImplementationContainer<DataConnectionImplementation>, IDisposable
     {
         private ImplementationContainer<PageDataConnection> _pageDataConnection;
@@ -43,7 +58,7 @@ namespace Composite.Data
         /// Creates a new <see cref="DataConnection"/> instance with the given <paramref name="scope"/>
         /// and default locale. It can be used to access the C1 storage.
         /// </summary>
-        /// <param name="scope"><see cref="Composite.Data.PublicationScope"/></param>
+        /// <param name="scope">The <see cref="Composite.Data.PublicationScope"/> data should be read from.</param>
         /// <example>
         /// Here is an example of how to use it
         /// <code>
@@ -97,7 +112,7 @@ namespace Composite.Data
         /// Creates a new <see cref="DataConnection"/> instance with the given <paramref name="scope"/>
         /// and the given <paramref name="locale"/>. It can be used to access the C1 storage.
         /// </summary>
-        /// <param name="scope"><see cref="Composite.Data.PublicationScope"/></param>
+        /// <param name="scope">The <see cref="Composite.Data.PublicationScope"/> data should be read from.</param>
         /// <param name="locale">The desired locale. This should be one of the locale found in <see cref="Composite.Data.DataConnection.AllLocales"/></param>
         /// <example>
         /// Here is an example of how to use it
