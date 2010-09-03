@@ -20,22 +20,18 @@ public class PageService : System.Web.Services.WebService
     [WebMethod]
     public string GetPageBrowserDefaultUrl(bool dummy)
     {
-#warning Remove outer using when bug fixing allow it
-        using (DataScope dc = new DataScope(UserSettings.ActiveLocaleCultureInfo))
+        using (DataConnection dataConnection = new DataConnection(PublicationScope.Unpublished, UserSettings.ActiveLocaleCultureInfo))
         {
-            using (DataConnection dataConnection = new DataConnection(PublicationScope.Unpublished, UserSettings.ActiveLocaleCultureInfo))
-            {
-                SitemapNavigator sitemapNavigator = new SitemapNavigator(dataConnection);
-                PageNode homePageNode = sitemapNavigator.GetPageNodeByHostname(this.Context.Request.Url.Host);
+            SitemapNavigator sitemapNavigator = new SitemapNavigator(dataConnection);
+            PageNode homePageNode = sitemapNavigator.GetPageNodeByHostname(this.Context.Request.Url.Host);
 
-                if (homePageNode != null)
-                {
-                    return homePageNode.Url;
-                }
-                else
-                {
-                    return "/";
-                }
+            if (homePageNode != null)
+            {
+                return homePageNode.Url;
+            }
+            else
+            {
+                return "/";
             }
         }
     }

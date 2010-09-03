@@ -6,12 +6,39 @@
     /// </summary>
     public enum SitemapScope
     {
+        /// <summary>
+        /// This page.
+        /// </summary>
         Current = 0,
+
+        /// <summary>
+        /// Children of this page.
+        /// </summary>
         Children = 2,
+
+        /// <summary>
+        /// All descendants of this page.
+        /// </summary>
         Descendants = 20,
+
+        /// <summary>
+        /// All descendants of this page and this page.
+        /// </summary>
         DescendantsAndCurrent = 1,
+
+        /// <summary>
+        /// Pages sharing the same parent as this page, excluding this page.
+        /// </summary>
         Siblings = 15,
+
+        /// <summary>
+        /// Pages sharing the same parent as this page, including this page.
+        /// </summary>
         SiblingsAndSelf = 21,
+
+        /// <summary>
+        /// All ancenstor pages
+        /// </summary>
         Ancestors = 3,
         AncestorsAndCurrent = 4,
         Parent = 5,
