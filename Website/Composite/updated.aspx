@@ -17,7 +17,7 @@
 					</div>
 				</div>
 				<p>To avoid errors, please empty your browsers cache - then press continue.</p>
-				<div id="link">
+				<div id="start">
 					<a id="continuelink" href="top.aspx">
 						<span><img alt="" src="images/blank.png"/> Continue</span>
 					</a>

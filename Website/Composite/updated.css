@@ -68,7 +68,13 @@ p {
 	width: 200px;
 	line-height: 1.25em;
 }
+/*
 a {
+	top: 253px;
+	left: 29px;
+}
+*/
+div#start a {
 	top: 253px;
 	left: 29px;
 }
