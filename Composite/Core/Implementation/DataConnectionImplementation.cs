@@ -9,6 +9,9 @@ namespace Composite.Core.Implementation
 {
     public class DataConnectionImplementation : DataConnectionBase, IDisposable
     {
+        private DataScope _dataScope;
+
+
         /// <summary>
         /// Stateless constructor. This is used when implementations of static methods needs to be called
         /// Used when New and AllLocales are called
@@ -20,8 +23,8 @@ namespace Composite.Core.Implementation
 
 
         public DataConnectionImplementation(PublicationScope scope, CultureInfo locale)
-        {
-            InitializeScope(scope, locale);
+        {            
+            _dataScope = new DataScope(this.DataScopeIdentifier, locale);
         }
 
 
@@ -29,7 +32,7 @@ namespace Composite.Core.Implementation
         public virtual IQueryable<TData> Get<TData>()
             where TData : class, IData
         {
-            using (new DataScope(this.DataScopeIdentifier, this.Locale))
+        //    using (new DataScope(this.DataScopeIdentifier, this.Locale))
             {
                 return DataFacade.GetData<TData>();
             }
@@ -40,7 +43,7 @@ namespace Composite.Core.Implementation
         public virtual TData Add<TData>(TData item)
             where TData : class, IData
         {
-            using (new DataScope(this.DataScopeIdentifier, this.Locale))
+         //   using (new DataScope(this.DataScopeIdentifier, this.Locale))
             {
                 return DataFacade.AddNew<TData>(item);
             }
@@ -51,7 +54,7 @@ namespace Composite.Core.Implementation
         public virtual IList<TData> Add<TData>(IEnumerable<TData> items)
             where TData : class, IData
         {
-            using (new DataScope(this.DataScopeIdentifier, this.Locale))
+         //   using (new DataScope(this.DataScopeIdentifier, this.Locale))
             {
                 return DataFacade.AddNew<TData>(items);
             }
@@ -62,7 +65,7 @@ namespace Composite.Core.Implementation
         public virtual void Update<TData>(TData item)
             where TData : class, IData
         {
-            using (new DataScope(this.DataScopeIdentifier, this.Locale))
+         //   using (new DataScope(this.DataScopeIdentifier, this.Locale))
             {
                 DataFacade.Update(item);
             }
@@ -73,7 +76,7 @@ namespace Composite.Core.Implementation
         public virtual void Update<TData>(IEnumerable<TData> items)
             where TData : class, IData
         {
-            using (new DataScope(this.DataScopeIdentifier, this.Locale))
+         //   using (new DataScope(this.DataScopeIdentifier, this.Locale))
             {
                 DataFacade.Update(items);
             }
@@ -84,7 +87,7 @@ namespace Composite.Core.Implementation
         public virtual void Delete<TData>(TData item)
             where TData : class, IData
         {
-            using (new DataScope(this.DataScopeIdentifier, this.Locale))
+          //  using (new DataScope(this.DataScopeIdentifier, this.Locale))
             {
                 DataFacade.Delete<TData>(item);
             }
@@ -95,7 +98,7 @@ namespace Composite.Core.Implementation
         public virtual void Delete<TData>(IEnumerable<TData> items)
             where TData : class, IData
         {
-            using (new DataScope(this.DataScopeIdentifier, this.Locale))
+          //  using (new DataScope(this.DataScopeIdentifier, this.Locale))
             {
                 DataFacade.Delete<TData>(items);
             }
@@ -161,7 +164,7 @@ namespace Composite.Core.Implementation
         {
             if (disposing)
             {
-                // Do disposing stuff
+                _dataScope.Dispose();                
             }
         }
     }
