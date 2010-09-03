@@ -382,7 +382,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             }
             else
             {
-                if (status != publishControlled.PublicationStatus)
+                if (!String.IsNullOrEmpty(publishControlled.PublicationStatus) && status != publishControlled.PublicationStatus)
                 {
                     if (_transitions[publishControlled.PublicationStatus].Contains(status) == false)
                     {
