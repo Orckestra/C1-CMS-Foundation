@@ -18,6 +18,7 @@ namespace Composite.Core.Implementation
             _create = create;
         }
 
+        
 
 
         internal T Implementation
@@ -26,13 +27,20 @@ namespace Composite.Core.Implementation
             {
                 if (_implementation == null)
                 {
-                    if (_disposed) throw new InvalidOperationException("Already disposed");
-
-                    _implementation = _create();
+                    CreateImplementation();
                 }
 
                 return _implementation;
             }
+        }
+
+
+
+        internal void CreateImplementation()
+        {
+            if (_disposed) throw new InvalidOperationException("Already disposed");
+
+            _implementation = _create();
         }
 
 

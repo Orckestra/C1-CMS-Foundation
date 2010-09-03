@@ -47,7 +47,9 @@ namespace Composite.Data
         /// </example>
         public DataConnection()
             : base(() => ImplementationFactory.CurrentFactory.CreateDataConnection(null, null))
-        {            
+        {
+            CreateImplementation();
+
             _pageDataConnection = new ImplementationContainer<PageDataConnection>(() => new PageDataConnection());
             _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this));
         }
@@ -76,6 +78,8 @@ namespace Composite.Data
         {
             if ((scope < PublicationScope.Unpublished) || (scope > PublicationScope.Published)) throw new ArgumentOutOfRangeException("scope");
 
+            CreateImplementation();
+
             _pageDataConnection = new ImplementationContainer<PageDataConnection>(() => new PageDataConnection(scope));
             _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this));            
         }
@@ -102,6 +106,8 @@ namespace Composite.Data
         public DataConnection(CultureInfo locale)
             : base(() => ImplementationFactory.CurrentFactory.CreateDataConnection(null, locale))
         {
+            CreateImplementation();
+
             _pageDataConnection = new ImplementationContainer<PageDataConnection>(() => new PageDataConnection(locale));
             _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this));
         }
@@ -130,6 +136,8 @@ namespace Composite.Data
             : base(() => ImplementationFactory.CurrentFactory.CreateDataConnection(scope, locale))
         {
             if ((scope < PublicationScope.Unpublished) || (scope > PublicationScope.Published)) throw new ArgumentOutOfRangeException("scope");
+
+            CreateImplementation();
 
             _pageDataConnection = new ImplementationContainer<PageDataConnection>(() => new PageDataConnection(scope, locale));
             _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this));

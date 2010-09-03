@@ -23,7 +23,9 @@ namespace Composite.Core.Implementation
 
 
         public DataConnectionImplementation(PublicationScope scope, CultureInfo locale)
-        {            
+        {
+            InitializeScope(scope, locale);
+
             _dataScope = new DataScope(this.DataScopeIdentifier, locale);
         }
 
