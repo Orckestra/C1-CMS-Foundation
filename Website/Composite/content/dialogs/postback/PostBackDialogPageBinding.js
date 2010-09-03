@@ -74,8 +74,14 @@ PostBackDialogPageBinding.prototype._submit = function () {
 	
 		var entry = this._list.getNext ();
 		var input = this.bindingDocument.createElement ( "input" );
+		
 		input.name = entry.name;
 		input.value =  entry.value;
+		
+		// DELETE THIS NOW???
+		input.setAttribute ( "name", new String ( entry.name )); // FF4.0 beta bug!!!
+		input.setAttribute ( "value", new String ( entry.value )); // FF4.0 beta bug!!!
+		
 		input.type = "hidden";
 		form.appendChild ( input );
 		
