@@ -527,7 +527,8 @@ namespace Composite.Data
 
 
 
-        internal static List<IData> GetReferees(this IData referencedData)
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public static List<IData> GetReferees(this IData referencedData)
         {
             if (referencedData == null) throw new ArgumentNullException("referencedData");
 
@@ -536,7 +537,8 @@ namespace Composite.Data
 
 
 
-        internal static List<IData> GetReferees(this IData referencedData, Type refereeType)
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public static List<IData> GetReferees(this IData referencedData, Type refereeType)
         {
             if (referencedData == null) throw new ArgumentNullException("referencedData");
 
@@ -545,14 +547,16 @@ namespace Composite.Data
 
 
 
-        internal static List<IData> GetReferees(this IData referencedData, bool allScopes)
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public static List<IData> GetReferees(this IData referencedData, bool allScopes)
         {
             if (referencedData == null) throw new ArgumentNullException("referencedData");
 
             return GetReferees(referencedData, false, null, null, allScopes);
         }
 
-        internal static List<IData> GetReferees(this IData referencedData, Type refereeType, IEnumerable<PropertyInfo> foreignKeyPropertys, bool allScopes)
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+        public static List<IData> GetReferees(this IData referencedData, Type refereeType, IEnumerable<PropertyInfo> foreignKeyPropertys, bool allScopes)
         {
             if (referencedData == null) throw new ArgumentNullException("referencedData");
 
