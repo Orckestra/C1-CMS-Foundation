@@ -6,6 +6,10 @@ using Composite.Data;
 
 namespace Composite.Core.Implementation
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class PageDataConnectionImplementation : DataConnectionBase, IDisposable
     {
         public PageDataConnectionImplementation()

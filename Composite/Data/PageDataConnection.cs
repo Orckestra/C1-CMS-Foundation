@@ -6,168 +6,172 @@ using Composite.Core.Implementation;
 
 namespace Composite.Data
 {
-    public class PageDataConnection : ImplementationContainer<PageDataConnectionImplementation>, IDisposable
-    {
-        ImplementationContainer<DataConnection> _dataConnection;
-        ImplementationContainer<SitemapNavigator> _sitemapNavigator;
+    ///// <summary>    
+    ///// </summary>
+    ///// <exclude />
+    //[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    //public class PageDataConnection : ImplementationContainer<PageDataConnectionImplementation>, IDisposable
+    //{
+    //    ImplementationContainer<DataConnection> _dataConnection;
+    //    ImplementationContainer<SitemapNavigator> _sitemapNavigator;
 
 
 
-        public PageDataConnection()
-            : base(() => ImplementationFactory.CurrentFactory.CreatePageDataConnection(null, null))
-        {
-            _dataConnection = new ImplementationContainer<DataConnection>(() => new DataConnection());
-            _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this.DataConnection));
-        }
+    //    public PageDataConnection()
+    //        : base(() => ImplementationFactory.CurrentFactory.CreatePageDataConnection(null, null))
+    //    {
+    //        _dataConnection = new ImplementationContainer<DataConnection>(() => new DataConnection());
+    //        _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this.DataConnection));
+    //    }
 
 
 
-        public PageDataConnection(PublicationScope scope)
-            : base(() => ImplementationFactory.CurrentFactory.CreatePageDataConnection(scope, null))
-        {
-            if ((scope < PublicationScope.Unpublished) || (scope > PublicationScope.Published)) throw new ArgumentOutOfRangeException("scope");
+    //    public PageDataConnection(PublicationScope scope)
+    //        : base(() => ImplementationFactory.CurrentFactory.CreatePageDataConnection(scope, null))
+    //    {
+    //        if ((scope < PublicationScope.Unpublished) || (scope > PublicationScope.Published)) throw new ArgumentOutOfRangeException("scope");
 
-            _dataConnection = new ImplementationContainer<DataConnection>(() => new DataConnection(scope));
-            _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this.DataConnection));
-        }
-
-
-
-        public PageDataConnection(CultureInfo locale)
-            : base(() => ImplementationFactory.CurrentFactory.CreatePageDataConnection(null, locale))
-        {
-            _dataConnection = new ImplementationContainer<DataConnection>(() => new DataConnection(locale));
-            _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this.DataConnection));
-        }
+    //        _dataConnection = new ImplementationContainer<DataConnection>(() => new DataConnection(scope));
+    //        _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this.DataConnection));
+    //    }
 
 
 
-        public PageDataConnection(PublicationScope scope, CultureInfo locale)
-            : base(() => ImplementationFactory.CurrentFactory.CreatePageDataConnection(scope, locale))
-        {
-            if ((scope < PublicationScope.Unpublished) || (scope > PublicationScope.Published)) throw new ArgumentOutOfRangeException("scope");
-
-            _dataConnection = new ImplementationContainer<DataConnection>(() => new DataConnection(scope, locale));
-            _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this.DataConnection));
-        }
+    //    public PageDataConnection(CultureInfo locale)
+    //        : base(() => ImplementationFactory.CurrentFactory.CreatePageDataConnection(null, locale))
+    //    {
+    //        _dataConnection = new ImplementationContainer<DataConnection>(() => new DataConnection(locale));
+    //        _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this.DataConnection));
+    //    }
 
 
 
-        public TData GetPageMetaData<TData>(string fieldName)
-            where TData : IPageMetaData
-        {
-            if (string.IsNullOrWhiteSpace(fieldName)) throw new ArgumentNullException("fieldName");
+    //    public PageDataConnection(PublicationScope scope, CultureInfo locale)
+    //        : base(() => ImplementationFactory.CurrentFactory.CreatePageDataConnection(scope, locale))
+    //    {
+    //        if ((scope < PublicationScope.Unpublished) || (scope > PublicationScope.Published)) throw new ArgumentOutOfRangeException("scope");
 
-            return this.Implementation.GetPageMetaData<TData>(fieldName);
-        }
-
-
-
-        public TData GetPageMetaData<TData>(string fieldName, Guid pageId)
-            where TData : IPageMetaData
-        {
-            if (string.IsNullOrWhiteSpace(fieldName)) throw new ArgumentNullException("fieldName");
-
-            return this.Implementation.GetPageMetaData<TData>(fieldName, pageId);
-        }
+    //        _dataConnection = new ImplementationContainer<DataConnection>(() => new DataConnection(scope, locale));
+    //        _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this.DataConnection));
+    //    }
 
 
 
-        public IQueryable<TData> GetPageMetaData<TData>(string fieldName, SitemapScope scope)
-            where TData : IPageMetaData
-        {
-            if (string.IsNullOrWhiteSpace(fieldName)) throw new ArgumentNullException("fieldName");
-            if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
+    //    public TData GetPageMetaData<TData>(string fieldName)
+    //        where TData : IPageMetaData
+    //    {
+    //        if (string.IsNullOrWhiteSpace(fieldName)) throw new ArgumentNullException("fieldName");
 
-            return this.Implementation.GetPageMetaData<TData>(fieldName, scope);
-        }
-
-
-
-        public IQueryable<TData> GetPageMetaData<TData>(string fieldName, SitemapScope scope, Guid pageId)
-            where TData : IPageMetaData
-        {
-            if (string.IsNullOrWhiteSpace(fieldName)) throw new ArgumentNullException("fieldName");
-            if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
-
-            return this.Implementation.GetPageMetaData<TData>(fieldName, scope, pageId);
-        }
+    //        return this.Implementation.GetPageMetaData<TData>(fieldName);
+    //    }
 
 
 
-        public IQueryable<TData> GetPageData<TData>()
-            where TData : IPageData
-        {
-            return this.Implementation.GetPageData<TData>();
-        }
+    //    public TData GetPageMetaData<TData>(string fieldName, Guid pageId)
+    //        where TData : IPageMetaData
+    //    {
+    //        if (string.IsNullOrWhiteSpace(fieldName)) throw new ArgumentNullException("fieldName");
+
+    //        return this.Implementation.GetPageMetaData<TData>(fieldName, pageId);
+    //    }
 
 
 
-        public IQueryable<TData> GetPageData<TData>(SitemapScope scope)
-            where TData : IPageData
-        {
-            if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
+    //    public IQueryable<TData> GetPageMetaData<TData>(string fieldName, SitemapScope scope)
+    //        where TData : IPageMetaData
+    //    {
+    //        if (string.IsNullOrWhiteSpace(fieldName)) throw new ArgumentNullException("fieldName");
+    //        if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
 
-            return this.Implementation.GetPageData<TData>(scope);
-        }
-
-
-
-        public IQueryable<TData> GetPageData<TData>(SitemapScope scope, Guid sourcePageId)
-            where TData : IPageData
-        {
-            if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
-
-            return this.Implementation.GetPageData<TData>(scope, sourcePageId);
-        }
+    //        return this.Implementation.GetPageMetaData<TData>(fieldName, scope);
+    //    }
 
 
 
-        public SitemapNavigator SitemapNavigator
-        {
-            get
-            {
-                return _sitemapNavigator.Implementation;
-            }
-        }
+    //    public IQueryable<TData> GetPageMetaData<TData>(string fieldName, SitemapScope scope, Guid pageId)
+    //        where TData : IPageMetaData
+    //    {
+    //        if (string.IsNullOrWhiteSpace(fieldName)) throw new ArgumentNullException("fieldName");
+    //        if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
+
+    //        return this.Implementation.GetPageMetaData<TData>(fieldName, scope, pageId);
+    //    }
 
 
 
-        public DataConnection DataConnection
-        {
-            get
-            {
-                return _dataConnection.Implementation;
-            }
-        }
+    //    public IQueryable<TData> GetPageData<TData>()
+    //        where TData : IPageData
+    //    {
+    //        return this.Implementation.GetPageData<TData>();
+    //    }
 
 
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+    //    public IQueryable<TData> GetPageData<TData>(SitemapScope scope)
+    //        where TData : IPageData
+    //    {
+    //        if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
+
+    //        return this.Implementation.GetPageData<TData>(scope);
+    //    }
 
 
 
-        ~PageDataConnection()
-        {
-            Dispose(false);
-        }
+    //    public IQueryable<TData> GetPageData<TData>(SitemapScope scope, Guid sourcePageId)
+    //        where TData : IPageData
+    //    {
+    //        if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
+
+    //        return this.Implementation.GetPageData<TData>(scope, sourcePageId);
+    //    }
 
 
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (_dataConnection != null)
-                {
-                    _dataConnection.DisposeImplementation();
-                    _sitemapNavigator.DisposeImplementation();
-                }
-            }
-        }
-    }
+    //    public SitemapNavigator SitemapNavigator
+    //    {
+    //        get
+    //        {
+    //            return _sitemapNavigator.Implementation;
+    //        }
+    //    }
+
+
+
+    //    public DataConnection DataConnection
+    //    {
+    //        get
+    //        {
+    //            return _dataConnection.Implementation;
+    //        }
+    //    }
+
+
+
+    //    public void Dispose()
+    //    {
+    //        Dispose(true);
+    //        GC.SuppressFinalize(this);
+    //    }
+
+
+
+    //    ~PageDataConnection()
+    //    {
+    //        Dispose(false);
+    //    }
+
+
+
+    //    protected virtual void Dispose(bool disposing)
+    //    {
+    //        if (disposing)
+    //        {
+    //            if (_dataConnection != null)
+    //            {
+    //                _dataConnection.DisposeImplementation();
+    //                _sitemapNavigator.DisposeImplementation();
+    //            }
+    //        }
+    //    }
+    //}
 }

@@ -57,23 +57,23 @@ namespace Composite.Core.Implementation
 
 
 
-        public virtual PageDataConnectionImplementation StatelessPageDataConnection
-        {
-            get
-            {
-                return new PageDataConnectionImplementation();
-            }
-        }
+        //public virtual PageDataConnectionImplementation StatelessPageDataConnection
+        //{
+        //    get
+        //    {
+        //        return new PageDataConnectionImplementation();
+        //    }
+        //}
 
 
 
-        public virtual PageDataConnectionImplementation CreatePageDataConnection(PublicationScope? scope, CultureInfo locale)
-        {
-            PublicationScope scopeToUse = ResolvePublicationScope(scope);
-            CultureInfo localeToUse = ResolveLocale(locale);
+        //public virtual PageDataConnectionImplementation CreatePageDataConnection(PublicationScope? scope, CultureInfo locale)
+        //{
+        //    PublicationScope scopeToUse = ResolvePublicationScope(scope);
+        //    CultureInfo localeToUse = ResolveLocale(locale);
 
-            return new PageDataConnectionImplementation(scopeToUse, localeToUse);
-        }
+        //    return new PageDataConnectionImplementation(scopeToUse, localeToUse);
+        //}
 
 
 

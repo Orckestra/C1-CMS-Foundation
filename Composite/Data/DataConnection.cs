@@ -24,7 +24,7 @@ namespace Composite.Data
     /// </example>
     public class DataConnection : ImplementationContainer<DataConnectionImplementation>, IDisposable
     {
-        private ImplementationContainer<PageDataConnection> _pageDataConnection;
+        //private ImplementationContainer<PageDataConnection> _pageDataConnection;
         private ImplementationContainer<SitemapNavigator> _sitemapNavigator;
 
 
@@ -50,7 +50,7 @@ namespace Composite.Data
         {
             CreateImplementation();
 
-            _pageDataConnection = new ImplementationContainer<PageDataConnection>(() => new PageDataConnection());
+            //_pageDataConnection = new ImplementationContainer<PageDataConnection>(() => new PageDataConnection());
             _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this));
         }
 
@@ -80,7 +80,7 @@ namespace Composite.Data
 
             CreateImplementation();
 
-            _pageDataConnection = new ImplementationContainer<PageDataConnection>(() => new PageDataConnection(scope));
+            //_pageDataConnection = new ImplementationContainer<PageDataConnection>(() => new PageDataConnection(scope));
             _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this));            
         }
 
@@ -108,7 +108,7 @@ namespace Composite.Data
         {
             CreateImplementation();
 
-            _pageDataConnection = new ImplementationContainer<PageDataConnection>(() => new PageDataConnection(locale));
+            //_pageDataConnection = new ImplementationContainer<PageDataConnection>(() => new PageDataConnection(locale));
             _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this));
         }
 
@@ -139,7 +139,7 @@ namespace Composite.Data
 
             CreateImplementation();
 
-            _pageDataConnection = new ImplementationContainer<PageDataConnection>(() => new PageDataConnection(scope, locale));
+            //_pageDataConnection = new ImplementationContainer<PageDataConnection>(() => new PageDataConnection(scope, locale));
             _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this));
         }
 
@@ -428,16 +428,16 @@ namespace Composite.Data
 
 
 
-        /// <summary>
-        /// A PageDataConnection instanse. See <see cref="Composite.Data.PageDataConnection"/>
-        /// </summary>
-        public PageDataConnection PageDataConnection
-        {
-            get
-            {
-                return _pageDataConnection.Implementation;
-            }
-        }
+        ///// <summary>
+        ///// A PageDataConnection instanse. See <see cref="Composite.Data.PageDataConnection"/>
+        ///// </summary>
+        //public PageDataConnection PageDataConnection
+        //{
+        //    get
+        //    {
+        //        return _pageDataConnection.Implementation;
+        //    }
+        //}
 
 
 
@@ -474,7 +474,7 @@ namespace Composite.Data
             if (disposing)
             {
                 this.DisposeImplementation();
-                _pageDataConnection.Implementation.DisposeImplementation();
+                //_pageDataConnection.Implementation.DisposeImplementation();
                 _sitemapNavigator.Implementation.DisposeImplementation();
             }
         }

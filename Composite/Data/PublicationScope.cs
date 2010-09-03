@@ -11,9 +11,9 @@ namespace Composite.Data
     /// Correct setting of the PublicationScope is typically handled by Composite C1 and should in general not be changed by developers. 
     /// Setting an explicit PublicationScope is typically only needed on new service end-points or 
     /// if specific features relating to data updating / publication is desired.
-    /// See <see cref="Composite.Data.DataConnection"/>
-    /// <seealso cref="Composite.Data.PageDataConnection"/>
+    /// See <see cref="Composite.Data.DataConnection"/>    
     /// </summary>
+    ///// <seealso cref="Composite.Data.PageDataConnection"/>
     public enum PublicationScope
     {
         /// <summary>
