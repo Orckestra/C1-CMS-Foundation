@@ -63,7 +63,8 @@ function submit ( list, url ) {
 	 * window.load event, we submit on a short timeout. Otherwise this document  
 	 * may cease to exist before they get a chance to handle it...
 	 */
-	alert ( form.method )
+// maw: sry, but this was too annoying :)
+//	alert ( form.method )
 	setTimeout ( function () {
 		top.Application.logger.debug ( DOMSerializer.serialize ( document.documentElement, true ));
 		form.submit ();
