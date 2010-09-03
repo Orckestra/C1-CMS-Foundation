@@ -14,43 +14,12 @@
 				<div id="credits">
 					<div id="roll">
 						<div class="logo" id="logo1"/>
-						<div class="logo" id="logo2"/>
 						<h2>Visual Editor</h2>
 						<p>powered by<br/><a href="http://tinymce.moxiecode.com/" title="Visit Moxicode" target="_blank">TinyMCE</a></p>
 						<h2>Source Editor</h2>
 						<p>powered by<br/><a href="http://bobdawg.org/codepress/" title="Visit Sourceforge" target="_blank">Codepress</a></p>
-						<div id="names">
-							<!-- 
-							<h2>Core Development</h2>
-							<p>
-								John Johnson<br/>
-								John Johnson<br/>
-								John Johnson<br/>
-								John Johnson
-							</p>
-							<h2>Package Development</h2>
-							<p>
-								John Johnson<br/>
-								John Johnson<br/>
-								John Johnson<br/>
-								John Johnson
-							</p>
-							<h2>Localization</h2>
-							<p>
-								John Johnson<br/>
-								John Johnson<br/>
-								John Johnson<br/>
-								John Johnson
-							</p>
-							<h2>Special Thanks To</h2>
-							<p>
-								John Johnson<br/>
-								John Johnson<br/>
-								John Johnson<br/>
-								John Johnson
-							</p>
-							-->
-						</div>
+						<div id="names"/>
+						<div class="logo" id="logo2"/>
 					</div>
 				</div>
 				<div id="info">

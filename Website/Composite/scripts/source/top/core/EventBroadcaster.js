@@ -101,7 +101,7 @@ _EventBroadcaster.prototype = {
 					try {
 						subscriber.handleBroadcast ( message, optional );
 					}
-					catch ( exception ) {		
+					catch ( exception ) {
 						exceptions.add ( subscriber );
 						var cry = "Exception in " + new String ( subscriber ) + 
 							" on broadcast '" + message + "':" +  

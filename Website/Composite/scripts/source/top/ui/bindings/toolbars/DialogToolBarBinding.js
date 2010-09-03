@@ -129,19 +129,23 @@ DialogToolBarBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 				/*
 				 * Only close active dialogs (don't close a chain of dialogs)!
 				 */
-				var dialog = this.getAncestorBindingByType ( DialogBinding, true );
-				if ( dialog && dialog.isActive ) {
-					if ( this._focusedButton ) {
-						if ( !this._focusedButton.isDisabled ) {
-							this.unsubscribe ( BroadcastMessages.KEY_ENTER );
-							this._focusedButton.fireCommand ();
-						}
-					} else {
-						if ( !this._defaultButton.isDisabled ) {
-							this.unsubscribe ( BroadcastMessages.KEY_ENTER );
-							this._defaultButton.fireCommand ();
+				if ( Binding.exists ( this )) {
+					var dialog = this.getAncestorBindingByType ( DialogBinding, true );
+					if ( dialog != null && dialog.isActive ) {
+						if ( this._focusedButton != null ) {
+							if ( !this._focusedButton.isDisabled ) {
+								this.unsubscribe ( BroadcastMessages.KEY_ENTER );
+								this._focusedButton.fireCommand ();
+							}
+						} else {
+							if ( !this._defaultButton.isDisabled ) {
+								this.unsubscribe ( BroadcastMessages.KEY_ENTER );
+								this._defaultButton.fireCommand ();
+							}
 						}
 					}
+				} else {
+					this.logger.error ( "Ouch: DialogToolBarBinding#handleBroadcast" );
 				}
 			}
 			break;

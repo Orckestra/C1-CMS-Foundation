@@ -76,7 +76,10 @@ var About = new function () {
 				}
 				
 				this._isCredits = true;
-				CoverBinding.fadeIn ( bindingMap.infocover );
+				
+				var cover = bindingMap.infocover;
+				cover.bindingElement.style.display = "block";
+				CoverBinding.fadeIn ( cover );
 				
 				this._y = 0;
 				this._i = 1;
@@ -125,22 +128,30 @@ var About = new function () {
 			div.appendChild ( h2 );
 			div.appendChild ( p );
 		});
+		
+		top.Application.logger.debug ( div.innerHTML );
 	}
 	
 	this.tick = function () {
 		
-		var roll = document.getElementById ( "roll" );
-		if ( roll != null ) {
-			if ( Math.abs ( this._y ) == roll.offsetHeight - ( 70 + 59 )) {
-				var self = this;
-				setTimeout ( function () {
-					self._back ( true );
-				}, 500 );
+		try {
+		
+			var roll = document.getElementById ( "roll" );
+			if ( roll != null ) {
+				if ( Math.abs ( this._y ) == roll.offsetHeight - ( 70 + 59 )) {
+					var self = this;
+					setTimeout ( function () {
+						self._back ( true );
+					}, 500 );
+				} else {
+					this._y -= this._i;
+					roll.style.top = this._y + "px";
+				}
 			} else {
-				this._y -= this._i;
-				roll.style.top = this._y + "px";
+				top.clearInterval ( this._interval );
 			}
-		} else {
+		
+		} catch ( exception ) {
 			top.clearInterval ( this._interval );
 		}
 	}
@@ -149,29 +160,36 @@ var About = new function () {
 		
 		top.clearInterval ( this._interval );
 		
-		var roll = document.getElementById ( "roll" );
-		var info = document.getElementById ( "info" );
+		if ( this._isCredits ) {
+			
+			this._isCredits = false;
+				
+			var roll = document.getElementById ( "roll" );
+			var info = document.getElementById ( "info" );
+			roll.style.top = 0;
+			
+			var cover = bindingMap.infocover;
+			if ( Binding.exists ( cover )) {
+				if ( isEnd ) {
+					CoverBinding.fadeOut ( cover );
+				} else {
+					if ( Client.isMozilla ) {
+						cover.bindingElement.style.MozOpacity = "0";
+					} else {
+						cover.bindingElement.style.filter = "progid:DXImageTransform.Microsoft.Alpha(opacity=100)";
+						cover.bindingElement.style.display = "none";
+					}
+				}
+			}
 		
-		
-		roll.style.top = 0;
-		this._isCredits = false;
-		
-		var cover = bindingMap.infocover;
-		if ( isEnd ) {
-			CoverBinding.fadeOut ( cover );
-		} else {
-			if ( Client.isMozilla ) {
-				cover.bindingElement.style.MozOpacity = "0";
-			} else {
-				cover.bindingElement.style.filter = "none";
+			info.style.display = "block";
+			
+			var button = window.bindingMap.buttonCredits;
+			if ( Binding.exists ( button )) {
+				button.setLabel ( "Credits" ); 
+				button.setImage ( false );
 			}
 		}
-		
-		info.style.display = "block";
-		
-		var button = window.bindingMap.buttonCredits;
-		button.setLabel ( "Credits" ); 
-		button.setImage ( false );
 	}
 }
 
