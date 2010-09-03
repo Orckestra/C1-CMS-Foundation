@@ -3263,7 +3263,6 @@ try{
 ProgressBarBinding.notch(4);
 Application.isOperational=true;
 EventBroadcaster.broadcast(BroadcastMessages.APPLICATION_OPERATIONAL);
-top.bindingMap.offlinetheatre.play();
 }
 catch(exception){
 alert("Application operational NOT");
