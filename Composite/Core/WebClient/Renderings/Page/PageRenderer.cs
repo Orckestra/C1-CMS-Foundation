@@ -231,6 +231,8 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                 ResolvePageFields(document, page);
 
+                NormalizeAspNetForms(document);
+
                 if (document.Root.Name == Namespaces.Xhtml + "html")
                 {
                     XhtmlDocument xhtmlDocument = new XhtmlDocument(document);
@@ -304,6 +306,21 @@ namespace Composite.Core.WebClient.Renderings.Page
             }
         }
 
+
+
+        private static void NormalizeAspNetForms(XDocument document)
+        {
+            List<XElement> aspNetFormElements = document.Descendants(Namespaces.AspNetControls + "form").Reverse().ToList();
+
+            foreach (XElement aspNetFormElement in aspNetFormElements)
+            {
+                if (aspNetFormElement.Ancestors(Namespaces.AspNetControls + "form").Any())
+                {
+                    aspNetFormElement.ReplaceWith(aspNetFormElement.Nodes());
+                }
+            }
+
+        }
 
 
         private static void ResolvePageFields(XDocument document, IPage page)

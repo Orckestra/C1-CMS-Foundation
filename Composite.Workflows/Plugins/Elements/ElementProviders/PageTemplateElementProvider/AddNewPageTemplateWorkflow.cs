@@ -28,16 +28,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         <rendering:page.metatag.description />
     </head>
     <body>
-        <asp:form>
-            <div style=""float:right; width:10em"">
-                <f:function name=""Composite.Pages.QuickSitemap"" />
-            </div>
-            <h1><rendering:page.title /></h1>
-            <h2><rendering:page.description /></h2>
-            <div id=""content"">
-                <rendering:placeholder id=""contentplaceholder"" title=""Content"" default=""true"" />
-            </div>
-        </asp:form>
+        <div style=""float:right; width:10em"">
+            <f:function name=""Composite.Pages.QuickSitemap"" />
+        </div>
+        <h1><rendering:page.title /></h1>
+        <h2><rendering:page.description /></h2>
+        <div id=""content"">
+            <rendering:placeholder id=""contentplaceholder"" title=""Content"" default=""true"" />
+        </div>
     </body>
 </html>
 ", LocalizationXmlConstants.XmlNamespace);
