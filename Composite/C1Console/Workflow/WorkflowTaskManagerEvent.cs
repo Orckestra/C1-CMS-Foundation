@@ -5,7 +5,11 @@ using Composite.C1Console.Actions;
 
 namespace Composite.C1Console.Workflow
 {
-    internal class WorkflowTaskManagerEvent : FlowTaskManagerEvent
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class WorkflowTaskManagerEvent : FlowTaskManagerEvent
     {
         public WorkflowTaskManagerEvent(FlowToken flowToken, Guid workflowInstanceId)
             : base(flowToken)
@@ -20,7 +24,13 @@ namespace Composite.C1Console.Workflow
         public Guid WorkflowInstanceId { get; private set; }
     }
 
-    internal class WorkflowCreationTaskManagerEvent : TaskManagerEvent
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class WorkflowCreationTaskManagerEvent : TaskManagerEvent
     {
         public WorkflowCreationTaskManagerEvent(Guid parentWorkflowInstanceId)
         {
@@ -30,7 +40,13 @@ namespace Composite.C1Console.Workflow
         public Guid ParentWorkflowInstanceId { get; private set; }
     }
 
-    internal class SaveWorklowTaskManagerEvent : WorkflowTaskManagerEvent
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class SaveWorklowTaskManagerEvent : WorkflowTaskManagerEvent
     {
         public SaveWorklowTaskManagerEvent(FlowToken flowToken, Guid workflowInstanceId, bool succeeded)
             : base(flowToken, workflowInstanceId)

@@ -12,7 +12,11 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Core.Configuration
 {
-    internal class ConfigurationServices
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class ConfigurationServices
     {
         private static IConfigurationSource _configurationSource = null;
         private static string _fileConfigurationSourcePath;

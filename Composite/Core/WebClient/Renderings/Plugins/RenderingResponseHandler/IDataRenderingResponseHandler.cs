@@ -3,7 +3,11 @@
 
 namespace Composite.Core.WebClient.Renderings.Plugins.RenderingResponseHandler
 {
-    internal interface IDataRenderingResponseHandler : IRenderingResponseHandler
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public interface IDataRenderingResponseHandler : IRenderingResponseHandler
 	{
         /// <summary>
         /// 

@@ -4,10 +4,14 @@ using System.Threading;
 
 namespace Composite.Core.Collections.Generic
 {
-    internal sealed class ResourceLocker<T>
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class ResourceLocker<T>
         where T : class
     {
-        internal delegate void InitializerDelegate(T resources);
+        public delegate void InitializerDelegate(T resources);
 
         private readonly T _resources;
         private InitializerDelegate _initializerDelegate;

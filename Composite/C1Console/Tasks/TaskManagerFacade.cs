@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Linq;
-using Composite.Data;
-using Composite.Data.Types;
+using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.C1Console.Security;
-using Composite.C1Console.Actions;
-using System.Collections.Generic;
 
 
 namespace Composite.C1Console.Tasks
 {
-    internal static class TaskManagerFacade
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class TaskManagerFacade
     {
         private static ITaskManagerFacade _implementation = new TaskManagerFacadeImpl();
 

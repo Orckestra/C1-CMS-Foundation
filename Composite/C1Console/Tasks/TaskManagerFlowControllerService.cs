@@ -1,6 +1,10 @@
 ﻿namespace Composite.C1Console.Tasks
 {
-    internal sealed class TaskManagerFlowControllerService : ITaskManagerFlowControllerService
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class TaskManagerFlowControllerService : ITaskManagerFlowControllerService
 	{
         private TaskContainer TaskContainer { get; set; }
 

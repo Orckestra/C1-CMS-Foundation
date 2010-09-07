@@ -4,7 +4,11 @@ using Composite.Core.Extensions;
 
 namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation
 {
-	internal sealed class EntityTokenFactory
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public sealed class EntityTokenFactory
 	{
         private string _providerName;
 

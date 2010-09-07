@@ -1,15 +1,18 @@
 ﻿using System;
-using System.Xml.Linq;
 using System.Collections.Generic;
-
-using Composite.Functions;
-using Composite.Core.Xml;
+using System.Xml.Linq;
 using Composite.C1Console.Security;
+using Composite.Core.Xml;
+using Composite.Functions;
 
 
 namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation
 {
-    internal abstract class CompositeWidgetFunctionBase : IWidgetFunction
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public abstract class CompositeWidgetFunctionBase : IWidgetFunction
 	{
         protected const string CommonNamespace = "Composite.Widgets";
         protected const string InternalCommonNamespace = "Composite.Widgets.Internal"; // not exposed by provider

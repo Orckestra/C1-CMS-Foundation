@@ -1,14 +1,15 @@
-using System;
 using System.Xml.Linq;
-using System.Collections.Generic;
-
 using Composite.Functions;
 using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
 
 
 namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.String
 {
-	internal sealed class VisualXhtmlEditorFuntion : CompositeWidgetFunctionBase
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public sealed class VisualXhtmlEditorFuntion : CompositeWidgetFunctionBase
     {
         private const string _functionName = "VisualXhtmlEditor";
         public const string CompositeName = CompositeWidgetFunctionBase.CommonNamespace + ".String." +_functionName;

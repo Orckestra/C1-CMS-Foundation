@@ -1,13 +1,14 @@
-using System;
 using System.Xml.Linq;
-
 using Composite.Functions.Foundation;
-using Composite.Core.Types;
 
 
 namespace Composite.Functions
 {
-    internal sealed class ConstantValueProvider : BaseValueProvider
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class ConstantValueProvider : BaseValueProvider
     {
         private object _value;
 

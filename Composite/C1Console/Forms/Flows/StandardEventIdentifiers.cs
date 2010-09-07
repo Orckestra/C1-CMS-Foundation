@@ -3,7 +3,11 @@
 
 namespace Composite.C1Console.Forms.Flows
 {
-    internal static class StandardEventIdentifiers
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class StandardEventIdentifiers
     {
         public static IFormEventIdentifier Save { get { return new SaveEvent(); } }
         public static IFormEventIdentifier SaveAs { get { return new SaveAsEvent(); } }
@@ -23,7 +27,11 @@ namespace Composite.C1Console.Forms.Flows
     }
 
 
-    internal class SaveEvent : IFormEventIdentifier
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class SaveEvent : IFormEventIdentifier
     {
         public SaveEvent() { }
 
@@ -31,7 +39,13 @@ namespace Composite.C1Console.Forms.Flows
 
     }
 
-    internal class SaveAsEvent : IFormEventIdentifier
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class SaveAsEvent : IFormEventIdentifier
     {
         public SaveAsEvent() { }
 
@@ -39,7 +53,13 @@ namespace Composite.C1Console.Forms.Flows
 
     }
 
-    internal class PreviewEvent : IFormEventIdentifier
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class PreviewEvent : IFormEventIdentifier
     {
         public PreviewEvent() { }
 
@@ -48,7 +68,12 @@ namespace Composite.C1Console.Forms.Flows
     }
 
 
-    internal class NextEvent : IFormEventIdentifier
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class NextEvent : IFormEventIdentifier
     {
         public NextEvent() { }
 
@@ -57,7 +82,12 @@ namespace Composite.C1Console.Forms.Flows
     }
 
 
-    internal class PreviousEvent : IFormEventIdentifier
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class PreviousEvent : IFormEventIdentifier
     {
         public PreviousEvent() { }
 
@@ -66,7 +96,12 @@ namespace Composite.C1Console.Forms.Flows
     }
 
 
-    internal class FinishEvent : IFormEventIdentifier
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class FinishEvent : IFormEventIdentifier
     {
         public FinishEvent() { }
 
@@ -75,7 +110,12 @@ namespace Composite.C1Console.Forms.Flows
     }
 
 
-    internal class CancelEvent : IFormEventIdentifier
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class CancelEvent : IFormEventIdentifier
     {
         public CancelEvent() { }
 
@@ -84,7 +124,12 @@ namespace Composite.C1Console.Forms.Flows
     }
 
 
-    internal class CustomEvent : IFormEventIdentifier
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class CustomEvent : IFormEventIdentifier
     {
         public CustomEvent(int eventNumber) 
         {
@@ -99,7 +144,4 @@ namespace Composite.C1Console.Forms.Flows
         }
 
     }
-
-
-
 }
