@@ -5,7 +5,11 @@ using Composite.Functions;
 
 namespace Composite.Core.WebClient.Renderings.Page
 {
-	internal interface IXElementToControlMapper
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public interface IXElementToControlMapper
 	{
         bool TryGetControlFromXElement(XElement element, out Control control);
 	}

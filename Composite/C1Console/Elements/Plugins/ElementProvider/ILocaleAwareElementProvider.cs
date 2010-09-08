@@ -5,7 +5,11 @@ using Composite.C1Console.Security;
 // The namespace is wrong but is left for backwards compatibility
 namespace Composite.C1Console.Elements
 {
-    internal interface ILocaleAwareElementProvider : IHooklessElementProvider
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public interface ILocaleAwareElementProvider : IHooklessElementProvider
     {
         bool ContainsLocalizedData { get; }
 

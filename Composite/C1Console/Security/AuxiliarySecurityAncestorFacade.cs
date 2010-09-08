@@ -5,7 +5,11 @@ using Composite.C1Console.Events;
 
 namespace Composite.C1Console.Security
 {
-	internal static class AuxiliarySecurityAncestorFacade
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public static class AuxiliarySecurityAncestorFacade
 	{
         private static IAuxiliarySecurityAncestorFacade _implementation = new AuxiliarySecurityAncestorFacadeImpl();
 

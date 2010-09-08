@@ -10,7 +10,11 @@ using Composite.Core.Types;
 
 namespace Composite.Data.Hierarchy.DataAncestorProviders
 {
-    internal sealed class PropertyDataAncestorProviderAttribute : Attribute
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class PropertyDataAncestorProviderAttribute : Attribute
     {
         private string _idPropertyName;
         private string _parentIdPropertyName;

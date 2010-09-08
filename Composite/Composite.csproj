@@ -309,11 +309,6 @@
     <Compile Include="Core\Configuration\ICachingSettings.cs" />
     <Compile Include="Core\Configuration\InstallationInformationFacade.cs" />
     <Compile Include="Core\Implementation\ImplementationContainer.cs" />
-    <Compile Include="Core\Implementation\Pages\DefaultPageManager.cs" />
-    <Compile Include="Core\Implementation\Pages\NavigationBase.cs" />
-    <Compile Include="Core\Implementation\Pages\NavigationDefaultImplementation.cs" />
-    <Compile Include="Core\Implementation\Pages\PageManagerBase.cs" />
-    <Compile Include="Core\Implementation\Pages\PageManagerDefaultImplementation.cs" />
     <Compile Include="Core\Instrumentation\Foundation\IPerformanceCounterProviderRegistry.cs" />
     <Compile Include="Core\Instrumentation\Foundation\PerformanceCounterProviderRegistry.cs" />
     <Compile Include="Core\Instrumentation\Foundation\PerformanceCounterProviderRegistryImpl.cs" />
@@ -339,11 +334,8 @@
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\LocalePackageFragmentUninstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\PackageVersionBumberFragmentInstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\PackageVersionBumberFragmentUninstaller.cs" />
-    <Compile Include="Data\Navigation.cs" />
     <Compile Include="Data\PageManager.cs" />
     <Compile Include="Data\PageUrl.cs" />
-    <Compile Include="Data\XPage.cs" />
-    <Compile Include="Data\XSiteMap.cs" />
     <Compile Include="Core\Parallelization\IndexEnumerator.cs" />
     <Compile Include="Core\Logging\LogManager.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\FileXslTransformationPackageFragmentInstaller.cs" />

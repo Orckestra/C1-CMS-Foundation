@@ -16,7 +16,6 @@ using Composite.Core;
 
 namespace Composite.Data
 {
-#warning MRJ: Delete this file ????????
     /// <summary>
     /// Page url type
     /// </summary>
@@ -95,7 +94,6 @@ namespace Composite.Data
         /// <returns></returns>
         public IPage GetPage()
         {
-#warning MRJ: WHAT TO DO HERE?? // MAW: reintrocuced this code - any issues with it?
             using(DataConnection connection = new DataConnection(PublicationScope, Locale))
             {
                 return Data.PageManager.GetPageById(PageId);

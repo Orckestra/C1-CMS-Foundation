@@ -3,7 +3,11 @@ using System.Collections.Generic;
 
 namespace Composite.Functions.Plugins.FunctionProvider
 {
-    internal interface IDynamicTypeFunctionProvider : IFunctionProvider
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public interface IDynamicTypeFunctionProvider : IFunctionProvider
 	{
         IEnumerable<IFunction> DynamicTypeDependentFunctions { get; }
 	}
