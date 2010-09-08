@@ -28,17 +28,29 @@
    <Modules AnalyzeAllChildren="False">
     <Module Name="composite.dll" Analyze="False" AnalyzeAllChildren="False">
      <Namespaces AnalyzeAllChildren="False">
-      <Namespace Name="Composite" Analyze="False" AnalyzeAllChildren="False">
+      <Namespace Name="Composite.Core" Analyze="False" AnalyzeAllChildren="False">
        <Types AnalyzeAllChildren="False">
         <Type Name="Log" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="Storage" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="StorageAccess" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="StorageEvents" Analyze="True" AnalyzeAllChildren="True" />
        </Types>
       </Namespace>
       <Namespace Name="Composite.Core.Implementation" Analyze="True" AnalyzeAllChildren="True" />
-      <Namespace Name="Composite.Core.Implementation.Pages" Analyze="True" AnalyzeAllChildren="True" />
-      <Namespace Name="Composite.Data" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="Composite.Data" Analyze="False" AnalyzeAllChildren="False">
+       <Types AnalyzeAllChildren="False">
+        <Type Name="DataConnection" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="DataEventArgs" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="DataEventHandler" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="DataEvents`1" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="PageNode" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="PublicationScope" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SitemapNavigator" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SitemapScope" Analyze="True" AnalyzeAllChildren="True" />
+       </Types>
+      </Namespace>
+      <Namespace Name="Composite.Functions" Analyze="False" AnalyzeAllChildren="False">
+       <Types AnalyzeAllChildren="False">
+        <Type Name="FunctionParameterDescriptionAttribute" Analyze="True" AnalyzeAllChildren="True" />
+       </Types>
+      </Namespace>
      </Namespaces>
      <Resources AnalyzeAllChildren="True" />
     </Module>
