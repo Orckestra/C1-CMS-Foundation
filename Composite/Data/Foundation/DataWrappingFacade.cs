@@ -3,7 +3,11 @@ using Composite.Data.Foundation.CodeGeneration;
 
 namespace Composite.Data.Foundation
 {
-	internal static class DataWrappingFacade
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public static class DataWrappingFacade
 	{
 	    public static T Wrap<T>(T value) where T: class, IData
         {

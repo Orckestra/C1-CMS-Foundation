@@ -8,7 +8,11 @@ using Composite.Core.Xml;
 
 namespace Composite.Core.WebClient.Renderings.Data
 {
-	internal static class DataXhtmlRenderingServices
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public static class DataXhtmlRenderingServices
 	{
         public static bool CanRender(Type dataTypeToRender, XhtmlRenderingType renderingType)
         {

@@ -1,6 +1,10 @@
 namespace Composite.Core.ResourceSystem.Icons
 {
-	internal static class BuildInIconProviderName
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public static class BuildInIconProviderName
 	{
         public const string ProviderName = "Composite.Icons";
 	}

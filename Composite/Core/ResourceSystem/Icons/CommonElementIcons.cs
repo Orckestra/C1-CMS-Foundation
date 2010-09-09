@@ -1,7 +1,11 @@
 
 namespace Composite.Core.ResourceSystem.Icons
 {
-    internal static class CommonElementIcons
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class CommonElementIcons
     {
         public static ResourceHandle Advanced { get { return GetIconHandle("advanced"); } }
         public static ResourceHandle Clock { get { return GetIconHandle("clock"); } }

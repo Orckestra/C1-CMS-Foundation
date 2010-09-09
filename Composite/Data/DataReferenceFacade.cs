@@ -384,7 +384,7 @@ namespace Composite.Data
 
 
 
-        internal static bool TryGetReferenceType(this PropertyInfo propertyInfo, out Type typeBeingReferenced)
+        public static bool TryGetReferenceType(this PropertyInfo propertyInfo, out Type typeBeingReferenced)
         {
             if (propertyInfo == null) throw new ArgumentNullException("propertyInfo");
 
