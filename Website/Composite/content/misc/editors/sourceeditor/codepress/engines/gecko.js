@@ -250,7 +250,8 @@ CodePress = {
 		code = code.replace(/<.*?>/g,'');
 		code = code.replace(/&lt;/g,'<');
 		code = code.replace(/&gt;/g,'>');
-		code = code.replace(/&amp;/gi,'&');
+		code = code.replace(/&amp;/gi, '&');
+		code = code.replace(/&nbsp;/g, ' '); /* COMPOSITE ADDED THIS */
 		return code;
 	},
 
