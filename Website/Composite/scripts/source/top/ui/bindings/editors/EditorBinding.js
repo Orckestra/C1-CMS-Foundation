@@ -3,6 +3,13 @@ EditorBinding.prototype.constructor = EditorBinding;
 EditorBinding.superclass = WindowBinding.prototype;
 
 /**
+ * True while an EditorBinding instance has focus.
+ * @see {EditorBinding._activateEditor}
+ * @type {boolean}
+ */
+EditorBinding.isActive = false;
+
+/**
  * Subclasses should define these.
  */
 EditorBinding.ACTION_ATTACHED = null;
@@ -589,6 +596,7 @@ EditorBinding.prototype._activateEditor = function ( isActivate ) {
 	if ( isActivate != this._isActivated ) {
 	
 		this._isActivated = isActivate;
+		EditorBinding.isActive = isActivate;
 		
 		var handler = this.getEditorWindow ().standardEventHandler;
 		var broadcaster = this.getContentWindow ().bindingMap.broadcasterIsActive;

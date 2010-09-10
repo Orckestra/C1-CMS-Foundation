@@ -17,13 +17,7 @@
 							<ui:text label="${string:Website.General.LabelVersionNumber}"/>
 						</td>
 						<td id="versioninfo">&#160;</td>
-					</tr>
-					<tr>
-						<td class="index">
-							<ui:text label="${string:Website.General.LabelRegisteredTo}"/>
-						</td>
-						<td id="licenseinfo">&#160;</td>
-					</tr>
+					</tr>					
 				</tbody>
 			</table>
 			<div id="logo"></div>

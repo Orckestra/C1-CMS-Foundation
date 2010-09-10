@@ -124,7 +124,7 @@ DialogToolBarBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 			/*
 			 * Don't close the dialog while a popup is handled!
 			 */
-			if ( !PopupBinding.hasActiveInstances ()) {
+			if ( !PopupBinding.hasActiveInstances () && !EditorBinding.isActive ) {
 				
 				/*
 				 * Only close active dialogs (don't close a chain of dialogs)!
