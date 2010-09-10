@@ -23,7 +23,7 @@ namespace Composite.Data
         ///    
         ///    using (DataConnection connection = new DataConnection())
         ///    {
-        ///       IMyDataType myDataType = Storage.New&lt;IMyDataType&gt;();
+        ///       IMyDataType myDataType = DataConnection.New&lt;IMyDataType&gt;();
         ///       myDataType.Name = "Foo";
         ///       
         ///       connection.Add&lt;IMyDataType&gt;(myDataType); // This will fire the event!
@@ -31,7 +31,7 @@ namespace Composite.Data
         /// }
         /// 
         /// 
-        /// void DataEvents_OnBeforeAdd(DataEventArgs dataEventArgs)
+        /// void DataEvents_OnBeforeAdd(object sender, DataEventArgs dataEventArgs)
         /// {        
         /// }
         /// </code>
@@ -62,7 +62,7 @@ namespace Composite.Data
         ///    
         ///    using (DataConnection connection = new DataConnection())
         ///    {
-        ///       IMyDataType myDataType = Storage.New&lt;IMyDataType&gt;();
+        ///       IMyDataType myDataType = DataConnection.New&lt;IMyDataType&gt;();
         ///       myDataType.Name = "Foo";
         ///       
         ///       connection.Add&lt;IMyDataType&gt;(myDataType); // This will fire the event!
@@ -70,7 +70,7 @@ namespace Composite.Data
         /// }
         /// 
         /// 
-        /// void DataEvents_OnAfterAdd(DataEventArgs dataEventArgs)
+        /// void DataEvents_OnAfterAdd(object sender, DataEventArgs dataEventArgs)
         /// {        
         /// }
         /// </code>
@@ -102,7 +102,7 @@ namespace Composite.Data
         ///    using (DataConnection connection = new DataConnection())
         ///    {
         ///       IMyDataType myDataType = 
-        ///          (from item in Storage.Get&lt;IMyDataType&gt;()
+        ///          (from item in connection.get&lt;IMyDataType&gt;()
         ///           where item.Id == 1
         ///           select item).First();
         ///           
@@ -113,7 +113,7 @@ namespace Composite.Data
         /// }
         /// 
         /// 
-        /// void DataEvents_OnBeforeUpdate(DataEventArgs dataEventArgs)
+        /// void DataEvents_OnBeforeUpdate(object sender, DataEventArgs dataEventArgs)
         /// {        
         /// }
         /// </code>
@@ -145,7 +145,7 @@ namespace Composite.Data
         ///    using (DataConnection connection = new DataConnection())
         ///    {
         ///       IMyDataType myDataType = 
-        ///          (from item in Storage.Get&lt;IMyDataType&gt;()
+        ///          (from item in connection.get&lt;IMyDataType&gt;()
         ///           where item.Id == 1
         ///           select item).First();
         ///           
@@ -156,7 +156,7 @@ namespace Composite.Data
         /// }
         /// 
         /// 
-        /// void DataEvents_OnAfterUpdate(DataEventArgs dataEventArgs)
+        /// void DataEvents_OnAfterUpdate(object sender, DataEventArgs dataEventArgs)
         /// {        
         /// }
         /// </code>
@@ -188,7 +188,7 @@ namespace Composite.Data
         ///    using (DataConnection connection = new DataConnection())
         ///    {
         ///       IMyDataType myDataType = 
-        ///          (from item in Storage.Get&lt;IMyDataType&gt;()
+        ///          (from item in connection.get&lt;IMyDataType&gt;()
         ///           where item.Id == 1
         ///           select item).First();
         ///           
@@ -197,7 +197,7 @@ namespace Composite.Data
         /// }
         /// 
         /// 
-        /// void DataEvents_OnDeleted(DataEventArgs dataEventArgs)
+        /// void DataEvents_OnDeleted(object sender, DataEventArgs dataEventArgs)
         /// {        
         /// }
         /// </code>
@@ -230,7 +230,7 @@ namespace Composite.Data
         /// }
         /// 
         /// 
-        /// void DataEvents_OnNew(DataEventArgs dataEventArgs)
+        /// void DataEvents_OnNew(object sender, DataEventArgs dataEventArgs)
         /// {        
         /// }
         /// </code>
