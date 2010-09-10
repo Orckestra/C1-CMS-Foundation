@@ -17,7 +17,7 @@ namespace Composite.Data
 
 
 
-        [ForeignKey(typeof(Composite.Data.Types.IPage), "Id")]
+        [ForeignKey(typeof(Composite.Data.Types.IPage), "Id", AllowCascadeDeletes = true)]
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{F641EC01-75BB-49EC-B02A-969D6BE59A5F}")]
         Guid PageId { get; set; }
