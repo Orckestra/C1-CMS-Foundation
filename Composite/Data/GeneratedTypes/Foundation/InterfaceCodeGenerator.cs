@@ -449,7 +449,7 @@ namespace Composite.Data.GeneratedTypes.Foundation
                 codeMemberProperty.CustomAttributes.Add(stringLengthAttribute);
             }
 
-            if (dataFieldDescriptor.StoreType.IsNumeric == true)
+            if (dataFieldDescriptor.StoreType.PhysicalStoreType == PhysicalStoreFieldType.Integer)
             {
                 CodeAttributeDeclaration integerRangeValidatorAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(IntegerRangeValidatorAttribute)));
                 integerRangeValidatorAttribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(Int32.MinValue)));
