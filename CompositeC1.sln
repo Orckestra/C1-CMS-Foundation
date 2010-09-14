@@ -1,0 +1,72 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{44113BBC-CB18-41CF-AB26-6D190BA4E117}"
+	ProjectSection(SolutionItems) = preProject
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.Workflows", "Composite.Workflows\Composite.Workflows.csproj", "{1FE08476-346A-4053-813D-8807C0E0FC36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSite", "Website\WebSite.csproj", "{D0A3D7D5-1D1F-40BC-89C1-93CDCEDF262C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite", "Composite\Composite.csproj", "{F8D87A5F-D090-4D24-80C1-DBCD938C6CAB}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://core03:8080/tfs/compositecore03
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Composite.Workflows\\Composite.Workflows.csproj
+		SccProjectName1 = Composite.Workflows
+		SccLocalPath1 = Composite.Workflows
+		SccProjectUniqueName2 = Website\\WebSite.csproj
+		SccProjectName2 = Website
+		SccLocalPath2 = Website
+		SccProjectUniqueName3 = Composite\\Composite.csproj
+		SccProjectName3 = Composite
+		SccLocalPath3 = Composite
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|.NET = Debug|.NET
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Release|.NET = Release|.NET
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1FE08476-346A-4053-813D-8807C0E0FC36}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{1FE08476-346A-4053-813D-8807C0E0FC36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FE08476-346A-4053-813D-8807C0E0FC36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FE08476-346A-4053-813D-8807C0E0FC36}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1FE08476-346A-4053-813D-8807C0E0FC36}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1FE08476-346A-4053-813D-8807C0E0FC36}.Release|.NET.ActiveCfg = Release|Any CPU
+		{1FE08476-346A-4053-813D-8807C0E0FC36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FE08476-346A-4053-813D-8807C0E0FC36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FE08476-346A-4053-813D-8807C0E0FC36}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1FE08476-346A-4053-813D-8807C0E0FC36}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D0A3D7D5-1D1F-40BC-89C1-93CDCEDF262C}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{D0A3D7D5-1D1F-40BC-89C1-93CDCEDF262C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0A3D7D5-1D1F-40BC-89C1-93CDCEDF262C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0A3D7D5-1D1F-40BC-89C1-93CDCEDF262C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D0A3D7D5-1D1F-40BC-89C1-93CDCEDF262C}.Release|.NET.ActiveCfg = Release|Any CPU
+		{D0A3D7D5-1D1F-40BC-89C1-93CDCEDF262C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0A3D7D5-1D1F-40BC-89C1-93CDCEDF262C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0A3D7D5-1D1F-40BC-89C1-93CDCEDF262C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F8D87A5F-D090-4D24-80C1-DBCD938C6CAB}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{F8D87A5F-D090-4D24-80C1-DBCD938C6CAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8D87A5F-D090-4D24-80C1-DBCD938C6CAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8D87A5F-D090-4D24-80C1-DBCD938C6CAB}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F8D87A5F-D090-4D24-80C1-DBCD938C6CAB}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F8D87A5F-D090-4D24-80C1-DBCD938C6CAB}.Release|.NET.ActiveCfg = Release|Any CPU
+		{F8D87A5F-D090-4D24-80C1-DBCD938C6CAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8D87A5F-D090-4D24-80C1-DBCD938C6CAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8D87A5F-D090-4D24-80C1-DBCD938C6CAB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F8D87A5F-D090-4D24-80C1-DBCD938C6CAB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

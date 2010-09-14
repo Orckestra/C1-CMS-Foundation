@@ -1236,6 +1236,6 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)Public\bin\"</PostBuildEvent>
+    <PostBuildEvent>copy "$(TargetPath)" "$(ProjectDir)..\bin\"</PostBuildEvent>
   </PropertyGroup>
 </Project>

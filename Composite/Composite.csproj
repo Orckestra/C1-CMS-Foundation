@@ -2099,7 +2099,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)Public\bin\"
-copy "$(TargetPath)" "$(SolutionDir)Public\Website\bin\"</PostBuildEvent>
+    <PostBuildEvent>copy "$(TargetPath)" "$(ProjectDir)..\bin\"
+copy "$(TargetPath)" "$(ProjectDir)..\Website\bin\"</PostBuildEvent>
   </PropertyGroup>
 </Project>
