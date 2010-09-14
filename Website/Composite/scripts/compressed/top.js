@@ -17794,7 +17794,7 @@ DialogToolBarBinding.prototype.handleBroadcast=function(_b61,arg){
 DialogToolBarBinding.superclass.handleBroadcast.call(this,_b61,arg);
 switch(_b61){
 case BroadcastMessages.KEY_ENTER:
-if(!PopupBinding.hasActiveInstances()){
+if(!PopupBinding.hasActiveInstances()&&!EditorBinding.isActive){
 if(Binding.exists(this)){
 var _b63=this.getAncestorBindingByType(DialogBinding,true);
 if(_b63!=null&&_b63.isActive){
@@ -25338,6 +25338,7 @@ return _f2e;
 EditorBinding.prototype=new WindowBinding;
 EditorBinding.prototype.constructor=EditorBinding;
 EditorBinding.superclass=WindowBinding.prototype;
+EditorBinding.isActive=false;
 EditorBinding.ACTION_ATTACHED=null;
 EditorBinding.URL_DIALOG_MOZ_CONFIGURE="${root}/content/dialogs/wysiwygeditor/mozsecuritynote/mozsecuritynote.aspx";
 EditorBinding.ABSURD_NUMBER=-999999999;
@@ -25593,6 +25594,7 @@ break;
 EditorBinding.prototype._activateEditor=function(_f51){
 if(_f51!=this._isActivated){
 this._isActivated=_f51;
+EditorBinding.isActive=_f51;
 var _f52=this.getEditorWindow().standardEventHandler;
 var _f53=this.getContentWindow().bindingMap.broadcasterIsActive;
 if(_f53!=null){
