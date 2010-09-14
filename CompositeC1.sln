@@ -13,21 +13,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite", "Composite\Composite.csproj", "{F8D87A5F-D090-4D24-80C1-DBCD938C6CAB}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://core03:8080/tfs/compositecore03
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Composite.Workflows\\Composite.Workflows.csproj
-		SccProjectName1 = Composite.Workflows
-		SccLocalPath1 = Composite.Workflows
-		SccProjectUniqueName2 = Website\\WebSite.csproj
-		SccProjectName2 = Website
-		SccLocalPath2 = Website
-		SccProjectUniqueName3 = Composite\\Composite.csproj
-		SccProjectName3 = Composite
-		SccLocalPath3 = Composite
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
 		Debug|Any CPU = Debug|Any CPU

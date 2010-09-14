@@ -245,12 +245,12 @@ p#crumbs {
 }
 p#crumbs em {
 	font-family: Arial, sans-serif;
-	font-size: 10px;
-	opacity: 0.75;
+	font-size: 10px; 
+	/* opacity: 0.75; */
 }
 p#crumbs span {
 	font-weight: bold;
-	opacity: 0.75;	
+	/* opacity: 0.75; */
 }
 p#crumbs span.selected {
 	color: #CC071E;
