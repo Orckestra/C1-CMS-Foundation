@@ -36,7 +36,7 @@ namespace Composite.Core.WebClient.Setup
                 },
                 new CheckResult {
                 	Key = "connection",
-                    Title = "Outbound server connection",
+                    Title = "Outbound HTTPS connection",
                     Success = HasConnectionToPackageServer()
                 },
                 new CheckResult {
