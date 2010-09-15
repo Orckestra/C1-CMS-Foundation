@@ -21,6 +21,7 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         private string _autoPackageInstallDirectory = "~/AutoInstallPackages";
         private string _treeDefinitionsDirectory = "~/TreeDefinitions";
         private string _dataMetaDataDirectory = "~/DataMetaData";
+        private string _inlineCSharpFunctionDirectory = "~/InlineCSharpFunctions";
         private IResourceCacheSettings _resourceCacheSettings = new BuildinResourceCacheSettings();
         private ICachingSettings _cachingSettings = new BuildinCachingSettings();
         private List<string> _nonProbableAssemblyNames = new List<string>();
@@ -146,6 +147,14 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
             }
         }
 
+
+        public string InlineCSharpFunctionDirectory
+        {
+            get 
+            {
+                return _inlineCSharpFunctionDirectory;
+            }
+        }
 
 
         public IResourceCacheSettings ResourceCacheSettings

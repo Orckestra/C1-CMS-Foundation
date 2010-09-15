@@ -129,6 +129,11 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         }
 
 
+        public string InlineCSharpFunctionDirectory
+        {
+            get { return _configurationData.InlineCSharpFunctionDirectory; }
+        }
+
 
         public IResourceCacheSettings ResourceCacheSettings
         {
@@ -425,6 +430,16 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         {
             get { return (string)base[_dataMetaDataDirectoryPropertyName]; }
             set { base[_dataMetaDataDirectoryPropertyName] = value; }
+        }
+
+
+
+        private const string _inlineCSharpFunctionDirectoryPropertyName = "inlineCSharpFunctionDirectory";
+        [ConfigurationProperty(_inlineCSharpFunctionDirectoryPropertyName, DefaultValue = "~")]
+        public string InlineCSharpFunctionDirectory
+        {
+            get { return (string)base[_inlineCSharpFunctionDirectoryPropertyName]; }
+            set { base[_inlineCSharpFunctionDirectoryPropertyName] = value; }
         }
         
 

@@ -95,3 +95,4 @@ Changes since C1 1.2 SP2 Patch 3
  Changes in 2.0 trunk:
  - <exceptionHandling> removed
  - Composite.SetupConfiguration section added
+ - inlineCSharpFunctionDirectory="~/App_Data/Composite/InlineCSharpFunctions" added to GlobalSettingsProviderPlugins

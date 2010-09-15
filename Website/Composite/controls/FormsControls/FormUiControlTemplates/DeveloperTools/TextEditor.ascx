@@ -33,6 +33,8 @@
             case "text/javascript":
             case "text/js":
                 return "javascript";
+            case "text/x-csharp":
+                return "csharp";
             default:
                 return "text";
         }

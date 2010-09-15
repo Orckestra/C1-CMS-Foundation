@@ -38,6 +38,8 @@ namespace Composite.Core.Configuration.Plugins.GlobalSettingsProvider
 
         string DataMetaDataDirectory { get; }
 
+        string InlineCSharpFunctionDirectory { get; }
+
         IResourceCacheSettings ResourceCacheSettings { get; }
 
         IEnumerable<CultureInfo> ApplicationCultures { get; }

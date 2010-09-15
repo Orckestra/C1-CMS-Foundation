@@ -211,6 +211,16 @@ namespace Composite.Core.Configuration
 
 
 
+        public static string InlineCSharpFunctionDirectory
+        {
+            get
+            {
+                return _globalSettingsFacade.InlineCSharpFunctionDirectory;
+            }
+        }
+
+        
+
         public static IResourceCacheSettings ResourceCacheSettings
         {
             get

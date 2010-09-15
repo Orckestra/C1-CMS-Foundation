@@ -53,6 +53,8 @@ namespace Composite.Data.Foundation
                     typeof(IMediaFileData),
                     typeof(IMediaFolderData),
                     typeof(IMethodBasedFunctionInfo),
+                    typeof(ICSharpFunction),
+                    typeof(ICSharpFunctionAssemblyReference),
                     typeof(ISqlConnection),
                     typeof(ISqlFunctionInfo),
                     typeof(INamedFunctionCall),

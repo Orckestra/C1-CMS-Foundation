@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0" xmlns:internal="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0">
+  <cms:bindings>
+    <cms:binding name="FunctionInfo" type="Composite.Data.Types.ICSharpFunction, Composite" />
+    <cms:binding name="FunctionCode" type="System.String" />
+    <cms:binding name="Assemblies" type="System.Collections.IEnumerable" />
+    <cms:binding name="SelectedAssemblies" type="System.Collections.IEnumerable" />
+    <cms:binding name="PreviewEventHandler" type="System.EventHandler" optional="true" />
+    <cms:binding name="SessionStateProvider" type="System.String" />
+    <cms:binding name="SessionStateId" type="System.Guid" />
+  </cms:bindings>
+  <cms:layout>
+    <cms:layout.label>
+      <cms:read source="FunctionInfo.Name" />
+      
+    </cms:layout.label>
+
+    <TabPanels PreSelectedIndex="1">
+
+      <FieldGroup Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditEditableMethodBasedFunction.FieldGroup.Label}">
+        <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditEditableMethodBasedFunction.MethodName.Label}"
+                 Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditEditableMethodBasedFunction.MethodName.Help}">
+          <TextBox.Text>
+            <cms:bind source="FunctionInfo.Name" />
+          </TextBox.Text>
+        </TextBox>
+
+        <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditEditableMethodBasedFunction.MethodNamespace.Label}"
+                 Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditEditableMethodBasedFunction.MethodNamespace.Help}">
+          <TextBox.Text>
+            <cms:bind source="FunctionInfo.Namespace" />
+          </TextBox.Text>
+        </TextBox>
+      </FieldGroup>
+
+
+      <TextEditor Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditEditableMethodBasedFunction.Code.Label}" MimeType="text/x-csharp">        
+        <cms:bind source="FunctionCode" />      
+      </TextEditor>
+
+
+      <FieldGroup Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditEditableMethodBasedFunction.AssembliesFieldGroup.Label}">
+        
+        <MultiKeySelector OptionsKeyField="Key" OptionsLabelField="Value" CompactMode="true">
+          <MultiKeySelector.Options>
+            <cms:read source="Assemblies"/>
+          </MultiKeySelector.Options>
+          <MultiKeySelector.Selected>
+            <cms:bind source="SelectedAssemblies"/>
+          </MultiKeySelector.Selected>
+        </MultiKeySelector>
+      </FieldGroup>
+
+      <internal:ParameterDesigner Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditEditableMethodBasedFunction.ParameterFieldGroup.Label}">
+        <internal:ParameterDesigner.SessionStateProvider>
+          <cms:read source="SessionStateProvider"/>
+        </internal:ParameterDesigner.SessionStateProvider>
+        <internal:ParameterDesigner.SessionStateId>
+          <cms:read source="SessionStateId"/>
+        </internal:ParameterDesigner.SessionStateId>
+      </internal:ParameterDesigner>
+
+
+      <internal:PreviewPanel Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditEditableMethodBasedFunction.Preview.Label}">
+        <internal:PreviewPanel.ClickEventHandler>
+          <cms:read source="PreviewEventHandler" />
+        </internal:PreviewPanel.ClickEventHandler>
+      </internal:PreviewPanel>
+    </TabPanels>
+  </cms:layout>
+</cms:formdefinition>

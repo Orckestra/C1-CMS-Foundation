@@ -212,6 +212,8 @@
     <Compile Include="Data\Streams\IFileStreamManager.cs" />
     <Compile Include="Data\IPageData.cs" />
     <Compile Include="Data\IPageFolderData.cs" />
+    <Compile Include="Data\Types\ICSharpFunctionAssemblyReference.cs" />
+    <Compile Include="Data\Types\ICSharpFunction.cs" />
     <Compile Include="Data\Types\IPageFolderDefinition.cs" />
     <Compile Include="Data\IPageMetaData.cs" />
     <Compile Include="Data\Types\IPageMetaDataDefinition.cs" />
@@ -386,6 +388,8 @@
     <Compile Include="C1Console\Security\UserGroupFacade.cs" />
     <Compile Include="C1Console\Security\UserGroupPermissionDefinition.cs" />
     <Compile Include="C1Console\Security\UserGroupPerspectiveFacade.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\MethodBasedFunctionProvider\CSharpFunctionHelper.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\MethodBasedFunctionProvider\EditableMethodBasedFunction.cs" />
     <Compile Include="Sql\SqlConnectionManager.cs" />
     <Compile Include="Plugins\Application\ApplicationStartupHandlers\AttributeBasedApplicationStartupHandler\AttributeBasedApplicationStartupHandler.cs" />
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\CodeGeneration\Foundation\DataProviderHelperBase.cs" />

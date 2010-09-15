@@ -22,6 +22,7 @@ namespace Composite.Core.Configuration
         string AutoPackageInstallDirectory { get; }
         string TreeDefinitionsDirectory { get; }
         string DataMetaDataDirectory { get; }
+        string InlineCSharpFunctionDirectory { get; }
         IResourceCacheSettings ResourceCacheSettings { get; }
         IEnumerable<string> NonProbableAssemblyNames { get; }
         void AddNonProbableAssemblyName(string assemblyNamePatern);

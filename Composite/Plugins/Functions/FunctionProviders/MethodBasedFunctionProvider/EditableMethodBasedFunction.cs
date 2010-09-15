@@ -1,10 +1,8 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Composite.C1Console.Security;
-using Composite.Core.Logging;
-using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Functions;
@@ -12,27 +10,26 @@ using Composite.Functions;
 
 namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvider
 {
-    internal sealed class MethodBasedFunction : IFunction
+    internal sealed class EditableMethodBasedFunction : IFunction
     {
-        private IMethodBasedFunctionInfo _methodBasedFunctionInfo;
-        private Type _type;
+        private ICSharpFunction _editableMethodBasedFunctionInfo;
         private MethodInfo _methodInfo;
         private IList<ParameterProfile> _parameterProfile;
-        private object _object;
 
 
-        private MethodBasedFunction(IMethodBasedFunctionInfo info, Type type, MethodInfo methodInfo)
+        private EditableMethodBasedFunction(ICSharpFunction info, MethodInfo methodInfo)
         {
-            _methodBasedFunctionInfo = info;
-            _type = type;
+            _editableMethodBasedFunctionInfo = info;
             _methodInfo = methodInfo;
         }
 
 
 
-        public static MethodBasedFunction Create(IMethodBasedFunctionInfo info)
+        public static EditableMethodBasedFunction Create(ICSharpFunction info)
         {
-            Type type = TypeManager.TryGetType(info.Type);
+            MethodInfo methodInfo = CSharpFunctionHelper.Create(info);   
+
+            /*Type type = TypeManager.TryGetType(info.Type);
 
             if (type == null)
             {
@@ -49,9 +46,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
             {
                 LoggingService.LogError("MethodBasedFunctionProvider", string.Format("Could not find the method '{0}' on the the type '{1}'", info.MethodName, info.Type));
                 return null;
-            }
+            }*/
 
-            return new MethodBasedFunction(info, type, methodInfo);
+            return new EditableMethodBasedFunction(info, methodInfo);
         }
 
 
@@ -61,30 +58,37 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
             IList<object> arguments = new List<object>();
             foreach (ParameterProfile paramProfile in ParameterProfiles)
             {
-                
                 arguments.Add(parameters.GetParameter(paramProfile.Name, paramProfile.Type));
             }
 
-            return this.MethodInfo.Invoke(this.Object, arguments.ToArray());
+            return this.MethodInfo.Invoke(null, arguments.ToArray());
         }
 
 
 
         public string Name
         {
-            get { return _methodBasedFunctionInfo.UserMethodName; }
+            get { return _editableMethodBasedFunctionInfo.Name; }
         }
 
 
 
         public string Namespace
         {
-            get { return _methodBasedFunctionInfo.Namespace; }
+            get { return _editableMethodBasedFunctionInfo.Namespace; }
         }
 
 
 
-        public string Description { get { return string.Format("This is a static method call to the function '{0}' on '{1}'.", _methodBasedFunctionInfo.MethodName, _methodBasedFunctionInfo.Type); } }
+        public string Description 
+        { 
+            get 
+            {
+                return "ljklkj";
+                //return string.Format("This is a static method call to the function '{0}' on '{1}'.", _methodBasedFunctionInfo.MethodName, _methodBasedFunctionInfo.Type); 
+            } 
+        }
+
 
 
         public Type ReturnType
@@ -98,7 +102,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
         {
             get
             {
-                if (_parameterProfile == null)
+                yield break;
+
+                /*if (_parameterProfile == null)
                 {
                     ParameterInfo[] parameterInfos = this.MethodInfo.GetParameters();
 
@@ -116,7 +122,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                         FunctionParameterDescriptionAttribute attribute = (FunctionParameterDescriptionAttribute)obj;
                         if (attribute.HasDefaultValue)
                         {
-                            if (defaultValues.ContainsKey(attribute.ParameterName)==false)
+                            if (defaultValues.ContainsKey(attribute.ParameterName) == false)
                                 defaultValues.Add(attribute.ParameterName, attribute.DefaultValue);
                         }
 
@@ -151,7 +157,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                         string parameterHelpText = "";
                         if (helpTexts.ContainsKey(parameterInfo.Name)) parameterHelpText = helpTexts[parameterInfo.Name];
 
-                        WidgetFunctionProvider widgetFunctionProvider = 
+                        WidgetFunctionProvider widgetFunctionProvider =
                             StandardWidgetFunctions.GetDefaultWidgetFunctionProviderByType(parameterInfo.ParameterType);
 
                         _parameterProfile.Add
@@ -161,9 +167,10 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                         );
                     }
                 }
-                return _parameterProfile;
+                return _parameterProfile;*/
             }
         }
+
 
 
 
@@ -177,27 +184,12 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
 
 
-        private object Object
+        public EntityToken EntityToken
         {
             get
             {
-                if (_object == null)
-                {
-                    _object = Activator.CreateInstance(_type);
-                }
-
-                return _object;
+                return _editableMethodBasedFunctionInfo.GetDataEntityToken();
             }
         }
-
-
-
-        public EntityToken EntityToken
-        {
-            get 
-            {
-                return _methodBasedFunctionInfo.GetDataEntityToken();
-            }
-        }
-    }     
+    }   
 }

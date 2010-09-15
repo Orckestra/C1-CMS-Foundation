@@ -75,9 +75,15 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
             }
             else
             {
-                return
+                IEnumerable<IFunctionTreeBuilderLeafInfo> methodBasedFunctions =
                     from function in DataFacade.GetData<IMethodBasedFunctionInfo>()
                     select (IFunctionTreeBuilderLeafInfo)new MethodFunctionTreeBuilderLeafInfo(function);
+
+                IEnumerable<IFunctionTreeBuilderLeafInfo> editableMethodBasedFunctions =
+                     from function in DataFacade.GetData<ICSharpFunction>()
+                     select (IFunctionTreeBuilderLeafInfo)new EditableMethodFunctionTreeBuilderLeafInfo(function);
+
+                return methodBasedFunctions.Concat(editableMethodBasedFunctions);
             }
         }
 
@@ -95,9 +101,16 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
             DataEntityToken dataEntityToken = entityToken as DataEntityToken;
             if (dataEntityToken == null) return null;
 
-            if (dataEntityToken.InterfaceType != typeof(IMethodBasedFunctionInfo)) return null;
+            if (dataEntityToken.InterfaceType == typeof(IMethodBasedFunctionInfo))
+            {
+                return new MethodFunctionTreeBuilderLeafInfo(dataEntityToken.Data as IMethodBasedFunctionInfo);
+            }
+            else if (dataEntityToken.InterfaceType == typeof(ICSharpFunction))
+            {
+                return new EditableMethodFunctionTreeBuilderLeafInfo(dataEntityToken.Data as ICSharpFunction);
+            }
 
-            return new MethodFunctionTreeBuilderLeafInfo(dataEntityToken.Data as IMethodBasedFunctionInfo);
+            return null;
         }
 
 
@@ -123,6 +136,25 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
                                 ActionGroup = PrimaryActionGroup
                             }
                         }
+                    },
+
+                    new ElementAction(new ActionHandle(
+                        new WorkflowActionToken(
+                            WorkflowFacade.GetWorkflowType("Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider.CreateEditableMethodBasedFunctionWorkflow"),
+                            new PermissionType[] { PermissionType.Add }
+                        ))) {
+                         VisualData = new ActionVisualizedData { 
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "Create"), 
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "CreateToolTip"),
+                            Icon = MethodBasedFunctionProviderElementProvider.AddIcon,
+                            Disabled = false, 
+                            ActionLocation = new ActionLocation { 
+                                ActionType = ActionType.Edit,
+                                IsInFolder = false,
+                                IsInToolbar = true,
+                                ActionGroup = PrimaryActionGroup
+                            }
+                        }
                     }
                 };
         }
@@ -130,7 +162,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
 
         protected override IEnumerable<ElementAction> OnGetFunctionActions(IFunctionTreeBuilderLeafInfo function)
         {
-            return new ElementAction[] 
+            if (function is MethodFunctionTreeBuilderLeafInfo)
+            {
+                return new ElementAction[] 
                 {
                     new ElementAction(new ActionHandle(
                         new WorkflowActionToken(
@@ -172,6 +206,54 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
                         }
                     }
                 };
+            }
+            else if (function is EditableMethodFunctionTreeBuilderLeafInfo)
+            {
+                return new ElementAction[] 
+                {
+                    new ElementAction(new ActionHandle(
+                        new WorkflowActionToken(
+                            WorkflowFacade.GetWorkflowType("Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider.EditEditableMethodBasedFunctionWorkflow"),
+                            new PermissionType[] { PermissionType.Edit }
+                        ))) {
+                        VisualData = new ActionVisualizedData { 
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "Edit"), 
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "EditToolTip"),
+                            Icon = MethodBasedFunctionProviderElementProvider.EditIcon,
+                            Disabled = false, 
+                            ActionLocation = new ActionLocation { 
+                                ActionType = ActionType.Edit,
+                                IsInFolder = false,
+                                IsInToolbar = true,
+                                ActionGroup = PrimaryActionGroup
+                            }
+                        }
+                    }/*,
+
+                    new ElementAction(new ActionHandle(
+                        new WorkflowActionToken(
+                            WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider.DeleteMethodBasedFunctionWorkflow"),
+                            new PermissionType[] { PermissionType.Delete }
+                        ) { 
+                            Payload = GetContext().ProviderName
+                        })) {
+                        VisualData = new ActionVisualizedData { 
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "Delete"), 
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "DeleteToolTip"),
+                            Icon = MethodBasedFunctionProviderElementProvider.DeleteIcon,
+                            Disabled = false, 
+                            ActionLocation = new ActionLocation { 
+                                ActionType = ActionType.Delete,
+                                IsInFolder = false,
+                                IsInToolbar = true,
+                                ActionGroup = PrimaryActionGroup
+                            }
+                        }
+                    }*/
+                };
+            }
+
+            throw new NotImplementedException();
         }
 
 
@@ -188,6 +270,33 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
             public string Name
             {
                 get { return _function.UserMethodName; }
+            }
+
+            public string Namespace
+            {
+                get { return _function.Namespace; }
+            }
+
+            public EntityToken EntityToken
+            {
+                get { return _function.GetDataEntityToken(); }
+            }
+        }
+
+
+
+        private sealed class EditableMethodFunctionTreeBuilderLeafInfo : IFunctionTreeBuilderLeafInfo
+        {
+            private ICSharpFunction _function;
+
+            public EditableMethodFunctionTreeBuilderLeafInfo(ICSharpFunction function)
+            {
+                _function = function;
+            }
+
+            public string Name
+            {
+                get { return _function.Name; }
             }
 
             public string Namespace

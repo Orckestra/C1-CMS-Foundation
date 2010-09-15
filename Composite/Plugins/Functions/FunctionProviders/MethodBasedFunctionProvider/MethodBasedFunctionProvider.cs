@@ -21,6 +21,10 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
             DataEventSystemFacade.SubscribeToDataAfterAdd<IMethodBasedFunctionInfo>(OnDataChanged);
             DataEventSystemFacade.SubscribeToDataDeleted<IMethodBasedFunctionInfo>(OnDataChanged);
             DataEventSystemFacade.SubscribeToDataAfterUpdate<IMethodBasedFunctionInfo>(OnDataChanged);
+
+            DataEventSystemFacade.SubscribeToDataAfterAdd<ICSharpFunction>(OnDataChanged);
+            DataEventSystemFacade.SubscribeToDataDeleted<ICSharpFunction>(OnDataChanged);
+            DataEventSystemFacade.SubscribeToDataAfterUpdate<ICSharpFunction>(OnDataChanged);
         }
 
 
@@ -36,19 +40,36 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
         {
             get 
             {
-                var infos = from item in DataFacade.GetData<IMethodBasedFunctionInfo>()
-                            select item;
-
                 IList<IFunction> result = new List<IFunction>();
-                foreach (IMethodBasedFunctionInfo info in infos)
+
+
+                IEnumerable<IMethodBasedFunctionInfo> methodBasedFunctionInfos = 
+                    from item in DataFacade.GetData<IMethodBasedFunctionInfo>()
+                    select item;
+                
+                foreach (IMethodBasedFunctionInfo info in methodBasedFunctionInfos)
                 {
                     MethodBasedFunction methodBasedFunction = MethodBasedFunction.Create(info);
 
-                    if (methodBasedFunction != null)
-                    {
-                        result.Add(methodBasedFunction);
-                    }
+                    if (methodBasedFunction == null) continue;
+                    
+                    result.Add(methodBasedFunction);                    
                 }
+
+
+                IEnumerable<ICSharpFunction> editableMethodBasedFunctionInfos =
+                    from item in DataFacade.GetData<ICSharpFunction>()
+                    select item;
+
+                foreach (ICSharpFunction info in editableMethodBasedFunctionInfos)
+                {
+                    EditableMethodBasedFunction editableMethodBasedFunction = EditableMethodBasedFunction.Create(info);
+
+                    if (editableMethodBasedFunction == null) continue;
+
+                    result.Add(editableMethodBasedFunction);
+                }
+
                 return result;
             }
         }

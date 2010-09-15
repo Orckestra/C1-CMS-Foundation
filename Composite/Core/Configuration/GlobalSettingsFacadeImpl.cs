@@ -168,6 +168,16 @@ namespace Composite.Core.Configuration
 
 
 
+        public string InlineCSharpFunctionDirectory
+        {
+            get
+            {
+                return GlobalSettingsProviderPluginFacade.InlineCSharpFunctionDirectory;
+            }
+        }
+        
+
+
         public IResourceCacheSettings ResourceCacheSettings
         {
             get

@@ -172,6 +172,16 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
 
 
 
+        public static string InlineCSharpFunctionDirectory
+        {
+            get
+            {
+                return UseReaderLock(provider => provider.InlineCSharpFunctionDirectory);
+            }
+        }
+        
+
+
         public static IResourceCacheSettings ResourceCacheSettings
         {
             get

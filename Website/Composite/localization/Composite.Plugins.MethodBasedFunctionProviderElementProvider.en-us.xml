@@ -4,8 +4,10 @@
   <string key="RootFolderToolTip" value="Method functions" />
   <string key="DeleteFunction.LabelFieldGroup" value="Delete this function" />
   <string key="DeleteFunction.Text" value="Delete this function" />
-  <string key="Add" value="Add C# function" />
-  <string key="AddToolTip" value="Add new method based function." />
+  <string key="Add" value="Add External C# function" />
+  <string key="AddToolTip" value="Add an external C# method based function." />
+  <string key="Create" value="Add Inline C# function" />
+  <string key="CreateToolTip" value="Add an inline C# method based function." />
   <string key="Edit" value="Edit" />
   <string key="EditToolTip" value="Edit Function." />
   <string key="Delete" value="Delete" />
@@ -46,4 +48,29 @@
   <string key="EditFunction.MethodNotInType" value="The type does not contain the method" />
   <string key="EditFunction.NoValidMethod" value="The type does not contain any valid method" />
   <string key="EditFunction.MethodOverloadsNotAllowed" value="The type must not have overloads" />
+
+
+  <string key="CreateEditableMethodBasedFunction.FieldGroup.Label" value="Settings" />
+  <string key="CreateEditableMethodBasedFunction.MethodName.Label" value="Name" />
+  <string key="CreateEditableMethodBasedFunction.MethodName.Help" value="The name of the method you want to create" />
+  <string key="CreateEditableMethodBasedFunction.MethodNamespace.Label" value="Namespace" />
+  <string key="CreateEditableMethodBasedFunction.MethodNamespace.Help" value="The namespace of the method you want to create" />
+
+
+  <string key="EditEditableMethodBasedFunction.FieldGroup.Label" value="Settings" />
+  <string key="EditEditableMethodBasedFunction.MethodName.Label" value="Name" />
+  <string key="EditEditableMethodBasedFunction.MethodName.Help" value="The name of the method you want to create" />
+  <string key="EditEditableMethodBasedFunction.MethodNamespace.Label" value="Namespace" />
+  <string key="EditEditableMethodBasedFunction.MethodNamespace.Help" value="The namespace of the method you want to create" />
+  <string key="EditEditableMethodBasedFunction.Code.Label" value="Source" />
+  <string key="EditEditableMethodBasedFunction.AssembliesFieldGroup.Label" value="Assembly References" />
+  <string key="EditEditableMethodBasedFunction.Preview.Label" value="Preview" />
+  <string key="EditEditableMethodBasedFunction.ParameterFieldGroup.Label" value="Input Parameters" />
+
+  <string key="CSharpInlineFunction.OnMissingContainerType" value="A public static class named {0} is missing from the code. This class should contain the function method." />
+  <string key="CSharpInlineFunction.OnNamespaceMismatch" value="The namespace in the code '{0}' does not match the given function namespace '{1}'." />
+  <string key="CSharpInlineFunction.OnMissionMethod" value="The given function name '{0}' was not found or not public static in the class '{1}'." />
+  <string key="CSharpInlineFunction.MissingParameterTestValue" value="The parameter '{0}' is missing a test value." />
+  <string key="CSharpInlineFunction.WrongParameterTestValueType" value="The parameter '{0}' is expecting test value of type '{1}', got value of type '{2}'." />
+  
 </strings>

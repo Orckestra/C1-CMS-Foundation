@@ -388,6 +388,10 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Composite\content\forms\Administrative\AddMediaFileStep2.xml" />
+    <Content Include="Composite\content\forms\Administrative\EditEditableMethodBasedFunction.xml" />
+    <Content Include="Composite\content\forms\Administrative\AddEditableMethodBasedFunctionStep1.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Composite\content\forms\Administrative\SendMessageToConsoles_EnterMessage.xml" />
     <Content Include="Composite\content\forms\Administrative\EditMetaData_EditDefinition.xml">
       <SubType>Designer</SubType>
@@ -919,7 +923,9 @@
     </Content>
     <Content Include="Composite\localization\Composite.Plugins.GenericPublishProcessController.en-us.xml" />
     <Content Include="Composite\localization\Composite.Plugins.LocalizationElementProvider.en-us.xml" />
-    <Content Include="Composite\localization\Composite.Plugins.MethodBasedFunctionProviderElementProvider.en-us.xml" />
+    <Content Include="Composite\localization\Composite.Plugins.MethodBasedFunctionProviderElementProvider.en-us.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Composite\localization\Composite.Plugins.PackageElementProvider.en-us.xml" />
     <Content Include="Composite\localization\Composite.Plugins.PageElementProvider.en-us.xml" />
     <Content Include="Composite\localization\Composite.Plugins.PageTemplateElementProvider.en-us.xml" />

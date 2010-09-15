@@ -315,11 +315,23 @@
     <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\AddNewMethodBasedFunctionWorkflow.Designer.cs">
       <DependentUpon>AddNewMethodBasedFunctionWorkflow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\CreateEditableMethodBasedFunctionWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\CreateEditableMethodBasedFunctionWorkflow.Designer.cs">
+      <DependentUpon>CreateEditableMethodBasedFunctionWorkflow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\DeleteMethodBasedFunctionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\DeleteMethodBasedFunctionWorkflow.Designer.cs">
       <DependentUpon>DeleteMethodBasedFunctionWorkflow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\EditEditableMethodBasedFunctionWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\EditEditableMethodBasedFunctionWorkflow.designer.cs">
+      <DependentUpon>EditEditableMethodBasedFunctionWorkflow.cs</DependentUpon>
     </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\EditMethodBasedFunctionWorkflow.cs">
       <SubType>Component</SubType>
@@ -951,8 +963,14 @@
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\AddNewMethodBasedFunctionWorkflow.layout">
       <DependentUpon>AddNewMethodBasedFunctionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\CreateEditableMethodBasedFunctionWorkflow.layout">
+      <DependentUpon>CreateEditableMethodBasedFunctionWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\DeleteMethodBasedFunctionWorkflow.layout">
       <DependentUpon>DeleteMethodBasedFunctionWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\EditEditableMethodBasedFunctionWorkflow.layout">
+      <DependentUpon>EditEditableMethodBasedFunctionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\EditMethodBasedFunctionWorkflow.layout">
       <DependentUpon>EditMethodBasedFunctionWorkflow.cs</DependentUpon>
