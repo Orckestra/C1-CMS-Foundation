@@ -1,1 +1,0 @@
-The file microsoft.sqlserver.batchparser.dll is a 32 bit version. A 64 bit version exists (currently not in this repository)
