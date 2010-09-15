@@ -8,7 +8,6 @@
     <ProjectGuid>{D0A3D7D5-1D1F-40BC-89C1-93CDCEDF262C}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Composite</RootNamespace>
     <AssemblyName>Composite.Website</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -367,17 +366,8 @@
     <Compile Include="Composite\top.aspx.designer.cs">
       <DependentUpon>top.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderers\Page.aspx.cs">
       <DependentUpon>Page.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Tests\AspNetControlCompiling.aspx.cs">
-      <DependentUpon>AspNetControlCompiling.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Tests\PageElementProviderHooks.aspx.cs">
-      <DependentUpon>PageElementProviderHooks.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
   </ItemGroup>
@@ -481,8 +471,6 @@
     <Content Include="Global.asax" />
     <Content Include="ReleaseBuild.Global.asax" />
     <Content Include="Renderers\Page.aspx" />
-    <Content Include="Tests\Performance.asmx" />
-    <Content Include="Tests\ServerConfig.asmx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Composite\applets\custom_rhino.jar" />
@@ -5649,18 +5637,11 @@
     <None Include="Composite\skins\system\docks\vista\Thumbs.db" />
     <Content Include="Composite\web.config" />
     <Content Include="ReleaseCleanupConfiguration.xml" />
-    <Content Include="Tests\AspNetControlCompiling.aspx" />
-    <Content Include="Tests\PageElementProviderHooks.aspx" />
-    <Content Include="Tests\ScenarioServices\DataFacadeService.asmx" />
-    <Content Include="Tests\ScenarioServices\ExecuteActionService.asmx" />
-    <Content Include="Tests\ScenarioServices\WorkflowAuthomationService.asmx" />
-    <Content Include="Tests\ScenarioServices\WorkflowBindingsService.asmx" />
     <Content Include="Composite\webauthorization.config" />
     <Content Include="ReleaseBuild.Web.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Renderers\Captcha.ashx" />
-    <None Include="Tests\Web.config.new" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Composite.Workflows\Composite.Workflows.csproj">
