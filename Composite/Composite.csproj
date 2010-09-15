@@ -2065,7 +2065,6 @@
     <Folder Include="Core\WebClient\WCF\Logger\" />
     <Folder Include="Functions\ManagedParameters\Types\" />
     <Folder Include="Functions\Types\" />
-    <Folder Include="NewFolder1\" />
     <Folder Include="Plugins\Elements\Design\" />
     <Folder Include="Plugins\Functions\FunctionProviders\XsltBasedFunctionProvider\XsltExtensions\" />
     <Folder Include="Plugins\WebClient\SessionStateProviders\DefaultSessionStateProvider\" />
