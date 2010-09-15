@@ -143,6 +143,7 @@
     <Compile Include="Core\Implementation\PageDataConnectionImplementation.cs" />
     <Compile Include="Core\Implementation\SitemapNavigatorImplementation.cs" />
     <Compile Include="Core\Log.cs" />
+    <Compile Include="Core\Sql\SqlConnectionManager.cs" />
     <Compile Include="Core\WebClient\ApplicationLevelEventHandlers.cs" />
     <Compile Include="Data\DataEventArgs.cs" />
     <Compile Include="Data\DataEventHandler.cs" />
@@ -390,7 +391,6 @@
     <Compile Include="C1Console\Security\UserGroupPerspectiveFacade.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\MethodBasedFunctionProvider\CSharpFunctionHelper.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\MethodBasedFunctionProvider\EditableMethodBasedFunction.cs" />
-    <Compile Include="Sql\SqlConnectionManager.cs" />
     <Compile Include="Plugins\Application\ApplicationStartupHandlers\AttributeBasedApplicationStartupHandler\AttributeBasedApplicationStartupHandler.cs" />
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\CodeGeneration\Foundation\DataProviderHelperBase.cs" />
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\Foundation\TransactionRollbackHandler.cs" />
@@ -815,8 +815,6 @@
     <Compile Include="Core\Serialization\SystemSerializableValueXmlSerializer.cs" />
     <Compile Include="Core\Serialization\SystemTypesValueXmlSerializer.cs" />
     <Compile Include="Core\Serialization\XmlSerializer.cs" />
-    <Compile Include="Sql\ISqlTableInformationStore.cs" />
-    <Compile Include="Sql\SqlTableInformationStore.cs" />
     <Compile Include="Plugins\Application\ApplicationOnlineHandlers\AspNetApplicationOnlineHandler\AspNetApplicationOnlineHandler.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\AllFunctionsElementProvider\DocumentFunctionsActionToken.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\AllFunctionsElementProvider\AllFunctionsProviderActionExecutor.cs" />
@@ -1851,10 +1849,6 @@
     <Compile Include="Core\ResourceSystem\Icons\CommonElementIcons.cs" />
     <Compile Include="Core\ResourceSystem\ResourceHandle.cs" />
     <Compile Include="C1Console\Security\DataSecurityAncestorProvider.cs" />
-    <Compile Include="Sql\ISqlTableInformation.cs" />
-    <Compile Include="Sql\SqlColumnInformation.cs" />
-    <Compile Include="Sql\SqlTableInformation.cs" />
-    <Compile Include="Sql\SqlTableInformationStoreImpl.cs" />
     <Compile Include="Plugins\Data\DataProviders\Common\PropertyNameMappingConfigurationElement.cs" />
     <Compile Include="Plugins\Data\DataProviders\Common\PropertyNameMappingConfigurationElementCollection.cs" />
     <Compile Include="Plugins\Data\DataProviders\FileSystemDataProvider\FileSystemDataProvider.cs" />

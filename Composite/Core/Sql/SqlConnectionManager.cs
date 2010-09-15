@@ -1,7 +1,7 @@
 ﻿using System.Data.SqlClient;
 using Composite.Core.Threading;
 
-namespace Composite.Sql
+namespace Composite.Core.Sql
 {
     /// <summary>    
     /// </summary>

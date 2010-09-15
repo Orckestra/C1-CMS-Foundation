@@ -9,16 +9,16 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
-using Composite.Core.Caching;
-using Composite.Data;
-using Composite.Data.Types;
-using Composite.Core.Extensions;
-using Composite.Functions;
-using Composite.Functions.ManagedParameters;
 using Composite.C1Console.Security;
 using Composite.C1Console.Security.Cryptography;
-using Composite.Sql;
+using Composite.Core.Caching;
+using Composite.Core.Extensions;
+using Composite.Core.Sql;
 using Composite.Core.Types;
+using Composite.Data;
+using Composite.Data.Types;
+using Composite.Functions;
+using Composite.Functions.ManagedParameters;
 
 
 namespace Composite.Plugins.Functions.FunctionProviders.SqlFunctionProvider

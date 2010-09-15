@@ -5,7 +5,11 @@ using System.Collections.Generic;
 
 namespace Composite.Core.Linq
 {
-    internal static class DictionaryExtensions
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class DictionaryExtensions
     {
         public static int GetContentHashCode(this IDictionary dictionary)
         {
