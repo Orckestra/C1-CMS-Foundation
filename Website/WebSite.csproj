@@ -940,8 +940,6 @@
     <Content Include="Composite\localization\Composite.Web.FormControl.TypeFieldDesigner.en-us.xml" />
     <Content Include="Composite\localization\Composite.Web.SEOAssistant.en-us.xml" />
     <Content Include="Composite\schemas\FormsControls\GenerateDynamicSchemas.aspx" />
-    <Content Include="Develop\PackageServer\Packages.asmx" />
-    <Content Include="Develop\PackageServer\PackageServerConfig.xml" />
     <Content Include="Frontend\Styles\VisualEditor\ReleaseBuild.VisualEditor.Config.xml" />
     <Content Include="Frontend\Styles\VisualEditor\VisualEditor.Config.css" />
     <Content Include="Frontend\Styles\VisualEditor\VisualEditor.Config.xml" />
@@ -5661,33 +5659,6 @@
     <Content Include="ReleaseBuild.Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="Develop\PackageServer\ConfigFailing.zip" />
-    <None Include="Develop\PackageServer\DistributedNavigation_2008_v07.09_b0953.zip" />
-    <None Include="Develop\PackageServer\Empty %28none%29.zip" />
-    <None Include="Develop\PackageServer\Empty - WrongVersion %28none%29.zip" />
-    <None Include="Develop\PackageServer\ExistingDataType.zip" />
-    <None Include="Develop\PackageServer\ExistingDynamicDataType.zip" />
-    <None Include="Develop\PackageServer\FailingAddOn - InstallInitialize %28hard%29.zip" />
-    <None Include="Develop\PackageServer\FailingAddOn - InstallInitialize %28none%29.zip" />
-    <None Include="Develop\PackageServer\FailingAddOn - InstallInstall %28hard%29.zip" />
-    <None Include="Develop\PackageServer\FailingAddOn - InstallInstall %28none%29.zip" />
-    <None Include="Develop\PackageServer\FailingAddOn - InstallValidate %28hard%29.zip" />
-    <None Include="Develop\PackageServer\FailingAddOn - InstallValidate %28none%29.zip" />
-    <None Include="Develop\PackageServer\FailingAddOn - UninstallInitialize %28hard%29.zip" />
-    <None Include="Develop\PackageServer\FailingAddOn - UninstallInitialize %28none%29.zip" />
-    <None Include="Develop\PackageServer\FailingAddOn - UninstallUninstall %28hard%29.zip" />
-    <None Include="Develop\PackageServer\FailingAddOn - UninstallUninstall %28none%29.zip" />
-    <None Include="Develop\PackageServer\FailingAddOn - UninstallValidate %28hard%29.zip" />
-    <None Include="Develop\PackageServer\FailingAddOn - UninstallValidate %28none%29.zip" />
-    <None Include="Develop\PackageServer\FormsRenderer_2008_v07.09_b1303.zip" />
-    <None Include="Develop\PackageServer\IDataTypeRequiresLicense %28hard%29.zip" />
-    <None Include="Develop\PackageServer\IDataTypeRequiresLicense %28soft%29.zip" />
-    <None Include="Develop\PackageServer\ImageRotator_2008_v07.09_b1008.zip" />
-    <None Include="Develop\PackageServer\NavigationDropdown_2008_v07.09_b1045.zip" />
-    <None Include="Develop\PackageServer\NewsList_2008_v07.10_b1039.zip" />
-    <None Include="Develop\PackageServer\SleeperAddOn %28hard%29.zip" />
-    <None Include="Develop\PackageServer\SleeperAddOn %28none%29.zip" />
-    <None Include="Develop\PackageServer\SleeperAddOn %28soft%29.zip" />
     <Content Include="Renderers\Captcha.ashx" />
     <None Include="Tests\Web.config.new" />
   </ItemGroup>
