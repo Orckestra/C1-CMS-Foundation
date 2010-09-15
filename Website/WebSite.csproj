@@ -5703,7 +5703,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Code\" />
     <Folder Include="Composite\audio\" />
     <Folder Include="Composite\content\dialogs\querytreeeditor\" />
     <Folder Include="Composite\content\misc\editors\visualeditor\bindings\" />
