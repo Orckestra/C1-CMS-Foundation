@@ -1,1 +1,0 @@
-﻿Rename InternalDeveloperLicense.xml to License.xml

@@ -954,7 +954,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Data\Composite\DynamicTypeForms\readme.txt" />
-    <Content Include="App_Data\Composite\License\License.xml" />
     <Content Include="App_Data\Composite\ReleaseBuild.Composite.config" />
     <Content Include="App_Data\Composite\Configuration\XmlDataProvider.config" />
     <None Include="Composite\content\views\start\compositestart\DELETE\backdrop.xcf" />
