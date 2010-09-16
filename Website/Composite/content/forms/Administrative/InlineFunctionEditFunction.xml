@@ -1,45 +1,54 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0" xmlns:internal="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0">
   <cms:bindings>
-    <cms:binding name="FunctionInfo" type="Composite.Data.Types.ICSharpFunction, Composite" />
+    <cms:binding name="Function" type="Composite.Data.Types.IInlineFunction, Composite" />
     <cms:binding name="FunctionCode" type="System.String" />
     <cms:binding name="Assemblies" type="System.Collections.IEnumerable" />
     <cms:binding name="SelectedAssemblies" type="System.Collections.IEnumerable" />
+    
     <cms:binding name="PreviewEventHandler" type="System.EventHandler" optional="true" />
+    
     <cms:binding name="SessionStateProvider" type="System.String" />
     <cms:binding name="SessionStateId" type="System.Guid" />
   </cms:bindings>
   <cms:layout>
     <cms:layout.label>
-      <cms:read source="FunctionInfo.Name" />
+      <cms:read source="Function.Name" />
       
     </cms:layout.label>
 
     <TabPanels PreSelectedIndex="1">
 
-      <FieldGroup Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditEditableMethodBasedFunction.FieldGroup.Label}">
-        <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditEditableMethodBasedFunction.MethodName.Label}"
-                 Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditEditableMethodBasedFunction.MethodName.Help}">
+      <FieldGroup Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.FieldGroup.Label}">
+        <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodName.Label}"
+                 Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodName.Help}">
           <TextBox.Text>
-            <cms:bind source="FunctionInfo.Name" />
+            <cms:bind source="Function.Name" />
           </TextBox.Text>
         </TextBox>
 
-        <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditEditableMethodBasedFunction.MethodNamespace.Label}"
-                 Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditEditableMethodBasedFunction.MethodNamespace.Help}">
+        <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodNamespace.Label}"
+                 Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodNamespace.Help}">
           <TextBox.Text>
-            <cms:bind source="FunctionInfo.Namespace" />
+            <cms:bind source="Function.Namespace" />
           </TextBox.Text>
         </TextBox>
+
+        <TextArea Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodDescription.Label}"
+               Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodDescription.Help}">
+          <TextArea.Text>
+            <cms:bind source="Function.Description" />
+          </TextArea.Text>
+        </TextArea>
       </FieldGroup>
 
 
-      <TextEditor Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditEditableMethodBasedFunction.Code.Label}" MimeType="text/x-csharp">        
+      <TextEditor Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.Code.Label}" MimeType="text/x-csharp">        
         <cms:bind source="FunctionCode" />      
       </TextEditor>
 
 
-      <FieldGroup Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditEditableMethodBasedFunction.AssembliesFieldGroup.Label}">
+      <FieldGroup Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.AssembliesFieldGroup.Label}">
         
         <MultiKeySelector OptionsKeyField="Key" OptionsLabelField="Value" CompactMode="true">
           <MultiKeySelector.Options>
@@ -51,7 +60,7 @@
         </MultiKeySelector>
       </FieldGroup>
 
-      <internal:ParameterDesigner Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditEditableMethodBasedFunction.ParameterFieldGroup.Label}">
+      <internal:ParameterDesigner Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.ParameterFieldGroup.Label}">
         <internal:ParameterDesigner.SessionStateProvider>
           <cms:read source="SessionStateProvider"/>
         </internal:ParameterDesigner.SessionStateProvider>
@@ -61,7 +70,7 @@
       </internal:ParameterDesigner>
 
 
-      <internal:PreviewPanel Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditEditableMethodBasedFunction.Preview.Label}">
+      <internal:PreviewPanel Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.Preview.Label}">
         <internal:PreviewPanel.ClickEventHandler>
           <cms:read source="PreviewEventHandler" />
         </internal:PreviewPanel.ClickEventHandler>

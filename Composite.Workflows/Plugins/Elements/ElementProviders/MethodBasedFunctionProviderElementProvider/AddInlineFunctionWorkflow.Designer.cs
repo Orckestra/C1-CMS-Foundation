@@ -15,7 +15,7 @@ using Composite.C1Console.Workflow;
 
 namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
 {
-    partial class CreateEditableMethodBasedFunctionWorkflow
+    partial class AddInlineFunctionWorkflow
     {
         #region Designer generated code
 
@@ -62,7 +62,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
             // wizardFormActivity1
             // 
             this.wizardFormActivity1.ContainerLabel = null;
-            this.wizardFormActivity1.FormDefinitionFileName = "\\Administrative\\AddEditableMethodBasedFunctionStep1.xml";
+            this.wizardFormActivity1.FormDefinitionFileName = "\\Administrative\\InlineFunctionAddFunctionStep1.xml";
             this.wizardFormActivity1.Name = "wizardFormActivity1";
             // 
             // setStateActivity3
@@ -164,7 +164,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
             this.eventDrivenActivity_GlobalCancel.Activities.Add(this.setStateActivity1);
             this.eventDrivenActivity_GlobalCancel.Name = "eventDrivenActivity_GlobalCancel";
             // 
-            // CreateEditableMethodBasedFunctionWorkflow
+            // AddInlineFunctionWorkflow
             // 
             this.Activities.Add(this.eventDrivenActivity_GlobalCancel);
             this.Activities.Add(this.initializeStateActivity);
@@ -174,7 +174,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
             this.CompletedStateName = "finalStateActivity";
             this.DynamicUpdateCondition = null;
             this.InitialStateName = "initializeStateActivity";
-            this.Name = "CreateEditableMethodBasedFunctionWorkflow";
+            this.Name = "AddInlineFunctionWorkflow";
             this.CanModifyActivities = false;
 
         }
@@ -222,6 +222,8 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
         private CodeActivity finalizeCodeActivity_Finalize;
 
         private EventDrivenActivity eventDrivenActivity_GlobalCancel;
+
+
 
 
 

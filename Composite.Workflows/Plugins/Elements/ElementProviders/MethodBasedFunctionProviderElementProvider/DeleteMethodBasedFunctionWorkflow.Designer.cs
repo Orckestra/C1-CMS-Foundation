@@ -17,7 +17,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
     partial class DeleteMethodBasedFunctionWorkflow
     {
         #region Designer generated code
-        
+
         /// <summary> 
         /// Required method for Designer support - do not modify 
         /// the contents of this method with the code editor.
@@ -180,26 +180,47 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
         #endregion
 
         private StateInitializationActivity deleteStateInitializationActivity;
+
         private StateActivity finalStateActivity;
+
         private SetStateActivity setStateActivity2;
-        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+
         private EventDrivenActivity eventDrivenActivity_GlobalCancel;
+
         private CodeActivity finalizeCodeActivity;
+
         private StateInitializationActivity finalizeStateInitializationActivity;
+
         private EventDrivenActivity step1EventDrivenActivity_Cancel;
+
         private EventDrivenActivity step1EventDrivenActivity_Finish;
+
         private StateInitializationActivity step1StateInitializationActivity;
+
         private StateActivity finalizeStateActivity;
+
         private StateActivity step1StateActivity;
+
         private SetStateActivity setStateActivity1;
-        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
+
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
+
         private SetStateActivity setStateActivity3;
-        private Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
-        private Composite.C1Console.Workflow.Activities.ConfirmDialogFormActivity confirmDialogFormActivity1;
+
+        private C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
+
+        private C1Console.Workflow.Activities.ConfirmDialogFormActivity confirmDialogFormActivity1;
+
         private SetStateActivity setStateActivity4;
+
         private SetStateActivity setStateActivity5;
-        private Composite.C1Console.Workflow.Activities.CloseCurrentViewActivity closeCurrentViewActivity1;
+
+        private C1Console.Workflow.Activities.CloseCurrentViewActivity closeCurrentViewActivity1;
+
         private StateActivity deleteStateActivity;
+
 
 
 

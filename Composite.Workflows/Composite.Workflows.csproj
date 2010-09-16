@@ -315,11 +315,17 @@
     <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\AddNewMethodBasedFunctionWorkflow.Designer.cs">
       <DependentUpon>AddNewMethodBasedFunctionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\CreateEditableMethodBasedFunctionWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\AddInlineFunctionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\CreateEditableMethodBasedFunctionWorkflow.Designer.cs">
-      <DependentUpon>CreateEditableMethodBasedFunctionWorkflow.cs</DependentUpon>
+    <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\AddInlineFunctionWorkflow.Designer.cs">
+      <DependentUpon>AddInlineFunctionWorkflow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\DeleteInlineFunctionWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\DeleteInlineFunctionWorkflow.designer.cs">
+      <DependentUpon>DeleteInlineFunctionWorkflow.cs</DependentUpon>
     </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\DeleteMethodBasedFunctionWorkflow.cs">
       <SubType>Component</SubType>
@@ -327,11 +333,11 @@
     <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\DeleteMethodBasedFunctionWorkflow.Designer.cs">
       <DependentUpon>DeleteMethodBasedFunctionWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\EditEditableMethodBasedFunctionWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\EditInlineFunctionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\EditEditableMethodBasedFunctionWorkflow.designer.cs">
-      <DependentUpon>EditEditableMethodBasedFunctionWorkflow.cs</DependentUpon>
+    <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\EditInlineFunctionWorkflow.designer.cs">
+      <DependentUpon>EditInlineFunctionWorkflow.cs</DependentUpon>
     </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\EditMethodBasedFunctionWorkflow.cs">
       <SubType>Component</SubType>
@@ -960,17 +966,20 @@
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\MediaFileProviderElementProvider\UploadNewMediaFileWorkflow.layout">
       <DependentUpon>UploadNewMediaFileWorkflow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\AddInlineFunctionWorkflow.layout">
+      <DependentUpon>AddInlineFunctionWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\AddNewMethodBasedFunctionWorkflow.layout">
       <DependentUpon>AddNewMethodBasedFunctionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\CreateEditableMethodBasedFunctionWorkflow.layout">
-      <DependentUpon>CreateEditableMethodBasedFunctionWorkflow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\DeleteMethodBasedFunctionWorkflow.layout">
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\DeleteInlineFunctionWorkflow.layout">
       <DependentUpon>DeleteMethodBasedFunctionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\EditEditableMethodBasedFunctionWorkflow.layout">
-      <DependentUpon>EditEditableMethodBasedFunctionWorkflow.cs</DependentUpon>
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\DeleteMethodBasedFunctionWorkflow.layout">
+      <DependentUpon>DeleteInlineFunctionWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\EditInlineFunctionWorkflow.layout">
+      <DependentUpon>EditInlineFunctionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\EditMethodBasedFunctionWorkflow.layout">
       <DependentUpon>EditMethodBasedFunctionWorkflow.cs</DependentUpon>

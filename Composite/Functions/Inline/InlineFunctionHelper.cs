@@ -8,92 +8,26 @@ using Composite.Core.Configuration;
 using Composite.Core.IO;
 using Composite.Core.Linq;
 using Composite.Core.Logging;
+using Composite.Core.ResourceSystem;
+using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.Types;
 using Microsoft.CSharp;
-using Composite.Core.ResourceSystem;
 
 
-namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvider
+namespace Composite.Functions.Inline
 {
     /// <summary>    
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    public class CreateMethodErrorHandler
-    {
-        public virtual bool HasErrors { get { return false; } }
-        public virtual void OnCompileError(int line, string errorNumber, string message) { }
-        public virtual void OnMissingContainerType(string message) { }
-        public virtual void OnNamespaceMismatch(string message) { }
-        public virtual void OnMissionMethod(string message) { }
-    }
-
-
-
-    /// <summary>    
-    /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    public class StringCreateMethodErrorHandler : CreateMethodErrorHandler
-    {
-        bool _hasErrors;
-
-        public StringCreateMethodErrorHandler()
-        {
-            _hasErrors = false;
-            this.CompileErrors = new List<Tuple<int, string, string>>();
-        }
-
-
-        public List<Tuple<int, string, string>> CompileErrors { get; set; }
-        public string MissingContainerType { get; set; }
-        public string NamespaceMismatch { get; set; }
-        public string MissionMethod { get; set; }
-
-
-        public override bool HasErrors { get { return _hasErrors; } }
-
-
-        public override void OnCompileError(int line, string errorNumber, string message)
-        {
-            _hasErrors = true;
-            this.CompileErrors.Add(new Tuple<int, string, string>(line, errorNumber, message));
-        }
-
-
-        public override void OnMissingContainerType(string message)
-        {
-            _hasErrors = true;
-            this.MissingContainerType = message;
-        }
-
-
-        public override void OnNamespaceMismatch(string message)
-        {
-            _hasErrors = true;
-            this.NamespaceMismatch = message;
-        }
-
-
-        public override void OnMissionMethod(string message)
-        {
-            _hasErrors = true;
-            this.MissionMethod = message;
-        }
-    }
-
-
-    /// <summary>    
-    /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    public static class CSharpFunctionHelper
+    public static class InlineFunctionHelper
     {
         public static string MethodClassContainerName { get { return "InlineMethodFunction"; } }
 
 
-        public static MethodInfo Create(ICSharpFunction function, string code = null, CreateMethodErrorHandler createMethodErrorHandler = null)
+
+        public static MethodInfo Create(IInlineFunction function, string code = null, InlineFunctionCreateMethodErrorHandler createMethodErrorHandler = null)
         {
             if (string.IsNullOrWhiteSpace(code))
             {
@@ -103,34 +37,22 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
             CompilerParameters compilerParameters = new CompilerParameters();
             compilerParameters.GenerateExecutable = false;
             compilerParameters.GenerateInMemory = true;
-            compilerParameters.ReferencedAssemblies.Add(typeof(System.String).Assembly.Location); // System.dll;
-            compilerParameters.ReferencedAssemblies.Add(typeof(System.Linq.Enumerable).Assembly.Location); // System.Core.dll;
-            compilerParameters.ReferencedAssemblies.Add(typeof(System.Xml.XmlElement).Assembly.Location); // System.Xml.dll;
-            compilerParameters.ReferencedAssemblies.Add(typeof(System.Xml.Linq.XElement).Assembly.Location); // System.Xml.Linq.dll;
 
-            compilerParameters.ReferencedAssemblies.Add(typeof(GlobalInitializerFacade).Assembly.Location); // Composite.dll
+            IEnumerable<IInlineFunctionAssemblyReference> assemblyReferences =
+                DataFacade.GetData<IInlineFunctionAssemblyReference>(f => f.Function == function.Id).Evaluate();
 
-            string compositeGeneretedPath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "Composite.Generated.dll");
-            if (File.Exists(compositeGeneretedPath))
-            {
-                compilerParameters.ReferencedAssemblies.Add(compositeGeneretedPath); // Composite.Generated.dll
-            }
-
-            string compositeWorkflowsPath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "Composite.Workflows.dll");
-            if (File.Exists(compositeWorkflowsPath))
-            {
-                compilerParameters.ReferencedAssemblies.Add(compositeWorkflowsPath); // Composite.Workflows.dll
-            }
-
-            IEnumerable<ICSharpFunctionAssemblyReference> assemblyReferences =
-                DataFacade.GetData<ICSharpFunctionAssemblyReference>(f => f.Function == function.Id).Evaluate();
-
-            foreach (ICSharpFunctionAssemblyReference assemblyReference in assemblyReferences)
+            foreach (IInlineFunctionAssemblyReference assemblyReference in assemblyReferences)
             {
                 string assemblyPath = GetAssemblyFullPath(assemblyReference.Name, assemblyReference.Location);
                 compilerParameters.ReferencedAssemblies.Add(assemblyPath);
             }
 
+
+            Assembly appCodeAssembly = AssemblyFacade.GetAppCodeAssembly();
+            if (appCodeAssembly != null)
+            {
+                compilerParameters.ReferencedAssemblies.Add(appCodeAssembly.Location);
+            }
 
             CSharpCodeProvider compiler = new CSharpCodeProvider();
             CompilerResults results = compiler.CompileAssemblyFromSource(compilerParameters, code);
@@ -145,7 +67,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                     }
                     else
                     {
-                        LoggingService.LogWarning("MethodBasedFunctionProvider", error.ErrorText);
+                        LoggingService.LogWarning("MethodBasedFunctionProvider", string.Format("{0}.{1} : {2}", function.Namespace, function.Name, error.ErrorText));
                     }
                 }
 
@@ -164,7 +86,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                 }
                 else
                 {
-                    LoggingService.LogWarning("MethodBasedFunctionProvider", message);
+                    LoggingService.LogWarning("MethodBasedFunctionProvider", string.Format("{0}.{1} : {2}", function.Namespace, function.Name, message));
                 }
 
                 return null;
@@ -180,7 +102,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                 }
                 else
                 {
-                    LoggingService.LogWarning("MethodBasedFunctionProvider", message);
+                    LoggingService.LogWarning("MethodBasedFunctionProvider", string.Format("{0}.{1} : {2}", function.Namespace, function.Name, message));
                 }
 
                 return null;
@@ -197,7 +119,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                 }
                 else
                 {
-                    LoggingService.LogWarning("MethodBasedFunctionProvider", message);
+                    LoggingService.LogWarning("MethodBasedFunctionProvider", string.Format("{0}.{1} : {2}", function.Namespace, function.Name, message));
                 }
 
                 return null;
@@ -208,7 +130,30 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
 
 
-        public static string GetFunctionCode(this ICSharpFunction function)
+        public static IEnumerable<string> DefaultAssemblies
+        {
+            get
+            {
+                string systemPath = Path.GetDirectoryName(typeof(String).Assembly.Location);
+
+                yield return Path.Combine(systemPath, "System.dll");            // System.dll;
+                yield return Path.Combine(systemPath, "System.Core.dll");       // System.Core.dll;
+                yield return Path.Combine(systemPath, "System.Xml.dll");        // System.Xml.dll;
+                yield return Path.Combine(systemPath, "System.Xml.Linq.dll");   // System.Xml.Linq.dll;
+
+                yield return Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "Composite.dll");
+
+                string compositeGeneretedPath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "Composite.Generated.dll");
+                if (File.Exists(compositeGeneretedPath)) yield return compositeGeneretedPath;
+
+                string compositeWorkflowsPath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "Composite.Workflows.dll");
+                if (File.Exists(compositeWorkflowsPath)) yield return compositeWorkflowsPath;
+            }
+        }
+
+
+
+        public static string GetFunctionCode(this IInlineFunction function)
         {
             string filepath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory), function.CodePath);
 
@@ -217,7 +162,19 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
 
 
-        public static void SetFunctinoCode(this ICSharpFunction function, string content)
+        public static void DeleteFunctionCode(this IInlineFunction function)
+        {
+            string filepath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory), function.CodePath);
+
+            if (File.Exists(filepath))
+            {
+                FileEx.Delete(filepath);
+            }            
+        }
+
+
+
+        public static void SetFunctinoCode(this IInlineFunction function, string content)
         {
             string directoryPath = PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory);
             if (Directory.Exists(directoryPath) == false)
@@ -232,7 +189,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
 
 
-        public static void FunctionRenamed(ICSharpFunction newFunction, ICSharpFunction oldFunction)
+        public static void FunctionRenamed(IInlineFunction newFunction, IInlineFunction oldFunction)
         {
             newFunction.UpdateCodePath();
 
@@ -246,7 +203,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
 
 
-        public static void UpdateCodePath(this ICSharpFunction function)
+        public static void UpdateCodePath(this IInlineFunction function)
         {
             function.CodePath = function.Namespace;
             if (string.IsNullOrEmpty(function.CodePath) == false)
@@ -264,23 +221,13 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
             string path = Path.GetDirectoryName(typeof(String).Assembly.Location);
             foreach (string file in Directory.GetFiles(path, "System*.dll"))
             {
-                if (Path.GetFileNameWithoutExtension(file).ToLower() == "system") continue;
-                if (Path.GetFileNameWithoutExtension(file).ToLower() == "system.core") continue;
-                if (Path.GetFileNameWithoutExtension(file).ToLower() == "system.xml") continue;
-                if (Path.GetFileNameWithoutExtension(file).ToLower() == "system.xml.linq") continue;
-
                 yield return file;
             }
 
             foreach (string file in Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "*.dll"))
             {
-                if (Path.GetFileNameWithoutExtension(file).ToLower() == "composite") continue;
-                if (Path.GetFileNameWithoutExtension(file).ToLower() == "composite.generated") continue;
-                if (Path.GetFileNameWithoutExtension(file).ToLower() == "composite.website") continue;
-                if (Path.GetFileNameWithoutExtension(file).ToLower() == "composite.workflows") continue;
-
                 yield return file;
-            }
+            }            
         }
 
 
@@ -292,6 +239,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
             {
                 return "System";
             }
+
 
             string binPath = PathUtil.Resolve(GlobalSettingsFacade.BinDirectory).ToLower();
             if (fullPath.ToLower().StartsWith(binPath))

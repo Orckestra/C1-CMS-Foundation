@@ -80,10 +80,10 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
                     select (IFunctionTreeBuilderLeafInfo)new MethodFunctionTreeBuilderLeafInfo(function);
 
                 IEnumerable<IFunctionTreeBuilderLeafInfo> editableMethodBasedFunctions =
-                     from function in DataFacade.GetData<ICSharpFunction>()
+                     from function in DataFacade.GetData<IInlineFunction>()
                      select (IFunctionTreeBuilderLeafInfo)new EditableMethodFunctionTreeBuilderLeafInfo(function);
 
-                return methodBasedFunctions.Concat(editableMethodBasedFunctions);
+                return methodBasedFunctions.Concat(editableMethodBasedFunctions).OrderBy(f => f.Name);
             }
         }
 
@@ -105,9 +105,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
             {
                 return new MethodFunctionTreeBuilderLeafInfo(dataEntityToken.Data as IMethodBasedFunctionInfo);
             }
-            else if (dataEntityToken.InterfaceType == typeof(ICSharpFunction))
+            else if (dataEntityToken.InterfaceType == typeof(IInlineFunction))
             {
-                return new EditableMethodFunctionTreeBuilderLeafInfo(dataEntityToken.Data as ICSharpFunction);
+                return new EditableMethodFunctionTreeBuilderLeafInfo(dataEntityToken.Data as IInlineFunction);
             }
 
             return null;
@@ -119,6 +119,26 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
         {
             return new ElementAction[]
                 {
+                    new ElementAction(new ActionHandle(
+                        new WorkflowActionToken(
+                            WorkflowFacade.GetWorkflowType("Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider.AddInlineFunctionWorkflow"),
+                            new PermissionType[] { PermissionType.Add }
+                        ))) {
+                         VisualData = new ActionVisualizedData { 
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "Create"), 
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "CreateToolTip"),
+                            Icon = MethodBasedFunctionProviderElementProvider.AddIcon,
+                            Disabled = false, 
+                            ActionLocation = new ActionLocation { 
+                                ActionType = ActionType.Edit,
+                                IsInFolder = false,
+                                IsInToolbar = true,
+                                ActionGroup = PrimaryActionGroup
+                            }
+                        }
+                    },
+
+
                     new ElementAction(new ActionHandle(
                         new WorkflowActionToken(
                             WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider.AddNewMethodBasedFunctionWorkflow"),
@@ -136,26 +156,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
                                 ActionGroup = PrimaryActionGroup
                             }
                         }
-                    },
-
-                    new ElementAction(new ActionHandle(
-                        new WorkflowActionToken(
-                            WorkflowFacade.GetWorkflowType("Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider.CreateEditableMethodBasedFunctionWorkflow"),
-                            new PermissionType[] { PermissionType.Add }
-                        ))) {
-                         VisualData = new ActionVisualizedData { 
-                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "Create"), 
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "CreateToolTip"),
-                            Icon = MethodBasedFunctionProviderElementProvider.AddIcon,
-                            Disabled = false, 
-                            ActionLocation = new ActionLocation { 
-                                ActionType = ActionType.Edit,
-                                IsInFolder = false,
-                                IsInToolbar = true,
-                                ActionGroup = PrimaryActionGroup
-                            }
-                        }
-                    }
+                    }                    
                 };
         }
 
@@ -213,7 +214,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
                 {
                     new ElementAction(new ActionHandle(
                         new WorkflowActionToken(
-                            WorkflowFacade.GetWorkflowType("Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider.EditEditableMethodBasedFunctionWorkflow"),
+                            WorkflowFacade.GetWorkflowType("Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider.EditInlineFunctionWorkflow"),
                             new PermissionType[] { PermissionType.Edit }
                         ))) {
                         VisualData = new ActionVisualizedData { 
@@ -228,11 +229,11 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
                                 ActionGroup = PrimaryActionGroup
                             }
                         }
-                    }/*,
+                    },
 
                     new ElementAction(new ActionHandle(
                         new WorkflowActionToken(
-                            WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider.DeleteMethodBasedFunctionWorkflow"),
+                            WorkflowFacade.GetWorkflowType("Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider.DeleteInlineFunctionWorkflow"),
                             new PermissionType[] { PermissionType.Delete }
                         ) { 
                             Payload = GetContext().ProviderName
@@ -249,7 +250,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
                                 ActionGroup = PrimaryActionGroup
                             }
                         }
-                    }*/
+                    }
                 };
             }
 
@@ -287,9 +288,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
 
         private sealed class EditableMethodFunctionTreeBuilderLeafInfo : IFunctionTreeBuilderLeafInfo
         {
-            private ICSharpFunction _function;
+            private IInlineFunction _function;
 
-            public EditableMethodFunctionTreeBuilderLeafInfo(ICSharpFunction function)
+            public EditableMethodFunctionTreeBuilderLeafInfo(IInlineFunction function)
             {
                 _function = function;
             }

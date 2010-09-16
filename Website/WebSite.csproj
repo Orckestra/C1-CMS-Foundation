@@ -378,8 +378,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Composite\content\forms\Administrative\AddMediaFileStep2.xml" />
-    <Content Include="Composite\content\forms\Administrative\EditEditableMethodBasedFunction.xml" />
-    <Content Include="Composite\content\forms\Administrative\AddEditableMethodBasedFunctionStep1.xml">
+    <Content Include="Composite\content\forms\Administrative\InlineFunctionDeleteFunction.xml" />
+    <Content Include="Composite\content\forms\Administrative\InlineFunctionEditFunction.xml" />
+    <Content Include="Composite\content\forms\Administrative\InlineFunctionAddFunctionStep1.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Composite\content\forms\Administrative\SendMessageToConsoles_EnterMessage.xml" />

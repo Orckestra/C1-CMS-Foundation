@@ -3,6 +3,7 @@ using System.Linq;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Functions;
+using Composite.Functions.Inline;
 using Composite.Functions.Plugins.FunctionProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
@@ -22,9 +23,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
             DataEventSystemFacade.SubscribeToDataDeleted<IMethodBasedFunctionInfo>(OnDataChanged);
             DataEventSystemFacade.SubscribeToDataAfterUpdate<IMethodBasedFunctionInfo>(OnDataChanged);
 
-            DataEventSystemFacade.SubscribeToDataAfterAdd<ICSharpFunction>(OnDataChanged);
-            DataEventSystemFacade.SubscribeToDataDeleted<ICSharpFunction>(OnDataChanged);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<ICSharpFunction>(OnDataChanged);
+            DataEventSystemFacade.SubscribeToDataAfterAdd<IInlineFunction>(OnDataChanged);
+            DataEventSystemFacade.SubscribeToDataDeleted<IInlineFunction>(OnDataChanged);
+            DataEventSystemFacade.SubscribeToDataAfterUpdate<IInlineFunction>(OnDataChanged);
         }
 
 
@@ -57,17 +58,17 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                 }
 
 
-                IEnumerable<ICSharpFunction> editableMethodBasedFunctionInfos =
-                    from item in DataFacade.GetData<ICSharpFunction>()
+                IEnumerable<IInlineFunction> editableMethodBasedFunctionInfos =
+                    from item in DataFacade.GetData<IInlineFunction>()
                     select item;
 
-                foreach (ICSharpFunction info in editableMethodBasedFunctionInfos)
+                foreach (IInlineFunction info in editableMethodBasedFunctionInfos)
                 {
-                    EditableMethodBasedFunction editableMethodBasedFunction = EditableMethodBasedFunction.Create(info);
+                    InlineFunction inlineFunction = InlineFunction.Create(info);
 
-                    if (editableMethodBasedFunction == null) continue;
+                    if (inlineFunction == null) continue;
 
-                    result.Add(editableMethodBasedFunction);
+                    result.Add(inlineFunction);
                 }
 
                 return result;

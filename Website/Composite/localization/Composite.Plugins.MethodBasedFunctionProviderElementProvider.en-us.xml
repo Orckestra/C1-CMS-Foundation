@@ -50,27 +50,39 @@
   <string key="EditFunction.MethodOverloadsNotAllowed" value="The type must not have overloads" />
 
 
-  <string key="CreateEditableMethodBasedFunction.FieldGroup.Label" value="Settings" />
-  <string key="CreateEditableMethodBasedFunction.MethodName.Label" value="Name" />
-  <string key="CreateEditableMethodBasedFunction.MethodName.Help" value="The name of the method you want to create" />
-  <string key="CreateEditableMethodBasedFunction.MethodNamespace.Label" value="Namespace" />
-  <string key="CreateEditableMethodBasedFunction.MethodNamespace.Help" value="The namespace of the method you want to create" />
+  <string key="AddInlineFunctionWorkflow.FieldGroup.Label" value="Settings" />
+  <string key="AddInlineFunctionWorkflow.MethodName.Label" value="Name" />
+  <string key="AddInlineFunctionWorkflow.MethodName.Help" value="The name of the method you want to create" />
+  <string key="AddInlineFunctionWorkflow.MethodNamespace.Label" value="Namespace" />
+  <string key="AddInlineFunctionWorkflow.MethodNamespace.Help" value="The namespace of the method you want to create" />
+  <string key="AddInlineFunctionWorkflow.MethodDescription.Label" value="Description" />
+  <string key="AddInlineFunctionWorkflow.MethodDescription.Help" value="A short description of the function" />
+  <string key="AddInlineFunctionWorkflow.InlineFunctionMethodTemplate.Label" value="Template" />
+  <string key="AddInlineFunctionWorkflow.InlineFunctionMethodTemplate.Help" value="Select the template that you want to use for the new method." />
 
 
-  <string key="EditEditableMethodBasedFunction.FieldGroup.Label" value="Settings" />
-  <string key="EditEditableMethodBasedFunction.MethodName.Label" value="Name" />
-  <string key="EditEditableMethodBasedFunction.MethodName.Help" value="The name of the method you want to create" />
-  <string key="EditEditableMethodBasedFunction.MethodNamespace.Label" value="Namespace" />
-  <string key="EditEditableMethodBasedFunction.MethodNamespace.Help" value="The namespace of the method you want to create" />
-  <string key="EditEditableMethodBasedFunction.Code.Label" value="Source" />
-  <string key="EditEditableMethodBasedFunction.AssembliesFieldGroup.Label" value="Assembly References" />
-  <string key="EditEditableMethodBasedFunction.Preview.Label" value="Preview" />
-  <string key="EditEditableMethodBasedFunction.ParameterFieldGroup.Label" value="Input Parameters" />
+  <string key="EditInlineFunctionWorkflow.FieldGroup.Label" value="Settings" />
+  <string key="EditInlineFunctionWorkflow.MethodName.Label" value="Name" />
+  <string key="EditInlineFunctionWorkflow.MethodName.Help" value="The name of the method you want to create" />
+  <string key="EditInlineFunctionWorkflow.MethodNamespace.Label" value="Namespace" />
+  <string key="EditInlineFunctionWorkflow.MethodNamespace.Help" value="The namespace of the method you want to create" />
+  <string key="EditInlineFunctionWorkflow.MethodDescription.Label" value="Description" />
+  <string key="EditInlineFunctionWorkflow.MethodDescription.Help" value="A short description of the function" />
+  <string key="EditInlineFunctionWorkflow.Code.Label" value="Source" />
+  <string key="EditInlineFunctionWorkflow.AssembliesFieldGroup.Label" value="Assembly References" />
+  <string key="EditInlineFunctionWorkflow.Preview.Label" value="Preview" />
+  <string key="EditInlineFunctionWorkflow.ParameterFieldGroup.Label" value="Input Parameters" />
 
+  <string key="InlineFunctionMethodTemplate.Clean" value="Empty method" />
+  <string key="InlineFunctionMethodTemplate.WithParameters" value="Method with parameters" />
+  <string key="InlineFunctionMethodTemplate.DataConnection" value="Method using data connection" />
+  
   <string key="CSharpInlineFunction.OnMissingContainerType" value="A public static class named {0} is missing from the code. This class should contain the function method." />
   <string key="CSharpInlineFunction.OnNamespaceMismatch" value="The namespace in the code '{0}' does not match the given function namespace '{1}'." />
   <string key="CSharpInlineFunction.OnMissionMethod" value="The given function name '{0}' was not found or not public static in the class '{1}'." />
   <string key="CSharpInlineFunction.MissingParameterTestValue" value="The parameter '{0}' is missing a test value." />
   <string key="CSharpInlineFunction.WrongParameterTestValueType" value="The parameter '{0}' is expecting test value of type '{1}', got value of type '{2}'." />
+
+  
   
 </strings>

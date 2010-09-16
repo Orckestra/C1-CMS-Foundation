@@ -20,7 +20,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
             InitializeComponent();
         }
 
-      
+
 
         private void finalizeCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
@@ -37,12 +37,12 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
                 int count =
                     (from info in DataFacade.GetData<IMethodBasedFunctionInfo>()
                      where info.Namespace == methodBasedFunctionInfo.Namespace
-                     select info).Count();                
+                     select info).Count();
 
                 if (count == 0)
                 {
                     WorkflowActionToken actionToken = (WorkflowActionToken)this.ActionToken;
-                    
+
                     string id = BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider.CreateId("", actionToken.Payload);
 
                     BaseFunctionFolderElementEntityToken entityToken = new BaseFunctionFolderElementEntityToken(id);
@@ -51,7 +51,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
                     specificTreeRefresher.PostRefreshMesseges(entityToken);
                 }
                 else
-                {                    
+                {
                     treeRefresher.PostRefreshMesseges();
                 }
             }

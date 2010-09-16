@@ -15,7 +15,7 @@ using Composite.C1Console.Workflow;
 
 namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
 {
-    partial class EditEditableMethodBasedFunctionWorkflow
+    partial class EditInlineFunctionWorkflow
     {
         #region Designer generated code
 
@@ -80,7 +80,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
             // 
             this.documentFormActivity1.ContainerLabel = null;
             this.documentFormActivity1.CustomToolbarDefinitionFileName = null;
-            this.documentFormActivity1.FormDefinitionFileName = "\\Administrative\\EditEditableMethodBasedFunction.xml";
+            this.documentFormActivity1.FormDefinitionFileName = "\\Administrative\\InlineFunctionEditFunction.xml";
             this.documentFormActivity1.Name = "documentFormActivity1";
             // 
             // setStateActivity3
@@ -172,7 +172,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
             this.eventDrivenActivity_GlobalCancel.Activities.Add(this.setStateActivity1);
             this.eventDrivenActivity_GlobalCancel.Name = "eventDrivenActivity_GlobalCancel";
             // 
-            // EditEditableMethodBasedFunctionWorkflow
+            // EditInlineFunctionWorkflow
             // 
             this.Activities.Add(this.eventDrivenActivity_GlobalCancel);
             this.Activities.Add(this.initializeStateActivity);
@@ -182,7 +182,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
             this.CompletedStateName = "finalStateActivity";
             this.DynamicUpdateCondition = null;
             this.InitialStateName = "initializeStateActivity";
-            this.Name = "EditEditableMethodBasedFunctionWorkflow";
+            this.Name = "EditInlineFunctionWorkflow";
             this.CanModifyActivities = false;
 
         }
@@ -232,6 +232,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
         private EventDrivenActivity editEventDrivenActivity_Preview;
 
         private EventDrivenActivity eventDrivenActivity_GlobalCancel;
+
 
 
 

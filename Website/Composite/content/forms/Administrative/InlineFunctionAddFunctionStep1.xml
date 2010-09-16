@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="NewFunction" type="Composite.Data.Types.IInlineFunction, Composite" />
+    <cms:binding name="TemplateOptions" type="System.Collections.IEnumerable" />
+    <cms:binding name="SelectedTemplate" type="System.String" />
+  </cms:bindings>
+  <cms:layout iconhandle="functioncall">
+
+    <FieldGroup Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddInlineFunctionWorkflow.FieldGroup.Label}">
+
+      <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddInlineFunctionWorkflow.MethodName.Label}"
+               Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddInlineFunctionWorkflow.MethodName.Help}">
+        <TextBox.Text>
+          <cms:bind source="NewFunction.Name" />
+        </TextBox.Text>
+      </TextBox>
+
+      <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddInlineFunctionWorkflow.MethodNamespace.Label}"
+               Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddInlineFunctionWorkflow.MethodNamespace.Help}">
+        <TextBox.Text>
+          <cms:bind source="NewFunction.Namespace" />
+        </TextBox.Text>
+      </TextBox>
+
+
+      <TextArea Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddInlineFunctionWorkflow.MethodDescription.Label}"
+                Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddInlineFunctionWorkflow.MethodDescription.Help}">
+        <TextArea.Text>
+          <cms:bind source="NewFunction.Description" />
+        </TextArea.Text>
+      </TextArea>
+
+      <KeySelector Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddInlineFunctionWorkflow.InlineFunctionMethodTemplate.Label}"
+                   Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddInlineFunctionWorkflow.InlineFunctionMethodTemplate.Help}"
+                   OptionsKeyField="Key" OptionsLabelField="Value">
+        <KeySelector.Options>
+          <cms:read source="TemplateOptions"/>
+        </KeySelector.Options>
+        <KeySelector.Selected>
+          <cms:bind source="SelectedTemplate"/>
+        </KeySelector.Selected>
+      </KeySelector>
+
+    </FieldGroup>
+
+  </cms:layout>
+</cms:formdefinition>

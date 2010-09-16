@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Transactions;
+using System.Web;
 using System.Web.UI;
 using System.Workflow.Runtime;
 using System.Xml.Linq;
@@ -12,53 +14,26 @@ using Composite.C1Console.Actions;
 using Composite.C1Console.Workflow;
 using Composite.C1Console.Workflow.Foundation;
 using Composite.Core.Linq;
+using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
 using Composite.Core.WebClient.FlowMediators.FormFlowRendering;
 using Composite.Core.WebClient.FunctionCallEditor;
 using Composite.Core.WebClient.State;
 using Composite.Data;
+using Composite.Data.Transactions;
 using Composite.Data.Types;
 using Composite.Functions;
+using Composite.Functions.Inline;
 using Composite.Functions.ManagedParameters;
-using Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvider;
-using System.Web;
-using Composite.Core.ResourceSystem;
 
 
 namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
 {
-    [Serializable]
-    public sealed class ParameterEditorState : IParameterEditorState
-    {
-        public Guid WorkflowId { get; set; }
-
-        private FormData GetFormData()
-        {
-            return WorkflowFacade.GetFormData(WorkflowId);
-        }
-
-
-        [XmlIgnore]
-        public List<ManagedParameterDefinition> Parameters
-        {
-            get { return GetFormData().Bindings["Parameters"] as List<ManagedParameterDefinition>; }
-            set { GetFormData().Bindings["Parameters"] = value; }
-        }
-
-
-        [XmlIgnore]
-        public List<Type> ParameterTypeOptions
-        {
-            get { return (GetFormData().Bindings["ParameterTypeOptions"] as IEnumerable<Type>).ToList(); }
-            set { GetFormData().Bindings["ParameterTypeOptions"] = value.ToList(); }
-        }
-    }
-
     [EntityTokenLock]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class EditEditableMethodBasedFunctionWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
+    public sealed partial class EditInlineFunctionWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
-        public EditEditableMethodBasedFunctionWorkflow()
+        public EditInlineFunctionWorkflow()
         {
             InitializeComponent();
         }
@@ -67,13 +42,13 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
 
         private void initializeCodeActivity_InitBindings_ExecuteCode(object sender, EventArgs e)
         {
-            ICSharpFunction functionInfo = this.GetDataItemFromEntityToken<ICSharpFunction>();
+            IInlineFunction functionInfo = this.GetDataItemFromEntityToken<IInlineFunction>();
 
-            this.Bindings.Add("FunctionInfo", functionInfo);
+            this.Bindings.Add("Function", functionInfo);
             this.Bindings.Add("FunctionCode", functionInfo.GetFunctionCode());
 
             List<KeyValuePair> assemblies = new List<KeyValuePair>();
-            foreach (string assembly in CSharpFunctionHelper.GetReferencableAssemblies())
+            foreach (string assembly in InlineFunctionHelper.GetReferencableAssemblies())
             {
                 assemblies.Add(new KeyValuePair(assembly.ToLower(), Path.GetFileName(assembly)));
             }
@@ -83,10 +58,10 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
             this.Bindings.Add("Assemblies", assemblies);
 
             List<string> selectedAssemblies =
-                DataFacade.GetData<ICSharpFunctionAssemblyReference>().
+                DataFacade.GetData<IInlineFunctionAssemblyReference>().
                 Where(f => f.Function == functionInfo.Id).
                 Evaluate().
-                Select(f => CSharpFunctionHelper.GetAssemblyFullPath(f.Name, f.Location).ToLower()).
+                Select(f => InlineFunctionHelper.GetAssemblyFullPath(f.Name, f.Location).ToLower()).
                 ToList();
 
             this.Bindings.Add("SelectedAssemblies", selectedAssemblies);
@@ -112,54 +87,57 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
 
         private void saveCodeActivity_Save_ExecuteCode(object sender, EventArgs e)
         {
-            ICSharpFunction function = this.GetBinding<ICSharpFunction>("FunctionInfo");
+            IInlineFunction function = this.GetBinding<IInlineFunction>("Function");
             string code = this.GetBinding<string>("FunctionCode");
             List<string> selectedAssemblies = this.GetBinding<List<string>>("SelectedAssemblies");
 
-            IEnumerable<ICSharpFunctionAssemblyReference> assemblyReferences =
-                DataFacade.GetData<ICSharpFunctionAssemblyReference>(f => f.Function == function.Id).Evaluate();
-
-            foreach (string selectedAssembly in selectedAssemblies)
+            using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
             {
-                string name = Path.GetFileName(selectedAssembly).ToLower();
-                string location = CSharpFunctionHelper.GetAssemblyLocation(selectedAssembly).ToLower();
+                IEnumerable<IInlineFunctionAssemblyReference> assemblyReferences =
+                    DataFacade.GetData<IInlineFunctionAssemblyReference>(f => f.Function == function.Id).Evaluate();
 
-                if (assemblyReferences.Where(f => f.Name.ToLower() == name && f.Location.ToLower() == location).Any() == false)
+                foreach (string selectedAssembly in selectedAssemblies)
                 {
-                    ICSharpFunctionAssemblyReference assemblyReference = DataFacade.BuildNew<ICSharpFunctionAssemblyReference>();
-                    assemblyReference.Id = Guid.NewGuid();
-                    assemblyReference.Function = function.Id;
-                    assemblyReference.Name = name;
-                    assemblyReference.Location = location;
+                    string name = Path.GetFileName(selectedAssembly).ToLower();
+                    string location = InlineFunctionHelper.GetAssemblyLocation(selectedAssembly).ToLower();
 
-                    DataFacade.AddNew(assemblyReference);
+                    if (assemblyReferences.Where(f => f.Name.ToLower() == name && f.Location.ToLower() == location).Any() == false)
+                    {
+                        IInlineFunctionAssemblyReference assemblyReference = DataFacade.BuildNew<IInlineFunctionAssemblyReference>();
+                        assemblyReference.Id = Guid.NewGuid();
+                        assemblyReference.Function = function.Id;
+                        assemblyReference.Name = name;
+                        assemblyReference.Location = location;
+
+                        DataFacade.AddNew(assemblyReference);
+                    }
                 }
-            }
 
 
-            foreach (ICSharpFunctionAssemblyReference assemblyReference in assemblyReferences)
-            {
-                string fullPath = CSharpFunctionHelper.GetAssemblyFullPath(assemblyReference.Name, assemblyReference.Location).ToLower();
-
-                if (selectedAssemblies.Where(f => f.ToLower() == fullPath).Any() == false)
+                foreach (IInlineFunctionAssemblyReference assemblyReference in assemblyReferences)
                 {
-                    DataFacade.Delete(assemblyReference);
+                    string fullPath = InlineFunctionHelper.GetAssemblyFullPath(assemblyReference.Name, assemblyReference.Location).ToLower();
+
+                    if (selectedAssemblies.Where(f => f.ToLower() == fullPath).Any() == false)
+                    {
+                        DataFacade.Delete(assemblyReference);
+                    }
                 }
+
+
+                IInlineFunction oldFunction = DataFacade.GetData<IInlineFunction>(f => f.Id == function.Id).Single();
+                if ((oldFunction.Name != function.Name) || (oldFunction.Namespace != function.Namespace))
+                {
+                    InlineFunctionHelper.FunctionRenamed(function, oldFunction);
+                }
+
+
+                List<ManagedParameterDefinition> parameters = this.GetBinding<List<ManagedParameterDefinition>>("Parameters");
+                ManagedParameterManager.Save(function.Id, parameters);
+
+                DataFacade.Update(function);
+                InlineFunctionHelper.SetFunctinoCode(function, code);
             }
-
-
-            ICSharpFunction oldFunction = DataFacade.GetData<ICSharpFunction>(f => f.Id == function.Id).Single();
-            if ((oldFunction.Name != function.Name) || (oldFunction.Namespace != function.Namespace))
-            {
-                CSharpFunctionHelper.FunctionRenamed(function, oldFunction);
-            }
-
-
-            List<ManagedParameterDefinition> parameters = this.GetBinding<List<ManagedParameterDefinition>>("Parameters");
-            ManagedParameterManager.Save(function.Id, parameters);
-
-            DataFacade.Update(function);
-            CSharpFunctionHelper.SetFunctinoCode(function, code);
 
             SetSaveStatus(true);
         }
@@ -168,12 +146,12 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
 
         private void editCodeActivity_Preview_ExecuteCode(object sender, EventArgs e)
         {
-            ICSharpFunction functionInfo = this.GetBinding<ICSharpFunction>("FunctionInfo");
+            IInlineFunction functionInfo = this.GetBinding<IInlineFunction>("Function");
             string code = this.GetBinding<string>("FunctionCode");
 
-            StringCreateMethodErrorHandler handler = new StringCreateMethodErrorHandler();
+            StringInlineFunctionCreateMethodErrorHandler handler = new StringInlineFunctionCreateMethodErrorHandler();
 
-            MethodInfo methodInfo = CSharpFunctionHelper.Create(functionInfo, code, handler);
+            MethodInfo methodInfo = InlineFunctionHelper.Create(functionInfo, code, handler);
 
             FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
             IFormFlowWebRenderingService formFlowWebRenderingService = serviceContainer.GetService<IFormFlowWebRenderingService>();
@@ -221,14 +199,14 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
                     string message = string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "CSharpInlineFunction.MissingParameterTestValue"), parameterInfo.Name);
 
                     parameterErrors = true;
-                    parameterErrorMessages.AppendLine("<pre>" + message + "</pre>");                    
+                    parameterErrorMessages.AppendLine("<pre>" + message + "</pre>");
                 }
                 else if (parameter.Type != parameterInfo.ParameterType)
                 {
                     string message = string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "CSharpInlineFunction.WrongParameterTestValueType"), parameterInfo.Name, parameterInfo.ParameterType, parameter.Type);
 
                     parameterErrors = true;
-                    parameterErrorMessages.AppendLine("<pre>" + message + "</pre>");                    
+                    parameterErrorMessages.AppendLine("<pre>" + message + "</pre>");
                 }
                 else
                 {
@@ -250,6 +228,37 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
 
             Control output = new LiteralControl("<pre>" + HttpUtility.HtmlEncode(result.ToString()) + "</pre>");
             formFlowWebRenderingService.SetNewPageOutput(output);
+        }
+    }
+
+
+
+
+
+    [Serializable]
+    public sealed class ParameterEditorState : IParameterEditorState
+    {
+        public Guid WorkflowId { get; set; }
+
+        private FormData GetFormData()
+        {
+            return WorkflowFacade.GetFormData(WorkflowId);
+        }
+
+
+        [XmlIgnore]
+        public List<ManagedParameterDefinition> Parameters
+        {
+            get { return GetFormData().Bindings["Parameters"] as List<ManagedParameterDefinition>; }
+            set { GetFormData().Bindings["Parameters"] = value; }
+        }
+
+
+        [XmlIgnore]
+        public List<Type> ParameterTypeOptions
+        {
+            get { return (GetFormData().Bindings["ParameterTypeOptions"] as IEnumerable<Type>).ToList(); }
+            set { GetFormData().Bindings["ParameterTypeOptions"] = value.ToList(); }
         }
     }
 }
