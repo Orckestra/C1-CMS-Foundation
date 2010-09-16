@@ -58,43 +58,38 @@ public partial class Renderers_Page : System.Web.UI.Page
 
         _dataScope = new DataScope(DataScopeIdentifier.FromPublicationScope(_url.PublicationScope), _url.Locale); // IDisposable, Disposed in OnUnload
 
-        using (DataConnection dataConnection = new DataConnection(_url.PublicationScope, _url.Locale))
+        IPage page = PageManager.GetPageById(_url.PageId);
+
+        if (page == null)
         {
-            IPage page = dataConnection.Get<IPage>().Where(f => f.Id == _url.PageId).FirstOrDefault();
-
-            if (page != null)
-            {
-                RenderingResponseHandlerResult responseHandling = RenderingResponseHandlerFacade.GetDataResponseHandling(page.GetDataEntityToken());
-
-                if ((responseHandling != null) && (responseHandling.PreventPublicCaching == true))
-                {
-                    Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                }
-
-                if ((responseHandling != null) &&
-                    (responseHandling.EndRequest || responseHandling.RedirectRequesterTo != null))
-                {
-                    if (responseHandling.RedirectRequesterTo != null)
-                    {
-                        Response.Redirect(responseHandling.RedirectRequesterTo.AbsoluteUri, false);
-                    }
-
-                    Context.ApplicationInstance.CompleteRequest();
-                    _requestCompleted = true;
-                    return;
-                }
-
-                IEnumerable<IPagePlaceholderContent> contents = dataConnection.Get<IPagePlaceholderContent>().Where(f=>f.PageId==page.Id);
-                Control renderedPage = PageRenderer.Render(page, contents);
-                this.Controls.Add(renderedPage);
-                if (this.Form != null) this.Form.Action = Request.RawUrl;
-            }
-            else
-            {
-                // GUID not found in lookup
-                this.Controls.Add(new LiteralControl("<div>Unknown page id - either this page has not been published yet or it has been deleted.</div>"));
-            }
+            // GUID not found in lookup
+            this.Controls.Add(new LiteralControl("<div>Unknown page id - either this page has not been published yet or it has been deleted.</div>"));
+            return;
         }
+        
+        RenderingResponseHandlerResult responseHandling = RenderingResponseHandlerFacade.GetDataResponseHandling(page.GetDataEntityToken());
+
+        if ((responseHandling != null) && (responseHandling.PreventPublicCaching == true))
+        {
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+        }
+
+        if ((responseHandling != null) && (responseHandling.EndRequest || responseHandling.RedirectRequesterTo != null))
+        {
+            if (responseHandling.RedirectRequesterTo != null)
+            {
+                Response.Redirect(responseHandling.RedirectRequesterTo.AbsoluteUri, false);
+            }
+
+            Context.ApplicationInstance.CompleteRequest();
+            _requestCompleted = true;
+            return;
+        }
+
+        IEnumerable<IPagePlaceholderContent> contents = PageManager.GetPlaceholderContent(page.Id);
+        Control renderedPage = PageRenderer.Render(page, contents);
+        this.Controls.Add(renderedPage);
+        if (this.Form != null) this.Form.Action = Request.RawUrl;
     }
 
 
@@ -141,18 +136,18 @@ public partial class Renderers_Page : System.Web.UI.Page
 
     protected override void OnUnload(EventArgs e)
     {
-        if (_requestCompleted)
-        {
-            return;
-        }
-
         base.OnUnload(e);
 
         if (_dataScope != null)
             _dataScope.Dispose();
 
+        if (_requestCompleted)
+        {
+            return;
+        }
+
         // Rewrite path to what it was when this page was constructed. This ensure full page caching can work.
-        HttpContext.Current.RewritePath(_cacheUrl.Replace("%20", " "));
+        Context.RewritePath(_cacheUrl.Replace("%20", " "));
     }
 
 }
