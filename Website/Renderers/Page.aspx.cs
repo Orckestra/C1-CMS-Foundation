@@ -23,6 +23,7 @@ public partial class Renderers_Page : System.Web.UI.Page
     private PageUrl _url;
     private NameValueCollection _foreignQueryStringParameters;
     private string _cacheUrl = null;
+    private bool _requestCompleted = false;
 
 
     public Renderers_Page()
@@ -79,6 +80,7 @@ public partial class Renderers_Page : System.Web.UI.Page
                     }
 
                     Context.ApplicationInstance.CompleteRequest();
+                    _requestCompleted = true;
                     return;
                 }
 
@@ -113,6 +115,11 @@ public partial class Renderers_Page : System.Web.UI.Page
 
     protected override void Render(HtmlTextWriter writer)
     {
+        if(_requestCompleted)
+        {
+            return;
+        }
+
         ScriptManager scriptManager = ScriptManager.GetCurrent(this);
         bool isUpdatePanelPostback = scriptManager != null && scriptManager.IsInAsyncPostBack;
 
@@ -134,6 +141,11 @@ public partial class Renderers_Page : System.Web.UI.Page
 
     protected override void OnUnload(EventArgs e)
     {
+        if (_requestCompleted)
+        {
+            return;
+        }
+
         base.OnUnload(e);
 
         if (_dataScope != null)
