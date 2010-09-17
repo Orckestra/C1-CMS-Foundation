@@ -125,8 +125,22 @@ public partial class Renderers_Page : System.Web.UI.Page
         }
 
         StringBuilder markupBuilder = new StringBuilder();
-        StringWriter sw = new StringWriter(markupBuilder);
-        base.Render(new HtmlTextWriter(sw));
+        StringWriter sw = new StringWriter(markupBuilder);        
+        try
+        {
+            base.Render(new HtmlTextWriter(sw));
+        }
+        catch (HttpException ex)
+        {
+            bool multipleAspFormTagsExists = ex.Message == "A page can have only one server-side Form tag.";
+
+            if (multipleAspFormTagsExists)
+            {
+                throw new HttpException("Multiple <asp:form /> elements exists on this page. ASP.NET only support one form. To fix this, insert a <asp:form> ... </asp:form> section in your template that spans all controls.");
+            }
+                
+            throw;            
+        }
 
         string xhtml = PageUrlHelper.ChangeRenderingPageUrlsToPublic(markupBuilder.ToString());
         xhtml = Composite.Core.Xml.XhtmlPrettifier.Prettify(xhtml);
