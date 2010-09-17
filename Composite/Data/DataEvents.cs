@@ -19,7 +19,7 @@ namespace Composite.Data
         /// <code>
         /// void MyMethod()
         /// {
-        ///    DataEvents&lt;IMyDataType&gt;().OnBeforeAdd += new DataEventHandler(DataEvents_OnBeforeAdd);
+        ///    DataEvents&lt;IMyDataType&gt;.OnBeforeAdd += new DataEventHandler(DataEvents_OnBeforeAdd);
         ///    
         ///    using (DataConnection connection = new DataConnection())
         ///    {
@@ -39,7 +39,7 @@ namespace Composite.Data
         public static event DataEventHandler OnBeforeAdd
         {
             add
-            {
+            {                
                 ImplementationFactory.CurrentFactory.CreateStatelessDataEvents<TData>().OnBeforeAdd += value;
             }
             remove
@@ -58,7 +58,7 @@ namespace Composite.Data
         /// <code>
         /// void MyMethod()
         /// {
-        ///    DataEvents&lt;IMyDataType&gt;().OnAfterAdd += new DataEventHandler(DataEvents_OnAfterAdd);
+        ///    DataEvents&lt;IMyDataType&gt;.OnAfterAdd += new DataEventHandler(DataEvents_OnAfterAdd);
         ///    
         ///    using (DataConnection connection = new DataConnection())
         ///    {
@@ -97,7 +97,7 @@ namespace Composite.Data
         /// <code>
         /// void MyMethod()
         /// {
-        ///    DataEvents&lt;IMyDataType&gt;().OnBeforeUpdate += new DataEventHandler(DataEvents_OnBeforeUpdate);
+        ///    DataEvents&lt;IMyDataType&gt;.OnBeforeUpdate += new DataEventHandler(DataEvents_OnBeforeUpdate);
         ///    
         ///    using (DataConnection connection = new DataConnection())
         ///    {
@@ -140,7 +140,7 @@ namespace Composite.Data
         /// <code>
         /// void MyMethod()
         /// {
-        ///    DataEvents&lt;IMyDataType&gt;().OnAfterUpdate += new DataEventHandler(DataEvents_OnAfterUpdate);
+        ///    DataEvents&lt;IMyDataType&gt;.OnAfterUpdate += new DataEventHandler(DataEvents_OnAfterUpdate);
         ///    
         ///    using (DataConnection connection = new DataConnection())
         ///    {
@@ -183,7 +183,7 @@ namespace Composite.Data
         /// <code>
         /// void MyMethod()
         /// {
-        ///    DataEvents&lt;IMyDataType&gt;().OnDeleted+= new DataEventHandler(DataEvents_OnDeleted);
+        ///    DataEvents&lt;IMyDataType&gt;.OnDeleted+= new DataEventHandler(DataEvents_OnDeleted);
         ///    
         ///    using (DataConnection connection = new DataConnection())
         ///    {
@@ -224,7 +224,7 @@ namespace Composite.Data
         /// <code>
         /// void MyMethod()
         /// {
-        ///    DataEvents&lt;IMyDataType&gt;().OnNew += new DataEventHandler(DataEvents_OnNew);
+        ///    DataEvents&lt;IMyDataType&gt;.OnNew += new DataEventHandler(DataEvents_OnNew);
         ///    
         ///    IMyDataType myDataType = DataConnection.New&lt;IMyDataType&gt;(); // This will fire the event!
         /// }
