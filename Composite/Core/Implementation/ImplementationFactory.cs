@@ -103,11 +103,11 @@ namespace Composite.Core.Implementation
             }
             else
             {
-                if (DataScopeManager.CurrentDataScope == DataScopeIdentifier.Administrated)
+                if (DataScopeManager.CurrentDataScope.Equals(DataScopeIdentifier.Administrated))
                 {
                     scopeToUse = PublicationScope.Unpublished;
                 }
-                else if (DataScopeManager.CurrentDataScope == DataScopeIdentifier.Public)
+                else if (DataScopeManager.CurrentDataScope.Equals(DataScopeIdentifier.Public))
                 {
                     scopeToUse = PublicationScope.Published;
                 }
