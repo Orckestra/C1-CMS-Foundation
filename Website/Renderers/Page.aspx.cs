@@ -14,6 +14,7 @@ using Composite.Core.WebClient.Renderings;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.C1Console.Security;
 using Composite.Core.WebClient;
+using System.Reflection;
 
 
 public partial class Renderers_Page : System.Web.UI.Page
@@ -132,7 +133,13 @@ public partial class Renderers_Page : System.Web.UI.Page
         }
         catch (HttpException ex)
         {
-            bool multipleAspFormTagsExists = ex.Message == "A page can have only one server-side Form tag.";
+            MethodInfo setStringMethod = typeof(HttpContext).Assembly /* System.Web */
+                .GetType("System.Web.SR")
+                .GetMethod("GetString", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(string) }, null);
+
+            string multipleFormNotAllowedMessage = (string)setStringMethod.Invoke(null, new object[] { "Multiple_forms_not_allowed" });
+
+            bool multipleAspFormTagsExists = ex.Message == multipleFormNotAllowedMessage;
 
             if (multipleAspFormTagsExists)
             {
