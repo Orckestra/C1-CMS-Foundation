@@ -25,6 +25,10 @@ using Composite.Data.Types;
 using Composite.Functions;
 using Composite.Functions.Inline;
 using Composite.Functions.ManagedParameters;
+using Composite.Core.WebClient.Renderings.Page;
+using Composite.C1Console.Users;
+using System.Globalization;
+using System.Threading;
 
 
 namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
@@ -45,6 +49,35 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
             IInlineFunction functionInfo = this.GetDataItemFromEntityToken<IInlineFunction>();
 
             this.Bindings.Add("Function", functionInfo);
+
+            List<KeyValuePair<Guid, string>> pages = PageStructureInfo.PageListInDocumentOrder().ToList();
+            if (pages.Count > 0)
+            {
+                this.Bindings.Add("PageId", pages.First().Key);
+            }
+            else
+            {
+                this.Bindings.Add("PageId", Guid.Empty);
+            }
+
+            this.Bindings.Add("PageList", pages);
+
+
+            if (UserSettings.ActiveLocaleCultureInfo != null)
+            {
+                List<KeyValuePair<string, string>> activeCulturesDictionary = UserSettings.ActiveLocaleCultureInfos.Select(f => new KeyValuePair<string, string>(f.Name, StringResourceSystemFacade.GetString("Composite.Cultures", f.Name))).ToList();
+                this.Bindings.Add("ActiveCultureName", UserSettings.ActiveLocaleCultureInfo.Name);
+                this.Bindings.Add("ActiveCulturesList", activeCulturesDictionary);
+            }
+
+            this.Bindings.Add("PageDataScopeName", DataScopeIdentifier.AdministratedName);
+            this.Bindings.Add("PageDataScopeList", new Dictionary<string, string> 
+            { 
+                { DataScopeIdentifier.AdministratedName, StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "EditInlineFunctionWorkflow.AdminitrativeScope.Label") }, 
+                { DataScopeIdentifier.PublicName, StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "EditInlineFunctionWorkflow.PublicScope.Label") } 
+            });
+
+
             this.Bindings.Add("FunctionCode", functionInfo.GetFunctionCode());
 
             List<KeyValuePair> assemblies = new List<KeyValuePair>();
@@ -224,10 +257,50 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
                 return;
             }
 
-            object result = methodInfo.Invoke(null, parameterValues.ToArray());
+            CultureInfo oldCurrentCulture = Thread.CurrentThread.CurrentCulture;
+            CultureInfo oldCurrentUICulture = Thread.CurrentThread.CurrentUICulture;
 
-            Control output = new LiteralControl("<pre>" + HttpUtility.HtmlEncode(result.ToString()) + "</pre>");
-            formFlowWebRenderingService.SetNewPageOutput(output);
+            try
+            {
+                Guid pageId = this.GetBinding<Guid>("PageId");
+                string dataScopeName = this.GetBinding<string>("PageDataScopeName");
+                string cultureName = this.GetBinding<string>("ActiveCultureName");
+                CultureInfo cultureInfo = null;
+                if (cultureName != null)
+                {
+                    cultureInfo = CultureInfo.CreateSpecificCulture(cultureName);
+                }
+
+                using (new DataScope(DataScopeIdentifier.Deserialize(dataScopeName), cultureInfo))
+                {
+                    Thread.CurrentThread.CurrentCulture = cultureInfo;
+                    Thread.CurrentThread.CurrentUICulture = cultureInfo;
+
+                    IPage page = DataFacade.GetData<IPage>(f => f.Id == pageId).FirstOrDefault();
+                    if (page != null)
+                    {
+                        PageRenderer.CurrentPage = page;
+                    }
+
+                    object result = methodInfo.Invoke(null, parameterValues.ToArray());
+
+                    Control output = new LiteralControl("<pre>" + HttpUtility.HtmlEncode(result.ToString()) + "</pre>");
+                    formFlowWebRenderingService.SetNewPageOutput(output);
+
+                    Thread.CurrentThread.CurrentCulture = oldCurrentCulture;
+                    Thread.CurrentThread.CurrentUICulture = oldCurrentUICulture;
+                }                
+            }
+            catch (TargetInvocationException ex)
+            {
+                Control output = new LiteralControl("<pre>" + HttpUtility.HtmlEncode(ex.InnerException.ToString()) + "</pre>");
+                formFlowWebRenderingService.SetNewPageOutput(output);
+            }
+            finally
+            {
+                Thread.CurrentThread.CurrentCulture = oldCurrentCulture;
+                Thread.CurrentThread.CurrentUICulture = oldCurrentUICulture;
+            }
         }
     }
 

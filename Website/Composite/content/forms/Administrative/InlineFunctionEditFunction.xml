@@ -2,6 +2,13 @@
 <cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0" xmlns:internal="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0">
   <cms:bindings>
     <cms:binding name="Function" type="Composite.Data.Types.IInlineFunction, Composite" />
+    
+    <cms:binding name="PageId" type="System.Guid" />
+    <cms:binding name="PageDataScopeName" type="System.String" optional="true"/>
+    <cms:binding name="PageDataScopeList" type="System.Collections.IEnumerable" optional="true"/>
+    <cms:binding name="ActiveCultureName" type="System.String" optional="true"/>
+    <cms:binding name="ActiveCulturesList" type="System.Collections.IEnumerable" optional="true"/>
+    
     <cms:binding name="FunctionCode" type="System.String" />
     <cms:binding name="Assemblies" type="System.Collections.IEnumerable" />
     <cms:binding name="SelectedAssemblies" type="System.Collections.IEnumerable" />
@@ -19,28 +26,66 @@
 
     <TabPanels PreSelectedIndex="1">
 
-      <FieldGroup Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.FieldGroup.Label}">
-        <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodName.Label}"
-                 Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodName.Help}">
-          <TextBox.Text>
-            <cms:bind source="Function.Name" />
-          </TextBox.Text>
-        </TextBox>
+      <PlaceHolder Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.FieldGroup.Label}">
+        <FieldGroup Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.FieldGroup.Label}">
+          <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodName.Label}"
+                   Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodName.Help}">
+            <TextBox.Text>
+              <cms:bind source="Function.Name" />
+            </TextBox.Text>
+          </TextBox>
 
-        <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodNamespace.Label}"
-                 Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodNamespace.Help}">
-          <TextBox.Text>
-            <cms:bind source="Function.Namespace" />
-          </TextBox.Text>
-        </TextBox>
+          <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodNamespace.Label}"
+                   Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodNamespace.Help}">
+            <TextBox.Text>
+              <cms:bind source="Function.Namespace" />
+            </TextBox.Text>
+          </TextBox>
 
-        <TextArea Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodDescription.Label}"
-               Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodDescription.Help}">
-          <TextArea.Text>
-            <cms:bind source="Function.Description" />
-          </TextArea.Text>
-        </TextArea>
-      </FieldGroup>
+          <TextArea Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodDescription.Label}"
+                 Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodDescription.Help}">
+            <TextArea.Text>
+              <cms:bind source="Function.Description" />
+            </TextArea.Text>
+          </TextArea>
+          
+        </FieldGroup>
+
+        <FieldGroup Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.DebugFieldGroup.Label}">
+          <PageSelector Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.DebugPage.Label}" Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.DebugPage.Help}">
+            <PageSelector.Selected>
+              <cms:bind source="PageId"/>
+            </PageSelector.Selected>
+          </PageSelector>
+          <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"
+                       Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.DebugPageDataScope.Label}"
+                       Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.DebugPageDataScope.Help}">
+            <KeySelector.Options>
+              <cms:read source="PageDataScopeList"/>
+            </KeySelector.Options>
+            <KeySelector.Selected>
+              <cms:bind source="PageDataScopeName"/>
+            </KeySelector.Selected>
+          </KeySelector>
+          <f:NullCheck>
+            <f:NullCheck.CheckValue>
+              <cms:read source="ActiveCultureName"/>
+            </f:NullCheck.CheckValue>
+            <f:NullCheck.WhenNotNull>
+              <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"
+                           Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.DebugActiveLocale.Label}"
+                           Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.DebugActiveLocale.Help}">
+                <KeySelector.Options>
+                  <cms:read source="ActiveCulturesList"/>
+                </KeySelector.Options>
+                <KeySelector.Selected>
+                  <cms:bind source="ActiveCultureName"/>
+                </KeySelector.Selected>
+              </KeySelector>
+            </f:NullCheck.WhenNotNull>
+          </f:NullCheck>
+        </FieldGroup>
+      </PlaceHolder>
 
 
       <TextEditor Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.Code.Label}" MimeType="text/x-csharp">        

@@ -9,6 +9,7 @@ using Composite.Data.Transactions;
 using Composite.Data.Types;
 using Composite.Functions.Inline;
 using Composite.Functions.ManagedParameters;
+using Composite.C1Console.Users;
 
 
 namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
@@ -28,6 +29,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
         {
             IInlineFunction function = DataFacade.BuildNew<IInlineFunction>();
             function.Id = Guid.NewGuid();
+            function.Namespace = UserSettings.LastSpecifiedNamespace;
 
             this.Bindings.Add("NewFunction", function);
 
@@ -123,6 +125,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
 
 
         private static string _cleanTemplate = @"using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Data;
@@ -142,6 +145,7 @@ namespace {0}
 
 
         private static string _parameterTemplate = @"using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Data;
@@ -161,6 +165,7 @@ namespace {0}
 
 
         private static string _dataConnectionTemplate = @"using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Data;

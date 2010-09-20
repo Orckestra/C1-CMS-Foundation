@@ -68,10 +68,21 @@
   <string key="EditInlineFunctionWorkflow.MethodNamespace.Help" value="The namespace of the method you want to create" />
   <string key="EditInlineFunctionWorkflow.MethodDescription.Label" value="Description" />
   <string key="EditInlineFunctionWorkflow.MethodDescription.Help" value="A short description of the function" />
+  <string key="EditInlineFunctionWorkflow.DebugFieldGroup.Label" value="Debug" />
+  <string key="EditInlineFunctionWorkflow.DebugPage.Label" value="Page" />
+  <string key="EditInlineFunctionWorkflow.DebugPage.Help" value="When debugging, this page is used as current page" />
+  <string key="EditInlineFunctionWorkflow.DebugPageDataScope.Label" value="Data scope" />
+  <string key="EditInlineFunctionWorkflow.DebugPageDataScope.Help" value="When debugging, this is used as current data scope" />
+  <string key="EditInlineFunctionWorkflow.DebugActiveLocale.Label" value="Language" />
+  <string key="EditInlineFunctionWorkflow.DebugActiveLocale.Help" value="When debugging, this is used as the current language" />
+
   <string key="EditInlineFunctionWorkflow.Code.Label" value="Source" />
   <string key="EditInlineFunctionWorkflow.AssembliesFieldGroup.Label" value="Assembly References" />
   <string key="EditInlineFunctionWorkflow.Preview.Label" value="Preview" />
   <string key="EditInlineFunctionWorkflow.ParameterFieldGroup.Label" value="Input Parameters" />
+
+  <string key="EditInlineFunctionWorkflow.AdminitrativeScope.Label" value="Adminitrative" />
+  <string key="EditInlineFunctionWorkflow.PublicScope.Label" value="Public" />
 
   <string key="InlineFunctionMethodTemplate.Clean" value="Empty method" />
   <string key="InlineFunctionMethodTemplate.WithParameters" value="Method with parameters" />
