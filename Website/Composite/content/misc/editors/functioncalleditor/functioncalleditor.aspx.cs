@@ -60,8 +60,26 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         Default = 0, Constant, InputParameter, FunctionCall
     }
 
+    private enum EditorModeEnum
+    {
+        Design = 0,
+        Source = 1
+    }
+
     private IFunctionCallEditorState _state;
     private XDocument _functionMarkup;
+
+    private EditorModeEnum EditorMode
+    {
+        get
+        {
+            return fldMode.Value == "source" ? EditorModeEnum.Source : EditorModeEnum.Design;
+        }
+        set
+        {
+            fldMode.Value = (value == EditorModeEnum.Source) ? "source" : "design";
+        }
+    }
 
     private Guid? _stateId;
     private Guid StateId
@@ -293,7 +311,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         if(message == "save")
         {
-            ctlFeedback.SetStatus(ValidateSave());
+            ctlFeedback.SetStatus(EditorMode == EditorModeEnum.Source ? SaveSourceMarkupChanges() : ValidateSave());
         } 
         else if ( message == "persist" )
         {
@@ -1137,17 +1155,12 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         btnDeleteFunction.Attributes["isdisabled"] = (!rootFunctionSelected) ? "true" : "false";
     }
 
-    public void OnSourceMarkupChanged()
+    public bool SaveSourceMarkupChanges()
     {
-        if (Request["__EVENTARGUMENT"] == "source")
-        {
-            return;
-        }
-
         string markup = Context.Request.Form["ctlSourceEditor"];
-        if(markup.IsNullOrEmpty())
+        if (markup.IsNullOrEmpty())
         {
-            return;
+            return false;
         }
 
         markup = Context.Server.UrlDecode(markup);
@@ -1158,31 +1171,48 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             newMarkup = XDocument.Parse(markup);
         }
 
-        catch(Exception e)
+        catch (Exception e)
         {
             LoggingService.LogError("FunctionCallEditor", e);
             Alert("Failed to parse the markup");
-            return;
+            return false;
         }
 
         try
         {
             if (!ValidateMarkup(newMarkup, false))
-                return;
+                return false;
         }
         catch (Exception e)
         {
             Alert(e.Message);
-            return;
+            return false;
         }
 
 
-        FunctionMarkup = newMarkup; 
+        FunctionMarkup = newMarkup;
 
         InitializeTreeView();
         SelectedNode = "";
 
         SaveChanges();
+
+        return true;
+    }
+
+    public void OnSourceMarkupChanged()
+    {
+        EditorMode = EditorModeEnum.Source;
+
+        if (Request["__EVENTARGUMENT"] == "source")
+        {
+            return;
+        }
+
+        if(SaveSourceMarkupChanges())
+        {
+            EditorMode = EditorModeEnum.Design;
+        }
     }
 
     private XElement UpdateTreeView(XElement functionMarkupContainer)

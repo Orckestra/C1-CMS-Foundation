@@ -212,6 +212,8 @@
 				</ui:decks>
 					
 			</ui:page>
+
+            <asp:HiddenField id="fldMode" runat="server" />
 		</form>
 	</body>
 </html>
