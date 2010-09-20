@@ -152,7 +152,7 @@ namespace Composite.Core.Implementation
 
                 XElement pageXElement = GetElementByPageId(PageRenderer.CurrentPageId);
 
-                while (pageXElement.Parent != null)
+                while ((pageXElement.Parent != null) && (pageXElement.Parent.Name.LocalName == "Page"))
                 {
                     pageXElement = pageXElement.Parent;
                 }
