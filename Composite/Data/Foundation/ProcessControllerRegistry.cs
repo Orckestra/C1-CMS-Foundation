@@ -121,20 +121,23 @@ namespace Composite.Data.Foundation
             {
                 List<T> publishAttributes = interfaceType.GetCustomAttributesRecursively<T>().ToList();
 
-                if (publishAttributes.Count == 1)
+                if (publishAttributes.Count == 0) return;
+
+                Type processControllerType = publishAttributes[0].ProcessControllerType;
+
+                foreach (T attribute in publishAttributes.Skip(1))
                 {
-                    Type processControllerType = publishAttributes[0].ProcessControllerType;
-
-                    processControllerTypes.Add(superProcessControllerInterfaceType, processControllerType);
-
-                    if (resources.ProcessControllerTypes.Contains(processControllerType) == false)
+                    if (attribute.ProcessControllerType != processControllerType)
                     {
-                        resources.ProcessControllerTypes.Add(processControllerType);
+                        throw new InvalidOperationException(string.Format("Only one '{0}' is allowed on the data type '{1}' or all attributes should have same process controller type", typeof(PublishProcessControllerTypeAttribute), interfaceType));
                     }
                 }
-                else if (publishAttributes.Count > 1)
+
+                processControllerTypes.Add(superProcessControllerInterfaceType, processControllerType);
+
+                if (resources.ProcessControllerTypes.Contains(processControllerType) == false)
                 {
-                    throw new InvalidOperationException(string.Format("Only on '{0}' is allowed on the data type '{1}'", typeof(PublishProcessControllerTypeAttribute), interfaceType));
+                    resources.ProcessControllerTypes.Add(processControllerType);
                 }
             }
         }

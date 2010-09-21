@@ -272,17 +272,7 @@ namespace Composite.Data.GeneratedTypes.Foundation
                         }
                     ));
             }
-
-            if (dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == true)
-            {
-                codeTypeDeclaration.CustomAttributes.Add(
-                    new CodeAttributeDeclaration(
-                        typeof(PublishProcessControllerTypeAttribute).FullName,
-                        new [] {
-                            new CodeAttributeArgument(new CodeTypeOfExpression(typeof(GenericPublishProcessController)))
-                        }
-                    ));
-            }
+            
 
             if (dataTypeDescriptor.Cachable == true)
             {

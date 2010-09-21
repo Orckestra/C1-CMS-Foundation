@@ -849,12 +849,12 @@ namespace Composite.Data.GeneratedTypes
 
             dataTypeDescriptor.DataScopes.Add(DataScopeIdentifier.Public);
 
-            if (publishControlled == true)
+            if ((publishControlled == true) && (_dataAssociationType != DataAssociationType.Composition))
             {
                 dataTypeDescriptor.AddSuperInterface(typeof(IPublishControlled));
             }
 
-            if (localizedControlled == true)
+            if ((localizedControlled == true) && (_dataAssociationType != DataAssociationType.Composition))
             {
                 dataTypeDescriptor.AddSuperInterface(typeof(ILocalizedControlled));
             }
@@ -908,19 +908,19 @@ namespace Composite.Data.GeneratedTypes
 
             dataTypeDescriptor.DataScopes.Add(DataScopeIdentifier.Public);
 
-            dataTypeDescriptor.Cachable = _cachable;
+            dataTypeDescriptor.Cachable = _cachable;            
 
-            if (_publishControlled == true)
+            if ((_publishControlled == true) && (_dataAssociationType != DataAssociationType.Composition))
             {
                 dataTypeDescriptor.AddSuperInterface(typeof(IPublishControlled));
             }
 
-            if (_localizedControlled == true)
+            if ((_localizedControlled == true) && (_dataAssociationType != DataAssociationType.Composition))
             {
                 dataTypeDescriptor.AddSuperInterface(typeof(ILocalizedControlled));
             }
 
-#warning Critical bug fix HACK - MRJ, please make pretty
+
             if (_oldDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPageFolderData)))
             {
                 dataTypeDescriptor.AddSuperInterface(typeof(IPageData));

@@ -8,7 +8,7 @@ namespace Composite.Data
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     [SerializerHandler(typeof(DataSerializerHandler))]
-    [KeyPropertyName("Id")]
+    [KeyPropertyName("Id")]    
     public interface IPageData : IData
     {
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
