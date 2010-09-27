@@ -37,7 +37,7 @@ namespace Composite.Data
         ///    
         ///    using (DataConnection connection = new DataConnection())
         ///    {
-        ///       IMyDataType myDataType = Storage.New&lt;IMyDataType&gt;();
+        ///       IMyDataType myDataType = DataConnection.New&lt;IMyDataType&gt;();
         ///       myDataType.Name = "Foo";
         ///       
         ///       connection.Add&lt;IMyDataType&gt;(myDataType); // This will fire the event!
@@ -69,7 +69,7 @@ namespace Composite.Data
         ///    
         ///    using (DataConnection connection = new DataConnection())
         ///    {
-        ///       IMyDataType myDataType = Storage.New&lt;IMyDataType&gt;();
+        ///       IMyDataType myDataType = DataConnection.New&lt;IMyDataType&gt;();
         ///       myDataType.Name = "Foo";
         ///       
         ///       connection.Add&lt;IMyDataType&gt;(myDataType); // This will fire the event!
@@ -102,7 +102,7 @@ namespace Composite.Data
         ///    
         ///    using (DataConnection connection = new DataConnection())
         ///    {
-        ///       IMyDataType myDataType = Storage.New&lt;IMyDataType&gt;();
+        ///       IMyDataType myDataType = DataConnection.New&lt;IMyDataType&gt;();
         ///       myDataType.Name = "Foo";
         ///       
         ///       connection.Add&lt;IMyDataType&gt;(myDataType); // This will fire the event!
