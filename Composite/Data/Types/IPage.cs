@@ -11,10 +11,11 @@ using Composite.Core.WebClient.Renderings.Data;
 
 namespace Composite.Data.Types
 {
-    /// <summary>    
+    /// <summary>
+    /// This data interface represents a page in C1. This can be used to query pages through a <see cref="Composite.Data.DataConnection"/>. 
+    /// Note that a lot of page related tasks can be done with a <see cref="Composite.Data.SitemapNavigator"/>. 
+    /// And any changes done through this interface and a <see cref="Composite.Data.DataConnection"/> should be done with care. 
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Title("C1 Page")]
     [AutoUpdateble]
     [TypeVersion(4)]
@@ -36,6 +37,7 @@ namespace Composite.Data.Types
         [ImmutableFieldId("{FA2691BB-191E-4520-BF60-F3B7D1762CE0}")]
         Guid Id { get; set; }
 
+
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{46D0EBCD-B604-4cc2-B0B0-C0F589172680}")]
         [ForeignKey(typeof(IPageTemplate), "Id")]
@@ -54,9 +56,11 @@ namespace Composite.Data.Types
         [NotNullValidator()]
         string Title { get; set; }
 
+
         [StoreFieldType(PhysicalStoreFieldType.String, 64, IsNullable = true)]
         [ImmutableFieldId("{3E398FA5-7961-4a75-A6CE-C147B7F4B90A}")]
         string MenuTitle { get; set; }
+
 
         [StoreFieldType(PhysicalStoreFieldType.String, 192)]
         [ImmutableFieldId("{C9A81ADE-DAD5-4740-A891-DF1CE2FAB498}")]
@@ -64,9 +68,11 @@ namespace Composite.Data.Types
         [Composite.Data.Validation.Validators.RegexValidator(@"^[-\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Pc}\p{Lm}]*$")]
         string UrlTitle { get; set; }
 
+
         [StoreFieldType(PhysicalStoreFieldType.String, 192, IsNullable = true)]
         [ImmutableFieldId("{22787AD0-349A-432f-89C7-3D532B613BB7}")]
         string FriendlyUrl { get; set; }
+
 
         [StoreFieldType(PhysicalStoreFieldType.String, 1024, IsNullable = true)]
         [ImmutableFieldId("{3EECB770-1D8F-45e0-9B4D-2CA67A278FA3}")]
