@@ -120,6 +120,9 @@ namespace Composite.Core.Parallelization
             private DataScopeIdentifier _parentThreadDataScope;
             private HttpContext _parentThreadHttpContext;
 
+            private CultureInfo _parentThreadCulture;
+            private CultureInfo _parentThreadUiCulture;
+
             public ThreadWrapper(Action<TSource> body, ThreadDataManagerData parentData)
             {
                 _body = body;
@@ -128,6 +131,11 @@ namespace Composite.Core.Parallelization
                 _parentThreadLocale = LocalizationScopeManager.CurrentLocalizationScope;
                 _parentThreadDataScope = DataScopeManager.CurrentDataScope;
                 _parentThreadHttpContext = HttpContext.Current;
+
+                var currentThread = System.Threading.Thread.CurrentThread;
+
+                _parentThreadCulture = currentThread.CurrentCulture;
+                _parentThreadUiCulture = currentThread.CurrentUICulture;
             }
 
             public void WrapperAction(TSource source)
@@ -137,6 +145,11 @@ namespace Composite.Core.Parallelization
                 bool dataScopePushed = false;
                 bool languageScopePushed = false;
 
+                var currentThread = System.Threading.Thread.CurrentThread;
+
+                CultureInfo originalCulture = currentThread.CurrentCulture;
+                CultureInfo originalUiCulture = currentThread.CurrentUICulture;
+                
                 using (ThreadDataManager.Initialize(_parentData))
                 {
                     try
@@ -155,10 +168,16 @@ namespace Composite.Core.Parallelization
 
                         HttpContext.Current = _parentThreadHttpContext;
 
+                        currentThread.CurrentCulture = _parentThreadCulture;
+                        currentThread.CurrentUICulture = _parentThreadUiCulture;
+
                         _body(source);
                     }
                     finally
                     {
+                        currentThread.CurrentCulture = originalCulture;
+                        currentThread.CurrentUICulture = originalUiCulture;
+
                         HttpContext.Current = originalHttpContext;
 
                         if (dataScopePushed)
