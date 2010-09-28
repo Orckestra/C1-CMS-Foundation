@@ -88,6 +88,7 @@ namespace Composite.C1Console.Trees
                 case CustomUrlActionNodeViewType.DocumentView:
                     OpenViewMessageQueueItem openViewMessageQueueItem = new OpenViewMessageQueueItem()
                     {
+                        ViewId = EntityTokenSerializer.Serialize(entityToken),
                         EntityToken = EntityTokenSerializer.Serialize(entityToken),
                         Label = customUrlActionNodeActionToken.ViewLabel,
                         ToolTip = customUrlActionNodeActionToken.ViewToolTip,
@@ -102,6 +103,7 @@ namespace Composite.C1Console.Trees
                 case CustomUrlActionNodeViewType.GenericView:
                     OpenGenericViewQueueItem openGenericViewQueueItem = new OpenGenericViewQueueItem(entityToken)
                     {
+                        ViewId = EntityTokenSerializer.Serialize(entityToken),
                         Label = customUrlActionNodeActionToken.ViewLabel,
                         ToolTip = customUrlActionNodeActionToken.ViewToolTip,
                         IconResourceHandle = customUrlActionNode.ViewIcon,
