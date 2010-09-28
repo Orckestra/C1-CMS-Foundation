@@ -107,12 +107,24 @@ namespace Composite.Core.WebClient.Renderings.Data
 
             public XhtmlDocument Render(IDataReference dataReferenceToRender)
             {
-                IData dataToRender;
-
-                if (!dataReferenceToRender.IsSet || 
-                    (dataToRender = DataFacade.TryGetDataByUniqueKey<IPage>(dataReferenceToRender.KeyValue)) == null)
+                if (!dataReferenceToRender.IsSet)
                 {
                     return new XhtmlDocument();
+                }
+
+                IData dataToRender;
+
+                if(dataReferenceToRender.ReferencedType == typeof(IPage))
+                {
+                    dataToRender = DataFacade.TryGetDataByUniqueKey<IPage>(dataReferenceToRender.KeyValue);
+                    if(dataToRender == null)
+                    {
+                        return new XhtmlDocument();
+                    }
+                }
+                else
+                {
+                    dataToRender = dataReferenceToRender.Data;
                 }
 
                 string markup = _templateString;
