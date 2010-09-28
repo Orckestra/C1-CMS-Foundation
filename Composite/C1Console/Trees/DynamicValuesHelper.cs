@@ -36,6 +36,8 @@ namespace Composite.C1Console.Trees
         }
 
 
+        public bool UseUrlEncode { get; set; }
+
 
         public string ReplaceValues(DynamicValuesHelperReplaceContext context)
         {
@@ -43,7 +45,7 @@ namespace Composite.C1Console.Trees
 
             if (this.DataFieldValueHelper != null)
             {
-                currentValue = this.DataFieldValueHelper.ReplaceValues(currentValue, context.PiggybagDataFinder, context.CurrentDataItem);
+                currentValue = this.DataFieldValueHelper.ReplaceValues(currentValue, context.PiggybagDataFinder, context.CurrentDataItem, this.UseUrlEncode);
             }
 
             return StringResourceSystemFacade.ParseString(currentValue);

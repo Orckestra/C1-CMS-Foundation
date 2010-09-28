@@ -33,6 +33,7 @@ namespace Composite.C1Console.Trees
         public Dictionary<string, string> PostParameters { get; internal set; }     // Optional
 
         // Cached values
+        private DynamicValuesHelper UrlDynamicValuesHelper { get; set; }
         private DynamicValuesHelper ViewLabelDynamicValuesHelper { get; set; }
         private DynamicValuesHelper ViewToolTipDynamicValuesHelper { get; set; }
 
@@ -40,6 +41,7 @@ namespace Composite.C1Console.Trees
         protected override void OnAddAction(Action<ElementAction> actionAdder, EntityToken entityToken, TreeNodeDynamicContext dynamicContext, DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext)
         {
             CustomUrlActionNodeActionToken actoinToken = new CustomUrlActionNodeActionToken(
+                this.UrlDynamicValuesHelper.ReplaceValues(dynamicValuesHelperReplaceContext),
                 this.ViewLabelDynamicValuesHelper.ReplaceValues(dynamicValuesHelperReplaceContext),
                 this.ViewToolTipDynamicValuesHelper.ReplaceValues(dynamicValuesHelperReplaceContext),
                 this.Serialize(),
@@ -57,6 +59,10 @@ namespace Composite.C1Console.Trees
 
         protected override void OnInitialize()
         {
+            this.UrlDynamicValuesHelper = new DynamicValuesHelper(this.Url);
+            this.UrlDynamicValuesHelper.Initialize(this.OwnerNode);
+            this.UrlDynamicValuesHelper.UseUrlEncode = true;
+
             this.ViewLabelDynamicValuesHelper = new DynamicValuesHelper(this.ViewLabel);
             this.ViewLabelDynamicValuesHelper.Initialize(this.OwnerNode);
 
@@ -86,7 +92,7 @@ namespace Composite.C1Console.Trees
                         Label = customUrlActionNodeActionToken.ViewLabel,
                         ToolTip = customUrlActionNodeActionToken.ViewToolTip,
                         IconResourceHandle = customUrlActionNode.ViewIcon,
-                        Url = customUrlActionNode.Url,
+                        Url = customUrlActionNodeActionToken.Url,
                         UrlPostArguments = customUrlActionNode.PostParameters
                     };
                     // ${icon:Composite.Icons:folder}
@@ -99,7 +105,7 @@ namespace Composite.C1Console.Trees
                         Label = customUrlActionNodeActionToken.ViewLabel,
                         ToolTip = customUrlActionNodeActionToken.ViewToolTip,
                         IconResourceHandle = customUrlActionNode.ViewIcon,
-                        Url = customUrlActionNode.Url,
+                        Url = customUrlActionNodeActionToken.Url,
                         UrlPostArguments = customUrlActionNode.PostParameters
                     };
                     ConsoleMessageQueueFacade.Enqueue(openGenericViewQueueItem, currentConsoleId);
@@ -108,7 +114,7 @@ namespace Composite.C1Console.Trees
 
                 case CustomUrlActionNodeViewType.PageBrowser:
                     Dictionary<string, string> arguments = new Dictionary<string, string>();
-                    arguments.Add("URL", customUrlActionNode.Url);
+                    arguments.Add("URL", customUrlActionNodeActionToken.Url);
 
                     OpenHandledViewMessageQueueItem openHandledViewMessageQueueItem = new OpenHandledViewMessageQueueItem(
                         EntityTokenSerializer.Serialize(entityToken, true), 
@@ -121,7 +127,7 @@ namespace Composite.C1Console.Trees
 
 
                 case CustomUrlActionNodeViewType.FileDownload:
-                    DownloadFileMessageQueueItem downloadFileMessageQueueItem = new DownloadFileMessageQueueItem(customUrlActionNode.Url);
+                    DownloadFileMessageQueueItem downloadFileMessageQueueItem = new DownloadFileMessageQueueItem(customUrlActionNodeActionToken.Url);
 
                     ConsoleMessageQueueFacade.Enqueue(downloadFileMessageQueueItem, currentConsoleId);                    
                     break;
@@ -141,8 +147,9 @@ namespace Composite.C1Console.Trees
         private List<PermissionType> _permissionTypes;
 
 
-        public CustomUrlActionNodeActionToken(string viewLabel, string viewToolTip, string serializedActionNode, List<PermissionType> permissionTypes)
+        public CustomUrlActionNodeActionToken(string url, string viewLabel, string viewToolTip, string serializedActionNode, List<PermissionType> permissionTypes)
         {
+            this.Url = url;
             this.ViewLabel = viewLabel;
             this.ViewToolTip = viewToolTip;
             _permissionTypes = permissionTypes;
@@ -150,6 +157,7 @@ namespace Composite.C1Console.Trees
         }
 
 
+        public string Url { get; private set; }
         public string ViewLabel { get; private set; }
         public string ViewToolTip { get; private set; }
         public string SerializedActionNode { get; private set; }
@@ -166,6 +174,7 @@ namespace Composite.C1Console.Trees
         {
             StringBuilder sb = new StringBuilder();
 
+            StringConversionServices.SerializeKeyValuePair(sb, "Url", this.Url);
             StringConversionServices.SerializeKeyValuePair(sb, "ViewLabel", this.ViewLabel);
             StringConversionServices.SerializeKeyValuePair(sb, "ViewToolTip", this.ViewToolTip);
             StringConversionServices.SerializeKeyValuePair(sb, "SerializedActionNode", this.SerializedActionNode);
@@ -181,6 +190,7 @@ namespace Composite.C1Console.Trees
 
             return new CustomUrlActionNodeActionToken
             (
+                StringConversionServices.DeserializeValueString(dic["Url"]),
                 StringConversionServices.DeserializeValueString(dic["ViewLabel"]),
                 StringConversionServices.DeserializeValueString(dic["ViewToolTip"]),
                 StringConversionServices.DeserializeValueString(dic["SerializedActionNode"]),

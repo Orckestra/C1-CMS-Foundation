@@ -48,7 +48,7 @@ namespace Composite.C1Console.Trees
 
 
 
-        public string ReplaceValues(string currentValue, PiggybagDataFinder piggybagDataFinder, IData currentDataItem = null)
+        public string ReplaceValues(string currentValue, PiggybagDataFinder piggybagDataFinder, IData currentDataItem = null, bool useUrlEncode = false)
         {
             string result = currentValue;
 
@@ -71,6 +71,11 @@ namespace Composite.C1Console.Trees
                     IData referencedData = data.GetReferenced(entry.PropertyInfo.Name);
 
                     value = referencedData.GetLabel();
+                }
+
+                if (useUrlEncode)
+                {
+                    value = HttpUtility.UrlEncode(value.ToString());
                 }
 
                 result = result.Replace(entry.Match, value.ToString());
