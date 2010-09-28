@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Web;
 using Composite.Data;
 using Composite.Core.Types;
 using Composite.C1Console.Trees.Foundation.AttachmentPoints;
