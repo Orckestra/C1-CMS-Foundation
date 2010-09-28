@@ -26,6 +26,8 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class PageMetaDataFacade
     {
+        private static readonly Guid DefaultCompositionContainerId = new Guid("eb210a75-be25-401f-b0d4-b3787bce36fa");
+
         internal static readonly string MetaDataType_IdFieldName = "Id";
         internal static readonly string MetaDataType_PageReferenceFieldName = "PageId";
         internal static readonly string MetaDataType_MetaDataDefinitionFieldName = "FieldName";
@@ -135,7 +137,7 @@ namespace Composite.Data
                 {
                     ICompositionContainer defaultContainer = DataFacade.BuildNew<ICompositionContainer>();
 
-                    defaultContainer.Id = Guid.NewGuid();
+                    defaultContainer.Id = DefaultCompositionContainerId;
                     defaultContainer.Label = "${Composite.Management, DataCompositionVisabilityFacade.DefaultContainerLabel}";
 
                     DataFacade.AddNew<ICompositionContainer>(defaultContainer);
