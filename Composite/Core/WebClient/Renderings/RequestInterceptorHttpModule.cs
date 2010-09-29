@@ -76,6 +76,7 @@ namespace Composite.Core.WebClient.Renderings
                 UrlBuilder internalPageUrl = pageUrl.Build(PageUrlType.Unpublished);
 
                 internalPageUrl.AddQueryParameters(notInvolvedQueryParameters);
+                internalPageUrl.PathInfo = originalUrlString.PathInfo;
 
                 context.RewritePath(internalPageUrl.FilePath, context.Request.PathInfo, internalPageUrl.QueryString);
 
