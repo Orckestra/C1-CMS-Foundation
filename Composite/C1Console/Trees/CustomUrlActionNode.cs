@@ -86,31 +86,55 @@ namespace Composite.C1Console.Trees
             switch (customUrlActionNode.ViewType)
             {
                 case CustomUrlActionNodeViewType.DocumentView:
-                    OpenViewMessageQueueItem openViewMessageQueueItem = new OpenViewMessageQueueItem()
                     {
-                        ViewId = EntityTokenSerializer.Serialize(entityToken),
-                        EntityToken = EntityTokenSerializer.Serialize(entityToken),
-                        Label = customUrlActionNodeActionToken.ViewLabel,
-                        ToolTip = customUrlActionNodeActionToken.ViewToolTip,
-                        IconResourceHandle = customUrlActionNode.ViewIcon,
-                        Url = customUrlActionNodeActionToken.Url,
-                        UrlPostArguments = customUrlActionNode.PostParameters
-                    };
-                    // ${icon:Composite.Icons:folder}
-                    ConsoleMessageQueueFacade.Enqueue(openViewMessageQueueItem, currentConsoleId);
+                        string viewId = Guid.NewGuid().ToString();
+                        string serializedEntityToken = EntityTokenSerializer.Serialize(entityToken, true);
+
+                        OpenViewMessageQueueItem openViewMessageQueueItem = new OpenViewMessageQueueItem()
+                        {
+                            ViewId = viewId,
+                            EntityToken = serializedEntityToken,
+                            Label = customUrlActionNodeActionToken.ViewLabel,
+                            ToolTip = customUrlActionNodeActionToken.ViewToolTip,
+                            IconResourceHandle = customUrlActionNode.ViewIcon,
+                            Url = customUrlActionNodeActionToken.Url,
+                            UrlPostArguments = customUrlActionNode.PostParameters
+                        };
+                        ConsoleMessageQueueFacade.Enqueue(openViewMessageQueueItem, currentConsoleId);
+
+                        BindEntityTokenToViewQueueItem bindEntityTokenToViewQueueItem = new BindEntityTokenToViewQueueItem()
+                        {
+                            ViewId = viewId,
+                            EntityToken = serializedEntityToken
+                        };
+                        ConsoleMessageQueueFacade.Enqueue(bindEntityTokenToViewQueueItem, currentConsoleId);
+                    }
                     break;
 
                 case CustomUrlActionNodeViewType.GenericView:
-                    OpenGenericViewQueueItem openGenericViewQueueItem = new OpenGenericViewQueueItem(entityToken)
                     {
-                        ViewId = EntityTokenSerializer.Serialize(entityToken),
-                        Label = customUrlActionNodeActionToken.ViewLabel,
-                        ToolTip = customUrlActionNodeActionToken.ViewToolTip,
-                        IconResourceHandle = customUrlActionNode.ViewIcon,
-                        Url = customUrlActionNodeActionToken.Url,
-                        UrlPostArguments = customUrlActionNode.PostParameters
-                    };
-                    ConsoleMessageQueueFacade.Enqueue(openGenericViewQueueItem, currentConsoleId);
+                        string viewId = Guid.NewGuid().ToString();
+                        string serializedEntityToken = EntityTokenSerializer.Serialize(entityToken, true);
+
+                        OpenGenericViewQueueItem openGenericViewQueueItem = new OpenGenericViewQueueItem(entityToken)
+                        {
+                            ViewId = viewId,
+                            EntityToken = serializedEntityToken,
+                            Label = customUrlActionNodeActionToken.ViewLabel,
+                            ToolTip = customUrlActionNodeActionToken.ViewToolTip,
+                            IconResourceHandle = customUrlActionNode.ViewIcon,
+                            Url = customUrlActionNodeActionToken.Url,
+                            UrlPostArguments = customUrlActionNode.PostParameters
+                        };
+                        ConsoleMessageQueueFacade.Enqueue(openGenericViewQueueItem, currentConsoleId);
+
+                        BindEntityTokenToViewQueueItem bindEntityTokenToViewQueueItem = new BindEntityTokenToViewQueueItem()
+                        {
+                            ViewId = viewId,
+                            EntityToken = serializedEntityToken
+                        };
+                        ConsoleMessageQueueFacade.Enqueue(bindEntityTokenToViewQueueItem, currentConsoleId);
+                    }
                     break;
 
 
