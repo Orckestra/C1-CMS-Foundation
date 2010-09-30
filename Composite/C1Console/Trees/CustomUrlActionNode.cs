@@ -8,6 +8,8 @@ using Composite.C1Console.Elements;
 using Composite.Core.ResourceSystem;
 using Composite.C1Console.Security;
 using Composite.Core.Serialization;
+using Composite.Core.WebClient;
+using Composite.Core.IO;
 
 
 namespace Composite.C1Console.Trees
@@ -40,8 +42,11 @@ namespace Composite.C1Console.Trees
 
         protected override void OnAddAction(Action<ElementAction> actionAdder, EntityToken entityToken, TreeNodeDynamicContext dynamicContext, DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext)
         {
+            string url = this.UrlDynamicValuesHelper.ReplaceValues(dynamicValuesHelperReplaceContext);
+            url = UrlUtils.ResolvePublicUrl(url);                       
+
             CustomUrlActionNodeActionToken actoinToken = new CustomUrlActionNodeActionToken(
-                this.UrlDynamicValuesHelper.ReplaceValues(dynamicValuesHelperReplaceContext),
+                url,
                 this.ViewLabelDynamicValuesHelper.ReplaceValues(dynamicValuesHelperReplaceContext),
                 this.ViewToolTipDynamicValuesHelper.ReplaceValues(dynamicValuesHelperReplaceContext),
                 this.Serialize(),

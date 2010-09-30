@@ -53,9 +53,15 @@ namespace Composite.Core.WebClient
         public static string ResolvePublicUrl(string publicRelativePath)
         {
             if (publicRelativePath == null) throw new ArgumentNullException("publicRelativePath");
-            if (publicRelativePath.IndexOf('~') > -1 || publicRelativePath.StartsWith("/") )
+
+            if (publicRelativePath.StartsWith("/"))
             {
                 throw new ArgumentException("The relative URL may not be rooted or contain '~'");
+            }
+
+            if (publicRelativePath.StartsWith("~/"))
+            {
+                publicRelativePath = publicRelativePath.Remove(0, 2);
             }
 
             return string.Format("{0}/{1}", _applicationVirtualPath, publicRelativePath);
