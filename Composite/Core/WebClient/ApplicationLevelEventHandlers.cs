@@ -7,6 +7,8 @@ using Composite.Core.Threading;
 using Composite.Core.Types;
 using Composite.Core.Extensions;
 using System.Web;
+using Composite.Core.WebClient.Renderings;
+using Composite.Data;
 
 namespace Composite.Core.WebClient
 {
@@ -183,6 +185,25 @@ namespace Composite.Core.WebClient
             }
         }
 
+
+        public static string GetVaryByCustomString(HttpContext context, string custom)
+        {
+            if (custom == "C1Page_ChangeDate")
+            {
+                var pageUrl = context.Items[RequestInterceptorHttpModule.HttpContextItem_C1PageUrl] as PageUrl;
+                if (pageUrl != null)
+                {
+                    var page = pageUrl.GetPage();
+                    if (page != null)
+                    {
+                        return page.ChangeDate.ToString();
+                    }
+                }
+                return string.Empty;
+            }
+
+            return null;
+        }
 
 
         internal static void ApplicationStartInitialize(bool displayDebugInfo = false)

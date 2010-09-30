@@ -33,5 +33,10 @@
     {
         ApplicationLevelEventHandlers.Application_Error(sender, e);
     }
+
+    public override string GetVaryByCustomString(HttpContext context, string custom)
+    {
+        return ApplicationLevelEventHandlers.GetVaryByCustomString(context, custom) ?? base.GetVaryByCustomString(context, custom);
+    }
 </script>
 

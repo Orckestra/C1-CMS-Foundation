@@ -3,7 +3,6 @@ using System.Collections.Specialized;
 using System.Web;
 using Composite.Data;
 using Composite.Core.Threading;
-using Composite.Core.WebClient;
 using Composite.Core.Extensions;
 using Composite.Core.Configuration;
 
@@ -12,6 +11,8 @@ namespace Composite.Core.WebClient.Renderings
 {
     internal class RequestInterceptorHttpModule : IHttpModule
     {
+        internal static readonly string HttpContextItem_C1PageUrl = "C1_PageUrl";
+
         public void Init(HttpApplication context)
         {
             context.BeginRequest += context_BeginRequest;
@@ -84,6 +85,8 @@ namespace Composite.Core.WebClient.Renderings
                 {
                     context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
                 }
+
+                context.Items.Add("C1_PageUrl", pageUrl);
 
                 return true;
             }
