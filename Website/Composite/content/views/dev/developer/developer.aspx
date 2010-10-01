@@ -21,6 +21,8 @@
 					<ui:tabpanel>
 						<ui:tree>
 							<ui:treebody>
+								<ui:treenode label="C1Function" oncommand="Developer.load('test-c1function')"/>
+								<ui:treenode label="Writer" oncommand="Developer.load('test-bespin')"/>
 								<ui:treenode label="UpdateManager Fun :)" oncommand="Developer.load('test-mothfun')"/>
 								<ui:treenode label="Non-framework doc" oncommand="Developer.load('test-nonframework')"/>
 								<!-- 

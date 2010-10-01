@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>C1Function Test</title>
+		<script type="text/javascript" src="/Composite/scripts/source/page/functions/C1Function.js"></script>
+		<script type="text/javascript" src="/Composite/scripts/source/page/functions/C1FunctionParam.js"></script>
+		<script type="text/javascript">
+
+			// SIMPLE ................................................................................
+
+			/**
+			 * Get sitemap as XML.
+			 */
+			function getSitemapXML () {
+				
+				new C1Function ( "Composite.Pages.SitemapXml" ).invoke ( "text/xml", function ( doc ) {
+					alert ( doc );
+				});
+			}
+
+			/**
+			 * Get sitemap as string.
+			 */
+			function getSitemapString () {
+
+				new C1Function ( "Composite.Pages.SitemapXml" ).invoke ( "text/plain", function ( text ) {
+					alert ( text );
+				});
+			}
+
+			/**
+			 * Get sitemap as string.
+			 */
+			function getSitemapJSON () {
+
+				new C1Function ( "Composite.Pages.SitemapXml" ).invoke ( "application/json", function ( object ) {
+					alert ( object );
+				});
+			}
+
+			// PARAMS ................................................................................
+			
+			/*
+			 * A serialized HTML document :)
+			 */		
+			var XHTML_STRING = "&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;&#xD;&#xA;&lt;head&gt;&lt;/head&gt;&#xD;&#xA;&lt;body&gt;&#xD;&#xA;&lt;p&gt;Hello from the XHTML document!&lt;/p&gt;&#xD;&#xA;&lt;/body&gt;&#xD;&#xA;&lt;/html&gt;";
+
+
+			
+			/**
+			 * Get XHTML as XML.
+			 */
+			function getDocumentXML () {
+				
+				new C1Function ( "Composite.Constant.XhtmlDocument" )
+					.addParam ( "Constant", XHTML_STRING )
+					.invoke ( "text/xml", function ( doc ) {
+						alert ( doc );
+					});
+			}
+
+			/**
+			 * Get XHTML as string.
+			 */
+			function getDocumentString () {
+
+				new C1Function ( "Composite.Constant.XhtmlDocument", "text/plain" )
+					.addParam ( "Constant", XHTML_STRING )
+					.invoke ( "text/plain", function ( text ) {
+						alert ( text );
+					});
+			}
+
+			/**
+			 * Get XHTML as JSON.
+			 */
+			function getDocumentJSON () {
+
+				new C1Function ( "Composite.Constant.XhtmlDocument", "application/json" )
+					.addParam ( "Constant", XHTML_STRING )
+					.invoke ( "application/json", function ( object ) {
+						alert ( object );
+					});
+			}
+
+
+			// NESTED ................................................................................
+			
+			/**
+			 * Get sitemap as XML.
+			 */
+			function getDocumentXMLnested () {
+
+				new C1Function ( "Composite.Constant.XhtmlDocument" )
+					.addParam ( "Constant", 
+						new C1Function ( "Composite.Constant.XhtmlDocument" )
+							.addParam ( "Constant", XHTML_STRING )
+					)
+					.invoke ( "text/xml", function ( doc ) {
+						alert ( doc );
+					});
+
+				// ALTERNATIVE SYNTAX!
+				
+				/*
+				var f1 = new C1Function ( "Composite.Constant.XhtmlDocument" );
+				var f2 = new C1Function ( "Composite.Constant.XhtmlDocument" );
+				f2.addParam ( "Constant", XHTML_STRING );
+				f1.addParam ( "Constant", f2 );
+				f1.invokeBlocking ( "text/xml );
+				var doc = f1.result; 
+				alert ( doc );
+				*/
+
+				// MORE ALTERNATIVE SYNTAX
+				/*
+				var handler = {
+					handleC1FunctionResult : function ( doc ) {
+						alert ( doc );
+					}
+				}		
+				f1.invoke ( "text/xml", handler );
+				*/
+			}
+
+			/**
+			 * Get sitemap as string.
+			 */
+			function getDocumentStringnested () {
+
+				new C1Function ( "Composite.Constant.XhtmlDocument" )
+					.addParam ( "Constant", 
+						new C1Function ( "Composite.Constant.XhtmlDocument" )
+							.addParam ( "Constant", XHTML_STRING )
+					)
+					.invoke ( "text/plain", function ( text ) {
+						alert ( text );
+					});
+			}
+
+			/**
+			 * Get sitemap as string.
+			 */
+			function getDocumentJSONnested () {
+
+				new C1Function ( "Composite.Constant.XhtmlDocument" )
+					.addParam ( "Constant", 
+						new C1Function ( "Composite.Constant.XhtmlDocument" )
+							.addParam ( "Constant", XHTML_STRING )
+					)
+					.invoke ( "application/json", function ( object ) {
+						alert ( object );
+					});
+			}
+			
+		</script>
+		<style type="text/css">
+			body {
+				background-color: white;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Omnicorp Ajax Division</h1>
+		<hr/>
+		<h2>Simple Functions</h2>
+		<p>
+			<input type="submit" value="Get sitemap as XML" onclick="getSitemapXML ()" />
+		</p>
+		<p>
+			<input type="submit" value="Get sitemap as string" onclick="getSitemapString ()" />
+		</p>
+		<p>
+			<input type="submit" value="Get sitemap as JSON" onclick="getSitemapJSON ()" />
+		</p>
+		<hr/>
+		<h2>Param Functions</h2>
+		<p>
+			<input type="submit" value="Get XHTML document as XML" onclick="getDocumentXML ()" />
+		</p>
+		<p>
+			<input type="submit" value="Get XHTML document as string" onclick="getDocumentString ()" />
+		</p>
+		<p>
+			<input type="submit" value="Get XHTML document as JSON" onclick="getDocumentJSON ()" />
+		</p>
+		<h2>Nested Functions</h2>
+		<p>
+			<input type="submit" value="Get XHTML document as XML" onclick="getDocumentXMLnested ()" />
+		</p>
+		<p>
+			<input type="submit" value="Get XHTML document as string" onclick="getDocumentStringnested ()" />
+		</p>
+		<p>
+			<input type="submit" value="Get XHTML document as JSON" onclick="getDocumentJSONnested ()" />
+		</p>
+	</body>
+</html>
