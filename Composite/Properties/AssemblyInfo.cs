@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Composite C1 2.0")]
+[assembly: AssemblyTitle("Composite C1 2.0 Patch 1")]
 [assembly: AssemblyDescription("Composite C1 Core classes")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Composite A/S")]
