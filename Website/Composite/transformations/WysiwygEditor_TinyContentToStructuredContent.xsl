@@ -33,6 +33,9 @@
 
 	<!-- strip empty attributes -->
 	<xsl:template match="@*[.='']" />
+	
+	<!-- strip this attribute -->
+	<xsl:template match="@id[.='__mce']"/>
 
 	<!-- strip tinymce internals -->
 	<xsl:template match="@mce_serialized|@mce_keep|@mce_src|@mce_href|@mce_bogus|@mce_style" />
