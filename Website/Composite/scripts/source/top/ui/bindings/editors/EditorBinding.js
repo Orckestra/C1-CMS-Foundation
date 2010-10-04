@@ -298,7 +298,7 @@ EditorBinding.prototype._setup = function () {
 	var value = this.getProperty ( "value" );
 	if ( value != null ) {
 		value = decodeURIComponent ( value );
-		value = value.replace ( /\&#xA;/g, EditorBinding.LINE_BREAK_ENTITY_HACK );
+		//value = value.replace ( /\&#xA;/g, EditorBinding.LINE_BREAK_ENTITY_HACK );
 		this._startContent = value;
 	}
 }
@@ -323,7 +323,7 @@ EditorBinding.prototype.onBindingDispose = function () {
  * Initialize editor.
  */
 EditorBinding.prototype._initialize = function () {
-	
+
 	this.subscribe ( BroadcastMessages.APPLICATION_BLURRED );
 	this.subscribe ( BroadcastMessages.MOUSEEVENT_MOUSEUP );
 	
@@ -495,9 +495,26 @@ EditorBinding.prototype.handleEvent = function ( e ) {
 		 * Activate editor on editor mousedown.
 		 */
 		case DOMEvents.MOUSEDOWN :
-			if ( target.ownerDocument == this.getEditorDocument ()) {
-				if ( !this._isActivated ) {
-					this._activateEditor ( true );
+			
+			/*
+			 * TODO: MOVE THIS!
+			 */
+			if ( this instanceof BespinEditorBinding ) {	
+				if ( target == this._bespinElement ) {
+					this.dispatchAction ( Binding.ACTION_ACTIVATED );
+					if ( !this._isActivated ) {
+						this._activateEditor ( true );
+					}
+					if ( DOMEvents.isRightButton ( e )) { // block contextmenu for now...	
+						DOMEvents.stopPropagation ( e );
+						DOMEvents.preventDefault ( e );
+					}
+				}
+			} else {
+				if ( target.ownerDocument == this.getEditorDocument ()) {
+					if ( !this._isActivated ) {
+						this._activateEditor ( true );
+					}
 				}
 			}
 			break;
@@ -557,7 +574,7 @@ EditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 		 * whether or not this something should deactivate the editor. 
 		 */
 		case BroadcastMessages.MOUSEEVENT_MOUSEUP :
-			
+				
 			if ( !this.isDialogMode ) {
 				try {
 					var isDeactivate = true;
@@ -569,8 +586,14 @@ EditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 						}
 					} else {
 						target = DOMEvents.getTarget ( arg );
-						if ( target && target.ownerDocument == this.getEditorDocument ()) {
-							isDeactivate = false;
+						if ( this instanceof BespinEditorBinding ) {
+							if ( target == this._bespinElement ) {
+								isDeactivate = false;
+							}
+						} else {
+							if ( target && target.ownerDocument == this.getEditorDocument ()) {
+								isDeactivate = false;
+							}
 						}
 					}
 					if ( isDeactivate ) {
@@ -594,7 +617,7 @@ EditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 EditorBinding.prototype._activateEditor = function ( isActivate ) {
 	
 	if ( isActivate != this._isActivated ) {
-	
+		
 		this._isActivated = isActivate;
 		EditorBinding.isActive = isActivate;
 		

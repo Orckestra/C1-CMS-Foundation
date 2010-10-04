@@ -3,6 +3,11 @@ VisualEditorPropertiesToolBarGroupBinding.prototype.constructor = VisualEditorPr
 VisualEditorPropertiesToolBarGroupBinding.superclass = ToolBarGroupBinding.prototype;
 
 /**
+ * Classname reserved for focused element.
+ */
+VisualEditorPropertiesToolBarGroupBinding.CLASSNAME_FOCUSED = "mceC1Focused";
+
+/**
  * @class
  * @implements {IWysiwygEditorComponent}
  */
@@ -46,6 +51,12 @@ function VisualEditorPropertiesToolBarGroupBinding () {
 	 * @type {Map<string><WysiwygEditorToolBarButtonBinding}
 	 */
 	this._buttons = new Map ();
+	
+	/**
+	 * Tracking the focused image.
+	 * @type {HTMLImageElement}
+	 */
+	this._focusedImage = null;
 	
 	/*
 	 * Returnable.
@@ -142,8 +153,16 @@ VisualEditorPropertiesToolBarGroupBinding.prototype.initializeComponent = functi
 VisualEditorPropertiesToolBarGroupBinding.prototype.handleNodeChange = function ( element ) {
 	
 	this._tinyElement = element;
+	var classname = VisualEditorPropertiesToolBarGroupBinding.CLASSNAME_FOCUSED;
 	
 	if ( this._isImage ()) {
+		
+		if ( this._focusedImage != null ) {
+			CSSUtil.detachClassName ( this._focusedImage, classname );
+		}
+		CSSUtil.attachClassName ( element, classname );
+		this._focusedImage = element;
+		
 		var command = null;
 		if ( this._isRendering ()) {
 			command = "compositeInsertRendering";
@@ -162,8 +181,15 @@ VisualEditorPropertiesToolBarGroupBinding.prototype.handleNodeChange = function 
 				this.show ();
 			}
 		}
-	} else if ( this.isVisible ) {
-		this.hide ();
+	} else {
+		
+		if ( this._focusedImage != null ) {
+			CSSUtil.detachClassName ( this._focusedImage, classname );
+			this._focusedImage = null;
+		}
+		if ( this.isVisible ) {
+			this.hide ();
+		}
 	}
 }
 
@@ -232,24 +258,6 @@ VisualEditorPropertiesToolBarGroupBinding.prototype._isField = function () {
 }
 
 /**
- * TODO: COMBINE WITH POPUP!
- * Is media?
- * @return {boolean}
- *
-VisualEditorPropertiesToolBarGroupBinding.prototype._isMedia = function () {
-
-	return this._isImage () && 
-		(
-			CSSUtil.hasClassName ( this._tinyElement, WysiwygEditorBinding.CLASSNAME_MEDIA ) ||
-			CSSUtil.hasClassName ( this._tinyElement, WysiwygEditorBinding.CLASSNAME_FLASH ) ||
-			CSSUtil.hasClassName ( this._tinyElement, WysiwygEditorBinding.CLASSNAME_QUICKTIME ) ||
-			CSSUtil.hasClassName ( this._tinyElement, WysiwygEditorBinding.CLASSNAME_SHOCKWAVE ) ||
-			CSSUtil.hasClassName ( this._tinyElement, WysiwygEditorBinding.CLASSNAME_WINMEDIA )
-		);
-}
-*/
-
-/**
  * Hide all buttons when editor looses focus.
  * @param {boolean} isDisabled
  */
@@ -264,11 +272,5 @@ VisualEditorPropertiesToolBarGroupBinding.prototype._setSpecialVisibility = func
 				}
 			});
 		}
-	} else {
-		/*
-		if ( !this.isVisible ) {
-			this.show ();
-		}
-		*/
 	}
 }

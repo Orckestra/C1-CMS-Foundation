@@ -32,9 +32,9 @@
                 return "css";
             case "text/javascript":
             case "text/js":
-                return "javascript";
-            case "text/x-csharp":
-                return "csharp";
+                return "js";
+			case "text/x-csharp":
+                return "cs";
             default:
                 return "text";
         }

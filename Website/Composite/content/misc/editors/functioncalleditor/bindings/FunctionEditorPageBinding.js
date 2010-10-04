@@ -34,7 +34,7 @@ FunctionEditorPageBinding.prototype.toString = function () {
 FunctionEditorPageBinding.prototype.onBeforePageInitialize = function () {
 	
 	FunctionEditorPageBinding.superclass.onBeforePageInitialize.call ( this );
-	this.addActionListener ( SourceEditorBinding.ACTION_INITIALIZED ); 
+	this.addActionListener ( BespinEditorBinding.ACTION_INITIALIZED ); 
 }
 
 /**
@@ -59,8 +59,8 @@ FunctionEditorPageBinding.prototype.handleAction = function ( action ) {
 			}
 			break;
 		
-		case SourceEditorBinding.ACTION_INITIALIZED :
-			this.removeActionListener ( SourceEditorBinding.ACTION_INITIALIZED );
+		case BespinEditorBinding.ACTION_INITIALIZED :
+			this.removeActionListener ( action.type );
 			this._buildSwitchButton ( action.target );
 			action.consume ();
 			

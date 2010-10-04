@@ -1,0 +1,23 @@
+html,
+body {
+	margin: 0;
+	padding: 0;
+	background-color: black;
+	overflow: hidden;
+}
+div#editor {
+	width: 800px;
+	height: 200px;
+	outline: 1px solid lime;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+div#editor div {
+	margin: 0 !important;
+	padding: 0 !important;
+	position: static !important;
+}
+canvas {
+	margin: 0 !important;
+	display: block;
+}

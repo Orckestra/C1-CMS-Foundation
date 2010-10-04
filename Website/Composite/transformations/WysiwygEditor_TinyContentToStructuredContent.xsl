@@ -50,6 +50,18 @@
 	</xsl:template>
 	
 	<!-- more tinymce internals -->
+	<xsl:template match="@class[contains(.,'mceC1Focused')]">
+		<xsl:choose>
+			<xsl:when test=".='mceC1Focused'" />
+			<xsl:otherwise>
+				<xsl:attribute name="class">
+					<xsl:value-of select="substring-before(.,' mceC1Focused')" />
+				</xsl:attribute>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<!-- more tinymce internals -->
 	<xsl:template match="@class[contains(.,'mceItemTable')]">
 		<xsl:choose>
 			<xsl:when test=".='mceItemTable'" />

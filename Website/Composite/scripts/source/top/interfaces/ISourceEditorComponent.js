@@ -3,7 +3,8 @@
  */
 var ISourceEditorComponent = new function () {
 	
-	/** 
+	/**
+	 * TODO: REPLACE WITH BESPINEDITORCOMPONENT! 
 	 * @param {SourceEditorBinding} editor
 	 * @param {HTMLIframeElement} frame
 	 * @type {CodePress} engine

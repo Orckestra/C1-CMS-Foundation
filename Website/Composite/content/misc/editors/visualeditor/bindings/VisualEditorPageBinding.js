@@ -50,7 +50,7 @@ function VisualEditorPageBinding () {
 	this.isSourceMode = false;
 	
 	/**
-	 * @type {SourceEditorBinding}
+	 * @type {BespinEditorBinding}
 	 */
 	this._sourceEditor = null;
 	
@@ -84,7 +84,7 @@ VisualEditorPageBinding.prototype.toString = function () {
 VisualEditorPageBinding.prototype.onBindingAttach = function () {
 	
 	VisualEditorPageBinding.superclass.onBindingAttach.call ( this );
-	this.addActionListener ( SourceEditorBinding.ACTION_INITIALIZED );
+	this.addActionListener ( BespinEditorBinding.ACTION_INITIALIZED );
 }
 
 /**
@@ -289,6 +289,19 @@ VisualEditorPageBinding.prototype._synchronizeSwitch = function () {
 	var isSuccess = this.setContent ( content );
 	if ( !isSuccess ) {
 		this.isSourceMode = !this.isSourceMode;
+	} else {
+		
+		/*
+		 * Hide "flash-of-previous-code"
+		 * when switching to source editor.
+		 */
+		if ( this._sourceEditor != null ) {
+			var self = this;
+			setTimeout ( function () {
+				self._sourceEditor.cover ( !self.isSourceMode );
+			}, 200 )
+			
+		}
 	}
 	
 	/*
@@ -390,7 +403,7 @@ VisualEditorPageBinding.prototype.handleAction = function ( action ) {
 	
 	switch ( action.type ) {
 		
-		case SourceEditorBinding.ACTION_INITIALIZED :
+		case BespinEditorBinding.ACTION_INITIALIZED :
 			
 			this._sourceEditor = binding;
 			this._buildSwitchButton ();
@@ -404,9 +417,8 @@ VisualEditorPageBinding.prototype.handleAction = function ( action ) {
 			var self = this;
 			setTimeout ( function () {
 				if ( self._synchronizeSwitch ()) {
-					cover.hide ();
 					setTimeout ( function () {
-						binding.blurEditor ();
+						cover.hide ();
 					}, 100 );
 				} else {
 					throw "Illegal content";

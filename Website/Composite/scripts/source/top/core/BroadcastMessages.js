@@ -27,6 +27,11 @@ _BroadcastMessages.prototype = {
 	APPLICATION_BLURRED					: "application blurred",
 	APPLICATION_FOCUSED					: "application focused",
 	APPLICATION_KICKSTART				: "application kickstart",
+	
+	/*
+	 * Experimental
+	 */
+	BESPIN_LOADED						: "bespin loaded",
 
 	/*
 	 * Mouse events
