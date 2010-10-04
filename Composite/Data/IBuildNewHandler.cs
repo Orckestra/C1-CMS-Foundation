@@ -3,7 +3,7 @@ using System;
 
 namespace Composite.Data
 {
-    internal interface IBuildNewHandler
+    public interface IBuildNewHandler
     {
         Type GetTypeToBuild(Type dataType);
     }
