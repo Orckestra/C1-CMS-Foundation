@@ -47,7 +47,7 @@ new function () {
 			if ( Client.isMozilla ) {
 				var self = this;
 				ed.onDblClick.add ( function ( editor, e ) {
-					if ( e.target.nodeName == "IMG" ) {
+					if ( e.target.nodeName.toLowerCase () == "img" ) {
 						switch ( e.target.className ) {
 							case VisualEditorBinding.FUNCTION_CLASSNAME :
 							case VisualEditorBinding.FIELD_CLASSNAME :
@@ -83,7 +83,7 @@ new function () {
 				} else {
 					img = self.editor.selection.getNode ();
 				}
-				if ( img.nodeName != "IMG" ) {
+				if ( img.nodeName.toLowerCase () != "img" ) {
 					img = null;
 				}
 				

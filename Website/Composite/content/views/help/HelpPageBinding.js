@@ -269,7 +269,7 @@ HelpPageBinding.prototype._onWindowLoaded = function () {
 	var doc = win.getContentDocument ();
 	var links = new List ( doc.links );
 	links.each ( function ( link ) {
-		if ( link.href != Constants.DUMMY_LINK ) {
+		if ( link.href != Constants.DUMMY_LINK && link.target != "_blank" ) {
 			link.onclick = HelpPageBinding.navigate;
 		}
 	});

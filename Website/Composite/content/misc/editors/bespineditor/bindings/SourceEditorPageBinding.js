@@ -141,10 +141,14 @@ SourceEditorPageBinding.prototype.setContent = function ( string ) {
 		this._editorTextBox.setValue ( string );
 		this._editorTextBox.clean ();
 	} else {
-		/*
-		 * Unixification!!!
-		 */
+		
+		// Unixification.
 		string = string.replace ( /\r\n/g, "\n" );
+		
+		// Fixing the title char
+		// TODO: probably on server...
+		string = string.replace ( /\"%7E/g, "\"~" );
+		
 		this._bespinEditor.value = string;
 		this._bespinEditor.setLineNumber ( 1 );
 	}
