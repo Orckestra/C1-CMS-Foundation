@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Web;
+using System.Web.Caching;
 using System.Xml.Linq;
 using Composite.Functions;
-using Composite.C1Console.Security;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.Core.ResourceSystem;
 using Composite.Core.Instrumentation;
 
 namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Xml
@@ -22,11 +20,36 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         {
             string url = parameters.GetParameter<string>("Url");
 
-            using (TimerProfiler functionTimerProfiler = TimerProfilerFacade.CreateTimerProfiler(url))
-            {
-                XElement doc = XElement.Load(url);
+            bool cachingEnabled = false;
 
-                return doc;
+            int cachePeriod;
+            if (parameters.TryGetParameter("CacheTime", out cachePeriod))
+            {
+                cachingEnabled = cachePeriod > 0;
+            }
+
+            string cacheKey = null;
+            if (cachingEnabled)
+            {
+                cacheKey = typeof(LoadUrlFunction).FullName + "|" + url;
+                var cachedValue = HttpRuntime.Cache.Get(cacheKey) as XElement;
+                if (cachedValue != null)
+                {
+                    return cachedValue;
+                }
+            }
+
+            using (TimerProfilerFacade.CreateTimerProfiler(url))
+            {
+                XElement value = XElement.Load(url);
+
+                if (cachingEnabled)
+                {
+                    HttpRuntime.Cache.Add(cacheKey, value, null, DateTime.Now.AddSeconds(cachePeriod),
+                                          Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
+                }
+
+                return value;
             }
         }
 
@@ -39,6 +62,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
                 yield return new StandardFunctionParameterProfile(
                     "Url", typeof(string), true, new NoValueValueProvider(),textboxWidget);
+
+                yield return new StandardFunctionParameterProfile(
+                    "CacheTime", typeof(int), false, new ConstantValueProvider(0), textboxWidget);
             }
         }
     }

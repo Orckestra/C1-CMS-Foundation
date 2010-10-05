@@ -360,6 +360,8 @@
   <string key="Composite.Core.Xml.LoadUrl.description" value="Loads a remote XML file given a Url" />
   <string key="Composite.Core.Xml.LoadUrl.param.Url.help" value="" />
   <string key="Composite.Core.Xml.LoadUrl.param.Url.label" value="Url" />
+  <string key="Composite.Core.Xml.LoadUrl.param.CacheTime.help" value="Time period in seconds for which the result should is cached. Default is 0 (no caching)." />
+  <string key="Composite.Core.Xml.LoadUrl.param.CacheTime.label" value="Seconds to cache" />
   <string key="Composite.Xslt.Extensions.DateFormatting.description" value="Provides localized date formatting functions for XSLT use. " />
   <string key="Composite.Xslt.Extensions.Globalization.description" value="Provides globalization functions for XSLT use." />
   <string key="Composite.Xslt.Extensions.MarkupParser.description" value="Provides functions that parse encoded XML documents or XHTML fragments into nodes. Use this extension when you have XML or XHTML as a string and need to copy it to the output or do transformations on it." />
