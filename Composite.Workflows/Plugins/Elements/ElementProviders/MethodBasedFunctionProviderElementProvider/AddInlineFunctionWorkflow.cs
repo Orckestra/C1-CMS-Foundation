@@ -116,6 +116,8 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
                 function.SetFunctinoCode(code);
 
                 function = DataFacade.AddNew(function);
+
+                transactionScope.Complete();
             }
 
             this.CloseCurrentView();

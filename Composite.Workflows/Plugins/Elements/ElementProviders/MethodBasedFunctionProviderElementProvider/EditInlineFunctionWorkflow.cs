@@ -170,6 +170,8 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
 
                 DataFacade.Update(function);
                 InlineFunctionHelper.SetFunctinoCode(function, code);
+
+                transactionScope.Complete();
             }
 
             SetSaveStatus(true);
