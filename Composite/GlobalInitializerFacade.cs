@@ -89,7 +89,13 @@ namespace Composite
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
         }
 
-
+        /// <summary>
+        /// This method will initialize the system (if it has not been initialized).
+        /// </summary>
+        public static void EnsureSystemIsInitialized()
+        {
+            InitializeTheSystem();
+        }
 
         /// <summary>
         /// This method will initialize the system (if it has not been initialized).

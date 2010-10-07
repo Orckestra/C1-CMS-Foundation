@@ -78,6 +78,8 @@ namespace Composite.C1Console.Workflow
         #region Workflow methods
         public WorkflowInstance CreateNewWorkflow(Type workflowType)
         {
+            GlobalInitializerFacade.EnsureSystemIsInitialized();
+
             try
             {
                 WorkflowInstance workflowInstance = _workflowRuntime.CreateWorkflow(workflowType);
@@ -103,6 +105,8 @@ namespace Composite.C1Console.Workflow
 
         public WorkflowInstance CreateNewWorkflow(Type workflowType, Dictionary<string, object> arguments)
         {
+            GlobalInitializerFacade.EnsureSystemIsInitialized();
+
             try
             {
                 WorkflowInstance workflowInstance = _workflowRuntime.CreateWorkflow(workflowType, arguments);
