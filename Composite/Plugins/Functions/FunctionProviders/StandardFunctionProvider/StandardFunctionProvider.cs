@@ -258,6 +258,18 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             _standardDynamicTypeFunctions.AddRange(
                 from t in dataInterfaces
                 select (IFunction)Activator.CreateInstance(typeof(GetNullableDataReference<>).MakeGenericType(t), args));
+
+            _standardDynamicTypeFunctions.AddRange(
+                from t in dataInterfaces
+                select (IFunction)Activator.CreateInstance(typeof(AddDataInstance<>).MakeGenericType(t), args));
+
+            _standardDynamicTypeFunctions.AddRange(
+                from t in dataInterfaces
+                select (IFunction)Activator.CreateInstance(typeof(UpdateDataInstance<>).MakeGenericType(t), args));
+
+            _standardDynamicTypeFunctions.AddRange(
+                from t in dataInterfaces
+                select (IFunction)Activator.CreateInstance(typeof(DeleteDataInstance<>).MakeGenericType(t), args));
         }
     }
 

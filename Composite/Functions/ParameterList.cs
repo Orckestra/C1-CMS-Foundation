@@ -15,6 +15,7 @@ namespace Composite.Functions
         {
             public object ValueObject { get; set; }
             public Type ValueType { get; set; }
+            public bool IsDefaultValue { get; set; }
         }
 
 
@@ -162,16 +163,23 @@ namespace Composite.Functions
 
 
 
-        internal void AddConstantParameter(string parameterName, object value, Type parameterType)
+        public bool IsDefaultValue(string parameterName)
         {
-            _parameters.Add(parameterName, new StoredParameterReturnValue { ValueObject = value, ValueType = parameterType});
+            return _parameters[parameterName].IsDefaultValue;
+        }
+
+
+
+        internal void AddConstantParameter(string parameterName, object value, Type parameterType, bool isDefaultValue = false)
+        {
+            _parameters.Add(parameterName, new StoredParameterReturnValue { ValueObject = value, ValueType = parameterType, IsDefaultValue = isDefaultValue});
         }
 
 
 
         internal void AddLazyParameter(string parameterName, BaseRuntimeTreeNode runtimeTreeNode, Type parameterType)
         {
-            _parameters.Add(parameterName, new StoredParameterReturnValue { ValueObject = runtimeTreeNode, ValueType = parameterType });
+            _parameters.Add(parameterName, new StoredParameterReturnValue { ValueObject = runtimeTreeNode, ValueType = parameterType, IsDefaultValue = false });
         }
     }
 }

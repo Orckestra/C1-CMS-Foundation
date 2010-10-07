@@ -211,8 +211,6 @@ public class TreeServices : WebService
     [WebMethod]
     public bool ExecuteDropElementAction(ClientElement draggedClientElement, ClientElement newParentClientElement, int dropIndex, string consoleId, bool isCopy)
     {
-        //if (isCopy == false)
-        //{
         try
         {
             VerifyClientElement(draggedClientElement);
@@ -226,14 +224,6 @@ public class TreeServices : WebService
 
             throw;
         }
-
-        return false;
-        //}
-        //else
-        //{
-        //    Composite.Core.Logging.LoggingService.LogWarning("TreeService", "Copy action from client ignored by asmx. Remember to refresh tree...");
-        //    return false;
-        //}
     }
 
 

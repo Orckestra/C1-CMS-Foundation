@@ -90,7 +90,7 @@ namespace Composite.Functions
                         {
                             throw new InvalidOperationException(string.Format("Failed to get value for parameter '{0}' in function '{1}'.", parameterProfile.Name, _function.CompositeName()), ex);
                         }
-                        parameters.AddConstantParameter(parameterProfile.Name, value, parameterProfile.Type);
+                        parameters.AddConstantParameter(parameterProfile.Name, value, parameterProfile.Type, true);
                     }
 
                     _cachedValue = _function.Execute(parameters, contextContainer);

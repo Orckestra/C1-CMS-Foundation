@@ -418,6 +418,10 @@
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedMultiContentXhtmlEditorUiControlFactory.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\IDataGenerated\AddDataInstance.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\IDataGenerated\DeleteDataInstance.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\IDataGenerated\DataInstanceHelper.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\IDataGenerated\UpdateDataInstance.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\DataReference\NullablePageReferenceSelectorWidgetFunction.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\DataReference\PageReferenceSelectorWidgetFunction.cs" />
     <Compile Include="C1Console\Trees\AttributeDynamicValuesHelper.cs" />

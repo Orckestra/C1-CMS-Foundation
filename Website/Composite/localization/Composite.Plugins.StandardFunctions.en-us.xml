@@ -25,6 +25,13 @@
   <string key="Composite.Constant.XhtmlDocument.param.Constant.help" value="" />
   <string key="Composite.Constant.XhtmlDocument.param.Constant.label" value="Value" />
 
+  <string key="Composite.IDataGenerated.AddDataInstance.description" value="Adds a new instance of the given type." />
+  <string key="Composite.IDataGenerated.UpdateDataInstance.description" value="Updates instance(s) with the given values." />
+  <string key="Composite.IDataGenerated.UpdateDataInstance.param.Filter.help" value="" />
+  <string key="Composite.IDataGenerated.UpdateDataInstance.param.Filter.label" value="Filter" />
+  <string key="Composite.IDataGenerated.DeleteDataInstance.description" value="Deletes instance(s) with the given filter." />
+  <string key="Composite.IDataGenerated.DeleteDataInstance.param.Filter.help" value="" />
+  <string key="Composite.IDataGenerated.DeleteDataInstance.param.Filter.label" value="Filter" />
   <string key="Composite.IDataGenerated.GetDataReference.description" value="Creates a DataReference based on a key value." />
   <string key="Composite.IDataGenerated.GetDataReference.param.KeyValue.help" value="The key value of the data to reference." />
   <string key="Composite.IDataGenerated.GetDataReference.param.KeyValue.label" value="Key value" />
