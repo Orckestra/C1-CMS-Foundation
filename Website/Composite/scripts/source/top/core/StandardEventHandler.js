@@ -44,19 +44,24 @@ function StandardEventHandler ( doc, isMouseHandlerOnly ) {
 	this._isMouseHandlerOnly = isMouseHandlerOnly;
 	
 	/*
-	 * Add listeners!
+	 * Add listeners.
 	 */
 	this._addListeners ();
 }
 
 /*
- * Add listeners!
+ * Add listeners.
  */
 StandardEventHandler.prototype._addListeners = function () {
 	
 	var doc = this._contextDocument;
 	
-	DOMEvents.addEventListener ( doc, DOMEvents.MOUSEDOWN, this );
+	/* 
+	 * Mousedown event consumed by Bespin unless we flip the capture flag. 
+	 * TODO: This may also be the case for other mouse events...
+	 */
+	var isBespin = this._contextWindow.bespin != undefined;
+	DOMEvents.addEventListener ( doc, DOMEvents.MOUSEDOWN, this, isBespin );
 	DOMEvents.addEventListener ( doc, DOMEvents.MOUSEUP, this );
 	DOMEvents.addEventListener ( doc, DOMEvents.MOUSEMOVE, this );
 	
@@ -222,8 +227,9 @@ StandardEventHandler.prototype._handleMouseMove = function ( e ) {
 		 * mousemove event is registered, this is not obviously not the case. 
 		 * Therefore we can safely FOCUS our window, kicking IE back on track. 
 		 * This fixes a bug where the backspace key stopped working.
-		 */
-		if ( Client.isExplorer && false ) {
+		 * TODO: Figure out why this was disabled...
+		 *
+		if ( Client.isExplorer ) {
 			
 			if ( Application.isBlurred ) {
 				
@@ -234,13 +240,14 @@ StandardEventHandler.prototype._handleMouseMove = function ( e ) {
 				 * The contentEditable document MUST be activated by a 
 				 * mousedown WHEN another window has the focus. That's 
 				 * why we focus the parent window in this case.
-				 */
+				 *
 				if ( doc.body.contentEditable == "true" ) {
 					win = DOMUtil.getParentWindow ( win.frameElement );
 				}
 				win.focus ();
 			}
 		}
+		*/
 		
 	} catch ( exception ) { // don't want to throw errors continually onmousemove
 		DOMEvents.removeEventListener ( 

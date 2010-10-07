@@ -308,7 +308,7 @@
 			<Script filename="${root}/scripts/source/top/ui/bindings/editors/visualeditor/VisualEditorFieldGroupConfiguration.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/editors/visualeditor/multieditor/VisualMultiEditorBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/editors/visualeditor/multieditor/VisualMultiTemplateEditorBinding.js"/>
-			<Script filename="${root}/scripts/source/top/ui/bindings/editors/sourceeditor/SourceEditorPopupBinding.js"/>
+			<Script filename="${root}/scripts/source/top/ui/bindings/editors/bespineditor/BespinEditorPopupBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/editors/bespineditor/BespinEditorBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/audio/AudioWindowBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/throbber/ThrobberBinding.js"/>

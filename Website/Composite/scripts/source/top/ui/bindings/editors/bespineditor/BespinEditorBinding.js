@@ -231,17 +231,21 @@ BespinEditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 			
 				if ( arg.broadcastWindow == contentWindow ) {
 					
+					// this.logger.debug ( DOMSerializer.serialize ( contentWindow.document.documentElement, true ));
+					
 					// identification
 					this._bespinEnvelope = arg.bespinEnvelope;
 					this._bespinEditor = arg.bespinEditor;
 					this._bespinElement = this._bespinEditor.textView.domNode;
 					
 					// syntax and settings - hardcode ahead
+					// TODO: Move this somewhere...
 					this._bespinEditor.syntax = this.syntax;
 					this._bespinEnvelope.settings.set ( "theme", "white" );
-					this._bespinEnvelope.settings.set ( "fontsize", 13 );
-					this._bespinEnvelope.settings.set ( "tabstop", 4 );
 					this._bespinEnvelope.settings.set ( "fontface", "monospace" );
+					this._bespinEnvelope.settings.set ( "fontsize", 13 );
+					this._bespinEnvelope.settings.set ( "tabmode", "tabs" );
+					this._bespinEnvelope.settings.set ( "tabstop", 4 );
 					
 					// init components 
 					this.initializeEditorComponents ( windowBinding );
@@ -324,8 +328,10 @@ BespinEditorBinding.prototype._activateEditor = function ( isActivate ) {
 		if ( broadcaster != null ) {
 			if ( isActivate ) {
 				broadcaster.enable ();
+				this.focus ();
 			} else {
-				broadcaster.disable (); 
+				broadcaster.disable ();
+				this.blur ();
 			}
 		} else {
 			throw "Required broadcaster not found";
@@ -420,7 +426,7 @@ BespinEditorBinding.prototype.clean = function () {
  */
 BespinEditorBinding.prototype.handleContextMenu = function ( e ) {
 	
-	alert ( "BespinEditorBinding.prototype.handleContextMenu" )
+	alert ( "BespinEditorBinding.prototype.handleContextMenu" );
 	/*
 	this._popupBinding.configure ( this, this._codePressFrame, this._codePressEngine );
 	BespinEditorBinding.superclass.handleContextMenu.call ( this, e );
