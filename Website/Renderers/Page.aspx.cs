@@ -105,7 +105,9 @@ public partial class Renderers_Page : System.Web.UI.Page
 
         structuredUrl.AddQueryParameters(_foreignQueryStringParameters);
 
-        HttpContext.Current.RewritePath(structuredUrl.FilePath, structuredUrl.PathInfo, structuredUrl.QueryString);
+        string pathInfo = new UrlBuilder(_cacheUrl).PathInfo;
+
+        Context.RewritePath(structuredUrl.FilePath, pathInfo, structuredUrl.QueryString);
     }
 
 
