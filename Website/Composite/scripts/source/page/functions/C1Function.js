@@ -1,4 +1,16 @@
-C1Function.URL = window.location.toString ();
+/*
+ * ----------------------------------------------------------------------------
+ * "THE BEER-WARE LICENSE" (Revised):
+ * Composite.NET wrote this file. As long as you retain this notice 
+ * you can do whatever you want with this stuff. If we meet some day, 
+ * and you think this stuff is worth it, you can buy us a beer in return.
+ * ----------------------------------------------------------------------------
+ */
+
+/*
+ * TODO: Service URL here!
+ */ 
+C1Function.URL = window.location.toString (); 
 C1Function.NS = "http://www.composite.net/ns/function/1.0";
 
 C1Function.XML = "text/xml";
