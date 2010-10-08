@@ -152,7 +152,15 @@ public partial class Renderers_Page : System.Web.UI.Page
         }
 
         string xhtml = PageUrlHelper.ChangeRenderingPageUrlsToPublic(markupBuilder.ToString());
-        xhtml = Composite.Core.Xml.XhtmlPrettifier.Prettify(xhtml);
+
+        try
+        {
+            xhtml = Composite.Core.Xml.XhtmlPrettifier.Prettify(xhtml);
+        }
+        catch
+        {
+            Log.LogWarning("/Renderers/Page.aspx", "Failed to format output xhtml. Url: " + (_cacheUrl ?? string.Empty));
+        }
 
         writer.Write(xhtml);
     }
