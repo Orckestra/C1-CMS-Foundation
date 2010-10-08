@@ -1,9 +1,9 @@
 C1Function.URL = window.location.toString ();
 C1Function.NS = "http://www.composite.net/ns/function/1.0";
 
-C1Function.TYPE_XML = "text/xml";
-C1Function.TYPE_TEXT = "text/plain";
-C1Function.TYPE_JSON = "application/json";
+C1Function.XML = "text/xml";
+C1Function.TEXT = "text/plain";
+C1Function.JSON = "application/json";
 
 /**
  * @param {String} name
@@ -18,11 +18,21 @@ function C1Function ( name ) {
 C1Function.prototype = {
 	
 	/**
+	 * On an async callback, this may be used 
+	 * to identify the executing C1Function. 
+	 * @type {String}
+	 */
+	key : null,
+		
+	/**
 	 * The function name, eg. "Composite.Constant.String"
 	 * @type {String}
 	 */
 	name : null,
+	
 	/**
+	 * Store the server response after this C1Function is invoked.
+	 * If you want to know the request, use the toString () method.
 	 * @type {object}
 	 */
 	result : null,
@@ -33,13 +43,25 @@ C1Function.prototype = {
 	params : null,
 	
 	/**
-	 * Constructor action isolated for potential subclasses to overload.
+	 * Constructor action.
 	 * @param {String} name
 	 */
 	_construct : function ( name ) {
 	
-		this.params = [];
+		this.key = "c1function:" + new String ( Math.random ()).slice ( 2 ); 
 		this.name = name;
+		this.params = [];
+	},
+	
+	/**
+	 * Identify this C1Function.
+	 * @param {String} key
+	 * @return {C1Function}
+	 */
+	setKey : function ( key ) {
+		
+		this.key = key;
+		return this;
 	},
 	
 	/**
@@ -58,19 +80,26 @@ C1Function.prototype = {
 
 	/**
 	 * Parse to string.
+	 * @param {String} tabs
 	 * @return {String}
 	 */
-	toString : function () {
+	toString : function ( tabs ) {
 		
-		var string = '<f:function name="' + this.name + '" xmlns:f="' + C1Function.NS + '" ';
+		var ns = "";
+		if ( tabs == null ) {
+			ns = " xmlns:f=\"" + C1Function.NS + "\" ";
+			tabs = "";
+		}
+		
+		var string = tabs + "<f:function name=\"" + this.name + "\"" + ns;
 		
 		if ( this.params.length > 0 ) {
 			string += ">";
 			var i = 0, param;
 			while (( param = this.params [ i++ ]) != null ) {
-				string += param.toString ();
+				string += "\n" + param.toString ( tabs + "\t" );
 			}
-			string += "</f:function>";
+			string += "\n" + tabs + "</f:function>";
 		} else {
 			string += "/>";
 		}
@@ -80,14 +109,25 @@ C1Function.prototype = {
 	
 	/**
 	 * Parse to XML document.
+	 * TODO: IE support here.
 	 * @return {Document}
 	 */
 	toDocument : function () {
 		
 		return new DOMParser ().parseFromString ( 
 			this.toString (), 
-			C1Function.TYPE_XML 
+			C1Function.XML 
 		);
+	},
+	
+	/**
+	 * Invoke request sync (blocking).
+	 * @param {string} type
+	 * @param {object} callback
+	 */
+	invoke : function ( type, callback ) {
+		
+		this._request ( this.toString (), false, type, callback );
 	},
 	
 	/**
@@ -95,37 +135,25 @@ C1Function.prototype = {
 	 * @param {string} type
 	 * @param {object} callback
 	 */
-	invoke : function ( type, callback ) {
+	invokeAsync : function ( type, callback ) {
 		
-		alert ( this.toString ())
-		
-		this._request ( this.toDocument (), true, type, callback );
-	},
-	
-	/**
-	 * Invoke request sync.
-	 * @param {string} type
-	 * @param {object} callback
-	 */
-	invokeBlocking : function ( callback ) {
-		
-		this._request ( this.toDocument (), false, type, callback );
+		this._request ( this.toString (), true, type, callback );
 	},
 	
 	/**
 	 * Build and send a XMLHttpRequest.
-	 * @param {Document} doc
+	 * @param {String} string
 	 * @param {boolean} isAsync
 	 * @param {string} type
 	 * @param {object} callback
 	 */
-	_request : function ( doc, isAsync, type, callback ) {
+	_request : function ( string, isAsync, type, callback ) {
 		
 		switch ( type ) {
 		
-			case C1Function.TYPE_XML :
-			case C1Function.TYPE_TEXT :
-			case C1Function.TYPE_JSON :
+			case C1Function.XML :
+			case C1Function.TEXT :
+			case C1Function.JSON :
 			
 				var _this = this;
 				var request = new XMLHttpRequest ();
@@ -133,7 +161,7 @@ C1Function.prototype = {
 				request.open ( "post", C1Function.URL, isAsync );
 				request.setRequestHeader ( "X-C1Function-Type", type );
 				request.overrideMimeType ( type );
-				request.send ( doc );
+				request.send ( string );
 				if ( isAsync ) {
 					request.onreadystatechange = function  () {
 						if  ( this.readyState == 4 ) {
@@ -162,13 +190,13 @@ C1Function.prototype = {
 		
 		var result = null;
 		switch ( type ) {
-			case C1Function.TYPE_XML :
+			case C1Function.XML :
 				result = request.responseXML;
 				break;
-			case C1Function.TYPE_TEXT :
+			case C1Function.TEXT :
 				result = request.responseText;
 				break;
-			case C1Function.TYPE_JSON :
+			case C1Function.JSON :
 				result = JSON.parse ( request.responseText );
 				break;
 		}
@@ -176,9 +204,9 @@ C1Function.prototype = {
 		this.result = result;
 		if ( callback != null ) {
 			if ( callback instanceof Function ) {
-				callback.apply ( null, [ result ]);
-			} else if ( typeof callback.handleC1FunctionResult == "function" ) {
-				callback.handleC1FunctionResult ( result );
+				callback.apply ( null, [ this ]);
+			} else if ( typeof callback.handleFunction == "function" ) {
+				callback.handleFunction ( this );
 			}
 		}
 	}

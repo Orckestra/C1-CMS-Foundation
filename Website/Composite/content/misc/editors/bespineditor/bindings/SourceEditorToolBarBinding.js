@@ -85,14 +85,16 @@ SourceEditorToolBarBinding.prototype.onBindingInitialize = function () {
 	
 	this._buttons = new Map ();
 	
-	var buttons = this._toolBarBodyLeft.getDescendantBindingsByLocalName ( "toolbarbutton" );
-	while ( buttons.hasNext ()) {
-		var button = buttons.getNext ();
-		if ( button.cmd != null ) {
-			this._buttons.set ( 
-				button.cmd, 
-				button 
-			);
+	if ( this._toolBarBodyLef != null ) {
+		var buttons = this._toolBarBodyLeft.getDescendantBindingsByLocalName ( "toolbarbutton" );
+		while ( buttons.hasNext ()) {
+			var button = buttons.getNext ();
+			if ( button.cmd != null ) {
+				this._buttons.set ( 
+					button.cmd, 
+					button 
+				);
+			}
 		}
 	}
 }
@@ -164,8 +166,10 @@ SourceEditorToolBarBinding.prototype.updateButtons = function () {
 	var cmd1 = window.bindingMap.editorpage.isPlainView ? "plainview" : "fancyview";
 	var cmd2 = window.bindingMap.editorpage.isPlainView ? "fancyview" : "plainview";
 	
-	this._buttons.get ( cmd1 ).hide ();
-	this._buttons.get ( cmd2 ).show ();
+	if ( this._buttons.has ( cmd1 ) && this._buttons.has ( cmd2 )) {
+		this._buttons.get ( cmd1 ).hide ();
+		this._buttons.get ( cmd2 ).show ();
+	}
 }
 
 /** 

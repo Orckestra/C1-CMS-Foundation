@@ -42,7 +42,11 @@
 		</ui:popupset>
 		
 		<ui:page id="editorpage" binding="SourceEditorPageBinding"> <!--  fitasdialogsubpage="false" -->
-			<ui:toolbar id="toolbar" binding="SourceEditorToolBarBinding">
+			<ui:toolbar id="toolbar" binding="SourceEditorToolBarBinding" hidden="true">
+				<!-- 
+				
+				PlainTextEditor disabled pending https://bugzilla.mozilla.org/show_bug.cgi?id=602484
+				
 				<ui:toolbarbody>
 					<ui:region match="mozilla">
 						<ui:toolbargroup>
@@ -56,6 +60,7 @@
 						</ui:toolbargroup>
 					</ui:region>
 				</ui:toolbarbody>
+				-->
 				<ui:toolbarbody align="right">
 					<ui:toolbargroup>
 						<!-- 

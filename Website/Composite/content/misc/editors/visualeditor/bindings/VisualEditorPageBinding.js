@@ -450,8 +450,17 @@ VisualEditorPageBinding.prototype._buildSwitchButton = function () {
 		self.switchEditingMode ();
 	};
 	
-	win.bindingMap.toolbar.addRight ( button );
-	button.attach ();
+	var toolbar = win.bindingMap.toolbar;
+	if ( toolbar != null ) {
+		win.bindingMap.toolbar.addRight ( button );
+		button.attach ();
+		
+		// pending https://bugzilla.mozilla.org/show_bug.cgi?id=602484
+		if ( !toolbar.isVisible ) {
+			toolbar.show ();
+			this.reflex ();
+		}
+	}
 }
 
 /**

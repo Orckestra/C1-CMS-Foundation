@@ -32,17 +32,23 @@ C1FunctionParam.prototype = {
 	},
 	
 	/**
-	 * Serialize param.
+	 * Parse to string.
+	 * @param {String} tabs
 	 * @return {String}
 	 */
-	toString : function () {
+	toString : function ( tabs ) {
 		
-		var string = '<f:param name="' + this.name + '" xmlns:f="' + C1Function.NS + '"';
+		var ns = "";
+		if ( tabs == null ) {
+			ns = " xmlns:f=\"" + C1Function.NS + "\"";
+			tabs = "";
+		}
 		
+		var string = tabs + "<f:param name=\"" + this.name + "\"" + ns;
 		if ( this.value instanceof C1Function ) {
-			string += '>' + this.value.toString () + '</f:param>';
+			string += ">\n" + this.value.toString ( tabs + "\t" ) + "\n" + tabs + "</f:param>";
 		} else {
-			string += ' value="' + new String ( this.value ) + '"/>';
+			string += " value=\"" + new String ( this.value ) + "\"/>";
 		}
 		return string;
 		
