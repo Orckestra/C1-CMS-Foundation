@@ -24,10 +24,13 @@ namespace Composite.Core.IO
             {
                 currentPath = string.Format("{0}{1}{2}", currentPath, directories[i], Path.DirectorySeparatorChar);
 
-                if (Directory.Exists(currentPath) == false)
+                if (currentPath.ToLower().StartsWith(PathUtil.BaseDirectory.ToLower())) // don't touch dirs outside our own folder!
                 {
-                    Directory.CreateDirectory(currentPath);
-                }                
+                    if (Directory.Exists(currentPath) == false)
+                    {
+                        Directory.CreateDirectory(currentPath);
+                    }
+                }
             }
         }
 
@@ -41,7 +44,7 @@ namespace Composite.Core.IO
         /// <param name="deleteEmptyDirectoresRecursively"></param>
         public static void DeleteFile(string path, bool deleteEmptyDirectoresRecursively)
         {
-            LoggingService.LogVerbose( "DirectoryUtil", string.Format("Deleting file '{0}'", path) );
+            LoggingService.LogVerbose("DirectoryUtil", string.Format("Deleting file '{0}'", path));
             File.Delete(path);
 
             if (deleteEmptyDirectoresRecursively == true)
@@ -63,7 +66,7 @@ namespace Composite.Core.IO
                     string currentPath = stringBuilder.ToString();
                     if (Directory.GetFiles(currentPath).Length == 0)
                     {
-                        LoggingService.LogVerbose( "DirectoryUtil", string.Format("Deleting directory '{0}'", currentPath) );
+                        LoggingService.LogVerbose("DirectoryUtil", string.Format("Deleting directory '{0}'", currentPath));
                         Directory.Delete(currentPath);
                     }
                     else
