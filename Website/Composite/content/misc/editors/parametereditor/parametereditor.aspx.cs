@@ -13,7 +13,7 @@ using System.Xml.Linq;
 /// <summary>
 /// Summary description for functioneditor
 /// </summary>
-public partial class parametereditor : Composite.WebClient.XhtmlPage
+public partial class parametereditor : Composite.Core.WebClient.XhtmlPage
 {
 
 	private void Page_Load(object sender, EventArgs args)

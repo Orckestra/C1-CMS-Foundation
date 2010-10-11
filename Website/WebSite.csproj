@@ -100,6 +100,10 @@
     <Compile Include="Composite\content\misc\editors\functioncalleditor\functioncalleditor.aspx.designer.cs">
       <DependentUpon>functioncalleditor.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Composite\content\misc\editors\parametereditor\parametereditor.aspx.cs">
+      <DependentUpon>parametereditor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\DocumentExecutionContainer.ascx.designer.cs">
       <DependentUpon>DocumentExecutionContainer.ascx</DependentUpon>
     </Compile>
@@ -440,6 +444,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Composite\content\misc\editors\functioncalleditor\bindings\ToolBarButtonDataBindingAddNew.js" />
+    <Content Include="Composite\content\misc\editors\parametereditor\parametereditor.aspx" />
     <Content Include="Composite\content\views\dev\flushadmin\Default.aspx" />
     <Content Include="Composite\content\views\relationshipgraph\ShowRelationshipOrientedGraph.aspx" />
     <Content Include="Composite\controls\FormsControls\FormUiContainerTemplates\EmptyDocumentExecutionContainer.ascx" />
@@ -752,7 +757,6 @@
     <Content Include="Composite\content\views\dev\developer\tests\ui\trees.aspx" />
     <Content Include="Composite\content\views\dev\developer\tests\ui\TreeTest.js" />
     <Content Include="Composite\content\views\dev\developer\tests\ui\xmleditor.jar" />
-    <Content Include="Composite\content\views\dev\developer\tests\ui\xslt.aspx" />
     <Content Include="Composite\content\views\dev\icons\files\harmony.aspx" />
     <Content Include="Composite\content\views\dev\icons\files\harmonyrender.aspx" />
     <Content Include="Composite\content\views\dev\icons\files\iconpack.css" />
@@ -5601,6 +5605,7 @@
     <Folder Include="Frontend\Controls\" />
     <Folder Include="Frontend\Images\" />
     <Folder Include="Frontend\Scripts\" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

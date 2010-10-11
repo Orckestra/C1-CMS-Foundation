@@ -5,43 +5,46 @@ using System.Web.Hosting;
 using System.Web.UI;
 using Composite.Core.WebClient;
 
-public partial class StyleLoaderControl : System.Web.UI.UserControl
+namespace Composite.controls
 {
-    public string Directive { get; set; }
-
-    protected override void Render(HtmlTextWriter writer)
+    public partial class StyleLoaderControl : System.Web.UI.UserControl
     {
-        string root = UrlUtils.AdminRootPath; 
+        public string Directive { get; set; }
 
-        if (Directive == "compile")
+        protected override void Render(HtmlTextWriter writer)
         {
-            StyleCompiler.Compile(HostingEnvironment.MapPath(root + "/styles/styles.css"),
-                                  HostingEnvironment.MapPath(root + "/styles/styles_compiled.css"));
+            string root = UrlUtils.AdminRootPath;
 
-            StyleCompiler.Compile(HostingEnvironment.MapPath(root + "/skins/skin.css"),
-                                  HostingEnvironment.MapPath(root + "/skins/skin_compiled.css"));
+            if (Directive == "compile")
+            {
+                StyleCompiler.Compile(HostingEnvironment.MapPath(root + "/styles/styles.css"),
+                                      HostingEnvironment.MapPath(root + "/styles/styles_compiled.css"));
 
-            return;
+                StyleCompiler.Compile(HostingEnvironment.MapPath(root + "/skins/skin.css"),
+                                      HostingEnvironment.MapPath(root + "/skins/skin_compiled.css"));
+
+                return;
+            }
+
+            bool isInDevelopMode = CookieHandler.Get("mode") == "develop";
+
+            if (isInDevelopMode)
+            {
+                writer.WriteLine(stylesheet(root + "/styles/styles.css.aspx"));
+                writer.WriteLine(stylesheet(root + "/skins/skin.css.aspx"));
+            }
+            else
+            {
+                writer.WriteLine(stylesheet(root + "/styles/styles_compiled.css.aspx"));
+                writer.WriteLine(stylesheet(root + "/skins/skin_compiled.css.aspx"));
+            }
+
+            writer.WriteLine(stylesheet(root + "/skins/dynamicskin.css.aspx"));
         }
 
-        bool isInDevelopMode = CookieHandler.Get("mode") == "develop";
-        
-        if(isInDevelopMode)
+        private string stylesheet(string url)
         {
-            writer.WriteLine(stylesheet(root + "/styles/styles.css.aspx"));
-            writer.WriteLine(stylesheet(root + "/skins/skin.css.aspx"));
+            return @"<link rel=""stylesheet"" type=""text/css"" href=""" + url + @"""/>";
         }
-        else
-        {
-            writer.WriteLine(stylesheet(root + "/styles/styles_compiled.css.aspx"));
-            writer.WriteLine(stylesheet(root + "/skins/skin_compiled.css.aspx"));
-        }
-
-        writer.WriteLine(stylesheet(root + "/skins/dynamicskin.css.aspx"));
     }
-	
-	private string stylesheet ( string url ) 
-	{
-		return @"<link rel=""stylesheet"" type=""text/css"" href=""" + url + @"""/>";
-	}
 }
