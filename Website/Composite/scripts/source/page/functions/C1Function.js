@@ -6,11 +6,37 @@
  * and you think this stuff is worth it, you can buy us a beer in return.
  * ----------------------------------------------------------------------------
  */
+ 
 
 /*
- * TODO: Service URL here!
- */ 
-C1Function.URL = window.location.toString (); 
+
+Basic usage:
+
+	new C1Function ( "Composite.Pages.SitemapXml" ).addParam ( "scope", "all" ).invokeAsync ( "text/xml", function ( func ) {
+		alert ( func.toString ()) // check our request 
+		alert ( func.result ); // XML document
+	});
+	
+Alternative usage:
+
+	var handler = {
+		handleFunction : function ( func ) {
+			if ( funk.key == "MY KEY" ) {
+				alert ( func.result ); // Javascript object
+			}
+		}
+	}
+
+	var func = new C1Function ( "Composite.Pages.SitemapXml" );
+	func.addParam ( "scope", "all" );
+	func.addParam ( "depth", "8" );
+	func.setKey ( "MY KEY" );
+	func.invokeAsync ( "application/json", handler );
+
+*/
+
+
+C1Function.URL = window.location.toString (); // TODO: Service URL here! 
 C1Function.NS = "http://www.composite.net/ns/function/1.0";
 
 C1Function.XML = "text/xml";
@@ -53,17 +79,6 @@ C1Function.prototype = {
 	 * @type {Array<string><C1FunctionParam}
 	 */
 	params : null,
-	
-	/**
-	 * Constructor action.
-	 * @param {String} name
-	 */
-	_construct : function ( name ) {
-	
-		this.key = "c1function:" + new String ( Math.random ()).slice ( 2 ); 
-		this.name = name;
-		this.params = [];
-	},
 	
 	/**
 	 * Identify this C1Function.
@@ -120,16 +135,34 @@ C1Function.prototype = {
 	},
 	
 	/**
+	 * Parse from form markup string <f:function name="..."/>
+	 * TODO: validate input + error handling
+	 * @param string
+	 * @returns
+	 */
+	fromString : function ( string ) {
+		
+		this.fromDocument ( this._parseToDocument ( string ));
+	},
+	
+	/**
 	 * Parse to XML document.
 	 * TODO: IE support here.
 	 * @return {Document}
 	 */
 	toDocument : function () {
 		
-		return new DOMParser ().parseFromString ( 
-			this.toString (), 
-			C1Function.XML 
-		);
+		return this._parseToDocument ( this.toString ());
+	},
+	
+	/**
+	 * Parse from XML document.
+	 * @param {Document} doc
+	 * @returns
+	 */
+	fromDocument : function ( doc ) {
+		
+		// TODO: Implement this!
 	},
 	
 	/**
@@ -150,6 +183,33 @@ C1Function.prototype = {
 	invokeAsync : function ( type, callback ) {
 		
 		this._request ( this.toString (), true, type, callback );
+	},
+	
+	
+	// PRIVATE ..........................................................................
+	
+	/**
+	 * Constructor action.
+	 * @param {String} name
+	 */
+	_construct : function ( name ) {
+	
+		this.key = "c1function:" + new String ( Math.random ()).slice ( 2 ); 
+		this.name = name;
+		this.params = [];
+	},
+	
+	/**
+	 * Parse string to XML document.
+	 * TODO: IE support here.
+	 * @return {Document}
+	 */
+	_parseToDocument : function ( string ) {
+		
+		return new DOMParser ().parseFromString ( 
+			string, 
+			C1Function.XML 
+		);
 	},
 	
 	/**

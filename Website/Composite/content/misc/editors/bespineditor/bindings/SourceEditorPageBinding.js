@@ -85,8 +85,10 @@ SourceEditorPageBinding.prototype.onBeforePageInitialize = function () {
 		 * This delays method onPageInitialize untill all is loaded.
 		 */
 		this.isPlainView = this.bindingWindow.bindingMap.plaindeck.isSelected;
+		/*
 		var toolbar = window.bindingMap.toolbar;
 		toolbar.updateButtons ();
+		*/
 		this._loadBespin ();
 		
 	} else {

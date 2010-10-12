@@ -455,11 +455,13 @@ VisualEditorPageBinding.prototype._buildSwitchButton = function () {
 		win.bindingMap.toolbar.addRight ( button );
 		button.attach ();
 		
+		/*
 		// pending https://bugzilla.mozilla.org/show_bug.cgi?id=602484
 		if ( !toolbar.isVisible ) {
 			toolbar.show ();
 			this.reflex ();
 		}
+		*/
 	}
 }
 

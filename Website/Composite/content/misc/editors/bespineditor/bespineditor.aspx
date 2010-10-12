@@ -42,8 +42,9 @@
 		</ui:popupset>
 		
 		<ui:page id="editorpage" binding="SourceEditorPageBinding"> <!--  fitasdialogsubpage="false" -->
+		
+			<!-- 
 			<ui:toolbar id="toolbar" binding="SourceEditorToolBarBinding" hidden="true">
-				<!-- 
 				
 				PlainTextEditor disabled pending https://bugzilla.mozilla.org/show_bug.cgi?id=602484
 				
@@ -60,17 +61,18 @@
 						</ui:toolbargroup>
 					</ui:region>
 				</ui:toolbarbody>
-				-->
+				
 				<ui:toolbarbody align="right">
 					<ui:toolbargroup>
-						<!-- 
+						 
 							When loaded inside the wysiwygeditor, 
 							the WysiwygEditorBinding will insert 
 							a toolbarbutton here! 
-						-->
+						
 					</ui:toolbargroup>
 				</ui:toolbarbody>
 			</ui:toolbar>
+			-->
 			
 			<!-- mozilla only -->
 			<ui:region match="mozilla">
@@ -82,7 +84,7 @@
 						</ui:flexbox>
 					</ui:deck>
 					<ui:deck id="fancydeck">
-						<ui:toolbar>
+						<ui:toolbar id="toolbar" binding="SourceEditorToolBarBinding">
 							<ui:toolbarbody>
 								<ui:toolbargroup>
 									<ui:toolbarbutton 
@@ -105,6 +107,15 @@
 										binding="SourceEditorFormatToolbarButtonBinding"/>
 								</ui:toolbargroup>
 							</ui:toolbarbody>
+							<ui:toolbarbody align="right">
+								<ui:toolbargroup>
+									<!-- 
+										When loaded inside the wysiwygeditor, 
+										the WysiwygEditorBinding will insert 
+										a toolbarbutton here! 
+									-->
+								</ui:toolbargroup>
+							</ui:toolbarbody>
 						</ui:toolbar>
 						<ui:flexbox id="codepressflexbox">
 							<ui:cover id="codepresscover" busy="false"/>
@@ -116,6 +127,17 @@
 			
 			<!-- explorer only -->
 			<ui:region match="explorer">
+				<ui:toolbar id="toolbar">
+					<ui:toolbarbody align="right">
+						<ui:toolbargroup>
+							<!-- 
+								When loaded inside the wysiwygeditor, 
+								the WysiwygEditorBinding will insert 
+								a toolbarbutton here! 
+							-->
+						</ui:toolbargroup>
+					</ui:toolbarbody>
+				</ui:toolbar>
 				<ui:flexbox>
 					<ui:cover id="plaineditorcover" busy="false" hidden="true"/>
 					<ui:editortextbox id="plaineditor"/>
