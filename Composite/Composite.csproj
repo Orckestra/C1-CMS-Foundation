@@ -145,6 +145,7 @@
     <Compile Include="Core\Log.cs" />
     <Compile Include="Core\Sql\SqlConnectionManager.cs" />
     <Compile Include="Core\WebClient\ApplicationLevelEventHandlers.cs" />
+    <Compile Include="Core\WebClient\Presentation\LessRequestHandler.cs" />
     <Compile Include="Data\DataEventArgs.cs" />
     <Compile Include="Data\DataEventHandler.cs" />
     <Compile Include="Data\DataEvents.cs" />
