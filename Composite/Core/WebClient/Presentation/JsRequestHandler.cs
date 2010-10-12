@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Web;
+using System.Text;
 using Composite.Core.Extensions;
 using Composite.Core.Logging;
 
@@ -29,7 +30,24 @@ namespace Composite.Core.WebClient.Presentation
             }
             else 
             {
-                context.Response.WriteFile(filePath);
+            	// bespin folder here!!!
+            	if ( jsPath.Contains ( "build" )) 
+            	{
+            		var sb = new StringBuilder();
+                	string[] lines = File.ReadAllLines(filePath);
+                	foreach (string line in lines)
+	                {
+	                 	string result = line.Replace ( ".js", ".js.aspx" );
+	                    result = result.Replace ( ".less", ".less.aspx" );
+	                    if (result != null)
+	                    {
+	                        sb.Append(result).Append("\n");
+	                    }
+	                }
+                    context.Response.Write ( sb.ToString());
+            	} else {
+	                context.Response.WriteFile(filePath);
+	            }
             }            
         }
 
