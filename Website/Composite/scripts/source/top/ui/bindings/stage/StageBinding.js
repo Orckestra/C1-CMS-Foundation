@@ -463,9 +463,11 @@ StageBinding.prototype.handleAction = function ( action ) {
 			this._isExplorerReady = true;
 			if ( this._isDecksReady == true ) {
 				if ( !this._isStageReady ) {
+					/*
 					if ( Client.isWebKit ) {
 						alert ( "StageBinding 4 WEHEY!" );
 					}
+					*/
 					ProgressBarBinding.notch ( 3 );
 					this._onStageReady ();
 				}

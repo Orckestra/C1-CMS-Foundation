@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ----------------------------------------------------------------------------
  * "THE BEER-WARE LICENSE" (Revised):
  * Composite.NET wrote this file. As long as you retain this notice 
