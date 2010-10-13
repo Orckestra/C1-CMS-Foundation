@@ -188,17 +188,14 @@ BespinEditorBinding.prototype.onBindingAttach = function () {
 			break;
 	}
 	
-	//this._url = this._url.replace ( "${syntax}", this.syntax );
-	
 	/*
 	 * While developing, mount test file based on current syntax
-	 * 
+	 */ 
 	if ( this.getProperty ( "debug" )) {
 		this._startContent = Templates.getPlainText ( 
 			"sourcecodeeditor/" + this.syntax + ".txt" 
 		);
 	}
-	*/
 	
 	// finally call super method.
 	BespinEditorBinding.superclass.onBindingAttach.call ( this );

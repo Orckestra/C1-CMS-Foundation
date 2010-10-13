@@ -67,10 +67,10 @@
 										<ui:sourceeditor syntax="html" debug="true"/>
 									</ui:tabpanel>
 									<ui:tabpanel lazy="true">
-										<ui:sourceeditor syntax="javascript" debug="true"/>
+										<ui:sourceeditor syntax="js" debug="true"/>
 									</ui:tabpanel>
 									<ui:tabpanel lazy="true">
-										<ui:sourceeditor syntax="csharp" debug="true"/>
+										<ui:sourceeditor syntax="cs" debug="true"/>
 									</ui:tabpanel>
 									<ui:tabpanel lazy="true">
 										<ui:sourceeditor syntax="css" debug="true"/>

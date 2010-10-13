@@ -21,15 +21,10 @@
 					<ui:tabpanel>
 						<ui:tree>
 							<ui:treebody>
-								<ui:treenode label="C1Function" oncommand="Developer.load('test-c1function')"/>
-								<ui:treenode label="Writer" oncommand="Developer.load('test-bespin')"/>
-								<ui:treenode label="UpdateManager Fun :)" oncommand="Developer.load('test-mothfun')"/>
+								<ui:treenode label="Javascript AJAX API" oncommand="Developer.load('test-c1function')"/>
+								<ui:treenode label="Mozilla Skywriter test" oncommand="Developer.load('test-fields-sourceedit')"/>
+								<ui:treenode label="UpdateManager fun" oncommand="Developer.load('test-mothfun')"/>
 								<ui:treenode label="Non-framework doc" oncommand="Developer.load('test-nonframework')"/>
-								<!-- 
-								<ui:treenode label="Dmitry Fun" oncommand="Developer.load('test-dmitryfun')"/>
-								<ui:treenode label="Marcus Fun" oncommand="Developer.load('test-marcusfun')"/>
-								<ui:treenode label="Moth Fun" oncommand="Developer.load('test-mothfun')"/>
-								-->
 								<ui:treenode label="Bindings" open="true">
 									<ui:treenode label="DataBindings" open="false">
 										<ui:treenode label="Null Tree Selector" oncommand="Developer.load('test-nulltreeselect')"/>
