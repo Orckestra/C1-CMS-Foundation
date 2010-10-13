@@ -1125,4 +1125,3 @@
 	<string key="Validation.Decimal.SymbolsAfterPointAllowed" value="Only {0} digit(s) after decimal point allowed" />
 	<string key="Validation.Decimal.SymbolsBeforePointAllowed" value="Only {0} digit(s) before decimal point allowed" />
 </strings>
-
