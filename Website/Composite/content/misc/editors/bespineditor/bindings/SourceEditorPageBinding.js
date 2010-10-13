@@ -254,13 +254,17 @@ SourceEditorPageBinding.prototype.flex = function () {
 SourceEditorPageBinding.prototype._fit = function () {
 	
 	var win = this.bindingWindow.bindingMap.bespinwindow;
-	var div = win.getContentDocument ().getElementById ( "editor" );
-	
-	var dim = win.boxObject.getDimension ();
-	div.style.width = dim.w + "px";
-	div.style.height = dim.h + "px";
-	
-	this._bespinEditor.dimensionsChanged ();
+	if ( win !== undefined ) {
+		var div = win.getContentDocument ().getElementById ( "editor" );
+		if ( div != null ) {
+			var dim = win.boxObject.getDimension ();
+			div.style.width = dim.w + "px";
+			div.style.height = dim.h + "px";
+			if ( this._bespinEditor != null ) {
+				this._bespinEditor.dimensionsChanged ();
+			}
+		}
+	}
 }
 
 /**

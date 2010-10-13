@@ -122,9 +122,9 @@ _Client.prototype = {
 		var result = true;
 		var isOldFox = false;
 		if ( this.isMozilla && !this.isWebKit ) {
-			isOldFox = ( document.documentElement.mozMatchesSelector == null );
+			isOldFox = ( document.documentElement.mozMatchesSelector === undefined );
 		}
-		if ( this.isWebKit || window.opera != null || isOldFox || this.isExplorer6 ) {
+		if ( window.opera != null || isOldFox || this.isExplorer6 ) { // this.isWebKit || 
 			result = false;
 		}
 		return result;

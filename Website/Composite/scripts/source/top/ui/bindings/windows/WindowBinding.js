@@ -497,7 +497,7 @@ WindowBinding.prototype.reload = function ( isClearCache ) {
 WindowBinding.prototype.getFrameElement = function () {
 	
 	var result = null;
-	if ( this.shadowTree.iframe ) {
+	if ( this.shadowTree.iframe != null ) {
 		result = this.shadowTree.iframe;
 	}
 	return result;
@@ -511,8 +511,12 @@ WindowBinding.prototype.getFrameElement = function () {
 WindowBinding.prototype.getContentWindow = function () {
 	
 	var result = null, frame = this.getFrameElement ();
-	if ( frame ) {
+	if ( frame !== null ) {
 		result = frame.contentWindow;
+		
+		if ( result === undefined ) {
+			alert ( "HEIL" )
+		}
 	}
 	return result;
 };

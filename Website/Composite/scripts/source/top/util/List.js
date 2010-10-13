@@ -17,6 +17,12 @@ function List ( arg ) {
 	 */
 	this._array = [];
 	
+	/**
+	 * Is disposed?
+	 * @type {boolean}
+	 */
+	this.isDisposed = false;
+	
 	/*
 	 * Initialize from argument.
 	 */
@@ -33,7 +39,7 @@ function List ( arg ) {
  */
 List.prototype.init = function ( list ) {
 
-	var isArray = list.splice != null;
+	var isArray = ( list !== undefined && list.splice !== undefined );
 	
 	if ( isArray ) {
 		this._array = list;
@@ -107,7 +113,7 @@ List.prototype.has = function ( entry ) {
 	
 	var result = false;
 	var i = 0, e;
-	while (( e = this._array [ i++ ]) != null ) {
+	while (( e = this._array [ i++ ]) !== undefined ) {
 		if ( e == entry ) {
 			result = true;
 			break;
@@ -137,7 +143,14 @@ List.prototype.hasEntries = function () {
  */
 List.prototype.hasNext = function () {
 
-	return this._index < this._array.length;
+	var result = false;
+	if ( this._array != null ) {
+		result = this._index < this._array.length;
+	} else {
+		SystemLogger.getLogger ( "List" ).error ( "Mysterious List#hasNext exception in IE" );
+		// SystemDebug.stack ( arguments );
+	}
+	return result;
 }
 
 /**
@@ -241,10 +254,14 @@ List.prototype.clear = function () {
 List.prototype.each = function ( action, thisp ) {
 
 	this.reset ();
-	var is = true;
+	var next, is = true;
 	while ( is != false && this.hasNext ()) {
+		if ( thisp === undefined ) {
+			thisp = null;
+		}
+		var entry = this.getNext ();
 		var index = this._index;
-		is = action.call ( thisp, this.getNext (), index );
+		is = action.call ( thisp, entry, index );
 	}
 	this.reset ();
 }
@@ -341,4 +358,5 @@ List.prototype.dispose = function () {
 	}
 	this._array = null;
 	this._index = null;
+	this._isDisposed = true;
 }
