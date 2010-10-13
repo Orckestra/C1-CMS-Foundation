@@ -66,6 +66,21 @@ StandardEventHandler.prototype._addListeners = function () {
 	DOMEvents.addEventListener ( doc, DOMEvents.MOUSEMOVE, this );
 	
 	/*
+	 * Somewhat hacked, we disable the Mozilla SkyWriter contextmenu here. 
+	 * This may interfere with our own (future) contextmenu, so be aware!
+	 */
+	if ( isBespin ) {
+		DOMEvents.addEventListener ( doc, DOMEvents.CLICK, {
+			handleEvent : function ( e ) {
+				if ( DOMEvents.isRightButton ( e )) {
+					DOMEvents.stopPropagation ( e );
+					DOMEvents.preventDefault ( e );
+				}
+			}
+		}, true );
+	}
+	
+	/*
 	 * Disable F1 to launch OS help in IE.
 	 */
 	if ( Client.isExplorer ) {
