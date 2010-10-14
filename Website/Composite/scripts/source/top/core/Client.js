@@ -124,8 +124,14 @@ _Client.prototype = {
 		if ( this.isMozilla && !this.isWebKit ) {
 			isOldFox = ( document.documentElement.mozMatchesSelector === undefined );
 		}
-		if ( window.opera != null || isOldFox || this.isExplorer6 ) { // this.isWebKit || 
+		if ( window.opera != null || isOldFox || this.isExplorer6 ) { // this.isWebKit ||
 			result = false;
+		} else if ( this.isWebKit ) {
+			
+			// Application.isDeveloperMode not evaluated at this point
+			if ( top.document.location.toString ().indexOf ( "mode=develop" ) == -1 ) {
+				result = false;
+			}
 		}
 		return result;
 	}
