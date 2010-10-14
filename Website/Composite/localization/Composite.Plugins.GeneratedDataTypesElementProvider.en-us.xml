@@ -42,9 +42,6 @@
   <string key="UndefinedDataLavelTemplate" value="(undefined)" />
   <string key="ShowInContent" value="Show in Content perspective" />
   <string key="ShowInContentToolTip" value="Show in Content perspective" />
-
-
-
   <string key="AddData" value="Add data" />
   <string key="AddDataToolTip" value="Add new data" />
   <string key="EditData" value="Edit data" />
@@ -56,13 +53,9 @@
   <string key="LabelPublicationState" value="Publication State" />
   <string key="DraftTransition" value="Draft" />
   <string key="AwaitingApprovalTransition" value="Awaiting Approval" />
-  <string key="AwaitingPublicationTransition" value="Awaiting Publication" />
-
   <string key="AddNewInterfaceTypeStep1.DocumentTitle" value="New Datatype" />
-  <string key="AddNewInterfaceTypeStep1.ErrorTitle" value="Error" />
   <string key="AddNewCompositionTypeWorkflow.DocumentTitle" value="New Page metatype" />
   <string key="AddNewAggregationTypeWorkflow.DocumentTitle" value="New Page datafolder" />
-
   <string key="EditorCommon.SettingsTab" value="Settings" />
   <string key="EditorCommon.LabelTitleGroup" value="Type title" />
   <string key="EditorCommon.LabelProgrammaticNamingAndServices" value="Programmatic naming and services" />
@@ -78,8 +71,6 @@
   <string key="EditorCommon.HasCaching" value="Has caching" />
   <string key="EditorCommon.HasPublishing" value="Has publishing" />
   <string key="EditorCommon.HasLocalization" value="Is localizable data" />
-  <string key="EditorCommon.ErrorTitle" value="Error" />
-
   <string key="DeleteGeneratedDataStep1.LabelFieldGroup" value="Delete data?" />
   <string key="DeleteGeneratedDataStep1.Text" value="Delete data?" />
   <string key="DeleteDataConfirmationText" value="There're some referenced data that will also be deleted, do you want to continue?" />
@@ -87,18 +78,13 @@
   <string key="DeleteGeneratedInterfaceStep1.Text" value="Delete the datatype" />
   <string key="CascadeDeleteErrorTitle" value="Cascade delete error" />
   <string key="CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
-
   <string key="DeleteAggregationTypeWorkflow.LabelFieldGroup" value="Delete the datatype" />
   <string key="DeleteAggregationTypeWorkflow.Text" value="Delete the datatype" />
-
-  <string key="DeleteCompositionTypeWorkflow.TypeIsReferenced" value="Cannot delete type '{0}' since there're types that referenced to it." />
   <string key="DeleteCompositionTypeWorkflow.LabelFieldGroup" value="Delete the datatype" />
   <string key="DeleteCompositionTypeWorkflow.Text" value="Delete the datatype" />
   <string key="DeleteCompositionTypeWorkflow.ErrorTitle" value="Error" />
-
   <string key="ToXmlLabel" value="To Xml" />
   <string key="ToXmlToolTip" value="To Xml" />
-
   <string key="EnableTypeLocalizationWorkflow.Dialog.Label" value="Enable localization" />
   <string key="EnableTypeLocalizationWorkflow.Step1.FieldGroup.Label" value="Enable localization" />
   <string key="EnableTypeLocalizationWorkflow.Step1.CultureSelector.Label" value="Move existing data to ..." />
@@ -109,22 +95,18 @@
   <string key="EnableTypeLocalizationWorkflow.Step3.Description" value="There's some datatypes which have references to the type. While localizing the data will be copied to all languages in order to prevent appearing of broken references." />
   <string key="EnableTypeLocalizationWorkflow.Abort.Title" value="Missing active locales" />
   <string key="EnableTypeLocalizationWorkflow.Abort.Description" value="There are no added active locales. Add at least one before localization this datat type." />
-
   <string key="DisableTypeLocalizationWorkflow.Dialog.Label" value="Disable localization" />
   <string key="DisableTypeLocalizationWorkflow.Step1.FieldGroup.Label" value="Disable localization" />
   <string key="DisableTypeLocalizationWorkflow.Step1.CultureSelector.Label" value="Keep data from ..." />
   <string key="DisableTypeLocalizationWorkflow.Step1.CultureSelector.Help" value="When localization is disabled on a datatype only one translation can be kept. Data from other languages will be lost." />
   <string key="DisableTypeLocalizationWorkflow.Step2.Title" value="Confirmation" />
   <string key="DisableTypeLocalizationWorkflow.Step2.Description" value="All data from other locales than the one selected will be lost. Click Finish to continue." />
-
   <string key="LocalizeDataWorkflow.ShowError.LayoutLabel" value="Failed to translate data" />
   <string key="LocalizeDataWorkflow.ShowError.InfoTableCaption" value="Translation errors" />
   <string key="LocalizeDataWorkflow.ShowError.AlreadyTranslated" value="This data has already been translated. Translated version belongs to a diffrent group." />
   <string key="LocalizeDataWorkflow.ShowError.Description" value="The following fields has a reference to a data type. You should translate these data items before you can translate this data item" />
   <string key="LocalizeDataWorkflow.ShowError.FieldErrorFormat" value="The field '{0}' is referencing data of type '{1}' with the label '{2}'" />
-
   <string key="EditInterfaceTypeStep1.ErrorTitle" value="Error" />
   <string key="EditCompositionTypeWorkflow.ErrorTitle" value="Error" />
-
   <string key="DataTypeDescriptorToXmlLabel" value="XML Result" />
 </strings>

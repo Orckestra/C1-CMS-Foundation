@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
   <string key="Plugins.XsltBasedFunctionProviderElementProvider.RootFolderLabel" value="XSLT functions" />
   <string key="Plugins.XsltBasedFunctionProviderElementProvider.RootFolderToolTip" value="XSLT functions" />
@@ -6,15 +6,12 @@
   <string key="AddNewXsltFunctionWorkflow.MethodEmpty" value="Method name must be non-empty" />
   <string key="AddNewXsltFunctionWorkflow.NamespaceEmpty" value="Namespace must be non-empty" />
   <string key="AddNewXsltFunctionWorkflow.InvalidNamespace" value="Namespace must be like A.B.C - not start and end with ." />
-  <string key="AddNewXsltFunctionWorkflow.InvalidFilePath" value="XslFilePath must start with \ or /" />
   <string key="AddNewXsltFunctionWorkflow.MissingActiveLanguageTitle" value="A language is required" />
   <string key="AddNewXsltFunctionWorkflow.MissingActiveLanguageMessage" value="To create a XSLT function a language is required, but no languages have been added yet. You can add one under the System perspective." />
   <string key="AddNewXsltFunctionWorkflow.MissingPageTitle" value="A page is required" />
   <string key="AddNewXsltFunctionWorkflow.MissingPageMessage" value="To create a XSLT function at least one page has to be added." />
   <string key="DeleteXsltFunctionWorkflow.ConfirmDeleteTitle" value="Delete XSLT?" />
   <string key="DeleteXsltFunctionWorkflow.ConfirmDeleteMessage" value="Delete the selected XSLT?" />
-  <string key="DeleteXsltFunctionWorkflow.DeleteTitle" value="Delete" />
-  <string key="DeleteXsltFunctionWorkflow.DeleteMessage" value="Xslt Function deleted" />
   <string key="DeleteXsltFunctionWorkflow.CascadeDeleteErrorTitle" value="Cascade delete error" />
   <string key="DeleteXsltFunctionWorkflow.CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
   <string key="EditXsltFunctionWorkflow.EmptyMethodName" value="Method name must be non-empty" />
@@ -28,8 +25,6 @@
   <string key="XsltBasedFunctionProviderElementProvider.EditToolTip" value="Edit XSLT function" />
   <string key="XsltBasedFunctionProviderElementProvider.Delete" value="Delete" />
   <string key="XsltBasedFunctionProviderElementProvider.DeleteToolTip" value="Delete XSLT function" />
-  <string key="DeleteXsltWorkflow.DeleteTitle" value="Delete" />
-  <string key="DeleteXsltWorkflow.DeleteMessage" value="XSLT function deleted" />
   <string key="AddNewXsltFunctionStep1.LabelDialog" value="Add new XSLT function" />
   <string key="AddNewXsltFunctionStep1.LabelFieldGroup" value="Naming and output type" />
   <string key="AddNewXsltFunctionStep1.LabelName" value="Name" />

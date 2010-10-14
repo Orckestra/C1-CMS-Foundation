@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
   <string key="RootFolderLabel" value="C# functions" />
   <string key="RootFolderToolTip" value="Method functions" />
@@ -13,10 +13,8 @@
   <string key="Delete" value="Delete" />
   <string key="DeleteToolTip" value="Delete Function." />
   <string key="AddNewMethodBasedFunction.LabelFieldGroup" value="Add new method based function" />
-  <string key="AddNewMethodBasedFunctionStep1.LabelFieldGroup" value="Step 1" />
   <string key="AddNewMethodBasedFunctionStep1.LabelType" value="Type" />
   <string key="AddNewMethodBasedFunctionStep1.LabelTypeHelp" value="The type that contains the method in question" />
-  <string key="AddNewMethodBasedFunctionStep1.LabelError" value="Error" />
   <string key="AddNewMethodBasedFunctionStep2.LabelMethodName" value="Method name" />
   <string key="AddNewMethodBasedFunctionStep2.HelpMethodName" value="" />
   <string key="AddNewMethodBasedFunctionStep3.LabelMethodName" value="Method Name" />
@@ -48,8 +46,6 @@
   <string key="EditFunction.MethodNotInType" value="The type does not contain the method" />
   <string key="EditFunction.NoValidMethod" value="The type does not contain any valid method" />
   <string key="EditFunction.MethodOverloadsNotAllowed" value="The type must not have overloads" />
-
-
   <string key="AddInlineFunctionWorkflow.FieldGroup.Label" value="Settings" />
   <string key="AddInlineFunctionWorkflow.MethodName.Label" value="Name" />
   <string key="AddInlineFunctionWorkflow.MethodName.Help" value="The name of the method you want to create" />
@@ -59,8 +55,6 @@
   <string key="AddInlineFunctionWorkflow.MethodDescription.Help" value="A short description of the function" />
   <string key="AddInlineFunctionWorkflow.InlineFunctionMethodTemplate.Label" value="Template" />
   <string key="AddInlineFunctionWorkflow.InlineFunctionMethodTemplate.Help" value="Select the template that you want to use for the new method." />
-
-
   <string key="EditInlineFunctionWorkflow.FieldGroup.Label" value="Settings" />
   <string key="EditInlineFunctionWorkflow.MethodName.Label" value="Name" />
   <string key="EditInlineFunctionWorkflow.MethodName.Help" value="The name of the method you want to create" />
@@ -75,25 +69,18 @@
   <string key="EditInlineFunctionWorkflow.DebugPageDataScope.Help" value="When debugging, this is used as current data scope" />
   <string key="EditInlineFunctionWorkflow.DebugActiveLocale.Label" value="Language" />
   <string key="EditInlineFunctionWorkflow.DebugActiveLocale.Help" value="When debugging, this is used as the current language" />
-
   <string key="EditInlineFunctionWorkflow.Code.Label" value="Source" />
   <string key="EditInlineFunctionWorkflow.AssembliesFieldGroup.Label" value="Assembly References" />
   <string key="EditInlineFunctionWorkflow.Preview.Label" value="Preview" />
   <string key="EditInlineFunctionWorkflow.ParameterFieldGroup.Label" value="Input Parameters" />
-
   <string key="EditInlineFunctionWorkflow.AdminitrativeScope.Label" value="Adminitrative" />
   <string key="EditInlineFunctionWorkflow.PublicScope.Label" value="Public" />
-
   <string key="InlineFunctionMethodTemplate.Clean" value="Empty method" />
   <string key="InlineFunctionMethodTemplate.WithParameters" value="Method with parameters" />
   <string key="InlineFunctionMethodTemplate.DataConnection" value="Method using data connection" />
-  
   <string key="CSharpInlineFunction.OnMissingContainerType" value="A public static class named {0} is missing from the code. This class should contain the function method." />
   <string key="CSharpInlineFunction.OnNamespaceMismatch" value="The namespace in the code '{0}' does not match the given function namespace '{1}'." />
   <string key="CSharpInlineFunction.OnMissionMethod" value="The given function name '{0}' was not found or not public static in the class '{1}'." />
   <string key="CSharpInlineFunction.MissingParameterTestValue" value="The parameter '{0}' is missing a test value." />
   <string key="CSharpInlineFunction.WrongParameterTestValueType" value="The parameter '{0}' is expecting test value of type '{1}', got value of type '{2}'." />
-
-  
-  
 </strings>

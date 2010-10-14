@@ -1,16 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
-	<string key="SEOAssistant" value="SEO Assistant"/>
-	<string key="IntroText" value="Generate a page preview to compute the SEO indication."/>
-	<string key="Points" value="points"/>
-	<string key="TabResult" value="Result"/>
-	<string key="TabKeywords" value="Keywords"/>
-	<string key="NoKeywordsWarning" value="No keywords configured."/>
-	<string key="isInTitle" value="Keyword in title"/>
-	<string key="isInURL" value="Keyword in URL"/>
-	<string key="isInMenuTitle" value="Keyword in menu title"/>
-	<string key="isInDescription" value="Keyword in description"/>
-	<string key="isInHeading" value="Keyword in heading"/>
-	<string key="isInContent" value="Keyword in content"/> 
-	<string key="NoKeywords" value="No keywords"/>
+  <string key="SEOAssistant" value="SEO Assistant" />
+  <string key="IntroText" value="Generate a page preview to compute the SEO indication." />
+  <string key="TabResult" value="Result" />
+  <string key="TabKeywords" value="Keywords" />
+  <string key="NoKeywordsWarning" value="No keywords configured." />
+  <string key="isInTitle" value="Keyword in title" />
+  <string key="isInURL" value="Keyword in URL" />
+  <string key="isInMenuTitle" value="Keyword in menu title" />
+  <string key="isInDescription" value="Keyword in description" />
+  <string key="isInHeading" value="Keyword in heading" />
+  <string key="isInContent" value="Keyword in content" />
+  <string key="NoKeywords" value="No keywords" />
 </strings>

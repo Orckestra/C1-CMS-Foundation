@@ -1,8 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
-	<string key="DeveloperApplicationProvider.TreeLabel" value="Tree definitions"/>
-  <string key="DeveloperApplicationProvider.TreeToolTip" value="Tree definitions"/>
-
   <!--<string key="AddNewUserGroup.AddNewUserGroupStep1.LabelFieldGroup" value="Add User Group"/>
   <string key="AddNewUserGroup.AddNewUserGroupStep1.UserGroupNameLabel" value="User group name"/>
   <string key="AddNewUserGroup.AddNewUserGroupStep1.UserGroupNameHelp" value="The name of the new user group"/>

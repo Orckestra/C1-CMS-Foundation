@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
   <string key="AddNewPageStep1.DialogLabel" value="Add new page" />
   <string key="GeneralSettings.FieldGroupLabel" value="General settings" />
@@ -24,12 +24,9 @@
   <string key="AddNewPageStep2.LabelPositionSelectorPanel" value="Select detailed page position" />
   <string key="AddNewPageStep2.LabelPositionSelector" value="Position below" />
   <string key="AddNewPageStep2.HelpPositionSelector" value="" />
-  <string key="AddNewPageStep4.LabelFieldGroup" value="Step 4" />
-  <string key="AddNewPageStep4.LabelExsistingPage" value="Exsisting page" />
   <string key="EditPage.LabelPaneSettings" value="Settings" />
   <string key="EditPage.LabelPublicationState" value="Status" />
   <string key="EditPage.HelpPublicationState" value="Send the page to another status" />
-  <string key="EditPage.LabelTemplate" value="Template" />
   <string key="EditPage.LabelPageTitle" value="Page title" />
   <string key="EditPage.LabelPageTitleHelp" value="The entry specified in this field is shown in the browser window title bar. The field is used by search engines and sitemaps" />
   <string key="EditPage.LabelMenuTitle" value="Menu title" />
@@ -46,22 +43,13 @@
   <string key="EditPage.HelpUnpublishDate" value="Specify at which date and time you want the page to be unpublished. At the specified time the page will automatically be removed from the site" />
   <string key="EditPage.LabelContent" value="Content" />
   <string key="EditPage.LabelPreview" value="Preview" />
-  <string key="EditPage.DraftTransition" value="Draft" />
   <string key="EditPage.PageTypeSelectorLabel" value="Page type" />
-  <string key="EditPage.PageTypeSelectorHelp" value="Select a page type for this page" />
-  <string key="EditPage.AwaitingApprovalTransition" value="Awaiting Approval" />
-  <string key="EditPage.AwaitingPublicationTransition" value="Awaiting Publication" />
-
   <string key="EditPage.MaxLength" value="{0} characters maximum" />
-
-	<string key="DeletePage.LabelFieldGroup" value="Delete page?" />
-	
+  <string key="DeletePage.LabelFieldGroup" value="Delete page?" />
   <string key="DeletePageStep1.Title" value="Delete page and all subpages" />
-	<string key="DeletePageStep1.Description" value="All subpages will also be deleted. Continue?" />
-	
+  <string key="DeletePageStep1.Description" value="All subpages will also be deleted. Continue?" />
   <string key="DeletePageStep2.Text" value="Delete page '{0}'?" />
-	<string key="DeletePageStep3.Text" value="There're some referenced data that will also be deleted, do you want to continue?" />
-	<string key="UrlTitleNotUniqueError" value="Another page is using the specified URL title. URL titles must be unique among pages with the same parent." />
+  <string key="UrlTitleNotUniqueError" value="Another page is using the specified URL title. URL titles must be unique among pages with the same parent." />
   <string key="UrlTitleNotValidError" value="The specified URL title contains invalid characters. Since this field is used to build the web address for the page, certain special characters (like space, question mark, slash and dot) are not allowed. You can use letters, digits and dash." />
   <string key="FriendlyUrlNotUniqueError" value="Another page is using the specified Friendly URL. Friendly URL's must unique." />
   <string key="TitleMissingError" value="The title can not be empty." />
@@ -69,21 +57,18 @@
   <string key="PageSaveValidationFailedMessage" value="The page did not validate and has not been saved. Please examine field messages." />
   <string key="PageElementProvider.RootLabel" value="Websites" />
   <string key="PageElementProvider.RootLabelToolTip" value="Websites" />
-  <string key="PageElementProvider.AddPage" value="Add Page..." />
-  <string key="PageElementProvider.AddPageToolTip" value="Add new page" />
   <string key="PageElementProvider.AddPageAtRoot" value="Add Website..." />
   <string key="PageElementProvider.AddPageAtRootToolTip" value="Add new homepage" />
-	<string key="PageElementProvider.ViewUnpublishedItems" value="List unpublished pages" />
-	<string key="PageElementProvider.ViewUnpublishedItemsToolTip" value="Get an overview of pages and page folder data that haven't been published yet." />
-	<string key="PageElementProvider.ViewUnpublishedItems-document-title" value="Unpublished content" />
-	<string key="PageElementProvider.ViewUnpublishedItems-document-description" value="The list below display pages and page data which are currently being edited or are ready to be approved / published." />
-	<string key="PageElementProvider.ViewUnpublishedItems-document-empty-label" value="No unpublished pages or page folder data." />
-	<string key="PageElementProvider.EditPage" value="Edit Page" />
+  <string key="PageElementProvider.ViewUnpublishedItems" value="List unpublished pages" />
+  <string key="PageElementProvider.ViewUnpublishedItemsToolTip" value="Get an overview of pages and page folder data that haven't been published yet." />
+  <string key="PageElementProvider.ViewUnpublishedItems-document-title" value="Unpublished content" />
+  <string key="PageElementProvider.ViewUnpublishedItems-document-description" value="The list below display pages and page data which are currently being edited or are ready to be approved / published." />
+  <string key="PageElementProvider.EditPage" value="Edit Page" />
   <string key="PageElementProvider.EditPageToolTip" value="Edit selected page" />
-	<string key="PageElementProvider.Delete" value="Delete" />
-	<string key="PageElementProvider.DeleteToolTip" value="Delete the selected page" />
-	<string key="PageElementProvider.LocalizePage" value="Translate Page" />
-	<string key="PageElementProvider.LocalizePageToolTip" value="Translate selected page" />
+  <string key="PageElementProvider.Delete" value="Delete" />
+  <string key="PageElementProvider.DeleteToolTip" value="Delete the selected page" />
+  <string key="PageElementProvider.LocalizePage" value="Translate Page" />
+  <string key="PageElementProvider.LocalizePageToolTip" value="Translate selected page" />
   <string key="PageElementProvider.AddSubPage" value="Add page..." />
   <string key="PageElementProvider.AddSubPageToolTip" value="Add new page below the selected" />
   <string key="PageElementProvider.ViewPublicPage" value="View published" />
@@ -95,7 +80,6 @@
   <string key="PageElementProvider.DisplayLocalOrderingLabel" value="Show page local orderings" />
   <string key="PageElementProvider.DisplayLocalOrderingToolTip" value="Show page local orderings" />
   <string key="PageElementProvider.DisabledPage" value="Not yet approved or published" />
-
   <string key="PageElementProvider.MissingTemplateTitle" value="Website Template required" />
   <string key="PageElementProvider.MissingTemplateMessage" value="To create a page, a Website Template is required, but none has been created yet. You can create one under the Layout perspective." />
   <string key="PageElementProvider.MissingActiveLanguageTitle" value="Language required" />
@@ -103,8 +87,6 @@
   <string key="PageElementProvider.MissingPageTypeTitle" value="Page type required" />
   <string key="PageElementProvider.MissingPageTypeHomepageMessage" value="To create a homepage, a page type without the &quot;only subpages&quot; restriction is required, but none have been added yet. You can add one under the Layout perspective." />
   <string key="PageElementProvider.MissingPageTypeSubpageMessage" value="To create a subpage, a page type without the the only homepages restriction is requried, but none have been added yet. You can add one under the Layout perspective." />
-  
-  
   <string key="ManageHostNames.Add.DialogLabel" value="Manage host name" />
   <string key="ManageHostNames.Add.HeadingTitle" value="Add host name association to page" />
   <string key="ManageHostNames.Add.HeadingDescription" value="You can associate a host name (or a domain name) to a page by specifying it in the field below. Please note that the DNS settings for the specified host name must also be configured, which is done outside this system." />
@@ -119,10 +101,9 @@
   <string key="ManageHostNames.Remove.MultiSelectorHelp" value="The host names you select will no longer be associated with the page" />
   <string key="Preview.PublishedPage.NotPublishedTitle" value="The selected page is not published" />
   <string key="Preview.PublishedPage.NotPublishedMessage" value="The selected page is not published" />
-
-	<string key="DeletePageWorkflow.MissingConfirmErrorMessage" value="Please confirm deletion of all sub pages" />
-	<string key="DeletePageWorkflow.CascadeDeleteErrorTitle" value="Cascade delete error" />
-	<string key="DeletePageWorkflow.CascadeDeleteErrorMessage" value="The page is referenced by another type that does not allow cascade deletes. This operation is halted" />
-	<string key="DeletePageWorkflow.HasCompositionsTitle" value="Can not delete page" />
-	<string key="DeletePageWorkflow.HasCompositionsMessage" value="This page has one or more page folders or metadata fields defined on it. Delete these first." />
+  <string key="DeletePageWorkflow.MissingConfirmErrorMessage" value="Please confirm deletion of all sub pages" />
+  <string key="DeletePageWorkflow.CascadeDeleteErrorTitle" value="Cascade delete error" />
+  <string key="DeletePageWorkflow.CascadeDeleteErrorMessage" value="The page is referenced by another type that does not allow cascade deletes. This operation is halted" />
+  <string key="DeletePageWorkflow.HasCompositionsTitle" value="Can not delete page" />
+  <string key="DeletePageWorkflow.HasCompositionsMessage" value="This page has one or more page folders or metadata fields defined on it. Delete these first." />
 </strings>

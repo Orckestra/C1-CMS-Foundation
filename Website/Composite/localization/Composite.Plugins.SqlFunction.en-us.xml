@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
   <string key="SqlFunctionElementProvider.RootLabel" value="SQL functions" />
   <string key="SqlFunctionElementProvider.RootLabelToolTip" value="Add Connections and then queries to connections" />
@@ -14,10 +14,6 @@
   <string key="SqlFunctionElementProvider.EditQueryToolTip" value="Edit SQL Query" />
   <string key="SqlFunctionElementProvider.DeleteQuery" value="Delete" />
   <string key="SqlFunctionElementProvider.DeleteQueryToolTip" value="Delete SQL Query" />
-  <string key="DeleteSqlConnectionWorkflow.DeleteSqlXmlTitle" value="Delete" />
-  <string key="DeleteSqlConnectionWorkflow.DeleteSqlXmlMessage" value="SQL Connection and queries deleted" />
-  <string key="DeleteSqlFunctionProviderWorkflow.DeleteTitle" value="Delete" />
-  <string key="DeleteSqlFunctionProviderWorkflow.DeleteMessage" value="Function deleted" />
   <string key="AddNewSqlFunction.LabelDialog" value="Add New SQL Query" />
   <string key="AddNewSqlFunction.LabelNamingPanel" value="Function naming" />
   <string key="AddNewSqlFunction.LabelName" value="Name" />
@@ -52,7 +48,6 @@
   <string key="EditSqlFunction.HelpNamespace" value="" />
   <string key="EditSqlFunction.LabelDescription" value="Description" />
   <string key="EditSqlFunction.HelpDescription" value="" />
-  <string key="EditSqlFunction.LabelCommandBehaviour" value="SQL Command behaviour" />
   <string key="EditSqlFunction.LabelPreview" value="Preview" />
   <string key="EditSqlFunctionConnection.LabelName" value="Name" />
   <string key="EditSqlFunctionConnection.HelpName" value="" />

@@ -1,99 +1,80 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
-	<string key="AddOnManager.CompositeVersionMisMatch" value="The package composite version requirements does not match the current composite version" />
-	<string key="AddOnManager.NewerVersionInstlled" value="Package already installed with a newer version" />
-	<string key="AddOnManager.MissingAddOnDirectory" value="Could not locate the package directory path '{0}'" />
-	<string key="AddOnManager.Uninstallable" value="The package is marked as non uninstallable" />
-	<string key="AddOnManager.MissingZipFile" value="Could not locate the package zip file path '{0}'" />
-	<string key="AddOnManager.MissingUninstallFile" value="Could not locate the package uninstall file path '{0}'" />
-	<string key="AddOnManager.MissingElement" value="Missing '{0}' element." />
-	<string key="AddOnManager.MissingAttribute" value="Missing '{0}' attribute." />
-	<string key="AddOnManager.InvalidAttributeValue" value="'{0}' attribute value is not a valid value." />
-	<string key="AddOnManager.InvalidElementValue" value="'{0}' element value is not a valid value" />
-
-	<string key="ConfigurationTransformationAddOnFragmentInstaller.ExpectedExactlyTwoElements" value="Expected exactly two elements, '{0}' and '{1}'" />
-	<string key="ConfigurationTransformationAddOnFragmentInstaller.MissingElement" value="Missing '{0}' element." />
-	<string key="ConfigurationTransformationAddOnFragmentInstaller.MissingAttribute" value="Missing '{0}' attribute." />
-	<string key="ConfigurationTransformationAddOnFragmentInstaller.PathDoesNotExist" value="The path '{0}' does not exist in the ZIP." />
-	<string key="ConfigurationTransformationAddOnFragmentInstaller.UnableToParsXslt" value="Unable to parse ZIP'ed XSLT file '{0}'. {1}" />
-	<string key="ConfigurationTransformationAddOnFragmentInstaller.XsltWillGeneratedInvalid" value="The XSLT file '{0}' will generate an invalid Configuration file. {1}" />
-
-	<string key="DataAddOnFragmentInstaller.OnlyOneElement" value="Only one 'Types' element allowed" />
-	<string key="DataAddOnFragmentInstaller.MissingElement" value="Missing 'Types' element" />
-	<string key="DataAddOnFragmentInstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
-	<string key="DataAddOnFragmentInstaller.WrongDataScopeIdentifier" value="Wrong DataScopeIdentifier ({0}) name in the configuration" />
-  <string key="DataAddOnFragmentInstaller.WrongLocale" value="Wrong culture ({0}) name in the configuration" />  
-	<string key="DataAddOnFragmentInstaller.MissingFile" value="Missing file '{0}' in the package zip" />
-	<string key="DataAddOnFragmentInstaller.TypeNotConfigured" value="The data interface type '{0}' has not been configured in the system" />
-	<string key="DataAddOnFragmentInstaller.TypeNotInheriting" value="The data interface type '{0}' does not inherit the interface '{1}'" />
-	<string key="DataAddOnFragmentInstaller.MissingProperty" value="The data interface type '{0}' does not have a property named '{1}'" />
-	<string key="DataAddOnFragmentInstaller.MissingWritableProperty" value="The data interface type '{0}' does not have a writable property named '{1}'" />
-	<string key="DataAddOnFragmentInstaller.ConversionFailed" value="Could not convert the value '{0}' to the type '{1}'" />
-	<string key="DataAddOnFragmentInstaller.MissingPropertyVaule" value="The property '{0}' on the interface '{1}' is missing a value." />
-	<string key="DataAddOnFragmentInstaller.DataExists" value="A data item of the data interface type '{0}' does already exist" />
-	<string key="DataAddOnFragmentInstaller.MissingTypeDescriptor" value="Missing data type descriptor for the type {0}" />
+  <string key="AddOnManager.CompositeVersionMisMatch" value="The package composite version requirements does not match the current composite version" />
+  <string key="AddOnManager.NewerVersionInstlled" value="Package already installed with a newer version" />
+  <string key="AddOnManager.MissingAddOnDirectory" value="Could not locate the package directory path '{0}'" />
+  <string key="AddOnManager.Uninstallable" value="The package is marked as non uninstallable" />
+  <string key="AddOnManager.MissingZipFile" value="Could not locate the package zip file path '{0}'" />
+  <string key="AddOnManager.MissingUninstallFile" value="Could not locate the package uninstall file path '{0}'" />
+  <string key="AddOnManager.MissingElement" value="Missing '{0}' element." />
+  <string key="AddOnManager.MissingAttribute" value="Missing '{0}' attribute." />
+  <string key="AddOnManager.InvalidAttributeValue" value="'{0}' attribute value is not a valid value." />
+  <string key="AddOnManager.InvalidElementValue" value="'{0}' element value is not a valid value" />
+  <string key="ConfigurationTransformationAddOnFragmentInstaller.ExpectedExactlyTwoElements" value="Expected exactly two elements, '{0}' and '{1}'" />
+  <string key="ConfigurationTransformationAddOnFragmentInstaller.MissingElement" value="Missing '{0}' element." />
+  <string key="ConfigurationTransformationAddOnFragmentInstaller.MissingAttribute" value="Missing '{0}' attribute." />
+  <string key="ConfigurationTransformationAddOnFragmentInstaller.PathDoesNotExist" value="The path '{0}' does not exist in the ZIP." />
+  <string key="ConfigurationTransformationAddOnFragmentInstaller.UnableToParsXslt" value="Unable to parse ZIP'ed XSLT file '{0}'. {1}" />
+  <string key="ConfigurationTransformationAddOnFragmentInstaller.XsltWillGeneratedInvalid" value="The XSLT file '{0}' will generate an invalid Configuration file. {1}" />
+  <string key="DataAddOnFragmentInstaller.OnlyOneElement" value="Only one 'Types' element allowed" />
+  <string key="DataAddOnFragmentInstaller.MissingElement" value="Missing 'Types' element" />
+  <string key="DataAddOnFragmentInstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
+  <string key="DataAddOnFragmentInstaller.WrongDataScopeIdentifier" value="Wrong DataScopeIdentifier ({0}) name in the configuration" />
+  <string key="DataAddOnFragmentInstaller.WrongLocale" value="Wrong culture ({0}) name in the configuration" />
+  <string key="DataAddOnFragmentInstaller.MissingFile" value="Missing file '{0}' in the package zip" />
+  <string key="DataAddOnFragmentInstaller.TypeNotConfigured" value="The data interface type '{0}' has not been configured in the system" />
+  <string key="DataAddOnFragmentInstaller.TypeNotInheriting" value="The data interface type '{0}' does not inherit the interface '{1}'" />
+  <string key="DataAddOnFragmentInstaller.MissingProperty" value="The data interface type '{0}' does not have a property named '{1}'" />
+  <string key="DataAddOnFragmentInstaller.MissingWritableProperty" value="The data interface type '{0}' does not have a writable property named '{1}'" />
+  <string key="DataAddOnFragmentInstaller.ConversionFailed" value="Could not convert the value '{0}' to the type '{1}'" />
+  <string key="DataAddOnFragmentInstaller.MissingPropertyVaule" value="The property '{0}' on the interface '{1}' is missing a value." />
+  <string key="DataAddOnFragmentInstaller.DataExists" value="A data item of the data interface type '{0}' does already exist" />
+  <string key="DataAddOnFragmentInstaller.MissingTypeDescriptor" value="Missing data type descriptor for the type {0}" />
   <string key="DataAddOnFragmentInstaller.TypeNonLocalizedWithLocale" value="The data type '{0}' is not localized but a locale is specified in the configuration" />
   <string key="DataAddOnFragmentInstaller.TypeLocalizedWithoutLocale" value="The data type '{0}' is localized but no locale is specified in the configuration" />
-
   <string key="DataAddOnFragmentUninstaller.OnlyOneElement" value="Only one 'Types' element allowed" />
-	<string key="DataAddOnFragmentUninstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
-	<string key="DataAddOnFragmentUninstaller.MissingKeyProperty" value="The data type '{0}' does not contain a key property named '{1}" />
-	<string key="DataAddOnFragmentUninstaller.ConversionFailed" value="Could not convert the value '{0}' to the type '{1}'" />
-	
-	<string key="DataTypeAddOnFragmentInstaller.OnlyOneElement" value="Only one 'Types' element allowed" />
-	<string key="DataTypeAddOnFragmentInstaller.MissingElement" value="Missing 'Types' element" />
-	<string key="DataTypeAddOnFragmentInstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
-	<string key="DataTypeAddOnFragmentInstaller.TypeNotConfigured" value="The data interface type '{0}' has not been configured in the system" />
-	<string key="DataTypeAddOnFragmentInstaller.TypeNotInheriting" value="The data interface type '{0}' does not inherit the interface '{1}'" />
-	<string key="DataTypeAddOnFragmentInstaller.TypeExists" value="The interface type '{0}' is already exists in the system" />
-	<string key="DataTypeAddOnFragmentInstaller.InterfaceCodeError" value="The interface type '{0}' is not coded correctly" />
-
-	<string key="DataTypeAddOnFragmentUninstaller.OnlyOneElement" value="Only one 'Types' element allowed" />
-	<string key="DataTypeAddOnFragmentUninstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
-	<string key="DataTypeAddOnFragmentUninstaller.WrongAttributeFormat" value="Wrong attribute format in the configuration" />
-
-	<string key="DynamicDataTypeAddOnFragmentInstaller.OnlyOneElement" value="Only one 'Types' element allowed" />
-	<string key="DynamicDataTypeAddOnFragmentInstaller.MissingElement" value="Missing 'Types' element" />
-	<string key="DynamicDataTypeAddOnFragmentInstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
-	<string key="DynamicDataTypeAddOnFragmentInstaller.DataTypeDescriptorParseError" value="Error xml parsing the dataTypeDescriptor attribute" />
-	<string key="DynamicDataTypeAddOnFragmentInstaller.DataTypeDescriptorDeserializeError" value="Error while deserializing a DataType. Error text: {0}." />
-	<string key="DynamicDataTypeAddOnFragmentInstaller.MissingReferencedType" value="Cannot find a referenced type '{0}'." />
-	<string key="DynamicDataTypeAddOnFragmentInstaller.TypeExists" value="The interface type '{0}' is already exists in the system" />
-	
-	<string key="DynamicDataTypeAddOnFragmentUninstaller.OnlyOneElement" value="Only one 'Types' element allowed" />
-	<string key="DynamicDataTypeAddOnFragmentUninstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
-	<string key="DynamicDataTypeAddOnFragmentUninstaller.WrongAttributeFormat" value="Wrong attribute format in the configuration" />
-
-	<string key="FileAddOnFragmentInstaller.OnlyOneFilesElement" value="Only one 'Files' element allowed" />
-	<string key="FileAddOnFragmentInstaller.OnlyOneDirectoriesElement" value="Only one 'Directories' element allowed" />
-	<string key="FileAddOnFragmentInstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
-	<string key="FileAddOnFragmentInstaller.DeleteTargetDirectoryNotAllowed" value="The 'deleteTargetDirectory' attribute can only be applied to directories, not files" />
-	<string key="FileAddOnFragmentInstaller.WrongAttributeBoolFormat" value="Wrong attribute value format, bool value expected" />
-	<string key="FileAddOnFragmentInstaller.MissingFile" value="The install zip-file does not contain the file '{0}'" />
-	<string key="FileAddOnFragmentInstaller.FileExists" value="The file '{0}' already exists" />
-	<string key="FileAddOnFragmentInstaller.FileReadOnly" value="File '{0}' marked as 'Read Only' and therefore cannot be overwritten." />
-	<string key="FileAddOnFragmentInstaller.AssemblyLoadNotAllowed" value="The 'assemblyLoad' attribute can only be applied to files, not directories" />
+  <string key="DataAddOnFragmentUninstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
+  <string key="DataAddOnFragmentUninstaller.MissingKeyProperty" value="The data type '{0}' does not contain a key property named '{1}" />
+  <string key="DataTypeAddOnFragmentInstaller.OnlyOneElement" value="Only one 'Types' element allowed" />
+  <string key="DataTypeAddOnFragmentInstaller.MissingElement" value="Missing 'Types' element" />
+  <string key="DataTypeAddOnFragmentInstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
+  <string key="DataTypeAddOnFragmentInstaller.TypeNotConfigured" value="The data interface type '{0}' has not been configured in the system" />
+  <string key="DataTypeAddOnFragmentInstaller.TypeNotInheriting" value="The data interface type '{0}' does not inherit the interface '{1}'" />
+  <string key="DataTypeAddOnFragmentInstaller.TypeExists" value="The interface type '{0}' is already exists in the system" />
+  <string key="DataTypeAddOnFragmentInstaller.InterfaceCodeError" value="The interface type '{0}' is not coded correctly" />
+  <string key="DataTypeAddOnFragmentUninstaller.OnlyOneElement" value="Only one 'Types' element allowed" />
+  <string key="DataTypeAddOnFragmentUninstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
+  <string key="DataTypeAddOnFragmentUninstaller.WrongAttributeFormat" value="Wrong attribute format in the configuration" />
+  <string key="DynamicDataTypeAddOnFragmentInstaller.OnlyOneElement" value="Only one 'Types' element allowed" />
+  <string key="DynamicDataTypeAddOnFragmentInstaller.MissingElement" value="Missing 'Types' element" />
+  <string key="DynamicDataTypeAddOnFragmentInstaller.DataTypeDescriptorParseError" value="Error xml parsing the dataTypeDescriptor attribute" />
+  <string key="DynamicDataTypeAddOnFragmentInstaller.DataTypeDescriptorDeserializeError" value="Error while deserializing a DataType. Error text: {0}." />
+  <string key="DynamicDataTypeAddOnFragmentInstaller.MissingReferencedType" value="Cannot find a referenced type '{0}'." />
+  <string key="DynamicDataTypeAddOnFragmentInstaller.TypeExists" value="The interface type '{0}' is already exists in the system" />
+  <string key="DynamicDataTypeAddOnFragmentUninstaller.OnlyOneElement" value="Only one 'Types' element allowed" />
+  <string key="DynamicDataTypeAddOnFragmentUninstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
+  <string key="DynamicDataTypeAddOnFragmentUninstaller.WrongAttributeFormat" value="Wrong attribute format in the configuration" />
+  <string key="FileAddOnFragmentInstaller.OnlyOneFilesElement" value="Only one 'Files' element allowed" />
+  <string key="FileAddOnFragmentInstaller.OnlyOneDirectoriesElement" value="Only one 'Directories' element allowed" />
+  <string key="FileAddOnFragmentInstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
+  <string key="FileAddOnFragmentInstaller.DeleteTargetDirectoryNotAllowed" value="The 'deleteTargetDirectory' attribute can only be applied to directories, not files" />
+  <string key="FileAddOnFragmentInstaller.WrongAttributeBoolFormat" value="Wrong attribute value format, bool value expected" />
+  <string key="FileAddOnFragmentInstaller.MissingFile" value="The install zip-file does not contain the file '{0}'" />
+  <string key="FileAddOnFragmentInstaller.FileExists" value="The file '{0}' already exists" />
+  <string key="FileAddOnFragmentInstaller.FileReadOnly" value="File '{0}' marked as 'Read Only' and therefore cannot be overwritten." />
+  <string key="FileAddOnFragmentInstaller.AssemblyLoadNotAllowed" value="The 'assemblyLoad' attribute can only be applied to files, not directories" />
   <string key="FileAddOnFragmentInstaller.OnlyUpdateNotAllowed" value="The 'onlyUpdate' attribute can only be applied to files, not directories" />
-  <string key="FileAddOnFragmentInstaller.OnlyUpdateNotAllowedWithLoadAssemlby" value="The 'onlyUpdate' attribute is not allowed in combination with the 'loadAssembly' attribute" />  
+  <string key="FileAddOnFragmentInstaller.OnlyUpdateNotAllowedWithLoadAssemlby" value="The 'onlyUpdate' attribute is not allowed in combination with the 'loadAssembly' attribute" />
   <string key="FileAddOnFragmentInstaller.MissingDirectory" value="The install zip-file does not contain the directory '{0}'" />
   <string key="FileAddOnFragmentInstaller.WrongBasePath" value="Uninstall.xml contains file pathes, binded to the original website location, and therefore the package cannot be uninstalled safely." />
-
   <string key="FileAddOnFragmentUninstaller.OnlyOneFilesElement" value="Only one 'Files' element allowed" />
-	<string key="FileAddOnFragmentUninstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
-
-	<string key="VirtualElementProviderNodeAddOnFragmentInstaller.OnlyOneElement" value="Only one 'Areas' element allowed" />
-	<string key="VirtualElementProviderNodeAddOnFragmentInstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
-	<string key="VirtualElementProviderNodeAddOnFragmentInstaller.MissingType" value="Could not find the type '{0}'" />
-	<string key="VirtualElementProviderNodeAddOnFragmentInstaller.MissingIcon" value="Could not find the icon '{0}'" />
-
-	<string key="VirtualElementProviderNodeAddOnFragmentUninstaller.OnlyOneElement" value="Only one 'Areas' element allowed" />
-	<string key="VirtualElementProviderNodeAddOnFragmentUninstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
-
-  <string key="FileXslTransformationPackageFragmentInstaller.OnlyOneElement" value="Only one 'XslFiles' element allowed" />
+  <string key="VirtualElementProviderNodeAddOnFragmentInstaller.OnlyOneElement" value="Only one 'Areas' element allowed" />
+  <string key="VirtualElementProviderNodeAddOnFragmentInstaller.MissingType" value="Could not find the type '{0}'" />
+  <string key="VirtualElementProviderNodeAddOnFragmentInstaller.MissingIcon" value="Could not find the icon '{0}'" />
+  <string key="VirtualElementProviderNodeAddOnFragmentUninstaller.OnlyOneElement" value="Only one 'Areas' element allowed" />
+  <string key="VirtualElementProviderNodeAddOnFragmentUninstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
   <string key="FileXslTransformationPackageFragmentInstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
   <string key="FileXslTransformationPackageFragmentInstaller.FileNotFound" value="File '{0}' not found" />
-	
-
   <string key="PackageVersionBumberFragmentInstaller.OnlyOneElement" value="Only one 'PackageVersions' element allowed" />
   <string key="PackageVersionBumberFragmentInstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
   <string key="PackageVersionBumberFragmentInstaller.WrongAttributeGuidFormat" value="Wrong attribute value format, Guid value expected" />
@@ -104,5 +85,4 @@
   <string key="PackageVersionBumberFragmentUninstaller.WrongAttributeGuidFormat" value="Wrong attribute value format, Guid value expected" />
   <string key="PackageVersionBumberFragmentUninstaller.PackageIdDuplicate" value="The package id duplicate: '{0}'" />
   <string key="PackageVersionBumberFragmentUninstaller.WrongAttributeVersionFormat" value="Wrong attribute value format, Version value expected (x.y.z)" />
-  
 </strings>

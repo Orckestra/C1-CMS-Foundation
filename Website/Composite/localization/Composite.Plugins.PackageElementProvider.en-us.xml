@@ -1,148 +1,129 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
-	<string key="RootFolderLabel" value="Packages" />
-	<string key="RootFolderToolTip" value="Explore and manage installed packages" />
-	<string key="AvailableAddOnsFolderLabel" value="Available packages" />
-	<string key="AvailableAddOnsFolderToolTip" value="Available packages" />
-	<string key="InstalledAddOnFolderLabel" value="Installed packages" />
-	<string key="InstalledAddOnFolderToolTip" value="Installed packages" />
-	<string key="LocalAddOnsFolderLabel" value="Local packages" />
-	<string key="LocalAddOnsFolderToolTip" value="Local packages" />
-	<string key="AddOnSourcesFolderLabel" value="Package sources" />
-	<string key="AddOnSourcesFolderToolTip" value="Package sources" />
-
-	<string key="ViewAvailableInformationLabel" value="Package Info" />
-	<string key="ViewAvailableInformationToolTip" value="View package information" />
-	<string key="ViewInstalledInformationLabel" value="Package Info" />
-	<string key="ViewInstalledInformationToolTip" value="View package information" />
-	<string key="InstallLocalAddOnLabel" value="Install local package..." />
-	<string key="InstallLocalAddOnToolTip" value="Install package from local file system" />
-	<string key="AddAddOnSourceLabel" value="Add package source" />
-	<string key="AddAddOnSourceToolTip" value="Add package source" />
-	<string key="DeleteAddOnSourceLabel" value="Delete package source" />
-	<string key="DeleteAddOnSourceToolTip" value="Delete package source" />
-
-	<string key="ClearServerCacheLabel" value="Clear cache" />
-	<string key="ClearServerCacheToolTip" value="Clear cache to get the newest packages" />
-	<string key="ViewAvailableInformation.FieldGroupLabel" value="Package Info" />
-	<string key="ViewAvailableInformation.NameTextLabel" value="Name" />
-	<string key="ViewAvailableInformation.NameTextHelp" value="The name of the package" />
-	<string key="ViewAvailableInformation.VersionTextLabel" value="Version" />
-	<string key="ViewAvailableInformation.VersionTextHelp" value="The version of the package" />
-	<string key="ViewAvailableInformation.DescriptionTextLabel" value="Description" />
-	<string key="ViewAvailableInformation.DescriptionTextHelp" value="The description of the package" />
-	<string key="ViewAvailableInformation.TechicalDescriptionTextLabel" value="Tecnhical Description" />
-	<string key="ViewAvailableInformation.TechicalDescriptionTextHelp" value="The techical description of the package" />
-	<string key="ViewAvailableInformation.AuthorTextLabel" value="Author" />
-	<string key="ViewAvailableInformation.AuthorTextHelp" value="The name of the package author" />
-	<string key="ViewAvailableInformation.PriceTextLabel" value="Price (EUR)" />
-	<string key="ViewAvailableInformation.PriceTextHelp" value="The price of the package" />
-	<string key="ViewAvailableInformation.AddOnSourceTextLabel" value="AddOnSource" />
-	<string key="ViewAvailableInformation.AddOnSourceTextHelp" value="The source of the package" />
-	<string key="ViewAvailableInformation.Toolbar.InstallLabel" value="Install" />
-	<string key="ViewAvailableInformation.Toolbar.ReadMoreLabel" value="Read more" />
-	<string key="ViewAvailableInformation.ShowError.MessageTitle" value="Already installed" />
-	<string key="ViewAvailableInformation.ShowError.MessageMessage" value="The package is already installed, cannot install the selected package." />
-	<string key="ViewAvailableInformation.ShowServerError.MessageTitle" value="Package server did not respond" />
-	<string key="ViewAvailableInformation.ShowServerError.MessageMessage" value="The package server did not respond, try again or contact the system administrator" />
-
-	<string key="ViewInstalledInformation.FieldGroupLabel" value="Package Info" />
-	<string key="ViewInstalledInformation.NameTextLabel" value="Name" />
-	<string key="ViewInstalledInformation.NameTextHelp" value="The name of the package" />
-	<string key="ViewInstalledInformation.DateTextLabel" value="Installation date" />
-	<string key="ViewInstalledInformation.DateTextHelp" value="The installation date of the package" />
-	<string key="ViewInstalledInformation.UserTextLabel" value="Installed by" />
-	<string key="ViewInstalledInformation.UserTextHelp" value="The user who installed the package" />
-
+  <string key="RootFolderLabel" value="Packages" />
+  <string key="RootFolderToolTip" value="Explore and manage installed packages" />
+  <string key="AvailableAddOnsFolderLabel" value="Available packages" />
+  <string key="AvailableAddOnsFolderToolTip" value="Available packages" />
+  <string key="InstalledAddOnFolderLabel" value="Installed packages" />
+  <string key="InstalledAddOnFolderToolTip" value="Installed packages" />
+  <string key="LocalAddOnsFolderLabel" value="Local packages" />
+  <string key="LocalAddOnsFolderToolTip" value="Local packages" />
+  <string key="AddOnSourcesFolderLabel" value="Package sources" />
+  <string key="AddOnSourcesFolderToolTip" value="Package sources" />
+  <string key="ViewAvailableInformationLabel" value="Package Info" />
+  <string key="ViewAvailableInformationToolTip" value="View package information" />
+  <string key="ViewInstalledInformationLabel" value="Package Info" />
+  <string key="ViewInstalledInformationToolTip" value="View package information" />
+  <string key="InstallLocalAddOnLabel" value="Install local package..." />
+  <string key="InstallLocalAddOnToolTip" value="Install package from local file system" />
+  <string key="AddAddOnSourceLabel" value="Add package source" />
+  <string key="AddAddOnSourceToolTip" value="Add package source" />
+  <string key="DeleteAddOnSourceLabel" value="Delete package source" />
+  <string key="DeleteAddOnSourceToolTip" value="Delete package source" />
+  <string key="ClearServerCacheLabel" value="Clear cache" />
+  <string key="ClearServerCacheToolTip" value="Clear cache to get the newest packages" />
+  <string key="ViewAvailableInformation.FieldGroupLabel" value="Package Info" />
+  <string key="ViewAvailableInformation.NameTextLabel" value="Name" />
+  <string key="ViewAvailableInformation.NameTextHelp" value="The name of the package" />
+  <string key="ViewAvailableInformation.VersionTextLabel" value="Version" />
+  <string key="ViewAvailableInformation.VersionTextHelp" value="The version of the package" />
+  <string key="ViewAvailableInformation.DescriptionTextLabel" value="Description" />
+  <string key="ViewAvailableInformation.DescriptionTextHelp" value="The description of the package" />
+  <string key="ViewAvailableInformation.TechicalDescriptionTextLabel" value="Tecnhical Description" />
+  <string key="ViewAvailableInformation.TechicalDescriptionTextHelp" value="The techical description of the package" />
+  <string key="ViewAvailableInformation.AuthorTextLabel" value="Author" />
+  <string key="ViewAvailableInformation.AuthorTextHelp" value="The name of the package author" />
+  <string key="ViewAvailableInformation.PriceTextLabel" value="Price (EUR)" />
+  <string key="ViewAvailableInformation.PriceTextHelp" value="The price of the package" />
+  <string key="ViewAvailableInformation.AddOnSourceTextLabel" value="AddOnSource" />
+  <string key="ViewAvailableInformation.AddOnSourceTextHelp" value="The source of the package" />
+  <string key="ViewAvailableInformation.Toolbar.InstallLabel" value="Install" />
+  <string key="ViewAvailableInformation.Toolbar.ReadMoreLabel" value="Read more" />
+  <string key="ViewAvailableInformation.ShowError.MessageTitle" value="Already installed" />
+  <string key="ViewAvailableInformation.ShowError.MessageMessage" value="The package is already installed, cannot install the selected package." />
+  <string key="ViewAvailableInformation.ShowServerError.MessageTitle" value="Package server did not respond" />
+  <string key="ViewAvailableInformation.ShowServerError.MessageMessage" value="The package server did not respond, try again or contact the system administrator" />
+  <string key="ViewInstalledInformation.FieldGroupLabel" value="Package Info" />
+  <string key="ViewInstalledInformation.NameTextLabel" value="Name" />
+  <string key="ViewInstalledInformation.DateTextLabel" value="Installation date" />
+  <string key="ViewInstalledInformation.UserTextLabel" value="Installed by" />
   <string key="ViewInstalledInformation.AuthorTextLabel" value="Author" />
-  <string key="ViewInstalledInformation.WebsiteTextLabel" value="Website" />
   <string key="ViewInstalledInformation.VersionTextLabel" value="Version" />
-  <string key="ViewInstalledInformation.DescriptionTextLabel" value="Description" />
-  
-	<string key="ViewInstalledInformation.Toolbar.UninstallLabel" value="Uninstall" />
-	<string key="ViewInstalledInformation.ShowError.MessageTitle" value="Already uninstalled" />
-	<string key="ViewInstalledInformation.ShowError.MessageMessage" value="The package is already uninstalled, cannot uninstall the selected package." />
-
-	<string key="InstallRemoteAddOn.Step1.LayoutLabel" value="Install package" />
-	<string key="InstallRemoteAddOn.Step1.HeadingTitle" value="This is a trial/payment package" />
-	<string key="InstallRemoteAddOn.Step1.HeadingDescription" value="This package is subject to payment - please examine the EULA on the next screen for details about trial period and payment terms." />
-	<string key="InstallRemoteAddOn.Step2.LayoutLabel" value="Install package" />
-	<string key="InstallRemoteAddOn.Step2.HeadingTitle" value="License agreement" />
+  <string key="ViewInstalledInformation.Toolbar.UninstallLabel" value="Uninstall" />
+  <string key="ViewInstalledInformation.ShowError.MessageTitle" value="Already uninstalled" />
+  <string key="ViewInstalledInformation.ShowError.MessageMessage" value="The package is already uninstalled, cannot uninstall the selected package." />
+  <string key="InstallRemoteAddOn.Step1.LayoutLabel" value="Install package" />
+  <string key="InstallRemoteAddOn.Step1.HeadingTitle" value="This is a trial/payment package" />
+  <string key="InstallRemoteAddOn.Step1.HeadingDescription" value="This package is subject to payment - please examine the EULA on the next screen for details about trial period and payment terms." />
+  <string key="InstallRemoteAddOn.Step2.LayoutLabel" value="Install package" />
+  <string key="InstallRemoteAddOn.Step2.HeadingTitle" value="License agreement" />
   <string key="InstallRemoteAddOn.Step2.HeadingDescription" value="If you accept the terms of the agreement, click the check box below. You must accept the agreement to install." />
   <string key="InstallRemoteAddOn.Step2.IAcceptItemLabel" value="I accept the license agreement" />
   <string key="InstallRemoteAddOn.Step2.AcceptMissing" value="You must accept the terms of the license agreement before you can proceed." />
   <string key="InstallRemoteAddOn.Step3.LayoutLabel" value="Install package" />
-	<string key="InstallRemoteAddOn.Step3.HeadingTitle" value="Download and validate package" />
-	<string key="InstallRemoteAddOn.Step3.HeadingDescription" value="The package will be downloaded and validated. Please note that this may take several minutes. Click next to continue." />
-	<string key="InstallRemoteAddOn.Step4.LayoutLabel" value="Install local package" />
-	<string key="InstallRemoteAddOn.Step4.HeadingTitle" value="Ready to install" />
-	<string key="InstallRemoteAddOn.Step4.HeadingDescription" value="Ready to install the package. Please note that the installation may take several minutes. Click next to continue." />
-	<string key="InstallRemoteAddOn.Step4.NonUninstallableHeadingTitle" value="Ready to install" />
-	<string key="InstallRemoteAddOn.Step4.NonUninstallableHeadingDescription" value="Ready to install the package. Please note that the installation may take several minutes. Also note that this package can not be uninstalled. Click next to continue." />
-	<string key="InstallRemoteAddOn.Step5.LayoutLabel" value="Package installed" />
-	<string key="InstallRemoteAddOn.Step5.HeadingTitle" value="Package installed successfully" />
-	<string key="InstallRemoteAddOn.Step5.HeadingDescription" value="Package installed successfully." />
-	<string key="InstallRemoteAddOn.ShowError.LayoutLabel" value="Package installation failed" />
-	<string key="InstallRemoteAddOn.ShowError.InfoTableCaption" value="Package installation failed" />
-	<string key="InstallRemoteAddOn.ShowError.MessageTitle" value="Message" />
-
-	<string key="InstallLocalAddOn.Step1.LayoutLabel" value="Install local package" />
-	<string key="InstallLocalAddOn.Step1.FieldGroupLabel" value="Installed local package" />
-	<string key="InstallLocalAddOn.Step1.FileUploadLabel" value="Package file" />
-	<string key="InstallLocalAddOn.Step1.FileUploadHelp" value="Browse to the package file" />
-	<string key="InstallLocalAddOn.Step1.RestartErrorTitle" value="Server was restarted durring installation" />
-	<string key="InstallLocalAddOn.Step1.RestartErrorMessage" value="Server was restarted durring installation. Stopping installation" />
-	<string key="InstallLocalAddOn.Step2.LayoutLabel" value="Install local package" />
-	<string key="InstallLocalAddOn.Step2.HeadingTitle" value="Ready to install" />
-	<string key="InstallLocalAddOn.Step2.HeadingDescription" value="Ready to install the package. Please note that the installation may take several minutes. Click next to continue." />
-	<string key="InstallLocalAddOn.Step3.LayoutLabel" value="Package Installed" />
-	<string key="InstallLocalAddOn.Step3.HeadingTitle" value="Package installed successfully" />
-	<string key="InstallLocalAddOn.Step3.HeadingDescription" value="Package installed successfully." />
-	<string key="InstallLocalAddOn.ShowError.LayoutLabel" value="Package installation failed" />
-	<string key="InstallLocalAddOn.ShowError.InfoTableCaption" value="Package installation failed" />
-	<string key="InstallLocalAddOn.ShowError.MessageTitle" value="Message" />
-
-	<string key="UninstallRemoteAddOn.Step1.LayoutLabel" value="Uninstall package" />
-	<string key="UninstallRemoteAddOn.Step1.HeadingTitle" value="Ready to check uninstallation process" />
-	<string key="UninstallRemoteAddOn.Step1.HeadingDescription" value="Ready to check the uninstall process of the package. Click next to continue." />
-	<string key="UninstallRemoteAddOn.Step2.LayoutLabel" value="Uninstall package" />
-	<string key="UninstallRemoteAddOn.Step2.HeadingTitle" value="Ready to uninstall" />
-	<string key="UninstallRemoteAddOn.Step2.HeadingDescription" value="Ready to uninstall the package. Please note that the installation may take several minutes. Click next to continue." />
-	<string key="UninstallRemoteAddOn.Step3.LayoutLabel" value="Package uninstalled" />
-	<string key="UninstallRemoteAddOn.Step3.HeadingTitle" value="Package uninstalled successfully" />
-	<string key="UninstallRemoteAddOn.Step3.HeadingDescription" value="Package uninstalled successfully." />
-	<string key="UninstallRemoteAddOn.ShowError.LayoutLabel" value="Package uninstallation failed" />
-	<string key="UninstallRemoteAddOn.ShowError.InfoTableCaption" value="Package uninstallation failed" />
-	<string key="UninstallRemoteAddOn.ShowError.MessageTitle" value="Message" />
-	<string key="UninstallRemoteAddOn.ShowUnregistre.LayoutLabel" value="Uninstall package" />
-	<string key="UninstallRemoteAddOn.ShowUnregistre.HeadingTitle" value="Registration of uninstallation failed" />
-	<string key="UninstallRemoteAddOn.ShowUnregistre.HeadingDescription" value="The registration of uninstallation failed. Contact the package vendor for manual unregistration." />
-
-	<string key="UninstallLocalAddOn.Step1.LayoutLabel" value="Uninstall local package" />
-	<string key="UninstallLocalAddOn.Step1.HeadingTitle" value="Ready to check uninstallation process" />
-	<string key="UninstallLocalAddOn.Step1.HeadingDescription" value="Ready to check the uninstall process of the package. Click next to continue." />
-	<string key="UninstallLocalAddOn.Step2.LayoutLabel" value="Uninstall local package" />
-	<string key="UninstallLocalAddOn.Step2.HeadingTitle" value="Ready to uninstall" />
-	<string key="UninstallLocalAddOn.Step2.HeadingDescription" value="Ready to uninstall the package. Please note that the installation may take several minutes. Click next to continue." />
-	<string key="UninstallLocalAddOn.Step3.LayoutLabel" value="Package uninstalled" />
-	<string key="UninstallLocalAddOn.Step3.HeadingTitle" value="Package uninstalled successfully" />
-	<string key="UninstallLocalAddOn.Step3.HeadingDescription" value="Package uninstalled successfully." />
-	<string key="UninstallLocalAddOn.ShowError.LayoutLabel" value="Package uninstallation failed" />
-	<string key="UninstallLocalAddOn.ShowError.InfoTableCaption" value="Package uninstallation failed" />
-	<string key="UninstallLocalAddOn.ShowError.MessageTitle" value="Message" />
-
-	<string key="AddAddOnSource.Step1.LayoutLabel" value="New package source" />
-	<string key="AddAddOnSource.Step1.FieldGroupLabel" value="Package source data" />
-	<string key="AddAddOnSource.Step1.UrlLabel" value="Package web service URL" />
-	<string key="AddAddOnSource.Step1.UrlHelp" value="Packages can be hosted on remote servers. The package web service URL will be validated in the next step." />
-	<string key="AddAddOnSource.Step1.UrlNotValid" value="The entered text was not a valid URL" />
-	<string key="AddAddOnSource.Step1.UrlNonAddOnServer" value="The server is not a Composite C1 package server" />
-
-	<string key="AddAddOnSource.Step2.LayoutLabel" value="Add package server source" />
-	<string key="AddAddOnSource.Step2.HeadingTitle" value="Server URL is valid" />
-	<string key="AddAddOnSource.Step2.HeadingNoHttpsDescription" value="Note that the HTTP protocol is used on this connection. This implies that all information will be send unencrypted. Click Finish to add the source." />
-	<string key="AddAddOnSource.Step2.HeadingWithHttpsDescription" value="Click Finish to add the source." />
-
-	<string key="DeleteAddOnSource.Step1.LayoutLabel" value="Delete confirm" />
-	<string key="DeleteAddOnSource.Step1.Text" value="Delete the selected server source" />
+  <string key="InstallRemoteAddOn.Step3.HeadingTitle" value="Download and validate package" />
+  <string key="InstallRemoteAddOn.Step3.HeadingDescription" value="The package will be downloaded and validated. Please note that this may take several minutes. Click next to continue." />
+  <string key="InstallRemoteAddOn.Step4.LayoutLabel" value="Install local package" />
+  <string key="InstallRemoteAddOn.Step4.HeadingTitle" value="Ready to install" />
+  <string key="InstallRemoteAddOn.Step4.HeadingDescription" value="Ready to install the package. Please note that the installation may take several minutes. Click next to continue." />
+  <string key="InstallRemoteAddOn.Step4.NonUninstallableHeadingTitle" value="Ready to install" />
+  <string key="InstallRemoteAddOn.Step4.NonUninstallableHeadingDescription" value="Ready to install the package. Please note that the installation may take several minutes. Also note that this package can not be uninstalled. Click next to continue." />
+  <string key="InstallRemoteAddOn.Step5.LayoutLabel" value="Package installed" />
+  <string key="InstallRemoteAddOn.Step5.HeadingTitle" value="Package installed successfully" />
+  <string key="InstallRemoteAddOn.Step5.HeadingDescription" value="Package installed successfully." />
+  <string key="InstallRemoteAddOn.ShowError.LayoutLabel" value="Package installation failed" />
+  <string key="InstallRemoteAddOn.ShowError.InfoTableCaption" value="Package installation failed" />
+  <string key="InstallRemoteAddOn.ShowError.MessageTitle" value="Message" />
+  <string key="InstallLocalAddOn.Step1.LayoutLabel" value="Install local package" />
+  <string key="InstallLocalAddOn.Step1.FieldGroupLabel" value="Installed local package" />
+  <string key="InstallLocalAddOn.Step1.FileUploadLabel" value="Package file" />
+  <string key="InstallLocalAddOn.Step1.FileUploadHelp" value="Browse to the package file" />
+  <string key="InstallLocalAddOn.Step2.LayoutLabel" value="Install local package" />
+  <string key="InstallLocalAddOn.Step2.HeadingTitle" value="Ready to install" />
+  <string key="InstallLocalAddOn.Step2.HeadingDescription" value="Ready to install the package. Please note that the installation may take several minutes. Click next to continue." />
+  <string key="InstallLocalAddOn.Step3.LayoutLabel" value="Package Installed" />
+  <string key="InstallLocalAddOn.Step3.HeadingTitle" value="Package installed successfully" />
+  <string key="InstallLocalAddOn.Step3.HeadingDescription" value="Package installed successfully." />
+  <string key="InstallLocalAddOn.ShowError.LayoutLabel" value="Package installation failed" />
+  <string key="InstallLocalAddOn.ShowError.InfoTableCaption" value="Package installation failed" />
+  <string key="InstallLocalAddOn.ShowError.MessageTitle" value="Message" />
+  <string key="UninstallRemoteAddOn.Step1.LayoutLabel" value="Uninstall package" />
+  <string key="UninstallRemoteAddOn.Step1.HeadingTitle" value="Ready to check uninstallation process" />
+  <string key="UninstallRemoteAddOn.Step1.HeadingDescription" value="Ready to check the uninstall process of the package. Click next to continue." />
+  <string key="UninstallRemoteAddOn.Step2.LayoutLabel" value="Uninstall package" />
+  <string key="UninstallRemoteAddOn.Step2.HeadingTitle" value="Ready to uninstall" />
+  <string key="UninstallRemoteAddOn.Step2.HeadingDescription" value="Ready to uninstall the package. Please note that the installation may take several minutes. Click next to continue." />
+  <string key="UninstallRemoteAddOn.Step3.LayoutLabel" value="Package uninstalled" />
+  <string key="UninstallRemoteAddOn.Step3.HeadingTitle" value="Package uninstalled successfully" />
+  <string key="UninstallRemoteAddOn.Step3.HeadingDescription" value="Package uninstalled successfully." />
+  <string key="UninstallRemoteAddOn.ShowError.LayoutLabel" value="Package uninstallation failed" />
+  <string key="UninstallRemoteAddOn.ShowError.InfoTableCaption" value="Package uninstallation failed" />
+  <string key="UninstallRemoteAddOn.ShowError.MessageTitle" value="Message" />
+  <string key="UninstallRemoteAddOn.ShowUnregistre.LayoutLabel" value="Uninstall package" />
+  <string key="UninstallRemoteAddOn.ShowUnregistre.HeadingTitle" value="Registration of uninstallation failed" />
+  <string key="UninstallRemoteAddOn.ShowUnregistre.HeadingDescription" value="The registration of uninstallation failed. Contact the package vendor for manual unregistration." />
+  <string key="UninstallLocalAddOn.Step1.LayoutLabel" value="Uninstall local package" />
+  <string key="UninstallLocalAddOn.Step1.HeadingTitle" value="Ready to check uninstallation process" />
+  <string key="UninstallLocalAddOn.Step1.HeadingDescription" value="Ready to check the uninstall process of the package. Click next to continue." />
+  <string key="UninstallLocalAddOn.Step2.LayoutLabel" value="Uninstall local package" />
+  <string key="UninstallLocalAddOn.Step2.HeadingTitle" value="Ready to uninstall" />
+  <string key="UninstallLocalAddOn.Step2.HeadingDescription" value="Ready to uninstall the package. Please note that the installation may take several minutes. Click next to continue." />
+  <string key="UninstallLocalAddOn.Step3.LayoutLabel" value="Package uninstalled" />
+  <string key="UninstallLocalAddOn.Step3.HeadingTitle" value="Package uninstalled successfully" />
+  <string key="UninstallLocalAddOn.Step3.HeadingDescription" value="Package uninstalled successfully." />
+  <string key="UninstallLocalAddOn.ShowError.LayoutLabel" value="Package uninstallation failed" />
+  <string key="UninstallLocalAddOn.ShowError.InfoTableCaption" value="Package uninstallation failed" />
+  <string key="UninstallLocalAddOn.ShowError.MessageTitle" value="Message" />
+  <string key="AddAddOnSource.Step1.LayoutLabel" value="New package source" />
+  <string key="AddAddOnSource.Step1.FieldGroupLabel" value="Package source data" />
+  <string key="AddAddOnSource.Step1.UrlLabel" value="Package web service URL" />
+  <string key="AddAddOnSource.Step1.UrlHelp" value="Packages can be hosted on remote servers. The package web service URL will be validated in the next step." />
+  <string key="AddAddOnSource.Step1.UrlNotValid" value="The entered text was not a valid URL" />
+  <string key="AddAddOnSource.Step1.UrlNonAddOnServer" value="The server is not a Composite C1 package server" />
+  <string key="AddAddOnSource.Step2.LayoutLabel" value="Add package server source" />
+  <string key="AddAddOnSource.Step2.HeadingTitle" value="Server URL is valid" />
+  <string key="AddAddOnSource.Step2.HeadingNoHttpsDescription" value="Note that the HTTP protocol is used on this connection. This implies that all information will be send unencrypted. Click Finish to add the source." />
+  <string key="AddAddOnSource.Step2.HeadingWithHttpsDescription" value="Click Finish to add the source." />
+  <string key="DeleteAddOnSource.Step1.LayoutLabel" value="Delete confirm" />
+  <string key="DeleteAddOnSource.Step1.Text" value="Delete the selected server source" />
 </strings>
