@@ -11,8 +11,16 @@ namespace Composite.Core.WebClient.Presentation
     {
         public void ProcessRequest(HttpContext context)
         {
-            context.Response.Cache.SetExpires(DateTime.Now.AddMonths(1));
-            context.Response.Cache.SetCacheability(HttpCacheability.Private);
+            if (CookieHandler.Get("mode") == "develop")
+            {
+                context.Response.Cache.SetExpires(DateTime.Now.AddMonths(-1));
+                context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            }
+            else
+            {
+                context.Response.Cache.SetExpires(DateTime.Now.AddMonths(1));
+                context.Response.Cache.SetCacheability(HttpCacheability.Private);
+            }
 
             string webPath  = context.Request.Path;
             string jsPath  = webPath.Substring(0, webPath.LastIndexOf(".aspx"));
