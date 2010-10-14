@@ -105,7 +105,7 @@ TreeBodyBinding.prototype._scrollIntoView = function ( treenode ) {
 	try {
 		
 		/*
-		 * Fix the top window.
+		 * Fix the top window. 
 		 */
 		top.document.documentElement.scrollTop = 0;
 		top.document.body.scrollTop = 0;
