@@ -757,6 +757,7 @@
   <string key="Website.App.LabelFile" value="File" />
   <string key="Website.App.LabelView" value="View" />
   <string key="Website.App.LabelSystemLog" value="System Log" />
+  <string key="Website.App.LabelDeveloperPanel" value="Developer Panel" />
   <string key="Website.App.LabelTools" value="Tools" />
   <string key="Website.App.LabelHelp" value="Help" />
   <string key="Website.App.LabelHelpContents" value="Help Contents" />
