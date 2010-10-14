@@ -97,6 +97,31 @@ TreeBodyBinding.prototype._scrollIntoView = function ( treenode ) {
 	}
 	
 	/*
+	 * Firefox 3.6.10 seems to first scroll the tree window, 
+	 * then scroll the TOP window so that treenode appears 
+	 * right at the top of the viewport. Probably a bug,  
+	 * but this will fix it.
+	 */
+	try {
+		
+		/*
+		 * Fix the top window.
+		 */
+		top.document.documentElement.scrollTop = 0;
+		top.document.body.scrollTop = 0;
+		
+		/*
+		 * Fix the app window.
+		 */
+		top.app.document.documentElement.scrollTop = 0;
+		top.app.document.body.scrollTop = 0;
+		
+	} catch ( exception ) {
+		
+		// Cannot test this now, so just in case...
+	}
+	
+	/*
 	 * IE may present an extreme horizontal scroll. 
 	 * We hack it by locking scrollLeft completely. 
 	 * Tough luck for deeply nested tree structures.
