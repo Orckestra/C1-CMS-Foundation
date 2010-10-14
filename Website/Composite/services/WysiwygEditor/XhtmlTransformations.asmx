@@ -98,14 +98,14 @@ public class XhtmlTransformations : System.Web.Services.WebService
                 throw new InvalidOperationException("Parse failed for \n" + htmlFragment, ex);
             }
 
-            List<XElement> functionImages = structuredResult.Descendants(Namespaces.Xhtml + "img").Where(f => f.Attribute("functionmarkup") != null).ToList();
-            functionImages.AddRange(structuredResult.Descendants("img").Where(f => f.Attribute("functionmarkup") != null));
+            List<XElement> functionImages = structuredResult.Descendants(Namespaces.Xhtml + "img").Where(f => f.Attribute("alt") != null).ToList();
+            functionImages.AddRange(structuredResult.Descendants("img").Where(f => f.Attribute("alt") != null));
 
             foreach (var functionImageElement in functionImages)
             {
                 try
                 {
-                    string functionMarkup = HttpUtility.UrlDecode(functionImageElement.Attribute("functionmarkup").Value);
+                    string functionMarkup = HttpUtility.UrlDecode(functionImageElement.Attribute("alt").Value);
                     XElement functionElement = XElement.Parse(functionMarkup);
 
                     bool functionAloneInParagraph =
@@ -375,7 +375,7 @@ public class XhtmlTransformations : System.Web.Services.WebService
         string yellowBoxUrl = Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(tmpUrl);
 
         XElement imagetag = new XElement("img"
-            , new XAttribute("functionmarkup", HttpUtility.UrlEncodeUnicode(compactMarkup))
+            , new XAttribute("alt", HttpUtility.UrlEncodeUnicode(compactMarkup))
             , new XAttribute("src", yellowBoxUrl)
             , new XAttribute("class", "compositeFunctionWysiwygRepresentation")
             );

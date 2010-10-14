@@ -129,7 +129,7 @@ new function () {
 				img = this.editor.selection.getNode ();
 			}
 			if ( img.nodeName.toLowerCase () == "img" ) {
-				var markup = img.getAttribute ( "functionmarkup" );
+				var markup = img.alt;
 				this._launchUpdateDialog ( markup );
 			}
 		},
@@ -191,6 +191,7 @@ new function () {
 			
 			if ( markup != "" ) {
 				var html = top.XhtmlTransformationsService.GetImageTagForFunctionCall ( markup );
+				alert ( html )
 				this.editor.execCommand ( "mceInsertContent", false, html );
 			} else {
 				this.editor.execCommand ( "mceInsertContent", false, "" );
