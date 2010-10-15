@@ -120,9 +120,7 @@ var About = new function () {
 			var names = new List ( category.Value.split ( ";" )); 
 			names.each ( function ( name, index ) {
 				p.appendChild ( document.createTextNode ( name ));
-				if ( index != names.getLength () - 1 ) {
-					p.appendChild ( document.createElement ( "br" ));
-				}
+				p.appendChild ( document.createElement ( "br" ));
 			});
 		
 			div.appendChild ( h2 );

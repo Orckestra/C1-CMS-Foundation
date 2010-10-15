@@ -117,11 +117,6 @@ ui|fielddata textarea {
 	border: none;
 	display: block;
 }
-ui|fielddata input:focus,
-ui|fielddata select:focus,
-ui|fielddata textarea:focus {
-	outline: none;
-}
 ui|fielddata input {
 	padding: 5px 0 0 7px;
 	#moz padding-bottom: 4px;
