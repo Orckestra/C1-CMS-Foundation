@@ -112,7 +112,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             _standardStaticTypeFunctions.Add(new Web.Request.QueryStringXmlFormattedDateTimeValueFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Response.RedirectFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Response.SetCookieValueFunction(_entityTokenFactory));
+            _standardStaticTypeFunctions.Add(new Web.Response.SetServerPageCacheDuration(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Response.SetSessionVariableFunction(_entityTokenFactory));
+
             _standardStaticTypeFunctions.Add(new Web.Server.ApplicationVariableFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Server.ServerVariableFunction(_entityTokenFactory));
 
