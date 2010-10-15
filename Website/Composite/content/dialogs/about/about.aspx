@@ -17,7 +17,7 @@
 						<h2>Visual Editor</h2>
 						<p>powered by<br/><a href="http://tinymce.moxiecode.com/" title="Visit Moxicode" target="_blank">TinyMCE</a></p>
 						<h2>Source Editor</h2>
-						<p>powered by<br/><a href="http://bobdawg.org/codepress/" title="Visit Sourceforge" target="_blank">Codepress</a></p>
+						<p>powered by<br/><a href="http://mozillalabs.com/skywriter/" title="Visit Mozilla Labs" target="_blank">Skywriter</a></p>
 						<div id="names"/>
 						<div class="logo" id="logo2"/>
 					</div>
