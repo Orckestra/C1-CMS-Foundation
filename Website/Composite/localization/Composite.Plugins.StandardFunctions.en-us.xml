@@ -345,6 +345,11 @@
   <string key="Composite.Web.Response.SetCookieValue.param.Value.label" value="Cookie value" />
   <string key="Composite.Web.Response.SetCookieValue.param.Expires.help" value="When the cookie should expire (stop to exist). The default value is 'session', when the user closes the browser." />
   <string key="Composite.Web.Response.SetCookieValue.param.Expires.label" value="Expiration" />
+
+  <string key="Composite.Web.Response.SetServerPageCacheDuration.description" value="Sets the maximum number of seconds the current page should be publically cached on the server. To ensure that the page response is not cached set the &quot;Maximum seconds&quot; to &quot;0&quot;. If multiple sources set the server cache duration, the smallest number is used. Note that the file &quot;~/Renderers/Page.aspx&quot; contains a default value for cache duration – you can edit this file to change the default." />
+  <string key="Composite.Web.Response.SetServerPageCacheDuration.param.MaxSeconds.help" value="The maximum number of seconds the page currently being rendered should be publically cached. A high value yield good performance, a low value make changes show up faster. A value of '0' ensure that all visitors get a unique response." />
+  <string key="Composite.Web.Response.SetServerPageCacheDuration.param.MaxSeconds.label" value="Maximum seconds" />
+
   <string key="Composite.Web.Response.SetSessionVariable.description" value="Sets a session variable for the current user" />
   <string key="Composite.Web.Response.SetSessionVariable.param.Value.help" value="" />
   <string key="Composite.Web.Response.SetSessionVariable.param.Value.label" value="Value" />

@@ -130,7 +130,7 @@
 					<ui:menubody>
 						<ui:menugroup>
 							<ui:menuitem label="${string:Website.App.LabelSystemLog}" binding="StageViewMenuItemBinding" handle="Composite.Management.SystemLog" type="checkbox" image="${icon:systemlog}"/>
-							<ui:menuitem label="${string:Website.App.LabelDeveloperPanel" binding="StageViewMenuItemBinding" handle="Composite.Management.Developer" type="checkbox" image="${icon:developer}"/>
+							<ui:menuitem label="${string:Website.App.LabelDeveloperPanel}" binding="StageViewMenuItemBinding" handle="Composite.Management.Developer" type="checkbox" image="${icon:developer}"/>
 							<ui:menuitem label="Icons">
 								<ui:menupopup>
 									<ui:menubody>
