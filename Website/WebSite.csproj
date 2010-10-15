@@ -5479,7 +5479,6 @@
     <Content Include="Composite\templates\wysiwygeditor\popup.xml" />
     <Content Include="Composite\templates\wysiwygeditor\toolbar_advanced.xml" />
     <Content Include="Composite\templates\wysiwygeditor\toolbar_simple.xml" />
-    <Content Include="Composite\test.html" />
     <Content Include="Composite\top.aspx" />
     <Content Include="Composite\top.css" />
     <Content Include="Composite\transformations\viewsource-xml.xsl" />
