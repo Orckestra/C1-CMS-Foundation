@@ -47,12 +47,6 @@
 			<div id="offlinesplash">
 				<div id="offlineimage"/>
 				<div id="offlinetext">Installing</div>
-				<!-- 
-				<span id="offlinetext">
-					<span class="text1">Installing</span>
-					<span class="text2">Installing</span>
-				</span>
-				-->
 			</div>
 		</ui:theatre>
 		

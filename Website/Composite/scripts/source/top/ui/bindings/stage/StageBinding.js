@@ -463,11 +463,6 @@ StageBinding.prototype.handleAction = function ( action ) {
 			this._isExplorerReady = true;
 			if ( this._isDecksReady == true ) {
 				if ( !this._isStageReady ) {
-					/*
-					if ( Client.isWebKit ) {
-						alert ( "StageBinding 4 WEHEY!" );
-					}
-					*/
 					ProgressBarBinding.notch ( 3 );
 					this._onStageReady ();
 				}
@@ -619,7 +614,7 @@ StageBinding.prototype._inflateBinding = function ( binding ) {
 			binding.mountDefinition ( definition );
 		}
 	}
-	var isReady = ( this._decksBinding && this._explorerBinding ); 
+	var isReady = ( this._decksBinding != null && this._explorerBinding != null ); 
 	if ( isReady ) {
 		var self = this;
 		setTimeout ( function () {

@@ -282,11 +282,13 @@ DataInputBinding.prototype._buildDOMContent = function () {
 		this.shadowTree.box
 	);
 	
+	this.shadowTree.input.setAttribute ( "spellcheck", "false" );
+	
 	/*
 	 * Setup ASP.NET identity.
 	 */
 	if ( this.hasCallBackID ()) {
-		// Binding.dotnetify not needed!
+		// Binding.dotnetify not needed - we already have an input element!
 	} else if ( this._isAutoPost ) {
 		this.logger.warn ( "Autopost " + this.toString () + " without a callbackid?" );
 	}

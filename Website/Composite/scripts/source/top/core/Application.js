@@ -262,17 +262,9 @@ _Application.prototype = {
 				}
 				
 				setTimeout ( function () {
-					try {
-						ProgressBarBinding.notch ( 4 );
-						Application.isOperational = true;
-						EventBroadcaster.broadcast ( BroadcastMessages.APPLICATION_OPERATIONAL );
-						
-//						top.bindingMap.offlinetheatre.play ();
-						
-					} catch ( exception ) {
-						alert ( "Application operational NOT" );
-						throw ( exception );
-					}
+					ProgressBarBinding.notch ( 4 );
+					Application.isOperational = true;
+					EventBroadcaster.broadcast ( BroadcastMessages.APPLICATION_OPERATIONAL );
 				}, PageBinding.TIMEOUT );
 			}
 		});
@@ -371,7 +363,12 @@ _Application.prototype = {
 		
 		ProgressBarBinding.notch ( 4 );
 
-		EventBroadcaster.broadcast ( BroadcastMessages.APPLICATION_LOGIN );
+		/*
+		 * WebKit needs a short break here...
+		 */
+		setTimeout ( function () {
+			EventBroadcaster.broadcast ( BroadcastMessages.APPLICATION_LOGIN );
+		}, 0 );
 	},
 	
 	/**

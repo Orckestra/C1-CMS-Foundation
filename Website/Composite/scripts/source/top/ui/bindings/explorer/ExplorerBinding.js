@@ -190,8 +190,6 @@ ExplorerBinding.prototype.mountDefinition = function ( definition ) {
 	if ( definition instanceof SystemViewDefinition ) {
 		this._decksBinding.mountDefinition ( definition );
 		this._menuBinding.mountDefinition ( definition );
-	} else {
-		throw new Error ( "ExplorerBinding: No such ViewDefinition supported" );
 	}
 }
 

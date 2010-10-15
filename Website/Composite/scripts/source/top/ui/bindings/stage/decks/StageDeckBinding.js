@@ -217,9 +217,8 @@ StageDeckBinding.prototype.initialize = function () {
 		this.windowBinding = this.add ( 
 			WindowBinding.newInstance ( this.bindingDocument )
 		);
-		this.windowBinding.setURL ( 
-			StageDeckBinding.DEFAULT_URL + "?handle=" + this.handle
-		);
+		var url = StageDeckBinding.DEFAULT_URL + "?handle=" + this.handle;
+		this.windowBinding.setURL ( url );
 		this.windowBinding.attach ();
 		this._isStageDeckBindingInitialized = true;
 	}
