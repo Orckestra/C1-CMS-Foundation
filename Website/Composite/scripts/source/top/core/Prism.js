@@ -2,9 +2,6 @@
  * @class
  * Allows basic communication between C1 and the Prism host. 
  * The Composite C1 extension must be installed in Prism.
- * Don't instantiate this class manually. Access through 
- * instance variable "Prism" declared below. This 
- * instance should be considered a singleton class.
  */
 function _Prism () {}
 _Prism.prototype = {

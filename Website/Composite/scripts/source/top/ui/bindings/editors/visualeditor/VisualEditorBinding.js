@@ -171,7 +171,7 @@ VisualEditorBinding.extractByIndex = function ( html, index ) {
 	}
 	
 	/*
-	 * We don't want to return a null pointer here.
+	 * We don't want to return a null here.
 	 */
 	if ( result == null ) {
 		result = new String( "" );
