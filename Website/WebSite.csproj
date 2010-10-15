@@ -468,6 +468,8 @@
     <Content Include="Composite\services\Installation\InstallationService.asmx" />
     <Content Include="Composite\services\Setup\SetupService.asmx" />
     <Content Include="Composite\skins\dynamicskin.css" />
+    <Content Include="Composite\templates\sourcecodeeditor\cs.txt" />
+    <Content Include="Composite\templates\sourcecodeeditor\js.txt" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -5463,10 +5465,8 @@
     <Content Include="Composite\templates\fieldgroupmatrix.xml" />
     <Content Include="Composite\templates\matrixbindingelement.xml" />
     <Content Include="Composite\templates\soapenvelope.xml" />
-    <Content Include="Composite\templates\sourcecodeeditor\csharp.txt" />
     <Content Include="Composite\templates\sourcecodeeditor\css.txt" />
     <Content Include="Composite\templates\sourcecodeeditor\html.txt" />
-    <Content Include="Composite\templates\sourcecodeeditor\javascript.txt" />
     <Content Include="Composite\templates\sourcecodeeditor\sql.txt" />
     <Content Include="Composite\templates\sourcecodeeditor\xml.txt" />
     <Content Include="Composite\templates\sourcecodeeditor\xsl.txt" />
