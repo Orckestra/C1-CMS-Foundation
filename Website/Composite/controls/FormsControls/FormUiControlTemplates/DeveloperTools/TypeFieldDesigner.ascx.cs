@@ -186,7 +186,7 @@ namespace CompositeTypeFieldDesigner
                 case "System.String":
                     TypeDetailsLabel.Text = GetString("StringMaximumLength");
 
-                    TypeDetailsSelector.AutoPostBack = false;
+                    TypeDetailsSelector.AutoPostBack = true; // this is a fix to plug bug in update manager (client)
                     TypeDetailsSelector.Items.Add(new ListItem(GetString("16CharMax"), "16"));
                     TypeDetailsSelector.Items.Add(new ListItem(GetString("32CharMax"), "32"));
                     TypeDetailsSelector.Items.Add(new ListItem(GetString("64CharMax"), "64"));
@@ -199,7 +199,7 @@ namespace CompositeTypeFieldDesigner
                     break;
                 case "System.Decimal":
                     TypeDetailsLabel.Text = GetString("DecimalNumberFormat");
-                    TypeDetailsSelector.AutoPostBack = false;
+                    TypeDetailsSelector.AutoPostBack = true; // this is a fix to plug bug in update manager (client)
                     TypeDetailsSelector.Items.Add(new ListItem(GetString("1DecimalPlace"), "1"));
                     TypeDetailsSelector.Items.Add(new ListItem(GetString("2DecimalPlace"), "2"));
                     TypeDetailsSelector.Items.Add(new ListItem(GetString("3DecimalPlace"), "3"));
@@ -512,8 +512,8 @@ namespace CompositeTypeFieldDesigner
                         selected = new ListItem(selectedField.StoreType.NumericScale.ToString());
                         this.TypeDetailsSelector.Items.Add(selected);
                     }
-                    this.TypeDetailsSelector.ClearSelection();
-                    selected.Selected = true;
+                    this.TypeDetailsSelector.SelectedValue = selected.Value;
+                    //selected.Selected = true;
                 }
             }
 
