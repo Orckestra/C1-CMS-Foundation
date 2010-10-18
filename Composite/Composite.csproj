@@ -423,7 +423,9 @@
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\IDataGenerated\DeleteDataInstance.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\IDataGenerated\DataInstanceHelper.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\IDataGenerated\UpdateDataInstance.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Guid\NewGuid.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Response\SetServerPageCacheDuration.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Server\ApplicationPath.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\DataReference\NullablePageReferenceSelectorWidgetFunction.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\DataReference\PageReferenceSelectorWidgetFunction.cs" />
     <Compile Include="C1Console\Trees\AttributeDynamicValuesHelper.cs" />

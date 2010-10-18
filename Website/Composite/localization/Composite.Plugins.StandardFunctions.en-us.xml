@@ -124,6 +124,7 @@
   <string key="Composite.Utils.ParseStringToObject.param.StringToParse.help" value="Specify the string to parse. Note that the string must be formatted in a way that can be converted into the type of object thats expected." />
   <string key="Composite.Utils.ParseStringToObject.param.StringToParse.label" value="String to parse" />
 
+  <string key="Composite.Utils.Guid.NewGuid.description" value="Returns a new random Guid." />
   <string key="Composite.Utils.Globalization.AllCultures.description" value="A list of all cultures" />
   <string key="Composite.Utils.Globalization.CurrentCulture.description" value="The culture for the current user / request." />
   <string key="Composite.Utils.Integer.Sum.description" value="Returns the sum from a list of integers" />
@@ -355,6 +356,7 @@
   <string key="Composite.Web.Response.SetSessionVariable.param.Value.label" value="Value" />
   <string key="Composite.Web.Response.SetSessionVariable.param.VariableName.help" value="The name of the session variable to set." />
   <string key="Composite.Web.Response.SetSessionVariable.param.VariableName.label" value="Variable name" />
+  <string key="Composite.Web.Server.ApplicationPath.description" value="Gets the web application virtual root path. Typically '/', but if Composite C1 is running in a sub folder this can be '/MySubfolder/'. You can use this value to prefix URL's in situations where the automatic tilde path translations (like ~/myimages/img.jpg) are not handled by the Composite C1 rendering engine." />
   <string key="Composite.Web.Server.ApplicationVariable.description" value="Gets an IIS application variable" />
   <string key="Composite.Web.Server.ApplicationVariable.param.FallbackValue.help" value="Value to use if the application variable was not located" />
   <string key="Composite.Web.Server.ApplicationVariable.param.FallbackValue.label" value="Fallback value" />

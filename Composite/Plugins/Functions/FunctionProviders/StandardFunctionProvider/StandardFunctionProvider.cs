@@ -115,12 +115,16 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             _standardStaticTypeFunctions.Add(new Web.Response.SetServerPageCacheDuration(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Response.SetSessionVariableFunction(_entityTokenFactory));
 
+            _standardStaticTypeFunctions.Add(new Web.Server.ApplicationPath(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Server.ApplicationVariableFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Server.ServerVariableFunction(_entityTokenFactory));
 
             // date
             _standardStaticTypeFunctions.Add(new Utils.Date.NowFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Utils.Date.AddDaysFunction(_entityTokenFactory));
+
+            // guid
+            _standardStaticTypeFunctions.Add(new Utils.GuidFunctions.NewGuid(_entityTokenFactory));
 
             // globalization
             _standardStaticTypeFunctions.Add(new Utils.Globalization.CurrentCulture(_entityTokenFactory));
