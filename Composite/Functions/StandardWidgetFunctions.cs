@@ -182,6 +182,19 @@ namespace Composite.Functions
         public static WidgetFunctionProvider GetDataReferenceWidget<T>()
             where T : class, IData
         {
+            if (typeof(T) == typeof(IPage))
+            {
+                return new WidgetFunctionProvider(PageReferenceSelectorWidgetFunction.CompositeName);
+            }
+            if (typeof(T) == typeof(IMediaFile))
+            {
+                return GetMediaFileSelectorWidget(true);
+            }
+            if (typeof(T) == typeof(IImageFile))
+            {
+                return GetImageSelectorWidget(true);
+            }
+
             return new WidgetFunctionProvider(DataReferenceSelectorWidgetFunction<T>.CompositeName);
         }
 
@@ -190,8 +203,22 @@ namespace Composite.Functions
         public static WidgetFunctionProvider GetNullableDataReferenceWidget<T>()
             where T : class, IData
         {
+            if (typeof(T) == typeof(IPage))
+            {
+                return new WidgetFunctionProvider(NullablePageReferenceSelectorWidgetFunction.CompositeName);
+            }
+            if (typeof(T) == typeof(IMediaFile))
+            {
+                return GetMediaFileSelectorWidget(false);
+            }
+            if (typeof(T) == typeof(IImageFile))
+            {
+                return GetImageSelectorWidget(false);
+            }
+
             return new WidgetFunctionProvider(NullableDataReferenceSelectorWidgetFunction<T>.CompositeName);
         }
+
 
 
 
