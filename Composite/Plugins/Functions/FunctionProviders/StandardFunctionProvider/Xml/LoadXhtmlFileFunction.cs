@@ -17,7 +17,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
     internal sealed class LoadXhtmlFileFunction : StandardFunctionBase
     {
         public LoadXhtmlFileFunction(EntityTokenFactory entityTokenFactory)
-            : base("LoadXhtmlFile", "Composite.Core.Xml", typeof(XhtmlDocument), entityTokenFactory)
+            : base("LoadXhtmlFile", "Composite.Xml", typeof(XhtmlDocument), entityTokenFactory)
         {
         }
 

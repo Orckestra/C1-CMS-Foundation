@@ -363,17 +363,17 @@
   <string key="Composite.Web.Server.ServerVariable.description" value="Gets the value of an IIS Server variable" />
   <string key="Composite.Web.Server.ServerVariable.param.VariableName.help" value="The IIS Server variable to get." />
   <string key="Composite.Web.Server.ServerVariable.param.VariableName.label" value="Variable name" />
-  <string key="Composite.Core.Xml.LoadFile.description" value="Loads a local XML file given a relative path" />
-  <string key="Composite.Core.Xml.LoadFile.param.RelativePath.help" value="The relative path of the xml file to load" />
-  <string key="Composite.Core.Xml.LoadFile.param.RelativePath.label" value="Relative path" />
-  <string key="Composite.Core.Xml.LoadXhtmlFile.description" value="Loads a local Xhtml file given a relative path" />
-  <string key="Composite.Core.Xml.LoadXhtmlFile.param.RelativePath.help" value="The relative path of the xhtml file to load" />
-  <string key="Composite.Core.Xml.LoadXhtmlFile.param.RelativePath.label" value="Relative path" />
-  <string key="Composite.Core.Xml.LoadUrl.description" value="Loads a remote XML file given a Url" />
-  <string key="Composite.Core.Xml.LoadUrl.param.Url.help" value="" />
-  <string key="Composite.Core.Xml.LoadUrl.param.Url.label" value="Url" />
-  <string key="Composite.Core.Xml.LoadUrl.param.CacheTime.help" value="Time period in seconds for which the result should is cached. Default is 0 (no caching)." />
-  <string key="Composite.Core.Xml.LoadUrl.param.CacheTime.label" value="Seconds to cache" />
+  <string key="Composite.Xml.LoadFile.description" value="Loads a local XML file given a relative path" />
+  <string key="Composite.Xml.LoadFile.param.RelativePath.help" value="The relative path of the xml file to load" />
+  <string key="Composite.Xml.LoadFile.param.RelativePath.label" value="Relative path" />
+  <string key="Composite.Xml.LoadXhtmlFile.description" value="Loads a local Xhtml file given a relative path" />
+  <string key="Composite.Xml.LoadXhtmlFile.param.RelativePath.help" value="The relative path of the xhtml file to load" />
+  <string key="Composite.Xml.LoadXhtmlFile.param.RelativePath.label" value="Relative path" />
+  <string key="Composite.Xml.LoadUrl.description" value="Loads a remote XML file given a Url" />
+  <string key="Composite.Xml.LoadUrl.param.Url.help" value="" />
+  <string key="Composite.Xml.LoadUrl.param.Url.label" value="Url" />
+  <string key="Composite.Xml.LoadUrl.param.CacheTime.help" value="Time period in seconds for which the result should is cached. Default is 0 (no caching)." />
+  <string key="Composite.Xml.LoadUrl.param.CacheTime.label" value="Seconds to cache" />
   <string key="Composite.Xslt.Extensions.DateFormatting.description" value="Provides localized date formatting functions for XSLT use. " />
   <string key="Composite.Xslt.Extensions.Globalization.description" value="Provides globalization functions for XSLT use." />
   <string key="Composite.Xslt.Extensions.MarkupParser.description" value="Provides functions that parse encoded XML documents or XHTML fragments into nodes. Use this extension when you have XML or XHTML as a string and need to copy it to the output or do transformations on it." />

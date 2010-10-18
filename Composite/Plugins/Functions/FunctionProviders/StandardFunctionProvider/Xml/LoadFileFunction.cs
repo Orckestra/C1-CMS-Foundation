@@ -16,7 +16,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
     internal sealed class LoadFileFunction : StandardFunctionBase
     {
         public LoadFileFunction(EntityTokenFactory entityTokenFactory)
-            : base("LoadFile", "Composite.Core.Xml", typeof(XElement), entityTokenFactory)
+            : base("LoadFile", "Composite.Xml", typeof(XElement), entityTokenFactory)
         {
         }
 

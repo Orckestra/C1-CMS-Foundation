@@ -12,7 +12,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
     internal sealed class LoadUrlFunction : StandardFunctionBase
     {
         public LoadUrlFunction(EntityTokenFactory entityTokenFactory)
-            : base("LoadUrl", "Composite.Core.Xml", typeof(XElement), entityTokenFactory)
+            : base("LoadUrl", "Composite.Xml", typeof(XElement), entityTokenFactory)
         {
         }
 
