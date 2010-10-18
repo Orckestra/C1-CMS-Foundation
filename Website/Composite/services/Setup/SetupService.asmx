@@ -186,7 +186,7 @@ namespace Composite.Core.WebClient.Setup
 
         private bool BasePathNotToLong()
         {
-            return Context.Server.MapPath("~\\").Length <= 70;
+            return Context.Server.MapPath("~\\").Length <= GlobalSettingsFacade.MaximumRootPathLength;
         }
 
 

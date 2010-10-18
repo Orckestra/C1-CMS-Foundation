@@ -196,14 +196,7 @@ namespace Composite.Data
 
         private static string CreateFilename(DataTypeDescriptor dataTypeDescriptor)
         {
-            if (string.IsNullOrEmpty(dataTypeDescriptor.Namespace) == true)
-            {
-                return Path.Combine(_metaDataPath, string.Format("{0}_{1}.xml", dataTypeDescriptor.Name, dataTypeDescriptor.DataTypeId));
-            }
-            else 
-            {
-                return Path.Combine(_metaDataPath, string.Format("{0}.{1}_{2}.xml", dataTypeDescriptor.Namespace, dataTypeDescriptor.Name, dataTypeDescriptor.DataTypeId));
-            }
+            return Path.Combine(_metaDataPath, string.Format("{0}_{1}.xml", dataTypeDescriptor.Name, dataTypeDescriptor.DataTypeId));
         }
 
 
