@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web;
+using Composite.Core.Configuration;
 
 namespace Composite.Core.WebClient
 {
@@ -63,9 +64,10 @@ namespace Composite.Core.WebClient
             cookie.Value = value;
         }
 
-        private static string GetApplicationSpecificCookieName(string cookieName)
+        internal static string GetApplicationSpecificCookieName(string cookieName)
         {
-            return string.Format("{0}_{1}_{2}", cookieName, HttpContext.Current.Request.Url.Port, UrlUtils.PublicRootPath.GetHashCode());
+            int siteUniqueHash = InstallationInformationFacade.InstallationId.GetHashCode();
+            return string.Format("{0}_{1}_{2}", cookieName, siteUniqueHash, UrlUtils.PublicRootPath.GetHashCode());
         }
 
         private static HttpCookie GetCookie(HttpCookieCollection cookies, string key)

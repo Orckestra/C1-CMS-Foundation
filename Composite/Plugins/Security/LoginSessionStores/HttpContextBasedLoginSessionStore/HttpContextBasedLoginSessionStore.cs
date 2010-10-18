@@ -35,9 +35,18 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
 
             userName = userName.ToLower(CultureInfo.InvariantCulture);
 
-            HttpCookie authCookie = FormsAuthentication.GetAuthCookie(userName, persistAcrossSessions);
-            authCookie.Name = this.AuthCookieName;
-            HttpContext.Current.Response.SetCookie(authCookie);
+            int daysToLive = (persistAcrossSessions ? 365 : 2);
+
+            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(userName, persistAcrossSessions, (int)TimeSpan.FromDays(daysToLive).TotalMinutes);
+            string encryptedTicket = FormsAuthentication.Encrypt(ticket);
+            if (persistAcrossSessions)
+            {
+                CookieHandler.Set(_authCookieName, encryptedTicket, DateTime.Now.AddDays(daysToLive));
+            }
+            else
+            {
+                CookieHandler.Set(_authCookieName, encryptedTicket);
+            }
         }
 
 
@@ -52,6 +61,7 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
                     || !context.RequestIsAvaliable()
                     || context.Request == null)
                 {
+                    LoggingService.LogInformation("HttpContextBasedLoginSessionStore", "Unable to return stored username, no HttpContent");
                     return null;
                 }
 
@@ -62,7 +72,7 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
                 {
                     try
                     {
-                        value = DecryptCookie(context, AuthCookieName);
+                        value = GetUsernameFromCookie();
 
                         if (!string.IsNullOrEmpty(value as string))
                         {
@@ -86,15 +96,15 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
 
 
         [DebuggerStepThrough]
-        private static string DecryptCookie(HttpContext context, string authCookieName)
+        private static string GetUsernameFromCookie()
         {
             try
             {
-                HttpCookie authCookie = context.Request.Cookies[authCookieName];
+                string cookieValue = CookieHandler.Get(_authCookieName);
 
-                if (authCookie != null && !authCookie.Value.IsNullOrEmpty())
+                if (!string.IsNullOrEmpty(cookieValue))
                 {
-                    FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
+                    FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(cookieValue);
                     return ticket.Name;
                 }
             }
@@ -107,9 +117,7 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
 
         public void FlushUsername()
         {
-            HttpCookie resetCookie = new HttpCookie(this.AuthCookieName, "");
-            resetCookie.Expires = DateTime.Now.AddYears(-10);
-            HttpContext.Current.Response.Cookies.Set(resetCookie);
+            CookieHandler.Set(_authCookieName, "", DateTime.Now.AddYears(-10));
 
             string key = typeof(HttpContextBasedLoginSessionStore) + "StoredUsername";
             if (RequestLifetimeCache.HasKey(key))
@@ -133,15 +141,7 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
         {
             get
             {
-                if (HttpContext.Current!=null && HttpContext.Current.Request!=null)
-                {
-
-                    return string.Format("{0}_{1}_{2}", _authCookieName, HttpContext.Current.Request.Url.Port, UrlUtils.PublicRootPath.GetHashCode());
-                }
-                else
-                {
-                    return _authCookieName;
-                }
+                return CookieHandler.GetApplicationSpecificCookieName(_authCookieName);
             }
         }
     }

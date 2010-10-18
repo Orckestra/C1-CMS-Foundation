@@ -24,7 +24,7 @@ namespace Composite.Core.WebClient.FlowMediators
             else
             {
                 // Force update in same container
-                HttpContext.Current.Response.Redirect(HttpContext.Current.Request.Url.ToString(), false);
+                HttpContext.Current.Response.Redirect(HttpContext.Current.Request.Url.PathAndQuery, false);
             }
         }
 
