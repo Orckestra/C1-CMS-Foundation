@@ -100,10 +100,6 @@
     <Compile Include="Composite\content\misc\editors\functioncalleditor\functioncalleditor.aspx.designer.cs">
       <DependentUpon>functioncalleditor.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Composite\content\misc\editors\parametereditor\parametereditor.aspx.cs">
-      <DependentUpon>parametereditor.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\DocumentExecutionContainer.ascx.designer.cs">
       <DependentUpon>DocumentExecutionContainer.ascx</DependentUpon>
     </Compile>
@@ -444,7 +440,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Composite\content\misc\editors\functioncalleditor\bindings\ToolBarButtonDataBindingAddNew.js" />
-    <Content Include="Composite\content\misc\editors\parametereditor\parametereditor.aspx" />
     <Content Include="Composite\content\views\dev\flushadmin\Default.aspx" />
     <Content Include="Composite\content\views\relationshipgraph\ShowRelationshipOrientedGraph.aspx" />
     <Content Include="Composite\controls\FormsControls\FormUiContainerTemplates\EmptyDocumentExecutionContainer.ascx" />

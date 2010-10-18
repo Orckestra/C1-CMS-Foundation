@@ -42,7 +42,7 @@
     
     private void PopulateSelector()
     {
-        #warning This widget is currently 'code bound' to IMediaFileFolder. Rename or - even better - put this out of it's missery.
+        // This widget is currently 'code bound' to IMediaFileFolder. Rename or - even better - put this out of it's missery.
         
         if (this.DataType.Equals(typeof(Composite.Data.Types.IMediaFileFolder)))
         {

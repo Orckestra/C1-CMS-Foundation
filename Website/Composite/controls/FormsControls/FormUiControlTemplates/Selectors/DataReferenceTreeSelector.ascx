@@ -83,10 +83,8 @@
                 {
                     label = reference.Data.GetLabel(true);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    // LoggingService.LogError("TreeDataReferenceSelector", new Exception("Failed to build label from a data reference", ex));
-                    
                     brokenReference = true;
                     label = StringResourceSystemFacade.GetString("Composite.Management", "AspNetUiControl.Selector.BrokenReference");
                 }

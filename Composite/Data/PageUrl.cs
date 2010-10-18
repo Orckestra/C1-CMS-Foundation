@@ -327,7 +327,15 @@ namespace Composite.Data
             return new PageUrl(publicationScope, cultureInfo, pageId, PageUrlType.Unpublished);
         }
 
-        internal static bool TryParseFriendlyUrl(string relativeUrl, out PageUrl pageUrl)
+
+
+        /// <summary>
+        /// Looks for a friendly URL and set pageUrl if found.
+        /// </summary>
+        /// <param name="relativeUrl">The string to match to a friendly URL</param>
+        /// <param name="pageUrl">The matching page, if a match was found. Otherwise null.</param>
+        /// <returns>True if a friendly URL match was found</returns>
+        public static bool TryParseFriendlyUrl(string relativeUrl, out PageUrl pageUrl)
         {
             string path;
             CultureInfo cultureInfo = GetCultureInfo(relativeUrl, out path);

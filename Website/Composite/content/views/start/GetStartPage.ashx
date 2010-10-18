@@ -14,18 +14,13 @@ public class FetchPage : IHttpHandler
 {
     public void ProcessRequest (HttpContext context) 
     {
-        /// When public URL is known, remove this:
-//        context.Response.Redirect( UrlUtils.ResolveAdminUrl( "content/views/start/compositestart/CompositeStart.aspx" ));
-//        return;
-        
-        
         string userCultureName = UserSettings.CultureInfo.Name;
         string productVersion = RuntimeInformation.ProductVersion.ToString(4);
         string installationId = InstallationInformationFacade.InstallationId.ToString();
         string browser = context.Request.UserAgent.IndexOf("Gecko") > -1 ? "mozilla" : "explorer";
         string platform = context.Request.Browser.Platform;
 
-        string baseUriString = System.Configuration.ConfigurationSettings.AppSettings["Composite.StartPage.Url"];
+        string baseUriString = System.Configuration.ConfigurationManager.AppSettings["Composite.StartPage.Url"];
         string sourceUriString = string.Format("{0}?culture={1}&version={2}&installation={3}&browser={4}&platform={5}", 
             baseUriString,
             HttpUtility.UrlEncodeUnicode(userCultureName), 

@@ -57,18 +57,20 @@ public class SourceValidationService  : System.Web.Services.WebService {
             switch (validatorName)
             {
                 case "http://www.composite.net/ns/function/1.0":
-                    var reader = new XmlValidatingReader(sourceToValidate, XmlNodeType.Document, null);
+                    XmlReaderSettings settings = new XmlReaderSettings();
+                    settings.ValidationType = ValidationType.Schema;
+                    settings.ValidationEventHandler += ReaderValidationEventHandler;
                     var schema = GetSchema("~/Composite/schemas/Functions/XsltFunctionCalls.xsd");
 
                     if (schema != null)
                     {
-                        reader.Schemas.Add(schema);
-                        reader.ValidationType = ValidationType.Schema;
+                        settings.Schemas.Add( schema );
                     }
 
-                    reader.ValidationEventHandler += ReaderValidationEventHandler;
-
-                    while(reader.Read()) {}
+                    using (XmlReader reader = XmlReader.Create(new StringReader(sourceToValidate), settings))
+                    {
+                       while (reader.Read()) {}
+                    }
                     break;
                      
                 default:

@@ -15,12 +15,13 @@ public class FileNotFoundHandler : IHttpHandler
     {
         string path = GetRequestedPath(context);
 
-        PageUrlOptions urlOptions;
-        if (PageUrlHelper.TryParseFriendlyUrl(path, out urlOptions))
-        {
-            UrlString publicPageUrl = PageUrlHelper.BuildUrl(UrlType.Public, urlOptions);
+        PageUrl pageUrl;
 
-            context.Response.Redirect(publicPageUrl.ToString());
+        if (Composite.Data.PageUrl.TryParseFriendlyUrl(path, out pageUrl))
+        {
+            string redurectUrl = pageUrl.Build(PageUrlType.Published).ToString();
+            Composite.Core.Log.LogVerbose("Friendly URL", redurectUrl);
+            context.Response.Redirect(redurectUrl);
             return;
         }
             

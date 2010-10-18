@@ -9,11 +9,8 @@ using System.Web.Services.Protocols;
 using System.Xml.Linq;
 using Composite;
 using Composite.C1Console.Actions;
-using Composite.Data;
-using Composite.Data.Types;
 using Composite.C1Console.Events;
 using Composite.C1Console.Elements;
-using Composite.Data;
 using Composite.C1Console.Security;
 using Composite.Core.IO;
 using Composite.Core.Xml;
@@ -22,6 +19,8 @@ using Composite.Core.WebClient;
 using Composite.Core.WebClient.Services.TreeServiceObjects;
 using Composite.Core.WebClient.FlowMediators;
 using Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods;
+using Composite.Data;
+using Composite.Data.Types;
 
 // Search token stuff
 using Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider;
