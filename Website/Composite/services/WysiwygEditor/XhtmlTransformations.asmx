@@ -160,7 +160,9 @@ public class XhtmlTransformations : System.Web.Services.WebService
             {
                 dottedAttribute.Value = string.Format("/{0}", dottedAttribute.Value.Replace("../", ""));
             }
-
+            
+            FixTinyMceMalEncodingOfInternationalUrlHostNames(structuredResult);
+            
             string bodyInnerXhtml = MarkupTransformationServices.OutputBodyDescendants(structuredResult);
 
             XhtmlTransformationResult result = new XhtmlTransformationResult();
@@ -177,6 +179,25 @@ public class XhtmlTransformations : System.Web.Services.WebService
         }
     }
 
+
+
+    // Fixing issue where tiny 
+    private void FixTinyMceMalEncodingOfInternationalUrlHostNames(XDocument xhtmlDoc)
+    {
+        var urlAttributes = xhtmlDoc.Descendants().Attributes().Where(f => f.Value.StartsWith("http://") || f.Value.StartsWith("https://"));
+        foreach (XAttribute urlAttribute in urlAttributes)
+        {
+            string url = urlAttribute.Value;
+            string urlWithoutProtocol = url.Substring(url.IndexOf("//") + 2);
+            string urlHostWithPort = (urlWithoutProtocol.Contains("/") ? urlWithoutProtocol.Substring(0, urlWithoutProtocol.IndexOf("/")) : urlWithoutProtocol);
+            string urlHost = (urlHostWithPort.Contains(":") ? urlHostWithPort.Substring(0, urlHostWithPort.IndexOf(":")) : urlHostWithPort);
+            if (urlHost != HttpUtility.UrlDecode(urlHost))
+            {
+                urlAttribute.Value = urlAttribute.Value.Replace(urlHost, HttpUtility.UrlDecode(urlHost));
+            }
+        }
+    }
+    
 
 
     [WebMethod]
