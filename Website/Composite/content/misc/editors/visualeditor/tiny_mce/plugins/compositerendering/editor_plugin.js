@@ -191,7 +191,6 @@ new function () {
 			
 			if ( markup != "" ) {
 				var html = top.XhtmlTransformationsService.GetImageTagForFunctionCall ( markup );
-				alert ( html )
 				this.editor.execCommand ( "mceInsertContent", false, html );
 			} else {
 				this.editor.execCommand ( "mceInsertContent", false, "" );

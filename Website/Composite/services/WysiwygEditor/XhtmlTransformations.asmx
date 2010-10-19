@@ -98,7 +98,7 @@ public class XhtmlTransformations : System.Web.Services.WebService
                 throw new InvalidOperationException("Parse failed for \n" + htmlFragment, ex);
             }
 
-            List<XElement> functionImages = structuredResult.Descendants(Namespaces.Xhtml + "img").Where(f => f.Attribute("alt") != null).ToList();
+            List<XElement> functionImages = structuredResult.Descendants(Namespaces.Xhtml + "img").Where(f => f.Attribute("class") != null && f.Attribute("class").Value == "compositeFunctionWysiwygRepresentation").ToList();
             functionImages.AddRange(structuredResult.Descendants("img").Where(f => f.Attribute("alt") != null));
 
             foreach (var functionImageElement in functionImages)
@@ -130,13 +130,14 @@ public class XhtmlTransformations : System.Web.Services.WebService
             }
 
 
-            IEnumerable<XElement> dataFieldReferenceImages = structuredResult.Descendants(Namespaces.Xhtml + "img").Where(f => f.Attribute("referencedfieldname") != null);
+            IEnumerable<XElement> dataFieldReferenceImages = structuredResult.Descendants(Namespaces.Xhtml + "img").Where(f => f.Attribute("class") != null && f.Attribute("class").Value == "compositeFieldReferenceWysiwygRepresentation");
             foreach (var referenceImageElement in dataFieldReferenceImages.ToList())
             {
                 try
                 {
-                    string fieldName = referenceImageElement.Attribute("referencedfieldname").Value;
-                    string typeName = referenceImageElement.Attribute("referencedtypemanagername").Value;
+                    string[] parts = HttpUtility.UrlDecode(referenceImageElement.Attribute("alt").Value).Split('\\');
+                    string typeName = parts[0];
+                    string fieldName = parts[1];
 
                     referenceImageElement.ReplaceWith(DynamicTypeMarkupServices.GetReferenceElement(fieldName, typeName));
                 }
@@ -286,8 +287,8 @@ public class XhtmlTransformations : System.Web.Services.WebService
         return new XElement(Namespaces.Xhtml + "img",
             new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
             new XAttribute("class", "compositeFieldReferenceWysiwygRepresentation"),
-            new XAttribute("referencedtypemanagername", dataTypeDescriptor.TypeManagerTypeName),
-            new XAttribute("referencedfieldname", dataField.Name));
+            new XAttribute("alt", HttpUtility.UrlEncodeUnicode(string.Format("{0}\\{1}", dataTypeDescriptor.TypeManagerTypeName, dataField.Name)))
+            );
     }
 
 
