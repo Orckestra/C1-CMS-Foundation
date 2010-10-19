@@ -68,5 +68,5 @@ function submit ( list, url ) {
 	setTimeout ( function () {
 		top.Application.logger.debug ( DOMSerializer.serialize ( document.documentElement, true ));
 		form.submit ();
-	}, 5000 );
+	}, 100 );
 }
