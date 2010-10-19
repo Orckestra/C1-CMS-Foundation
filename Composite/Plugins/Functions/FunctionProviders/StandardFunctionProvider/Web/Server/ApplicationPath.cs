@@ -19,7 +19,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             if (HttpContext.Current != null && HttpContext.Current.Request != null)
             {
                 string appPath = HttpContext.Current.Request.ApplicationPath;
-                return appPath + (appPath.EndsWith("/") ? "" : "/");
+                if (appPath.EndsWith("/"))
+                {
+                    appPath = appPath.Substring(0, appPath.Length - 1);
+                }
+                return appPath;
             }
             else
             {
