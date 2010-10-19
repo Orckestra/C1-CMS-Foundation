@@ -193,6 +193,16 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                 string xslTemplate = this.GetBinding<string>("XslTemplate");
 
                 List<NamedFunctionCall> namedFunctions = this.GetBinding<IEnumerable<NamedFunctionCall>>("FunctionCalls").ToList();
+
+                // If preview is done multiple times in a row, with no postbacks an object reference to BaseFunctionRuntimeTreeNode may be held
+                // If the function in the BaseFunctionRuntimeTreeNode have ben unloaded / reloaded, this preview will still run on the old instance
+                // We force refresh by serializing / deserializing
+                foreach (NamedFunctionCall namedFunction in namedFunctions)
+                {
+                    namedFunction.FunctionCall = (BaseFunctionRuntimeTreeNode)FunctionFacade.BuildTree(namedFunction.FunctionCall.Serialize());
+                }
+
+
                 List<ManagedParameterDefinition> parameterDefinitions = this.GetBinding<IEnumerable<ManagedParameterDefinition>>("Parameters").ToList();
 
                 Guid pageId = this.GetBinding<Guid>("PageId");

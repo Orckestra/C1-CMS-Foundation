@@ -231,7 +231,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
                 ManagedParameterDefinition parameter = parameters.Where(f => f.Name == parameterInfo.Name).FirstOrDefault();
                 if (parameter == null)
                 {
-                    string message = string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "CSharpInlineFunction.MissingParameterTestValue"), parameterInfo.Name);
+                    string message = string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "CSharpInlineFunction.MissingParameterDefinition"), parameterInfo.Name);
 
                     parameterErrors = true;
                     parameterErrorMessages.AppendLine("<pre>" + message + "</pre>");
@@ -245,11 +245,23 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
                 }
                 else
                 {
-                    BaseRuntimeTreeNode treeNode = FunctionFacade.BuildTree(XElement.Parse(parameter.TestValueFunctionMarkup));
+                    string previewValueFunctionMarkup = (string.IsNullOrEmpty(parameter.TestValueFunctionMarkup) ? parameter.DefaultValueFunctionMarkup : parameter.TestValueFunctionMarkup);
 
-                    object value = treeNode.GetValue();
+                    if (string.IsNullOrEmpty(previewValueFunctionMarkup))
+                    {
+                        string message = string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "CSharpInlineFunction.MissingParameterTestOrDefaultValue"), parameterInfo.Name, parameterInfo.ParameterType, parameter.Type);
 
-                    parameterValues.Add(value);
+                        parameterErrors = true;
+                        parameterErrorMessages.AppendLine("<pre>" + message + "</pre>");
+                    }
+                    else
+                    {
+                        BaseRuntimeTreeNode treeNode = FunctionFacade.BuildTree(XElement.Parse(previewValueFunctionMarkup));
+
+                        object value = treeNode.GetValue();
+
+                        parameterValues.Add(value);
+                    }
                 }
             }
 

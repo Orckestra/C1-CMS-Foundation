@@ -7,6 +7,11 @@ using Composite.Functions.Inline;
 using Composite.Functions.Plugins.FunctionProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
+using System.IO;
+using Composite.Core.IO;
+using Composite.Core.Configuration;
+using Composite.Core.Threading;
+using System;
 
 
 namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvider
@@ -15,6 +20,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
     internal sealed class MethodBasedFunctionProvider : IFunctionProvider
     {
         private FunctionNotifier _functionNotifier;
+        private FileSystemWatcher _codeDirectoryFileSystemWatcher;
+        private DateTime _lastWriteHandleTime = DateTime.MinValue;
+        private object _fileUpdateLock = new object();
+
+
 
 
         public MethodBasedFunctionProvider()
@@ -23,11 +33,14 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
             DataEventSystemFacade.SubscribeToDataDeleted<IMethodBasedFunctionInfo>(OnDataChanged);
             DataEventSystemFacade.SubscribeToDataAfterUpdate<IMethodBasedFunctionInfo>(OnDataChanged);
 
-            DataEventSystemFacade.SubscribeToDataAfterAdd<IInlineFunction>(OnDataChanged);
-            DataEventSystemFacade.SubscribeToDataDeleted<IInlineFunction>(OnDataChanged);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<IInlineFunction>(OnDataChanged);
-        }
+            _codeDirectoryFileSystemWatcher = new System.IO.FileSystemWatcher(PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory));
+            _codeDirectoryFileSystemWatcher.Changed += new System.IO.FileSystemEventHandler(CodeFileDirectoryWatcher_Changed);
+            _codeDirectoryFileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite;
+            _codeDirectoryFileSystemWatcher.EnableRaisingEvents = true;
+            _codeDirectoryFileSystemWatcher.IncludeSubdirectories = true;
 
+            DataEventSystemFacade.SubscribeToDataDeleted<IInlineFunction>(OnDataChanged);
+        }
 
 
         public FunctionNotifier FunctionNotifier
@@ -39,22 +52,22 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
         public IEnumerable<IFunction> Functions
         {
-            get 
+            get
             {
                 IList<IFunction> result = new List<IFunction>();
 
 
-                IEnumerable<IMethodBasedFunctionInfo> methodBasedFunctionInfos = 
+                IEnumerable<IMethodBasedFunctionInfo> methodBasedFunctionInfos =
                     from item in DataFacade.GetData<IMethodBasedFunctionInfo>()
                     select item;
-                
+
                 foreach (IMethodBasedFunctionInfo info in methodBasedFunctionInfos)
                 {
                     MethodBasedFunction methodBasedFunction = MethodBasedFunction.Create(info);
 
                     if (methodBasedFunction == null) continue;
-                    
-                    result.Add(methodBasedFunction);                    
+
+                    result.Add(methodBasedFunction);
                 }
 
 
@@ -81,6 +94,33 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
         {
             _functionNotifier.FunctionsUpdated();
         }
+
+
+        void CodeFileDirectoryWatcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            lock (_fileUpdateLock)
+            {
+                using (ThreadDataManager.EnsureInitialize())
+                {
+                    bool fileExists = true;
+                    if (fileExists)
+                    {
+                        // Supress multiple events fireing by observing last write time
+                        DateTime writeTime = File.GetLastWriteTime(e.FullPath);
+                        if (_lastWriteHandleTime < writeTime)
+                        {
+                            _lastWriteHandleTime = writeTime;
+                            _functionNotifier.FunctionsUpdated();
+                        }
+
+                    }
+                }
+            }
+        }
+
+
+
+
     }
 
 
