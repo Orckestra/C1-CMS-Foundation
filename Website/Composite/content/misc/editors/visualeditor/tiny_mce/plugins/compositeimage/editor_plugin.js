@@ -48,6 +48,15 @@ new function () {
 				var self = this;
 				ed.onDblClick.add ( function ( editor, e ) {
 					if ( e.target.nodeName.toLowerCase () == "img" ) {
+						if ( 
+							CSSUtil.hasClassName ( e.target, VisualEditorBinding.FUNCTION_CLASSNAME ) ||
+							CSSUtil.hasClassName ( e.target, VisualEditorBinding.FIELD_CLASSNAME )) {
+						} else {
+							self._img = e.target;
+							self.execCommand ( "compositeInsertImage", true, "update" );
+							self._img = null;
+						}
+						/*
 						switch ( e.target.className ) {
 							case VisualEditorBinding.FUNCTION_CLASSNAME :
 							case VisualEditorBinding.FIELD_CLASSNAME :
@@ -58,6 +67,7 @@ new function () {
 								self._img = null;
 								break;
 						}
+						*/
 					}
 				});
 			}

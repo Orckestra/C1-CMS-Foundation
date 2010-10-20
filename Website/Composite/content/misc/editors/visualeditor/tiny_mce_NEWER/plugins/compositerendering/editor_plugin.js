@@ -42,7 +42,13 @@ new function () {
 			if ( Client.isMozilla ) {
 				var self = this;
 				ed.onDblClick.add ( function ( editor, e ) {
-					if ( e.target.nodeName == "IMG" ) {
+					if ( e.target.nodeName.toLowerCase () == "img" ) {
+						if ( CSSUtil.hasClassName ( e.target, VisualEditorBinding.FUNCTION_CLASSNAME )) {
+							self._img = e.target;
+							self.execCommand ( "compositeInsertRendering", true, "update" );
+							self._img = null;
+						}
+						/*
 						switch ( e.target.className ) {
 							case VisualEditorBinding.FUNCTION_CLASSNAME :
 								self._img = e.target;
@@ -50,6 +56,7 @@ new function () {
 								self._img = null;
 								break;
 						}
+						*/
 					}
 				});
 			}
@@ -121,8 +128,8 @@ new function () {
 			} else {
 				img = this.editor.selection.getNode ();
 			}
-			if ( img.nodeName == "IMG" ) {
-				var markup = img.getAttribute ( "functionmarkup" );
+			if ( img.nodeName.toLowerCase () == "img" ) {
+				var markup = img.alt;
 				this._launchUpdateDialog ( markup );
 			}
 		},
