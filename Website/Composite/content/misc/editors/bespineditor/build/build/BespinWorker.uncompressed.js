@@ -699,28 +699,6 @@ var createTagStates = function(prefix, interiorActions) {
             then:   prefix + '_attrName'
         }
     ];
-    
-    states['composite_beforeAttrName'] = [
-	      {
-	          regex:  /^\s+/,
-	          tag:    'plain'
-	      },
-	      {
-	          regex:  /^\//,
-	          tag:    'composite',
-	          then:   'composite_selfClosingStartTag'
-	      },
-	      {
-	          regex:  /^>/,
-	          tag:    'composite',
-	          then:   interiorActions
-	      },
-	      {
-	          regex:  /^./,
-	          tag:    'composite',
-	          then:   'composite_attrName'
-	      }
-	  ];
 
     // 10.2.4.35 Attribute name state
     states[prefix + '_attrName'] = [
@@ -753,38 +731,6 @@ var createTagStates = function(prefix, interiorActions) {
             tag:    'keyword'
         }
     ];
-    
-    // Composite!
-    states[ 'composite_attrName' ] = [
-        {
-            regex:  /^\s+/,
-            tag:    'plain',
-            then:   'composite_afterAttrName'
-        },
-        {
-            regex:  /^\//,
-            tag:    'composite',
-            then:   'composite_selfClosingStartTag'
-        },
-        {
-            regex:  /^=/,
-            tag:    'composite',
-            then:   'composite_beforeAttrValue'
-        },
-        {
-            regex:  /^>/,
-            tag:    'composite',
-            then:   interiorActions
-        },
-        {
-            regex:  /^["'<]+/,
-            tag:    'error'
-        },
-        {
-            regex:  /^[^ \t\n\/=>"'<]+/,
-            tag:    'composite'
-        }
-    ];
 
     states[prefix + '_afterAttrName'] = [
         {
@@ -812,33 +758,6 @@ var createTagStates = function(prefix, interiorActions) {
             then:   prefix + '_attrName'
         }
     ];
-    
-    states[ 'composite_afterAttrName'] = [
-         {
-             regex:  /^\s+/,
-             tag:    'plain'
-         },
-         {
-             regex:  /^\//,
-             tag:    'composite',
-             then:   'composite_selfClosingStartTag'
-         },
-         {
-             regex:  /^=/,
-             tag:    'composite',
-             then:   'composite_beforeAttrValue'
-         },
-         {
-             regex:  /^>/,
-             tag:    'composite',
-             then:   interiorActions
-         },
-         {
-             regex:  /^./,
-             tag:    'keyword',
-             then:   'composite_attrName'
-         }
-     ];
 
     states[prefix + '_beforeAttrValue'] = [
         {
@@ -871,38 +790,6 @@ var createTagStates = function(prefix, interiorActions) {
             then:   prefix + '_attrValueU'
         }
     ];
-    
-    states['composite_beforeAttrValue'] = [
-       {
-           regex:  /^\s+/,
-           tag:    'plain'
-       },
-       {
-           regex:  /^"/,
-           tag:    'string',
-           then:   'composite_attrValueQQ'
-       },
-       {
-           regex:  /^(?=&)/,
-           tag:    'plain',
-           then:   'composite_attrValueU'
-       },
-       {
-           regex:  /^'/,
-           tag:    'string',
-           then:   'composite_attrValueQ'
-       },
-       {
-           regex:  /^>/,
-           tag:    'error',
-           then:   interiorActions
-       },
-       {
-           regex:  /^./,
-           tag:    'string',
-           then:   'composite_attrValueU'
-       }
-   ];
 
     states[prefix + '_attrValueQQ'] = [
         {
@@ -944,47 +831,6 @@ var createTagStates = function(prefix, interiorActions) {
             tag:    'string'
         }
     ];
-    
-    states['composite_attrValueQQ'] = [
-           {
-               regex:  /^"/,
-               tag:    'string',
-               then:   'composite_afterAttrValueQ'
-           },
-           {
-               regex:  /^[^"]+/,
-               tag:    'string'
-           }
-       ];
-
-       states['composite_attrValueQ'] = [
-           {
-               regex:  /^'/,
-               tag:    'string',
-               then:   'composite_afterAttrValueQ'
-           },
-           {
-               regex:  /^[^']+/,
-               tag:    'string'
-           }
-       ];
-
-       states['composite_attrValueU'] = [
-           {
-               regex:  /^\s/,
-               tag:    'string',
-               then:   'composite_beforeAttrName'
-           },
-           {
-               regex:  /^>/,
-               tag:    'operator',
-               then:   interiorActions
-           },
-           {
-               regex:  /[^ \t\n>]+/,
-               tag:    'string'
-           }
-       ];
 
     states[prefix + '_afterAttrValueQ'] = [
         {
@@ -1008,49 +854,12 @@ var createTagStates = function(prefix, interiorActions) {
             then:   prefix + '_beforeAttrName'
         }
     ];
-    
-    states['composite_afterAttrValueQ'] = [
-       {
-           regex:  /^\s/,
-           tag:    'plain',
-           then:   'composite_beforeAttrName'
-       },
-       {
-           regex:  /^\//,
-           tag:    'composite',
-           then:   'composite_selfClosingStartTag'
-       },
-       {
-           regex:  /^>/,
-           tag:    'composite',
-           then:   interiorActions
-       },
-       {
-           regex:  /^(?=.)/,
-           tag:    'operator',
-           then:   'composite_beforeAttrName'
-       }
-   ];
 
     // 10.2.4.43 Self-closing start tag state
     states[prefix + '_selfClosingStartTag'] = [
         {
             regex:  /^>/,
             tag:    'operator',
-            then:   'start'
-        },
-        {
-            regex:  /^./,
-            tag:    'error',
-            then:   prefix + '_beforeAttrName'
-        }
-    ];
-    
-    // Composite added this!
-    states[ 'composite_selfClosingStartTag' ] = [
-        {
-            regex:  /^>/,
-            tag:    'composite',
             then:   'start'
         },
         {
@@ -1084,11 +893,6 @@ states = {
             then:   'bogusComment'
         },
         {
-        	regex : /^<f:|^<lang:|^<rendering:|^<asp:/,
-        	tag : 'composite',
-        	then: 'tagOpenComposite'
-        },
-        {
             regex:  /^</,
             tag:    'operator',
             then:   'tagOpen'
@@ -1111,25 +915,6 @@ states = {
             regex:  /^[a-zA-Z]/,
             tag:    'keyword',
             then:   'tagName'
-        },
-        {
-            regex:  /^(?=.)/,
-            tag:    'plain',
-            then:   'start'
-        }
-    ],
-    
-    // HEY!
-    tagOpenComposite: [
-        {
-            regex:  /^\//,
-            tag:    'operator',
-            then:   'endTagOpen'
-        },
-        {
-            regex:  /^[a-zA-Z]/,
-            tag:    'composite',
-            then:   'tagNameComposite'
         },
         {
             regex:  /^(?=.)/,
@@ -1190,28 +975,6 @@ states = {
         {
             regex:  /^[^ \t\n\/>]+/,
             tag:    'keyword'
-        }
-    ],
-    
-    tagNameComposite: [
-        {
-            regex:  /^\s+/,
-            tag:    'plain',
-            then:   'composite_beforeAttrName'
-        },
-        {
-            regex:  /^\//,
-            tag:    'composite',
-            then:   'composite_selfClosingStartTag'
-        },
-        {
-            regex:  /^>/,
-            tag:    'composite',
-            then:   'start'
-        },
-        {
-            regex:  /^[^ \t\n\/>]+/,
-            tag:    'composite'
         }
     ],
 

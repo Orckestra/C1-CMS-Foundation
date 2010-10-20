@@ -1,20 +1,28 @@
 window.onload = function () {
 	
 	var div = document.getElementById ( "editor" );
-	bespin.useBespin ( div ).then ( function ( env ) {
-		
-		var broadcaster = top.EventBroadcaster;
-		var messages = top.BroadcastMessages;
-		
-		if ( broadcaster != undefined ) {
-			broadcaster.broadcast ( messages.BESPIN_LOADED, {
-				broadcastWindow : window,
-				bespinEditor : env.editor,
-				bespinEnvelope : env
+	
+	// WebKit needs a short timeout here...
+	setTimeout ( function () {
+		try {
+			bespin.useBespin ( div ).then ( function ( env ) {
+				
+				var broadcaster = top.EventBroadcaster;
+				var messages = top.BroadcastMessages;
+				
+				if ( broadcaster != undefined ) {
+					broadcaster.broadcast ( messages.BESPIN_LOADED, {
+						broadcastWindow : window,
+						bespinEditor : env.editor,
+						bespinEnvelope : env
+					});
+				}
+				
+			}, function ( error ) {
+			    throw new Error ( error );
 			});
+		} catch ( exception ) {
+			alert ( exception )
 		}
-		
-	}, function ( error ) {
-	    throw new Error ( "Bespin performed a crash landing: " + error );
-	});
+	}, 0 );
 }

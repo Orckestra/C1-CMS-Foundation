@@ -10905,15 +10905,14 @@ exports.whiteTheme = function() {
             */
             
             highlighterFG: {
-            	composite:	'rgb(127,63,63)',
                 plain:     	'rgb(0,0,0)',
                 comment:   	'rgb(63,95,191)',
-                directive: 	'rgb(0,127,0)',
+                directive: 	'lime',
                 error:      'rgb(255,0,0)',
-                identifier: 'rgb(127,0,127)',
+                identifier: 'pink',
                 keyword:    'rgb(63,127,127)',
-                operator:   'rgb(63,127,127)',
-                string:     'rgb(0,0,255)',
+                operator:   '#477ABE',
+                string:     'rgb(0,0,127)',
                 addition:   '#ffffff',
                 deletion:   '#ffffff'
             },

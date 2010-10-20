@@ -1743,7 +1743,7 @@ Loader.prototype._ensurePackage = function(packageId, vers, workingPackage, seen
   @returns {String}
 */
 Loader.prototype._canonicalPackageId = function(packageId, vers, workingPackage) {
-  
+
   // fast paths
   if (packageId instanceof Package) return packageId.id;
   if (isCanonicalId(packageId)) return packageId;
@@ -1753,6 +1753,7 @@ Loader.prototype._canonicalPackageId = function(packageId, vers, workingPackage)
   
   var cache = this.canonicalPackageIds,
       cacheId, sources, ret, idx, len, source;
+
   // use anonymousPackage if no workingPackage is provided
   if (!workingPackage) workingPackage = this.anonymousPackage;
   if (!workingPackage) throw new Error('working package is required');
@@ -3521,7 +3522,7 @@ if (typeof(window) === 'undefined') {
     // For each of the console functions, copy them if they exist, stub if not
     NAMES.forEach(function(name) {
         if (window.console && window.console[name]) {
-            exports.console[name] = window.console[name].bind(window.console);
+            exports.console[name] = window.console[name];
         } else {
             exports.console[name] = noop;
         }
@@ -5516,6 +5517,7 @@ exports.Promise.prototype._complete = function(list, status, data, name) {
     return this;
 };
 
+
 /**
  * Takes an array of promises and returns a promise that that is fulfilled once
  * all the promises in the array are fulfilled
@@ -5556,26 +5558,6 @@ exports.group = function(promiseList) {
     });
 
     return groupPromise;
-};
-
-/**
- * Take an asynchronous function (i.e. one that returns a promise) and
- * return a synchronous version of the same function.
- * Clearly this is impossible without blocking or busy waiting (both evil).
- * In this case we make the assumption that the called function is only
- * theoretically asynchronous (which is actually common with Bespin, because the
- * most common cause of asynchronaity is the lazy loading module system which
- * can sometimes be proved to be synchronous in use, even though in theory
- * there is the potential for asynch behaviour)
- */
-exports.synchronizer = function(func, scope) {
-    return function() {
-        var promise = func.apply(scope, arguments);
-        if (!promise.isComplete()) {
-            throw new Error('asynchronous function can\'t be synchronized');
-        }
-        return promise._value;
-    };
 };
 
 });
@@ -6878,9 +6860,7 @@ exports.none = function(obj) {
  * (which are not actually cloned because they are immutable).
  * If the passed object implements the clone() method, then this function
  * will simply call that method and return the result.
- *
  * @param object {Object} the object to clone
- * @param deep {Boolean} do a deep clone?
  * @returns {Object} the cloned object
  */
 exports.clone = function(object, deep) {
@@ -6905,7 +6885,7 @@ exports.clone = function(object, deep) {
         return reply;
     }
 
-    if (object && typeof(object.clone) === 'function') {
+    if (object.clone && typeof(object.clone) === 'function') {
         return object.clone();
     }
 
@@ -7639,7 +7619,6 @@ bespin.tiki.module("canon:history",function(require,exports,module) {
 
 var Trace = require('bespin:util/stacktrace').Trace;
 var catalog = require('bespin:plugins').catalog;
-var console = require('bespin:console').console;
 
 /**
  * Current requirements are around displaying the command line, and provision
@@ -7918,7 +7897,6 @@ function SyntaxInfo(ext) {
     this.extension = ext;
     this.name = ext.name;
     this.fileExts = ext.hasOwnProperty('fileexts') ? ext.fileexts : [];
-    this.settings = ext.settings != null ? ext.settings : [];
 }
 
 /**
@@ -8206,101 +8184,49 @@ bespin.tiki.module("traits:index",function(require,exports,module) {
 });
 "end";
 
-// --- Begin traits-0.3.js ---
+// --- Begin traits-0.1.js ---
 
-// Copyright (C) 2010 Google Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-// See http://code.google.com/p/es-lab/wiki/Traits
-// for background on traits and a description of this library
-
-var Trait = (function(){
+exports.Trait = (function(){
 
   // == Ancillary functions ==
   
-  var SUPPORTS_DEFINEPROP = (function() {
-    try {
-      var test = {};
-      Object.defineProperty(test, 'x', {get: function() { return 0; } } );
-      return test.x === 0;
-    } catch(e) {
-      return false;
-    }
-  })();
-  
-  // IE8 implements Object.defineProperty and Object.getOwnPropertyDescriptor
-  // only for DOM objects. These methods don't work on plain objects.
-  // Hence, we need a more elaborate feature-test to see whether the
-  // browser truly supports these methods:
-  function supportsGOPD() {
-    try {
-      if (Object.getOwnPropertyDescriptor) {
-        var test = {x:0};
-        return !!Object.getOwnPropertyDescriptor(test,'x');        
-      }
-    } catch(e) {}
-    return false;
-  };
-  function supportsDP() {
-    try {
-      if (Object.defineProperty) {
-        var test = {};
-        Object.defineProperty(test,'x',{value:0});
-        return test.x === 0;
-      }
-    } catch(e) {}
-    return false;
-  };
+  // this signals that the current ES implementation supports properties,
+  // so probably also accessor properties
+  var SUPPORTS_DEFINEPROP = !!Object.defineProperty;
 
   var call = Function.prototype.call;
 
   /**
    * An ad hoc version of bind that only binds the 'this' parameter.
    */
-  var bindThis = Function.prototype.bind ?
-    function(fun, self) { return Function.prototype.bind.call(fun, self); } :
-    function(fun, self) {
-      function funcBound(var_args) {
-        return fun.apply(self, arguments);
-      }
-      return funcBound;
-    };
+  var bindThis = Function.prototype.bind
+    ? function(fun, self) { return Function.prototype.bind.call(fun, self); }
+    : function(fun, self) {
+        function funcBound(var_args) {
+          return fun.apply(self, arguments);
+        }
+        return funcBound;
+      };
 
   var hasOwnProperty = bindThis(call, Object.prototype.hasOwnProperty);
   var slice = bindThis(call, Array.prototype.slice);
     
   // feature testing such that traits.js runs on both ES3 and ES5
-  var forEach = Array.prototype.forEach ?
-      bindThis(call, Array.prototype.forEach) :
-      function(arr, fun) {
-        for (var i = 0, len = arr.length; i < len; i++) { fun(arr[i]); }
-      };
-  
-  // on v8 version 2.3.4.1, Object.freeze(obj) returns undefined instead of obj
-  var freeze = (Object.freeze ? function(obj) { Object.freeze(obj); return obj; }
-                              : function(obj) { return obj; });
-  var getPrototypeOf = Object.getPrototypeOf || function(obj) { 
-    return Object.prototype;
-  };
+  var forEach = Array.prototype.forEach
+      ? bindThis(call, Array.prototype.forEach)
+      : function(arr, fun) {
+          for (var i = 0, len = arr.length; i < len; i++) { fun(arr[i]); }
+        };
+      
+  var freeze = Object.freeze || function(obj) { return obj; };
+  var getPrototypeOf = Object.getPrototypeOf || function(obj) { return Object.prototype };
   var getOwnPropertyNames = Object.getOwnPropertyNames ||
       function(obj) {
         var props = [];
         for (var p in obj) { if (hasOwnProperty(obj,p)) { props.push(p); } }
         return props;
       };
-  var getOwnPropertyDescriptor = supportsGOPD() ?
-      Object.getOwnPropertyDescriptor :
+  var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor ||
       function(obj, name) {
         return {
           value: obj[name],
@@ -8309,7 +8235,7 @@ var Trait = (function(){
           configurable: true
         };
       };
-  var defineProperty = supportsDP() ? Object.defineProperty :
+  var defineProperty = Object.defineProperty ||
       function(obj, name, pd) {
         obj[name] = pd.value;
       };
@@ -8394,8 +8320,7 @@ var Trait = (function(){
 
   // Note: isSameDesc should return true if both
   // desc1 and desc2 represent a 'required' property
-  // (otherwise two composed required properties would be turned into
-  // a conflict) 
+  // (otherwise two composed required properties would be turned into a conflict)
   function isSameDesc(desc1, desc2) {
     // for conflicting properties, don't compare values because
     // the conflicting property values are never equal
@@ -8432,12 +8357,9 @@ var Trait = (function(){
     return freeze(set);
   }
 
-  // == singleton object to be used as the placeholder for a required
-  // property == 
+  // == singleton object to be used as the placeholder for a required property ==
   
-  var required = freeze({ 
-    toString: function() { return '<Trait.required>'; } 
-  });
+  var required = freeze({ toString: function() { return '<Trait.required>'; } });
 
   // == The public API methods ==
 
@@ -8448,23 +8370,20 @@ var Trait = (function(){
    * @returns a new trait describing all of the own properties of the object
    *          (both enumerable and non-enumerable)
    *
-   * As a general rule, 'trait' should be invoked with an object
-   * literal, since the object merely serves as a record
-   * descriptor. Both its identity and its prototype chain are
-   * irrelevant.
+   * As a general rule, 'trait' should be invoked with an
+   * object literal, since the object merely serves as a record
+   * descriptor. Both its identity and its prototype chain are irrelevant.
    * 
-   * Data properties bound to function objects in the argument will be
-   * flagged as 'method' properties. The prototype of these function
-   * objects is frozen.
+   * Data properties bound to function objects in the argument will be flagged
+   * as 'method' properties. The prototype of these function objects is frozen.
    * 
-   * Data properties bound to the 'required' singleton exported by
-   * this module will be marked as 'required' properties.
+   * Data properties bound to the 'required' singleton exported by this module
+   * will be marked as 'required' properties.
    *
-   * The <tt>trait</tt> function is pure if no other code can witness
-   * the side-effects of freezing the prototypes of the methods. If
-   * <tt>trait</tt> is invoked with an object literal whose methods
-   * are represented as in-place anonymous functions, this should
-   * normally be the case.
+   * The <tt>trait</tt> function is pure if no other code can witness the
+   * side-effects of freezing the prototypes of the methods. If <tt>trait</tt>
+   * is invoked with an object literal whose methods are represented as
+   * in-place anonymous functions, this should normally be the case.
    */
   function trait(obj) {
     var map = {};
@@ -8512,18 +8431,15 @@ var Trait = (function(){
         if (hasOwnProperty(newTrait, name) &&
             !newTrait[name].required) {
           
-          // a non-required property with the same name was previously
-          // defined this is not a conflict if pd represents a
-          // 'required' property itself:
+          // a non-required property with the same name was previously defined
+          // this is not a conflict if pd represents a 'required' property itself:
           if (pd.required) {
-            return; // skip this property, the required property is
-   	            // now present 
+            return; // skip this property, the required property is now present
           }
             
           if (!isSameDesc(newTrait[name], pd)) {
             // a distinct, non-required property with the same name
-            // was previously defined by another trait => mark as
-	    // conflicting property
+            // was previously defined by another trait => mark as conflicting property
             newTrait[name] = makeConflictingPropDesc(name); 
           } // else,
           // properties are not in conflict if they refer to the same value
@@ -8567,18 +8483,16 @@ var Trait = (function(){
   /**
    * var newTrait = override(trait_1, trait_2, ..., trait_N)
    *
-   * @returns a new trait with all of the combined properties of the
-   *          argument traits.  In contrast to 'compose', 'override'
-   *          immediately resolves all conflicts resulting from this
-   *          composition by overriding the properties of later
-   *          traits. Trait priority is from left to right. I.e. the
-   *          properties of the leftmost trait are never overridden.
+   * @returns a new trait with all of the combined properties of the argument traits.
+   *          In contrast to 'compose', 'override' immediately resolves all conflicts
+   *          resulting from this composition by overriding the properties of later
+   *          traits. Trait priority is from left to right. I.e. the properties of the
+   *          leftmost trait are never overridden.
    *
    *  override is associative:
    *    override(t1,t2,t3) is equivalent to override(t1, override(t2, t3)) or
    *    to override(override(t1, t2), t3)
-   *  override is not commutative: override(t1,t2) is not equivalent
-   *    to override(t2,t1)
+   *  override is not commutative: override(t1,t2) is not equivalent to override(t2,t1)
    *
    * override() returns an empty trait
    * override(trait_1) returns a trait equivalent to trait_1
@@ -8607,8 +8521,7 @@ var Trait = (function(){
    *          and all of the properties of recessiveTrait not in dominantTrait
    *
    * Note: override is associative:
-   *   override(t1, override(t2, t3)) is equivalent to
-   *   override(override(t1, t2), t3) 
+   *   override(t1, override(t2, t3)) is equivalent to override(override(t1, t2), t3)
    */
   /*function override(frontT, backT) {
     var newTrait = {};
@@ -8643,14 +8556,12 @@ var Trait = (function(){
    *                                 { a: { required: true },
    *                                   b: t[a] })
    *
-   * For each renamed property, a required property is generated.  If
-   * the map renames two properties to the same name, a conflict is
-   * generated.  If the map renames a property to an existing
-   * unrenamed property, a conflict is generated.
+   * For each renamed property, a required property is generated.
+   * If the map renames two properties to the same name, a conflict is generated.
+   * If the map renames a property to an existing unrenamed property, a conflict is generated.
    *
-   * Note: rename(A, rename(B, t)) is equivalent to rename(\n ->
-   * A(B(n)), t) Note: rename({...},exclude([...], t)) is not eqv to
-   * exclude([...],rename({...}, t))
+   * Note: rename(A, rename(B, t)) is equivalent to rename(\n -> A(B(n)), t)
+   * Note: rename({...},exclude([...], t)) is not eqv to exclude([...],rename({...}, t))
    */
   function rename(map, trait) {
     var renamedTrait = {};
@@ -8658,8 +8569,7 @@ var Trait = (function(){
       // required props are never renamed
       if (hasOwnProperty(map, name) && !trait[name].required) {
         var alias = map[name]; // alias defined in map
-        if (hasOwnProperty(renamedTrait, alias) && 
-	    !renamedTrait[alias].required) {
+        if (hasOwnProperty(renamedTrait, alias) && !renamedTrait[alias].required) {
           // could happen if 2 props are mapped to the same alias
           renamedTrait[alias] = makeConflictingPropDesc(alias);
         } else {
@@ -8668,8 +8578,8 @@ var Trait = (function(){
         }
         // add a required property under the original name
         // but only if a property under the original name does not exist
-        // such a prop could exist if an earlier prop in the trait was
-        // previously aliased to this name
+        // such a prop could exist if an earlier prop in the trait was previously
+        // aliased to this name
         if (!hasOwnProperty(renamedTrait, name)) {
           renamedTrait[name] = makeRequiredPropDesc(name);     
         }
@@ -8679,8 +8589,8 @@ var Trait = (function(){
           if (!trait[name].required) {
             renamedTrait[name] = makeConflictingPropDesc(name);            
           }
-          // else required property overridden by a previously aliased
-          // property and otherwise ignored
+          // else required property overridden by a previously aliased property
+          // and otherwise ignored
         } else {
           renamedTrait[name] = trait[name];
         }
@@ -8691,21 +8601,17 @@ var Trait = (function(){
   }
   
   /**
-   * var newTrait = resolve({ oldName: 'newName', excludeName:
-   * undefined, ... }, trait)
+   * var newTrait = resolve({ oldName: 'newName', excludeName: undefined, ... }, trait)
    *
-   * This is a convenience function combining renaming and
-   * exclusion. It can be implemented as <tt>rename(map,
-   * exclude(exclusions, trait))</tt> where map is the subset of
-   * mappings from oldName to newName and exclusions is an array of
-   * all the keys that map to undefined (or another falsy value).
+   * This is a convenience function combining renaming and exclusion. It can be implemented
+   * as <tt>rename(map, exclude(exclusions, trait))</tt> where map is the subset of
+   * mappings from oldName to newName and exclusions is an array of all the keys that map
+   * to undefined (or another falsy value).
    *
-   * @param resolutions an object whose own properties serve as a
-            mapping from old names to new names, or to undefined if
-            the property should be excluded
+   * @param resolutions an object whose own properties serve as a mapping from
+            old names to new names, or to undefined if the property should be excluded
    * @param trait a trait object
-   * @returns a resolved trait with the same own properties as the
-   * original trait.
+   * @returns a resolved trait with the same own properties as the original trait.
    *
    * In a resolved trait, all own properties whose name is an own property
    * of resolutions will be renamed to resolutions[name] if it is truthy,
@@ -8715,12 +8621,10 @@ var Trait = (function(){
    * Note, it's important to _first_ exclude, _then_ rename, since exclude
    * and rename are not associative, for example:
    * rename({a: 'b'}, exclude(['b'], trait({ a:1,b:2 }))) eqv trait({b:1})
-   * exclude(['b'], rename({a: 'b'}, trait({ a:1,b:2 }))) eqv
-   * trait({b:Trait.required}) 
+   * exclude(['b'], rename({a: 'b'}, trait({ a:1,b:2 }))) eqv trait({b:Trait.required})
    *
-   * writing resolve({a:'b', b: undefined},trait({a:1,b:2})) makes it
-   * clear that what is meant is to simply drop the old 'b' and rename
-   * 'a' to 'b'
+   * writing resolve({a:'b', b: undefined},trait({a:1,b:2})) makes it clear that
+   * what is meant is to simply drop the old 'b' and rename 'a' to 'b'
    */
   function resolve(resolutions, trait) {
     var renames = {};
@@ -8744,31 +8648,27 @@ var Trait = (function(){
    * @param proto denotes the prototype of the completed object
    * @param trait a trait object to be turned into a complete object
    * @returns an object with all of the properties described by the trait.
-   * @throws 'Missing required property' the trait still contains a
-   *         required property.
-   * @throws 'Remaining conflicting property' if the trait still
-   *         contains a conflicting property. 
+   * @throws 'Missing required property' the trait still contains a required property.
+   * @throws 'Remaining conflicting property' if the trait still contains a conflicting property.
    *
    * Trait.create is like Object.create, except that it generates
    * high-integrity or final objects. In addition to creating a new object
    * from a trait, it also ensures that:
    *    - an exception is thrown if 'trait' still contains required properties
-   *    - an exception is thrown if 'trait' still contains conflicting
-   *      properties 
+   *    - an exception is thrown if 'trait' still contains conflicting properties
    *    - the object is and all of its accessor and method properties are frozen
-   *    - the 'this' pseudovariable in all accessors and methods of
-   *      the object is bound to the composed object.
+   *    - the 'this' pseudovariable in all accessors and methods of the object is
+   *      bound to the composed object.
    *
    *  Use Object.create instead of Trait.create if you want to create
    *  abstract or malleable objects. Keep in mind that for such objects:
    *    - no exception is thrown if 'trait' still contains required properties
    *      (the properties are simply dropped from the composite object)
-   *    - no exception is thrown if 'trait' still contains conflicting
-   *      properties (these properties remain as conflicting
-   *      properties in the composite object) 
+   *    - no exception is thrown if 'trait' still contains conflicting properties
+   *      (these properties remain as conflicting properties in the composite object)
    *    - neither the object nor its accessor and method properties are frozen
-   *    - the 'this' pseudovariable in all accessors and methods of
-   *      the object is left unbound.
+   *    - the 'this' pseudovariable in all accessors and methods of the object is
+   *      left unbound.
    */
   function create(proto, trait) {
     var self = Object_create(proto);
@@ -8778,10 +8678,8 @@ var Trait = (function(){
       var pd = trait[name];
       // check for remaining 'required' properties
       // Note: it's OK for the prototype to provide the properties
-      if (pd.required) {
-        if (!(name in proto)) {
-          throw new Error('Missing required property: '+name);
-        }
+      if (pd.required && !(name in proto)) {
+        throw new Error('Missing required property: '+name);
       } else if (pd.conflict) { // check for remaining conflicting properties
         throw new Error('Remaining conflicting property: '+name);
       } else if ('value' in pd) { // data property
@@ -8823,8 +8721,7 @@ var Trait = (function(){
    * names n, T1[n] is equivalent to T2[n]. Two property descriptors are
    * equivalent if they have the same value, accessors and attributes.
    *
-   * @return a boolean indicating whether the two argument traits are
-   *         equivalent.
+   * @return a boolean indicating whether the two argument traits are equivalent.
    */
   function eqv(trait1, trait2) {
     var names1 = getOwnPropertyNames(trait1);
@@ -8848,8 +8745,7 @@ var Trait = (function(){
     Object.create = Object_create;
   }
   // ES5 does not by default provide Object.getOwnProperties
-  // if it's not defined, the Traits library defines this utility
-  // function on Object 
+  // if it's not defined, the Traits library defines this utility function on Object
   if(!Object.getOwnProperties) {
     Object.getOwnProperties = getOwnProperties;
   }
@@ -8870,11 +8766,7 @@ var Trait = (function(){
   
 })();
 
-if (typeof exports !== "undefined") { // CommonJS module support
-  exports.Trait = Trait;
-}
-
-// --- End traits-0.3.js ---
+// --- End traits-0.1.js ---
 
 
 });
@@ -10382,7 +10274,7 @@ bespin.tiki.module("types:index",function(require,exports,module) {
 });
 ;bespin.tiki.register("::syntax_manager", {
     name: "syntax_manager",
-    dependencies: { "worker_manager": "0.0.0", "syntax_directory": "0.0.0", "events": "0.0.0", "underscore": "0.0.0", "settings": "0.0.0" }
+    dependencies: { "worker_manager": "0.0.0", "events": "0.0.0", "underscore": "0.0.0", "syntax_directory": "0.0.0" }
 });
 bespin.tiki.module("syntax_manager:index",function(require,exports,module) {
 /* ***** BEGIN LICENSE BLOCK *****
@@ -10427,7 +10319,6 @@ var Event = require('events').Event;
 var WorkerSupervisor = require('worker_manager').WorkerSupervisor;
 var console = require('bespin:console').console;
 var rangeutils = require('rangeutils:utils/range');
-var settings = require('settings').settings;
 var syntaxDirectory = require('syntax_directory').syntaxDirectory;
 
 // The number of lines to highlight at once.
@@ -10554,13 +10445,7 @@ Context.prototype = {
     },
 
     _workerStarted: function() {
-        this._syntaxInfo.settings.forEach(function(name) {
-            var value = settings.get(name);
-            this._worker.send('setSyntaxSetting', [ name, value ]);
-        }, this);
-
         this._worker.send('loadSyntax', [ this._syntaxInfo.name ]);
-
         if (this._active) {
             this._annotate();
         }
@@ -10750,7 +10635,7 @@ exports.SyntaxManager = SyntaxManager;
 
 });
 
-bespin.tiki.require("bespin:plugins").catalog.registerMetadata({"traits": {"resourceURL": "resources/traits/", "description": "Traits library, traitsjs.org", "dependencies": {}, "testmodules": [], "provides": [], "type": "plugins\\thirdparty", "name": "traits"}, "settings": {"resourceURL": "resources/settings/", "description": "Infrastructure and commands for managing user preferences", "share": true, "dependencies": {"types": "0.0"}, "testmodules": [], "provides": [{"indexOn": "name", "description": "A setting is something that the application offers as a way to customize how it works", "register": "index#addSetting", "ep": "extensionpoint", "name": "setting"}, {"description": "A settingChange is a way to be notified of changes to a setting", "ep": "extensionpoint", "name": "settingChange"}, {"pointer": "commands#setCommand", "description": "define and show settings", "params": [{"defaultValue": null, "type": {"pointer": "settings:index#getSettings", "name": "selection"}, "name": "setting", "description": "The name of the setting to display or alter"}, {"defaultValue": null, "type": {"pointer": "settings:index#getTypeSpecFromAssignment", "name": "deferred"}, "name": "value", "description": "The new value for the chosen setting"}], "ep": "command", "name": "set"}, {"pointer": "commands#unsetCommand", "description": "unset a setting entirely", "params": [{"type": {"pointer": "settings:index#getSettings", "name": "selection"}, "name": "setting", "description": "The name of the setting to return to defaults"}], "ep": "command", "name": "unset"}], "type": "plugins\\supported", "name": "settings"}, "canon": {"resourceURL": "resources/canon/", "name": "canon", "environments": {"main": true, "worker": false}, "dependencies": {"environment": "0.0.0", "events": "0.0.0", "settings": "0.0.0"}, "testmodules": [], "provides": [{"indexOn": "name", "description": "A command is a bit of functionality with optional typed arguments which can do something small like moving the cursor around the screen, or large like cloning a project from VCS.", "ep": "extensionpoint", "name": "command"}, {"description": "An extension point to be called whenever a new command begins output.", "ep": "extensionpoint", "name": "addedRequestOutput"}, {"description": "A dimensionsChanged is a way to be notified of changes to the dimension of Bespin", "ep": "extensionpoint", "name": "dimensionsChanged"}, {"description": "How many typed commands do we recall for reference?", "defaultValue": 50, "type": "number", "ep": "setting", "name": "historyLength"}, {"action": "create", "pointer": "history#InMemoryHistory", "ep": "factory", "name": "history"}], "type": "plugins\\supported", "description": "Manages commands"}, "events": {"resourceURL": "resources/events/", "description": "Dead simple event implementation", "dependencies": {"traits": "0.0"}, "testmodules": ["tests\\test"], "provides": [], "type": "plugins\\supported", "name": "events"}, "environment": {"testmodules": [], "dependencies": {"settings": "0.0.0"}, "resourceURL": "resources/environment/", "name": "environment", "type": "plugins\\supported"}, "bespin": {"testmodules": [], "resourceURL": "resources/bespin/", "name": "bespin", "environments": {"main": true, "worker": true}, "type": "plugins\\boot"}, "underscore": {"testmodules": [], "type": "plugins\\thirdparty", "resourceURL": "resources/underscore/", "description": "Functional Programming Aid for Javascript. Works well with jQuery.", "name": "underscore"}, "worker_manager": {"resourceURL": "resources/worker_manager/", "description": "Manages a web worker on the browser side", "dependencies": {"canon": "0.0.0", "events": "0.0.0", "underscore": "0.0.0"}, "testmodules": [], "provides": [{"description": "Low-level web worker control (for plugin development)", "ep": "command", "name": "worker"}, {"description": "Restarts all web workers (for plugin development)", "pointer": "#workerRestartCommand", "ep": "command", "name": "worker restart"}], "type": "plugins\\supported", "name": "worker_manager"}, "syntax_directory": {"resourceURL": "resources/syntax_directory/", "name": "syntax_directory", "environments": {"main": true, "worker": true}, "dependencies": {}, "testmodules": [], "provides": [{"register": "#discoveredNewSyntax", "ep": "extensionhandler", "name": "syntax"}], "type": "plugins\\supported", "description": "Catalogs the available syntax engines"}, "types": {"resourceURL": "resources/types/", "description": "Defines parameter types for commands", "testmodules": ["tests\\testBasic", "tests\\testTypes"], "provides": [{"indexOn": "name", "description": "Commands can accept various arguments that the user enters or that are automatically supplied by the environment. Those arguments have types that define how they are supplied or completed. The pointer points to an object with methods convert(str value) and getDefault(). Both functions have `this` set to the command's `takes` parameter. If getDefault is not defined, the default on the command's `takes` is used, if there is one. The object can have a noInput property that is set to true to reflect that this type is provided directly by the system. getDefault must be defined in that case.", "ep": "extensionpoint", "name": "type"}, {"description": "Text that the user needs to enter.", "pointer": "basic#text", "ep": "type", "name": "text"}, {"description": "A JavaScript number", "pointer": "basic#number", "ep": "type", "name": "number"}, {"description": "A true/false value", "pointer": "basic#bool", "ep": "type", "name": "boolean"}, {"description": "An object that converts via JavaScript", "pointer": "basic#object", "ep": "type", "name": "object"}, {"description": "A string that is constrained to be one of a number of pre-defined values", "pointer": "basic#selection", "ep": "type", "name": "selection"}, {"description": "A type which we don't understand from the outset, but which we hope context can help us with", "ep": "type", "name": "deferred"}], "type": "plugins\\supported", "name": "types"}, "syntax_manager": {"resourceURL": "resources/syntax_manager/", "name": "syntax_manager", "environments": {"main": true, "worker": false}, "dependencies": {"worker_manager": "0.0.0", "syntax_directory": "0.0.0", "events": "0.0.0", "underscore": "0.0.0", "settings": "0.0.0"}, "testmodules": [], "provides": [], "type": "plugins\\supported", "description": "Provides syntax highlighting services for the editor"}});
+bespin.tiki.require("bespin:plugins").catalog.registerMetadata({"traits": {"resourceURL": "resources/traits/", "description": "Traits library, traitsjs.org", "dependencies": {}, "testmodules": [], "provides": [], "type": "plugins\\thirdparty", "name": "traits"}, "settings": {"resourceURL": "resources/settings/", "description": "Infrastructure and commands for managing user preferences", "share": true, "dependencies": {"types": "0.0"}, "testmodules": [], "provides": [{"description": "Storage for the customizable Bespin settings", "pointer": "index#settings", "ep": "appcomponent", "name": "settings"}, {"indexOn": "name", "description": "A setting is something that the application offers as a way to customize how it works", "register": "index#addSetting", "ep": "extensionpoint", "name": "setting"}, {"description": "A settingChange is a way to be notified of changes to a setting", "ep": "extensionpoint", "name": "settingChange"}, {"pointer": "commands#setCommand", "description": "define and show settings", "params": [{"defaultValue": null, "type": {"pointer": "settings:index#getSettings", "name": "selection"}, "name": "setting", "description": "The name of the setting to display or alter"}, {"defaultValue": null, "type": {"pointer": "settings:index#getTypeSpecFromAssignment", "name": "deferred"}, "name": "value", "description": "The new value for the chosen setting"}], "ep": "command", "name": "set"}, {"pointer": "commands#unsetCommand", "description": "unset a setting entirely", "params": [{"type": {"pointer": "settings:index#getSettings", "name": "selection"}, "name": "setting", "description": "The name of the setting to return to defaults"}], "ep": "command", "name": "unset"}], "type": "plugins\\supported", "name": "settings"}, "canon": {"resourceURL": "resources/canon/", "name": "canon", "environments": {"main": true, "worker": false}, "dependencies": {"environment": "0.0.0", "events": "0.0.0", "settings": "0.0.0"}, "testmodules": [], "provides": [{"indexOn": "name", "description": "A command is a bit of functionality with optional typed arguments which can do something small like moving the cursor around the screen, or large like cloning a project from VCS.", "ep": "extensionpoint", "name": "command"}, {"description": "An extension point to be called whenever a new command begins output.", "ep": "extensionpoint", "name": "addedRequestOutput"}, {"description": "A dimensionsChanged is a way to be notified of changes to the dimension of Bespin", "ep": "extensionpoint", "name": "dimensionsChanged"}, {"description": "How many typed commands do we recall for reference?", "defaultValue": 50, "type": "number", "ep": "setting", "name": "historyLength"}, {"action": "create", "pointer": "history#InMemoryHistory", "ep": "factory", "name": "history"}], "type": "plugins\\supported", "description": "Manages commands"}, "events": {"resourceURL": "resources/events/", "description": "Dead simple event implementation", "dependencies": {"traits": "0.0"}, "testmodules": ["tests\\test"], "provides": [], "type": "plugins\\supported", "name": "events"}, "environment": {"testmodules": [], "dependencies": {"settings": "0.0.0"}, "resourceURL": "resources/environment/", "name": "environment", "type": "plugins\\supported"}, "bespin": {"testmodules": [], "resourceURL": "resources/bespin/", "name": "bespin", "environments": {"main": true, "worker": true}, "type": "plugins\\boot"}, "underscore": {"testmodules": [], "type": "plugins\\thirdparty", "resourceURL": "resources/underscore/", "description": "Functional Programming Aid for Javascript. Works well with jQuery.", "name": "underscore"}, "worker_manager": {"resourceURL": "resources/worker_manager/", "description": "Manages a web worker on the browser side", "dependencies": {"canon": "0.0.0", "events": "0.0.0", "underscore": "0.0.0"}, "testmodules": [], "provides": [{"description": "Low-level web worker control (for plugin development)", "ep": "command", "name": "worker"}, {"description": "Restarts all web workers (for plugin development)", "pointer": "#workerRestartCommand", "ep": "command", "name": "worker restart"}], "type": "plugins\\supported", "name": "worker_manager"}, "syntax_directory": {"resourceURL": "resources/syntax_directory/", "name": "syntax_directory", "environments": {"main": true, "worker": true}, "dependencies": {}, "testmodules": [], "provides": [{"register": "#discoveredNewSyntax", "ep": "extensionhandler", "name": "syntax"}], "type": "plugins\\supported", "description": "Catalogs the available syntax engines"}, "types": {"resourceURL": "resources/types/", "description": "Defines parameter types for commands", "testmodules": ["tests\\testBasic", "tests\\testTypes"], "provides": [{"indexOn": "name", "description": "Commands can accept various arguments that the user enters or that are automatically supplied by the environment. Those arguments have types that define how they are supplied or completed. The pointer points to an object with methods convert(str value) and getDefault(). Both functions have `this` set to the command's `takes` parameter. If getDefault is not defined, the default on the command's `takes` is used, if there is one. The object can have a noInput property that is set to true to reflect that this type is provided directly by the system. getDefault must be defined in that case.", "ep": "extensionpoint", "name": "type"}, {"description": "Text that the user needs to enter.", "pointer": "basic#text", "ep": "type", "name": "text"}, {"description": "A JavaScript number", "pointer": "basic#number", "ep": "type", "name": "number"}, {"description": "A true/false value", "pointer": "basic#bool", "ep": "type", "name": "boolean"}, {"description": "An object that converts via JavaScript", "pointer": "basic#object", "ep": "type", "name": "object"}, {"description": "A string that is constrained to be one of a number of pre-defined values", "pointer": "basic#selection", "ep": "type", "name": "selection"}, {"description": "A type which we don't understand from the outset, but which we hope context can help us with", "ep": "type", "name": "deferred"}], "type": "plugins\\supported", "name": "types"}, "syntax_manager": {"resourceURL": "resources/syntax_manager/", "name": "syntax_manager", "environments": {"main": true, "worker": false}, "dependencies": {"worker_manager": "0.0.0", "events": "0.0.0", "underscore": "0.0.0", "syntax_directory": "0.0.0"}, "testmodules": [], "provides": [], "type": "plugins\\supported", "description": "Provides syntax highlighting services for the editor"}});
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *

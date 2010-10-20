@@ -1862,7 +1862,8 @@ exports.Buffer.prototype = {
      * Saves the contents of this buffer to a new file, and updates the file
      * field of this buffer to point to the result.
      *
-     * @param {File} newFile The pathname to save to, as a File object.
+     * @param dir{Directory} The directory to save in.
+     * @param filename{string} The name of the file in the directory.
      * @return A promise to return the newly-saved file.
      */
     saveAs: function(newFile) {
@@ -2474,7 +2475,9 @@ var Event = require('events').Event;
  * @class
  *
  * This class provides support for manual scrolling and positioning for canvas-
- * based elements. Derived views should implement drawRect() in order to
+ * based elements. Getting these elements to play nicely with SproutCore is
+ * tricky and error-prone, so all canvas-based views should consider deriving
+ * from this class. Derived views should implement drawRect() in order to
  * perform the appropriate canvas drawing logic.
  *
  * The actual size of the canvas is always the size of the container the canvas
@@ -2556,9 +2559,7 @@ exports.CanvasView.prototype = {
         this.invalidate();
     },
 
-    drawRect: function(rect, context) {
-        // abstract
-    },
+    drawRect: function(rect, context) { },
 
     /**
      * Render the canvas. Rendering is delayed by a few ms to empty the call
@@ -2746,7 +2747,6 @@ Object.defineProperties(exports.CanvasView.prototype, {
     }
 });
 
-
 });
 
 bespin.tiki.module("text_editor:views/editor",function(require,exports,module) {
@@ -2838,8 +2838,7 @@ function computeThemeData(themeManager) {
                 case 'gutter':
                 case 'editor':
                 case 'scroller':
-                case 'highlighterFG':
-                case 'highlighterBG':
+                case 'highlighter':
                     editorThemeData[provides[i].name] = value;
             }
         }
@@ -3558,8 +3557,6 @@ bespin.tiki.module("text_editor:views/gutter",function(require,exports,module) {
  * ***** END LICENSE BLOCK ***** */
 
 var util = require('bespin:util/util');
-var catalog = require('bespin:plugins').catalog;
-var rect = require('utils/rect');
 
 var CanvasView = require('views/canvas').CanvasView;
 
@@ -3573,14 +3570,11 @@ exports.GutterView = function(container, editor) {
     CanvasView.call(this, container, true /* preventDownsize */ );
 
     this.editor = editor;
-    this.domNode.addEventListener('click', this._click.bind(this), false);
 };
 
 exports.GutterView.prototype = new CanvasView();
 
 util.mixin(exports.GutterView.prototype, {
-    _decorationSpacing: 2,
-
     drawRect: function(rect, context) {
         var theme = this.editor.themeData.gutter;
 
@@ -3590,8 +3584,7 @@ util.mixin(exports.GutterView.prototype, {
         context.save();
 
         var paddingLeft = theme.paddingLeft;
-
-        context.translate(paddingLeft - 0.5, -0.5);
+        context.translate(paddingLeft, 0);
 
         var layoutManager = this.editor.layoutManager;
         var range = layoutManager.characterRangeForBoundingRect(rect);
@@ -3599,23 +3592,13 @@ util.mixin(exports.GutterView.prototype, {
             layoutManager.textLines.length - 1);
         var lineAscent = layoutManager.fontDimension.lineAscent;
 
-        var decorations = this._loadedDecorations(true);
-        var decorationWidths = [];
-        for (var i = 0; i < decorations.length; i++) {
-            decorationWidths.push(decorations[i].computeWidth(this));
-        }
+        context.fillStyle = theme.color;
+        context.font = this.editor.font;
 
         for (var row = range.start.row; row <= endRow; row++) {
-            context.save();
-
-            var rowY = layoutManager.lineRectForRow(row).y;
-            context.translate(0, rowY);
-
-            for (var i = 0; i < decorations.length; i++) {
-                decorations[i].drawDecoration(this, context, lineAscent, row);
-                context.translate(decorationWidths[i] + this._decorationSpacing, 0);
-            }
-            context.restore();
+            // TODO: breakpoints
+            context.fillText('' + (row + 1), -0.5,
+                layoutManager.lineRectForRow(row).y + lineAscent - 0.5);
         }
 
         context.restore();
@@ -3623,80 +3606,20 @@ util.mixin(exports.GutterView.prototype, {
 
     computeWidth: function() {
         var theme = this.editor.themeData.gutter;
-        var width = theme.paddingLeft + theme.paddingRight;
+        var paddingWidth = theme.paddingLeft + theme.paddingRight;
 
-        var decorations = this._loadedDecorations(true);
-        for (var i = 0; i < decorations.length; i++) {
-            width += decorations[i].computeWidth(this);
-        }
+        var lineNumberFont = this.editor.font;
 
-        width += (decorations.length - 1) * this._decorationSpacing;
-        return width;
-    },
+        var layoutManager = this.editor.layoutManager;
+        var lineCount = layoutManager.textLines.length;
+        var lineCountStr = '' + lineCount;
 
-    _click: function(evt) {
-        var point = {x: evt.layerX, y: evt.layerY};
-        if (rect.pointInRect(point, this.frame)) {
-            var deco = this._decorationAtPoint(point);
-            if (deco && ('selected' in deco)) {
-                var computedPoint = this.computeWithClippingFrame(point.x, point.y);
-                var pos = this.editor.layoutManager.characterAtPoint(computedPoint);
-                deco.selected(this, pos.row);
-            }
-        }
-    },
+        var characterWidth = layoutManager.fontDimension.characterWidth;
+        var strWidth = characterWidth * lineCountStr.length;
 
-    _loadedDecorations: function(invalidateOnLoaded) {
-        var decorations = [];
-        var extensions = catalog.getExtensions('gutterDecoration');
-        for (var i = 0; i < extensions.length; i++) {
-            var promise = extensions[i].load();
-            if (promise.isResolved()) {
-                promise.then(decorations.push.bind(decorations));
-            } else if (invalidateOnLoaded) {
-                promise.then(this.invalidate.bind(this));
-            }
-        }
-        return decorations;
-    },
-
-    _decorationAtPoint: function(point) {
-        var theme = this.editor.themeData.gutter;
-        var width = theme.paddingLeft + theme.paddingRight;
-        if (point.x > theme.paddingLeft) {
-            var decorations = this._loadedDecorations(false);
-            var pos = theme.paddingLeft;
-            for (var i = 0; i < decorations.length; i++) {
-                var deco = decorations[i];
-                var w = deco.computeWidth(this);
-                if (point.x < pos + w) {
-                    return deco;
-                }
-                pos += w + this._decorationSpacing;
-            }
-        }
-        return null;
+        return strWidth + paddingWidth;
     }
 });
-
-exports.lineNumbers = {
-    drawDecoration: function(gutter, context, lineAscent, row) {
-        var editor = gutter.editor;
-        var theme = editor.themeData.gutter;
-        var layoutManager = editor.layoutManager;
-
-        context.fillStyle = theme.color;
-        context.font = editor.font;
-        context.fillText('' + (row + 1), 0, lineAscent);
-    },
-
-    computeWidth: function(gutter) {
-        var layoutManager = gutter.editor.layoutManager;
-        var lineCountStr = '' + layoutManager.textLines.length;
-        var characterWidth = layoutManager.fontDimension.characterWidth;
-        return characterWidth * lineCountStr.length;
-    }
-};
 
 });
 
@@ -4510,6 +4433,9 @@ exports.TextView = function(container, editor) {
     CanvasView.call(this, container, true /* preventDownsize */ );
     this.editor = editor;
 
+    // Takes the layoutManager of the editor and uses it.
+    var textInput = this.textInput = new TextInput(container, this);
+
     this.padding = {
         top: 0,
         bottom: 30,
@@ -4521,7 +4447,6 @@ exports.TextView = function(container, editor) {
 
     var dom = this.domNode;
     dom.style.cursor = "text";
-    dom.addEventListener('click', this.click.bind(this), false);
     dom.addEventListener('mousedown', this.mouseDown.bind(this), false);
     dom.addEventListener('mousemove', this.mouseMove.bind(this), false);
     window.addEventListener('mouseup', this.mouseUp.bind(this), false);
@@ -4534,8 +4459,6 @@ exports.TextView = function(container, editor) {
     this.endedChangeGroup = new Event();
     this.willReplaceRange = new Event();
     this.replacedCharacters = new Event();
-
-    this.textInput = new TextInput(container, this);
 };
 
 exports.TextView.prototype = new CanvasView();
@@ -4641,14 +4564,10 @@ util.mixin(exports.TextView.prototype, {
     },
 
     _drawLines: function(rect, context) {
-        var editor = this.editor;
-        var layoutManager = editor.layoutManager;
+        var layoutManager = this.editor.layoutManager;
         var textLines = layoutManager.textLines;
         var lineAscent = layoutManager.fontDimension.lineAscent;
-
-        var themeData = editor.themeData;
-        var fgColors = themeData.highlighterFG;
-        var bgColors = themeData.highlighterBG;
+        var themeHighlighter = this.editor.themeData.highlighter
 
         context.save();
         context.font = this.editor.font;
@@ -4697,24 +4616,15 @@ util.mixin(exports.TextView.prototype, {
                 var end = colorRange != null ? colorRange.end : endCol;
                 var tag = colorRange != null ? colorRange.tag : 'plain';
 
+                var color = themeHighlighter.hasOwnProperty(tag)
+                            ? themeHighlighter[tag]
+                            : 'red';
+                context.fillStyle = color;
+
                 var pos = { row: row, col: col };
                 var rect = layoutManager.characterRectForPosition(pos);
 
-                if (bgColors.hasOwnProperty(tag)) {
-                    var endPos = { row: row, col: end - 1 };
-                    var endRect = layoutManager.
-                        characterRectForPosition(endPos);
-
-                    var bg = bgColors[tag];
-                    context.fillStyle = bg;
-                    context.fillRect(rect.x, rect.y, endRect.x - rect.x +
-                        endRect.width, endRect.height);
-                }
-
-                var fg = fgColors.hasOwnProperty(tag) ? fgColors[tag] : 'red';
-
                 var snippet = characters.substring(col, end);
-                context.fillStyle = fg;
                 context.fillText(snippet, rect.x, rect.y + lineAscent);
 
                 if (DEBUG_TEXT_RANGES) {
@@ -4922,14 +4832,6 @@ util.mixin(exports.TextView.prototype, {
     },
 
     /**
-     * Handles click events and sets the focus appropriately. This is needed
-     * now that Firefox focus is tightened down; see bugs 125282 and 588381.
-     */
-    click: function(event) {
-        this.focus();
-    },
-
-    /**
      * This is where the editor is painted from head to toe. Pitiful tricks are
      * used to draw as little as possible.
      */
@@ -5089,6 +4991,8 @@ util.mixin(exports.TextView.prototype, {
     },
 
     mouseDown: function(evt) {
+        util.stopEvent(evt);
+
         this.hasFocus = true;
         this._mouseIsDown = true;
 
@@ -5585,7 +5489,6 @@ bespin.tiki.module("text_editor:views/textinput",function(require,exports,module
 
 var util = require('bespin:util/util');
 var Event = require('events').Event;
-var Range = require('rangeutils:utils/range');
 
 var KeyUtil = require('keyboard:keyutil');
 
@@ -5615,12 +5518,14 @@ var KeyUtil = require('keyboard:keyutil');
 exports.TextInput = function(container, delegate) {
     var domNode = this.domNode = document.createElement('textarea');
     domNode.setAttribute('style', 'position: absolute; z-index: -99999; ' +
-         'width: 0px; height: 0px; margin: 0px; outline: none; border: 0;');
+          'width: 0px; height: 0px; margin: 0px; outline: none; border: 0;');
          // 'z-index: 100; top: 20px; left: 20px; width: 50px; ' +
          // 'height: 50px');
 
     container.appendChild(domNode);
+
     this.delegate = delegate;
+
     this._attachEvents();
 };
 
@@ -5745,11 +5650,20 @@ exports.TextInput.prototype = {
                     getData('text/plain'));
                 evt.preventDefault();
             }, false);
-        // This is Firefox only at the moment.
         } else {
-            textField.addEventListener('input', function(evt) {
-                self._textFieldChanged();
-            }, false);
+            var textFieldChangedFn = self._textFieldChanged.bind(self);
+
+            // Same as above, but executes after all pending events. This
+            // ensures that content gets added to the text field before the
+            // value field is read.
+            var textFieldChangedLater = function() {
+                window.setTimeout(textFieldChangedFn, 0);
+            };
+
+            textField.addEventListener('keydown', textFieldChangedLater,
+                false);
+            textField.addEventListener('keypress', textFieldChangedFn, false);
+            textField.addEventListener('keyup', textFieldChangedFn, false);
 
             textField.addEventListener('compositionstart', function(evt) {
                 self._composing = true;
@@ -5775,30 +5689,6 @@ exports.TextInput.prototype = {
                     self._textFieldChanged();
                 }, 0);
             }, false);
-
-            // Fix for bug 583638.
-            // Copy and cut is only performed on Mozilla as of changest
-            //   http://hg.mozilla.org/mozilla-central/rev/27259a0fcbe6
-            // if some text is selected. The following code ensures that this is
-            // the case. The code hocks to the `selectionChanged` event of the
-            // `delegate` object (which is the textView) and sets and selects
-            // some text if there is a selection in the Bespin Editor. This
-            // 'enables' copy and cut.
-            var wasSelectionBefore = false;
-            this.delegate.selectionChanged.add(function(newRange) {
-                if (Range.isZeroLength(newRange)) {
-                    if (wasSelectionBefore) {
-                        textField.value = "";
-                    }
-                    wasSelection = false;
-                } else {
-                    if (!wasSelectionBefore) {
-                        textField.value = "z";
-                        textField.select();
-                    }
-                    wasSelection = true;
-                }
-            }.bind(this));
         }
 
         // Here comes the code for copy and cut...
@@ -10889,8 +10779,7 @@ exports.whiteTheme = function() {
             },
 
             // Variables for the syntax highlighter.
-            /*
-            highlighterFG: {
+            highlighter: {
                 plain:     '#030303',
                 comment:   '#919191',
                 directive: '#999999',
@@ -10898,30 +10787,7 @@ exports.whiteTheme = function() {
                 identifier: '#A7379F',
                 keyword:    '#1414EF',
                 operator:   '#477ABE',
-                string:     '#017F19',
-                addition:   '#ffffff',
-                deletion:   '#ffffff'
-            },
-            */
-            
-            highlighterFG: {
-            	composite:	'rgb(127,63,63)',
-                plain:     	'rgb(0,0,0)',
-                comment:   	'rgb(63,95,191)',
-                directive: 	'rgb(0,127,0)',
-                error:      'rgb(255,0,0)',
-                identifier: 'rgb(127,0,127)',
-                keyword:    'rgb(63,127,127)',
-                operator:   'rgb(63,127,127)',
-                string:     'rgb(0,0,255)',
-                addition:   '#ffffff',
-                deletion:   '#ffffff'
-            },
-
-            highlighterBG: {
-                // plain:      '#ffffff', Composite removed this
-                addition:   '#008000',
-                deletion:   '#800000'
+                string:     '#017F19'
             },
 
             // Variables for the scrollers.
@@ -17260,7 +17126,7 @@ bespin.tiki.module("embedded:index",function(require,exports,module) {
 });
 ;bespin.tiki.register("::appconfig", {
     name: "appconfig",
-    dependencies: { "jquery": "0.0.0", "canon": "0.0.0", "underscore": "0.0.0", "settings": "0.0.0" }
+    dependencies: { "jquery": "0.0.0", "canon": "0.0.0", "settings": "0.0.0" }
 });
 bespin.tiki.module("appconfig:index",function(require,exports,module) {
 /* ***** BEGIN LICENSE BLOCK *****
@@ -17301,7 +17167,6 @@ bespin.tiki.module("appconfig:index",function(require,exports,module) {
  * ***** END LICENSE BLOCK ***** */
 
 var $ = require('jquery').$;
-var _ = require('underscore')._;
 var settings = require('settings').settings;
 var group = require("bespin:promise").group;
 var Promise = require("bespin:promise").Promise;
@@ -17527,9 +17392,6 @@ exports.normalizeConfig = function(catalog, config) {
         config.objects.commandLine = {
         };
     }
-    if (!config.objects.toolbar && catalog.plugins.toolbar) {
-        config.objects.toolbar = {};
-    }
 
     if (config.gui === undefined) {
         config.gui = {};
@@ -17543,10 +17405,6 @@ exports.normalizeConfig = function(catalog, config) {
         }
     }
 
-    if (!config.gui.north && config.objects.toolbar
-        && !alreadyRegistered.toolbar) {
-        config.gui.north = { component: "toolbar" };
-    }
     if (!config.gui.center && config.objects.editor
         && !alreadyRegistered.editor) {
         config.gui.center = { component: "editor" };
@@ -17595,67 +17453,49 @@ var generateGUI = function(catalog, config, pr) {
 
     var centerContainer = document.createElement('div');
     centerContainer.setAttribute('class', 'center-container');
-    var centerAdded = false;
+    container.appendChild(centerContainer);
 
     var element = config.element || document.body;
     // Add the 'bespin' class to the element in case it doesn't have this already.
     util.addClass(element, 'bespin');
     element.appendChild(container);
 
-    try {
-        // this shouldn't be necessary, but it looks like Firefox has an issue
-        // with the box-ordinal-group CSS property
-        ['north', 'west', 'center', 'east', 'south'].forEach(function(place) {
-            var descriptor = config.gui[place];
-            if (!descriptor) {
-                return;
-            }
+    for (var place in config.gui) {
+        var descriptor = config.gui[place];
 
-            var component = catalog.getObject(descriptor.component);
-            if (!component) {
-                throw 'Cannot find object ' + descriptor.component +
-                                ' to attach to the Bespin UI';
-            }
+        var component = catalog.getObject(descriptor.component);
+        if (!component) {
+            error = 'Cannot find object ' + descriptor.component +
+                            ' to attach to the Bespin UI';
+            console.error(error);
+            pr.reject(error);
+            return;
+        }
 
-            element = component.element;
-            if (!element) {
-                throw 'Component ' + descriptor.component + ' does not ' +
-                            'have an "element" attribute to attach to the ' +
-                            'Bespin UI';
-            }
+        element = component.element;
+        if (!element) {
+            error = 'Component ' + descriptor.component + ' does not have' +
+                          ' an "element" attribute to attach to the Bespin UI';
+            console.error(error);
+            pr.reject(error);
+            return;
+        }
 
-            $(element).addClass(place);
+        $(element).addClass(place);
 
-            if (place == 'west' || place == 'east' || place == 'center') {
-                if (!centerAdded) {
-                    container.appendChild(centerContainer);
-                    centerAdded = true;
-                }
-                centerContainer.appendChild(element);
-            } else {
-                container.appendChild(element);
-            }
-        });
+        if (place == 'west' || place == 'east' || place == 'center') {
+            centerContainer.appendChild(element);
+        } else {
+            container.appendChild(element);
+        }
 
-        // Call the "elementAppended" callbacks.
-        ['north', 'west', 'east', 'south', 'center'].forEach(function(place) {
-            var descriptor = config.gui[place];
-            if (!descriptor) {
-                return;
-            }
-
-            var component = catalog.getObject(descriptor.component);
-            if (component.elementAppended != null) {
-                component.elementAppended();
-            }
-        });
-
-        pr.resolve();
-    } catch (e) {
-        console.error(e);
-        pr.reject(e);
+        // Call the elementAppended event if there is one.
+        if (component.elementAppended) {
+            component.elementAppended();
+        }
     }
 
+    pr.resolve();
 };
 
 });
@@ -17670,7 +17510,7 @@ bespin.tiki.module("screen_theme:index",function(require,exports,module) {
 (function() {
 var $ = bespin.tiki.require("jquery").$;
 $(document).ready(function() {
-    bespin.tiki.require("bespin:plugins").catalog.registerMetadata({"text_editor": {"resourceURL": "resources/text_editor/", "description": "Canvas-based text editor component and many common editing commands", "dependencies": {"completion": "0.0.0", "undomanager": "0.0.0", "settings": "0.0.0", "canon": "0.0.0", "rangeutils": "0.0.0", "traits": "0.0.0", "theme_manager": "0.0.0", "keyboard": "0.0.0", "edit_session": "0.0.0", "syntax_manager": "0.0.0"}, "testmodules": ["tests\\controllers\\testLayoutmanager", "tests\\models\\testTextstorage", "tests\\testScratchcanvas", "tests\\utils\\testRect"], "provides": [{"action": "new", "pointer": "views/editor#EditorView", "ep": "factory", "name": "text_editor"}, {"predicates": {"isTextView": true}, "pointer": "commands/editing#backspace", "ep": "command", "key": "backspace", "name": "backspace"}, {"predicates": {"isTextView": true}, "pointer": "commands/editing#deleteCommand", "ep": "command", "key": "delete", "name": "delete"}, {"description": "Delete all lines currently selected", "key": "ctrl_d", "predicates": {"isTextView": true}, "pointer": "commands/editing#deleteLines", "ep": "command", "name": "deletelines"}, {"description": "Create a new, empty line below the current one", "key": "ctrl_return", "predicates": {"isTextView": true}, "pointer": "commands/editing#openLine", "ep": "command", "name": "openline"}, {"description": "Join the current line with the following", "key": "ctrl_shift_j", "predicates": {"isTextView": true}, "pointer": "commands/editing#joinLines", "ep": "command", "name": "joinline"}, {"params": [{"defaultValue": "", "type": "text", "name": "text", "description": "The text to insert"}], "pointer": "commands/editing#insertText", "ep": "command", "name": "insertText"}, {"predicates": {"completing": false, "isTextView": true}, "pointer": "commands/editing#newline", "ep": "command", "key": "return", "name": "newline"}, {"predicates": {"completing": false, "isTextView": true}, "pointer": "commands/editing#tab", "ep": "command", "key": "tab", "name": "tab"}, {"predicates": {"isTextView": true}, "pointer": "commands/editing#untab", "ep": "command", "key": "shift_tab", "name": "untab"}, {"predicates": {"isTextView": true}, "ep": "command", "name": "move"}, {"description": "Repeat the last search (forward)", "pointer": "commands/editor#findNextCommand", "ep": "command", "key": "ctrl_g", "name": "findnext"}, {"description": "Repeat the last search (backward)", "pointer": "commands/editor#findPrevCommand", "ep": "command", "key": "ctrl_shift_g", "name": "findprev"}, {"predicates": {"completing": false, "isTextView": true}, "pointer": "commands/movement#moveDown", "ep": "command", "key": "down", "name": "move down"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#moveLeft", "ep": "command", "key": "left", "name": "move left"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#moveRight", "ep": "command", "key": "right", "name": "move right"}, {"predicates": {"completing": false, "isTextView": true}, "pointer": "commands/movement#moveUp", "ep": "command", "key": "up", "name": "move up"}, {"predicates": {"isTextView": true}, "ep": "command", "name": "select"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectDown", "ep": "command", "key": "shift_down", "name": "select down"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectLeft", "ep": "command", "key": "shift_left", "name": "select left"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectRight", "ep": "command", "key": "shift_right", "name": "select right"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectUp", "ep": "command", "key": "shift_up", "name": "select up"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#moveLineEnd", "ep": "command", "key": ["end", "ctrl_right"], "name": "move lineend"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectLineEnd", "ep": "command", "key": ["shift_end", "ctrl_shift_right"], "name": "select lineend"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#moveDocEnd", "ep": "command", "key": "ctrl_down", "name": "move docend"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectDocEnd", "ep": "command", "key": "ctrl_shift_down", "name": "select docend"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#moveLineStart", "ep": "command", "key": ["home", "ctrl_left"], "name": "move linestart"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectLineStart", "ep": "command", "key": ["shift_home", "ctrl_shift_left"], "name": "select linestart"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#moveDocStart", "ep": "command", "key": "ctrl_up", "name": "move docstart"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectDocStart", "ep": "command", "key": "ctrl_shift_up", "name": "select docstart"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#moveNextWord", "ep": "command", "key": ["alt_right"], "name": "move nextword"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectNextWord", "ep": "command", "key": ["alt_shift_right"], "name": "select nextword"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#movePreviousWord", "ep": "command", "key": ["alt_left"], "name": "move prevword"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectPreviousWord", "ep": "command", "key": ["alt_shift_left"], "name": "select prevword"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectAll", "ep": "command", "key": ["ctrl_a", "meta_a"], "name": "select all"}, {"predicates": {"isTextView": true}, "ep": "command", "name": "scroll"}, {"predicates": {"isTextView": true}, "pointer": "commands/scrolling#scrollDocStart", "ep": "command", "key": "ctrl_home", "name": "scroll start"}, {"predicates": {"isTextView": true}, "pointer": "commands/scrolling#scrollDocEnd", "ep": "command", "key": "ctrl_end", "name": "scroll end"}, {"predicates": {"isTextView": true}, "pointer": "commands/scrolling#scrollPageDown", "ep": "command", "key": "pagedown", "name": "scroll down"}, {"predicates": {"isTextView": true}, "pointer": "commands/scrolling#scrollPageUp", "ep": "command", "key": "pageup", "name": "scroll up"}, {"pointer": "commands/editor#lcCommand", "description": "Change all selected text to lowercase", "withKey": "CMD SHIFT L", "ep": "command", "name": "lc"}, {"pointer": "commands/editor#detabCommand", "description": "Convert tabs to spaces.", "params": [{"defaultValue": null, "type": "text", "name": "tabsize", "description": "Optionally, specify a tab size. (Defaults to setting.)"}], "ep": "command", "name": "detab"}, {"pointer": "commands/editor#entabCommand", "description": "Convert spaces to tabs.", "params": [{"defaultValue": null, "type": "text", "name": "tabsize", "description": "Optionally, specify a tab size. (Defaults to setting.)"}], "ep": "command", "name": "entab"}, {"pointer": "commands/editor#trimCommand", "description": "trim trailing or leading whitespace from each line in selection", "params": [{"defaultValue": "both", "type": {"data": [{"name": "left"}, {"name": "right"}, {"name": "both"}], "name": "selection"}, "name": "side", "description": "Do we trim from the left, right or both"}], "ep": "command", "name": "trim"}, {"pointer": "commands/editor#ucCommand", "description": "Change all selected text to uppercase", "withKey": "CMD SHIFT U", "ep": "command", "name": "uc"}, {"predicates": {"isTextView": true}, "pointer": "controllers/undo#undoManagerCommand", "ep": "command", "key": ["ctrl_shift_z"], "name": "redo"}, {"predicates": {"isTextView": true}, "pointer": "controllers/undo#undoManagerCommand", "ep": "command", "key": ["ctrl_z"], "name": "undo"}, {"description": "The distance in characters between each tab", "defaultValue": 8, "type": "number", "ep": "setting", "name": "tabstop"}, {"description": "Customize the keymapping", "defaultValue": "{}", "type": "text", "ep": "setting", "name": "customKeymapping"}, {"description": "The keymapping to use", "defaultValue": "standard", "type": "text", "ep": "setting", "name": "keymapping"}, {"description": "The editor font size in pixels", "defaultValue": 14, "type": "number", "ep": "setting", "name": "fontsize"}, {"description": "The editor font face", "defaultValue": "Monaco, Lucida Console, monospace", "type": "text", "ep": "setting", "name": "fontface"}, {"defaultValue": {"color": "#e5c138", "paddingLeft": 5, "backgroundColor": "#4c4a41", "paddingRight": 10}, "ep": "themevariable", "name": "gutter"}, {"defaultValue": {"color": "#e6e6e6", "selectedTextBackgroundColor": "#526da5", "backgroundColor": "#2a211c", "cursorColor": "#879aff", "unfocusedCursorBackgroundColor": "#73171e", "unfocusedCursorColor": "#ff0033"}, "ep": "themevariable", "name": "editor"}, {"defaultValue": {"comment": "#666666", "directive": "#999999", "keyword": "#42A8ED", "addition": "#FFFFFF", "plain": "#e6e6e6", "module": "#BA4946", "specialmodule": "#C741BB", "builtin": "#307BAD", "deletion": "#FFFFFF", "error": "#ff0000", "operator": "#88BBFF", "identifier": "#D841FF", "string": "#039A0A"}, "ep": "themevariable", "name": "highlighterFG"}, {"defaultValue": {"addition": "#008000", "deletion": "#800000"}, "ep": "themevariable", "name": "highlighterBG"}, {"defaultValue": {"nibStrokeStyle": "rgb(150, 150, 150)", "fullAlpha": 1.0, "barFillStyle": "rgb(0, 0, 0)", "particalAlpha": 0.29999999999999999, "barFillGradientBottomStop": "rgb(44, 44, 44)", "backgroundStyle": "#2A211C", "thickness": 17, "padding": 5, "trackStrokeStyle": "rgb(150, 150, 150)", "nibArrowStyle": "rgb(255, 255, 255)", "barFillGradientBottomStart": "rgb(22, 22, 22)", "barFillGradientTopStop": "rgb(40, 40, 40)", "barFillGradientTopStart": "rgb(90, 90, 90)", "nibStyle": "rgb(100, 100, 100)", "trackFillStyle": "rgba(50, 50, 50, 0.8)"}, "ep": "themevariable", "name": "scroller"}, {"description": "Event: Notify when something within the editor changed.", "params": [{"required": true, "name": "pointer", "description": "Function that is called whenever a change happened."}], "ep": "extensionpoint", "name": "editorChange"}, {"description": "Decoration for the gutter", "ep": "extensionpoint", "name": "gutterDecoration"}, {"description": "Line number decoration for the gutter", "pointer": "views/gutter#lineNumbers", "ep": "gutterDecoration", "name": "lineNumbers"}], "type": "plugins\\supported", "name": "text_editor"}, "cs_syntax": {"resourceURL": "resources/cs_syntax/", "name": "cs_syntax", "environments": {"worker": true}, "dependencies": {"standard_syntax": "0.0.0"}, "testmodules": [], "provides": [{"pointer": "#CSSyntax", "ep": "syntax", "fileexts": ["cs"], "name": "cs"}], "type": "plugins\\thirdparty", "description": "C# syntax highlighter"}, "less": {"resourceURL": "resources/less/", "description": "Leaner CSS", "contributors": [], "author": "Alexis Sellier <self@cloudhead.net>", "url": "http://lesscss.org", "version": "1.0.11", "dependencies": {}, "testmodules": [], "provides": [], "keywords": ["css", "parser", "lesscss", "browser"], "type": "plugins\\thirdparty", "name": "less"}, "theme_manager_base": {"resourceURL": "resources/theme_manager_base/", "name": "theme_manager_base", "share": true, "environments": {"main": true}, "dependencies": {}, "testmodules": [], "provides": [{"description": "(Less)files holding the CSS style information for the UI.", "params": [{"required": true, "name": "url", "description": "Name of the ThemeStylesFile - can also be an array of files."}], "ep": "extensionpoint", "name": "themestyles"}, {"description": "Event: Notify when the theme(styles) changed.", "params": [{"required": true, "name": "pointer", "description": "Function that is called whenever the theme is changed."}], "ep": "extensionpoint", "name": "themeChange"}, {"indexOn": "name", "description": "A theme is a way change the look of the application.", "params": [{"required": false, "name": "url", "description": "Name of a ThemeStylesFile that holds theme specific CSS rules - can also be an array of files."}, {"required": true, "name": "pointer", "description": "Function that returns the ThemeData"}], "ep": "extensionpoint", "name": "theme"}], "type": "plugins\\supported", "description": "Defines extension points required for theming"}, "keyboard": {"resourceURL": "resources/keyboard/", "description": "Keyboard shortcuts", "dependencies": {"canon": "0.0", "settings": "0.0"}, "testmodules": ["tests\\testKeyboard"], "provides": [{"description": "A keymapping defines how keystrokes are interpreted.", "params": [{"required": true, "name": "states", "description": "Holds the states and all the informations about the keymapping. See docs: pluginguide/keymapping"}], "ep": "extensionpoint", "name": "keymapping"}], "type": "plugins\\supported", "name": "keyboard"}, "edit_session": {"resourceURL": "resources/edit_session/", "description": "Ties together the files being edited with the views on screen", "dependencies": {"events": "0.0.0"}, "testmodules": ["tests\\testSession"], "provides": [{"action": "call", "pointer": "#createSession", "ep": "factory", "name": "session"}], "type": "plugins\\supported", "name": "edit_session"}, "completion": {"resourceURL": "resources/completion/", "description": "Code completion support", "dependencies": {"jquery": "0.0.0", "ctags": "0.0.0", "rangeutils": "0.0.0", "canon": "0.0.0", "underscore": "0.0.0"}, "testmodules": [], "provides": [{"indexOn": "name", "description": "Code completion support for specific languages", "ep": "extensionpoint", "name": "completion"}, {"description": "Accept the chosen completion", "key": ["return", "tab"], "predicates": {"completing": true}, "pointer": "controller#completeCommand", "ep": "command", "name": "complete"}, {"description": "Abandon the completion", "key": "escape", "predicates": {"completing": true}, "pointer": "controller#completeCancelCommand", "ep": "command", "name": "complete cancel"}, {"description": "Choose the completion below", "key": "down", "predicates": {"completing": true}, "pointer": "controller#completeDownCommand", "ep": "command", "name": "complete down"}, {"description": "Choose the completion above", "key": "up", "predicates": {"completing": true}, "pointer": "controller#completeUpCommand", "ep": "command", "name": "complete up"}], "type": "plugins\\supported", "name": "completion"}, "undomanager": {"resourceURL": "resources/undomanager/", "description": "Manages undoable events", "testmodules": ["tests\\testUndomanager"], "provides": [{"pointer": "#undoManagerCommand", "ep": "command", "key": ["ctrl_shift_z"], "name": "redo"}, {"pointer": "#undoManagerCommand", "ep": "command", "key": ["ctrl_z"], "name": "undo"}], "type": "plugins\\supported", "name": "undomanager"}, "rangeutils": {"testmodules": ["tests\\test"], "type": "plugins\\supported", "resourceURL": "resources/rangeutils/", "description": "Utility functions for dealing with ranges of text", "name": "rangeutils"}, "stylesheet": {"resourceURL": "resources/stylesheet/", "name": "stylesheet", "environments": {"worker": true}, "dependencies": {"standard_syntax": "0.0.0"}, "testmodules": [], "provides": [{"pointer": "#CSSSyntax", "ep": "syntax", "fileexts": ["css", "less"], "name": "css"}], "type": "plugins\\supported", "description": "CSS syntax highlighter"}, "js_syntax": {"resourceURL": "resources/js_syntax/", "name": "js_syntax", "environments": {"worker": true}, "dependencies": {"standard_syntax": "0.0.0", "settings": "0.0.0"}, "testmodules": [], "provides": [{"settings": ["specialmodules"], "pointer": "#JSSyntax", "ep": "syntax", "fileexts": ["js", "json"], "name": "js"}, {"description": "Regex that matches special modules", "defaultValue": "^jetpack\\.[^\"']+", "type": "text", "ep": "setting", "name": "specialmodules"}], "type": "plugins\\supported", "description": "JavaScript syntax highlighter"}, "ctags": {"resourceURL": "resources/ctags/", "description": "Reads and writes tag files", "dependencies": {"traits": "0.0.0", "underscore": "0.0.0"}, "testmodules": [], "type": "plugins\\supported", "name": "ctags"}, "theme_manager": {"resourceURL": "resources/theme_manager/", "name": "theme_manager", "share": true, "environments": {"main": true, "worker": false}, "dependencies": {"theme_manager_base": "0.0.0", "settings": "0.0.0", "events": "0.0.0", "less": "0.0.0"}, "testmodules": [], "provides": [{"unregister": "themestyles#unregisterThemeStyles", "register": "themestyles#registerThemeStyles", "ep": "extensionhandler", "name": "themestyles"}, {"unregister": "index#unregisterTheme", "register": "index#registerTheme", "ep": "extensionhandler", "name": "theme"}, {"defaultValue": "standard", "description": "The theme plugin's name to use. If set to 'standard' no theme will be used", "type": "text", "ep": "setting", "name": "theme"}, {"pointer": "#appLaunched", "ep": "appLaunched"}], "type": "plugins\\supported", "description": "Handles colors in Bespin"}, "whitetheme": {"resourceURL": "resources/whitetheme/", "description": "Provides a white theme for Bespin", "dependencies": {"theme_manager": "0.0.0"}, "testmodules": [], "provides": [{"url": ["theme.less"], "description": "A basic white theme", "pointer": "index#whiteTheme", "ep": "theme", "name": "white"}], "type": "plugins\\supported", "name": "whitetheme"}, "standard_syntax": {"resourceURL": "resources/standard_syntax/", "description": "Easy-to-use basis for syntax engines", "environments": {"worker": true}, "dependencies": {"syntax_worker": "0.0.0", "syntax_directory": "0.0.0", "underscore": "0.0.0"}, "testmodules": [], "type": "plugins\\supported", "name": "standard_syntax"}, "jquery": {"testmodules": [], "resourceURL": "resources/jquery/", "name": "jquery", "type": "plugins\\thirdparty"}, "embedded": {"testmodules": [], "dependencies": {"theme_manager": "0.0.0", "text_editor": "0.0.0", "appconfig": "0.0.0", "edit_session": "0.0.0", "screen_theme": "0.0.0"}, "resourceURL": "resources/embedded/", "name": "embedded", "type": "plugins\\supported"}, "sql_syntax": {"resourceURL": "resources/sql_syntax/", "name": "sql_syntax", "environments": {"worker": true}, "dependencies": {"syntax_manager": "0.0.0"}, "testmodules": [], "provides": [{"pointer": "#SQLSyntax", "ep": "syntax", "fileexts": ["sql"], "name": "sql"}], "type": "plugins\\thirdparty", "description": "Python syntax highlighter"}, "appconfig": {"resourceURL": "resources/appconfig/", "description": "Instantiates components and displays the GUI based on configuration.", "dependencies": {"jquery": "0.0.0", "canon": "0.0.0", "underscore": "0.0.0", "settings": "0.0.0"}, "testmodules": [], "provides": [{"description": "Event: Fired when the app is completely launched.", "ep": "extensionpoint", "name": "appLaunched"}], "type": "plugins\\supported", "name": "appconfig"}, "syntax_worker": {"resourceURL": "resources/syntax_worker/", "description": "Coordinates multiple syntax engines", "environments": {"worker": true}, "dependencies": {"syntax_directory": "0.0.0", "underscore": "0.0.0"}, "testmodules": [], "type": "plugins\\supported", "name": "syntax_worker"}, "c1_html": {"resourceURL": "resources/c1_html/", "name": "c1_html", "environments": {"worker": true}, "dependencies": {"standard_syntax": "0.0.0"}, "testmodules": [], "provides": [{"pointer": "#HTMLSyntax", "ep": "syntax", "fileexts": ["htm", "html"], "name": "html"}], "type": "plugins\\supported", "description": "C1 HTML syntax highlighter"}, "screen_theme": {"resourceURL": "resources/screen_theme/", "description": "Bespins standard theme basePlugin", "dependencies": {"theme_manager": "0.0.0"}, "testmodules": [], "provides": [{"url": ["theme.less"], "ep": "themestyles"}, {"defaultValue": "@global_font", "ep": "themevariable", "name": "container_font"}, {"defaultValue": "@global_font_size", "ep": "themevariable", "name": "container_font_size"}, {"defaultValue": "@global_container_background", "ep": "themevariable", "name": "container_bg"}, {"defaultValue": "@global_color", "ep": "themevariable", "name": "container_color"}, {"defaultValue": "@global_line_height", "ep": "themevariable", "name": "container_line_height"}, {"defaultValue": "@global_pane_background", "ep": "themevariable", "name": "pane_bg"}, {"defaultValue": "@global_pane_border_radius", "ep": "themevariable", "name": "pane_border_radius"}, {"defaultValue": "@global_form_font", "ep": "themevariable", "name": "form_font"}, {"defaultValue": "@global_form_font_size", "ep": "themevariable", "name": "form_font_size"}, {"defaultValue": "@global_form_line_height", "ep": "themevariable", "name": "form_line_height"}, {"defaultValue": "@global_form_color", "ep": "themevariable", "name": "form_color"}, {"defaultValue": "@global_form_text_shadow", "ep": "themevariable", "name": "form_text_shadow"}, {"defaultValue": "@global_pane_link_color", "ep": "themevariable", "name": "pane_a_color"}, {"defaultValue": "@global_font", "ep": "themevariable", "name": "pane_font"}, {"defaultValue": "@global_font_size", "ep": "themevariable", "name": "pane_font_size"}, {"defaultValue": "@global_pane_text_shadow", "ep": "themevariable", "name": "pane_text_shadow"}, {"defaultValue": "@global_pane_h1_font", "ep": "themevariable", "name": "pane_h1_font"}, {"defaultValue": "@global_pane_h1_font_size", "ep": "themevariable", "name": "pane_h1_font_size"}, {"defaultValue": "@global_pane_h1_color", "ep": "themevariable", "name": "pane_h1_color"}, {"defaultValue": "@global_font_size * 1.8", "ep": "themevariable", "name": "pane_line_height"}, {"defaultValue": "@global_pane_color", "ep": "themevariable", "name": "pane_color"}, {"defaultValue": "@global_text_shadow", "ep": "themevariable", "name": "pane_text_shadow"}, {"defaultValue": "@global_font", "ep": "themevariable", "name": "button_font"}, {"defaultValue": "@global_font_size", "ep": "themevariable", "name": "button_font_size"}, {"defaultValue": "@global_button_color", "ep": "themevariable", "name": "button_color"}, {"defaultValue": "@global_button_background", "ep": "themevariable", "name": "button_bg"}, {"defaultValue": "@button_bg - #063A27", "ep": "themevariable", "name": "button_bg2"}, {"defaultValue": "@button_bg - #194A5E", "ep": "themevariable", "name": "button_border"}, {"defaultValue": "@global_control_background", "ep": "themevariable", "name": "control_bg"}, {"defaultValue": "@global_control_color", "ep": "themevariable", "name": "control_color"}, {"defaultValue": "@global_control_border", "ep": "themevariable", "name": "control_border"}, {"defaultValue": "@global_control_border_radius", "ep": "themevariable", "name": "control_border_radius"}, {"defaultValue": "@global_control_active_background", "ep": "themevariable", "name": "control_active_bg"}, {"defaultValue": "@global_control_active_border", "ep": "themevariable", "name": "control_active_border"}, {"defaultValue": "@global_control_active_color", "ep": "themevariable", "name": "control_active_color"}, {"defaultValue": "@global_control_active_inset_color", "ep": "themevariable", "name": "control_active_inset_color"}], "type": "plugins\\supported", "name": "screen_theme"}});;
+    bespin.tiki.require("bespin:plugins").catalog.registerMetadata({"text_editor": {"resourceURL": "resources/text_editor/", "description": "Canvas-based text editor component and many common editing commands", "dependencies": {"completion": "0.0.0", "undomanager": "0.0.0", "settings": "0.0.0", "canon": "0.0.0", "rangeutils": "0.0.0", "traits": "0.0.0", "theme_manager": "0.0.0", "keyboard": "0.0.0", "edit_session": "0.0.0", "syntax_manager": "0.0.0"}, "testmodules": ["tests\\controllers\\testLayoutmanager", "tests\\models\\testTextstorage", "tests\\testScratchcanvas", "tests\\utils\\testRect"], "provides": [{"action": "new", "pointer": "views/editor#EditorView", "ep": "factory", "name": "text_editor"}, {"pointer": "views/editor#EditorView", "ep": "appcomponent", "name": "editor_view"}, {"predicates": {"isTextView": true}, "pointer": "commands/editing#backspace", "ep": "command", "key": "backspace", "name": "backspace"}, {"predicates": {"isTextView": true}, "pointer": "commands/editing#deleteCommand", "ep": "command", "key": "delete", "name": "delete"}, {"description": "Delete all lines currently selected", "key": "ctrl_d", "predicates": {"isTextView": true}, "pointer": "commands/editing#deleteLines", "ep": "command", "name": "deletelines"}, {"description": "Create a new, empty line below the current one", "key": "ctrl_return", "predicates": {"isTextView": true}, "pointer": "commands/editing#openLine", "ep": "command", "name": "openline"}, {"description": "Join the current line with the following", "key": "ctrl_shift_j", "predicates": {"isTextView": true}, "pointer": "commands/editing#joinLines", "ep": "command", "name": "joinline"}, {"params": [{"defaultValue": "", "type": "text", "name": "text", "description": "The text to insert"}], "pointer": "commands/editing#insertText", "ep": "command", "name": "insertText"}, {"predicates": {"completing": false, "isTextView": true}, "pointer": "commands/editing#newline", "ep": "command", "key": "return", "name": "newline"}, {"predicates": {"completing": false, "isTextView": true}, "pointer": "commands/editing#tab", "ep": "command", "key": "tab", "name": "tab"}, {"predicates": {"isTextView": true}, "pointer": "commands/editing#untab", "ep": "command", "key": "shift_tab", "name": "untab"}, {"predicates": {"isTextView": true}, "ep": "command", "name": "move"}, {"description": "Repeat the last search (forward)", "pointer": "commands/editor#findNextCommand", "ep": "command", "key": "ctrl_g", "name": "findnext"}, {"description": "Repeat the last search (backward)", "pointer": "commands/editor#findPrevCommand", "ep": "command", "key": "ctrl_shift_g", "name": "findprev"}, {"predicates": {"completing": false, "isTextView": true}, "pointer": "commands/movement#moveDown", "ep": "command", "key": "down", "name": "move down"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#moveLeft", "ep": "command", "key": "left", "name": "move left"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#moveRight", "ep": "command", "key": "right", "name": "move right"}, {"predicates": {"completing": false, "isTextView": true}, "pointer": "commands/movement#moveUp", "ep": "command", "key": "up", "name": "move up"}, {"predicates": {"isTextView": true}, "ep": "command", "name": "select"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectDown", "ep": "command", "key": "shift_down", "name": "select down"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectLeft", "ep": "command", "key": "shift_left", "name": "select left"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectRight", "ep": "command", "key": "shift_right", "name": "select right"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectUp", "ep": "command", "key": "shift_up", "name": "select up"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#moveLineEnd", "ep": "command", "key": ["end", "ctrl_right"], "name": "move lineend"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectLineEnd", "ep": "command", "key": ["shift_end", "ctrl_shift_right"], "name": "select lineend"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#moveDocEnd", "ep": "command", "key": "ctrl_down", "name": "move docend"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectDocEnd", "ep": "command", "key": "ctrl_shift_down", "name": "select docend"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#moveLineStart", "ep": "command", "key": ["home", "ctrl_left"], "name": "move linestart"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectLineStart", "ep": "command", "key": ["shift_home", "ctrl_shift_left"], "name": "select linestart"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#moveDocStart", "ep": "command", "key": "ctrl_up", "name": "move docstart"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectDocStart", "ep": "command", "key": "ctrl_shift_up", "name": "select docstart"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#moveNextWord", "ep": "command", "key": ["alt_right"], "name": "move nextword"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectNextWord", "ep": "command", "key": ["alt_shift_right"], "name": "select nextword"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#movePreviousWord", "ep": "command", "key": ["alt_left"], "name": "move prevword"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectPreviousWord", "ep": "command", "key": ["alt_shift_left"], "name": "select prevword"}, {"predicates": {"isTextView": true}, "pointer": "commands/movement#selectAll", "ep": "command", "key": ["ctrl_a", "meta_a"], "name": "select all"}, {"predicates": {"isTextView": true}, "ep": "command", "name": "scroll"}, {"predicates": {"isTextView": true}, "pointer": "commands/scrolling#scrollDocStart", "ep": "command", "key": "ctrl_home", "name": "scroll start"}, {"predicates": {"isTextView": true}, "pointer": "commands/scrolling#scrollDocEnd", "ep": "command", "key": "ctrl_end", "name": "scroll end"}, {"predicates": {"isTextView": true}, "pointer": "commands/scrolling#scrollPageDown", "ep": "command", "key": "pagedown", "name": "scroll down"}, {"predicates": {"isTextView": true}, "pointer": "commands/scrolling#scrollPageUp", "ep": "command", "key": "pageup", "name": "scroll up"}, {"pointer": "commands/editor#lcCommand", "description": "Change all selected text to lowercase", "withKey": "CMD SHIFT L", "ep": "command", "name": "lc"}, {"pointer": "commands/editor#detabCommand", "description": "Convert tabs to spaces.", "params": [{"defaultValue": null, "type": "text", "name": "tabsize", "description": "Optionally, specify a tab size. (Defaults to setting.)"}], "ep": "command", "name": "detab"}, {"pointer": "commands/editor#entabCommand", "description": "Convert spaces to tabs.", "params": [{"defaultValue": null, "type": "text", "name": "tabsize", "description": "Optionally, specify a tab size. (Defaults to setting.)"}], "ep": "command", "name": "entab"}, {"pointer": "commands/editor#trimCommand", "description": "trim trailing or leading whitespace from each line in selection", "params": [{"defaultValue": "both", "type": {"data": [{"name": "left"}, {"name": "right"}, {"name": "both"}], "name": "selection"}, "name": "side", "description": "Do we trim from the left, right or both"}], "ep": "command", "name": "trim"}, {"pointer": "commands/editor#ucCommand", "description": "Change all selected text to uppercase", "withKey": "CMD SHIFT U", "ep": "command", "name": "uc"}, {"predicates": {"isTextView": true}, "pointer": "controllers/undo#undoManagerCommand", "ep": "command", "key": ["ctrl_shift_z"], "name": "redo"}, {"predicates": {"isTextView": true}, "pointer": "controllers/undo#undoManagerCommand", "ep": "command", "key": ["ctrl_z"], "name": "undo"}, {"description": "The distance in characters between each tab", "defaultValue": 8, "type": "number", "ep": "setting", "name": "tabstop"}, {"description": "Customize the keymapping", "defaultValue": "{}", "type": "text", "ep": "setting", "name": "customKeymapping"}, {"description": "The keymapping to use", "defaultValue": "standard", "type": "text", "ep": "setting", "name": "keymapping"}, {"description": "The editor font size in pixels", "defaultValue": 14, "type": "number", "ep": "setting", "name": "fontsize"}, {"description": "The editor font face", "defaultValue": "Monaco, Lucida Console, monospace", "type": "text", "ep": "setting", "name": "fontface"}, {"defaultValue": {"color": "#e5c138", "paddingLeft": 5, "backgroundColor": "#4c4a41", "paddingRight": 10}, "ep": "themevariable", "name": "gutter"}, {"defaultValue": {"color": "#e6e6e6", "selectedTextBackgroundColor": "#526da5", "backgroundColor": "#2a211c", "cursorColor": "#879aff", "unfocusedCursorBackgroundColor": "#73171e", "unfocusedCursorColor": "#ff0033"}, "ep": "themevariable", "name": "editor"}, {"defaultValue": {"comment": "#666666", "directive": "#999999", "keyword": "#42A8ED", "plain": "#e6e6e6", "error": "#ff0000", "operator": "#88BBFF", "identifier": "#D841FF", "string": "#039A0A"}, "ep": "themevariable", "name": "highlighter"}, {"defaultValue": {"nibStrokeStyle": "rgb(150, 150, 150)", "fullAlpha": 1.0, "barFillStyle": "rgb(0, 0, 0)", "particalAlpha": 0.29999999999999999, "barFillGradientBottomStop": "rgb(44, 44, 44)", "backgroundStyle": "#2A211C", "thickness": 17, "padding": 5, "trackStrokeStyle": "rgb(150, 150, 150)", "nibArrowStyle": "rgb(255, 255, 255)", "barFillGradientBottomStart": "rgb(22, 22, 22)", "barFillGradientTopStop": "rgb(40, 40, 40)", "barFillGradientTopStart": "rgb(90, 90, 90)", "nibStyle": "rgb(100, 100, 100)", "trackFillStyle": "rgba(50, 50, 50, 0.8)"}, "ep": "themevariable", "name": "scroller"}, {"description": "Event: Notify when something within the editor changed.", "params": [{"required": true, "name": "pointer", "description": "Function that is called whenever a change happened."}], "ep": "extensionpoint", "name": "editorChange"}], "type": "plugins\\supported", "name": "text_editor"}, "cs_syntax": {"resourceURL": "resources/cs_syntax/", "name": "cs_syntax", "environments": {"worker": true}, "dependencies": {"standard_syntax": "0.0.0"}, "testmodules": [], "provides": [{"pointer": "#CSSyntax", "ep": "syntax", "fileexts": ["cs"], "name": "cs"}], "type": "plugins\\thirdparty", "description": "C# syntax highlighter"}, "less": {"resourceURL": "resources/less/", "description": "Leaner CSS", "contributors": [], "author": "Alexis Sellier <self@cloudhead.net>", "url": "http://lesscss.org", "version": "1.0.11", "dependencies": {}, "testmodules": [], "provides": [], "keywords": ["css", "parser", "lesscss", "browser"], "type": "plugins\\thirdparty", "name": "less"}, "theme_manager_base": {"resourceURL": "resources/theme_manager_base/", "name": "theme_manager_base", "share": true, "environments": {"main": true}, "dependencies": {}, "testmodules": [], "provides": [{"description": "(Less)files holding the CSS style information for the UI.", "params": [{"required": true, "name": "url", "description": "Name of the ThemeStylesFile - can also be an array of files."}], "ep": "extensionpoint", "name": "themestyles"}, {"description": "Event: Notify when the theme(styles) changed.", "params": [{"required": true, "name": "pointer", "description": "Function that is called whenever the theme is changed."}], "ep": "extensionpoint", "name": "themeChange"}, {"indexOn": "name", "description": "A theme is a way change the look of the application.", "params": [{"required": false, "name": "url", "description": "Name of a ThemeStylesFile that holds theme specific CSS rules - can also be an array of files."}, {"required": true, "name": "pointer", "description": "Function that returns the ThemeData"}], "ep": "extensionpoint", "name": "theme"}], "type": "plugins\\supported", "description": "Defines extension points required for theming"}, "keyboard": {"resourceURL": "resources/keyboard/", "description": "Keyboard shortcuts", "dependencies": {"canon": "0.0", "settings": "0.0"}, "testmodules": ["tests\\testKeyboard"], "provides": [{"description": "A keymapping defines how keystrokes are interpreted.", "params": [{"required": true, "name": "states", "description": "Holds the states and all the informations about the keymapping. See docs: pluginguide/keymapping"}], "ep": "extensionpoint", "name": "keymapping"}], "type": "plugins\\supported", "name": "keyboard"}, "edit_session": {"resourceURL": "resources/edit_session/", "description": "Ties together the files being edited with the views on screen", "dependencies": {"events": "0.0.0"}, "testmodules": ["tests\\testSession"], "provides": [{"action": "call", "pointer": "#createSession", "ep": "factory", "name": "session"}], "type": "plugins\\supported", "name": "edit_session"}, "completion": {"resourceURL": "resources/completion/", "description": "Code completion support", "dependencies": {"jquery": "0.0.0", "ctags": "0.0.0", "rangeutils": "0.0.0", "canon": "0.0.0", "underscore": "0.0.0"}, "testmodules": [], "provides": [{"indexOn": "name", "description": "Code completion support for specific languages", "ep": "extensionpoint", "name": "completion"}, {"description": "Accept the chosen completion", "key": ["return", "tab"], "predicates": {"completing": true}, "pointer": "controller#completeCommand", "ep": "command", "name": "complete"}, {"description": "Abandon the completion", "key": "escape", "predicates": {"completing": true}, "pointer": "controller#completeCancelCommand", "ep": "command", "name": "complete cancel"}, {"description": "Choose the completion below", "key": "down", "predicates": {"completing": true}, "pointer": "controller#completeDownCommand", "ep": "command", "name": "complete down"}, {"description": "Choose the completion above", "key": "up", "predicates": {"completing": true}, "pointer": "controller#completeUpCommand", "ep": "command", "name": "complete up"}], "type": "plugins\\supported", "name": "completion"}, "undomanager": {"resourceURL": "resources/undomanager/", "description": "Manages undoable events", "testmodules": ["tests\\testUndomanager"], "provides": [{"pointer": "#undoManagerCommand", "ep": "command", "key": ["ctrl_shift_z"], "name": "redo"}, {"pointer": "#undoManagerCommand", "ep": "command", "key": ["ctrl_z"], "name": "undo"}], "type": "plugins\\supported", "name": "undomanager"}, "rangeutils": {"testmodules": ["tests\\test"], "type": "plugins\\supported", "resourceURL": "resources/rangeutils/", "description": "Utility functions for dealing with ranges of text", "name": "rangeutils"}, "stylesheet": {"resourceURL": "resources/stylesheet/", "name": "stylesheet", "environments": {"worker": true}, "dependencies": {"standard_syntax": "0.0.0"}, "testmodules": [], "provides": [{"pointer": "#CSSSyntax", "ep": "syntax", "fileexts": ["css", "less"], "name": "css"}], "type": "plugins\\supported", "description": "CSS syntax highlighter"}, "html": {"resourceURL": "resources/html/", "name": "html", "environments": {"worker": true}, "dependencies": {"standard_syntax": "0.0.0"}, "testmodules": [], "provides": [{"pointer": "#HTMLSyntax", "ep": "syntax", "fileexts": ["htm", "html"], "name": "html"}], "type": "plugins\\supported", "description": "HTML syntax highlighter"}, "js_syntax": {"resourceURL": "resources/js_syntax/", "name": "js_syntax", "environments": {"worker": true}, "dependencies": {"standard_syntax": "0.0.0"}, "testmodules": [], "provides": [{"pointer": "#JSSyntax", "ep": "syntax", "fileexts": ["js", "json"], "name": "js"}], "type": "plugins\\supported", "description": "JavaScript syntax highlighter"}, "ctags": {"resourceURL": "resources/ctags/", "description": "Reads and writes tag files", "dependencies": {"traits": "0.0.0", "underscore": "0.0.0"}, "testmodules": [], "type": "plugins\\supported", "name": "ctags"}, "theme_manager": {"resourceURL": "resources/theme_manager/", "name": "theme_manager", "share": true, "environments": {"main": true, "worker": false}, "dependencies": {"theme_manager_base": "0.0.0", "settings": "0.0.0", "events": "0.0.0", "less": "0.0.0"}, "testmodules": [], "provides": [{"unregister": "themestyles#unregisterThemeStyles", "register": "themestyles#registerThemeStyles", "ep": "extensionhandler", "name": "themestyles"}, {"unregister": "index#unregisterTheme", "register": "index#registerTheme", "ep": "extensionhandler", "name": "theme"}, {"defaultValue": "standard", "description": "The theme plugin's name to use. If set to 'standard' no theme will be used", "type": "text", "ep": "setting", "name": "theme"}, {"pointer": "#appLaunched", "ep": "appLaunched"}], "type": "plugins\\supported", "description": "Handles colors in Bespin"}, "whitetheme": {"resourceURL": "resources/whitetheme/", "description": "Provides a white theme for Bespin", "dependencies": {"theme_manager": "0.0.0"}, "testmodules": [], "provides": [{"url": ["theme.less"], "description": "A basic white theme", "pointer": "index#whiteTheme", "ep": "theme", "name": "white"}], "type": "plugins\\supported", "name": "whitetheme"}, "standard_syntax": {"resourceURL": "resources/standard_syntax/", "description": "Easy-to-use basis for syntax engines", "environments": {"worker": true}, "dependencies": {"syntax_worker": "0.0.0", "syntax_directory": "0.0.0", "underscore": "0.0.0"}, "testmodules": [], "type": "plugins\\supported", "name": "standard_syntax"}, "jquery": {"testmodules": [], "resourceURL": "resources/jquery/", "name": "jquery", "type": "plugins\\thirdparty"}, "embedded": {"testmodules": [], "dependencies": {"theme_manager": "0.0.0", "text_editor": "0.0.0", "appconfig": "0.0.0", "edit_session": "0.0.0", "screen_theme": "0.0.0"}, "resourceURL": "resources/embedded/", "name": "embedded", "type": "plugins\\supported"}, "sql_syntax": {"resourceURL": "resources/sql_syntax/", "name": "sql_syntax", "environments": {"worker": true}, "dependencies": {"syntax_manager": "0.0.0"}, "testmodules": [], "provides": [{"pointer": "#SQLSyntax", "ep": "syntax", "fileexts": ["sql"], "name": "sql"}], "type": "plugins\\thirdparty", "description": "Python syntax highlighter"}, "appconfig": {"resourceURL": "resources/appconfig/", "description": "Instantiates components and displays the GUI based on configuration.", "dependencies": {"jquery": "0.0.0", "canon": "0.0.0", "settings": "0.0.0"}, "testmodules": [], "provides": [{"description": "Event: Fired when the app is completely launched.", "ep": "extensionpoint", "name": "appLaunched"}], "type": "plugins\\supported", "name": "appconfig"}, "syntax_worker": {"resourceURL": "resources/syntax_worker/", "description": "Coordinates multiple syntax engines", "environments": {"worker": true}, "dependencies": {"syntax_directory": "0.0.0", "underscore": "0.0.0"}, "testmodules": [], "type": "plugins\\supported", "name": "syntax_worker"}, "screen_theme": {"resourceURL": "resources/screen_theme/", "description": "Bespins standard theme basePlugin", "dependencies": {"theme_manager": "0.0.0"}, "testmodules": [], "provides": [{"url": ["theme.less"], "ep": "themestyles"}, {"defaultValue": "@global_font", "ep": "themevariable", "name": "container_font"}, {"defaultValue": "@global_font_size", "ep": "themevariable", "name": "container_font_size"}, {"defaultValue": "@global_container_background", "ep": "themevariable", "name": "container_bg"}, {"defaultValue": "@global_color", "ep": "themevariable", "name": "container_color"}, {"defaultValue": "@global_line_height", "ep": "themevariable", "name": "container_line_height"}, {"defaultValue": "@global_pane_background", "ep": "themevariable", "name": "pane_bg"}, {"defaultValue": "@global_pane_border_radius", "ep": "themevariable", "name": "pane_border_radius"}, {"defaultValue": "@global_form_font", "ep": "themevariable", "name": "form_font"}, {"defaultValue": "@global_form_font_size", "ep": "themevariable", "name": "form_font_size"}, {"defaultValue": "@global_form_line_height", "ep": "themevariable", "name": "form_line_height"}, {"defaultValue": "@global_form_color", "ep": "themevariable", "name": "form_color"}, {"defaultValue": "@global_form_text_shadow", "ep": "themevariable", "name": "form_text_shadow"}, {"defaultValue": "@global_pane_link_color", "ep": "themevariable", "name": "pane_a_color"}, {"defaultValue": "@global_font", "ep": "themevariable", "name": "pane_font"}, {"defaultValue": "@global_font_size", "ep": "themevariable", "name": "pane_font_size"}, {"defaultValue": "@global_pane_text_shadow", "ep": "themevariable", "name": "pane_text_shadow"}, {"defaultValue": "@global_pane_h1_font", "ep": "themevariable", "name": "pane_h1_font"}, {"defaultValue": "@global_pane_h1_font_size", "ep": "themevariable", "name": "pane_h1_font_size"}, {"defaultValue": "@global_pane_h1_color", "ep": "themevariable", "name": "pane_h1_color"}, {"defaultValue": "@global_font_size * 1.8", "ep": "themevariable", "name": "pane_line_height"}, {"defaultValue": "@global_pane_color", "ep": "themevariable", "name": "pane_color"}, {"defaultValue": "@global_text_shadow", "ep": "themevariable", "name": "pane_text_shadow"}, {"defaultValue": "@global_font", "ep": "themevariable", "name": "button_font"}, {"defaultValue": "@global_font_size", "ep": "themevariable", "name": "button_font_size"}, {"defaultValue": "@global_button_color", "ep": "themevariable", "name": "button_color"}, {"defaultValue": "@global_button_background", "ep": "themevariable", "name": "button_bg"}, {"defaultValue": "@button_bg - #063A27", "ep": "themevariable", "name": "button_bg2"}, {"defaultValue": "@button_bg - #194A5E", "ep": "themevariable", "name": "button_border"}, {"defaultValue": "@global_control_background", "ep": "themevariable", "name": "control_bg"}, {"defaultValue": "@global_control_color", "ep": "themevariable", "name": "control_color"}, {"defaultValue": "@global_control_border", "ep": "themevariable", "name": "control_border"}, {"defaultValue": "@global_control_border_radius", "ep": "themevariable", "name": "control_border_radius"}, {"defaultValue": "@global_control_active_background", "ep": "themevariable", "name": "control_active_bg"}, {"defaultValue": "@global_control_active_border", "ep": "themevariable", "name": "control_active_border"}, {"defaultValue": "@global_control_active_color", "ep": "themevariable", "name": "control_active_color"}, {"defaultValue": "@global_control_active_inset_color", "ep": "themevariable", "name": "control_active_inset_color"}], "type": "plugins\\supported", "name": "screen_theme"}});;
 });
 })();
 /* ***** BEGIN LICENSE BLOCK *****
@@ -17717,13 +17557,7 @@ $(document).ready(function() {
 
 (function() {
 
-var Promise = bespin.tiki.require('bespin:promise').Promise;
-var group = bespin.tiki.require("bespin:promise").group;
 var $ = bespin.tiki.require("jquery").$;
-
-bespin.loaded = new Promise();
-bespin.initialized = new Promise();
-
 /**
  * Returns the CSS property of element.
  *   1) If the CSS property is on the style object of the element, use it, OR
@@ -17743,6 +17577,29 @@ var getCSSProperty = function(element, container, property) {
     }
     return ret;
 };
+
+/**
+ * Returns the sum of all passed property values. Calls internal getCSSProperty
+ * to get the value of the individual peroperties.
+  */
+// var sumCSSProperties = function(element, container, props) {
+//     var ret = document.defaultView.getComputedStyle(element, '').
+//                                         getPropertyValue(props[0]);
+//
+//     if (!ret || ret == 'auto' || ret == 'intrinsic') {
+//         return container.style[props[0]];
+//     }
+//
+//     var sum = props.map(function(item) {
+//         var cssProp = getCSSProperty(element, container, item);
+//         // Remove the 'px; and parse the property to a floating point.
+//         return parseFloat(cssProp.replace('px', ''));
+//     }).reduce(function(a, b) {
+//         return a + b;
+//     });
+//
+//     return sum;
+// };
 
 bespin.useBespin = function(element, options) {
     var util = bespin.tiki.require('bespin:util/util');
@@ -17764,6 +17621,7 @@ bespin.useBespin = function(element, options) {
         }
     }
 
+    var Promise = bespin.tiki.require('bespin:promise').Promise;
     var prEnv = null;
     var pr = new Promise();
 
@@ -17820,6 +17678,12 @@ bespin.useBespin = function(element, options) {
 
                 // The complete width is the width of the textarea + the padding
                 // to the left and right.
+                // var width = sumCSSProperties(element, container, [
+                //     'width', 'padding-left', 'padding-right'
+                // ]) + 'px';
+                // var height = sumCSSProperties(element, container, [
+                //     'height', 'padding-top', 'padding-bottom'
+                // ]) + 'px';
                 var width = getCSSProperty(element, container, 'width');
                 var height = getCSSProperty(element, container, 'height');
                 style += 'height:' + height + ';width:' + width + ';';
@@ -17886,9 +17750,6 @@ bespin.useBespin = function(element, options) {
 };
 
 $(document).ready(function() {
-    // Bespin is now ready to use.
-    bespin.loaded.resolve();
-
     // Holds the lauch promises of all launched Bespins.
     var launchBespinPromises = [];
 
@@ -17905,17 +17766,19 @@ $(document).ready(function() {
         launchBespinPromises.push(pr);
     }
 
-    // Call the window.onBespinLoad() function after all launched Bespins
-    // are ready or throw an error otherwise.
-    group(launchBespinPromises).then(function() {
-        bespin.initialized.resolve();
-        // If users want a custom startup.
-        if (window.onBespinLoad) {
-          window.onBespinLoad();
-        }
-    }, function(err) {
-        bespin.initialized.reject('At least one Bespin failed to launch!' + err);
-    });
+    // If users want a custom startup
+    if (window.onBespinLoad) {
+        // group-promise function.
+        var group = bespin.tiki.require("bespin:promise").group;
+
+        // Call the window.onBespinLoad() function after all launched Bespins
+        // are ready or throw an error otherwise.
+        group(launchBespinPromises).then(function() {
+            window.onBespinLoad();
+        }, function() {
+            throw new Error('At least one Bespin failed to launch!');
+        });
+    }
 });
 
 })();

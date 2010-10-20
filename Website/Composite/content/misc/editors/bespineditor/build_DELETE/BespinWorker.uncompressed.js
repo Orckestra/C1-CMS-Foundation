@@ -321,7 +321,6 @@ var syntaxDirectory = require('syntax_directory').syntaxDirectory;
 
 var syntaxWorker = {
     engines: {},
-    settings: {},
 
     annotate: function(state, lines, range) {
         function splitParts(str) { return str.split(":"); }
@@ -412,13 +411,6 @@ var syntaxWorker = {
         info.extension.load().then(function(engine) {
             engines[syntaxName] = engine;
 
-            if (info.settings != null) {
-                engine.settings = {};
-                info.settings.forEach(function(name) {
-                    engine.settings[name] = this.settings[name];
-                }, this);
-            }
-
             var subsyntaxes = engine.subsyntaxes;
             if (subsyntaxes == null) {
                 pr.resolve();
@@ -430,11 +422,6 @@ var syntaxWorker = {
         }.bind(this));
 
         return pr;
-    },
-
-    setSyntaxSetting: function(name, value) {
-        this.settings[name] = value;
-        return true;
     }
 };
 
@@ -608,11 +595,11 @@ var states = {
 exports.CSSSyntax = new StandardSyntax(states);
 
 });
-;bespin.tiki.register("::c1_html", {
-    name: "c1_html",
+;bespin.tiki.register("::html", {
+    name: "html",
     dependencies: { "standard_syntax": "0.0.0" }
 });
-bespin.tiki.module("c1_html:index",function(require,exports,module) {
+bespin.tiki.module("html:index",function(require,exports,module) {
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
@@ -652,7 +639,7 @@ bespin.tiki.module("c1_html:index",function(require,exports,module) {
 
 "define metadata";
 ({
-    "description": "C1 HTML syntax highlighter",
+    "description": "HTML syntax highlighter",
     "dependencies": { "standard_syntax": "0.0.0" },
     "environments": { "worker": true },
     "provides": [
@@ -699,28 +686,6 @@ var createTagStates = function(prefix, interiorActions) {
             then:   prefix + '_attrName'
         }
     ];
-    
-    states['composite_beforeAttrName'] = [
-	      {
-	          regex:  /^\s+/,
-	          tag:    'plain'
-	      },
-	      {
-	          regex:  /^\//,
-	          tag:    'composite',
-	          then:   'composite_selfClosingStartTag'
-	      },
-	      {
-	          regex:  /^>/,
-	          tag:    'composite',
-	          then:   interiorActions
-	      },
-	      {
-	          regex:  /^./,
-	          tag:    'composite',
-	          then:   'composite_attrName'
-	      }
-	  ];
 
     // 10.2.4.35 Attribute name state
     states[prefix + '_attrName'] = [
@@ -753,38 +718,6 @@ var createTagStates = function(prefix, interiorActions) {
             tag:    'keyword'
         }
     ];
-    
-    // Composite!
-    states[ 'composite_attrName' ] = [
-        {
-            regex:  /^\s+/,
-            tag:    'plain',
-            then:   'composite_afterAttrName'
-        },
-        {
-            regex:  /^\//,
-            tag:    'composite',
-            then:   'composite_selfClosingStartTag'
-        },
-        {
-            regex:  /^=/,
-            tag:    'composite',
-            then:   'composite_beforeAttrValue'
-        },
-        {
-            regex:  /^>/,
-            tag:    'composite',
-            then:   interiorActions
-        },
-        {
-            regex:  /^["'<]+/,
-            tag:    'error'
-        },
-        {
-            regex:  /^[^ \t\n\/=>"'<]+/,
-            tag:    'composite'
-        }
-    ];
 
     states[prefix + '_afterAttrName'] = [
         {
@@ -812,33 +745,6 @@ var createTagStates = function(prefix, interiorActions) {
             then:   prefix + '_attrName'
         }
     ];
-    
-    states[ 'composite_afterAttrName'] = [
-         {
-             regex:  /^\s+/,
-             tag:    'plain'
-         },
-         {
-             regex:  /^\//,
-             tag:    'composite',
-             then:   'composite_selfClosingStartTag'
-         },
-         {
-             regex:  /^=/,
-             tag:    'composite',
-             then:   'composite_beforeAttrValue'
-         },
-         {
-             regex:  /^>/,
-             tag:    'composite',
-             then:   interiorActions
-         },
-         {
-             regex:  /^./,
-             tag:    'keyword',
-             then:   'composite_attrName'
-         }
-     ];
 
     states[prefix + '_beforeAttrValue'] = [
         {
@@ -871,38 +777,6 @@ var createTagStates = function(prefix, interiorActions) {
             then:   prefix + '_attrValueU'
         }
     ];
-    
-    states['composite_beforeAttrValue'] = [
-       {
-           regex:  /^\s+/,
-           tag:    'plain'
-       },
-       {
-           regex:  /^"/,
-           tag:    'string',
-           then:   'composite_attrValueQQ'
-       },
-       {
-           regex:  /^(?=&)/,
-           tag:    'plain',
-           then:   'composite_attrValueU'
-       },
-       {
-           regex:  /^'/,
-           tag:    'string',
-           then:   'composite_attrValueQ'
-       },
-       {
-           regex:  /^>/,
-           tag:    'error',
-           then:   interiorActions
-       },
-       {
-           regex:  /^./,
-           tag:    'string',
-           then:   'composite_attrValueU'
-       }
-   ];
 
     states[prefix + '_attrValueQQ'] = [
         {
@@ -944,47 +818,6 @@ var createTagStates = function(prefix, interiorActions) {
             tag:    'string'
         }
     ];
-    
-    states['composite_attrValueQQ'] = [
-           {
-               regex:  /^"/,
-               tag:    'string',
-               then:   'composite_afterAttrValueQ'
-           },
-           {
-               regex:  /^[^"]+/,
-               tag:    'string'
-           }
-       ];
-
-       states['composite_attrValueQ'] = [
-           {
-               regex:  /^'/,
-               tag:    'string',
-               then:   'composite_afterAttrValueQ'
-           },
-           {
-               regex:  /^[^']+/,
-               tag:    'string'
-           }
-       ];
-
-       states['composite_attrValueU'] = [
-           {
-               regex:  /^\s/,
-               tag:    'string',
-               then:   'composite_beforeAttrName'
-           },
-           {
-               regex:  /^>/,
-               tag:    'operator',
-               then:   interiorActions
-           },
-           {
-               regex:  /[^ \t\n>]+/,
-               tag:    'string'
-           }
-       ];
 
     states[prefix + '_afterAttrValueQ'] = [
         {
@@ -1008,49 +841,12 @@ var createTagStates = function(prefix, interiorActions) {
             then:   prefix + '_beforeAttrName'
         }
     ];
-    
-    states['composite_afterAttrValueQ'] = [
-       {
-           regex:  /^\s/,
-           tag:    'plain',
-           then:   'composite_beforeAttrName'
-       },
-       {
-           regex:  /^\//,
-           tag:    'composite',
-           then:   'composite_selfClosingStartTag'
-       },
-       {
-           regex:  /^>/,
-           tag:    'composite',
-           then:   interiorActions
-       },
-       {
-           regex:  /^(?=.)/,
-           tag:    'operator',
-           then:   'composite_beforeAttrName'
-       }
-   ];
 
     // 10.2.4.43 Self-closing start tag state
     states[prefix + '_selfClosingStartTag'] = [
         {
             regex:  /^>/,
             tag:    'operator',
-            then:   'start'
-        },
-        {
-            regex:  /^./,
-            tag:    'error',
-            then:   prefix + '_beforeAttrName'
-        }
-    ];
-    
-    // Composite added this!
-    states[ 'composite_selfClosingStartTag' ] = [
-        {
-            regex:  /^>/,
-            tag:    'composite',
             then:   'start'
         },
         {
@@ -1084,11 +880,6 @@ states = {
             then:   'bogusComment'
         },
         {
-        	regex : /^<f:|^<lang:|^<rendering:|^<asp:/,
-        	tag : 'composite',
-        	then: 'tagOpenComposite'
-        },
-        {
             regex:  /^</,
             tag:    'operator',
             then:   'tagOpen'
@@ -1111,25 +902,6 @@ states = {
             regex:  /^[a-zA-Z]/,
             tag:    'keyword',
             then:   'tagName'
-        },
-        {
-            regex:  /^(?=.)/,
-            tag:    'plain',
-            then:   'start'
-        }
-    ],
-    
-    // HEY!
-    tagOpenComposite: [
-        {
-            regex:  /^\//,
-            tag:    'operator',
-            then:   'endTagOpen'
-        },
-        {
-            regex:  /^[a-zA-Z]/,
-            tag:    'composite',
-            then:   'tagNameComposite'
         },
         {
             regex:  /^(?=.)/,
@@ -1190,28 +962,6 @@ states = {
         {
             regex:  /^[^ \t\n\/>]+/,
             tag:    'keyword'
-        }
-    ],
-    
-    tagNameComposite: [
-        {
-            regex:  /^\s+/,
-            tag:    'plain',
-            then:   'composite_beforeAttrName'
-        },
-        {
-            regex:  /^\//,
-            tag:    'composite',
-            then:   'composite_selfClosingStartTag'
-        },
-        {
-            regex:  /^>/,
-            tag:    'composite',
-            then:   'start'
-        },
-        {
-            regex:  /^[^ \t\n\/>]+/,
-            tag:    'composite'
         }
     ],
 
@@ -1618,10 +1368,12 @@ createTagStates('script', 'start js:start:</script>');
  * specification.
  */
 exports.HTMLSyntax = new StandardSyntax(states, [ 'js' ]);
+
+
 });
 ;bespin.tiki.register("::js_syntax", {
     name: "js_syntax",
-    dependencies: { "standard_syntax": "0.0.0", "settings": "0.0.0" }
+    dependencies: { "standard_syntax": "0.0.0" }
 });
 bespin.tiki.module("js_syntax:index",function(require,exports,module) {
 /* ***** BEGIN LICENSE BLOCK *****
@@ -1664,22 +1416,14 @@ bespin.tiki.module("js_syntax:index",function(require,exports,module) {
 "define metadata";
 ({
     "description": "JavaScript syntax highlighter",
-    "dependencies": { "settings": "0.0.0", "standard_syntax": "0.0.0" },
+    "dependencies": { "standard_syntax": "0.0.0" },
     "environments": { "worker": true },
     "provides": [
         {
             "ep": "syntax",
             "name": "js",
             "pointer": "#JSSyntax",
-            "fileexts": [ "js", "json" ],
-            "settings": [ "specialmodules" ]
-        },
-        {
-            "ep": "setting",
-            "name": "specialmodules",
-            "description": "Regex that matches special modules",
-            "type": "text",
-            "defaultValue": "^jetpack\\.[^\"']+"
+            "fileexts": [ "js", "json" ]
         }
     ]
 });
@@ -1697,11 +1441,6 @@ var states = {
         {
             regex:  /^(?:break|case|catch|continue|default|delete|do|else|false|finally|for|function|if|in|instanceof|let|new|null|return|switch|this|throw|true|try|typeof|var|void|while|with)(?![a-zA-Z0-9_])/,
             tag:    'keyword'
-        },
-        {
-            regex:  /^require/,
-            tag:    'builtin',
-            then:   'require'
         },
         {
             regex:  /^[A-Za-z_][A-Za-z0-9_]*/,
@@ -1770,47 +1509,10 @@ var states = {
             regex:  /^[*\/]/,
             tag:    'comment'
         }
-    ],
-
-    /* Special handling for "require" */
-
-    require: [
-        {
-            regex:  /^\(["']/,
-            tag:    'plain',
-            then:   'requireBody'
-        },
-        {
-            regex:  /^/,
-            tag:    'plain',
-            then:   'start'
-        }
-    ],
-
-    requireBody: [
-        {
-            regexSetting:   'specialmodules',
-            tag:            'specialmodule',
-            then:           'requireEnd'
-        },
-        {
-            regex:  /^[^"']+/,
-            tag:    'module',
-            then:   'requireEnd'
-        }
-    ],
-
-    requireEnd: [
-        {
-            regex:  /^["']?/,
-            tag:    'plain',
-            then:   'start'
-        }
     ]
 };
 
 exports.JSSyntax = new StandardSyntax(states);
-
 
 });
 ;bespin.tiki.register("::standard_syntax", {
@@ -1875,8 +1577,6 @@ var syntaxDirectory = require('syntax_directory').syntaxDirectory;
 exports.StandardSyntax = function(states, subsyntaxes) {
     this.states = states;
     this.subsyntaxes = subsyntaxes;
-
-    this.settings = {};
 };
 
 /** This syntax controller exposes a simple regex- and line-based parser. */
@@ -1893,13 +1593,7 @@ exports.StandardSyntax.prototype = {
 
         var result = null;
         _(this.states[state]).each(function(alt) {
-            var regex;
-            if (alt.regexSetting != null) {
-                regex = new RegExp(this.settings[alt.regexSetting]);
-            } else {
-                regex = alt.regex;
-            }
-
+            var regex = alt.regex;
             var match = regex.exec(str);
             if (match == null) {
                 return;
@@ -1937,7 +1631,7 @@ exports.StandardSyntax.prototype = {
             }
 
             _.breakLoop();
-        }, this);
+        });
 
         return result;
     }
@@ -1945,7 +1639,7 @@ exports.StandardSyntax.prototype = {
 
 
 });
-bespin.metadata = {"cs_syntax": {"resourceURL": "resources/cs_syntax/", "name": "cs_syntax", "environments": {"worker": true}, "dependencies": {"standard_syntax": "0.0.0"}, "testmodules": [], "provides": [{"pointer": "#CSSyntax", "ep": "syntax", "fileexts": ["cs"], "name": "cs"}], "type": "plugins\\thirdparty", "description": "C# syntax highlighter"}, "sql_syntax": {"resourceURL": "resources/sql_syntax/", "name": "sql_syntax", "environments": {"worker": true}, "dependencies": {"syntax_manager": "0.0.0"}, "testmodules": [], "provides": [{"pointer": "#SQLSyntax", "ep": "syntax", "fileexts": ["sql"], "name": "sql"}], "type": "plugins\\thirdparty", "description": "Python syntax highlighter"}, "syntax_worker": {"resourceURL": "resources/syntax_worker/", "description": "Coordinates multiple syntax engines", "environments": {"worker": true}, "dependencies": {"syntax_directory": "0.0.0", "underscore": "0.0.0"}, "testmodules": [], "type": "plugins\\supported", "name": "syntax_worker"}, "stylesheet": {"resourceURL": "resources/stylesheet/", "name": "stylesheet", "environments": {"worker": true}, "dependencies": {"standard_syntax": "0.0.0"}, "testmodules": [], "provides": [{"pointer": "#CSSSyntax", "ep": "syntax", "fileexts": ["css", "less"], "name": "css"}], "type": "plugins\\supported", "description": "CSS syntax highlighter"}, "c1_html": {"resourceURL": "resources/c1_html/", "name": "c1_html", "environments": {"worker": true}, "dependencies": {"standard_syntax": "0.0.0"}, "testmodules": [], "provides": [{"pointer": "#HTMLSyntax", "ep": "syntax", "fileexts": ["htm", "html"], "name": "html"}], "type": "plugins\\supported", "description": "C1 HTML syntax highlighter"}, "js_syntax": {"resourceURL": "resources/js_syntax/", "name": "js_syntax", "environments": {"worker": true}, "dependencies": {"standard_syntax": "0.0.0", "settings": "0.0.0"}, "testmodules": [], "provides": [{"settings": ["specialmodules"], "pointer": "#JSSyntax", "ep": "syntax", "fileexts": ["js", "json"], "name": "js"}, {"description": "Regex that matches special modules", "defaultValue": "^jetpack\\.[^\"']+", "type": "text", "ep": "setting", "name": "specialmodules"}], "type": "plugins\\supported", "description": "JavaScript syntax highlighter"}, "standard_syntax": {"resourceURL": "resources/standard_syntax/", "description": "Easy-to-use basis for syntax engines", "environments": {"worker": true}, "dependencies": {"syntax_worker": "0.0.0", "syntax_directory": "0.0.0", "underscore": "0.0.0"}, "testmodules": [], "type": "plugins\\supported", "name": "standard_syntax"}};/* ***** BEGIN LICENSE BLOCK *****
+bespin.metadata = {"cs_syntax": {"resourceURL": "resources/cs_syntax/", "name": "cs_syntax", "environments": {"worker": true}, "dependencies": {"standard_syntax": "0.0.0"}, "testmodules": [], "provides": [{"pointer": "#CSSyntax", "ep": "syntax", "fileexts": ["cs"], "name": "cs"}], "type": "plugins\\thirdparty", "description": "C# syntax highlighter"}, "sql_syntax": {"resourceURL": "resources/sql_syntax/", "name": "sql_syntax", "environments": {"worker": true}, "dependencies": {"syntax_manager": "0.0.0"}, "testmodules": [], "provides": [{"pointer": "#SQLSyntax", "ep": "syntax", "fileexts": ["sql"], "name": "sql"}], "type": "plugins\\thirdparty", "description": "Python syntax highlighter"}, "syntax_worker": {"resourceURL": "resources/syntax_worker/", "description": "Coordinates multiple syntax engines", "environments": {"worker": true}, "dependencies": {"syntax_directory": "0.0.0", "underscore": "0.0.0"}, "testmodules": [], "type": "plugins\\supported", "name": "syntax_worker"}, "stylesheet": {"resourceURL": "resources/stylesheet/", "name": "stylesheet", "environments": {"worker": true}, "dependencies": {"standard_syntax": "0.0.0"}, "testmodules": [], "provides": [{"pointer": "#CSSSyntax", "ep": "syntax", "fileexts": ["css", "less"], "name": "css"}], "type": "plugins\\supported", "description": "CSS syntax highlighter"}, "html": {"resourceURL": "resources/html/", "name": "html", "environments": {"worker": true}, "dependencies": {"standard_syntax": "0.0.0"}, "testmodules": [], "provides": [{"pointer": "#HTMLSyntax", "ep": "syntax", "fileexts": ["htm", "html"], "name": "html"}], "type": "plugins\\supported", "description": "HTML syntax highlighter"}, "js_syntax": {"resourceURL": "resources/js_syntax/", "name": "js_syntax", "environments": {"worker": true}, "dependencies": {"standard_syntax": "0.0.0"}, "testmodules": [], "provides": [{"pointer": "#JSSyntax", "ep": "syntax", "fileexts": ["js", "json"], "name": "js"}], "type": "plugins\\supported", "description": "JavaScript syntax highlighter"}, "standard_syntax": {"resourceURL": "resources/standard_syntax/", "description": "Easy-to-use basis for syntax engines", "environments": {"worker": true}, "dependencies": {"syntax_worker": "0.0.0", "syntax_directory": "0.0.0", "underscore": "0.0.0"}, "testmodules": [], "type": "plugins\\supported", "name": "standard_syntax"}};/* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
  * The contents of this file are subject to the Mozilla Public License Version
