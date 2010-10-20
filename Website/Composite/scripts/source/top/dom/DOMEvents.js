@@ -325,7 +325,7 @@ _DOMEvents.prototype = {
 				var win = target.nodeType ? DOMUtil.getParentWindow ( target ) : target;
 				if ( win ) {
 					handler._domEventHandlers [ target ][ event ] = function () {
-						if ( win.event && handler ) {
+						if ( win.event != null && handler != null ) {
 							handler.handleEvent ( win.event );
 						}
 					}

@@ -24,6 +24,22 @@ var config = {
 	init_instance_callback 	: onInstanceInitialize
 };
 
+/*
+formats : {
+	alignleft : {selector : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', classes : 'left'},
+	aligncenter : {selector : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', classes : 'center'},
+	alignright : {selector : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', classes : 'right'},
+	alignfull : {selector : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', classes : 'full'},
+	bold : {inline : 'span', 'classes' : 'bold'},
+	italic : {inline : 'span', 'classes' : 'italic'},
+	underline : {inline : 'span', 'classes' : 'underline', exact : true},
+	strikethrough : {inline : 'del'},
+    forecolor : {inline : 'span', classes : 'forecolor', styles : {color : '%value'}},
+    hilitecolor : {inline : 'span', classes : 'hilitecolor', styles : {backgroundColor : '%value'}},
+	custom_format : {block : 'h1', attributes : {title : "Header"}, styles : {color : "red"}}
+}
+*/
+
 window.tinyMCE.init ( config );
 
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<visualeditor>
+	<formats>
+		<group>
+			<format 
+				id="alignLeft" 
+				label="Align Left" 
+				description="" 
+				classes="left" 
+				selector="p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img"/>
+			<format 
+				id="alignCenter" 
+				label="Align Center"/>
+			<format 
+				id="alignRight" 
+				label="Align Left" 
+				description="" 
+				classes="right" 
+				selector="p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img"/>
+		</group>
+	</formats>
+</visualeditor>

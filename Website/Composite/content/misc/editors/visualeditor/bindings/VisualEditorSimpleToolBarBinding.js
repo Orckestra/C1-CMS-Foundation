@@ -439,5 +439,5 @@ VisualEditorSimpleToolBarBinding.prototype._cleanup = function () {
 	//alert ( this + ": TODO!" );
 	
 	var markup = this._editorBinding.getValue ();
-	alert ( this + ":\n\n" + markup );
+	// alert ( this + ":\n\n" + markup );
 }

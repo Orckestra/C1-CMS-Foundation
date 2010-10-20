@@ -278,7 +278,7 @@ StandardEventHandler.prototype._handleMouseMove = function ( e ) {
  * @param {KeyEvent} e
  */
 StandardEventHandler.prototype._handleKeyDown = function ( e, isTabHandled ) {
-
+	
 	/*
 	 * This should only happen in the currently active window, 
 	 * but the keypress should still be propagated for KeyBinding.
@@ -326,6 +326,7 @@ StandardEventHandler.prototype._handleKeyDown = function ( e, isTabHandled ) {
 	var isHandled = KeySetBinding.handleKey ( this._contextDocument, e );
 	if ( !isHandled ) {
 		switch ( e.keyCode ) {
+			
 			case KeyEventCodes.VK_PAGE_UP :
 			case KeyEventCodes.VK_PAGE_DOWN :
 				/*

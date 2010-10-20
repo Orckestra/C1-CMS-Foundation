@@ -57,7 +57,8 @@ C1Function.prototype = {
 	
 	/**
 	 * On an async callback, this may be used 
-	 * to identify the executing C1Function. 
+	 * to identify the executing C1Function.
+	 * TODO: Dispose C1Function when not set! 
 	 * @type {String}
 	 */
 	key : null,
@@ -67,6 +68,12 @@ C1Function.prototype = {
 	 * @type {String}
 	 */
 	name : null,
+	
+	/**
+	 * TODO: Set this on invoke!
+	 * @type {String}
+	 */
+	type : C1Function.XML,
 	
 	/**
 	 * Store the server response after this C1Function is invoked.
@@ -277,7 +284,7 @@ C1Function.prototype = {
 		if ( callback != null ) {
 			if ( callback instanceof Function ) {
 				callback.apply ( null, [ this ]);
-			} else if ( typeof callback.handleFunction == "function" ) {
+			} else if ( typeof callback.handleFunction === "function" ) {
 				callback.handleFunction ( this );
 			}
 		}

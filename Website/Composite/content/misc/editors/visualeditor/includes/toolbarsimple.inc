@@ -1,4 +1,5 @@
 <ui:toolbarbody>
+	
 	<ui:toolbargroup>
 		<ui:toolbarbutton cmd="Bold" tooltip="${string:Composite.Web.VisualEditor:ToolBar.ToolTipStrong}" type="checkbox" image="${skin}/wysiwygeditor/bold.png" image-disabled="${skin}/wysiwygeditor/bold-disabled.png" isdisabled="true" />
 		<ui:toolbarbutton cmd="Italic" tooltip="${string:Composite.Web.VisualEditor:ToolBar.ToolTipEmphasize}" type="checkbox" image="${skin}/wysiwygeditor/italic.png" image-disabled="${skin}/wysiwygeditor/italic-disabled.png" isdisabled="true" />
@@ -11,6 +12,7 @@
 		<ui:toolbarbutton cmd="JustifyCenter" tooltip="${string:Composite.Web.VisualEditor:ToolBar.ToolTipJustifyCenter}" type="radio" image="${skin}/wysiwygeditor/justifycenter.png" image-disabled="${skin}/wysiwygeditor/justifycenter-disabled.png" isdisabled="true" />
 		<ui:toolbarbutton cmd="JustifyFull" tooltip="${string:Composite.Web.VisualEditor:ToolBar.ToolTipJustifyFull}" type="radio" image="${skin}/wysiwygeditor/justifyfull.png" image-disabled="${skin}/wysiwygeditor/justifyfull-disabled.png" isdisabled="true" />
 	</ui:toolbargroup>
+	
 	<ui:toolbargroup>
 		<ui:toolbarbutton cmd="InsertUnorderedList" tooltip="${string:Composite.Web.VisualEditor:ToolBar.ToolTipUnorderedList}" type="checkbox" image="${skin}/wysiwygeditor/bullist.png" image-disabled="${skin}/wysiwygeditor/bullist-disabled.png" isdisabled="true" />
 		<ui:toolbarbutton cmd="InsertOrderedList" tooltip="${string:Composite.Web.VisualEditor:ToolBar.ToolTipOrderedList}" type="checkbox" image="${skin}/wysiwygeditor/numlist.png" image-disabled="${skin}/wysiwygeditor/numlist-disabled.png" isdisabled="true" />

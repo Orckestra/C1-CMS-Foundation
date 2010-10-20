@@ -14,7 +14,8 @@ public partial class HttpHeadersControl : System.Web.UI.UserControl
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Request.UserAgent != null && Request.UserAgent.IndexOf("Gecko") > -1)
+ 		
+        if (Request.UserAgent != null && !Request.UserAgent.Contains ( "MSIE" ))
         {
             Response.ContentType = "application/xhtml+xml";
         }

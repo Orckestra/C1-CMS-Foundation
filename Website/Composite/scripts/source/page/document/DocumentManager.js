@@ -98,8 +98,10 @@ _DocumentManager.prototype = {
 
 			case DOMEvents.CLICK :
 				if ( Client.isExplorer ) {
-					if ( target.href && target.href.indexOf ( Constants.DUMMY_LINK ) >-1 ) {
-						DOMEvents.preventDefault ( e );
+					if ( target != null ) {
+						if ( target.href != null && target.href.indexOf ( Constants.DUMMY_LINK ) >-1 ) {
+							DOMEvents.preventDefault ( e );
+						}
 					}
 				}
 				break;

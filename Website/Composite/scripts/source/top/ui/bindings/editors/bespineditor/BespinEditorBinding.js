@@ -43,9 +43,15 @@ function BespinEditorBinding () {
 	this.url_default = "${root}/content/misc/editors/bespineditor/bespineditor.aspx"; // language=${syntax} 
 	
 	/**
+	 * TODO: Is this used?
 	 * @type {DocumentView}
 	 */
 	this._editorWindowBinding = null; 
+	
+	/**
+	 * @type {DocumentView}
+	 */
+	this._bespinWindow = null;
 	
 	/**
 	 * @type {Bespin}
@@ -231,6 +237,7 @@ BespinEditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 					// this.logger.debug ( DOMSerializer.serialize ( contentWindow.document.documentElement, true ));
 					
 					// identification
+					this._bespinWindow = contentWindow;
 					this._bespinEnvelope = arg.bespinEnvelope;
 					this._bespinEditor = arg.bespinEditor;
 					this._bespinElement = this._bespinEditor.textView.domNode;
@@ -241,7 +248,6 @@ BespinEditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 					this._bespinEnvelope.settings.set ( "theme", "white" );
 					this._bespinEnvelope.settings.set ( "fontface", "monospace" );
 					this._bespinEnvelope.settings.set ( "fontsize", 13 );
-					this._bespinEnvelope.settings.set ( "tabmode", "tabs" );
 					this._bespinEnvelope.settings.set ( "tabstop", 4 );
 					
 					// init components 
@@ -292,7 +298,7 @@ BespinEditorBinding.prototype._onPageInitialize = function ( binding ) {
 /**
  * Debug editor HTML content.
  * TODO: Move to super?
- */
+ *
 BespinEditorBinding.prototype.debug = function () {
 	
 	var html = this.getEditorDocument ().body.innerHTML;
@@ -308,6 +314,7 @@ BespinEditorBinding.prototype.debug = function () {
 	}
 	this.logger.debug ( html );
 }
+*/
 
 /**
  * Activate editor.
@@ -320,49 +327,37 @@ BespinEditorBinding.prototype._activateEditor = function ( isActivate ) {
 		this._isActivated = isActivate;
 		EditorBinding.isActive = isActivate;
 		
-		var broadcaster = this.getContentWindow ().bindingMap.broadcasterIsActive;
-		
-		if ( broadcaster != null ) {
-			if ( isActivate ) {
-				broadcaster.enable ();
-				this.focus ();
-			} else {
-				broadcaster.disable ();
-				this.blur ();
-			}
+		/*
+		 * Enable all keyboard keys.
+		 */
+		var handler = this.getContentWindow ().standardEventHandler;
+		if ( isActivate ) {
+			handler.enableNativeKeys ( true );
 		} else {
-			throw "Required broadcaster not found";
+			handler.disableNativeKeys ();
 		}
 		
 		/*
-		var handler = this.getEditorWindow ().standardEventHandler;
+		 * Update "active" broadcaster.
+		 */
 		var broadcaster = this.getContentWindow ().bindingMap.broadcasterIsActive;
-		
 		if ( broadcaster != null ) {
 			if ( isActivate ) {
-				 
-				if ( this.hasBookmark ()) {
-					this.deleteBookmark (); // no need to keep old bookmarks around
-				}
 				broadcaster.enable ();
-				
-				if ( Client.isExplorer ) { // fixes a glitch where Explorer needs multiple activations.
-					this._sanitizeExplorer ();
-				}
-				
-				this.focus ();
-				handler.enableNativeKeys ( true );
-				
 			} else {
-				
 				broadcaster.disable ();
-				handler.disableNativeKeys ();
-				this.blur (); 
 			}
-		} else {
-			throw "Required broadcaster not found";
 		}
-		*/
+		
+		/*
+		 * Update focus status.
+		 */
+		if ( isActivate ) {
+			this.focus ();
+			var editor = this._bespinEditor;
+		} else {
+			this.blur ();
+		}
 	}
 }
 
@@ -376,12 +371,14 @@ BespinEditorBinding.prototype.handleCommand = function ( cmd, gui, val ) {
 	var isCommandHandled = BespinEditorBinding.superclass.handleCommand.call ( this, cmd, val );
 	/*
 	 * THIS IS NOT YET SUPPORTED BY GUI!
-	 */
+	 *
 	switch ( cmd ) {
 		case "Paste" :
 			this._codePressFrame.syntaxHighlight ( "generic" );
 			break;
 	}
+	*/
+	
 	return isCommandHandled;
 }
 
@@ -444,7 +441,7 @@ BespinEditorBinding.prototype.getEditorPopupBinding = function () {
  */
 BespinEditorBinding.prototype.getEditorWindow = function () {
 	
-	return this._codePressFrame.contentWindow;
+	return this._bespinWindow;
 }
 
 /**
@@ -453,11 +450,7 @@ BespinEditorBinding.prototype.getEditorWindow = function () {
  */
 BespinEditorBinding.prototype.getEditorDocument = function () {
 	
-	var result = null;
-	if ( this._codePressFrame != null ) {
-		result = this._codePressFrame.contentWindow.document;
-	}
-	return result;
+	return this._bespinWindow.document;
 }
 
 /**

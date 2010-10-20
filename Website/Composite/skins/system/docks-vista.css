@@ -74,7 +74,7 @@ ui|docktabs div.tabliner {
 	background-color: #9196A2;
 	height: 1px;
 	z-index: 2;
-	#ie bottom: -1px;
+	/*#ie bottom: -1px;*/
 	#moz border-right: 1px solid $(color:threedface);
 }
 ui|docktab.selected {

@@ -170,7 +170,7 @@ VisualEditorStatusBarBinding.prototype._buildToolBar = function ( element ) {
 		body.hide ();
 		
 		var elements = new List ();
-		while ( element.nodeName.toLowerCase () != "body" ) {
+		while ( element != null && element.nodeName.toLowerCase () != "body" ) {
 			if ( element.nodeType == Node.ELEMENT_NODE ) {
 				elements.add ( element );
 			}

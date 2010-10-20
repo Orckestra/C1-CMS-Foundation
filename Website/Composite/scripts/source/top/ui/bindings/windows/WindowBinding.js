@@ -512,10 +512,10 @@ WindowBinding.prototype.getContentWindow = function () {
 	
 	var result = null, frame = this.getFrameElement ();
 	if ( frame !== null ) {
-		result = frame.contentWindow;
-		
-		if ( result === undefined ) {
-			alert ( "HEIL" )
+		try {
+			result = frame.contentWindow;
+		} catch ( e ) {
+			this.logger.error ( "WindowBinding#getContentWindow: strange IE9 error" );
 		}
 	}
 	return result;
