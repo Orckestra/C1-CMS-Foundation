@@ -459,11 +459,6 @@ Binding.prototype.onBindingRegister = function () {
 		this.isRegistered 			= true;
 		this._subscriptions			= new Map ();
 		
-		var id = this.bindingElement.id;
-		if ( id != "" && id.slice ( 0, 2 ) == "ID" && this.bindingWindow.isServersideExpand ) {
-			this.isBindingBuild = true; // This is not used and should be done elsehow anyway...
-		}
-		
 		this._updateBindingMap ( true );
 		if ( this.getProperty ( "lazy" )) {
 			this.isLazy = true;
@@ -757,7 +752,7 @@ Binding.prototype._initializeBindingDragAndDropFeatures = function () {
 Binding.prototype._updateBindingMap = function ( isRegistration ) {
 	
 	try {
-		if ( this.bindingWindow ) {
+		if ( this.bindingWindow != null ) {
 		
 			var id = this.bindingElement.id;
 			var map = this.bindingWindow.bindingMap;

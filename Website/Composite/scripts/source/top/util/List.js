@@ -259,8 +259,8 @@ List.prototype.each = function ( action, thisp ) {
 		if ( thisp === undefined ) {
 			thisp = null;
 		}
-		var entry = this.getNext ();
 		var index = this._index;
+		var entry = this.getNext ();
 		is = action.call ( thisp, entry, index );
 	}
 	this.reset ();
