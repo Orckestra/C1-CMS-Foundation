@@ -20,13 +20,16 @@ namespace Composite.Plugins.ResourceSystem.XmlStringResourceProvider
     internal sealed class XmlStringResourceProvider : IStringResourceProvider
     {
         private ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize, false);
+        private string _providerName;
 
 
 
-        public XmlStringResourceProvider(string defaultCultureName, Dictionary<CultureInfo, string> cultureToFileLookup, Dictionary<CultureInfo, bool> watchForFileChanges)
+        public XmlStringResourceProvider(string defaultCultureName, Dictionary<CultureInfo, string> cultureToFileLookup, Dictionary<CultureInfo, bool> watchForFileChanges, string providerName)
         {
             using (_resourceLocker.Locker)
             {
+                _providerName = providerName;
+
                 _resourceLocker.Resources.DefaultCulture = new CultureInfo(defaultCultureName);
                 _resourceLocker.Resources.CultureToFileLookup = cultureToFileLookup;
 
@@ -85,7 +88,7 @@ namespace Composite.Plugins.ResourceSystem.XmlStringResourceProvider
                         }
                         else
                         {
-                            LoggingService.LogError("XmlStringResourceProvider", string.Format("String not found: '{0}'", stringId));
+                            LoggingService.LogError("XmlStringResourceProvider", string.Format("String not found: '{0}' for provider '{1}'", stringId, _providerName));
                             return "*** STRING NOT FOUND ***";
                         }
                     }
@@ -307,7 +310,7 @@ namespace Composite.Plugins.ResourceSystem.XmlStringResourceProvider
             Dictionary<CultureInfo, bool> cultureFileWatches = cultureElements.ToDictionary(k => new CultureInfo(k.CultureName), f => f.MonitorFileChanges);
 
             XmlStringResourceProvider provider =
-                new XmlStringResourceProvider(data.DefaultCultureName, cultureFiles, cultureFileWatches);
+                new XmlStringResourceProvider(data.DefaultCultureName, cultureFiles, cultureFileWatches, data.Name);
 
             return provider;
         }

@@ -106,7 +106,11 @@
   <string key="LocalizeDataWorkflow.ShowError.AlreadyTranslated" value="This data has already been translated. Translated version belongs to a diffrent group." />
   <string key="LocalizeDataWorkflow.ShowError.Description" value="The following fields has a reference to a data type. You should translate these data items before you can translate this data item" />
   <string key="LocalizeDataWorkflow.ShowError.FieldErrorFormat" value="The field '{0}' is referencing data of type '{1}' with the label '{2}'" />
+  <string key="AddNewInterfaceTypeStep1.ErrorTitle" value="Error" />
   <string key="EditInterfaceTypeStep1.ErrorTitle" value="Error" />
+  <string key="AddNewCompositionTypeWorkflow.ErrorTitle" value="Error" />
+  <string key="AddNewAggregationTypeWorkflow.ErrorTitle" value="Error" />
+
   <string key="EditCompositionTypeWorkflow.ErrorTitle" value="Error" />
   <string key="DataTypeDescriptorToXmlLabel" value="XML Result" />
 </strings>
