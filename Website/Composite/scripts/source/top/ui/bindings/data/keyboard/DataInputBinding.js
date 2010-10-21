@@ -856,15 +856,23 @@ DataInputBinding.prototype.handleElement = function ( element ) {
  */
 DataInputBinding.prototype.updateElement = function ( element ) {
 	
-	var newval = value = element.getAttribute ( "value" );
+	var newval = element.getAttribute ( "value" );
+	var newtype = element.getAttribute ( "type" );
+	
 	if ( newval == null ) {
 		newval = "";
 	}
+	
+	var manager = this.bindingWindow.UpdateManager;
 	if ( this.getValue () != newval ) {
-		var manager = this.bindingWindow.UpdateManager;
 		manager.report ( "Property [value] updated on binding \"" + this.getID () + "\"" );
 		this.setValue ( newval );
 	}
+	if ( this.type != newtype ) {
+		manager.report ( "Property [type] updated on binding \"" + this.getID () + "\"" );
+		this.type = newtype;
+	}
+	
 	return true;
 };
 

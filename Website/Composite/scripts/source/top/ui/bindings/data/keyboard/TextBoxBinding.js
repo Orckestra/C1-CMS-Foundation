@@ -91,6 +91,7 @@ TextBoxBinding.prototype.handleElement = function ( element ) {
  * Update element.
  * @implements {IUpdateHandler}
  * @overwrites {Binding#updateElement}
+ * TODO: handle "value" property, though not normally used by server ???!!!
  * @param {Element} element
  * @return {boolean}
  */
@@ -100,15 +101,22 @@ TextBoxBinding.prototype.updateElement = function ( element ) {
 	if ( area != null && area.hasChildNodes ()) {
 		newval = DOMUtil.getTextContent ( area );
 	}
-	// TODO: handle "value" property, though not normally used by server
 	if ( newval == null ) {
 		newval = "";
 	}
+	
+	var manager = this.bindingWindow.UpdateManager;
 	if ( this.getValue () != newval ) {
-		var manager = this.bindingWindow.UpdateManager;
 		manager.report ( "Property [value] updated on binding \"" + this.getID () + "\"" );
 		this.setValue ( newval );
 	}
+	
+	var newtype = element.getAttribute ( "type" );
+	if ( this.type != newtype ) {
+		manager.report ( "Property [type] updated on binding \"" + this.getID () + "\"" );
+		this.type = newtype;
+	}
+	
 	return true;
 };
 
