@@ -34,6 +34,7 @@ FunctionEditorPageBinding.prototype.toString = function () {
 FunctionEditorPageBinding.prototype.onBeforePageInitialize = function () {
 	
 	FunctionEditorPageBinding.superclass.onBeforePageInitialize.call ( this );
+	this.addActionListener ( Binding.ACTION_DIRTY );
 	this.addActionListener ( BespinEditorBinding.ACTION_INITIALIZED ); 
 }
 
@@ -47,6 +48,12 @@ FunctionEditorPageBinding.prototype.handleAction = function ( action ) {
 	FunctionEditorPageBinding.superclass.handleAction.call ( this, action );
 	
 	switch ( action.type ) {
+		
+		case Binding.ACTION_DIRTY :
+			if ( action.target.getID () == "switchbutton" ) {
+				action.consume ();
+			}
+			break;
 		
 		case PageBinding.ACTION_DOPOSTBACK :
 			if ( action.target.getID () == "switchbutton" ) {
