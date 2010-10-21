@@ -858,6 +858,8 @@ DataInputBinding.prototype.updateElement = function ( element ) {
 	
 	var newval = element.getAttribute ( "value" );
 	var newtype = element.getAttribute ( "type" );
+	var newmax = element.getAttribute ( "maxlength" );
+	var newmin = element.getAttribute ( "minlength" );
 	
 	if ( newval == null ) {
 		newval = "";
@@ -871,6 +873,14 @@ DataInputBinding.prototype.updateElement = function ( element ) {
 	if ( this.type != newtype ) {
 		manager.report ( "Property [type] updated on binding \"" + this.getID () + "\"" );
 		this.type = newtype;
+	}
+	if ( this.maxlength != newmax ) {
+		manager.report ( "Property [maxlength] updated on binding \"" + this.getID () + "\"" );
+		this.maxlength = newmax;
+	}
+	if ( this.minlength != newmin ) {
+		manager.report ( "Property [minlength] updated on binding \"" + this.getID () + "\"" );
+		this.minlength = newmin;
 	}
 	
 	return true;

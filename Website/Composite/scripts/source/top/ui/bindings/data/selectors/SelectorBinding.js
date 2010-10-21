@@ -1019,12 +1019,46 @@ SelectorBinding.prototype.manifest = function () {
  * the enter key.
  */
 SelectorBinding.prototype._attachSelections = function () {
-
+	
 	var popup = this._popupBinding;
 	if ( !this._isUpToDate ) {
 		popup.attachRecursive ();
 		this._isUpToDate = true;
 	}
+}
+
+/**
+ * Always update selector!  
+ * TODO: Not a good idea, since this control is pretty render-heavy...
+ * @overwrites {Binding#handleElement}
+ * @implements {IUpdateHandler}
+ * @param {Element} element
+ * @returns {boolean} Return true to trigger method handleElement.
+ */
+SelectorBinding.prototype.handleElement = function () {
+	
+	return true;
+}
+
+/**
+ * Always update selector!
+ * TODO: Check for changes by comparing curent CLIENTSIDE value (selection) with server response!!!
+ * TODO: See Bug 3115. 
+ * @implements {IUpdateHandler}
+ * @overwrites {Binding#updateElement}
+ * @param {Element} element
+ * @param {Element} oldelement
+ * @returns {boolean} Return true to stop crawling.
+ */
+SelectorBinding.prototype.updateElement = function ( element, oldelement ) {
+	
+	/*
+	 * ALWAYS update selector (full replace)
+	 */ 
+	this.bindingWindow.UpdateManager.addUpdate ( 
+		new this.bindingWindow.ReplaceUpdate ( this.getID (), element )
+	);
+	return true;
 }
 
 /**
