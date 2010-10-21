@@ -766,7 +766,6 @@
     <Content Include="Composite\content\views\dev\systemlog\systemlog.css" />
     <Content Include="Composite\content\views\dev\systemlog\systemlogoutput.aspx" />
     <Content Include="Composite\content\views\dev\systemlog\systemlogoutput.css" />
-    <Content Include="Composite\content\views\dev\systemlog\systemlogoutput.html" />
     <Content Include="Composite\content\views\dev\systemlog\SystemLogPageBinding.js" />
     <Content Include="Composite\content\views\dev\viewsource\blank.html" />
     <Content Include="Composite\content\views\dev\viewsource\images\minus.png" />
@@ -822,21 +821,6 @@
     <Content Include="Composite\content\views\start\compositestart\CompositeStart.aspx" />
     <Content Include="Composite\content\views\start\compositestart\CompositeStart.css" />
     <Content Include="Composite\content\views\start\compositestart\CompositeStart.js" />
-    <Content Include="Composite\content\views\start\compositestart\DELETE\backdrop.jpg" />
-    <Content Include="Composite\content\views\start\compositestart\DELETE\box-e.png" />
-    <Content Include="Composite\content\views\start\compositestart\DELETE\box-n.png" />
-    <Content Include="Composite\content\views\start\compositestart\DELETE\box-ne.png" />
-    <Content Include="Composite\content\views\start\compositestart\DELETE\box-nw.png" />
-    <Content Include="Composite\content\views\start\compositestart\DELETE\box-s.png" />
-    <Content Include="Composite\content\views\start\compositestart\DELETE\box-se.png" />
-    <Content Include="Composite\content\views\start\compositestart\DELETE\box-sw.png" />
-    <Content Include="Composite\content\views\start\compositestart\DELETE\box-w.png" />
-    <Content Include="Composite\content\views\start\compositestart\DELETE\Composite.css" />
-    <Content Include="Composite\content\views\start\compositestart\DELETE\CompositeLayout.css" />
-    <Content Include="Composite\content\views\start\compositestart\DELETE\GetWebRunner.aspx" />
-    <Content Include="Composite\content\views\start\compositestart\DELETE\GetWebRunner.css" />
-    <Content Include="Composite\content\views\start\compositestart\DELETE\logo.png" />
-    <Content Include="Composite\content\views\start\compositestart\DELETE\rocket.png" />
     <Content Include="Composite\content\views\start\start.aspx" />
     <Content Include="Composite\content\views\start\start.css" />
     <Content Include="Composite\content\views\start\StartPageBinding.js" />
@@ -887,11 +871,8 @@
     <Content Include="App_Data\Composite\Composite.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Composite\DynamicTypeForms\readme.txt" />
     <Content Include="App_Data\Composite\ReleaseBuild.Composite.config" />
     <Content Include="App_Data\Composite\Configuration\XmlDataProvider.config" />
-    <None Include="Composite\content\views\start\compositestart\DELETE\backdrop.xcf" />
-    <None Include="Composite\content\views\start\compositestart\DELETE\box.xcf" />
     <Content Include="App_Data\Composite\app_offline.htm" />
     <Content Include="App_Data\Composite\ReleaseBuild.Composite.config.changeHistory.txt" />
     <Content Include="Composite\app.aspx" />
@@ -5220,18 +5201,6 @@
     <Content Include="Composite\skins\system\imageeditor.css" />
     <Content Include="Composite\skins\system\imageeditor\select16.png" />
     <Content Include="Composite\skins\system\imageeditor\select24.png" />
-    <Content Include="Composite\skins\system\imageeditor\TRASH\move16.png" />
-    <Content Include="Composite\skins\system\imageeditor\TRASH\move24.png" />
-    <Content Include="Composite\skins\system\imageeditor\TRASH\rotate16-disabled.png" />
-    <Content Include="Composite\skins\system\imageeditor\TRASH\rotate16.png" />
-    <Content Include="Composite\skins\system\imageeditor\TRASH\rotate22.png" />
-    <Content Include="Composite\skins\system\imageeditor\TRASH\scale16.png" />
-    <Content Include="Composite\skins\system\imageeditor\TRASH\scale22.png" />
-    <Content Include="Composite\skins\system\imageeditor\TRASH\zoom16.png" />
-    <Content Include="Composite\skins\system\imageeditor\TRASH\zoom24.png" />
-    <Content Include="Composite\skins\system\imageeditor\TRASH\zoomin16.png" />
-    <Content Include="Composite\skins\system\imageeditor\TRASH\zoominout16.png" />
-    <Content Include="Composite\skins\system\imageeditor\TRASH\zoomout16.png" />
     <Content Include="Composite\skins\system\menus.css" />
     <Content Include="Composite\skins\system\menus\vistabackdrop.png" />
     <Content Include="Composite\skins\system\shadows.css" />
@@ -5507,7 +5476,6 @@
     <None Include="Composite\images\icons\republic\Thumbs.db" />
     <None Include="Composite\images\logo.xcf" />
     <None Include="Composite\images\originals\about.xcf" />
-    <None Include="Composite\images\originals\actionended.xcf" />
     <None Include="Composite\images\originals\box.xcf" />
     <None Include="Composite\images\originals\harmonies\accept.xcf" />
     <None Include="Composite\images\originals\harmonies\accept_16.xcf" />
@@ -5529,11 +5497,6 @@
     <None Include="Composite\images\originals\harmonies\warning_16.xcf" />
     <None Include="Composite\images\originals\harmonies\warning_24.xcf" />
     <None Include="Composite\images\originals\harmonies\warning_32.xcf" />
-    <None Include="Composite\images\originals\login.xcf" />
-    <None Include="Composite\images\originals\registration.xcf" />
-    <None Include="Composite\images\originals\splash.xcf" />
-    <None Include="Composite\images\originals\splash2.xcf" />
-    <None Include="Composite\images\originals\unfortunateerror.xcf" />
     <None Include="Composite\images\originals\vistaskin\button-default-backdrop.xcf" />
     <None Include="Composite\images\originals\winxpskin\balloon.ai" />
     <None Include="Composite\images\originals\winxpskin\balloon.xcf" />
@@ -5590,6 +5553,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\Composite\DynamicTypeForms\" />
     <Folder Include="Composite\audio\" />
     <Folder Include="Composite\content\dialogs\querytreeeditor\" />
     <Folder Include="Composite\content\misc\editors\visualeditor\bindings\" />
