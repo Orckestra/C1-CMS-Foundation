@@ -67,17 +67,19 @@ namespace Composite.Functions.Foundation.PluginFacades
         {
             IFunctionProvider functionProvider;
 
-            using (_resourceLocker.Locker)
+            var resources = _resourceLocker;
+
+            using (resources.Locker)
             {
-                if (_resourceLocker.Resources.ProviderCache.TryGetValue(providerName, out functionProvider) == false)
+                if (resources.Resources.ProviderCache.TryGetValue(providerName, out functionProvider) == false)
                 {
                     try
                     {
-                        functionProvider = _resourceLocker.Resources.Factory.Create(providerName);
+                        functionProvider = resources.Resources.Factory.Create(providerName);
 
                         functionProvider.FunctionNotifier = new FunctionNotifier(providerName);
 
-                        _resourceLocker.Resources.ProviderCache.Add(providerName, functionProvider);
+                        resources.Resources.ProviderCache.Add(providerName, functionProvider);
                     }
                     catch (ArgumentException ex)
                     {

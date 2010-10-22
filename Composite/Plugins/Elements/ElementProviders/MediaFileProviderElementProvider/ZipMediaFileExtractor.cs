@@ -67,7 +67,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             {
                 using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope(extrationTimeout))
                 {
-                    EnsureFolderExistens(file.FolderPath);
+                    EnsureFolderExistence(file.FolderPath);
 
                     if (overwrite)
                     {
@@ -108,9 +108,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
 
 
-        private static void EnsureFolderExistens(string folderPath)
+        private static void EnsureFolderExistence(string folderPath)
         {
-
+            // TODO: Implement
         }
 
 

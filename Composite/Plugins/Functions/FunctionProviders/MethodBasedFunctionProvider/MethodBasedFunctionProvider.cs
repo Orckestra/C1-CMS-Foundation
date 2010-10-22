@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using Composite.Data;
@@ -7,12 +9,10 @@ using Composite.Functions.Inline;
 using Composite.Functions.Plugins.FunctionProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
-using System.IO;
+
 using Composite.Core.IO;
 using Composite.Core.Configuration;
 using Composite.Core.Threading;
-using System;
-
 
 namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvider
 {
@@ -20,26 +20,16 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
     internal sealed class MethodBasedFunctionProvider : IFunctionProvider
     {
         private FunctionNotifier _functionNotifier;
-        private FileSystemWatcher _codeDirectoryFileSystemWatcher;
-        private DateTime _lastWriteHandleTime = DateTime.MinValue;
-        private object _fileUpdateLock = new object();
-
-
-
 
         public MethodBasedFunctionProvider()
         {
-            DataEventSystemFacade.SubscribeToDataAfterAdd<IMethodBasedFunctionInfo>(OnDataChanged);
-            DataEventSystemFacade.SubscribeToDataDeleted<IMethodBasedFunctionInfo>(OnDataChanged);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<IMethodBasedFunctionInfo>(OnDataChanged);
+            var events = ChangeEventsSingleton.Instance;
 
-            _codeDirectoryFileSystemWatcher = new System.IO.FileSystemWatcher(PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory));
-            _codeDirectoryFileSystemWatcher.Changed += new System.IO.FileSystemEventHandler(CodeFileDirectoryWatcher_Changed);
-            _codeDirectoryFileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite;
-            _codeDirectoryFileSystemWatcher.EnableRaisingEvents = true;
-            _codeDirectoryFileSystemWatcher.IncludeSubdirectories = true;
-
-            DataEventSystemFacade.SubscribeToDataDeleted<IInlineFunction>(OnDataChanged);
+            lock(events.SyncRoot)
+            {
+                events.DataChangedEvent += OnDataChanged;
+                events.FileChangedEvent += CodeFileDirectoryWatcher_Changed;
+            }
         }
 
 
@@ -92,39 +82,109 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
         private void OnDataChanged(object sender, DataEventArgs dataEventArgs)
         {
-            _functionNotifier.FunctionsUpdated();
+            // Checking for null since it is possible that event will be raised before the provider is fully initialized
+            if (_functionNotifier != null)
+            {
+                _functionNotifier.FunctionsUpdated();
+            }
         }
 
 
         void CodeFileDirectoryWatcher_Changed(object sender, FileSystemEventArgs e)
         {
-            lock (_fileUpdateLock)
+            // Checking for null since it is possible that event will be raised before the provider is fully initialized
+            if(_functionNotifier != null)
             {
-                using (ThreadDataManager.EnsureInitialize())
-                {
-                    bool fileExists = true;
-                    if (fileExists)
-                    {
-                        // Supress multiple events fireing by observing last write time
-                        DateTime writeTime = File.GetLastWriteTime(e.FullPath);
-                        if (_lastWriteHandleTime < writeTime)
-                        {
-                            _lastWriteHandleTime = writeTime;
-                            _functionNotifier.FunctionsUpdated();
-                        }
-
-                    }
-                }
+                _functionNotifier.FunctionsUpdated();
             }
         }
 
 
+        private sealed class ChangeEventsSingleton
+        {
+            public readonly object SyncRoot = new object();
+            public event DataEventHandler DataChangedEvent;
+            public event FileSystemEventHandler FileChangedEvent;
+
+            private readonly FileSystemWatcher _codeDirectoryFileSystemWatcher;
+            private DateTime _lastWriteHandleTime = DateTime.MinValue;
+            private object _fileUpdateLock = new object();
+
+            private ChangeEventsSingleton()
+            {
+                DataEventSystemFacade.SubscribeToDataAfterAdd<IMethodBasedFunctionInfo>(OnDataChanged);
+                DataEventSystemFacade.SubscribeToDataDeleted<IMethodBasedFunctionInfo>(OnDataChanged);
+                DataEventSystemFacade.SubscribeToDataAfterUpdate<IMethodBasedFunctionInfo>(OnDataChanged);
+
+                DataEventSystemFacade.SubscribeToDataDeleted<IInlineFunction>(OnDataChanged);
+
+                string folderToWatch = PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory);
+
+                DirectoryUtil.EnsurePath(folderToWatch);
+
+                _codeDirectoryFileSystemWatcher = new FileSystemWatcher(folderToWatch)
+                                                      {
+                                                          NotifyFilter = NotifyFilters.LastWrite,
+                                                          EnableRaisingEvents = true,
+                                                          IncludeSubdirectories = true
+                                                      };
+
+                _codeDirectoryFileSystemWatcher.Changed += OnFileWatcherEvent;
+            }
+
+            void OnFileWatcherEvent(object sender, FileSystemEventArgs e)
+            {
+                FileSystemEventHandler hander = FileChangedEvent;
+                if (hander != null)
+                {
+                    lock (_fileUpdateLock)
+                    {
+                        bool fileExists = true;
+                        if (fileExists)
+                        {
+                            // Supress multiple events fireing by observing last write time
+                            DateTime writeTime = File.GetLastWriteTime(e.FullPath);
+                            if (_lastWriteHandleTime < writeTime)
+                            {
+                                _lastWriteHandleTime = writeTime;
+                                using (ThreadDataManager.EnsureInitialize())
+                                {
+                                    hander(sender, e);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            private void OnDataChanged(object sender, DataEventArgs dataEventArgs)
+            {
+                DataEventHandler hander = DataChangedEvent;
+                if(hander != null)
+                {
+                    hander(sender, dataEventArgs);
+                }
+            }
 
 
+            public static ChangeEventsSingleton Instance
+            {
+                get { return Nested.InstanceInt; }
+            }
+
+            class Nested
+            {
+                
+                static Nested()
+                {
+                    // Explicit static constructor to tell C# compiler
+                    // not to mark type as beforefieldinit
+                }
+
+                internal static readonly ChangeEventsSingleton InstanceInt = new ChangeEventsSingleton();
+            }
+        }
     }
-
-
-
 
     [Assembler(typeof(NonConfigurableFunctionProviderAssembler))]
     internal sealed class MethodBasedFunctionProviderData : FunctionProviderData
