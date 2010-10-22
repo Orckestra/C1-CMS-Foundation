@@ -5,6 +5,9 @@
 cursor: default;
 -vendor-box-sizing: border-box;
 }
+*:focus {
+outline: none;
+}
 html,
 body {
 height: 100%;

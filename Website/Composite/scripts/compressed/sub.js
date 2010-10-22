@@ -1264,8 +1264,10 @@ DOMEvents.preventDefault(e);
 break;
 case DOMEvents.CLICK:
 if(Client.isExplorer){
-if(_117.href&&_117.href.indexOf(Constants.DUMMY_LINK)>-1){
+if(_117!=null){
+if(_117.href!=null&&_117.href.indexOf(Constants.DUMMY_LINK)>-1){
 DOMEvents.preventDefault(e);
+}
 }
 }
 break;
