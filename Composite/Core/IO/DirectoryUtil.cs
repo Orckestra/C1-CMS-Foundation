@@ -10,10 +10,18 @@ namespace Composite.Core.IO
         /// <summary>
         /// Ensures that the directories in the path exists and if they dont they will be created
         /// </summary>
-        public static void EnsurePath(string path)
+        public static void EnsurePath(string filePath)
         {
-            string directory = Path.GetDirectoryName(path);
+            string directory = Path.GetDirectoryName(filePath);
 
+            EnsureDirectoryExists(directory);
+        }
+
+        /// <summary>
+        /// Ensures that the directory exists 
+        /// </summary>
+        public static void EnsureDirectoryExists(string directory)
+        {
             string[] directories = directory.Split(Path.DirectorySeparatorChar);
 
             if (directories.Length == 2) return;
@@ -33,7 +41,6 @@ namespace Composite.Core.IO
                 }
             }
         }
-
 
 
         /// <summary>
