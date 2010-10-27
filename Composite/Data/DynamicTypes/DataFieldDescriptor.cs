@@ -159,7 +159,7 @@ namespace Composite.Data.DynamicTypes
             dataFieldDescriptor.Inherited = this.Inherited;
             dataFieldDescriptor.IsNullable = this.IsNullable;
             dataFieldDescriptor.Position = this.Position;
-            dataFieldDescriptor.ValidationFunctionMarkup = new List<string>(this.ValidationFunctionMarkup);
+            dataFieldDescriptor.ValidationFunctionMarkup = this.ValidationFunctionMarkup != null ? new List<string>(this.ValidationFunctionMarkup) : null;
             dataFieldDescriptor.NewInstanceDefaultFieldValue = this.NewInstanceDefaultFieldValue;
 
             return dataFieldDescriptor;
