@@ -528,9 +528,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         internal IDataProvider Assemble(IBuilderContext context, DataProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache, string configurationFolderPath)
         {
-            XmlDataProviderData data = (XmlDataProviderData)objectConfiguration;
-
-            System.Configuration.ConfigurationManager.OpenMappedExeConfiguration(null, System.Configuration.ConfigurationUserLevel.None);
+            XmlDataProviderData data = (XmlDataProviderData)objectConfiguration;            
 
             Configuration configuration = Configuration.Load(System.IO.Path.Combine(configurationFolderPath, string.Format("{0}.config", data.Name)));
 
