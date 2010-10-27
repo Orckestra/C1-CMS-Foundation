@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using System.IO;
+using Composite.Core.NewIO;
 using Composite.Core.Configuration;
 using Composite.Core.Xml;
 
@@ -36,9 +36,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         public override void Uninstall()
         {
-            using (Stream xsltFileStream = this.AddOnUninstallerContex.ZipFileSystem.GetFileStream(this.UninstallXsltFilePath))
+            using (System.IO.Stream xsltFileStream = this.AddOnUninstallerContex.ZipFileSystem.GetFileStream(this.UninstallXsltFilePath))
             {
-                using (TextReader xsltTextReader = new StreamReader(xsltFileStream))
+                using (System.IO.TextReader xsltTextReader = new StreamReader(xsltFileStream))
                 {
                     XDocument xslt = XDocument.Load(xsltTextReader);
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -128,7 +128,7 @@ public partial class Renderers_Page : System.Web.UI.Page
         }
 
         StringBuilder markupBuilder = new StringBuilder();
-        StringWriter sw = new StringWriter(markupBuilder);        
+        System.IO.StringWriter sw = new System.IO.StringWriter(markupBuilder);        
         try
         {
             base.Render(new HtmlTextWriter(sw));

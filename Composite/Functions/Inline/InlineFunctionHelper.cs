@@ -1,7 +1,7 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Reflection;
 using Composite.Core.Configuration;
@@ -134,19 +134,19 @@ namespace Composite.Functions.Inline
         {
             get
             {
-                string systemPath = Path.GetDirectoryName(typeof(String).Assembly.Location);
+                string systemPath = System.IO.Path.GetDirectoryName(typeof(String).Assembly.Location);
 
-                yield return Path.Combine(systemPath, "System.dll");            // System.dll;
-                yield return Path.Combine(systemPath, "System.Core.dll");       // System.Core.dll;
-                yield return Path.Combine(systemPath, "System.Xml.dll");        // System.Xml.dll;
-                yield return Path.Combine(systemPath, "System.Xml.Linq.dll");   // System.Xml.Linq.dll;
+                yield return System.IO.Path.Combine(systemPath, "System.dll");            // System.dll;
+                yield return System.IO.Path.Combine(systemPath, "System.Core.dll");       // System.Core.dll;
+                yield return System.IO.Path.Combine(systemPath, "System.Xml.dll");        // System.Xml.dll;
+                yield return System.IO.Path.Combine(systemPath, "System.Xml.Linq.dll");   // System.Xml.Linq.dll;
 
-                yield return Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "Composite.dll");
+                yield return System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "Composite.dll");
 
-                string compositeGeneretedPath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "Composite.Generated.dll");
+                string compositeGeneretedPath = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "Composite.Generated.dll");
                 if (File.Exists(compositeGeneretedPath)) yield return compositeGeneretedPath;
 
-                string compositeWorkflowsPath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "Composite.Workflows.dll");
+                string compositeWorkflowsPath = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "Composite.Workflows.dll");
                 if (File.Exists(compositeWorkflowsPath)) yield return compositeWorkflowsPath;
             }
         }
@@ -155,7 +155,7 @@ namespace Composite.Functions.Inline
 
         public static string GetFunctionCode(this IInlineFunction function)
         {
-            string filepath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory), function.CodePath);
+            string filepath = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory), function.CodePath);
 
             return File.ReadAllText(filepath);
         }
@@ -164,7 +164,7 @@ namespace Composite.Functions.Inline
 
         public static void DeleteFunctionCode(this IInlineFunction function)
         {
-            string filepath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory), function.CodePath);
+            string filepath = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory), function.CodePath);
 
             if (File.Exists(filepath))
             {
@@ -182,7 +182,7 @@ namespace Composite.Functions.Inline
                 Directory.CreateDirectory(directoryPath);
             }
 
-            string filepath = Path.Combine(directoryPath, function.CodePath);
+            string filepath = System.IO.Path.Combine(directoryPath, function.CodePath);
 
             File.WriteAllText(filepath, content);
         }
@@ -195,8 +195,8 @@ namespace Composite.Functions.Inline
 
             string directoryPath = PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory);
 
-            string oldFilepath = Path.Combine(directoryPath, oldFunction.CodePath);
-            string newFilepath = Path.Combine(directoryPath, newFunction.CodePath);
+            string oldFilepath = System.IO.Path.Combine(directoryPath, oldFunction.CodePath);
+            string newFilepath = System.IO.Path.Combine(directoryPath, newFunction.CodePath);
 
             File.Move(oldFilepath, newFilepath);
         }
@@ -218,7 +218,7 @@ namespace Composite.Functions.Inline
 
         public static IEnumerable<string> GetReferencableAssemblies()
         {
-            string path = Path.GetDirectoryName(typeof(String).Assembly.Location);
+            string path = System.IO.Path.GetDirectoryName(typeof(String).Assembly.Location);
             foreach (string file in Directory.GetFiles(path, "System*.dll"))
             {
                 yield return file;
@@ -234,7 +234,7 @@ namespace Composite.Functions.Inline
 
         public static string GetAssemblyLocation(string fullPath)
         {
-            string systemPath = Path.GetDirectoryName(typeof(String).Assembly.Location).ToLower();
+            string systemPath = System.IO.Path.GetDirectoryName(typeof(String).Assembly.Location).ToLower();
             if (fullPath.ToLower().StartsWith(systemPath))
             {
                 return "System";
@@ -259,10 +259,10 @@ namespace Composite.Functions.Inline
             switch (location)
             {
                 case "system":
-                    return Path.Combine(Path.GetDirectoryName(typeof(String).Assembly.Location), filename);
+                    return System.IO.Path.Combine(System.IO.Path.GetDirectoryName(typeof(String).Assembly.Location), filename);
 
                 case "bin":
-                    return Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), filename);
+                    return System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), filename);
 
                 default:
                     throw new NotImplementedException();

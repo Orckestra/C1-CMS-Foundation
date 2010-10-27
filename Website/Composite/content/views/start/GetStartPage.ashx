@@ -1,7 +1,7 @@
 ﻿<%@ WebHandler Language="C#" Class="FetchPage" %>
 
 using System;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Net;
 using System.Xml.Linq;
 using System.Web;
@@ -41,7 +41,7 @@ public class FetchPage : IHttpHandler
             
             string contentType = webResponse.ContentType;
             
-            using (Stream responseStream = webResponse.GetResponseStream())
+            using (System.IO.Stream responseStream = webResponse.GetResponseStream())
             {
                 StreamReader sr = new StreamReader(responseStream);
                 string content = sr.ReadToEnd();

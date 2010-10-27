@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Elements;
@@ -81,7 +81,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                 _manageableKeyNames = new List<string>();
             }
 
-            _rootPath = Path.GetDirectoryName(PathUtil.BaseDirectory);
+            _rootPath = System.IO.Path.GetDirectoryName(PathUtil.BaseDirectory);
         }
 
 

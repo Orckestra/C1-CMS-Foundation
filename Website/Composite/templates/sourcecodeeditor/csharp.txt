@@ -1,5 +1,5 @@
 using System;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -25,7 +25,7 @@ namespace Composite.Core.WebClient
         private void LoadAndAttachHandler(Object o, EventArgs e)
         {
             string requestPath = Request.Path;
-            string requestName = Path.GetFileNameWithoutExtension(requestPath);
+            string requestName = System.IO.Path.GetFileNameWithoutExtension(requestPath);
 
             WebRequestHandlerData requestHandlerData = WebRequestHandlerPluginFacade.GetConfigurationForHandler(requestName);
 

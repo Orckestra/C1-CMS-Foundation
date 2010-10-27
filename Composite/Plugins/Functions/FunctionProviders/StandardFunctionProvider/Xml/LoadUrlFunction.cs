@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.Caching;
 using System.Xml.Linq;
+using Composite.Core.Instrumentation;
+using Composite.Core.Xml;
 using Composite.Functions;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.Core.Instrumentation;
 
 namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Xml
 {
@@ -41,7 +42,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
             using (TimerProfilerFacade.CreateTimerProfiler(url))
             {
-                XElement value = XElement.Load(url);
+                XElement value = XElementUtils.Load(url);
 
                 if (cachingEnabled)
                 {

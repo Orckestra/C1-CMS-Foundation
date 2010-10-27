@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Text;
 using System.Linq;
 using System.Web;
 using System.Xml.Linq;
 using Composite.Core.IO;
 using System;
+using Composite.Core.Xml;
 
 
 namespace Composite.Core.WebClient
@@ -120,9 +121,9 @@ namespace Composite.Core.WebClient
 
         private static IEnumerable<string> GetStrings(string type, string mode, string folderPath)
         {
-            string filename = Path.Combine(folderPath, _compileScriptsFilename);
+            string filename = System.IO.Path.Combine(folderPath, _compileScriptsFilename);
 
-            XDocument doc = XDocument.Load(filename);
+            XDocument doc = XDocumentUtils.Load(filename);
 
             if (mode == "compile") mode = "develop";
 

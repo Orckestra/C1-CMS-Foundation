@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using Composite.Core.NewIO;
 using System.Web.UI;
 using Composite.C1Console.Forms;
 using Composite.C1Console.Forms.DataServices.UiControls;
@@ -38,7 +38,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             Control _formControl = ((IWebUiControl)this.CompiledUiControl).BuildWebControl();
 
 
-            _formControl.ID = Path.GetFileNameWithoutExtension(this.FormPath); ;
+            _formControl.ID = System.IO.Path.GetFileNameWithoutExtension(this.FormPath); ;
 
             return _formControl;
         }

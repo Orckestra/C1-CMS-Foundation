@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -72,12 +72,24 @@ namespace Composite.C1Console.Trees.Foundation
                     schemaValidationResult = false;
                 };
 
+                XDocument schemaDocument = XDocumentUtils.Load(System.IO.Path.Combine(PathUtil.Resolve("~/Composite/schemas/Trees"), "Tree.xsd"));
+                IEnumerable<XElement> elements = schemaDocument.Descendants((XNamespace)"http://www.w3.org/2001/XMLSchema" + "import").ToList();
+                foreach (XElement element in elements)
+                {
+                    element.Remove();
+                }
+
                 XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
                 xmlReaderSettings.ValidationType = ValidationType.Schema;
-                xmlReaderSettings.Schemas.Add(null, Path.Combine(PathUtil.Resolve("~/Composite/schemas/Trees"), "Tree.xsd"));
+                using (XmlReader schemaReader = schemaDocument.CreateReader())
+                {
+                    xmlReaderSettings.Schemas.Add(null, schemaReader);
+                }
+                xmlReaderSettings.Schemas.AddFromPath(null, System.IO.Path.Combine(PathUtil.Resolve("~/Composite/schemas/Functions"), "Function.xsd"));
+                //xmlReaderSettings.Schemas.AddFromPath(null, System.IO.Path.Combine(PathUtil.Resolve("~/Composite/schemas/Trees"), "Tree.xsd"));                
                 xmlReaderSettings.ValidationEventHandler += new ValidationEventHandler(onValidationError);
                 xmlReaderSettings.ValidationFlags = XmlSchemaValidationFlags.ProcessSchemaLocation | XmlSchemaValidationFlags.ReportValidationWarnings;
-                XmlReader xmlReader = XmlReader.Create(new StringReader(document.ToString()), xmlReaderSettings);
+                XmlReader xmlReader = XmlReader.Create(new System.IO.StringReader(document.ToString()), xmlReaderSettings);
 
                 while (xmlReader.Read() == true) ;
 

@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Transactions;
 using System.Workflow.Activities;
 using System.Workflow.Runtime;
@@ -181,8 +181,8 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                 {
                     IXsltFile xsltfile = DataFacade.BuildNew<IXsltFile>();
 
-                    xsltfile.FolderPath = Path.GetDirectoryName(xslt.XslFilePath);
-                    xsltfile.FileName = Path.GetFileName(xslt.XslFilePath);
+                    xsltfile.FolderPath = System.IO.Path.GetDirectoryName(xslt.XslFilePath);
+                    xsltfile.FileName = System.IO.Path.GetFileName(xslt.XslFilePath);
 
 
                     xsltfile.SetNewContent(_newXsltMarkup);

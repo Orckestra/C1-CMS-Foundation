@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -31,7 +31,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         {
             Verify.ArgumentNotNull(logDirectoryPath, "logDirectoryPath");
 
-            _logDirectoryPath = Path.Combine(HostingEnvironment.ApplicationPhysicalPath, logDirectoryPath); 
+            _logDirectoryPath = System.IO.Path.Combine(HostingEnvironment.ApplicationPhysicalPath, logDirectoryPath); 
             _flushImmediately = flushImmediately;
         }
 
@@ -117,7 +117,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
             foreach (string filePath in filePathes)
             {
-                string fileName = Path.GetFileName(filePath);
+                string fileName = System.IO.Path.GetFileName(filePath);
 
                 // Skipping file to which we're currently using
                 if (currentlyOpenedFileName != null
@@ -158,7 +158,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             e = null;
             try
             {
-                return File.Open(filePath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
+                return File.Open(filePath, System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite, System.IO.FileShare.Read);
             }
             catch (Exception ex)
             {
@@ -180,8 +180,8 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                 // TODO: It should open file only once, not twice
                 content = File.ReadAllLines(filePath);
 
-                stream = File.Open(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
-                stream.Seek(stream.Length, SeekOrigin.Begin);
+                stream = File.Open(filePath, System.IO.FileMode.Open, System.IO.FileAccess.ReadWrite, System.IO.FileShare.Read);
+                stream.Seek(stream.Length, System.IO.SeekOrigin.Begin);
             }
             catch (Exception e)
             {
@@ -215,7 +215,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 	            for (int i = 0; i < 10; i++)
 	            {
 	                fileName = fileNamePrefix + (i > 0 ? "_" + i : string.Empty) + ".txt";
-                    string filePath = Path.Combine(_logDirectoryPath, fileName);
+                    string filePath = System.IO.Path.Combine(_logDirectoryPath, fileName);
 
                     if (!File.Exists(filePath))
 	                {
@@ -286,7 +286,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             }
         }
 
-        private static void WriteUTF8EncodingHeader(Stream stream)
+        private static void WriteUTF8EncodingHeader(System.IO.Stream stream)
         {
             byte[] preamble = Encoding.UTF8.GetPreamble();
             stream.Write(preamble, 0, preamble.Length);

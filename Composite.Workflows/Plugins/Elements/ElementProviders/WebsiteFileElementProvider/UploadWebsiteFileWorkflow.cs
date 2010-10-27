@@ -1,5 +1,5 @@
 using System;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Workflow.Activities;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
@@ -84,14 +84,14 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                 string currentPath = GetCurrentPath();
                 string filename = uploadedFile.FileName;
 
-                string fullFilename = Path.Combine(currentPath, filename);
+                string fullFilename = System.IO.Path.Combine(currentPath, filename);
 
                 if (File.Exists(fullFilename) == true)
                 {
                     FileEx.Delete(fullFilename);
                 }
 
-                using (FileStream fs = new FileStream(fullFilename, FileMode.CreateNew))
+                using (FileStream fs = new FileStream(fullFilename, System.IO.FileMode.CreateNew))
                 {
                     uploadedFile.FileStream.CopyTo(fs);
                 }

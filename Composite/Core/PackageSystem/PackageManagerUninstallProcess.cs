@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using Composite.Core.Application;
 using Composite.Core.Serialization;

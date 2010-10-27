@@ -2,7 +2,7 @@ using System;
 using System.Web;
 using System.Web.UI;
 using System.Text;
-using System.IO;
+using Composite.Core.NewIO;
 using Composite.Core.IO;
 
 public partial class IconRendererControl : System.Web.UI.UserControl

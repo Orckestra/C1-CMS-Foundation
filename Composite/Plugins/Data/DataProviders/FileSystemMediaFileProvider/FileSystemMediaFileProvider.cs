@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider;
@@ -106,9 +106,9 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
                         File.Move(oldPos, newPos);                        
                     }
 
-                    using (Stream readStream = updatedFile.GetReadStream())
+                    using (System.IO.Stream readStream = updatedFile.GetReadStream())
                     {
-                        using (Stream writeStream = File.Open(GetAbsolutePath(updatedFile), FileMode.Create))
+                        using (System.IO.Stream writeStream = File.Open(GetAbsolutePath(updatedFile), System.IO.FileMode.Create))
                         {
                             readStream.CopyTo(writeStream);
                         }
@@ -150,11 +150,11 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
                 if (typeof(T) == typeof(IMediaFile))
                 {
                     IMediaFile file = (IMediaFile) data;
-                    string fullPath = Path.Combine(Path.Combine(_rootDir, file.FolderPath.Remove(0, 1)), file.FileName);
+                    string fullPath = System.IO.Path.Combine(System.IO.Path.Combine(_rootDir, file.FolderPath.Remove(0, 1)), file.FileName);
 
-                    using (Stream readStream = file.GetReadStream())
+                    using (System.IO.Stream readStream = file.GetReadStream())
                     {
-                        using (Stream writeStream = File.Open(fullPath, FileMode.CreateNew))
+                        using (System.IO.Stream writeStream = File.Open(fullPath, System.IO.FileMode.CreateNew))
                         {
                             readStream.CopyTo(writeStream);
                         }
@@ -165,7 +165,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
                 else if (typeof(T) == typeof(IMediaFileFolder))
                 {
                     IMediaFileFolder folder = (IMediaFileFolder)data;
-                    string fullPath = Path.Combine(_rootDir, folder.Path.Remove(0, 1));
+                    string fullPath = System.IO.Path.Combine(_rootDir, folder.Path.Remove(0, 1));
 
                     Directory.CreateDirectory(fullPath);
                     result.Add(CreateFolder(fullPath) as T);
@@ -222,7 +222,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
                       select PathUtil.Resolve(_rootDir + dir.Replace('/', '\\')) + @"\").ToList();
 
                  var matches =
-                     from filePath in Directory.GetFiles( _rootDir, "*", SearchOption.AllDirectories)
+                     from filePath in Directory.GetFiles( _rootDir, "*", System.IO.SearchOption.AllDirectories)
                      where excludePaths.Where( f=> filePath.StartsWith(f) ).Count()== 0
                      select CreateFile( filePath );
 
@@ -235,7 +235,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
                       select PathUtil.Resolve(_rootDir + dir.Replace('/','\\')) + @"\").ToList();
 
                  var matches =
-                     from dirPath in Directory.GetDirectories(_rootDir, "*", SearchOption.AllDirectories)
+                     from dirPath in Directory.GetDirectories(_rootDir, "*", System.IO.SearchOption.AllDirectories)
                      where excludePaths.Where(f => (dirPath+@"\").StartsWith(f)).Count() == 0
                      select CreateFolder(dirPath);
 
@@ -269,11 +269,9 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
                     throw new ArgumentException("The dataId specifies a IMediaFileFolder, but the generic method was invoked with different type");
                 }
 
-                DirectoryInfo directoryInfo = new DirectoryInfo(_rootDir);
-
-                FileSystemMediaFileFolder folder = (from dirInfo in directoryInfo.GetDirectories("*", SearchOption.AllDirectories)
-                                             where GetRelativePath(dirInfo.FullName) == mediaDataId.Path
-                                             select CreateFolder(dirInfo.FullName)).FirstOrDefault();
+                FileSystemMediaFileFolder folder = (from dirInfo in Directory.GetDirectories(_rootDir, "*", System.IO.SearchOption.AllDirectories)
+                                                    where GetRelativePath(dirInfo) == mediaDataId.Path
+                                                    select CreateFolder(dirInfo)).FirstOrDefault();
                 return folder as T;
             }
             else if (mediaDataId.MediaType == _fileType)
@@ -283,10 +281,10 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
                     throw new ArgumentException("The dataId specifies a IMediaFile, but the generic method was invoked with different type");
                 }
 
-                DirectoryInfo directoryInfo = new DirectoryInfo(_rootDir);
-                FileSystemMediaFile file = (from fileInfo in directoryInfo.GetFiles("*", SearchOption.AllDirectories)
-                                         where GetRelativePath(fileInfo.DirectoryName) == mediaDataId.Path && fileInfo.Name == mediaDataId.FileName
-                                         select CreateFile(fileInfo.FullName)).FirstOrDefault();
+                FileSystemMediaFile file = (from fileInfo in Directory.GetFiles(_rootDir, "*", System.IO.SearchOption.AllDirectories)
+                                            where GetRelativePath(System.IO.Path.GetDirectoryName(fileInfo)) == mediaDataId.Path && System.IO.Path.GetFileName(fileInfo) == mediaDataId.FileName
+                                            select CreateFile(fileInfo)).FirstOrDefault();
+
                 return file as T;
             }
             else
@@ -308,14 +306,14 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
 
         private string GetAbsolutePath(IMediaFile file)
         {
-            return Path.Combine(Path.Combine(_rootDir, file.FolderPath.Remove(0, 1)), file.FileName);
+            return System.IO.Path.Combine(System.IO.Path.Combine(_rootDir, file.FolderPath.Remove(0, 1)), file.FileName);
         }
 
 
 
         private string GetAbsolutePath(IMediaFileFolder folder)
         {
-            return Path.Combine(_rootDir, folder.Path.Remove(0, 1));
+            return System.IO.Path.Combine(_rootDir, folder.Path.Remove(0, 1));
         }
 
 
@@ -324,11 +322,11 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
         {
             if (mediaData.MediaType == _fileType)
             {
-                return Path.Combine(Path.Combine(_rootDir, mediaData.Path.Remove(0, 1)), mediaData.FileName);
+                return System.IO.Path.Combine(System.IO.Path.Combine(_rootDir, mediaData.Path.Remove(0, 1)), mediaData.FileName);
             }
             else
             {
-                return Path.Combine(_rootDir, mediaData.Path.Remove(0, 1));
+                return System.IO.Path.Combine(_rootDir, mediaData.Path.Remove(0, 1));
             }
         }
         
@@ -378,8 +376,8 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
 
         private FileSystemMediaFile CreateFile(string filePath)
         {
-            string relativeDir = GetRelativePath(Path.GetDirectoryName(filePath));
-            string fileName = Path.GetFileName(filePath);
+            string relativeDir = GetRelativePath(System.IO.Path.GetDirectoryName(filePath));
+            string fileName = System.IO.Path.GetFileName(filePath);
 
             DataSourceId dataSourceId = _context.CreateDataSourceId(new MediaDataId() { Path = relativeDir, FileName = fileName, MediaType = _fileType }, typeof(IMediaFile));
             FileSystemMediaFile file = new FileSystemMediaFile(filePath, fileName, relativeDir, this.Store.Id, dataSourceId);
@@ -533,7 +531,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
             }
             if (resolvedRootDirectory.EndsWith("\\"))
             {
-                resolvedRootDirectory = Path.GetDirectoryName(resolvedRootDirectory);
+                resolvedRootDirectory = System.IO.Path.GetDirectoryName(resolvedRootDirectory);
             }
 
             string[] excludedDirs;

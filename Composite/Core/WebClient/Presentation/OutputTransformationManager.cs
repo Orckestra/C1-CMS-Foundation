@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Web;
 using System.Xml;
@@ -72,16 +72,16 @@ namespace Composite.Core.WebClient.Presentation
             public int Position { get; set; }
         }
 
-        private class XslTransformationStream : Stream
+        private class XslTransformationStream : System.IO.Stream
         {
-            public XslTransformationStream(Stream outputStream)
+            public XslTransformationStream(System.IO.Stream outputStream)
             {
-                _buffer = new MemoryStream(8192);
+                _buffer = new System.IO.MemoryStream(8192);
                 _responseOutputStream = outputStream;
             }
 
-            private Stream _responseOutputStream;
-            private MemoryStream _buffer;
+            private System.IO.Stream _responseOutputStream;
+            private System.IO.MemoryStream _buffer;
 
             /// <summary>
             /// Performs the actual transformation and write the result to the original stream
@@ -93,8 +93,8 @@ namespace Composite.Core.WebClient.Presentation
             [Obsolete("Use Transform() instead")]
             public void TransformBufferToOutput(String mode, String browser, String platform)
             {
-                MemoryStream result = Transform(_buffer, mode, browser, platform);
-                result.Seek(0, SeekOrigin.Begin);
+                System.IO.MemoryStream result = Transform(_buffer, mode, browser, platform);
+                result.Seek(0, System.IO.SeekOrigin.Begin);
 
                 result.WriteTo(_responseOutputStream);
             }
@@ -104,8 +104,8 @@ namespace Composite.Core.WebClient.Presentation
              * Moth knows about the ugly parameters, please refactor!
              * We should probably supply XSLT params by webcontrol markup...
              */
-            
-            public static MemoryStream Transform(MemoryStream buffer, String mode, String browser, String platform)
+
+            public static System.IO.MemoryStream Transform(System.IO.MemoryStream buffer, String mode, String browser, String platform)
             {
                 XmlReaderSettings readerSettings = new XmlReaderSettings();
                 readerSettings.XmlResolver = null;
@@ -118,8 +118,8 @@ namespace Composite.Core.WebClient.Presentation
                     return buffer;
                 }
 
-                MemoryStream inputStream;
-                MemoryStream outputStream = null;
+                System.IO.MemoryStream inputStream;
+                System.IO.MemoryStream outputStream = null;
 
                 int xsltCount = xsltFilePaths.Count;
 
@@ -130,7 +130,7 @@ namespace Composite.Core.WebClient.Presentation
 
                     inputStream = (isFirst ? buffer : outputStream);
                     inputStream.Position = 0;
-                    outputStream = new MemoryStream();
+                    outputStream = new System.IO.MemoryStream();
                         
                     /*
                         * Hardcoding a parameter for masterfilter.xsl
@@ -200,7 +200,7 @@ namespace Composite.Core.WebClient.Presentation
                         return;
                     }
 
-                    MemoryStream output = _buffer;
+                    System.IO.MemoryStream output = _buffer;
 
                     if (httpContext.Response.StatusCode == 200)
                     {
@@ -246,7 +246,7 @@ namespace Composite.Core.WebClient.Presentation
 
                     if(output.Position != 0)
                     {
-                        output.Seek(0, SeekOrigin.Begin);
+                        output.Seek(0, System.IO.SeekOrigin.Begin);
                     }
                     output.WriteTo(_responseOutputStream);
                 }

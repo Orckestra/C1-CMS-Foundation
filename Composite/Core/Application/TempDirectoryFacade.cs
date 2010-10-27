@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using Composite.Core.NewIO;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
 
@@ -14,7 +14,7 @@ namespace Composite.Core.Application
     {
         public static string CreateTempDirectory()
         {
-            string directory = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), Guid.NewGuid().ToString());
+            string directory = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), Guid.NewGuid().ToString());
 
             Directory.CreateDirectory(directory);
 

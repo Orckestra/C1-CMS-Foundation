@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml.Xsl;
 using System.Xml;
-using System.IO;
 using System.Xml.Linq;
+using System.Xml.Xsl;
+using Composite.Core.NewIO;
+using Composite.Core.Xml;
+
 
 namespace Composite.Core.WebClient
 {
@@ -27,7 +29,7 @@ namespace Composite.Core.WebClient
                 if (compiledVersionExists == false || lastXsltFileWrite > _xsltFileTimestamps[stylesheetPath] || reloadFresh == true)
                 {
                     XslCompiledTransform xslt = new XslCompiledTransform();
-                    using (XmlReader reader = XmlReader.Create(stylesheetPath))
+                    using (XmlReader reader = XmlReaderUtil.Create(stylesheetPath))
                     {
                         xslt.Load(reader);
                     }

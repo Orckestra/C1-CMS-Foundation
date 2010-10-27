@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Xml;
 using Composite.Data;
@@ -28,8 +28,8 @@ namespace Composite.C1Console.Forms.DataServices
 
         public XmlReader GetReader()
         {
-            string folderPath = Path.GetDirectoryName(_formPath);
-            string fileName = Path.GetFileName(_formPath);
+            string folderPath = System.IO.Path.GetDirectoryName(_formPath);
+            string fileName = System.IO.Path.GetFileName(_formPath);
 
             List<IFormDefinitionFile> formFiles =
                 (from file in DataFacade.GetData<IFormDefinitionFile>()

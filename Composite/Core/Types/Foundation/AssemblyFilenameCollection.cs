@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 
 
 namespace Composite.Core.Types.Foundation
@@ -56,9 +56,9 @@ namespace Composite.Core.Types.Foundation
 
         public static string GetAssemblyName(string assemblyFilename)
         {
-            string filename = Path.GetFileName(assemblyFilename);
+            string filename = System.IO.Path.GetFileName(assemblyFilename);
 
-            string extension = Path.GetExtension(filename);
+            string extension = System.IO.Path.GetExtension(filename);
 
             filename = filename.Remove(filename.Length - extension.Length);
 

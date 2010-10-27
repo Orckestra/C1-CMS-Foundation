@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.Configuration;
@@ -93,7 +93,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             {
                 if (this.InstalledPackages.ContainsKey(kvp.Key) == true)
                 {
-                    XDocument doc = XDocument.Load(this.InstalledPackages[kvp.Key]);
+                    XDocument doc = XDocumentUtils.Load(this.InstalledPackages[kvp.Key]);
 
                     XElement element = doc.Root;
                     if (element == null) continue;
@@ -108,7 +108,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     attribute.Value = kvp.Value;
 
-                    doc.Save(this.InstalledPackages[kvp.Key]);
+                    XDocumentUtils.Save(doc, this.InstalledPackages[kvp.Key]);
                 }
             }
 
@@ -132,9 +132,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     string[] packageDirectories = Directory.GetDirectories(baseDirectory);
                     foreach (string packageDirecoty in packageDirectories)
                     {
-                        if (File.Exists(Path.Combine(packageDirecoty, PackageSystemSettings.InstalledFilename)) == true)
+                        if (File.Exists(System.IO.Path.Combine(packageDirecoty, PackageSystemSettings.InstalledFilename)) == true)
                         {
-                            string filename = Path.Combine(packageDirecoty, PackageSystemSettings.PackageInformationFilename);
+                            string filename = System.IO.Path.Combine(packageDirecoty, PackageSystemSettings.PackageInformationFilename);
 
                             if (File.Exists(filename) == true)
                             {

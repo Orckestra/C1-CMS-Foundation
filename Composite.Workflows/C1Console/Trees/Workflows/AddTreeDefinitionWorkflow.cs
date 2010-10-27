@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
 using Composite.C1Console.Workflow;
@@ -142,7 +142,7 @@ namespace Composite.C1Console.Trees.Workflows
             }
 
 
-            string filename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), definitionName + ".xml");
+            string filename = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), definitionName + ".xml");
 
             File.WriteAllText(filename, template);
 
@@ -155,7 +155,7 @@ namespace Composite.C1Console.Trees.Workflows
         {
             string definitionName = this.GetBinding<string>("DefinitionName");
 
-            string filename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), definitionName + ".xml");
+            string filename = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), definitionName + ".xml");
 
             e.Result = File.Exists(filename) == false;
 

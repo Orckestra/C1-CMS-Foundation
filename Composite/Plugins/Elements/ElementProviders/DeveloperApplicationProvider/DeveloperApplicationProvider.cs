@@ -8,7 +8,7 @@ using Composite.C1Console.Elements;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
-using System.IO;
+using Composite.Core.NewIO;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
 using Composite.C1Console.Workflow;
@@ -36,7 +36,7 @@ namespace Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvid
 
             foreach (string treeDefinitionFilename in this.TreeDefinitionFilenames)
             {
-                string filename = Path.GetFileName(treeDefinitionFilename);
+                string filename = System.IO.Path.GetFileName(treeDefinitionFilename);
 
                 DeveloperApplicationProviderEntityToken entityToken = new DeveloperApplicationProviderEntityToken(DeveloperApplicationProviderEntityToken.TreeDefinitionId, filename);
 
@@ -91,7 +91,7 @@ namespace Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvid
             {
                 foreach (string treeDefinitionFilename in this.TreeDefinitionFilenames)
                 {
-                    string filename = Path.GetFileName(treeDefinitionFilename);
+                    string filename = System.IO.Path.GetFileName(treeDefinitionFilename);
 
                     Element treeDefintionElement = new Element(_context.CreateElementHandle(
                         new DeveloperApplicationProviderEntityToken(DeveloperApplicationProviderEntityToken.TreeDefinitionId, filename)))

@@ -8,9 +8,10 @@ using System.Web.Configuration;
 using Composite.Core.Logging;
 using Composite.C1Console.Security;
 using Composite.Core.WebClient;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Web.Hosting;
 using System.Xml.Linq;
+using Composite.Core.Xml;
 
 namespace Composite.Core.WebClient.HttpModules
 {
@@ -80,7 +81,8 @@ namespace Composite.Core.WebClient.HttpModules
 
                 Verify.That(File.Exists(webauthorizationConfigPath), "Missing file '{0}'.", webauthorizationRelativeConfigPath);
 
-                XDocument webauthorizationConfigDocument = XDocument.Load(webauthorizationConfigPath);
+
+                XDocument webauthorizationConfigDocument = XDocumentUtils.Load(webauthorizationConfigPath);
 
                 XAttribute loginPagePathAttribute = Verify.ResultNotNull<XAttribute>(webauthorizationConfigDocument.Root.Attribute("loginPagePath"), "Missing '{0}' attribute on '{1}' root element", loginPagePathAttributeName, webauthorizationRelativeConfigPath);
                 string relativeLoginPagePath = Verify.StringNotIsNullOrWhiteSpace(loginPagePathAttribute.Value, "Unexpected empty '{0}' attribute on '{1}' root element", loginPagePathAttributeName, webauthorizationRelativeConfigPath);

@@ -1,5 +1,5 @@
 using System;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
@@ -8,6 +8,7 @@ using Composite.Core.Collections.Generic;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Streams;
+using Composite.Core.Xml;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
@@ -116,7 +117,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                     if (cachedData == null)
                     {
-                        XDocument xDoc = XDocument.Load(filename);
+                        XDocument xDoc = XDocumentUtils.Load(filename);
                         List<XElement> elements = ExtractElements(xDoc);
 
                         var index = new Hashtable<IDataId, XElement>();
@@ -187,7 +188,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
                     xmlWriterSettings.CheckCharacters = false;
                     xmlWriterSettings.Indent = true;
-                    using (XmlWriter xmlWriter = XmlWriter.Create(fileRecord.FileName, xmlWriterSettings))
+                    using (XmlWriter xmlWriter = XmlWriterUtil.Create(fileRecord.FileName, xmlWriterSettings))
                     {
                         xDocument.Save(xmlWriter);
                     }

@@ -1,7 +1,7 @@
 ﻿//using System.ComponentModel;
 //using System.Web.UI;
 //using System.Web.UI.WebControls;
-//using System.IO;
+//using Composite.Core.NewIO;
 //using System.Globalization;
 
 //using Composite.Core.WebClient.UiControlLib.Foundation;

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Transactions;
 using System.Xml.Linq;
@@ -180,13 +180,13 @@ namespace Composite.Core.PackageSystem
 
         private IEnumerable<PackageFragmentValidationResult> LoadAddOnFragmentInstallerBinaries()
         {
-            string binariesDirectory = Path.Combine(this.AddOnInstallationDirectory, PackageSystemSettings.BinariesDirectoryName);
+            string binariesDirectory = System.IO.Path.Combine(this.AddOnInstallationDirectory, PackageSystemSettings.BinariesDirectoryName);
 
             if (Directory.Exists(binariesDirectory) == true)
             {
                 foreach (string filename in Directory.GetFiles(binariesDirectory))
                 {
-                    string newFilename = Path.Combine(this.TempDirectory, Path.GetFileName(filename));
+                    string newFilename = System.IO.Path.Combine(this.TempDirectory, System.IO.Path.GetFileName(filename));
                     File.Copy(filename, newFilename);
 
                     LoggingService.LogVerbose("AddOnUninstaller", string.Format("Loading package uninstaller fragment assembly '{0}'", newFilename));
@@ -282,7 +282,7 @@ namespace Composite.Core.PackageSystem
 
         private XElement LoadXml()
         {
-            XDocument doc = XDocument.Load(this.UninstallFilename);
+            XDocument doc = XDocumentUtils.Load(this.UninstallFilename);
 
             return doc.Root;
         }

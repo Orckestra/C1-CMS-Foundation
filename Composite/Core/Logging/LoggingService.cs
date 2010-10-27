@@ -301,7 +301,7 @@ namespace Composite.Core.Logging
                 {
                     string path = System.IO.Path.Combine(Core.IO.PathUtil.BaseDirectory, string.Format("logging{0}.config", Guid.NewGuid()));
 
-                    using (System.IO.StreamWriter writer = new System.IO.StreamWriter(path))
+                    using (Composite.Core.NewIO.StreamWriter writer = new Composite.Core.NewIO.StreamWriter(path))
                     {
                         Type type = typeof(LoggingService).Assembly
                             .GetType("Composite.Plugins.Logging.LogTraceListeners.TcpLogTraceListener.TcpLogTraceListener", false);

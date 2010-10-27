@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Data.DynamicTypes;
 using Composite.C1Console.Events;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
+using Composite.Core.Xml;
 
 
 namespace Composite.Data
@@ -54,7 +55,7 @@ namespace Composite.Data
 
                 foreach (string filepath in filepaths)
                 {
-                    XDocument doc = XDocument.Load(filepath);
+                    XDocument doc = XDocumentUtils.Load(filepath);
 
                     DataTypeDescriptor dataTypeDescriptor = DataTypeDescriptor.FromXml(doc.Root);
                     _dataTypeDescriptorCache.Add(dataTypeDescriptor.DataTypeId, dataTypeDescriptor);
@@ -94,9 +95,9 @@ namespace Composite.Data
             foreach (var kvp in ids)
             {
                 string filepath = kvp.Value;
-                if (Path.GetFileNameWithoutExtension(filepath).Contains('_') == false)
+                if (System.IO.Path.GetFileNameWithoutExtension(filepath).Contains('_') == false)
                 {
-                    XDocument doc = XDocument.Load(filepath);
+                    XDocument doc = XDocumentUtils.Load(filepath);
 
                     DataTypeDescriptor dataTypeDescriptor = DataTypeDescriptor.FromXml(doc.Root);
 
@@ -161,7 +162,7 @@ namespace Composite.Data
 
                 XElement rootElement = dataTypeDescriptor.ToXml();
                 XDocument doc = new XDocument(rootElement);
-                doc.Save(filepath);
+                XDocumentUtils.Save(doc, filepath);
 
                 _dataTypeDescriptorCache[dataTypeDescriptor.DataTypeId] = dataTypeDescriptor;
 
@@ -196,14 +197,14 @@ namespace Composite.Data
 
         private static string CreateFilename(DataTypeDescriptor dataTypeDescriptor)
         {
-            return Path.Combine(_metaDataPath, string.Format("{0}_{1}.xml", dataTypeDescriptor.Name, dataTypeDescriptor.DataTypeId));
+            return System.IO.Path.Combine(_metaDataPath, string.Format("{0}_{1}.xml", dataTypeDescriptor.Name, dataTypeDescriptor.DataTypeId));
         }
 
 
 
         private static Guid GetGuidFromFilename(string filepath)
         {
-            string tmp = Path.GetFileNameWithoutExtension(filepath);
+            string tmp = System.IO.Path.GetFileNameWithoutExtension(filepath);
             int index = tmp.LastIndexOf('_');
 
             if (index == -1)

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.IO;
@@ -117,7 +117,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                             continue;
                         }
 
-                        if ((File.GetAttributes(targetFilename) & FileAttributes.ReadOnly) > 0)
+                        if ((File.GetAttributes(targetFilename) & System.IO.FileAttributes.ReadOnly) > 0)
                         {
                             if (allowOverwrite == false)
                             {
@@ -149,7 +149,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     if (loadAssembly == true)
                     {
-                        string tempFilename = Path.Combine(this.InstallerContex.TempDirectory, Path.GetFileName(targetFilename));
+                        string tempFilename = System.IO.Path.Combine(this.InstallerContex.TempDirectory, System.IO.Path.GetFileName(targetFilename));
 
                         this.InstallerContex.ZipFileSystem.WriteFileToDisk(sourceFilename, tempFilename);
 
@@ -232,7 +232,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                             resolvedSourceFilename = resolvedSourceFilename.Remove(0, 1);
                         }
 
-                        string targetFilename = Path.Combine(targetDirectory, resolvedSourceFilename);
+                        string targetFilename = System.IO.Path.Combine(targetDirectory, resolvedSourceFilename);
 
                         if ((File.Exists(targetFilename) == true) && (deleteTargetDirectory == false) && (allowOverwrite == false))
                         {
@@ -243,7 +243,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         FileToCopy fileToCopy = new FileToCopy
                         {
                             SourceFilename = sourceFilename, 
-                            TargetRelativeFilePath = Path.Combine(targetDirectoryAttribute.Value, resolvedSourceFilename),
+                            TargetRelativeFilePath = System.IO.Path.Combine(targetDirectoryAttribute.Value, resolvedSourceFilename),
                             TargetFilePath = targetFilename, 
                             AllowOverwrite = allowOverwrite
                         };
@@ -277,7 +277,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             {
                 LoggingService.LogVerbose("FileAddOnFragmentInstaller", string.Format("Installing the file '{0}' to the target filename '{1}'", fileToCopy.SourceFilename, fileToCopy.TargetFilePath));
 
-                string targetDirectory = Path.GetDirectoryName(fileToCopy.TargetFilePath);
+                string targetDirectory = System.IO.Path.GetDirectoryName(fileToCopy.TargetFilePath);
                 if (Directory.Exists(targetDirectory) == false)
                 {
                     Directory.CreateDirectory(targetDirectory);

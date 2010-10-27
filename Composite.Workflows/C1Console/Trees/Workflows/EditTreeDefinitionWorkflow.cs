@@ -1,5 +1,5 @@
 using System;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -27,9 +27,9 @@ namespace Composite.C1Console.Trees.Workflows
 
         private void initializeCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            string path = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), this.Filename);
+            string path = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), this.Filename);
 
-            this.Bindings.Add("TreeId", Path.GetFileNameWithoutExtension(this.Filename));
+            this.Bindings.Add("TreeId", System.IO.Path.GetFileNameWithoutExtension(this.Filename));
             this.Bindings.Add("TreeDefinitionMarkup", File.ReadAllText(path));
         }
 
@@ -39,7 +39,7 @@ namespace Composite.C1Console.Trees.Workflows
         {
             string content = this.GetBinding<string>("TreeDefinitionMarkup");
 
-            string path = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), this.Filename);
+            string path = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), this.Filename);
 
             FileEx.RemoveReadOnly(path);
 

@@ -9,7 +9,7 @@
         {
             this.UploadedFile.ContentLength = fileUpload.PostedFile.ContentLength;
             this.UploadedFile.ContentType = fileUpload.PostedFile.ContentType;
-            this.UploadedFile.FileName = System.IO.Path.GetFileName(fileUpload.PostedFile.FileName);
+            this.UploadedFile.FileName = Composite.Core.NewIO.Path.GetFileName(fileUpload.PostedFile.FileName);
             this.UploadedFile.FileStream = fileUpload.PostedFile.InputStream;
         }
     }

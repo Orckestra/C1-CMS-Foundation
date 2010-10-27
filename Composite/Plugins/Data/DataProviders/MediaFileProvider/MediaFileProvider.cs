@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider;
@@ -104,7 +104,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
                     }
                     CopyFileData(updatedFile, currentFileData);
                     currentFileData.LastWriteTime = DateTime.Now;
-                    using (Stream stream = updatedFile.GetReadStream())
+                    using (System.IO.Stream stream = updatedFile.GetReadStream())
                     {
                         currentFileData.Length = (int)stream.Length;
                     }
@@ -189,17 +189,17 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
                     CopyFileData(mediaFile, fileData);
                     fileData.LastWriteTime = DateTime.Now;
                     fileData.CreationTime = DateTime.Now;
-                    using (Stream stream = mediaFile.GetReadStream())
+                    using (System.IO.Stream stream = mediaFile.GetReadStream())
                     {
                         if (stream == null) throw new InvalidOperationException(string.Format("GetReadStream returned null for type '{0}'", mediaFile.GetType()));
                         fileData.Length = (int)stream.Length;
                     }
 
-                    string internalPath = Path.Combine(_workingDirectory, fileData.Id.ToString());
+                    string internalPath = System.IO.Path.Combine(_workingDirectory, fileData.Id.ToString());
                     IMediaFile internalMediaFile = new MediaFile(fileData, Store.Id, _context.CreateDataSourceId(new MediaDataId() { MediaType = _fileType, Id = fileData.Id }, typeof(IMediaFile)), internalPath);
-                    using (Stream readStream = mediaFile.GetReadStream())
+                    using (System.IO.Stream readStream = mediaFile.GetReadStream())
                     {
-                        using (Stream writeStream = internalMediaFile.GetNewWriteStream())
+                        using (System.IO.Stream writeStream = internalMediaFile.GetNewWriteStream())
                         {
                             readStream.CopyTo(writeStream);
                         }
@@ -287,7 +287,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
                             var publicDataScope = DataScopeIdentifier.Public;
                             foreach (IMediaFileData file in files)
                             {
-                                string internalPath = Path.Combine(_workingDirectory, file.Id.ToString());
+                                string internalPath = System.IO.Path.Combine(_workingDirectory, file.Id.ToString());
                                 fileItems.Add(new MediaFile(file, Store.Id, _context.CreateDataSourceId(new MediaDataId { MediaType = _fileType, Id = file.Id }, typeof(IMediaFile), publicDataScope, CultureInfo.InvariantCulture), internalPath));
                             }
                             _mediaFilesCachedQuery = fileItems.AsQueryable();
@@ -374,7 +374,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
                     return null;
                 }
 
-                string internalPath = Path.Combine(_workingDirectory, file.Id.ToString());
+                string internalPath = System.IO.Path.Combine(_workingDirectory, file.Id.ToString());
                 return new MediaFile(file, Store.Id,
                        _context.CreateDataSourceId(new MediaDataId() { MediaType = _fileType, Id = file.Id }, typeof(IMediaFile)), internalPath) as T;
 
@@ -434,7 +434,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
         private void DeleteMediaFile(Guid id)
         {
-            string fullPath = Path.Combine(_workingDirectory, id.ToString());
+            string fullPath = System.IO.Path.Combine(_workingDirectory, id.ToString());
             if (File.Exists(fullPath))
             {
                 File.Delete(fullPath);

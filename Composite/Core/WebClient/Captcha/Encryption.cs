@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Management;
 using System.Security.Cryptography;
 using System.Text;
@@ -31,7 +31,7 @@ namespace Composite.Core.WebClient.Captcha
             // Declare the streams used
             // to encrypt to an in memory
             // array of bytes.
-            MemoryStream msEncrypt = null;
+            System.IO.MemoryStream msEncrypt = null;
             CryptoStream csEncrypt = null;
             StreamWriter swEncrypt = null;
 
@@ -51,7 +51,7 @@ namespace Composite.Core.WebClient.Captcha
                 ICryptoTransform encryptor = rima.CreateEncryptor();
 
                 // Create the streams used for encryption.
-                msEncrypt = new MemoryStream();
+                msEncrypt = new System.IO.MemoryStream();
                 csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write);
                 swEncrypt = new StreamWriter(csEncrypt);
 
@@ -78,7 +78,7 @@ namespace Composite.Core.WebClient.Captcha
             // TDeclare the streams used
             // to decrypt to an in memory
             // array of bytes.
-            MemoryStream msDecrypt = null;
+            System.IO.MemoryStream msDecrypt = null;
             CryptoStream csDecrypt = null;
             StreamReader srDecrypt = null;
 
@@ -98,7 +98,7 @@ namespace Composite.Core.WebClient.Captcha
                 ICryptoTransform decryptor = rima.CreateDecryptor();
 
                 // Create the streams used for decryption.
-                msDecrypt = new MemoryStream(encodedSequence);
+                msDecrypt = new System.IO.MemoryStream(encodedSequence);
                 csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read);
                 srDecrypt = new StreamReader(csDecrypt);
 

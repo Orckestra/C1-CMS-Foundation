@@ -63,3 +63,10 @@ del ..\..\Frontend\Styles\Screen.css /F
 del ..\..\Frontend\Styles\VisualEditor\VisualEditor.Config.css /F
 del ..\..\Frontend\Styles\VisualEditor\VisualEditor.Config.xml /F
 del ..\..\Frontend\Styles\VisualEditor\VisualEditor.Default.css /F
+
+
+
+
+
+:: Omni corp cleanup
+del ..\..\Frontend\Composite\Search\SimplePageSearch\Styles.css

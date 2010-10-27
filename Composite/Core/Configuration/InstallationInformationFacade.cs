@@ -1,7 +1,8 @@
 ﻿using System;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Xml.Linq;
 using Composite.Core.IO;
+using Composite.Core.Xml;
 
 
 namespace Composite.Core.Configuration
@@ -16,11 +17,11 @@ namespace Composite.Core.Configuration
 
         static InstallationInformationFacade()
         {
-            string filepath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.ConfigurationDirectory), "InstallationInformation.xml");
+            string filepath = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.ConfigurationDirectory), "InstallationInformation.xml");
 
             if (File.Exists(filepath) == true)
             {
-                XDocument doc = XDocument.Load(filepath);
+                XDocument doc = XDocumentUtils.Load(filepath);
 
                 XAttribute idAttribute = doc.Root.Attribute("installationId");
 
@@ -48,7 +49,7 @@ namespace Composite.Core.Configuration
         {
             _installationId = Guid.NewGuid();
 
-            string directory = Path.GetDirectoryName(filepath);
+            string directory = System.IO.Path.GetDirectoryName(filepath);
             if (Directory.Exists(directory) == false)
             {
                 Directory.CreateDirectory(directory);
@@ -60,7 +61,7 @@ namespace Composite.Core.Configuration
                         )
                     );
 
-            doc.Save(filepath);
+            XDocumentUtils.Save(doc, filepath);
         }
     }
 }

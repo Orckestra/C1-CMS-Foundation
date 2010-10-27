@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.IO;
+using Composite.Core.NewIO;
 
 
 namespace Composite.Core.IO

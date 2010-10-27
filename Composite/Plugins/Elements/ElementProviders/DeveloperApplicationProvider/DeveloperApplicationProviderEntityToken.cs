@@ -1,6 +1,6 @@
 ﻿using Composite.C1Console.Security;
 using Composite.C1Console.Security.SecurityAncestorProviders;
-using System.IO;
+using Composite.Core.NewIO;
 using Composite.Core.IO;
 using Composite.Core.Configuration;
 
@@ -70,7 +70,7 @@ namespace Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvid
         {
             get
             {                
-                return Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), this.Filename);
+                return System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), this.Filename);
             }
         }
 

@@ -1,7 +1,8 @@
 ﻿using System;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Xml.Linq;
 using Composite.Core.IO;
+using Composite.Core.Xml;
 
 
 namespace Composite.Core.Configuration
@@ -48,7 +49,7 @@ namespace Composite.Core.Configuration
                 {
                     if (File.Exists(SystemInitializedFilePath) == false)
                     {
-                        string directory = Path.GetDirectoryName(SystemInitializedFilePath);
+                        string directory = System.IO.Path.GetDirectoryName(SystemInitializedFilePath);
                         if (Directory.Exists(directory) == false)
                         {
                             Directory.CreateDirectory(directory);
@@ -58,7 +59,7 @@ namespace Composite.Core.Configuration
                             new XElement("Root", new XAttribute("Status", true))
                         );
 
-                        doc.Save(SystemInitializedFilePath);
+                        XDocumentUtils.Save(doc, SystemInitializedFilePath);
                     }
 
                     _isSystemFirstTimeInitializedValue = true;

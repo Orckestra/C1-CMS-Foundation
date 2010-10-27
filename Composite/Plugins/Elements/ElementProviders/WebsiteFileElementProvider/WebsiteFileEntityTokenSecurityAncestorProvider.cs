@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using Composite.C1Console.Security;
 
 
@@ -17,7 +17,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                 return null;
             }
 
-            string newFolderPath = Path.GetDirectoryName(castedEntityToken.Path);
+            string newFolderPath = System.IO.Path.GetDirectoryName(castedEntityToken.Path);
 
             if (newFolderPath != castedEntityToken.RootPath)
             {

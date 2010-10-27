@@ -13,7 +13,8 @@ using System.Xml.Linq;
 using Composite.C1Console.Forms;
 using System.Collections.Generic;
 using System.Text;
-using System.IO;
+using Composite.Core.NewIO;
+using Composite.Core.Xml;
 
 public partial class Composite_schemas_FormsControls_GenerateDynamicSchemas : System.Web.UI.Page
 {
@@ -30,14 +31,14 @@ public partial class Composite_schemas_FormsControls_GenerateDynamicSchemas : Sy
         {
             DateTime lastWrite = File.GetLastWriteTime(xsdFile);
 
-            XDocument schemaDocument = XDocument.Load(xsdFile);
+            XDocument schemaDocument = XDocumentUtils.Load(xsdFile);
             string targetNamespace = schemaDocument.Root.Attribute("targetNamespace").Value;
 
             xsdFilesTable.Add(
                 new XElement("tr",
                     new XElement("td", 
                         new XElement("a",
-                            new XAttribute("href",Path.GetFileName(xsdFile)),
+                            new XAttribute("href",System.IO.Path.GetFileName(xsdFile)),
                             targetNamespace)),
                     new XElement("td", lastWrite)));
         }
@@ -54,7 +55,7 @@ public partial class Composite_schemas_FormsControls_GenerateDynamicSchemas : Sy
 
         foreach (SchemaInfo schemaInfo in schemaInfos)
         {
-            schemaInfo.Schema.Save(this.MapPath(BuildFileName(schemaInfo)));
+            XDocumentUtils.Save(schemaInfo.Schema, this.MapPath(BuildFileName(schemaInfo)));
         }
 
         GenerateButton.Text = "Done";

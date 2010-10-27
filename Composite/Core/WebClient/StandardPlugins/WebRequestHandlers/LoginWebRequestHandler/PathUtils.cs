@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Configuration;
 using System.Web;
 using Composite.Core.WebClient;

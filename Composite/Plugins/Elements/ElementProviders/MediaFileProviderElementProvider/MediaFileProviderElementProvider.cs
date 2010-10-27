@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -274,7 +274,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
             if (file.MimeType.StartsWith("image") == true)
             {
-                using (Stream fileStream = file.GetReadStream())
+                using (System.IO.Stream fileStream = file.GetReadStream())
                 {
                     Bitmap bitmap = new Bitmap(fileStream);
                     propertyList.Add("ImageWidth", "Image width", bitmap.Width);
@@ -432,9 +432,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
                     newWorkflowMediaFile.FileName = newFilename;
 
-                    using (Stream readStream = draggedFile.GetReadStream())
+                    using (System.IO.Stream readStream = draggedFile.GetReadStream())
                     {
-                        using (Stream writeStream = newWorkflowMediaFile.GetNewWriteStream())
+                        using (System.IO.Stream writeStream = newWorkflowMediaFile.GetNewWriteStream())
                         {
                             readStream.CopyTo(writeStream);
                         }
@@ -656,7 +656,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
         private bool IsImage(IMediaFile file)
         {
             return (file.MimeType != null && file.MimeType.StartsWith("image")) ||
-                (MimeTypeInfo.GetCanonicalFromExtension(Path.GetExtension(file.FileName)).StartsWith("image"));
+                (MimeTypeInfo.GetCanonicalFromExtension(System.IO.Path.GetExtension(file.FileName)).StartsWith("image"));
         }
 
        

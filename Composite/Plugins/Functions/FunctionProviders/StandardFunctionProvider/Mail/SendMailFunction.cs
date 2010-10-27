@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Net.Mail;
 using System.Web;
 using System.Linq;
@@ -184,7 +184,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                         return false;
                     }
 
-                    Stream readStream = mediaFile.GetReadStream();
+                    System.IO.Stream readStream = mediaFile.GetReadStream();
 
                     result.Add(new Attachment(readStream, attachmentName ?? mediaFile.Title, mimeType ?? mediaFile.MimeType));
 

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Text;
 using System.Workflow.Activities;
@@ -117,7 +117,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
                 string packageServerSource = PackageSystemServices.GetPackageSourceNameByPackageId(packageDescription.Id, InstallationInformationFacade.InstallationId, UserSettings.CultureInfo);
 
-                Stream installFileStream = PackageServerFacade.GetInstallFileStream(packageDescription.PackageFileDownloadUrl);
+                System.IO.Stream installFileStream = PackageServerFacade.GetInstallFileStream(packageDescription.PackageFileDownloadUrl);
 
                 PackageManagerInstallProcess packageManagerInstallProcess = PackageManager.Install(installFileStream, false, packageServerSource);
                 this.Bindings.Add("AddOnManagerInstallProcess", packageManagerInstallProcess);

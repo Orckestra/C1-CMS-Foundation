@@ -3,7 +3,7 @@
 <script runat="server">
     bool HasDeveloperModeSupport
     {
-        get { return System.IO.File.Exists(this.MapPath("scripts/source/top/core/Application.js")); }
+        get { return Composite.Core.NewIO.File.Exists(this.MapPath("scripts/source/top/core/Application.js")); }
     }
 </script>
 <!DOCTYPE html>

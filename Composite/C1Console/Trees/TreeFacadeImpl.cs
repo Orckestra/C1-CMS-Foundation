@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -13,25 +12,27 @@ using System.Xml.Xsl;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Elements.Plugins.ElementAttachingProvider;
 using Composite.C1Console.Events;
+using Composite.C1Console.Security;
+using Composite.C1Console.Trees.Foundation;
+using Composite.C1Console.Trees.Foundation.AttachmentPoints;
+using Composite.C1Console.Users;
 using Composite.Core.Collections.Generic;
-using Composite.Data;
-using Composite.Data.GeneratedTypes;
-using Composite.Data.ProcessControlled;
-using Composite.Data.Types;
-using Composite.Core.Extensions;
 using Composite.Core.Configuration;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Linq;
 using Composite.Core.Logging;
+using Composite.Core.NewIO;
 using Composite.Core.ResourceSystem;
-using Composite.C1Console.Security;
-using Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvider;
 using Composite.Core.Threading;
-using Composite.Data.Transactions;
-using Composite.C1Console.Trees.Foundation;
-using Composite.C1Console.Trees.Foundation.AttachmentPoints;
 using Composite.Core.Types;
-using Composite.C1Console.Users;
+using Composite.Core.Xml;
+using Composite.Data;
+using Composite.Data.GeneratedTypes;
+using Composite.Data.ProcessControlled;
+using Composite.Data.Transactions;
+using Composite.Data.Types;
+using Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvider;
 
 
 
@@ -156,11 +157,11 @@ namespace Composite.C1Console.Trees
             return tree.RootTreeNode.GetElements(parentEntityToken, dynamicContext);
         }
 
-
+        
 
         public Tree LoadTreeFromDom(string treeId, XDocument document)
         {
-            string xslFilename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), XslFilename);
+            string xslFilename = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), XslFilename);
 
             if (File.Exists(xslFilename) == true)
             {
@@ -170,7 +171,8 @@ namespace Composite.C1Console.Trees
                     using (XmlWriter xmlWriter = newDocument.CreateWriter())
                     {
                         XslCompiledTransform xslTransform = new XslCompiledTransform();
-                        xslTransform.Load(xslFilename);
+
+                        xslTransform.LoadFromPath(xslFilename);
 
                         xslTransform.Transform(document.CreateReader(), xmlWriter);
                     }
@@ -207,7 +209,7 @@ namespace Composite.C1Console.Trees
 
 
 
-        private void OnReloadTrees(object sender, FileSystemEventArgs e)
+        private void OnReloadTrees(object sender, System.IO.FileSystemEventArgs e)
         {
             if (HostingEnvironment.ApplicationHost.ShutdownInitiated())
             {
@@ -241,7 +243,7 @@ namespace Composite.C1Console.Trees
 
                 foreach (string filename in Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), "*.xml"))
                 {
-                    string treeId = Path.GetFileName(filename);
+                    string treeId = System.IO.Path.GetFileName(filename);
 
                     try
                     {
@@ -337,16 +339,16 @@ namespace Composite.C1Console.Trees
 
         private Tree LoadTreeFromFile(string treeId)
         {
-            string filename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), treeId);
+            string filename = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), treeId);
                         
             for (int i = 0; i < 10; i++)
             {
                 try
                 {
-                    XDocument document = XDocument.Load(filename);
+                    XDocument document = XDocumentUtils.Load(filename);
                     return LoadTreeFromDom(treeId, document);
                 }
-                catch (IOException)
+                catch (System.IO.IOException)
                 {
                     Thread.Sleep(100);
                 }
@@ -516,7 +518,7 @@ namespace Composite.C1Console.Trees
                 Tree tree = GetTree(attachmentPoint.TreeId);
                 if (tree == null)
                 {
-                    string treePath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), attachmentPoint.TreeId);
+                    string treePath = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), attachmentPoint.TreeId);
                     if (File.Exists(treePath) == false) // This ensures that invalid, but existing trees does not remove these attachment points
                     {
                         if (DataFacade.WillDeleteSucceed(attachmentPoint) == true)

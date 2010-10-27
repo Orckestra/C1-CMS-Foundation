@@ -1,7 +1,7 @@
 <%@ WebService Language="C#" Class="SourceValidationService" %>
 
 using System;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Services;
@@ -67,7 +67,7 @@ public class SourceValidationService  : System.Web.Services.WebService {
                         settings.Schemas.Add( schema );
                     }
 
-                    using (XmlReader reader = XmlReader.Create(new StringReader(sourceToValidate), settings))
+                    using (XmlReader reader = XmlReader.Create(new System.IO.StringReader(sourceToValidate), settings))
                     {
                        while (reader.Read()) {}
                     }
@@ -103,7 +103,7 @@ public class SourceValidationService  : System.Web.Services.WebService {
                 return schema;
             }
 
-            using (var file = File.Open(filePath, FileMode.Open, FileAccess.Read))
+            using (var file = File.Open(filePath, System.IO.FileMode.Open, System.IO.FileAccess.Read))
             {
                 schema = XmlSchema.Read(file, null);
             }

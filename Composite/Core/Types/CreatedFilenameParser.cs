@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 
 
@@ -34,7 +34,7 @@ namespace Composite.Core.Types
         /// <returns></returns>
         public static CreatedFilenameParser Create(string filename, string extension)
         {
-            string fn = Path.GetFileName(filename);
+            string fn = System.IO.Path.GetFileName(filename);
 
             int idx = fn.LastIndexOf(string.Format(".{0}", extension));
             if (idx >= 0)

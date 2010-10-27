@@ -15,7 +15,7 @@ using Composite.C1Console.Elements.Foundation.PluginFacades;
 using System.Text;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
-using System.IO;
+using Composite.Core.NewIO;
 using Composite.Core.Logging;
 
 
@@ -85,7 +85,7 @@ namespace Composite.C1Console.Elements.Foundation
             {
                 
                 Guid id = Guid.NewGuid();
-                string filename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), string.Format("{0}.RelationshipGraph", id));
+                string filename = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), string.Format("{0}.RelationshipGraph", id));
                 File.WriteAllLines(filename, new string[] { serializedEntityToken });
 
                 string url = string.Format("{0}?Id={1}", UrlUtils.ResolveAdminUrl("content/views/relationshipgraph/ShowRelationshipOrientedGraph.aspx"), id);
@@ -162,7 +162,7 @@ namespace Composite.C1Console.Elements.Foundation
             }
 
             Guid id = Guid.NewGuid();
-            string filename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), string.Format("{0}.showinfo", id));
+            string filename = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), string.Format("{0}.showinfo", id));
 
             File.WriteAllLines(filename, new string[] { serializedEntityToken, sb.ToString() });
 

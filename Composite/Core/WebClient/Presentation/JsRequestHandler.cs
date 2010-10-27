@@ -1,5 +1,5 @@
 using System;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Web;
 using System.Text;
 using Composite.Core.Extensions;

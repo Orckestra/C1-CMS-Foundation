@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
@@ -35,7 +35,7 @@ namespace Composite.Core.WebClient.Logging.WCF
                     {
                         if (_loggerPassword == null)
                         {
-                            string configurationFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, LoggerConfigurationFilePath);
+                            string configurationFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, LoggerConfigurationFilePath);
 
                             if (File.Exists(configurationFilePath))
                             {

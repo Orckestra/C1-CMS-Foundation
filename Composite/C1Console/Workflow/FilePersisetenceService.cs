@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -38,17 +38,13 @@ namespace Composite.C1Console.Workflow
 
         public IEnumerable<Guid> GetPersistedWorkflows()
         {
-            IEnumerable<FileInfo> fileInfos =
-                from file in Directory.GetFiles(_baseDirectory, "*.bin")
-                select new FileInfo(file);
-
-            foreach (FileInfo fileInfo in fileInfos)
+            foreach (string filePath in Directory.GetFiles(_baseDirectory, "*.bin"))
             {
-                int idx = fileInfo.Name.LastIndexOf(".bin");
+                int idx = filePath.LastIndexOf(".bin");
 
                 if (idx == -1) continue;
 
-                string guidString = fileInfo.Name.Remove(idx);
+                string guidString = filePath.Remove(idx);
 
                 Guid guid = Guid.Empty;
                 try
@@ -172,7 +168,7 @@ namespace Composite.C1Console.Workflow
             IFormatter formatter = new BinaryFormatter();
             formatter.SurrogateSelector = ActivitySurrogateSelector.Default;
 
-            using (FileStream stream = new FileStream(filename, FileMode.OpenOrCreate))
+            using (FileStream stream = new FileStream(filename, System.IO.FileMode.OpenOrCreate))
             {
                 rootActivity.Save(stream, formatter);
                 stream.Close();
@@ -191,7 +187,7 @@ namespace Composite.C1Console.Workflow
             IFormatter formatter = new BinaryFormatter();
             formatter.SurrogateSelector = ActivitySurrogateSelector.Default;
 
-            using (FileStream stream = new FileStream(filename, FileMode.Open))
+            using (FileStream stream = new FileStream(filename, System.IO.FileMode.Open))
             {
                 result = Activity.Load(stream, rootActivity, formatter);
                 stream.Close();
@@ -215,7 +211,7 @@ namespace Composite.C1Console.Workflow
 
         private string GetFileName(Guid id)
         {
-            return Path.Combine(this._baseDirectory, id.ToString() + ".bin");
+            return System.IO.Path.Combine(this._baseDirectory, id.ToString() + ".bin");
         }
     }
 }

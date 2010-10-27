@@ -1,5 +1,5 @@
 using System;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Text;
 using System.Web;
 using System.Collections.Generic;
@@ -84,7 +84,7 @@ namespace Composite.Core.WebClient.Presentation
                 this.skinPath = UrlUtils.AdminRootPath + "/skins/system";
 
                 // the folder of the currently parsed CSS file
-                this.folderPath = Path.GetDirectoryName(context.Request.Path).Replace('\\', '/');
+                this.folderPath = System.IO.Path.GetDirectoryName(context.Request.Path).Replace('\\', '/');
             }
         }
 

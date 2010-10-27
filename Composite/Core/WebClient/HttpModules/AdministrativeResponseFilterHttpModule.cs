@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Text;
 using System.Web;
 using System.Web.UI;
@@ -37,12 +37,12 @@ namespace Composite.Core.WebClient.HttpModules
         {
         }
 
-        internal class ReplacementStream : Stream
+        internal class ReplacementStream : System.IO.Stream
         {
-            private readonly Stream _innerStream;
-            private MemoryStream _ms = new MemoryStream();
+            private readonly System.IO.Stream _innerStream;
+            private System.IO.MemoryStream _ms = new System.IO.MemoryStream();
 
-            public ReplacementStream(Stream innerOuputStream)
+            public ReplacementStream(System.IO.Stream innerOuputStream)
             {
                 _innerStream = innerOuputStream;
             }
@@ -83,7 +83,7 @@ namespace Composite.Core.WebClient.HttpModules
                 throw new NotImplementedException();
             }
 
-            public override long Seek(long offset, SeekOrigin origin)
+            public override long Seek(long offset, System.IO.SeekOrigin origin)
             {
                 throw new NotImplementedException();
             }
@@ -98,7 +98,7 @@ namespace Composite.Core.WebClient.HttpModules
                 if (!_ms.CanWrite)
                 {
                     // Reopening stream if it was empty
-                    _ms = new MemoryStream();
+                    _ms = new System.IO.MemoryStream();
                 }
                 _ms.Write(buffer, offset, count);
             }
@@ -111,7 +111,7 @@ namespace Composite.Core.WebClient.HttpModules
                     return;
                 }
 
-                _ms.Seek(0, SeekOrigin.Begin);
+                _ms.Seek(0, System.IO.SeekOrigin.Begin);
 
                 var bytes = _ms.ToArray();
 

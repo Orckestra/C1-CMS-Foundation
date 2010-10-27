@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Xml.Linq;
 using Composite.Core.IO.Zip;
 

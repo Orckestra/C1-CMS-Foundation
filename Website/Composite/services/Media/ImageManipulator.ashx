@@ -2,7 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Web;
 using System.Linq;
 using System.Drawing.Imaging;
@@ -62,7 +62,7 @@ public class ImageManipulator : IHttpHandler
         Bitmap image;
         
         // TODO: Caching here?
-        using (Stream readStream = mediaFile.GetReadStream())
+        using (System.IO.Stream readStream = mediaFile.GetReadStream())
         {
             Bitmap lockedSource = new Bitmap(new Bitmap(readStream));  // the double new(new) fixes GIF prb; "a graphics object cannot be created from an image that has an indexed pixel format"
             Graphics g = Graphics.FromImage(lockedSource);
@@ -318,7 +318,7 @@ public class ImageManipulator : IHttpHandler
     private void WriteBitmapToResponseSteam(HttpContext context, Bitmap image, string mimeType)
     {
         context.Response.ContentType = mimeType;
-        using (MemoryStream memStream = new MemoryStream())
+        using (System.IO.MemoryStream memStream = new System.IO.MemoryStream())
         {
             image.Save(memStream, GetImageFormat(mimeType));
             memStream.WriteTo(context.Response.OutputStream);
@@ -329,7 +329,7 @@ public class ImageManipulator : IHttpHandler
 
     private void UpdateMediaFileImage(IMediaFile mediaFile, System.Drawing.Image image)
     {
-        using (Stream writeStream = mediaFile.GetNewWriteStream())
+        using (System.IO.Stream writeStream = mediaFile.GetNewWriteStream())
         {
             image.Save(writeStream, GetImageFormat(mediaFile.MimeType));
         }

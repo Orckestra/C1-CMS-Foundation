@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Workflow.Activities;
 using Composite.C1Console.Actions;
@@ -212,7 +212,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             if (existingFile == null)
             {
                 WorkflowMediaFile mediaFile = new WorkflowMediaFile();
-                mediaFile.FileName = Path.GetFileName(filename);
+                mediaFile.FileName = System.IO.Path.GetFileName(filename);
                 mediaFile.FolderPath = this.FolderPath;
                 mediaFile.Title = this.GetBinding<string>("Title");
                 mediaFile.Description = this.GetBinding<string>("Description");
@@ -222,12 +222,12 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 
                 if (mediaFile.MimeType == MimeTypeInfo.Default)
                 {
-                    mediaFile.MimeType = MimeTypeInfo.GetCanonicalFromExtension(Path.GetExtension(mediaFile.FileName));
+                    mediaFile.MimeType = MimeTypeInfo.GetCanonicalFromExtension(System.IO.Path.GetExtension(mediaFile.FileName));
                 }
 
-                using (Stream readStream = uploadedFile.FileStream)
+                using (System.IO.Stream readStream = uploadedFile.FileStream)
                 {
-                    using (Stream writeStream = mediaFile.GetNewWriteStream())
+                    using (System.IO.Stream writeStream = mediaFile.GetNewWriteStream())
                     {
                         readStream.CopyTo(writeStream);
                     }
@@ -247,9 +247,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 fileData.MimeType = MimeTypeInfo.GetCanonical(uploadedFile.ContentType);
                 fileData.Length = uploadedFile.ContentLength;
 
-                using (Stream readStream = uploadedFile.FileStream)
+                using (System.IO.Stream readStream = uploadedFile.FileStream)
                 {
-                    using (Stream writeStream = existingFile.GetNewWriteStream())
+                    using (System.IO.Stream writeStream = existingFile.GetNewWriteStream())
                     {
                         readStream.CopyTo(writeStream);
                     }

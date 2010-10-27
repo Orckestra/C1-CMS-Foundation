@@ -7,7 +7,7 @@ using System.Web.UI;
 using System.Xml.Linq;
 using System.Xml;
 using System.Xml.Xsl;
-using System.IO;
+using Composite.Core.NewIO;
 using Composite;
 using Composite.C1Console.Events;
 using Composite.Core.Extensions;
@@ -134,7 +134,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
                 string serializedMarkup = ViewState[FunctionMarkupSessionKey] as string;
 
                 byte[] bytes = System.Text.Encoding.UTF8.GetBytes(serializedMarkup);
-                using (var stream = new MemoryStream(bytes))
+                using (var stream = new System.IO.MemoryStream(bytes))
                 {
                     _functionMarkup = XDocument.Load(stream);
                 }
@@ -290,7 +290,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         if (IsInTestMode)
         {
             // For testing only
-            FunctionMarkup = XDocument.Load(Request.MapPath("functioneditor-sample-function.xml"));
+            FunctionMarkup = XDocumentUtils.Load(Request.MapPath("functioneditor-sample-function.xml"));
         }
 
         WidgetIsShown = false;
@@ -595,7 +595,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         byte[] serializedXDocument;
 
-        using (MemoryStream stream = new MemoryStream())
+        using (System.IO.MemoryStream stream = new System.IO.MemoryStream())
         {
             using (XmlWriter writer = XmlWriter.Create(stream, xmlWriterSettings))
             {

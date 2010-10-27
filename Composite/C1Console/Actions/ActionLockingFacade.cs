@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -270,7 +270,7 @@ namespace Composite.C1Console.Actions
                 object ownerId;
 
                 byte[] bytes = Convert.FromBase64String(lockingInformation.SerializedOwnerId);
-                using (MemoryStream ms = new MemoryStream(bytes))
+                using (System.IO.MemoryStream ms = new System.IO.MemoryStream(bytes))
                 {
                     ownerId = formatter.Deserialize(ms);
                 }
@@ -311,7 +311,7 @@ namespace Composite.C1Console.Actions
             {
                 string serializedOwnerId;
 
-                using (MemoryStream ms = new MemoryStream())
+                using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
                 {
                     formatter.Serialize(ms, lockingInformation.Value.OwnerId);
 

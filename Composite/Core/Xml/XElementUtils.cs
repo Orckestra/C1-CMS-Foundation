@@ -1,12 +1,31 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Linq;
+using Composite.Core.NewIO;
 
 
 namespace Composite.Core.Xml
 {
-    internal static class XElementExtensionMethods
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    internal static class XElementUtils
     {
+        public static XElement Load(string filename)
+        {
+            XElement element;
+
+            using (FileStream stream = new FileStream(filename, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+            {
+                element = XElement.Load(stream);
+            }
+
+            return element;
+        }
+
+
+
         public static bool HasSameSiblings(this XElement element)
         {
             if (element == null) throw new ArgumentNullException("element");
@@ -48,5 +67,6 @@ namespace Composite.Core.Xml
                 return valueAttribute.Value;
             }
         }
+
     }
 }

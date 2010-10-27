@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -17,6 +16,7 @@ using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Linq;
 using Composite.Core.Logging;
+using Composite.Core.NewIO;
 using Composite.Core.Types.Foundation;
 using Microsoft.CSharp;
 
@@ -211,7 +211,7 @@ namespace Composite.Core.Types
             }
 
             string baseFilename = CreatedFilenameParser.CreateFilename(buildManagerCompileUnit);
-            string filename = Path.Combine(_tempAssemblyDirectory, baseFilename);
+            string filename = System.IO.Path.Combine(_tempAssemblyDirectory, baseFilename);
 
 
             CompilerParameters compilerParameters = new CompilerParameters();
@@ -261,7 +261,7 @@ namespace Composite.Core.Types
                 if (buildManagerCompileUnit.IsCacheble == true)
                 {
                     string sourceBaseFilename = CreatedFilenameParser.CreateFilename(buildManagerCompileUnit, "cs");
-                    sourceFilename = Path.Combine(_tempAssemblyDirectory, sourceBaseFilename);
+                    sourceFilename = System.IO.Path.Combine(_tempAssemblyDirectory, sourceBaseFilename);
 
                     using (FileStream file = File.Create(sourceFilename))
                     {
@@ -304,8 +304,8 @@ namespace Composite.Core.Types
 #if DEBUG_MODE
     //////////////////////////////////
     // #warning REMARK THIS SHIT
-            System.IO.FileStream file = System.IO.File.Create(string.Format("{0}.cs", filename));
-            System.IO.StreamWriter sw = new System.IO.StreamWriter(file);
+            Composite.Core.NewIO.FileStream file = Composite.Core.NewIO.File.Create(string.Format("{0}.cs", filename));
+            Composite.Core.NewIO.StreamWriter sw = new Composite.Core.NewIO.StreamWriter(file);
             compiler.GenerateCodeFromCompileUnit(compileUnit.CodeCompileUnit, sw, new CodeGeneratorOptions());
             sw.Close();
             file.Close();
@@ -370,7 +370,7 @@ namespace Composite.Core.Types
                 // Dump info to file
                 //try
                 //{
-                //    using (StreamWriter sw2 = new StreamWriter(Path.Combine(_tempAssemblyDirectory, "HashedToIdMap.txt"), true))
+                //    using (StreamWriter sw2 = new StreamWriter(System.IO.Path.Combine(_tempAssemblyDirectory, "HashedToIdMap.txt"), true))
                 //    {
                 //        sw2.WriteLine(string.Format("{0:X8}\t\t{1}\t{2}\t\t\t\t\t\t{3}", buildManagerCompileUnit.HashedId, buildManagerCompileUnit.AssemblyVersion, buildManagerCompileUnit.Id, buildManagerCompileUnit.Fingerprint));
                 //    }
@@ -411,7 +411,7 @@ namespace Composite.Core.Types
         /// <returns></returns>
         private string GetAssemblyVersionFile(BuildManagerCompileUnit buildManagerCompileUnit)
         {
-            string filename = Path.Combine(_tempAssemblyDirectory, "main.cstemp");
+            string filename = System.IO.Path.Combine(_tempAssemblyDirectory, "main.cstemp");
             File.WriteAllLines(filename, new[] { string.Format(@"[assembly: {0}(""{1}"", true)]",
                                                                        typeof (BuildManagerCompileUnitAssemblyAttribute)
                                                                            .FullName, buildManagerCompileUnit.Id),
@@ -497,7 +497,7 @@ namespace Composite.Core.Types
                 return new CompatibilityCheckResult();
             }
 
-            string tempDllFilePath = Path.Combine(_tempAssemblyDirectory, immutableTypeId + "tempBuild.dll");
+            string tempDllFilePath = System.IO.Path.Combine(_tempAssemblyDirectory, immutableTypeId + "tempBuild.dll");
 
             IEnumerable<string> generatedInterfaces = GetInterfaceSourcesToCompile(immutableTypeId).Evaluate();
             if (generatedInterfaces.FirstOrDefault() == null)
@@ -554,7 +554,7 @@ namespace Composite.Core.Types
             BuildManagerSiloHelper.SiloEmbedClasses(compileUnit, buildManagerCompileUnit.ReferencedAssemblies, compilerParameters);
 
             string tempCsFileName = CreatedFilenameParser.CreateFilename(buildManagerCompileUnit, "temp");
-            string tempCsFilePath = Path.Combine(_tempAssemblyDirectory, tempCsFileName);
+            string tempCsFilePath = System.IO.Path.Combine(_tempAssemblyDirectory, tempCsFileName);
 
             string tempDllFilePath = tempCsFilePath + "dll";
 
@@ -700,7 +700,7 @@ namespace Composite.Core.Types
 
                 if (!filePath.StartsWith(tempFolderPath, true))
                 {
-                    assembliesNotFromCache.Add(Path.GetFileName(filePath));
+                    assembliesNotFromCache.Add(System.IO.Path.GetFileName(filePath));
                 }
             }
 
@@ -710,7 +710,7 @@ namespace Composite.Core.Types
                 string filePath = stringCollection[i];
 
                 if (filePath.StartsWith(tempFolderPath, true)
-                    && assembliesNotFromCache.Contains(Path.GetFileName(filePath), StringComparer.OrdinalIgnoreCase))
+                    && assembliesNotFromCache.Contains(System.IO.Path.GetFileName(filePath), StringComparer.OrdinalIgnoreCase))
                 {
                     stringCollection.RemoveAt(i);
                 }
@@ -760,7 +760,7 @@ namespace Composite.Core.Types
 
             foreach (string locationCandidate in locationCandidates)
             {
-                string locationKey = Path.GetFileName(locationCandidate).ToLower();
+                string locationKey = System.IO.Path.GetFileName(locationCandidate).ToLower();
                 if (locations.ContainsKey(locationKey) == false)
                 {
                     locations.Add(locationKey, locationCandidate);
@@ -787,7 +787,7 @@ namespace Composite.Core.Types
 
             foreach (string binFilename in Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "*.dll"))
             {
-                string filename = Path.GetFileName(binFilename).ToLower();
+                string filename = System.IO.Path.GetFileName(binFilename).ToLower();
 
                 if (filename.ToLower().StartsWith(_assemblyPackFilename.ToLower()) == false)
                 {
@@ -1051,11 +1051,11 @@ namespace Composite.Core.Types
         /// <returns></returns>
         private static string[] GetAppCodeFiles()
         {
-            var folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, GlobalSettingsFacade.AppCodeDirectory);
+            var folderPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, GlobalSettingsFacade.AppCodeDirectory);
             if (!Directory.Exists(folderPath))
                 return new string[0];
 
-            return Directory.GetFiles(folderPath, "*.cs", SearchOption.AllDirectories);
+            return Directory.GetFiles(folderPath, "*.cs", System.IO.SearchOption.AllDirectories);
         }
 
 
@@ -1191,7 +1191,7 @@ namespace Composite.Core.Types
 
                 foreach (string filename in GetAssembliesToCopy())
                 {
-                    string targetFilename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), Path.GetFileName(filename));
+                    string targetFilename = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), System.IO.Path.GetFileName(filename));
 
                     LoggingService.LogVerbose("BuildManager", "Copying '{0}' to '{1}'".FormatWith(filename, targetFilename));
                     File.Copy(filename, targetFilename, true);
@@ -1213,7 +1213,7 @@ namespace Composite.Core.Types
                 return;
             }
 
-            string mainFilename = Path.Combine(_tempAssemblyDirectory, "main.cs");
+            string mainFilename = System.IO.Path.Combine(_tempAssemblyDirectory, "main.cs");
             File.WriteAllLines(mainFilename, new[] 
             { 
                 string.Format(@"[assembly: {0}(""{1}"", true)]", 
@@ -1252,7 +1252,7 @@ namespace Composite.Core.Types
             {
                 Assembly assembly =
                     (from asm in assemblies
-                     where Path.GetFullPath(asm.Location) == Path.GetFullPath(filename)
+                     where System.IO.Path.GetFullPath(asm.Location) == System.IO.Path.GetFullPath(filename)
                      select asm).SingleOrDefault();
 
                 if ((assembly != null) && (assembly.IsCacheble() == true))
@@ -1286,9 +1286,9 @@ namespace Composite.Core.Types
             if (_useAssemblyPacking == true)
             {
                 string fullFilename = GetAssemblyPackFilename();
-                string filename = Path.GetFileName(fullFilename);
+                string filename = System.IO.Path.GetFileName(fullFilename);
 
-                int idx = filename.IndexOf(Path.GetExtension(filename));
+                int idx = filename.IndexOf(System.IO.Path.GetExtension(filename));
 
                 string assemblyName = filename.Remove(idx);
 
@@ -1302,11 +1302,11 @@ namespace Composite.Core.Types
                 IEnumerable<CreatedFilenameParser> createdFilenameParsers = CreatedFilenameParser.GetParsers(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory));
                 foreach (CreatedFilenameParser createdFilenameParser in createdFilenameParsers)
                 {
-                    string filename = Path.GetFileName(createdFilenameParser.Filename);
+                    string filename = System.IO.Path.GetFileName(createdFilenameParser.Filename);
 
-                    int idx = filename.IndexOf(Path.GetExtension(filename));
+                    int idx = filename.IndexOf(System.IO.Path.GetExtension(filename));
 
-                    string assemblyName = Path.GetFileName(filename).Remove(idx);
+                    string assemblyName = System.IO.Path.GetFileName(filename).Remove(idx);
 
                     Assembly.Load(assemblyName);
                 }
@@ -1440,7 +1440,7 @@ namespace Composite.Core.Types
 
         private string GetAssemblyPackFilename()
         {
-            return Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), string.Format("{0}.dll", _assemblyPackFilename));
+            return System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), string.Format("{0}.dll", _assemblyPackFilename));
         }
         #endregion
 

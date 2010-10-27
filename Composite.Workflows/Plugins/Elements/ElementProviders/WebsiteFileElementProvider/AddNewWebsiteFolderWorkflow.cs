@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Workflow.Activities;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Elements;
@@ -43,7 +43,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             string currentPath = GetCurrentPath();
             string newFolderName = this.GetBinding<string>("NewFolderName");
 
-            e.Result = Directory.Exists(Path.Combine(currentPath, newFolderName));
+            e.Result = Directory.Exists(System.IO.Path.Combine(currentPath, newFolderName));
         }
 
 
@@ -60,7 +60,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             string currentPath = GetCurrentPath();
             string newFolderName = this.GetBinding<string>("NewFolderName");
 
-            string newFolderPath = Path.Combine(currentPath, newFolderName);
+            string newFolderPath = System.IO.Path.Combine(currentPath, newFolderName);
 
             Directory.CreateDirectory(newFolderPath);
 

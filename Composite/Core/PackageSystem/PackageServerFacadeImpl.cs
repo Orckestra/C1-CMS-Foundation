@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
+using Composite.Core.NewIO;
 using System.ServiceModel;
 using Composite.Core.PackageSystem.WebServiceClient;
 using Composite.Core.Logging;
@@ -119,7 +119,7 @@ namespace Composite.Core.PackageSystem
 
 
 
-        public Stream GetInstallFileStream(string packageFileDownloadUrl)
+        public System.IO.Stream GetInstallFileStream(string packageFileDownloadUrl)
         {
             LoggingService.LogVerbose("AddOnServerFacade", string.Format("Downloading file: {0}", packageFileDownloadUrl));
 

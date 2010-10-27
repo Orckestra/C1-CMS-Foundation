@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using ICSharpCode.SharpZipLib.Zip;
 
 
@@ -90,13 +90,13 @@ namespace Composite.Core.IO.Zip
         ///     ~/Directory1/Directory2/Filename.txt
         /// </param>
         /// <returns></returns>
-        public Stream GetFileStream(string filename)
+        public System.IO.Stream GetFileStream(string filename)
         {
             string parstedFilename = ParseFilename(filename);
 
             if (_existingFilenamesInZip.ContainsKey(parstedFilename) == false) throw new ArgumentException(string.Format("The file {0} does not exist in the zip", filename));
 
-            ZipInputStream zipInputStream = new ZipInputStream(File.Open(this.ZipFilename, FileMode.Open, FileAccess.Read));
+            ZipInputStream zipInputStream = new ZipInputStream(File.Open(this.ZipFilename, System.IO.FileMode.Open, System.IO.FileAccess.Read));
 
             ZipEntry zipEntry;
             while ((zipEntry = zipInputStream.GetNextEntry()) != null)
@@ -124,9 +124,9 @@ namespace Composite.Core.IO.Zip
         /// <returns></returns>
         public void WriteFileToDisk(string filename, string targetFilename)
         {
-            using (Stream stream = GetFileStream(filename))
+            using (System.IO.Stream stream = GetFileStream(filename))
             {
-                using (FileStream fileStream = new FileStream(targetFilename, FileMode.Create, FileAccess.Write))
+                using (FileStream fileStream = new FileStream(targetFilename, System.IO.FileMode.Create, System.IO.FileAccess.Write))
                 {
                     byte[] buffer = new byte[4096];
 
@@ -143,7 +143,7 @@ namespace Composite.Core.IO.Zip
 
         private void Initialize()
         {
-            using (FileStream fileStream = File.Open(this.ZipFilename, FileMode.Open, FileAccess.Read))
+            using (FileStream fileStream = File.Open(this.ZipFilename, System.IO.FileMode.Open, System.IO.FileAccess.Read))
             {
                 using (ZipInputStream zipInputStream = new ZipInputStream(fileStream))
                 {

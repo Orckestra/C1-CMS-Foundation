@@ -2,7 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Web;
 
 using Composite;
@@ -32,7 +32,7 @@ public class ImageManipulator : IHttpHandler
                 return;
             }
             
-            string basePath = Path.GetDirectoryName(PathUtil.BaseDirectory);
+            string basePath = System.IO.Path.GetDirectoryName(PathUtil.BaseDirectory);
             
             fullFilePath = basePath + file;
 
@@ -51,7 +51,7 @@ public class ImageManipulator : IHttpHandler
 
         Verify.IsNotNull(fullFilePath, "Unexpected exception");
         
-        context.Response.AddHeader("Content-Disposition", "attachment;filename=" + HttpUtility.UrlEncode(Path.GetFileName(fullFilePath)));        
+        context.Response.AddHeader("Content-Disposition", "attachment;filename=" + HttpUtility.UrlEncode(System.IO.Path.GetFileName(fullFilePath)));        
         context.Response.WriteFile(fullFilePath);
 
         context.ApplicationInstance.CompleteRequest();

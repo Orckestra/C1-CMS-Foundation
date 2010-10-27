@@ -2,7 +2,7 @@
 using System.Web.UI.WebControls;
 using System.Web.UI;
 using System.Web;
-using System.IO;
+using Composite.Core.NewIO;
 
 namespace Composite.Core.WebClient.UiControlLib
 {
@@ -13,7 +13,7 @@ namespace Composite.Core.WebClient.UiControlLib
         protected override void Render(HtmlTextWriter writer)
         {
             StringBuilder markupBuilder = new StringBuilder();
-            StringWriter sw = new StringWriter(markupBuilder);
+            System.IO.StringWriter sw = new System.IO.StringWriter(markupBuilder);
             base.Render(new HtmlTextWriter(sw));
 
             writer.Write( HttpUtility.HtmlEncode(markupBuilder.ToString()));

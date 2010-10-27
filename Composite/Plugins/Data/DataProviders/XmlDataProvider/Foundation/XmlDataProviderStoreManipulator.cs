@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Data;
@@ -8,6 +8,7 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Data.Plugins.DataProvider.CodeGeneration.PropertyInitializer;
 using Composite.Core.IO;
+using Composite.Core.Xml;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
@@ -58,7 +59,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     string oldFilename = ResolvePath(oldDataScopeConfigurationElement.Filename, providerName);
                     string newFilename = ResolvePath(newDataScopeConfigurationElement.Filename, providerName);
 
-                    XDocument oldDocument = XDocument.Load(PathUtil.Resolve(oldFilename));
+                    XDocument oldDocument = XDocumentUtils.Load(PathUtil.Resolve(oldFilename));
 
                     List<XElement> newElements = new List<XElement>();
 
@@ -115,7 +116,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     XDocument newDocument = new XDocument();
                     newDocument.Add(newRoot);
 
-                    newDocument.Save(newFilename);
+                    XDocumentUtils.Save(newDocument, newFilename);
                 }
             }
         }
@@ -136,7 +137,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             string filename = ResolvePath(scopeElement.Filename, providerName);
 
-            string directoryPath = Path.GetDirectoryName(filename);
+            string directoryPath = System.IO.Path.GetDirectoryName(filename);
             if (Directory.Exists(directoryPath)==false)
             {
                 Directory.CreateDirectory(directoryPath);
@@ -149,7 +150,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             {
                 try
                 {
-                    XDocument existingDocument = XDocument.Load(filename);
+                    XDocument existingDocument = XDocumentUtils.Load(filename);
                     if (existingDocument.Root.Name.LocalName == rootLocalName)
                     {
                         keepExistingFile = true;
@@ -170,7 +171,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             {
                 XDocument document = new XDocument();
                 document.Add(new XElement(rootLocalName));
-                document.Save(filename);
+                XDocumentUtils.Save(document, filename);
             }
         }
 
@@ -199,9 +200,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             XmlDataProviderData providerConfiguration = GetProviderSettings(providerName);
 
-            string s = Path.Combine(providerConfiguration.StoreDirectory, filename);
+            string s = System.IO.Path.Combine(providerConfiguration.StoreDirectory, filename);
 
-            return PathUtil.Resolve(Path.Combine(providerConfiguration.StoreDirectory, filename));
+            return PathUtil.Resolve(System.IO.Path.Combine(providerConfiguration.StoreDirectory, filename));
         }
 
 

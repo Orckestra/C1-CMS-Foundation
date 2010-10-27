@@ -1,5 +1,5 @@
 using System;
-using System.IO;
+using Composite.Core.NewIO;
 using Composite.Core.IO;
 using Composite.Data.Types;
 using Composite.Data.Streams;
@@ -11,7 +11,7 @@ namespace Composite.Data.Plugins.DataProvider.Streams
 {
     internal sealed class TransactionFileSystemFileStreamManager : IFileStreamManager
     {
-        public Stream GetReadStream(IFile file)
+        public System.IO.Stream GetReadStream(IFile file)
         {
             if (file == null) throw new ArgumentNullException("file");
 
@@ -21,7 +21,7 @@ namespace Composite.Data.Plugins.DataProvider.Streams
 
             if (baseFile.CurrentWriteStream == null)
             {
-                return new FileStream(baseFile.SystemPath, FileMode.OpenOrCreate, FileAccess.Read);
+                return new FileStream(baseFile.SystemPath, System.IO.FileMode.OpenOrCreate, System.IO.FileAccess.Read);
             }
             else
             {
@@ -30,13 +30,13 @@ namespace Composite.Data.Plugins.DataProvider.Streams
                     throw new InvalidOperationException("Trying to read from a writable stream that is not closed");
                 }
 
-                return new MemoryStream(baseFile.CurrentWriteStream.Data);
+                return new System.IO.MemoryStream(baseFile.CurrentWriteStream.Data);
             }
         }
 
 
 
-        public Stream GetNewWriteStream(IFile file)
+        public System.IO.Stream GetNewWriteStream(IFile file)
         {
             if (file == null) throw new ArgumentNullException("file");
 
@@ -71,7 +71,7 @@ namespace Composite.Data.Plugins.DataProvider.Streams
 
             if (Transaction.Current == null)
             {
-                Core.Logging.LoggingService.LogWarning("Transaction not active", "There is no current transaction that the File System File Stream manager can attach to - going ahead with delete without transactional support.");
+                Core.Logging.LoggingService.LogWarning("Transaction not active", "There is no current transaction that the File System File System.IO.Stream manager can attach to - going ahead with delete without transactional support.");
                 DeleteFile(baseFile.SystemPath);
             }
             else
@@ -92,15 +92,15 @@ namespace Composite.Data.Plugins.DataProvider.Streams
 
             if (Transaction.Current == null)
             {
-                Core.Logging.LoggingService.LogWarning("Transaction not active", "There is no current transaction that the File System File Stream manager can attach to - going ahead with write to disk without transactional support.");
+                Core.Logging.LoggingService.LogWarning("Transaction not active", "There is no current transaction that the File System File System.IO.Stream manager can attach to - going ahead with write to disk without transactional support.");
 
                 if (baseFile.CurrentWriteStream != null)
                 {
                     DirectoryUtil.EnsurePath(baseFile.SystemPath);
 
-                    using (Stream stream = file.GetReadStream())
+                    using (System.IO.Stream stream = file.GetReadStream())
                     {
-                        using (Stream writeStream = new FileStream(baseFile.SystemPath, FileMode.Create, FileAccess.Write))
+                        using (System.IO.Stream writeStream = new FileStream(baseFile.SystemPath, System.IO.FileMode.Create, System.IO.FileAccess.Write))
                         {
                             stream.CopyTo(writeStream);
                         }
@@ -138,9 +138,9 @@ namespace Composite.Data.Plugins.DataProvider.Streams
                 {
                     DirectoryUtil.EnsurePath(baseFile.SystemPath);
 
-                    using (Stream stream = file.GetReadStream())
+                    using (System.IO.Stream stream = file.GetReadStream())
                     {
-                        using (Stream writeStream = new FileStream(baseFile.SystemPath, FileMode.Create, FileAccess.Write))
+                        using (System.IO.Stream writeStream = new FileStream(baseFile.SystemPath, System.IO.FileMode.Create, System.IO.FileAccess.Write))
                         {
                             stream.CopyTo(writeStream);
                         }

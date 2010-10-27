@@ -1,4 +1,4 @@
-using System.IO;
+using Composite.Core.NewIO;
 using Composite.Data.Streams;
 
 
@@ -11,7 +11,7 @@ namespace Composite.Data.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class IFileExtensions
     {
-        public static Stream GetReadStream(this IFile file)
+        public static System.IO.Stream GetReadStream(this IFile file)
         {
             IFileStreamManager manager = FileStreamManagerLocator.GetFileStreamManager(file.GetType());
 
@@ -20,7 +20,7 @@ namespace Composite.Data.Types
 
 
 
-        public static Stream GetNewWriteStream(this IFile file)
+        public static System.IO.Stream GetNewWriteStream(this IFile file)
         {
             IFileStreamManager manager = FileStreamManagerLocator.GetFileStreamManager(file.GetType());
 
@@ -39,7 +39,7 @@ namespace Composite.Data.Types
         /// </summary>
         public static string ReadAllText(this IFile file)
         {
-            using (Stream fileStream = GetReadStream(file))
+            using (System.IO.Stream fileStream = GetReadStream(file))
             {
                 using (StreamReader sr = new StreamReader(fileStream))
                 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Web.Hosting;
@@ -132,12 +132,12 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             SubscribedTypesCache cached;
             try
             {
-                using(var fileStream = File.Open(TempFilePath, FileMode.Open))
+                using(var fileStream = File.Open(TempFilePath, System.IO.FileMode.Open))
                 {
                     cached = GetSerializer().Deserialize(fileStream) as SubscribedTypesCache;
                 }
             }
-            catch (IOException)
+            catch (System.IO.IOException)
             {
                 LoggingService.LogWarning(typeof(AttributeBasedApplicationStartupHandler).FullName, "Failed to open file '{0}'".FormatWith(TempFilePath));
                 return result;
@@ -170,7 +170,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
 
         private static Type[] GetSubscribedTypes(string filePath, List<AssemblyInfo> cachedTypesInfo, ref bool cacheHasBeenUpdated)
         {
-            string assemblyName = Path.GetFileNameWithoutExtension(filePath);
+            string assemblyName = System.IO.Path.GetFileNameWithoutExtension(filePath);
             if(assemblyName == "Composite.Generated")
             {
                 return null;
@@ -274,7 +274,8 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
                         Directory.CreateDirectory(TempDirectoryPath);
                     }
 
-                    using(var fileStream = File.Open(TempFilePath, FileMode.Create))
+                    using(var fileStream = File.Open(TempFilePath, System.IO.FileMode.Create))
+               //     using (var fileStream = System.IO.File.Open(TempFilePath, System.IO.FileMode.Create))
                     {
                         GetSerializer().Serialize(fileStream, root);
                     }
@@ -343,7 +344,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             {
                 if (_tempFilePath == null)
                 {
-                    _tempFilePath = Path.Combine(TempDirectoryPath, TempFileName);
+                    _tempFilePath = System.IO.Path.Combine(TempDirectoryPath, TempFileName);
                 }
                 
                 return _tempFilePath;

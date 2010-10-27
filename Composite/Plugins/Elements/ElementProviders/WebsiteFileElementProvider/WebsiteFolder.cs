@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using Composite.Core.NewIO;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
@@ -20,7 +20,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             {
                 if (_folderName == null)
                 {
-                    _folderName = Path.GetFileName(this.FullPath);
+                    _folderName = System.IO.Path.GetFileName(this.FullPath);
                 }
 
                 return _folderName;

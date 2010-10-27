@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -331,7 +331,7 @@ namespace Composite
 
                 if (RuntimeInformation.IsDebugBuild == true)
                 {
-                    string workflowTestDir = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.AutoPackageInstallDirectory), "WorkflowTesting");
+                    string workflowTestDir = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.AutoPackageInstallDirectory), "WorkflowTesting");
                     if (Directory.Exists(workflowTestDir))
                     {
                         LoggingService.LogVerbose("GlobalInitializerFacade", string.Format("Installing packages from: {0}", workflowTestDir));
@@ -344,7 +344,7 @@ namespace Composite
                 {
                     try
                     {
-                        using (Stream zipFileStream = File.OpenRead(kvp.Value))
+                        using (System.IO.Stream zipFileStream = File.OpenRead(kvp.Value))
                         {
                             // TODO: Log validation messages
                             PackageManagerInstallProcess packageManagerInstallProcess = PackageManager.Install(zipFileStream, true);

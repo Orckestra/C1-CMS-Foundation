@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Workflow.Runtime;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
@@ -60,9 +60,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                     return;
                 }
 
-                using (Stream readStream = uploadedFile.FileStream)
+                using (System.IO.Stream readStream = uploadedFile.FileStream)
                 {
-                    using (Stream writeStream = mediaFile.GetNewWriteStream())
+                    using (System.IO.Stream writeStream = mediaFile.GetNewWriteStream())
                     {
                         readStream.CopyTo(writeStream);
                     }

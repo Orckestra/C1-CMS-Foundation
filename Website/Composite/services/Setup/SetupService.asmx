@@ -1,7 +1,7 @@
 ﻿<%@ WebService Language="C#" Class="Composite.Core.WebClient.Setup.SetupService" %>
 
 using System;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Xml;
 using System.Runtime.InteropServices;
@@ -155,7 +155,7 @@ namespace Composite.Core.WebClient.Setup
                     FileEx.Delete(filePath);
                 }
 
-                string directory = Path.Combine(Path.GetDirectoryName(filePath), "NtfsSecurityTest");
+                string directory = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(filePath), "NtfsSecurityTest");
                 if (Directory.Exists(directory) == false)
                 {
                     Directory.CreateDirectory(directory);

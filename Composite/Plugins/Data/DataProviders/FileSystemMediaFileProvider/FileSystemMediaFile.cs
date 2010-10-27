@@ -7,7 +7,7 @@ using System.Globalization;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Streams;
 using Composite.Core.IO;
-using System.IO;
+using Composite.Core.NewIO;
 
 namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
 {
@@ -16,7 +16,6 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
     {
         private static readonly MD5 HashingAlgorithm = MD5.Create(); 
 
-        private FileInfo _fileInfo;
 
 
         public FileSystemMediaFile(string systemPath, string fileName, string folderName, string storeId, DataSourceId dataSourceId)
@@ -110,7 +109,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
 
         public string MimeType
         {
-            get { return MimeTypeInfo.GetCanonicalFromExtension(Path.GetExtension(this.FileName)); }
+            get { return MimeTypeInfo.GetCanonicalFromExtension(System.IO.Path.GetExtension(this.FileName)); }
         }
 
 
@@ -120,7 +119,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
         {
             get 
             {
-                return (int)this.FileInfo.Length;
+                return (int)File.GetLength(this.SystemPath);
             }
         }
 
@@ -130,7 +129,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
         {
             get 
             {
-                return this.FileInfo.CreationTime;
+                return File.GetCreationTime(this.SystemPath);
             }
         }
 
@@ -140,7 +139,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
         {
             get 
             {
-                return this.FileInfo.LastWriteTime;
+                return File.GetLastWriteTime(this.SystemPath);
             }
         }
 
@@ -150,7 +149,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
         {
             get
             {
-                return this.FileInfo.IsReadOnly;
+                return (File.GetAttributes(this.SystemPath) & System.IO.FileAttributes.ReadOnly) == System.IO.FileAttributes.ReadOnly;
             }
             set
             {
@@ -174,19 +173,6 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
             set;
         }
 
-
-
-        private FileInfo FileInfo
-        {
-            get
-            {
-                if (_fileInfo == null)
-                {
-                    _fileInfo = new FileInfo(this.SystemPath);
-                }
-                return _fileInfo;
-            }
-        }
 
 
         public DataSourceId DataSourceId

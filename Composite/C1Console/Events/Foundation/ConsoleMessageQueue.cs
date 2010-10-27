@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
-using Composite.C1Console.Events;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
 using Composite.Core.Logging;
+using Composite.Core.NewIO;
 using Composite.Core.Serialization;
+using Composite.Core.Xml;
 
 
 namespace Composite.C1Console.Events.Foundation
@@ -173,7 +173,7 @@ namespace Composite.C1Console.Events.Foundation
                     }
 
                     string timeSortedUniqueFileName = string.Format("{0}.{1}.xml", (long.MaxValue - DateTime.Now.Ticks), Guid.NewGuid());
-                    string queueElementsXmlFilePath = Path.Combine(serializedConsoleMessagesDir, timeSortedUniqueFileName);
+                    string queueElementsXmlFilePath = System.IO.Path.Combine(serializedConsoleMessagesDir, timeSortedUniqueFileName);
 
                     serializedMessages.Save(queueElementsXmlFilePath);
                 }
@@ -196,7 +196,7 @@ namespace Composite.C1Console.Events.Foundation
                     {
                         try
                         {
-                            XElement serializedMessages = XElement.Load(xmlFilePath);
+                            XElement serializedMessages = XElementUtils.Load(xmlFilePath);
 
                             List<ConsoleMessageQueueElement> messageList = xmlSerializer.Deserialize(serializedMessages) as List<ConsoleMessageQueueElement>;
 

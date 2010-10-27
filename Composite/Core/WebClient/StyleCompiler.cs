@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 
 namespace Composite.Core.WebClient
 {
@@ -9,7 +9,7 @@ namespace Composite.Core.WebClient
     {
         public static void Compile(string sourceFile, string targetFile)
         {
-            using (var outputFile = File.Open(targetFile, FileMode.Create))
+            using (var outputFile = File.Open(targetFile, System.IO.FileMode.Create))
             {
                 using (var writer = new StreamWriter(outputFile))
                 {
@@ -40,9 +40,9 @@ namespace Composite.Core.WebClient
                         {
                             string relativeIncludedFilePath =
                                 trimmedline.Substring(fileNameBegin + 1, fileNameEnd - fileNameBegin - 1).Replace('/', '\\');
-                            string directoryPath = Path.GetDirectoryName(fileToInclude);
+                            string directoryPath = System.IO.Path.GetDirectoryName(fileToInclude);
 
-                            string includedFilePath = Path.Combine(directoryPath, relativeIncludedFilePath);
+                            string includedFilePath = System.IO.Path.Combine(directoryPath, relativeIncludedFilePath);
                             if (alreadyIncludedFiles.Contains(includedFilePath))
                             {
                                 continue;

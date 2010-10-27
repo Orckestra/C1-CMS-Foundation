@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -23,6 +23,7 @@ using Composite.C1Console.Workflow.Activities.Foundation;
 using Composite.C1Console.Workflow.Foundation;
 using Composite.C1Console.Workflow.Foundation.PluginFacades;
 using Composite.Data;
+using Composite.Core.Xml;
 
 
 namespace Composite.C1Console.Workflow
@@ -1033,10 +1034,10 @@ namespace Composite.C1Console.Workflow
             {
                 foreach (string filename in Directory.GetFiles(SerializedWorkflowsDirectory, "*.xml"))
                 {
-                    string guidString = Path.GetFileNameWithoutExtension(filename);
+                    string guidString = System.IO.Path.GetFileNameWithoutExtension(filename);
                     Guid id = new Guid(guidString);
 
-                    XDocument doc = XDocument.Load(filename);
+                    XDocument doc = XDocumentUtils.Load(filename);
 
                     try
                     {
@@ -1152,10 +1153,10 @@ namespace Composite.C1Console.Workflow
                 {
                     XElement element = kvp.Value.Serialize();
 
-                    string filename = Path.Combine(SerializedWorkflowsDirectory, string.Format("{0}.xml", instanceid));
+                    string filename = System.IO.Path.Combine(SerializedWorkflowsDirectory, string.Format("{0}.xml", instanceid));
 
                     XDocument doc = new XDocument(element);
-                    doc.Save(filename);
+                    XDocumentUtils.Save(doc, filename);
 
                     LoggingService.LogVerbose("WorkflowFacade", string.Format("FormData persisted for workflow id = {0}", instanceid));
                 }
@@ -1185,7 +1186,7 @@ namespace Composite.C1Console.Workflow
         {
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
-                string filename = Path.Combine(SerializedWorkflowsDirectory, string.Format("{0}.xml", instanceId));
+                string filename = System.IO.Path.Combine(SerializedWorkflowsDirectory, string.Format("{0}.xml", instanceId));
 
                 if (File.Exists(filename) == true)
                 {
@@ -1208,9 +1209,9 @@ namespace Composite.C1Console.Workflow
 
                     if (DateTime.Now.Subtract(creationTime) > _oldFileExistensTimeout)
                     {
-                        Guid instanceId = new Guid(Path.GetFileNameWithoutExtension(filename));
+                        Guid instanceId = new Guid(System.IO.Path.GetFileNameWithoutExtension(filename));
 
-                        if (Path.GetExtension(filename) == "bin")
+                        if (System.IO.Path.GetExtension(filename) == "bin")
                         {
                             try
                             {

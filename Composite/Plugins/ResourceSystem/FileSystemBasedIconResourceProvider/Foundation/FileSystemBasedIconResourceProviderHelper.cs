@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.IO;
+using Composite.Core.NewIO;
 using Composite.Core.ResourceSystem;
+using Composite.Core.Xml;
 using ICSharpCode.SharpZipLib.Zip;
 
 
@@ -27,7 +28,7 @@ namespace Composite.Plugins.ResourceSystem.FileSystemBasedIconResourceProvider.F
         {
             _resolvedBaseDirectoryPath = PathUtil.Resolve(baseDirectoryPath);
 
-            _mappingsFileFullPath = Path.Combine(_resolvedBaseDirectoryPath, iconMappingsFileName);
+            _mappingsFileFullPath = System.IO.Path.Combine(_resolvedBaseDirectoryPath, iconMappingsFileName);
 
         }
 
@@ -93,7 +94,7 @@ namespace Composite.Plugins.ResourceSystem.FileSystemBasedIconResourceProvider.F
 
                         try
                         {
-                            _mappings = XElement.Load(_mappingsFileFullPath);
+                            _mappings = XElementUtils.Load(_mappingsFileFullPath);
                         }
                         catch (Exception ex)
                         {
@@ -121,7 +122,7 @@ namespace Composite.Plugins.ResourceSystem.FileSystemBasedIconResourceProvider.F
 
             if (this.ZipFileMode==false)
             {
-                string fullPath = Path.Combine(_resolvedBaseDirectoryPath, fileRelativePath);
+                string fullPath = System.IO.Path.Combine(_resolvedBaseDirectoryPath, fileRelativePath);
 
                 return (Bitmap)Bitmap.FromFile(fullPath);
             }
@@ -132,14 +133,14 @@ namespace Composite.Plugins.ResourceSystem.FileSystemBasedIconResourceProvider.F
 
                 if (ze != null)
                 {
-                    using (Stream fileStream = zf.GetInputStream(ze))
+                    using (System.IO.Stream fileStream = zf.GetInputStream(ze))
                     {
                         return (Bitmap)Bitmap.FromStream(fileStream);
                     }
                 }
                 else
                 {
-                    throw new FileNotFoundException(string.Format("Icon '{0}' not found in ZIP archive.", fileRelativePath));
+                    throw new System.IO.FileNotFoundException(string.Format("Icon '{0}' not found in ZIP archive.", fileRelativePath));
                 }
             }
         }
@@ -156,7 +157,7 @@ namespace Composite.Plugins.ResourceSystem.FileSystemBasedIconResourceProvider.F
                 }
                 else
                 {
-                    return Path.Combine(_resolvedBaseDirectoryPath, _mappings.Attribute("zipfilepath").Value);
+                    return System.IO.Path.Combine(_resolvedBaseDirectoryPath, _mappings.Attribute("zipfilepath").Value);
                 }
             }
         }

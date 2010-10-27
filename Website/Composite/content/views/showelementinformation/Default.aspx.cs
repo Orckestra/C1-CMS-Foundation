@@ -21,7 +21,7 @@ using Composite.Data;
 using Composite.Core.WebClient;
 using Composite.Core.IO;
 using Composite.Core.Configuration;
-using System.IO;
+using Composite.Core.NewIO;
 
 
 public partial class ShowElementInformation_Default : System.Web.UI.Page
@@ -36,7 +36,7 @@ public partial class ShowElementInformation_Default : System.Web.UI.Page
         }
 
         Guid piggybagId = new Guid(Request.QueryString["PiggyBagId"]);
-        string filename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), string.Format("{0}.showinfo", piggybagId));
+        string filename = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), string.Format("{0}.showinfo", piggybagId));
 
         string[] showinfo = File.ReadAllLines(filename);
 

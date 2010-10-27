@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.Collections.Generic;
 using Composite.Core.IO;
 using Composite.Core.Logging;
+using Composite.Core.NewIO;
 using Composite.Core.ResourceSystem.Plugins.ResourceProvider;
+using Composite.Core.Xml;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
@@ -57,7 +58,7 @@ namespace Composite.Plugins.ResourceSystem.XmlStringResourceProvider
             {
                 stringDictionary = GetStringsForCulture(cultureInfo);
             }
-            catch (FileNotFoundException ex)
+            catch (System.IO.FileNotFoundException ex)
             {
                 return string.Format("*** FILE '{0}' NOT FOUND ***", ex.FileName);
             }
@@ -170,7 +171,7 @@ namespace Composite.Plugins.ResourceSystem.XmlStringResourceProvider
                     }
 
                     string resolvedFileName = PathUtil.Resolve(unresolvedFileName);
-                    XElement strings = XElement.Load(resolvedFileName);
+                    XElement strings = XElementUtils.Load(resolvedFileName);
 
                     stringDictionary = new Dictionary<string, string>();
 

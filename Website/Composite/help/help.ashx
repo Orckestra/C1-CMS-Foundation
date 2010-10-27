@@ -3,7 +3,7 @@
 using System;
 using System.Configuration;
 using System.Text;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Net;
 using System.Xml.Linq;
 using System.Web;
@@ -40,7 +40,7 @@ public class HelpHandler : IHttpHandler
 
         WebResponse webResponse = request.GetResponse();
 
-        using (Stream responseStream = webResponse.GetResponseStream())
+        using (System.IO.Stream responseStream = webResponse.GetResponseStream())
         {
             using( StreamReader sr = new StreamReader(responseStream))
             {

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Composite.Core.Serialization;
 
@@ -10,14 +10,14 @@ namespace Composite.Data.Validation
 	{
         public string Serialize(object objectToSerialize)
         {            
-            using (MemoryStream ms = new MemoryStream())
+            using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
             {
                 BinaryFormatter binaryFormatter = new BinaryFormatter();
                 binaryFormatter.Serialize(ms, objectToSerialize);
 
-                ms.Seek(0, SeekOrigin.Begin);
+                ms.Seek(0, System.IO.SeekOrigin.Begin);
 
-                using (BinaryReader br = new BinaryReader(ms))
+                using (System.IO.BinaryReader br = new System.IO.BinaryReader(ms))
                 {
                     byte[] bytes = br.ReadBytes((int)ms.Length);
 
@@ -33,7 +33,7 @@ namespace Composite.Data.Validation
         public object Deserialize(string serializedObject)
         {
             byte[] bytes = Convert.FromBase64String(serializedObject);
-            using (MemoryStream ms = new MemoryStream(bytes))
+            using (System.IO.MemoryStream ms = new System.IO.MemoryStream(bytes))
             {
                 BinaryFormatter binaryFormatter = new BinaryFormatter();
                 

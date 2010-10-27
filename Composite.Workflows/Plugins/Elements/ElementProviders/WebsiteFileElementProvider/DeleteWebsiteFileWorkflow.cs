@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using Composite.Core.NewIO;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.Core.ResourceSystem;

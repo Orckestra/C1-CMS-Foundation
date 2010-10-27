@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -12,6 +12,7 @@ using Composite.Core.Logging;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
 using Composite.C1Console.Users;
+using Composite.Core.Xml;
 
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers

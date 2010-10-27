@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.IO;
+using Composite.Core.NewIO;
 
 namespace Composite.Core.IO.Zip
 {
@@ -17,7 +17,7 @@ namespace Composite.Core.IO.Zip
         IEnumerable<string> GetFilenames();
         IEnumerable<string> GetFilenames(string directoryName);
         IEnumerable<string> GetDirectoryNames();
-        Stream GetFileStream(string filename);
+        System.IO.Stream GetFileStream(string filename);
         void WriteFileToDisk(string filename, string targetFilename);
 	}
 }

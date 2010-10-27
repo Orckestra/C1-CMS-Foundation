@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Net;
 using System.ServiceModel;
@@ -15,6 +15,7 @@ using Composite.Core.Logging;
 using Composite.Core.PackageSystem;
 using Composite.C1Console.Security;
 using Composite.Core.WebClient.Setup.WebServiceClient;
+using Composite.Core.Xml;
 
 
 namespace Composite.Core.WebClient.Setup
@@ -45,7 +46,7 @@ namespace Composite.Core.WebClient.Setup
                 {
                     string filepath = PathUtil.Resolve(@"~/App_Data/Composite/Composite.config");
 
-                    XDocument doc = XDocument.Load(filepath);
+                    XDocument doc = XDocumentUtils.Load(filepath);
                     XElement element = doc.Root.Descendants("Composite.SetupConfiguration").Single();
 
                     _packageServerUrl = element.Attribute("PackageServerUrl").Value;
@@ -166,9 +167,9 @@ namespace Composite.Core.WebClient.Setup
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
                 byte[] buffer = new byte[32768];
-                using (Stream inputStream = response.GetResponseStream())
+                using (System.IO.Stream inputStream = response.GetResponseStream())
                 {
-                    using (MemoryStream outputStream = new MemoryStream())
+                    using (System.IO.MemoryStream outputStream = new System.IO.MemoryStream())
                     {
                         int read;
                         while ((read = inputStream.Read(buffer, 0, 32768)) > 0)
@@ -176,7 +177,7 @@ namespace Composite.Core.WebClient.Setup
                             outputStream.Write(buffer, 0, read);
                         }
 
-                        outputStream.Seek(0, SeekOrigin.Begin);
+                        outputStream.Seek(0, System.IO.SeekOrigin.Begin);
 
                         PackageManagerInstallProcess packageManagerInstallProcess = PackageManager.Install(outputStream, true);
                         if (packageManagerInstallProcess.PreInstallValidationResult.Count > 0)

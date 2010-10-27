@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using System.IO;
+using Composite.Core.NewIO;
 using Composite.C1Console.Forms.Flows;
 
 
@@ -28,7 +28,7 @@ namespace Composite.C1Console.Forms.Flows
 
         public XmlReader GetReader()
         {
-            return new XmlTextReader(new StringReader(this.Document));
+            return new XmlTextReader(new System.IO.StringReader(this.Document));
         }
     }
 }

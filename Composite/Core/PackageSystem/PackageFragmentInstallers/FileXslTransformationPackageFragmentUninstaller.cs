@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Xsl;
@@ -9,6 +9,7 @@ using Composite.Core.IO;
 using Composite.Core.Logging;
 using Composite.Core.Extensions;
 using Installer = Composite.Core.PackageSystem.PackageFragmentInstallers.FileXslTransformationPackageFragmentInstaller;
+using Composite.Core.Xml;
 
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
@@ -73,7 +74,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 		{
             if (_xsls == null) throw new InvalidOperationException("Has not been validated");
 
-			Stream stream;
+			System.IO.Stream stream;
             foreach (XslTransformation xslfile in _xsls)
 			{
                 LoggingService.LogVerbose("XsltPackageFragmentInstaller",
@@ -95,7 +96,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         xslt.Transform(xmlFilePath, writer);
 					}
 
-                    resultDocument.Save(xmlFilePath);
+                    XDocumentUtils.Save(resultDocument, xmlFilePath);
 
 					LoggingService.LogVerbose("XsltTransformationResult", resultDocument.ToString());
 				}

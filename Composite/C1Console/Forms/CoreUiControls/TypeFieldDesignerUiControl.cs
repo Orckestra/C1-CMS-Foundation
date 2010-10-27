@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 
 using Composite.C1Console.Forms.Foundation;
 using Composite.Data.DynamicTypes;

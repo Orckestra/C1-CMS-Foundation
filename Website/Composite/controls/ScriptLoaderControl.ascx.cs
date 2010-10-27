@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Net;
 using System.Text;
 using System.Web;
@@ -39,7 +39,7 @@ public partial class ScriptLoaderControl : System.Web.UI.UserControl
             _mode = CompositeScriptMode.OPERATE;
         }
 
-        string folderPath = Path.Combine(HttpContext.Current.Request.PhysicalApplicationPath, "Composite");
+        string folderPath = System.IO.Path.Combine(HttpContext.Current.Request.PhysicalApplicationPath, "Composite");
 
         switch (type)
         {
@@ -78,7 +78,7 @@ public partial class ScriptLoaderControl : System.Web.UI.UserControl
     {
         try
         {
-            string folderPath = Path.Combine(HttpContext.Current.Request.PhysicalApplicationPath, "Composite");
+            string folderPath = System.IO.Path.Combine(HttpContext.Current.Request.PhysicalApplicationPath, "Composite");
 
             string targetPath = folderPath + "\\scripts\\compressed";
 
@@ -106,8 +106,8 @@ public partial class ScriptLoaderControl : System.Web.UI.UserControl
      */
     private void RenderMarkup(HtmlTextWriter writer)
     {
-        //string thisVirtualFolder = System.IO.Path.GetDirectoryName(this.AppRelativeVirtualPath);
-        //string parentVirtualFolder = thisVirtualFolder.Substring(0, thisVirtualFolder.LastIndexOf(System.IO.Path.DirectorySeparatorChar));
+        //string thisVirtualFolder = Composite.Core.NewIO.Path.GetDirectoryName(this.AppRelativeVirtualPath);
+        //string parentVirtualFolder = thisVirtualFolder.Substring(0, thisVirtualFolder.LastIndexOf(Composite.Core.NewIO.Path.DirectorySeparatorChar));
         //string fullPathWindowsStyle = parentVirtualFolder.Replace( "~", HttpContext.Current.Request.ApplicationPath );
 
         string _root = Composite.Core.WebClient.UrlUtils.AdminRootPath;
@@ -192,7 +192,7 @@ public partial class ScriptLoaderControl : System.Web.UI.UserControl
             request.Timeout = 1000;
             using (WebResponse response = request.GetResponse())
             {
-                using (Stream responseStream = response.GetResponseStream())
+                using (System.IO.Stream responseStream = response.GetResponseStream())
                 {
                     XmlTextReader reader = new XmlTextReader(responseStream);
                     while (reader.Read() && !result)

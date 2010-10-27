@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Configuration;
-using System.IO;
+using Composite.Core.NewIO;
 using Composite.Core.Application;
 using Composite.Core.Application.Plugins.ApplicationOnlineHandler;
 using Composite.Core.IO;
@@ -22,11 +22,11 @@ namespace Composite.Plugins.Application.ApplicationOnlineHandlers.AspNetApplicat
         {
             if (string.IsNullOrEmpty(appOfflineFilename) == true) throw new ArgumentNullException("appOfflineFilename");
 
-            _sourceFilename = Path.Combine(PathUtil.Resolve(PathUtil.BaseDirectory), PathUtil.Resolve(appOfflineFilename));
+            _sourceFilename = System.IO.Path.Combine(PathUtil.Resolve(PathUtil.BaseDirectory), PathUtil.Resolve(appOfflineFilename));
 
-            string filename = Path.GetFileName(_sourceFilename);
+            string filename = System.IO.Path.GetFileName(_sourceFilename);
 
-            _targetFilename = Path.Combine(PathUtil.Resolve(PathUtil.BaseDirectory), filename);
+            _targetFilename = System.IO.Path.Combine(PathUtil.Resolve(PathUtil.BaseDirectory), filename);
         }
 
 

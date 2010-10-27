@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Composite.Functions;
 using System.Xml.Linq;
-using System.IO;
+using Composite.Core.NewIO;
 using Composite.Core.IO;
 using Composite.C1Console.Security;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
@@ -25,13 +25,13 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         {
             string relativePath = parameters.GetParameter<string>("RelativePath");
 
-            string path = Path.Combine(PathUtil.Resolve("~"), relativePath);
+            string path = System.IO.Path.Combine(PathUtil.Resolve("~"), relativePath);
             if (!File.Exists(path))
             {
-                throw new FileNotFoundException("File not found. Ensure path is relative (that it does not start with '/').", path);
+                throw new System.IO.FileNotFoundException("File not found. Ensure path is relative (that it does not start with '/').", path);
             }
 
-            using (var streamReader = new System.IO.StreamReader(path))
+            using (var streamReader = new Composite.Core.NewIO.StreamReader(path))
             {
                 using (var reader = XmlReader.Create(streamReader))
                 {

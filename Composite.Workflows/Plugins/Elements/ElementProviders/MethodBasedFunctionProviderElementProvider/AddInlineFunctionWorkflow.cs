@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Transactions;
 using Composite.C1Console.Workflow;
 using Composite.Core.ResourceSystem;
@@ -107,7 +107,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
                     IInlineFunctionAssemblyReference reference = DataFacade.BuildNew<IInlineFunctionAssemblyReference>();
                     reference.Id = Guid.NewGuid();
                     reference.Function = function.Id;
-                    reference.Name = Path.GetFileName(assemblyPath);
+                    reference.Name = System.IO.Path.GetFileName(assemblyPath);
                     reference.Location = InlineFunctionHelper.GetAssemblyLocation(assemblyPath);
 
                     DataFacade.AddNew(reference);

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Threading;
 using System.Xml;
 using Composite.C1Console.Actions;
@@ -60,7 +60,7 @@ namespace Composite.C1Console.Workflow
             if (formFunction.FormDefinition != null)
             {
                 formFlowUiDefinition = new FormFlowUiDefinition(
-                           new XmlTextReader(new StringReader(formFunction.FormDefinition)),
+                           new XmlTextReader(new System.IO.StringReader(formFunction.FormDefinition)),
                            formFunction.ContainerType,
                            formFunction.ContainerLabel,
                            formFunction.Bindings,
@@ -84,7 +84,7 @@ namespace Composite.C1Console.Workflow
 
             if (string.IsNullOrEmpty(formFunction.CustomToolbarDefinition) == false)
             {
-                formFlowUiDefinition.SetCustomToolbarMarkupProvider(new XmlTextReader(new StringReader(formFunction.CustomToolbarDefinition)));
+                formFlowUiDefinition.SetCustomToolbarMarkupProvider(new XmlTextReader(new System.IO.StringReader(formFunction.CustomToolbarDefinition)));
             }
             else if (formFunction.CustomToolbarMarkupProvider != null)
             {

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Workflow.Runtime;
 using System.Xml.Linq;
@@ -74,11 +74,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
             // Renaming related file if necessary
             string fileName = pageTemplate.Title + ".xml";
-            if (Path.GetFileName(pageTemplate.PageTemplateFilePath) != fileName)
+            if (System.IO.Path.GetFileName(pageTemplate.PageTemplateFilePath) != fileName)
             {
                 IPageTemplateFile file = IFileServices.GetFile<IPageTemplateFile>(pageTemplate.PageTemplateFilePath);
                 string systemPath = (file as FileSystemFileBase).SystemPath;
-                string newSystemPath = Path.Combine(Path.GetDirectoryName(systemPath), fileName);
+                string newSystemPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(systemPath), fileName);
 
                 if (string.Compare(systemPath, newSystemPath, true) != 0
                     && File.Exists(newSystemPath))
@@ -94,7 +94,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
                 File.Move(systemPath, newSystemPath);
 
-                string newRelativePath = Path.Combine(Path.GetDirectoryName(pageTemplate.PageTemplateFilePath), fileName);
+                string newRelativePath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(pageTemplate.PageTemplateFilePath), fileName);
                 pageTemplate.PageTemplateFilePath = newRelativePath;
             }
 

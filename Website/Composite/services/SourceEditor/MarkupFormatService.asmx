@@ -2,7 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -84,9 +84,9 @@ public class MarkupFormatService : System.Web.Services.WebService
         }
 
         byte[] htmlByteArray = Encoding.UTF8.GetBytes(html);
-        using (MemoryStream inputStream = new MemoryStream(htmlByteArray))
+        using (System.IO.MemoryStream inputStream = new System.IO.MemoryStream(htmlByteArray))
         {
-            using (MemoryStream outputStream = new MemoryStream())
+            using (System.IO.MemoryStream outputStream = new System.IO.MemoryStream())
             {
                 Tidy tidy = GetXhtmlConfiguredTidy();
                 TidyMessageCollection tidyMessages = new TidyMessageCollection();

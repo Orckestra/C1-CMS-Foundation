@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Composite.Core.Configuration;
+using Composite.Core.Xml;
 
 
 namespace Composite.C1Console.Forms
@@ -152,7 +153,7 @@ namespace Composite.C1Console.Forms
             public ElementInformationExtractor(string configurationFilePath)
             {
                 this.configurationFilePath = configurationFilePath;
-                configDoc = XDocument.Load(configurationFilePath);
+                configDoc = XDocumentUtils.Load(configurationFilePath);
 
                 //Quick code for nameSpaces
                 UiContolNs = (from c in GetUiControlDescriptors()
@@ -367,7 +368,7 @@ namespace Composite.C1Console.Forms
                         xmlns,
                         xmlns.Key
                         );
-                        uicontrols.Save(OutputDir + channel.Key + ((countChannels++ > 0) ? "." + countChannels : "") + ".xsd");
+                        XDocumentUtils.Save(uicontrols, OutputDir + channel.Key + ((countChannels++ > 0) ? "." + countChannels : "") + ".xsd");
                     }
 
 
@@ -394,10 +395,8 @@ namespace Composite.C1Console.Forms
 
                     );
 
-                    uicontrols.Save(OutputDir + "Plugins.Function" + ((countChannels++ > 0) ? "." + countChannels : "") + ".xsd");
+                    XDocumentUtils.Save(uicontrols, OutputDir + "Plugins.Function" + ((countChannels++ > 0) ? "." + countChannels : "") + ".xsd");
                 }
-
-
             }
 
 

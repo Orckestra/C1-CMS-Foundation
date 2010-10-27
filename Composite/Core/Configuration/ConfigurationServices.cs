@@ -1,6 +1,6 @@
 using System;
 using System.Configuration;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Web.Hosting;
 using System.Xml;
 using System.Xml.Linq;
@@ -8,6 +8,7 @@ using System.Xml.Xsl;
 using Composite.C1Console.Events;
 using Composite.Core.IO;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
+using Composite.Core.Xml;
 
 
 namespace Composite.Core.Configuration
@@ -155,7 +156,7 @@ namespace Composite.Core.Configuration
                     {
                         // Kill monitoring of file changes:
                         //                        FileConfigurationSource.ResetImplementation(ConfigurationServices.FileConfigurationSourcePath, false);
-                        resultDocument.Save(ConfigurationServices.FileConfigurationSourcePath);
+                        XDocumentUtils.Save(resultDocument, ConfigurationServices.FileConfigurationSourcePath);
                         _configurationSource = new FileConfigurationSource(ConfigurationServices.FileConfigurationSourcePath);
                         // Kill monitoring of file changes:
                         //                        FileConfigurationSource.ResetImplementation(ConfigurationServices.FileConfigurationSourcePath, false);
@@ -172,7 +173,7 @@ namespace Composite.Core.Configuration
             {
                 lock (_lock)
                 {
-                    XDocument document = XDocument.Load(ConfigurationServices.FileConfigurationSourcePath);
+                    XDocument document = XDocumentUtils.Load(ConfigurationServices.FileConfigurationSourcePath);
 
                     if (transformer(document) == true)
                     {
@@ -180,7 +181,7 @@ namespace Composite.Core.Configuration
 
                         // Kill monitoring of file changes:
                         //                        FileConfigurationSource.ResetImplementation(ConfigurationServices.FileConfigurationSourcePath, false);
-                        document.Save(ConfigurationServices.FileConfigurationSourcePath);
+                        XDocumentUtils.Save(document, ConfigurationServices.FileConfigurationSourcePath);
                         _configurationSource = new FileConfigurationSource(ConfigurationServices.FileConfigurationSourcePath);
                         // Kill monitoring of file changes:
                         //                        FileConfigurationSource.ResetImplementation(ConfigurationServices.FileConfigurationSourcePath, false);
@@ -197,7 +198,7 @@ namespace Composite.Core.Configuration
         {
             string tempValidationFilePath = TempRandomConfigFilePath;
 
-            resultDocument.Save(tempValidationFilePath);
+            XDocumentUtils.Save(resultDocument, tempValidationFilePath);
 
             try
             {
@@ -263,7 +264,7 @@ namespace Composite.Core.Configuration
             //            FileConfigurationSourceElement fileConfigurationInfo = objectConfiguration as FileConfigurationSourceElement;
             //            if (fileConfigurationInfo == null) throw new InvalidOperationException("Expected EntLib configuration source configuration to be of type " + typeof(FileConfigurationSourceElement).Name);
             //            string relativePath = fileConfigurationInfo.FilePath;
-            //            string tildePath = (Path.IsPathRooted(relativePath) == true ? "~" + relativePath : "~/" + relativePath);
+            //            string tildePath = (System.IO.Path.IsPathRooted(relativePath) == true ? "~" + relativePath : "~/" + relativePath);
 
             //            return PathUtil.Resolve(tildePath);
             //        }

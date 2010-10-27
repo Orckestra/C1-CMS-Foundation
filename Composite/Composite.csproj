@@ -135,6 +135,7 @@
     <Compile Include="C1Console\Actions\IElementInformationService.cs" />
     <Compile Include="C1Console\Actions\MessageBoxActionToken.cs" />
     <Compile Include="C1Console\Actions\UrlActionToken.cs" />
+    <Compile Include="Core\Configuration\Configuration.cs" />
     <Compile Include="Core\Implementation\DataConnectionBase.cs" />
     <Compile Include="Core\Implementation\DataConnectionImplementation.cs" />
     <Compile Include="Core\Implementation\DataEventsImplementation.cs" />
@@ -143,9 +144,25 @@
     <Compile Include="Core\Implementation\PageDataConnectionImplementation.cs" />
     <Compile Include="Core\Implementation\SitemapNavigatorImplementation.cs" />
     <Compile Include="Core\Log.cs" />
+    <Compile Include="Core\NewIO\Directory.cs" />
+    <Compile Include="Core\NewIO\File.cs" />
+    <Compile Include="Core\NewIO\FileStream.cs" />
+    <Compile Include="Core\NewIO\FileSystemWatcher.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Core\NewIO\StreamReader.cs" />
+    <Compile Include="Core\NewIO\StreamWriter.cs" />
+    <Compile Include="Core\NewIO\WaitForChangedResult.cs" />
     <Compile Include="Core\Sql\SqlConnectionManager.cs" />
     <Compile Include="Core\WebClient\ApplicationLevelEventHandlers.cs" />
     <Compile Include="Core\WebClient\Presentation\LessRequestHandler.cs" />
+    <Compile Include="Core\Xml\XDocumentUtils.cs" />
+    <Compile Include="Core\Xml\XElementUtils.cs" />
+    <Compile Include="Core\Xml\XmlDocumentUtil.cs" />
+    <Compile Include="Core\Xml\XmlReaderUtil.cs" />
+    <Compile Include="Core\Xml\XmlSchemaSetUtils.cs" />
+    <Compile Include="Core\Xml\XmlWriterUtil.cs" />
+    <Compile Include="Core\Xml\XslCompiledTransformExtensionMethods.cs" />
     <Compile Include="Data\DataEventArgs.cs" />
     <Compile Include="Data\DataEventHandler.cs" />
     <Compile Include="Data\DataEvents.cs" />
@@ -1035,7 +1052,7 @@
     <Compile Include="C1Console\Workflow\IEventHandleFilter.cs" />
     <Compile Include="C1Console\Workflow\WorkflowTaskManagerEvent.cs" />
     <Compile Include="Core\Xml\LimitedDepthXmlWriter.cs" />
-    <Compile Include="Core\Xml\XAttributeExtensionMethods.cs" />
+    <Compile Include="Core\Xml\XAttributeUtils.cs" />
     <Compile Include="Core\IO\Zip\ZipFileSystem.cs" />
     <Compile Include="Core\PackageSystem\Foundation\PackageSystemSettings.cs" />
     <Compile Include="Core\PackageSystem\IPackageFragmentUninstaller.cs" />
@@ -2048,8 +2065,6 @@
     <Compile Include="C1Console\Workflow\WorkflowFlowController.cs" />
     <Compile Include="C1Console\Workflow\WorkflowFlowToken.cs" />
     <Compile Include="Core\Xml\Namespaces.cs" />
-    <Compile Include="Core\Xml\XDocumentExtensionMethods.cs" />
-    <Compile Include="Core\Xml\XElementExtensionMethods.cs" />
     <Compile Include="Core\Xml\XhtmlPrettifier.cs" />
     <Compile Include="Core\Xml\XmlUtils.cs" />
     <Compile Include="Core\Xml\XNodeExtensionMethods.cs" />

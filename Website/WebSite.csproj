@@ -463,7 +463,7 @@
     <Content Include="Composite\services\Installation\InstallationService.asmx" />
     <Content Include="Composite\services\Setup\SetupService.asmx" />
     <Content Include="Composite\skins\dynamicskin.css" />
-    <Content Include="Composite\templates\sourcecodeeditor\cs.txt" />
+    <Content Include="Composite\templates\sourcecodeeditor\csharp.txt" />
     <Content Include="Composite\templates\sourcecodeeditor\js.txt" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

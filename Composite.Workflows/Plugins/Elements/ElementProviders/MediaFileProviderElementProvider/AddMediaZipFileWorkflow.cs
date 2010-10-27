@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using Composite.C1Console.Actions;
 using Composite.Data;
@@ -64,7 +64,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
             if (uploadedFile.HasFile)
             {
-                using (Stream readStream = uploadedFile.FileStream)
+                using (System.IO.Stream readStream = uploadedFile.FileStream)
                 {
                     ZipMediaFileExtractor.AddZip(providerName, parentFolderPath, readStream, recreateFolders, overwrite);
                 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.UI;
 using System.Web.Hosting;
-using System.IO;
+using Composite.Core.NewIO;
 
 namespace Composite.Core.WebClient
 {
@@ -88,7 +88,7 @@ namespace Composite.Core.WebClient
 
         public static string Combine( string path1, string path2 )
         {
-            return Path.Combine(path1,path2).Replace( Path.DirectorySeparatorChar, '/' );
+            return System.IO.Path.Combine(path1,path2).Replace( System.IO.Path.DirectorySeparatorChar, '/' );
         }
     }
 }

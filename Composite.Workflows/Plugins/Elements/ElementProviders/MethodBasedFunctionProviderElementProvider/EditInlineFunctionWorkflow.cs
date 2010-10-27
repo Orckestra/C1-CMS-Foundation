@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -83,7 +83,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
             List<KeyValuePair> assemblies = new List<KeyValuePair>();
             foreach (string assembly in InlineFunctionHelper.GetReferencableAssemblies())
             {
-                assemblies.Add(new KeyValuePair(assembly.ToLower(), Path.GetFileName(assembly)));
+                assemblies.Add(new KeyValuePair(assembly.ToLower(), System.IO.Path.GetFileName(assembly)));
             }
 
             assemblies.Sort(delegate(KeyValuePair kvp1, KeyValuePair kvp2) { return kvp1.Value.CompareTo(kvp2.Value); });
@@ -131,7 +131,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
 
                 foreach (string selectedAssembly in selectedAssemblies)
                 {
-                    string name = Path.GetFileName(selectedAssembly).ToLower();
+                    string name = System.IO.Path.GetFileName(selectedAssembly).ToLower();
                     string location = InlineFunctionHelper.GetAssemblyLocation(selectedAssembly).ToLower();
 
                     if (assemblyReferences.Where(f => f.Name.ToLower() == name && f.Location.ToLower() == location).Any() == false)

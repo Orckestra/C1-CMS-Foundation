@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using Composite.Core.PackageSystem.Foundation;
 using Composite.Core.Serialization;
@@ -162,7 +162,7 @@ namespace Composite.Core.PackageSystem
                 else if ((_installationResult != null) && (_installationResult.Count > 0) && (Directory.Exists(_packageInstallDirectory) == true)) DirectoryUtil.DeleteFilesRecursively(_packageInstallDirectory);
                 else
                 {
-                    File.WriteAllText(Path.Combine(_packageInstallDirectory, PackageSystemSettings.InstalledFilename), "");
+                    File.WriteAllText(System.IO.Path.Combine(_packageInstallDirectory, PackageSystemSettings.InstalledFilename), "");
                 }
 
                 return new List<PackageFragmentValidationResult>();

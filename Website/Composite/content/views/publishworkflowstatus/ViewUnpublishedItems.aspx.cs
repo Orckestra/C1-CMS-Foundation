@@ -1,24 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Linq;
-using System.Web;
-using System.Web.Security;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Xml.Linq;
-using Composite.Data;
-using Composite.Data.Types;
-using Composite.C1Console.Security;
-using Composite.Core.WebClient.Renderings.Page;
-using System.Globalization;
-using System.Xml.Xsl;
 using System.Xml;
-using Composite.Data.ProcessControlled;
+using System.Xml.Linq;
+using System.Xml.Xsl;
+using Composite.C1Console.Security;
 using Composite.C1Console.Users;
+using Composite.Core.WebClient.Renderings.Page;
+using Composite.Data;
+using Composite.Data.ProcessControlled;
+using Composite.Data.Types;
+
 
 public partial class ViewUnpublishedItems : System.Web.UI.Page
 {
@@ -233,7 +226,7 @@ public partial class ViewUnpublishedItems : System.Web.UI.Page
         using (XmlWriter writer = newTree.CreateWriter())
         {
             XslCompiledTransform xslTransformer = new XslCompiledTransform();
-            xslTransformer.Load(this.MapPath("ViewUnpublishedItems.xslt"));
+            xslTransformer.LoadFromPath(this.MapPath("ViewUnpublishedItems.xslt"));
 
             xslTransformer.Transform(inputRoot.CreateReader(), writer);
         }

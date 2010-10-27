@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Transactions;
 using System.Web;
@@ -433,7 +433,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                             return;
                         }
 
-                        string directoryPath = Path.GetDirectoryName(newSystemPath);
+                        string directoryPath = System.IO.Path.GetDirectoryName(newSystemPath);
                         if(!Directory.Exists(directoryPath))
                         {
                             Directory.CreateDirectory(directoryPath);

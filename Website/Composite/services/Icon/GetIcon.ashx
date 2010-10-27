@@ -1,7 +1,7 @@
 <%@ WebHandler Language="C#" Class="GetIcon" %>
 
 using System;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Web;
 using System.Drawing.Imaging;
 using System.Drawing;
@@ -99,7 +99,7 @@ public class GetIcon : IHttpHandler
     {
         
         string fileName = string.Format("{0}.{1}.{2}.png", resourceHandle.ResourceNamespace, resourceHandle.ResourceName, iconSize);
-        string relativePath = Path.Combine(GlobalSettingsFacade.ResourceCacheSettings.CachePath, fileName);
+        string relativePath = System.IO.Path.Combine(GlobalSettingsFacade.ResourceCacheSettings.CachePath, fileName);
         return context.Server.MapPath(relativePath);
     }
     

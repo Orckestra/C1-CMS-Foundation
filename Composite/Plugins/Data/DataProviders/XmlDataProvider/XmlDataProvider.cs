@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Configuration;
+//using System.Configuration;
 using System.Globalization;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Threading;
 using System.Transactions;
@@ -23,6 +23,7 @@ using Composite.Core.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
+using Composite.Core.Xml;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
@@ -429,13 +430,13 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                         store.DataScopes.Add(storeElement.DataScope);
                     }
 
-                    string filename = PathUtil.Resolve(Path.Combine(_storeDirectory, storeElement.Filename));
+                    string filename = PathUtil.Resolve(System.IO.Path.Combine(_storeDirectory, storeElement.Filename));
 
                     if (File.Exists(filename) == false)
                     {
                         XDocument document = new XDocument();
                         document.Add(new XElement(string.Format("{0}s", storeElement.DataScope)));
-                        document.Save(filename);
+                        XDocumentUtils.Save(document, filename);
 
                     }
 
@@ -522,14 +523,16 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
             return Assemble(context, objectConfiguration, configurationSource, reflectionCache, pathToConfigFile);
         }
 
+
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         internal IDataProvider Assemble(IBuilderContext context, DataProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache, string configurationFolderPath)
         {
             XmlDataProviderData data = (XmlDataProviderData)objectConfiguration;
 
-            ExeConfigurationFileMap map = new ExeConfigurationFileMap();
-            map.ExeConfigFilename = Path.Combine(configurationFolderPath, string.Format("{0}.config", data.Name));
-            System.Configuration.Configuration configuration = ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
+            System.Configuration.ConfigurationManager.OpenMappedExeConfiguration(null, System.Configuration.ConfigurationUserLevel.None);
+
+            Configuration configuration = Configuration.Load(System.IO.Path.Combine(configurationFolderPath, string.Format("{0}.config", data.Name)));
 
             XmlDataProviderConfigurationSection section = configuration.GetSection(XmlDataProviderConfigurationSection.SectionName) as XmlDataProviderConfigurationSection;
             if (section == null)
@@ -569,7 +572,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
     internal sealed class XmlDataProviderData : DataProviderData
     {
         private const string _storeDirectoryPropertyName = "storeDirectory";
-        [ConfigurationProperty(_storeDirectoryPropertyName, IsRequired = true)]
+        [System.Configuration.ConfigurationProperty(_storeDirectoryPropertyName, IsRequired = true)]
         public string StoreDirectory
         {
             get { return (string)base[_storeDirectoryPropertyName]; }
@@ -579,13 +582,13 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
 
 
-    internal sealed class XmlDataProviderConfigurationSection : ConfigurationSection
+    internal sealed class XmlDataProviderConfigurationSection : System.Configuration.ConfigurationSection
     {
         public const string SectionName = "Composite.Data.Plugins.XmlDataProviderConfiguration";
 
 
         private const string _interfacesPropertyName = "Interfaces";
-        [ConfigurationProperty(_interfacesPropertyName)]
+        [System.Configuration.ConfigurationProperty(_interfacesPropertyName)]
         public XmlProviderInterfaceConfigurationElementCollection Interfaces
         {
             get { return (XmlProviderInterfaceConfigurationElementCollection)base[_interfacesPropertyName]; }
@@ -596,7 +599,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
 
 
-    internal sealed class XmlProviderInterfaceConfigurationElementCollection : ConfigurationElementCollection
+    internal sealed class XmlProviderInterfaceConfigurationElementCollection : System.Configuration.ConfigurationElementCollection
     {
         internal void Add(XmlProviderInterfaceConfigurationElement element)
         {
@@ -609,12 +612,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
             BaseRemove(key);
         }
 
-        protected override ConfigurationElement CreateNewElement()
+        protected override System.Configuration.ConfigurationElement CreateNewElement()
         {
             return new XmlProviderInterfaceConfigurationElement();
         }
 
-        protected override object GetElementKey(ConfigurationElement element)
+        protected override object GetElementKey(System.Configuration.ConfigurationElement element)
         {
             return ((XmlProviderInterfaceConfigurationElement)element).InterfaceType;
         }
@@ -640,7 +643,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
 
 
-    internal sealed class XmlProviderInterfaceConfigurationElement : ConfigurationElement
+    internal sealed class XmlProviderInterfaceConfigurationElement : System.Configuration.ConfigurationElement
     {
         public Dictionary<string, Dictionary<string, DataScopeConfigurationElement>> DataScopes
         {
@@ -724,7 +727,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
 
         private const string _interfaceTypePropertyName = "interfaceType";
-        [ConfigurationProperty(_interfaceTypePropertyName, IsKey = true, IsRequired = true)]
+        [System.Configuration.ConfigurationProperty(_interfaceTypePropertyName, IsKey = true, IsRequired = true)]
         public string InterfaceType
         {
             get { return (string)base[_interfaceTypePropertyName]; }
@@ -733,7 +736,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
 
         private const string _isGeneratedTypePropertyName = "isGeneratedType";
-        [ConfigurationProperty(_isGeneratedTypePropertyName, IsRequired = true)]
+        [System.Configuration.ConfigurationProperty(_isGeneratedTypePropertyName, IsRequired = true)]
         public bool IsGeneratedType
         {
             get { return (bool)base[_isGeneratedTypePropertyName]; }
@@ -742,7 +745,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
 
         private const string _storesPropertyName = "Stores";
-        [ConfigurationProperty(_storesPropertyName, IsRequired = true)]
+        [System.Configuration.ConfigurationProperty(_storesPropertyName, IsRequired = true)]
         public DataScopeConfigurationElementCollection ConfigurationStores
         {
             get { return (DataScopeConfigurationElementCollection)base[_storesPropertyName]; }
@@ -751,7 +754,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
 
         private const string _dataIdPropertiesPropertyName = "DataIdProperties";
-        [ConfigurationProperty(_dataIdPropertiesPropertyName, IsRequired = true)]
+        [System.Configuration.ConfigurationProperty(_dataIdPropertiesPropertyName, IsRequired = true)]
         public SimpleNameTypeConfigurationElementCollection ConfigurationDataIdProperties
         {
             get { return (SimpleNameTypeConfigurationElementCollection)base[_dataIdPropertiesPropertyName]; }
@@ -760,7 +763,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
 
         private const string _propertyNameMappingsPropertyName = "PropertyNameMappings";
-        [ConfigurationProperty(_propertyNameMappingsPropertyName)]
+        [System.Configuration.ConfigurationProperty(_propertyNameMappingsPropertyName)]
         public PropertyNameMappingConfigurationElementCollection ConfigurationPropertyNameMappings
         {
             get { return (PropertyNameMappingConfigurationElementCollection)base[_propertyNameMappingsPropertyName]; }
@@ -769,7 +772,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
 
         private const string _propertyInitializersPropertyName = "PropertyInitializers";
-        [ConfigurationProperty(_propertyInitializersPropertyName)]
+        [System.Configuration.ConfigurationProperty(_propertyInitializersPropertyName)]
         public SimpleNameTypeConfigurationElementCollection ConfigurationPropertyInitializers
         {
             get { return (SimpleNameTypeConfigurationElementCollection)base[_propertyInitializersPropertyName]; }
@@ -779,10 +782,10 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
 
 
-    internal sealed class DataScopeConfigurationElement : ConfigurationElement
+    internal sealed class DataScopeConfigurationElement : System.Configuration.ConfigurationElement
     {
         private const string _dataScopePropertyName = "dataScope";
-        [ConfigurationProperty(_dataScopePropertyName, IsRequired = true)]
+        [System.Configuration.ConfigurationProperty(_dataScopePropertyName, IsRequired = true)]
         public string DataScope
         {
             get { return (string)base[_dataScopePropertyName]; }
@@ -791,7 +794,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
 
         private const string _cultureNamePropertyName = "cultureName";
-        [ConfigurationProperty(_cultureNamePropertyName, IsRequired = false, DefaultValue="")]
+        [System.Configuration.ConfigurationProperty(_cultureNamePropertyName, IsRequired = false, DefaultValue = "")]
         public string CultureName
         {
             get { return (string)base[_cultureNamePropertyName]; }
@@ -800,7 +803,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
 
         private const string _filenamePropertyName = "filename";
-        [ConfigurationProperty(_filenamePropertyName, IsRequired = true)]
+        [System.Configuration.ConfigurationProperty(_filenamePropertyName, IsRequired = true)]
         public string Filename
         {
             get { return (string)base[_filenamePropertyName]; }
@@ -809,7 +812,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
 
         private const string _elementNamePropertyName = "elementName";
-        [ConfigurationProperty(_elementNamePropertyName, IsRequired = true)]
+        [System.Configuration.ConfigurationProperty(_elementNamePropertyName, IsRequired = true)]
         public string ElementName
         {
             get { return (string)base[_elementNamePropertyName]; }
@@ -820,19 +823,19 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
 
 
-    internal sealed class DataScopeConfigurationElementCollection : ConfigurationElementCollection
+    internal sealed class DataScopeConfigurationElementCollection : System.Configuration.ConfigurationElementCollection
     {
         internal void Add(DataScopeConfigurationElement element)
         {
             BaseAdd(element);
         }
 
-        protected override ConfigurationElement CreateNewElement()
+        protected override System.Configuration.ConfigurationElement CreateNewElement()
         {
             return new DataScopeConfigurationElement();
         }
 
-        protected override object GetElementKey(ConfigurationElement element)
+        protected override object GetElementKey(System.Configuration.ConfigurationElement element)
         {
             DataScopeConfigurationElement castedElement = (DataScopeConfigurationElement)element;
             return string.Format("{0}.{1}", castedElement.DataScope, castedElement.CultureName);                

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -41,27 +41,27 @@ namespace Composite.Data.Plugins.DataProvider.Streams
                 _fileWatcher.Deleted += FileWatcher_Deleted;
 
                 _fileWatcher.IncludeSubdirectories = true;
-                _fileWatcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite;
+                _fileWatcher.NotifyFilter = System.IO.NotifyFilters.FileName | System.IO.NotifyFilters.LastWrite;
 
                 _fileWatcher.EnableRaisingEvents = true;
             }
         }
 
 
-        static void FileWatcher_Deleted(object sender, FileSystemEventArgs e)
+        static void FileWatcher_Deleted(object sender, System.IO.FileSystemEventArgs e)
         {
             FireFileChangedEvent(e.FullPath, FileChangeType.Deleted);
         }
 
-        static void FileWatcher_Changed(object sender, FileSystemEventArgs e)
+        static void FileWatcher_Changed(object sender, System.IO.FileSystemEventArgs e)
         {
-            FileChangeType changeType = e.ChangeType == WatcherChangeTypes.Renamed
+            FileChangeType changeType = e.ChangeType == System.IO.WatcherChangeTypes.Renamed
                                             ? FileChangeType.Renamed
                                             : FileChangeType.Modified;
             FireFileChangedEvent(e.FullPath, changeType);
         }
 
-        static void FileWatcher_Created(object sender, FileSystemEventArgs e)
+        static void FileWatcher_Created(object sender, System.IO.FileSystemEventArgs e)
         {
             // Do nothing...
         }

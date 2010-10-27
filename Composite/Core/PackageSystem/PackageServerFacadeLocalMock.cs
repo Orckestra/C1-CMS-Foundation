@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -87,7 +87,7 @@ namespace Composite.Core.PackageSystem
 
 
 
-        public Stream GetInstallFileStream(string packageFileDownloadUrl)
+        public System.IO.Stream GetInstallFileStream(string packageFileDownloadUrl)
         {
             Initialize();
 
@@ -136,7 +136,7 @@ namespace Composite.Core.PackageSystem
             UTF8Encoding encoding = new UTF8Encoding();
             byte[] buffer = encoding.GetBytes(content);
 
-            MemoryStream outputStream = new MemoryStream();
+            System.IO.MemoryStream outputStream = new System.IO.MemoryStream();
 
             ZipOutputStream zipStream = new ZipOutputStream(outputStream);
 
@@ -152,7 +152,7 @@ namespace Composite.Core.PackageSystem
             zipStream.Write(buffer, 0, buffer.Length);
             zipStream.Finish();
 
-            outputStream.Seek(0, SeekOrigin.Begin);
+            outputStream.Seek(0, System.IO.SeekOrigin.Begin);
 
             return outputStream;
         }
@@ -211,7 +211,7 @@ namespace Composite.Core.PackageSystem
             _packageDescriptions = new Dictionary<string, List<KeyValuePair<PackageDescription, ExtraInfo>>>();
             _eulaTexts = new Dictionary<string, Dictionary<Guid, string>>();
 
-            XDocument doc = XDocument.Load(_configFilePath);
+            XDocument doc = XDocumentUtils.Load(_configFilePath);
 
             foreach (XElement element in doc.Root.Elements("Source"))
             {

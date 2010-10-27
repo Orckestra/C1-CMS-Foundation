@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Composite.Core.Extensions;
-using System.IO;
+using Composite.Core.NewIO;
 using Composite.Core.Logging;
 
 
@@ -269,7 +269,7 @@ namespace Composite.Core.Types
                 Assembly assembly =
                     (from a in AppDomain.CurrentDomain.GetAssemblies()
                      where a.GetType().Name != "InternalAssemblyBuilder" &&
-                           a.CodeBase.ToLower().EndsWith(Path.GetFileName(assemblyFileName).ToLower()) == true
+                           a.CodeBase.ToLower().EndsWith(System.IO.Path.GetFileName(assemblyFileName).ToLower()) == true
                      select a).FirstOrDefault();
 
                 if (assembly != null)

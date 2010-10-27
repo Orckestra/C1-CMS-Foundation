@@ -1,11 +1,12 @@
 ﻿using System;
-using System.IO;
+using Composite.Core.NewIO;
 using System.Xml.Linq;
 using Composite.C1Console.Elements;
 using Composite.Core.IO;
 using Composite.Core.ResourceSystem;
 using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
+using Composite.Core.Xml;
 
 
 namespace Composite.C1Console.Trees
@@ -48,7 +49,7 @@ namespace Composite.C1Console.Trees
                         AddValidationError("TreeValidationError.GenericEditDataAction.MissingMarkupFile", path);
                     }
 
-                    XDocument document = XDocument.Load(path);
+                    XDocument document = XDocumentUtils.Load(path);
 
                     this.CustomFormMarkupPath = path;
                 }

@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using System.Text;
-using System.IO;
+using Composite.Core.NewIO;
 using Composite.Core.IO;
 using Composite.Core.Configuration;
 
@@ -25,7 +25,7 @@ public partial class IconRendererHarmonyControl : System.Web.UI.UserControl
             size = "24";
         }
 
-        string path = Path.Combine(PathUtil.Resolve(PathUtil.BaseDirectory), "Composite\\images\\icons\\harmony");
+        string path = System.IO.Path.Combine(PathUtil.Resolve(PathUtil.BaseDirectory), "Composite\\images\\icons\\harmony");
         string[] dirEntries = Directory.GetDirectories(path);
 
         StringBuilder builder = new StringBuilder();

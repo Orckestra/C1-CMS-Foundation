@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using Composite.Core.NewIO;
 
 
 namespace Composite.Core.IO
@@ -13,11 +13,11 @@ namespace Composite.Core.IO
         {
             if (File.Exists(filePath) == false) return false;
 
-            FileAttributes fileAttributes = File.GetAttributes(filePath);
+            System.IO.FileAttributes fileAttributes = File.GetAttributes(filePath);
 
-            if ((fileAttributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+            if ((fileAttributes & System.IO.FileAttributes.ReadOnly) == System.IO.FileAttributes.ReadOnly)
             {
-                fileAttributes ^= FileAttributes.ReadOnly;
+                fileAttributes ^= System.IO.FileAttributes.ReadOnly;
                 File.SetAttributes(filePath, fileAttributes);
             }
 
