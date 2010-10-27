@@ -1,6 +1,6 @@
 ﻿using System;
-using Composite.Core.NewIO;
 using System.Web;
+using Composite.Core.NewIO;
 using Composite.Core.Extensions;
 
 
@@ -26,7 +26,7 @@ namespace Composite.Core.Application
 
             context.Response.Clear();
             context.Response.Write(_responceHtml);
-            context.Response.StatusCode = 404;
+            context.Response.StatusCode = 480; /* Temporary unavailable*/
             context.Response.Flush();
 
             context.ApplicationInstance.CompleteRequest();
