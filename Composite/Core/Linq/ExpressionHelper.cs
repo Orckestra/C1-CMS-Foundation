@@ -34,7 +34,23 @@ namespace Composite.Core.Linq
 
         public static Expression CreatePropertyExpression(string fieldName, Expression parameterExpression)
         {
-            return Expression.Property(parameterExpression, fieldName);
+            Type interfaceType = parameterExpression.Type;
+
+            if (interfaceType.GetProperties().Where(f => f.Name == fieldName).Any())
+            {
+                return Expression.Property(parameterExpression, fieldName);
+            }
+
+
+            foreach (Type superInterfaceType in interfaceType.GetInterfaces())
+            {
+                if (superInterfaceType.GetProperties().Where(f => f.Name == fieldName).Any())
+                {
+                    return Expression.Property(Expression.Convert(parameterExpression, superInterfaceType), fieldName);
+                }
+            }
+
+            throw new InvalidOperationException(string.Format("The interface '{0}' or any of its superinterfaces does not contain a field named '{1}'", parameterExpression.Type, fieldName));
         }
 
 
