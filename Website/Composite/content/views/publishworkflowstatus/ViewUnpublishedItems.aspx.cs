@@ -8,6 +8,7 @@ using System.Xml.Xsl;
 using Composite.C1Console.Security;
 using Composite.C1Console.Users;
 using Composite.Core.WebClient.Renderings.Page;
+using Composite.Core.Xml;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
 using Composite.Data.Types;

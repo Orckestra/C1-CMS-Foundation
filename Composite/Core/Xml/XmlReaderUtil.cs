@@ -8,7 +8,7 @@ namespace Composite.Core.Xml
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    internal static class XmlReaderUtil
+    public static class XmlReaderUtil
     {
         public static XmlReader Create(string path)
         {
