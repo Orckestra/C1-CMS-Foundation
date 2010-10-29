@@ -380,7 +380,7 @@ namespace Composite.Core.Logging
                         }
                     }
 
-                    resources.Factory = new LogWriterFactory(new Microsoft.Practices.EnterpriseLibrary.Common.Configuration.FileConfigurationSource(path));
+                    resources.Factory = new LogWriterFactory(new FileConfigurationSource(path));
                     resources.Writer = resources.Factory.Create();
                 }
             }

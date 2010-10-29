@@ -13,6 +13,8 @@ namespace Composite.Core.Xml
     {
         public static XDocument Load(string filename)
         {
+            return XDocument.Load(filename);
+
             XDocument document;
 
             using (FileStream stream = new FileStream(filename, System.IO.FileMode.Open, System.IO.FileAccess.Read))

@@ -12,16 +12,26 @@ namespace Composite.Core.Xml
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     internal static class XElementUtils
     {
-        public static XElement Load(string filename)
+        public static XElement Load(string fileName)
         {
             XElement element;
 
-            using (FileStream stream = new FileStream(filename, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+            using (FileStream stream = new FileStream(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))
             {
                 element = XElement.Load(stream);
             }
 
             return element;
+        }
+
+
+
+        public static void SaveToPath(this XElement element, string fileName)
+        {
+            using (FileStream stream = new FileStream(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+            {                
+                element.Save(stream);
+            }
         }
 
 

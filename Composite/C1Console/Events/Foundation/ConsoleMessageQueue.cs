@@ -175,7 +175,7 @@ namespace Composite.C1Console.Events.Foundation
                     string timeSortedUniqueFileName = string.Format("{0}.{1}.xml", (long.MaxValue - DateTime.Now.Ticks), Guid.NewGuid());
                     string queueElementsXmlFilePath = System.IO.Path.Combine(serializedConsoleMessagesDir, timeSortedUniqueFileName);
 
-                    serializedMessages.Save(queueElementsXmlFilePath);
+                    serializedMessages.SaveToPath(queueElementsXmlFilePath);
                 }
             }
         }

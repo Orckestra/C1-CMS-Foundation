@@ -136,6 +136,8 @@
     <Compile Include="C1Console\Actions\MessageBoxActionToken.cs" />
     <Compile Include="C1Console\Actions\UrlActionToken.cs" />
     <Compile Include="Core\Configuration\Configuration.cs" />
+    <Compile Include="Core\Configuration\FileConfigurationSource.cs" />
+    <Compile Include="Core\Configuration\FileConfigurationSourceImplementation.cs" />
     <Compile Include="Core\Implementation\DataConnectionBase.cs" />
     <Compile Include="Core\Implementation\DataConnectionImplementation.cs" />
     <Compile Include="Core\Implementation\DataEventsImplementation.cs" />

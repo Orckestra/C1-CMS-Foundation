@@ -246,7 +246,7 @@ namespace Composite.C1Console.Elements
         private static IEnumerable<Element> GetRoots(string providerName, SearchToken searchToken, bool performceSecurityCheck, bool useForeign)
         {
             if (providerName == null) throw new ArgumentNullException("providerName");
-
+            
             IEnumerable<Element> roots;
             if ((useForeign == false) || (ElementProviderPluginFacade.IsLocaleAwareElementProvider(providerName) == false))
             {
