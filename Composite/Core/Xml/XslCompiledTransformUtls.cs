@@ -9,7 +9,7 @@ namespace Composite.Core.Xml
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    internal static class XslCompiledTransformExtensionMethods
+    public static class XslCompiledTransformUtls
     {
         public static void LoadFromPath(this XslCompiledTransform xslCompiledTransform, string path)
         {

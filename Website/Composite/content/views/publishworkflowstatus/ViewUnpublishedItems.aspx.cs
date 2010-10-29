@@ -226,6 +226,7 @@ public partial class ViewUnpublishedItems : System.Web.UI.Page
         XDocument newTree = new XDocument();
         using (XmlWriter writer = newTree.CreateWriter())
         {
+            
             XslCompiledTransform xslTransformer = new XslCompiledTransform();
             xslTransformer.LoadFromPath(this.MapPath("ViewUnpublishedItems.xslt"));
 

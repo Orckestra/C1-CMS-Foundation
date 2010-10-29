@@ -164,7 +164,7 @@
     <Compile Include="Core\Xml\XmlReaderUtil.cs" />
     <Compile Include="Core\Xml\XmlSchemaSetUtils.cs" />
     <Compile Include="Core\Xml\XmlWriterUtil.cs" />
-    <Compile Include="Core\Xml\XslCompiledTransformExtensionMethods.cs" />
+    <Compile Include="Core\Xml\XslCompiledTransformUtls.cs" />
     <Compile Include="Data\DataEventArgs.cs" />
     <Compile Include="Data\DataEventHandler.cs" />
     <Compile Include="Data\DataEvents.cs" />
