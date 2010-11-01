@@ -25,7 +25,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
         {
             var events = ChangeEventsSingleton.Instance;
 
-            lock(events.SyncRoot)
+            lock (events.SyncRoot)
             {
                 events.DataChangedEvent += OnDataChanged;
                 events.FileChangedEvent += CodeFileDirectoryWatcher_Changed;
@@ -93,7 +93,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
         void CodeFileDirectoryWatcher_Changed(object sender, FileSystemEventArgs e)
         {
             // Checking for null since it is possible that event will be raised before the provider is fully initialized
-            if(_functionNotifier != null)
+            if (_functionNotifier != null)
             {
                 _functionNotifier.FunctionsUpdated();
             }
@@ -120,14 +120,14 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
                 string folderToWatch = PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory);
 
-                DirectoryUtil.EnsurePath(folderToWatch);
+                DirectoryUtil.EnsureDirectoryExists(folderToWatch);
 
                 _codeDirectoryFileSystemWatcher = new FileSystemWatcher(folderToWatch)
-                                                      {
-                                                          NotifyFilter = NotifyFilters.LastWrite,
-                                                          EnableRaisingEvents = true,
-                                                          IncludeSubdirectories = true
-                                                      };
+                {
+                    NotifyFilter = NotifyFilters.LastWrite,
+                    EnableRaisingEvents = true,
+                    IncludeSubdirectories = true
+                };
 
                 _codeDirectoryFileSystemWatcher.Changed += OnFileWatcherEvent;
             }
@@ -160,7 +160,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
             private void OnDataChanged(object sender, DataEventArgs dataEventArgs)
             {
                 DataEventHandler hander = DataChangedEvent;
-                if(hander != null)
+                if (hander != null)
                 {
                     hander(sender, dataEventArgs);
                 }
@@ -174,7 +174,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
             class Nested
             {
-                
+
                 static Nested()
                 {
                     // Explicit static constructor to tell C# compiler
