@@ -36,6 +36,8 @@ namespace Composite.Data
         /// }
         /// </code>
         /// </example>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "We had to be backwards compatible")]
         public static event DataEventHandler OnBeforeAdd
         {
             add
@@ -75,6 +77,8 @@ namespace Composite.Data
         /// }
         /// </code>
         /// </example>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "We had to be backwards compatible")]
         public static event DataEventHandler OnAfterAdd
         {
             add
@@ -118,6 +122,8 @@ namespace Composite.Data
         /// }
         /// </code>
         /// </example>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "We had to be backwards compatible")]
         public static event DataEventHandler OnBeforeUpdate
         {
             add
@@ -161,6 +167,8 @@ namespace Composite.Data
         /// }
         /// </code>
         /// </example>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "We had to be backwards compatible")]
         public static event DataEventHandler OnAfterUpdate
         {
             add
@@ -202,6 +210,8 @@ namespace Composite.Data
         /// }
         /// </code>
         /// </example>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "We had to be backwards compatible")]
         public static event DataEventHandler OnDeleted
         {
             add
@@ -235,6 +245,8 @@ namespace Composite.Data
         /// }
         /// </code>
         /// </example>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "We had to be backwards compatible")]
         public static event DataEventHandler OnNew
         {
             add

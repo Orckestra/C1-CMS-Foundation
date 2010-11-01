@@ -77,6 +77,7 @@ namespace Composite.Core.Implementation
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Sitemap")]
         public virtual SitemapNavigatorImplementation StatelessSitemapNavigator
         {
             get
@@ -87,6 +88,7 @@ namespace Composite.Core.Implementation
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Sitemap")]
         public virtual SitemapNavigatorImplementation CreateSitemapNavigator(DataConnection connection)
         {
             return new SitemapNavigatorImplementation(connection);

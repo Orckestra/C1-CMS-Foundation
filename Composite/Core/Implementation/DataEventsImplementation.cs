@@ -7,6 +7,7 @@ namespace Composite.Core.Implementation
     public class DataEventsImplementation<TData>
         where TData : class, IData
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
         public virtual event DataEventHandler OnBeforeAdd 
         { 
             add 
@@ -17,10 +18,11 @@ namespace Composite.Core.Implementation
             {
                 DataEventSystemFacade.UnsubscribeToDataBeforeAdd(typeof(TData), value);
             } 
-        }        
+        }
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
         public virtual event DataEventHandler OnAfterAdd
         {
             add
@@ -35,6 +37,7 @@ namespace Composite.Core.Implementation
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
         public virtual event DataEventHandler OnBeforeUpdate
         {
             add
@@ -49,6 +52,7 @@ namespace Composite.Core.Implementation
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
         public virtual event DataEventHandler OnAfterUpdate
         {
             add
@@ -63,6 +67,7 @@ namespace Composite.Core.Implementation
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
         public virtual event DataEventHandler OnDeleted
         {
             add
@@ -77,6 +82,7 @@ namespace Composite.Core.Implementation
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
         public virtual event DataEventHandler OnNew
         {
             add

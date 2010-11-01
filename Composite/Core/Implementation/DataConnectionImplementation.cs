@@ -31,6 +31,7 @@ namespace Composite.Core.Implementation
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Get", Justification = "This is what we want")]
         public virtual IQueryable<TData> Get<TData>()
             where TData : class, IData
         {
@@ -109,6 +110,7 @@ namespace Composite.Core.Implementation
 
 
         // This is a static on the actual class, but non-static here to allow mocking
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "New", Justification = "This is what we want")]
         public virtual TData New<TData>()
             where TData : class, IData
         {

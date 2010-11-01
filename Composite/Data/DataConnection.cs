@@ -446,6 +446,7 @@ namespace Composite.Data
         /// <summary>
         /// A SitemapNavigator instance. See <see cref="Composite.Data.SitemapNavigator"/>
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Sitemap")] 
         public SitemapNavigator SitemapNavigator 
         {
             get

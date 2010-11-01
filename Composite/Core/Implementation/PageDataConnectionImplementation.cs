@@ -26,7 +26,7 @@ namespace Composite.Core.Implementation
 
 
 
-        public TData GetPageMetaData<TData>(string fieldName)
+     /*   public TData GetPageMetaData<TData>(string fieldName)
             where TData : IPageMetaData
         {
             throw new NotImplementedException();
@@ -78,7 +78,7 @@ namespace Composite.Core.Implementation
             where TData : IPageData
         {
             throw new NotImplementedException();
-        }
+        }*/
 
 
 

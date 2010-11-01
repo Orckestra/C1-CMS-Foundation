@@ -4,6 +4,7 @@
     /// <summary>
     /// Define a set of elements in a tree structure, relative to a particular node.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Sitemap")]
     public enum SitemapScope
     {
         /// <summary>

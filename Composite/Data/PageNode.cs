@@ -80,6 +80,7 @@ namespace Composite.Data
         /// <summary>
         /// Url to this page. The Url is relative.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings")]
         public string Url
         {
             get
@@ -166,6 +167,7 @@ namespace Composite.Data
         /// <summary>
         /// XML representing the page and it's decendants. Do NOT modify this structure. To do modifications, clone this first.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Sitemap")]
         public XElement SitemapXml
         {
             get

@@ -51,6 +51,7 @@ namespace Composite.Data
         /// }
         /// </code>
         /// </example>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1721:PropertyNamesShouldNotMatchGetMethods", Justification = "We had to be backwards compatible")]
         public IData Data
         {
             get { return _data; }

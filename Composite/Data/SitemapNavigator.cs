@@ -10,6 +10,7 @@ namespace Composite.Data
     /// <summary>
     /// Provide access to the Composite C1 sitemap structure and primary page attributes.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Sitemap")]
     public class SitemapNavigator : ImplementationContainer<SitemapNavigatorImplementation>
     {
         /// <summary>
@@ -45,6 +46,7 @@ namespace Composite.Data
         /// <summary>
         /// Gets <see cref="PageNode"/>'s for all homepages.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "HomePage")]
         public IEnumerable<PageNode> HomePageNodes
         {
             get
@@ -57,6 +59,7 @@ namespace Composite.Data
         /// <summary>
         /// Gets the Id's for all homepages.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "HomePage")]
         public IEnumerable<Guid> HomePageIds
         {
             get
@@ -82,6 +85,7 @@ namespace Composite.Data
         /// <summary>
         /// Gets the <see cref="PageNode"/> for the current homepage.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "HomePage")]
         public PageNode CurrentHomePageNode
         {
             get
@@ -97,6 +101,8 @@ namespace Composite.Data
         /// </summary>
         /// <param name="hostname">Hostname string to resolve to a <see cref="PageNode"/>.</param>
         /// <returns>The homepage <see cref="PageNode"/> element matching the specified hostname or the default homepage.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Hostname")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "hostname")]
         public PageNode GetPageNodeByHostname(string hostname)
         {
             return this.Implementation.GetPageNodeByHostname(hostname);
@@ -107,6 +113,7 @@ namespace Composite.Data
         /// <summary>
         /// Gets the sitemaps for all sites. Do not modify this structure. To do modifications new up XElements taking sitemap root elements as parameter. 
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Sitemaps")]
         public ReadOnlyCollection<XElement> AllSitemapsXml
         {
             get
@@ -119,6 +126,7 @@ namespace Composite.Data
         /// <summary>
         /// Gets the sitemap for the current site. Do not modify this structure. To do modifications new up XElements taking sitemap root elements as parameter. 
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Sitemap")]
         public XElement SitemapXml
         {
             get
@@ -143,6 +151,7 @@ namespace Composite.Data
         /// <summary>
         /// Gets the Id of the top level page (homepage) for the page currently being rendered
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "HomePage")]
         public static Guid CurrentHomePageId
         {
             get

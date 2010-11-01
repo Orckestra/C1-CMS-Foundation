@@ -121,7 +121,15 @@
     <Rule Name="UseIntegralOrStringArgumentForIndexers" Enabled="True" />
     <Rule Name="UsePropertiesWhereAppropriate" Enabled="True" />
    </RuleFile>
-   <RuleFile Name="$(FxCopDir)\Rules\GlobalizationRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\GlobalizationRules.dll" Enabled="True" AllRulesEnabled="False">
+    <Rule Name="AvoidDuplicateAccelerators" Enabled="True" />
+    <Rule Name="DoNotHardcodeLocaleSpecificStrings" Enabled="True" />
+    <Rule Name="NormalizeStringsToUppercase" Enabled="True" />
+    <Rule Name="SetLocaleForDataTypes" Enabled="True" />
+    <Rule Name="SpecifyMarshalingForPInvokeStringArguments" Enabled="True" />
+    <Rule Name="SpecifyMessageBoxOptions" Enabled="True" />
+    <Rule Name="UseOrdinalStringComparison" Enabled="True" />
+   </RuleFile>
    <RuleFile Name="$(FxCopDir)\Rules\InteroperabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
    <RuleFile Name="$(FxCopDir)\Rules\MobilityRules.dll" Enabled="True" AllRulesEnabled="True" />
    <RuleFile Name="$(FxCopDir)\Rules\NamingRules.dll" Enabled="True" AllRulesEnabled="True" />
