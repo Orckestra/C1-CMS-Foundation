@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.InteropServices;
-using System.Runtime;
+﻿using System.Runtime.InteropServices;
+
 
 namespace Composite.Core.NewIO
 {
-    /// <summary>    
+    /// <summary>
+    /// This should be a part of the I/O layer
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 

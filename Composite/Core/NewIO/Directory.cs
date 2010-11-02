@@ -8,12 +8,14 @@ using System.Runtime.InteropServices;
 
 namespace Composite.Core.NewIO
 {
-    /// <summary>    
+    /// <summary>
+    /// This should be a part of the I/O layer
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class Directory
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "The implementation may use it")]
         public static System.IO.DirectoryInfo CreateDirectory(string path)
         {
             return System.IO.Directory.CreateDirectory(path);
@@ -23,6 +25,7 @@ namespace Composite.Core.NewIO
         //public static DirectoryInfo CreateDirectory(string path, DirectorySecurity directorySecurity) { throw new NotImplementedException(); }
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "The implementation may use it")]
         public static void Delete(string path)
         {
             System.IO.Directory.Delete(path);
@@ -30,6 +33,7 @@ namespace Composite.Core.NewIO
 
 
         //[SecuritySafeCritical]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "The implementation may use it")]
         public static void Delete(string path, bool recursive) 
         {
             System.IO.Directory.Delete(path, recursive); 
@@ -46,7 +50,9 @@ namespace Composite.Core.NewIO
         //public static IEnumerable<string> EnumerateFileSystemEntries(string path, string searchPattern, System.IO.SearchOption searchOption){ throw new NotImplementedException(); }
         //private static IEnumerable<string> EnumerateFileSystemNames(string path, string searchPattern, System.IO.SearchOption searchOption, bool includeFiles, bool includeDirs){ throw new NotImplementedException(); }
         //[SecuritySafeCritical]
-        
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "The implementation may use it")]
         public static bool Exists(string path)
         {
             return System.IO.Directory.Exists(path); 
@@ -56,6 +62,7 @@ namespace Composite.Core.NewIO
         //public static DirectorySecurity GetAccessControl(string path, AccessControlSections includeSections){ throw new NotImplementedException(); }
         //[SecuritySafeCritical]
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "The implementation may use it")]
         public static DateTime GetCreationTime(string path)
         {
             return System.IO.Directory.GetCreationTime(path); 
@@ -66,7 +73,8 @@ namespace Composite.Core.NewIO
         //[SecuritySafeCritical]
         //public static string GetCurrentDirectory(){ throw new NotImplementedException(); }
         //internal static string GetDemandDir(string fullPath, bool thisDirOnly){ throw new NotImplementedException(); }
-        
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "The implementation may use it")]
         public static string[] GetDirectories(string path)
         {
             return System.IO.Directory.GetDirectories(path); 
@@ -76,28 +84,33 @@ namespace Composite.Core.NewIO
         //{
         //    return System.IO.Directory.GetDirectories(path, searchPattern); 
         //}
-        
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "The implementation may use it")]
         public static string[] GetDirectories(string path, string searchPattern, System.IO.SearchOption searchOption)
         {
             return System.IO.Directory.GetDirectories(path, searchPattern, searchOption); 
         }
         
         //[SecuritySafeCritical]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "The implementation may use it")]
         public static string GetDirectoryRoot(string path)
         {
             return System.IO.Directory.GetDirectoryRoot(path); 
         }
-        
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "The implementation may use it")]
         public static string[] GetFiles(string path)
         {
             return System.IO.Directory.GetFiles(path); 
         }
-        
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "The implementation may use it")]
         public static string[] GetFiles(string path, string searchPattern)
         {
             return System.IO.Directory.GetFiles(path, searchPattern); 
         }
-        
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "The implementation may use it")]
         public static string[] GetFiles(string path, string searchPattern, System.IO.SearchOption searchOption)
         {
             return System.IO.Directory.GetFiles(path, searchPattern, searchOption); 
@@ -120,6 +133,7 @@ namespace Composite.Core.NewIO
         //public static DirectoryInfo GetParent(string path){ throw new NotImplementedException(); }
         //[SecuritySafeCritical]
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "The implementation may use it")]
         public static void Move(string sourceDirName, string destDirName)
         {
             System.IO.Directory.Move(sourceDirName, destDirName); 

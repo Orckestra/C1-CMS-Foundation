@@ -1,7 +1,10 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using Composite.Core.Configuration;
+using Composite.Core.IO;
+using Composite.Core.NewIO;
+using Composite.Core.Threading;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Functions;
@@ -10,9 +13,6 @@ using Composite.Functions.Plugins.FunctionProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
-using Composite.Core.IO;
-using Composite.Core.Configuration;
-using Composite.Core.Threading;
 
 namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvider
 {
@@ -90,7 +90,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
         }
 
 
-        void CodeFileDirectoryWatcher_Changed(object sender, FileSystemEventArgs e)
+        void CodeFileDirectoryWatcher_Changed(object sender, System.IO.FileSystemEventArgs e)
         {
             // Checking for null since it is possible that event will be raised before the provider is fully initialized
             if (_functionNotifier != null)
@@ -104,7 +104,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
         {
             public readonly object SyncRoot = new object();
             public event DataEventHandler DataChangedEvent;
-            public event FileSystemEventHandler FileChangedEvent;
+            public event System.IO.FileSystemEventHandler FileChangedEvent;
 
             private readonly FileSystemWatcher _codeDirectoryFileSystemWatcher;
             private DateTime _lastWriteHandleTime = DateTime.MinValue;
@@ -124,7 +124,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
                 _codeDirectoryFileSystemWatcher = new FileSystemWatcher(folderToWatch)
                 {
-                    NotifyFilter = NotifyFilters.LastWrite,
+                    NotifyFilter = System.IO.NotifyFilters.LastWrite,
                     EnableRaisingEvents = true,
                     IncludeSubdirectories = true
                 };
@@ -132,9 +132,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                 _codeDirectoryFileSystemWatcher.Changed += OnFileWatcherEvent;
             }
 
-            void OnFileWatcherEvent(object sender, FileSystemEventArgs e)
+            void OnFileWatcherEvent(object sender, System.IO.FileSystemEventArgs e)
             {
-                FileSystemEventHandler hander = FileChangedEvent;
+                System.IO.FileSystemEventHandler hander = FileChangedEvent;
                 if (hander != null)
                 {
                     lock (_fileUpdateLock)

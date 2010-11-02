@@ -12,6 +12,9 @@ namespace Composite.Core.Xml
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     internal static class XElementUtils
     {
+        /// <summary>
+        /// This should be a part of the I/O layer
+        /// </summary>
         public static XElement Load(string fileName)
         {
             XElement element;
@@ -26,6 +29,9 @@ namespace Composite.Core.Xml
 
 
 
+        /// <summary>
+        /// This should be a part of the I/O layer
+        /// </summary>
         public static void SaveToPath(this XElement element, string fileName)
         {
             using (FileStream stream = new FileStream(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))

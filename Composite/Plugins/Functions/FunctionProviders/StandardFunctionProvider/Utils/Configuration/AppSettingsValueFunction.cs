@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Composite.Functions;
+﻿using System.Collections.Generic;
 using System.Configuration;
-using Composite.C1Console.Security;
+using Composite.Functions;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.Core.ResourceSystem;
+
 
 namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Configuration
 {
@@ -18,6 +14,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         }
 
 
+        
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
             string keyName = parameters.GetParameter<string>("KeyName");

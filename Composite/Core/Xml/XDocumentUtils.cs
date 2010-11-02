@@ -11,10 +11,11 @@ namespace Composite.Core.Xml
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class XDocumentUtils
     {
+        /// <summary>
+        /// This should be a part of the I/O layer
+        /// </summary>
         public static XDocument Load(string filename)
         {
-            return XDocument.Load(filename);
-
             XDocument document;
 
             using (FileStream stream = new FileStream(filename, System.IO.FileMode.Open, System.IO.FileAccess.Read))
@@ -27,6 +28,9 @@ namespace Composite.Core.Xml
 
 
 
+        /// <summary>
+        /// This should be a part of the I/O layer
+        /// </summary>
         public static void Save(XDocument document, string filename)
         {
             using (FileStream stream = new FileStream(filename, System.IO.FileMode.Create, System.IO.FileAccess.Write, System.IO.FileShare.Read))

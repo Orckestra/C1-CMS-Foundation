@@ -1,6 +1,6 @@
-using System.IO;
 using System.Text;
 using Composite.Core.Logging;
+using Composite.Core.NewIO;
 
 
 namespace Composite.Core.IO
@@ -12,7 +12,7 @@ namespace Composite.Core.IO
         /// </summary>
         public static void EnsurePath(string filePath)
         {
-            string directory = Path.GetDirectoryName(filePath);
+            string directory = System.IO.Path.GetDirectoryName(filePath);
 
             EnsureDirectoryExists(directory);
         }
@@ -22,15 +22,15 @@ namespace Composite.Core.IO
         /// </summary>
         public static void EnsureDirectoryExists(string directory)
         {
-            string[] directories = directory.Split(Path.DirectorySeparatorChar);
+            string[] directories = directory.Split(System.IO.Path.DirectorySeparatorChar);
 
             if (directories.Length == 2) return;
 
-            string currentPath = string.Format("{0}{1}", directories[0], Path.DirectorySeparatorChar);
+            string currentPath = string.Format("{0}{1}", directories[0], System.IO.Path.DirectorySeparatorChar);
 
             for (int i = 1; i < directories.Length; ++i)
             {
-                currentPath = string.Format("{0}{1}{2}", currentPath, directories[i], Path.DirectorySeparatorChar);
+                currentPath = string.Format("{0}{1}{2}", currentPath, directories[i], System.IO.Path.DirectorySeparatorChar);
 
                 if (currentPath.ToLower().StartsWith(PathUtil.BaseDirectory.ToLower())) // don't touch dirs outside our own folder!
                 {
@@ -56,9 +56,9 @@ namespace Composite.Core.IO
 
             if (deleteEmptyDirectoresRecursively == true)
             {
-                string directory = Path.GetDirectoryName(path);
+                string directory = System.IO.Path.GetDirectoryName(path);
 
-                string[] directories = directory.Split(Path.DirectorySeparatorChar);
+                string[] directories = directory.Split(System.IO.Path.DirectorySeparatorChar);
 
                 for (int i = directories.Length; i > 1; --i)
                 {
@@ -67,7 +67,7 @@ namespace Composite.Core.IO
                     for (int j = 0; j < i; ++j)
                     {
                         stringBuilder.Append(directories[j]);
-                        stringBuilder.Append(Path.DirectorySeparatorChar);
+                        stringBuilder.Append(System.IO.Path.DirectorySeparatorChar);
                     }
 
                     string currentPath = stringBuilder.ToString();

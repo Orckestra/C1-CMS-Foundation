@@ -8,7 +8,8 @@ using System.Runtime.InteropServices;
 
 namespace Composite.Core.NewIO
 {
-    /// <summary>    
+    /// <summary>
+    /// This should be a part of the I/O layer
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
@@ -17,11 +18,17 @@ namespace Composite.Core.NewIO
     {
         private System.IO.StreamWriter _streamWriter;
 
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass", Justification = "The implementation may use it")]
         public StreamWriter(System.IO.Stream stream)
         {
             _streamWriter = new System.IO.StreamWriter(stream);
         }
 
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass", Justification = "The implementation may use it")]
         public StreamWriter(string path)
         {
             _streamWriter = new System.IO.StreamWriter(path);

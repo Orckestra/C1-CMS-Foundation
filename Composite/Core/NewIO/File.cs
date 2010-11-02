@@ -8,7 +8,8 @@ using System.Runtime.InteropServices;
 
 namespace Composite.Core.NewIO
 {
-    /// <summary>    
+    /// <summary>
+    /// This should be a part of the I/O layer
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
@@ -31,6 +32,7 @@ namespace Composite.Core.NewIO
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static void AppendAllText(string path, string contents)
         {
             System.IO.File.AppendAllText(path, contents);
@@ -40,19 +42,25 @@ namespace Composite.Core.NewIO
         //public static void AppendAllText(string path, string contents, Encoding encoding){ throw new NotImplementedException(); }
         //[SecuritySafeCritical]
         //public static StreamWriter AppendText(string path){ throw new NotImplementedException(); }
-        
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static void Copy(string sourceFileName, string destFileName)
         {
             System.IO.File.Copy(sourceFileName, destFileName); 
         }
-        
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static void Copy(string sourceFileName, string destFileName, bool overwrite)
         {
             System.IO.File.Copy(sourceFileName, destFileName, overwrite);
         }
         
         //[SecuritySafeCritical, TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
-        
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static FileStream Create(string path)
         {
             return new FileStream(System.IO.File.Create(path)); 
@@ -68,7 +76,10 @@ namespace Composite.Core.NewIO
         //[SecuritySafeCritical]
         //public static void Decrypt(string path){ throw new NotImplementedException(); }
         //[SecuritySafeCritical]
-        
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static void Delete(string path)
         {
             System.IO.File.Delete(path);
@@ -77,7 +88,10 @@ namespace Composite.Core.NewIO
         //[SecuritySafeCritical]
         //public static void Encrypt(string path){ throw new NotImplementedException(); }
         //[SecuritySafeCritical]
-        
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static bool Exists(string path)
         {
             return System.IO.File.Exists(path);
@@ -87,14 +101,20 @@ namespace Composite.Core.NewIO
         //public static System.Security.AccessControl.FileSecurity GetAccessControl(string path){ throw new NotImplementedException(); }
         //public static System.Security.AccessControl.FileSecurity GetAccessControl(string path, System.Security.AccessControl.AccessControlSections includeSections){ throw new NotImplementedException(); }
         //[SecuritySafeCritical]
-        
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static System.IO.FileAttributes GetAttributes(string path)
         {
             return System.IO.File.GetAttributes(path); 
         }
         
         //[SecuritySafeCritical]
-        
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static DateTime GetCreationTime(string path)
         {
             return System.IO.File.GetCreationTime(path); 
@@ -107,7 +127,10 @@ namespace Composite.Core.NewIO
         //[SecuritySafeCritical]
         //public static DateTime GetLastAccessTimeUtc(string path){ throw new NotImplementedException(); }
         //[SecuritySafeCritical]
-        
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static DateTime GetLastWriteTime(string path)
         {
             return System.IO.File.GetLastWriteTime(path);
@@ -116,35 +139,47 @@ namespace Composite.Core.NewIO
         //[SecuritySafeCritical]
         //public static DateTime GetLastWriteTimeUtc(string path){ throw new NotImplementedException(); }
         //[SecuritySafeCritical]
-        
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static void Move(string sourceFileName, string destFileName)
         {
             System.IO.File.Move(sourceFileName, destFileName); 
         }
         
         //[SecuritySafeCritical]
-        
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static FileStream Open(string path, System.IO.FileMode mode)
         {
             return new FileStream(System.IO.File.Open(path, mode)); 
         }
         
         //[SecuritySafeCritical, TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
-        
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static FileStream Open(string path, System.IO.FileMode mode, System.IO.FileAccess access)
         { 
             return new FileStream(System.IO.File.Open(path, mode, access));
         }
         
         //[SecuritySafeCritical]
-        
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static FileStream Open(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share)
         { 
             return new FileStream(System.IO.File.Open(path, mode, access, share)); 
         }
         
         //[SecuritySafeCritical]
-        
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static FileStream OpenRead(string path)
         {
             return new FileStream(System.IO.File.OpenRead(path));    
@@ -155,14 +190,20 @@ namespace Composite.Core.NewIO
         //[SecuritySafeCritical]
         //public static FileStream OpenWrite(string path){ throw new NotImplementedException(); }
         //[SecuritySafeCritical]
-        
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static byte[] ReadAllBytes(string path)
         {
             return System.IO.File.ReadAllBytes(path);
         }
         
         //[SecuritySafeCritical]
-        
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static string[] ReadAllLines(string path)
         {
             return System.IO.File.ReadAllLines(path); 
@@ -171,7 +212,10 @@ namespace Composite.Core.NewIO
         //[SecuritySafeCritical]
         //public static string[] ReadAllLines(string path, Encoding encoding){ throw new NotImplementedException(); }
         //[SecuritySafeCritical]
-        
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static string ReadAllText(string path)
         {
             return System.IO.File.ReadAllText(path); 
@@ -189,13 +233,17 @@ namespace Composite.Core.NewIO
         //[SecuritySafeCritical]
         //public static void SetAccessControl(string path, System.Security.AccessControl.FileSecurity fileSecurity){ throw new NotImplementedException(); }
         //[SecuritySafeCritical]
-        
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static void SetAttributes(string path, System.IO.FileAttributes fileAttributes)
         {
             System.IO.File.SetAttributes(path, fileAttributes); 
         }
-        
 
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static void SetCreationTime(string path, DateTime creationTime)
         {
             System.IO.File.SetCreationTime(path, creationTime); 
@@ -205,9 +253,9 @@ namespace Composite.Core.NewIO
         //public static void SetLastAccessTime(string path, DateTime lastAccessTime){ throw new NotImplementedException(); }
         //[SecuritySafeCritical]
         //public static void SetLastAccessTimeUtc(string path, DateTime lastAccessTimeUtc){ throw new NotImplementedException(); }
-        
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static void SetLastWriteTime(string path, DateTime lastWriteTime)
         {
             System.IO.File.SetLastWriteTime(path, lastWriteTime);
@@ -219,7 +267,9 @@ namespace Composite.Core.NewIO
         //[SecuritySafeCritical]
         //public static void WriteAllBytes(string path, byte[] bytes){ throw new NotImplementedException(); }
         //[SecuritySafeCritical]
-        
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static void WriteAllLines(string path, IEnumerable<string> contents)
         { 
             System.IO.File.WriteAllLines(path, contents); 
@@ -232,14 +282,18 @@ namespace Composite.Core.NewIO
         //[SecuritySafeCritical]
         //public static void WriteAllLines(string path, string[] contents, Encoding encoding){ throw new NotImplementedException(); }
         //[SecuritySafeCritical]
-        
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static void WriteAllText(string path, string contents)
         {
             System.IO.File.WriteAllText(path, contents); 
         }
         
         //[SecuritySafeCritical]
-        
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
         public static void WriteAllText(string path, string contents, Encoding encoding)
         {
             System.IO.File.WriteAllText(path, contents, encoding); 

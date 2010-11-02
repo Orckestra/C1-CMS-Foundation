@@ -11,6 +11,9 @@ namespace Composite.Core.Xml
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class XslCompiledTransformUtls
     {
+        /// <summary>
+        /// This should be a part of the I/O layer
+        /// </summary>
         public static void LoadFromPath(this XslCompiledTransform xslCompiledTransform, string path)
         {
             using (StreamReader streamReader = new StreamReader(path))
@@ -24,6 +27,9 @@ namespace Composite.Core.Xml
 
 
 
+        /// <summary>
+        /// This should be a part of the I/O layer
+        /// </summary>
         public static void LoadFromPath(this XslCompiledTransform xslCompiledTransform, string path, XsltSettings settings, XmlResolver stylesheetResolver)
         {
             using (StreamReader streamReader = new StreamReader(path))

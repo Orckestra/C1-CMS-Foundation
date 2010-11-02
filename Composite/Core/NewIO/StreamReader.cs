@@ -8,7 +8,8 @@ using System.Security;
 
 namespace Composite.Core.NewIO
 {
-    /// <summary>    
+    /// <summary>
+    /// This should be a part of the I/O layer
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
@@ -19,12 +20,16 @@ namespace Composite.Core.NewIO
 
         //[TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamReaderClass:DotNotUseStreamReaderClass", Justification = "The implementation may use it")]
         public StreamReader(System.IO.Stream stream)
         {
             _streamReader = new System.IO.StreamReader(stream);
         }
 
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamReaderClass:DotNotUseStreamReaderClass", Justification = "The implementation may use it")]
         public StreamReader(string path)
         {
             _streamReader = new System.IO.StreamReader(path);
@@ -33,6 +38,9 @@ namespace Composite.Core.NewIO
         //public StreamReader(System.IO.Stream stream, bool detectEncodingFromByteOrderMarks){ throw new NotImplementedException(); }
         //[TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
 
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamReaderClass:DotNotUseStreamReaderClass", Justification = "The implementation may use it")]
         public StreamReader(System.IO.Stream stream, Encoding encoding)
         {
             _streamReader = new System.IO.StreamReader(stream, encoding);

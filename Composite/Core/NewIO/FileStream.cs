@@ -12,10 +12,12 @@ using System.Security.AccessControl;
 
 namespace Composite.Core.NewIO
 {
-    /// <summary>    
+    /// <summary>
+    /// This should be a part of the I/O layer
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    
     public class FileStream : System.IO.Stream, IDisposable
     {
         private System.IO.FileStream _fileStream;
@@ -28,7 +30,7 @@ namespace Composite.Core.NewIO
         //[SecuritySafeCritical]
 
 
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "The implementation may use it")]
         public FileStream(string path, System.IO.FileMode mode)
         {
             _fileStream = new System.IO.FileStream(path, mode);
@@ -43,7 +45,7 @@ namespace Composite.Core.NewIO
         //[SecuritySafeCritical]
 
 
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "The implementation may use it")]
         public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access)
         {
             _fileStream = new System.IO.FileStream(path, mode, access);
@@ -51,6 +53,7 @@ namespace Composite.Core.NewIO
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "The implementation may use it")]
         internal FileStream(System.IO.FileStream fileStream)
         {
             _fileStream = fileStream;
@@ -63,9 +66,10 @@ namespace Composite.Core.NewIO
         //[SecuritySafeCritical, Obsolete("This constructor has been deprecated.  Please use new FileStream(SafeFileHandle handle, System.IO.FileAccess access, int bufferSize) instead, and optionally make a new SafeFileHandle with ownsHandle=false if needed.  http://go.microsoft.com/fwlink/?linkid=14202"), TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         //public FileStream(IntPtr handle, System.IO.FileAccess access, bool ownsHandle, int bufferSize) { throw new NotImplementedException(); }
         //[SecuritySafeCritical]
-        
 
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "The implementation may use it")]
         public FileStream(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share) 
         {
             _fileStream = new System.IO.FileStream(path, mode, access, share); 
@@ -102,8 +106,9 @@ namespace Composite.Core.NewIO
             _fileStream.Flush();
         }
 
-        
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "The implementation may use it")]
         public virtual void Flush(bool flushToDisk) 
         {
             _fileStream.Flush(flushToDisk);

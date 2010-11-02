@@ -5,6 +5,9 @@ using Composite.Core.NewIO;
 
 namespace Composite.Core.Configuration
 {
+    /// <summary>
+    /// This should be a part of the I/O layer
+    /// </summary>
     internal class FileConfigurationSource : Microsoft.Practices.EnterpriseLibrary.Common.Configuration.IConfigurationSource, Microsoft.Practices.EnterpriseLibrary.Common.Configuration.IProtectedConfigurationSource
 	{
 		private static Dictionary<string, FileConfigurationSourceImplementation> implementationByFilepath = new Dictionary<string, FileConfigurationSourceImplementation>(StringComparer.OrdinalIgnoreCase);
@@ -69,6 +72,10 @@ namespace Composite.Core.Configuration
             InternalSave(fileName, section, configurationSection, protectionProvider);
         }
 
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "The implementation may use it")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationManagerClass:DoNotUseConfigurationManagerClass", Justification = "The implementation may use it")]
         private void InternalSave(string fileName, string section, System.Configuration.ConfigurationSection configurationSection, string protectionProvider)
         {
             System.Configuration.ExeConfigurationFileMap fileMap = new System.Configuration.ExeConfigurationFileMap();
@@ -115,9 +122,10 @@ namespace Composite.Core.Configuration
                 }
             }
         }
-        
 
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "The implementation may use it")]
         private void UpdateApplicationSettings(string section, System.Configuration.ConfigurationSection configurationSection, System.Configuration.Configuration config, string protectionProvider)
         {
             System.Configuration.AppSettingsSection current = config.AppSettings;
@@ -166,6 +174,7 @@ namespace Composite.Core.Configuration
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "The implementation may use it")]
 		private void UpdateConnectionStrings(string section, System.Configuration.ConfigurationSection configurationSection, System.Configuration.Configuration config, string protectionProvider)
 		{
 			System.Configuration.ConnectionStringsSection current = config.ConnectionStrings;
@@ -188,8 +197,10 @@ namespace Composite.Core.Configuration
 			}
 		}
 
-		
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "The implementation may use it")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationManagerClass:DoNotUseConfigurationManagerClass", Justification = "The implementation may use it")]
 		public void Remove(string fileName, string section)
         {
 #warning MRJ: Fix this exception

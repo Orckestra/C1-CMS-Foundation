@@ -8,7 +8,8 @@ using System.Runtime;
 
 namespace Composite.Core.NewIO
 {
-    /// <summary>    
+    /// <summary>
+    /// This should be a part of the I/O layer
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
@@ -18,6 +19,7 @@ namespace Composite.Core.NewIO
         private System.IO.FileSystemWatcher _fileSystemWatcher;
 
         [System.IO.IODescription("FSW_Changed")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass", Justification = "The implementation may use it")]
         public event System.IO.FileSystemEventHandler Changed 
         { 
             add 
@@ -33,6 +35,7 @@ namespace Composite.Core.NewIO
 
 
         [System.IO.IODescription("FSW_Created")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass", Justification = "The implementation may use it")]
         public event System.IO.FileSystemEventHandler Created
         {
             add
@@ -48,6 +51,7 @@ namespace Composite.Core.NewIO
 
 
         [System.IO.IODescription("FSW_Deleted")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass", Justification = "The implementation may use it")]
         public event System.IO.FileSystemEventHandler Deleted
         {
             add
@@ -67,6 +71,7 @@ namespace Composite.Core.NewIO
         
         
         [System.IO.IODescription("FSW_Renamed")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass", Justification = "The implementation may use it")]
         public event System.IO.RenamedEventHandler Renamed
         {
             add
@@ -83,23 +88,32 @@ namespace Composite.Core.NewIO
         //static FileSystemWatcher(){ throw new NotImplementedException(); }
         //public FileSystemWatcher(){ throw new NotImplementedException(); }
         //[TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
-        
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass", Justification = "The implementation may use it")]
         public FileSystemWatcher(string path)
         {
             _fileSystemWatcher = new System.IO.FileSystemWatcher(path); 
         }
-        
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass", Justification = "The implementation may use it")]
         public FileSystemWatcher(string path, string filter)
         {
             _fileSystemWatcher = new System.IO.FileSystemWatcher(path, filter); 
         }
 
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass", Justification = "The implementation may use it")]
         public void BeginInit()
         {
             _fileSystemWatcher.BeginInit(); 
         }
-        
-        
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass", Justification = "The implementation may use it")]
         public void EndInit()
         {
             _fileSystemWatcher.EndInit(); 
@@ -112,6 +126,7 @@ namespace Composite.Core.NewIO
         //// Properties
         
         [System.IO.IODescription("FSW_Enabled"), DefaultValue(false)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass", Justification = "The implementation may use it")]
         public bool EnableRaisingEvents 
         { 
             [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")] 
@@ -129,7 +144,9 @@ namespace Composite.Core.NewIO
         //[SettingsBindable(true), DefaultValue("*.*"), System.IO.IODescription("FSW_Filter"), TypeConverter("System.Diagnostics.Design.StringValueConverter, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
         //public string Filter { [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")] get{ throw new NotImplementedException(); } set{ throw new NotImplementedException(); } }
         //[DefaultValue(false), System.IO.IODescription("FSW_IncludeSubdirectories")]
-        
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass", Justification = "The implementation may use it")]
         public bool IncludeSubdirectories 
         { 
             [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")] 
@@ -146,7 +163,8 @@ namespace Composite.Core.NewIO
         //[DefaultValue(0x2000), Browsable(false)]
         //public int InternalBufferSize { [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")] get{ throw new NotImplementedException(); } set{ throw new NotImplementedException(); } }
         
-        [DefaultValue(0x13), System.IO.IODescription("FSW_ChangedFilter")]        
+        [DefaultValue(0x13), System.IO.IODescription("FSW_ChangedFilter")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass", Justification = "The implementation may use it")]
         public System.IO.NotifyFilters NotifyFilter 
         { 
             [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")] 

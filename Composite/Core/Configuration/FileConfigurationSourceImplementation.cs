@@ -3,7 +3,10 @@
 
 namespace Composite.Core.Configuration
 {
-    public class FileConfigurationSourceImplementation : Microsoft.Practices.EnterpriseLibrary.Common.Configuration.BaseFileConfigurationSourceImplementation
+    /// <summary>
+    /// This should be a part of the I/O layer
+    /// </summary>
+    internal class FileConfigurationSourceImplementation : Microsoft.Practices.EnterpriseLibrary.Common.Configuration.BaseFileConfigurationSourceImplementation
     {
         private string configurationFilepath;
         private System.Configuration.ExeConfigurationFileMap fileMap;
@@ -27,8 +30,9 @@ namespace Composite.Core.Configuration
             fileMap.ExeConfigFilename = configurationFilepath;
         }
 
-        
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "The implementation may use it")]
         public override System.Configuration.ConfigurationSection GetSection(string sectionName)
         {
             System.Configuration.Configuration configuration = GetConfiguration();
@@ -40,8 +44,9 @@ namespace Composite.Core.Configuration
             return configurationSection;
         }
 
-       
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "The implementation may use it")]
         protected override void RefreshAndValidateSections(IDictionary<string, string> localSectionsToRefresh, IDictionary<string, string> externalSectionsToRefresh, out ICollection<string> sectionsToNotify, out IDictionary<string, string> sectionsWithChangedConfigSource)
         {
             UpdateCache();
@@ -87,6 +92,8 @@ namespace Composite.Core.Configuration
 
 
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationManagerClass:DoNotUseConfigurationManagerClass", Justification = "The implementation may use it")]
         private System.Configuration.Configuration GetConfiguration()
         {
             if (cachedConfiguration == null)
@@ -105,6 +112,7 @@ namespace Composite.Core.Configuration
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationManagerClass:DoNotUseConfigurationManagerClass", Justification = "The implementation may use it")]
         internal void UpdateCache()
         {
             System.Configuration.Configuration newConfiguration

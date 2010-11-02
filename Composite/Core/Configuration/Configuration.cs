@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Configuration;
+﻿using System.Configuration;
 
 
 namespace Composite.Core.Configuration
 {
-    /// <summary>    
+    /// <summary>
+    /// This should be a part of the I/O layer
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
@@ -15,11 +12,13 @@ namespace Composite.Core.Configuration
     {
         System.Configuration.Configuration _configuration;
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationManagerClass:DoNotUseConfigurationManagerClass", Justification = "The implementation may use it")]
         public static Configuration Load(string path)
-        {
+        {            
             ExeConfigurationFileMap map = new ExeConfigurationFileMap();
             map.ExeConfigFilename = path;
-            System.Configuration.Configuration configuration = ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
+            System.Configuration.Configuration configuration = ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);            
 
             return new Configuration(configuration);
         }
@@ -33,6 +32,7 @@ namespace Composite.Core.Configuration
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "The implementation may use it")]
         public ConfigurationSectionCollection Sections
         {
             get
@@ -43,6 +43,7 @@ namespace Composite.Core.Configuration
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "The implementation may use it")]
         public ConfigurationSection GetSection(string sectionName)
         {
             return _configuration.GetSection(sectionName);
@@ -50,6 +51,8 @@ namespace Composite.Core.Configuration
 
 
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "The implementation may use it")]
         public void Save()
         {
             _configuration.Save();
