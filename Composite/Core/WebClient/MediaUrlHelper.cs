@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Composite.Core.Extensions;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Core.Extensions;
 
 
 namespace Composite.Core.WebClient

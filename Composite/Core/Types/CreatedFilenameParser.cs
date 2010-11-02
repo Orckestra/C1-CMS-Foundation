@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Composite.Core.NewIO;
 using System.Linq;
+using Composite.Core.IO;
 
 
 namespace Composite.Core.Types

@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Security;
-using Microsoft.Win32.SafeHandles;
-using System.Threading;
-using System.Runtime.InteropServices;
 using System.Runtime;
-using System.Security.Permissions;
-using System.Security.AccessControl;
+using System.Runtime.InteropServices;
+using System.Security;
 
-namespace Composite.Core.NewIO
+namespace Composite.Core.IO
 {
     /// <summary>
     /// This should be a part of the I/O layer

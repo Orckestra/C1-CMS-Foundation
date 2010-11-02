@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Net;
 using System.ServiceModel;
 using System.Xml;
 using System.Xml.Linq;
+using Composite.C1Console.Security;
 using Composite.Core.Application;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
 using Composite.Core.Localization;
 using Composite.Core.Logging;
 using Composite.Core.PackageSystem;
-using Composite.C1Console.Security;
 using Composite.Core.WebClient.Setup.WebServiceClient;
 using Composite.Core.Xml;
 

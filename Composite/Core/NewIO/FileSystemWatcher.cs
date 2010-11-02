@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel;
-using System.Security.Permissions;
+﻿using System.ComponentModel;
 using System.Runtime;
+using System.Security.Permissions;
 
-namespace Composite.Core.NewIO
+namespace Composite.Core.IO
 {
     /// <summary>
     /// This should be a part of the I/O layer

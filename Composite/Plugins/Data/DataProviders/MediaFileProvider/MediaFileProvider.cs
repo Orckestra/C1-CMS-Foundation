@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
-using Composite.Core.NewIO;
 using System.Linq;
+using Composite.Core.Extensions;
+using Composite.Core.IO;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Types;
-using Composite.Core.Extensions;
-using Composite.Core.IO;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;

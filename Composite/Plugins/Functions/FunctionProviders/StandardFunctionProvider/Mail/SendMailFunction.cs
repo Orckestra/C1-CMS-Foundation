@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Composite.Core.NewIO;
+using System.Linq;
 using System.Net.Mail;
 using System.Web;
-using System.Linq;
+using Composite.Core.Extensions;
+using Composite.Core.IO;
+using Composite.Core.Logging;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Functions;
-using Composite.Core.Logging;
-using Composite.Core.Extensions;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 
 namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Mail

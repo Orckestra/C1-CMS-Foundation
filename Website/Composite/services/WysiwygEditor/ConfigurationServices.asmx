@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
@@ -10,12 +9,12 @@ using System.Web.Services.Protocols;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Xsl;
-
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Data.DynamicTypes;
 using Composite.Core.Types;
 using Composite.Core.Xml;
+using Composite.Core.IO;
 
 
 [WebService(Namespace = "http://www.composite.net/ns/management")]

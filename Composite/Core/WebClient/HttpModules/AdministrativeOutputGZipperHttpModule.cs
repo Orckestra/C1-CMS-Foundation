@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Web;
-using Composite.Core.NewIO;
+
 
 namespace Composite.Core.WebClient.HttpModules
 {

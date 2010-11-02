@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using Composite.Core.NewIO;
 using System.Net;
 using System.Text;
 using System.Web;
@@ -106,8 +105,8 @@ public partial class ScriptLoaderControl : System.Web.UI.UserControl
      */
     private void RenderMarkup(HtmlTextWriter writer)
     {
-        //string thisVirtualFolder = Composite.Core.NewIO.Path.GetDirectoryName(this.AppRelativeVirtualPath);
-        //string parentVirtualFolder = thisVirtualFolder.Substring(0, thisVirtualFolder.LastIndexOf(Composite.Core.NewIO.Path.DirectorySeparatorChar));
+        //string thisVirtualFolder = Composite.Core.IO.Path.GetDirectoryName(this.AppRelativeVirtualPath);
+        //string parentVirtualFolder = thisVirtualFolder.Substring(0, thisVirtualFolder.LastIndexOf(Composite.Core.IO.Path.DirectorySeparatorChar));
         //string fullPathWindowsStyle = parentVirtualFolder.Replace( "~", HttpContext.Current.Request.ApplicationPath );
 
         string _root = Composite.Core.WebClient.UrlUtils.AdminRootPath;

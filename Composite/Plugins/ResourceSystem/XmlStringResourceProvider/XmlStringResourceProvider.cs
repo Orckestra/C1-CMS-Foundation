@@ -7,7 +7,6 @@ using System.Xml.Linq;
 using Composite.Core.Collections.Generic;
 using Composite.Core.IO;
 using Composite.Core.Logging;
-using Composite.Core.NewIO;
 using Composite.Core.ResourceSystem.Plugins.ResourceProvider;
 using Composite.Core.Xml;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;

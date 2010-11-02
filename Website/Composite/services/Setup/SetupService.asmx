@@ -1,7 +1,6 @@
 ﻿<%@ WebService Language="C#" Class="Composite.Core.WebClient.Setup.SetupService" %>
 
 using System;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Xml;
 using System.Runtime.InteropServices;

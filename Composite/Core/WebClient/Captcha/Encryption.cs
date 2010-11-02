@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Globalization;
-using Composite.Core.NewIO;
 using System.Management;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web.Hosting;
+using Composite.Core.IO;
+
 
 namespace Composite.Core.WebClient.Captcha
 {

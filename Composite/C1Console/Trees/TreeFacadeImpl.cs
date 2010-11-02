@@ -22,7 +22,6 @@ using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Linq;
 using Composite.Core.Logging;
-using Composite.Core.NewIO;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Threading;
 using Composite.Core.Types;

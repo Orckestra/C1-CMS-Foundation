@@ -2,8 +2,6 @@
 using System.Xml;
 using System.Xml.Linq;
 using Composite.Core.IO;
-using Composite.Core.NewIO;
-using Composite.Core.Xml;
 using Composite.Functions;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 
@@ -27,7 +25,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                 throw new System.IO.FileNotFoundException("File not found. Ensure path is relative (that it does not start with '/').", path);
             }
 
-            using (var streamReader = new Composite.Core.NewIO.StreamReader(path))
+            using (var streamReader = new Composite.Core.IO.StreamReader(path))
             {
                 using (var reader = XmlReader.Create(streamReader))
                 {

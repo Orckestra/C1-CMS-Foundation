@@ -1,28 +1,27 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Caching;
 using System.Web.UI;
-using System.Xml.Linq;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Xsl;
-using Composite.Core.NewIO;
 using Composite;
 using Composite.C1Console.Events;
-using Composite.Core.Extensions;
 using Composite.C1Console.Forms.WebChannel;
+using Composite.Core.Extensions;
 using Composite.Core.Logging;
 using Composite.Core.ResourceSystem;
-using Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvider;
-using Composite.Plugins.Forms.WebChannel.UiControlFactories;
+using Composite.Core.Types;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.FunctionCallEditor;
 using Composite.Core.WebClient.State;
 using Composite.Core.Xml;
 using Composite.Functions;
-using System.Collections.Generic;
-using Composite.Core.Types;
+using Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvider;
+using Composite.Plugins.Forms.WebChannel.UiControlFactories;
 
 /// <summary>
 /// Summary description for functioneditor

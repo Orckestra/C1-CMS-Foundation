@@ -1,4 +1,3 @@
-using Composite.Core.NewIO;
 
 
 namespace Composite.Data.Streams

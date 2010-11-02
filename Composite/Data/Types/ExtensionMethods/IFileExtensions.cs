@@ -1,4 +1,4 @@
-using Composite.Core.NewIO;
+using Composite.Core.IO;
 using Composite.Data.Streams;
 
 

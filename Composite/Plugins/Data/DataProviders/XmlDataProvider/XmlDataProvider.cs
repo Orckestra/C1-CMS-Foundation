@@ -2,28 +2,27 @@ using System;
 using System.Collections.Generic;
 //using System.Configuration;
 using System.Globalization;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Threading;
 using System.Transactions;
 using System.Xml.Linq;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Configuration;
+using Composite.Core.Extensions;
+using Composite.Core.IO;
+using Composite.Core.Logging;
+using Composite.Core.Threading;
+using Composite.Core.Types;
+using Composite.Core.Xml;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Plugins.DataProvider;
-using Composite.Core.IO;
-using Composite.Core.Logging;
 using Composite.Plugins.Data.DataProviders.Common;
 using Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration;
 using Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation;
-using Composite.Core.Extensions;
-using Composite.Core.Threading;
-using Composite.Core.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
-using Composite.Core.Xml;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider

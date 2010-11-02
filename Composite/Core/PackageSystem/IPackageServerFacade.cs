@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Composite.Core.NewIO;
 
 
 namespace Composite.Core.PackageSystem

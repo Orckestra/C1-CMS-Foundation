@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Composite.Core.NewIO;
 using System.Text;
 using Composite.C1Console.Forms.Foundation;
 using Composite.Core.Serialization;

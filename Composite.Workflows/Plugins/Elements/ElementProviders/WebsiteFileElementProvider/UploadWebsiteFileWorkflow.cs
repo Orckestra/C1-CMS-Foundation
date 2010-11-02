@@ -1,10 +1,8 @@
 using System;
-using Composite.Core.NewIO;
 using System.Workflow.Activities;
 using Composite.C1Console.Actions;
-using Composite.C1Console.Events;
 using Composite.C1Console.Elements;
-using Composite.Core.Extensions;
+using Composite.C1Console.Events;
 using Composite.C1Console.Forms.CoreUiControls;
 using Composite.C1Console.Workflow;
 using Composite.Core.IO;

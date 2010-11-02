@@ -1,9 +1,8 @@
 using System;
-using Composite.Core.NewIO;
+using System.Collections.Generic;
 using System.Text;
 using System.Web;
-using System.Collections.Generic;
-using Composite.Core.Logging;
+using Composite.Core.IO;
 
 /*
  * Important notice: This setup has been hardwired to handle MY personal 

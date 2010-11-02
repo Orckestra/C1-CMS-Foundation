@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Xsl;
-using TidyNet;
+using Composite.Core.IO;
 using Composite.Core.Xml;
+using TidyNet;
 
 
 namespace Composite.Core.WebClient.Services.WysiwygEditor

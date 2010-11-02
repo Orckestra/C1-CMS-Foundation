@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Composite.Core.NewIO;
 using System.ServiceModel;
-using Composite.Core.PackageSystem.WebServiceClient;
 using Composite.Core.Logging;
 using Composite.Core.PackageSystem.Foundation;
-using System.Text.RegularExpressions;
+using Composite.Core.PackageSystem.WebServiceClient;
 
 
 namespace Composite.Core.PackageSystem

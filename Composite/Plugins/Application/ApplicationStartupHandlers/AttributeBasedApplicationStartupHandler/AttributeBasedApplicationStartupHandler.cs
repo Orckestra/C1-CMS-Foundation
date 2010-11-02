@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Composite.Core.NewIO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Web.Hosting;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Reflection;
-using Composite.Core.Types;
-using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Composite.Core.Application;
 using Composite.Core.Application.Plugins.ApplicationStartupHandler;
-using Composite.Core.Extensions;
 using Composite.Core.Configuration;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Logging;
+using Composite.Core.Types;
+using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 
 namespace Composite.Core.Application

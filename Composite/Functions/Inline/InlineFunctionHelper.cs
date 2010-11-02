@@ -1,7 +1,6 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Reflection;
 using Composite.Core.Configuration;

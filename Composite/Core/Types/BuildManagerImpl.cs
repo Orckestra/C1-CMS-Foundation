@@ -16,7 +16,6 @@ using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Linq;
 using Composite.Core.Logging;
-using Composite.Core.NewIO;
 using Composite.Core.Types.Foundation;
 using Microsoft.CSharp;
 
@@ -304,8 +303,8 @@ namespace Composite.Core.Types
 #if DEBUG_MODE
     //////////////////////////////////
     // #warning REMARK THIS SHIT
-            Composite.Core.NewIO.FileStream file = Composite.Core.NewIO.File.Create(string.Format("{0}.cs", filename));
-            Composite.Core.NewIO.StreamWriter sw = new Composite.Core.NewIO.StreamWriter(file);
+            Composite.Core.IO.FileStream file = Composite.Core.IO.File.Create(string.Format("{0}.cs", filename));
+            Composite.Core.IO.StreamWriter sw = new Composite.Core.IO.StreamWriter(file);
             compiler.GenerateCodeFromCompileUnit(compileUnit.CodeCompileUnit, sw, new CodeGeneratorOptions());
             sw.Close();
             file.Close();

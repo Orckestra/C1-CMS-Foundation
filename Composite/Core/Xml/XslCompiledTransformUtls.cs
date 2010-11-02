@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 using System.Xml.Xsl;
-using Composite.Core.NewIO;
+using Composite.Core.IO;
 
 
 namespace Composite.Core.Xml

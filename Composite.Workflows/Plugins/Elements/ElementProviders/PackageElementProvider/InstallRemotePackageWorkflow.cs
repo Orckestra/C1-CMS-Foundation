@@ -1,17 +1,16 @@
 using System;
 using System.Collections.Generic;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Text;
 using System.Workflow.Activities;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
+using Composite.C1Console.Users;
+using Composite.C1Console.Workflow;
 using Composite.Core.Configuration;
 using Composite.Core.Logging;
 using Composite.Core.PackageSystem;
 using Composite.Core.ResourceSystem;
-using Composite.C1Console.Users;
-using Composite.C1Console.Workflow;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider

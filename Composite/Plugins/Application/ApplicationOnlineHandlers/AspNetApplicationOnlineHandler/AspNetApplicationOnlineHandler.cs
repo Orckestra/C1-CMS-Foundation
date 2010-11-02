@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using Composite.Core.NewIO;
 using Composite.Core.Application;
 using Composite.Core.Application.Plugins.ApplicationOnlineHandler;
 using Composite.Core.IO;

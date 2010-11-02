@@ -1,5 +1,4 @@
 using System.Globalization;
-using Composite.Core.NewIO;
 
 
 namespace Composite.Core.Extensions

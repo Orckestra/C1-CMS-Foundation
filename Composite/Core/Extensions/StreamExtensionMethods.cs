@@ -1,5 +1,4 @@
 ﻿using System;
-using Composite.Core.NewIO;
 
 
 namespace Composite.Core.Extensions

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using Composite.Core.NewIO;
 using System.Web.Hosting;
 using System.Web.UI;
 using Composite.Core.WebClient;

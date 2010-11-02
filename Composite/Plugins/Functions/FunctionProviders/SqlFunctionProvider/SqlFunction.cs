@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 using System.Data.SqlClient;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;

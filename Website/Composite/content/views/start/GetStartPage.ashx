@@ -1,7 +1,7 @@
 ﻿<%@ WebHandler Language="C#" Class="FetchPage" %>
 
 using System;
-using Composite.Core.NewIO;
+using Composite.Core.IO;
 using System.Net;
 using System.Xml.Linq;
 using System.Web;

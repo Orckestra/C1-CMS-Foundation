@@ -1,7 +1,7 @@
 <%@ WebService Language="C#" Class="SourceValidationService" %>
 
 using System;
-using Composite.Core.NewIO;
+using Composite.Core.IO;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Services;

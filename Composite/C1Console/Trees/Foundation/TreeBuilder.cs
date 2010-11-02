@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Elements.Plugins.ElementAttachingProvider;
-using Composite.Core.IO;
 using Composite.C1Console.Trees.Foundation.AttachmentPoints;
+using Composite.Core.IO;
 using Composite.Core.Types;
 using Composite.Core.Xml;
 

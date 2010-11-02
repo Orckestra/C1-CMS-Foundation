@@ -6,7 +6,6 @@ using System.Xml.Linq;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
 using Composite.Core.Logging;
-using Composite.Core.NewIO;
 using Composite.Core.Serialization;
 using Composite.Core.Xml;
 

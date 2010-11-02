@@ -33,7 +33,7 @@ public class YellowBox : IHttpHandler
             context.Response.ContentType = "image/png";
 
             Bitmap boxBitmap = imageCreator.CreateBitmap();
-            Composite.Core.NewIO.MemoryStream ms = new Composite.Core.NewIO.MemoryStream();
+            Composite.Core.IO.MemoryStream ms = new Composite.Core.IO.MemoryStream();
             boxBitmap.Save(ms, ImageFormat.Png);
 
             ms.WriteTo(context.Response.OutputStream);

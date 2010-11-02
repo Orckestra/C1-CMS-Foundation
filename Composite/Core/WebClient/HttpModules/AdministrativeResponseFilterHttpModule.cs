@@ -1,9 +1,9 @@
 ﻿using System;
-using Composite.Core.NewIO;
 using System.Text;
 using System.Web;
 using System.Web.UI;
 using Composite.Core.Types;
+
 
 namespace Composite.Core.WebClient.HttpModules
 {

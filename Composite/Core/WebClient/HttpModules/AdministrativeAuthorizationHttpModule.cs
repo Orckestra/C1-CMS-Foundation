@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Web;
-using System.Web.Configuration;
-
-using Composite.Core.Logging;
-using Composite.C1Console.Security;
-using Composite.Core.WebClient;
-using Composite.Core.NewIO;
 using System.Web.Hosting;
 using System.Xml.Linq;
+using Composite.C1Console.Security;
+using Composite.Core.IO;
+using Composite.Core.Logging;
 using Composite.Core.Xml;
+
 
 namespace Composite.Core.WebClient.HttpModules
 {

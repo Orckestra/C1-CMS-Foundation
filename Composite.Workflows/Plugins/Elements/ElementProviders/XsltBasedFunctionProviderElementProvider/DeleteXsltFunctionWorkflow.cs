@@ -1,17 +1,16 @@
 using System;
-using Composite.Core.NewIO;
 using System.Linq;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
+using Composite.C1Console.Workflow;
+using Composite.Core.Extensions;
+using Composite.Core.IO;
+using Composite.Core.Logging;
+using Composite.Core.ResourceSystem;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Types;
-using Composite.Core.Logging;
-using Composite.Core.ResourceSystem;
 using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
-using Composite.Core.Extensions;
-using Composite.C1Console.Workflow;
-using System.Collections.Generic;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider

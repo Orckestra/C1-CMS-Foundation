@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Composite.Core.NewIO;
 
 
 namespace Composite.Core.Types.Foundation

@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Xml.Linq;
-using Composite.Data.DynamicTypes;
 using Composite.C1Console.Events;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
 using Composite.Core.Xml;
+using Composite.Data.DynamicTypes;
 
 
 namespace Composite.Data

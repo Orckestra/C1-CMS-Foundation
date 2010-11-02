@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using Composite.Core.PackageSystem.Foundation;
 using Composite.C1Console.Events;
 using Composite.Core.Logging;
+using Composite.Core.PackageSystem.Foundation;
 using Composite.Core.Xml;
 using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip;

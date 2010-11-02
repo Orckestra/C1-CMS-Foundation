@@ -1,14 +1,13 @@
 using System;
 using System.Configuration;
-using Composite.Core.NewIO;
 using System.Web.Hosting;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Xsl;
 using Composite.C1Console.Events;
 using Composite.Core.IO;
-using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Composite.Core.Xml;
+using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 
 namespace Composite.Core.Configuration

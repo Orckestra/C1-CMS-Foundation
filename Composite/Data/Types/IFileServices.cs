@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Composite.Core.NewIO;
 
 
 namespace Composite.Data.Types

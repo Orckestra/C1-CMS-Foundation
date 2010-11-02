@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Collections;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Xml.Linq;
-using Composite.C1Console.Forms;
 using System.Collections.Generic;
 using System.Text;
-using Composite.Core.NewIO;
+using System.Web.UI;
+using System.Xml.Linq;
+using Composite.C1Console.Forms;
+using Composite.Core.IO;
 using Composite.Core.Xml;
 
 public partial class Composite_schemas_FormsControls_GenerateDynamicSchemas : System.Web.UI.Page

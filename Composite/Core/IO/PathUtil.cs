@@ -1,5 +1,4 @@
 using System;
-using Composite.Core.NewIO;
 using System.Text;
 using System.Web.Hosting;
 

@@ -1,5 +1,4 @@
 using System;
-using Composite.Core.NewIO;
 using System.Web.UI;
 using Composite.Core.WebClient.Foundation.PluginFacades;
 using Composite.Core.WebClient.Plugins.WebRequestHandler;

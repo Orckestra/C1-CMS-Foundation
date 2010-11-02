@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
-using Composite.Core.NewIO;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Serialization;
+using System.Xml.Linq;
 using Composite.Core.Types;
 
 

@@ -1,14 +1,14 @@
 using System;
-using Composite.Core.NewIO;
+using System.Collections.Generic;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
-using System.Collections.Generic;
 using Composite.Core.Collections.Generic;
+using Composite.Core.IO;
+using Composite.Core.Xml;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Streams;
-using Composite.Core.Xml;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation

@@ -1,15 +1,8 @@
 ﻿
-using System;
-using Composite.Functions;
-
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.Core.Xml;
-using System.Xml.Linq;
-using System.Xml;
 using System.Xml.XPath;
-using Composite.Core.NewIO;
+using Composite.Core.Xml;
+using Composite.Functions;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 
 namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Xslt.Extensions
 {

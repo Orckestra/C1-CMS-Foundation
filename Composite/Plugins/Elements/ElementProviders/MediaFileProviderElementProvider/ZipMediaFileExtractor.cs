@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using Composite.Core.NewIO;
 using System.Linq;
-using Composite.Data;
-using Composite.Data.Types;
+using System.Transactions;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
-using ICSharpCode.SharpZipLib.Zip;
-using System.Transactions;
+using Composite.Data;
 using Composite.Data.Transactions;
+using Composite.Data.Types;
+using ICSharpCode.SharpZipLib.Zip;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider

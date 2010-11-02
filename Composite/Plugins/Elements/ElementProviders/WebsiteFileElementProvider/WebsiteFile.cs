@@ -1,5 +1,4 @@
-﻿using Composite.Core.NewIO;
-using System.Text;
+﻿using System.Text;
 using Composite.Core.IO;
 
 
@@ -74,7 +73,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
         public void WriteAllText(string content)
         {
-            // Default encode is Composite.Core.NewIO.StreamWriter.UTF8NoBOM, which is UTF8 without encoding signature
+            // Default encode is Composite.Core.IO.StreamWriter.UTF8NoBOM, which is UTF8 without encoding signature
             File.WriteAllText(this.FullPath, content, Encoding.UTF8);
         }
     }

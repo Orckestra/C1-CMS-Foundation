@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Web.Hosting;
-using Composite.Core.Logging;
 using Composite.Core.Extensions;
+using Composite.Core.IO;
+using Composite.Core.Logging;
 
 
 namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener

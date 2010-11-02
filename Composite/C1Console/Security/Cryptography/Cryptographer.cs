@@ -1,5 +1,4 @@
 ﻿using System;
-using Composite.Core.NewIO;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;

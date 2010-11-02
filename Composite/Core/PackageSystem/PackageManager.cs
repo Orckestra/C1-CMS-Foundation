@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Xml.Linq;
-using Composite.Core.PackageSystem.Foundation;
+using Composite.C1Console.Security;
 using Composite.Core.Application;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
-using Composite.Core.ResourceSystem;
-using Composite.C1Console.Security;
-using Composite.Core.Xml;
 using Composite.Core.Logging;
+using Composite.Core.PackageSystem.Foundation;
+using Composite.Core.ResourceSystem;
+using Composite.Core.Xml;
 
 
 namespace Composite.Core.PackageSystem

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Composite.Core.NewIO;
+﻿using System.Collections.Generic;
 
 namespace Composite.Core.IO.Zip
 {

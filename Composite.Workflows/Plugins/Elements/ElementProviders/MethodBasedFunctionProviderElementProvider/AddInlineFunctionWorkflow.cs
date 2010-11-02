@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Composite.Core.NewIO;
 using System.Transactions;
+using Composite.C1Console.Users;
 using Composite.C1Console.Workflow;
 using Composite.Core.ResourceSystem;
 using Composite.Data;
@@ -9,7 +9,6 @@ using Composite.Data.Transactions;
 using Composite.Data.Types;
 using Composite.Functions.Inline;
 using Composite.Functions.ManagedParameters;
-using Composite.C1Console.Users;
 
 
 namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider

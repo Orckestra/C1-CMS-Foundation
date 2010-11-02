@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Linq;
-using Composite.Core.NewIO;
+using Composite.Core.IO;
 
 
 namespace Composite.Core.Xml
@@ -10,7 +10,7 @@ namespace Composite.Core.Xml
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    internal static class XElementUtils
+    public static class XElementUtils
     {
         /// <summary>
         /// This should be a part of the I/O layer

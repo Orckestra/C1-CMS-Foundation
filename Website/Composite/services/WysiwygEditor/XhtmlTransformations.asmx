@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -13,7 +12,6 @@ using System.Web.Services.Protocols;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Xsl;
-
 using Composite.Data.DynamicTypes;
 using Composite.Functions;
 using Composite.Core.Logging;
@@ -22,6 +20,7 @@ using Composite.Core.WebClient.Services.WysiwygEditor;
 using Composite.Core.Xml;
 using Composite.Data;
 using Composite.Core.Types;
+using Composite.Core.IO;
 
 
 public class XhtmlTransformationResult

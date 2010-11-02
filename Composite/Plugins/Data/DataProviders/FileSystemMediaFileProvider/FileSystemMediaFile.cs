@@ -1,13 +1,12 @@
 ﻿using System;
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
-using Composite.Data.Types;
+using Composite.Core.IO;
 using Composite.Data;
-using System.Globalization;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Streams;
-using Composite.Core.IO;
-using Composite.Core.NewIO;
+using Composite.Data.Types;
 
 namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
 {

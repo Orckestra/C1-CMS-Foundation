@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using Composite.Core.NewIO;
 using System.Web;
 
 using Composite;

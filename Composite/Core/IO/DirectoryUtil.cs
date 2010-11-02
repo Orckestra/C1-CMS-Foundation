@@ -1,6 +1,5 @@
 using System.Text;
 using Composite.Core.Logging;
-using Composite.Core.NewIO;
 
 
 namespace Composite.Core.IO

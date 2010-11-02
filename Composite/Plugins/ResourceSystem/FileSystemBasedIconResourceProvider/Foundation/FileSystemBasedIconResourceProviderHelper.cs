@@ -5,7 +5,6 @@ using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.IO;
-using Composite.Core.NewIO;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Xml;
 using ICSharpCode.SharpZipLib.Zip;

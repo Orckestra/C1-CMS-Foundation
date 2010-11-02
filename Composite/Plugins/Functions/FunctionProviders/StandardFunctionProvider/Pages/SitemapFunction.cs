@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Composite.Functions;
+﻿using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Xsl;
-using System.Xml;
-using Composite.Core.NewIO;
-using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.C1Console.Security;
 using Composite.Core.WebClient.Renderings.Page;
-using Composite.Core.Logging;
 using Composite.Core.Xml;
+using Composite.Functions;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 
 namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Pages
 {

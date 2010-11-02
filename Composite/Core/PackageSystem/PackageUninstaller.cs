@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Transactions;
 using System.Xml.Linq;
-using Composite.Core.PackageSystem.Foundation;
 using Composite.Core.Application;
+using Composite.Core.IO;
+using Composite.Core.IO.Zip;
 using Composite.Core.Logging;
-using Composite.Data.Transactions;
+using Composite.Core.PackageSystem.Foundation;
 using Composite.Core.Types;
 using Composite.Core.Xml;
-using Composite.Core.IO.Zip;
+using Composite.Data.Transactions;
 
 
 namespace Composite.Core.PackageSystem

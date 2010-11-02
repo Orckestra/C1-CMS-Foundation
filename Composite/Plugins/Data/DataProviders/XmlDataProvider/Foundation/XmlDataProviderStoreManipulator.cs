@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Xml.Linq;
+using Composite.Core.IO;
+using Composite.Core.Xml;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Plugins.DataProvider;
-using Composite.Data.Plugins.DataProvider.CodeGeneration.PropertyInitializer;
-using Composite.Core.IO;
-using Composite.Core.Xml;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation

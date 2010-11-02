@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Composite.Core.NewIO;
 using System.Linq;
-using Composite.Core.Application;
-using Composite.Core.Serialization;
-using Composite.Core.PackageSystem.Foundation;
 using Composite.Core.IO;
+using Composite.Core.PackageSystem.Foundation;
+using Composite.Core.Serialization;
 
 
 namespace Composite.Core.PackageSystem

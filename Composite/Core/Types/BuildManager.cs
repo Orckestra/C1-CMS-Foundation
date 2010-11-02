@@ -1,8 +1,7 @@
 ﻿using System;
-using Composite.Core.NewIO;
 using System.Linq;
-using Composite.C1Console.Events;
 using System.Reflection;
+using Composite.C1Console.Events;
 
 
 namespace Composite.Core.Types

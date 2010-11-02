@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 
 
-namespace Composite.Core.NewIO
+namespace Composite.Core.IO
 {
     /// <summary>
     /// This should be a part of the I/O layer

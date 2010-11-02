@@ -1,8 +1,8 @@
 ﻿using System;
-using Composite.Core.NewIO;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+
 
 namespace Composite.Plugins.WebClient.SessionStateProviders.DefaultSessionStateProvider
 {

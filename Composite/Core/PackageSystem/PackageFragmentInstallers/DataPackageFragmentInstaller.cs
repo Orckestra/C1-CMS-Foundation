@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using Composite.Data;
-using Composite.Data.DynamicTypes;
-using Composite.Data.ProcessControlled;
+using Composite.C1Console.Users;
+using Composite.Core.IO;
 using Composite.Core.Logging;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
-using Composite.C1Console.Users;
-using Composite.Core.Xml;
+using Composite.Data;
+using Composite.Data.DynamicTypes;
+using Composite.Data.ProcessControlled;
 
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers

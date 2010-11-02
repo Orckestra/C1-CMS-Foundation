@@ -1,8 +1,9 @@
 ﻿using System;
-using Composite.Core.NewIO;
 using System.Web;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
+using Composite.Core.IO;
+
 
 namespace Composite.Core.WebClient.WCF
 {

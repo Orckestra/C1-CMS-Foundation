@@ -1,11 +1,7 @@
 using System;
-using Composite.Core.NewIO;
-
 using Composite.Core.IO;
-using Composite.Data.Types;
 using Composite.Data.Streams;
-using System.Text;
-using Composite.Core.Extensions;
+using Composite.Data.Types;
 
 
 namespace Composite.Data.Plugins.DataProvider.Streams

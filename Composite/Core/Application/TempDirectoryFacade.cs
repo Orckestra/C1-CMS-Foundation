@@ -1,5 +1,4 @@
 ﻿using System;
-using Composite.Core.NewIO;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
 

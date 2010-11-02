@@ -1,6 +1,5 @@
 using System;
 using System.CodeDom;
-using Composite.Core.NewIO;
 using Composite.Data.Foundation.CodeGeneration;
 using Composite.Data.Streams;
 

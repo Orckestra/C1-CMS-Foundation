@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Workflow.ComponentModel;
 using System.Workflow.ComponentModel.Serialization;
 using System.Workflow.Runtime.Hosting;
-using Composite.Core.Types;
+using Composite.Core.IO;
 using Composite.Core.Logging;
+using Composite.Core.Types;
 
 
 namespace Composite.C1Console.Workflow

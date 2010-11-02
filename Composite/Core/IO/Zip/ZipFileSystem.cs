@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using Composite.Core.NewIO;
+using System.Linq;
 using ICSharpCode.SharpZipLib.Zip;
 
 

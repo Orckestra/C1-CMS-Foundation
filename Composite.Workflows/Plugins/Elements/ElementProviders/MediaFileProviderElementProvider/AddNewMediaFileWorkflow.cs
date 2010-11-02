@@ -1,16 +1,14 @@
 using System;
 using System.Collections.Generic;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Workflow.Activities;
 using Composite.C1Console.Actions;
+using Composite.C1Console.Forms.CoreUiControls;
+using Composite.C1Console.Workflow;
+using Composite.Core.IO;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.C1Console.Forms.CoreUiControls;
-using Composite.Core.IO;
-using Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider;
 using Composite.Data.Validation.ClientValidationRules;
-using Composite.C1Console.Workflow;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider

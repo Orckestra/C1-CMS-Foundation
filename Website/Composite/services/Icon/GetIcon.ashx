@@ -1,7 +1,7 @@
 <%@ WebHandler Language="C#" Class="GetIcon" %>
 
 using System;
-using Composite.Core.NewIO;
+using Composite.Core.IO;
 using System.Web;
 using System.Drawing.Imaging;
 using System.Drawing;

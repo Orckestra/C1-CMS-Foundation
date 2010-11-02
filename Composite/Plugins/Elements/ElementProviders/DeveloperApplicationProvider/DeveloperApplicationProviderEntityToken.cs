@@ -1,8 +1,7 @@
 ﻿using Composite.C1Console.Security;
 using Composite.C1Console.Security.SecurityAncestorProviders;
-using Composite.Core.NewIO;
-using Composite.Core.IO;
 using Composite.Core.Configuration;
+using Composite.Core.IO;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvider

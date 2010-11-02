@@ -5,7 +5,8 @@ using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-using Composite.Core.NewIO;
+using Composite.Core.IO;
+using Composite.Core.Xml;
 using System.Web;
 using System.Web.Caching;
 using System.Web.SessionState;
@@ -543,7 +544,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
                 config.Save(_resizedImageKeysFilePath);
             }
 
-            xel = XElementUtil.Load(_resizedImageKeysFilePath);
+            xel = XElementUtils.Load(_resizedImageKeysFilePath);
             CacheDependency cd = new CacheDependency(_resizedImageKeysFilePath);
             TimeSpan ts = new TimeSpan(24, 0, 0);
             context.Cache.Add("ResizedImageKeys", xel, cd, Cache.NoAbsoluteExpiration, ts, CacheItemPriority.Default, null);

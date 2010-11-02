@@ -3,7 +3,7 @@
 using System;
 using System.Configuration;
 using System.Text;
-using Composite.Core.NewIO;
+using Composite.Core.IO;
 using System.Net;
 using System.Xml.Linq;
 using System.Web;

@@ -1,5 +1,4 @@
 ﻿using System;
-using Composite.Core.NewIO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Composite.Core.Serialization;
 

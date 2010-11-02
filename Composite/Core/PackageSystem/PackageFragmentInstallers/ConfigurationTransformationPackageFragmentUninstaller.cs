@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
-using Composite.Core.NewIO;
 using Composite.Core.Configuration;
+using Composite.Core.IO;
 using Composite.Core.Xml;
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers

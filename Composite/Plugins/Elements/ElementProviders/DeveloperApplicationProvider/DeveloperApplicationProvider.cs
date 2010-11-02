@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Composite.C1Console.Elements;
 using Composite.C1Console.Elements.Plugins.ElementProvider;
 using Composite.C1Console.Security;
-using Composite.C1Console.Elements;
-using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
-using Composite.Core.ResourceSystem;
-using Composite.Core.ResourceSystem.Icons;
-using Composite.Core.NewIO;
+using Composite.C1Console.Trees;
+using Composite.C1Console.Workflow;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
-using Composite.C1Console.Workflow;
-using Composite.C1Console.Trees;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvider

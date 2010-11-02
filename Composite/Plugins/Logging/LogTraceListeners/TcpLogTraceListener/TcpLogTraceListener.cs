@@ -1,7 +1,5 @@
 using System;
 using System.Diagnostics;
-using Composite.Core.NewIO;
-using System.Text;
 using System.Threading;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Logging;

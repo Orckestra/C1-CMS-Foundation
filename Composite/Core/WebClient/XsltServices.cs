@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Xsl;
-using Composite.Core.NewIO;
+using Composite.Core.IO;
 using Composite.Core.Xml;
 
 

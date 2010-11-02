@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Composite.Core.NewIO;
 using System.Linq;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
+using Composite.Core.IO;
+using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
-using Composite.Core.IO;
 using Composite.Plugins.Data.DataProviders.Common;
-using Composite.Core.Types;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation

@@ -1,8 +1,8 @@
 using System;
 using System.Web;
 using Composite.Core.Extensions;
+using Composite.Core.IO;
 using Composite.Core.Logging;
-using Composite.Core.NewIO;
 
 
 namespace Composite.Core.WebClient.Presentation

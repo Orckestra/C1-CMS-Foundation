@@ -1,17 +1,17 @@
 ﻿using System;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.Xml;
-using Composite.Data;
-using Composite.Data.Types;
 using Composite.C1Console.Security;
 using Composite.C1Console.Security.Foundation.PluginFacades;
-using Composite.Core.Extensions;
-using Composite.Core.Threading;
 using Composite.Core.Configuration;
+using Composite.Core.Extensions;
+using Composite.Core.IO;
 using Composite.Core.Logging;
+using Composite.Core.Threading;
+using Composite.Data;
+using Composite.Data.Types;
 
 
 namespace Composite.Core.WebClient.Logging.WCF

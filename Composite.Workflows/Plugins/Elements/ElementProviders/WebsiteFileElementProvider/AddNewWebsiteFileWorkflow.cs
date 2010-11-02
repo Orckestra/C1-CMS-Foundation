@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using Composite.Core.NewIO;
-using System.Linq;
 using System.Workflow.Activities;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Workflow;
+using Composite.Core.IO;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider

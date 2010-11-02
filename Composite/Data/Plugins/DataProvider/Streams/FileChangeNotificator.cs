@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using Composite.Core.Collections.Generic;
-using Composite.Data.Streams;
+using Composite.Core.IO;
 using Composite.Core.Types;
+using Composite.Data.Streams;
 
 namespace Composite.Data.Plugins.DataProvider.Streams
 {

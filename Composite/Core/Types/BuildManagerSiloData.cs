@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Composite.Core.Extensions;
-using Composite.Core.NewIO;
 using Composite.Core.Logging;
 
 

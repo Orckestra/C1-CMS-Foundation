@@ -1,16 +1,14 @@
 ﻿using System;
-using Composite.Core.NewIO;
 using System.Workflow.Runtime;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
-using Composite.Data;
-using Composite.Data.Types;
-using Composite.Core.Extensions;
 using Composite.C1Console.Forms.CoreUiControls;
-using Composite.Core.IO;
 using Composite.C1Console.Workflow;
 using Composite.C1Console.Workflow.Activities;
+using Composite.Core.IO;
 using Composite.Core.ResourceSystem;
+using Composite.Data;
+using Composite.Data.Types;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider

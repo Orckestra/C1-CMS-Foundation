@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Composite.Core.NewIO;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.Configuration;

@@ -1,27 +1,10 @@
 using System;
-using System.Data;
-using System.Configuration;
-using System.Collections;
-using System.Linq;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
-using Composite.Core.Serialization;
 using System.Collections.Generic;
-using Composite.Core.Types;
-using System.Reflection;
+using System.Web.UI;
 using Composite.C1Console.Security;
-using System.Xml.Linq;
-using System.Text;
-using Composite.Data.Types;
-using Composite.Data;
-using Composite.Core.WebClient;
-using Composite.Core.IO;
 using Composite.Core.Configuration;
-using Composite.Core.NewIO;
+using Composite.Core.IO;
+using Composite.Core.Serialization;
 
 
 public partial class ShowElementInformation_Default : System.Web.UI.Page

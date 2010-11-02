@@ -2,7 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using Composite.Core.NewIO;
+using Composite.Core.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -11,9 +11,9 @@ using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Xml;
 using System.Xml.Linq;
-
 using Composite.Core.Xml;
 using TidyNet;
+
 
 [WebService(Namespace = "http://www.composite.net/ns/management")]
 [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]

@@ -1,5 +1,5 @@
 ﻿using System.Xml;
-using Composite.Core.NewIO;
+using Composite.Core.IO;
 
 
 namespace Composite.Core.Xml

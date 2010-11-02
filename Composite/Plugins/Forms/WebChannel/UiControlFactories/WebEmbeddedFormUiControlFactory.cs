@@ -1,5 +1,4 @@
-﻿using Composite.Core.NewIO;
-using System.Web.UI;
+﻿using System.Web.UI;
 using Composite.C1Console.Forms;
 using Composite.C1Console.Forms.DataServices.UiControls;
 using Composite.C1Console.Forms.Plugins.UiControlFactory;
