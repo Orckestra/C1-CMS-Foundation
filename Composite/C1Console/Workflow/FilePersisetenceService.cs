@@ -39,12 +39,8 @@ namespace Composite.C1Console.Workflow
         public IEnumerable<Guid> GetPersistedWorkflows()
         {
             foreach (string filePath in Directory.GetFiles(_baseDirectory, "*.bin"))
-            {
-                int idx = filePath.LastIndexOf(".bin");
-
-                if (idx == -1) continue;
-
-                string guidString = filePath.Remove(idx);
+            {                
+                string guidString = System.IO.Path.GetFileNameWithoutExtension(filePath);
 
                 Guid guid = Guid.Empty;
                 try

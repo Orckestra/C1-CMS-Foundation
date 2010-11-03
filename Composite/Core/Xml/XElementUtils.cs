@@ -34,7 +34,7 @@ namespace Composite.Core.Xml
         /// </summary>
         public static void SaveToPath(this XElement element, string fileName)
         {
-            using (FileStream stream = new FileStream(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+            using (FileStream stream = new FileStream(fileName, System.IO.FileMode.Create, System.IO.FileAccess.Write))
             {                
                 element.Save(stream);
             }

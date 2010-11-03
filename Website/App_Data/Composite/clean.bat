@@ -70,3 +70,10 @@ del ..\..\Frontend\Styles\VisualEditor\VisualEditor.Default.css /F
 
 :: Omni corp cleanup
 del ..\..\Frontend\Composite\Search\SimplePageSearch\Styles.css
+
+
+:: Package create cleanup
+
+rd ..\..\Composite\content\forms\InstalledPackages\Composite.Tools.PackageCreator /S /Q
+del ..\..\Bin\Composite.Tools.PackageCreator.dll 
+del ..\..\Composite\InstalledPackages\localization\Composite.Tools.PackageCreator.en-us.xml
