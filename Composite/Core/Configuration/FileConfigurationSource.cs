@@ -1,4 +1,16 @@
-﻿using System;
+﻿//===============================================================================
+// Microsoft patterns & practices Enterprise Library
+// Core
+//===============================================================================
+// Copyright © Microsoft Corporation.  All rights reserved.
+// THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
+// OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT
+// LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+// FITNESS FOR A PARTICULAR PURPOSE.
+//===============================================================================
+
+
+using System;
 using System.Collections.Generic;
 using Composite.Core.IO;
 
@@ -18,12 +30,10 @@ namespace Composite.Core.Configuration
 
 		public FileConfigurationSource(string configurationFilepath)
         {
-#warning MRJ: Fix this exception
-            if (string.IsNullOrEmpty(configurationFilepath)) throw new ArgumentException("Resources.ExceptionStringNullOrEmpty", "configurationFilepath");
+            if (string.IsNullOrEmpty(configurationFilepath)) throw new ArgumentNullException("configurationFilepath");
 			this.configurationFilepath = RootConfigurationFilePath(configurationFilepath);
 
-#warning MRJ: Fix this exception
-            if (!File.Exists(this.configurationFilepath)) throw new System.IO.FileNotFoundException(string.Format("", "Resources.ExceptionConfigurationLoadFileNotFound", this.configurationFilepath));
+            if (!File.Exists(this.configurationFilepath)) throw new System.IO.FileNotFoundException("File not found", this.configurationFilepath);
 			EnsureImplementation(this.configurationFilepath);
 		}
 
@@ -66,8 +76,7 @@ namespace Composite.Core.Configuration
         public void Save(string fileName, string section, System.Configuration.ConfigurationSection configurationSection, string protectionProvider)
         {
             ValidateArgumentsAndFileExists(fileName, section, configurationSection);
-#warning MRJ: Fix this exception
-            if (string.IsNullOrEmpty(protectionProvider)) throw new ArgumentException("Resources.ExceptionStringNullOrEmpty", "protectionProvider");
+            if (string.IsNullOrEmpty(protectionProvider)) throw new ArgumentNullException("protectionProvider");
 
             InternalSave(fileName, section, configurationSection, protectionProvider);
         }
@@ -203,10 +212,8 @@ namespace Composite.Core.Configuration
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationManagerClass:DoNotUseConfigurationManagerClass", Justification = "The implementation may use it")]
 		public void Remove(string fileName, string section)
         {
-#warning MRJ: Fix this exception
-            if (string.IsNullOrEmpty(fileName)) throw new ArgumentException("Resources.ExceptionStringNullOrEmpty", "fileName");
-#warning MRJ: Fix this exception
-            if (string.IsNullOrEmpty(section)) throw new ArgumentException("Resources.ExceptionStringNullOrEmpty", "section");
+            if (string.IsNullOrEmpty(fileName)) throw new ArgumentNullException("fileName");
+            if (string.IsNullOrEmpty(section)) throw new ArgumentNullException("section");
 
 			System.Configuration.ExeConfigurationFileMap fileMap = new System.Configuration.ExeConfigurationFileMap();
 			fileMap.ExeConfigFilename = fileName;
@@ -225,8 +232,7 @@ namespace Composite.Core.Configuration
         public void Add(Microsoft.Practices.EnterpriseLibrary.Common.Configuration.IConfigurationParameter saveParameter, string sectionName, System.Configuration.ConfigurationSection configurationSection)
 		{
             Microsoft.Practices.EnterpriseLibrary.Common.Configuration.FileConfigurationParameter parameter = saveParameter as Microsoft.Practices.EnterpriseLibrary.Common.Configuration.FileConfigurationParameter;
-#warning MRJ: Fix this exception
-            if (null == parameter) throw new ArgumentException(string.Format("", "Resources.ExceptionUnexpectedType", typeof(Microsoft.Practices.EnterpriseLibrary.Common.Configuration.FileConfigurationParameter).Name), "saveParameter");
+            if (null == parameter) throw new ArgumentNullException("saveParameter");
 
 			Save(parameter.FileName, sectionName, configurationSection);
 		}
@@ -237,8 +243,7 @@ namespace Composite.Core.Configuration
         public void Add(Microsoft.Practices.EnterpriseLibrary.Common.Configuration.IConfigurationParameter saveParameter, string sectionName, System.Configuration.ConfigurationSection configurationSection, string protectionProviderName)
         {
             Microsoft.Practices.EnterpriseLibrary.Common.Configuration.FileConfigurationParameter parameter = saveParameter as Microsoft.Practices.EnterpriseLibrary.Common.Configuration.FileConfigurationParameter;
-#warning MRJ: Fix this exception
-            if (null == parameter) throw new ArgumentException(string.Format("", "Resources.ExceptionUnexpectedType", typeof(Microsoft.Practices.EnterpriseLibrary.Common.Configuration.FileConfigurationParameter).Name), "saveParameter");
+            if (null == parameter) throw new ArgumentNullException("saveParameter");
 
             Save(parameter.FileName, sectionName, configurationSection, protectionProviderName);
             
@@ -250,8 +255,7 @@ namespace Composite.Core.Configuration
 		public void Remove(Microsoft.Practices.EnterpriseLibrary.Common.Configuration.IConfigurationParameter removeParameter, string sectionName)
 		{
             Microsoft.Practices.EnterpriseLibrary.Common.Configuration.FileConfigurationParameter parameter = removeParameter as Microsoft.Practices.EnterpriseLibrary.Common.Configuration.FileConfigurationParameter;
-#warning MRJ: Fix this exception
-            if (null == parameter) throw new ArgumentException(string.Format("", "Resources.ExceptionUnexpectedType", typeof(Microsoft.Practices.EnterpriseLibrary.Common.Configuration.FileConfigurationParameter).Name), "saveParameter");
+            if (null == parameter) throw new ArgumentNullException("saveParameter");
 
 			Remove(parameter.FileName, sectionName);
 		}
@@ -291,10 +295,8 @@ namespace Composite.Core.Configuration
 
 		private static void ValidateArgumentsAndFileExists(string fileName, string section, System.Configuration.ConfigurationSection configurationSection)
         {
-#warning MRJ: Fix this exception
-            if (string.IsNullOrEmpty(fileName)) throw new ArgumentException("Resources.ExceptionStringNullOrEmpty", "fileName");
-			if (string.IsNullOrEmpty(section)) throw new ArgumentException("Resources.ExceptionStringNullOrEmpty", "section");
-#warning MRJ: Fix this exception
+            if (string.IsNullOrEmpty(fileName)) throw new ArgumentNullException("fileName");
+            if (string.IsNullOrEmpty(section)) throw new ArgumentNullException("section");
             if (null == configurationSection) throw new ArgumentNullException("configurationSection");
 
 			if (!File.Exists(fileName)) throw new System.IO.FileNotFoundException(string.Format("", "Resources.ExceptionConfigurationFileNotFound", section), fileName);
