@@ -28,7 +28,17 @@ namespace Composite.Data.DynamicTypes
 
         public void Add(string dataFieldName)
         {
-            ValidateFieldMembership(dataFieldName);
+            Add(dataFieldName, true);
+        }
+
+
+        public void Add(string dataFieldName, bool valideFieldMemberShip)
+        {
+            if (valideFieldMemberShip == true)
+            {
+                ValidateFieldMembership(dataFieldName);
+            }
+
             _dataFieldNames.Add(dataFieldName);
         }
 

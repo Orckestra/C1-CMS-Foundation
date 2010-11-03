@@ -407,14 +407,14 @@ namespace Composite.Data.DynamicTypes
 
             foreach (string keyPropertyName in this.KeyPropertyNames)
             {
-                dataTypeDescriptor.KeyPropertyNames.Add(keyPropertyName);
+                dataTypeDescriptor.KeyPropertyNames.Add(keyPropertyName, false);
             }
 
             dataTypeDescriptor.LabelFieldName = this.LabelFieldName;
 
             foreach (string storeSortOrderFieldNames in this.StoreSortOrderFieldNames)
             {
-                dataTypeDescriptor.StoreSortOrderFieldNames.Add(storeSortOrderFieldNames);
+                dataTypeDescriptor.StoreSortOrderFieldNames.Add(storeSortOrderFieldNames, false);
             }
 
             foreach (Type superInterface in this.SuperInterfaces)
