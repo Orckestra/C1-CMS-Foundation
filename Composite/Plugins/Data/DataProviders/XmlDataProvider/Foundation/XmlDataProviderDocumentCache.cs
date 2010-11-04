@@ -188,7 +188,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
                     xmlWriterSettings.CheckCharacters = false;
                     xmlWriterSettings.Indent = true;
-                    using (XmlWriter xmlWriter = XmlWriterUtil.Create(fileRecord.FileName, xmlWriterSettings))
+                    using (XmlWriter xmlWriter = XmlWriterUtils.Create(fileRecord.FileName, xmlWriterSettings))
                     {
                         xDocument.Save(xmlWriter);
                     }

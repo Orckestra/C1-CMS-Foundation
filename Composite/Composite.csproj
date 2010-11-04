@@ -145,6 +145,7 @@
     <Compile Include="Core\Implementation\LogImplementation.cs" />
     <Compile Include="Core\Implementation\PageDataConnectionImplementation.cs" />
     <Compile Include="Core\Implementation\SitemapNavigatorImplementation.cs" />
+    <Compile Include="Core\IO\Plugins\IOProvider\IIOProvider.cs" />
     <Compile Include="Core\Log.cs" />
     <Compile Include="Core\IO\Directory.cs" />
     <Compile Include="Core\IO\File.cs" />
@@ -162,10 +163,10 @@
     <Compile Include="Core\Xml\XDocumentUtils.cs" />
     <Compile Include="Core\Xml\XElementUtils.cs" />
     <Compile Include="Core\Xml\XmlDocumentUtil.cs" />
-    <Compile Include="Core\Xml\XmlReaderUtil.cs" />
+    <Compile Include="Core\Xml\XmlReaderUtils.cs" />
     <Compile Include="Core\Xml\XmlSchemaSetUtils.cs" />
-    <Compile Include="Core\Xml\XmlWriterUtil.cs" />
-    <Compile Include="Core\Xml\XslCompiledTransformUtls.cs" />
+    <Compile Include="Core\Xml\XmlWriterUtils.cs" />
+    <Compile Include="Core\Xml\XslCompiledTransformUtils.cs" />
     <Compile Include="Data\DataEventArgs.cs" />
     <Compile Include="Data\DataEventHandler.cs" />
     <Compile Include="Data\DataEvents.cs" />

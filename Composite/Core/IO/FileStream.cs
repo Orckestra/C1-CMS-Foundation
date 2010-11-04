@@ -9,8 +9,7 @@ namespace Composite.Core.IO
     /// This should be a part of the I/O layer
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]    
     public class FileStream : System.IO.Stream, IDisposable
     {
         private System.IO.FileStream _fileStream;

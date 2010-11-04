@@ -8,7 +8,7 @@ namespace Composite.Core.Xml
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    public static class XmlReaderUtil
+    public static class XmlReaderUtils
     {
         /// <summary>
         /// This should be a part of the I/O layer

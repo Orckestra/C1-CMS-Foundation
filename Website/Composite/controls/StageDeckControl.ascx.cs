@@ -19,7 +19,7 @@ public partial class StageDeckControl : System.Web.UI.UserControl
 		XmlReaderSettings settings = new XmlReaderSettings();
         settings.IgnoreComments = true;
 
-        using (XmlReader reader = XmlReaderUtil.Create(path, settings))
+        using (XmlReader reader = XmlReaderUtils.Create(path, settings))
         {
             doc.Load(reader);
         }

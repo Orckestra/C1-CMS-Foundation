@@ -8,7 +8,7 @@ namespace Composite.Core.Xml
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    internal static class XmlWriterUtil
+    internal static class XmlWriterUtils
     {
         /// <summary>
         /// This should be a part of the I/O layer

@@ -29,7 +29,7 @@ namespace Composite.Core.WebClient
                 if (compiledVersionExists == false || lastXsltFileWrite > _xsltFileTimestamps[stylesheetPath] || reloadFresh == true)
                 {
                     XslCompiledTransform xslt = new XslCompiledTransform();
-                    using (XmlReader reader = XmlReaderUtil.Create(stylesheetPath))
+                    using (XmlReader reader = XmlReaderUtils.Create(stylesheetPath))
                     {
                         xslt.Load(reader);
                     }
