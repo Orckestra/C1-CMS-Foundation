@@ -2084,7 +2084,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\Logging\WCF\" />
-    <Folder Include="Core\NewIO\" />
     <Folder Include="Core\WebClient\WCF\Logger\" />
     <Folder Include="Functions\ManagedParameters\Types\" />
     <Folder Include="Functions\Types\" />
