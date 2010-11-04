@@ -14,11 +14,12 @@ namespace Composite.Core.Xml
         /// <summary>
         /// This should be a part of the I/O layer
         /// </summary>
-        public static XDocument Load(string filename)
+        /// <param name="inputUri">This could be a file or a url</param>
+        public static XDocument Load(string inputUri)
         {
             XDocument document;
 
-            using (FileStream stream = new FileStream(filename, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+            using (System.IO.Stream stream = UriResolver.GetStream(inputUri))
             {
                 document = XDocument.Load(stream);
             }

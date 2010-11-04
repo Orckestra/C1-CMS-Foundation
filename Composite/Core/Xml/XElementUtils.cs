@@ -15,11 +15,12 @@ namespace Composite.Core.Xml
         /// <summary>
         /// This should be a part of the I/O layer
         /// </summary>
-        public static XElement Load(string fileName)
+        /// <param name="inputUri">This could be a file or a url</param>
+        public static XElement Load(string inputUri)
         {
             XElement element;
 
-            using (FileStream stream = new FileStream(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+            using (System.IO.Stream stream = UriResolver.GetStream(inputUri))
             {
                 element = XElement.Load(stream);
             }
