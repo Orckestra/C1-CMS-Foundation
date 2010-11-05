@@ -42,14 +42,7 @@ namespace Composite.Core.IO
         {
             _fileStream = new System.IO.FileStream(path, mode, access);
         }
-
-
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "The implementation may use it")]
-        internal FileStream(System.IO.FileStream fileStream)
-        {
-            _fileStream = fileStream;
-        }
+        
 
 
 
@@ -67,6 +60,14 @@ namespace Composite.Core.IO
             _fileStream = new System.IO.FileStream(path, mode, access, share); 
         }
 
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "The implementation may use it")]
+        internal FileStream(System.IO.FileStream fileStream)
+        {
+            _fileStream = fileStream;
+        }
 
 
         //[Obsolete("This constructor has been deprecated.  Please use new FileStream(SafeFileHandle handle, System.IO.FileAccess access, int bufferSize, bool isAsync) instead, and optionally make a new SafeFileHandle with ownsHandle=false if needed.  http://go.microsoft.com/fwlink/?linkid=14202"), SecuritySafeCritical, SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
