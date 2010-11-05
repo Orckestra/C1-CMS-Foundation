@@ -171,7 +171,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             foreach (IPageMetaDataDefinition pageMetaDataDefinition in pageMetaDataDefinitions)
             {
-                DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(pageMetaDataDefinition.MetaDataTypeId);
+                Guid metaDatTypeId = pageMetaDataDefinition.MetaDataTypeId;
+
+                DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(metaDatTypeId);
+                Verify.IsNotNull(dataTypeDescriptor, "Failed to get meta data type by id '{0}'", metaDatTypeId);
+
                 Type metaDataType = TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName);
 
                 DataTypeDescriptorFormsHelper helper = CreateDataTypeDescriptorFormsHelper(pageMetaDataDefinition, dataTypeDescriptor);
