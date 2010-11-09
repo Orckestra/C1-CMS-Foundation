@@ -26,28 +26,13 @@ _Types.prototype = {
 		
 		var result = string;
 		
-		if ( parseInt ( result ).toString () == result ) {
+		if ( parseInt ( result ).toString () === result ) {
 			result = parseInt ( result );
-		}
-		else if ( parseFloat ( result ).toString () == result ) {
+		} else if ( parseFloat ( result ).toString () === result ) {
 			result = parseFloat ( result );
+		} else if ( result === "true" || result === "false" ) {
+			result = ( result === "true" );
 		}
-		else if ( result == "true" || result == "false" ) {
-			result = eval ( result );
-		} else {
-			/*
-			 * Note this trick! This way, we can minimize the amount 
-			 * of code where we have to duplicate the decode stuff. 
-			 * It always fails, because its not a URI, but it worx...
-			 * UPDATE: IT DOESN'T WORK! IMAGE EDITOR CANNOT HANDLE ÆØÅ
-			try {
-				result = decodeURIComponent ( result );
-			} catch ( exception ) {
-				this._logger.error ( exception )
-			}
-			*/
-		}
-		
 		return result;
 	},
 	

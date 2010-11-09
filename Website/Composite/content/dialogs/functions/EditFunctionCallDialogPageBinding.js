@@ -58,7 +58,7 @@ EditFunctionCallDialogPageBinding.prototype.handleAction = function ( action ) {
  */
 EditFunctionCallDialogPageBinding.prototype.postframe = function () {
 	
-	var tagname = Client.isExplorer ? "functioneditor" : "ui:functioneditor"; 
+	var tagname = Client.isExplorer || Client.isWebKit ? "functioneditor" : "ui:functioneditor"; 
 	var editor = this.bindingDocument.getElementsByTagName ( tagname ).item ( 0 );
 	var binding = UserInterface.getBinding ( editor );
 	var win = binding.getContentWindow ();

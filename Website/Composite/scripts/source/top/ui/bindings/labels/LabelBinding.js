@@ -146,24 +146,6 @@ LabelBinding.prototype.getLabel = function () {
 LabelBinding.prototype.setImage = function ( url, isNotBuildingClassName ) {
 	
 	if ( url != false ) {
-		
-		/*
-		switch ( url ) {
-			case "${icon:blank}" :
-			case "${icon:accept}" :
-				
-				if ( this.getLabel () == "Default" && url == "${icon:accept}" ) {
-					alert ( this );
-					SystemDebug.stack ( arguments );
-				}
-				
-				if ( this.bindingWindow.FieldsButtonDataBinding != null ) {
-					alert ( this.getLabel () + ": " + url );
-				}
-			break;
-		}
-		*/
-		
 		url = url ? url : LabelBinding.DEFAULT_IMAGE;
 		this.setAlphaTransparentBackdrop ( 
 			Resolver.resolve ( url )

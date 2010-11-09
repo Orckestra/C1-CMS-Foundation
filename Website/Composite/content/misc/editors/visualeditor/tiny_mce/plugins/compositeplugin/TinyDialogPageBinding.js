@@ -77,21 +77,26 @@ TinyDialogPageBinding.prototype.setPageArgument = function ( arg ) {
  * @param {string} elementName Optional
  */
 TinyDialogPageBinding.prototype._populateClassNameSelector = function ( elementName ) {
-
-	if ( !elementName ) {
-		elementName = DOMUtil.getLocalName ( this._tinyElement );
-	}
+	
+	var groups = this._tinyTheme.formatGroups;
 	var classSelector = this.bindingWindow.bindingMap.classnameselector;
-	if ( classSelector ) {
-		var classes = this._editorBinding.elementClassConfiguration.getClassNamesForElement ( elementName );
+	
+	if ( classSelector != null ) {
+		
 		var list = new List ();
-		while ( classes.hasNext ()) {
-			list.add ({
-				value : classes.getNext ()
-			});
-		}
+		groups.reverse ().each ( function ( group ) {
+			group.each ( function ( format ) {
+				if ( format.select != null ) {
+					if ( format.props.block == null && format.props.inline == null ) {
+						list.add ({
+							value : format.props.classes
+						});
+					}
+				}
+			}, this );
+		}, this );
 		classSelector.populateFromList ( list );
-	};
+	}
 }
 
 /**
@@ -103,10 +108,12 @@ TinyDialogPageBinding.prototype._populateDataBindingsFromDOM = function () {
 	var element = this._tinyElement;
 	
 	if ( element.className != "" ) {
-		var className = VisualEditorBinding.getTinyLessClassName ( element.className );
-		UserInterface.getBinding ( 
-			this.bindingDocument.getElementById ( "classnameselector" )
-		).setValue ( className );
+		var classSelector = this.bindingWindow.bindingMap.classnameselector;
+		if ( classSelector != null ) {
+			classSelector.setValue ( 
+				VisualEditorBinding.getTinyLessClassName ( element.className )
+			);
+		}
 	}
 	if ( element.id ) {
 		manager.getDataBinding ( "id" ).setValue ( element.id );

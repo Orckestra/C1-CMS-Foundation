@@ -45,7 +45,8 @@ ImageDialogPageBinding.prototype.onBeforePageInitialize = function () {
 	
 	ImageDialogPageBinding.superclass.onBeforePageInitialize.call ( this );
 	
-	this._populateClassNameSelector ( "img" );
+	this._populateClassNameSelector ();
+	// this._populateClassNameSelector ( "img" );
 	if ( this._tinyAction == "update" ) {
 		this._populateDataBindingsFromDOM ();
 	}

@@ -330,7 +330,7 @@ List.prototype.toString = function () {
  */
 List.prototype.toArray = function () {
 	
-	return this._array;
+	return this._array.concat ([]);
 }
 
 /**

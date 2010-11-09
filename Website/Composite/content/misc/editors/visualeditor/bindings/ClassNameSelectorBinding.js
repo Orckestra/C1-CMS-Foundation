@@ -12,6 +12,11 @@ function ClassNameSelectorBinding () {
 	 */
 	this.logger = SystemLogger.getLogger ( "ClassNameSelectorBinding" );
 	
+	/**
+	 * @type {boolean}
+	 */
+	this._hack = false;
+	
 	/*
 	 * Returnable.
 	 */
@@ -33,6 +38,24 @@ ClassNameSelectorBinding.prototype.onBindingAttach = function () {
 	
 	ClassNameSelectorBinding.superclass.onBindingAttach.call ( this );
 	this.addActionListener ( SelectorBinding.ACTION_SELECTIONCHANGED );
+	
+	var groups = this._tinyTheme.formatGroups;
+	
+	// Compute priorities
+	var array = [];
+	groups.reverse ().each ( function ( group ) {
+		group.each ( function ( format ) {
+			if ( format.select != null && format.props.classes != null ) {
+				if ( format.props.block == null && format.props.inline == null ) {
+					array.push ( format );
+				}
+			}
+		}, this );
+	}, this );
+	array.sort ( function ( f1, f2 ) {
+		return f2.priority - f1.priority;
+	});
+	this.priorities = new List ( array );
 }
 
 /**
@@ -68,58 +91,75 @@ ClassNameSelectorBinding.prototype.handleAction = function ( action ) {
 	
 	switch ( action.type ) {
 		case SelectorBinding.ACTION_SELECTIONCHANGED :
-			var classname = this.getResult ();
-			this._tinyInstance.execCommand (
-				"mceSetCSSClass",
-				false,
-				classname
-			);
-			action.consume ();
+			
+			var result = true;
+			this.selections.each ( function ( selection ){
+				var id = selection.value; 
+				if ( id != null ) {
+					if ( this._tinyInstance.queryCommandState ( id )) {
+						this._tinyInstance.formatter.remove ( id );
+						result = false;
+					}
+				}
+				return result;
+			}, this );
+			if ( this.getValue () != null ) {
+				this._isUpdating = true;
+				this._tinyInstance.formatter.apply ( this.getValue ());
+				this._isUpdating = false;
+			}
 			break;
 	}	
 }
 
 /**
  * Handle node change.
- * TODO: this is invoked like crazy, please remove redundant builds.
  * Implements {@link IWysiwygEditorNodeChangeHandler}
  * @param {DOMElement} element
  */
 ClassNameSelectorBinding.prototype.handleNodeChange = function ( element ) {
 	
-	var names = this._getClassNamesForElement ( element );
+	if ( !this._isUpdating ) {
 	
-	if ( names.hasEntries ()) {
-		var list = new List ();
-		names.each ( function ( name ) {
-			list.add ( 
-				new SelectorBindingSelection ( 
-					name, 
-					name, 
-					name == element.className 
-				)
-			);
-		});
-		this.populateFromList ( list );
-		this.hasSelections = true;
-		this.enable ();
-	} else {
-		this.clear ();
-		this.hasSelections = false;
-		this.disable ();
+		if ( element != this._element || element.className != this._classname ) {
+		
+			this._element = element;
+			this._classname = element.className;
+			
+			var list = new List ();
+			this.priorities.each ( function ( format ) {
+				if ( this._tinyInstance.formatter.canApply ( format.id )) {
+					list.add ( new SelectorBindingSelection ( 
+					    format.select.label, 
+					    format.id,
+					    this._tinyInstance.queryCommandState ( format.id ) 
+					));
+				}
+			}, this );
+			
+			if ( list.hasEntries ()) {
+				this.populateFromList ( list );
+				this._hack = true;
+				this.enable ();
+				this._false = true;
+			} else {
+				this.clear ();
+				this.disable ();
+			}
+		}
 	}
 }
 
 /**
- * Get classnames for element.
- * @param {DOMElement} element
- * @return {List<string>}
+ * Only enable the selector when WE decide to.
+ * @param {boolean} isDisabled
  */
-ClassNameSelectorBinding.prototype._getClassNamesForElement = function ( element ) {
-
-	var config 	= this._editorBinding.elementClassConfiguration;
-	var name 	= DOMUtil.getLocalName ( element ).toLowerCase ();
-	var list 	= config.getClassNamesForElement ( name );
+ClassNameSelectorBinding.prototype.setDisabled = function ( isDisabled ) {
 	
-	return list;
+	if ( isDisabled == true || this._hack == true ) {
+		ClassNameSelectorBinding.superclass.setDisabled.call ( this, isDisabled );
+		if ( isDisabled ) {
+			this._element = null;
+		}
+	}
 }

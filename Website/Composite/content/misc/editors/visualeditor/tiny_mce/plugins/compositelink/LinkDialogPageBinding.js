@@ -38,7 +38,8 @@ LinkDialogPageBinding.prototype.onBeforePageInitialize = function () {
 	
 	LinkDialogPageBinding.superclass.onBeforePageInitialize.call ( this );
 	
-	this._populateClassNameSelector ( "a" );
+	this._populateClassNameSelector ();
+	//this._populateClassNameSelector ( "a" );
 	if ( this._tinyAction == "update" ) {
 		this._populateDataBindingsFromDOM ();
 	} else {

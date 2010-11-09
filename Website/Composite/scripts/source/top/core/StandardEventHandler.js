@@ -312,7 +312,15 @@ StandardEventHandler.prototype._handleKeyDown = function ( e, isTabHandled ) {
 			case KeyEventCodes.VK_SPACE :
 			case KeyEventCodes.VK_PAGE_UP :
 			case KeyEventCodes.VK_PAGE_DOWN :
-				DOMEvents.preventDefault ( e );
+				
+				/*
+				 * TODO: Investigate whether or not it is wise to EXCLUDE WebKit!
+				 * Problem is that the Visual Editor get's locked while it shouldn't.
+				 * Is something wrong with hasNativeKeys in WebKit?
+				 */
+				if ( !Client.isWebKit ) {
+					DOMEvents.preventDefault ( e );
+				}
 			 	break;
 		} 
 	}

@@ -32,8 +32,19 @@ function VisualEditorSimpleToolBarBinding () {
 	
 	/**
 	 * @type {HTMLElement}
-	 */
+	 *
 	this._element = null;
+	
+	/**
+	 * @type {String}
+	 *
+	this._classname = null;
+	*/
+	
+	/**
+	 * @type {List<ToolBarButtonBinding>}
+	 */
+	this.priorities = null;
 	
 	/*
 	 * Returnable.
@@ -72,9 +83,13 @@ VisualEditorSimpleToolBarBinding.prototype.onBindingAttach = function () {
 	VisualEditorSimpleToolBarBinding.superclass.onBindingAttach.call ( this );
 
 	/*
-	 * Index toolbar buttons.
+	 * toolbar buttons index.
 	 */
 	this._buttons = new Map ();
+	
+	/*
+	 * Index existing buttons.
+	 */
 	var buttons = this.getDescendantBindingsByLocalName ( "toolbarbutton" );
 	while ( buttons.hasNext ()) {
 		var button = buttons.getNext ();
@@ -86,6 +101,46 @@ VisualEditorSimpleToolBarBinding.prototype.onBindingAttach = function () {
 			);
 		}
 	}
+	
+	/*
+	 * Mount and index configuration buttons.
+	 */
+	var groups = this._tinyTheme.formatGroups;
+	groups.reverse ().each ( function ( group ) {
+		var groupBinding = ToolBarGroupBinding.newInstance ( this.bindingDocument );
+		group.each ( function ( format ) {
+			if ( format.button != null ) {
+				var button = this._getButton ( format )
+				groupBinding.add ( button );
+				if ( this._buttons.has ( format.id )) {
+					throw "Duplicate format ID: " + format.id;
+				} else {
+					this._buttons.set ( 
+						format.id, 
+						button 
+					);
+				}
+			}
+		}, this );
+		this.addFirst ( groupBinding );
+		groupBinding.attachRecursive ();
+	}, this ); 
+	
+	/*
+	 * Compute priorities
+	 */
+	var array = [];
+	this._buttons.each ( function ( key, button ) {
+		if ( button.format != null ) {
+			array.push ( button );
+		}
+	});
+	array.sort ( function ( b1, b2 ) {
+		var p1 = b1.format.priority;
+		var p2 = b2.format.priority;
+		return p2 - p1;
+	});
+	this.priorities = new List ( array );
 	
 	/* 
 	 * Hookup on theme transmission.
@@ -100,6 +155,38 @@ VisualEditorSimpleToolBarBinding.prototype.onBindingAttach = function () {
 }
 
 /**
+ * Build button.
+ * @param {Format} format
+ * @returns {EditorToolBarButtonBinding}
+ */
+VisualEditorSimpleToolBarBinding.prototype._getButton = function ( format ) {
+	
+	var button = EditorToolBarButtonBinding.newInstance ( this.bindingDocument );
+	
+	var cmd = format.id;
+	var label = format.button.label;
+	var image = format.button.image;
+	var notes = format.button.notes;
+	
+	if ( label != null && label != "" ) {
+		button.setLabel ( label );
+	}
+	if ( image != null && image != "" ) {
+		button.setImage ( Constants.CONFIGROOT + image );
+	}
+	if ( notes != null && notes != "" ) {
+		button.setToolTip ( notes );
+	}
+	
+	button.disable ();
+	button.setProperty ( "cmd", cmd );
+	button.setType ( ButtonBinding.TYPE_CHECKBUTTON );
+	button.format = format;
+	
+	return button;
+}
+
+/**
  * Handle node change.
  * @implements {IWysiwygEditorNodeChangeHandler}
  * @param {DOMElement} element
@@ -107,9 +194,68 @@ VisualEditorSimpleToolBarBinding.prototype.onBindingAttach = function () {
 VisualEditorSimpleToolBarBinding.prototype.handleNodeChange = function ( element ) {
 	
 	if ( !this._isToolBarUpdate ) {
-		if ( element != this._element ) {
-			this._updateButtons ( element );
-			this._element = element;
+		
+		var hasSelection = this._editorBinding.hasSelection ();
+				
+		// uncheck buttons and disable some buttons
+		this._buttons.each ( function ( key, button ) {
+			if ( button.isChecked ) {
+				button.uncheck ( true );
+			}
+			var format = button.format;
+			if ( format != null ) {
+				if ( format.props.inline != null ) {
+					button.setDisabled ( !hasSelection );
+				} else if ( format.props.block != null ) {
+					button.setDisabled ( hasSelection );
+				} else {
+					button.enable ();
+				}
+			}
+		}, this )
+		
+		var tiny = this._tinyInstance;
+		
+		// disable more buttons
+		this._buttons.each ( function ( key, button ) {
+			if ( !button.isDisabled ) {
+				var format = button.format;
+				if ( format != null ) {
+					if ( tiny.formatter.canApply ( format.id )) {
+						button.enable ();
+					} else {
+						button.disable ();
+					}
+				}
+			}
+		})
+		
+		// check buttons
+		this.priorities.each ( function ( button ) {
+			var result = true;
+			if ( !button.isDisabled ) {
+				if ( tiny.queryCommandState ( button.cmd )) {
+					button.check ( true );
+					result = false;
+				} else {
+					button.uncheck ( true );
+				}
+			}
+			return result;
+		}, this );
+		
+		// hack this button
+		// TODO: less hacking
+		var b1 = this._buttons.get ( "InsertUnorderedList" );
+		if ( tiny.queryCommandState ( b1.cmd )) {
+			b1.check ( true );
+		}
+		
+		// hack this button
+		// TODO: less hacking
+		var b2 = this._buttons.get ( "InsertOrderedList" );
+		if ( tiny.queryCommandState ( b2.cmd )) {
+			b2.check ( true );
 		}
 	}
 }
@@ -117,8 +263,11 @@ VisualEditorSimpleToolBarBinding.prototype.handleNodeChange = function ( element
 /**
  * Update buttons.
  * @param {DOMElement} element
- */
+ *
 VisualEditorSimpleToolBarBinding.prototype._updateButtons = function ( element ) {
+	
+	alert ( "HELLO" )
+	return;
 	
 	var structure = new List ();
 	var commands = new Map ();
@@ -128,7 +277,7 @@ VisualEditorSimpleToolBarBinding.prototype._updateButtons = function ( element )
 	/**
 	 * Collec ancestor nodenames in a list. 
 	 * Scanning for any alignment on stuff.
-	 */
+	 *
 	var el = element;
 	do {
 		if ( el.nodeType == Node.ELEMENT_NODE ) {
@@ -143,10 +292,10 @@ VisualEditorSimpleToolBarBinding.prototype._updateButtons = function ( element )
 	 * Computing commands relevant for current node. Cases "img" and "a" 
 	 * are due to a flaw in EditorBinding#hasSelection where images aren't 
 	 * reckognized as selections.
-	 */
+	 *
 	var wasAlignmentDisabled = false;
 	while ( structure.hasNext ()) {
-		switch ( structure.getNext () ) {
+		switch ( structure.getNext ()) {
 			case "img" :
 				if ( this._isReservedClassName ( element.className )) {
 					this._disableAlignment ( true );
@@ -205,7 +354,7 @@ VisualEditorSimpleToolBarBinding.prototype._updateButtons = function ( element )
 	
 	/*
 	 * Check and uncheck buttons.
-	 */
+	 *
 	this._buttons.each ( 
 		function ( key, button ) {
 			if ( button.cmd && ( button.isCheckButton || button.isRadioButton )) {
@@ -215,6 +364,7 @@ VisualEditorSimpleToolBarBinding.prototype._updateButtons = function ( element )
 		}
 	);
 }
+*/
 
 /**
  * This handles all button commands.
@@ -250,7 +400,7 @@ VisualEditorSimpleToolBarBinding.prototype.handleAction = function ( action ) {
  * @param {EditorToolBarButton} button
  */
 VisualEditorSimpleToolBarBinding.prototype._handleButton = function ( button ) {
-
+	
 	if ( button.cmd != null ) {
 		
 		var isRelay = true;
@@ -302,9 +452,32 @@ VisualEditorSimpleToolBarBinding.prototype._handleButton = function ( button ) {
 			 * of this operation (leads to weird toolbar behavior).
 			 */
 			this._isToolBarUpdate = true;
-			this._editorBinding.handleCommand ( 
-				button.cmd, button.val, button.gui
-			);
+			
+			/*
+			 * Not the most elegant way to handle this...
+			 */
+			if ( button.format != null ) {
+				if ( button.isChecked ) {
+					if ( button.format != null && button.format.isRadio ) {
+						var group = UserInterface.getBinding ( button.bindingElement.parentNode );
+						var buttons = group.getDescendantBindingsByLocalName ( "toolbarbutton" );
+						buttons.each ( function ( b ) {
+							if ( b != button ) {
+								this._tinyInstance.formatter.remove ( b.cmd );
+								b.uncheck ( true );
+							}
+						}, this );
+					}
+					this._tinyInstance.formatter.apply ( button.cmd );
+				} else {
+					this._tinyInstance.formatter.remove ( button.cmd );
+				}
+			} else {
+				this._editorBinding.handleCommand ( 
+					button.cmd, button.val, button.gui
+				);
+			}
+			
 			var self = this;
 			setTimeout ( function () {
 				self._isToolBarUpdate = false;
@@ -341,12 +514,12 @@ VisualEditorSimpleToolBarBinding.prototype._disableAlignment = function ( isDisa
 VisualEditorSimpleToolBarBinding.prototype._isReservedClassName = function ( classname ) {
 
 	var result = false;
-	if ( classname && classname != "" ) {
-		switch ( classname ) {
-			case VisualEditorBinding.FUNCTION_CLASSNAME :
-			case VisualEditorBinding.FIELD_CLASSNAME :
-				result = true;
-				break;
+	if ( classname != null && classname != "" ) {
+		if ( 
+			classname.indexOf ( VisualEditorBinding.FUNCTION_CLASSNAME ) >-1 ||
+			classname.indexOf ( VisualEditorBinding.FIELD_CLASSNAME ) >-1 ) 
+		{
+			result = true;
 		}
 	}
 	return result;
@@ -424,14 +597,26 @@ VisualEditorSimpleToolBarBinding.prototype.setDisabled = function ( isDisabled )
 						button.disable ();
 					}
 					break;
-				default :
+				case "InsertUnorderedList" :
+				case "InsertOrderedList" :
 					button.setDisabled ( isDisabled );
+					break;
+				default :
+					if ( isDisabled ) {
+						if ( button.format != null ) {
+							if ( button.isChecked ) {
+								button.uncheck ( true );
+							}
+							button.disable ();
+						}
+					}
+					// button.setDisabled ( isDisabled );
 					break;
 			}
 		});
 	}, 10 );
 	
-	this._element = null;
+	// this._element = null;
 }
 
 VisualEditorSimpleToolBarBinding.prototype._cleanup = function () {

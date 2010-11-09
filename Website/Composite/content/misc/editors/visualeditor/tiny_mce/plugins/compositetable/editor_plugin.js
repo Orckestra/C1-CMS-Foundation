@@ -42,7 +42,7 @@ new function () {
 		init : function ( ed, url ) {
 			
 			this.editor = ed;
-			this.theme = editor.theme;
+			this.theme = this.editor.theme;
 			
 			/*
 			 * Fixes a bug in FF3.0 where the cursor gets stuck in  
@@ -877,7 +877,7 @@ new function () {
 								var lastTDElm = null;
 
 								// Only one col, remove whole table
-								if ((grid.length > 1 && grid[0].length <= 1) && tableElm.nodeName == 'TBODY') {
+								if ((grid.length > 1 && grid[0].length <= 1) && tableElm.nodeName.toLowerCase () == 'TBODY') {
 									inst.dom.remove(inst.dom.getParent(tableElm, "table"));
 									return true;
 								}

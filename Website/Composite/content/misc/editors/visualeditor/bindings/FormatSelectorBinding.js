@@ -2,8 +2,27 @@ FormatSelectorBinding.prototype = new EditorSelectorBinding;
 FormatSelectorBinding.prototype.constructor = FormatSelectorBinding;
 FormatSelectorBinding.superclass = EditorSelectorBinding.prototype;
 
+FormatSelectorBinding.LABEL_UNKNOWN = "(Unknown)"
+FormatSelectorBinding.VALUE_UNKNOWN = "(Unknown)"
+	
+/*
+<p>
+<h1>, <h2>, <h3>, <h4>, <h5>, <h6>
+<ol>, <ul>
+<pre>
+<address>
+<blockquote>
+<dl>
+<div>
+<fieldset>
+<form>
+<hr>
+<noscript>
+<table>
+*/
+	
 /**
- * @class
+ * Block format controller.
  * @implements {IWysiwygEditorComponent}
  */
 function FormatSelectorBinding () {
@@ -14,16 +33,24 @@ function FormatSelectorBinding () {
 	this.logger = SystemLogger.getLogger ( "FormatSelectorBinding" );
 	
 	/**
-	 * Comma separated string of recognized formatting element names.
-	 * "p,div,h1,h2,h3,h4,h5,h6,pre,address,blockquote,dt,dl,dd,samp"
-	 * @type {string}
+	 * @type {List<SelectorBindingSelection>}
 	 */
-	this._elementNames = null;
+	this._list = null;
+	
+	/**
+	 * @type {List<Format>}
+	 */
+	this.priorities = null;
 	
 	/**
 	 * @type {HTMLElement}
 	 */
 	this._element = null;
+	
+	/**
+	 * @type {HashMap<string><Format>}
+	 */
+	this._formats = new Map ();
 	
 	/*
 	 * Returnable.
@@ -48,26 +75,46 @@ FormatSelectorBinding.prototype.buildDOMContent = function () {
 	FormatSelectorBinding.superclass.buildDOMContent.call ( this );
 	
 	/*
-	 * Build selections.
+	 * Mount and index configuration buttons.
 	 */
-	var list = new List ();
-	var names = new List ();
-	var config = this._editorBinding.formattingConfiguration.getFormattingOptions ();
+	var groups = this._tinyTheme.formatGroups;
+	var list = new List ([ 
+	    new SelectorBindingSelection ( 
+	    	FormatSelectorBinding.LABEL_UNKNOWN,
+	    	FormatSelectorBinding.VALUE_UNKNOWN
+	    )
+	]);
 	
-	for ( var tag in config ) {
-		var name = config [ tag ];
-		var value = tag;
-		list.add ( new SelectorBindingSelection ( name, value ));
-		names.add ( value );
-	}
+	// isolating BLOCK format instances
+	groups.each ( function ( group ) {
+		var groupBinding = ToolBarGroupBinding.newInstance ( this.bindingDocument );
+		group.each ( function ( format ) {
+			if ( format.props.block != null && format.select != null ) {
+				this._formats.set ( format.id, format );
+				var name = format.select.label;
+				var value = format.id;
+				list.add ( new SelectorBindingSelection ( name, value ));
+			}
+		}, this );
+	}, this );
+	
+	// Compute priorities
+	var array = [];
+	groups.each ( function ( group ) {
+		group.each ( function ( format ) {
+			if ( format.select != null && format.props.block != null ) {
+				array.push ( format );
+			}
+		}, this );
+	}, this );
+	array.sort ( function ( f1, f2 ) {
+		return f2.priority - f1.priority;
+	});
+	this.priorities = new List ( array );
 	
 	this.populateFromList ( list );
-	this._elementNames = names.toString ();
-	
-	/*
-	 * Rigup action.
-	 */
 	this.addActionListener ( SelectorBinding.ACTION_SELECTIONCHANGED );
+	this._list = list;
 }
 
 /**
@@ -102,30 +149,13 @@ FormatSelectorBinding.prototype.handleAction = function ( action ) {
 	
 	switch ( action.type ) {
 		case SelectorBinding.ACTION_SELECTIONCHANGED :
-			var format = this.getResult ();
-			/*
-			 * Seems to be fixed in IE8, though...
-			 */ 
-			if ( Client.isExplorer ) {
-				if ( format == "" ) {
-					this.logger.error ( "TODO: Problem with no format in Explorer!" );
-				}
-				format = "<" + format + ">";
+			var format = this._formats.get ( this.getValue ());
+			var formatter = this._tinyInstance.formatter;
+			if ( formatter.canApply ( format.id )) {
+				formatter.apply ( format.id );
 			}
-			this._tinyInstance.execCommand (
-				"FormatBlock",
-				false,
-				format
-			);
-			
-			this._tinyInstance.execCommand (
-				"mceSetCSSClass",
-				false,
-				""
-			);
-			action.consume ();
 			break;
-	}	
+	}
 }
 
 /**
@@ -139,16 +169,19 @@ FormatSelectorBinding.prototype.handleNodeChange = function ( element ) {
 		
 		this._element = element;
 		
-		var block = this._tinyInstance.dom.getParent (
-			element, this._elementNames
-		);
-		if ( block ) {
-			this.selectByValue ( 
-				DOMUtil.getLocalName ( block ).toLowerCase (),
-				true
-			);
-		} else {
-			this.reset ( true );
+		var value = null;
+		while ( value == null && element != null && element.nodeName.toLowerCase () != "body" ) {
+			this.priorities.each ( function ( format ) {
+				if ( this._tinyInstance.formatter.matchNode ( element, format.id )) {
+					value = format.id;
+				}
+				return value == null;
+			}, this );
+			element = element.parentNode;
 		}
+		if ( value == null ) {
+			value = FormatSelectorBinding.VALUE_UNKNOWN;
+		}
+		this.selectByValue ( value, true );
 	}
 }

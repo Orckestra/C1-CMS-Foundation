@@ -26,6 +26,9 @@ ui|clickbutton table.matrix td.c {
 ui|toolbar ui|clickbutton table.matrix td.c {
 	padding: 0 2px 0 2px;
 }
+/*
+produce a pressed-down effect - unfortunately, 
+this will crop images on small buttons!
 ui|toolbarbutton.active ui|labelbox,
 ui|clickbutton.active ui|labelbox {
 	position: relative;
@@ -35,3 +38,4 @@ ui|clickbutton.active ui|labelbox {
 		position: static;
 	#endregion
 }
+*/

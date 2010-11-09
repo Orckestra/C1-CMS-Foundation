@@ -5,7 +5,6 @@
 		<title>Composite.Management.Dialogs.WysiwygEditor.Link.Link</title>
 		<control:styleloader runat="server"/>
 		<control:scriptloader type="sub" runat="server"/>
-		<link rel="stylesheet" type="text/css" href="image.css"/>
 		<script type="text/javascript" src="../compositeplugin/TinyDialogPageBinding.js"></script>
 		<script type="text/javascript" src="LinkDialogPageBinding.js"></script>
 	</head>

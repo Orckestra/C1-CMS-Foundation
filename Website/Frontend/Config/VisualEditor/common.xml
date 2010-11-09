@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<visualeditor>
+	<styles>
+		<style file="styles/common.css"/>
+	</styles>
+	
+	<!-- 
+		These format-id's will overwrite or overload TinyMCE built-in formats:
+		alignleft, aligncenter, alignright, alignfull, bold, italic, underline, 
+		strikethrough, forecolor, hilitecolor, fontname, fontsize, blockquote, 
+		removeformat, p, h1, h2, h3, h4, h5, h6, div, address, pre, div, code, 
+		dt, dd, samp. 
+	-->
+	
+	<formats>
+		<group>
+			<format 
+				id="bold" 
+				label="Strong" 
+				image=""
+				notes=""  
+				inline="strong">
+					<button image="Images/bold.png" label=""/>
+			</format>
+			<format 
+				id="italic" 
+				label="Emphasis" 
+				image=""
+				notes="" 
+				inline="em">
+					<button image="Images/italic.png" label=""/>
+			</format>
+				
+			<!-- example: Button to surround selection with span.myclass
+				<format id="example" 
+					label="Example" 
+					image=""
+					notes="" 
+					inline="span"
+					classes="myclass">
+						<button label=":)"/>
+				</format>
+			-->
+		</group>
+		<radiogroup>
+			<format 
+				id="h1" 
+				label="Heading H1" 
+				image=""
+				notes="Small heading" 
+				block="h1">
+					<select/>
+			</format>
+			<format 
+				id="h2" 
+				label="Heading H2" 
+				image=""
+				notes="Small heading" 
+				block="h2">
+					<select/>
+			</format>
+			<format 
+				id="p" 
+				label="Paragraph"  
+				image=""
+				notes="Normal paragraph" 
+				block="p">
+					<select/>
+			</format>
+			
+			<!-- example! Selection and button to insert H1.nice 
+			<format 
+				id="h1.test" 
+				label="Nice H1" 
+				image=""
+				notes="Big heading with classname" 
+				block="h1" 
+				priority="1"  
+				classes="nice">
+					<select label="Heading H1.nice"/>
+					<button/>
+			</format>
+			-->
+			
+		</radiogroup>
+		<radiogroup>
+			<format 
+				id="alignleft" 
+				label="Left" 
+				image=""
+				notes="Left-align images and tables" 
+				classes="left" 
+				selector="img,table">
+					<button label="" image="images/left.png"/>
+					<select image=""/>
+				</format>
+			<format 
+				id="aligncenter" 
+				label="Align Center" 
+				image=""/>
+			<format 
+				id="alignright" 
+				label="Right"  
+				image="" 
+				notes="Right-align images and tables" 
+				classes="right" 
+				selector="img,table">
+					<button label="" image="images/right.png"/>
+					<select image=""/>
+				</format>
+		</radiogroup>
+	</formats>
+</visualeditor>

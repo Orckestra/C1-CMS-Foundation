@@ -18,6 +18,13 @@ new function () {
 	var DOM = tinymce.DOM;
 	
 	/**
+	 * Format list.
+	 * @see {VisualEditor.js}
+	 * @type {List<FormatGroup>}
+	 */
+	this.formatGroups = new List (),
+	
+	/**
 	 * Info
 	 */
 	this.getInfo = function() {
@@ -65,7 +72,7 @@ new function () {
 			
 			/*
 			 * Inject stylesheets.
-			 */
+			 *
 			var css0 = this.editorBinding.defaultStylesheet;
 			var css1 = this.editorBinding.presentationStylesheet;
 			var css2 = this.editorBinding.configurationStylesheet;
@@ -79,6 +86,7 @@ new function () {
 			if ( css2 != null ) {
 				this.tinyInstance.dom.loadCSS ( css2 );
 			}
+			*/
 		},
 		
 		/**

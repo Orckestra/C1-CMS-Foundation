@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<%@ Page Language="C#"%>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml" xmlns:control="http://www.composite.net/ns/uicontrol">
 	<control:httpheaders runat="server" />
 	<head>
@@ -67,14 +68,14 @@
 							<ui:box id="toolbarsbox" binding="VisualEditorBoxBinding">
 								<ui:cover id="toolbarscover" busy="false"/>
 								<ui:toolbar id="toolbar" binding="VisualEditorSimpleToolBarBinding" observes="broadcasterIsActive">
-									<% Response.WriteFile ( "includes/toolbarsimple.inc" ) %>
+									<% Response.WriteFile ( "includes/toolbarsimple.inc" ); %>
 								</ui:toolbar>
 								<ui:toolbar id="advancedtoolbar" binding="VisualEditorToolBarBinding">
-									<% Response.WriteFile ( "includes/toolbaradvanced.inc" ) %>
+									<% Response.WriteFile ( "includes/toolbaradvanced.inc" ); %>
 								</ui:toolbar>
 							</ui:box>
 							<ui:flexbox id="tinyflexbox">
-								<ui:window id="tinywindow" url="tinymce.aspx"/>
+								<ui:window id="tinywindow" url="tinymce.aspx?config=<%= Request.QueryString [ "config" ] %>"/>
 								<ui:cover id="tinycover" busy="false"/>
 							</ui:flexbox>
 							<ui:toolbar id="statusbar" binding="VisualEditorStatusBarBinding" observes="broadcasterIsActive" class="statusbar">

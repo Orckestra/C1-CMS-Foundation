@@ -76,12 +76,25 @@ ui|toolbar#toolbar ui|clickbutton table.matrix td.c {
 	padding: 6px;
 }
 */
-
 #region osx
 	ui|toolbar#toolbar ui|toolbarbutton {
 		filter: url("${root}/templates/grayscalefilter.xml#grayscale");	
 	}
 #endregion
+
+/*
+ This ought to be enabled on ALL buttons (in buttons.css) 
+ but the effect will crop images on small buttons
+*/
+ui|toolbar#toolbar ui|toolbarbutton.active ui|labelbox {
+	position: relative;
+	top: 1px;
+	left: 1px;
+	#region osx
+		position: static;
+	#endregion
+}
+
 ui|stagecontainer {
 	display: block;
 	overflow: hidden;

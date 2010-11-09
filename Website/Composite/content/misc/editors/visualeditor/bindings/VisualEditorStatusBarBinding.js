@@ -2,11 +2,13 @@ VisualEditorStatusBarBinding.prototype = new ToolBarBinding;
 VisualEditorStatusBarBinding.prototype.constructor = VisualEditorStatusBarBinding;
 VisualEditorStatusBarBinding.superclass = ToolBarBinding.prototype;
 
-VisualEditorStatusBarBinding.NAME_RENDERING 		= "[function]";
-VisualEditorStatusBarBinding.NAME_FIELD 			= "[field]";
-VisualEditorStatusBarBinding.NAME_FLASH 			= "[flash]";
-VisualEditorStatusBarBinding.NAME_QUICKTIME 		= "[quicktime]";
-VisualEditorStatusBarBinding.NAME_SHOCKWAVE 		= "[shockwave]";
+VisualEditorStatusBarBinding.NAME_RENDERING 	= "[function]";
+VisualEditorStatusBarBinding.NAME_FIELD 		= "[field]";
+
+// TODO: THESE ARE NOT USED NO MORE!
+VisualEditorStatusBarBinding.NAME_FLASH 		= "[flash]";
+VisualEditorStatusBarBinding.NAME_QUICKTIME 	= "[quicktime]";
+VisualEditorStatusBarBinding.NAME_SHOCKWAVE 	= "[shockwave]";
 VisualEditorStatusBarBinding.NAME_WINMEDIA 		= "[windowsmedia]";
 VisualEditorStatusBarBinding.NAME_GENERICMEDIA 	= "[media]";
 
@@ -48,6 +50,11 @@ function VisualEditorStatusBarBinding () {
 	 * @type {HTMLElement}
 	 */
 	this._element = null;
+	
+	/**
+	 * @type {String}
+	 */
+	this._classname = null;
 	
 	/**
 	 * @type {LabelBinding}
@@ -121,9 +128,10 @@ VisualEditorStatusBarBinding.prototype.initializeComponent = function ( editor, 
  */
 VisualEditorStatusBarBinding.prototype.handleNodeChange = function ( element ) {
 	
-	if ( element != this._element ) {
+	if ( element != this._element || element.className != this._classname ) {
 		this._buildToolBar ( element );
 		this._element = element;
+		this._classname = element.classname;
 	}
 }
 
@@ -183,9 +191,12 @@ VisualEditorStatusBarBinding.prototype._buildToolBar = function ( element ) {
 			var structuralDepth = elements.getLength ();
 			
 			while ( elements.hasNext ()) {
-				groupBinding.add ( 
-					this._getButtonBinding ( elements.getNext (), -- structuralDepth )
-				);
+				var e = elements.getNext ();
+				if ( e.nodeName.toLowerCase () != "br" ) { // some new TinyMCE devilry
+					groupBinding.add ( 
+						this._getButtonBinding ( e, -- structuralDepth )
+					);
+				}
 			}
 			this.addLeft ( groupBinding );
 			this._groupBinding = groupBinding;
@@ -248,9 +259,9 @@ VisualEditorStatusBarBinding.prototype._getButtonBinding = function ( element, s
 		case "img" :
 			var classname = element.className;
 			if ( classname != "" ) {
-				if ( classname == VisualEditorBinding.FUNCTION_CLASSNAME ) {
+				if ( classname.indexOf ( VisualEditorBinding.FUNCTION_CLASSNAME ) >-1 ) {
 					nodeName = VisualEditorStatusBarBinding.NAME_RENDERING;
-				} else if ( classname == VisualEditorBinding.FIELD_CLASSNAME ) {
+				} else if ( classname.indexOf ( VisualEditorBinding.FIELD_CLASSNAME ) >-1 ) {
 					nodeName = VisualEditorStatusBarBinding.NAME_FIELD;
 				}
 			}
@@ -274,8 +285,8 @@ VisualEditorStatusBarBinding.prototype._getButtonBinding = function ( element, s
 		nodeName += "#" + id;
 	}
 	if ( classname != "" &&
-		classname != VisualEditorBinding.FIELD_CLASSNAME && 
-		classname != VisualEditorBinding.FUNCTION_CLASSNAME 
+			classname.indexOf ( VisualEditorBinding.FIELD_CLASSNAME ) == -1 && 
+			classname.indexOf ( VisualEditorBinding.FUNCTION_CLASSNAME ) == -1  
 		) { 
 		classname = VisualEditorBinding.getTinyLessClassName ( classname );
 		if ( classname != "" ) {

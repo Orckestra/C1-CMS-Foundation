@@ -104,9 +104,18 @@ VisualEditorPageBinding.prototype.onBeforePageInitialize = function () {
  */
 VisualEditorPageBinding.prototype.onBindingDispose = function () {
 	
-	VisualEditorPageBinding.superclass.onBindingDispose.call ( this );
+	VisualEditorPageBinding.superclass.onBindingDispose.call ( this ); 
+	
 	if ( this._dirtyInterval != null ) {
 		clearInterval ( this._dirtyInterval );
+	}
+	
+	/*
+	 * This is supposed to unleak memory.
+	 * http://wiki.moxiecode.com/index.php/TinyMCE:API/tinymce.Editor/destroy
+	 */
+	if ( this._tinyInstance != null ) {
+		this._tinyInstance.destroy ();
 	}
 }
 

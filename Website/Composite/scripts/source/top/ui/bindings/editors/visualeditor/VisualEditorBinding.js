@@ -6,12 +6,12 @@ VisualEditorBinding.FUNCTION_CLASSNAME = "compositeFunctionWysiwygRepresentation
 VisualEditorBinding.FIELD_CLASSNAME = "compositeFieldReferenceWysiwygRepresentation";
 VisualEditorBinding.ACTION_INITIALIZED = "visualeditor initialized";
 VisualEditorBinding.DEFAULT_CONTENT = "<p><br/></p>";
-VisualEditorBinding.DEFAULT_STYLESHEET = Resolver.resolve ( "${root}/content/misc/editors/visualeditor/tinymce.css" );
+// VisualEditorBinding.DEFAULT_STYLESHEET = Resolver.resolve ( "${root}/content/misc/editors/visualeditor/tinymce.css" );
 
 VisualEditorBinding.URL_DIALOG_CONTENTERROR = "${root}/content/dialogs/wysiwygeditor/errors/contenterror.aspx";
 VisualEditorBinding.XHTML = "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n\t<head>${head}</head>\n\t<body>\n${body}\n\t</body>\n</html>";
 
-/**
+/*
  * It ain't pretty, but we had to put this somewhere.
  * @param {string} classname
  * @return {string}
@@ -217,39 +217,42 @@ function VisualEditorBinding () {
 	 * @type {TinyMCE_CompositeTheme}
 	 */
 	this._tinyTheme = null;
-
-	/**
-	 * @type {VisualEditorFormattingConfiguration}
-	 */
-	this.formattingConfiguration = null;
-	
-	/**
-	 * @type {VisualEditorElementClassConfiguration}
-	 */
-	this.elementClassConfiguration = null;
 	
 	/**
 	 * @type {VisualEditorFieldGroupConfiguration}
 	 */
 	this.embedableFieldConfiguration = null;
+
+	/**
+	 * @type {VisualEditorFormattingConfiguration}
+	 *
+	this.formattingConfiguration = null;
+	*/
+	
+	/**
+	 * @type {VisualEditorElementClassConfiguration}
+	 *
+	this.elementClassConfiguration = null;
+	*/
 	
 	/**
 	 * TinyMCE internal stylesheet. Externalized  
 	 * so that an TinyMCE upgrade won't overwrite.
-	 */
+	 *
 	this.defaultStylesheet = VisualEditorBinding.DEFAULT_STYLESHEET;
 	
 	/**
 	 * Editor configuration stylesheet URL.
 	 * @type {string}
-	 */
+	 *
 	this.configurationStylesheet = null;
 	
 	/**
 	 * Editor presentation stylesheet URL.
 	 * @type {string}
-	 */
+	 *
 	this.presentationStylesheet = null;
+	*/
 	
 	/**
 	 * Stores the HEAD section markup.
@@ -273,7 +276,21 @@ VisualEditorBinding.prototype.onBindingRegister = function () {
 	 * to supress occasional glitches in string fetching.
 	 */
 	VisualEditorBinding.superclass.onBindingRegister.call ( this );
+	
+	// load strings
 	StringBundle.getString ( "Composite.Web.VisualEditor", "Preload.Key" );
+
+	// fields config
+	var fieldsconfig = this.getProperty ( "embedablefieldstypenames" );
+	if ( fieldsconfig != null ) {
+		this.embedableFieldConfiguration = VisualEditorFieldGroupConfiguration.getConfiguration ( fieldsconfig );
+	}
+	
+	// formatting config
+	var config = this.getProperty ( "formattingconfiguration" );
+	if ( config != null ) {
+		this._url += "?config=" + config;
+	}
 }
 
 /**
@@ -286,7 +303,7 @@ VisualEditorBinding.prototype.onBindingAttach = function () {
 	this.subscribe ( BroadcastMessages.TINYMCE_INITIALIZED );
 	this.subscribe ( BroadcastMessages.VISUALEDITOR_HACKED );
 	
-	this._parseDOMProperties ();
+	// this._parseDOMProperties ();
 };
 
 /**
@@ -299,7 +316,7 @@ VisualEditorBinding.prototype.toString = function () {
 
 /**
  * Parse DOM properties.
- */
+ *
 VisualEditorBinding.prototype._parseDOMProperties = function () {
 
 	var presentation = this.getProperty ( "presentationstylesheet" );
@@ -311,15 +328,15 @@ VisualEditorBinding.prototype._parseDOMProperties = function () {
 	if ( configuration != null ) {
 		this.configurationStylesheet = configuration;
 	}
-
-	var formatconfig = this.getProperty ( "formattingconfiguration" );
-	if ( formatconfig != null ) {
-		this.formattingConfiguration = VisualEditorFormattingConfiguration.getConfiguration ( formatconfig );
-	}
 	
 	var classconfig = this.getProperty ( "elementclassconfiguration" );
 	if ( classconfig != null ) {
 		this.elementClassConfiguration = VisualEditorElementClassConfiguration.getConfiguration ( classconfig );
+	}
+	
+	var formatconfig = this.getProperty ( "formattingconfiguration" );
+	if ( formatconfig != null ) {
+		this.formattingConfiguration = VisualEditorFormattingConfiguration.getConfiguration ( formatconfig );
 	}
 
 	var fieldsconfig = this.getProperty ( "embedablefieldstypenames" );
@@ -327,6 +344,7 @@ VisualEditorBinding.prototype._parseDOMProperties = function () {
 		this.embedableFieldConfiguration = VisualEditorFieldGroupConfiguration.getConfiguration ( fieldsconfig );
 	}
 };
+*/
 
 /**
  * @implements {IBroadcastListener}
@@ -587,7 +605,6 @@ VisualEditorBinding.prototype.getEditorPopupBinding = function () {
 VisualEditorBinding.prototype.createBookmark = function () {
 	
 	this._bookmark = this._tinyInstance.selection.getBookmark ( true );
-	//this.logger.debug ( "Bookmark created! " + Math.random ());
 };
 
 /**
@@ -595,9 +612,8 @@ VisualEditorBinding.prototype.createBookmark = function () {
  */
 VisualEditorBinding.prototype.restoreBookmark = function () {
 	
-	if ( this._bookmark != null ) {
+	if ( this.hasBookmark ()) {
 		this._tinyInstance.selection.moveToBookmark ( this._bookmark );
-		//this.logger.debug ( "Bookmark restored! " + Math.random ());
 		this.deleteBookmark ();
 	}
 };
@@ -617,7 +633,6 @@ VisualEditorBinding.prototype.hasBookmark = function () {
 VisualEditorBinding.prototype.deleteBookmark = function () {
 	
 	this._bookmark = null;
-	//this.logger.debug ( "Bookmark deleted! " + Math.random ());
 };
 
 /**

@@ -699,36 +699,41 @@ EditorBinding.prototype._sanitizeMozilla = function () {
  * @return {boolean}
  */
 EditorBinding.prototype.hasSelection = function () {
-	
 	var result = false;
-	if ( Client.isMozilla ) {
-	 	var selection = this.getEditorWindow ().getSelection ();
-		if ( selection != null ) {
-			 result = selection.toString ().length > 0;
-			 if ( !result ) {
-				var range = selection.getRangeAt ( 0 );
-				var frag = range.cloneContents ();
-				var element = this.getEditorDocument ().createElement ( "element" );
-				while ( frag.hasChildNodes ()) {
-					element.appendChild ( frag.firstChild );
-				}
-				var img = element.getElementsByTagName ( "img" ).item ( 0 );
-				if ( img != null ) {
-					
-					/*
-					 * Major hack. Should not be performed here, but the  
-					 * class check will at least prevent the Link button 
-					 * from being enabled when a Function is selected.
-					 */
-					if ( !CSSUtil.hasClassName ( img, VisualEditorBinding.FUNCTION_CLASSNAME )) {
-						result = true;
-					} 
-				}
-			 }
+	try {
+	
+		if ( !Client.isExplorer) {
+		 	var selection = this.getEditorWindow ().getSelection ();
+			if ( selection != null ) {
+				 result = selection.toString ().length > 0;
+				 if ( !result ) {
+					var range = selection.getRangeAt ( 0 );
+					var frag = range.cloneContents ();
+					var element = this.getEditorDocument ().createElement ( "element" );
+					while ( frag.hasChildNodes ()) {
+						element.appendChild ( frag.firstChild );
+					}
+					var img = element.getElementsByTagName ( "img" ).item ( 0 );
+					if ( img != null ) {
+						
+						/*
+						 * Major hack. Should not be performed here, but the  
+						 * class check will at least prevent the Link button 
+						 * from being enabled when a Function is selected.
+						 */
+						if ( !CSSUtil.hasClassName ( img, VisualEditorBinding.FUNCTION_CLASSNAME )) {
+							result = true;
+						} 
+					}
+				 }
+			}
+		} else {
+			var range = this.getEditorDocument ().selection.createRange ();
+			result = ( range && range.text ) && range.text.length > 0;
 		}
-	} else {
-		var range = this.getEditorDocument ().selection.createRange ();
-		result = ( range && range.text ) && range.text.length > 0;
+		
+	} catch ( exception ) {
+		// may happen in WebKit when inserting eg. a table from the Insert>Table dialog
 	}
 	return result;
 }
