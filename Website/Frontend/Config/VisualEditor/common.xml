@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <visualeditor>
+
+	<!-- stylesheets to import -->
 	<styles>
 		<style file="styles/common.css"/>
 	</styles>
@@ -20,7 +22,14 @@
 				image=""
 				notes=""  
 				inline="strong">
+					<!-- 
+						Add button: you can overwrite the 
+						label, image and notes attributes  
+					-->
 					<button image="Images/bold.png" label=""/>
+					<!-- 
+						you can also add a "select" element!
+					-->
 			</format>
 			<format 
 				id="italic" 
@@ -110,4 +119,5 @@
 				</format>
 		</radiogroup>
 	</formats>
+	
 </visualeditor>

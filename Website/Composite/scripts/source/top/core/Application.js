@@ -362,13 +362,20 @@ _Application.prototype = {
 		PageService					= WebServiceProxy.createProxy ( Constants.URL_WSDL_PAGESERVICE );
 		
 		ProgressBarBinding.notch ( 4 );
-
+		
 		/*
 		 * WebKit needs a short break here...
 		 */
-		setTimeout ( function () {
+		function next () {
 			EventBroadcaster.broadcast ( BroadcastMessages.APPLICATION_LOGIN );
-		}, 0 );
+		}
+		if ( Client.isWebKit ) {
+			setTimeout ( function () {
+				next ();
+			}, 0 );
+		} else {
+			next ();
+		}
 	},
 	
 	/**

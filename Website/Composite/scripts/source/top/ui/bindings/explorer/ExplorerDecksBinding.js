@@ -65,11 +65,18 @@ ExplorerDecksBinding.prototype.mountDefinition = function ( definition ) {
 		deckBinding.add ( viewBinding );
 		this.add ( deckBinding );
 		
-		// attach - WebKit needs a short break here...
-		setTimeout ( function () {
+		//  attach - WebKit needs a short break here...
+		function attach () {
 			deckBinding.attach ();
 			viewBinding.attach ();
-		}, 0 );
+		}
+		if ( Client.isWebKit ) {
+			setTimeout ( function () {
+				attach ();
+			}, 0 );
+		} else {
+			attach ();
+		}
 	}
 }
 
