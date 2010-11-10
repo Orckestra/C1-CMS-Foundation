@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using Composite.Core.IO;
 
@@ -7,13 +8,13 @@ namespace Composite.Core.Xml
 {
     internal static class UriResolver
     {
-        public static System.IO.Stream GetStream(string inputUri)
+        public static Stream GetStream(string inputUri)
         {
             Uri resolvedUri = ResolveUri(inputUri);
 
             if (resolvedUri.Scheme == "file")
             {
-                return new FileStream(resolvedUri.LocalPath, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read);
+                return new C1FileStream(resolvedUri.LocalPath, FileMode.Open, FileAccess.Read, FileShare.Read);
             }
             else
             {

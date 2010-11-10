@@ -5,6 +5,7 @@ using System.Web;
 using System.Xml.Linq;
 using System.Drawing;
 using System.Xml;
+using System.IO;
 using System.Text;
 using Composite.Functions;
 using Composite.C1Console.Drawing;
@@ -33,7 +34,7 @@ public class YellowBox : IHttpHandler
             context.Response.ContentType = "image/png";
 
             Bitmap boxBitmap = imageCreator.CreateBitmap();
-            Composite.Core.IO.MemoryStream ms = new Composite.Core.IO.MemoryStream();
+            MemoryStream ms = new MemoryStream();
             boxBitmap.Save(ms, ImageFormat.Png);
 
             ms.WriteTo(context.Response.OutputStream);

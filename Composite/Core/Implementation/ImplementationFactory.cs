@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using Composite.Data;
+using System.IO;
 
 
 namespace Composite.Core.Implementation
@@ -35,7 +36,7 @@ namespace Composite.Core.Implementation
             {
                 return new DataConnectionImplementation();
             }
-        }
+        }        
 
 
 
@@ -129,6 +130,40 @@ namespace Composite.Core.Implementation
             }
 
             return localeToUse;
-        }        
+        }
+
+
+        #region IO
+
+        public virtual C1DirectoryImplementation StatelessC1Directory
+        {
+            get
+            {
+                return new C1DirectoryImplementation();
+            }
+        }
+
+        
+
+        public virtual C1FileStreamImplementation CreateC1FileStream(string path, FileMode mode )
+        {
+            return new C1FileStreamImplementation(path, mode, (mode == System.IO.FileMode.Append) ? System.IO.FileAccess.Write : System.IO.FileAccess.ReadWrite, FileShare.Read);
+        }
+
+
+
+        public virtual C1FileStreamImplementation CreateC1FileStream(string path, FileMode mode, FileAccess access)
+        {
+            return new C1FileStreamImplementation(path, mode, access, FileShare.Read);
+        }
+
+
+
+        public virtual C1FileStreamImplementation CreateC1FileStream(string path, FileMode mode, FileAccess access, FileShare share)
+        {
+            return new C1FileStreamImplementation(path, mode, access, share);
+        }
+
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.IO;
@@ -20,7 +21,7 @@ namespace Composite.Core.Xml
         {
             XElement element;
 
-            using (System.IO.Stream stream = UriResolver.GetStream(inputUri))
+            using (Stream stream = UriResolver.GetStream(inputUri))
             {
                 element = XElement.Load(stream);
             }
@@ -35,7 +36,7 @@ namespace Composite.Core.Xml
         /// </summary>
         public static void SaveToPath(this XElement element, string fileName)
         {
-            using (FileStream stream = new FileStream(fileName, System.IO.FileMode.Create, System.IO.FileAccess.Write))
+            using (C1FileStream stream = new C1FileStream(fileName, FileMode.Create, FileAccess.Write))
             {                
                 element.Save(stream);
             }
@@ -84,6 +85,5 @@ namespace Composite.Core.Xml
                 return valueAttribute.Value;
             }
         }
-
     }
 }

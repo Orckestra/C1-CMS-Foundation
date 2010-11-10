@@ -149,7 +149,6 @@
     <Compile Include="Core\Log.cs" />
     <Compile Include="Core\IO\Directory.cs" />
     <Compile Include="Core\IO\File.cs" />
-    <Compile Include="Core\IO\FileStream.cs" />
     <Compile Include="Core\IO\FileSystemWatcher.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -460,14 +460,14 @@
     </Content>
     <Content Include="Composite\scripts\source\top\core\Dialog.js" />
     <Content Include="Composite\scripts\source\top\core\ViewDefinitions.js" />
-    <Content Include="Composite\services\Installation\InstallationService.asmx" />
-    <Content Include="Composite\services\Setup\SetupService.asmx" />
     <Content Include="Composite\skins\dynamicskin.css" />
     <Content Include="Composite\templates\sourcecodeeditor\csharp.txt" />
     <Content Include="Composite\templates\sourcecodeeditor\js.txt" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Compile Include="Composite\services\Installation\InstallationService.asmx" />
+    <Compile Include="Composite\services\Setup\SetupService.asmx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="default.aspx" />
@@ -4924,24 +4924,8 @@
     <Content Include="Composite\schemas\default.aspx" />
     <Content Include="Composite\CompileScripts.xml" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\editors\FunctionEditorDataBinding.js" />
-    <Content Include="Composite\services\Configuration\ConfigurationService.asmx" />
-    <Content Include="Composite\services\ConsoleMessageQueue\ConsoleMessageQueueServices.asmx" />
-    <Content Include="Composite\services\FlowController\FlowControllerServices.asmx" />
-    <Content Include="Composite\services\Localization\LocalizationService.asmx" />
-    <Content Include="Composite\services\Login\Login.asmx" />
     <Content Include="Composite\services\LogService\LogService.svc" />
-    <Content Include="Composite\services\Page\PageService.asmx" />
-    <Content Include="Composite\services\Ready\ReadyService.asmx" />
-    <Content Include="Composite\services\SearchEngineOptimizationKeyword\SearchEngineOptimizationKeyword.asmx" />
-    <Content Include="Composite\services\SourceEditor\MarkupFormatService.asmx" />
-    <Content Include="Composite\services\SourceEditor\SourceValidationService.asmx" />
-    <Content Include="Composite\services\StringResource\DiffService.asmx" />
-    <Content Include="Composite\services\StringResource\StringService.asmx" />
-    <Content Include="Composite\services\Tree\SecurityServices.asmx" />
-    <Content Include="Composite\services\Tree\TreeServices.asmx" />
-    <Content Include="Composite\services\WysiwygEditor\ConfigurationServices.asmx" />
     <Content Include="Composite\services\WysiwygEditor\ControlConfiguration.xsl" />
-    <Content Include="Composite\services\WysiwygEditor\XhtmlTransformations.asmx" />
     <Content Include="Composite\skins\skin.css" />
     <Content Include="Composite\skins\system\balloons.css" />
     <Content Include="Composite\skins\system\balloons\balloon-e.png" />
@@ -5541,6 +5525,22 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Renderers\Captcha.ashx" />
+    <Compile Include="Composite\services\Configuration\ConfigurationService.asmx" />
+    <Compile Include="Composite\services\ConsoleMessageQueue\ConsoleMessageQueueServices.asmx" />
+    <Compile Include="Composite\services\FlowController\FlowControllerServices.asmx" />
+    <Compile Include="Composite\services\Localization\LocalizationService.asmx" />
+    <Compile Include="Composite\services\Login\Login.asmx" />
+    <Compile Include="Composite\services\Page\PageService.asmx" />
+    <Compile Include="Composite\services\Ready\ReadyService.asmx" />
+    <Compile Include="Composite\services\SearchEngineOptimizationKeyword\SearchEngineOptimizationKeyword.asmx" />
+    <Compile Include="Composite\services\SourceEditor\MarkupFormatService.asmx" />
+    <Compile Include="Composite\services\SourceEditor\SourceValidationService.asmx" />
+    <Compile Include="Composite\services\StringResource\DiffService.asmx" />
+    <Compile Include="Composite\services\StringResource\StringService.asmx" />
+    <Compile Include="Composite\services\Tree\SecurityServices.asmx" />
+    <Compile Include="Composite\services\Tree\TreeServices.asmx" />
+    <Compile Include="Composite\services\WysiwygEditor\ConfigurationServices.asmx" />
+    <Compile Include="Composite\services\WysiwygEditor\XhtmlTransformations.asmx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Composite.Workflows\Composite.Workflows.csproj">

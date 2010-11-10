@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.IO;
+using System.Xml;
 using Composite.Core.IO;
 
 
@@ -12,7 +13,7 @@ namespace Composite.Core.Xml
     {
         public static void Load(XmlDocument document, string filename)
         {
-            using (var stream = new FileStream(filename, System.IO.FileMode.Open))
+            using (Stream stream = new C1FileStream(filename, FileMode.Open))
             {
                 document.Load(stream);
             }
@@ -22,7 +23,7 @@ namespace Composite.Core.Xml
 
         public static void Save(XmlDocument document, string filename)
         {
-            using (var stream = new FileStream(filename, System.IO.FileMode.Create, System.IO.FileAccess.Write, System.IO.FileShare.Read))
+            using (Stream stream = new C1FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.Read))
             {
                 document.Save(stream);
             }

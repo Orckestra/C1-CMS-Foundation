@@ -9,6 +9,7 @@ using System.Workflow.Runtime.Hosting;
 using Composite.Core.IO;
 using Composite.Core.Logging;
 using Composite.Core.Types;
+using System.IO;
 
 
 namespace Composite.C1Console.Workflow
@@ -38,9 +39,9 @@ namespace Composite.C1Console.Workflow
 
         public IEnumerable<Guid> GetPersistedWorkflows()
         {
-            foreach (string filePath in Directory.GetFiles(_baseDirectory, "*.bin"))
+            foreach (string filePath in C1Directory.GetFiles(_baseDirectory, "*.bin"))
             {                
-                string guidString = System.IO.Path.GetFileNameWithoutExtension(filePath);
+                string guidString = Path.GetFileNameWithoutExtension(filePath);
 
                 Guid guid = Guid.Empty;
                 try
@@ -62,11 +63,11 @@ namespace Composite.C1Console.Workflow
         {
             string filename = GetFileName(instanceId);
 
-            if (File.Exists(filename) == true)
+            if (Composite.Core.IO.File.Exists(filename) == true)
             {
                 try
                 {
-                    File.Delete(filename);
+                    Composite.Core.IO.File.Delete(filename);
 
                     LoggingService.LogVerbose("FileWorkFlowPersisetenceService", string.Format("Workflow persisted state deleted. Id = {0}", instanceId));
                 }
@@ -101,7 +102,7 @@ namespace Composite.C1Console.Workflow
                 string filename = GetFileName(instanceId);
                 LoggingService.LogCritical(LogTitle, ex);
                 LoggingService.LogWarning(LogTitle, string.Format("Failed to load workflow with id '{0}'. Deleting file.", filename));
-                File.Delete(filename);
+                Composite.Core.IO.File.Delete(filename);
 
                 MarkWorkflowAsAborted(instanceId);
                 return null;
@@ -164,7 +165,7 @@ namespace Composite.C1Console.Workflow
             IFormatter formatter = new BinaryFormatter();
             formatter.SurrogateSelector = ActivitySurrogateSelector.Default;
 
-            using (FileStream stream = new FileStream(filename, System.IO.FileMode.OpenOrCreate))
+            using (C1FileStream stream = new C1FileStream(filename, FileMode.OpenOrCreate))
             {
                 rootActivity.Save(stream, formatter);
                 stream.Close();
@@ -183,7 +184,7 @@ namespace Composite.C1Console.Workflow
             IFormatter formatter = new BinaryFormatter();
             formatter.SurrogateSelector = ActivitySurrogateSelector.Default;
 
-            using (FileStream stream = new FileStream(filename, System.IO.FileMode.Open))
+            using (C1FileStream stream = new C1FileStream(filename, FileMode.Open))
             {
                 result = Activity.Load(stream, rootActivity, formatter);
                 stream.Close();
@@ -207,7 +208,7 @@ namespace Composite.C1Console.Workflow
 
         private string GetFileName(Guid id)
         {
-            return System.IO.Path.Combine(this._baseDirectory, id.ToString() + ".bin");
+            return Path.Combine(this._baseDirectory, id.ToString() + ".bin");
         }
     }
 }

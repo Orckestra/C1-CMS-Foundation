@@ -13,7 +13,7 @@ using System.Xml.Linq;
 /// <summary>
 /// Summary description for postbackfun
 /// </summary>
-public partial class dmitryfun : Composite.WebClient.XhtmlPage
+public partial class dmitryfun : Composite.Core.WebClient.XhtmlPage
 {
 
 	private void Page_Load(object sender, EventArgs args)
@@ -22,13 +22,13 @@ public partial class dmitryfun : Composite.WebClient.XhtmlPage
 		 * This will force the NET mumbojumbo to appear in  
 		 * the output: __doPostback and related hidden fields.
 		 */
-		this.GetPostBackEventReference ( this, string.Empty );
+//		this.GetPostBackEventReference ( this, string.Empty );
 	}
 
     public void UpdaterButton_Click(object sender, EventArgs args)
     {
-		Response.Cache.SetNoStore();
+	/*	Response.Cache.SetNoStore();
         this.fakedUpdatePanel_OFF.Visible = !this.fakedUpdatePanel_OFF.Visible;
-        this.fakedUpdatePanel_ON.Visible = !this.fakedUpdatePanel_ON.Visible;
+        this.fakedUpdatePanel_ON.Visible = !this.fakedUpdatePanel_ON.Visible;*/
     }
 }

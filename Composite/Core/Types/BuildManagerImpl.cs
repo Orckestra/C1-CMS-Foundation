@@ -262,7 +262,7 @@ namespace Composite.Core.Types
                     string sourceBaseFilename = CreatedFilenameParser.CreateFilename(buildManagerCompileUnit, "cs");
                     sourceFilename = System.IO.Path.Combine(_tempAssemblyDirectory, sourceBaseFilename);
 
-                    using (FileStream file = File.Create(sourceFilename))
+                    using (C1FileStream file = Composite.Core.IO.File.Create(sourceFilename))
                     {
                         using (var sw = new StreamWriter(file))
                         {
@@ -559,7 +559,7 @@ namespace Composite.Core.Types
 
             try
             {
-                using (FileStream file = File.Create(tempCsFilePath))
+                using (C1FileStream file = Composite.Core.IO.File.Create(tempCsFilePath))
                 {
                     using (var sw = new StreamWriter(file))
                     {

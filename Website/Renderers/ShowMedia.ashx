@@ -30,7 +30,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
     private static string _resizedImageKeysFilePath;
 
     private static readonly TimeSpan CacheExpirationTimeSpan = new TimeSpan(1, 0, 0, 0);
-
+    
 
     public void ProcessRequest(HttpContext context)
     {
@@ -284,7 +284,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
         try
         {
-            return new FileStream(resizedImageFilePath, System.IO.FileMode.OpenOrCreate, System.IO.FileAccess.Read);
+            return new C1FileStream(resizedImageFilePath, System.IO.FileMode.OpenOrCreate, System.IO.FileAccess.Read);
         }
         catch (Exception ex)
         {

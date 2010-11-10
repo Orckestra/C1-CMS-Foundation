@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Xml.Linq;
 using Composite.Core.IO;
 
@@ -19,7 +20,7 @@ namespace Composite.Core.Xml
         {
             XDocument document;
 
-            using (System.IO.Stream stream = UriResolver.GetStream(inputUri))
+            using (Stream stream = UriResolver.GetStream(inputUri))
             {
                 document = XDocument.Load(stream);
             }
@@ -34,7 +35,7 @@ namespace Composite.Core.Xml
         /// </summary>
         public static void Save(XDocument document, string filename)
         {
-            using (FileStream stream = new FileStream(filename, System.IO.FileMode.Create, System.IO.FileAccess.Write, System.IO.FileShare.Read))
+            using (C1FileStream stream = new C1FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.Read))
             {
                 document.Save(stream);
             }
@@ -46,16 +47,15 @@ namespace Composite.Core.Xml
         {
             if (document == null) throw new ArgumentNullException("document");
 
-            using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
+            using (MemoryStream ms = new MemoryStream())
             {
-                using (StreamWriter sw = new StreamWriter(ms))
+                using (Composite.Core.IO.StreamWriter sw = new Composite.Core.IO.StreamWriter(ms))
                 {
                     document.Save(sw);
 
+                    ms.Seek(0, SeekOrigin.Begin);
 
-                    ms.Seek(0, System.IO.SeekOrigin.Begin);
-
-                    using (StreamReader sr = new StreamReader(ms))
+                    using (Composite.Core.IO.StreamReader sr = new Composite.Core.IO.StreamReader(ms))
                     {
                         return sr.ReadToEnd();
                     }

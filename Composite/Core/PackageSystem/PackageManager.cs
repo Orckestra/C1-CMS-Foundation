@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.C1Console.Security;
@@ -24,16 +25,16 @@ namespace Composite.Core.PackageSystem
         {
             string baseDirectory = PathUtil.Resolve(GlobalSettingsFacade.PackageDirectory);
 
-            if (Directory.Exists(baseDirectory) == false) yield break;
+            if (C1Directory.Exists(baseDirectory) == false) yield break;
 
-            string[] packageDirectories = Directory.GetDirectories(baseDirectory);
+            string[] packageDirectories = C1Directory.GetDirectories(baseDirectory);
             foreach (string packageDirecoty in packageDirectories)
             {
-                if (File.Exists(System.IO.Path.Combine(packageDirecoty, PackageSystemSettings.InstalledFilename)) == true)
+                if (Composite.Core.IO.File.Exists(Path.Combine(packageDirecoty, PackageSystemSettings.InstalledFilename)) == true)
                 {
-                    string filename = System.IO.Path.Combine(packageDirecoty, PackageSystemSettings.PackageInformationFilename);
+                    string filename = Path.Combine(packageDirecoty, PackageSystemSettings.PackageInformationFilename);
 
-                    if (File.Exists(filename) == true)
+                    if (Composite.Core.IO.File.Exists(filename) == true)
                     {
                         XDocument doc = XDocumentUtils.Load(filename);
 
@@ -94,7 +95,7 @@ namespace Composite.Core.PackageSystem
                 else
                 {
                     // Make this cleanup in an other way, it works correctly if it is done between validation and installation.
-                    //LoggingService.LogVerbose("PackageManager", string.Format("Uncomlete installed add on found ('{0}'), deleting it", System.IO.Path.GetFileName(packageDirecoty)));
+                    //LoggingService.LogVerbose("PackageManager", string.Format("Uncomlete installed add on found ('{0}'), deleting it", Path.GetFileName(packageDirecoty)));
                     //try
                     //{
                     //    Directory.Delete(packageDirecoty, true);
@@ -140,7 +141,7 @@ namespace Composite.Core.PackageSystem
 
 
 
-        public static PackageManagerInstallProcess Install(System.IO.Stream zipFileStream, bool isLocalInstall)
+        public static PackageManagerInstallProcess Install(Stream zipFileStream, bool isLocalInstall)
         {
             if (isLocalInstall == false) throw new ArgumentException("Non local install needs a packageServerAddress");
 
@@ -149,7 +150,7 @@ namespace Composite.Core.PackageSystem
 
 
 
-        public static PackageManagerInstallProcess Install(System.IO.Stream zipFileStream, bool isLocalInstall, string packageServerAddress)
+        public static PackageManagerInstallProcess Install(Stream zipFileStream, bool isLocalInstall, string packageServerAddress)
         {
             if ((isLocalInstall == false) && (string.IsNullOrEmpty(packageServerAddress) == true)) throw new ArgumentException("Non local install needs a packageServerAddress");
 
@@ -186,10 +187,10 @@ namespace Composite.Core.PackageSystem
                 }
 
                 string packageInstallDirectory = CreatePackageDirectoryName(packageInformation);
-                Directory.CreateDirectory(packageInstallDirectory);
+                C1Directory.CreateDirectory(packageInstallDirectory);
 
-                string packageZipFilename = System.IO.Path.Combine(packageInstallDirectory, System.IO.Path.GetFileName(zipFilename));
-                File.Copy(zipFilename, packageZipFilename, true);
+                string packageZipFilename = Path.Combine(packageInstallDirectory, Path.GetFileName(zipFilename));
+                Composite.Core.IO.File.Copy(zipFilename, packageZipFilename, true);
 
                 string username = "Composite";
                 if (UserValidationFacade.IsLoggedIn() == true)
@@ -218,7 +219,7 @@ namespace Composite.Core.PackageSystem
                     packageInfoElement.Add(new XAttribute(PackageSystemSettings.PackageInfo_PackageServerAddressAttributeName, packageServerAddress));
                 }
 
-                string infoFilename = System.IO.Path.Combine(packageInstallDirectory, PackageSystemSettings.PackageInformationFilename);              
+                string infoFilename = Path.Combine(packageInstallDirectory, PackageSystemSettings.PackageInformationFilename);              
                 XDocumentUtils.Save(doc, infoFilename);
 
                 PackageInstaller packageInstaller = new PackageInstaller(new PackageInstallerUninstallerFactory(), packageZipFilename, packageInstallDirectory, TempDirectoryFacade.CreateTempDirectory(), packageInformation);
@@ -238,7 +239,7 @@ namespace Composite.Core.PackageSystem
         {
             try
             {
-                string absolutePath = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PackageDirectory), id.ToString());
+                string absolutePath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PackageDirectory), id.ToString());
 
                 InstalledPackageInformation installedPackageInformation =
                     (from addon in GetInstalledPackages()
@@ -251,11 +252,11 @@ namespace Composite.Core.PackageSystem
 
                 if (installedPackageInformation.CanBeUninstalled == false) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.Uninstallable")) });
 
-                string zipFilePath = System.IO.Path.Combine(absolutePath, PackageSystemSettings.ZipFilename);
-                if (File.Exists(zipFilePath) == false) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingZipFile"), zipFilePath)) });
+                string zipFilePath = Path.Combine(absolutePath, PackageSystemSettings.ZipFilename);
+                if (Composite.Core.IO.File.Exists(zipFilePath) == false) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingZipFile"), zipFilePath)) });
 
-                string uninstallFilePath = System.IO.Path.Combine(absolutePath, PackageSystemSettings.UninstallFilename);
-                if (File.Exists(uninstallFilePath) == false) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingUninstallFile"), uninstallFilePath)) });
+                string uninstallFilePath = Path.Combine(absolutePath, PackageSystemSettings.UninstallFilename);
+                if (Composite.Core.IO.File.Exists(uninstallFilePath) == false) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingUninstallFile"), uninstallFilePath)) });
 
                 PackageUninstaller packageUninstaller = new PackageUninstaller(zipFilePath, uninstallFilePath, absolutePath, TempDirectoryFacade.CreateTempDirectory(), installedPackageInformation.FlushOnCompletion, installedPackageInformation.ReloadConsoleOnCompletion, true);
 
@@ -365,27 +366,27 @@ namespace Composite.Core.PackageSystem
 
 
 
-        private static PackageFragmentValidationResult SaveZipFile(System.IO.Stream zipFileStream, out string zipFilename)
+        private static PackageFragmentValidationResult SaveZipFile(Stream zipFileStream, out string zipFilename)
         {
             zipFilename = null;
 
             try
             {
-                zipFilename = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PackageDirectory), PackageSystemSettings.ZipFilename);
+                zipFilename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PackageDirectory), PackageSystemSettings.ZipFilename);
 
-                if (File.Exists(zipFilename) == true)
+                if (Composite.Core.IO.File.Exists(zipFilename) == true)
                 {
-                    File.Delete(zipFilename);
+                    Composite.Core.IO.File.Delete(zipFilename);
                 }
 
-                if (Directory.Exists(System.IO.Path.GetDirectoryName(zipFilename)) == false)
+                if (C1Directory.Exists(Path.GetDirectoryName(zipFilename)) == false)
                 {
-                    Directory.CreateDirectory(System.IO.Path.GetDirectoryName(zipFilename));
+                    C1Directory.CreateDirectory(Path.GetDirectoryName(zipFilename));
                 }
 
-                using (System.IO.Stream readStream = zipFileStream)
+                using (Stream readStream = zipFileStream)
                 {
-                    using (FileStream fileStream = new FileStream(zipFilename, System.IO.FileMode.Create))
+                    using (C1FileStream fileStream = new C1FileStream(zipFilename, FileMode.Create))
                     {
                         byte[] buffer = new byte[4096];
 
@@ -411,7 +412,7 @@ namespace Composite.Core.PackageSystem
         {
             string direcotryName = string.Format("{0}", packageInformation.Id);
 
-            return System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PackageDirectory), direcotryName);
+            return Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PackageDirectory), direcotryName);
         }
     }
 }

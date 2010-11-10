@@ -57,9 +57,9 @@ namespace Composite.Core.IO
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
-        public static FileStream Create(string path)
+        public static C1FileStream Create(string path)
         {
-            return new FileStream(System.IO.File.Create(path)); 
+            return new C1FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite, System.IO.FileShare.None);
         }
         
         //[SecuritySafeCritical, TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
@@ -149,36 +149,36 @@ namespace Composite.Core.IO
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
-        public static FileStream Open(string path, System.IO.FileMode mode)
+        public static C1FileStream Open(string path, System.IO.FileMode mode)
         {
-            return new FileStream(System.IO.File.Open(path, mode)); 
+            return new C1FileStream(path, mode); 
         }
         
         //[SecuritySafeCritical, TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
-        public static FileStream Open(string path, System.IO.FileMode mode, System.IO.FileAccess access)
+        public static C1FileStream Open(string path, System.IO.FileMode mode, System.IO.FileAccess access)
         { 
-            return new FileStream(System.IO.File.Open(path, mode, access));
+            return new C1FileStream(path, mode, access);
         }
         
         //[SecuritySafeCritical]
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
-        public static FileStream Open(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share)
+        public static C1FileStream Open(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share)
         { 
-            return new FileStream(System.IO.File.Open(path, mode, access, share)); 
+            return new C1FileStream(path, mode, access, share); 
         }
         
         //[SecuritySafeCritical]
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The implementation may use it")]
-        public static FileStream OpenRead(string path)
+        public static C1FileStream OpenRead(string path)
         {
-            return new FileStream(System.IO.File.OpenRead(path));    
+            return new C1FileStream(path, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read);
         }
         
         //[SecuritySafeCritical]

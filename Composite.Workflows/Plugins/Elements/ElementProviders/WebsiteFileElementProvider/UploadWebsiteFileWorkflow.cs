@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Workflow.Activities;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Elements;
@@ -54,7 +55,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             {
                 string currentPath = GetCurrentPath();
 
-                e.Result = Directory.GetFiles(currentPath, file.FileName).Length > 0;
+                e.Result = C1Directory.GetFiles(currentPath, file.FileName).Length > 0;
             }
             else
             {
@@ -84,12 +85,12 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
                 string fullFilename = System.IO.Path.Combine(currentPath, filename);
 
-                if (File.Exists(fullFilename) == true)
+                if (Composite.Core.IO.File.Exists(fullFilename) == true)
                 {
                     FileEx.Delete(fullFilename);
                 }
 
-                using (FileStream fs = new FileStream(fullFilename, System.IO.FileMode.CreateNew))
+                using (C1FileStream fs = new C1FileStream(fullFilename, FileMode.CreateNew))
                 {
                     uploadedFile.FileStream.CopyTo(fs);
                 }

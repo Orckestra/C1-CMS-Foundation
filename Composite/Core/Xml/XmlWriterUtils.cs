@@ -1,5 +1,6 @@
 ﻿using System.Xml;
 using Composite.Core.IO;
+using System.IO;
 
 
 namespace Composite.Core.Xml
@@ -15,7 +16,7 @@ namespace Composite.Core.Xml
         /// </summary>
         public static XmlWriter Create(string path)
         {
-            System.IO.Stream stream = new FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.Write, System.IO.FileShare.Read);
+            Stream stream = new C1FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read);
 
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.CloseOutput = true;
@@ -30,7 +31,7 @@ namespace Composite.Core.Xml
         /// </summary>
         public static XmlWriter Create(string path, XmlWriterSettings settings)
         {
-            System.IO.Stream stream = new FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.Write, System.IO.FileShare.Read);
+            Stream stream = new C1FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read);
 
             settings.CloseOutput = true;
 

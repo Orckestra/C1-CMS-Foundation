@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<%@ Page Inherits="dmitryfun" Language="C#" AutoEventWireup="true" EnableEventValidation="true" ValidateRequest="true" CodeFile="dmitryfun.aspx.cs" %> <%@ Register TagPrefix="aspui" Namespace="Composite.WebClient.UiControlLib" Assembly="Composite" %>
+<%@ Page Inherits="dmitryfun" Language="C#" AutoEventWireup="true" EnableEventValidation="true" ValidateRequest="true" CodeFile="dmitryfun.aspx.cs" %> <%@ Register TagPrefix="aspui" Namespace="Composite.Core.WebClient.UiControlLib" Assembly="Composite" %>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml" xmlns:control="http://www.composite.net/ns/uicontrol">
 	<control:httpheaders ID="Httpheaders1" runat="server" />
 	<head runat="server">
