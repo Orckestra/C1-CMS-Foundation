@@ -107,20 +107,20 @@ namespace Composite.Core.WebClient.WCF
 
                 string mappedDirectory = httpContext.Server.MapPath(newRelativeFolderUrl);
 
-                if (!Directory.Exists(mappedDirectory))
+                if (!C1Directory.Exists(mappedDirectory))
                 {
-                    Directory.CreateDirectory(mappedDirectory);
+                    C1Directory.CreateDirectory(mappedDirectory);
                 }
 
                 // Copying service file
                 string sourcePhysicalFile = basePath + "\\" + _serviceFileName;
                 string mappedPhysicalFile = mappedDirectory + "\\" + _serviceFileName;
 
-                if ((RuntimeInformation.IsDebugBuild == false) || (File.Exists(mappedPhysicalFile) == false))
+                if ((RuntimeInformation.IsDebugBuild == false) || (C1File.Exists(mappedPhysicalFile) == false))
                 {
                     try
                     {
-                        File.Copy(sourcePhysicalFile, mappedPhysicalFile, true);
+                        C1File.Copy(sourcePhysicalFile, mappedPhysicalFile, true);
                     }
                     catch (UnauthorizedAccessException)
                     {

@@ -79,7 +79,7 @@ namespace Composite.C1Console.Trees.Workflows
                     _dataTypeDescriptorFormsHelper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor, true, this.EntityToken);
                     if (string.IsNullOrEmpty(_genericAddDataActionNode.CustomFormMarkupPath) == false)
                     {
-                        _dataTypeDescriptorFormsHelper.AlternateFormDefinition = File.ReadAllText(_genericAddDataActionNode.CustomFormMarkupPath);
+                        _dataTypeDescriptorFormsHelper.AlternateFormDefinition = C1File.ReadAllText(_genericAddDataActionNode.CustomFormMarkupPath);
                     }
                     _dataTypeDescriptorFormsHelper.LayoutIconHandle = _genericAddDataActionNode.Icon.ResourceName;
                     _dataTypeDescriptorFormsHelper.AddReadOnlyFields(generatedTypesHelper.NotEditableDataFieldDescriptorNames);

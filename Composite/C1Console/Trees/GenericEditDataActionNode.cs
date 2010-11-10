@@ -42,7 +42,7 @@ namespace Composite.C1Console.Trees
                 try
                 {
                     string path = PathUtil.Resolve(this.CustomFormMarkupPath);
-                    if (File.Exists(path) == false)
+                    if (C1File.Exists(path) == false)
                     {
                         AddValidationError("TreeValidationError.GenericEditDataAction.MissingMarkupFile", path);
                     }

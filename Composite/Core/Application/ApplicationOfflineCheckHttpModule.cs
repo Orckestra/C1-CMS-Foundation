@@ -50,7 +50,7 @@ namespace Composite.Core.Application
                 Verify.That(!filePath.IsNullOrEmpty(), "Path to 'app_offline.html' has not been set");
                 try
                 {
-                    _responceHtml = File.ReadAllText(filePath);
+                    _responceHtml = C1File.ReadAllText(filePath);
                 }
                 catch(Exception e)
                 {

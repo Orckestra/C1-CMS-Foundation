@@ -32,7 +32,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
             string filePath = baseFile.SystemPath;
             try
             {
-                File.Delete(filePath);
+                C1File.Delete(filePath);
             }
             catch
             {

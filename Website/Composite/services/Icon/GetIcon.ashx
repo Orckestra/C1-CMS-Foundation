@@ -58,13 +58,13 @@ public class GetIcon : IHttpHandler
 
     private void EnsureLocalFile(string iconFilePath, ResourceHandle resourceHandle, IconSize iconSize)
     {
-        bool fileExist = File.Exists(iconFilePath);
+        bool fileExist = C1File.Exists(iconFilePath);
 
         DateTime lastWriteTime = DateTime.MinValue;
 
         if (fileExist)
         {
-            lastWriteTime = File.GetLastWriteTime(iconFilePath);
+            lastWriteTime = C1File.GetLastWriteTime(iconFilePath);
         }
 
         if (fileExist && (DateTime.Now - lastWriteTime).Minutes < GlobalSettingsFacade.ResourceCacheSettings.ServerCacheMinutes)
@@ -76,9 +76,9 @@ public class GetIcon : IHttpHandler
         try
         {
             // Checking if a file was created/updated by another thread
-            if (!fileExist && File.Exists(iconFilePath)) return;
+            if (!fileExist && C1File.Exists(iconFilePath)) return;
 
-            if (fileExist && lastWriteTime != File.GetLastWriteTime(iconFilePath)) return;
+            if (fileExist && lastWriteTime != C1File.GetLastWriteTime(iconFilePath)) return;
 
 
             using (Bitmap sourceIcon = IconResourceSystemFacade.GetIcon(resourceHandle, iconSize))
@@ -157,9 +157,9 @@ public class GetIcon : IHttpHandler
             {
                 // ensure cache folder exists
                 string folderPath = context.Server.MapPath(GlobalSettingsFacade.ResourceCacheSettings.CachePath);
-                if (Directory.Exists(folderPath) == false)
+                if (C1Directory.Exists(folderPath) == false)
                 {
-                    Directory.CreateDirectory(folderPath);
+                    C1Directory.CreateDirectory(folderPath);
                 }
             }
 

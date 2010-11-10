@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 using Composite.Core.Logging;
 
@@ -11,7 +12,7 @@ namespace Composite.Core.IO
         /// </summary>
         public static void EnsurePath(string filePath)
         {
-            string directory = System.IO.Path.GetDirectoryName(filePath);
+            string directory = Path.GetDirectoryName(filePath);
 
             EnsureDirectoryExists(directory);
         }
@@ -21,21 +22,21 @@ namespace Composite.Core.IO
         /// </summary>
         public static void EnsureDirectoryExists(string directory)
         {
-            string[] directories = directory.Split(System.IO.Path.DirectorySeparatorChar);
+            string[] directories = directory.Split(Path.DirectorySeparatorChar);
 
             if (directories.Length == 2) return;
 
-            string currentPath = string.Format("{0}{1}", directories[0], System.IO.Path.DirectorySeparatorChar);
+            string currentPath = string.Format("{0}{1}", directories[0], Path.DirectorySeparatorChar);
 
             for (int i = 1; i < directories.Length; ++i)
             {
-                currentPath = string.Format("{0}{1}{2}", currentPath, directories[i], System.IO.Path.DirectorySeparatorChar);
+                currentPath = string.Format("{0}{1}{2}", currentPath, directories[i], Path.DirectorySeparatorChar);
 
                 if (currentPath.ToLower().StartsWith(PathUtil.BaseDirectory.ToLower())) // don't touch dirs outside our own folder!
                 {
-                    if (Directory.Exists(currentPath) == false)
+                    if (C1Directory.Exists(currentPath) == false)
                     {
-                        Directory.CreateDirectory(currentPath);
+                        C1Directory.CreateDirectory(currentPath);
                     }
                 }
             }
@@ -51,13 +52,13 @@ namespace Composite.Core.IO
         public static void DeleteFile(string path, bool deleteEmptyDirectoresRecursively)
         {
             LoggingService.LogVerbose("DirectoryUtil", string.Format("Deleting file '{0}'", path));
-            File.Delete(path);
+            C1File.Delete(path);
 
             if (deleteEmptyDirectoresRecursively == true)
             {
-                string directory = System.IO.Path.GetDirectoryName(path);
+                string directory = Path.GetDirectoryName(path);
 
-                string[] directories = directory.Split(System.IO.Path.DirectorySeparatorChar);
+                string[] directories = directory.Split(Path.DirectorySeparatorChar);
 
                 for (int i = directories.Length; i > 1; --i)
                 {
@@ -66,14 +67,14 @@ namespace Composite.Core.IO
                     for (int j = 0; j < i; ++j)
                     {
                         stringBuilder.Append(directories[j]);
-                        stringBuilder.Append(System.IO.Path.DirectorySeparatorChar);
+                        stringBuilder.Append(Path.DirectorySeparatorChar);
                     }
 
                     string currentPath = stringBuilder.ToString();
-                    if (Directory.GetFiles(currentPath).Length == 0)
+                    if (C1Directory.GetFiles(currentPath).Length == 0)
                     {
                         LoggingService.LogVerbose("DirectoryUtil", string.Format("Deleting directory '{0}'", currentPath));
-                        Directory.Delete(currentPath);
+                        C1Directory.Delete(currentPath);
                     }
                     else
                     {
@@ -91,12 +92,12 @@ namespace Composite.Core.IO
         /// <param name="directoryPath"></param>
         public static void DeleteFilesRecursively(string directoryPath)
         {
-            foreach (string file in Directory.GetFiles(directoryPath))
+            foreach (string file in C1Directory.GetFiles(directoryPath))
             {
-                File.Delete(file);
+                C1File.Delete(file);
             }
 
-            foreach (string directory in Directory.GetDirectories(directoryPath))
+            foreach (string directory in C1Directory.GetDirectories(directoryPath))
             {
                 DeleteFilesRecursively(directory);
             }

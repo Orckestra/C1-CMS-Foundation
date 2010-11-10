@@ -88,7 +88,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     if(DateTime.Now - fileRecord.LastModified < AcceptableNotificationDelay) return;
 
                     // Checking if the date has changed
-                    if(File.GetLastWriteTime(filePath) == fileRecord.FileModificationDate)
+                    if(C1File.GetLastWriteTime(filePath) == fileRecord.FileModificationDate)
                     {
                         return;
                     }
@@ -141,7 +141,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                             RecordSet = new RecordSet { /* Elements = elements,*/ Index = index},
                             ReadOnlyElementsList = new ReadOnlyList<XElement>(new List<XElement>(elements)),
                             LastModified = DateTime.Now,
-                            FileModificationDate = File.GetLastWriteTime(filename)
+                            FileModificationDate = C1File.GetLastWriteTime(filename)
                         };
 
                         EnsureFileChangesSubscription(filename);
@@ -205,7 +205,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             elements.ForEach(element => element.Remove());
 
             fileRecord.LastModified = DateTime.Now;
-            fileRecord.FileModificationDate = File.GetLastWriteTime(fileRecord.FileName);
+            fileRecord.FileModificationDate = C1File.GetLastWriteTime(fileRecord.FileName);
 
             // Atomic operation
             fileRecord.ReadOnlyElementsList = new ReadOnlyList<XElement>(new List<XElement>(elements));

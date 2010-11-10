@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -117,13 +118,13 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         private string[] GetDllFilesFromBin()
         {
             string binDirectory = PathUtil.Resolve(GlobalSettingsFacade.BinDirectory).ToLower().Replace('/', '\\');
-            return Directory.GetFiles(binDirectory, "*.dll");
+            return C1Directory.GetFiles(binDirectory, "*.dll");
         }
 
         private List<AssemblyInfo> GetCachedAssemblyInfo()
         {
             var result = new List<AssemblyInfo>();
-            if(!File.Exists(TempFilePath))
+            if (!C1File.Exists(TempFilePath))
             {
                 return result;
             }
@@ -131,12 +132,12 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             SubscribedTypesCache cached;
             try
             {
-                using(var fileStream = File.Open(TempFilePath, System.IO.FileMode.Open))
+                using (var fileStream = C1File.Open(TempFilePath, FileMode.Open))
                 {
                     cached = GetSerializer().Deserialize(fileStream) as SubscribedTypesCache;
                 }
             }
-            catch (System.IO.IOException)
+            catch (IOException)
             {
                 LoggingService.LogWarning(typeof(AttributeBasedApplicationStartupHandler).FullName, "Failed to open file '{0}'".FormatWith(TempFilePath));
                 return result;
@@ -169,13 +170,13 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
 
         private static Type[] GetSubscribedTypes(string filePath, List<AssemblyInfo> cachedTypesInfo, ref bool cacheHasBeenUpdated)
         {
-            string assemblyName = System.IO.Path.GetFileNameWithoutExtension(filePath);
+            string assemblyName = Path.GetFileNameWithoutExtension(filePath);
             if(assemblyName == "Composite.Generated")
             {
                 return null;
             }
 
-            DateTime modificationDate = File.GetLastWriteTime(filePath);
+            DateTime modificationDate = C1File.GetLastWriteTime(filePath);
 
             var cachedInfo = cachedTypesInfo.FirstOrDefault(asm => asm.AssemblyName == assemblyName);
             if (cachedInfo != null)
@@ -264,17 +265,17 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             {
                 if(root == null)
                 {
-                    File.Delete(TempFilePath);
+                    C1File.Delete(TempFilePath);
                 }
                 else
                 {
-                    if (!Directory.Exists(TempDirectoryPath))
+                    if (!C1Directory.Exists(TempDirectoryPath))
                     {
-                        Directory.CreateDirectory(TempDirectoryPath);
+                        C1Directory.CreateDirectory(TempDirectoryPath);
                     }
 
-                    using(var fileStream = File.Open(TempFilePath, System.IO.FileMode.Create))
-               //     using (var fileStream = System.IO.File.Open(TempFilePath, System.IO.FileMode.Create))
+                    using (var fileStream = C1File.Open(TempFilePath, FileMode.Create))
+               //     using (var fileStream = File.Open(TempFilePath, FileMode.Create))
                     {
                         GetSerializer().Serialize(fileStream, root);
                     }
@@ -343,7 +344,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             {
                 if (_tempFilePath == null)
                 {
-                    _tempFilePath = System.IO.Path.Combine(TempDirectoryPath, TempFileName);
+                    _tempFilePath = Path.Combine(TempDirectoryPath, TempFileName);
                 }
                 
                 return _tempFilePath;

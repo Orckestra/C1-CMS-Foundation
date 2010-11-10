@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.Collections.Generic;
@@ -39,7 +40,7 @@ namespace Composite.Plugins.ResourceSystem.XmlStringResourceProvider
                     if (_resourceLocker.Resources.CultureToFileLookup.TryGetValue(watchedCulture, out unresolvedFileName) == true)
                     {
                         string resolvedFileName = PathUtil.Resolve(unresolvedFileName);
-                        DateTime lastWrite = File.GetLastWriteTime(resolvedFileName);
+                        DateTime lastWrite = C1File.GetLastWriteTime(resolvedFileName);
 
                         _resourceLocker.Resources.CultureFileLastUpdated.Add(watchedCulture, lastWrite);
                     }
@@ -57,7 +58,7 @@ namespace Composite.Plugins.ResourceSystem.XmlStringResourceProvider
             {
                 stringDictionary = GetStringsForCulture(cultureInfo);
             }
-            catch (System.IO.FileNotFoundException ex)
+            catch (FileNotFoundException ex)
             {
                 return string.Format("*** FILE '{0}' NOT FOUND ***", ex.FileName);
             }
@@ -151,7 +152,7 @@ namespace Composite.Plugins.ResourceSystem.XmlStringResourceProvider
                     string unresolvedFileName = _resourceLocker.Resources.CultureToFileLookup[cultureInfo];
                     string resolvedFileName = PathUtil.Resolve(unresolvedFileName);
 
-                    DateTime lastWrite = File.GetLastWriteTime(resolvedFileName);
+                    DateTime lastWrite = C1File.GetLastWriteTime(resolvedFileName);
                     double secondsSinceLastWrite = (DateTime.Now - lastWrite).TotalSeconds;
 
                     if (secondsSinceLastWrite < 300 || lastWrite > _resourceLocker.Resources.CultureFileLastUpdated[cultureInfo])

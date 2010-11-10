@@ -10,13 +10,13 @@ namespace Composite.Core.IO
 	{
         public static void RemoveReadOnlyRecursively(string directoryPath)
         {
-            foreach (string file in Directory.GetFiles(directoryPath))
+            foreach (string file in C1Directory.GetFiles(directoryPath))
             {
                 FileEx.RemoveReadOnly(file);
             }
 
 
-            foreach (string directory in Directory.GetDirectories(directoryPath))
+            foreach (string directory in C1Directory.GetDirectories(directoryPath))
             {
                 RemoveReadOnlyRecursively(directory);
             }

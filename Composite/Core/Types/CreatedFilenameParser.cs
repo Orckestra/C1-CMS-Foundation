@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using Composite.Core.IO;
 
@@ -34,7 +35,7 @@ namespace Composite.Core.Types
         /// <returns></returns>
         public static CreatedFilenameParser Create(string filename, string extension)
         {
-            string fn = System.IO.Path.GetFileName(filename);
+            string fn = Path.GetFileName(filename);
 
             int idx = fn.LastIndexOf(string.Format(".{0}", extension));
             if (idx >= 0)
@@ -99,7 +100,7 @@ namespace Composite.Core.Types
         public static IEnumerable<CreatedFilenameParser> GetParsers(string path, string extension)
         {
             IEnumerable<string> fileanames =
-                from fn in Directory.GetFiles(path, string.Format("{0}*.{1}", PrefixString, extension))
+                from fn in C1Directory.GetFiles(path, string.Format("{0}*.{1}", PrefixString, extension))
                 select fn;
 
             foreach (string filename in fileanames)

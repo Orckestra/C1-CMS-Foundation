@@ -21,7 +21,7 @@ public partial class ShowElementInformation_Default : System.Web.UI.Page
         Guid piggybagId = new Guid(Request.QueryString["PiggyBagId"]);
         string filename = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), string.Format("{0}.showinfo", piggybagId));
 
-        string[] showinfo = File.ReadAllLines(filename);
+        string[] showinfo = C1File.ReadAllLines(filename);
 
         string serializedEntityToken = showinfo[0];
         string serializedPiggyBag = showinfo[1];

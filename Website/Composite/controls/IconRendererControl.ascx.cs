@@ -15,7 +15,7 @@ public partial class IconRendererControl : System.Web.UI.UserControl
     	}
 
         string path = Server.MapPath ( "../../../../../images/icons/republic" );
-        string [] dirEntries = Directory.GetDirectories ( path );
+        string [] dirEntries = C1Directory.GetDirectories ( path );
 			
 		StringBuilder builder = new StringBuilder (); 
         
@@ -23,7 +23,7 @@ public partial class IconRendererControl : System.Web.UI.UserControl
 		{
 		   // do something with fileName
 		   if ( dirName.Contains ( "republic_" )) {
-		   		string [] fileEntries = Directory.GetFiles ( dirName );
+		   		string [] fileEntries = C1Directory.GetFiles ( dirName );
 		   		foreach(string fileName in fileEntries) {
 		   			if ( fileName.Contains ( "_" + size + "px_" )) {
 		   				string string1 = fileName.Replace ( "\\", "/" ).ToLower();

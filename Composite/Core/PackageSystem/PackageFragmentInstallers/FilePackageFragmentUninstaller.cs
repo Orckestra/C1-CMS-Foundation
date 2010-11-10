@@ -130,7 +130,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     {
                         for(int i=0; i < absoluteReferences.Count; i++)
                         {
-                            if(File.Exists(ReplaceFolder(absoluteReferences[0], oldRoot, newRoot)))
+                            if(C1File.Exists(ReplaceFolder(absoluteReferences[0], oldRoot, newRoot)))
                             {
                                 fileExists = true;
                                 break;

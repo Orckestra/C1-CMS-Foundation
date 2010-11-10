@@ -159,7 +159,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             e = null;
             try
             {
-                return Composite.Core.IO.File.Open(filePath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
+                return C1File.Open(filePath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
             }
             catch (Exception ex)
             {
@@ -179,9 +179,9 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             try
             {
                 // TODO: It should open file only once, not twice
-                content = Composite.Core.IO.File.ReadAllLines(filePath);
+                content = C1File.ReadAllLines(filePath);
 
-                stream = Composite.Core.IO.File.Open(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
+                stream = C1File.Open(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
                 stream.Seek(stream.Length, SeekOrigin.Begin);
             }
             catch (Exception e)
@@ -218,14 +218,14 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 	                fileName = fileNamePrefix + (i > 0 ? "_" + i : string.Empty) + ".txt";
                     string filePath = Path.Combine(_logDirectoryPath, fileName);
 
-                    if (!Composite.Core.IO.File.Exists(filePath))
+                    if (!C1File.Exists(filePath))
 	                {
 	                    stream = TryOpenFile(filePath, out ex);
 
                         if(stream == null)
 	                    {
 	                        // Ignoring this exception if the file has already created
-                            if (Composite.Core.IO.File.Exists(filePath)) continue;
+                            if (C1File.Exists(filePath)) continue;
 
 	                        throw new Exception("Failed to create file '{0}'".FormatWith(filePath), ex);
 	                    }
@@ -325,7 +325,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             {
                 try
                 {
-                    _file = Composite.Core.IO.File.OpenRead(_filePath);
+                    _file = C1File.OpenRead(_filePath);
                 }
                 catch(Exception)
                 {
@@ -421,7 +421,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             {
                 try
                 {
-                    Composite.Core.IO.File.Delete(_filePath);
+                    C1File.Delete(_filePath);
                     return true;
                 }
                 catch

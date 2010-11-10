@@ -9,7 +9,7 @@ namespace Composite.Core.IO
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    public static class File
+    public static class File11
     {
         // THIS IS NOT A PART OF System.IO.File
         public static long GetLength(string path)

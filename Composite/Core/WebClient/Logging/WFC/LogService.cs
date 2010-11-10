@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
@@ -35,15 +36,15 @@ namespace Composite.Core.WebClient.Logging.WCF
                     {
                         if (_loggerPassword == null)
                         {
-                            string configurationFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, LoggerConfigurationFilePath);
+                            string configurationFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, LoggerConfigurationFilePath);
 
-                            if (File.Exists(configurationFilePath))
+                            if (C1File.Exists(configurationFilePath))
                             {
 
                                 var doc = new XmlDocument();
                                 try
                                 {
-                                    using (var sr = new StreamReader(configurationFilePath))
+                                    using (var sr = new Composite.Core.IO.StreamReader(configurationFilePath))
                                     {
                                         doc.Load(sr);
                                     }
@@ -62,7 +63,7 @@ namespace Composite.Core.WebClient.Logging.WCF
                                 if (_loggerPassword == null)
                                 {
                                     // Deleting configuration file
-                                    File.Delete(configurationFilePath);
+                                    C1File.Delete(configurationFilePath);
                                 }
                             }
 
@@ -72,7 +73,7 @@ namespace Composite.Core.WebClient.Logging.WCF
 
                                 string configFile = @"<logger> <password>{0}</password> </logger>".FormatWith(_loggerPassword);
 
-                                File.WriteAllText(configurationFilePath, configFile);
+                                C1File.WriteAllText(configurationFilePath, configFile);
                             }
                         }
                     }

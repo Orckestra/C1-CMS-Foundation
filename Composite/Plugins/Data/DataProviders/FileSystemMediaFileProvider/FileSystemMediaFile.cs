@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using Composite.Core.IO;
@@ -7,6 +8,7 @@ using Composite.Data;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Streams;
 using Composite.Data.Types;
+
 
 namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
 {
@@ -108,7 +110,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
 
         public string MimeType
         {
-            get { return MimeTypeInfo.GetCanonicalFromExtension(System.IO.Path.GetExtension(this.FileName)); }
+            get { return MimeTypeInfo.GetCanonicalFromExtension(Path.GetExtension(this.FileName)); }
         }
 
 
@@ -118,7 +120,9 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
         {
             get 
             {
-                return (int)File.GetLength(this.SystemPath);
+                System.IO.FileInfo fileInfo = new System.IO.FileInfo(this.SystemPath);
+
+                return (int)fileInfo.Length;
             }
         }
 
@@ -128,7 +132,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
         {
             get 
             {
-                return File.GetCreationTime(this.SystemPath);
+                return C1File.GetCreationTime(this.SystemPath);
             }
         }
 
@@ -138,7 +142,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
         {
             get 
             {
-                return File.GetLastWriteTime(this.SystemPath);
+                return C1File.GetLastWriteTime(this.SystemPath);
             }
         }
 
@@ -148,7 +152,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
         {
             get
             {
-                return (File.GetAttributes(this.SystemPath) & System.IO.FileAttributes.ReadOnly) == System.IO.FileAttributes.ReadOnly;
+                return (C1File.GetAttributes(this.SystemPath) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
             }
             set
             {

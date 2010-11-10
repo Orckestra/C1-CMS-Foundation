@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.IO;
@@ -27,7 +28,7 @@ namespace Composite.Plugins.ResourceSystem.FileSystemBasedIconResourceProvider.F
         {
             _resolvedBaseDirectoryPath = PathUtil.Resolve(baseDirectoryPath);
 
-            _mappingsFileFullPath = System.IO.Path.Combine(_resolvedBaseDirectoryPath, iconMappingsFileName);
+            _mappingsFileFullPath = Path.Combine(_resolvedBaseDirectoryPath, iconMappingsFileName);
 
         }
 
@@ -83,13 +84,13 @@ namespace Composite.Plugins.ResourceSystem.FileSystemBasedIconResourceProvider.F
 
         private void EnsureMappings()
         {
-            if (File.GetLastWriteTime(_mappingsFileFullPath) > _lastMappingsFileTimeStamp)
+            if (C1File.GetLastWriteTime(_mappingsFileFullPath) > _lastMappingsFileTimeStamp)
             {
                 lock (_lock)
                 {
-                    if (File.GetLastWriteTime(_mappingsFileFullPath) > _lastMappingsFileTimeStamp)
+                    if (C1File.GetLastWriteTime(_mappingsFileFullPath) > _lastMappingsFileTimeStamp)
                     {
-                        if (File.Exists(_mappingsFileFullPath) == false) throw new InvalidOperationException(string.Format("Icon mapping file '{0}' not found.", _mappingsFileFullPath));
+                        if (C1File.Exists(_mappingsFileFullPath) == false) throw new InvalidOperationException(string.Format("Icon mapping file '{0}' not found.", _mappingsFileFullPath));
 
                         try
                         {
@@ -100,7 +101,7 @@ namespace Composite.Plugins.ResourceSystem.FileSystemBasedIconResourceProvider.F
                             throw new InvalidOperationException(string.Format("Failed to load icon mapping file '{0}'", _mappingsFileFullPath), ex);
                         }
 
-                        _lastMappingsFileTimeStamp = File.GetLastWriteTime(_mappingsFileFullPath);
+                        _lastMappingsFileTimeStamp = C1File.GetLastWriteTime(_mappingsFileFullPath);
                     }
                 }
             }
@@ -121,7 +122,7 @@ namespace Composite.Plugins.ResourceSystem.FileSystemBasedIconResourceProvider.F
 
             if (this.ZipFileMode==false)
             {
-                string fullPath = System.IO.Path.Combine(_resolvedBaseDirectoryPath, fileRelativePath);
+                string fullPath = Path.Combine(_resolvedBaseDirectoryPath, fileRelativePath);
 
                 return (Bitmap)Bitmap.FromFile(fullPath);
             }
@@ -132,14 +133,14 @@ namespace Composite.Plugins.ResourceSystem.FileSystemBasedIconResourceProvider.F
 
                 if (ze != null)
                 {
-                    using (System.IO.Stream fileStream = zf.GetInputStream(ze))
+                    using (Stream fileStream = zf.GetInputStream(ze))
                     {
                         return (Bitmap)Bitmap.FromStream(fileStream);
                     }
                 }
                 else
                 {
-                    throw new System.IO.FileNotFoundException(string.Format("Icon '{0}' not found in ZIP archive.", fileRelativePath));
+                    throw new FileNotFoundException(string.Format("Icon '{0}' not found in ZIP archive.", fileRelativePath));
                 }
             }
         }
@@ -156,7 +157,7 @@ namespace Composite.Plugins.ResourceSystem.FileSystemBasedIconResourceProvider.F
                 }
                 else
                 {
-                    return System.IO.Path.Combine(_resolvedBaseDirectoryPath, _mappings.Attribute("zipfilepath").Value);
+                    return Path.Combine(_resolvedBaseDirectoryPath, _mappings.Attribute("zipfilepath").Value);
                 }
             }
         }
@@ -168,7 +169,7 @@ namespace Composite.Plugins.ResourceSystem.FileSystemBasedIconResourceProvider.F
             {
                 if (this.ZipFilePath == null) return false;
 
-                return File.Exists(this.ZipFilePath);
+                return C1File.Exists(this.ZipFilePath);
             }
         }
     }

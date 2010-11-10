@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -83,8 +84,8 @@ namespace Composite.C1Console.Elements.Foundation
             {
                 
                 Guid id = Guid.NewGuid();
-                string filename = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), string.Format("{0}.RelationshipGraph", id));
-                File.WriteAllLines(filename, new string[] { serializedEntityToken });
+                string filename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), string.Format("{0}.RelationshipGraph", id));
+                C1File.WriteAllLines(filename, new string[] { serializedEntityToken });
 
                 string url = string.Format("{0}?Id={1}", UrlUtils.ResolveAdminUrl("content/views/relationshipgraph/ShowRelationshipOrientedGraph.aspx"), id);
 
@@ -160,9 +161,9 @@ namespace Composite.C1Console.Elements.Foundation
             }
 
             Guid id = Guid.NewGuid();
-            string filename = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), string.Format("{0}.showinfo", id));
+            string filename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), string.Format("{0}.showinfo", id));
 
-            File.WriteAllLines(filename, new string[] { serializedEntityToken, sb.ToString() });
+            C1File.WriteAllLines(filename, new string[] { serializedEntityToken, sb.ToString() });
 
             string url = string.Format("{0}?PiggyBagId={1}", UrlUtils.ResolveAdminUrl("content/views/showelementinformation/Default.aspx"), id);
 

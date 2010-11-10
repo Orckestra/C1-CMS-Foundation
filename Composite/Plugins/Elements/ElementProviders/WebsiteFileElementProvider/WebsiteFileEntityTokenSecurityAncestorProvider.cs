@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using Composite.C1Console.Security;
 using Composite.Core.IO;
 
@@ -11,13 +12,13 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         {
             WebsiteFileElementProviderEntityToken castedEntityToken = (WebsiteFileElementProviderEntityToken)entityToken;
 
-            if ((File.Exists(castedEntityToken.Path) == false) &&
-                (Directory.Exists(castedEntityToken.Path) == false))
+            if ((C1File.Exists(castedEntityToken.Path) == false) &&
+                (C1Directory.Exists(castedEntityToken.Path) == false))
             {
                 return null;
             }
 
-            string newFolderPath = System.IO.Path.GetDirectoryName(castedEntityToken.Path);
+            string newFolderPath = Path.GetDirectoryName(castedEntityToken.Path);
 
             if (newFolderPath != castedEntityToken.RootPath)
             {

@@ -21,7 +21,7 @@ namespace Composite.Core.WebClient
         {
             lock (_lock)
             {
-                DateTime lastXsltFileWrite = File.GetLastWriteTime(stylesheetPath);
+                DateTime lastXsltFileWrite = C1File.GetLastWriteTime(stylesheetPath);
 
                 bool compiledVersionExists = _xsltLookup.ContainsKey(stylesheetPath);
                 bool reloadFresh = (DateTime.Now - lastXsltFileWrite).Minutes < 30;
@@ -65,7 +65,6 @@ namespace Composite.Core.WebClient
             }
 
             return outputDocument;
-
         }
     }
 }

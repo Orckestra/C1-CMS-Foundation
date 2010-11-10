@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Web;
@@ -184,7 +185,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                         return false;
                     }
 
-                    System.IO.Stream readStream = mediaFile.GetReadStream();
+                    Stream readStream = mediaFile.GetReadStream();
 
                     result.Add(new Attachment(readStream, attachmentName ?? mediaFile.Title, mimeType ?? mediaFile.MimeType));
 
@@ -197,7 +198,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                     filePath = HttpContext.Current.Server.MapPath(filePath);
                 }
 
-                if (!File.Exists(filePath))
+                if (!C1File.Exists(filePath))
                 {
                     LoggingService.LogWarning(LogTitle,
                                               "Cannot create an attachment. File '{0}' does not exists".
@@ -215,7 +216,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                     }
                     else
                     {
-                        attachment = new Attachment(File.OpenRead(filePath), attachmentName);
+                        attachment = new Attachment(C1File.OpenRead(filePath), attachmentName);
                     }
                 }
                 else
@@ -226,7 +227,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                     }
                     else
                     {
-                        attachment = new Attachment(File.OpenRead(filePath), attachmentName, mimeType);
+                        attachment = new Attachment(C1File.OpenRead(filePath), attachmentName, mimeType);
                     }
                 }
 

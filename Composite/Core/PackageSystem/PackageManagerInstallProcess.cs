@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Composite.Core.IO;
 using Composite.Core.Logging;
@@ -143,9 +144,9 @@ namespace Composite.Core.PackageSystem
 
         public void CancelInstallation()
         {
-            if ((_zipFilename != null) && (File.Exists(_zipFilename))) File.Delete(_zipFilename);
+            if ((_zipFilename != null) && (C1File.Exists(_zipFilename))) C1File.Delete(_zipFilename);
 
-            if (Directory.Exists(_packageInstallDirectory) == true) DirectoryUtil.DeleteFilesRecursively(_packageInstallDirectory);
+            if (C1Directory.Exists(_packageInstallDirectory) == true) DirectoryUtil.DeleteFilesRecursively(_packageInstallDirectory);
         }
 
 
@@ -154,14 +155,14 @@ namespace Composite.Core.PackageSystem
         {
             try        
             {
-                if ((_zipFilename != null) && (File.Exists(_zipFilename))) File.Delete(_zipFilename);
+                if ((_zipFilename != null) && (C1File.Exists(_zipFilename))) C1File.Delete(_zipFilename);
 
-                if ((_preInstallValidationResult != null) && (_validationResult.Count > 0) && (Directory.Exists(_packageInstallDirectory) == true)) DirectoryUtil.DeleteFilesRecursively(_packageInstallDirectory);
-                else if ((_validationResult != null) && (_validationResult.Count > 0) && (Directory.Exists(_packageInstallDirectory) == true)) DirectoryUtil.DeleteFilesRecursively(_packageInstallDirectory);
-                else if ((_installationResult != null) && (_installationResult.Count > 0) && (Directory.Exists(_packageInstallDirectory) == true)) DirectoryUtil.DeleteFilesRecursively(_packageInstallDirectory);
+                if ((_preInstallValidationResult != null) && (_validationResult.Count > 0) && (C1Directory.Exists(_packageInstallDirectory) == true)) DirectoryUtil.DeleteFilesRecursively(_packageInstallDirectory);
+                else if ((_validationResult != null) && (_validationResult.Count > 0) && (C1Directory.Exists(_packageInstallDirectory) == true)) DirectoryUtil.DeleteFilesRecursively(_packageInstallDirectory);
+                else if ((_installationResult != null) && (_installationResult.Count > 0) && (C1Directory.Exists(_packageInstallDirectory) == true)) DirectoryUtil.DeleteFilesRecursively(_packageInstallDirectory);
                 else
                 {
-                    File.WriteAllText(System.IO.Path.Combine(_packageInstallDirectory, PackageSystemSettings.InstalledFilename), "");
+                    C1File.WriteAllText(Path.Combine(_packageInstallDirectory, PackageSystemSettings.InstalledFilename), "");
                 }
 
                 return new List<PackageFragmentValidationResult>();

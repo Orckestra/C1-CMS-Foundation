@@ -96,7 +96,7 @@ namespace Composite.Core.IO.Zip
 
             if (_existingFilenamesInZip.ContainsKey(parstedFilename) == false) throw new ArgumentException(string.Format("The file {0} does not exist in the zip", filename));
 
-            ZipInputStream zipInputStream = new ZipInputStream(File.Open(this.ZipFilename, FileMode.Open, FileAccess.Read));
+            ZipInputStream zipInputStream = new ZipInputStream(C1File.Open(this.ZipFilename, FileMode.Open, FileAccess.Read));
 
             ZipEntry zipEntry;
             while ((zipEntry = zipInputStream.GetNextEntry()) != null)
@@ -143,7 +143,7 @@ namespace Composite.Core.IO.Zip
 
         private void Initialize()
         {
-            using (C1FileStream fileStream = Composite.Core.IO.File.Open(this.ZipFilename, FileMode.Open, FileAccess.Read))
+            using (C1FileStream fileStream = C1File.Open(this.ZipFilename, FileMode.Open, FileAccess.Read))
             {
                 using (ZipInputStream zipInputStream = new ZipInputStream(fileStream))
                 {

@@ -23,7 +23,7 @@ namespace Composite.content.views.relationshipgraph
             Guid id = new Guid(idString);
             string filename = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), string.Format("{0}.RelationshipGraph", id));
 
-            EntityToken startEntityToken = EntityTokenSerializer.Deserialize(File.ReadAllLines(filename)[0]);
+            EntityToken startEntityToken = EntityTokenSerializer.Deserialize(C1File.ReadAllLines(filename)[0]);
 
             RelationshipOrientedGraph graph = new RelationshipOrientedGraph(startEntityToken);
 

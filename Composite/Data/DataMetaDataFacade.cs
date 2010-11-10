@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.C1Console.Events;
@@ -30,9 +31,9 @@ namespace Composite.Data
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
 
             _metaDataPath = PathUtil.Resolve(GlobalSettingsFacade.DataMetaDataDirectory);
-            if (Directory.Exists(_metaDataPath) == false)
+            if (C1Directory.Exists(_metaDataPath) == false)
             {
-                Directory.CreateDirectory(_metaDataPath);
+                C1Directory.CreateDirectory(_metaDataPath);
             }
 
             UpdateFilenames();            
@@ -50,7 +51,7 @@ namespace Composite.Data
                 _dataTypeDescriptorFilesnamesCache = new Dictionary<Guid, string>();
 
 
-                List<string> filepaths = Directory.GetFiles(_metaDataPath).ToList();
+                List<string> filepaths = C1Directory.GetFiles(_metaDataPath).ToList();
 
                 foreach (string filepath in filepaths)
                 {
@@ -67,7 +68,7 @@ namespace Composite.Data
 
         private static void UpdateFilenames()
         {
-            List<string> filepaths = Directory.GetFiles(_metaDataPath).ToList();
+            List<string> filepaths = C1Directory.GetFiles(_metaDataPath).ToList();
 
             Dictionary<Guid, string> ids = new Dictionary<Guid,string>();
             foreach (string filepath in filepaths)
@@ -94,7 +95,7 @@ namespace Composite.Data
             foreach (var kvp in ids)
             {
                 string filepath = kvp.Value;
-                if (System.IO.Path.GetFileNameWithoutExtension(filepath).Contains('_') == false)
+                if (Path.GetFileNameWithoutExtension(filepath).Contains('_') == false)
                 {
                     XDocument doc = XDocumentUtils.Load(filepath);
 
@@ -103,7 +104,7 @@ namespace Composite.Data
                     string newFilepath = CreateFilename(dataTypeDescriptor);
 
                     FileEx.RemoveReadOnly(filepath);
-                    File.Move(filepath, newFilepath);
+                    C1File.Move(filepath, newFilepath);
                 }
             }
         }
@@ -196,14 +197,14 @@ namespace Composite.Data
 
         private static string CreateFilename(DataTypeDescriptor dataTypeDescriptor)
         {
-            return System.IO.Path.Combine(_metaDataPath, string.Format("{0}_{1}.xml", dataTypeDescriptor.Name, dataTypeDescriptor.DataTypeId));
+            return Path.Combine(_metaDataPath, string.Format("{0}_{1}.xml", dataTypeDescriptor.Name, dataTypeDescriptor.DataTypeId));
         }
 
 
 
         private static Guid GetGuidFromFilename(string filepath)
         {
-            string tmp = System.IO.Path.GetFileNameWithoutExtension(filepath);
+            string tmp = Path.GetFileNameWithoutExtension(filepath);
             int index = tmp.LastIndexOf('_');
 
             if (index == -1)

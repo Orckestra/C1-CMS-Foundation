@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Web;
 using Composite.Core.IO;
@@ -83,7 +84,7 @@ namespace Composite.Core.WebClient.Presentation
                 this.skinPath = UrlUtils.AdminRootPath + "/skins/system";
 
                 // the folder of the currently parsed CSS file
-                this.folderPath = System.IO.Path.GetDirectoryName(context.Request.Path).Replace('\\', '/');
+                this.folderPath = Path.GetDirectoryName(context.Request.Path).Replace('\\', '/');
             }
         }
 
@@ -173,11 +174,11 @@ namespace Composite.Core.WebClient.Presentation
             User user = new User ( context );
             Colors colors = new Colors (user);
 
-            if (File.Exists(filePath))
+            if (C1File.Exists(filePath))
             {
                 var sb = new StringBuilder();
 
-                string[] lines = File.ReadAllLines(filePath);
+                string[] lines = C1File.ReadAllLines(filePath);
                 foreach (string line in lines)
                 {
                 	// context.Response.Write ( "/*" + line.ToString() + "*/" + "\n" );

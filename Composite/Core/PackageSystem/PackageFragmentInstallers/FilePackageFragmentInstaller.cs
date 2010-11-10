@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.IO;
@@ -108,7 +109,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
 
                     string targetFilename = PathUtil.Resolve(targetFilenameAttribute.Value);
-                    if (File.Exists(targetFilename) == true)
+                    if (C1File.Exists(targetFilename) == true)
                     {
                         if ((allowOverwrite == false) && (onlyUpdate == false))
                         {
@@ -116,7 +117,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                             continue;
                         }
 
-                        if ((File.GetAttributes(targetFilename) & System.IO.FileAttributes.ReadOnly) > 0)
+                        if ((C1File.GetAttributes(targetFilename) & FileAttributes.ReadOnly) > 0)
                         {
                             if (allowOverwrite == false)
                             {
@@ -148,7 +149,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     if (loadAssembly == true)
                     {
-                        string tempFilename = System.IO.Path.Combine(this.InstallerContex.TempDirectory, System.IO.Path.GetFileName(targetFilename));
+                        string tempFilename = Path.Combine(this.InstallerContex.TempDirectory, Path.GetFileName(targetFilename));
 
                         this.InstallerContex.ZipFileSystem.WriteFileToDisk(sourceFilename, tempFilename);
 
@@ -217,7 +218,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     if (deleteTargetDirectory == true)
                     {
-                        if (Directory.Exists(targetDirectory) == true)
+                        if (C1Directory.Exists(targetDirectory) == true)
                         {
                             _directoriesToDelete.Add(targetDirectory);
                         }
@@ -231,9 +232,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                             resolvedSourceFilename = resolvedSourceFilename.Remove(0, 1);
                         }
 
-                        string targetFilename = System.IO.Path.Combine(targetDirectory, resolvedSourceFilename);
+                        string targetFilename = Path.Combine(targetDirectory, resolvedSourceFilename);
 
-                        if ((File.Exists(targetFilename) == true) && (deleteTargetDirectory == false) && (allowOverwrite == false))
+                        if ((C1File.Exists(targetFilename) == true) && (deleteTargetDirectory == false) && (allowOverwrite == false))
                         {
                             validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.FileExists"), targetFilename), targetDirectoryAttribute));
                             continue;
@@ -242,7 +243,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         FileToCopy fileToCopy = new FileToCopy
                         {
                             SourceFilename = sourceFilename, 
-                            TargetRelativeFilePath = System.IO.Path.Combine(targetDirectoryAttribute.Value, resolvedSourceFilename),
+                            TargetRelativeFilePath = Path.Combine(targetDirectoryAttribute.Value, resolvedSourceFilename),
                             TargetFilePath = targetFilename, 
                             AllowOverwrite = allowOverwrite
                         };
@@ -276,7 +277,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             {
                 LoggingService.LogVerbose("FileAddOnFragmentInstaller", string.Format("Installing the file '{0}' to the target filename '{1}'", fileToCopy.SourceFilename, fileToCopy.TargetFilePath));
 
-                string targetDirectory = System.IO.Path.GetDirectoryName(fileToCopy.TargetFilePath);
+                string targetDirectory = Path.GetDirectoryName(fileToCopy.TargetFilePath);
                 if (Directory.Exists(targetDirectory) == false)
                 {
                     Directory.CreateDirectory(targetDirectory);

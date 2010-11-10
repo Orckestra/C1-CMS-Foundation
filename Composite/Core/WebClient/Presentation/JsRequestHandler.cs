@@ -29,7 +29,7 @@ namespace Composite.Core.WebClient.Presentation
 
             context.Response.ContentType = "text/javascript";
 
-            if (File.Exists(filePath) == false)
+            if (C1File.Exists(filePath) == false)
             {
                 LoggingService.LogWarning("JsRequestHandler", "File {0} not found".FormatWith(filePath));
 
@@ -43,7 +43,7 @@ namespace Composite.Core.WebClient.Presentation
             	if ( jsPath.Contains ( "build" )) 
             	{
             		var sb = new StringBuilder();
-                	string[] lines = File.ReadAllLines(filePath);
+                	string[] lines = C1File.ReadAllLines(filePath);
                 	foreach (string line in lines)
 	                {
 	                 	string result = line.Replace ( ".js", ".js.aspx" );

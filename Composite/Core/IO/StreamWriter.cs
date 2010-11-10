@@ -32,8 +32,13 @@ namespace Composite.Core.IO
 
         //[SecuritySafeCritical, TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         //public StreamWriter(System.IO.Stream stream, Encoding encoding){throw new NotImplementedException();}
+        
         //[SecuritySafeCritical]
-        //public StreamWriter(string path, bool append){throw new NotImplementedException();}
+        public StreamWriter(string path, bool append) 
+        { 
+            throw new NotImplementedException(); 
+        }
+        
         //[SecuritySafeCritical]
         //public StreamWriter(System.IO.Stream stream, Encoding encoding, int bufferSize){throw new NotImplementedException();}
         //[SecuritySafeCritical, TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]

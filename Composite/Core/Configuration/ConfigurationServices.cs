@@ -107,12 +107,12 @@ namespace Composite.Core.Configuration
                 lock (_lock)
                 {
                     string tempFilePath = ConfigurationServices.TempRandomConfigFilePath;
-                    File.Copy(FileConfigurationSourcePath, tempFilePath);
+                    C1File.Copy(FileConfigurationSourcePath, tempFilePath);
                     FileConfigurationParameter configurationParameter = new FileConfigurationParameter(tempFilePath);
                     ConfigurationServices.ConfigurationSource.Add(configurationParameter, sectionName, configurationSection);
                     // Kill monitoring of file changes:
                     //                    FileConfigurationSource.ResetImplementation(ConfigurationServices.FileConfigurationSourcePath, false);
-                    File.Copy(tempFilePath, ConfigurationServices.FileConfigurationSourcePath, true);
+                    C1File.Copy(tempFilePath, ConfigurationServices.FileConfigurationSourcePath, true);
                     DeleteTempConfigurationFile(tempFilePath);
 
                     _configurationSource = new FileConfigurationSource(ConfigurationServices.FileConfigurationSourcePath);
@@ -237,7 +237,7 @@ namespace Composite.Core.Configuration
             try
             {
                 //                FileConfigurationSource.ResetImplementation(tempValidationFilePath, false); //turn file monitoring off
-                File.Delete(tempValidationFilePath);
+                C1File.Delete(tempValidationFilePath);
             }
             catch (Exception) { }
         }

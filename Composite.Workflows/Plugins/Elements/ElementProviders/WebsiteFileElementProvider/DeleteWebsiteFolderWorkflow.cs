@@ -25,7 +25,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
             try
             {                
-                Directory.Delete(entityToken.Path, true);
+                C1Directory.Delete(entityToken.Path, true);
 
                 treeRefresher.PostRefreshMesseges();
             }

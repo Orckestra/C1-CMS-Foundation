@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Xml.Linq;
 using Composite.Core.IO;
 using Composite.Core.Xml;
@@ -31,7 +32,7 @@ namespace Composite.Core.Configuration
                 {
                     try
                     {
-                        _isSystemFirstTimeInitializedValue = File.Exists(SystemInitializedFilePath);
+                        _isSystemFirstTimeInitializedValue = C1File.Exists(SystemInitializedFilePath);
                     }
                     catch (Exception)
                     {
@@ -46,12 +47,12 @@ namespace Composite.Core.Configuration
             {
                 lock (_lock)
                 {
-                    if (File.Exists(SystemInitializedFilePath) == false)
+                    if (C1File.Exists(SystemInitializedFilePath) == false)
                     {
-                        string directory = System.IO.Path.GetDirectoryName(SystemInitializedFilePath);
-                        if (Directory.Exists(directory) == false)
+                        string directory = Path.GetDirectoryName(SystemInitializedFilePath);
+                        if (C1Directory.Exists(directory) == false)
                         {
-                            Directory.CreateDirectory(directory);
+                            C1Directory.CreateDirectory(directory);
                         }
 
                         XDocument doc = new XDocument(

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.IO;
@@ -106,7 +107,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                         newElements.Add(newElement);
                     }
 
-                    File.Delete(oldFilename);
+                    C1File.Delete(oldFilename);
 
                     XElement newRoot = new XElement(string.Format("{0}s", newDataScopeConfigurationElement.ElementName));
                     newRoot.Add(newElements);
@@ -135,16 +136,16 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             string filename = ResolvePath(scopeElement.Filename, providerName);
 
-            string directoryPath = System.IO.Path.GetDirectoryName(filename);
-            if (Directory.Exists(directoryPath)==false)
+            string directoryPath = Path.GetDirectoryName(filename);
+            if (C1Directory.Exists(directoryPath)==false)
             {
-                Directory.CreateDirectory(directoryPath);
+                C1Directory.CreateDirectory(directoryPath);
             }
 
             bool keepExistingFile = false;
             string rootLocalName = string.Format("{0}s", scopeElement.ElementName);
 
-            if (File.Exists(filename) == true)
+            if (C1File.Exists(filename) == true)
             {
                 try
                 {
@@ -161,7 +162,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                 if (keepExistingFile == false)
                 {
-                    File.Delete(filename);
+                    C1File.Delete(filename);
                 }
             }
 
@@ -179,9 +180,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             string filename = ResolvePath(scopeElement.Filename, providerName);
 
-            if (File.Exists(filename) == true)
+            if (C1File.Exists(filename) == true)
             {
-                File.Delete(filename);
+                C1File.Delete(filename);
             }
         }
 
@@ -198,9 +199,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             XmlDataProviderData providerConfiguration = GetProviderSettings(providerName);
 
-            string s = System.IO.Path.Combine(providerConfiguration.StoreDirectory, filename);
+            string s = Path.Combine(providerConfiguration.StoreDirectory, filename);
 
-            return PathUtil.Resolve(System.IO.Path.Combine(providerConfiguration.StoreDirectory, filename));
+            return PathUtil.Resolve(Path.Combine(providerConfiguration.StoreDirectory, filename));
         }
 
 

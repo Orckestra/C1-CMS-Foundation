@@ -28,7 +28,7 @@ namespace Composite.Core.WebClient.Presentation
 
             context.Response.ContentType = "text/javascript";
 
-            if (File.Exists(filePath) == false)
+            if (C1File.Exists(filePath) == false)
             {
                 LoggingService.LogWarning("LessRequestHandler", "File {0} not found".FormatWith(filePath));
 

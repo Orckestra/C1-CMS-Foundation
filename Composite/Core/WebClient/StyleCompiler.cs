@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using Composite.Core.IO;
+
 
 namespace Composite.Core.WebClient
 {
@@ -9,23 +11,23 @@ namespace Composite.Core.WebClient
     {
         public static void Compile(string sourceFile, string targetFile)
         {
-            using (var outputFile = File.Open(targetFile, System.IO.FileMode.Create))
+            using (var outputFile = C1File.Open(targetFile, FileMode.Create))
             {
-                using (var writer = new StreamWriter(outputFile))
+                using (var writer = new Composite.Core.IO.StreamWriter(outputFile))
                 {
                     IncludeRecursive(sourceFile, writer, new HashSet<string>());
                 }
             }
         }
 
-        private static void IncludeRecursive(string fileToInclude, StreamWriter writer, HashSet<string> alreadyIncludedFiles)
+        private static void IncludeRecursive(string fileToInclude, Composite.Core.IO.StreamWriter writer, HashSet<string> alreadyIncludedFiles)
         {
             fileToInclude = fileToInclude.ToLower();
             alreadyIncludedFiles.Add(fileToInclude);
 
             bool includingEnabled = true;
 
-            string[] lines = File.ReadAllLines(fileToInclude);
+            string[] lines = C1File.ReadAllLines(fileToInclude);
             foreach (string line in lines)
             {
                 var trimmedline = line.TrimStart();
@@ -40,15 +42,15 @@ namespace Composite.Core.WebClient
                         {
                             string relativeIncludedFilePath =
                                 trimmedline.Substring(fileNameBegin + 1, fileNameEnd - fileNameBegin - 1).Replace('/', '\\');
-                            string directoryPath = System.IO.Path.GetDirectoryName(fileToInclude);
+                            string directoryPath = Path.GetDirectoryName(fileToInclude);
 
-                            string includedFilePath = System.IO.Path.Combine(directoryPath, relativeIncludedFilePath);
+                            string includedFilePath = Path.Combine(directoryPath, relativeIncludedFilePath);
                             if (alreadyIncludedFiles.Contains(includedFilePath))
                             {
                                 continue;
                             }
 
-                            if (File.Exists(includedFilePath))
+                            if (C1File.Exists(includedFilePath))
                             {
                                 IncludeRecursive(includedFilePath, writer, alreadyIncludedFiles);
                                 continue;

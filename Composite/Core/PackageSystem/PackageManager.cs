@@ -30,11 +30,11 @@ namespace Composite.Core.PackageSystem
             string[] packageDirectories = C1Directory.GetDirectories(baseDirectory);
             foreach (string packageDirecoty in packageDirectories)
             {
-                if (Composite.Core.IO.File.Exists(Path.Combine(packageDirecoty, PackageSystemSettings.InstalledFilename)) == true)
+                if (C1File.Exists(Path.Combine(packageDirecoty, PackageSystemSettings.InstalledFilename)) == true)
                 {
                     string filename = Path.Combine(packageDirecoty, PackageSystemSettings.PackageInformationFilename);
 
-                    if (Composite.Core.IO.File.Exists(filename) == true)
+                    if (C1File.Exists(filename) == true)
                     {
                         XDocument doc = XDocumentUtils.Load(filename);
 
@@ -190,7 +190,7 @@ namespace Composite.Core.PackageSystem
                 C1Directory.CreateDirectory(packageInstallDirectory);
 
                 string packageZipFilename = Path.Combine(packageInstallDirectory, Path.GetFileName(zipFilename));
-                Composite.Core.IO.File.Copy(zipFilename, packageZipFilename, true);
+                C1File.Copy(zipFilename, packageZipFilename, true);
 
                 string username = "Composite";
                 if (UserValidationFacade.IsLoggedIn() == true)
@@ -253,10 +253,10 @@ namespace Composite.Core.PackageSystem
                 if (installedPackageInformation.CanBeUninstalled == false) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.Uninstallable")) });
 
                 string zipFilePath = Path.Combine(absolutePath, PackageSystemSettings.ZipFilename);
-                if (Composite.Core.IO.File.Exists(zipFilePath) == false) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingZipFile"), zipFilePath)) });
+                if (C1File.Exists(zipFilePath) == false) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingZipFile"), zipFilePath)) });
 
                 string uninstallFilePath = Path.Combine(absolutePath, PackageSystemSettings.UninstallFilename);
-                if (Composite.Core.IO.File.Exists(uninstallFilePath) == false) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingUninstallFile"), uninstallFilePath)) });
+                if (C1File.Exists(uninstallFilePath) == false) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingUninstallFile"), uninstallFilePath)) });
 
                 PackageUninstaller packageUninstaller = new PackageUninstaller(zipFilePath, uninstallFilePath, absolutePath, TempDirectoryFacade.CreateTempDirectory(), installedPackageInformation.FlushOnCompletion, installedPackageInformation.ReloadConsoleOnCompletion, true);
 
@@ -374,9 +374,9 @@ namespace Composite.Core.PackageSystem
             {
                 zipFilename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PackageDirectory), PackageSystemSettings.ZipFilename);
 
-                if (Composite.Core.IO.File.Exists(zipFilename) == true)
+                if (C1File.Exists(zipFilename) == true)
                 {
-                    Composite.Core.IO.File.Delete(zipFilename);
+                    C1File.Delete(zipFilename);
                 }
 
                 if (C1Directory.Exists(Path.GetDirectoryName(zipFilename)) == false)

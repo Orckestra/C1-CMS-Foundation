@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Elements.Plugins.ElementProvider;
@@ -33,7 +34,7 @@ namespace Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvid
 
             foreach (string treeDefinitionFilename in this.TreeDefinitionFilenames)
             {
-                string filename = System.IO.Path.GetFileName(treeDefinitionFilename);
+                string filename = Path.GetFileName(treeDefinitionFilename);
 
                 DeveloperApplicationProviderEntityToken entityToken = new DeveloperApplicationProviderEntityToken(DeveloperApplicationProviderEntityToken.TreeDefinitionId, filename);
 
@@ -88,7 +89,7 @@ namespace Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvid
             {
                 foreach (string treeDefinitionFilename in this.TreeDefinitionFilenames)
                 {
-                    string filename = System.IO.Path.GetFileName(treeDefinitionFilename);
+                    string filename = Path.GetFileName(treeDefinitionFilename);
 
                     Element treeDefintionElement = new Element(_context.CreateElementHandle(
                         new DeveloperApplicationProviderEntityToken(DeveloperApplicationProviderEntityToken.TreeDefinitionId, filename)))
@@ -171,7 +172,7 @@ namespace Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvid
         {
             get
             {
-                return Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), "*.xml");
+                return C1Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), "*.xml");
             }
         }
 

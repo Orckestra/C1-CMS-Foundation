@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 using Composite.Core.Application;
 using Composite.Core.Application.Plugins.ApplicationOnlineHandler;
 using Composite.Core.IO;
@@ -21,11 +22,11 @@ namespace Composite.Plugins.Application.ApplicationOnlineHandlers.AspNetApplicat
         {
             if (string.IsNullOrEmpty(appOfflineFilename) == true) throw new ArgumentNullException("appOfflineFilename");
 
-            _sourceFilename = System.IO.Path.Combine(PathUtil.Resolve(PathUtil.BaseDirectory), PathUtil.Resolve(appOfflineFilename));
+            _sourceFilename = Path.Combine(PathUtil.Resolve(PathUtil.BaseDirectory), PathUtil.Resolve(appOfflineFilename));
 
-            string filename = System.IO.Path.GetFileName(_sourceFilename);
+            string filename = Path.GetFileName(_sourceFilename);
 
-            _targetFilename = System.IO.Path.Combine(PathUtil.Resolve(PathUtil.BaseDirectory), filename);
+            _targetFilename = Path.Combine(PathUtil.Resolve(PathUtil.BaseDirectory), filename);
         }
 
 
@@ -33,7 +34,7 @@ namespace Composite.Plugins.Application.ApplicationOnlineHandlers.AspNetApplicat
         public void TurnApplicationOffline()
         {
             FileEx.Delete(_targetFilename);
-            File.Copy(_sourceFilename, _targetFilename, true);
+            C1File.Copy(_sourceFilename, _targetFilename, true);
 
             ApplicationOfflineCheckHttpModule.FilePath = _targetFilename;
             ApplicationOfflineCheckHttpModule.IsOffline = true;
@@ -51,7 +52,7 @@ namespace Composite.Plugins.Application.ApplicationOnlineHandlers.AspNetApplicat
 
         public bool IsApplicationOnline()
         {
-            return File.Exists(_targetFilename) == false;
+            return C1File.Exists(_targetFilename) == false;
         }
     }
 

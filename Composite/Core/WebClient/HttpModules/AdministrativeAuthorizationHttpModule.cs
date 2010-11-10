@@ -76,7 +76,7 @@ namespace Composite.Core.WebClient.HttpModules
 
                 string webauthorizationConfigPath = HostingEnvironment.MapPath(webauthorizationRelativeConfigPath);
 
-                Verify.That(File.Exists(webauthorizationConfigPath), "Missing file '{0}'.", webauthorizationRelativeConfigPath);
+                Verify.That(C1File.Exists(webauthorizationConfigPath), "Missing file '{0}'.", webauthorizationRelativeConfigPath);
 
 
                 XDocument webauthorizationConfigDocument = XDocumentUtils.Load(webauthorizationConfigPath);

@@ -143,6 +143,16 @@ namespace Composite.Core.Implementation
             }
         }
 
+
+
+        public virtual C1FileImplementation StatelessC1File
+        {
+            get
+            {
+                return new C1FileImplementation();
+            }
+        }
+
         
 
         public virtual C1FileStreamImplementation CreateC1FileStream(string path, FileMode mode )

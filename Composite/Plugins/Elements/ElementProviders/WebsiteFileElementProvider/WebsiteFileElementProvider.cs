@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Elements;
@@ -80,7 +81,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                 _manageableKeyNames = new List<string>();
             }
 
-            _rootPath = System.IO.Path.GetDirectoryName(PathUtil.BaseDirectory);
+            _rootPath = Path.GetDirectoryName(PathUtil.BaseDirectory);
         }
 
 
@@ -192,7 +193,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             {
                 string path = ((WebsiteFileElementProviderEntityToken)entityToken).Path;
 
-                if (Directory.Exists(path) == true)
+                if (C1Directory.Exists(path) == true)
                 {
                     return GetChildrenOnPath(path, searchToken);
                 }
@@ -313,7 +314,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         private IEnumerable<WebsiteFolder> GetFoldersOnPath(string parentPath, SearchToken searchToken)
         {
             IEnumerable<WebsiteFolder> folders =
-                from folderPath in Directory.GetDirectories(parentPath)
+                from folderPath in C1Directory.GetDirectories(parentPath)
                 orderby folderPath
                 select new WebsiteFolder(folderPath);
 

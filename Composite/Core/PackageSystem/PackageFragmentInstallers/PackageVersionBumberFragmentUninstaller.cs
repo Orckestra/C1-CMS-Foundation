@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.Configuration;
@@ -105,16 +106,16 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     string baseDirectory = PathUtil.Resolve(GlobalSettingsFacade.PackageDirectory);
 
-                    if (Directory.Exists(baseDirectory) == false) return _installedPackages;
+                    if (C1Directory.Exists(baseDirectory) == false) return _installedPackages;
 
-                    string[] packageDirectories = Directory.GetDirectories(baseDirectory);
+                    string[] packageDirectories = C1Directory.GetDirectories(baseDirectory);
                     foreach (string packageDirecoty in packageDirectories)
                     {
-                        if (File.Exists(System.IO.Path.Combine(packageDirecoty, PackageSystemSettings.InstalledFilename)) == true)
+                        if (C1File.Exists(Path.Combine(packageDirecoty, PackageSystemSettings.InstalledFilename)) == true)
                         {
-                            string filename = System.IO.Path.Combine(packageDirecoty, PackageSystemSettings.PackageInformationFilename);
+                            string filename = Path.Combine(packageDirecoty, PackageSystemSettings.PackageInformationFilename);
 
-                            if (File.Exists(filename) == true)
+                            if (C1File.Exists(filename) == true)
                             {
                                 string path = packageDirecoty.Remove(0, baseDirectory.Length);
                                 if (path.StartsWith("\\") == true)

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Transactions;
@@ -422,7 +423,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                         string newSystemPath = xsltFilesRoot + newRelativePath;
 
                         if (string.Compare(systemPath, newSystemPath, true) != 0
-                            && File.Exists(newSystemPath))
+                            && C1File.Exists(newSystemPath))
                         {
                             FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
                             var consoleMessageService = serviceContainer.GetService<IManagementConsoleMessageService>();
@@ -433,13 +434,13 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                             return;
                         }
 
-                        string directoryPath = System.IO.Path.GetDirectoryName(newSystemPath);
-                        if(!Directory.Exists(directoryPath))
+                        string directoryPath = Path.GetDirectoryName(newSystemPath);
+                        if(!C1Directory.Exists(directoryPath))
                         {
-                            Directory.CreateDirectory(directoryPath);
+                            C1Directory.CreateDirectory(directoryPath);
                         }
 
-                        File.Move(systemPath, newSystemPath);
+                        C1File.Move(systemPath, newSystemPath);
 
                         xslt.XslFilePath = newRelativePath;
 

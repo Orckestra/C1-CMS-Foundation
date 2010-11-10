@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -37,17 +38,17 @@ namespace Composite.Core.WebClient
 
             FileEx.RemoveReadOnly(sourcesFilename);
 
-            File.WriteAllText(sourcesFilename, string.Empty /* GetTimestampString() */);
+            C1File.WriteAllText(sourcesFilename, string.Empty /* GetTimestampString() */);
 
             foreach (string scriptFilename in scriptFilenames)
             {
                 string scriptPath = scriptFilename.Replace("${root}", folderPath).Replace("/", "\\");
 
-                string lines = File.ReadAllText(scriptPath);
+                string lines = C1File.ReadAllText(scriptPath);
 
                 
-                File.AppendAllText(sourcesFilename, lines);
-                File.AppendAllText(sourcesFilename, newLine.ToString());
+                C1File.AppendAllText(sourcesFilename, lines);
+                C1File.AppendAllText(sourcesFilename, newLine.ToString());
             }
 
             return sourcesFilename;
@@ -91,8 +92,8 @@ namespace Composite.Core.WebClient
 
             FileEx.RemoveReadOnly(classesFilename);
 
-            File.WriteAllText(classesFilename, string.Empty /* GetTimestampString() */);
-            File.AppendAllText(classesFilename, classes.ToString());
+            C1File.WriteAllText(classesFilename, string.Empty /* GetTimestampString() */);
+            C1File.AppendAllText(classesFilename, classes.ToString());
 
             return classesFilename;
         }
@@ -119,7 +120,7 @@ namespace Composite.Core.WebClient
 
         private static IEnumerable<string> GetStrings(string type, string mode, string folderPath)
         {
-            string filename = System.IO.Path.Combine(folderPath, _compileScriptsFilename);
+            string filename = Path.Combine(folderPath, _compileScriptsFilename);
 
             XDocument doc = XDocumentUtils.Load(filename);
 

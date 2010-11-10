@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
@@ -26,7 +27,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
         private string _resolvedRootDirectory;
         private Type _fileInterfaceType;
         private string _fileSearchPattern;
-        private System.IO.SearchOption _fileSearchOptions;
+        private SearchOption _fileSearchOptions;
         private int _resolvedRootDirectoryPathLength;
         private Type _fileSystemFileTypeWithInterface;
 
@@ -45,7 +46,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
 
             resolvedRootDirectory = resolvedRootDirectory.Replace("/", @"\");
 
-            if (System.IO.Path.IsPathRooted(resolvedRootDirectory) == false) throw new ArgumentException("Path must be rooted", "resolvedRootDirectory");
+            if (Path.IsPathRooted(resolvedRootDirectory) == false) throw new ArgumentException("Path must be rooted", "resolvedRootDirectory");
 
             if (resolvedRootDirectory.EndsWith("/") || resolvedRootDirectory.EndsWith(@"\")) resolvedRootDirectory = resolvedRootDirectory.Substring(0, resolvedRootDirectory.Length - 1);
 
@@ -54,7 +55,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
             _fileSearchPattern = fileSearchPattern;
 
             _resolvedRootDirectoryPathLength = _resolvedRootDirectory.Length;
-            _fileSearchOptions = (topDirectoryOnly == true ? System.IO.SearchOption.TopDirectoryOnly : System.IO.SearchOption.AllDirectories);
+            _fileSearchOptions = (topDirectoryOnly == true ? SearchOption.TopDirectoryOnly : SearchOption.AllDirectories);
 
             _fileSystemFileTypeWithInterface = FileSystemFileGenerator.GenerateFileSystemFileWithInterface(fileInterfaceType);
         }
@@ -121,7 +122,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
 
                 if (file.SystemPath != oldPath)
                 {
-                    File.Delete(oldPath);
+                    C1File.Delete(oldPath);
                 }
             }
         }
@@ -138,7 +139,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
 
                 IFile file = (IFile)data;
 
-                string filename = CreateSystemPath( System.IO.Path.Combine(file.FolderPath, file.FileName));
+                string filename = CreateSystemPath( Path.Combine(file.FolderPath, file.FileName));
 
                 FileSystemFile fileSystemFile = Activator.CreateInstance(_fileSystemFileTypeWithInterface) as FileSystemFile;
                 fileSystemFile.SetDataSourceId(_context.CreateDataSourceId(new FileSystemFileDataId(filename), _fileInterfaceType));
@@ -146,9 +147,9 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
                 fileSystemFile.FileName = file.FileName;
                 fileSystemFile.SystemPath = filename;
 
-                using (StreamReader streamReader = new StreamReader(file.GetReadStream()))
+                using (Composite.Core.IO.StreamReader streamReader = new Composite.Core.IO.StreamReader(file.GetReadStream()))
                 {
-                    using (StreamWriter streamWriter = new StreamWriter(fileSystemFile.GetNewWriteStream()))
+                    using (Composite.Core.IO.StreamWriter streamWriter = new Composite.Core.IO.StreamWriter(fileSystemFile.GetNewWriteStream()))
                     {
                         streamWriter.Write(streamReader.ReadToEnd());
                     }
@@ -172,7 +173,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
 
                 FileSystemFileStreamManager.DeleteFile(dataId.FullPath);
 
-                File.Delete(dataId.FullPath);
+                C1File.Delete(dataId.FullPath);
             }
         }
 
@@ -181,7 +182,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
         private IQueryable<T> GetFiles<T>() where T : class, IData
         {
             var result =
-                from file in Directory.GetFiles(_resolvedRootDirectory, _fileSearchPattern, _fileSearchOptions)
+                from file in C1Directory.GetFiles(_resolvedRootDirectory, _fileSearchPattern, _fileSearchOptions)
                 select BuildNewFileSystemFile<T>(file);
 
             return result.AsQueryable();
@@ -209,8 +210,8 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
         {
             FileSystemFile fileSystemFile = Activator.CreateInstance(_fileSystemFileTypeWithInterface) as FileSystemFile;
             fileSystemFile.SetDataSourceId(dataSourceId);
-            fileSystemFile.FolderPath = System.IO.Path.GetDirectoryName(localPath);
-            fileSystemFile.FileName = System.IO.Path.GetFileName(localPath);
+            fileSystemFile.FolderPath = Path.GetDirectoryName(localPath);
+            fileSystemFile.FileName = Path.GetFileName(localPath);
             fileSystemFile.SystemPath = fullPath;
 
             return fileSystemFile as T;
@@ -225,9 +226,9 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
 
             string lPath = localPath.Remove(0, 1);
 
-            string s = System.IO.Path.Combine(_resolvedRootDirectory, lPath);
+            string s = Path.Combine(_resolvedRootDirectory, lPath);
 
-            return System.IO.Path.Combine(_resolvedRootDirectory, lPath);
+            return Path.Combine(_resolvedRootDirectory, lPath);
         }
     }
 
@@ -287,11 +288,11 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
             if (configuration == null) throw new ArgumentException("Expected configuration to be of type FileSystemDataProviderData", "objectConfiguration");
 
             string resolvedRootDirectory = PathUtil.Resolve(configuration.RootDirectory);
-            if (Directory.Exists(resolvedRootDirectory) == false)
+            if (C1Directory.Exists(resolvedRootDirectory) == false)
             {
                 try
                 {
-                    Directory.CreateDirectory(resolvedRootDirectory);
+                    C1Directory.CreateDirectory(resolvedRootDirectory);
                 }
                 catch (Exception ex)
                 {

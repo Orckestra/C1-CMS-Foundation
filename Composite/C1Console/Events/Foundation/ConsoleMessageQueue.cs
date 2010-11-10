@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
@@ -166,13 +167,13 @@ namespace Composite.C1Console.Events.Foundation
                     
                     string serializedConsoleMessagesDir = PathUtil.Resolve((forDebug ? GlobalSettingsFacade.TempDirectory : GlobalSettingsFacade.SerializedConsoleMessagesDirectory));
 
-                    if (Directory.Exists(serializedConsoleMessagesDir) == false)
+                    if (C1Directory.Exists(serializedConsoleMessagesDir) == false)
                     {
-                        Directory.CreateDirectory(serializedConsoleMessagesDir);
+                        C1Directory.CreateDirectory(serializedConsoleMessagesDir);
                     }
 
                     string timeSortedUniqueFileName = string.Format("{0}.{1}.xml", (long.MaxValue - DateTime.Now.Ticks), Guid.NewGuid());
-                    string queueElementsXmlFilePath = System.IO.Path.Combine(serializedConsoleMessagesDir, timeSortedUniqueFileName);
+                    string queueElementsXmlFilePath = Path.Combine(serializedConsoleMessagesDir, timeSortedUniqueFileName);
 
                     serializedMessages.SaveToPath(queueElementsXmlFilePath);
                 }
@@ -187,11 +188,11 @@ namespace Composite.C1Console.Events.Foundation
             {
                 string serializedConsoleMessagesDir = PathUtil.Resolve(GlobalSettingsFacade.SerializedConsoleMessagesDirectory);
 
-                if (Directory.Exists(serializedConsoleMessagesDir) == true)
+                if (C1Directory.Exists(serializedConsoleMessagesDir) == true)
                 {
                     IXmlSerializer xmlSerializer = GetMessageListXmlSerializer();
 
-                    foreach (string xmlFilePath in Directory.GetFiles(serializedConsoleMessagesDir).OrderBy(f=>f))
+                    foreach (string xmlFilePath in C1Directory.GetFiles(serializedConsoleMessagesDir).OrderBy(f=>f))
                     {
                         try
                         {
@@ -211,7 +212,7 @@ namespace Composite.C1Console.Events.Foundation
                             }
                             else
                             {
-                                File.Delete(xmlFilePath); // cleaning up obsolete files
+                                C1File.Delete(xmlFilePath); // cleaning up obsolete files
                             }
                         }
                         catch (Exception ex)
@@ -220,7 +221,7 @@ namespace Composite.C1Console.Events.Foundation
 
                             try
                             {
-                                File.Delete(xmlFilePath); // Delete broken file
+                                C1File.Delete(xmlFilePath); // Delete broken file
                             }
                             catch // Ignore exceptions
                             {

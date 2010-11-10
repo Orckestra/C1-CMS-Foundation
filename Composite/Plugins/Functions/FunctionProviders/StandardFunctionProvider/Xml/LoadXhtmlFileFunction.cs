@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using Composite.Core.IO;
 using Composite.Core.Xml;
 using Composite.Functions;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+
 
 namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Xml
 {
@@ -19,10 +21,10 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         {
             string relativePath = parameters.GetParameter<string>("RelativePath");
 
-            string path = System.IO.Path.Combine(PathUtil.Resolve("~"), relativePath);
-            if (!File.Exists(path))
+            string path = Path.Combine(PathUtil.Resolve("~"), relativePath);
+            if (!C1File.Exists(path))
             {
-                throw new System.IO.FileNotFoundException("File not found. Ensure path is relative (that it does not start with '/').", path);
+                throw new FileNotFoundException("File not found. Ensure path is relative (that it does not start with '/').", path);
             }
 
             using (var streamReader = new Composite.Core.IO.StreamReader(path))

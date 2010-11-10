@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -1031,9 +1032,9 @@ namespace Composite.C1Console.Workflow
         {
             using (_resourceLocker.Locker)
             {
-                foreach (string filename in Directory.GetFiles(SerializedWorkflowsDirectory, "*.xml"))
+                foreach (string filename in C1Directory.GetFiles(SerializedWorkflowsDirectory, "*.xml"))
                 {
-                    string guidString = System.IO.Path.GetFileNameWithoutExtension(filename);
+                    string guidString = Path.GetFileNameWithoutExtension(filename);
                     Guid id = new Guid(guidString);
 
                     XDocument doc = XDocumentUtils.Load(filename);
@@ -1152,7 +1153,7 @@ namespace Composite.C1Console.Workflow
                 {
                     XElement element = kvp.Value.Serialize();
 
-                    string filename = System.IO.Path.Combine(SerializedWorkflowsDirectory, string.Format("{0}.xml", instanceid));
+                    string filename = Path.Combine(SerializedWorkflowsDirectory, string.Format("{0}.xml", instanceid));
 
                     XDocument doc = new XDocument(element);
                     XDocumentUtils.Save(doc, filename);
@@ -1185,11 +1186,11 @@ namespace Composite.C1Console.Workflow
         {
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
-                string filename = System.IO.Path.Combine(SerializedWorkflowsDirectory, string.Format("{0}.xml", instanceId));
+                string filename = Path.Combine(SerializedWorkflowsDirectory, string.Format("{0}.xml", instanceId));
 
-                if (File.Exists(filename) == true)
+                if (C1File.Exists(filename) == true)
                 {
-                    File.Delete(filename);
+                    C1File.Delete(filename);
 
                     LoggingService.LogVerbose("WorkflowFacade", string.Format("Persisted FormData deleted for workflow id = {0}", instanceId));
                 }
@@ -1202,15 +1203,15 @@ namespace Composite.C1Console.Workflow
         {
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
-                foreach (string filename in Directory.GetFiles(SerializedWorkflowsDirectory))
+                foreach (string filename in C1Directory.GetFiles(SerializedWorkflowsDirectory))
                 {
-                    DateTime creationTime = File.GetLastWriteTime(filename);
+                    DateTime creationTime = C1File.GetLastWriteTime(filename);
 
                     if (DateTime.Now.Subtract(creationTime) > _oldFileExistensTimeout)
                     {
-                        Guid instanceId = new Guid(System.IO.Path.GetFileNameWithoutExtension(filename));
+                        Guid instanceId = new Guid(Path.GetFileNameWithoutExtension(filename));
 
-                        if (System.IO.Path.GetExtension(filename) == "bin")
+                        if (Path.GetExtension(filename) == "bin")
                         {
                             try
                             {
@@ -1222,7 +1223,7 @@ namespace Composite.C1Console.Workflow
                             }
                         }
 
-                        File.Delete(filename);
+                        C1File.Delete(filename);
 
                         LoggingService.LogVerbose("WorkflowFacade", string.Format("Old workflow instance file deleted {0}", filename));
                     }
@@ -1237,9 +1238,9 @@ namespace Composite.C1Console.Workflow
             get
             {
                 string directory = PathUtil.Resolve(GlobalSettingsFacade.SerializedWorkflowsDirectory);
-                if (Directory.Exists(directory) == false)
+                if (C1Directory.Exists(directory) == false)
                 {
-                    Directory.CreateDirectory(directory);
+                    C1Directory.CreateDirectory(directory);
                 }
 
                 return directory;

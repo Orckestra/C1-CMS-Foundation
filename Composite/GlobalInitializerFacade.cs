@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -318,10 +319,10 @@ namespace Composite
                 List<KeyValuePair<bool, string>> zipFilenames = new List<KeyValuePair<bool, string>>();
 
                 string directory = PathUtil.Resolve(GlobalSettingsFacade.AutoPackageInstallDirectory);
-                if (Directory.Exists(directory) == true)
+                if (C1Directory.Exists(directory) == true)
                 {
                     LoggingService.LogVerbose("GlobalInitializerFacade", string.Format("Installing packages from: {0}", directory));
-                    zipFilenames.AddRange(Directory.GetFiles(directory, "*.zip").Select(f => new KeyValuePair<bool, string>(true, f)));
+                    zipFilenames.AddRange(C1Directory.GetFiles(directory, "*.zip").Select(f => new KeyValuePair<bool, string>(true, f)));
                 }
                 else
                 {
@@ -330,11 +331,11 @@ namespace Composite
 
                 if (RuntimeInformation.IsDebugBuild == true)
                 {
-                    string workflowTestDir = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.AutoPackageInstallDirectory), "WorkflowTesting");
-                    if (Directory.Exists(workflowTestDir))
+                    string workflowTestDir = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.AutoPackageInstallDirectory), "WorkflowTesting");
+                    if (C1Directory.Exists(workflowTestDir))
                     {
                         LoggingService.LogVerbose("GlobalInitializerFacade", string.Format("Installing packages from: {0}", workflowTestDir));
-                        zipFilenames.AddRange(Directory.GetFiles(workflowTestDir, "*.zip").OrderBy(f => f).Select(f => new KeyValuePair<bool, string>(false, f)));                        
+                        zipFilenames.AddRange(C1Directory.GetFiles(workflowTestDir, "*.zip").OrderBy(f => f).Select(f => new KeyValuePair<bool, string>(false, f)));                        
                     }                    
                 }
 
@@ -343,7 +344,7 @@ namespace Composite
                 {
                     try
                     {
-                        using (System.IO.Stream zipFileStream = File.OpenRead(kvp.Value))
+                        using (Stream zipFileStream = C1File.OpenRead(kvp.Value))
                         {
                             // TODO: Log validation messages
                             PackageManagerInstallProcess packageManagerInstallProcess = PackageManager.Install(zipFileStream, true);

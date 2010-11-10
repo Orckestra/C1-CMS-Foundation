@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 //using System.Configuration;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Transactions;
@@ -417,9 +418,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                 store.Stores = new Dictionary<string, Dictionary<string, XmlDataProviderCodeGeneratorStore.StoreInformaion>>();
 
                 string resolvedDirectoryPath = PathUtil.Resolve(_storeDirectory);
-                if (Directory.Exists(resolvedDirectoryPath) == false)
+                if (C1Directory.Exists(resolvedDirectoryPath) == false)
                 {
-                    Directory.CreateDirectory(resolvedDirectoryPath);
+                    C1Directory.CreateDirectory(resolvedDirectoryPath);
                 }
 
                 foreach (DataScopeConfigurationElement storeElement in element.ConfigurationStores)
@@ -429,9 +430,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                         store.DataScopes.Add(storeElement.DataScope);
                     }
 
-                    string filename = PathUtil.Resolve(System.IO.Path.Combine(_storeDirectory, storeElement.Filename));
+                    string filename = PathUtil.Resolve(Path.Combine(_storeDirectory, storeElement.Filename));
 
-                    if (File.Exists(filename) == false)
+                    if (C1File.Exists(filename) == false)
                     {
                         XDocument document = new XDocument();
                         document.Add(new XElement(string.Format("{0}s", storeElement.DataScope)));
@@ -529,7 +530,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         {
             XmlDataProviderData data = (XmlDataProviderData)objectConfiguration;            
 
-            Configuration configuration = Configuration.Load(System.IO.Path.Combine(configurationFolderPath, string.Format("{0}.config", data.Name)));
+            Configuration configuration = Configuration.Load(Path.Combine(configurationFolderPath, string.Format("{0}.config", data.Name)));
 
             XmlDataProviderConfigurationSection section = configuration.GetSection(XmlDataProviderConfigurationSection.SectionName) as XmlDataProviderConfigurationSection;
             if (section == null)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using Composite.Core.IO;
 using Composite.Data;
@@ -33,8 +34,8 @@ namespace Composite.Core.PackageSystem
 
         static PackageServerFacade()
         {
-            string testFilePath = System.IO.Path.Combine(PathUtil.Resolve(PathUtil.BaseDirectory), "App_Data/Composite/AddOnDescriptions.xml");
-            if (File.Exists(testFilePath) == true)
+            string testFilePath = Path.Combine(PathUtil.Resolve(PathUtil.BaseDirectory), "App_Data/Composite/AddOnDescriptions.xml");
+            if (C1File.Exists(testFilePath) == true)
             {
                 _packageServerFacade = new PackageServerFacadeLocalMock(testFilePath);
             }
@@ -103,7 +104,7 @@ namespace Composite.Core.PackageSystem
 
 
 
-        public static System.IO.Stream GetInstallFileStream(string packageFileDownloadUrl)
+        public static Stream GetInstallFileStream(string packageFileDownloadUrl)
         {
             return _packageServerFacade.GetInstallFileStream(packageFileDownloadUrl);
         }

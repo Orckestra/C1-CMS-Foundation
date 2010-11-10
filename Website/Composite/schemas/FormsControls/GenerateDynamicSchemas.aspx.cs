@@ -12,7 +12,7 @@ public partial class Composite_schemas_FormsControls_GenerateDynamicSchemas : Sy
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        var xsdFiles = Directory.GetFiles(this.MapPath(""), "*.xsd");
+        var xsdFiles = C1Directory.GetFiles(this.MapPath(""), "*.xsd");
 
         XElement xsdFilesTable = new XElement("table",
             new XElement("tr",
@@ -21,7 +21,7 @@ public partial class Composite_schemas_FormsControls_GenerateDynamicSchemas : Sy
 
         foreach( string xsdFile in xsdFiles)
         {
-            DateTime lastWrite = File.GetLastWriteTime(xsdFile);
+            DateTime lastWrite = C1File.GetLastWriteTime(xsdFile);
 
             XDocument schemaDocument = XDocumentUtils.Load(xsdFile);
             string targetNamespace = schemaDocument.Root.Attribute("targetNamespace").Value;

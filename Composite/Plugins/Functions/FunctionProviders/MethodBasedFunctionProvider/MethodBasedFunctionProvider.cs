@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
@@ -89,7 +90,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
         }
 
 
-        void CodeFileDirectoryWatcher_Changed(object sender, System.IO.FileSystemEventArgs e)
+        void CodeFileDirectoryWatcher_Changed(object sender, FileSystemEventArgs e)
         {
             // Checking for null since it is possible that event will be raised before the provider is fully initialized
             if (_functionNotifier != null)
@@ -103,9 +104,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
         {
             public readonly object SyncRoot = new object();
             public event DataEventHandler DataChangedEvent;
-            public event System.IO.FileSystemEventHandler FileChangedEvent;
+            public event FileSystemEventHandler FileChangedEvent;
 
-            private readonly FileSystemWatcher _codeDirectoryFileSystemWatcher;
+            private readonly Composite.Core.IO.FileSystemWatcher _codeDirectoryFileSystemWatcher;
             private DateTime _lastWriteHandleTime = DateTime.MinValue;
             private object _fileUpdateLock = new object();
 
@@ -121,9 +122,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
                 DirectoryUtil.EnsureDirectoryExists(folderToWatch);
 
-                _codeDirectoryFileSystemWatcher = new FileSystemWatcher(folderToWatch)
+                _codeDirectoryFileSystemWatcher = new Composite.Core.IO.FileSystemWatcher(folderToWatch)
                 {
-                    NotifyFilter = System.IO.NotifyFilters.LastWrite,
+                    NotifyFilter = NotifyFilters.LastWrite,
                     EnableRaisingEvents = true,
                     IncludeSubdirectories = true
                 };
@@ -131,9 +132,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                 _codeDirectoryFileSystemWatcher.Changed += OnFileWatcherEvent;
             }
 
-            void OnFileWatcherEvent(object sender, System.IO.FileSystemEventArgs e)
+            void OnFileWatcherEvent(object sender, FileSystemEventArgs e)
             {
-                System.IO.FileSystemEventHandler hander = FileChangedEvent;
+                FileSystemEventHandler hander = FileChangedEvent;
                 if (hander != null)
                 {
                     lock (_fileUpdateLock)
@@ -142,7 +143,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                         if (fileExists)
                         {
                             // Supress multiple events fireing by observing last write time
-                            DateTime writeTime = File.GetLastWriteTime(e.FullPath);
+                            DateTime writeTime = C1File.GetLastWriteTime(e.FullPath);
                             if (_lastWriteHandleTime < writeTime)
                             {
                                 _lastWriteHandleTime = writeTime;

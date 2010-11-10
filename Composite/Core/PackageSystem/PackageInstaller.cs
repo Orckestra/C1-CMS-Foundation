@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Transactions;
 using System.Xml.Linq;
@@ -113,7 +114,7 @@ namespace Composite.Core.PackageSystem
         {
             using (TransactionScope transactionScope = TransactionsFacade.Create(true, TimeSpan.FromMinutes(30.0)))
             {
-                string uninstallFilename = System.IO.Path.Combine(this.AddOnInstallDirectory,
+                string uninstallFilename = Path.Combine(this.AddOnInstallDirectory,
                                                         PackageSystemSettings.UninstallFilename);
 
                 Exception installException = null;
@@ -267,11 +268,11 @@ namespace Composite.Core.PackageSystem
 
         private IEnumerable<PackageFragmentValidationResult> LoadAddOnFragmentInstallerBinaries(XElement packageFragmentInstallerBinariesElement)
         {
-            string binariesDirectory = System.IO.Path.Combine(this.AddOnInstallDirectory, PackageSystemSettings.BinariesDirectoryName);
+            string binariesDirectory = Path.Combine(this.AddOnInstallDirectory, PackageSystemSettings.BinariesDirectoryName);
 
-            if (Directory.Exists(binariesDirectory) == false)
+            if (C1Directory.Exists(binariesDirectory) == false)
             {
-                Directory.CreateDirectory(binariesDirectory);
+                C1Directory.CreateDirectory(binariesDirectory);
             }
 
             foreach (XElement element in packageFragmentInstallerBinariesElement.Elements(XmlUtils.GetXName(PackageSystemSettings.XmlNamespace, PackageSystemSettings.PackageFragmentInstallerBinariesAddElementName)))
@@ -279,17 +280,17 @@ namespace Composite.Core.PackageSystem
                 XAttribute pathAttribute = element.Attribute(PackageSystemSettings.PathAttributeName);
 
                 string sourceFilename = pathAttribute.Value;
-                string targetFilename = System.IO.Path.Combine(binariesDirectory, System.IO.Path.GetFileName(sourceFilename));
+                string targetFilename = Path.Combine(binariesDirectory, Path.GetFileName(sourceFilename));
 
                 ZipFileSystem zipFileSystem = new ZipFileSystem(this.ZipFilename);
                 if (zipFileSystem.ContainsFile(sourceFilename) == false) { yield return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("The file '{0}' is missing from the zipfile", sourceFilename)); continue; }
 
-                if (File.Exists(targetFilename) == true) { yield return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("The file '{0}' already exists", targetFilename)); continue; }
+                if (C1File.Exists(targetFilename) == true) { yield return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("The file '{0}' already exists", targetFilename)); continue; }
 
                 zipFileSystem.WriteFileToDisk(sourceFilename, targetFilename);
 
-                string newTargetFilename = System.IO.Path.Combine(this.TempDirectory, System.IO.Path.GetFileName(targetFilename));
-                File.Copy(targetFilename, newTargetFilename);
+                string newTargetFilename = Path.Combine(this.TempDirectory, Path.GetFileName(targetFilename));
+                C1File.Copy(targetFilename, newTargetFilename);
 
                 LoggingService.LogVerbose("AddOnInstaller", string.Format("Loading package uninstaller fragment assembly '{0}'", newTargetFilename));
                 BuildManager.LoadAssemlby(newTargetFilename);

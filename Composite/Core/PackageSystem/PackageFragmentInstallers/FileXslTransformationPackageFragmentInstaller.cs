@@ -117,7 +117,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 								  };
 				}
 
-                if(!File.Exists(PathUtil.Resolve(xslFile.InputXmlPath)))
+                if(!C1File.Exists(PathUtil.Resolve(xslFile.InputXmlPath)))
                 {
                     if(skipIfNotExist) continue;
 
@@ -128,7 +128,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 }
 
                 string outputXmlFullPath = PathUtil.Resolve(xslFile.OutputXmlPath);
-                if (File.Exists(outputXmlFullPath) && (File.GetAttributes(outputXmlFullPath) & System.IO.FileAttributes.ReadOnly) > 0)
+                if (C1File.Exists(outputXmlFullPath) && (C1File.GetAttributes(outputXmlFullPath) & System.IO.FileAttributes.ReadOnly) > 0)
                 {
                     validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
                             GetResourceString("FileAddOnFragmentInstaller.FileReadOnly").FormatWith(xslFile.OutputXmlPath),

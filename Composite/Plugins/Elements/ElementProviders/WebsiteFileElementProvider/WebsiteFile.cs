@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using Composite.Core.IO;
 
 
@@ -26,7 +27,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             {
                 if (_filename == null)
                 {
-                    _filename = System.IO.Path.GetFileName(this.FullPath);
+                    _filename = Path.GetFileName(this.FullPath);
                 }
 
                 return _filename;
@@ -40,7 +41,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             {
                 if (_mimeTypeInfo == null)
                 {
-                    _mimeTypeInfo = MimeTypeInfo.GetCanonicalFromExtension(System.IO.Path.GetExtension(this.FullPath));
+                    _mimeTypeInfo = MimeTypeInfo.GetCanonicalFromExtension(Path.GetExtension(this.FullPath));
                 }
 
                 return _mimeTypeInfo;
@@ -51,7 +52,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
         public string ReadAllText()
         {
-            return File.ReadAllText(this.FullPath);
+            return C1File.ReadAllText(this.FullPath);
         }
 
 
@@ -62,7 +63,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             {
                 if (isReadOnly.HasValue == false)
                 {
-                    isReadOnly = (File.GetAttributes(this.FullPath) & System.IO.FileAttributes.ReadOnly) == System.IO.FileAttributes.ReadOnly;
+                    isReadOnly = (C1File.GetAttributes(this.FullPath) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
                 }
 
                 return isReadOnly.Value; 
@@ -74,7 +75,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         public void WriteAllText(string content)
         {
             // Default encode is Composite.Core.IO.StreamWriter.UTF8NoBOM, which is UTF8 without encoding signature
-            File.WriteAllText(this.FullPath, content, Encoding.UTF8);
+            C1File.WriteAllText(this.FullPath, content, Encoding.UTF8);
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -9,7 +10,6 @@ using System.Workflow.Runtime.Hosting;
 using Composite.Core.IO;
 using Composite.Core.Logging;
 using Composite.Core.Types;
-using System.IO;
 
 
 namespace Composite.C1Console.Workflow
@@ -63,11 +63,11 @@ namespace Composite.C1Console.Workflow
         {
             string filename = GetFileName(instanceId);
 
-            if (Composite.Core.IO.File.Exists(filename) == true)
+            if (C1File.Exists(filename) == true)
             {
                 try
                 {
-                    Composite.Core.IO.File.Delete(filename);
+                    C1File.Delete(filename);
 
                     LoggingService.LogVerbose("FileWorkFlowPersisetenceService", string.Format("Workflow persisted state deleted. Id = {0}", instanceId));
                 }
@@ -102,7 +102,7 @@ namespace Composite.C1Console.Workflow
                 string filename = GetFileName(instanceId);
                 LoggingService.LogCritical(LogTitle, ex);
                 LoggingService.LogWarning(LogTitle, string.Format("Failed to load workflow with id '{0}'. Deleting file.", filename));
-                Composite.Core.IO.File.Delete(filename);
+                C1File.Delete(filename);
 
                 MarkWorkflowAsAborted(instanceId);
                 return null;

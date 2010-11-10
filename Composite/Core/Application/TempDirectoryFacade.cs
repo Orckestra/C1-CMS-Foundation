@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
 
@@ -13,9 +14,9 @@ namespace Composite.Core.Application
     {
         public static string CreateTempDirectory()
         {
-            string directory = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), Guid.NewGuid().ToString());
+            string directory = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), Guid.NewGuid().ToString());
 
-            Directory.CreateDirectory(directory);
+            C1Directory.CreateDirectory(directory);
 
             return directory;
         }
@@ -25,9 +26,9 @@ namespace Composite.Core.Application
         {
             string tempDirectoryName = PathUtil.Resolve(GlobalSettingsFacade.TempDirectory);
 
-            if (Directory.Exists(tempDirectoryName) == false)
+            if (C1Directory.Exists(tempDirectoryName) == false)
             {
-                Directory.CreateDirectory(tempDirectoryName);
+                C1Directory.CreateDirectory(tempDirectoryName);
             }
         }
 
@@ -36,15 +37,15 @@ namespace Composite.Core.Application
         {
             string tempDirectoryName = PathUtil.Resolve(GlobalSettingsFacade.TempDirectory);
 
-            if (Directory.Exists(tempDirectoryName) == true)
+            if (C1Directory.Exists(tempDirectoryName) == true)
             {
-                foreach (string filename in Directory.GetFiles(tempDirectoryName))
+                foreach (string filename in C1Directory.GetFiles(tempDirectoryName))
                 {
                     try
                     {
-                        if (File.GetCreationTime(filename) > DateTime.Now + TimeSpan.FromHours(24.0))
+                        if (C1File.GetCreationTime(filename) > DateTime.Now + TimeSpan.FromHours(24.0))
                         {
-                            File.Delete(filename);
+                            C1File.Delete(filename);
                         }
                     }
                     catch (Exception)
@@ -52,14 +53,14 @@ namespace Composite.Core.Application
                     }
                 }
 
-                foreach (string directoryPath in Directory.GetDirectories(tempDirectoryName))
+                foreach (string directoryPath in C1Directory.GetDirectories(tempDirectoryName))
                 {
                     try
                     {
 
-                        if (Directory.GetCreationTime(directoryPath) > DateTime.Now + TimeSpan.FromHours(24.0))
+                        if (C1Directory.GetCreationTime(directoryPath) > DateTime.Now + TimeSpan.FromHours(24.0))
                         {
-                            Directory.Delete(directoryPath, true);
+                            C1Directory.Delete(directoryPath, true);
                         }
                     }
                     catch (Exception)

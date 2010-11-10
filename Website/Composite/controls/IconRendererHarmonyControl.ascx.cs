@@ -16,7 +16,7 @@ public partial class IconRendererHarmonyControl : System.Web.UI.UserControl
         }
 
         string path = System.IO.Path.Combine(PathUtil.Resolve(PathUtil.BaseDirectory), "Composite\\images\\icons\\harmony");
-        string[] dirEntries = Directory.GetDirectories(path);
+        string[] dirEntries = C1Directory.GetDirectories(path);
 
         StringBuilder builder = new StringBuilder();
 
@@ -31,7 +31,7 @@ public partial class IconRendererHarmonyControl : System.Web.UI.UserControl
                 "</ui:pageheading>"
             );
 
-            string[] fileEntries = Directory.GetFiles(dirName);
+            string[] fileEntries = C1Directory.GetFiles(dirName);
             foreach (string fileName in fileEntries)
             {
                 if (fileName.Contains("_" + size))

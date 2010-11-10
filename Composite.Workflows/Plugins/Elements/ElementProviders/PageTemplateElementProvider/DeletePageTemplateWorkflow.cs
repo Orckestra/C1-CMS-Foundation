@@ -44,11 +44,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 if(file != null && file is FileSystemFileBase)
                 {
                     FileSystemFileBase baseFile = file as FileSystemFileBase;
-                    File.Delete(baseFile.SystemPath);
+                    C1File.Delete(baseFile.SystemPath);
 
                     try
                     {
-                        File.Delete(baseFile.SystemPath);
+                        C1File.Delete(baseFile.SystemPath);
                     }
                     catch
                     {

@@ -44,7 +44,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             string currentPath = GetCurrentPath();
             string newFileName = this.GetBinding<string>("NewFileName");
 
-            e.Result = Composite.Core.IO.File.Exists(Path.Combine(currentPath, newFileName));
+            e.Result = C1File.Exists(Path.Combine(currentPath, newFileName));
         }
 
 
@@ -68,7 +68,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             string currentPath = GetCurrentPath();
             string newFileName = this.GetBinding<string>("NewFileName");
 
-            using (C1FileStream fs = Composite.Core.IO.File.Create(Path.Combine(currentPath, newFileName)))
+            using (C1FileStream fs = C1File.Create(Path.Combine(currentPath, newFileName)))
             { }
 
             SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();

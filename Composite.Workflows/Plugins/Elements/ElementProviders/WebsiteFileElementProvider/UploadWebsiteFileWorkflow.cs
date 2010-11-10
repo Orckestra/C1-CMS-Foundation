@@ -85,7 +85,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
                 string fullFilename = System.IO.Path.Combine(currentPath, filename);
 
-                if (Composite.Core.IO.File.Exists(fullFilename) == true)
+                if (C1File.Exists(fullFilename) == true)
                 {
                     FileEx.Delete(fullFilename);
                 }

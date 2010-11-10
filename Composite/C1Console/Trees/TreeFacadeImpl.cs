@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -65,7 +66,7 @@ namespace Composite.C1Console.Trees
                 LoadAllTrees();
                 InitializeTreeAttachmentPoints();
 
-                _resourceLocker.Resources.FileSystemWatcher = new FileSystemWatcher(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), "*.xml");
+                _resourceLocker.Resources.FileSystemWatcher = new Composite.Core.IO.FileSystemWatcher(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), "*.xml");
                 _resourceLocker.Resources.FileSystemWatcher.Created += OnReloadTrees;
                 _resourceLocker.Resources.FileSystemWatcher.Deleted += OnReloadTrees;
                 _resourceLocker.Resources.FileSystemWatcher.Changed += OnReloadTrees;
@@ -160,9 +161,9 @@ namespace Composite.C1Console.Trees
 
         public Tree LoadTreeFromDom(string treeId, XDocument document)
         {
-            string xslFilename = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), XslFilename);
+            string xslFilename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), XslFilename);
 
-            if (File.Exists(xslFilename) == true)
+            if (C1File.Exists(xslFilename) == true)
             {
                 try
                 {
@@ -208,7 +209,7 @@ namespace Composite.C1Console.Trees
 
 
 
-        private void OnReloadTrees(object sender, System.IO.FileSystemEventArgs e)
+        private void OnReloadTrees(object sender, FileSystemEventArgs e)
         {
             if (HostingEnvironment.ApplicationHost.ShutdownInitiated())
             {
@@ -240,9 +241,9 @@ namespace Composite.C1Console.Trees
 
                 LoggingService.LogVerbose("TreeFacade", string.Format("Loading all tree definitions from {0}", PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory)));
 
-                foreach (string filename in Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), "*.xml"))
+                foreach (string filename in C1Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), "*.xml"))
                 {
-                    string treeId = System.IO.Path.GetFileName(filename);
+                    string treeId = Path.GetFileName(filename);
 
                     try
                     {
@@ -338,7 +339,7 @@ namespace Composite.C1Console.Trees
 
         private Tree LoadTreeFromFile(string treeId)
         {
-            string filename = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), treeId);
+            string filename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), treeId);
                         
             for (int i = 0; i < 10; i++)
             {
@@ -347,7 +348,7 @@ namespace Composite.C1Console.Trees
                     XDocument document = XDocumentUtils.Load(filename);
                     return LoadTreeFromDom(treeId, document);
                 }
-                catch (System.IO.IOException)
+                catch (IOException)
                 {
                     Thread.Sleep(100);
                 }
@@ -517,8 +518,8 @@ namespace Composite.C1Console.Trees
                 Tree tree = GetTree(attachmentPoint.TreeId);
                 if (tree == null)
                 {
-                    string treePath = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), attachmentPoint.TreeId);
-                    if (File.Exists(treePath) == false) // This ensures that invalid, but existing trees does not remove these attachment points
+                    string treePath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), attachmentPoint.TreeId);
+                    if (C1File.Exists(treePath) == false) // This ensures that invalid, but existing trees does not remove these attachment points
                     {
                         if (DataFacade.WillDeleteSucceed(attachmentPoint) == true)
                         {
@@ -601,7 +602,7 @@ namespace Composite.C1Console.Trees
         {
             public Dictionary<string, Tree> Trees { get; set; }
             public Dictionary<string, List<IAttachmentPoint>> PersistentAttachmentPoints { get; set; }
-            public FileSystemWatcher FileSystemWatcher { get; set; }
+            public Composite.Core.IO.FileSystemWatcher FileSystemWatcher { get; set; }
             public DateTime LastFileChange { get; set; }
             public EntityToken RootEntityToken { get; set; }
 

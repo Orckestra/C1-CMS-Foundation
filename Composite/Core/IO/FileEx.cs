@@ -1,4 +1,5 @@
-﻿
+﻿using System.IO;
+
 
 namespace Composite.Core.IO
 {
@@ -10,14 +11,14 @@ namespace Composite.Core.IO
     {
         public static bool RemoveReadOnly(string filePath)
         {
-            if (File.Exists(filePath) == false) return false;
+            if (C1File.Exists(filePath) == false) return false;
 
-            System.IO.FileAttributes fileAttributes = File.GetAttributes(filePath);
+            FileAttributes fileAttributes = C1File.GetAttributes(filePath);
 
             if ((fileAttributes & System.IO.FileAttributes.ReadOnly) == System.IO.FileAttributes.ReadOnly)
             {
                 fileAttributes ^= System.IO.FileAttributes.ReadOnly;
-                File.SetAttributes(filePath, fileAttributes);
+                C1File.SetAttributes(filePath, fileAttributes);
             }
 
             return true;
@@ -27,10 +28,10 @@ namespace Composite.Core.IO
 
         public static void Delete(string filePath)
         {
-            if (File.Exists(filePath) == true)
+            if (C1File.Exists(filePath) == true)
             {
                 RemoveReadOnly(filePath);
-                File.Delete(filePath);
+                C1File.Delete(filePath);
             }
         }
     }

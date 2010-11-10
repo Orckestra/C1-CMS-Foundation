@@ -7,7 +7,7 @@ namespace Composite.Core.IO
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    public static class Directory
+    public static class Directory11
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "The implementation may use it")]
         public static System.IO.DirectoryInfo CreateDirectory(string path)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Composite.C1Console.Workflow;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
@@ -141,9 +142,9 @@ namespace Composite.C1Console.Trees.Workflows
             }
 
 
-            string filename = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), definitionName + ".xml");
+            string filename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), definitionName + ".xml");
 
-            File.WriteAllText(filename, template);
+            C1File.WriteAllText(filename, template);
 
             this.RefreshRootEntityToken();
         }
@@ -154,9 +155,9 @@ namespace Composite.C1Console.Trees.Workflows
         {
             string definitionName = this.GetBinding<string>("DefinitionName");
 
-            string filename = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), definitionName + ".xml");
+            string filename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), definitionName + ".xml");
 
-            e.Result = File.Exists(filename) == false;
+            e.Result = C1File.Exists(filename) == false;
 
             if (e.Result == false)
             {
