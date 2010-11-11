@@ -466,8 +466,12 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Compile Include="Composite\services\Installation\InstallationService.asmx" />
-    <Compile Include="Composite\services\Setup\SetupService.asmx" />
+    <Content Include="Composite\services\Installation\InstallationService.asmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Composite\services\Setup\SetupService.asmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="default.aspx" />
@@ -5525,22 +5529,54 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Renderers\Captcha.ashx" />
-    <Compile Include="Composite\services\Configuration\ConfigurationService.asmx" />
-    <Compile Include="Composite\services\ConsoleMessageQueue\ConsoleMessageQueueServices.asmx" />
-    <Compile Include="Composite\services\FlowController\FlowControllerServices.asmx" />
-    <Compile Include="Composite\services\Localization\LocalizationService.asmx" />
-    <Compile Include="Composite\services\Login\Login.asmx" />
-    <Compile Include="Composite\services\Page\PageService.asmx" />
-    <Compile Include="Composite\services\Ready\ReadyService.asmx" />
-    <Compile Include="Composite\services\SearchEngineOptimizationKeyword\SearchEngineOptimizationKeyword.asmx" />
-    <Compile Include="Composite\services\SourceEditor\MarkupFormatService.asmx" />
-    <Compile Include="Composite\services\SourceEditor\SourceValidationService.asmx" />
-    <Compile Include="Composite\services\StringResource\DiffService.asmx" />
-    <Compile Include="Composite\services\StringResource\StringService.asmx" />
-    <Compile Include="Composite\services\Tree\SecurityServices.asmx" />
-    <Compile Include="Composite\services\Tree\TreeServices.asmx" />
-    <Compile Include="Composite\services\WysiwygEditor\ConfigurationServices.asmx" />
-    <Compile Include="Composite\services\WysiwygEditor\XhtmlTransformations.asmx" />
+    <Content Include="Composite\services\Configuration\ConfigurationService.asmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Composite\services\ConsoleMessageQueue\ConsoleMessageQueueServices.asmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Composite\services\FlowController\FlowControllerServices.asmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Composite\services\Localization\LocalizationService.asmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Composite\services\Login\Login.asmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Composite\services\Page\PageService.asmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Composite\services\Ready\ReadyService.asmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Composite\services\SearchEngineOptimizationKeyword\SearchEngineOptimizationKeyword.asmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Composite\services\SourceEditor\MarkupFormatService.asmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Composite\services\SourceEditor\SourceValidationService.asmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Composite\services\StringResource\DiffService.asmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Composite\services\StringResource\StringService.asmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Composite\services\Tree\SecurityServices.asmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Composite\services\Tree\TreeServices.asmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Composite\services\WysiwygEditor\ConfigurationServices.asmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Composite\services\WysiwygEditor\XhtmlTransformations.asmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Composite.Workflows\Composite.Workflows.csproj">
