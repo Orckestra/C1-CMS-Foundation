@@ -1,4 +1,4 @@
-﻿<%@ WebService Language="C#" Class="LocalizationService" %>
+﻿<%@ WebService Language="C#" Class="Composite.Services.LocalizationService" %>
 
 using System;
 using System.Linq;
@@ -18,109 +18,112 @@ using Composite.C1Console.Security;
 using Composite.Data.Types;
 
 
-[WebService(Namespace = "http://www.composite.net/ns/management")]
-[SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
-public class LocalizationService : System.Web.Services.WebService
+namespace Composite.Services
 {
-    private static PermissionType[]  _changeOwnActiveLocalePermissionType = new PermissionType[] { };
-
-    
-    
-    public LocalizationService()
+    [WebService(Namespace = "http://www.composite.net/ns/management")]
+    [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
+    public class LocalizationService : System.Web.Services.WebService
     {
-    }
+        private static PermissionType[] _changeOwnActiveLocalePermissionType = new PermissionType[] { };
 
-    
 
-    [WebMethod]
-    public ClientLocales GetLocales(bool dummy)
-    {
-        ClientLocales clientLocales = new ClientLocales();
 
-        if (UserSettings.ActiveLocaleCultureInfos.Count() >= 2)
+        public LocalizationService()
         {
-            if (UserSettings.ActiveLocaleCultureInfo != null) clientLocales.ActiveLocaleName = StringResourceSystemFacade.GetString("Composite.Cultures", UserSettings.ActiveLocaleCultureInfo.Name);
-            if (UserSettings.ForeignLocaleCultureInfo != null) clientLocales.ForeignLocaleName = StringResourceSystemFacade.GetString("Composite.Cultures", UserSettings.ForeignLocaleCultureInfo.Name);
         }
 
-        return clientLocales;
-    }
 
 
-
-    [WebMethod]
-    public List<ClientLocale> GetActiveLocales(bool dummy)
-    {
-        List<ClientLocale> clientLocales = new List<ClientLocale>();
-        
-        foreach (CultureInfo cultureInfo in UserSettings.ActiveLocaleCultureInfos)
+        [WebMethod]
+        public ClientLocales GetLocales(bool dummy)
         {
-            ClientLocale clientLocale = new ClientLocale();
+            ClientLocales clientLocales = new ClientLocales();
 
-            clientLocale.Name = StringResourceSystemFacade.GetString("Composite.Cultures", cultureInfo.Name);
-            clientLocale.IsoName = cultureInfo.Name;
-            clientLocale.UrlMappingName = DataLocalizationFacade.GetUrlMappingName(cultureInfo);
-            clientLocale.IsCurrent = cultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo);
-
-            ActionToken actionToken = new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Users.Workflows.ChangeOwnActiveLocaleWorkflow"), _changeOwnActiveLocalePermissionType) { Payload = cultureInfo.Name };
-            clientLocale.SerializedActionToken = ActionTokenSerializer.Serialize(actionToken, true);
-            
-            clientLocales.Add(clientLocale);
-        }
-
-        return clientLocales;
-    }
-    
-    
-
-    [WebMethod]
-    public List<string> GetLocaleAwarePerspectiveElements(bool dummy)
-    {
-        return TreeServicesFacade.GetLocaleAwarePerspectiveElements(null);
-    }
-
-
-
-    [WebMethod]
-    public List<PageLocale> GetPageOtherLocales(string url)
-    {
-        var pageUrl = PageUrl.Parse(url);
-        if (pageUrl == null)
-        {
-            return new List<PageLocale>(); 
-        }
-
-        var urlBuilder = new UrlBuilder(url);
-        
-        List<PageLocale> pageLocales = new List<PageLocale>();
-
-        foreach (CultureInfo locale in UserSettings.ActiveLocaleCultureInfos)
-        {
-            bool exists = false;
-            using (DataConnection dataConnection = new DataConnection(pageUrl.PublicationScope, locale))
+            if (UserSettings.ActiveLocaleCultureInfos.Count() >= 2)
             {
-                exists = dataConnection.Get<IPage>().Any(page => page.Id == pageUrl.PageId);
+                if (UserSettings.ActiveLocaleCultureInfo != null) clientLocales.ActiveLocaleName = StringResourceSystemFacade.GetString("Composite.Cultures", UserSettings.ActiveLocaleCultureInfo.Name);
+                if (UserSettings.ForeignLocaleCultureInfo != null) clientLocales.ForeignLocaleName = StringResourceSystemFacade.GetString("Composite.Cultures", UserSettings.ForeignLocaleCultureInfo.Name);
             }
 
-            if (!exists) continue;
-
-            PageLocale pageLocale = new PageLocale();
-
-            pageLocale.Name = StringResourceSystemFacade.GetString("Composite.Cultures", locale.Name);
-            pageLocale.IsoName = locale.Name;
-            pageLocale.UrlMappingName = DataLocalizationFacade.GetUrlMappingName(locale);
-            pageLocale.IsCurrent = locale.Equals(pageUrl.Locale);
-
-            PageUrl pageUrl2 = new PageUrl(pageUrl.PublicationScope, locale, pageUrl.PageId);
-
-            UrlBuilder newUrlBuilder = pageUrl2.Build(PageUrlType.Published) ?? pageUrl2.Build(PageUrlType.Unpublished);
-            newUrlBuilder.ServerUrl = urlBuilder.ServerUrl;
-            
-            pageLocale.Url = newUrlBuilder.ToString();
-
-            pageLocales.Add(pageLocale);
+            return clientLocales;
         }
-        
-        return pageLocales;
+
+
+
+        [WebMethod]
+        public List<ClientLocale> GetActiveLocales(bool dummy)
+        {
+            List<ClientLocale> clientLocales = new List<ClientLocale>();
+
+            foreach (CultureInfo cultureInfo in UserSettings.ActiveLocaleCultureInfos)
+            {
+                ClientLocale clientLocale = new ClientLocale();
+
+                clientLocale.Name = StringResourceSystemFacade.GetString("Composite.Cultures", cultureInfo.Name);
+                clientLocale.IsoName = cultureInfo.Name;
+                clientLocale.UrlMappingName = DataLocalizationFacade.GetUrlMappingName(cultureInfo);
+                clientLocale.IsCurrent = cultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo);
+
+                ActionToken actionToken = new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Users.Workflows.ChangeOwnActiveLocaleWorkflow"), _changeOwnActiveLocalePermissionType) { Payload = cultureInfo.Name };
+                clientLocale.SerializedActionToken = ActionTokenSerializer.Serialize(actionToken, true);
+
+                clientLocales.Add(clientLocale);
+            }
+
+            return clientLocales;
+        }
+
+
+
+        [WebMethod]
+        public List<string> GetLocaleAwarePerspectiveElements(bool dummy)
+        {
+            return TreeServicesFacade.GetLocaleAwarePerspectiveElements(null);
+        }
+
+
+
+        [WebMethod]
+        public List<PageLocale> GetPageOtherLocales(string url)
+        {
+            var pageUrl = PageUrl.Parse(url);
+            if (pageUrl == null)
+            {
+                return new List<PageLocale>();
+            }
+
+            var urlBuilder = new UrlBuilder(url);
+
+            List<PageLocale> pageLocales = new List<PageLocale>();
+
+            foreach (CultureInfo locale in UserSettings.ActiveLocaleCultureInfos)
+            {
+                bool exists = false;
+                using (DataConnection dataConnection = new DataConnection(pageUrl.PublicationScope, locale))
+                {
+                    exists = dataConnection.Get<IPage>().Any(page => page.Id == pageUrl.PageId);
+                }
+
+                if (!exists) continue;
+
+                PageLocale pageLocale = new PageLocale();
+
+                pageLocale.Name = StringResourceSystemFacade.GetString("Composite.Cultures", locale.Name);
+                pageLocale.IsoName = locale.Name;
+                pageLocale.UrlMappingName = DataLocalizationFacade.GetUrlMappingName(locale);
+                pageLocale.IsCurrent = locale.Equals(pageUrl.Locale);
+
+                PageUrl pageUrl2 = new PageUrl(pageUrl.PublicationScope, locale, pageUrl.PageId);
+
+                UrlBuilder newUrlBuilder = pageUrl2.Build(PageUrlType.Published) ?? pageUrl2.Build(PageUrlType.Unpublished);
+                newUrlBuilder.ServerUrl = urlBuilder.ServerUrl;
+
+                pageLocale.Url = newUrlBuilder.ToString();
+
+                pageLocales.Add(pageLocale);
+            }
+
+            return pageLocales;
+        }
     }
 }

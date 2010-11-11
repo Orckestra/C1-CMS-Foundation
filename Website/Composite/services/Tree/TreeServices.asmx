@@ -1,4 +1,4 @@
-<%@ WebService Language="C#" Class="TreeServices" %>
+<%@ WebService Language="C#" Class="Composite.Services.TreeServices" %>
 
 using System;
 using System.Linq;
@@ -26,238 +26,240 @@ using Composite.Data.Types;
 using Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider;
 using Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvider;
 
-
-[WebService(Namespace = "http://www.composite.net/ns/management")]
-[SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
-public class TreeServices : WebService
+namespace Composite.Services
 {
-    private void RemoveDuplicateActions(List<ClientElement> listToClean)
+    [WebService(Namespace = "http://www.composite.net/ns/management")]
+    [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
+    public class TreeServices : WebService
     {
-        List<string> knownActionKeys = new List<string>();
-        foreach (ClientElement clientElement in listToClean)
+        private void RemoveDuplicateActions(List<ClientElement> listToClean)
         {
-            clientElement.Actions.RemoveAll(f => knownActionKeys.Contains(f.ActionKey));
-            knownActionKeys.AddRange(clientElement.ActionKeys.Where(f => knownActionKeys.Contains(f) == false));
-        }
-    }
-
-
-
-    [WebMethod]
-    public List<ClientElement> GetActivePerspectiveElements(string dummy)
-    {
-        string username = UserValidationFacade.GetUsername();
-
-        List<Element> allPerspectives = ElementFacade.GetPerspectiveElementsWithNoSecurity(null).ToList();
-        List<string> activePerspectiveEntityTokens = UserPerspectiveFacade.GetSerializedEntityTokens(username).ToList();
-        activePerspectiveEntityTokens.AddRange(UserGroupPerspectiveFacade.GetSerializedEntityTokens(username));
-        activePerspectiveEntityTokens = activePerspectiveEntityTokens.Distinct().ToList();
-
-        List<ClientElement> activePerspectives = allPerspectives.Where(f => activePerspectiveEntityTokens.Contains(EntityTokenSerializer.Serialize(f.ElementHandle.EntityToken))).ToList().ToClientElementList();
-
-        foreach (ClientElement clientElement in activePerspectives)
-        {
-            clientElement.Actions.Clear();
-            clientElement.ActionKeys.Clear();
+            List<string> knownActionKeys = new List<string>();
+            foreach (ClientElement clientElement in listToClean)
+            {
+                clientElement.Actions.RemoveAll(f => knownActionKeys.Contains(f.ActionKey));
+                knownActionKeys.AddRange(clientElement.ActionKeys.Where(f => knownActionKeys.Contains(f) == false));
+            }
         }
 
-        return activePerspectives;
-    }
 
 
-
-    [WebMethod]
-    public List<ClientElement> GetElements(ClientElement clientElement)
-    {
-        return GetElementsBySearchToken(clientElement, null);
-    }
-
-
-    [WebMethod]
-    public List<ClientElement> GetRootElements(string dummy)
-    {
-        return GetElementsBySearchToken(null, null);
-    }
-
-
-    [WebMethod]
-    public List<RefreshChildrenInfo> FindEntityToken(string rootEntityToken, string entityToken, List<RefreshChildrenParams> openedNodes)
-    {
-        Verify.ArgumentNotNullOrEmpty(rootEntityToken, "rootEntityToken");
-        Verify.ArgumentNotNullOrEmpty(entityToken, "entityToken");
-        Verify.ArgumentNotNull(openedNodes, "openedNodes");
-
-        List<RefreshChildrenInfo> refreshingInfo = TreeServicesFacade.FindEntityToken(rootEntityToken, entityToken, openedNodes);
-        if (refreshingInfo == null)
+        [WebMethod]
+        public List<ClientElement> GetActivePerspectiveElements(string dummy)
         {
-            return new List<RefreshChildrenInfo>();
+            string username = UserValidationFacade.GetUsername();
+
+            List<Element> allPerspectives = ElementFacade.GetPerspectiveElementsWithNoSecurity(null).ToList();
+            List<string> activePerspectiveEntityTokens = UserPerspectiveFacade.GetSerializedEntityTokens(username).ToList();
+            activePerspectiveEntityTokens.AddRange(UserGroupPerspectiveFacade.GetSerializedEntityTokens(username));
+            activePerspectiveEntityTokens = activePerspectiveEntityTokens.Distinct().ToList();
+
+            List<ClientElement> activePerspectives = allPerspectives.Where(f => activePerspectiveEntityTokens.Contains(EntityTokenSerializer.Serialize(f.ElementHandle.EntityToken))).ToList().ToClientElementList();
+
+            foreach (ClientElement clientElement in activePerspectives)
+            {
+                clientElement.Actions.Clear();
+                clientElement.ActionKeys.Clear();
+            }
+
+            return activePerspectives;
         }
 
-        foreach (RefreshChildrenInfo nodeRefreshingInfo in refreshingInfo)
+
+
+        [WebMethod]
+        public List<ClientElement> GetElements(ClientElement clientElement)
         {
-            RemoveDuplicateActions(nodeRefreshingInfo.ClientElements);
+            return GetElementsBySearchToken(clientElement, null);
         }
-        return refreshingInfo;
-    }
 
 
-    [WebMethod]
-    public List<RefreshChildrenInfo> GetMultipleChildren(List<RefreshChildrenParams> clientProviderNameEntityTokenPairs)
-    {
-        Verify.ArgumentNotNull(clientProviderNameEntityTokenPairs, "clientProviderNameEntityTokenPairs");
-
-        List<RefreshChildrenInfo> multiChildren = TreeServicesFacade.GetMultipleChildren(clientProviderNameEntityTokenPairs);
-        foreach (RefreshChildrenInfo multiChild in multiChildren)
+        [WebMethod]
+        public List<ClientElement> GetRootElements(string dummy)
         {
-            RemoveDuplicateActions(multiChild.ClientElements);
+            return GetElementsBySearchToken(null, null);
         }
-        return multiChildren;
-    }
 
 
-
-    [WebMethod]
-    public List<ClientElement> GetElementsBySearchToken(ClientElement clientElement, string serializedSearchToken)
-    {
-        VerifyClientElement(clientElement);
-
-        if ((clientElement == null) || (string.IsNullOrEmpty(clientElement.ProviderName) == true))
+        [WebMethod]
+        public List<RefreshChildrenInfo> FindEntityToken(string rootEntityToken, string entityToken, List<RefreshChildrenParams> openedNodes)
         {
-            List<ClientElement> root = new List<ClientElement>();
-            root.Add(TreeServicesFacade.GetRoot());
-            return root;
+            Verify.ArgumentNotNullOrEmpty(rootEntityToken, "rootEntityToken");
+            Verify.ArgumentNotNullOrEmpty(entityToken, "entityToken");
+            Verify.ArgumentNotNull(openedNodes, "openedNodes");
+
+            List<RefreshChildrenInfo> refreshingInfo = TreeServicesFacade.FindEntityToken(rootEntityToken, entityToken, openedNodes);
+            if (refreshingInfo == null)
+            {
+                return new List<RefreshChildrenInfo>();
+            }
+
+            foreach (RefreshChildrenInfo nodeRefreshingInfo in refreshingInfo)
+            {
+                RemoveDuplicateActions(nodeRefreshingInfo.ClientElements);
+            }
+            return refreshingInfo;
         }
-        else
+
+
+        [WebMethod]
+        public List<RefreshChildrenInfo> GetMultipleChildren(List<RefreshChildrenParams> clientProviderNameEntityTokenPairs)
         {
-            List<ClientElement> clientElements = TreeServicesFacade.GetChildren(clientElement.ProviderName, clientElement.EntityToken, clientElement.Piggybag, serializedSearchToken);
+            Verify.ArgumentNotNull(clientProviderNameEntityTokenPairs, "clientProviderNameEntityTokenPairs");
+
+            List<RefreshChildrenInfo> multiChildren = TreeServicesFacade.GetMultipleChildren(clientProviderNameEntityTokenPairs);
+            foreach (RefreshChildrenInfo multiChild in multiChildren)
+            {
+                RemoveDuplicateActions(multiChild.ClientElements);
+            }
+            return multiChildren;
+        }
+
+
+
+        [WebMethod]
+        public List<ClientElement> GetElementsBySearchToken(ClientElement clientElement, string serializedSearchToken)
+        {
+            VerifyClientElement(clientElement);
+
+            if ((clientElement == null) || (string.IsNullOrEmpty(clientElement.ProviderName) == true))
+            {
+                List<ClientElement> root = new List<ClientElement>();
+                root.Add(TreeServicesFacade.GetRoot());
+                return root;
+            }
+            else
+            {
+                List<ClientElement> clientElements = TreeServicesFacade.GetChildren(clientElement.ProviderName, clientElement.EntityToken, clientElement.Piggybag, serializedSearchToken);
+                RemoveDuplicateActions(clientElements);
+                return clientElements;
+            }
+        }
+
+
+
+        [WebMethod]
+        public List<ClientElement> GetNamedRoots(string name)
+        {
+            return GetNamedRootsBySearchToken(name, null);
+        }
+
+
+
+        [WebMethod]
+        public List<ClientElement> GetNamedRootsBySearchToken(string name, string serializedSearchToken)
+        {
+            if (true == (string.IsNullOrEmpty(name))) throw new ArgumentNullException("name");
+
+            List<ClientElement> clientElements = TreeServicesFacade.GetRoots(name, serializedSearchToken);
             RemoveDuplicateActions(clientElements);
             return clientElements;
         }
-    }
 
 
 
-    [WebMethod]
-    public List<ClientElement> GetNamedRoots(string name)
-    {
-        return GetNamedRootsBySearchToken(name, null);
-    }
-
-
-
-    [WebMethod]
-    public List<ClientElement> GetNamedRootsBySearchToken(string name, string serializedSearchToken)
-    {
-        if (true == (string.IsNullOrEmpty(name))) throw new ArgumentNullException("name");
-
-        List<ClientElement> clientElements = TreeServicesFacade.GetRoots(name, serializedSearchToken);
-        RemoveDuplicateActions(clientElements);
-        return clientElements;
-    }
-
-
-
-    [WebMethod]
-    public string GetEntityTokenByPageUrl(string pageUrl)
-    {
-        PageUrl pageUrlOptions = PageUrl.Parse(pageUrl);
-        if (pageUrlOptions == null) return string.Empty;
-
-        if (pageUrlOptions.PublicationScope == PublicationScope.Published)
+        [WebMethod]
+        public string GetEntityTokenByPageUrl(string pageUrl)
         {
-            pageUrlOptions = new PageUrl(PublicationScope.Unpublished, pageUrlOptions.Locale, pageUrlOptions.PageId);
+            PageUrl pageUrlOptions = PageUrl.Parse(pageUrl);
+            if (pageUrlOptions == null) return string.Empty;
+
+            if (pageUrlOptions.PublicationScope == PublicationScope.Published)
+            {
+                pageUrlOptions = new PageUrl(PublicationScope.Unpublished, pageUrlOptions.Locale, pageUrlOptions.PageId);
+            }
+
+            IPage page = pageUrlOptions.GetPage();
+            if (page == null) return string.Empty;
+
+            return EntityTokenSerializer.Serialize(page.GetDataEntityToken(), true);
         }
 
-        IPage page = pageUrlOptions.GetPage();
-        if (page == null) return string.Empty;
-
-        return EntityTokenSerializer.Serialize(page.GetDataEntityToken(), true);
-    }
 
 
-
-    [WebMethod]
-    public List<ClientLabeledProperty> GetProperties(ClientElement clientElement)
-    {
-        VerifyClientElement(clientElement);
-        return TreeServicesFacade.GetLabeledProperties(clientElement.ProviderName, clientElement.EntityToken, clientElement.Piggybag);
-    }
-
-
-
-    [WebMethod]
-    public List<ActionResult> ExecuteSingleElementAction(ClientElement clientElement, string serializedActionToken, string consoleId)
-    {
-        try
+        [WebMethod]
+        public List<ClientLabeledProperty> GetProperties(ClientElement clientElement)
         {
             VerifyClientElement(clientElement);
-            TreeServicesFacade.ExecuteElementAction(clientElement.ProviderName, clientElement.EntityToken, clientElement.Piggybag, serializedActionToken, consoleId);
-        }
-        catch (Exception ex)
-        {
-
-            IConsoleMessageQueueItem errorLogEntry = new LogEntryMessageQueueItem { Sender = typeof(TreeServices), Level = Composite.Core.Logging.LogLevel.Error, Message = ex.ToString() };
-            ConsoleMessageQueueFacade.Enqueue(errorLogEntry, consoleId);
-            IConsoleMessageQueueItem msgBoxEntry = new MessageBoxMessageQueueItem { DialogType = DialogType.Error, Title = "Error executing action", Message = "An error occured executing the action. Please contact your system administrator or consult the log for help" };
-            ConsoleMessageQueueFacade.Enqueue(msgBoxEntry, consoleId);
+            return TreeServicesFacade.GetLabeledProperties(clientElement.ProviderName, clientElement.EntityToken, clientElement.Piggybag);
         }
 
-        return new List<ActionResult> { new ActionResult { ResponseType = ActionResultResponseType.None } };
-    }
 
 
-
-    [WebMethod]
-    public bool ExecuteDropElementAction(ClientElement draggedClientElement, ClientElement newParentClientElement, int dropIndex, string consoleId, bool isCopy)
-    {
-        try
+        [WebMethod]
+        public List<ActionResult> ExecuteSingleElementAction(ClientElement clientElement, string serializedActionToken, string consoleId)
         {
-            VerifyClientElement(draggedClientElement);
-            VerifyClientElement(newParentClientElement);
-            return TreeServicesFacade.ExecuteElementDraggedAndDropped(draggedClientElement.ProviderName, draggedClientElement.EntityToken, draggedClientElement.Piggybag, newParentClientElement.ProviderName, newParentClientElement.EntityToken, newParentClientElement.Piggybag, dropIndex, consoleId, isCopy);
+            try
+            {
+                VerifyClientElement(clientElement);
+                TreeServicesFacade.ExecuteElementAction(clientElement.ProviderName, clientElement.EntityToken, clientElement.Piggybag, serializedActionToken, consoleId);
+            }
+            catch (Exception ex)
+            {
+
+                IConsoleMessageQueueItem errorLogEntry = new LogEntryMessageQueueItem { Sender = typeof(TreeServices), Level = Composite.Core.Logging.LogLevel.Error, Message = ex.ToString() };
+                ConsoleMessageQueueFacade.Enqueue(errorLogEntry, consoleId);
+                IConsoleMessageQueueItem msgBoxEntry = new MessageBoxMessageQueueItem { DialogType = DialogType.Error, Title = "Error executing action", Message = "An error occured executing the action. Please contact your system administrator or consult the log for help" };
+                ConsoleMessageQueueFacade.Enqueue(msgBoxEntry, consoleId);
+            }
+
+            return new List<ActionResult> { new ActionResult { ResponseType = ActionResultResponseType.None } };
         }
-        catch (Exception ex)
-        {
-            IConsoleMessageQueueItem errorLogEntry = new LogEntryMessageQueueItem { Sender = typeof(TreeServices), Level = Composite.Core.Logging.LogLevel.Error, Message = ex.Message };
-            ConsoleMessageQueueFacade.Enqueue(errorLogEntry, consoleId);
 
-            throw;
+
+
+        [WebMethod]
+        public bool ExecuteDropElementAction(ClientElement draggedClientElement, ClientElement newParentClientElement, int dropIndex, string consoleId, bool isCopy)
+        {
+            try
+            {
+                VerifyClientElement(draggedClientElement);
+                VerifyClientElement(newParentClientElement);
+                return TreeServicesFacade.ExecuteElementDraggedAndDropped(draggedClientElement.ProviderName, draggedClientElement.EntityToken, draggedClientElement.Piggybag, newParentClientElement.ProviderName, newParentClientElement.EntityToken, newParentClientElement.Piggybag, dropIndex, consoleId, isCopy);
+            }
+            catch (Exception ex)
+            {
+                IConsoleMessageQueueItem errorLogEntry = new LogEntryMessageQueueItem { Sender = typeof(TreeServices), Level = Composite.Core.Logging.LogLevel.Error, Message = ex.Message };
+                ConsoleMessageQueueFacade.Enqueue(errorLogEntry, consoleId);
+
+                throw;
+            }
         }
-    }
 
 
-    [WebMethod]
-    public List<KeyValuePair> GetSearchTokens(string dummy)
-    {
-        List<KeyValuePair> tokens = new List<KeyValuePair>();
-
-
-        MediaFileSearchToken embedableMediaFileSearchToken = new MediaFileSearchToken();
-        embedableMediaFileSearchToken.MimeTypes = new string[] { MimeTypeInfo.Asf, MimeTypeInfo.Avi, MimeTypeInfo.Director, MimeTypeInfo.Flash, MimeTypeInfo.QuickTime, MimeTypeInfo.Wmv };
-        tokens.Add(new KeyValuePair("MediaFileElementProvider.EmbeddableMedia", embedableMediaFileSearchToken.Serialize()));
-
-        MediaFileSearchToken imageMediaFileSearchToken = new MediaFileSearchToken();
-        imageMediaFileSearchToken.MimeTypes = new string[] { MimeTypeInfo.Gif, MimeTypeInfo.Jpeg, MimeTypeInfo.Png, MimeTypeInfo.Bmp };
-        tokens.Add(new KeyValuePair("MediaFileElementProvider.WebImages", imageMediaFileSearchToken.Serialize()));
-
-        var xhtmlDocumentFunctionsSearchToken = AllFunctionsElementProviderSearchToken.Build(new[] { typeof(XhtmlDocument) });
-        tokens.Add(new KeyValuePair("AllFunctionsElementProvider.XhtmlDocument", xhtmlDocumentFunctionsSearchToken.Serialize()));
-
-        var xstlFunctionCallsSearchToken = AllFunctionsElementProviderSearchToken.Build(new[] { typeof(XhtmlDocument), typeof(IEnumerable<XElement>), typeof(XElement) });
-        tokens.Add(new KeyValuePair("AllFunctionsElementProvider.XsltFunctionCall", xstlFunctionCallsSearchToken.Serialize()));
-
-        return tokens;
-    }
-
-
-
-    private void VerifyClientElement(ClientElement clientElement)
-    {
-        if (clientElement == null) return;
-
-        if (HashSigner.ValidateSignedHash(clientElement.Piggybag, HashValue.Deserialize(clientElement.PiggybagHash)) == false)
+        [WebMethod]
+        public List<KeyValuePair> GetSearchTokens(string dummy)
         {
-            throw new System.Security.SecurityException("Data has been tampered");
+            List<KeyValuePair> tokens = new List<KeyValuePair>();
+
+
+            MediaFileSearchToken embedableMediaFileSearchToken = new MediaFileSearchToken();
+            embedableMediaFileSearchToken.MimeTypes = new string[] { MimeTypeInfo.Asf, MimeTypeInfo.Avi, MimeTypeInfo.Director, MimeTypeInfo.Flash, MimeTypeInfo.QuickTime, MimeTypeInfo.Wmv };
+            tokens.Add(new KeyValuePair("MediaFileElementProvider.EmbeddableMedia", embedableMediaFileSearchToken.Serialize()));
+
+            MediaFileSearchToken imageMediaFileSearchToken = new MediaFileSearchToken();
+            imageMediaFileSearchToken.MimeTypes = new string[] { MimeTypeInfo.Gif, MimeTypeInfo.Jpeg, MimeTypeInfo.Png, MimeTypeInfo.Bmp };
+            tokens.Add(new KeyValuePair("MediaFileElementProvider.WebImages", imageMediaFileSearchToken.Serialize()));
+
+            var xhtmlDocumentFunctionsSearchToken = AllFunctionsElementProviderSearchToken.Build(new[] { typeof(XhtmlDocument) });
+            tokens.Add(new KeyValuePair("AllFunctionsElementProvider.XhtmlDocument", xhtmlDocumentFunctionsSearchToken.Serialize()));
+
+            var xstlFunctionCallsSearchToken = AllFunctionsElementProviderSearchToken.Build(new[] { typeof(XhtmlDocument), typeof(IEnumerable<XElement>), typeof(XElement) });
+            tokens.Add(new KeyValuePair("AllFunctionsElementProvider.XsltFunctionCall", xstlFunctionCallsSearchToken.Serialize()));
+
+            return tokens;
+        }
+
+
+
+        private void VerifyClientElement(ClientElement clientElement)
+        {
+            if (clientElement == null) return;
+
+            if (HashSigner.ValidateSignedHash(clientElement.Piggybag, HashValue.Deserialize(clientElement.PiggybagHash)) == false)
+            {
+                throw new System.Security.SecurityException("Data has been tampered");
+            }
         }
     }
 }

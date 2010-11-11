@@ -1,4 +1,4 @@
-<%@ WebService Language="C#" Class="ConsoleMessageQueueServices" %>
+<%@ WebService Language="C#" Class="Composite.Services.ConsoleMessageQueueServices" %>
 
 using System;
 using System.Collections.Generic;
@@ -11,24 +11,27 @@ using Composite.Core.WebClient.Services.TreeServiceObjects;
 using Composite.Core.WebClient.Services.ConsoleMessageService;
 using Composite.C1Console.Events;
 
-
-[WebService(Namespace = "http://www.composite.net/ns/management")]
-[SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
-public class ConsoleMessageQueueServices : WebService
+namespace Composite.Services
 {
 
-    [WebMethod]
-    public int GetCurrentSequenceNumber(string dummyToPreventClientSoapBreak)
+    [WebService(Namespace = "http://www.composite.net/ns/management")]
+    [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
+    public class ConsoleMessageQueueServices : WebService
     {
-        return ConsoleMessageQueueFacade.CurrentChangeNumber;
+
+        [WebMethod]
+        public int GetCurrentSequenceNumber(string dummyToPreventClientSoapBreak)
+        {
+            return ConsoleMessageQueueFacade.CurrentChangeNumber;
+        }
+
+
+
+        [WebMethod]
+        public GetMessagesResult GetMessages(string consoleId, int lastKnownChangeNumber)
+        {
+            return ConsoleMessageServiceFacade.GetNewMessages(consoleId, lastKnownChangeNumber);
+        }
     }
 
-
-
-    [WebMethod]
-    public GetMessagesResult GetMessages(string consoleId, int lastKnownChangeNumber)
-    {
-        return ConsoleMessageServiceFacade.GetNewMessages(consoleId, lastKnownChangeNumber);
-    }
 }
-

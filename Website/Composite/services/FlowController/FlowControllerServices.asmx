@@ -1,4 +1,4 @@
-<%@ WebService Language="C#" Class="FlowControllerServices" %>
+<%@ WebService Language="C#" Class="Composite.Services.FlowControllerServices" %>
 
 using System;
 using System.Collections.Generic;
@@ -12,39 +12,43 @@ using Composite.Core.WebClient.Services.ConsoleMessageService;
 using Composite.C1Console.Events;
 using Composite.C1Console.Actions;
 
+namespace Composite.Services
+{
 
-[WebService(Namespace = "http://www.composite.net/ns/management")]
-[SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
-public class FlowControllerServices  : System.Web.Services.WebService {
-
-    [WebMethod]
-    public bool CancelFlow(string serializedFlowHandle) 
+    [WebService(Namespace = "http://www.composite.net/ns/management")]
+    [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
+    public class FlowControllerServices : System.Web.Services.WebService
     {
-        FlowHandle flowHandle = FlowHandle.Deserialize(serializedFlowHandle);
-        try
+
+        [WebMethod]
+        public bool CancelFlow(string serializedFlowHandle)
         {
-            FlowControllerFacade.CancelFlow(flowHandle.FlowToken);
+            FlowHandle flowHandle = FlowHandle.Deserialize(serializedFlowHandle);
+            try
+            {
+                FlowControllerFacade.CancelFlow(flowHandle.FlowToken);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
         }
-        catch (Exception)
+
+
+
+        [WebMethod]
+        public bool ReleaseAllConsoleResources(string consoleId)
         {
-            return false;
+            if (string.IsNullOrEmpty(consoleId)) throw new ArgumentNullException("consoleId");
+
+            Composite.Core.Logging.LoggingService.LogVerbose("FlowControllerServices.asmx", "ReleaseAllConsoleResources for " + consoleId);
+            ConsoleFacade.CloseConsole(consoleId);
+
+            return true;
         }
-        
-        return true;
+
     }
 
-    
-    
-    [WebMethod]
-    public bool ReleaseAllConsoleResources(string consoleId)
-    {
-        if (string.IsNullOrEmpty(consoleId)) throw new ArgumentNullException("consoleId");
-
-        Composite.Core.Logging.LoggingService.LogVerbose("FlowControllerServices.asmx", "ReleaseAllConsoleResources for " + consoleId);
-        ConsoleFacade.CloseConsole(consoleId);        
-
-        return true;
-    }
-    
 }
-

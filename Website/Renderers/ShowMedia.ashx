@@ -300,9 +300,9 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         {
             _resizedImagesDirectoryPath = context.Server.MapPath(ResizedImagesCacheDirectory);
 
-            if (!Directory.Exists(_resizedImagesDirectoryPath))
+            if (!C1Directory.Exists(_resizedImagesDirectoryPath))
             {
-                Directory.CreateDirectory(_resizedImagesDirectoryPath);
+                C1Directory.CreateDirectory(_resizedImagesDirectoryPath);
             }
         }
 
@@ -338,7 +338,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
             string imageFullPath = System.IO.Path.Combine(_resizedImagesDirectoryPath, resizedImageFileName);
 
-            if (!File.Exists(imageFullPath) || File.GetLastWriteTime(imageFullPath) != file.LastWriteTime)
+            if (!C1File.Exists(imageFullPath) || C1File.GetLastWriteTime(imageFullPath) != file.LastWriteTime)
             {
                 if (bitmap == null)
                 {
@@ -349,7 +349,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
                 if (file.LastWriteTime.HasValue)
                 {
-                    File.SetLastWriteTime(imageFullPath, file.LastWriteTime.Value);
+                    C1File.SetLastWriteTime(imageFullPath, file.LastWriteTime.Value);
                 }
             }
 
@@ -522,10 +522,10 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         //If it's not there, load the xml document and then add it to the cache
         if (xel == null)
         {
-            if (!File.Exists(_resizedImageKeysFilePath))
+            if (!C1File.Exists(_resizedImageKeysFilePath))
             {
                 string directoryPath = System.IO.Path.GetDirectoryName(_resizedImageKeysFilePath);
-                if (!Directory.Exists(directoryPath)) Directory.CreateDirectory(directoryPath);
+                if (!C1Directory.Exists(directoryPath)) C1Directory.CreateDirectory(directoryPath);
 
                 var config = new XElement("ResizedImages");
                 config.Add(new XElement("image",

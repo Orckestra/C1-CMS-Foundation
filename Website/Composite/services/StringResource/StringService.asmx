@@ -1,4 +1,4 @@
-﻿<%@ WebService Language="C#" CodeBehind="~/App_Code/StringService.cs" Class="StringService" %>
+﻿<%@ WebService Language="C#" CodeBehind="~/App_Code/StringService.cs" Class="Composite.Services.StringService" %>
 
 using System;
 using System.Linq;
@@ -10,23 +10,26 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using Composite.Core.Types;
 
-[WebService(Namespace = "http://www.composite.net/ns/management")]
-[SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
-public class StringService : System.Web.Services.WebService
+namespace Composite.Services
 {
-
-    public StringService()
+    [WebService(Namespace = "http://www.composite.net/ns/management")]
+    [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
+    public class StringService : System.Web.Services.WebService
     {
 
-        //Uncomment the following line if using designed components 
-        //InitializeComponent(); 
-    }
+        public StringService()
+        {
+
+            //Uncomment the following line if using designed components 
+            //InitializeComponent(); 
+        }
 
 
 
-    [WebMethod]
-    public List<KeyValuePair> GetLocalisation(string resourceStoreName)
-    {
-        return Composite.Core.ResourceSystem.StringResourceSystemFacade.GetLocalization(resourceStoreName);
+        [WebMethod]
+        public List<KeyValuePair> GetLocalisation(string resourceStoreName)
+        {
+            return Composite.Core.ResourceSystem.StringResourceSystemFacade.GetLocalization(resourceStoreName);
+        }
     }
 }

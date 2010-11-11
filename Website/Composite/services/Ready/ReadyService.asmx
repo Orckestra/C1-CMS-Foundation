@@ -1,24 +1,27 @@
-﻿<%@ WebService Language="C#" Class="ReadyService" %>
+﻿<%@ WebService Language="C#" Class="Composite.Services.ReadyService" %>
 
 using System.Web.Services;
 using System.Web.Services.Protocols;
 using Composite;
 
-
-[WebService(Namespace = "http://www.composite.net/ns/management")]
-[SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
-public class ReadyService : System.Web.Services.WebService
+namespace Composite.Services
 {
-    public ReadyService()
+
+    [WebService(Namespace = "http://www.composite.net/ns/management")]
+    [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
+    public class ReadyService : System.Web.Services.WebService
     {
-    }
+        public ReadyService()
+        {
+        }
 
 
-    [WebMethod]
-    public bool IsServerReady(bool dummy)
-    {
-        return GlobalInitializerFacade.SystemCoreInitialized && Composite.Core.Application.ApplicationOnlineHandlerFacade.IsApplicationOnline;
+        [WebMethod]
+        public bool IsServerReady(bool dummy)
+        {
+            return GlobalInitializerFacade.SystemCoreInitialized && Composite.Core.Application.ApplicationOnlineHandlerFacade.IsApplicationOnline;
+        }
+
     }
 
 }
-

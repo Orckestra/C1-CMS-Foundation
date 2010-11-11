@@ -1,4 +1,4 @@
-﻿<%@ WebService Language="C#" Class="ConfigurationService" %>
+﻿<%@ WebService Language="C#" Class="Composite.Services.ConfigurationService" %>
 
 using System;
 using System.Collections.Generic;
@@ -11,28 +11,30 @@ using System.Xml.Serialization;
 using Composite.Core.Types;
 using Composite.C1Console.Users;
 
-
-[WebService(Namespace = "http://www.composite.net/ns/management")]
-[SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
-[XmlInclude(typeof(Composite.Core.WebClient.Services.TreeServiceObjects.ClientElement))]
-public class ConfigurationService : WebService
+namespace Composite.Services
 {
-    public class ConfigurationElement
-    {
-        public string Key { get; set; }
-        public object Value { get; set; }
-    }
-    
 
-    [WebMethod]
+    [WebService(Namespace = "http://www.composite.net/ns/management")]
+    [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
     [XmlInclude(typeof(Composite.Core.WebClient.Services.TreeServiceObjects.ClientElement))]
-    public List<KeyValuePair> GetValidatingRegularExpressions(string dummyToPreventClientSoapBreak)
+    public class ConfigurationService : WebService
     {
-        CultureInfo userCulture = UserSettings.CultureInfo;
-        string decimalSeparator = userCulture.NumberFormat.NumberDecimalSeparator;
-        string groupSeparator = userCulture.NumberFormat.NumberGroupSeparator;
+        public class ConfigurationElement
+        {
+            public string Key { get; set; }
+            public object Value { get; set; }
+        }
 
-        List<KeyValuePair> regExExpressions = new List<KeyValuePair>
+
+        [WebMethod]
+        [XmlInclude(typeof(Composite.Core.WebClient.Services.TreeServiceObjects.ClientElement))]
+        public List<KeyValuePair> GetValidatingRegularExpressions(string dummyToPreventClientSoapBreak)
+        {
+            CultureInfo userCulture = UserSettings.CultureInfo;
+            string decimalSeparator = userCulture.NumberFormat.NumberDecimalSeparator;
+            string groupSeparator = userCulture.NumberFormat.NumberGroupSeparator;
+
+            List<KeyValuePair> regExExpressions = new List<KeyValuePair>
         {
 	        new KeyValuePair("number", @"^-?[0-9]+(\" + decimalSeparator + @"[0-9]+)?$"),
 	        new KeyValuePair("integer", @"^-?[0-9]+$"),
@@ -46,6 +48,7 @@ public class ConfigurationService : WebService
 
         };
 
-        return regExExpressions;
+            return regExExpressions;
+        }
     }
 }

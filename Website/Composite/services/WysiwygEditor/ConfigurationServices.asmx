@@ -1,4 +1,4 @@
-<%@ WebService Language="C#" Class="WysiwygEditorConfigurationServices" %>
+<%@ WebService Language="C#" Class="Composite.Services.WysiwygEditorConfigurationServices" %>
 
 using System;
 using System.Collections.Generic;
@@ -16,184 +16,186 @@ using Composite.Core.Types;
 using Composite.Core.Xml;
 using Composite.Core.IO;
 
-
-[WebService(Namespace = "http://www.composite.net/ns/management")]
-[SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
-public class WysiwygEditorConfigurationServices : System.Web.Services.WebService
+namespace Composite.Services
 {
-    [WebMethod]
-    public XmlDocument GetElementClassConfiguration(string configurationName)
+    [WebService(Namespace = "http://www.composite.net/ns/management")]
+    [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
+    public class WysiwygEditorConfigurationServices : System.Web.Services.WebService
     {
-        if (string.IsNullOrEmpty(configurationName) == true) throw new ArgumentException("Missing QueryString 'configurationName' value");
-
-        List<IXhtmlEditorElementClassConfiguration> elementClasses;
-
-        using (new DataScope(DataScopeIdentifier.Administrated))
+        [WebMethod]
+        public XmlDocument GetElementClassConfiguration(string configurationName)
         {
-            elementClasses =
-                (from elementClass in DataFacade.GetData<IXhtmlEditorElementClassConfiguration>()
-                 where elementClass.ConfigurationName == configurationName
-                 orderby elementClass.ElementName
-                 select elementClass).ToList();
+            if (string.IsNullOrEmpty(configurationName) == true) throw new ArgumentException("Missing QueryString 'configurationName' value");
+
+            List<IXhtmlEditorElementClassConfiguration> elementClasses;
+
+            using (new DataScope(DataScopeIdentifier.Administrated))
+            {
+                elementClasses =
+                    (from elementClass in DataFacade.GetData<IXhtmlEditorElementClassConfiguration>()
+                     where elementClass.ConfigurationName == configurationName
+                     orderby elementClass.ElementName
+                     select elementClass).ToList();
+            }
+
+            XElement xml = new XElement("elements",
+                               from elementClass in elementClasses
+                               orderby elementClass.ElementName
+                               group elementClass by elementClass.ElementName into element
+                               select new XElement("element", new XAttribute("name", element.Key),
+                                          from cssclass in element
+                                          select new XElement("class", new XAttribute("name", cssclass.ClassName))));
+
+            XmlDocument output = new XmlDocument();
+            output.LoadXml(xml.ToString());
+            return output;
         }
 
-        XElement xml = new XElement("elements",
-                           from elementClass in elementClasses
-                           orderby elementClass.ElementName
-                           group elementClass by elementClass.ElementName into element
-                           select new XElement("element", new XAttribute("name", element.Key),
-                                      from cssclass in element
-                                      select new XElement("class", new XAttribute("name", cssclass.ClassName))));
-
-        XmlDocument output = new XmlDocument();
-        output.LoadXml(xml.ToString());
-        return output;
-    }
 
 
 
 
 
-
-    [WebMethod]
-    public List<FieldGroup> GetEmbedableFieldGroupConfigurations(string embedableFieldsTypeNames)
-    {
-        if (string.IsNullOrEmpty(embedableFieldsTypeNames) == false)
+        [WebMethod]
+        public List<FieldGroup> GetEmbedableFieldGroupConfigurations(string embedableFieldsTypeNames)
         {
-            List<FieldGroup> fieldGroups = new List<FieldGroup>();
-
-            string[] serializedTypeManagerTypeNameArray = embedableFieldsTypeNames.Split('|');
-
-            foreach (string serializedTypeManagerTypeName in serializedTypeManagerTypeNameArray)
+            if (string.IsNullOrEmpty(embedableFieldsTypeNames) == false)
             {
-                Type sourceDataType = TypeManager.TryGetType(serializedTypeManagerTypeName);
+                List<FieldGroup> fieldGroups = new List<FieldGroup>();
 
-                if (sourceDataType != null)
+                string[] serializedTypeManagerTypeNameArray = embedableFieldsTypeNames.Split('|');
+
+                foreach (string serializedTypeManagerTypeName in serializedTypeManagerTypeNameArray)
                 {
-                    fieldGroups.Add( GetSingleFieldGroupByType( sourceDataType ) );
+                    Type sourceDataType = TypeManager.TryGetType(serializedTypeManagerTypeName);
+
+                    if (sourceDataType != null)
+                    {
+                        fieldGroups.Add(GetSingleFieldGroupByType(sourceDataType));
+                    }
+                }
+
+                return fieldGroups;
+            }
+            else
+            {
+                return new List<FieldGroup>();
+            }
+        }
+
+
+
+        private FieldGroup GetSingleFieldGroupByType(Type sourceDataType)
+        {
+            if (sourceDataType == null) throw new ArgumentNullException();
+
+            FieldGroup group = new FieldGroup();
+
+            // TODO: Fix the logic, this expression is always "false"
+            if (sourceDataType is IData)
+            {
+                DataTypeDescriptor dataTypeDescriptor = null;
+                if (DynamicTypeManager.TryGetDataTypeDescriptor(sourceDataType, out dataTypeDescriptor) == false)
+                {
+                    dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(sourceDataType);
+                }
+
+                group.GroupName = dataTypeDescriptor.Name;
+
+                foreach (var dataField in dataTypeDescriptor.Fields)
+                {
+                    string label = dataField.Name;
+
+                    if (dataField.FormRenderingProfile != null && string.IsNullOrEmpty(dataField.FormRenderingProfile.Label) == false)
+                    {
+                        label = dataField.FormRenderingProfile.Label;
+                    }
+
+                    Field field = new Field
+                    {
+                        Name = label,
+                        XhtmlRepresentation = GetImageTagForDynamicDataFieldReference(dataField, dataTypeDescriptor).ToString(),
+                        XmlRepresentation = dataField.GetReferenceElement(dataTypeDescriptor).ToString()
+                    };
+
+                    group.Fields.Add(field);
+                }
+            }
+            else
+            {
+                group.GroupName = sourceDataType.Name;
+
+                foreach (var propertyInfo in sourceDataType.GetPropertiesRecursively())
+                {
+                    string label = propertyInfo.Name;
+
+                    Field field = new Field
+                    {
+                        Name = propertyInfo.Name,
+                        XhtmlRepresentation = GetImageTagForDynamicDataFieldReference(propertyInfo.Name, sourceDataType).ToString(),
+
+                        XmlRepresentation = DynamicTypeMarkupServices.GetReferenceElement(propertyInfo.Name, TypeManager.SerializeType(sourceDataType)).ToString()
+                    };
+
+                    group.Fields.Add(field);
                 }
             }
 
-            return fieldGroups;
+            return group;
         }
-        else
+
+
+
+        private XElement GetImageTagForDynamicDataFieldReference(string fieldName, Type dataType)
         {
-            return new List<FieldGroup>();
+            string imageUrl = string.Format("services/WysiwygEditor/FieldImage.ashx?name={0}&groupname={1}", HttpUtility.UrlEncodeUnicode(fieldName), HttpUtility.UrlEncodeUnicode(dataType.Name));
+
+            return new XElement(Namespaces.Xhtml + "img",
+                new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
+                new XAttribute("class", "compositeFieldReferenceWysiwygRepresentation"),
+                new XAttribute("referencedtypemanagername", TypeManager.SerializeType(dataType)),
+                new XAttribute("referencedfieldname", fieldName));
         }
-    }
 
 
-
-    private FieldGroup GetSingleFieldGroupByType(Type sourceDataType)
-    {
-        if (sourceDataType == null) throw new ArgumentNullException();
-
-        FieldGroup group = new FieldGroup();
-
-        // TODO: Fix the logic, this expression is always "false"
-        if (sourceDataType is IData)
+        private XElement GetImageTagForDynamicDataFieldReference(DataFieldDescriptor dataField, DataTypeDescriptor dataTypeDescriptor)
         {
-            DataTypeDescriptor dataTypeDescriptor = null;
-            if (DynamicTypeManager.TryGetDataTypeDescriptor(sourceDataType, out dataTypeDescriptor) == false)
+            string imageUrl = string.Format("services/WysiwygEditor/FieldImage.ashx?name={0}&groupname={1}", HttpUtility.UrlEncodeUnicode(dataField.Name), HttpUtility.UrlEncodeUnicode(dataTypeDescriptor.Name));
+
+            return new XElement(Namespaces.Xhtml + "img",
+                new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
+                new XAttribute("class", "compositeFieldReferenceWysiwygRepresentation"),
+                new XAttribute("referencedtypemanagername", dataTypeDescriptor.TypeManagerTypeName),
+                new XAttribute("referencedfieldname", dataField.Name));
+        }
+
+
+
+
+
+
+
+        public class FieldGroup
+        {
+            public FieldGroup()
             {
-                dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(sourceDataType);
+                this.Fields = new List<Field>();
             }
 
-            group.GroupName = dataTypeDescriptor.Name;
+            public string GroupName { get; set; }
 
-            foreach (var dataField in dataTypeDescriptor.Fields)
-            {
-                string label = dataField.Name;
-
-                if (dataField.FormRenderingProfile != null && string.IsNullOrEmpty(dataField.FormRenderingProfile.Label) == false)
-                {
-                    label = dataField.FormRenderingProfile.Label;
-                }
-
-                Field field = new Field
-                {
-                    Name = label,
-                    XhtmlRepresentation = GetImageTagForDynamicDataFieldReference(dataField, dataTypeDescriptor).ToString(),
-                    XmlRepresentation = dataField.GetReferenceElement(dataTypeDescriptor).ToString()
-                };
-
-                group.Fields.Add(field);
-            }
+            public List<Field> Fields { get; set; }
         }
-        else
+
+
+
+        public class Field
         {
-            group.GroupName = sourceDataType.Name;
+            public string Name { get; set; }
 
-            foreach (var propertyInfo in sourceDataType.GetPropertiesRecursively())
-            {
-                string label = propertyInfo.Name;
+            public string XhtmlRepresentation { get; set; }
 
-                Field field = new Field
-                {
-                    Name = propertyInfo.Name,
-                    XhtmlRepresentation = GetImageTagForDynamicDataFieldReference(propertyInfo.Name, sourceDataType).ToString(),
-                    
-                    XmlRepresentation = DynamicTypeMarkupServices.GetReferenceElement(propertyInfo.Name, TypeManager.SerializeType(sourceDataType)).ToString()
-                };
-
-                group.Fields.Add(field);
-            }
+            public string XmlRepresentation { get; set; }
         }
-
-        return group;
-    }
-
-
-
-    private XElement GetImageTagForDynamicDataFieldReference(string fieldName, Type dataType)
-    {
-        string imageUrl = string.Format("services/WysiwygEditor/FieldImage.ashx?name={0}&groupname={1}", HttpUtility.UrlEncodeUnicode(fieldName), HttpUtility.UrlEncodeUnicode(dataType.Name));
-
-        return new XElement(Namespaces.Xhtml + "img",
-            new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
-            new XAttribute("class", "compositeFieldReferenceWysiwygRepresentation"),
-            new XAttribute("referencedtypemanagername", TypeManager.SerializeType(dataType)),
-            new XAttribute("referencedfieldname", fieldName));
-    }
-
-
-    private XElement GetImageTagForDynamicDataFieldReference(DataFieldDescriptor dataField, DataTypeDescriptor dataTypeDescriptor)
-    {
-        string imageUrl = string.Format("services/WysiwygEditor/FieldImage.ashx?name={0}&groupname={1}", HttpUtility.UrlEncodeUnicode(dataField.Name), HttpUtility.UrlEncodeUnicode(dataTypeDescriptor.Name));
-
-        return new XElement(Namespaces.Xhtml + "img",
-            new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
-            new XAttribute("class", "compositeFieldReferenceWysiwygRepresentation"),
-            new XAttribute("referencedtypemanagername", dataTypeDescriptor.TypeManagerTypeName),
-            new XAttribute("referencedfieldname", dataField.Name));
-    }
-
-
-
-
-
-
-
-    public class FieldGroup
-    {
-        public FieldGroup()
-        {
-            this.Fields = new List<Field>();
-        }
-
-        public string GroupName { get; set; }
-
-        public List<Field> Fields { get; set; }
-    }
-
-
-
-    public class Field
-    {
-        public string Name { get; set; }
-
-        public string XhtmlRepresentation { get; set; }
-
-        public string XmlRepresentation { get; set; }
     }
 }

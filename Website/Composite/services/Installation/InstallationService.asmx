@@ -1,4 +1,4 @@
-﻿<%@ WebService Language="C#" Class="Licensing" %>
+﻿<%@ WebService Language="C#" Class="Composite.Services.Licensing" %>
 
 using System;
 using System.Collections;
@@ -13,75 +13,78 @@ using Composite;
 using Composite.Core.Threading;
 using Composite.Core.Types;
 
-[WebService(Namespace = "http://www.composite.net/ns/management")]
-[SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
-public class Licensing : System.Web.Services.WebService
+namespace Composite.Services
 {
-
-    public Licensing()
+    [WebService(Namespace = "http://www.composite.net/ns/management")]
+    [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
+    public class Licensing : System.Web.Services.WebService
     {
-    }
 
-    [WebMethod]
-    public bool Registered( bool dummy )
-    {
-        return true;
-    }
+        public Licensing()
+        {
+        }
 
-    [WebMethod]
-    public bool InvokeLicenseFetch(bool dummy)
-    {
-        return true;
-    }
-    
-    [WebMethod]
-    public KeyValuePair[] GetInstallationInfo(bool dummy)
-    {
-        List<KeyValuePair> list = new List<KeyValuePair>();
+        [WebMethod]
+        public bool Registered(bool dummy)
+        {
+            return true;
+        }
 
-        KeyValuePair pair = new KeyValuePair();
-        pair.Key = "ProductVersion";
-        pair.Value = Composite.RuntimeInformation.ProductVersion.ToString();
-        list.Add(pair);
+        [WebMethod]
+        public bool InvokeLicenseFetch(bool dummy)
+        {
+            return true;
+        }
 
-        pair = new KeyValuePair();
-        pair.Key = "ProductTitle";
-        pair.Value = Composite.RuntimeInformation.ProductTitle;
-        list.Add(pair);
+        [WebMethod]
+        public KeyValuePair[] GetInstallationInfo(bool dummy)
+        {
+            List<KeyValuePair> list = new List<KeyValuePair>();
 
-        pair = new KeyValuePair();
-        pair.Key = "InstallationId";
-        pair.Value = Composite.Core.Configuration.InstallationInformationFacade.InstallationId.ToString();
-        list.Add(pair);
-        
-        return list.ToArray();
-    }
+            KeyValuePair pair = new KeyValuePair();
+            pair.Key = "ProductVersion";
+            pair.Value = Composite.RuntimeInformation.ProductVersion.ToString();
+            list.Add(pair);
 
-    [WebMethod]
-    public KeyValuePair[] GetCreditsInfo(bool dummy)
-    {
-        List<KeyValuePair> list = new List<KeyValuePair>();
+            pair = new KeyValuePair();
+            pair.Key = "ProductTitle";
+            pair.Value = Composite.RuntimeInformation.ProductTitle;
+            list.Add(pair);
 
-        KeyValuePair pair = new KeyValuePair();
-        pair.Key = "Core Development";
-        pair.Value = "Marcus Wendt;Martin Jensen;Dmitry Dzygin;Jesper Moth";
-        list.Add(pair);
+            pair = new KeyValuePair();
+            pair.Key = "InstallationId";
+            pair.Value = Composite.Core.Configuration.InstallationInformationFacade.InstallationId.ToString();
+            list.Add(pair);
 
-        /*pair = new KeyValuePair();
-        pair.Key = "Package Development";
-        pair.Value = "";
-        list.Add(pair);
+            return list.ToArray();
+        }
 
-        pair = new KeyValuePair();
-        pair.Key = "Localization";
-        pair.Value = "";
-        list.Add(pair);
+        [WebMethod]
+        public KeyValuePair[] GetCreditsInfo(bool dummy)
+        {
+            List<KeyValuePair> list = new List<KeyValuePair>();
 
-        pair = new KeyValuePair();
-        pair.Key = "Special Thanks To";
-        pair.Value = "";
-        list.Add(pair);*/
+            KeyValuePair pair = new KeyValuePair();
+            pair.Key = "Core Development";
+            pair.Value = "Marcus Wendt;Martin Jensen;Dmitry Dzygin;Jesper Moth";
+            list.Add(pair);
 
-        return list.ToArray();
+            /*pair = new KeyValuePair();
+            pair.Key = "Package Development";
+            pair.Value = "";
+            list.Add(pair);
+
+            pair = new KeyValuePair();
+            pair.Key = "Localization";
+            pair.Value = "";
+            list.Add(pair);
+
+            pair = new KeyValuePair();
+            pair.Key = "Special Thanks To";
+            pair.Value = "";
+            list.Add(pair);*/
+
+            return list.ToArray();
+        }
     }
 }

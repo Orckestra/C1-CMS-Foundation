@@ -149,23 +149,23 @@ namespace Composite.Core.WebClient.Setup
             {
                 string filePath = Context.Server.MapPath("~/Composite/Setup/NtfsSecurityTest.xml");
 
-                if (File.Exists(filePath) == true)
+                if (C1File.Exists(filePath) == true)
                 {
                     FileEx.Delete(filePath);
                 }
 
                 string directory = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(filePath), "NtfsSecurityTest");
-                if (Directory.Exists(directory) == false)
+                if (C1Directory.Exists(directory) == false)
                 {
-                    Directory.CreateDirectory(directory);
+                    C1Directory.CreateDirectory(directory);
                 }
 
-                File.WriteAllLines(filePath, new[] { "That file is created for testing purpuses" });
+                C1File.WriteAllLines(filePath, new[] { "That file is created for testing purpuses" });
 
-                File.SetCreationTime(filePath, DateTime.Now.Subtract(TimeSpan.FromSeconds(45)));
+                C1File.SetCreationTime(filePath, DateTime.Now.Subtract(TimeSpan.FromSeconds(45)));
 
                 FileEx.Delete(filePath);
-                Directory.Delete(directory);
+                C1Directory.Delete(directory);
 
                 return true;
             }
@@ -218,7 +218,7 @@ namespace Composite.Core.WebClient.Setup
             try
             {
                 string siteRoot = Context.Server.MapPath("~\\");
-                string diskRoot = Directory.GetDirectoryRoot(siteRoot);
+                string diskRoot = C1Directory.GetDirectoryRoot(siteRoot);
 
                 ulong lpFreeBytesAvailable, lpTotalNumberOfBytes, lpTotalNumberOfFreeBytes;
 

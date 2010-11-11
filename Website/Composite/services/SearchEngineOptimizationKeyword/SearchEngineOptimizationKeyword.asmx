@@ -1,4 +1,4 @@
-﻿<%@ WebService Language="C#" Class="SearchEngineOptimizationKeyword" %>
+﻿<%@ WebService Language="C#" Class="Composite.Services.SearchEngineOptimizationKeyword" %>
 
 using System;
 using System.Linq;
@@ -14,59 +14,61 @@ using Composite.Core.Linq;
 using Composite.Data.Transactions;
 
 
-[WebService(Namespace = "http://www.composite.net/ns/management")]
-[SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
-public class SearchEngineOptimizationKeyword : System.Web.Services.WebService 
+namespace Composite.Services
 {
-    
-    [WebMethod]
-    public bool SaveKeyWords(List<string> keywords) 
+    [WebService(Namespace = "http://www.composite.net/ns/management")]
+    [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
+    public class SearchEngineOptimizationKeyword : System.Web.Services.WebService
     {
-        using (new DataScope(DataScopeIdentifier.Administrated, UserSettings.ActiveLocaleCultureInfo))
+
+        [WebMethod]
+        public bool SaveKeyWords(List<string> keywords)
         {
-            using (TransactionScope transactionScope = TransactionsFacade.Create(true))
+            using (new DataScope(DataScopeIdentifier.Administrated, UserSettings.ActiveLocaleCultureInfo))
             {
-                IEnumerable<ISearchEngineOptimizationKeyword> existingKeywords = DataFacade.GetData<ISearchEngineOptimizationKeyword>().Evaluate();
-
-                foreach (string keyword in keywords)
+                using (TransactionScope transactionScope = TransactionsFacade.Create(true))
                 {
-                    if (existingKeywords.Where(f => f.Keyword == keyword).Any() == false)
-                    {
-                        ISearchEngineOptimizationKeyword newKeyword = DataFacade.BuildNew<ISearchEngineOptimizationKeyword>();
-                        newKeyword.Keyword = keyword;
-                        DataFacade.AddNew(newKeyword);
-                    }
-                }
+                    IEnumerable<ISearchEngineOptimizationKeyword> existingKeywords = DataFacade.GetData<ISearchEngineOptimizationKeyword>().Evaluate();
 
-                foreach (ISearchEngineOptimizationKeyword existingKeyword in existingKeywords)
-                {
-                    if (keywords.Contains(existingKeyword.Keyword) == false)
+                    foreach (string keyword in keywords)
                     {
-                        DataFacade.Delete(existingKeyword);
+                        if (existingKeywords.Where(f => f.Keyword == keyword).Any() == false)
+                        {
+                            ISearchEngineOptimizationKeyword newKeyword = DataFacade.BuildNew<ISearchEngineOptimizationKeyword>();
+                            newKeyword.Keyword = keyword;
+                            DataFacade.AddNew(newKeyword);
+                        }
                     }
+
+                    foreach (ISearchEngineOptimizationKeyword existingKeyword in existingKeywords)
+                    {
+                        if (keywords.Contains(existingKeyword.Keyword) == false)
+                        {
+                            DataFacade.Delete(existingKeyword);
+                        }
+                    }
+
+                    transactionScope.Complete();
                 }
-                
-                transactionScope.Complete();
             }
+
+            return true;
         }
 
-        return true;
-    }
 
-    
-    
 
-    [WebMethod]
-    public List<string> GetKeyWords(bool dummy)
-    {
-        using (new DataScope(DataScopeIdentifier.Administrated, UserSettings.ActiveLocaleCultureInfo))
+
+        [WebMethod]
+        public List<string> GetKeyWords(bool dummy)
         {
-            IEnumerable<ISearchEngineOptimizationKeyword> keywords = DataFacade.GetData<ISearchEngineOptimizationKeyword>().Evaluate();
+            using (new DataScope(DataScopeIdentifier.Administrated, UserSettings.ActiveLocaleCultureInfo))
+            {
+                IEnumerable<ISearchEngineOptimizationKeyword> keywords = DataFacade.GetData<ISearchEngineOptimizationKeyword>().Evaluate();
 
-            List<string> result = new List<string>(keywords.Select(f => f.Keyword));
+                List<string> result = new List<string>(keywords.Select(f => f.Keyword));
 
-            return result;
+                return result;
+            }
         }
     }
 }
-

@@ -1,4 +1,4 @@
-﻿<%@ WebService Language="C#" Class="PageService" %>
+﻿<%@ WebService Language="C#" Class="Composite.Services.PageService" %>
 
 using System;
 using System.Collections.Generic;
@@ -13,47 +13,50 @@ using Composite.Data;
 using Composite.Data.Types;
 
 
-[WebService(Namespace = "http://www.composite.net/ns/management")]
-[SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
-public class PageService : System.Web.Services.WebService
+namespace Composite.Services
 {
-    [WebMethod]
-    public string GetPageBrowserDefaultUrl(bool dummy)
+    [WebService(Namespace = "http://www.composite.net/ns/management")]
+    [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
+    public class PageService : System.Web.Services.WebService
     {
-        using (DataConnection dataConnection = new DataConnection(PublicationScope.Unpublished, UserSettings.ActiveLocaleCultureInfo))
+        [WebMethod]
+        public string GetPageBrowserDefaultUrl(bool dummy)
         {
-            SitemapNavigator sitemapNavigator = new SitemapNavigator(dataConnection);
-            PageNode homePageNode = sitemapNavigator.GetPageNodeByHostname(this.Context.Request.Url.Host);
+            using (DataConnection dataConnection = new DataConnection(PublicationScope.Unpublished, UserSettings.ActiveLocaleCultureInfo))
+            {
+                SitemapNavigator sitemapNavigator = new SitemapNavigator(dataConnection);
+                PageNode homePageNode = sitemapNavigator.GetPageNodeByHostname(this.Context.Request.Url.Host);
 
-            if (homePageNode != null)
-            {
-                return homePageNode.Url;
+                if (homePageNode != null)
+                {
+                    return homePageNode.Url;
+                }
+                else
+                {
+                    return "/";
+                }
             }
-            else
+        }
+
+
+
+        [WebMethod]
+        public string TranslateToInternalUrl(string url)
+        {
+            if (PageUrlHelper.IsInternalUrl(url))
             {
-                return "/";
+                return url;
             }
+
+            var pageUrlOptions = PageUrl.Parse(url);
+
+            if (pageUrlOptions == null)
+            {
+                return string.Empty;
+            }
+
+            return pageUrlOptions.Build(PageUrlType.Unpublished);
         }
     }
 
-
-
-    [WebMethod]
-    public string TranslateToInternalUrl(string url)
-    {
-        if (PageUrlHelper.IsInternalUrl(url))
-        {
-            return url;
-        }
-
-        var pageUrlOptions = PageUrl.Parse(url);
-
-        if (pageUrlOptions == null)
-        {
-            return string.Empty;
-        }
-
-        return pageUrlOptions.Build(PageUrlType.Unpublished);
-    }
 }
-

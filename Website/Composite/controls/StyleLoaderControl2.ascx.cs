@@ -79,7 +79,7 @@ public partial class StyleLoaderControl2 : System.Web.UI.UserControl
 		StringBuilder _builder = new StringBuilder ();
 
         // TODO: Check if we need this class at all. 
-        string[] lines = File.ReadAllLines( root + "/" /* + scriptPath */); 
+        string[] lines = C1File.ReadAllLines( root + "/" /* + scriptPath */); 
         foreach (string line in lines)
         {
             _builder.AppendLine ( line.ToString());
