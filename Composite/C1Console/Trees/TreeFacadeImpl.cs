@@ -66,7 +66,7 @@ namespace Composite.C1Console.Trees
                 LoadAllTrees();
                 InitializeTreeAttachmentPoints();
 
-                _resourceLocker.Resources.FileSystemWatcher = new Composite.Core.IO.FileSystemWatcher(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), "*.xml");
+                _resourceLocker.Resources.FileSystemWatcher = new C1FileSystemWatcher(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), "*.xml");
                 _resourceLocker.Resources.FileSystemWatcher.Created += OnReloadTrees;
                 _resourceLocker.Resources.FileSystemWatcher.Deleted += OnReloadTrees;
                 _resourceLocker.Resources.FileSystemWatcher.Changed += OnReloadTrees;
@@ -602,7 +602,7 @@ namespace Composite.C1Console.Trees
         {
             public Dictionary<string, Tree> Trees { get; set; }
             public Dictionary<string, List<IAttachmentPoint>> PersistentAttachmentPoints { get; set; }
-            public Composite.Core.IO.FileSystemWatcher FileSystemWatcher { get; set; }
+            public C1FileSystemWatcher FileSystemWatcher { get; set; }
             public DateTime LastFileChange { get; set; }
             public EntityToken RootEntityToken { get; set; }
 

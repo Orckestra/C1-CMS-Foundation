@@ -154,7 +154,7 @@ namespace Composite.Core.Implementation
         }
 
         
-
+#warning MRJ: Clean thees methods, only one is needed
         public virtual C1FileStreamImplementation CreateC1FileStream(string path, FileMode mode )
         {
             return new C1FileStreamImplementation(path, mode, (mode == System.IO.FileMode.Append) ? System.IO.FileAccess.Write : System.IO.FileAccess.ReadWrite, FileShare.Read);
@@ -173,6 +173,14 @@ namespace Composite.Core.Implementation
         {
             return new C1FileStreamImplementation(path, mode, access, share);
         }
+
+
+
+        public virtual C1FileSystemWatcherImplementation CreateC1FileSystemWatcher(string path, string filter)
+        {
+            return new C1FileSystemWatcherImplementation(path, filter);
+        }
+
 
         #endregion
     }

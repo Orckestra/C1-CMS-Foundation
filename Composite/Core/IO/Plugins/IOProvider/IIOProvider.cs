@@ -436,7 +436,7 @@ namespace Composite.Core.Implementation
     /// <summary>
     /// IOLayer - documentation pending
     /// </summary>
-    public class C1FileImplementation 
+    public class C1FileImplementation
     {
         /// <summary>
         /// IOLayer - documentation pending
@@ -1433,6 +1433,244 @@ namespace Composite.Core.Implementation
         //    throw new NotImplementedException(); 
         //}
     }
+
+
+
+
+
+    /// <summary>
+    /// IOLayer - documentation pending
+    /// </summary>
+    public class C1FileSystemWatcherImplementation 
+    {
+        private IC1FileSystemWatcher _fileSystemWatcher;
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="filter"></param>
+        public C1FileSystemWatcherImplementation(string path, string filter)
+        {
+            _fileSystemWatcher = IOFacade.CreateFileSystemWatcher(path, filter);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual bool EnableRaisingEvents
+        {
+            get
+            {
+                return _fileSystemWatcher.EnableRaisingEvents;
+            }
+            set
+            {
+                _fileSystemWatcher.EnableRaisingEvents = value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual string Path
+        {
+            get
+            {
+                return _fileSystemWatcher.Path;
+            }
+            set
+            {
+                _fileSystemWatcher.Path = value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual string Filter
+        {
+            get
+            {
+                return _fileSystemWatcher.Filter;
+            }
+            set
+            {
+                _fileSystemWatcher.Filter = value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual bool IncludeSubdirectories
+        {
+            get
+            {
+                return _fileSystemWatcher.IncludeSubdirectories;
+            }
+            set
+            {
+                _fileSystemWatcher.IncludeSubdirectories = value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual event FileSystemEventHandler Created
+        {
+            add
+            {
+                _fileSystemWatcher.Created += value;
+            }
+            remove
+            {
+                _fileSystemWatcher.Created -= value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual event FileSystemEventHandler Changed
+        {
+            add
+            {
+                _fileSystemWatcher.Changed += value;
+            }
+            remove
+            {
+                _fileSystemWatcher.Changed -= value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual event RenamedEventHandler Renamed
+        {
+            add
+            {
+                _fileSystemWatcher.Renamed += value;
+            }
+            remove
+            {
+                _fileSystemWatcher.Renamed -= value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual event FileSystemEventHandler Deleted
+        {
+            add
+            {
+                _fileSystemWatcher.Deleted += value;
+            }
+            remove
+            {
+                _fileSystemWatcher.Deleted -= value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual event ErrorEventHandler Error
+        {
+            add
+            {
+                _fileSystemWatcher.Error += value;
+            }
+            remove
+            {
+                _fileSystemWatcher.Error -= value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual NotifyFilters NotifyFilter
+        {
+            get
+            {
+                return _fileSystemWatcher.NotifyFilter;
+            }
+            set
+            {
+                _fileSystemWatcher.NotifyFilter = value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual void BeginInit()
+        {
+            _fileSystemWatcher.BeginInit();
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual void EndInit()
+        {
+            _fileSystemWatcher.EndInit();
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="changeType"></param>
+        /// <returns></returns>
+        public virtual C1WaitForChangedResult WaitForChanged(WatcherChangeTypes changeType)
+        {
+            return _fileSystemWatcher.WaitForChanged(changeType);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="changeType"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public virtual C1WaitForChangedResult WaitForChanged(WatcherChangeTypes changeType, int timeout)
+        {
+            return _fileSystemWatcher.WaitForChanged(changeType, timeout);
+        }
+    }
 }
 
 
@@ -1448,7 +1686,7 @@ namespace Composite.Core.IO
     /// <summary>
     /// IOLayer - documentation pending
     /// </summary>
-    public static class C1Directory 
+    public static class C1Directory
     {
         /// <summary>
         /// IOLayer - documentation pending
@@ -1856,7 +2094,7 @@ namespace Composite.Core.IO
         //}
     }
 
-   
+
 
 
 
@@ -1864,7 +2102,7 @@ namespace Composite.Core.IO
     /// IOLayer - documentation pending
     /// </summary>
     public static class C1File
-    {         
+    {
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
@@ -1968,7 +2206,7 @@ namespace Composite.Core.IO
         }
 
 
-        
+
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
@@ -1980,8 +2218,8 @@ namespace Composite.Core.IO
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.Create(path, bufferSize);
         }
-        
-        
+
+
 
         /// <summary>
         /// IOLayer - documentation pending
@@ -1995,9 +2233,9 @@ namespace Composite.Core.IO
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.Create(path, bufferSize, options);
         }
-        
-      
-        
+
+
+
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
@@ -2515,7 +2753,7 @@ namespace Composite.Core.IO
         }
 
 
-        
+
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
@@ -2533,7 +2771,7 @@ namespace Composite.Core.IO
         //{ 
         //    throw new NotImplementedException(); 
         //}
-        
+
 
 
 
@@ -2609,7 +2847,7 @@ namespace Composite.Core.IO
         {
         }
 
-
+#warning MRJ: Clean up these constructors
 
         /// <summary>
         /// IOLayer - documentation pending
@@ -2909,7 +3147,268 @@ namespace Composite.Core.IO
     }
 
 
+
+
+
+    /// <summary>
+    /// IOLayer - documentation pending
+    /// </summary>
+    public class C1FileSystemWatcher : ImplementationContainer<C1FileSystemWatcherImplementation>
+    {
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        public C1FileSystemWatcher(string path)
+            : this(path, null)
+        {
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="filter"></param>
+        public C1FileSystemWatcher(string path, string filter)
+            : base(() => ImplementationFactory.CurrentFactory.CreateC1FileSystemWatcher(path, filter))
+        {            
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public bool EnableRaisingEvents
+        {
+            get
+            {
+                return this.Implementation.EnableRaisingEvents;
+            }
+            set
+            {
+                this.Implementation.EnableRaisingEvents = value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public string Path
+        {
+            get
+            {
+                return this.Implementation.Path;
+            }
+            set
+            {
+                this.Implementation.Path = value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public string Filter
+        {
+            get
+            {
+                return this.Implementation.Filter;
+            }
+            set
+            {
+                this.Implementation.Filter = value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public bool IncludeSubdirectories
+        {
+            get
+            {
+                return this.Implementation.IncludeSubdirectories;
+            }
+            set
+            {
+                this.Implementation.IncludeSubdirectories = value;
+            }
+        }
+        
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public event FileSystemEventHandler Created
+        {
+            add
+            {
+                this.Implementation.Created += value;
+            }
+            remove
+            {
+                this.Implementation.Created -= value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public event FileSystemEventHandler Changed
+        {
+            add
+            {
+                this.Implementation.Changed += value;
+            }
+            remove
+            {
+                this.Implementation.Changed -= value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public event RenamedEventHandler Renamed
+        {
+            add
+            {
+                this.Implementation.Renamed += value;
+            }
+            remove
+            {
+                this.Implementation.Renamed -= value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public event FileSystemEventHandler Deleted
+        {
+            add
+            {
+                this.Implementation.Deleted += value;
+            }
+            remove
+            {
+                this.Implementation.Deleted -= value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public event ErrorEventHandler Error
+        {
+            add
+            {
+                this.Implementation.Error += value;
+            }
+            remove
+            {
+                this.Implementation.Error -= value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public NotifyFilters NotifyFilter
+        {
+            get
+            {
+                return this.Implementation.NotifyFilter;
+            }
+            set
+            {
+                this.Implementation.NotifyFilter = value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public void BeginInit()
+        {
+            this.Implementation.BeginInit();
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public void EndInit()
+        {
+            this.Implementation.EndInit();
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="changeType"></param>
+        /// <returns></returns>
+        public C1WaitForChangedResult WaitForChanged(WatcherChangeTypes changeType)
+        {
+            return this.Implementation.WaitForChanged(changeType);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="changeType"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public C1WaitForChangedResult WaitForChanged(WatcherChangeTypes changeType, int timeout)
+        {
+            return this.Implementation.WaitForChanged(changeType, timeout);
+        }
+    }
+
+
+
+
+    /// <summary>
+    /// IOLayer - documentation pending
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct C1WaitForChangedResult
+    {
+        public string Name { get; set; }
+        public string OldName { get; set; }
+        public WatcherChangeTypes ChangeType { get; set; }        
+        public bool TimedOut { get; set; }
+    }
 }
+
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3450,7 +3949,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
 
     public class LocalC1FileStream : IC1FileStream
     {
-        private System.IO.FileStream _fileStream;
+        private FileStream _fileStream;
 
 
 
@@ -3610,6 +4109,223 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
             _fileStream.Dispose();
         }
     }
+
+
+
+
+    public class LocalC1FileSystemWatcher : IC1FileSystemWatcher
+    {
+        private FileSystemWatcher _fileSystemWatcher;
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]
+        public LocalC1FileSystemWatcher(string path, string filter)
+        {
+            _fileSystemWatcher = new FileSystemWatcher(path, filter);
+        }
+
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]
+        public bool EnableRaisingEvents 
+        {
+            get
+            {
+                return _fileSystemWatcher.EnableRaisingEvents;
+            }
+            set
+            {
+                _fileSystemWatcher.EnableRaisingEvents = value;
+            }
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]
+        public string Path 
+        {
+            get
+            {
+                return _fileSystemWatcher.Path;
+            }
+            set
+            {
+                _fileSystemWatcher.Path = value;
+            }
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]
+        public string Filter 
+        {
+            get
+            {
+                return _fileSystemWatcher.Filter;
+            }
+            set
+            {
+                _fileSystemWatcher.Filter = value;
+            }
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]
+        public bool IncludeSubdirectories 
+        {
+            get
+            {
+                return _fileSystemWatcher.IncludeSubdirectories;
+            }
+            set
+            {
+                _fileSystemWatcher.IncludeSubdirectories = value;
+            }
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]
+        public event FileSystemEventHandler Created
+        {
+            add
+            {
+                _fileSystemWatcher.Created += value;
+            }
+            remove
+            {
+                _fileSystemWatcher.Created -= value;
+            }
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]
+        public event FileSystemEventHandler Changed
+        {
+            add
+            {
+                _fileSystemWatcher.Changed += value;
+            }
+            remove
+            {
+                _fileSystemWatcher.Changed -= value;
+            }
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]
+        public event RenamedEventHandler Renamed
+        {
+            add
+            {
+                _fileSystemWatcher.Renamed += value;
+            }
+            remove
+            {
+                _fileSystemWatcher.Renamed -= value;
+            }
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]
+        public event FileSystemEventHandler Deleted
+        {
+            add
+            {
+                _fileSystemWatcher.Deleted += value;
+            }
+            remove
+            {
+                _fileSystemWatcher.Deleted -= value;
+            }
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]
+        public event ErrorEventHandler Error
+        {
+            add
+            {
+                _fileSystemWatcher.Error += value;
+            }
+            remove
+            {
+                _fileSystemWatcher.Error -= value;
+            }
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]
+        public NotifyFilters NotifyFilter 
+        {
+            get
+            {
+                return _fileSystemWatcher.NotifyFilter;
+            }
+            set
+            {
+                _fileSystemWatcher.NotifyFilter = value;
+            }
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]
+        public void BeginInit()
+        {
+            _fileSystemWatcher.BeginInit();
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]
+        public void EndInit()
+        {
+            _fileSystemWatcher.EndInit();
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseWaitForChangedResultClass:DoNotUseWaitForChangedResultClass")]
+        public C1WaitForChangedResult WaitForChanged(WatcherChangeTypes changeType)
+        {
+            WaitForChangedResult result = _fileSystemWatcher.WaitForChanged(changeType);
+
+            return new C1WaitForChangedResult
+            {
+                Name = result.Name,
+                OldName = result.OldName, 
+                ChangeType = result.ChangeType,
+                TimedOut = result.TimedOut
+            };
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseWaitForChangedResultClass:DoNotUseWaitForChangedResultClass")]
+        public C1WaitForChangedResult WaitForChanged(WatcherChangeTypes changeType, int timeout)
+        {
+            WaitForChangedResult result = _fileSystemWatcher.WaitForChanged(changeType, timeout);
+
+            return new C1WaitForChangedResult
+            {
+                Name = result.Name,
+                OldName = result.OldName,
+                ChangeType = result.ChangeType,
+                
+                TimedOut = result.TimedOut
+            };
+        }
+    }
 }
 
 
@@ -3623,113 +4339,799 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
 
 namespace Composite.Core.IO.Plugins.IOProvider
 {
+    /// <summary>
+    /// IOLayer - documentation pending
+    /// </summary>
     public interface IC1Directory
     {
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         DirectoryInfo CreateDirectory(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
         void Delete(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="recursive"></param>
         void Delete(string path, bool recursive);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="sourceDirName"></param>
+        /// <param name="destDirName"></param>
         void Move(string sourceDirName, string destDirName);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         bool Exists(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <returns></returns>
         string GetCurrentDirectory();
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
         void SetCurrentDirectory(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         DirectoryInfo GetParent(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         string GetDirectoryRoot(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         string[] GetDirectories(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="searchPattern"></param>
+        /// <returns></returns>
         string[] GetDirectories(string path, string searchPattern);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="searchPattern"></param>
+        /// <param name="searchOption"></param>
+        /// <returns></returns>
         string[] GetDirectories(string path, string searchPattern, SearchOption searchOption);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         string[] GetFiles(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="searchPattern"></param>
+        /// <returns></returns>
         string[] GetFiles(string path, string searchPattern);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="searchPattern"></param>
+        /// <param name="searchOption"></param>
+        /// <returns></returns>
         string[] GetFiles(string path, string searchPattern, SearchOption searchOption);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         DateTime GetCreationTime(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         DateTime GetCreationTimeUtc(string path);
     }
 
 
 
-    interface IC1File
+    /// <summary>
+    /// IOLayer - documentation pending
+    /// </summary>
+    public interface IC1File
     {
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         bool Exists(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="sourceFileName"></param>
+        /// <param name="destFileName"></param>
         void Copy(string sourceFileName, string destFileName);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="sourceFileName"></param>
+        /// <param name="destFileName"></param>
+        /// <param name="overwrite"></param>
         void Copy(string sourceFileName, string destFileName, bool overwrite);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="sourceFileName"></param>
+        /// <param name="destFileName"></param>
         void Move(string sourceFileName, string destFileName);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="sourceFileName"></param>
+        /// <param name="destinationFileName"></param>
+        /// <param name="destinationBackupFileName"></param>
         void Replace(string sourceFileName, string destinationFileName, string destinationBackupFileName);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="sourceFileName"></param>
+        /// <param name="destinationFileName"></param>
+        /// <param name="destinationBackupFileName"></param>
+        /// <param name="ignoreMetadataErrors"></param>
         void Replace(string sourceFileName, string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
         void Delete(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         C1FileStream Create(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="bufferSize"></param>
+        /// <returns></returns>
         C1FileStream Create(string path, int bufferSize);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="bufferSize"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         C1FileStream Create(string path, int bufferSize, FileOptions options);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         Composite.Core.IO.StreamWriter CreateText(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         Composite.Core.IO.StreamWriter AppendText(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="contents"></param>
         void AppendAllText(string path, string contents);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="contents"></param>
+        /// <param name="encoding"></param>
         void AppendAllText(string path, string contents, Encoding encoding);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="contents"></param>
         void AppendAllLines(string path, IEnumerable<string> contents);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="contents"></param>
+        /// <param name="encoding"></param>
         void AppendAllLines(string path, IEnumerable<string> contents, Encoding encoding);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="mode"></param>
+        /// <returns></returns>
         C1FileStream Open(string path, FileMode mode);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="mode"></param>
+        /// <param name="access"></param>
+        /// <returns></returns>
         C1FileStream Open(string path, FileMode mode, FileAccess access);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="mode"></param>
+        /// <param name="access"></param>
+        /// <param name="share"></param>
+        /// <returns></returns>
         C1FileStream Open(string path, FileMode mode, FileAccess access, FileShare share);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         C1FileStream OpenRead(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         Composite.Core.IO.StreamReader OpenText(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         C1FileStream OpenWrite(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         byte[] ReadAllBytes(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         string[] ReadAllLines(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
         string[] ReadAllLines(string path, Encoding encoding);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         string ReadAllText(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
         string ReadAllText(string path, Encoding encoding);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         IEnumerable<string> ReadLines(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
         IEnumerable<string> ReadLines(string path, Encoding encoding);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="bytes"></param>
         void WriteAllBytes(string path, byte[] bytes);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="contents"></param>
         void WriteAllLines(string path, IEnumerable<string> contents);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="contents"></param>
+        /// <param name="encoding"></param>
         void WriteAllLines(string path, IEnumerable<string> contents, Encoding encoding);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="contents"></param>
         void WriteAllLines(string path, string[] contents);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="contents"></param>
+        /// <param name="encoding"></param>
         void WriteAllLines(string path, string[] contents, Encoding encoding);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="contents"></param>
         void WriteAllText(string path, string contents);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="contents"></param>
+        /// <param name="encoding"></param>
         void WriteAllText(string path, string contents, Encoding encoding);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         FileAttributes GetAttributes(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="fileAttributes"></param>
         void SetAttributes(string path, FileAttributes fileAttributes);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         DateTime GetCreationTime(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         DateTime GetCreationTimeUtc(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="creationTime"></param>
         void SetCreationTime(string path, DateTime creationTime);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="creationTimeUtc"></param>
         void SetCreationTimeUtc(string path, DateTime creationTimeUtc);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         DateTime GetLastAccessTime(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         DateTime GetLastAccessTimeUtc(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="lastAccessTime"></param>
         void SetLastAccessTime(string path, DateTime lastAccessTime);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="lastAccessTimeUtc"></param>
         void SetLastAccessTimeUtc(string path, DateTime lastAccessTimeUtc);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         DateTime GetLastWriteTime(string path);
-        DateTime GetLastWriteTimeUtc(string path);                      
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        DateTime GetLastWriteTimeUtc(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="lastWriteTime"></param>
         void SetLastWriteTime(string path, DateTime lastWriteTime);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="lastWriteTimeUtc"></param>
         void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc);
     }
 
 
 
+    /// <summary>
+    /// IOLayer - documentation pending
+    /// </summary>
     public interface IC1FileStream : IDisposable
     {
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
         string Name { get; }
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
         long Length { get; }
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
         void SetLength(long value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
         long Position { get; set; }
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
         int Read(byte[] array, int offset, int count);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <returns></returns>
         int ReadByte();
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
         void Write(byte[] array, int offset, int count);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
         void WriteByte(byte value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="offset"></param>
+        /// <param name="origin"></param>
+        /// <returns></returns>
         long Seek(long offset, System.IO.SeekOrigin origin);
+        
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
         bool CanRead { get; }
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
         bool CanSeek { get; }
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
         bool CanWrite { get; }
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
         void Flush();
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="flushToDisk"></param>
         void Flush(bool flushToDisk);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
         void Close();
     }
 
 
 
+    /// <summary>
+    /// IOLayer - documentation pending
+    /// </summary>
+    public interface IC1FileSystemWatcher
+    {
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        bool EnableRaisingEvents { get; set; }
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        string Path { get; set; }
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        string Filter { get; set; }
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        bool IncludeSubdirectories { get; set; }
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        event FileSystemEventHandler Created;
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        event FileSystemEventHandler Changed;
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        event RenamedEventHandler Renamed;
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        event FileSystemEventHandler Deleted;
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        event ErrorEventHandler Error;
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>        
+        NotifyFilters NotifyFilter { get; set; }
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        void BeginInit();
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        void EndInit();
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="changeType"></param>
+        /// <returns></returns>
+        C1WaitForChangedResult WaitForChanged(WatcherChangeTypes changeType);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="changeType"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        C1WaitForChangedResult WaitForChanged(WatcherChangeTypes changeType, int timeout);
+    }
+
+
+
+
+
+
+
+
     internal interface IIOProvider
-    {        
+    {
         IC1Directory C1Directory { get; }
         IC1File C1File { get; }
 
 
         IC1FileStream CreateFileStream(string path, FileMode mode, FileAccess access, FileShare share);
+        IC1FileSystemWatcher CreateFileSystemWatcher(string path, string filter);
 
         // --- Classes/Structs ---
         // static Directory
@@ -3769,7 +5171,7 @@ namespace Composite.Core.IO
 {
     internal static class IOFacade
     {
-        public static IC1Directory C1Directory 
+        public static IC1Directory C1Directory
         {
             get
             {
@@ -3788,9 +5190,17 @@ namespace Composite.Core.IO
         }
 
 
+
         public static IC1FileStream CreateFileStream(string path, FileMode mode, FileAccess access, FileShare share)
         {
             return new LocalC1FileStream(path, mode, access, share);
+        }
+
+
+
+        public static IC1FileSystemWatcher CreateFileSystemWatcher(string path, string filter)
+        {
+            return new LocalC1FileSystemWatcher(path, filter);
         }
     }
 }

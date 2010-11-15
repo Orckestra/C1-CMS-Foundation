@@ -7,13 +7,14 @@ using Composite.Core.Collections.Generic;
 using Composite.Core.IO;
 using Composite.Core.Types;
 using Composite.Data.Streams;
+using System.IO;
 
 namespace Composite.Data.Plugins.DataProvider.Streams
 {
 	internal class FileChangeNotificator
 	{
         private static readonly object _syncRoot = new object();
-        private static FileSystemWatcher _fileWatcher;
+        private static C1FileSystemWatcher _fileWatcher;
 
         private static int _counter;
 
@@ -35,33 +36,33 @@ namespace Composite.Data.Plugins.DataProvider.Streams
                     return;
                 }
 
-                _fileWatcher = new FileSystemWatcher(AppDomain.CurrentDomain.BaseDirectory);
+                _fileWatcher = new C1FileSystemWatcher(AppDomain.CurrentDomain.BaseDirectory);
                 _fileWatcher.Created += FileWatcher_Created;
                 _fileWatcher.Changed += FileWatcher_Changed;
                 _fileWatcher.Deleted += FileWatcher_Deleted;
 
                 _fileWatcher.IncludeSubdirectories = true;
-                _fileWatcher.NotifyFilter = System.IO.NotifyFilters.FileName | System.IO.NotifyFilters.LastWrite;
+                _fileWatcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite;
 
                 _fileWatcher.EnableRaisingEvents = true;
             }
         }
 
 
-        static void FileWatcher_Deleted(object sender, System.IO.FileSystemEventArgs e)
+        static void FileWatcher_Deleted(object sender, FileSystemEventArgs e)
         {
             FireFileChangedEvent(e.FullPath, FileChangeType.Deleted);
         }
 
-        static void FileWatcher_Changed(object sender, System.IO.FileSystemEventArgs e)
+        static void FileWatcher_Changed(object sender, FileSystemEventArgs e)
         {
-            FileChangeType changeType = e.ChangeType == System.IO.WatcherChangeTypes.Renamed
+            FileChangeType changeType = e.ChangeType == WatcherChangeTypes.Renamed
                                             ? FileChangeType.Renamed
                                             : FileChangeType.Modified;
             FireFileChangedEvent(e.FullPath, changeType);
         }
 
-        static void FileWatcher_Created(object sender, System.IO.FileSystemEventArgs e)
+        static void FileWatcher_Created(object sender, FileSystemEventArgs e)
         {
             // Do nothing...
         }

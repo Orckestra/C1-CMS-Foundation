@@ -106,7 +106,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
             public event DataEventHandler DataChangedEvent;
             public event FileSystemEventHandler FileChangedEvent;
 
-            private readonly Composite.Core.IO.FileSystemWatcher _codeDirectoryFileSystemWatcher;
+            private readonly C1FileSystemWatcher _codeDirectoryFileSystemWatcher;
             private DateTime _lastWriteHandleTime = DateTime.MinValue;
             private object _fileUpdateLock = new object();
 
@@ -122,7 +122,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
                 DirectoryUtils.EnsureDirectoryExists(folderToWatch);
 
-                _codeDirectoryFileSystemWatcher = new Composite.Core.IO.FileSystemWatcher(folderToWatch)
+                _codeDirectoryFileSystemWatcher = new C1FileSystemWatcher(folderToWatch)
                 {
                     NotifyFilter = NotifyFilters.LastWrite,
                     EnableRaisingEvents = true,

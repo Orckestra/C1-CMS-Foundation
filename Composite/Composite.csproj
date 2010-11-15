@@ -147,12 +147,8 @@
     <Compile Include="Core\Implementation\SitemapNavigatorImplementation.cs" />
     <Compile Include="Core\IO\Plugins\IOProvider\IIOProvider.cs" />
     <Compile Include="Core\Log.cs" />
-    <Compile Include="Core\IO\FileSystemWatcher.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Core\IO\StreamReader.cs" />
     <Compile Include="Core\IO\StreamWriter.cs" />
-    <Compile Include="Core\IO\WaitForChangedResult.cs" />
     <Compile Include="Core\Sql\SqlConnectionManager.cs" />
     <Compile Include="Core\WebClient\ApplicationLevelEventHandlers.cs" />
     <Compile Include="Core\WebClient\Presentation\LessRequestHandler.cs" />
