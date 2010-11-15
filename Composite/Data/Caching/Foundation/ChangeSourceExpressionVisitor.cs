@@ -1,11 +1,9 @@
 using System.Linq.Expressions;
-using Composite.Core.Linq.Disassembled;
 
 
 namespace Composite.Data.Caching.Foundation
 {
-    //MRJ: 4.0 Upgrade
-    internal sealed class ChangeSourceExpressionVisitor : Composite.Core.Linq.Disassembled.ExpressionVisitor
+    internal sealed class ChangeSourceExpressionVisitor : ExpressionVisitor
     {
         private Expression _newSourceExpression;
 
@@ -21,7 +19,7 @@ namespace Composite.Data.Caching.Foundation
         }
 
 
-        public override Expression VisitConstant(ConstantExpression c)
+        protected override Expression VisitConstant(ConstantExpression c)
         {
             if (c.Value == null) return base.VisitConstant(c);
 

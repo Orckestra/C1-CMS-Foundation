@@ -1,16 +1,16 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Collections.Generic;
 
 
 namespace Composite.Data.Foundation
 {
-    internal sealed class DataFacadeQueryableGathererExpressionVisitor : Composite.Core.Linq.Disassembled.ExpressionVisitor
+    internal sealed class DataFacadeQueryableGathererExpressionVisitor : ExpressionVisitor
     {
         private List<IDataFacadeQueryable> _multibleSourceQueryables = new List<IDataFacadeQueryable>();
         private int _sourceCount = 0;
 
-        public override Expression VisitConstant(ConstantExpression c)
+        protected override Expression VisitConstant(ConstantExpression c)
         {
             if (c.Value is IDataFacadeQueryable)
             {

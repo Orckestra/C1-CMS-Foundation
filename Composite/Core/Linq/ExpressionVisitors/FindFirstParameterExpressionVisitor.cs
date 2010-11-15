@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Composite.Core.Linq.ExpressionVisitors
 {
-    internal sealed class FindFirstParameterExpressionVisitor : Linq.Disassembled.ExpressionVisitor
+    internal sealed class FindFirstParameterExpressionVisitor : ExpressionVisitor
     {
         private ParameterExpression _foundParameter = null;
 
@@ -14,7 +14,7 @@ namespace Composite.Core.Linq.ExpressionVisitors
         }
 
 
-        public override Expression VisitParameter(ParameterExpression p)
+        protected override Expression VisitParameter(ParameterExpression p)
         {
             if (null == _foundParameter)
             {

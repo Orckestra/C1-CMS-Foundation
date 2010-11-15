@@ -2,13 +2,12 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-
 using Composite.Core.Linq;
 
 
 namespace Composite.Data.Foundation
 {
-    internal sealed class DataFacadeQueryableExpressionVisitor : Composite.Core.Linq.Disassembled.ExpressionVisitor
+    internal sealed class DataFacadeQueryableExpressionVisitor : ExpressionVisitor
     {
         private static readonly MethodInfo _genericGetDataMethodInfo = typeof(DataFacade).GetMethods().Where(x => x.Name == "GetData" && x.IsGenericMethod == true).First();
 
@@ -24,7 +23,7 @@ namespace Composite.Data.Foundation
 
 
 
-        public override Expression VisitConstant(ConstantExpression c)
+        protected override Expression VisitConstant(ConstantExpression c)
         {
             if (c.Value is IDataFacadeQueryable)
             {
@@ -40,7 +39,8 @@ namespace Composite.Data.Foundation
 
 
 
-        public override Expression VisitMemberAccess(MemberExpression m)
+
+        protected override Expression VisitMember(MemberExpression m)
         {
             if (m.Member.DeclaringType.IsCompilerGeneratedType() == true)
             {
@@ -69,12 +69,13 @@ namespace Composite.Data.Foundation
                 }
             }
 
-            return base.VisitMemberAccess(m);
+
+            return base.VisitMember(m);
         }
 
 
 
-        public override Expression VisitMethodCall(MethodCallExpression m)
+        protected override Expression VisitMethodCall(MethodCallExpression m)
         {
 
             if (m.Method.DeclaringType == typeof(DataFacade))

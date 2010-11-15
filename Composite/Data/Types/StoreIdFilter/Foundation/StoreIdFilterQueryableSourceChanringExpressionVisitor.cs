@@ -1,11 +1,9 @@
 using System.Linq.Expressions;
-using Composite.Core.Linq.Disassembled;
 
 
 namespace Composite.Data.Types.StoreIdFilter.Foundation
 {
-    //MRJ: 4.0 Upgrade
-    internal sealed class StoreIdFilterQueryableSourceChanringExpressionVisitor : Composite.Core.Linq.Disassembled.ExpressionVisitor
+    internal sealed class StoreIdFilterQueryableSourceChanringExpressionVisitor : ExpressionVisitor
     {
         private Expression _newSourceExpression = null;
 
@@ -21,7 +19,7 @@ namespace Composite.Data.Types.StoreIdFilter.Foundation
         }
 
 
-        public override Expression VisitConstant(ConstantExpression c)
+        protected override Expression VisitConstant(ConstantExpression c)
         {
             IStoreIdFilterQueryable queryable = c.Value as IStoreIdFilterQueryable;
 

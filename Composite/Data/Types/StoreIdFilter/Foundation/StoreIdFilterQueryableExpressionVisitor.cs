@@ -1,14 +1,11 @@
-using System.Linq;
+using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using Composite.Core.Linq.Disassembled;
-using System;
 
 
 namespace Composite.Data.Types.StoreIdFilter.Foundation
 {
-    //MRJ: 4.0 Upgrade
-    internal sealed class StoreIdFilterQueryableExpressionVisitor : Composite.Core.Linq.Disassembled.ExpressionVisitor
+    internal sealed class StoreIdFilterQueryableExpressionVisitor : ExpressionVisitor
     {
         private static readonly MemberInfo _mediaFileStoreIdMemberInfo = typeof(IMediaFile).GetMember("StoreId")[0];
         private static readonly MemberInfo _mediaFileFOlderStoreIdMemberInfo = typeof(IMediaFileFolder).GetMember("StoreId")[0];
@@ -20,7 +17,7 @@ namespace Composite.Data.Types.StoreIdFilter.Foundation
             this.FoundStoreId = null;
         }
 
-        public override Expression VisitConstant(ConstantExpression c)
+        protected override Expression VisitConstant(ConstantExpression c)
         {
             if (c.Value != null && c.Value is IStorageFilter)
             {
@@ -30,7 +27,7 @@ namespace Composite.Data.Types.StoreIdFilter.Foundation
             return base.VisitConstant(c);
         }
 
-        public override Expression VisitBinary(BinaryExpression b)
+        protected override Expression VisitBinary(BinaryExpression b)
         {
             if ((b.Method != null) && (b.Method.Name == "op_Equality"))
             {

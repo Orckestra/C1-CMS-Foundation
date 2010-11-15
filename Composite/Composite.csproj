@@ -1556,10 +1556,6 @@
     <Compile Include="Functions\WidgetFunctionProvider.cs" />
     <Compile Include="Functions\WidgetFunctionRuntimeTreeNode.cs" />
     <Compile Include="Core\IO\DirectoryUtil.cs" />
-    <Compile Include="Core\Linq\Disassembled\Error.cs" />
-    <Compile Include="Core\Linq\Disassembled\ReadOnlyCollectionExtensions.cs" />
-    <Compile Include="Core\Linq\Disassembled\SR.cs" />
-    <Compile Include="Core\Linq\Disassembled\Strings.cs" />
     <Compile Include="Core\Linq\TypeExtensions.cs" />
     <Compile Include="Core\WebClient\Renderings\Page\PageStructureInfo.cs" />
     <Compile Include="Core\WebClient\Renderings\RequestInterceptorHttpModule.cs" />
@@ -1866,7 +1862,6 @@
     <Compile Include="Plugins\Elements\ElementProviders\VirtualElementProvider\ProviderHookingElementNode.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\VirtualElementProvider\VirtualElementProvider.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\VirtualElementProvider\VirtualElementProviderEntityToken.cs" />
-    <Compile Include="Core\Linq\Disassembled\ExpressionVisitor.cs" />
     <Compile Include="Core\Linq\ExpressionCreator.cs" />
     <Compile Include="Core\Linq\ExpressionExtractor.cs" />
     <Compile Include="Core\Linq\ExpressionVisitors\FindFirstParameterExpressionVisitor.cs" />
