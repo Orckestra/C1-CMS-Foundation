@@ -37,20 +37,6 @@ namespace Composite.Core.Implementation
 
 
 
-#warning MRJ: Remark this methods
-        /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
-        /// <param name="path"></param>
-        /// <param name="directorySecurity"></param>
-        /// <returns></returns>
-        public virtual DirectoryInfo CreateDirectory(string path, DirectorySecurity directorySecurity)
-        {
-            return IOFacade.C1Directory.CreateDirectory(path, directorySecurity);
-        }
-
-
-
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
@@ -1479,19 +1465,6 @@ namespace Composite.Core.IO
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="directorySecurity"></param>
-        /// <returns></returns>
-        public static DirectoryInfo CreateDirectory(string path, DirectorySecurity directorySecurity)
-        {
-            return ImplementationFactory.CurrentFactory.StatelessC1Directory.CreateDirectory(path, directorySecurity);
-        }
-
-
-
-        /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
         /// <param name="sourceDirName"></param>
         /// <param name="destDirName"></param>
         //[SecuritySafeCritical]
@@ -1883,14 +1856,7 @@ namespace Composite.Core.IO
         //}
     }
 
-
-    // THIS IS NOT A PART OF System.IO.File
-        //public static long GetLength(string path)
-        //{
-        //    System.IO.FileInfo fileInfo = new System.IO.FileInfo(path);
-
-        //    return fileInfo.Length;
-        //}
+   
 
 
 
@@ -2962,14 +2928,6 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
-        public DirectoryInfo CreateDirectory(string path, DirectorySecurity directorySecurity)
-        {
-            return System.IO.Directory.CreateDirectory(path, directorySecurity);
-        }
-
-
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
         public void Delete(string path)
         {
             System.IO.Directory.Delete(path);
@@ -3668,7 +3626,6 @@ namespace Composite.Core.IO.Plugins.IOProvider
     public interface IC1Directory
     {
         DirectoryInfo CreateDirectory(string path);
-        DirectoryInfo CreateDirectory(string path, DirectorySecurity directorySecurity);
         void Delete(string path);
         void Delete(string path, bool recursive);
         void Move(string sourceDirName, string destDirName);

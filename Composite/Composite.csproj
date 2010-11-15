@@ -147,8 +147,6 @@
     <Compile Include="Core\Implementation\SitemapNavigatorImplementation.cs" />
     <Compile Include="Core\IO\Plugins\IOProvider\IIOProvider.cs" />
     <Compile Include="Core\Log.cs" />
-    <Compile Include="Core\IO\Directory.cs" />
-    <Compile Include="Core\IO\File.cs" />
     <Compile Include="Core\IO\FileSystemWatcher.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -350,7 +348,6 @@
     <Compile Include="Core\Instrumentation\Plugin\Runtime\PerformanceCounterProviderDefaultNameRetriever.cs" />
     <Compile Include="Core\Instrumentation\Plugin\Runtime\PerformanceCounterProviderFactory.cs" />
     <Compile Include="Core\Instrumentation\Plugin\Runtime\PerformanceCounterProviderSettings.cs" />
-    <Compile Include="Core\IO\DirectoryEx.cs" />
     <Compile Include="Core\Linq\Disassembled\ExpressionStringBuilder.cs" />
     <Compile Include="Core\Linq\ExpressionExtensionMethods.cs" />
     <Compile Include="Core\Linq\ExpressionVisitors\CacheKeyBuilderExpressionVisitor.cs" />
@@ -824,7 +821,7 @@
     <Compile Include="Functions\NamedFunctionCallValueXmlSerializer.cs" />
     <Compile Include="Core\Configuration\GlobalSettingsFacadeImpl.cs" />
     <Compile Include="Core\Configuration\IGlobalSettingsFacade.cs" />
-    <Compile Include="Core\IO\FileEx.cs" />
+    <Compile Include="Core\IO\FileUtils.cs" />
     <Compile Include="Core\IO\Zip\IZipFileSystem.cs" />
     <Compile Include="Core\WebClient\Renderings\CultureExtrator.cs" />
     <Compile Include="Core\ResourceSystem\IconResourceSystemFacade.cs" />
@@ -1555,7 +1552,7 @@
     <Compile Include="Functions\StandardWidgetFunctions.cs" />
     <Compile Include="Functions\WidgetFunctionProvider.cs" />
     <Compile Include="Functions\WidgetFunctionRuntimeTreeNode.cs" />
-    <Compile Include="Core\IO\DirectoryUtil.cs" />
+    <Compile Include="Core\IO\DirectoryUtils.cs" />
     <Compile Include="Core\Linq\TypeExtensions.cs" />
     <Compile Include="Core\WebClient\Renderings\Page\PageStructureInfo.cs" />
     <Compile Include="Core\WebClient\Renderings\RequestInterceptorHttpModule.cs" />

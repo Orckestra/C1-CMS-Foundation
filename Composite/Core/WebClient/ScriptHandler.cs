@@ -36,7 +36,7 @@ namespace Composite.Core.WebClient
             newLine.AppendLine();
             newLine.AppendLine();
 
-            FileEx.RemoveReadOnly(sourcesFilename);
+            FileUtils.RemoveReadOnly(sourcesFilename);
 
             C1File.WriteAllText(sourcesFilename, string.Empty /* GetTimestampString() */);
 
@@ -90,7 +90,7 @@ namespace Composite.Core.WebClient
 
             string classesFilename = targetPath + "\\" + "toplevelclassnames.js";
 
-            FileEx.RemoveReadOnly(classesFilename);
+            FileUtils.RemoveReadOnly(classesFilename);
 
             C1File.WriteAllText(classesFilename, string.Empty /* GetTimestampString() */);
             C1File.AppendAllText(classesFilename, classes.ToString());

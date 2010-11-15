@@ -168,7 +168,7 @@ namespace Composite.Functions.Inline
 
             if (C1File.Exists(filepath))
             {
-                FileEx.Delete(filepath);
+                FileUtils.Delete(filepath);
             }            
         }
 

@@ -127,7 +127,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                             else
                             {
                                 LoggingService.LogVerbose("FileAddOnFragmentInstaller", string.Format("Removing read-only flag from file '{0}' because it need to be updated", targetFilename));
-                                FileEx.RemoveReadOnly(targetFilename);
+                                FileUtils.RemoveReadOnly(targetFilename);
                             }
                         }
                     }

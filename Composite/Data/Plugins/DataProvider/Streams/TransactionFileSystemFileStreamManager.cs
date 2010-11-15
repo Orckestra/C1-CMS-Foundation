@@ -54,7 +54,7 @@ namespace Composite.Data.Plugins.DataProvider.Streams
         {
             if (string.IsNullOrEmpty(filename) == true) throw new ArgumentNullException("filename");
 
-            DirectoryUtil.DeleteFile(filename, true);
+            DirectoryUtils.DeleteFile(filename, true);
         }
 
 
@@ -95,7 +95,7 @@ namespace Composite.Data.Plugins.DataProvider.Streams
 
                 if (baseFile.CurrentWriteStream != null)
                 {
-                    DirectoryUtil.EnsurePath(baseFile.SystemPath);
+                    DirectoryUtils.EnsurePath(baseFile.SystemPath);
 
                     using (Stream stream = file.GetReadStream())
                     {
@@ -135,7 +135,7 @@ namespace Composite.Data.Plugins.DataProvider.Streams
             {
                 if (baseFile.CurrentWriteStream != null)
                 {
-                    DirectoryUtil.EnsurePath(baseFile.SystemPath);
+                    DirectoryUtils.EnsurePath(baseFile.SystemPath);
 
                     using (Stream stream = file.GetReadStream())
                     {

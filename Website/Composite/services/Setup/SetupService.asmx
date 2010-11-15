@@ -151,7 +151,7 @@ namespace Composite.Core.WebClient.Setup
 
                 if (C1File.Exists(filePath) == true)
                 {
-                    FileEx.Delete(filePath);
+                    FileUtils.Delete(filePath);
                 }
 
                 string directory = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(filePath), "NtfsSecurityTest");
@@ -164,7 +164,7 @@ namespace Composite.Core.WebClient.Setup
 
                 C1File.SetCreationTime(filePath, DateTime.Now.Subtract(TimeSpan.FromSeconds(45)));
 
-                FileEx.Delete(filePath);
+                FileUtils.Delete(filePath);
                 C1Directory.Delete(directory);
 
                 return true;

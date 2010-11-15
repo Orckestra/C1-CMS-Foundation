@@ -411,7 +411,7 @@ namespace Composite
 
                     if (kvp.Key == true)
                     {
-                        FileEx.Delete(kvp.Value);
+                        FileUtils.Delete(kvp.Value);
                     }
                 }
             }

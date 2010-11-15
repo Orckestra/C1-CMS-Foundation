@@ -33,7 +33,7 @@ namespace Composite.Plugins.Application.ApplicationOnlineHandlers.AspNetApplicat
 
         public void TurnApplicationOffline()
         {
-            FileEx.Delete(_targetFilename);
+            FileUtils.Delete(_targetFilename);
             C1File.Copy(_sourceFilename, _targetFilename, true);
 
             ApplicationOfflineCheckHttpModule.FilePath = _targetFilename;
@@ -45,7 +45,7 @@ namespace Composite.Plugins.Application.ApplicationOnlineHandlers.AspNetApplicat
         public void TurnApplicationOnline()
         {
             ApplicationOfflineCheckHttpModule.IsOffline = false;
-            FileEx.Delete(_targetFilename);
+            FileUtils.Delete(_targetFilename);
         }
 
 

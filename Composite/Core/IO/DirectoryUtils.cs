@@ -5,7 +5,11 @@ using Composite.Core.Logging;
 
 namespace Composite.Core.IO
 {
-    internal static class DirectoryUtil
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class DirectoryUtils
     {
         /// <summary>
         /// Ensures that the directories in the path exists and if they dont they will be created
@@ -100,6 +104,22 @@ namespace Composite.Core.IO
             foreach (string directory in C1Directory.GetDirectories(directoryPath))
             {
                 DeleteFilesRecursively(directory);
+            }
+        }
+
+
+
+        public static void RemoveReadOnlyRecursively(string directoryPath)
+        {
+            foreach (string file in C1Directory.GetFiles(directoryPath))
+            {
+                FileUtils.RemoveReadOnly(file);
+            }
+
+
+            foreach (string directory in C1Directory.GetDirectories(directoryPath))
+            {
+                RemoveReadOnlyRecursively(directory);
             }
         }
     }

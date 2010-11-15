@@ -7,7 +7,7 @@ namespace Composite.Core.IO
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    public static class FileEx
+    public static class FileUtils
     {
         public static bool RemoveReadOnly(string filePath)
         {

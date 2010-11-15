@@ -146,7 +146,7 @@ namespace Composite.Core.PackageSystem
         {
             if ((_zipFilename != null) && (C1File.Exists(_zipFilename))) C1File.Delete(_zipFilename);
 
-            if (C1Directory.Exists(_packageInstallDirectory) == true) DirectoryUtil.DeleteFilesRecursively(_packageInstallDirectory);
+            if (C1Directory.Exists(_packageInstallDirectory) == true) DirectoryUtils.DeleteFilesRecursively(_packageInstallDirectory);
         }
 
 
@@ -157,9 +157,9 @@ namespace Composite.Core.PackageSystem
             {
                 if ((_zipFilename != null) && (C1File.Exists(_zipFilename))) C1File.Delete(_zipFilename);
 
-                if ((_preInstallValidationResult != null) && (_validationResult.Count > 0) && (C1Directory.Exists(_packageInstallDirectory) == true)) DirectoryUtil.DeleteFilesRecursively(_packageInstallDirectory);
-                else if ((_validationResult != null) && (_validationResult.Count > 0) && (C1Directory.Exists(_packageInstallDirectory) == true)) DirectoryUtil.DeleteFilesRecursively(_packageInstallDirectory);
-                else if ((_installationResult != null) && (_installationResult.Count > 0) && (C1Directory.Exists(_packageInstallDirectory) == true)) DirectoryUtil.DeleteFilesRecursively(_packageInstallDirectory);
+                if ((_preInstallValidationResult != null) && (_validationResult.Count > 0) && (C1Directory.Exists(_packageInstallDirectory) == true)) DirectoryUtils.DeleteFilesRecursively(_packageInstallDirectory);
+                else if ((_validationResult != null) && (_validationResult.Count > 0) && (C1Directory.Exists(_packageInstallDirectory) == true)) DirectoryUtils.DeleteFilesRecursively(_packageInstallDirectory);
+                else if ((_installationResult != null) && (_installationResult.Count > 0) && (C1Directory.Exists(_packageInstallDirectory) == true)) DirectoryUtils.DeleteFilesRecursively(_packageInstallDirectory);
                 else
                 {
                     C1File.WriteAllText(Path.Combine(_packageInstallDirectory, PackageSystemSettings.InstalledFilename), "");

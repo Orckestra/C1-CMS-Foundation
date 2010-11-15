@@ -40,7 +40,7 @@ namespace Composite.C1Console.Trees.Workflows
 
             string path = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), this.Filename);
 
-            FileEx.RemoveReadOnly(path);
+            FileUtils.RemoveReadOnly(path);
 
             C1File.WriteAllText(path, content);
 

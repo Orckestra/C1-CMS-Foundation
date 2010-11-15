@@ -87,7 +87,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
                 if (C1File.Exists(fullFilename) == true)
                 {
-                    FileEx.Delete(fullFilename);
+                    FileUtils.Delete(fullFilename);
                 }
 
                 using (C1FileStream fs = new C1FileStream(fullFilename, FileMode.CreateNew))

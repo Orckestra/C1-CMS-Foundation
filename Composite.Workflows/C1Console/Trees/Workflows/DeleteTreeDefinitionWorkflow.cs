@@ -21,7 +21,7 @@ namespace Composite.C1Console.Trees.Workflows
         {
             DeveloperApplicationProviderEntityToken castedEntityToken = (DeveloperApplicationProviderEntityToken)this.EntityToken;
 
-            FileEx.Delete(castedEntityToken.FullTreePath);
+            FileUtils.Delete(castedEntityToken.FullTreePath);
 
             this.RefreshRootEntityToken();
         }

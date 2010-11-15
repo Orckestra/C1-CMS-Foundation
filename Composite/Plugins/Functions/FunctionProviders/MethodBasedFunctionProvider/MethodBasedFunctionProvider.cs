@@ -120,7 +120,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
                 string folderToWatch = PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory);
 
-                DirectoryUtil.EnsureDirectoryExists(folderToWatch);
+                DirectoryUtils.EnsureDirectoryExists(folderToWatch);
 
                 _codeDirectoryFileSystemWatcher = new Composite.Core.IO.FileSystemWatcher(folderToWatch)
                 {

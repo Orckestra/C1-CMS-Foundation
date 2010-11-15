@@ -182,7 +182,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             {
                 LoggingService.LogVerbose("FileAddOnFragmentUninstaller", string.Format("Uninstalling the file '{0}'", filename));
 
-                FileEx.Delete(filename);
+                FileUtils.Delete(filename);
             }
         }
     }

@@ -82,11 +82,11 @@ namespace Composite.Data
                 {
                     if (filepath.Contains('_') == false) // Old version of the file, delete it
                     {
-                        FileEx.Delete(filepath);
+                        FileUtils.Delete(filepath);
                     }
                     else // Old version is stored in ids, delete it and change the value to new version
                     {
-                        FileEx.Delete(ids[id]);
+                        FileUtils.Delete(ids[id]);
                         ids[id] = filepath;
                     }                    
                 }
@@ -103,7 +103,7 @@ namespace Composite.Data
 
                     string newFilepath = CreateFilename(dataTypeDescriptor);
 
-                    FileEx.RemoveReadOnly(filepath);
+                    FileUtils.RemoveReadOnly(filepath);
                     C1File.Move(filepath, newFilepath);
                 }
             }
@@ -169,7 +169,7 @@ namespace Composite.Data
                 if ((_dataTypeDescriptorFilesnamesCache.ContainsKey(dataTypeDescriptor.DataTypeId) == true) && 
                     (_dataTypeDescriptorFilesnamesCache[dataTypeDescriptor.DataTypeId] != filepath))
                 {
-                    FileEx.Delete(_dataTypeDescriptorFilesnamesCache[dataTypeDescriptor.DataTypeId]);
+                    FileUtils.Delete(_dataTypeDescriptorFilesnamesCache[dataTypeDescriptor.DataTypeId]);
                     _dataTypeDescriptorFilesnamesCache[dataTypeDescriptor.DataTypeId] = filepath;
                 }                
             }
@@ -185,7 +185,7 @@ namespace Composite.Data
 
                 if (_dataTypeDescriptorFilesnamesCache.ContainsKey(dataTypeId) == true)
                 {
-                    FileEx.Delete(_dataTypeDescriptorFilesnamesCache[dataTypeId]);
+                    FileUtils.Delete(_dataTypeDescriptorFilesnamesCache[dataTypeId]);
 
                     _dataTypeDescriptorCache.Remove(dataTypeId);
                     _dataTypeDescriptorFilesnamesCache.Remove(dataTypeId);

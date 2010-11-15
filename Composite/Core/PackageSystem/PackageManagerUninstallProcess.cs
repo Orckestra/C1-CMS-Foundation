@@ -127,7 +127,7 @@ namespace Composite.Core.PackageSystem
                 {
                     if (C1Directory.Exists(_packageInstallDirectory) == true)
                     {
-                        DirectoryUtil.DeleteFilesRecursively(_packageInstallDirectory);
+                        DirectoryUtils.DeleteFilesRecursively(_packageInstallDirectory);
                     }
                 }
 

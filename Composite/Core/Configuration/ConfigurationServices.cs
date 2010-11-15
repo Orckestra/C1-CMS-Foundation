@@ -32,7 +32,7 @@ namespace Composite.Core.Configuration
                 _fileConfigurationSourcePath = GetFileConfigurationSourcePath();
                 if (_fileConfigurationSourcePath != null)
                 {
-                    FileEx.RemoveReadOnly(_fileConfigurationSourcePath);
+                    FileUtils.RemoveReadOnly(_fileConfigurationSourcePath);
                 }
 
                 _configurationSource = new FileConfigurationSource(_fileConfigurationSourcePath);
@@ -69,7 +69,7 @@ namespace Composite.Core.Configuration
 
                     if (fileConfigurationSourcePath != null)
                     {
-                        FileEx.RemoveReadOnly(fileConfigurationSourcePath);
+                        FileUtils.RemoveReadOnly(fileConfigurationSourcePath);
                     }
 
                     // GlobalEventSystemFacade.FlushTheSystem();
