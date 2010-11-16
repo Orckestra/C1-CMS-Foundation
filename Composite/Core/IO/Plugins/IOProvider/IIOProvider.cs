@@ -715,7 +715,7 @@ namespace Composite.Core.Implementation
         /// <param name="path"></param>
         /// <returns></returns>
         //[SecuritySafeCritical]
-        public virtual Composite.Core.IO.StreamReader OpenText(string path)
+        public virtual C1StreamReader OpenText(string path)
         {
             return IOFacade.C1File.OpenText(path);
         }
@@ -1669,6 +1669,177 @@ namespace Composite.Core.Implementation
         public virtual C1WaitForChangedResult WaitForChanged(WatcherChangeTypes changeType, int timeout)
         {
             return _fileSystemWatcher.WaitForChanged(changeType, timeout);
+        }
+    }
+
+
+
+
+
+
+    /// <summary>
+    /// IOLayer - documentation pending
+    /// </summary>
+    public class C1StreamReaderImplementation : IDisposable
+    {
+        private IC1StreamReader _streamReader;
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="encoding"></param>
+        /// <param name="detectEncodingFromByteOrderMarks"></param>
+        /// <param name="bufferSize"></param>
+        public C1StreamReaderImplementation(string path, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize)
+        {
+            _streamReader = IOFacade.CreateC1StreamReader(path, encoding, detectEncodingFromByteOrderMarks, bufferSize);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="encoding"></param>
+        /// <param name="detectEncodingFromByteOrderMarks"></param>
+        /// <param name="bufferSize"></param>
+        public C1StreamReaderImplementation(Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize)
+        {
+            _streamReader = IOFacade.CreateC1StreamReader(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <returns></returns>
+        public virtual override int Read()
+        {
+            return _streamReader.Read();
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public virtual override int Read([In, Out] char[] buffer, int index, int count)
+        {
+            return _streamReader.Read(buffer, index, count);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <returns></returns>
+        public virtual override string ReadLine()
+        {
+            return _streamReader.ReadLine();
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <returns></returns>
+        public virtual override string ReadToEnd()
+        {
+            return _streamReader.ReadToEnd();
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <returns></returns>
+        public virtual override int Peek()
+        {
+            return _streamReader.Peek();
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual bool EndOfStream
+        {
+            get
+            {
+                return _streamReader.EndOfStream;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual override void Close()
+        {
+            _streamReader.Close();
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual Stream BaseStream
+        {
+            get
+            {
+                return _streamReader.BaseStream;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual Encoding CurrentEncoding
+        {
+            get
+            {
+                return _streamReader.CurrentEncoding;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        ~C1StreamReaderImplementation()
+        {
+            Dispose(false);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
@@ -3406,6 +3577,278 @@ namespace Composite.Core.IO
         public WatcherChangeTypes ChangeType { get; set; }        
         public bool TimedOut { get; set; }
     }
+
+
+
+
+    /// <summary>
+    /// IOLayer - documentation pending
+    /// </summary>
+    public class C1StreamReader : TextReader, IDisposable
+    {
+        private ImplementationContainer<C1StreamReaderImplementation> _implementation;
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        public C1StreamReader(string path)
+            : this(path, Encoding.UTF8, true, 1024)
+        {
+        }
+
+        
+        
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="detectEncodingFromByteOrderMarks"></param>
+        public C1StreamReader(string path, bool detectEncodingFromByteOrderMarks)
+            : this(path, Encoding.UTF8, detectEncodingFromByteOrderMarks, 1024)
+        {
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="encoding"></param>
+        public C1StreamReader(string path, Encoding encoding)
+            : this(path, encoding, true, 1024)
+        {
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="encoding"></param>
+        /// <param name="detectEncodingFromByteOrderMarks"></param>
+        public C1StreamReader(string path, Encoding encoding, bool detectEncodingFromByteOrderMarks)
+            : this(path, encoding, detectEncodingFromByteOrderMarks, 1024)
+        {
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="encoding"></param>
+        /// <param name="detectEncodingFromByteOrderMarks"></param>
+        /// <param name="bufferSize"></param>
+        public C1StreamReader(string path, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize)
+        {
+            _implementation = new ImplementationContainer<C1StreamReaderImplementation>(() => ImplementationFactory.CurrentFactory.CreateC1StreamReader(path, encoding, detectEncodingFromByteOrderMarks, bufferSize));
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="stream"></param>
+        public C1StreamReader(Stream stream)
+            : this(stream, Encoding.UTF8, true, 1024)
+        {
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="detectEncodingFromByteOrderMarks"></param>
+        public C1StreamReader(Stream stream, bool detectEncodingFromByteOrderMarks)
+            : this(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks, 1024)
+        { 
+        }        
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="encoding"></param>
+        public C1StreamReader(Stream stream, Encoding encoding)
+            : this(stream, encoding, true, 1024)
+        {
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="encoding"></param>
+        /// <param name="detectEncodingFromByteOrderMarks"></param>
+        public C1StreamReader(Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks)
+            : this(stream, encoding, detectEncodingFromByteOrderMarks, 1024)
+        { 
+        }
+
+      
+        
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="encoding"></param>
+        /// <param name="detectEncodingFromByteOrderMarks"></param>
+        /// <param name="bufferSize"></param>
+        public C1StreamReader(Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize)
+        {
+            _implementation = new ImplementationContainer<C1StreamReaderImplementation>(() => ImplementationFactory.CurrentFactory.CreateC1StreamReader(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize));
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <returns></returns>
+        public override int Read()
+        {
+            return _implementation.Implementation.Read();
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public override int Read([In, Out] char[] buffer, int index, int count)
+        {
+            return _implementation.Implementation.Read(buffer, index, count);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <returns></returns>
+        public override string ReadLine()
+        {
+            return _implementation.Implementation.ReadLine();
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <returns></returns>
+        public override string ReadToEnd()
+        {
+            return _implementation.Implementation.ReadToEnd();
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <returns></returns>
+        public override int Peek()
+        {
+            return _implementation.Implementation.Peek();
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public bool EndOfStream
+        {
+            get
+            {
+                return _implementation.Implementation.EndOfStream;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public override void Close()
+        {
+            _implementation.Implementation.Close();
+        }
+
+
+        
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual Stream BaseStream 
+        { 
+            get
+            {
+                return _implementation.Implementation.BaseStream;
+            } 
+        }
+        
+
+        
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual Encoding CurrentEncoding 
+        { 
+            get
+            {
+                return _implementation.Implementation.CurrentEncoding;
+            } 
+        }
+        
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        ~C1StreamReader()
+        {
+            Dispose(false);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _implementation.DisposeImplementation();
+            }
+        }
+
+
+        
+        //public void DiscardBufferedData()
+        //{ 
+        //    throw new NotImplementedException(); 
+        //}
+    }
 }
 
 
@@ -4112,7 +4555,6 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
 
 
 
-
     public class LocalC1FileSystemWatcher : IC1FileSystemWatcher
     {
         private FileSystemWatcher _fileSystemWatcher;
@@ -4324,6 +4766,105 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
                 
                 TimedOut = result.TimedOut
             };
+        }
+    }
+
+
+
+    public class LocalC1StreamReader : IC1StreamReader
+    {
+        private StreamReader _streamReader;
+
+
+        public LocalC1StreamReader(string path, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize)
+        {
+            _streamReader = new StreamReader(path, encoding, detectEncodingFromByteOrderMarks, bufferSize);
+        }
+
+
+
+        public LocalC1StreamReader(Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize)
+        {
+            _streamReader = new StreamReader(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize);
+        }
+
+
+
+        public int Read()
+        {
+            return _streamReader.Read();
+        }
+
+
+
+        public int Read(char[] buffer, int index, int count)
+        {
+            return _streamReader.Read(buffer, index, count);
+        }
+
+
+
+        public string ReadLine()
+        {
+            return _streamReader.ReadLine();
+        }
+
+
+
+        public string ReadToEnd()
+        {
+            return _streamReader.ReadToEnd();
+        }
+
+
+
+        public int Peek()
+        {
+            return _streamReader.Peek();
+        }
+
+
+
+        public bool EndOfStream
+        {
+            get 
+            {
+                return _streamReader.EndOfStream;
+            }
+        }
+
+
+
+        public void Close()
+        {
+            _streamReader.Close();
+        }
+
+
+
+        public Stream BaseStream
+        {
+            get 
+            {
+                return _streamReader.BaseStream;
+            }
+        }
+
+
+
+        public Encoding CurrentEncoding
+        {
+            get 
+            {
+                return _streamReader.CurrentEncoding;
+            }
+        }
+
+
+
+        public void Dispose()
+        {
+            _streamReader.Dispose();
         }
     }
 }
@@ -5120,6 +5661,73 @@ namespace Composite.Core.IO.Plugins.IOProvider
 
 
 
+    /// <summary>
+    /// IOLayer - documentation pending
+    /// </summary>
+    public interface IC1StreamReader : IDisposable
+    {
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <returns></returns>
+        int Read();
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        int Read(char[] buffer, int index, int count);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <returns></returns>
+        string ReadLine();
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <returns></returns>
+        string ReadToEnd();
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <returns></returns>
+        int Peek();
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        bool EndOfStream { get; }
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        void Close();
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        Stream BaseStream { get; }
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        Encoding CurrentEncoding { get; }
+    }
+
 
 
 
@@ -5132,6 +5740,8 @@ namespace Composite.Core.IO.Plugins.IOProvider
 
         IC1FileStream CreateFileStream(string path, FileMode mode, FileAccess access, FileShare share);
         IC1FileSystemWatcher CreateFileSystemWatcher(string path, string filter);
+        IC1StreamReader CreateStreamReader(string path, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize);
+        IC1StreamReader CreateStreamReader(Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize);
 
         // --- Classes/Structs ---
         // static Directory
@@ -5201,6 +5811,20 @@ namespace Composite.Core.IO
         public static IC1FileSystemWatcher CreateFileSystemWatcher(string path, string filter)
         {
             return new LocalC1FileSystemWatcher(path, filter);
+        }
+
+
+
+        public static IC1StreamReader CreateC1StreamReader(string path, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize)
+        {
+            return new LocalC1StreamReader(path, encoding, detectEncodingFromByteOrderMarks, bufferSize);
+        }
+
+
+
+        public static IC1StreamReader CreateC1StreamReader(Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize)
+        {
+            return new LocalC1StreamReader(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize);
         }
     }
 }

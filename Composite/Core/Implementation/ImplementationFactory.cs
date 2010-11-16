@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using Composite.Data;
 using System.IO;
+using System.Text;
 
 
 namespace Composite.Core.Implementation
@@ -181,6 +182,19 @@ namespace Composite.Core.Implementation
             return new C1FileSystemWatcherImplementation(path, filter);
         }
 
+
+
+        public virtual C1StreamReaderImplementation CreateC1StreamReader(string path, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize)
+        {
+            return new C1StreamReaderImplementation(path, encoding, detectEncodingFromByteOrderMarks, bufferSize);
+        }
+
+
+
+        public virtual C1StreamReaderImplementation CreateC1StreamReader(Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize)
+        {
+            return new C1StreamReaderImplementation(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize);
+        }
 
         #endregion
     }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Composite.Core.IO
 {
-    /// <summary>
+   /* /// <summary>
     /// This should be a part of the I/O layer
     /// </summary>
     /// <exclude />
@@ -111,5 +111,5 @@ namespace Composite.Core.IO
                 _streamReader.Dispose();
             }
         }
-    }
+    }*/
 }
