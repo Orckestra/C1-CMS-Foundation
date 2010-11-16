@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.Configuration;
@@ -34,9 +35,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         public override void Uninstall()
         {
-            using (System.IO.Stream xsltFileStream = this.AddOnUninstallerContex.ZipFileSystem.GetFileStream(this.UninstallXsltFilePath))
+            using (Stream xsltFileStream = this.AddOnUninstallerContex.ZipFileSystem.GetFileStream(this.UninstallXsltFilePath))
             {
-                using (System.IO.TextReader xsltTextReader = new StreamReader(xsltFileStream))
+                using (TextReader xsltTextReader = new C1StreamReader(xsltFileStream))
                 {
                     XDocument xslt = XDocument.Load(xsltTextReader);
 

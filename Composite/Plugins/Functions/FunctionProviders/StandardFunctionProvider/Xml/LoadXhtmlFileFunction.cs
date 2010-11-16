@@ -27,7 +27,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                 throw new FileNotFoundException("File not found. Ensure path is relative (that it does not start with '/').", path);
             }
 
-            using (var streamReader = new Composite.Core.IO.StreamReader(path))
+            using (var streamReader = new C1StreamReader(path))
             {
                 using (var reader = XmlReader.Create(streamReader))
                 {

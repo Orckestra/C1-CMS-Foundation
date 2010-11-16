@@ -44,7 +44,7 @@ namespace Composite.Core.WebClient.Logging.WCF
                                 var doc = new XmlDocument();
                                 try
                                 {
-                                    using (var sr = new Composite.Core.IO.StreamReader(configurationFilePath))
+                                    using (var sr = new C1StreamReader(configurationFilePath))
                                     {
                                         doc.Load(sr);
                                     }

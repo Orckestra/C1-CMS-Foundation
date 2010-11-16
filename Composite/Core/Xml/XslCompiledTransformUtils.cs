@@ -16,7 +16,7 @@ namespace Composite.Core.Xml
         /// </summary>
         public static void LoadFromPath(this XslCompiledTransform xslCompiledTransform, string path)
         {
-            using (StreamReader streamReader = new StreamReader(path))
+            using (C1StreamReader streamReader = new C1StreamReader(path))
             {
                 using (XmlReader xmlReader = XmlReader.Create(streamReader))
                 {
@@ -32,7 +32,7 @@ namespace Composite.Core.Xml
         /// </summary>
         public static void LoadFromPath(this XslCompiledTransform xslCompiledTransform, string path, XsltSettings settings, XmlResolver stylesheetResolver)
         {
-            using (StreamReader streamReader = new StreamReader(path))
+            using (C1StreamReader streamReader = new C1StreamReader(path))
             {
                 using (XmlReader xmlReader = XmlReader.Create(streamReader))
                 {

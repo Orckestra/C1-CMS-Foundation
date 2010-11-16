@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -115,13 +116,13 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             TidyMessageCollection tidyMessages = new TidyMessageCollection();
             string xhtml = "";
 
-            using (System.IO.MemoryStream inputStream = new System.IO.MemoryStream(htmlByteArray))
+            using (MemoryStream inputStream = new MemoryStream(htmlByteArray))
             {
-                using (System.IO.MemoryStream outputStream = new System.IO.MemoryStream())
+                using (MemoryStream outputStream = new MemoryStream())
                 {
                     tidy.Parse(inputStream, outputStream, tidyMessages);
                     outputStream.Position = 0;
-                    StreamReader sr = new StreamReader(outputStream);
+                    C1StreamReader sr = new C1StreamReader(outputStream);
                     xhtml = sr.ReadToEnd();
                 }
             }
@@ -204,13 +205,13 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             TidyMessageCollection tidyMessages = new TidyMessageCollection();
             string xml = "";
 
-            using (System.IO.MemoryStream inputStream = new System.IO.MemoryStream(xmlByteArray))
+            using (MemoryStream inputStream = new MemoryStream(xmlByteArray))
             {
-                using (System.IO.MemoryStream outputStream = new System.IO.MemoryStream())
+                using (MemoryStream outputStream = new MemoryStream())
                 {
                     tidy.Parse(inputStream, outputStream, tidyMessages);
                     outputStream.Position = 0;
-                    StreamReader sr = new StreamReader(outputStream);
+                    C1StreamReader sr = new C1StreamReader(outputStream);
                     xml = sr.ReadToEnd();
                 }
             }
@@ -237,7 +238,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             string bodyInnerXhtml = "";
 
             XmlWriterSettings settings = CustomizedWriterSettings();
-            using (System.IO.MemoryStream memoryStream = new System.IO.MemoryStream())
+            using (MemoryStream memoryStream = new MemoryStream())
             {
                 using (XmlWriter writer = XmlWriter.Create(memoryStream, settings))
                 {
@@ -251,7 +252,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
 
                     writer.Flush();
                     memoryStream.Position = 0;
-                    StreamReader sr = new StreamReader(memoryStream);
+                    C1StreamReader sr = new C1StreamReader(memoryStream);
                     bodyInnerXhtml = sr.ReadToEnd();
                 }
             }

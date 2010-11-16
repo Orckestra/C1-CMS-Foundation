@@ -147,7 +147,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
                 fileSystemFile.FileName = file.FileName;
                 fileSystemFile.SystemPath = filename;
 
-                using (Composite.Core.IO.StreamReader streamReader = new Composite.Core.IO.StreamReader(file.GetReadStream()))
+                using (C1StreamReader streamReader = new C1StreamReader(file.GetReadStream()))
                 {
                     using (Composite.Core.IO.StreamWriter streamWriter = new Composite.Core.IO.StreamWriter(fileSystemFile.GetNewWriteStream()))
                     {

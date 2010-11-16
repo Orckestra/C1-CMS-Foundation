@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using System.Management;
 using System.Security.Cryptography;
 using System.Text;
@@ -32,9 +33,9 @@ namespace Composite.Core.WebClient.Captcha
             // Declare the streams used
             // to encrypt to an in memory
             // array of bytes.
-            System.IO.MemoryStream msEncrypt = null;
+            MemoryStream msEncrypt = null;
             CryptoStream csEncrypt = null;
-            StreamWriter swEncrypt = null;
+            Composite.Core.IO.StreamWriter swEncrypt = null;
 
             // Declare the RijndaelManaged object
             // used to encrypt the data.
@@ -52,9 +53,9 @@ namespace Composite.Core.WebClient.Captcha
                 ICryptoTransform encryptor = rima.CreateEncryptor();
 
                 // Create the streams used for encryption.
-                msEncrypt = new System.IO.MemoryStream();
+                msEncrypt = new MemoryStream();
                 csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write);
-                swEncrypt = new StreamWriter(csEncrypt);
+                swEncrypt = new Composite.Core.IO.StreamWriter(csEncrypt);
 
                 //Write all data to the stream.
                 swEncrypt.Write(value);
@@ -79,9 +80,9 @@ namespace Composite.Core.WebClient.Captcha
             // TDeclare the streams used
             // to decrypt to an in memory
             // array of bytes.
-            System.IO.MemoryStream msDecrypt = null;
+            MemoryStream msDecrypt = null;
             CryptoStream csDecrypt = null;
-            StreamReader srDecrypt = null;
+            C1StreamReader srDecrypt = null;
 
             // Declare the RijndaelManaged object
             // used to decrypt the data.
@@ -99,9 +100,9 @@ namespace Composite.Core.WebClient.Captcha
                 ICryptoTransform decryptor = rima.CreateDecryptor();
 
                 // Create the streams used for decryption.
-                msDecrypt = new System.IO.MemoryStream(encodedSequence);
+                msDecrypt = new MemoryStream(encodedSequence);
                 csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read);
-                srDecrypt = new StreamReader(csDecrypt);
+                srDecrypt = new C1StreamReader(csDecrypt);
 
                 // Read the decrypted bytes from the decrypting stream
                 // and place them in a string.

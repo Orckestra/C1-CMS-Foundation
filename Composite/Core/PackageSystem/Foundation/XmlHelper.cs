@@ -30,7 +30,7 @@ namespace Composite.Core.PackageSystem.Foundation
 
             try
             {
-                using (StreamReader streamReader = new StreamReader(zipFileSystem.GetFileStream(filename)))
+                using (C1StreamReader streamReader = new C1StreamReader(zipFileSystem.GetFileStream(filename)))
                 {
                     string fileContent = streamReader.ReadToEnd();
                     installElement = XElement.Parse(fileContent);

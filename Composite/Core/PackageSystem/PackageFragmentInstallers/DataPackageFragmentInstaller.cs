@@ -280,7 +280,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     XDocument doc = null;
                     try
                     {
-                        using (StreamReader sr = new StreamReader(this.InstallerContex.ZipFileSystem.GetFileStream(dataFilenameAttribute.Value)))
+                        using (C1StreamReader sr = new C1StreamReader(this.InstallerContex.ZipFileSystem.GetFileStream(dataFilenameAttribute.Value)))
                         {
                             doc = XDocument.Load(sr);
                         }

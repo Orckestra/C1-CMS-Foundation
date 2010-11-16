@@ -43,7 +43,7 @@ public class FetchPage : IHttpHandler
             
             using (System.IO.Stream responseStream = webResponse.GetResponseStream())
             {
-                StreamReader sr = new StreamReader(responseStream);
+                C1StreamReader sr = new C1StreamReader(responseStream);
                 string content = sr.ReadToEnd();
 
                 context.Response.ContentType = contentType;

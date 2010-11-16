@@ -42,7 +42,7 @@ public class HelpHandler : IHttpHandler
 
         using (System.IO.Stream responseStream = webResponse.GetResponseStream())
         {
-            using( StreamReader sr = new StreamReader(responseStream))
+            using(C1StreamReader sr = new C1StreamReader(responseStream))
             {
                 return new ResponseContent { Content = sr.ReadToEnd(), ContentType = webResponse.ContentType };
             }

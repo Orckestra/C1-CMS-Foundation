@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.Configuration;
@@ -59,9 +60,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         public override IEnumerable<XElement> Install()
         {
-            using (System.IO.Stream xsltFileStream = this.InstallerContex.ZipFileSystem.GetFileStream(this.InstallXsltFilePath))
+            using (Stream xsltFileStream = this.InstallerContex.ZipFileSystem.GetFileStream(this.InstallXsltFilePath))
             {
-                using (System.IO.TextReader xsltTextReader = new StreamReader(xsltFileStream))
+                using (TextReader xsltTextReader = new StreamReader(xsltFileStream))
                 {
                     XDocument xslt = XDocument.Load(xsltTextReader);
 
@@ -101,9 +102,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
                     else
                     {
-                        using (System.IO.Stream xsltFileStream = zipFileSystem.GetFileStream(xsltFilePathProvider()))
+                        using (Stream xsltFileStream = zipFileSystem.GetFileStream(xsltFilePathProvider()))
                         {
-                            using (System.IO.TextReader xsltTextReader = new StreamReader(xsltFileStream))
+                            using (TextReader xsltTextReader = new C1StreamReader(xsltFileStream))
                             {
                                 XDocument xslt = null;
 

@@ -1717,7 +1717,7 @@ namespace Composite.Core.Implementation
         /// IOLayer - documentation pending
         /// </summary>
         /// <returns></returns>
-        public virtual override int Read()
+        public virtual int Read()
         {
             return _streamReader.Read();
         }
@@ -1731,7 +1731,7 @@ namespace Composite.Core.Implementation
         /// <param name="index"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public virtual override int Read([In, Out] char[] buffer, int index, int count)
+        public virtual int Read([In, Out] char[] buffer, int index, int count)
         {
             return _streamReader.Read(buffer, index, count);
         }
@@ -1742,7 +1742,7 @@ namespace Composite.Core.Implementation
         /// IOLayer - documentation pending
         /// </summary>
         /// <returns></returns>
-        public virtual override string ReadLine()
+        public virtual string ReadLine()
         {
             return _streamReader.ReadLine();
         }
@@ -1753,7 +1753,7 @@ namespace Composite.Core.Implementation
         /// IOLayer - documentation pending
         /// </summary>
         /// <returns></returns>
-        public virtual override string ReadToEnd()
+        public virtual string ReadToEnd()
         {
             return _streamReader.ReadToEnd();
         }
@@ -1764,7 +1764,7 @@ namespace Composite.Core.Implementation
         /// IOLayer - documentation pending
         /// </summary>
         /// <returns></returns>
-        public virtual override int Peek()
+        public virtual int Peek()
         {
             return _streamReader.Peek();
         }
@@ -1787,7 +1787,7 @@ namespace Composite.Core.Implementation
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        public virtual override void Close()
+        public virtual void Close()
         {
             _streamReader.Close();
         }
@@ -1823,6 +1823,16 @@ namespace Composite.Core.Implementation
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
         ~C1StreamReaderImplementation()
         {
             Dispose(false);
@@ -1834,13 +1844,13 @@ namespace Composite.Core.Implementation
         /// IOLayer - documentation pending
         /// </summary>
         /// <param name="disposing"></param>
-        protected override void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (disposing)
             {
-                throw new NotImplementedException();
+                _streamReader.Dispose();
             }
-        }
+        }        
     }
 }
 
@@ -2551,7 +2561,7 @@ namespace Composite.Core.IO
         /// <param name="path"></param>
         /// <returns></returns>
         //[SecuritySafeCritical]
-        public static StreamReader OpenText(string path)
+        public static C1StreamReader OpenText(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.OpenText(path);
         }
@@ -4151,9 +4161,9 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
 
 
 
-        public Core.IO.StreamReader OpenText(string path)
+        public C1StreamReader OpenText(string path)
         {
-            return new Core.IO.StreamReader(path);
+            return new C1StreamReader(path);
         }
 
 
@@ -4776,6 +4786,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
         private StreamReader _streamReader;
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamReaderClass:DotNotUseStreamReaderClass")]
         public LocalC1StreamReader(string path, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize)
         {
             _streamReader = new StreamReader(path, encoding, detectEncodingFromByteOrderMarks, bufferSize);
@@ -4783,6 +4794,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamReaderClass:DotNotUseStreamReaderClass")]
         public LocalC1StreamReader(Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize)
         {
             _streamReader = new StreamReader(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize);
@@ -4790,6 +4802,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamReaderClass:DotNotUseStreamReaderClass")]
         public int Read()
         {
             return _streamReader.Read();
@@ -4797,6 +4810,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamReaderClass:DotNotUseStreamReaderClass")]
         public int Read(char[] buffer, int index, int count)
         {
             return _streamReader.Read(buffer, index, count);
@@ -4804,6 +4818,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamReaderClass:DotNotUseStreamReaderClass")]
         public string ReadLine()
         {
             return _streamReader.ReadLine();
@@ -4811,6 +4826,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamReaderClass:DotNotUseStreamReaderClass")]
         public string ReadToEnd()
         {
             return _streamReader.ReadToEnd();
@@ -4818,6 +4834,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamReaderClass:DotNotUseStreamReaderClass")]
         public int Peek()
         {
             return _streamReader.Peek();
@@ -4825,6 +4842,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamReaderClass:DotNotUseStreamReaderClass")]
         public bool EndOfStream
         {
             get 
@@ -4835,6 +4853,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamReaderClass:DotNotUseStreamReaderClass")]
         public void Close()
         {
             _streamReader.Close();
@@ -4842,6 +4861,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamReaderClass:DotNotUseStreamReaderClass")]
         public Stream BaseStream
         {
             get 
@@ -4852,6 +4872,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamReaderClass:DotNotUseStreamReaderClass")]
         public Encoding CurrentEncoding
         {
             get 
@@ -4862,6 +4883,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamReaderClass:DotNotUseStreamReaderClass")]
         public void Dispose()
         {
             _streamReader.Dispose();
@@ -5210,7 +5232,7 @@ namespace Composite.Core.IO.Plugins.IOProvider
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        Composite.Core.IO.StreamReader OpenText(string path);
+        C1StreamReader OpenText(string path);
 
 
         /// <summary>

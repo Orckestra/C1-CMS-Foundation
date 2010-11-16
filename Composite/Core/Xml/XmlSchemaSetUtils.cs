@@ -16,7 +16,7 @@ namespace Composite.Core.Xml
         /// </summary>
         public static XmlSchema AddFromPath(this XmlSchemaSet xmlSchemaSet, string targetNamespace, string path)
         {
-            using (StreamReader streamReader = new StreamReader(path))
+            using (C1StreamReader streamReader = new C1StreamReader(path))
             {
                 using (XmlReader xmlReader = XmlReader.Create(streamReader))
                 {

@@ -348,7 +348,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                 StringBuilder sb = new StringBuilder();
 
                 LogEntry previousEntry = null;
-                using (var reader = new Composite.Core.IO.StreamReader(_file, Encoding.UTF8))
+                using (var reader = new C1StreamReader(_file, Encoding.UTF8))
                 {
                     while (reader.Peek() >= 0)
                     {

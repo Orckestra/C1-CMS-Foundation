@@ -55,7 +55,7 @@ namespace Composite.Core.Xml
 
                     ms.Seek(0, SeekOrigin.Begin);
 
-                    using (Composite.Core.IO.StreamReader sr = new Composite.Core.IO.StreamReader(ms))
+                    using (C1StreamReader sr = new C1StreamReader(ms))
                     {
                         return sr.ReadToEnd();
                     }

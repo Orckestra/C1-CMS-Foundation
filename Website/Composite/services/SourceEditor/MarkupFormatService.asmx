@@ -97,7 +97,7 @@ namespace Composite.Services
                     if (tidyMessages.Errors == 0)
                     {
                         outputStream.Position = 0;
-                        StreamReader sr = new StreamReader(outputStream);
+                        C1StreamReader sr = new C1StreamReader(outputStream);
                         xhtml = declarations + sr.ReadToEnd();
                     }
                 }
