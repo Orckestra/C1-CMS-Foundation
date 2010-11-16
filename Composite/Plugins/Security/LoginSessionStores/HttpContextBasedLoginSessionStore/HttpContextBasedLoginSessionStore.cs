@@ -61,7 +61,7 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
                     || !context.RequestIsAvaliable()
                     || context.Request == null)
                 {
-                    LoggingService.LogInformation("HttpContextBasedLoginSessionStore", "Unable to return stored username, no HttpContent");
+                    LoggingService.LogInformation("HttpContextBasedLoginSessionStore", "Unable to return stored username, no HttpContext");
                     return null;
                 }
 
