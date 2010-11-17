@@ -418,7 +418,7 @@ var Welcome = new function () {
 		});
 		
 		var target = document.getElementById ( "setupfields" );
-		var groups = new List ( target.getElementsByTagName ( Client.isExplorer ? "radiodatagroup" : "ui:radiodatagroup" ));
+		var groups = new List ( target.getElementsByTagName ( Client.isExplorer || Client.isWebKit ? "radiodatagroup" : "ui:radiodatagroup" ));
 		
 		// update setup result
 		groups.each ( function ( group ) {
@@ -509,7 +509,7 @@ var Welcome = new function () {
 	 */
 	this.login = function () {
 		
-		var serial = DOMSerializer.serialize ( clone );
+		var serial = DOMSerializer.serialize ( clone, true );
 		
 		var username = document.getElementById ( "username" ).value;
 		var password = document.getElementById ( "password" ).value;
