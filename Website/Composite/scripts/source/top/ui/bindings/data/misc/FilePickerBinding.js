@@ -53,7 +53,13 @@ FilePickerBinding.prototype.onBindingAttach = function () {
 	
 	var self = this;
 	real.onchange = function () {
-		fake.setValue ( this.value );
+		var val = this.value;
+		if ( val.indexOf ( "/" ) >-1 ) { // unix maybe?
+			val = val.substring ( val.lastIndexOf ( "/" ) + 1 );
+		} else if ( val.indexOf ( "\\" ) >-1 ) { // windows
+				val = val.substring ( val.lastIndexOf ( "\\" ) + 1 );
+		}
+		fake.setValue ( val );
 		self.dirty ();
 		if ( !self._isValid ) {
 			self.validate ();

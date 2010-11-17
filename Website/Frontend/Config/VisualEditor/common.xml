@@ -4,6 +4,7 @@
 	<!-- stylesheets to import -->
 	<styles>
 		<style file="styles/common.css"/>
+		<style file="styles/core.css"/>
 	</styles>
 	
 	<!-- 

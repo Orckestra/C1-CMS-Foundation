@@ -395,7 +395,12 @@ var Welcome = new function () {
 	function updateSetup () {
 		
 		// reset setup result
-		clone = setup.cloneNode ( true );
+		if ( Client.isWebKit ) { // huh? Cannot clone document node?
+			var xml = DOMSerializer.serialize ( setup );
+			clone = XMLParser.parse ( xml );
+		} else {
+			clone = setup.cloneNode ( true );
+		}
 		
 		var keys = {};
 		var radios = new List ();
@@ -438,17 +443,20 @@ var Welcome = new function () {
 	 * @param {boolean} isRelaxed
 	 */
 	function relax ( isRelaxed ) {
+
+		if ( !Client.isWebKit ) { // somehow fails in webkit
 		
-		var table = document.getElementById ( "intro" );
-		var c = table.getElementsByTagName ( "td" ).item ( 4 );
-		
-		if ( isRelaxed ) {
-			c.setAttribute ( "_height", c.offsetHeight );
-			c.style.height = "auto";
-		} else {
-			var h = c.getAttribute ( "_height" );
-			if ( c.offsetHeight < parseInt ( h )) {
-				c.style.height = h + "px";
+			var table = document.getElementById ( "intro" );
+			var c = table.getElementsByTagName ( "td" ).item ( 4 );
+	
+			if ( isRelaxed ) {
+				c.setAttribute ( "_height", c.offsetHeight ); 
+				c.style.height = "auto";
+			} else {
+				var h = c.getAttribute ( "_height" );
+				if ( c.offsetHeight < parseInt ( h )) {
+					c.style.height = h + "px";
+				}
 			}
 		}
 	}

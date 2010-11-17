@@ -124,6 +124,7 @@ function onInstanceInitialize ( inst ) {
 	var styles = new List ( doc.getElementsByTagName ( "style" ));
 	styles.each ( function ( style ) {
 		var file = style.getAttribute ( "file" );
+		alert ( file );
 		if ( file != null && file != "" ) {
 			tinyInstance.dom.loadCSS ( Constants.CONFIGROOT + file );
 		}

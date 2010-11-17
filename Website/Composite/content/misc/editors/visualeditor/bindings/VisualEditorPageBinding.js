@@ -340,10 +340,13 @@ VisualEditorPageBinding.prototype.getContent = function () {
 	if ( this.isSourceMode == true ) {
 		result = this._sourceEditor.getValue ();
 	} else {
+		var html = this._tinyInstance.getBody ().innerHTML;
+		var WEBKITBAD = '"="">'; // what on earth? invalid innerHTML!
+		if ( html.indexOf ( WEBKITBAD ) >-1 ) {
+			html = html.replace ( /\"=\"\">/g, ">" );
+		}
 		result = this._editorBinding.normalizeToDocument ( 
-			VisualEditorBinding.getStructuredContent (
-				this._tinyInstance.getBody().innerHTML
-			)
+			VisualEditorBinding.getStructuredContent ( html )
 		);
 	}
 	return result;
@@ -367,6 +370,11 @@ VisualEditorPageBinding.prototype.setContent = function ( content ) {
 		 * switch between placeholders in source mode works.
 		 */
 	    content = this._editorBinding.normalizeToDocument(  content );
+	    if ( content == null || content == "" ) {
+	    	
+	    	// this may happen in WebKit...
+	    	content = "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n\t<head></head>\n\t<body></body>\n</html>";
+	    }
 	    content = decodeURIComponent( MarkupFormatService.AutoIndentDocument( encodeURIComponent( content )));
 		this._sourceEditor.setValue ( content );
 		

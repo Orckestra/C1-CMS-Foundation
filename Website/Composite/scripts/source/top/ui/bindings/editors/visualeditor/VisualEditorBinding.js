@@ -280,6 +280,14 @@ VisualEditorBinding.prototype.onBindingRegister = function () {
 	// load strings
 	StringBundle.getString ( "Composite.Web.VisualEditor", "Preload.Key" );
 
+	
+}
+
+/**
+ * @overloads {WindowBinding#onBindingAttach}
+ */
+VisualEditorBinding.prototype.onBindingAttach = function () {
+	
 	// fields config
 	var fieldsconfig = this.getProperty ( "embedablefieldstypenames" );
 	if ( fieldsconfig != null ) {
@@ -291,12 +299,6 @@ VisualEditorBinding.prototype.onBindingRegister = function () {
 	if ( config != null ) {
 		this._url += "?config=" + config;
 	}
-}
-
-/**
- * @overloads {WindowBinding#onBindingAttach}
- */
-VisualEditorBinding.prototype.onBindingAttach = function () {
 	
 	VisualEditorBinding.superclass.onBindingAttach.call ( this );
 	

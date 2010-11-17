@@ -28,7 +28,6 @@ function _Client () {
 
 	return this;
 }
-
 /*
  * Public fields.
  */
