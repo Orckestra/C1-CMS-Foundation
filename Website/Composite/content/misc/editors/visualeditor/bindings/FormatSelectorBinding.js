@@ -113,6 +113,10 @@ FormatSelectorBinding.prototype.buildDOMContent = function () {
 	this.priorities = new List ( array );
 	
 	this.populateFromList ( list );
+	
+	var defaultitem = this._menuBodyBinding.getChildBindingByLocalName ( "menuitem" );
+	defaultitem.disable ();
+	
 	this.addActionListener ( SelectorBinding.ACTION_SELECTIONCHANGED );
 	this._list = list;
 }
@@ -149,10 +153,13 @@ FormatSelectorBinding.prototype.handleAction = function ( action ) {
 	
 	switch ( action.type ) {
 		case SelectorBinding.ACTION_SELECTIONCHANGED :
-			var format = this._formats.get ( this.getValue ());
-			var formatter = this._tinyInstance.formatter;
-			if ( formatter.canApply ( format.id )) {
-				formatter.apply ( format.id );
+			var value = this.getValue ();
+			if ( this._formats.has ( value )) { // (exluding "Unknown" selection)
+				var format = this._formats.get ( value );
+				var formatter = this._tinyInstance.formatter;
+				if ( formatter.canApply ( format.id )) {
+					formatter.apply ( format.id );
+				}
 			}
 			break;
 	}
