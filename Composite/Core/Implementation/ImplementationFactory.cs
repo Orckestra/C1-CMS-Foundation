@@ -196,6 +196,19 @@ namespace Composite.Core.Implementation
             return new C1StreamReaderImplementation(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize);
         }
 
+
+        public virtual C1StreamWriterImplementation CreateC1StreamWriter(string path, bool append, Encoding encoding, int bufferSize)
+        {
+            return new C1StreamWriterImplementation(path, append, encoding, bufferSize);
+        }
+
+
+
+        public virtual C1StreamWriterImplementation CreateC1StreamWriter(Stream stream, Encoding encoding, int bufferSize)
+        {
+            return new C1StreamWriterImplementation(stream, encoding, bufferSize);
+        }
+
         #endregion
     }
 }

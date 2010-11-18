@@ -265,7 +265,7 @@ namespace Composite.Core.Types
 
                     using (C1FileStream file = C1File.Create(sourceFilename))
                     {
-                        using (var sw = new Composite.Core.IO.StreamWriter(file))
+                        using (var sw = new C1StreamWriter(file))
                         {
                             compiler.GenerateCodeFromCompileUnit(codeCompileUnit, sw, new CodeGeneratorOptions());
                             sw.Close();
@@ -562,7 +562,7 @@ namespace Composite.Core.Types
             {
                 using (C1FileStream file = C1File.Create(tempCsFilePath))
                 {
-                    using (var sw = new Composite.Core.IO.StreamWriter(file))
+                    using (var sw = new C1StreamWriter(file))
                     {
                         new CSharpCodeProvider().GenerateCodeFromCompileUnit(compileUnit, sw,
                                                                              new CodeGeneratorOptions());

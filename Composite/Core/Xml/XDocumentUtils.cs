@@ -49,7 +49,7 @@ namespace Composite.Core.Xml
 
             using (MemoryStream ms = new MemoryStream())
             {
-                using (Composite.Core.IO.StreamWriter sw = new Composite.Core.IO.StreamWriter(ms))
+                using (C1StreamWriter sw = new C1StreamWriter(ms))
                 {
                     document.Save(sw);
 

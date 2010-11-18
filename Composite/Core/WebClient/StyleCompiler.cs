@@ -13,14 +13,14 @@ namespace Composite.Core.WebClient
         {
             using (var outputFile = C1File.Open(targetFile, FileMode.Create))
             {
-                using (var writer = new Composite.Core.IO.StreamWriter(outputFile))
+                using (var writer = new C1StreamWriter(outputFile))
                 {
                     IncludeRecursive(sourceFile, writer, new HashSet<string>());
                 }
             }
         }
 
-        private static void IncludeRecursive(string fileToInclude, Composite.Core.IO.StreamWriter writer, HashSet<string> alreadyIncludedFiles)
+        private static void IncludeRecursive(string fileToInclude, C1StreamWriter writer, HashSet<string> alreadyIncludedFiles)
         {
             fileToInclude = fileToInclude.ToLower();
             alreadyIncludedFiles.Add(fileToInclude);

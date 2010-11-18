@@ -35,7 +35,7 @@ namespace Composite.Core.WebClient.Captcha
             // array of bytes.
             MemoryStream msEncrypt = null;
             CryptoStream csEncrypt = null;
-            Composite.Core.IO.StreamWriter swEncrypt = null;
+            C1StreamWriter swEncrypt = null;
 
             // Declare the RijndaelManaged object
             // used to encrypt the data.
@@ -55,7 +55,7 @@ namespace Composite.Core.WebClient.Captcha
                 // Create the streams used for encryption.
                 msEncrypt = new MemoryStream();
                 csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write);
-                swEncrypt = new Composite.Core.IO.StreamWriter(csEncrypt);
+                swEncrypt = new C1StreamWriter(csEncrypt);
 
                 //Write all data to the stream.
                 swEncrypt.Write(value);

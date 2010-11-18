@@ -58,7 +58,7 @@ namespace Composite.Data.Types
         /// <param name="newContent"></param>
         public static void SetNewContent(this IFile file, string newContent)
         {
-            using (Composite.Core.IO.StreamWriter sw = new Composite.Core.IO.StreamWriter(GetNewWriteStream(file)))
+            using (C1StreamWriter sw = new C1StreamWriter(GetNewWriteStream(file)))
             {
                 sw.Write(newContent);
             }

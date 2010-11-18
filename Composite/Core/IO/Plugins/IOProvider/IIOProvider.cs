@@ -577,7 +577,7 @@ namespace Composite.Core.Implementation
         /// <param name="path"></param>
         /// <returns></returns>
         //[SecuritySafeCritical]
-        public virtual Composite.Core.IO.StreamWriter CreateText(string path)
+        public virtual C1StreamWriter CreateText(string path)
         {
             return IOFacade.C1File.CreateText(path);
         }
@@ -590,7 +590,7 @@ namespace Composite.Core.Implementation
         /// <param name="path"></param>
         /// <returns></returns>
         //[SecuritySafeCritical]
-        public virtual Composite.Core.IO.StreamWriter AppendText(string path)
+        public virtual C1StreamWriter AppendText(string path)
         {
             return IOFacade.C1File.AppendText(path);
         }
@@ -1763,6 +1763,20 @@ namespace Composite.Core.Implementation
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public virtual int ReadBlock(char[] buffer, int index, int count)
+        {
+            return _streamReader.ReadBlock(buffer, index, count);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
         /// <returns></returns>
         public virtual int Peek()
         {
@@ -1851,6 +1865,572 @@ namespace Composite.Core.Implementation
                 _streamReader.Dispose();
             }
         }        
+    }
+
+
+
+
+
+
+    /// <summary>
+    /// IOLayer - documentation pending
+    /// </summary>
+    public class C1StreamWriterImplementation : IDisposable
+    {
+        private IC1StreamWriter _streamWriter;
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="append"></param>
+        /// <param name="encoding"></param>
+        /// <param name="bufferSize"></param>
+        public C1StreamWriterImplementation(string path, bool append, Encoding encoding, int bufferSize)
+        {
+            _streamWriter = IOFacade.CreateStreamWriter(path, append, encoding, bufferSize);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="encoding"></param>
+        /// <param name="bufferSize"></param>
+        public C1StreamWriterImplementation(Stream stream, Encoding encoding, int bufferSize)
+        {
+            _streamWriter = IOFacade.CreateStreamWriter(stream, encoding, bufferSize);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void Write(string value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg0"></param>
+        public virtual void Write(string format, object arg0)
+        {
+            _streamWriter.Write(format, arg0);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg0"></param>
+        /// <param name="arg1"></param>
+        public virtual void Write(string format, object arg0, object arg1)
+        {
+            _streamWriter.Write(format, arg0, arg1);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg0"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        public virtual void Write(string format, object arg0, object arg1, object arg2)
+        {
+            _streamWriter.Write(format, arg0, arg1, arg2);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg"></param>
+        public virtual void Write(string format, params object[] arg)
+        {
+            _streamWriter.Write(format, arg);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void Write(char value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="buffer"></param>
+        public virtual void Write(char[] buffer)
+        {
+            _streamWriter.Write(buffer);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        public virtual void Write(char[] buffer, int index, int count)
+        {
+            _streamWriter.Write(buffer, index, count);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void Write(bool value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void Write(int value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void Write(uint value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void Write(long value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void Write(ulong value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void Write(float value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void Write(double value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void Write(decimal value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void Write(object value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual void WriteLine()
+        {
+            _streamWriter.WriteLine();
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void WriteLine(string value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg0"></param>
+        public virtual void WriteLine(string format, object arg0)
+        {
+            _streamWriter.WriteLine(format, arg0);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg0"></param>
+        /// <param name="arg1"></param>
+        public virtual void WriteLine(string format, object arg0, object arg1)
+        {
+            _streamWriter.WriteLine(format, arg0, arg1);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg0"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        public virtual void WriteLine(string format, object arg0, object arg1, object arg2)
+        {
+            _streamWriter.WriteLine(format, arg0, arg1, arg2);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg"></param>
+        public virtual void WriteLine(string format, params object[] arg)
+        {
+            _streamWriter.WriteLine(format, arg);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void WriteLine(char value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="buffer"></param>
+        public virtual void WriteLine(char[] buffer)
+        {
+            _streamWriter.WriteLine(buffer);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        public virtual void WriteLine(char[] buffer, int index, int count)
+        {
+            _streamWriter.WriteLine(buffer, index, count);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void WriteLine(bool value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void WriteLine(int value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void WriteLine(uint value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void WriteLine(long value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void WriteLine(ulong value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void WriteLine(float value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void WriteLine(double value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void WriteLine(decimal value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public virtual void WriteLine(object value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual string NewLine
+        {
+            get
+            {
+                return _streamWriter.NewLine;
+            }
+            set
+            {
+                _streamWriter.NewLine = value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual IFormatProvider FormatProvider
+        {
+            get
+            {
+                return _streamWriter.FormatProvider;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual void Flush()
+        {
+            _streamWriter.Flush();
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual bool AutoFlush
+        {
+            get
+            {
+                return _streamWriter.AutoFlush;
+            }
+            set
+            {
+                _streamWriter.AutoFlush = value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual void Close()
+        {
+            _streamWriter.Close();
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual Stream BaseStream
+        {
+            get
+            {
+                return _streamWriter.BaseStream;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual Encoding Encoding
+        {
+            get
+            {
+                return _streamWriter.Encoding;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+
+
+        ~C1StreamWriterImplementation()
+        {
+            Dispose(false);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _streamWriter.Dispose();
+            }
+        }
     }
 }
 
@@ -2423,7 +3003,7 @@ namespace Composite.Core.IO
         /// <param name="path"></param>
         /// <returns></returns>
         //[SecuritySafeCritical]
-        public static StreamWriter CreateText(string path)
+        public static C1StreamWriter CreateText(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.CreateText(path);
         }
@@ -2436,7 +3016,7 @@ namespace Composite.Core.IO
         /// <param name="path"></param>
         /// <returns></returns>
         //[SecuritySafeCritical]
-        public static StreamWriter AppendText(string path)
+        public static C1StreamWriter AppendText(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.AppendText(path);
         }
@@ -3252,7 +3832,7 @@ namespace Composite.Core.IO
         {
             _implementation.Implementation.Close();
         }
-
+        
 
 
         /// <summary>
@@ -3773,6 +4353,20 @@ namespace Composite.Core.IO
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public override int ReadBlock(char[] buffer, int index, int count)
+        {
+            return _implementation.Implementation.ReadBlock(buffer, index, count);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
         /// <returns></returns>
         public override int Peek()
         {
@@ -3858,6 +4452,620 @@ namespace Composite.Core.IO
         //{ 
         //    throw new NotImplementedException(); 
         //}
+    }
+
+
+
+
+
+    
+    /// <summary>
+    /// IOLayer - documentation pending
+    /// </summary>
+    public class C1StreamWriter : TextWriter, IDisposable
+    {
+        private ImplementationContainer<C1StreamWriterImplementation> _implementation;
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        public C1StreamWriter(string path)
+            : this(path, false, Encoding.UTF8, 1024)
+        {
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="append"></param>
+        public C1StreamWriter(string path, bool append)
+            : this(path, append, Encoding.UTF8, 1024)
+        {
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="append"></param>
+        /// <param name="encoding"></param>
+        public C1StreamWriter(string path, bool append, Encoding encoding)
+            : this(path, append, encoding, 1024)
+        {
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="append"></param>
+        /// <param name="encoding"></param>
+        /// <param name="bufferSize"></param>
+        public C1StreamWriter(string path, bool append, Encoding encoding, int bufferSize)
+        {
+            _implementation = new ImplementationContainer<C1StreamWriterImplementation>(() => ImplementationFactory.CurrentFactory.CreateC1StreamWriter(path, append, encoding, bufferSize));
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="stream"></param>
+        public C1StreamWriter(Stream stream)
+            : this(stream, Encoding.UTF8, 1024)
+        {            
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="encoding"></param>
+        public C1StreamWriter(Stream stream, Encoding encoding)
+            : this(stream, encoding, 1024)
+        {
+        }
+
+        
+        
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="encoding"></param>
+        /// <param name="bufferSize"></param>
+        public C1StreamWriter(Stream stream, Encoding encoding, int bufferSize)
+        {
+            _implementation = new ImplementationContainer<C1StreamWriterImplementation>(() => ImplementationFactory.CurrentFactory.CreateC1StreamWriter(stream, encoding, bufferSize));
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void Write(string value)
+        {
+            _implementation.Implementation.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg0"></param>
+        public override void Write(string format, object arg0)
+        {
+            _implementation.Implementation.Write(format, arg0);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg0"></param>
+        /// <param name="arg1"></param>
+        public override void Write(string format, object arg0, object arg1)
+        {
+            _implementation.Implementation.Write(format, arg0, arg1);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg0"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        public override void Write(string format, object arg0, object arg1, object arg2)
+        {
+            _implementation.Implementation.Write(format, arg0, arg1, arg2);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg"></param>
+        public override void Write(string format, params object[] arg)
+        {
+            _implementation.Implementation.Write(format, arg);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void Write(char value)
+        {
+            _implementation.Implementation.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="buffer"></param>
+        public override void Write(char[] buffer)
+        {
+            _implementation.Implementation.Write(buffer);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        public override void Write(char[] buffer, int index, int count)
+        {
+            _implementation.Implementation.Write(buffer, index, count);
+        }
+
+
+        
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void Write(bool value)
+        {
+            _implementation.Implementation.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void Write(int value)
+        {
+            _implementation.Implementation.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void Write(uint value)
+        {
+            _implementation.Implementation.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void Write(long value)
+        {
+            _implementation.Implementation.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void Write(ulong value)
+        {
+            _implementation.Implementation.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void Write(float value)
+        {
+            _implementation.Implementation.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void Write(double value)
+        {
+            _implementation.Implementation.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void Write(decimal value)
+        {
+            _implementation.Implementation.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void Write(object value)
+        {
+            _implementation.Implementation.Write(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public override void WriteLine()
+        {
+            _implementation.Implementation.WriteLine();
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void WriteLine(string value)
+        {
+            _implementation.Implementation.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg0"></param>
+        public override void WriteLine(string format, object arg0)
+        {
+            _implementation.Implementation.WriteLine(format, arg0);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg0"></param>
+        /// <param name="arg1"></param>
+        public override void WriteLine(string format, object arg0, object arg1)
+        {
+            _implementation.Implementation.WriteLine(format, arg0, arg1);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg0"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        public override void WriteLine(string format, object arg0, object arg1, object arg2)
+        {
+            _implementation.Implementation.WriteLine(format, arg0, arg1, arg2);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg"></param>
+        public override void WriteLine(string format, params object[] arg)
+        {
+            _implementation.Implementation.WriteLine(format, arg);
+        }
+
+        
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void WriteLine(char value)
+        {
+            _implementation.Implementation.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="buffer"></param>
+        public override void WriteLine(char[] buffer)
+        {
+            _implementation.Implementation.WriteLine(buffer);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        public override void WriteLine(char[] buffer, int index, int count)
+        {
+            _implementation.Implementation.WriteLine(buffer, index, count);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void WriteLine(bool value)
+        {
+            _implementation.Implementation.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void WriteLine(int value)
+        {
+            _implementation.Implementation.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void WriteLine(uint value)
+        {
+            _implementation.Implementation.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void WriteLine(long value)
+        {
+            _implementation.Implementation.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void WriteLine(ulong value)
+        {
+            _implementation.Implementation.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void WriteLine(float value)
+        {
+            _implementation.Implementation.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void WriteLine(double value)
+        {
+            _implementation.Implementation.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void WriteLine(decimal value)
+        {
+            _implementation.Implementation.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        public override void WriteLine(object value)
+        {
+            _implementation.Implementation.WriteLine(value);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public override string NewLine
+        {
+            get
+            {
+                return _implementation.Implementation.NewLine;
+            }
+            set
+            {
+                _implementation.Implementation.NewLine = value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public override IFormatProvider FormatProvider
+        {
+            get
+            {
+                return _implementation.Implementation.FormatProvider;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public override void Flush()
+        {
+            _implementation.Implementation.Flush();
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual bool AutoFlush
+        {
+            get
+            {
+                return _implementation.Implementation.AutoFlush;
+            }
+            set
+            {
+                _implementation.Implementation.AutoFlush = value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public override void Close()
+        {
+            _implementation.Implementation.Close();
+        }
+
+
+        
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public virtual Stream BaseStream 
+        { 
+            get
+            {
+                return _implementation.Implementation.BaseStream;
+            } 
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public override Encoding Encoding
+        {
+            get
+            {
+                return _implementation.Implementation.Encoding;
+            }
+        }
+
+
+
+        ~C1StreamWriter()
+        {
+            Dispose(false);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _implementation.DisposeImplementation();
+            }
+        }
     }
 }
 
@@ -4087,16 +5295,16 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
 
 
 
-        public Core.IO.StreamWriter CreateText(string path)
+        public C1StreamWriter CreateText(string path)
         {
-            return new Core.IO.StreamWriter(path, false);
+            return new C1StreamWriter(path, false);
         }
 
 
 
-        public Core.IO.StreamWriter AppendText(string path)
+        public C1StreamWriter AppendText(string path)
         {
-            return new Core.IO.StreamWriter(path, true);
+            return new C1StreamWriter(path, true);
         }
 
 
@@ -4835,6 +6043,14 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamReaderClass:DotNotUseStreamReaderClass")]
+        public int ReadBlock(char[] buffer, int index, int count)
+        {
+            return _streamReader.ReadBlock(buffer, index, count);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamReaderClass:DotNotUseStreamReaderClass")]
         public int Peek()
         {
             return _streamReader.Peek();
@@ -4887,6 +6103,395 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
         public void Dispose()
         {
             _streamReader.Dispose();
+        }        
+    }
+
+
+
+    public class LocalC1StreamWriter : IC1StreamWriter
+    {
+        private StreamWriter _streamWriter;
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public LocalC1StreamWriter(string path, bool append, Encoding encoding, int bufferSize)
+        {
+            _streamWriter = new StreamWriter(path, append, encoding, bufferSize);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public LocalC1StreamWriter(Stream stream, Encoding encoding, int bufferSize)
+        {
+            _streamWriter = new StreamWriter(stream, encoding, bufferSize);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void Write(string value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void Write(string format, object arg0)
+        {
+            _streamWriter.Write(format, arg0);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void Write(string format, object arg0, object arg1)
+        {
+            _streamWriter.Write(format, arg0, arg1);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void Write(string format, object arg0, object arg1, object arg2)
+        {
+            _streamWriter.Write(format, arg0, arg1, arg2);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void Write(string format, params object[] arg)
+        {
+            _streamWriter.Write(format, arg);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void Write(char value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void Write(char[] buffer)
+        {
+            _streamWriter.Write(buffer);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void Write(char[] buffer, int index, int count)
+        {
+            _streamWriter.Write(buffer, index, count);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void Write(bool value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void Write(int value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void Write(uint value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void Write(long value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void Write(ulong value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void Write(float value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void Write(double value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void Write(decimal value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void Write(object value)
+        {
+            _streamWriter.Write(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void WriteLine()
+        {
+            _streamWriter.WriteLine();
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void WriteLine(string value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void WriteLine(string format, object arg0)
+        {
+            _streamWriter.WriteLine(format, arg0);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void WriteLine(string format, object arg0, object arg1)
+        {
+            _streamWriter.WriteLine(format, arg0, arg1);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void WriteLine(string format, object arg0, object arg1, object arg2)
+        {
+            _streamWriter.WriteLine(format, arg0, arg1, arg2);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void WriteLine(string format, params object[] arg)
+        {
+            _streamWriter.WriteLine(format, arg);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void WriteLine(char value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void WriteLine(char[] buffer)
+        {
+            _streamWriter.WriteLine(buffer);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void WriteLine(char[] buffer, int index, int count)
+        {
+            _streamWriter.WriteLine(buffer, index, count);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void WriteLine(bool value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void WriteLine(int value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void WriteLine(uint value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void WriteLine(long value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void WriteLine(ulong value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void WriteLine(float value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void WriteLine(double value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void WriteLine(decimal value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void WriteLine(object value)
+        {
+            _streamWriter.WriteLine(value);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public string NewLine
+        {
+            get
+            {
+                return _streamWriter.NewLine;
+            }
+            set
+            {
+                _streamWriter.NewLine = value;
+            }
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public IFormatProvider FormatProvider
+        {
+            get 
+            {
+                return _streamWriter.FormatProvider;
+            }
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public bool AutoFlush
+        {
+            get
+            {
+                return _streamWriter.AutoFlush;
+            }
+            set
+            {
+                _streamWriter.AutoFlush = value;
+            }
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void Flush()
+        {
+            _streamWriter.Flush();
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void Close()
+        {
+            _streamWriter.Close();
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public Stream BaseStream
+        {
+            get 
+            {
+                return _streamWriter.BaseStream;
+            }
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public Encoding Encoding
+        {
+            get 
+            {
+                return _streamWriter.Encoding;
+            }
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
+        public void Dispose()
+        {
+            _streamWriter.Dispose();
         }
     }
 }
@@ -5144,7 +6749,7 @@ namespace Composite.Core.IO.Plugins.IOProvider
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        Composite.Core.IO.StreamWriter CreateText(string path);
+        C1StreamWriter CreateText(string path);
 
 
         /// <summary>
@@ -5152,7 +6757,7 @@ namespace Composite.Core.IO.Plugins.IOProvider
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        Composite.Core.IO.StreamWriter AppendText(string path);
+        C1StreamWriter AppendText(string path);
 
 
         /// <summary>
@@ -5722,6 +7327,16 @@ namespace Composite.Core.IO.Plugins.IOProvider
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        int ReadBlock(char[] buffer, int index, int count);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
         /// <returns></returns>
         int Peek();
 
@@ -5753,6 +7368,318 @@ namespace Composite.Core.IO.Plugins.IOProvider
 
 
 
+    /// <summary>
+    /// IOLayer - documentation pending
+    /// </summary>
+    public interface IC1StreamWriter : IDisposable
+    {
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void Write(string value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg"></param>
+        void Write(string format, params object[] arg);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg0"></param>
+        void Write(string format, object arg0);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg0"></param>
+        /// <param name="arg1"></param>
+        void Write(string format, object arg0, object arg1);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg0"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        void Write(string format, object arg0, object arg1, object arg2);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void Write(char value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="buffer"></param>
+        void Write(char[] buffer);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        void Write(char[] buffer, int index, int count);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void Write(bool value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void Write(int value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void Write(uint value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void Write(long value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void Write(ulong value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void Write(float value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void Write(double value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void Write(decimal value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void Write(object value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        void WriteLine();
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void WriteLine(string value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg0"></param>
+        void WriteLine(string format, object arg0);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg0"></param>
+        /// <param name="arg1"></param>
+        void WriteLine(string format, object arg0, object arg1);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg0"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        void WriteLine(string format, object arg0, object arg1, object arg2);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="arg"></param>
+        void WriteLine(string format, params object[] arg);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void WriteLine(char value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="buffer"></param>
+        void WriteLine(char[] buffer);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        void WriteLine(char[] buffer, int index, int count);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void WriteLine(bool value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void WriteLine(int value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void WriteLine(uint value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void WriteLine(long value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void WriteLine(ulong value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void WriteLine(float value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void WriteLine(double value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void WriteLine(decimal value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="value"></param>
+        void WriteLine(object value);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        string NewLine { get; set; }
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        IFormatProvider FormatProvider { get; }
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        bool AutoFlush { get; set; }
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        void Flush();
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        void Close();
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        Stream BaseStream { get; }
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        Encoding Encoding { get; }
+    }
+
+
+
+
 
     internal interface IIOProvider
     {
@@ -5764,6 +7691,8 @@ namespace Composite.Core.IO.Plugins.IOProvider
         IC1FileSystemWatcher CreateFileSystemWatcher(string path, string filter);
         IC1StreamReader CreateStreamReader(string path, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize);
         IC1StreamReader CreateStreamReader(Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize);
+        IC1StreamWriter CreateStreamWriter(string path, bool append, Encoding encoding, int bufferSize);
+        IC1StreamWriter CreateStreamWriter(Stream stream, Encoding encoding, int bufferSize);
 
         // --- Classes/Structs ---
         // static Directory
@@ -5847,6 +7776,20 @@ namespace Composite.Core.IO
         public static IC1StreamReader CreateC1StreamReader(Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize)
         {
             return new LocalC1StreamReader(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize);
+        }
+
+
+
+        public static IC1StreamWriter CreateStreamWriter(string path, bool append, Encoding encoding, int bufferSize)
+        {
+            return new LocalC1StreamWriter(path, append, encoding, bufferSize);
+        }
+
+
+
+        public static IC1StreamWriter CreateStreamWriter(Stream stream, Encoding encoding, int bufferSize)
+        {
+            return new LocalC1StreamWriter(stream, encoding, bufferSize);
         }
     }
 }

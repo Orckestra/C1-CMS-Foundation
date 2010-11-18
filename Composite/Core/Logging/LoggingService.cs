@@ -1,10 +1,12 @@
 using System;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading;
 using Composite.C1Console.Events;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Configuration;
+using Composite.Core.IO;
 using Microsoft.Practices.EnterpriseLibrary.Logging;
 using Microsoft.Practices.EnterpriseLibrary.Logging.Configuration;
 
@@ -299,9 +301,9 @@ namespace Composite.Core.Logging
                 }
                 else
                 {
-                    string path = System.IO.Path.Combine(Core.IO.PathUtil.BaseDirectory, string.Format("logging{0}.config", Guid.NewGuid()));
+                    string path = Path.Combine(PathUtil.BaseDirectory, string.Format("logging{0}.config", Guid.NewGuid()));
 
-                    using (Composite.Core.IO.StreamWriter writer = new Composite.Core.IO.StreamWriter(path))
+                    using (C1StreamWriter writer = new C1StreamWriter(path))
                     {
                         Type type = typeof(LoggingService).Assembly
                             .GetType("Composite.Plugins.Logging.LogTraceListeners.TcpLogTraceListener.TcpLogTraceListener", false);

@@ -149,7 +149,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
 
                 using (C1StreamReader streamReader = new C1StreamReader(file.GetReadStream()))
                 {
-                    using (Composite.Core.IO.StreamWriter streamWriter = new Composite.Core.IO.StreamWriter(fileSystemFile.GetNewWriteStream()))
+                    using (C1StreamWriter streamWriter = new C1StreamWriter(fileSystemFile.GetNewWriteStream()))
                     {
                         streamWriter.Write(streamReader.ReadToEnd());
                     }
