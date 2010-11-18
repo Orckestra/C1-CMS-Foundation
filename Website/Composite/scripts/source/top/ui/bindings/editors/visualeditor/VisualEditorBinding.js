@@ -6,8 +6,6 @@ VisualEditorBinding.FUNCTION_CLASSNAME = "compositeFunctionWysiwygRepresentation
 VisualEditorBinding.FIELD_CLASSNAME = "compositeFieldReferenceWysiwygRepresentation";
 VisualEditorBinding.ACTION_INITIALIZED = "visualeditor initialized";
 VisualEditorBinding.DEFAULT_CONTENT = "<p><br/></p>";
-// VisualEditorBinding.DEFAULT_STYLESHEET = Resolver.resolve ( "${root}/content/misc/editors/visualeditor/tinymce.css" );
-
 VisualEditorBinding.URL_DIALOG_CONTENTERROR = "${root}/content/dialogs/wysiwygeditor/errors/contenterror.aspx";
 VisualEditorBinding.XHTML = "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n\t<head>${head}</head>\n\t<body>\n${body}\n\t</body>\n</html>";
 
@@ -224,6 +222,9 @@ function VisualEditorBinding () {
 	this.embedableFieldConfiguration = null;
 
 	/**
+	 * OLD STUFF HERE!
+	 * 
+	 * 
 	 * @type {VisualEditorFormattingConfiguration}
 	 *
 	this.formattingConfiguration = null;
@@ -369,6 +370,13 @@ VisualEditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 		case BroadcastMessages.VISUALEDITOR_HACKED :
 			
 			if ( arg.broadcastWindow == contentWindow ) {
+				
+				/*
+				 * Some kind of devilry going on with the server...
+				 */
+				if ( this._startContent == " " ) {
+					this._startContent = VisualEditorBinding.DEFAULT_CONTENT;
+				}
 				
 				/*
 				 * Normalize start content and extract HEAD and BODY section before we 
