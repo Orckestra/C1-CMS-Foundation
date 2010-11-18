@@ -5,7 +5,7 @@
 	xmlns="http://www.w3.org/1999/xhtml" 
 	xmlns:x="http://www.w3.org/1999/xhtml">
 	
-	<!-- could be nice with an absolute pointer on this!!! -->
+	<!-- TODO: an absolute pointer on this!!! -->
 	<xsl:variable name="blankimageurl">../../../../images/blank.png</xsl:variable>
 	
 	<xsl:template match="@*|*|processing-instruction()|comment()">
@@ -107,6 +107,14 @@
 	<!-- tinymce internals -->
 	<xsl:template match="x:a/@target">
 		<xsl:attribute name="tinymcetargetalias">
+			<xsl:value-of select="."/>
+		</xsl:attribute>
+	</xsl:template>
+	
+	<!-- root-URLS must start with a tilde, otherwise despair -->
+	<xsl:template match="x:a/@href[starts-with(.,'/')]">
+		<xsl:attribute name="href">
+			<xsl:text>~</xsl:text>
 			<xsl:value-of select="."/>
 		</xsl:attribute>
 	</xsl:template>
