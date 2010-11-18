@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+
 
 namespace Composite.Core.IO.Zip
 {
@@ -13,7 +15,7 @@ namespace Composite.Core.IO.Zip
         IEnumerable<string> GetFilenames();
         IEnumerable<string> GetFilenames(string directoryName);
         IEnumerable<string> GetDirectoryNames();
-        System.IO.Stream GetFileStream(string filename);
+        Stream GetFileStream(string filename);
         void WriteFileToDisk(string filename, string targetFilename);
 	}
 }

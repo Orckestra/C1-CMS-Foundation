@@ -1,11 +1,12 @@
 ﻿using System;
+using System.IO;
 
 
 namespace Composite.Core.Extensions
 {
     internal static class StreamExtensionMethods
     {
-        public static void CopyTo(this System.IO.Stream stream, System.IO.Stream toStream)
+        public static void CopyTo(this Stream stream, Stream toStream)
         {
             int offset = 0;
             int remaining = (int)stream.Length;
@@ -17,7 +18,7 @@ namespace Composite.Core.Extensions
                 int toRead = Math.Min(chunkSize, remaining);
                 int read = stream.Read(data, 0, toRead);
                 
-                if (read <= 0) throw new System.IO.EndOfStreamException(String.Format("End of stream reached with {0} bytes left to read", remaining));
+                if (read <= 0) throw new EndOfStreamException(String.Format("End of stream reached with {0} bytes left to read", remaining));
                 
                 toStream.Write(data, 0, read);
                 

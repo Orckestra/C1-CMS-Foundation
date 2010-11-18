@@ -1,8 +1,9 @@
-﻿
+﻿using System.IO;
 using System.Xml.XPath;
 using Composite.Core.Xml;
 using Composite.Functions;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+
 
 namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Xslt.Extensions
 {
@@ -28,7 +29,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         {
             public XPathNavigator ParseWellformedDocumentMarkup(string wellformedMarkupString)
             {
-                using (System.IO.StringReader sr = new System.IO.StringReader(wellformedMarkupString))
+                using (StringReader sr = new StringReader(wellformedMarkupString))
                 {
                     XPathDocument doc = new XPathDocument(sr);
                     return doc.CreateNavigator();
@@ -39,7 +40,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
             public XPathNavigator ParseXhtmlBodyFragment(string xhtmlBodyFragmentString)
             {
-                using (System.IO.StringReader sr = new System.IO.StringReader(string.Format("<html xmlns='{0}'><head /><body>{1}</body></html>", Namespaces.Xhtml, xhtmlBodyFragmentString)))
+                using (StringReader sr = new StringReader(string.Format("<html xmlns='{0}'><head /><body>{1}</body></html>", Namespaces.Xhtml, xhtmlBodyFragmentString)))
                 {
                     XPathDocument doc = new XPathDocument(sr);
                     return doc.CreateNavigator();

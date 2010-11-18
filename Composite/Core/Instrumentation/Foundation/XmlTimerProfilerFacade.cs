@@ -1,6 +1,7 @@
 using System;
-using System.Xml.Linq;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml.Linq;
 using Composite.Core.Xml;
 
 
@@ -85,7 +86,7 @@ namespace Composite.Core.Instrumentation.Foundation
                 XDocument doc = new XDocument(element);
 
                 // avoid writes to windows/system32 dir on web
-                XDocumentUtils.Save(doc, System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TimerProfile.xml"));
+                XDocumentUtils.Save(doc, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TimerProfile.xml"));
             }
             catch( Exception ex)
             {

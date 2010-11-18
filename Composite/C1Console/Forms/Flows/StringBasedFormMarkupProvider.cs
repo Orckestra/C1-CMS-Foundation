@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Xml;
 
 
@@ -23,7 +24,7 @@ namespace Composite.C1Console.Forms.Flows
 
         public XmlReader GetReader()
         {
-            return new XmlTextReader(new System.IO.StringReader(this.Document));
+            return new XmlTextReader(new StringReader(this.Document));
         }
     }
 }

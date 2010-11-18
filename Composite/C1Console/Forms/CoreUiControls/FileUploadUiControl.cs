@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Composite.C1Console.Forms.Foundation;
 using Composite.Core.Serialization;
@@ -48,14 +49,14 @@ namespace Composite.C1Console.Forms.CoreUiControls
             {
                 long position = uploadedFile.FileStream.Position;
 
-                uploadedFile.FileStream.Seek(0, System.IO.SeekOrigin.Begin);
+                uploadedFile.FileStream.Seek(0, SeekOrigin.Begin);
                 
                 byte[] buffer = new byte[uploadedFile.FileStream.Length];
                 uploadedFile.FileStream.Read(buffer, 0, (int)uploadedFile.FileStream.Length);
 
                 StringConversionServices.SerializeKeyValueArrayPair<byte>(sb, "FileStream", buffer);
 
-                uploadedFile.FileStream.Seek(position, System.IO.SeekOrigin.Begin);
+                uploadedFile.FileStream.Seek(position, SeekOrigin.Begin);
             }
 
             return sb.ToString();
@@ -91,7 +92,7 @@ namespace Composite.C1Console.Forms.CoreUiControls
             {
                 byte[] bytes = StringConversionServices.DeserializeValueArray<byte>(dic["FileStream"]);
 
-                uploadedFile.FileStream = new System.IO.MemoryStream(bytes);
+                uploadedFile.FileStream = new MemoryStream(bytes);
             }
 
             return uploadedFile;
@@ -115,6 +116,6 @@ namespace Composite.C1Console.Forms.CoreUiControls
         public string FileName { get; set; }
         public string ContentType { get; set; }
         public int ContentLength { get; set; }
-        public System.IO.Stream FileStream { get; set; }
+        public Stream FileStream { get; set; }
     }
 }

@@ -34,7 +34,7 @@ namespace Composite.Core.Xml
             
             if (!uri.IsAbsoluteUri && (uri.OriginalString.Length > 0))
             {
-                uri = new Uri(System.IO.Path.GetFullPath(inputUri));
+                uri = new Uri(Path.GetFullPath(inputUri));
             }
             
             return uri;

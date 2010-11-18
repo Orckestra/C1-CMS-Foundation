@@ -1,6 +1,7 @@
 ﻿<%@ WebHandler Language="C#" Class="YellowBox" %>
 
 using System;
+using System.IO;
 using System.Web;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -63,7 +64,7 @@ public class YellowBox : IHttpHandler
             context.Response.ContentType = "image/png";
 
             Bitmap boxBitmap = imageCreator.CreateBitmap();
-            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+            MemoryStream ms = new MemoryStream();
             boxBitmap.Save(ms, ImageFormat.Png);
 
             ms.WriteTo(context.Response.OutputStream);

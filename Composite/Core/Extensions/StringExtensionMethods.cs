@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.IO;
 
 
 namespace Composite.Core.Extensions
@@ -204,8 +205,8 @@ namespace Composite.Core.Extensions
 
         public static string GetNameWithoutExtension(this string s)
         {
-            string name = System.IO.Path.GetFileName(s);
-            if (System.IO.Path.HasExtension(name))
+            string name = Path.GetFileName(s);
+            if (Path.HasExtension(name))
             {
                 int lastIndex = name.LastIndexOf('.');
                 return name.Remove(lastIndex);

@@ -1,6 +1,7 @@
 ﻿<%@ WebHandler Language="C#" Class="ShowMedia" %>
 
 using System;
+using System.IO;
 using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -47,7 +48,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
                 context.Response.StatusCode = 500;
                 context.Response.Write("Invalid arguments");
             }
-            catch (System.IO.FileNotFoundException)
+            catch (FileNotFoundException)
             {
                 context.Response.StatusCode = 404;
                 context.Response.Write("File not found");
@@ -101,7 +102,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
             context.Response.Cache.SetCacheability(HttpCacheability.Private);
         }
 
-        System.IO.Stream inputStream = null;
+        Stream inputStream = null;
         try
         {
 
@@ -237,7 +238,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         }
     }
 
-    private System.IO.Stream ProcessImageResizing(HttpContext context, IMediaFile file)
+    private Stream ProcessImageResizing(HttpContext context, IMediaFile file)
     {
         ResizingOptions resizingOptions;
 
@@ -284,7 +285,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
         try
         {
-            return new C1FileStream(resizedImageFilePath, System.IO.FileMode.OpenOrCreate, System.IO.FileAccess.Read);
+            return new C1FileStream(resizedImageFilePath, FileMode.OpenOrCreate, FileAccess.Read);
         }
         catch (Exception ex)
         {
@@ -336,7 +337,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
             int filePathHash = imageKey.GetHashCode();
             string resizedImageFileName = string.Format("{0}x{1}_{2}.{3}", newWidth, newHeight, filePathHash, imgType.ToString().ToLower());
 
-            string imageFullPath = System.IO.Path.Combine(_resizedImagesDirectoryPath, resizedImageFileName);
+            string imageFullPath = Path.Combine(_resizedImagesDirectoryPath, resizedImageFileName);
 
             if (!C1File.Exists(imageFullPath) || C1File.GetLastWriteTime(imageFullPath) != file.LastWriteTime)
             {
@@ -524,7 +525,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         {
             if (!C1File.Exists(_resizedImageKeysFilePath))
             {
-                string directoryPath = System.IO.Path.GetDirectoryName(_resizedImageKeysFilePath);
+                string directoryPath = Path.GetDirectoryName(_resizedImageKeysFilePath);
                 if (!C1Directory.Exists(directoryPath)) C1Directory.CreateDirectory(directoryPath);
 
                 var config = new XElement("ResizedImages");

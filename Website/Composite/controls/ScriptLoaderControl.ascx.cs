@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Net;
 using System.Text;
 using System.Web;
@@ -38,7 +39,7 @@ public partial class ScriptLoaderControl : System.Web.UI.UserControl
             _mode = CompositeScriptMode.OPERATE;
         }
 
-        string folderPath = System.IO.Path.Combine(HttpContext.Current.Request.PhysicalApplicationPath, "Composite");
+        string folderPath = Path.Combine(HttpContext.Current.Request.PhysicalApplicationPath, "Composite");
 
         switch (type)
         {
@@ -77,7 +78,7 @@ public partial class ScriptLoaderControl : System.Web.UI.UserControl
     {
         try
         {
-            string folderPath = System.IO.Path.Combine(HttpContext.Current.Request.PhysicalApplicationPath, "Composite");
+            string folderPath = Path.Combine(HttpContext.Current.Request.PhysicalApplicationPath, "Composite");
 
             string targetPath = folderPath + "\\scripts\\compressed";
 
@@ -191,7 +192,7 @@ public partial class ScriptLoaderControl : System.Web.UI.UserControl
             request.Timeout = 1000;
             using (WebResponse response = request.GetResponse())
             {
-                using (System.IO.Stream responseStream = response.GetResponseStream())
+                using (Stream responseStream = response.GetResponseStream())
                 {
                     XmlTextReader reader = new XmlTextReader(responseStream);
                     while (reader.Read() && !result)

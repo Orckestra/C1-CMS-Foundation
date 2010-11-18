@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Transactions;
 using Composite.Core.Extensions;
@@ -20,7 +21,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
     {
         private static readonly TimeSpan extrationTimeout = TimeSpan.FromMinutes(15);
 
-        public static void AddZip(string providerName, string parentPath, System.IO.Stream compressedStream, bool recreateDirStructure, bool overwrite)
+        public static void AddZip(string providerName, string parentPath, Stream compressedStream, bool recreateDirStructure, bool overwrite)
         {
             if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
             if (string.IsNullOrEmpty(parentPath) == true) throw new ArgumentNullException("parentPath");
@@ -72,9 +73,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                         if (Exists(file))
                         {
                             IMediaFile currentFile = DataFacade.GetData<IMediaFile>().Where(x => x.FolderPath == file.FolderPath && x.FileName == file.FileName).First();
-                            using (System.IO.Stream readStream = file.GetReadStream())
+                            using (Stream readStream = file.GetReadStream())
                             {
-                                using (System.IO.Stream writeStream = currentFile.GetNewWriteStream())
+                                using (Stream writeStream = currentFile.GetNewWriteStream())
                                 {
                                     readStream.CopyTo(writeStream);
                                 }
@@ -89,7 +90,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                     else
                     {
                         int counter = 0;
-                        string extension = System.IO.Path.GetExtension(file.FileName);
+                        string extension = Path.GetExtension(file.FileName);
                         string name = file.FileName.GetNameWithoutExtension();
                         while (Exists(file))
                         {
@@ -113,7 +114,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
 
 
-        private static void Extract(string parentPath, System.IO.Stream compressedStream,
+        private static void Extract(string parentPath, Stream compressedStream,
             out IList<IMediaFileFolder> folders, out IList<IMediaFile> files)
         {
             folders = new List<IMediaFileFolder>();
@@ -136,7 +137,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                         WorkflowMediaFile mediaFile = new WorkflowMediaFile();
                         int length = CopyZipData(zipInputStream, mediaFile);
 
-                        mediaFile.FileName = System.IO.Path.GetFileName(theEntry.Name);
+                        mediaFile.FileName = Path.GetFileName(theEntry.Name);
                         mediaFile.Title = mediaFile.FileName.GetNameWithoutExtension();
                         mediaFile.FolderPath = parentPath.Combine(theEntry.Name.GetDirectory('/'), '/');
 
@@ -144,7 +145,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                         mediaFile.Culture = C1Console.Users.UserSettings.CultureInfo.Name;
                         mediaFile.LastWriteTime = DateTime.Now;
                         mediaFile.Length = length;
-                        mediaFile.MimeType = MimeTypeInfo.GetCanonicalFromExtension(System.IO.Path.GetExtension(theEntry.Name));
+                        mediaFile.MimeType = MimeTypeInfo.GetCanonicalFromExtension(Path.GetExtension(theEntry.Name));
 
                         files.Add(mediaFile);
 
@@ -164,11 +165,11 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
 
 
-        private static int CopyZipData(System.IO.Stream from, WorkflowMediaFile mediaFile)
+        private static int CopyZipData(Stream from, WorkflowMediaFile mediaFile)
         {
             int fileSize = 0;
 
-            using (System.IO.Stream streamWriter = mediaFile.GetNewWriteStream())
+            using (Stream streamWriter = mediaFile.GetNewWriteStream())
             {
                 int size = 2048;
                 byte[] data = new byte[2048];

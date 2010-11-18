@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 
 
 namespace Composite.Core.PackageSystem
@@ -10,7 +11,7 @@ namespace Composite.Core.PackageSystem
         ServerUrlValidationResult ValidateServerUrl(string packageServerUrl);
         IEnumerable<PackageDescription> GetAddOnDescriptions(string packageServerUrl, Guid installationId, CultureInfo userCulture);
         string GetEulaText(string packageServerUrl, Guid eulaId, CultureInfo userCulture);
-        System.IO.Stream GetInstallFileStream(string packageFileDownloadUrl);
+        Stream GetInstallFileStream(string packageFileDownloadUrl);
 
         bool RequestLicenseUpdate(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp);
         void RegisterAddonInstallationCompletion(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp);

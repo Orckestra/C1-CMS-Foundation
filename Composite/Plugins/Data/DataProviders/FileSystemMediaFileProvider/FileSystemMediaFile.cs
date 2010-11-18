@@ -120,7 +120,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
         {
             get 
             {
-                System.IO.FileInfo fileInfo = new System.IO.FileInfo(this.SystemPath);
+                FileInfo fileInfo = new FileInfo(this.SystemPath);
 
                 return (int)fileInfo.Length;
             }

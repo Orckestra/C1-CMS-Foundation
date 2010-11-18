@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml;
 using Composite.Data;
@@ -12,8 +13,8 @@ namespace Composite.C1Console.Forms.DataServices.Foundation
     {
         internal static FormTreeCompiler Build(string formPath, IFormChannelIdentifier channel, Dictionary<string, object> bindings, bool debugMode)
         {
-            string folderPath = System.IO.Path.GetDirectoryName(formPath);
-            string fileName = System.IO.Path.GetFileName(formPath);
+            string folderPath = Path.GetDirectoryName(formPath);
+            string fileName = Path.GetFileName(formPath);
 
             List<IFormDefinitionFile> formFiles =
                 (from file in DataFacade.GetData<IFormDefinitionFile>()

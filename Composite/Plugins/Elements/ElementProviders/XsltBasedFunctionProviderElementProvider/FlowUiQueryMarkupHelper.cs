@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -115,7 +116,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
 
         public static string IndentedOuterXml(XmlNode node)
         {
-            System.IO.StringWriter stringWriter = new System.IO.StringWriter();
+            StringWriter stringWriter = new StringWriter();
             XmlTextWriter xmlTextWriter = new XmlTextWriter(stringWriter);
             xmlTextWriter.Formatting = Formatting.Indented;
             node.WriteTo(xmlTextWriter);

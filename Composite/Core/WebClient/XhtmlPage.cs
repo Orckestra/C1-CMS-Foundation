@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.IO;
+using System.Text.RegularExpressions;
 using System.Web.UI;
 
 
@@ -13,7 +14,7 @@ namespace Composite.Core.WebClient
             Regex xmlScriptRegex = new Regex(@"(<script\stype=""text/javascript"">)(\s*<!--)((?:.|\n)*?)(\s*-->\s*)(</script>)");
             string xmlScriptCDATAWrapper = "$1\n// <![CDATA[$3 // ]]>\n$5";
 
-            System.IO.StringWriter sw = new System.IO.StringWriter();
+            StringWriter sw = new StringWriter();
             base.Render(new HtmlTextWriter(sw));
             string html = sw.ToString();
 
@@ -21,7 +22,5 @@ namespace Composite.Core.WebClient
 
             writer.Write(html);
         }
-
-
 	}
 }

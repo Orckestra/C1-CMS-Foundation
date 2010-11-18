@@ -1,3 +1,4 @@
+using System.IO;
 
 
 namespace Composite.Data.Streams
@@ -6,7 +7,7 @@ namespace Composite.Data.Streams
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    public sealed class CachedMemoryStream : System.IO.MemoryStream
+    public sealed class CachedMemoryStream : MemoryStream
     {
         private byte[] _data = null;
 
@@ -41,7 +42,7 @@ namespace Composite.Data.Streams
         {
             if (_data == null)
             {
-                this.Seek(0, System.IO.SeekOrigin.Begin);
+                this.Seek(0, SeekOrigin.Begin);
 
                 _data = new byte[this.Length];
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Caching;
@@ -133,7 +134,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
                 string serializedMarkup = ViewState[FunctionMarkupSessionKey] as string;
 
                 byte[] bytes = System.Text.Encoding.UTF8.GetBytes(serializedMarkup);
-                using (var stream = new System.IO.MemoryStream(bytes))
+                using (var stream = new MemoryStream(bytes))
                 {
                     _functionMarkup = XDocument.Load(stream);
                 }
@@ -594,7 +595,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         byte[] serializedXDocument;
 
-        using (System.IO.MemoryStream stream = new System.IO.MemoryStream())
+        using (MemoryStream stream = new MemoryStream())
         {
             using (XmlWriter writer = XmlWriter.Create(stream, xmlWriterSettings))
             {

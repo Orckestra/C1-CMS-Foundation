@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 
 
@@ -13,8 +14,8 @@ namespace Composite.Data.Types
         public static T GetFile<T>(string filePath)
             where T : class, IFile
         {
-            string folderPath = System.IO.Path.GetDirectoryName(filePath);
-            string fileName = System.IO.Path.GetFileName(filePath);
+            string folderPath = Path.GetDirectoryName(filePath);
+            string fileName = Path.GetFileName(filePath);
 
             var foundFile =
                 (from file in DataFacade.GetData<T>()
@@ -32,8 +33,8 @@ namespace Composite.Data.Types
         public static T TryGetFile<T>(string filePath)
             where T : class, IFile
         {
-            string folderPath = System.IO.Path.GetDirectoryName(filePath);
-            string fileName = System.IO.Path.GetFileName(filePath);
+            string folderPath = Path.GetDirectoryName(filePath);
+            string fileName = Path.GetFileName(filePath);
 
             var foundFile =
                 (from file in DataFacade.GetData<T>()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -128,7 +129,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 }
 
                 string outputXmlFullPath = PathUtil.Resolve(xslFile.OutputXmlPath);
-                if (C1File.Exists(outputXmlFullPath) && (C1File.GetAttributes(outputXmlFullPath) & System.IO.FileAttributes.ReadOnly) > 0)
+                if (C1File.Exists(outputXmlFullPath) && (C1File.GetAttributes(outputXmlFullPath) & FileAttributes.ReadOnly) > 0)
                 {
                     validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
                             GetResourceString("FileAddOnFragmentInstaller.FileReadOnly").FormatWith(xslFile.OutputXmlPath),
@@ -149,7 +150,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 		public override IEnumerable<XElement> Install()
 		{
 			if (_xslToAdd == null) throw new InvalidOperationException("Has not been validated");
-			System.IO.Stream stream;
+			Stream stream;
 			foreach (XslToAdd xslfile in _xslToAdd)
 			{
 				string messageFormat = xslfile.InputXmlPath == xslfile.OutputXmlPath ?

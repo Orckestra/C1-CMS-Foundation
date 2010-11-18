@@ -158,7 +158,7 @@ namespace Composite.Core.Implementation
 #warning MRJ: Clean thees methods, only one is needed
         public virtual C1FileStreamImplementation CreateC1FileStream(string path, FileMode mode )
         {
-            return new C1FileStreamImplementation(path, mode, (mode == System.IO.FileMode.Append) ? System.IO.FileAccess.Write : System.IO.FileAccess.ReadWrite, FileShare.Read);
+            return new C1FileStreamImplementation(path, mode, (mode == FileMode.Append) ? FileAccess.Write : FileAccess.ReadWrite, FileShare.Read);
         }
 
 

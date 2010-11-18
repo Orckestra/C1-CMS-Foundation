@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -73,7 +74,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 		{
             if (_xsls == null) throw new InvalidOperationException("Has not been validated");
 
-			System.IO.Stream stream;
+			Stream stream;
             foreach (XslTransformation xslfile in _xsls)
 			{
                 LoggingService.LogVerbose("XsltPackageFragmentInstaller",

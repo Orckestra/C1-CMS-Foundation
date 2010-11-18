@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -19,7 +20,7 @@ namespace Composite.Plugins.WebClient.SessionStateProviders.DefaultSessionStateP
         {
             XmlSerializer serializer = GetSerializer(type);
 
-            using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
+            using (MemoryStream ms = new MemoryStream())
             {
                 using (var xmlTextWriter = new XmlTextWriter(ms, Encoding))
                 {
@@ -36,7 +37,7 @@ namespace Composite.Plugins.WebClient.SessionStateProviders.DefaultSessionStateP
 
             byte[] bytes = Encoding.GetBytes(serializedValue);
 
-            using (var stream = new System.IO.MemoryStream(bytes))
+            using (var stream = new MemoryStream(bytes))
             {
                 return serializer.Deserialize(stream);
             }

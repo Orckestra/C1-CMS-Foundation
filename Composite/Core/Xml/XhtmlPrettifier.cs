@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -365,7 +366,7 @@ namespace Composite.Core.Xml
                 return _ampersandWord + match.Groups["tag"].Value;
             });
 
-            using (XmlReader xmlReader = XmlTextReader.Create(new System.IO.StringReader(xmlString), xmlReaderSettings))
+            using (XmlReader xmlReader = XmlTextReader.Create(new StringReader(xmlString), xmlReaderSettings))
             {
                 return BuildTree(xmlReader, 0).ToList();
             }

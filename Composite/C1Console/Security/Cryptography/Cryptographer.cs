@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -52,7 +53,7 @@ namespace Composite.C1Console.Security.Cryptography
             ICryptoTransform desencrypt = DES.CreateEncryptor();
 
             byte[] result;
-            using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
+            using (MemoryStream ms = new MemoryStream())
             {
                 using (CryptoStream cryptostream = new CryptoStream(ms, desencrypt, CryptoStreamMode.Write))
                 {
@@ -74,14 +75,14 @@ namespace Composite.C1Console.Security.Cryptography
             ICryptoTransform desdecrypt = DES.CreateDecryptor();
 
             byte[] result;
-            using (System.IO.MemoryStream memoryWriteStream = new System.IO.MemoryStream())
+            using (MemoryStream memoryWriteStream = new MemoryStream())
             {
                 memoryWriteStream.Write(toDecrypt, 0, toDecrypt.Length);
                 memoryWriteStream.Position = 0;
 
                 using (CryptoStream cryptostreamDecr = new CryptoStream(memoryWriteStream, desdecrypt, CryptoStreamMode.Read))
                 {
-                    using (System.IO.Stream memoryReadStream = new System.IO.MemoryStream())
+                    using (Stream memoryReadStream = new MemoryStream())
                     {
                         int size = 2048;
                         byte[] data = new byte[2048];

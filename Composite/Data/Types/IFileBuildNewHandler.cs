@@ -1,5 +1,6 @@
 using System;
 using System.CodeDom;
+using System.IO;
 using Composite.Data.Foundation.CodeGeneration;
 using Composite.Data.Streams;
 
@@ -57,21 +58,21 @@ namespace Composite.Data.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class IFileEmptyDataClassFileStreamManager : IFileStreamManager
     {
-        public System.IO.Stream GetReadStream(IFile file)
+        public Stream GetReadStream(IFile file)
         {
             IFileEmptyDataClassBase castedFile = (IFileEmptyDataClassBase)file;
 
             if (castedFile.CurrentWriteStream == null)
             {
-                return new System.IO.MemoryStream(new byte[] { });
+                return new MemoryStream(new byte[] { });
             }
             else
             {
-                return new System.IO.MemoryStream(castedFile.CurrentWriteStream.Data);
+                return new MemoryStream(castedFile.CurrentWriteStream.Data);
             }
         }
 
-        public System.IO.Stream GetNewWriteStream(IFile file)
+        public Stream GetNewWriteStream(IFile file)
         {
             IFileEmptyDataClassBase castedFile = (IFileEmptyDataClassBase)file;
 

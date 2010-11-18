@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -13,7 +14,7 @@ namespace Composite.Core.WebClient.UiControlLib
         protected override void Render(HtmlTextWriter writer)
         {
             StringBuilder markupBuilder = new StringBuilder();
-            System.IO.StringWriter sw = new System.IO.StringWriter(markupBuilder);
+            StringWriter sw = new StringWriter(markupBuilder);
             base.Render(new HtmlTextWriter(sw));
 
             writer.Write( HttpUtility.HtmlEncode(markupBuilder.ToString()));

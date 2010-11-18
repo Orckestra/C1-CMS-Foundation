@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.UI;
 using Composite.C1Console.Security;
@@ -21,7 +22,7 @@ namespace Composite.content.views.relationshipgraph
             }
 
             Guid id = new Guid(idString);
-            string filename = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), string.Format("{0}.RelationshipGraph", id));
+            string filename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), string.Format("{0}.RelationshipGraph", id));
 
             EntityToken startEntityToken = EntityTokenSerializer.Deserialize(C1File.ReadAllLines(filename)[0]);
 

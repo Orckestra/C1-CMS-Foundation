@@ -1,18 +1,19 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using System.Web;
 
 
 namespace Composite.Core.WebClient.Ajax
 {
-	internal class AjaxStream: System.IO.Stream
+	internal class AjaxStream: Stream
 	{
         private static readonly string ScriptManagerJS = "UpdateManager.xhtml = null;";
 
-	    private readonly System.IO.Stream _innerStream;
-        private System.IO.MemoryStream _ms = new System.IO.MemoryStream();
+	    private readonly Stream _innerStream;
+        private MemoryStream _ms = new MemoryStream();
 
-	    public AjaxStream(System.IO.Stream innerOuputStream)
+	    public AjaxStream(Stream innerOuputStream)
 	    {
 	        _innerStream = innerOuputStream;
 	    }
@@ -59,7 +60,7 @@ namespace Composite.Core.WebClient.Ajax
             throw new NotImplementedException();
         }
 
-        public override long Seek(long offset, System.IO.SeekOrigin origin)
+        public override long Seek(long offset, SeekOrigin origin)
         {
             throw new NotImplementedException();
         }
@@ -74,7 +75,7 @@ namespace Composite.Core.WebClient.Ajax
             if(!_ms.CanWrite)
             {
                 // Reopening stream if it was empty
-                _ms = new System.IO.MemoryStream();
+                _ms = new MemoryStream();
             }
             _ms.Write(buffer, offset, count);
         }
@@ -87,7 +88,7 @@ namespace Composite.Core.WebClient.Ajax
                 return;
             }
 
-            _ms.Seek(0, System.IO.SeekOrigin.Begin);
+            _ms.Seek(0, SeekOrigin.Begin);
 
             var bytes = _ms.ToArray();
 

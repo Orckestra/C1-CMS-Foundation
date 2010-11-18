@@ -12,6 +12,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Composite.Core.IO;
 
 
@@ -33,7 +34,7 @@ namespace Composite.Core.Configuration
             if (string.IsNullOrEmpty(configurationFilepath)) throw new ArgumentNullException("configurationFilepath");
 			this.configurationFilepath = RootConfigurationFilePath(configurationFilepath);
 
-            if (!C1File.Exists(this.configurationFilepath)) throw new System.IO.FileNotFoundException("File not found", this.configurationFilepath);
+            if (!C1File.Exists(this.configurationFilepath)) throw new FileNotFoundException("File not found", this.configurationFilepath);
 			EnsureImplementation(this.configurationFilepath);
 		}
 
@@ -299,7 +300,7 @@ namespace Composite.Core.Configuration
             if (string.IsNullOrEmpty(section)) throw new ArgumentNullException("section");
             if (null == configurationSection) throw new ArgumentNullException("configurationSection");
 
-			if (!C1File.Exists(fileName)) throw new System.IO.FileNotFoundException(string.Format("", "Resources.ExceptionConfigurationFileNotFound", section), fileName);
+			if (!C1File.Exists(fileName)) throw new FileNotFoundException(string.Format("", "Resources.ExceptionConfigurationFileNotFound", section), fileName);
 		}
 
 
@@ -307,9 +308,9 @@ namespace Composite.Core.Configuration
 		private static string RootConfigurationFilePath(string configurationFile)
 		{
 			string rootedConfigurationFile = (string)configurationFile.Clone();
-			if (!System.IO.Path.IsPathRooted(rootedConfigurationFile))
+			if (!Path.IsPathRooted(rootedConfigurationFile))
 			{
-				rootedConfigurationFile = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, rootedConfigurationFile);
+				rootedConfigurationFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, rootedConfigurationFile);
 			}
 			return rootedConfigurationFile;
 		}

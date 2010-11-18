@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -160,7 +161,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.SqlFunctionProvider
         private static XElement BuidlXElement(string item)
         {
             string result = "<root>" + item + "</root>";
-            System.IO.StringReader reader = new System.IO.StringReader(result);
+            StringReader reader = new StringReader(result);
                 
             return XElement.Load(reader);
         }
@@ -278,7 +279,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.SqlFunctionProvider
                             adapter.Fill(dataSet);
                             if (dataSet != null && !dataSet.HasChanges())
                             {
-                                System.IO.StringWriter writer = new System.IO.StringWriter();
+                                StringWriter writer = new StringWriter();
                                 dataSet.WriteXml(writer);
                                 result = writer.ToString();
                             }
@@ -342,7 +343,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.SqlFunctionProvider
                             adapter.Fill(dataSet);
                             if (dataSet != null && !dataSet.HasChanges())
                             {
-                                System.IO.StringWriter writer = new System.IO.StringWriter();
+                                StringWriter writer = new StringWriter();
                                 dataSet.WriteXml(writer);
                                 result = writer.ToString();
                             }

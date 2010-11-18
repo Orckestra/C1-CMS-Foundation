@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.ServiceModel;
@@ -166,9 +167,9 @@ namespace Composite.Core.WebClient.Setup
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
                 byte[] buffer = new byte[32768];
-                using (System.IO.Stream inputStream = response.GetResponseStream())
+                using (Stream inputStream = response.GetResponseStream())
                 {
-                    using (System.IO.MemoryStream outputStream = new System.IO.MemoryStream())
+                    using (MemoryStream outputStream = new MemoryStream())
                     {
                         int read;
                         while ((read = inputStream.Read(buffer, 0, 32768)) > 0)
@@ -176,7 +177,7 @@ namespace Composite.Core.WebClient.Setup
                             outputStream.Write(buffer, 0, read);
                         }
 
-                        outputStream.Seek(0, System.IO.SeekOrigin.Begin);
+                        outputStream.Seek(0, SeekOrigin.Begin);
 
                         PackageManagerInstallProcess packageManagerInstallProcess = PackageManager.Install(outputStream, true);
                         if (packageManagerInstallProcess.PreInstallValidationResult.Count > 0)

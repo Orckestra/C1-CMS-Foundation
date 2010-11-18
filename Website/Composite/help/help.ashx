@@ -1,6 +1,7 @@
 <%@ WebHandler Language="C#" Class="HelpHandler" %>
 
 using System;
+using System.IO;
 using System.Configuration;
 using System.Text;
 using Composite.Core.IO;
@@ -16,6 +17,7 @@ using Composite;
 using Composite.Core.Extensions;
 using Composite.C1Console.Users;
 using Composite.Core.WebClient;
+
 
 public class HelpHandler : IHttpHandler 
 {
@@ -40,7 +42,7 @@ public class HelpHandler : IHttpHandler
 
         WebResponse webResponse = request.GetResponse();
 
-        using (System.IO.Stream responseStream = webResponse.GetResponseStream())
+        using (Stream responseStream = webResponse.GetResponseStream())
         {
             using(C1StreamReader sr = new C1StreamReader(responseStream))
             {

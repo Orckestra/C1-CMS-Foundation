@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Composite.Core.Extensions;
@@ -100,7 +101,7 @@ namespace Composite.Core.WebClient
                 }
                 catch (Exception ex)
                 {
-                    throw new System.IO.FileNotFoundException("File '{0}' was not found.".FormatWith(compositePath), ex);
+                    throw new FileNotFoundException("File '{0}' was not found.".FormatWith(compositePath), ex);
                 }
 
             }
@@ -122,11 +123,11 @@ namespace Composite.Core.WebClient
                 }
                 catch (Exception ex)
                 {
-                    throw new System.IO.FileNotFoundException("File not found. Storage: '{0}', Id: {1}".FormatWith(storeId, id), ex);
+                    throw new FileNotFoundException("File not found. Storage: '{0}', Id: {1}".FormatWith(storeId, id), ex);
                 }
             }
 
-            if (result == null) throw new System.IO.FileNotFoundException("File not found.");
+            if (result == null) throw new FileNotFoundException("File not found.");
 
             return result;
         }

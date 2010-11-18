@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
@@ -259,7 +260,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             public XmlDataProviderConfiguration(string providerName)
             {
-                _configuration = Configuration.Load(System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.ConfigurationDirectory), string.Format("{0}.config", providerName)));
+                _configuration = Configuration.Load(Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.ConfigurationDirectory), string.Format("{0}.config", providerName)));
 
                 this.Section = _configuration.GetSection(XmlDataProviderConfigurationSection.SectionName) as XmlDataProviderConfigurationSection;
 

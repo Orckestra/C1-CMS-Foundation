@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web.UI;
 using Composite.C1Console.Security;
 using Composite.Core.Configuration;
@@ -19,7 +20,7 @@ public partial class ShowElementInformation_Default : System.Web.UI.Page
         }
 
         Guid piggybagId = new Guid(Request.QueryString["PiggyBagId"]);
-        string filename = System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), string.Format("{0}.showinfo", piggybagId));
+        string filename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), string.Format("{0}.showinfo", piggybagId));
 
         string[] showinfo = C1File.ReadAllLines(filename);
 

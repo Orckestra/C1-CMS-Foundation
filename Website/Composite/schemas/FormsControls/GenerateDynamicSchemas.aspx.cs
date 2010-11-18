@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Web.UI;
 using System.Xml.Linq;
 using Composite.C1Console.Forms;
 using Composite.Core.IO;
 using Composite.Core.Xml;
+
 
 public partial class Composite_schemas_FormsControls_GenerateDynamicSchemas : System.Web.UI.Page
 {
@@ -30,7 +32,7 @@ public partial class Composite_schemas_FormsControls_GenerateDynamicSchemas : Sy
                 new XElement("tr",
                     new XElement("td", 
                         new XElement("a",
-                            new XAttribute("href",System.IO.Path.GetFileName(xsdFile)),
+                            new XAttribute("href", Path.GetFileName(xsdFile)),
                             targetNamespace)),
                     new XElement("td", lastWrite)));
         }

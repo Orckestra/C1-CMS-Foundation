@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Linq;
 using Composite.Core.Types;
@@ -22,14 +23,14 @@ namespace Composite.Core.Serialization
 
                 if (objectToSerialize != null)
                 {
-                    using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
+                    using (MemoryStream ms = new MemoryStream())
                     {
                         BinaryFormatter binaryFormatter = new BinaryFormatter();
                         binaryFormatter.Serialize(ms, objectToSerialize);
 
-                        ms.Seek(0, System.IO.SeekOrigin.Begin);
+                        ms.Seek(0, SeekOrigin.Begin);
 
-                        using (System.IO.BinaryReader br = new System.IO.BinaryReader(ms))
+                        using (BinaryReader br = new BinaryReader(ms))
                         {
                             byte[] bytes = br.ReadBytes((int)ms.Length);
 
@@ -83,7 +84,7 @@ namespace Composite.Core.Serialization
             else if ((valueAttribute != null) && (typeAttribute == null))
             {
                 byte[] bytes = Convert.FromBase64String(valueAttribute.Value);
-                using (System.IO.MemoryStream ms = new System.IO.MemoryStream(bytes))
+                using (MemoryStream ms = new MemoryStream(bytes))
                 {
                     BinaryFormatter binaryFormatter = new BinaryFormatter();
 

@@ -1,6 +1,8 @@
 using System;
+using System.IO;
 using System.Text;
 using System.Web.Hosting;
+
 
 namespace Composite.Core.IO
 {
@@ -48,17 +50,17 @@ namespace Composite.Core.IO
                 }
 
                 string tildeLessPath = path.Remove(0, 1);
-                if (System.IO.Path.IsPathRooted(tildeLessPath) == false) throw new ArgumentException("Tilde based paths must start with tilde (~) and then a directory separator , like ~/folder/file.txt", "path");
+                if (Path.IsPathRooted(tildeLessPath) == false) throw new ArgumentException("Tilde based paths must start with tilde (~) and then a directory separator , like ~/folder/file.txt", "path");
 
                 string appRootRelativePath = tildeLessPath.Remove(0, 1);
-                if (System.IO.Path.IsPathRooted(appRootRelativePath) == true) throw new ArgumentException("Invalid path", "path");
+                if (Path.IsPathRooted(appRootRelativePath) == true) throw new ArgumentException("Invalid path", "path");
 
                 appRootRelativePath = appRootRelativePath.Replace( '/', '\\' );
 
-                return System.IO.Path.Combine(_appBasePath, appRootRelativePath);
+                return Path.Combine(_appBasePath, appRootRelativePath);
             }
 
-            if (System.IO.Path.IsPathRooted(path) == false) throw new ArgumentException("Relative paths must start with tilde (~), like ~/folder/file.txt", "path");
+            if (Path.IsPathRooted(path) == false) throw new ArgumentException("Relative paths must start with tilde (~), like ~/folder/file.txt", "path");
 
             return path.Replace('/', '\\');
         }

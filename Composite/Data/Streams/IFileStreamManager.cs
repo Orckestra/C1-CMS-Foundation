@@ -1,4 +1,4 @@
-﻿
+﻿using System.IO;
 using Composite.Data.Types;
 
 
@@ -27,8 +27,8 @@ namespace Composite.Data.Streams
 
     internal interface IFileStreamManager
     {
-        System.IO.Stream GetReadStream(IFile file);
-        System.IO.Stream GetNewWriteStream(IFile file);
+        Stream GetReadStream(IFile file);
+        Stream GetNewWriteStream(IFile file);
         void SubscribeOnFileChanged(IFile file, OnFileChangedDelegate handler);
     }
 }

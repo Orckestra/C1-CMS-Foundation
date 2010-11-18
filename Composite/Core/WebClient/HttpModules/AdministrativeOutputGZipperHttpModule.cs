@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using System.Web;
 
@@ -25,7 +26,7 @@ namespace Composite.Core.WebClient.HttpModules
             if (!adminRootRequest) return;
 
 
-            string requestPathExtension = System.IO.Path.GetExtension(context.Request.Path).ToLower();
+            string requestPathExtension = Path.GetExtension(context.Request.Path).ToLower();
 
             if (requestPathExtension == ".aspx" || requestPathExtension == ".asmx")
             {
@@ -43,7 +44,7 @@ namespace Composite.Core.WebClient.HttpModules
 
             if (adminRootRequest == true)
             {
-                string requestPathExtension = System.IO.Path.GetExtension(context.Request.Path).ToLower();
+                string requestPathExtension = Path.GetExtension(context.Request.Path).ToLower();
 
                 if (requestPathExtension == ".aspx" || requestPathExtension == ".asmx")
                 {

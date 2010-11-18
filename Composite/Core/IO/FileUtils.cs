@@ -15,9 +15,9 @@ namespace Composite.Core.IO
 
             FileAttributes fileAttributes = C1File.GetAttributes(filePath);
 
-            if ((fileAttributes & System.IO.FileAttributes.ReadOnly) == System.IO.FileAttributes.ReadOnly)
+            if ((fileAttributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
             {
-                fileAttributes ^= System.IO.FileAttributes.ReadOnly;
+                fileAttributes ^= FileAttributes.ReadOnly;
                 C1File.SetAttributes(filePath, fileAttributes);
             }
 

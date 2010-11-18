@@ -1,16 +1,17 @@
 <%@ WebHandler Language="C#" Class="GetIcon" %>
 
 using System;
+using System.IO;
 using Composite.Core.IO;
 using System.Web;
 using System.Drawing.Imaging;
 using System.Drawing;
 using System.Threading;
-
 using Composite.Core.Configuration;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 using Composite.Core.Collections.Generic;
+
 
 public class GetIcon : IHttpHandler
 {
@@ -96,10 +97,9 @@ public class GetIcon : IHttpHandler
     }
     
     private string GetCachePathForFile(HttpContext context, ResourceHandle resourceHandle, IconSize iconSize)
-    {
-        
+    {        
         string fileName = string.Format("{0}.{1}.{2}.png", resourceHandle.ResourceNamespace, resourceHandle.ResourceName, iconSize);
-        string relativePath = System.IO.Path.Combine(GlobalSettingsFacade.ResourceCacheSettings.CachePath, fileName);
+        string relativePath = Path.Combine(GlobalSettingsFacade.ResourceCacheSettings.CachePath, fileName);
         return context.Server.MapPath(relativePath);
     }
     

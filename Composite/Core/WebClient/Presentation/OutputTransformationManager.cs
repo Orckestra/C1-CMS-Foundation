@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Caching;
@@ -70,16 +71,16 @@ namespace Composite.Core.WebClient.Presentation
             public int Position { get; set; }
         }
 
-        private class XslTransformationStream : System.IO.Stream
+        private class XslTransformationStream : Stream
         {
-            public XslTransformationStream(System.IO.Stream outputStream)
+            public XslTransformationStream(Stream outputStream)
             {
-                _buffer = new System.IO.MemoryStream(8192);
+                _buffer = new MemoryStream(8192);
                 _responseOutputStream = outputStream;
             }
 
-            private System.IO.Stream _responseOutputStream;
-            private System.IO.MemoryStream _buffer;
+            private Stream _responseOutputStream;
+            private MemoryStream _buffer;
 
             /// <summary>
             /// Performs the actual transformation and write the result to the original stream
@@ -91,8 +92,8 @@ namespace Composite.Core.WebClient.Presentation
             [Obsolete("Use Transform() instead")]
             public void TransformBufferToOutput(String mode, String browser, String platform)
             {
-                System.IO.MemoryStream result = Transform(_buffer, mode, browser, platform);
-                result.Seek(0, System.IO.SeekOrigin.Begin);
+                MemoryStream result = Transform(_buffer, mode, browser, platform);
+                result.Seek(0, SeekOrigin.Begin);
 
                 result.WriteTo(_responseOutputStream);
             }
@@ -103,7 +104,7 @@ namespace Composite.Core.WebClient.Presentation
              * We should probably supply XSLT params by webcontrol markup...
              */
 
-            public static System.IO.MemoryStream Transform(System.IO.MemoryStream buffer, String mode, String browser, String platform)
+            public static MemoryStream Transform(MemoryStream buffer, String mode, String browser, String platform)
             {
                 XmlReaderSettings readerSettings = new XmlReaderSettings();
                 readerSettings.XmlResolver = null;
@@ -116,8 +117,8 @@ namespace Composite.Core.WebClient.Presentation
                     return buffer;
                 }
 
-                System.IO.MemoryStream inputStream;
-                System.IO.MemoryStream outputStream = null;
+                MemoryStream inputStream;
+                MemoryStream outputStream = null;
 
                 int xsltCount = xsltFilePaths.Count;
 
@@ -128,7 +129,7 @@ namespace Composite.Core.WebClient.Presentation
 
                     inputStream = (isFirst ? buffer : outputStream);
                     inputStream.Position = 0;
-                    outputStream = new System.IO.MemoryStream();
+                    outputStream = new MemoryStream();
                         
                     /*
                         * Hardcoding a parameter for masterfilter.xsl
@@ -198,7 +199,7 @@ namespace Composite.Core.WebClient.Presentation
                         return;
                     }
 
-                    System.IO.MemoryStream output = _buffer;
+                    MemoryStream output = _buffer;
 
                     if (httpContext.Response.StatusCode == 200)
                     {
@@ -244,7 +245,7 @@ namespace Composite.Core.WebClient.Presentation
 
                     if(output.Position != 0)
                     {
-                        output.Seek(0, System.IO.SeekOrigin.Begin);
+                        output.Seek(0, SeekOrigin.Begin);
                     }
                     output.WriteTo(_responseOutputStream);
                 }
@@ -280,7 +281,7 @@ namespace Composite.Core.WebClient.Presentation
                 set { _responseOutputStream.Position = value; }
             }
 
-            public override long Seek(long offset, System.IO.SeekOrigin origin)
+            public override long Seek(long offset, SeekOrigin origin)
             {
                 return _responseOutputStream.Seek(offset, origin);
             }

@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Logging;
@@ -58,7 +59,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.TcpLogTraceListener
             string eventTypeString = entry.Severity.ToString();
             char separator = ':';
 
-            using (System.IO.StringReader sr = new System.IO.StringReader(entry.Message))
+            using (StringReader sr = new StringReader(entry.Message))
             {
                 string line = sr.ReadLine();
                 while (line != null)

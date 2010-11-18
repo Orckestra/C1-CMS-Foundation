@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Web.UI;
 using Composite.Core.WebClient.Foundation.PluginFacades;
 using Composite.Core.WebClient.Plugins.WebRequestHandler;
@@ -18,7 +19,7 @@ namespace Composite.Core.WebClient
         private void LoadAndAttachHandler(Object o, EventArgs e)
         {
             string requestPath = Request.Path;
-            string requestName = System.IO.Path.GetFileNameWithoutExtension(requestPath);
+            string requestName = Path.GetFileNameWithoutExtension(requestPath);
 
             WebRequestHandlerData requestHandlerData = WebRequestHandlerPluginFacade.GetConfigurationForHandler(requestName);
 
@@ -37,7 +38,5 @@ namespace Composite.Core.WebClient
             Control placeHolder = c.FindControl(placeholderId);
             placeHolder.Controls.Add(handler);
         }
-
     }
-
 }

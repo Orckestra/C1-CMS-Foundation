@@ -1,6 +1,7 @@
 <%@ WebService Language="C#" Class="Composite.Services.MarkupFormatService" %>
 
 using System;
+using System.IO;
 using System.Collections.Generic;
 using Composite.Core.IO;
 using System.Linq;
@@ -86,9 +87,9 @@ namespace Composite.Services
             }
 
             byte[] htmlByteArray = Encoding.UTF8.GetBytes(html);
-            using (System.IO.MemoryStream inputStream = new System.IO.MemoryStream(htmlByteArray))
+            using (MemoryStream inputStream = new MemoryStream(htmlByteArray))
             {
-                using (System.IO.MemoryStream outputStream = new System.IO.MemoryStream())
+                using (MemoryStream outputStream = new MemoryStream())
                 {
                     Tidy tidy = GetXhtmlConfiguredTidy();
                     TidyMessageCollection tidyMessages = new TidyMessageCollection();

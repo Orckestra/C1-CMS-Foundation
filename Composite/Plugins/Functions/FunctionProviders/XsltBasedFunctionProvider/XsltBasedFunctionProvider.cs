@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -185,8 +186,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
                         using (
                             DebugLoggingScope.CompletionTime(this.GetType(), "Loading and compiling {0}".FormatWith(_xsltFunction.XslFilePath)))
                         {
-                            string folderPath = System.IO.Path.GetDirectoryName(_xsltFunction.XslFilePath);
-                            string fileName = System.IO.Path.GetFileName(_xsltFunction.XslFilePath);
+                            string folderPath = Path.GetDirectoryName(_xsltFunction.XslFilePath);
+                            string fileName = Path.GetFileName(_xsltFunction.XslFilePath);
 
                             var xsltFileHandles =
                                 (from file in DataFacade.GetData<IXsltFile>()
@@ -207,7 +208,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
 
 
                             XDocument doc;
-                            using (System.IO.Stream xsltSourceStream = xsltFileHandle.GetReadStream())
+                            using (Stream xsltSourceStream = xsltFileHandle.GetReadStream())
                             {
                                 using (XmlReader xmlReader = XmlReader.Create(xsltSourceStream))
                                 {

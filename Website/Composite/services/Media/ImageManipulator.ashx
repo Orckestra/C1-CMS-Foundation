@@ -1,13 +1,13 @@
 <%@ WebHandler Language="C#" Class="ImageManipulator" %>
 
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Web;
 using System.Linq;
 using System.Drawing.Imaging;
 using System.Drawing;
 using System.Workflow.Runtime;
-
 using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.Types;
@@ -61,7 +61,7 @@ public class ImageManipulator : IHttpHandler
         Bitmap image;
         
         // TODO: Caching here?
-        using (System.IO.Stream readStream = mediaFile.GetReadStream())
+        using (Stream readStream = mediaFile.GetReadStream())
         {
             Bitmap lockedSource = new Bitmap(new Bitmap(readStream));  // the double new(new) fixes GIF prb; "a graphics object cannot be created from an image that has an indexed pixel format"
             Graphics g = Graphics.FromImage(lockedSource);
@@ -317,7 +317,7 @@ public class ImageManipulator : IHttpHandler
     private void WriteBitmapToResponseSteam(HttpContext context, Bitmap image, string mimeType)
     {
         context.Response.ContentType = mimeType;
-        using (System.IO.MemoryStream memStream = new System.IO.MemoryStream())
+        using (MemoryStream memStream = new MemoryStream())
         {
             image.Save(memStream, GetImageFormat(mimeType));
             memStream.WriteTo(context.Response.OutputStream);
@@ -328,7 +328,7 @@ public class ImageManipulator : IHttpHandler
 
     private void UpdateMediaFileImage(IMediaFile mediaFile, System.Drawing.Image image)
     {
-        using (System.IO.Stream writeStream = mediaFile.GetNewWriteStream())
+        using (Stream writeStream = mediaFile.GetNewWriteStream())
         {
             image.Save(writeStream, GetImageFormat(mediaFile.MimeType));
         }
