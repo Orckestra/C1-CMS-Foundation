@@ -93,7 +93,8 @@ FormatSelectorBinding.prototype.buildDOMContent = function () {
 				this._formats.set ( format.id, format );
 				var name = format.select.label;
 				var value = format.id;
-				list.add ( new SelectorBindingSelection ( name, value ));
+				var notes = format.notes;
+				list.add ( new SelectorBindingSelection ( name, value, null, null, notes ));
 			}
 		}, this );
 	}, this );

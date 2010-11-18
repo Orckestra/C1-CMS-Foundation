@@ -126,13 +126,17 @@ ClassNameSelectorBinding.prototype.handleNodeChange = function ( element ) {
 			this._element = element;
 			this._classname = element.className;
 			
+			// TODO: Add support for images here?
+			
 			var list = new List ();
 			this.priorities.each ( function ( format ) {
 				if ( this._tinyInstance.formatter.canApply ( format.id )) {
 					list.add ( new SelectorBindingSelection ( 
 					    format.select.label, 
 					    format.id,
-					    this._tinyInstance.queryCommandState ( format.id ) 
+					    this._tinyInstance.queryCommandState ( format.id ),
+					    null,
+					    format.notes
 					));
 				}
 			}, this );

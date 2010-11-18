@@ -8,9 +8,9 @@
  * @param {boolean} isSelected
  * @param {ImageProfile} imageProfile
  */ 
-function SelectorBindingSelection ( label, value, isSelected, imageProfile ) {
+function SelectorBindingSelection ( label, value, isSelected, imageProfile, tooltip ) {
 	
-	this._init ( label, value, isSelected, imageProfile );
+	this._init ( label, value, isSelected, imageProfile, tooltip );
 }
 
 SelectorBindingSelection.prototype = {
@@ -28,6 +28,11 @@ SelectorBindingSelection.prototype = {
 	 * @type {string}
 	 */
 	value : null,
+	
+	/**
+	 * @type {String}
+	 */
+	tooltip : null,
 	
 	/**
 	 * If set to true, the selection will be selected.
@@ -53,8 +58,9 @@ SelectorBindingSelection.prototype = {
 	 * @param {object} value
 	 * @param {boolean} isSelected
 	 * @param {ImageProfile} imageProfile
+	 * @param {String} tooltip
 	 */
-	_init : function ( label, value, isSelected, imageProfile ) {
+	_init : function ( label, value, isSelected, imageProfile, tooltip ) {
 		
 		if ( label != null ) {
 			this.label = String ( label );
@@ -64,6 +70,9 @@ SelectorBindingSelection.prototype = {
 		}
 		if ( imageProfile != null ) {
 			this.imageProfile = imageProfile;
+		}
+		if ( tooltip != null ) {
+			this.tooltip = tooltip;
 		}
 		this.isSelected = isSelected ? true : false;
 	}

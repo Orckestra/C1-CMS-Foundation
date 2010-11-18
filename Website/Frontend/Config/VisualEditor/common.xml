@@ -28,9 +28,7 @@
 						label, image and notes attributes  
 					-->
 					<button image="Images/bold.png" label=""/>
-					<!-- 
-						you can also add a "select" element!
-					-->
+					<!-- you can also add a "select" element! -->
 			</format>
 			<format 
 				id="italic" 
@@ -71,7 +69,6 @@
 				notes="Big heading" 
 				block="h1">
 					<select/>
-					<button label="H1"/>
 			</format>
 			<format 
 				id="h2" 

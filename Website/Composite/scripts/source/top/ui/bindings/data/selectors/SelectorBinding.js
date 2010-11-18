@@ -469,6 +469,9 @@ SelectorBinding.prototype.addSelection = function ( selection, isPositionFirst )
 	var itemBinding = menuItemImplementation.newInstance ( bodyDocument );
 	itemBinding.imageProfile = selection.imageProfile;
 	itemBinding.setLabel ( selection.label );
+	if ( selection.tooltip != null ) {
+		itemBinding.setToolTip ( selection.tooltip )
+	}
 	itemBinding.selectionValue = selection.value;
 	
 	if ( selection.isSelected ) {
