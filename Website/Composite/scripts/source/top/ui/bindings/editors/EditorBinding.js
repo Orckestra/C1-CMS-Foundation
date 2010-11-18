@@ -1,3 +1,9 @@
+/*
+ * This fellow is a superclass for editors based on the contentEditable interface. 
+ * This should give us a unified way of accessing the editable document, and 
+ * to setup contextmenus and stuff for the editor. @see {BespinEditorBinding}
+ */
+
 EditorBinding.prototype = new WindowBinding;
 EditorBinding.prototype.constructor = EditorBinding;
 EditorBinding.superclass = WindowBinding.prototype;

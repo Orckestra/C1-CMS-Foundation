@@ -1,3 +1,10 @@
+/*
+ * For historical reasons, we subclass this thing from EditorBinding. There's 
+ * really no good reason to do so, since Mozilla Skywriter is based on canvas 
+ * and not contentEditble. But Skywriter is currently being transformed into a 
+ * contentEditable sort of gizmo, so it might make sense not to refactor yet... 
+ */
+
 BespinEditorBinding.prototype = new EditorBinding;
 BespinEditorBinding.prototype.constructor = BespinEditorBinding;
 BespinEditorBinding.superclass = EditorBinding.prototype;
