@@ -1,4 +1,4 @@
-﻿<%@ WebService Language="C#" CodeBehind="DiffService.asmx.cs" Class="Composite.Services.DiffService" %>
+﻿<%@ WebService Language="C#" Class="Composite.Services.DiffService" %>
 
 using System;
 using System.Collections;
