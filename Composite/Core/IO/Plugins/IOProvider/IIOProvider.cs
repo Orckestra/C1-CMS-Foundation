@@ -41,8 +41,7 @@ namespace Composite.Core.Implementation
         /// IOLayer - documentation pending
         /// </summary>
         /// <param name="sourceDirName"></param>
-        /// <param name="destDirName"></param>
-        //[SecuritySafeCritical]
+        /// <param name="destDirName"></param>        
         public virtual void Move(string sourceDirName, string destDirName)
         {
             IOFacade.C1Directory.Move(sourceDirName, destDirName);
@@ -66,7 +65,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <param name="recursive"></param>
-        //[SecuritySafeCritical]
         public virtual void Delete(string path, bool recursive)
         {
             IOFacade.C1Directory.Delete(path, recursive);
@@ -79,7 +77,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual bool Exists(string path)
         {
             return IOFacade.C1Directory.Exists(path);
@@ -91,7 +88,6 @@ namespace Composite.Core.Implementation
         /// IOLayer - documentation pending
         /// </summary>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual string GetCurrentDirectory()
         {
             return IOFacade.C1Directory.GetCurrentDirectory();
@@ -103,7 +99,6 @@ namespace Composite.Core.Implementation
         /// IOLayer - documentation pending
         /// </summary>
         /// <param name="path"></param>
-        //[SecuritySafeCritical]
         public virtual void SetCurrentDirectory(string path)
         {
             IOFacade.C1Directory.SetCurrentDirectory(path);
@@ -116,7 +111,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual DirectoryInfo GetParent(string path)
         {
             return IOFacade.C1Directory.GetParent(path);
@@ -129,7 +123,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual string GetDirectoryRoot(string path)
         {
             return IOFacade.C1Directory.GetDirectoryRoot(path);
@@ -220,7 +213,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual DateTime GetCreationTime(string path)
         {
             return IOFacade.C1Directory.GetCreationTime(path);
@@ -233,7 +225,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual DateTime GetCreationTimeUtc(string path)
         {
             return IOFacade.C1Directory.GetCreationTimeUtc(path);
@@ -339,7 +330,6 @@ namespace Composite.Core.Implementation
 
 
 
-        ////[SecuritySafeCritical]
         //public virtual void SetAccessControl(string path, DirectorySecurity directorySecurity)
         //{
         //    throw new NotImplementedException();
@@ -354,7 +344,6 @@ namespace Composite.Core.Implementation
 
 
 
-        ////[SecuritySafeCritical]
         //public virtual void SetCreationTimeUtc(string path, DateTime creationTimeUtc)
         //{ 
         //    throw new NotImplementedException(); 
@@ -362,7 +351,6 @@ namespace Composite.Core.Implementation
 
 
 
-        ////[SecuritySafeCritical]
         //public virtual string[] GetLogicalDrives()
         //{ 
         //    throw new NotImplementedException(); 
@@ -370,7 +358,6 @@ namespace Composite.Core.Implementation
 
 
 
-        ////[SecuritySafeCritical]
         //public virtual DateTime GetLastAccessTime(string path)
         //{ 
         //    throw new NotImplementedException(); 
@@ -385,7 +372,6 @@ namespace Composite.Core.Implementation
 
 
 
-        ////[SecuritySafeCritical]
         //public virtual DateTime GetLastAccessTimeUtc(string path)
         //{ 
         //    throw new NotImplementedException(); 
@@ -393,7 +379,6 @@ namespace Composite.Core.Implementation
 
 
 
-        ////[SecuritySafeCritical]
         //public virtual void SetLastAccessTimeUtc(string path, DateTime lastAccessTimeUtc)
         //{ 
         //    throw new NotImplementedException(); 
@@ -401,7 +386,6 @@ namespace Composite.Core.Implementation
 
 
 
-        ////[SecuritySafeCritical]
         //public virtual DateTime GetLastWriteTime(string path)
         //{ 
         //    throw new NotImplementedException(); 
@@ -416,7 +400,6 @@ namespace Composite.Core.Implementation
 
 
 
-        ////[SecuritySafeCritical]
         //public virtual DateTime GetLastWriteTimeUtc(string path)
         //{ 
         //    throw new NotImplementedException(); 
@@ -424,7 +407,6 @@ namespace Composite.Core.Implementation
 
 
 
-        //[SecuritySafeCritical]
         //public virtual void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc)
         //{ 
         //    throw new NotImplementedException(); 
@@ -443,7 +425,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual bool Exists(string path)
         {
             return IOFacade.C1File.Exists(path);
@@ -481,7 +462,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="sourceFileName"></param>
         /// <param name="destFileName"></param>
-        //[SecuritySafeCritical]
         public virtual void Move(string sourceFileName, string destFileName)
         {
             IOFacade.C1File.Move(sourceFileName, destFileName);
@@ -509,7 +489,6 @@ namespace Composite.Core.Implementation
         /// <param name="destinationFileName"></param>
         /// <param name="destinationBackupFileName"></param>
         /// <param name="ignoreMetadataErrors"></param>
-        //[SecuritySafeCritical]
         public virtual void Replace(string sourceFileName, string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors)
         {
             IOFacade.C1File.Replace(sourceFileName, destinationBackupFileName, destinationBackupFileName, ignoreMetadataErrors);
@@ -521,7 +500,6 @@ namespace Composite.Core.Implementation
         /// IOLayer - documentation pending
         /// </summary>
         /// <param name="path"></param>
-        //[SecuritySafeCritical]
         public virtual void Delete(string path)
         {
             IOFacade.C1File.Delete(path);
@@ -534,7 +512,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical, TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public virtual C1FileStream Create(string path)
         {
             return IOFacade.C1File.Create(path);
@@ -548,7 +525,6 @@ namespace Composite.Core.Implementation
         /// <param name="path"></param>
         /// <param name="bufferSize"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical, TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public virtual C1FileStream Create(string path, int bufferSize)
         {
             return IOFacade.C1File.Create(path, bufferSize);
@@ -563,7 +539,6 @@ namespace Composite.Core.Implementation
         /// <param name="bufferSize"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual C1FileStream Create(string path, int bufferSize, FileOptions options)
         {
             return IOFacade.C1File.Create(path, bufferSize, options);
@@ -576,7 +551,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual C1StreamWriter CreateText(string path)
         {
             return IOFacade.C1File.CreateText(path);
@@ -589,7 +563,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual C1StreamWriter AppendText(string path)
         {
             return IOFacade.C1File.AppendText(path);
@@ -602,7 +575,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <param name="contents"></param>
-        //[SecuritySafeCritical]
         public virtual void AppendAllText(string path, string contents)
         {
             IOFacade.C1File.AppendAllText(path, contents);
@@ -616,7 +588,6 @@ namespace Composite.Core.Implementation
         /// <param name="path"></param>
         /// <param name="contents"></param>
         /// <param name="encoding"></param>
-        //[SecuritySafeCritical]
         public virtual void AppendAllText(string path, string contents, Encoding encoding)
         {
             IOFacade.C1File.AppendAllText(path, contents, encoding);
@@ -629,7 +600,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <param name="contents"></param>
-        //[SecuritySafeCritical]
         public virtual void AppendAllLines(string path, IEnumerable<string> contents)
         {
             IOFacade.C1File.AppendAllLines(path, contents);
@@ -643,7 +613,6 @@ namespace Composite.Core.Implementation
         /// <param name="path"></param>
         /// <param name="contents"></param>
         /// <param name="encoding"></param>
-        //[SecuritySafeCritical]
         public virtual void AppendAllLines(string path, IEnumerable<string> contents, Encoding encoding)
         {
             IOFacade.C1File.AppendAllLines(path, contents, encoding);
@@ -657,7 +626,6 @@ namespace Composite.Core.Implementation
         /// <param name="path"></param>
         /// <param name="mode"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual C1FileStream Open(string path, FileMode mode)
         {
             return IOFacade.C1File.Open(path, mode);
@@ -672,7 +640,6 @@ namespace Composite.Core.Implementation
         /// <param name="mode"></param>
         /// <param name="access"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical, TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public virtual C1FileStream Open(string path, FileMode mode, FileAccess access)
         {
             return IOFacade.C1File.Open(path, mode, access);
@@ -688,7 +655,6 @@ namespace Composite.Core.Implementation
         /// <param name="access"></param>
         /// <param name="share"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual C1FileStream Open(string path, FileMode mode, FileAccess access, FileShare share)
         {
             return IOFacade.C1File.Open(path, mode, access, share);
@@ -701,7 +667,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual C1FileStream OpenRead(string path)
         {
             return IOFacade.C1File.OpenRead(path);
@@ -714,7 +679,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual C1StreamReader OpenText(string path)
         {
             return IOFacade.C1File.OpenText(path);
@@ -727,7 +691,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual C1FileStream OpenWrite(string path)
         {
             return IOFacade.C1File.OpenWrite(path);
@@ -740,7 +703,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual byte[] ReadAllBytes(string path)
         {
             return IOFacade.C1File.ReadAllBytes(path);
@@ -753,7 +715,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual string[] ReadAllLines(string path)
         {
             return IOFacade.C1File.ReadAllLines(path);
@@ -767,7 +728,6 @@ namespace Composite.Core.Implementation
         /// <param name="path"></param>
         /// <param name="encoding"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]           
         public virtual string[] ReadAllLines(string path, Encoding encoding)
         {
             return IOFacade.C1File.ReadAllLines(path, encoding);
@@ -780,7 +740,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual string ReadAllText(string path)
         {
             return IOFacade.C1File.ReadAllText(path);
@@ -794,7 +753,6 @@ namespace Composite.Core.Implementation
         /// <param name="path"></param>
         /// <param name="encoding"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual string ReadAllText(string path, Encoding encoding)
         {
             return IOFacade.C1File.ReadAllText(path, encoding);
@@ -807,7 +765,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual IEnumerable<string> ReadLines(string path)
         {
             return IOFacade.C1File.ReadLines(path);
@@ -821,7 +778,6 @@ namespace Composite.Core.Implementation
         /// <param name="path"></param>
         /// <param name="encoding"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual IEnumerable<string> ReadLines(string path, Encoding encoding)
         {
             return IOFacade.C1File.ReadLines(path, encoding);
@@ -834,7 +790,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <param name="bytes"></param>
-        //[SecuritySafeCritical]
         public virtual void WriteAllBytes(string path, byte[] bytes)
         {
             IOFacade.C1File.WriteAllBytes(path, bytes);
@@ -847,7 +802,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <param name="contents"></param>
-        //[SecuritySafeCritical]
         public virtual void WriteAllLines(string path, IEnumerable<string> contents)
         {
             IOFacade.C1File.WriteAllLines(path, contents);
@@ -860,7 +814,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <param name="contents"></param>
-        //[SecuritySafeCritical]
         public virtual void WriteAllLines(string path, string[] contents)
         {
             IOFacade.C1File.WriteAllLines(path, contents);
@@ -874,7 +827,6 @@ namespace Composite.Core.Implementation
         /// <param name="path"></param>
         /// <param name="contents"></param>
         /// <param name="encoding"></param>
-        //[SecuritySafeCritical]
         public virtual void WriteAllLines(string path, IEnumerable<string> contents, Encoding encoding)
         {
             IOFacade.C1File.WriteAllLines(path, contents, encoding);
@@ -888,7 +840,6 @@ namespace Composite.Core.Implementation
         /// <param name="path"></param>
         /// <param name="contents"></param>
         /// <param name="encoding"></param>
-        //[SecuritySafeCritical]
         public virtual void WriteAllLines(string path, string[] contents, Encoding encoding)
         {
             IOFacade.C1File.WriteAllLines(path, contents, encoding);
@@ -901,7 +852,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <param name="contents"></param>
-        //[SecuritySafeCritical]
         public virtual void WriteAllText(string path, string contents)
         {
             IOFacade.C1File.WriteAllText(path, contents);
@@ -915,7 +865,6 @@ namespace Composite.Core.Implementation
         /// <param name="path"></param>
         /// <param name="contents"></param>
         /// <param name="encoding"></param>
-        //[SecuritySafeCritical]
         public virtual void WriteAllText(string path, string contents, Encoding encoding)
         {
             IOFacade.C1File.WriteAllText(path, contents, encoding);
@@ -928,7 +877,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual FileAttributes GetAttributes(string path)
         {
             return IOFacade.C1File.GetAttributes(path);
@@ -941,7 +889,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <param name="fileAttributes"></param>
-        //[SecuritySafeCritical]
         public virtual void SetAttributes(string path, FileAttributes fileAttributes)
         {
             IOFacade.C1File.SetAttributes(path, fileAttributes);
@@ -954,7 +901,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual DateTime GetCreationTime(string path)
         {
             return IOFacade.C1File.GetCreationTime(path);
@@ -967,7 +913,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual DateTime GetCreationTimeUtc(string path)
         {
             return IOFacade.C1File.GetCreationTimeUtc(path);
@@ -992,7 +937,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <param name="creationTimeUtc"></param>
-        //[SecuritySafeCritical]
         public virtual void SetCreationTimeUtc(string path, DateTime creationTimeUtc)
         {
             IOFacade.C1File.SetCreationTimeUtc(path, creationTimeUtc);
@@ -1005,7 +949,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual DateTime GetLastAccessTime(string path)
         {
             return IOFacade.C1File.GetLastAccessTime(path);
@@ -1018,7 +961,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual DateTime GetLastAccessTimeUtc(string path)
         {
             return IOFacade.C1File.GetLastAccessTimeUtc(path);
@@ -1043,7 +985,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <param name="lastAccessTimeUtc"></param>
-        //[SecuritySafeCritical]
         public virtual void SetLastAccessTimeUtc(string path, DateTime lastAccessTimeUtc)
         {
             IOFacade.C1File.SetLastAccessTimeUtc(path, lastAccessTimeUtc);
@@ -1056,7 +997,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual DateTime GetLastWriteTime(string path)
         {
             return IOFacade.C1File.GetLastWriteTime(path);
@@ -1069,7 +1009,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public virtual DateTime GetLastWriteTimeUtc(string path)
         {
             return IOFacade.C1File.GetLastWriteTimeUtc(path);
@@ -1094,7 +1033,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <param name="lastWriteTimeUtc"></param>
-        //[SecuritySafeCritical]
         public virtual void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc)
         {
             IOFacade.C1File.SetLastWriteTimeUtc(path, lastWriteTimeUtc);
@@ -1110,7 +1048,6 @@ namespace Composite.Core.Implementation
 
 
 
-        //[SecuritySafeCritical]
         //public virtual void Encrypt(string path)
         //{ 
         //    throw new NotImplementedException(); 
@@ -1118,7 +1055,6 @@ namespace Composite.Core.Implementation
 
 
 
-        //[SecuritySafeCritical]
         //public virtual void Decrypt(string path)
         //{ 
         //    throw new NotImplementedException(); 
@@ -1126,7 +1062,6 @@ namespace Composite.Core.Implementation
 
 
 
-        //[TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         //public virtual System.Security.AccessControl.FileSecurity GetAccessControl(string path)
         //{ 
         //    throw new NotImplementedException(); 
@@ -1141,7 +1076,6 @@ namespace Composite.Core.Implementation
 
 
 
-        //[SecuritySafeCritical]
         //public virtual void SetAccessControl(string path, System.Security.AccessControl.FileSecurity fileSecurity)
         //{ 
         //    throw new NotImplementedException(); 
@@ -1166,9 +1100,11 @@ namespace Composite.Core.Implementation
         /// <param name="mode"></param>
         /// <param name="access"></param>
         /// <param name="share"></param>
-        public C1FileStreamImplementation(string path, FileMode mode, FileAccess access, FileShare share)
+        /// <param name="bufferSize"></param>
+        /// <param name="options"></param>
+        public C1FileStreamImplementation(string path, FileMode mode, FileAccess access, FileShare share, int bufferSize, FileOptions options)
         {
-            _fileStream = IOFacade.CreateFileStream(path, mode, access, share);
+            _fileStream = IOFacade.CreateFileStream(path, mode, access, share, bufferSize, options);
         }
 
 
@@ -1178,7 +1114,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         public virtual string Name
         {
-            [SecuritySafeCritical]
             get
             {
                 return _fileStream.Name;
@@ -1192,7 +1127,6 @@ namespace Composite.Core.Implementation
         /// </summary>
         public virtual long Length
         {
-            [SecuritySafeCritical]
             get
             {
                 return _fileStream.Length;
@@ -1217,12 +1151,10 @@ namespace Composite.Core.Implementation
         /// </summary>
         public virtual long Position
         {
-            [SecuritySafeCritical]
             get
             {
                 return _fileStream.Position;
             }
-            [SecuritySafeCritical]
             set
             {
                 _fileStream.Position = value;
@@ -2466,7 +2398,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="sourceDirName"></param>
         /// <param name="destDirName"></param>
-        //[SecuritySafeCritical]
         public static void Move(string sourceDirName, string destDirName)
         {
             ImplementationFactory.CurrentFactory.StatelessC1Directory.Move(sourceDirName, destDirName);
@@ -2490,7 +2421,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <param name="recursive"></param>
-        //[SecuritySafeCritical]
         public static void Delete(string path, bool recursive)
         {
             ImplementationFactory.CurrentFactory.StatelessC1Directory.Delete(path, recursive);
@@ -2503,7 +2433,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static bool Exists(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1Directory.Exists(path);
@@ -2515,7 +2444,6 @@ namespace Composite.Core.IO
         /// IOLayer - documentation pending
         /// </summary>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static string GetCurrentDirectory()
         {
             return ImplementationFactory.CurrentFactory.StatelessC1Directory.GetCurrentDirectory();
@@ -2527,7 +2455,6 @@ namespace Composite.Core.IO
         /// IOLayer - documentation pending
         /// </summary>
         /// <param name="path"></param>
-        //[SecuritySafeCritical]
         public static void SetCurrentDirectory(string path)
         {
             ImplementationFactory.CurrentFactory.StatelessC1Directory.SetCurrentDirectory(path);
@@ -2540,7 +2467,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static DirectoryInfo GetParent(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1Directory.GetParent(path);
@@ -2553,7 +2479,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static string GetDirectoryRoot(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1Directory.GetDirectoryRoot(path);
@@ -2644,7 +2569,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static DateTime GetCreationTime(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1Directory.GetCreationTime(path);
@@ -2657,7 +2581,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static DateTime GetCreationTimeUtc(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1Directory.GetCreationTimeUtc(path);
@@ -2763,7 +2686,6 @@ namespace Composite.Core.IO
 
 
 
-        ////[SecuritySafeCritical]
         //public static void SetAccessControl(string path, DirectorySecurity directorySecurity)
         //{
         //    throw new NotImplementedException();
@@ -2778,7 +2700,6 @@ namespace Composite.Core.IO
 
 
 
-        ////[SecuritySafeCritical]
         //public static void SetCreationTimeUtc(string path, DateTime creationTimeUtc)
         //{ 
         //    throw new NotImplementedException(); 
@@ -2786,7 +2707,6 @@ namespace Composite.Core.IO
 
 
 
-        ////[SecuritySafeCritical]
         //public static string[] GetLogicalDrives()
         //{ 
         //    throw new NotImplementedException(); 
@@ -2794,7 +2714,6 @@ namespace Composite.Core.IO
 
 
 
-        ////[SecuritySafeCritical]
         //public static DateTime GetLastAccessTime(string path)
         //{ 
         //    throw new NotImplementedException(); 
@@ -2809,7 +2728,6 @@ namespace Composite.Core.IO
 
 
 
-        ////[SecuritySafeCritical]
         //public static DateTime GetLastAccessTimeUtc(string path)
         //{ 
         //    throw new NotImplementedException(); 
@@ -2817,7 +2735,6 @@ namespace Composite.Core.IO
 
 
 
-        ////[SecuritySafeCritical]
         //public static void SetLastAccessTimeUtc(string path, DateTime lastAccessTimeUtc)
         //{ 
         //    throw new NotImplementedException(); 
@@ -2825,7 +2742,6 @@ namespace Composite.Core.IO
 
 
 
-        ////[SecuritySafeCritical]
         //public static DateTime GetLastWriteTime(string path)
         //{ 
         //    throw new NotImplementedException(); 
@@ -2840,7 +2756,6 @@ namespace Composite.Core.IO
 
 
 
-        ////[SecuritySafeCritical]
         //public static DateTime GetLastWriteTimeUtc(string path)
         //{ 
         //    throw new NotImplementedException(); 
@@ -2848,7 +2763,6 @@ namespace Composite.Core.IO
 
 
 
-        //[SecuritySafeCritical]
         //public static void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc)
         //{ 
         //    throw new NotImplementedException(); 
@@ -2869,7 +2783,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static bool Exists(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.Exists(path);
@@ -2907,7 +2820,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="sourceFileName"></param>
         /// <param name="destFileName"></param>
-        //[SecuritySafeCritical]
         public static void Move(string sourceFileName, string destFileName)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.Move(sourceFileName, destFileName);
@@ -2935,7 +2847,6 @@ namespace Composite.Core.IO
         /// <param name="destinationFileName"></param>
         /// <param name="destinationBackupFileName"></param>
         /// <param name="ignoreMetadataErrors"></param>
-        //[SecuritySafeCritical]
         public static void Replace(string sourceFileName, string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.Replace(sourceFileName, destinationFileName, destinationBackupFileName, ignoreMetadataErrors);
@@ -2947,7 +2858,6 @@ namespace Composite.Core.IO
         /// IOLayer - documentation pending
         /// </summary>
         /// <param name="path"></param>
-        //[SecuritySafeCritical]
         public static void Delete(string path)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.Delete(path);
@@ -2960,7 +2870,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical, TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public static C1FileStream Create(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.Create(path);
@@ -2974,7 +2883,6 @@ namespace Composite.Core.IO
         /// <param name="path"></param>
         /// <param name="bufferSize"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical, TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public static C1FileStream Create(string path, int bufferSize)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.Create(path, bufferSize);
@@ -2989,7 +2897,6 @@ namespace Composite.Core.IO
         /// <param name="bufferSize"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static C1FileStream Create(string path, int bufferSize, FileOptions options)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.Create(path, bufferSize, options);
@@ -3002,7 +2909,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static C1StreamWriter CreateText(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.CreateText(path);
@@ -3015,7 +2921,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static C1StreamWriter AppendText(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.AppendText(path);
@@ -3028,7 +2933,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <param name="contents"></param>
-        //[SecuritySafeCritical]
         public static void AppendAllText(string path, string contents)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.AppendAllText(path, contents);
@@ -3042,7 +2946,6 @@ namespace Composite.Core.IO
         /// <param name="path"></param>
         /// <param name="contents"></param>
         /// <param name="encoding"></param>
-        //[SecuritySafeCritical]
         public static void AppendAllText(string path, string contents, Encoding encoding)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.AppendAllText(path, contents, encoding);
@@ -3055,7 +2958,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <param name="contents"></param>
-        //[SecuritySafeCritical]
         public static void AppendAllLines(string path, IEnumerable<string> contents)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.AppendAllLines(path, contents);
@@ -3069,7 +2971,6 @@ namespace Composite.Core.IO
         /// <param name="path"></param>
         /// <param name="contents"></param>
         /// <param name="encoding"></param>
-        //[SecuritySafeCritical]
         public static void AppendAllLines(string path, IEnumerable<string> contents, Encoding encoding)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.AppendAllLines(path, contents, encoding);
@@ -3083,7 +2984,6 @@ namespace Composite.Core.IO
         /// <param name="path"></param>
         /// <param name="mode"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static C1FileStream Open(string path, FileMode mode)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.Open(path, mode);
@@ -3098,7 +2998,6 @@ namespace Composite.Core.IO
         /// <param name="mode"></param>
         /// <param name="access"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical, TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public static C1FileStream Open(string path, FileMode mode, FileAccess access)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.Open(path, mode, access);
@@ -3114,7 +3013,6 @@ namespace Composite.Core.IO
         /// <param name="access"></param>
         /// <param name="share"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static C1FileStream Open(string path, FileMode mode, FileAccess access, FileShare share)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.Open(path, mode, access, share);
@@ -3127,7 +3025,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static C1FileStream OpenRead(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.OpenRead(path);
@@ -3140,7 +3037,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static C1StreamReader OpenText(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.OpenText(path);
@@ -3153,7 +3049,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static C1FileStream OpenWrite(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.OpenWrite(path);
@@ -3166,7 +3061,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static byte[] ReadAllBytes(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.ReadAllBytes(path);
@@ -3179,7 +3073,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static string[] ReadAllLines(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.ReadAllLines(path);
@@ -3193,7 +3086,6 @@ namespace Composite.Core.IO
         /// <param name="path"></param>
         /// <param name="encoding"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]           
         public static string[] ReadAllLines(string path, Encoding encoding)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.ReadAllLines(path, encoding);
@@ -3206,7 +3098,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static string ReadAllText(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.ReadAllText(path);
@@ -3220,7 +3111,6 @@ namespace Composite.Core.IO
         /// <param name="path"></param>
         /// <param name="encoding"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static string ReadAllText(string path, Encoding encoding)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.ReadAllText(path, encoding);
@@ -3233,7 +3123,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static IEnumerable<string> ReadLines(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.ReadLines(path);
@@ -3247,7 +3136,6 @@ namespace Composite.Core.IO
         /// <param name="path"></param>
         /// <param name="encoding"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static IEnumerable<string> ReadLines(string path, Encoding encoding)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.ReadLines(path, encoding);
@@ -3260,7 +3148,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <param name="bytes"></param>
-        //[SecuritySafeCritical]
         public static void WriteAllBytes(string path, byte[] bytes)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.WriteAllBytes(path, bytes);
@@ -3273,7 +3160,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <param name="contents"></param>
-        //[SecuritySafeCritical]
         public static void WriteAllLines(string path, IEnumerable<string> contents)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.WriteAllLines(path, contents);
@@ -3286,7 +3172,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <param name="contents"></param>
-        //[SecuritySafeCritical]
         public static void WriteAllLines(string path, string[] contents)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.WriteAllLines(path, contents);
@@ -3300,7 +3185,6 @@ namespace Composite.Core.IO
         /// <param name="path"></param>
         /// <param name="contents"></param>
         /// <param name="encoding"></param>
-        //[SecuritySafeCritical]
         public static void WriteAllLines(string path, IEnumerable<string> contents, Encoding encoding)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.WriteAllLines(path, contents, encoding);
@@ -3314,7 +3198,6 @@ namespace Composite.Core.IO
         /// <param name="path"></param>
         /// <param name="contents"></param>
         /// <param name="encoding"></param>
-        //[SecuritySafeCritical]
         public static void WriteAllLines(string path, string[] contents, Encoding encoding)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.WriteAllLines(path, contents, encoding);
@@ -3327,7 +3210,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <param name="contents"></param>
-        //[SecuritySafeCritical]
         public static void WriteAllText(string path, string contents)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.WriteAllText(path, contents);
@@ -3341,7 +3223,6 @@ namespace Composite.Core.IO
         /// <param name="path"></param>
         /// <param name="contents"></param>
         /// <param name="encoding"></param>
-        //[SecuritySafeCritical]
         public static void WriteAllText(string path, string contents, Encoding encoding)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.WriteAllText(path, contents, encoding);
@@ -3354,7 +3235,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static FileAttributes GetAttributes(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.GetAttributes(path);
@@ -3367,7 +3247,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <param name="fileAttributes"></param>
-        //[SecuritySafeCritical]
         public static void SetAttributes(string path, FileAttributes fileAttributes)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.SetAttributes(path, fileAttributes);
@@ -3380,7 +3259,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static DateTime GetCreationTime(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.GetCreationTime(path);
@@ -3393,7 +3271,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static DateTime GetCreationTimeUtc(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.GetCreationTimeUtc(path);
@@ -3418,7 +3295,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <param name="creationTimeUtc"></param>
-        //[SecuritySafeCritical]
         public static void SetCreationTimeUtc(string path, DateTime creationTimeUtc)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.SetCreationTimeUtc(path, creationTimeUtc);
@@ -3431,7 +3307,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static DateTime GetLastAccessTime(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.GetLastAccessTime(path);
@@ -3444,7 +3319,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static DateTime GetLastAccessTimeUtc(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.GetLastAccessTimeUtc(path);
@@ -3469,7 +3343,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <param name="lastAccessTimeUtc"></param>
-        //[SecuritySafeCritical]
         public static void SetLastAccessTimeUtc(string path, DateTime lastAccessTimeUtc)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.SetLastAccessTimeUtc(path, lastAccessTimeUtc);
@@ -3482,7 +3355,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static DateTime GetLastWriteTime(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.GetLastWriteTime(path);
@@ -3495,7 +3367,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        //[SecuritySafeCritical]
         public static DateTime GetLastWriteTimeUtc(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.GetLastWriteTimeUtc(path);
@@ -3520,7 +3391,6 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <param name="lastWriteTimeUtc"></param>
-        //[SecuritySafeCritical]
         public static void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.SetLastWriteTimeUtc(path, lastWriteTimeUtc);
@@ -3536,7 +3406,6 @@ namespace Composite.Core.IO
 
 
 
-        //[SecuritySafeCritical]
         //public static void Encrypt(string path)
         //{ 
         //    throw new NotImplementedException(); 
@@ -3544,7 +3413,6 @@ namespace Composite.Core.IO
 
 
 
-        //[SecuritySafeCritical]
         //public static void Decrypt(string path)
         //{ 
         //    throw new NotImplementedException(); 
@@ -3552,7 +3420,6 @@ namespace Composite.Core.IO
 
 
 
-        //[TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         //public static System.Security.AccessControl.FileSecurity GetAccessControl(string path)
         //{ 
         //    throw new NotImplementedException(); 
@@ -3567,7 +3434,6 @@ namespace Composite.Core.IO
 
 
 
-        //[SecuritySafeCritical]
         //public static void SetAccessControl(string path, System.Security.AccessControl.FileSecurity fileSecurity)
         //{ 
         //    throw new NotImplementedException(); 
@@ -3575,7 +3441,8 @@ namespace Composite.Core.IO
     }
 
 
-#warning MRJ: SecuritySafeCritical is used on FileStream's methods, so, use it here??
+
+
     /// <summary>
     /// IOLayer - documentation pending
     /// </summary>
@@ -3591,7 +3458,7 @@ namespace Composite.Core.IO
         /// <param name="path"></param>
         /// <param name="mode"></param>
         public C1FileStream(string path, FileMode mode)
-            : this(path, mode, (mode == FileMode.Append) ? FileAccess.Write : FileAccess.ReadWrite, FileShare.Read)
+            : this(path, mode, (mode == FileMode.Append) ? FileAccess.Write : FileAccess.ReadWrite, FileShare.Read, 4096, FileOptions.None)
         {
         }
 
@@ -3604,11 +3471,11 @@ namespace Composite.Core.IO
         /// <param name="mode"></param>
         /// <param name="access"></param>
         public C1FileStream(string path, FileMode mode, FileAccess access)
-            : this(path, mode, access, FileShare.Read)
+            : this(path, mode, access, FileShare.Read, 4096, FileOptions.None)
         {
         }
 
-#warning MRJ: Clean up these constructors
+
 
         /// <summary>
         /// IOLayer - documentation pending
@@ -3618,26 +3485,42 @@ namespace Composite.Core.IO
         /// <param name="access"></param>
         /// <param name="share"></param>
         public C1FileStream(string path, FileMode mode, FileAccess access, FileShare share)
+            : this(path, mode, access, share, 4096, FileOptions.None)
         {
-            _implementation = new ImplementationContainer<C1FileStreamImplementation>(() => ImplementationFactory.CurrentFactory.CreateC1FileStream(path, mode, access, share));
-            _implementation.CreateImplementation();
         }
 
 
-#warning MRJ: Implement this!!!
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="mode"></param>
+        /// <param name="access"></param>
+        /// <param name="share"></param>
+        /// <param name="bufferSize"></param>
         public C1FileStream(string path, FileMode mode, FileAccess access, FileShare share, int bufferSize)
+            : this(path, mode, access, share, bufferSize, FileOptions.None)
         {
-            _implementation = new ImplementationContainer<C1FileStreamImplementation>(() => ImplementationFactory.CurrentFactory.CreateC1FileStream(path, mode, access, share));
-            _implementation.CreateImplementation();
         }
 
 
-#warning MRJ: Implement this!!!
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="mode"></param>
+        /// <param name="access"></param>
+        /// <param name="share"></param>
+        /// <param name="bufferSize"></param>
+        /// <param name="options"></param>
         public C1FileStream(string path, FileMode mode, FileAccess access, FileShare share, int bufferSize, FileOptions options)
         {
-            _implementation = new ImplementationContainer<C1FileStreamImplementation>(() => ImplementationFactory.CurrentFactory.CreateC1FileStream(path, mode, access, share));
+            _implementation = new ImplementationContainer<C1FileStreamImplementation>(() => ImplementationFactory.CurrentFactory.CreateC1FileStream(path, mode, access, share, bufferSize, options));
             _implementation.CreateImplementation();
         }
+
 
 
         /// <summary>
@@ -3647,7 +3530,7 @@ namespace Composite.Core.IO
         {
             get
             {
-                throw new NotImplementedException();
+                return _implementation.Implementation.Name;
             }
         }
 
@@ -3658,7 +3541,6 @@ namespace Composite.Core.IO
         /// </summary>
         public override long Length
         {
-            [SecuritySafeCritical]
             get
             {
                 return _implementation.Implementation.Length;
@@ -3683,12 +3565,10 @@ namespace Composite.Core.IO
         /// </summary>
         public override long Position
         {
-            [SecuritySafeCritical]
             get
             {
                 return _implementation.Implementation.Position;
             }
-            [SecuritySafeCritical]
             set
             {
                 _implementation.Implementation.Position = value;
@@ -3764,8 +3644,6 @@ namespace Composite.Core.IO
         /// </summary>
         public override bool CanRead
         {
-#warning MRJ: Should this be here or not?
-            //[TargetedPatchingOptOut("Performance critical to inline this type of method across NGen imagetiur boundaries")]
             get
             {
                 return _implementation.Implementation.CanRead;
@@ -3779,8 +3657,6 @@ namespace Composite.Core.IO
         /// </summary>
         public override bool CanSeek
         {
-#warning MRJ: Should this be here or not?
-            //[TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
             get
             {
                 return _implementation.Implementation.CanSeek;
@@ -3794,8 +3670,6 @@ namespace Composite.Core.IO
         /// </summary>
         public override bool CanWrite
         {
-#warning MRJ: Should this be here or not?
-            //[TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
             get
             {
                 return _implementation.Implementation.CanWrite;
@@ -5615,9 +5489,9 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass")]
-        public LocalC1FileStream(string path, FileMode mode, FileAccess access, FileShare share)
+        public LocalC1FileStream(string path, FileMode mode, FileAccess access, FileShare share, int bufferSize, FileOptions options)
         {
-            _fileStream = new System.IO.FileStream(path, mode, access, share);
+            _fileStream = new System.IO.FileStream(path, mode, access, share, bufferSize, options);
         }
 
 
@@ -7752,9 +7626,9 @@ namespace Composite.Core.IO
 
 
 
-        public static IC1FileStream CreateFileStream(string path, FileMode mode, FileAccess access, FileShare share)
+        public static IC1FileStream CreateFileStream(string path, FileMode mode, FileAccess access, FileShare share, int bufferSize, FileOptions options)
         {
-            return new LocalC1FileStream(path, mode, access, share);
+            return new LocalC1FileStream(path, mode, access, share, bufferSize, options);
         }
 
 
@@ -7795,66 +7669,3 @@ namespace Composite.Core.IO
 }
 
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-namespace Martin
-{
-
-#warning MRJ: Delete this class
-    public static class MRJTest
-    {
-        public static void Hans()
-        {
-            // Ex 1 - Static method
-            // Old: Directory.GetDirectories("c:\\")
-            string[] directories = C1Directory.GetDirectories("c:\\");
-
-
-            C1Directory.CreateDirectory("lkj");
-
-            // Ex 2 - Class
-            // Old: new FileStream("abe.txt", FileMode.Create)
-            using (C1FileStream fileStream = new C1FileStream("c:\\abe.txt", FileMode.Create))
-            {
-                byte[] bytes = { 65, 13, 10 };
-
-                fileStream.Write(bytes, 0, bytes.Length);
-            }
-
-
-            /*
-            // Ex 2 - Static method
-            // Old: File.AppendAllText("abe.txt", "Some some");
-            IOFacade.File.AppendAllText("abe.txt", "Some some");
-
-
-
-            
-
-
-
-            // Ex 4 - Non-static method (solved by overload)
-            // Old: XDocument.Load("abe.txt");
-            XDocument doc1 = IOFacade.LoadXDocument("abe.txt");
-            // VS
-            XDocument doc2 = XDocumentUtils.Load("abe.txt"); // This is just an overload using C1FileStream
-
-
-
-            // Ex 5 - Non-static method (solved by overload)
-            XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
-            // Old: xmlReaderSettings.Schemas.Add(null, "monkey.xsd");
-            // IOFacade.AddFromPath(xmlReaderSettings, null, "monkey.xsd"); // Overload added to IOFacade
-            xmlReaderSettings.Schemas.AddFromPath(null, "monkey.xsd");
-            // VS
-            // XmlSchemaSetUtils.AddFromPath(xmlReaderSettings, null, "monkey.xsd"); // Overload added to XmlSchemaSetUtils
-            xmlReaderSettings.Schemas.AddFromPath(null, "monkey.xsd"); // This is just an overload using C1FileStream*/
-        }
-    }
-}

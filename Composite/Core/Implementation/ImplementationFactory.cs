@@ -153,26 +153,12 @@ namespace Composite.Core.Implementation
                 return new C1FileImplementation();
             }
         }
-
         
-#warning MRJ: Clean thees methods, only one is needed
-        public virtual C1FileStreamImplementation CreateC1FileStream(string path, FileMode mode )
+
+
+        public virtual C1FileStreamImplementation CreateC1FileStream(string path, FileMode mode, FileAccess access, FileShare share, int bufferSize, FileOptions options)
         {
-            return new C1FileStreamImplementation(path, mode, (mode == FileMode.Append) ? FileAccess.Write : FileAccess.ReadWrite, FileShare.Read);
-        }
-
-
-
-        public virtual C1FileStreamImplementation CreateC1FileStream(string path, FileMode mode, FileAccess access)
-        {
-            return new C1FileStreamImplementation(path, mode, access, FileShare.Read);
-        }
-
-
-
-        public virtual C1FileStreamImplementation CreateC1FileStream(string path, FileMode mode, FileAccess access, FileShare share)
-        {
-            return new C1FileStreamImplementation(path, mode, access, share);
+            return new C1FileStreamImplementation(path, mode, access, share, bufferSize, options);
         }
 
 
