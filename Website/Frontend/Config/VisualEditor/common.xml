@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <visualeditor>
 
-	<!-- stylesheets to import -->
+	<!-- stylesheets to import (tip: you can also use @import inside the CSS) -->
 	<styles>
 		<style file="styles/common.css"/>
 		<style file="styles/core.css"/>
@@ -21,7 +21,7 @@
 				id="bold" 
 				label="Strong" 
 				image=""
-				notes=""  
+				notes="Strong text"  
 				inline="strong">
 					<!-- 
 						Add button: you can overwrite the 
@@ -36,7 +36,7 @@
 				id="italic" 
 				label="Emphasis" 
 				image=""
-				notes="" 
+				notes="Emphasized text" 
 				inline="em">
 					<button image="Images/italic.png" label=""/>
 			</format>
@@ -51,15 +51,27 @@
 						<button label=":)"/>
 				</format>
 			-->
+			
+			<!-- example2: Button to surround selection with html CODE tag
+				<format id="example2" 
+					label="Example2" 
+					image=""
+					notes="" 
+					inline="code">
+						<button label=";)"/>
+				</format>
+			-->
+			
 		</group>
 		<radiogroup>
 			<format 
 				id="h1" 
 				label="Heading H1" 
 				image=""
-				notes="Small heading" 
+				notes="Big heading" 
 				block="h1">
 					<select/>
+					<button label="H1"/>
 			</format>
 			<format 
 				id="h2" 
@@ -73,22 +85,23 @@
 				id="p" 
 				label="Paragraph"  
 				image=""
-				notes="Normal paragraph" 
+				notes="Paragraph" 
 				block="p">
 					<select/>
 			</format>
 			
-			<!-- example! Selection and button to insert H1.nice 
+			<!-- example! Selection and button to insert H1.nice -->
+			<!-- NOTE the "priority" attribute to resolve this before H1 with NO class! 
 			<format 
 				id="h1.test" 
-				label="Nice H1" 
+				label="" 
 				image=""
 				notes="Big heading with classname" 
 				block="h1" 
 				priority="1"  
 				classes="nice">
 					<select label="Heading H1.nice"/>
-					<button/>
+					<button label="H1.nice"/>
 			</format>
 			-->
 			
