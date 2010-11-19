@@ -26331,6 +26331,9 @@ var _fc9=_fc8.getContentWindow();
 switch(_fc6){
 case BroadcastMessages.VISUALEDITOR_HACKED:
 if(arg.broadcastWindow==_fc9){
+if(this._startContent==" "){
+this._startContent=VisualEditorBinding.DEFAULT_CONTENT;
+}
 this._startContent=this.normalizeToDocument(this._startContent);
 this.extractHead(this._startContent);
 this._startContent=this.extractBody(this._startContent);
