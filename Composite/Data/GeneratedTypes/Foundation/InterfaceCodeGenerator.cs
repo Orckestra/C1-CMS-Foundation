@@ -321,7 +321,7 @@ namespace Composite.Data.GeneratedTypes.Foundation
                 codeMemberProperty.HasGet = true;
                 codeMemberProperty.HasSet = true;
 
-                AddPropertyAttributes(codeMemberProperty, dataFieldDescriptor, referencedAssemblies);
+                AddPropertyAttributes(codeMemberProperty, dataFieldDescriptor, dataTypeDescriptor.KeyPropertyNames.Contains(dataFieldDescriptor.Name), referencedAssemblies);
 
                 codeTypeDeclaratoin.Members.Add(codeMemberProperty);
             }
@@ -329,7 +329,7 @@ namespace Composite.Data.GeneratedTypes.Foundation
 
 
 
-        private static void AddPropertyAttributes(CodeMemberProperty codeMemberProperty, DataFieldDescriptor dataFieldDescriptor, List<Assembly> referencedAssemblies)
+        private static void AddPropertyAttributes(CodeMemberProperty codeMemberProperty, DataFieldDescriptor dataFieldDescriptor, bool isKeyField, List<Assembly> referencedAssemblies)
         {
             codeMemberProperty.CustomAttributes.Add(
                     new CodeAttributeDeclaration(
@@ -339,6 +339,17 @@ namespace Composite.Data.GeneratedTypes.Foundation
                         }
                     ));
 
+            if (isKeyField && dataFieldDescriptor.InstanceType == typeof(Guid))
+            {
+                codeMemberProperty.CustomAttributes.Add(
+                    new CodeAttributeDeclaration(
+                        typeof(FunctionBasedNewInstanceDefaultFieldValueAttribute).FullName,
+                        new CodeAttributeArgument[] {
+                            new CodeAttributeArgument(new CodePrimitiveExpression(@"<f:function name=""Composite.Utils.Guid.NewGuid"" xmlns:f=""http://www.composite.net/ns/function/1.0"" />"))
+                        }
+                    ));
+            }
+
             List<CodeAttributeArgument> arguments = new List<CodeAttributeArgument>();
 
             arguments.Add(new CodeAttributeArgument(
@@ -346,7 +357,7 @@ namespace Composite.Data.GeneratedTypes.Foundation
                     new CodeTypeReferenceExpression(typeof(PhysicalStoreFieldType)),
                     dataFieldDescriptor.StoreType.PhysicalStoreType.ToString()
                 )));
-
+            
 
             switch (dataFieldDescriptor.StoreType.PhysicalStoreType)
             {

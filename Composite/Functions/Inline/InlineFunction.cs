@@ -33,6 +33,8 @@ namespace Composite.Functions.Inline
         {
             MethodInfo methodInfo = InlineFunctionHelper.Create(info);
 
+            if (methodInfo == null) return null;
+
             return new InlineFunction(info, methodInfo);
         }
 
