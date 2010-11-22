@@ -15,7 +15,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
         {
             if (filter == null)
             {
-                _fileSystemWatcher = new FileSystemWatcher(path, filter);
+                _fileSystemWatcher = new FileSystemWatcher(path);
             }
             else
             {
