@@ -256,11 +256,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
         private sealed class XmlDataProviderConfiguration
         {
-            Configuration _configuration = null;
+            C1Configuration _configuration = null;
 
             public XmlDataProviderConfiguration(string providerName)
             {
-                _configuration = Configuration.Load(Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.ConfigurationDirectory), string.Format("{0}.config", providerName)));
+                _configuration = new C1Configuration(Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.ConfigurationDirectory), string.Format("{0}.config", providerName)));
 
                 this.Section = _configuration.GetSection(XmlDataProviderConfigurationSection.SectionName) as XmlDataProviderConfigurationSection;
 

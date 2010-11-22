@@ -195,6 +195,13 @@ namespace Composite.Core.Implementation
             return new C1StreamWriterImplementation(stream, encoding, bufferSize);
         }
 
+
+
+        public virtual C1ConfigurationImplementation CreateC1Configuration(string path)
+        {
+            return new C1ConfigurationImplementation(path);
+        }
+
         #endregion
     }
 }

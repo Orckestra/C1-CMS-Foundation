@@ -3,29 +3,29 @@
 
 namespace Composite.Core.Configuration
 {
-    /// <summary>
+   /* /// <summary>
     /// This should be a part of the I/O layer
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    public class Configuration
+    public class C1Configuration
     {
         System.Configuration.Configuration _configuration;
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationManagerClass:DoNotUseConfigurationManagerClass", Justification = "The implementation may use it")]
-        public static Configuration Load(string path)
+        public static C1Configuration Load(string path)
         {            
             ExeConfigurationFileMap map = new ExeConfigurationFileMap();
             map.ExeConfigFilename = path;
             System.Configuration.Configuration configuration = ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);            
 
-            return new Configuration(configuration);
+            return new C1Configuration(configuration);
         }
 
 
 
-        protected Configuration(System.Configuration.Configuration configuration)
+        protected C1Configuration(System.Configuration.Configuration configuration)
         {
             _configuration = configuration;
         }
@@ -57,5 +57,5 @@ namespace Composite.Core.Configuration
         {
             _configuration.Save();
         }
-    }
+    }*/
 }

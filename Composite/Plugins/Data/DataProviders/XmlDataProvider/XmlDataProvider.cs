@@ -530,7 +530,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         {
             XmlDataProviderData data = (XmlDataProviderData)objectConfiguration;            
 
-            Configuration configuration = Configuration.Load(Path.Combine(configurationFolderPath, string.Format("{0}.config", data.Name)));
+            C1Configuration configuration = new C1Configuration(Path.Combine(configurationFolderPath, string.Format("{0}.config", data.Name)));
 
             XmlDataProviderConfigurationSection section = configuration.GetSection(XmlDataProviderConfigurationSection.SectionName) as XmlDataProviderConfigurationSection;
             if (section == null)
