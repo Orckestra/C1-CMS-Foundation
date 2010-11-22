@@ -13,6 +13,7 @@ using Composite.Core.ResourceSystem;
 using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
 using Composite.Core.Types;
 using Composite.C1Console.Workflow;
+using Composite.Functions;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
@@ -135,14 +136,25 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
             if (function.UserMethodName == String.Empty)
             {
                 string errorMessage = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "AddFunction.MethodNameIsEmpty");
-                ShowFieldMessage("SelectedMethodName", errorMessage);
+                ShowFieldMessage("NewMethodBasedFunction", errorMessage);
                 e.Result = false;
                 return;
             }
             if (!function.Namespace.IsCorrectNamespace('.'))
             {
                 string errorMessage = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "AddFunction.InvalidNamespace");
-                ShowFieldMessage("SelectedMethodName", errorMessage);
+                ShowFieldMessage("NewMethodBasedFunction", errorMessage);
+                e.Result = false;
+                return;
+            }
+
+            bool exists = FunctionFacade.FunctionExists(function.Namespace, function.UserMethodName);
+
+            if (exists == true)
+            {
+                string errorMessage = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "AddFunction.NameAlreadyUsed");
+                errorMessage = string.Format(errorMessage, StringExtensionMethods.CreateNamespace(function.Namespace, function.UserMethodName));
+                ShowFieldMessage("NewMethodBasedFunction.UserMethodName", errorMessage);
                 e.Result = false;
                 return;
             }

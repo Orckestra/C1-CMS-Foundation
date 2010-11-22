@@ -1,4 +1,4 @@
-﻿<StateMachineWorkflowDesigner xmlns:ns0="clr-namespace:System.Drawing;Assembly=System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Size="1120; 986" AutoSizeMargin="16; 24" Location="30; 30" Name="AddInlineFunctionWorkflow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/workflow">
+﻿<StateMachineWorkflowDesigner xmlns:ns0="clr-namespace:System.Drawing;Assembly=System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Size="1151; 965" AutoSizeMargin="16; 24" AutoSize="False" Location="30; 30" Name="AddInlineFunctionWorkflow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/workflow">
 	<StateMachineWorkflowDesigner.Designers>
 		<EventDrivenDesigner Name="eventDrivenActivity_GlobalCancel" Size="150; 182" Location="38; 61">
 			<EventDrivenDesigner.Designers>
@@ -17,23 +17,36 @@
 			</StateDesigner.Designers>
 		</StateDesigner>
 		<StateDesigner Size="160; 80" AutoSizeMargin="16; 24" Location="809; 776" Name="finalStateActivity" />
-		<StateDesigner Size="211; 118" AutoSizeMargin="16; 24" Location="273; 303" Name="step1StateActivity">
+		<StateDesigner Size="211; 118" AutoSizeMargin="16; 24" AutoSize="False" Location="273; 303" Name="step1StateActivity">
 			<StateDesigner.Designers>
-				<EventDrivenDesigner Name="step1EventDrivenActivity_Finish" Size="150; 182" Location="281; 358">
+				<EventDrivenDesigner Name="step1EventDrivenActivity_Finish" Size="381; 363" Location="415; 148">
 					<EventDrivenDesigner.Designers>
-						<HandleExternalEventActivityDesigner Name="finishHandleExternalEventActivity1" Size="130; 41" Location="291; 420" />
-						<SetStateDesigner Name="setStateActivity4" Size="130; 41" Location="291; 480" />
+						<HandleExternalEventActivityDesigner Name="finishHandleExternalEventActivity1" Size="130; 41" Location="540; 210" />
+						<IfElseDesigner Name="ifElseActivity_ValidateFunctionName" Size="361; 222" Location="425; 270">
+							<IfElseDesigner.Designers>
+								<IfElseBranchDesigner Name="ifElseBranchActivity1" Size="150; 122" Location="444; 341">
+									<IfElseBranchDesigner.Designers>
+										<SetStateDesigner Name="setStateActivity4" Size="130; 41" Location="454; 403" />
+									</IfElseBranchDesigner.Designers>
+								</IfElseBranchDesigner>
+								<IfElseBranchDesigner Name="ifElseBranchActivity2" Size="150; 122" Location="617; 341">
+									<IfElseBranchDesigner.Designers>
+										<SetStateDesigner Name="setStateActivity6" Size="130; 41" Location="627; 403" />
+									</IfElseBranchDesigner.Designers>
+								</IfElseBranchDesigner>
+							</IfElseDesigner.Designers>
+						</IfElseDesigner>
 					</EventDrivenDesigner.Designers>
 				</EventDrivenDesigner>
-				<EventDrivenDesigner Name="step1EventDrivenActivity_Cancel" Size="150; 182" Location="281; 382">
+				<EventDrivenDesigner Name="step1EventDrivenActivity_Cancel" Size="150; 182" Location="407; 183">
 					<EventDrivenDesigner.Designers>
-						<HandleExternalEventActivityDesigner Name="cancelHandleExternalEventActivity2" Size="130; 41" Location="291; 444" />
-						<SetStateDesigner Name="setStateActivity3" Size="130; 41" Location="291; 504" />
+						<HandleExternalEventActivityDesigner Name="cancelHandleExternalEventActivity2" Size="130; 41" Location="417; 245" />
+						<SetStateDesigner Name="setStateActivity3" Size="130; 41" Location="417; 305" />
 					</EventDrivenDesigner.Designers>
 				</EventDrivenDesigner>
-				<StateInitializationDesigner Name="step1StateInitializationActivity" Size="150; 122" Location="281; 334">
+				<StateInitializationDesigner Name="step1StateInitializationActivity" Size="150; 122" Location="407; 135">
 					<StateInitializationDesigner.Designers>
-						<ActivityDesigner Name="wizardFormActivity1" Size="130; 41" Location="291; 396" />
+						<ActivityDesigner Name="wizardFormActivity1" Size="130; 41" Location="417; 197" />
 					</StateInitializationDesigner.Designers>
 				</StateInitializationDesigner>
 			</StateDesigner.Designers>

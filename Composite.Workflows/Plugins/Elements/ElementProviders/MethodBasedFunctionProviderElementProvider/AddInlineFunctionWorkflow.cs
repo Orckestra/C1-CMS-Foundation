@@ -9,6 +9,8 @@ using Composite.Data.Transactions;
 using Composite.Data.Types;
 using Composite.Functions.Inline;
 using Composite.Functions.ManagedParameters;
+using System.Workflow.Activities;
+using Composite.Functions;
 
 
 namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
@@ -125,6 +127,28 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
         }
 
 
+
+
+        private void ValidateFunctionName(object sender, ConditionalEventArgs e)
+        {
+            IInlineFunction function = this.GetBinding<IInlineFunction>("NewFunction");
+
+            bool exists = FunctionFacade.FunctionExists(function.Namespace, function.Name);
+
+            if (exists == true)
+            {
+                string errorMessage = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "AddFunction.NameAlreadyUsed");
+                errorMessage = string.Format(errorMessage, FunctionFacade.GetFunctionCompositionName(function.Namespace, function.Name));
+                ShowFieldMessage("NewFunction.Name", errorMessage);
+                e.Result = false;
+                return;
+            }
+
+            e.Result = true;
+        }
+
+
+
         private static string _cleanTemplate = @"using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -194,6 +218,6 @@ namespace {0}
 ··}}
 ·}}
 }}
-";
+";        
     }
 }

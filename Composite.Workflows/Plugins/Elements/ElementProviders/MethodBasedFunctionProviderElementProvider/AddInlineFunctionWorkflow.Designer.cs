@@ -27,12 +27,17 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
         private void InitializeComponent()
         {
             this.CanModifyActivities = true;
+            System.Workflow.Activities.CodeCondition codecondition1 = new System.Workflow.Activities.CodeCondition();
+            this.setStateActivity6 = new System.Workflow.Activities.SetStateActivity();
+            this.setStateActivity4 = new System.Workflow.Activities.SetStateActivity();
+            this.ifElseBranchActivity2 = new System.Workflow.Activities.IfElseBranchActivity();
+            this.ifElseBranchActivity1 = new System.Workflow.Activities.IfElseBranchActivity();
             this.setStateActivity5 = new System.Workflow.Activities.SetStateActivity();
             this.finalizeCodeActivity_Finalize = new System.Workflow.Activities.CodeActivity();
             this.wizardFormActivity1 = new Composite.C1Console.Workflow.Activities.WizardFormActivity();
             this.setStateActivity3 = new System.Workflow.Activities.SetStateActivity();
             this.cancelHandleExternalEventActivity2 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
-            this.setStateActivity4 = new System.Workflow.Activities.SetStateActivity();
+            this.ifElseActivity_ValidateFunctionName = new System.Workflow.Activities.IfElseActivity();
             this.finishHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity();
             this.setStateActivity2 = new System.Workflow.Activities.SetStateActivity();
             this.initializeCodeActivity_InitBindings = new System.Workflow.Activities.CodeActivity();
@@ -48,6 +53,28 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
             this.finalStateActivity = new System.Workflow.Activities.StateActivity();
             this.initializeStateActivity = new System.Workflow.Activities.StateActivity();
             this.eventDrivenActivity_GlobalCancel = new System.Workflow.Activities.EventDrivenActivity();
+            // 
+            // setStateActivity6
+            // 
+            this.setStateActivity6.Name = "setStateActivity6";
+            this.setStateActivity6.TargetStateName = "step1StateActivity";
+            // 
+            // setStateActivity4
+            // 
+            this.setStateActivity4.Name = "setStateActivity4";
+            this.setStateActivity4.TargetStateName = "finalizeStateActivity";
+            // 
+            // ifElseBranchActivity2
+            // 
+            this.ifElseBranchActivity2.Activities.Add(this.setStateActivity6);
+            this.ifElseBranchActivity2.Name = "ifElseBranchActivity2";
+            // 
+            // ifElseBranchActivity1
+            // 
+            this.ifElseBranchActivity1.Activities.Add(this.setStateActivity4);
+            codecondition1.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.ValidateFunctionName);
+            this.ifElseBranchActivity1.Condition = codecondition1;
+            this.ifElseBranchActivity1.Name = "ifElseBranchActivity1";
             // 
             // setStateActivity5
             // 
@@ -76,10 +103,11 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
             this.cancelHandleExternalEventActivity2.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity2.Name = "cancelHandleExternalEventActivity2";
             // 
-            // setStateActivity4
+            // ifElseActivity_ValidateFunctionName
             // 
-            this.setStateActivity4.Name = "setStateActivity4";
-            this.setStateActivity4.TargetStateName = "finalizeStateActivity";
+            this.ifElseActivity_ValidateFunctionName.Activities.Add(this.ifElseBranchActivity1);
+            this.ifElseActivity_ValidateFunctionName.Activities.Add(this.ifElseBranchActivity2);
+            this.ifElseActivity_ValidateFunctionName.Name = "ifElseActivity_ValidateFunctionName";
             // 
             // finishHandleExternalEventActivity1
             // 
@@ -117,7 +145,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
             // step1EventDrivenActivity_Finish
             // 
             this.step1EventDrivenActivity_Finish.Activities.Add(this.finishHandleExternalEventActivity1);
-            this.step1EventDrivenActivity_Finish.Activities.Add(this.setStateActivity4);
+            this.step1EventDrivenActivity_Finish.Activities.Add(this.ifElseActivity_ValidateFunctionName);
             this.step1EventDrivenActivity_Finish.Name = "step1EventDrivenActivity_Finish";
             // 
             // initializeStateInitializationActivity
@@ -181,6 +209,14 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
 
         #endregion
 
+        private SetStateActivity setStateActivity6;
+
+        private IfElseBranchActivity ifElseBranchActivity2;
+
+        private IfElseBranchActivity ifElseBranchActivity1;
+
+        private IfElseActivity ifElseActivity_ValidateFunctionName;
+
         private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
 
         private StateInitializationActivity initializeStateInitializationActivity;
@@ -222,6 +258,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
         private CodeActivity finalizeCodeActivity_Finalize;
 
         private EventDrivenActivity eventDrivenActivity_GlobalCancel;
+
 
 
 

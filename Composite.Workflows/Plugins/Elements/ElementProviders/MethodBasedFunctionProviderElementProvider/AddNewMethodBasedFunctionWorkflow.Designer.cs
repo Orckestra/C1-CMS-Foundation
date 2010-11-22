@@ -18,7 +18,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
     partial class AddNewMethodBasedFunctionWorkflow
     {
         #region Designer generated code
-        
+
         /// <summary> 
         /// Required method for Designer support - do not modify 
         /// the contents of this method with the code editor.
@@ -394,57 +394,109 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
         #endregion
 
         private SetStateActivity setStateActivity3;
-        private Composite.C1Console.Workflow.Activities.CloseCurrentViewActivity closeCurrentViewActivity1;
-        private Composite.C1Console.Workflow.Activities.WizardFormActivity wizzardFormActivity1;
+
+        private C1Console.Workflow.Activities.CloseCurrentViewActivity closeCurrentViewActivity1;
+
+        private C1Console.Workflow.Activities.WizardFormActivity wizzardFormActivity1;
+
         private SetStateActivity setStateActivity1;
+
         private StateInitializationActivity finalizeStateInitializationActivity;
+
         private StateInitializationActivity step1StateInitializationActivity;
+
         private StateInitializationActivity initalizeStateInitializationActivity;
+
         private StateActivity finalStateActivity;
+
         private StateActivity finalizeStateActivity;
+
         private StateActivity step1StateActivity;
+
         private CodeActivity initializeCodeActivity;
+
         private CodeActivity finalizeCodeActivity;
+
         private SetStateActivity setStateActivity2;
-        private Composite.C1Console.Workflow.Activities.NextHandleExternalEventActivity nextHandleExternalEventActivity1;
+
+        private C1Console.Workflow.Activities.NextHandleExternalEventActivity nextHandleExternalEventActivity1;
+
         private StateInitializationActivity step2StateInitializationActivity;
+
         private EventDrivenActivity step1EventDrivenActivity_Next;
+
         private StateActivity step2StateActivity;
-        private Composite.C1Console.Workflow.Activities.WizardFormActivity wizzardFormActivity2;
-        private Composite.C1Console.Workflow.Activities.NextHandleExternalEventActivity nextHandleExternalEventActivity2;
-        private Composite.C1Console.Workflow.Activities.WizardFormActivity wizzardFormActivity3;
+
+        private C1Console.Workflow.Activities.WizardFormActivity wizzardFormActivity2;
+
+        private C1Console.Workflow.Activities.NextHandleExternalEventActivity nextHandleExternalEventActivity2;
+
+        private C1Console.Workflow.Activities.WizardFormActivity wizzardFormActivity3;
+
         private EventDrivenActivity step3EventDrivenActivity_Finish;
+
         private StateInitializationActivity step3StateInitializationActivity;
+
         private EventDrivenActivity step2EventDrivenActivity_Next;
+
         private StateActivity step3StateActivity;
+
         private SetStateActivity setStateActivity7;
+
         private IfElseBranchActivity ifElseBranchActivity4;
+
         private IfElseBranchActivity ifElseBranchActivity3;
+
         private IfElseActivity ifElseActivity2;
+
         private CodeActivity step2CodeActivity;
-        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+
         private EventDrivenActivity eventDrivenActivity_GlobalCancel;
+
         private SetStateActivity setStateActivity6;
+
         private IfElseBranchActivity ifElseBranchActivity2;
+
         private IfElseBranchActivity ifElseBranchActivity1;
+
         private IfElseActivity ifElseActivity1;
+
         private SetStateActivity setStateActivity4;
-        private Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
+
+        private C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
+
         private StateInitializationActivity checkMethodNameStateInitializationActivity;
+
         private StateActivity checkMethodNameStateActivity;
+
         private SetStateActivity setStateActivity9;
+
         private SetStateActivity setStateActivity5;
+
         private SetStateActivity setStateActivity10;
+
         private EventDrivenActivity step3EventDrivenActivity_Cancel;
+
         private EventDrivenActivity step2EventDrivenActivity_Cancel;
+
         private EventDrivenActivity step1EventDrivenActivity_Cancel;
+
         private SetStateActivity setStateActivity12;
-        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity4;
+
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity4;
+
         private SetStateActivity setStateActivity11;
-        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity3;
+
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity3;
+
         private SetStateActivity setStateActivity8;
-        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
+
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
+
         private StateActivity initializeStateActivity;
+
 
 
 

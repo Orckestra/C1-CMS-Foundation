@@ -3,6 +3,7 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using Composite.Functions.Foundation;
+using Composite.Core.Extensions;
 
 
 namespace Composite.Functions
@@ -165,6 +166,17 @@ namespace Composite.Functions
 
 
 
+        public static bool FunctionExists(string namespaceName, string name)
+        {
+            IFunction fun;
+            
+            bool exists = FunctionFacade.TryGetFunction(out fun, StringExtensionMethods.CreateNamespace(namespaceName, name));
+
+            return exists;
+        }
+
+
+
         public static BaseRuntimeTreeNode BuildTree(IFunction function, IDictionary<string, object> paramters)
         {
             List<BaseParameterRuntimeTreeNode> parameterNodes = new List<BaseParameterRuntimeTreeNode>();
@@ -271,6 +283,13 @@ namespace Composite.Functions
             }
 
             return nameCandidate;
+        }
+
+
+
+        public static string GetFunctionCompositionName(string functionNamespace, string name)
+        {
+            return StringExtensionMethods.CreateNamespace(functionNamespace, name);
         }
     }
 }

@@ -30,6 +30,7 @@
   <string key="AddFunction.TypeMustNotHaveOverloads" value="The type must not have overloads" />
   <string key="AddFunction.MethodNameIsEmpty" value="Method name must be non-empty" />
   <string key="AddFunction.InvalidNamespace" value="Namespace must be like A.B.C - not start and end with ." />
+  <string key="AddFunction.NameAlreadyUsed" value="The functoin name '{0}' is already used" />
   <string key="EditMethodBasedFunction.LabelFieldGroup" value="Edit Method Based Query" />
   <string key="EditMethodBasedFunction.LabelMethodName" value="Method Name" />
   <string key="EditMethodBasedFunction.LabelMethodNameHelp" value="The name that the function should be know under." />
