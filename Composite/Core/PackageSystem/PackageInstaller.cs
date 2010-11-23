@@ -16,7 +16,11 @@ using Composite.Data.Transactions;
 
 namespace Composite.Core.PackageSystem
 {
-    internal sealed class PackageInstaller : IPackageInstaller
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class PackageInstaller : IPackageInstaller
     {
         private static readonly string LogTitle = "PackageInstaller";
 

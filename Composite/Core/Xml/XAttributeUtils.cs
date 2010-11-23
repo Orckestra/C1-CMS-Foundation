@@ -4,7 +4,11 @@ using System.Xml.Linq;
 
 namespace Composite.Core.Xml
 {
-	internal static class XAttributeUtils
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public static class XAttributeUtils
 	{
         public static string GetValueOrDefault(this XAttribute attribute, string defaultValue)
         {

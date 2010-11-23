@@ -5,7 +5,11 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Data.Plugins.DataProvider.Runtime
 {
-    internal sealed class DataProviderSettings : SerializableConfigurationSection
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class DataProviderSettings : SerializableConfigurationSection
     {
         public const string SectionName = "Composite.Data.Plugins.DataProviderConfiguration";
 

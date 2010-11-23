@@ -110,25 +110,17 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     string targetFilename = PathUtil.Resolve(targetFilenameAttribute.Value);
                     if (C1File.Exists(targetFilename) == true)
-                    {
+                    {                        
                         if ((allowOverwrite == false) && (onlyUpdate == false))
                         {
                             validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.FileExists"), targetFilename), targetFilenameAttribute));
                             continue;
                         }
 
-                        if ((C1File.GetAttributes(targetFilename) & FileAttributes.ReadOnly) > 0)
+                        if (((C1File.GetAttributes(targetFilename) & FileAttributes.ReadOnly) > 0) && (onlyUpdate == false))
                         {
-                            if (allowOverwrite == false)
-                            {
-                                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.FileReadOnly"), targetFilename), targetFilenameAttribute));
-                                continue;
-                            }
-                            else
-                            {
-                                LoggingService.LogVerbose("FileAddOnFragmentInstaller", string.Format("Removing read-only flag from file '{0}' because it need to be updated", targetFilename));
-                                FileUtils.RemoveReadOnly(targetFilename);
-                            }
+                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.FileReadOnly"), targetFilename), targetFilenameAttribute));
+                            continue;                            
                         }
                     }
                     else if (onlyUpdate == true)
