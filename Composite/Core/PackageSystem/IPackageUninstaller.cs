@@ -4,7 +4,11 @@ using Composite.Core.PackageSystem.Foundation;
 
 namespace Composite.Core.PackageSystem
 {
-    internal interface IPackageUninstaller
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public interface IPackageUninstaller
     {
         bool FlushOnCompletion { get; }
         bool ReloadConsoleOnCompletion { get; }

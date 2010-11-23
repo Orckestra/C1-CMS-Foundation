@@ -1,6 +1,10 @@
 ﻿namespace Composite.Core.PackageSystem
 {
-    internal interface IPackageInstallerUninstallerFactory
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public interface IPackageInstallerUninstallerFactory
     {
         IPackageUninstaller CreateUninstaller(string zipFilename, string uninstallFilename, string packageInstallationDirectory, string tempDirectory, bool flushOnCompletion, bool reloadConsoleOnCompletion, bool useTransaction);
     }
