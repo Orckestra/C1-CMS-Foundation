@@ -2,6 +2,7 @@
 using Composite.Data;
 using System.IO;
 using System.Text;
+using System.Threading;
 
 
 namespace Composite.Core.Implementation
@@ -126,8 +127,8 @@ namespace Composite.Core.Implementation
         {
             CultureInfo localeToUse = locale;
             if ((locale == null) || (locale == CultureInfo.InvariantCulture))
-            {                
-                localeToUse = DataLocalizationFacade.DefaultLocalizationCulture;
+            {
+                localeToUse = Thread.CurrentThread.CurrentCulture;
             }
 
             return localeToUse;
