@@ -14,6 +14,7 @@ using Composite.C1Console.Security;
 using Composite.Data.Transactions;
 using Composite.Core.Types;
 using Composite.C1Console.Workflow;
+using Composite.C1Console.Users;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
@@ -63,7 +64,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             Dictionary<string, string> culturesDictionary = DataLocalizationFacade.ActiveLocalizationCultures.ToDictionary(f => f.Name, f => StringResourceSystemFacade.GetString("Composite.Cultures", f.Name));
 
-            this.UpdateBinding("CultureName", culturesDictionary.First().Key);
+            this.UpdateBinding("CultureName", UserSettings.ForeignLocaleCultureInfo.Name);
             this.UpdateBinding("CultureNameList", culturesDictionary);
         }
 
