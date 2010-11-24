@@ -1,4 +1,4 @@
-﻿@namespace url("http://www.w3.org/1999/xhtml");
+@namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
 * {
@@ -679,9 +679,6 @@ _padding: 3px 6px 2px 6px;
 ui|toolbar ui|clickbutton table.matrix td.c {
 padding: 0 2px 0 2px;
 }
-/*
-produce a pressed-down effect - unfortunately, 
-this will crop images on small buttons!
 ui|toolbarbutton.active ui|labelbox,
 ui|clickbutton.active ui|labelbox {
 position: relative;
@@ -691,7 +688,6 @@ left: 1px;
 position: static;
 #endregion
 }
-*/
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
