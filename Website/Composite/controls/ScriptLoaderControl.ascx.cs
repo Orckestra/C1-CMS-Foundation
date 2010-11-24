@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.UI;
 using System.Xml;
 using Composite.Core.WebClient;
+using System.Xml.Linq;
+using System.Linq;
 
 
 public partial class ScriptLoaderControl : System.Web.UI.UserControl
@@ -188,30 +190,18 @@ public partial class ScriptLoaderControl : System.Web.UI.UserControl
         try
         {
             string uri = ConfigurationManager.AppSettings["Composite.StartPage.Url"];
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(uri);
-            request.Timeout = 1000;
-            using (WebResponse response = request.GetResponse())
+
+            XDocument loaded = null;
+            System.Threading.Tasks.Task task = System.Threading.Tasks.Task.Factory.StartNew(() => loaded = System.Xml.Linq.XDocument.Load(uri));
+
+            task.Wait(500);
+            if (task.IsCompleted)
             {
-                using (Stream responseStream = response.GetResponseStream())
-                {
-                    XmlTextReader reader = new XmlTextReader(responseStream);
-                    while (reader.Read() && !result)
-                    {
-                        if (reader.Name == "title")
-                        {
-                            reader.Read();
-                            if (reader.ReadString() == "Start")
-                            {
-                                result = true;
-                            }
-                        }
-                    }
-                    responseStream.Close();
-                }
-                response.Close();
+                XElement titleElement = loaded.Descendants(Composite.Core.Xml.Namespaces.Xhtml + "title").FirstOrDefault();
+                result = (titleElement != null && titleElement.Value == "Start");
             }
         }
-        catch (Exception) {}
+        catch (Exception) { }
         return result;
     }
 }
