@@ -114,7 +114,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         public override IEnumerable<XElement> Install()
         {
-            if (_dataTypeDescriptors == null) throw new InvalidOperationException("Has not been validated");
+            if (_dataTypeDescriptors == null) throw new InvalidOperationException("DynamicDataTypePackageFragmentInstaller has not been validated");
 
             List<XElement> typeElements = new List<XElement>();
             foreach (DataTypeDescriptor dataTypeDescriptor in _dataTypeDescriptors)

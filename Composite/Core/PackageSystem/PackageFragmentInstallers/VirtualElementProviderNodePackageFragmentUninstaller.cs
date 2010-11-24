@@ -29,24 +29,23 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             }
 
             XElement areasElement = this.Configuration.Where(f => f.Name == "Areas").SingleOrDefault();
-            if (areasElement == null)
-            {
-                return validationResult;
-            }
 
             _areasToUninstall = new List<string>();
 
-            foreach (XElement areaElement in areasElement.Elements("Area").Reverse())
+            if (areasElement != null)
             {
-                XAttribute elementProviderNameAttribute = areaElement.Attribute("elementProviderName");
+                foreach (XElement areaElement in areasElement.Elements("Area").Reverse())
+                {
+                    XAttribute elementProviderNameAttribute = areaElement.Attribute("elementProviderName");
 
-                if (elementProviderNameAttribute == null) 
-                {
-                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodeAddOnFragmentUninstaller.MissingAttribute"), "elementProviderName"), areaElement));
-                }
-                else
-                {
-                    _areasToUninstall.Add(elementProviderNameAttribute.Value);
+                    if (elementProviderNameAttribute == null)
+                    {
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodeAddOnFragmentUninstaller.MissingAttribute"), "elementProviderName"), areaElement));
+                    }
+                    else
+                    {
+                        _areasToUninstall.Add(elementProviderNameAttribute.Value);
+                    }
                 }
             }
 
@@ -62,7 +61,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         public override void Uninstall()
         {
-            if (_areasToUninstall == null) throw new InvalidOperationException("Has not been validated");
+            if (_areasToUninstall == null) throw new InvalidOperationException("VirtualElementProviderNodePackageFragmentUninstaller has not been validated");
 
             bool makeAFlush = false;
             foreach (string elementProviderName in _areasToUninstall)

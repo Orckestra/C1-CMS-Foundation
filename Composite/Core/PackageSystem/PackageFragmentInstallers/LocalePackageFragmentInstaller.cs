@@ -31,84 +31,83 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             }
 
             XElement areasElement = this.Configuration.Where(f => f.Name == "Locales").SingleOrDefault();
-            if (areasElement == null)
-            {
-                return validationResult;
-            }
 
             _localesToInstall = new List<Tuple<CultureInfo, string, bool>>();
 
-            foreach (XElement localeElement in areasElement.Elements("Locale"))
+            if (areasElement != null)
             {
-                XAttribute nameAttribute = localeElement.Attribute("name");
-                XAttribute urlMappingNameAttribute = localeElement.Attribute("urlMappingName");
-                XAttribute defaultAttribute = localeElement.Attribute("default");
+                foreach (XElement localeElement in areasElement.Elements("Locale"))
+                {
+                    XAttribute nameAttribute = localeElement.Attribute("name");
+                    XAttribute urlMappingNameAttribute = localeElement.Attribute("urlMappingName");
+                    XAttribute defaultAttribute = localeElement.Attribute("default");
 
-                if (nameAttribute == null)
-                {
-                    // Missing attribute
-                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.MissingAttribute"), "order"), localeElement));
-                    continue;
-                }
-
-                CultureInfo cultureInfo;
-                try
-                {
-                    cultureInfo = CultureInfo.CreateSpecificCulture(nameAttribute.Value);
-                }
-                catch
-                {
-                    // Name error
-                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.MissingAttribute"), "order"), nameAttribute));
-                    continue;
-                }
-
-                if (LocalizationFacade.IsLocaleInstalled(cultureInfo) == true)
-                {
-                    continue; // Skip it, it is installed
-                }
-
-                if (_localesToInstall.Where(f => f.Item1.Equals(cultureInfo)).Any() == true)
-                {
-                    // Already installed or going to be installed
-                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.MissingAttribute"), "order"), nameAttribute));
-                    continue;
-                }
-
-                string urlMappingName = cultureInfo.Name;
-                if (urlMappingNameAttribute != null)
-                {
-                    urlMappingName = urlMappingNameAttribute.Value;
-                }
-
-                if ((LocalizationFacade.IsUrlMappingNameInUse(urlMappingName) == true) || (_localesToInstall.Where(f => f.Item2 == urlMappingName).Any() == true))
-                {
-                    // Url mapping name alread used or going to be used
-                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.MissingAttribute"), "order"), urlMappingNameAttribute));
-                    continue;
-                }
-
-                bool isDefault = false;
-                if (defaultAttribute != null)
-                {
-                    if (defaultAttribute.TryGetBoolValue(out isDefault) == false)
+                    if (nameAttribute == null)
                     {
-                        // Wrong attribute value
+                        // Missing attribute
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.MissingAttribute"), "order"), localeElement));
+                        continue;
+                    }
+
+                    CultureInfo cultureInfo;
+                    try
+                    {
+                        cultureInfo = CultureInfo.CreateSpecificCulture(nameAttribute.Value);
+                    }
+                    catch
+                    {
+                        // Name error
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.MissingAttribute"), "order"), nameAttribute));
+                        continue;
+                    }
+
+                    if (LocalizationFacade.IsLocaleInstalled(cultureInfo) == true)
+                    {
+                        continue; // Skip it, it is installed
+                    }
+
+                    if (_localesToInstall.Where(f => f.Item1.Equals(cultureInfo)).Any() == true)
+                    {
+                        // Already installed or going to be installed
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.MissingAttribute"), "order"), nameAttribute));
+                        continue;
+                    }
+
+                    string urlMappingName = cultureInfo.Name;
+                    if (urlMappingNameAttribute != null)
+                    {
+                        urlMappingName = urlMappingNameAttribute.Value;
+                    }
+
+                    if ((LocalizationFacade.IsUrlMappingNameInUse(urlMappingName) == true) || (_localesToInstall.Where(f => f.Item2 == urlMappingName).Any() == true))
+                    {
+                        // Url mapping name alread used or going to be used
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.MissingAttribute"), "order"), urlMappingNameAttribute));
+                        continue;
+                    }
+
+                    bool isDefault = false;
+                    if (defaultAttribute != null)
+                    {
+                        if (defaultAttribute.TryGetBoolValue(out isDefault) == false)
+                        {
+                            // Wrong attribute value
+                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.MissingAttribute"), "order"), defaultAttribute));
+                            continue;
+                        }
+                    }
+
+                    if ((isDefault == true) && (_localesToInstall.Where(f => f.Item3 == true).Any() == true))
+                    {
+                        // More than one is specified as default
                         validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.MissingAttribute"), "order"), defaultAttribute));
                         continue;
                     }
+
+                    _localesToInstall.Add(new Tuple<CultureInfo, string, bool>(cultureInfo, urlMappingName, isDefault));
+
+                    this.InstallerContex.AddPendingLocale(cultureInfo);
                 }
-
-                if ((isDefault == true) && (_localesToInstall.Where(f => f.Item3 == true).Any() == true))
-                {
-                    // More than one is specified as default
-                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.MissingAttribute"), "order"), defaultAttribute));
-                    continue;
-                }                
-
-                _localesToInstall.Add(new Tuple<CultureInfo,string,bool>(cultureInfo, urlMappingName, isDefault));
-
-                this.InstallerContex.AddPendingLocale(cultureInfo);
             }
 
 
@@ -124,6 +123,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         public override IEnumerable<XElement> Install()
         {
+            if (_localesToInstall == null) throw new InvalidOperationException("LocalePackageFragmentInstaller has not been validated");
+
             XAttribute oldDefaultAttribute = null;
             if (DataLocalizationFacade.DefaultLocalizationCulture != null)
             {

@@ -34,45 +34,53 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 			}
 
 			var filesElement = this.Configuration.Where(f => f.Name == "XslFiles");
-			if (filesElement.SingleOrDefault() == null) return validationResult;
 
             _xsls = new List<XslTransformation>();
 
-			foreach (XElement fileElement in filesElement.Elements("XslFile"))
-			{
-                XAttribute pathXMLAttribute = fileElement.Attribute(Installer.TargetXmlAttributeName);
-                XAttribute pathXSLAttribute = fileElement.Attribute(Installer.UninstallXslAttributeName);
-
-                if (pathXMLAttribute == null)
-				{
-				    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
-                        GetResourceString("FileXslTransformationPackageFragmentInstaller.MissingAttribute").FormatWith(Installer.TargetXmlAttributeName),
-                        fileElement));
-                    continue;
-				}
-
-                if (pathXSLAttribute == null)
+            if (filesElement != null)
+            {
+                foreach (XElement fileElement in filesElement.Elements("XslFile"))
                 {
-                    //if there isn no uninstall xsl
-                    continue;
+                    XAttribute pathXMLAttribute = fileElement.Attribute(Installer.TargetXmlAttributeName);
+                    XAttribute pathXSLAttribute = fileElement.Attribute(Installer.UninstallXslAttributeName);
+
+                    if (pathXMLAttribute == null)
+                    {
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
+                            GetResourceString("FileXslTransformationPackageFragmentInstaller.MissingAttribute").FormatWith(Installer.TargetXmlAttributeName),
+                            fileElement));
+                        continue;
+                    }
+
+                    if (pathXSLAttribute == null)
+                    {
+                        //if there isn no uninstall xsl
+                        continue;
+                    }
+
+                    string inputPathXMLAttributeValue = PathUtil.Resolve(pathXMLAttribute.Value);
+                    string inpuPathXSLAttributeValue = pathXSLAttribute.Value;
+
+                    _xsls.Add(new XslTransformation
+                    {
+                        pathXml = inputPathXMLAttributeValue,
+                        pathXsl = inpuPathXSLAttributeValue
+                    });
                 }
+            }
 
-                string inputPathXMLAttributeValue = PathUtil.Resolve(pathXMLAttribute.Value);
-                string inpuPathXSLAttributeValue = pathXSLAttribute.Value;
 
-                _xsls.Add(new XslTransformation
-                {
-                    pathXml = inputPathXMLAttributeValue,
-                    pathXsl = inpuPathXSLAttributeValue
-                });
-			}
+            if (validationResult.Count > 0)
+            {
+                _xsls = null;
+            }
 
 			return validationResult;
 		}
 
 		public override void Uninstall()
 		{
-            if (_xsls == null) throw new InvalidOperationException("Has not been validated");
+            if (_xsls == null) throw new InvalidOperationException("FileXslTransformationPackageFragmentUninstaller has not been validated");
 
 			Stream stream;
             foreach (XslTransformation xslfile in _xsls)

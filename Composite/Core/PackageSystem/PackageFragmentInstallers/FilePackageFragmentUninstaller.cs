@@ -28,7 +28,6 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             }
 
             XElement filesElement = this.Configuration.Where(f => f.Name == "Files").SingleOrDefault();
-            if (filesElement == null) return validationResult;
             
 
             _filesToDelete = new List<string>();
@@ -39,24 +38,27 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             //  <File filename="C:\inetpub\docs\Frontend\Composite\Forms\Renderer\Controls/FormsRender.ascx.cs" />
             List<string> absoluteReferences = new List<string>();
 
-            foreach (XElement fileElement in filesElement.Elements("File").Reverse())
+            if (filesElement != null)
             {
-                XAttribute filenameAttribute = fileElement.Attribute("filename");
-                if (filenameAttribute == null)
+                foreach (XElement fileElement in filesElement.Elements("File").Reverse())
                 {
-                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetResourceString("FileAddOnFragmentInstaller.MissingAttribute"), "filename"), fileElement)); 
-                    continue;
-                }
+                    XAttribute filenameAttribute = fileElement.Attribute("filename");
+                    if (filenameAttribute == null)
+                    {
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetResourceString("FileAddOnFragmentInstaller.MissingAttribute"), "filename"), fileElement));
+                        continue;
+                    }
 
-                string filePath = filenameAttribute.Value;
-                if(!filePath.Contains(":\\"))
-                {
-                    filePath = PathUtil.Resolve(filePath);
-                    _filesToDelete.Add(filePath);
-                }
-                else
-                {
-                    absoluteReferences.Add(filePath);
+                    string filePath = filenameAttribute.Value;
+                    if (!filePath.Contains(":\\"))
+                    {
+                        filePath = PathUtil.Resolve(filePath);
+                        _filesToDelete.Add(filePath);
+                    }
+                    else
+                    {
+                        absoluteReferences.Add(filePath);
+                    }
                 }
             }
 
@@ -176,7 +178,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         public override void Uninstall()
         {
-            if (_filesToDelete == null) throw new InvalidOperationException("Has not been validated");
+            if (_filesToDelete == null) throw new InvalidOperationException("FilePackageFragmentUninstaller has not been validated");
 
             foreach (string filename in _filesToDelete)
             {

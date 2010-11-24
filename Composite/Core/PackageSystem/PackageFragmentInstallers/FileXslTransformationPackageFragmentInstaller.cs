@@ -43,105 +43,112 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 			}
 
 			var filesElement = this.Configuration.Where(f => f.Name == "XslFiles");
-			if (filesElement.SingleOrDefault() == null) return validationResult;
 
 			_xslToAdd = new List<XslToAdd>();
 
-			foreach (XElement fileElement in filesElement.Elements("XslFile"))
-			{
-                XAttribute pathXMLAttribute = fileElement.Attribute(TargetXmlAttributeName);
-                XAttribute inputXMLAttribute = fileElement.Attribute(InputXmlAttributeName);
-                XAttribute outputXMLAttribute = fileElement.Attribute(OutputXmlAttributeName);
-
-                XAttribute pathXSLAttribute = fileElement.Attribute(TargetXslAttributeName);
-                XAttribute installXSLAttribute = fileElement.Attribute(InstallXslAttributeName);
-                XAttribute uninstallXSLAttribute = fileElement.Attribute(UninstallXslAttributeName);
-
-                XAttribute skipIfNotExistAttribute = fileElement.Attribute(SkipIfNotExistAttributeName);
-                bool skipIfNotExist = skipIfNotExistAttribute != null && skipIfNotExistAttribute.Value.ToLower() == "true";
-
-                if (pathXSLAttribute == null && installXSLAttribute == null) 
+            if (filesElement != null)
+            {
+                foreach (XElement fileElement in filesElement.Elements("XslFile"))
                 {
-                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
-                        GetResourceString("FileXslTransformationPackageFragmentInstaller.MissingAttribute").FormatWith(TargetXmlAttributeName),
-                        fileElement)); 
-                    continue; 
-                }
+                    XAttribute pathXMLAttribute = fileElement.Attribute(TargetXmlAttributeName);
+                    XAttribute inputXMLAttribute = fileElement.Attribute(InputXmlAttributeName);
+                    XAttribute outputXMLAttribute = fileElement.Attribute(OutputXmlAttributeName);
 
-                if(outputXMLAttribute != null && uninstallXSLAttribute != null)
-                {
-                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
-                        "Xsl installer does not suppurt simultanious usage of attributes '{0}' and '{1}'".FormatWith(OutputXmlAttributeName, UninstallXslAttributeName),
-                        fileElement));
-                    continue; 
-                }
+                    XAttribute pathXSLAttribute = fileElement.Attribute(TargetXslAttributeName);
+                    XAttribute installXSLAttribute = fileElement.Attribute(InstallXslAttributeName);
+                    XAttribute uninstallXSLAttribute = fileElement.Attribute(UninstallXslAttributeName);
 
-                string xslFilePath = (pathXSLAttribute ?? installXSLAttribute).Value;
+                    XAttribute skipIfNotExistAttribute = fileElement.Attribute(SkipIfNotExistAttributeName);
+                    bool skipIfNotExist = skipIfNotExistAttribute != null && skipIfNotExistAttribute.Value.ToLower() == "true";
 
-
-				XslToAdd xslFile;
-				if (inputXMLAttribute != null)
-				{
-                    if (outputXMLAttribute == null) 
+                    if (pathXSLAttribute == null && installXSLAttribute == null)
                     {
                         validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
-                            GetResourceString("FileXslTransformationPackageFragmentInstaller.MissingAttribute").FormatWith("outputFilename"), 
-                            fileElement)); 
-                        continue; 
-                    }
-
-					xslFile = new XslToAdd
-								  {
-                                      XslPath = xslFilePath,
-                                      InputXmlPath = inputXMLAttribute.Value,
-                                      OutputXmlPath = outputXMLAttribute.Value
-								  };
-				}
-				else
-				{
-                    if (pathXMLAttribute == null)
-                    {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
-                            GetResourceString("FileAddOnFragmentInstaller.MissingAttribute").FormatWith(TargetXmlAttributeName),
-                            fileElement)); 
+                            GetResourceString("FileXslTransformationPackageFragmentInstaller.MissingAttribute").FormatWith(TargetXmlAttributeName),
+                            fileElement));
                         continue;
                     }
 
-					string pathToXmlFile = pathXMLAttribute.Value;
-
-				    xslFile = new XslToAdd
-				                  {
-				                      XslPath = xslFilePath,
-				                      // UninstallXslPath = uninstallXSLAttribute != null ? uninstallXSLAttribute.Value : null,
-									  InputXmlPath = pathToXmlFile,
-									  OutputXmlPath = pathToXmlFile
-								  };
-				}
-
-                if(!C1File.Exists(PathUtil.Resolve(xslFile.InputXmlPath)))
-                {
-                    if(skipIfNotExist) continue;
-
-                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
-                            GetResourceString("FileXslTransformationPackageFragmentInstaller.FileNotFound").FormatWith(xslFile.InputXmlPath),
+                    if (outputXMLAttribute != null && uninstallXSLAttribute != null)
+                    {
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
+                            "Xsl installer does not suppurt simultanious usage of attributes '{0}' and '{1}'".FormatWith(OutputXmlAttributeName, UninstallXslAttributeName),
                             fileElement));
-                    continue;
+                        continue;
+                    }
+
+                    string xslFilePath = (pathXSLAttribute ?? installXSLAttribute).Value;
+
+
+                    XslToAdd xslFile;
+                    if (inputXMLAttribute != null)
+                    {
+                        if (outputXMLAttribute == null)
+                        {
+                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
+                                GetResourceString("FileXslTransformationPackageFragmentInstaller.MissingAttribute").FormatWith("outputFilename"),
+                                fileElement));
+                            continue;
+                        }
+
+                        xslFile = new XslToAdd
+                                      {
+                                          XslPath = xslFilePath,
+                                          InputXmlPath = inputXMLAttribute.Value,
+                                          OutputXmlPath = outputXMLAttribute.Value
+                                      };
+                    }
+                    else
+                    {
+                        if (pathXMLAttribute == null)
+                        {
+                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
+                                GetResourceString("FileAddOnFragmentInstaller.MissingAttribute").FormatWith(TargetXmlAttributeName),
+                                fileElement));
+                            continue;
+                        }
+
+                        string pathToXmlFile = pathXMLAttribute.Value;
+
+                        xslFile = new XslToAdd
+                                      {
+                                          XslPath = xslFilePath,
+                                          // UninstallXslPath = uninstallXSLAttribute != null ? uninstallXSLAttribute.Value : null,
+                                          InputXmlPath = pathToXmlFile,
+                                          OutputXmlPath = pathToXmlFile
+                                      };
+                    }
+
+                    if (!C1File.Exists(PathUtil.Resolve(xslFile.InputXmlPath)))
+                    {
+                        if (skipIfNotExist) continue;
+
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
+                                GetResourceString("FileXslTransformationPackageFragmentInstaller.FileNotFound").FormatWith(xslFile.InputXmlPath),
+                                fileElement));
+                        continue;
+                    }
+
+                    string outputXmlFullPath = PathUtil.Resolve(xslFile.OutputXmlPath);
+                    if (C1File.Exists(outputXmlFullPath) && (C1File.GetAttributes(outputXmlFullPath) & FileAttributes.ReadOnly) > 0)
+                    {
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
+                                GetResourceString("FileAddOnFragmentInstaller.FileReadOnly").FormatWith(xslFile.OutputXmlPath),
+                                fileElement));
+                        continue;
+                    }
+
+
+
+                    _xslToAdd.Add(xslFile);
                 }
+            }
 
-                string outputXmlFullPath = PathUtil.Resolve(xslFile.OutputXmlPath);
-                if (C1File.Exists(outputXmlFullPath) && (C1File.GetAttributes(outputXmlFullPath) & FileAttributes.ReadOnly) > 0)
-                {
-                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
-                            GetResourceString("FileAddOnFragmentInstaller.FileReadOnly").FormatWith(xslFile.OutputXmlPath),
-                            fileElement));
-                    continue;
-                }
 
-                
-
-				_xslToAdd.Add(xslFile);
-			}
-
+            if (validationResult.Count > 0)
+            {
+                _xslToAdd = null;
+            }
             
 
 			return validationResult;
@@ -149,7 +156,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 		public override IEnumerable<XElement> Install()
 		{
-			if (_xslToAdd == null) throw new InvalidOperationException("Has not been validated");
+            if (_xslToAdd == null) throw new InvalidOperationException("FileXslTransformationPackageFragmentInstaller has not been validated");
+
 			Stream stream;
 			foreach (XslToAdd xslfile in _xslToAdd)
 			{

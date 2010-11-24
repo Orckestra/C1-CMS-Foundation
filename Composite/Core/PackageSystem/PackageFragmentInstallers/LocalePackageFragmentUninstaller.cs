@@ -31,42 +31,48 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             }
 
             XElement localesElement = this.Configuration.Where(f => f.Name == "Locales").SingleOrDefault();
-            if (localesElement == null)
-            {
-                return validationResults;
-            }
 
             _culturesToUninstall = new List<CultureInfo>();
 
-            XAttribute oldDefaultAttribute = localesElement.Attribute("oldDefault");
-            if (oldDefaultAttribute != null)
+            if (localesElement != null)
             {
-                _oldDefaultCultureInfo = CultureInfo.CreateSpecificCulture(oldDefaultAttribute.Value);
+                XAttribute oldDefaultAttribute = localesElement.Attribute("oldDefault");
+                if (oldDefaultAttribute != null)
+                {
+                    _oldDefaultCultureInfo = CultureInfo.CreateSpecificCulture(oldDefaultAttribute.Value);
+                }
+
+                foreach (XElement localeElement in localesElement.Elements("Locale").Reverse())
+                {
+                    CultureInfo locale = CultureInfo.CreateSpecificCulture(localeElement.Attribute("name").Value);
+
+                    if ((_oldDefaultCultureInfo == null) && (LocalizationFacade.IsDefaultLocale(locale) == true))
+                    {
+                        // Locale is default -> not possible to unintall
+                        validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodeAddOnFragmentUninstaller.OnlyOneElement")));
+                        continue;
+                    }
+
+                    if (LocalizationFacade.IsOnlyActiveLocaleForSomeUsers(locale) == true)
+                    {
+                        // only active for the a user
+                        validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodeAddOnFragmentUninstaller.OnlyOneElement")));
+                        continue;
+                    }
+
+                    if (LocalizationFacade.IsLocaleInstalled(locale) == true)
+                    {
+                        _culturesToUninstall.Add(locale);
+                    }
+                }
             }
 
-            foreach (XElement localeElement in localesElement.Elements("Locale").Reverse())
+
+            if (validationResults.Count > 0)
             {
-                CultureInfo locale = CultureInfo.CreateSpecificCulture(localeElement.Attribute("name").Value);
-
-                if ((_oldDefaultCultureInfo == null) && (LocalizationFacade.IsDefaultLocale(locale) == true))
-                {
-                    // Locale is default -> not possible to unintall
-                    validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodeAddOnFragmentUninstaller.OnlyOneElement")));
-                    continue;
-                }
-
-                if (LocalizationFacade.IsOnlyActiveLocaleForSomeUsers(locale) == true)
-                {
-                    // only active for the a user
-                    validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodeAddOnFragmentUninstaller.OnlyOneElement")));
-                    continue;
-                }
-
-                if (LocalizationFacade.IsLocaleInstalled(locale) == true)
-                {
-                    _culturesToUninstall.Add(locale);
-                }
-            }            
+                _culturesToUninstall = null;
+                _oldDefaultCultureInfo = null;
+            }
 
             return validationResults;
         }

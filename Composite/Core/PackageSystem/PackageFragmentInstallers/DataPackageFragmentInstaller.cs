@@ -67,7 +67,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         public override IEnumerable<XElement> Install()
         {
-            if (_dataTypes == null) throw new InvalidOperationException("Has not been validated");
+            if (_dataTypes == null) throw new InvalidOperationException("DataPackageFragmentInstaller has not been validated");
 
             List<XElement> typeElements = new List<XElement>();
             foreach (DataType dataType in _dataTypes)

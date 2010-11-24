@@ -257,7 +257,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         public override IEnumerable<XElement> Install()
         {
-            if (_filesToCopy == null) throw new InvalidOperationException("Has not been validated");
+            if (_filesToCopy == null) throw new InvalidOperationException("FilePackageFragmentInstaller has not been validated");
 
             foreach (string directoryToDelete in _directoriesToDelete)
             {

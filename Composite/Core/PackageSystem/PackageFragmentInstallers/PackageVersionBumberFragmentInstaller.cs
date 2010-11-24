@@ -34,43 +34,45 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             }            
 
             XElement packageVersionsElement = this.Configuration.Where(f => f.Name == "PackageVersions").SingleOrDefault();
-            if (packageVersionsElement == null) return validationResult;
 
             _packagesToBumb = new Dictionary<Guid, string>();
 
-            foreach (XElement packageVersionElement in packageVersionsElement.Elements("PackageVersion"))
+            if (packageVersionsElement != null)
             {
-                XAttribute packageIdAttribute = packageVersionElement.Attribute("packageId");
-                XAttribute newVersionAttribute = packageVersionElement.Attribute("newVersion");
-
-                if (packageIdAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.MissingAttribute"), "packageId"), packageVersionElement)); continue; }
-                if (newVersionAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.MissingAttribute"), "newVersion"), packageVersionElement)); continue; }
-
-                Guid packageId;
-                if (packageIdAttribute.TryGetGuidValue(out packageId) == false)
+                foreach (XElement packageVersionElement in packageVersionsElement.Elements("PackageVersion"))
                 {
-                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.WrongAttributeGuidFormat"), packageIdAttribute));
-                    continue;
-                }
+                    XAttribute packageIdAttribute = packageVersionElement.Attribute("packageId");
+                    XAttribute newVersionAttribute = packageVersionElement.Attribute("newVersion");
 
-                if (_packagesToBumb.ContainsKey(packageId) == true)
-                {
-                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.PackageIdDuplicate"), packageIdAttribute));
-                    continue;
-                }
+                    if (packageIdAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.MissingAttribute"), "packageId"), packageVersionElement)); continue; }
+                    if (newVersionAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.MissingAttribute"), "newVersion"), packageVersionElement)); continue; }
 
-                Version version;
-                try
-                {
-                    version = new Version(newVersionAttribute.Value);
-                }
-                catch
-                {
-                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.WrongAttributeVersionFormat"), newVersionAttribute));
-                    continue;
-                }
+                    Guid packageId;
+                    if (packageIdAttribute.TryGetGuidValue(out packageId) == false)
+                    {
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.WrongAttributeGuidFormat"), packageIdAttribute));
+                        continue;
+                    }
 
-                _packagesToBumb.Add(packageId, version.ToString());
+                    if (_packagesToBumb.ContainsKey(packageId) == true)
+                    {
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.PackageIdDuplicate"), packageIdAttribute));
+                        continue;
+                    }
+
+                    Version version;
+                    try
+                    {
+                        version = new Version(newVersionAttribute.Value);
+                    }
+                    catch
+                    {
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.WrongAttributeVersionFormat"), newVersionAttribute));
+                        continue;
+                    }
+
+                    _packagesToBumb.Add(packageId, version.ToString());
+                }
             }
 
 
@@ -86,7 +88,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         public override IEnumerable<XElement> Install()
         {
-            if (_packagesToBumb == null) throw new InvalidOperationException("Has not been validated");
+            if (_packagesToBumb == null) throw new InvalidOperationException("PackageVersionBumberFragmentInstaller has not been validated");
 
             List<XElement> installedElements = new List<XElement>();
             foreach (var kvp in _packagesToBumb)

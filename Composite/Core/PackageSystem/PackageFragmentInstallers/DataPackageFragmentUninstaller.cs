@@ -36,113 +36,114 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             _datasToDelete = new List<DataType>();
 
             XElement typesElement = this.Configuration.Where(f => f.Name == "Types").SingleOrDefault();
-            if (typesElement == null) return validationResult;
 
-
-            foreach (XElement typeElement in typesElement.Elements("Type").Reverse())
+            if (typesElement != null)
             {
-                XAttribute typeAttribute = typeElement.Attribute("type");
-                XAttribute dataScopeIdentifierAttribute = typeElement.Attribute("dataScopeIdentifier");
-
-                if (typeAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentUninstaller.MissingAttribute"), "type"), typeElement)); continue; }
-                if (dataScopeIdentifierAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentUninstaller.MissingAttribute"), "dataScopeIdentifier"), typeElement)); continue; }
-
-                Type type = TypeManager.TryGetType(typeAttribute.Value);
-                if (type == null) continue;
-                if (DataFacade.GetAllInterfaces().Contains(type) == false) continue;
-
-
-                DataScopeIdentifier dataScopeIdentifier = null;
-                try
+                foreach (XElement typeElement in typesElement.Elements("Type").Reverse())
                 {
-                    dataScopeIdentifier = DataScopeIdentifier.Deserialize(dataScopeIdentifierAttribute.Value);
-                }
-                catch (Exception)
-                {
-                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("Wrong DataScopeIdentifier ({0}) name in the configuration", dataScopeIdentifierAttribute.Value), dataScopeIdentifierAttribute));
-                    continue;
-                }
+                    XAttribute typeAttribute = typeElement.Attribute("type");
+                    XAttribute dataScopeIdentifierAttribute = typeElement.Attribute("dataScopeIdentifier");
+
+                    if (typeAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentUninstaller.MissingAttribute"), "type"), typeElement)); continue; }
+                    if (dataScopeIdentifierAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentUninstaller.MissingAttribute"), "dataScopeIdentifier"), typeElement)); continue; }
+
+                    Type type = TypeManager.TryGetType(typeAttribute.Value);
+                    if (type == null) continue;
+                    if (DataFacade.GetAllInterfaces().Contains(type) == false) continue;
 
 
-                foreach (XElement datasElement in typeElement.Elements("Datas").Reverse())
-                {
-                    CultureInfo locale = null;
-
-                    XAttribute localeAttribute = datasElement.Attribute("locale");
-                    if (localeAttribute != null)
+                    DataScopeIdentifier dataScopeIdentifier = null;
+                    try
                     {
-                        locale = CultureInfo.CreateSpecificCulture(localeAttribute.Value);
+                        dataScopeIdentifier = DataScopeIdentifier.Deserialize(dataScopeIdentifierAttribute.Value);
+                    }
+                    catch (Exception)
+                    {
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("Wrong DataScopeIdentifier ({0}) name in the configuration", dataScopeIdentifierAttribute.Value), dataScopeIdentifierAttribute));
+                        continue;
                     }
 
-                    foreach (XElement keysElement in datasElement.Elements("Keys"))
+
+                    foreach (XElement datasElement in typeElement.Elements("Datas").Reverse())
                     {
-                        bool allKeyPropertiesValidated = true;
-                        DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
+                        CultureInfo locale = null;
 
-                        foreach (XElement keyElement in keysElement.Elements("Key"))
+                        XAttribute localeAttribute = datasElement.Attribute("locale");
+                        if (localeAttribute != null)
                         {
-                            XAttribute keyNameAttribute = keyElement.Attribute("name");
-                            XAttribute keyValueAttribute = keyElement.Attribute("value");
+                            locale = CultureInfo.CreateSpecificCulture(localeAttribute.Value);
+                        }
 
+                        foreach (XElement keysElement in datasElement.Elements("Keys"))
+                        {
+                            bool allKeyPropertiesValidated = true;
+                            DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
 
-                            if ((keyNameAttribute == null) || (keyValueAttribute == null))
+                            foreach (XElement keyElement in keysElement.Elements("Key"))
                             {
-                                if (keyNameAttribute == null) validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentUninstaller.MissingAttribute"), "name"), keyElement));
-                                if (keyValueAttribute == null) validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentUninstaller.MissingAttribute"), "value"), keyElement));
+                                XAttribute keyNameAttribute = keyElement.Attribute("name");
+                                XAttribute keyValueAttribute = keyElement.Attribute("value");
 
-                                allKeyPropertiesValidated = false;
-                                continue;
-                            }
-                            else
-                            {
-                                string keyName = keyNameAttribute.Value;
-                                PropertyInfo keyPropertyInfo = type.GetPropertiesRecursively().Where(f => f.Name == keyName).SingleOrDefault();
-                                if (keyPropertyInfo == null)
+
+                                if ((keyNameAttribute == null) || (keyValueAttribute == null))
                                 {
-                                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentUninstaller.MissingKeyProperty"), type, keyName)));
+                                    if (keyNameAttribute == null) validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentUninstaller.MissingAttribute"), "name"), keyElement));
+                                    if (keyValueAttribute == null) validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentUninstaller.MissingAttribute"), "value"), keyElement));
+
                                     allKeyPropertiesValidated = false;
+                                    continue;
                                 }
                                 else
                                 {
-                                    try
+                                    string keyName = keyNameAttribute.Value;
+                                    PropertyInfo keyPropertyInfo = type.GetPropertiesRecursively().Where(f => f.Name == keyName).SingleOrDefault();
+                                    if (keyPropertyInfo == null)
                                     {
-                                        object keyValue = ValueTypeConverter.Convert(keyValueAttribute.Value, keyPropertyInfo.PropertyType);
-                                        dataKeyPropertyCollection.AddKeyProperty(keyName, keyValue);
-                                    }
-                                    catch (Exception)
-                                    {
+                                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentUninstaller.MissingKeyProperty"), type, keyName)));
                                         allKeyPropertiesValidated = false;
-                                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentUninstaller.DataAddOnFragmentUninstaller"), keyValueAttribute.Value, keyPropertyInfo.PropertyType)));
                                     }
-                                }
-                            }
-                        }
-
-                        if (allKeyPropertiesValidated == true)
-                        {
-                            IData data;
-                            using (DataScope dataScope = new DataScope(dataScopeIdentifier, locale))
-                            {
-                                data = DataFacade.TryGetDataByUniqueKey(type, dataKeyPropertyCollection);
-                            }
-
-                            if (data != null)
-                            {
-                                List<IData> referees = data.GetReferees();
-
-                                bool addToDelete = true;
-                                foreach (IData referee in referees)
-                                {
-                                    if (this.AddOnUninstallerContex.IsPendingForDeletionData(referee) == false)
+                                    else
                                     {
-                                        addToDelete = false;
-                                        LoggingService.LogWarning("DataPackageFragmentUninstaller", string.Format("Could not uninstall the data of the type '{0}'", type));
+                                        try
+                                        {
+                                            object keyValue = ValueTypeConverter.Convert(keyValueAttribute.Value, keyPropertyInfo.PropertyType);
+                                            dataKeyPropertyCollection.AddKeyProperty(keyName, keyValue);
+                                        }
+                                        catch (Exception)
+                                        {
+                                            allKeyPropertiesValidated = false;
+                                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentUninstaller.DataAddOnFragmentUninstaller"), keyValueAttribute.Value, keyPropertyInfo.PropertyType)));
+                                        }
                                     }
                                 }
+                            }
 
-                                if (addToDelete == true)
+                            if (allKeyPropertiesValidated == true)
+                            {
+                                IData data;
+                                using (DataScope dataScope = new DataScope(dataScopeIdentifier, locale))
                                 {
-                                    AddDataToDelete(type, dataScopeIdentifier, locale, dataKeyPropertyCollection);
+                                    data = DataFacade.TryGetDataByUniqueKey(type, dataKeyPropertyCollection);
+                                }
+
+                                if (data != null)
+                                {
+                                    List<IData> referees = data.GetReferees();
+
+                                    bool addToDelete = true;
+                                    foreach (IData referee in referees)
+                                    {
+                                        if (this.AddOnUninstallerContex.IsPendingForDeletionData(referee) == false)
+                                        {
+                                            addToDelete = false;
+                                            LoggingService.LogWarning("DataPackageFragmentUninstaller", string.Format("Could not uninstall the data of the type '{0}'", type));
+                                        }
+                                    }
+
+                                    if (addToDelete == true)
+                                    {
+                                        AddDataToDelete(type, dataScopeIdentifier, locale, dataKeyPropertyCollection);
+                                    }
                                 }
                             }
                         }
@@ -162,7 +163,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         public override void Uninstall()
         {
-            if (_datasToDelete == null) throw new InvalidOperationException("Has not been validated");
+            if (_datasToDelete == null) throw new InvalidOperationException("DataPackageFragmentUninstaller has not been validated");
 
             foreach (DataType dataType in _datasToDelete)
             {
