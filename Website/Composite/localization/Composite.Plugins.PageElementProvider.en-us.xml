@@ -86,7 +86,9 @@
   <string key="PageElementProvider.MissingActiveLanguageMessage" value="To add a page, you should firstly add at least one language. It can be done in the 'System' perspective." />
   <string key="PageElementProvider.MissingPageTypeTitle" value="Page type required" />
   <string key="PageElementProvider.MissingPageTypeHomepageMessage" value="To create a homepage, a page type without the &quot;only subpages&quot; restriction is required, but none have been added yet. You can add one under the Layout perspective." />
-  <string key="PageElementProvider.MissingPageTypeSubpageMessage" value="To create a subpage, a page type without the the only homepages restriction is requried, but none have been added yet. You can add one under the Layout perspective." />
+  <string key="PageElementProvider.MissingPageTypeSubpageMessage" value="To create a subpage, a page type without the the only homepages restriction is requried, but none have been added yet. You can add one under the Layout perspective." />  
+  <string key="PageElementProvider.RuleDontAllowPageAddTitle" value="Unable to add a page!" />
+  <string key="PageElementProvider.RuleDontAllowPageAddMessage" value="The rules that define availability for Page Types prohibit adding a page here." />
   <string key="ManageHostNames.Add.DialogLabel" value="Manage host name" />
   <string key="ManageHostNames.Add.HeadingTitle" value="Add host name association to page" />
   <string key="ManageHostNames.Add.HeadingDescription" value="You can associate a host name (or a domain name) to a page by specifying it in the field below. Please note that the DNS settings for the specified host name must also be configured, which is done outside this system." />

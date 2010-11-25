@@ -26,6 +26,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class AddNewPageWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
+        [NonSerialized]
+        private List<IPageType> selectablePageTypes = null;
+
+
         public AddNewPageWorkflow()
         {
             InitializeComponent();
@@ -55,22 +59,28 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
 
 
+
         private List<IPageType> GetSelectablePageTypes()
         {
-            if (this.EntityToken is PageElementProviderEntityToken)
+            if (selectablePageTypes == null)
             {
-                return
-                    DataFacade.GetData<IPageType>().
-                    Where(f => (f.Available == true) && (f.HomepageRelation != PageTypeHomepageRelation.OnlySubPages.ToString())).
-                    OrderBy(f => f.Name).
-                    ToList();
-            }
-            else
-            {
-                IPage page = this.GetDataItemFromEntityToken<IPage>();
+                if (this.EntityToken is PageElementProviderEntityToken)
+                {
+                    selectablePageTypes =
+                        DataFacade.GetData<IPageType>().
+                        Where(f => (f.Available == true) && (f.HomepageRelation != PageTypeHomepageRelation.OnlySubPages.ToString())).
+                        OrderBy(f => f.Name).
+                        ToList();
+                }
+                else
+                {
+                    IPage page = this.GetDataItemFromEntityToken<IPage>();
 
-                return page.GetChildPageSelectablePageTypes().ToList();
+                    selectablePageTypes = page.GetChildPageSelectablePageTypes().ToList();
+                }
             }
+
+            return selectablePageTypes;
         }
 
 
@@ -104,10 +114,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private void MissingTemplateAlertActivity_ExecuteCode(object sender, EventArgs e)
         {
-            FlowControllerServicesContainer flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
-            var managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
-
-            managementConsoleMessageService.ShowMessage(
+            ShowMessage(
                 DialogType.Message,
                 StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingTemplateTitle"),
                 StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingTemplateMessage"));
@@ -117,10 +124,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private void MissingActiveLanguageCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            FlowControllerServicesContainer flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
-            var managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
-
-            managementConsoleMessageService.ShowMessage(
+            ShowMessage(
                 DialogType.Message,
                 StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingActiveLanguageTitle"),
                 StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingActiveLanguageMessage"));
@@ -144,6 +148,16 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingPageTypeTitle"),
                     StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingPageTypeSubpageMessage"));
             }
+        }
+
+
+
+        private void RuleDontAllowPageAddCodeActivity_ExecuteCode(object sender, EventArgs e)
+        {
+            ShowMessage(
+                DialogType.Message,
+                StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.RuleDontAllowPageAddTitle"),
+                StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.RuleDontAllowPageAddMessage"));
         }
 
 
@@ -179,6 +193,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     Where(f => f.Available == true && f.HomepageRelation != PageTypeHomepageRelation.OnlyHomePages.ToString()).
                     Any();
             }
+        }
+
+
+
+        private void CheckRulesAllowPageAddExists(object sender, ConditionalEventArgs e)
+        {
+            e.Result = GetSelectablePageTypes().Count > 0;
         }
 
 
@@ -238,8 +259,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             newPage.PublicationStatus = GenericPublishProcessController.Draft;
 
             bindings.Add("NewPage", newPage);
-
-
 
 
 
@@ -450,7 +469,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
 
             // Adding default page content
-            IEnumerable<IPageTypeDefaultPageContent> pageTypeDefaultPageContents = 
+            IEnumerable<IPageTypeDefaultPageContent> pageTypeDefaultPageContents =
                 DataFacade.GetData<IPageTypeDefaultPageContent>().
                 Where(f => f.PageTypeId == selectedPageType.Id).
                 Evaluate();
@@ -517,7 +536,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             {
                 string matchString = new string(c, 1);
                 if (regex.IsMatch(matchString) == true)
-                {                 
+                {
                     generated.Append(c);
                 }
             }

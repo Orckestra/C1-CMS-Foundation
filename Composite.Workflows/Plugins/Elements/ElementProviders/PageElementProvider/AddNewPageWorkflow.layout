@@ -1,4 +1,4 @@
-﻿<StateMachineWorkflowDesigner xmlns:ns0="clr-namespace:System.Drawing;Assembly=System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Size="1190; 986" AutoSizeMargin="16; 24" AutoSize="False" Location="30; 30" Name="AddNewPageWorkflow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/workflow">
+﻿<StateMachineWorkflowDesigner xmlns:ns0="clr-namespace:System.Drawing;Assembly=System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Size="1151; 965" AutoSizeMargin="16; 24" AutoSize="False" Location="30; 30" Name="AddNewPageWorkflow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/workflow">
 	<StateMachineWorkflowDesigner.Designers>
 		<StateDesigner Size="226; 126" AutoSizeMargin="16; 24" Location="447; 453" Name="step2State">
 			<StateDesigner.Designers>
@@ -109,48 +109,62 @@
 		</StateDesigner>
 		<StateDesigner Size="210; 80" AutoSizeMargin="16; 24" AutoSize="False" Location="59; 111" Name="initializeActivity">
 			<StateDesigner.Designers>
-				<StateInitializationDesigner Name="initializeStateInitializationActivity" Size="843; 725" Location="203; 148">
+				<StateInitializationDesigner Name="initializeStateInitializationActivity" Size="1074; 918" Location="68; 148">
 					<StateInitializationDesigner.Designers>
-						<IfElseDesigner Name="ifElse_CheckTemplatesExists" Size="823; 644" Location="213; 210">
+						<IfElseDesigner Name="ifElse_CheckTemplatesExists" Size="1054; 837" Location="78; 210">
 							<IfElseDesigner.Designers>
-								<IfElseBranchDesigner Name="ifElseBranchActivity7" Size="612; 544" Location="232; 281">
+								<IfElseBranchDesigner Name="ifElseBranchActivity7" Size="843; 737" Location="97; 281">
 									<IfElseBranchDesigner.Designers>
-										<IfElseDesigner Name="ifElse_CheckActiveLanguagesExists" Size="592; 463" Location="242; 343">
+										<IfElseDesigner Name="ifElse_CheckActiveLanguagesExists" Size="823; 656" Location="107; 343">
 											<IfElseDesigner.Designers>
-												<IfElseBranchDesigner Name="ifElseBranchActivity5" Size="381; 363" Location="261; 414">
+												<IfElseBranchDesigner Name="ifElseBranchActivity5" Size="612; 556" Location="126; 414">
 													<IfElseBranchDesigner.Designers>
-														<IfElseDesigner Name="ifElse_CheckPageTypesExists" Size="361; 282" Location="271; 476">
+														<IfElseDesigner Name="ifElse_CheckPageTypesExists" Size="592; 475" Location="136; 476">
 															<IfElseDesigner.Designers>
-																<IfElseBranchDesigner Name="ifElseBranchActivity11" Size="150; 182" Location="290; 547">
+																<IfElseBranchDesigner Name="ifElseBranchActivity11" Size="381; 375" Location="155; 547">
 																	<IfElseBranchDesigner.Designers>
-																		<CodeDesigner Name="stepInitialize_codeActivity" Size="130; 41" Location="300; 609" />
-																		<SetStateDesigner Name="setStateActivity4" Size="130; 41" Location="300; 669" />
+																		<IfElseDesigner Name="ifElse_RulesDontAllowPageAdd" Size="361; 294" Location="165; 609">
+																			<IfElseDesigner.Designers>
+																				<IfElseBranchDesigner Name="ifElseBranchActivity13" Size="150; 194" Location="184; 680">
+																					<IfElseBranchDesigner.Designers>
+																						<CodeDesigner Name="stepInitialize_codeActivity" Size="130; 41" Location="194; 742" />
+																						<SetStateDesigner Name="setStateActivity4" Size="130; 41" Location="194; 802" />
+																					</IfElseBranchDesigner.Designers>
+																				</IfElseBranchDesigner>
+																				<IfElseBranchDesigner Name="ifElseBranchActivity14" Size="150; 194" Location="357; 680">
+																					<IfElseBranchDesigner.Designers>
+																						<CodeDesigner Name="RuleDontAllowPageAddCodeActivity" Size="130; 41" Location="367; 742" />
+																						<SetStateDesigner Name="setStateActivity10" Size="130; 53" Location="367; 802" />
+																					</IfElseBranchDesigner.Designers>
+																				</IfElseBranchDesigner>
+																			</IfElseDesigner.Designers>
+																		</IfElseDesigner>
 																	</IfElseBranchDesigner.Designers>
 																</IfElseBranchDesigner>
-																<IfElseBranchDesigner Name="ifElseBranchActivity12" Size="150; 182" Location="463; 547">
+																<IfElseBranchDesigner Name="ifElseBranchActivity12" Size="150; 375" Location="559; 547">
 																	<IfElseBranchDesigner.Designers>
-																		<CodeDesigner Name="MissingPageTypeCodeActivity" Size="130; 41" Location="473; 609" />
-																		<SetStateDesigner Name="setStateActivity9" Size="130; 41" Location="473; 669" />
+																		<CodeDesigner Name="MissingPageTypeCodeActivity" Size="130; 41" Location="569; 609" />
+																		<SetStateDesigner Name="setStateActivity9" Size="130; 41" Location="569; 669" />
 																	</IfElseBranchDesigner.Designers>
 																</IfElseBranchDesigner>
 															</IfElseDesigner.Designers>
 														</IfElseDesigner>
 													</IfElseBranchDesigner.Designers>
 												</IfElseBranchDesigner>
-												<IfElseBranchDesigner Name="ifElseBranchActivity6" Size="150; 363" Location="665; 414">
+												<IfElseBranchDesigner Name="ifElseBranchActivity6" Size="150; 556" Location="761; 414">
 													<IfElseBranchDesigner.Designers>
-														<CodeDesigner Name="MissingActiveLanguageCodeActivity" Size="130; 41" Location="675; 476" />
-														<SetStateDesigner Name="setStateActivity6" Size="130; 41" Location="675; 536" />
+														<CodeDesigner Name="MissingActiveLanguageCodeActivity" Size="130; 41" Location="771; 476" />
+														<SetStateDesigner Name="setStateActivity6" Size="130; 41" Location="771; 536" />
 													</IfElseBranchDesigner.Designers>
 												</IfElseBranchDesigner>
 											</IfElseDesigner.Designers>
 										</IfElseDesigner>
 									</IfElseBranchDesigner.Designers>
 								</IfElseBranchDesigner>
-								<IfElseBranchDesigner Name="ifElseBranchActivity8" Size="150; 544" Location="867; 281">
+								<IfElseBranchDesigner Name="ifElseBranchActivity8" Size="150; 737" Location="963; 281">
 									<IfElseBranchDesigner.Designers>
-										<CodeDesigner Name="MissingTemplateAlertActivity" Size="130; 41" Location="877; 343" />
-										<SetStateDesigner Name="setStateActivity20" Size="130; 53" Location="877; 403" />
+										<CodeDesigner Name="MissingTemplateAlertActivity" Size="130; 41" Location="973; 343" />
+										<SetStateDesigner Name="setStateActivity20" Size="130; 53" Location="973; 403" />
 									</IfElseBranchDesigner.Designers>
 								</IfElseBranchDesigner>
 							</IfElseDesigner.Designers>
@@ -257,6 +271,13 @@
 				<ns0:Point X="1064" Y="854" />
 			</StateDesignerConnector.Segments>
 		</StateDesignerConnector>
+		<StateDesignerConnector TargetActivity="finishState" SetStateName="setStateActivity6" SourceActivity="initializeActivity" TargetConnectionIndex="0" SourceStateName="initializeActivity" TargetConnectionEdge="Top" SourceConnectionEdge="Right" EventHandlerName="initializeStateInitializationActivity" SourceConnectionIndex="0" TargetStateName="finishState">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="265" Y="152" />
+				<ns0:Point X="1064" Y="152" />
+				<ns0:Point X="1064" Y="854" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
 		<StateDesignerConnector TargetActivity="step1State" SetStateName="setStateActivity4" SourceActivity="initializeActivity" TargetConnectionIndex="0" SourceStateName="initializeActivity" TargetConnectionEdge="Top" SourceConnectionEdge="Left" EventHandlerName="initializeStateInitializationActivity" SourceConnectionIndex="0" TargetStateName="step1State">
 			<StateDesignerConnector.Segments>
 				<ns0:Point X="63" Y="152" />
@@ -264,13 +285,6 @@
 				<ns0:Point X="53" Y="241" />
 				<ns0:Point X="261" Y="241" />
 				<ns0:Point X="261" Y="253" />
-			</StateDesignerConnector.Segments>
-		</StateDesignerConnector>
-		<StateDesignerConnector TargetActivity="finishState" SetStateName="setStateActivity6" SourceActivity="initializeActivity" TargetConnectionIndex="0" SourceStateName="initializeActivity" TargetConnectionEdge="Top" SourceConnectionEdge="Right" EventHandlerName="initializeStateInitializationActivity" SourceConnectionIndex="0" TargetStateName="finishState">
-			<StateDesignerConnector.Segments>
-				<ns0:Point X="265" Y="152" />
-				<ns0:Point X="1064" Y="152" />
-				<ns0:Point X="1064" Y="854" />
 			</StateDesignerConnector.Segments>
 		</StateDesignerConnector>
 		<StateDesignerConnector TargetActivity="finishState" SetStateName="setStateActivity9" SourceActivity="initializeActivity" TargetConnectionIndex="0" SourceStateName="initializeActivity" TargetConnectionEdge="Top" SourceConnectionEdge="Right" EventHandlerName="initializeStateInitializationActivity" SourceConnectionIndex="0" TargetStateName="finishState">
