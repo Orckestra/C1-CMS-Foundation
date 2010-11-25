@@ -61,7 +61,12 @@ namespace Composite.Data.Hierarchy.DataAncestorProviders
 
 
 
-    internal sealed class PropertyDataAncestorProvider : IDataAncestorProvider
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class PropertyDataAncestorProvider : IDataAncestorProvider
     {
         private Dictionary<Type, Entry> _methodInfoCache = new Dictionary<Type, Entry>();
 
