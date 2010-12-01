@@ -36,7 +36,7 @@ namespace Composite.Core.WebClient.Presentation
 				
 			public User(HttpContext context)
 			{
-                string agent = context.Request.UserAgent;
+                string agent = context.Request.UserAgent ?? string.Empty;
 				
 				this.isIE = agent.Contains("MSIE");
                 this.isIE6 = agent.Contains("MSIE 6");

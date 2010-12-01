@@ -167,17 +167,14 @@ public partial class ScriptLoaderControl : System.Web.UI.UserControl
      */
     private string _getScriptMarkup()
     {
-        String markup = null;
+        string userAgent = Request.UserAgent;
 
-        if (Request.UserAgent.IndexOf("Gecko") > -1)
+        if(userAgent != null && userAgent.IndexOf("Gecko") > -1) 
         {
-            markup = @"<script type=""application/javascript"" src=""${scriptsource}""/>";
+            return @"<script type=""application/javascript"" src=""${scriptsource}""/>";
         }
-        else
-        {
-            markup = @"<script type=""text/javascript"" src=""${scriptsource}""></script>";
-        }
-        return markup;
+
+        return @"<script type=""text/javascript"" src=""${scriptsource}""></script>";
     }
 
     /**

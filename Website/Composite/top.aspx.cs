@@ -9,6 +9,12 @@ public partial class Composite_Management_Top : System.Web.UI.Page
     {
         if (SystemSetupFacade.IsSystemFirstTimeInitialized == false)
         {
+            if(System.Web.HttpContext.Current.Request.UserAgent == null)
+            {
+                Response.Redirect("unknownbrowser.aspx");
+                return;
+            }
+
             introholder.Visible = true;
             splashholder.Visible = false;
         }
