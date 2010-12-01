@@ -226,14 +226,13 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
         private static string MakeFilename(DataTypeDescriptor dataTypeDescriptor, DataScopeIdentifier dataScopeIdentifier, string cultureName)
         {
+            string typeFullName = StringExtensionMethods.CreateNamespace(dataTypeDescriptor.Namespace, dataTypeDescriptor.Name, '.');
+
             if (cultureName == "")
             {
-                return string.Format("{0}s_{1}.xml", StringExtensionMethods.CreateNamespace(dataTypeDescriptor.Namespace, dataTypeDescriptor.Name, '.'), dataScopeIdentifier.Name);
+                return string.Format("{0}_{1}.xml", typeFullName, dataScopeIdentifier.Name);
             }
-            else
-            {
-                return string.Format("{0}s_{1}_{2}.xml", StringExtensionMethods.CreateNamespace(dataTypeDescriptor.Namespace, dataTypeDescriptor.Name, '.'), dataScopeIdentifier.Name, cultureName);
-            }
+            return string.Format("{0}_{1}_{2}.xml", typeFullName, dataScopeIdentifier.Name, cultureName);
         }
 
 
