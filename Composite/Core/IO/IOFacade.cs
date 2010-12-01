@@ -4,19 +4,6 @@ using Composite.Core.IO.Plugins.IOProvider;
 using Composite.Plugins.IO.IOProviders.LocalIOPorivder;
 
 
-#warning MRJ: Delete this
-namespace Demo
-{
-    public class Functions
-    {
-        public static string ShowDate()
-        {
-            return System.DateTime.Now.ToLongDateString();
-        }
-    }
-}
-
-
 
 namespace Composite.Core.IO
 {
