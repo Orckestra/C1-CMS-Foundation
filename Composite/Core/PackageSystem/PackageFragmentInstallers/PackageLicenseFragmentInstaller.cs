@@ -24,8 +24,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             XElement publicKeyElement = this.Configuration.Where(f => f.Name == "RSAKeyValue").SingleOrDefault();
             if (publicKeyElement == null)
             {
-#warning MRJ: Localization
-                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentInstaller.OnlyOneElement")));
+                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageLicenseFragmentInstaller.MissingPublicKeyElement")));
                 return validationResult;
             }
 

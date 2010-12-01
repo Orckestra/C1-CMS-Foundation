@@ -85,4 +85,5 @@
   <string key="PackageVersionBumberFragmentUninstaller.WrongAttributeGuidFormat" value="Wrong attribute value format, Guid value expected" />
   <string key="PackageVersionBumberFragmentUninstaller.PackageIdDuplicate" value="The package id duplicate: '{0}'" />
   <string key="PackageVersionBumberFragmentUninstaller.WrongAttributeVersionFormat" value="Wrong attribute value format, Version value expected (x.y.z)" />
+  <string key="PackageLicenseFragmentInstaller.MissingPublicKeyElement" value="A public RSA key is missing in the package configuration" />
 </strings>
