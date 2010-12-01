@@ -86,7 +86,7 @@ namespace Composite.Core.Instrumentation.Foundation
                 XDocument doc = new XDocument(element);
 
                 // avoid writes to windows/system32 dir on web
-                XDocumentUtils.Save(doc, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TimerProfile.xml"));
+                doc.SaveToFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TimerProfile.xml"));
             }
             catch( Exception ex)
             {

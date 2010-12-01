@@ -59,7 +59,7 @@ namespace Composite.Core.Configuration
                             new XElement("Root", new XAttribute("Status", true))
                         );
 
-                        XDocumentUtils.Save(doc, SystemInitializedFilePath);
+                        doc.SaveToFile(SystemInitializedFilePath);
                     }
 
                     _isSystemFirstTimeInitializedValue = true;

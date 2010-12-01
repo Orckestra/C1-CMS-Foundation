@@ -61,7 +61,7 @@ namespace Composite.Core.Configuration
                         )
                     );
 
-            XDocumentUtils.Save(doc, filepath);
+            doc.SaveToFile(filepath);
         }
     }
 }

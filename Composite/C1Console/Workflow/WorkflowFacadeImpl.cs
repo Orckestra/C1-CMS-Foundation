@@ -1156,7 +1156,7 @@ namespace Composite.C1Console.Workflow
                     string filename = Path.Combine(SerializedWorkflowsDirectory, string.Format("{0}.xml", instanceid));
 
                     XDocument doc = new XDocument(element);
-                    XDocumentUtils.Save(doc, filename);
+                    doc.SaveToFile(filename);
 
                     LoggingService.LogVerbose("WorkflowFacade", string.Format("FormData persisted for workflow id = {0}", instanceid));
                 }

@@ -155,7 +155,7 @@ namespace Composite.Core.Configuration
                     {
                         // Kill monitoring of file changes:
                         //                        FileConfigurationSource.ResetImplementation(ConfigurationServices.FileConfigurationSourcePath, false);
-                        XDocumentUtils.Save(resultDocument, ConfigurationServices.FileConfigurationSourcePath);
+                        resultDocument.SaveToFile(ConfigurationServices.FileConfigurationSourcePath);
                         _configurationSource = new FileConfigurationSource(ConfigurationServices.FileConfigurationSourcePath);
                         // Kill monitoring of file changes:
                         //                        FileConfigurationSource.ResetImplementation(ConfigurationServices.FileConfigurationSourcePath, false);
@@ -180,7 +180,7 @@ namespace Composite.Core.Configuration
 
                         // Kill monitoring of file changes:
                         //                        FileConfigurationSource.ResetImplementation(ConfigurationServices.FileConfigurationSourcePath, false);
-                        XDocumentUtils.Save(document, ConfigurationServices.FileConfigurationSourcePath);
+                        document.SaveToFile(ConfigurationServices.FileConfigurationSourcePath);
                         _configurationSource = new FileConfigurationSource(ConfigurationServices.FileConfigurationSourcePath);
                         // Kill monitoring of file changes:
                         //                        FileConfigurationSource.ResetImplementation(ConfigurationServices.FileConfigurationSourcePath, false);
@@ -197,7 +197,7 @@ namespace Composite.Core.Configuration
         {
             string tempValidationFilePath = TempRandomConfigFilePath;
 
-            XDocumentUtils.Save(resultDocument, tempValidationFilePath);
+            resultDocument.SaveToFile(tempValidationFilePath);
 
             try
             {

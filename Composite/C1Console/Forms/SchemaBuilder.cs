@@ -368,14 +368,13 @@ namespace Composite.C1Console.Forms
                         xmlns,
                         xmlns.Key
                         );
-                        XDocumentUtils.Save(uicontrols, OutputDir + channel.Key + ((countChannels++ > 0) ? "." + countChannels : "") + ".xsd");
+                        uicontrols.SaveToFile(OutputDir + channel.Key + ((countChannels++ > 0) ? "." + countChannels : "") + ".xsd");
                     }
-
-
                 }
-
-
             }
+
+
+
             /// <summary>
             /// For all namespaces of functions generate XSD file
             /// </summary>
@@ -395,7 +394,7 @@ namespace Composite.C1Console.Forms
 
                     );
 
-                    XDocumentUtils.Save(uicontrols, OutputDir + "Plugins.Function" + ((countChannels++ > 0) ? "." + countChannels : "") + ".xsd");
+                    uicontrols.SaveToFile(OutputDir + "Plugins.Function" + ((countChannels++ > 0) ? "." + countChannels : "") + ".xsd");
                 }
             }
 

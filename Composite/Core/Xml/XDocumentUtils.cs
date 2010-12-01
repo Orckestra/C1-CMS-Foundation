@@ -43,6 +43,16 @@ namespace Composite.Core.Xml
 
 
 
+        /// <summary>
+        /// This should be a part of the I/O layer
+        /// </summary>
+        public static void SaveToFile(this XDocument document, string filename)
+        {
+            Save(document, filename);
+        }
+
+
+
         public static string GetDocumentAsString(this XDocument document)
         {
             if (document == null) throw new ArgumentNullException("document");
