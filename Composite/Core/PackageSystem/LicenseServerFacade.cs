@@ -36,8 +36,7 @@ namespace Composite.Core.PackageSystem
         {
             get
             {
-                //return "http://package.composite.net/PackageLicense/LicenseDefinitionService.asmx";
-                return "http://localhost:23974/Website/PackageLicense/LicenseDefinitionService.asmx";
+                return "http://package.composite.net/PackageLicense/LicenseDefinitionService.asmx";
             }
         }
 
