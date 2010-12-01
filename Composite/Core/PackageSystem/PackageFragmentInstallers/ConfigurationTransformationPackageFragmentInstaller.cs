@@ -39,7 +39,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 this.InstallerContex.ZipFileSystem,
                 true);
 
-            if (this.InstallerContex.AddOnInformation.CanBeUninstalled == true)
+            if (this.InstallerContex.PackageInformation.CanBeUninstalled == true)
             {
 
                 ValidateXslt(
@@ -70,7 +70,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 }
             }
 
-            if (this.InstallerContex.AddOnInformation.CanBeUninstalled == true)
+            if (this.InstallerContex.PackageInformation.CanBeUninstalled == true)
             {
                 yield return this.UninstallElement;
             }

@@ -27,7 +27,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 _uninstallElementName,
                 () => this.UninstallElement.Attribute(_xsltFilePathAttributeName),
                 () => this.UninstallXsltFilePath,
-                this.AddOnUninstallerContex.ZipFileSystem,
+                this.UninstallerContex.ZipFileSystem,
                 true);
 
             return validationResults;
@@ -35,7 +35,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         public override void Uninstall()
         {
-            using (Stream xsltFileStream = this.AddOnUninstallerContex.ZipFileSystem.GetFileStream(this.UninstallXsltFilePath))
+            using (Stream xsltFileStream = this.UninstallerContex.ZipFileSystem.GetFileStream(this.UninstallXsltFilePath))
             {
                 using (TextReader xsltTextReader = new C1StreamReader(xsltFileStream))
                 {

@@ -18,7 +18,10 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             if (packageUninstallerContex == null) throw new ArgumentNullException("packageUninstallerContex");
 
             this.Configuration = configuration;
+#pragma warning disable 618
             this.AddOnUninstallerContex = packageUninstallerContex;
+#pragma warning restore 618
+            this.UninstallerContex = packageUninstallerContex;
         }
 
 
@@ -26,7 +29,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         public abstract void Uninstall();
 
         protected IEnumerable<XElement> Configuration { get; set; }
+        [Obsolete("Use PackageInformation")]
         protected PackageUninstallerContext AddOnUninstallerContex { get; private set; }
+        protected PackageUninstallerContext UninstallerContex { get; private set; }
 
         internal static string GetResourceString(string key)
         {

@@ -175,6 +175,16 @@ namespace Composite.Core.Configuration
                 return GlobalSettingsProviderPluginFacade.InlineCSharpFunctionDirectory;
             }
         }
+
+
+
+        public string PackageLicenseDirectory
+        {
+            get
+            {
+                return GlobalSettingsProviderPluginFacade.PackageLicenseDirectory;
+            }
+        }
         
 
 

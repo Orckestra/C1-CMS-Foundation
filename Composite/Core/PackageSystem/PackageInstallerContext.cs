@@ -28,14 +28,21 @@ namespace Composite.Core.PackageSystem
 
             this.ZipFileSystem = zipFileSystem;
             this.TempDirectory = tempDirectory;
+
+#pragma warning disable 618
             this.AddOnInformation = packageInformation;
+#pragma warning restore 618
+            this.PackageInformation = packageInformation;
         }
 
 
 
         public IZipFileSystem ZipFileSystem { get; private set; }
         public string TempDirectory { get; private set; }
+
+        [Obsolete("Use PackageInformation")]
         public PackageInformation AddOnInformation { get; private set; }
+        public PackageInformation PackageInformation { get; private set; }
 
 
 

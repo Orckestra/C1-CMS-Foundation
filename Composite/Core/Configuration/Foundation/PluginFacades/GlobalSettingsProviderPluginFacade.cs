@@ -179,6 +179,16 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
                 return UseReaderLock(provider => provider.InlineCSharpFunctionDirectory);
             }
         }
+
+
+
+        public static string PackageLicenseDirectory
+        {
+            get
+            {
+                return UseReaderLock(provider => provider.PackageLicenseDirectory);
+            }
+        }
         
 
 

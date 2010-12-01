@@ -184,7 +184,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         xslt.Transform(inputXml, writer);
 					}
 
-                    XDocumentUtils.Save(resultDocument, outputXml);
+                    resultDocument.SaveToFile(outputXml);
 
 					LoggingService.LogVerbose("XsltTransformationResult", resultDocument.ToString());
 				}

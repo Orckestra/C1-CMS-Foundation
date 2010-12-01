@@ -110,7 +110,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     attribute.Value = kvp.Value;
 
-                    XDocumentUtils.Save(doc, this.InstalledPackages[kvp.Key]);
+                    doc.SaveToFile(this.InstalledPackages[kvp.Key]);
                 }
             }
 

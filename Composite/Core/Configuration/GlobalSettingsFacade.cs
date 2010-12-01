@@ -219,6 +219,16 @@ namespace Composite.Core.Configuration
             }
         }
 
+
+
+        public static string PackageLicenseDirectory
+        {
+            get
+            {
+                return _globalSettingsFacade.PackageLicenseDirectory;
+            }
+        }
+
         
 
         public static IResourceCacheSettings ResourceCacheSettings

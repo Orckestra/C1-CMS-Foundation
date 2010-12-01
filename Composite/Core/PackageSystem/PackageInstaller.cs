@@ -26,14 +26,14 @@ namespace Composite.Core.PackageSystem
 
         private bool _isInitialized = false;
         private PackageInstallerContext _packageInstallerContex;
-        // IAddOnFragmentInstaller -> uninstall type, null is allowed
+        // IPackageFragmentInstaller -> uninstall type, null is allowed
         private Dictionary<IPackageFragmentInstaller, Type> _packageFramentInstallers = new Dictionary<IPackageFragmentInstaller, Type>();
 
-        private IPackageInstallerUninstallerFactory AddOnInstallerUninstallerFactory { get; set; }
+        private IPackageInstallerUninstallerFactory PackageInstallerUninstallerFactory { get; set; }
         private string ZipFilename { get; set; }
-        private string AddOnInstallDirectory { get; set; }
+        private string PackageInstallDirectory { get; set; }
         private string TempDirectory { get; set; }
-        private PackageInformation AddOnInformation { get; set; }
+        private PackageInformation PackageInformation { get; set; }
 
         public PackageInstaller(IPackageInstallerUninstallerFactory packageInstallerUninstallerFactory, string zipFilename, string packageInstallDirectory, string tempDirectory, PackageInformation packageInformation)
         {
@@ -43,17 +43,17 @@ namespace Composite.Core.PackageSystem
             if (string.IsNullOrEmpty(tempDirectory) == true) throw new ArgumentNullException("tempDirectory");
             if (packageInformation == null) throw new ArgumentNullException("packageInformation");
 
-            this.AddOnInstallerUninstallerFactory = packageInstallerUninstallerFactory;
+            this.PackageInstallerUninstallerFactory = packageInstallerUninstallerFactory;
             this.ZipFilename = zipFilename;
-            this.AddOnInstallDirectory = packageInstallDirectory;
+            this.PackageInstallDirectory = packageInstallDirectory;
             this.TempDirectory = tempDirectory;
-            this.AddOnInformation = packageInformation;
+            this.PackageInformation = packageInformation;
         }
 
 
-        public bool CanBeUninstalled { get { return this.AddOnInformation.CanBeUninstalled; } }
-        public bool FlushOnCompletion { get { return this.AddOnInformation.FlushOnCompletion; } }
-        public bool ReloadConsoleOnCompletion { get { return this.AddOnInformation.ReloadConsoleOnCompletion; } }
+        public bool CanBeUninstalled { get { return this.PackageInformation.CanBeUninstalled; } }
+        public bool FlushOnCompletion { get { return this.PackageInformation.FlushOnCompletion; } }
+        public bool ReloadConsoleOnCompletion { get { return this.PackageInformation.ReloadConsoleOnCompletion; } }
 
 
         public IEnumerable<PackageFragmentValidationResult> Validate()
@@ -118,7 +118,7 @@ namespace Composite.Core.PackageSystem
         {
             using (TransactionScope transactionScope = TransactionsFacade.Create(true, TimeSpan.FromMinutes(30.0)))
             {
-                string uninstallFilename = Path.Combine(this.AddOnInstallDirectory,
+                string uninstallFilename = Path.Combine(this.PackageInstallDirectory,
                                                         PackageSystemSettings.UninstallFilename);
 
                 Exception installException = null;
@@ -160,7 +160,7 @@ namespace Composite.Core.PackageSystem
                                     XmlUtils.GetXName(PackageSystemSettings.XmlNamespace,
                                                       PackageSystemSettings.PackageInstallerElementName),
                                     uninstallElements));
-                        XDocumentUtils.Save(doc, uninstallFilename);
+                        doc.SaveToFile(uninstallFilename);
                     }
                 }
 
@@ -170,13 +170,15 @@ namespace Composite.Core.PackageSystem
                     if (this.CanBeUninstalled == true)
                     {
                         IPackageUninstaller packageUninstaller =
-                            this.AddOnInstallerUninstallerFactory.CreateUninstaller(this.ZipFilename, uninstallFilename,
-                                                                                    this.AddOnInstallDirectory,
-                                                                                    TempDirectoryFacade.
-                                                                                        CreateTempDirectory(),
-                                                                                    this.FlushOnCompletion,
-                                                                                    this.ReloadConsoleOnCompletion,
-                                                                                    false);
+                            this.PackageInstallerUninstallerFactory.CreateUninstaller(
+                                this.ZipFilename, uninstallFilename,
+                                this.PackageInstallDirectory,
+                                TempDirectoryFacade.
+                                CreateTempDirectory(),
+                                this.FlushOnCompletion,
+                                this.ReloadConsoleOnCompletion,
+                                false, 
+                                this.PackageInformation);
 
                         List<PackageFragmentValidationResult> validationResult = null;
                         try
@@ -239,7 +241,7 @@ namespace Composite.Core.PackageSystem
             Exception exception = null;
             try
             {
-                _packageInstallerContex = new PackageInstallerContext(new ZipFileSystem(this.ZipFilename), this.TempDirectory, this.AddOnInformation);
+                _packageInstallerContex = new PackageInstallerContext(new ZipFileSystem(this.ZipFilename), this.TempDirectory, this.PackageInformation);
             }
             catch (Exception ex)
             {
@@ -272,7 +274,7 @@ namespace Composite.Core.PackageSystem
 
         private IEnumerable<PackageFragmentValidationResult> LoadAddOnFragmentInstallerBinaries(XElement packageFragmentInstallerBinariesElement)
         {
-            string binariesDirectory = Path.Combine(this.AddOnInstallDirectory, PackageSystemSettings.BinariesDirectoryName);
+            string binariesDirectory = Path.Combine(this.PackageInstallDirectory, PackageSystemSettings.BinariesDirectoryName);
 
             if (C1Directory.Exists(binariesDirectory) == false)
             {

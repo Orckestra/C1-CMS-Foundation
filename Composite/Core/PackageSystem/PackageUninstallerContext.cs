@@ -16,15 +16,17 @@ namespace Composite.Core.PackageSystem
         private Dictionary<Type, Dictionary<DataScopeIdentifier, Dictionary<CultureInfo, List<DataKeyPropertyCollection>>>> _dataPendingForDeletion = new Dictionary<Type, Dictionary<DataScopeIdentifier, Dictionary<CultureInfo, List<DataKeyPropertyCollection>>>>();
 
 
-        internal PackageUninstallerContext(IZipFileSystem zipFileSystem)
+        internal PackageUninstallerContext(IZipFileSystem zipFileSystem, PackageInformation packageInformation)
         {
             if (zipFileSystem == null) throw new ArgumentNullException("zipFileSystem");
 
             this.ZipFileSystem = zipFileSystem;
+            this.PackageInformation = packageInformation;
         }
 
 
         public IZipFileSystem ZipFileSystem { get; private set; }
+        public PackageInformation PackageInformation { get; private set; }
 
 
         public void AddPendingForDeletionData(Type interfaceType, DataScopeIdentifier dataScopeIdentifier, CultureInfo locale, DataKeyPropertyCollection dataKeyPropertyCollection)

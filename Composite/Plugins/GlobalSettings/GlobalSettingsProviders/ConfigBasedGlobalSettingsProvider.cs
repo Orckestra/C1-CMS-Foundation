@@ -135,6 +135,12 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         }
 
 
+        public string PackageLicenseDirectory
+        {
+            get { return _configurationData.PackageLicenseDirectory; }
+        }
+        
+
         public IResourceCacheSettings ResourceCacheSettings
         {
             get
@@ -441,8 +447,17 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
             get { return (string)base[_inlineCSharpFunctionDirectoryPropertyName]; }
             set { base[_inlineCSharpFunctionDirectoryPropertyName] = value; }
         }
-        
 
+
+
+        private const string _packageLicenseDirectoryPropertyName = "packageLicenseDirectory";
+        [ConfigurationProperty(_packageLicenseDirectoryPropertyName, DefaultValue = "~")]
+        public string PackageLicenseDirectory
+        {
+            get { return (string)base[_packageLicenseDirectoryPropertyName]; }
+            set { base[_packageLicenseDirectoryPropertyName] = value; }
+        }
+        
 
         private const int A_DAY_IN_MINUTES = 1440;
         private const int A_WEEK_IN_MINUTES = 10080;

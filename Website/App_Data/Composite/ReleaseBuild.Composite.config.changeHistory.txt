@@ -96,3 +96,4 @@ Changes since C1 1.2 SP2 Patch 3
  - <exceptionHandling> removed
  - Composite.SetupConfiguration section added
  - inlineCSharpFunctionDirectory="~/App_Data/Composite/InlineCSharpFunctions" added to GlobalSettingsProviderPlugins
+ - packageLicenseDirectory="~/App_Data/Composite/PackageLicenses" added to GlobalSettingsProviderPlugins

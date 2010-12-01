@@ -90,7 +90,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 			    string xmlFilePath = PathUtil.Resolve(xslfile.pathXml);
 
-                using (stream = this.AddOnUninstallerContex.ZipFileSystem.GetFileStream(xslfile.pathXsl))
+                using (stream = this.UninstallerContex.ZipFileSystem.GetFileStream(xslfile.pathXsl))
 				{
 					var xslt = new XslCompiledTransform();
 					using (XmlReader xslReader = XmlReader.Create(stream))
@@ -104,7 +104,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         xslt.Transform(xmlFilePath, writer);
 					}
 
-                    XDocumentUtils.Save(resultDocument, xmlFilePath);
+                    resultDocument.SaveToFile(xmlFilePath);
 
 					LoggingService.LogVerbose("XsltTransformationResult", resultDocument.ToString());
 				}

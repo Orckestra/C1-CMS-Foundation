@@ -220,7 +220,7 @@ namespace Composite.Core.PackageSystem
                 }
 
                 string infoFilename = Path.Combine(packageInstallDirectory, PackageSystemSettings.PackageInformationFilename);              
-                XDocumentUtils.Save(doc, infoFilename);
+                doc.SaveToFile(infoFilename);
 
                 PackageInstaller packageInstaller = new PackageInstaller(new PackageInstallerUninstallerFactory(), packageZipFilename, packageInstallDirectory, TempDirectoryFacade.CreateTempDirectory(), packageInformation);
 
@@ -253,12 +253,28 @@ namespace Composite.Core.PackageSystem
                 if (installedPackageInformation.CanBeUninstalled == false) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.Uninstallable")) });
 
                 string zipFilePath = Path.Combine(absolutePath, PackageSystemSettings.ZipFilename);
-                if (C1File.Exists(zipFilePath) == false) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingZipFile"), zipFilePath)) });
+                if (C1File.Exists(zipFilePath) == false) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingZipFile"), zipFilePath)) });           
 
                 string uninstallFilePath = Path.Combine(absolutePath, PackageSystemSettings.UninstallFilename);
                 if (C1File.Exists(uninstallFilePath) == false) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingUninstallFile"), uninstallFilePath)) });
 
-                PackageUninstaller packageUninstaller = new PackageUninstaller(zipFilePath, uninstallFilePath, absolutePath, TempDirectoryFacade.CreateTempDirectory(), installedPackageInformation.FlushOnCompletion, installedPackageInformation.ReloadConsoleOnCompletion, true);
+                PackageInformation packageInformation = new PackageInformation
+                {
+                    Id = installedPackageInformation.Id,
+                    Name = installedPackageInformation.Name,
+                    GroupName = installedPackageInformation.GroupName,
+                    Author = installedPackageInformation.Author,
+                    Website = installedPackageInformation.Website,
+                    Description = installedPackageInformation.Description,
+                    Version = installedPackageInformation.Version,
+                    CanBeUninstalled = installedPackageInformation.CanBeUninstalled,
+                    SystemLockingType = installedPackageInformation.SystemLockingType,
+                    FlushOnCompletion = installedPackageInformation.FlushOnCompletion,
+                    ReloadConsoleOnCompletion = installedPackageInformation.ReloadConsoleOnCompletion,
+                };
+
+
+                PackageUninstaller packageUninstaller = new PackageUninstaller(zipFilePath, uninstallFilePath, absolutePath, TempDirectoryFacade.CreateTempDirectory(), installedPackageInformation.FlushOnCompletion, installedPackageInformation.ReloadConsoleOnCompletion, true, packageInformation);
 
                 PackageManagerUninstallProcess packageManagerUninstallProcess = new PackageManagerUninstallProcess(packageUninstaller, absolutePath, installedPackageInformation.SystemLockingType);
                 return packageManagerUninstallProcess;

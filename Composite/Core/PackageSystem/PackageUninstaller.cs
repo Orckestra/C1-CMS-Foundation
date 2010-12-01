@@ -26,10 +26,11 @@ namespace Composite.Core.PackageSystem
         private string AddOnInstallationDirectory { get; set; }
         private string TempDirectory { get; set; }
         private bool UseTransaction { get; set; }
+        private PackageInformation PackageInformation { get; set; }
 
 
 
-        public PackageUninstaller(string zipFilename, string uninstallFilename, string packageInstallationDirectory, string tempDirectory, bool flushOnCompletion, bool reloadConsoleOnCompletion, bool useTransaction)
+        public PackageUninstaller(string zipFilename, string uninstallFilename, string packageInstallationDirectory, string tempDirectory, bool flushOnCompletion, bool reloadConsoleOnCompletion, bool useTransaction, PackageInformation packageInformation)
         {
             if (string.IsNullOrEmpty(zipFilename) == true) throw new ArgumentNullException("zipFilename");
             if (string.IsNullOrEmpty(uninstallFilename) == true) throw new ArgumentNullException("uninstallFilename");
@@ -43,6 +44,7 @@ namespace Composite.Core.PackageSystem
             this.FlushOnCompletion = flushOnCompletion;
             this.ReloadConsoleOnCompletion = reloadConsoleOnCompletion;
             this.UseTransaction = useTransaction;
+            this.PackageInformation = packageInformation;
         }
 
 
@@ -221,7 +223,7 @@ namespace Composite.Core.PackageSystem
             Exception exception = null;
             try
             {
-                packageUninstallerContex = new PackageUninstallerContext(new ZipFileSystem(this.ZipFilename));
+                packageUninstallerContex = new PackageUninstallerContext(new ZipFileSystem(this.ZipFilename), this.PackageInformation);
             }
             catch (Exception ex)
             {

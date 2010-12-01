@@ -151,6 +151,7 @@
     <Compile Include="Core\Implementation\DataEventsImplementation.cs" />
     <Compile Include="Core\Implementation\ImplementationFactory.cs" />
     <Compile Include="Core\Implementation\LogImplementation.cs" />
+    <Compile Include="Core\Implementation\PackageLicenseHelperImplementation.cs" />
     <Compile Include="Core\Implementation\PageDataConnectionImplementation.cs" />
     <Compile Include="Core\Implementation\SitemapNavigatorImplementation.cs" />
     <Compile Include="Core\IO\C1Directory.cs" />
@@ -170,8 +171,16 @@
     <Compile Include="Core\IO\Plugins\IOProvider\IC1StreamWriter.cs" />
     <Compile Include="Core\IO\Plugins\IOProvider\IIOProvider.cs" />
     <Compile Include="Core\Log.cs" />
+    <Compile Include="Core\PackageSystem\LicenseDefinitionManager.cs" />
+    <Compile Include="Core\PackageSystem\LicenseDefinitionUtils.cs" />
+    <Compile Include="Core\PackageSystem\LicenseServerFacade.cs" />
+    <Compile Include="Core\PackageSystem\PackageFragmentInstallers\PackageLicenseFragmentInstaller.cs" />
+    <Compile Include="Core\PackageSystem\PackageFragmentInstallers\PackageLicenseFragmentUninstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\RebootingConsoleFragmentInstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\RebootingConsoleFragmentUninstaller.cs" />
+    <Compile Include="Core\PackageSystem\PackageLicenseDefinition.cs" />
+    <Compile Include="Core\PackageSystem\PackageLicenseHelper.cs" />
+    <Compile Include="Core\PackageSystem\WebServiceClient\LicenseDefinitionServiceSoapClient.cs" />
     <Compile Include="Core\Sql\SqlConnectionManager.cs" />
     <Compile Include="Core\WebClient\ApplicationLevelEventHandlers.cs" />
     <Compile Include="Core\WebClient\Presentation\LessRequestHandler.cs" />

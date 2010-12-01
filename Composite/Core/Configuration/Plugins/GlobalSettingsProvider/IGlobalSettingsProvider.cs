@@ -40,6 +40,8 @@ namespace Composite.Core.Configuration.Plugins.GlobalSettingsProvider
 
         string InlineCSharpFunctionDirectory { get; }
 
+        string PackageLicenseDirectory { get; }
+
         IResourceCacheSettings ResourceCacheSettings { get; }
 
         IEnumerable<CultureInfo> ApplicationCultures { get; }

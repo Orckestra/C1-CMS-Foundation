@@ -204,5 +204,15 @@ namespace Composite.Core.Implementation
         }
 
         #endregion
+
+
+
+        public virtual PackageLicenseHelperImplementation StatelessPackageLicenseHelper
+        {
+            get
+            {
+                return new PackageLicenseHelperImplementation();
+            }
+        }
     }
 }
