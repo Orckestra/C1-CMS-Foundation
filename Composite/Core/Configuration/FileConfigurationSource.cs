@@ -34,7 +34,7 @@ namespace Composite.Core.Configuration
             if (string.IsNullOrEmpty(configurationFilepath)) throw new ArgumentNullException("configurationFilepath");
 			this.configurationFilepath = RootConfigurationFilePath(configurationFilepath);
 
-            if (!C1File.Exists(this.configurationFilepath)) throw new FileNotFoundException("File not found", this.configurationFilepath);
+            if (!File.Exists(this.configurationFilepath)) throw new FileNotFoundException("File not found", this.configurationFilepath);
 			EnsureImplementation(this.configurationFilepath);
 		}
 

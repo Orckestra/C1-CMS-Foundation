@@ -8,6 +8,7 @@ using Composite.C1Console.Events;
 using Composite.Core.IO;
 using Composite.Core.Xml;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
+using System.IO;
 
 
 namespace Composite.Core.Configuration
@@ -30,9 +31,16 @@ namespace Composite.Core.Configuration
             if (RuntimeInformation.IsUnittest == false)
             {
                 _fileConfigurationSourcePath = GetFileConfigurationSourcePath();
+                
                 if (_fileConfigurationSourcePath != null)
                 {
-                    FileUtils.RemoveReadOnly(_fileConfigurationSourcePath);
+                    FileAttributes fileAttributes = File.GetAttributes(_fileConfigurationSourcePath);
+
+                    if ((fileAttributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                    {
+                        fileAttributes ^= FileAttributes.ReadOnly;
+                        File.SetAttributes(_fileConfigurationSourcePath, fileAttributes);
+                    }
                 }
 
                 _configurationSource = new FileConfigurationSource(_fileConfigurationSourcePath);

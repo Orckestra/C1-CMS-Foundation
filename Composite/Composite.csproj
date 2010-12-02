@@ -161,6 +161,7 @@
     <Compile Include="Core\IO\C1StreamReader.cs" />
     <Compile Include="Core\IO\C1StreamWriter.cs" />
     <Compile Include="Core\IO\C1WaitForChangedResult.cs" />
+    <Compile Include="Core\IO\Foundation\PluginFacades\IOProviderPluginFacade.cs" />
     <Compile Include="Core\IO\IOFacade.cs" />
     <Compile Include="Core\IO\Plugins\IOProvider\IC1Configuration.cs" />
     <Compile Include="Core\IO\Plugins\IOProvider\IC1Directory.cs" />
@@ -170,6 +171,12 @@
     <Compile Include="Core\IO\Plugins\IOProvider\IC1StreamReader.cs" />
     <Compile Include="Core\IO\Plugins\IOProvider\IC1StreamWriter.cs" />
     <Compile Include="Core\IO\Plugins\IOProvider\IIOProvider.cs" />
+    <Compile Include="Core\IO\Plugins\IOProvider\IOProviderData.cs" />
+    <Compile Include="Core\IO\Plugins\IOProvider\NonConfigurableIOProvider.cs" />
+    <Compile Include="Core\IO\Plugins\IOProvider\Runtime\IOProviderDefaultNameRetriever.cs" />
+    <Compile Include="Core\IO\Plugins\IOProvider\Runtime\IOProviderCustomFactory.cs" />
+    <Compile Include="Core\IO\Plugins\IOProvider\Runtime\IOProviderFactory.cs" />
+    <Compile Include="Core\IO\Plugins\IOProvider\Runtime\IOProviderSettings.cs" />
     <Compile Include="Core\Log.cs" />
     <Compile Include="Core\PackageSystem\LicenseDefinitionManager.cs" />
     <Compile Include="Core\PackageSystem\LicenseDefinitionUtils.cs" />
@@ -571,6 +578,7 @@
     <Compile Include="Plugins\IO\IOProviders\LocalIOPorivder\LocalC1FileSystemWatcher.cs" />
     <Compile Include="Plugins\IO\IOProviders\LocalIOPorivder\LocalC1StreamReader.cs" />
     <Compile Include="Plugins\IO\IOProviders\LocalIOPorivder\LocalC1StreamWriter.cs" />
+    <Compile Include="Plugins\IO\IOProviders\LocalIOPorivder\LocalIOProvider.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\FileLogger.cs" />
     <Compile Include="Core\Logging\LogEntry.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\FileLogTraceListener.cs" />

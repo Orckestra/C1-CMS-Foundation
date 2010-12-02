@@ -1,17 +1,21 @@
 ﻿using System.IO;
 using System.Text;
+using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
+using Composite.Core.IO.Plugins.IOProvider.Runtime;
 
 
 
 namespace Composite.Core.IO.Plugins.IOProvider
 {
+    [CustomFactory(typeof(IOProviderCustomFactory))]
+    [ConfigurationNameMapper(typeof(IOProviderDefaultNameRetriever))]
     internal interface IIOProvider
     {
         IC1Directory C1Directory { get; }
         
         IC1File C1File { get; }
 
-        IC1FileStream CreateFileStream(string path, FileMode mode, FileAccess access, FileShare share);
+        IC1FileStream CreateFileStream(string path, FileMode mode, FileAccess access, FileShare share, int bufferSize, FileOptions options);
         
         IC1FileSystemWatcher CreateFileSystemWatcher(string path, string filter);
         

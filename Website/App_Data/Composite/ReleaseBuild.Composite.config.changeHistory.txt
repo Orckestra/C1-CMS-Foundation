@@ -97,3 +97,11 @@ Changes since C1 1.2 SP2 Patch 3
  - Composite.SetupConfiguration section added
  - inlineCSharpFunctionDirectory="~/App_Data/Composite/InlineCSharpFunctions" added to GlobalSettingsProviderPlugins
  - packageLicenseDirectory="~/App_Data/Composite/PackageLicenses" added to GlobalSettingsProviderPlugins
+ - Element added:
+  <section name="Composite.Core.IO.Plugins.IOProviderConfiguration" type="Composite.Core.IO.Plugins.IOProvider.Runtime.IOProviderSettings, Composite" />
+ - Section added:
+  <Composite.Core.IO.Plugins.IOProviderConfiguration defaultIOProvider="LocalIOProvider">
+    <IOProviderPlugins>
+      <add name="LocalIOProvider" type="Composite.Plugins.IO.IOProviders.LocalIOPorivder.LocalIOProvider, Composite"/>
+    </IOProviderPlugins>
+  </Composite.Core.IO.Plugins.IOProviderConfiguration>
