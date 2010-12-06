@@ -168,7 +168,7 @@ namespace Composite.Core.Types
             // This should be the first thing tried, otherwise "old" types are found in Composite.Genereted.dll instead of a possible new compiled version of the type /MRJ
             if (fullName.Contains(",") == false)
             {
-                Type compositeType = TryGetNonGenericType(fullName + ", CompositeCore");
+                Type compositeType = TryGetNonGenericType(fullName + ", Composite");
                 if (compositeType != null) return compositeType;
 
                 if (fullName.StartsWith("DynamicType:") == false)

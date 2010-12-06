@@ -201,7 +201,7 @@ namespace Composite.Data.DynamicTypes
         {
             Dictionary<string, object> newBindings = new Dictionary<string, object>();
 
-            foreach (DataFieldDescriptor fieldDescriptor in _dataTypeDescriptor.Fields.Where(dfd => dfd.Inherited == false))
+            foreach (DataFieldDescriptor fieldDescriptor in _dataTypeDescriptor.Fields)
             {
                 Type fieldType = fieldDescriptor.InstanceType;
 
@@ -292,7 +292,7 @@ namespace Composite.Data.DynamicTypes
 
             Dictionary<string, object> bindings = new Dictionary<string, object>();
 
-            foreach (DataFieldDescriptor fieldDescriptor in _dataTypeDescriptor.Fields.Where(dfd => dfd.Inherited == false))
+            foreach (DataFieldDescriptor fieldDescriptor in _dataTypeDescriptor.Fields)
             {
                 PropertyInfo propertyInfo = dataObject.GetType().GetProperty(fieldDescriptor.Name);
 
@@ -384,7 +384,7 @@ namespace Composite.Data.DynamicTypes
 
             Dictionary<string, List<ClientValidationRule>> result = new Dictionary<string, List<ClientValidationRule>>();
 
-            foreach (DataFieldDescriptor fieldDescriptor in _dataTypeDescriptor.Fields.Where(dfd => dfd.Inherited == false))
+            foreach (DataFieldDescriptor fieldDescriptor in _dataTypeDescriptor.Fields)
             {
                 List<ClientValidationRule> rules = ClientValidationRuleFacade.GetClientValidationRules(data, fieldDescriptor.Name);
 
@@ -404,7 +404,7 @@ namespace Composite.Data.DynamicTypes
         {
             Dictionary<string, string> errorMessages = new Dictionary<string, string>();
 
-            foreach (DataFieldDescriptor fieldDescriptor in _dataTypeDescriptor.Fields.Where(dfd => dfd.Inherited == false))
+            foreach (DataFieldDescriptor fieldDescriptor in _dataTypeDescriptor.Fields)
             {
                 if (_readOnlyFields.Contains(fieldDescriptor.Name) == true)
                 {
@@ -463,7 +463,7 @@ namespace Composite.Data.DynamicTypes
         {
             Dictionary<string, string> errorMessages = new Dictionary<string, string>();
 
-            foreach (DataFieldDescriptor fieldDescriptor in _dataTypeDescriptor.Fields.Where(dfd => dfd.Inherited == false))
+            foreach (DataFieldDescriptor fieldDescriptor in _dataTypeDescriptor.Fields)
             {
                 string bindingName = GetBindingName(fieldDescriptor);
 
@@ -624,7 +624,7 @@ namespace Composite.Data.DynamicTypes
             }
             layout.Add(_panelXml);
 
-            foreach (DataFieldDescriptor fieldDescriptor in _dataTypeDescriptor.Fields.Where(dfd => dfd.Inherited == false))
+            foreach (DataFieldDescriptor fieldDescriptor in _dataTypeDescriptor.Fields)
             {
                 Type bindingType = fieldDescriptor.InstanceType;
                 string bindingName = GetBindingName(fieldDescriptor);
@@ -726,7 +726,11 @@ namespace Composite.Data.DynamicTypes
 
                 foreach (XAttribute bindingNameAttribute in bindingNameAttributes)
                 {
-                    bindingNameAttribute.Value = fieldNameToBindingNameMapper[bindingNameAttribute.Value];
+                    var bindingName = bindingNameAttribute.Value;
+
+                    Verify.That(fieldNameToBindingNameMapper.ContainsKey(bindingName), "Incorrect binding '{0}'", bindingName);
+
+                    bindingNameAttribute.Value = fieldNameToBindingNameMapper[bindingName];
                 }
 
                 if (string.IsNullOrEmpty(this.FieldGroupLabel) == false)

@@ -304,6 +304,10 @@ namespace Composite.C1Console.Elements.Foundation
 
                 if ((element.ElementExternalActionAdding & ElementExternalActionAdding.AllowGlobal) == ElementExternalActionAdding.AllowGlobal)
                 {
+                    IEnumerable<string> elementActionProviderNames = ElementActionProviderRegistry.ElementActionProviderNames;
+
+                    Verify.IsNotNull(elementActionProviderNames, "Failed to load one of the element action providers");
+
                     foreach (string elementActionProviderName in ElementActionProviderRegistry.ElementActionProviderNames)
                     {
                         IEnumerable<ElementAction> actions = ElementActionProviderPluginFacade.GetActions(elementActionProviderName, element.ElementHandle.EntityToken);
