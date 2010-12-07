@@ -28,30 +28,25 @@ namespace Composite.Core.Configuration
 
         static ConfigurationServices()
         {
-            if (RuntimeInformation.IsUnittest == false)
-            {
-                _fileConfigurationSourcePath = GetFileConfigurationSourcePath();
-                
-                if (_fileConfigurationSourcePath != null)
-                {
-                    FileAttributes fileAttributes = File.GetAttributes(_fileConfigurationSourcePath);
-
-                    if ((fileAttributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
-                    {
-                        fileAttributes ^= FileAttributes.ReadOnly;
-                        File.SetAttributes(_fileConfigurationSourcePath, fileAttributes);
-                    }
-                }
-
-                _configurationSource = new FileConfigurationSource(_fileConfigurationSourcePath);
-            }
-            else
+            if (RuntimeInformation.IsUnittest)
             {
                 _configurationSource = ConfigurationSourceFactory.Create();
+                return;
             }
+            
+            _fileConfigurationSourcePath = GetFileConfigurationSourcePath();
+
+            Verify.IsNotNull(_fileConfigurationSourcePath, "Configuration file is not defined");
+
+            FileAttributes fileAttributes = File.GetAttributes(_fileConfigurationSourcePath);
+            if ((fileAttributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+            {
+                fileAttributes ^= FileAttributes.ReadOnly;
+                File.SetAttributes(_fileConfigurationSourcePath, fileAttributes);
+            }
+
+            _configurationSource = new FileConfigurationSource(_fileConfigurationSourcePath);
         }
-
-
 
 
         public static IConfigurationSource ConfigurationSource
