@@ -321,7 +321,7 @@ List.prototype.toString=function(){
 return this._array.toString();
 };
 List.prototype.toArray=function(){
-return this._array;
+return this._array.concat([]);
 };
 List.prototype.merge=function(_3e){
 _3e.reset();
@@ -510,7 +510,7 @@ function _Constants(){
 }
 var temppath=document.location.pathname;
 var temproot=temppath.substring(0,temppath.lastIndexOf("/"));
-_Constants.prototype={COMPOSITE_HOME:"http://www.composite.net",DUMMY_LINK:"javascript:void(false);",APPROOT:temproot,TEMPLATESROOT:temproot+"/templates",SKINROOT:temproot+"/skins/system",TINYMCEROOT:temproot+"/content/misc/editors/wysiwygeditor/tiny_mce",TINYROOT:temproot+"/content/misc/editors/visualeditor/tiny_mce",URL_WSDL_SETUPSERVICE:temproot+"/services/Setup/SetupService.asmx?WSDL",URL_WSDL_CONFIGURATION:temproot+"/services/Configuration/ConfigurationService.asmx?WSDL",URL_WSDL_LOGINSERVICE:temproot+"/services/Login/Login.asmx?WSDL",URL_WSDL_INSTALLSERVICE:temproot+"/services/Installation/InstallationService.asmx?WSDL",URL_WSDL_MESSAGEQUEUE:temproot+"/services/ConsoleMessageQueue/ConsoleMessageQueueServices.asmx?WSDL",URL_WSDL_EDITORCONFIG:temproot+"/services/WysiwygEditor/ConfigurationServices.asmx?WSDL",URL_WSDL_FLOWCONTROLLER:temproot+"/services/FlowController/FlowControllerServices.asmx?WSDL",URL_WSDL_STRINGSERVICE:temproot+"/services/StringResource/StringService.asmx?WSDL",URL_WSDL_TREESERVICE:temproot+"/services/Tree/TreeServices.asmx?WSDL",URL_WSDL_XHTMLTRANSFORM:temproot+"/services/WysiwygEditor/XhtmlTransformations.asmx?WSDL",URL_WSDL_SECURITYSERVICE:temproot+"/services/Tree/SecurityServices.asmx?WSDL",URL_WSDL_READYSERVICE:temproot+"/services/Ready/ReadyService.asmx?WSDL",URL_WSDL_LOCALIZATION:temproot+"/services/Localization/LocalizationService.asmx?WSDL",URL_WSDL_SOURCEVALIDATION:temproot+"/services/SourceEditor/SourceValidationService.asmx?WSDL",URL_WSDL_MARKUPFORMAT:temproot+"/services/SourceEditor/MarkupFormatService.asmx?WSDL",URL_WSDL_SEOSERVICE:temproot+"/services/SearchEngineOptimizationKeyword/SearchEngineOptimizationKeyword.asmx?WSDL",URL_WSDL_PAGESERVICE:temproot+"/services/Page/PageService.asmx?WSDL",URL_WSDL_DIFFSERVICE:temproot+"/services/StringResource/DiffService.asmx?WSDL",NS_XHTML:"http://www.w3.org/1999/xhtml",NS_UI:"http://www.w3.org/1999/xhtml",NX_XUL:"http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul",NS_XBL:"http://www.mozilla.org/xbl",NS_WSDL:"http://schemas.xmlsoap.org/wsdl/",NS_SOAP:"http://schemas.xmlsoap.org/wsdl/soap/",NS_ENVELOPE:"http://schemas.xmlsoap.org/soap/envelope/",NS_ENCODING:"http://schemas.xmlsoap.org/soap/encoding/",NS_SCHEMA:"http://www.w3.org/2001/XMLSchema",NS_SCHEMA_INSTANCE:"http://www.w3.org/1999/XMLSchema-instance",NS_DOMPARSEERROR:"http://www.mozilla.org/newlayout/xml/parsererror.xml",NS_NS:"http://www.w3.org/2000/xmlns/",NS_PERSISTANCE:"http://www.composite.net/ns/localstore/persistance",NS_FUNCTION:"http://www.composite.net/ns/function/1.0",SCROLLBAR_DIMENSION_HARDCODED_VALUE:19};
+_Constants.prototype={COMPOSITE_HOME:"http://www.composite.net",DUMMY_LINK:"javascript:void(false);",APPROOT:temproot,CONFIGROOT:temproot.replace("Composite","Frontend")+"/Config/VisualEditor/",TEMPLATESROOT:temproot+"/templates",SKINROOT:temproot+"/skins/system",TINYMCEROOT:temproot+"/content/misc/editors/wysiwygeditor/tiny_mce",TINYROOT:temproot+"/content/misc/editors/visualeditor/tiny_mce",URL_WSDL_SETUPSERVICE:temproot+"/services/Setup/SetupService.asmx?WSDL",URL_WSDL_CONFIGURATION:temproot+"/services/Configuration/ConfigurationService.asmx?WSDL",URL_WSDL_LOGINSERVICE:temproot+"/services/Login/Login.asmx?WSDL",URL_WSDL_INSTALLSERVICE:temproot+"/services/Installation/InstallationService.asmx?WSDL",URL_WSDL_MESSAGEQUEUE:temproot+"/services/ConsoleMessageQueue/ConsoleMessageQueueServices.asmx?WSDL",URL_WSDL_EDITORCONFIG:temproot+"/services/WysiwygEditor/ConfigurationServices.asmx?WSDL",URL_WSDL_FLOWCONTROLLER:temproot+"/services/FlowController/FlowControllerServices.asmx?WSDL",URL_WSDL_STRINGSERVICE:temproot+"/services/StringResource/StringService.asmx?WSDL",URL_WSDL_TREESERVICE:temproot+"/services/Tree/TreeServices.asmx?WSDL",URL_WSDL_XHTMLTRANSFORM:temproot+"/services/WysiwygEditor/XhtmlTransformations.asmx?WSDL",URL_WSDL_SECURITYSERVICE:temproot+"/services/Tree/SecurityServices.asmx?WSDL",URL_WSDL_READYSERVICE:temproot+"/services/Ready/ReadyService.asmx?WSDL",URL_WSDL_LOCALIZATION:temproot+"/services/Localization/LocalizationService.asmx?WSDL",URL_WSDL_SOURCEVALIDATION:temproot+"/services/SourceEditor/SourceValidationService.asmx?WSDL",URL_WSDL_MARKUPFORMAT:temproot+"/services/SourceEditor/MarkupFormatService.asmx?WSDL",URL_WSDL_SEOSERVICE:temproot+"/services/SearchEngineOptimizationKeyword/SearchEngineOptimizationKeyword.asmx?WSDL",URL_WSDL_PAGESERVICE:temproot+"/services/Page/PageService.asmx?WSDL",URL_WSDL_DIFFSERVICE:temproot+"/services/StringResource/DiffService.asmx?WSDL",NS_XHTML:"http://www.w3.org/1999/xhtml",NS_UI:"http://www.w3.org/1999/xhtml",NX_XUL:"http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul",NS_XBL:"http://www.mozilla.org/xbl",NS_WSDL:"http://schemas.xmlsoap.org/wsdl/",NS_SOAP:"http://schemas.xmlsoap.org/wsdl/soap/",NS_ENVELOPE:"http://schemas.xmlsoap.org/soap/envelope/",NS_ENCODING:"http://schemas.xmlsoap.org/soap/encoding/",NS_SCHEMA:"http://www.w3.org/2001/XMLSchema",NS_SCHEMA_INSTANCE:"http://www.w3.org/1999/XMLSchema-instance",NS_DOMPARSEERROR:"http://www.mozilla.org/newlayout/xml/parsererror.xml",NS_NS:"http://www.w3.org/2000/xmlns/",NS_PERSISTANCE:"http://www.composite.net/ns/localstore/persistance",NS_FUNCTION:"http://www.composite.net/ns/function/1.0",SCROLLBAR_DIMENSION_HARDCODED_VALUE:19};
 var Constants=new _Constants();
 temppath=null;
 temproot=null;
@@ -570,12 +570,6 @@ _77=(document.documentElement.mozMatchesSelector===undefined);
 }
 if(window.opera!=null||_77||this.isExplorer6){
 _76=false;
-}else{
-if(this.isWebKit){
-if(top.document.location.toString().indexOf("mode=develop")==-1){
-_76=false;
-}
-}
 }
 return _76;
 }};
@@ -753,15 +747,14 @@ function _Types(){
 }
 _Types.prototype={_logger:SystemLogger.getLogger("Types"),BOOLEAN:"boolean",STRING:"string",NUMBER:"number",FUNCTION:"function",UNDEFINED:"undefined",castFromString:function(_a0){
 var _a1=_a0;
-if(parseInt(_a1).toString()==_a1){
+if(parseInt(_a1).toString()===_a1){
 _a1=parseInt(_a1);
 }else{
-if(parseFloat(_a1).toString()==_a1){
+if(parseFloat(_a1).toString()===_a1){
 _a1=parseFloat(_a1);
 }else{
-if(_a1=="true"||_a1=="false"){
-_a1=eval(_a1);
-}else{
+if(_a1==="true"||_a1==="false"){
+_a1=(_a1==="true");
 }
 }
 }
@@ -874,66 +867,91 @@ _b9=_b9.split("&size=DEFAULT")[0];
 throw "Could not compute image URL.";
 }
 return _b9;
+},toGrayScaleURL:function(_bd){
+var _be=document.createElement("canvas");
+var ctx=_be.getContext("2d");
+var _bd=new Image();
+var _c0=_bd.width;
+var _c1=_bd.height;
+_be.width=_c0;
+_be.height=_c1;
+ctx.drawImage(_bd,0,0);
+var _c2=ctx.getImageData(0,0,_c0,_c1);
+for(j=0;j<_c2.height;i++){
+for(i=0;i<_c2.width;j++){
+var _c3=(i*4)*_c2.width+(j*4);
+var red=_c2.data[_c3];
+var _c5=_c2.data[_c3+1];
+var _c6=_c2.data[_c3+2];
+var _c7=_c2.data[_c3+3];
+var _c8=(red+_c5+_c6)/3;
+_c2.data[_c3]=_c8;
+_c2.data[_c3+1]=_c8;
+_c2.data[_c3+2]=_c8;
+_c2.data[_c3+3]=_c7;
+}
+}
+return _be.toDataURL();
 }};
 var ImageProvider=new _ImageProvider();
 function _Resolver(){
 }
-_Resolver.prototype={_logger:SystemLogger.getLogger("Resolver"),resolve:function(_bd){
-if(typeof _bd!=Types.UNDEFINED){
-_bd=String(_bd);
-_bd=_bd.replace("${root}",Constants.APPROOT);
-_bd=_bd.replace("${skin}",Constants.SKINROOT);
-_bd=_bd.replace("${tinymce}",Constants.TINYMCEROOT);
-_bd=_bd.replace("${tiny}",Constants.TINYROOT);
-if(_bd.indexOf("${icon:")>-1){
-_bd=this._resolveImage(_bd);
+_Resolver.prototype={_logger:SystemLogger.getLogger("Resolver"),resolve:function(_c9){
+if(typeof _c9!=Types.UNDEFINED){
+_c9=String(_c9);
+_c9=_c9.replace("${root}",Constants.APPROOT);
+_c9=_c9.replace("${skin}",Constants.SKINROOT);
+_c9=_c9.replace("${tinymce}",Constants.TINYMCEROOT);
+_c9=_c9.replace("${tiny}",Constants.TINYROOT);
+if(_c9.indexOf("${icon:")>-1){
+_c9=this._resolveImage(_c9);
 }else{
-if(_bd.indexOf("${string:")>-1){
-_bd=this._resolveString(_bd);
+if(_c9.indexOf("${string:")>-1){
+_c9=this._resolveString(_c9);
 }
 }
 }
-return _bd;
-},resolveVars:function(_be,_bf){
+return _c9;
+},resolveVars:function(_ca,_cb){
 var i=0;
-while(i<_bf.length){
-_be=_be.replace("{"+i+"}",_bf[i]);
+while(i<_cb.length){
+_ca=_ca.replace("{"+i+"}",_cb[i]);
 i++;
 }
-return _be;
-},_resolveString:function(_c1){
-var _c2=null;
-var _c3=null;
-var key=_c1.split("${string:")[1].split("}")[0];
+return _ca;
+},_resolveString:function(_cd){
+var _ce=null;
+var _cf=null;
+var key=_cd.split("${string:")[1].split("}")[0];
 if(key.indexOf(":")>-1){
-_c3=key.split(":")[0];
+_cf=key.split(":")[0];
 key=key.split(":")[1];
 }else{
-_c3=StringBundle.UI;
+_cf=StringBundle.UI;
 }
-_c2=StringBundle.getString(_c3,key);
-if(!_c2){
-_c2="(?)";
+_ce=StringBundle.getString(_cf,key);
+if(!_ce){
+_ce="(?)";
 }
-return _c2;
-},_resolveImage:function(_c5){
-var _c6=null;
-var _c7=null;
-var _c8=null;
-var _c9=null;
-_c8=_c5.split("${icon:")[1].split("}")[0];
-if(_c8.indexOf(":")>-1){
-_c7=_c8.split(":")[0];
-_c8=_c8.split(":")[1];
+return _ce;
+},_resolveImage:function(_d1){
+var _d2=null;
+var _d3=null;
+var _d4=null;
+var _d5=null;
+_d4=_d1.split("${icon:")[1].split("}")[0];
+if(_d4.indexOf(":")>-1){
+_d3=_d4.split(":")[0];
+_d4=_d4.split(":")[1];
 }else{
-_c7=ImageProvider.UI;
+_d3=ImageProvider.UI;
 }
-if(_c8.indexOf("(")>-1){
-_c9=_c8.split("(")[1].split(")")[0];
-_c8=_c8.split("(")[0];
+if(_d4.indexOf("(")>-1){
+_d5=_d4.split("(")[1].split(")")[0];
+_d4=_d4.split("(")[0];
 }
-_c6=ImageProvider.getImageURL({ResourceNamespace:_c7,ResourceName:_c8},_c9);
-return _c6;
+_d2=ImageProvider.getImageURL({ResourceNamespace:_d3,ResourceName:_d4},_d5);
+return _d2;
 }};
 var Resolver=new _Resolver();
 function _Download(){
@@ -946,31 +964,31 @@ var Download=new _Download();
 function _Cookies(){
 }
 var Cookies=new _Cookies();
-_Cookies.prototype={createCookie:function(_cc,_cd,_ce){
-var _cf="";
-if(_ce){
-var _d0=new Date();
-_d0.setTime(_d0.getTime()+(_ce*24*60*60*1000));
-_cf="; expires="+_d0.toGMTString();
+_Cookies.prototype={createCookie:function(_d8,_d9,_da){
+var _db="";
+if(_da){
+var _dc=new Date();
+_dc.setTime(_dc.getTime()+(_da*24*60*60*1000));
+_db="; expires="+_dc.toGMTString();
 }
-document.cookie=_cc+"="+escape(_cd)+_cf+"; path=/";
-return this.readCookie(_cc);
-},readCookie:function(_d1){
-var _d2=null;
-var _d3=_d1+"=";
+document.cookie=_d8+"="+escape(_d9)+_db+"; path=/";
+return this.readCookie(_d8);
+},readCookie:function(_dd){
+var _de=null;
+var _df=_dd+"=";
 var ca=document.cookie.split(";");
 for(var i=0;i<ca.length;i++){
 var c=ca[i];
 while(c.charAt(0)==" "){
 c=c.substring(1,c.length);
 }
-if(c.indexOf(_d3)==0){
-_d2=unescape(c.substring(_d3.length,c.length));
+if(c.indexOf(_df)==0){
+_de=unescape(c.substring(_df.length,c.length));
 }
 }
-return _d2;
-},eraseCookie:function(_d7){
-this.createCookie(_d7,"",-1);
+return _de;
+},eraseCookie:function(_e3){
+this.createCookie(_e3,"",-1);
 }};
 function _StatusBar(){
 this.AUTOCLEAR_TIMEOUT=5*1000;
@@ -982,73 +1000,73 @@ this.WARN="warn";
 this.BUSY="busy";
 this.READY="ready";
 this._groups=new Map();
-var _d8=SystemLogger.getLogger("StatusBar");
-var _d9=null;
-var _da="${icon:error}";
-var _db="${icon:warning}";
-var _dc="${icon:loading}";
-var _dd="${icon:message}";
-var _de=null;
-var _df=null;
-var _e0=null;
-var _e1=null;
-this.initialize=function(_e2){
-_de=StringBundle.getString("ui","Website.App.StatusBar.Error");
-_df=StringBundle.getString("ui","Website.App.StatusBar.Warn");
-_e0=StringBundle.getString("ui","Website.App.StatusBar.Busy");
-_e1=StringBundle.getString("ui","Website.App.StatusBar.Ready");
-_d9=_e2;
-this.document=_e2.bindingDocument;
+var _e4=SystemLogger.getLogger("StatusBar");
+var _e5=null;
+var _e6="${icon:error}";
+var _e7="${icon:warning}";
+var _e8="${icon:loading}";
+var _e9="${icon:message}";
+var _ea=null;
+var _eb=null;
+var _ec=null;
+var _ed=null;
+this.initialize=function(_ee){
+_ea=StringBundle.getString("ui","Website.App.StatusBar.Error");
+_eb=StringBundle.getString("ui","Website.App.StatusBar.Warn");
+_ec=StringBundle.getString("ui","Website.App.StatusBar.Busy");
+_ed=StringBundle.getString("ui","Website.App.StatusBar.Ready");
+_e5=_ee;
+this.document=_ee.bindingDocument;
 };
-this.error=function(_e3,_e4){
+this.error=function(_ef,_f0){
 this.state=StatusBar.ERROR;
-_e3=_e3?_e3:_de;
-show(_e3,_da,_e4,false);
+_ef=_ef?_ef:_ea;
+show(_ef,_e6,_f0,false);
 };
-this.warn=function(_e5,_e6){
+this.warn=function(_f1,_f2){
 this.state=StatusBar.WARN;
-_e5=_e5?_e5:_df;
-show(_e5,_db,_e6,false);
+_f1=_f1?_f1:_eb;
+show(_f1,_e7,_f2,false);
 };
-this.busy=function(_e7,_e8){
+this.busy=function(_f3,_f4){
 this.state=StatusBar.BUSY;
-_e7=_e7?_e7:_e0;
-show(_e7,_dc,_e8,false);
+_f3=_f3?_f3:_ec;
+show(_f3,_e8,_f4,false);
 };
-this.ready=function(_e9,_ea){
+this.ready=function(_f5,_f6){
 this.state=StatusBar.READY;
-_e9=_e9?_e9:_e1;
-show(_e9,_dd,_ea,true);
+_f5=_f5?_f5:_ed;
+show(_f5,_e9,_f6,true);
 };
-this.report=function(_eb,_ec,_ed,_ee){
+this.report=function(_f7,_f8,_f9,_fa){
 this.state=null;
-show(_eb,_ec,_ed,_ee);
+show(_f7,_f8,_f9,_fa);
 };
 this.clear=function(){
 this.state=null;
-if(_d9){
-_d9.clear();
+if(_e5){
+_e5.clear();
 }
 };
-function show(_ef,_f0,_f1,_f2){
-if(_f1){
-_ef=Resolver.resolveVars(_ef,_f1);
+function show(_fb,_fc,_fd,_fe){
+if(_fd){
+_fb=Resolver.resolveVars(_fb,_fd);
 }
-if(_d9){
-_d9.setLabel(_ef);
-_d9.setImage(_f0);
-if(_f2){
-_d9.startFadeOut(StatusBar.AUTOCLEAR_TIMEOUT);
+if(_e5){
+_e5.setLabel(_fb);
+_e5.setImage(_fc);
+if(_fe){
+_e5.startFadeOut(StatusBar.AUTOCLEAR_TIMEOUT);
 }
 }else{
-_d8.error("Message not initialized for display: "+_ef);
+_e4.error("Message not initialized for display: "+_fb);
 }
 }
-this.addToGroup=function(_f3,_f4){
-if(!this._groups.has(_f3)){
-this._groups.set(_f3,_d9.addRight(ToolBarGroupBinding.newInstance(this.document)));
+this.addToGroup=function(_ff,_100){
+if(!this._groups.has(_ff)){
+this._groups.set(_ff,_e5.addRight(ToolBarGroupBinding.newInstance(this.document)));
 }
-this._groups.get(_f3).add(_f4);
+this._groups.get(_ff).add(_100);
 };
 }
 var StatusBar=new _StatusBar();
@@ -1057,70 +1075,70 @@ EventBroadcaster.subscribe(BroadcastMessages.APPLICATION_LOGIN,this);
 EventBroadcaster.subscribe(BroadcastMessages.LANGUAGES_UPDATED,this);
 EventBroadcaster.subscribe(BroadcastMessages.FROMLANGUAGE_UPDATED,this);
 }
-_Localization.prototype={languages:null,source:null,target:null,handleBroadcast:function(_f5,arg){
-switch(_f5){
+_Localization.prototype={languages:null,source:null,target:null,handleBroadcast:function(_101,arg){
+switch(_101){
 case BroadcastMessages.APPLICATION_LOGIN:
 case BroadcastMessages.LANGUAGES_UPDATED:
-var _f7=LocalizationService.GetActiveLocales(true);
-if(_f7.length>=1){
-this.languages=new List(_f7);
+var _103=LocalizationService.GetActiveLocales(true);
+if(_103.length>=1){
+this.languages=new List(_103);
 }else{
 this.languages=null;
 }
 EventBroadcaster.broadcast(BroadcastMessages.UPDATE_LANGUAGES,this.languages);
 break;
 }
-switch(_f5){
+switch(_101){
 case BroadcastMessages.APPLICATION_LOGIN:
 case BroadcastMessages.FROMLANGUAGE_UPDATED:
-var _f8=LocalizationService.GetLocales(true);
-this.source=_f8.ForeignLocaleName;
-this.target=_f8.ActiveLocaleName;
-EventBroadcaster.broadcast(BroadcastMessages.LOCALIZATION_CHANGED,{source:_f8.ForeignLocaleName,target:_f8.ActiveLocaleName});
+var _104=LocalizationService.GetLocales(true);
+this.source=_104.ForeignLocaleName;
+this.target=_104.ActiveLocaleName;
+EventBroadcaster.broadcast(BroadcastMessages.LOCALIZATION_CHANGED,{source:_104.ForeignLocaleName,target:_104.ActiveLocaleName});
 break;
 }
 }};
 var Localization=new _Localization();
 function _Validator(){
 }
-_Validator.prototype={validate:function(_f9,key,_fb){
-var _fc=true;
-var _fd=SourceValidationService.ValidateSource(_f9,key);
-if(_fd!="True"){
-if(_fb==true){
-this._dialog(_fd);
+_Validator.prototype={validate:function(_105,key,_107){
+var _108=true;
+var _109=SourceValidationService.ValidateSource(_105,key);
+if(_109!="True"){
+if(_107==true){
+this._dialog(_109);
 }
-_fc=false;
+_108=false;
 }
-return _fc;
-},validateInformed:function(_fe,key){
-return this.validate(_fe,key,true);
-},_dialog:function(_100){
+return _108;
+},validateInformed:function(_10a,key){
+return this.validate(_10a,key,true);
+},_dialog:function(_10c){
 setTimeout(function(){
-Dialog.error("Source Invalid",_100);
+Dialog.error("Source Invalid",_10c);
 },0);
 }};
 var Validator=new _Validator();
 function _DOMEvents(){
 }
-_DOMEvents.prototype={_logger:SystemLogger.getLogger("DOMEvents"),MOUSEDOWN:"mousedown",MOUSEUP:"mouseup",MOUSEOVER:"mouseover",MOUSEOUT:"mouseout",MOUSEMOVE:"mousemove",CLICK:"click",DOUBLECLICK:"dblclick",KEYPRESS:"keypress",KEYDOWN:"keydown",KEYUP:"keyup",CONTEXTMENU:"contextmenu",SCROLL:"scroll",LOAD:"load",BEFOREUNLOAD:"beforeunload",UNLOAD:"unload",RESIZE:"resize",FOCUS:"focus",BLUR:"blur",SUBMIT:"submit",CUT:"cut",COPY:"copy",PASTE:"paste",DOM:"DOMContentLoaded",ACTIVATE:"activate",DEACTIVATE:"deactivate",MOUSEENTER:"mouseenter",MOUSELEAVE:"mouseleave",SELECTSTART:"selectstart",FOCUSIN:"focusin",FOCUSOUT:"focusout",BEFOREUPDATE:"beforeupdate",AFTERUPDATE:"afterupdate",ERRORUPDATE:"errorupdate",_count:0,addEventListener:function(_101,_102,_103,_104){
+_DOMEvents.prototype={_logger:SystemLogger.getLogger("DOMEvents"),MOUSEDOWN:"mousedown",MOUSEUP:"mouseup",MOUSEOVER:"mouseover",MOUSEOUT:"mouseout",MOUSEMOVE:"mousemove",CLICK:"click",DOUBLECLICK:"dblclick",KEYPRESS:"keypress",KEYDOWN:"keydown",KEYUP:"keyup",CONTEXTMENU:"contextmenu",SCROLL:"scroll",LOAD:"load",BEFOREUNLOAD:"beforeunload",UNLOAD:"unload",RESIZE:"resize",FOCUS:"focus",BLUR:"blur",SUBMIT:"submit",CUT:"cut",COPY:"copy",PASTE:"paste",DOM:"DOMContentLoaded",ACTIVATE:"activate",DEACTIVATE:"deactivate",MOUSEENTER:"mouseenter",MOUSELEAVE:"mouseleave",SELECTSTART:"selectstart",FOCUSIN:"focusin",FOCUSOUT:"focusout",BEFOREUPDATE:"beforeupdate",AFTERUPDATE:"afterupdate",ERRORUPDATE:"errorupdate",_count:0,addEventListener:function(_10d,_10e,_10f,_110){
 this._count++;
-this._eventListener(true,_101,_102,_103,_104);
-if(_101&&typeof _101.nodeType!=Types.UNDEFINED){
-if(_101.nodeType==Node.ELEMENT_NODE){
-var win=DOMUtil.getParentWindow(_101);
+this._eventListener(true,_10d,_10e,_10f,_110);
+if(_10d&&typeof _10d.nodeType!=Types.UNDEFINED){
+if(_10d.nodeType==Node.ELEMENT_NODE){
+var win=DOMUtil.getParentWindow(_10d);
 if(win){
-var _106={handleEvent:function(){
-DOMEvents.removeEventListener(_101,_102,_103,_104);
-DOMEvents.removeEventListener(win,DOMEvents.UNLOAD,_106);
+var _112={handleEvent:function(){
+DOMEvents.removeEventListener(_10d,_10e,_10f,_110);
+DOMEvents.removeEventListener(win,DOMEvents.UNLOAD,_112);
 }};
-DOMEvents.addEventListener(win,DOMEvents.UNLOAD,_106);
+DOMEvents.addEventListener(win,DOMEvents.UNLOAD,_112);
 }
 }
 }
-},removeEventListener:function(_107,_108,_109,_10a){
+},removeEventListener:function(_113,_114,_115,_116){
 this._count--;
-this._eventListener(false,_107,_108,_109,_10a);
+this._eventListener(false,_113,_114,_115,_116);
 },getTarget:function(e){
 return e?(e.target?e.target:e.srcElement):null;
 },stopPropagation:function(e){
@@ -1151,47 +1169,47 @@ this._logger.error(exception);
 }
 },isRightButton:function(e){
 return e.button==2?true:false;
-},cleanupEventListeners:function(_10f){
-this._deleteWrappedHandler(_10f);
+},cleanupEventListeners:function(_11b){
+this._deleteWrappedHandler(_11b);
 },isCurrentTarget:function(e){
-var _111=false;
+var _11d=false;
 if(Client.isMozilla==true){
-_111=e.target==e.currentTarget;
+_11d=e.target==e.currentTarget;
 }
 return true;
-},_isChildOf:function(_112,_113){
-var _114=true;
-if(_112==_113){
-_114=false;
+},_isChildOf:function(_11e,_11f){
+var _120=true;
+if(_11e==_11f){
+_120=false;
 }
-if(_114==true){
-while(_113!=null&&_113.nodeType!=Node.DOCUMENT_NODE&&_113!=_112){
-_113=_113.parentNode;
+if(_120==true){
+while(_11f!=null&&_11f.nodeType!=Node.DOCUMENT_NODE&&_11f!=_11e){
+_11f=_11f.parentNode;
 }
-_114=(_113==_112);
+_120=(_11f==_11e);
 }
-return _114;
-},_eventListener:function(_115,_116,_117,_118,_119,_11a){
-if(Interfaces.isImplemented(IEventListener,_118,true)){
-if(typeof _117!=Types.UNDEFINED){
+return _120;
+},_eventListener:function(_121,_122,_123,_124,_125,_126){
+if(Interfaces.isImplemented(IEventListener,_124,true)){
+if(typeof _123!=Types.UNDEFINED){
 if(Client.isExplorer==true){
-_118=this._getWrappedHandler(_116,_117,_118,_11a);
-_116[this._getAction(_115)]("on"+_117,_118);
+_124=this._getWrappedHandler(_122,_123,_124,_126);
+_122[this._getAction(_121)]("on"+_123,_124);
 }else{
-switch(_117){
+switch(_123){
 case DOMEvents.MOUSEENTER:
 case DOMEvents.MOUSELEAVE:
-_117=_117==DOMEvents.MOUSEENTER?DOMEvents.MOUSEOVER:DOMEvents.MOUSEOUT;
-_116[this._getAction(_115)](_117,{handleEvent:function(e){
+_123=_123==DOMEvents.MOUSEENTER?DOMEvents.MOUSEOVER:DOMEvents.MOUSEOUT;
+_122[this._getAction(_121)](_123,{handleEvent:function(e){
 var rel=e.relatedTarget;
 if(e.currentTarget==rel||DOMEvents._isChildOf(e.currentTarget,rel)){
 }else{
-_118.handleEvent(e);
+_124.handleEvent(e);
 }
-}},_119?true:false);
+}},_125?true:false);
 break;
 default:
-_116[this._getAction(_115)](_117,_118,_119?true:false);
+_122[this._getAction(_121)](_123,_124,_125?true:false);
 break;
 }
 }
@@ -1199,282 +1217,282 @@ break;
 throw "No such event allowed!";
 }
 }
-},_getAction:function(_11d){
-var _11e=null;
-switch(_11d){
+},_getAction:function(_129){
+var _12a=null;
+switch(_129){
 case true:
-_11e=Client.isMozilla==true?"addEventListener":"attachEvent";
+_12a=Client.isMozilla==true?"addEventListener":"attachEvent";
 break;
 case false:
-_11e=Client.isMozilla==true?"removeEventListener":"detachEvent";
+_12a=Client.isMozilla==true?"removeEventListener":"detachEvent";
 break;
 }
-return _11e;
-},_getWrappedHandler:function(_11f,_120,_121,_122){
-var _123=null;
+return _12a;
+},_getWrappedHandler:function(_12b,_12c,_12d,_12e){
+var _12f=null;
 try{
-if(!_121._domEventHandlers){
-_121._domEventHandlers={};
+if(!_12d._domEventHandlers){
+_12d._domEventHandlers={};
 }
-if(!_121._domEventHandlers[_11f]){
-_121._domEventHandlers[_11f]={};
+if(!_12d._domEventHandlers[_12b]){
+_12d._domEventHandlers[_12b]={};
 }
-if(!_121._domEventHandlers[_11f][_120]){
-var win=_11f.nodeType?DOMUtil.getParentWindow(_11f):_11f;
+if(!_12d._domEventHandlers[_12b][_12c]){
+var win=_12b.nodeType?DOMUtil.getParentWindow(_12b):_12b;
 if(win){
-_121._domEventHandlers[_11f][_120]=function(){
-if(win.event!=null&&_121!=null){
-_121.handleEvent(win.event);
+_12d._domEventHandlers[_12b][_12c]=function(){
+if(win.event!=null&&_12d!=null){
+_12d.handleEvent(win.event);
 }
 };
 }
 }
-_123=_121._domEventHandlers[_11f][_120];
+_12f=_12d._domEventHandlers[_12b][_12c];
 }
 catch(exception){
-this._report(_11f,_120,_121,_122);
+this._report(_12b,_12c,_12d,_12e);
 }
-return _123;
-},_deleteWrappedHandler:function(_125){
-for(var _126 in _125._domEventHandlers){
-if(_126){
-for(var _127 in _125._domEventHandlers[_126]){
-if(_127){
-delete _125._domEventHandlers[_126][_127];
+return _12f;
+},_deleteWrappedHandler:function(_131){
+for(var _132 in _131._domEventHandlers){
+if(_132){
+for(var _133 in _131._domEventHandlers[_132]){
+if(_133){
+delete _131._domEventHandlers[_132][_133];
 }
 }
 }
-delete _125._domEventHandlers[_126];
+delete _131._domEventHandlers[_132];
 }
-},_report:function(_128,_129,_12a,_12b){
-alert("DOMEvents.getWrappedHandler malfunction.\n\n"+"\ttarget: "+(_128?_128.nodeName:_128)+"\n"+"\tevent: "+_129+"\n"+"\thandler: "+_12a+"\n\n"+"Offending invoker: "+(_12b.callee?_12b.callee.toString():_12b.constructor));
+},_report:function(_134,_135,_136,_137){
+alert("DOMEvents.getWrappedHandler malfunction.\n\n"+"\ttarget: "+(_134?_134.nodeName:_134)+"\n"+"\tevent: "+_135+"\n"+"\thandler: "+_136+"\n\n"+"Offending invoker: "+(_137.callee?_137.callee.toString():_137.constructor));
 }};
 var DOMEvents=new _DOMEvents();
 function _DOMSerializer(){
 }
-_DOMSerializer.prototype={_serializer:(Client.isMozilla?new XMLSerializer():null),serialize:function(node,_12d){
-var _12e=null;
-var _12f=node;
+_DOMSerializer.prototype={_serializer:(Client.isMozilla?new XMLSerializer():null),serialize:function(node,_139){
+var _13a=null;
+var _13b=node;
 if(node.nodeType==Node.DOCUMENT_NODE){
-_12f=node.documentElement;
+_13b=node.documentElement;
 }
 if(Client.isMozilla==true){
-if(_12d==true){
-_12f=_12f.cloneNode(true);
-_12f=DOMFormatter.format(_12f,DOMFormatter.INDENTED_TYPE_RESULT);
+if(_139==true){
+_13b=_13b.cloneNode(true);
+_13b=DOMFormatter.format(_13b,DOMFormatter.INDENTED_TYPE_RESULT);
 }
-_12e=this._serializer.serializeToString(_12f);
+_13a=this._serializer.serializeToString(_13b);
 }else{
-_12e=_12f.xml;
+_13a=_13b.xml;
 }
-return _12e;
+return _13a;
 }};
 var DOMSerializer=new _DOMSerializer();
 window.DOMFormatter=new function(){
 var TAB="\t";
 var NEW="\n";
-var _132=new RegExp(/[^\t\n\r ]/);
+var _13e=new RegExp(/[^\t\n\r ]/);
 this.ignoreCDATASections=false;
-function indent(_133){
-var doc=_133.ownerDocument;
-var _135=function(node,_137){
+function indent(_13f){
+var doc=_13f.ownerDocument;
+var _141=function(node,_143){
 if(node.hasChildNodes()&&node.firstChild.nodeType!=Node.TEXT_NODE){
-var _138="",i=0;
-while(i++<_137){
-_138+=TAB;
+var _144="",i=0;
+while(i++<_143){
+_144+=TAB;
 }
-var _13a=node.firstChild;
-while(_13a){
-switch(_13a.nodeType){
+var _146=node.firstChild;
+while(_146){
+switch(_146.nodeType){
 case Node.ELEMENT_NODE:
-if(_13a==node.lastChild){
-node.appendChild(doc.createTextNode(NEW+_138));
+if(_146==node.lastChild){
+node.appendChild(doc.createTextNode(NEW+_144));
 }
-node.insertBefore(doc.createTextNode(NEW+_138+TAB),_13a);
-_135(_13a,_137+1);
+node.insertBefore(doc.createTextNode(NEW+_144+TAB),_146);
+_141(_146,_143+1);
 break;
 case Node.COMMENT_NODE:
 case Node.PROCESSING_INSTRUCTION_NODE:
 case Node.CDATA_SECTION_NODE:
-node.insertBefore(doc.createTextNode(NEW+_138+TAB),_13a);
+node.insertBefore(doc.createTextNode(NEW+_144+TAB),_146);
 break;
 }
-if(_13a.nodeType==Node.CDATA_SECTION_NODE){
+if(_146.nodeType==Node.CDATA_SECTION_NODE){
 if(!this.ignoreCDATASections){
-formatCDATASection(_13a,_138+TAB);
+formatCDATASection(_146,_144+TAB);
 }
 }
-_13a=_13a.nextSibling;
+_146=_146.nextSibling;
 }
 }
 };
-_135(_133,0);
+_141(_13f,0);
 }
-function strip(_13b){
-var _13c=[];
-var _13d={acceptNode:function(_13e){
-return (!_132.test(_13e.nodeValue))?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;
+function strip(_147){
+var _148=[];
+var _149={acceptNode:function(_14a){
+return (!_13e.test(_14a.nodeValue))?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;
 }};
-var _13f=_13b.ownerDocument.createTreeWalker(_13b,NodeFilter.SHOW_TEXT,_13d,true);
-while(_13f.nextNode()){
-_13c.push(_13f.currentNode);
+var _14b=_147.ownerDocument.createTreeWalker(_147,NodeFilter.SHOW_TEXT,_149,true);
+while(_14b.nextNode()){
+_148.push(_14b.currentNode);
 }
-var i=0,_141;
-while((_141=_13c[i++])!=null){
-_141.parentNode.removeChild(_141);
+var i=0,_14d;
+while((_14d=_148[i++])!=null){
+_14d.parentNode.removeChild(_14d);
 }
 }
-function formatCDATASection(node,_143){
+function formatCDATASection(node,_14f){
 if(node.textContent.indexOf(NEW)>-1){
-var _144=node.textContent.split(NEW);
-var _145="",line,_147=0,_148=true;
-while((line=_144.shift())!=null){
-if(_147==0&&line.charAt(0)==TAB){
-while(line.charAt(_147++)==TAB){
+var _150=node.textContent.split(NEW);
+var _151="",line,_153=0,_154=true;
+while((line=_150.shift())!=null){
+if(_153==0&&line.charAt(0)==TAB){
+while(line.charAt(_153++)==TAB){
 }
 }
-line=line.substring(_147,line.length);
-if(_144.length>0){
-_145+=_143+TAB+line;
-_145+=_148?"":"\n";
+line=line.substring(_153,line.length);
+if(_150.length>0){
+_151+=_14f+TAB+line;
+_151+=_154?"":"\n";
 }else{
-_145+=_143+line;
-_143=_143.slice(1,_143.length);
-node.parentNode.appendChild(doc.createTextNode(NEW+_143));
+_151+=_14f+line;
+_14f=_14f.slice(1,_14f.length);
+node.parentNode.appendChild(doc.createTextNode(NEW+_14f));
 }
-_148=false;
+_154=false;
 }
-node.textContent=_145;
+node.textContent=_151;
 }
 }
-this.format=function(_149,_14a){
-var _14b=1;
+this.format=function(_155,_156){
+var _157=1;
 if(document.createTreeWalker){
 try{
-strip(_149);
-if(_14a!=_14b){
-indent(_149);
+strip(_155);
+if(_156!=_157){
+indent(_155);
 }
 }
 catch(exception){
 throw new Error(exception);
 }
 }
-return (_149);
+return (_155);
 };
 };
 DOMFormatter.INDENTED_TYPE_RESULT=0;
 DOMFormatter.STRIPPED_TYPE_RESULT=1;
 function _DOMUtil(){
 }
-_DOMUtil.prototype={_logger:SystemLogger.getLogger("DOMUtil"),MSXML_MAXVERSION:6,MSXML_MINVERSION:1,MSXML_HTTPREQUEST:"MSXML2.XMLHTTP.{$version}.0",MSXML_DOMDOCUMENT:"MSXML2.DOMDocument.{$version}.0",MSXML_FREETHREADED:"MSXML2.FreeThreadedDOMDocument.{$version}.0",MSXML_XSLTEMPLATE:"MSXML2.XSLTemplate.{$version}.0",getMSComponent:function(_14c){
-var sig,_14e=null,_14f=this.MSXML_MAXVERSION;
-while(!_14e&&_14f>=this.MSXML_MINVERSION){
+_DOMUtil.prototype={_logger:SystemLogger.getLogger("DOMUtil"),MSXML_MAXVERSION:6,MSXML_MINVERSION:1,MSXML_HTTPREQUEST:"MSXML2.XMLHTTP.{$version}.0",MSXML_DOMDOCUMENT:"MSXML2.DOMDocument.{$version}.0",MSXML_FREETHREADED:"MSXML2.FreeThreadedDOMDocument.{$version}.0",MSXML_XSLTEMPLATE:"MSXML2.XSLTemplate.{$version}.0",getMSComponent:function(_158){
+var sig,_15a=null,_15b=this.MSXML_MAXVERSION;
+while(!_15a&&_15b>=this.MSXML_MINVERSION){
 try{
-sig=_14c.replace("{$version}",_14f);
-_14e=new ActiveXObject(sig);
+sig=_158.replace("{$version}",_15b);
+_15a=new ActiveXObject(sig);
 }
 catch(exception){
 }
-_14f--;
+_15b--;
 }
-return _14e;
+return _15a;
 },getXMLHTTPRequest:function(){
-var _150=null;
+var _15c=null;
 if(Client.isExplorer){
-_150=this.getMSComponent(this.MSXML_HTTPREQUEST);
+_15c=this.getMSComponent(this.MSXML_HTTPREQUEST);
 }else{
-_150=new XMLHttpRequest();
+_15c=new XMLHttpRequest();
 }
-return _150;
-},getDOMDocument:function(_151){
-var _152=null;
+return _15c;
+},getDOMDocument:function(_15d){
+var _15e=null;
 if(Client.isExplorer){
-_152=this.getMSComponent(_151?this.MSXML_FREETHREADED:this.MSXML_DOMDOCUMENT);
+_15e=this.getMSComponent(_15d?this.MSXML_FREETHREADED:this.MSXML_DOMDOCUMENT);
 }else{
 var doc=XMLParser.parse("<?xml version=\"1.0\" encoding=\"UTF-8\"?><ROOT/>");
 doc.removeChild(doc.documentElement);
-_152=doc;
+_15e=doc;
 }
-return _152;
+return _15e;
 },getMSXMLXSLTemplate:function(){
-var _154=null;
+var _160=null;
 if(Client.isExplorer){
-_154=this.getMSComponent(this.MSXML_XSLTEMPLATE);
+_160=this.getMSComponent(this.MSXML_XSLTEMPLATE);
 }
-return _154;
-},getLocalName:function(_155){
-var _156=null;
-if(_155.localName){
-_156=_155.localName;
+return _160;
+},getLocalName:function(_161){
+var _162=null;
+if(_161.localName){
+_162=_161.localName;
 }else{
-if(_155.baseName){
-_156=_155.baseName;
+if(_161.baseName){
+_162=_161.baseName;
 }else{
-_156=_155.nodeName.toLowerCase();
+_162=_161.nodeName.toLowerCase();
 }
 }
-return _156;
-},getComputedStyle:function(_157,_158){
-var _159=null;
+return _162;
+},getComputedStyle:function(_163,_164){
+var _165=null;
 if(Client.isExplorer){
-if(_157.currentStyle!=null){
-_159=_157.currentStyle[_158];
+if(_163.currentStyle!=null){
+_165=_163.currentStyle[_164];
 }else{
-this._logger.error("Could not compute style for element "+_157.nodeName);
+this._logger.error("Could not compute style for element "+_163.nodeName);
 SystemDebug.stack(arguments);
 }
 }else{
-_159=_157.ownerDocument.defaultView.getComputedStyle(_157,null).getPropertyValue(_158);
+_165=_163.ownerDocument.defaultView.getComputedStyle(_163,null).getPropertyValue(_164);
 }
-return _159;
+return _165;
 },getMaxIndex:function(doc){
-var max=0,_15c=new List(doc.getElementsByTagName("*"));
-_15c.each(function(_15d){
-var _15e=CSSComputer.getZIndex(_15d);
-if(_15e>max){
-max=_15e;
+var max=0,_168=new List(doc.getElementsByTagName("*"));
+_168.each(function(_169){
+var _16a=CSSComputer.getZIndex(_169);
+if(_16a>max){
+max=_16a;
 }
 });
 return max;
-},getOrdinalPosition:function(_15f,_160){
-var _161=null;
-var _162=-1;
-var _163=this.getLocalName(_15f);
-var _164=new List(_15f.parentNode.childNodes);
-while(_164.hasNext()){
-var _165=_164.getNext();
-if(_165.nodeType==Node.ELEMENT_NODE){
-if(!_160||this.getLocalName(_165)==_163){
-_162++;
-if(_165==_15f||(_165.id!=""&&_165.id==_15f.id)){
-_161=_162;
+},getOrdinalPosition:function(_16b,_16c){
+var _16d=null;
+var _16e=-1;
+var _16f=this.getLocalName(_16b);
+var _170=new List(_16b.parentNode.childNodes);
+while(_170.hasNext()){
+var _171=_170.getNext();
+if(_171.nodeType==Node.ELEMENT_NODE){
+if(!_16c||this.getLocalName(_171)==_16f){
+_16e++;
+if(_171==_16b||(_171.id!=""&&_171.id==_16b.id)){
+_16d=_16e;
 break;
 }
 }
 }
 }
-return _161;
-},isFirstElement:function(_166,_167){
-return (this.getOrdinalPosition(_166,_167)==0);
-},isLastElement:function(_168,_169){
-var _16a=_168.parentNode.getElementsByTagName(_169?this.getLocalName(_168):"*");
-return (this.getOrdinalPosition(_168)==_16a.length);
+return _16d;
+},isFirstElement:function(_172,_173){
+return (this.getOrdinalPosition(_172,_173)==0);
+},isLastElement:function(_174,_175){
+var _176=_174.parentNode.getElementsByTagName(_175?this.getLocalName(_174):"*");
+return (this.getOrdinalPosition(_174)==_176.length);
 },getParentWindow:function(node){
 var doc=node.nodeType==Node.DOCUMENT_NODE?node:node.ownerDocument;
 return doc.defaultView?doc.defaultView:doc.parentWindow;
 },getTextContent:function(node){
-var _16e=null;
+var _17a=null;
 if(node.textContent){
-_16e=node.textContent;
+_17a=node.textContent;
 }else{
 if(node.text){
-_16e=node.text;
+_17a=node.text;
 }else{
-_16e=node.innerText;
+_17a=node.innerText;
 }
 }
-return _16e;
+return _17a;
 },setTextContent:function(node,text){
 text=String(text);
 if(node.textContent){
@@ -1486,131 +1504,131 @@ node.text=text;
 node.innerText=text;
 }
 }
-},getAncestorByLocalName:function(_171,node,_173){
-var _174=null;
-while(_174==null){
+},getAncestorByLocalName:function(_17d,node,_17f){
+var _180=null;
+while(_180==null){
 node=node.parentNode;
 if(node.nodeType==Node.DOCUMENT_NODE){
-if(_173==true){
+if(_17f==true){
 var win=this.getParentWindow(node);
 node=win.frameElement;
 }else{
 break;
 }
 }
-if(this.getLocalName(node)==_171){
-_174=node;
+if(this.getLocalName(node)==_17d){
+_180=node;
 }
 }
-return _174;
-},contains:function(_176,node){
-return _176.contains?_176!=node&&_176.contains(node):!!(_176.compareDocumentPosition(node)&16);
-},createElementNS:function(_178,_179,_17a){
-var _17b=null;
-if(_17a==null){
+return _180;
+},contains:function(_182,node){
+return _182.contains?_182!=node&&_182.contains(node):!!(_182.compareDocumentPosition(node)&16);
+},createElementNS:function(_184,_185,_186){
+var _187=null;
+if(_186==null){
 alert("DOMUtil#createElementNS : Missing argument (DOMDocument)");
 }else{
 if(Client.isMozilla){
-_17b=_17a.createElementNS(_178,_179);
+_187=_186.createElementNS(_184,_185);
 }else{
-if(_17a.xml!=null){
-_17b=_17a.createNode(Node.ELEMENT_NODE,_179,_178);
+if(_186.xml!=null){
+_187=_186.createNode(Node.ELEMENT_NODE,_185,_184);
 }else{
-_17b=_17a.createElement(_179);
+_187=_186.createElement(_185);
 }
 }
 }
-return _17b;
-},getElementsByTagName:function(node,_17d){
-var _17e=null;
-if(Client.isMozilla){
-_17e=node.getElementsByTagNameNS(Constants.NS_XHTML,_17d);
-}else{
-_17e=node.getElementsByTagName(_17d);
-}
-return _17e;
-},getNextElementSibling:function(_17f){
-return Client.isExplorer?_17f.nextSibling:_17f.nextElementSibling;
-},getPreviousElementSibling:function(_180){
-return Client.isExplorer?_180.previousSibling:_180.previousElementSibling;
-},cloneNode:function(node){
-var _182=null;
-if(Client.isMozilla==true){
-_182=XMLParser.parse(DOMSerializer.serialize(node));
-}else{
-_182=node.cloneNode(true);
-}
-return _182;
-},getLocalPosition:function(_183){
-var _184=new Point(_183.offsetLeft,_183.offsetTop);
-if(Client.isExplorer&&_183.parentNode&&_183.parentNode.currentStyle){
-if(_183.parentNode.currentStyle.position=="static"){
-var _185=this.getLocalPosition(_183.parentNode);
-_184.x+=_185.x;
-_184.y+=_185.y;
-}
-}
-return _184;
-},getGlobalPosition:function(_186){
-return this._getPosition(_186,false);
-},getUniversalPosition:function(_187){
-return this._getPosition(_187,true);
-},_getPosition:function(_188,_189){
+return _187;
+},getElementsByTagName:function(node,_189){
 var _18a=null;
-if(typeof _188.getBoundingClientRect!=Types.UNDEFINED){
-var rect=_188.getBoundingClientRect();
-_18a={x:rect.left,y:rect.top};
 if(Client.isMozilla){
-_18a.x-=_188.scrollLeft;
-_18a.y-=_188.scrollTop;
+_18a=node.getElementsByTagNameNS(Constants.NS_XHTML,_189);
+}else{
+_18a=node.getElementsByTagName(_189);
+}
+return _18a;
+},getNextElementSibling:function(_18b){
+return Client.isExplorer?_18b.nextSibling:_18b.nextElementSibling;
+},getPreviousElementSibling:function(_18c){
+return Client.isExplorer?_18c.previousSibling:_18c.previousElementSibling;
+},cloneNode:function(node){
+var _18e=null;
+if(Client.isMozilla==true){
+_18e=XMLParser.parse(DOMSerializer.serialize(node));
+}else{
+_18e=node.cloneNode(true);
+}
+return _18e;
+},getLocalPosition:function(_18f){
+var _190=new Point(_18f.offsetLeft,_18f.offsetTop);
+if(Client.isExplorer&&_18f.parentNode&&_18f.parentNode.currentStyle){
+if(_18f.parentNode.currentStyle.position=="static"){
+var _191=this.getLocalPosition(_18f.parentNode);
+_190.x+=_191.x;
+_190.y+=_191.y;
+}
+}
+return _190;
+},getGlobalPosition:function(_192){
+return this._getPosition(_192,false);
+},getUniversalPosition:function(_193){
+return this._getPosition(_193,true);
+},_getPosition:function(_194,_195){
+var _196=null;
+if(typeof _194.getBoundingClientRect!=Types.UNDEFINED){
+var rect=_194.getBoundingClientRect();
+_196={x:rect.left,y:rect.top};
+if(Client.isMozilla){
+_196.x-=_194.scrollLeft;
+_196.y-=_194.scrollTop;
 }
 }else{
-_18a={x:_188.offsetLeft-_188.scrollLeft,y:_188.offsetTop-_188.scrollTop};
-while(_188.offsetParent){
-_188=_188.offsetParent;
-_18a.x+=(_188.offsetLeft-_188.scrollLeft);
-_18a.y+=(_188.offsetTop-_188.scrollTop);
+_196={x:_194.offsetLeft-_194.scrollLeft,y:_194.offsetTop-_194.scrollTop};
+while(_194.offsetParent){
+_194=_194.offsetParent;
+_196.x+=(_194.offsetLeft-_194.scrollLeft);
+_196.y+=(_194.offsetTop-_194.scrollTop);
 }
 }
-if(_189){
-var win=DOMUtil.getParentWindow(_188);
+if(_195){
+var win=DOMUtil.getParentWindow(_194);
 if(win){
-var _18d=win.frameElement;
-if(_18d){
-var add=DOMUtil.getUniversalPosition(_18d);
-_18a.x+=add.x;
-_18a.y+=add.y;
+var _199=win.frameElement;
+if(_199){
+var add=DOMUtil.getUniversalPosition(_199);
+_196.x+=add.x;
+_196.y+=add.y;
 }
 }
 }
-return new Point(_18a.x,_18a.y);
+return new Point(_196.x,_196.y);
 },getGlobalMousePosition:function(e){
 return this._getMousePosition(e,false);
 },getUniversalMousePosition:function(e){
 return this._getMousePosition(e,true);
-},_getMousePosition:function(e,_192){
-var _193=DOMEvents.getTarget(e);
-var _194={x:e.pageX?e.pageX:e.clientX,y:e.pageY?e.pageY:e.clientY};
+},_getMousePosition:function(e,_19e){
+var _19f=DOMEvents.getTarget(e);
+var _1a0={x:e.pageX?e.pageX:e.clientX,y:e.pageY?e.pageY:e.clientY};
 if(Client.isMozilla){
-var doc=_193.ownerDocument;
+var doc=_19f.ownerDocument;
 var win=this.getParentWindow(doc);
-_194.x-=win.pageXOffset;
-_194.y-=win.pageYOffset;
+_1a0.x-=win.pageXOffset;
+_1a0.y-=win.pageYOffset;
 }
-if(_192){
-var _197=this.getParentWindow(_193).frameElement;
-if(_197){
-var add=this.getUniversalPosition(_197);
-_194.x+=add.x;
-_194.y+=add.y;
+if(_19e){
+var _1a3=this.getParentWindow(_19f).frameElement;
+if(_1a3){
+var add=this.getUniversalPosition(_1a3);
+_1a0.x+=add.x;
+_1a0.y+=add.y;
 }
 }
-return _194;
+return _1a0;
 }};
 var DOMUtil=new _DOMUtil();
 function _XMLParser(){
 }
-_XMLParser.prototype={_logger:SystemLogger.getLogger("XMLParser"),_domParser:(window.DOMParser!=null?new DOMParser():null),parse:function(xml,_19a){
+_XMLParser.prototype={_logger:SystemLogger.getLogger("XMLParser"),_domParser:(window.DOMParser!=null?new DOMParser():null),parse:function(xml,_1a6){
 var doc=null;
 if(xml!=null){
 if(this._domParser!=null){
@@ -1621,7 +1639,7 @@ catch(e){
 alert(xml);
 }
 if(doc.documentElement.namespaceURI==Constants.NS_DOMPARSEERROR){
-if(!_19a){
+if(!_1a6){
 this._logger.error(DOMSerializer.serialize(doc.documentElement,true));
 if(Application.isDeveloperMode){
 alert("XMLParser failed: \n\n"+DOMSerializer.serialize(doc.documentElement,true));
@@ -1633,7 +1651,7 @@ doc=null;
 doc=DOMUtil.getDOMDocument();
 doc.loadXML(xml);
 if(doc.parseError.errorCode!=0){
-if(!_19a){
+if(!_1a6){
 this._logger.error("XMLParser failed!");
 if(Application.isDeveloperMode){
 alert("XMLParser failed!");
@@ -1646,33 +1664,33 @@ doc=null;
 throw "XMLParser: No XML input to parse!";
 }
 return doc;
-},isWellFormedDocument:function(xml,_19d){
-var _19e=true;
+},isWellFormedDocument:function(xml,_1a9){
+var _1aa=true;
 var dec="<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 if(xml.indexOf("<?xml ")==-1){
 xml=dec+xml;
 }
-var _1a0=SourceValidationService.IsWellFormedDocument(xml);
-if(_1a0!="True"){
-_19e=false;
-if(_19d==true){
-this._illFormedDialog(_1a0);
+var _1ac=SourceValidationService.IsWellFormedDocument(xml);
+if(_1ac!="True"){
+_1aa=false;
+if(_1a9==true){
+this._illFormedDialog(_1ac);
 }
 }
-return _19e;
-},isWellFormedFragment:function(xml,_1a2){
-var _1a3=true;
-var _1a4=SourceValidationService.IsWellFormedFragment(xml);
-if(_1a4!="True"){
-_1a3=false;
-if(_1a2==true){
-this._illFormedDialog(_1a4);
+return _1aa;
+},isWellFormedFragment:function(xml,_1ae){
+var _1af=true;
+var _1b0=SourceValidationService.IsWellFormedFragment(xml);
+if(_1b0!="True"){
+_1af=false;
+if(_1ae==true){
+this._illFormedDialog(_1b0);
 }
 }
-return _1a3;
-},_illFormedDialog:function(_1a5){
+return _1af;
+},_illFormedDialog:function(_1b1){
 setTimeout(function(){
-Dialog.error("Not well-formed",_1a5);
+Dialog.error("Not well-formed",_1b1);
 },0);
 }};
 var XMLParser=new _XMLParser();
@@ -1681,22 +1699,22 @@ this.logger=SystemLogger.getLogger("XPathResolver");
 this._evaluator=window.XPathEvaluator?new XPathEvaluator():null;
 this._nsResolver=null;
 }
-XPathResolver.prototype.setNamespacePrefixResolver=function(_1a6){
+XPathResolver.prototype.setNamespacePrefixResolver=function(_1b2){
 if(this._evaluator){
-this._nsResolver={lookupNamespaceURI:function(_1a7){
-return _1a6[_1a7];
+this._nsResolver={lookupNamespaceURI:function(_1b3){
+return _1b2[_1b3];
 }};
 }else{
-this._nsResolver=_1a6;
+this._nsResolver=_1b2;
 }
 };
-XPathResolver.prototype.resolve=function(_1a8,node,_1aa){
-var _1ab=null;
+XPathResolver.prototype.resolve=function(_1b4,node,_1b6){
+var _1b7=null;
 try{
 if(this._evaluator){
-_1ab=this._evaluateDOMXpath(_1a8,node,_1aa?true:false);
+_1b7=this._evaluateDOMXpath(_1b4,node,_1b6?true:false);
 }else{
-_1ab=this._evaluateMSXpath(_1a8,node,_1aa?true:false);
+_1b7=this._evaluateMSXpath(_1b4,node,_1b6?true:false);
 }
 }
 catch(exception){
@@ -1708,23 +1726,23 @@ alert(arguments.caller.callee.toString());
 }
 throw exception;
 }
-return _1ab;
+return _1b7;
 };
-XPathResolver.prototype.resolveAll=function(_1ac,node){
-return this.resolve(_1ac,node,true);
+XPathResolver.prototype.resolveAll=function(_1b8,node){
+return this.resolve(_1b8,node,true);
 };
-XPathResolver.prototype._evaluateDOMXpath=function(_1ae,node,_1b0){
-var _1b1=null;
+XPathResolver.prototype._evaluateDOMXpath=function(_1ba,node,_1bc){
+var _1bd=null;
 if(node){
-var _1b1=this._evaluator.evaluate(_1ae,node,this._nsResolver,XPathResult.ORDERED_NODE_ITERATOR_TYPE,null);
-if(_1b0){
+var _1bd=this._evaluator.evaluate(_1ba,node,this._nsResolver,XPathResult.ORDERED_NODE_ITERATOR_TYPE,null);
+if(_1bc){
 var list=new List();
-while((node=_1b1.iterateNext())!=null){
+while((node=_1bd.iterateNext())!=null){
 list.add(node);
 }
-_1b1=list;
+_1bd=list;
 }else{
-_1b1=_1b1.iterateNext();
+_1bd=_1bd.iterateNext();
 }
 }else{
 var cry="XPathResolver#_evaluateDOMXpath: No DOMNode to evaluate!";
@@ -1734,24 +1752,24 @@ alert(cry);
 this.logger.fatal(cry);
 }
 }
-return _1b1;
+return _1bd;
 };
-XPathResolver.prototype._evaluateMSXpath=function(_1b4,node,_1b6){
+XPathResolver.prototype._evaluateMSXpath=function(_1c0,node,_1c2){
 var doc=(node.nodeType==Node.DOCUMENT_NODE?node:node.ownerDocument);
-var _1b8="";
-for(var _1b9 in this._nsResolver){
-_1b8+="xmlns:"+_1b9+"=\""+this._nsResolver[_1b9]+"\" ";
+var _1c4="";
+for(var _1c5 in this._nsResolver){
+_1c4+="xmlns:"+_1c5+"=\""+this._nsResolver[_1c5]+"\" ";
 }
-doc.setProperty("SelectionNamespaces",_1b8);
-if(_1b6){
+doc.setProperty("SelectionNamespaces",_1c4);
+if(_1c2){
 var list=new List();
-var i=0,_1bc=node.selectNodes(_1b4);
-while(i<_1bc.length){
-list.add(_1bc.item(i++));
+var i=0,_1c8=node.selectNodes(_1c0);
+while(i<_1c8.length){
+list.add(_1c8.item(i++));
 }
 result=list;
 }else{
-result=node.selectSingleNode(_1b4);
+result=node.selectSingleNode(_1c0);
 }
 return result;
 };
@@ -1761,139 +1779,139 @@ this._processor=null;
 this._cache=null;
 }
 XSLTransformer.prototype.importStylesheet=function(url){
-var _1be=this._import(Resolver.resolve(url));
+var _1ca=this._import(Resolver.resolve(url));
 if(Client.isMozilla){
 this._processor=new XSLTProcessor();
-this._processor.importStylesheet(_1be);
+this._processor.importStylesheet(_1ca);
 }else{
 this._cache=DOMUtil.getMSXMLXSLTemplate();
-this._cache.stylesheet=_1be;
+this._cache.stylesheet=_1ca;
 }
 };
 XSLTransformer.prototype._import=function(url){
-var _1c0=null;
+var _1cc=null;
 if(Client.isMozilla){
-var _1c1=DOMUtil.getXMLHTTPRequest();
-_1c1.open("get",Resolver.resolve(url),false);
-_1c1.send(null);
-_1c0=_1c1.responseXML;
+var _1cd=DOMUtil.getXMLHTTPRequest();
+_1cd.open("get",Resolver.resolve(url),false);
+_1cd.send(null);
+_1cc=_1cd.responseXML;
 }else{
-var _1c0=DOMUtil.getDOMDocument(true);
-_1c0.async=false;
-_1c0.load(url);
+var _1cc=DOMUtil.getDOMDocument(true);
+_1cc.async=false;
+_1cc.load(url);
 }
-return _1c0;
+return _1cc;
 };
 XSLTransformer.prototype.transformToDocument=function(dom){
-var _1c3=null;
+var _1cf=null;
 if(Client.isMozilla){
-_1c3=this._processor.transformToDocument(dom);
+_1cf=this._processor.transformToDocument(dom);
 }else{
 alert("TODO!");
 }
-return _1c3;
+return _1cf;
 };
-XSLTransformer.prototype.transformToString=function(dom,_1c5){
-var _1c6=null;
+XSLTransformer.prototype.transformToString=function(dom,_1d1){
+var _1d2=null;
 if(Client.isMozilla){
 var doc=this.transformToDocument(dom);
-_1c6=DOMSerializer.serialize(doc,_1c5);
+_1d2=DOMSerializer.serialize(doc,_1d1);
 }else{
 var proc=this._cache.createProcessor();
 proc.input=dom;
 proc.transform();
-_1c6=proc.output;
+_1d2=proc.output;
 }
-return _1c6;
+return _1d2;
 };
 function _CSSUtil(){
 }
-_CSSUtil.prototype={_getCurrent:function(_1c9){
-var _1ca=_1c9.style?_1c9.className:_1c9.getAttribute("class");
-_1ca=_1ca?_1ca:"";
-return _1ca;
-},_contains:function(_1cb,sub){
-return _1cb.indexOf(sub)>-1;
-},_attach:function(_1cd,sub){
-return _1cd+(_1cd==""?"":" ")+sub;
-},_detach:function(_1cf,sub){
-if(this._contains(_1cf," "+sub)){
+_CSSUtil.prototype={_getCurrent:function(_1d5){
+var _1d6=_1d5.style?_1d5.className:_1d5.getAttribute("class");
+_1d6=_1d6?_1d6:"";
+return _1d6;
+},_contains:function(_1d7,sub){
+return _1d7.indexOf(sub)>-1;
+},_attach:function(_1d9,sub){
+return _1d9+(_1d9==""?"":" ")+sub;
+},_detach:function(_1db,sub){
+if(this._contains(_1db," "+sub)){
 sub=" "+sub;
 }
-return _1cf.replace(sub,"");
-},attachClassName:function(_1d1,_1d2){
-if(_1d1.classList!=null){
-if(!_1d1.classList.contains(_1d2)){
-_1d1.classList.add(_1d2);
+return _1db.replace(sub,"");
+},attachClassName:function(_1dd,_1de){
+if(_1dd.classList!=null){
+if(!_1dd.classList.contains(_1de)){
+_1dd.classList.add(_1de);
 }
 }else{
-var _1d3=this._getCurrent(_1d1);
-if(!this._contains(_1d3,_1d2)){
-_1d3=this._attach(_1d3,_1d2);
+var _1df=this._getCurrent(_1dd);
+if(!this._contains(_1df,_1de)){
+_1df=this._attach(_1df,_1de);
 }
-if(_1d1.style!=null){
-_1d1.className=_1d3;
+if(_1dd.style!=null){
+_1dd.className=_1df;
 }else{
-_1d1.setAttribute("class",_1d3);
+_1dd.setAttribute("class",_1df);
 }
 }
-},detachClassName:function(_1d4,_1d5){
-if(_1d4.classList!=null){
-if(_1d4.classList.contains(_1d5)){
-_1d4.classList.remove(_1d5);
+},detachClassName:function(_1e0,_1e1){
+if(_1e0.classList!=null){
+if(_1e0.classList.contains(_1e1)){
+_1e0.classList.remove(_1e1);
 }
 }else{
-var _1d6=this._getCurrent(_1d4);
-if(this._contains(_1d6,_1d5)){
-_1d6=this._detach(_1d6,_1d5);
+var _1e2=this._getCurrent(_1e0);
+if(this._contains(_1e2,_1e1)){
+_1e2=this._detach(_1e2,_1e1);
 }
-if(_1d4.style!=null){
-_1d4.className=_1d6;
+if(_1e0.style!=null){
+_1e0.className=_1e2;
 }else{
-if(_1d6==""){
-_1d4.removeAttribute("class");
+if(_1e2==""){
+_1e0.removeAttribute("class");
 }else{
-_1d4.setAttribute("class",_1d6);
+_1e0.setAttribute("class",_1e2);
 }
 }
 }
-},hasClassName:function(_1d7,_1d8){
-var _1d9=false;
-if(_1d7.classList!=null){
-_1d9=_1d7.classList.contains(_1d8);
+},hasClassName:function(_1e3,_1e4){
+var _1e5=false;
+if(_1e3.classList!=null){
+_1e5=_1e3.classList.contains(_1e4);
 }else{
-_1d9=this._contains(this._getCurrent(_1d7),_1d8);
+_1e5=this._contains(this._getCurrent(_1e3),_1e4);
 }
-return _1d9;
+return _1e5;
 }};
 var CSSUtil=new _CSSUtil();
 function _CSSComputer(){
 }
-_CSSComputer.prototype={_margins:{top:Client.isExplorer?"marginTop":"margin-top",right:Client.isExplorer?"marginRight":"margin-right",bottom:Client.isExplorer?"marginBottom":"margin-bottom",left:Client.isExplorer?"marginLeft":"margin-left"},_paddings:{top:Client.isExplorer?"paddingTop":"padding-top",right:Client.isExplorer?"paddingRight":"padding-right",bottom:Client.isExplorer?"paddingBottom":"padding-bottom",left:Client.isExplorer?"paddingLeft":"padding-left"},_borders:{top:Client.isExplorer?"borderTopWidth":"border-top-width",right:Client.isExplorer?"borderRightWidth":"border-right-width",bottom:Client.isExplorer?"borderBottomWidth":"border-bottom-width",left:Client.isExplorer?"borderLeftWidth":"border-left-width"},_getComplexResult:function(_1da,_1db){
-var _1dc={};
-for(var _1dd in _1da){
-var ent=parseInt(DOMUtil.getComputedStyle(_1db,_1da[_1dd]));
-_1dc[_1dd]=isNaN(ent)?0:ent;
+_CSSComputer.prototype={_margins:{top:Client.isExplorer?"marginTop":"margin-top",right:Client.isExplorer?"marginRight":"margin-right",bottom:Client.isExplorer?"marginBottom":"margin-bottom",left:Client.isExplorer?"marginLeft":"margin-left"},_paddings:{top:Client.isExplorer?"paddingTop":"padding-top",right:Client.isExplorer?"paddingRight":"padding-right",bottom:Client.isExplorer?"paddingBottom":"padding-bottom",left:Client.isExplorer?"paddingLeft":"padding-left"},_borders:{top:Client.isExplorer?"borderTopWidth":"border-top-width",right:Client.isExplorer?"borderRightWidth":"border-right-width",bottom:Client.isExplorer?"borderBottomWidth":"border-bottom-width",left:Client.isExplorer?"borderLeftWidth":"border-left-width"},_getComplexResult:function(_1e6,_1e7){
+var _1e8={};
+for(var _1e9 in _1e6){
+var ent=parseInt(DOMUtil.getComputedStyle(_1e7,_1e6[_1e9]));
+_1e8[_1e9]=isNaN(ent)?0:ent;
 }
-return _1dc;
-},_getMargin:function(_1df){
-return this._getComplexResult(this._margins,_1df);
-},getPadding:function(_1e0){
-return this._getComplexResult(this._paddings,_1e0);
-},getBorder:function(_1e1){
-return this._getComplexResult(this._borders,_1e1);
-},getPosition:function(_1e2){
-return DOMUtil.getComputedStyle(_1e2,"position");
-},getFloat:function(_1e3){
-return DOMUtil.getComputedStyle(_1e3,Client.isExplorer?"styleFloat":"float");
-},getZIndex:function(_1e4){
-return parseInt(DOMUtil.getComputedStyle(_1e4,Client.isExplorer?"zIndex":"z-index"));
-},getBackgroundColor:function(_1e5){
-return DOMUtil.getComputedStyle(_1e5,Client.isExplorer?"backgroundColor":"background-color");
+return _1e8;
+},_getMargin:function(_1eb){
+return this._getComplexResult(this._margins,_1eb);
+},getPadding:function(_1ec){
+return this._getComplexResult(this._paddings,_1ec);
+},getBorder:function(_1ed){
+return this._getComplexResult(this._borders,_1ed);
+},getPosition:function(_1ee){
+return DOMUtil.getComputedStyle(_1ee,"position");
+},getFloat:function(_1ef){
+return DOMUtil.getComputedStyle(_1ef,Client.isExplorer?"styleFloat":"float");
+},getZIndex:function(_1f0){
+return parseInt(DOMUtil.getComputedStyle(_1f0,Client.isExplorer?"zIndex":"z-index"));
+},getBackgroundColor:function(_1f1){
+return DOMUtil.getComputedStyle(_1f1,Client.isExplorer?"backgroundColor":"background-color");
 }};
 var CSSComputer=new _CSSComputer();
 var System=new function(){
-var _1e6=SystemLogger.getLogger("System");
+var _1f2=SystemLogger.getLogger("System");
 var root=null;
 this.hasActivePerspectives=false;
 this.getRootNode=function(){
@@ -1903,115 +1921,115 @@ root=new SystemNode(TreeService.GetRootElements("")[0]);
 return root;
 };
 this.getPerspectiveNodes=function(){
-var _1e8=new List();
-var _1e9=TreeService.GetActivePerspectiveElements("dummy");
-var list=new List(_1e9);
+var _1f4=new List();
+var _1f5=TreeService.GetActivePerspectiveElements("dummy");
+var list=new List(_1f5);
 if(list.hasEntries()){
 this.hasActivePerspectives=true;
-list.each(function(_1eb){
-_1e8.add(new SystemNode(_1eb));
+list.each(function(_1f7){
+_1f4.add(new SystemNode(_1f7));
 });
 }else{
 EventBroadcaster.broadcast(BroadcastMessages.PERSPECTIVES_NONE);
 }
-return _1e8;
+return _1f4;
 };
-this.getChildNodes=function(node,_1ed){
-var _1ee=new List();
-var _1ef=null;
-if(_1ed){
-if(SearchTokens.hasToken(_1ed)){
-_1ed=SearchTokens.getToken(_1ed);
+this.getChildNodes=function(node,_1f9){
+var _1fa=new List();
+var _1fb=null;
+if(_1f9){
+if(SearchTokens.hasToken(_1f9)){
+_1f9=SearchTokens.getToken(_1f9);
 }
-_1ef=TreeService.GetElementsBySearchToken(node.getData(),_1ed);
+_1fb=TreeService.GetElementsBySearchToken(node.getData(),_1f9);
 }else{
-_1ef=TreeService.GetElements(node.getData());
+_1fb=TreeService.GetElements(node.getData());
 }
-new List(_1ef).each(function(_1f0){
-var _1f1=new SystemNode(_1f0);
-if(_1ed){
-_1f1.searchToken=_1ed;
+new List(_1fb).each(function(_1fc){
+var _1fd=new SystemNode(_1fc);
+if(_1f9){
+_1fd.searchToken=_1f9;
 }
-_1ee.add(_1f1);
+_1fa.add(_1fd);
 });
-return _1ee;
+return _1fa;
 };
-this.getDescendantBranch=function(_1f2){
+this.getDescendantBranch=function(_1fe){
 var map=new Map();
 var arg=[];
-_1f2.each(function(node){
+_1fe.each(function(node){
 arg.push({ProviderName:node.getProviderName(),EntityToken:node.getEntityToken(),Piggybag:node.getPiggyBag()});
 });
-var _1f6=TreeService.GetMultipleChildren(arg);
-var _1f7=new List(_1f6);
-while(_1f7.hasNext()){
-this._listNodesInMap(_1f7.getNext(),map);
+var _202=TreeService.GetMultipleChildren(arg);
+var _203=new List(_202);
+while(_203.hasNext()){
+this._listNodesInMap(_203.getNext(),map);
 }
 return map;
 };
-this.getInvisibleBranch=function(_1f8,_1f9,_1fa){
+this.getInvisibleBranch=function(_204,_205,_206){
 var map=new Map();
 var arg=[];
-_1fa.each(function(node){
+_206.each(function(node){
 arg.push({ProviderName:node.getProviderName(),EntityToken:node.getEntityToken(),Piggybag:node.getPiggyBag()});
 });
-var _1fe=TreeService.FindEntityToken(_1f8,_1f9,arg);
-if(_1fe instanceof SOAPFault){
-_1e6.error(_1fe.getFaultString());
+var _20a=TreeService.FindEntityToken(_204,_205,arg);
+if(_20a instanceof SOAPFault){
+_1f2.error(_20a.getFaultString());
 if(Application.isDeveloperMode){
-alert(_1fe.getFaultString());
+alert(_20a.getFaultString());
 }
 map=null;
 }else{
-var _1ff=new List(_1fe);
-while(_1ff.hasNext()){
-this._listNodesInMap(_1ff.getNext(),map);
+var _20b=new List(_20a);
+while(_20b.hasNext()){
+this._listNodesInMap(_20b.getNext(),map);
 }
 }
 return map;
 };
-this._listNodesInMap=function(_200,map){
+this._listNodesInMap=function(_20c,map){
 var list=new List();
-var key=_200.ElementKey;
-var _204=new List(_200.ClientElements);
+var key=_20c.ElementKey;
+var _210=new List(_20c.ClientElements);
 map.set(key,list);
-while(_204.hasNext()){
-var _205=_204.getNext();
-list.add(new SystemNode(_205));
+while(_210.hasNext()){
+var _211=_210.getNext();
+list.add(new SystemNode(_211));
 }
 };
-this.getChildNodesBySearchToken=function(node,_207){
-return this.getChildNodes(node,_207);
+this.getChildNodesBySearchToken=function(node,_213){
+return this.getChildNodes(node,_213);
 };
-this.getNamedRoots=function(key,_209){
-var _20a=new List();
-var _20b=null;
-if(_209){
-if(SearchTokens.hasToken(_209)){
-_209=SearchTokens.getToken(_209);
+this.getNamedRoots=function(key,_215){
+var _216=new List();
+var _217=null;
+if(_215){
+if(SearchTokens.hasToken(_215)){
+_215=SearchTokens.getToken(_215);
 }
-_20b=TreeService.GetNamedRootsBySearchToken(key,_209);
+_217=TreeService.GetNamedRootsBySearchToken(key,_215);
 }else{
-_20b=TreeService.GetNamedRoots(key);
+_217=TreeService.GetNamedRoots(key);
 }
-new List(_20b).each(function(_20c){
-var node=new SystemNode(_20c);
-if(_209){
-node.searchToken=_209;
+new List(_217).each(function(_218){
+var node=new SystemNode(_218);
+if(_215){
+node.searchToken=_215;
 }
-_20a.add(node);
+_216.add(node);
 });
-return _20a;
+return _216;
 };
-this.getNamedRootsBySearchToken=function(key,_20f){
-return this.getNamedRoots(key,_20f);
+this.getNamedRootsBySearchToken=function(key,_21b){
+return this.getNamedRoots(key,_21b);
 };
-function compileActionList(node,_211,_212){
-var _213=_211.ClientElementActionGroupId;
-if(_213!=null){
-var _214=_212.get(_213).ClientElementActionGroupItems;
-if(_214&&_214.length>0){
-node.setActionList(new List(_214));
+function compileActionList(node,_21d,_21e){
+var _21f=_21d.ClientElementActionGroupId;
+if(_21f!=null){
+var _220=_21e.get(_21f).ClientElementActionGroupItems;
+if(_220&&_220.length>0){
+node.setActionList(new List(_220));
 }
 }
 }
@@ -2040,13 +2058,13 @@ SystemNode.prototype._registerSystemActions=function(){
 var self=this;
 new List(this._data.ActionKeys).each(function(key){
 if(!SystemAction.actionMap.has(key)){
-new List(self._data.Actions).each(function(_21a){
-var _21b=_21a.ActionCategory.Name;
-if(SystemAction.hasCategory(_21b)){
-var _21c=new SystemAction(_21a);
-SystemAction.actionMap.set(_21a.ActionKey,_21c);
+new List(self._data.Actions).each(function(_226){
+var _227=_226.ActionCategory.Name;
+if(SystemAction.hasCategory(_227)){
+var _228=new SystemAction(_226);
+SystemAction.actionMap.set(_226.ActionKey,_228);
 }else{
-throw "No such action category: "+_21b;
+throw "No such action category: "+_227;
 }
 });
 }
@@ -2056,13 +2074,13 @@ SystemNode.prototype.getData=function(){
 return this._data;
 };
 SystemNode.prototype.getChildren=function(){
-var _21d=null;
+var _229=null;
 if(this.searchToken){
-_21d=System.getChildNodesBySearchToken(this,this.searchToken);
+_229=System.getChildNodesBySearchToken(this,this.searchToken);
 }else{
-_21d=System.getChildNodes(this);
+_229=System.getChildNodes(this);
 }
-return _21d;
+return _229;
 };
 SystemNode.prototype.getDescendantBranch=function(list){
 return System.getDescendantBranch(list);
@@ -2077,11 +2095,11 @@ SystemNode.prototype.getEntityToken=function(){
 return this._data.EntityToken;
 };
 SystemNode.prototype.getPiggyBag=function(){
-var _21f=this._data.Piggybag;
-if(_21f==null){
-_21f="";
+var _22b=this._data.Piggybag;
+if(_22b==null){
+_22b="";
 }
-return _21f;
+return _22b;
 };
 SystemNode.prototype.getHandle=function(){
 return this._data.ElementKey;
@@ -2093,17 +2111,17 @@ SystemNode.prototype.getImageProfile=function(size){
 return new ImageProfile({image:ImageProvider.getImageURL(this._data.Icon,size),imageActive:ImageProvider.getImageURL(this._data.OpenedIcon?this._data.OpenedIcon:this._data.Icon,size)});
 };
 SystemNode.prototype.getToolTip=function(){
-var _221=null;
+var _22d=null;
 if(typeof this._data.ToolTip!="undefined"){
-_221=this._data.ToolTip;
+_22d=this._data.ToolTip;
 }
-return _221;
+return _22d;
 };
 SystemNode.prototype.getPropertyBag=function(){
 if(!this._propertyBag&&this._data.PropertyBag&&this._data.PropertyBag.length!=0){
 var map={};
-new List(this._data.PropertyBag).each(function(_223){
-map[_223.Key]=_223.Value;
+new List(this._data.PropertyBag).each(function(_22f){
+map[_22f.Key]=_22f.Value;
 });
 this._propertyBag=map;
 }
@@ -2118,20 +2136,20 @@ var map=new Map();
 var self=this;
 new List(this._data.ActionKeys).each(function(key){
 if(SystemAction.actionMap.has(key)){
-var _227=SystemAction.actionMap.get(key);
-var _228=true;
-if(_227.getCategory()==SystemAction.categories.DeveloperMode){
+var _233=SystemAction.actionMap.get(key);
+var _234=true;
+if(_233.getCategory()==SystemAction.categories.DeveloperMode){
 if(!Application.isDeveloperMode){
-_228=false;
+_234=false;
 }
 }
-if(_228){
-var id=_227.getGroupID();
+if(_234){
+var id=_233.getGroupID();
 if(!map.has(id)){
 map.set(id,new List());
 }
 var list=map.get(id);
-list.add(_227);
+list.add(_233);
 }
 }else{
 throw "No details for action key: "+key;
@@ -2171,13 +2189,13 @@ SystemAction.TAG_CHANGEFROMLANGUAGE="ChangeFromLocale";
 SystemAction.categories={Edit:"Edit",Add:"Add",Delete:"Delete",Other:"Other",DeveloperMode:"DeveloperMode"};
 SystemAction.taggedActions=new Map();
 SystemAction.actionMap=new Map();
-SystemAction.invoke=function(_22b,arg){
+SystemAction.invoke=function(_237,arg){
 var node=arg;
 if(node instanceof SystemNode){
 Application.lock(SystemAction);
-_22b.logger.debug("Execute \""+_22b.getLabel()+"\" on \""+node.getLabel()+"\".");
+_237.logger.debug("Execute \""+_237.getLabel()+"\" on \""+node.getLabel()+"\".");
 setTimeout(function(){
-TreeService.ExecuteSingleElementAction(node.getData(),_22b.getHandle(),Application.CONSOLE_ID);
+TreeService.ExecuteSingleElementAction(node.getData(),_237.getHandle(),Application.CONSOLE_ID);
 MessageQueue.update();
 Application.unlock(SystemAction);
 },0);
@@ -2185,17 +2203,17 @@ Application.unlock(SystemAction);
 throw "Multiple actiontargets not supported.";
 }
 };
-SystemAction.invokeTagged=function(_22e,_22f){
-action=SystemAction.taggedActions.get(_22e);
-node=SystemNode.taggedNodes.get(_22f);
+SystemAction.invokeTagged=function(_23a,_23b){
+action=SystemAction.taggedActions.get(_23a);
+node=SystemNode.taggedNodes.get(_23b);
 SystemAction.invoke(action,node);
 };
-SystemAction.hasCategory=function(_230){
-return SystemAction.categories[_230]?true:false;
+SystemAction.hasCategory=function(_23c){
+return SystemAction.categories[_23c]?true:false;
 };
-function SystemAction(_231){
+function SystemAction(_23d){
 this.logger=SystemLogger.getLogger("SystemAction");
-this._data=_231;
+this._data=_23d;
 if(this._data.TagValue!=null){
 SystemAction.taggedActions.set(this._data.TagValue,this);
 }
@@ -2234,11 +2252,11 @@ SystemAction.prototype.isInFolder=function(){
 return this._data.ActionCategory.IsInFolder;
 };
 SystemAction.prototype.getFolderName=function(){
-var _232=null;
+var _23e=null;
 if(this.isInFolder()){
-_232=this._data.ActionCategory.FolderName;
+_23e=this._data.ActionCategory.FolderName;
 }
-return _232;
+return _23e;
 };
 SystemAction.prototype.isDisabled=function(){
 return this._data.Disabled;
@@ -2247,38 +2265,38 @@ SystemAction.prototype.isCheckBox=function(){
 return typeof this._data.CheckboxStatus!=Types.UNDEFINED;
 };
 SystemAction.prototype.getTag=function(){
-var _233=null;
+var _23f=null;
 if(typeof this._data.TagValue!="undefined"){
-_233=this._data.TagValue;
+_23f=this._data.TagValue;
 }
-return _233;
+return _23f;
 };
 SystemAction.prototype.isChecked=function(){
-var _234=null;
+var _240=null;
 if(this.isCheckBox()){
-_234=this._data.CheckboxStatus=="Checked";
+_240=this._data.CheckboxStatus=="Checked";
 }else{
 throw "Not a checkbox!";
 }
-return _234;
+return _240;
 };
 function _UpdateManager(){
-var _235=null;
+var _241=null;
 if(!window.UpdateManager){
 this._construct();
-_235=this;
+_241=this;
 }
-return _235;
+return _241;
 }
 _UpdateManager.prototype={version:"0.1",CLASSNAME_FORM:"updateform",CLASSNAME_ZONE:"updatezone",CLASSNAME_GONE:"updategone",EVENT_BEFOREUPDATE:"beforeupdate",EVENT_AFTERUPDATE:"afterupdate",EVENT_ERRORUPDATE:"errorupdate",xhtml:null,summary:null,isEnabled:true,isDebugging:false,isUpdating:false,hasSoftAttributes:false,hasSoftSiblings:false,pendingResponse:null,currentDOM:null,errormessage:null,_assistant:null,_updates:null,_replaced:null,_dotnetnames:["__VIEWSTATE","__EVENTVALIDATION","__EVENTTARGET","__EVENTARGUMENT","__LASTFOCUS"],plugins:[],toString:function(){
 return "[object UpdateManager]";
-},_construct:function(_236){
+},_construct:function(_242){
 var root=document.documentElement;
-var _238=root.namespaceURI;
-if(_238==null){
-_238=new String(root.getAttribute("xmlns"));
+var _244=root.namespaceURI;
+if(_244==null){
+_244=new String(root.getAttribute("xmlns"));
 }
-if(_238=="http://www.w3.org/1999/xhtml"){
+if(_244=="http://www.w3.org/1999/xhtml"){
 this._addListener(window,"load");
 this._addListener(window,"unload");
 }else{
@@ -2290,50 +2308,50 @@ this.isEnabled=this.setupForms();
 if(this.isEnabled){
 if(this.xhtml!=null){
 if(typeof this.xhtml=="string"){
-var _239=decodeURIComponent(this.xhtml);
-this.currentDOM=UpdateAssistant.parse(_239);
+var _245=decodeURIComponent(this.xhtml);
+this.currentDOM=UpdateAssistant.parse(_245);
 }else{
 throw new TypeError();
 }
 }else{
-var _23a=this;
+var _246=this;
 UpdateAssistant.getXMLHttpRequest("get",window.location.toString(),{handleResponse:function(dom){
-_23a.currentDOM=dom;
+_246.currentDOM=dom;
 }}).send(null);
 }
 }
 }
 },setupForms:function(){
-var _23c=false;
+var _248=false;
 Array.forEach(document.forms,function(form){
 if(form.className.indexOf(this.CLASSNAME_FORM)>-1){
 if(!form.__isSetup){
 this._setupForm(form);
 form.__isSetup=true;
 }
-_23c=true;
+_248=true;
 }
 },this);
-return _23c;
+return _248;
 },_setupForm:function(form){
-var _23f=this;
+var _24b=this;
 this._addListener(form,"submit");
 form.__submit=form.submit;
 form.submit=function(){
-if(_23f.isEnabled){
-_23f._submit(form);
+if(_24b.isEnabled){
+_24b._submit(form);
 }else{
 form.__submit();
 }
 return false;
 };
-},_addListener:function(_240,type){
-if(_240.addEventListener!=null){
-_240.addEventListener(type,this,false);
+},_addListener:function(_24c,type){
+if(_24c.addEventListener!=null){
+_24c.addEventListener(type,this,false);
 }else{
-var _242=this;
-_240.attachEvent("on"+type,function(){
-_242.handleEvent(window.event);
+var _24e=this;
+_24c.attachEvent("on"+type,function(){
+_24e.handleEvent(window.event);
 });
 }
 },handleEvent:function(e){
@@ -2369,17 +2387,17 @@ if(this.isEnabled){
 this.summary=new String("");
 this.errors=new String("");
 if(dom!=null){
-var _247=UpdateAssistant.getUpdateZones(dom);
-var _248=UpdateAssistant.getUpdateZones(this.currentDOM);
+var _253=UpdateAssistant.getUpdateZones(dom);
+var _254=UpdateAssistant.getUpdateZones(this.currentDOM);
 this._updates=[];
 this._replaced={};
-_247.forEach(function(_249,_24a){
-var _24b=_248[_24a];
-this._crawl(_249,_24b);
+_253.forEach(function(_255,_256){
+var _257=_254[_256];
+this._crawl(_255,_257);
 },this);
-this._updates.forEach(function(_24c,_24d){
-_24c.update();
-_24c.dispose();
+this._updates.forEach(function(_258,_259){
+_258.update();
+_258.dispose();
 },this);
 this._dotnetnames.forEach(function(name){
 this._fixdotnet(dom,name);
@@ -2391,79 +2409,79 @@ this.isUpdating=false;
 UpdateAssistant.dispatchEvent(document.documentElement,this.EVENT_AFTERUPDATE);
 },handleSimilarResponse:function(){
 UpdateAssistant.dispatchEvent(document.documentElement,this.EVENT_AFTERUPDATE);
-},_crawl:function(_24f,_250,_251,id){
-var _253=true;
-var _254=_250.getAttribute("class");
-if(_254==null||_254.indexOf(this.CLASSNAME_GONE)==-1){
-if(_250.nodeType==Node.ELEMENT_NODE){
-var _255=_250.getAttribute("id");
-if(_255!=null){
-_251=_24f;
-id=_255;
+},_crawl:function(_25b,_25c,_25d,id){
+var _25f=true;
+var _260=_25c.getAttribute("class");
+if(_260==null||_260.indexOf(this.CLASSNAME_GONE)==-1){
+if(_25c.nodeType==Node.ELEMENT_NODE){
+var _261=_25c.getAttribute("id");
+if(_261!=null){
+_25d=_25b;
+id=_261;
 }
 }
-if(_253=this._check(_24f,_250,_251,id)){
-var _256=_24f.firstChild;
-var _257=_250.firstChild;
-while(_256!=null&&_257!=null&&!this._replaced[id]){
-switch(_256.nodeType){
+if(_25f=this._check(_25b,_25c,_25d,id)){
+var _262=_25b.firstChild;
+var _263=_25c.firstChild;
+while(_262!=null&&_263!=null&&!this._replaced[id]){
+switch(_262.nodeType){
 case Node.TEXT_NODE:
-_253=this._check(_256,_257,_251,id);
+_25f=this._check(_262,_263,_25d,id);
 break;
 case Node.DOCUMENT_NODE:
 case Node.ELEMENT_NODE:
-_253=this._crawl(_256,_257,_251,id);
+_25f=this._crawl(_262,_263,_25d,id);
 break;
 }
 if(this._replaced[id]){
-_253=false;
+_25f=false;
 }else{
-_256=_256.nextSibling;
-_257=_257.nextSibling;
+_262=_262.nextSibling;
+_263=_263.nextSibling;
 }
 }
 }
 }
-return _253;
-},_check:function(_258,_259,_25a,id){
-var _25c=true;
-var _25d=null;
-var _25e=false;
-var _25f=false;
-if((_258!=null&&_259==null)||(_258==null&&_259!=null)){
-_25c=false;
+return _25f;
+},_check:function(_264,_265,_266,id){
+var _268=true;
+var _269=null;
+var _26a=false;
+var _26b=false;
+if((_264!=null&&_265==null)||(_264==null&&_265!=null)){
+_268=false;
 }else{
-if(_25c=_258.nodeType==_259.nodeType){
-switch(_259.nodeType){
+if(_268=_264.nodeType==_265.nodeType){
+switch(_265.nodeType){
 case Node.ELEMENT_NODE:
-if(_258.namespaceURI!=_259.namespaceURI||_258.nodeName!=_259.nodeName){
-_25c=false;
+if(_264.namespaceURI!=_265.namespaceURI||_264.nodeName!=_265.nodeName){
+_268=false;
 }else{
-if(_25c=(_258.nodeName==_259.nodeName)){
-var _260=_259.getAttribute("id");
-var _261=_258.getAttribute("id");
-if(_260!=null&&_261!=null){
-if(_260!=_261){
-_25c=false;
+if(_268=(_264.nodeName==_265.nodeName)){
+var _26c=_265.getAttribute("id");
+var _26d=_264.getAttribute("id");
+if(_26c!=null&&_26d!=null){
+if(_26c!=_26d){
+_268=false;
 }else{
-if((_25d=this._getPlugin(_258,_259))!=null){
-if(_25d.updateElement(_258,_259)){
-_25f=true;
-_25c=false;
+if((_269=this._getPlugin(_264,_265))!=null){
+if(_269.updateElement(_264,_265)){
+_26b=true;
+_268=false;
 }
 }
 }
 }
-if(_25c){
-if(_25c=this._checkAttributes(_258,_259)){
-if(this.hasSoftSiblings&&this._hasSoftChildren(_258)&&this._hasSoftChildren(_259)){
-if(this._validateSoftChildren(_258,_259)){
-this._updateSoftChildren(_258,_259);
-_25e=true;
+if(_268){
+if(_268=this._checkAttributes(_264,_265)){
+if(this.hasSoftSiblings&&this._hasSoftChildren(_264)&&this._hasSoftChildren(_265)){
+if(this._validateSoftChildren(_264,_265)){
+this._updateSoftChildren(_264,_265);
+_26a=true;
 }
-_25c=false;
+_268=false;
 }else{
-_25c=_258.childNodes.length==_259.childNodes.length;
+_268=_264.childNodes.length==_265.childNodes.length;
 }
 }
 }
@@ -2471,46 +2489,46 @@ _25c=_258.childNodes.length==_259.childNodes.length;
 }
 break;
 case Node.TEXT_NODE:
-if(_258.data.trim()!=_259.data.trim()){
-_25c=false;
+if(_264.data.trim()!=_265.data.trim()){
+_268=false;
 }
 break;
 }
 }
 }
-if(_25c==false&&!_25e&&!_25f){
-if(id!=null&&_25a!=null){
-this.addUpdate(new ReplaceUpdate(id,_25a));
+if(_268==false&&!_26a&&!_26b){
+if(id!=null&&_266!=null){
+this.addUpdate(new ReplaceUpdate(id,_266));
 }
 }
-return _25c;
-},_checkAttributes:function(_262,_263){
-var _264=true;
-var _265=false;
-var _266=_262.attributes;
-var _267=_263.attributes;
-if(_266.length!=_267.length){
-_265=true;
+return _268;
+},_checkAttributes:function(_26e,_26f){
+var _270=true;
+var _271=false;
+var _272=_26e.attributes;
+var _273=_26f.attributes;
+if(_272.length!=_273.length){
+_271=true;
 }else{
-_265=!Array.every(_266,function(att1,i){
-var att2=_267.item(i);
+_271=!Array.every(_272,function(att1,i){
+var att2=_273.item(i);
 return att1.nodeName==att2.nodeName&&att1.nodeValue==att2.nodeValue;
 });
 }
-if(_265){
-var _26b=_262.getAttribute("id");
-var _26c=_263.getAttribute("id");
-if(this.hasSoftAttributes&&_26b!=null&&_26b==_26c){
-this.addUpdate(new AttributesUpdate(_26c,_262,_263));
+if(_271){
+var _277=_26e.getAttribute("id");
+var _278=_26f.getAttribute("id");
+if(this.hasSoftAttributes&&_277!=null&&_277==_278){
+this.addUpdate(new AttributesUpdate(_278,_26e,_26f));
 }else{
-_264=false;
+_270=false;
 }
 }
-return _264;
-},_hasSoftChildren:function(_26d){
-var _26e=true;
-if(_26d.hasChildNodes()){
-_26e=Array.every(_26d.childNodes,function(node){
+return _270;
+},_hasSoftChildren:function(_279){
+var _27a=true;
+if(_279.hasChildNodes()){
+_27a=Array.every(_279.childNodes,function(node){
 var res=true;
 switch(node.nodeType){
 case Node.TEXT_NODE:
@@ -2523,32 +2541,32 @@ break;
 return res;
 });
 }
-return _26e;
-},_validateSoftChildren:function(_271,_272){
-var _273=true;
-var _274=-1;
-var _275=-1;
-var _276=-1;
-var news=this._toMap(_271.childNodes,true);
-var olds=this._toMap(_272.childNodes,true);
+return _27a;
+},_validateSoftChildren:function(_27d,_27e){
+var _27f=true;
+var _280=-1;
+var _281=-1;
+var _282=-1;
+var news=this._toMap(_27d.childNodes,true);
+var olds=this._toMap(_27e.childNodes,true);
 for(var id in olds){
-if(_273){
-var _27a=olds[id];
-_273=_27a>=_274;
+if(_27f){
+var _286=olds[id];
+_27f=_286>=_280;
 if(news[id]!=null){
-_276=news[id];
-_273=_276>=_275;
+_282=news[id];
+_27f=_282>=_281;
 }
 }
-_274=_27a;
-if(_276>-1){
-_275=_276;
+_280=_286;
+if(_282>-1){
+_281=_282;
 }
 }
-return _273;
-},_updateSoftChildren:function(_27b,_27c){
-var news=this._toMap(_27b.childNodes);
-var olds=this._toMap(_27c.childNodes);
+return _27f;
+},_updateSoftChildren:function(_287,_288){
+var news=this._toMap(_287.childNodes);
+var olds=this._toMap(_288.childNodes);
 for(var id in olds){
 if(news[id]==null){
 this.addUpdate(new SiblingUpdate(Update.TYPE_REMOVE,id,null,null));
@@ -2556,73 +2574,73 @@ this.addUpdate(new SiblingUpdate(Update.TYPE_REMOVE,id,null,null));
 this._crawl(news[id],olds[id]);
 }
 }
-var _280=null;
+var _28c=null;
 for(id in news){
 if(olds[id]==null){
-var _281=news[id];
-if(_280==null){
-var _282=_27c.getAttribute("id");
-this.addUpdate(new SiblingUpdate(Update.TYPE_INSERT,_282,_281,true));
+var _28d=news[id];
+if(_28c==null){
+var _28e=_288.getAttribute("id");
+this.addUpdate(new SiblingUpdate(Update.TYPE_INSERT,_28e,_28d,true));
 }else{
-this.addUpdate(new SiblingUpdate(Update.TYPE_INSERT,_280,_281,false));
+this.addUpdate(new SiblingUpdate(Update.TYPE_INSERT,_28c,_28d,false));
 }
 }
-_280=id;
+_28c=id;
 }
-},addUpdate:function(_283){
-this._updates.push(_283);
-if(_283 instanceof ReplaceUpdate){
-this._replaced[_283.id]=true;
+},addUpdate:function(_28f){
+this._updates.push(_28f);
+if(_28f instanceof ReplaceUpdate){
+this._replaced[_28f.id]=true;
 }
-},_getPlugin:function(_284,_285){
-var _286=null;
-this.plugins.every(function(_287){
-if(_287.handleElement(_284,_285)){
-_286=_287;
+},_getPlugin:function(_290,_291){
+var _292=null;
+this.plugins.every(function(_293){
+if(_293.handleElement(_290,_291)){
+_292=_293;
 }
-return _286==null;
+return _292==null;
 });
-return _286;
-},_toMap:function(_288,_289){
-var _28a={};
-Array.forEach(_288,function(node,_28c){
+return _292;
+},_toMap:function(_294,_295){
+var _296={};
+Array.forEach(_294,function(node,_298){
 if(node.nodeType==Node.ELEMENT_NODE){
-_28a[node.getAttribute("id")]=_289?_28c:node;
+_296[node.getAttribute("id")]=_295?_298:node;
 }
 });
-return _28a;
+return _296;
 },_getPost:function(form){
-var _28e=new String("");
+var _29a=new String("");
 if(form!=null){
 var last="";
-Array.forEach(form.elements,function(_290){
-var name=_290.name;
-var _292=encodeURIComponent(_290.value);
-switch(_290.type){
+Array.forEach(form.elements,function(_29c){
+var name=_29c.name;
+var _29e=encodeURIComponent(_29c.value);
+switch(_29c.type){
 case "button":
 case "submit":
-var _293=UpdateAssistant.getActiveElement();
-if(_290==_293&&name!=""){
-_28e+=name+"="+_292+"&";
+var _29f=UpdateAssistant.getActiveElement();
+if(_29c==_29f&&name!=""){
+_29a+=name+"="+_29e+"&";
 }
 break;
 case "radio":
-if(_290.checked){
-_28e+=name+"="+_292+"&";
+if(_29c.checked){
+_29a+=name+"="+_29e+"&";
 }
 break;
 case "checkbox":
-if(_290.checked){
-if(_290.name==last){
-if(_28e.lastIndexOf("&")==_28e.length-1){
-_28e=_28e.substr(0,_28e.length-1);
+if(_29c.checked){
+if(_29c.name==last){
+if(_29a.lastIndexOf("&")==_29a.length-1){
+_29a=_29a.substr(0,_29a.length-1);
 }
-_28e+=","+_292;
+_29a+=","+_29e;
 }else{
-_28e+=name+"="+_290.value;
+_29a+=name+"="+_29c.value;
 }
 last=name;
-_28e+="&";
+_29a+="&";
 }
 break;
 case "text":
@@ -2630,37 +2648,37 @@ case "hidden":
 case "password":
 case "textarea":
 case "select-one":
-_28e+=name+"="+_292+"&";
+_29a+=name+"="+_29e+"&";
 break;
 }
 });
 }
-return _28e.substr(0,_28e.length-1);
+return _29a.substr(0,_29a.length-1);
 },_postRequest:function(form){
-var _295=form.method!=""?form.method:"get";
-var _296=form.action!=""?form.action:window.location.toString();
-var _297=this._getPost(form);
-if(_295=="get"){
-if(_296.indexOf("?")>-1){
-_296=_296+"&"+_297;
+var _2a1=form.method!=""?form.method:"get";
+var _2a2=form.action!=""?form.action:window.location.toString();
+var _2a3=this._getPost(form);
+if(_2a1=="get"){
+if(_2a2.indexOf("?")>-1){
+_2a2=_2a2+"&"+_2a3;
 }else{
-_296+"?"+_297;
+_2a2+"?"+_2a3;
 }
 }
-var _298=this;
-var _299=UpdateAssistant.getXMLHttpRequest(_295,_296,this);
-if(_295=="post"){
-_299.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+var _2a4=this;
+var _2a5=UpdateAssistant.getXMLHttpRequest(_2a1,_2a2,this);
+if(_2a1=="post"){
+_2a5.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 }
-_299.send(_295=="post"?_297:null);
+_2a5.send(_2a1=="post"?_2a3:null);
 },_fixdotnet:function(dom,id){
-var _29c=document.getElementById(id);
-if(_29c!=null){
-var _29d=UpdateAssistant.getElementById(dom,id);
-if(_29d!=null){
-var _29e=_29d.getAttribute("value");
-if(_29e!==_29c.value){
-_29c.value=_29e;
+var _2a8=document.getElementById(id);
+if(_2a8!=null){
+var _2a9=UpdateAssistant.getElementById(dom,id);
+if(_2a9!=null){
+var _2aa=_2a9.getAttribute("value");
+if(_2aa!==_2a8.value){
+_2a8.value=_2aa;
 }
 }
 }
@@ -2672,58 +2690,58 @@ alert("UpdateManager dysfunction. \n\n"+out);
 this.errorsmessage=out;
 UpdateAssistant.dispatchEvent(document.documentElement,UpdateManager.EVENT_ERRORUPDATE);
 this.debug(out);
-},report:function(_2a1){
-this.summary+=_2a1+"\n";
+},report:function(_2ad){
+this.summary+=_2ad+"\n";
 }};
 var UpdateManager=new _UpdateManager();
 function _UpdateAssistant(){
-var _2a2=null;
+var _2ae=null;
 if(!window.UpdateAssistant){
 this._construct();
-_2a2=this;
+_2ae=this;
 }
-return _2a2;
+return _2ae;
 }
 _UpdateAssistant.prototype={_serializer:window.XMLSerializer!=null?new XMLSerializer():null,_parser:window.DOMParser!=null?new DOMParser():null,_activeElement:null,_construct:function(){
 if(!window.Node){
 window.Node={ELEMENT_NODE:1,TEXT_NODE:3,DOCUMENT_NODE:9};
 }
 if(!Array.every){
-Array.every=function(_2a3,fun){
-var _2a5=true;
-var len=_2a3.length>>>0;
+Array.every=function(_2af,fun){
+var _2b1=true;
+var len=_2af.length>>>0;
 if(typeof fun!="function"){
 throw new TypeError();
 }else{
-var _2a7=arguments[2];
+var _2b3=arguments[2];
 for(var i=0;i<len;i++){
-if(typeof _2a3[i]!="undefined"){
-if(!fun.call(_2a7,_2a3[i],i,_2a3)){
-_2a5=false;
+if(typeof _2af[i]!="undefined"){
+if(!fun.call(_2b3,_2af[i],i,_2af)){
+_2b1=false;
 break;
 }
 }
 }
 }
-return _2a5;
+return _2b1;
 };
 }
 if(!Array.prototype.every){
 Array.prototype.every=function(fun){
-var _2aa=arguments[1];
-return Array.every(this,fun,_2aa);
+var _2b6=arguments[1];
+return Array.every(this,fun,_2b6);
 };
 }
 if(!Array.forEach){
-Array.forEach=function(_2ab,fun){
-var len=_2ab.length>>>0;
+Array.forEach=function(_2b7,fun){
+var len=_2b7.length>>>0;
 if(typeof fun!="function"){
 throw new TypeError();
 }else{
-var _2ae=arguments[2];
+var _2ba=arguments[2];
 for(var i=0;i<len;i++){
-if(typeof _2ab[i]!="undefined"){
-fun.call(_2ae,_2ab[i],i,_2ab);
+if(typeof _2b7[i]!="undefined"){
+fun.call(_2ba,_2b7[i],i,_2b7);
 }
 }
 }
@@ -2731,8 +2749,8 @@ fun.call(_2ae,_2ab[i],i,_2ab);
 }
 if(!Array.prototype.forEach){
 Array.prototype.forEach=function(fun){
-var _2b1=arguments[1];
-Array.forEach(this,fun,_2b1);
+var _2bd=arguments[1];
+Array.forEach(this,fun,_2bd);
 };
 }
 if(!String.prototype.trim){
@@ -2757,147 +2775,147 @@ this._activeElement=null;
 }
 break;
 }
-},getXMLHttpRequest:function(_2b3,_2b4,_2b5){
-var _2b6=window.XMLHttpRequest?new XMLHttpRequest():new ActiveXObject("Msxml2.XMLHTTP.3.0");
-if(_2b6!=null){
-_2b6.open(_2b3,_2b4,(_2b5!=null?true:false));
-if(_2b5!=null){
+},getXMLHttpRequest:function(_2bf,_2c0,_2c1){
+var _2c2=window.XMLHttpRequest?new XMLHttpRequest():new ActiveXObject("Msxml2.XMLHTTP.3.0");
+if(_2c2!=null){
+_2c2.open(_2bf,_2c0,(_2c1!=null?true:false));
+if(_2c1!=null){
 function action(){
-if(_2b6.readyState==4){
-var text=_2b6.responseText;
+if(_2c2.readyState==4){
+var text=_2c2.responseText;
 UpdateManager.pendingResponse=text;
 var dom=UpdateAssistant.parse(text);
 if(dom!=null){
-_2b5.handleResponse(dom);
+_2c1.handleResponse(dom);
 }
 }
 }
-if(_2b6.addEventListener!=null){
-_2b6.addEventListener("readystatechange",{handleEvent:function(){
+if(_2c2.addEventListener!=null){
+_2c2.addEventListener("readystatechange",{handleEvent:function(){
 action();
 }},false);
 }else{
-_2b6.onreadystatechange=action;
+_2c2.onreadystatechange=action;
 }
 }
 }
-return _2b6;
-},dispatchEvent:function(_2b9,name){
-var _2bb=true;
-if(_2b9.fireEvent!=null){
-_2bb=_2b9.fireEvent("on"+name);
+return _2c2;
+},dispatchEvent:function(_2c5,name){
+var _2c7=true;
+if(_2c5.fireEvent!=null){
+_2c7=_2c5.fireEvent("on"+name);
 }else{
-var _2bc=document.createEvent("UIEvents");
-_2bc.initEvent(name,true,true);
-_2bb=_2b9.dispatchEvent(_2bc);
+var _2c8=document.createEvent("UIEvents");
+_2c8.initEvent(name,true,true);
+_2c7=_2c5.dispatchEvent(_2c8);
 }
-return _2bb;
+return _2c7;
 },getUpdateZones:function(dom){
-var _2be="//*[@id and contains(@class,'updatezone')]";
-var _2bf=[];
-var _2c0=null;
-var _2c1=null;
+var _2ca="//*[@id and contains(@class,'updatezone')]";
+var _2cb=[];
+var _2cc=null;
+var _2cd=null;
 if(window.XPathResult!=null){
 var type=XPathResult.ORDERED_NODE_ITERATOR_TYPE;
-_2c0=dom.evaluate(_2be,dom,null,type,null);
-while((_2c1=_2c0.iterateNext())!=null){
-_2bf.push(_2c1);
+_2cc=dom.evaluate(_2ca,dom,null,type,null);
+while((_2cd=_2cc.iterateNext())!=null){
+_2cb.push(_2cd);
 }
 }else{
-_2c0=dom.documentElement.selectNodes(_2be);
-Array.forEach(_2c0,function(_2c3){
-_2bf.push(_2c3);
+_2cc=dom.documentElement.selectNodes(_2ca);
+Array.forEach(_2cc,function(_2cf){
+_2cb.push(_2cf);
 });
 }
-return _2bf;
+return _2cb;
 },getElementById:function(dom,id){
-var _2c6="//*[@id='"+id+"']";
-var _2c7=null;
-var _2c8=null;
+var _2d2="//*[@id='"+id+"']";
+var _2d3=null;
+var _2d4=null;
 if(window.XPathResult!=null){
 var type=XPathResult.FIRST_ORDERED_NODE_TYPE;
-_2c7=dom.evaluate(_2c6,dom,null,type,null);
-_2c8=_2c7.singleNodeValue;
+_2d3=dom.evaluate(_2d2,dom,null,type,null);
+_2d4=_2d3.singleNodeValue;
 }else{
-_2c8=dom.documentElement.selectNodes(_2c6)[0];
+_2d4=dom.documentElement.selectNodes(_2d2)[0];
 }
-return _2c8;
+return _2d4;
 },_getIds:function(dom){
-var _2cb="//*[@id]";
-var _2cc=null;
-var _2cd=[];
+var _2d7="//*[@id]";
+var _2d8=null;
+var _2d9=[];
 if(window.XPathResult!=null){
 var type=XPathResult.ORDERED_NODE_ITERATOR_TYPE;
-_2cc=dom.evaluate(_2cb,dom,null,type,null);
-while((element=_2cc.iterateNext())!=null){
-_2cd.push(element.getAttribute("id"));
+_2d8=dom.evaluate(_2d7,dom,null,type,null);
+while((element=_2d8.iterateNext())!=null){
+_2d9.push(element.getAttribute("id"));
 }
 }else{
-_2cc=dom.documentElement.selectNodes(_2cb);
-Array.forEach(_2cc,function(_2cf){
-_2cd.push(_2cf.getAttribute("id"));
+_2d8=dom.documentElement.selectNodes(_2d7);
+Array.forEach(_2d8,function(_2db){
+_2d9.push(_2db.getAttribute("id"));
 });
 }
-return _2cd;
-},toHTMLElement:function(_2d0){
-var _2d1=this.serialize(_2d0);
+return _2d9;
+},toHTMLElement:function(_2dc){
+var _2dd=this.serialize(_2dc);
 var temp=document.createElement("temp");
-temp.innerHTML=_2d1;
+temp.innerHTML=_2dd;
 return temp.firstChild;
 },getActiveElement:function(){
-var _2d3=document.activeElement;
-if(_2d3==null||_2d3==document.body){
-_2d3=this._activeElement;
+var _2df=document.activeElement;
+if(_2df==null||_2df==document.body){
+_2df=this._activeElement;
 }
-return _2d3;
-},serialize:function(_2d4){
-var _2d5=null;
+return _2df;
+},serialize:function(_2e0){
+var _2e1=null;
 if(this._serializer!=null){
-_2d5=this._serializer.serializeToString(_2d4);
+_2e1=this._serializer.serializeToString(_2e0);
 }else{
-_2d5=_2d4.xml;
+_2e1=_2e0.xml;
 }
-return _2d5;
-},hasDifferences:function(_2d6,_2d7){
+return _2e1;
+},hasDifferences:function(_2e2,_2e3){
 var s1=null;
 var s2=null;
 if(this._serializer!=null){
-s1=this._serializer.serializeToString(_2d6);
-s2=this._serializer.serializeToString(_2d7);
+s1=this._serializer.serializeToString(_2e2);
+s2=this._serializer.serializeToString(_2e3);
 }else{
-s1=_2d6.xml;
-s2=_2d7.xml;
+s1=_2e2.xml;
+s2=_2e3.xml;
 }
 return s1!=s2;
-},parse:function(_2da){
-var _2db=null;
+},parse:function(_2e6){
+var _2e7=null;
 if(this._parser!=null){
-_2db=this._parser.parseFromString(_2da,"text/xml");
+_2e7=this._parser.parseFromString(_2e6,"text/xml");
 }else{
-_2db=new ActiveXObject("Msxml2.DOMDocument.3.0");
-_2db.setProperty("SelectionLanguage","XPath");
-_2db.loadXML(_2da);
+_2e7=new ActiveXObject("Msxml2.DOMDocument.3.0");
+_2e7.setProperty("SelectionLanguage","XPath");
+_2e7.loadXML(_2e6);
 }
-return this._validate(_2db);
+return this._validate(_2e7);
 },_validate:function(dom){
 var out=null;
 if(dom.parseError!=null&&dom.parseError.errorCode!=0){
 out=dom.parseError.reason;
 }else{
-var _2de=dom.getElementsByTagName("parsererror").item(0);
-if(_2de!=null){
-out=_2de.textContent.replace(/\^/g,"").replace(/\-/g,"");
+var _2ea=dom.getElementsByTagName("parsererror").item(0);
+if(_2ea!=null){
+out=_2ea.textContent.replace(/\^/g,"").replace(/\-/g,"");
 }
 }
 if(out==null){
 var has={},ids=this._getIds(dom);
 ids.every(function(id){
-var _2e2=!has[id];
+var _2ee=!has[id];
 has[id]=true;
-if(!_2e2){
+if(!_2ee){
 out="Element \""+id+"\" encountered twice.";
 }
-return _2e2;
+return _2ee;
 });
 }
 if(out!=null){
@@ -2908,41 +2926,41 @@ return dom;
 }};
 var UpdateAssistant=new _UpdateAssistant();
 function UpdatePlugin(){
-this.handleElement=function(_2e3,_2e4){
-var _2e5=false;
-switch(_2e3.nodeName.toLowerCase()){
+this.handleElement=function(_2ef,_2f0){
+var _2f1=false;
+switch(_2ef.nodeName.toLowerCase()){
 case "input":
 case "textarea":
-switch(_2e3.getAttribute("id")){
+switch(_2ef.getAttribute("id")){
 case "__EVENTTARGET":
 case "__EVENTARGUMENT":
 case "__VIEWSTATE":
 case "__EVENTVALIDATION":
-_2e5=false;
+_2f1=false;
 break;
 }
 break;
 }
-return _2e5;
+return _2f1;
 };
-this.updateElement=function(_2e6,_2e7){
-var id=_2e6.getAttribute("id");
-var _2e9=document.getElementById(id);
-if(_2e9!=null){
-var _2ea=null;
-switch(_2e9.nodeName.toLowerCase()){
+this.updateElement=function(_2f2,_2f3){
+var id=_2f2.getAttribute("id");
+var _2f5=document.getElementById(id);
+if(_2f5!=null){
+var _2f6=null;
+switch(_2f5.nodeName.toLowerCase()){
 case "input":
-_2ea=_2e6.getAttribute("value");
+_2f6=_2f2.getAttribute("value");
 break;
 case "textarea":
-_2ea=_2e6.textContent?_2e6.textContent:_2e6.text;
+_2f6=_2f2.textContent?_2f2.textContent:_2f2.text;
 break;
 }
-if(_2ea==null){
-_2ea="";
+if(_2f6==null){
+_2f6="";
 }
-if(_2ea!=_2e9.value){
-_2e9.value=_2ea;
+if(_2f6!=_2f5.value){
+_2f5.value=_2f6;
 UpdateManager.report("Property [value] updated on field \""+id+"\"");
 }
 }
@@ -2962,185 +2980,185 @@ return this;
 Update.prototype={type:null,key:null,id:null,element:null,update:function(){
 },dispose:function(){
 this.element=null;
-},_beforeUpdate:function(_2eb){
-var _2ec=true;
-if(_2eb!=null){
-_2eb.__updateType=this.type;
-_2ec=UpdateAssistant.dispatchEvent(_2eb,Update.EVENT_BEFOREUPDATE);
+},_beforeUpdate:function(_2f7){
+var _2f8=true;
+if(_2f7!=null){
+_2f7.__updateType=this.type;
+_2f8=UpdateAssistant.dispatchEvent(_2f7,Update.EVENT_BEFOREUPDATE);
 }
-return _2ec;
-},_afterUpdate:function(_2ed){
-var _2ee=true;
-if(_2ed!=null){
-_2ed.__updateType=this.type;
-_2ee=UpdateAssistant.dispatchEvent(_2ed,Update.EVENT_AFTERUPDATE);
+return _2f8;
+},_afterUpdate:function(_2f9){
+var _2fa=true;
+if(_2f9!=null){
+_2f9.__updateType=this.type;
+_2fa=UpdateAssistant.dispatchEvent(_2f9,Update.EVENT_AFTERUPDATE);
 }
-return _2ee;
+return _2fa;
 }};
 ReplaceUpdate.prototype=new Update();
 ReplaceUpdate.superclass=Update.prototype;
-function ReplaceUpdate(id,_2f0){
+function ReplaceUpdate(id,_2fc){
 this.type=Update.TYPE_REPLACE;
 this.id=id;
-this.element=_2f0;
+this.element=_2fc;
 return this;
 }
 ReplaceUpdate.prototype.update=function(){
-var _2f1,_2f2,_2f3=UpdateAssistant.toHTMLElement(this.element);
-if((_2f1=document.getElementById(this.id))!=null){
-if((_2f2=_2f1.parentNode)!=null){
-if(this._beforeUpdate(_2f1)){
-_2f2.replaceChild(_2f3,_2f1);
-this._afterUpdate(_2f3);
+var _2fd,_2fe,_2ff=UpdateAssistant.toHTMLElement(this.element);
+if((_2fd=document.getElementById(this.id))!=null){
+if((_2fe=_2fd.parentNode)!=null){
+if(this._beforeUpdate(_2fd)){
+_2fe.replaceChild(_2ff,_2fd);
+this._afterUpdate(_2ff);
 }
 }
 }else{
 UpdateManager.error("Element null point: "+this.id);
 }
 };
-ReplaceUpdate.prototype._afterUpdate=function(_2f4){
-var _2f5=ReplaceUpdate.superclass._afterUpdate.call(this,_2f4);
+ReplaceUpdate.prototype._afterUpdate=function(_300){
+var _301=ReplaceUpdate.superclass._afterUpdate.call(this,_300);
 UpdateManager.report("Replaced element id=\""+this.id+"\"");
-if(_2f4.nodeName=="form"||_2f4.getElementsByTagName("form").item(0)!=null){
+if(_300.nodeName=="form"||_300.getElementsByTagName("form").item(0)!=null){
 UpdateManager.setupForms();
 }
-return _2f5;
+return _301;
 };
 SiblingUpdate.prototype=new Update();
 SiblingUpdate.superclass=Update.prototype;
-function SiblingUpdate(type,id,_2f8,_2f9){
+function SiblingUpdate(type,id,_304,_305){
 this.type=type;
 this.id=id;
-this.element=_2f8;
-this.isFirst=_2f9;
+this.element=_304;
+this.isFirst=_305;
 return this;
 }
 SiblingUpdate.prototype.update=function(){
-var _2fa=document.getElementById(this.id);
+var _306=document.getElementById(this.id);
 switch(this.type){
 case Update.TYPE_REMOVE:
-this._remove(_2fa);
+this._remove(_306);
 break;
 case Update.TYPE_INSERT:
-this._insert(this.element,_2fa);
+this._insert(this.element,_306);
 break;
 }
 };
-SiblingUpdate.prototype._remove=function(_2fb){
-var _2fc=_2fb.parentNode;
-if(_2fc!=null){
-if(this._beforeUpdate(_2fb)){
-_2fc.removeChild(_2fb);
-this._afterUpdate(_2fc);
+SiblingUpdate.prototype._remove=function(_307){
+var _308=_307.parentNode;
+if(_308!=null){
+if(this._beforeUpdate(_307)){
+_308.removeChild(_307);
+this._afterUpdate(_308);
 }
 }
 };
-SiblingUpdate.prototype._insert=function(_2fd,_2fe){
-var _2ff=UpdateAssistant.toHTMLElement(_2fd);
+SiblingUpdate.prototype._insert=function(_309,_30a){
+var _30b=UpdateAssistant.toHTMLElement(_309);
 if(this.isFirst){
-var _300=_2fe;
-if(_300!=null){
-if(this._beforeUpdate(_300)){
-_300.insertBefore(_2ff,_300.firstChild);
-this._afterUpdate(_2ff);
+var _30c=_30a;
+if(_30c!=null){
+if(this._beforeUpdate(_30c)){
+_30c.insertBefore(_30b,_30c.firstChild);
+this._afterUpdate(_30b);
 }
 }
 }else{
-var _300=_2fe.parentNode;
-if(_300!=null){
-if(this._beforeUpdate(_300)){
-_300.insertBefore(_2ff,_2fe.nextSibling);
-this._afterUpdate(_2ff);
+var _30c=_30a.parentNode;
+if(_30c!=null){
+if(this._beforeUpdate(_30c)){
+_30c.insertBefore(_30b,_30a.nextSibling);
+this._afterUpdate(_30b);
 }
 }
 }
 };
-SiblingUpdate.prototype._beforeUpdate=function(_301){
-var _302=SiblingUpdate.superclass._beforeUpdate.call(this,_301);
+SiblingUpdate.prototype._beforeUpdate=function(_30d){
+var _30e=SiblingUpdate.superclass._beforeUpdate.call(this,_30d);
 if(this.type==Update.TYPE_REMOVE){
-UpdateManager.report("Removed element id=\""+_301.id+"\"");
+UpdateManager.report("Removed element id=\""+_30d.id+"\"");
 }
-return _302;
+return _30e;
 };
-SiblingUpdate.prototype._afterUpdate=function(_303){
-var _304=true;
-if(_303!=null){
-_304=SiblingUpdate.superclass._afterUpdate.call(this,_303);
+SiblingUpdate.prototype._afterUpdate=function(_30f){
+var _310=true;
+if(_30f!=null){
+_310=SiblingUpdate.superclass._afterUpdate.call(this,_30f);
 if(this.type==Update.TYPE_INSERT){
-UpdateManager.report("Inserted element id=\""+_303.id+"\"");
-if(_303.nodeName=="form"||_303.getElementsByTagName("form").item(0)!=null){
+UpdateManager.report("Inserted element id=\""+_30f.id+"\"");
+if(_30f.nodeName=="form"||_30f.getElementsByTagName("form").item(0)!=null){
 UpdateManager.setupForms();
 }
 }
 }
-return _304;
+return _310;
 };
 AttributesUpdate.prototype=new Update();
 AttributesUpdate.superclass=Update.prototype;
 AttributesUpdate.prototype.currentElement=null;
-function AttributesUpdate(id,_306,_307){
+function AttributesUpdate(id,_312,_313){
 this.type=type=Update.TYPE_ATTRIBUTES;
 this.id=id;
-this.element=_306;
-this.currentElement=_307;
+this.element=_312;
+this.currentElement=_313;
 this._summary=[];
 return this;
 }
 AttributesUpdate.prototype.update=function(){
-var _308=document.getElementById(this.id);
-if(this._beforeUpdate(_308)){
-this._updateAttributes(_308);
-this._afterUpdate(_308);
+var _314=document.getElementById(this.id);
+if(this._beforeUpdate(_314)){
+this._updateAttributes(_314);
+this._afterUpdate(_314);
 }
 };
-AttributesUpdate.prototype._updateAttributes=function(_309){
-Array.forEach(this.element.attributes,function(_30a){
-var _30b=this.currentElement.getAttribute(_30a.nodeName);
-if(_30b==null||_30b!=_30a.nodeValue){
-this._setAttribute(_309,_30a.nodeName,_30a.nodeValue);
-this._summary.push("@"+_30a.nodeName);
+AttributesUpdate.prototype._updateAttributes=function(_315){
+Array.forEach(this.element.attributes,function(_316){
+var _317=this.currentElement.getAttribute(_316.nodeName);
+if(_317==null||_317!=_316.nodeValue){
+this._setAttribute(_315,_316.nodeName,_316.nodeValue);
+this._summary.push("@"+_316.nodeName);
 }
 },this);
-Array.forEach(this.currentElement.attributes,function(_30c){
-if(this.element.getAttribute(_30c.nodeName)==null){
-this._setAttribute(_309,_30c.nodeName,null);
-this._summary.push("@"+_30c.nodeName);
+Array.forEach(this.currentElement.attributes,function(_318){
+if(this.element.getAttribute(_318.nodeName)==null){
+this._setAttribute(_315,_318.nodeName,null);
+this._summary.push("@"+_318.nodeName);
 }
 },this);
 };
-AttributesUpdate.prototype._setAttribute=function(_30d,name,_30f){
-if(_30d==null){
-alert(this.id+": "+document.getElementById(this.id)+"\n\n"+name+"="+_30f);
+AttributesUpdate.prototype._setAttribute=function(_319,name,_31b){
+if(_319==null){
+alert(this.id+": "+document.getElementById(this.id)+"\n\n"+name+"="+_31b);
 SystemLogger.getLogger("AttributesUpdate").fine(document.body.innerHTML);
 }
-var _310=(_30f==null);
-if(_310){
-_30d.removeAttribute(name);
+var _31c=(_31b==null);
+if(_31c){
+_319.removeAttribute(name);
 }else{
-_30d.setAttribute(name,_30f);
+_319.setAttribute(name,_31b);
 }
 if(document.all!=null){
-if(_310){
-_30f="";
+if(_31c){
+_31b="";
 }
 switch(name.toLowerCase()){
 case "class":
-_30d.className=_30f;
+_319.className=_31b;
 break;
 case "disabled":
-_30d.disabled=!_310;
+_319.disabled=!_31c;
 break;
 case "checked":
-_30d.checked=!_310;
+_319.checked=!_31c;
 break;
 case "readonly":
-_30d.readOnly=!_310;
+_319.readOnly=!_31c;
 break;
 }
 }
 };
-AttributesUpdate.prototype._afterUpdate=function(_311){
-AttributesUpdate.superclass._afterUpdate.call(this,_311);
+AttributesUpdate.prototype._afterUpdate=function(_31d){
+AttributesUpdate.superclass._afterUpdate.call(this,_31d);
 UpdateManager.report("Attributes updated on element id=\""+this.id+"\": "+this._summary.toString());
 };
 AttributesUpdate.prototype.dispose=function(){
@@ -3164,8 +3182,8 @@ top.Application.declareTopLocal(window);
 function _WindowManager(){
 this._construct(KeyMaster.getUniqueKey());
 }
-_WindowManager.prototype={WINDOW_LOADED_BROADCAST:null,WINDOW_UNLOADED_BROADCAST:null,WINDOW_EVALUATED_BROADCAST:null,WINDOW_RESIZED_BROADCAST:null,isWindowLoaded:false,_logger:SystemLogger.getLogger("WindowManager ["+document.title+"]"),_ondomstatements:new List(),_onloadstatements:new List(),_onresizestatements:new List(),_currentDimensions:null,_newDimensions:null,_broadcastTimeout:null,_isHorizontalResize:false,_isVerticalResize:false,_broadcastTimeout:null,_compute:function(_312,key){
-return _312.replace("${windowkey}",document.location+":"+key);
+_WindowManager.prototype={WINDOW_LOADED_BROADCAST:null,WINDOW_UNLOADED_BROADCAST:null,WINDOW_EVALUATED_BROADCAST:null,WINDOW_RESIZED_BROADCAST:null,isWindowLoaded:false,_logger:SystemLogger.getLogger("WindowManager ["+document.title+"]"),_ondomstatements:new List(),_onloadstatements:new List(),_onresizestatements:new List(),_currentDimensions:null,_newDimensions:null,_broadcastTimeout:null,_isHorizontalResize:false,_isVerticalResize:false,_broadcastTimeout:null,_compute:function(_31e,key){
+return _31e.replace("${windowkey}",document.location+":"+key);
 },_construct:function(key){
 this.WINDOW_LOADED_BROADCAST=this._compute(BroadcastMessages.$WINKEY_LOADED,key);
 this.WINDOW_UNLOADED_BROADCAST=this._compute(BroadcastMessages.$WINKEY_UNLOADED,key);
@@ -3202,9 +3220,9 @@ while(this._onresizestatements.hasNext()){
 this._onresizestatements.getNext().fireOnResize();
 }
 this._newDimensions=WindowManager.getWindowDimensions();
-var _316=this._newDimensions.w!=this._currentDimensions.w;
-var _317=this._newDimensions.h!=this._currentDimensions.h;
-if(_316||_317){
+var _322=this._newDimensions.w!=this._currentDimensions.w;
+var _323=this._newDimensions.h!=this._currentDimensions.h;
+if(_322||_323){
 if(this._broadcastTimeout!=null){
 clearTimeout(this._broadcastTimeout);
 this._broadcastTimeout=null;
@@ -3224,17 +3242,17 @@ clearTimeout(this._broadcastTimeout);
 this._broadcastTimeout=null;
 EventBroadcaster.broadcast(this.WINDOW_RESIZED_BROADCAST);
 this._currentDimensions=this._newDimensions;
-},fireOnDOM:function(_319){
-if(Interfaces.isImplemented(IDOMHandler,_319,true)){
-this._ondomstatements.add(_319);
+},fireOnDOM:function(_325){
+if(Interfaces.isImplemented(IDOMHandler,_325,true)){
+this._ondomstatements.add(_325);
 }
-},fireOnLoad:function(_31a){
-if(Interfaces.isImplemented(ILoadHandler,_31a,true)){
-this._onloadstatements.add(_31a);
+},fireOnLoad:function(_326){
+if(Interfaces.isImplemented(ILoadHandler,_326,true)){
+this._onloadstatements.add(_326);
 }
-},fireOnResize:function(_31b){
-if(Interfaces.isImplemented(IResizeHandler,_31b,true)){
-this._onresizestatements.add(_31b);
+},fireOnResize:function(_327){
+if(Interfaces.isImplemented(IResizeHandler,_327,true)){
+this._onresizestatements.add(_327);
 }
 },onDOMContentLoaded:function(){
 while(this._ondomstatements.hasNext()){
@@ -3242,8 +3260,8 @@ this._ondomstatements.getNext().fireOnDOM();
 }
 },getWindowDimensions:function(){
 return new Dimension(Client.isMozilla?window.innerWidth:document.body.clientWidth,Client.isMozilla?window.innerHeight:document.body.clientHeight);
-},evaluate:function(_31c){
-return eval(_31c);
+},evaluate:function(_328){
+return eval(_328);
 }};
 var WindowManager=new _WindowManager();
 new function WindowAssistant(){
@@ -3265,8 +3283,8 @@ SystemDebug.stack(arguments);
 throw (exception);
 }
 }});
-EventBroadcaster.subscribe(BroadcastMessages.SYSTEMLOG_OPENED,{handleBroadcast:function(_31d,_31e){
-SystemLogger.unsuspend(_31e);
+EventBroadcaster.subscribe(BroadcastMessages.SYSTEMLOG_OPENED,{handleBroadcast:function(_329,_32a){
+SystemLogger.unsuspend(_32a);
 }});
 EventBroadcaster.subscribe(BroadcastMessages.SYSTEMLOG_CLOSED,{handleBroadcast:function(){
 SystemLogger.suspend();
@@ -3293,20 +3311,20 @@ Application.isOffLine=true;
 EventBroadcaster.subscribe(BroadcastMessages.SERVER_ONLINE,{handleBroadcast:function(){
 Application.isOffLine=false;
 }});
-EventBroadcaster.subscribe(BroadcastMessages.DOCKTAB_DIRTY,{handleBroadcast:function(_31f,arg){
+EventBroadcaster.subscribe(BroadcastMessages.DOCKTAB_DIRTY,{handleBroadcast:function(_32b,arg){
 var list=Application._dirtyTabs;
 list.set(arg.key,arg);
 if(list.countEntries()==1){
-var _322=top.app.bindingMap.broadcasterHasDirtyTabs;
-_322.enable();
+var _32e=top.app.bindingMap.broadcasterHasDirtyTabs;
+_32e.enable();
 }
 }});
-EventBroadcaster.subscribe(BroadcastMessages.DOCKTAB_CLEAN,{handleBroadcast:function(_323,arg){
+EventBroadcaster.subscribe(BroadcastMessages.DOCKTAB_CLEAN,{handleBroadcast:function(_32f,arg){
 var list=Application._dirtyTabs;
 list.del(arg.key);
 if(list.countEntries()==0){
-var _326=top.app.bindingMap.broadcasterHasDirtyTabs;
-_326.disable();
+var _332=top.app.bindingMap.broadcasterHasDirtyTabs;
+_332.disable();
 }
 }});
 },toString:function(){
@@ -3326,23 +3344,30 @@ SourceValidationService=WebServiceProxy.createProxy(Constants.URL_WSDL_SOURCEVAL
 MarkupFormatService=WebServiceProxy.createProxy(Constants.URL_WSDL_MARKUPFORMAT);
 PageService=WebServiceProxy.createProxy(Constants.URL_WSDL_PAGESERVICE);
 ProgressBarBinding.notch(4);
-setTimeout(function(){
+function next(){
 EventBroadcaster.broadcast(BroadcastMessages.APPLICATION_LOGIN);
+}
+if(Client.isWebKit){
+setTimeout(function(){
+next();
 },0);
+}else{
+next();
+}
 },logout:function(){
-var _327=false;
+var _333=false;
 if(this.isLoggedIn){
 this.isLoggedIn=false;
 this.isLoggedOut=true;
-_327=LoginService.Logout(true);
-if(!_327){
+_333=LoginService.Logout(true);
+if(!_333){
 alert("Logout failed.");
 }
 }
-return _327;
-},lock:function(_328){
-if(_328!=null){
-this._lockthings[_328]=true;
+return _333;
+},lock:function(_334){
+if(_334!=null){
+this._lockthings[_334]=true;
 if(top.bindingMap.mastercover!=null){
 if(this._lockers>=0){
 this._lockers++;
@@ -3358,15 +3383,15 @@ top.app.bindingMap.throbber.play();
 }else{
 throw "Application: No locker specified.";
 }
-},unlock:function(_329,_32a){
-if(_329!=null){
-delete this._lockthings[_329];
+},unlock:function(_335,_336){
+if(_335!=null){
+delete this._lockthings[_335];
 if(top.bindingMap.mastercover!=null){
-if(_32a||this._lockers>0){
-if(_32a){
-var out="Unlocked by "+new String(_329)+"\n";
-for(var _32c in this._lockthings){
-out+="Locked by "+new String(_32c)+". ";
+if(_336||this._lockers>0){
+if(_336){
+var out="Unlocked by "+new String(_335)+"\n";
+for(var _338 in this._lockthings){
+out+="Locked by "+new String(_338)+". ";
 }
 this.logger.debug(out);
 this._lockers=0;
@@ -3387,33 +3412,33 @@ top.app.bindingMap.throbber.stop();
 }else{
 throw "Application: No unlocker specified.";
 }
-},hasLock:function(_32d){
-return this._lockthings[_32d]==true;
-},activate:function(_32e){
-var _32f=this._activeBinding;
-this._activeBinding=_32e;
-this._activatedBindings.add(_32e);
-if(_32f&&_32f.isActive){
-_32f.deActivate();
+},hasLock:function(_339){
+return this._lockthings[_339]==true;
+},activate:function(_33a){
+var _33b=this._activeBinding;
+this._activeBinding=_33a;
+this._activatedBindings.add(_33a);
+if(_33b&&_33b.isActive){
+_33b.deActivate();
 }
-},deActivate:function(_330){
-var _331=null;
-var _332=null;
-if(_330==this._activeBinding){
-while(!_332&&this._activatedBindings.hasEntries()){
-_331=this._activatedBindings.extractLast();
-if(_331!=_330&&_331.isActivatable){
-_332=_331;
+},deActivate:function(_33c){
+var _33d=null;
+var _33e=null;
+if(_33c==this._activeBinding){
+while(!_33e&&this._activatedBindings.hasEntries()){
+_33d=this._activatedBindings.extractLast();
+if(_33d!=_33c&&_33d.isActivatable){
+_33e=_33d;
 }
 }
-if(!_332){
-_332=app.bindingMap.explorerdock;
+if(!_33e){
+_33e=app.bindingMap.explorerdock;
 }
-_332.activate();
+_33e.activate();
 }
-},focused:function(_333){
-this.isFocused=_333;
-if(_333){
+},focused:function(_33f){
+this.isFocused=_33f;
+if(_33f){
 if(this.isBlurred){
 this.isBlurred=false;
 EventBroadcaster.broadcast(BroadcastMessages.APPLICATION_FOCUSED);
@@ -3452,20 +3477,20 @@ win.standardEventHandler=new StandardEventHandler(doc);
 }
 }
 },normalize:function(doc){
-},handleAction:function(_338){
-switch(_338.type){
+},handleAction:function(_344){
+switch(_344.type){
 case Application.REFRESH:
 this.refresh();
 break;
 }
 },declareTopLocal:function(win){
-var _33a=Resolver.resolve("/scripts/source/top/");
+var _346=Resolver.resolve("/scripts/source/top/");
 if(this._topLevelClasses==null){
 this._topLevelClasses=new List();
 var self=this;
-new List(DOMUtil.getElementsByTagName(document,"script")).each(function(_33c){
-var src=_33c.src;
-if(src.indexOf(_33a)>-1){
+new List(DOMUtil.getElementsByTagName(document,"script")).each(function(_348){
+var src=_348.src;
+if(src.indexOf(_346)>-1){
 var name=src.substring(src.lastIndexOf("/")+1,src.lastIndexOf(".js"));
 self._topLevelClasses.add(name);
 }
@@ -3477,17 +3502,17 @@ win[name]=window[name];
 }
 });
 },trackMousePosition:function(e){
-var _341=false;
+var _34d=false;
 if(this._isMousePositionTracking){
-_341=true;
+_34d=true;
 if(Client.isExplorer&&e.button!=1){
-_341=false;
+_34d=false;
 }
-if(_341){
+if(_34d){
 this._mousePosition=DOMUtil.getUniversalMousePosition(e);
 }
 }
-return _341;
+return _34d;
 },enableMousePositionTracking:function(e){
 if(e){
 this._isMousePositionTracking=true;
@@ -3500,40 +3525,40 @@ this._isMousePositionTracking=false;
 this._mouseposition=null;
 },getMousePosition:function(){
 return this._mousePosition;
-},onDragStart:function(_343){
-var _344=BindingDragger.draggedBinding;
-if(Interfaces.isImplemented(IDraggable,_344,true)==true){
+},onDragStart:function(_34f){
+var _350=BindingDragger.draggedBinding;
+if(Interfaces.isImplemented(IDraggable,_350,true)==true){
 if(!this._isDragging){
-app.bindingMap.dragdropcursor.setImage(_344.getImage());
-this._cursorStartPoint=_343;
+app.bindingMap.dragdropcursor.setImage(_350.getImage());
+this._cursorStartPoint=_34f;
 app.bindingMap.dragdropcursor.setPosition(this._cursorStartPoint);
 CursorBinding.fadeIn(app.bindingMap.dragdropcursor);
-if(_344.showDrag){
-_344.showDrag();
+if(_350.showDrag){
+_350.showDrag();
 }
-EventBroadcaster.broadcast(BroadcastMessages.TYPEDRAG_START,_344.dragType);
+EventBroadcaster.broadcast(BroadcastMessages.TYPEDRAG_START,_350.dragType);
 this._isDragging=true;
 }
 }
 },onDrag:function(diff){
 if(this._isDragging){
-var _346=new Point(this._cursorStartPoint.x+diff.x,this._cursorStartPoint.y+diff.y);
-app.bindingMap.dragdropcursor.setPosition(_346);
+var _352=new Point(this._cursorStartPoint.x+diff.x,this._cursorStartPoint.y+diff.y);
+app.bindingMap.dragdropcursor.setPosition(_352);
 }
 },onDragStop:function(diff){
 if(this._isDragging){
-var _348=BindingDragger.draggedBinding;
-if(_348.hideDrag){
-_348.hideDrag();
+var _354=BindingDragger.draggedBinding;
+if(_354.hideDrag){
+_354.hideDrag();
 }
-EventBroadcaster.broadcast(BroadcastMessages.TYPEDRAG_STOP,_348.dragType);
+EventBroadcaster.broadcast(BroadcastMessages.TYPEDRAG_STOP,_354.dragType);
 this._isDragging=false;
-_348=BindingAcceptor.acceptingBinding;
-if(_348!=null){
-if(Interfaces.isImplemented(IAcceptable,_348,true)==true){
-_348.accept(BindingDragger.draggedBinding);
+_354=BindingAcceptor.acceptingBinding;
+if(_354!=null){
+if(Interfaces.isImplemented(IAcceptable,_354,true)==true){
+_354.accept(BindingDragger.draggedBinding);
 }else{
-throw new Error("Application: IAcceptable not implemented "+_348);
+throw new Error("Application: IAcceptable not implemented "+_354);
 }
 BindingAcceptor.acceptingBinding=null;
 CursorBinding.fadeOut(app.bindingMap.dragdropcursor);
@@ -3541,8 +3566,8 @@ CursorBinding.fadeOut(app.bindingMap.dragdropcursor);
 app.bindingMap.dragdropcursor.hide();
 }
 }
-},reload:function(_349){
-if(this.isDeveloperMode||_349){
+},reload:function(_355){
+if(this.isDeveloperMode||_355){
 if(this.isDeveloperMode&&Client.isPrism){
 Prism.clearCache();
 }
@@ -3552,8 +3577,8 @@ top.window.location.reload(true);
 },0);
 }else{
 if(Application.isOperational){
-Dialog.question(StringBundle.getString("ui","Website.Application.DialogReload.Title"),StringBundle.getString("ui","Website.Application.DialogReload.Text"),Dialog.BUTTONS_ACCEPT_CANCEL,{handleDialogResponse:function(_34a){
-if(_34a==Dialog.RESPONSE_ACCEPT){
+Dialog.question(StringBundle.getString("ui","Website.Application.DialogReload.Title"),StringBundle.getString("ui","Website.Application.DialogReload.Text"),Dialog.BUTTONS_ACCEPT_CANCEL,{handleDialogResponse:function(_356){
+if(_356==Dialog.RESPONSE_ACCEPT){
 Application.reload(true);
 }
 }});
@@ -3579,20 +3604,20 @@ var Application=new _Application();
 function _Installation(){
 EventBroadcaster.subscribe(BroadcastMessages.APPLICATION_KICKSTART,this);
 }
-_Installation.prototype={versionString:null,versionPrettyString:null,installationID:null,handleBroadcast:function(_34b){
-switch(_34b){
+_Installation.prototype={versionString:null,versionPrettyString:null,installationID:null,handleBroadcast:function(_357){
+switch(_357){
 case BroadcastMessages.APPLICATION_KICKSTART:
 var list=new List(InstallationService.GetInstallationInfo(true));
-list.each(function(_34d){
-switch(_34d.Key){
+list.each(function(_359){
+switch(_359.Key){
 case "ProductVersion":
-this.versionString=_34d.Value;
+this.versionString=_359.Value;
 break;
 case "ProductTitle":
-this.versionPrettyString=_34d.Value;
+this.versionPrettyString=_359.Value;
 break;
 case "InstallationId":
-this.installationID=_34d.Value;
+this.installationID=_359.Value;
 break;
 }
 },this);
@@ -3641,35 +3666,35 @@ EventBroadcaster.subscribe(BroadcastMessages.APPLICATION_KICKSTART,{handleBroadc
 Audio.initialize(null);
 }});
 }
-},initialize:function(_350){
+},initialize:function(_35c){
 if(!this.isInitialized){
 this.isInitialized=true;
-if(_350){
-this._audio=_350;
+if(_35c){
+this._audio=_35c;
 this.isEnabled=true;
 }
 EventBroadcaster.broadcast(BroadcastMessages.AUDIO_INITIALIZED);
 }
 },play:function(url){
-var _352=false;
+var _35e=false;
 if(this.isEnabled&&Preferences.getPref("audio")){
 this._audio.fromURL(Resolver.resolve(url));
-_352=true;
+_35e=true;
 }
-return _352;
+return _35e;
 }};
 var Audio=new _Audio();
 window.Preferences=new function(){
-var _353=SystemLogger.getLogger("Preferences");
+var _35f=SystemLogger.getLogger("Preferences");
 this.AUDIO="audio";
 this.LOGIN="login";
-var _354={"audio":true,"login":true};
+var _360={"audio":true,"login":true};
 EventBroadcaster.subscribe(BroadcastMessages.LOCALSTORE_INITIALIZED,{handleBroadcast:function(){
 if(LocalStore.isEnabled){
-var _355=LocalStore.getProperty(LocalStore.PREFERENCES);
-if(_355){
-for(var key in _355){
-_354[key]=_355[key];
+var _361=LocalStore.getProperty(LocalStore.PREFERENCES);
+if(_361){
+for(var key in _361){
+_360[key]=_361[key];
 }
 debug(true);
 }else{
@@ -3681,58 +3706,58 @@ debug(false);
 }});
 EventBroadcaster.subscribe(BroadcastMessages.APPLICATION_SHUTDOWN,{handleBroadcast:function(){
 if(LocalStore.isEnabled){
-LocalStore.setProperty(LocalStore.PREFERENCES,_354);
+LocalStore.setProperty(LocalStore.PREFERENCES,_360);
 }
 }});
 this.getPref=function(key){
-var _358=null;
+var _364=null;
 if(key){
-_358=_354[key];
+_364=_360[key];
 }else{
 throw "No such preference.";
 }
-return _358;
+return _364;
 };
-this.setPref=function(key,_35a){
+this.setPref=function(key,_366){
 if(key){
-_354[key]=_35a;
+_360[key]=_366;
 }else{
 throw "No such preference.";
 }
 };
-function debug(_35b){
-var _35c=_35b?"Persisted preferences":"No persisted preferences. Using defaults";
-_35c+=":\n";
-for(var key in _354){
-var pref=_354[key];
-_35c+="\n\t"+key+": "+pref+" ["+typeof pref+"]";
+function debug(_367){
+var _368=_367?"Persisted preferences":"No persisted preferences. Using defaults";
+_368+=":\n";
+for(var key in _360){
+var pref=_360[key];
+_368+="\n\t"+key+": "+pref+" ["+typeof pref+"]";
 }
-_353.fine(_35c);
+_35f.fine(_368);
 }
 };
 function _Persistance(){
 }
 _Persistance.prototype={_logger:SystemLogger.getLogger("Persistance"),_persistance:null,_isEnabled:false,isInitialized:false,isEnabled:false,getPersistedProperty:function(id,prop){
-var _361=null;
+var _36d=null;
 if(this.isInitialized==true){
 if(this._persistance){
-var _362=this._persistance[id];
-if(_362){
-_361=_362[prop];
+var _36e=this._persistance[id];
+if(_36e){
+_36d=_36e[prop];
 }
 }
 }else{
 throw "Persistance not initialized!";
 }
-return _361;
-},setPersistedProperty:function(id,prop,_365){
+return _36d;
+},setPersistedProperty:function(id,prop,_371){
 if(this.isInitialized==true){
 if(this._persistance){
-if(_365!=null){
+if(_371!=null){
 if(!this._persistance[id]){
 this._persistance[id]={};
 }
-this._persistance[id][prop]=String(_365);
+this._persistance[id][prop]=String(_371);
 }else{
 this._logger.error("Cannot persist "+prop+" with value: null");
 }
@@ -3742,19 +3767,19 @@ throw "Persistance not initialized!";
 }
 },clearAllPersistedProperties:function(){
 this._logger.debug("TODO: clearAllPersistedProperties");
-},handleBroadcast:function(_366){
-switch(_366){
+},handleBroadcast:function(_372){
+switch(_372){
 case BroadcastMessages.APPLICATION_SHUTDOWN:
-var _367=top.bindingMap.persistance;
-_367.persist(this._persistance);
+var _373=top.bindingMap.persistance;
+_373.persist(this._persistance);
 break;
 }
 },initialize:function(){
 if(!this.isInitialized){
 this.isInitialized=true;
 if(this._isEnabled==true){
-var _368=top.bindingMap.persistance;
-var map=_368.getPersistanceMap();
+var _374=top.bindingMap.persistance;
+var map=_374.getPersistanceMap();
 if(map){
 this.isEnabled=true;
 this._persistance=map;
@@ -3772,22 +3797,22 @@ this.isInitialized=true;
 this.isEnabled=false;
 };
 StandardEventHandler.isBackAllowed=false;
-function StandardEventHandler(doc,_36b){
+function StandardEventHandler(doc,_377){
 this.logger=SystemLogger.getLogger("StandardEventHandler ["+doc.title+"]");
 this._contextDocument=doc;
 this._contextWindow=DOMUtil.getParentWindow(doc);
 this.hasNativeKeys=false;
 this._isAllowTabs=false;
-this._isMouseHandlerOnly=_36b;
+this._isMouseHandlerOnly=_377;
 this._addListeners();
 }
 StandardEventHandler.prototype._addListeners=function(){
 var doc=this._contextDocument;
-var _36d=this._contextWindow.bespin!=undefined;
-DOMEvents.addEventListener(doc,DOMEvents.MOUSEDOWN,this,_36d);
+var _379=this._contextWindow.bespin!=undefined;
+DOMEvents.addEventListener(doc,DOMEvents.MOUSEDOWN,this,_379);
 DOMEvents.addEventListener(doc,DOMEvents.MOUSEUP,this);
 DOMEvents.addEventListener(doc,DOMEvents.MOUSEMOVE,this);
-if(_36d){
+if(_379){
 DOMEvents.addEventListener(doc,DOMEvents.CLICK,{handleEvent:function(e){
 if(DOMEvents.isRightButton(e)){
 DOMEvents.stopPropagation(e);
@@ -3816,7 +3841,7 @@ DOMEvents.addEventListener(doc,DOMEvents.BLUR,this,true);
 }
 }
 }
-var _36f={handleEvent:function(e){
+var _37b={handleEvent:function(e){
 switch(e.type){
 case DOMEvents.BLUR:
 Application.focused(false);
@@ -3826,8 +3851,8 @@ Application.focused(true);
 break;
 }
 }};
-DOMEvents.addEventListener(this._contextWindow,DOMEvents.BLUR,_36f);
-DOMEvents.addEventListener(this._contextWindow,DOMEvents.FOCUS,_36f);
+DOMEvents.addEventListener(this._contextWindow,DOMEvents.BLUR,_37b);
+DOMEvents.addEventListener(this._contextWindow,DOMEvents.FOCUS,_37b);
 }
 if(Client.isMozilla){
 doc.addEventListener(DOMEvents.KEYDOWN,{handleEvent:function(e){
@@ -3871,11 +3896,11 @@ var node=DOMEvents.getTarget(e);
 while(node!=null){
 switch(node.nodeType){
 case Node.ELEMENT_NODE:
-var _376=UserInterface.getBinding(node);
-if(_376!=null){
-_376.dispatchAction(Binding.ACTION_ACTIVATED);
+var _382=UserInterface.getBinding(node);
+if(_382!=null){
+_382.dispatchAction(Binding.ACTION_ACTIVATED);
 }
-node=_376!=null?null:node.parentNode;
+node=_382!=null?null:node.parentNode;
 break;
 case Node.DOCUMENT_NODE:
 node=DOMUtil.getParentWindow(node).frameElement;
@@ -3893,8 +3918,8 @@ EventBroadcaster.broadcast(BroadcastMessages.MOUSEEVENT_MOUSEUP,e);
 };
 StandardEventHandler.prototype._handleMouseMove=function(e){
 try{
-var _379=Application.trackMousePosition(e);
-if(_379){
+var _385=Application.trackMousePosition(e);
+if(_385){
 EventBroadcaster.broadcast(BroadcastMessages.MOUSEEVENT_MOUSEMOVE,e);
 }
 }
@@ -3903,10 +3928,10 @@ DOMEvents.removeEventListener(this._contextDocument,DOMEvents.MOUSEMOVE,this);
 throw (exception);
 }
 };
-StandardEventHandler.prototype._handleKeyDown=function(e,_37b){
+StandardEventHandler.prototype._handleKeyDown=function(e,_387){
 if(e.keyCode==KeyEventCodes.VK_TAB){
 if(!this._isAllowTabs){
-if(!_37b){
+if(!_387){
 this._handleTab(e);
 DOMEvents.preventDefault(e);
 }
@@ -3915,7 +3940,7 @@ if(e.shiftKey||e.ctrlKey){
 DOMEvents.preventDefault(e);
 }
 }
-_37b=true;
+_387=true;
 }
 if(!this.hasNativeKeys&&!e.shiftKey&&!e.ctrlKey){
 switch(e.keyCode){
@@ -3926,7 +3951,9 @@ case KeyEventCodes.VK_RIGHT:
 case KeyEventCodes.VK_SPACE:
 case KeyEventCodes.VK_PAGE_UP:
 case KeyEventCodes.VK_PAGE_DOWN:
+if(!Client.isWebKit){
 DOMEvents.preventDefault(e);
+}
 break;
 }
 }
@@ -3935,18 +3962,18 @@ if(!StandardEventHandler.isBackAllowed){
 DOMEvents.preventDefault(e);
 }
 }
-var _37c=KeySetBinding.handleKey(this._contextDocument,e);
-if(!_37c){
+var _388=KeySetBinding.handleKey(this._contextDocument,e);
+if(!_388){
 switch(e.keyCode){
 case KeyEventCodes.VK_PAGE_UP:
 case KeyEventCodes.VK_PAGE_DOWN:
 break;
 default:
-var _37d=this._contextWindow.frameElement;
-if(_37d!=null){
-var _37e=DOMUtil.getParentWindow(_37d);
-if(_37e.standardEventHandler!=null){
-_37e.standardEventHandler._handleKeyDown(e,_37b);
+var _389=this._contextWindow.frameElement;
+if(_389!=null){
+var _38a=DOMUtil.getParentWindow(_389);
+if(_38a.standardEventHandler!=null){
+_38a.standardEventHandler._handleKeyDown(e,_387);
 }
 }
 break;
@@ -3965,18 +3992,18 @@ FocusBinding.navigateNext();
 }
 };
 StandardEventHandler.prototype._handleFocus=function(e){
-var _381=false;
-var _382=DOMEvents.getTarget(e);
-var name=_382.nodeName.toLowerCase();
+var _38d=false;
+var _38e=DOMEvents.getTarget(e);
+var name=_38e.nodeName.toLowerCase();
 switch(name){
 case "input":
 case "textarea":
 case "select":
-_381=(e.type==DOMEvents.FOCUS||e.type==DOMEvents.FOCUSIN);
+_38d=(e.type==DOMEvents.FOCUS||e.type==DOMEvents.FOCUSIN);
 if(name=="input"||name=="textarea"){
-StandardEventHandler.isBackAllowed=_381;
+StandardEventHandler.isBackAllowed=_38d;
 }
-if(_381){
+if(_38d){
 if(!this.hasNativeKeys){
 this.enableNativeKeys();
 }
@@ -3991,8 +4018,8 @@ break;
 StandardEventHandler.prototype._handleKeyUp=function(e){
 Keyboard.keyUp(e);
 };
-StandardEventHandler.prototype.enableNativeKeys=function(_385){
-this._isAllowTabs=(_385==true?true:false);
+StandardEventHandler.prototype.enableNativeKeys=function(_391){
+this._isAllowTabs=(_391==true?true:false);
 var self=this;
 top.setTimeout(function(){
 self.hasNativeKeys=true;
@@ -4007,8 +4034,8 @@ StandardEventHandler.isBackAllowed=false;
 Action.isValid=function(type){
 return typeof type!=Types.UNDEFINED;
 };
-function Action(_388,type){
-this.target=_388;
+function Action(_394,type){
+this.target=_394;
 this.type=type;
 this.listener=null;
 this.isConsumed=false;
@@ -4021,14 +4048,14 @@ Action.prototype.cancel=function(){
 this.isCancelled=true;
 };
 Animation.DEFAULT_TIME=parseInt(250);
-function Animation(_38a){
+function Animation(_396){
 this.id=KeyMaster.getUniqueKey();
 this.interval=25;
 this.iterator=0;
 this.modifier=1;
 this.endcount=90;
-for(var _38b in _38a){
-this[_38b]=_38a[_38b];
+for(var _397 in _396){
+this[_397]=_396[_397];
 }
 }
 Animation.prototype.play=function(){
@@ -4061,18 +4088,18 @@ Animation.prototype.stop=function(){
 this.onstop(this.iterator);
 this.isPlaying=false;
 };
-Animation.prototype.onstart=function(_38f){
+Animation.prototype.onstart=function(_39b){
 };
-Animation.prototype.onstep=function(_390){
+Animation.prototype.onstep=function(_39c){
 };
-Animation.prototype.onstop=function(_391){
+Animation.prototype.onstop=function(_39d){
 };
 Point.isEqual=function(p1,p2){
-var _394=false;
+var _3a0=false;
 if(p1&&p2){
-_394=(p1.x==p2.x)&&(p1.y==p2.y);
+_3a0=(p1.x==p2.x)&&(p1.y==p2.y);
 }
-return _394;
+return _3a0;
 };
 function Point(x,y){
 this.x=x;
@@ -4080,11 +4107,11 @@ this.y=y;
 }
 Point.prototype={x:0,y:0};
 Dimension.isEqual=function(dim1,dim2){
-var _399=false;
+var _3a5=false;
 if(dim1&&dim2){
-_399=(dim1.w==dim2.w)&&(dim1.h==dim2.h);
+_3a5=(dim1.w==dim2.w)&&(dim1.h==dim2.h);
 }
-return _399;
+return _3a5;
 };
 function Dimension(w,h){
 this.w=w;
@@ -4098,9 +4125,9 @@ this.w=w;
 this.h=h;
 }
 BindingAcceptor.acceptingBinding=null;
-function BindingAcceptor(_3a0){
+function BindingAcceptor(_3ac){
 this.logger=SystemLogger.getLogger("BindingDragger");
-this._binding=_3a0;
+this._binding=_3ac;
 this._acceptedList={};
 this._isAccepting=false;
 this._corsor=null;
@@ -4112,17 +4139,17 @@ EventBroadcaster.subscribe(BroadcastMessages.TYPEDRAG_START,this);
 EventBroadcaster.subscribe(BroadcastMessages.TYPEDRAG_STOP,this);
 if(this._binding.dragAccept){
 EventBroadcaster.subscribe(BroadcastMessages.TYPEDRAG_PAUSE,this);
-var _3a1=new List(this._binding.dragAccept.split(" "));
-while(_3a1.hasNext()){
-var type=_3a1.getNext();
+var _3ad=new List(this._binding.dragAccept.split(" "));
+while(_3ad.hasNext()){
+var type=_3ad.getNext();
 this._acceptedList[type]=true;
 }
 }
 };
-BindingAcceptor.prototype.handleBroadcast=function(_3a3,arg){
+BindingAcceptor.prototype.handleBroadcast=function(_3af,arg){
 var type=arg;
 try{
-switch(_3a3){
+switch(_3af){
 case BroadcastMessages.TYPEDRAG_START:
 if(this._cursor==null){
 this._cursor=app.bindingMap.dragdropcursor;
@@ -4212,8 +4239,8 @@ BindingAcceptor.prototype.dispose=function(){
 EventBroadcaster.unsubscribe(BroadcastMessages.TYPEDRAG_START,this);
 EventBroadcaster.unsubscribe(BroadcastMessages.TYPEDRAG_STOP,this);
 };
-function BindingBoxObject(_3a8){
-this._domElement=_3a8.getBindingElement();
+function BindingBoxObject(_3b4){
+this._domElement=_3b4.getBindingElement();
 }
 BindingBoxObject.prototype.getUniversalPosition=function(){
 return DOMUtil.getUniversalPosition(this._domElement);
@@ -4234,9 +4261,9 @@ this._domElement=null;
 BindingDragger.isDragging=false;
 BindingDragger.draggedBinding=null;
 BindingDragger.bindingDragger=null;
-function BindingDragger(_3aa){
+function BindingDragger(_3b6){
 this.logger=SystemLogger.getLogger("BindingDragger");
-this.binding=_3aa;
+this.binding=_3b6;
 this.isDragReady=false;
 this.isDragging=false;
 this.startPoint=null;
@@ -4267,9 +4294,9 @@ break;
 }
 }
 };
-BindingDragger.prototype.registerHandler=function(_3ac){
-if(Interfaces.isImplemented(IDragHandler,_3ac)==true){
-this.handler=_3ac;
+BindingDragger.prototype.registerHandler=function(_3b8){
+if(Interfaces.isImplemented(IDragHandler,_3b8)==true){
+this.handler=_3b8;
 }else{
 throw new Error("BindingDragger: Interface IDraghandler not implemented.");
 }
@@ -4288,8 +4315,8 @@ EventBroadcaster.subscribe(BroadcastMessages.MOUSEEVENT_MOUSEUP,this);
 };
 BindingDragger.prototype.onDrag=function(e){
 if(this.isDragging==true){
-var _3af=e.button==(e.target?0:1);
-if(_3af){
+var _3bb=e.button==(e.target?0:1);
+if(_3bb){
 this.handler.onDrag(this.getDiff());
 }else{
 this.onDragStop(e);
@@ -4308,13 +4335,13 @@ EventBroadcaster.unsubscribe(BroadcastMessages.MOUSEEVENT_MOUSEUP,this);
 }
 };
 BindingDragger.prototype.getDiff=function(){
-var _3b1=Application.getMousePosition();
-var dx=_3b1.x-this.startPoint.x;
-var dy=_3b1.y-this.startPoint.y;
+var _3bd=Application.getMousePosition();
+var dx=_3bd.x-this.startPoint.x;
+var dy=_3bd.y-this.startPoint.y;
 return new Point(dx,dy);
 };
-BindingDragger.prototype.handleBroadcast=function(_3b4,e){
-switch(_3b4){
+BindingDragger.prototype.handleBroadcast=function(_3c0,e){
+switch(_3c0){
 case BroadcastMessages.MOUSEEVENT_MOUSEMOVE:
 this.onDrag(e);
 break;
@@ -4327,83 +4354,83 @@ BindingDragger.prototype.dispose=function(){
 this.binding=null;
 };
 BindingParser.XML="<div xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:ui=\"http://www.w3.org/1999/xhtml\">${markup}</div>";
-function BindingParser(_3b6){
+function BindingParser(_3c2){
 this.logger=SystemLogger.getLogger("BindingParser");
-this._ownerDocument=_3b6;
+this._ownerDocument=_3c2;
 this._rootElement=null;
 }
-BindingParser.prototype.parseFromString=function(_3b7){
-var _3b8=new List();
-var xml=BindingParser.XML.replace("${markup}",_3b7);
-var doc=XMLParser.parse(_3b7);
+BindingParser.prototype.parseFromString=function(_3c3){
+var _3c4=new List();
+var xml=BindingParser.XML.replace("${markup}",_3c3);
+var doc=XMLParser.parse(_3c3);
 if(doc){
-var _3bb=DOMUtil.createElementNS(Constants.NS_XHTML,"div",this._ownerDocument);
-this._iterate(doc.documentElement,_3bb);
-var node=_3bb.firstChild;
+var _3c7=DOMUtil.createElementNS(Constants.NS_XHTML,"div",this._ownerDocument);
+this._iterate(doc.documentElement,_3c7);
+var node=_3c7.firstChild;
 while(node){
 if(node.nodeType==Node.ELEMENT_NODE){
-_3b8.add(node);
+_3c4.add(node);
 }
 node=node.nextSibling;
 }
 }
-return _3b8;
+return _3c4;
 };
-BindingParser.prototype._iterate=function(_3bd,_3be){
-var _3bf=null;
-switch(_3bd.nodeType){
+BindingParser.prototype._iterate=function(_3c9,_3ca){
+var _3cb=null;
+switch(_3c9.nodeType){
 case Node.ELEMENT_NODE:
-_3bf=this._cloneElement(_3bd);
-UserInterface.registerBinding(_3bf);
+_3cb=this._cloneElement(_3c9);
+UserInterface.registerBinding(_3cb);
 break;
 case Node.TEXT_NODE:
-_3bf=this._ownerDocument.createTextNode(_3bd.nodeValue);
+_3cb=this._ownerDocument.createTextNode(_3c9.nodeValue);
 break;
 }
-if(_3bf){
-_3be.appendChild(_3bf);
+if(_3cb){
+_3ca.appendChild(_3cb);
 }
-if(_3bf&&_3bd.hasChildNodes()){
-var _3c0=_3bd.firstChild;
-while(_3c0){
-this._iterate(_3c0,_3bf);
-_3c0=_3c0.nextSibling;
+if(_3cb&&_3c9.hasChildNodes()){
+var _3cc=_3c9.firstChild;
+while(_3cc){
+this._iterate(_3cc,_3cb);
+_3cc=_3cc.nextSibling;
 }
 }
 };
-BindingParser.prototype._cloneElement=function(_3c1){
-var _3c2=DOMUtil.createElementNS(_3c1.namespaceURI?_3c1.namespaceURI:Constants.NS_XHTML,_3c1.nodeName,this._ownerDocument);
+BindingParser.prototype._cloneElement=function(_3cd){
+var _3ce=DOMUtil.createElementNS(_3cd.namespaceURI?_3cd.namespaceURI:Constants.NS_XHTML,_3cd.nodeName,this._ownerDocument);
 var i=0;
-while(i<_3c1.attributes.length){
-var attr=_3c1.attributes.item(i++);
-_3c2.setAttribute(attr.nodeName,String(attr.nodeValue));
+while(i<_3cd.attributes.length){
+var attr=_3cd.attributes.item(i++);
+_3ce.setAttribute(attr.nodeName,String(attr.nodeValue));
 }
-return _3c2;
+return _3ce;
 };
 BindingSerializer.activeInstance=null;
 BindingSerializer.KEYPOINTER="bindingserializerkeypointer";
 BindingSerializer.includeShadowTreeBindings=false;
-BindingSerializer.filter=function(_3c5){
-var _3c6=null;
-var _3c7=false;
-var _3c8=_3c5.parentNode.getAttribute(BindingSerializer.KEYPOINTER);
-if(UserInterface.hasBinding(_3c5)){
-var _3c9=UserInterface.getBinding(_3c5);
-_3c7=BindingSerializer.activeInstance.indexBinding(_3c9);
-if(_3c7){
-_3c6=_3c9.key;
-_3c5.setAttribute(BindingSerializer.KEYPOINTER,_3c6);
+BindingSerializer.filter=function(_3d1){
+var _3d2=null;
+var _3d3=false;
+var _3d4=_3d1.parentNode.getAttribute(BindingSerializer.KEYPOINTER);
+if(UserInterface.hasBinding(_3d1)){
+var _3d5=UserInterface.getBinding(_3d1);
+_3d3=BindingSerializer.activeInstance.indexBinding(_3d5);
+if(_3d3){
+_3d2=_3d5.key;
+_3d1.setAttribute(BindingSerializer.KEYPOINTER,_3d2);
 }
 }
-_3c6=_3c6?_3c6:_3c8;
-var _3ca=new List(_3c5.childNodes);
-_3ca.each(function(_3cb){
-if(_3cb.nodeType==Node.ELEMENT_NODE){
-_3cb.setAttribute(BindingSerializer.KEYPOINTER,_3c6);
+_3d2=_3d2?_3d2:_3d4;
+var _3d6=new List(_3d1.childNodes);
+_3d6.each(function(_3d7){
+if(_3d7.nodeType==Node.ELEMENT_NODE){
+_3d7.setAttribute(BindingSerializer.KEYPOINTER,_3d2);
 }
 });
-if(_3c7){
-BindingSerializer.activeInstance.append(_3c6,_3c8);
+if(_3d3){
+BindingSerializer.activeInstance.append(_3d2,_3d4);
 }
 };
 function BindingSerializer(){
@@ -4412,97 +4439,97 @@ this._dom=DOMUtil.getDOMDocument();
 alert("BindingSerializer: Convert to Crawler!");
 this._pointers=[];
 }
-BindingSerializer.prototype.serializeBinding=function(_3cc,_3cd){
-BindingSerializer.includeShadowTreeBindings=_3cd?true:false;
+BindingSerializer.prototype.serializeBinding=function(_3d8,_3d9){
+BindingSerializer.includeShadowTreeBindings=_3d9?true:false;
 BindingSerializer.activeInstance=this;
-_3cc.bindingWindow.ElementIterator.iterate(_3cc.bindingElement,BindingSerializer.filter);
+_3d8.bindingWindow.ElementIterator.iterate(_3d8.bindingElement,BindingSerializer.filter);
 return DOMSerializer.serialize(this._dom,true);
 };
-BindingSerializer.prototype.indexBinding=function(_3ce){
-var _3cf=false;
-var _3d0=_3ce.serialize();
-if(_3d0!=false){
-_3cf=true;
-var _3d1="ui:"+DOMUtil.getLocalName(_3ce.bindingElement);
-var _3d2=DOMUtil.createElementNS(Constants.NS_UI,_3d1,this._dom);
-this._pointers[_3ce.key]=_3d2;
-for(var prop in _3d0){
-if(_3d0[prop]!=null){
-_3d2.setAttribute(prop,String(_3d0[prop]));
+BindingSerializer.prototype.indexBinding=function(_3da){
+var _3db=false;
+var _3dc=_3da.serialize();
+if(_3dc!=false){
+_3db=true;
+var _3dd="ui:"+DOMUtil.getLocalName(_3da.bindingElement);
+var _3de=DOMUtil.createElementNS(Constants.NS_UI,_3dd,this._dom);
+this._pointers[_3da.key]=_3de;
+for(var prop in _3dc){
+if(_3dc[prop]!=null){
+_3de.setAttribute(prop,String(_3dc[prop]));
 }
 }
 }
-return _3cf;
+return _3db;
 };
-BindingSerializer.prototype.append=function(_3d4,_3d5){
-var _3d6=this._pointers[_3d4];
-var _3d7=_3d5?this._pointers[_3d5]:this._dom;
-_3d7.appendChild(_3d6);
+BindingSerializer.prototype.append=function(_3e0,_3e1){
+var _3e2=this._pointers[_3e0];
+var _3e3=_3e1?this._pointers[_3e1]:this._dom;
+_3e3.appendChild(_3e2);
 };
-function ImageProfile(_3d8){
-this._default=_3d8.image;
-this._hover=_3d8.imageHover;
-this._active=_3d8.imageActive;
-this._disabled=_3d8.imageDisabled;
+function ImageProfile(_3e4){
+this._default=_3e4.image;
+this._hover=_3e4.imageHover;
+this._active=_3e4.imageActive;
+this._disabled=_3e4.imageDisabled;
 }
 ImageProfile.prototype.getDefaultImage=function(){
 return this._default;
 };
-ImageProfile.prototype.setDefaultImage=function(_3d9){
-this._default=_3d9;
+ImageProfile.prototype.setDefaultImage=function(_3e5){
+this._default=_3e5;
 };
 ImageProfile.prototype.getHoverImage=function(){
 return this._hover;
 };
-ImageProfile.prototype.setHoverImage=function(_3da){
-this._hover=_3da;
+ImageProfile.prototype.setHoverImage=function(_3e6){
+this._hover=_3e6;
 };
 ImageProfile.prototype.getActiveImage=function(){
 return this._active;
 };
-ImageProfile.prototype.setActiveImage=function(_3db){
-this._active=_3db;
+ImageProfile.prototype.setActiveImage=function(_3e7){
+this._active=_3e7;
 };
 ImageProfile.prototype.getDisabledImage=function(){
 return this._disabled;
 };
-ImageProfile.prototype.setDisabledImage=function(_3dc){
-this._disabled=_3dc;
+ImageProfile.prototype.setDisabledImage=function(_3e8){
+this._disabled=_3e8;
 };
 function _BindingFinder(){
 }
-_BindingFinder.prototype={getDescendantBindingsByLocalName:function(_3dd,_3de,_3df){
-var _3e0=null;
-if(_3dd.isAttached){
-_3e0=new List();
-var _3e1=_3df?_3dd.getChildElementsByLocalName(_3de):_3dd.getDescendantElementsByLocalName(_3de);
-_3e1.each(function(_3e2){
-var _3e3=UserInterface.getBinding(_3e2);
-if(_3e3){
-_3e0.add(_3e3);
+_BindingFinder.prototype={getDescendantBindingsByLocalName:function(_3e9,_3ea,_3eb){
+var _3ec=null;
+if(_3e9.isAttached){
+_3ec=new List();
+var _3ed=_3eb?_3e9.getChildElementsByLocalName(_3ea):_3e9.getDescendantElementsByLocalName(_3ea);
+_3ed.each(function(_3ee){
+var _3ef=UserInterface.getBinding(_3ee);
+if(_3ef){
+_3ec.add(_3ef);
 }
 });
 }else{
-var ouch="Could not resolve descendants of unattached binding "+_3dd.toString();
+var ouch="Could not resolve descendants of unattached binding "+_3e9.toString();
 if(Application.isDeveloperMode){
 throw ouch;
 }
 }
-return _3e0;
-},getAncestorBindingByType:function(_3e5,impl,_3e7){
-var _3e8=null;
-if(Binding.exists(_3e5)){
-var node=_3e5.bindingElement;
-while(_3e8==null&&node!=null){
+return _3ec;
+},getAncestorBindingByType:function(_3f1,impl,_3f3){
+var _3f4=null;
+if(Binding.exists(_3f1)){
+var node=_3f1.bindingElement;
+while(_3f4==null&&node!=null){
 node=node.parentNode;
 if(node!=null){
 if(UserInterface.hasBinding(node)){
-var _3ea=UserInterface.getBinding(node);
-if(_3ea instanceof impl){
-_3e8=_3ea;
+var _3f6=UserInterface.getBinding(node);
+if(_3f6 instanceof impl){
+_3f4=_3f6;
 }
 }else{
-if(_3e7&&node.nodeType==Node.DOCUMENT_NODE){
+if(_3f3&&node.nodeType==Node.DOCUMENT_NODE){
 var win=DOMUtil.getParentWindow(node);
 if(win!=null){
 node=win.frameElement;
@@ -4515,83 +4542,83 @@ break;
 }
 }
 }
-return _3e8;
-},getAncestorBindingByLocalName:function(_3ec,_3ed,_3ee){
-var _3ef=null;
-if(_3ed=="*"){
-var node=_3ec.bindingElement;
-while(!_3ef&&(node=node.parentNode)!=null){
+return _3f4;
+},getAncestorBindingByLocalName:function(_3f8,_3f9,_3fa){
+var _3fb=null;
+if(_3f9=="*"){
+var node=_3f8.bindingElement;
+while(!_3fb&&(node=node.parentNode)!=null){
 if(UserInterface.hasBinding(node)){
-_3ef=UserInterface.getBinding(node);
+_3fb=UserInterface.getBinding(node);
 }
 }
 }else{
-_3ef=UserInterface.getBinding(DOMUtil.getAncestorByLocalName(_3ed,_3ec.bindingElement,_3ee));
+_3fb=UserInterface.getBinding(DOMUtil.getAncestorByLocalName(_3f9,_3f8.bindingElement,_3fa));
 }
-return _3ef;
-},getChildElementsByLocalName:function(_3f1,_3f2){
-var _3f3=new List();
-var _3f4=new List(_3f1.bindingElement.childNodes);
-_3f4.each(function(_3f5){
-if(_3f5.nodeType==Node.ELEMENT_NODE){
-if(_3f2=="*"||DOMUtil.getLocalName(_3f5)==_3f2){
-_3f3.add(_3f5);
+return _3fb;
+},getChildElementsByLocalName:function(_3fd,_3fe){
+var _3ff=new List();
+var _400=new List(_3fd.bindingElement.childNodes);
+_400.each(function(_401){
+if(_401.nodeType==Node.ELEMENT_NODE){
+if(_3fe=="*"||DOMUtil.getLocalName(_401)==_3fe){
+_3ff.add(_401);
 }
 }
 });
-return _3f3;
-},getChildBindingByType:function(_3f6,impl){
-var _3f8=null;
-_3f6.getChildElementsByLocalName("*").each(function(_3f9){
-var _3fa=UserInterface.getBinding(_3f9);
-if(_3fa!=null&&_3fa instanceof impl){
-_3f8=_3fa;
+return _3ff;
+},getChildBindingByType:function(_402,impl){
+var _404=null;
+_402.getChildElementsByLocalName("*").each(function(_405){
+var _406=UserInterface.getBinding(_405);
+if(_406!=null&&_406 instanceof impl){
+_404=_406;
 return false;
 }else{
 return true;
 }
 });
-return _3f8;
-},getDescendantBindingByType:function(_3fb,impl){
-var _3fd=null;
-_3fb.getDescendantElementsByLocalName("*").each(function(_3fe){
-var _3ff=UserInterface.getBinding(_3fe);
-if(_3ff!=null&&_3ff instanceof impl){
-_3fd=_3ff;
+return _404;
+},getDescendantBindingByType:function(_407,impl){
+var _409=null;
+_407.getDescendantElementsByLocalName("*").each(function(_40a){
+var _40b=UserInterface.getBinding(_40a);
+if(_40b!=null&&_40b instanceof impl){
+_409=_40b;
 return false;
 }else{
 return true;
 }
 });
-return _3fd;
-},getDescendantBindingsByType:function(_400,impl){
-var _402=new List();
-_400.getDescendantElementsByLocalName("*").each(function(_403){
-var _404=UserInterface.getBinding(_403);
-if(_404!=null&&_404 instanceof impl){
-_402.add(_404);
+return _409;
+},getDescendantBindingsByType:function(_40c,impl){
+var _40e=new List();
+_40c.getDescendantElementsByLocalName("*").each(function(_40f){
+var _410=UserInterface.getBinding(_40f);
+if(_410!=null&&_410 instanceof impl){
+_40e.add(_410);
 }
 return true;
 });
-return _402;
-},getNextBindingByLocalName:function(_405,name){
-var _407=null;
-var _408=_405.bindingElement;
-while((_408=DOMUtil.getNextElementSibling(_408))!=null&&DOMUtil.getLocalName(_408)!=name){
+return _40e;
+},getNextBindingByLocalName:function(_411,name){
+var _413=null;
+var _414=_411.bindingElement;
+while((_414=DOMUtil.getNextElementSibling(_414))!=null&&DOMUtil.getLocalName(_414)!=name){
 }
-if(_408!=null){
-_407=UserInterface.getBinding(_408);
+if(_414!=null){
+_413=UserInterface.getBinding(_414);
 }
-return _407;
-},getPreviousBindingByLocalName:function(_409,name){
-var _40b=null;
-var _40c=_409.bindingElement;
-while((_40c=DOMUtil.getPreviousElementSibling(_40c))!=null&&DOMUtil.getLocalName(_40c)!=name){
+return _413;
+},getPreviousBindingByLocalName:function(_415,name){
+var _417=null;
+var _418=_415.bindingElement;
+while((_418=DOMUtil.getPreviousElementSibling(_418))!=null&&DOMUtil.getLocalName(_418)!=name){
 }
-if(_40c!=null){
-_40b=UserInterface.getBinding(_40c);
+if(_418!=null){
+_417=UserInterface.getBinding(_418);
 }
-return _40b;
+return _417;
 }};
 var BindingFinder=new _BindingFinder();
 NodeCrawler.NORMAL=1;
@@ -4609,57 +4636,57 @@ this.currentNode=null,this.previousNode=null;
 this.nextNode=null;
 this._filters=new List();
 this.type=NodeCrawler.TYPE_DESCENDING;
-},addFilter:function(_40d){
-this._filters.add(_40d);
-},removeFilter:function(_40e){
-var _40f=-1;
+},addFilter:function(_419){
+this._filters.add(_419);
+},removeFilter:function(_41a){
+var _41b=-1;
 this._filters.each(function(fil){
-_40f++;
-var _411=true;
-if(fil==_40e){
-_411=false;
+_41b++;
+var _41d=true;
+if(fil==_41a){
+_41d=false;
 }
-return _411;
+return _41d;
 });
-if(_40f>-1){
-this._filters.del(_40f);
+if(_41b>-1){
+this._filters.del(_41b);
 }
 },_applyFilters:function(node,arg){
-var _414=null;
+var _420=null;
 var stop=NodeCrawler.STOP_CRAWLING;
 var skip=NodeCrawler.SKIP_NODE;
-var _417=NodeCrawler.SKIP_CHILDREN;
+var _423=NodeCrawler.SKIP_CHILDREN;
 this._filters.reset();
-var _418=true;
-while(this._filters.hasNext()&&_418==true){
-var _419=this._filters.getNext();
-var res=_419.call(this,node,arg);
+var _424=true;
+while(this._filters.hasNext()&&_424==true){
+var _425=this._filters.getNext();
+var res=_425.call(this,node,arg);
 if(res!=null){
-_414=res;
+_420=res;
 switch(res){
 case stop:
 case skip:
-case skip+_417:
-_418=false;
+case skip+_423:
+_424=false;
 break;
 }
 }
 }
-return _414;
-},crawl:function(_41b,arg){
-this.contextDocument=_41b.ownerDocument;
+return _420;
+},crawl:function(_427,arg){
+this.contextDocument=_427.ownerDocument;
 this.onCrawlStart();
-var _41d=this.type==NodeCrawler.TYPE_ASCENDING;
-var _41e=this._applyFilters(_41b,arg);
-if(_41e!=NodeCrawler.STOP_CRAWLING){
-if(_41d&&_41e==NodeCrawler.SKIP_CHILDREN){
+var _429=this.type==NodeCrawler.TYPE_ASCENDING;
+var _42a=this._applyFilters(_427,arg);
+if(_42a!=NodeCrawler.STOP_CRAWLING){
+if(_429&&_42a==NodeCrawler.SKIP_CHILDREN){
 }else{
 var next=null;
 if(this.nextNode!=null){
 next=this.nextNode;
 this.nextNode=null;
 }else{
-next=_41d?_41b.parentNode:_41b;
+next=_429?_427.parentNode:_427;
 }
 this._crawl(next,arg);
 }
@@ -4667,78 +4694,78 @@ this._crawl(next,arg);
 this.onCrawlStop();
 },onCrawlStart:function(){
 },onCrawlStop:function(){
-},_crawl:function(_420,arg){
-var _422=null;
+},_crawl:function(_42c,arg){
+var _42e=null;
 switch(this.type){
 case NodeCrawler.TYPE_DESCENDING:
-_422=this._crawlDescending(_420,arg);
+_42e=this._crawlDescending(_42c,arg);
 break;
 case NodeCrawler.TYPE_ASCENDING:
-_422=this._crawlAscending(_420,arg);
+_42e=this._crawlAscending(_42c,arg);
 break;
 }
-return _422;
-},_crawlDescending:function(_423,arg){
+return _42e;
+},_crawlDescending:function(_42f,arg){
 var skip=NodeCrawler.SKIP_NODE;
-var _426=NodeCrawler.SKIP_CHILDREN;
+var _432=NodeCrawler.SKIP_CHILDREN;
 var stop=NodeCrawler.STOP_CRAWLING;
-var _428=null;
-if(_423.hasChildNodes()){
-var node=_423.firstChild;
-while(node!=null&&_428!=stop){
+var _434=null;
+if(_42f.hasChildNodes()){
+var node=_42f.firstChild;
+while(node!=null&&_434!=stop){
 this.currentNode=node;
-_428=this._applyFilters(node,arg);
-switch(_428){
+_434=this._applyFilters(node,arg);
+switch(_434){
 case stop:
-case _426:
-case skip+_426:
+case _432:
+case skip+_432:
 break;
 default:
 if(node.nodeType==Node.ELEMENT_NODE){
 if(this.nextNode==null){
 var res=this._crawl(node,arg);
 if(res==stop){
-_428=stop;
+_434=stop;
 break;
 }
 }
 }
-if(_428!=stop&&_428!=skip){
+if(_434!=stop&&_434!=skip){
 this.previousNode=node;
 }
 break;
 }
-if(_428!=stop){
+if(_434!=stop){
 node=this.nextNode?this.nextNode:node.nextSibling;
 this.nextNode=null;
 }
 }
 }
-return _428;
-},_crawlAscending:function(_42b,arg){
-var _42d=null;
+return _434;
+},_crawlAscending:function(_437,arg){
+var _439=null;
 var skip=NodeCrawler.SKIP_CHILDREN;
 var stop=NodeCrawler.STOP_CRAWLING;
-if(_42b!=null){
-this.currentNode=_42b;
-_42d=this._applyFilters(_42b,arg);
-if(_42d!=stop){
-var next=this.nextNode?this.nextNode:_42b.parentNode;
+if(_437!=null){
+this.currentNode=_437;
+_439=this._applyFilters(_437,arg);
+if(_439!=stop){
+var next=this.nextNode?this.nextNode:_437.parentNode;
 this.nextNode=null;
 if(next&&next.nodeType!=Node.DOCUMENT_NODE){
-this.previousNode=_42b;
-_42d=this._crawl(next,arg);
+this.previousNode=_437;
+_439=this._crawl(next,arg);
 }
 }
 }else{
-_42d=stop;
+_439=stop;
 }
-return _42d;
+return _439;
 }};
 NodeCrawler.prototype.dispose=function(){
 this._filters.dispose();
-for(var _431 in this){
-this[_431]=null;
+for(var _43d in this){
+this[_43d]=null;
 }
 };
 ElementCrawler.prototype=new NodeCrawler;
@@ -4751,11 +4778,11 @@ return this;
 ElementCrawler.prototype._construct=function(){
 ElementCrawler.superclass._construct.call(this);
 this.addFilter(function(node,arg){
-var _434=null;
+var _440=null;
 if(node.nodeType!=Node.ELEMENT_NODE){
-_434=NodeCrawler.SKIP_NODE;
+_440=NodeCrawler.SKIP_NODE;
 }
-return _434;
+return _440;
 });
 };
 BindingCrawler.prototype=new ElementCrawler;
@@ -4767,12 +4794,12 @@ return this;
 }
 BindingCrawler.prototype._construct=function(){
 BindingCrawler.superclass._construct.call(this);
-this.addFilter(function(_435,arg){
-var _437=null;
-if(!UserInterface.hasBinding(_435)){
-_437=NodeCrawler.SKIP_NODE;
+this.addFilter(function(_441,arg){
+var _443=null;
+if(!UserInterface.hasBinding(_441)){
+_443=NodeCrawler.SKIP_NODE;
 }
-return _437;
+return _443;
 });
 };
 Crawler.prototype=new BindingCrawler;
@@ -4788,15 +4815,15 @@ Crawler.prototype._construct=function(){
 Crawler.superclass._construct.call(this);
 this.response=null;
 var self=this;
-this.addFilter(function(_439,arg){
-var _43b=null;
-var _43c=UserInterface.getBinding(_439);
-if(Interfaces.isImplemented(ICrawlerHandler,_43c)==true){
+this.addFilter(function(_445,arg){
+var _447=null;
+var _448=UserInterface.getBinding(_445);
+if(Interfaces.isImplemented(ICrawlerHandler,_448)==true){
 self.response=null;
-_43c.handleCrawler(self);
-_43b=self.response;
+_448.handleCrawler(self);
+_447=self.response;
 }
-return _43b;
+return _447;
 });
 };
 FlexBoxCrawler.prototype=new Crawler;
@@ -4815,24 +4842,24 @@ return this;
 FlexBoxCrawler.prototype._construct=function(){
 FlexBoxCrawler.superclass._construct.call(this);
 var self=this;
-this.addFilter(function(_43e,list){
-var _440=null;
-var _441=UserInterface.getBinding(_43e);
-if(Interfaces.isImplemented(IFlexible,_441)==true){
+this.addFilter(function(_44a,list){
+var _44c=null;
+var _44d=UserInterface.getBinding(_44a);
+if(Interfaces.isImplemented(IFlexible,_44d)==true){
 switch(self.mode){
 case FlexBoxCrawler.MODE_FORCE:
-list.add(_441);
+list.add(_44d);
 break;
 case FlexBoxCrawler.MODE_NORMAL:
-if(_441.isFlexSuspended==true){
-_440=NodeCrawler.SKIP_CHILDREN;
+if(_44d.isFlexSuspended==true){
+_44c=NodeCrawler.SKIP_CHILDREN;
 }else{
-list.add(_441);
+list.add(_44d);
 }
 break;
 }
 }
-return _440;
+return _44c;
 });
 };
 FocusCrawler.prototype=new Crawler;
@@ -4849,33 +4876,33 @@ return this;
 }
 FocusCrawler.prototype._construct=function(){
 FocusCrawler.superclass._construct.call(this);
-this.addFilter(function(_442,list){
-var _444=null;
-var _445=UserInterface.getBinding(_442);
-if(_445.isAttached==true){
-if(Interfaces.isImplemented(IFocusable,_445)==true){
-if(_445.isFocusable&&_445.isVisible){
+this.addFilter(function(_44e,list){
+var _450=null;
+var _451=UserInterface.getBinding(_44e);
+if(_451.isAttached==true){
+if(Interfaces.isImplemented(IFocusable,_451)==true){
+if(_451.isFocusable&&_451.isVisible){
 switch(this.mode){
 case FocusCrawler.MODE_INDEX:
-list.add(_445);
+list.add(_451);
 break;
 case FocusCrawler.MODE_FOCUS:
-if(!_445.isFocused){
-_445.focus();
+if(!_451.isFocused){
+_451.focus();
 }
-_444=NodeCrawler.STOP_CRAWLING;
+_450=NodeCrawler.STOP_CRAWLING;
 break;
 case FocusCrawler.MODE_BLUR:
-if(_445.isFocused==true){
-_445.blur();
-_444=NodeCrawler.STOP_CRAWLING;
+if(_451.isFocused==true){
+_451.blur();
+_450=NodeCrawler.STOP_CRAWLING;
 }
 break;
 }
 }
 }
 }
-return _444;
+return _450;
 });
 };
 FitnessCrawler.prototype=new Crawler;
@@ -4892,21 +4919,21 @@ return this;
 }
 FitnessCrawler.prototype._construct=function(){
 FitnessCrawler.superclass._construct.call(this);
-this.addFilter(function(_446,list){
-var _448=null;
-var _449=UserInterface.getBinding(_446);
-if(!_449.isVisible){
-_448=NodeCrawler.SKIP_NODE+NodeCrawler.SKIP_CHILDREN;
+this.addFilter(function(_452,list){
+var _454=null;
+var _455=UserInterface.getBinding(_452);
+if(!_455.isVisible){
+_454=NodeCrawler.SKIP_NODE+NodeCrawler.SKIP_CHILDREN;
 }
-return _448;
+return _454;
 });
-this.addFilter(function(_44a,list){
-var _44c=null;
-var _44d=UserInterface.getBinding(_44a);
-if(_44d.isAttached){
-if(Interfaces.isImplemented(IFit,_44d)){
-if(!_44d.isFit||this.mode==FitnessCrawler.MODE_BRUTAL){
-list.add(_44d);
+this.addFilter(function(_456,list){
+var _458=null;
+var _459=UserInterface.getBinding(_456);
+if(_459.isAttached){
+if(Interfaces.isImplemented(IFit,_459)){
+if(!_459.isFit||this.mode==FitnessCrawler.MODE_BRUTAL){
+list.add(_459);
 }
 }
 }
@@ -4930,21 +4957,21 @@ DOMEvents.addEventListener(document,DOMEvents.AFTERUPDATE,this);
 DOMEvents.addEventListener(document,DOMEvents.ERRORUPDATE,this);
 DOMEvents.addEventListener(window,DOMEvents.UNLOAD,this);
 if(Client.isMozilla){
-UpdateAssistant.serialize=function(_44e){
-_44e=_44e.cloneNode(true);
-_44e.setAttributeNS(Constants.NS_NS,"xmlns",Constants.NS_XHTML);
-_44e.setAttributeNS(Constants.NS_NS,"xmlns:ui",Constants.NS_UI);
-return this._serializer.serializeToString(_44e);
+UpdateAssistant.serialize=function(_45a){
+_45a=_45a.cloneNode(true);
+_45a.setAttributeNS(Constants.NS_NS,"xmlns",Constants.NS_XHTML);
+_45a.setAttributeNS(Constants.NS_NS,"xmlns:ui",Constants.NS_UI);
+return this._serializer.serializeToString(_45a);
 };
 }
 },handleEvent:function(e){
-var _450=DOMEvents.getTarget(e);
+var _45c=DOMEvents.getTarget(e);
 switch(e.type){
 case DOMEvents.BEFOREUPDATE:
-this._beforeUpdate(_450);
+this._beforeUpdate(_45c);
 break;
 case DOMEvents.AFTERUPDATE:
-this._afterUpdate(_450);
+this._afterUpdate(_45c);
 break;
 case DOMEvents.ERRORUPDATE:
 this._errorUpdate();
@@ -4955,9 +4982,9 @@ Application.unlock(this);
 }
 break;
 }
-},_beforeUpdate:function(_451){
-var _452=(_451==document.documentElement);
-if(_452){
+},_beforeUpdate:function(_45d){
+var _45e=(_45d==document.documentElement);
+if(_45e){
 this._elementsbuffer=new List();
 this._isUpdating=true;
 Application.lock(this);
@@ -4968,31 +4995,31 @@ if(page!=null){
 page.onBeforeUpdates();
 }
 }
-var _455=FocusBinding.focusedBinding;
-if(_455!=null){
-this._focusID=_455.getID();
+var _461=FocusBinding.focusedBinding;
+if(_461!=null){
+this._focusID=_461.getID();
 }
 if(this.isDebugging){
 this._oldDOM=DOMSerializer.serialize(UpdateManager.currentDOM,true);
 }
 }else{
-switch(_451.__updateType){
+switch(_45d.__updateType){
 case Update.TYPE_REPLACE:
 case Update.TYPE_REMOVE:
-DocumentManager.detachBindings(_451);
+DocumentManager.detachBindings(_45d);
 break;
 case Update.TYPE_ATTRIBUTES:
-this._backupattributes(_451,false);
+this._backupattributes(_45d,false);
 break;
 }
 }
-},_afterUpdate:function(_456){
-var _457=(_456==document.documentElement);
-if(_457){
-var _458=this._elementsbuffer;
-if(_458.hasEntries()){
-_458.each(function(_459){
-DocumentManager.attachBindings(_459);
+},_afterUpdate:function(_462){
+var _463=(_462==document.documentElement);
+if(_463){
+var _464=this._elementsbuffer;
+if(_464.hasEntries()){
+_464.each(function(_465){
+DocumentManager.attachBindings(_465);
 });
 }
 this._isUpdating=false;
@@ -5004,38 +5031,38 @@ if(page!=null){
 page.onAfterUpdates();
 }
 }
-var _45c=FocusBinding.focusedBinding;
-if(_45c==null){
-var _45d=document.getElementById(this._focusID);
-if(_45d!=null){
-var _45c=UserInterface.getBinding(_45d);
-if(_45c!=null){
-_45c.focus();
+var _468=FocusBinding.focusedBinding;
+if(_468==null){
+var _469=document.getElementById(this._focusID);
+if(_469!=null){
+var _468=UserInterface.getBinding(_469);
+if(_468!=null){
+_468.focus();
 }
 }
 }
 this._focusID=null;
 if(UpdateManager.summary!=""){
 if(this.isDebugging){
-var _45e=DOMSerializer.serialize(UpdateManager.currentDOM,true);
-var _45f="NEW DOM: "+document.title+"\n\n"+_45e+"\n\n";
-_45f+="OLD DOM: "+document.title+"\n\n"+this._oldDOM;
-this._logger.debug(_45f);
+var _46a=DOMSerializer.serialize(UpdateManager.currentDOM,true);
+var _46b="NEW DOM: "+document.title+"\n\n"+_46a+"\n\n";
+_46b+="OLD DOM: "+document.title+"\n\n"+this._oldDOM;
+this._logger.debug(_46b);
 this._oldDOM=null;
 }
 this._logger.fine(UpdateManager.summary);
 }
 }else{
-switch(_456.__updateType){
+switch(_462.__updateType){
 case Update.TYPE_REPLACE:
 case Update.TYPE_INSERT:
-this._elementsbuffer.add(_456);
+this._elementsbuffer.add(_462);
 break;
 case Update.TYPE_ATTRIBUTES:
-this._backupattributes(_456,true);
+this._backupattributes(_462,true);
 break;
 }
-switch(_456.id){
+switch(_462.id){
 case "__VIEWSTATE":
 case "__EVENTTARGET":
 case "__EVENTARGUMENT":
@@ -5046,13 +5073,13 @@ case "__RESPONSE":
 case "__CONSOLEID":
 break;
 default:
-var _45c=UserInterface.getBinding(_456);
-while(_45c==null&&_456!=null){
-_45c=UserInterface.getBinding(_456);
-_456=_456.parentNode;
+var _468=UserInterface.getBinding(_462);
+while(_468==null&&_462!=null){
+_468=UserInterface.getBinding(_462);
+_462=_462.parentNode;
 }
-if(_45c!=null){
-_45c.dispatchAction(Binding.ACTION_UPDATED);
+if(_468!=null){
+_468.dispatchAction(Binding.ACTION_UPDATED);
 }
 break;
 }
@@ -5064,14 +5091,14 @@ this._logger.error(cry+"\n\n"+UpdateManager.pendingResponse);
 if(Application.isDeveloperMode){
 alert(cry);
 }
-},_backupattributes:function(_461,_462){
-var _463=UserInterface.getBinding(_461);
-if(_463!=null){
-if(_462){
-var _464=this._attributesbuffer;
+},_backupattributes:function(_46d,_46e){
+var _46f=UserInterface.getBinding(_46d);
+if(_46f!=null){
+if(_46e){
+var _470=this._attributesbuffer;
 var map=new Map();
-_464.each(function(name,old){
-var now=_461.getAttribute(name);
+_470.each(function(name,old){
+var now=_46d.getAttribute(name);
 if(now!=null){
 if(now!=old){
 map.set(name,Types.castFromString(now));
@@ -5080,22 +5107,22 @@ map.set(name,Types.castFromString(now));
 map.set(name,null);
 }
 });
-new List(_461.attributes).each(function(att){
+new List(_46d.attributes).each(function(att){
 if(att.specified){
-if(!_464.has(att.nodeName)){
+if(!_470.has(att.nodeName)){
 map.set(att.nodeName,Types.castFromString(att.nodeValue));
 }
 }
 });
-map.each(function(name,_46b){
-var _46c=_463.propertyMethodMap[name];
-if(_46c!=null){
-_46c.call(_463,_46b);
+map.each(function(name,_477){
+var _478=_46f.propertyMethodMap[name];
+if(_478!=null){
+_478.call(_46f,_477);
 }
 });
 }else{
 var map=new Map();
-new List(_461.attributes).each(function(att){
+new List(_46d.attributes).each(function(att){
 if(att.specified){
 map.set(att.nodeName,att.nodeValue);
 }
@@ -5103,15 +5130,15 @@ map.set(att.nodeName,att.nodeValue);
 this._attributesbuffer=map;
 }
 }
-},handleElement:function(_46e,_46f){
-var _470=window.bindingMap[_46e.getAttribute("id")];
-if(_470!=null){
-return _470.handleElement(_46e,_46f);
+},handleElement:function(_47a,_47b){
+var _47c=window.bindingMap[_47a.getAttribute("id")];
+if(_47c!=null){
+return _47c.handleElement(_47a,_47b);
 }
-},updateElement:function(_471,_472){
-var _473=window.bindingMap[_471.getAttribute("id")];
-if(_473!=null){
-return _473.updateElement(_471,_472);
+},updateElement:function(_47d,_47e){
+var _47f=window.bindingMap[_47d.getAttribute("id")];
+if(_47f!=null){
+return _47f.updateElement(_47d,_47e);
 }
 }};
 var DocumentUpdatePlugin=new _DocumentUpdatePlugin();
@@ -5131,32 +5158,32 @@ return this;
 DocumentCrawler.prototype._construct=function(){
 DocumentCrawler.superclass._construct.call(this);
 var self=this;
-this.addFilter(function(_475,list){
-var _477=UserInterface.getBinding(_475);
-var _478=null;
+this.addFilter(function(_481,list){
+var _483=UserInterface.getBinding(_481);
+var _484=null;
 switch(self.mode){
 case DocumentCrawler.MODE_REGISTER:
-if(_477==null){
-UserInterface.registerBinding(_475);
+if(_483==null){
+UserInterface.registerBinding(_481);
 }
 break;
 case DocumentCrawler.MODE_ATTACH:
-if(_477!=null){
-if(!_477.isAttached){
-list.add(_477);
+if(_483!=null){
+if(!_483.isAttached){
+list.add(_483);
 }
-if(_477.isLazy==true){
-_478=NodeCrawler.SKIP_CHILDREN;
+if(_483.isLazy==true){
+_484=NodeCrawler.SKIP_CHILDREN;
 }
 }
 break;
 case DocumentCrawler.MODE_DETACH:
-if(_477!=null){
-list.add(_477);
+if(_483!=null){
+list.add(_483);
 }
 break;
 }
-return _478;
+return _484;
 });
 };
 function _DocumentManager(){
@@ -5168,7 +5195,7 @@ EventBroadcaster.subscribe(WindowManager.WINDOW_LOADED_BROADCAST,this);
 if(Client.isExplorer){
 DOMEvents.addEventListener(document,DOMEvents.CLICK,this);
 }
-},handleBroadcast:function(_479,arg){
+},handleBroadcast:function(_485,arg){
 if(!this.isDocumentSelectable){
 this._makeDocumentUnselectable();
 }
@@ -5180,18 +5207,18 @@ this._resolveCustomBindingMappings();
 this.attachBindings(document.documentElement);
 }
 },handleEvent:function(e){
-var _47c=DOMEvents.getTarget(e);
+var _488=DOMEvents.getTarget(e);
 switch(e.type){
 case DOMEvents.SELECTSTART:
 case DOMEvents.CONTEXTMENU:
-if(!this._isTextInputElement(_47c)){
+if(!this._isTextInputElement(_488)){
 DOMEvents.preventDefault(e);
 }
 break;
 case DOMEvents.CLICK:
 if(Client.isExplorer){
-if(_47c!=null){
-if(_47c.href!=null&&_47c.href.indexOf(Constants.DUMMY_LINK)>-1){
+if(_488!=null){
+if(_488.href!=null&&_488.href.indexOf(Constants.DUMMY_LINK)>-1){
 DOMEvents.preventDefault(e);
 }
 }
@@ -5199,47 +5226,47 @@ DOMEvents.preventDefault(e);
 break;
 }
 },_resolveCustomBindingMappings:function(){
-var _47d=DOMUtil.getElementsByTagName(document.documentElement,"bindingmappingset").item(0);
-if(_47d!=null){
+var _489=DOMUtil.getElementsByTagName(document.documentElement,"bindingmappingset").item(0);
+if(_489!=null){
 var map={};
-var _47f=DOMUtil.getElementsByTagName(_47d,"bindingmapping");
-new List(_47f).each(function(_480){
-var _481=_480.getAttribute("element");
-var _482=_480.getAttribute("binding");
-map[_481]=eval(_482);
+var _48b=DOMUtil.getElementsByTagName(_489,"bindingmapping");
+new List(_48b).each(function(_48c){
+var _48d=_48c.getAttribute("element");
+var _48e=_48c.getAttribute("binding");
+map[_48d]=eval(_48e);
 });
 this.setCustomUserInterfaceMapping(new UserInterfaceMapping(map));
 }
-},setCustomUserInterfaceMapping:function(_483){
+},setCustomUserInterfaceMapping:function(_48f){
 if(this.customUserInterfaceMapping==null){
-this.customUserInterfaceMapping=_483;
+this.customUserInterfaceMapping=_48f;
 }else{
-this.customUserInterfaceMapping.merge(_483);
+this.customUserInterfaceMapping.merge(_48f);
 }
-},_registerBindings:function(_484){
-var _485=new DocumentCrawler();
-_485.mode=DocumentCrawler.MODE_REGISTER;
-_485.crawl(_484);
-_485.dispose();
-},_attachBindings:function(_486){
-var _487=new DocumentCrawler();
-_487.mode=DocumentCrawler.MODE_ATTACH;
+},_registerBindings:function(_490){
+var _491=new DocumentCrawler();
+_491.mode=DocumentCrawler.MODE_REGISTER;
+_491.crawl(_490);
+_491.dispose();
+},_attachBindings:function(_492){
+var _493=new DocumentCrawler();
+_493.mode=DocumentCrawler.MODE_ATTACH;
 var list=new List();
-_487.crawl(_486,list);
-var _489=false;
+_493.crawl(_492,list);
+var _495=false;
 while(list.hasNext()){
-var _48a=list.getNext();
-if(!_48a.isAttached){
-_48a.onBindingAttach();
-if(!_48a.memberDependencies){
-_48a.onBindingInitialize();
+var _496=list.getNext();
+if(!_496.isAttached){
+_496.onBindingAttach();
+if(!_496.memberDependencies){
+_496.onBindingInitialize();
 }
-if(Interfaces.isImplemented(IData,_48a)){
-_489=true;
+if(Interfaces.isImplemented(IData,_496)){
+_495=true;
 }
 }
 }
-if(_489){
+if(_495){
 var root=UserInterface.getBinding(document.body);
 if(root!=null){
 setTimeout(function(){
@@ -5249,27 +5276,27 @@ root.dispatchAction(FocusBinding.ACTION_UPDATE);
 },250);
 }
 }
-_487.dispose();
+_493.dispose();
 list.dispose();
-},attachBindings:function(_48c){
-this._registerBindings(_48c);
-this._attachBindings(_48c);
-},detachBindings:function(_48d,_48e){
-var _48f=new DocumentCrawler();
-_48f.mode=DocumentCrawler.MODE_DETACH;
+},attachBindings:function(_498){
+this._registerBindings(_498);
+this._attachBindings(_498);
+},detachBindings:function(_499,_49a){
+var _49b=new DocumentCrawler();
+_49b.mode=DocumentCrawler.MODE_DETACH;
 var list=new List();
-_48f.crawl(_48d,list);
-if(_48e==true){
+_49b.crawl(_499,list);
+if(_49a==true){
 list.extractFirst();
 }
-var _491=false;
-list.reverse().each(function(_492){
-if(Interfaces.isImplemented(IData,_492)){
-_491=true;
+var _49d=false;
+list.reverse().each(function(_49e){
+if(Interfaces.isImplemented(IData,_49e)){
+_49d=true;
 }
-_492.dispose(true);
+_49e.dispose(true);
 });
-if(_491){
+if(_49d){
 var root=UserInterface.getBinding(document.body);
 if(root!=null){
 setTimeout(function(){
@@ -5279,7 +5306,7 @@ root.dispatchAction(FocusBinding.ACTION_UPDATE);
 },250);
 }
 }
-_48f.dispose();
+_49b.dispose();
 list.dispose();
 },detachAllBindings:function(){
 this.detachBindings(document.documentElement);
@@ -5288,8 +5315,8 @@ if(this._maxIndex==-1){
 this._maxIndex=DOMUtil.getMaxIndex(document);
 }
 return this._maxIndex++;
-},_isTextInputElement:function(_494){
-return (/textarea|input/.test(DOMUtil.getLocalName(_494)));
+},_isTextInputElement:function(_4a0){
+return (/textarea|input/.test(DOMUtil.getLocalName(_4a0)));
 },_makeDocumentUnselectable:function(){
 if(Client.isExplorer){
 DOMEvents.addEventListener(document,DOMEvents.SELECTSTART,this);
@@ -5299,72 +5326,72 @@ DOMEvents.addEventListener(document,DOMEvents.SELECTSTART,this);
 var DocumentManager=new _DocumentManager();
 function _DataManager(){
 }
-_DataManager.prototype={isPostBackFun:false,_logger:SystemLogger.getLogger("DataManager ["+document.title+"]"),_dataBindings:{},isDirty:false,dirty:function(_495){
+_DataManager.prototype={isPostBackFun:false,_logger:SystemLogger.getLogger("DataManager ["+document.title+"]"),_dataBindings:{},isDirty:false,dirty:function(_4a1){
 this.isDirty=true;
-var _496=false;
-if(_495!=null&&!_495.isDirty){
-_495.isDirty=true;
-_495.dispatchAction(Binding.ACTION_DIRTY);
-_496=true;
+var _4a2=false;
+if(_4a1!=null&&!_4a1.isDirty){
+_4a1.isDirty=true;
+_4a1.dispatchAction(Binding.ACTION_DIRTY);
+_4a2=true;
 }
-return _496;
-},clean:function(_497){
-if(_497.isDirty){
-_497.isDirty=false;
+return _4a2;
+},clean:function(_4a3){
+if(_4a3.isDirty){
+_4a3.isDirty=false;
 }
-},registerDataBinding:function(name,_499){
-if(Interfaces.isImplemented(IData,_499,true)){
+},registerDataBinding:function(name,_4a5){
+if(Interfaces.isImplemented(IData,_4a5,true)){
 if(this._dataBindings[name]!=null){
 throw "no proper support for checkbox multiple values! "+name;
 }else{
-this._dataBindings[name]=_499;
+this._dataBindings[name]=_4a5;
 }
 }else{
-throw "Invalid DataBinding: "+_499;
+throw "Invalid DataBinding: "+_4a5;
 }
 },unRegisterDataBinding:function(name){
 if(this._dataBindings[name]!=null){
 delete this._dataBindings[name];
 }
 },getDataBinding:function(name){
-var _49c=null;
+var _4a8=null;
 if(this._dataBindings[name]!=null){
-_49c=this._dataBindings[name];
+_4a8=this._dataBindings[name];
 }
-return _49c;
-},getAllDataBindings:function(_49d){
+return _4a8;
+},getAllDataBindings:function(_4a9){
 var list=new List();
 for(var name in this._dataBindings){
-var _4a0=this._dataBindings[name];
-list.add(_4a0);
-if(_49d&&_4a0 instanceof WindowBinding){
-var _4a1=_4a0.getContentWindow().DataManager;
-if(_4a1!=null){
-list.merge(_4a1.getAllDataBindings());
+var _4ac=this._dataBindings[name];
+list.add(_4ac);
+if(_4a9&&_4ac instanceof WindowBinding){
+var _4ad=_4ac.getContentWindow().DataManager;
+if(_4ad!=null){
+list.merge(_4ad.getAllDataBindings());
 }
 }
 }
 return list;
 },hasDataBindings:function(){
-var _4a2=false;
+var _4ae=false;
 for(var name in this._dataBindings){
-_4a2=true;
+_4ae=true;
 break;
 }
-return _4a2;
+return _4ae;
 },populateDataBindings:function(map){
 if(map instanceof DataBindingMap){
-map.each(function(name,_4a6){
-var _4a7=this._dataBindings[name];
-if(_4a7!=null){
+map.each(function(name,_4b2){
+var _4b3=this._dataBindings[name];
+if(_4b3!=null){
 switch(map.type){
 case DataBindingMap.TYPE_RESULT:
 try{
-_4a7.setResult(_4a6);
+_4b3.setResult(_4b2);
 }
 catch(exception){
 if(Application.isDeveloperMode){
-alert(_4a7);
+alert(_4b3);
 }
 throw exception;
 }
@@ -5376,75 +5403,75 @@ throw "Not implemented!";
 });
 }
 },getDataBindingValueMap:function(){
-var _4a8=new DataBindingMap();
-_4a8.type=DataBindingMap.TYPE_VALUE;
+var _4b4=new DataBindingMap();
+_4b4.type=DataBindingMap.TYPE_VALUE;
 for(var name in this._dataBindings){
-var _4aa=this._dataBindings[name];
-if(_4aa instanceof DataDialogBinding){
+var _4b6=this._dataBindings[name];
+if(_4b6 instanceof DataDialogBinding){
 throw "DataDialogBinding valuemap not supported!";
 }
-_4a8[name]=_4aa.getValue();
+_4b4[name]=_4b6.getValue();
 }
-return _4a8;
+return _4b4;
 },getDataBindingResultMap:function(){
-var _4ab=new DataBindingMap();
-_4ab.type=DataBindingMap.TYPE_RESULT;
+var _4b7=new DataBindingMap();
+_4b7.type=DataBindingMap.TYPE_RESULT;
 for(var name in this._dataBindings){
-var _4ad=this._dataBindings[name];
-var res=_4ad.getResult();
+var _4b9=this._dataBindings[name];
+var res=_4b9.getResult();
 if(res instanceof DataBindingMap){
-res.each(function(name,_4b0){
-_4ab.set(name,_4b0);
+res.each(function(name,_4bc){
+_4b7.set(name,_4bc);
 });
 }else{
-_4ab.set(name,res);
+_4b7.set(name,res);
 }
 }
-return _4ab;
+return _4b7;
 },getPostBackString:function(){
-var _4b1="";
+var _4bd="";
 var form=document.forms[0];
 if(form!=null){
-var _4b3="";
-new List(form.elements).each(function(_4b4){
-var name=_4b4.name;
-var _4b6=encodeURIComponent(_4b4.value);
-switch(_4b4.type){
+var _4bf="";
+new List(form.elements).each(function(_4c0){
+var name=_4c0.name;
+var _4c2=encodeURIComponent(_4c0.value);
+switch(_4c0.type){
 case "text":
 case "hidden":
 case "password":
 case "textarea":
 case "select-one":
-_4b1+=name+"="+_4b6+"&";
+_4bd+=name+"="+_4c2+"&";
 break;
 case "submit":
-if(document.activeElement==_4b4){
-_4b1+=name+"="+_4b6+"&";
+if(document.activeElement==_4c0){
+_4bd+=name+"="+_4c2+"&";
 }
 break;
 case "radio":
-if(_4b4.checked){
-_4b1+=name+"="+_4b6+"&";
+if(_4c0.checked){
+_4bd+=name+"="+_4c2+"&";
 }
 break;
 case "checkbox":
-if(_4b4.checked){
-if(_4b4.name==_4b3){
-if(_4b1.lastIndexOf("&")==_4b1.length-1){
-_4b1=_4b1.substr(0,_4b1.length-1);
+if(_4c0.checked){
+if(_4c0.name==_4bf){
+if(_4bd.lastIndexOf("&")==_4bd.length-1){
+_4bd=_4bd.substr(0,_4bd.length-1);
 }
-_4b1+=","+_4b6;
+_4bd+=","+_4c2;
 }else{
-_4b1+=name+"="+_4b4.value;
+_4bd+=name+"="+_4c0.value;
 }
-_4b3=name;
-_4b1+="&";
+_4bf=name;
+_4bd+="&";
 }
 break;
 }
 });
 }
-return _4b1.substr(0,_4b1.length-1);
+return _4bd.substr(0,_4bd.length-1);
 }};
 var DataManager=new _DataManager();
 function _Templates(){
@@ -5469,52 +5496,52 @@ return tmp;
 this._mode=this._modes.MODE_PLAINTEXT;
 return this._getIt(name);
 },_getIt:function(name){
-var _4bf=null;
-var _4c0=null;
-var _4c1=false;
+var _4cb=null;
+var _4cc=null;
+var _4cd=false;
 if(!this._cache[name]){
-_4c1=true;
+_4cd=true;
 var uri=Constants.TEMPLATESROOT+"/"+name;
-var _4c3=DOMUtil.getXMLHTTPRequest();
-_4c3.open("get",uri,false);
-_4c3.setRequestHeader("Content-Type","text/xml; charset=UTF-8");
-_4c3.send(null);
+var _4cf=DOMUtil.getXMLHTTPRequest();
+_4cf.open("get",uri,false);
+_4cf.setRequestHeader("Content-Type","text/xml; charset=UTF-8");
+_4cf.send(null);
 switch(this._mode){
 case this._modes.MODE_PLAINTEXT:
-_4c0=_4c3.responseText;
+_4cc=_4cf.responseText;
 break;
 default:
-_4c0=_4c3.responseXML;
+_4cc=_4cf.responseXML;
 break;
 }
-if(_4c0==null){
+if(_4cc==null){
 throw new Error("Templates: Could not read template. Malformed XML?");
 }else{
-this._cache[name]=_4c0;
+this._cache[name]=_4cc;
 }
 }
-_4c0=this._cache[name];
+_4cc=this._cache[name];
 switch(this._mode){
 case this._modes.MODE_PLAINTEXT:
-_4bf=_4c0;
+_4cb=_4cc;
 break;
 case this._modes.MODE_DOCUMENT:
-_4bf=DOMUtil.cloneNode(_4c0,true);
+_4cb=DOMUtil.cloneNode(_4cc,true);
 break;
 case this._modes.MODE_ELEMENT:
-_4bf=DOMUtil.cloneNode(_4c0.documentElement,true);
+_4cb=DOMUtil.cloneNode(_4cc.documentElement,true);
 break;
 case this._modes.MODE_DOCUMENTTEXT:
-_4bf=DOMSerializer.serialize(_4c0,true);
+_4cb=DOMSerializer.serialize(_4cc,true);
 break;
 case this._modes.MODE_ELEMENTTEXT:
-_4bf=DOMSerializer.serialize(_4c0.documentElement,true);
+_4cb=DOMSerializer.serialize(_4cc.documentElement,true);
 break;
 }
-if(_4c1&&Application.isDeveloperMode){
-this._logger.fine(new String("Import \""+name+"\":\n\n"+_4bf));
+if(_4cd&&Application.isDeveloperMode){
+this._logger.fine(new String("Import \""+name+"\":\n\n"+_4cb));
 }
-return _4bf;
+return _4cb;
 }};
 var Templates=new _Templates();
 function DialogButton(obj){
@@ -5537,67 +5564,67 @@ this._construct();
 }
 _Dialog.prototype={_logger:SystemLogger.getLogger("Dialog"),_URL_STANDARDDIALOG:"${root}/content/dialogs/standard/standard.aspx",MODAL:"modal",NON_MODAL:"nonmodal",URL_TREESELECTOR:"${root}/content/dialogs/treeselector/treeselector.aspx",URL_TREESEARCH:"${root}/content/dialogs/treesearch/treeSearchForm.aspx",URL_IMAGESELECTOR:"${root}/content/dialogs/treeselector/special/imageselector.aspx",URL_SERVICEFAULT:"${root}/content/dialogs/webservices/error.aspx",BUTTONS_YES_NO_CANCEL:["yes:default","no","cancel"],BUTTONS_ACCEPT_CANCEL:["accept:default","cancel"],BUTTONS_ACCEPT:["accept:default"],RESPONSE_YES:"yes",RESPONSE_NO:"no",RESPONSE_ACCEPT:"accept",RESPONSE_CANCEL:"cancel",RESPONSE_DEFAULT:"default",_TYPE_WARNING:"warning",_TYPE_MESSAGE:"message",_TYPE_ERROR:"error",_TYPE_QUESTION:"question",_dialogImages:{"warning":"${icon:warning}","message":"${icon:message}","error":"${icon:error}","question":"${icon:question}"},_construct:function(){
 this._dialogButtons={"yes":new DialogButton({label:"Yes",response:this.RESPONSE_YES}),"no":new DialogButton({label:"No",response:this.RESPONSE_NO}),"accept":new DialogButton({label:"OK",response:this.RESPONSE_ACCEPT}),"cancel":new DialogButton({label:"Cancel",response:this.RESPONSE_CANCEL})};
-},invoke:function(url,_4c7,_4c8){
+},invoke:function(url,_4d3,_4d4){
 this._logger.error("Not implemented");
-},invokeModal:function(url,_4ca,_4cb){
-var _4cc=new DialogViewDefinition({handle:KeyMaster.getUniqueKey(),position:Dialog.MODAL,url:url,handler:_4ca,argument:_4cb});
-StageBinding.presentViewDefinition(_4cc);
-return _4cc;
-},invokeDefinition:function(_4cd){
-if(_4cd instanceof DialogViewDefinition){
-StageBinding.presentViewDefinition(_4cd);
+},invokeModal:function(url,_4d6,_4d7){
+var _4d8=new DialogViewDefinition({handle:KeyMaster.getUniqueKey(),position:Dialog.MODAL,url:url,handler:_4d6,argument:_4d7});
+StageBinding.presentViewDefinition(_4d8);
+return _4d8;
+},invokeDefinition:function(_4d9){
+if(_4d9 instanceof DialogViewDefinition){
+StageBinding.presentViewDefinition(_4d9);
 }
-return _4cd;
-},question:function(_4ce,text,_4d0,_4d1){
-if(!_4d0){
-_4d0=this.BUTTONS_ACCEPT_CANCEL;
-}
-this._standardDialog(this._TYPE_QUESTION,_4ce,text,_4d0,_4d1);
-},message:function(_4d2,text,_4d4,_4d5){
-if(!_4d4){
-_4d4=this.BUTTONS_ACCEPT;
-}
-this._standardDialog(this._TYPE_MESSAGE,_4d2,text,_4d4,_4d5);
-},error:function(_4d6,text,_4d8,_4d9){
-if(!_4d8){
-_4d8=this.BUTTONS_ACCEPT;
-}
-this._standardDialog(this._TYPE_ERROR,_4d6,text,_4d8,_4d9);
-},warning:function(_4da,text,_4dc,_4dd){
+return _4d9;
+},question:function(_4da,text,_4dc,_4dd){
 if(!_4dc){
-_4dc=this.BUTTONS_ACCEPT;
+_4dc=this.BUTTONS_ACCEPT_CANCEL;
 }
-this._standardDialog(this._TYPE_WARNING,_4da,text,_4dc,_4dd);
-},_standardDialog:function(type,_4df,text,_4e1,_4e2){
-var _4e3=null;
-if(!_4e1){
-_4e3=new List(Dialog.BUTTONS_ACCEPT);
+this._standardDialog(this._TYPE_QUESTION,_4da,text,_4dc,_4dd);
+},message:function(_4de,text,_4e0,_4e1){
+if(!_4e0){
+_4e0=this.BUTTONS_ACCEPT;
+}
+this._standardDialog(this._TYPE_MESSAGE,_4de,text,_4e0,_4e1);
+},error:function(_4e2,text,_4e4,_4e5){
+if(!_4e4){
+_4e4=this.BUTTONS_ACCEPT;
+}
+this._standardDialog(this._TYPE_ERROR,_4e2,text,_4e4,_4e5);
+},warning:function(_4e6,text,_4e8,_4e9){
+if(!_4e8){
+_4e8=this.BUTTONS_ACCEPT;
+}
+this._standardDialog(this._TYPE_WARNING,_4e6,text,_4e8,_4e9);
+},_standardDialog:function(type,_4eb,text,_4ed,_4ee){
+var _4ef=null;
+if(!_4ed){
+_4ef=new List(Dialog.BUTTONS_ACCEPT);
 }else{
-_4e3=new List();
-new List(_4e1).each(function(_4e4){
-var _4e5=null;
-switch(typeof _4e4){
+_4ef=new List();
+new List(_4ed).each(function(_4f0){
+var _4f1=null;
+switch(typeof _4f0){
 case "object":
-_4e5=_4e4;
+_4f1=_4f0;
 break;
 case "string":
-var _4e6=false;
-if(_4e4.indexOf(":")>-1){
-_4e4=_4e4.split(":")[0];
-_4e6=true;
+var _4f2=false;
+if(_4f0.indexOf(":")>-1){
+_4f0=_4f0.split(":")[0];
+_4f2=true;
 }
-_4e5=Dialog._dialogButtons[_4e4];
-if(_4e6){
-_4e5.isDefault=true;
+_4f1=Dialog._dialogButtons[_4f0];
+if(_4f2){
+_4f1.isDefault=true;
 }
 break;
 }
-_4e3.add(_4e5);
+_4ef.add(_4f1);
 });
 }
-var _4e7={title:_4df,text:text,type:type,image:this._dialogImages[type],buttons:_4e3};
-var _4e8=new DialogViewDefinition({handle:"standarddialog:"+type,position:Dialog.MODAL,url:this._URL_STANDARDDIALOG,handler:_4e2,argument:_4e7});
-StageBinding.presentViewDefinition(_4e8);
+var _4f3={title:_4eb,text:text,type:type,image:this._dialogImages[type],buttons:_4ef};
+var _4f4=new DialogViewDefinition({handle:"standarddialog:"+type,position:Dialog.MODAL,url:this._URL_STANDARDDIALOG,handler:_4ee,argument:_4f3});
+StageBinding.presentViewDefinition(_4f4);
 }};
 var Dialog=new _Dialog();
 function _Commands(){
@@ -5605,7 +5632,7 @@ this._construct();
 }
 _Commands.prototype={_URL_ABOUTDIALOG:"${root}/content/dialogs/about/about.aspx",_URL_PREFERENCES:"${root}/content/dialogs/preferences/preferences.aspx",_construct:function(){
 var self=this;
-EventBroadcaster.subscribe(BroadcastMessages.SAVE_ALL,{handleBroadcast:function(_4ea,arg){
+EventBroadcaster.subscribe(BroadcastMessages.SAVE_ALL,{handleBroadcast:function(_4f6,arg){
 self.saveAll(arg);
 }});
 },about:function(){
@@ -5626,53 +5653,53 @@ EventBroadcaster.broadcast(BroadcastMessages.CLOSE_CURRENT);
 this.saveAll(true);
 },save:function(){
 EventBroadcaster.broadcast(BroadcastMessages.SAVE_CURRENT);
-},saveAll:function(_4ed){
+},saveAll:function(_4f9){
 var self=this;
-var _4ef=Application.getDirtyDockTabsTabs();
-if(_4ef.hasEntries()){
-Dialog.invokeModal("${root}/content/dialogs/save/saveall.aspx",{handleDialogResponse:function(_4f0,_4f1){
-switch(_4f0){
+var _4fb=Application.getDirtyDockTabsTabs();
+if(_4fb.hasEntries()){
+Dialog.invokeModal("${root}/content/dialogs/save/saveall.aspx",{handleDialogResponse:function(_4fc,_4fd){
+switch(_4fc){
 case Dialog.RESPONSE_ACCEPT:
-self._handleSaveAllResult(_4f1,_4ed);
+self._handleSaveAllResult(_4fd,_4f9);
 break;
 case Dialog.RESPONSE_CANCEL:
 EventBroadcaster.broadcast(BroadcastMessages.SAVE_ALL_DONE);
 break;
 }
-}},_4ef);
+}},_4fb);
 }else{
-if(_4ed){
+if(_4f9){
 EventBroadcaster.broadcast(BroadcastMessages.CLOSE_ALL);
 }
 }
-},_handleSaveAllResult:function(_4f2,_4f3){
-var _4f4=false;
+},_handleSaveAllResult:function(_4fe,_4ff){
+var _500=false;
 var list=new List();
-_4f2.each(function(name,tab){
+_4fe.each(function(name,tab){
 if(tab!=false){
 list.add(tab);
 }
 });
 if(list.hasEntries()){
-_4f4=true;
-var _4f8=list.getLength();
-var _4f9={handleBroadcast:function(_4fa,tab){
-if(--_4f8==0){
+_500=true;
+var _504=list.getLength();
+var _505={handleBroadcast:function(_506,tab){
+if(--_504==0){
 EventBroadcaster.unsubscribe(BroadcastMessages.DOCKTAB_CLEAN,this);
 EventBroadcaster.broadcast(BroadcastMessages.SAVE_ALL_DONE);
-if(_4f3){
+if(_4ff){
 EventBroadcaster.broadcast(BroadcastMessages.CLOSE_ALL);
 }
 }
 }};
-EventBroadcaster.subscribe(BroadcastMessages.DOCKTAB_CLEAN,_4f9);
+EventBroadcaster.subscribe(BroadcastMessages.DOCKTAB_CLEAN,_505);
 list.each(function(tab){
 tab.saveContainedEditor();
 });
 }else{
 EventBroadcaster.broadcast(BroadcastMessages.SAVE_ALL_DONE);
 }
-return _4f4;
+return _500;
 },systemLog:function(){
 if(Application.isOperational){
 StageBinding.handleViewPresentation("Composite.Management.SystemLog");
@@ -5683,9 +5710,9 @@ EventBroadcaster.broadcast(BroadcastMessages.SYSTEMLOG_OPENED,this);
 };
 }
 },help:function(){
-var _4fe="Composite.Management.Help";
-if(!StageBinding.isViewOpen(_4fe)){
-StageBinding.handleViewPresentation(_4fe);
+var _50a="Composite.Management.Help";
+if(!StageBinding.isViewOpen(_50a)){
+StageBinding.handleViewPresentation(_50a);
 }
 }};
 var Commands=new _Commands();
@@ -5702,39 +5729,39 @@ this._logger.fine("Enabling cache");
 this._dispatchToPrism("contenttochrome-cache-enable");
 },_dispatchToPrism:function(type){
 if(Client.isPrism){
-var _500=document.createEvent("Events");
-_500.initEvent(type,true,true);
-window.dispatchEvent(_500);
+var _50c=document.createEvent("Events");
+_50c.initEvent(type,true,true);
+window.dispatchEvent(_50c);
 }else{
 this._logger.warn("Prism methods should only be invoked in Prism! ("+type+")");
 }
 }};
 var Prism=new _Prism();
 ViewDefinition.DEFAULT_URL="${root}/blank.aspx";
-ViewDefinition.clone=function(_501,_502){
-var _503=null;
-var _504=ViewDefinitions[_501];
-if(_504.isMutable){
+ViewDefinition.clone=function(_50d,_50e){
+var _50f=null;
+var _510=ViewDefinitions[_50d];
+if(_510.isMutable){
 var impl=null;
-if(_504 instanceof DialogViewDefinition){
+if(_510 instanceof DialogViewDefinition){
 impl=DialogViewDefinition;
 }else{
 impl=HostedViewDefinition;
 }
-if(_502!=null&&impl!=null){
+if(_50e!=null&&impl!=null){
 var def=new impl();
-for(var prop in _504){
-def[prop]=_504[prop];
+for(var prop in _510){
+def[prop]=_510[prop];
 }
-def.handle=_502;
-_503=def;
+def.handle=_50e;
+_50f=def;
 }else{
 throw "Cannot clone without newhandle";
 }
 }else{
 throw "Cannot clone non-mutable definition";
 }
-return _503;
+return _50f;
 };
 function ViewDefinition(){
 }
@@ -5834,96 +5861,96 @@ Binding.ABSTRACT_METHOD=function(){
 SystemDebug.stack(arguments);
 throw (this.toString()+" abstract method not implemented");
 };
-Binding.evaluate=function(_50d,_50e){
-var _50f=null;
-var _510=_50e.bindingWindow.WindowManager;
-if(_510!=null){
-var _511=Binding.parseScriptStatement(_50d,_50e.key);
-_50f=_510.evaluate(_511);
+Binding.evaluate=function(_519,_51a){
+var _51b=null;
+var _51c=_51a.bindingWindow.WindowManager;
+if(_51c!=null){
+var _51d=Binding.parseScriptStatement(_519,_51a.key);
+_51b=_51c.evaluate(_51d);
 }
-return _50f;
+return _51b;
 };
-Binding.parseScriptStatement=function(_512,key){
-if(_512!=null&&key!=null){
-var _514="UserInterface.getBindingByKey ( \""+key+"\" )";
-_512=_512.replace(/(\W|^)this(,| +|\)|;)/g,_514);
-_512=_512.replace(/(\W|^)this(\.)/g,_514+".");
+Binding.parseScriptStatement=function(_51e,key){
+if(_51e!=null&&key!=null){
+var _520="UserInterface.getBindingByKey ( \""+key+"\" )";
+_51e=_51e.replace(/(\W|^)this(,| +|\)|;)/g,_520);
+_51e=_51e.replace(/(\W|^)this(\.)/g,_520+".");
 }
-return _512;
+return _51e;
 };
-Binding.exists=function(_515){
-var _516=false;
+Binding.exists=function(_521){
+var _522=false;
 try{
-if(_515&&_515.bindingElement&&_515.bindingElement.nodeType&&_515.isDisposed==false){
-_516=true;
+if(_521&&_521.bindingElement&&_521.bindingElement.nodeType&&_521.isDisposed==false){
+_522=true;
 }
 }
 catch(accessDeniedException){
-_516=false;
+_522=false;
 }
 finally{
-return _516;
+return _522;
 }
 };
-Binding.destroy=function(_517){
-if(!_517.isDisposed){
-if(_517.acceptor!=null){
-_517.acceptor.dispose();
+Binding.destroy=function(_523){
+if(!_523.isDisposed){
+if(_523.acceptor!=null){
+_523.acceptor.dispose();
 }
-if(_517.dragger!=null){
-_517.disableDragging();
+if(_523.dragger!=null){
+_523.disableDragging();
 }
-if(_517.boxObject!=null){
-_517.boxObject.dispose();
+if(_523.boxObject!=null){
+_523.boxObject.dispose();
 }
-if(_517._domEventHandlers!=null){
-DOMEvents.cleanupEventListeners(_517);
+if(_523._domEventHandlers!=null){
+DOMEvents.cleanupEventListeners(_523);
 }
-for(var _518 in _517.shadowTree){
-var _519=_517.shadowTree[_518];
-if(_519 instanceof Binding&&Binding.exists(_519)){
-_519.dispose(true);
+for(var _524 in _523.shadowTree){
+var _525=_523.shadowTree[_524];
+if(_525 instanceof Binding&&Binding.exists(_525)){
+_525.dispose(true);
 }
-_517.shadowTree[_518]=null;
+_523.shadowTree[_524]=null;
 }
-_517.isDisposed=true;
-_517=null;
+_523.isDisposed=true;
+_523=null;
 }
 };
-Binding.dotnetify=function(_51a,_51b){
-var _51c=_51a.getCallBackID();
-if(_51c!=null){
-var _51d=DOMUtil.createElementNS(Constants.NS_XHTML,"input",_51a.bindingDocument);
-_51d.type="hidden";
-_51d.id=_51c;
-_51d.name=_51c;
-_51d.value=_51b!=null?_51b:"";
-_51a.bindingElement.appendChild(_51d);
-_51a.shadowTree.dotnetinput=_51d;
+Binding.dotnetify=function(_526,_527){
+var _528=_526.getCallBackID();
+if(_528!=null){
+var _529=DOMUtil.createElementNS(Constants.NS_XHTML,"input",_526.bindingDocument);
+_529.type="hidden";
+_529.id=_528;
+_529.name=_528;
+_529.value=_527!=null?_527:"";
+_526.bindingElement.appendChild(_529);
+_526.shadowTree.dotnetinput=_529;
 }else{
-throw _51a.toString()+": Missing callback ID";
+throw _526.toString()+": Missing callback ID";
 }
 };
-Binding.imageProfile=function(_51e){
-var _51f=_51e.getProperty("image");
-var _520=_51e.getProperty("image-hover");
-var _521=_51e.getProperty("image-active");
-var _522=_51e.getProperty("image-disabled");
-if(_51e.imageProfile==null){
-if(_51e.image==null&&_51f!=null){
-_51e.image=_51f;
+Binding.imageProfile=function(_52a){
+var _52b=_52a.getProperty("image");
+var _52c=_52a.getProperty("image-hover");
+var _52d=_52a.getProperty("image-active");
+var _52e=_52a.getProperty("image-disabled");
+if(_52a.imageProfile==null){
+if(_52a.image==null&&_52b!=null){
+_52a.image=_52b;
 }
-if(_51e.imageHover==null&&_520!=null){
-_51e.imageHover=_51f;
+if(_52a.imageHover==null&&_52c!=null){
+_52a.imageHover=_52b;
 }
-if(_51e.imageActive==null&&_521!=null){
-_51e.imageActive=_521;
+if(_52a.imageActive==null&&_52d!=null){
+_52a.imageActive=_52d;
 }
-if(_51e.imageDisabled==null&&_522!=null){
-_51e.imageDisabled=_522;
+if(_52a.imageDisabled==null&&_52e!=null){
+_52a.imageDisabled=_52e;
 }
-if(_51e.image||_51e.imageHover||_51e.imageActive||_51e.imageDisabled){
-_51e.imageProfile=new ImageProfile(_51e);
+if(_52a.image||_52a.imageHover||_52a.imageActive||_52a.imageDisabled){
+_52a.imageProfile=new ImageProfile(_52a);
 }
 }
 };
@@ -5997,23 +6024,23 @@ this.isAttached=true;
 Binding.prototype.onBindingInitialize=function(){
 if(this.dependentBindings!=null){
 for(var key in this.dependentBindings){
-var _524=this.dependentBindings[key];
-_524.onMemberInitialize(this);
+var _530=this.dependentBindings[key];
+_530.onMemberInitialize(this);
 }
 }
 this.isInitialized=true;
 };
-Binding.prototype.onMemberInitialize=function(_525){
-if(_525){
-this.memberDependencies[_525.key]=true;
-var _526=true;
+Binding.prototype.onMemberInitialize=function(_531){
+if(_531){
+this.memberDependencies[_531.key]=true;
+var _532=true;
 for(var key in this.memberDependencies){
 if(this.memberDependencies[key]==false){
-_526=false;
+_532=false;
 break;
 }
 }
-if(_526){
+if(_532){
 this.onBindingInitialize();
 }
 }else{
@@ -6032,58 +6059,58 @@ return this;
 Binding.prototype.attachRecursive=function(){
 this.bindingWindow.DocumentManager.attachBindings(this.bindingElement);
 };
-Binding.prototype.detachRecursive=function(_528){
-if(_528==null){
-_528=false;
+Binding.prototype.detachRecursive=function(_534){
+if(_534==null){
+_534=false;
 }
-this.bindingWindow.DocumentManager.detachBindings(this.bindingElement,!_528);
+this.bindingWindow.DocumentManager.detachBindings(this.bindingElement,!_534);
 };
-Binding.prototype.addMember=function(_529){
+Binding.prototype.addMember=function(_535){
 if(!this.isAttached){
 throw "Cannot add members to unattached binding";
 }else{
-if(!_529.isInitialized){
+if(!_535.isInitialized){
 if(!this.memberDependencies){
 this.memberDependencies={};
 }
-this.memberDependencies[_529.key]=false;
-_529.registerDependentBinding(this);
+this.memberDependencies[_535.key]=false;
+_535.registerDependentBinding(this);
 }
 }
-return _529;
+return _535;
 };
-Binding.prototype.addMembers=function(_52a){
-while(_52a.hasNext()){
-var _52b=_52a.getNext();
-if(!_52b.isInitialized){
-this.addMember(_52b);
+Binding.prototype.addMembers=function(_536){
+while(_536.hasNext()){
+var _537=_536.getNext();
+if(!_537.isInitialized){
+this.addMember(_537);
 }
 }
-return _52a;
+return _536;
 };
-Binding.prototype.registerDependentBinding=function(_52c){
+Binding.prototype.registerDependentBinding=function(_538){
 if(!this.dependentBindings){
 this.dependentBindings={};
 }
-this.dependentBindings[_52c.key]=_52c;
+this.dependentBindings[_538.key]=_538;
 };
 Binding.prototype._initializeBindingPersistanceFeatures=function(){
-var _52d=this.getProperty("persist");
-if(_52d&&Persistance.isEnabled){
+var _539=this.getProperty("persist");
+if(_539&&Persistance.isEnabled){
 var id=this.bindingElement.id;
 if(!KeyMaster.hasKey(id)){
 this._persist={};
-var _52f=new List(_52d.split(" "));
-while(_52f.hasNext()){
-var prop=_52f.getNext();
-var _531=Persistance.getPersistedProperty(id,prop);
-if(_531!=null){
-this._persist[prop]=_531;
-this.setProperty(prop,_531);
+var _53b=new List(_539.split(" "));
+while(_53b.hasNext()){
+var prop=_53b.getNext();
+var _53d=Persistance.getPersistedProperty(id,prop);
+if(_53d!=null){
+this._persist[prop]=_53d;
+this.setProperty(prop,_53d);
 }else{
-_531=this.getProperty(prop);
-if(_531!=null){
-this._persist[prop]=_531;
+_53d=this.getProperty(prop);
+if(_53d!=null){
+this._persist[prop]=_53d;
 }
 }
 }
@@ -6093,25 +6120,25 @@ throw "Persistable bindings must have a specified ID.";
 }
 };
 Binding.prototype._initializeBindingGeneralFeatures=function(){
-var _532=this.getProperty("disabled");
-var _533=this.getProperty("contextmenu");
-var _534=this.getProperty("observes");
-var _535=this.getProperty("onattach");
-var _536=this.getProperty("hidden");
-var _537=this.getProperty("blockactionevents");
-if(_536==true&&this.isVisible==true){
+var _53e=this.getProperty("disabled");
+var _53f=this.getProperty("contextmenu");
+var _540=this.getProperty("observes");
+var _541=this.getProperty("onattach");
+var _542=this.getProperty("hidden");
+var _543=this.getProperty("blockactionevents");
+if(_542==true&&this.isVisible==true){
 this.hide();
 }
-if(_532&&this.logger!=null){
+if(_53e&&this.logger!=null){
 this.logger.error("The 'disabled' property has been renamed 'isdisbaled'");
 }
-if(_533){
-this.setContextMenu(_533);
+if(_53f){
+this.setContextMenu(_53f);
 }
-if(_534){
-this.observe(this.getBindingForArgument(_534));
+if(_540){
+this.observe(this.getBindingForArgument(_540));
 }
-if(_537==true){
+if(_543==true){
 this.isBlockingActions=true;
 }
 if(this.isActivationAware==true){
@@ -6119,29 +6146,29 @@ var root=UserInterface.getBinding(this.bindingDocument.body);
 root.makeActivationAware(this);
 this._hasActivationAwareness=true;
 }
-if(_535!=null){
-Binding.evaluate(_535,this);
+if(_541!=null){
+Binding.evaluate(_541,this);
 }
 };
 Binding.prototype._initializeBindingDragAndDropFeatures=function(){
-var _539=this.getProperty("draggable");
-var _53a=this.getProperty("dragtype");
-var _53b=this.getProperty("dragaccept");
-var _53c=this.getProperty("dragreject");
-if(_539!=null){
-this.isDraggable=_539;
+var _545=this.getProperty("draggable");
+var _546=this.getProperty("dragtype");
+var _547=this.getProperty("dragaccept");
+var _548=this.getProperty("dragreject");
+if(_545!=null){
+this.isDraggable=_545;
 }
-if(_53a!=null){
-this.dragType=_53a;
-if(_539!=false){
+if(_546!=null){
+this.dragType=_546;
+if(_545!=false){
 this.isDraggable=true;
 }
 }
-if(_53b!=null){
-this.dragAccept=_53b;
+if(_547!=null){
+this.dragAccept=_547;
 }
-if(_53c!=null){
-this.dragReject=_53c;
+if(_548!=null){
+this.dragReject=_548;
 }
 if(this.isDraggable){
 this.enableDragging();
@@ -6157,15 +6184,15 @@ this.acceptor=new BindingAcceptor(this);
 }
 }
 };
-Binding.prototype._updateBindingMap=function(_53d){
+Binding.prototype._updateBindingMap=function(_549){
 try{
 if(this.bindingWindow!=null){
 var id=this.bindingElement.id;
 var map=this.bindingWindow.bindingMap;
-var _540=null;
-if(_53d){
-_540=map[id];
-if(_540!=null&&_540!=this){
+var _54c=null;
+if(_549){
+_54c=map[id];
+if(_54c!=null&&_54c!=this){
 var cry=this.toString()+" duplicate binding ID: "+id;
 this.logger.error(cry);
 if(Application.isDeveloperMode){
@@ -6175,17 +6202,17 @@ throw (cry);
 map[id]=this;
 }
 }else{
-_540=map[id];
-if(_540!=null&&_540==this){
+_54c=map[id];
+if(_54c!=null&&_54c==this){
 delete map[id];
 }
 }
 }else{
-var _542=new String("Binding#_updateBindingMap odd dysfunction: "+this.toString()+": "+_53d);
+var _54e=new String("Binding#_updateBindingMap odd dysfunction: "+this.toString()+": "+_549);
 if(Application.isDeveloperMode==true){
-alert(_542);
+alert(_54e);
 }else{
-this.logger.error(_542);
+this.logger.error(_54e);
 }
 }
 }
@@ -6195,100 +6222,100 @@ this.logger.error(exception);
 };
 Binding.prototype.handleEvent=function(e){
 };
-Binding.prototype.handleAction=function(_544){
+Binding.prototype.handleAction=function(_550){
 };
-Binding.prototype.handleBroadcast=function(_545,arg){
+Binding.prototype.handleBroadcast=function(_551,arg){
 };
-Binding.prototype.handleElement=function(_547){
+Binding.prototype.handleElement=function(_553){
 return false;
 };
-Binding.prototype.updateElement=function(_548){
+Binding.prototype.updateElement=function(_554){
 return false;
 };
 Binding.prototype.getBindingForArgument=function(arg){
-var _54a=null;
+var _556=null;
 switch(typeof arg){
 case "object":
-_54a=arg;
+_556=arg;
 break;
 case "string":
-_54a=this.bindingDocument.getElementById(arg);
-if(_54a==null){
-_54a=Binding.evaluate(arg,this);
+_556=this.bindingDocument.getElementById(arg);
+if(_556==null){
+_556=Binding.evaluate(arg,this);
 }
 break;
 }
-if(_54a!=null&&_54a.nodeType!=null){
-_54a=UserInterface.getBinding(_54a);
-}
-return _54a;
-};
-Binding.prototype.serialize=function(){
-var _54b={};
-var id=this.bindingElement.id;
-if(id&&id!=this.key){
-_54b.id=id;
-}
-var _54d=this.getProperty("binding");
-if(_54d){
-_54b.binding=_54d;
-}
-if(!BindingSerializer.includeShadowTreeBindings){
-var _54e=this.getAncestorBindingByLocalName("*");
-if(_54e){
-if(_54e.isShadowBinding){
-this.isShadowBinding=true;
-_54b=false;
-}else{
-var tree=_54e.shadowTree;
-for(var key in tree){
-var _551=tree[key];
-if(_551==this){
-this.isShadowBinding=true;
-_54b=false;
-}
-}
-}
-}
-}
-return _54b;
-};
-Binding.prototype.serializeToString=function(_552){
-var _553=null;
-if(this.isAttached){
-_553=new BindingSerializer().serializeBinding(this,_552);
-}else{
-throw "cannot serialize unattached binding";
-}
-return _553;
-};
-Binding.prototype.subTreeFromString=function(_554){
-this.detachRecursive();
-this.bindingElement.innerHTML=_554;
-this.attachRecursive();
-};
-Binding.prototype.getProperty=function(_555){
-var _556=this.bindingElement.getAttribute(_555);
-if(_556){
-_556=Types.castFromString(_556);
+if(_556!=null&&_556.nodeType!=null){
+_556=UserInterface.getBinding(_556);
 }
 return _556;
 };
-Binding.prototype.setProperty=function(prop,_558){
-if(_558!=null){
-_558=_558.toString();
-if(String(this.bindingElement.getAttribute(prop))!=_558){
-this.bindingElement.setAttribute(prop,_558);
-if(this.isAttached==true){
-if(Persistance.isEnabled&&_558!=null){
-if(this._persist!=null&&this._persist[prop]){
-this._persist[prop]=_558;
-Persistance.setPersistedProperty(this.bindingElement.id,prop,_558);
+Binding.prototype.serialize=function(){
+var _557={};
+var id=this.bindingElement.id;
+if(id&&id!=this.key){
+_557.id=id;
 }
-}
-var _559=this.propertyMethodMap[prop];
+var _559=this.getProperty("binding");
 if(_559){
-_559.call(this,this.getProperty(prop));
+_557.binding=_559;
+}
+if(!BindingSerializer.includeShadowTreeBindings){
+var _55a=this.getAncestorBindingByLocalName("*");
+if(_55a){
+if(_55a.isShadowBinding){
+this.isShadowBinding=true;
+_557=false;
+}else{
+var tree=_55a.shadowTree;
+for(var key in tree){
+var _55d=tree[key];
+if(_55d==this){
+this.isShadowBinding=true;
+_557=false;
+}
+}
+}
+}
+}
+return _557;
+};
+Binding.prototype.serializeToString=function(_55e){
+var _55f=null;
+if(this.isAttached){
+_55f=new BindingSerializer().serializeBinding(this,_55e);
+}else{
+throw "cannot serialize unattached binding";
+}
+return _55f;
+};
+Binding.prototype.subTreeFromString=function(_560){
+this.detachRecursive();
+this.bindingElement.innerHTML=_560;
+this.attachRecursive();
+};
+Binding.prototype.getProperty=function(_561){
+var _562=this.bindingElement.getAttribute(_561);
+if(_562){
+_562=Types.castFromString(_562);
+}
+return _562;
+};
+Binding.prototype.setProperty=function(prop,_564){
+if(_564!=null){
+_564=_564.toString();
+if(String(this.bindingElement.getAttribute(prop))!=_564){
+this.bindingElement.setAttribute(prop,_564);
+if(this.isAttached==true){
+if(Persistance.isEnabled&&_564!=null){
+if(this._persist!=null&&this._persist[prop]){
+this._persist[prop]=_564;
+Persistance.setPersistedProperty(this.bindingElement.id,prop,_564);
+}
+}
+var _565=this.propertyMethodMap[prop];
+if(_565){
+_565.call(this,this.getProperty(prop));
 }
 }
 }
@@ -6300,47 +6327,47 @@ Binding.prototype.deleteProperty=function(prop){
 this.bindingElement.removeAttribute(prop);
 };
 Binding.prototype.getID=function(){
-var _55b=null;
+var _567=null;
 if(Binding.exists(this)){
-_55b=this.bindingElement.id;
+_567=this.bindingElement.id;
 }else{
 SystemDebug.stack(arguments);
 }
-return _55b;
+return _567;
 };
-Binding.prototype.attachClassName=function(_55c){
-CSSUtil.attachClassName(this.bindingElement,_55c);
+Binding.prototype.attachClassName=function(_568){
+CSSUtil.attachClassName(this.bindingElement,_568);
 };
-Binding.prototype.detachClassName=function(_55d){
-CSSUtil.detachClassName(this.bindingElement,_55d);
+Binding.prototype.detachClassName=function(_569){
+CSSUtil.detachClassName(this.bindingElement,_569);
 };
-Binding.prototype.hasClassName=function(_55e){
-return CSSUtil.hasClassName(this.bindingElement,_55e);
+Binding.prototype.hasClassName=function(_56a){
+return CSSUtil.hasClassName(this.bindingElement,_56a);
 };
-Binding.prototype.addActionListener=function(type,_560){
-_560=_560!=null?_560:this;
+Binding.prototype.addActionListener=function(type,_56c){
+_56c=_56c!=null?_56c:this;
 if(Action.isValid(type)){
-if(Interfaces.isImplemented(IActionListener,_560)){
+if(Interfaces.isImplemented(IActionListener,_56c)){
 if(!this.actionListeners[type]){
 this.actionListeners[type]=[];
 }
-this.actionListeners[type].push(_560);
+this.actionListeners[type].push(_56c);
 }else{
 throw new Error("Could not add action-event listener. Method handleAction not implemented.");
 }
 }else{
-alert(this+"\nCould not add undefined Action ("+_560+")");
+alert(this+"\nCould not add undefined Action ("+_56c+")");
 }
 };
-Binding.prototype.removeActionListener=function(type,_562){
-_562=_562?_562:this;
+Binding.prototype.removeActionListener=function(type,_56e){
+_56e=_56e?_56e:this;
 if(Action.isValid(type)){
-var _563=this.actionListeners[type];
-if(_563){
-var i=0,_565;
-while((_565=_563[i])!=null){
-if(_565==_562){
-_563.splice(i,1);
+var _56f=this.actionListeners[type];
+if(_56f){
+var i=0,_571;
+while((_571=_56f[i])!=null){
+if(_571==_56e){
+_56f.splice(i,1);
 break;
 }
 i++;
@@ -6348,36 +6375,36 @@ i++;
 }
 }
 };
-Binding.prototype.addEventListener=function(type,_567){
-_567=_567?_567:this;
-DOMEvents.addEventListener(this.bindingElement,type,_567);
+Binding.prototype.addEventListener=function(type,_573){
+_573=_573?_573:this;
+DOMEvents.addEventListener(this.bindingElement,type,_573);
 };
-Binding.prototype.removeEventListener=function(type,_569){
-_569=_569?_569:this;
-DOMEvents.removeEventListener(this.bindingElement,type,_569);
+Binding.prototype.removeEventListener=function(type,_575){
+_575=_575?_575:this;
+DOMEvents.removeEventListener(this.bindingElement,type,_575);
 };
-Binding.prototype.subscribe=function(_56a){
-if(!this.hasSubscription(_56a)){
-this._subscriptions.set(_56a,true);
-EventBroadcaster.subscribe(_56a,this);
+Binding.prototype.subscribe=function(_576){
+if(!this.hasSubscription(_576)){
+this._subscriptions.set(_576,true);
+EventBroadcaster.subscribe(_576,this);
 }else{
-this.logger.error("Dubplicate subscription aborted:"+_56a);
+this.logger.error("Dubplicate subscription aborted:"+_576);
 }
 };
-Binding.prototype.unsubscribe=function(_56b){
-if(this.hasSubscription(_56b)){
-this._subscriptions.del(_56b);
-EventBroadcaster.unsubscribe(_56b,this);
+Binding.prototype.unsubscribe=function(_577){
+if(this.hasSubscription(_577)){
+this._subscriptions.del(_577);
+EventBroadcaster.unsubscribe(_577,this);
 }
 };
-Binding.prototype.hasSubscription=function(_56c){
-return this._subscriptions.has(_56c);
+Binding.prototype.hasSubscription=function(_578){
+return this._subscriptions.has(_578);
 };
-Binding.prototype.observe=function(_56d,_56e){
-_56d.addObserver(this,_56e);
+Binding.prototype.observe=function(_579,_57a){
+_579.addObserver(this,_57a);
 };
-Binding.prototype.unObserve=function(_56f,_570){
-_56f.removeObserver(this,_570);
+Binding.prototype.unObserve=function(_57b,_57c){
+_57b.removeObserver(this,_57c);
 };
 Binding.prototype.setContextMenu=function(arg){
 this.contextMenuBinding=this.getBindingForArgument(arg);
@@ -6386,12 +6413,12 @@ var self=this;
 var menu=this.contextMenuBinding;
 this.addEventListener(DOMEvents.CONTEXTMENU,{handleEvent:function(e){
 if(Interfaces.isImplemented(IActionListener,self)==true){
-var _575={handleAction:function(){
+var _581={handleAction:function(){
 menu.removeActionListener(MenuItemBinding.ACTION_COMMAND,self);
-menu.removeActionListener(PopupBinding.ACTION_HIDE,_575);
+menu.removeActionListener(PopupBinding.ACTION_HIDE,_581);
 }};
 menu.addActionListener(MenuItemBinding.ACTION_COMMAND,self);
-menu.addActionListener(PopupBinding.ACTION_HIDE,_575);
+menu.addActionListener(PopupBinding.ACTION_HIDE,_581);
 }
 menu.snapToMouse(e);
 }});
@@ -6403,34 +6430,34 @@ Binding.prototype.getContextMenu=function(){
 return this.contextMenuBinding;
 };
 Binding.prototype.dispatchAction=function(arg){
-var _577=null;
-var _578=null;
-var _579=false;
+var _583=null;
+var _584=null;
+var _585=false;
 if(arg instanceof Action){
-_577=arg;
+_583=arg;
 }else{
 if(Action.isValid(arg)){
-_577=new Action(this,arg);
-_579=true;
+_583=new Action(this,arg);
+_585=true;
 }
 }
-if(_577!=null&&Action.isValid(_577.type)==true){
-if(_577.isConsumed==true){
-_578=_577;
+if(_583!=null&&Action.isValid(_583.type)==true){
+if(_583.isConsumed==true){
+_584=_583;
 }else{
-var _57a=this.actionListeners[_577.type];
-if(_57a!=null){
-_577.listener=this;
-var i=0,_57c;
-while((_57c=_57a[i++])!=null){
-if(_57c&&_57c.handleAction){
-_57c.handleAction(_577);
+var _586=this.actionListeners[_583.type];
+if(_586!=null){
+_583.listener=this;
+var i=0,_588;
+while((_588=_586[i++])!=null){
+if(_588&&_588.handleAction){
+_588.handleAction(_583);
 }
 }
 }
-var _57d=true;
+var _589=true;
 if(this.isBlockingActions==true){
-switch(_577.type){
+switch(_583.type){
 case Binding.ACTION_FOCUSED:
 case Binding.ACTION_BLURRED:
 case Binding.ACTION_ACTIVATED:
@@ -6439,105 +6466,105 @@ case DockTabBinding.ACTION_UPDATE_VISUAL:
 case PageBinding.ACTION_DOPOSTBACK:
 break;
 default:
-if(!_579){
-_57d=false;
+if(!_585){
+_589=false;
 }
 break;
 }
 }
-if(_57d){
-_578=this.migrateAction(_577);
+if(_589){
+_584=this.migrateAction(_583);
 }else{
-_578=_577;
+_584=_583;
 }
 }
 }
-return _578;
+return _584;
 };
-Binding.prototype.migrateAction=function(_57e){
-var _57f=null;
-var _580=null;
+Binding.prototype.migrateAction=function(_58a){
+var _58b=null;
+var _58c=null;
 var node=this.getMigrationParent();
 if(node){
-while(node&&!_57f&&node.nodeType!=Node.DOCUMENT_NODE){
-_57f=UserInterface.getBinding(node);
+while(node&&!_58b&&node.nodeType!=Node.DOCUMENT_NODE){
+_58b=UserInterface.getBinding(node);
 node=node.parentNode;
 }
-if(_57f){
-_580=_57f.dispatchAction(_57e);
+if(_58b){
+_58c=_58b.dispatchAction(_58a);
 }else{
-_580=_57e;
+_58c=_58a;
 }
 }
-return _580;
+return _58c;
 };
-Binding.prototype.reflex=function(_582){
+Binding.prototype.reflex=function(_58e){
 if(Application.isOperational==true){
-FlexBoxBinding.reflex(this,_582);
+FlexBoxBinding.reflex(this,_58e);
 }
 };
 Binding.prototype.getMigrationParent=function(){
-var _583=null;
+var _58f=null;
 if(true){
 try{
-var _584=this.bindingElement.parentNode;
-if(_584!=null){
-_583=_584;
+var _590=this.bindingElement.parentNode;
+if(_590!=null){
+_58f=_590;
 }
 }
 catch(wtfException){
 this.logger.error("Binding#getMigrationParent exception");
 SystemDebug.stack(arguments);
-_583=null;
+_58f=null;
 }
 }
-return _583;
+return _58f;
 };
-Binding.prototype.add=function(_585){
-if(_585.bindingDocument==this.bindingDocument){
-this.bindingElement.appendChild(_585.bindingElement);
+Binding.prototype.add=function(_591){
+if(_591.bindingDocument==this.bindingDocument){
+this.bindingElement.appendChild(_591.bindingElement);
 }else{
-throw "Could not add "+_585.toString()+" of different document origin.";
+throw "Could not add "+_591.toString()+" of different document origin.";
 }
-return _585;
+return _591;
 };
-Binding.prototype.addFirst=function(_586){
-if(_586.bindingDocument==this.bindingDocument){
-this.bindingElement.insertBefore(_586.bindingElement,this.bindingElement.firstChild);
+Binding.prototype.addFirst=function(_592){
+if(_592.bindingDocument==this.bindingDocument){
+this.bindingElement.insertBefore(_592.bindingElement,this.bindingElement.firstChild);
 }else{
-throw "Could not add "+_586.toString()+" of different document origin.";
+throw "Could not add "+_592.toString()+" of different document origin.";
 }
-return _586;
+return _592;
 };
-Binding.prototype.getAncestorBindingByLocalName=function(_587,_588){
-return BindingFinder.getAncestorBindingByLocalName(this,_587,_588);
+Binding.prototype.getAncestorBindingByLocalName=function(_593,_594){
+return BindingFinder.getAncestorBindingByLocalName(this,_593,_594);
 };
-Binding.prototype.getAncestorBindingByType=function(impl,_58a){
-return BindingFinder.getAncestorBindingByType(this,impl,_58a);
+Binding.prototype.getAncestorBindingByType=function(impl,_596){
+return BindingFinder.getAncestorBindingByType(this,impl,_596);
 };
 Binding.prototype.getChildBindingByType=function(impl){
 return BindingFinder.getChildBindingByType(this,impl);
 };
-Binding.prototype.getChildElementsByLocalName=function(_58c){
-return BindingFinder.getChildElementsByLocalName(this,_58c);
+Binding.prototype.getChildElementsByLocalName=function(_598){
+return BindingFinder.getChildElementsByLocalName(this,_598);
 };
-Binding.prototype.getChildElementByLocalName=function(_58d){
-return this.getChildElementsByLocalName(_58d).getFirst();
+Binding.prototype.getChildElementByLocalName=function(_599){
+return this.getChildElementsByLocalName(_599).getFirst();
 };
-Binding.prototype.getDescendantElementsByLocalName=function(_58e){
-return new List(DOMUtil.getElementsByTagName(this.bindingElement,_58e));
+Binding.prototype.getDescendantElementsByLocalName=function(_59a){
+return new List(DOMUtil.getElementsByTagName(this.bindingElement,_59a));
 };
-Binding.prototype.getChildBindingsByLocalName=function(_58f){
-return this.getDescendantBindingsByLocalName(_58f,true);
+Binding.prototype.getChildBindingsByLocalName=function(_59b){
+return this.getDescendantBindingsByLocalName(_59b,true);
 };
-Binding.prototype.getChildBindingByLocalName=function(_590){
-return this.getChildBindingsByLocalName(_590).getFirst();
+Binding.prototype.getChildBindingByLocalName=function(_59c){
+return this.getChildBindingsByLocalName(_59c).getFirst();
 };
-Binding.prototype.getDescendantBindingsByLocalName=function(_591,_592){
-return BindingFinder.getDescendantBindingsByLocalName(this,_591,_592);
+Binding.prototype.getDescendantBindingsByLocalName=function(_59d,_59e){
+return BindingFinder.getDescendantBindingsByLocalName(this,_59d,_59e);
 };
-Binding.prototype.getDescendantBindingByLocalName=function(_593){
-return this.getDescendantBindingsByLocalName(_593,false).getFirst();
+Binding.prototype.getDescendantBindingByLocalName=function(_59f){
+return this.getDescendantBindingsByLocalName(_59f,false).getFirst();
 };
 Binding.prototype.getDescendantBindingsByType=function(impl){
 return BindingFinder.getDescendantBindingsByType(this,impl);
@@ -6545,23 +6572,23 @@ return BindingFinder.getDescendantBindingsByType(this,impl);
 Binding.prototype.getDescendantBindingByType=function(impl){
 return BindingFinder.getDescendantBindingByType(this,impl);
 };
-Binding.prototype.getNextBindingByLocalName=function(_596){
-return BindingFinder.getNextBindingByLocalName(this,_596);
+Binding.prototype.getNextBindingByLocalName=function(_5a2){
+return BindingFinder.getNextBindingByLocalName(this,_5a2);
 };
-Binding.prototype.getPreviousBindingByLocalName=function(_597){
-return BindingFinder.getPreviousBindingByLocalName(this,_597);
+Binding.prototype.getPreviousBindingByLocalName=function(_5a3){
+return BindingFinder.getPreviousBindingByLocalName(this,_5a3);
 };
 Binding.prototype.getBindingElement=function(){
 return this.bindingDocument.getElementById(this.bindingElement.id);
 };
-Binding.prototype.getOrdinalPosition=function(_598){
-return DOMUtil.getOrdinalPosition(this.bindingElement,_598);
+Binding.prototype.getOrdinalPosition=function(_5a4){
+return DOMUtil.getOrdinalPosition(this.bindingElement,_5a4);
 };
-Binding.prototype.isFirstBinding=function(_599){
-return (this.getOrdinalPosition(_599)==0);
+Binding.prototype.isFirstBinding=function(_5a5){
+return (this.getOrdinalPosition(_5a5)==0);
 };
-Binding.prototype.isLastBinding=function(_59a){
-return DOMUtil.isLastElement(this.bindingElement,_59a);
+Binding.prototype.isLastBinding=function(_5a6){
+return DOMUtil.isLastElement(this.bindingElement,_5a6);
 };
 Binding.prototype.hasCallBackID=function(){
 return this.getProperty(Binding.CALLBACKID)!=null;
@@ -6578,30 +6605,30 @@ return this.getCallBackArg()!=null;
 Binding.prototype.getCallBackArg=function(){
 return this.getProperty(Binding.CALLBACKARG);
 };
-Binding.prototype.setCallBackArg=function(_59c){
-this.setProperty(Binding.CALLBACKARG,_59c);
+Binding.prototype.setCallBackArg=function(_5a8){
+this.setProperty(Binding.CALLBACKARG,_5a8);
 };
-Binding.prototype.dispose=function(_59d){
+Binding.prototype.dispose=function(_5a9){
 if(!this.isDisposed){
-if(!_59d){
+if(!_5a9){
 this.bindingWindow.DocumentManager.detachBindings(this.bindingElement);
-var _59e=this.bindingDocument.getElementById(this.bindingElement.id);
-if(_59e){
+var _5aa=this.bindingDocument.getElementById(this.bindingElement.id);
+if(_5aa){
 if(Client.isExplorer){
-_59e.outerHTML="";
+_5aa.outerHTML="";
 }else{
-_59e.parentNode.removeChild(_59e);
+_5aa.parentNode.removeChild(_5aa);
 }
 }
 }else{
 if(this._subscriptions.hasEntries()){
 var self=this;
 var list=new List();
-this._subscriptions.each(function(_5a1){
-list.add(_5a1);
+this._subscriptions.each(function(_5ad){
+list.add(_5ad);
 });
-list.each(function(_5a2){
-self.unsubscribe(_5a2);
+list.each(function(_5ae){
+self.unsubscribe(_5ae);
 });
 }
 this.onBindingDispose();
@@ -6650,8 +6677,8 @@ this.deleteProperty("hidden");
 this.isVisible=false;
 }
 };
-Binding.prototype.wakeUp=function(_5a4,_5a5){
-_5a5=_5a5?_5a5:Binding.SNOOZE;
+Binding.prototype.wakeUp=function(_5b0,_5b1){
+_5b1=_5b1?_5b1:Binding.SNOOZE;
 if(this.isLazy==true){
 this.deleteProperty("lazy");
 this.isLazy=false;
@@ -6661,42 +6688,42 @@ var self=this;
 setTimeout(function(){
 self.attachRecursive();
 setTimeout(function(){
-if(_5a4!==undefined){
-self[_5a4]();
+if(_5b0!==undefined){
+self[_5b0]();
 }
 LazyBindingBinding.wakeUp(self);
 Application.unlock(self);
-},_5a5);
+},_5b1);
 },0);
 }
 };
-Binding.prototype.handleCrawler=function(_5a7){
-if(_5a7.response==null&&this.isLazy==true){
-if(_5a7.id==DocumentCrawler.ID&&_5a7.mode==DocumentCrawler.MODE_REGISTER){
-_5a7.response=NodeCrawler.NORMAL;
+Binding.prototype.handleCrawler=function(_5b3){
+if(_5b3.response==null&&this.isLazy==true){
+if(_5b3.id==DocumentCrawler.ID&&_5b3.mode==DocumentCrawler.MODE_REGISTER){
+_5b3.response=NodeCrawler.NORMAL;
 }else{
-_5a7.response=NodeCrawler.SKIP_CHILDREN;
+_5b3.response=NodeCrawler.SKIP_CHILDREN;
 }
 }
-if(_5a7.response==null&&this.crawlerFilters!=null){
-if(this.crawlerFilters.has(_5a7.id)){
-_5a7.response=NodeCrawler.SKIP_CHILDREN;
+if(_5b3.response==null&&this.crawlerFilters!=null){
+if(this.crawlerFilters.has(_5b3.id)){
+_5b3.response=NodeCrawler.SKIP_CHILDREN;
 }
 }
-if(_5a7.response==null){
-switch(_5a7.id){
+if(_5b3.response==null){
+switch(_5b3.id){
 case FlexBoxCrawler.ID:
 case FocusCrawler.ID:
 if(!this.isVisible){
-_5a7.response=NodeCrawler.SKIP_CHILDREN;
+_5b3.response=NodeCrawler.SKIP_CHILDREN;
 }
 break;
 }
 }
 };
-Binding.newInstance=function(_5a8){
-var _5a9=DOMUtil.createElementNS(Constants.NS_UI,"ui:binding",_5a8);
-return UserInterface.registerBinding(_5a9,Binding);
+Binding.newInstance=function(_5b4){
+var _5b5=DOMUtil.createElementNS(Constants.NS_UI,"ui:binding",_5b4);
+return UserInterface.registerBinding(_5b5,Binding);
 };
 DataBinding.prototype=new Binding;
 DataBinding.prototype.constructor=DataBinding;
@@ -6710,24 +6737,24 @@ DataBinding.CLASSNAME_WARNING="warning";
 DataBinding.CLASSNAME_FOCUSED="focused";
 DataBinding.CLASSNAME_DISABLED="disabled";
 EventBroadcaster.subscribe(BroadcastMessages.APPLICATION_LOGIN,{handleBroadcast:function(){
-var _5aa=new List(ConfigurationService.GetValidatingRegularExpressions("dummy"));
-_5aa.each(function(_5ab){
-DataBinding.expressions[_5ab.Key]=new RegExp(_5ab.Value);
+var _5b6=new List(ConfigurationService.GetValidatingRegularExpressions("dummy"));
+_5b6.each(function(_5b7){
+DataBinding.expressions[_5b7.Key]=new RegExp(_5b7.Value);
 });
 }});
 DataBinding.expressions={};
 DataBinding.warnings={"required":"Required","number":"Numbers only","integer":"Integers only","programmingidentifier":"Invalid identifier","programmingnamespace":"Invalid namespace","url":"Invalid URL","minlength":"${count} characters minimum","maxlength":"${count} characters maximum","currency":"Invalid notation","email":"Invalid e-mail","guid":"Invalid GUID"};
 DataBinding.errors={"programmingidentifier":"An identifier must not contain spaces or special characters. Only characters a-z, A-Z and 0-9 are allowed. An identifier must begin with a letter (not a number).","programmingnamespace":"A namespace must take the form Example.Name.Space where only characters a-z, A-Z, 0-9 and dots (.) are allowed. Each part of the namespace must begin with a letter (not a number).","url":"A valid URL must begin with a forward slash, designating the site root, or an URL scheme name such as http://. Simpliefied addresses such as www.example.com cannot be resolved reliably by the browser. Relative URLs are not supported."};
-DataBinding.getAssociatedLabel=function(_5ac){
-var _5ad=null;
-var _5ae=_5ac.getAncestorBindingByLocalName("field");
-if(_5ae&&_5ae instanceof FieldBinding){
-var desc=_5ae.getDescendantBindingByLocalName("fielddesc");
+DataBinding.getAssociatedLabel=function(_5b8){
+var _5b9=null;
+var _5ba=_5b8.getAncestorBindingByLocalName("field");
+if(_5ba&&_5ba instanceof FieldBinding){
+var desc=_5ba.getDescendantBindingByLocalName("fielddesc");
 if(desc&&desc instanceof FieldDescBinding){
-_5ad=desc.getLabel();
+_5b9=desc.getLabel();
 }
 }
-return _5ad;
+return _5b9;
 };
 function DataBinding(){
 this.logger=SystemLogger.getLogger("DataBinding");
@@ -6761,15 +6788,15 @@ DataBinding.superclass.onBindingDispose.call(this);
 if(this.isFocused==true){
 this.blur();
 }
-var _5b1=this.bindingWindow.DataManager;
-_5b1.unRegisterDataBinding(this._name);
+var _5bd=this.bindingWindow.DataManager;
+_5bd.unRegisterDataBinding(this._name);
 };
 DataBinding.prototype.setName=function(name){
-var _5b3=this.bindingWindow.DataManager;
-if(_5b3.getDataBinding(name)){
-_5b3.unRegisterDataBinding(name);
+var _5bf=this.bindingWindow.DataManager;
+if(_5bf.getDataBinding(name)){
+_5bf.unRegisterDataBinding(name);
 }
-_5b3.registerDataBinding(name,this);
+_5bf.registerDataBinding(name,this);
 this.setProperty("name",name);
 this._name=name;
 };
@@ -6835,15 +6862,15 @@ RootBinding.superclass.onBindingDispose.call(this);
 this._setupActivationAwareness(false);
 EventBroadcaster.unsubscribe(this.bindingWindow.WindowManager.WINDOW_EVALUATED_BROADCAST,this);
 };
-RootBinding.prototype.handleBroadcast=function(_5b4,arg){
-RootBinding.superclass.handleBroadcast.call(this,_5b4,arg);
-var _5b6=this.bindingWindow.WindowManager.WINDOW_EVALUATED_BROADCAST;
-switch(_5b4){
-case _5b6:
+RootBinding.prototype.handleBroadcast=function(_5c0,arg){
+RootBinding.superclass.handleBroadcast.call(this,_5c0,arg);
+var _5c2=this.bindingWindow.WindowManager.WINDOW_EVALUATED_BROADCAST;
+switch(_5c0){
+case _5c2:
 this.dispatchAction(RootBinding.ACTION_PHASE_1);
 this.dispatchAction(RootBinding.ACTION_PHASE_2);
 this.dispatchAction(RootBinding.ACTION_PHASE_3);
-this.unsubscribe(_5b6);
+this.unsubscribe(_5c2);
 break;
 }
 };
@@ -6853,83 +6880,83 @@ this._onActivationChanged(true);
 RootBinding.prototype.onDeactivate=function(){
 this._onActivationChanged(false);
 };
-RootBinding.prototype._onActivationChanged=function(_5b7){
-var _5b8=_5b7?RootBinding.ACTION_ACTIVATED:RootBinding.ACTION_DEACTIVATED;
-if(_5b7!=this.isActivated){
-this.isActivated=_5b7;
-this.dispatchAction(_5b8);
-var _5b9=new List();
+RootBinding.prototype._onActivationChanged=function(_5c3){
+var _5c4=_5c3?RootBinding.ACTION_ACTIVATED:RootBinding.ACTION_DEACTIVATED;
+if(_5c3!=this.isActivated){
+this.isActivated=_5c3;
+this.dispatchAction(_5c4);
+var _5c5=new List();
 var self=this;
-this._activationawares.each(function(_5bb){
-if(_5bb.isActivationAware){
+this._activationawares.each(function(_5c7){
+if(_5c7.isActivationAware){
 try{
-if(_5b7){
-if(!_5bb.isActivated){
-_5bb.onActivate();
+if(_5c3){
+if(!_5c7.isActivated){
+_5c7.onActivate();
 }
 }else{
-if(_5bb.isActivated){
-_5bb.onDeactivate();
+if(_5c7.isActivated){
+_5c7.onDeactivate();
 }
 }
 }
 catch(exception){
 self.logger.error(exception);
-_5b9.add(_5bb);
+_5c5.add(_5c7);
 }
 }
 });
-_5b9.each(function(_5bc){
-this._activationawares.del(_5bc);
+_5c5.each(function(_5c8){
+this._activationawares.del(_5c8);
 });
-_5b9.dispose();
+_5c5.dispose();
 }else{
-var _5bd="Activation dysfunction: "+this.bindingDocument.title;
+var _5c9="Activation dysfunction: "+this.bindingDocument.title;
 if(Application.isDeveloperMode==true){
-this.logger.error(_5bd);
+this.logger.error(_5c9);
 }else{
-this.logger.error(_5bd);
+this.logger.error(_5c9);
 }
 }
 };
-RootBinding.prototype.makeActivationAware=function(_5be,_5bf){
-if(Interfaces.isImplemented(IActivationAware,_5be,true)==true){
-if(_5bf==false){
-this._activationawares.del(_5be);
+RootBinding.prototype.makeActivationAware=function(_5ca,_5cb){
+if(Interfaces.isImplemented(IActivationAware,_5ca,true)==true){
+if(_5cb==false){
+this._activationawares.del(_5ca);
 }else{
-this._activationawares.add(_5be);
+this._activationawares.add(_5ca);
 if(this.isActivated==true){
-_5be.onActivate();
+_5ca.onActivate();
 }
 }
 }else{
 if(Application.isDeveloperMode==true){
-alert("RootBinding: IActivationAware not implemented ("+_5be+")");
+alert("RootBinding: IActivationAware not implemented ("+_5ca+")");
 }
 }
 };
-RootBinding.prototype._setupActivationAwareness=function(_5c0){
-var _5c1=this.getMigrationParent();
-if(_5c1!=null){
-var root=_5c1.ownerDocument.body;
-var _5c3=UserInterface.getBinding(root);
-if(_5c3!=null){
-_5c3.makeActivationAware(this,_5c0);
+RootBinding.prototype._setupActivationAwareness=function(_5cc){
+var _5cd=this.getMigrationParent();
+if(_5cd!=null){
+var root=_5cd.ownerDocument.body;
+var _5cf=UserInterface.getBinding(root);
+if(_5cf!=null){
+_5cf.makeActivationAware(this,_5cc);
 }
 }
 };
-RootBinding.prototype.handleCrawler=function(_5c4){
-RootBinding.superclass.handleCrawler.call(this,_5c4);
-if(_5c4.type==NodeCrawler.TYPE_ASCENDING){
-_5c4.nextNode=this.bindingWindow.frameElement;
+RootBinding.prototype.handleCrawler=function(_5d0){
+RootBinding.superclass.handleCrawler.call(this,_5d0);
+if(_5d0.type==NodeCrawler.TYPE_ASCENDING){
+_5d0.nextNode=this.bindingWindow.frameElement;
 }
 };
 RootBinding.prototype.getMigrationParent=function(){
-var _5c5=null;
+var _5d1=null;
 if(this.bindingWindow.parent){
-_5c5=this.bindingWindow.frameElement;
+_5d1=this.bindingWindow.frameElement;
 }
-return _5c5;
+return _5d1;
 };
 MatrixBinding.prototype=new Binding;
 MatrixBinding.prototype.constructor=MatrixBinding;
@@ -6967,38 +6994,38 @@ this.shadowTree.table=this.bindingElement.firstChild;
 }
 };
 MatrixBinding.prototype._indexTable=function(){
-var _5c6=new List(DOMUtil.getElementsByTagName(this.bindingElement,"td"));
-while(_5c6.hasNext()){
-var cell=_5c6.getNext();
+var _5d2=new List(DOMUtil.getElementsByTagName(this.bindingElement,"td"));
+while(_5d2.hasNext()){
+var cell=_5d2.getNext();
 this.shadowTree[cell.className]=cell;
 }
 };
-MatrixBinding.prototype.add=function(_5c8){
-var _5c9=null;
+MatrixBinding.prototype.add=function(_5d4){
+var _5d5=null;
 if(this.hasMatrix){
 if(!this._isTableIndexed){
 this._indexTable();
 }
-this.shadowTree[MatrixBinding.CENTER].appendChild(_5c8.bindingElement);
-_5c9=_5c8;
+this.shadowTree[MatrixBinding.CENTER].appendChild(_5d4.bindingElement);
+_5d5=_5d4;
 }else{
-_5c9=MatrixBinding.superclass.add.call(this,_5c8);
+_5d5=MatrixBinding.superclass.add.call(this,_5d4);
 }
-return _5c9;
+return _5d5;
 };
-MatrixBinding.prototype.addFirst=function(_5ca){
-var _5cb=null;
+MatrixBinding.prototype.addFirst=function(_5d6){
+var _5d7=null;
 if(this.hasMatrix){
 if(!this._isTableIndexed){
 this._indexTable();
 }
-var _5cc=this.shadowTree[MatrixBinding.CENTER];
-_5cc.insertBefore(_5ca.bindingElement,_5cc.firstChild);
-_5cb=_5ca;
+var _5d8=this.shadowTree[MatrixBinding.CENTER];
+_5d8.insertBefore(_5d6.bindingElement,_5d8.firstChild);
+_5d7=_5d6;
 }else{
-_5cb=MatrixBinding.superclass.addFirst.call(this,_5ca);
+_5d7=MatrixBinding.superclass.addFirst.call(this,_5d6);
 }
-return _5ca;
+return _5d6;
 };
 MatrixBinding.prototype.manifest=function(){
 if(!this._isTableIndexed){
@@ -7009,42 +7036,42 @@ div.appendChild(this.bindingDocument.createTextNode("!"));
 div.className=MatrixBinding.CLASSNAME_MANIFESTER;
 this.shadowTree[MatrixBinding.CENTER].appendChild(div);
 };
-MatrixBinding.newInstance=function(_5ce){
-var _5cf=DOMUtil.createElementNS(Constants.NS_UI,"ui:matrix",_5ce);
-return UserInterface.registerBinding(_5cf,MatrixBinding);
+MatrixBinding.newInstance=function(_5da){
+var _5db=DOMUtil.createElementNS(Constants.NS_UI,"ui:matrix",_5da);
+return UserInterface.registerBinding(_5db,MatrixBinding);
 };
 FlexBoxBinding.prototype=new Binding;
 FlexBoxBinding.prototype.constructor=FlexBoxBinding;
 FlexBoxBinding.superclass=Binding.prototype;
 FlexBoxBinding.CLASSNAME="flexboxelement";
 FlexBoxBinding.TIMEOUT=250;
-FlexBoxBinding.reflex=function(_5d0,_5d1){
+FlexBoxBinding.reflex=function(_5dc,_5dd){
 var list=new List();
-var _5d3=new FlexBoxCrawler();
-_5d3.mode=_5d1?FlexBoxCrawler.MODE_FORCE:FlexBoxCrawler.MODE_NORMAL;
-_5d3.startBinding=_5d0;
-_5d3.crawl(_5d0.bindingElement,list);
-list.each(function(_5d4){
-_5d4.flex();
+var _5df=new FlexBoxCrawler();
+_5df.mode=_5dd?FlexBoxCrawler.MODE_FORCE:FlexBoxCrawler.MODE_NORMAL;
+_5df.startBinding=_5dc;
+_5df.crawl(_5dc.bindingElement,list);
+list.each(function(_5e0){
+_5e0.flex();
 });
 if(Client.isExplorer){
 setTimeout(function(){
-list.each(function(_5d5){
-if(Binding.exists(_5d5)){
-_5d5.flex();
+list.each(function(_5e1){
+if(Binding.exists(_5e1)){
+_5e1.flex();
 }
 });
 },0.5*FlexBoxBinding.TIMEOUT);
 }
 setTimeout(function(){
-list.each(function(_5d6){
-if(Binding.exists(_5d6)){
-_5d6.isFlexSuspended=false;
+list.each(function(_5e2){
+if(Binding.exists(_5e2)){
+_5e2.isFlexSuspended=false;
 }
 });
 list.dispose();
 },FlexBoxBinding.TIMEOUT);
-_5d3.dispose();
+_5df.dispose();
 };
 function FlexBoxBinding(){
 this.logger=SystemLogger.getLogger("FlexBoxBinding");
@@ -7076,103 +7103,103 @@ this.attachClassName(FlexBoxBinding.CLASSNAME);
 }
 }
 };
-FlexBoxBinding.prototype.handleAction=function(_5d7){
-FlexBoxBinding.superclass.handleAction.call(this,_5d7);
-switch(_5d7.type){
+FlexBoxBinding.prototype.handleAction=function(_5e3){
+FlexBoxBinding.superclass.handleAction.call(this,_5e3);
+switch(_5e3.type){
 case Binding.ACTION_UPDATED:
 this.isFit=false;
 break;
 }
 };
-FlexBoxBinding.prototype._getSiblingsSpan=function(_5d8){
-var _5d9=0;
-var _5da=new List(this.bindingElement.parentNode.childNodes);
-while(_5da.hasNext()){
-var _5db=_5da.getNext();
-if(_5db.nodeType==Node.ELEMENT_NODE&&_5db!=this.bindingElement){
-if(!this._isOutOfFlow(_5db)){
-var rect=_5db.getBoundingClientRect();
-if(_5d8){
+FlexBoxBinding.prototype._getSiblingsSpan=function(_5e4){
+var _5e5=0;
+var _5e6=new List(this.bindingElement.parentNode.childNodes);
+while(_5e6.hasNext()){
+var _5e7=_5e6.getNext();
+if(_5e7.nodeType==Node.ELEMENT_NODE&&_5e7!=this.bindingElement){
+if(!this._isOutOfFlow(_5e7)){
+var rect=_5e7.getBoundingClientRect();
+if(_5e4){
 height+=(rect.right-rect.left);
 }else{
-_5d9+=(rect.bottom-rect.top);
+_5e5+=(rect.bottom-rect.top);
 }
 }
 }
 }
-return _5d9;
+return _5e5;
 };
-FlexBoxBinding.prototype._isOutOfFlow=function(_5dd){
-var _5de=CSSComputer.getPosition(_5dd);
-var _5df=CSSComputer.getFloat(_5dd);
-return (_5de=="absolute"||_5df!="none"?true:false);
+FlexBoxBinding.prototype._isOutOfFlow=function(_5e9){
+var _5ea=CSSComputer.getPosition(_5e9);
+var _5eb=CSSComputer.getFloat(_5e9);
+return (_5ea=="absolute"||_5eb!="none"?true:false);
 };
 FlexBoxBinding.prototype._getCalculatedHeight=function(){
-var _5e0=this.bindingElement.parentNode;
-var rect=_5e0.getBoundingClientRect();
-var _5e2=rect.bottom-rect.top;
-var _5e3=CSSComputer.getPadding(_5e0);
-var _5e4=CSSComputer.getBorder(_5e0);
-_5e2-=(_5e3.top+_5e3.bottom);
-_5e2-=(_5e4.top+_5e4.bottom);
-return _5e2;
+var _5ec=this.bindingElement.parentNode;
+var rect=_5ec.getBoundingClientRect();
+var _5ee=rect.bottom-rect.top;
+var _5ef=CSSComputer.getPadding(_5ec);
+var _5f0=CSSComputer.getBorder(_5ec);
+_5ee-=(_5ef.top+_5ef.bottom);
+_5ee-=(_5f0.top+_5f0.bottom);
+return _5ee;
 };
 FlexBoxBinding.prototype._getCalculatedWidth=function(){
-var _5e5=this.bindingElement.parentNode;
-var rect=_5e5.getBoundingClientRect();
-var _5e7=rect.right-rect.left;
-var _5e8=CSSComputer.getPadding(_5e5);
-var _5e9=CSSComputer.getBorder(_5e5);
-_5e7-=(_5e8.left+_5e8.right);
-_5e7-=(_5e9.left+_5e9.right);
-return _5e7;
+var _5f1=this.bindingElement.parentNode;
+var rect=_5f1.getBoundingClientRect();
+var _5f3=rect.right-rect.left;
+var _5f4=CSSComputer.getPadding(_5f1);
+var _5f5=CSSComputer.getBorder(_5f1);
+_5f3-=(_5f4.left+_5f4.right);
+_5f3-=(_5f5.left+_5f5.right);
+return _5f3;
 };
-FlexBoxBinding.prototype.setFlexibility=function(_5ea){
-if(_5ea!=this.isFlexible){
-if(_5ea){
+FlexBoxBinding.prototype.setFlexibility=function(_5f6){
+if(_5f6!=this.isFlexible){
+if(_5f6){
 this.attachClassName(FlexBoxBinding.CLASSNAME);
 this.deleteProperty("flex");
 }else{
 this.detachClassName(FlexBoxBinding.CLASSNAME);
 this.setProperty("flex",false);
 }
-this.isFlexible=_5ea;
+this.isFlexible=_5f6;
 }
 };
 FlexBoxBinding.prototype.flex=function(){
 if(Binding.exists(this)){
 if(this.isFlexible==true){
-var _5eb=this._getSiblingsSpan();
-_5eb=this._getCalculatedHeight()-_5eb;
-if(!isNaN(_5eb)&&_5eb>=0){
-if(_5eb!=this.bindingElement.offsetHeight){
-this.bindingElement.style.height=String(_5eb)+"px";
+var _5f7=this._getSiblingsSpan();
+_5f7=this._getCalculatedHeight()-_5f7;
+if(!isNaN(_5f7)&&_5f7>=0){
+if(_5f7!=this.bindingElement.offsetHeight){
+this.bindingElement.style.height=String(_5f7)+"px";
 }
 }
 }
 }
 };
-FlexBoxBinding.prototype.fit=function(_5ec){
-if(!this.isFit||_5ec){
-var _5ed=0;
-new List(this.bindingElement.childNodes).each(function(_5ee){
-if(_5ee.nodeType==Node.ELEMENT_NODE){
-if(!this._isOutOfFlow(_5ee)){
-var rect=_5ee.getBoundingClientRect();
-_5ed+=(rect.bottom-rect.top);
+FlexBoxBinding.prototype.fit=function(_5f8){
+if(!this.isFit||_5f8){
+var _5f9=0;
+new List(this.bindingElement.childNodes).each(function(_5fa){
+if(_5fa.nodeType==Node.ELEMENT_NODE){
+if(!this._isOutOfFlow(_5fa)){
+var rect=_5fa.getBoundingClientRect();
+_5f9+=(rect.bottom-rect.top);
 }
 }
 },this);
-this._setFitnessHeight(_5ed);
+this._setFitnessHeight(_5f9);
 this.isFit=true;
 }
 };
-FlexBoxBinding.prototype._setFitnessHeight=function(_5f0){
-var _5f1=CSSComputer.getPadding(this.bindingElement);
-var _5f2=CSSComputer.getBorder(this.bindingElement);
-_5f0+=_5f1.top+_5f1.bottom;
-_5f0+=_5f2.top+_5f2.bottom;
-this.bindingElement.style.height=_5f0+"px";
+FlexBoxBinding.prototype._setFitnessHeight=function(_5fc){
+var _5fd=CSSComputer.getPadding(this.bindingElement);
+var _5fe=CSSComputer.getBorder(this.bindingElement);
+_5fc+=_5fd.top+_5fd.bottom;
+_5fc+=_5fe.top+_5fe.bottom;
+this.bindingElement.style.height=_5fc+"px";
 };
 ScrollBoxBinding.prototype=new FlexBoxBinding;
 ScrollBoxBinding.prototype.constructor=ScrollBoxBinding;
@@ -7187,17 +7214,17 @@ ScrollBoxBinding.prototype.onBindingRegister=function(){
 ScrollBoxBinding.superclass.onBindingRegister.call(this);
 this.addActionListener(BalloonBinding.ACTION_INITIALIZE);
 };
-ScrollBoxBinding.prototype.handleAction=function(_5f3){
-ScrollBoxBinding.superclass.handleAction.call(this,_5f3);
-switch(_5f3.type){
+ScrollBoxBinding.prototype.handleAction=function(_5ff){
+ScrollBoxBinding.superclass.handleAction.call(this,_5ff);
+switch(_5ff.type){
 case BalloonBinding.ACTION_INITIALIZE:
-_5f3.consume();
+_5ff.consume();
 break;
 }
 };
-ScrollBoxBinding.prototype.setPosition=function(_5f4){
-this.bindingElement.scrollLeft=_5f4.x;
-this.bindingElement.scrollTop=_5f4.y;
+ScrollBoxBinding.prototype.setPosition=function(_600){
+this.bindingElement.scrollLeft=_600.x;
+this.bindingElement.scrollTop=_600.y;
 };
 ScrollBoxBinding.prototype.getPosition=function(){
 return new Point(this.bindingElement.scrollLeft,this.bindingElement.scrollTop);
@@ -7234,49 +7261,49 @@ this.bindingElement.appendChild(this.shadowTree.labelBody);
 LabelBinding.prototype.onBindingAttach=function(){
 LabelBinding.superclass.onBindingAttach.call(this);
 if(this.isBindingBuild){
-var _5f5=this._getBuildElement("labeltext");
-if(_5f5){
-this.shadowTree.labelText=_5f5;
-this.shadowTree.text=_5f5.firstChild;
+var _601=this._getBuildElement("labeltext");
+if(_601){
+this.shadowTree.labelText=_601;
+this.shadowTree.text=_601.firstChild;
 this.hasLabel=true;
 }
 }else{
-var _5f6=this.getProperty("label");
-var _5f7=this.getProperty("image");
-var _5f8=this.getProperty("tooltip");
-if(_5f6){
-this.setLabel(_5f6,false);
+var _602=this.getProperty("label");
+var _603=this.getProperty("image");
+var _604=this.getProperty("tooltip");
+if(_602){
+this.setLabel(_602,false);
 }
-if(_5f7){
-this.setImage(_5f7,false);
+if(_603){
+this.setImage(_603,false);
 }
-if(_5f8){
-this.setToolTip(_5f8);
+if(_604){
+this.setToolTip(_604);
 }
 this.buildClassName();
 }
 };
-LabelBinding.prototype.setLabel=function(_5f9,_5fa){
-_5f9=_5f9?_5f9:"";
+LabelBinding.prototype.setLabel=function(_605,_606){
+_605=_605?_605:"";
 if(!this.hasLabel){
 this.buildLabel();
 }
-this.shadowTree.text.data=Resolver.resolve(_5f9);
-this.setProperty("label",_5f9);
-if(!_5fa){
+this.shadowTree.text.data=Resolver.resolve(_605);
+this.setProperty("label",_605);
+if(!_606){
 this.buildClassName();
 }
 };
 LabelBinding.prototype.getLabel=function(){
 return this.getProperty("label");
 };
-LabelBinding.prototype.setImage=function(url,_5fc){
+LabelBinding.prototype.setImage=function(url,_608){
 if(url!=false){
 url=url?url:LabelBinding.DEFAULT_IMAGE;
 this.setAlphaTransparentBackdrop(Resolver.resolve(url));
 this.setProperty("image",url);
 this.hasImage=true;
-if(!_5fc){
+if(!_608){
 this.buildClassName();
 }
 }else{
@@ -7310,24 +7337,24 @@ this.shadowTree.labelBody.style.backgroundImage="none";
 LabelBinding.prototype.getImage=function(){
 return this.getProperty("image");
 };
-LabelBinding.prototype.setToolTip=function(_5ff){
-this.setProperty("tooltip",_5ff);
-if(_5ff!=this.getLabel()){
-this.setProperty("title",Resolver.resolve(_5ff));
+LabelBinding.prototype.setToolTip=function(_60b){
+this.setProperty("tooltip",_60b);
+if(_60b!=this.getLabel()){
+this.setProperty("title",Resolver.resolve(_60b));
 }
 };
-LabelBinding.prototype.getToolTip=function(_600){
+LabelBinding.prototype.getToolTip=function(_60c){
 return this.getProperty("tooltip");
 };
-LabelBinding.prototype.flip=function(_601){
-_601=_601==null?true:_601;
-var _602=LabelBinding.CLASSNAME_FLIPPED;
+LabelBinding.prototype.flip=function(_60d){
+_60d=_60d==null?true:_60d;
+var _60e=LabelBinding.CLASSNAME_FLIPPED;
 if(!Client.isExplorer6){
-this.isFlipped=_601;
-if(_601){
-this.attachClassName(_602);
+this.isFlipped=_60d;
+if(_60d){
+this.attachClassName(_60e);
 }else{
-this.detachClassName(_602);
+this.detachClassName(_60e);
 }
 }
 };
@@ -7343,23 +7370,23 @@ this.hasLabel=true;
 LabelBinding.prototype.buildClassName=function(){
 if(Client.isMozilla){
 }
-var _603="textonly";
-var _604="imageonly";
-var _605="both";
+var _60f="textonly";
+var _610="imageonly";
+var _611="both";
 if(this.hasLabel&&this.hasImage){
-this.detachClassName(_603);
-this.detachClassName(_604);
-this.attachClassName(_605);
+this.detachClassName(_60f);
+this.detachClassName(_610);
+this.attachClassName(_611);
 }else{
 if(this.hasLabel){
-this.detachClassName(_605);
-this.detachClassName(_604);
-this.attachClassName(_603);
+this.detachClassName(_611);
+this.detachClassName(_610);
+this.attachClassName(_60f);
 }else{
 if(this.hasImage){
-this.detachClassName(_605);
-this.detachClassName(_603);
-this.attachClassName(_604);
+this.detachClassName(_611);
+this.detachClassName(_60f);
+this.attachClassName(_610);
 }
 }
 }
@@ -7374,9 +7401,9 @@ this.attachClassName(LabelBinding.CLASSNAME_TEXTOVERFLOW);
 }
 }
 };
-LabelBinding.newInstance=function(_606){
-var _607=DOMUtil.createElementNS(Constants.NS_UI,"ui:labelbox",_606);
-return UserInterface.registerBinding(_607,LabelBinding);
+LabelBinding.newInstance=function(_612){
+var _613=DOMUtil.createElementNS(Constants.NS_UI,"ui:labelbox",_612);
+return UserInterface.registerBinding(_613,LabelBinding);
 };
 TextBinding.prototype=new Binding;
 TextBinding.prototype.constructor=TextBinding;
@@ -7391,20 +7418,20 @@ return "[TextBinding]";
 };
 TextBinding.prototype.onBindingAttach=function(){
 TextBinding.superclass.onBindingAttach.call(this);
-var _608=this.getProperty("label");
-if(!_608){
-_608=DOMUtil.getTextContent(this.bindingElement);
+var _614=this.getProperty("label");
+if(!_614){
+_614=DOMUtil.getTextContent(this.bindingElement);
 }
-var text=this.bindingDocument.createTextNode(Resolver.resolve(_608));
+var text=this.bindingDocument.createTextNode(Resolver.resolve(_614));
 this.bindingElement.parentNode.replaceChild(text,this.bindingElement);
 this.dispose();
 };
-TextBinding.prototype.setLabel=function(_60a){
-this.setProperty("label",_60a);
+TextBinding.prototype.setLabel=function(_616){
+this.setProperty("label",_616);
 };
-TextBinding.newInstance=function(_60b){
-var _60c=DOMUtil.createElementNS(Constants.NS_UI,"ui:text",_60b);
-return UserInterface.registerBinding(_60c,TextBinding);
+TextBinding.newInstance=function(_617){
+var _618=DOMUtil.createElementNS(Constants.NS_UI,"ui:text",_617);
+return UserInterface.registerBinding(_618,TextBinding);
 };
 BroadcasterSetBinding.prototype=new Binding;
 BroadcasterSetBinding.prototype.constructor=BroadcasterSetBinding;
@@ -7430,88 +7457,88 @@ BroadcasterBinding.superclass.onBindingRegister.call(this);
 this.propertyMethodMap["isdisabled"]=this.setDisabled;
 this._observers=new List();
 };
-BroadcasterBinding.prototype.setProperty=function(_60d,_60e){
-BroadcasterBinding.superclass.setProperty.call(this,_60d,_60e);
+BroadcasterBinding.prototype.setProperty=function(_619,_61a){
+BroadcasterBinding.superclass.setProperty.call(this,_619,_61a);
 function update(list){
 if(list){
-list.each(function(_610){
-_610.setProperty(_60d,_60e);
+list.each(function(_61c){
+_61c.setProperty(_619,_61a);
 });
 }
 }
 if(this._observers["*"]!=null){
 update(this._observers["*"]);
 }
-var _611=this._observers[_60d];
-if(_611){
-update(_611);
+var _61d=this._observers[_619];
+if(_61d){
+update(_61d);
 }
 };
-BroadcasterBinding.prototype.deleteProperty=function(_612){
-BroadcasterBinding.superclass.deleteProperty.call(this,_612);
+BroadcasterBinding.prototype.deleteProperty=function(_61e){
+BroadcasterBinding.superclass.deleteProperty.call(this,_61e);
 function update(list){
 if(list){
-list.each(function(_614){
-_614.deleteProperty(_612);
+list.each(function(_620){
+_620.deleteProperty(_61e);
 });
 }
 }
 if(this._observers["*"]!=null){
 update(this._observers["*"]);
 }
-var _615=this._observers[_612];
-if(_615){
-update(_615);
+var _621=this._observers[_61e];
+if(_621){
+update(_621);
 }
 };
-BroadcasterBinding.prototype.addObserver=function(_616,_617){
-_617=_617?_617:"*";
-_617=new List(_617.split(" "));
-while(_617.hasNext()){
-var _618=_617.getNext();
-switch(_618){
+BroadcasterBinding.prototype.addObserver=function(_622,_623){
+_623=_623?_623:"*";
+_623=new List(_623.split(" "));
+while(_623.hasNext()){
+var _624=_623.getNext();
+switch(_624){
 case "*":
-this._setAllProperties(_616);
+this._setAllProperties(_622);
 break;
 default:
-var _619=this.getProperty(_618);
-_616.setProperty(_618,_619);
+var _625=this.getProperty(_624);
+_622.setProperty(_624,_625);
 break;
 }
-if(!this._observers[_618]){
-this._observers[_618]=new List();
+if(!this._observers[_624]){
+this._observers[_624]=new List();
 }
-this._observers[_618].add(_616);
+this._observers[_624].add(_622);
 }
 };
-BroadcasterBinding.prototype._setAllProperties=function(_61a){
+BroadcasterBinding.prototype._setAllProperties=function(_626){
 var atts=new List(this.bindingElement.attributes);
 while(atts.hasNext()){
 var att=atts.getNext();
 if(att.specified){
-var _61d=att.nodeName;
-switch(_61d){
+var _629=att.nodeName;
+switch(_629){
 case "id":
 case "key":
 break;
 default:
-var _61e=this.getProperty(_61d);
-_61a.setProperty(_61d,_61e);
+var _62a=this.getProperty(_629);
+_626.setProperty(_629,_62a);
 break;
 }
 }
 }
 };
-BroadcasterBinding.prototype.removeObserver=function(_61f,_620){
-_620=_620?_620:"*";
-_620=new List(_620.split(" "));
-while(_620.hasNext()){
-var list=this._observers[_620.getNext()];
+BroadcasterBinding.prototype.removeObserver=function(_62b,_62c){
+_62c=_62c?_62c:"*";
+_62c=new List(_62c.split(" "));
+while(_62c.hasNext()){
+var list=this._observers[_62c.getNext()];
 if(list){
 while(list.hasNext()){
-var _622=list.getNext();
-if(_622==_61f){
-list.del(_622);
+var _62e=list.getNext();
+if(_62e==_62b){
+list.del(_62e);
 }
 }
 }
@@ -7523,8 +7550,8 @@ this.setDisabled(true);
 BroadcasterBinding.prototype.enable=function(){
 this.setDisabled(false);
 };
-BroadcasterBinding.prototype.setDisabled=function(_623){
-this.setProperty("isdisabled",_623);
+BroadcasterBinding.prototype.setDisabled=function(_62f){
+this.setProperty("isdisabled",_62f);
 };
 BroadcasterBinding.prototype.isDisabled=function(){
 return this.getProperty("isdisabled")==true;
@@ -7593,27 +7620,27 @@ Binding.imageProfile(this);
 };
 ButtonBinding.prototype.buildDOMContent=function(){
 var tree=this.shadowTree;
-var _625=this.getProperty("width");
-var _626=this.getProperty("label");
+var _631=this.getProperty("width");
+var _632=this.getProperty("label");
 var type=this.getProperty("type");
-var _628=this.getProperty("popup");
-var _629=this.getProperty("tooltip");
-var _62a=this.getProperty("isdisabled");
-var _62b=this.getProperty("response");
-var _62c=this.getProperty("oncommand");
-var _62d=this.getProperty("value");
-var _62e=this.getProperty("ischecked");
-var _62f=this.getProperty("callbackid");
-var _630=this.getProperty("focusable");
-var _631=this.getProperty("focused");
-var _632=this.getProperty("default");
+var _634=this.getProperty("popup");
+var _635=this.getProperty("tooltip");
+var _636=this.getProperty("isdisabled");
+var _637=this.getProperty("response");
+var _638=this.getProperty("oncommand");
+var _639=this.getProperty("value");
+var _63a=this.getProperty("ischecked");
+var _63b=this.getProperty("callbackid");
+var _63c=this.getProperty("focusable");
+var _63d=this.getProperty("focused");
+var _63e=this.getProperty("default");
 var url=this.getProperty("url");
-var _634=this.getProperty("flip");
+var _640=this.getProperty("flip");
 this.labelBinding=LabelBinding.newInstance(this.bindingDocument);
 this.add(this.labelBinding);
 this.labelBinding.attach();
 this.shadowTree.labelBinding=this.labelBinding;
-if(_634){
+if(_640){
 this.flip(true);
 }
 if(!this._stateManager){
@@ -7622,53 +7649,53 @@ this._stateManager=new ButtonStateManager(this);
 if(this.imageProfile!=null&&this.imageProfile.getDefaultImage()!=null){
 this.setImage(this.imageProfile.getDefaultImage());
 }
-if(_626!=null){
-this.setLabel(_626);
+if(_632!=null){
+this.setLabel(_632);
 }
 if(type!=null){
 this.setType(type);
 }
-if(_629!=null){
-this.setToolTip(_629);
+if(_635!=null){
+this.setToolTip(_635);
 }
-if(_625!=null){
-this.setWidth(_625);
+if(_631!=null){
+this.setWidth(_631);
 }
-if(_628!=null){
-this.setPopup(_628);
+if(_634!=null){
+this.setPopup(_634);
 }
-if(_62b!=null){
-this.response=_62b;
+if(_637!=null){
+this.response=_637;
 }
-if(_62e==true){
+if(_63a==true){
 if(this.isCheckButton||this.isRadioButton){
 this.check(true);
 }
 }
-if(_62c!=null&&this.oncommand==null){
+if(_638!=null&&this.oncommand==null){
 this.oncommand=function(){
-Binding.evaluate(_62c,this);
+Binding.evaluate(_638,this);
 };
 }
-if(_630||this.isFocusable){
+if(_63c||this.isFocusable){
 this._makeFocusable();
-if(_632||this.isDefault){
+if(_63e||this.isDefault){
 this.isDefault=true;
 }
-if(_631){
+if(_63d){
 this.focus();
 }
 }
-if(_62a==true){
+if(_636==true){
 this.disable();
 }
 if(url!=null){
 this.setURL(url);
 }
-if(_62f!=null){
-this.bindingWindow.DataManager.registerDataBinding(_62f,this);
-if(_62d!=null){
-Binding.dotnetify(this,_62d);
+if(_63b!=null){
+this.bindingWindow.DataManager.registerDataBinding(_63b,this);
+if(_639!=null){
+Binding.dotnetify(this,_639);
 }
 if(this.oncommand==null){
 this.oncommand=function(){
@@ -7687,20 +7714,20 @@ this.isFocusable=true;
 this.attachClassName(ButtonBinding.CLASSNAME_FOCUSABLE);
 this._isFocusableButton=true;
 };
-ButtonBinding.prototype.setImage=function(_635){
+ButtonBinding.prototype.setImage=function(_641){
 if(this.isAttached){
-this.labelBinding.setImage(_635);
+this.labelBinding.setImage(_641);
 }
-this.setProperty("image",_635);
+this.setProperty("image",_641);
 };
 ButtonBinding.prototype.getImage=function(){
 return this.getProperty("image");
 };
-ButtonBinding.prototype.setLabel=function(_636){
+ButtonBinding.prototype.setLabel=function(_642){
 if(this.isAttached){
-this.labelBinding.setLabel(_636);
+this.labelBinding.setLabel(_642);
 }
-this.setProperty("label",_636);
+this.setProperty("label",_642);
 };
 ButtonBinding.prototype.getLabel=function(){
 return this.getProperty("label");
@@ -7716,17 +7743,17 @@ break;
 }
 this.setProperty("type",type);
 };
-ButtonBinding.prototype.setToolTip=function(_638){
-this.setProperty("tooltip",_638);
+ButtonBinding.prototype.setToolTip=function(_644){
+this.setProperty("tooltip",_644);
 if(this.isAttached==true){
-this.setProperty("title",Resolver.resolve(_638));
+this.setProperty("title",Resolver.resolve(_644));
 }
 };
 ButtonBinding.prototype.getToolTip=function(){
 return this.getProperty("tooltip");
 };
-ButtonBinding.prototype.setImageProfile=function(_639){
-this.imageProfile=new _639(this);
+ButtonBinding.prototype.setImageProfile=function(_645){
+this.imageProfile=new _645(this);
 };
 ButtonBinding.prototype.setPopup=function(arg){
 this.popupBinding=this.getBindingForArgument(arg);
@@ -7759,12 +7786,12 @@ this.setProperty("url",url);
 ButtonBinding.prototype.getURL=function(){
 return this.getProperty("url");
 };
-ButtonBinding.prototype.flip=function(_63e){
-_63e=_63e==null?true:_63e;
-this.isFlipped=_63e;
-this.setProperty("flip",_63e);
+ButtonBinding.prototype.flip=function(_64a){
+_64a=_64a==null?true:_64a;
+this.isFlipped=_64a;
+this.setProperty("flip",_64a);
 if(this.isAttached){
-this.labelBinding.flip(_63e);
+this.labelBinding.flip(_64a);
 }
 };
 ButtonBinding.prototype.fireCommand=function(){
@@ -7797,53 +7824,53 @@ this.check();
 }
 }
 };
-ButtonBinding.prototype.check=function(_63f){
+ButtonBinding.prototype.check=function(_64b){
 if((this.isCheckButton||this.isRadioButton)&&!this.isChecked){
 if(this.isAttached==true){
 this._check();
-if(!_63f==true){
+if(!_64b==true){
 this.fireCommand();
 }
 }
 this.setProperty("ischecked",true);
 }
 };
-ButtonBinding.prototype._check=function(_640){
+ButtonBinding.prototype._check=function(_64c){
 this.isActive=true;
 this.isChecked=true;
-if(!_640){
+if(!_64c){
 this._stateManager.invokeActiveState();
 }
 };
-ButtonBinding.prototype.uncheck=function(_641){
+ButtonBinding.prototype.uncheck=function(_64d){
 if((this.isCheckButton||this.isRadioButton)&&this.isChecked){
 if(this.isAttached==true){
 this._uncheck();
-if(!_641==true){
+if(!_64d==true){
 this.fireCommand();
 }
 }
 this.setProperty("ischecked",false);
 }
 };
-ButtonBinding.prototype._uncheck=function(_642){
+ButtonBinding.prototype._uncheck=function(_64e){
 this.isActive=false;
 this.isChecked=false;
-if(!_642){
+if(!_64e){
 this._stateManager.invokeNormalState();
 }
 };
-ButtonBinding.prototype.setChecked=function(_643,_644){
-if(_643==null){
-_643==false;
+ButtonBinding.prototype.setChecked=function(_64f,_650){
+if(_64f==null){
+_64f==false;
 }
 if(this.isCheckButton||this.isRadioButton){
-switch(_643){
+switch(_64f){
 case true:
-this.check(_644);
+this.check(_650);
 break;
 case false:
-this.uncheck(_644);
+this.uncheck(_650);
 break;
 }
 }
@@ -7863,9 +7890,9 @@ this._stateManager.invokeDisabledState();
 break;
 case false:
 this.deleteProperty("isdisabled");
-var _646=this.getProperty("tooltip");
-if(_646){
-this.setToolTip(_646);
+var _652=this.getProperty("tooltip");
+if(_652){
+this.setToolTip(_652);
 }
 if(this._stateManager!=null){
 this._stateManager.invokeNormalState();
@@ -7904,21 +7931,21 @@ ButtonBinding.prototype.onMouseUp=function(){
 EventBroadcaster.broadcast(BroadcastMessages.MOUSEEVENT_MOUSEUP,this);
 };
 ButtonBinding.prototype.getEqualSizeWidth=function(){
-var _647=null;
+var _653=null;
 if(this.isAttached==true){
 this.labelBinding.bindingElement.style.marginLeft="0";
 this.labelBinding.bindingElement.style.marginRight="0";
-_647=this.labelBinding.bindingElement.offsetWidth;
+_653=this.labelBinding.bindingElement.offsetWidth;
 }else{
 throw "ButtonBinding: getEqualSizeWidth failed for non-attached button.";
 }
-return _647;
+return _653;
 };
 ButtonBinding.prototype.setEqualSizeWidth=function(goal){
 if(this.isAttached==true){
-var _649=this.getEqualSizeWidth();
-if(goal>_649){
-var diff=goal-_649;
+var _655=this.getEqualSizeWidth();
+if(goal>_655){
+var diff=goal-_655;
 var marg=Math.floor(diff*0.5);
 this.labelBinding.bindingElement.style.marginLeft=marg+"px";
 this.labelBinding.bindingElement.style.marginRight=marg+"px";
@@ -7926,30 +7953,30 @@ this.labelBinding.bindingElement.style.marginRight=marg+"px";
 }
 };
 ButtonBinding.prototype.getWidth=function(){
-var _64c=null;
+var _658=null;
 if(this.isAttached==true){
-var _64d=CSSComputer.getPadding(this.bindingElement);
-var _64e=CSSComputer.getPadding(this.bindingElement);
-_64c=this.shadowTree.c.offsetWidth+this.shadowTree.e.offsetWidth+this.shadowTree.w.offsetWidth;
-_64c=_64c+_64d.left+_64d.right;
-_64c=_64c+_64e.left+_64e.right;
+var _659=CSSComputer.getPadding(this.bindingElement);
+var _65a=CSSComputer.getPadding(this.bindingElement);
+_658=this.shadowTree.c.offsetWidth+this.shadowTree.e.offsetWidth+this.shadowTree.w.offsetWidth;
+_658=_658+_659.left+_659.right;
+_658=_658+_65a.left+_65a.right;
 }else{
 throw "ButtonBinding: getWidth failed for non-attached button.";
 }
-return _64c;
+return _658;
 };
-ButtonBinding.prototype.setWidth=function(_64f){
+ButtonBinding.prototype.setWidth=function(_65b){
 if(this.isAttached==true){
-var _650=this.shadowTree.e.offsetWidth+this.shadowTree.w.offsetWidth;
-var _651=CSSComputer.getPadding(this.shadowTree.c);
-var _652=_64f-_650;
-_652=_652-_651.left-_651.right;
-this.shadowTree.c.style.width=String(_652)+"px";
+var _65c=this.shadowTree.e.offsetWidth+this.shadowTree.w.offsetWidth;
+var _65d=CSSComputer.getPadding(this.shadowTree.c);
+var _65e=_65b-_65c;
+_65e=_65e-_65d.left-_65d.right;
+this.shadowTree.c.style.width=String(_65e)+"px";
 if(this.getProperty("centered")){
-this.labelBinding.bindingElement.style.marginLeft=String(0.5*(_652-this.labelBinding.bindingElement.offsetWidth))+"px";
+this.labelBinding.bindingElement.style.marginLeft=String(0.5*(_65e-this.labelBinding.bindingElement.offsetWidth))+"px";
 }
 }
-this.setProperty("width",_64f);
+this.setProperty("width",_65b);
 };
 ButtonBinding.prototype.validate=function(){
 return true;
@@ -7963,31 +7990,31 @@ ButtonBinding.prototype.getName=function(){
 ButtonBinding.prototype.getValue=function(){
 return this.shadowTree.dotnetinput.value;
 };
-ButtonBinding.prototype.setValue=function(_653){
-this.shadowTree.dotnetinput.value=_653;
+ButtonBinding.prototype.setValue=function(_65f){
+this.shadowTree.dotnetinput.value=_65f;
 };
 ButtonBinding.prototype.getResult=function(){
 return this.getValue();
 };
-ButtonBinding.prototype.setResult=function(_654){
-this.setValue(_654);
+ButtonBinding.prototype.setResult=function(_660){
+this.setValue(_660);
 };
 ButtonStateManager.STATE_NORMAL=0;
 ButtonStateManager.STATE_HOVER=1;
 ButtonStateManager.STATE_ACTIVE=2;
 ButtonStateManager.RIGHT_BUTTON=2;
-function ButtonStateManager(_655){
+function ButtonStateManager(_661){
 this.logger=SystemLogger.getLogger("ButtonStateManager");
-this.binding=_655;
-this.imageProfile=_655.imageProfile;
+this.binding=_661;
+this.imageProfile=_661.imageProfile;
 this.assignDOMEvents(true);
 }
-ButtonStateManager.prototype.assignDOMEvents=function(_656){
-var _657=_656?"addEventListener":"removeEventListener";
-this.binding[_657](DOMEvents.MOUSEENTER,this);
-this.binding[_657](DOMEvents.MOUSELEAVE,this);
-this.binding[_657](DOMEvents.MOUSEDOWN,this);
-this.binding[_657](DOMEvents.MOUSEUP,this);
+ButtonStateManager.prototype.assignDOMEvents=function(_662){
+var _663=_662?"addEventListener":"removeEventListener";
+this.binding[_663](DOMEvents.MOUSEENTER,this);
+this.binding[_663](DOMEvents.MOUSELEAVE,this);
+this.binding[_663](DOMEvents.MOUSEDOWN,this);
+this.binding[_663](DOMEvents.MOUSEUP,this);
 };
 ButtonStateManager.prototype.dispose=function(){
 this.assignDOMEvents(false);
@@ -7996,31 +8023,31 @@ this.imageProfile=null;
 };
 ButtonStateManager.prototype.handleEvent=function(e){
 if(Binding.exists(this.binding)&&!this.binding.isDisabled&&!BindingDragger.isDragging){
-var _659=false,_65a=null;
+var _665=false,_666=null;
 if(e.button==ButtonStateManager.RIGHT_BUTTON){
 }else{
 if(this.binding.isCheckBox){
 switch(e.type){
 case DOMEvents.MOUSEENTER:
 case DOMEvents.MOUSEOVER:
-_65a=ButtonStateManager.STATE_HOVER;
+_666=ButtonStateManager.STATE_HOVER;
 break;
 case DOMEvents.MOUSELEAVE:
 case DOMEvents.MOUSEOUT:
-_65a=this.binding.isChecked?ButtonStateManager.STATE_ACTIVE:ButtonStateManager.STATE_NORMAL;
+_666=this.binding.isChecked?ButtonStateManager.STATE_ACTIVE:ButtonStateManager.STATE_NORMAL;
 break;
 case DOMEvents.MOUSEDOWN:
-_65a=ButtonStateManager.STATE_HOVER;
+_666=ButtonStateManager.STATE_HOVER;
 break;
 case DOMEvents.MOUSEUP:
 this.binding.isChecked=!this.binding.isChecked;
-_65a=this.binding.isChecked?ButtonStateManager.STATE_ACTIVE:ButtonStateManager.STATE_NORMAL;
-if(_65a==ButtonStateManager.STATE_ACTIVE){
+_666=this.binding.isChecked?ButtonStateManager.STATE_ACTIVE:ButtonStateManager.STATE_NORMAL;
+if(_666==ButtonStateManager.STATE_ACTIVE){
 this.binding._check(true);
 }else{
 this.binding._uncheck(true);
 }
-_659=true;
+_665=true;
 break;
 }
 }else{
@@ -8029,28 +8056,28 @@ switch(e.type){
 case DOMEvents.MOUSEENTER:
 case DOMEvents.MOUSEOVER:
 if(!this.binding.isChecked){
-_65a=ButtonStateManager.STATE_HOVER;
+_666=ButtonStateManager.STATE_HOVER;
 }
 break;
 case DOMEvents.MOUSELEAVE:
 case DOMEvents.MOUSEOUT:
 if(!this.binding.isChecked){
-_65a=ButtonStateManager.STATE_NORMAL;
+_666=ButtonStateManager.STATE_NORMAL;
 }
 break;
 case DOMEvents.MOUSEDOWN:
-_65a=ButtonStateManager.STATE_ACTIVE;
+_666=ButtonStateManager.STATE_ACTIVE;
 break;
 case DOMEvents.MOUSEUP:
 if(this.binding.isCheckButton||!this.binding.isChecked){
 this.binding.isChecked=!this.binding.isChecked;
-_65a=this.binding.isChecked?ButtonStateManager.STATE_ACTIVE:ButtonStateManager.STATE_NORMAL;
-if(_65a==ButtonStateManager.STATE_ACTIVE){
+_666=this.binding.isChecked?ButtonStateManager.STATE_ACTIVE:ButtonStateManager.STATE_NORMAL;
+if(_666==ButtonStateManager.STATE_ACTIVE){
 this.binding._check(true);
 }else{
 this.binding._uncheck(true);
 }
-_659=true;
+_665=true;
 }
 break;
 }
@@ -8058,24 +8085,24 @@ break;
 switch(e.type){
 case DOMEvents.MOUSEENTER:
 case DOMEvents.MOUSEOVER:
-_65a=ButtonStateManager.STATE_HOVER;
+_666=ButtonStateManager.STATE_HOVER;
 break;
 case DOMEvents.MOUSELEAVE:
 case DOMEvents.MOUSEOUT:
-_65a=ButtonStateManager.STATE_NORMAL;
+_666=ButtonStateManager.STATE_NORMAL;
 break;
 case DOMEvents.MOUSEDOWN:
-_65a=ButtonStateManager.STATE_ACTIVE;
+_666=ButtonStateManager.STATE_ACTIVE;
 break;
 case DOMEvents.MOUSEUP:
-_65a=ButtonStateManager.STATE_NORMAL;
-_659=true;
+_666=ButtonStateManager.STATE_NORMAL;
+_665=true;
 break;
 }
 }
 }
 }
-switch(_65a){
+switch(_666){
 case ButtonStateManager.STATE_NORMAL:
 this.invokeNormalState();
 break;
@@ -8086,7 +8113,7 @@ case ButtonStateManager.STATE_ACTIVE:
 this.invokeActiveState();
 break;
 }
-if(_659){
+if(_665){
 this.binding.fireCommand();
 }
 if(Binding.exists(this.binding)==true){
@@ -8138,9 +8165,9 @@ this.binding.detachClassName("hover");
 this.binding.detachClassName("active");
 this.binding.attachClassName("isdisabled");
 if(this.imageProfile){
-var _65e=this.imageProfile.getDisabledImage();
-if(_65e){
-this.binding.setImage(_65e);
+var _66a=this.imageProfile.getDisabledImage();
+if(_66a){
+this.binding.setImage(_66a);
 }
 }
 };
@@ -8153,9 +8180,9 @@ this.logger=SystemLogger.getLogger("ClickButtonBinding");
 ClickButtonBinding.prototype.toString=function(){
 return "[ClickButtonBinding]";
 };
-ClickButtonBinding.newInstance=function(_65f){
-var _660=DOMUtil.createElementNS(Constants.NS_UI,"ui:clickbutton",_65f);
-return UserInterface.registerBinding(_660,ClickButtonBinding);
+ClickButtonBinding.newInstance=function(_66b){
+var _66c=DOMUtil.createElementNS(Constants.NS_UI,"ui:clickbutton",_66b);
+return UserInterface.registerBinding(_66c,ClickButtonBinding);
 };
 RadioButtonBinding.prototype=new ButtonBinding;
 RadioButtonBinding.prototype.constructor=RadioButtonBinding;
@@ -8174,9 +8201,9 @@ return this;
 RadioButtonBinding.prototype.toString=function(){
 return "[RadioButtonBinding]";
 };
-RadioButtonBinding.newInstance=function(_661){
-var _662=DOMUtil.createElementNS(Constants.NS_UI,"ui:radiobutton",_661);
-return UserInterface.registerBinding(_662,RadioButtonBinding);
+RadioButtonBinding.newInstance=function(_66d){
+var _66e=DOMUtil.createElementNS(Constants.NS_UI,"ui:radiobutton",_66d);
+return UserInterface.registerBinding(_66e,RadioButtonBinding);
 };
 CheckButtonBinding.prototype=new ButtonBinding;
 CheckButtonBinding.prototype.constructor=CheckButtonBinding;
@@ -8191,9 +8218,9 @@ this.imageProfile=new CheckButtonImageProfile(this);
 CheckButtonBinding.prototype.toString=function(){
 return "[CheckButtonBinding]";
 };
-CheckButtonBinding.newInstance=function(_663){
-var _664=DOMUtil.createElementNS(Constants.NS_UI,"ui:checkbutton",_663);
-return UserInterface.registerBinding(_664,CheckButtonBinding);
+CheckButtonBinding.newInstance=function(_66f){
+var _670=DOMUtil.createElementNS(Constants.NS_UI,"ui:checkbutton",_66f);
+return UserInterface.registerBinding(_670,CheckButtonBinding);
 };
 CheckButtonImageProfile.IMG_DEFAULT="${skin}/buttons/checkbutton-default.png";
 CheckButtonImageProfile.IMG_HOVER="${skin}/buttons/checkbutton-hover.png";
@@ -8201,8 +8228,8 @@ CheckButtonImageProfile.IMG_ACTIVE="${skin}/buttons/checkbutton-active.png";
 CheckButtonImageProfile.IMG_ACTIVE_HOVER="${skin}/buttons/checkbutton-active-hover.png";
 CheckButtonImageProfile.IMG_DISABLED=null;
 CheckButtonImageProfile.IMG_DISABLED_ON=null;
-function CheckButtonImageProfile(_665){
-this._binding=_665;
+function CheckButtonImageProfile(_671){
+this._binding=_671;
 }
 CheckButtonImageProfile.prototype.getDefaultImage=function(){
 return CheckButtonImageProfile.IMG_DEFAULT;
@@ -8248,9 +8275,9 @@ this.addEventListener(DOMEvents.MOUSEDOWN);
 this.addEventListener(DOMEvents.MOUSEUP);
 };
 ControlGroupBinding.prototype.onActivate=function(){
-var _666=this.getDescendantBindingsByLocalName("control");
-_666.each(function(_667){
-_667.setControlType(_667.controlType);
+var _672=this.getDescendantBindingsByLocalName("control");
+_672.each(function(_673){
+_673.setControlType(_673.controlType);
 });
 };
 ControlGroupBinding.prototype.onDeactivate=ControlGroupBinding.prototype.onActivate;
@@ -8267,9 +8294,9 @@ EventBroadcaster.broadcast(BroadcastMessages.MOUSEEVENT_MOUSEUP,e);
 break;
 }
 };
-ControlGroupBinding.newInstance=function(_669){
-var _66a=DOMUtil.createElementNS(Constants.NS_UI,"ui:controlgroup",_669);
-return UserInterface.registerBinding(_66a,ControlGroupBinding);
+ControlGroupBinding.newInstance=function(_675){
+var _676=DOMUtil.createElementNS(Constants.NS_UI,"ui:controlgroup",_675);
+return UserInterface.registerBinding(_676,ControlGroupBinding);
 };
 ControlBinding.prototype=new ButtonBinding;
 ControlBinding.prototype.constructor=ControlBinding;
@@ -8327,9 +8354,9 @@ if(this.isAttached){
 this.setImage(this.imageProfile.getDefaultImage());
 }
 };
-ControlBinding.prototype.handleAction=function(_66d){
-ControlBinding.superclass.handleAction.call(this,_66d);
-switch(_66d.type){
+ControlBinding.prototype.handleAction=function(_679){
+ControlBinding.superclass.handleAction.call(this,_679);
+switch(_679.type){
 case ControlBoxBinding.ACTION_STATECHANGE:
 this._handleStateChange();
 break;
@@ -8371,34 +8398,34 @@ ControlImageProfile.IMAGE_MINIMIZE=null;
 ControlImageProfile.IMAGE_MAXIMIZE=null;
 ControlImageProfile.IMAGE_RESTORE=null;
 ControlImageProfile.IMAGE_CLOSE=null;
-function ControlImageProfile(_66e){
-this.binding=_66e;
+function ControlImageProfile(_67a){
+this.binding=_67a;
 }
-ControlImageProfile.prototype._getImage=function(_66f){
-var _670=null;
+ControlImageProfile.prototype._getImage=function(_67b){
+var _67c=null;
 switch(this.binding.controlType){
 case ControlBinding.TYPE_MINIMIZE:
-_670=this.constructor.IMAGE_MINIMIZE;
+_67c=this.constructor.IMAGE_MINIMIZE;
 break;
 case ControlBinding.TYPE_MAXIMIZE:
-_670=this.constructor.IMAGE_MAXIMIZE;
+_67c=this.constructor.IMAGE_MAXIMIZE;
 break;
 case ControlBinding.TYPE_UNMAXIMIZE:
 case ControlBinding.TYPE_UNMINIMIZE:
-_670=this.constructor.IMAGE_RESTORE;
+_67c=this.constructor.IMAGE_RESTORE;
 break;
 case ControlBinding.TYPE_CLOSE:
-_670=this.constructor.IMAGE_CLOSE;
+_67c=this.constructor.IMAGE_CLOSE;
 break;
 }
-return _670.replace("${string}",_66f);
+return _67c.replace("${string}",_67b);
 };
 ControlImageProfile.prototype.getDefaultImage=function(){
-var _671=true;
+var _67d=true;
 if(this.binding.isGhostable&&this.binding.containingControlBoxBinding){
-_671=this.binding.containingControlBoxBinding.isActive?true:false;
+_67d=this.binding.containingControlBoxBinding.isActive?true:false;
 }
-return _671?this._getImage("default"):this._getImage("ghosted");
+return _67d?this._getImage("default"):this._getImage("ghosted");
 };
 ControlImageProfile.prototype.getHoverImage=function(){
 return this._getImage("hover");
@@ -8430,23 +8457,23 @@ ControlBoxBinding.superclass.onBindingAttach.call(this);
 this.addActionListener(ControlBinding.ACTION_COMMAND,this);
 this.attachClassName(ControlBoxBinding.STATE_NORMAL);
 };
-ControlBoxBinding.prototype.handleAction=function(_672){
-ControlBoxBinding.superclass.handleAction.call(this,_672);
-switch(_672.type){
+ControlBoxBinding.prototype.handleAction=function(_67e){
+ControlBoxBinding.superclass.handleAction.call(this,_67e);
+switch(_67e.type){
 case ControlBinding.ACTION_COMMAND:
-var _673=_672.target;
+var _67f=_67e.target;
 Application.lock(this);
 var self=this;
 setTimeout(function(){
-self.handleInvokedControl(_673);
+self.handleInvokedControl(_67f);
 Application.unlock(self);
 },0);
-_672.consume();
+_67e.consume();
 break;
 }
 };
-ControlBoxBinding.prototype.handleInvokedControl=function(_675){
-switch(_675.controlType){
+ControlBoxBinding.prototype.handleInvokedControl=function(_681){
+switch(_681.controlType){
 case ControlBinding.TYPE_MAXIMIZE:
 this.maximize();
 break;
@@ -8480,19 +8507,19 @@ this.isNormalized=true;
 this.isMaximized=false;
 this.isMinimized=false;
 };
-ControlBoxBinding.prototype.setState=function(_676){
-var _677=this.getState();
-this.setProperty("state",_676);
-this.detachClassName(_677);
-this.attachClassName(_676);
+ControlBoxBinding.prototype.setState=function(_682){
+var _683=this.getState();
+this.setProperty("state",_682);
+this.detachClassName(_683);
+this.attachClassName(_682);
 this.dispatchAction(ControlBoxBinding.ACTION_STATECHANGE);
 };
 ControlBoxBinding.prototype.getState=function(){
-var _678=this.getProperty("state");
-if(!_678){
-_678=ControlBoxBinding.STATE_NORMAL;
+var _684=this.getProperty("state");
+if(!_684){
+_684=ControlBoxBinding.STATE_NORMAL;
 }
-return _678;
+return _684;
 };
 MenuContainerBinding.prototype=new Binding;
 MenuContainerBinding.prototype.constructor=MenuContainerBinding;
@@ -8507,21 +8534,21 @@ this.menuPopupBinding=null;
 MenuContainerBinding.prototype.toString=function(){
 return "[MenuContainerBinding]";
 };
-MenuContainerBinding.prototype.isOpen=function(_679){
-var _67a=null;
-if(!_679){
-_67a=this._isOpen;
+MenuContainerBinding.prototype.isOpen=function(_685){
+var _686=null;
+if(!_685){
+_686=this._isOpen;
 }else{
-_67a=(_679==this._openElement);
+_686=(_685==this._openElement);
 }
-return _67a;
+return _686;
 };
-MenuContainerBinding.prototype.setOpenElement=function(_67b){
-if(_67b){
+MenuContainerBinding.prototype.setOpenElement=function(_687){
+if(_687){
 if(this._openElement){
 this._openElement.hide();
 }
-this._openElement=_67b;
+this._openElement=_687;
 this._isOpen=true;
 }else{
 this._openElement=null;
@@ -8535,19 +8562,19 @@ this.menuContainerBinding=this.getAncestorBindingByType(MenuContainerBinding);
 return this.menuContainerBinding;
 };
 MenuContainerBinding.prototype.getMenuPopupBinding=function(){
-var _67c=this.getChildBindingByLocalName("menupopup");
-if(_67c&&_67c!=this.menuPopupBinding){
-this.menuPopupBinding=_67c;
+var _688=this.getChildBindingByLocalName("menupopup");
+if(_688&&_688!=this.menuPopupBinding){
+this.menuPopupBinding=_688;
 this.menuPopupBinding.addActionListener(PopupBinding.ACTION_HIDE,this);
 }
 return this.menuPopupBinding;
 };
 MenuContainerBinding.prototype.show=function(){
-var _67d=this.getMenuContainerBinding();
-_67d.setOpenElement(this);
-var _67e=this.getMenuPopupBinding();
-_67e.snapTo(this.bindingElement);
-_67e.show();
+var _689=this.getMenuContainerBinding();
+_689.setOpenElement(this);
+var _68a=this.getMenuPopupBinding();
+_68a.snapTo(this.bindingElement);
+_68a.show();
 };
 MenuContainerBinding.prototype.hide=function(){
 this.reset();
@@ -8557,13 +8584,13 @@ this._openElement.hide();
 }
 };
 MenuContainerBinding.prototype.reset=Binding.ABSTRACT_METHOD;
-MenuContainerBinding.prototype.handleAction=function(_67f){
-MenuContainerBinding.superclass.handleAction.call(this,_67f);
-if(_67f.type==PopupBinding.ACTION_HIDE){
-var _680=this.getMenuContainerBinding();
-_680.setOpenElement(false);
+MenuContainerBinding.prototype.handleAction=function(_68b){
+MenuContainerBinding.superclass.handleAction.call(this,_68b);
+if(_68b.type==PopupBinding.ACTION_HIDE){
+var _68c=this.getMenuContainerBinding();
+_68c.setOpenElement(false);
 this.reset();
-_67f.consume();
+_68b.consume();
 }
 };
 MenuBarBinding.prototype=new MenuContainerBinding;
@@ -8582,16 +8609,16 @@ MenuBarBinding.superclass.onBindingRegister.call(this);
 this.addActionListener(MenuBodyBinding.ACTION_UNHANDLED_LEFTRIGHTKEY);
 this.attachClassName(Binding.CLASSNAME_CLEARFLOAT);
 };
-MenuBarBinding.prototype.handleAction=function(_681){
-MenuBarBinding.superclass.handleAction.call(this,_681);
-switch(_681.type){
+MenuBarBinding.prototype.handleAction=function(_68d){
+MenuBarBinding.superclass.handleAction.call(this,_68d);
+switch(_68d.type){
 case MenuBodyBinding.ACTION_UNHANDLED_LEFTRIGHTKEY:
-var _682=_681.target;
-var _683=this.getChildBindingsByLocalName("menu");
-while(_683.hasNext()){
-var menu=_683.getNext();
+var _68e=_68d.target;
+var _68f=this.getChildBindingsByLocalName("menu");
+while(_68f.hasNext()){
+var menu=_68f.getNext();
 }
-switch(_682.arrowKey){
+switch(_68e.arrowKey){
 case KeyEventCodes.VK_LEFT:
 this.logger.debug("LEFTG");
 break;
@@ -8619,20 +8646,20 @@ this.buildDOMContent();
 this.assignDOMEvents();
 };
 MenuBinding.prototype.buildDOMContent=function(){
-var _685=this.getProperty("image");
-var _686=this.getProperty("label");
-var _687=this.getProperty("tooltip");
+var _691=this.getProperty("image");
+var _692=this.getProperty("label");
+var _693=this.getProperty("tooltip");
 this.labelBinding=LabelBinding.newInstance(this.bindingDocument);
 this.labelBinding.attachClassName("menulabel");
 this.add(this.labelBinding);
-if(_686){
-this.setLabel(_686);
+if(_692){
+this.setLabel(_692);
 }
-if(_685){
-this.setImage(_685);
+if(_691){
+this.setImage(_691);
 }
-if(_687){
-this.setToolTip(_687);
+if(_693){
+this.setToolTip(_693);
 }
 };
 MenuBinding.prototype.reset=function(){
@@ -8644,16 +8671,16 @@ if(this.isAttached){
 this.labelBinding.setImage(Resolver.resolve(url));
 }
 };
-MenuBinding.prototype.setLabel=function(_689){
-this.setProperty("label",_689);
+MenuBinding.prototype.setLabel=function(_695){
+this.setProperty("label",_695);
 if(this.isAttached){
-this.labelBinding.setLabel(Resolver.resolve(_689));
+this.labelBinding.setLabel(Resolver.resolve(_695));
 }
 };
-MenuBinding.prototype.setToolTip=function(_68a){
-this.setProperty("tooltip",_68a);
+MenuBinding.prototype.setToolTip=function(_696){
+this.setProperty("tooltip",_696);
 if(this.isAttached){
-this.labelBinding.setToolTip(Resolver.resolve(_68a));
+this.labelBinding.setToolTip(Resolver.resolve(_696));
 }
 };
 MenuBinding.prototype.getImage=function(){
@@ -8673,16 +8700,16 @@ this.addEventListener(DOMEvents.MOUSEUP);
 };
 MenuBinding.prototype.handleEvent=function(e){
 MenuBinding.superclass.handleEvent.call(this,e);
-var _68c=this.getMenuContainerBinding();
+var _698=this.getMenuContainerBinding();
 if(!BindingDragger.isDragging){
 switch(e.type){
 case DOMEvents.MOUSEDOWN:
-if(_68c.isOpen(this)){
+if(_698.isOpen(this)){
 DOMEvents.stopPropagation(e);
 }
 break;
 case DOMEvents.MOUSEOVER:
-if(_68c.isOpen()&&!_68c.isOpen(this)){
+if(_698.isOpen()&&!_698.isOpen(this)){
 this.show();
 this.menuPopupBinding.grabKeyboard();
 }
@@ -8690,13 +8717,13 @@ this.attachClassName("hover");
 this.isFocused=true;
 break;
 case DOMEvents.MOUSEOUT:
-if(!_68c.isOpen()){
+if(!_698.isOpen()){
 this.hide();
 }
 this.isFocused=false;
 break;
 case DOMEvents.MOUSEUP:
-if(!_68c.isOpen(this)){
+if(!_698.isOpen(this)){
 this.show();
 this.menuPopupBinding.grabKeyboard();
 }
@@ -8712,11 +8739,11 @@ MenuBodyBinding.superclass=Binding.prototype;
 MenuBodyBinding.CLASSNAME_CHECKBOXED="checkboxed";
 MenuBodyBinding.ACTION_UNHANDLED_LEFTRIGHTKEY="menubody unhandled arrowkey";
 MenuBodyBinding.activeInstance=null;
-MenuBodyBinding.handleBroadcast=function(_68d,arg){
+MenuBodyBinding.handleBroadcast=function(_699,arg){
 var body=MenuBodyBinding.activeInstance;
 var key=arg;
 if(body){
-switch(_68d){
+switch(_699){
 case BroadcastMessages.KEY_ARROW:
 body.handleArrowKey(key);
 break;
@@ -8751,18 +8778,18 @@ this.addEventListener(DOMEvents.MOUSEOVER);
 this.addEventListener(DOMEvents.MOUSEOUT);
 this.addEventListener(DOMEvents.MOUSEUP);
 var self=this;
-this.addActionListener(MenuBodyBinding.ACTION_UNHANDLED_LEFTRIGHTKEY,{handleAction:function(_692){
-switch(_692.target){
+this.addActionListener(MenuBodyBinding.ACTION_UNHANDLED_LEFTRIGHTKEY,{handleAction:function(_69e){
+switch(_69e.target){
 case self:
 self.releaseKeyboard();
 self._containingPopupBinding.hide();
 break;
 default:
-var _693=null;
-var _694=true;
+var _69f=null;
+var _6a0=true;
 self._lastFocused.focus();
 self.grabKeyboard();
-_692.consume();
+_69e.consume();
 break;
 }
 }});
@@ -8792,28 +8819,28 @@ DOMEvents.stopPropagation(e);
 break;
 }
 };
-MenuBodyBinding.prototype.handleFocusedItem=function(_696){
+MenuBodyBinding.prototype.handleFocusedItem=function(_6a2){
 for(var key in this._focused){
-if(key!=_696.key){
+if(key!=_6a2.key){
 var item=this._focused[key];
 item.blur();
 }
 }
-this._focused[_696.key]=_696;
-this._lastFocused=_696;
+this._focused[_6a2.key]=_6a2;
+this._lastFocused=_6a2;
 if(MenuBodyBinding.activeInstance!=this){
 this.grabKeyboard();
 }
 };
-MenuBodyBinding.prototype.handleBlurredItem=function(_699){
-delete this._focused[_699.key];
+MenuBodyBinding.prototype.handleBlurredItem=function(_6a5){
+delete this._focused[_6a5.key];
 };
-MenuBodyBinding.prototype.resetFocusedItems=function(_69a){
+MenuBodyBinding.prototype.resetFocusedItems=function(_6a6){
 for(var key in this._focused){
 var item=this._focused[key];
-item.blur(_69a);
+item.blur(_6a6);
 }
-if(_69a){
+if(_6a6){
 this._lastFocused=null;
 }
 };
@@ -8821,33 +8848,33 @@ MenuBodyBinding.prototype.refreshMenuGroups=function(){
 if(!this.isAttached){
 throw "refreshMenuGroups: MenuBodyBinding not attached!";
 }else{
-var _69d=this.getChildBindingsByLocalName("menugroup");
-var _69e=null;
-var _69f=null;
-while(_69d.hasNext()){
-var _6a0=_69d.getNext();
-if(!_6a0.isDefaultContent){
-_6a0.setLayout(MenuGroupBinding.LAYOUT_DEFAULT);
-if(!_69e&&_6a0.isVisible){
-_69e=_6a0;
+var _6a9=this.getChildBindingsByLocalName("menugroup");
+var _6aa=null;
+var _6ab=null;
+while(_6a9.hasNext()){
+var _6ac=_6a9.getNext();
+if(!_6ac.isDefaultContent){
+_6ac.setLayout(MenuGroupBinding.LAYOUT_DEFAULT);
+if(!_6aa&&_6ac.isVisible){
+_6aa=_6ac;
 }
-if(_6a0.isVisible){
-_69f=_6a0;
+if(_6ac.isVisible){
+_6ab=_6ac;
 }
 }
 }
-if(_69e&&_69f){
-_69e.setLayout(MenuGroupBinding.LAYOUT_FIRST);
-_69f.setLayout(MenuGroupBinding.LAYOUT_LAST);
+if(_6aa&&_6ab){
+_6aa.setLayout(MenuGroupBinding.LAYOUT_FIRST);
+_6ab.setLayout(MenuGroupBinding.LAYOUT_LAST);
 }
 }
 };
-MenuBodyBinding.prototype.grabKeyboard=function(_6a1){
+MenuBodyBinding.prototype.grabKeyboard=function(_6ad){
 MenuBodyBinding.activeInstance=this;
-if(_6a1){
-var _6a2=this._getMenuItems().getFirst();
-if(_6a2){
-_6a2.focus();
+if(_6ad){
+var _6ae=this._getMenuItems().getFirst();
+if(_6ae){
+_6ae.focus();
 }
 }
 };
@@ -8857,25 +8884,25 @@ MenuBodyBinding.activeInstance=null;
 }
 };
 MenuBodyBinding.prototype.handleEnterKey=function(){
-var _6a3=this._lastFocused;
-if((_6a3!=null)&&(!_6a3.isMenuContainer)){
-_6a3.fireCommand();
+var _6af=this._lastFocused;
+if((_6af!=null)&&(!_6af.isMenuContainer)){
+_6af.fireCommand();
 EventBroadcaster.broadcast(BroadcastMessages.MOUSEEVENT_MOUSEDOWN);
 }
 };
 MenuBodyBinding.prototype.handleArrowKey=function(key){
 this.arrowKey=key;
-var _6a5=this._getMenuItems();
-var _6a6=null;
+var _6b1=this._getMenuItems();
+var _6b2=null;
 var next=null;
 if(this._lastFocused){
-_6a6=this._lastFocused;
+_6b2=this._lastFocused;
 switch(key){
 case KeyEventCodes.VK_UP:
-next=_6a5.getPreceding(_6a6);
+next=_6b1.getPreceding(_6b2);
 break;
 case KeyEventCodes.VK_DOWN:
-next=_6a5.getFollowing(_6a6);
+next=_6b1.getFollowing(_6b2);
 break;
 case KeyEventCodes.VK_LEFT:
 this.dispatchAction(MenuBodyBinding.ACTION_UNHANDLED_LEFTRIGHTKEY);
@@ -8891,7 +8918,7 @@ this.dispatchAction(MenuBodyBinding.ACTION_UNHANDLED_LEFTRIGHTKEY);
 break;
 }
 }else{
-next=_6a5.getFirst();
+next=_6b1.getFirst();
 }
 if(next){
 next.focus();
@@ -8900,15 +8927,15 @@ next.focus();
 MenuBodyBinding.prototype._getMenuItems=function(){
 if(!this._menuItemsList||this.isDirty){
 var list=new List();
-var _6a9=null;
-this.getChildBindingsByLocalName("menugroup").each(function(_6aa){
-_6a9=_6aa.getChildBindingsByLocalName("menuitem");
-_6a9.each(function(item){
+var _6b5=null;
+this.getChildBindingsByLocalName("menugroup").each(function(_6b6){
+_6b5=_6b6.getChildBindingsByLocalName("menuitem");
+_6b5.each(function(item){
 list.add(item);
 });
 });
-_6a9=this.getChildBindingsByLocalName("menuitem");
-_6a9.each(function(item){
+_6b5=this.getChildBindingsByLocalName("menuitem");
+_6b5.each(function(item){
 list.add(item);
 });
 this._menuItemsList=list;
@@ -8930,9 +8957,9 @@ this._hasImageLayout=true;
 MenuBodyBinding.prototype.setDimension=function(dim){
 this.getBindingElement().style.width=new String(dim.w)+"px";
 };
-MenuBodyBinding.newInstance=function(_6ae){
-var _6af=DOMUtil.createElementNS(Constants.NS_UI,"ui:menubody",_6ae);
-return UserInterface.registerBinding(_6af,MenuBodyBinding);
+MenuBodyBinding.newInstance=function(_6ba){
+var _6bb=DOMUtil.createElementNS(Constants.NS_UI,"ui:menubody",_6ba);
+return UserInterface.registerBinding(_6bb,MenuBodyBinding);
 };
 MenuGroupBinding.prototype=new Binding;
 MenuGroupBinding.prototype.constructor=MenuGroupBinding;
@@ -8947,8 +8974,8 @@ this.isVisible=true;
 MenuGroupBinding.prototype.toString=function(){
 return "[MenuGroupBinding]";
 };
-MenuGroupBinding.prototype.setLayout=function(_6b0){
-switch(_6b0){
+MenuGroupBinding.prototype.setLayout=function(_6bc){
+switch(_6bc){
 case MenuGroupBinding.LAYOUT_DEFAULT:
 this.detachClassName("first");
 this.detachClassName("last");
@@ -8975,9 +9002,9 @@ this.bindingElement.style.visibility="hidden";
 this.isVisible=false;
 }
 };
-MenuGroupBinding.newInstance=function(_6b1){
-var _6b2=DOMUtil.createElementNS(Constants.NS_UI,"ui:menugroup",_6b1);
-return UserInterface.registerBinding(_6b2,MenuGroupBinding);
+MenuGroupBinding.newInstance=function(_6bd){
+var _6be=DOMUtil.createElementNS(Constants.NS_UI,"ui:menugroup",_6bd);
+return UserInterface.registerBinding(_6be,MenuGroupBinding);
 };
 MenuItemBinding.prototype=new MenuContainerBinding;
 MenuItemBinding.prototype.constructor=MenuItemBinding;
@@ -8989,7 +9016,7 @@ MenuItemBinding.CLASSNAME_CHECKBOX="checkboxindicator";
 MenuItemBinding.CLASSNAME_SUBMENU="submenuindicator";
 MenuItemBinding.CLASSNAME_HOVER="hover";
 MenuItemBinding.CHAR_CHECKBOX="V";
-MenuItemBinding.CHAR_SUBMENU=String.fromCharCode(9658);
+MenuItemBinding.CHAR_SUBMENU="\xe2\u2013\xba";
 MenuItemBinding.TIMEOUT=150;
 function MenuItemBinding(){
 this.logger=SystemLogger.getLogger("MenuItemBinding");
@@ -9028,52 +9055,52 @@ this.assignDOMEvents();
 this.dispatchAction(Binding.ACTION_ATTACHED);
 };
 MenuItemBinding.prototype.parseDOMProperties=function(){
-var _6b3=this.getProperty("image");
-var _6b4=this.getProperty("image-hover");
-var _6b5=this.getProperty("image-active");
-var _6b6=this.getProperty("image-disabled");
-if(!this.image&&_6b3){
-this.image=_6b3;
+var _6bf=this.getProperty("image");
+var _6c0=this.getProperty("image-hover");
+var _6c1=this.getProperty("image-active");
+var _6c2=this.getProperty("image-disabled");
+if(!this.image&&_6bf){
+this.image=_6bf;
 }
-if(!this.imageHover&&_6b4){
-this.imageHover=_6b3;
+if(!this.imageHover&&_6c0){
+this.imageHover=_6bf;
 }
-if(!this.imageActive&&_6b5){
-this.imageActive=_6b5;
+if(!this.imageActive&&_6c1){
+this.imageActive=_6c1;
 }
-if(!this.imageDisabled&&_6b6){
-this.imageDisabled=_6b6;
+if(!this.imageDisabled&&_6c2){
+this.imageDisabled=_6c2;
 }
 };
 MenuItemBinding.prototype.buildDOMContent=function(){
-var _6b7=this.getProperty("label");
-var _6b8=this.getProperty("tooltip");
+var _6c3=this.getProperty("label");
+var _6c4=this.getProperty("tooltip");
 var type=this.getProperty("type");
-var _6ba=this.getProperty("isdisabled");
-var _6bb=this.getProperty("image");
-var _6bc=this.getProperty("image-hover");
-var _6bd=this.getProperty("image-active");
-var _6be=this.getProperty("image-disabled");
+var _6c6=this.getProperty("isdisabled");
+var _6c7=this.getProperty("image");
+var _6c8=this.getProperty("image-hover");
+var _6c9=this.getProperty("image-active");
+var _6ca=this.getProperty("image-disabled");
 this.labelBinding=LabelBinding.newInstance(this.bindingDocument);
 this.labelBinding.attachClassName("menuitemlabel");
 this.add(this.labelBinding);
-var _6bf=this.getMenuPopupBinding();
-if(_6bf){
+var _6cb=this.getMenuPopupBinding();
+if(_6cb){
 this.isMenuContainer=true;
 this.setType(MenuItemBinding.TYPE_MENUCONTAINER);
 }
 if(!this.imageProfile){
-if(!this.image&&_6bb){
-this.image=_6bb;
+if(!this.image&&_6c7){
+this.image=_6c7;
 }
-if(!this.imageHover&&_6bc){
-this.imageHover=_6bb;
+if(!this.imageHover&&_6c8){
+this.imageHover=_6c7;
 }
-if(!this.imageActive&&_6bd){
-this.imageActive=_6bd;
+if(!this.imageActive&&_6c9){
+this.imageActive=_6c9;
 }
-if(!this.imageDisabled&&_6be){
-this.imageDisabled=_6be;
+if(!this.imageDisabled&&_6ca){
+this.imageDisabled=_6ca;
 }
 if(this.image||this.imageHover||this.imageActive||this.imageDisabled){
 this.imageProfile=new ImageProfile(this);
@@ -9084,11 +9111,11 @@ this.setImage(this.imageProfile.getDefaultImage());
 }else{
 this.setImage(null);
 }
-if(_6b7){
-this.setLabel(_6b7);
+if(_6c3){
+this.setLabel(_6c3);
 }
-if(_6b8){
-this.setToolTip(_6b8);
+if(_6c4){
+this.setToolTip(_6c4);
 }
 if(type){
 this.setType(type);
@@ -9098,16 +9125,16 @@ if(this.getProperty("ischecked")==true){
 this.check(true);
 }
 }
-if(_6ba==true){
+if(_6c6==true){
 this.disable();
 }
-var _6c0=this.getProperty("oncommand");
-if(_6c0){
+var _6cc=this.getProperty("oncommand");
+if(_6cc){
 if(this.isMenuContainer){
 throw new Error("MenuItemBinding with contained menuitems cannot fire commands.");
 }else{
 this.oncommand=function(){
-this.bindingWindow.eval(_6c0);
+this.bindingWindow.eval(_6cc);
 };
 }
 }
@@ -9152,16 +9179,16 @@ if(this.isAttached){
 this.labelBinding.setImage(Resolver.resolve(url));
 }
 };
-MenuItemBinding.prototype.setLabel=function(_6c3){
-this.setProperty("label",_6c3);
+MenuItemBinding.prototype.setLabel=function(_6cf){
+this.setProperty("label",_6cf);
 if(this.isAttached){
-this.labelBinding.setLabel(Resolver.resolve(_6c3));
+this.labelBinding.setLabel(Resolver.resolve(_6cf));
 }
 };
-MenuItemBinding.prototype.setToolTip=function(_6c4){
-this.setProperty("tooltip",_6c4);
+MenuItemBinding.prototype.setToolTip=function(_6d0){
+this.setProperty("tooltip",_6d0);
 if(this.isAttached){
-this.labelBinding.setToolTip(Resolver.resolve(_6c4));
+this.labelBinding.setToolTip(Resolver.resolve(_6d0));
 }
 };
 MenuItemBinding.prototype.reset=function(){
@@ -9176,23 +9203,23 @@ switch(type){
 case MenuItemBinding.TYPE_CHECKBOX:
 if(!this.isMenuContainer){
 this._containingMenuBodyBinding.invokeCheckBoxLayout();
-var _6c6=this.bindingDocument.createElement("div");
-_6c6.className=MenuItemBinding.CLASSNAME_CHECKBOX;
-_6c6.appendChild(this.bindingDocument.createTextNode(MenuItemBinding.CHAR_CHECKBOX));
-var _6c7=this.labelBinding.bindingElement;
-_6c7.insertBefore(_6c6,_6c7.firstChild);
-_6c6.style.display="none";
-this.shadowTree.checkBoxIndicator=_6c6;
+var _6d2=this.bindingDocument.createElement("div");
+_6d2.className=MenuItemBinding.CLASSNAME_CHECKBOX;
+_6d2.appendChild(this.bindingDocument.createTextNode(MenuItemBinding.CHAR_CHECKBOX));
+var _6d3=this.labelBinding.bindingElement;
+_6d3.insertBefore(_6d2,_6d3.firstChild);
+_6d2.style.display="none";
+this.shadowTree.checkBoxIndicator=_6d2;
 }else{
 throw new Error("MenuItemBinding: checkboxes cannot contain menus");
 }
 break;
 case MenuItemBinding.TYPE_MENUCONTAINER:
-var _6c6=this.bindingDocument.createElement("div");
-_6c6.className=MenuItemBinding.CLASSNAME_SUBMENU;
-_6c6.appendChild(this.bindingDocument.createTextNode(MenuItemBinding.CHAR_SUBMENU));
-var _6c7=this.labelBinding.bindingElement;
-_6c7.insertBefore(_6c6,_6c7.firstChild);
+var _6d2=this.bindingDocument.createElement("div");
+_6d2.className=MenuItemBinding.CLASSNAME_SUBMENU;
+_6d2.appendChild(this.bindingDocument.createTextNode(MenuItemBinding.CHAR_SUBMENU));
+var _6d3=this.labelBinding.bindingElement;
+_6d3.insertBefore(_6d2,_6d3.firstChild);
 break;
 }
 this.type=type;
@@ -9230,17 +9257,17 @@ if(this.isDisabled){
 this.labelBinding.detachClassName("hover");
 this.attachClassName("isdisabled");
 if(this.imageProfile){
-var _6c9=this.imageProfile.getDisabledImage();
-if(_6c9){
-this.setImage(_6c9);
+var _6d5=this.imageProfile.getDisabledImage();
+if(_6d5){
+this.setImage(_6d5);
 }
 }
 }else{
 this.detachClassName("isdisabled");
 if(this.imageProfile){
-var _6c9=this.imageProfile.getDefaultImage();
-if(_6c9){
-this.setImage(_6c9);
+var _6d5=this.imageProfile.getDefaultImage();
+if(_6d5){
+this.setImage(_6d5);
 }
 }
 }
@@ -9248,14 +9275,14 @@ this.setImage(_6c9);
 };
 MenuItemBinding.prototype.focus=function(e){
 this.labelBinding.attachClassName(MenuItemBinding.CLASSNAME_HOVER);
-var _6cb=this.getMenuContainerBinding();
-if(_6cb.isOpen()&&!_6cb.isOpen(this)){
-_6cb._openElement.hide();
-_6cb.setOpenElement(false);
+var _6d7=this.getMenuContainerBinding();
+if(_6d7.isOpen()&&!_6d7.isOpen(this)){
+_6d7._openElement.hide();
+_6d7.setOpenElement(false);
 }
 if(this.isMenuContainer&&e&&e.type==DOMEvents.MOUSEOVER){
-var _6cb=this.getMenuContainerBinding();
-if(!_6cb.isOpen(this)){
+var _6d7=this.getMenuContainerBinding();
+if(!_6d7.isOpen(this)){
 var self=this;
 this._showSubMenuTimeout=window.setTimeout(function(){
 self.show();
@@ -9278,48 +9305,48 @@ FocusBinding.focusElement(self.bindingElement);
 this.isFocused=true;
 this._containingMenuBodyBinding.handleFocusedItem(this);
 };
-MenuItemBinding.prototype.blur=function(_6cd){
+MenuItemBinding.prototype.blur=function(_6d9){
 if(this._showSubMenuTimeout){
 window.clearTimeout(this._showSubMenuTimeout);
 this._showSubMenuTimeout=null;
 }
 if(this.isFocused){
-var _6ce=this.getMenuContainerBinding();
-if(!_6ce||!_6ce.isOpen(this)||_6cd){
+var _6da=this.getMenuContainerBinding();
+if(!_6da||!_6da.isOpen(this)||_6d9){
 this.labelBinding.detachClassName(MenuItemBinding.CLASSNAME_HOVER);
 this.isFocused=false;
 this._containingMenuBodyBinding.handleBlurredItem(this);
 }
 }
 };
-MenuItemBinding.prototype.check=function(_6cf){
-this.setChecked(true,_6cf);
+MenuItemBinding.prototype.check=function(_6db){
+this.setChecked(true,_6db);
 };
-MenuItemBinding.prototype.uncheck=function(_6d0){
-this.setChecked(false,_6d0);
+MenuItemBinding.prototype.uncheck=function(_6dc){
+this.setChecked(false,_6dc);
 };
 MenuItemBinding.prototype.show=function(){
 this.menuPopupBinding.position=PopupBinding.POSITION_RIGHT;
 MenuItemBinding.superclass.show.call(this);
 };
-MenuItemBinding.prototype.setChecked=function(_6d1,_6d2){
-this.setProperty("ischecked",_6d1);
+MenuItemBinding.prototype.setChecked=function(_6dd,_6de){
+this.setProperty("ischecked",_6dd);
 if(this.isAttached){
 if(this.type==MenuItemBinding.TYPE_CHECKBOX){
-if(this.isChecked!=_6d1){
-this.isChecked=_6d1;
-this.shadowTree.checkBoxIndicator.style.display=_6d1?"block":"none";
-if(!_6d2){
+if(this.isChecked!=_6dd){
+this.isChecked=_6dd;
+this.shadowTree.checkBoxIndicator.style.display=_6dd?"block":"none";
+if(!_6de){
 this.fireCommand();
 }
 }
 }
 }
 };
-MenuItemBinding.newInstance=function(_6d3){
-var _6d4=DOMUtil.createElementNS(Constants.NS_UI,"ui:menuitem",_6d3);
-UserInterface.registerBinding(_6d4,MenuItemBinding);
-return UserInterface.getBinding(_6d4);
+MenuItemBinding.newInstance=function(_6df){
+var _6e0=DOMUtil.createElementNS(Constants.NS_UI,"ui:menuitem",_6df);
+UserInterface.registerBinding(_6e0,MenuItemBinding);
+return UserInterface.getBinding(_6e0);
 };
 PopupSetBinding.prototype=new MenuContainerBinding;
 PopupSetBinding.prototype.constructor=PopupSetBinding;
@@ -9349,29 +9376,29 @@ PopupBinding.activeInstances=new Map();
 PopupBinding.hasActiveInstances=function(){
 return PopupBinding.activeInstances.hasEntries();
 };
-PopupBinding.handleBroadcast=function(_6d5,arg){
-switch(_6d5){
+PopupBinding.handleBroadcast=function(_6e1,arg){
+switch(_6e1){
 case BroadcastMessages.MOUSEEVENT_MOUSEDOWN:
 case BroadcastMessages.MOUSEEVENT_MOUSEUP:
 if(PopupBinding.activeInstances.hasEntries()){
 var list=new List();
 PopupBinding.activeInstances.each(function(key){
-var _6d9=PopupBinding.activeInstances.get(key);
-var _6da=(arg&&arg instanceof ButtonBinding&&arg.popupBinding==_6d9);
-if(!_6da){
-list.add(_6d9);
+var _6e5=PopupBinding.activeInstances.get(key);
+var _6e6=(arg&&arg instanceof ButtonBinding&&arg.popupBinding==_6e5);
+if(!_6e6){
+list.add(_6e5);
 }
 });
-list.each(function(_6db){
-_6db.hide();
+list.each(function(_6e7){
+_6e7.hide();
 });
 }
 break;
 case BroadcastMessages.KEY_ESCAPE:
 if(PopupBinding.activeInstances.hasEntries()){
 PopupBinding.activeInstances.each(function(key){
-var _6dd=PopupBinding.activeInstances.get(key);
-_6dd.hide();
+var _6e9=PopupBinding.activeInstances.get(key);
+_6e9.hide();
 });
 }
 break;
@@ -9420,13 +9447,13 @@ this._shadowBinding.dispose();
 }
 };
 PopupBinding.prototype.buildDOMContent=function(){
-var _6de=DOMUtil.getElementsByTagName(this.bindingElement,"menubody").item(0);
-var _6df=DOMUtil.getElementsByTagName(this.bindingElement,"popupbody").item(0);
-if(_6de){
-this._bodyBinding=UserInterface.getBinding(_6de);
+var _6ea=DOMUtil.getElementsByTagName(this.bindingElement,"menubody").item(0);
+var _6eb=DOMUtil.getElementsByTagName(this.bindingElement,"popupbody").item(0);
+if(_6ea){
+this._bodyBinding=UserInterface.getBinding(_6ea);
 }else{
-if(_6df){
-this._bodyBinding=UserInterface.getBinding(_6df);
+if(_6eb){
+this._bodyBinding=UserInterface.getBinding(_6eb);
 }else{
 if(this.bindingElement.hasChildNodes()){
 throw new Error(this+": DOM structure invalid.");
@@ -9441,8 +9468,8 @@ this.bindingElement.style.opacity="0";
 };
 PopupBinding.prototype.parseDOMProperties=function(){
 if(!this.position){
-var _6e0=this.getProperty("position");
-this.position=_6e0?_6e0:PopupBinding.POSITION_BOTTOM;
+var _6ec=this.getProperty("position");
+this.position=_6ec?_6ec:PopupBinding.POSITION_BOTTOM;
 }
 };
 PopupBinding.prototype.buildShadowBinding=function(){
@@ -9458,47 +9485,47 @@ PopupBinding.prototype.assignDOMEvents=function(){
 this.addEventListener(DOMEvents.MOUSEDOWN);
 this.addEventListener(DOMEvents.MOUSEUP);
 };
-PopupBinding.prototype.add=function(_6e1){
-var _6e2=null;
+PopupBinding.prototype.add=function(_6ed){
+var _6ee=null;
 if(this._bodyBinding){
-this._bodyBinding.add(_6e1);
-_6e2=_6e1;
+this._bodyBinding.add(_6ed);
+_6ee=_6ed;
 }else{
-_6e2=PopupBinding.superclass.add.call(this,_6e1);
+_6ee=PopupBinding.superclass.add.call(this,_6ed);
 }
-return _6e2;
+return _6ee;
 };
-PopupBinding.prototype.addFirst=function(_6e3){
-var _6e4=null;
+PopupBinding.prototype.addFirst=function(_6ef){
+var _6f0=null;
 if(this._bodyBinding){
-this._bodyBinding.addFirst(_6e3);
-_6e4=_6e3;
+this._bodyBinding.addFirst(_6ef);
+_6f0=_6ef;
 }else{
-_6e4=PopupBinding.superclass.addFirst.call(this,_6e3);
+_6f0=PopupBinding.superclass.addFirst.call(this,_6ef);
 }
-return _6e4;
+return _6f0;
 };
-PopupBinding.prototype.handleAction=function(_6e5){
-PopupBinding.superclass.handleAction.call(this,_6e5);
-var _6e6=_6e5.target;
-switch(_6e5.type){
+PopupBinding.prototype.handleAction=function(_6f1){
+PopupBinding.superclass.handleAction.call(this,_6f1);
+var _6f2=_6f1.target;
+switch(_6f1.type){
 case Binding.ACTION_ATTACHED:
-if(_6e6 instanceof MenuItemBinding){
+if(_6f2 instanceof MenuItemBinding){
 this._count(true);
-_6e5.consume();
+_6f1.consume();
 }
 break;
 case Binding.ACTION_DETACHED:
-if(_6e6 instanceof MenuItemBinding){
+if(_6f2 instanceof MenuItemBinding){
 this._count(false);
-_6e5.consume();
+_6f1.consume();
 }
 break;
 }
 };
-PopupBinding.prototype._count=function(_6e7){
+PopupBinding.prototype._count=function(_6f3){
 if(this.type==PopupBinding.TYPE_FIXED){
-this._menuItemCount=this._menuItemCount+(_6e7?1:-1);
+this._menuItemCount=this._menuItemCount+(_6f3?1:-1);
 if(!this._isOverflow){
 if(this._menuItemCount>=PopupBinding.FIXED_MAX){
 this.attachClassName(PopupBinding.CLASSNAME_OVERFLOW);
@@ -9513,32 +9540,32 @@ this._isOverflow=false;
 }
 }
 };
-PopupBinding.prototype.snapTo=function(_6e8){
-var _6e9=this._getElementPosition(_6e8);
+PopupBinding.prototype.snapTo=function(_6f4){
+var _6f5=this._getElementPosition(_6f4);
 switch(this.position){
 case PopupBinding.POSITION_TOP:
-_6e9.y-=this.bindingElement.offsetHeight;
+_6f5.y-=this.bindingElement.offsetHeight;
 break;
 case PopupBinding.POSITION_RIGHT:
-_6e9.x+=_6e8.offsetWidth;
+_6f5.x+=_6f4.offsetWidth;
 break;
 case PopupBinding.POSITION_BOTTOM:
-_6e9.y+=_6e8.offsetHeight;
+_6f5.y+=_6f4.offsetHeight;
 break;
 case PopupBinding.POSITION_LEFT:
-_6e9.x-=this.bindingElement.offsetWidth;
+_6f5.x-=this.bindingElement.offsetWidth;
 break;
 }
-this.targetElement=_6e8;
+this.targetElement=_6f4;
 this.bindingElement.style.display="block";
-this.setPosition(_6e9.x,_6e9.y);
+this.setPosition(_6f5.x,_6f5.y);
 };
 PopupBinding.prototype.snapToMouse=function(e){
 this.snapToPoint(this._getMousePosition(e));
 };
-PopupBinding.prototype.snapToPoint=function(_6eb){
+PopupBinding.prototype.snapToPoint=function(_6f7){
 this.bindingElement.style.display="block";
-this.setPosition(_6eb.x,_6eb.y);
+this.setPosition(_6f7.x,_6f7.y);
 this.show();
 };
 PopupBinding.prototype.setPosition=function(x,y){
@@ -9553,12 +9580,12 @@ return new Point(this.geometry.x,this.geometry.y);
 PopupBinding.prototype.getDimension=function(){
 return new Dimension(this.bindingElement.offsetWidth,this.bindingElement.offsetHeight);
 };
-PopupBinding.prototype._getElementPosition=function(_6f0){
-return _6f0.ownerDocument==this.bindingDocument?DOMUtil.getGlobalPosition(_6f0):DOMUtil.getUniversalPosition(_6f0);
+PopupBinding.prototype._getElementPosition=function(_6fc){
+return _6fc.ownerDocument==this.bindingDocument?DOMUtil.getGlobalPosition(_6fc):DOMUtil.getUniversalPosition(_6fc);
 };
 PopupBinding.prototype._getMousePosition=function(e){
-var _6f2=DOMEvents.getTarget(e);
-return _6f2.ownerDocument==this.bindingDocument?DOMUtil.getGlobalMousePosition(e):DOMUtil.getUniversalMousePosition(e);
+var _6fe=DOMEvents.getTarget(e);
+return _6fe.ownerDocument==this.bindingDocument?DOMUtil.getGlobalMousePosition(e):DOMUtil.getUniversalMousePosition(e);
 };
 PopupBinding.prototype.show=function(){
 if(this.isVisible==true){
@@ -9582,31 +9609,31 @@ this.dispatchAction(Binding.ACTION_POSITIONCHANGED);
 this.dispatchAction(Binding.ACTION_DIMENSIONCHANGED);
 }
 };
-PopupBinding.prototype._makeVisible=function(_6f3){
-var _6f4=this.bindingElement;
-if(_6f3){
+PopupBinding.prototype._makeVisible=function(_6ff){
+var _700=this.bindingElement;
+if(_6ff){
 if(Client.hasTransitions){
-_6f4.style.visibility="visible";
-_6f4.style.opacity="1";
+_700.style.visibility="visible";
+_700.style.opacity="1";
 }else{
-_6f4.style.visibility="visible";
+_700.style.visibility="visible";
 }
 }else{
-_6f4.style.visibility="hidden";
-_6f4.style.display="none";
+_700.style.visibility="hidden";
+_700.style.display="none";
 if(Client.hasTransitions){
-_6f4.style.opacity="0";
+_700.style.opacity="0";
 }
 }
-this.isVisible=_6f3;
+this.isVisible=_6ff;
 };
-PopupBinding.prototype._enableTab=function(_6f5){
+PopupBinding.prototype._enableTab=function(_701){
 var self=this;
-var _6f7=this.getDescendantBindingsByLocalName("menuitem");
+var _703=this.getDescendantBindingsByLocalName("menuitem");
 setTimeout(function(){
 if(Binding.exists(self)==true){
-_6f7.each(function(_6f8){
-_6f8.bindingElement.tabIndex=_6f5?0:-1;
+_703.each(function(_704){
+_704.bindingElement.tabIndex=_701?0:-1;
 });
 }
 },0);
@@ -9683,7 +9710,7 @@ PopupBinding.prototype.empty=function(){
 this._bodyBinding.detachRecursive();
 this._bodyBinding.bindingElement.innerHTML="";
 };
-PopupBinding.prototype.grabKeyboard=function(_701){
+PopupBinding.prototype.grabKeyboard=function(_70d){
 };
 PopupBinding.prototype.releaseKeyboard=function(){
 if(this._bodyBinding!=null&&this._bodyBinding instanceof MenuBodyBinding){
@@ -9712,29 +9739,29 @@ this._menuItems[cmd]=item;
 }
 };
 PopupBinding.prototype.getMenuItemForCommand=function(cmd){
-var _707=null;
+var _713=null;
 if(this._menuItems){
 if(this._menuItems[cmd]){
-_707=this._menuItems[cmd];
+_713=this._menuItems[cmd];
 }else{
 throw "PopupBinding.getMenuItemForCommand: No binding for command "+cmd;
 }
 }else{
 throw "Must invoke _indexMenuContent method first!";
 }
-return _707;
+return _713;
 };
 PopupBinding.prototype.clear=function(){
-var _708=this._bodyBinding;
-if(_708){
-_708.detachRecursive();
-_708.bindingElement.innerHTML="";
+var _714=this._bodyBinding;
+if(_714){
+_714.detachRecursive();
+_714.bindingElement.innerHTML="";
 }
 this._menuItemCount=0;
 };
-PopupBinding.newInstance=function(_709){
-var _70a=DOMUtil.createElementNS(Constants.NS_UI,"ui:popup",_709);
-return UserInterface.registerBinding(_70a,PopupBinding);
+PopupBinding.newInstance=function(_715){
+var _716=DOMUtil.createElementNS(Constants.NS_UI,"ui:popup",_715);
+return UserInterface.registerBinding(_716,PopupBinding);
 };
 PopupBodyBinding.prototype=new Binding;
 PopupBodyBinding.prototype.constructor=PopupBodyBinding;
@@ -9748,9 +9775,9 @@ return "[PopupBodyBinding]";
 PopupBodyBinding.prototype.setDimension=function(dim){
 this.getBindingElement().style.width=new String(dim.w)+"px";
 };
-PopupBodyBinding.newInstance=function(_70c){
-var _70d=DOMUtil.createElementNS(Constants.NS_UI,"ui:popupbody",_70c);
-return UserInterface.registerBinding(_70d,PopupBodyBinding);
+PopupBodyBinding.newInstance=function(_718){
+var _719=DOMUtil.createElementNS(Constants.NS_UI,"ui:popupbody",_718);
+return UserInterface.registerBinding(_719,PopupBodyBinding);
 };
 MenuPopupBinding.prototype=new PopupBinding;
 MenuPopupBinding.prototype.constructor=MenuPopupBinding;
@@ -9762,12 +9789,12 @@ return this;
 MenuPopupBinding.prototype.toString=function(){
 return "[MenuPopupBinding]";
 };
-MenuPopupBinding.prototype._getElementPosition=function(_70e){
-return new Point(_70e.offsetLeft,0);
+MenuPopupBinding.prototype._getElementPosition=function(_71a){
+return new Point(_71a.offsetLeft,0);
 };
-MenuPopupBinding.newInstance=function(_70f){
-var _710=DOMUtil.createElementNS(Constants.NS_UI,"ui:menupopup",_70f);
-return UserInterface.registerBinding(_710,MenuPopupBinding);
+MenuPopupBinding.newInstance=function(_71b){
+var _71c=DOMUtil.createElementNS(Constants.NS_UI,"ui:menupopup",_71b);
+return UserInterface.registerBinding(_71c,MenuPopupBinding);
 };
 DialogBinding.prototype=new ControlBoxBinding;
 DialogBinding.prototype.constructor=DialogBinding;
@@ -9841,20 +9868,20 @@ this._titlebar=DialogTitleBarBinding.newInstance(this.bindingDocument);
 this.add(this._matrix);
 this.addFirst(this._head);
 this._head.add(this._titlebar);
-var _711=DOMUtil.getElementsByTagName(this.bindingElement,"dialogbody").item(0);
-if(_711){
-this._body=UserInterface.getBinding(_711);
+var _71d=DOMUtil.getElementsByTagName(this.bindingElement,"dialogbody").item(0);
+if(_71d){
+this._body=UserInterface.getBinding(_71d);
 }else{
 this._body=DialogBodyBinding.newInstance(this.bindingDocument);
 this.add(this._body);
 }
 };
 DialogBinding.prototype.buildBorderBindings=function(){
-var _712=new List([DialogBorderBinding.TYPE_NORTH,DialogBorderBinding.TYPE_SOUTH,DialogBorderBinding.TYPE_EAST,DialogBorderBinding.TYPE_WEST]);
-while(_712.hasNext()){
-var _713=DialogBorderBinding.newInstance(this.bindingDocument);
-_713.setType(_712.getNext());
-this.add(_713);
+var _71e=new List([DialogBorderBinding.TYPE_NORTH,DialogBorderBinding.TYPE_SOUTH,DialogBorderBinding.TYPE_EAST,DialogBorderBinding.TYPE_WEST]);
+while(_71e.hasNext()){
+var _71f=DialogBorderBinding.newInstance(this.bindingDocument);
+_71f.setType(_71e.getNext());
+this.add(_71f);
 }
 };
 DialogBinding.prototype.buildShadowBinding=function(){
@@ -9864,19 +9891,19 @@ this.shadowBinding.shadow(this);
 this.shadowBinding.attach();
 };
 DialogBinding.prototype.buildControlBindings=function(){
-var _714=this.getProperty("controls");
-if(_714){
-var _715=new List(_714.split(" "));
-while(_715.hasNext()){
-var type=_715.getNext();
+var _720=this.getProperty("controls");
+if(_720){
+var _721=new List(_720.split(" "));
+while(_721.hasNext()){
+var type=_721.getNext();
 switch(type){
 case ControlBinding.TYPE_MAXIMIZE:
 case ControlBinding.TYPE_MINIMIZE:
 case ControlBinding.TYPE_CLOSE:
-var _717=DialogControlBinding.newInstance(this.bindingDocument);
-_717.setControlType(type);
-this._titlebar.addControl(_717);
-this.controlBindings[type]=_717;
+var _723=DialogControlBinding.newInstance(this.bindingDocument);
+_723.setControlType(type);
+this._titlebar.addControl(_723);
+this.controlBindings[type]=_723;
 break;
 default:
 throw new Error("DialogBinding: Control not added: "+type);
@@ -9891,34 +9918,34 @@ this.getAncestorBindingByLocalName("dialogset").add(this._cover);
 this._cover.cover(this);
 };
 DialogBinding.prototype.parseDOMProperties=function(){
-var _718=this.getProperty("image");
-var _719=this.getProperty("label");
-var _71a=this.getProperty("draggable");
-var _71b=this.getProperty("resizable");
-var _71c=this.getProperty("modal");
-if(_718){
-this.setImage(_718);
+var _724=this.getProperty("image");
+var _725=this.getProperty("label");
+var _726=this.getProperty("draggable");
+var _727=this.getProperty("resizable");
+var _728=this.getProperty("modal");
+if(_724){
+this.setImage(_724);
 }
-if(_719){
-this.setLabel(_719);
+if(_725){
+this.setLabel(_725);
 }
-if(_71a==false){
+if(_726==false){
 this.isDialogDraggable=false;
 }
-if(_71b==false){
+if(_727==false){
 this.isPanelResizable=false;
 }
-if(_71c==true){
+if(_728==true){
 this.setModal(true);
 }
 };
-DialogBinding.prototype.setModal=function(_71d){
-this.isModal=_71d;
+DialogBinding.prototype.setModal=function(_729){
+this.isModal=_729;
 };
-DialogBinding.prototype.setLabel=function(_71e){
-this.setProperty("label",_71e);
+DialogBinding.prototype.setLabel=function(_72a){
+this.setProperty("label",_72a);
 if(this.isAttached==true){
-this._titlebar.setLabel(Resolver.resolve(_71e));
+this._titlebar.setLabel(Resolver.resolve(_72a));
 }
 };
 DialogBinding.prototype.getLabel=function(){
@@ -9930,54 +9957,54 @@ if(this.isAttached){
 this._titlebar.setImage(Resolver.resolve(url));
 }
 };
-DialogBinding.prototype.handleAction=function(_720){
-DialogBinding.superclass.handleAction.call(this,_720);
-switch(_720.type){
+DialogBinding.prototype.handleAction=function(_72c){
+DialogBinding.superclass.handleAction.call(this,_72c);
+switch(_72c.type){
 case Binding.ACTION_DRAG:
-var _721=_720.target;
+var _72d=_72c.target;
 if(this.getState()==ControlBoxBinding.STATE_NORMAL){
-switch(_721.constructor){
+switch(_72d.constructor){
 case DialogTitleBarBinding:
 this.mode=DialogBinding.MODE_DRAGGING;
-_721.dragger.registerHandler(this);
+_72d.dragger.registerHandler(this);
 break;
 case DialogBorderBinding:
 if(this._isResizable){
 this.mode=DialogBinding.MODE_RESIZING;
-this._border=_721;
-_721.dragger.registerHandler(this);
+this._border=_72d;
+_72d.dragger.registerHandler(this);
 }
 break;
 }
 }
-_720.consume();
+_72c.consume();
 break;
 case Binding.ACTION_ACTIVATED:
 if(!this.isActive){
 this.activate();
 }
-_720.consume();
+_72c.consume();
 break;
 }
 };
-DialogBinding.prototype.handleBroadcast=function(_722,arg){
-DialogBinding.superclass.handleBroadcast.call(this,_722,arg);
-switch(_722){
+DialogBinding.prototype.handleBroadcast=function(_72e,arg){
+DialogBinding.superclass.handleBroadcast.call(this,_72e,arg);
+switch(_72e){
 case this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST:
 this.startPoint=this.getPosition();
 this._setComputedPosition(new Point(0,0));
 break;
 }
 };
-DialogBinding.prototype.handleInvokedControl=function(_724){
-DialogBinding.superclass.handleInvokedControl.call(this,_724);
-switch(_724.controlType){
+DialogBinding.prototype.handleInvokedControl=function(_730){
+DialogBinding.superclass.handleInvokedControl.call(this,_730);
+switch(_730.controlType){
 case ControlBinding.TYPE_CLOSE:
 this.close();
 break;
 }
 };
-DialogBinding.prototype.open=function(_725){
+DialogBinding.prototype.open=function(_731){
 if(this.isModal&&this._cover==null){
 this.buildDialogCoverBinding();
 }
@@ -9986,7 +10013,7 @@ this.setProperty("open","true");
 this.isVisible=true;
 this.isActivatable=true;
 this.activate();
-if(_725){
+if(_731){
 }else{
 this.centerOnScreen();
 this.reflex(true);
@@ -10016,9 +10043,9 @@ self.dispatchAction(DialogBinding.ACTION_CLOSE);
 if(!this._hasTransitions){
 doit();
 }else{
-var _727=self.bindingElement;
+var _733=self.bindingElement;
 setTimeout(function(){
-_727.style.opacity="0";
+_733.style.opacity="0";
 setTimeout(function(){
 doit();
 },Animation.DEFAULT_TIME);
@@ -10050,10 +10077,10 @@ this.dispatchAction(Binding.ACTION_MOVEDONTOP);
 DialogBinding.prototype.getZIndex=function(){
 return CSSComputer.getZIndex(this.bindingElement);
 };
-DialogBinding.prototype.setZIndex=function(_728){
-this.bindingElement.style.zIndex=new String(_728);
+DialogBinding.prototype.setZIndex=function(_734){
+this.bindingElement.style.zIndex=new String(_734);
 };
-DialogBinding.prototype.onDragStart=function(_729){
+DialogBinding.prototype.onDragStart=function(_735){
 switch(this.mode){
 case DialogBinding.MODE_DRAGGING:
 case DialogBinding.MODE_RESIZING:
@@ -10154,36 +10181,36 @@ this.dispatchAction(Binding.ACTION_DIMENSIONCHANGED);
 DialogBinding.prototype.getDimension=function(){
 return new Dimension(this.geometry.w,this.geometry.h);
 };
-DialogBinding.prototype.setResizable=function(_73b){
-if(this._isResizable!=_73b){
-if(_73b){
+DialogBinding.prototype.setResizable=function(_747){
+if(this._isResizable!=_747){
+if(_747){
 this.attachClassName("resizable");
 }else{
 this.detachClassName("resizable");
 }
-this._isResizable=_73b;
+this._isResizable=_747;
 }
 };
 DialogBinding.prototype.computeDefaultGeometry=function(){
-var _73c=null;
-var _73d=this.bindingDocument.body.offsetWidth;
-var _73e=this.bindingDocument.body.offsetHeight;
-_73c={x:0.125*_73d,y:0.125*_73e,w:0.75*_73d,h:0.5*_73e};
-return _73c;
+var _748=null;
+var _749=this.bindingDocument.body.offsetWidth;
+var _74a=this.bindingDocument.body.offsetHeight;
+_748={x:0.125*_749,y:0.125*_74a,w:0.75*_749,h:0.5*_74a};
+return _748;
 };
 DialogBinding.prototype.centerOnScreen=function(){
-var _73f=this.bindingWindow.WindowManager.getWindowDimensions();
+var _74b=this.bindingWindow.WindowManager.getWindowDimensions();
 var dim=this.getDimension();
-this.setPosition(new Point(0.5*(_73f.w-dim.w),0.5*(_73f.h-dim.h)));
+this.setPosition(new Point(0.5*(_74b.w-dim.w),0.5*(_74b.h-dim.h)));
 };
 DialogBinding.prototype.alert=function(){
-var _741=this;
+var _74d=this;
 var i=0;
 function blink(){
 if(i%2==0){
-_741.detachClassName("active");
+_74d.detachClassName("active");
 }else{
-_741.attachClassName("active");
+_74d.attachClassName("active");
 }
 if(i++<7){
 setTimeout(blink,50);
@@ -10195,19 +10222,19 @@ DialogBinding.prototype.setControls=function(list){
 for(var type in this.controlBindings){
 this.controlBindings[type].dispose();
 }
-var _745="";
+var _751="";
 while(list.hasNext()){
 var type=list.getNext();
-_745+=type+list.hasNext()?" ":"";
+_751+=type+list.hasNext()?" ":"";
 }
-this.setProperty("controls",_745);
+this.setProperty("controls",_751);
 if(this.isAttached){
 this.buildControlBindings();
 }
 };
-DialogBinding.newInstance=function(_746){
-var _747=DOMUtil.createElementNS(Constants.NS_UI,"ui:dialog",_746);
-return UserInterface.registerBinding(_747,DialogBinding);
+DialogBinding.newInstance=function(_752){
+var _753=DOMUtil.createElementNS(Constants.NS_UI,"ui:dialog",_752);
+return UserInterface.registerBinding(_753,DialogBinding);
 };
 DialogHeadBinding.prototype=new Binding;
 DialogHeadBinding.prototype.constructor=DialogHeadBinding;
@@ -10218,9 +10245,9 @@ this.logger=SystemLogger.getLogger("DialogHeadBinding");
 DialogHeadBinding.prototype.toString=function(){
 return "[DialogHeadBinding]";
 };
-DialogHeadBinding.newInstance=function(_748){
-var _749=DOMUtil.createElementNS(Constants.NS_UI,"ui:dialoghead",_748);
-return UserInterface.registerBinding(_749,DialogHeadBinding);
+DialogHeadBinding.newInstance=function(_754){
+var _755=DOMUtil.createElementNS(Constants.NS_UI,"ui:dialoghead",_754);
+return UserInterface.registerBinding(_755,DialogHeadBinding);
 };
 DialogBodyBinding.prototype=new FlexBoxBinding;
 DialogBodyBinding.prototype.constructor=DialogBodyBinding;
@@ -10246,9 +10273,9 @@ DialogBodyBinding.prototype.getDimension=function(){
 var dim=this.boxObject.getDimension();
 return new Dimension(dim.w-2*DialogBorderBinding.DIMENSION,dim.h-DialogBorderBinding.DIMENSION);
 };
-DialogBodyBinding.newInstance=function(_74c){
-var _74d=DOMUtil.createElementNS(Constants.NS_UI,"ui:dialogbody",_74c);
-return UserInterface.registerBinding(_74d,DialogBodyBinding);
+DialogBodyBinding.newInstance=function(_758){
+var _759=DOMUtil.createElementNS(Constants.NS_UI,"ui:dialogbody",_758);
+return UserInterface.registerBinding(_759,DialogBodyBinding);
 };
 DialogMatrixBinding.prototype=new MatrixBinding;
 DialogMatrixBinding.prototype.constructor=DialogMatrixBinding;
@@ -10267,9 +10294,9 @@ this.shadowTree.table.className="matrix dialogmatrix";
 this._indexTable();
 this.shadowTree[MatrixBinding.CENTER].appendChild(this.bindingDocument.createTextNode("."));
 };
-DialogMatrixBinding.newInstance=function(_74e){
-var _74f=DOMUtil.createElementNS(Constants.NS_UI,"ui:dialogmatrix",_74e);
-return UserInterface.registerBinding(_74f,DialogMatrixBinding);
+DialogMatrixBinding.newInstance=function(_75a){
+var _75b=DOMUtil.createElementNS(Constants.NS_UI,"ui:dialogmatrix",_75a);
+return UserInterface.registerBinding(_75b,DialogMatrixBinding);
 };
 DialogSetBinding.prototype=new Binding;
 DialogSetBinding.prototype.constructor=DialogSetBinding;
@@ -10285,28 +10312,28 @@ DialogSetBinding.superclass.onBindingAttach.call(this);
 this.addActionListener(Binding.ACTION_MOVETOTOP,this);
 this.addActionListener(Binding.ACTION_MOVEDONTOP,this);
 };
-DialogSetBinding.prototype.handleAction=function(_750){
-DialogSetBinding.superclass.handleAction.call(this,_750);
-var _751=_750.target;
-switch(_750.type){
+DialogSetBinding.prototype.handleAction=function(_75c){
+DialogSetBinding.superclass.handleAction.call(this,_75c);
+var _75d=_75c.target;
+switch(_75c.type){
 case Binding.ACTION_MOVETOTOP:
-if(_751 instanceof DialogBinding){
-this._moveToTop(_751);
+if(_75d instanceof DialogBinding){
+this._moveToTop(_75d);
 }
 break;
 case Binding.ACTION_MOVEDONTOP:
-_750.consume();
+_75c.consume();
 break;
 }
 };
-DialogSetBinding.prototype._moveToTop=function(_752){
-var _753=0;
-var _754=this.getChildBindingsByLocalName("dialog");
-_754.each(function(_755){
-var _756=_755.getZIndex();
-_753=_756>_753?_756:_753;
+DialogSetBinding.prototype._moveToTop=function(_75e){
+var _75f=0;
+var _760=this.getChildBindingsByLocalName("dialog");
+_760.each(function(_761){
+var _762=_761.getZIndex();
+_75f=_762>_75f?_762:_75f;
 });
-_752.setZIndex(_753+2);
+_75e.setZIndex(_75f+2);
 };
 DialogBorderBinding.prototype=new Binding;
 DialogBorderBinding.prototype.constructor=DialogBorderBinding;
@@ -10331,9 +10358,9 @@ this._type=type;
 DialogBorderBinding.prototype.getType=function(){
 return this._type;
 };
-DialogBorderBinding.newInstance=function(_758){
-var _759=DOMUtil.createElementNS(Constants.NS_UI,"ui:dialogborder",_758);
-return UserInterface.registerBinding(_759,DialogBorderBinding);
+DialogBorderBinding.newInstance=function(_764){
+var _765=DOMUtil.createElementNS(Constants.NS_UI,"ui:dialogborder",_764);
+return UserInterface.registerBinding(_765,DialogBorderBinding);
 };
 DialogCoverBinding.prototype=new Binding;
 DialogCoverBinding.prototype.constructor=DialogCoverBinding;
@@ -10345,8 +10372,8 @@ this._dialogBinding=null;
 DialogCoverBinding.prototype.toString=function(){
 return "[DialogCoverBinding]";
 };
-DialogCoverBinding.prototype.cover=function(_75a){
-this._dialogBinding=_75a;
+DialogCoverBinding.prototype.cover=function(_766){
+this._dialogBinding=_766;
 this._dialogBinding.addActionListener(DialogBinding.ACTION_OPEN,this);
 this._dialogBinding.addActionListener(DialogBinding.ACTION_CLOSE,this);
 this._dialogBinding.addActionListener(Binding.ACTION_MOVEDONTOP,this);
@@ -10356,11 +10383,11 @@ DialogCoverBinding.prototype.handleEvent=function(e){
 DialogCoverBinding.superclass.handleEvent.call(this,e);
 this._dialogBinding.alert();
 };
-DialogCoverBinding.prototype.handleAction=function(_75c){
-DialogCoverBinding.superclass.handleAction.call(this,_75c);
-var _75d=_75c.target;
+DialogCoverBinding.prototype.handleAction=function(_768){
+DialogCoverBinding.superclass.handleAction.call(this,_768);
+var _769=_768.target;
 if(this._dialogBinding.isModal){
-switch(_75c.type){
+switch(_768.type){
 case DialogBinding.ACTION_OPEN:
 this.show();
 break;
@@ -10368,16 +10395,16 @@ case DialogBinding.ACTION_CLOSE:
 this.hide();
 break;
 case Binding.ACTION_MOVEDONTOP:
-if(_75d==this._dialogBinding){
-this.bindingElement.style.zIndex=new String(_75d.getZIndex()-1);
+if(_769==this._dialogBinding){
+this.bindingElement.style.zIndex=new String(_769.getZIndex()-1);
 }
 break;
 }
 }
 };
-DialogCoverBinding.prototype.handleBroadcast=function(_75e,arg){
-DialogCoverBinding.superclass.handleBroadcast.call(this,_75e,arg);
-switch(_75e){
+DialogCoverBinding.prototype.handleBroadcast=function(_76a,arg){
+DialogCoverBinding.superclass.handleBroadcast.call(this,_76a,arg);
+switch(_76a){
 case this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST:
 this._max();
 break;
@@ -10390,18 +10417,18 @@ this.bindingElement.style.height=dim.h+"px";
 };
 DialogCoverBinding.prototype.show=function(){
 this._max();
-var _761=this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST;
-this.subscribe(_761);
+var _76d=this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST;
+this.subscribe(_76d);
 DialogCoverBinding.superclass.show.call(this);
 };
 DialogCoverBinding.prototype.hide=function(){
-var _762=this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST;
-this.unsubscribe(_762);
+var _76e=this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST;
+this.unsubscribe(_76e);
 DialogCoverBinding.superclass.hide.call(this);
 };
-DialogCoverBinding.newInstance=function(_763){
-var _764=DOMUtil.createElementNS(Constants.NS_UI,"ui:dialogcover",_763);
-return UserInterface.registerBinding(_764,DialogCoverBinding);
+DialogCoverBinding.newInstance=function(_76f){
+var _770=DOMUtil.createElementNS(Constants.NS_UI,"ui:dialogcover",_76f);
+return UserInterface.registerBinding(_770,DialogCoverBinding);
 };
 DialogTitleBarBinding.prototype=new Binding;
 DialogTitleBarBinding.prototype.constructor=DialogTitleBarBinding;
@@ -10424,20 +10451,20 @@ this.labelBinding.attachClassName("dialogtitle");
 };
 DialogTitleBarBinding.prototype.onBindingAttach=function(){
 DialogTitleBarBinding.superclass.onBindingAttach.call(this);
-var _765=this.getProperty("image");
-if(_765){
-this.setImage(_765);
+var _771=this.getProperty("image");
+if(_771){
+this.setImage(_771);
 }
-var _766=this.getProperty("label");
-if(_766){
-this.setLabel(_766);
+var _772=this.getProperty("label");
+if(_772){
+this.setLabel(_772);
 }
 };
-DialogTitleBarBinding.prototype.setLabel=function(_767){
+DialogTitleBarBinding.prototype.setLabel=function(_773){
 if(this.isAttached){
-this.labelBinding.setLabel(_767);
+this.labelBinding.setLabel(_773);
 }
-this.setProperty("label",_767);
+this.setProperty("label",_773);
 };
 DialogTitleBarBinding.prototype.setImage=function(url){
 if(this.isAttached&&Client.isWindows){
@@ -10445,11 +10472,11 @@ this.labelBinding.setImage(url);
 }
 this.setProperty("image",url);
 };
-DialogTitleBarBinding.prototype.addControl=function(_769){
+DialogTitleBarBinding.prototype.addControl=function(_775){
 if(!this._controlGroupBinding){
 this._controlGroupBinding=this.bodyBinding.addFirst(ControlGroupBinding.newInstance(this.bindingDocument));
 }
-this._controlGroupBinding.add(_769);
+this._controlGroupBinding.add(_775);
 };
 DialogTitleBarBinding.prototype.onActivate=function(){
 if(this._controlGroupBinding){
@@ -10461,9 +10488,9 @@ if(this._controlGroupBinding){
 this._controlGroupBinding.onDeactivate();
 }
 };
-DialogTitleBarBinding.newInstance=function(_76a){
-var _76b=DOMUtil.createElementNS(Constants.NS_UI,"ui:titlebar",_76a);
-return UserInterface.registerBinding(_76b,DialogTitleBarBinding);
+DialogTitleBarBinding.newInstance=function(_776){
+var _777=DOMUtil.createElementNS(Constants.NS_UI,"ui:titlebar",_776);
+return UserInterface.registerBinding(_777,DialogTitleBarBinding);
 };
 DialogTitleBarBodyBinding.prototype=new Binding;
 DialogTitleBarBodyBinding.prototype.constructor=DialogTitleBarBodyBinding;
@@ -10478,9 +10505,9 @@ DialogTitleBarBodyBinding.prototype.onBindingRegister=function(){
 DialogTitleBarBodyBinding.superclass.onBindingRegister.call(this);
 this.attachClassName(Binding.CLASSNAME_CLEARFLOAT);
 };
-DialogTitleBarBodyBinding.newInstance=function(_76c){
-var _76d=DOMUtil.createElementNS(Constants.NS_UI,"ui:titlebarbody",_76c);
-return UserInterface.registerBinding(_76d,DialogTitleBarBodyBinding);
+DialogTitleBarBodyBinding.newInstance=function(_778){
+var _779=DOMUtil.createElementNS(Constants.NS_UI,"ui:titlebarbody",_778);
+return UserInterface.registerBinding(_779,DialogTitleBarBodyBinding);
 };
 DialogControlBinding.prototype=new ControlBinding;
 DialogControlBinding.prototype.constructor=DialogControlBinding;
@@ -10499,9 +10526,9 @@ DialogControlBinding.superclass.onBindingRegister.call(this);
 this.setImageProfile(DialogControlImageProfile);
 this.attachClassName(DialogControlBinding.CLASSNAME);
 };
-DialogControlBinding.newInstance=function(_76e){
-var _76f=DOMUtil.createElementNS(Constants.NS_UI,"ui:control",_76e);
-return UserInterface.registerBinding(_76f,DialogControlBinding);
+DialogControlBinding.newInstance=function(_77a){
+var _77b=DOMUtil.createElementNS(Constants.NS_UI,"ui:control",_77a);
+return UserInterface.registerBinding(_77b,DialogControlBinding);
 };
 DialogControlImageProfile.prototype=new ControlImageProfile;
 DialogControlImageProfile.prototype.constructor=DialogControlImageProfile;
@@ -10511,8 +10538,8 @@ DialogControlImageProfile.IMAGE_MINIMIZE="${root}/skins/system/controls/"+os+"co
 DialogControlImageProfile.IMAGE_MAXIMIZE="${root}/skins/system/controls/"+os+"control-maximize-${string}.png";
 DialogControlImageProfile.IMAGE_RESTORE="${root}/skins/system/controls/"+os+"control-restore-${string}.png";
 DialogControlImageProfile.IMAGE_CLOSE="${root}/skins/system/controls/"+os+"control-close-${string}.png";
-function DialogControlImageProfile(_770){
-this.binding=_770;
+function DialogControlImageProfile(_77c){
+this.binding=_77c;
 }
 DialogTitleBarPopupBinding.prototype=new PopupBinding;
 DialogTitleBarPopupBinding.prototype.constructor=DialogTitleBarPopupBinding;
@@ -10549,45 +10576,45 @@ return this;
 WindowBindingHighlightNodeCrawler.prototype._construct=function(){
 ElementCrawler.superclass._construct.call(this);
 this.addFilter(function(node,arg){
-var _773=null;
+var _77f=null;
 if(node.nodeType==Node.ELEMENT_NODE){
-var _774=node.nodeName.toLowerCase();
-switch(_774){
+var _780=node.nodeName.toLowerCase();
+switch(_780){
 case "script":
 case "style":
 case "textarea":
-_773=NodeCrawler.SKIP_NODE+NodeCrawler.SKIP_CHILDREN;
+_77f=NodeCrawler.SKIP_NODE+NodeCrawler.SKIP_CHILDREN;
 break;
 }
 }
-return _773;
+return _77f;
 });
 var self=this;
 this.addFilter(function(node,arg){
 if(node.nodeType==Node.TEXT_NODE){
 var text=node.nodeValue.toLowerCase();
 self._map.each(function(key,exp){
-var _77b=true;
+var _787=true;
 if(exp.test(text)){
 self._textnodes.add(node);
-_77b=false;
+_787=false;
 }
-return _77b;
+return _787;
 });
 }
 });
 };
-WindowBindingHighlightNodeCrawler.prototype.crawl=function(_77c,arg){
+WindowBindingHighlightNodeCrawler.prototype.crawl=function(_788,arg){
 this._textnodes=new List();
-WindowBindingHighlightNodeCrawler.superclass.crawl.call(this,_77c,arg);
+WindowBindingHighlightNodeCrawler.superclass.crawl.call(this,_788,arg);
 };
 WindowBindingHighlightNodeCrawler.prototype.setKeys=function(list){
 list.reset();
 this._map.empty();
 while(list.hasNext()){
 var key=list.getNext();
-var _780=key.toLowerCase().replace(/ /g,"\\W");
-var exp=new RegExp("("+_780+")");
+var _78c=key.toLowerCase().replace(/ /g,"\\W");
+var exp=new RegExp("("+_78c+")");
 this._map.set(key,exp);
 }
 };
@@ -10605,45 +10632,45 @@ node.parentNode.replaceChild(frag,node);
 });
 }
 };
-WindowBindingHighlightNodeCrawler.prototype._getMarkup=function(_786){
-var _787="";
-var _788="<span class=\""+WindowBindingHighlightNodeCrawler.CLASSNAME_HIGHLIGHT+"\" style=\"background-color:yellow;color:black;\">";
-var _789="</span>";
+WindowBindingHighlightNodeCrawler.prototype._getMarkup=function(_792){
+var _793="";
+var _794="<span class=\""+WindowBindingHighlightNodeCrawler.CLASSNAME_HIGHLIGHT+"\" style=\"background-color:yellow;color:black;\">";
+var _795="</span>";
 var self=this;
-function iterate(_78b){
-var _78c=-1;
-var _78d=null;
+function iterate(_797){
+var _798=-1;
+var _799=null;
 self._map.each(function(key,exp){
-var low=_78b.toLowerCase();
-var _791=low.search(exp);
-if(_791>-1){
-if(_78c==-1){
-_78c=_791;
+var low=_797.toLowerCase();
+var _79d=low.search(exp);
+if(_79d>-1){
+if(_798==-1){
+_798=_79d;
 }
-if(_791<=_78c){
-_78c=_791;
-_78d=key;
+if(_79d<=_798){
+_798=_79d;
+_799=key;
 }
 }
 });
-if(_78c>-1&&_78d!=null){
-var pre=_78b.substring(0,_78c);
-var hit=_78b.substring(_78c,_78c+_78d.length);
-var pst=_78b.substring(_78c+_78d.length,_78b.length);
-_787+=pre+_788+hit+_789;
+if(_798>-1&&_799!=null){
+var pre=_797.substring(0,_798);
+var hit=_797.substring(_798,_798+_799.length);
+var pst=_797.substring(_798+_799.length,_797.length);
+_793+=pre+_794+hit+_795;
 iterate(pst);
 }else{
-_787+=_78b;
+_793+=_797;
 }
 }
-iterate(_786);
-return _787;
+iterate(_792);
+return _793;
 };
-WindowBindingHighlightNodeCrawler.prototype.reset=function(_795){
-var _796=new List(_795.getElementsByTagName("span"));
-_796.each(function(span){
+WindowBindingHighlightNodeCrawler.prototype.reset=function(_7a1){
+var _7a2=new List(_7a1.getElementsByTagName("span"));
+_7a2.each(function(span){
 if(span.className==WindowBindingHighlightNodeCrawler.CLASSNAME_HIGHLIGHT){
-var node=_795.ownerDocument.createTextNode(DOMUtil.getTextContent(span));
+var node=_7a1.ownerDocument.createTextNode(DOMUtil.getTextContent(span));
 span.parentNode.replaceChild(node,span);
 }
 });
@@ -10657,35 +10684,35 @@ WindowBinding.DEFAULT_URL="${root}/blank.aspx";
 WindowBinding.DEFAULT_TITLE="Composite.Management.Blank";
 WindowBinding.POSTBACK_URL="${root}/postback.aspx";
 WindowBinding.POSTBACK_TITLE="Composite.Management.DefaultPostBack";
-WindowBinding.getMarkup=function(_799){
-var _79a=null;
-if(_799.isAttached){
-var doc=_799.getContentDocument();
+WindowBinding.getMarkup=function(_7a5){
+var _7a6=null;
+if(_7a5.isAttached){
+var doc=_7a5.getContentDocument();
 if(doc!=null){
 var root=doc.getElementsByTagName("html").item(0);
 var html="<html xmlns=\""+Constants.NS_XHTML+"\">"+root.innerHTML+"</html>";
 WebServiceProxy.isFaultHandler=false;
-_79a=top.MarkupFormatService.HtmlToXhtml(html);
+_7a6=top.MarkupFormatService.HtmlToXhtml(html);
 WebServiceProxy.isFaultHandler=true;
-if(_79a instanceof SOAPFault){
-_79a=null;
+if(_7a6 instanceof SOAPFault){
+_7a6=null;
 }
 }
 }
-return _79a;
+return _7a6;
 };
-WindowBinding.highlightKeywords=function(_79e,list){
+WindowBinding.highlightKeywords=function(_7aa,list){
 if(WindowBinding._highlightcrawler==null){
 WindowBinding._highlightcrawler=new WindowBindingHighlightNodeCrawler();
 }
-if(_79e.isAttached){
-var doc=_79e.getContentDocument();
+if(_7aa.isAttached){
+var doc=_7aa.getContentDocument();
 if(doc!=null){
-var _7a1=WindowBinding._highlightcrawler;
-_7a1.reset(doc.body);
+var _7ad=WindowBinding._highlightcrawler;
+_7ad.reset(doc.body);
 if(list!=null){
-_7a1.setKeys(list);
-_7a1.crawl(doc.body);
+_7ad.setKeys(list);
+_7ad.crawl(doc.body);
 }
 }
 }
@@ -10706,11 +10733,11 @@ WindowBinding.prototype.toString=function(){
 return "[WindowBinding]";
 };
 WindowBinding.prototype.serialize=function(){
-var _7a2=WindowBinding.superclass.serialize.call(this);
-if(_7a2){
-_7a2.url=this.getURL();
+var _7ae=WindowBinding.superclass.serialize.call(this);
+if(_7ae){
+_7ae.url=this.getURL();
 }
-return _7a2;
+return _7ae;
 };
 WindowBinding.prototype.onBindingRegister=function(){
 WindowBinding.superclass.onBindingRegister.call(this);
@@ -10732,20 +10759,20 @@ WindowBinding.prototype._disposeContentDocument=function(){
 if(this._pageBinding!=null){
 var win=this.getContentWindow();
 if(win!=null){
-var _7a4=this.getContentWindow().DocumentManager;
-if(_7a4!=null){
-_7a4.detachAllBindings();
+var _7b0=this.getContentWindow().DocumentManager;
+if(_7b0!=null){
+_7b0.detachAllBindings();
 this._pageBinding=null;
 }
 }
 }
 };
-WindowBinding.prototype.handleAction=function(_7a5){
-WindowBinding.superclass.handleAction.call(this,_7a5);
-var _7a6=_7a5.target;
-switch(_7a5.type){
+WindowBinding.prototype.handleAction=function(_7b1){
+WindowBinding.superclass.handleAction.call(this,_7b1);
+var _7b2=_7b1.target;
+switch(_7b1.type){
 case RootBinding.ACTION_PHASE_3:
-if(_7a6.bindingDocument==this.getContentDocument()){
+if(_7b2.bindingDocument==this.getContentDocument()){
 if(this._isReloading==true){
 this._isReloading=false;
 if(Client.isPrism==true){
@@ -10756,26 +10783,26 @@ this.dispatchAction(WindowBinding.ACTION_LOADED);
 }
 break;
 case PageBinding.ACTION_INITIALIZED:
-this._onPageInitialize(_7a6);
+this._onPageInitialize(_7b2);
 break;
 case RootBinding.ACTION_ACTIVATED:
 case RootBinding.ACTION_DEACTIVATED:
-_7a5.consume();
+_7b1.consume();
 break;
 }
 };
-WindowBinding.prototype.fit=function(_7a7){
-if(!this.isFit||_7a7){
+WindowBinding.prototype.fit=function(_7b3){
+if(!this.isFit||_7b3){
 if(this._pageBinding!=null){
 this.setHeight(this._pageBinding.getHeight());
 this.isFit=true;
 }
 }
 };
-WindowBinding.prototype._onPageInitialize=function(_7a8){
+WindowBinding.prototype._onPageInitialize=function(_7b4){
 if(this._pageBinding==null){
-if(_7a8.bindingWindow==this.getContentWindow()){
-this._pageBinding=_7a8;
+if(_7b4.bindingWindow==this.getContentWindow()){
+this._pageBinding=_7b4;
 }
 }
 };
@@ -10786,17 +10813,17 @@ this.shadowTree.iframe.frameBorder=0;
 this.bindingElement.appendChild(this.shadowTree.iframe);
 this._registerOnloadListener(true);
 };
-WindowBinding.prototype._registerOnloadListener=function(_7a9){
-var _7aa=this.shadowTree.iframe;
-var _7ab=_7a9?"addEventListener":"removeEventListener";
+WindowBinding.prototype._registerOnloadListener=function(_7b5){
+var _7b6=this.shadowTree.iframe;
+var _7b7=_7b5?"addEventListener":"removeEventListener";
 if(this._onloadHandler==null){
 var self=this;
 this._onloadHandler={handleEvent:function(e){
-var _7ae=true;
+var _7ba=true;
 if(Client.isExplorer){
-_7ae=_7aa.readyState=="complete";
+_7ba=_7b6.readyState=="complete";
 }
-if(_7ae==true){
+if(_7ba==true){
 if(self.getURL()!=WindowBinding.DEFAULT_URL){
 if(!self._hasLoadActionFired){
 self.onWindowLoaded(self.getContentWindow());
@@ -10805,10 +10832,10 @@ self.onWindowLoaded(self.getContentWindow());
 }
 }};
 }
-DOMEvents[_7ab](this.shadowTree.iframe,Client.isExplorer==true?"readystatechange":DOMEvents.LOAD,this._onloadHandler);
+DOMEvents[_7b7](this.shadowTree.iframe,Client.isExplorer==true?"readystatechange":DOMEvents.LOAD,this._onloadHandler);
 };
-WindowBinding.prototype._registerUnloadListener=function(_7af){
-var _7b0=_7af?"addEventListener":"removeEventListener";
+WindowBinding.prototype._registerUnloadListener=function(_7bb){
+var _7bc=_7bb?"addEventListener":"removeEventListener";
 if(this._unloadHandler==null){
 var self=this;
 this._unloadHandler={handleEvent:function(){
@@ -10816,7 +10843,7 @@ self._disposeContentDocument();
 self._hasLoadActionFired=false;
 }};
 }
-DOMEvents[_7b0](this.getContentWindow(),DOMEvents.UNLOAD,this._unloadHandler);
+DOMEvents[_7bc](this.getContentWindow(),DOMEvents.UNLOAD,this._unloadHandler);
 };
 WindowBinding.prototype.onWindowLoaded=function(win){
 if(win==null){
@@ -10852,14 +10879,14 @@ this.getFrameElement().src=Resolver.resolve(url);
 }
 };
 WindowBinding.prototype.getURL=function(){
-var _7b4=WindowBinding.DEFAULT_URL;
+var _7c0=WindowBinding.DEFAULT_URL;
 var url=this.getProperty("url");
 if(url){
-_7b4=url;
+_7c0=url;
 }
-return _7b4;
+return _7c0;
 };
-WindowBinding.prototype.reload=function(_7b6){
+WindowBinding.prototype.reload=function(_7c2){
 this._disposeContentDocument();
 if(Client.isPrism){
 Prism.disableCache();
@@ -10868,43 +10895,43 @@ this._isReloading=true;
 this.getContentDocument().location.reload();
 };
 WindowBinding.prototype.getFrameElement=function(){
-var _7b7=null;
+var _7c3=null;
 if(this.shadowTree.iframe!=null){
-_7b7=this.shadowTree.iframe;
+_7c3=this.shadowTree.iframe;
 }
-return _7b7;
+return _7c3;
 };
 WindowBinding.prototype.getContentWindow=function(){
-var _7b8=null,_7b9=this.getFrameElement();
-if(_7b9!==null){
+var _7c4=null,_7c5=this.getFrameElement();
+if(_7c5!==null){
 try{
-_7b8=_7b9.contentWindow;
+_7c4=_7c5.contentWindow;
 }
 catch(e){
 this.logger.error("WindowBinding#getContentWindow: strange IE9 error");
 }
 }
-return _7b8;
+return _7c4;
 };
 WindowBinding.prototype.getContentDocument=function(){
-var _7ba=null,win=this.getContentWindow();
+var _7c6=null,win=this.getContentWindow();
 if(win){
-_7ba=win.document;
+_7c6=win.document;
 }
-return _7ba;
+return _7c6;
 };
 WindowBinding.prototype.getRootBinding=function(){
-var _7bc=null,doc=this.getContentDocument();
+var _7c8=null,doc=this.getContentDocument();
 if(doc&&doc.body){
-_7bc=UserInterface.getBinding(doc.body);
+_7c8=UserInterface.getBinding(doc.body);
 }
-return _7bc;
+return _7c8;
 };
 WindowBinding.prototype.getPageBinding=function(){
 return this._pageBinding;
 };
-WindowBinding.prototype.setHeight=function(_7be){
-this.bindingElement.style.height=_7be+"px";
+WindowBinding.prototype.setHeight=function(_7ca){
+this.bindingElement.style.height=_7ca+"px";
 };
 WindowBinding.prototype.hide=function(){
 if(this.isVisible==true){
@@ -10918,14 +10945,14 @@ this.bindingElement.style.visibility="visible";
 this.isVisible=true;
 }
 };
-WindowBinding.prototype.handleCrawler=function(_7bf){
-WindowBinding.superclass.handleCrawler.call(this,_7bf);
-if(_7bf.type==NodeCrawler.TYPE_DESCENDING){
+WindowBinding.prototype.handleCrawler=function(_7cb){
+WindowBinding.superclass.handleCrawler.call(this,_7cb);
+if(_7cb.type==NodeCrawler.TYPE_DESCENDING){
 var root=this.getRootBinding();
 if(root!=null){
-_7bf.nextNode=root.bindingElement;
+_7cb.nextNode=root.bindingElement;
 }else{
-_7bf.response=NodeCrawler.SKIP_CHILDREN;
+_7cb.response=NodeCrawler.SKIP_CHILDREN;
 }
 }
 };
@@ -10937,10 +10964,10 @@ win.submit(list,url);
 throw "Post aborted";
 }
 };
-WindowBinding.newInstance=function(_7c4){
-var _7c5=DOMUtil.createElementNS(Constants.NS_UI,"ui:window",_7c4);
-var _7c6=UserInterface.registerBinding(_7c5,WindowBinding);
-return _7c6;
+WindowBinding.newInstance=function(_7d0){
+var _7d1=DOMUtil.createElementNS(Constants.NS_UI,"ui:window",_7d0);
+var _7d2=UserInterface.registerBinding(_7d1,WindowBinding);
+return _7d2;
 };
 PreviewWindowBinding.prototype=new WindowBinding;
 PreviewWindowBinding.prototype.constructor=PreviewWindowBinding;
@@ -11008,9 +11035,9 @@ this._windowBinding=this._getWindowBinding();
 this._windowBinding.setURL(PreviewWindowBinding.URL_FULL_STOP);
 this._windowBinding.hide();
 this._windowBinding.attach();
-this._windowBinding.addActionListener(WindowBinding.ACTION_LOADED,{handleAction:function(_7ca){
-_7ca.target.show();
-_7ca.consume();
+this._windowBinding.addActionListener(WindowBinding.ACTION_LOADED,{handleAction:function(_7d6){
+_7d6.target.show();
+_7d6.consume();
 }});
 }else{
 this._windowBinding.show();
@@ -11030,9 +11057,9 @@ this._errorBinding=this._getWindowBinding();
 this._errorBinding.setURL(PreviewWindowBinding.URL_ERROR);
 this._errorBinding.hide();
 this._errorBinding.attach();
-this._errorBinding.addActionListener(WindowBinding.ACTION_LOADED,{handleAction:function(_7cc){
-_7cc.target.show();
-_7cc.consume();
+this._errorBinding.addActionListener(WindowBinding.ACTION_LOADED,{handleAction:function(_7d8){
+_7d8.target.show();
+_7d8.consume();
 }});
 }else{
 this._errorBinding.show();
@@ -11048,9 +11075,9 @@ win.bindingElement.style.width="100%";
 win.bindingElement.style.height="100%";
 return win;
 };
-PreviewWindowBinding.prototype.handleAction=function(_7ce){
-PreviewWindowBinding.superclass.handleAction.call(this,_7ce);
-switch(_7ce.type){
+PreviewWindowBinding.prototype.handleAction=function(_7da){
+PreviewWindowBinding.superclass.handleAction.call(this,_7da);
+switch(_7da.type){
 case PreviewWindowBinding.ACTION_RETURN:
 this._return();
 break;
@@ -11112,53 +11139,53 @@ this.addActionListener(ButtonBinding.ACTION_RADIOBUTTON_ATTACHED,this);
 this.addActionListener(ButtonBinding.ACTION_COMMAND,this);
 };
 RadioGroupBinding.prototype.onBindingInitialize=function(){
-var _7cf=null;
-this._getRadioButtonBindings().each(function(_7d0){
-if(_7d0.getProperty("ischecked")){
-_7cf=_7d0;
+var _7db=null;
+this._getRadioButtonBindings().each(function(_7dc){
+if(_7dc.getProperty("ischecked")){
+_7db=_7dc;
 return false;
 }else{
 return true;
 }
 });
-if(_7cf){
-this._checkedRadioBinding=_7cf;
+if(_7db){
+this._checkedRadioBinding=_7db;
 }
 RadioGroupBinding.superclass.onBindingInitialize.call(this);
 };
-RadioGroupBinding.prototype.handleAction=function(_7d1){
-RadioGroupBinding.superclass.handleAction.call(this,_7d1);
-var _7d2=_7d1.target;
-switch(_7d1.type){
+RadioGroupBinding.prototype.handleAction=function(_7dd){
+RadioGroupBinding.superclass.handleAction.call(this,_7dd);
+var _7de=_7dd.target;
+switch(_7dd.type){
 case ButtonBinding.ACTION_RADIOBUTTON_ATTACHED:
 this._isUpToDate=false;
-_7d1.consume();
+_7dd.consume();
 break;
 case ButtonBinding.ACTION_COMMAND:
-if(_7d2.isRadioButton&&!_7d2.isDisabled){
+if(_7de.isRadioButton&&!_7de.isDisabled){
 if(this._checkedRadioBinding){
-this._unCheckRadioBindingsExcept(_7d2);
+this._unCheckRadioBindingsExcept(_7de);
 }
-this._checkedRadioBinding=_7d2;
+this._checkedRadioBinding=_7de;
 this.dispatchAction(RadioGroupBinding.ACTION_SELECTIONCHANGED);
-_7d1.consume();
+_7dd.consume();
 }
 break;
 }
 };
-RadioGroupBinding.prototype.setCheckedButtonBinding=function(_7d3,_7d4){
-if(_7d3 instanceof RadioDataBinding){
-_7d3=_7d3.getButton();
+RadioGroupBinding.prototype.setCheckedButtonBinding=function(_7df,_7e0){
+if(_7df instanceof RadioDataBinding){
+_7df=_7df.getButton();
 }
-if(_7d3.isRadioButton){
-switch(_7d4){
+if(_7df.isRadioButton){
+switch(_7e0){
 case true:
-this._unCheckRadioBindingsExcept(_7d3);
-this._checkedRadioBinding=_7d3;
-_7d3.check(true);
+this._unCheckRadioBindingsExcept(_7df);
+this._checkedRadioBinding=_7df;
+_7df.check(true);
 break;
 default:
-_7d3.check();
+_7df.check();
 break;
 }
 }
@@ -11166,38 +11193,38 @@ break;
 RadioGroupBinding.prototype.getCheckedButtonBinding=function(){
 return this._checkedRadioBinding;
 };
-RadioGroupBinding.prototype._unCheckRadioBindingsExcept=function(_7d5){
-var _7d6=this._getRadioButtonBindings();
-_7d6.each(function(_7d7){
-if(_7d7.isChecked&&_7d7!=_7d5){
-_7d7.uncheck(true);
+RadioGroupBinding.prototype._unCheckRadioBindingsExcept=function(_7e1){
+var _7e2=this._getRadioButtonBindings();
+_7e2.each(function(_7e3){
+if(_7e3.isChecked&&_7e3!=_7e1){
+_7e3.uncheck(true);
 }
 });
 };
 RadioGroupBinding.prototype._getRadioButtonBindings=function(){
 if(this._radioButtonBindings===null||!this._isUpToDate){
-var _7d8=new Crawler();
+var _7e4=new Crawler();
 var list=new List();
-_7d8.addFilter(function(_7da){
-var _7db=true;
-var _7dc=UserInterface.getBinding(_7da);
-if(_7dc instanceof RadioGroupBinding){
-_7db=NodeCrawler.SKIP_CHILDREN;
+_7e4.addFilter(function(_7e6){
+var _7e7=true;
+var _7e8=UserInterface.getBinding(_7e6);
+if(_7e8 instanceof RadioGroupBinding){
+_7e7=NodeCrawler.SKIP_CHILDREN;
 }else{
-if(_7dc instanceof ButtonBinding&&_7dc.isRadioButton){
-list.add(_7dc);
+if(_7e8 instanceof ButtonBinding&&_7e8.isRadioButton){
+list.add(_7e8);
 }
 }
-return _7db;
+return _7e7;
 });
-_7d8.crawl(this.bindingElement);
+_7e4.crawl(this.bindingElement);
 this._radioButtonBindings=list;
 }
 return this._radioButtonBindings;
 };
-RadioGroupBinding.newInstance=function(_7dd){
-var _7de=DOMUtil.createElementNS(Constants.NS_UI,"ui:radiogroup",_7dd);
-return UserInterface.registerBinding(_7de,RadioGroupBinding);
+RadioGroupBinding.newInstance=function(_7e9){
+var _7ea=DOMUtil.createElementNS(Constants.NS_UI,"ui:radiogroup",_7e9);
+return UserInterface.registerBinding(_7ea,RadioGroupBinding);
 };
 DataBindingMap.prototype=new Map;
 DataBindingMap.prototype.constructor=DataBindingMap;
@@ -11268,26 +11295,26 @@ this.isPassword=this.getProperty("password")==true;
 this.minlength=this.getProperty("minlength");
 this.maxlength=this.getProperty("maxlength");
 this._isAutoPost=this.getProperty("autopost")==true;
-var _7e0=this.getProperty("regexrule");
-if(_7e0!=null){
-this.expression=new RegExp(_7e0);
+var _7ec=this.getProperty("regexrule");
+if(_7ec!=null){
+this.expression=new RegExp(_7ec);
 }
-var _7e1=this.getProperty("onbindingblur");
-if(_7e1!=null){
+var _7ed=this.getProperty("onbindingblur");
+if(_7ed!=null){
 this.onblur=function(){
-Binding.evaluate(_7e1,this);
+Binding.evaluate(_7ed,this);
 };
 }
-var _7e2=this.getProperty("onvaluechange");
-if(_7e2!=null){
+var _7ee=this.getProperty("onvaluechange");
+if(_7ee!=null){
 this.onValueChange=function(){
-Binding.evaluate(_7e2,this);
+Binding.evaluate(_7ee,this);
 };
 }
 if(this.error==null&&this.type!=null){
-var _7e3=DataBinding.errors[this.type];
-if(_7e3!=null){
-this.error=_7e3;
+var _7ef=DataBinding.errors[this.type];
+if(_7ef!=null){
+this.error=_7ef;
 }
 }
 };
@@ -11297,24 +11324,24 @@ this.shadowTree.box=DOMUtil.createElementNS(Constants.NS_UI,"ui:box",this.bindin
 if(Client.isExplorer==true){
 this.bindingElement.hideFocus=true;
 }
-var _7e4=this.getProperty("value");
-if(_7e4!=null){
-this.setValue(String(_7e4));
+var _7f0=this.getProperty("value");
+if(_7f0!=null){
+this.setValue(String(_7f0));
 }
 var name=this.getProperty("name");
 if(name!=null){
 this.setName(name);
 }
-var _7e6=this.getProperty("isdisabled");
-if(_7e6==true){
+var _7f2=this.getProperty("isdisabled");
+if(_7f2==true){
 this.setDisabled(true);
 }
-var _7e7=this.getProperty("readonly");
-if(_7e7==true){
+var _7f3=this.getProperty("readonly");
+if(_7f3==true){
 this.setReadOnly(true);
 }
-var _7e8=this.getProperty("autoselect");
-if(_7e8==true){
+var _7f4=this.getProperty("autoselect");
+if(_7f4==true){
 this._isAutoSelect=true;
 }
 this.shadowTree.box.appendChild(this.shadowTree.input);
@@ -11328,10 +11355,10 @@ this.logger.warn("Autopost "+this.toString()+" without a callbackid?");
 }
 };
 DataInputBinding.prototype._getInputElement=function(){
-var _7e9=DOMUtil.createElementNS(Constants.NS_XHTML,"input",this.bindingDocument);
-_7e9.type=this.isPassword==true?"password":"text";
-_7e9.tabIndex=-1;
-return _7e9;
+var _7f5=DOMUtil.createElementNS(Constants.NS_XHTML,"input",this.bindingDocument);
+_7f5.type=this.isPassword==true?"password":"text";
+_7f5.tabIndex=-1;
+return _7f5;
 };
 DataInputBinding.prototype._attachDOMEvents=function(){
 DOMEvents.addEventListener(this.shadowTree.input,DOMEvents.FOCUS,this);
@@ -11381,8 +11408,8 @@ break;
 }
 }
 };
-DataInputBinding.prototype._handleFocusAndBlur=function(_7ec){
-if(_7ec){
+DataInputBinding.prototype._handleFocusAndBlur=function(_7f8){
+if(_7f8){
 this.focus(true);
 this.bindingWindow.standardEventHandler.enableNativeKeys();
 if(Client.isExplorer==true){
@@ -11406,14 +11433,14 @@ DOMEvents.preventDefault(e);
 DOMEvents.stopPropagation(e);
 EventBroadcaster.broadcast(BroadcastMessages.KEY_ENTER);
 };
-DataInputBinding.prototype.handleBroadcast=function(_7ef,arg){
-DataInputBinding.superclass.handleBroadcast.call(this,_7ef,arg);
+DataInputBinding.prototype.handleBroadcast=function(_7fb,arg){
+DataInputBinding.superclass.handleBroadcast.call(this,_7fb,arg);
 var self=this;
-switch(_7ef){
+switch(_7fb){
 case BroadcastMessages.MOUSEEVENT_MOUSEDOWN:
 if(Client.isExplorer==true){
-var _7f2=DOMEvents.getTarget(arg);
-if(_7f2!=this.shadowTree.input){
+var _7fe=DOMEvents.getTarget(arg);
+if(_7fe!=this.shadowTree.input){
 setTimeout(function(){
 if(Binding.exists(self)==true){
 if(self.isFocused==true){
@@ -11426,49 +11453,49 @@ self.blur();
 break;
 }
 };
-DataInputBinding.prototype.focus=function(_7f3){
+DataInputBinding.prototype.focus=function(_7ff){
 if(!this.isFocused&&!this.isReadOnly&&!this.isDisabled){
 DataInputBinding.superclass.focus.call(this);
 if(this.isFocused==true){
 this._focus();
 if(this._isAutoSelect==true){
-if(_7f3){
-var self=this,_7f5=this.bindingElement,_7f6={handleEvent:function(){
+if(_7ff){
+var self=this,_801=this.bindingElement,_802={handleEvent:function(){
 self.select();
-DOMEvents.removeEventListener(_7f5,DOMEvents.MOUSEUP,this);
+DOMEvents.removeEventListener(_801,DOMEvents.MOUSEUP,this);
 }};
-DOMEvents.addEventListener(_7f5,DOMEvents.MOUSEUP,_7f6);
+DOMEvents.addEventListener(_801,DOMEvents.MOUSEUP,_802);
 }else{
 this.select();
 }
 }
 this.onfocus();
-if(!_7f3){
-var _7f7=this.shadowTree.input;
+if(!_7ff){
+var _803=this.shadowTree.input;
 setTimeout(function(){
-FocusBinding.focusElement(_7f7);
+FocusBinding.focusElement(_803);
 },0);
 }
 }
 }
 };
 DataInputBinding.prototype.select=function(){
-var _7f8=this.shadowTree.input;
+var _804=this.shadowTree.input;
 setTimeout(function(){
 if(Client.isExplorer==true){
-var _7f9=_7f8.createTextRange();
-_7f9.moveStart("character",0);
-_7f9.moveEnd("character",_7f8.value.length);
-_7f9.select();
+var _805=_804.createTextRange();
+_805.moveStart("character",0);
+_805.moveEnd("character",_804.value.length);
+_805.select();
 }else{
-_7f8.setSelectionRange(0,_7f8.value.length);
+_804.setSelectionRange(0,_804.value.length);
 }
 },0);
 };
-DataInputBinding.prototype.blur=function(_7fa){
+DataInputBinding.prototype.blur=function(_806){
 if(this.isFocused==true){
 DataInputBinding.superclass.blur.call(this);
-if(!_7fa){
+if(!_806){
 this.shadowTree.input.blur();
 }
 this._blur();
@@ -11540,43 +11567,43 @@ self.dirty();
 };
 DataInputBinding.prototype.onValueChange=function(){
 };
-DataInputBinding.prototype.validate=function(_7fe){
-if(_7fe==true||this._isValid){
-var _7ff=this.isValid();
-if(_7ff!=this._isValid){
-this._isValid=_7ff;
-if(!_7ff){
+DataInputBinding.prototype.validate=function(_80a){
+if(_80a==true||this._isValid){
+var _80b=this.isValid();
+if(_80b!=this._isValid){
+this._isValid=_80b;
+if(!_80b){
 this.attachClassName(DataBinding.CLASSNAME_INVALID);
 this._value=this.getValue();
 this.dispatchAction(Binding.ACTION_INVALID);
 if(!this.isFocused){
-var _800=null;
+var _80c=null;
 if(this._isInvalidBecauseRequired==true){
-_800=DataBinding.warnings["required"];
+_80c=DataBinding.warnings["required"];
 }else{
 if(this._isInvalidBecauseMinLength==true){
-_800=DataBinding.warnings["minlength"];
-_800=_800.replace("${count}",String(this.minlength));
+_80c=DataBinding.warnings["minlength"];
+_80c=_80c.replace("${count}",String(this.minlength));
 }else{
 if(this._isInvalidBecauseMaxLength==true){
-_800=DataBinding.warnings["maxlength"];
-_800=_800.replace("${count}",String(this.maxlength));
+_80c=DataBinding.warnings["maxlength"];
+_80c=_80c.replace("${count}",String(this.maxlength));
 }else{
-_800=DataBinding.warnings[this.type];
+_80c=DataBinding.warnings[this.type];
 }
 }
 }
 this.shadowTree.input.className=DataBinding.CLASSNAME_WARNING;
-if(_800!=null){
+if(_80c!=null){
 if(this.isPassword){
 if(Client.isMozilla){
 this.shadowTree.input.type="text";
-this.setValue(_800);
+this.setValue(_80c);
 }else{
-alert(_800);
+alert(_80c);
 }
 }else{
-this.setValue(_800);
+this.setValue(_80c);
 }
 }
 }
@@ -11600,80 +11627,80 @@ this.dispatchAction(Binding.ACTION_VALID);
 }
 };
 DataInputBinding.prototype.isValid=function(){
-var _801=true;
+var _80d=true;
 this._isInvalidBecauseRequired=false;
 this._isInvalidBecauseMinLength=false;
 this._isInvalidaBecuaseMaxLength=false;
-var _802=this.getValue();
-if(_802==""){
+var _80e=this.getValue();
+if(_80e==""){
 if(this.isRequired==true){
-_801=false;
+_80d=false;
 this._isInvalidBecauseRequired=true;
 }
 }else{
 if(this.type!=null){
-var _803=DataBinding.expressions[this.type];
-if(!_803.test(_802)){
-_801=false;
+var _80f=DataBinding.expressions[this.type];
+if(!_80f.test(_80e)){
+_80d=false;
 }
 }else{
 if(this.expression!=null){
-if(!this.expression.test(_802)){
-_801=false;
+if(!this.expression.test(_80e)){
+_80d=false;
 }
 }
 }
 }
-if(_801&&this.minlength!=null){
-if(_802.length<this.minlength){
+if(_80d&&this.minlength!=null){
+if(_80e.length<this.minlength){
 this._isInvalidBecauseMinLength=true;
-_801=false;
+_80d=false;
 }
 }
-if(_801&&this.maxlength!=null){
-if(_802.length>this.maxlength){
+if(_80d&&this.maxlength!=null){
+if(_80e.length>this.maxlength){
 this._isInvalidBecauseMaxLength=true;
-_801=false;
+_80d=false;
 }
 }
-return _801;
+return _80d;
 };
-DataInputBinding.prototype.setDisabled=function(_804){
-if(_804!=this.isDisabled){
-if(_804){
+DataInputBinding.prototype.setDisabled=function(_810){
+if(_810!=this.isDisabled){
+if(_810){
 this.attachClassName("isdisabled");
 }else{
 this.detachClassName("isdisabled");
 }
-var _805=this.shadowTree.input;
-if(_804){
+var _811=this.shadowTree.input;
+if(_810){
 this._disabledHandler={handleEvent:function(e){
 DOMEvents.preventDefault(e);
 DOMEvents.stopPropagation(e);
 }};
-DOMEvents.addEventListener(_805,DOMEvents.MOUSEDOWN,this._disabledHandler);
+DOMEvents.addEventListener(_811,DOMEvents.MOUSEDOWN,this._disabledHandler);
 }else{
-DOMEvents.removeEventListener(_805,DOMEvents.MOUSEDOWN,this._disabledHandler);
+DOMEvents.removeEventListener(_811,DOMEvents.MOUSEDOWN,this._disabledHandler);
 this._disabledHandler=null;
 }
 if(Client.isExplorer){
-this.shadowTree.input.disabled=_804;
-this.shadowTree.input.unselectable=_804?"on":"off";
+this.shadowTree.input.disabled=_810;
+this.shadowTree.input.unselectable=_810?"on":"off";
 }
-this.isDisabled=_804;
-this.isFocusable=!_804;
+this.isDisabled=_810;
+this.isFocusable=!_810;
 this.dispatchAction(FocusBinding.ACTION_UPDATE);
 }
 };
-DataInputBinding.prototype.setReadOnly=function(_807){
-if(_807!=this.isReadOnly){
-if(_807){
+DataInputBinding.prototype.setReadOnly=function(_813){
+if(_813!=this.isReadOnly){
+if(_813){
 this.attachClassName("readonly");
 }else{
 this.detachClassName("readonly");
 }
-this.shadowTree.input.readOnly=_807;
-this.isReadOnly=_807;
+this.shadowTree.input.readOnly=_813;
+this.isReadOnly=_813;
 }
 };
 DataInputBinding.prototype.disable=function(){
@@ -11686,33 +11713,33 @@ if(this.isDisabled){
 this.setDisabled(false);
 }
 };
-DataInputBinding.prototype.handleElement=function(_808){
+DataInputBinding.prototype.handleElement=function(_814){
 return true;
 };
-DataInputBinding.prototype.updateElement=function(_809){
-var _80a=_809.getAttribute("value");
-var _80b=_809.getAttribute("type");
-var _80c=_809.getAttribute("maxlength");
-var _80d=_809.getAttribute("minlength");
-if(_80a==null){
-_80a="";
+DataInputBinding.prototype.updateElement=function(_815){
+var _816=_815.getAttribute("value");
+var _817=_815.getAttribute("type");
+var _818=_815.getAttribute("maxlength");
+var _819=_815.getAttribute("minlength");
+if(_816==null){
+_816="";
 }
-var _80e=this.bindingWindow.UpdateManager;
-if(this.getValue()!=_80a){
-_80e.report("Property [value] updated on binding \""+this.getID()+"\"");
-this.setValue(_80a);
+var _81a=this.bindingWindow.UpdateManager;
+if(this.getValue()!=_816){
+_81a.report("Property [value] updated on binding \""+this.getID()+"\"");
+this.setValue(_816);
 }
-if(this.type!=_80b){
-_80e.report("Property [type] updated on binding \""+this.getID()+"\"");
-this.type=_80b;
+if(this.type!=_817){
+_81a.report("Property [type] updated on binding \""+this.getID()+"\"");
+this.type=_817;
 }
-if(this.maxlength!=_80c){
-_80e.report("Property [maxlength] updated on binding \""+this.getID()+"\"");
-this.maxlength=_80c;
+if(this.maxlength!=_818){
+_81a.report("Property [maxlength] updated on binding \""+this.getID()+"\"");
+this.maxlength=_818;
 }
-if(this.minlength!=_80d){
-_80e.report("Property [minlength] updated on binding \""+this.getID()+"\"");
-this.minlength=_80d;
+if(this.minlength!=_819){
+_81a.report("Property [minlength] updated on binding \""+this.getID()+"\"");
+this.minlength=_819;
 }
 return true;
 };
@@ -11727,25 +11754,25 @@ DataInputBinding.prototype.clean=function(){
 DataInputBinding.superclass.clean.call(this);
 this._sessionResult=this.getResult();
 };
-DataInputBinding.prototype.setValue=function(_80f){
-if(_80f===null){
-_80f="";
+DataInputBinding.prototype.setValue=function(_81b){
+if(_81b===null){
+_81b="";
 }
-if(_80f!=this.getValue()){
-this.setProperty("value",_80f);
+if(_81b!=this.getValue()){
+this.setProperty("value",_81b);
 if(this.shadowTree.input!=null){
-this.shadowTree.input.value=String(_80f);
+this.shadowTree.input.value=String(_81b);
 }
 }
 };
 DataInputBinding.prototype.getValue=function(){
-var _810=null;
+var _81c=null;
 if(this.shadowTree.input!=null){
-_810=this.shadowTree.input.value;
+_81c=this.shadowTree.input.value;
 }else{
-_810=this.getProperty("value");
+_81c=this.getProperty("value");
 }
-return _810;
+return _81c;
 };
 DataInputBinding.prototype.setName=function(name){
 DataInputBinding.superclass.setName.call(this,name);
@@ -11754,19 +11781,19 @@ this.shadowTree.input.name=name;
 }
 };
 DataInputBinding.prototype.getResult=function(){
-var _812=this.getValue();
+var _81e=this.getValue();
 switch(this.type){
 case DataBinding.TYPE_NUMBER:
 case DataBinding.TYPE_INTEGER:
-_812=Number(_812);
+_81e=Number(_81e);
 break;
 }
-return _812;
+return _81e;
 };
 DataInputBinding.prototype.setResult=DataInputBinding.prototype.setValue;
-DataInputBinding.newInstance=function(_813){
-var _814=DOMUtil.createElementNS(Constants.NS_UI,"ui:datainput",_813);
-return UserInterface.registerBinding(_814,DataInputBinding);
+DataInputBinding.newInstance=function(_81f){
+var _820=DOMUtil.createElementNS(Constants.NS_UI,"ui:datainput",_81f);
+return UserInterface.registerBinding(_820,DataInputBinding);
 };
 TextBoxBinding.prototype=new DataInputBinding;
 TextBoxBinding.prototype.constructor=TextBoxBinding;
@@ -11780,10 +11807,10 @@ TextBoxBinding.prototype.toString=function(){
 return "[TextBoxBinding]";
 };
 TextBoxBinding.prototype._buildDOMContent=function(){
-var _815=DOMUtil.getElementsByTagName(this.bindingElement,"textarea").item(0);
-if(_815!=null){
-this.setValue(_815.value);
-_815.parentNode.removeChild(_815);
+var _821=DOMUtil.getElementsByTagName(this.bindingElement,"textarea").item(0);
+if(_821!=null){
+this.setValue(_821.value);
+_821.parentNode.removeChild(_821);
 }
 TextBoxBinding.superclass._buildDOMContent.call(this);
 this.shadowTree.input.setAttribute("spellcheck","false");
@@ -11792,30 +11819,30 @@ this.shadowTree.input.setAttribute("wrap","off");
 }
 };
 TextBoxBinding.prototype._getInputElement=function(){
-var _816=DOMUtil.createElementNS(Constants.NS_XHTML,"textarea",this.bindingDocument);
-_816.tabIndex=-1;
-return _816;
+var _822=DOMUtil.createElementNS(Constants.NS_XHTML,"textarea",this.bindingDocument);
+_822.tabIndex=-1;
+return _822;
 };
-TextBoxBinding.prototype.handleElement=function(_817){
+TextBoxBinding.prototype.handleElement=function(_823){
 return true;
 };
-TextBoxBinding.prototype.updateElement=function(_818){
-var _819,area=_818.getElementsByTagName("textarea").item(0);
+TextBoxBinding.prototype.updateElement=function(_824){
+var _825,area=_824.getElementsByTagName("textarea").item(0);
 if(area!=null&&area.hasChildNodes()){
-_819=DOMUtil.getTextContent(area);
+_825=DOMUtil.getTextContent(area);
 }
-if(_819==null){
-_819="";
+if(_825==null){
+_825="";
 }
-var _81b=this.bindingWindow.UpdateManager;
-if(this.getValue()!=_819){
-_81b.report("Property [value] updated on binding \""+this.getID()+"\"");
-this.setValue(_819);
+var _827=this.bindingWindow.UpdateManager;
+if(this.getValue()!=_825){
+_827.report("Property [value] updated on binding \""+this.getID()+"\"");
+this.setValue(_825);
 }
-var _81c=_818.getAttribute("type");
-if(this.type!=_81c){
-_81b.report("Property [type] updated on binding \""+this.getID()+"\"");
-this.type=_81c;
+var _828=_824.getAttribute("type");
+if(this.type!=_828){
+_827.report("Property [type] updated on binding \""+this.getID()+"\"");
+this.type=_828;
 }
 return true;
 };
@@ -11873,47 +11900,47 @@ this.logger=SystemLogger.getLogger("IEEditorTextBoxBinding");
 IEEditorTextBoxBinding.prototype.toString=function(){
 return "[IEEditorTextBoxBinding]";
 };
-IEEditorTextBoxBinding.prototype._handleTabKey=function(_820){
-var _821=this.bindingDocument.selection.createRange();
-var _822=_821.text=="";
-if(_822&&!_820){
-_821.text="\t";
+IEEditorTextBoxBinding.prototype._handleTabKey=function(_82c){
+var _82d=this.bindingDocument.selection.createRange();
+var _82e=_82d.text=="";
+if(_82e&&!_82c){
+_82d.text="\t";
 }else{
 var text="";
-var _824=_821.text.length;
-while((_821.moveStart("word",-1)&&_821.text.charAt(1)!="\n")){
+var _830=_82d.text.length;
+while((_82d.moveStart("word",-1)&&_82d.text.charAt(1)!="\n")){
 }
-_821.moveStart("character",1);
-var _825=0;
-var i=0,line,_828=_821.text.split("\n");
-while((line=_828[i++])!=null){
-if(_820){
+_82d.moveStart("character",1);
+var _831=0;
+var i=0,line,_834=_82d.text.split("\n");
+while((line=_834[i++])!=null){
+if(_82c){
 line=line.replace(/^(\s)/mg,"");
-_825++;
+_831++;
 }else{
 line=line.replace(/^(.)/mg,"\t$1");
 }
-text+=line+(_828[i+1]?"\n":"");
+text+=line+(_834[i+1]?"\n":"");
 }
-_821.text=text;
-_821.moveStart("character",-_824);
-if(_820){
-_821.moveStart("character",2*_828.length-2);
+_82d.text=text;
+_82d.moveStart("character",-_830);
+if(_82c){
+_82d.moveStart("character",2*_834.length-2);
 }
-_821.select();
+_82d.select();
 }
 };
 IEEditorTextBoxBinding.prototype._handleEnterKey=function(){
-var _829=this.bindingDocument.selection.createRange();
-var _82a=_829.duplicate();
-while((_82a.moveStart("word",-1)&&_82a.text.indexOf("\n")==-1)){
+var _835=this.bindingDocument.selection.createRange();
+var _836=_835.duplicate();
+while((_836.moveStart("word",-1)&&_836.text.indexOf("\n")==-1)){
 }
-_82a.moveStart("character",1);
-_829.text="\n"+_82a.text.match(/^(\s)*/)[0]+"!";
-_829.moveStart("character",-1);
-_829.select();
-_829.text="";
-_829.select();
+_836.moveStart("character",1);
+_835.text="\n"+_836.text.match(/^(\s)*/)[0]+"!";
+_835.moveStart("character",-1);
+_835.select();
+_835.text="";
+_835.select();
 };
 MozEditorTextBoxBinding.prototype=new EditorTextBoxBinding;
 MozEditorTextBoxBinding.prototype.constructor=MozEditorTextBoxBinding;
@@ -11925,18 +11952,18 @@ return this;
 MozEditorTextBoxBinding.prototype.toString=function(){
 return "[MozEditorTextBoxBinding]";
 };
-MozEditorTextBoxBinding.prototype._handleTabKey=function(_82b){
-var _82c;
-var _82d;
+MozEditorTextBoxBinding.prototype._handleTabKey=function(_837){
+var _838;
+var _839;
 var oss;
 var osy;
 var i;
 var fnd;
-var _832=this._getSelectedText();
+var _83e=this._getSelectedText();
 var el=this.shadowTree.input;
-_82c=el.scrollLeft;
-_82d=el.scrollTop;
-if(!_832.match(/\n/)){
+_838=el.scrollLeft;
+_839=el.scrollTop;
+if(!_83e.match(/\n/)){
 oss=el.selectionStart;
 el.value=el.value.substr(0,el.selectionStart)+"\t"+el.value.substr(el.selectionEnd);
 el.selectionStart=oss+1;
@@ -11968,27 +11995,27 @@ osy=el.value.length;
 }
 el.selectionStart=oss;
 el.selectionEnd=osy;
-_832=this._getSelectedText();
-if(_82b){
-ntext=_832.replace(/^(\s)/mg,"");
+_83e=this._getSelectedText();
+if(_837){
+ntext=_83e.replace(/^(\s)/mg,"");
 }else{
-ntext=_832.replace(/^(.)/mg,"\t$1");
+ntext=_83e.replace(/^(.)/mg,"\t$1");
 }
 el.value=el.value.substr(0,el.selectionStart)+ntext+el.value.substr(el.selectionEnd);
 el.selectionStart=oss;
-el.selectionEnd=osy+(ntext.length-_832.length);
+el.selectionEnd=osy+(ntext.length-_83e.length);
 }
-el.scrollLeft=_82c;
-el.scrollTop=_82d;
+el.scrollLeft=_838;
+el.scrollTop=_839;
 };
 MozEditorTextBoxBinding.prototype._handleEnterKey=function(){
-var _834;
-var _835;
+var _840;
+var _841;
 var oss;
 var osy;
 var el=this.shadowTree.input;
-_834=el.scrollLeft;
-_835=el.scrollTop;
+_840=el.scrollLeft;
+_841=el.scrollTop;
 oss=el.selectionStart;
 osy=el.selectionEnd;
 var bfs=el.value.substr(0,el.selectionStart);
@@ -11997,14 +12024,14 @@ var spm=bfsm[bfsm.length-1].match(/^(\s)*/);
 el.value=el.value.substr(0,el.selectionStart)+"\n"+spm[0]+el.value.substr(el.selectionEnd);
 el.selectionStart=oss+1+spm[0].length;
 el.selectionEnd=oss+1+spm[0].length;
-el.scrollLeft=_834;
-el.scrollTop=_835;
+el.scrollLeft=_840;
+el.scrollTop=_841;
 };
 MozEditorTextBoxBinding.prototype._getSelectedText=function(){
-var _83c=this.shadowTree.input.value;
-var _83d=this.shadowTree.input.selectionStart;
+var _848=this.shadowTree.input.value;
+var _849=this.shadowTree.input.selectionStart;
 var end=this.shadowTree.input.selectionEnd;
-return _83c.substr(_83d,end-_83d);
+return _848.substr(_849,end-_849);
 };
 SelectorBinding.prototype=new DataBinding;
 SelectorBinding.prototype.constructor=SelectorBinding;
@@ -12050,8 +12077,8 @@ this.parseDOMProperties();
 this.buildDOMContent();
 this.addEventListener(DOMEvents.FOCUS);
 this.addActionListener(ButtonBinding.ACTION_COMMAND);
-var _83f=this.getProperty("isdisabled");
-if(this.isDisabled||_83f){
+var _84b=this.getProperty("isdisabled");
+if(this.isDisabled||_84b){
 this.disable();
 }
 };
@@ -12066,29 +12093,29 @@ this._releaseKeyboard();
 };
 SelectorBinding.prototype.parseDOMProperties=function(){
 var type=this.getProperty("type");
-var _841=this.getProperty("label");
-var _842=this.getProperty("value");
-var _843=this.getProperty("width");
-var _844=this.getProperty("onchange");
-var _845=this.getProperty("required")==true;
+var _84d=this.getProperty("label");
+var _84e=this.getProperty("value");
+var _84f=this.getProperty("width");
+var _850=this.getProperty("onchange");
+var _851=this.getProperty("required")==true;
 if(!this.type&&type){
 this.type=type;
 }
-if(!this.label&&_841!=null){
-this.label=_841;
+if(!this.label&&_84d!=null){
+this.label=_84d;
 }
-if(!this.value&&_842!=null){
-this.value=_842;
+if(!this.value&&_84e!=null){
+this.value=_84e;
 }
-if(!this.width&&_843){
-this.width=_843;
+if(!this.width&&_84f){
+this.width=_84f;
 }
-if(_845){
+if(_851){
 this.isRequired=true;
 }
-if(_844){
+if(_850){
 this.onValueChange=function(){
-Binding.evaluate(_844,this);
+Binding.evaluate(_850,this);
 };
 }
 this._computeImageProfile();
@@ -12107,28 +12134,28 @@ this.bindingElement.hideFocus=true;
 }
 };
 SelectorBinding.prototype.buildFormField=function(){
-var _846=DOMUtil.createElementNS(Constants.NS_XHTML,"input",this.bindingDocument);
-_846.name=this.getName();
-_846.value=this.getValue();
-_846.type="hidden";
+var _852=DOMUtil.createElementNS(Constants.NS_XHTML,"input",this.bindingDocument);
+_852.name=this.getName();
+_852.value=this.getValue();
+_852.type="hidden";
 if(this.hasCallBackID()){
-_846.id=this.getCallBackID();
+_852.id=this.getCallBackID();
 }
-this.shadowTree.input=_846;
-this.bindingElement.appendChild(_846);
+this.shadowTree.input=_852;
+this.bindingElement.appendChild(_852);
 };
 SelectorBinding.prototype.buildButton=function(){
-var _847=this.BUTTON_IMPLEMENTATION;
-var _848=this.add(_847.newInstance(this.bindingDocument));
+var _853=this.BUTTON_IMPLEMENTATION;
+var _854=this.add(_853.newInstance(this.bindingDocument));
 if(this.imageProfile!=null){
-_848.imageProfile=this.imageProfile;
+_854.imageProfile=this.imageProfile;
 }
 if(this.width!=null){
-_848.setWidth(this.width);
+_854.setWidth(this.width);
 }
-this._buttonBinding=_848;
-this.shadowTree.button=_848;
-_848.attach();
+this._buttonBinding=_854;
+this.shadowTree.button=_854;
+_854.attach();
 };
 SelectorBinding.prototype.buildIndicator=function(){
 var img=this.bindingDocument.createElement("img");
@@ -12138,20 +12165,20 @@ this._buttonBinding.bindingElement.appendChild(img);
 this.shadowTree.selectorindicatorimage=img;
 };
 SelectorBinding.prototype.buildPopup=function(){
-var _84a=top.app.bindingMap.selectorpopupset;
-var doc=_84a.bindingDocument;
-var _84c=_84a.add(PopupBinding.newInstance(doc));
-var _84d=_84c.add(MenuBodyBinding.newInstance(doc));
-this._popupBinding=_84c;
-this._menuBodyBinding=_84d;
+var _856=top.app.bindingMap.selectorpopupset;
+var doc=_856.bindingDocument;
+var _858=_856.add(PopupBinding.newInstance(doc));
+var _859=_858.add(MenuBodyBinding.newInstance(doc));
+this._popupBinding=_858;
+this._menuBodyBinding=_859;
 this._popupBinding.attachClassName(SelectorBinding.CLASSNAME_POPUP);
 this._popupBinding.attachRecursive();
 this._popupBinding.type=PopupBinding.TYPE_FIXED;
-_84c.attachClassName("selectorpopup");
-_84c.addActionListener(PopupBinding.ACTION_SHOW,this);
-_84c.addActionListener(MenuItemBinding.ACTION_COMMAND,this);
-_84c.addActionListener(PopupBinding.ACTION_HIDE,this);
-this._buttonBinding.setPopup(_84c);
+_858.attachClassName("selectorpopup");
+_858.addActionListener(PopupBinding.ACTION_SHOW,this);
+_858.addActionListener(MenuItemBinding.ACTION_COMMAND,this);
+_858.addActionListener(PopupBinding.ACTION_HIDE,this);
+this._buttonBinding.setPopup(_858);
 };
 SelectorBinding.prototype.buildSelections=function(){
 if(this.defaultSelection==null&&(this.label||this.value)){
@@ -12162,20 +12189,20 @@ this.populateFromList(list);
 };
 SelectorBinding.prototype._getSelectionsList=function(){
 var list=new List();
-var _850=DOMUtil.getElementsByTagName(this.bindingElement,"selection");
-new List(_850).each(function(_851){
-var _852=_851.getAttribute("label");
-var _853=_851.getAttribute("value");
-var _854=_851.getAttribute("selected");
-var _855=_851.getAttribute("image");
-var _856=_851.getAttribute("image-hover");
-var _857=_851.getAttribute("image-active");
-var _858=_851.getAttribute("image-disabled");
-var _859=null;
-if(_855||_856||_857||_858){
-_859=new ImageProfile({image:_855,imageHover:_856,imageActive:_857,imageDisabled:_858});
+var _85c=DOMUtil.getElementsByTagName(this.bindingElement,"selection");
+new List(_85c).each(function(_85d){
+var _85e=_85d.getAttribute("label");
+var _85f=_85d.getAttribute("value");
+var _860=_85d.getAttribute("selected");
+var _861=_85d.getAttribute("image");
+var _862=_85d.getAttribute("image-hover");
+var _863=_85d.getAttribute("image-active");
+var _864=_85d.getAttribute("image-disabled");
+var _865=null;
+if(_861||_862||_863||_864){
+_865=new ImageProfile({image:_861,imageHover:_862,imageActive:_863,imageDisabled:_864});
 }
-list.add(new SelectorBindingSelection(_852?_852:null,_853?_853:null,_854&&_854=="true",_859));
+list.add(new SelectorBindingSelection(_85e?_85e:null,_85f?_85f:null,_860&&_860=="true",_865));
 });
 return list;
 };
@@ -12183,16 +12210,16 @@ SelectorBinding.prototype.populateFromList=function(list){
 if(this.isAttached){
 this.clear();
 if(list.hasEntries()){
-var _85b=null;
+var _867=null;
 while(list.hasNext()){
-var _85c=list.getNext();
-var item=this.addSelection(_85c);
-if(!_85b){
-_85b=item;
+var _868=list.getNext();
+var item=this.addSelection(_868);
+if(!_867){
+_867=item;
 }
 }
 if(!this._selectedItemBinding){
-this.select(_85b,true);
+this.select(_867,true);
 }
 this.shadowTree.selectorindicatorimage.style.display="block";
 }else{
@@ -12202,39 +12229,42 @@ this.shadowTree.selectorindicatorimage.style.display="none";
 throw "Could not populate unattached selector";
 }
 };
-SelectorBinding.prototype.addSelection=function(_85e,_85f){
-var _860=this.MENUITEM_IMPLEMENTATION;
-var _861=this._menuBodyBinding;
-var _862=_861.bindingDocument;
-var _863=_860.newInstance(_862);
-_863.imageProfile=_85e.imageProfile;
-_863.setLabel(_85e.label);
-_863.selectionValue=_85e.value;
-if(_85e.isSelected){
-this.select(_863,true);
+SelectorBinding.prototype.addSelection=function(_86a,_86b){
+var _86c=this.MENUITEM_IMPLEMENTATION;
+var _86d=this._menuBodyBinding;
+var _86e=_86d.bindingDocument;
+var _86f=_86c.newInstance(_86e);
+_86f.imageProfile=_86a.imageProfile;
+_86f.setLabel(_86a.label);
+if(_86a.tooltip!=null){
+_86f.setToolTip(_86a.tooltip);
 }
-_85e.menuItemBinding=_863;
-if(_85f){
-_861.addFirst(_863);
-this.selections.addFirst(_85e);
+_86f.selectionValue=_86a.value;
+if(_86a.isSelected){
+this.select(_86f,true);
+}
+_86a.menuItemBinding=_86f;
+if(_86b){
+_86d.addFirst(_86f);
+this.selections.addFirst(_86a);
 }else{
-_861.add(_863);
-this.selections.add(_85e);
+_86d.add(_86f);
+this.selections.add(_86a);
 }
 this._isUpToDate=false;
-return _863;
+return _86f;
 };
-SelectorBinding.prototype.addSelectionFirst=function(_864){
-return this.addSelection(_864,true);
+SelectorBinding.prototype.addSelectionFirst=function(_870){
+return this.addSelection(_870,true);
 };
-SelectorBinding.prototype.clear=function(_865){
+SelectorBinding.prototype.clear=function(_871){
 this._selectedItemBinding=null;
 if(this._popupBinding){
 this._popupBinding.clear();
 this.selections.clear();
-if(!_865&&this.defaultSelection!=null){
-var _866=this.addSelection(this.defaultSelection);
-this.select(_866,true);
+if(!_871&&this.defaultSelection!=null){
+var _872=this.addSelection(this.defaultSelection);
+this.select(_872,true);
 }
 }
 };
@@ -12277,37 +12307,37 @@ this.unsubscribe(BroadcastMessages.KEY_ARROW);
 this._hasKeyboard=false;
 }
 };
-SelectorBinding.prototype.setDisabled=function(_867){
+SelectorBinding.prototype.setDisabled=function(_873){
 if(this.isAttached==true){
-var _868=this._buttonBinding;
-this.shadowTree.selectorindicatorimage.style.display=_867?"none":"block";
-_868.setDisabled(_867);
+var _874=this._buttonBinding;
+this.shadowTree.selectorindicatorimage.style.display=_873?"none":"block";
+_874.setDisabled(_873);
 }
-if(_867){
+if(_873){
 this.setProperty("isdisabled",true);
 }else{
 this.deleteProperty("isdisabled");
 }
 };
-SelectorBinding.prototype.reset=function(_869){
+SelectorBinding.prototype.reset=function(_875){
 if(this.defaultSelection!=null){
-this.selectByValue(this.defaultSelection.value,_869);
+this.selectByValue(this.defaultSelection.value,_875);
 }
 };
-SelectorBinding.prototype.handleAction=function(_86a){
-SelectorBinding.superclass.handleAction.call(this,_86a);
-switch(_86a.type){
+SelectorBinding.prototype.handleAction=function(_876){
+SelectorBinding.superclass.handleAction.call(this,_876);
+switch(_876.type){
 case ButtonBinding.ACTION_COMMAND:
 this._onButtonCommand();
-_86a.consume();
+_876.consume();
 break;
 case PopupBinding.ACTION_SHOW:
 this._onPopupShowing();
-_86a.consume();
+_876.consume();
 break;
 case MenuItemBinding.ACTION_COMMAND:
-this._onMenuItemCommand(_86a.target);
-_86a.consume();
+this._onMenuItemCommand(_876.target);
+_876.consume();
 break;
 case PopupBinding.ACTION_HIDE:
 var self=this;
@@ -12316,7 +12346,7 @@ if(self.isFocused){
 self._grabKeyboard();
 }
 },0);
-_86a.consume();
+_876.consume();
 break;
 }
 };
@@ -12330,8 +12360,8 @@ SelectorBinding.prototype._onPopupShowing=function(){
 this._fitMenuToSelector();
 this._releaseKeyboard();
 };
-SelectorBinding.prototype._onMenuItemCommand=function(_86c){
-this.select(_86c);
+SelectorBinding.prototype._onMenuItemCommand=function(_878){
+this.select(_878);
 FocusBinding.focusElement(this.bindingElement);
 this._grabKeyboard();
 };
@@ -12341,12 +12371,12 @@ this._selectedItemBinding.focus();
 }
 };
 SelectorBinding.prototype._fitMenuToSelector=function(){
-var _86d=this._buttonBinding.bindingElement.offsetWidth+"px";
-var _86e=this._popupBinding.bindingElement;
+var _879=this._buttonBinding.bindingElement.offsetWidth+"px";
+var _87a=this._popupBinding.bindingElement;
 if(Client.isMozilla==true){
-_86e.style.minWidth=_86d;
+_87a.style.minWidth=_879;
 }else{
-_86e.style.width=_86d;
+_87a.style.width=_879;
 }
 };
 SelectorBinding.prototype.handleEvent=function(e){
@@ -12357,9 +12387,9 @@ this.focus();
 break;
 }
 };
-SelectorBinding.prototype.handleBroadcast=function(_870,arg){
-SelectorBinding.superclass.handleBroadcast.call(this,_870,arg);
-switch(_870){
+SelectorBinding.prototype.handleBroadcast=function(_87c,arg){
+SelectorBinding.superclass.handleBroadcast.call(this,_87c,arg);
+switch(_87c){
 case BroadcastMessages.KEY_ARROW:
 this.logger.debug(this._buttonBinding.getLabel());
 this._handleArrowKey(arg);
@@ -12376,43 +12406,43 @@ break;
 }
 }
 };
-SelectorBinding.prototype.select=function(_873,_874){
-var _875=false;
-if(_873!=this._selectedItemBinding){
-this._selectedItemBinding=_873;
-_875=true;
-var _876=this._buttonBinding;
-this._selectionValue=_873.selectionValue;
-_876.setLabel(_873.getLabel());
-if(_873.imageProfile!=null){
-_876.imageProfile=_873.imageProfile;
+SelectorBinding.prototype.select=function(_87f,_880){
+var _881=false;
+if(_87f!=this._selectedItemBinding){
+this._selectedItemBinding=_87f;
+_881=true;
+var _882=this._buttonBinding;
+this._selectionValue=_87f.selectionValue;
+_882.setLabel(_87f.getLabel());
+if(_87f.imageProfile!=null){
+_882.imageProfile=_87f.imageProfile;
 }
-if(_876.imageProfile!=null){
-_876.setImage(this.isDisabled==true?_876.imageProfile.getDisabledImage():_876.imageProfile.getDefaultImage());
+if(_882.imageProfile!=null){
+_882.setImage(this.isDisabled==true?_882.imageProfile.getDisabledImage():_882.imageProfile.getDefaultImage());
 }
 this._updateImageLayout();
-if(!_874){
+if(!_880){
 this.onValueChange();
 this.dispatchAction(SelectorBinding.ACTION_SELECTIONCHANGED);
 this.dirty();
 }
-if(!this._isValid||(this.isRequired&&!_874)){
+if(!this._isValid||(this.isRequired&&!_880)){
 this.validate();
 }
 }
-return _875;
+return _881;
 };
 SelectorBinding.prototype._relate=function(){
-var _877=this.getProperty("relate");
-if(_877){
-var _878=this.bindingDocument.getElementById(_877);
-if(_878){
-var _879=UserInterface.getBinding(_878);
-if(_879){
+var _883=this.getProperty("relate");
+if(_883){
+var _884=this.bindingDocument.getElementById(_883);
+if(_884){
+var _885=UserInterface.getBinding(_884);
+if(_885){
 if(this.isChecked){
-_879.show();
+_885.show();
 }else{
-_879.hide();
+_885.hide();
 }
 }
 }
@@ -12433,56 +12463,56 @@ this._isImageLayout=true;
 };
 SelectorBinding.prototype.onValueChange=function(){
 };
-SelectorBinding.prototype.selectByValue=function(_87a,_87b){
-var _87c=false;
-var _87d=this._menuBodyBinding;
-var _87e=_87d.getDescendantElementsByLocalName("menuitem");
-while(_87e.hasNext()){
-var _87f=UserInterface.getBinding(_87e.getNext());
-if(_87f.selectionValue==_87a){
-_87c=this.select(_87f,_87b);
+SelectorBinding.prototype.selectByValue=function(_886,_887){
+var _888=false;
+var _889=this._menuBodyBinding;
+var _88a=_889.getDescendantElementsByLocalName("menuitem");
+while(_88a.hasNext()){
+var _88b=UserInterface.getBinding(_88a.getNext());
+if(_88b.selectionValue==_886){
+_888=this.select(_88b,_887);
 break;
 }
 }
-return _87c;
+return _888;
 };
 SelectorBinding.prototype.getValue=function(){
-var _880=this._selectionValue;
-if(_880!=null){
-_880=String(_880);
+var _88c=this._selectionValue;
+if(_88c!=null){
+_88c=String(_88c);
 }
-return _880;
+return _88c;
 };
-SelectorBinding.prototype.setValue=function(_881){
-this.selectByValue(String(_881),true);
+SelectorBinding.prototype.setValue=function(_88d){
+this.selectByValue(String(_88d),true);
 };
 SelectorBinding.prototype.getResult=function(){
-var _882=this._selectionValue;
-if(_882=="null"){
-_882=null;
+var _88e=this._selectionValue;
+if(_88e=="null"){
+_88e=null;
 }
-if(_882){
+if(_88e){
 switch(this.type){
 case DataBinding.TYPE_NUMBER:
 case DataBinding.TYPE_INTEGER:
-_882=Number(_882);
+_88e=Number(_88e);
 break;
 }
 }
-return _882;
+return _88e;
 };
-SelectorBinding.prototype.setResult=function(_883){
-this.selectByValue(_883,true);
+SelectorBinding.prototype.setResult=function(_88f){
+this.selectByValue(_88f,true);
 };
 SelectorBinding.prototype.validate=function(){
-var _884=true;
+var _890=true;
 if(this.isRequired==true&&this.defaultSelection!=null){
-var _885=this.getValue();
-if(_885==this.defaultSelection.value){
-_884=false;
+var _891=this.getValue();
+if(_891==this.defaultSelection.value){
+_890=false;
 }
-if(_884!=this._isValid){
-if(_884){
+if(_890!=this._isValid){
+if(_890){
 this.dispatchAction(Binding.ACTION_VALID);
 this.detachClassName(DataBinding.CLASSNAME_INVALID);
 }else{
@@ -12491,9 +12521,9 @@ this.attachClassName(DataBinding.CLASSNAME_INVALID);
 this._buttonBinding.setLabel(DataBinding.warnings["required"]);
 }
 }
-this._isValid=_884;
+this._isValid=_890;
 }
-return _884;
+return _890;
 };
 SelectorBinding.prototype.manifest=function(){
 if(this.isAttached==true){
@@ -12511,22 +12541,22 @@ this.shadowTree.input=null;
 }
 };
 SelectorBinding.prototype._attachSelections=function(){
-var _886=this._popupBinding;
+var _892=this._popupBinding;
 if(!this._isUpToDate){
-_886.attachRecursive();
+_892.attachRecursive();
 this._isUpToDate=true;
 }
 };
 SelectorBinding.prototype.handleElement=function(){
 return true;
 };
-SelectorBinding.prototype.updateElement=function(_887,_888){
-this.bindingWindow.UpdateManager.addUpdate(new this.bindingWindow.ReplaceUpdate(this.getID(),_887));
+SelectorBinding.prototype.updateElement=function(_893,_894){
+this.bindingWindow.UpdateManager.addUpdate(new this.bindingWindow.ReplaceUpdate(this.getID(),_893));
 return true;
 };
-SelectorBinding.newInstance=function(_889){
-var _88a=DOMUtil.createElementNS(Constants.NS_UI,"ui:selector",_889);
-return UserInterface.registerBinding(_88a,SelectorBinding);
+SelectorBinding.newInstance=function(_895){
+var _896=DOMUtil.createElementNS(Constants.NS_UI,"ui:selector",_895);
+return UserInterface.registerBinding(_896,SelectorBinding);
 };
 SimpleSelectorBinding.prototype=new DataBinding;
 SimpleSelectorBinding.prototype.constructor=SimpleSelectorBinding;
@@ -12560,14 +12590,14 @@ this._parseDOMProperties();
 this._buildDOMContent();
 };
 SimpleSelectorBinding.prototype._parseDOMProperties=function(){
-var _88d=this.getProperty("onchange");
+var _899=this.getProperty("onchange");
 this.isRequired=this.getProperty("required")==true;
 if(this.hasCallBackID()){
 this._select.id=this.getCallBackID();
 }
-if(_88d){
+if(_899){
 this.onValueChange=function(){
-Binding.evaluate(_88d,this);
+Binding.evaluate(_899,this);
 };
 }
 };
@@ -12611,10 +12641,10 @@ self._hack(false);
 };
 SimpleSelectorBinding.prototype.onValueChange=function(){
 };
-SimpleSelectorBinding.prototype.focus=function(_890){
+SimpleSelectorBinding.prototype.focus=function(_89c){
 SimpleSelectorBinding.superclass.focus.call(this);
 if(this.isFocused){
-if(!_890){
+if(!_89c){
 FocusBinding.focusElement(this._select);
 if(Client.isExplorer){
 this._hack(true);
@@ -12636,10 +12666,10 @@ this.validate();
 }
 }
 };
-SimpleSelectorBinding.prototype._hack=function(_891){
+SimpleSelectorBinding.prototype._hack=function(_89d){
 if(Client.isExplorer){
-this._select.style.width=_891?"auto":this._cachewidth+"px";
-if(_891){
+this._select.style.width=_89d?"auto":this._cachewidth+"px";
+if(_89d){
 if(this._select.offsetWidth<=this._cachewidth){
 this._hack(false);
 }
@@ -12647,83 +12677,86 @@ this._hack(false);
 }
 };
 SimpleSelectorBinding.prototype.validate=function(){
-var _892=true;
+var _89e=true;
 if(this.isRequired){
 if(this.getValue()==null){
-_892=false;
+_89e=false;
 }
 }
-if(_892!=this._isValid){
-if(_892){
+if(_89e!=this._isValid){
+if(_89e){
 this.detachClassName(DataBinding.CLASSNAME_INVALID);
 }else{
 this.attachClassName(DataBinding.CLASSNAME_INVALID);
-var _893=this._select;
-var _894=_893.options[_893.selectedIndex];
-var text=DOMUtil.getTextContent(_894);
-_893.blur();
-_893.style.color="#A40000";
-_893.style.fontWeight="bold";
+var _89f=this._select;
+var _8a0=_89f.options[_89f.selectedIndex];
+var text=DOMUtil.getTextContent(_8a0);
+_89f.blur();
+_89f.style.color="#A40000";
+_89f.style.fontWeight="bold";
 if(!Client.isExplorer6){
-DOMUtil.setTextContent(_894,DataBinding.warnings["required"]);
+DOMUtil.setTextContent(_8a0,DataBinding.warnings["required"]);
 }
-_893.onfocus=function(){
+_89f.onfocus=function(){
 this.style.color="black";
 this.style.fontWeight="normal";
 this.onfocus=null;
 if(!Client.isExplorer6){
-DOMUtil.setTextContent(_894,text);
+DOMUtil.setTextContent(_8a0,text);
 }
 };
 }
-this._isValid=_892;
+this._isValid=_89e;
 }
-return _892;
+return _89e;
 };
 SimpleSelectorBinding.prototype.manifest=function(){
 };
 SimpleSelectorBinding.prototype.getValue=function(){
-var _896=null;
-var _897=this._select;
-var _898=_897.options[_897.selectedIndex];
-var _899=true;
+var _8a2=null;
+var _8a3=this._select;
+var _8a4=_8a3.options[_8a3.selectedIndex];
+var _8a5=true;
 if(Client.isExplorer){
-var html=_898.outerHTML.toLowerCase();
+var html=_8a4.outerHTML.toLowerCase();
 if(html.indexOf("value=")==-1){
-_899=false;
+_8a5=false;
 }
 }
-if(_899){
-_896=_898.getAttribute("value");
+if(_8a5){
+_8a2=_8a4.getAttribute("value");
 }
-return _896;
+return _8a2;
 };
-SimpleSelectorBinding.prototype.setValue=function(_89b){
+SimpleSelectorBinding.prototype.setValue=function(_8a7){
 };
 SimpleSelectorBinding.prototype.getResult=function(){
 return this.getValue();
 };
-SimpleSelectorBinding.prototype.setResult=function(_89c){
-this.setValue(_89c);
+SimpleSelectorBinding.prototype.setResult=function(_8a8){
+this.setValue(_8a8);
 };
-SimpleSelectorBinding.newInstance=function(_89d){
-var _89e=DOMUtil.createElementNS(Constants.NS_XHTML,"select",_89d);
-return UserInterface.registerBinding(_89e,SimpleSelectorBinding);
+SimpleSelectorBinding.newInstance=function(_8a9){
+var _8aa=DOMUtil.createElementNS(Constants.NS_XHTML,"select",_8a9);
+return UserInterface.registerBinding(_8aa,SimpleSelectorBinding);
 };
-function SelectorBindingSelection(_89f,_8a0,_8a1,_8a2){
-this._init(_89f,_8a0,_8a1,_8a2);
+function SelectorBindingSelection(_8ab,_8ac,_8ad,_8ae,_8af){
+this._init(_8ab,_8ac,_8ad,_8ae,_8af);
 }
-SelectorBindingSelection.prototype={label:null,value:null,isSelected:null,imageProfile:null,menuItemBinding:null,_init:function(_8a3,_8a4,_8a5,_8a6){
-if(_8a3!=null){
-this.label=String(_8a3);
+SelectorBindingSelection.prototype={label:null,value:null,tooltip:null,isSelected:null,imageProfile:null,menuItemBinding:null,_init:function(_8b0,_8b1,_8b2,_8b3,_8b4){
+if(_8b0!=null){
+this.label=String(_8b0);
 }
-if(_8a4!=null){
-this.value=String(_8a4);
+if(_8b1!=null){
+this.value=String(_8b1);
 }
-if(_8a6!=null){
-this.imageProfile=_8a6;
+if(_8b3!=null){
+this.imageProfile=_8b3;
 }
-this.isSelected=_8a5?true:false;
+if(_8b4!=null){
+this.tooltip=_8b4;
+}
+this.isSelected=_8b2?true:false;
 }};
 DataInputSelectorBinding.prototype=new DataInputBinding;
 DataInputSelectorBinding.prototype.constructor=DataInputSelectorBinding;
@@ -12753,28 +12786,28 @@ this.buildPopup();
 this.buildSelections();
 };
 DataInputSelectorBinding.prototype.buildButton=function(){
-var _8a7=this.addFirst(ToolBarButtonBinding.newInstance(this.bindingDocument));
-_8a7.popupBindingTargetElement=this.shadowTree.input;
-_8a7.setImage(DataInputSelectorBinding.INDICATOR_IMAGE);
-_8a7.attach();
+var _8b5=this.addFirst(ToolBarButtonBinding.newInstance(this.bindingDocument));
+_8b5.popupBindingTargetElement=this.shadowTree.input;
+_8b5.setImage(DataInputSelectorBinding.INDICATOR_IMAGE);
+_8b5.attach();
 var self=this;
-_8a7.oncommand=function(){
+_8b5.oncommand=function(){
 self._attachSelections();
 };
-this._buttonBinding=_8a7;
+this._buttonBinding=_8b5;
 };
 DataInputSelectorBinding.prototype.buildPopup=SelectorBinding.prototype.buildPopup;
 DataInputSelectorBinding.prototype.buildSelections=function(){
 var list=new List();
-var _8aa=DOMUtil.getElementsByTagName(this.bindingElement,"selection");
-new List(_8aa).each(function(_8ab){
-if(_8ab.getAttribute("label")){
+var _8b8=DOMUtil.getElementsByTagName(this.bindingElement,"selection");
+new List(_8b8).each(function(_8b9){
+if(_8b9.getAttribute("label")){
 throw "label not supported - use value property!";
 }else{
-var _8ac=_8ab.getAttribute("value");
-var _8ad=_8ab.getAttribute("selected");
-var _8ae=_8ab.getAttribute("tooltip");
-list.add({value:_8ac?_8ac:null,toolTip:_8ae?_8ae:null,isSelected:(_8ad&&_8ad=="true")?true:false});
+var _8ba=_8b9.getAttribute("value");
+var _8bb=_8b9.getAttribute("selected");
+var _8bc=_8b9.getAttribute("tooltip");
+list.add({value:_8ba?_8ba:null,toolTip:_8bc?_8bc:null,isSelected:(_8bb&&_8bb=="true")?true:false});
 }
 });
 if(list.hasEntries()){
@@ -12782,14 +12815,14 @@ this.populateFromList(list);
 }
 };
 DataInputSelectorBinding.prototype.populateFromList=function(list){
-var _8b0=this._menuBodyBinding;
-var _8b1=_8b0.bindingDocument;
-while(_8b0.bindingElement.hasChildNodes()){
-var node=_8b0.bindingElement.lastChild;
+var _8be=this._menuBodyBinding;
+var _8bf=_8be.bindingDocument;
+while(_8be.bindingElement.hasChildNodes()){
+var node=_8be.bindingElement.lastChild;
 if(node.nodeType==Node.ELEMENT_NODE&&UserInterface.hasBinding(node)){
 UserInterface.getBinding(node).dispose();
 }else{
-_8b0.removeChild(node);
+_8be.removeChild(node);
 }
 }
 if(list.hasEntries()){
@@ -12798,17 +12831,17 @@ if(!this._buttonBinding.isVisible){
 this._buttonBinding.show();
 }
 while(list.hasNext()){
-var _8b3=list.getNext();
-var _8b4=MenuItemBinding.newInstance(_8b1);
-_8b4.setLabel(_8b3.value);
-_8b4.selectionValue=_8b3.value;
-if(_8b3.toolTip){
-_8b4.setToolTip(_8b3.toolTip);
+var _8c1=list.getNext();
+var _8c2=MenuItemBinding.newInstance(_8bf);
+_8c2.setLabel(_8c1.value);
+_8c2.selectionValue=_8c1.value;
+if(_8c1.toolTip){
+_8c2.setToolTip(_8c1.toolTip);
 }
-if(_8b3.isSelected){
-this.select(_8b4,true);
+if(_8c1.isSelected){
+this.select(_8c2,true);
 }
-_8b0.add(_8b4);
+_8be.add(_8c2);
 }
 }else{
 this._buttonBinding.hide();
@@ -12825,17 +12858,17 @@ this._fitMenuToSelector();
 this._restoreSelection();
 this._releaseKeyboard();
 };
-DataInputSelectorBinding.prototype._onMenuItemCommand=function(_8b5){
-this.select(_8b5);
+DataInputSelectorBinding.prototype._onMenuItemCommand=function(_8c3){
+this.select(_8c3);
 FocusBinding.focusElement(this.bindingElement);
 this._grabKeyboard();
 };
-DataInputSelectorBinding.prototype.handleBroadcast=function(_8b6,arg){
-SelectorBinding.prototype.handleBroadcast.call(this,_8b6,arg);
-switch(_8b6){
+DataInputSelectorBinding.prototype.handleBroadcast=function(_8c4,arg){
+SelectorBinding.prototype.handleBroadcast.call(this,_8c4,arg);
+switch(_8c4){
 case BroadcastMessages.MOUSEEVENT_MOUSEDOWN:
 if(arg!=this._buttonBinding){
-DataInputSelectorBinding.superclass.handleBroadcast.call(this,_8b6,arg);
+DataInputSelectorBinding.superclass.handleBroadcast.call(this,_8c4,arg);
 }
 break;
 }
@@ -12843,17 +12876,17 @@ break;
 DataInputSelectorBinding.prototype._grabKeyboard=SelectorBinding.prototype._grabKeyboard;
 DataInputSelectorBinding.prototype._releaseKeyboard=SelectorBinding.prototype._releaseKeyboard;
 DataInputSelectorBinding.prototype._handleArrowKey=SelectorBinding.prototype._handleArrowKey;
-DataInputSelectorBinding.prototype.focus=function(_8b8){
+DataInputSelectorBinding.prototype.focus=function(_8c6){
 if(!this.isFocused){
-DataInputSelectorBinding.superclass.focus.call(this,_8b8);
+DataInputSelectorBinding.superclass.focus.call(this,_8c6);
 if(this.isFocused==true){
 this._grabKeyboard();
 }
 }
 };
-DataInputSelectorBinding.prototype.blur=function(_8b9){
+DataInputSelectorBinding.prototype.blur=function(_8c7){
 if(this.isFocused==true){
-DataInputSelectorBinding.superclass.blur.call(this,_8b9);
+DataInputSelectorBinding.superclass.blur.call(this,_8c7);
 this._releaseKeyboard();
 if(this._popupBinding.isVisible){
 this._popupBinding.hide();
@@ -12861,35 +12894,35 @@ this._popupBinding.hide();
 }
 };
 DataInputSelectorBinding.prototype._fitMenuToSelector=function(){
-var _8ba=this.bindingElement.offsetWidth+"px";
-var _8bb=this._popupBinding.bindingElement;
+var _8c8=this.bindingElement.offsetWidth+"px";
+var _8c9=this._popupBinding.bindingElement;
 if(Client.isMozilla){
-_8bb.style.minWidth=_8ba;
+_8c9.style.minWidth=_8c8;
 }else{
-_8bb.style.width=_8ba;
+_8c9.style.width=_8c8;
 }
 };
 DataInputSelectorBinding.prototype._restoreSelection=function(){
 if(!this._isUpToDate){
 this._attachSelections();
 }
-var _8bc=this._menuBodyBinding.getDescendantBindingsByLocalName("menuitem");
-var _8bd=this.getValue();
-var _8be=null;
-_8bc.each(function(item){
-if(item.getLabel()==_8bd){
-_8be=item;
+var _8ca=this._menuBodyBinding.getDescendantBindingsByLocalName("menuitem");
+var _8cb=this.getValue();
+var _8cc=null;
+_8ca.each(function(item){
+if(item.getLabel()==_8cb){
+_8cc=item;
 }
 });
-if(_8be){
-_8be.focus();
+if(_8cc){
+_8cc.focus();
 }
 };
-DataInputSelectorBinding.prototype.select=function(item,_8c1){
+DataInputSelectorBinding.prototype.select=function(item,_8cf){
 if(item!=this._selectedItemBinding){
 this._selectedItemBinding=item;
 this.setValue(item.selectionValue);
-if(!_8c1){
+if(!_8cf){
 this.dirty();
 this.dispatchAction(DataInputSelectorBinding.ACTION_SELECTIONCHANGED);
 }
@@ -12915,54 +12948,54 @@ DataInputSelectorBinding.superclass._buildDOMContent.call(this);
 this.buildButton();
 };
 DataInputDialogBinding.prototype.buildButton=function(){
-var _8c2=ToolBarButtonBinding.newInstance(this.bindingDocument);
-_8c2.setImage("${icon:popup}");
-this.addFirst(_8c2);
-_8c2.attach();
+var _8d0=ToolBarButtonBinding.newInstance(this.bindingDocument);
+_8d0.setImage("${icon:popup}");
+this.addFirst(_8d0);
+_8d0.attach();
 var self=this;
-_8c2.oncommand=function(){
+_8d0.oncommand=function(){
 self._isButtonClicked=true;
 setTimeout(function(){
 self._isButtonClicked=false;
 },1000);
-var _8c4=self.getProperty("handle");
-var _8c5=ViewDefinitions[_8c4];
-if(_8c5 instanceof DialogViewDefinition){
-_8c5.handler={handleDialogResponse:function(_8c6,_8c7){
+var _8d2=self.getProperty("handle");
+var _8d3=ViewDefinitions[_8d2];
+if(_8d3 instanceof DialogViewDefinition){
+_8d3.handler={handleDialogResponse:function(_8d4,_8d5){
 self._isButtonClicked=false;
-if(_8c6==Dialog.RESPONSE_ACCEPT){
+if(_8d4==Dialog.RESPONSE_ACCEPT){
 self.logger.debug("Usecase scenario was hardcoded into DataInputDialogBinding#buildButton");
-var _8c8=_8c7.getFirst();
-self.setValue(_8c8);
+var _8d6=_8d5.getFirst();
+self.setValue(_8d6);
 self.validate(true);
 }
 self.focus();
 }};
-_8c5.argument.selectedResult=self.getValue();
-StageBinding.presentViewDefinition(_8c5);
+_8d3.argument.selectedResult=self.getValue();
+StageBinding.presentViewDefinition(_8d3);
 }else{
 throw "Definition was either undefine or of a non-dialog type.";
 }
 };
-DOMEvents.addEventListener(_8c2.getBindingElement(),DOMEvents.MOUSEDOWN,{handleEvent:function(e){
+DOMEvents.addEventListener(_8d0.getBindingElement(),DOMEvents.MOUSEDOWN,{handleEvent:function(e){
 self._isButtonClicked=true;
 }});
-this._dialogButtonBinding=_8c2;
+this._dialogButtonBinding=_8d0;
 };
 DataInputDialogBinding.prototype.oncommand=function(){
-var _8ca=this._dialogButtonBinding;
-if(_8ca!=null){
-_8ca.oncommand();
+var _8d8=this._dialogButtonBinding;
+if(_8d8!=null){
+_8d8.oncommand();
 }
 };
 DataInputDialogBinding.prototype.validate=function(arg){
-var _8cc=true;
+var _8da=true;
 if(this._isButtonClicked==true){
 this._isButtonClicked=false;
 }else{
-_8cc=DataInputDialogBinding.superclass.validate.call(this,arg);
+_8da=DataInputDialogBinding.superclass.validate.call(this,arg);
 }
-return _8cc;
+return _8da;
 };
 DataDialogBinding.prototype=new DataBinding;
 DataDialogBinding.prototype.constructor=DataDialogBinding;
@@ -13002,21 +13035,21 @@ this.bindingElement.hideFocus=true;
 }
 };
 DataDialogBinding.prototype._buildButton=function(){
-var _8cd=this.getProperty("label");
-var _8ce=this.getProperty("tooltip");
+var _8db=this.getProperty("label");
+var _8dc=this.getProperty("tooltip");
 this._buttonBinding=this.add(ClickButtonBinding.newInstance(this.bindingDocument));
-if(_8cd!=null){
+if(_8db!=null){
 if(this.getProperty("handle")!=null||this.getProperty("url")!=null){
-this._buttonBinding.setLabel(_8cd+LabelBinding.DIALOG_INDECATOR_SUFFIX);
+this._buttonBinding.setLabel(_8db+LabelBinding.DIALOG_INDECATOR_SUFFIX);
 }else{
-this._buttonBinding.setLabel(_8cd);
+this._buttonBinding.setLabel(_8db);
 }
 }
 if(this.imageProfile){
 this._buttonBinding.imageProfile=this.imageProfile;
 }
-if(_8ce!=null){
-this._buttonBinding.setToolTip(_8ce);
+if(_8dc!=null){
+this._buttonBinding.setToolTip(_8dc);
 }
 this._buttonBinding.addActionListener(ButtonBinding.ACTION_COMMAND,this);
 this._buttonBinding.attach();
@@ -13028,34 +13061,34 @@ img.className="dialogindicatorimage";
 this._buttonBinding.bindingElement.appendChild(img);
 this.shadowTree.indicatorimage=img;
 };
-DataDialogBinding.prototype.handleAction=function(_8d0){
-DataDialogBinding.superclass.handleAction.call(this,_8d0);
-var _8d1=_8d0.target;
+DataDialogBinding.prototype.handleAction=function(_8de){
+DataDialogBinding.superclass.handleAction.call(this,_8de);
+var _8df=_8de.target;
 var self=this;
-switch(_8d0.type){
+switch(_8de.type){
 case ButtonBinding.ACTION_COMMAND:
 if(this._handler==null){
-this._handler={handleDialogResponse:function(_8d3,_8d4){
-if(_8d3==Dialog.RESPONSE_ACCEPT){
-if(_8d4 instanceof DataBindingMap){
-self._map=_8d4;
+this._handler={handleDialogResponse:function(_8e1,_8e2){
+if(_8e1==Dialog.RESPONSE_ACCEPT){
+if(_8e2 instanceof DataBindingMap){
+self._map=_8e2;
 }else{
 throw "Invalid dialog result";
 }
 }
 }};
 }
-if(_8d1==this._buttonBinding){
-_8d0.consume();
+if(_8df==this._buttonBinding){
+_8de.consume();
 this.focus();
 this.fireCommand();
 }
 break;
 }
 };
-DataDialogBinding.prototype.handleBroadcast=function(_8d5,arg){
-DataDialogBinding.superclass.handleBroadcast.call(this,_8d5,arg);
-switch(_8d5){
+DataDialogBinding.prototype.handleBroadcast=function(_8e3,arg){
+DataDialogBinding.superclass.handleBroadcast.call(this,_8e3,arg);
+switch(_8e3){
 case BroadcastMessages.KEY_SPACE:
 this.fireCommand();
 break;
@@ -13063,56 +13096,56 @@ break;
 };
 DataDialogBinding.prototype.fireCommand=function(def){
 this.dispatchAction(this.constructor.ACTION_COMMAND);
-var _8d8=this.getProperty("handle");
+var _8e6=this.getProperty("handle");
 var url=this.getURL();
-var _8da=null;
-if(_8d8!=null||def!=null){
-if(_8d8!=null){
-_8da=ViewDefinitions[_8d8];
+var _8e8=null;
+if(_8e6!=null||def!=null){
+if(_8e6!=null){
+_8e8=ViewDefinitions[_8e6];
 }else{
-_8da=def;
+_8e8=def;
 }
-if(_8da instanceof DialogViewDefinition){
-_8da.handler=this._handler;
+if(_8e8 instanceof DialogViewDefinition){
+_8e8.handler=this._handler;
 if(this._map!=null){
-_8da.argument=this._map;
+_8e8.argument=this._map;
 }
-StageBinding.presentViewDefinition(_8da);
+StageBinding.presentViewDefinition(_8e8);
 }
 }else{
 if(url!=null){
-_8da=Dialog.invokeModal(url,this._handler,this._map);
+_8e8=Dialog.invokeModal(url,this._handler,this._map);
 }
 }
-if(_8da!=null){
-this._dialogViewHandle=_8da.handle;
+if(_8e8!=null){
+this._dialogViewHandle=_8e8.handle;
 this._releaseKeyboard();
 }
 };
-DataDialogBinding.prototype.setLabel=function(_8db){
-this.setProperty("label",_8db);
+DataDialogBinding.prototype.setLabel=function(_8e9){
+this.setProperty("label",_8e9);
 if(this.isAttached){
-this._buttonBinding.setLabel(_8db+LabelBinding.DIALOG_INDECATOR_SUFFIX);
+this._buttonBinding.setLabel(_8e9+LabelBinding.DIALOG_INDECATOR_SUFFIX);
 }
 };
-DataDialogBinding.prototype.setImage=function(_8dc){
-this.setProperty("image",_8dc);
+DataDialogBinding.prototype.setImage=function(_8ea){
+this.setProperty("image",_8ea);
 if(this.imageProfile!=null){
-this.imageProfile.setDefaultImage(_8dc);
+this.imageProfile.setDefaultImage(_8ea);
 if(this._buttonBinding!=null){
 this._buttonBinding.imageProfile=this.imageProfile;
 this._buttonBinding.setImage(this._buttonBinding.imageProfile.getDefaultImage());
 }
 }
 };
-DataDialogBinding.prototype.setToolTip=function(_8dd){
-this.setProperty("tooltip",_8dd);
+DataDialogBinding.prototype.setToolTip=function(_8eb){
+this.setProperty("tooltip",_8eb);
 if(this.isAttached){
-this._buttonBinding.setToolTip(_8dd);
+this._buttonBinding.setToolTip(_8eb);
 }
 };
-DataDialogBinding.prototype.setHandle=function(_8de){
-this.setProperty("handle",_8de);
+DataDialogBinding.prototype.setHandle=function(_8ec){
+this.setProperty("handle",_8ec);
 };
 DataDialogBinding.prototype.setURL=function(url){
 this.setProperty("url",url);
@@ -13120,8 +13153,8 @@ this.setProperty("url",url);
 DataDialogBinding.prototype.getURL=function(){
 return this.getProperty("url");
 };
-DataDialogBinding.prototype.setHandler=function(_8e0){
-this._handler=_8e0;
+DataDialogBinding.prototype.setHandler=function(_8ee){
+this._handler=_8ee;
 };
 DataDialogBinding.prototype.focus=function(){
 if(!this.isFocused){
@@ -13170,9 +13203,9 @@ this._map=map;
 throw "Invalid argument";
 }
 };
-DataDialogBinding.newInstance=function(_8e2){
-var _8e3=DOMUtil.createElementNS(Constants.NS_UI,"ui:datadialog",_8e2);
-return UserInterface.registerBinding(_8e3,DataDialogBinding);
+DataDialogBinding.newInstance=function(_8f0){
+var _8f1=DOMUtil.createElementNS(Constants.NS_UI,"ui:datadialog",_8f0);
+return UserInterface.registerBinding(_8f1,DataDialogBinding);
 };
 PostBackDataDialogBinding.prototype=new DataDialogBinding;
 PostBackDataDialogBinding.prototype.constructor=PostBackDataDialogBinding;
@@ -13186,18 +13219,18 @@ PostBackDataDialogBinding.prototype.onBindingAttach=function(){
 PostBackDataDialogBinding.superclass.onBindingAttach.call(this);
 Binding.dotnetify(this);
 var self=this;
-this._handler={handleDialogResponse:function(_8e5,_8e6){
-if(_8e5==Dialog.RESPONSE_ACCEPT){
-self._onDialogAccept(_8e6);
+this._handler={handleDialogResponse:function(_8f3,_8f4){
+if(_8f3==Dialog.RESPONSE_ACCEPT){
+self._onDialogAccept(_8f4);
 }else{
 self._onDialogCancel();
 }
 }};
 };
-PostBackDataDialogBinding.prototype._onDialogAccept=function(_8e7){
-_8e7=new String(_8e7);
+PostBackDataDialogBinding.prototype._onDialogAccept=function(_8f5){
+_8f5=new String(_8f5);
 this.dirty();
-this.setValue(encodeURIComponent(_8e7));
+this.setValue(encodeURIComponent(_8f5));
 var self=this;
 setTimeout(function(){
 if(self.ondialogaccept!=null){
@@ -13217,14 +13250,14 @@ var suf=this.getValue();
 return new String(url+suf);
 };
 PostBackDataDialogBinding.prototype.manifest=function(){
-var _8eb=this.getValue();
-if(_8eb==null){
-_8eb="";
+var _8f9=this.getValue();
+if(_8f9==null){
+_8f9="";
 }
-this.shadowTree.dotnetinput.value=_8eb;
+this.shadowTree.dotnetinput.value=_8f9;
 };
-PostBackDataDialogBinding.prototype.setValue=function(_8ec){
-this.setProperty("value",_8ec);
+PostBackDataDialogBinding.prototype.setValue=function(_8fa){
+this.setProperty("value",_8fa);
 };
 PostBackDataDialogBinding.prototype.getValue=function(){
 return this.getProperty("value");
@@ -13232,11 +13265,11 @@ return this.getProperty("value");
 PostBackDataDialogBinding.prototype.getResult=function(){
 return null;
 };
-PostBackDataDialogBinding.prototype.setResult=function(_8ed){
+PostBackDataDialogBinding.prototype.setResult=function(_8fb){
 };
-PostBackDataDialogBinding.newInstance=function(_8ee){
-var _8ef=DOMUtil.createElementNS(Constants.NS_UI,"ui:postbackdialog",_8ee);
-return UserInterface.registerBinding(_8ef,PostBackDataDialogBinding);
+PostBackDataDialogBinding.newInstance=function(_8fc){
+var _8fd=DOMUtil.createElementNS(Constants.NS_UI,"ui:postbackdialog",_8fc);
+return UserInterface.registerBinding(_8fd,PostBackDataDialogBinding);
 };
 ViewDefinitionPostBackDataDialogBinding.prototype=new PostBackDataDialogBinding;
 ViewDefinitionPostBackDataDialogBinding.prototype.constructor=ViewDefinitionPostBackDataDialogBinding;
@@ -13249,26 +13282,26 @@ ViewDefinitionPostBackDataDialogBinding.prototype.toString=function(){
 return "[ViewDefinitionPostBackDataDialogBinding]";
 };
 ViewDefinitionPostBackDataDialogBinding.prototype.fireCommand=function(){
-var _8f0=this.getProperty("dialoglabel");
-var _8f1=this.getProperty("providersearch");
+var _8fe=this.getProperty("dialoglabel");
+var _8ff=this.getProperty("providersearch");
 var key=this.getProperty("providerkey");
-var _8f3=this.getProperty("handle");
-if(_8f3!=null){
-var def=ViewDefinition.clone(_8f3,"Generated.ViewDefinition.Handle."+KeyMaster.getUniqueKey());
-if(_8f0!=null){
+var _901=this.getProperty("handle");
+if(_901!=null){
+var def=ViewDefinition.clone(_901,"Generated.ViewDefinition.Handle."+KeyMaster.getUniqueKey());
+if(_8fe!=null){
 if(def.argument==null){
 def.argument={};
 }
-def.argument.label=_8f0;
+def.argument.label=_8fe;
 }
-if(_8f1!=null){
+if(_8ff!=null){
 if(def.argument==null){
 def.argument={};
 }
 if(def.argument.nodes==null){
 def.argument.nodes=[];
 }
-def.argument.nodes[0].search=_8f1;
+def.argument.nodes[0].search=_8ff;
 }
 if(key!=null){
 if(def.argument==null){
@@ -13284,9 +13317,9 @@ ViewDefinitionPostBackDataDialogBinding.superclass.fireCommand.call(this,def);
 throw "Attribute \"handle\" required.";
 }
 };
-ViewDefinitionPostBackDataDialogBinding.newInstance=function(_8f5){
-var _8f6=DOMUtil.createElementNS(Constants.NS_UI,"ui:postbackdialog",_8f5);
-return UserInterface.registerBinding(_8f6,ViewDefinitionPostBackDataDialogBinding);
+ViewDefinitionPostBackDataDialogBinding.newInstance=function(_903){
+var _904=DOMUtil.createElementNS(Constants.NS_UI,"ui:postbackdialog",_903);
+return UserInterface.registerBinding(_904,ViewDefinitionPostBackDataDialogBinding);
 };
 NullPostBackDataDialogBinding.prototype=new DataBinding;
 NullPostBackDataDialogBinding.prototype.constructor=NullPostBackDataDialogBinding;
@@ -13309,8 +13342,8 @@ NullPostBackDataDialogBinding.prototype.onBindingAttach=function(){
 NullPostBackDataDialogBinding.superclass.onBindingAttach.call(this);
 this.propertyMethodMap["label"]=this.setLabel;
 var self=this;
-this.propertyMethodMap["value"]=function(_8f8){
-self._datathing.setValue(_8f8);
+this.propertyMethodMap["value"]=function(_906){
+self._datathing.setValue(_906);
 };
 this.propertyMethodMap["selectorlabel"]=function(){
 if(Application.isDeveloperMode){
@@ -13329,8 +13362,8 @@ this.setProperty(prop,null);
 },this);
 var self=this;
 this._datathing.ondialogcancel=function(){
-var _8fb=self.getValue();
-if(_8fb==""||_8fb==null){
+var _909=self.getValue();
+if(_909==""||_909==null){
 self._selector.setLabel(NullPostBackDataDialogBinding.LABEL_NULL);
 }else{
 self._selector.setLabel(self.getLabel());
@@ -13341,39 +13374,39 @@ this._datathing.attach();
 };
 NullPostBackDataDialogBinding.prototype._buildSelector=function(){
 this._selector=this.add(NullPostBackDataDialogSelectorBinding.newInstance(this.bindingDocument));
-var _8fc=this.getProperty("value");
-var _8fd=this.getProperty("selectorlabel");
-if(_8fd==null){
-_8fd=NullPostBackDataDialogBinding.LABEL_DEFAULT;
+var _90a=this.getProperty("value");
+var _90b=this.getProperty("selectorlabel");
+if(_90b==null){
+_90b=NullPostBackDataDialogBinding.LABEL_DEFAULT;
 }
 var list=new List();
-list.add(new SelectorBindingSelection(NullPostBackDataDialogBinding.LABEL_NULL,NullPostBackDataDialogBinding.VALUE_NULL,_8fc==null));
-list.add(new SelectorBindingSelection(_8fd+LabelBinding.DIALOG_INDECATOR_SUFFIX,NullPostBackDataDialogBinding.VALUE_SELECTED,_8fc!=null,new ImageProfile({image:"${icon:popup}"})));
+list.add(new SelectorBindingSelection(NullPostBackDataDialogBinding.LABEL_NULL,NullPostBackDataDialogBinding.VALUE_NULL,_90a==null));
+list.add(new SelectorBindingSelection(_90b+LabelBinding.DIALOG_INDECATOR_SUFFIX,NullPostBackDataDialogBinding.VALUE_SELECTED,_90a!=null,new ImageProfile({image:"${icon:popup}"})));
 this._selector.master=this;
 this._selector.attach();
 this._selector.populateFromList(list);
-var _8fc=this.getValue();
-if(_8fc==""||_8fc==null){
+var _90a=this.getValue();
+if(_90a==""||_90a==null){
 this._selector.setLabel(NullPostBackDataDialogBinding.LABEL_NULL);
 }else{
 this._selector.setLabel(this.getLabel());
 }
 };
-NullPostBackDataDialogBinding.prototype.handleAction=function(_8ff){
-NullPostBackDataDialogBinding.superclass.handleAction.call(this,_8ff);
-switch(_8ff.type){
+NullPostBackDataDialogBinding.prototype.handleAction=function(_90d){
+NullPostBackDataDialogBinding.superclass.handleAction.call(this,_90d);
+switch(_90d.type){
 case PageBinding.ACTION_DOPOSTBACK:
-if(_8ff.target==this._datathing){
-var _900=this.getProperty("label");
+if(_90d.target==this._datathing){
+var _90e=this.getProperty("label");
 this._selector.setLabel("");
 this.dispatchAction(PageBinding.ACTION_DOPOSTBACK);
 var self=this;
 setTimeout(function(){
-if(self.getProperty("label")==_900){
-self._selector.setLabel(_900);
+if(self.getProperty("label")==_90e){
+self._selector.setLabel(_90e);
 }
 },500);
-_8ff.consume();
+_90d.consume();
 }
 break;
 }
@@ -13381,17 +13414,17 @@ break;
 NullPostBackDataDialogBinding.prototype.getLabel=function(){
 return this.getProperty("label");
 };
-NullPostBackDataDialogBinding.prototype.setLabel=function(_902){
-this.setProperty("label",_902);
+NullPostBackDataDialogBinding.prototype.setLabel=function(_910){
+this.setProperty("label",_910);
 if(this._selector!=null){
-this._selector.setLabel(_902);
+this._selector.setLabel(_910);
 }
 };
 NullPostBackDataDialogBinding.prototype.getValue=function(){
 return this._datathing.getValue();
 };
-NullPostBackDataDialogBinding.prototype.setValue=function(_903){
-this._datathing.setValue(_903);
+NullPostBackDataDialogBinding.prototype.setValue=function(_911){
+this._datathing.setValue(_911);
 this.dispatchAction(PageBinding.ACTION_DOPOSTBACK);
 };
 NullPostBackDataDialogBinding.prototype.action=function(){
@@ -13417,8 +13450,8 @@ return this;
 NullPostBackDataDialogSelectorBinding.prototype.toString=function(){
 return "[NullPostBackDataDialogSelectorBinding]";
 };
-NullPostBackDataDialogSelectorBinding.prototype.select=function(_904,_905){
-if(NullPostBackDataDialogSelectorBinding.superclass.select.call(this,_904,_905)){
+NullPostBackDataDialogSelectorBinding.prototype.select=function(_912,_913){
+if(NullPostBackDataDialogSelectorBinding.superclass.select.call(this,_912,_913)){
 this._buttonBinding.setImage(null);
 this._updateImageLayout();
 if(this._selectionValue==NullPostBackDataDialogBinding.VALUE_SELECTED){
@@ -13427,35 +13460,35 @@ if(this.master.getValue()!=null){
 }
 }
 };
-NullPostBackDataDialogSelectorBinding.prototype.setLabel=function(_906){
-this._buttonBinding.setLabel(_906);
+NullPostBackDataDialogSelectorBinding.prototype.setLabel=function(_914){
+this._buttonBinding.setLabel(_914);
 };
-NullPostBackDataDialogSelectorBinding.prototype.setToolTip=function(_907){
-this._buttonBinding.setToolTip(_907);
+NullPostBackDataDialogSelectorBinding.prototype.setToolTip=function(_915){
+this._buttonBinding.setToolTip(_915);
 };
-NullPostBackDataDialogSelectorBinding.prototype.handleAction=function(_908){
-NullPostBackDataDialogSelectorBinding.superclass.handleAction.call(this,_908);
-switch(_908.type){
+NullPostBackDataDialogSelectorBinding.prototype.handleAction=function(_916){
+NullPostBackDataDialogSelectorBinding.superclass.handleAction.call(this,_916);
+switch(_916.type){
 case MenuItemBinding.ACTION_COMMAND:
-var _909=_908.target;
-var _90a=this.master;
-if(_909.selectionValue==NullPostBackDataDialogBinding.VALUE_SELECTED){
-this.setLabel(_909.getLabel());
+var _917=_916.target;
+var _918=this.master;
+if(_917.selectionValue==NullPostBackDataDialogBinding.VALUE_SELECTED){
+this.setLabel(_917.getLabel());
 setTimeout(function(){
-_90a.action();
+_918.action();
 },0);
 }else{
 this.master.setValue("");
 }
-_90a.dirty();
+_918.dirty();
 break;
 }
 };
 NullPostBackDataDialogSelectorBinding.prototype.manifest=function(){
 };
-NullPostBackDataDialogSelectorBinding.newInstance=function(_90b){
-var _90c=DOMUtil.createElementNS(Constants.NS_UI,"ui:selector",_90b);
-return UserInterface.registerBinding(_90c,NullPostBackDataDialogSelectorBinding);
+NullPostBackDataDialogSelectorBinding.newInstance=function(_919){
+var _91a=DOMUtil.createElementNS(Constants.NS_UI,"ui:selector",_919);
+return UserInterface.registerBinding(_91a,NullPostBackDataDialogSelectorBinding);
 };
 MultiSelectorBinding.prototype=new DataBinding;
 MultiSelectorBinding.prototype.constructor=MultiSelectorBinding;
@@ -13487,10 +13520,10 @@ this.addEventListener(DOMEvents.MOUSEDOWN);
 this._buildDOMContent();
 this._parseDOMProperties();
 this.populateFromList(this.selections);
-var _90d=this._dataDialogBinding;
-if(_90d!=null){
+var _91b=this._dataDialogBinding;
+if(_91b!=null){
 DOMEvents.addEventListener(this.shadowTree.box,DOMEvents.DOUBLECLICK,{handleEvent:function(){
-_90d.fireCommand();
+_91b.fireCommand();
 }});
 }
 };
@@ -13499,48 +13532,48 @@ this.shadowTree.box=DOMUtil.createElementNS(Constants.NS_UI,"ui:box",this.bindin
 this.bindingElement.appendChild(this.shadowTree.box);
 };
 MultiSelectorBinding.prototype._parseDOMProperties=function(){
-var _90e=this.getProperty("editable");
-var _90f=this.getProperty("selectable");
-var _910=this.getProperty("display");
-if(_90e!=false){
+var _91c=this.getProperty("editable");
+var _91d=this.getProperty("selectable");
+var _91e=this.getProperty("display");
+if(_91c!=false){
 this._buildEditorButton();
 }else{
 this.isEditable=false;
 }
-if(_90f){
+if(_91d){
 this.isSelectable=true;
 this._selectionMap=new Map();
 }
-if(_910){
-this._display=_910;
+if(_91e){
+this._display=_91e;
 }
 };
 MultiSelectorBinding.prototype._buildEditorButton=function(){
 if(this.isEditable){
-var _911=MultiSelectorDataDialogBinding.newInstance(this.bindingDocument);
-_911.selections=this.selections;
-this.add(_911);
-_911.attach();
-this._dataDialogBinding=_911;
-this.shadowTree.datadialog=_911;
+var _91f=MultiSelectorDataDialogBinding.newInstance(this.bindingDocument);
+_91f.selections=this.selections;
+this.add(_91f);
+_91f.attach();
+this._dataDialogBinding=_91f;
+this.shadowTree.datadialog=_91f;
 }
 };
 MultiSelectorBinding.prototype.populateFromList=function(list){
 list.reset();
-var _913=false;
+var _921=false;
 this.shadowTree.box.innerHTML="";
 while(list.hasNext()){
-var _914=list.getNext();
+var _922=list.getNext();
 switch(this._display){
 case MultiSelectorBinding.DISPLAY_SELECTED:
-_913=_914.isSelected;
+_921=_922.isSelected;
 break;
 case MultiSelectorBinding.DISPLAY_UNSELECTED:
-_913=_914.isSelected!=true;
+_921=_922.isSelected!=true;
 break;
 }
-if(_913){
-this.shadowTree.box.appendChild(this._getElementForSelection(_914));
+if(_921){
+this.shadowTree.box.appendChild(this._getElementForSelection(_922));
 }
 }
 this.selections=list;
@@ -13548,42 +13581,42 @@ if(this._dataDialogBinding){
 this._dataDialogBinding.selections=this.selections;
 }
 };
-MultiSelectorBinding.prototype.cumulateFromList=function(list,_916){
+MultiSelectorBinding.prototype.cumulateFromList=function(list,_924){
 var box=this.shadowTree.box;
-var _918=false;
+var _926=false;
 if(list.hasEntries()){
 list.reverse().reset();
 while(list.hasNext()){
-var _919=list.getNext();
-if(_916){
-_919.isSelected=this._display==MultiSelectorBinding.DISPLAY_SELECTED;
-_918=true;
+var _927=list.getNext();
+if(_924){
+_927.isSelected=this._display==MultiSelectorBinding.DISPLAY_SELECTED;
+_926=true;
 }else{
 switch(this._display){
 case MultiSelectorBinding.DISPLAY_SELECTED:
-_918=_919.isSelected;
+_926=_927.isSelected;
 break;
 case MultiSelectorBinding.DISPLAY_UNSELECTED:
-_918=_919.isSelected!=true;
+_926=_927.isSelected!=true;
 break;
 }
 }
-if(_918){
-var _91a=this._getElementForSelection(_919);
-box.insertBefore(_91a,box.firstChild);
-CSSUtil.attachClassName(_91a,"selected");
-this._selectionMap.set(_919.value,_91a);
+if(_926){
+var _928=this._getElementForSelection(_927);
+box.insertBefore(_928,box.firstChild);
+CSSUtil.attachClassName(_928,"selected");
+this._selectionMap.set(_927.value,_928);
 }
 }
 this.dispatchAction(MultiSelectorBinding.ACTION_SELECTIONCHANGED);
 }
 };
-MultiSelectorBinding.prototype._getElementForSelection=function(_91b){
-var _91c=DOMUtil.createElementNS(Constants.NS_XHTML,"div",this.bindingDocument);
-_91c.appendChild(this.bindingDocument.createTextNode(_91b.label));
-_91c.setAttribute("label",_91b.label);
-_91c.setAttribute("value",_91b.value);
-return _91c;
+MultiSelectorBinding.prototype._getElementForSelection=function(_929){
+var _92a=DOMUtil.createElementNS(Constants.NS_XHTML,"div",this.bindingDocument);
+_92a.appendChild(this.bindingDocument.createTextNode(_929.label));
+_92a.setAttribute("label",_929.label);
+_92a.setAttribute("value",_929.value);
+return _92a;
 };
 MultiSelectorBinding.prototype.hasHighlight=function(){
 return this._selectionMap&&this._selectionMap.hasEntries();
@@ -13596,133 +13629,133 @@ if(!this.isFocused){
 this.focus();
 }
 if(this.isSelectable){
-var _91e=DOMEvents.getTarget(e);
-var _91f=DOMUtil.getLocalName(_91e);
-if(_91f=="div"){
-this._handleMouseDown(_91e);
+var _92c=DOMEvents.getTarget(e);
+var _92d=DOMUtil.getLocalName(_92c);
+if(_92d=="div"){
+this._handleMouseDown(_92c);
 this.dispatchAction(MultiSelectorBinding.ACTION_SELECTIONCHANGED);
 }
 }
 break;
 }
 };
-MultiSelectorBinding.prototype._handleMouseDown=function(_920){
+MultiSelectorBinding.prototype._handleMouseDown=function(_92e){
 if(Keyboard.isShiftPressed&&this._lastSelectedElement){
-var _921=this._getElements();
-var _922=_920.getAttribute("value");
-var _923=this._lastSelectedElement.getAttribute("value");
-var _924=false;
-while(_921.hasNext()){
-var el=_921.getNext();
+var _92f=this._getElements();
+var _930=_92e.getAttribute("value");
+var _931=this._lastSelectedElement.getAttribute("value");
+var _932=false;
+while(_92f.hasNext()){
+var el=_92f.getNext();
 switch(el.getAttribute("value")){
-case _922:
-case _923:
-_924=!_924;
+case _930:
+case _931:
+_932=!_932;
 break;
 }
-if(_924){
+if(_932){
 this._hilite(el);
 }else{
 this._unhilite(el);
 }
 this._hilite(this._lastSelectedElement);
-this._hilite(_920);
+this._hilite(_92e);
 }
 }else{
-if(Keyboard.isControlPressed&&this._isHilited(_920)){
-this._unhilite(_920);
+if(Keyboard.isControlPressed&&this._isHilited(_92e)){
+this._unhilite(_92e);
 }else{
-this._hilite(_920);
+this._hilite(_92e);
 }
 if(!Keyboard.isControlPressed){
 var self=this;
 this._getElements().each(function(el){
-if(el!=_920){
+if(el!=_92e){
 self._unhilite(el);
 }
 });
 }
 }
-this._lastSelectedElement=_920;
+this._lastSelectedElement=_92e;
 };
-MultiSelectorBinding.prototype._hilite=function(_928){
-var _929=_928.getAttribute("value");
-if(!this._selectionMap.has(_929)){
-CSSUtil.attachClassName(_928,"selected");
-this._selectionMap.set(_929,_928);
+MultiSelectorBinding.prototype._hilite=function(_936){
+var _937=_936.getAttribute("value");
+if(!this._selectionMap.has(_937)){
+CSSUtil.attachClassName(_936,"selected");
+this._selectionMap.set(_937,_936);
 }
 };
-MultiSelectorBinding.prototype._unhilite=function(_92a){
-var _92b=_92a.getAttribute("value");
-if(this._selectionMap.has(_92b)){
-CSSUtil.detachClassName(_92a,"selected");
-this._selectionMap.del(_92b);
+MultiSelectorBinding.prototype._unhilite=function(_938){
+var _939=_938.getAttribute("value");
+if(this._selectionMap.has(_939)){
+CSSUtil.detachClassName(_938,"selected");
+this._selectionMap.del(_939);
 }
 };
-MultiSelectorBinding.prototype._isHilited=function(_92c){
-return CSSUtil.hasClassName(_92c,"selected");
+MultiSelectorBinding.prototype._isHilited=function(_93a){
+return CSSUtil.hasClassName(_93a,"selected");
 };
-MultiSelectorBinding.prototype.handleAction=function(_92d){
-MultiSelectorBinding.superclass.handleAction.call(this,_92d);
-var _92e=_92d.target;
-switch(_92d.type){
+MultiSelectorBinding.prototype.handleAction=function(_93b){
+MultiSelectorBinding.superclass.handleAction.call(this,_93b);
+var _93c=_93b.target;
+switch(_93b.type){
 case DataDialogBinding.ACTION_COMMAND:
-if(_92e==this._dataDialogBinding){
+if(_93c==this._dataDialogBinding){
 if(!this.isFocused){
 this.focus();
 }
 this.dispatchAction(MultiSelectorBinding.ACTION_COMMAND);
-_92d.consume();
+_93b.consume();
 }
 break;
 case MultiSelectorDataDialogBinding.ACTION_RESULT:
-this.populateFromList(_92e.result);
+this.populateFromList(_93c.result);
 this.dirty();
-_92e.result=null;
-_92d.consume();
+_93c.result=null;
+_93b.consume();
 break;
 }
 };
 MultiSelectorBinding.prototype.extractSelected=function(){
-var _92f=null;
+var _93d=null;
 if(this.isSelectable){
-_92f=new List();
+_93d=new List();
 if(this._selectionMap&&this._selectionMap.hasEntries()){
 var self=this;
-this._getElements().each(function(_931){
-if(self._isHilited(_931)){
-_931.parentNode.removeChild(_931);
-_92f.add(new SelectorBindingSelection(_931.getAttribute("label"),_931.getAttribute("value"),true));
+this._getElements().each(function(_93f){
+if(self._isHilited(_93f)){
+_93f.parentNode.removeChild(_93f);
+_93d.add(new SelectorBindingSelection(_93f.getAttribute("label"),_93f.getAttribute("value"),true));
 }
 });
 this._selectionMap=new Map();
 this.dispatchAction(MultiSelectorBinding.ACTION_SELECTIONCHANGED);
 }
 }
-return _92f;
+return _93d;
 };
 MultiSelectorBinding.prototype.reposition=function(isUp){
-var _933=this._getElements();
+var _941=this._getElements();
 if(!isUp){
-_933.reverse();
+_941.reverse();
 }
-var _934=true;
-while(_934&&_933.hasNext()){
-var _935=_933.getNext();
-if(this._isHilited(_935)){
+var _942=true;
+while(_942&&_941.hasNext()){
+var _943=_941.getNext();
+if(this._isHilited(_943)){
 switch(isUp){
 case true:
-if(_935.previousSibling){
-_935.parentNode.insertBefore(_935,_935.previousSibling);
+if(_943.previousSibling){
+_943.parentNode.insertBefore(_943,_943.previousSibling);
 }else{
-_934=false;
+_942=false;
 }
 break;
 case false:
-if(_935.nextSibling){
-_935.parentNode.insertBefore(_935,_935.nextSibling.nextSibling);
+if(_943.nextSibling){
+_943.parentNode.insertBefore(_943,_943.nextSibling.nextSibling);
 }else{
-_934=false;
+_942=false;
 }
 break;
 }
@@ -13730,15 +13763,15 @@ break;
 }
 };
 MultiSelectorBinding.prototype.toSelectionList=function(){
-var _936=new List();
-var _937=this._display==MultiSelectorBinding.DISPLAY_SELECTED;
+var _944=new List();
+var _945=this._display==MultiSelectorBinding.DISPLAY_SELECTED;
 var self=this;
-this._getElements().each(function(_939){
-var _93a=new SelectorBindingSelection(_939.getAttribute("label"),_939.getAttribute("value"),_937);
-_93a.isHighlighted=self._isHilited(_939);
-_936.add(_93a);
+this._getElements().each(function(_947){
+var _948=new SelectorBindingSelection(_947.getAttribute("label"),_947.getAttribute("value"),_945);
+_948.isHighlighted=self._isHilited(_947);
+_944.add(_948);
 });
-return _936;
+return _944;
 };
 MultiSelectorBinding.prototype._getElements=function(){
 return new List(DOMUtil.getElementsByTagName(this.shadowTree.box,"div"));
@@ -13748,34 +13781,34 @@ MultiSelectorBinding.prototype.validate=function(){
 return true;
 };
 MultiSelectorBinding.prototype.manifest=function(){
-var _93b=new List(DOMUtil.getElementsByTagName(this.bindingElement,"input"));
-if(_93b.hasEntries()){
-_93b.each(function(_93c){
-_93c.parentNode.removeChild(_93c);
+var _949=new List(DOMUtil.getElementsByTagName(this.bindingElement,"input"));
+if(_949.hasEntries()){
+_949.each(function(_94a){
+_94a.parentNode.removeChild(_94a);
 });
 }
 this.selections.reset();
 while(this.selections.hasNext()){
-var _93d=this.selections.getNext();
-if(_93d.isSelected){
-var _93e=DOMUtil.createElementNS(Constants.NS_XHTML,"input",this.bindingDocument);
-_93e.name=this._name;
-_93e.value=_93d.value;
-this.bindingElement.appendChild(_93e);
+var _94b=this.selections.getNext();
+if(_94b.isSelected){
+var _94c=DOMUtil.createElementNS(Constants.NS_XHTML,"input",this.bindingDocument);
+_94c.name=this._name;
+_94c.value=_94b.value;
+this.bindingElement.appendChild(_94c);
 }
 }
 };
 MultiSelectorBinding.prototype.getValue=function(){
 return "HEJ!";
 };
-MultiSelectorBinding.prototype.setValue=function(_93f){
-alert(_93f);
+MultiSelectorBinding.prototype.setValue=function(_94d){
+alert(_94d);
 };
 MultiSelectorBinding.prototype.getResult=function(){
 alert("TODO: MultiSelectorBinding#getResult");
 return new Array();
 };
-MultiSelectorBinding.prototype.setResult=function(_940){
+MultiSelectorBinding.prototype.setResult=function(_94e){
 alert("TODO: MultiSelectorBinding#setResult");
 };
 HTMLDataDialogBinding.prototype=new PostBackDataDialogBinding;
@@ -13795,11 +13828,11 @@ HTMLDataDialogBinding.superclass.onBindingAttach.call(this);
 };
 HTMLDataDialogBinding.prototype.fireCommand=function(){
 this.dispatchAction(DataDialogBinding.ACTION_COMMAND);
-var _941={label:DataBinding.getAssociatedLabel(this),value:decodeURIComponent(this.getValue()),configuration:{"formattingconfiguration":this.getProperty("formattingconfiguration"),"elementclassconfiguration":this.getProperty("elementclassconfiguration"),"configurationstylesheet":this.getProperty("configurationstylesheet"),"presentationstylesheet":this.getProperty("presentationstylesheet"),"embedablefieldstypenames":this.getProperty("embedablefieldstypenames")}};
-var _942=ViewDefinitions["Composite.Management.VisualEditorDialog"];
-_942.handler=this._handler;
-_942.argument=_941;
-StageBinding.presentViewDefinition(_942);
+var _94f={label:DataBinding.getAssociatedLabel(this),value:decodeURIComponent(this.getValue()),configuration:{"formattingconfiguration":this.getProperty("formattingconfiguration"),"elementclassconfiguration":this.getProperty("elementclassconfiguration"),"configurationstylesheet":this.getProperty("configurationstylesheet"),"presentationstylesheet":this.getProperty("presentationstylesheet"),"embedablefieldstypenames":this.getProperty("embedablefieldstypenames")}};
+var _950=ViewDefinitions["Composite.Management.VisualEditorDialog"];
+_950.handler=this._handler;
+_950.argument=_94f;
+StageBinding.presentViewDefinition(_950);
 this._releaseKeyboard();
 };
 MultiSelectorDataDialogBinding.prototype=new DataDialogBinding;
@@ -13822,22 +13855,22 @@ MultiSelectorDataDialogBinding.superclass.onBindingAttach.call(this);
 };
 MultiSelectorDataDialogBinding.prototype.fireCommand=function(){
 this.dispatchAction(DataDialogBinding.ACTION_COMMAND);
-var _943={label:DataBinding.getAssociatedLabel(this),selections:this.selections};
+var _951={label:DataBinding.getAssociatedLabel(this),selections:this.selections};
 var self=this;
-var _945={handleDialogResponse:function(_946,_947){
-if(_946==Dialog.RESPONSE_ACCEPT){
-self.result=_947;
+var _953={handleDialogResponse:function(_954,_955){
+if(_954==Dialog.RESPONSE_ACCEPT){
+self.result=_955;
 self.dispatchAction(MultiSelectorDataDialogBinding.ACTION_RESULT);
 }
 }};
-var _948=ViewDefinitions[this._dialogViewHandle];
-_948.handler=_945;
-_948.argument=_943;
-StageBinding.presentViewDefinition(_948);
+var _956=ViewDefinitions[this._dialogViewHandle];
+_956.handler=_953;
+_956.argument=_951;
+StageBinding.presentViewDefinition(_956);
 };
-MultiSelectorDataDialogBinding.newInstance=function(_949){
-var _94a=DOMUtil.createElementNS(Constants.NS_UI,"ui:datadialog",_949);
-return UserInterface.registerBinding(_94a,MultiSelectorDataDialogBinding);
+MultiSelectorDataDialogBinding.newInstance=function(_957){
+var _958=DOMUtil.createElementNS(Constants.NS_UI,"ui:datadialog",_957);
+return UserInterface.registerBinding(_958,MultiSelectorDataDialogBinding);
 };
 LazyBindingSetBinding.prototype=new Binding;
 LazyBindingSetBinding.prototype.constructor=LazyBindingSetBinding;
@@ -13852,12 +13885,12 @@ LazyBindingBinding.prototype=new DataBinding;
 LazyBindingBinding.prototype.constructor=LazyBindingBinding;
 LazyBindingBinding.superclass=DataBinding.prototype;
 LazyBindingBinding.ID_APPENDIX="lazybinding";
-LazyBindingBinding.wakeUp=function(_94b){
-var id=_94b.bindingElement.id+LazyBindingBinding.ID_APPENDIX;
-var _94d=_94b.bindingDocument.getElementById(id);
-if(_94d!=null){
-var _94e=UserInterface.getBinding(_94d);
-_94e.setResult(true);
+LazyBindingBinding.wakeUp=function(_959){
+var id=_959.bindingElement.id+LazyBindingBinding.ID_APPENDIX;
+var _95b=_959.bindingDocument.getElementById(id);
+if(_95b!=null){
+var _95c=UserInterface.getBinding(_95b);
+_95c.setResult(true);
 }
 };
 function LazyBindingBinding(){
@@ -13872,13 +13905,13 @@ LazyBindingBinding.prototype.onBindingRegister=function(){
 LazyBindingBinding.superclass.onBindingRegister.call(this);
 var id=this.getProperty("bindingid");
 if(id!=null){
-var _950=this.bindingDocument.getElementById(id);
-if(_950!=null){
-var _951=UserInterface.getBinding(_950);
-if(_951&&!_951.isAttached){
-_951.isLazy=true;
+var _95e=this.bindingDocument.getElementById(id);
+if(_95e!=null){
+var _95f=UserInterface.getBinding(_95e);
+if(_95f&&!_95f.isAttached){
+_95f.isLazy=true;
 }else{
-_950.setAttribute("lazy",true);
+_95e.setAttribute("lazy",true);
 }
 }
 }
@@ -13906,8 +13939,8 @@ throw "Not implemented";
 LazyBindingBinding.prototype.getResult=function(){
 return this._isLazy;
 };
-LazyBindingBinding.prototype.setResult=function(_952){
-this._isLazy=_952;
+LazyBindingBinding.prototype.setResult=function(_960){
+this._isLazy=_960;
 };
 EditorDataBinding.prototype=new WindowBinding;
 EditorDataBinding.prototype.constructor=EditorDataBinding;
@@ -13927,10 +13960,10 @@ EditorDataBinding.superclass.onBindingRegister.call(this);
 DataBinding.prototype.onBindingRegister.call(this);
 this._coverBinding=this.add(CoverBinding.newInstance(this.bindingDocument)).attach();
 var url=this._url;
-var _954=this.getProperty("stateprovider");
-var _955=this.getProperty("handle");
-if(_954!=null&&_955!=null){
-url=url.replace("${stateprovider}",_954).replace("${handle}",_955);
+var _962=this.getProperty("stateprovider");
+var _963=this.getProperty("handle");
+if(_962!=null&&_963!=null){
+url=url.replace("${stateprovider}",_962).replace("${handle}",_963);
 }else{
 url=url.split("?")[0];
 }
@@ -13942,8 +13975,8 @@ EditorDataBinding.superclass.onBindingAttach.call(this);
 this.addActionListener(Binding.ACTION_DIRTY);
 Application.lock(this);
 };
-EditorDataBinding.prototype._onPageInitialize=function(_956){
-EditorDataBinding.superclass._onPageInitialize.call(this,_956);
+EditorDataBinding.prototype._onPageInitialize=function(_964){
+EditorDataBinding.superclass._onPageInitialize.call(this,_964);
 if(this._pageBinding!=null){
 Application.unlock(this);
 this._coverBinding.hide();
@@ -13953,15 +13986,15 @@ EditorDataBinding.prototype.setName=DataBinding.prototype.setName;
 EditorDataBinding.prototype.validate=function(){
 return this._pageBinding.validateAllDataBindings();
 };
-EditorDataBinding.prototype.handleAction=function(_957){
-EditorDataBinding.superclass.handleAction.call(this,_957);
-switch(_957.type){
+EditorDataBinding.prototype.handleAction=function(_965){
+EditorDataBinding.superclass.handleAction.call(this,_965);
+switch(_965.type){
 case Binding.ACTION_DIRTY:
-if(_957.target!=this){
+if(_965.target!=this){
 if(!this.isDirty){
 this.dirty();
 }
-_957.consume();
+_965.consume();
 }
 break;
 }
@@ -13986,12 +14019,12 @@ EditorDataBinding.prototype.getName=function(){
 };
 EditorDataBinding.prototype.getValue=function(){
 };
-EditorDataBinding.prototype.setValue=function(_958){
+EditorDataBinding.prototype.setValue=function(_966){
 };
 EditorDataBinding.prototype.getResult=function(){
 return null;
 };
-EditorDataBinding.prototype.setResult=function(_959){
+EditorDataBinding.prototype.setResult=function(_967){
 };
 FunctionEditorDataBinding.prototype=new EditorDataBinding;
 FunctionEditorDataBinding.prototype.constructor=FunctionEditorDataBinding;
@@ -14037,7 +14070,15 @@ var fake=this.getDescendantBindingByLocalName("datainput");
 fake.isFocusable=false;
 var self=this;
 real.onchange=function(){
-fake.setValue(this.value);
+var val=this.value;
+if(val.indexOf("/")>-1){
+val=val.substring(val.lastIndexOf("/")+1);
+}else{
+if(val.indexOf("\\")>-1){
+val=val.substring(val.lastIndexOf("\\")+1);
+}
+}
+fake.setValue(val);
 self.dirty();
 if(!self._isValid){
 self.validate();
@@ -14045,20 +14086,20 @@ self.validate();
 };
 };
 FilePickerBinding.prototype.validate=function(){
-var _95d=true;
+var _96c=true;
 if(this.getProperty("required")){
 var fake=this.getDescendantBindingByLocalName("datainput");
-_95d=fake.getValue()!="";
+_96c=fake.getValue()!="";
 }
-if(!_95d&&this._isValid){
+if(!_96c&&this._isValid){
 this._isValid=false;
 this.dispatchAction(Binding.ACTION_INVALID);
 }else{
-if(_95d&&!this._isValid){
+if(_96c&&!this._isValid){
 this.dispatchAction(Binding.ACTION_VALID);
 }
 }
-return _95d;
+return _96c;
 };
 FilePickerBinding.prototype.focus=function(){
 FilePickerBinding.superclass.focus.call(this);
@@ -14104,14 +14145,14 @@ RequestBinding.prototype.onBindingAttach=function(){
 RequestBinding.superclass.onBindingAttach.call(this);
 this.setCallBackID(RequestBinding.CALLBACK_ID);
 Binding.dotnetify(this);
-var _961=this.bindingDocument.getElementById(RequestBinding.INPUT_ID);
-if(_961!=null){
-_961.value=Application.CONSOLE_ID;
+var _970=this.bindingDocument.getElementById(RequestBinding.INPUT_ID);
+if(_970!=null){
+_970.value=Application.CONSOLE_ID;
 }
 };
-RequestBinding.prototype.postback=function(_962){
-_962=_962!=null?_962:EditorPageBinding.message;
-this.shadowTree.dotnetinput.value=_962;
+RequestBinding.prototype.postback=function(_971){
+_971=_971!=null?_971:EditorPageBinding.message;
+this.shadowTree.dotnetinput.value=_971;
 this.dispatchAction(PageBinding.ACTION_DOPOSTBACK);
 };
 FieldGroupBinding.prototype=new Binding;
@@ -14142,55 +14183,55 @@ this._innerHTML();
 this._buildDOMContent();
 };
 FieldGroupBinding.prototype._innerHTML=function(){
-var _963=Templates.getTemplateElementText("fieldgroupmatrix.xml");
-var _964=_963.replace("MARKUP",this.bindingElement.innerHTML);
+var _972=Templates.getTemplateElementText("fieldgroupmatrix.xml");
+var _973=_972.replace("MARKUP",this.bindingElement.innerHTML);
 try{
-this.bindingElement.innerHTML=_964;
+this.bindingElement.innerHTML=_973;
 }
 catch(exception1){
 this.logger.error("Exeption in innerHTML!");
-_964=_964.replace(/\&nbsp;/g,"");
-this.bindingElement.innerHTML=_964;
+_973=_973.replace(/\&nbsp;/g,"");
+this.bindingElement.innerHTML=_973;
 }
 var self=this;
-var _966=DOMUtil.getElementsByTagName(this.bindingElement,"table").item(0);
-new List(_966.rows).each(function(row){
+var _975=DOMUtil.getElementsByTagName(this.bindingElement,"table").item(0);
+new List(_975.rows).each(function(row){
 new List(row.cells).each(function(cell){
 self.shadowTree[cell.className]=cell;
 });
 });
 };
 FieldGroupBinding.prototype._buildDOMContent=function(){
-var _969=this.getProperty("label");
-if(_969){
-this.setLabel(_969);
+var _978=this.getProperty("label");
+if(_978){
+this.setLabel(_978);
 }else{
 this.attachClassName(FieldGroupBinding.CLASSNAME_NOLABEL);
 }
 };
-FieldGroupBinding.prototype.setLabel=function(_96a){
-this.setProperty("label",_96a);
+FieldGroupBinding.prototype.setLabel=function(_979){
+this.setProperty("label",_979);
 if(this.shadowTree.labelBinding==null){
-var _96b=LabelBinding.newInstance(this.bindingDocument);
+var _97a=LabelBinding.newInstance(this.bindingDocument);
 var cell=this.shadowTree[FieldGroupBinding.NORTH];
-_96b.attachClassName("fieldgrouplabel");
-cell.insertBefore(_96b.bindingElement,cell.getElementsByTagName("div").item(1));
-_96b.attach();
-this.shadowTree.labelBinding=_96b;
+_97a.attachClassName("fieldgrouplabel");
+cell.insertBefore(_97a.bindingElement,cell.getElementsByTagName("div").item(1));
+_97a.attach();
+this.shadowTree.labelBinding=_97a;
 }
-this.shadowTree.labelBinding.setLabel(Resolver.resolve(_96a));
+this.shadowTree.labelBinding.setLabel(Resolver.resolve(_979));
 };
 FieldGroupBinding.prototype.getLabel=function(){
 return this.getProperty("label");
 };
-FieldGroupBinding.prototype.add=function(_96d){
-this.shadowTree[FieldGroupBinding.CENTER].appendChild(_96d.bindingElement);
-return _96d;
+FieldGroupBinding.prototype.add=function(_97c){
+this.shadowTree[FieldGroupBinding.CENTER].appendChild(_97c.bindingElement);
+return _97c;
 };
-FieldGroupBinding.prototype.addFirst=function(_96e){
-var _96f=this.shadowTree[FieldGroupBinding.CENTER];
-_96f.insertBefore(_96e.bindingElement,_96f.firstChild);
-return _96e;
+FieldGroupBinding.prototype.addFirst=function(_97d){
+var _97e=this.shadowTree[FieldGroupBinding.CENTER];
+_97e.insertBefore(_97d.bindingElement,_97e.firstChild);
+return _97d;
 };
 FieldBinding.prototype=new Binding;
 FieldBinding.prototype.constructor=FieldBinding;
@@ -14206,16 +14247,16 @@ return "[FieldBinding]";
 FieldBinding.prototype.onBindingRegister=function(){
 FieldBinding.superclass.onBindingRegister.call(this);
 this.attachClassName(Binding.CLASSNAME_CLEARFLOAT);
-var _970=this.getProperty("relation");
-if(_970!=null){
-this.bindingRelation=_970;
+var _97f=this.getProperty("relation");
+if(_97f!=null){
+this.bindingRelation=_97f;
 this.subscribe(BroadcastMessages.BINDING_RELATE);
 this.hide();
 }
 };
-FieldBinding.prototype.handleBroadcast=function(_971,arg){
-FieldBinding.superclass.handleBroadcast.call(this,_971,arg);
-switch(_971){
+FieldBinding.prototype.handleBroadcast=function(_980,arg){
+FieldBinding.superclass.handleBroadcast.call(this,_980,arg);
+switch(_980){
 case BroadcastMessages.BINDING_RELATE:
 if(arg.relate==this.bindingRelation&&arg.origin==this.bindingDocument){
 if(arg.result==true){
@@ -14233,9 +14274,9 @@ this.dispatchAction(Binding.ACTION_UPDATED);
 break;
 }
 };
-FieldBinding.newInstance=function(_973){
-var _974=DOMUtil.createElementNS(Constants.NS_UI,"ui:field",_973);
-return UserInterface.registerBinding(_974,FieldBinding);
+FieldBinding.newInstance=function(_982){
+var _983=DOMUtil.createElementNS(Constants.NS_UI,"ui:field",_982);
+return UserInterface.registerBinding(_983,FieldBinding);
 };
 FieldsBinding.prototype=new Binding;
 FieldsBinding.prototype.constructor=FieldsBinding;
@@ -14261,9 +14302,9 @@ this._invalidFieldLabels=new Map();
 FieldsBinding.prototype.onBindingInitialize=function(){
 FieldsBinding.superclass.onBindingInitialize.call(this);
 this.bindingElement.style.display="block";
-var _975=this.getDescendantBindingByLocalName("fieldgroup");
-if(_975!=null){
-_975.attachClassName(FieldGroupBinding.CLASSNAME_FIRST);
+var _984=this.getDescendantBindingByLocalName("fieldgroup");
+if(_984!=null){
+_984.attachClassName(FieldGroupBinding.CLASSNAME_FIRST);
 }
 };
 FieldsBinding.prototype.onBindingDispose=function(){
@@ -14273,63 +14314,63 @@ this.dispatchAction(Binding.ACTION_VALID);
 }
 };
 FieldsBinding.prototype.validate=function(){
-var _976=true;
-var _977=this.getDescendantBindingsByLocalName("*");
-while(_977.hasNext()){
-var _978=_977.getNext();
-if(Interfaces.isImplemented(IData,_978)){
-var _979=_978.validate();
-if(_976&&!_979){
-_976=false;
+var _985=true;
+var _986=this.getDescendantBindingsByLocalName("*");
+while(_986.hasNext()){
+var _987=_986.getNext();
+if(Interfaces.isImplemented(IData,_987)){
+var _988=_987.validate();
+if(_985&&!_988){
+_985=false;
 }
 }
 }
-return _976;
+return _985;
 };
-FieldsBinding.prototype.handleAction=function(_97a){
-FieldsBinding.superclass.handleAction.call(this,_97a);
-var _97b=_97a.target;
-if(_97b!=this){
-switch(_97a.type){
+FieldsBinding.prototype.handleAction=function(_989){
+FieldsBinding.superclass.handleAction.call(this,_989);
+var _98a=_989.target;
+if(_98a!=this){
+switch(_989.type){
 case Binding.ACTION_INVALID:
-var _97c=DataBinding.getAssociatedLabel(_97b);
-if(_97c){
-this._invalidFieldLabels.set(_97b.key,_97c);
+var _98b=DataBinding.getAssociatedLabel(_98a);
+if(_98b){
+this._invalidFieldLabels.set(_98a.key,_98b);
 }
-if(_97b.error){
-if(!_97b.isInvalidBecauseRequired){
-ErrorBinding.presentError({text:_97b.error},_97b);
+if(_98a.error){
+if(!_98a.isInvalidBecauseRequired){
+ErrorBinding.presentError({text:_98a.error},_98a);
 }
 }
 if(this._invalidCount==0){
 this.dispatchAction(Binding.ACTION_INVALID);
 }
 this._invalidCount++;
-_97a.consume();
+_989.consume();
 break;
 case Binding.ACTION_VALID:
-if(this._invalidFieldLabels.has(_97b.key)){
-this._invalidFieldLabels.del(_97b.key);
+if(this._invalidFieldLabels.has(_98a.key)){
+this._invalidFieldLabels.del(_98a.key);
 }
 this._invalidCount--;
 if(this._invalidCount==0){
 this.dispatchAction(Binding.ACTION_VALID);
 }
-_97a.consume();
+_989.consume();
 break;
 }
 }
 };
 FieldsBinding.prototype.getInvalidLabels=function(){
-var _97d=null;
+var _98c=null;
 if(this._invalidFieldLabels.hasEntries()){
-_97d=this._invalidFieldLabels.toList();
+_98c=this._invalidFieldLabels.toList();
 }
-return _97d;
+return _98c;
 };
-FieldsBinding.newInstance=function(_97e){
-var _97f=DOMUtil.createElementNS(Constants.NS_UI,"ui:fields",_97e);
-return UserInterface.registerBinding(_97f,FieldsBinding);
+FieldsBinding.newInstance=function(_98d){
+var _98e=DOMUtil.createElementNS(Constants.NS_UI,"ui:fields",_98d);
+return UserInterface.registerBinding(_98e,FieldsBinding);
 };
 FieldDescBinding.prototype=new Binding;
 FieldDescBinding.prototype.constructor=FieldDescBinding;
@@ -14347,17 +14388,17 @@ this.buildDOMContent();
 this.attachDOMEvents();
 };
 FieldDescBinding.prototype.buildDOMContent=function(){
-var _980=this.getProperty("image");
-if(_980){
-this.setImage(_980);
+var _98f=this.getProperty("image");
+if(_98f){
+this.setImage(_98f);
 }
-var _981=this.getProperty("tooltip");
-if(_981){
-this.setToolTip(_981);
+var _990=this.getProperty("tooltip");
+if(_990){
+this.setToolTip(_990);
 }
-var _982=this.getProperty("label");
-if(_982){
-this.setLabel(_982);
+var _991=this.getProperty("label");
+if(_991){
+this.setLabel(_991);
 }
 };
 FieldDescBinding.prototype.attachDOMEvents=function(){
@@ -14367,51 +14408,51 @@ FieldDescBinding.prototype.handleEvent=function(e){
 FieldDescBinding.superclass.handleEvent.call(this,e);
 switch(e.type){
 case DOMEvents.CLICK:
-var _984=this.getAncestorBindingByLocalName("field");
-if(_984){
-var _985=true;
-_984.getDescendantBindingsByLocalName("*").each(function(_986){
-if(Interfaces.isImplemented(IData,_986)){
-_986.focus();
-_985=false;
+var _993=this.getAncestorBindingByLocalName("field");
+if(_993){
+var _994=true;
+_993.getDescendantBindingsByLocalName("*").each(function(_995){
+if(Interfaces.isImplemented(IData,_995)){
+_995.focus();
+_994=false;
 }
-return _985;
+return _994;
 });
 }
 break;
 }
 };
-FieldDescBinding.prototype.setLabel=function(_987){
-this.setProperty("label",_987);
+FieldDescBinding.prototype.setLabel=function(_996){
+this.setProperty("label",_996);
 if(this.isAttached){
-this.bindingElement.innerHTML=Resolver.resolve(_987);
+this.bindingElement.innerHTML=Resolver.resolve(_996);
 }
 };
 FieldDescBinding.prototype.getLabel=function(){
-var _988=this.getProperty("label");
-if(!_988){
+var _997=this.getProperty("label");
+if(!_997){
 var node=this.bindingElement.firstChild;
 if(node&&node.nodeType==Node.TEXT_NODE){
-_988=node.data;
+_997=node.data;
 }
 }
-return _988;
+return _997;
 };
-FieldDescBinding.prototype.setImage=function(_98a){
-this.setProperty("image",_98a);
+FieldDescBinding.prototype.setImage=function(_999){
+this.setProperty("image",_999);
 if(this.isAttached){
 throw "FieldDescBinding: Images not suppoerted!";
 }
 };
-FieldDescBinding.prototype.setToolTip=function(_98b){
-this.setProperty("tooltip",_98b);
+FieldDescBinding.prototype.setToolTip=function(_99a){
+this.setProperty("tooltip",_99a);
 if(this.isAttached){
-this.bindingElement.title=_98b;
+this.bindingElement.title=_99a;
 }
 };
-FieldDescBinding.newInstance=function(_98c){
-var _98d=DOMUtil.createElementNS(Constants.NS_UI,"ui:fielddesc",_98c);
-return UserInterface.registerBinding(_98d,FieldDescBinding);
+FieldDescBinding.newInstance=function(_99b){
+var _99c=DOMUtil.createElementNS(Constants.NS_UI,"ui:fielddesc",_99b);
+return UserInterface.registerBinding(_99c,FieldDescBinding);
 };
 FieldDataBinding.prototype=new Binding;
 FieldDataBinding.prototype.constructor=FieldDataBinding;
@@ -14423,9 +14464,9 @@ return this;
 FieldDataBinding.prototype.toString=function(){
 return "[FieldDataBinding]";
 };
-FieldDataBinding.newInstance=function(_98e){
-var _98f=DOMUtil.createElementNS(Constants.NS_UI,"ui:fielddata",_98e);
-return UserInterface.registerBinding(_98f,FieldDataBinding);
+FieldDataBinding.newInstance=function(_99d){
+var _99e=DOMUtil.createElementNS(Constants.NS_UI,"ui:fielddata",_99d);
+return UserInterface.registerBinding(_99e,FieldDataBinding);
 };
 FieldHelpBinding.prototype=new Binding;
 FieldHelpBinding.prototype.constructor=FieldHelpBinding;
@@ -14445,50 +14486,50 @@ this.buildPopupButton();
 };
 FieldHelpBinding.prototype.onBindingDispose=function(){
 FieldHelpBinding.superclass.onBindingDispose.call(this);
-var _990=this._fieldHelpPopupBinding;
-if(_990){
-_990.dispose();
+var _99f=this._fieldHelpPopupBinding;
+if(_99f){
+_99f.dispose();
 }
 };
 FieldHelpBinding.prototype.buildPopupBinding=function(){
-var _991=app.bindingMap.fieldhelpopupset;
-var doc=_991.bindingDocument;
-var _993=_991.add(PopupBinding.newInstance(doc));
-var _994=_993.add(PopupBodyBinding.newInstance(doc));
-_993.position=PopupBinding.POSITION_RIGHT;
-_993.attachClassName("fieldhelppopup");
+var _9a0=app.bindingMap.fieldhelpopupset;
+var doc=_9a0.bindingDocument;
+var _9a2=_9a0.add(PopupBinding.newInstance(doc));
+var _9a3=_9a2.add(PopupBodyBinding.newInstance(doc));
+_9a2.position=PopupBinding.POSITION_RIGHT;
+_9a2.attachClassName("fieldhelppopup");
 if(this.bindingElement.hasChildNodes()){
-_994.bindingElement.innerHTML=this.bindingElement.innerHTML;
+_9a3.bindingElement.innerHTML=this.bindingElement.innerHTML;
 }else{
-var _995=this.getProperty("label");
-if(_995){
-_994.bindingElement.innerHTML=Resolver.resolve(_995);
+var _9a4=this.getProperty("label");
+if(_9a4){
+_9a3.bindingElement.innerHTML=Resolver.resolve(_9a4);
 }
 }
 this.bindingElement.innerHTML="";
-this._fieldHelpPopupBinding=_993;
+this._fieldHelpPopupBinding=_9a2;
 };
 FieldHelpBinding.prototype.buildPopupButton=function(){
-var _996=this.getAncestorBindingByLocalName("field");
-if(_996){
-_996.attachClassName("fieldhelp");
-var _997=ClickButtonBinding.newInstance(this.bindingDocument);
-_997.attachClassName("fieldhelp");
-_997.setImage(FieldHelpBinding.INDICATOR_IMAGE);
-this.add(_997);
-_997.attach();
+var _9a5=this.getAncestorBindingByLocalName("field");
+if(_9a5){
+_9a5.attachClassName("fieldhelp");
+var _9a6=ClickButtonBinding.newInstance(this.bindingDocument);
+_9a6.attachClassName("fieldhelp");
+_9a6.setImage(FieldHelpBinding.INDICATOR_IMAGE);
+this.add(_9a6);
+_9a6.attach();
 var self=this;
-_997.oncommand=function(){
+_9a6.oncommand=function(){
 self.attachPopupBinding();
 };
-_997.setPopup(this._fieldHelpPopupBinding);
-this._fieldHelpButton=_997;
+_9a6.setPopup(this._fieldHelpPopupBinding);
+this._fieldHelpButton=_9a6;
 }
 };
 FieldHelpBinding.prototype.attachPopupBinding=function(){
-var _999=this._fieldHelpPopupBinding;
-if(_999&&!_999.isAttached){
-_999.attachRecursive();
+var _9a8=this._fieldHelpPopupBinding;
+if(_9a8&&!_9a8.isAttached){
+_9a8.attachRecursive();
 }
 };
 RadioDataGroupBinding.prototype=new RadioGroupBinding;
@@ -14525,9 +14566,9 @@ RadioDataGroupBinding.prototype.onBindingDispose=function(){
 RadioDataGroupBinding.superclass.onBindingDispose.call(this);
 DataBinding.prototype.onBindingDispose.call(this);
 };
-RadioDataGroupBinding.prototype.handleAction=function(_99b){
-RadioDataGroupBinding.superclass.handleAction.call(this,_99b);
-switch(_99b.type){
+RadioDataGroupBinding.prototype.handleAction=function(_9aa){
+RadioDataGroupBinding.superclass.handleAction.call(this,_9aa);
+switch(_9aa.type){
 case RadioGroupBinding.ACTION_SELECTIONCHANGED:
 this.dirty();
 break;
@@ -14546,37 +14587,37 @@ break;
 }
 }
 };
-RadioDataGroupBinding.prototype.handleBroadcast=function(_99d,arg){
-RadioDataGroupBinding.superclass.handleBroadcast.call(this,_99d,arg);
-switch(_99d){
+RadioDataGroupBinding.prototype.handleBroadcast=function(_9ac,arg){
+RadioDataGroupBinding.superclass.handleBroadcast.call(this,_9ac,arg);
+switch(_9ac){
 case BroadcastMessages.KEY_ARROW:
-var _99f=null;
+var _9ae=null;
 var next=null;
-var _9a1=null;
+var _9b0=null;
 switch(arg){
 case KeyEventCodes.VK_DOWN:
 case KeyEventCodes.VK_UP:
-_9a1=this.getChildBindingsByLocalName("radio");
-while(!_99f&&_9a1.hasNext()){
-var _9a2=_9a1.getNext();
-if(_9a2.getProperty("ischecked")){
-_99f=_9a2;
+_9b0=this.getChildBindingsByLocalName("radio");
+while(!_9ae&&_9b0.hasNext()){
+var _9b1=_9b0.getNext();
+if(_9b1.getProperty("ischecked")){
+_9ae=_9b1;
 }
 }
 break;
 }
-if(_99f){
+if(_9ae){
 switch(arg){
 case KeyEventCodes.VK_DOWN:
-next=_9a1.getFollowing(_99f);
+next=_9b0.getFollowing(_9ae);
 while(next!=null&&next.isDisabled){
-next=_9a1.getFollowing(next);
+next=_9b0.getFollowing(next);
 }
 break;
 case KeyEventCodes.VK_UP:
-next=_9a1.getPreceding(_99f);
+next=_9b0.getPreceding(_9ae);
 while(next!=null&&next.isDisabled){
-next=_9a1.getPreceding(next);
+next=_9b0.getPreceding(next);
 }
 break;
 }
@@ -14591,11 +14632,11 @@ RadioDataGroupBinding.prototype.setName=DataBinding.prototype.setName;
 RadioDataGroupBinding.prototype.getName=DataBinding.prototype.getName;
 RadioDataGroupBinding.prototype.dirty=DataBinding.prototype.dirty;
 RadioDataGroupBinding.prototype.clean=DataBinding.prototype.clean;
-RadioDataGroupBinding.prototype.focus=function(_9a3){
+RadioDataGroupBinding.prototype.focus=function(_9b2){
 if(!this.isFocused){
 DataBinding.prototype.focus.call(this);
 if(this.isFocused){
-if(!_9a3){
+if(!_9b2){
 FocusBinding.focusElement(this.bindingElement);
 }
 this.addEventListener(DOMEvents.KEYDOWN);
@@ -14616,30 +14657,30 @@ return true;
 RadioDataGroupBinding.prototype.manifest=function(){
 if(this.isAttached){
 if(!this.shadowTree.input){
-var _9a4=DOMUtil.createElementNS(Constants.NS_XHTML,"input",this.bindingDocument);
-_9a4.type="hidden";
-_9a4.name=this._name;
-this.bindingElement.appendChild(_9a4);
-this.shadowTree.input=_9a4;
+var _9b3=DOMUtil.createElementNS(Constants.NS_XHTML,"input",this.bindingDocument);
+_9b3.type="hidden";
+_9b3.name=this._name;
+this.bindingElement.appendChild(_9b3);
+this.shadowTree.input=_9b3;
 }
 this.shadowTree.input.value=this.getValue();
 }
 };
 RadioDataGroupBinding.prototype.getValue=function(){
-var _9a5=null;
-var _9a6=this.getChildBindingsByLocalName("radio");
-while(!_9a5&&_9a6.hasNext()){
-var _9a7=_9a6.getNext();
-if(_9a7.isChecked){
-_9a5=_9a7.getProperty("value");
+var _9b4=null;
+var _9b5=this.getChildBindingsByLocalName("radio");
+while(!_9b4&&_9b5.hasNext()){
+var _9b6=_9b5.getNext();
+if(_9b6.isChecked){
+_9b4=_9b6.getProperty("value");
 }
 }
-return _9a5;
+return _9b4;
 };
 RadioDataGroupBinding.prototype.getResult=RadioDataGroupBinding.prototype.getValue;
-RadioDataGroupBinding.prototype.setValue=function(_9a8){
+RadioDataGroupBinding.prototype.setValue=function(_9b7){
 };
-RadioDataGroupBinding.prototype.setResult=function(_9a9){
+RadioDataGroupBinding.prototype.setResult=function(_9b8){
 };
 RadioDataBinding.prototype=new Binding;
 RadioDataBinding.prototype.constructor=RadioDataBinding;
@@ -14657,15 +14698,15 @@ return "[RadioDataBinding]";
 };
 RadioDataBinding.prototype.onBindingRegister=function(){
 RadioDataBinding.superclass.onBindingRegister.call(this);
-this.propertyMethodMap["checked"]=function(_9aa){
-if(_9aa!=this.isChecked){
-this.setChecked(_9aa,true);
+this.propertyMethodMap["checked"]=function(_9b9){
+if(_9b9!=this.isChecked){
+this.setChecked(_9b9,true);
 }
 };
 this.propertyMethodMap["checksum"]=function(){
-var _9ab=this.getProperty("ischecked");
-if(_9ab!=this.isChecked){
-this.setChecked(_9ab,true);
+var _9ba=this.getProperty("ischecked");
+if(_9ba!=this.isChecked){
+this.setChecked(_9ba,true);
 }
 };
 this._buttonBinding=this.add(RadioButtonBinding.newInstance(this.bindingDocument));
@@ -14681,15 +14722,15 @@ this._buttonBinding.attach();
 this._buildDOMContent();
 };
 RadioDataBinding.prototype._buildDOMContent=function(){
-var _9ac=this.getProperty("relate");
-var _9ad=this.getProperty("oncommand");
-if(_9ac){
-this.bindingRelate=_9ac;
+var _9bb=this.getProperty("relate");
+var _9bc=this.getProperty("oncommand");
+if(_9bb){
+this.bindingRelate=_9bb;
 this.relate();
 }
-if(_9ad){
+if(_9bc){
 this.oncommand=function(){
-Binding.evaluate(_9ad,this);
+Binding.evaluate(_9bc,this);
 };
 }
 if(this.hasCallBackID()){
@@ -14708,15 +14749,15 @@ return this._buttonBinding;
 };
 RadioDataBinding.prototype._hack=function(){
 var self=this;
-var _9af=this.getCallBackID();
-this._buttonBinding.check=function(_9b0){
-RadioButtonBinding.prototype.check.call(this,_9b0);
+var _9be=this.getCallBackID();
+this._buttonBinding.check=function(_9bf){
+RadioButtonBinding.prototype.check.call(this,_9bf);
 self.setProperty("ischecked",true);
 self.isChecked=true;
 self.relate();
 };
-this._buttonBinding.uncheck=function(_9b1){
-RadioButtonBinding.prototype.uncheck.call(this,_9b1);
+this._buttonBinding.uncheck=function(_9c0){
+RadioButtonBinding.prototype.uncheck.call(this,_9c0);
 self.deleteProperty("ischecked");
 self.isChecked=false;
 self.relate();
@@ -14729,24 +14770,24 @@ self.oncommand();
 }
 };
 };
-RadioDataBinding.prototype.setChecked=function(_9b2,_9b3){
-this._buttonBinding.setChecked(_9b2,_9b3);
+RadioDataBinding.prototype.setChecked=function(_9c1,_9c2){
+this._buttonBinding.setChecked(_9c1,_9c2);
 if(this.bindingRelate!=null){
 this.relate();
 }
-this.setProperty("ischecked",_9b2);
+this.setProperty("ischecked",_9c1);
 };
-RadioDataBinding.prototype.check=function(_9b4){
-this.setChecked(true,_9b4);
+RadioDataBinding.prototype.check=function(_9c3){
+this.setChecked(true,_9c3);
 };
-RadioDataBinding.prototype.uncheck=function(_9b5){
-this.setChecked(false,_9b5);
+RadioDataBinding.prototype.uncheck=function(_9c4){
+this.setChecked(false,_9c4);
 };
-RadioDataBinding.prototype.setDisabled=function(_9b6){
-if(_9b6!=this.isDisabled){
-this.isDisabled=_9b6;
-this._buttonBinding.setDisabled(_9b6);
-if(_9b6){
+RadioDataBinding.prototype.setDisabled=function(_9c5){
+if(_9c5!=this.isDisabled){
+this.isDisabled=_9c5;
+this._buttonBinding.setDisabled(_9c5);
+if(_9c5){
 this.attachClassName(DataBinding.CLASSNAME_DISABLED);
 }else{
 this.detachClassName(DataBinding.CLASSNAME_DISABLED);
@@ -14766,8 +14807,8 @@ this.setDisabled(false);
 RadioDataBinding.prototype.handleEvent=function(e){
 RadioDataBinding.superclass.handleEvent.call(this,e);
 if(e.type==DOMEvents.CLICK){
-var _9b8=DOMEvents.getTarget(e);
-switch(_9b8){
+var _9c7=DOMEvents.getTarget(e);
+switch(_9c7){
 case this.shadowTree.labelText:
 if(!this.isChecked&&!this.isDisabled){
 this.check();
@@ -14777,19 +14818,19 @@ break;
 }
 };
 RadioDataBinding.prototype._buildLabelText=function(){
-var _9b9=this.getProperty("label");
-if(_9b9){
+var _9c8=this.getProperty("label");
+if(_9c8){
 this.shadowTree.labelText=DOMUtil.createElementNS(Constants.NS_UI,"ui:datalabeltext",this.bindingDocument);
-this.shadowTree.labelText.appendChild(this.bindingDocument.createTextNode(Resolver.resolve(_9b9)));
+this.shadowTree.labelText.appendChild(this.bindingDocument.createTextNode(Resolver.resolve(_9c8)));
 DOMEvents.addEventListener(this.shadowTree.labelText,DOMEvents.CLICK,this);
 this.bindingElement.appendChild(this.shadowTree.labelText);
 }
 };
-RadioDataBinding.prototype.setLabel=function(_9ba){
+RadioDataBinding.prototype.setLabel=function(_9c9){
 if(this.shadowTree.labelText!=null){
-this.shadowTree.labelText.firstChild.data=_9ba;
+this.shadowTree.labelText.firstChild.data=_9c9;
 }
-this.setProperty("label",_9ba);
+this.setProperty("label",_9c9);
 };
 CheckBoxBinding.prototype=new Binding;
 CheckBoxBinding.prototype.constructor=CheckBoxBinding;
@@ -14812,15 +14853,15 @@ CheckBoxBinding.prototype.onBindingRegister=function(){
 CheckBoxBinding.superclass.onBindingRegister.call(this);
 DataBinding.prototype.onBindingRegister.call(this);
 this._buildButtonBinding();
-this.propertyMethodMap["checked"]=function(_9bb){
-if(_9bb!=this.isChecked){
-this.setChecked(_9bb,true);
+this.propertyMethodMap["checked"]=function(_9ca){
+if(_9ca!=this.isChecked){
+this.setChecked(_9ca,true);
 }
 };
 this.propertyMethodMap["checksum"]=function(){
-var _9bc=this.getProperty("ischecked");
-if(_9bc!=this.isChecked){
-this.setChecked(_9bc,true);
+var _9cb=this.getProperty("ischecked");
+if(_9cb!=this.isChecked){
+this.setChecked(_9cb,true);
 }
 };
 };
@@ -14841,8 +14882,8 @@ CheckBoxBinding.prototype._buildDOMContent=RadioDataBinding.prototype._buildDOMC
 CheckBoxBinding.prototype.handleEvent=function(e){
 CheckBoxBinding.superclass.handleEvent.call(this,e);
 if(e.type==DOMEvents.CLICK){
-var _9be=DOMEvents.getTarget(e);
-switch(_9be){
+var _9cd=DOMEvents.getTarget(e);
+switch(_9cd){
 case this.shadowTree.labelText:
 this.setChecked(!this.isChecked);
 break;
@@ -14850,9 +14891,9 @@ break;
 }
 };
 CheckBoxBinding.prototype.relate=RadioDataBinding.prototype.relate;
-CheckBoxBinding.prototype.handleBroadcast=function(_9bf,arg){
-CheckBoxBinding.superclass.handleBroadcast.call(this,_9bf,arg);
-switch(_9bf){
+CheckBoxBinding.prototype.handleBroadcast=function(_9ce,arg){
+CheckBoxBinding.superclass.handleBroadcast.call(this,_9ce,arg);
+switch(_9ce){
 case BroadcastMessages.KEY_SPACE:
 this.setChecked(!this.isChecked);
 break;
@@ -14861,8 +14902,8 @@ break;
 CheckBoxBinding.prototype._buildButtonBinding=function(){
 this._buttonBinding=this.add(CheckButtonBinding.newInstance(this.bindingDocument));
 var self=this;
-this._buttonBinding.addActionListener(ButtonBinding.ACTION_COMMAND,{handleAction:function(_9c2){
-_9c2.consume();
+this._buttonBinding.addActionListener(ButtonBinding.ACTION_COMMAND,{handleAction:function(_9d1){
+_9d1.consume();
 self.dispatchAction(CheckBoxBinding.ACTION_COMMAND);
 }});
 this._hack();
@@ -14873,18 +14914,18 @@ this.check(true);
 };
 CheckBoxBinding.prototype._hack=function(){
 var self=this;
-var _9c4=this.getCallBackID();
-this._buttonBinding.check=function(_9c5){
-ButtonBinding.prototype.check.call(this,_9c5);
+var _9d3=this.getCallBackID();
+this._buttonBinding.check=function(_9d4){
+ButtonBinding.prototype.check.call(this,_9d4);
 self.setProperty("ischecked",true);
 self.isChecked=true;
 self.relate();
-if(!_9c5){
+if(!_9d4){
 self.focus();
 }
 };
-this._buttonBinding.uncheck=function(_9c6){
-ButtonBinding.prototype.uncheck.call(this,_9c6);
+this._buttonBinding.uncheck=function(_9d5){
+ButtonBinding.prototype.uncheck.call(this,_9d5);
 self.setProperty("ischecked",false);
 self.isChecked=false;
 self.relate();
@@ -14897,7 +14938,7 @@ if(self.oncommand){
 self.oncommand();
 }
 self.dirty();
-if(_9c4!=null){
+if(_9d3!=null){
 self.dispatchAction(PageBinding.ACTION_DOPOSTBACK);
 }
 };
@@ -14927,33 +14968,33 @@ this.unsubscribe(BroadcastMessages.KEY_SPACE);
 }
 };
 CheckBoxBinding.prototype.validate=function(){
-var _9c7=true;
-var _9c8=this.bindingElement.parentNode;
-if(_9c8){
-var _9c9=UserInterface.getBinding(_9c8);
-if(_9c9&&_9c9 instanceof CheckBoxGroupBinding){
-if(_9c9.isRequired){
-if(_9c9.isValid){
-_9c7=_9c9.validate();
+var _9d6=true;
+var _9d7=this.bindingElement.parentNode;
+if(_9d7){
+var _9d8=UserInterface.getBinding(_9d7);
+if(_9d8&&_9d8 instanceof CheckBoxGroupBinding){
+if(_9d8.isRequired){
+if(_9d8.isValid){
+_9d6=_9d8.validate();
 }else{
-_9c7=false;
+_9d6=false;
 }
 }
 }
 }
-return _9c7;
+return _9d6;
 };
 CheckBoxBinding.prototype.manifest=function(){
 if(this.isAttached){
 switch(this.isChecked){
 case true:
 if(!this.shadowTree.input){
-var _9ca=DOMUtil.createElementNS(Constants.NS_XHTML,"input",this.bindingDocument);
-_9ca.type="hidden";
-_9ca.name=this._name;
-_9ca.style.display="none";
-this.bindingElement.appendChild(_9ca);
-this.shadowTree.input=_9ca;
+var _9d9=DOMUtil.createElementNS(Constants.NS_XHTML,"input",this.bindingDocument);
+_9d9.type="hidden";
+_9d9.name=this._name;
+_9d9.style.display="none";
+this.bindingElement.appendChild(_9d9);
+this.shadowTree.input=_9d9;
 }
 this.shadowTree.input.value=this.getValue();
 break;
@@ -14967,39 +15008,39 @@ break;
 }
 };
 CheckBoxBinding.prototype.getValue=function(){
-var _9cb=null;
-var _9cc=this.getProperty("value");
+var _9da=null;
+var _9db=this.getProperty("value");
 if(this.isChecked){
-_9cb=_9cc?_9cc:"on";
+_9da=_9db?_9db:"on";
 }
-return _9cb;
+return _9da;
 };
-CheckBoxBinding.prototype.setValue=function(_9cd){
-if(_9cd==this.getValue()||_9cd=="on"){
+CheckBoxBinding.prototype.setValue=function(_9dc){
+if(_9dc==this.getValue()||_9dc=="on"){
 this.check(true);
 }else{
-if(_9cd!="on"){
-this.setPropety("value",_9cd);
+if(_9dc!="on"){
+this.setPropety("value",_9dc);
 }
 }
 };
 CheckBoxBinding.prototype.getResult=function(){
-var _9ce=false;
+var _9dd=false;
 if(this.isChecked){
-_9ce=this._result!=null?this._result:true;
+_9dd=this._result!=null?this._result:true;
 }
-return _9ce;
+return _9dd;
 };
-CheckBoxBinding.prototype.setResult=function(_9cf){
-if(typeof _9cf=="boolean"){
-this.setChecked(_9cf,true);
+CheckBoxBinding.prototype.setResult=function(_9de){
+if(typeof _9de=="boolean"){
+this.setChecked(_9de,true);
 }else{
-this._result=_9cf;
+this._result=_9de;
 }
 };
-CheckBoxBinding.newInstance=function(_9d0){
-var _9d1=DOMUtil.createElementNS(Constants.NS_UI,"ui:checkbox",_9d0);
-return UserInterface.registerBinding(_9d1,CheckBoxBinding);
+CheckBoxBinding.newInstance=function(_9df){
+var _9e0=DOMUtil.createElementNS(Constants.NS_UI,"ui:checkbox",_9df);
+return UserInterface.registerBinding(_9e0,CheckBoxBinding);
 };
 CheckBoxGroupBinding.prototype=new Binding;
 CheckBoxGroupBinding.prototype.constructor=CheckBoxGroupBinding;
@@ -15017,33 +15058,33 @@ CheckBoxGroupBinding.superclass.onBindingAttach.call(this);
 this.isRequired=this.getProperty("required")==true;
 };
 CheckBoxGroupBinding.prototype.validate=function(){
-var _9d2=true;
+var _9e1=true;
 if(this.isRequired){
-var _9d3=this.getDescendantBindingsByLocalName("checkbox");
-if(_9d3.hasEntries()){
-_9d2=false;
-while(_9d3.hasNext()&&!_9d2){
-if(_9d3.getNext().isChecked){
-_9d2=true;
+var _9e2=this.getDescendantBindingsByLocalName("checkbox");
+if(_9e2.hasEntries()){
+_9e1=false;
+while(_9e2.hasNext()&&!_9e1){
+if(_9e2.getNext().isChecked){
+_9e1=true;
 }
 }
 }
-if(_9d2==false){
+if(_9e1==false){
 this._showWarning(true);
 this.dispatchAction(Binding.ACTION_INVALID);
 this.addActionListener(CheckBoxBinding.ACTION_COMMAND);
 }
 }
-return _9d2;
+return _9e1;
 };
-CheckBoxGroupBinding.prototype._showWarning=function(_9d4){
-if(_9d4){
+CheckBoxGroupBinding.prototype._showWarning=function(_9e3){
+if(_9e3){
 if(!this._labelBinding){
-var _9d5=LabelBinding.newInstance(this.bindingDocument);
-_9d5.attachClassName("invalid");
-_9d5.setImage("${icon:error}");
-_9d5.setLabel("Selection required");
-this._labelBinding=this.addFirst(_9d5);
+var _9e4=LabelBinding.newInstance(this.bindingDocument);
+_9e4.attachClassName("invalid");
+_9e4.setImage("${icon:error}");
+_9e4.setLabel("Selection required");
+this._labelBinding=this.addFirst(_9e4);
 this._labelBinding.attach();
 }
 }else{
@@ -15053,9 +15094,9 @@ this._labelBinding=null;
 }
 }
 };
-CheckBoxGroupBinding.prototype.handleAction=function(_9d6){
-CheckBoxGroupBinding.superclass.handleAction.call(this,_9d6);
-switch(_9d6.type){
+CheckBoxGroupBinding.prototype.handleAction=function(_9e5){
+CheckBoxGroupBinding.superclass.handleAction.call(this,_9e5);
+switch(_9e5.type){
 case CheckBoxBinding.ACTION_COMMAND:
 this._showWarning(false);
 this.dispatchAction(Binding.ACTION_VALID);
@@ -15063,9 +15104,9 @@ this.removeActionListener(CheckBoxBinding.ACTION_COMMAND);
 break;
 }
 };
-CheckBoxGroupBinding.newInstance=function(_9d7){
-var _9d8=DOMUtil.createElementNS(Constants.NS_UI,"ui:checkboxgroup",_9d7);
-return UserInterface.registerBinding(_9d8,CheckBoxGroupBinding);
+CheckBoxGroupBinding.newInstance=function(_9e6){
+var _9e7=DOMUtil.createElementNS(Constants.NS_UI,"ui:checkboxgroup",_9e6);
+return UserInterface.registerBinding(_9e7,CheckBoxGroupBinding);
 };
 BalloonSetBinding.prototype=new Binding;
 BalloonSetBinding.prototype.constructor=BalloonSetBinding;
@@ -15099,15 +15140,15 @@ BalloonBinding.superclass.onBindingAttach.call(this);
 this.addActionListener(Binding.ACTION_ACTIVATED);
 this.addActionListener(ControlBinding.ACTION_COMMAND);
 this._controlGroupBinding=this.add(ControlGroupBinding.newInstance(this.bindingDocument));
-var _9d9=DialogControlBinding.newInstance(this.bindingDocument);
-_9d9.setControlType(ControlBinding.TYPE_CLOSE);
-this._controlGroupBinding.add(_9d9);
+var _9e8=DialogControlBinding.newInstance(this.bindingDocument);
+_9e8.setControlType(ControlBinding.TYPE_CLOSE);
+this._controlGroupBinding.add(_9e8);
 this._controlGroupBinding.attachRecursive();
-var _9da=DOMUtil.createElementNS(Constants.NS_UI,"ui:balloonspeak",this.bindingDocument);
-this.bindingElement.appendChild(_9da);
-var _9db=this.getLabel();
-if(_9db!=null){
-this.setLabel(_9db);
+var _9e9=DOMUtil.createElementNS(Constants.NS_UI,"ui:balloonspeak",this.bindingDocument);
+this.bindingElement.appendChild(_9e9);
+var _9ea=this.getLabel();
+if(_9ea!=null){
+this.setLabel(_9ea);
 }
 };
 BalloonBinding.prototype.onBindingDispose=function(){
@@ -15116,72 +15157,72 @@ if(this._updateInterval){
 window.clearInterval(this._updateInterval);
 this._updateInterval=null;
 }
-var _9dc=this._snapTargetBinding;
-if(Binding.exists(_9dc)==true){
-_9dc.removeActionListener(Binding.ACTION_BLURRED,this);
-_9dc.removeActionListener(Binding.ACTION_VALID,this);
+var _9eb=this._snapTargetBinding;
+if(Binding.exists(_9eb)==true){
+_9eb.removeActionListener(Binding.ACTION_BLURRED,this);
+_9eb.removeActionListener(Binding.ACTION_VALID,this);
 }
 };
-BalloonBinding.prototype.snapTo=function(_9dd){
-if(Interfaces.isImplemented(IData,_9dd)){
-this._snapTargetBinding=_9dd;
-var _9de=_9dd.dispatchAction(BalloonBinding.ACTION_INITIALIZE);
-if(_9de&&_9de.isConsumed){
-this._environmentBinding=_9de.listener;
+BalloonBinding.prototype.snapTo=function(_9ec){
+if(Interfaces.isImplemented(IData,_9ec)){
+this._snapTargetBinding=_9ec;
+var _9ed=_9ec.dispatchAction(BalloonBinding.ACTION_INITIALIZE);
+if(_9ed&&_9ed.isConsumed){
+this._environmentBinding=_9ed.listener;
 }
 if(this._environmentBinding){
-_9dd.addActionListener(Binding.ACTION_BLURRED,this);
-_9dd.addActionListener(Binding.ACTION_VALID,this);
+_9ec.addActionListener(Binding.ACTION_BLURRED,this);
+_9ec.addActionListener(Binding.ACTION_VALID,this);
 this.subscribe(BroadcastMessages.VIEW_CLOSED);
 var self=this;
 this._updateInterval=window.setInterval(function(){
-if(Binding.exists(_9dd)==true){
+if(Binding.exists(_9ec)==true){
 self._updatePosition();
 }else{
 self.dispose();
 }
 },BalloonBinding.TIMEOUT);
-_9dd.dispatchAction(BalloonBinding.ACTION_SNAP);
+_9ec.dispatchAction(BalloonBinding.ACTION_SNAP);
 }else{
 throw "No environment fit for balloons!";
 }
 }
 };
 BalloonBinding.prototype._updatePosition=function(){
-var _9e0=this._snapTargetBinding;
-var _9e1=this._environmentBinding;
-var root=UserInterface.getBinding(_9e0.bindingDocument.body);
-if(Binding.exists(_9e0)&&Binding.exists(_9e1)){
+var _9ef=this._snapTargetBinding;
+var _9f0=this._environmentBinding;
+var root=UserInterface.getBinding(_9ef.bindingDocument.body);
+if(Binding.exists(_9ef)&&Binding.exists(_9f0)){
 if(!root.isActivated){
 if(this.isVisible==true){
 this.hide();
 }
 }else{
-if(_9e0.isAttached&&_9e1.isAttached){
-var _9e3=_9e0.boxObject.getUniversalPosition();
-var _9e4=_9e1.boxObject.getUniversalPosition();
-_9e4.y+=_9e1.bindingElement.scrollTop;
-_9e4.x+=_9e1.bindingElement.scrollLeft;
-var tDim=_9e0.boxObject.getDimension();
-var eDim=_9e1.boxObject.getDimension();
-var _9e7=false;
-if(_9e3.y+tDim.h<_9e4.y){
-_9e7=true;
+if(_9ef.isAttached&&_9f0.isAttached){
+var _9f2=_9ef.boxObject.getUniversalPosition();
+var _9f3=_9f0.boxObject.getUniversalPosition();
+_9f3.y+=_9f0.bindingElement.scrollTop;
+_9f3.x+=_9f0.bindingElement.scrollLeft;
+var tDim=_9ef.boxObject.getDimension();
+var eDim=_9f0.boxObject.getDimension();
+var _9f6=false;
+if(_9f2.y+tDim.h<_9f3.y){
+_9f6=true;
 }else{
-if(_9e3.x+tDim.w<_9e4.x){
-_9e7=true;
+if(_9f2.x+tDim.w<_9f3.x){
+_9f6=true;
 }else{
-if(_9e3.y>_9e4.y+eDim.h){
-_9e7=true;
+if(_9f2.y>_9f3.y+eDim.h){
+_9f6=true;
 }else{
-if(_9e3.x>_9e4.x+eDim.w){
-_9e7=true;
+if(_9f2.x>_9f3.x+eDim.w){
+_9f6=true;
 }
 }
 }
 }
-if(!_9e7){
-this._setComputedPosition(_9e3,_9e4,tDim,eDim);
+if(!_9f6){
+this._setComputedPosition(_9f2,_9f3,tDim,eDim);
 if(!this.isVisible){
 this.show();
 }
@@ -15196,32 +15237,32 @@ this.hide();
 this.dispose();
 }
 };
-BalloonBinding.prototype._setComputedPosition=function(_9e8,_9e9,tDim,eDim){
+BalloonBinding.prototype._setComputedPosition=function(_9f7,_9f8,tDim,eDim){
 var wDim=WindowManager.getWindowDimensions();
 var bDim=this._getDimension();
-var _9ee=_9e8;
-var _9ef=false;
-if(_9e8.x+tDim.w+bDim.w+BalloonBinding.OFFSET_X>=wDim.w){
-_9ef=true;
+var _9fd=_9f7;
+var _9fe=false;
+if(_9f7.x+tDim.w+bDim.w+BalloonBinding.OFFSET_X>=wDim.w){
+_9fe=true;
 }else{
-if(_9e8.x+tDim.w>=_9e9.x+eDim.w){
-_9ef=true;
+if(_9f7.x+tDim.w>=_9f8.x+eDim.w){
+_9fe=true;
 }
 }
-if(_9ef){
-_9ee.x-=(bDim.w+BalloonBinding.OFFSET_X);
+if(_9fe){
+_9fd.x-=(bDim.w+BalloonBinding.OFFSET_X);
 this.attachClassName(BalloonBinding.CLASSNAME_LEFT);
 }else{
-_9ee.x+=tDim.w+BalloonBinding.OFFSET_X;
+_9fd.x+=tDim.w+BalloonBinding.OFFSET_X;
 this.detachClassName(BalloonBinding.CLASSNAME_LEFT);
 }
-_9ee.y-=(bDim.h);
-_9ee.y+=BalloonBinding.OFFSET_Y;
-this._setPosition(_9ee);
+_9fd.y-=(bDim.h);
+_9fd.y+=BalloonBinding.OFFSET_Y;
+this._setPosition(_9fd);
 };
-BalloonBinding.prototype.handleBroadcast=function(_9f0,arg){
-BalloonBinding.superclass.handleBroadcast.call(this,_9f0,arg);
-switch(_9f0){
+BalloonBinding.prototype.handleBroadcast=function(_9ff,arg){
+BalloonBinding.superclass.handleBroadcast.call(this,_9ff,arg);
+switch(_9ff){
 case BroadcastMessages.VIEW_CLOSED:
 if(this._isAssociatedView(arg)==true){
 this.dispose();
@@ -15229,28 +15270,28 @@ this.dispose();
 break;
 }
 };
-BalloonBinding.prototype._isAssociatedView=function(_9f2){
-var _9f3=false;
+BalloonBinding.prototype._isAssociatedView=function(_a01){
+var _a02=false;
 if(this._snapTargetBinding){
 var view=this._snapTargetBinding.getAncestorBindingByType(ViewBinding,true);
-if(view&&view.getHandle()==_9f2){
-_9f3=true;
+if(view&&view.getHandle()==_a01){
+_a02=true;
 }
 }
-return _9f3;
+return _a02;
 };
-BalloonBinding.prototype._setPosition=function(_9f5){
-var _9f6=false;
+BalloonBinding.prototype._setPosition=function(_a04){
+var _a05=false;
 var pos=this.boxObject.getLocalPosition();
 if(this._point!=null){
 if(pos.x!=this._point.x||pos.y!=this._point.y){
-_9f6=true;
+_a05=true;
 }
 }
-if(!_9f6){
-this.bindingElement.style.left=_9f5.x+"px";
-this.bindingElement.style.top=_9f5.y+"px";
-this._point=_9f5;
+if(!_a05){
+this.bindingElement.style.left=_a04.x+"px";
+this.bindingElement.style.top=_a04.y+"px";
+this._point=_a04;
 }
 };
 BalloonBinding.prototype._getPosition=function(){
@@ -15271,33 +15312,33 @@ this.bindingElement.style.visibility="visible";
 this.isVisible=true;
 }
 };
-BalloonBinding.prototype.handleAction=function(_9f8){
-BalloonBinding.superclass.handleAction.call(this,_9f8);
-var _9f9=_9f8.target;
-switch(_9f8.type){
+BalloonBinding.prototype.handleAction=function(_a07){
+BalloonBinding.superclass.handleAction.call(this,_a07);
+var _a08=_a07.target;
+switch(_a07.type){
 case Binding.ACTION_ACTIVATED:
 if(this._snapTargetBinding){
 this._snapTargetBinding.dispatchAction(Binding.ACTION_ACTIVATED);
-_9f8.consume();
+_a07.consume();
 }
 case Binding.ACTION_BLURRED:
 case Binding.ACTION_VALID:
-if(_9f9==this._snapTargetBinding){
+if(_a08==this._snapTargetBinding){
 var self=this;
 setTimeout(function(){
-if(!Binding.exists(_9f9)){
+if(!Binding.exists(_a08)){
 self.dispose();
 }else{
-if(_9f9.validate()){
-var _9fb=true;
-if(_9f8.type==Binding.ACTION_BLURRED){
-var root=_9f9.bindingDocument.body;
+if(_a08.validate()){
+var _a0a=true;
+if(_a07.type==Binding.ACTION_BLURRED){
+var root=_a08.bindingDocument.body;
 var bind=UserInterface.getBinding(root);
 if(!root.isActivated){
-_9fb=false;
+_a0a=false;
 }
 }
-if(_9fb){
+if(_a0a){
 self.dispose();
 }
 }
@@ -15310,49 +15351,49 @@ this.dispose();
 break;
 }
 };
-BalloonBinding.prototype.setLabel=function(_9fe){
+BalloonBinding.prototype.setLabel=function(_a0d){
 if(this.isAttached==true){
 if(!this._isTableIndexed){
 this._indexTable();
 }
-var _9ff=DOMUtil.createElementNS(Constants.NS_UI,"ui:balloontext",this.bindingDocument);
-var text=this.bindingDocument.createTextNode(_9fe);
-_9ff.appendChild(text);
-this.shadowTree[MatrixBinding.CENTER].appendChild(_9ff);
+var _a0e=DOMUtil.createElementNS(Constants.NS_UI,"ui:balloontext",this.bindingDocument);
+var text=this.bindingDocument.createTextNode(_a0d);
+_a0e.appendChild(text);
+this.shadowTree[MatrixBinding.CENTER].appendChild(_a0e);
 }
-this.setProperty("label",_9fe);
+this.setProperty("label",_a0d);
 };
 BalloonBinding.prototype.getLabel=function(){
 return this.getProperty("label");
 };
-BalloonBinding.newInstance=function(_a01){
-var _a02=DOMUtil.createElementNS(Constants.NS_UI,"ui:balloon",_a01);
-var _a03=UserInterface.registerBinding(_a02,BalloonBinding);
-_a03.hide();
-return _a03;
+BalloonBinding.newInstance=function(_a10){
+var _a11=DOMUtil.createElementNS(Constants.NS_UI,"ui:balloon",_a10);
+var _a12=UserInterface.registerBinding(_a11,BalloonBinding);
+_a12.hide();
+return _a12;
 };
 ErrorBinding.prototype=new Binding;
 ErrorBinding.prototype.constructor=ErrorBinding;
 ErrorBinding.superclass=Binding.prototype;
 ErrorBinding.ACTION_INITIALIZE="error initialize";
-ErrorBinding.presentError=function(_a04,_a05){
-if(Interfaces.isImplemented(IData,_a05)==true){
-var _a06,_a07=_a05.dispatchAction(ErrorBinding.ACTION_INITIALIZE);
-if(_a07&&_a07.isConsumed){
-switch(_a07.listener.constructor){
+ErrorBinding.presentError=function(_a13,_a14){
+if(Interfaces.isImplemented(IData,_a14)==true){
+var _a15,_a16=_a14.dispatchAction(ErrorBinding.ACTION_INITIALIZE);
+if(_a16&&_a16.isConsumed){
+switch(_a16.listener.constructor){
 case StageBinding:
-_a06=false;
+_a15=false;
 break;
 case StageDialogBinding:
-_a06=true;
+_a15=true;
 break;
 }
 }
-var _a08=_a06?top.app.bindingMap.dialogballoonset:top.app.bindingMap.balloonset;
-var _a09=_a08.add(BalloonBinding.newInstance(top.app.document));
-_a09.setLabel(_a04.text);
-_a09.snapTo(_a05);
-_a09.attach();
+var _a17=_a15?top.app.bindingMap.dialogballoonset:top.app.bindingMap.balloonset;
+var _a18=_a17.add(BalloonBinding.newInstance(top.app.document));
+_a18.setLabel(_a13.text);
+_a18.snapTo(_a14);
+_a18.attach();
 }
 };
 function ErrorBinding(){
@@ -15364,12 +15405,12 @@ return "[ErrorBinding]";
 };
 ErrorBinding.prototype.onBindingAttach=function(){
 ErrorBinding.superclass.onBindingAttach.call(this);
-var _a0a=this.bindingWindow.DataManager;
+var _a19=this.bindingWindow.DataManager;
 var text=this.getProperty("text");
 var name=this.getProperty("targetname");
-var _a0d=_a0a.getDataBinding(name);
-if(_a0d){
-ErrorBinding.presentError({text:text},_a0d);
+var _a1c=_a19.getDataBinding(name);
+if(_a1c){
+ErrorBinding.presentError({text:text},_a1c);
 }else{
 alert("ErrorBinding dysfunction: No such DataBinding!\n"+name);
 if(name.indexOf("_")>-1){
@@ -15387,40 +15428,40 @@ FocusBinding.ACTION_ATTACHED="focusmanager attached";
 FocusBinding.ACTION_UPDATE="focusmanager update required";
 FocusBinding.ACTION_FOCUS="focusmanager focus";
 FocusBinding.ACTION_BLUR="focusmanager blur";
-FocusBinding.focusElement=function(_a0e){
-var _a0f=true;
+FocusBinding.focusElement=function(_a1d){
+var _a1e=true;
 try{
-_a0e.focus();
+_a1d.focus();
 Application.focused(true);
 }
 catch(exception){
-var _a10=UserInterface.getBinding(_a0e);
-var _a11=SystemLogger.getLogger("FocusBinding.focusElement");
-_a11.warn("Could not focus "+(_a10?_a10.toString():String(_a0e)));
-_a0f=false;
+var _a1f=UserInterface.getBinding(_a1d);
+var _a20=SystemLogger.getLogger("FocusBinding.focusElement");
+_a20.warn("Could not focus "+(_a1f?_a1f.toString():String(_a1d)));
+_a1e=false;
 }
-return _a0f;
+return _a1e;
 };
 FocusBinding.focusedBinding=null;
 FocusBinding.activeInstance=null;
-FocusBinding.getCachedFocus=function(_a12){
-var win=_a12.bindingWindow;
-var id=_a12.bindingElement.id;
+FocusBinding.getCachedFocus=function(_a21){
+var win=_a21.bindingWindow;
+var id=_a21.bindingElement.id;
 return {getBinding:function(){
-var _a15=null;
+var _a24=null;
 try{
-if(Binding.exists(_a12)){
-_a15=win.bindingMap[id];
+if(Binding.exists(_a21)){
+_a24=win.bindingMap[id];
 }
 }
 catch(exception){
 }
-return _a15;
+return _a24;
 }};
 };
-FocusBinding.navigateNext=function(_a16){
+FocusBinding.navigateNext=function(_a25){
 if(Binding.exists(FocusBinding.activeInstance)){
-FocusBinding.activeInstance.focusNext(_a16);
+FocusBinding.activeInstance.focusNext(_a25);
 }
 };
 FocusBinding.navigatePrevious=function(){
@@ -15447,9 +15488,9 @@ if(this.getProperty("strongfocusmanager")==false){
 this.isStrongFocusManager=false;
 }
 if(this._isFocusManager){
-var _a17=this.dispatchAction(FocusBinding.ACTION_ATTACHED);
-if(_a17&&_a17.isConsumed){
-if(_a17.listener.isStrongFocusManager){
+var _a26=this.dispatchAction(FocusBinding.ACTION_ATTACHED);
+if(_a26&&_a26.isConsumed){
+if(_a26.listener.isStrongFocusManager){
 this._isFocusManager=false;
 }
 }
@@ -15472,78 +15513,78 @@ if(FocusBinding.activeInstance==this){
 FocusBinding.activeInstance=null;
 }
 };
-FocusBinding.prototype.handleAction=function(_a18){
-FocusBinding.superclass.handleAction.call(this,_a18);
-var _a19=_a18.target;
-var _a1a=null;
+FocusBinding.prototype.handleAction=function(_a27){
+FocusBinding.superclass.handleAction.call(this,_a27);
+var _a28=_a27.target;
+var _a29=null;
 if(this._isFocusManager){
-switch(_a18.type){
+switch(_a27.type){
 case FocusBinding.ACTION_ATTACHED:
-if(_a19!=this){
+if(_a28!=this){
 this._isUpToDate=false;
 }
-_a18.consume();
+_a27.consume();
 break;
 case FocusBinding.ACTION_UPDATE:
-if(_a19!=this){
+if(_a28!=this){
 this._isUpToDate=false;
-_a18.consume();
+_a27.consume();
 }
 break;
 case FocusBinding.ACTION_BLUR:
 if(Application.isOperational){
-_a1a=new FocusCrawler();
-_a1a.mode=FocusCrawler.MODE_BLUR;
-_a1a.crawl(_a19.bindingElement);
+_a29=new FocusCrawler();
+_a29.mode=FocusCrawler.MODE_BLUR;
+_a29.crawl(_a28.bindingElement);
 if(this._cachedFocus!=null){
 this._cachedFocus=null;
 }
 }
-_a18.consume();
+_a27.consume();
 break;
 case FocusBinding.ACTION_FOCUS:
-if(Application.isOperational&&_a19!=this){
-_a1a=new FocusCrawler();
-_a1a.mode=FocusCrawler.MODE_FOCUS;
-_a1a.crawl(_a19.bindingElement);
+if(Application.isOperational&&_a28!=this){
+_a29=new FocusCrawler();
+_a29.mode=FocusCrawler.MODE_FOCUS;
+_a29.crawl(_a28.bindingElement);
 }
-_a18.consume();
+_a27.consume();
 break;
 case Binding.ACTION_FOCUSED:
-if(Interfaces.isImplemented(IFocusable,_a19)){
+if(Interfaces.isImplemented(IFocusable,_a28)){
 this.claimFocus();
-this._onFocusableFocused(_a19);
+this._onFocusableFocused(_a28);
 }
-_a18.consume();
+_a27.consume();
 break;
 case Binding.ACTION_BLURRED:
-if(Interfaces.isImplemented(IFocusable,_a19)){
-this._onFocusableBlurred(_a19);
+if(Interfaces.isImplemented(IFocusable,_a28)){
+this._onFocusableBlurred(_a28);
 }
-_a18.consume();
+_a27.consume();
 break;
 }
 }
 };
-FocusBinding.prototype.focusNext=function(_a1b){
-var _a1c=null;
+FocusBinding.prototype.focusNext=function(_a2a){
+var _a2b=null;
 var list=this._getFocusableList();
 if(list.reset().hasEntries()){
-while(_a1c==null&&list.hasNext()){
-var _a1e=list.getNext();
-if(this._cachedFocus&&_a1e==this._cachedFocus.getBinding()){
-_a1c=_a1e;
+while(_a2b==null&&list.hasNext()){
+var _a2d=list.getNext();
+if(this._cachedFocus&&_a2d==this._cachedFocus.getBinding()){
+_a2b=_a2d;
 }
 }
-if(_a1c!=null){
-if(_a1e.isFocused){
-var next=_a1b?list.getPreceding(_a1c):list.getFollowing(_a1c);
+if(_a2b!=null){
+if(_a2d.isFocused){
+var next=_a2a?list.getPreceding(_a2b):list.getFollowing(_a2b);
 if(!next){
-next=_a1b?list.getLast():list.getFirst();
+next=_a2a?list.getLast():list.getFirst();
 }
 next.focus();
 }else{
-_a1c.focus();
+_a2b.focus();
 }
 }else{
 list.getFirst().focus();
@@ -15555,10 +15596,10 @@ FocusBinding.activeInstance=this;
 };
 FocusBinding.prototype._getFocusableList=function(){
 if(!this._isUpToDate){
-var _a20=new FocusCrawler();
+var _a2f=new FocusCrawler();
 var list=new List();
-_a20.mode=FocusCrawler.MODE_INDEX;
-_a20.crawl(this.bindingElement,list);
+_a2f.mode=FocusCrawler.MODE_INDEX;
+_a2f.crawl(this.bindingElement,list);
 this._focusableList=list;
 this._isUpToDate=true;
 }
@@ -15584,27 +15625,27 @@ this.logger.warn("Could not compute focusable list.");
 };
 FocusBinding.prototype._focusPreviouslyFocused=function(){
 if(this._cachedFocus){
-var _a24=this._cachedFocus.getBinding();
-if(_a24&&!_a24.isFocused){
-_a24.focus();
+var _a33=this._cachedFocus.getBinding();
+if(_a33&&!_a33.isFocused){
+_a33.focus();
 }
 }
 };
-FocusBinding.prototype._onFocusableFocused=function(_a25){
-if(_a25!=FocusBinding.focusedBinding){
+FocusBinding.prototype._onFocusableFocused=function(_a34){
+if(_a34!=FocusBinding.focusedBinding){
 if(FocusBinding.focusedBinding!=null){
 if(Binding.exists(FocusBinding.focusedBinding)){
 FocusBinding.focusedBinding.blur();
 }
 }
-FocusBinding.focusedBinding=_a25;
-_a25.setProperty(FocusBinding.MARKER,true);
-this._cachedFocus=FocusBinding.getCachedFocus(_a25);
+FocusBinding.focusedBinding=_a34;
+_a34.setProperty(FocusBinding.MARKER,true);
+this._cachedFocus=FocusBinding.getCachedFocus(_a34);
 }
 };
-FocusBinding.prototype._onFocusableBlurred=function(_a26){
-_a26.deleteProperty(FocusBinding.MARKER);
-if(_a26==FocusBinding.focusedBinding){
+FocusBinding.prototype._onFocusableBlurred=function(_a35){
+_a35.deleteProperty(FocusBinding.MARKER);
+if(_a35==FocusBinding.focusedBinding){
 FocusBinding.focusedBinding=null;
 }
 };
@@ -15639,8 +15680,8 @@ span.appendChild(this.bindingDocument.createTextNode(TabsButtonBinding.CHAR_INDI
 span.className="arrow";
 this.labelBinding.bindingElement.appendChild(span);
 };
-TabsButtonBinding.prototype.show=function(_a28){
-this.bindingElement.style.left=_a28+"px";
+TabsButtonBinding.prototype.show=function(_a37){
+this.bindingElement.style.left=_a37+"px";
 this.setLabel(this.hiddenTabBindings.getLength().toString());
 TabsButtonBinding.superclass.show.call(this);
 };
@@ -15655,18 +15696,18 @@ this.menuItemBindings.clear();
 this.selectedTabBinding=null;
 this.isPopulated=false;
 };
-TabsButtonBinding.prototype.registerHiddenTabBinding=function(_a29){
-this.hiddenTabBindings.add(_a29);
+TabsButtonBinding.prototype.registerHiddenTabBinding=function(_a38){
+this.hiddenTabBindings.add(_a38);
 };
 TabsButtonBinding.prototype.fireCommand=function(){
 if(this.isChecked&&!this.isPopulated){
 this.hiddenTabBindings.reset();
 while(this.hiddenTabBindings.hasNext()){
-var _a2a=this.hiddenTabBindings.getNext();
+var _a39=this.hiddenTabBindings.getNext();
 var item=MenuItemBinding.newInstance(this.popupBinding.bindingDocument);
-item.setLabel(_a2a.getLabel());
-item.setImage(_a2a.getImage());
-item.associatedTabBinding=_a2a;
+item.setLabel(_a39.getLabel());
+item.setImage(_a39.getImage());
+item.associatedTabBinding=_a39;
 var self=this;
 item.oncommand=function(){
 self.selectedTabBinding=this.associatedTabBinding;
@@ -15680,26 +15721,26 @@ this.isPopulated=true;
 this.popupBinding.addActionListener(PopupBinding.ACTION_HIDE,this);
 TabsButtonBinding.superclass.fireCommand.call(this);
 };
-TabsButtonBinding.prototype.handleAction=function(_a2d){
-TabsButtonBinding.superclass.handleAction.call(this,_a2d);
-switch(_a2d.type){
+TabsButtonBinding.prototype.handleAction=function(_a3c){
+TabsButtonBinding.superclass.handleAction.call(this,_a3c);
+switch(_a3c.type){
 case PopupBinding.ACTION_HIDE:
 this.popupBinding.removeActionListener(PopupBinding.ACTION_HIDE,this);
-var _a2e=this.selectedTabBinding;
-if(_a2e){
-this.containingTabBoxBinding.moveToOrdinalPosition(_a2e,0);
-this.containingTabBoxBinding.select(_a2e);
+var _a3d=this.selectedTabBinding;
+if(_a3d){
+this.containingTabBoxBinding.moveToOrdinalPosition(_a3d,0);
+this.containingTabBoxBinding.select(_a3d);
 }
-_a2d.consume();
+_a3c.consume();
 break;
 }
 };
-TabsButtonBinding.newInstance=function(_a2f){
-var _a30=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbarbutton",_a2f);
-_a30.setAttribute("type","checkbox");
-_a30.setAttribute("popup","app.bindingMap.tabsbuttonpopup");
-_a30.className="tabbutton";
-return UserInterface.registerBinding(_a30,TabsButtonBinding);
+TabsButtonBinding.newInstance=function(_a3e){
+var _a3f=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbarbutton",_a3e);
+_a3f.setAttribute("type","checkbox");
+_a3f.setAttribute("popup","app.bindingMap.tabsbuttonpopup");
+_a3f.className="tabbutton";
+return UserInterface.registerBinding(_a3f,TabsButtonBinding);
 };
 TabBoxBinding.prototype=new FlexBoxBinding;
 TabBoxBinding.prototype.constructor=TabBoxBinding;
@@ -15716,8 +15757,8 @@ TabBoxBinding.INVALID_TAB_IMAGE="${icon:error}";
 TabBoxBinding.BALLOON_TAB_IMAGE="${icon:balloon}";
 EventBroadcaster.subscribe(BroadcastMessages.KEY_TAB,{handleBroadcast:function(){
 if(Keyboard.isControlPressed){
-var _a31=TabBoxBinding.currentActiveInstance;
-if(_a31!=null&&Binding.exists(_a31)){
+var _a40=TabBoxBinding.currentActiveInstance;
+if(_a40!=null&&Binding.exists(_a40)){
 }
 }
 }});
@@ -15762,12 +15803,12 @@ TabBoxBinding.superclass.onBindingAttach.call(this);
 TabBoxBinding.currentActiveInstance=this;
 this._tabsElement=this.getTabsElement();
 this._tabPanelsElement=this.getTabPanelsElement();
-var _a32=this.getTabElements().getLength();
-var _a33=this.getTabPanelElements().getLength();
+var _a41=this.getTabElements().getLength();
+var _a42=this.getTabPanelElements().getLength();
 if(!this._tabsElement||!this._tabPanelsElement){
 throw new Error(this.toString()+" DOM subtree invalid.");
 }else{
-if(_a32!=_a33){
+if(_a41!=_a42){
 throw new Error(this.toString()+" DOM subtree invalid.");
 }else{
 if(this.getProperty("type")=="boxed"){
@@ -15792,9 +15833,9 @@ this.addMembers(this.getTabPanelBindings());
 }
 };
 TabBoxBinding.prototype.onBindingInitialize=function(){
-var _a34=this.getTabPanelElements();
-while(_a34.hasNext()){
-this._setupWarningSystem(UserInterface.getBinding(_a34.getNext()));
+var _a43=this.getTabPanelElements();
+while(_a43.hasNext()){
+this._setupWarningSystem(UserInterface.getBinding(_a43.getNext()));
 }
 if(this.isEqualSize){
 this.enforceEqualSize();
@@ -15804,114 +15845,114 @@ this.dispatchAction(TabBoxBinding.ACTION_ATTACHED);
 TabBoxBinding.superclass.onBindingInitialize.call(this);
 };
 TabBoxBinding.prototype.buildDOMContent=function(){
-var _a35=DOMUtil.getOrdinalPosition(this._tabsElement);
-var _a36=DOMUtil.getOrdinalPosition(this._tabPanelsElement);
-var _a37=_a35>_a36?"tabsbelow":"tabsontop";
-this.attachClassName(_a37);
+var _a44=DOMUtil.getOrdinalPosition(this._tabsElement);
+var _a45=DOMUtil.getOrdinalPosition(this._tabPanelsElement);
+var _a46=_a44>_a45?"tabsbelow":"tabsontop";
+this.attachClassName(_a46);
 };
 TabBoxBinding.prototype._TEMPNAME=function(){
 var tabs=this.getTabElements();
-var _a39=this.getTabPanelElements();
-var _a3a=null;
-var _a3b=this.getProperty("selectedindex");
-if(_a3b!=null){
-if(_a3b>tabs.getLength()-1){
+var _a48=this.getTabPanelElements();
+var _a49=null;
+var _a4a=this.getProperty("selectedindex");
+if(_a4a!=null){
+if(_a4a>tabs.getLength()-1){
 throw "Selectedindex out of range";
 }
 }
 if(tabs.hasEntries()){
-var _a3c=0;
+var _a4b=0;
 while(tabs.hasNext()){
 var tab=tabs.getNext();
-var _a3e=_a39.getNext();
-this.registerTabBoxPair(tab,_a3e);
-if(_a3b&&_a3c==_a3b){
+var _a4d=_a48.getNext();
+this.registerTabBoxPair(tab,_a4d);
+if(_a4a&&_a4b==_a4a){
 tab.setAttribute("selected","true");
 }else{
 if(tab.getAttribute("selected")=="true"){
-_a3a=tab;
+_a49=tab;
 }
 }
-_a3c++;
+_a4b++;
 }
-if(!_a3a){
-_a3a=tabs.getFirst();
-_a3a.setAttribute("selected","true");
+if(!_a49){
+_a49=tabs.getFirst();
+_a49.setAttribute("selected","true");
 }
 }
 };
-TabBoxBinding.prototype.enforceEqualSize=function(_a3f){
-var _a40=null;
-var _a41=null;
+TabBoxBinding.prototype.enforceEqualSize=function(_a4e){
+var _a4f=null;
+var _a50=null;
 if(this.isEqualSize){
-var _a42=CSSComputer.getPadding(this._tabPanelsElement);
-var max=0,_a44=this.getTabPanelElements();
-_a44.each(function(_a45){
-max=_a45.offsetHeight>max?_a45.offsetHeight:max;
+var _a51=CSSComputer.getPadding(this._tabPanelsElement);
+var max=0,_a53=this.getTabPanelElements();
+_a53.each(function(_a54){
+max=_a54.offsetHeight>max?_a54.offsetHeight:max;
 });
-_a41=max+_a42.top+_a42.bottom;
-if(_a3f&&this._tabPanelsElement.style.height!=null){
-_a40=this._tabPanelsElement.offsetHeight;
+_a50=max+_a51.top+_a51.bottom;
+if(_a4e&&this._tabPanelsElement.style.height!=null){
+_a4f=this._tabPanelsElement.offsetHeight;
 }
-if(_a40!=null||_a41>_a40){
-this._tabPanelsElement.style.height=_a41+"px";
+if(_a4f!=null||_a50>_a4f){
+this._tabPanelsElement.style.height=_a50+"px";
 }
 }
 };
-TabBoxBinding.prototype._setupWarningSystem=function(_a46){
-_a46._invalidCount=0;
-_a46.addActionListener(Binding.ACTION_INVALID,this);
-_a46.addActionListener(Binding.ACTION_VALID,this);
-_a46.addActionListener(BalloonBinding.ACTION_SNAP,this);
+TabBoxBinding.prototype._setupWarningSystem=function(_a55){
+_a55._invalidCount=0;
+_a55.addActionListener(Binding.ACTION_INVALID,this);
+_a55.addActionListener(Binding.ACTION_VALID,this);
+_a55.addActionListener(BalloonBinding.ACTION_SNAP,this);
 };
-TabBoxBinding.prototype.handleAction=function(_a47){
-TabBoxBinding.superclass.handleAction.call(this,_a47);
-var _a48=_a47.target;
-var _a49=_a47.listener;
-switch(_a47.type){
+TabBoxBinding.prototype.handleAction=function(_a56){
+TabBoxBinding.superclass.handleAction.call(this,_a56);
+var _a57=_a56.target;
+var _a58=_a56.listener;
+switch(_a56.type){
 case Binding.ACTION_ATTACHED:
 break;
 case Binding.ACTION_DETACHED:
-if(_a48.constructor==this._impl_tab){
+if(_a57.constructor==this._impl_tab){
 this.updateType=TabBoxBinding.UPDATE_DETACH;
 this.dispatchAction(TabBoxBinding.ACTION_UPDATED);
-_a47.consume();
+_a56.consume();
 }
 break;
 case PageBinding.ACTION_INITIALIZED:
-if(_a48.isDialogSubPage&&this.isEqualSize){
+if(_a57.isDialogSubPage&&this.isEqualSize){
 this.enforceEqualSize();
 }
 break;
 case Binding.ACTION_INVALID:
-_a49._invalidCount++;
-if(_a49._invalidCount==1){
+_a58._invalidCount++;
+if(_a58._invalidCount==1){
 var self=this;
 setTimeout(function(){
-if(!_a49.isSelected){
-self._showWarning(_a49,true);
+if(!_a58.isSelected){
+self._showWarning(_a58,true);
 }
 },0);
 }
 break;
 case Binding.ACTION_VALID:
-if(_a49._invalidCount>0){
-_a49._invalidCount--;
-if(_a49._invalidCount==0){
-if(_a49.isSelected){
-this._showWarning(_a49,false);
+if(_a58._invalidCount>0){
+_a58._invalidCount--;
+if(_a58._invalidCount==0){
+if(_a58.isSelected){
+this._showWarning(_a58,false);
 }
 }
 }
 break;
 case BalloonBinding.ACTION_SNAP:
-this._showBalloon(_a49,true);
+this._showBalloon(_a58,true);
 break;
 case Binding.ACTION_ACTIVATED:
 case Binding.ACTION_FOCUSED:
-if(_a47._tabboxstamp==null){
+if(_a56._tabboxstamp==null){
 TabBoxBinding.currentActiveInstance=this;
-_a47._tabboxstamp="stamped";
+_a56._tabboxstamp="stamped";
 }
 break;
 }
@@ -15920,21 +15961,21 @@ TabBoxBinding.prototype.handleEvent=function(e){
 TabBoxBinding.superclass.handleEvent.call(this,e);
 switch(e.type){
 case DOMEvents.AFTERUPDATE:
-var _a4c=DOMEvents.getTarget(e);
-if(_a4c==this.bindingDocument.documentElement){
+var _a5b=DOMEvents.getTarget(e);
+if(_a5b==this.bindingDocument.documentElement){
 if(this._hasBastardUpdates){
 this._hasBastardUpdates=false;
 var tabs=this.getTabElements();
-var _a4e=this.getTabPanelElements();
-tabs.each(function(tab,_a50){
+var _a5d=this.getTabPanelElements();
+tabs.each(function(tab,_a5f){
 if(tab.getAttribute(TabBoxBinding.ASSOCIATION_KEY)==null){
-var _a51=_a4e.get(_a50);
-this.registerTabBoxPair(tab,_a51);
+var _a60=_a5d.get(_a5f);
+this.registerTabBoxPair(tab,_a60);
 }
 },this);
-var _a52=this._tabBoxPairs;
-for(var key in _a52){
-var tab=_a52[key].tab;
+var _a61=this._tabBoxPairs;
+for(var key in _a61){
+var tab=_a61[key].tab;
 if(tab.parentNode==null){
 this.unRegisterTabBoxPair(tab);
 }
@@ -15942,14 +15983,14 @@ this.unRegisterTabBoxPair(tab);
 }
 }else{
 if(!this._hasBastardUpdates){
-var name=DOMUtil.getLocalName(_a4c);
-switch(_a4c.__updateType){
+var name=DOMUtil.getLocalName(_a5b);
+switch(_a5b.__updateType){
 case Update.TYPE_INSERT:
 switch(name){
 case this._nodename_tab:
 case this._nodename_tabpanel:
-var _a56=_a4c.parentNode;
-if(_a56==this._tabsElement||_a56==this._tabPanelsElement){
+var _a65=_a5b.parentNode;
+if(_a65==this._tabsElement||_a65==this._tabPanelsElement){
 this._hasBastardUpdates=true;
 }
 break;
@@ -15959,7 +16000,7 @@ case Update.TYPE_REMOVE:
 switch(name){
 case this._nodename_tabs:
 case this._nodename_tabpanels:
-if(_a4c==this._tabsElement||_a4c==this._tabPanelsElement){
+if(_a5b==this._tabsElement||_a5b==this._tabPanelsElement){
 this._hasBastardUpdates=true;
 }
 break;
@@ -15971,146 +16012,146 @@ break;
 break;
 }
 };
-TabBoxBinding.prototype.select=function(arg,_a58){
-var _a59=this.getBindingForArgument(arg);
-if(_a59!=null&&!_a59.isSelected){
+TabBoxBinding.prototype.select=function(arg,_a67){
+var _a68=this.getBindingForArgument(arg);
+if(_a68!=null&&!_a68.isSelected){
 if(this._selectedTabBinding!=null){
 this._selectedTabBinding.unselect();
 this.getTabPanelBinding(this._selectedTabBinding).unselect();
 }
 this.dispatchAction(TabBoxBinding.ACTION_UNSELECTED);
-_a59.select(_a58);
-this.getTabPanelBinding(_a59).select(_a58);
-var _a5a=this.getProperty("selectedindex");
-if(_a5a!=null){
-this.setProperty("selectedindex",DOMUtil.getOrdinalPosition(_a59.bindingElement,true));
+_a68.select(_a67);
+this.getTabPanelBinding(_a68).select(_a67);
+var _a69=this.getProperty("selectedindex");
+if(_a69!=null){
+this.setProperty("selectedindex",DOMUtil.getOrdinalPosition(_a68.bindingElement,true));
 }
-this._selectedTabBinding=_a59;
+this._selectedTabBinding=_a68;
 this.dispatchAction(TabBoxBinding.ACTION_SELECTED);
 this.dispatchAction(FocusBinding.ACTION_UPDATE);
-if(_a59.getImage()==TabBoxBinding.BALLOON_TAB_IMAGE){
-var _a5b=this.getTabPanelBinding(_a59);
-this._showBalloon(_a5b,false);
+if(_a68.getImage()==TabBoxBinding.BALLOON_TAB_IMAGE){
+var _a6a=this.getTabPanelBinding(_a68);
+this._showBalloon(_a6a,false);
 }
 }
 };
-TabBoxBinding.prototype.registerTabBoxPair=function(tab,_a5d){
+TabBoxBinding.prototype.registerTabBoxPair=function(tab,_a6c){
 var key=KeyMaster.getUniqueKey();
 tab.setAttribute(TabBoxBinding.ASSOCIATION_KEY,key);
-_a5d.setAttribute(TabBoxBinding.ASSOCIATION_KEY,key);
-this._tabBoxPairs[key]={tab:tab,tabPanel:_a5d};
+_a6c.setAttribute(TabBoxBinding.ASSOCIATION_KEY,key);
+this._tabBoxPairs[key]={tab:tab,tabPanel:_a6c};
 };
 TabBoxBinding.prototype.unRegisterTabBoxPair=function(tab){
 var key=tab.getAttribute(TabBoxBinding.ASSOCIATION_KEY);
 delete this._tabBoxPairs[key];
 };
-TabBoxBinding.prototype.getTabPanelBinding=function(_a61){
-var _a62=null;
+TabBoxBinding.prototype.getTabPanelBinding=function(_a70){
+var _a71=null;
 try{
-var key=_a61.getProperty(TabBoxBinding.ASSOCIATION_KEY);
-var _a64=this._tabBoxPairs[key].tabPanel;
-_a62=UserInterface.getBinding(_a64);
+var key=_a70.getProperty(TabBoxBinding.ASSOCIATION_KEY);
+var _a73=this._tabBoxPairs[key].tabPanel;
+_a71=UserInterface.getBinding(_a73);
 }
 catch(exception){
 this.logger.error(exception);
 SystemDebug.stack(arguments);
 }
-return _a62;
+return _a71;
 };
-TabBoxBinding.prototype.getTabBinding=function(_a65){
-var key=_a65.getProperty(TabBoxBinding.ASSOCIATION_KEY);
-var _a67=this._tabBoxPairs[key].tab;
-return UserInterface.getBinding(_a67);
+TabBoxBinding.prototype.getTabBinding=function(_a74){
+var key=_a74.getProperty(TabBoxBinding.ASSOCIATION_KEY);
+var _a76=this._tabBoxPairs[key].tab;
+return UserInterface.getBinding(_a76);
 };
 TabBoxBinding.prototype.summonTabBinding=function(){
 return TabBinding.newInstance(this.bindingDocument);
 };
 TabBoxBinding.prototype.summonTabPanelBinding=function(){
-var _a68=this._impl_tabpanel.newInstance(this.bindingDocument);
-this._setupWarningSystem(_a68);
-return _a68;
+var _a77=this._impl_tabpanel.newInstance(this.bindingDocument);
+this._setupWarningSystem(_a77);
+return _a77;
 };
-TabBoxBinding.prototype.appendTabByBindings=function(_a69,_a6a){
-var _a6b=_a69.bindingElement;
-_a69.setProperty("selected",true);
-var _a6c=this.summonTabPanelBinding();
-var _a6d=_a6c.bindingElement;
-if(_a6a){
-_a6d.appendChild(_a6a instanceof Binding?_a6a.bindingElement:_a6a);
+TabBoxBinding.prototype.appendTabByBindings=function(_a78,_a79){
+var _a7a=_a78.bindingElement;
+_a78.setProperty("selected",true);
+var _a7b=this.summonTabPanelBinding();
+var _a7c=_a7b.bindingElement;
+if(_a79){
+_a7c.appendChild(_a79 instanceof Binding?_a79.bindingElement:_a79);
 }
-this.registerTabBoxPair(_a6b,_a6d);
-UserInterface.getBinding(this._tabsElement).add(_a69);
-this._tabPanelsElement.appendChild(_a6d);
-_a69.attach();
-UserInterface.getBinding(_a6d).attachRecursive();
+this.registerTabBoxPair(_a7a,_a7c);
+UserInterface.getBinding(this._tabsElement).add(_a78);
+this._tabPanelsElement.appendChild(_a7c);
+_a78.attach();
+UserInterface.getBinding(_a7c).attachRecursive();
 this.updateType=TabBoxBinding.UPDATE_ATTACH;
 this.dispatchAction(TabBoxBinding.ACTION_UPDATED);
-return _a69;
+return _a78;
 };
-TabBoxBinding.prototype.importTabBinding=function(_a6e){
-var that=_a6e.containingTabBoxBinding;
-var _a70=that.getTabPanelBinding(_a6e);
-var _a71=_a70.getBindingElement();
-var _a72=_a6e.getBindingElement();
-that.dismissTabBinding(_a6e);
-this._tabsElement.appendChild(_a72);
-this._tabPanelsElement.appendChild(_a71);
-this.registerTabBoxPair(_a72,_a71);
-_a6e.containingTabBoxBinding=this;
-this.select(_a6e);
+TabBoxBinding.prototype.importTabBinding=function(_a7d){
+var that=_a7d.containingTabBoxBinding;
+var _a7f=that.getTabPanelBinding(_a7d);
+var _a80=_a7f.getBindingElement();
+var _a81=_a7d.getBindingElement();
+that.dismissTabBinding(_a7d);
+this._tabsElement.appendChild(_a81);
+this._tabPanelsElement.appendChild(_a80);
+this.registerTabBoxPair(_a81,_a80);
+_a7d.containingTabBoxBinding=this;
+this.select(_a7d);
 this.dispatchAction(Binding.ACTION_ACTIVATED);
 this.dispatchAction(TabBoxBinding.ACTION_UPDATED);
 };
-TabBoxBinding.prototype.removeTab=function(_a73){
-var _a74=null;
-if(_a73.isSelected){
-_a74=this.getBestTab(_a73);
+TabBoxBinding.prototype.removeTab=function(_a82){
+var _a83=null;
+if(_a82.isSelected){
+_a83=this.getBestTab(_a82);
 this._selectedTabBinding=null;
 }
-var _a75=this.getTabPanelBinding(_a73);
-this.unRegisterTabBoxPair(_a73.bindingElement);
-_a73.dispose();
-_a75.dispose();
-if(_a74!=null){
-this.select(_a74);
+var _a84=this.getTabPanelBinding(_a82);
+this.unRegisterTabBoxPair(_a82.bindingElement);
+_a82.dispose();
+_a84.dispose();
+if(_a83!=null){
+this.select(_a83);
 }
 this.updateType=TabBoxBinding.UPDATE_DETACH;
 this.dispatchAction(TabBoxBinding.ACTION_UPDATED);
 };
-TabBoxBinding.prototype.dismissTabBinding=function(_a76){
-if(_a76.isSelected){
-this.selectBestTab(_a76);
+TabBoxBinding.prototype.dismissTabBinding=function(_a85){
+if(_a85.isSelected){
+this.selectBestTab(_a85);
 }
 };
-TabBoxBinding.prototype.selectBestTab=function(_a77){
-var _a78=this.getBestTab(_a77);
-if(_a78){
-this.select(_a78);
+TabBoxBinding.prototype.selectBestTab=function(_a86){
+var _a87=this.getBestTab(_a86);
+if(_a87){
+this.select(_a87);
 }else{
 this._selectedTabBinding=null;
 }
 };
-TabBoxBinding.prototype.getBestTab=function(_a79){
-var _a7a=null;
-var _a7b=_a79.getOrdinalPosition(true);
-var _a7c=this.getTabBindings();
-var _a7d=_a7c.getLength();
-var _a7e=_a7d-1;
-if(_a7d==1){
-_a7a=null;
+TabBoxBinding.prototype.getBestTab=function(_a88){
+var _a89=null;
+var _a8a=_a88.getOrdinalPosition(true);
+var _a8b=this.getTabBindings();
+var _a8c=_a8b.getLength();
+var _a8d=_a8c-1;
+if(_a8c==1){
+_a89=null;
 }else{
-if(_a7b==_a7e){
-_a7a=_a7c.get(_a7b-1);
+if(_a8a==_a8d){
+_a89=_a8b.get(_a8a-1);
 }else{
-_a7a=_a7c.get(_a7b+1);
+_a89=_a8b.get(_a8a+1);
 }
 }
-return _a7a;
+return _a89;
 };
-TabBoxBinding.prototype.moveToOrdinalPosition=function(_a7f,_a80){
-var _a81=this.bindingDocument.getElementById(_a7f.bindingElement.id);
-var tab=this.getTabElements().get(_a80);
-this._tabsElement.insertBefore(_a81,tab);
+TabBoxBinding.prototype.moveToOrdinalPosition=function(_a8e,_a8f){
+var _a90=this.bindingDocument.getElementById(_a8e.bindingElement.id);
+var tab=this.getTabElements().get(_a8f);
+this._tabsElement.insertBefore(_a90,tab);
 this.updateType=TabBoxBinding.UPDATE_ORDINAL;
 this.dispatchAction(TabBoxBinding.ACTION_UPDATED);
 };
@@ -16121,27 +16162,27 @@ TabBoxBinding.prototype.getTabPanelsElement=function(){
 return DOMUtil.getElementsByTagName(this.bindingElement,this._nodename_tabpanels).item(0);
 };
 TabBoxBinding.prototype.getTabElements=function(){
-var _a83=this._nodename_tab;
-var _a84=new List(this._tabsElement.childNodes);
-var _a85=new List();
-while(_a84.hasNext()){
-var _a86=_a84.getNext();
-if(_a86.nodeType==Node.ELEMENT_NODE&&DOMUtil.getLocalName(_a86)==_a83){
-_a85.add(_a86);
+var _a92=this._nodename_tab;
+var _a93=new List(this._tabsElement.childNodes);
+var _a94=new List();
+while(_a93.hasNext()){
+var _a95=_a93.getNext();
+if(_a95.nodeType==Node.ELEMENT_NODE&&DOMUtil.getLocalName(_a95)==_a92){
+_a94.add(_a95);
 }
 }
-return _a85;
+return _a94;
 };
 TabBoxBinding.prototype.getTabPanelElements=function(){
-var _a87=this._nodename_tabpanel;
-var _a88=new List(this._tabPanelsElement.childNodes);
-var _a89=new List();
-_a88.each(function(_a8a){
-if(_a8a.nodeType==Node.ELEMENT_NODE&&DOMUtil.getLocalName(_a8a)==_a87){
-_a89.add(_a8a);
+var _a96=this._nodename_tabpanel;
+var _a97=new List(this._tabPanelsElement.childNodes);
+var _a98=new List();
+_a97.each(function(_a99){
+if(_a99.nodeType==Node.ELEMENT_NODE&&DOMUtil.getLocalName(_a99)==_a96){
+_a98.add(_a99);
 }
 });
-return _a89;
+return _a98;
 };
 TabBoxBinding.prototype.getTabsBinding=function(){
 return this.getChildBindingByLocalName(this._nodename_tabs);
@@ -16150,83 +16191,83 @@ TabBoxBinding.prototype.getTabPanelsBinding=function(){
 return this.getChildBindingByLocalName(this._nodename_tabpanels);
 };
 TabBoxBinding.prototype.getTabBindings=function(){
-var _a8b=new List();
-var _a8c=this.getTabElements();
-_a8c.each(function(_a8d){
-_a8b.add(UserInterface.getBinding(_a8d));
+var _a9a=new List();
+var _a9b=this.getTabElements();
+_a9b.each(function(_a9c){
+_a9a.add(UserInterface.getBinding(_a9c));
 });
-return _a8b;
+return _a9a;
 };
 TabBoxBinding.prototype.getTabPanelBindings=function(){
-var _a8e=new List();
-this.getTabPanelElements().each(function(_a8f){
-_a8e.add(UserInterface.getBinding(_a8f));
+var _a9d=new List();
+this.getTabPanelElements().each(function(_a9e){
+_a9d.add(UserInterface.getBinding(_a9e));
 });
-return _a8e;
+return _a9d;
 };
 TabBoxBinding.prototype.getSelectedTabBinding=function(){
 return this._selectedTabBinding;
 };
 TabBoxBinding.prototype.getSelectedTabPanelBinding=function(){
-var _a90=null;
+var _a9f=null;
 if(this._selectedTabBinding){
-_a90=this.getTabPanelBinding(this._selectedTabBinding);
+_a9f=this.getTabPanelBinding(this._selectedTabBinding);
 }
-return _a90;
+return _a9f;
 };
-TabBoxBinding.prototype._showWarning=function(_a91,_a92){
-var _a93=this.getTabBinding(_a91);
-if(_a92){
-if(_a93.labelBinding.hasImage){
-_a93._backupImage=_a93.getImage();
+TabBoxBinding.prototype._showWarning=function(_aa0,_aa1){
+var _aa2=this.getTabBinding(_aa0);
+if(_aa1){
+if(_aa2.labelBinding.hasImage){
+_aa2._backupImage=_aa2.getImage();
 }
-_a93.setImage(TabBoxBinding.INVALID_TAB_IMAGE);
+_aa2.setImage(TabBoxBinding.INVALID_TAB_IMAGE);
 }else{
-if(_a93._backupImage){
-_a93.setImage(_a93._backupImage);
+if(_aa2._backupImage){
+_aa2.setImage(_aa2._backupImage);
 }else{
-_a93.setImage(false);
-}
-}
-};
-TabBoxBinding.prototype._showBalloon=function(_a94,_a95){
-var _a96=this.getTabBinding(_a94);
-if((_a95&&!_a96.isSelected)||!_a95){
-if(_a96.getImage()!=TabBoxBinding.INVALID_TAB_IMAGE){
-if(_a95){
-if(_a96.labelBinding.hasImage){
-_a96._backupImage=_a96.getImage();
-}
-_a96.setImage(TabBoxBinding.BALLOON_TAB_IMAGE);
-}else{
-if(_a96._backupImage!=null){
-_a96.setImage(_a96._backupImage);
-}else{
-_a96.setImage(false);
-}
-}
+_aa2.setImage(false);
 }
 }
 };
-TabBoxBinding.prototype.advanceSelection=function(_a97){
+TabBoxBinding.prototype._showBalloon=function(_aa3,_aa4){
+var _aa5=this.getTabBinding(_aa3);
+if((_aa4&&!_aa5.isSelected)||!_aa4){
+if(_aa5.getImage()!=TabBoxBinding.INVALID_TAB_IMAGE){
+if(_aa4){
+if(_aa5.labelBinding.hasImage){
+_aa5._backupImage=_aa5.getImage();
+}
+_aa5.setImage(TabBoxBinding.BALLOON_TAB_IMAGE);
+}else{
+if(_aa5._backupImage!=null){
+_aa5.setImage(_aa5._backupImage);
+}else{
+_aa5.setImage(false);
+}
+}
+}
+}
+};
+TabBoxBinding.prototype.advanceSelection=function(_aa6){
 var tab=this.getSelectedTabBinding();
 var tabs=this.getTabBindings();
-var _a9a=tab.getOrdinalPosition(true);
+var _aa9=tab.getOrdinalPosition(true);
 var next=null;
-var _a9c=new List();
+var _aab=new List();
 tabs.each(function(t){
 if(t.isVisible){
-_a9c.add(t);
+_aab.add(t);
 }
 });
-if(_a9c.getLength()>1){
-if(_a9a==0&&!_a97){
-next=_a9c.getLast();
+if(_aab.getLength()>1){
+if(_aa9==0&&!_aa6){
+next=_aab.getLast();
 }else{
-if(_a9a==_a9c.getLength()-1&&_a97){
-next=_a9c.getFirst();
+if(_aa9==_aab.getLength()-1&&_aa6){
+next=_aab.getFirst();
 }else{
-if(_a97){
+if(_aa6){
 next=tab.getNextBindingByLocalName(this._nodename_tab);
 }else{
 next=tab.getPreviousBindingByLocalName(this._nodename_tab);
@@ -16272,15 +16313,15 @@ div.className="tabliner";
 this.bindingElement.insertBefore(div,this.bindingElement.firstChild);
 this.shadowTree.tabManager=this.bindingDocument.createElement("div");
 this.shadowTree.tabManager.className="tabmanager";
-var _a9f=this.constructor.TABBUTTON_IMPLEMENTATION;
-this.tabsButtonBinding=_a9f.newInstance(this.bindingDocument);
+var _aae=this.constructor.TABBUTTON_IMPLEMENTATION;
+this.tabsButtonBinding=_aae.newInstance(this.bindingDocument);
 this.shadowTree.tabsButton=this.tabsButtonBinding;
 this.add(this.tabsButtonBinding);
 this.tabsButtonBinding.attach();
 };
-TabsBinding.prototype.handleAction=function(_aa0){
-TabsBinding.superclass.handleAction.call(this,_aa0);
-switch(_aa0.type){
+TabsBinding.prototype.handleAction=function(_aaf){
+TabsBinding.superclass.handleAction.call(this,_aaf);
+switch(_aaf.type){
 case TabBoxBinding.ACTION_UPDATED:
 if(!this.isManaging){
 var self=this;
@@ -16297,74 +16338,74 @@ if(this.isAttached==true){
 var self=this;
 function manage(){
 if(Binding.exists(self)==true){
-var _aa3=self.bindingElement.offsetWidth;
-if(_aa3!=self._cachedOffsetWidth){
+var _ab2=self.bindingElement.offsetWidth;
+if(_ab2!=self._cachedOffsetWidth){
 self.manage();
 }
-self._cachedOffsetWidth=_aa3;
+self._cachedOffsetWidth=_ab2;
 }
 }
 setTimeout(manage,0);
 }
 };
-TabsBinding.prototype.add=function(_aa4){
-if(_aa4 instanceof TabBinding){
+TabsBinding.prototype.add=function(_ab3){
+if(_ab3 instanceof TabBinding){
 if(this.tabsButtonBinding&&this.tabsButtonBinding.isVisible){
 this.tabsButtonBinding.hide();
 }
 }
-return TabsBinding.superclass.add.call(this,_aa4);
+return TabsBinding.superclass.add.call(this,_ab3);
 };
 TabsBinding.prototype.manage=function(){
 if(Binding.exists(this)==true&&this.isVisible){
 this.isManaging=true;
-var _aa5=false;
-var _aa6,tab,tabs=this.containingTabBoxBinding.getTabElements();
-var _aa9=this.constructor.TABBUTTON_IMPLEMENTATION;
-var _aaa=this.bindingElement.offsetWidth-_aa9.RESERVED_SPACE;
-var _aab=null;
-var sum=0,_aad=0;
-var _aae=true;
+var _ab4=false;
+var _ab5,tab,tabs=this.containingTabBoxBinding.getTabElements();
+var _ab8=this.constructor.TABBUTTON_IMPLEMENTATION;
+var _ab9=this.bindingElement.offsetWidth-_ab8.RESERVED_SPACE;
+var _aba=null;
+var sum=0,_abc=0;
+var _abd=true;
 if(tabs.hasEntries()){
 this.tabsButtonBinding.reset();
-while(tabs.hasNext()&&_aae){
+while(tabs.hasNext()&&_abd){
 tab=tabs.getNext();
-_aa6=UserInterface.getBinding(tab);
-if(!_aab){
-_aab=_aa6;
+_ab5=UserInterface.getBinding(tab);
+if(!_aba){
+_aba=_ab5;
 }
 sum+=tab.offsetWidth;
-if(sum>=_aaa){
-_aa5=true;
-if(_aa6.isSelected){
-if(!DOMUtil.isFirstElement(_aa6.bindingElement,true)){
+if(sum>=_ab9){
+_ab4=true;
+if(_ab5.isSelected){
+if(!DOMUtil.isFirstElement(_ab5.bindingElement,true)){
 this.isManaging=false;
-if(_aab){
-_aab.hide();
+if(_aba){
+_aba.hide();
 if(this.tabsButtonBinding.isVisible){
 this.tabsButtonBinding.hide();
 }
 }
-this.containingTabBoxBinding.moveToOrdinalPosition(_aa6,_aad-1);
-_aae=false;
+this.containingTabBoxBinding.moveToOrdinalPosition(_ab5,_abc-1);
+_abd=false;
 }
 }else{
-_aa6.hide();
-this.tabsButtonBinding.registerHiddenTabBinding(_aa6);
+_ab5.hide();
+this.tabsButtonBinding.registerHiddenTabBinding(_ab5);
 }
 }else{
-_aa6.show();
-_aab=_aa6;
-_aad++;
+_ab5.show();
+_aba=_ab5;
+_abc++;
 }
 }
-if(_aae){
-if(_aa5&&this.tabsButtonBinding.hiddenTabBindings.hasEntries()){
-var _aaf=_aab.getBindingElement();
-var _ab0=_aaf.offsetLeft+_aaf.offsetWidth;
-var _ab1=this.tabsButtonBinding;
+if(_abd){
+if(_ab4&&this.tabsButtonBinding.hiddenTabBindings.hasEntries()){
+var _abe=_aba.getBindingElement();
+var _abf=_abe.offsetLeft+_abe.offsetWidth;
+var _ac0=this.tabsButtonBinding;
 setTimeout(function(){
-_ab1.show(_ab0+4);
+_ac0.show(_abf+4);
 },50);
 }else{
 this.tabsButtonBinding.hide();
@@ -16393,13 +16434,13 @@ TabBinding.prototype.toString=function(){
 return "[TabBinding]";
 };
 TabBinding.prototype.serialize=function(){
-var _ab2=TabBinding.superclass.serialize.call(this);
-if(_ab2){
-_ab2.label=this.getLabel();
-_ab2.image=this.getImage();
-_ab2.tooltip=this.getToolTip();
+var _ac1=TabBinding.superclass.serialize.call(this);
+if(_ac1){
+_ac1.label=this.getLabel();
+_ac1.image=this.getImage();
+_ac1.tooltip=this.getToolTip();
 }
-return _ab2;
+return _ac1;
 };
 TabBinding.prototype.onBindingAttach=function(){
 TabBinding.superclass.onBindingAttach.call(this);
@@ -16414,22 +16455,22 @@ this.containingTabBoxBinding.select(this);
 }
 };
 TabBinding.prototype.buildDOMContent=function(){
-var _ab3=this.bindingElement.getAttribute("image");
-var _ab4=this.bindingElement.getAttribute("label");
-var _ab5=this.bindingElement.getAttribute("tooltip");
+var _ac2=this.bindingElement.getAttribute("image");
+var _ac3=this.bindingElement.getAttribute("label");
+var _ac4=this.bindingElement.getAttribute("tooltip");
 this.bindingElement.className="default";
 this.labelBinding=LabelBinding.newInstance(this.bindingDocument);
 this.shadowTree.labelBinding=this.labelBinding;
 this.labelBinding.attachClassName("tablabel");
 this.add(this.labelBinding);
-if(_ab4){
-this.setLabel(_ab4);
+if(_ac3){
+this.setLabel(_ac3);
 }
-if(_ab3){
-this.setImage(_ab3);
+if(_ac2){
+this.setImage(_ac2);
 }
-if(_ab5){
-this.setToolTip(_ab5);
+if(_ac4){
+this.setToolTip(_ac4);
 }
 };
 TabBinding.prototype.setImage=function(url){
@@ -16441,22 +16482,22 @@ this.labelBinding.setImage(url);
 TabBinding.prototype.getImage=function(){
 return this.getProperty("image");
 };
-TabBinding.prototype.setLabel=function(_ab7){
-if(_ab7!=null){
-this.setProperty("label",_ab7);
+TabBinding.prototype.setLabel=function(_ac6){
+if(_ac6!=null){
+this.setProperty("label",_ac6);
 if(this.isAttached){
-this.labelBinding.setLabel(_ab7);
+this.labelBinding.setLabel(_ac6);
 }
 }
 };
 TabBinding.prototype.getLabel=function(){
 return this.getProperty("label");
 };
-TabBinding.prototype.setToolTip=function(_ab8){
-if(_ab8){
-this.setProperty("tooltip",_ab8);
+TabBinding.prototype.setToolTip=function(_ac7){
+if(_ac7){
+this.setProperty("tooltip",_ac7);
 if(this.isAttached){
-this.labelBinding.setToolTip(_ab8);
+this.labelBinding.setToolTip(_ac7);
 }
 }
 };
@@ -16471,10 +16512,10 @@ this.addEventListener(DOMEvents.MOUSELEAVE);
 TabBinding.prototype.handleEvent=function(e){
 TabBinding.superclass.handleEvent.call(this,e);
 if(!this.isSelected){
-var _aba=false;
+var _ac9=false;
 if(Client.isMozilla==true){
 }
-if(!_aba){
+if(!_ac9){
 switch(e.type){
 case DOMEvents.MOUSEENTER:
 case DOMEvents.MOUSEOVER:
@@ -16497,7 +16538,7 @@ break;
 }
 }
 };
-TabBinding.prototype.select=function(_abb){
+TabBinding.prototype.select=function(_aca){
 this.show();
 this.isSelected=true;
 this.setProperty("selected",true);
@@ -16522,9 +16563,9 @@ this.bindingElement.style.left=this.defaultElementLeft;
 this.isVisible=true;
 }
 };
-TabBinding.newInstance=function(_abc){
-var _abd=DOMUtil.createElementNS(Constants.NS_UI,"ui:tab",_abc);
-return UserInterface.registerBinding(_abd,TabBinding);
+TabBinding.newInstance=function(_acb){
+var _acc=DOMUtil.createElementNS(Constants.NS_UI,"ui:tab",_acb);
+return UserInterface.registerBinding(_acc,TabBinding);
 };
 TabPanelsBinding.prototype=new FlexBoxBinding;
 TabPanelsBinding.prototype.constructor=TabPanelsBinding;
@@ -16542,14 +16583,14 @@ TabPanelsBinding.superclass.onBindingRegister.call(this);
 this._lastKnownDimension=new Dimension(0,0);
 };
 TabPanelsBinding.prototype.hasDimensionsChanged=function(){
-var _abe=false;
+var _acd=false;
 var dim1=this.boxObject.getDimension();
 var dim2=this._lastKnownDimension;
 if(dim2==null||!Dimension.isEqual(dim1,dim2)){
-_abe=true;
+_acd=true;
 this._lastKnownDimension=dim1;
 }
-return _abe;
+return _acd;
 };
 TabPanelsBinding.prototype.onBindingAttach=function(){
 TabPanelsBinding.superclass.onBindingAttach.call(this);
@@ -16575,7 +16616,7 @@ TabPanelBinding.superclass.onBindingAttach.call(this);
 this.dispatchAction(Binding.ACTION_ATTACHED);
 this.addActionListener(BalloonBinding.ACTION_INITIALIZE);
 };
-TabPanelBinding.prototype.select=function(_ac1){
+TabPanelBinding.prototype.select=function(_ad0){
 if(!this.isSelected){
 if(this.isLazy){
 this.wakeUp("select");
@@ -16584,7 +16625,7 @@ this.isSelected=true;
 this.isVisible=true;
 this.bindingElement.style.position="static";
 this._invokeManagedRecursiveFlex();
-if(_ac1!=true){
+if(_ad0!=true){
 this.dispatchAction(FocusBinding.ACTION_FOCUS);
 }
 }
@@ -16601,19 +16642,19 @@ this.bindingElement.style.position="absolute";
 TabPanelBinding.prototype._invokeManagedRecursiveFlex=function(){
 this.reflex(true);
 };
-TabPanelBinding.prototype.handleAction=function(_ac2){
-TabPanelBinding.superclass.handleAction.call(this,_ac2);
-var _ac3=_ac2.target;
-switch(_ac2.type){
+TabPanelBinding.prototype.handleAction=function(_ad1){
+TabPanelBinding.superclass.handleAction.call(this,_ad1);
+var _ad2=_ad1.target;
+switch(_ad1.type){
 case BalloonBinding.ACTION_INITIALIZE:
-_ac2.consume();
+_ad1.consume();
 break;
 }
 };
-TabPanelBinding.newInstance=function(_ac4){
-var _ac5=DOMUtil.createElementNS(Constants.NS_UI,"ui:tabpanel",_ac4);
-UserInterface.registerBinding(_ac5,TabPanelBinding);
-return UserInterface.getBinding(_ac5);
+TabPanelBinding.newInstance=function(_ad3){
+var _ad4=DOMUtil.createElementNS(Constants.NS_UI,"ui:tabpanel",_ad3);
+UserInterface.registerBinding(_ad4,TabPanelBinding);
+return UserInterface.getBinding(_ad4);
 };
 SplitBoxBinding.prototype=new FlexBoxBinding;
 SplitBoxBinding.prototype.constructor=SplitBoxBinding;
@@ -16631,12 +16672,12 @@ SplitBoxBinding.prototype.toString=function(){
 return "[SplitBoxBinding]";
 };
 SplitBoxBinding.prototype.serialize=function(){
-var _ac6=SplitBoxBinding.superclass.serialize.call(this);
-if(_ac6){
-_ac6.orient=this.getOrient();
-_ac6.layout=this.getLayout();
+var _ad5=SplitBoxBinding.superclass.serialize.call(this);
+if(_ad5){
+_ad5.orient=this.getOrient();
+_ad5.layout=this.getLayout();
 }
-return _ac6;
+return _ad5;
 };
 SplitBoxBinding.prototype.onBindingAttach=function(){
 SplitBoxBinding.superclass.onBindingAttach.call(this);
@@ -16648,49 +16689,49 @@ this._initializeOrient();
 this._initializeSplitters();
 };
 SplitBoxBinding.prototype._initializeLayout=function(){
-var _ac7=this.getSplitPanelElements();
-if(_ac7.hasEntries()){
-var _ac8=new List(this.getLayout().split(":"));
-if(_ac8.getLength()!=_ac7.getLength()){
+var _ad6=this.getSplitPanelElements();
+if(_ad6.hasEntries()){
+var _ad7=new List(this.getLayout().split(":"));
+if(_ad7.getLength()!=_ad6.getLength()){
 throw new Error(this+" DOM subree invalid");
 }else{
-_ac7.each(function(_ac9){
-_ac9.setAttribute("ratio",_ac8.getNext());
+_ad6.each(function(_ad8){
+_ad8.setAttribute("ratio",_ad7.getNext());
 });
 }
 }
 this.isLayoutInitialized=true;
 };
 SplitBoxBinding.prototype._initializeOrient=function(){
-var _aca=this.getProperty("orient");
-if(_aca){
-this._orient=_aca;
+var _ad9=this.getProperty("orient");
+if(_ad9){
+this._orient=_ad9;
 }
 this.attachClassName(this._orient);
 };
 SplitBoxBinding.prototype._initializeSplitters=function(){
-var _acb=this.getSplitterBindings();
-while(_acb.hasNext()){
-var _acc=_acb.getNext();
-if(_acc&&_acc.getProperty("collapsed")==true){
-_acc.collapse();
+var _ada=this.getSplitterBindings();
+while(_ada.hasNext()){
+var _adb=_ada.getNext();
+if(_adb&&_adb.getProperty("collapsed")==true){
+_adb.collapse();
 }
 }
 };
-SplitBoxBinding.prototype.handleAction=function(_acd){
-SplitBoxBinding.superclass.handleAction.call(this,_acd);
-switch(_acd.type){
+SplitBoxBinding.prototype.handleAction=function(_adc){
+SplitBoxBinding.superclass.handleAction.call(this,_adc);
+switch(_adc.type){
 case SplitterBinding.ACTION_DRAGGED:
 this.refreshLayout();
-_acd.consume();
+_adc.consume();
 break;
 case SplitterBinding.ACTION_COLLAPSE:
-this.collapse(_acd.target);
-_acd.consume();
+this.collapse(_adc.target);
+_adc.consume();
 break;
 case SplitterBinding.ACTION_UNCOLLAPSE:
-this.unCollapse(_acd.target);
-_acd.consume();
+this.unCollapse(_adc.target);
+_adc.consume();
 break;
 }
 };
@@ -16700,132 +16741,132 @@ if(this.isAttached==true){
 this.invokeLayout(true);
 }
 };
-SplitBoxBinding.prototype.collapse=function(_ace){
-this._getSplitPanelBindingForSplitter(_ace).collapse();
+SplitBoxBinding.prototype.collapse=function(_add){
+this._getSplitPanelBindingForSplitter(_add).collapse();
 this.invokeLayout();
 };
-SplitBoxBinding.prototype.unCollapse=function(_acf){
-this._getSplitPanelBindingForSplitter(_acf).unCollapse();
+SplitBoxBinding.prototype.unCollapse=function(_ade){
+this._getSplitPanelBindingForSplitter(_ade).unCollapse();
 this.invokeLayout();
 };
-SplitBoxBinding.prototype._getSplitPanelBindingForSplitter=function(_ad0){
-var _ad1=DOMUtil.getOrdinalPosition(_ad0.bindingElement,true);
-var _ad2,_ad3=this.getSplitPanelElements();
-switch(_ad0.getCollapseDirection()){
+SplitBoxBinding.prototype._getSplitPanelBindingForSplitter=function(_adf){
+var _ae0=DOMUtil.getOrdinalPosition(_adf.bindingElement,true);
+var _ae1,_ae2=this.getSplitPanelElements();
+switch(_adf.getCollapseDirection()){
 case SplitterBinding.COLLAPSE_BEFORE:
-_ad2=_ad3.get(_ad1);
+_ae1=_ae2.get(_ae0);
 break;
 case SplitterBinding.COLLAPSE_AFTER:
-_ad2=_ad3.get(_ad1+1);
+_ae1=_ae2.get(_ae0+1);
 break;
 }
-return UserInterface.getBinding(_ad2);
+return UserInterface.getBinding(_ae1);
 };
-SplitBoxBinding.prototype.invokeLayout=function(_ad4){
-var _ad5=this.isHorizontalOrient();
-var _ad6=this.getSplitPanelBindings();
-var _ad7=this.getSplitterBindings();
-var _ad8=new List();
-var _ad9,sum=0;
-var _adb=0;
-_ad6.each(function(_adc){
-if(_adc.isFixed==true){
-if(!_ad6.hasNext()){
-_adb+=_adc.getFix();
+SplitBoxBinding.prototype.invokeLayout=function(_ae3){
+var _ae4=this.isHorizontalOrient();
+var _ae5=this.getSplitPanelBindings();
+var _ae6=this.getSplitterBindings();
+var _ae7=new List();
+var _ae8,sum=0;
+var _aea=0;
+_ae5.each(function(_aeb){
+if(_aeb.isFixed==true){
+if(!_ae5.hasNext()){
+_aea+=_aeb.getFix();
 }
-_ad8.add(0);
+_ae7.add(0);
 sum+=0;
 }else{
-_ad9=_adc.getRatio();
-_ad8.add(_ad9);
-sum+=_ad9;
+_ae8=_aeb.getRatio();
+_ae7.add(_ae8);
+sum+=_ae8;
 }
 });
 if(sum==0){
 this.logger.warn("Division by zero was hacked");
 sum=1;
 }
-if(_ad8.getLength()!=_ad6.getLength()){
+if(_ae7.getLength()!=_ae5.getLength()){
 throw new Error(this+" Invalid property (ratio)");
 }else{
-var _add=_ad5?this.getWidth():this.getHeight();
-_add-=_adb;
-_ad7.each(function(_ade){
-if(_ade.isVisible){
-_add-=SplitterBinding.DIMENSION;
+var _aec=_ae4?this.getWidth():this.getHeight();
+_aec-=_aea;
+_ae6.each(function(_aed){
+if(_aed.isVisible){
+_aec-=SplitterBinding.DIMENSION;
 }
 });
-var unit=_add/sum;
-var _ae0=0;
+var unit=_aec/sum;
+var _aef=0;
 var self=this;
-_ad6.each(function(_ae2){
+_ae5.each(function(_af1){
 var span=0;
-var _ae4=_ad8.getNext();
-if(_ae2.isFixed){
-span=_ae2.getFix();
+var _af3=_ae7.getNext();
+if(_af1.isFixed){
+span=_af1.getFix();
 }else{
-span=Math.round(unit*_ae4);
+span=Math.round(unit*_af3);
 if(isNaN(span)){
 alert("isNaN ( span ) ["+this.getProperty("layout")+"]");
 }
 }
-_ae0+=span;
-while(_ae0>_add){
-_ae0--;
+_aef+=span;
+while(_aef>_aec){
+_aef--;
 span--;
 }
-if(!_ae2.isFixed){
-if(_ad5){
-_ae2.setWidth(span);
+if(!_af1.isFixed){
+if(_ae4){
+_af1.setWidth(span);
 }else{
-_ae2.setHeight(span);
+_af1.setHeight(span);
 }
 }
 });
 }
-if(_ad4!=true){
+if(_ae3!=true){
 this.reflex();
 }
 if(this._persist&&this._persist.layout){
-var _ae5=this.getLayout();
-if(_ae5){
-this.setProperty("layout",_ae5);
+var _af4=this.getLayout();
+if(_af4){
+this.setProperty("layout",_af4);
 }
 }
 };
 SplitBoxBinding.prototype.computeLayout=function(){
-var _ae6=this.isHorizontalOrient();
-var _ae7=this.getSplitPanelBindings();
-var _ae8=this.getSplitterBindings();
-var _ae9=null;
-var _aea=null;
+var _af5=this.isHorizontalOrient();
+var _af6=this.getSplitPanelBindings();
+var _af7=this.getSplitterBindings();
+var _af8=null;
+var _af9=null;
 var unit=null;
-var _aec=null;
+var _afb=null;
 var span=null;
-_ae7.each(function(_aee){
+_af6.each(function(_afd){
 if(!unit){
-unit=_ae6?_aee.getWidth():_aee.getHeight();
+unit=_af5?_afd.getWidth():_afd.getHeight();
 }
-span=_ae6?_aee.getWidth():_aee.getHeight();
-if(_aec){
-span-=_aec;
-_aec=null;
+span=_af5?_afd.getWidth():_afd.getHeight();
+if(_afb){
+span-=_afb;
+_afb=null;
 }
-_ae9=_ae8.getNext();
-if(_ae9&&_ae9.offset){
-_aec=_ae9.offset;
-span+=_aec;
+_af8=_af7.getNext();
+if(_af8&&_af8.offset){
+_afb=_af8.offset;
+span+=_afb;
 }
-_aee.setRatio(span/unit);
+_afd.setRatio(span/unit);
 });
 };
 SplitBoxBinding.prototype.refreshLayout=function(){
 this.computeLayout();
 this.invokeLayout();
 };
-SplitBoxBinding.prototype.setLayout=function(_aef){
-this.logger.debug(_aef);
-this.setProperty("layout",_aef);
+SplitBoxBinding.prototype.setLayout=function(_afe){
+this.logger.debug(_afe);
+this.setProperty("layout",_afe);
 this._initializeLayout();
 this.invokeLayout();
 };
@@ -16835,30 +16876,30 @@ if(!this.getProperty("layout")){
 this.setProperty("layout",this.getDefaultLayout());
 }
 }else{
-var _af0="",_af1=this.getSplitPanelBindings();
-_af1.each(function(_af2){
-_af0+=_af2.getRatio().toString();
-_af0+=_af1.hasNext()?":":"";
+var _aff="",_b00=this.getSplitPanelBindings();
+_b00.each(function(_b01){
+_aff+=_b01.getRatio().toString();
+_aff+=_b00.hasNext()?":":"";
 });
-this.setProperty("layout",_af0);
+this.setProperty("layout",_aff);
 }
 return new String(this.getProperty("layout"));
 };
 SplitBoxBinding.prototype.getDefaultLayout=function(){
-var _af3=this.getSplitPanelElements();
-_af3.each(function(_af4){
-layout+="1"+(_af3.hasNext()?":":"");
+var _b02=this.getSplitPanelElements();
+_b02.each(function(_b03){
+layout+="1"+(_b02.hasNext()?":":"");
 });
 this.setProperty("layout",layout);
 };
-SplitBoxBinding.prototype.setWidth=function(_af5){
-this.bindingElement.style.width=_af5+"px";
+SplitBoxBinding.prototype.setWidth=function(_b04){
+this.bindingElement.style.width=_b04+"px";
 };
 SplitBoxBinding.prototype.getWidth=function(){
 return this.bindingElement.offsetWidth;
 };
-SplitBoxBinding.prototype.setHeight=function(_af6){
-this.bindingElement.style.height=_af6+"px";
+SplitBoxBinding.prototype.setHeight=function(_b05){
+this.bindingElement.style.height=_b05+"px";
 };
 SplitBoxBinding.prototype.getHeight=function(){
 return this.bindingElement.offsetHeight;
@@ -16881,14 +16922,14 @@ return this.getChildElementsByLocalName("splitter");
 SplitBoxBinding.prototype.getSplitterBindings=function(){
 return this.getChildBindingsByLocalName("splitter");
 };
-SplitBoxBinding.prototype.fit=function(_af7){
-if(!this.isFit||_af7){
+SplitBoxBinding.prototype.fit=function(_b06){
+if(!this.isFit||_b06){
 if(this.isHorizontalOrient()){
 var max=0;
-var _af9=this.getSplitPanelBindings();
-_af9.each(function(_afa){
-var _afb=_afa.bindingElement.offsetHeight;
-max=_afb>max?_afb:max;
+var _b08=this.getSplitPanelBindings();
+_b08.each(function(_b09){
+var _b0a=_b09.bindingElement.offsetHeight;
+max=_b0a>max?_b0a:max;
 });
 this._setFitnessHeight(max);
 }else{
@@ -16897,9 +16938,9 @@ throw "SplitBoxBinding enforceFitness not supported vertically!";
 this.isFit=true;
 }
 };
-SplitBoxBinding.newInstance=function(_afc){
-var _afd=DOMUtil.createElementNS(Constants.NS_UI,"ui:splitbox",_afc);
-return UserInterface.registerBinding(_afd,SplitBoxBinding);
+SplitBoxBinding.newInstance=function(_b0b){
+var _b0c=DOMUtil.createElementNS(Constants.NS_UI,"ui:splitbox",_b0b);
+return UserInterface.registerBinding(_b0c,SplitBoxBinding);
 };
 SplitPanelBinding.prototype=new ControlBoxBinding;
 SplitPanelBinding.prototype.constructor=SplitPanelBinding;
@@ -16932,8 +16973,8 @@ var fix=this.getProperty("fix");
 if(fix){
 this.setFix(fix);
 }
-var _b00=this.getProperty("hidden");
-if(_b00){
+var _b0f=this.getProperty("hidden");
+if(_b0f){
 this.hide();
 }
 };
@@ -16958,9 +16999,9 @@ this.isVisible=false;
 };
 SplitPanelBinding.prototype.show=function(){
 if(!this.isVisible){
-var _b01=this.getProperty("ratiocache");
-if(_b01){
-this.setRatio(_b01);
+var _b10=this.getProperty("ratiocache");
+if(_b10){
+this.setRatio(_b10);
 this.deleteProperty("ratiocache");
 }else{
 this._containingSplitBoxBinding.computeLayout();
@@ -16970,37 +17011,37 @@ this.deleteProperty("hidden");
 this.isVisible=true;
 }
 };
-SplitPanelBinding.prototype.setWidth=function(_b02){
+SplitPanelBinding.prototype.setWidth=function(_b11){
 if(!this.isFixed){
-if(_b02!=this.getWidth()){
-if(_b02<0){
-_b02=this.getWidth();
+if(_b11!=this.getWidth()){
+if(_b11<0){
+_b11=this.getWidth();
 this.logger.warn("SplitPanelBinding#setWidth bug in Internet Explorer!");
 }
 try{
-this.bindingElement.style.width=_b02+"px";
+this.bindingElement.style.width=_b11+"px";
 }
 catch(exception){
-alert("SplitPanelBinding#setWidth: Occult width: "+_b02);
+alert("SplitPanelBinding#setWidth: Occult width: "+_b11);
 alert(arguments.caller.callee);
 }
 }
 }
 };
 SplitPanelBinding.prototype.getWidth=function(){
-var _b03=null;
+var _b12=null;
 if(this.isFixed){
-_b03=this.getFix();
+_b12=this.getFix();
 }else{
-_b03=this.bindingElement.offsetWidth;
+_b12=this.bindingElement.offsetWidth;
 }
-return _b03;
+return _b12;
 };
-SplitPanelBinding.prototype.setHeight=function(_b04){
+SplitPanelBinding.prototype.setHeight=function(_b13){
 if(!this.isFixed){
-if(_b04!=this.getHeight()){
+if(_b13!=this.getHeight()){
 try{
-this.bindingElement.style.height=_b04+"px";
+this.bindingElement.style.height=_b13+"px";
 }
 catch(exception){
 alert("SplitPanelBinding.prototype.setHeight"+arguments.caller.callee);
@@ -17009,30 +17050,30 @@ alert("SplitPanelBinding.prototype.setHeight"+arguments.caller.callee);
 }
 };
 SplitPanelBinding.prototype.getHeight=function(){
-var _b05=null;
+var _b14=null;
 if(this.isFixed){
-_b05=this.getFix();
+_b14=this.getFix();
 }else{
-_b05=this.bindingElement.offsetHeight;
+_b14=this.bindingElement.offsetHeight;
 }
-return _b05;
+return _b14;
 };
-SplitPanelBinding.prototype.setRatio=function(_b06){
-this.setProperty("ratio",_b06);
+SplitPanelBinding.prototype.setRatio=function(_b15){
+this.setProperty("ratio",_b15);
 };
 SplitPanelBinding.prototype.getRatio=function(){
 return this.getProperty("ratio");
 };
-SplitPanelBinding.prototype.setFix=function(_b07){
-if(_b07){
-this._fixedSpan=_b07;
+SplitPanelBinding.prototype.setFix=function(_b16){
+if(_b16){
+this._fixedSpan=_b16;
 switch(this._containingSplitBoxBinding.getOrient()){
 case SplitBoxBinding.ORIENT_HORIZONTAL:
 this.logger.warn("Fix not properly supported on horizontal splitboxes!");
-this.setWidth(_b07);
+this.setWidth(_b16);
 break;
 case SplitBoxBinding.ORIENT_VERTICAL:
-this.setHeight(_b07);
+this.setHeight(_b16);
 break;
 }
 this.isFixed=true;
@@ -17044,9 +17085,9 @@ this.isFixed=false;
 SplitPanelBinding.prototype.getFix=function(){
 return this._fixedSpan;
 };
-SplitPanelBinding.newInstance=function(_b08){
-var _b09=DOMUtil.createElementNS(Constants.NS_UI,"ui:splitpanel",_b08);
-return UserInterface.registerBinding(_b09,SplitPanelBinding);
+SplitPanelBinding.newInstance=function(_b17){
+var _b18=DOMUtil.createElementNS(Constants.NS_UI,"ui:splitpanel",_b17);
+return UserInterface.registerBinding(_b18,SplitPanelBinding);
 };
 SplitterBinding.prototype=new Binding;
 SplitterBinding.prototype.constructor=SplitterBinding;
@@ -17076,13 +17117,13 @@ SplitterBinding.prototype.toString=function(){
 return "[SplitterBinding]";
 };
 SplitterBinding.prototype.serialize=function(){
-var _b0a=SplitBoxBinding.superclass.serialize.call(this);
-if(_b0a){
-_b0a.collapse=this.getProperty("collapse");
-_b0a.collapsed=this.getProperty("collapsed");
-_b0a.disabled=this.getProperty("isdisabled");
+var _b19=SplitBoxBinding.superclass.serialize.call(this);
+if(_b19){
+_b19.collapse=this.getProperty("collapse");
+_b19.collapsed=this.getProperty("collapsed");
+_b19.disabled=this.getProperty("isdisabled");
 }
-return _b0a;
+return _b19;
 };
 SplitterBinding.prototype.onBindingAttach=function(){
 SplitterBinding.superclass.onBindingAttach.call(this);
@@ -17092,8 +17133,8 @@ this.attachClassName(this._containingSplitBoxBinding.getOrient());
 this._collapseDirection=this.getProperty("collapse");
 this.buildDOMContent();
 this.attachDOMEvents();
-var _b0b=this.getProperty("hidden");
-if(_b0b){
+var _b1a=this.getProperty("hidden");
+if(_b1a){
 this.hide();
 }
 };
@@ -17128,41 +17169,41 @@ this.dispatchAction(SplitterBinding.ACTION_UNCOLLAPSE);
 SplitterBinding.prototype.getCollapseDirection=function(){
 return this._collapseDirection;
 };
-SplitterBinding.prototype.setCollapseDirection=function(_b0d){
-this.setProperty("collapse",_b0d);
-this._collapseDirection=_b0d;
+SplitterBinding.prototype.setCollapseDirection=function(_b1c){
+this.setProperty("collapse",_b1c);
+this._collapseDirection=_b1c;
 };
-SplitterBinding.prototype.handleAction=function(_b0e){
-SplitterBinding.superclass.handleAction.call(this,_b0e);
-switch(_b0e.type){
+SplitterBinding.prototype.handleAction=function(_b1d){
+SplitterBinding.superclass.handleAction.call(this,_b1d);
+switch(_b1d.type){
 case Binding.ACTION_DRAG:
 this.dragger.registerHandler(this);
-_b0e.consume();
+_b1d.consume();
 break;
 }
 };
 SplitterBinding.prototype.handleEvent=function(e){
 SplitterBinding.superclass.handleEvent.call(this,e);
-var _b10=this;
+var _b1f=this;
 if(!this.isDragging&&!this.isDisabled){
 switch(e.type){
 case DOMEvents.MOUSEOVER:
 window.splitterTimeout=window.setTimeout(function(){
-_b10.shadowTree.splitterBody.className=SplitterBinding.CLASSNAME_HOVER;
+_b1f.shadowTree.splitterBody.className=SplitterBinding.CLASSNAME_HOVER;
 },250);
 break;
 case DOMEvents.MOUSEOUT:
 if(window.splitterTimeout){
 window.clearTimeout(window.splitterTimeout);
 }
-if(_b10.shadowTree.splitterBody.className==SplitterBinding.CLASSNAME_HOVER){
+if(_b1f.shadowTree.splitterBody.className==SplitterBinding.CLASSNAME_HOVER){
 this.shadowTree.splitterBody.className="";
 }
 break;
 }
 }
 };
-SplitterBinding.prototype.onDragStart=function(_b11){
+SplitterBinding.prototype.onDragStart=function(_b20){
 this.attachClassName(SplitterBinding.CLASSNAME_ACTIVE);
 this.shadowTree.splitterBody.className=SplitterBinding.CLASSNAME_ACTIVE;
 this.isDragging=true;
@@ -17227,9 +17268,9 @@ this.enableDragging();
 this.deleteProperty("isdisabled");
 }
 };
-SplitterBinding.newInstance=function(_b1c){
-var _b1d=DOMUtil.createElementNS(Constants.NS_UI,"ui:splitter",_b1c);
-return UserInterface.registerBinding(_b1d,SplitterBinding);
+SplitterBinding.newInstance=function(_b2b){
+var _b2c=DOMUtil.createElementNS(Constants.NS_UI,"ui:splitter",_b2b);
+return UserInterface.registerBinding(_b2c,SplitterBinding);
 };
 DecksBinding.prototype=new FlexBoxBinding;
 DecksBinding.prototype.constructor=DecksBinding;
@@ -17251,25 +17292,25 @@ this.attachClassName("deckselement");
 };
 DecksBinding.prototype.onBindingAttach=function(){
 DecksBinding.superclass.onBindingAttach.call(this);
-var _b1e=this.getProperty("selectedindex");
-var _b1f=this.getDeckElements();
-if(_b1f.hasEntries()){
-var _b20=false;
-var _b21=0;
-while(_b1f.hasNext()){
-var deck=_b1f.getNext();
-if(_b1e&&_b21==_b1e){
+var _b2d=this.getProperty("selectedindex");
+var _b2e=this.getDeckElements();
+if(_b2e.hasEntries()){
+var _b2f=false;
+var _b30=0;
+while(_b2e.hasNext()){
+var deck=_b2e.getNext();
+if(_b2d&&_b30==_b2d){
 deck.setAttribute("selected","true");
-_b20=true;
+_b2f=true;
 }else{
 if(deck.getAttribute("selected")=="true"){
-_b20=true;
+_b2f=true;
 }
 }
-_b21++;
+_b30++;
 }
-if(!_b20){
-_b1f.getFirst().setAttribute("selected","true");
+if(!_b2f){
+_b2e.getFirst().setAttribute("selected","true");
 }
 }
 };
@@ -17277,17 +17318,17 @@ DecksBinding.prototype.getDeckElements=function(){
 return this.getChildElementsByLocalName(this.constructor.NODENAME_DECK);
 };
 DecksBinding.prototype.select=function(arg){
-var _b24=this.getBindingForArgument(arg);
-if(_b24!=null){
-if(_b24!=this._selectedDeckBinding){
+var _b33=this.getBindingForArgument(arg);
+if(_b33!=null){
+if(_b33!=this._selectedDeckBinding){
 if(this._selectedDeckBinding){
 this._selectedDeckBinding.unselect();
 }
-_b24.select();
-this._selectedDeckBinding=_b24;
-var _b25=this.getProperty("selectedindex");
-if(_b25!=null){
-this.setProperty("selectedindex",DOMUtil.getOrdinalPosition(_b24.bindingElement,true));
+_b33.select();
+this._selectedDeckBinding=_b33;
+var _b34=this.getProperty("selectedindex");
+if(_b34!=null){
+this.setProperty("selectedindex",DOMUtil.getOrdinalPosition(_b33.bindingElement,true));
 }
 this.dispatchAction(DecksBinding.ACTION_SELECTED);
 this.dispatchAction(FocusBinding.ACTION_UPDATE);
@@ -17297,21 +17338,21 @@ throw "No deck for argument "+arg;
 }
 };
 DecksBinding.prototype.hasDimensionsChanged=function(){
-var _b26=false;
+var _b35=false;
 var dim1=this.boxObject.getDimension();
 var dim2=this._lastKnownDimension;
 if(!Dimension.isEqual(dim1,dim2)){
-_b26=true;
+_b35=true;
 this._lastKnownDimension=dim1;
 }
-return _b26;
+return _b35;
 };
 DecksBinding.prototype.getSelectedDeckBinding=function(){
 return this._selectedDeckBinding;
 };
-DecksBinding.newInstance=function(_b29){
-var _b2a=DOMUtil.createElementNS(Constants.NS_UI,"ui:decks",_b29);
-return UserInterface.registerBinding(_b2a,DecksBinding);
+DecksBinding.newInstance=function(_b38){
+var _b39=DOMUtil.createElementNS(Constants.NS_UI,"ui:decks",_b38);
+return UserInterface.registerBinding(_b39,DecksBinding);
 };
 DeckBinding.prototype=new FlexBoxBinding;
 DeckBinding.prototype.constructor=DeckBinding;
@@ -17342,12 +17383,12 @@ if(this.getProperty("selected")==true){
 this.containingDecksBinding.select(this);
 }
 };
-DeckBinding.prototype.handleAction=function(_b2b){
-DeckBinding.superclass.handleAction.call(this,_b2b);
-var _b2c=_b2b.target;
-switch(_b2b.type){
+DeckBinding.prototype.handleAction=function(_b3a){
+DeckBinding.superclass.handleAction.call(this,_b3a);
+var _b3b=_b3a.target;
+switch(_b3a.type){
 case BalloonBinding.ACTION_INITIALIZE:
-_b2b.consume();
+_b3a.consume();
 break;
 }
 };
@@ -17382,9 +17423,9 @@ this.dispatchAction(DeckBinding.ACTION_UNSELECTED);
 DeckBinding.prototype._invokeManagedRecursiveFlex=function(){
 this.reflex(true);
 };
-DeckBinding.newInstance=function(_b2e){
-var _b2f=DOMUtil.createElementNS(Constants.NS_UI,"ui:deck",_b2e);
-return UserInterface.registerBinding(_b2f,DeckBinding);
+DeckBinding.newInstance=function(_b3d){
+var _b3e=DOMUtil.createElementNS(Constants.NS_UI,"ui:deck",_b3d);
+return UserInterface.registerBinding(_b3e,DeckBinding);
 };
 ToolBarBinding.prototype=new Binding;
 ToolBarBinding.prototype.constructor=ToolBarBinding;
@@ -17425,25 +17466,25 @@ this.parseDOMProperties();
 this.buildDOMContent();
 this.addMembers(this.getChildBindingsByLocalName("toolbarbody"));
 };
-ToolBarBinding.prototype.onMemberInitialize=function(_b30){
-if(_b30 instanceof ToolBarBodyBinding){
-if(_b30.isRightAligned){
+ToolBarBinding.prototype.onMemberInitialize=function(_b3f){
+if(_b3f instanceof ToolBarBodyBinding){
+if(_b3f.isRightAligned){
 if(!this._toolBarBodyRight){
-this._toolBarBodyRight=_b30;
+this._toolBarBodyRight=_b3f;
 }
 }else{
 if(!this._toolBarBodyLeft){
-this._toolBarBodyLeft=_b30;
+this._toolBarBodyLeft=_b3f;
 }
 }
 }
-ToolBarBinding.superclass.onMemberInitialize.call(this,_b30);
+ToolBarBinding.superclass.onMemberInitialize.call(this,_b3f);
 };
 ToolBarBinding.prototype.parseDOMProperties=function(){
-var _b31=this.getProperty("imagesize");
+var _b40=this.getProperty("imagesize");
 var type=this.getProperty("type");
-if(_b31){
-this.setImageSize(_b31);
+if(_b40){
+this.setImageSize(_b40);
 }
 if(type){
 this.setType(type);
@@ -17453,68 +17494,68 @@ this.setType(this.type);
 };
 ToolBarBinding.prototype.buildDOMContent=function(){
 if(this._hasDefaultContent==true&&!this._hasDOMContent){
-var _b33=ToolBarGroupBinding.newInstance(this.bindingDocument);
-_b33.add(ToolBarButtonBinding.newInstance(this.bindingDocument));
-_b33.isDefaultContent=true;
-this.add(_b33);
-_b33.attachRecursive();
+var _b42=ToolBarGroupBinding.newInstance(this.bindingDocument);
+_b42.add(ToolBarButtonBinding.newInstance(this.bindingDocument));
+_b42.isDefaultContent=true;
+this.add(_b42);
+_b42.attachRecursive();
 this._hasDOMContent=true;
 }
 };
 ToolBarBinding.prototype.flex=function(){
 var left=this._toolBarBodyLeft;
-var _b35=this._toolBarBodyRight;
+var _b44=this._toolBarBodyRight;
 if(left!=null&&left.hasClassName("max")){
-this._maxToolBarGroup(left,_b35);
+this._maxToolBarGroup(left,_b44);
 }
-if(_b35!=null&&_b35.hasClassName("max")){
-this._maxToolBarGroup(_b35,left);
+if(_b44!=null&&_b44.hasClassName("max")){
+this._maxToolBarGroup(_b44,left);
 }
 };
-ToolBarBinding.prototype._maxToolBarGroup=function(max,_b37){
-var _b38=this.boxObject.getDimension().w;
-var _b39=CSSComputer.getPadding(this.bindingElement);
-_b38-=(_b39.left+_b39.right);
-if(_b37!=null){
-_b38-=_b37.boxObject.getDimension().w;
+ToolBarBinding.prototype._maxToolBarGroup=function(max,_b46){
+var _b47=this.boxObject.getDimension().w;
+var _b48=CSSComputer.getPadding(this.bindingElement);
+_b47-=(_b48.left+_b48.right);
+if(_b46!=null){
+_b47-=_b46.boxObject.getDimension().w;
 if(!Client.isWindows){
-_b38-=1;
+_b47-=1;
 }
 if(Client.isExplorer){
-_b38-=15;
+_b47-=15;
 }
 }
-max.bindingElement.style.width=_b38+"px";
+max.bindingElement.style.width=_b47+"px";
 };
-ToolBarBinding.prototype.getToolBarGroupByIndex=function(_b3a){
-return this.getDescendantBindingsByLocalName("toolbargroup").get(_b3a);
+ToolBarBinding.prototype.getToolBarGroupByIndex=function(_b49){
+return this.getDescendantBindingsByLocalName("toolbargroup").get(_b49);
 };
-ToolBarBinding.prototype.addLeft=function(_b3b,_b3c){
-var _b3d=null;
+ToolBarBinding.prototype.addLeft=function(_b4a,_b4b){
+var _b4c=null;
 if(this._toolBarBodyLeft!=null){
-_b3d=this._toolBarBodyLeft.add(_b3b,_b3c);
+_b4c=this._toolBarBodyLeft.add(_b4a,_b4b);
 }else{
 throw new Error("No left toolbarbody");
 }
-return _b3d;
+return _b4c;
 };
-ToolBarBinding.prototype.addLeftFirst=function(_b3e,_b3f){
-var _b40=null;
+ToolBarBinding.prototype.addLeftFirst=function(_b4d,_b4e){
+var _b4f=null;
 if(this._toolBarBodyLeft){
-_b40=this._toolBarBodyLeft.addFirst(_b3e,_b3f);
+_b4f=this._toolBarBodyLeft.addFirst(_b4d,_b4e);
 }else{
 throw new Error("No left toolbarbody");
 }
-return _b40;
+return _b4f;
 };
-ToolBarBinding.prototype.addRight=function(_b41){
-var _b42=null;
+ToolBarBinding.prototype.addRight=function(_b50){
+var _b51=null;
 if(this._toolBarBodyRight){
-_b42=this._toolBarBodyRight.add(_b41);
+_b51=this._toolBarBodyRight.add(_b50);
 }else{
 throw new Error("No left toolbarbody");
 }
-return _b42;
+return _b51;
 };
 ToolBarBinding.prototype.empty=function(){
 this.emptyLeft();
@@ -17583,9 +17624,9 @@ break;
 }
 this.setProperty("type",type);
 };
-ToolBarBinding.newInstance=function(_b45){
-var _b46=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbar",_b45);
-return UserInterface.registerBinding(_b46,ToolBarBinding);
+ToolBarBinding.newInstance=function(_b54){
+var _b55=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbar",_b54);
+return UserInterface.registerBinding(_b55,ToolBarBinding);
 };
 ToolBarBodyBinding.prototype=new Binding;
 ToolBarBodyBinding.prototype.constructor=ToolBarBodyBinding;
@@ -17615,23 +17656,23 @@ this.setProperty("align","right");
 this.isRightAligned=true;
 };
 ToolBarBodyBinding.prototype.refreshToolBarGroups=function(){
-var _b47=this.getDescendantBindingsByLocalName("toolbargroup");
-var _b48=new List();
-var _b49=true;
-_b47.each(function(_b4a){
-if(_b4a.isVisible&&!_b4a.isDefaultContent){
-_b48.add(_b4a);
+var _b56=this.getDescendantBindingsByLocalName("toolbargroup");
+var _b57=new List();
+var _b58=true;
+_b56.each(function(_b59){
+if(_b59.isVisible&&!_b59.isDefaultContent){
+_b57.add(_b59);
 }
 });
-while(_b48.hasNext()){
-var _b4b=_b48.getNext();
-_b4b.setLayout(ToolBarGroupBinding.LAYOUT_DEFAULT);
-if(_b49){
-_b4b.setLayout(ToolBarGroupBinding.LAYOUT_FIRST);
-_b49=false;
+while(_b57.hasNext()){
+var _b5a=_b57.getNext();
+_b5a.setLayout(ToolBarGroupBinding.LAYOUT_DEFAULT);
+if(_b58){
+_b5a.setLayout(ToolBarGroupBinding.LAYOUT_FIRST);
+_b58=false;
 }
-if(!_b48.hasNext()){
-_b4b.setLayout(ToolBarGroupBinding.LAYOUT_LAST);
+if(!_b57.hasNext()){
+_b5a.setLayout(ToolBarGroupBinding.LAYOUT_LAST);
 }
 }
 if(this.getProperty("equalsize")){
@@ -17641,17 +17682,17 @@ this.enforceEqualSize();
 ToolBarBodyBinding.prototype.enforceEqualSize=function(){
 var max=0,list=this.getDescendantBindingsByLocalName("clickbutton");
 while(list.hasNext()){
-var _b4e=list.getNext();
-var _b4f=_b4e.getEqualSizeWidth();
-if(_b4f>max){
-max=_b4f;
+var _b5d=list.getNext();
+var _b5e=_b5d.getEqualSizeWidth();
+if(_b5e>max){
+max=_b5e;
 }
 }
 if(max!=0){
 list.reset();
 while(list.hasNext()){
-var _b4e=list.getNext();
-_b4e.setEqualSizeWidth(max);
+var _b5d=list.getNext();
+_b5d.setEqualSizeWidth(max);
 }
 }
 };
@@ -17659,27 +17700,27 @@ ToolBarBodyBinding.prototype.empty=function(){
 this.detachRecursive();
 this.bindingElement.innerHTML="";
 };
-ToolBarBodyBinding.prototype.add=function(_b50,_b51){
-var _b52=ToolBarBinding.superclass.add.call(this,_b50);
-if(!_b51){
-if(_b50 instanceof ToolBarGroupBinding&&this.isAttached){
+ToolBarBodyBinding.prototype.add=function(_b5f,_b60){
+var _b61=ToolBarBinding.superclass.add.call(this,_b5f);
+if(!_b60){
+if(_b5f instanceof ToolBarGroupBinding&&this.isAttached){
 this.refreshToolBarGroups();
 }
 }
-return _b52;
+return _b61;
 };
-ToolBarBodyBinding.prototype.addFirst=function(_b53,_b54){
-var _b55=ToolBarBinding.superclass.addFirst.call(this,_b53);
-if(!_b54){
-if(_b53 instanceof ToolBarGroupBinding&&this.isAttached){
+ToolBarBodyBinding.prototype.addFirst=function(_b62,_b63){
+var _b64=ToolBarBinding.superclass.addFirst.call(this,_b62);
+if(!_b63){
+if(_b62 instanceof ToolBarGroupBinding&&this.isAttached){
 this.refreshToolBarGroups();
 }
 }
-return _b55;
+return _b64;
 };
-ToolBarBodyBinding.newInstance=function(_b56){
-var _b57=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbarbody",_b56);
-return UserInterface.registerBinding(_b57,ToolBarBodyBinding);
+ToolBarBodyBinding.newInstance=function(_b65){
+var _b66=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbarbody",_b65);
+return UserInterface.registerBinding(_b66,ToolBarBodyBinding);
 };
 ToolBarGroupBinding.prototype=new RadioGroupBinding;
 ToolBarGroupBinding.prototype.constructor=ToolBarGroupBinding;
@@ -17704,8 +17745,8 @@ if(this.isDefaultContent==true){
 this.attachClassName(ToolBarGroupBinding.CLASSNAME_DEFAULTCONTENT);
 }
 };
-ToolBarGroupBinding.prototype.setLayout=function(_b58){
-switch(_b58){
+ToolBarGroupBinding.prototype.setLayout=function(_b67){
+switch(_b67){
 case ToolBarGroupBinding.LAYOUT_DEFAULT:
 this.detachClassName("first");
 this.detachClassName("last");
@@ -17720,21 +17761,21 @@ break;
 };
 ToolBarGroupBinding.prototype.show=function(){
 ToolBarGroupBinding.superclass.show.call(this);
-var _b59=this.bindingElement.parentNode;
-if(DOMUtil.getLocalName(_b59)=="toolbarbody"){
-UserInterface.getBinding(_b59).refreshToolBarGroups();
+var _b68=this.bindingElement.parentNode;
+if(DOMUtil.getLocalName(_b68)=="toolbarbody"){
+UserInterface.getBinding(_b68).refreshToolBarGroups();
 }
 };
 ToolBarGroupBinding.prototype.hide=function(){
 ToolBarGroupBinding.superclass.hide.call(this);
-var _b5a=this.bindingElement.parentNode;
-if(DOMUtil.getLocalName(_b5a)=="toolbarbody"){
-UserInterface.getBinding(_b5a).refreshToolBarGroups();
+var _b69=this.bindingElement.parentNode;
+if(DOMUtil.getLocalName(_b69)=="toolbarbody"){
+UserInterface.getBinding(_b69).refreshToolBarGroups();
 }
 };
-ToolBarGroupBinding.newInstance=function(_b5b){
-var _b5c=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbargroup",_b5b);
-return UserInterface.registerBinding(_b5c,ToolBarGroupBinding);
+ToolBarGroupBinding.newInstance=function(_b6a){
+var _b6b=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbargroup",_b6a);
+return UserInterface.registerBinding(_b6b,ToolBarGroupBinding);
 };
 ToolBarButtonBinding.prototype=new ButtonBinding;
 ToolBarButtonBinding.prototype.constructor=ToolBarButtonBinding;
@@ -17745,9 +17786,9 @@ this.logger=SystemLogger.getLogger("ToolBarButtonBinding");
 ToolBarButtonBinding.prototype.toString=function(){
 return "[ToolBarButtonBinding]";
 };
-ToolBarButtonBinding.newInstance=function(_b5d){
-var _b5e=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbarbutton",_b5d);
-return UserInterface.registerBinding(_b5e,ToolBarButtonBinding);
+ToolBarButtonBinding.newInstance=function(_b6c){
+var _b6d=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbarbutton",_b6c);
+return UserInterface.registerBinding(_b6d,ToolBarButtonBinding);
 };
 ToolBarLabelBinding.prototype=new Binding;
 ToolBarLabelBinding.prototype.constructor=ToolBarLabelBinding;
@@ -17762,30 +17803,30 @@ ToolBarLabelBinding.prototype.onBindingAttach=function(){
 ToolBarLabelBinding.superclass.onBindingAttach.call(this);
 this._labelBinding=this.add(LabelBinding.newInstance(this.bindingDocument));
 this.shadowTree.label=this._labelBinding;
-var _b5f=this.getProperty("label");
-var _b60=this.getProperty("image");
-if(_b5f){
-this.setLabel(_b5f);
+var _b6e=this.getProperty("label");
+var _b6f=this.getProperty("image");
+if(_b6e){
+this.setLabel(_b6e);
 }
-if(_b60){
-this.setImage(_b60);
+if(_b6f){
+this.setImage(_b6f);
 }
 };
-ToolBarLabelBinding.prototype.setLabel=function(_b61,_b62){
+ToolBarLabelBinding.prototype.setLabel=function(_b70,_b71){
 if(this.isAttached){
-this._labelBinding.setLabel(_b61,_b62);
+this._labelBinding.setLabel(_b70,_b71);
 }
-this.setProperty("label",_b61);
+this.setProperty("label",_b70);
 };
-ToolBarLabelBinding.prototype.setImage=function(_b63,_b64){
+ToolBarLabelBinding.prototype.setImage=function(_b72,_b73){
 if(this.isAttached){
-this._labelBinding.setImage(_b63,_b64);
+this._labelBinding.setImage(_b72,_b73);
 }
-this.setProperty("image",_b63);
+this.setProperty("image",_b72);
 };
-ToolBarLabelBinding.newInstance=function(_b65){
-var _b66=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbarlabel",_b65);
-return UserInterface.registerBinding(_b66,ToolBarLabelBinding);
+ToolBarLabelBinding.newInstance=function(_b74){
+var _b75=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbarlabel",_b74);
+return UserInterface.registerBinding(_b75,ToolBarLabelBinding);
 };
 DialogToolBarBinding.prototype=new ToolBarBinding;
 DialogToolBarBinding.prototype.constructor=DialogToolBarBinding;
@@ -17818,30 +17859,30 @@ this.indexDialogButtons();
 DialogToolBarBinding.superclass.onBindingInitialize.call(this);
 };
 DialogToolBarBinding.prototype.indexDialogButtons=function(){
-var _b67=this.getDescendantBindingsByLocalName("clickbutton");
-if(_b67.hasEntries()){
-while(_b67.hasNext()){
-var _b68=_b67.getNext();
-if(_b68.isDefault){
-this._defaultButton=_b68;
-_b68.attachClassName(ButtonBinding.CLASSNAME_DEFAULT);
+var _b76=this.getDescendantBindingsByLocalName("clickbutton");
+if(_b76.hasEntries()){
+while(_b76.hasNext()){
+var _b77=_b76.getNext();
+if(_b77.isDefault){
+this._defaultButton=_b77;
+_b77.attachClassName(ButtonBinding.CLASSNAME_DEFAULT);
 }
-if(!this._isListening&&_b68.isFocusable){
+if(!this._isListening&&_b77.isFocusable){
 this.subscribe(BroadcastMessages.KEY_ENTER);
 this._isListening=true;
 }
 }
-this._buttons=_b67;
+this._buttons=_b76;
 }
 };
-DialogToolBarBinding.prototype.handleBroadcast=function(_b69,arg){
-DialogToolBarBinding.superclass.handleBroadcast.call(this,_b69,arg);
-switch(_b69){
+DialogToolBarBinding.prototype.handleBroadcast=function(_b78,arg){
+DialogToolBarBinding.superclass.handleBroadcast.call(this,_b78,arg);
+switch(_b78){
 case BroadcastMessages.KEY_ENTER:
 if(!PopupBinding.hasActiveInstances()&&!EditorBinding.isActive){
 if(Binding.exists(this)){
-var _b6b=this.getAncestorBindingByType(DialogBinding,true);
-if(_b6b!=null&&_b6b.isActive){
+var _b7a=this.getAncestorBindingByType(DialogBinding,true);
+if(_b7a!=null&&_b7a.isActive){
 if(this._focusedButton!=null){
 if(!this._focusedButton.isDisabled){
 this.unsubscribe(BroadcastMessages.KEY_ENTER);
@@ -17861,31 +17902,31 @@ this.logger.error("Ouch: DialogToolBarBinding#handleBroadcast");
 break;
 }
 };
-DialogToolBarBinding.prototype.handleAction=function(_b6c){
-DialogToolBarBinding.superclass.handleAction.call(this,_b6c);
-var _b6d=_b6c.target;
-var _b6e=false;
-var _b6f=this._buttons.reset();
-if(_b6d instanceof ClickButtonBinding){
-switch(_b6c.type){
+DialogToolBarBinding.prototype.handleAction=function(_b7b){
+DialogToolBarBinding.superclass.handleAction.call(this,_b7b);
+var _b7c=_b7b.target;
+var _b7d=false;
+var _b7e=this._buttons.reset();
+if(_b7c instanceof ClickButtonBinding){
+switch(_b7b.type){
 case Binding.ACTION_FOCUSED:
-_b6d.attachClassName(ButtonBinding.CLASSNAME_FOCUSED);
-this._focusedButton=_b6d;
+_b7c.attachClassName(ButtonBinding.CLASSNAME_FOCUSED);
+this._focusedButton=_b7c;
 if(this._defaultButton){
 this._defaultButton.detachClassName(ButtonBinding.CLASSNAME_DEFAULT);
 }
 break;
 case Binding.ACTION_BLURRED:
-_b6d.detachClassName(ButtonBinding.CLASSNAME_FOCUSED);
+_b7c.detachClassName(ButtonBinding.CLASSNAME_FOCUSED);
 break;
 }
 }
 if(this._defaultButton){
-while(!_b6e&&_b6f.hasNext()){
-var _b70=_b6f.getNext();
-_b6e=_b70.isFocused;
+while(!_b7d&&_b7e.hasNext()){
+var _b7f=_b7e.getNext();
+_b7d=_b7f.isFocused;
 }
-if(!_b6e){
+if(!_b7d){
 this._defaultButton.attachClassName(ButtonBinding.CLASSNAME_DEFAULT);
 this._focusedButton=null;
 }
@@ -17907,15 +17948,15 @@ ToolBoxToolBarButtonBinding.prototype.onBindingAttach=function(){
 ToolBoxToolBarButtonBinding.superclass.onBindingAttach.call(this);
 if(System.hasActivePerspectives){
 this.subscribe(BroadcastMessages.PERSPECTIVE_CHANGED);
-var _b71=this._views;
-for(var _b72 in ViewDefinitions){
-var def=ViewDefinitions[_b72];
+var _b80=this._views;
+for(var _b81 in ViewDefinitions){
+var def=ViewDefinitions[_b81];
 var key=def.perspective;
 if(key!=null){
-if(!_b71.has(key)){
-_b71.set(key,new List());
+if(!_b80.has(key)){
+_b80.set(key,new List());
 }
-var list=_b71.get(key);
+var list=_b80.get(key);
 list.add(def);
 }
 }
@@ -17923,19 +17964,19 @@ list.add(def);
 this.hide();
 }
 };
-ToolBoxToolBarButtonBinding.prototype.handleBroadcast=function(_b76,arg){
-ToolBoxToolBarButtonBinding.superclass.handleBroadcast.call(this,_b76,arg);
-switch(_b76){
+ToolBoxToolBarButtonBinding.prototype.handleBroadcast=function(_b85,arg){
+ToolBoxToolBarButtonBinding.superclass.handleBroadcast.call(this,_b85,arg);
+switch(_b85){
 case BroadcastMessages.PERSPECTIVE_CHANGED:
 var tag=arg;
 if(this._views.has(tag)){
 if(tag!=this._lastGeneratedPerspective){
 this._lastGeneratedPerspective=tag;
 var list=this._views.get(tag);
-var _b7a=this.bindingWindow.bindingMap.toolboxpopup;
-_b7a.empty();
+var _b89=this.bindingWindow.bindingMap.toolboxpopup;
+_b89.empty();
 list.each(function(def){
-var item=_b7a.add(StageViewMenuItemBinding.newInstance(_b7a.bindingDocument));
+var item=_b89.add(StageViewMenuItemBinding.newInstance(_b89.bindingDocument));
 item.setType(MenuItemBinding.TYPE_CHECKBOX);
 item.setHandle(def.handle);
 item.setLabel(def.label);
@@ -17958,14 +17999,14 @@ TreeBinding.ACTION_SELECTIONCHANGED="tree selection changed";
 TreeBinding.ACTION_NOSELECTION="tree selection none";
 TreeBinding.SELECTIONTYPE_SINGLE="single";
 TreeBinding.SELECTIONTYPE_MULTIPLE="multiple";
-TreeBinding.grid=function(_b7d){
-var _b7e=TreeNodeBinding.HEIGHT;
-var ceil=Math.ceil(_b7d);
-var _b80=_b7d%_b7e;
-if(_b80>0){
-_b7d=_b7d-_b80+_b7e;
+TreeBinding.grid=function(_b8c){
+var _b8d=TreeNodeBinding.HEIGHT;
+var ceil=Math.ceil(_b8c);
+var _b8f=_b8c%_b8d;
+if(_b8f>0){
+_b8c=_b8c-_b8f+_b8d;
 }
-return _b7d+TreeBodyBinding.PADDING_TOP;
+return _b8c+TreeBodyBinding.PADDING_TOP;
 };
 function TreeBinding(){
 this.logger=SystemLogger.getLogger("TreeBinding");
@@ -18003,9 +18044,9 @@ this._focusedTreeNodeBindings=new List();
 };
 TreeBinding.prototype.onBindingAttach=function(){
 TreeBinding.superclass.onBindingAttach.call(this);
-var _b81=this.getProperty("focusable");
-if(_b81!=null){
-this._isFocusable=_b81;
+var _b90=this.getProperty("focusable");
+if(_b90!=null){
+this._isFocusable=_b90;
 }
 if(!this._treeBodyBinding){
 this._treeBodyBinding=this.addMember(this.getChildBindingByLocalName("treebody"));
@@ -18035,9 +18076,9 @@ this.addEventListener(DOMEvents.AFTERUPDATE);
 TreeBinding.prototype.onBindingInitialize=function(){
 TreeBinding.superclass.onBindingInitialize.call(this);
 this._setupTreeSelection();
-var _b83=this.getProperty("builder");
-if(_b83){
-this._buildFromTextArea(_b83);
+var _b92=this.getProperty("builder");
+if(_b92){
+this._buildFromTextArea(_b92);
 }else{
 if(this._treeNodeBuffer.hasEntries()){
 while(this._treeNodeBuffer.hasNext()){
@@ -18047,16 +18088,16 @@ this.add(this._treeNodeBuffer.getNext());
 }
 };
 TreeBinding.prototype._setupTreeSelection=function(){
-var _b84=this.getProperty("selectable");
-var _b85=this.getProperty("selectionproperty");
-var _b86=this.getProperty("selectionvalue");
-if(_b84){
+var _b93=this.getProperty("selectable");
+var _b94=this.getProperty("selectionproperty");
+var _b95=this.getProperty("selectionvalue");
+if(_b93){
 this.setSelectable(true);
-if(_b85){
-this.setSelectionProperty(_b85);
+if(_b94){
+this.setSelectionProperty(_b94);
 }
-if(_b86){
-this.setSelectionValue(_b86);
+if(_b95){
+this.setSelectionValue(_b95);
 }
 }
 this._positionIndicatorBinding=this.add(TreePositionIndicatorBinding.newInstance(this.bindingDocument));
@@ -18066,71 +18107,71 @@ this._positionIndicatorBinding.attach();
 TreeBinding.prototype._buildFromTextArea=function(id){
 var area=this.bindingDocument.getElementById(id);
 if(area!=null){
-var _b89=UserInterface.getBinding(area);
-var _b8a=this._treeBodyBinding;
+var _b98=UserInterface.getBinding(area);
+var _b99=this._treeBodyBinding;
 function build(){
-_b8a.subTreeFromString(area.value);
+_b99.subTreeFromString(area.value);
 }
-_b89.addActionListener(Binding.ACTION_UPDATED,{handleAction:function(){
+_b98.addActionListener(Binding.ACTION_UPDATED,{handleAction:function(){
 build();
 }});
 setTimeout(build,0);
 }
 };
-TreeBinding.prototype.registerTreeNodeBinding=function(_b8b){
-var _b8c=_b8b.getHandle();
-if(this._treeNodeBindings.has(_b8c)){
-throw "Duplicate treenodehandles registered: "+_b8b.getLabel();
+TreeBinding.prototype.registerTreeNodeBinding=function(_b9a){
+var _b9b=_b9a.getHandle();
+if(this._treeNodeBindings.has(_b9b)){
+throw "Duplicate treenodehandles registered: "+_b9a.getLabel();
 }else{
-this._treeNodeBindings.set(_b8c,_b8b);
+this._treeNodeBindings.set(_b9b,_b9a);
 var map=this._openTreeNodesBackupMap;
-if(map!=null&&map.has(_b8c)){
-_b8b.open();
+if(map!=null&&map.has(_b9b)){
+_b9a.open();
 }
 }
 };
-TreeBinding.prototype.unRegisterTreeNodeBinding=function(_b8e){
-this._treeNodeBindings.del(_b8e.getHandle());
+TreeBinding.prototype.unRegisterTreeNodeBinding=function(_b9d){
+this._treeNodeBindings.del(_b9d.getHandle());
 };
-TreeBinding.prototype.getTreeNodeBindingByHandle=function(_b8f){
-var _b90=null;
-if(this._treeNodeBindings.has(_b8f)){
-_b90=this._treeNodeBindings.get(_b8f);
+TreeBinding.prototype.getTreeNodeBindingByHandle=function(_b9e){
+var _b9f=null;
+if(this._treeNodeBindings.has(_b9e)){
+_b9f=this._treeNodeBindings.get(_b9e);
 }else{
-throw "No such treenode: "+_b8f;
+throw "No such treenode: "+_b9e;
 }
-return _b90;
+return _b9f;
 };
-TreeBinding.prototype.handleAction=function(_b91){
-TreeBinding.superclass.handleAction.call(this,_b91);
-var _b92=_b91.target;
-switch(_b91.type){
+TreeBinding.prototype.handleAction=function(_ba0){
+TreeBinding.superclass.handleAction.call(this,_ba0);
+var _ba1=_ba0.target;
+switch(_ba0.type){
 case TreeNodeBinding.ACTION_OPEN:
-_b91.consume();
+_ba0.consume();
 break;
 case TreeNodeBinding.ACTION_CLOSE:
-this._blurDescendantBindings(_b92);
-_b91.consume();
+this._blurDescendantBindings(_ba1);
+_ba0.consume();
 break;
 case TreeNodeBinding.ACTION_ONFOCUS:
-this._nodePrimary=_b92;
-this.focusSingleTreeNodeBinding(_b92);
+this._nodePrimary=_ba1;
+this.focusSingleTreeNodeBinding(_ba1);
 if(!this.isFocused){
 this.focus();
 }
-_b91.consume();
+_ba0.consume();
 break;
 case TreeNodeBinding.ACTION_ONMULTIFOCUS:
 switch(this._selectionType){
 case TreeBinding.SELECTIONTYPE_SINGLE:
-this._nodePrimary=_b92;
-this.focusSingleTreeNodeBinding(_b92);
+this._nodePrimary=_ba1;
+this.focusSingleTreeNodeBinding(_ba1);
 break;
 case TreeBinding.SELECTIONTYPE_SINGLE:
-this._nodeSecondary=_b92;
+this._nodeSecondary=_ba1;
 if(!this._nodePrimary||this._nodeSecondary==this._nodePrimary){
-this._nodePrimary=_b92;
-this.focusSingleTreeNodeBinding(_b92);
+this._nodePrimary=_ba1;
+this.focusSingleTreeNodeBinding(_ba1);
 }else{
 this.focusMultipeTreeNodeBindings(this._getVisibleTreeNodeBindingsInRange(this._nodePrimary,this._nodeSecondary));
 }
@@ -18139,13 +18180,13 @@ break;
 if(!this.isFocused){
 this.focus();
 }
-_b91.consume();
+_ba0.consume();
 break;
 case TreeNodeBinding.ACTION_DISPOSE:
-if(_b92.isFocused){
+if(_ba1.isFocused){
 this.blurSelectedTreeNodes();
 }
-_b91.consume();
+_ba0.consume();
 break;
 case TreeNodeBinding.ACTION_BLUR:
 break;
@@ -18156,56 +18197,56 @@ this.focus();
 break;
 }
 };
-TreeBinding.prototype._getVisibleTreeNodeBindingsInRange=function(_b93,_b94){
+TreeBinding.prototype._getVisibleTreeNodeBindingsInRange=function(_ba2,_ba3){
 alert("TreeBinding#_getVisibleTreeNodeBindingsInRange");
 };
-TreeBinding.prototype.focusSingleTreeNodeBinding=function(_b95){
-if(_b95!=null&&!_b95.isFocused){
+TreeBinding.prototype.focusSingleTreeNodeBinding=function(_ba4){
+if(_ba4!=null&&!_ba4.isFocused){
 this.blurSelectedTreeNodes();
-this._focusedTreeNodeBindings.add(_b95);
-_b95.invokeManagedFocus();
+this._focusedTreeNodeBindings.add(_ba4);
+_ba4.invokeManagedFocus();
 if(this._isSelectable){
 this._manageSelections();
 }
 }
 };
-TreeBinding.prototype.focusMultipeTreeNodeBindings=function(_b96){
+TreeBinding.prototype.focusMultipeTreeNodeBindings=function(_ba5){
 this.blurSelectedTreeNodes();
-while(_b96.hasNext()){
-var _b97=_b96.getNext();
-this._focusedTreeNodeBindings.add(_b97);
-_b97.invokeManagedFocus();
+while(_ba5.hasNext()){
+var _ba6=_ba5.getNext();
+this._focusedTreeNodeBindings.add(_ba6);
+_ba6.invokeManagedFocus();
 }
 if(this._isSelectable){
 this._manageSelections();
 }
 };
 TreeBinding.prototype._manageSelections=function(){
-var _b98=this._selectedTreeNodeBindings;
+var _ba7=this._selectedTreeNodeBindings;
 this._selectedTreeNodeBindings={};
-var _b99=false;
-var _b9a=null;
+var _ba8=false;
+var _ba9=null;
 this._focusedTreeNodeBindings.reset();
 while(this._focusedTreeNodeBindings.hasNext()){
-var _b9b=this._focusedTreeNodeBindings.getNext();
-var _b9c=_b9b.getProperty(this._selectionProperty);
-if(_b9c!=null){
-if(!this._selectionValue||this._selectionValue[_b9c]){
-_b9a=(this._selectedTreeNodeBindings[_b9b.key]=_b9b);
-var _b9d=_b98[_b9b.key];
-if(!_b9d||_b9d!=_b9a){
-_b99=true;
+var _baa=this._focusedTreeNodeBindings.getNext();
+var _bab=_baa.getProperty(this._selectionProperty);
+if(_bab!=null){
+if(!this._selectionValue||this._selectionValue[_bab]){
+_ba9=(this._selectedTreeNodeBindings[_baa.key]=_baa);
+var _bac=_ba7[_baa.key];
+if(!_bac||_bac!=_ba9){
+_ba8=true;
 }
 }
 }
 }
-if(_b9a){
-if(_b99){
+if(_ba9){
+if(_ba8){
 this.dispatchAction(TreeBinding.ACTION_SELECTIONCHANGED);
 }
 }else{
-if(_b98){
-for(var key in _b98){
+if(_ba7){
+for(var key in _ba7){
 this.dispatchAction(TreeBinding.ACTION_NOSELECTION);
 break;
 }
@@ -18213,28 +18254,28 @@ break;
 }
 };
 TreeBinding.prototype.getSelectedTreeNodeBindings=function(){
-var _b9f=new List();
+var _bae=new List();
 for(var key in this._selectedTreeNodeBindings){
-_b9f.add(this._selectedTreeNodeBindings[key]);
+_bae.add(this._selectedTreeNodeBindings[key]);
 }
-return _b9f;
+return _bae;
 };
 TreeBinding.prototype.blurSelectedTreeNodes=function(){
-this._focusedTreeNodeBindings.reset().each(function(_ba1){
-_ba1.blur();
+this._focusedTreeNodeBindings.reset().each(function(_bb0){
+_bb0.blur();
 });
 this._focusedTreeNodeBindings.clear();
 };
-TreeBinding.prototype._blurDescendantBindings=function(_ba2){
-var _ba3=_ba2.getDescendantBindingsByLocalName("treenode");
-var _ba4=true;
+TreeBinding.prototype._blurDescendantBindings=function(_bb1){
+var _bb2=_bb1.getDescendantBindingsByLocalName("treenode");
+var _bb3=true;
 var self=this;
-_ba3.each(function(desc){
+_bb2.each(function(desc){
 if(desc.isFocused){
 desc.blur();
 self._focusedTreeNodeBindings.del(self._focusedTreeNodeBindings.getIndex(desc));
 }
-return _ba4;
+return _bb3;
 });
 };
 TreeBinding.prototype.getFocusedTreeNodeBindings=function(){
@@ -18255,10 +18296,10 @@ this._grabKeyboard();
 }
 };
 TreeBinding.prototype._focusDefault=function(){
-var _ba7=this._treeBodyBinding.getChildBindingByLocalName("treenode");
-if(_ba7!=null){
-this.focusSingleTreeNodeBinding(_ba7);
-_ba7.callback();
+var _bb6=this._treeBodyBinding.getChildBindingByLocalName("treenode");
+if(_bb6!=null){
+this.focusSingleTreeNodeBinding(_bb6);
+_bb6.callback();
 }
 };
 TreeBinding.prototype.blur=function(){
@@ -18279,38 +18320,38 @@ this.unsubscribe(BroadcastMessages.KEY_ARROW);
 this.unsubscribe(BroadcastMessages.KEY_ENTER);
 this._hasKeyboard=false;
 };
-TreeBinding.prototype.add=function(_ba8){
-var _ba9=null;
+TreeBinding.prototype.add=function(_bb7){
+var _bb8=null;
 if(this._treeBodyBinding){
-_ba9=this._treeBodyBinding.add(_ba8);
+_bb8=this._treeBodyBinding.add(_bb7);
 }else{
-this._treeNodeBuffer.add(_ba8);
-_ba9=_ba8;
+this._treeNodeBuffer.add(_bb7);
+_bb8=_bb7;
 }
-return _ba9;
+return _bb8;
 };
-TreeBinding.prototype.addFirst=function(_baa){
+TreeBinding.prototype.addFirst=function(_bb9){
 throw new Error("Not implemented");
 };
 TreeBinding.prototype.empty=function(){
 this._treeBodyBinding.detachRecursive();
-var _bab=this._treeBodyBinding.bindingElement;
-_bab.innerHTML="";
+var _bba=this._treeBodyBinding.bindingElement;
+_bba.innerHTML="";
 };
 TreeBinding.prototype.isEmpty=function(){
 return this._treeNodeBindings.hasEntries()==false;
 };
 TreeBinding.prototype.collapse=function(){
 this.blurSelectedTreeNodes();
-this._treeNodeBindings.each(function(_bac,_bad){
-if(_bad.isContainer&&_bad.isOpen){
-_bad.close();
+this._treeNodeBindings.each(function(_bbb,_bbc){
+if(_bbc.isContainer&&_bbc.isOpen){
+_bbc.close();
 }
 });
 };
-TreeBinding.prototype.setSelectable=function(_bae){
-this._isSelectable=_bae;
-if(_bae){
+TreeBinding.prototype.setSelectable=function(_bbd){
+this._isSelectable=_bbd;
+if(_bbd){
 this._selectedTreeNodeBindings={};
 }else{
 this._selectedTreeNodeBindings=null;
@@ -18318,21 +18359,21 @@ this._selectionProperty=null;
 this._selectionValue=null;
 }
 };
-TreeBinding.prototype.setSelectionProperty=function(_baf){
-this._selectionProperty=_baf;
+TreeBinding.prototype.setSelectionProperty=function(_bbe){
+this._selectionProperty=_bbe;
 };
-TreeBinding.prototype.setSelectionValue=function(_bb0){
-if(_bb0){
-var list=new List(_bb0.split(" "));
+TreeBinding.prototype.setSelectionValue=function(_bbf){
+if(_bbf){
+var list=new List(_bbf.split(" "));
 this._selectionValue={};
 while(list.hasNext()){
 this._selectionValue[list.getNext()]=true;
 }
 }
 };
-TreeBinding.prototype.handleBroadcast=function(_bb2,arg){
-TreeBinding.superclass.handleBroadcast.call(this,_bb2,arg);
-switch(_bb2){
+TreeBinding.prototype.handleBroadcast=function(_bc1,arg){
+TreeBinding.superclass.handleBroadcast.call(this,_bc1,arg);
+switch(_bc1){
 case BroadcastMessages.TYPEDRAG_START:
 this.addEventListener(DOMEvents.MOUSEMOVE);
 this._yposition=this.boxObject.getGlobalPosition().y;
@@ -18346,9 +18387,9 @@ case BroadcastMessages.KEY_ARROW:
 this._navigateByKey(arg);
 break;
 case BroadcastMessages.KEY_ENTER:
-var _bb4=this.getFocusedTreeNodeBindings();
-if(_bb4.hasEntries()){
-var node=_bb4.getFirst();
+var _bc3=this.getFocusedTreeNodeBindings();
+if(_bc3.hasEntries()){
+var node=_bc3.getFirst();
 if(node.isContainer){
 if(node.isOpen){
 node.close();
@@ -18363,9 +18404,9 @@ break;
 }
 };
 TreeBinding.prototype._navigateByKey=function(key){
-var _bb7=this.getFocusedTreeNodeBindings();
-if(_bb7.hasEntries()){
-var node=_bb7.getFirst();
+var _bc6=this.getFocusedTreeNodeBindings();
+if(_bc6.hasEntries()){
+var node=_bc6.getFirst();
 var next=null;
 switch(key){
 case KeyEventCodes.VK_UP:
@@ -18385,12 +18426,12 @@ next=node.getChildBindingByLocalName("treenode");
 }else{
 next=node.getNextBindingByLocalName("treenode");
 if(next==null){
-var _bba=null;
-while(next==null&&(_bba=node.getAncestorBindingByLocalName("treenode"))!=null){
-if(_bba!=null){
-next=_bba.getNextBindingByLocalName("treenode");
+var _bc9=null;
+while(next==null&&(_bc9=node.getAncestorBindingByLocalName("treenode"))!=null){
+if(_bc9!=null){
+next=_bc9.getNextBindingByLocalName("treenode");
 }
-node=_bba;
+node=_bc9;
 }
 }
 }
@@ -18419,7 +18460,7 @@ this.focusSingleTreeNodeBinding(next);
 };
 TreeBinding.prototype.handleEvent=function(e){
 TreeBinding.superclass.handleEvent.call(this,e);
-var _bbc=DOMEvents.getTarget(e);
+var _bcb=DOMEvents.getTarget(e);
 switch(e.type){
 case DOMEvents.MOUSEMOVE:
 try{
@@ -18431,15 +18472,15 @@ throw (exception);
 }
 break;
 case DOMEvents.BEFOREUPDATE:
-var _bbd=new TreeCrawler();
+var _bcc=new TreeCrawler();
 var list=new List();
-_bbd.mode=TreeCrawler.MODE_GETOPEN;
-_bbd.crawl(this.bindingElement,list);
+_bcc.mode=TreeCrawler.MODE_GETOPEN;
+_bcc.crawl(this.bindingElement,list);
 var map=new Map();
 if(list.hasEntries()){
 while(list.hasNext()){
-var _bc0=list.getNext();
-map.set(_bc0.getHandle(),true);
+var _bcf=list.getNext();
+map.set(_bcf.getHandle(),true);
 }
 this._openTreeNodesBackupMap=map;
 }
@@ -18453,7 +18494,7 @@ TreeBinding.prototype._updatePositionIndicator=function(e){
 var y=e.clientY-this._yposition;
 var pos=this._acceptingPosition;
 var dim=this._acceptingDimension;
-var _bc5=this._positionIndicatorBinding;
+var _bd4=this._positionIndicatorBinding;
 if(this._acceptingTreeNodeBinding){
 var miny=pos.y;
 var maxy=pos.y+dim.h;
@@ -18464,44 +18505,44 @@ y=TreeBinding.grid(y);
 while(!this._acceptingPositions[y]){
 y+=TreeNodeBinding.HEIGHT;
 }
-if(y!=_bc5.getPosition().y){
-_bc5.setPosition(new Point(this._acceptingPosition.x+TreeNodeBinding.INDENT,y));
+if(y!=_bd4.getPosition().y){
+_bd4.setPosition(new Point(this._acceptingPosition.x+TreeNodeBinding.INDENT,y));
 }
-if(!_bc5.isVisible){
-_bc5.show();
-}
-}else{
-if(_bc5.isVisible){
-_bc5.hide();
-}
+if(!_bd4.isVisible){
+_bd4.show();
 }
 }else{
-if(_bc5.isVisible){
-_bc5.hide();
+if(_bd4.isVisible){
+_bd4.hide();
+}
+}
+}else{
+if(_bd4.isVisible){
+_bd4.hide();
 }
 }
 };
-TreeBinding.prototype.enablePositionIndicator=function(_bc8){
-this._acceptingTreeNodeBinding=_bc8;
-this._acceptingPosition=_bc8.boxObject.getLocalPosition();
-this._acceptingDimension=_bc8.boxObject.getDimension();
-this._acceptingPositions=this._getChildPositions(_bc8);
+TreeBinding.prototype.enablePositionIndicator=function(_bd7){
+this._acceptingTreeNodeBinding=_bd7;
+this._acceptingPosition=_bd7.boxObject.getLocalPosition();
+this._acceptingDimension=_bd7.boxObject.getDimension();
+this._acceptingPositions=this._getChildPositions(_bd7);
 };
 TreeBinding.prototype.disablePositionIndicator=function(){
 this._acceptingTreeNodeBinding=null;
 this._acceptingPosition=null;
 this._acceptingDimension=null;
 };
-TreeBinding.prototype._getChildPositions=function(_bc9){
+TreeBinding.prototype._getChildPositions=function(_bd8){
 var map={};
-var _bcb=_bc9.getChildBindingsByLocalName("treenode");
-var _bcc,pos,dim,y;
-y=TreeBinding.grid(_bc9.boxObject.getLocalPosition().y);
+var _bda=_bd8.getChildBindingsByLocalName("treenode");
+var _bdb,pos,dim,y;
+y=TreeBinding.grid(_bd8.boxObject.getLocalPosition().y);
 map[y]=true;
-while(_bcb.hasNext()){
-_bcc=_bcb.getNext();
-pos=_bcc.boxObject.getLocalPosition();
-dim=_bcc.boxObject.getDimension();
+while(_bda.hasNext()){
+_bdb=_bda.getNext();
+pos=_bdb.boxObject.getLocalPosition();
+dim=_bdb.boxObject.getDimension();
 y=TreeBinding.grid(pos.y+dim.h)-TreeNodeBinding.HEIGHT;
 map[y]=true;
 }
@@ -18510,8 +18551,8 @@ return map;
 TreeBinding.prototype.getDropIndex=function(){
 var y=this._positionIndicatorBinding.getPosition().y;
 var drop=0;
-for(var _bd2 in this._acceptingPositions){
-if(_bd2==y){
+for(var _be1 in this._acceptingPositions){
+if(_be1==y){
 break;
 }else{
 drop++;
@@ -18522,11 +18563,11 @@ return Number(drop);
 TreeBinding.prototype.getRootTreeNodeBindings=function(){
 return this._treeBodyBinding.getChildBindingsByLocalName("treenode");
 };
-TreeBinding.newInstance=function(_bd3){
-var _bd4=DOMUtil.createElementNS(Constants.NS_UI,"ui:tree",_bd3);
-var _bd5=UserInterface.registerBinding(_bd4,TreeBinding);
-_bd5.treeBodyBinding=TreeBodyBinding.newInstance(_bd3);
-return _bd5;
+TreeBinding.newInstance=function(_be2){
+var _be3=DOMUtil.createElementNS(Constants.NS_UI,"ui:tree",_be2);
+var _be4=UserInterface.registerBinding(_be3,TreeBinding);
+_be4.treeBodyBinding=TreeBodyBinding.newInstance(_be2);
+return _be4;
 };
 TreeBodyBinding.prototype=new FlexBoxBinding;
 TreeBodyBinding.prototype.constructor=TreeBodyBinding;
@@ -18545,32 +18586,32 @@ TreeBodyBinding.superclass.onBindingAttach.call(this);
 this.addActionListener(TreeNodeBinding.ACTION_FOCUSED);
 this.containingTreeBinding=UserInterface.getBinding(this.bindingElement.parentNode);
 };
-TreeBodyBinding.prototype.accept=function(_bd6){
-if(_bd6 instanceof TreeNodeBinding){
-this.logger.debug(_bd6);
+TreeBodyBinding.prototype.accept=function(_be5){
+if(_be5 instanceof TreeNodeBinding){
+this.logger.debug(_be5);
 }
 };
-TreeBodyBinding.prototype.handleAction=function(_bd7){
-TreeBodyBinding.superclass.handleAction.call(this,_bd7);
-switch(_bd7.type){
+TreeBodyBinding.prototype.handleAction=function(_be6){
+TreeBodyBinding.superclass.handleAction.call(this,_be6);
+switch(_be6.type){
 case TreeNodeBinding.ACTION_FOCUSED:
-this._scrollIntoView(_bd7.target);
-_bd7.consume();
+this._scrollIntoView(_be6.target);
+_be6.consume();
 break;
 }
 };
-TreeBodyBinding.prototype._scrollIntoView=function(_bd8){
+TreeBodyBinding.prototype._scrollIntoView=function(_be7){
 var a=this.boxObject.getDimension().h;
-var y=_bd8.boxObject.getLocalPosition().y;
-var h=_bd8.boxObject.getDimension().h;
+var y=_be7.boxObject.getLocalPosition().y;
+var h=_be7.boxObject.getDimension().h;
 var t=this.bindingElement.scrollTop;
 var l=this.bindingElement.scrollLeft;
-var _bde=_bd8.labelBinding.bindingElement;
+var _bed=_be7.labelBinding.bindingElement;
 if(y-t<0){
-_bde.scrollIntoView(true);
+_bed.scrollIntoView(true);
 }else{
 if(y-t+h>a){
-_bde.scrollIntoView(false);
+_bed.scrollIntoView(false);
 }
 }
 try{
@@ -18585,9 +18626,9 @@ if(Client.isExplorer){
 this.bindingElement.scrollLeft=l;
 }
 };
-TreeBodyBinding.newInstance=function(_bdf){
-var _be0=DOMUtil.createElementNS(Constants.NS_UI,"ui:treebody",_bdf);
-return UserInterface.registerBinding(_be0,TreeBodyBinding);
+TreeBodyBinding.newInstance=function(_bee){
+var _bef=DOMUtil.createElementNS(Constants.NS_UI,"ui:treebody",_bee);
+return UserInterface.registerBinding(_bef,TreeBodyBinding);
 };
 TreeNodeBinding.prototype=new Binding;
 TreeNodeBinding.prototype.constructor=TreeNodeBinding;
@@ -18627,28 +18668,28 @@ TreeNodeBinding.prototype.toString=function(){
 return "[TreeNodeBinding]";
 };
 TreeNodeBinding.prototype.serialize=function(){
-var _be1=TreeNodeBinding.superclass.serialize.call(this);
-if(_be1){
-_be1.label=this.getLabel();
-_be1.image=this.getImage();
-var _be2=this.getHandle();
-if(_be2&&_be2!=this.key){
-_be1.handle=_be2;
+var _bf0=TreeNodeBinding.superclass.serialize.call(this);
+if(_bf0){
+_bf0.label=this.getLabel();
+_bf0.image=this.getImage();
+var _bf1=this.getHandle();
+if(_bf1&&_bf1!=this.key){
+_bf0.handle=_bf1;
 }
 if(this.isOpen){
-_be1.open=true;
+_bf0.open=true;
 }
 if(this.isDisabled){
-_be1.disabled=true;
+_bf0.disabled=true;
 }
 if(this.dragType){
-_be1.dragtype=this.dragType;
+_bf0.dragtype=this.dragType;
 }
 if(this.dragAccept){
-_be1.dragaccept=this.dragAccept;
+_bf0.dragaccept=this.dragAccept;
 }
 }
-return _be1;
+return _bf0;
 };
 TreeNodeBinding.prototype.onBindingRegister=function(){
 TreeNodeBinding.superclass.onBindingRegister.call(this);
@@ -18689,9 +18730,9 @@ TreeNodeBinding.superclass.onBindingDispose.call(this);
 TreeNodeBinding.prototype._registerWithAncestorTreeBinding=function(){
 var node=this.bindingElement;
 while((node=node.parentNode)!=null&&!this.containingTreeBinding){
-var _be4=UserInterface.getBinding(node);
-if(_be4&&_be4.containingTreeBinding){
-this.containingTreeBinding=_be4.containingTreeBinding;
+var _bf3=UserInterface.getBinding(node);
+if(_bf3&&_bf3.containingTreeBinding){
+this.containingTreeBinding=_bf3.containingTreeBinding;
 }
 }
 if(this.containingTreeBinding){
@@ -18702,25 +18743,25 @@ throw "TreeNodeBinding attached outside TreeBodyBinding";
 }
 };
 TreeNodeBinding.prototype.getHandle=function(){
-var _be5=this.key;
-var _be6=this.getProperty("handle");
-if(_be6){
-_be5=_be6;
+var _bf4=this.key;
+var _bf5=this.getProperty("handle");
+if(_bf5){
+_bf4=_bf5;
 }
-return _be5;
+return _bf4;
 };
-TreeNodeBinding.prototype.setHandle=function(_be7){
-this.setProperty("handle",_be7);
+TreeNodeBinding.prototype.setHandle=function(_bf6){
+this.setProperty("handle",_bf6);
 };
 TreeNodeBinding.prototype.buildDOMContent=function(){
 var url=this.getProperty("url");
-var _be9=this.getProperty("label");
-var _bea=this.getProperty("tooltip");
-var _beb=this.getProperty("oncommand");
-var _bec=this.getProperty("onbindingfocus");
-var _bed=this.getProperty("onbindingblur");
-var _bee=this.getProperty("focused");
-var _bef=this.getProperty("callbackid");
+var _bf8=this.getProperty("label");
+var _bf9=this.getProperty("tooltip");
+var _bfa=this.getProperty("oncommand");
+var _bfb=this.getProperty("onbindingfocus");
+var _bfc=this.getProperty("onbindingblur");
+var _bfd=this.getProperty("focused");
+var _bfe=this.getProperty("callbackid");
 if(url){
 var link=DOMUtil.createElementNS(Constants.NS_XHTML,"a",this.bindingDocument);
 link.href=url;
@@ -18745,11 +18786,11 @@ this.labelBinding.addEventListener(DOMEvents.MOUSEUP,this.dragger);
 if(this.isContainer&&!this.dragAccept){
 this.acceptor=new BindingAcceptor(this);
 }
-if(_be9!=null){
-this.setLabel(_be9);
+if(_bf8!=null){
+this.setLabel(_bf8);
 }
-if(_bea!=null){
-this.setToolTip(_bea);
+if(_bf9!=null){
+this.setToolTip(_bf9);
 }
 if(!this.imageProfile){
 this._computeImageProfile();
@@ -18758,34 +18799,34 @@ this.setImage(this.computeImage());
 if(this.isContainer){
 this.updateClassNames();
 }
-var _bf1=this.bindingWindow.WindowManager;
-if(_beb!=null){
+var _c00=this.bindingWindow.WindowManager;
+if(_bfa!=null){
 this.oncommand=function(){
-Binding.evaluate(_beb,this);
+Binding.evaluate(_bfa,this);
 };
 }
-if(_bec!=null){
+if(_bfb!=null){
 this.onfocus=function(){
-Binding.evaluate(_bec,this);
+Binding.evaluate(_bfb,this);
 };
 }
-if(_bed!=null){
+if(_bfc!=null){
 this.onblur=function(){
-Binding.evaluate(_bed,this);
+Binding.evaluate(_bfc,this);
 };
 }
-if(_bee==true){
+if(_bfd==true){
 this.focus();
 }
-if(_bef!=null){
-Binding.dotnetify(this,_bef);
+if(_bfe!=null){
+Binding.dotnetify(this,_bfe);
 }
 };
-TreeNodeBinding.prototype.handleAction=function(_bf2){
-TreeNodeBinding.superclass.handleAction.call(this,_bf2);
-switch(_bf2.type){
+TreeNodeBinding.prototype.handleAction=function(_c01){
+TreeNodeBinding.superclass.handleAction.call(this,_c01);
+switch(_c01.type){
 case TreeNodeBinding.ACTION_FOCUSED:
-if(_bf2.target!=this){
+if(_c01.target!=this){
 if(this.isContainer&&!this.isOpen){
 this.open();
 }
@@ -18798,39 +18839,39 @@ TreeNodeBinding.prototype.enableDragging=function(){
 TreeNodeBinding.prototype.disableDragging=function(){
 this.isDraggable=false;
 };
-TreeNodeBinding.prototype.accept=function(_bf3,_bf4){
-var _bf5=true;
-if(_bf3 instanceof TreeNodeBinding){
-var _bf6=false;
-var _bf7=this.bindingElement;
-var _bf8=this.containingTreeBinding.bindingElement;
-while(!_bf6&&_bf7!=_bf8){
-if(_bf7==_bf3.getBindingElement()){
-_bf6=true;
+TreeNodeBinding.prototype.accept=function(_c02,_c03){
+var _c04=true;
+if(_c02 instanceof TreeNodeBinding){
+var _c05=false;
+var _c06=this.bindingElement;
+var _c07=this.containingTreeBinding.bindingElement;
+while(!_c05&&_c06!=_c07){
+if(_c06==_c02.getBindingElement()){
+_c05=true;
 }else{
-_bf7=_bf7.parentNode;
+_c06=_c06.parentNode;
 }
 }
-if(_bf6){
+if(_c05){
 Dialog.error("Not Allowed","You cannot move a folder into itself.");
-_bf5=false;
+_c04=false;
 }else{
-this.acceptTreeNodeBinding(_bf3,_bf4);
+this.acceptTreeNodeBinding(_c02,_c03);
 }
 }else{
-_bf5=false;
+_c04=false;
 }
-return _bf5;
+return _c04;
 };
-TreeNodeBinding.prototype.acceptTreeNodeBinding=function(_bf9,_bfa){
-var _bfb=_bf9.serializeToString();
-var _bfc=new BindingParser(this.bindingDocument);
-var _bfd=_bfc.parseFromString(_bfb).getFirst();
-_bfa=_bfa?_bfa:this.containingTreeBinding.getDropIndex();
-var _bfe=this.getChildElementsByLocalName("treenode");
-this.bindingElement.insertBefore(_bfd,_bfe.get(_bfa));
+TreeNodeBinding.prototype.acceptTreeNodeBinding=function(_c08,_c09){
+var _c0a=_c08.serializeToString();
+var _c0b=new BindingParser(this.bindingDocument);
+var _c0c=_c0b.parseFromString(_c0a).getFirst();
+_c09=_c09?_c09:this.containingTreeBinding.getDropIndex();
+var _c0d=this.getChildElementsByLocalName("treenode");
+this.bindingElement.insertBefore(_c0c,_c0d.get(_c09));
 this.bindingWindow.DocumentManager.attachBindings(this.bindingElement);
-_bf9.dispose();
+_c08.dispose();
 };
 TreeNodeBinding.prototype.showAcceptance=function(){
 this.containingTreeBinding.enablePositionIndicator(this);
@@ -18839,13 +18880,13 @@ TreeNodeBinding.prototype.hideAcceptance=function(){
 this.containingTreeBinding.disablePositionIndicator();
 };
 TreeNodeBinding.prototype._computeImageProfile=function(){
-var _bff=this.getProperty("image");
-var _c00=this.getProperty("image-active");
-var _c01=this.getProperty("image-disabled");
-_c00=_c00?_c00:this.isContainer?_bff?_bff:TreeNodeBinding.DEFAULT_FOLDER_OPEN:_bff?_bff:TreeNodeBinding.DEFAULT_ITEM;
-_c01=_c01?_c01:this.isContainer?_bff?_bff:TreeNodeBinding.DEFAULT_FOLDER_DISABLED:_bff?_bff:TreeNodeBinding.DEFAULT_ITEM_DISABLED;
-_bff=_bff?_bff:this.isContainer?TreeNodeBinding.DEFAULT_FOLDER_CLOSED:TreeNodeBinding.DEFAULT_ITEM;
-this.imageProfile=new ImageProfile({image:_bff,imageHover:null,imageActive:_c00,imageDisabled:_c01});
+var _c0e=this.getProperty("image");
+var _c0f=this.getProperty("image-active");
+var _c10=this.getProperty("image-disabled");
+_c0f=_c0f?_c0f:this.isContainer?_c0e?_c0e:TreeNodeBinding.DEFAULT_FOLDER_OPEN:_c0e?_c0e:TreeNodeBinding.DEFAULT_ITEM;
+_c10=_c10?_c10:this.isContainer?_c0e?_c0e:TreeNodeBinding.DEFAULT_FOLDER_DISABLED:_c0e?_c0e:TreeNodeBinding.DEFAULT_ITEM_DISABLED;
+_c0e=_c0e?_c0e:this.isContainer?TreeNodeBinding.DEFAULT_FOLDER_CLOSED:TreeNodeBinding.DEFAULT_ITEM;
+this.imageProfile=new ImageProfile({image:_c0e,imageHover:null,imageActive:_c0f,imageDisabled:_c10});
 };
 TreeNodeBinding.prototype.assignDOMEvents=function(){
 this.labelBinding.addEventListener(DOMEvents.DOUBLECLICK,this);
@@ -18859,16 +18900,16 @@ if(this.isAttached){
 this.labelBinding.setImage(url);
 }
 };
-TreeNodeBinding.prototype.setLabel=function(_c03){
-this.setProperty("label",String(_c03));
+TreeNodeBinding.prototype.setLabel=function(_c12){
+this.setProperty("label",String(_c12));
 if(this.isAttached){
-this.labelBinding.setLabel(String(_c03));
+this.labelBinding.setLabel(String(_c12));
 }
 };
-TreeNodeBinding.prototype.setToolTip=function(_c04){
-this.setProperty("tooltip",String(_c04));
+TreeNodeBinding.prototype.setToolTip=function(_c13){
+this.setProperty("tooltip",String(_c13));
 if(this.isAttached){
-this.labelBinding.setToolTip(String(_c04));
+this.labelBinding.setToolTip(String(_c13));
 }
 };
 TreeNodeBinding.prototype.getImage=function(){
@@ -18881,25 +18922,25 @@ TreeNodeBinding.prototype.getToolTip=function(){
 return this.getProperty("tooltip");
 };
 TreeNodeBinding.prototype.computeImage=function(){
-var _c05=this.imageProfile.getDefaultImage();
-var _c06=this.imageProfile.getActiveImage();
-_c06=_c06?_c06:_c05;
-return this.isOpen?_c06:_c05;
+var _c14=this.imageProfile.getDefaultImage();
+var _c15=this.imageProfile.getActiveImage();
+_c15=_c15?_c15:_c14;
+return this.isOpen?_c15:_c14;
 };
 TreeNodeBinding.prototype.handleEvent=function(e){
 TreeNodeBinding.superclass.handleEvent.call(this,e);
-var _c08=DOMEvents.getTarget(e);
-var _c09=this.labelBinding.bindingElement;
-var _c0a=this.labelBinding.shadowTree.labelBody;
-var _c0b=this.labelBinding.shadowTree.labelText;
+var _c17=DOMEvents.getTarget(e);
+var _c18=this.labelBinding.bindingElement;
+var _c19=this.labelBinding.shadowTree.labelBody;
+var _c1a=this.labelBinding.shadowTree.labelText;
 switch(e.type){
 case DOMEvents.MOUSEDOWN:
-switch(_c08){
-case _c09:
+switch(_c17){
+case _c18:
 this._onAction(e);
 break;
-case _c0a:
-case _c0b:
+case _c19:
+case _c1a:
 if(!this.isDisabled){
 this._onFocus(e);
 }
@@ -18910,11 +18951,11 @@ case DOMEvents.DOUBLECLICK:
 this._onAction(e);
 break;
 case UpdateManager.EVENT_AFTERUPDATE:
-if(_c08.parentNode==this.bindingElement&&_c08.__updateType==Update.TYPE_INSERT){
-var _c09=this.labelBinding.bindingElement;
-if(DOMUtil.getLocalName(_c08)=="treenode"){
-if(_c08==this.bindingElement.firstChild){
-this.bindingElement.insertBefore(_c08,_c09.nextSibling);
+if(_c17.parentNode==this.bindingElement&&_c17.__updateType==Update.TYPE_INSERT){
+var _c18=this.labelBinding.bindingElement;
+if(DOMUtil.getLocalName(_c17)=="treenode"){
+if(_c17==this.bindingElement.firstChild){
+this.bindingElement.insertBefore(_c17,_c18.nextSibling);
 }
 }
 break;
@@ -18925,10 +18966,10 @@ if(BindingDragger.isDragging&&this.isContainer&&!this.isOpen){
 switch(e.type){
 case DOMEvents.MOUSEOVER:
 case DOMEvents.MOUSEOUT:
-switch(_c08){
-case _c09:
-case _c0a:
-case _c0b:
+switch(_c17){
+case _c18:
+case _c19:
+case _c1a:
 this._folderDragOverTimeout(e);
 break;
 }
@@ -18950,14 +18991,14 @@ break;
 }
 };
 TreeNodeBinding.prototype._onAction=function(e){
-var _c0f=true;
+var _c1e=true;
 if(e.type=="mousedown"){
-var _c10=e.button==(e.target?0:1);
-if(!_c10){
-_c0f=false;
+var _c1f=e.button==(e.target?0:1);
+if(!_c1f){
+_c1e=false;
 }
 }
-if(_c0f){
+if(_c1e){
 if(this.isContainer){
 if(!this.isOpen){
 this.open();
@@ -18976,11 +19017,11 @@ this.oncommand();
 this.dispatchAction(TreeNodeBinding.ACTION_COMMAND);
 };
 TreeNodeBinding.prototype._onFocus=function(e){
-var _c12=false;
+var _c21=false;
 if(e!=null){
-_c12=e.shiftKey;
+_c21=e.shiftKey;
 }
-this.dispatchAction(_c12?TreeNodeBinding.ACTION_ONMULTIFOCUS:TreeNodeBinding.ACTION_ONFOCUS);
+this.dispatchAction(_c21?TreeNodeBinding.ACTION_ONMULTIFOCUS:TreeNodeBinding.ACTION_ONFOCUS);
 if(e!=null){
 this.stopPropagation(e);
 }
@@ -19077,9 +19118,9 @@ this.labelBinding.detachClassName("open");
 }
 };
 TreeNodeBinding.prototype.empty=function(){
-var _c15=this.getDescendantBindingsByLocalName("treenode");
-_c15.each(function(_c16){
-_c16.dispose();
+var _c24=this.getDescendantBindingsByLocalName("treenode");
+_c24.each(function(_c25){
+_c25.dispose();
 });
 };
 TreeNodeBinding.prototype.showDrag=function(){
@@ -19091,18 +19132,18 @@ this.detachClassName(TreeNodeBinding.CLASSNAME_DRAGGED);
 TreeNodeBinding.prototype.hasChildren=function(){
 return this.bindingElement.hasChildNodes();
 };
-TreeNodeBinding.prototype.handleElement=function(_c17){
-var _c18=_c17.getAttribute("focused");
-if(_c18=="true"){
+TreeNodeBinding.prototype.handleElement=function(_c26){
+var _c27=_c26.getAttribute("focused");
+if(_c27=="true"){
 if(!this.isFocused){
 this.focus();
 }
 }
 return false;
 };
-TreeNodeBinding.newInstance=function(_c19){
-var _c1a=DOMUtil.createElementNS(Constants.NS_UI,"ui:treenode",_c19);
-return UserInterface.registerBinding(_c1a,TreeNodeBinding);
+TreeNodeBinding.newInstance=function(_c28){
+var _c29=DOMUtil.createElementNS(Constants.NS_UI,"ui:treenode",_c28);
+return UserInterface.registerBinding(_c29,TreeNodeBinding);
 };
 TreeContentBinding.prototype=new Binding;
 TreeContentBinding.prototype.constructor=TreeContentBinding;
@@ -19114,9 +19155,9 @@ return this;
 TreeContentBinding.prototype.toString=function(){
 return "[TreeContentBinding]";
 };
-TreeContentBinding.newInstance=function(_c1b){
-var _c1c=DOMUtil.createElementNS(Constants.NS_UI,"ui:treecontent",_c1b);
-return UserInterface.registerBinding(_c1c,TreeContentBinding);
+TreeContentBinding.newInstance=function(_c2a){
+var _c2b=DOMUtil.createElementNS(Constants.NS_UI,"ui:treecontent",_c2a);
+return UserInterface.registerBinding(_c2b,TreeContentBinding);
 };
 TreePositionIndicatorBinding.prototype=new Binding;
 TreePositionIndicatorBinding.prototype.constructor=TreePositionIndicatorBinding;
@@ -19132,18 +19173,18 @@ TreePositionIndicatorBinding.prototype.onBindingAttach=function(){
 TreePositionIndicatorBinding.superclass.onBindingAttach.call(this);
 this.hide();
 };
-TreePositionIndicatorBinding.prototype.setPosition=function(_c1d){
-this.bindingElement.style.left=_c1d.x+"px";
-this.bindingElement.style.top=_c1d.y+"px";
-this._geometry.x=_c1d.x;
-this._geometry.y=_c1d.y;
+TreePositionIndicatorBinding.prototype.setPosition=function(_c2c){
+this.bindingElement.style.left=_c2c.x+"px";
+this.bindingElement.style.top=_c2c.y+"px";
+this._geometry.x=_c2c.x;
+this._geometry.y=_c2c.y;
 };
 TreePositionIndicatorBinding.prototype.getPosition=function(){
 return new Point(this._geometry.x,this._geometry.y);
 };
-TreePositionIndicatorBinding.newInstance=function(_c1e){
-var _c1f=DOMUtil.createElementNS(Constants.NS_UI,"ui:treepositionindicator",_c1e);
-return UserInterface.registerBinding(_c1f,TreePositionIndicatorBinding);
+TreePositionIndicatorBinding.newInstance=function(_c2d){
+var _c2e=DOMUtil.createElementNS(Constants.NS_UI,"ui:treepositionindicator",_c2d);
+return UserInterface.registerBinding(_c2e,TreePositionIndicatorBinding);
 };
 TreeCrawler.prototype=new BindingCrawler;
 TreeCrawler.prototype.constructor=TreeCrawler;
@@ -19159,26 +19200,26 @@ return this;
 TreeCrawler.prototype._construct=function(){
 TreeCrawler.superclass._construct.call(this);
 var self=this;
-this.addFilter(function(_c21){
-var _c22=UserInterface.getBinding(_c21);
-var _c23=null;
-var _c23=null;
-if(!_c22 instanceof TreeNodeBinding){
-_c23=NodeCrawler.SKIP_NODE;
+this.addFilter(function(_c30){
+var _c31=UserInterface.getBinding(_c30);
+var _c32=null;
+var _c32=null;
+if(!_c31 instanceof TreeNodeBinding){
+_c32=NodeCrawler.SKIP_NODE;
 }
-return _c23;
+return _c32;
 });
-this.addFilter(function(_c24,list){
-var _c26=UserInterface.getBinding(_c24);
-var _c27=null;
+this.addFilter(function(_c33,list){
+var _c35=UserInterface.getBinding(_c33);
+var _c36=null;
 switch(self.mode){
 case TreeCrawler.MODE_GETOPEN:
-if(_c26.isOpen){
-list.add(_c26);
+if(_c35.isOpen){
+list.add(_c35);
 }
 break;
 }
-return _c27;
+return _c36;
 });
 };
 ShadowBinding.prototype=new MatrixBinding;
@@ -19199,37 +19240,37 @@ ShadowBinding.prototype.onBindingRegister=function(){
 ShadowBinding.superclass.onBindingRegister.call(this);
 this.hide();
 };
-ShadowBinding.prototype.shadow=function(_c28){
-this.targetBinding=_c28;
-_c28.addActionListener(Binding.ACTION_POSITIONCHANGED,this);
-_c28.addActionListener(Binding.ACTION_DIMENSIONCHANGED,this);
-_c28.addActionListener(Binding.ACTION_VISIBILITYCHANGED,this);
-_c28.bindingElement.parentNode.appendChild(this.bindingElement);
-if(_c28.isVisible){
+ShadowBinding.prototype.shadow=function(_c37){
+this.targetBinding=_c37;
+_c37.addActionListener(Binding.ACTION_POSITIONCHANGED,this);
+_c37.addActionListener(Binding.ACTION_DIMENSIONCHANGED,this);
+_c37.addActionListener(Binding.ACTION_VISIBILITYCHANGED,this);
+_c37.bindingElement.parentNode.appendChild(this.bindingElement);
+if(_c37.isVisible){
 this.show();
-this.setPosition(_c28.getPosition());
-this.setDimension(_c28.getDimension());
+this.setPosition(_c37.getPosition());
+this.setDimension(_c37.getDimension());
 }else{
 this.hide();
 }
 };
-ShadowBinding.prototype.handleAction=function(_c29){
-ShadowBinding.superclass.handleAction.call(this,_c29);
-var _c2a=_c29.target;
-if(_c2a==this.targetBinding){
-switch(_c29.type){
+ShadowBinding.prototype.handleAction=function(_c38){
+ShadowBinding.superclass.handleAction.call(this,_c38);
+var _c39=_c38.target;
+if(_c39==this.targetBinding){
+switch(_c38.type){
 case Binding.ACTION_POSITIONCHANGED:
 this.setPosition(this.targetBinding.getPosition());
-_c29.consume();
+_c38.consume();
 break;
 case Binding.ACTION_DIMENSIONCHANGED:
 this.setDimension(this.targetBinding.getDimension());
 break;
 case Binding.ACTION_VISIBILITYCHANGED:
-if(_c2a.isVisible){
+if(_c39.isVisible){
 this.show();
-this.setPosition(_c2a.getPosition());
-this.setDimension(_c2a.getDimension());
+this.setPosition(_c39.getPosition());
+this.setDimension(_c39.getDimension());
 }else{
 this.hide();
 }
@@ -19237,18 +19278,18 @@ break;
 }
 }
 };
-ShadowBinding.prototype.setPosition=function(_c2b){
-var _c2c=this.offset-this.expand;
-this.bindingElement.style.left=new String(_c2b.x+_c2c)+"px";
-this.bindingElement.style.top=new String(_c2b.y+_c2c)+"px";
+ShadowBinding.prototype.setPosition=function(_c3a){
+var _c3b=this.offset-this.expand;
+this.bindingElement.style.left=new String(_c3a.x+_c3b)+"px";
+this.bindingElement.style.top=new String(_c3a.y+_c3b)+"px";
 };
 ShadowBinding.prototype.setDimension=function(dim){
 this.bindingElement.style.width=new String(dim.w+2*this.expand)+"px";
 this.bindingElement.style.height=new String(dim.h+2*this.expand)+"px";
 };
-ShadowBinding.newInstance=function(_c2e){
-var _c2f=DOMUtil.createElementNS(Constants.NS_UI,"ui:shadow",_c2e);
-return UserInterface.registerBinding(_c2f,ShadowBinding);
+ShadowBinding.newInstance=function(_c3d){
+var _c3e=DOMUtil.createElementNS(Constants.NS_UI,"ui:shadow",_c3d);
+return UserInterface.registerBinding(_c3e,ShadowBinding);
 };
 DockControlImageProfile.prototype=new ControlImageProfile;
 DockControlImageProfile.prototype.constructor=DockControlImageProfile;
@@ -19257,8 +19298,8 @@ DockControlImageProfile.IMAGE_MINIMIZE=Resolver.resolve("${skin}/docks/control-m
 DockControlImageProfile.IMAGE_MAXIMIZE=Resolver.resolve("${skin}/docks/control-maximize-${string}.png");
 DockControlImageProfile.IMAGE_RESTORE=Resolver.resolve("${skin}/docks/control-restore-${string}.png");
 DockControlImageProfile.IMAGE_CLOSE=null;
-function DockControlImageProfile(_c30){
-this.binding=_c30;
+function DockControlImageProfile(_c3f){
+this.binding=_c3f;
 }
 DockControlImageProfile.prototype.getHoverImage=function(){
 return null;
@@ -19277,12 +19318,12 @@ this.logger=SystemLogger.getLogger("DockTabsButtonBinding");
 DockTabsButtonBinding.prototype.toString=function(){
 return "[DockTabsButtonBinding]";
 };
-DockTabsButtonBinding.newInstance=function(_c31){
-var _c32=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbarbutton",_c31);
-_c32.setAttribute("type","checkbox");
-_c32.setAttribute("popup","app.bindingMap.tabsbuttonpopup");
-_c32.className="tabbutton";
-return UserInterface.registerBinding(_c32,DockTabsButtonBinding);
+DockTabsButtonBinding.newInstance=function(_c40){
+var _c41=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbarbutton",_c40);
+_c41.setAttribute("type","checkbox");
+_c41.setAttribute("popup","app.bindingMap.tabsbuttonpopup");
+_c41.className="tabbutton";
+return UserInterface.registerBinding(_c41,DockTabsButtonBinding);
 };
 DockBinding.prototype=new TabBoxBinding;
 DockBinding.prototype.constructor=DockBinding;
@@ -19329,12 +19370,12 @@ DockBinding.prototype.toString=function(){
 return "[DockBinding]";
 };
 DockBinding.prototype.serialize=function(){
-var _c33=DockBinding.superclass.serialize.call(this);
-if(_c33){
-_c33.active=this.isActive?true:null;
-_c33.collapsed=this.isCollapsed?true:null;
+var _c42=DockBinding.superclass.serialize.call(this);
+if(_c42){
+_c42.active=this.isActive?true:null;
+_c42.collapsed=this.isCollapsed?true:null;
 }
-return _c33;
+return _c42;
 };
 DockBinding.prototype.onBindingRegister=function(){
 DockBinding.superclass.onBindingRegister.call(this);
@@ -19363,13 +19404,13 @@ this.showControls(false);
 DockBinding.superclass.onBindingInitialize.call(this);
 };
 DockBinding.prototype.buildDOMContent=function(){
-var _c34=UserInterface.getBinding(this.bindingElement.parentNode);
-var _c35=MatrixBinding.newInstance(this.bindingDocument);
-_c35.attachClassName("dockliner");
-this.shadowTree.dockLiner=_c35;
-_c34.add(_c35);
-_c35.attach();
-_c35.manifest();
+var _c43=UserInterface.getBinding(this.bindingElement.parentNode);
+var _c44=MatrixBinding.newInstance(this.bindingDocument);
+_c44.attachClassName("dockliner");
+this.shadowTree.dockLiner=_c44;
+_c43.add(_c44);
+_c44.attach();
+_c44.manifest();
 var type=this.getProperty("type");
 this.type=type?type:DockBinding.TYPE_TOOLS;
 this.attachClassName(this.type);
@@ -19377,107 +19418,107 @@ if(this.getProperty("active")==true){
 this.activate();
 }
 };
-DockBinding.prototype.interceptDisplayChange=function(_c37){
-var _c38=this.getSelectedTabPanelBinding();
-if(_c38){
-_c38.isVisible=_c37;
-_c38.dispatchAction(Binding.ACTION_VISIBILITYCHANGED);
+DockBinding.prototype.interceptDisplayChange=function(_c46){
+var _c47=this.getSelectedTabPanelBinding();
+if(_c47){
+_c47.isVisible=_c46;
+_c47.dispatchAction(Binding.ACTION_VISIBILITYCHANGED);
 }
 };
-DockBinding.prototype.prepareNewView=function(_c39){
-var _c3a=this._getBindingForDefinition(_c39);
-var _c3b=DockTabBinding.newInstance(this.bindingDocument);
-_c3b.setHandle(_c39.handle);
-_c3b.setLabel(this.type==DockBinding.TYPE_EDITORS?null:_c39.label);
-_c3b.setImage(_c39.image);
-_c3b.setToolTip(_c39.toolTip);
-_c3b.setEntityToken(_c39.entityToken);
-_c3b.setAssociatedView(_c3a);
-this.appendTabByBindings(_c3b,null);
-this._setupPageBindingListeners(_c3b);
-var _c3c=this.getTabPanelBinding(_c3b);
-_c3a.snapToBinding(_c3c);
-var _c3d=this.bindingWindow.bindingMap.views;
-_c3d.add(_c3a);
+DockBinding.prototype.prepareNewView=function(_c48){
+var _c49=this._getBindingForDefinition(_c48);
+var _c4a=DockTabBinding.newInstance(this.bindingDocument);
+_c4a.setHandle(_c48.handle);
+_c4a.setLabel(this.type==DockBinding.TYPE_EDITORS?null:_c48.label);
+_c4a.setImage(_c48.image);
+_c4a.setToolTip(_c48.toolTip);
+_c4a.setEntityToken(_c48.entityToken);
+_c4a.setAssociatedView(_c49);
+this.appendTabByBindings(_c4a,null);
+this._setupPageBindingListeners(_c4a);
+var _c4b=this.getTabPanelBinding(_c4a);
+_c49.snapToBinding(_c4b);
+var _c4c=this.bindingWindow.bindingMap.views;
+_c4c.add(_c49);
 if(!this.isActive){
 this.activate();
 }
-_c3a.attach();
+_c49.attach();
 };
-DockBinding.prototype.prepareOpenView=function(_c3e,_c3f){
+DockBinding.prototype.prepareOpenView=function(_c4d,_c4e){
 this.logger.debug("DockBinding.prototype.prepareOpenView: _setupDirtyStuff required?");
-_c3f.setLabel(_c3e.label);
-_c3f.setImage(_c3e.image);
-_c3f.setToolTip(_c3e.toolTip);
-this._setupPageBindingListeners(_c3f);
-var _c40=this.getTabPanelBinding(_c3f);
-var _c41=this._getBindingForDefinition(_c3e);
-_c3f.setAssociatedView(_c41);
-_c41.snapToBinding(_c40);
-UserInterface.getBinding(this.bindingDocument.body).add(_c41);
-_c41.attach();
+_c4e.setLabel(_c4d.label);
+_c4e.setImage(_c4d.image);
+_c4e.setToolTip(_c4d.toolTip);
+this._setupPageBindingListeners(_c4e);
+var _c4f=this.getTabPanelBinding(_c4e);
+var _c50=this._getBindingForDefinition(_c4d);
+_c4e.setAssociatedView(_c50);
+_c50.snapToBinding(_c4f);
+UserInterface.getBinding(this.bindingDocument.body).add(_c50);
+_c50.attach();
 };
-DockBinding.prototype._getBindingForDefinition=function(_c42){
-var _c43=this.bindingWindow.bindingMap.views;
-var view=ViewBinding.newInstance(_c43.bindingDocument);
-view.setDefinition(_c42);
+DockBinding.prototype._getBindingForDefinition=function(_c51){
+var _c52=this.bindingWindow.bindingMap.views;
+var view=ViewBinding.newInstance(_c52.bindingDocument);
+view.setDefinition(_c51);
 return view;
 };
-DockBinding.prototype._setupPageBindingListeners=function(_c45){
-var _c46=this.getTabPanelBinding(_c45);
+DockBinding.prototype._setupPageBindingListeners=function(_c54){
+var _c55=this.getTabPanelBinding(_c54);
 var self=this;
-var _c48={handleAction:function(_c49){
-var _c4a=_c49.target;
-switch(_c49.type){
+var _c57={handleAction:function(_c58){
+var _c59=_c58.target;
+switch(_c58.type){
 case PageBinding.ACTION_ATTACHED:
 TabBoxBinding.currentActiveInstance=self;
 break;
 case PageBinding.ACTION_INITIALIZED:
-_c4a.reflex(true);
-var view=_c45.getAssociatedView();
-if(_c4a.bindingWindow==view.getContentWindow()){
-_c45.updateDisplay(_c4a);
+_c59.reflex(true);
+var view=_c54.getAssociatedView();
+if(_c59.bindingWindow==view.getContentWindow()){
+_c54.updateDisplay(_c59);
 EventBroadcaster.broadcast(BroadcastMessages.VIEW_COMPLETED,view.getHandle());
 if(StatusBar.state==StatusBar.BUSY){
 StatusBar.clear();
 }
 }
-_c45.onPageInitialize(_c4a);
-_c49.consume();
+_c54.onPageInitialize(_c59);
+_c58.consume();
 break;
 case DockTabBinding.ACTION_UPDATE_VISUAL:
-_c45.updateDisplay(_c4a);
-_c49.consume();
+_c54.updateDisplay(_c59);
+_c58.consume();
 break;
 case DockTabBinding.ACTION_UPDATE_TOKEN:
-_c45.updateEntityToken(_c4a);
-_c49.consume();
+_c54.updateEntityToken(_c59);
+_c58.consume();
 break;
 case EditorPageBinding.ACTION_DIRTY:
-_c45.setDirty(true);
+_c54.setDirty(true);
 break;
 case EditorPageBinding.ACTION_SAVE:
-_c45.onSaveStart();
+_c54.onSaveStart();
 break;
 case ViewBinding.ACTION_ONCLOSE:
-self.closeTab(_c45);
-_c49.consume();
+self.closeTab(_c54);
+_c58.consume();
 break;
 case ViewBinding.ACTION_ONCLOSE_FORCE:
-self.closeTab(_c45,true);
-_c49.consume();
+self.closeTab(_c54,true);
+_c58.consume();
 break;
 case DockPanelBinding.ACTION_FORCE_SELECT:
-self.select(_c45);
+self.select(_c54);
 break;
 case Binding.ACTION_FORCE_REFLEX:
-_c46.reflex(true);
-_c49.consume();
+_c55.reflex(true);
+_c58.consume();
 break;
 case DockTabBinding.ACTION_FORCE_CLEAN:
 case EditorPageBinding.ACTION_CLEAN:
-if(_c45.isDirty){
-_c45.setDirty(false);
+if(_c54.isDirty){
+_c54.setDirty(false);
 }
 break;
 case WindowBinding.ACTION_ONLOAD:
@@ -19485,26 +19526,26 @@ alert("HWEJ");
 break;
 }
 }};
-new List([DockTabBinding.ACTION_UPDATE_VISUAL,DockTabBinding.ACTION_UPDATE_TOKEN,PageBinding.ACTION_ATTACHED,PageBinding.ACTION_INITIALIZED,EditorPageBinding.ACTION_DIRTY,EditorPageBinding.ACTION_CLEAN,EditorPageBinding.ACTION_SAVE,ViewBinding.ACTION_ONCLOSE,ViewBinding.ACTION_ONCLOSE_FORCE,DockPanelBinding.ACTION_FORCE_SELECT,Binding.ACTION_FORCE_REFLEX,DockTabBinding.ACTION_FORCE_CLEAN,WindowBinding.ACTION_ONLOAD]).each(function(_c4c){
-_c46.addActionListener(_c4c,_c48);
+new List([DockTabBinding.ACTION_UPDATE_VISUAL,DockTabBinding.ACTION_UPDATE_TOKEN,PageBinding.ACTION_ATTACHED,PageBinding.ACTION_INITIALIZED,EditorPageBinding.ACTION_DIRTY,EditorPageBinding.ACTION_CLEAN,EditorPageBinding.ACTION_SAVE,ViewBinding.ACTION_ONCLOSE,ViewBinding.ACTION_ONCLOSE_FORCE,DockPanelBinding.ACTION_FORCE_SELECT,Binding.ACTION_FORCE_REFLEX,DockTabBinding.ACTION_FORCE_CLEAN,WindowBinding.ACTION_ONLOAD]).each(function(_c5b){
+_c55.addActionListener(_c5b,_c57);
 });
 };
 DockBinding.prototype.summonTabPanelBinding=function(){
 return DockPanelBinding.newInstance(this.bindingDocument);
 };
-DockBinding.prototype.handleAction=function(_c4d){
-DockBinding.superclass.handleAction.call(this,_c4d);
-var _c4e=_c4d.target;
-switch(_c4d.type){
+DockBinding.prototype.handleAction=function(_c5c){
+DockBinding.superclass.handleAction.call(this,_c5c);
+var _c5d=_c5c.target;
+switch(_c5c.type){
 case Binding.ACTION_ACTIVATED:
 if(!this.isActive){
 this.activate();
 }
-_c4d.consume();
+_c5c.consume();
 break;
 case TabBoxBinding.ACTION_UPDATED:
-if(_c4e instanceof DockBinding){
-if(_c4e.updateType==TabBoxBinding.UPDATE_DETACH){
+if(_c5d instanceof DockBinding){
+if(_c5d.updateType==TabBoxBinding.UPDATE_DETACH){
 if(!this.getTabElements().hasEntries()){
 this.isEmpty=true;
 this.isActivatable=false;
@@ -19517,70 +19558,70 @@ this.dispatchAction(DockBinding.ACTION_EMPTIED);
 }
 break;
 case ViewBinding.ACTION_LOADED:
-this._viewBindingList.add(_c4e);
+this._viewBindingList.add(_c5d);
 if(this.isActive){
-_c4e.onActivate();
+_c5d.onActivate();
 }
 break;
 case ViewBinding.ACTION_CLOSED:
-this._viewBindingList.del(_c4e);
+this._viewBindingList.del(_c5d);
 break;
 }
 };
-DockBinding.prototype.handleBroadcast=function(_c4f,arg){
-DockBinding.superclass.handleBroadcast.call(this,_c4f,arg);
-switch(_c4f){
+DockBinding.prototype.handleBroadcast=function(_c5e,arg){
+DockBinding.superclass.handleBroadcast.call(this,_c5e,arg);
+switch(_c5e){
 case BroadcastMessages.SYSTEMTREENODEBINDING_FOCUS:
-var _c51=arg;
-if(_c51.perspectiveNode==this.perspectiveNode){
-this._selectTabByEntityToken(_c51.node.getEntityToken());
+var _c60=arg;
+if(_c60.perspectiveNode==this.perspectiveNode){
+this._selectTabByEntityToken(_c60.node.getEntityToken());
 }
 break;
 }
 };
-DockBinding.prototype._selectTabByEntityToken=function(_c52){
+DockBinding.prototype._selectTabByEntityToken=function(_c61){
 var tabs=this.getTabBindings();
-var _c54=false;
-while(tabs.hasNext()&&!_c54){
+var _c63=false;
+while(tabs.hasNext()&&!_c63){
 var tab=tabs.getNext();
-var _c56=tab.getEntityToken();
-if(_c56!=null&&_c56==_c52){
+var _c65=tab.getEntityToken();
+if(_c65!=null&&_c65==_c61){
 if(!tab.isSelected){
 this.select(tab,true);
-_c54=true;
+_c63=true;
 }
 }
 }
 };
-DockBinding.prototype.collapse=function(_c57){
-this._handleCollapse(true,_c57);
+DockBinding.prototype.collapse=function(_c66){
+this._handleCollapse(true,_c66);
 };
-DockBinding.prototype.unCollapse=function(_c58){
-this._handleCollapse(false,_c58);
+DockBinding.prototype.unCollapse=function(_c67){
+this._handleCollapse(false,_c67);
 };
-DockBinding.prototype._handleCollapse=function(_c59,_c5a){
-var _c5b=this.getChildBindingByLocalName("dockpanels");
-var _c5c=this.getAncestorBindingByLocalName("splitbox");
-if(_c59){
-_c5b.hide();
+DockBinding.prototype._handleCollapse=function(_c68,_c69){
+var _c6a=this.getChildBindingByLocalName("dockpanels");
+var _c6b=this.getAncestorBindingByLocalName("splitbox");
+if(_c68){
+_c6a.hide();
 this.bindingElement.style.height="auto";
 this.isFlexible=false;
 this.isActivatable=false;
 this.setProperty("collapsed",true);
-if(_c5a&&_c5c.hasBothPanelsVisible()){
+if(_c69&&_c6b.hasBothPanelsVisible()){
 this.setWidth(200);
 }
 }else{
-_c5b.show();
+_c6a.show();
 this.isFlexible=true;
 this.isActivatable=true;
 this.deleteProperty("collapsed");
-if(_c5a){
+if(_c69){
 this.setWidth(false);
 }
 }
-this.interceptDisplayChange(!_c59);
-this.isCollapsed=_c59;
+this.interceptDisplayChange(!_c68);
+this.isCollapsed=_c68;
 };
 DockBinding.prototype.activate=function(){
 if(!this.isActive){
@@ -19616,61 +19657,61 @@ view.onDeactivate();
 Application.deActivate(this);
 }
 };
-DockBinding.prototype.closeTab=function(_c61,_c62){
-if(_c61.isDirty&&!_c62){
-var _c63=Resolver.resolve(_c61.getLabel());
+DockBinding.prototype.closeTab=function(_c70,_c71){
+if(_c70.isDirty&&!_c71){
+var _c72=Resolver.resolve(_c70.getLabel());
 var self=this;
-Dialog.question(StringBundle.getString("ui","WebSite.Application.DialogSaveResource.Title"),StringBundle.getString("ui","WebSite.Application.DialogSaveResource.Text").replace("${resourcename}",_c63),Dialog.BUTTONS_YES_NO_CANCEL,{handleDialogResponse:function(_c65){
-switch(_c65){
+Dialog.question(StringBundle.getString("ui","WebSite.Application.DialogSaveResource.Title"),StringBundle.getString("ui","WebSite.Application.DialogSaveResource.Text").replace("${resourcename}",_c72),Dialog.BUTTONS_YES_NO_CANCEL,{handleDialogResponse:function(_c74){
+switch(_c74){
 case Dialog.RESPONSE_YES:
 setTimeout(function(){
-self.saveContainedEditor(_c61);
+self.saveContainedEditor(_c70);
 },0);
 break;
 case Dialog.RESPONSE_NO:
-self.removeTab(_c61);
+self.removeTab(_c70);
 break;
 }
 }});
 }else{
-this.removeTab(_c61);
+this.removeTab(_c70);
 }
 };
-DockBinding.prototype.closeTabsExcept=function(_c66){
+DockBinding.prototype.closeTabsExcept=function(_c75){
 var tabs=this.getTabBindings();
 while(tabs.hasNext()){
 var tab=tabs.getNext();
-if(tab!=_c66){
+if(tab!=_c75){
 this.closeTab(tab);
 }
 }
 };
-DockBinding.prototype.saveContainedEditor=function(_c69){
-var _c6a=_c69.getAssociatedView();
-_c6a.saveContainedEditor();
+DockBinding.prototype.saveContainedEditor=function(_c78){
+var _c79=_c78.getAssociatedView();
+_c79.saveContainedEditor();
 var self=this;
-var _c6c={handleBroadcast:function(_c6d,arg){
-switch(_c6d){
+var _c7b={handleBroadcast:function(_c7c,arg){
+switch(_c7c){
 case BroadcastMessages.CURRENT_SAVED:
-if(arg.handle==_c6a.getHandle()){
-EventBroadcaster.unsubscribe(BroadcastMessages.CURRENT_SAVED,_c6c);
+if(arg.handle==_c79.getHandle()){
+EventBroadcaster.unsubscribe(BroadcastMessages.CURRENT_SAVED,_c7b);
 if(arg.isSuccess){
-self.removeTab(_c69);
+self.removeTab(_c78);
 }
 }
 break;
 }
 }};
-EventBroadcaster.subscribe(BroadcastMessages.CURRENT_SAVED,_c6c);
+EventBroadcaster.subscribe(BroadcastMessages.CURRENT_SAVED,_c7b);
 };
-DockBinding.prototype.appendTabByBindings=function(_c6f,_c70){
+DockBinding.prototype.appendTabByBindings=function(_c7e,_c7f){
 if(this.isEmpty){
 this.isEmpty=false;
 this.isActivatable=true;
 this.setWidth(false);
 this.dispatchAction(DockBinding.ACTION_OPENED);
 }
-DockBinding.superclass.appendTabByBindings.call(this,_c6f,_c70);
+DockBinding.superclass.appendTabByBindings.call(this,_c7e,_c7f);
 };
 DockBinding.prototype.getHeight=function(){
 return this.bindingElement.offsetHeight;
@@ -19678,9 +19719,9 @@ return this.bindingElement.offsetHeight;
 DockBinding.prototype.getWidth=function(){
 return this.bindingElement.offsetWidth;
 };
-DockBinding.prototype.setWidth=function(_c71){
-_c71=_c71?_c71+"px":"100%";
-this.bindingElement.style.width=_c71;
+DockBinding.prototype.setWidth=function(_c80){
+_c80=_c80?_c80+"px":"100%";
+this.bindingElement.style.width=_c80;
 };
 DockBinding.prototype.show=function(){
 if(this.isVisible){
@@ -19699,9 +19740,9 @@ this.deActivate();
 }
 }
 };
-DockBinding.prototype.showControls=function(_c72){
+DockBinding.prototype.showControls=function(_c81){
 var tabs=this.getChildBindingByLocalName(this._nodename_tabs);
-if(_c72){
+if(_c81){
 tabs.controlGroupBinding.show();
 }else{
 tabs.controlGroupBinding.hide();
@@ -19728,18 +19769,18 @@ this.controlGroupBinding.attachRecursive();
 }
 };
 DockTabsBinding.prototype.getControlBinding=function(type){
-var _c75=DockControlBinding.newInstance(this.bindingDocument);
-_c75.setControlType(type);
-return _c75;
+var _c84=DockControlBinding.newInstance(this.bindingDocument);
+_c84.setControlType(type);
+return _c84;
 };
 DockTabsBinding.prototype.flex=function(){
 if(Client.isExplorer&&this.containingTabBoxBinding!=null){
 var self=this;
 function fix(){
-var _c77=self.containingTabBoxBinding.getWidth();
-if(!isNaN(_c77)){
-_c77=_c77>0?_c77-1:0;
-self.bindingElement.style.width=new String(_c77)+"px";
+var _c86=self.containingTabBoxBinding.getWidth();
+if(!isNaN(_c86)){
+_c86=_c86>0?_c86-1:0;
+self.bindingElement.style.width=new String(_c86)+"px";
 }
 }
 setTimeout(fix,250);
@@ -19747,9 +19788,9 @@ fix();
 }
 DockTabsBinding.superclass.flex.call(this);
 };
-DockTabsBinding.prototype.handleCrawler=function(_c78){
-DockTabsBinding.superclass.handleCrawler.call(this,_c78);
-switch(_c78.id){
+DockTabsBinding.prototype.handleCrawler=function(_c87){
+DockTabsBinding.superclass.handleCrawler.call(this,_c87);
+switch(_c87.id){
 case FlexBoxCrawler.ID:
 this._explorerFlexHack();
 break;
@@ -19759,19 +19800,19 @@ DockTabsBinding.prototype._explorerFlexHack=function(){
 if(Client.isExplorer&&this.containingTabBoxBinding!=null){
 var self=this;
 function fix(){
-var _c7a=self.containingTabBoxBinding.getWidth();
-if(!isNaN(_c7a)){
-_c7a=_c7a>0?_c7a-1:0;
-self.bindingElement.style.width=new String(_c7a)+"px";
+var _c89=self.containingTabBoxBinding.getWidth();
+if(!isNaN(_c89)){
+_c89=_c89>0?_c89-1:0;
+self.bindingElement.style.width=new String(_c89)+"px";
 }
 }
 setTimeout(fix,250);
 fix();
 }
 };
-DockTabsBinding.newInstance=function(_c7b){
-var _c7c=DOMUtil.createElementNS(Constants.NS_UI,"ui:docktabs",_c7b);
-return UserInterface.registerBinding(_c7c,DockTabsBinding);
+DockTabsBinding.newInstance=function(_c8a){
+var _c8b=DOMUtil.createElementNS(Constants.NS_UI,"ui:docktabs",_c8a);
+return UserInterface.registerBinding(_c8b,DockTabsBinding);
 };
 DockTabBinding.prototype=new TabBinding;
 DockTabBinding.prototype.constructor=DockTabBinding;
@@ -19808,32 +19849,32 @@ if(this.containingTabBoxBinding.type!=DockBinding.EXPLORER){
 this.setContextMenu(top.app.bindingMap.docktabpopup);
 }
 };
-DockTabBinding.prototype.setAssociatedView=function(_c7d){
-this._viewBinding=_c7d;
+DockTabBinding.prototype.setAssociatedView=function(_c8c){
+this._viewBinding=_c8c;
 };
 DockTabBinding.prototype.getAssociatedView=function(){
 return this._viewBinding;
 };
 DockTabBinding.prototype.serialize=function(){
-var _c7e=DockTabBinding.superclass.serialize.call(this);
-if(_c7e){
-_c7e.label=null;
-_c7e.image=null;
-_c7e.handle=this.getHandle();
+var _c8d=DockTabBinding.superclass.serialize.call(this);
+if(_c8d){
+_c8d.label=null;
+_c8d.image=null;
+_c8d.handle=this.getHandle();
 }
-return _c7e;
+return _c8d;
 };
-DockTabBinding.prototype.setHandle=function(_c7f){
-this.setProperty("handle",_c7f);
+DockTabBinding.prototype.setHandle=function(_c8e){
+this.setProperty("handle",_c8e);
 };
 DockTabBinding.prototype.getHandle=function(){
 return this.getProperty("handle");
 };
-DockTabBinding.prototype.setEntityToken=function(_c80){
+DockTabBinding.prototype.setEntityToken=function(_c8f){
 if(this._entityToken==null){
 this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_LOCKTOEDITOR);
 }
-this._entityToken=_c80;
+this._entityToken=_c8f;
 if(this.isAttached){
 if(this.isSelected){
 this._updateTree(true);
@@ -19846,64 +19887,64 @@ return this._entityToken;
 DockTabBinding.prototype.buildDOMContent=function(){
 DockTabBinding.superclass.buildDOMContent.call(this);
 this._controlGroupBinding=this.labelBinding.add(ControlGroupBinding.newInstance(this.bindingDocument));
-var _c81=DialogControlBinding.newInstance(this.bindingDocument);
-_c81.setControlType(ControlBinding.TYPE_CLOSE);
-this._controlGroupBinding.add(_c81);
+var _c90=DialogControlBinding.newInstance(this.bindingDocument);
+_c90.setControlType(ControlBinding.TYPE_CLOSE);
+this._controlGroupBinding.add(_c90);
 this._controlGroupBinding.attachRecursive();
 };
-DockTabBinding.prototype.setDirty=function(_c82){
+DockTabBinding.prototype.setDirty=function(_c91){
 if(this.containingTabBoxBinding.type==DockBinding.TYPE_EDITORS){
-if(this.isDirty!=_c82){
-this.isDirty=_c82;
+if(this.isDirty!=_c91){
+this.isDirty=_c91;
 if(Binding.exists(this.labelBinding)){
-var _c83=this.labelBinding.getLabel();
-if(_c83!=null){
-this.labelBinding.setLabel(_c82?"*"+_c83:_c83.slice(1,_c83.length));
+var _c92=this.labelBinding.getLabel();
+if(_c92!=null){
+this.labelBinding.setLabel(_c91?"*"+_c92:_c92.slice(1,_c92.length));
 }else{
-this.labelBinding.setLabel(_c82?"*":"");
+this.labelBinding.setLabel(_c91?"*":"");
 }
 }
 }
-var _c84=top.app.bindingMap.broadcasterCurrentTabDirty;
+var _c93=top.app.bindingMap.broadcasterCurrentTabDirty;
 if(this.isDirty==true){
 this.subscribe(BroadcastMessages.SAVE_CURRENT);
 EventBroadcaster.broadcast(BroadcastMessages.DOCKTAB_DIRTY,this);
-_c84.enable();
+_c93.enable();
 }else{
 this.unsubscribe(BroadcastMessages.SAVE_CURRENT);
 EventBroadcaster.broadcast(BroadcastMessages.DOCKTAB_CLEAN,this);
-_c84.disable();
+_c93.disable();
 }
 }else{
 Dialog.warning("Dirty denied","Only editor docks should invoke the dirty state!");
 }
 };
-DockTabBinding.prototype.updateDisplay=function(_c85){
-this.setLabel(_c85.getLabel());
-this.setImage(_c85.getImage());
-this.setToolTip(_c85.getToolTip());
+DockTabBinding.prototype.updateDisplay=function(_c94){
+this.setLabel(_c94.getLabel());
+this.setImage(_c94.getImage());
+this.setToolTip(_c94.getToolTip());
 };
-DockTabBinding.prototype.updateEntityToken=function(_c86){
-this.setEntityToken(_c86.getEntityToken());
+DockTabBinding.prototype.updateEntityToken=function(_c95){
+this.setEntityToken(_c95.getEntityToken());
 };
-DockTabBinding.prototype.handleAction=function(_c87){
-DockTabBinding.superclass.handleAction.call(this,_c87);
-var _c88=_c87.target;
-switch(_c87.type){
+DockTabBinding.prototype.handleAction=function(_c96){
+DockTabBinding.superclass.handleAction.call(this,_c96);
+var _c97=_c96.target;
+switch(_c96.type){
 case ControlBinding.ACTION_COMMAND:
-if(_c88.controlType==ControlBinding.TYPE_CLOSE){
+if(_c97.controlType==ControlBinding.TYPE_CLOSE){
 this.close();
 }
 break;
 case MenuItemBinding.ACTION_COMMAND:
-if(_c87.listener==this.contextMenuBinding){
-this._handleContextMenuItemBinding(_c88);
+if(_c96.listener==this.contextMenuBinding){
+this._handleContextMenuItemBinding(_c97);
 }
 break;
 }
 };
-DockTabBinding.prototype._handleContextMenuItemBinding=function(_c89){
-var cmd=_c89.getProperty("cmd");
+DockTabBinding.prototype._handleContextMenuItemBinding=function(_c98){
+var cmd=_c98.getProperty("cmd");
 switch(cmd){
 case DockTabPopupBinding.CMD_REFRESH:
 if(this.containingTabBoxBinding.type!=DockBinding.TYPE_TOOLS){
@@ -19932,43 +19973,43 @@ alert("TODO!");
 break;
 }
 };
-DockTabBinding.prototype.setLabel=function(_c8b){
-if(!_c8b){
+DockTabBinding.prototype.setLabel=function(_c9a){
+if(!_c9a){
 if(!this.getLabel()){
-_c8b=DockTabBinding.LABEL_TABLOADING;
+_c9a=DockTabBinding.LABEL_TABLOADING;
 }else{
 if(this.getLabel()==DockTabBinding.LABEL_TABLOADING){
-_c8b=DockTabBinding.LABEL_TABDEFAULT;
+_c9a=DockTabBinding.LABEL_TABDEFAULT;
 }
 }
 }
-DockTabBinding.superclass.setLabel.call(this,_c8b);
+DockTabBinding.superclass.setLabel.call(this,_c9a);
 };
-DockTabBinding.prototype.setImage=function(_c8c){
-if(!_c8c){
+DockTabBinding.prototype.setImage=function(_c9b){
+if(!_c9b){
 if(!this.getImage()){
-_c8c=DockTabBinding.IMG_TABLOADING;
+_c9b=DockTabBinding.IMG_TABLOADING;
 }else{
 if(this.getImage()==DockTabBinding.IMG_TABLOADING){
-_c8c=DockTabBinding.IMG_TABDEFAULT;
+_c9b=DockTabBinding.IMG_TABDEFAULT;
 }
 }
 }
-DockTabBinding.superclass.setImage.call(this,_c8c);
+DockTabBinding.superclass.setImage.call(this,_c9b);
 };
 DockTabBinding.prototype._viewSource=function(cmd){
 var def=ViewDefinitions["Composite.Management.SourceCodeViewer"];
 def.argument={action:cmd,doc:this._viewBinding.windowBinding.getContentDocument()};
-var _c8f=Resolver.resolve(this.getLabel());
+var _c9e=Resolver.resolve(this.getLabel());
 switch(cmd){
 case DockTabPopupBinding.CMD_VIEWSOURCE:
-def.label="Source: "+_c8f;
+def.label="Source: "+_c9e;
 break;
 case DockTabPopupBinding.CMD_VIEWGENERATED:
-def.label="Generated: "+_c8f;
+def.label="Generated: "+_c9e;
 break;
 case DockTabPopupBinding.CMD_VIEWSERIALIZED:
-def.label="Serialized: "+_c8f;
+def.label="Serialized: "+_c9e;
 break;
 }
 StageBinding.presentViewDefinition(def);
@@ -20008,17 +20049,17 @@ DockTabBinding.prototype.show=function(){
 DockTabBinding.superclass.show.call(this);
 if(this.isVisible&&this.isInitiallyHidden&&Binding.exists(this)){
 this.isInitiallyHidden=false;
-var _c91=this.bindingElement;
+var _ca0=this.bindingElement;
 setTimeout(function(){
-_c91.style.bottom="auto";
+_ca0.style.bottom="auto";
 },25);
 }
 };
-DockTabBinding.prototype.handleBroadcast=function(_c92,arg){
-DockTabBinding.superclass.handleBroadcast.call(this,_c92,arg);
+DockTabBinding.prototype.handleBroadcast=function(_ca1,arg){
+DockTabBinding.superclass.handleBroadcast.call(this,_ca1,arg);
 var body=this._viewBinding.getContentDocument().body;
 var root=UserInterface.getBinding(body);
-switch(_c92){
+switch(_ca1){
 case BroadcastMessages.SAVE_CURRENT:
 if(this.isDirty&&this.isSelected&&root.isActivated){
 this.saveContainedEditor();
@@ -20074,10 +20115,10 @@ page.onSaveSuccess();
 };
 DockTabBinding.prototype._onSaveFailure=function(){
 };
-DockTabBinding.prototype.select=function(_c97){
-DockTabBinding.superclass.select.call(this,_c97);
+DockTabBinding.prototype.select=function(_ca6){
+DockTabBinding.superclass.select.call(this,_ca6);
 this._updateBroadcasters();
-if(_c97!=true){
+if(_ca6!=true){
 this._updateTree();
 }
 this._updateGlobalEntityToken();
@@ -20087,45 +20128,45 @@ this.containingTabBoxBinding.closeTab(this);
 };
 DockTabBinding.prototype._updateBroadcasters=function(){
 if(this.isSelected){
-var _c98=top.app.bindingMap.broadcasterCurrentTabDirty;
-var _c99=top.app.bindingMap.broadcasterCurrentIsEditor;
+var _ca7=top.app.bindingMap.broadcasterCurrentTabDirty;
+var _ca8=top.app.bindingMap.broadcasterCurrentIsEditor;
 if(this._isEditorDockTab()){
-_c99.enable();
+_ca8.enable();
 if(this.isDirty){
-_c98.enable();
+_ca7.enable();
 }else{
-_c98.disable();
+_ca7.disable();
 }
 }else{
-_c99.disable();
-_c98.disable();
+_ca8.disable();
+_ca7.disable();
 }
 }
 };
-DockTabBinding.prototype._updateTree=function(_c9a){
-if(this._canUpdateTree||_c9a){
+DockTabBinding.prototype._updateTree=function(_ca9){
+if(this._canUpdateTree||_ca9){
 EventBroadcaster.broadcast(BroadcastMessages.DOCKTABBINDING_SELECT,this);
 }
 };
 DockTabBinding.prototype._isEditorDockTab=function(){
-var _c9b=false;
+var _caa=false;
 if(this._viewBinding!=null){
 var win=this._viewBinding.getContentWindow();
 if(win!=null&&win.bindingMap!=null){
-var _c9d=win.bindingMap.savebutton;
-if(_c9d!=null){
-_c9b=true;
+var _cac=win.bindingMap.savebutton;
+if(_cac!=null){
+_caa=true;
 }
 }
 }
-return _c9b;
+return _caa;
 };
 DockTabBinding.prototype._updateGlobalEntityToken=function(){
 StageBinding.entityToken=this._entityToken;
 };
-DockTabBinding.newInstance=function(_c9e){
-var _c9f=DOMUtil.createElementNS(Constants.NS_UI,"ui:docktab",_c9e);
-return UserInterface.registerBinding(_c9f,DockTabBinding);
+DockTabBinding.newInstance=function(_cad){
+var _cae=DOMUtil.createElementNS(Constants.NS_UI,"ui:docktab",_cad);
+return UserInterface.registerBinding(_cae,DockTabBinding);
 };
 DockPanelsBinding.prototype=new TabPanelsBinding;
 DockPanelsBinding.prototype.constructor=DockPanelsBinding;
@@ -20138,9 +20179,9 @@ return this;
 DockPanelsBinding.prototype.toString=function(){
 return "[DockPanelsBinding]";
 };
-DockPanelsBinding.newInstance=function(_ca0){
-var _ca1=DOMUtil.createElementNS(Constants.NS_UI,"ui:dockpanels",_ca0);
-return UserInterface.registerBinding(_ca1,DockPanelsBinding);
+DockPanelsBinding.newInstance=function(_caf){
+var _cb0=DOMUtil.createElementNS(Constants.NS_UI,"ui:dockpanels",_caf);
+return UserInterface.registerBinding(_cb0,DockPanelsBinding);
 };
 DockPanelBinding.prototype=new TabPanelBinding;
 DockPanelBinding.prototype.constructor=DockPanelBinding;
@@ -20158,8 +20199,8 @@ DockPanelBinding.prototype.onBindingDispose=function(){
 DockPanelBinding.superclass.onBindingDispose.call(this);
 this.dispatchAction(Binding.ACTION_DISPOSED);
 };
-DockPanelBinding.prototype.select=function(_ca2){
-DockPanelBinding.superclass.select.call(this,_ca2);
+DockPanelBinding.prototype.select=function(_cb1){
+DockPanelBinding.superclass.select.call(this,_cb1);
 this.dispatchAction(Binding.ACTION_VISIBILITYCHANGED);
 };
 DockPanelBinding.prototype.unselect=function(){
@@ -20169,21 +20210,21 @@ this.dispatchAction(Binding.ACTION_VISIBILITYCHANGED);
 DockPanelBinding.prototype.flex=function(){
 this.dispatchAction(Binding.ACTION_DIMENSIONCHANGED);
 };
-DockPanelBinding.prototype.handleCrawler=function(_ca3){
-DockPanelBinding.superclass.handleCrawler.call(this,_ca3);
-if(_ca3.response==null){
-if(_ca3.type==NodeCrawler.TYPE_DESCENDING){
+DockPanelBinding.prototype.handleCrawler=function(_cb2){
+DockPanelBinding.superclass.handleCrawler.call(this,_cb2);
+if(_cb2.response==null){
+if(_cb2.type==NodeCrawler.TYPE_DESCENDING){
 if(this.viewBinding!=null){
-if(_ca3.id==FocusCrawler.ID){
-_ca3.nextNode=this.viewBinding.bindingElement;
+if(_cb2.id==FocusCrawler.ID){
+_cb2.nextNode=this.viewBinding.bindingElement;
 }
 }
 }
 }
 };
-DockPanelBinding.newInstance=function(_ca4){
-var _ca5=DOMUtil.createElementNS(Constants.NS_UI,"ui:dockpanel",_ca4);
-return UserInterface.registerBinding(_ca5,DockPanelBinding);
+DockPanelBinding.newInstance=function(_cb3){
+var _cb4=DOMUtil.createElementNS(Constants.NS_UI,"ui:dockpanel",_cb3);
+return UserInterface.registerBinding(_cb4,DockPanelBinding);
 };
 DockControlBinding.prototype=new ControlBinding;
 DockControlBinding.prototype.constructor=DockControlBinding;
@@ -20198,9 +20239,9 @@ DockControlBinding.prototype.onBindingRegister=function(){
 DockControlBinding.superclass.onBindingRegister.call(this);
 this.setImageProfile(DockControlImageProfile);
 };
-DockControlBinding.newInstance=function(_ca6){
-var _ca7=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbarbutton",_ca6);
-return UserInterface.registerBinding(_ca7,DockControlBinding);
+DockControlBinding.newInstance=function(_cb5){
+var _cb6=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbarbutton",_cb5);
+return UserInterface.registerBinding(_cb6,DockControlBinding);
 };
 DockTabPopupBinding.prototype=new PopupBinding;
 DockTabPopupBinding.prototype.constructor=DockTabPopupBinding;
@@ -20253,17 +20294,17 @@ ViewBinding.TYPE_DIALOGVIEW="dialogview";
 ViewBinding.CLASSNAME_ACTIVE="active";
 ViewBinding.TIMEOUT=15;
 ViewBinding._instances=new Map();
-ViewBinding.getInstance=function(_ca8){
-var _ca9=ViewBinding._instances.get(_ca8);
-if(!_ca9){
-var cry="ViewBinding.getInstance: No such instance: "+_ca8;
+ViewBinding.getInstance=function(_cb7){
+var _cb8=ViewBinding._instances.get(_cb7);
+if(!_cb8){
+var cry="ViewBinding.getInstance: No such instance: "+_cb7;
 SystemLogger.getLogger("ViewBinding [static]").error(cry);
 SystemDebug.stack(arguments);
 if(Application.isDeveloperMode){
 alert(cry);
 }
 }
-return _ca9;
+return _cb8;
 };
 function ViewBinding(){
 this.logger=SystemLogger.getLogger("ViewBinding");
@@ -20313,22 +20354,22 @@ this.windowBinding.attach();
 };
 ViewBinding.prototype.updatePositionDimension=function(){
 var snap=this._snapBinding;
-var _cac=!System.hasActivePerspectives&&Client.isExplorer;
-if(this.isFreeFloating==true&&!_cac){
+var _cbb=!System.hasActivePerspectives&&Client.isExplorer;
+if(this.isFreeFloating==true&&!_cbb){
 if(snap.isVisible==true){
 if(snap.isAttached==true){
-var _cad=snap.boxObject.getGlobalPosition();
-var _cae=snap.boxObject.getDimension();
-if(!Point.isEqual(_cad,this._lastknownposition)){
-this.setPosition(_cad);
-this._lastknownposition=_cad;
+var _cbc=snap.boxObject.getGlobalPosition();
+var _cbd=snap.boxObject.getDimension();
+if(!Point.isEqual(_cbc,this._lastknownposition)){
+this.setPosition(_cbc);
+this._lastknownposition=_cbc;
 }
-if(!Dimension.isEqual(_cae,this._lastknowndimension)){
-this.setDimension(_cae);
-this._lastknowndimension=_cae;
-var _caf=_cae.h-ViewBinding.VERTICAL_ADJUST;
-_caf=_caf<0?0:_caf;
-this.windowBinding.getBindingElement().style.height=new String(_caf)+"px";
+if(!Dimension.isEqual(_cbd,this._lastknowndimension)){
+this.setDimension(_cbd);
+this._lastknowndimension=_cbd;
+var _cbe=_cbd.h-ViewBinding.VERTICAL_ADJUST;
+_cbe=_cbe<0?0:_cbe;
+this.windowBinding.getBindingElement().style.height=new String(_cbe)+"px";
 this.windowBinding.reflex();
 }else{
 throw "Could not snap to unattached binding!";
@@ -20340,15 +20381,15 @@ throw "Could not snap to unattached binding!";
 ViewBinding.prototype.onBindingDispose=function(){
 ViewBinding.superclass.onBindingDispose.call(this);
 if(this._viewDefinition!=null){
-var _cb0=this._viewDefinition.flowHandle;
-if(_cb0!=null){
-FlowControllerService.CancelFlow(_cb0);
+var _cbf=this._viewDefinition.flowHandle;
+if(_cbf!=null){
+FlowControllerService.CancelFlow(_cbf);
 }
 }
 if(this._viewDefinition!=null){
-var _cb1=this._viewDefinition.handle;
-EventBroadcaster.broadcast(BroadcastMessages.VIEW_CLOSED,_cb1);
-this.logger.fine("ViewBinding closed: \""+_cb1+"\"");
+var _cc0=this._viewDefinition.handle;
+EventBroadcaster.broadcast(BroadcastMessages.VIEW_CLOSED,_cc0);
+this.logger.fine("ViewBinding closed: \""+_cc0+"\"");
 }
 this.dispatchAction(ViewBinding.ACTION_CLOSED);
 };
@@ -20364,11 +20405,11 @@ ViewBinding.prototype.getType=function(){
 return this._type;
 };
 ViewBinding.prototype.getHandle=function(){
-var _cb3=null;
+var _cc2=null;
 if(this._viewDefinition!=null){
-_cb3=this._viewDefinition.handle;
+_cc2=this._viewDefinition.handle;
 }
-return _cb3;
+return _cc2;
 };
 ViewBinding.prototype.initialize=function(){
 if(!this._isViewBindingInitialized){
@@ -20379,43 +20420,43 @@ EventBroadcaster.broadcast(BroadcastMessages.VIEW_OPENING,this.getHandle());
 throw ("Somehow ViewBinding got initialized twice: "+this.getHandle());
 }
 };
-ViewBinding.prototype.setDefinition=function(_cb4){
-this._viewDefinition=_cb4;
-if(_cb4.flowHandle!=null){
+ViewBinding.prototype.setDefinition=function(_cc3){
+this._viewDefinition=_cc3;
+if(_cc3.flowHandle!=null){
 this.subscribe(BroadcastMessages.CLOSE_VIEWS);
 }
 };
 ViewBinding.prototype.getDefinition=function(){
 return this._viewDefinition;
 };
-ViewBinding.prototype.handleAction=function(_cb5){
-ViewBinding.superclass.handleAction.call(this,_cb5);
-var _cb6=_cb5.target;
-switch(_cb5.type){
+ViewBinding.prototype.handleAction=function(_cc4){
+ViewBinding.superclass.handleAction.call(this,_cc4);
+var _cc5=_cc4.target;
+switch(_cc4.type){
 case RootBinding.ACTION_PHASE_1:
 case RootBinding.ACTION_PHASE_2:
 case RootBinding.ACTION_PHASE_3:
-if(_cb5.type==RootBinding.ACTION_PHASE_1){
-if(this.isActivated&&!_cb6.isActivated){
-_cb6.onActivate();
+if(_cc4.type==RootBinding.ACTION_PHASE_1){
+if(this.isActivated&&!_cc5.isActivated){
+_cc5.onActivate();
 }
 }
-_cb5.consume();
+_cc4.consume();
 break;
 case Binding.ACTION_DIMENSIONCHANGED:
 if(this.isFreeFloating==true){
-if(_cb6==this._snapBinding){
+if(_cc5==this._snapBinding){
 if(this.isVisible==true){
 this.updatePositionDimension();
-_cb5.consume();
+_cc4.consume();
 }
 }
 }
 break;
 case Binding.ACTION_VISIBILITYCHANGED:
 if(this.isFreeFloating==true){
-if(_cb6==this._snapBinding){
-if(_cb6.isVisible==true){
+if(_cc5==this._snapBinding){
+if(_cc5.isVisible==true){
 this.show();
 }else{
 this.hide();
@@ -20425,55 +20466,55 @@ this.hide();
 break;
 case WindowBinding.ACTION_LOADED:
 case WindowBinding.ACTION_ONLOAD:
-if(_cb6.getContentWindow().isPostBackDocument){
-if(_cb5.type==WindowBinding.ACTION_ONLOAD){
+if(_cc5.getContentWindow().isPostBackDocument){
+if(_cc4.type==WindowBinding.ACTION_ONLOAD){
 var arg=this._viewDefinition.argument;
 if(arg!=null&&arg.list!=null&&arg.url!=null){
-_cb6.post(arg.list,arg.url);
+_cc5.post(arg.list,arg.url);
 arg.list=null;
 arg.url=null;
 }
 }
 }else{
 if(Client.isExplorer==true){
-if(_cb6==this.windowBinding){
+if(_cc5==this.windowBinding){
 var self=this;
-DOMEvents.addEventListener(_cb6.getContentWindow(),DOMEvents.UNLOAD,{handleEvent:function(e){
+DOMEvents.addEventListener(_cc5.getContentWindow(),DOMEvents.UNLOAD,{handleEvent:function(e){
 if(Binding.exists(self._coverBinding)==true){
 self._coverBinding.show();
 }
 }});
 }
-if(_cb5.type==WindowBinding.ACTION_ONLOAD){
+if(_cc4.type==WindowBinding.ACTION_ONLOAD){
 if(this._coverBinding){
 this._coverBinding.hide();
 }
 }
 }
 }
-if(_cb5.type==WindowBinding.ACTION_ONLOAD){
-var win=_cb6.getContentWindow();
+if(_cc4.type==WindowBinding.ACTION_ONLOAD){
+var win=_cc5.getContentWindow();
 if(win.WindowManager==null){
 if(!this._isLoaded){
-this._onLoadingCompleted(_cb6);
+this._onLoadingCompleted(_cc5);
 }
 }
 }
-_cb5.consume();
+_cc4.consume();
 break;
 case PageBinding.ACTION_ATTACHED:
-if(!_cb6.label&&this._viewDefinition.label){
-_cb6.label=this._viewDefinition.label;
+if(!_cc5.label&&this._viewDefinition.label){
+_cc5.label=this._viewDefinition.label;
 }
-if(!_cb6.image&&this._viewDefinition.image){
-_cb6.image=this._viewDefinition.image;
+if(!_cc5.image&&this._viewDefinition.image){
+_cc5.image=this._viewDefinition.image;
 }
-if(_cb6.bindingWindow==this.getContentWindow()){
-this._pageBinding=_cb6;
+if(_cc5.bindingWindow==this.getContentWindow()){
+this._pageBinding=_cc5;
 this._injectPageArgument();
 }
 case PageBinding.ACTION_INITIALIZED:
-if(_cb6.bindingWindow==this.getContentWindow()){
+if(_cc5.bindingWindow==this.getContentWindow()){
 if(Client.isExplorer&&this._coverBinding){
 this._coverBinding.hide();
 }
@@ -20483,17 +20524,17 @@ this._onLoadingCompleted();
 }
 break;
 case Binding.ACTION_DISPOSED:
-if(this.isFreeFloating&&_cb6==this._snapBinding){
+if(this.isFreeFloating&&_cc5==this._snapBinding){
 this.removeActionListener(Binding.ACTION_DISPOSED);
 this.dispose();
-_cb5.consume();
+_cc4.consume();
 }
 break;
 case WizardPageBinding.ACTION_NAVIGATE_NEXT:
 case WizardPageBinding.ACTION_NAVIGATE_PREVIOUS:
 case WizardPageBinding.ACTION_FINISH:
 EventBroadcaster.broadcast(BroadcastMessages.VIEW_OPENING,this.getHandle());
-_cb5.consume();
+_cc4.consume();
 break;
 case ViewBinding.ACTION_DETACH:
 this.setDefinition(ViewDefinitions["Composite.Management.Null"]);
@@ -20501,9 +20542,9 @@ ViewBinding._instances.set(this._viewDefinition.handle,this);
 break;
 }
 };
-ViewBinding.prototype.handleBroadcast=function(_cbb,arg){
-ViewBinding.superclass.handleBroadcast.call(this,_cbb,arg);
-switch(_cbb){
+ViewBinding.prototype.handleBroadcast=function(_cca,arg){
+ViewBinding.superclass.handleBroadcast.call(this,_cca,arg);
+switch(_cca){
 case BroadcastMessages.CLOSE_VIEW:
 if(arg==this._viewDefinition.handle){
 this.dispatchAction(ViewBinding.ACTION_ONCLOSE);
@@ -20540,35 +20581,35 @@ ViewBinding.prototype._injectPageArgument=function(){
 var page=this._pageBinding;
 var def=this._viewDefinition;
 if(page!=null){
-var _cbf=def.argument;
-if(_cbf!=null){
-page.setPageArgument(_cbf);
+var _cce=def.argument;
+if(_cce!=null){
+page.setPageArgument(_cce);
 }
-var _cc0=def.width;
-if(_cc0!=null){
-page.width=_cc0;
+var _ccf=def.width;
+if(_ccf!=null){
+page.width=_ccf;
 }
-var _cc1=def.height;
-if(_cc1!=null){
-page.height=_cc1;
+var _cd0=def.height;
+if(_cd0!=null){
+page.height=_cd0;
 }
 }
 };
-ViewBinding.prototype.handleCrawler=function(_cc2){
-ViewBinding.superclass.handleCrawler.call(this,_cc2);
-switch(_cc2.type){
+ViewBinding.prototype.handleCrawler=function(_cd1){
+ViewBinding.superclass.handleCrawler.call(this,_cd1);
+switch(_cd1.type){
 case NodeCrawler.TYPE_DESCENDING:
 if(this.isFreeFloating==true){
-if(_cc2.id==FocusCrawler.ID){
-if(_cc2.previousNode!=this._snapBinding.bindingElement){
-_cc2.response=NodeCrawler.SKIP_NODE;
+if(_cd1.id==FocusCrawler.ID){
+if(_cd1.previousNode!=this._snapBinding.bindingElement){
+_cd1.response=NodeCrawler.SKIP_NODE;
 }
 }
 }
 break;
 case NodeCrawler.TYPE_ASCENDING:
 if(this.isFreeFloating==true){
-_cc2.nextNode=this._snapBinding.bindingElement;
+_cd1.nextNode=this._snapBinding.bindingElement;
 }
 break;
 }
@@ -20599,30 +20640,30 @@ ViewBinding.superclass.hide.call(this);
 }
 }
 };
-ViewBinding.prototype.setPosition=function(_cc3){
-_cc3.x+=ViewBinding.HORIZONTAL_ADJUST;
-this.bindingElement.style.left=_cc3.x+"px";
-this.bindingElement.style.top=_cc3.y+"px";
+ViewBinding.prototype.setPosition=function(_cd2){
+_cd2.x+=ViewBinding.HORIZONTAL_ADJUST;
+this.bindingElement.style.left=_cd2.x+"px";
+this.bindingElement.style.top=_cd2.y+"px";
 };
-ViewBinding.prototype.setDimension=function(_cc4){
-_cc4.h-=ViewBinding.VERTICAL_ADJUST;
-_cc4.w-=ViewBinding.HORIZONTAL_ADJUST;
-_cc4.w-=1;
-if(_cc4.h<0){
-_cc4.h=0;
+ViewBinding.prototype.setDimension=function(_cd3){
+_cd3.h-=ViewBinding.VERTICAL_ADJUST;
+_cd3.w-=ViewBinding.HORIZONTAL_ADJUST;
+_cd3.w-=1;
+if(_cd3.h<0){
+_cd3.h=0;
 }
-if(_cc4.w<0){
-_cc4.w=0;
+if(_cd3.w<0){
+_cd3.w=0;
 }
-this.bindingElement.style.width=String(_cc4.w)+"px";
-this.bindingElement.style.height=String(_cc4.h)+"px";
+this.bindingElement.style.width=String(_cd3.w)+"px";
+this.bindingElement.style.height=String(_cd3.h)+"px";
 };
-ViewBinding.prototype.snapToBinding=function(_cc5){
+ViewBinding.prototype.snapToBinding=function(_cd4){
 this.isFlexBoxBehavior=false;
-_cc5.addActionListener(Binding.ACTION_DIMENSIONCHANGED,this);
-_cc5.addActionListener(Binding.ACTION_POSITIONCHANGED,this);
-_cc5.addActionListener(Binding.ACTION_VISIBILITYCHANGED,this);
-_cc5.addActionListener(Binding.ACTION_DISPOSED,this);
+_cd4.addActionListener(Binding.ACTION_DIMENSIONCHANGED,this);
+_cd4.addActionListener(Binding.ACTION_POSITIONCHANGED,this);
+_cd4.addActionListener(Binding.ACTION_VISIBILITYCHANGED,this);
+_cd4.addActionListener(Binding.ACTION_DISPOSED,this);
 if(this._snapBinding){
 this._snapBinding.removeActionListener(Binding.ACTION_DIMENSIONCHANGED,this);
 this._snapBinding.removeActionListener(Binding.ACTION_POSITIONCHANGED,this);
@@ -20630,7 +20671,7 @@ this._snapBinding.removeActionListener(Binding.ACTION_VISIBILITYCHANGED,this);
 this._snapBinding.removeActionListener(Binding.ACTION_DISPOSED,this);
 this._snapBinding.viewBinding=null;
 }
-this._snapBinding=_cc5;
+this._snapBinding=_cd4;
 this._snapBinding.viewBinding=this;
 this.isFreeFloating=true;
 if(!this._isViewBindingInitialized){
@@ -20638,13 +20679,13 @@ this.initialize();
 }
 };
 ViewBinding.prototype.getMigrationParent=function(){
-var _cc6=null;
+var _cd5=null;
 if(this.isFreeFloating==true){
-_cc6=this._snapBinding.getBindingElement();
+_cd5=this._snapBinding.getBindingElement();
 }else{
-_cc6=ViewBinding.superclass.getMigrationParent.call(this);
+_cd5=ViewBinding.superclass.getMigrationParent.call(this);
 }
-return _cc6;
+return _cd5;
 };
 ViewBinding.prototype.getContentWindow=function(){
 return this.windowBinding.getContentWindow();
@@ -20658,21 +20699,21 @@ return this.windowBinding.getRootBinding();
 ViewBinding.prototype.getPageBinding=function(){
 return this._pageBinding;
 };
-ViewBinding.prototype.reload=function(_cc7){
+ViewBinding.prototype.reload=function(_cd6){
 this._isLoaded=false;
-this.windowBinding.reload(_cc7);
+this.windowBinding.reload(_cd6);
 EventBroadcaster.broadcast(BroadcastMessages.VIEW_OPENING,this.getHandle());
 };
 ViewBinding.prototype.saveContainedEditor=function(){
-var _cc8=false;
+var _cd7=false;
 var page=this._pageBinding;
 if(page!=null&&page instanceof EditorPageBinding){
 if(page.canSave()){
 page.doSave();
-_cc8=true;
+_cd7=true;
 }
 }
-if(!_cc8){
+if(!_cd7){
 this.logger.error("saveContainedEditor failed");
 }
 };
@@ -20694,12 +20735,12 @@ this.getRootBinding().onDeactivate();
 }
 }
 };
-ViewBinding.newInstance=function(_ccc){
-var _ccd=DOMUtil.createElementNS(Constants.NS_UI,"ui:view",_ccc);
-var _cce=UserInterface.registerBinding(_ccd,ViewBinding);
-_cce.windowBinding=_cce.add(WindowBinding.newInstance(_ccc));
-_cce.windowBinding.isFlexible=false;
-return _cce;
+ViewBinding.newInstance=function(_cdb){
+var _cdc=DOMUtil.createElementNS(Constants.NS_UI,"ui:view",_cdb);
+var _cdd=UserInterface.registerBinding(_cdc,ViewBinding);
+_cdd.windowBinding=_cdd.add(WindowBinding.newInstance(_cdb));
+_cdd.windowBinding.isFlexible=false;
+return _cdd;
 };
 PageBinding.prototype=new FocusBinding;
 PageBinding.prototype.constructor=Binding;
@@ -20847,31 +20888,31 @@ this.isDialogSubPage=true;
 PageBinding.prototype._setupDotNet=function(){
 var self=this;
 var form=this.bindingDocument.forms[0];
-var _cd6=this.bindingWindow.__doPostBack;
-var _cd7=false;
+var _ce5=this.bindingWindow.__doPostBack;
+var _ce6=false;
 if(!form.__isSetup){
 DOMEvents.addEventListener(this.bindingWindow,DOMEvents.UNLOAD,{handleEvent:function(){
-if(_cd7){
+if(_ce6){
 Application.unlock(self);
 }
 }});
 }
-this.bindingWindow.__doPostBack=function(_cd8,_cd9){
+this.bindingWindow.__doPostBack=function(_ce7,_ce8){
 if(!form.__isSetup){
 Application.lock(self);
-_cd7=true;
+_ce6=true;
 }
 self.manifestAllDataBindings();
-_cd6(_cd8,_cd9);
+_ce5(_ce7,_ce8);
 if(Application.isDeveloperMode){
 self._debugDotNetPostback();
 }
 };
 };
-PageBinding.prototype.postMessage=function(_cda,list){
-var _cdc=this.bindingWindow.bindingMap.__REQUEST;
-if(_cdc!=null&&this._isDotNet()){
-switch(_cda){
+PageBinding.prototype.postMessage=function(_ce9,list){
+var _ceb=this.bindingWindow.bindingMap.__REQUEST;
+if(_ceb!=null&&this._isDotNet()){
+switch(_ce9){
 case EditorPageBinding.MESSAGE_SAVE:
 case EditorPageBinding.MESSAGE_PERSIST:
 if(this.bindingWindow.DataManager.isDirty){
@@ -20879,46 +20920,46 @@ if(this.validateAllDataBindings()){
 if(list!=null){
 list.add(this);
 }
-_cdc.postback(_cda);
+_ceb.postback(_ce9);
 }
 }
 break;
 default:
-_cdc.postback(_cda);
+_ceb.postback(_ce9);
 break;
 }
 }
 if(list!=null){
-this._postMessageToDescendants(_cda,list);
+this._postMessageToDescendants(_ce9,list);
 }
 };
-PageBinding.prototype._postMessageToDescendants=function(_cdd,list){
-var _cdf=this.getDescendantBindingsByType(WindowBinding);
-_cdf.each(function(win){
+PageBinding.prototype._postMessageToDescendants=function(_cec,list){
+var _cee=this.getDescendantBindingsByType(WindowBinding);
+_cee.each(function(win){
 var page=win.getPageBinding();
 if(page!=null){
-page.postMessage(_cdd,list);
+page.postMessage(_cec,list);
 }
 });
 };
 PageBinding.prototype._debugDotNetPostback=function(){
 var list=new List();
-new List(this.bindingDocument.forms[0].elements).each(function(_ce3){
-list.add({name:_ce3.name,value:_ce3.value});
+new List(this.bindingDocument.forms[0].elements).each(function(_cf2){
+list.add({name:_cf2.name,value:_cf2.value});
 });
 var out="";
-list.each(function(_ce5){
-out+=_ce5.name+": "+_ce5.value+"\n";
+list.each(function(_cf4){
+out+=_cf4.name+": "+_cf4.value+"\n";
 });
 this.logger.debug(out);
 };
-PageBinding.prototype.handleAction=function(_ce6){
-PageBinding.superclass.handleAction.call(this,_ce6);
-var _ce7=_ce6.target;
-switch(_ce6.type){
+PageBinding.prototype.handleAction=function(_cf5){
+PageBinding.superclass.handleAction.call(this,_cf5);
+var _cf6=_cf5.target;
+switch(_cf5.type){
 case RootBinding.ACTION_PHASE_3:
-if(_ce7==UserInterface.getBinding(this.bindingDocument.body)){
-_ce7.removeActionListener(RootBinding.ACTION_PHASE_3,this);
+if(_cf6==UserInterface.getBinding(this.bindingDocument.body)){
+_cf6.removeActionListener(RootBinding.ACTION_PHASE_3,this);
 if(!this._isPageBindingInitialized){
 try{
 this.onBeforePageInitialize();
@@ -20933,32 +20974,32 @@ throw exception;
 break;
 case PageBinding.ACTION_DOPOSTBACK:
 if(this._isDotNet()){
-this.doPostBack(_ce7);
+this.doPostBack(_cf6);
 }
-_ce6.consume();
+_cf5.consume();
 break;
 case PageBinding.ACTION_DOVALIDATEDPOSTBACK:
 if(this._isDotNet()){
-var _ce8=this.validateAllDataBindings();
-if(_ce8){
-this.doPostBack(_ce7);
+var _cf7=this.validateAllDataBindings();
+if(_cf7){
+this.doPostBack(_cf6);
 }
 }
-_ce6.consume();
+_cf5.consume();
 break;
 case BalloonBinding.ACTION_INITIALIZE:
-_ce6.consume();
+_cf5.consume();
 break;
 case PageBinding.ACTION_BLOCK_INIT:
 if(this._initBlockers==null){
 this._initBlockers=new Map();
 }
-this._initBlockers.set(_ce7.key,true);
+this._initBlockers.set(_cf6.key,true);
 break;
 case PageBinding.ACTION_UNBLOCK_INIT:
 if(this._initBlockers!=null){
-if(this._initBlockers.has(_ce7.key)){
-this._initBlockers.del(_ce7.key);
+if(this._initBlockers.has(_cf6.key)){
+this._initBlockers.del(_cf6.key);
 if(!this._initBlockers.hasEntries()){
 this._initBlockers=null;
 if(this._isReadyForInitialize==true){
@@ -20974,26 +21015,26 @@ break;
 case PageBinding.ACTION_GETMESSAGES:
 if(UpdateMananger.isUpdating){
 var self=this;
-var _cea={handleAction:function(_ceb){
-if(_ceb.target==self){
-self.removeActionListener(PageBinding.ACTION_UPDATED,_cea);
+var _cf9={handleAction:function(_cfa){
+if(_cfa.target==self){
+self.removeActionListener(PageBinding.ACTION_UPDATED,_cf9);
 MessageQueue.udpdate();
 }
 }};
-this.addActionListener(PageBinding.ACTION_UPDATED,_cea);
+this.addActionListener(PageBinding.ACTION_UPDATED,_cf9);
 }else{
 MessageQueue.udpdate();
 }
-_ce6.consume();
+_cf5.consume();
 break;
 }
 };
-PageBinding.prototype.handleBroadcast=function(_cec,arg){
-PageBinding.superclass.handleBroadcast.call(this,_cec,arg);
-switch(_cec){
+PageBinding.prototype.handleBroadcast=function(_cfb,arg){
+PageBinding.superclass.handleBroadcast.call(this,_cfb,arg);
+switch(_cfb){
 case BroadcastMessages.MESSAGEQUEUE_REQUESTED:
-var _cee=arg;
-if(!this._canPostBack&&!_cee){
+var _cfd=arg;
+if(!this._canPostBack&&!_cfd){
 this._canPostBack=true;
 Application.unlock(this);
 }
@@ -21004,59 +21045,59 @@ PageBinding.prototype._isDotNet=function(){
 var form=this.bindingDocument.forms[0];
 return (form!=null&&typeof this.bindingWindow.__doPostBack!="undefined");
 };
-PageBinding.prototype.doPostBack=function(_cf0){
+PageBinding.prototype.doPostBack=function(_cff){
 if(this._canPostBack){
-if(_cf0!=null&&this._isDotNet()){
-var _cf1=_cf0.getCallBackID();
-var _cf2=_cf0.getCallBackArg();
-if(_cf1!=null){
-_cf1=_cf1.replace(/_/g,"$");
+if(_cff!=null&&this._isDotNet()){
+var _d00=_cff.getCallBackID();
+var _d01=_cff.getCallBackArg();
+if(_d00!=null){
+_d00=_d00.replace(/_/g,"$");
 }else{
-_cf1="";
+_d00="";
 }
-if(_cf2==null){
-_cf2="";
+if(_d01==null){
+_d01="";
 }
-this.bindingWindow.__doPostBack(_cf1,_cf2);
+this.bindingWindow.__doPostBack(_d00,_d01);
 }
 }
 };
 PageBinding.prototype.validateAllDataBindings=function(){
-var _cf3=true;
-var _cf4=this.bindingWindow.DataManager.getAllDataBindings();
-while(_cf4.hasNext()&&_cf3){
-var _cf5=_cf4.getNext();
-if(_cf5.isAttached){
-var _cf6=_cf5.validate();
-if(_cf3&&!_cf6){
-_cf3=false;
-this.logger.debug("Invalid DataBinding: "+_cf5.toString()+" ("+_cf5.getName()+")");
+var _d02=true;
+var _d03=this.bindingWindow.DataManager.getAllDataBindings();
+while(_d03.hasNext()&&_d02){
+var _d04=_d03.getNext();
+if(_d04.isAttached){
+var _d05=_d04.validate();
+if(_d02&&!_d05){
+_d02=false;
+this.logger.debug("Invalid DataBinding: "+_d04.toString()+" ("+_d04.getName()+")");
 break;
 }
 }
 }
-return _cf3;
+return _d02;
 };
 PageBinding.prototype.manifestAllDataBindings=function(){
 var list=new List();
-var _cf8=this.bindingWindow.DataManager.getAllDataBindings();
-while(_cf8.hasNext()){
-var _cf9=_cf8.getNext();
-if(_cf9.isAttached){
-var _cfa=_cf9.manifest();
-if(_cfa!=null){
-list.add(_cfa);
+var _d07=this.bindingWindow.DataManager.getAllDataBindings();
+while(_d07.hasNext()){
+var _d08=_d07.getNext();
+if(_d08.isAttached){
+var _d09=_d08.manifest();
+if(_d09!=null){
+list.add(_d09);
 }
 }
 }
 return list;
 };
 PageBinding.prototype.cleanAllDataBindings=function(){
-var _cfb=this.bindingWindow.DataManager.getAllDataBindings();
-while(_cfb.hasNext()){
-var _cfc=_cfb.getNext();
-if(_cfc.isAttached){
-_cfc.clean();
+var _d0a=this.bindingWindow.DataManager.getAllDataBindings();
+while(_d0a.hasNext()){
+var _d0b=_d0a.getNext();
+if(_d0b.isAttached){
+_d0b.clean();
 }
 }
 };
@@ -21097,9 +21138,9 @@ PageBinding.prototype.onDeactivate=function(){
 if(this.isActivated==true){
 this.isActivated=false;
 if(this._cachedFocus!=null){
-var _cfe=this._cachedFocus.getBinding();
-if(_cfe){
-_cfe.blur();
+var _d0d=this._cachedFocus.getBinding();
+if(_d0d){
+_d0d.blur();
 }
 }
 if(FocusBinding.activeInstance==this){
@@ -21143,58 +21184,58 @@ this.addActionListener(ButtonBinding.ACTION_COMMAND);
 DialogPageBinding.prototype.parseDOMProperties=function(){
 DialogPageBinding.superclass.parseDOMProperties.call(this);
 if(this.width==null){
-var _cff=this.getProperty("width");
-if(!_cff){
-_cff=this.hasClassName(DialogPageBinding.CLASSNAME_TABBOXED)?DialogPageBinding.DEFAULT_TABBOXED_WIDTH:DialogPageBinding.DEFAULT_WIDTH;
+var _d0e=this.getProperty("width");
+if(!_d0e){
+_d0e=this.hasClassName(DialogPageBinding.CLASSNAME_TABBOXED)?DialogPageBinding.DEFAULT_TABBOXED_WIDTH:DialogPageBinding.DEFAULT_WIDTH;
 }
-this.width=_cff;
+this.width=_d0e;
 }
 if(this.height==null){
-var _d00=this.getProperty("height");
-this.height=_d00?_d00:DialogPageBinding.DEFAULT_HEIGHT;
+var _d0f=this.getProperty("height");
+this.height=_d0f?_d0f:DialogPageBinding.DEFAULT_HEIGHT;
 }
 if(this.minheight==null){
-var _d01=this.getProperty("minheight");
-if(_d01!=null){
-this.minheight=_d01;
+var _d10=this.getProperty("minheight");
+if(_d10!=null){
+this.minheight=_d10;
 }
 }
 if(this.controls==null){
-var _d02=this.getProperty("controls");
-this.controls=_d02?_d02:DialogPageBinding.DEFAULT_CONTROLS;
+var _d11=this.getProperty("controls");
+this.controls=_d11?_d11:DialogPageBinding.DEFAULT_CONTROLS;
 }
 if(!this.isResizable){
-var _d03=this.getProperty("resizable");
-this.isResizable=_d03?_d03:DialogPageBinding.DEFAULT_RESIZABLE;
+var _d12=this.getProperty("resizable");
+this.isResizable=_d12?_d12:DialogPageBinding.DEFAULT_RESIZABLE;
 }
 if(this.height=="auto"){
 this.enableAutoHeightLayoutMode(true);
 }
 };
-DialogPageBinding.prototype.enableAutoHeightLayoutMode=function(_d04){
-if(_d04!=this.isAutoHeightLayoutMode){
-if(_d04){
+DialogPageBinding.prototype.enableAutoHeightLayoutMode=function(_d13){
+if(_d13!=this.isAutoHeightLayoutMode){
+if(_d13){
 this.attachClassName("auto");
 }else{
 this.detachClassName("auto");
 }
-this.isAutoHeightLayoutMode=_d04;
+this.isAutoHeightLayoutMode=_d13;
 }
 };
-DialogPageBinding.prototype.handleAction=function(_d05){
-DialogPageBinding.superclass.handleAction.call(this,_d05);
-var _d06=_d05.target;
-switch(_d05.type){
+DialogPageBinding.prototype.handleAction=function(_d14){
+DialogPageBinding.superclass.handleAction.call(this,_d14);
+var _d15=_d14.target;
+switch(_d14.type){
 case PageBinding.ACTION_ATTACHED:
-if(_d06!=this&&_d06.isFitAsDialogSubPage){
-_d06.makeDialogSubPage();
+if(_d15!=this&&_d15.isFitAsDialogSubPage){
+_d15.makeDialogSubPage();
 }
 break;
 case ButtonBinding.ACTION_COMMAND:
-_d05.consume();
-if(_d06.response!=null){
-this.response=_d06.response;
-switch(_d06.response){
+_d14.consume();
+if(_d15.response!=null){
+this.response=_d15.response;
+switch(_d15.response){
 case Dialog.RESPONSE_ACCEPT:
 if(this.validateAllDataBindings()==true){
 this.onDialogAccept();
@@ -21219,10 +21260,10 @@ this._disableAcceptButton(false);
 break;
 }
 };
-DialogPageBinding.prototype._disableAcceptButton=function(_d07){
-var _d08=this.bindingWindow.bindingMap.buttonAccept;
-if(_d08!=null){
-_d08.setDisabled(_d07);
+DialogPageBinding.prototype._disableAcceptButton=function(_d16){
+var _d17=this.bindingWindow.bindingMap.buttonAccept;
+if(_d17!=null){
+_d17.setDisabled(_d16);
 }
 };
 DialogPageBinding.prototype.onDialogAccept=function(){
@@ -21254,13 +21295,13 @@ this.logger=SystemLogger.getLogger("DialogPageBodyBinding");
 DialogPageBodyBinding.prototype.toString=function(){
 return "[DialogPageBodyBinding]";
 };
-DialogPageBodyBinding.prototype._setFitnessHeight=function(_d09){
-var _d0a=CSSComputer.getPadding(this.bindingElement);
-var _d0b=CSSComputer.getBorder(this.bindingElement);
-_d09+=_d0a.top+_d0a.bottom;
-_d09+=_d0b.top+_d0b.bottom;
-if(_d09>this.bindingElement.offsetHeight){
-this.bindingElement.style.height=_d09+"px";
+DialogPageBodyBinding.prototype._setFitnessHeight=function(_d18){
+var _d19=CSSComputer.getPadding(this.bindingElement);
+var _d1a=CSSComputer.getBorder(this.bindingElement);
+_d18+=_d19.top+_d19.bottom;
+_d18+=_d1a.top+_d1a.bottom;
+if(_d18>this.bindingElement.offsetHeight){
+this.bindingElement.style.height=_d18+"px";
 }
 };
 EditorPageBinding.prototype=new PageBinding;
@@ -21371,10 +21412,10 @@ this.isDirty=false;
 EditorPageBinding.message=null;
 this.dispatchAction(EditorPageBinding.ACTION_CLEAN);
 };
-EditorPageBinding.prototype.handleAction=function(_d13){
-EditorPageBinding.superclass.handleAction.call(this,_d13);
-var _d14=_d13.target;
-switch(_d13.type){
+EditorPageBinding.prototype.handleAction=function(_d22){
+EditorPageBinding.superclass.handleAction.call(this,_d22);
+var _d23=_d22.target;
+switch(_d22.type){
 case EditorPageBinding.ACTION_SAVE:
 this.postMessage(EditorPageBinding.MESSAGE_SAVE);
 break;
@@ -21386,21 +21427,21 @@ case ResponseBinding.ACTION_SUCCESS:
 if(Application.isDeveloperMode){
 }
 if(this._messengers.hasEntries()){
-var _d15=-1;
+var _d24=-1;
 this._messengers.each(function(page){
-var res=page.bindingWindow==_d14.bindingWindow;
+var res=page.bindingWindow==_d23.bindingWindow;
 if(res){
 page.bindingWindow.DataManager.isDirty=false;
-if(_d15==-1){
-_d15=0;
+if(_d24==-1){
+_d24=0;
 }
 }else{
-_d15++;
+_d24++;
 }
 return res;
 });
-if(_d15>-1){
-this._messengers.del(_d15);
+if(_d24>-1){
+this._messengers.del(_d24);
 }
 if(!this._messengers.hasEntries()){
 switch(this._message){
@@ -21436,18 +21477,18 @@ this.isDirty=true;
 this.dispatchAction(EditorPageBinding.ACTION_DIRTY);
 }
 }
-_d13.consume();
+_d22.consume();
 break;
 case Binding.ACTION_INVALID:
 this.enableSave(false);
-this._invalidBindings.set(_d14.key,_d14);
-if(_d14 instanceof FieldsBinding){
+this._invalidBindings.set(_d23.key,_d23);
+if(_d23 instanceof FieldsBinding){
 this._updateStatusBar();
 }
 break;
 case Binding.ACTION_VALID:
-this._invalidBindings.del(_d14.key);
-if(_d14 instanceof FieldsBinding){
+this._invalidBindings.del(_d23.key);
+if(_d23 instanceof FieldsBinding){
 this._updateStatusBar();
 }
 if(!this._invalidBindings.hasEntries()){
@@ -21455,9 +21496,9 @@ this.enableSave(true);
 }
 break;
 case TabBoxBinding.ACTION_SELECTED:
-if(_d14==this._tabBoxBinding){
+if(_d23==this._tabBoxBinding){
 if(this._windowBinding!=null){
-var tab=_d14.getSelectedTabBinding();
+var tab=_d23.getSelectedTabBinding();
 if(tab.getID()==EditorPageBinding.ID_PREVIEWTAB){
 this._isPreviewing=true;
 if(this._messengers.hasEntries()){
@@ -21473,26 +21514,26 @@ this._stopPreview();
 }
 }
 }
-_d13.consume();
+_d22.consume();
 break;
 case TabBoxBinding.ACTION_UNSELECTED:
-if(_d14==this._tabBoxBinding){
+if(_d23==this._tabBoxBinding){
 this.postMessage(EditorPageBinding.MESSAGE_PERSIST);
 }
-_d13.consume();
+_d22.consume();
 break;
 case WindowBinding.ACTION_LOADED:
-if(_d14==this._windowBinding){
+if(_d23==this._windowBinding){
 if(this._isGeneratingPreview==true){
 this._generatePreview();
 this._isGeneratingPreview=false;
 }
-_d13.consume();
+_d22.consume();
 }
 break;
 case WindowBinding.ACTION_ONLOAD:
-if(_d14==this._windowBinding){
-if(_d14.getContentWindow().isPostBackDocument!=true){
+if(_d23==this._windowBinding){
+if(_d23.getContentWindow().isPostBackDocument!=true){
 if(Client.isPrism){
 Prism.enableCache();
 }
@@ -21501,9 +21542,9 @@ setTimeout(function(){
 Application.unlock(self);
 },100);
 if(EventBroadcaster.hasSubscribers(BroadcastMessages.XHTML_MARKUP_ON)){
-var _d1a=WindowBinding.getMarkup(this._windowBinding);
-if(_d1a!=null){
-EventBroadcaster.broadcast(BroadcastMessages.XHTML_MARKUP_ON,_d1a);
+var _d29=WindowBinding.getMarkup(this._windowBinding);
+if(_d29!=null){
+EventBroadcaster.broadcast(BroadcastMessages.XHTML_MARKUP_ON,_d29);
 }
 }
 }
@@ -21515,9 +21556,9 @@ EditorPageBinding.prototype.canSave=function(){
 return this.bindingWindow.bindingMap.savebutton!=null;
 };
 EditorPageBinding.prototype.doSave=function(){
-var _d1b=this.bindingWindow.bindingMap.savebutton;
-if(_d1b!=null&&!_d1b.isDisabled){
-_d1b.fireCommand();
+var _d2a=this.bindingWindow.bindingMap.savebutton;
+if(_d2a!=null&&!_d2a.isDisabled){
+_d2a.fireCommand();
 }
 };
 EditorPageBinding.prototype._saveEditorPage=function(){
@@ -21525,9 +21566,9 @@ if(Application.isDeveloperMode){
 }
 if(this.validateAllDataBindings()){
 this.bindingWindow.DataManager.isDirty=false;
-var _d1c=this.bindingWindow.bindingMap.__REQUEST;
-if(_d1c!=null){
-_d1c.postback(EditorPageBinding.MESSAGE_SAVE);
+var _d2b=this.bindingWindow.bindingMap.__REQUEST;
+if(_d2b!=null){
+_d2b.postback(EditorPageBinding.MESSAGE_SAVE);
 }else{
 this.logger.error("Save aborted: Could not locate RequestBinding");
 }
@@ -21538,33 +21579,33 @@ if(Application.isDeveloperMode){
 }
 this.postMessage(EditorPageBinding.MESSAGE_REFRESH);
 };
-EditorPageBinding.prototype.postMessage=function(_d1d){
+EditorPageBinding.prototype.postMessage=function(_d2c){
 this._message=null;
-switch(_d1d){
+switch(_d2c){
 case EditorPageBinding.MESSAGE_SAVE:
-this._postMessageToDescendants(_d1d,this._messengers);
+this._postMessageToDescendants(_d2c,this._messengers);
 if(!this._messengers.hasEntries()){
 this._saveEditorPage();
 }else{
-this._message=_d1d;
+this._message=_d2c;
 }
 break;
 case EditorPageBinding.MESSAGE_PERSIST:
-this._message=_d1d;
-EditorPageBinding.superclass.postMessage.call(this,_d1d,this._messengers);
+this._message=_d2c;
+EditorPageBinding.superclass.postMessage.call(this,_d2c,this._messengers);
 break;
 case EditorPageBinding.MESSAGE_REFRESH:
-EditorPageBinding.superclass.postMessage.call(this,_d1d,this._messengers);
+EditorPageBinding.superclass.postMessage.call(this,_d2c,this._messengers);
 break;
 }
 };
-EditorPageBinding.prototype.handleBroadcast=function(_d1e,arg){
-EditorPageBinding.superclass.handleBroadcast.call(this,_d1e,arg);
-switch(_d1e){
+EditorPageBinding.prototype.handleBroadcast=function(_d2d,arg){
+EditorPageBinding.superclass.handleBroadcast.call(this,_d2d,arg);
+switch(_d2d){
 case BroadcastMessages.HIGHLIGHT_KEYWORDS:
-var _d20=arg;
+var _d2f=arg;
 if(UserInterface.isBindingVisible(this._windowBinding)){
-WindowBinding.highlightKeywords(this._windowBinding,_d20);
+WindowBinding.highlightKeywords(this._windowBinding,_d2f);
 }
 break;
 }
@@ -21582,27 +21623,27 @@ EventBroadcaster.broadcast(BroadcastMessages.XHTML_MARKUP_DEACTIVATE);
 }
 };
 EditorPageBinding.prototype._updateStatusBar=function(){
-var _d21=new List();
-this._invalidBindings.each(function(key,_d23){
-var list=_d23.getInvalidLabels();
+var _d30=new List();
+this._invalidBindings.each(function(key,_d32){
+var list=_d32.getInvalidLabels();
 if(list){
-list.each(function(_d25){
-_d21.add(_d25);
+list.each(function(_d34){
+_d30.add(_d34);
 });
 }
 });
-if(_d21.hasEntries()){
-var _d26="";
-while(_d21.hasNext()){
-_d26+=_d21.getNext().toLowerCase();
-if(_d21.hasNext()){
-_d26+=", ";
+if(_d30.hasEntries()){
+var _d35="";
+while(_d30.hasNext()){
+_d35+=_d30.getNext().toLowerCase();
+if(_d30.hasNext()){
+_d35+=", ";
 }else{
-_d26+=".";
+_d35+=".";
 }
 }
-var _d27=StringBundle.getString("ui","Website.App.StatusBar.ErrorInField");
-StatusBar.error(_d27+" "+_d26);
+var _d36=StringBundle.getString("ui","Website.App.StatusBar.ErrorInField");
+StatusBar.error(_d36+" "+_d35);
 }else{
 StatusBar.clear();
 }
@@ -21621,23 +21662,23 @@ if(Application.isLocked){
 Application.unlock(this);
 }
 };
-EditorPageBinding.prototype.enableSave=function(_d28){
-var _d29=this.bindingDocument.getElementById("broadcasterCanSave");
-if(_d29){
-var _d2a=UserInterface.getBinding(_d29);
-if(_d28){
-_d2a.enable();
+EditorPageBinding.prototype.enableSave=function(_d37){
+var _d38=this.bindingDocument.getElementById("broadcasterCanSave");
+if(_d38){
+var _d39=UserInterface.getBinding(_d38);
+if(_d37){
+_d39.enable();
 }else{
-_d2a.disable();
+_d39.disable();
 }
 }else{
 throw new Error("A required BroadcasterBinding could not be located.");
 }
 };
 EditorPageBinding.prototype.enableSaveAs=function(){
-var _d2b=this.bindingDocument.getElementById(EditorPageBinding.ID_SAVEASBUTTON);
-if(_d2b!=null){
-UserInterface.getBinding(_d2b).enable();
+var _d3a=this.bindingDocument.getElementById(EditorPageBinding.ID_SAVEASBUTTON);
+if(_d3a!=null){
+UserInterface.getBinding(_d3a).enable();
 }
 };
 EditorPageBinding.prototype.handleInvalidData=function(){
@@ -21651,17 +21692,17 @@ Application.unlock(this);
 }
 };
 EditorPageBinding.prototype._generatePreview=function(){
-var _d2c=this._windowBinding.getContentDocument().title;
-if(_d2c==WindowBinding.POSTBACK_TITLE){
+var _d3b=this._windowBinding.getContentDocument().title;
+if(_d3b==WindowBinding.POSTBACK_TITLE){
 if(this.validateAllDataBindings()){
 this.manifestAllDataBindings();
-var _d2d=this._tabBinding.getCallBackID();
+var _d3c=this._tabBinding.getCallBackID();
 var list=new List();
-new List(this.bindingDocument.forms[0].elements).each(function(_d2f){
-if(_d2f.name=="__EVENTTARGET"&&_d2d){
-_d2f.value=_d2d;
+new List(this.bindingDocument.forms[0].elements).each(function(_d3e){
+if(_d3e.name=="__EVENTTARGET"&&_d3c){
+_d3e.value=_d3c;
 }
-list.add({name:_d2f.name,value:_d2f.value});
+list.add({name:_d3e.name,value:_d3e.value});
 });
 var url=String(this.bindingDocument.location);
 this._windowBinding.getContentWindow().submit(list,url);
@@ -21693,39 +21734,39 @@ this.addActionListener(WizardPageBinding.ACTION_NAVIGATE_NEXT,this);
 this.addActionListener(WizardPageBinding.ACTION_NAVIGATE_PREVIOUS,this);
 this.addActionListener(WizardPageBinding.ACTION_FINISH,this);
 };
-WizardPageBinding.prototype.handleAction=function(_d31){
-WizardPageBinding.superclass.handleAction.call(this,_d31);
-var _d32=_d31.target;
-switch(_d31.type){
+WizardPageBinding.prototype.handleAction=function(_d40){
+WizardPageBinding.superclass.handleAction.call(this,_d40);
+var _d41=_d40.target;
+switch(_d40.type){
 case WizardPageBinding.ACTION_NAVIGATE_NEXT:
 case WizardPageBinding.ACTION_FINISH:
 if(this.validateAllDataBindings()==true){
-this.doPostBack(_d32);
+this.doPostBack(_d41);
 }else{
-_d31.consume();
+_d40.consume();
 }
 break;
 case WizardPageBinding.ACTION_NAVIGATE_PREVIOUS:
-this.doPostBack(_d32);
+this.doPostBack(_d41);
 break;
 case Binding.ACTION_INVALID:
 this._enableNextAndFinish(false);
-_d31.consume();
+_d40.consume();
 break;
 case Binding.ACTION_VALID:
 this._enableNextAndFinish(true);
-_d31.consume();
+_d40.consume();
 break;
 }
 };
-WizardPageBinding.prototype._enableNextAndFinish=function(_d33){
+WizardPageBinding.prototype._enableNextAndFinish=function(_d42){
 var next=this.bindingWindow.bindingMap.nextbutton;
-var _d35=this.bindingWindow.bindingMap.finishbutton;
+var _d44=this.bindingWindow.bindingMap.finishbutton;
 if(next){
-next.setDisabled(!_d33);
+next.setDisabled(!_d42);
 }
-if(_d35){
-_d35.setDisabled(!_d33);
+if(_d44){
+_d44.setDisabled(!_d42);
 }
 };
 MarkupAwarePageBinding.prototype=new PageBinding;
@@ -21747,10 +21788,10 @@ this.subscribe(BroadcastMessages.XHTML_MARKUP_OFF);
 this.subscribe(BroadcastMessages.XHTML_MARKUP_ACTIVATE);
 this.subscribe(BroadcastMessages.XHTML_MARKUP_DEACTIVATE);
 };
-MarkupAwarePageBinding.prototype.handleBroadcast=function(_d36,arg){
-MarkupAwarePageBinding.superclass.handleBroadcast.call(this,_d36,arg);
+MarkupAwarePageBinding.prototype.handleBroadcast=function(_d45,arg){
+MarkupAwarePageBinding.superclass.handleBroadcast.call(this,_d45,arg);
 var self=this;
-switch(_d36){
+switch(_d45){
 case BroadcastMessages.XHTML_MARKUP_ON:
 this._activate(true);
 if(arg!=null){
@@ -21791,9 +21832,9 @@ self._activate(false);
 }
 },0);
 };
-MarkupAwarePageBinding.prototype._handleMarkup=function(_d3a){
+MarkupAwarePageBinding.prototype._handleMarkup=function(_d49){
 };
-MarkupAwarePageBinding.prototype._activate=function(_d3b){
+MarkupAwarePageBinding.prototype._activate=function(_d4a){
 };
 SystemToolBarBinding.prototype=new ToolBarBinding;
 SystemToolBarBinding.prototype.constructor=SystemToolBarBinding;
@@ -21822,27 +21863,27 @@ this.hide();
 }
 };
 SystemToolBarBinding.prototype.onBindingInitialize=function(){
-var _d3c=this.bindingWindow.bindingMap.moreactionstoolbargroup;
-this._moreActionsWidth=_d3c.boxObject.getDimension().w;
-_d3c.hide();
-var _d3d=this.boxObject.getDimension().h;
-this.bindingElement.style.height=_d3d+"px";
+var _d4b=this.bindingWindow.bindingMap.moreactionstoolbargroup;
+this._moreActionsWidth=_d4b.boxObject.getDimension().w;
+_d4b.hide();
+var _d4c=this.boxObject.getDimension().h;
+this.bindingElement.style.height=_d4c+"px";
 var self=this;
-var _d3f=this.bindingWindow.bindingMap.moreactionsbutton;
-_d3f.addActionListener(ButtonBinding.ACTION_COMMAND,{handleAction:function(_d40){
+var _d4e=this.bindingWindow.bindingMap.moreactionsbutton;
+_d4e.addActionListener(ButtonBinding.ACTION_COMMAND,{handleAction:function(_d4f){
 self._showMoreActions();
-_d40.consume();
+_d4f.consume();
 }});
-var _d41=this.bindingWindow.bindingMap.moreactionspopup;
-_d41.addActionListener(MenuItemBinding.ACTION_COMMAND,{handleAction:function(_d42){
-var item=_d42.target;
+var _d50=this.bindingWindow.bindingMap.moreactionspopup;
+_d50.addActionListener(MenuItemBinding.ACTION_COMMAND,{handleAction:function(_d51){
+var item=_d51.target;
 self._handleSystemAction(item.associatedSystemAction);
 }});
 SystemToolBarBinding.superclass.onBindingInitialize.call(this);
 };
-SystemToolBarBinding.prototype.handleBroadcast=function(_d44,arg){
-SystemToolBarBinding.superclass.handleBroadcast.call(this,_d44,arg);
-switch(_d44){
+SystemToolBarBinding.prototype.handleBroadcast=function(_d53,arg){
+SystemToolBarBinding.superclass.handleBroadcast.call(this,_d53,arg);
+switch(_d53){
 case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
 var self=this;
 if(arg!=null){
@@ -21861,15 +21902,15 @@ setTimeout(function(){
 self.emptyLeft();
 self._actionFolderNames={};
 self._currentProfileKey=null;
-var _d48=self.bindingWindow.bindingMap.moreactionstoolbargroup;
-if(_d48!=null){
-_d48.hide();
+var _d57=self.bindingWindow.bindingMap.moreactionstoolbargroup;
+if(_d57!=null){
+_d57.hide();
 }
 },0);
 }
 break;
 case this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST:
-var _d49=this.bindingWindow.WindowManager;
+var _d58=this.bindingWindow.WindowManager;
 this._toolBarBodyLeft.refreshToolBarGroups();
 this._containAllButtons();
 break;
@@ -21882,60 +21923,60 @@ break;
 }
 };
 SystemToolBarBinding.prototype._getProfileKey=function(){
-var _d4a=new String("");
-this._actionProfile.each(function(_d4b,list){
-list.each(function(_d4d){
-_d4a+=_d4d.getHandle()+";";
+var _d59=new String("");
+this._actionProfile.each(function(_d5a,list){
+list.each(function(_d5c){
+_d59+=_d5c.getHandle()+";";
 });
 });
-return _d4a;
+return _d59;
 };
-SystemToolBarBinding.prototype.handleAction=function(_d4e){
-SystemToolBarBinding.superclass.handleAction.call(this,_d4e);
-switch(_d4e.type){
+SystemToolBarBinding.prototype.handleAction=function(_d5d){
+SystemToolBarBinding.superclass.handleAction.call(this,_d5d);
+switch(_d5d.type){
 case ButtonBinding.ACTION_COMMAND:
-var _d4f=_d4e.target;
-this._handleSystemAction(_d4f.associatedSystemAction);
+var _d5e=_d5d.target;
+this._handleSystemAction(_d5e.associatedSystemAction);
 break;
 }
 };
-SystemToolBarBinding.prototype._handleSystemAction=function(_d50){
-if(_d50!=null){
+SystemToolBarBinding.prototype._handleSystemAction=function(_d5f){
+if(_d5f!=null){
 var list=ExplorerBinding.getFocusedTreeNodeBindings();
 if(list.hasEntries()){
-var _d52=list.getFirst();
-var _d53=_d52.node;
+var _d61=list.getFirst();
+var _d62=_d61.node;
 }
-SystemAction.invoke(_d50,_d53);
+SystemAction.invoke(_d5f,_d62);
 }
 };
 SystemToolBarBinding.prototype.buildLeft=function(){
 if(this.isInitialized&&this._actionProfile!=null&&this._actionProfile.hasEntries()){
 var doc=this.bindingDocument;
 var self=this;
-this._actionProfile.each(function(_d56,list){
-var _d58=new List();
+this._actionProfile.each(function(_d65,list){
+var _d67=new List();
 list.reset();
 while(list.hasNext()){
-var _d59=list.getNext();
-var _d5a=null;
-if(_d59.isInToolBar()){
-if(_d59.isInFolder()){
+var _d68=list.getNext();
+var _d69=null;
+if(_d68.isInToolBar()){
+if(_d68.isInFolder()){
 alert("IsInFolder not implemented!");
 }else{
-_d5a=self.getToolBarButtonBinding(_d59);
+_d69=self.getToolBarButtonBinding(_d68);
 }
 }
-if(_d5a!=null){
-_d58.add(_d5a);
+if(_d69!=null){
+_d67.add(_d69);
 }
 }
-if(_d58.hasEntries()){
-var _d5b=ToolBarGroupBinding.newInstance(doc);
-_d58.each(function(_d5c){
-_d5b.add(_d5c);
+if(_d67.hasEntries()){
+var _d6a=ToolBarGroupBinding.newInstance(doc);
+_d67.each(function(_d6b){
+_d6a.add(_d6b);
 });
-self.addLeft(_d5b);
+self.addLeft(_d6a);
 }
 });
 this.attachRecursive();
@@ -21943,41 +21984,41 @@ this._containAllButtons();
 }
 };
 SystemToolBarBinding.prototype._containAllButtons=function(){
-var _d5d=this.bindingWindow.bindingMap.toolsbutton;
-var _d5e=this.bindingWindow.bindingMap.moreactionstoolbargroup;
-var _d5f=_d5d.bindingElement.offsetLeft-this._moreActionsWidth;
-var _d60=0;
-var _d61=new List();
-var _d62,_d63=this._toolBarBodyLeft.getDescendantBindingsByLocalName("toolbarbutton");
-while((_d62=_d63.getNext())!=null){
-if(!_d62.isVisible){
-_d62.show();
+var _d6c=this.bindingWindow.bindingMap.toolsbutton;
+var _d6d=this.bindingWindow.bindingMap.moreactionstoolbargroup;
+var _d6e=_d6c.bindingElement.offsetLeft-this._moreActionsWidth;
+var _d6f=0;
+var _d70=new List();
+var _d71,_d72=this._toolBarBodyLeft.getDescendantBindingsByLocalName("toolbarbutton");
+while((_d71=_d72.getNext())!=null){
+if(!_d71.isVisible){
+_d71.show();
 }
-_d60+=_d62.boxObject.getDimension().w;
-if(_d60>=_d5f){
-_d61.add(_d62);
-_d62.hide();
+_d6f+=_d71.boxObject.getDimension().w;
+if(_d6f>=_d6e){
+_d70.add(_d71);
+_d71.hide();
 }
 }
-if(_d61.hasEntries()){
-var _d64=_d61.getFirst().bindingElement.parentNode;
-UserInterface.getBinding(_d64).setLayout(ToolBarGroupBinding.LAYOUT_LAST);
+if(_d70.hasEntries()){
+var _d73=_d70.getFirst().bindingElement.parentNode;
+UserInterface.getBinding(_d73).setLayout(ToolBarGroupBinding.LAYOUT_LAST);
 this._moreActions=new List();
-while((_d62=_d61.getNext())!=null){
-this._moreActions.add(_d62.associatedSystemAction);
+while((_d71=_d70.getNext())!=null){
+this._moreActions.add(_d71.associatedSystemAction);
 }
-_d5e.show();
+_d6d.show();
 }else{
 this._moreActions=null;
-_d5e.hide();
+_d6d.hide();
 }
 };
 SystemToolBarBinding.prototype._showMoreActions=function(){
 if(this._moreActions!=null){
-var _d65=this.bindingWindow.bindingMap.moreactionspopup;
-_d65.empty();
+var _d74=this.bindingWindow.bindingMap.moreactionspopup;
+_d74.empty();
 while((action=this._moreActions.getNext())!=null){
-var item=MenuItemBinding.newInstance(_d65.bindingDocument);
+var item=MenuItemBinding.newInstance(_d74.bindingDocument);
 item.setLabel(action.getLabel());
 item.setToolTip(action.getToolTip());
 item.imageProfile=new ImageProfile({image:action.getImage(),imageDisabled:action.getDisabledImage()});
@@ -21985,43 +22026,43 @@ if(action.isDisabled()){
 item.disable();
 }
 item.associatedSystemAction=action;
-_d65.add(item);
+_d74.add(item);
 }
-_d65.attachRecursive();
+_d74.attachRecursive();
 this._moreActions=null;
 }
 };
-SystemToolBarBinding.prototype.getToolBarButtonBinding=function(_d67){
-var _d68=ToolBarButtonBinding.newInstance(this.bindingDocument);
-var _d69=_d67.getLabel();
-var _d6a=_d67.getToolTip();
-var _d6b=_d67.getImage();
-var _d6c=_d67.isDisabled();
-if(_d6b&&_d6b.indexOf("size=")==-1){
-_d6b=_d6b+"&size="+this.getImageSize();
-_d68.imageProfile=new ImageProfile({image:_d6b});
+SystemToolBarBinding.prototype.getToolBarButtonBinding=function(_d76){
+var _d77=ToolBarButtonBinding.newInstance(this.bindingDocument);
+var _d78=_d76.getLabel();
+var _d79=_d76.getToolTip();
+var _d7a=_d76.getImage();
+var _d7b=_d76.isDisabled();
+if(_d7a&&_d7a.indexOf("size=")==-1){
+_d7a=_d7a+"&size="+this.getImageSize();
+_d77.imageProfile=new ImageProfile({image:_d7a});
 }
-if(_d69){
-_d68.setLabel(_d69);
+if(_d78){
+_d77.setLabel(_d78);
 }
-if(_d6a){
-_d68.setToolTip(_d6a);
+if(_d79){
+_d77.setToolTip(_d79);
 }
-if(_d67.isDisabled()){
-_d68.disable();
+if(_d76.isDisabled()){
+_d77.disable();
 }
-_d68.associatedSystemAction=_d67;
-return _d68;
+_d77.associatedSystemAction=_d76;
+return _d77;
 };
 SystemToolBarBinding.prototype._invokeDefaultAction=function(){
-var _d6d=this.getDescendantBindingByLocalName("toolbarbutton");
-if(_d6d!=null){
-_d6d.fireCommand();
+var _d7c=this.getDescendantBindingByLocalName("toolbarbutton");
+if(_d7c!=null){
+_d7c.fireCommand();
 }
 };
-SystemToolBarBinding.newInstance=function(_d6e){
-var _d6f=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbar",_d6e);
-return UserInterface.registerBinding(_d6f,SystemToolBarBinding);
+SystemToolBarBinding.newInstance=function(_d7d){
+var _d7e=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbar",_d7d);
+return UserInterface.registerBinding(_d7e,SystemToolBarBinding);
 };
 SystemTreeBinding.prototype=new TreeBinding;
 SystemTreeBinding.prototype.constructor=SystemTreeBinding;
@@ -22071,27 +22112,27 @@ if(this.getProperty("locktoeditor")!=null){
 this.isLockedToEditor=this.getProperty("locktoeditor");
 }
 };
-SystemTreeBinding.prototype.add=function(_d70){
-var _d71=SystemTreeBinding.superclass.add.call(this,_d70);
+SystemTreeBinding.prototype.add=function(_d7f){
+var _d80=SystemTreeBinding.superclass.add.call(this,_d7f);
 if(!this._defaultTreeNode){
-if(_d70 instanceof SystemTreeNodeBinding){
-this._defaultTreeNode=_d70;
+if(_d7f instanceof SystemTreeNodeBinding){
+this._defaultTreeNode=_d7f;
 }
 }
-return _d71;
+return _d80;
 };
-SystemTreeBinding.prototype.handleAction=function(_d72){
-SystemTreeBinding.superclass.handleAction.call(this,_d72);
-var _d73=_d72.target;
-switch(_d72.type){
+SystemTreeBinding.prototype.handleAction=function(_d81){
+SystemTreeBinding.superclass.handleAction.call(this,_d81);
+var _d82=_d81.target;
+switch(_d81.type){
 case TreeNodeBinding.ACTION_ONFOCUS:
 case TreeNodeBinding.ACTION_ONMULTIFOCUS:
 this._restorableFocusHandle=null;
 this._handleSystemTreeFocus();
 break;
 case SystemTreeNodeBinding.ACTION_REFRESHED_YEAH:
-this._updateRefreshingTrees(_d73.key);
-_d72.consume();
+this._updateRefreshingTrees(_d82.key);
+_d81.consume();
 break;
 case TreeNodeBinding.ACTION_DISPOSE:
 case TreeNodeBinding.ACTION_BLUR:
@@ -22101,13 +22142,13 @@ if(!self._focusedTreeNodeBindings.hasEntries()){
 EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED,null);
 }
 },0);
-if(_d72.type==TreeNodeBinding.ACTION_BLUR){
-this._restorableFocusHandle=_d73.getHandle();
+if(_d81.type==TreeNodeBinding.ACTION_BLUR){
+this._restorableFocusHandle=_d82.getHandle();
 }
 break;
 case TreeNodeBinding.ACTION_COMMAND:
 EventBroadcaster.broadcast(BroadcastMessages.INVOKE_DEFAULT_ACTION);
-_d72.consume();
+_d81.consume();
 break;
 }
 };
@@ -22125,8 +22166,8 @@ SystemTreeBinding.superclass._focusDefault.call(this);
 };
 SystemTreeBinding.prototype._attemptRestorableFocus=function(){
 if(this._treeNodeBindings.has(this._restorableFocusHandle)){
-var _d75=this._treeNodeBindings.get(this._restorableFocusHandle);
-this.focusSingleTreeNodeBinding(_d75);
+var _d84=this._treeNodeBindings.get(this._restorableFocusHandle);
+this.focusSingleTreeNodeBinding(_d84);
 }
 this._restorableFocusHandle=null;
 };
@@ -22139,42 +22180,42 @@ EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED,this
 }
 }
 };
-SystemTreeBinding.prototype.registerTreeNodeBinding=function(_d76){
-SystemTreeBinding.superclass.registerTreeNodeBinding.call(this,_d76);
+SystemTreeBinding.prototype.registerTreeNodeBinding=function(_d85){
+SystemTreeBinding.superclass.registerTreeNodeBinding.call(this,_d85);
 var reg=this._entityTokenRegistry;
-var _d78=_d76.node.getEntityToken();
-if(reg.has(_d78)){
-reg.get(_d78).add(_d76);
+var _d87=_d85.node.getEntityToken();
+if(reg.has(_d87)){
+reg.get(_d87).add(_d85);
 }else{
-reg.set(_d78,new List([_d76]));
+reg.set(_d87,new List([_d85]));
 }
-var _d79=null;
+var _d88=null;
 if(this.isLockedToEditor){
-if(_d78==StageBinding.entityToken){
-if(_d76.node.isTreeLockEnabled()){
-_d79=_d76;
+if(_d87==StageBinding.entityToken){
+if(_d85.node.isTreeLockEnabled()){
+_d88=_d85;
 }
 }
 }else{
 if(this._backupfocushandle!=null){
-if(this._backupfocushandle==_d76.node.getHandle()){
-_d79=_d76;
+if(this._backupfocushandle==_d85.node.getHandle()){
+_d88=_d85;
 }
 }
 }
-if(_d79!=null){
-this.focusSingleTreeNodeBinding(_d79);
+if(_d88!=null){
+this.focusSingleTreeNodeBinding(_d88);
 }
 };
-SystemTreeBinding.prototype.unRegisterTreeNodeBinding=function(_d7a){
-SystemTreeBinding.superclass.unRegisterTreeNodeBinding.call(this,_d7a);
+SystemTreeBinding.prototype.unRegisterTreeNodeBinding=function(_d89){
+SystemTreeBinding.superclass.unRegisterTreeNodeBinding.call(this,_d89);
 var reg=this._entityTokenRegistry;
-var _d7c=_d7a.node.getEntityToken();
-if(reg.has(_d7c)){
-var list=reg.get(_d7c);
-list.del(_d7a);
+var _d8b=_d89.node.getEntityToken();
+if(reg.has(_d8b)){
+var list=reg.get(_d8b);
+list.del(_d89);
 if(!list.hasEntries()){
-reg.del(_d7c);
+reg.del(_d8b);
 }
 }else{
 this.logger.fatal("SystemTreeBinding out of synch: unRegisterTreeNodeBinding");
@@ -22182,12 +22223,12 @@ if(Application.isDeveloperMode){
 Dialog.error("Attention Developer","Tree is out of synch. Please reproduce this bug and file a report.");
 }
 }
-if(_d7a.isRefreshing){
+if(_d89.isRefreshing){
 this._updateRefreshingTrees(binding.key);
 }
 if(!this.isLockedToEditor){
-if(_d7a.isFocused&&this._backupfocushandle==null){
-this._backupfocushandle=_d7a.node.getHandle();
+if(_d89.isFocused&&this._backupfocushandle==null){
+this._backupfocushandle=_d89.node.getHandle();
 var self=this;
 setTimeout(function(){
 self._backupfocushandle=null;
@@ -22196,10 +22237,10 @@ self._backupfocushandle=null;
 }
 };
 SystemTreeBinding.prototype._updateRefreshingTrees=function(key){
-var _d80=this._refreshingTreeNodes;
-if(_d80.hasEntries()&&_d80.has(key)){
-_d80.del(key);
-if(!_d80.hasEntries()){
+var _d8f=this._refreshingTreeNodes;
+if(_d8f.hasEntries()&&_d8f.has(key)){
+_d8f.del(key);
+if(!_d8f.hasEntries()){
 EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED,this._refreshToken);
 this._refreshToken=null;
 this._attemptRestorableFocus();
@@ -22207,35 +22248,35 @@ this._attemptRestorableFocus();
 }
 };
 SystemTreeBinding.prototype._computeClipboardSetup=function(){
-var _d81=false;
-var _d82=this.getFocusedTreeNodeBindings();
-if(_d82.hasEntries()){
-_d81=true;
-while(_d81&&_d82.hasNext()){
-var _d83=_d82.getNext();
-if(!_d83.isDraggable){
-_d81=false;
+var _d90=false;
+var _d91=this.getFocusedTreeNodeBindings();
+if(_d91.hasEntries()){
+_d90=true;
+while(_d90&&_d91.hasNext()){
+var _d92=_d91.getNext();
+if(!_d92.isDraggable){
+_d90=false;
 }
 }
 }
-SystemTreePopupBinding.isCutAllowed=_d81;
+SystemTreePopupBinding.isCutAllowed=_d90;
 };
 SystemTreeBinding.prototype._computeRefreshSetup=function(){
 SystemTreePopupBinding.isRefreshAllowed=SystemTreeBinding.clipboard===null;
 };
-SystemTreeBinding.prototype.handleBroadcast=function(_d84,arg){
-SystemTreeBinding.superclass.handleBroadcast.call(this,_d84,arg);
-switch(_d84){
+SystemTreeBinding.prototype.handleBroadcast=function(_d93,arg){
+SystemTreeBinding.superclass.handleBroadcast.call(this,_d93,arg);
+switch(_d93){
 case BroadcastMessages.SYSTEMTREEBINDING_REFRESH:
 if(arg!=null||this.isFocused){
-this._handleCommandBroadcast(_d84,arg);
+this._handleCommandBroadcast(_d93,arg);
 }
 break;
 case BroadcastMessages.SYSTEMTREEBINDING_CUT:
 case BroadcastMessages.SYSTEMTREEBINDING_COPY:
 case BroadcastMessages.SYSTEMTREEBINDING_PASTE:
 if(this.isFocused){
-this._handleCommandBroadcast(_d84);
+this._handleCommandBroadcast(_d93);
 }
 break;
 case BroadcastMessages.SYSTEMTREEBINDING_COLLAPSEALL:
@@ -22258,61 +22299,61 @@ break;
 }
 };
 SystemTreeBinding.prototype._handleDockTabSelect=function(tab){
-var _d88=tab.perspectiveNode==null;
-if(!_d88){
-_d88=tab.perspectiveNode==this.perspectiveNode;
+var _d97=tab.perspectiveNode==null;
+if(!_d97){
+_d97=tab.perspectiveNode==this.perspectiveNode;
 }
-if(_d88){
-var self=this,_d8a=tab.getEntityToken();
+if(_d97){
+var self=this,_d99=tab.getEntityToken();
 setTimeout(function(){
-if(_d8a==null){
+if(_d99==null){
 self.blurSelectedTreeNodes();
 }else{
-self._focusTreeNodeByEntityToken(_d8a);
+self._focusTreeNodeByEntityToken(_d99);
 }
 },250);
 }
 };
-SystemTreeBinding.prototype._focusTreeNodeByEntityToken=function(_d8b,_d8c){
+SystemTreeBinding.prototype._focusTreeNodeByEntityToken=function(_d9a,_d9b){
 this.isLockFeatureFocus=true;
-var _d8d=null;
-if(this._entityTokenRegistry.has(_d8b)){
-var list=this._entityTokenRegistry.get(_d8b);
+var _d9c=null;
+if(this._entityTokenRegistry.has(_d9a)){
+var list=this._entityTokenRegistry.get(_d9a);
 list.each(function(tn){
-var _d90=true;
+var _d9f=true;
 if(tn.node.isTreeLockEnabled()){
-_d8d=tn;
-_d90=false;
+_d9c=tn;
+_d9f=false;
 }
-return _d90;
+return _d9f;
 });
-if(_d8d!=null){
-if(!_d8d.isFocused){
-this.focusSingleTreeNodeBinding(_d8d,true);
+if(_d9c!=null){
+if(!_d9c.isFocused){
+this.focusSingleTreeNodeBinding(_d9c,true);
 }else{
-_d8d.dispatchAction(TreeNodeBinding.ACTION_FOCUSED);
+_d9c.dispatchAction(TreeNodeBinding.ACTION_FOCUSED);
 }
 }
 }
 this.isLockFeatureFocus=false;
-if(_d8d==null&&_d8c!=true){
+if(_d9c==null&&_d9b!=true){
 Application.lock(this);
 StatusBar.busy();
 var self=this;
 setTimeout(function(){
 if(Binding.exists(self)){
-self._fetchTreeForEntityToken(_d8b);
-self._focusTreeNodeByEntityToken(_d8b,true);
+self._fetchTreeForEntityToken(_d9a);
+self._focusTreeNodeByEntityToken(_d9a,true);
 }
 Application.unlock(self);
 StatusBar.clear();
 },0);
 }
 };
-SystemTreeBinding.prototype._fetchTreeForEntityToken=function(_d92){
-var _d93=StageBinding.perspectiveNode.getEntityToken();
-var _d94=this.getOpenSystemNodes();
-var map=System.getInvisibleBranch(_d93,_d92,_d94);
+SystemTreeBinding.prototype._fetchTreeForEntityToken=function(_da1){
+var _da2=StageBinding.perspectiveNode.getEntityToken();
+var _da3=this.getOpenSystemNodes();
+var map=System.getInvisibleBranch(_da2,_da1,_da3);
 if(map==null){
 this.isLockedToEditor=false;
 if(Application.isDeveloperMode){
@@ -22321,31 +22362,31 @@ Dialog.warning("Ouch!","Because the web service failed, tree has disabled the lo
 }else{
 if(map.hasEntries()){
 var self=this;
-var _d97=this._treeNodeBindings;
-var _d98=new Map();
-function fix(_d99,list){
-if(!_d99.hasBeenOpened){
+var _da6=this._treeNodeBindings;
+var _da7=new Map();
+function fix(_da8,list){
+if(!_da8.hasBeenOpened){
 if(list.hasEntries()){
 list.each(function(node){
-if(!_d97.has(node.getHandle())){
-var _d9c=SystemTreeNodeBinding.newInstance(node,self.bindingDocument);
-_d98.set(node.getHandle(),_d9c);
-_d99.add(_d9c);
+if(!_da6.has(node.getHandle())){
+var _dab=SystemTreeNodeBinding.newInstance(node,self.bindingDocument);
+_da7.set(node.getHandle(),_dab);
+_da8.add(_dab);
 }
 });
-_d99.attachRecursive();
+_da8.attachRecursive();
 }
 }
-_d99.open(true);
+_da8.open(true);
 }
-map.each(function(_d9d,list){
-if(_d97.has(_d9d)){
-var _d9f=_d97.get(_d9d);
-fix(_d9f,list);
+map.each(function(_dac,list){
+if(_da6.has(_dac)){
+var _dae=_da6.get(_dac);
+fix(_dae,list);
 }else{
-if(_d98.has(_d9d)){
-var _da0=_d98.get(_d9d);
-fix(_da0,list);
+if(_da7.has(_dac)){
+var _daf=_da7.get(_dac);
+fix(_daf,list);
 }else{
 }
 }
@@ -22353,12 +22394,12 @@ fix(_da0,list);
 }
 }
 };
-SystemTreeBinding.prototype._handleCommandBroadcast=function(_da1,arg){
-switch(_da1){
+SystemTreeBinding.prototype._handleCommandBroadcast=function(_db0,arg){
+switch(_db0){
 case BroadcastMessages.SYSTEMTREEBINDING_REFRESH:
-var _da3=arg;
-if(_da3!=null){
-this._invokeServerRefresh(_da3);
+var _db2=arg;
+if(_db2!=null){
+this._invokeServerRefresh(_db2);
 }else{
 this._invokeManualRefresh();
 }
@@ -22367,66 +22408,66 @@ case BroadcastMessages.SYSTEMTREEBINDING_CUT:
 if(SystemTreeBinding.clipboard!=null){
 SystemTreeBinding.clipboard.hideDrag();
 }
-var _da4=this.getFocusedTreeNodeBindings().getFirst();
+var _db3=this.getFocusedTreeNodeBindings().getFirst();
 SystemTreeBinding.clipboardOperation=SystemTreePopupBinding.CMD_CUT;
-SystemTreeBinding.clipboard=_da4;
-_da4.showDrag();
+SystemTreeBinding.clipboard=_db3;
+_db3.showDrag();
 break;
 case BroadcastMessages.SYSTEMTREEBINDING_COPY:
-var _da4=this.getFocusedTreeNodeBindings().getFirst();
+var _db3=this.getFocusedTreeNodeBindings().getFirst();
 SystemTreeBinding.clipboardOperation=SystemTreePopupBinding.CMD_COPY;
-SystemTreeBinding.clipboard=_da4;
+SystemTreeBinding.clipboard=_db3;
 break;
 case BroadcastMessages.SYSTEMTREEBINDING_PASTE:
 this._handlePaste();
 break;
 }
 };
-SystemTreeBinding.prototype._invokeServerRefresh=function(_da5){
-if(_da5!=null&&_da5=="null"){
+SystemTreeBinding.prototype._invokeServerRefresh=function(_db4){
+if(_db4!=null&&_db4=="null"){
 if(Application.isDeveloperMode){
 alert("Saa har vi balladen.");
 }
 }
-if(this._entityTokenRegistry.has(_da5)){
-var list=this._entityTokenRegistry.get(_da5).reset();
-this._refreshToken=_da5;
+if(this._entityTokenRegistry.has(_db4)){
+var list=this._entityTokenRegistry.get(_db4).reset();
+this._refreshToken=_db4;
 EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,this._refreshToken);
 while(list.hasNext()){
-var _da7=list.getNext();
-this._refreshingTreeNodes.set(_da7.key,true);
+var _db6=list.getNext();
+this._refreshingTreeNodes.set(_db6.key,true);
 setTimeout(function(){
-_da7.refresh(true);
+_db6.refresh(true);
 },0);
 }
 }
 };
 SystemTreeBinding.prototype._invokeManualRefresh=function(){
-var _da8=this.getFocusedTreeNodeBindings().getFirst();
-if(_da8){
-var _da9=_da8.getLabel();
-var _daa=_da8.getAncestorBindingByLocalName("treenode");
-if(_daa){
-_da8=_daa;
+var _db7=this.getFocusedTreeNodeBindings().getFirst();
+if(_db7){
+var _db8=_db7.getLabel();
+var _db9=_db7.getAncestorBindingByLocalName("treenode");
+if(_db9){
+_db7=_db9;
 }
 this._refreshToken=null;
-this._refreshingTreeNodes.set(_da8.key,true);
+this._refreshingTreeNodes.set(_db7.key,true);
 EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,null);
 if(!StatusBar.state){
-var _dab=StringBundle.getString("ui","Website.App.StatusBar.Refreshing");
-StatusBar.busy(_dab,[_da9]);
+var _dba=StringBundle.getString("ui","Website.App.StatusBar.Refreshing");
+StatusBar.busy(_dba,[_db8]);
 }
-_da8.refresh();
+_db7.refresh();
 }
 };
 SystemTreeBinding.prototype._handlePaste=function(){
-var _dac=SystemTreeBinding.clipboard;
-if(_dac){
-var type=_dac.dragType;
-var _dae=this.getFocusedTreeNodeBindings().getFirst();
-if(_dae.dragAccept){
-if(_dae.acceptor.isAccepting(type)){
-this._performPaste(_dae);
+var _dbb=SystemTreeBinding.clipboard;
+if(_dbb){
+var type=_dbb.dragType;
+var _dbd=this.getFocusedTreeNodeBindings().getFirst();
+if(_dbd.dragAccept){
+if(_dbd.acceptor.isAccepting(type)){
+this._performPaste(_dbd);
 }else{
 Dialog.message(StringBundle.getString("ui","Website.Misc.Trees.DialogTitle.PasteTypeNotAllowed"),StringBundle.getString("ui","Website.Misc.Trees.DialogText.PasteTypeNotAllowed"));
 }
@@ -22435,25 +22476,25 @@ Dialog.message(StringBundle.getString("ui","Website.Misc.Trees.DialogTitle.Paste
 }
 }
 };
-SystemTreeBinding.prototype._performPaste=function(_daf){
+SystemTreeBinding.prototype._performPaste=function(_dbe){
 var self=this;
 function update(){
 MessageQueue.update();
 Application.unlock(self);
 }
-if(_daf.node.hasDetailedDropSupport()){
-if(_daf.node.hasChildren()){
-var _db1=_daf.node.getChildren();
-Dialog.invokeModal(SystemTreeBinding.URL_DIALOG_DETAILEDPASTE,{handleDialogResponse:function(_db2,_db3){
-if(_db2==Dialog.RESPONSE_ACCEPT){
+if(_dbe.node.hasDetailedDropSupport()){
+if(_dbe.node.hasChildren()){
+var _dc0=_dbe.node.getChildren();
+Dialog.invokeModal(SystemTreeBinding.URL_DIALOG_DETAILEDPASTE,{handleDialogResponse:function(_dc1,_dc2){
+if(_dc1==Dialog.RESPONSE_ACCEPT){
 Application.lock(self);
-var _db4=_db3.get("switch");
-var _db5=_db3.get("sibling");
-if(_db4=="after"){
-_db5++;
+var _dc3=_dc2.get("switch");
+var _dc4=_dc2.get("sibling");
+if(_dc3=="after"){
+_dc4++;
 }
-var _db6=_daf.accept(SystemTreeBinding.clipboard,_db5);
-if(_db6){
+var _dc5=_dbe.accept(SystemTreeBinding.clipboard,_dc4);
+if(_dc5){
 SystemTreeBinding.clipboard=null;
 SystemTreeBinding.clipboardOperation=null;
 setTimeout(update,0);
@@ -22461,11 +22502,11 @@ setTimeout(update,0);
 update();
 }
 }
-}},_db1);
+}},_dc0);
 }else{
 Application.lock(self);
-var _db7=_daf.accept(SystemTreeBinding.clipboard,0);
-if(_db7){
+var _dc6=_dbe.accept(SystemTreeBinding.clipboard,0);
+if(_dc6){
 SystemTreeBinding.clipboard=null;
 SystemTreeBinding.clipboardOperation=null;
 setTimeout(update,0);
@@ -22475,8 +22516,8 @@ update();
 }
 }else{
 Application.lock(self);
-var _db7=_daf.accept(SystemTreeBinding.clipboard,0);
-if(_db7){
+var _dc6=_dbe.accept(SystemTreeBinding.clipboard,0);
+if(_dc6){
 SystemTreeBinding.clipboard=null;
 SystemTreeBinding.clipboardOperation=null;
 }
@@ -22489,53 +22530,53 @@ this._defaultTreeNode.focus();
 this._defaultTreeNode=null;
 }
 };
-SystemTreeBinding.prototype.collapse=function(_db8){
+SystemTreeBinding.prototype.collapse=function(_dc7){
 EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED,null);
-if(_db8){
+if(_dc7){
 this.blurSelectedTreeNodes();
-var _db9=this.getRootTreeNodeBindings();
-_db9.each(function(_dba){
-if(_dba.isContainer&&_dba.isOpen){
-_dba.close();
-_dba.hasBeenOpened=false;
-_dba.empty();
+var _dc8=this.getRootTreeNodeBindings();
+_dc8.each(function(_dc9){
+if(_dc9.isContainer&&_dc9.isOpen){
+_dc9.close();
+_dc9.hasBeenOpened=false;
+_dc9.empty();
 }
 });
 }else{
 SystemTreeBinding.superclass.collapse.call(this);
 }
 };
-SystemTreeBinding.prototype.setLockToEditor=function(_dbb){
-if(_dbb!=this.isLockedToEditor){
-this.isLockedToEditor=_dbb;
-if(_dbb){
+SystemTreeBinding.prototype.setLockToEditor=function(_dca){
+if(_dca!=this.isLockedToEditor){
+this.isLockedToEditor=_dca;
+if(_dca){
 EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_LOCKTOEDITOR);
 }
 }
 };
 SystemTreeBinding.prototype.getOpenSystemNodes=function(){
 var list=new List([StageBinding.perspectiveNode]);
-var _dbd=this.getRootTreeNodeBindings();
-_dbd.each(function(_dbe){
-var _dbf=_dbe.getOpenSystemNodes();
-if(_dbf!=null&&_dbf.hasEntries()){
-list.merge(_dbf);
+var _dcc=this.getRootTreeNodeBindings();
+_dcc.each(function(_dcd){
+var _dce=_dcd.getOpenSystemNodes();
+if(_dce!=null&&_dce.hasEntries()){
+list.merge(_dce);
 }
 });
 return list;
 };
-SystemTreeBinding.prototype.focusSingleTreeNodeBinding=function(_dc0){
-SystemTreeBinding.superclass.focusSingleTreeNodeBinding.call(this,_dc0);
-if(_dc0!=null){
+SystemTreeBinding.prototype.focusSingleTreeNodeBinding=function(_dcf){
+SystemTreeBinding.superclass.focusSingleTreeNodeBinding.call(this,_dcf);
+if(_dcf!=null){
 this._handleSystemTreeFocus();
 }
 };
 SystemTreeBinding.prototype.getCompiledActionProfile=function(){
 var temp={};
-var _dc2=new Map();
-var _dc3=this.getFocusedTreeNodeBindings();
-_dc2=_dc3.getFirst().node.getActionProfile();
-return _dc2;
+var _dd1=new Map();
+var _dd2=this.getFocusedTreeNodeBindings();
+_dd1=_dd2.getFirst().node.getActionProfile();
+return _dd1;
 };
 SystemTreePopupBinding.prototype=new PopupBinding;
 SystemTreePopupBinding.prototype.constructor=SystemTreePopupBinding;
@@ -22561,9 +22602,9 @@ SystemTreePopupBinding.prototype.onBindingAttach=function(){
 SystemTreePopupBinding.superclass.onBindingAttach.call(this);
 this._indexMenuContent();
 };
-SystemTreePopupBinding.prototype.handleBroadcast=function(_dc4,arg){
-SystemTreePopupBinding.superclass.handleBroadcast.call(this,_dc4,arg);
-switch(_dc4){
+SystemTreePopupBinding.prototype.handleBroadcast=function(_dd3,arg){
+SystemTreePopupBinding.superclass.handleBroadcast.call(this,_dd3,arg);
+switch(_dd3){
 case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
 if(arg!=null){
 this._actionProfile=arg;
@@ -22588,30 +22629,30 @@ SystemTreePopupBinding.superclass.show.call(this);
 SystemTreePopupBinding.prototype._setupClipboardItems=function(){
 var cut=this.getMenuItemForCommand(SystemTreePopupBinding.CMD_CUT);
 var copy=this.getMenuItemForCommand(SystemTreePopupBinding.CMD_COPY);
-var _dc9=this.getMenuItemForCommand(SystemTreePopupBinding.CMD_PASTE);
+var _dd8=this.getMenuItemForCommand(SystemTreePopupBinding.CMD_PASTE);
 cut.setDisabled(!SystemTreePopupBinding.isCutAllowed);
 copy.setDisabled(!SystemTreePopupBinding.isCutAllowed);
-_dc9.setDisabled(SystemTreeBinding.clipboard==null);
+_dd8.setDisabled(SystemTreeBinding.clipboard==null);
 };
 SystemTreePopupBinding.prototype._setupRefreshItem=function(){
-var _dca=this.getMenuItemForCommand(SystemTreePopupBinding.CMD_REFRESH);
-_dca.setDisabled(!SystemTreePopupBinding.isRefreshAllowed);
+var _dd9=this.getMenuItemForCommand(SystemTreePopupBinding.CMD_REFRESH);
+_dd9.setDisabled(!SystemTreePopupBinding.isRefreshAllowed);
 };
-SystemTreePopupBinding.prototype.handleAction=function(_dcb){
-SystemTreePopupBinding.superclass.handleAction.call(this,_dcb);
-switch(_dcb.type){
+SystemTreePopupBinding.prototype.handleAction=function(_dda){
+SystemTreePopupBinding.superclass.handleAction.call(this,_dda);
+switch(_dda.type){
 case MenuItemBinding.ACTION_COMMAND:
-var _dcc=_dcb.target;
-var _dcd=_dcc.associatedSystemAction;
-if(_dcd){
+var _ddb=_dda.target;
+var _ddc=_ddb.associatedSystemAction;
+if(_ddc){
 var list=ExplorerBinding.getFocusedTreeNodeBindings();
 if(list.hasEntries()){
-var _dcf=list.getFirst();
-var _dd0=_dcf.node;
+var _dde=list.getFirst();
+var _ddf=_dde.node;
 }
-SystemAction.invoke(_dcd,_dd0);
+SystemAction.invoke(_ddc,_ddf);
 }else{
-var cmd=_dcc.getProperty("cmd");
+var cmd=_ddb.getProperty("cmd");
 if(cmd){
 this._handleCommand(cmd);
 }
@@ -22620,88 +22661,88 @@ break;
 }
 };
 SystemTreePopupBinding.prototype._handleCommand=function(cmd){
-var _dd3=null;
+var _de2=null;
 switch(cmd){
 case SystemTreePopupBinding.CMD_CUT:
-_dd3=BroadcastMessages.SYSTEMTREEBINDING_CUT;
+_de2=BroadcastMessages.SYSTEMTREEBINDING_CUT;
 break;
 case SystemTreePopupBinding.CMD_COPY:
-_dd3=BroadcastMessages.SYSTEMTREEBINDING_COPY;
+_de2=BroadcastMessages.SYSTEMTREEBINDING_COPY;
 break;
 case SystemTreePopupBinding.CMD_PASTE:
-_dd3=BroadcastMessages.SYSTEMTREEBINDING_PASTE;
+_de2=BroadcastMessages.SYSTEMTREEBINDING_PASTE;
 break;
 case SystemTreePopupBinding.CMD_REFRESH:
-_dd3=BroadcastMessages.SYSTEMTREEBINDING_REFRESH;
+_de2=BroadcastMessages.SYSTEMTREEBINDING_REFRESH;
 break;
 }
-if(_dd3){
+if(_de2){
 setTimeout(function(){
-EventBroadcaster.broadcast(_dd3);
+EventBroadcaster.broadcast(_de2);
 },0);
 }
 };
 SystemTreePopupBinding.prototype.disposeContent=function(){
-var _dd4=new List(DOMUtil.getElementsByTagName(this.bindingElement,"menugroup"));
-while(_dd4.hasNext()){
-var _dd5=UserInterface.getBinding(_dd4.getNext());
-if(!_dd5.getProperty("rel")){
-_dd5.dispose();
+var _de3=new List(DOMUtil.getElementsByTagName(this.bindingElement,"menugroup"));
+while(_de3.hasNext()){
+var _de4=UserInterface.getBinding(_de3.getNext());
+if(!_de4.getProperty("rel")){
+_de4.dispose();
 }
 }
 };
 SystemTreePopupBinding.prototype.constructContent=function(){
 if(this._actionProfile!=null){
 var doc=this.bindingDocument;
-var _dd7=new List();
+var _de6=new List();
 var self=this;
-this._actionProfile.each(function(_dd9,list){
-var _ddb=MenuGroupBinding.newInstance(doc);
-list.each(function(_ddc){
-var _ddd=self.getMenuItemBinding(_ddc);
-_ddb.add(_ddd);
+this._actionProfile.each(function(_de8,list){
+var _dea=MenuGroupBinding.newInstance(doc);
+list.each(function(_deb){
+var _dec=self.getMenuItemBinding(_deb);
+_dea.add(_dec);
 });
-_dd7.add(_ddb);
+_de6.add(_dea);
 });
-_dd7.reverse();
-while(_dd7.hasNext()){
-this._bodyBinding.addFirst(_dd7.getNext());
+_de6.reverse();
+while(_de6.hasNext()){
+this._bodyBinding.addFirst(_de6.getNext());
 }
 this._bodyBinding.attachRecursive();
 }
 };
-SystemTreePopupBinding.prototype.getMenuItemBinding=function(_dde){
-var _ddf=MenuItemBinding.newInstance(this.bindingDocument);
-var _de0=_dde.getLabel();
-var _de1=_dde.getToolTip();
-var _de2=_dde.getImage();
-var _de3=_dde.getDisabledImage();
-var _de4=_dde.isCheckBox();
-if(_de0){
-_ddf.setLabel(_de0);
+SystemTreePopupBinding.prototype.getMenuItemBinding=function(_ded){
+var _dee=MenuItemBinding.newInstance(this.bindingDocument);
+var _def=_ded.getLabel();
+var _df0=_ded.getToolTip();
+var _df1=_ded.getImage();
+var _df2=_ded.getDisabledImage();
+var _df3=_ded.isCheckBox();
+if(_def){
+_dee.setLabel(_def);
 }
-if(_de1){
-_ddf.setToolTip(_de1);
+if(_df0){
+_dee.setToolTip(_df0);
 }
-if(_de2){
-_ddf.imageProfile=new ImageProfile({image:_de2,imageDisabled:_de3});
+if(_df1){
+_dee.imageProfile=new ImageProfile({image:_df1,imageDisabled:_df2});
 }
-if(_de4){
-_ddf.setType(MenuItemBinding.TYPE_CHECKBOX);
-if(_dde.isChecked()){
-_ddf.check(true);
+if(_df3){
+_dee.setType(MenuItemBinding.TYPE_CHECKBOX);
+if(_ded.isChecked()){
+_dee.check(true);
 }
 }
-if(_dde.isDisabled()){
-_ddf.disable();
+if(_ded.isDisabled()){
+_dee.disable();
 }
-_ddf.associatedSystemAction=_dde;
-return _ddf;
+_dee.associatedSystemAction=_ded;
+return _dee;
 };
 SystemTreePopupBinding.prototype.snapToMouse=function(e){
 var node=e.target?e.target:e.srcElement;
 var name=DOMUtil.getLocalName(node);
-var _de8=null;
+var _df7=null;
 if(name!="tree"){
 switch(name){
 case "treenode":
@@ -22709,14 +22750,14 @@ break;
 default:
 node=DOMUtil.getAncestorByLocalName("treenode",node);
 if(node!=null){
-_de8=UserInterface.getBinding(node);
-if(_de8.isDisabled){
-_de8=null;
+_df7=UserInterface.getBinding(node);
+if(_df7.isDisabled){
+_df7=null;
 }
 }
 break;
 }
-if(_de8!=null&&_de8.node!=null&&_de8.node.getActionProfile()!=null){
+if(_df7!=null&&_df7.node!=null&&_df7.node.getActionProfile()!=null){
 SystemTreePopupBinding.superclass.snapToMouse.call(this,e);
 }
 }
@@ -22737,17 +22778,17 @@ SystemTreeNodeBinding.prototype.onBindingAttach=function(){
 this.addActionListener(SystemTreeNodeBinding.ACTION_REFRESHED);
 this.subscribe(BroadcastMessages.SYSTEMTREENODEBINDING_FORCE_OPEN);
 this.isDisabled=this.node.isDisabled();
-var _de9=this.node.getLabel();
-if(_de9){
-this.setLabel(_de9);
+var _df8=this.node.getLabel();
+if(_df8){
+this.setLabel(_df8);
 }
-var _dea=this.node.getToolTip();
-if(_dea){
-this.setToolTip(_dea);
+var _df9=this.node.getToolTip();
+if(_df9){
+this.setToolTip(_df9);
 }
-var _deb=this.node.getHandle();
-if(_deb){
-this.setHandle(_deb);
+var _dfa=this.node.getHandle();
+if(_dfa){
+this.setHandle(_dfa);
 }
 var bag=this.node.getPropertyBag();
 if(bag){
@@ -22771,34 +22812,34 @@ if(this.node.hasDragType()){
 this.setProperty("dragtype",this.node.getDragType());
 }
 if(this.node.hasDragAccept()){
-var _dee="";
+var _dfd="";
 var list=this.node.getDragAccept();
 while(list.hasNext()){
-_dee+=list.getNext();
+_dfd+=list.getNext();
 if(list.hasNext()){
-_dee+=" ";
+_dfd+=" ";
 }
 }
-this.setProperty("dragaccept",_dee);
+this.setProperty("dragaccept",_dfd);
 }
 SystemTreeNodeBinding.superclass._initializeBindingDragAndDropFeatures.call(this);
 };
-SystemTreeNodeBinding.prototype.handleAction=function(_df0){
-SystemTreeNodeBinding.superclass.handleAction.call(this,_df0);
-switch(_df0.type){
+SystemTreeNodeBinding.prototype.handleAction=function(_dff){
+SystemTreeNodeBinding.superclass.handleAction.call(this,_dff);
+switch(_dff.type){
 case SystemTreeNodeBinding.ACTION_REFRESHED:
-if(_df0.target==this){
+if(_dff.target==this){
 if(!this.isOpen){
 this.hasBeenOpened=false;
-_df0.consume();
+_dff.consume();
 }
 }
 break;
 }
 };
-SystemTreeNodeBinding.prototype.handleBroadcast=function(_df1,arg){
-SystemTreeNodeBinding.superclass.handleBroadcast.call(this,_df1,arg);
-switch(_df1){
+SystemTreeNodeBinding.prototype.handleBroadcast=function(_e00,arg){
+SystemTreeNodeBinding.superclass.handleBroadcast.call(this,_e00,arg);
+switch(_e00){
 case BroadcastMessages.SYSTEMTREENODEBINDING_FORCE_OPEN:
 if(arg==this.node.getEntityToken()){
 if(this.isContainer&&!this.isOpen){
@@ -22816,25 +22857,25 @@ break;
 SystemTreeNodeBinding.prototype._computeImageProfile=function(){
 };
 SystemTreeNodeBinding.prototype.computeImage=function(){
-var _df4=null;
-var _df5=this.node.getImageProfile();
-if(_df5){
+var _e03=null;
+var _e04=this.node.getImageProfile();
+if(_e04){
 if(this.isOpen){
-_df4=_df5.getActiveImage();
+_e03=_e04.getActiveImage();
 }else{
-_df4=_df5.getDefaultImage();
+_e03=_e04.getDefaultImage();
 }
 }
-if(!_df4){
-_df4=SystemTreeNodeBinding.superclass.computeImage.call(this);
+if(!_e03){
+_e03=SystemTreeNodeBinding.superclass.computeImage.call(this);
 }
-return _df4;
+return _e03;
 };
-SystemTreeNodeBinding.prototype.open=function(_df6){
-var _df7=this.isContainer&&!this.isOpen;
-var _df8=!this.hasBeenOpened;
+SystemTreeNodeBinding.prototype.open=function(_e05){
+var _e06=this.isContainer&&!this.isOpen;
+var _e07=!this.hasBeenOpened;
 SystemTreeNodeBinding.superclass.open.call(this);
-if(_df7&&(_df8||SystemTreeBinding.HAS_NO_MEMORY)&&_df6!=true){
+if(_e06&&(_e07||SystemTreeBinding.HAS_NO_MEMORY)&&_e05!=true){
 this.refresh();
 if(this._isForcedOpen){
 EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREENODEBINDING_FORCED_OPEN,this);
@@ -22843,9 +22884,9 @@ this._isForcedOpen=false;
 }
 };
 SystemTreeNodeBinding.prototype.refresh=function(){
-var _df9=null;
+var _e08=null;
 if(this.isContainer){
-_df9=this.getOpenSystemNodes();
+_e08=this.getOpenSystemNodes();
 }
 this.isRefreshing=true;
 Application.lock(this);
@@ -22853,15 +22894,15 @@ StatusBar.busy();
 var self=this;
 setTimeout(function(){
 if(Binding.exists(self)){
-self._performRefresh(_df9);
+self._performRefresh(_e08);
 Application.unlock(self);
 StatusBar.clear();
 }
 },0);
 };
-SystemTreeNodeBinding.prototype._performRefresh=function(_dfb){
-if(_dfb!=null){
-this._refreshBranch(_dfb);
+SystemTreeNodeBinding.prototype._performRefresh=function(_e0a){
+if(_e0a!=null){
+this._refreshBranch(_e0a);
 }else{
 this._refreshChildren();
 }
@@ -22872,52 +22913,52 @@ this.dispatchAction(SystemTreeNodeBinding.ACTION_REFRESHED);
 this.dispatchAction(SystemTreeNodeBinding.ACTION_REFRESHED_YEAH);
 };
 SystemTreeNodeBinding.prototype._refreshChildren=function(){
-var _dfc=new List();
-var _dfd=this.node.getChildren();
+var _e0b=new List();
+var _e0c=this.node.getChildren();
 this.empty();
-if(_dfd.hasEntries()){
-this._insertTreeNodesRegulated(_dfd);
+if(_e0c.hasEntries()){
+this._insertTreeNodesRegulated(_e0c);
 }
 };
-SystemTreeNodeBinding.prototype._insertTreeNodesRegulated=function(_dfe){
-var _dff=0;
-while(_dfe.hasEntries()&&_dff<=SystemTreeNodeBinding.MAX_CHILD_IMPORT){
-var _e00=SystemTreeNodeBinding.newInstance(_dfe.extractFirst(),this.bindingDocument);
-this.add(_e00);
-_e00.attach();
-_dff++;
+SystemTreeNodeBinding.prototype._insertTreeNodesRegulated=function(_e0d){
+var _e0e=0;
+while(_e0d.hasEntries()&&_e0e<=SystemTreeNodeBinding.MAX_CHILD_IMPORT){
+var _e0f=SystemTreeNodeBinding.newInstance(_e0d.extractFirst(),this.bindingDocument);
+this.add(_e0f);
+_e0f.attach();
+_e0e++;
 }
-if(_dfe.hasEntries()){
-this._insertBufferTreeNode(_dfe);
+if(_e0d.hasEntries()){
+this._insertBufferTreeNode(_e0d);
 }
 };
-SystemTreeNodeBinding.prototype._insertBufferTreeNode=function(_e01){
+SystemTreeNodeBinding.prototype._insertBufferTreeNode=function(_e10){
 alert("Max treenode count reached. This is not handled!");
 alert("TODO: SystemTreeNodeBinding#._insertBufferTreeNode");
 };
 SystemTreeNodeBinding.prototype._refreshBranch=function(list){
-var _e03=this.node.getDescendantBranch(list);
-if(_e03.hasEntries()){
-this.XXX(_e03);
+var _e12=this.node.getDescendantBranch(list);
+if(_e12.hasEntries()){
+this.XXX(_e12);
 }
 };
-SystemTreeNodeBinding.prototype.XXX=function(_e04){
+SystemTreeNodeBinding.prototype.XXX=function(_e13){
 var self=this;
 var map=new Map();
 this.empty();
-_e04.each(function(key,_e08){
-if(_e08.hasEntries()){
-_e08.each(function(node){
-var _e0a=SystemTreeNodeBinding.newInstance(node,self.bindingDocument);
-map.set(node.getHandle(),_e0a);
+_e13.each(function(key,_e17){
+if(_e17.hasEntries()){
+_e17.each(function(node){
+var _e19=SystemTreeNodeBinding.newInstance(node,self.bindingDocument);
+map.set(node.getHandle(),_e19);
 if(map.has(key)){
-var _e0b=map.get(key);
-_e0b.add(_e0a);
-_e0b.isOpen=true;
-_e0b.hasBeenOpened=true;
+var _e1a=map.get(key);
+_e1a.add(_e19);
+_e1a.isOpen=true;
+_e1a.hasBeenOpened=true;
 }else{
 if(key==self.node.getHandle()){
-self.add(_e0a);
+self.add(_e19);
 }else{
 }
 }
@@ -22925,41 +22966,41 @@ self.add(_e0a);
 }
 });
 this.attachRecursive();
-_e04.dispose();
+_e13.dispose();
 map.dispose();
 };
 SystemTreeNodeBinding.prototype.getOpenDescendants=function(){
-var _e0c=new TreeCrawler();
-var _e0d=new List();
-_e0c.mode=TreeCrawler.MODE_GETOPEN;
-_e0c.crawl(this.bindingElement,_e0d);
-if(_e0d.hasEntries()){
-_e0d.extractFirst();
+var _e1b=new TreeCrawler();
+var _e1c=new List();
+_e1b.mode=TreeCrawler.MODE_GETOPEN;
+_e1b.crawl(this.bindingElement,_e1c);
+if(_e1c.hasEntries()){
+_e1c.extractFirst();
 }
-_e0c.dispose();
-return _e0d;
+_e1b.dispose();
+return _e1c;
 };
 SystemTreeNodeBinding.prototype.getOpenSystemNodes=function(){
-var _e0e=null;
+var _e1d=null;
 var list=this.getOpenDescendants();
 if(list.hasEntries()){
-_e0e=new List([this.node]);
-list.each(function(_e10){
-_e0e.add(_e10.node);
+_e1d=new List([this.node]);
+list.each(function(_e1f){
+_e1d.add(_e1f.node);
 });
 }
-return _e0e;
+return _e1d;
 };
 SystemTreeNodeBinding.prototype.updateClassNames=function(){
 if(!this.isRefreshing){
 SystemTreeNodeBinding.superclass.updateClassNames.call(this);
 }
 };
-SystemTreeNodeBinding.prototype.acceptTreeNodeBinding=function(_e11,_e12){
-var _e13=(SystemTreeBinding.clipboardOperation==SystemTreePopupBinding.CMD_COPY);
-if(_e11 instanceof SystemTreeNodeBinding){
+SystemTreeNodeBinding.prototype.acceptTreeNodeBinding=function(_e20,_e21){
+var _e22=(SystemTreeBinding.clipboardOperation==SystemTreePopupBinding.CMD_COPY);
+if(_e20 instanceof SystemTreeNodeBinding){
 if(TreeService.ExecuteDropElementAction){
-TreeService.ExecuteDropElementAction(_e11.node.getData(),this.node.getData(),_e12?_e12:this.containingTreeBinding.getDropIndex(),Application.CONSOLE_ID,_e13);
+TreeService.ExecuteDropElementAction(_e20.node.getData(),this.node.getData(),_e21?_e21:this.containingTreeBinding.getDropIndex(),Application.CONSOLE_ID,_e22);
 }
 }
 };
@@ -22975,11 +23016,11 @@ EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREENODEBINDING_FOCUS,this);
 SystemTreeNodeBinding.prototype.hasChildren=function(){
 return this.node.hasChildren();
 };
-SystemTreeNodeBinding.newInstance=function(node,_e17){
-var _e18=DOMUtil.createElementNS(Constants.NS_UI,"ui:treenode",_e17);
-var _e19=UserInterface.registerBinding(_e18,SystemTreeNodeBinding);
-_e19.node=node;
-return _e19;
+SystemTreeNodeBinding.newInstance=function(node,_e26){
+var _e27=DOMUtil.createElementNS(Constants.NS_UI,"ui:treenode",_e26);
+var _e28=UserInterface.registerBinding(_e27,SystemTreeNodeBinding);
+_e28.node=node;
+return _e28;
 };
 SystemPageBinding.prototype=new PageBinding;
 SystemPageBinding.prototype.constructor=SystemPageBinding;
@@ -22997,9 +23038,9 @@ SystemPageBinding.superclass.onBindingRegister.call(this);
 this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESH);
 this.addActionListener(ButtonBinding.ACTION_COMMAND);
 };
-SystemPageBinding.prototype.setPageArgument=function(_e1a){
-this.node=_e1a;
-SystemPageBinding.superclass.setPageArgument.call(this,_e1a);
+SystemPageBinding.prototype.setPageArgument=function(_e29){
+this.node=_e29;
+SystemPageBinding.superclass.setPageArgument.call(this,_e29);
 };
 SystemPageBinding.prototype.onBeforePageInitialize=function(){
 if(this.node){
@@ -23015,47 +23056,47 @@ throw "SystemPageBinding requires a SystemNode";
 SystemPageBinding.superclass.onBeforePageInitialize.call(this);
 };
 SystemPageBinding.prototype._buildTree=function(){
-var _e1b=this.node.getChildren();
-if(_e1b.hasEntries()){
-while(_e1b.hasNext()){
-var node=SystemTreeNodeBinding.newInstance(_e1b.getNext(),this.bindingDocument);
+var _e2a=this.node.getChildren();
+if(_e2a.hasEntries()){
+while(_e2a.hasNext()){
+var node=SystemTreeNodeBinding.newInstance(_e2a.getNext(),this.bindingDocument);
 this._tree.add(node);
 node.attach();
 }
 }
 };
 SystemPageBinding.prototype._refreshTree=function(){
-var _e1d=this._tree._treeBodyBinding.getChildBindingsByLocalName("treenode");
-_e1d.each(function(root){
+var _e2c=this._tree._treeBodyBinding.getChildBindingsByLocalName("treenode");
+_e2c.each(function(root){
 if(!root.isContainer){
 root.isOpen=true;
 }
 });
-var _e1f=new TreeCrawler();
-var _e20=new List();
-_e1f.mode=TreeCrawler.MODE_GETOPEN;
-_e1f.crawl(this.bindingElement,_e20);
-_e1f.dispose();
+var _e2e=new TreeCrawler();
+var _e2f=new List();
+_e2e.mode=TreeCrawler.MODE_GETOPEN;
+_e2e.crawl(this.bindingElement,_e2f);
+_e2e.dispose();
 var list=new List([this.node]);
-_e20.each(function(_e22){
-list.add(_e22.node);
+_e2f.each(function(_e31){
+list.add(_e31.node);
 });
 this._tree.empty();
-var _e23=this.node.getDescendantBranch(list);
-if(_e23.hasEntries()){
+var _e32=this.node.getDescendantBranch(list);
+if(_e32.hasEntries()){
 var self=this;
 var map=new Map();
-_e23.each(function(key,_e27){
-_e27.each(function(node){
-var _e29=SystemTreeNodeBinding.newInstance(node,self.bindingDocument);
-map.set(node.getHandle(),_e29);
+_e32.each(function(key,_e36){
+_e36.each(function(node){
+var _e38=SystemTreeNodeBinding.newInstance(node,self.bindingDocument);
+map.set(node.getHandle(),_e38);
 if(map.has(key)){
-var _e2a=map.get(key);
-_e2a.add(_e29);
-_e2a.isOpen=true;
+var _e39=map.get(key);
+_e39.add(_e38);
+_e39.isOpen=true;
 }else{
 if(key==self.node.getHandle()){
-self._tree.add(_e29);
+self._tree.add(_e38);
 }
 }
 });
@@ -23067,14 +23108,14 @@ SystemPageBinding.prototype.onAfterPageInitialize=function(){
 SystemPageBinding.superclass.onAfterPageInitialize.call(this);
 this._tree.selectDefault();
 };
-SystemPageBinding.prototype.handleAction=function(_e2b){
-SystemPageBinding.superclass.handleAction.call(this,_e2b);
-switch(_e2b.type){
+SystemPageBinding.prototype.handleAction=function(_e3a){
+SystemPageBinding.superclass.handleAction.call(this,_e3a);
+switch(_e3a.type){
 case ButtonBinding.ACTION_COMMAND:
-var _e2c=_e2b.target;
-switch(_e2c.getID()){
+var _e3b=_e3a.target;
+switch(_e3b.getID()){
 case "locktreebutton":
-this._tree.setLockToEditor(_e2c.isChecked);
+this._tree.setLockToEditor(_e3b.isChecked);
 break;
 case "collapsebutton":
 this._tree.collapse();
@@ -23083,19 +23124,19 @@ break;
 break;
 }
 };
-SystemPageBinding.prototype.handleBroadcast=function(_e2d,arg){
-SystemPageBinding.superclass.handleBroadcast.call(this,_e2d,arg);
-switch(_e2d){
+SystemPageBinding.prototype.handleBroadcast=function(_e3c,arg){
+SystemPageBinding.superclass.handleBroadcast.call(this,_e3c,arg);
+switch(_e3c){
 case BroadcastMessages.SYSTEMTREEBINDING_REFRESH:
-var _e2f=arg;
-if(this.node&&this.node.getEntityToken()==_e2f){
+var _e3e=arg;
+if(this.node&&this.node.getEntityToken()==_e3e){
 try{
-EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,_e2f);
+EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,_e3e);
 var self=this;
 Application.lock(this);
 setTimeout(function(){
 self._refreshTree();
-EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED,_e2f);
+EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED,_e3e);
 Application.unlock(self);
 },0);
 }
@@ -23120,16 +23161,16 @@ StageContainerBinding.prototype.onBindingAttach=function(){
 StageContainerBinding.superclass.onBindingAttach.call(this);
 this.subscribe(BroadcastMessages.APPLICATION_OPERATIONAL);
 };
-StageContainerBinding.prototype.handleBroadcast=function(_e31,arg){
-StageContainerBinding.superclass.handleBroadcast.call(this,_e31,arg);
-var _e33=this.bindingWindow.WindowManager;
-switch(_e31){
+StageContainerBinding.prototype.handleBroadcast=function(_e40,arg){
+StageContainerBinding.superclass.handleBroadcast.call(this,_e40,arg);
+var _e42=this.bindingWindow.WindowManager;
+switch(_e40){
 case BroadcastMessages.APPLICATION_OPERATIONAL:
-this.subscribe(_e33.WINDOW_RESIZED_BROADCAST);
+this.subscribe(_e42.WINDOW_RESIZED_BROADCAST);
 this._fit();
 this.reflex();
 break;
-case _e33.WINDOW_RESIZED_BROADCAST:
+case _e42.WINDOW_RESIZED_BROADCAST:
 if(Client.isMozilla==true){
 this._fit();
 this.reflex();
@@ -23146,8 +23187,8 @@ break;
 }
 };
 StageContainerBinding.prototype._fit=function(){
-var _e35=this.bindingWindow.WindowManager;
-this.bindingElement.style.width=_e35.getWindowDimensions().w+"px";
+var _e44=this.bindingWindow.WindowManager;
+this.bindingElement.style.width=_e44.getWindowDimensions().w+"px";
 };
 StageBinding.prototype=new FocusBinding;
 StageBinding.prototype.constructor=StageBinding;
@@ -23155,25 +23196,25 @@ StageBinding.superclass=FocusBinding.prototype;
 StageBinding.bindingInstance=null;
 StageBinding.perspectiveNode=null;
 StageBinding.entityToken=null;
-StageBinding.handleViewPresentation=function(_e36){
-if(StageBinding.isViewOpen(_e36)){
-EventBroadcaster.broadcast(BroadcastMessages.CLOSE_VIEW,_e36);
+StageBinding.handleViewPresentation=function(_e45){
+if(StageBinding.isViewOpen(_e45)){
+EventBroadcaster.broadcast(BroadcastMessages.CLOSE_VIEW,_e45);
 }else{
-var _e37=ViewDefinitions[_e36];
-StageBinding.presentViewDefinition(_e37);
+var _e46=ViewDefinitions[_e45];
+StageBinding.presentViewDefinition(_e46);
 }
 };
-StageBinding.isViewOpen=function(_e38){
-return StageBinding.bindingInstance._activeViewDefinitions[_e38]!=null;
+StageBinding.isViewOpen=function(_e47){
+return StageBinding.bindingInstance._activeViewDefinitions[_e47]!=null;
 };
-StageBinding.presentViewDefinition=function(_e39){
-if(_e39.label!=null){
-var _e3a=StringBundle.getString("ui","Website.App.StatusBar.Opening");
-StatusBar.busy(_e3a,[_e39.label]);
+StageBinding.presentViewDefinition=function(_e48){
+if(_e48.label!=null){
+var _e49=StringBundle.getString("ui","Website.App.StatusBar.Opening");
+StatusBar.busy(_e49,[_e48.label]);
 }else{
 StatusBar.busy();
 }
-StageBinding.bindingInstance._presentViewDefinition(_e39);
+StageBinding.bindingInstance._presentViewDefinition(_e48);
 };
 function StageBinding(){
 this.logger=SystemLogger.getLogger("StageBinding");
@@ -23213,14 +23254,14 @@ this.subscribe(BroadcastMessages.DOCK_MAXIMIZED);
 this.subscribe(BroadcastMessages.DOCK_NORMALIZED);
 var root=System.getRootNode();
 this._initializeRootActions(root);
-EventBroadcaster.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESH,{handleBroadcast:function(_e3c,arg){
+EventBroadcaster.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESH,{handleBroadcast:function(_e4b,arg){
 if(arg==root.getEntityToken()){
 EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESHALL);
 }
 }});
-var _e3e=System.getPerspectiveNodes();
-if(_e3e.hasEntries()){
-this._initializeSystemViewDefinitions(_e3e);
+var _e4d=System.getPerspectiveNodes();
+if(_e4d.hasEntries()){
+this._initializeSystemViewDefinitions(_e4d);
 }else{
 top.app.bindingMap.stagecontainer.hide();
 this._onStageReady();
@@ -23239,13 +23280,13 @@ self._initializeWorkbenchLayout();
 };
 StageBinding.prototype._initializeWorkbenchLayout=function(){
 if(this._explorerBinding){
-var _e40=null;
+var _e4f=null;
 if(LocalStore.isEnabled){
-_e40=LocalStore.getProperty(LocalStore.SELECTED_PERSPECTIVE_HANDLE);
+_e4f=LocalStore.getProperty(LocalStore.SELECTED_PERSPECTIVE_HANDLE);
 }
-if(_e40&&ViewDefinitions[_e40]){
+if(_e4f&&ViewDefinitions[_e4f]){
 alert("StageBinding#_initializeWorkbenchLayout !!!!");
-this._explorerBinding.setSelectionByHandle(unescape(_e40));
+this._explorerBinding.setSelectionByHandle(unescape(_e4f));
 }else{
 this._explorerBinding.setSelectionDefault();
 }
@@ -23264,87 +23305,87 @@ this._isStageReady=true;
 }
 };
 StageBinding.prototype._initializeRootActions=function(root){
-var _e42=root.getActionProfile();
-if(_e42&&_e42.hasEntries()){
-var _e43=top.app.bindingMap.toolsmenugroup;
-if(_e43){
-_e42.each(function(_e44,list){
-list.each(function(_e46){
-var item=MenuItemBinding.newInstance(_e43.bindingDocument);
-item.setLabel(_e46.getLabel());
-item.setToolTip(_e46.getToolTip());
-item.setImage(_e46.getImage());
-item.setDisabled(_e46.isDisabled());
-item.associatedSystemAction=_e46;
-var _e48=_e43;
-var tag=_e46.getTag();
+var _e51=root.getActionProfile();
+if(_e51&&_e51.hasEntries()){
+var _e52=top.app.bindingMap.toolsmenugroup;
+if(_e52){
+_e51.each(function(_e53,list){
+list.each(function(_e55){
+var item=MenuItemBinding.newInstance(_e52.bindingDocument);
+item.setLabel(_e55.getLabel());
+item.setToolTip(_e55.getToolTip());
+item.setImage(_e55.getImage());
+item.setDisabled(_e55.isDisabled());
+item.associatedSystemAction=_e55;
+var _e57=_e52;
+var tag=_e55.getTag();
 if(tag!=null){
 switch(tag){
 case SystemAction.TAG_CHANGEFROMLANGUAGE:
-_e48=top.app.bindingMap.translationsmenugroup;
+_e57=top.app.bindingMap.translationsmenugroup;
 break;
 }
 }
-_e48.add(item);
+_e57.add(item);
 });
 });
-_e43.attachRecursive();
+_e52.attachRecursive();
 }
 }
 };
-StageBinding.prototype._initializeSystemViewDefinitions=function(_e4a){
-while(_e4a.hasNext()){
-var node=_e4a.getNext();
-var _e4c=node.getHandle();
-ViewDefinitions[_e4c]=new SystemViewDefinition(node);
+StageBinding.prototype._initializeSystemViewDefinitions=function(_e59){
+while(_e59.hasNext()){
+var node=_e59.getNext();
+var _e5b=node.getHandle();
+ViewDefinitions[_e5b]=new SystemViewDefinition(node);
 }
 };
-StageBinding.prototype.handleAction=function(_e4d){
-StageBinding.superclass.handleAction.call(this,_e4d);
-var _e4e=_e4d.target;
-switch(_e4d.type){
+StageBinding.prototype.handleAction=function(_e5c){
+StageBinding.superclass.handleAction.call(this,_e5c);
+var _e5d=_e5c.target;
+switch(_e5c.type){
 case StageDecksBinding.ACTION_INITIALIZED:
 if(!Application.isOperational){
 ProgressBarBinding.notch(4);
 }
-this._decksBinding=_e4e;
-this._inflateBinding(_e4e);
-_e4d.consume();
+this._decksBinding=_e5d;
+this._inflateBinding(_e5d);
+_e5c.consume();
 break;
 case ExplorerBinding.ACTION_INITIALIZED:
 if(!Application.isOperational){
 ProgressBarBinding.notch(4);
 }
-this._explorerBinding=_e4e;
-this._inflateBinding(_e4e);
-_e4d.consume();
+this._explorerBinding=_e5d;
+this._inflateBinding(_e5d);
+_e5c.consume();
 break;
 case ExplorerMenuBinding.ACTION_SELECTIONCHANGED:
 if(!Application.isOperational){
 ProgressBarBinding.notch(5);
 }
-this.handlePerspectiveChange(_e4e);
-_e4d.consume();
+this.handlePerspectiveChange(_e5d);
+_e5c.consume();
 break;
 case TabBoxBinding.ACTION_ATTACHED:
-if(_e4e instanceof DockBinding){
-switch(_e4e.reference){
+if(_e5d instanceof DockBinding){
+switch(_e5d.reference){
 case DockBinding.START:
 case DockBinding.ABSBOTTOMLEFT:
 case DockBinding.ABSBOTTOMRIGHT:
 case DockBinding.ABSRIGHTTOP:
 case DockBinding.ABSRIGHTBOTTOM:
-this._dockBindings.set(_e4e.reference,_e4e);
+this._dockBindings.set(_e5d.reference,_e5d);
 break;
 }
-this.handleAttachedDock(_e4e);
-_e4d.consume();
+this.handleAttachedDock(_e5d);
+_e5c.consume();
 }
 break;
 case TabBoxBinding.ACTION_SELECTED:
-if(_e4e instanceof DockBinding){
-this.handleSelectedDockTab(_e4e.getSelectedTabBinding());
-_e4d.consume();
+if(_e5d instanceof DockBinding){
+this.handleSelectedDockTab(_e5d.getSelectedTabBinding());
+_e5c.consume();
 }
 break;
 case WindowBinding.ACTION_LOADED:
@@ -23370,7 +23411,7 @@ self.reflex(true);
 self._isFlexAbort=false;
 },0);
 }
-_e4d.consume();
+_e5c.consume();
 break;
 case StageDeckBinding.ACTION_LOADED:
 this._isDecksReady=true;
@@ -23381,20 +23422,20 @@ this._onStageReady();
 }
 break;
 case ErrorBinding.ACTION_INITIALIZE:
-_e4d.consume();
+_e5c.consume();
 break;
 }
-StageBoxHandlerAbstraction.handleAction.call(this,_e4d);
+StageBoxHandlerAbstraction.handleAction.call(this,_e5c);
 };
-StageBinding.prototype.handleBroadcast=function(_e50,arg){
-StageBinding.superclass.handleBroadcast.call(this,_e50,arg);
-switch(_e50){
+StageBinding.prototype.handleBroadcast=function(_e5f,arg){
+StageBinding.superclass.handleBroadcast.call(this,_e5f,arg);
+switch(_e5f){
 case BroadcastMessages.VIEW_OPENED:
 Application.unlock(this);
 break;
 case BroadcastMessages.VIEW_CLOSED:
-var _e52=arg;
-this._dontView(_e52);
+var _e61=arg;
+this._dontView(_e61);
 break;
 case BroadcastMessages.COMPOSITE_START:
 this._showStart(true);
@@ -23423,33 +23464,33 @@ self.reflex(true);
 }
 }
 };
-StageBinding.prototype._showStart=function(_e54){
-if(_e54!=this._isShowingStart){
+StageBinding.prototype._showStart=function(_e63){
+if(_e63!=this._isShowingStart){
 var view=ViewBinding.getInstance("Composite.Management.Start");
 var dock=this._dockBindings.get(DockBinding.START);
-var _e57=this.bindingWindow.bindingMap.maindecks;
-if(_e54){
-_e57.select("startdeck");
+var _e66=this.bindingWindow.bindingMap.maindecks;
+if(_e63){
+_e66.select("startdeck");
 view.show();
 }else{
 view.hide();
-_e57.select("stagedeck");
+_e66.select("stagedeck");
 if(dock!=null&&dock.isActive){
 dock.deActivate();
 }
 }
-this._isShowingStart=_e54;
+this._isShowingStart=_e63;
 }
 };
-StageBinding.prototype._inflateBinding=function(_e58){
-for(var _e59 in ViewDefinitions){
-var _e5a=ViewDefinitions[_e59];
-if(_e5a instanceof SystemViewDefinition){
-_e58.mountDefinition(_e5a);
+StageBinding.prototype._inflateBinding=function(_e67){
+for(var _e68 in ViewDefinitions){
+var _e69=ViewDefinitions[_e68];
+if(_e69 instanceof SystemViewDefinition){
+_e67.mountDefinition(_e69);
 }
 }
-var _e5b=(this._decksBinding!=null&&this._explorerBinding!=null);
-if(_e5b){
+var _e6a=(this._decksBinding!=null&&this._explorerBinding!=null);
+if(_e6a){
 var self=this;
 setTimeout(function(){
 self._renameThisMethod();
@@ -23457,123 +23498,123 @@ self._renameThisMethod();
 }
 };
 StageBinding.prototype.iterateContainedStageBoxBindings=function(mode){
-var _e5e=new StageCrawler();
-_e5e.mode=mode;
-_e5e.crawl(this.bindingElement);
-_e5e.dispose();
+var _e6d=new StageCrawler();
+_e6d.mode=mode;
+_e6d.crawl(this.bindingElement);
+_e6d.dispose();
 };
-StageBinding.prototype.handlePerspectiveChange=function(_e5f){
-var _e60=_e5f.getSelectionHandle();
-this._decksBinding.setSelectionByHandle(_e60);
+StageBinding.prototype.handlePerspectiveChange=function(_e6e){
+var _e6f=_e6e.getSelectionHandle();
+this._decksBinding.setSelectionByHandle(_e6f);
 if(LocalStore.isEnabled){
-LocalStore.setProperty(LocalStore.SELECTED_PERSPECTIVE_HANDLE,escape(_e60));
+LocalStore.setProperty(LocalStore.SELECTED_PERSPECTIVE_HANDLE,escape(_e6f));
 }
 };
-StageBinding.prototype.handleAttachedDock=function(_e61){
-var _e62=_e61.getTabBindings();
-if(_e62.hasEntries()){
-while(_e62.hasNext()){
-var _e63=_e62.getNext();
-var _e64=_e63.getHandle();
-if(_e64){
-if(_e64=="Composite.Management.Start"&&(!Application.hasStartPage||!Application.hasExternalConnection)){
+StageBinding.prototype.handleAttachedDock=function(_e70){
+var _e71=_e70.getTabBindings();
+if(_e71.hasEntries()){
+while(_e71.hasNext()){
+var _e72=_e71.getNext();
+var _e73=_e72.getHandle();
+if(_e73){
+if(_e73=="Composite.Management.Start"&&(!Application.hasStartPage||!Application.hasExternalConnection)){
 }else{
-var _e65=ViewDefinitions[_e64];
-if(_e65){
-this._view(_e61,_e63,_e65,false);
+var _e74=ViewDefinitions[_e73];
+if(_e74){
+this._view(_e70,_e72,_e74,false);
 }else{
-alert("StageBinding: no such predefined viewdefinition ("+_e64+")");
+alert("StageBinding: no such predefined viewdefinition ("+_e73+")");
 }
 }
 }
 }
 }
 };
-StageBinding.prototype._presentViewDefinition=function(_e66){
-var _e67=null;
-var _e68=false;
-switch(_e66.position){
+StageBinding.prototype._presentViewDefinition=function(_e75){
+var _e76=null;
+var _e77=false;
+switch(_e75.position){
 case Dialog.MODAL:
-_e67=app.bindingMap.masterdialogset.getModalInstance();
+_e76=app.bindingMap.masterdialogset.getModalInstance();
 break;
 case Dialog.NON_MODAL:
-_e67=app.bindingMap.masterdialogset.getInstance();
+_e76=app.bindingMap.masterdialogset.getInstance();
 break;
 default:
 if(this._dockBindings.hasEntries()){
-switch(_e66.position){
+switch(_e75.position){
 case DockBinding.ABSBOTTOMLEFT:
 case DockBinding.ABSBOTTOMRIGHT:
 case DockBinding.ABSRIGHTTOP:
 case DockBinding.ABSRIGHTBOTTOM:
-_e67=this._dockBindings.get(_e66.position);
+_e76=this._dockBindings.get(_e75.position);
 break;
 default:
-var _e69=this._decksBinding.getSelectedDeckBinding();
-_e67=_e69.getDockBindingByReference(_e66.position);
+var _e78=this._decksBinding.getSelectedDeckBinding();
+_e76=_e78.getDockBindingByReference(_e75.position);
 if(this._isShowingStart){
 EventBroadcaster.broadcast(BroadcastMessages.STOP_COMPOSITE);
 }else{
 if(this._isShowingDefaultStart){
-var _e6a=this.bindingWindow.bindingMap.maindecks;
-_e6a.select("stagedeck");
+var _e79=this.bindingWindow.bindingMap.maindecks;
+_e79.select("stagedeck");
 this._isShowingDefaultStart=false;
 }
 }
 break;
 }
 }else{
-_e68=true;
+_e77=true;
 }
 break;
 }
-if(!_e68){
-if(_e67!=null){
-this._view(_e67,null,_e66,true);
+if(!_e77){
+if(_e76!=null){
+this._view(_e76,null,_e75,true);
 }else{
-throw "StageBinding: Could not position view: "+_e66.handle;
+throw "StageBinding: Could not position view: "+_e75.handle;
 }
 }
 };
-StageBinding.prototype._view=function(_e6b,_e6c,_e6d,_e6e){
-var _e6f=_e6d.handle;
-if(_e6d.isMutable){
-_e6f+=KeyMaster.getUniqueKey();
+StageBinding.prototype._view=function(_e7a,_e7b,_e7c,_e7d){
+var _e7e=_e7c.handle;
+if(_e7c.isMutable){
+_e7e+=KeyMaster.getUniqueKey();
 }
-if(this._activeViewDefinitions[_e6f]){
-var _e70=ViewBinding.getInstance(_e6f);
-if(_e70!=null){
-_e70.update();
+if(this._activeViewDefinitions[_e7e]){
+var _e7f=ViewBinding.getInstance(_e7e);
+if(_e7f!=null){
+_e7f.update();
 }else{
-this.logger.error("Could not update ViewBinding (declared open): \n"+_e6f);
+this.logger.error("Could not update ViewBinding (declared open): \n"+_e7e);
 }
 }else{
-this._activeViewDefinitions[_e6f]=_e6d;
+this._activeViewDefinitions[_e7e]=_e7c;
 Application.lock(this);
-switch(_e6b.constructor){
+switch(_e7a.constructor){
 case DockBinding:
-if(_e6e){
-_e6b.prepareNewView(_e6d);
+if(_e7d){
+_e7a.prepareNewView(_e7c);
 }else{
-_e6b.prepareOpenView(_e6d,_e6c);
+_e7a.prepareOpenView(_e7c,_e7b);
 }
 break;
 case StageDialogBinding:
-if(_e6e){
-_e6b.prepareNewView(_e6d);
+if(_e7d){
+_e7a.prepareNewView(_e7c);
 }
 break;
 }
 }
 };
-StageBinding.prototype._dontView=function(_e71){
-if(this._activeViewDefinitions[_e71]!=null){
-delete this._activeViewDefinitions[_e71];
+StageBinding.prototype._dontView=function(_e80){
+if(this._activeViewDefinitions[_e80]!=null){
+delete this._activeViewDefinitions[_e80];
 }else{
-this.logger.debug("Could not unregister active view: "+_e71);
+this.logger.debug("Could not unregister active view: "+_e80);
 }
 };
-StageBinding.prototype.handleSelectedDockTab=function(_e72){
+StageBinding.prototype.handleSelectedDockTab=function(_e81){
 };
 StageCrawler.prototype=new BindingCrawler;
 StageCrawler.prototype.constructor=StageCrawler;
@@ -23590,29 +23631,29 @@ return this;
 StageCrawler.prototype._construct=function(){
 StageCrawler.superclass._construct.call(this);
 var self=this;
-this.addFilter(function(_e74){
-var _e75=UserInterface.getBinding(_e74);
-var _e76=null;
-if(_e75){
-switch(_e75.constructor){
+this.addFilter(function(_e83){
+var _e84=UserInterface.getBinding(_e83);
+var _e85=null;
+if(_e84){
+switch(_e84.constructor){
 case StageSplitBoxBinding:
 case StageSplitPanelBinding:
 case StageSplitterBinding:
 switch(self.mode){
 case StageCrawler.MODE_MAXIMIZE:
-_e75.handleMaximization();
+_e84.handleMaximization();
 break;
 case StageCrawler.MODE_UNMAXIMIZE:
-_e75.handleUnMaximization();
+_e84.handleUnMaximization();
 break;
 }
 break;
 case DockBinding:
-_e76=NodeCrawler.SKIP_NODE;
+_e85=NodeCrawler.SKIP_NODE;
 break;
 }
 }
-return _e76;
+return _e85;
 });
 };
 StageDialogSetBinding.prototype=new DialogSetBinding;
@@ -23626,29 +23667,29 @@ StageDialogSetBinding.prototype.toString=function(){
 return "[StageDialogSetBinding]";
 };
 StageDialogSetBinding.prototype.getInstance=function(){
-var _e77=null;
-this._dialogs.each(function(_e78){
-if(!_e78.isVisible){
-_e77=_e78;
+var _e86=null;
+this._dialogs.each(function(_e87){
+if(!_e87.isVisible){
+_e86=_e87;
 }
-return _e77!=null;
+return _e86!=null;
 });
-if(!_e77){
+if(!_e86){
 this._newInstance();
-_e77=this._dialogs.getLast();
+_e86=this._dialogs.getLast();
 }
-_e77.setModal(false);
-return _e77;
+_e86.setModal(false);
+return _e86;
 };
 StageDialogSetBinding.prototype.getModalInstance=function(){
-var _e79=this.getInstance();
-_e79.setModal(true);
-return _e79;
+var _e88=this.getInstance();
+_e88.setModal(true);
+return _e88;
 };
 StageDialogSetBinding.prototype._newInstance=function(){
-var _e7a=this.add(StageDialogBinding.newInstance(this.bindingDocument));
-this._dialogs.add(_e7a);
-_e7a.attach();
+var _e89=this.add(StageDialogBinding.newInstance(this.bindingDocument));
+this._dialogs.add(_e89);
+_e89.attach();
 };
 StageDialogBinding.prototype=new DialogBinding;
 StageDialogBinding.prototype.constructor=StageDialogBinding;
@@ -23684,92 +23725,92 @@ StageDialogBinding.prototype.onBindingAttach=function(){
 StageDialogBinding.superclass.onBindingAttach.call(this);
 this.defaultSetup();
 };
-StageDialogBinding.prototype.prepareNewView=function(_e7b){
-if(_e7b instanceof DialogViewDefinition){
-var _e7c=ViewBinding.newInstance(this.bindingDocument);
-_e7c.setDefinition(_e7b);
-_e7c.setType(ViewBinding.TYPE_DIALOGVIEW);
-if(_e7b.handler){
-if(Interfaces.isImplemented(IDialogResponseHandler,_e7b.handler)){
-this._dialogResponseHandler=_e7b.handler;
+StageDialogBinding.prototype.prepareNewView=function(_e8a){
+if(_e8a instanceof DialogViewDefinition){
+var _e8b=ViewBinding.newInstance(this.bindingDocument);
+_e8b.setDefinition(_e8a);
+_e8b.setType(ViewBinding.TYPE_DIALOGVIEW);
+if(_e8a.handler){
+if(Interfaces.isImplemented(IDialogResponseHandler,_e8a.handler)){
+this._dialogResponseHandler=_e8a.handler;
 }else{
 throw "IDialogResponseHandler not implemented";
 }
 }
-this._viewBinding=_e7c;
-this._body.add(_e7c);
-_e7c.attach();
-_e7c.initialize();
+this._viewBinding=_e8b;
+this._body.add(_e8b);
+_e8b.attach();
+_e8b.initialize();
 }
 };
-StageDialogBinding.prototype.handleAction=function(_e7d){
-StageDialogBinding.superclass.handleAction.call(this,_e7d);
-var _e7e=_e7d.target;
-switch(_e7d.type){
+StageDialogBinding.prototype.handleAction=function(_e8c){
+StageDialogBinding.superclass.handleAction.call(this,_e8c);
+var _e8d=_e8c.target;
+switch(_e8c.type){
 case PageBinding.ACTION_INITIALIZED:
-this._handleInitializedPageBinding(_e7e);
-_e7d.consume();
+this._handleInitializedPageBinding(_e8d);
+_e8c.consume();
 break;
 case PageBinding.ACTION_DETACHED:
-if(_e7e.bindingDocument==this._viewBinding.getContentDocument()){
+if(_e8d.bindingDocument==this._viewBinding.getContentDocument()){
 this._pageBinding=null;
 }
-_e7d.consume();
+_e8c.consume();
 break;
 case DialogPageBinding.ACTION_RESPONSE:
-if(_e7e.response){
-this._handleDialogPageResponse(_e7e);
+if(_e8d.response){
+this._handleDialogPageResponse(_e8d);
 }
-_e7d.consume();
+_e8c.consume();
 break;
 case Binding.ACTION_INVALID:
 this._disableDialogAcceptButton(true);
-_e7d.consume();
+_e8c.consume();
 break;
 case Binding.ACTION_VALID:
 this._disableDialogAcceptButton(false);
-_e7d.consume();
+_e8c.consume();
 break;
 case ViewBinding.ACTION_ONCLOSE:
 this.close();
-_e7e.dispose();
-_e7d.consume();
+_e8d.dispose();
+_e8c.consume();
 break;
 case ViewBinding.ACTION_CLOSED:
 this._isFirstPage=true;
-_e7d.consume();
+_e8c.consume();
 break;
 case ErrorBinding.ACTION_INITIALIZE:
-_e7d.consume();
+_e8c.consume();
 break;
 case PageBinding.ACTION_UPDATING:
 this._isUpdating=true;
-_e7d.consume();
+_e8c.consume();
 break;
 case PageBinding.ACTION_UPDATED:
 if(this._isUpdating){
 this._isUpdating=false;
 this._fit();
 }
-_e7d.consume();
+_e8c.consume();
 break;
 case Binding.ACTION_UPDATED:
 if(!this._isUpdating){
 this._fit();
 }
-_e7d.consume();
+_e8c.consume();
 break;
 case DialogBinding.ACTION_CLOSE:
-if(_e7e==this){
+if(_e8d==this){
 this._viewBinding.dispose();
 this.defaultSetup();
 }
 break;
 }
 };
-StageDialogBinding.prototype.handleBroadcast=function(_e7f,arg){
-StageDialogBinding.superclass.handleBroadcast.call(this,_e7f,arg);
-switch(_e7f){
+StageDialogBinding.prototype.handleBroadcast=function(_e8e,arg){
+StageDialogBinding.superclass.handleBroadcast.call(this,_e8e,arg);
+switch(_e8e){
 case BroadcastMessages.KEY_ESCAPE:
 if(this.isVisible==true){
 if(!PopupBinding.hasActiveInstances()){
@@ -23779,18 +23820,18 @@ this._defaultClose();
 break;
 }
 };
-StageDialogBinding.prototype._fit=function(_e81){
-var _e82=new FitnessCrawler();
+StageDialogBinding.prototype._fit=function(_e90){
+var _e91=new FitnessCrawler();
 var list=new List();
-if(_e81){
-_e82.mode=FitnessCrawler.MODE_BRUTAL;
+if(_e90){
+_e91.mode=FitnessCrawler.MODE_BRUTAL;
 }
-_e82.crawl(this.bindingElement,list);
-_e82.dispose();
+_e91.crawl(this.bindingElement,list);
+_e91.dispose();
 if(list.hasEntries()){
 list.reverse();
-list.each(function(_e84){
-_e84.fit(_e81);
+list.each(function(_e93){
+_e93.fit(_e90);
 });
 list.dispose();
 this._fitMe();
@@ -23801,10 +23842,10 @@ if(this._pageBinding!=null){
 this._pageBinding.enableAutoHeightLayoutMode(true);
 this._fixAutoHeight(this._pageBinding);
 this._pageBinding.enableAutoHeightLayoutMode(false);
-var _e85=this.getDimension().h;
+var _e94=this.getDimension().h;
 this.reflex(true);
 var self=this;
-if(this.getDimension().h==_e85){
+if(this.getDimension().h==_e94){
 var self=this;
 setTimeout(function(){
 self.reflex(true);
@@ -23812,8 +23853,8 @@ self.reflex(true);
 }
 }
 };
-StageDialogBinding.prototype._handleContextMenuItemBinding=function(_e87){
-var cmd=_e87.getProperty("cmd");
+StageDialogBinding.prototype._handleContextMenuItemBinding=function(_e96){
+var cmd=_e96.getProperty("cmd");
 switch(cmd){
 case DialogTitleBarPopupBinding.CMD_CLOSE:
 this._defaultClose();
@@ -23835,17 +23876,17 @@ break;
 }
 };
 StageDialogBinding.prototype._viewSource=DockTabBinding.prototype._viewSource;
-StageDialogBinding.prototype._handleInitializedPageBinding=function(_e89){
-if(_e89.bindingDocument==this._viewBinding.getContentDocument()){
-if(_e89 instanceof DialogPageBinding){
+StageDialogBinding.prototype._handleInitializedPageBinding=function(_e98){
+if(_e98.bindingDocument==this._viewBinding.getContentDocument()){
+if(_e98 instanceof DialogPageBinding){
 if(this._pageBinding==null){
-this._parsePageBinding(_e89);
+this._parsePageBinding(_e98);
 }
-this._pageBinding=_e89;
-if(_e89.height=="auto"){
-_e89.enableAutoHeightLayoutMode(true);
-this._fixAutoHeight(_e89);
-_e89.enableAutoHeightLayoutMode(false);
+this._pageBinding=_e98;
+if(_e98.height=="auto"){
+_e98.enableAutoHeightLayoutMode(true);
+this._fixAutoHeight(_e98);
+_e98.enableAutoHeightLayoutMode(false);
 this.reflex(true);
 }
 }
@@ -23857,9 +23898,9 @@ EventBroadcaster.broadcast(BroadcastMessages.VIEW_COMPLETED,this._viewBinding.ge
 EventBroadcaster.broadcast(BroadcastMessages.STAGEDIALOG_OPENED);
 }
 }else{
-if(_e89.isDialogSubPage){
+if(_e98.isDialogSubPage){
 this._pageBinding.enableAutoHeightLayoutMode(true);
-this._fixAutoHeight(_e89);
+this._fixAutoHeight(_e98);
 this._pageBinding.enableAutoHeightLayoutMode(false);
 this._fit(true);
 this.reflex(true);
@@ -23867,79 +23908,79 @@ this.reflex(true);
 }
 this._isFirstPage=false;
 };
-StageDialogBinding.prototype._disableDialogAcceptButton=function(_e8a){
-var _e8b=this._viewBinding.getContentDocument().getElementById("dialogacceptbutton");
-if(_e8b){
-var _e8c=UserInterface.getBinding(_e8b);
-_e8c.setDisabled(_e8a);
+StageDialogBinding.prototype._disableDialogAcceptButton=function(_e99){
+var _e9a=this._viewBinding.getContentDocument().getElementById("dialogacceptbutton");
+if(_e9a){
+var _e9b=UserInterface.getBinding(_e9a);
+_e9b.setDisabled(_e99);
 }
 };
-StageDialogBinding.prototype._handleDialogPageResponse=function(_e8d){
+StageDialogBinding.prototype._handleDialogPageResponse=function(_e9c){
 if(this._dialogResponseHandler!=null){
-this._dialogResponseHandler.handleDialogResponse(_e8d.response,_e8d.result!=null?_e8d.result:null);
+this._dialogResponseHandler.handleDialogResponse(_e9c.response,_e9c.result!=null?_e9c.result:null);
 }
 this.close();
 };
-StageDialogBinding.prototype.handleInvokedControl=function(_e8e){
-if(_e8e.controlType==ControlBinding.TYPE_CLOSE){
+StageDialogBinding.prototype.handleInvokedControl=function(_e9d){
+if(_e9d.controlType==ControlBinding.TYPE_CLOSE){
 this._defaultClose();
 }
-StageDialogBinding.superclass.handleInvokedControl.call(this,_e8e);
+StageDialogBinding.superclass.handleInvokedControl.call(this,_e9d);
 };
 StageDialogBinding.prototype.buildDescendantBindings=function(){
 StageDialogBinding.superclass.buildDescendantBindings.call(this);
 this._titlebar.setContextMenu(app.bindingMap.dialogtitlebarpopup);
 var self=this;
-this._titlebar.handleAction=function(_e90){
-switch(_e90.type){
+this._titlebar.handleAction=function(_e9f){
+switch(_e9f.type){
 case MenuItemBinding.ACTION_COMMAND:
-if(_e90.listener==this.contextMenuBinding){
-self._handleContextMenuItemBinding(_e90.target);
+if(_e9f.listener==this.contextMenuBinding){
+self._handleContextMenuItemBinding(_e9f.target);
 }
 break;
 }
 };
 };
-StageDialogBinding.prototype._parsePageBinding=function(_e91){
-var _e92=_e91.label;
-var _e93=_e91.image;
-var _e94=_e91.width;
-var _e95=_e91.height;
-var _e96=_e91.controls;
-var _e97=_e91.isResizable;
-if(_e92){
-this.setLabel(_e92);
+StageDialogBinding.prototype._parsePageBinding=function(_ea0){
+var _ea1=_ea0.label;
+var _ea2=_ea0.image;
+var _ea3=_ea0.width;
+var _ea4=_ea0.height;
+var _ea5=_ea0.controls;
+var _ea6=_ea0.isResizable;
+if(_ea1){
+this.setLabel(_ea1);
 }
-if(_e93){
-this.setImage(_e93);
+if(_ea2){
+this.setImage(_ea2);
 }
-if(_e94||_e95){
+if(_ea3||_ea4){
 var old=this.getDimension();
 var nev=new Dimension();
 if(this._isFirstPage){
-nev.w=_e94?_e94:old.w;
+nev.w=_ea3?_ea3:old.w;
 }else{
 nev.w=old.w;
 }
-nev.h=(_e95!=null&&_e95!="auto")?_e95:old.h;
+nev.h=(_ea4!=null&&_ea4!="auto")?_ea4:old.h;
 this.setDimension(nev);
 }
-if(_e96){
+if(_ea5){
 this.controlBindings[ControlBinding.TYPE_MAXIMIZE].hide();
 this.controlBindings[ControlBinding.TYPE_MINIMIZE].hide();
 this.controlBindings[ControlBinding.TYPE_CLOSE].hide();
-var type,_e9b=new List(_e96.split(" "));
-while((type=_e9b.getNext())!=null){
+var type,_eaa=new List(_ea5.split(" "));
+while((type=_eaa.getNext())!=null){
 this.controlBindings[type].show();
 }
 }
-if(_e97!=this._isResizable){
-this.setResizable(_e97);
+if(_ea6!=this._isResizable){
+this.setResizable(_ea6);
 }
-if(_e95=="auto"){
-this._fixAutoHeight(_e91);
+if(_ea4=="auto"){
+this._fixAutoHeight(_ea0);
 }
-if(_e91==this._pageBinding){
+if(_ea0==this._pageBinding){
 this.centerOnScreen();
 }
 if(!this.isOpen){
@@ -23947,30 +23988,30 @@ this.reflex(true);
 this.open(true);
 }
 };
-StageDialogBinding.prototype._fixAutoHeight=function(_e9c){
+StageDialogBinding.prototype._fixAutoHeight=function(_eab){
 var dim=this.getDimension();
-var _e9e=0;
-var _e9f=0;
-if(_e9c.isDialogSubPage){
-_e9c=this._pageBinding;
+var _ead=0;
+var _eae=0;
+if(_eab.isDialogSubPage){
+_eab=this._pageBinding;
 }
 if(this._isFirstPage){
-_e9e=_e9c.width!=null?_e9c.width:dim.w;
+_ead=_eab.width!=null?_eab.width:dim.w;
 }else{
-_e9e=dim.w;
+_ead=dim.w;
 }
-_e9f=_e9c.bindingElement.offsetHeight;
-_e9f+=this._titlebar.bindingElement.offsetHeight;
-_e9f+=4;
-if(_e9f<dim.h){
-_e9f=dim.h;
+_eae=_eab.bindingElement.offsetHeight;
+_eae+=this._titlebar.bindingElement.offsetHeight;
+_eae+=4;
+if(_eae<dim.h){
+_eae=dim.h;
 }
-if(_e9c.minheight!=null){
-if(_e9f<_e9c.minheight){
-_e9f=_e9c.minheight;
+if(_eab.minheight!=null){
+if(_eae<_eab.minheight){
+_eae=_eab.minheight;
 }
 }
-this.setDimension(new Dimension(_e9e,_e9f));
+this.setDimension(new Dimension(_ead,_eae));
 };
 StageDialogBinding.prototype._defaultClose=function(){
 if(this._dialogResponseHandler!=null){
@@ -24020,11 +24061,11 @@ StageDialogBinding.superclass.deActivate.call(this);
 this._viewBinding.onDeactivate();
 }
 };
-StageDialogBinding.newInstance=function(_ea2){
-var _ea3=DOMUtil.createElementNS(Constants.NS_UI,"ui:dialog",_ea2);
-var _ea4=UserInterface.registerBinding(_ea3,StageDialogBinding);
-_ea4.setProperty("controls","minimize maximize close");
-return _ea4;
+StageDialogBinding.newInstance=function(_eb1){
+var _eb2=DOMUtil.createElementNS(Constants.NS_UI,"ui:dialog",_eb1);
+var _eb3=UserInterface.registerBinding(_eb2,StageDialogBinding);
+_eb3.setProperty("controls","minimize maximize close");
+return _eb3;
 };
 FitnessCrawler.prototype=new Crawler;
 FitnessCrawler.prototype.constructor=FitnessCrawler;
@@ -24040,21 +24081,21 @@ return this;
 }
 FitnessCrawler.prototype._construct=function(){
 FitnessCrawler.superclass._construct.call(this);
-this.addFilter(function(_ea5,list){
-var _ea7=null;
-var _ea8=UserInterface.getBinding(_ea5);
-if(!_ea8.isVisible){
-_ea7=NodeCrawler.SKIP_NODE+NodeCrawler.SKIP_CHILDREN;
+this.addFilter(function(_eb4,list){
+var _eb6=null;
+var _eb7=UserInterface.getBinding(_eb4);
+if(!_eb7.isVisible){
+_eb6=NodeCrawler.SKIP_NODE+NodeCrawler.SKIP_CHILDREN;
 }
-return _ea7;
+return _eb6;
 });
-this.addFilter(function(_ea9,list){
-var _eab=null;
-var _eac=UserInterface.getBinding(_ea9);
-if(_eac.isAttached){
-if(Interfaces.isImplemented(IFit,_eac)){
-if(!_eac.isFit||this.mode==FitnessCrawler.MODE_BRUTAL){
-list.add(_eac);
+this.addFilter(function(_eb8,list){
+var _eba=null;
+var _ebb=UserInterface.getBinding(_eb8);
+if(_ebb.isAttached){
+if(Interfaces.isImplemented(IFit,_ebb)){
+if(!_ebb.isFit||this.mode==FitnessCrawler.MODE_BRUTAL){
+list.add(_ebb);
 }
 }
 }
@@ -24077,18 +24118,18 @@ StageDecksBinding.prototype.onBindingInitialize=function(){
 StageDecksBinding.superclass.onBindingInitialize.call(this);
 this.dispatchAction(StageDecksBinding.ACTION_INITIALIZED);
 };
-StageDecksBinding.prototype.mountDefinition=function(_ead){
-var _eae=StageDeckBinding.newInstance(this.bindingDocument);
-_eae.handle=_ead.handle;
-_eae.perspectiveNode=_ead.node;
-this._decks[_eae.handle]=_eae;
-this.add(_eae);
-_eae.attach();
+StageDecksBinding.prototype.mountDefinition=function(_ebc){
+var _ebd=StageDeckBinding.newInstance(this.bindingDocument);
+_ebd.handle=_ebc.handle;
+_ebd.perspectiveNode=_ebc.node;
+this._decks[_ebd.handle]=_ebd;
+this.add(_ebd);
+_ebd.attach();
 };
-StageDecksBinding.prototype.setSelectionByHandle=function(_eaf){
-var _eb0=this._decks[_eaf];
-StageBinding.perspectiveNode=_eb0.perspectiveNode;
-this.select(_eb0);
+StageDecksBinding.prototype.setSelectionByHandle=function(_ebe){
+var _ebf=this._decks[_ebe];
+StageBinding.perspectiveNode=_ebf.perspectiveNode;
+this.select(_ebf);
 };
 StageDeckBinding.prototype=new DeckBinding;
 StageDeckBinding.prototype.constructor=StageDeckBinding;
@@ -24118,24 +24159,24 @@ this._dockBindings=new Map();
 this.addActionListener(WindowBinding.ACTION_LOADED);
 this.addActionListener(TabBoxBinding.ACTION_ATTACHED);
 };
-StageDeckBinding.prototype.handleAction=function(_eb1){
-StageDeckBinding.superclass.handleAction.call(this,_eb1);
-var _eb2=_eb1.target;
-switch(_eb1.type){
+StageDeckBinding.prototype.handleAction=function(_ec0){
+StageDeckBinding.superclass.handleAction.call(this,_ec0);
+var _ec1=_ec0.target;
+switch(_ec0.type){
 case WindowBinding.ACTION_LOADED:
-if(_eb2==this.windowBinding){
+if(_ec1==this.windowBinding){
 top.app.bindingMap.stagedeckscover.hide();
 this.removeActionListener(WindowBinding.ACTION_LOADED);
 this.addActionListener(StageSplitBoxBinding.ACTION_DOCK_EMPTIED);
 this.addActionListener(StageSplitBoxBinding.ACTION_DOCK_OPENED);
 this.dispatchAction(StageDeckBinding.ACTION_LOADED);
-_eb1.consume();
+_ec0.consume();
 }
 break;
 case TabBoxBinding.ACTION_ATTACHED:
-if(_eb2 instanceof DockBinding){
-this._dockBindings.set(_eb2.reference,_eb2);
-_eb2.perspectiveNode=this.perspectiveNode;
+if(_ec1 instanceof DockBinding){
+this._dockBindings.set(_ec1.reference,_ec1);
+_ec1.perspectiveNode=this.perspectiveNode;
 }
 break;
 case StageSplitBoxBinding.ACTION_DOCK_OPENED:
@@ -24143,24 +24184,24 @@ this._dockBindingCount++;
 if(this._dockBindingCount==2){
 this._dockBindings.get("main").showControls(true);
 }
-_eb1.consume();
+_ec0.consume();
 break;
 case StageSplitBoxBinding.ACTION_DOCK_EMPTIED:
 this._dockBindingCount--;
 if(this._dockBindingCount==1){
 this._dockBindings.get("main").showControls(false);
 }
-_eb1.consume();
+_ec0.consume();
 break;
 }
-StageBoxHandlerAbstraction.handleAction.call(this,_eb1);
-StageDeckBinding.superclass.handleAction.call(this,_eb1);
+StageBoxHandlerAbstraction.handleAction.call(this,_ec0);
+StageDeckBinding.superclass.handleAction.call(this,_ec0);
 };
 StageDeckBinding.prototype.iterateContainedStageBoxBindings=function(mode){
-var _eb4=new StageCrawler();
-_eb4.mode=mode;
-_eb4.crawl(this.windowBinding.getContentDocument().body);
-_eb4.dispose();
+var _ec3=new StageCrawler();
+_ec3.mode=mode;
+_ec3.crawl(this.windowBinding.getContentDocument().body);
+_ec3.dispose();
 };
 StageDeckBinding.prototype.select=function(){
 if(!this._isStageDeckBindingInitialized){
@@ -24168,8 +24209,8 @@ this.initialize();
 }
 StageDeckBinding.superclass.select.call(this);
 };
-StageDeckBinding.prototype.getDockBindingByReference=function(_eb5){
-return this._dockBindings.get(_eb5);
+StageDeckBinding.prototype.getDockBindingByReference=function(_ec4){
+return this._dockBindings.get(_ec4);
 };
 StageDeckBinding.prototype.initialize=function(){
 if(!this._isStageDeckBindingInitialized){
@@ -24181,10 +24222,10 @@ this.windowBinding.attach();
 this._isStageDeckBindingInitialized=true;
 }
 };
-StageDeckBinding.newInstance=function(_eb7){
-var _eb8=DOMUtil.createElementNS(Constants.NS_UI,"ui:stagedeck",_eb7);
-var _eb9=UserInterface.registerBinding(_eb8,StageDeckBinding);
-return _eb9;
+StageDeckBinding.newInstance=function(_ec6){
+var _ec7=DOMUtil.createElementNS(Constants.NS_UI,"ui:stagedeck",_ec6);
+var _ec8=UserInterface.registerBinding(_ec7,StageDeckBinding);
+return _ec8;
 };
 StageDeckRootBinding.prototype=new RootBinding;
 StageDeckRootBinding.prototype.constructor=StageDeckRootBinding;
@@ -24221,21 +24262,21 @@ this.addActionListener(DockBinding.ACTION_OPENED,this);
 this.addActionListener(StageSplitBoxBinding.ACTION_SHOW,this);
 this.addActionListener(StageSplitBoxBinding.ACTION_HIDE,this);
 };
-StageSplitBoxBinding.prototype.handleAction=function(_eba){
-StageSplitBoxBinding.superclass.handleAction.call(this,_eba);
-StageBoxAbstraction.handleAction.call(this,_eba);
-var _ebb=_eba.target;
-var _ebc=null;
-var _ebd=null;
-switch(_eba.type){
+StageSplitBoxBinding.prototype.handleAction=function(_ec9){
+StageSplitBoxBinding.superclass.handleAction.call(this,_ec9);
+StageBoxAbstraction.handleAction.call(this,_ec9);
+var _eca=_ec9.target;
+var _ecb=null;
+var _ecc=null;
+switch(_ec9.type){
 case DockBinding.ACTION_EMPTIED:
-_ebd=this.getChildBindingByLocalName("splitter");
-if(_ebd.isVisible){
-_ebd.hide();
+_ecc=this.getChildBindingByLocalName("splitter");
+if(_ecc.isVisible){
+_ecc.hide();
 }
-_ebc=this.getDescendantBindingsByLocalName("dock");
-if(_ebc.getFirst().isEmpty&&_ebc.getLast().isEmpty){
-if(_ebc.getFirst().type!=DockBinding.TYPE_EDITORS){
+_ecb=this.getDescendantBindingsByLocalName("dock");
+if(_ecb.getFirst().isEmpty&&_ecb.getLast().isEmpty){
+if(_ecb.getFirst().type!=DockBinding.TYPE_EDITORS){
 this.dispatchAction(StageSplitBoxBinding.ACTION_HIDE);
 this.hide();
 }
@@ -24244,14 +24285,14 @@ this.flex();
 this.invokeLayout();
 }
 this.dispatchAction(StageSplitBoxBinding.ACTION_DOCK_EMPTIED);
-_eba.consume();
+_ec9.consume();
 break;
 case DockBinding.ACTION_OPENED:
-_ebc=this.getDescendantBindingsByLocalName("dock");
-if(!_ebc.getFirst().isEmpty&&!_ebc.getLast().isEmpty){
-_ebd=this.getChildBindingByLocalName("splitter");
-if(!_ebd.isVisible){
-_ebd.show();
+_ecb=this.getDescendantBindingsByLocalName("dock");
+if(!_ecb.getFirst().isEmpty&&!_ecb.getLast().isEmpty){
+_ecc=this.getChildBindingByLocalName("splitter");
+if(!_ecc.isVisible){
+_ecc.show();
 }
 }
 if(!this.isVisible){
@@ -24261,29 +24302,29 @@ this.dispatchAction(StageSplitBoxBinding.ACTION_SHOW);
 this.flex();
 this.invokeLayout();
 this.dispatchAction(StageSplitBoxBinding.ACTION_DOCK_OPENED);
-_eba.consume();
+_ec9.consume();
 break;
 case StageSplitBoxBinding.ACTION_HIDE:
-if(_ebb!=this){
-_ebd=this.getChildBindingByLocalName("splitter");
-if(_ebd.isVisible){
-_ebd.hide();
+if(_eca!=this){
+_ecc=this.getChildBindingByLocalName("splitter");
+if(_ecc.isVisible){
+_ecc.hide();
 }
 this.invokeLayout();
-_eba.consume();
+_ec9.consume();
 }
 break;
 case StageSplitBoxBinding.ACTION_SHOW:
-if(_ebb!=this){
-var _ebe=this.getChildBindingsByLocalName("splitpanel");
-if(_ebe.getFirst().isVisible&&_ebe.getLast().isVisible){
-_ebd=this.getChildBindingByLocalName("splitter");
-if(!_ebd.isVisible){
-_ebd.show();
+if(_eca!=this){
+var _ecd=this.getChildBindingsByLocalName("splitpanel");
+if(_ecd.getFirst().isVisible&&_ecd.getLast().isVisible){
+_ecc=this.getChildBindingByLocalName("splitter");
+if(!_ecc.isVisible){
+_ecc.show();
 }
 }
 this.invokeLayout();
-_eba.consume();
+_ec9.consume();
 }
 break;
 }
@@ -24299,23 +24340,23 @@ if(this.isMaximizedForReal==null){
 StageSplitBoxBinding.superclass.flex.call(this);
 }
 };
-StageSplitBoxBinding.prototype.handleCrawler=function(_ebf){
-StageSplitBoxBinding.superclass.handleCrawler.call(this,_ebf);
-switch(_ebf.id){
+StageSplitBoxBinding.prototype.handleCrawler=function(_ece){
+StageSplitBoxBinding.superclass.handleCrawler.call(this,_ece);
+switch(_ece.id){
 case FlexBoxCrawler.ID:
 if(this.isMaximizedForReal==false){
-_ebf.response=NodeCrawler.SKIP_CHILDREN;
+_ece.response=NodeCrawler.SKIP_CHILDREN;
 }
 break;
 }
 };
 StageSplitBoxBinding.prototype.hasBothPanelsVisible=function(){
-var _ec0=this.getChildBindingsByLocalName("splitpanel");
-return _ec0.getFirst().isVisible&&_ec0.getLast().isVisible;
+var _ecf=this.getChildBindingsByLocalName("splitpanel");
+return _ecf.getFirst().isVisible&&_ecf.getLast().isVisible;
 };
 StageSplitBoxBinding.prototype.hasBothPanelsFixed=function(){
-var _ec1=this.getChildBindingsByLocalName("splitpanel");
-return _ec1.getFirst().isFixed&&_ec1.getLast().isFixed;
+var _ed0=this.getChildBindingsByLocalName("splitpanel");
+return _ed0.getFirst().isFixed&&_ed0.getLast().isFixed;
 };
 StageSplitPanelBinding.prototype=new SplitPanelBinding;
 StageSplitPanelBinding.prototype.constructor=StageSplitPanelBinding;
@@ -24342,10 +24383,10 @@ this.addActionListener(StageSplitBoxBinding.ACTION_HIDE,this);
 this.addActionListener(StageSplitBoxBinding.ACTION_SHOW,this);
 this.addActionListener(StageSplitPanelBinding.ACTION_LAYOUTUPDATE,this);
 };
-StageSplitPanelBinding.prototype.handleAction=function(_ec2){
-StageSplitPanelBinding.superclass.handleAction.call(this,_ec2);
-StageBoxAbstraction.handleAction.call(this,_ec2);
-switch(_ec2.type){
+StageSplitPanelBinding.prototype.handleAction=function(_ed1){
+StageSplitPanelBinding.superclass.handleAction.call(this,_ed1);
+StageBoxAbstraction.handleAction.call(this,_ed1);
+switch(_ed1.type){
 case DockBinding.ACTION_EMPTIED:
 case StageSplitBoxBinding.ACTION_HIDE:
 if(this.isMaximized==true){
@@ -24354,8 +24395,8 @@ this.normalize();
 var dock=this.getContainedDock();
 if(dock&&dock.type==DockBinding.TYPE_EDITORS){
 this._invisibilize(true);
-if(_ec2.type==StageSplitBoxBinding.ACTION_HIDE){
-_ec2.consume();
+if(_ed1.type==StageSplitBoxBinding.ACTION_HIDE){
+_ed1.consume();
 }
 }else{
 this.hide();
@@ -24363,7 +24404,7 @@ if(this.isFixed==true){
 this.setFix(false);
 }
 }
-if(_ec2.type==DockBinding.ACTION_EMPTIED){
+if(_ed1.type==DockBinding.ACTION_EMPTIED){
 var self=this;
 setTimeout(function(){
 self.dispatchAction(StageSplitPanelBinding.ACTION_LAYOUTUPDATE);
@@ -24375,8 +24416,8 @@ case StageSplitBoxBinding.ACTION_SHOW:
 var dock=this.getContainedDock();
 if(dock&&dock.type==DockBinding.TYPE_EDITORS){
 this._invisibilize(false);
-if(_ec2.type==StageSplitBoxBinding.ACTION_SHOW){
-_ec2.consume();
+if(_ed1.type==StageSplitBoxBinding.ACTION_SHOW){
+_ed1.consume();
 }
 }else{
 this.show();
@@ -24386,24 +24427,24 @@ this.setFix(false);
 }
 break;
 case StageSplitPanelBinding.ACTION_LAYOUTUPDATE:
-var _ec5=_ec2.target;
-if(_ec5!=this&&_ec5.getContainedDock()){
+var _ed4=_ed1.target;
+if(_ed4!=this&&_ed4.getContainedDock()){
 if(this._containingSplitBoxBinding.getOrient()==SplitBoxBinding.ORIENT_VERTICAL){
-var _ec6=_ec5._containingSplitBoxBinding;
-if(_ec6.getOrient()==SplitBoxBinding.ORIENT_HORIZONTAL){
-var _ec7=_ec6.getChildBindingsByLocalName("splitpanel");
-var _ec8=_ec7.getFirst();
-var _ec9=_ec7.getLast();
+var _ed5=_ed4._containingSplitBoxBinding;
+if(_ed5.getOrient()==SplitBoxBinding.ORIENT_HORIZONTAL){
+var _ed6=_ed5.getChildBindingsByLocalName("splitpanel");
+var _ed7=_ed6.getFirst();
+var _ed8=_ed6.getLast();
 if(this.isFixed==true){
-if(!_ec8.isFixed||!_ec9.isFixed||(!_ec6.hasBothPanelsVisible()&&_ec5.isMinimizedForReal)){
+if(!_ed7.isFixed||!_ed8.isFixed||(!_ed5.hasBothPanelsVisible()&&_ed4.isMinimizedForReal)){
 this.setFix(false);
-_ec2.consume();
+_ed1.consume();
 this.dispatchAction(StageSplitPanelBinding.ACTION_LAYOUTUPDATE);
 }
 }else{
-if(_ec6.hasBothPanelsFixed()||(!_ec6.hasBothPanelsVisible()&&_ec5.isMinimizedForReal)){
-this.setFix(_ec5.getContainedDock().getHeight());
-_ec2.consume();
+if(_ed5.hasBothPanelsFixed()||(!_ed5.hasBothPanelsVisible()&&_ed4.isMinimizedForReal)){
+this.setFix(_ed4.getContainedDock().getHeight());
+_ed1.consume();
 this.dispatchAction(StageSplitPanelBinding.ACTION_LAYOUTUPDATE);
 }
 }
@@ -24416,27 +24457,27 @@ break;
 };
 StageSplitPanelBinding.prototype.handleMaximization=function(){
 StageBoxAbstraction.handleMaximization.call(this);
-var _eca=this.getContainedDock();
-if(_eca){
+var _ed9=this.getContainedDock();
+if(_ed9){
 if(this.isMaximizePrepared==true){
 }else{
-_eca.interceptDisplayChange(false);
+_ed9.interceptDisplayChange(false);
 }
 }
 };
 StageSplitPanelBinding.prototype.handleUnMaximization=function(){
 StageBoxAbstraction.handleUnMaximization.call(this);
-var _ecb=this.getContainedDock();
-if(_ecb){
-if(_ecb.type==DockBinding.TYPE_EDITORS){
-if(_ecb.isEmpty){
+var _eda=this.getContainedDock();
+if(_eda){
+if(_eda.type==DockBinding.TYPE_EDITORS){
+if(_eda.isEmpty){
 this._invisibilize(true);
 }
 }
 if(this.isMaximized==true){
 this.normalize();
 }else{
-_ecb.interceptDisplayChange(true);
+_eda.interceptDisplayChange(true);
 }
 }
 };
@@ -24446,21 +24487,21 @@ this.normalize(true);
 }
 StageSplitPanelBinding.superclass.maximize.call(this);
 this.dispatchAction(StageSplitPanelBinding.ACTION_LAYOUTUPDATE);
-var _ecc=this.getContainedDock();
-if(_ecc){
-_ecc.activate();
-EventBroadcaster.broadcast(BroadcastMessages.DOCK_MAXIMIZED,_ecc);
+var _edb=this.getContainedDock();
+if(_edb){
+_edb.activate();
+EventBroadcaster.broadcast(BroadcastMessages.DOCK_MAXIMIZED,_edb);
 }
 };
 StageSplitPanelBinding.prototype.minimize=function(){
-var _ecd=this._containingSplitBoxBinding.getOrient()==SplitBoxBinding.ORIENT_HORIZONTAL;
-var _ece=this.getContainedDock();
-if(_ece){
-_ece.collapse(_ecd);
-if(!_ecd){
-this.setFix(_ece.getHeight());
+var _edc=this._containingSplitBoxBinding.getOrient()==SplitBoxBinding.ORIENT_HORIZONTAL;
+var _edd=this.getContainedDock();
+if(_edd){
+_edd.collapse(_edc);
+if(!_edc){
+this.setFix(_edd.getHeight());
 }else{
-this.setFix(_ece.getWidth());
+this.setFix(_edd.getWidth());
 }
 }
 if(this.isMaximized==true){
@@ -24468,47 +24509,47 @@ this.normalize(true);
 }
 StageSplitPanelBinding.superclass.minimize.call(this);
 this.dispatchAction(StageSplitPanelBinding.ACTION_LAYOUTUPDATE);
-if(_ece&&_ece.isActive){
-_ece.deActivate();
-EventBroadcaster.broadcast(BroadcastMessages.DOCK_MINIMIZED,_ece);
+if(_edd&&_edd.isActive){
+_edd.deActivate();
+EventBroadcaster.broadcast(BroadcastMessages.DOCK_MINIMIZED,_edd);
 }
 };
-StageSplitPanelBinding.prototype.normalize=function(_ecf){
-var _ed0=this._containingSplitBoxBinding.getOrient()==SplitBoxBinding.ORIENT_HORIZONTAL;
-var _ed1=this.getContainedDock();
-if(_ed1){
+StageSplitPanelBinding.prototype.normalize=function(_ede){
+var _edf=this._containingSplitBoxBinding.getOrient()==SplitBoxBinding.ORIENT_HORIZONTAL;
+var _ee0=this.getContainedDock();
+if(_ee0){
 if(this.isMinimized==true){
-_ed1.unCollapse(_ed0);
+_ee0.unCollapse(_edf);
 this.setFix(false);
 }
 }
 StageSplitPanelBinding.superclass.normalize.call(this);
-if(!_ecf){
+if(!_ede){
 this.dispatchAction(StageSplitPanelBinding.ACTION_LAYOUTUPDATE);
-if(_ed1){
-_ed1.activate();
-EventBroadcaster.broadcast(BroadcastMessages.DOCK_NORMALIZED,_ed1);
+if(_ee0){
+_ee0.activate();
+EventBroadcaster.broadcast(BroadcastMessages.DOCK_NORMALIZED,_ee0);
 }
 }
 };
 StageSplitPanelBinding.prototype.getContainedDock=function(){
 return this.getChildBindingByLocalName("dock");
 };
-StageSplitPanelBinding.prototype.invisibilize=function(_ed2){
-var _ed3=true;
+StageSplitPanelBinding.prototype.invisibilize=function(_ee1){
+var _ee2=true;
 var dock=this.getContainedDock();
 if(dock!=null&&dock.type==DockBinding.TYPE_EDITORS){
 if(dock.isEmpty==true){
-_ed3=false;
+_ee2=false;
 }
 }
-if(_ed3==true){
-this._invisibilize(_ed2);
+if(_ee2==true){
+this._invisibilize(_ee1);
 }
 };
-StageSplitPanelBinding.prototype._invisibilize=function(_ed5){
-if(_ed5!=this._isInvisibilized){
-if(_ed5){
+StageSplitPanelBinding.prototype._invisibilize=function(_ee4){
+if(_ee4!=this._isInvisibilized){
+if(_ee4){
 this.bindingElement.style.visibility="hidden";
 }else{
 this.bindingElement.style.visibility="visible";
@@ -24536,22 +24577,22 @@ this.bindingElement.style.display="block";
 this._wasHidden=null;
 }
 };
-StageSplitterBinding.prototype.onDragStart=function(_ed6){
-var _ed7=top.app.bindingMap.stagesplittercover;
-var _ed8=this._containingSplitBoxBinding.getOrient();
-switch(_ed8){
+StageSplitterBinding.prototype.onDragStart=function(_ee5){
+var _ee6=top.app.bindingMap.stagesplittercover;
+var _ee7=this._containingSplitBoxBinding.getOrient();
+switch(_ee7){
 case SplitBoxBinding.ORIENT_HORIZONTAL:
-_ed7.bindingElement.style.cursor="e-resize";
+_ee6.bindingElement.style.cursor="e-resize";
 break;
 case SplitBoxBinding.ORIENT_VERTICAL:
-_ed7.bindingElement.style.cursor="n-resize";
+_ee6.bindingElement.style.cursor="n-resize";
 break;
 }
-_ed7.show();
+_ee6.show();
 var body=top.app.bindingMap.stagesplitterbody;
 body.setPosition(this.getPosition());
 body.setDimension(this.getDimension());
-body.setOrient(_ed8);
+body.setOrient(_ee7);
 body.show();
 this.isDragging=true;
 };
@@ -24588,25 +24629,25 @@ this._orient=null;
 StageSplitterBodyBinding.prototype.toString=function(){
 return "[StageSplitterBodyBinding]";
 };
-StageSplitterBodyBinding.prototype.setOrient=function(_ede){
-this._orient=_ede;
-this.attachClassName(_ede);
+StageSplitterBodyBinding.prototype.setOrient=function(_eed){
+this._orient=_eed;
+this.attachClassName(_eed);
 };
 StageSplitterBodyBinding.prototype.setPosition=function(pos){
-var _ee0=true;
-var _ee1=true;
+var _eef=true;
+var _ef0=true;
 switch(this._orient){
 case SplitBoxBinding.ORIENT_HORIZONTAL:
-_ee1=false;
+_ef0=false;
 break;
 case SplitBoxBinding.ORIENT_VERTICAL:
-_ee0=false;
+_eef=false;
 break;
 }
-if(_ee0){
+if(_eef){
 this.bindingElement.style.left=pos.x+"px";
 }
-if(_ee1){
+if(_ef0){
 this.bindingElement.style.top=pos.y+"px";
 }
 };
@@ -24636,8 +24677,8 @@ this.addActionListener(ControlBoxBinding.ACTION_MINIMIZE);
 this.addActionListener(ControlBoxBinding.ACTION_NORMALIZE);
 this.addActionListener(TabBoxBinding.ACTION_UPDATED);
 };
-StageBoxAbstraction.handleAction=function(_ee3){
-switch(_ee3.type){
+StageBoxAbstraction.handleAction=function(_ef2){
+switch(_ef2.type){
 case ControlBoxBinding.ACTION_MAXIMIZE:
 this.isMaximizePrepared=true;
 break;
@@ -24649,7 +24690,7 @@ this.isMaximizePrepared=false;
 this.isMinimizedForReal=null;
 break;
 case TabBoxBinding.ACTION_UPDATED:
-if(_ee3.target instanceof DockBinding){
+if(_ef2.target instanceof DockBinding){
 if(this.isHiddenForReal){
 this.dispatchAction(StageBoxAbstraction.ACTION_HIDDENSTUFF_UPDATED);
 }else{
@@ -24658,7 +24699,7 @@ this.normalize();
 }
 }
 }
-_ee3.consume();
+_ef2.consume();
 break;
 }
 };
@@ -24668,12 +24709,12 @@ this.isMaximizedForReal=true;
 this.isHiddenForReal=false;
 this.isFlexible=false;
 if(Client.isMozilla==true){
-var _ee4=this.bindingElement.style;
-_ee4.position="absolute";
-_ee4.width="100%";
-_ee4.height="100%";
-_ee4.top="0";
-_ee4.left="0";
+var _ef3=this.bindingElement.style;
+_ef3.position="absolute";
+_ef3.width="100%";
+_ef3.height="100%";
+_ef3.top="0";
+_ef3.left="0";
 }else{
 this.attachClassName("maximized");
 if(this instanceof StageSplitPanelBinding){
@@ -24692,12 +24733,12 @@ StageBoxAbstraction.handleUnMaximization=function(){
 if(this.isMaximizedForReal==true){
 this.isFlexible=true;
 if(Client.isMozilla==true){
-var _ee5=this.bindingElement.style;
-_ee5.position="relative";
-_ee5.width="auto";
-_ee5.height="auto";
-_ee5.top="auto";
-_ee5.left="auto";
+var _ef4=this.bindingElement.style;
+_ef4.position="relative";
+_ef4.width="auto";
+_ef4.height="auto";
+_ef4.top="auto";
+_ef4.left="auto";
 }else{
 this.detachClassName("maximized");
 if(this instanceof StageSplitPanelBinding){
@@ -24713,29 +24754,29 @@ this.isMaximizePrepared=false;
 this.isMaximizedForReal=null;
 this.isHiddenForReal=null;
 };
-StageBoxAbstraction._emulateBasicCSS=function(_ee6,_ee7){
-var _ee8=_ee6.bindingElement.style;
-var _ee9=_ee6.bindingElement.parentNode;
-var box=_ee6._containingSplitBoxBinding;
+StageBoxAbstraction._emulateBasicCSS=function(_ef5,_ef6){
+var _ef7=_ef5.bindingElement.style;
+var _ef8=_ef5.bindingElement.parentNode;
+var box=_ef5._containingSplitBoxBinding;
 if(Client.isExplorer==true){
-if(_ee7){
-_ee6._unmodifiedFlexMethod=_ee6.flex;
-_ee6.flex=function(){
-_ee8.width=_ee9.offsetWidth+"px";
-_ee8.height=_ee9.offsetHeight+"px";
+if(_ef6){
+_ef5._unmodifiedFlexMethod=_ef5.flex;
+_ef5.flex=function(){
+_ef7.width=_ef8.offsetWidth+"px";
+_ef7.height=_ef8.offsetHeight+"px";
 };
 }else{
-_ee8.width="100%";
-_ee8.height="100%";
+_ef7.width="100%";
+_ef7.height="100%";
 if(!box.isHorizontalOrient()){
 setTimeout(function(){
-_ee8.width="auto";
-_ee8.height="auto";
+_ef7.width="auto";
+_ef7.height="auto";
 box.reflex(true);
 },0);
 }
-_ee6.flex=_ee6._unmodifiedFlexMethod;
-_ee6._unmodifiedFlexMethod=null;
+_ef5.flex=_ef5._unmodifiedFlexMethod;
+_ef5._unmodifiedFlexMethod=null;
 }
 }
 };
@@ -24748,14 +24789,14 @@ this.addActionListener(ControlBoxBinding.ACTION_NORMALIZE,this);
 this.addActionListener(StageBoxAbstraction.ACTION_HIDDENSTUFF_UPDATED,this);
 this.addActionListener(StageSplitPanelBinding.ACTION_LAYOUTUPDATE,this);
 };
-StageBoxHandlerAbstraction.handleAction=function(_eeb){
-var _eec=_eeb.target;
-switch(_eeb.type){
+StageBoxHandlerAbstraction.handleAction=function(_efa){
+var _efb=_efa.target;
+switch(_efa.type){
 case ControlBoxBinding.ACTION_MAXIMIZE:
 case ControlBoxBinding.ACTION_NORMALIZE:
-if(_eec instanceof StageSplitPanelBinding){
-StageBoxHandlerAbstraction.handleControlBoxAction.call(this,_eeb);
-_eeb.consume();
+if(_efb instanceof StageSplitPanelBinding){
+StageBoxHandlerAbstraction.handleControlBoxAction.call(this,_efa);
+_efa.consume();
 }
 break;
 case StageBoxAbstraction.ACTION_HIDDENSTUFF_UPDATED:
@@ -24763,15 +24804,15 @@ if(this.isSubPanelMaximized){
 this.iterateContainedStageBoxBindings(StageCrawler.MODE_UNMAXIMIZE);
 this.isSubPanelMaximized=false;
 }
-_eeb.consume();
+_efa.consume();
 break;
 case StageSplitPanelBinding.ACTION_LAYOUTUPDATE:
 break;
 }
 };
-StageBoxHandlerAbstraction.handleControlBoxAction=function(_eed){
+StageBoxHandlerAbstraction.handleControlBoxAction=function(_efc){
 var mode=null;
-switch(_eed.type){
+switch(_efc.type){
 case ControlBoxBinding.ACTION_MAXIMIZE:
 if(!this.isSubPanelMaximized){
 mode=StageCrawler.MODE_MAXIMIZE;
@@ -24807,20 +24848,20 @@ this.addActionListener(MenuItemBinding.ACTION_COMMAND);
 Binding.prototype.hide.call(this);
 }
 };
-StageMenuBarBinding.prototype.handleAction=function(_eef){
-StageMenuBarBinding.superclass.handleAction.call(this,_eef);
-switch(_eef.type){
+StageMenuBarBinding.prototype.handleAction=function(_efe){
+StageMenuBarBinding.superclass.handleAction.call(this,_efe);
+switch(_efe.type){
 case MenuItemBinding.ACTION_COMMAND:
-var _ef0=_eef.target.associatedSystemAction;
+var _eff=_efe.target.associatedSystemAction;
 if(Application.isLoggedIn){
 if(!this._rootNode){
 this._rootNode=System.getRootNode();
 }
-if(_ef0){
-SystemAction.invoke(_ef0,this._rootNode);
+if(_eff){
+SystemAction.invoke(_eff,this._rootNode);
 }
 }
-_eef.consume();
+_efe.consume();
 break;
 }
 };
@@ -24844,10 +24885,10 @@ this.subscribe(BroadcastMessages.STAGE_INITIALIZED);
 };
 StageViewMenuItemBinding.prototype.buildDOMContent=function(){
 StageViewMenuItemBinding.superclass.buildDOMContent.call(this);
-var _ef1=this.getProperty("handle");
-if(_ef1){
-this._handle=_ef1;
-if(StageBinding.isViewOpen(_ef1)){
+var _f00=this.getProperty("handle");
+if(_f00){
+this._handle=_f00;
+if(StageBinding.isViewOpen(_f00)){
 if(this.type==MenuItemBinding.TYPE_CHECKBOX){
 this.check(true);
 }
@@ -24856,7 +24897,7 @@ this.oncommand=function(){
 var self=this;
 Application.lock(self);
 setTimeout(function(){
-StageBinding.handleViewPresentation(_ef1);
+StageBinding.handleViewPresentation(_f00);
 Application.unlock(self);
 },Client.hasTransitions?Animation.DEFAULT_TIME:0);
 };
@@ -24864,13 +24905,13 @@ Application.unlock(self);
 throw new Error("StageViewMenuItemBinding: missing handle");
 }
 };
-StageViewMenuItemBinding.prototype.setHandle=function(_ef3){
-this.setProperty("handle",_ef3);
+StageViewMenuItemBinding.prototype.setHandle=function(_f02){
+this.setProperty("handle",_f02);
 };
-StageViewMenuItemBinding.prototype.handleBroadcast=function(_ef4,arg){
-StageViewMenuItemBinding.superclass.handleBroadcast.call(this,_ef4,arg);
+StageViewMenuItemBinding.prototype.handleBroadcast=function(_f03,arg){
+StageViewMenuItemBinding.superclass.handleBroadcast.call(this,_f03,arg);
 if(this.type==MenuItemBinding.TYPE_CHECKBOX){
-switch(_ef4){
+switch(_f03){
 case BroadcastMessages.STAGE_INITIALIZED:
 if(this.isChecked){
 this.fireCommand();
@@ -24889,10 +24930,10 @@ break;
 }
 }
 };
-StageViewMenuItemBinding.newInstance=function(_ef6){
-var _ef7=DOMUtil.createElementNS(Constants.NS_UI,"ui:menuitem",_ef6);
-UserInterface.registerBinding(_ef7,StageViewMenuItemBinding);
-return UserInterface.getBinding(_ef7);
+StageViewMenuItemBinding.newInstance=function(_f05){
+var _f06=DOMUtil.createElementNS(Constants.NS_UI,"ui:menuitem",_f05);
+UserInterface.registerBinding(_f06,StageViewMenuItemBinding);
+return UserInterface.getBinding(_f06);
 };
 StageStatusBarBinding.prototype=new ToolBarBinding;
 StageStatusBarBinding.prototype.constructor=StageStatusBarBinding;
@@ -24909,17 +24950,17 @@ this._label=this.bindingWindow.bindingMap.statusbarlabel;
 StatusBar.initialize(this);
 StageStatusBarBinding.superclass.onBindingInitialize.call(this);
 };
-StageStatusBarBinding.prototype.setLabel=function(_ef8){
-this._label.setLabel(_ef8);
+StageStatusBarBinding.prototype.setLabel=function(_f07){
+this._label.setLabel(_f07);
 };
-StageStatusBarBinding.prototype.setImage=function(_ef9){
-this._label.setImage(_ef9);
+StageStatusBarBinding.prototype.setImage=function(_f08){
+this._label.setImage(_f08);
 };
 StageStatusBarBinding.prototype.clear=function(){
 this._label.setLabel(null);
 this._label.setImage(false);
 };
-StageStatusBarBinding.prototype.startFadeOut=function(_efa){
+StageStatusBarBinding.prototype.startFadeOut=function(_f09){
 this.logger.debug("START FADEOUT");
 };
 ExplorerBinding.prototype=new FlexBoxBinding;
@@ -24936,10 +24977,10 @@ ExplorerBinding.PERSPECTIVE_USERS="Users";
 ExplorerBinding.PERSPECTIVE_SYSTEM="System";
 ExplorerBinding.bindingInstance=null;
 ExplorerBinding.getFocusedTreeNodeBindings=function(){
-var _efb=ExplorerBinding.bindingInstance.getSelectedDeckBinding();
-var _efc=_efb.getAssociatedView();
-var _efd=_efc.getContentWindow().bindingMap.tree;
-return _efd.getFocusedTreeNodeBindings();
+var _f0a=ExplorerBinding.bindingInstance.getSelectedDeckBinding();
+var _f0b=_f0a.getAssociatedView();
+var _f0c=_f0b.getContentWindow().bindingMap.tree;
+return _f0c.getFocusedTreeNodeBindings();
 };
 function ExplorerBinding(){
 this.logger=SystemLogger.getLogger("ExplorerBinding");
@@ -24968,10 +25009,10 @@ ExplorerBinding.bindingInstance=this;
 ExplorerBinding.superclass.onBindingInitialize.call(this);
 this.dispatchAction(ExplorerBinding.ACTION_INITIALIZED);
 };
-ExplorerBinding.prototype.handleAction=function(_efe){
-ExplorerBinding.superclass.handleAction.call(this,_efe);
-var _eff=_efe.target;
-switch(_efe.type){
+ExplorerBinding.prototype.handleAction=function(_f0d){
+ExplorerBinding.superclass.handleAction.call(this,_f0d);
+var _f0e=_f0d.target;
+switch(_f0d.type){
 case ExplorerMenuBinding.ACTION_SELECTIONCHANGED:
 this._decksBinding.setSelectionByHandle(this._menuBinding.getSelectionHandle());
 var tag=this._menuBinding.getSelectionTag();
@@ -24979,17 +25020,17 @@ EventBroadcaster.broadcast(BroadcastMessages.PERSPECTIVE_CHANGED,tag);
 break;
 case ViewBinding.ACTION_LOADED:
 this.dispatchAction(ExplorerBinding.ACTION_DECK_LOADED);
-_efe.consume();
+_f0d.consume();
 break;
 case Binding.ACTION_DRAG:
-if(_eff instanceof ExplorerSplitterBinding){
-_eff.dragger.registerHandler(this);
+if(_f0e instanceof ExplorerSplitterBinding){
+_f0e.dragger.registerHandler(this);
 }
-_efe.consume();
+_f0d.consume();
 }
 };
-ExplorerBinding.prototype.setSelectionByHandle=function(_f01){
-this._menuBinding.setSelectionByHandle(_f01);
+ExplorerBinding.prototype.setSelectionByHandle=function(_f10){
+this._menuBinding.setSelectionByHandle(_f10);
 };
 ExplorerBinding.prototype.setSelectionDefault=function(){
 this._menuBinding.setSelectionDefault();
@@ -24997,20 +25038,20 @@ this._menuBinding.setSelectionDefault();
 ExplorerBinding.prototype.getSelectedDeckBinding=function(){
 return this._decksBinding.getSelectedDeckBinding();
 };
-ExplorerBinding.prototype.mountDefinition=function(_f02){
-if(_f02 instanceof SystemViewDefinition){
-this._decksBinding.mountDefinition(_f02);
-this._menuBinding.mountDefinition(_f02);
+ExplorerBinding.prototype.mountDefinition=function(_f11){
+if(_f11 instanceof SystemViewDefinition){
+this._decksBinding.mountDefinition(_f11);
+this._menuBinding.mountDefinition(_f11);
 }
 };
-ExplorerBinding.prototype.onDragStart=function(_f03){
-var _f04=this._menuBinding.getDescendantBindingsByLocalName("explorertoolbarbutton");
-if(_f04.hasEntries()){
-var _f05=_f04.getFirst();
-this._dragStart=_f05.boxObject.getLocalPosition().y;
+ExplorerBinding.prototype.onDragStart=function(_f12){
+var _f13=this._menuBinding.getDescendantBindingsByLocalName("explorertoolbarbutton");
+if(_f13.hasEntries()){
+var _f14=_f13.getFirst();
+this._dragStart=_f14.boxObject.getLocalPosition().y;
 this._dragSlot=0;
 if(this._dragHeight==0){
-this._dragHeight=_f05.boxObject.getDimension().h;
+this._dragHeight=_f14.boxObject.getDimension().h;
 }
 this.bindingWindow.bindingMap.explorercover.show();
 }
@@ -25049,38 +25090,45 @@ this.addActionListener(PageBinding.ACTION_ATTACHED);
 ExplorerDecksBinding.prototype.toString=function(){
 return "[ExplorerDecksBinding]";
 };
-ExplorerDecksBinding.prototype.mountDefinition=function(_f09){
-if(_f09 instanceof SystemViewDefinition){
-var _f0a=ViewBinding.newInstance(this.bindingDocument);
-_f0a.setType(ViewBinding.TYPE_EXPLORERVIEW);
-_f0a.setDefinition(_f09);
-var _f0b=ExplorerDeckBinding.newInstance(this.bindingDocument);
-_f0b.setAssociatedView(_f0a);
-this._decks[_f09.handle]=_f0b;
-_f0b.add(_f0a);
-this.add(_f0b);
+ExplorerDecksBinding.prototype.mountDefinition=function(_f18){
+if(_f18 instanceof SystemViewDefinition){
+var _f19=ViewBinding.newInstance(this.bindingDocument);
+_f19.setType(ViewBinding.TYPE_EXPLORERVIEW);
+_f19.setDefinition(_f18);
+var _f1a=ExplorerDeckBinding.newInstance(this.bindingDocument);
+_f1a.setAssociatedView(_f19);
+this._decks[_f18.handle]=_f1a;
+_f1a.add(_f19);
+this.add(_f1a);
+function attach(){
+_f1a.attach();
+_f19.attach();
+}
+if(Client.isWebKit){
 setTimeout(function(){
-_f0b.attach();
-_f0a.attach();
+attach();
 },0);
+}else{
+attach();
+}
 }
 };
-ExplorerDecksBinding.prototype.setSelectionByHandle=function(_f0c){
-var _f0d=this._decks[_f0c];
-this.select(_f0d);
+ExplorerDecksBinding.prototype.setSelectionByHandle=function(_f1b){
+var _f1c=this._decks[_f1b];
+this.select(_f1c);
 };
-DecksBinding.prototype.expandBy=function(_f0e){
+DecksBinding.prototype.expandBy=function(_f1d){
 var deck=this.getSelectedDeckBinding();
 if(deck){
-var _f10=this.bindingElement.offsetHeight+_f0e;
+var _f1f=this.bindingElement.offsetHeight+_f1d;
 var view=deck.getAssociatedView();
-this.bindingElement.style.height=_f10+"px";
+this.bindingElement.style.height=_f1f+"px";
 this.reflex(true);
 }
 };
-ExplorerDecksBinding.newInstance=function(_f12){
-var _f13=DOMUtil.createElementNS(Constants.NS_UI,"ui:explorerdecks",_f12);
-return UserInterface.registerBinding(_f13,ExplorerDecksBinding);
+ExplorerDecksBinding.newInstance=function(_f21){
+var _f22=DOMUtil.createElementNS(Constants.NS_UI,"ui:explorerdecks",_f21);
+return UserInterface.registerBinding(_f22,ExplorerDecksBinding);
 };
 ExplorerDeckBinding.prototype=new DeckBinding;
 ExplorerDeckBinding.prototype.constructor=ExplorerDeckBinding;
@@ -25101,8 +25149,8 @@ ExplorerDeckBinding.prototype.onBindingRegister=function(){
 ExplorerDeckBinding.superclass.onBindingRegister.call(this);
 this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHALL);
 };
-ExplorerDeckBinding.prototype.setAssociatedView=function(_f14){
-this._viewBinding=_f14;
+ExplorerDeckBinding.prototype.setAssociatedView=function(_f23){
+this._viewBinding=_f23;
 };
 ExplorerDeckBinding.prototype.getAssociatedView=function(){
 return this._viewBinding;
@@ -25110,9 +25158,9 @@ return this._viewBinding;
 ExplorerDeckBinding.prototype.select=function(){
 if(!this._isExplorerDeckBindingInitialized){
 Application.lock(this);
-var _f15=StringBundle.getString("ui","Website.App.StatusBar.Loading");
-var _f16=this._viewBinding.getDefinition().label;
-StatusBar.busy(_f15,[_f16]);
+var _f24=StringBundle.getString("ui","Website.App.StatusBar.Loading");
+var _f25=this._viewBinding.getDefinition().label;
+StatusBar.busy(_f24,[_f25]);
 this.bindingWindow.bindingMap.explorerdeckscover.show();
 this.addActionListener(PageBinding.ACTION_INITIALIZED);
 this._viewBinding.initialize();
@@ -25125,14 +25173,14 @@ ExplorerDeckBinding.superclass.select.call(this);
 this.dispatchAction(DockTabBinding.ACTION_UPDATE_VISUAL);
 }
 };
-ExplorerDeckBinding.prototype.handleAction=function(_f17){
-ExplorerDeckBinding.superclass.handleAction.call(this,_f17);
-var _f18=_f17.target;
-switch(_f17.type){
+ExplorerDeckBinding.prototype.handleAction=function(_f26){
+ExplorerDeckBinding.superclass.handleAction.call(this,_f26);
+var _f27=_f26.target;
+switch(_f26.type){
 case PageBinding.ACTION_INITIALIZED:
-if(_f18 instanceof SystemPageBinding){
+if(_f27 instanceof SystemPageBinding){
 this._isExplorerDeckBindingInitialized=true;
-this._entityToken=_f18.node.getEntityToken();
+this._entityToken=_f27.node.getEntityToken();
 this.removeActionListener(PageBinding.ACTION_INITIALIZED);
 this.bindingWindow.bindingMap.explorerdeckscover.hide();
 this.dispatchAction(DockTabBinding.ACTION_UPDATE_VISUAL);
@@ -25144,9 +25192,9 @@ StatusBar.clear();
 break;
 }
 };
-ExplorerDeckBinding.prototype.handleBroadcast=function(_f19,arg){
-ExplorerDeckBinding.superclass.handleBroadcast.call(this,_f19,arg);
-switch(_f19){
+ExplorerDeckBinding.prototype.handleBroadcast=function(_f28,arg){
+ExplorerDeckBinding.superclass.handleBroadcast.call(this,_f28,arg);
+switch(_f28){
 case BroadcastMessages.SYSTEMTREEBINDING_REFRESHALL:
 if(this.isSelected==true){
 this._refreshTree();
@@ -25172,33 +25220,33 @@ ExplorerDeckBinding.prototype._collapseTree=function(){
 alert("ExplorerDeckBinding: collapse tree!");
 };
 ExplorerDeckBinding.prototype.getLabel=function(){
-var _f1b=null;
+var _f2a=null;
 if(this._isExplorerDeckBindingInitialized){
-_f1b=this._viewBinding.getDefinition().label;
+_f2a=this._viewBinding.getDefinition().label;
 }else{
-_f1b=DockTabBinding.LABEL_TABLOADING;
+_f2a=DockTabBinding.LABEL_TABLOADING;
 }
-return _f1b;
+return _f2a;
 };
 ExplorerDeckBinding.prototype.getImage=function(){
-var _f1c=null;
+var _f2b=null;
 if(this._isExplorerDeckBindingInitialized){
-_f1c=this._viewBinding.getDefinition().image;
+_f2b=this._viewBinding.getDefinition().image;
 }else{
-_f1c=DockTabBinding.IMG_TABLOADING;
+_f2b=DockTabBinding.IMG_TABLOADING;
 }
-return _f1c;
+return _f2b;
 };
 ExplorerDeckBinding.prototype.getToolTip=function(){
-var _f1d=null;
+var _f2c=null;
 if(this._isExplorerDeckBindingInitialized){
-_f1d=this._viewBinding.getDefinition().toolTip;
+_f2c=this._viewBinding.getDefinition().toolTip;
 }
-return _f1d;
+return _f2c;
 };
-ExplorerDeckBinding.newInstance=function(_f1e){
-var _f1f=DOMUtil.createElementNS(Constants.NS_UI,"ui:explorerdeck",_f1e);
-return UserInterface.registerBinding(_f1f,ExplorerDeckBinding);
+ExplorerDeckBinding.newInstance=function(_f2d){
+var _f2e=DOMUtil.createElementNS(Constants.NS_UI,"ui:explorerdeck",_f2d);
+return UserInterface.registerBinding(_f2e,ExplorerDeckBinding);
 };
 ExplorerSplitterBinding.prototype=new Binding;
 ExplorerSplitterBinding.prototype.constructor=ExplorerSplitterBinding;
@@ -25239,71 +25287,71 @@ ExplorerMenuBinding.superclass.onBindingAttach.call(this);
 this.addMember(this.getChildBindingByLocalName("explorertoolbar"));
 this.addMember(this.getChildBindingByLocalName("toolbar"));
 };
-ExplorerMenuBinding.prototype.onMemberInitialize=function(_f20){
-switch(_f20.constructor){
+ExplorerMenuBinding.prototype.onMemberInitialize=function(_f2f){
+switch(_f2f.constructor){
 case ExplorerToolBarBinding:
-this._maxGroup=_f20.getToolBarGroupByIndex(0);
+this._maxGroup=_f2f.getToolBarGroupByIndex(0);
 break;
 case ToolBarBinding:
-this._minGroup=_f20.getToolBarGroupByIndex(0);
+this._minGroup=_f2f.getToolBarGroupByIndex(0);
 break;
 }
-ExplorerMenuBinding.superclass.onMemberInitialize.call(this,_f20);
+ExplorerMenuBinding.superclass.onMemberInitialize.call(this,_f2f);
 };
-ExplorerMenuBinding.prototype.mountDefinition=function(_f21){
-this._maxButtons.set(_f21.handle,this._mountMaxButton(_f21));
-this._minButtons.set(_f21.handle,this._mountMinButton(_f21));
+ExplorerMenuBinding.prototype.mountDefinition=function(_f30){
+this._maxButtons.set(_f30.handle,this._mountMaxButton(_f30));
+this._minButtons.set(_f30.handle,this._mountMinButton(_f30));
 this._index++;
 };
-ExplorerMenuBinding.prototype._mountMaxButton=function(_f22){
-var _f23=ExplorerToolBarButtonBinding.newInstance(this.bindingDocument,ExplorerToolBarButtonBinding.TYPE_LARGE);
-_f23.setLabel(_f22.label);
-_f23.setToolTip(_f22.toolTip);
-_f23.handle=_f22.handle;
-_f23.node=_f22.node;
-this._maxGroup.add(_f23);
-this._maxList.add(_f23);
-_f23.attach();
-return _f23;
+ExplorerMenuBinding.prototype._mountMaxButton=function(_f31){
+var _f32=ExplorerToolBarButtonBinding.newInstance(this.bindingDocument,ExplorerToolBarButtonBinding.TYPE_LARGE);
+_f32.setLabel(_f31.label);
+_f32.setToolTip(_f31.toolTip);
+_f32.handle=_f31.handle;
+_f32.node=_f31.node;
+this._maxGroup.add(_f32);
+this._maxList.add(_f32);
+_f32.attach();
+return _f32;
 };
-ExplorerMenuBinding.prototype._mountMinButton=function(_f24){
-var _f25=ExplorerToolBarButtonBinding.newInstance(this.bindingDocument,ExplorerToolBarButtonBinding.TYPE_NORMAL);
-_f25.setLabel(_f24.label);
-_f25.setToolTip(_f24.label);
-_f25.handle=_f24.handle;
-_f25.node=_f24.node;
-this._minGroup.addFirst(_f25);
-this._minList.add(_f25);
-_f25.attach();
-_f25.hide();
-return _f25;
+ExplorerMenuBinding.prototype._mountMinButton=function(_f33){
+var _f34=ExplorerToolBarButtonBinding.newInstance(this.bindingDocument,ExplorerToolBarButtonBinding.TYPE_NORMAL);
+_f34.setLabel(_f33.label);
+_f34.setToolTip(_f33.label);
+_f34.handle=_f33.handle;
+_f34.node=_f33.node;
+this._minGroup.addFirst(_f34);
+this._minList.add(_f34);
+_f34.attach();
+_f34.hide();
+return _f34;
 };
-ExplorerMenuBinding.prototype.handleAction=function(_f26){
-ExplorerMenuBinding.superclass.handleAction.call(this,_f26);
-switch(_f26.type){
+ExplorerMenuBinding.prototype.handleAction=function(_f35){
+ExplorerMenuBinding.superclass.handleAction.call(this,_f35);
+switch(_f35.type){
 case RadioGroupBinding.ACTION_SELECTIONCHANGED:
-var _f27=_f26.target;
-var _f28=_f27.getCheckedButtonBinding();
-var _f29=_f28.handle;
-switch(_f27){
+var _f36=_f35.target;
+var _f37=_f36.getCheckedButtonBinding();
+var _f38=_f37.handle;
+switch(_f36){
 case this._maxGroup:
-this._minGroup.setCheckedButtonBinding(this._minButtons.get(_f29),true);
+this._minGroup.setCheckedButtonBinding(this._minButtons.get(_f38),true);
 break;
 case this._minGroup:
-this._maxGroup.setCheckedButtonBinding(this._maxButtons.get(_f29),true);
+this._maxGroup.setCheckedButtonBinding(this._maxButtons.get(_f38),true);
 break;
 }
-this._selectedHandle=_f29;
-this._selectedTag=_f28.node.getTag();
+this._selectedHandle=_f38;
+this._selectedTag=_f37.node.getTag();
 this.dispatchAction(ExplorerMenuBinding.ACTION_SELECTIONCHANGED);
-_f26.consume();
+_f35.consume();
 break;
 }
 };
-ExplorerMenuBinding.prototype.setSelectionByHandle=function(_f2a){
-var _f2b=this._maxButtons.get(_f2a);
-if(_f2b){
-_f2b.check();
+ExplorerMenuBinding.prototype.setSelectionByHandle=function(_f39){
+var _f3a=this._maxButtons.get(_f39);
+if(_f3a){
+_f3a.check();
 }else{
 this.setSelectionDefault();
 }
@@ -25320,25 +25368,25 @@ this._maxList.getFirst().check();
 }
 };
 ExplorerMenuBinding.prototype.showMore=function(){
-var _f2c=false;
+var _f3b=false;
 var max=this._maxList.getLength()-1;
 if(!this._maxList.get(max).isVisible){
 this._index++;
 this._maxList.get(this._index).show();
 this._minList.get(this._index).hide();
-_f2c=true;
+_f3b=true;
 }
-return _f2c;
+return _f3b;
 };
 ExplorerMenuBinding.prototype.showLess=function(){
-var _f2e=false;
+var _f3d=false;
 if(this._maxList.get(0).isVisible){
 this._maxList.get(this._index).hide();
 this._minList.get(this._index).show();
 this._index--;
-_f2e=true;
+_f3d=true;
 }
-return _f2e;
+return _f3d;
 };
 ExplorerToolBarBinding.prototype=new ToolBarBinding;
 ExplorerToolBarBinding.prototype.constructor=ExplorerToolBarBinding;
@@ -25354,9 +25402,9 @@ ExplorerToolBarBinding.prototype.onBindingRegister=function(){
 ExplorerToolBarBinding.superclass.onBindingRegister.call(this);
 this.setImageSize(ToolBarBinding.IMAGESIZE_LARGE);
 };
-ExplorerToolBarBinding.newInstance=function(_f2f){
-var _f30=DOMUtil.createElementNS(Constants.NS_UI,"ui:explorertoolbar",_f2f);
-return UserInterface.registerBinding(_f30,ExplorerToolBarBinding);
+ExplorerToolBarBinding.newInstance=function(_f3e){
+var _f3f=DOMUtil.createElementNS(Constants.NS_UI,"ui:explorertoolbar",_f3e);
+return UserInterface.registerBinding(_f3f,ExplorerToolBarBinding);
 };
 ExplorerToolBarButtonBinding.prototype=new ToolBarButtonBinding;
 ExplorerToolBarButtonBinding.prototype.constructor=ExplorerToolBarButtonBinding;
@@ -25373,17 +25421,17 @@ ExplorerToolBarButtonBinding.prototype.toString=function(){
 return "[ExplorerToolBarButtonBinding]";
 };
 ExplorerToolBarButtonBinding.prototype.onBindingAttach=function(){
-var _f31=this.explorerToolBarButtonType==ExplorerToolBarButtonBinding.TYPE_LARGE;
-var _f32=_f31?ToolBarBinding.IMAGESIZE_LARGE:ToolBarBinding.IMAGESIZE_NORMAL;
-this.imageProfile=this.node.getImageProfile(_f32);
+var _f40=this.explorerToolBarButtonType==ExplorerToolBarButtonBinding.TYPE_LARGE;
+var _f41=_f40?ToolBarBinding.IMAGESIZE_LARGE:ToolBarBinding.IMAGESIZE_NORMAL;
+this.imageProfile=this.node.getImageProfile(_f41);
 ExplorerToolBarButtonBinding.superclass.onBindingAttach.call(this);
 };
-ExplorerToolBarButtonBinding.newInstance=function(_f33,_f34){
-var _f35=(_f34==ExplorerToolBarButtonBinding.TYPE_LARGE?"ui:explorertoolbarbutton":"ui:toolbarbutton");
-var _f36=DOMUtil.createElementNS(Constants.NS_UI,_f35,_f33);
-var _f37=UserInterface.registerBinding(_f36,ExplorerToolBarButtonBinding);
-_f37.explorerToolBarButtonType=_f34;
-return _f37;
+ExplorerToolBarButtonBinding.newInstance=function(_f42,_f43){
+var _f44=(_f43==ExplorerToolBarButtonBinding.TYPE_LARGE?"ui:explorertoolbarbutton":"ui:toolbarbutton");
+var _f45=DOMUtil.createElementNS(Constants.NS_UI,_f44,_f42);
+var _f46=UserInterface.registerBinding(_f45,ExplorerToolBarButtonBinding);
+_f46.explorerToolBarButtonType=_f43;
+return _f46;
 };
 EditorBinding.prototype=new WindowBinding;
 EditorBinding.prototype.constructor=EditorBinding;
@@ -25395,36 +25443,36 @@ EditorBinding.ABSURD_NUMBER=-999999999;
 EditorBinding.LINE_BREAK_ENTITY_HACK="C1.LINE.BREAK.ENTITY.HACK";
 EditorBinding._components=new Map();
 EditorBinding._editors=new Map();
-EditorBinding.registerComponent=function(_f38,_f39){
-var _f3a=EditorBinding._components;
-var _f3b=EditorBinding._editors;
-var key=_f39.key;
-var _f3d=Interfaces.isImplemented(IWysiwygEditorComponent,_f38);
-if(!_f3d){
-_f3d=Interfaces.isImplemented(ISourceEditorComponent,_f38);
+EditorBinding.registerComponent=function(_f47,_f48){
+var _f49=EditorBinding._components;
+var _f4a=EditorBinding._editors;
+var key=_f48.key;
+var _f4c=Interfaces.isImplemented(IWysiwygEditorComponent,_f47);
+if(!_f4c){
+_f4c=Interfaces.isImplemented(ISourceEditorComponent,_f47);
 }
-if(_f3d){
-if(_f3b.has(key)){
-_f3b.get(key).initializeEditorComponent(_f38);
+if(_f4c){
+if(_f4a.has(key)){
+_f4a.get(key).initializeEditorComponent(_f47);
 }else{
-if(!_f3a.has(key)){
-_f3a.set(key,new List());
+if(!_f49.has(key)){
+_f49.set(key,new List());
 }
-_f3a.get(key).add(_f38);
+_f49.get(key).add(_f47);
 }
 }else{
-throw "Editor component interface not implemented: "+_f38;
+throw "Editor component interface not implemented: "+_f47;
 }
 };
-EditorBinding.claimComponents=function(_f3e,_f3f){
-var _f40=EditorBinding._components;
-var _f41=EditorBinding._editors;
-var key=_f3f.key;
-_f41.set(key,_f3e);
+EditorBinding.claimComponents=function(_f4d,_f4e){
+var _f4f=EditorBinding._components;
+var _f50=EditorBinding._editors;
+var key=_f4e.key;
+_f50.set(key,_f4d);
 var list=null;
-if(_f40.has(key)){
-list=_f40.get(key).copy();
-_f40.del(key);
+if(_f4f.has(key)){
+list=_f4f.get(key).copy();
+_f4f.del(key);
 }
 return list;
 };
@@ -25472,18 +25520,18 @@ if(name==null||name==""){
 name="generated"+KeyMaster.getUniqueKey();
 }
 this._registerWithDataManager(name);
-var _f45=this.getProperty("value");
-if(_f45!=null){
-_f45=decodeURIComponent(_f45);
-this._startContent=_f45;
+var _f54=this.getProperty("value");
+if(_f54!=null){
+_f54=decodeURIComponent(_f54);
+this._startContent=_f54;
 }
 };
 EditorBinding.prototype.onBindingDispose=function(){
 EditorBinding.superclass.onBindingDispose.call(this);
 var name=this.getProperty("name");
 if(name!=null){
-var _f47=this.bindingWindow.DataManager;
-_f47.unRegisterDataBinding(name);
+var _f56=this.bindingWindow.DataManager;
+_f56.unRegisterDataBinding(name);
 }
 };
 EditorBinding.prototype._initialize=function(){
@@ -25505,40 +25553,40 @@ Application.unlock(this);
 this._isFinalized=true;
 this.dispatchAction(this.action_initialized);
 };
-EditorBinding.prototype.initializeEditorComponents=function(_f49){
-var _f4a=EditorBinding.claimComponents(this,_f49);
-if(_f4a!=null){
-while(_f4a.hasNext()){
-this.initializeEditorComponent(_f4a.getNext());
+EditorBinding.prototype.initializeEditorComponents=function(_f58){
+var _f59=EditorBinding.claimComponents(this,_f58);
+if(_f59!=null){
+while(_f59.hasNext()){
+this.initializeEditorComponent(_f59.getNext());
 }
 }
 };
 EditorBinding.prototype._registerWithDataManager=function(name){
 if(name&&name!=""){
-var _f4c=this.bindingWindow.DataManager;
-if(_f4c.getDataBinding(name)){
-_f4c.unRegisterDataBinding(name);
+var _f5b=this.bindingWindow.DataManager;
+if(_f5b.getDataBinding(name)){
+_f5b.unRegisterDataBinding(name);
 }
-_f4c.registerDataBinding(name,this);
+_f5b.registerDataBinding(name,this);
 }
 };
 EditorBinding.prototype.addEditorEvents=function(){
-var _f4d=this.getEditorDocument();
-if(_f4d!=null){
-Application.framework(_f4d);
-DOMEvents.addEventListener(_f4d,DOMEvents.CONTEXTMENU,this);
-DOMEvents.addEventListener(_f4d,DOMEvents.KEYPRESS,this);
-DOMEvents.addEventListener(_f4d,DOMEvents.MOUSEDOWN,this);
-DOMEvents.addEventListener(_f4d,DOMEvents.MOUSEMOVE,this);
+var _f5c=this.getEditorDocument();
+if(_f5c!=null){
+Application.framework(_f5c);
+DOMEvents.addEventListener(_f5c,DOMEvents.CONTEXTMENU,this);
+DOMEvents.addEventListener(_f5c,DOMEvents.KEYPRESS,this);
+DOMEvents.addEventListener(_f5c,DOMEvents.MOUSEDOWN,this);
+DOMEvents.addEventListener(_f5c,DOMEvents.MOUSEMOVE,this);
 }
 DOMEvents.addEventListener(this.bindingElement,DOMEvents.MOUSEDOWN,{handleEvent:function(e){
 DOMEvents.stopPropagation(e);
 DOMEvents.preventDefault(e);
 }});
 };
-EditorBinding.prototype.checkForDirty=function(_f4f){
+EditorBinding.prototype.checkForDirty=function(_f5e){
 if(!this.isDirty){
-if(_f4f==true){
+if(_f5e==true){
 this.dispatchAction(Binding.ACTION_DIRTY);
 this.isDirty=true;
 }else{
@@ -25550,23 +25598,23 @@ self._checkForRealDirty();
 }
 };
 EditorBinding.prototype._checkForRealDirty=function(){
-var _f51=this.getCheckSum();
-if(_f51!=this._checksum){
+var _f60=this.getCheckSum();
+if(_f60!=this._checksum){
 this.dispatchAction(Binding.ACTION_DIRTY);
 this.isDirty=true;
-this._checksum=_f51;
+this._checksum=_f60;
 }
 };
 EditorBinding.prototype.getCheckSum=function(){
-var _f52=null;
+var _f61=null;
 if(Binding.exists(this._pageBinding)){
-_f52=this._pageBinding.getCheckSum(this._checksum);
+_f61=this._pageBinding.getCheckSum(this._checksum);
 }
-return _f52;
+return _f61;
 };
 EditorBinding.prototype.handleEvent=function(e){
 EditorBinding.superclass.handleEvent.call(this,e);
-var _f54=DOMEvents.getTarget(e);
+var _f63=DOMEvents.getTarget(e);
 switch(e.type){
 case DOMEvents.CONTEXTMENU:
 DOMEvents.preventDefault(e);
@@ -25581,7 +25629,7 @@ this._activateEditor(true);
 break;
 case DOMEvents.MOUSEDOWN:
 if(this instanceof BespinEditorBinding){
-if(_f54==this._bespinElement){
+if(_f63==this._bespinElement){
 this.dispatchAction(Binding.ACTION_ACTIVATED);
 if(!this._isActivated){
 this._activateEditor(true);
@@ -25592,7 +25640,7 @@ DOMEvents.preventDefault(e);
 }
 }
 }else{
-if(_f54.ownerDocument==this.getEditorDocument()){
+if(_f63.ownerDocument==this.getEditorDocument()){
 if(!this._isActivated){
 this._activateEditor(true);
 }
@@ -25614,10 +25662,10 @@ EditorBinding.prototype.handleContextMenu=function(e){
 this.createBookmark();
 this._popupBinding.snapToMouse(e);
 };
-EditorBinding.prototype.handleBroadcast=function(_f56,arg){
-EditorBinding.superclass.handleBroadcast.call(this,_f56,arg);
-var _f58=null;
-switch(_f56){
+EditorBinding.prototype.handleBroadcast=function(_f65,arg){
+EditorBinding.superclass.handleBroadcast.call(this,_f65,arg);
+var _f67=null;
+switch(_f65){
 case BroadcastMessages.APPLICATION_BLURRED:
 if(this._isActivated){
 this._activateEditor(false);
@@ -25626,26 +25674,26 @@ break;
 case BroadcastMessages.MOUSEEVENT_MOUSEUP:
 if(!this.isDialogMode){
 try{
-var _f59=true;
+var _f68=true;
 if(arg instanceof Binding){
 if(Interfaces.isImplemented(IEditorControlBinding,arg)==true){
 if(arg.isEditorControlBinding){
-_f59=false;
+_f68=false;
 }
 }
 }else{
-_f58=DOMEvents.getTarget(arg);
+_f67=DOMEvents.getTarget(arg);
 if(this instanceof BespinEditorBinding){
-if(_f58==this._bespinElement){
-_f59=false;
+if(_f67==this._bespinElement){
+_f68=false;
 }
 }else{
-if(_f58&&_f58.ownerDocument==this.getEditorDocument()){
-_f59=false;
+if(_f67&&_f67.ownerDocument==this.getEditorDocument()){
+_f68=false;
 }
 }
 }
-if(_f59){
+if(_f68){
 if(this._isActivated){
 this._activateEditor(false);
 }
@@ -25659,26 +25707,26 @@ throw exception;
 break;
 }
 };
-EditorBinding.prototype._activateEditor=function(_f5a){
-if(_f5a!=this._isActivated){
-this._isActivated=_f5a;
-EditorBinding.isActive=_f5a;
-var _f5b=this.getEditorWindow().standardEventHandler;
-var _f5c=this.getContentWindow().bindingMap.broadcasterIsActive;
-if(_f5c!=null){
-if(_f5a){
+EditorBinding.prototype._activateEditor=function(_f69){
+if(_f69!=this._isActivated){
+this._isActivated=_f69;
+EditorBinding.isActive=_f69;
+var _f6a=this.getEditorWindow().standardEventHandler;
+var _f6b=this.getContentWindow().bindingMap.broadcasterIsActive;
+if(_f6b!=null){
+if(_f69){
 if(this.hasBookmark()){
 this.deleteBookmark();
 }
-_f5c.enable();
+_f6b.enable();
 if(Client.isExplorer){
 this._sanitizeExplorer();
 }
 this.focus();
-_f5b.enableNativeKeys(true);
+_f6a.enableNativeKeys(true);
 }else{
-_f5c.disable();
-_f5b.disableNativeKeys();
+_f6b.disable();
+_f6a.disableNativeKeys();
 this.blur();
 }
 }else{
@@ -25688,65 +25736,69 @@ throw "Required broadcaster not found";
 };
 EditorBinding.prototype._sanitizeExplorer=function(){
 if(Client.isExplorer){
-var _f5d=this.getEditorDocument().selection.createRange();
-_f5d.select();
+var _f6c=this.getEditorDocument().selection.createRange();
+_f6c.select();
 }
 };
 EditorBinding.prototype._sanitizeMozilla=function(){
 };
 EditorBinding.prototype.hasSelection=function(){
-var _f5e=false;
-if(Client.isMozilla){
-var _f5f=this.getEditorWindow().getSelection();
-if(_f5f!=null){
-_f5e=_f5f.toString().length>0;
-if(!_f5e){
-var _f60=_f5f.getRangeAt(0);
-var frag=_f60.cloneContents();
-var _f62=this.getEditorDocument().createElement("element");
+var _f6d=false;
+try{
+if(!Client.isExplorer){
+var _f6e=this.getEditorWindow().getSelection();
+if(_f6e!=null){
+_f6d=_f6e.toString().length>0;
+if(!_f6d){
+var _f6f=_f6e.getRangeAt(0);
+var frag=_f6f.cloneContents();
+var _f71=this.getEditorDocument().createElement("element");
 while(frag.hasChildNodes()){
-_f62.appendChild(frag.firstChild);
+_f71.appendChild(frag.firstChild);
 }
-var img=_f62.getElementsByTagName("img").item(0);
+var img=_f71.getElementsByTagName("img").item(0);
 if(img!=null){
 if(!CSSUtil.hasClassName(img,VisualEditorBinding.FUNCTION_CLASSNAME)){
-_f5e=true;
+_f6d=true;
 }
 }
 }
 }
 }else{
-var _f60=this.getEditorDocument().selection.createRange();
-_f5e=(_f60&&_f60.text)&&_f60.text.length>0;
+var _f6f=this.getEditorDocument().selection.createRange();
+_f6d=(_f6f&&_f6f.text)&&_f6f.text.length>0;
 }
-return _f5e;
+}
+catch(exception){
+}
+return _f6d;
 };
-EditorBinding.prototype.isCommandEnabled=function(_f64){
-var _f65=true;
-switch(_f64){
+EditorBinding.prototype.isCommandEnabled=function(_f73){
+var _f74=true;
+switch(_f73){
 case "Cut":
 case "Copy":
 case "Paste":
-_f65=this.getEditorDocument().queryCommandEnabled(_f64);
+_f74=this.getEditorDocument().queryCommandEnabled(_f73);
 break;
 }
-return _f65;
+return _f74;
 };
 EditorBinding.prototype.handleCommand=function(cmd,gui,val){
-var _f69=false;
+var _f78=false;
 this.restoreBookmark();
 switch(cmd){
 case "Cut":
 case "Copy":
 case "Paste":
-var _f6a=null;
+var _f79=null;
 if(cmd=="Paste"){
-_f6a=null;
+_f79=null;
 }else{
-_f6a=this.hasSelection();
+_f79=this.hasSelection();
 }
 try{
-this.getEditorDocument().execCommand(cmd,gui,_f6a);
+this.getEditorDocument().execCommand(cmd,gui,_f79);
 }
 catch(mozillaSecurityException){
 if(Client.isMozilla==true){
@@ -25756,19 +25808,19 @@ throw "Clipboard operation malfunction. Contact your developer.";
 }
 }
 finally{
-_f69=true;
+_f78=true;
 }
 break;
 }
-return _f69;
+return _f78;
 };
 EditorBinding.prototype.getButtonForCommand=function(cmd){
-var _f6c=this.getContentWindow().bindingMap.toolbar;
-var _f6d=_f6c.getButtonForCommand(cmd);
-if(!_f6d){
+var _f7b=this.getContentWindow().bindingMap.toolbar;
+var _f7c=_f7b.getButtonForCommand(cmd);
+if(!_f7c){
 throw "No button for command "+cmd;
 }
-return _f6d;
+return _f7c;
 };
 EditorBinding.prototype.getName=function(){
 return this.getProperty("name");
@@ -25803,41 +25855,41 @@ self.blurEditor();
 }
 };
 EditorBinding.prototype.blurEditor=function(){
-var _f70=this.getContentDocument().getElementById("focusableinput");
-if(_f70!=null){
-_f70.style.display="block";
-FocusBinding.focusElement(_f70);
-_f70.style.display="none";
+var _f7f=this.getContentDocument().getElementById("focusableinput");
+if(_f7f!=null){
+_f7f.style.display="block";
+FocusBinding.focusElement(_f7f);
+_f7f.style.display="none";
 }else{
 throw "Required element not found: focusableinput";
 }
 };
-EditorBinding.prototype.handleAction=function(_f71){
-EditorBinding.superclass.handleAction.call(this,_f71);
-var _f72=_f71.target;
+EditorBinding.prototype.handleAction=function(_f80){
+EditorBinding.superclass.handleAction.call(this,_f80);
+var _f81=_f80.target;
 var self=this;
-var _f74=this.shadowTree.iframe;
-switch(_f71.type){
+var _f83=this.shadowTree.iframe;
+switch(_f80.type){
 case Binding.ACTION_DIRTY:
-if(_f71.target!=this){
+if(_f80.target!=this){
 this.checkForDirty();
 }
 break;
 }
 };
-EditorBinding.prototype._onPageInitialize=function(_f75){
+EditorBinding.prototype._onPageInitialize=function(_f84){
 if(this._pageBinding==null){
 this.reflex();
 if(this._coverBinding!=null&&this._coverBinding.isVisible){
 this._coverBinding.hide();
 }
 }
-EditorBinding.superclass._onPageInitialize.call(this,_f75);
+EditorBinding.superclass._onPageInitialize.call(this,_f84);
 };
-EditorBinding.prototype.handleElement=function(_f76){
+EditorBinding.prototype.handleElement=function(_f85){
 return true;
 };
-EditorBinding.prototype.updateElement=function(_f77){
+EditorBinding.prototype.updateElement=function(_f86){
 return true;
 };
 EditorBinding.prototype.focus=DataBinding.prototype.focus;
@@ -25901,23 +25953,23 @@ this._configure();
 };
 EditorPopupBinding.prototype._configure=Binding.ABSTRACT_METHOD;
 EditorPopupBinding.prototype._showMenuGroups=function(rel){
-this._menuGroups[rel].each(function(_f7a){
-_f7a.show();
+this._menuGroups[rel].each(function(_f89){
+_f89.show();
 });
 };
 EditorPopupBinding.prototype._hideMenuGroups=function(rel){
-this._menuGroups[rel].each(function(_f7c){
-_f7c.hide();
+this._menuGroups[rel].each(function(_f8b){
+_f8b.hide();
 });
 };
-EditorPopupBinding.prototype.handleAction=function(_f7d){
-EditorPopupBinding.superclass.handleAction.call(this,_f7d);
-var _f7e=_f7d.target;
-if(_f7d.type==MenuItemBinding.ACTION_COMMAND){
+EditorPopupBinding.prototype.handleAction=function(_f8c){
+EditorPopupBinding.superclass.handleAction.call(this,_f8c);
+var _f8d=_f8c.target;
+if(_f8c.type==MenuItemBinding.ACTION_COMMAND){
 this.hide();
-var cmd=_f7e.getProperty("cmd");
-var gui=_f7e.getProperty("gui");
-var val=_f7e.getProperty("val");
+var cmd=_f8d.getProperty("cmd");
+var gui=_f8d.getProperty("gui");
+var val=_f8d.getProperty("val");
 this.handleCommand(cmd,gui,val);
 }
 };
@@ -25953,13 +26005,13 @@ this.gui=this.getProperty("gui");
 if(this.getProperty("editorcontrol")==false){
 this.isEditorControlBinding=false;
 }
-var _f82=this.bindingWindow.bindingMap.tinywindow;
-var _f83=this.bindingWindow.bindingMap.codepresswindow;
-if(_f82){
-EditorBinding.registerComponent(this,_f82);
+var _f91=this.bindingWindow.bindingMap.tinywindow;
+var _f92=this.bindingWindow.bindingMap.codepresswindow;
+if(_f91){
+EditorBinding.registerComponent(this,_f91);
 }else{
-if(_f83){
-EditorBinding.registerComponent(this,_f83);
+if(_f92){
+EditorBinding.registerComponent(this,_f92);
 }
 }
 };
@@ -25967,17 +26019,17 @@ EditorClickButtonBinding.prototype.buildDOMContent=function(){
 EditorClickButtonBinding.superclass.buildDOMContent.call(this);
 this._buildDesignModeSanitizer();
 };
-EditorClickButtonBinding.prototype.initializeComponent=function(_f84,_f85,_f86,_f87){
-this._editorBinding=_f84;
-this._tinyEngine=_f85;
-this._tinyInstance=_f86;
-this._tinyTheme=_f87;
+EditorClickButtonBinding.prototype.initializeComponent=function(_f93,_f94,_f95,_f96){
+this._editorBinding=_f93;
+this._tinyEngine=_f94;
+this._tinyInstance=_f95;
+this._tinyTheme=_f96;
 this._setupEditorBookmarking();
 };
-EditorClickButtonBinding.prototype.initializeSourceEditorComponent=function(_f88,_f89,_f8a){
-this._editorBinding=_f88;
-this._codePressFrame=_f89;
-this._codePressEngine=_f8a;
+EditorClickButtonBinding.prototype.initializeSourceEditorComponent=function(_f97,_f98,_f99){
+this._editorBinding=_f97;
+this._codePressFrame=_f98;
+this._codePressEngine=_f99;
 };
 EditorClickButtonBinding.prototype._buildDesignModeSanitizer=function(){
 if(Client.isExplorer){
@@ -25989,34 +26041,34 @@ this.bindingElement.appendChild(img);
 }
 };
 EditorClickButtonBinding.prototype._setupEditorBookmarking=function(){
-var _f8c=this._editorBinding;
-if(_f8c!=null){
+var _f9b=this._editorBinding;
+if(_f9b!=null){
 var self=this;
-var _f8e={handleEvent:function(e){
+var _f9d={handleEvent:function(e){
 switch(e.type){
 case DOMEvents.MOUSEDOWN:
-if(!_f8c.hasBookmark()){
-_f8c.createBookmark();
+if(!_f9b.hasBookmark()){
+_f9b.createBookmark();
 }
 break;
 case DOMEvents.MOUSEUP:
 if(self.isEditorSimpleControl){
 if(self.popupBinding==null){
-if(_f8c.hasBookmark()){
-_f8c.restoreBookmark();
+if(_f9b.hasBookmark()){
+_f9b.restoreBookmark();
 }
 }
 }
 break;
 }
 }};
-DOMEvents.addEventListener(this.bindingElement,DOMEvents.MOUSEDOWN,_f8e);
-DOMEvents.addEventListener(this.bindingElement,DOMEvents.MOUSEUP,_f8e);
+DOMEvents.addEventListener(this.bindingElement,DOMEvents.MOUSEDOWN,_f9d);
+DOMEvents.addEventListener(this.bindingElement,DOMEvents.MOUSEUP,_f9d);
 }
 };
-EditorClickButtonBinding.newInstance=function(_f90){
-var _f91=DOMUtil.createElementNS(Constants.NS_UI,"ui:clickbutton",_f90);
-return UserInterface.registerBinding(_f91,EditorClickButtonBinding);
+EditorClickButtonBinding.newInstance=function(_f9f){
+var _fa0=DOMUtil.createElementNS(Constants.NS_UI,"ui:clickbutton",_f9f);
+return UserInterface.registerBinding(_fa0,EditorClickButtonBinding);
 };
 EditorToolBarButtonBinding.prototype=new ToolBarButtonBinding;
 EditorToolBarButtonBinding.prototype.constructor=EditorToolBarButtonBinding;
@@ -26049,9 +26101,9 @@ EditorToolBarButtonBinding.prototype.initializeComponent=EditorClickButtonBindin
 EditorToolBarButtonBinding.prototype.initializeSourceEditorComponent=EditorClickButtonBinding.prototype.initializeSourceEditorComponent;
 EditorToolBarButtonBinding.prototype._buildDesignModeSanitizer=EditorClickButtonBinding.prototype._buildDesignModeSanitizer;
 EditorToolBarButtonBinding.prototype._setupEditorBookmarking=EditorClickButtonBinding.prototype._setupEditorBookmarking;
-EditorToolBarButtonBinding.newInstance=function(_f92){
-var _f93=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbarbutton",_f92);
-return UserInterface.registerBinding(_f93,EditorToolBarButtonBinding);
+EditorToolBarButtonBinding.newInstance=function(_fa1){
+var _fa2=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbarbutton",_fa1);
+return UserInterface.registerBinding(_fa2,EditorToolBarButtonBinding);
 };
 EditorSelectorBinding.prototype=new SelectorBinding;
 EditorSelectorBinding.prototype.constructor=EditorSelectorBinding;
@@ -26076,8 +26128,8 @@ this.isEditorControlBinding=false;
 this.BUTTON_IMPLEMENTATION=ClickButtonBinding;
 this.MENUITEM_IMPLEMENTATION=MenuItemBinding;
 }
-var _f94=this.bindingWindow.bindingMap.tinywindow;
-EditorBinding.registerComponent(this,_f94);
+var _fa3=this.bindingWindow.bindingMap.tinywindow;
+EditorBinding.registerComponent(this,_fa3);
 EditorSelectorBinding.superclass.onBindingAttach.call(this);
 };
 EditorSelectorBinding.prototype.buildButton=function(){
@@ -26087,15 +26139,15 @@ if(this.isEditorControlBinding==false){
 this._buttonBinding.isEditorControlBinding=false;
 }
 };
-EditorSelectorBinding.prototype.initializeComponent=function(_f95,_f96,_f97,_f98){
-this._editorBinding=_f95;
-this._tinyEngine=_f96;
-this._tinyInstance=_f97;
-this._tinyTheme=_f98;
+EditorSelectorBinding.prototype.initializeComponent=function(_fa4,_fa5,_fa6,_fa7){
+this._editorBinding=_fa4;
+this._tinyEngine=_fa5;
+this._tinyInstance=_fa6;
+this._tinyTheme=_fa7;
 };
-EditorSelectorBinding.prototype.handleAction=function(_f99){
-EditorSelectorBinding.superclass.handleAction.call(this,_f99);
-switch(_f99.type){
+EditorSelectorBinding.prototype.handleAction=function(_fa8){
+EditorSelectorBinding.superclass.handleAction.call(this,_fa8);
+switch(_fa8.type){
 case MenuItemBinding.ACTION_COMMAND:
 if(this._editorBinding.hasBookmark()){
 var self=this;
@@ -26107,7 +26159,7 @@ self._editorBinding.restoreBookmark();
 }
 break;
 }
-EditorSelectorBinding.superclass.handleAction.call(this,_f99);
+EditorSelectorBinding.superclass.handleAction.call(this,_fa8);
 };
 EditorSelectorBinding.prototype._grabKeyboard=function(){
 };
@@ -26138,9 +26190,9 @@ this.shadowTree.designmodesanitizer=img;
 this.bindingElement.appendChild(img);
 }
 };
-EditorMenuItemBinding.newInstance=function(_f9c){
-var _f9d=DOMUtil.createElementNS(Constants.NS_UI,"ui:menuitem",_f9c);
-return UserInterface.registerBinding(_f9d,EditorMenuItemBinding);
+EditorMenuItemBinding.newInstance=function(_fab){
+var _fac=DOMUtil.createElementNS(Constants.NS_UI,"ui:menuitem",_fab);
+return UserInterface.registerBinding(_fac,EditorMenuItemBinding);
 };
 VisualEditorBinding.prototype=new EditorBinding;
 VisualEditorBinding.prototype.constructor=VisualEditorBinding;
@@ -26149,98 +26201,97 @@ VisualEditorBinding.FUNCTION_CLASSNAME="compositeFunctionWysiwygRepresentation";
 VisualEditorBinding.FIELD_CLASSNAME="compositeFieldReferenceWysiwygRepresentation";
 VisualEditorBinding.ACTION_INITIALIZED="visualeditor initialized";
 VisualEditorBinding.DEFAULT_CONTENT="<p><br/></p>";
-VisualEditorBinding.DEFAULT_STYLESHEET=Resolver.resolve("${root}/content/misc/editors/visualeditor/tinymce.css");
 VisualEditorBinding.URL_DIALOG_CONTENTERROR="${root}/content/dialogs/wysiwygeditor/errors/contenterror.aspx";
 VisualEditorBinding.XHTML="<html xmlns=\"http://www.w3.org/1999/xhtml\">\n\t<head>${head}</head>\n\t<body>\n${body}\n\t</body>\n</html>";
-VisualEditorBinding.getTinyLessClassName=function(_f9e){
-var i=0,_fa0,_fa1="",_fa2=_f9e.split(" ");
-while((_fa0=_fa2[i])!=null){
-if(_fa0.length>=3&&_fa0.substring(0,3)=="mce"){
-_fa0="";
+VisualEditorBinding.getTinyLessClassName=function(_fad){
+var i=0,_faf,_fb0="",_fb1=_fad.split(" ");
+while((_faf=_fb1[i])!=null){
+if(_faf.length>=3&&_faf.substring(0,3)=="mce"){
+_faf="";
 }else{
-if(_fa0.length>=14&&_fa0.substring(0,14)=="compositemedia"){
-_fa0="";
+if(_faf.length>=14&&_faf.substring(0,14)=="compositemedia"){
+_faf="";
 }
 }
-_fa1+=_fa0;
-if(_fa2[i+1]){
-_fa1+=" ";
+_fb0+=_faf;
+if(_fb1[i+1]){
+_fb0+=" ";
 }
 i++;
 }
-return _fa1;
+return _fb0;
 };
-VisualEditorBinding.getStructuredContent=function(_fa3){
-var _fa4=null;
+VisualEditorBinding.getStructuredContent=function(_fb2){
+var _fb3=null;
 WebServiceProxy.isFaultHandler=false;
-var soap=XhtmlTransformationsService.TinyContentToStructuredContent(_fa3);
+var soap=XhtmlTransformationsService.TinyContentToStructuredContent(_fb2);
 if(soap instanceof SOAPFault){
 }else{
-_fa4=soap.XhtmlFragment;
-if(!_fa4){
-_fa4="";
+_fb3=soap.XhtmlFragment;
+if(!_fb3){
+_fb3="";
 }
 }
 WebServiceProxy.isFaultHandler=true;
-return _fa4;
+return _fb3;
 };
-VisualEditorBinding.getTinyContent=function(_fa6,_fa7){
-var _fa8=null;
-if(_fa6==null||_fa6==""){
-_fa6=VisualEditorBinding.DEFAULT_CONTENT;
+VisualEditorBinding.getTinyContent=function(_fb5,_fb6){
+var _fb7=null;
+if(_fb5==null||_fb5==""){
+_fb5=VisualEditorBinding.DEFAULT_CONTENT;
 }
 WebServiceProxy.isFaultHandler=false;
-var soap=XhtmlTransformationsService.StructuredContentToTinyContent(_fa6);
+var soap=XhtmlTransformationsService.StructuredContentToTinyContent(_fb5);
 if(soap instanceof SOAPFault){
-var _faa=soap;
-var _fab={handleDialogResponse:function(){
-_fa7.dispatchAction(Binding.ACTION_VALID);
+var _fb9=soap;
+var _fba={handleDialogResponse:function(){
+_fb6.dispatchAction(Binding.ACTION_VALID);
 }};
-Dialog.invokeModal(VisualEditorBinding.URL_DIALOG_CONTENTERROR,_fab,_faa);
+Dialog.invokeModal(VisualEditorBinding.URL_DIALOG_CONTENTERROR,_fba,_fb9);
 }else{
-_fa8=soap.XhtmlFragment;
-if(_fa8==null){
-_fa8=new String("");
+_fb7=soap.XhtmlFragment;
+if(_fb7==null){
+_fb7=new String("");
 }
 }
 WebServiceProxy.isFaultHandler=true;
-return _fa8;
+return _fb7;
 };
-VisualEditorBinding.extractByIndex=function(html,_fad){
-var _fae=null;
+VisualEditorBinding.extractByIndex=function(html,_fbc){
+var _fbd=null;
 var doc=XMLParser.parse(html);
 if(doc!=null){
-var _fb0=new List(doc.documentElement.childNodes);
-var _fb1=new List();
-_fb0.each(function(_fb2){
-if(_fb2.nodeType==Node.ELEMENT_NODE){
-_fb1.add(_fb2);
+var _fbf=new List(doc.documentElement.childNodes);
+var _fc0=new List();
+_fbf.each(function(_fc1){
+if(_fc1.nodeType==Node.ELEMENT_NODE){
+_fc0.add(_fc1);
 }
 });
-var _fb3=_fb1.get(_fad);
-if(_fb3==null){
+var _fc2=_fc0.get(_fbc);
+if(_fc2==null){
 if(Application.isDeveloperMode){
 alert("VisualEditorBinding: Bad HTML!"+"\n\n"+html);
 }
 }else{
-if(_fb3.hasChildNodes()){
+if(_fc2.hasChildNodes()){
 var frag=doc.createDocumentFragment();
-while(_fb3.hasChildNodes()){
-frag.appendChild(_fb3.firstChild);
+while(_fc2.hasChildNodes()){
+frag.appendChild(_fc2.firstChild);
 }
 doc.removeChild(doc.documentElement);
 doc.appendChild(DOMUtil.createElementNS(Constants.NS_XHTML,"ROOT",doc));
 doc.documentElement.appendChild(frag);
-_fae=DOMSerializer.serialize(doc.documentElement);
-_fae=_fae.substring(_fae.indexOf(">")+1,_fae.length);
-_fae=_fae.substring(0,_fae.lastIndexOf("<"));
+_fbd=DOMSerializer.serialize(doc.documentElement);
+_fbd=_fbd.substring(_fbd.indexOf(">")+1,_fbd.length);
+_fbd=_fbd.substring(0,_fbd.lastIndexOf("<"));
 }
 }
 }
-if(_fae==null){
-_fae=new String("");
+if(_fbd==null){
+_fbd=new String("");
 }
-return _fae;
+return _fbd;
 };
 function VisualEditorBinding(){
 this.logger=SystemLogger.getLogger("VisualEditorBinding");
@@ -26249,12 +26300,7 @@ this.url_default="${root}/content/misc/editors/visualeditor/visualeditor.aspx";
 this._tinyEngine=null;
 this._tinyInstance=null;
 this._tinyTheme=null;
-this.formattingConfiguration=null;
-this.elementClassConfiguration=null;
 this.embedableFieldConfiguration=null;
-this.defaultStylesheet=VisualEditorBinding.DEFAULT_STYLESHEET;
-this.configurationStylesheet=null;
-this.presentationStylesheet=null;
 this._head=null;
 return this;
 }
@@ -26263,43 +26309,31 @@ VisualEditorBinding.superclass.onBindingRegister.call(this);
 StringBundle.getString("Composite.Web.VisualEditor","Preload.Key");
 };
 VisualEditorBinding.prototype.onBindingAttach=function(){
+var _fc4=this.getProperty("embedablefieldstypenames");
+if(_fc4!=null){
+this.embedableFieldConfiguration=VisualEditorFieldGroupConfiguration.getConfiguration(_fc4);
+}
+var _fc5=this.getProperty("formattingconfiguration");
+if(_fc5!=null){
+this._url+="?config="+_fc5;
+}
 VisualEditorBinding.superclass.onBindingAttach.call(this);
 this.subscribe(BroadcastMessages.TINYMCE_INITIALIZED);
 this.subscribe(BroadcastMessages.VISUALEDITOR_HACKED);
-this._parseDOMProperties();
 };
 VisualEditorBinding.prototype.toString=function(){
 return "[VisualEditorBinding]";
 };
-VisualEditorBinding.prototype._parseDOMProperties=function(){
-var _fb5=this.getProperty("presentationstylesheet");
-if(_fb5!=null){
-this.presentationStylesheet=_fb5;
-}
-var _fb6=this.getProperty("configurationstylesheet");
-if(_fb6!=null){
-this.configurationStylesheet=_fb6;
-}
-var _fb7=this.getProperty("formattingconfiguration");
-if(_fb7!=null){
-this.formattingConfiguration=VisualEditorFormattingConfiguration.getConfiguration(_fb7);
-}
-var _fb8=this.getProperty("elementclassconfiguration");
-if(_fb8!=null){
-this.elementClassConfiguration=VisualEditorElementClassConfiguration.getConfiguration(_fb8);
-}
-var _fb9=this.getProperty("embedablefieldstypenames");
-if(_fb9!=null){
-this.embedableFieldConfiguration=VisualEditorFieldGroupConfiguration.getConfiguration(_fb9);
-}
-};
-VisualEditorBinding.prototype.handleBroadcast=function(_fba,arg){
-VisualEditorBinding.superclass.handleBroadcast.call(this,_fba,arg);
-var _fbc=this.getContentWindow().bindingMap.tinywindow;
-var _fbd=_fbc.getContentWindow();
-switch(_fba){
+VisualEditorBinding.prototype.handleBroadcast=function(_fc6,arg){
+VisualEditorBinding.superclass.handleBroadcast.call(this,_fc6,arg);
+var _fc8=this.getContentWindow().bindingMap.tinywindow;
+var _fc9=_fc8.getContentWindow();
+switch(_fc6){
 case BroadcastMessages.VISUALEDITOR_HACKED:
-if(arg.broadcastWindow==_fbd){
+if(arg.broadcastWindow==_fc9){
+if(this._startContent==" "){
+this._startContent=VisualEditorBinding.DEFAULT_CONTENT;
+}
 this._startContent=this.normalizeToDocument(this._startContent);
 this.extractHead(this._startContent);
 this._startContent=this.extractBody(this._startContent);
@@ -26308,27 +26342,27 @@ this.unsubscribe(BroadcastMessages.VISUALEDITOR_HACKED);
 }
 break;
 case BroadcastMessages.TINYMCE_INITIALIZED:
-if(arg.broadcastWindow==_fbd){
+if(arg.broadcastWindow==_fc9){
 this._tinyEngine=arg.tinyEngine;
 this._tinyInstance=arg.tinyInstance;
 this._tinyTheme=arg.tinyTheme;
 this._tinyTheme.initC1(this,this._tinyEngine,this._tinyInstance);
-this.initializeEditorComponents(_fbc);
+this.initializeEditorComponents(_fc8);
 this._initialize();
 this.unsubscribe(BroadcastMessages.TINYMCE_INITIALIZED);
 }
 break;
 }
 };
-VisualEditorBinding.prototype.initializeEditorComponent=function(_fbe){
-_fbe.initializeComponent(this,this._tinyEngine,this._tinyInstance,this._tinyTheme);
+VisualEditorBinding.prototype.initializeEditorComponent=function(_fca){
+_fca.initializeComponent(this,this._tinyEngine,this._tinyInstance,this._tinyTheme);
 };
 VisualEditorBinding.prototype._finalize=function(){
 VisualEditorBinding.superclass._finalize.call(this);
 this._maybeShowEditor();
 };
-VisualEditorBinding.prototype._onPageInitialize=function(_fbf){
-VisualEditorBinding.superclass._onPageInitialize.call(this,_fbf);
+VisualEditorBinding.prototype._onPageInitialize=function(_fcb){
+VisualEditorBinding.superclass._onPageInitialize.call(this,_fcb);
 this._maybeShowEditor();
 };
 VisualEditorBinding.prototype._maybeShowEditor=function(){
@@ -26343,30 +26377,30 @@ this._head=VisualEditorBinding.extractByIndex(html,0);
 VisualEditorBinding.prototype.extractBody=function(html){
 return VisualEditorBinding.extractByIndex(html,1);
 };
-VisualEditorBinding.prototype.normalizeToDocument=function(_fc2){
-var _fc3=_fc2;
-if(!this._isNormalizedDocument(_fc2)){
-_fc2="\t\t"+_fc2.replace(/\n/g,"\n\t\t");
-_fc3=VisualEditorBinding.XHTML.replace("${head}",this._getHeadSection()).replace("${body}",_fc2);
+VisualEditorBinding.prototype.normalizeToDocument=function(_fce){
+var _fcf=_fce;
+if(!this._isNormalizedDocument(_fce)){
+_fce="\t\t"+_fce.replace(/\n/g,"\n\t\t");
+_fcf=VisualEditorBinding.XHTML.replace("${head}",this._getHeadSection()).replace("${body}",_fce);
 }
-return _fc3;
+return _fcf;
 };
-VisualEditorBinding.prototype._isNormalizedDocument=function(_fc4){
-var _fc5=false;
-var doc=XMLParser.parse(_fc4,true);
+VisualEditorBinding.prototype._isNormalizedDocument=function(_fd0){
+var _fd1=false;
+var doc=XMLParser.parse(_fd0,true);
 if(doc!=null){
 if(doc.documentElement.nodeName=="html"){
-_fc5=true;
+_fd1=true;
 }
 }
-return _fc5;
+return _fd1;
 };
 VisualEditorBinding.prototype._getHeadSection=function(){
 return this._head!=null?this._head:new String("");
 };
 VisualEditorBinding.prototype.handleCommand=function(cmd,gui,val){
-var _fca=VisualEditorBinding.superclass.handleCommand.call(this,cmd,gui,val);
-if(!_fca){
+var _fd6=VisualEditorBinding.superclass.handleCommand.call(this,cmd,gui,val);
+if(!_fd6){
 try{
 this._tinyInstance.execCommand(cmd,gui,val);
 this.checkForDirty();
@@ -26374,13 +26408,13 @@ this.checkForDirty();
 catch(e){
 SystemDebug.stack(arguments);
 }
-_fca=true;
+_fd6=true;
 }
-return _fca;
+return _fd6;
 };
 VisualEditorBinding.prototype.handleContextMenu=function(e){
-var _fcc=DOMEvents.getTarget(e);
-this._popupBinding.configure(this._tinyInstance,this._tinyEngine,_fcc);
+var _fd8=DOMEvents.getTarget(e);
+this._popupBinding.configure(this._tinyInstance,this._tinyEngine,_fd8);
 VisualEditorBinding.superclass.handleContextMenu.call(this,e);
 };
 VisualEditorBinding.prototype.getEditorWindow=function(){
@@ -26396,7 +26430,7 @@ VisualEditorBinding.prototype.createBookmark=function(){
 this._bookmark=this._tinyInstance.selection.getBookmark(true);
 };
 VisualEditorBinding.prototype.restoreBookmark=function(){
-if(this._bookmark!=null){
+if(this.hasBookmark()){
 this._tinyInstance.selection.moveToBookmark(this._bookmark);
 this.deleteBookmark();
 }
@@ -26419,14 +26453,14 @@ return this._pageBinding.validate();
 VisualEditorBinding.prototype.getValue=function(){
 return this._pageBinding.getContent();
 };
-VisualEditorBinding.prototype.setValue=function(_fcd){
+VisualEditorBinding.prototype.setValue=function(_fd9){
 if(this._isFinalized){
 if(Binding.exists(this._pageBinding)){
-this._pageBinding.setContent(_fcd);
+this._pageBinding.setContent(_fd9);
 }
 }else{
 if(this._startContent==null){
-this._startContent=_fcd;
+this._startContent=_fd9;
 }
 }
 };
@@ -26438,7 +26472,7 @@ if(this._pageBinding!=null){
 this._pageBinding.clean();
 }
 };
-VisualEditorBinding.prototype.setResult=function(_fce){
+VisualEditorBinding.prototype.setResult=function(_fda){
 };
 VisualEditorPopupBinding.prototype=new EditorPopupBinding;
 VisualEditorPopupBinding.prototype.constructor=VisualEditorPopupBinding;
@@ -26455,12 +26489,12 @@ this._isRenderingSelected=false;
 VisualEditorPopupBinding.prototype.toString=function(){
 return "[VisualEditorPopupBinding]";
 };
-VisualEditorPopupBinding.prototype.configure=function(_fcf,_fd0,_fd1){
-var _fd2=this.editorBinding.hasSelection();
-this.tinyInstance=_fcf;
-this.tinyEngine=_fd0;
-this.tinyElement=_fd1;
-this.hasSelection=_fd2;
+VisualEditorPopupBinding.prototype.configure=function(_fdb,_fdc,_fdd){
+var _fde=this.editorBinding.hasSelection();
+this.tinyInstance=_fdb;
+this.tinyEngine=_fdc;
+this.tinyElement=_fdd;
+this.hasSelection=_fde;
 VisualEditorPopupBinding.superclass.configure.call(this);
 };
 VisualEditorPopupBinding.prototype.handleCommand=function(cmd,gui,val){
@@ -26478,21 +26512,21 @@ this._configureImageGroup();
 }
 };
 VisualEditorPopupBinding.prototype._configureLinkGroup=function(){
-var _fd6=false;
+var _fe2=false;
 if(this.hasSelection){
-_fd6=true;
+_fe2=true;
 }else{
 if(this.tinyElement){
 if(this.tinyElement.nodeName=="A"&&!this.tinyElement.getAttribute("name")){
-_fd6=true;
+_fe2=true;
 }else{
 if(this.tinyElement.nodeName=="IMG"){
-_fd6=true;
+_fe2=true;
 }
 }
 }
 }
-if(_fd6){
+if(_fe2){
 this._showMenuGroups("link");
 this._configureLinkGroupDetails();
 }else{
@@ -26500,19 +26534,19 @@ this._hideMenuGroups("link");
 }
 };
 VisualEditorPopupBinding.prototype._configureLinkGroupDetails=function(){
-var _fd7=this.getMenuItemForCommand("compositeInsertLink");
-var _fd8=this.getMenuItemForCommand("unlink");
-var _fd9=this.editorBinding.getButtonForCommand("compositeInsertLink");
-var _fda=this.editorBinding.getButtonForCommand("unlink");
-_fd8.setDisabled(_fda.isDisabled);
-if(_fd8.isDisabled){
-_fd7.setLabel("Link");
+var _fe3=this.getMenuItemForCommand("compositeInsertLink");
+var _fe4=this.getMenuItemForCommand("unlink");
+var _fe5=this.editorBinding.getButtonForCommand("compositeInsertLink");
+var _fe6=this.editorBinding.getButtonForCommand("unlink");
+_fe4.setDisabled(_fe6.isDisabled);
+if(_fe4.isDisabled){
+_fe3.setLabel("Link");
 }else{
-_fd7.setLabel("Link properties");
+_fe3.setLabel("Link properties");
 }
 };
 VisualEditorPopupBinding.prototype._configureInsertGroup=function(){
-var _fdb=this.editorBinding.embedableFieldConfiguration;
+var _fe7=this.editorBinding.embedableFieldConfiguration;
 var item=this.getMenuItemForCommand("compositeInsertFieldParent");
 var doc=this.bindingDocument;
 if(item){
@@ -26523,24 +26557,24 @@ item.setLabel("Field");
 item.image="${icon:fields}";
 item.imageDisabled="${icon:fields-disabled}";
 item.setProperty("cmd","compositeInsertFieldParent");
-if(_fdb){
-var _fde=_fdb.getGroupNames();
-if(_fde.hasEntries()){
-var _fdf=MenuPopupBinding.newInstance(doc);
-var body=_fdf.add(MenuBodyBinding.newInstance(doc));
-var _fe1=body.add(MenuGroupBinding.newInstance(doc));
-_fde.each(function(_fe2){
-var _fe3=_fdb.getFieldNames(_fe2);
-_fe3.each(function(_fe4){
-var i=_fe1.add(MenuItemBinding.newInstance(doc));
-i.setLabel(_fe4);
+if(_fe7){
+var _fea=_fe7.getGroupNames();
+if(_fea.hasEntries()){
+var _feb=MenuPopupBinding.newInstance(doc);
+var body=_feb.add(MenuBodyBinding.newInstance(doc));
+var _fed=body.add(MenuGroupBinding.newInstance(doc));
+_fea.each(function(_fee){
+var _fef=_fe7.getFieldNames(_fee);
+_fef.each(function(_ff0){
+var i=_fed.add(MenuItemBinding.newInstance(doc));
+i.setLabel(_ff0);
 i.setImage("${icon:field}");
 i.setProperty("cmd","compositeInsertField");
-i.setProperty("val",_fe2+":"+_fe4);
-_fe1.add(i);
+i.setProperty("val",_fee+":"+_ff0);
+_fed.add(i);
 });
 });
-item.add(_fdf);
+item.add(_feb);
 }
 }else{
 item.disable();
@@ -26550,41 +26584,41 @@ item.attachRecursive();
 this._menuItems["compositeInsertFieldParent"]=item;
 };
 VisualEditorPopupBinding.prototype._configureTableGroup=function(){
-var _fe6=this.tinyInstance.dom.getParent(this.tinyElement,"table,td");
-var _fe7=null;
-var _fe8=null;
-if(_fe6){
-if(_fe6.nodeName=="TD"){
-_fe7=_fe6.getAttribute("colspan");
-_fe8=_fe6.getAttribute("rowspan");
+var _ff2=this.tinyInstance.dom.getParent(this.tinyElement,"table,td");
+var _ff3=null;
+var _ff4=null;
+if(_ff2){
+if(_ff2.nodeName=="TD"){
+_ff3=_ff2.getAttribute("colspan");
+_ff4=_ff2.getAttribute("rowspan");
 }
-this._menuItems["mceTableSplitCells"].setDisabled(_fe7=="1"&&_fe8=="1");
+this._menuItems["mceTableSplitCells"].setDisabled(_ff3=="1"&&_ff4=="1");
 this._menuItems["mceTablePasteRowBefore"].setDisabled(this.tinyInstance.tableRowClipboard==null);
 this._menuItems["mceTablePasteRowAfter"].setDisabled(this.tinyInstance.tableRowClipboard==null);
 }
-if(_fe6){
+if(_ff2){
 this._showMenuGroups("table");
 }else{
 this._hideMenuGroups("table");
 }
 };
 VisualEditorPopupBinding.prototype._configureRenderingGroup=function(){
-var _fe9=this._isRendering();
-if(_fe9){
+var _ff5=this._isRendering();
+if(_ff5){
 this._showMenuGroups("rendering");
 }else{
 this._hideMenuGroups("rendering");
 }
-this._isRenderingSelected=_fe9;
+this._isRenderingSelected=_ff5;
 };
 VisualEditorPopupBinding.prototype._configureFieldGroup=function(){
-var _fea=this._isField();
-if(_fea){
+var _ff6=this._isField();
+if(_ff6){
 this._showMenuGroups("field");
 }else{
 this._hideMenuGroups("field");
 }
-this._isFieldSelected=_fea;
+this._isFieldSelected=_ff6;
 };
 VisualEditorPopupBinding.prototype._configureImageGroup=function(){
 if(this._isImage()&&!this._isRenderingSelected&&!this._isFieldSelected){
@@ -26594,11 +26628,11 @@ this._hideMenuGroups("image");
 }
 };
 VisualEditorPopupBinding.prototype._isImage=function(){
-var _feb=false;
+var _ff7=false;
 if(!this.hasSelection){
-_feb=this.tinyElement&&this.tinyElement.nodeName=="IMG";
+_ff7=this.tinyElement&&this.tinyElement.nodeName=="IMG";
 }
-return _feb;
+return _ff7;
 };
 VisualEditorPopupBinding.prototype._isRendering=function(){
 return this._isImage()&&CSSUtil.hasClassName(this.tinyElement,VisualEditorBinding.FUNCTION_CLASSNAME);
@@ -26607,46 +26641,46 @@ VisualEditorPopupBinding.prototype._isField=function(){
 return this._isImage()&&CSSUtil.hasClassName(this.tinyElement,VisualEditorBinding.FIELD_CLASSNAME);
 };
 VisualEditorElementClassConfiguration._configurations=new Map();
-VisualEditorElementClassConfiguration.getConfiguration=function(_fec){
-var _fed=VisualEditorElementClassConfiguration._configurations;
-if(!_fed.has(_fec)){
-_fed.set(_fec,new VisualEditorElementClassConfiguration(EditorConfigurationService.GetElementClassConfiguration(_fec)));
+VisualEditorElementClassConfiguration.getConfiguration=function(_ff8){
+var _ff9=VisualEditorElementClassConfiguration._configurations;
+if(!_ff9.has(_ff8)){
+_ff9.set(_ff8,new VisualEditorElementClassConfiguration(EditorConfigurationService.GetElementClassConfiguration(_ff8)));
 }
-return _fed.get(_fec);
+return _ff9.get(_ff8);
 };
 function VisualEditorElementClassConfiguration(doc){
 this.logger=SystemLogger.getLogger("VisualEditorElementClassConfiguration");
 this._elements={};
-var _fef=new XPathResolver();
-var _ff0=_fef.resolveAll("elements/element",doc);
-while(_ff0.hasNext()){
-var _ff1=_ff0.getNext();
-var _ff2=_ff1.getAttribute("name");
-this._elements[_ff2]=new List();
-var _ff3=_fef.resolveAll("class",_ff1);
-while(_ff3.hasNext()){
-var _ff4=_ff3.getNext().getAttribute("name");
-this._elements[_ff2].add(_ff4);
+var _ffb=new XPathResolver();
+var _ffc=_ffb.resolveAll("elements/element",doc);
+while(_ffc.hasNext()){
+var _ffd=_ffc.getNext();
+var _ffe=_ffd.getAttribute("name");
+this._elements[_ffe]=new List();
+var _fff=_ffb.resolveAll("class",_ffd);
+while(_fff.hasNext()){
+var _1000=_fff.getNext().getAttribute("name");
+this._elements[_ffe].add(_1000);
 }
 }
 }
 VisualEditorElementClassConfiguration.prototype.getClassNamesForElement=function(name){
-var _ff6=null;
+var _1002=null;
 if(this._elements[name]){
-_ff6=this._elements[name].copy();
+_1002=this._elements[name].copy();
 }else{
-_ff6=new List();
+_1002=new List();
 }
-return _ff6;
+return _1002;
 };
 VisualEditorFormattingConfiguration._configurations=new Map();
 VisualEditorFormattingConfiguration._options=null;
-VisualEditorFormattingConfiguration.getConfiguration=function(_ff7){
-var _ff8=VisualEditorFormattingConfiguration._configurations;
-if(!_ff8.has(_ff7)){
-_ff8.set(_ff7,new VisualEditorFormattingConfiguration());
+VisualEditorFormattingConfiguration.getConfiguration=function(_1003){
+var _1004=VisualEditorFormattingConfiguration._configurations;
+if(!_1004.has(_1003)){
+_1004.set(_1003,new VisualEditorFormattingConfiguration());
 }
-return _ff8.get(_ff7);
+return _1004.get(_1003);
 };
 VisualEditorFormattingConfiguration._getOptions=function(){
 if(VisualEditorFormattingConfiguration._options==null){
@@ -26655,40 +26689,40 @@ VisualEditorFormattingConfiguration._options={"p":StringBundle.getString(p,"Form
 }
 return VisualEditorFormattingConfiguration._options;
 };
-function VisualEditorFormattingConfiguration(_ffa){
+function VisualEditorFormattingConfiguration(_1006){
 this._options=VisualEditorFormattingConfiguration._getOptions();
 }
 VisualEditorFormattingConfiguration.prototype.getFormattingOptions=function(){
 return this._options;
 };
 VisualEditorFieldGroupConfiguration._configurations=new Map();
-VisualEditorFieldGroupConfiguration.getConfiguration=function(_ffb){
-var _ffc=null;
-var _ffd=VisualEditorFieldGroupConfiguration._configurations;
-if(!_ffd.has(_ffb)){
-_ffd.set(_ffb,new VisualEditorFieldGroupConfiguration(EditorConfigurationService.GetEmbedableFieldGroupConfigurations(_ffb)));
+VisualEditorFieldGroupConfiguration.getConfiguration=function(_1007){
+var _1008=null;
+var _1009=VisualEditorFieldGroupConfiguration._configurations;
+if(!_1009.has(_1007)){
+_1009.set(_1007,new VisualEditorFieldGroupConfiguration(EditorConfigurationService.GetEmbedableFieldGroupConfigurations(_1007)));
 }
-return _ffd.get(_ffb);
+return _1009.get(_1007);
 };
-function VisualEditorFieldGroupConfiguration(_ffe){
-var _fff=new Map();
-new List(_ffe).each(function(group){
+function VisualEditorFieldGroupConfiguration(_100a){
+var _100b=new Map();
+new List(_100a).each(function(group){
 var map=new Map();
 new List(group.Fields).each(function(field){
 map.set(field.Name,{xhtml:field.XhtmlRepresentation,xml:field.XhtmlRepresentation});
 });
-_fff.set(group.GroupName,map);
+_100b.set(group.GroupName,map);
 });
-this._groups=_fff;
+this._groups=_100b;
 }
 VisualEditorFieldGroupConfiguration.prototype.getGroupNames=function(){
 return this._groups.toList(true);
 };
-VisualEditorFieldGroupConfiguration.prototype.getFieldNames=function(_1003){
-return this._groups.get(_1003).toList(true);
+VisualEditorFieldGroupConfiguration.prototype.getFieldNames=function(_100f){
+return this._groups.get(_100f).toList(true);
 };
-VisualEditorFieldGroupConfiguration.prototype.getTinyMarkup=function(_1004,_1005){
-return this._groups.get(_1004).get(_1005).xhtml;
+VisualEditorFieldGroupConfiguration.prototype.getTinyMarkup=function(_1010,_1011){
+return this._groups.get(_1010).get(_1011).xhtml;
 };
 VisualEditorFieldGroupConfiguration.prototype.getStructuredMarkup=function(name){
 return this._groups.get(groupname).get(fieldname).xml;
@@ -26714,12 +26748,12 @@ VisualMultiEditorBinding.superclass._maybeShowEditor.call(this);
 };
 VisualMultiEditorBinding.prototype._setup=function(){
 this._heads=new Map();
-var _1007=this.getDescendantElementsByLocalName("textarea");
-while(_1007.hasNext()){
-var _1008=_1007.getNext();
-if(_1008.getAttribute("selected")=="true"){
-this._startContent=_1008.value;
-this._textareaname=_1008.getAttribute("placeholderid");
+var _1013=this.getDescendantElementsByLocalName("textarea");
+while(_1013.hasNext()){
+var _1014=_1013.getNext();
+if(_1014.getAttribute("selected")=="true"){
+this._startContent=_1014.value;
+this._textareaname=_1014.getAttribute("placeholderid");
 }
 }
 if(this._startContent==null){
@@ -26729,27 +26763,27 @@ this._startContent=VisualEditorBinding.DEFAULT_CONTENT;
 VisualMultiEditorBinding.prototype._initialize=function(){
 var self=this;
 this._registerWithDataManager("generated"+KeyMaster.getUniqueKey());
-var _100a=this.getContentWindow().bindingMap.templatetree;
-_100a.addActionListener(TreeBinding.ACTION_SELECTIONCHANGED,{handleAction:function(_100b){
-var _100c=_100a.getSelectedTreeNodeBindings().getFirst();
-self._placeHolderSelected(_100c.textareaname);
-_100b.consume();
+var _1016=this.getContentWindow().bindingMap.templatetree;
+_1016.addActionListener(TreeBinding.ACTION_SELECTIONCHANGED,{handleAction:function(_1017){
+var _1018=_1016.getSelectedTreeNodeBindings().getFirst();
+self._placeHolderSelected(_1018.textareaname);
+_1017.consume();
 }});
-_100a.addActionListener(Binding.ACTION_FOCUSED,{handleAction:function(_100d){
+_1016.addActionListener(Binding.ACTION_FOCUSED,{handleAction:function(_1019){
 self._activateEditor(false);
 }});
 this._updatePlaceHolders();
-var _100e=this.getContentWindow().bindingMap.toolsplitter;
-_100e.unCollapse();
+var _101a=this.getContentWindow().bindingMap.toolsplitter;
+_101a.unCollapse();
 VisualMultiEditorBinding.superclass._initialize.call(this);
 };
 VisualMultiEditorBinding.prototype._updatePlaceHolders=function(){
 templatetree=this.getContentWindow().bindingMap.templatetree;
-var _100f=this.getDescendantElementsByLocalName("textarea");
+var _101b=this.getDescendantElementsByLocalName("textarea");
 templatetree.empty();
-if(_100f.hasEntries()){
+if(_101b.hasEntries()){
 this._hasPlaceHolders=true;
-this._parsePlaceHolders(_100f);
+this._parsePlaceHolders(_101b);
 if(this._isFinalized){
 this._pageBinding.showEditor(true);
 }
@@ -26761,66 +26795,66 @@ this._pageBinding.showEditor(false);
 }
 }
 };
-VisualMultiEditorBinding.prototype._parsePlaceHolders=function(_1010){
+VisualMultiEditorBinding.prototype._parsePlaceHolders=function(_101c){
 this._textareas=new Map();
-while(_1010.hasNext()){
-var _1011=_1010.getNext();
-var _1012=_1011.getAttribute("placeholderid");
-this._textareas.set(_1012,{placeholderid:_1012,placeholdername:_1011.getAttribute("placeholdername"),placeholdermarkup:_1011.value,textareaelement:_1011,isSelected:_1011.getAttribute("selected")=="true"});
+while(_101c.hasNext()){
+var _101d=_101c.getNext();
+var _101e=_101d.getAttribute("placeholderid");
+this._textareas.set(_101e,{placeholderid:_101e,placeholdername:_101d.getAttribute("placeholdername"),placeholdermarkup:_101d.value,textareaelement:_101d,isSelected:_101d.getAttribute("selected")=="true"});
 }
-var _1013=new Map();
-this._textareas.each(function(name,_1015){
-var _1016=templatetree.add(TreeNodeBinding.newInstance(templatetree.bindingDocument));
-_1016.setLabel(_1015.placeholdername);
-_1016.setImage("${icon:placeholder}");
-_1016.setProperty("placeholder",true);
-_1016.textareaname=name;
-_1013.set(_1015.placeholdername,_1016);
-if(_1015.isSelected){
-selected=_1016;
+var _101f=new Map();
+this._textareas.each(function(name,_1021){
+var _1022=templatetree.add(TreeNodeBinding.newInstance(templatetree.bindingDocument));
+_1022.setLabel(_1021.placeholdername);
+_1022.setImage("${icon:placeholder}");
+_1022.setProperty("placeholder",true);
+_1022.textareaname=name;
+_101f.set(_1021.placeholdername,_1022);
+if(_1021.isSelected){
+selected=_1022;
 }
 });
 templatetree.attachRecursive();
 if(selected!=null){
-var _1017=this._textareas.get(selected.textareaname);
+var _1023=this._textareas.get(selected.textareaname);
 this._textareaname=selected.textareaname;
-this._placeholdername=_1017.placeholdername;
+this._placeholdername=_1023.placeholdername;
 this._setContentFromPlaceHolder(selected.textareaname);
 selected.focus();
 }
 };
 VisualMultiEditorBinding.prototype._noPlaceHolders=function(){
-var _1018=this.getContentWindow().bindingMap.templatetree;
-var _1019=_1018.add(TreeNodeBinding.newInstance(_1018.bindingDocument));
-_1019.setLabel(StringBundle.getString("Composite.Web.VisualEditor","TemplateTree.NoTemplateWarning"));
-_1019.setImage("${icon:warning}");
-_1019.attach();
-var _101a=this.getContentWindow().bindingMap.statusbar;
-_101a.setPlaceHolderName(null);
+var _1024=this.getContentWindow().bindingMap.templatetree;
+var _1025=_1024.add(TreeNodeBinding.newInstance(_1024.bindingDocument));
+_1025.setLabel(StringBundle.getString("Composite.Web.VisualEditor","TemplateTree.NoTemplateWarning"));
+_1025.setImage("${icon:warning}");
+_1025.attach();
+var _1026=this.getContentWindow().bindingMap.statusbar;
+_1026.setPlaceHolderName(null);
 };
 VisualMultiEditorBinding.prototype._setContentFromPlaceHolder=function(name){
 if(this._isFinalized==true){
-var _101c=this._textareas.get(name);
-var _101d=_101c.placeholdermarkup;
-this.setValue(this.normalizeToDocument(_101d));
+var _1028=this._textareas.get(name);
+var _1029=_1028.placeholdermarkup;
+this.setValue(this.normalizeToDocument(_1029));
 this.resetUndoRedo();
 }
 };
-VisualMultiEditorBinding.prototype._placeHolderSelected=function(_101e){
+VisualMultiEditorBinding.prototype._placeHolderSelected=function(_102a){
 if(this._isFinalized==true){
 if(this._textareaname&&this._textareas.has(this._textareaname)){
 this._textareas.get(this._textareaname).placeholdermarkup=this.getValue();
 }
 }
-this._textareaname=_101e;
+this._textareaname=_102a;
 this._placeholdername=this._textareas.get(this._textareaname).placeholdername;
-var _101f=this.getContentWindow().bindingMap.statusbar;
-_101f.setPlaceHolderName(this._placeholdername);
+var _102b=this.getContentWindow().bindingMap.statusbar;
+_102b.setPlaceHolderName(this._placeholdername);
 if(this._isFinalized==true){
 var self=this;
 Application.lock(self);
 setTimeout(function(){
-self._setContentFromPlaceHolder(_101e);
+self._setContentFromPlaceHolder(_102a);
 Application.unlock(self);
 },0);
 }
@@ -26830,51 +26864,51 @@ VisualMultiEditorBinding.superclass.extractHead.call(this,html);
 this._heads.set(this._textareaname,this._head);
 };
 VisualMultiEditorBinding.prototype._getHeadSection=function(){
-var _1022="";
+var _102e="";
 if(this._heads.has(this._textareaname)){
-_1022=this._heads.get(this._textareaname);
-if(_1022==null){
-_1022=new String("");
+_102e=this._heads.get(this._textareaname);
+if(_102e==null){
+_102e=new String("");
 }
 }
-return _1022;
+return _102e;
 };
 VisualMultiEditorBinding.prototype.manifest=function(){
 if(this._textareas!=null&&this._textareas.hasEntries()){
 this._textareas.get(this._textareaname).placeholdermarkup=this.getValue();
-this._textareas.each(function(name,_1024){
-_1024.textareaelement.value=_1024.placeholdermarkup;
+this._textareas.each(function(name,_1030){
+_1030.textareaelement.value=_1030.placeholdermarkup;
 });
 }
 };
-VisualMultiEditorBinding.prototype.updateElement=function(_1025,_1026){
-var _1027=_1025.getElementsByTagName("div").item(0);
-var _1028=_1026.getElementsByTagName("div").item(0);
-var _1029=new List(_1027.getElementsByTagName("textarea"));
-var _102a=new List(_1028.getElementsByTagName("textarea"));
-var _102b=false;
-if(_1029.getLength()!=_102a.getLength()){
-_102b=true;
+VisualMultiEditorBinding.prototype.updateElement=function(_1031,_1032){
+var _1033=_1031.getElementsByTagName("div").item(0);
+var _1034=_1032.getElementsByTagName("div").item(0);
+var _1035=new List(_1033.getElementsByTagName("textarea"));
+var _1036=new List(_1034.getElementsByTagName("textarea"));
+var _1037=false;
+if(_1035.getLength()!=_1036.getLength()){
+_1037=true;
 }else{
 var index=0;
-_1029.each(function(_102d,index){
-var _102f=_102a.get(index);
-var newid=_102d.getAttribute("placeholderid");
-var oldid=_102f.getAttribute("placeholderid");
-var _1032=_102d.getAttribute("placeholdername");
-var _1033=_102f.getAttribute("placeholdername");
-if(newid!=oldid||_1032!=_1033){
-_102b=true;
+_1035.each(function(_1039,index){
+var _103b=_1036.get(index);
+var newid=_1039.getAttribute("placeholderid");
+var oldid=_103b.getAttribute("placeholderid");
+var _103e=_1039.getAttribute("placeholdername");
+var _103f=_103b.getAttribute("placeholdername");
+if(newid!=oldid||_103e!=_103f){
+_1037=true;
 }
-return !_102b;
+return !_1037;
 });
 }
-if(_102b){
+if(_1037){
 var html=null;
-if(_1027.innerHTML!=null){
-html=_1027.innerHTML;
+if(_1033.innerHTML!=null){
+html=_1033.innerHTML;
 }else{
-html=DOMSerializer.serialize(_1027);
+html=DOMSerializer.serialize(_1033);
 html=html.substring(html.indexOf(">")+1,html.length);
 html=html.substring(0,html.lastIndexOf("<"));
 }
@@ -26903,11 +26937,11 @@ this._oldtextareas=new Map();
 };
 VisualMultiTemplateEditorBinding.prototype._initialize=function(){
 var self=this;
-var _1037=this.getDescendantBindingByLocalName("selector");
-_1037.attach();
+var _1043=this.getDescendantBindingByLocalName("selector");
+_1043.attach();
 this._populateTemplateSelector();
-var _1038=this.getContentWindow().bindingMap.templateselector;
-_1038.addActionListener(SelectorBinding.ACTION_SELECTIONCHANGED,{handleAction:function(){
+var _1044=this.getContentWindow().bindingMap.templateselector;
+_1044.addActionListener(SelectorBinding.ACTION_SELECTIONCHANGED,{handleAction:function(){
 setTimeout(function(){
 self._onTemplateSelectionChanged();
 },0);
@@ -26916,21 +26950,21 @@ this.getContentWindow().bindingMap.templatetoolbar.show();
 VisualMultiTemplateEditorBinding.superclass._initialize.call(this);
 };
 VisualMultiTemplateEditorBinding.prototype._populateTemplateSelector=function(){
-var _1039=this.getDescendantBindingByLocalName("selector");
-var _103a=this.getContentWindow().bindingMap.templateselector;
-_1039.selections.each(function(_103b){
-_103b.imageProfile=new ImageProfile({image:"${icon:page-template-template}"});
+var _1045=this.getDescendantBindingByLocalName("selector");
+var _1046=this.getContentWindow().bindingMap.templateselector;
+_1045.selections.each(function(_1047){
+_1047.imageProfile=new ImageProfile({image:"${icon:page-template-template}"});
 });
-_103a.populateFromList(_1039.selections);
+_1046.populateFromList(_1045.selections);
 };
 VisualMultiTemplateEditorBinding.prototype._onTemplateSelectionChanged=function(){
-var _103c=this.getDescendantBindingByLocalName("selector");
-var _103d=this.getContentWindow().bindingMap.templateselector;
-_103c.selectByValue(_103d.getValue());
-_103c.dispatchAction(PageBinding.ACTION_DOPOSTBACK);
+var _1048=this.getDescendantBindingByLocalName("selector");
+var _1049=this.getContentWindow().bindingMap.templateselector;
+_1048.selectByValue(_1049.getValue());
+_1048.dispatchAction(PageBinding.ACTION_DOPOSTBACK);
 this.checkForDirty(true);
 };
-VisualMultiTemplateEditorBinding.prototype._parsePlaceHolders=function(_103e){
+VisualMultiTemplateEditorBinding.prototype._parsePlaceHolders=function(_104a){
 var nev=this._textareas;
 var old=this._oldtextareas;
 if(nev!=null){
@@ -26939,86 +26973,86 @@ old.set(key,value);
 });
 }
 this._textareas=new Map();
-function compute(_1043,_1044){
-var _1045=_1044;
-if(old.has(_1043)){
-_1045=old.get(_1043).placeholdermarkup;
+function compute(_104f,_1050){
+var _1051=_1050;
+if(old.has(_104f)){
+_1051=old.get(_104f).placeholdermarkup;
 }
-return _1045;
+return _1051;
 }
-while(_103e.hasNext()){
-var _1046=_103e.getNext();
-var _1047=_1046.getAttribute("placeholderid");
-this._textareas.set(_1047,{placeholderid:_1047,placeholdername:_1046.getAttribute("placeholdername"),placeholdermarkup:compute(_1047,_1046.value),textareaelement:_1046,isSelected:_1046.getAttribute("selected")=="true"});
+while(_104a.hasNext()){
+var _1052=_104a.getNext();
+var _1053=_1052.getAttribute("placeholderid");
+this._textareas.set(_1053,{placeholderid:_1053,placeholdername:_1052.getAttribute("placeholdername"),placeholdermarkup:compute(_1053,_1052.value),textareaelement:_1052,isSelected:_1052.getAttribute("selected")=="true"});
 }
-var _1048=null;
-var _1049=this.getContentWindow().bindingMap.templatetree;
-var _104a=new Map();
-this._textareas.each(function(name,_104c){
-var _104d=_1049.add(TreeNodeBinding.newInstance(_1049.bindingDocument));
-_104d.setLabel(_104c.placeholdername);
-_104d.setImage("${icon:placeholder}");
-_104d.setProperty("placeholder",true);
-_104d.textareaname=name;
-_104a.set(_104c.placeholdername,_104d);
-if(_104c.isSelected){
-_1048=_104d;
+var _1054=null;
+var _1055=this.getContentWindow().bindingMap.templatetree;
+var _1056=new Map();
+this._textareas.each(function(name,_1058){
+var _1059=_1055.add(TreeNodeBinding.newInstance(_1055.bindingDocument));
+_1059.setLabel(_1058.placeholdername);
+_1059.setImage("${icon:placeholder}");
+_1059.setProperty("placeholder",true);
+_1059.textareaname=name;
+_1056.set(_1058.placeholdername,_1059);
+if(_1058.isSelected){
+_1054=_1059;
 }
 });
-_1049.attachRecursive();
-if(_1048!=null){
-var _104e=true;
+_1055.attachRecursive();
+if(_1054!=null){
+var _105a=true;
 if(this._oldtextareas.hasEntries()){
-_104e=false;
+_105a=false;
 var map=new Map();
-this._textareas.each(function(id,_1051){
-map.set(_1051.placeholdername,true);
+this._textareas.each(function(id,_105d){
+map.set(_105d.placeholdername,true);
 });
 if(!map.has(this._placeholdername)){
-_104e=true;
+_105a=true;
 }
 }
-if(_104e){
-var _1052=this._textareas.get(_1048.textareaname);
-this._textareaname=_1048.textareaname;
-this._placeholdername=_1052.placeholdername;
-this._setContentFromPlaceHolder(_1048.textareaname);
-_1048.focus();
+if(_105a){
+var _105e=this._textareas.get(_1054.textareaname);
+this._textareaname=_1054.textareaname;
+this._placeholdername=_105e.placeholdername;
+this._setContentFromPlaceHolder(_1054.textareaname);
+_1054.focus();
 }else{
-var _1053=_104a.get(this._placeholdername);
-this._textareaname=_1053.textareaname;
-_1053.focus();
+var _105f=_1056.get(this._placeholdername);
+this._textareaname=_105f.textareaname;
+_105f.focus();
 }
 }
 };
-VisualMultiTemplateEditorBinding.prototype.updateElement=function(_1054,_1055){
-var _1056=_1054.getElementsByTagName("ui:selector").item(0);
-var _1057=_1055.getElementsByTagName("ui:selector").item(0);
-var _1058=false;
-if(_1056!=null&&_1057!=null){
-var _1059=new List(_1056.getElementsByTagName("ui:selection"));
-var _105a=new List(_1057.getElementsByTagName("ui:selection"));
-if(_1059.getLength()!=_105a.getLength()){
-_1058=true;
+VisualMultiTemplateEditorBinding.prototype.updateElement=function(_1060,_1061){
+var _1062=_1060.getElementsByTagName("ui:selector").item(0);
+var _1063=_1061.getElementsByTagName("ui:selector").item(0);
+var _1064=false;
+if(_1062!=null&&_1063!=null){
+var _1065=new List(_1062.getElementsByTagName("ui:selection"));
+var _1066=new List(_1063.getElementsByTagName("ui:selection"));
+if(_1065.getLength()!=_1066.getLength()){
+_1064=true;
 }else{
-_1059.each(function(_105b,index){
-var _105d=_105b.getAttribute("value");
-var _105e=_105a.get(index).getAttribute("value");
-if(_105d!=_105e){
-_1058=true;
+_1065.each(function(_1067,index){
+var _1069=_1067.getAttribute("value");
+var _106a=_1066.get(index).getAttribute("value");
+if(_1069!=_106a){
+_1064=true;
 }
-return !_1058;
+return !_1064;
 });
 }
 }
-if(_1058){
+if(_1064){
 var div=this.bindingElement.getElementsByTagName("div").item(1);
 this.bindingWindow.DocumentManager.detachBindings(div,true);
-div.innerHTML=DOMSerializer.serialize(_1056);
+div.innerHTML=DOMSerializer.serialize(_1062);
 this.bindingWindow.DocumentManager.attachBindings(div);
 this._populateTemplateSelector();
 }
-return VisualMultiTemplateEditorBinding.superclass.updateElement.call(this,_1054,_1055);
+return VisualMultiTemplateEditorBinding.superclass.updateElement.call(this,_1060,_1061);
 };
 BespinEditorPopupBinding.prototype=new EditorPopupBinding;
 BespinEditorPopupBinding.prototype.constructor=BespinEditorPopupBinding;
@@ -27033,10 +27067,10 @@ this._codePressEngine=null;
 BespinEditorPopupBinding.prototype.toString=function(){
 return "[BespinEditorPopupBinding]";
 };
-BespinEditorPopupBinding.prototype.configure=function(_1060,frame,_1062){
-this._editorBinding=_1060;
+BespinEditorPopupBinding.prototype.configure=function(_106c,frame,_106e){
+this._editorBinding=_106c;
 this._codePressFrame=frame;
-this._codePressEngine=_1062;
+this._codePressEngine=_106e;
 WysiwygEditorPopupBinding.superclass.configure.call(this);
 };
 BespinEditorPopupBinding.prototype._configure=function(){
@@ -27103,13 +27137,13 @@ this.subscribe(BroadcastMessages.BESPIN_LOADED);
 if(this.getProperty("embedded")==true){
 this._isEmbedded=true;
 }
-var _1068=this.getProperty("validate");
-if(_1068==true){
+var _1074=this.getProperty("validate");
+if(_1074==true){
 this._hasStrictValidation=true;
 }
-var _1069=this.getProperty("validator");
-if(_1069!=null){
-this._validator=_1069;
+var _1075=this.getProperty("validator");
+if(_1075!=null){
+this._validator=_1075;
 }
 this.syntax=this.getProperty("syntax");
 switch(this.syntax){
@@ -27123,15 +27157,15 @@ this._startContent=Templates.getPlainText("sourcecodeeditor/"+this.syntax+".txt"
 }
 BespinEditorBinding.superclass.onBindingAttach.call(this);
 };
-BespinEditorBinding.prototype.handleBroadcast=function(_106a,arg){
-BespinEditorBinding.superclass.handleBroadcast.call(this,_106a,arg);
-switch(_106a){
+BespinEditorBinding.prototype.handleBroadcast=function(_1076,arg){
+BespinEditorBinding.superclass.handleBroadcast.call(this,_1076,arg);
+switch(_1076){
 case BroadcastMessages.BESPIN_LOADED:
-var _106c=this.getContentWindow().bindingMap.bespinwindow;
-if(_106c!=null){
-var _106d=_106c.getContentWindow();
-if(arg.broadcastWindow==_106d){
-this._bespinWindow=_106d;
+var _1078=this.getContentWindow().bindingMap.bespinwindow;
+if(_1078!=null){
+var _1079=_1078.getContentWindow();
+if(arg.broadcastWindow==_1079){
+this._bespinWindow=_1079;
 this._bespinEnvelope=arg.bespinEnvelope;
 this._bespinEditor=arg.bespinEditor;
 this._bespinElement=this._bespinEditor.textView.domNode;
@@ -27140,63 +27174,63 @@ this._bespinEnvelope.settings.set("theme","white");
 this._bespinEnvelope.settings.set("fontface","monospace");
 this._bespinEnvelope.settings.set("fontsize",13);
 this._bespinEnvelope.settings.set("tabstop",4);
-this.initializeEditorComponents(_106c);
+this.initializeEditorComponents(_1078);
 this._bespinElement.addEventListener(DOMEvents.MOUSEDOWN,this,false);
 var self=this;
-this._bespinEditor.textChanged.add(function(_106f,_1070,_1071){
+this._bespinEditor.textChanged.add(function(_107b,_107c,_107d){
 self.checkForDirty();
 });
 if(this._pageBinding!=null){
 this._initialize();
 }
-this.unsubscribe(_106a);
+this.unsubscribe(_1076);
 }
 }
 break;
 }
 };
-BespinEditorBinding.prototype._onPageInitialize=function(_1072){
-BespinEditorBinding.superclass._onPageInitialize.call(this,_1072);
+BespinEditorBinding.prototype._onPageInitialize=function(_107e){
+BespinEditorBinding.superclass._onPageInitialize.call(this,_107e);
 if(Client.isExplorer||this._bespinEditor!=null){
 this._initialize();
 }
 };
-BespinEditorBinding.prototype._activateEditor=function(_1073){
-if(_1073!=this._isActivated){
-this._isActivated=_1073;
-EditorBinding.isActive=_1073;
-var _1074=this.getContentWindow().standardEventHandler;
-if(_1073){
-_1074.enableNativeKeys(true);
+BespinEditorBinding.prototype._activateEditor=function(_107f){
+if(_107f!=this._isActivated){
+this._isActivated=_107f;
+EditorBinding.isActive=_107f;
+var _1080=this.getContentWindow().standardEventHandler;
+if(_107f){
+_1080.enableNativeKeys(true);
 }else{
-_1074.disableNativeKeys();
+_1080.disableNativeKeys();
 }
-var _1075=this.getContentWindow().bindingMap.broadcasterIsActive;
-if(_1075!=null){
-if(_1073){
-_1075.enable();
+var _1081=this.getContentWindow().bindingMap.broadcasterIsActive;
+if(_1081!=null){
+if(_107f){
+_1081.enable();
 }else{
-_1075.disable();
+_1081.disable();
 }
 }
-if(_1073){
+if(_107f){
 this.focus();
-var _1076=this._bespinEditor;
+var _1082=this._bespinEditor;
 }else{
 this.blur();
 }
 }
 };
 BespinEditorBinding.prototype.handleCommand=function(cmd,gui,val){
-var _107a=BespinEditorBinding.superclass.handleCommand.call(this,cmd,val);
-return _107a;
+var _1086=BespinEditorBinding.superclass.handleCommand.call(this,cmd,val);
+return _1086;
 };
 BespinEditorBinding.prototype._finalize=function(){
 this.setContent(this._startContent);
 BespinEditorBinding.superclass._finalize.call(this);
 };
-BespinEditorBinding.prototype.initializeEditorComponent=function(_107b){
-_107b.initializeSourceEditorComponent(this,this._bespinEditor);
+BespinEditorBinding.prototype.initializeEditorComponent=function(_1087){
+_1087.initializeSourceEditorComponent(this,this._bespinEditor);
 };
 BespinEditorBinding.prototype.clean=function(){
 BespinEditorBinding.superclass.clean.call(this);
@@ -27214,33 +27248,33 @@ return this._bespinWindow;
 BespinEditorBinding.prototype.getEditorDocument=function(){
 return this._bespinWindow.document;
 };
-BespinEditorBinding.prototype.setContent=function(_107d){
+BespinEditorBinding.prototype.setContent=function(_1089){
 if(!this._isFinalized){
-if(_107d!=this._startContent){
-this._startContent=_107d;
+if(_1089!=this._startContent){
+this._startContent=_1089;
 }
 }
 if(this.isInitialized&&this.getContentWindow().bindingMap!=null){
-this.getContentWindow().bindingMap.editorpage.setContent(_107d);
+this.getContentWindow().bindingMap.editorpage.setContent(_1089);
 this.resetUndoRedo();
 this._checksum=this.getCheckSum();
 }
 return true;
 };
 BespinEditorBinding.prototype.getContent=function(){
-var _107e=this.getContentWindow().bindingMap.editorpage.getContent();
-return _107e?_107e:"";
+var _108a=this.getContentWindow().bindingMap.editorpage.getContent();
+return _108a?_108a:"";
 };
 BespinEditorBinding.prototype.resetUndoRedo=function(){
 };
-BespinEditorBinding.prototype.cover=function(_107f){
+BespinEditorBinding.prototype.cover=function(_108b){
 if(this._pageBinding!=null){
-this._pageBinding.cover(_107f);
+this._pageBinding.cover(_108b);
 }
 };
-BespinEditorBinding.prototype.updateElement=function(_1080){
-if(_1080!=null&&this.shadowTree.dotnetinput!=null){
-var value=_1080.getAttribute("value");
+BespinEditorBinding.prototype.updateElement=function(_108c){
+if(_108c!=null&&this.shadowTree.dotnetinput!=null){
+var value=_108c.getAttribute("value");
 if(value!=null&&value!=this.shadowTree.dotnetinput.value){
 this.setValue(decodeURIComponent(value));
 }
@@ -27252,58 +27286,58 @@ BespinEditorBinding.prototype.addEditorEvents=function(){
 BespinEditorBinding.prototype.blurEditor=function(){
 };
 BespinEditorBinding.prototype.validate=function(){
-var _1082=true;
-var _1083=this.getContent();
+var _108e=true;
+var _108f=this.getContent();
 if(this._validator!=null){
-_1082=Validator.validateInformed(_1083,this._validator);
+_108e=Validator.validateInformed(_108f,this._validator);
 }else{
 switch(this.syntax){
 case BespinEditorBinding.syntax.XML:
 case BespinEditorBinding.syntax.XSL:
 case BespinEditorBinding.syntax.HTML:
-_1082=XMLParser.isWellFormedDocument(_1083,true);
-if(_1082==true&&this._hasStrictValidation){
+_108e=XMLParser.isWellFormedDocument(_108f,true);
+if(_108e==true&&this._hasStrictValidation){
 switch(this.syntax){
 case BespinEditorBinding.syntax.HTML:
-_1082=this._isValidHTML(_1083);
+_108e=this._isValidHTML(_108f);
 break;
 }
 }
 break;
 }
 }
-return _1082;
+return _108e;
 };
 BespinEditorBinding.prototype._isValidHTML=function(xml){
-var _1085=true;
+var _1091=true;
 var doc=XMLParser.parse(xml);
-var _1087=new List();
+var _1093=new List();
 if(doc!=null){
 var root=doc.documentElement;
 if(root.nodeName!="html"){
-_1087.add("MissingHtml");
+_1093.add("MissingHtml");
 }
 if(root.namespaceURI!=Constants.NS_XHTML){
-_1087.add("NamespaceURI");
+_1093.add("NamespaceURI");
 }
 var head=null,body=null;
-var _108b=new List(root.childNodes);
-while(_108b.hasNext()){
-var child=_108b.getNext();
+var _1097=new List(root.childNodes);
+while(_1097.hasNext()){
+var child=_1097.getNext();
 if(child.nodeType==Node.ELEMENT_NODE){
 switch(child.nodeName){
 case "head":
 if(head!=null){
-_1087.add("MultipleHead");
+_1093.add("MultipleHead");
 }
 if(body!=null){
-_1087.add("HeadBodyIndex");
+_1093.add("HeadBodyIndex");
 }
 head=child;
 break;
 case "body":
 if(body!=null){
-_1087.add("MultipleBody");
+_1093.add("MultipleBody");
 }
 body=child;
 break;
@@ -27311,17 +27345,17 @@ break;
 }
 }
 if(head==null){
-_1087.add("MissingHead");
+_1093.add("MissingHead");
 }
 if(body==null){
-_1087.add("MissingBody");
+_1093.add("MissingBody");
 }
 }
-if(_1087.hasEntries()){
-_1085=false;
-Dialog.error(StringBundle.getString("Composite.Web.SourceEditor","Invalid.HTML.DialogTitle"),StringBundle.getString("Composite.Web.SourceEditor","Invalid.HTML."+_1087.getFirst()));
+if(_1093.hasEntries()){
+_1091=false;
+Dialog.error(StringBundle.getString("Composite.Web.SourceEditor","Invalid.HTML.DialogTitle"),StringBundle.getString("Composite.Web.SourceEditor","Invalid.HTML."+_1093.getFirst()));
 }
-return _1085;
+return _1091;
 };
 BespinEditorBinding.prototype._isValidXSL=function(){
 return true;
@@ -27339,12 +27373,12 @@ BespinEditorBinding.prototype.hasBookmark=function(){
 BespinEditorBinding.prototype.deleteBookmark=function(){
 };
 BespinEditorBinding.prototype.getCheckSum=function(){
-var _108d=null;
+var _1099=null;
 var page=this._pageBinding;
 if(page!=null){
-_108d=page.getCheckSum();
+_1099=page.getCheckSum();
 }
-return _108d;
+return _1099;
 };
 AudioWindowBinding.prototype=new WindowBinding;
 AudioWindowBinding.prototype.constructor=AudioWindowBinding;
@@ -27391,9 +27425,9 @@ EventBroadcaster.broadcast(BroadcastMessages.START_COMPOSITE);
 }});
 }
 };
-ThrobberBinding.prototype.handleBroadcast=function(_108f,arg){
-ThrobberBinding.superclass.handleBroadcast.call(this,_108f,arg);
-switch(_108f){
+ThrobberBinding.prototype.handleBroadcast=function(_109b,arg){
+ThrobberBinding.superclass.handleBroadcast.call(this,_109b,arg);
+switch(_109b){
 case BroadcastMessages.COMPOSITE_START:
 case BroadcastMessages.START_COMPOSITE:
 this.hide();
@@ -27436,10 +27470,10 @@ ProgressBarBinding.superclass=Binding.prototype;
 ProgressBarBinding.WIDTH=190;
 ProgressBarBinding.NOTCH=9;
 ProgressBarBinding._bindingInstance=null;
-ProgressBarBinding.notch=function(_1092){
+ProgressBarBinding.notch=function(_109e){
 var bar=ProgressBarBinding._bindingInstance;
 if(bar!=null){
-bar.notch(_1092);
+bar.notch(_109e);
 }
 };
 function ProgressBarBinding(){
@@ -27458,9 +27492,9 @@ this._cover.setBusy(false);
 this._cover.setWidth(ProgressBarBinding.WIDTH);
 this.shadowTree.cover=this._cover;
 };
-ProgressBarBinding.prototype.notch=function(_1094){
-_1094=_1094?_1094:1;
-var width=this._cover.getWidth()-(ProgressBarBinding.NOTCH*_1094);
+ProgressBarBinding.prototype.notch=function(_10a0){
+_10a0=_10a0?_10a0:1;
+var width=this._cover.getWidth()-(ProgressBarBinding.NOTCH*_10a0);
 this._cover.setWidth(width>=0?width:0);
 };
 StartMenuItemBinding.prototype=new MenuItemBinding;
@@ -27478,9 +27512,9 @@ StartMenuItemBinding.superclass.onBindingRegister.call(this);
 this.subscribe(BroadcastMessages.COMPOSITE_START);
 this.subscribe(BroadcastMessages.COMPOSITE_STOP);
 };
-StartMenuItemBinding.prototype.handleBroadcast=function(_1096,arg){
-StartMenuItemBinding.superclass.handleBroadcast.call(this,_1096,arg);
-switch(_1096){
+StartMenuItemBinding.prototype.handleBroadcast=function(_10a2,arg){
+StartMenuItemBinding.superclass.handleBroadcast.call(this,_10a2,arg);
+switch(_10a2){
 case BroadcastMessages.COMPOSITE_START:
 if(!this.isChecked){
 this.check(true);
@@ -27493,9 +27527,9 @@ this.uncheck(true);
 break;
 }
 };
-StartMenuItemBinding.prototype.setChecked=function(_1098,_1099){
-StartMenuItemBinding.superclass.setChecked.call(this,_1098,_1099);
-if(!_1099){
+StartMenuItemBinding.prototype.setChecked=function(_10a4,_10a5){
+StartMenuItemBinding.superclass.setChecked.call(this,_10a4,_10a5);
+if(!_10a5){
 if(this.isChecked){
 EventBroadcaster.broadcast(BroadcastMessages.START_COMPOSITE);
 }else{
@@ -27507,60 +27541,60 @@ KeySetBinding.prototype=new Binding;
 KeySetBinding.prototype.constructor=KeySetBinding;
 KeySetBinding.superclass=Binding.prototype;
 KeySetBinding.keyEventHandlers={};
-KeySetBinding.registerKeyEventHandler=function(doc,key,_109c,_109d){
-var _109e=KeySetBinding.keyEventHandlers;
-if(Interfaces.isImplemented(IKeyEventHandler,_109d,true)==true){
-if(_109c!="*"){
-_109c=KeySetBinding._sanitizeKeyModifiers(_109c);
+KeySetBinding.registerKeyEventHandler=function(doc,key,_10a8,_10a9){
+var _10aa=KeySetBinding.keyEventHandlers;
+if(Interfaces.isImplemented(IKeyEventHandler,_10a9,true)==true){
+if(_10a8!="*"){
+_10a8=KeySetBinding._sanitizeKeyModifiers(_10a8);
 }
 var code=window.KeyEventCodes[key];
 if(!code){
 code=key.charCodeAt(0);
 }
-if(!_109e[doc]){
-_109e[doc]={};
+if(!_10aa[doc]){
+_10aa[doc]={};
 }
-if(!_109e[doc][code]){
-_109e[doc][code]={};
+if(!_10aa[doc][code]){
+_10aa[doc][code]={};
 }
-_109e[doc][code][_109c]=_109d;
+_10aa[doc][code][_10a8]=_10a9;
 }
 };
 KeySetBinding.handleKey=function(doc,e){
-var _10a2=false;
+var _10ae=false;
 var code=e.keyCode;
-var _10a4=KeySetBinding.keyEventHandlers;
-if(_10a4[doc]&&_10a4[doc][code]){
-var _10a5="[default]";
-_10a5+=code!=KeyEventCodes.VK_SHIFT?e.shiftKey?" shift":"":"";
-_10a5+=code!=KeyEventCodes.VK_CONTROL?e.ctrlKey?" control":"":"";
-var _10a6=_10a4[doc][code][_10a5];
-if(_10a6==null){
-_10a6=_10a4[doc][code]["*"];
+var _10b0=KeySetBinding.keyEventHandlers;
+if(_10b0[doc]&&_10b0[doc][code]){
+var _10b1="[default]";
+_10b1+=code!=KeyEventCodes.VK_SHIFT?e.shiftKey?" shift":"":"";
+_10b1+=code!=KeyEventCodes.VK_CONTROL?e.ctrlKey?" control":"":"";
+var _10b2=_10b0[doc][code][_10b1];
+if(_10b2==null){
+_10b2=_10b0[doc][code]["*"];
 }
-if(_10a6!=null){
-_10a6.handleKeyEvent(e);
-_10a2=true;
+if(_10b2!=null){
+_10b2.handleKeyEvent(e);
+_10ae=true;
 }
 }
-return _10a2;
+return _10ae;
 };
-KeySetBinding._sanitizeKeyModifiers=function(_10a7){
-var _10a8="[default]";
+KeySetBinding._sanitizeKeyModifiers=function(_10b3){
+var _10b4="[default]";
 var mods={};
-if(_10a7){
-new List(_10a7.split(" ")).each(function(_10aa){
-mods[_10aa]=true;
+if(_10b3){
+new List(_10b3.split(" ")).each(function(_10b6){
+mods[_10b6]=true;
 });
-function check(_10ab){
-if(mods[_10ab]){
-_10a8+=" "+_10ab;
+function check(_10b7){
+if(mods[_10b7]){
+_10b4+=" "+_10b7;
 }
 }
 check("shift");
 check("control");
 }
-return _10a8;
+return _10b4;
 };
 function KeySetBinding(){
 this.logger=SystemLogger.getLogger("KeySetBinding");
@@ -27575,16 +27609,16 @@ KeySetBinding.superclass.onBindingAttach.call(this);
 var self=this;
 var keys=new List(DOMUtil.getElementsByTagName(this.bindingElement,"key"));
 keys.each(function(key){
-var _10af=key.getAttribute("oncommand");
-var _10b0=key.getAttribute("preventdefault")=="true";
+var _10bb=key.getAttribute("oncommand");
+var _10bc=key.getAttribute("preventdefault")=="true";
 KeySetBinding.registerKeyEventHandler(self.bindingDocument,key.getAttribute("key"),key.getAttribute("modifiers"),{handleKeyEvent:function(e){
 DOMEvents.stopPropagation(e);
-if(_10b0){
+if(_10bc){
 DOMEvents.preventDefault(e);
 }
-var _10b2=self.bindingWindow.WindowManager;
+var _10be=self.bindingWindow.WindowManager;
 top.setTimeout(function(){
-Binding.evaluate(_10af,self);
+Binding.evaluate(_10bb,self);
 },0);
 }});
 });
@@ -27592,35 +27626,35 @@ Binding.evaluate(_10af,self);
 CursorBinding.prototype=new Binding;
 CursorBinding.prototype.constructor=CursorBinding;
 CursorBinding.superclass=Binding.prototype;
-CursorBinding.fadeIn=function(_10b3){
-if(_10b3 instanceof CursorBinding){
-_10b3.setOpacity(0);
-_10b3.show();
-new Animation({modifier:Client.isExplorer?18:9,onstep:function(_10b4){
-_10b3.setOpacity(Math.sin(_10b4*Math.PI/180));
+CursorBinding.fadeIn=function(_10bf){
+if(_10bf instanceof CursorBinding){
+_10bf.setOpacity(0);
+_10bf.show();
+new Animation({modifier:Client.isExplorer?18:9,onstep:function(_10c0){
+_10bf.setOpacity(Math.sin(_10c0*Math.PI/180));
 },onstop:function(){
-_10b3.setOpacity(1);
+_10bf.setOpacity(1);
 }}).play();
 }
 };
-CursorBinding.fadeOut=function(_10b5){
-if(_10b5 instanceof CursorBinding){
-new Animation({modifier:Client.isExplorer?18:9,onstep:function(_10b6){
-_10b5.setOpacity(Math.cos(_10b6*Math.PI/180));
+CursorBinding.fadeOut=function(_10c1){
+if(_10c1 instanceof CursorBinding){
+new Animation({modifier:Client.isExplorer?18:9,onstep:function(_10c2){
+_10c1.setOpacity(Math.cos(_10c2*Math.PI/180));
 },onstop:function(){
-_10b5.hide();
+_10c1.hide();
 }}).play();
 }
 };
-CursorBinding.moveOut=function(_10b7,_10b8,_10b9){
-if(_10b7 instanceof CursorBinding){
-_10b9.x-=16;
-_10b9.y-=16;
-new Animation({modifier:3,onstep:function(_10ba){
-var tal=Math.sin(_10ba*Math.PI/180);
-_10b7.setPosition(new Point(((1-tal)*_10b8.x)+((0+tal)*_10b9.x),((1-tal)*_10b8.y)+((0+tal)*_10b9.y)));
+CursorBinding.moveOut=function(_10c3,_10c4,_10c5){
+if(_10c3 instanceof CursorBinding){
+_10c5.x-=16;
+_10c5.y-=16;
+new Animation({modifier:3,onstep:function(_10c6){
+var tal=Math.sin(_10c6*Math.PI/180);
+_10c3.setPosition(new Point(((1-tal)*_10c4.x)+((0+tal)*_10c5.x),((1-tal)*_10c4.y)+((0+tal)*_10c5.y)));
 },onstop:function(){
-CursorBinding.fadeOut(_10b7);
+CursorBinding.fadeOut(_10c3);
 }}).play();
 }
 };
@@ -27679,13 +27713,13 @@ self._stopIndicatorBinding.show();
 CursorBinding.prototype.show=function(){
 CursorBinding.superclass.show.call(this);
 };
-CursorBinding.prototype.setOpacity=function(_10c0){
+CursorBinding.prototype.setOpacity=function(_10cc){
 if(Client.isMozilla){
-this.bindingElement.style.MozOpacity=new String(_10c0);
+this.bindingElement.style.MozOpacity=new String(_10cc);
 }else{
-this.bindingElement.style.filter="progid:DXImageTransform.Microsoft.Alpha(opacity="+new String(_10c0*100)+")";
+this.bindingElement.style.filter="progid:DXImageTransform.Microsoft.Alpha(opacity="+new String(_10cc*100)+")";
 }
-this._opacity=_10c0;
+this._opacity=_10cc;
 };
 CursorBinding.prototype.getOpacity=function(){
 return this._opacity;
@@ -27708,17 +27742,17 @@ CoverBinding.prototype.constructor=CoverBinding;
 CoverBinding.superclass=Binding.prototype;
 CoverBinding.CLASSNAME_TRANSPARENT="transparent";
 CoverBinding.fadeOut=function(cover){
-function setOpacity(_10c3){
+function setOpacity(_10cf){
 if(Client.isMozilla){
-cover.bindingElement.style.opacity=new String(_10c3);
+cover.bindingElement.style.opacity=new String(_10cf);
 }else{
-cover.bindingElement.style.filter="progid:DXImageTransform.Microsoft.Alpha(opacity="+new String(_10c3*100)+")";
+cover.bindingElement.style.filter="progid:DXImageTransform.Microsoft.Alpha(opacity="+new String(_10cf*100)+")";
 }
 }
 if(cover instanceof CoverBinding){
-new Animation({modifier:Client.isExplorer?30:18,onstep:function(_10c4){
+new Animation({modifier:Client.isExplorer?30:18,onstep:function(_10d0){
 if(Binding.exists(cover)){
-setOpacity(Math.cos(_10c4*Math.PI/180));
+setOpacity(Math.cos(_10d0*Math.PI/180));
 }
 },onstop:function(){
 if(Binding.exists(cover)){
@@ -27728,11 +27762,11 @@ cover.hide();
 }
 };
 CoverBinding.fadeIn=function(cover){
-function setOpacity(_10c6){
+function setOpacity(_10d2){
 if(Client.isMozilla){
-cover.bindingElement.style.MozOpacity=new String(_10c6);
+cover.bindingElement.style.MozOpacity=new String(_10d2);
 }else{
-cover.bindingElement.style.filter="progid:DXImageTransform.Microsoft.Alpha(opacity="+new String(_10c6*100)+")";
+cover.bindingElement.style.filter="progid:DXImageTransform.Microsoft.Alpha(opacity="+new String(_10d2*100)+")";
 }
 }
 if(cover instanceof CoverBinding){
@@ -27741,9 +27775,9 @@ if(Binding.exists(cover)){
 setOpacity(0);
 cover.show();
 }
-},onstep:function(_10c7){
+},onstep:function(_10d3){
 if(Binding.exists(cover)){
-setOpacity(Math.sin(_10c7*Math.PI/180));
+setOpacity(Math.sin(_10d3*Math.PI/180));
 }
 },onstop:function(){
 setOpacity(1);
@@ -27801,24 +27835,24 @@ this._position=DOMUtil.getUniversalMousePosition(e);
 break;
 }
 };
-CoverBinding.prototype.setBusy=function(_10c9){
-if(_10c9!=this._isBusy){
-if(_10c9){
+CoverBinding.prototype.setBusy=function(_10d5){
+if(_10d5!=this._isBusy){
+if(_10d5){
 this.bindingElement.style.cursor="wait";
 }else{
 this.bindingElement.style.cursor="default";
 }
-this._isBusy=_10c9;
+this._isBusy=_10d5;
 }
 };
-CoverBinding.prototype.setTransparent=function(_10ca){
-if(_10ca!=this._isTransparent){
-if(_10ca){
+CoverBinding.prototype.setTransparent=function(_10d6){
+if(_10d6!=this._isTransparent){
+if(_10d6){
 this.attachClassName(CoverBinding.CLASSNAME_TRANSPARENT);
 }else{
 this.detachClassName(CoverBinding.CLASSNAME_TRANSPARENT);
 }
-this._isTransparent=_10ca;
+this._isTransparent=_10d6;
 }
 };
 CoverBinding.prototype.setWidth=function(width){
@@ -27829,26 +27863,26 @@ this.bindingElement.style.width=new String(width+"px");
 CoverBinding.prototype.getWidth=function(){
 return this.bindingElement.offsetWidth;
 };
-CoverBinding.prototype.setHeight=function(_10cc){
-if(_10cc>=0){
-this.bindingElement.style.height=new String(_10cc+"px");
+CoverBinding.prototype.setHeight=function(_10d8){
+if(_10d8>=0){
+this.bindingElement.style.height=new String(_10d8+"px");
 }
 };
 CoverBinding.prototype.getHeight=function(){
 return this.bindingElement.offsetHeight;
 };
-CoverBinding.newInstance=function(_10cd){
-var _10ce=DOMUtil.createElementNS(Constants.NS_UI,"ui:cover",_10cd);
-return UserInterface.registerBinding(_10ce,CoverBinding);
+CoverBinding.newInstance=function(_10d9){
+var _10da=DOMUtil.createElementNS(Constants.NS_UI,"ui:cover",_10d9);
+return UserInterface.registerBinding(_10da,CoverBinding);
 };
 UncoverBinding.prototype=new Binding;
 UncoverBinding.prototype.constructor=UncoverBinding;
 UncoverBinding.superclass=Binding.prototype;
 UncoverBinding._bindingInstance=null;
 UncoverBinding.uncover=function(pos){
-var _10d0=UncoverBinding._bindingInstance;
-if(Binding.exists(_10d0)){
-_10d0.setPosition(pos);
+var _10dc=UncoverBinding._bindingInstance;
+if(Binding.exists(_10dc)){
+_10dc.setPosition(pos);
 }
 };
 function UncoverBinding(){
@@ -27895,8 +27929,8 @@ this._canvas.style.filter="progid:DXImageTransform.Microsoft.Fade(duration=30) p
 }
 this.bindingElement.appendChild(this._canvas);
 };
-TheatreBinding.prototype.play=function(_10d4){
-this._isFading=_10d4==true;
+TheatreBinding.prototype.play=function(_10e0){
+this._isFading=_10e0==true;
 if(!this._isPlaying){
 Application.lock(this);
 this.show();
@@ -27908,13 +27942,13 @@ this._fade();
 };
 TheatreBinding.prototype._fade=function(){
 if(Client.isMozilla){
-var _10d5=this._canvas.getContext("2d");
+var _10e1=this._canvas.getContext("2d");
 var alpha=parseInt(0);
 TheatreBinding._interval=top.setInterval(function(){
 if(alpha<0.5){
-_10d5.fillStyle="rgba(0,0,0,"+new String(alpha)+")";
-_10d5.clearRect(0,0,300,150);
-_10d5.fillRect(0,0,300,150);
+_10e1.fillStyle="rgba(0,0,0,"+new String(alpha)+")";
+_10e1.clearRect(0,0,300,150);
+_10e1.fillRect(0,0,300,150);
 alpha+=0.002;
 }else{
 top.clearInterval(TheatreBinding._interval);
@@ -27936,8 +27970,8 @@ top.clearInterval(TheatreBinding._interval);
 if(Client.isExplorer){
 this._canvas.style.backgroundColor="transparent";
 }else{
-var _10d7=this._canvas.getContext("2d");
-_10d7.clearRect(0,0,300,150);
+var _10e3=this._canvas.getContext("2d");
+_10e3.clearRect(0,0,300,150);
 }
 }
 Application.unlock(this,true);
@@ -27964,37 +27998,37 @@ SourceCodeViewerBinding.prototype.onBindingAttach=function(){
 this._syntax=this.getProperty("syntax");
 switch(this._syntax){
 case SourceCodeViewerBinding.syntax.XML:
-var _10d8=SourceCodeViewerBinding.stylesheets[this._syntax];
+var _10e4=SourceCodeViewerBinding.stylesheets[this._syntax];
 this._transformer=new XSLTransformer();
-this._transformer.importStylesheet(_10d8);
+this._transformer.importStylesheet(_10e4);
 break;
 default:
 throw "SourceCodeViewer: Syntax error!";
 this._syntax=null;
 break;
 }
-var _10d9=DOMUtil.getElementsByTagName(this.bindingElement,"textarea").item(0);
-if(_10d9){
-this._startcontent=_10d9.value;
+var _10e5=DOMUtil.getElementsByTagName(this.bindingElement,"textarea").item(0);
+if(_10e5){
+this._startcontent=_10e5.value;
 }
 this.setURL(SourceCodeViewerBinding.URL_DEFAULT);
 this.addActionListener(WindowBinding.ACTION_ONLOAD);
 SourceCodeViewerBinding.superclass.onBindingAttach.call(this);
 };
-SourceCodeViewerBinding.prototype.handleAction=function(_10da){
-SourceCodeViewerBinding.superclass.handleAction.call(this,_10da);
-switch(_10da.type){
+SourceCodeViewerBinding.prototype.handleAction=function(_10e6){
+SourceCodeViewerBinding.superclass.handleAction.call(this,_10e6);
+switch(_10e6.type){
 case WindowBinding.ACTION_ONLOAD:
-if(_10da.target==this){
+if(_10e6.target==this){
 if(this._startcontent){
 this.view(this._startcontent);
 }
 this.dispatchAction(SourceCodeViewerBinding.ACTION_INITIALIZED);
-_10da.consume();
+_10e6.consume();
 }
 break;
 }
-SourceCodeViewerBinding.superclass.handleAction.call(this,_10da);
+SourceCodeViewerBinding.superclass.handleAction.call(this,_10e6);
 };
 SourceCodeViewerBinding.prototype.view=function(arg){
 switch(this._syntax){
@@ -28015,16 +28049,16 @@ doc=object;
 }
 }
 if(doc){
-var _10de=this._transformer.transformToString(doc);
-this._inject(_10de);
+var _10ea=this._transformer.transformToString(doc);
+this._inject(_10ea);
 }
 };
 SourceCodeViewerBinding.prototype._viewHTML=function(arg){
 };
 SourceCodeViewerBinding.prototype._viewJavascript=function(arg){
 };
-SourceCodeViewerBinding.prototype._inject=function(_10e1){
-this.getContentDocument().body.innerHTML=_10e1;
+SourceCodeViewerBinding.prototype._inject=function(_10ed){
+this.getContentDocument().body.innerHTML=_10ed;
 };
 PersistanceBinding.prototype=new Binding;
 PersistanceBinding.prototype.constructor=PersistanceBinding;
@@ -28072,10 +28106,10 @@ this._resolver.setNamespacePrefixResolver({"p":Constants.NS_PERSISTANCE});
 }
 var list=this._resolver.resolveAll("p:persist",doc.documentElement);
 while(list.hasNext()){
-var _10e9=list.getNext();
-var id=_10e9.getAttribute("id");
+var _10f5=list.getNext();
+var id=_10f5.getAttribute("id");
 map[id]={};
-var atts=this._resolver.resolveAll("p:att",_10e9);
+var atts=this._resolver.resolveAll("p:att",_10f5);
 while(atts.hasNext()){
 var att=atts.getNext();
 var name=att.getAttribute("name");
@@ -28093,15 +28127,15 @@ while(elm.hasChildNodes()){
 elm.removeChild(elm.lastChild);
 }
 for(var id in map){
-var _10f3=DOMUtil.createElementNS(Constants.NS_PERSISTANCE,"persist",doc);
-_10f3.setAttribute("id",id);
+var _10ff=DOMUtil.createElementNS(Constants.NS_PERSISTANCE,"persist",doc);
+_10ff.setAttribute("id",id);
 for(var name in map[id]){
 var att=DOMUtil.createElementNS(Constants.NS_PERSISTANCE,"att",doc);
 att.setAttribute("name",name);
 att.setAttribute("value",map[id][name]);
-_10f3.appendChild(att);
+_10ff.appendChild(att);
 }
-elm.appendChild(_10f3);
+elm.appendChild(_10ff);
 }
 return doc;
 };
@@ -28127,9 +28161,9 @@ this.bindingElement.save(PersistanceBinding.USERDATAKEY);
 PersistanceBinding.prototype._getDocMozilla=function(){
 delete window.globalStorage[PersistanceBinding.GLOBALSTOREKEY].persistance;
 var doc=null;
-var _10fd=window.globalStorage[PersistanceBinding.GLOBALSTOREKEY].persistance;
-if(_10fd){
-doc=XMLParser.parse(_10fd);
+var _1109=window.globalStorage[PersistanceBinding.GLOBALSTOREKEY].persistance;
+if(_1109){
+doc=XMLParser.parse(_1109);
 }else{
 var file=PersistanceBinding.TEMPLATE;
 doc=Templates.getTemplateDocument(file);
@@ -28141,8 +28175,8 @@ elm.removeChild(elm.lastChild);
 return doc;
 };
 PersistanceBinding.prototype._persistDocMozilla=function(doc){
-var _1101=DOMSerializer.serialize(doc,true);
-window.globalStorage[PersistanceBinding.GLOBALSTOREKEY].persistance=_1101;
+var _110d=DOMSerializer.serialize(doc,true);
+window.globalStorage[PersistanceBinding.GLOBALSTOREKEY].persistance=_110d;
 };
 LocalizationSelectorBinding.prototype=new SelectorBinding;
 LocalizationSelectorBinding.prototype.constructor=LocalizationSelectorBinding;
@@ -28159,9 +28193,9 @@ LocalizationSelectorBinding.superclass.onBindingAttach.call(this);
 this.subscribe(BroadcastMessages.UPDATE_LANGUAGES);
 this._populateFromLanguages(Localization.languages);
 };
-LocalizationSelectorBinding.prototype.handleBroadcast=function(_1102,arg){
-LocalizationSelectorBinding.superclass.handleBroadcast.call(this,_1102,arg);
-switch(_1102){
+LocalizationSelectorBinding.prototype.handleBroadcast=function(_110e,arg){
+LocalizationSelectorBinding.superclass.handleBroadcast.call(this,_110e,arg);
+switch(_110e){
 case BroadcastMessages.UPDATE_LANGUAGES:
 this._populateFromLanguages(arg);
 break;
@@ -28174,11 +28208,11 @@ break;
 };
 LocalizationSelectorBinding.prototype._populateFromLanguages=function(list){
 if(list!=null&&list.hasEntries()&&list.getLength()>1){
-var _1105=new List();
+var _1111=new List();
 list.each(function(lang){
-_1105.add(new SelectorBindingSelection(lang.Name,lang.SerializedActionToken,lang.IsCurrent,null));
+_1111.add(new SelectorBindingSelection(lang.Name,lang.SerializedActionToken,lang.IsCurrent,null));
 });
-this.populateFromList(_1105);
+this.populateFromList(_1111);
 this.show();
 }else{
 this.hide();
@@ -28190,8 +28224,8 @@ this._backupSelectionValue=this._selectionValue;
 };
 LocalizationSelectorBinding.prototype.onValueChange=function(){
 var self=this;
-Dialog.warning(StringBundle.getString(StringBundle.UI,"UserElementProvider.ChangeOtherActiveLocaleDialogTitle"),StringBundle.getString(StringBundle.UI,"UserElementProvider.ChangeOtherActiveLocaleDialogText"),Dialog.BUTTONS_ACCEPT_CANCEL,{handleDialogResponse:function(_1109){
-switch(_1109){
+Dialog.warning(StringBundle.getString(StringBundle.UI,"UserElementProvider.ChangeOtherActiveLocaleDialogTitle"),StringBundle.getString(StringBundle.UI,"UserElementProvider.ChangeOtherActiveLocaleDialogText"),Dialog.BUTTONS_ACCEPT_CANCEL,{handleDialogResponse:function(_1115){
+switch(_1115){
 case Dialog.RESPONSE_ACCEPT:
 if(Application.hasDirtyDockTabs()){
 self.subscribe(BroadcastMessages.SAVE_ALL_DONE);
@@ -28211,8 +28245,8 @@ break;
 LocalizationSelectorBinding.prototype._invokeAction=function(){
 var token=this.getValue();
 var root=SystemNode.taggedNodes.get("Root");
-var _110c=new SystemAction({Label:"Generated Action: Change Locale",ActionToken:token});
-SystemAction.invoke(_110c,root);
+var _1118=new SystemAction({Label:"Generated Action: Change Locale",ActionToken:token});
+SystemAction.invoke(_1118,root);
 };
 ResponseBinding.prototype=new Binding;
 ResponseBinding.prototype.constructor=ResponseBinding;
@@ -28233,9 +28267,9 @@ this.propertyMethodMap["checksum"]=this._update;
 this._update();
 };
 ResponseBinding.prototype._update=function(){
-var _110d=this.getProperty("status");
-if(_110d!=null){
-switch(_110d){
+var _1119=this.getProperty("status");
+if(_1119!=null){
+switch(_1119){
 case "success":
 this.dispatchAction(ResponseBinding.ACTION_SUCCESS);
 break;
@@ -28258,14 +28292,14 @@ function UserInterfaceMapping(map){
 this.logger=SystemLogger.getLogger("UserInterfaceMapping");
 this.map=map;
 }
-UserInterfaceMapping.prototype.merge=function(_1110){
-for(var _1111 in _1110.map){
-this.map[_1111]=_1110.getBindingImplementation(_1111);
+UserInterfaceMapping.prototype.merge=function(_111c){
+for(var _111d in _111c.map){
+this.map[_111d]=_111c.getBindingImplementation(_111d);
 }
 };
-UserInterfaceMapping.prototype.getBindingImplementation=function(_1112){
-var _1113=null;
-var name=_1112.nodeName;
+UserInterfaceMapping.prototype.getBindingImplementation=function(_111e){
+var _111f=null;
+var name=_111e.nodeName;
 if(Client.isExplorer){
 var small=name.toLowerCase();
 if(name==small){
@@ -28275,42 +28309,42 @@ name=small;
 }
 }
 if(this.map[name]){
-_1113=this.map[name];
+_111f=this.map[name];
 }
-return _1113;
+return _111f;
 };
 var UserInterface=new function(){
-var _1116=(Client.isMozilla?MozEditorTextBoxBinding:IEEditorTextBoxBinding);
-var _1117=new UserInterfaceMapping({"body":RootBinding,"ui:binding":Binding,"ui:box":Binding,"ui:dialog":DialogBinding,"ui:dialoghead":DialogHeadBinding,"ui:dialogbody":DialogBodyBinding,"ui:dialogmatrix":DialogMatrixBinding,"ui:dialogset":DialogSetBinding,"ui:dialogborder":DialogBorderBinding,"ui:dialogcover":DialogCoverBinding,"ui:titlebar":DialogTitleBarBinding,"ui:titlebarbody":DialogTitleBarBodyBinding,"ui:window":WindowBinding,"ui:controlgroup":ControlGroupBinding,"ui:control":ControlBinding,"ui:menubar":MenuBarBinding,"ui:menu":MenuBinding,"ui:menubody":MenuBodyBinding,"ui:menugroup":MenuGroupBinding,"ui:menuitem":MenuItemBinding,"ui:menupopup":MenuPopupBinding,"ui:tabbox":TabBoxBinding,"ui:tabs":TabsBinding,"ui:tab":TabBinding,"ui:tabpanels":TabPanelsBinding,"ui:tabpanel":TabPanelBinding,"ui:splitbox":SplitBoxBinding,"ui:splitpanel":SplitPanelBinding,"ui:splitter":SplitterBinding,"ui:decks":DecksBinding,"ui:deck":DeckBinding,"ui:toolbar":ToolBarBinding,"ui:toolbargroup":ToolBarGroupBinding,"ui:toolbarbody":ToolBarBodyBinding,"ui:toolbarbutton":ToolBarButtonBinding,"ui:toolbarlabel":ToolBarLabelBinding,"ui:labelbox":LabelBinding,"ui:text":TextBinding,"ui:clickbutton":ClickButtonBinding,"ui:tree":TreeBinding,"ui:treebody":TreeBodyBinding,"ui:treenode":TreeNodeBinding,"ui:flexbox":FlexBoxBinding,"ui:scrollbox":ScrollBoxBinding,"ui:popupset":PopupSetBinding,"ui:popup":PopupBinding,"ui:shadow":ShadowBinding,"ui:matrix":MatrixBinding,"ui:sourceeditor":BespinEditorBinding,"ui:visualeditor":VisualEditorBinding,"ui:visualmultieditor":VisualMultiEditorBinding,"ui:visualmultitemplateeditor":VisualMultiTemplateEditorBinding,"ui:wysiwygeditortoolbarbutton":EditorToolBarButtonBinding,"ui:dock":DockBinding,"ui:docktabs":DockTabsBinding,"ui:docktab":DockTabBinding,"ui:dockpanels":DockPanelsBinding,"ui:dockpanel":DockPanelBinding,"ui:page":PageBinding,"ui:editorpage":EditorPageBinding,"ui:dialogpage":DialogPageBinding,"ui:pagebody":DialogPageBodyBinding,"ui:wizardpage":WizardPageBinding,"ui:explorer":ExplorerBinding,"ui:explorerdecks":ExplorerDecksBinding,"ui:explorerdeck":ExplorerDeckBinding,"ui:explorersplitter":ExplorerSplitterBinding,"ui:explorermenu":ExplorerMenuBinding,"ui:explorertoolbar":ExplorerToolBarBinding,"ui:explorertoolbarbutton":ExplorerToolBarButtonBinding,"ui:stagecontainer":StageContainerBinding,"ui:stage":StageBinding,"ui:stagedecks":StageDecksBinding,"ui:stagedeck":StageDeckBinding,"ui:viewset":ViewSetBinding,"ui:view":ViewBinding,"ui:broadcasterset":BroadcasterSetBinding,"ui:broadcaster":BroadcasterBinding,"ui:fields":FieldsBinding,"ui:fieldgroup":FieldGroupBinding,"ui:field":FieldBinding,"ui:fielddesc":FieldDescBinding,"ui:fielddata":FieldDataBinding,"ui:fieldhelp":FieldHelpBinding,"ui:datainput":DataInputBinding,"ui:selector":SelectorBinding,"ui:simpleselector":SimpleSelectorBinding,"ui:multiselector":MultiSelectorBinding,"ui:datainputselector":DataInputSelectorBinding,"ui:datainputdialog":DataInputDialogBinding,"ui:textbox":TextBoxBinding,"ui:editortextbox":_1116,"ui:radiodatagroup":RadioDataGroupBinding,"ui:radio":RadioDataBinding,"ui:checkbutton":CheckButtonBinding,"ui:checkbox":CheckBoxBinding,"ui:checkboxgroup":CheckBoxGroupBinding,"ui:datadialog":DataDialogBinding,"ui:postbackdialog":PostBackDataDialogBinding,"ui:nullpostbackdialog":NullPostBackDataDialogBinding,"ui:htmldatadialog":HTMLDataDialogBinding,"ui:functioneditor":FunctionEditorDataBinding,"ui:parametereditor":ParameterEditorDataBinding,"ui:keyset":KeySetBinding,"ui:cover":CoverBinding,"ui:uncover":UncoverBinding,"ui:cursor":CursorBinding,"ui:dialogtoolbar":DialogToolBarBinding,"ui:focus":FocusBinding,"ui:balloonset":BalloonSetBinding,"ui:balloon":BalloonBinding,"ui:error":ErrorBinding,"ui:throbber":ThrobberBinding,"ui:progressbar":ProgressBarBinding,"ui:lazybinding":LazyBindingBinding,"ui:sourcecodeviewer":SourceCodeViewerBinding,"ui:theatre":TheatreBinding,"ui:persistance":PersistanceBinding,"ui:filepicker":FilePickerBinding,"ui:request":RequestBinding,"ui:response":ResponseBinding});
-var _1118=SystemLogger.getLogger("UserInterface");
+var _1122=(Client.isMozilla?MozEditorTextBoxBinding:IEEditorTextBoxBinding);
+var _1123=new UserInterfaceMapping({"body":RootBinding,"ui:binding":Binding,"ui:box":Binding,"ui:dialog":DialogBinding,"ui:dialoghead":DialogHeadBinding,"ui:dialogbody":DialogBodyBinding,"ui:dialogmatrix":DialogMatrixBinding,"ui:dialogset":DialogSetBinding,"ui:dialogborder":DialogBorderBinding,"ui:dialogcover":DialogCoverBinding,"ui:titlebar":DialogTitleBarBinding,"ui:titlebarbody":DialogTitleBarBodyBinding,"ui:window":WindowBinding,"ui:controlgroup":ControlGroupBinding,"ui:control":ControlBinding,"ui:menubar":MenuBarBinding,"ui:menu":MenuBinding,"ui:menubody":MenuBodyBinding,"ui:menugroup":MenuGroupBinding,"ui:menuitem":MenuItemBinding,"ui:menupopup":MenuPopupBinding,"ui:tabbox":TabBoxBinding,"ui:tabs":TabsBinding,"ui:tab":TabBinding,"ui:tabpanels":TabPanelsBinding,"ui:tabpanel":TabPanelBinding,"ui:splitbox":SplitBoxBinding,"ui:splitpanel":SplitPanelBinding,"ui:splitter":SplitterBinding,"ui:decks":DecksBinding,"ui:deck":DeckBinding,"ui:toolbar":ToolBarBinding,"ui:toolbargroup":ToolBarGroupBinding,"ui:toolbarbody":ToolBarBodyBinding,"ui:toolbarbutton":ToolBarButtonBinding,"ui:toolbarlabel":ToolBarLabelBinding,"ui:labelbox":LabelBinding,"ui:text":TextBinding,"ui:clickbutton":ClickButtonBinding,"ui:tree":TreeBinding,"ui:treebody":TreeBodyBinding,"ui:treenode":TreeNodeBinding,"ui:flexbox":FlexBoxBinding,"ui:scrollbox":ScrollBoxBinding,"ui:popupset":PopupSetBinding,"ui:popup":PopupBinding,"ui:shadow":ShadowBinding,"ui:matrix":MatrixBinding,"ui:sourceeditor":BespinEditorBinding,"ui:visualeditor":VisualEditorBinding,"ui:visualmultieditor":VisualMultiEditorBinding,"ui:visualmultitemplateeditor":VisualMultiTemplateEditorBinding,"ui:wysiwygeditortoolbarbutton":EditorToolBarButtonBinding,"ui:dock":DockBinding,"ui:docktabs":DockTabsBinding,"ui:docktab":DockTabBinding,"ui:dockpanels":DockPanelsBinding,"ui:dockpanel":DockPanelBinding,"ui:page":PageBinding,"ui:editorpage":EditorPageBinding,"ui:dialogpage":DialogPageBinding,"ui:pagebody":DialogPageBodyBinding,"ui:wizardpage":WizardPageBinding,"ui:explorer":ExplorerBinding,"ui:explorerdecks":ExplorerDecksBinding,"ui:explorerdeck":ExplorerDeckBinding,"ui:explorersplitter":ExplorerSplitterBinding,"ui:explorermenu":ExplorerMenuBinding,"ui:explorertoolbar":ExplorerToolBarBinding,"ui:explorertoolbarbutton":ExplorerToolBarButtonBinding,"ui:stagecontainer":StageContainerBinding,"ui:stage":StageBinding,"ui:stagedecks":StageDecksBinding,"ui:stagedeck":StageDeckBinding,"ui:viewset":ViewSetBinding,"ui:view":ViewBinding,"ui:broadcasterset":BroadcasterSetBinding,"ui:broadcaster":BroadcasterBinding,"ui:fields":FieldsBinding,"ui:fieldgroup":FieldGroupBinding,"ui:field":FieldBinding,"ui:fielddesc":FieldDescBinding,"ui:fielddata":FieldDataBinding,"ui:fieldhelp":FieldHelpBinding,"ui:datainput":DataInputBinding,"ui:selector":SelectorBinding,"ui:simpleselector":SimpleSelectorBinding,"ui:multiselector":MultiSelectorBinding,"ui:datainputselector":DataInputSelectorBinding,"ui:datainputdialog":DataInputDialogBinding,"ui:textbox":TextBoxBinding,"ui:editortextbox":_1122,"ui:radiodatagroup":RadioDataGroupBinding,"ui:radio":RadioDataBinding,"ui:checkbutton":CheckButtonBinding,"ui:checkbox":CheckBoxBinding,"ui:checkboxgroup":CheckBoxGroupBinding,"ui:datadialog":DataDialogBinding,"ui:postbackdialog":PostBackDataDialogBinding,"ui:nullpostbackdialog":NullPostBackDataDialogBinding,"ui:htmldatadialog":HTMLDataDialogBinding,"ui:functioneditor":FunctionEditorDataBinding,"ui:parametereditor":ParameterEditorDataBinding,"ui:keyset":KeySetBinding,"ui:cover":CoverBinding,"ui:uncover":UncoverBinding,"ui:cursor":CursorBinding,"ui:dialogtoolbar":DialogToolBarBinding,"ui:focus":FocusBinding,"ui:balloonset":BalloonSetBinding,"ui:balloon":BalloonBinding,"ui:error":ErrorBinding,"ui:throbber":ThrobberBinding,"ui:progressbar":ProgressBarBinding,"ui:lazybinding":LazyBindingBinding,"ui:sourcecodeviewer":SourceCodeViewerBinding,"ui:theatre":TheatreBinding,"ui:persistance":PersistanceBinding,"ui:filepicker":FilePickerBinding,"ui:request":RequestBinding,"ui:response":ResponseBinding});
+var _1124=SystemLogger.getLogger("UserInterface");
 var keys={};
-this.registerBinding=function(_111a,impl){
-var _111c=null;
-if(!this.hasBinding(_111a)){
-var _111d=DOMUtil.getParentWindow(_111a);
-if(DOMUtil.getLocalName(_111a)!="bindingmapping"){
-if(!impl&&_111a.getAttribute("binding")!=null){
-var _111e=_111a.getAttribute("binding");
-impl=_111d[_111e];
+this.registerBinding=function(_1126,impl){
+var _1128=null;
+if(!this.hasBinding(_1126)){
+var _1129=DOMUtil.getParentWindow(_1126);
+if(DOMUtil.getLocalName(_1126)!="bindingmapping"){
+if(!impl&&_1126.getAttribute("binding")!=null){
+var _112a=_1126.getAttribute("binding");
+impl=_1129[_112a];
 if(impl==null){
-throw "No such binding in scope: "+_111e;
+throw "No such binding in scope: "+_112a;
 }
 }
 if(!impl){
-var _111f=_111d.DocumentManager;
-if(_111f){
-var _1120=_111f.customUserInterfaceMapping;
-if(_1120){
-impl=_1120.getBindingImplementation(_111a);
+var _112b=_1129.DocumentManager;
+if(_112b){
+var _112c=_112b.customUserInterfaceMapping;
+if(_112c){
+impl=_112c.getBindingImplementation(_1126);
 }
 }
 }
 if(!impl){
-impl=_1117.getBindingImplementation(_111a);
+impl=_1123.getBindingImplementation(_1126);
 }
 if(impl!=null&&!Application.isMalFunctional){
 try{
-_111c=new impl();
+_1128=new impl();
 }
 catch(exception){
 Application.isMalFunctional=true;
@@ -28318,95 +28352,95 @@ alert("No such binding!\n"+exception.message+(exception.stack?"\n"+exception.sta
 throw (exception);
 }
 }
-if(_111c){
+if(_1128){
 var key=KeyMaster.getUniqueKey();
-_111a.setAttribute("key",key);
-_111c.key=key;
-if(!_111a.id){
-_111a.id=key;
+_1126.setAttribute("key",key);
+_1128.key=key;
+if(!_1126.id){
+_1126.id=key;
 }
-keys[key]={element:_111a,binding:_111c};
-_111c.onBindingRegister();
-}
-}
-}
-return _111c;
-};
-this.unRegisterBinding=function(_1122){
-terminate(_1122);
-};
-function terminate(_1123){
-if(Binding.exists(_1123)==true){
-var key=_1123.key;
-Binding.destroy(_1123);
-if(key){
-if(keys[key]){
-keys[key].binding=null;
-keys[key].element=null;
-delete keys[key];
-_1123=null;
-}else{
-_1118.error("URGH: "+key);
-}
-}
-}
-}
-this.getElement=function(_1125){
-var _1126=null;
-if(keys[_1125.key]){
-_1126=keys[_1125.key].element;
-}
-return _1126;
-};
-this.getBinding=function(_1127){
-var _1128=null;
-if(_1127&&_1127.nodeType==Node.ELEMENT_NODE){
-try{
-var key=_1127.getAttribute("key");
-if(key&&keys[key]){
-_1128=keys[key].binding;
-}
-}
-catch(exception){
-alert("getBinding exception occured on element:\n\n\t\t"+_1127);
-if(exception.stack){
-alert(exception.stack);
+keys[key]={element:_1126,binding:_1128};
+_1128.onBindingRegister();
 }
 }
 }
 return _1128;
 };
-this.getBindingByKey=function(key){
-var _112b=null;
+this.unRegisterBinding=function(_112e){
+terminate(_112e);
+};
+function terminate(_112f){
+if(Binding.exists(_112f)==true){
+var key=_112f.key;
+Binding.destroy(_112f);
+if(key){
 if(keys[key]){
-_112b=keys[key].binding;
+keys[key].binding=null;
+keys[key].element=null;
+delete keys[key];
+_112f=null;
+}else{
+_1124.error("URGH: "+key);
 }
-return _112b;
+}
+}
+}
+this.getElement=function(_1131){
+var _1132=null;
+if(keys[_1131.key]){
+_1132=keys[_1131.key].element;
+}
+return _1132;
 };
-this.hasBinding=function(_112c){
-return this.getBinding(_112c)!=null;
+this.getBinding=function(_1133){
+var _1134=null;
+if(_1133&&_1133.nodeType==Node.ELEMENT_NODE){
+try{
+var key=_1133.getAttribute("key");
+if(key&&keys[key]){
+_1134=keys[key].binding;
+}
+}
+catch(exception){
+alert("getBinding exception occured on element:\n\n\t\t"+_1133);
+if(exception.stack){
+alert(exception.stack);
+}
+}
+}
+return _1134;
 };
-this.isBindingVisible=function(_112d){
-var _112e=Application.isOperational;
-if(_112e==true){
-var _112f=new Crawler();
-_112f.type=NodeCrawler.TYPE_ASCENDING;
-_112f.id="visibilitycrawler";
-_112f.addFilter(function(_1130){
-var b=UserInterface.getBinding(_1130);
+this.getBindingByKey=function(key){
+var _1137=null;
+if(keys[key]){
+_1137=keys[key].binding;
+}
+return _1137;
+};
+this.hasBinding=function(_1138){
+return this.getBinding(_1138)!=null;
+};
+this.isBindingVisible=function(_1139){
+var _113a=Application.isOperational;
+if(_113a==true){
+var _113b=new Crawler();
+_113b.type=NodeCrawler.TYPE_ASCENDING;
+_113b.id="visibilitycrawler";
+_113b.addFilter(function(_113c){
+var b=UserInterface.getBinding(_113c);
 var res=0;
 if(!b.isVisible){
-_112e=false;
+_113a=false;
 res=NodeCrawler.STOP_CRAWLING;
 }
 return res;
 });
-_112f.crawl(_112d.bindingElement);
-_112f.dispose();
+_113b.crawl(_1139.bindingElement);
+_113b.dispose();
 }
-return _112e;
+return _113a;
 };
-var _1133=null;
+var _113f=null;
 this.getBindingCount=function(){
 var count=0;
 for(var key in keys){
@@ -28415,43 +28449,43 @@ count++;
 return count;
 };
 this.setPoint=function(){
-_1133={};
+_113f={};
 for(var key in keys){
-_1133[key]=true;
+_113f[key]=true;
 }
 };
 this.getPoint=function(){
-var _1137=null;
-if(_1133){
-_1137=new List();
+var _1143=null;
+if(_113f){
+_1143=new List();
 for(var key in keys){
-if(!_1133[key]){
-_1137.add(key);
+if(!_113f[key]){
+_1143.add(key);
 }
 }
 }
-return _1137;
+return _1143;
 };
 this.clearPoint=function(){
-_1133=null;
+_113f=null;
 };
 this.trackUndisposedBindings=function(){
-var _1139=null;
+var _1145=null;
 for(var key in keys){
 var entry=keys[key];
 if(!entry.binding||!entry.element||!Binding.exists(entry.binding)){
-if(!_1139){
-_1139="Bindings illdisposed: ";
+if(!_1145){
+_1145="Bindings illdisposed: ";
 }
-_1139+=entry.binding+" ";
+_1145+=entry.binding+" ";
 }
 }
-if(_1139!=null){
-_1118.error(_1139);
+if(_1145!=null){
+_1124.error(_1145);
 }
 };
-this.autoTrackDisposedBindings=function(_113c){
-if(_113c){
+this.autoTrackDisposedBindings=function(_1148){
+if(_1148){
 if(!window.disposedbindingtrackinterval){
 window.disposedbindingtrackinterval=window.setInterval(UserInterface.trackUndisposedBindings,10000);
 this.trackUndisposedBindings();
@@ -28472,33 +28506,33 @@ SOAPRequest.prototype.constructor=SOAPRequest;
 SOAPRequest.superclass=SOAPMessage.prototype;
 SOAPRequest.resolver=new XPathResolver();
 SOAPRequest.resolver.setNamespacePrefixResolver({"soap":Constants.NS_ENVELOPE,"xhtml":Constants.NS_XHTML});
-SOAPRequest.newInstance=function(_113d,_113e){
-var _113f=_113d+"/"+_113e;
-var _1140=new SOAPRequest(_113f);
-var _1141=SOAPRequest.resolver;
-_1140.document=Templates.getTemplateDocument("soapenvelope.xml");
-_1140.envelope=_1141.resolve("soap:Envelope",_1140.document);
-_1140.header=_1141.resolve("soap:Header",_1140.envelope);
-_1140.body=_1141.resolve("soap:Body",_1140.envelope);
-return _1140;
+SOAPRequest.newInstance=function(_1149,_114a){
+var _114b=_1149+"/"+_114a;
+var _114c=new SOAPRequest(_114b);
+var _114d=SOAPRequest.resolver;
+_114c.document=Templates.getTemplateDocument("soapenvelope.xml");
+_114c.envelope=_114d.resolve("soap:Envelope",_114c.document);
+_114c.header=_114d.resolve("soap:Header",_114c.envelope);
+_114c.body=_114d.resolve("soap:Body",_114c.envelope);
+return _114c;
 };
-SOAPRequest._parseResponse=function(_1142){
-var _1143=null;
-var _1144=false;
-var doc=_1142.responseXML;
+SOAPRequest._parseResponse=function(_114e){
+var _114f=null;
+var _1150=false;
+var doc=_114e.responseXML;
 if(doc!=null&&doc.documentElement!=null){
 switch(doc.documentElement.namespaceURI){
 case Constants.NS_ENVELOPE:
-_1143=SOAPRequestResponse.newInstance(_1142.responseXML);
+_114f=SOAPRequestResponse.newInstance(_114e.responseXML);
 if(Application.isOffLine){
 EventBroadcaster.broadcast(BroadcastMessages.SERVER_ONLINE);
 }
 break;
 case Constants.NS_XHTML:
 if(!Application.isOffLine){
-var body=SOAPRequest.resolver.resolve("xhtml:html/xhtml:body",_1142.responseXML);
+var body=SOAPRequest.resolver.resolve("xhtml:html/xhtml:body",_114e.responseXML);
 if(body&&body.getAttribute("id")=="offline"){
-_1144=true;
+_1150=true;
 }
 }
 break;
@@ -28517,38 +28551,38 @@ break;
 }
 }else{
 if(!Application.isOffLine&&!Application.isLoggedOut){
-var text=_1142.responseText;
+var text=_114e.responseText;
 if(text.indexOf("id=\"offline\"")>-1){
-_1144=true;
+_1150=true;
 }else{
-var cry="Invalid SOAP response: \n\n"+_1142.responseText;
+var cry="Invalid SOAP response: \n\n"+_114e.responseText;
 SystemLogger.getLogger("SOAPRequest._parseResponse (static)").error(cry);
 if(Application.isDeveloperMode){
 alert("Invalid SOAP response");
-window.open("about:blank").document.write(_1142.responseText);
+window.open("about:blank").document.write(_114e.responseText);
 }
 }
 }
 }
-if(_1144==true){
+if(_1150==true){
 EventBroadcaster.broadcast(BroadcastMessages.SERVER_OFFLINE);
 }
-return _1143;
+return _114f;
 };
-function SOAPRequest(_1149){
+function SOAPRequest(_1155){
 this.logger=SystemLogger.getLogger("SOAPRequest");
-this.action=_1149;
+this.action=_1155;
 return this;
 }
 SOAPRequest.prototype.invoke=function(url){
-var _114b=DOMUtil.getXMLHTTPRequest();
-var _114c=null;
-_114b.open("post",url,false);
-_114b.setRequestHeader("Content-Type","text/xml; charset=UTF-8");
-_114b.setRequestHeader("SOAPAction",this.action);
+var _1157=DOMUtil.getXMLHTTPRequest();
+var _1158=null;
+_1157.open("post",url,false);
+_1157.setRequestHeader("Content-Type","text/xml; charset=UTF-8");
+_1157.setRequestHeader("SOAPAction",this.action);
 try{
-_114b.send(this.document);
-_114c=SOAPRequest._parseResponse(_114b);
+_1157.send(this.document);
+_1158=SOAPRequest._parseResponse(_1157);
 }
 catch(exception){
 var error="Dysfuntion in SOAP invoke: "+url;
@@ -28558,12 +28592,12 @@ error+="\n"+DOMSerializer.serialize(this.document,true);
 this.logger.error(error);
 throw exception;
 }
-_114b=null;
-return _114c;
+_1157=null;
+return _1158;
 };
 SOAPRequest.prototype.dispose=function(){
-for(var _114e in this){
-this[_114e]=null;
+for(var _115a in this){
+this[_115a]=null;
 }
 };
 SOAPRequestResponse.prototype=new SOAPMessage;
@@ -28575,26 +28609,26 @@ SOAPRequestResponse.logger=SystemLogger.getLogger("SOAPRequestResponse");
 SOAPRequestResponse.resolver=new XPathResolver();
 SOAPRequestResponse.resolver.setNamespacePrefixResolver({"soap":Constants.NS_ENVELOPE});
 SOAPRequestResponse.newInstance=function(doc){
-var _1150=null;
+var _115c=null;
 if(doc&&doc.documentElement){
-_1150=new SOAPRequestResponse();
-var _1151=SOAPRequestResponse.resolver;
-_1150.document=doc;
-_1150.envelope=_1151.resolve("soap:Envelope",_1150.document);
-_1150.header=_1151.resolve("soap:Header",_1150.envelope);
-_1150.body=_1151.resolve("soap:Body",_1150.envelope);
-var fault=_1151.resolve("soap:Fault",_1150.body);
+_115c=new SOAPRequestResponse();
+var _115d=SOAPRequestResponse.resolver;
+_115c.document=doc;
+_115c.envelope=_115d.resolve("soap:Envelope",_115c.document);
+_115c.header=_115d.resolve("soap:Header",_115c.envelope);
+_115c.body=_115d.resolve("soap:Body",_115c.envelope);
+var fault=_115d.resolve("soap:Fault",_115c.body);
 if(fault){
 SOAPRequestResponse.logger.fatal(DOMSerializer.serialize(fault,true));
-_1150.fault={element:fault,faultNamespaceURI:fault.namespaceURI,faultCode:DOMUtil.getTextContent(_1151.resolve("faultcode",fault)),faultString:DOMUtil.getTextContent(_1151.resolve("faultstring",fault)),detail:fault.getElementsByTagName("detail").item(0)};
+_115c.fault={element:fault,faultNamespaceURI:fault.namespaceURI,faultCode:DOMUtil.getTextContent(_115d.resolve("faultcode",fault)),faultString:DOMUtil.getTextContent(_115d.resolve("faultstring",fault)),detail:fault.getElementsByTagName("detail").item(0)};
 }
 }
-return _1150;
+return _115c;
 };
-function SOAPFault(_1153,_1154,_1155){
-this._operationName=_1153;
-this._operationAddress=_1154;
-this._faultString=_1155;
+function SOAPFault(_115f,_1160,_1161){
+this._operationName=_115f;
+this._operationAddress=_1160;
+this._faultString=_1161;
 }
 SOAPFault.prototype.getOperationName=function(){
 return this._operationName;
@@ -28605,52 +28639,52 @@ return this._operationAddress;
 SOAPFault.prototype.getFaultString=function(){
 return this._faultString;
 };
-SOAPFault.newInstance=function(_1156,fault){
-return new SOAPFault(_1156.name,_1156.address,fault.faultString);
+SOAPFault.newInstance=function(_1162,fault){
+return new SOAPFault(_1162.name,_1162.address,fault.faultString);
 };
-function SOAPEncoder(wsdl,_1159){
+function SOAPEncoder(wsdl,_1165){
 this.logger=SystemLogger.getLogger("SOAPEncoder");
 this._wsdl=wsdl;
-this._operation=_1159;
+this._operation=_1165;
 this._namespace=wsdl.getTargetNamespace();
 }
 SOAPEncoder.prototype.encode=function(args){
-var _115b=SOAPRequest.newInstance(this._namespace,this._operation);
-var root=this._appendElement(_115b.body,this._operation);
-var _115d=this._wsdl.getSchema();
-var _115e=_115d.lookup(this._operation);
-var _115f=_115e.getListedDefinitions();
-while(_115f.hasNext()){
-var def=_115f.getNext();
+var _1167=SOAPRequest.newInstance(this._namespace,this._operation);
+var root=this._appendElement(_1167.body,this._operation);
+var _1169=this._wsdl.getSchema();
+var _116a=_1169.lookup(this._operation);
+var _116b=_116a.getListedDefinitions();
+while(_116b.hasNext()){
+var def=_116b.getNext();
 var elm=this._appendElement(root,def.name);
 var val=args.getNext();
 this._resolve(elm,def,val);
 }
-return _115b;
+return _1167;
 };
-SOAPEncoder.prototype._resolve=function(_1163,_1164,value){
-var _1166=this._wsdl.getSchema();
-if(_1164.isSimpleValue){
-this._appendText(_1163,value,_1164.type=="string");
+SOAPEncoder.prototype._resolve=function(_116f,_1170,value){
+var _1172=this._wsdl.getSchema();
+if(_1170.isSimpleValue){
+this._appendText(_116f,value,_1170.type=="string");
 }else{
-var _1167=_1166.lookup(_1164.type);
-if(_1167 instanceof SchemaSimpleType){
+var _1173=_1172.lookup(_1170.type);
+if(_1173 instanceof SchemaSimpleType){
 alert("SOAPEncoder: SchemaSimpleType support not implemented!");
 }else{
-var defs=_1167.getListedDefinitions();
-if(_1167.isArray){
-var _1169=new List(value);
+var defs=_1173.getListedDefinitions();
+if(_1173.isArray){
+var _1175=new List(value);
 var def=defs.getNext();
-while(_1169.hasNext()){
-var elm=this._appendElement(_1163,def.name);
-var val=_1169.getNext();
+while(_1175.hasNext()){
+var elm=this._appendElement(_116f,def.name);
+var val=_1175.getNext();
 this._resolve(elm,def,val);
 }
 }else{
 while(defs.hasNext()){
 try{
 var def=defs.getNext();
-var elm=this._appendElement(_1163,def.name);
+var elm=this._appendElement(_116f,def.name);
 var val=value[def.name];
 this._resolve(elm,def,val);
 }
@@ -28667,43 +28701,43 @@ var child=DOMUtil.createElementNS(this._namespace,name,node.ownerDocument);
 node.appendChild(child);
 return child;
 };
-SOAPEncoder.prototype._appendText=function(_1170,value,_1172){
+SOAPEncoder.prototype._appendText=function(_117c,value,_117e){
 if(value!=null){
 value=new String(value);
 var safe=new String("");
 var chars=value.split("");
-var _1175=false;
+var _1181=false;
 var i=0,c;
 while(c=chars[i++]){
-var _1178=true;
+var _1184=true;
 var code=c.charCodeAt(0);
 switch(code){
 case 9:
 case 10:
 case 13:
-_1178=false;
+_1184=false;
 break;
 default:
 if((code>=32&&code<=55295)||(code>=57344&&code<=65533)||(code>=65536&&code<=1114111)){
-_1178=false;
+_1184=false;
 }
 break;
 }
-if(!_1178){
+if(!_1184){
 safe+=c;
 }else{
-_1175=true;
+_1181=true;
 }
 }
-if(_1175){
+if(_1181){
 this.logger.debug("Illegal XML character(s) was deleted from the string: "+value);
 }
-_1170.appendChild(_1170.ownerDocument.createTextNode(safe));
+_117c.appendChild(_117c.ownerDocument.createTextNode(safe));
 }
 };
-function SOAPDecoder(wsdl,_117b){
+function SOAPDecoder(wsdl,_1187){
 this._wsdl=wsdl;
-this._operation=_117b;
+this._operation=_1187;
 this._resolver=new XPathResolver();
 this._resolver.setNamespacePrefixResolver({"result":wsdl.getTargetNamespace()});
 }
@@ -28713,57 +28747,57 @@ return this._resolver.resolve("result:"+xpath,node);
 SOAPDecoder.prototype.resolveAll=function(xpath,node){
 return this._resolver.resolveAll("result:"+xpath,node);
 };
-SOAPDecoder.prototype.decode=function(_1180){
-var _1181=null;
-var _1182=this._wsdl.getSchema();
+SOAPDecoder.prototype.decode=function(_118c){
+var _118d=null;
+var _118e=this._wsdl.getSchema();
 var id=this._operation+"Response";
-var _1184=this.resolve(id,_1180.body);
-var _1185=_1182.lookup(id);
-var _1186=_1185.getListedDefinitions();
-while(!_1181&&_1186.hasNext()){
-var def=_1186.getNext();
-var elm=this.resolve(def.name,_1184);
+var _1190=this.resolve(id,_118c.body);
+var _1191=_118e.lookup(id);
+var _1192=_1191.getListedDefinitions();
+while(!_118d&&_1192.hasNext()){
+var def=_1192.getNext();
+var elm=this.resolve(def.name,_1190);
 if(def.type==SchemaDefinition.TYPE_XML_DOCUMENT){
-_1181=DOMUtil.getDOMDocument();
+_118d=DOMUtil.getDOMDocument();
 var e=elm.getElementsByTagName("*").item(0);
-if(typeof _1181.importNode!=Types.UNDEFINED){
-_1181.appendChild(_1181.importNode(e,true));
+if(typeof _118d.importNode!=Types.UNDEFINED){
+_118d.appendChild(_118d.importNode(e,true));
 }else{
-_1181.loadXML(DOMSerializer.serialize(e));
+_118d.loadXML(DOMSerializer.serialize(e));
 }
 }else{
-_1181=this._compute(elm,def);
+_118d=this._compute(elm,def);
 }
 }
-return _1181;
+return _118d;
 };
-SOAPDecoder.prototype._compute=function(_118a,_118b){
-var _118c=null;
-var _118d=this._wsdl.getSchema();
-if(_118b.isSimpleValue){
-_118c=this._getSimpleValue(_118a,_118b.type);
+SOAPDecoder.prototype._compute=function(_1196,_1197){
+var _1198=null;
+var _1199=this._wsdl.getSchema();
+if(_1197.isSimpleValue){
+_1198=this._getSimpleValue(_1196,_1197.type);
 }else{
-var _118e=_118d.lookup(_118b.type);
-if(_118e instanceof SchemaSimpleType){
-_118c=this._getSimpleValue(_118a,_118e.restrictionType);
+var _119a=_1199.lookup(_1197.type);
+if(_119a instanceof SchemaSimpleType){
+_1198=this._getSimpleValue(_1196,_119a.restrictionType);
 }else{
-var defs=_118e.getListedDefinitions();
-if(_118e.isArray){
-_118c=[];
+var defs=_119a.getListedDefinitions();
+if(_119a.isArray){
+_1198=[];
 var def=defs.getNext();
-var elms=this.resolveAll(def.type,_118a);
+var elms=this.resolveAll(def.type,_1196);
 while(elms.hasNext()){
 var elm=elms.getNext();
-_118c.push(this._compute(elm,def));
+_1198.push(this._compute(elm,def));
 }
 }else{
-_118c={};
+_1198={};
 defs.reset();
 while(defs.hasNext()){
 var def=defs.getNext();
-var elm=this.resolve(def.name,_118a);
+var elm=this.resolve(def.name,_1196);
 if(elm){
-_118c[def.name]=this._compute(elm,def);
+_1198[def.name]=this._compute(elm,def);
 }else{
 if(def.isRequired){
 throw new Error("SOAPDecoder: invalid SOAP response.");
@@ -28773,48 +28807,48 @@ throw new Error("SOAPDecoder: invalid SOAP response.");
 }
 }
 }
-return _118c;
+return _1198;
 };
-SOAPDecoder.prototype._getSimpleValue=function(_1193,type){
-var _1195=null;
-if(_1193.firstChild&&_1193.firstChild.nodeType==Node.TEXT_NODE){
-if(Client.isMozilla&&_1193.childNodes.length>1){
-_1193.normalize();
+SOAPDecoder.prototype._getSimpleValue=function(_119f,type){
+var _11a1=null;
+if(_119f.firstChild&&_119f.firstChild.nodeType==Node.TEXT_NODE){
+if(Client.isMozilla&&_119f.childNodes.length>1){
+_119f.normalize();
 }
-_1195=_1193.firstChild.data;
+_11a1=_119f.firstChild.data;
 switch(type){
 case Schema.types.STRING:
-_1195=_1195;
+_11a1=_11a1;
 break;
 case Schema.types.INT:
 case Schema.types.FLOAT:
 case Schema.types.DOUBLE:
-_1195=Number(_1195);
+_11a1=Number(_11a1);
 break;
 case Schema.types.BOOLEAN:
-_1195=_1195=="true";
+_11a1=_11a1=="true";
 break;
 default:
 throw ("SOAPDecoder: schema type \""+type+"\" not handled.");
 break;
 }
 }
-return _1195;
+return _11a1;
 };
 Schema.prototype=new XPathResolver;
 Schema.prototype.constructor=Schema;
 Schema.superclass=XPathResolver.prototype;
 Schema.types={STRING:"string",INT:"int",FLOAT:"float",DOUBLE:"double",BOOLEAN:"boolean"};
 Schema.notSupportedException=new Error("Schema: Schema structure not supported!");
-function Schema(_1196){
+function Schema(_11a2){
 this.logger=SystemLogger.getLogger("Schema");
-this._map=this._parseSchema(_1196);
+this._map=this._parseSchema(_11a2);
 }
-Schema.prototype._parseSchema=function(_1197){
+Schema.prototype._parseSchema=function(_11a3){
 this.setNamespacePrefixResolver({"wsdl":Constants.NS_WSDL,"soap":Constants.NS_SOAP,"s":Constants.NS_SCHEMA});
-var _1198={};
+var _11a4={};
 var entry=null;
-var rules=this.resolveAll("s:*[@name]",_1197);
+var rules=this.resolveAll("s:*[@name]",_11a3);
 while(rules.hasNext()){
 var rule=rules.getNext();
 switch(DOMUtil.getLocalName(rule)){
@@ -28828,34 +28862,34 @@ case "simpleType":
 entry=new SchemaSimpleType(this,rule);
 break;
 }
-_1198[rule.getAttribute("name")]=entry;
+_11a4[rule.getAttribute("name")]=entry;
 }
-return _1198;
+return _11a4;
 };
 Schema.prototype.lookup=function(name){
 return this._map[name];
 };
 SchemaDefinition.TYPE_XML_DOCUMENT="xmldocument";
-function SchemaDefinition(_119d){
+function SchemaDefinition(_11a9){
 this.logger=SystemLogger.getLogger("SchemaDefinition");
 this.isRequired=null;
 this.type=null;
-this._parse(_119d);
+this._parse(_11a9);
 }
-SchemaDefinition.prototype._parse=function(_119e){
-var min=_119e.getAttribute("minOccurs");
-var max=_119e.getAttribute("maxOccurs");
-var type=_119e.getAttribute("type");
-this.name=_119e.getAttribute("name");
+SchemaDefinition.prototype._parse=function(_11aa){
+var min=_11aa.getAttribute("minOccurs");
+var max=_11aa.getAttribute("maxOccurs");
+var type=_11aa.getAttribute("type");
+this.name=_11aa.getAttribute("name");
 this.isRequired=min!="0";
 if(type){
 var split=type.split(":");
 var sort=split[0];
-var _11a4=split[1];
+var _11b0=split[1];
 this.isSimpleValue=sort!="tns";
-this.type=_11a4;
+this.type=_11b0;
 }else{
-var elm=_119e.getElementsByTagName("*").item(0);
+var elm=_11aa.getElementsByTagName("*").item(0);
 if(elm&&DOMUtil.getLocalName(elm)=="complexType"&&elm.getAttribute("mixed")=="true"){
 elm=elm.getElementsByTagName("*").item(0);
 if(elm&&DOMUtil.getLocalName(elm)=="sequence"){
@@ -28873,13 +28907,13 @@ SchemaType.prototype={};
 SchemaElementType.prototype=new SchemaType;
 SchemaElementType.prototype.constructor=SchemaElementType;
 SchemaElementType.superclass=SchemaType.prototype;
-function SchemaElementType(_11a6,_11a7){
+function SchemaElementType(_11b2,_11b3){
 this.logger=SystemLogger.getLogger("SchemaElementType");
 this._definitions=new List();
-this._parseListedDefinitions(_11a6,_11a7);
+this._parseListedDefinitions(_11b2,_11b3);
 }
-SchemaElementType.prototype._parseListedDefinitions=function(_11a8,_11a9){
-var els=_11a8.resolveAll("s:complexType/s:sequence/s:element",_11a9);
+SchemaElementType.prototype._parseListedDefinitions=function(_11b4,_11b5){
+var els=_11b4.resolveAll("s:complexType/s:sequence/s:element",_11b5);
 if(els.hasEntries()){
 while(els.hasNext()){
 this._definitions.add(new SchemaDefinition(els.getNext()));
@@ -28895,13 +28929,13 @@ return this._definitions.copy();
 SchemaComplexType.prototype=new SchemaType;
 SchemaComplexType.prototype.constructor=SchemaComplexType;
 SchemaComplexType.superclass=SchemaType.prototype;
-function SchemaComplexType(_11ab,_11ac){
+function SchemaComplexType(_11b7,_11b8){
 this._definitions=new List();
-this._parseListedDefinitions(_11ab,_11ac);
-this.isArray=_11ac.getAttribute("name").indexOf("ArrayOf")>-1;
+this._parseListedDefinitions(_11b7,_11b8);
+this.isArray=_11b8.getAttribute("name").indexOf("ArrayOf")>-1;
 }
-SchemaComplexType.prototype._parseListedDefinitions=function(_11ad,_11ae){
-var els=_11ad.resolveAll("s:sequence/s:element",_11ae);
+SchemaComplexType.prototype._parseListedDefinitions=function(_11b9,_11ba){
+var els=_11b9.resolveAll("s:sequence/s:element",_11ba);
 if(els.hasEntries()){
 while(els.hasNext()){
 var el=els.getNext();
@@ -28917,14 +28951,14 @@ return this._definitions.copy();
 SchemaSimpleType.prototype=new SchemaType;
 SchemaSimpleType.prototype.constructor=SchemaSimpleType;
 SchemaSimpleType.superclass=SchemaType.prototype;
-function SchemaSimpleType(_11b1,_11b2){
+function SchemaSimpleType(_11bd,_11be){
 this.restrictionType=null;
-this._parse(_11b1,_11b2);
+this._parse(_11bd,_11be);
 }
-SchemaSimpleType.prototype._parse=function(_11b3,_11b4){
-var _11b5=_11b3.resolve("s:restriction",_11b4);
-if(_11b5){
-this.restrictionType=_11b5.getAttribute("base").split(":")[1];
+SchemaSimpleType.prototype._parse=function(_11bf,_11c0){
+var _11c1=_11bf.resolve("s:restriction",_11c0);
+if(_11c1){
+this.restrictionType=_11c1.getAttribute("base").split(":")[1];
 }else{
 throw Schema.notSupportedException;
 }
@@ -28943,17 +28977,17 @@ this._schema=new Schema(this.resolve("wsdl:types/s:schema",this._root));
 this._WSDLURL=url;
 }
 WebServiceResolver.prototype._getDocumentElement=function(url){
-var _11b8=null;
-var _11b9=DOMUtil.getXMLHTTPRequest();
-_11b9.open("get",url,false);
-_11b9.send(null);
-if(_11b9.responseXML){
-_11b8=_11b9.responseXML.documentElement;
+var _11c4=null;
+var _11c5=DOMUtil.getXMLHTTPRequest();
+_11c5.open("get",url,false);
+_11c5.send(null);
+if(_11c5.responseXML){
+_11c4=_11c5.responseXML.documentElement;
 }else{
-alert(_11b9.responseText);
+alert(_11c5.responseText);
 throw new Error("WebServiceResolver: Could not read WSDL: "+url);
 }
-return _11b8;
+return _11c4;
 };
 WebServiceResolver.prototype.getPortAddress=function(){
 return this._WSDLURL.split("?WSDL")[0];
@@ -28962,27 +28996,27 @@ WebServiceResolver.prototype.getTargetNamespace=function(){
 return this._root.getAttribute("targetNamespace");
 };
 WebServiceResolver.prototype.getOperations=function(){
-var _11ba=new List();
-var _11bb=this.resolveAll("wsdl:portType/wsdl:operation",this._root);
-if(_11bb.hasEntries()){
-while(_11bb.hasNext()){
-var _11bc=_11bb.getNext();
-var name=_11bc.getAttribute("name");
-_11ba.add(new WebServiceOperation(name,this.getPortAddress(),new SOAPEncoder(this,name),new SOAPDecoder(this,name)));
+var _11c6=new List();
+var _11c7=this.resolveAll("wsdl:portType/wsdl:operation",this._root);
+if(_11c7.hasEntries()){
+while(_11c7.hasNext()){
+var _11c8=_11c7.getNext();
+var name=_11c8.getAttribute("name");
+_11c6.add(new WebServiceOperation(name,this.getPortAddress(),new SOAPEncoder(this,name),new SOAPDecoder(this,name)));
 }
 }else{
 throw new Error("WebServiceResolver: No portType found.");
 }
-return _11ba;
+return _11c6;
 };
 WebServiceResolver.prototype.getSchema=function(){
 return this._schema;
 };
-function WebServiceOperation(name,_11bf,_11c0,_11c1){
+function WebServiceOperation(name,_11cb,_11cc,_11cd){
 this.name=name;
-this.address=_11bf;
-this.encoder=_11c0;
-this.decoder=_11c1;
+this.address=_11cb;
+this.encoder=_11cc;
+this.decoder=_11cd;
 }
 WebServiceOperation.prototype={name:null,address:null,encoder:null,decoder:null};
 WebServiceProxy.isLoggingEnabled=true;
@@ -28994,50 +29028,50 @@ this.logger=SystemLogger.getLogger("WebServiceProxy");
 WebServiceProxy.createProxy=function(url){
 var wsdl=new WebServiceResolver(url);
 var proxy=new WebServiceProxy();
-var _11c5=wsdl.getOperations();
-_11c5.each(function(_11c6){
-proxy[_11c6.name]=WebServiceProxy.createProxyOperation(_11c6);
+var _11d1=wsdl.getOperations();
+_11d1.each(function(_11d2){
+proxy[_11d2.name]=WebServiceProxy.createProxyOperation(_11d2);
 });
 return proxy;
 };
-WebServiceProxy.prototype._log=function(_11c7,_11c8){
-if(WebServiceProxy.isLoggingEnabled&&Application.isDeveloperMode&&_11c8){
-var log=_11c8 instanceof SOAPRequest?"SOAPRequest for ":"SOAPResponse from ";
-log+=_11c7.address+": "+_11c7.name+"\n\n";
-log+=DOMSerializer.serialize(_11c8.document,true);
+WebServiceProxy.prototype._log=function(_11d3,_11d4){
+if(WebServiceProxy.isLoggingEnabled&&Application.isDeveloperMode&&_11d4){
+var log=_11d4 instanceof SOAPRequest?"SOAPRequest for ":"SOAPResponse from ";
+log+=_11d3.address+": "+_11d3.name+"\n\n";
+log+=DOMSerializer.serialize(_11d4.document,true);
 this.logger.fine(log);
 }
 };
-WebServiceProxy.createProxyOperation=function(_11ca){
+WebServiceProxy.createProxyOperation=function(_11d6){
 return function(){
-var _11cb=null,_11cc=_11ca.encoder.encode(new List(arguments));
-this._log(_11ca,_11cc);
-var _11cd=_11cc.invoke(_11ca.address);
-this._log(_11ca,_11cd);
-if(_11cd){
-if(_11cd.fault){
-_11cb=SOAPFault.newInstance(_11ca,_11cd.fault);
+var _11d7=null,_11d8=_11d6.encoder.encode(new List(arguments));
+this._log(_11d6,_11d8);
+var _11d9=_11d8.invoke(_11d6.address);
+this._log(_11d6,_11d9);
+if(_11d9){
+if(_11d9.fault){
+_11d7=SOAPFault.newInstance(_11d6,_11d9.fault);
 if(WebServiceProxy.isFaultHandler){
-WebServiceProxy.handleFault(_11cb,_11cc,_11cd);
+WebServiceProxy.handleFault(_11d7,_11d8,_11d9);
 }
 }else{
 if(WebServiceProxy.isDOMResult){
-_11cb=_11cd.document;
+_11d7=_11d9.document;
 }else{
-_11cb=_11ca.decoder.decode(_11cd);
+_11d7=_11d6.decoder.decode(_11d9);
 }
 }
 }
-_11cc.dispose();
-return _11cb;
+_11d8.dispose();
+return _11d7;
 };
 };
-WebServiceProxy.handleFault=function(_11ce,_11cf,_11d0){
+WebServiceProxy.handleFault=function(_11da,_11db,_11dc){
 try{
-Dialog.invokeModal(Dialog.URL_SERVICEFAULT,null,{soapFault:_11ce,soapRequest:_11cf,soapResponse:_11d0});
+Dialog.invokeModal(Dialog.URL_SERVICEFAULT,null,{soapFault:_11da,soapRequest:_11db,soapResponse:_11dc});
 }
 catch(exception){
-alert(_11ce.getFaultString());
+alert(_11da.getFaultString());
 }
 };
 var ConfigurationService=null;
@@ -29062,19 +29096,19 @@ this.INTERVAL_OFFLINE=4*1000;
 this._actions=new List();
 this._index={};
 this.index=0;
-var _11d1=SystemLogger.getLogger("MessageQueue");
-var _11d2=null;
-var _11d3=0;
-var _11d4=null;
-var _11d5=new Map();
-var _11d6=new Map();
-var _11d7=false;
-var _11d8=false;
-var _11d9={"Main":DockBinding.MAIN,"BottomLeft":DockBinding.BOTTOMLEFT,"BottomRight":DockBinding.BOTTOMRIGHT,"RightTop":DockBinding.RIGHTTOP,"RightBottom":DockBinding.RIGHTBOTTOM,"AbsBottomLeft":DockBinding.ABSBOTTOMLEFT,"AbsBottomRight":DockBinding.ABSBOTTOMRIGHT};
+var _11dd=SystemLogger.getLogger("MessageQueue");
+var _11de=null;
+var _11df=0;
+var _11e0=null;
+var _11e1=new Map();
+var _11e2=new Map();
+var _11e3=false;
+var _11e4=false;
+var _11e5={"Main":DockBinding.MAIN,"BottomLeft":DockBinding.BOTTOMLEFT,"BottomRight":DockBinding.BOTTOMRIGHT,"RightTop":DockBinding.RIGHTTOP,"RightBottom":DockBinding.RIGHTBOTTOM,"AbsBottomLeft":DockBinding.ABSBOTTOMLEFT,"AbsBottomRight":DockBinding.ABSBOTTOMRIGHT};
 this.initialize=function(){
-_11d2=ConsoleMessageQueueService;
-_11d3=_11d2.GetCurrentSequenceNumber("dummyparam!");
-this.index=_11d3;
+_11de=ConsoleMessageQueueService;
+_11df=_11de.GetCurrentSequenceNumber("dummyparam!");
+this.index=_11df;
 EventBroadcaster.subscribe(BroadcastMessages.VIEW_COMPLETED,this);
 EventBroadcaster.subscribe(BroadcastMessages.VIEW_CLOSED,this);
 EventBroadcaster.subscribe(BroadcastMessages.SERVER_OFFLINE,this);
@@ -29082,21 +29116,21 @@ EventBroadcaster.subscribe(BroadcastMessages.SERVER_ONLINE,this);
 window.messageQueueInterval=window.setInterval(MessageQueue._autoupdate,MessageQueue.INTERVAL_ONLINE);
 };
 this._autoupdate=function(){
-if(!_11d7){
+if(!_11e3){
 if(!MessageQueue._actions.hasEntries()){
-var _11da=WebServiceProxy.isLoggingEnabled;
+var _11e6=WebServiceProxy.isLoggingEnabled;
 if(Application.isLoggedIn){
-_11d8=true;
+_11e4=true;
 WebServiceProxy.isLoggingEnabled=false;
 MessageQueue.update();
-WebServiceProxy.isLoggingEnabled=_11da;
-_11d8=false;
+WebServiceProxy.isLoggingEnabled=_11e6;
+_11e4=false;
 }
 }
 }
 };
 this._pokeserver=function(){
-if(_11d7==true){
+if(_11e3==true){
 if(ReadyService.IsServerReady(true)){
 MessageQueue._lockSystem(false);
 }
@@ -29104,110 +29138,110 @@ MessageQueue._lockSystem(false);
 };
 this.update=function(){
 if(Application.isLoggedIn){
-EventBroadcaster.broadcast(BroadcastMessages.MESSAGEQUEUE_REQUESTED,_11d8);
-var _11db=_11d2.GetMessages(Application.CONSOLE_ID,this.index);
-if(_11db!=null){
-if(Types.isDefined(_11db.CurrentSequenceNumber)){
-var _11dc=_11db.CurrentSequenceNumber;
-if(_11dc<this.index){
-_11d1.debug("SERVER WAS RESTARTED! old messagequeue index: "+this.index+", new messagequeue index: "+_11dc);
+EventBroadcaster.broadcast(BroadcastMessages.MESSAGEQUEUE_REQUESTED,_11e4);
+var _11e7=_11de.GetMessages(Application.CONSOLE_ID,this.index);
+if(_11e7!=null){
+if(Types.isDefined(_11e7.CurrentSequenceNumber)){
+var _11e8=_11e7.CurrentSequenceNumber;
+if(_11e8<this.index){
+_11dd.debug("SERVER WAS RESTARTED! old messagequeue index: "+this.index+", new messagequeue index: "+_11e8);
 }
-this.index=_11dc;
-var _11dd=new List(_11db.ConsoleActions);
-if(_11dd.hasEntries()){
-this.evaluate(_11dd);
+this.index=_11e8;
+var _11e9=new List(_11e7.ConsoleActions);
+if(_11e9.hasEntries()){
+this.evaluate(_11e9);
 }else{
 if(!this._actions.hasEntries()){
 broadcastUpdateEvaluated();
 }
 }
 }else{
-_11d1.error("No sequencenumber in MessageQueue response!");
+_11dd.error("No sequencenumber in MessageQueue response!");
 }
 }
 }
 };
-this.evaluate=function(_11de){
-var _11df=new List();
-if(_11de.hasEntries()){
-_11de.each(function(_11e0){
-if(this._index[_11e0.Id]!=true){
-_11df.add(_11e0);
+this.evaluate=function(_11ea){
+var _11eb=new List();
+if(_11ea.hasEntries()){
+_11ea.each(function(_11ec){
+if(this._index[_11ec.Id]!=true){
+_11eb.add(_11ec);
 }
-this._index[_11e0.Id]=true;
+this._index[_11ec.Id]=true;
 },this);
-if(_11df.hasEntries()){
+if(_11eb.hasEntries()){
 if(this._actions.hasEntries()){
-this._actions.merge(_11df);
+this._actions.merge(_11eb);
 }else{
-this._actions=_11df;
+this._actions=_11eb;
 }
 this._nextAction();
 }
 }
 };
-this._closeAllViews=function(_11e1){
-var _11e2="(No reason)";
-if(_11e1!=null){
-_11e2=_11e1.Reason;
+this._closeAllViews=function(_11ed){
+var _11ee="(No reason)";
+if(_11ed!=null){
+_11ee=_11ed.Reason;
 }
 var title="Warning";
 var text="The server has requested a close of all active editors for the following reason: \"${reason}\". It is recommended that you accept this request by clicking OK.";
-text=text.replace("${reason}",_11e2);
+text=text.replace("${reason}",_11ee);
 var self=this;
-Dialog.warning(title,text,Dialog.BUTTONS_ACCEPT_CANCEL,{handleDialogResponse:function(_11e6){
-if(_11e6==Dialog.RESPONSE_ACCEPT){
+Dialog.warning(title,text,Dialog.BUTTONS_ACCEPT_CANCEL,{handleDialogResponse:function(_11f2){
+if(_11f2==Dialog.RESPONSE_ACCEPT){
 EventBroadcaster.broadcast(BroadcastMessages.CLOSE_VIEWS);
 }
 self._nextAction();
 }});
 };
 this._nextAction=function(){
-var _11e7=null;
+var _11f3=null;
 if(this._actions.hasEntries()){
-var _11e8=this._actions.extractFirst();
-_11d3=_11e8.SequenceNumber;
-_11d1.debug("MessageQueue action: "+_11e8.ActionType+" > QUEUE-MAX-SEQNUM: "+this.index+" > CURRENT SEQNUM: "+_11d3+" > ACTIONS-LEFT: "+this._actions.getLength());
-switch(_11e8.ActionType){
+var _11f4=this._actions.extractFirst();
+_11df=_11f4.SequenceNumber;
+_11dd.debug("MessageQueue action: "+_11f4.ActionType+" > QUEUE-MAX-SEQNUM: "+this.index+" > CURRENT SEQNUM: "+_11df+" > ACTIONS-LEFT: "+this._actions.getLength());
+switch(_11f4.ActionType){
 case "OpenView":
-_11e7=_11e8.OpenViewParams;
-if(_11e7.ViewType=="ModalDialog"){
-openDialogView(_11e7);
+_11f3=_11f4.OpenViewParams;
+if(_11f3.ViewType=="ModalDialog"){
+openDialogView(_11f3);
 }else{
-_11d4=_11e7.ViewId;
-openView(_11e7);
+_11e0=_11f3.ViewId;
+openView(_11f3);
 }
 break;
 case "CloseView":
-_11e7=_11e8.CloseViewParams;
-_11d4=_11e7.ViewId;
-closeView(_11e7);
+_11f3=_11f4.CloseViewParams;
+_11e0=_11f3.ViewId;
+closeView(_11f3);
 break;
 case "RefreshTree":
 EventBroadcaster.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,this);
 EventBroadcaster.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED,this);
-EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESH,_11e8.RefreshTreeParams.EntityToken);
-var debug="REFRESHING TREES: "+_11d5.countEntries()+"\n";
-_11d5.each(function(token){
+EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESH,_11f4.RefreshTreeParams.EntityToken);
+var debug="REFRESHING TREES: "+_11e1.countEntries()+"\n";
+_11e1.each(function(token){
 debug+="\n\tTOKEN: "+token;
 });
-_11d1.debug(debug);
-if(!_11d5.hasEntries()){
+_11dd.debug(debug);
+if(!_11e1.hasEntries()){
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,this);
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED,this);
 this._nextAction();
 }
 break;
 case "MessageBox":
-openMessageBox(_11e8.MessageBoxParams);
+openMessageBox(_11f4.MessageBoxParams);
 break;
 case "OpenViewDefinition":
-_11e7=_11e8.OpenViewDefinitionParams;
-_11d4=_11e7.Handle;
-openViewDefinition(_11e7);
+_11f3=_11f4.OpenViewDefinitionParams;
+_11e0=_11f3.Handle;
+openViewDefinition(_11f3);
 break;
 case "LogEntry":
-logEntry(_11e8.LogEntryParams);
+logEntry(_11f4.LogEntryParams);
 this._nextAction();
 break;
 case "Reboot":
@@ -29217,9 +29251,9 @@ case "LockSystem":
 MessageQueue._lockSystem(true);
 break;
 case "BroadcastMessage":
-_11e7=_11e8.BroadcastMessageParams;
-_11d1.debug("Server says: EventBroadcaster.broadcast ( \""+_11e7.Name+"\", "+_11e7.Value+" )");
-EventBroadcaster.broadcast(_11e7.Name,_11e7.Value);
+_11f3=_11f4.BroadcastMessageParams;
+_11dd.debug("Server says: EventBroadcaster.broadcast ( \""+_11f3.Name+"\", "+_11f3.Value+" )");
+EventBroadcaster.broadcast(_11f3.Name,_11f3.Value);
 this._nextAction();
 break;
 case "CollapseAndRefresh":
@@ -29227,37 +29261,37 @@ EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_COLLAPSEALL);
 EventBroadcaster.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,this);
 EventBroadcaster.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED,this);
 EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESHALL);
-if(!_11d5.hasEntries()){
+if(!_11e1.hasEntries()){
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,this);
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED,this);
 this._nextAction();
 }
 break;
 case "CloseAllViews":
-this._closeAllViews(_11e8.CloseAllViewsParams);
+this._closeAllViews(_11f4.CloseAllViewsParams);
 break;
 case "SaveStatus":
-saveStatus(_11e8.SaveStatusParams);
+saveStatus(_11f4.SaveStatusParams);
 this._nextAction();
 break;
 case "DownloadFile":
-Download.init(_11e8.DownloadFileParams.Url);
+Download.init(_11f4.DownloadFileParams.Url);
 this._nextAction();
 break;
 case "ExpandTreeNode":
 this._nextAction();
 break;
 case "BindEntityTokenToView":
-_11e7=_11e8.BindEntityTokenToViewParams;
-EventBroadcaster.broadcast(BroadcastMessages.BIND_TOKEN_TO_VIEW,{handle:_11e7.ViewId,entityToken:_11e7.EntityToken});
+_11f3=_11f4.BindEntityTokenToViewParams;
+EventBroadcaster.broadcast(BroadcastMessages.BIND_TOKEN_TO_VIEW,{handle:_11f3.ViewId,entityToken:_11f3.EntityToken});
 this._nextAction();
 break;
 case "OpenGenericView":
-_11e7=_11e8.OpenGenericViewParams;
-openGenericView(_11e7);
+_11f3=_11f4.OpenGenericViewParams;
+openGenericView(_11f3);
 break;
 default:
-Dialog.error("Dysfunction","Unhandled action: "+_11e8.ActionType);
+Dialog.error("Dysfunction","Unhandled action: "+_11f4.ActionType);
 break;
 }
 }else{
@@ -29265,54 +29299,54 @@ broadcastUpdateEvaluated();
 }
 };
 function broadcastUpdateEvaluated(){
-EventBroadcaster.broadcast(BroadcastMessages.MESSAGEQUEUE_EVALUATED,_11d8);
+EventBroadcaster.broadcast(BroadcastMessages.MESSAGEQUEUE_EVALUATED,_11e4);
 }
-function logEntry(_11eb){
-var _11ec=_11eb.Level.toLowerCase();
-SystemLogger.getLogger(_11eb.SenderId)[_11ec](_11eb.Message);
+function logEntry(_11f7){
+var _11f8=_11f7.Level.toLowerCase();
+SystemLogger.getLogger(_11f7.SenderId)[_11f8](_11f7.Message);
 }
-function openView(_11ed){
-var list=paramsToList(_11ed.Argument);
+function openView(_11f9){
+var list=paramsToList(_11f9.Argument);
 if(list.hasEntries()){
-var def=ViewDefinition.clone("Composite.Management.PostBackView",_11ed.ViewId);
-def.entityToken=_11ed.EntityToken;
-def.flowHandle=_11ed.FlowHandle;
-def.position=_11d9[_11ed.ViewType],def.label=_11ed.Label;
-def.image=_11ed.Image;
-def.toolTip=_11ed.ToolTip;
-def.argument={"url":_11ed.Url,"list":list};
+var def=ViewDefinition.clone("Composite.Management.PostBackView",_11f9.ViewId);
+def.entityToken=_11f9.EntityToken;
+def.flowHandle=_11f9.FlowHandle;
+def.position=_11e5[_11f9.ViewType],def.label=_11f9.Label;
+def.image=_11f9.Image;
+def.toolTip=_11f9.ToolTip;
+def.argument={"url":_11f9.Url,"list":list};
 StageBinding.presentViewDefinition(def);
 }else{
-StageBinding.presentViewDefinition(new HostedViewDefinition({handle:_11ed.ViewId,entityToken:_11ed.EntityToken,flowHandle:_11ed.FlowHandle,position:_11d9[_11ed.ViewType],url:_11ed.Url,label:_11ed.Label,image:_11ed.Image,toolTip:_11ed.ToolTip}));
+StageBinding.presentViewDefinition(new HostedViewDefinition({handle:_11f9.ViewId,entityToken:_11f9.EntityToken,flowHandle:_11f9.FlowHandle,position:_11e5[_11f9.ViewType],url:_11f9.Url,label:_11f9.Label,image:_11f9.Image,toolTip:_11f9.ToolTip}));
 }
 }
-function openDialogView(_11f0){
-StageBinding.presentViewDefinition(new DialogViewDefinition({handle:_11f0.ViewId,flowHandle:_11f0.FlowHandle,position:Dialog.MODAL,url:_11f0.Url,handler:{handleDialogResponse:function(){
+function openDialogView(_11fc){
+StageBinding.presentViewDefinition(new DialogViewDefinition({handle:_11fc.ViewId,flowHandle:_11fc.FlowHandle,position:Dialog.MODAL,url:_11fc.Url,handler:{handleDialogResponse:function(){
 setTimeout(function(){
 MessageQueue._nextAction();
 },250);
 }}}));
 }
-function openMessageBox(_11f1){
-var _11f2=_11f1.DialogType.toLowerCase();
-if(_11f2=="question"){
+function openMessageBox(_11fd){
+var _11fe=_11fd.DialogType.toLowerCase();
+if(_11fe=="question"){
 throw "Not supported!";
 }else{
-Dialog[_11f2](_11f1.Title,_11f1.Message,null,{handleDialogResponse:function(){
+Dialog[_11fe](_11fd.Title,_11fd.Message,null,{handleDialogResponse:function(){
 setTimeout(function(){
 MessageQueue._nextAction();
 },250);
 }});
 }
 }
-function openViewDefinition(_11f3){
+function openViewDefinition(_11ff){
 var map={};
-var _11f5=false;
-new List(_11f3.Argument).each(function(entry){
+var _1201=false;
+new List(_11ff.Argument).each(function(entry){
 map[entry.Key]=entry.Value;
-_11f5=true;
+_1201=true;
 });
-var proto=ViewDefinitions[_11f3.Handle];
+var proto=ViewDefinitions[_11ff.Handle];
 if(proto!=null){
 var def=null;
 if(proto.isMutable==false){
@@ -29322,40 +29356,40 @@ def=new HostedViewDefinition();
 for(var prop in proto){
 def[prop]=proto[prop];
 }
-def.handle=_11f3.ViewId;
+def.handle=_11ff.ViewId;
 }
-def.argument=_11f5?map:null;
+def.argument=_1201?map:null;
 StageBinding.presentViewDefinition(def);
 }else{
 throw "Unknown ViewDefinition: "+param.Handle;
 }
 }
-function openGenericView(_11fa){
-var def=ViewBinding.clone("Composite.Management.GenericView",_11fa.ViewId);
-def.label=_11fa.Label;
-def.toolTip=_11fa.ToolTip;
-def.image=_11fa.Image;
-def.argument={"url":_11fa.Url,"list":paramsToList(_11fa.UrlPostArguments)};
+function openGenericView(_1206){
+var def=ViewBinding.clone("Composite.Management.GenericView",_1206.ViewId);
+def.label=_1206.Label;
+def.toolTip=_1206.ToolTip;
+def.image=_1206.Image;
+def.argument={"url":_1206.Url,"list":paramsToList(_1206.UrlPostArguments)};
 StageBinding.presentViewDefinition(def);
 }
-function closeView(_11fc){
-if(StageBinding.isViewOpen(_11fc.ViewId)){
-EventBroadcaster.broadcast(BroadcastMessages.CLOSE_VIEW,_11fc.ViewId);
+function closeView(_1208){
+if(StageBinding.isViewOpen(_1208.ViewId)){
+EventBroadcaster.broadcast(BroadcastMessages.CLOSE_VIEW,_1208.ViewId);
 }else{
 MessageQueue._nextAction();
 }
 }
-function saveStatus(_11fd){
-EventBroadcaster.broadcast(BroadcastMessages.CURRENT_SAVED,{handle:_11fd.ViewId,isSuccess:_11fd.Succeeded});
+function saveStatus(_1209){
+EventBroadcaster.broadcast(BroadcastMessages.CURRENT_SAVED,{handle:_1209.ViewId,isSuccess:_1209.Succeeded});
 }
-this._lockSystem=function(_11fe){
-var _11ff=top.bindingMap.offlinetheatre;
-if(_11fe){
-_11ff.play(true);
+this._lockSystem=function(_120a){
+var _120b=top.bindingMap.offlinetheatre;
+if(_120a){
+_120b.play(true);
 window.clearInterval(window.messageQueueInterval);
 window.messageQueueInterval=window.setInterval(MessageQueue._pokeserver,MessageQueue.INTERVAL_OFFLINE);
 }else{
-_11ff.stop();
+_120b.stop();
 window.clearInterval(window.messageQueueInterval);
 window.messageQueueInterval=window.setInterval(MessageQueue._autoupdate,MessageQueue.INTERVAL_ONLINE);
 var self=this;
@@ -29365,32 +29399,32 @@ self._nextAction();
 }
 },0);
 }
-_11d7=_11fe;
+_11e3=_120a;
 };
-this.handleBroadcast=function(_1201,arg){
-switch(_1201){
+this.handleBroadcast=function(_120d,arg){
+switch(_120d){
 case BroadcastMessages.APPLICATION_LOGIN:
 this.initialize();
 break;
 case BroadcastMessages.VIEW_COMPLETED:
 case BroadcastMessages.VIEW_CLOSED:
-if(_11d4!=null&&arg==_11d4){
-_11d4=null;
+if(_11e0!=null&&arg==_11e0){
+_11e0=null;
 this._nextAction();
 }
 break;
 case BroadcastMessages.SYSTEMTREEBINDING_REFRESHING:
 if(arg!=null){
-_11d5.set(arg,true);
+_11e1.set(arg,true);
 }else{
-_11d1.debug("Saa har vi balladen!");
+_11dd.debug("Saa har vi balladen!");
 }
 break;
 case BroadcastMessages.SYSTEMTREEBINDING_REFRESHED:
-if(_11d5.hasEntries()){
-_11d5.del(arg);
-_11d1.debug("Refreshed tree: "+arg+"\n("+_11d5.countEntries()+" trees left!)");
-if(!_11d5.hasEntries()){
+if(_11e1.hasEntries()){
+_11e1.del(arg);
+_11dd.debug("Refreshed tree: "+arg+"\n("+_11e1.countEntries()+" trees left!)");
+if(!_11e1.hasEntries()){
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,this);
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED,this);
 setTimeout(function(){
@@ -29400,12 +29434,12 @@ MessageQueue._nextAction();
 }
 break;
 case BroadcastMessages.SYSTEMTREENODEBINDING_FORCING_OPEN:
-_11d6.set(arg,true);
+_11e2.set(arg,true);
 break;
 case BroadcastMessages.SYSTEMTREENODEBINDING_FORCED_OPEN:
-if(_11d6.hasEntries()==true){
-_11d6.del(arg);
-if(!_11d6.hasEntries()){
+if(_11e2.hasEntries()==true){
+_11e2.del(arg);
+if(!_11e2.hasEntries()){
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREENODEBINDING_FORCING_OPEN,this);
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREENODEBINDING_FORCED_OPEN,this);
 MessageQueue._nextAction();
@@ -29420,9 +29454,9 @@ MessageQueue._lockSystem(false);
 break;
 }
 };
-function paramsToList(_1203){
+function paramsToList(_120f){
 var list=new List();
-new List(_1203).each(function(entry){
+new List(_120f).each(function(entry){
 list.add({name:entry.Key,value:entry.Value});
 });
 return list;
@@ -29431,15 +29465,15 @@ EventBroadcaster.subscribe(BroadcastMessages.APPLICATION_LOGIN,this);
 };
 var ViewDefinitions={"Composite.Management.Null":new HostedViewDefinition({isMutable:true,handle:"Composite.Management.Null"}),"Composite.Management.PostBackDialog":new DialogViewDefinition({handle:"Composite.Management.PostBackDialog",isMutable:true,position:Dialog.MODAL,url:"${root}/content/dialogs/postback/postbackdialog.aspx",argument:{"url":null,"list":null}}),"Composite.Management.PostBackView":new HostedViewDefinition({handle:"Composite.Management.PostBackView",isMutable:true,position:DockBinding.MAIN,url:"${root}/postback.aspx",argument:{"url":null,"list":null}}),"Composite.Management.GenericView":new HostedViewDefinition({handle:"Composite.Management.GenericView",isMutable:true,position:DockBinding.MAIN,url:"${root}/content/views/generic/generic.aspx",label:null,image:null,toolTip:null,argument:{"url":null,"list":null}}),"Composite.Management.Start":new HostedViewDefinition({handle:"Composite.Management.Start",position:DockBinding.START,label:"Welcome Travellers",url:"${root}/content/views/start/start.aspx"}),"Composite.Management.About":new DialogViewDefinition({handle:"Composite.Management.About",position:Dialog.MODAL,url:"${root}/content/dialogs/about/about.aspx"}),"Composite.Management.PermissionEditor":new HostedViewDefinition({isMutable:true,handle:"Composite.Management.PermissionEditor",position:DockBinding.MAIN,url:"${root}/content/views/editors/permissioneditor/permissioneditor.aspx",argument:{serializedEntityToken:"entityTokenType='Composite\\.Plugins\\.Elements\\.ElementProviders\\.VirtualElementProvider\\.VirtualElementProviderEntityToken,Composite'entityToken='_EntityToken_Type_=\\'Composite\\\\\\.Plugins\\\\\\.Elements\\\\\\.ElementProviders\\\\\\.VirtualElementProvider\\\\\\.VirtualElementProviderEntityToken,Composite\\'_EntityToken_Source_=\\'VirtualElementProvider\\'_EntityToken_Id_=\\'DesignPerspective\\''\""}}),"Composite.Management.SystemLog":new HostedViewDefinition({handle:"Composite.Management.SystemLog",position:DockBinding.ABSBOTTOMLEFT,label:"System Log",url:"${root}/content/views/dev/systemlog/systemlog.aspx"}),"Composite.Management.Developer":new HostedViewDefinition({handle:"Composite.Management.Developer",position:DockBinding.ABSBOTTOMRIGHT,label:"Developer",url:"${root}/content/views/dev/developer/developer.aspx"}),"Composite.Management.IconPack.System":new HostedViewDefinition({handle:"Composite.Management.IconPack.System",position:DockBinding.ABSBOTTOMLEFT,label:"Freja",image:"${icon:icon}",url:"${root}/content/views/dev/icons/system/Default.aspx"}),"Composite.Management.IconPack.Republic":new HostedViewDefinition({handle:"Composite.Management.IconPack.Republic",position:DockBinding.ABSBOTTOMLEFT,label:"Republic",image:"${icon:icon}",url:"${root}/content/views/dev/icons/files/republic.aspx"}),"Composite.Management.IconPack.Harmony":new HostedViewDefinition({handle:"Composite.Management.IconPack.Harmony",position:DockBinding.ABSBOTTOMLEFT,label:"Harmony",image:"${icon:icon}",url:"${root}/content/views/dev/icons/files/harmony.aspx"}),"Composite.Management.Explorer":new HostedViewDefinition({handle:"Composite.Management.Explorer",position:DockBinding.EXPLORER,url:"${root}/content/views/explorer/explorer.aspx",label:"Explorer"}),"Composite.Management.Options":new DialogViewDefinition({handle:"Composite.Management.Options",position:Dialog.MODAL,url:"${root}/content/dialogs/options/options.aspx",label:"Options"}),"Composite.Management.VisualEditorDialog":new DialogViewDefinition({isMutable:true,handle:"Composite.Management.VisualEditorDialog",position:Dialog.MODAL,url:"${root}/content/dialogs/wysiwygeditor/wysiwygeditordialog.aspx",width:600,argument:{"formattingconfiguration":null,"elementclassconfiguration":null,"configurationstylesheet":null,"presentationstylesheet":null,"embedablefieldstypenames":null}}),"Composite.Management.MultiSelectorDialog":new DialogViewDefinition({isMutable:true,handle:"Composite.Management.MultiSelectorDialog",position:Dialog.MODAL,url:"${root}/content/dialogs/multiselector/multiselectordialog.aspx"}),"Composite.Management.Search":new HostedViewDefinition({handle:"Composite.Management.Search",position:DockBinding.RIGHTBOTTOM,url:"${root}/content/views/search/search.aspx",label:"Search",image:"${icon:view_search}",argument:null}),"Composite.Management.Browser":new HostedViewDefinition({isMutable:false,handle:"Composite.Management.Browser",position:DockBinding.MAIN,perspective:ExplorerBinding.PERSPECTIVE_CONTENT,label:"Page Browser",image:"${icon:page-view-administrated-scope}",toolTip:"Browse unpublished pages",url:"${root}/content/views/browser/browser.aspx",argument:{"URL":null}}),"Composite.Management.SEOAssistant":new HostedViewDefinition({handle:"Composite.Management.SEOAssistant",position:DockBinding.RIGHTTOP,perspective:ExplorerBinding.PERSPECTIVE_CONTENT,url:"${root}/content/views/seoassist/seoassist.aspx",label:"${string:Composite.Web.SEOAssistant:SEOAssistant}",image:"${icon:seoassistant}",toolTip:"Search engine optimization"}),"Composite.Management.SourceCodeViewer":new HostedViewDefinition({isMutable:true,handle:"Composite.Management.SourceCodeViewer",position:DockBinding.ABSBOTTOMLEFT,url:"${root}/content/views/dev/viewsource/viewsource.aspx",argument:{"action":null,"viewBinding":null}}),"Composite.User.SourceCodeViewer":new HostedViewDefinition({isMutable:true,handle:"Composite.User.SourceCodeViewer",position:DockBinding.BOTTOMLEFT,url:"${root}/content/views/dev/viewsource/viewsource.aspx",argument:{"action":null,"viewBinding":null}}),"Composite.Management.Help":new HostedViewDefinition({label:"Help",image:"${icon:help}",handle:"Composite.Management.Help",position:DockBinding.ABSRIGHTTOP,url:"${root}/content/views/help/help.aspx"}),"Composite.Management.Dialog.Translations":new DialogViewDefinition({handle:"Composite.Management.TranslationsDialog",position:Dialog.MODAL,url:"${root}/content/dialogs/translations/translations.aspx",label:"Translations",image:"${icon:users-changepublicculture}"}),"Composite.Management.ImageSelectorDialog":new DialogViewDefinition({isMutable:true,handle:"Composite.Management.ImageSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_IMAGESELECTOR,argument:{label:"Select Image",image:"${icon:image}",selectionProperty:"ElementType",selectionValue:"image/jpeg image/gif image/png image/bmp image/tiff",selectionResult:"Uri",nodes:[{key:"MediaFileElementProvider",search:"MediaFileElementProvider.WebImages"}]}}),"Composite.Management.EmbeddableMediaSelectorDialog":new DialogViewDefinition({isMutable:true,handle:"Composite.Management.EmbeddableMediaSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"Select Media",image:"${icon:media}",selectionProperty:"ElementType",selectionValue:null,selectionResult:"Uri",nodes:[{key:"MediaFileElementProvider",search:null}]}}),"Composite.Management.FrontendFileSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.EmbeddableMediaSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"Select Frontend File",image:"${icon:media}",selectionProperty:"ElementType",selectionValue:null,selectionResult:"Uri",nodes:[{key:"LayoutFileElementProvider"}]}}),"Composite.Management.PageSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.PageSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"Select Page",image:"${icon:page}",selectionProperty:"Uri",selectionValue:null,selectionResult:"Uri",nodes:[{key:"PageElementProvider"}]}}),"Composite.Management.PageIdSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.PageIdSelectorDialog",isMutable:true,position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"Select Page",image:"${icon:page}",selectionProperty:"DataId",selectionValue:null,selectionResult:"DataId",nodes:[{key:"PageElementProvider"}]}}),"Composite.Management.LinkableSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.LinkableSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"Select Page or File",image:"${icon:link}",selectionProperty:"Uri",selectionValue:null,selectionResult:"Uri",nodes:[{key:"PageElementProvider"},{key:"MediaFileElementProvider"}]}}),"Composite.Management.MediaSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.MediaSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"Select Page or File",image:"${icon:link}",selectionProperty:"Uri",selectionValue:null,selectionResult:"Uri",nodes:[{key:"MediaFileElementProvider"}]}}),"Composite.Management.FunctionSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.FunctionSelectorDialog",isMutable:true,position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"Select Function",image:"${icon:functioncall}",selectionProperty:"ElementType",selectionValue:MimeTypes.COMPOSITEFUNCTION,selectionResult:"ElementId",nodes:[{key:"AllFunctionsElementProvider"}]}}),"Composite.Management.WidgetFunctionSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.WidgetFunctionSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"Select Widget",image:"${icon:functioncall}",selectionProperty:"ElementType",selectionValue:MimeTypes.COMPOSITEFUNCTION,selectionResult:"ElementId",nodes:[{key:"AllWidgetFunctionsElementProvider"}]}}),"Composite.Management.XhtmlDocumentFunctionSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.XhtmlDocumentFunctionSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"Select Function",image:"${icon:functioncall}",selectionProperty:"ElementType",selectionValue:MimeTypes.COMPOSITEFUNCTION,selectionResult:"ElementId",nodes:[{key:"AllFunctionsElementProvider",search:"AllFunctionsElementProvider.XhtmlDocument"}]}})};
 var KickStart=new function(){
-var _1206=false;
-var _1207=false;
-var _1208=null;
-var _1209=false;
-var _120a=Client.qualifies();
-var _120b="admin";
-var _120c="123456";
+var _1212=false;
+var _1213=false;
+var _1214=null;
+var _1215=false;
+var _1216=Client.qualifies();
+var _1217="admin";
+var _1218="123456";
 this.fireOnLoad=function(){
-if(_120a){
+if(_1216){
 Application.lock(this);
 fileEventBroadcasterSubscriptions(true);
 EventBroadcaster.subscribe(BroadcastMessages.APPLICATION_SHUTDOWN,this);
@@ -29452,11 +29486,11 @@ EventBroadcaster.broadcast(BroadcastMessages.APPLICATION_KICKSTART);
 document.location="unsupported.aspx";
 }
 };
-this.handleBroadcast=function(_120d){
-switch(_120d){
+this.handleBroadcast=function(_1219){
+switch(_1219){
 case BroadcastMessages.AUDIO_INITIALIZED:
 case BroadcastMessages.PERSISTANCE_INITIALIZED:
-kickStart(_120d);
+kickStart(_1219);
 break;
 case BroadcastMessages.APPLICATION_STARTUP:
 break;
@@ -29464,8 +29498,8 @@ case BroadcastMessages.KEY_ENTER:
 this.login();
 break;
 case BroadcastMessages.APPLICATION_LOGIN:
-var _120e=window.bindingMap.appwindow;
-_120e.setURL("app.aspx");
+var _121a=window.bindingMap.appwindow;
+_121a.setURL("app.aspx");
 break;
 case BroadcastMessages.APPLICATION_OPERATIONAL:
 showWorkbench();
@@ -29478,28 +29512,28 @@ bindingMap.cover.show();
 break;
 }
 };
-function fileEventBroadcasterSubscriptions(_120f){
-new List([BroadcastMessages.AUDIO_INITIALIZED,BroadcastMessages.PERSISTANCE_INITIALIZED,BroadcastMessages.APPLICATION_STARTUP,BroadcastMessages.APPLICATION_LOGIN,BroadcastMessages.APPLICATION_OPERATIONAL]).each(function(_1210){
-if(_120f){
-EventBroadcaster.subscribe(_1210,KickStart);
+function fileEventBroadcasterSubscriptions(_121b){
+new List([BroadcastMessages.AUDIO_INITIALIZED,BroadcastMessages.PERSISTANCE_INITIALIZED,BroadcastMessages.APPLICATION_STARTUP,BroadcastMessages.APPLICATION_LOGIN,BroadcastMessages.APPLICATION_OPERATIONAL]).each(function(_121c){
+if(_121b){
+EventBroadcaster.subscribe(_121c,KickStart);
 }else{
-EventBroadcaster.unsubscribe(_1210,KickStart);
+EventBroadcaster.unsubscribe(_121c,KickStart);
 }
 });
 }
-function kickStart(_1211){
-switch(_1211){
+function kickStart(_121d){
+switch(_121d){
 case BroadcastMessages.AUDIO_INITIALIZED:
-_1207=true;
+_1213=true;
 setTimeout(function(){
 Persistance.initialize();
 },0);
 break;
 case BroadcastMessages.PERSISTANCE_INITIALIZED:
-_1206=true;
+_1212=true;
 break;
 }
-if(_1206&&_1207){
+if(_1212&&_1213){
 if(bindingMap.decks!=null&&LoginService.IsLoggedIn(true)){
 accessGranted();
 }else{
@@ -29530,8 +29564,8 @@ Application.unlock(KickStart);
 bindingMap.decks.select("logindeck");
 setTimeout(function(){
 if(Application.isDeveloperMode&&Application.isLocalHost){
-DataManager.getDataBinding("username").setValue(_120b);
-DataManager.getDataBinding("password").setValue(_120c);
+DataManager.getDataBinding("username").setValue(_1217);
+DataManager.getDataBinding("password").setValue(_1218);
 }
 setTimeout(function(){
 DataManager.getDataBinding("username").focus();
@@ -29565,18 +29599,18 @@ Application.unlock(KickStart);
 }
 },25);
 };
-this.doLogin=function(_1214,_1215){
-var _1216=WebServiceProxy.isLoggingEnabled;
+this.doLogin=function(_1220,_1221){
+var _1222=WebServiceProxy.isLoggingEnabled;
 WebServiceProxy.isLoggingEnabled=false;
 WebServiceProxy.isFaultHandler=false;
-var _1217=false;
-var _1218=LoginService.ValidateAndLogin(_1214,_1215);
-if(_1218 instanceof SOAPFault){
-alert(_1218.getFaultString());
+var _1223=false;
+var _1224=LoginService.ValidateAndLogin(_1220,_1221);
+if(_1224 instanceof SOAPFault){
+alert(_1224.getFaultString());
 }else{
-_1217=_1218;
+_1223=_1224;
 }
-if(_1217){
+if(_1223){
 EventBroadcaster.unsubscribe(BroadcastMessages.KEY_ENTER,KickStart);
 accessGranted();
 }else{
@@ -29586,7 +29620,7 @@ accesssDenied();
 }
 }
 WebServiceProxy.isFaultHandler=true;
-if(_1216){
+if(_1222){
 WebServiceProxy.isLoggingEnabled=true;
 }
 };
@@ -29601,24 +29635,24 @@ Application.login();
 },0);
 }
 function accesssDenied(){
-var _1219=DataManager.getDataBinding("username");
-var _121a=DataManager.getDataBinding("password");
-_1219.blur();
-_121a.blur();
-_1219.setValue("");
-_121a.setValue("");
-_1219.clean();
-_121a.clean();
-_1219.focus();
+var _1225=DataManager.getDataBinding("username");
+var _1226=DataManager.getDataBinding("password");
+_1225.blur();
+_1226.blur();
+_1225.setValue("");
+_1226.setValue("");
+_1225.clean();
+_1226.clean();
+_1225.focus();
 document.getElementById("loginerror").style.display="block";
-var _121b={handleAction:function(_121c){
+var _1227={handleAction:function(_1228){
 document.getElementById("loginerror").style.display="none";
-_121c.target.removeActionListener(Binding.ACTION_DIRTY,_121b);
+_1228.target.removeActionListener(Binding.ACTION_DIRTY,_1227);
 }};
-bindingMap.loginfields.addActionListener(Binding.ACTION_DIRTY,_121b);
+bindingMap.loginfields.addActionListener(Binding.ACTION_DIRTY,_1227);
 }
 WindowManager.fireOnLoad(this);
-if(!_120a){
+if(!_1216){
 UpdateManager.isEnabled=false;
 }
 };
