@@ -571,14 +571,14 @@
     <Compile Include="Plugins\Instrumentation\PerformanceCounterProviders\WindowsPerformanceCounterProvider\PerformanceNames.cs" />
     <Compile Include="Plugins\Instrumentation\PerformanceCounterProviders\WindowsPerformanceCounterProvider\WindowsPerformanceCounterProvider.cs">
     </Compile>
-    <Compile Include="Plugins\IO\IOProviders\LocalIOPorivder\LocalC1Configuration.cs" />
-    <Compile Include="Plugins\IO\IOProviders\LocalIOPorivder\LocalC1Directory.cs" />
-    <Compile Include="Plugins\IO\IOProviders\LocalIOPorivder\LocalC1File.cs" />
-    <Compile Include="Plugins\IO\IOProviders\LocalIOPorivder\LocalC1FileStream.cs" />
-    <Compile Include="Plugins\IO\IOProviders\LocalIOPorivder\LocalC1FileSystemWatcher.cs" />
-    <Compile Include="Plugins\IO\IOProviders\LocalIOPorivder\LocalC1StreamReader.cs" />
-    <Compile Include="Plugins\IO\IOProviders\LocalIOPorivder\LocalC1StreamWriter.cs" />
-    <Compile Include="Plugins\IO\IOProviders\LocalIOPorivder\LocalIOProvider.cs" />
+    <Compile Include="Plugins\IO\IOProviders\LocalIOProvider\LocalC1Configuration.cs" />
+    <Compile Include="Plugins\IO\IOProviders\LocalIOProvider\LocalC1Directory.cs" />
+    <Compile Include="Plugins\IO\IOProviders\LocalIOProvider\LocalC1File.cs" />
+    <Compile Include="Plugins\IO\IOProviders\LocalIOProvider\LocalC1FileStream.cs" />
+    <Compile Include="Plugins\IO\IOProviders\LocalIOProvider\LocalC1FileSystemWatcher.cs" />
+    <Compile Include="Plugins\IO\IOProviders\LocalIOProvider\LocalC1StreamReader.cs" />
+    <Compile Include="Plugins\IO\IOProviders\LocalIOProvider\LocalC1StreamWriter.cs" />
+    <Compile Include="Plugins\IO\IOProviders\LocalIOProvider\LocalIOProvider.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\FileLogger.cs" />
     <Compile Include="Core\Logging\LogEntry.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\FileLogTraceListener.cs" />

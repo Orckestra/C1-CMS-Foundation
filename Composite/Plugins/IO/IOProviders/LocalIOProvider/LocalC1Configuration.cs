@@ -2,7 +2,7 @@
 using Composite.Core.IO.Plugins.IOProvider;
 
 
-namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
+namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 {
     public class LocalC1Configuration : IC1Configuration
     {

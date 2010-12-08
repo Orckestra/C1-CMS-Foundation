@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 using Composite.Core.IO.Plugins.IOProvider;
-using Composite.Plugins.IO.IOProviders.LocalIOPorivder;
+using Composite.Plugins.IO.IOProviders.LocalIOProvider;
 using Composite.Core.IO.Foundation.PluginFacades;
 
 

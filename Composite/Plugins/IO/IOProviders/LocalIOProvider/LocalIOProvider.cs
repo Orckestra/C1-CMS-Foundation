@@ -4,7 +4,7 @@ using Composite.Core.IO.Plugins.IOProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 
-namespace Composite.Plugins.IO.IOProviders.LocalIOPorivder
+namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 {
     [ConfigurationElementType(typeof(NonConfigurableIOProvider))]
     internal class LocalIOProvider : IIOProvider
