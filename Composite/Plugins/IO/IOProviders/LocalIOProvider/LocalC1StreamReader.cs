@@ -26,7 +26,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
-        [System.Diagnos tics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamReaderClass:DotNotUseStreamReaderClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamReaderClass:DotNotUseStreamReaderClass")]
         public int Read()
         {
             return _streamReader.Read();
