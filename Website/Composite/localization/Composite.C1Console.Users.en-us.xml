@@ -31,7 +31,7 @@
 	<string key="ChangeForeignLocaleWorkflow.NoOrOneActiveLocales.Title" value="Multiple languages not installed"/>
 	<string key="ChangeForeignLocaleWorkflow.NoOrOneActiveLocales.Description" value="Two or more languages must be installed in order to support translations. Administrators can add more languages in the 'System' perspective."/>
 	<string key="ChangeForeignLocaleWorkflow.ForeignCultureSelector.Label" value="From-language"/>
-	<string key="ChangeForeignLocaleWorkflow.ForeignCultureSelector.Help" value="Pages written in the from-language will be indicated by globe-icons in the Content tree. The associated &quot;Translate Page&quot; action imports the page into the current working language."/>
+	<string key="ChangeForeignLocaleWorkflow.ForeignCultureSelector.Help" value="Pages written in the from-language will be indicated by globe icons in the Content tree. The associated &quot;Translate Page&quot; action imports the page into the current working language."/>
 
 
   <string key="ChangeOwnActiveLocaleWorkflow.CloseAllViews.Message" value="The active language has been changed"/>
