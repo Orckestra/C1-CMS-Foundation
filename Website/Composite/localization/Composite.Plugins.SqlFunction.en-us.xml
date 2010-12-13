@@ -9,7 +9,7 @@
   <string key="SqlFunctionElementProvider.DeleteConnection" value="Delete" />
   <string key="SqlFunctionElementProvider.DeleteConnectionToolTip" value="Delete SQL Connection" />
   <string key="SqlFunctionElementProvider.AddQuery" value="Add new SQL Query" />
-  <string key="SqlFunctionElementProvider.AddQueryToolTip" value="Add a new SQL Xml Provider" />
+  <string key="SqlFunctionElementProvider.AddQueryToolTip" value="Add a new SQL XML Provider" />
   <string key="SqlFunctionElementProvider.EditQuery" value="Edit" />
   <string key="SqlFunctionElementProvider.EditQueryToolTip" value="Edit SQL Query" />
   <string key="SqlFunctionElementProvider.DeleteQuery" value="Delete" />

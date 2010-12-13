@@ -74,7 +74,7 @@
   <string key="EditInlineFunctionWorkflow.AssembliesFieldGroup.Label" value="Assembly References" />
   <string key="EditInlineFunctionWorkflow.Preview.Label" value="Preview" />
   <string key="EditInlineFunctionWorkflow.ParameterFieldGroup.Label" value="Input Parameters" />
-  <string key="EditInlineFunctionWorkflow.AdminitrativeScope.Label" value="Adminitrative" />
+  <string key="EditInlineFunctionWorkflow.AdminitrativeScope.Label" value="Administrative" />
   <string key="EditInlineFunctionWorkflow.PublicScope.Label" value="Public" />
   <string key="InlineFunctionMethodTemplate.Clean" value="Empty method" />
   <string key="InlineFunctionMethodTemplate.WithParameters" value="Method with parameters" />

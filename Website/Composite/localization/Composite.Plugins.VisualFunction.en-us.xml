@@ -34,7 +34,7 @@
   <string key="Edit.ItemSortingHelp" value="Select which field to use when sorting the list. Use '(random)' to pick randomly from the list." />
   <string key="Edit.ListSortingLabel" value="List sort order" />
   <string key="Edit.ListSortingTrueLabel" value="Ascending" />
-  <string key="Edit.ListSortingFalseLabel" value="Decending" />
+  <string key="Edit.ListSortingFalseLabel" value="Descending" />
   <string key="Edit.ListSortingHelp" value="Select the sorted order. Ascending order is alphabetically, chronological. This field is ignored when '(random)' sorting is active." />
   <string key="Edit.PreviewTemplateLabel" value="Preview template" />
   <string key="Edit.PreviewTemplateHelp" value="This information is only used when previewing the function." />

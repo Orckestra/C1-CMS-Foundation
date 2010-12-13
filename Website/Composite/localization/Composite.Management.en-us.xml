@@ -32,7 +32,7 @@
   <string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissionsFieldLabel" value="Global permissions" />
   <string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissionsMultiSelectLabel" value="Global permissions" />
   <string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissionsMultiSelectHelp" value="The Administrate permission grants the user access to manage user permissions and execute other administrative tasks." />
-  <string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissions.IgnoredOwnAdministrativeRemoval" value="The removal of your own administrative permission has been ignored. You still have administrative priviledges." />
+  <string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissions.IgnoredOwnAdministrativeRemoval" value="The removal of your own administrative permission has been ignored. You still have administrative privileges." />
   <string key="Website.Forms.Administrative.EditUserStep1.ActiveLocalesFieldLabel" value="Data language access" />
   <string key="Website.Forms.Administrative.EditUserStep1.ActiveLocalesMultiSelectLabel" value="Data Languages" />
   <string key="Website.Forms.Administrative.EditUserStep1.ActiveLocalesMultiSelectHelp" value="User has access to manage data in the selected languages." />
@@ -122,7 +122,7 @@
   <string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.NoTypesMessage" value="No page metatypes have been created yet. You can create a Page metatype in the 'Data' perspective." />
   <string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.NamingFieldLabel" value="Metadata field group naming" />
   <string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupNameLabel" value="Name" />
-  <string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupNameHelp" value="Enter a unique name identifing this Metadata field group" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupNameHelp" value="Enter a unique name identifying this Metadata field group" />
   <string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupLabelLabel" value="Label" />
   <string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupLabelHelp" value="Enter a user friendly label for this Metadata field group" />
   <string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.VisabilityFieldLabel" value="Metadata field group visibility" />
@@ -208,7 +208,7 @@
   <string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeKeySelectorLabel" value="Select composition scope" />
   <string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeKeySelectorHelp" value="Select the scope for the new composition" />
   <string key="Website.Forms.Administrative.AddAssociatedTypeLevelsScopeSelection.LevelsLabel" value="Levels" />
-  <string key="Website.Forms.Administrative.AddAssociatedTypeLevelsScopeSelection.LevelsHelp" value="The depth of sub pages in wich the composition will be visible" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeLevelsScopeSelection.LevelsHelp" value="The depth of sub pages in which the composition will be visible" />
   <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.AssociationTypeLabel" value="Confirm new datatype:" />
   <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.AssociationTypeHelp" value="Metadata is a new field that are created on a page" />
   <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeRuleNameLabel" value="Composition scope rule name" />
@@ -216,13 +216,13 @@
   <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeRuleLabelLabel" value="Composition scope rule label" />
   <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeRuleHelpHelp" value="Rule label is used as a user friendly name for the instance. Can be localized" />
   <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeLabel" value="Composition scope" />
-  <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeHelp" value="This is the scope in wich the new composition will be visible when editing pages" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeHelp" value="This is the scope in which the new composition will be visible when editing pages" />
   <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.AddingTypeLabel" value="Adding type" />
   <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.AddingTypeHelp" value="Create a new type or use an existing type" />
   <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.ExistingTypeNameLabel" value="Existing type name" />
   <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.ExistingTypeNameHelp" value="The name of the selected existing type in the system to use" />
   <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.ForeignKeyFieldNameLabel" value="Foreign key field name" />
-  <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.ForeignKeyFieldNameHelp" value="The name of the field of the existing type to use as a foriegn key " />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.ForeignKeyFieldNameHelp" value="The name of the field of the existing type to use as a foreign key " />
   <string key="AssociatedDataElementProviderHelper.RemoveAssociatedTypeLabel" value="Remove datafolder" />
   <string key="AssociatedDataElementProviderHelper.RemoveAssociatedTypeToolTip" value="Remove datafolder" />
   <string key="Website.Forms.Administrative.RemoveAssociatedType.FieldGroupLabel" value="Remove page datatype" />
@@ -304,9 +304,9 @@
   <string key="UploadNewMediaFileWorkflow.UploadFailure" value="Failure" />
   <string key="UploadNewMediaFileWorkflow.UploadFailureMessage" value="The uploaded file must be of the same type as the original. The file you uploaded is of a different type." />
   <string key="RelationshipGraphActionExecutor.ShowGraph" value="Show Graph" />
-  <string key="RelationshipGraphActionExecutor.ShowGraphToolTip" value="Show releationship graph" />
+  <string key="RelationshipGraphActionExecutor.ShowGraphToolTip" value="Show relationship graph" />
   <string key="RelationshipGraphActionExecutor.ShowOrientedGraph" value="Show Oriented Graph" />
-  <string key="RelationshipGraphActionExecutor.ShowOrientedGraphToolTip" value="Show Oriented Releationship graph" />
+  <string key="RelationshipGraphActionExecutor.ShowOrientedGraphToolTip" value="Show Oriented Relationship graph" />
   <string key="ShowElementInformationActionExecutor.ShowElementInformation.Label" value="Show Element Information" />
   <string key="ShowElementInformationActionExecutor.ShowElementInformation.ToolTip" value="Show Element Information" />
   <string key="RelationshipGraphActionExecutor.Search" value="Search elements" />
@@ -386,7 +386,7 @@
   <string key="Website.FlowUICompleted.ExecutionEndedTitle" value="Execution Ended" />
   <string key="Website.FlowUICompleted.ExecutionEndedMessage" value="The action executed in this window has ended." />
   <string key="Website.ServerError.ServerErrorTitle" value="Server Error" />
-  <string key="Website.ServerError.ServerErrorMessage" value="An unfortunate error has occured." />
+  <string key="Website.ServerError.ServerErrorMessage" value="An unfortunate error has occurred." />
   <string key="Website.LicenseViolation.LicenseViolationTitle" value="License Violation" />
   <string key="Website.LicenseViolation.LicenseViolationMessage" value="The requested action is in violates with your current license." />
   <string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelFlashOptions" value="Flash options" />
@@ -522,7 +522,7 @@
   <string key="Website.Forms.Administrative.DeleteMediaFile.LabelFieldGroup" value="Delete this file?" />
   <string key="Website.Forms.Administrative.DeleteMediaFile.Text" value="Delete this file?" />
   <string key="Website.Forms.Administrative.DeleteMediaFile.DeleteDataConfirmationHeader" value="Deleting a file" />
-  <string key="Website.Forms.Administrative.DeleteMediaFile.DeleteDataConfirmationText" value="There're some referenced data that will also be deleted, do you want to continue?" />
+  <string key="Website.Forms.Administrative.DeleteMediaFile.DeleteDataConfirmationText" value="There is some referenced data that will also be deleted, do you want to continue?" />
   <string key="Website.Forms.Administrative.DeleteMediaFolder.LabelFieldGroup" value="Delete this folder?" />
   <string key="Website.Forms.Administrative.DeleteMediaFolder.Text" value="Delete this folder?" />
   <string key="Website.Forms.Administrative.DeleteMediaFolder.HasChildringText" value="This folder contains one or more files or subfolders. Deleting this folder will also delete all sub files and folders. Delete this folder?" />
@@ -553,7 +553,7 @@
   <string key="Website.Forms.Administrative.UploadMediaFile.HelpFile" value="" />
   <string key="Website.Forms.Administrative.UploadMediaFile.EmptyFileErrorTitle" value="File missing or empty" />
   <string key="Website.Forms.Administrative.UploadMediaFile.EmptyFileErrorMessage" value="No file data was received. Please use the browse button and ensure that the selected file is not empty." />
-  <string key="Website.Forms.Administrative.UploadNewMediaFile.LabelFieldGroup" value="Upload New Media File to exisiting file" />
+  <string key="Website.Forms.Administrative.UploadNewMediaFile.LabelFieldGroup" value="Upload New Media File to existing file" />
   <string key="Website.Forms.Administrative.UploadNewMediaFile.LabelFile" value="File name:" />
   <string key="Website.Forms.Administrative.UploadNewMediaFile.HelpFile" value="" />
   <string key="Website.Forms.Administrative.AdministrativeTemplates.Document.LabelSave" value="Save" />

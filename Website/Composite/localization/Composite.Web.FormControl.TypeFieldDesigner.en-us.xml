@@ -12,7 +12,7 @@
   <string key="Label" value="Label" />
   <string key="LabelHelp" value="Label text are showed to users when adding a new item based on the datatype." />
   <string key="Help" value="Help" />
-  <string key="HelpHelp" value="Use this entry for a short helptext to the user." />
+  <string key="HelpHelp" value="Use this entry for a short help text to the user." />
 
   <string key="FieldTypeGroupLabel" value="Field type and requirements" />
   <string key="FieldType" value="Field type" />

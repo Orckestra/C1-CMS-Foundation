@@ -62,7 +62,7 @@
   <string key="Composite.IDataGenerated.GetXml.param.IncludePagingInfo.label" value="Include paging info" />
   <string key="Composite.IDataGenerated.GetXml.param.OrderByField.help" value="The field to order data by" />
   <string key="Composite.IDataGenerated.GetXml.param.OrderByField.label" value="Order by" />
-  <string key="Composite.IDataGenerated.GetXml.param.OrderAscending.help" value="When set to true results are delivered in in ascending order, otherwise descending order is used. Default is ascending order." />
+  <string key="Composite.IDataGenerated.GetXml.param.OrderAscending.help" value="When set to true results are delivered in ascending order, otherwise descending order is used. Default is ascending order." />
   <string key="Composite.IDataGenerated.GetXml.param.OrderAscending.label" value="Order ascending" />
   <string key="Composite.IDataGenerated.GetXml.param.PageNumber.help" value="If the number of data elements exceed the page size you can use paging to move to the other pages. See the Page size parameter." />
   <string key="Composite.IDataGenerated.GetXml.param.PageNumber.label" value="Page number" />
@@ -72,7 +72,7 @@
   <string key="Composite.IDataGenerated.GetXml.param.PropertyNames.label" value="Selected fields" />
   <string key="Composite.IDataGenerated.GetXml.param.ShowReferencesInline.help" value="If you include reference data in the 'Selected properties' setting, you can use this option to control how the referenced data is included. 'Inline' is easy to use, but may bloat the size of the XML document." />
   <string key="Composite.IDataGenerated.GetXml.param.ShowReferencesInline.label" value="Show reference data inline" />
-  <string key="Composite.IDataGenerated.GetXml.param.Randomized.help" value="When true data can be ordered randomly. Specify the number of random results you require by setting the 'Page size'. If a filter is specified, this is applied before the random selection. If you speficy an 'Order by' value, you should specify a low 'Page size' or the randomization will become void." />
+  <string key="Composite.IDataGenerated.GetXml.param.Randomized.help" value="When true data can be ordered randomly. Specify the number of random results you require by setting the 'Page size'. If a filter is specified, this is applied before the random selection. If you specify an 'Order by' value, you should specify a low 'Page size' or the randomization will become void." />
   <string key="Composite.IDataGenerated.GetXml.param.Randomized.label" value="Randomized" />
   <string key="Composite.IDataGenerated.GetXml.param.CachePriority.help" value="Determines if result XML has to be cached, and what priority those cache records should have" />
   <string key="Composite.IDataGenerated.GetXml.param.CachePriority.label" value="Cache Priority" />  
@@ -113,7 +113,7 @@
   <string key="Composite.Utils.Configuration.AppSettingsValue.param.KeyName.help" value="" />
   <string key="Composite.Utils.Configuration.AppSettingsValue.param.KeyName.label" value="Key Name" />
   <string key="Composite.Utils.Date.AddDays.description" value="Add a number of days to the current date and get the resulting date." />
-  <string key="Composite.Utils.Date.AddDays.param.DaysToAdd.help" value="Specify a negivative or positve number of days to add to the current date." />
+  <string key="Composite.Utils.Date.AddDays.param.DaysToAdd.help" value="Specify a negative or positive number of days to add to the current date." />
   <string key="Composite.Utils.Date.AddDays.param.DaysToAdd.label" value="Days to add" />
   <string key="Composite.Utils.Date.Now.description" value="The current date and time" />
   <string key="Composite.Utils.GetInputParameter.description" value="Returns an input parameter from executing function context. Use this in developing to copy an input value to a new function call." />
@@ -121,7 +121,7 @@
   <string key="Composite.Utils.GetInputParameter.param.InputParameterName.label" value="Parameter name" />
 
   <string key="Composite.Utils.ParseStringToObject.description" value="Parses a string into an object. The type of object depends on the receiver. Using this function to deliver a value to a DateTime parameter, will make the system parse the string as a DateTime etc." />
-  <string key="Composite.Utils.ParseStringToObject.param.StringToParse.help" value="Specify the string to parse. Note that the string must be formatted in a way that can be converted into the type of object thats expected." />
+  <string key="Composite.Utils.ParseStringToObject.param.StringToParse.help" value="Specify the string to parse. Note that the string must be formatted in a way that can be converted into the type of object that is expected." />
   <string key="Composite.Utils.ParseStringToObject.param.StringToParse.label" value="String to parse" />
 
   <string key="Composite.Utils.Guid.NewGuid.description" value="Returns a new random Guid." />
@@ -155,11 +155,11 @@
   <string key="Composite.Utils.Predicates.GuidEquals.param.Value.help" value="" />
   <string key="Composite.Utils.Predicates.GuidEquals.param.Value.label" value="The value to compare with" />
 
-  <string key="Composite.Utils.Predicates.GuidInCommaSeparatedList.description" value="Check if a Guid exists in a comma seperated string list" />
+  <string key="Composite.Utils.Predicates.GuidInCommaSeparatedList.description" value="Check if a Guid exists in a comma separated string list" />
   <string key="Composite.Utils.Predicates.GuidInCommaSeparatedList.param.CommaSeparatedGuids.label" value="List of Guid" />
   <string key="Composite.Utils.Predicates.GuidInCommaSeparatedList.param.CommaSeparatedGuids.help" value="A string containing zero or more Guids separated by commas" />
 
-  <string key="Composite.Utils.Predicates.StringInCommaSeparatedList.description" value="Check if a string field matches one of the terms in a comma seperated string list" />
+  <string key="Composite.Utils.Predicates.StringInCommaSeparatedList.description" value="Check if a string field matches one of the terms in a comma separated string list" />
   <string key="Composite.Utils.Predicates.StringInCommaSeparatedList.param.CommaSeparatedSearchTerms.label" value="Search terms" />
   <string key="Composite.Utils.Predicates.StringInCommaSeparatedList.param.CommaSeparatedSearchTerms.help" value="A string containing search terms separated by commas, like 'c1,cms,linq'" />
   <string key="Composite.Utils.Predicates.StringInCommaSeparatedList.param.IgnoreCase.label" value="Ignore case" />
@@ -316,7 +316,7 @@
   <string key="Composite.Web.Request.QueryStringGuidValue.param.FallbackValue.label" value="Fallback value" />
   <string key="Composite.Web.Request.QueryStringGuidValue.param.ParameterName.help" value="" />
   <string key="Composite.Web.Request.QueryStringGuidValue.param.ParameterName.label" value="Parameter name" />
-  <string key="Composite.Web.Request.QueryStringIntegerValue.description" value="Gets a integer value from Url parameter (HTTP GET)" />
+  <string key="Composite.Web.Request.QueryStringIntegerValue.description" value="Gets a integer value from a Url parameter (HTTP GET)" />
   <string key="Composite.Web.Request.QueryStringIntegerValue.param.FallbackValue.help" value="" />
   <string key="Composite.Web.Request.QueryStringIntegerValue.param.FallbackValue.label" value="Fallback value" />
   <string key="Composite.Web.Request.QueryStringIntegerValue.param.ParameterName.help" value="" />
@@ -336,7 +336,7 @@
   <string key="Composite.Web.Request.SessionVariable.param.FallbackValue.label" value="Fallback value" />
   <string key="Composite.Web.Request.SessionVariable.param.VariableName.help" value="" />
   <string key="Composite.Web.Request.SessionVariable.param.VariableName.label" value="Variable name" />
-  <string key="Composite.Web.Response.Redirect.description" value="Redirects the website visitor to another URL. URL redirects are supressed when this function executes inside the C1 console." />
+  <string key="Composite.Web.Response.Redirect.description" value="Redirects the website visitor to another URL. URL redirects are suppressed when this function executes inside the C1 console." />
   <string key="Composite.Web.Response.Redirect.param.Url.help" value="The URL the user should be redirected to, either absolute (http://contoso.com/default.aspx) or relative (/Login.aspx))." />
   <string key="Composite.Web.Response.Redirect.param.Url.label" value="URL" />
   <string key="Composite.Web.Response.SetCookieValue.description" value="Sets a cookie value for the current user" />
@@ -347,8 +347,8 @@
   <string key="Composite.Web.Response.SetCookieValue.param.Expires.help" value="When the cookie should expire (stop to exist). The default value is 'session', when the user closes the browser." />
   <string key="Composite.Web.Response.SetCookieValue.param.Expires.label" value="Expiration" />
 
-  <string key="Composite.Web.Response.SetServerPageCacheDuration.description" value="Sets the maximum number of seconds the current page should be publically cached on the server. To ensure that the page response is not cached set the &quot;Maximum seconds&quot; to &quot;0&quot;. If multiple sources set the server cache duration, the smallest number is used. Note that the file &quot;~/Renderers/Page.aspx&quot; contains a default value for cache duration – you can edit this file to change the default." />
-  <string key="Composite.Web.Response.SetServerPageCacheDuration.param.MaxSeconds.help" value="The maximum number of seconds the page currently being rendered should be publically cached. A high value yield good performance, a low value make changes show up faster. A value of '0' ensure that all visitors get a unique response." />
+  <string key="Composite.Web.Response.SetServerPageCacheDuration.description" value="Sets the maximum number of seconds the current page should be publicly cached on the server. To ensure that the page response is not cached set the &quot;Maximum seconds&quot; to &quot;0&quot;. If multiple sources set the server cache duration, the smallest number is used. Note that the file &quot;~/Renderers/Page.aspx&quot; contains a default value for cache duration – you can edit this file to change the default." />
+  <string key="Composite.Web.Response.SetServerPageCacheDuration.param.MaxSeconds.help" value="The maximum number of seconds the page currently being rendered should be publicly cached. A high value yield good performance, a low value make changes show up faster. A value of '0' ensure that all visitors get a unique response." />
   <string key="Composite.Web.Response.SetServerPageCacheDuration.param.MaxSeconds.label" value="Maximum seconds" />
 
   <string key="Composite.Web.Response.SetSessionVariable.description" value="Sets a session variable for the current user" />
@@ -366,10 +366,10 @@
   <string key="Composite.Web.Server.ServerVariable.param.VariableName.help" value="The IIS Server variable to get." />
   <string key="Composite.Web.Server.ServerVariable.param.VariableName.label" value="Variable name" />
   <string key="Composite.Xml.LoadFile.description" value="Loads a local XML file given a relative path" />
-  <string key="Composite.Xml.LoadFile.param.RelativePath.help" value="The relative path of the xml file to load" />
+  <string key="Composite.Xml.LoadFile.param.RelativePath.help" value="The relative path of the XML file to load" />
   <string key="Composite.Xml.LoadFile.param.RelativePath.label" value="Relative path" />
-  <string key="Composite.Xml.LoadXhtmlFile.description" value="Loads a local Xhtml file given a relative path" />
-  <string key="Composite.Xml.LoadXhtmlFile.param.RelativePath.help" value="The relative path of the xhtml file to load" />
+  <string key="Composite.Xml.LoadXhtmlFile.description" value="Loads a local XHTML file given a relative path" />
+  <string key="Composite.Xml.LoadXhtmlFile.param.RelativePath.help" value="The relative path of the XHTML file to load" />
   <string key="Composite.Xml.LoadXhtmlFile.param.RelativePath.label" value="Relative path" />
   <string key="Composite.Xml.LoadUrl.description" value="Loads a remote XML file given a Url" />
   <string key="Composite.Xml.LoadUrl.param.Url.help" value="" />
@@ -396,7 +396,7 @@
   <string key="Composite.Mail.SendMail.param.ReplyTo.label" value="ReplyTo" />
   <string key="Composite.Mail.SendMail.param.ReplyTo.help" value="Address that should be used to reply to the message." />
   <string key="Composite.Mail.SendMail.param.BCC.label" value="BCC" />
-  <string key="Composite.Mail.SendMail.param.BCC.help" value="Blind Carbon Copy. A list of recipients which will receive a mail but their individual email adresses will be concealed from the complete list of recipients." />
+  <string key="Composite.Mail.SendMail.param.BCC.help" value="Blind Carbon Copy. A list of recipients which will receive a mail but their individual email addresses will be concealed from the complete list of recipients." />
   <string key="Composite.Mail.SendMail.param.Attachment.label" value="Attachment" />
   <string key="Composite.Mail.SendMail.param.Attachment.help" value="List of attached files.
 \n					Format it the following [{name}=]{filepath}[,{mime-type] [ | .... ]. 
@@ -416,11 +416,11 @@
   <string key="Composite.Data.Types.IImageFile.MediaFolderFilter.param.MediaFolder.label" value="Media Folder" />
   <string key="Composite.Data.Types.IImageFile.MediaFolderFilter.param.MediaFolder.help" value="A reference to a media folder" />
   <string key="Composite.Data.Types.IImageFile.MediaFolderFilter.param.IncludeSubfolders.label" value="Include Subfolders" />
-  <string key="Composite.Data.Types.IImageFile.MediaFolderFilter.param.IncludeSubfolders.help" value="Determines wheter images from subfolders should be included." />
+  <string key="Composite.Data.Types.IImageFile.MediaFolderFilter.param.IncludeSubfolders.help" value="Determines whether images from subfolders should be included." />
 
   <string key="Composite.Data.Types.IMediaFile.MediaFolderFilter.description" value="Filters images by it's folder path" />
   <string key="Composite.Data.Types.IMediaFile.MediaFolderFilter.param.MediaFolder.label" value="Media Folder" />
   <string key="Composite.Data.Types.IMediaFile.MediaFolderFilter.param.MediaFolder.help" value="A reference to a media folder" />
   <string key="Composite.Data.Types.IMediaFile.MediaFolderFilter.param.IncludeSubfolders.label" value="Include Subfolders" />
-  <string key="Composite.Data.Types.IMediaFile.MediaFolderFilter.param.IncludeSubfolders.help" value="Determines wheter media files from subfolders should be included." />
+  <string key="Composite.Data.Types.IMediaFile.MediaFolderFilter.param.IncludeSubfolders.help" value="Determines whether media files from subfolders should be included." />
 </strings>

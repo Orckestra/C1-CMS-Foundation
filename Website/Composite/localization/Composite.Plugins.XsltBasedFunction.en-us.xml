@@ -2,7 +2,7 @@
 <strings>
   <string key="Plugins.XsltBasedFunctionProviderElementProvider.RootFolderLabel" value="XSLT functions" />
   <string key="Plugins.XsltBasedFunctionProviderElementProvider.RootFolderToolTip" value="XSLT functions" />
-  <string key="AddNewXsltFunctionWorkflow.DuplicateName" value="An xslt function with the same name already exists." />
+  <string key="AddNewXsltFunctionWorkflow.DuplicateName" value="An XSLT function with the same name already exists." />
   <string key="AddNewXsltFunctionWorkflow.MethodEmpty" value="Method name must be non-empty" />
   <string key="AddNewXsltFunctionWorkflow.NamespaceEmpty" value="Namespace must be non-empty" />
   <string key="AddNewXsltFunctionWorkflow.InvalidNamespace" value="Namespace must be like A.B.C - not start and end with ." />
@@ -42,7 +42,7 @@
   <string key="EditXsltFunction.LabelDebug" value="Debug" />
   <string key="EditXsltFunction.LabelPage" value="Page" />
   <string key="EditXsltFunction.HelpPage" value="When debugging, this page is used as context for the rendering." />
-  <string key="EditXsltFunction.LabelAdminitrativeScope" value="Adminitrative" />
+  <string key="EditXsltFunction.LabelAdminitrativeScope" value="Administrative" />
   <string key="EditXsltFunction.LabelPublicScope" value="Public" />
   <string key="EditXsltFunction.LabelPageDataScope" value="Data scope" />
   <string key="EditXsltFunction.HelpPageDataScope" value="Choose public or development version as context for the rendering." />

@@ -49,7 +49,7 @@
   <string key="DeleteData" value="Delete data" />
   <string key="DeleteDataToolTip" value="Delete selected data" />
   <string key="LocalizeData" value="Translate data" />
-  <string key="LocalizeDataToolTip" value="Translate seleted data" />
+  <string key="LocalizeDataToolTip" value="Translate selected data" />
   <string key="LabelPublicationState" value="Publication State" />
   <string key="DraftTransition" value="Draft" />
   <string key="AwaitingApprovalTransition" value="Awaiting Approval" />
@@ -73,7 +73,7 @@
   <string key="EditorCommon.HasLocalization" value="Is localizable data" />
   <string key="DeleteGeneratedDataStep1.LabelFieldGroup" value="Delete data?" />
   <string key="DeleteGeneratedDataStep1.Text" value="Delete data?" />
-  <string key="DeleteDataConfirmationText" value="There're some referenced data that will also be deleted, do you want to continue?" />
+  <string key="DeleteDataConfirmationText" value="There is some referenced data that will also be deleted, do you want to continue?" />
   <string key="DeleteGeneratedInterfaceStep1.LabelFieldGroup" value="Delete datatype" />
   <string key="DeleteGeneratedInterfaceStep1.Text" value="Delete the datatype" />
   <string key="CascadeDeleteErrorTitle" value="Cascade delete error" />
@@ -94,7 +94,7 @@
   <string key="EnableTypeLocalizationWorkflow.Step3.Title" value="Warning" />
   <string key="EnableTypeLocalizationWorkflow.Step3.Description" value="There's some datatypes which have references to the type. While localizing the data will be copied to all languages in order to prevent appearing of broken references." />
   <string key="EnableTypeLocalizationWorkflow.Abort.Title" value="Missing active locales" />
-  <string key="EnableTypeLocalizationWorkflow.Abort.Description" value="There are no added active locales. Add at least one before localization this datat type." />
+  <string key="EnableTypeLocalizationWorkflow.Abort.Description" value="There are no added active locales. Add at least one before localization this datatype." />
   <string key="DisableTypeLocalizationWorkflow.Dialog.Label" value="Disable localization" />
   <string key="DisableTypeLocalizationWorkflow.Step1.FieldGroup.Label" value="Disable localization" />
   <string key="DisableTypeLocalizationWorkflow.Step1.CultureSelector.Label" value="Keep data from ..." />
@@ -103,7 +103,7 @@
   <string key="DisableTypeLocalizationWorkflow.Step2.Description" value="All data from other locales than the one selected will be lost. Click Finish to continue." />
   <string key="LocalizeDataWorkflow.ShowError.LayoutLabel" value="Failed to translate data" />
   <string key="LocalizeDataWorkflow.ShowError.InfoTableCaption" value="Translation errors" />
-  <string key="LocalizeDataWorkflow.ShowError.AlreadyTranslated" value="This data has already been translated. Translated version belongs to a diffrent group." />
+  <string key="LocalizeDataWorkflow.ShowError.AlreadyTranslated" value="This data has already been translated. The translated version belongs to a different group." />
   <string key="LocalizeDataWorkflow.ShowError.Description" value="The following fields has a reference to a data type. You should translate these data items before you can translate this data item" />
   <string key="LocalizeDataWorkflow.ShowError.FieldErrorFormat" value="The field '{0}' is referencing data of type '{1}' with the label '{2}'" />
   <string key="AddNewInterfaceTypeStep1.ErrorTitle" value="Error" />

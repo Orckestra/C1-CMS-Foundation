@@ -6,9 +6,9 @@
   <string key="PageType.Tree.AddNewPageType.Label" value="Add Page Type" />
   <string key="PageType.Tree.AddNewPageType.ToolTip" value="Add new page type" />
   <string key="PageType.Tree.EditPageType.Label" value="Edit page type" />
-  <string key="PageType.Tree.EditPageType.ToolTip" value="Edit seleted page type" />
+  <string key="PageType.Tree.EditPageType.ToolTip" value="Edit selected page type" />
   <string key="PageType.Tree.DeletePageType.Label" value="Delete page type" />
-  <string key="PageType.Tree.DeletePageType.ToolTip" value="Delete seleted page type" />
+  <string key="PageType.Tree.DeletePageType.ToolTip" value="Delete selected page type" />
   <string key="PageType.Tree.AddDefaultPageContent.Label" value="Add default content" />
   <string key="PageType.Tree.AddDefaultPageContent.ToolTip" value="Add placeholder default content" />
   <string key="PageType.Tree.EditDefaultPageContent.Label" value="Edit default content" />
@@ -59,10 +59,10 @@
   <string key="PageType.EditPageTypeWorkflow.DataFolderApplicationPlaceHolder.Label" value="DataFolders / Applications" />
   <string key="PageType.EditPageTypeWorkflow.DataFolderFieldGroup.Label" value="Data folders" />
   <string key="PageType.EditPageTypeWorkflow.DataFolderMultiKeySelector.Label" value="Data folders" />
-  <string key="PageType.EditPageTypeWorkflow.DataFolderMultiKeySelector.Help" value="Select the data folders that should automaticly be added to pages using this page type" />
+  <string key="PageType.EditPageTypeWorkflow.DataFolderMultiKeySelector.Help" value="Select the data folders that should automatically be added to pages using this page type" />
   <string key="PageType.EditPageTypeWorkflow.ApplicationFieldGroup.Label" value="Applications" />
   <string key="PageType.EditPageTypeWorkflow.ApplicationMultiKeySelector.Label" value="Applications" />
-  <string key="PageType.EditPageTypeWorkflow.ApplicationMultiKeySelector.Help" value="Select the applications that should automaticly be added to pages using this page type" />
+  <string key="PageType.EditPageTypeWorkflow.ApplicationMultiKeySelector.Help" value="Select the applications that should automatically be added to pages using this page type" />
   <string key="PageType.EditPageTypeWorkflow.ValidationError.DefaultTemplateNotInRestrictions" value="The default layout is not one of the selected restricted layouts" />
   <string key="PageType.EditPageTypeWorkflow.ValidationError.HomepageRelationConflictsWithParentRestrictions" value="Page type parent restrictions are not allowed with home pages only" />
   <string key="PageType.DeletePageTypeWorkflow.Confirm.Layout.Label" value="Delete this page type?" />
