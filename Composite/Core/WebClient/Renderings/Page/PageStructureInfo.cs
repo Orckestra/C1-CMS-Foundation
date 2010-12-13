@@ -443,7 +443,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             using (DebugLoggingScope.MethodInfoScope)
             {
-                LoggingService.LogVerbose("PageStructureInfo", string.Format("Building page structure in the data scope '{0}' with the localization scope '{1}'", DataScopeManager.CurrentDataScope, LocalizationScopeManager.CurrentLocalizationScope));
+                LoggingService.LogVerbose(LogTitle, string.Format("Building page structure in the data scope '{0}' with the localization scope '{1}'", DataScopeManager.CurrentDataScope, LocalizationScopeManager.CurrentLocalizationScope));
 
                 Dictionary<string, Guid> urlToIdLookup = new Dictionary<string, Guid>();
                 Dictionary<Guid, string> idToUrlLookup = new Dictionary<Guid, string>();
@@ -504,7 +504,15 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                 foreach (KeyValuePair<string, Guid> keyValuePair in urlToIdLookup)
                 {
-                    lowerCaseUrlToIdLookup.Add(keyValuePair.Key.ToLower(), keyValuePair.Value);
+                    string loweredUrl = keyValuePair.Key.ToLower();
+                    
+                    if(lowerCaseUrlToIdLookup.ContainsKey(loweredUrl))
+                    {
+                        LoggingService.LogError(LogTitle, "Multiple pages share the same path '{0}'. Page ID: '{1}'. Duplicates are ignored.".FormatWith(loweredUrl, keyValuePair.Value));
+                        continue;
+                    }
+
+                    lowerCaseUrlToIdLookup.Add(loweredUrl, keyValuePair.Value);
                 }
 
                 return new Map
@@ -574,16 +582,15 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                 element.Add(new XAttribute("Depth", 1+ element.Ancestors(PageElementName).Count()));
 
-                if (urlToIdLookup.ContainsKey(lookupUrl) == false)
+                if (urlToIdLookup.ContainsKey(lookupUrl))
                 {
-                    urlToIdLookup.Add(lookupUrl, pageId);
+                    LoggingService.LogError(LogTitle, "Multiple pages share the same path '{0}', page ID: '{1}'. Duplicates are ignored.".FormatWith(pageUrl, pageId));
+                    continue;
+                }
+                
+                urlToIdLookup.Add(lookupUrl, pageId);
 
-                    BuildFolderPaths(pagesData, element.Elements(), urlToIdLookup, builder);
-                }
-                else
-                {
-                    LoggingService.LogError("PageStructureInfo", string.Format("Multiple pages share the same path '{0}'. Duplicates are ignored.", pageUrl));
-                }
+                BuildFolderPaths(pagesData, element.Elements(), urlToIdLookup, builder);
             }
         }
 

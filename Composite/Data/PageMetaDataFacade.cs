@@ -10,9 +10,10 @@ using Composite.Data.Foundation;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
-using Composite.Core.Linq;
 using Composite.Data.Transactions;
+using Composite.Core.Linq;
 using Composite.Core.Types;
+using Composite.Core.Extensions;
 using Composite.C1Console.Users;
 
 
@@ -96,10 +97,16 @@ namespace Composite.Data
         /// <returns></returns>
         public static IPageMetaDataDefinition GetMetaDataDefinition(Guid definingItemId, string name)
         {
-            return
+            List<IPageMetaDataDefinition> result =
                 DataFacade.GetData<IPageMetaDataDefinition>().
                 Where(f => f.DefiningItemId == definingItemId && f.Name == name).
-                SingleOrDefault(); // Its an error if multible exists on this point
+                ToList();
+
+            if (result.Count == 0) return null;
+
+            if (result.Count == 1) return result[1];
+
+            throw new InvalidOperationException("Multiple metadata definitions on the same item. Name: '{0}', ItemId: '{1}'".FormatWith(name, definingItemId));
         }
 
 
@@ -111,12 +118,18 @@ namespace Composite.Data
         /// <returns></returns>
         public static ICompositionContainer GetMetaDataContainerByDefinitionName(string name)
         {
-            return
+            List<ICompositionContainer> result =
                 DataFacade.GetData<IPageMetaDataDefinition>().
                 Join(DataFacade.GetData<ICompositionContainer>(), o => o.MetaDataContainerId, i => i.Id, (def, con) => new { def, con }).
                 Where(f => f.def.Name == name).
                 Select(f => f.con).
-                Single(); // Its an error if multible exists on this point
+                ToList();
+
+            if (result.Count == 0) return null;
+
+            if (result.Count == 1) return result[1];
+
+            throw new InvalidOperationException("Multiple metadata containers with the same name '{0}'".FormatWith(name));
         }
 
 
@@ -146,7 +159,8 @@ namespace Composite.Data
                 containers =
                     DataFacade.GetData<ICompositionContainer>().
                     OrderBy(f => f.Label).
-                    ToList(f => new KeyValuePair<Guid, string>(f.Id, f.Label));
+                    Select(f => new KeyValuePair<Guid, string>(f.Id, f.Label)).
+                    ToList();
 
                 transactionScope.Complete();
             }
