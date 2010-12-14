@@ -692,11 +692,13 @@ namespace Composite.Core.WebClient.Renderings.Page
                 yield break;
             }
 
+            Verify.ArgumentCondition(pageId != Guid.Empty, "pageId", "The parameter is Guid.Empty");
+
             XElement currentPageElement = PageStructureInfo.GetSiteMap().DescendantsAndSelf().FirstOrDefault(f => f.Attribute("Id").Value == pageId.ToString());
 
             // finde dybden - hvis scope dybden == nuværende dybde + 1, så skift nuværende til first child
 
-            if (currentPageElement == null) throw new ArgumentException("No page with the given ID could be located in the current data scope.", "pageId");
+            if (currentPageElement == null) throw new ArgumentException("No page with the given ID could be located in the current data scope ('{0}').".FormatWith(pageId), "pageId");
 
             XElement pageCopy = null;
 

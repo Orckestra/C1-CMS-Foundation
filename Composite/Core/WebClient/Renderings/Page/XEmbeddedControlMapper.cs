@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
-
+using Composite.Core.Collections.Generic;
 using Composite.Core.Xml;
 using Composite.Core.Extensions;
 using Composite.Functions;
@@ -16,21 +15,28 @@ namespace Composite.Core.WebClient.Renderings.Page
         private static readonly XName _markerElementName = Namespaces.AspNetControls + "marker";
         private static readonly XName _formElementName = Namespaces.AspNetControls + "form";
         private static readonly XName _placeholderElementName = Namespaces.AspNetControls + "placeholder";
-        
 
-        private Dictionary<string, Control> _controlDictionary = new Dictionary<string,Control>();
+
+        private readonly Hashtable<string, Control> _controls = new Hashtable<string, Control>();
 
         // IFunctionResultToXElementMapper
         public bool TryMakeXEmbedable(FunctionContextContainer contextContainer, object resultObject, out XNode resultElement)
         {
-            if (!(resultObject is Control))
+            var control = resultObject as Control;
+
+            if (control == null)
             {
                 resultElement = null;
                 return false;
             }
 
-            string controlMarkerKey = string.Format("[Composite.Function.Render.Asp.Net.Control.{0}]", _controlDictionary.Count);
-            _controlDictionary.Add(controlMarkerKey, (Control)resultObject);
+            string controlMarkerKey;
+
+            lock (_controls)
+            {
+                controlMarkerKey = string.Format("[Composite.Function.Render.Asp.Net.Control.{0}]", _controls.Count);
+                _controls.Add(controlMarkerKey, control);
+            }
 
             resultElement =
                 XElement.Parse(@"<c1marker:{0} xmlns:c1marker=""{1}"" key=""{2}"" />"
@@ -53,7 +59,7 @@ namespace Composite.Core.WebClient.Renderings.Page
             
             if (element.Name == _markerElementName)
             {
-                control = _controlDictionary[element.Attribute("key").Value];
+                control = _controls[element.Attribute("key").Value];
                 return true;
             }
 
