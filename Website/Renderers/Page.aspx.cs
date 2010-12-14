@@ -65,7 +65,9 @@ public partial class Renderers_Page : System.Web.UI.Page
             this.Controls.Add(new LiteralControl("<div>Unknown page id - either this page has not been published yet or it has been deleted.</div>"));
             return;
         }
-        
+
+        PageRenderer.CurrentPage = page;
+
         RenderingResponseHandlerResult responseHandling = RenderingResponseHandlerFacade.GetDataResponseHandling(page.GetDataEntityToken());
 
         if ((responseHandling != null) && (responseHandling.PreventPublicCaching == true))
