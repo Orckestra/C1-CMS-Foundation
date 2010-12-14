@@ -186,6 +186,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
                 XhtmlDocument result = RenderingHelper.RenderCompleteDataList(function, templateDocument, typeDescriptor, fcc);
 
                 IPage previewPage = DataFacade.BuildNew<IPage>();
+                previewPage.Id = GetRootPageId();
                 previewPage.Title = function.Name;
 
                 previewPage.TemplateId = this.GetBinding<Guid>("PreviewTemplateId");
@@ -212,6 +213,11 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
                 webRenderService.SetNewPageOutput(errOutput);
             }
 
+        }
+
+        private static Guid GetRootPageId()
+        {
+            return  PageManager.GetChildrenIDs(Guid.Empty).FirstOrDefault(pageId => PageManager.GetPageById(pageId) != null);
         }
 
         private void previewHandleExternalEventActivity1_Invoked(object sender, System.Workflow.Activities.ExternalDataEventArgs e)
