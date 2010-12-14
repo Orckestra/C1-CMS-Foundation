@@ -1,6 +1,3 @@
-using System;
-
-
 namespace Composite.Data.Hierarchy.DataAncestorProviders
 {
     /// <summary>    
@@ -11,7 +8,7 @@ namespace Composite.Data.Hierarchy.DataAncestorProviders
 	{
         public IData GetParent(IData data)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             return null;
         }

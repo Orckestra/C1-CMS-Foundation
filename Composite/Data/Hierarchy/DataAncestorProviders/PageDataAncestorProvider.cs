@@ -10,19 +10,17 @@ namespace Composite.Data.Hierarchy.DataAncestorProviders
         public IData GetParent(IData data)
         {
             Verify.ArgumentNotNull(data, "data");
-            IPage page = (IPage)data;
+            IPage page = data as IPage;
 
             Verify.IsNotNull(page, "Only '{0}' type is supported.".FormatWith(typeof(IPage).FullName));
 
-
-            Guid parentId = Composite.Data.PageManager.GetParentId(page.Id);
-
+            Guid parentId = PageManager.GetParentId(page.Id);
             if (parentId == Guid.Empty)
             {
                 return null;
             }
 
-            return Composite.Data.PageManager.GetPageById(parentId);
+            return PageManager.GetPageById(parentId);
         }
     }
 }

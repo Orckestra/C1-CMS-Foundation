@@ -50,11 +50,14 @@ namespace Composite.Core.WebClient.Renderings.Page
         public static Control Render(this IPage page, IEnumerable<IPagePlaceholderContent> placeholderContents, FunctionContextContainer functionContextContainer)
         {
             Verify.ArgumentNotNull(page, "page");
-
-            string url;
+            Verify.ArgumentNotNull(functionContextContainer, "functionContextContainer");
+            Verify.ArgumentCondition((functionContextContainer.XEmbedableMapper as XEmbeddedControlMapper) != null,
+                "functionContextContainer", "Unknown or missing XEmbedable mapper on context container. Use GetPageRenderFunctionContextContainer().");
 
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
+                string url;
+
                 PageStructureInfo.TryGetPageUrl(page.Id, out url);
 
                 using (TimerProfilerFacade.CreateTimerProfiler(url ?? "(no url)"))
@@ -62,11 +65,6 @@ namespace Composite.Core.WebClient.Renderings.Page
                     var cultureInfo = new CultureInfo(page.CultureName);
                     System.Threading.Thread.CurrentThread.CurrentCulture = cultureInfo;
                     System.Threading.Thread.CurrentThread.CurrentUICulture = cultureInfo;
-
-                    if (functionContextContainer == null) throw new ArgumentNullException("functionContextContainer");
-                    if ((functionContextContainer.XEmbedableMapper is XEmbeddedControlMapper) == false) throw new ArgumentException("Unknown or missing XEmbedable mapper on context container. Use GetPageRenderFunctionContextContainer().");
-
-                    RequestLifetimeCache.Add("PageRenderer.IPage", page);
 
                     XEmbeddedControlMapper mapper = (XEmbeddedControlMapper)functionContextContainer.XEmbedableMapper;
 
