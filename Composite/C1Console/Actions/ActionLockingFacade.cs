@@ -156,6 +156,11 @@ namespace Composite.C1Console.Actions
 
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entityToken">Entity token to check if it is locked.</param>
+        /// <returns>True if the given entityToken is locked</returns>
         public static bool IsLocked(EntityToken entityToken)
         {
             using (GlobalInitializerFacade.CoreIsInitializedScope)
@@ -168,6 +173,11 @@ namespace Composite.C1Console.Actions
 
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entityToken">Entity token to check if it is locked.</param>
+        /// <returns>Returns the name of the user who has locked the given entity token. Null if no one has a lock on it.</returns>
         public static string LockedBy(EntityToken entityToken)
         {
             using (GlobalInitializerFacade.CoreIsInitializedScope)
@@ -188,6 +198,9 @@ namespace Composite.C1Console.Actions
 
 
 
+        /// <summary>    
+        /// </summary>
+        /// <exclude />
         public static IDisposable Locker
         {
             get
