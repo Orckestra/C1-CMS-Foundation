@@ -6,14 +6,22 @@ using Microsoft.Practices.ObjectBuilder;
 
 namespace Composite.Core.IO.Plugins.IOProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Assembler(typeof(NonConfigurableIOProviderAssembler))]
-    internal class NonConfigurableIOProvider : IOProviderData
+    public class NonConfigurableIOProvider : IOProviderData
     {
     }
 
 
 
-    internal sealed class NonConfigurableIOProviderAssembler : IAssembler<IIOProvider, IOProviderData>
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class NonConfigurableIOProviderAssembler : IAssembler<IIOProvider, IOProviderData>
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         public IIOProvider Assemble(IBuilderContext context, IOProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)

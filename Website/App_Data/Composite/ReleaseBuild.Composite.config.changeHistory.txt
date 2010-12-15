@@ -102,6 +102,6 @@ Changes since C1 1.2 SP2 Patch 3
  - Section added:
   <Composite.Core.IO.Plugins.IOProviderConfiguration defaultIOProvider="LocalIOProvider">
     <IOProviderPlugins>
-      <add name="LocalIOProvider" type="Composite.Plugins.IO.IOProviders.LocalIOPorivder.LocalIOProvider, Composite"/>
+      <add name="LocalIOProvider" type="Composite.Plugins.IO.IOProviders.LocalIOProvider.LocalIOProvider, Composite"/>
     </IOProviderPlugins>
   </Composite.Core.IO.Plugins.IOProviderConfiguration>

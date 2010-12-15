@@ -9,6 +9,8 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
         private Configuration _configuration;
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "IO implementation")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationManagerClass:DoNotUseConfigurationManagerClass", Justification = "IO implementation")]
         public LocalC1Configuration(string path)
         {
             ExeConfigurationFileMap map = new ExeConfigurationFileMap();
@@ -18,6 +20,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "IO implementation")]
         public string FilePath
         {
             get
@@ -28,6 +31,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "IO implementation")]
         public bool HasFile
         {
             get
@@ -38,6 +42,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "IO implementation")]
         public AppSettingsSection AppSettings
         {
             get
@@ -48,6 +53,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "IO implementation")]
         public ConnectionStringsSection ConnectionStrings
         {
             get
@@ -58,6 +64,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "IO implementation")]
         public ConfigurationSectionCollection Sections
         {
             get
@@ -68,6 +75,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "IO implementation")]
         public ConfigurationSectionGroup RootSectionGroup
         {
             get
@@ -78,6 +86,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "IO implementation")]
         public ConfigurationSectionGroupCollection SectionGroups
         {
             get
@@ -88,6 +97,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "IO implementation")]
         public ConfigurationSection GetSection(string sectionName)
         {
             return _configuration.GetSection(sectionName);
@@ -95,6 +105,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "IO implementation")]
         public ConfigurationSectionGroup GetSectionGroup(string sectionGroupName)
         {
             return _configuration.GetSectionGroup(sectionGroupName);
@@ -102,6 +113,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "IO implementation")]
         public void Save()
         {
             _configuration.Save();
@@ -109,6 +121,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "IO implementation")]
         public void Save(ConfigurationSaveMode saveMode)
         {
             _configuration.Save(saveMode);
@@ -116,6 +129,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "IO implementation")]
         public void Save(ConfigurationSaveMode saveMode, bool forceSaveAll)
         {
             _configuration.Save(saveMode, forceSaveAll);
@@ -123,6 +137,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "IO implementation")]
         public void SaveAs(string filename)
         {
             _configuration.SaveAs(filename);
@@ -130,6 +145,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "IO implementation")]
         public void SaveAs(string filename, ConfigurationSaveMode saveMode)
         {
             _configuration.SaveAs(filename, saveMode);
@@ -137,6 +153,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass", Justification = "IO implementation")]
         public void SaveAs(string filename, ConfigurationSaveMode saveMode, bool forceSaveAll)
         {
             _configuration.SaveAs(filename, saveMode, forceSaveAll);

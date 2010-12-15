@@ -2118,6 +2118,7 @@
     <Content Include="Data\Types\ExtensionMethods\Use_parent_namespace.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Core\Cloud\" />
     <Folder Include="Core\Logging\WCF\" />
     <Folder Include="Core\WebClient\WCF\Logger\" />
     <Folder Include="Functions\ManagedParameters\Types\" />

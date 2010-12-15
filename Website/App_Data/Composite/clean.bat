@@ -4,6 +4,7 @@ del Configuration\DynamicSqlDataProvider.config
 del Configuration\DynamicXmlDataProvider.config
 del Configuration\InstallationInformation.xml
 del Configuration\SystemInitialized.xml
+del Configuration\FirstTimeStart.xml
 del ..\..\Bin\Composite.Generated.dll 
 del ..\..\app_offline.htm /F
 rd Packages /S /Q

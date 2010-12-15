@@ -50,9 +50,10 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
         }
 
 
-
+        
         public string StoredUsername
         {
+            [DebuggerStepThrough]
             get
             {
                 HttpContext context = HttpContext.Current;
@@ -85,7 +86,8 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
                     }
                     catch (Exception ex)
                     {
-                        LoggingService.LogWarning("HttpContextBasedLoginSessionStore", ex);
+#warning MRJ: Why is it doing this?????
+                        //LoggingService.LogWarning("HttpContextBasedLoginSessionStore", ex);
                         return null;
                     }
                 }

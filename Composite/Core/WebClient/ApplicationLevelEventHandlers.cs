@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Web;
 using Composite.Core.Application;
 using Composite.Core.Configuration;
+using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
 using Composite.Core.Logging;
 using Composite.Core.Threading;
 using Composite.Core.Types;
-using Composite.Core.Extensions;
-using System.Web;
 using Composite.Core.WebClient.Renderings;
 using Composite.Data;
+
 
 namespace Composite.Core.WebClient
 {
@@ -28,6 +29,8 @@ namespace Composite.Core.WebClient
 
         public static void Application_Start(object sender, EventArgs e)
         {
+            SystemSetupFacade.SetFirstTimeStart();
+
             if (SystemSetupFacade.IsSystemFirstTimeInitialized == false)
             {
                 return;

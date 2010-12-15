@@ -7,9 +7,13 @@ using Composite.Core.IO.Plugins.IOProvider.Runtime;
 
 namespace Composite.Core.IO.Plugins.IOProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [CustomFactory(typeof(IOProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(IOProviderDefaultNameRetriever))]
-    internal interface IIOProvider
+    public interface IIOProvider
     {
         IC1Directory C1Directory { get; }
         

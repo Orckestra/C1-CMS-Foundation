@@ -12,7 +12,7 @@ namespace Composite.Core.Configuration
     /// Any call to the class will never result in the system being initialized
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class SystemSetupFacade
     {
         private static object _lock = new object();
@@ -20,7 +20,7 @@ namespace Composite.Core.Configuration
         private static bool _isSystemFirstTimeInitializedValue = false;
 
         static SystemSetupFacade()
-        {            
+        {
         }
 
 
@@ -74,6 +74,56 @@ namespace Composite.Core.Configuration
             get
             {
                 return PathUtil.Resolve("~/App_Data/Composite/Configuration/SystemInitialized.xml");
+            }
+        }
+
+
+
+        /// <summary>
+        /// This method is used to record the very first time the system is started.
+        /// Ths time can later be used to several things like finding files that have been written to etc.
+        /// </summary>
+        public static void SetFirstTimeStart()
+        {
+            if (C1File.Exists(FirstTimeStartFilePath) == false)
+            {
+                string directory = Path.GetDirectoryName(FirstTimeStartFilePath);
+                if (C1Directory.Exists(directory) == false)
+                {
+                    C1Directory.CreateDirectory(directory);
+                }
+
+                XDocument doc = new XDocument(
+                    new XElement("Root", new XAttribute("time", DateTime.Now))
+                );
+
+                doc.SaveToFile(FirstTimeStartFilePath);
+            }
+        }
+
+
+
+        /// <summary>
+        /// Returns the time the system was startet the very first time
+        /// </summary>
+        /// <returns>The very first time the system has been started</returns>        
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is intended")]
+        public static DateTime GetFirstTimeStart()
+        {
+            if (File.Exists(FirstTimeStartFilePath) == false) throw new InvalidOperationException(FirstTimeStartFilePath + " is missing");
+
+            XDocument doc = XDocumentUtils.Load(FirstTimeStartFilePath);
+
+            return (DateTime)doc.Element("Root").Attribute("time");
+        }
+
+
+
+        private static string FirstTimeStartFilePath
+        {
+            get
+            {
+                return PathUtil.Resolve("~/App_Data/Composite/Configuration/FirstTimeStart.xml");
             }
         }
     }
