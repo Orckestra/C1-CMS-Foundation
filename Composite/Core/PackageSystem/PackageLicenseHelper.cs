@@ -53,7 +53,7 @@ namespace Composite.Core.PackageSystem
         /// Guid productId = ...; // A package should have this compiled into its assembly.
         /// string publicKeyXml = ...; // A package should have this compiled into its assembly.
         /// 
-        /// LicenseDefinition licenseDefinition = PackageLicenseHelper.GetLicenseDefinition(productId);
+        /// PackageLicenseDefinition licenseDefinition = PackageLicenseHelper.GetLicenseDefinition(productId);
         /// Guid installationId = licenseDefinition.InstallationId; 
         /// bool isPermanent = licenseDefinition.Permanent;
         /// DateTime expiresTime = licenseDefinition.Expires;
