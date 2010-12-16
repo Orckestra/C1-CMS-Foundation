@@ -26,6 +26,7 @@ rd ApplicationState\SerializedConsoleMessages /S /Q
 md ApplicationState\SerializedConsoleMessages
 rd ApplicationState\SerializedWorkflows /S /Q
 md ApplicationState\SerializedWorkflows
+rd ..\..\Composite\InstalledPackages /S /Q
 
 
 copy TreeDefinitions\PageType.xml TreeDefinitions\PageType.xml.backup /y
