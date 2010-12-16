@@ -4,7 +4,11 @@ using System.Collections.Generic;
 
 namespace Composite.C1Console.Security.SecurityAncestorProviders
 {
-    internal sealed class NoAncestorSecurityAncestorProvider : ISecurityAncestorProvider
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class NoAncestorSecurityAncestorProvider : ISecurityAncestorProvider
 	{
         public IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {
