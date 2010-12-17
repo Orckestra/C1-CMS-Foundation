@@ -146,6 +146,8 @@ namespace Composite.Core.WebClient.Renderings.Page
 
         public static Control Render(this IPage page, IEnumerable<IPagePlaceholderContent> placeholderContents)
         {
+            CurrentPage = page;
+
             return page.Render(placeholderContents, GetPageRenderFunctionContextContainer());
         }
 
@@ -155,15 +157,12 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             get
             {
-
-                if (RequestLifetimeCache.HasKey("PageRenderer.IPage") == true)
-                {
-                    return RequestLifetimeCache.TryGet<IPage>("PageRenderer.IPage").Id;
-                }
-                else
+                if (!RequestLifetimeCache.HasKey("PageRenderer.IPage"))
                 {
                     return Guid.Empty;
                 }
+
+                return RequestLifetimeCache.TryGet<IPage>("PageRenderer.IPage").Id;
             }
         }
 
@@ -172,17 +171,23 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             get
             {
-                if (RequestLifetimeCache.HasKey("PageRenderer.IPage") == true)
-                {
-                    return RequestLifetimeCache.TryGet<IPage>("PageRenderer.IPage");
-                }
-                else
+                if (!RequestLifetimeCache.HasKey("PageRenderer.IPage"))
                 {
                     return null;
                 }
+                
+                return RequestLifetimeCache.TryGet<IPage>("PageRenderer.IPage");
             }
             set
             {
+                var currentValue = CurrentPage;
+                if (currentValue == value)
+                {
+                    return;
+                }
+
+                Verify.IsNull(currentValue, "CurrentPage is already set");
+
                 RequestLifetimeCache.Add("PageRenderer.IPage", value);
             }
         }
