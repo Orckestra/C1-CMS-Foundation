@@ -104,7 +104,7 @@ namespace Composite.Data
 
             if (result.Count == 0) return null;
 
-            if (result.Count == 1) return result[1];
+            if (result.Count == 1) return result[0];
 
             throw new InvalidOperationException("Multiple metadata definitions on the same item. Name: '{0}', ItemId: '{1}'".FormatWith(name, definingItemId));
         }
@@ -127,7 +127,7 @@ namespace Composite.Data
 
             if (result.Count == 0) return null;
 
-            if (result.Count == 1) return result[1];
+            if (result.Count == 1) return result[0];
 
             throw new InvalidOperationException("Multiple metadata containers with the same name '{0}'".FormatWith(name));
         }
