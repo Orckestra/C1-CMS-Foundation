@@ -370,7 +370,6 @@
       <DependentUpon>Page.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WebRole.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Composite\TreeDefinitions\PageType.xml" />
