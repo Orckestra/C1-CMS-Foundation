@@ -19,6 +19,14 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass")]
+        public void Touch(string path)
+        {
+            File.SetLastWriteTime(path, DateTime.Now);
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass")]
         public void Copy(string sourceFileName, string destFileName)
         {
             File.Copy(sourceFileName, destFileName);

@@ -22,6 +22,13 @@ namespace Composite.Core.IO.Plugins.IOProvider
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
+        /// <param name="path"></param>
+        void Touch(string path);
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
         /// <param name="sourceFileName"></param>
         /// <param name="destFileName"></param>
         void Copy(string sourceFileName, string destFileName);

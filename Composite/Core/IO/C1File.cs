@@ -24,6 +24,13 @@ namespace Composite.Core.IO
 
 
 
+#warning MRJ: This is not at part of the System.IO.File
+        public static void Touch(string path)
+        {
+            ImplementationFactory.CurrentFactory.StatelessC1File.Touch(path);
+        }
+
+
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>

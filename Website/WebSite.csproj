@@ -370,6 +370,7 @@
       <DependentUpon>Page.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="WebRole.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Composite\TreeDefinitions\PageType.xml" />
@@ -5441,6 +5442,9 @@
     <Content Include="Composite\updated.css" />
     <Content Include="Composite\updated.js" />
     <Content Include="Composite\help\help.ashx" />
+    <Content Include="App_Data\Composite\Azure.Composite.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Composite\extensions\compositec1\chrome.manifest" />
     <None Include="Composite\extensions\compositec1\chrome\content\compositec1.xul" />
     <None Include="Composite\extensions\compositec1\compositec1.xpi" />

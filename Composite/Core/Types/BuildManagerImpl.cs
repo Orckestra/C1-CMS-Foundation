@@ -1106,7 +1106,11 @@ namespace Composite.Core.Types
 
             CSharpCodeProvider compiler = new CSharpCodeProvider();
 
-            return compiler.CompileAssemblyFromFile(compilerParameters, filenames.ToArray());
+            CompilerResults result = compiler.CompileAssemblyFromFile(compilerParameters, filenames.ToArray());
+
+            C1File.Touch(targetFileName);
+
+            return result;
         }
 
         private IEnumerable<string> GetInterfaceSourcesToCompile()
@@ -1225,6 +1229,8 @@ namespace Composite.Core.Types
 
             string assemblyPackFilename = GetAssemblyPackFilename();
             CompilerResults compileResult = GeneratePackageDll(assemblyPackFilename, filesnames, null);
+
+            C1File.Touch(assemblyPackFilename);
 
             if (compileResult == null)
             {

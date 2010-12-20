@@ -27,6 +27,17 @@ namespace Composite.Core.Implementation
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
+        /// <param name="path"></param>
+        public virtual void Touch(string path)
+        {
+            IOFacade.C1File.Touch(path);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
         /// <param name="sourceFileName"></param>
         /// <param name="destFileName"></param>
         public virtual void Copy(string sourceFileName, string destFileName)

@@ -210,6 +210,7 @@ namespace Composite.Core.WebClient.Setup
             }
             catch (Exception ex)
             {
+                LoggingService.LogCritical("SetupServiceFacade", "Error installing package: " + packageUrl);
                 LoggingService.LogCritical("SetupServiceFacade", ex);
 
                 throw;
