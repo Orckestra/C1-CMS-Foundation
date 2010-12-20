@@ -228,11 +228,25 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             string typeFullName = StringExtensionMethods.CreateNamespace(dataTypeDescriptor.Namespace, dataTypeDescriptor.Name, '.');
 
+            PublicationScope publicationScope;
+
+            switch (dataScopeIdentifier.Name)
+            {
+                case DataScopeIdentifier.PublicName:
+                    publicationScope = PublicationScope.Published;
+                    break;
+                case DataScopeIdentifier.AdministratedName:
+                    publicationScope = PublicationScope.Unpublished;
+                    break;
+                default:
+                    throw new InvalidOperationException("Unsupported data scope identifier: '{0}'".FormatWith(dataScopeIdentifier.Name));
+            }
+
             if (cultureName == "")
             {
-                return string.Format("{0}_{1}.xml", typeFullName, dataScopeIdentifier.Name);
+                return string.Format("{0}_{1}.xml", typeFullName, publicationScope);
             }
-            return string.Format("{0}_{1}_{2}.xml", typeFullName, dataScopeIdentifier.Name, cultureName);
+            return string.Format("{0}_{1}_{2}.xml", typeFullName, publicationScope, cultureName);
         }
 
 

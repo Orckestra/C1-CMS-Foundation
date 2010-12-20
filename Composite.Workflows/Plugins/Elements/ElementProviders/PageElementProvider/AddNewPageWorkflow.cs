@@ -89,25 +89,28 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         {
             if (this.EntityToken is PageElementProviderEntityToken)
             {
-                return selectablePageTypes.First().Id;
+                var pageType = selectablePageTypes.FirstOrDefault();
+
+                Verify.IsNotNull(pageType, "No page type selected");
+
+                return pageType.Id;
             }
-            else
+            
+            IPage parentPage = this.GetDataItemFromEntityToken<IPage>();
+
+            IPageType parentPageType = DataFacade.GetData<IPageType>().Where(f => f.Id == parentPage.PageTypeId).Single();
+
+            if (parentPageType.DefaultChildPageType != Guid.Empty)
             {
-                IPage parentPage = this.GetDataItemFromEntityToken<IPage>();
-
-                IPageType parentPageType = DataFacade.GetData<IPageType>().Where(f => f.Id == parentPage.PageTypeId).Single();
-
-                if (parentPageType.DefaultChildPageType != Guid.Empty)
+                if (selectablePageTypes.Where(f => f.Id == parentPageType.DefaultChildPageType).Any() == true)
                 {
-                    if (selectablePageTypes.Where(f => f.Id == parentPageType.DefaultChildPageType).Any() == true)
-                    {
-                        return parentPageType.DefaultChildPageType;
-                    }
+                    return parentPageType.DefaultChildPageType;
                 }
-
-
-                return selectablePageTypes.First().Id;
             }
+
+
+            return selectablePageTypes.First().Id;
+            
         }
 
 
