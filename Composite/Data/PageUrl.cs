@@ -347,7 +347,7 @@ namespace Composite.Data
 
             var invariantCulture = CultureInfo.InvariantCulture;
 
-            string loweredFriendlyPath = path.ToLower(invariantCulture);
+            string loweredRelativeUrl = relativeUrl.ToLower(invariantCulture);
 
             // Getting the site map
             IEnumerable<XElement> siteMap;
@@ -360,7 +360,7 @@ namespace Composite.Data
             // TODO: Optimize
             XAttribute matchingAttributeNode = siteMap.DescendantsAndSelf()
                         .Attributes("FriendlyUrl")
-                        .Where(f => f.Value.ToLower(invariantCulture) == loweredFriendlyPath).FirstOrDefault();
+                        .Where(f => f.Value.ToLower(invariantCulture) == loweredRelativeUrl).FirstOrDefault();
 
             if (matchingAttributeNode == null)
             {

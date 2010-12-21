@@ -299,7 +299,7 @@ namespace Composite.Core.WebClient
                 return false;
             }
 
-            string loweredFriendlyPath = path.ToLower();
+            string loweredRelativeUrl = relativeUrl.ToLower(CultureInfo.InvariantCulture);
 
             // Getting the site map
             IEnumerable<XElement> siteMap;
@@ -312,7 +312,7 @@ namespace Composite.Core.WebClient
             // TODO: Optimize
             XAttribute matchingAttributeNode = siteMap.DescendantsAndSelf()
                         .Attributes("FriendlyUrl")
-                        .Where(f => f.Value.ToLower() == loweredFriendlyPath).FirstOrDefault();
+                        .Where(f => f.Value.ToLower() == loweredRelativeUrl).FirstOrDefault();
             
             if(matchingAttributeNode == null)
             {
