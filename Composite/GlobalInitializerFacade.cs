@@ -39,6 +39,7 @@ namespace Composite
         private static bool _initializing = false;
         private static bool _typesAutoUpdated = false;
         private static Exception _exceptionThrownDurringInitialization = null;
+        private static DateTime _exceptionThrownDurringInitializationTimeStamp;
         private static int _fatalErrorFlushCount = 0;
         private static ReaderWriterLock _readerWriterLock = new ReaderWriterLock();
         private static Thread _hookingFacadeThread = null; // This is used to wait on the the thread if a reinitialize is issued
@@ -104,7 +105,16 @@ namespace Composite
         {
             if (_exceptionThrownDurringInitialization != null)
             {
-                throw _exceptionThrownDurringInitialization;
+                TimeSpan timeSpan = DateTime.Now - _exceptionThrownDurringInitializationTimeStamp;
+                if (timeSpan < TimeSpan.FromMinutes(5.0))
+                {
+                    LoggingService.LogCritical("GlobalInitializerFacade", "Exception recorded:" + timeSpan.ToString() + " ago");
+                    throw _exceptionThrownDurringInitialization;
+                }
+                else
+                {
+                    _exceptionThrownDurringInitialization = null;
+                }
             }
 
             if (!SystemSetupFacade.IsSystemFirstTimeInitialized && RuntimeInformation.IsDebugBuild)
@@ -132,6 +142,8 @@ namespace Composite
                         catch (Exception ex)
                         {
                             _exceptionThrownDurringInitialization = ex;
+                            _exceptionThrownDurringInitializationTimeStamp = DateTime.Now;
+                            LoggingService.LogCritical("GlobalInitializerFacade", ex);
                             throw;
                         }
                         finally
