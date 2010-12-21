@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Web.Hosting;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.C1Console.Security;
@@ -140,9 +141,10 @@ namespace Composite
                             _fatalErrorFlushCount = 0;
                         }
                         catch (Exception ex)
-                        {
+                        {                            
                             _exceptionThrownDurringInitialization = ex;
                             _exceptionThrownDurringInitializationTimeStamp = DateTime.Now;
+                            LoggingService.LogCritical("GlobalInitializerFacade", HostingEnvironment.ShutdownReason.ToString());
                             LoggingService.LogCritical("GlobalInitializerFacade", ex);
                             throw;
                         }
