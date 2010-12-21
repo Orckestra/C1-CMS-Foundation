@@ -450,6 +450,10 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                 var pagesData = new SitemapBuildingData();
 
+                var locale = LocalizationScopeManager.CurrentLocalizationScope;
+                var localeMappedName = DataLocalizationFacade.GetUrlMappingName(locale) ?? string.Empty;
+                string friendlyUrlPrefix = localeMappedName.IsNullOrEmpty() ? string.Empty : "/" + localeMappedName;
+                
                 var pageToToChildElementsTable = new Hashtable<Guid, List<PageTreeInfo>>();
                 foreach (IPage page in pagesData.Pages)
                 {
@@ -468,7 +472,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                          new XAttribute("Title", page.Title),
                          (string.IsNullOrEmpty(page.MenuTitle) ? null : new XAttribute("MenuTitle", page.MenuTitle)),
                          new XAttribute("UrlTitle", page.UrlTitle),
-                         (string.IsNullOrEmpty(page.FriendlyUrl) ? null : new XAttribute("FriendlyUrl", MakeRelativeUrl(page.FriendlyUrl))),
+                         (string.IsNullOrEmpty(page.FriendlyUrl) ? null : new XAttribute("FriendlyUrl", friendlyUrlPrefix + MakeRelativeUrl(page.FriendlyUrl))),
                          new XAttribute("Description", page.Description),
                          new XAttribute("ChangedDate", page.ChangeDate),
                          new XAttribute("ChangedBy", page.ChangedBy ?? string.Empty));
