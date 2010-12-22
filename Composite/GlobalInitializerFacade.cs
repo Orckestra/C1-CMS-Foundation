@@ -24,10 +24,31 @@ using Composite.Data.Foundation;
 using Composite.Data.GeneratedTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Functions.Foundation;
+using Composite.Core.Extensions;
 
 
 namespace Composite
 {
+#warning MRJ: Delete this class
+    sealed class AppDomainShutdown : IRegisteredObject
+    {
+        public static readonly AppDomainShutdown Instance = new AppDomainShutdown();
+
+        private AppDomainShutdown()
+        {
+            HostingEnvironment.RegisterObject(this);
+        }
+
+        public void Stop(bool bImmediate)
+        {
+            bool shutdown = HostingEnvironment.ApplicationHost.ShutdownInitiated();
+            LoggingService.LogCritical("GlobalInitializerFacade", "AppDomainShutdown.Stop: ShutdownInitiated: " + shutdown.ToString());
+            LoggingService.LogCritical("GlobalInitializerFacade", "AppDomainShutdown.Stop: " + HostingEnvironment.ShutdownReason.ToString());
+        }
+    }
+
+
+
     /// <summary>    
     /// </summary>
     /// <exclude />
@@ -88,6 +109,8 @@ namespace Composite
 
         static GlobalInitializerFacade()
         {
+            var instance = AppDomainShutdown.Instance;
+
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
         }
 
