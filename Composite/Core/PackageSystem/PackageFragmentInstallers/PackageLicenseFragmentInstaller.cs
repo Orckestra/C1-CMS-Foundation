@@ -55,7 +55,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 LicenseFileName = "",
                 Permanent = descriptor.Permanent,                                
                 Expires = descriptor.Expires,
-                LicenseKey = descriptor.LicenseKey
+                LicenseKey = descriptor.LicenseKey,
+                PurchaseUrl = descriptor.PurchaseUrl
             };
 
             LicenseDefinitionManager.StoreLicenseDefinition(definition);

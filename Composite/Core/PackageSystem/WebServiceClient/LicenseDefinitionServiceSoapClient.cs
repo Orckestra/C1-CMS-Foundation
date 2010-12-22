@@ -34,10 +34,13 @@ namespace Composite.Core.PackageSystem.WebServiceClient
 
         private bool PermanentField;
 
-        private System.DateTime ExpiresField;
+        private System.DateTime ExpiresField;        
 
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string LicenseKeyField;
+
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string PurchaseUrlField;
 
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData
@@ -134,6 +137,23 @@ namespace Composite.Core.PackageSystem.WebServiceClient
                 {
                     this.LicenseKeyField = value;
                     this.RaisePropertyChanged("LicenseKey");
+                }
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 5)]
+        public string PurchaseUrl
+        {
+            get
+            {
+                return this.PurchaseUrlField;
+            }
+            set
+            {
+                if ((object.ReferenceEquals(this.PurchaseUrlField, value) != true))
+                {
+                    this.PurchaseUrlField = value;
+                    this.RaisePropertyChanged("PurchaseUrl");
                 }
             }
         }

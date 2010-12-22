@@ -46,6 +46,12 @@ namespace Composite.Core.PackageSystem
 
 
         /// <summary>
+        /// Url to where to buy a license for the pacakge.
+        /// </summary>
+        public string PurchaseUrl { get; set; }
+
+
+        /// <summary>
         /// If its a trail license this property contains the date when the pacakge experies in UTC.
         /// </summary>
         public DateTime Expires { get; set; }

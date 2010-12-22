@@ -40,6 +40,7 @@ namespace Composite.Core.PackageSystem
                 Permanent = (bool)doc.Descendants("Permanent").Single(),
                 Expires = (DateTime)doc.Descendants("Expires").Single(),
                 LicenseKey = doc.Descendants("LicenseKey").Single().Value,
+                PurchaseUrl = doc.Descendants("PurchaseUrl").Single().Value
             };
 
             if (licenseDefinition.InstallationId != InstallationInformationFacade.InstallationId)
@@ -68,7 +69,8 @@ namespace Composite.Core.PackageSystem
                     new XElement("ProductId", licenseDefinition.ProductId),
                     new XElement("Permanent", licenseDefinition.Permanent),                                        
                     new XElement("Expires", licenseDefinition.Expires),
-                    new XElement("LicenseKey", licenseDefinition.LicenseKey)
+                    new XElement("LicenseKey", licenseDefinition.LicenseKey),
+                    new XElement("PurchaseUrl", licenseDefinition.PurchaseUrl)
                 )
             );
 
