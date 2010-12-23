@@ -97,16 +97,9 @@ namespace Composite.Data
         /// <returns></returns>
         public static IPageMetaDataDefinition GetMetaDataDefinition(Guid definingItemId, string name)
         {
-            List<IPageMetaDataDefinition> result =
-                DataFacade.GetData<IPageMetaDataDefinition>().
-                Where(f => f.DefiningItemId == definingItemId && f.Name == name).
-                ToList();
-
-            if (result.Count == 0) return null;
-
-            if (result.Count == 1) return result[0];
-
-            throw new InvalidOperationException("Multiple metadata definitions on the same item. Name: '{0}', ItemId: '{1}'".FormatWith(name, definingItemId));
+            return DataFacade.GetData<IPageMetaDataDefinition>().
+                   Where(f => f.DefiningItemId == definingItemId && f.Name == name).
+                   SingleOrDefaultOrException("Multiple metadata definitions on the same item. Name: '{0}', ItemId: '{1}'", name, definingItemId);
         }
 
 
@@ -118,18 +111,11 @@ namespace Composite.Data
         /// <returns></returns>
         public static ICompositionContainer GetMetaDataContainerByDefinitionName(string name)
         {
-            List<ICompositionContainer> result =
-                DataFacade.GetData<IPageMetaDataDefinition>().
-                Join(DataFacade.GetData<ICompositionContainer>(), o => o.MetaDataContainerId, i => i.Id, (def, con) => new { def, con }).
-                Where(f => f.def.Name == name).
-                Select(f => f.con).
-                ToList();
-
-            if (result.Count == 0) return null;
-
-            if (result.Count == 1) return result[0];
-
-            throw new InvalidOperationException("Multiple metadata containers with the same name '{0}'".FormatWith(name));
+            return  DataFacade.GetData<IPageMetaDataDefinition>().
+                    Join(DataFacade.GetData<ICompositionContainer>(), o => o.MetaDataContainerId, i => i.Id, (def, con) => new { def, con }).
+                    Where(f => f.def.Name == name).
+                    Select(f => f.con).
+                    SingleOrDefaultOrException("Multiple metadata containers with the same name '{0}'", name);
         }
 
 

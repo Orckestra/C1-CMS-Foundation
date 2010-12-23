@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Workflow.Activities;
-using System.Workflow.Runtime;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.Data;
@@ -27,7 +26,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
     public sealed partial class AddNewPageWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         [NonSerialized]
-        private List<IPageType> selectablePageTypes = null;
+        private List<IPageType> _selectablePageTypes = null;
 
 
         public AddNewPageWorkflow()
@@ -42,19 +41,17 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             if (this.EntityToken is PageElementProviderEntityToken)
             {
                 return Guid.Empty;
-
             }
-            else if (this.EntityToken is DataEntityToken)
+
+            if (this.EntityToken is DataEntityToken)
             {
                 DataEntityToken dataEntityToken = (DataEntityToken)this.EntityToken;
                 IPage selectedPage = (IPage)dataEntityToken.Data;
 
                 return selectedPage.Id;
             }
-            else
-            {
-                throw new NotImplementedException();
-            }
+
+            throw new NotImplementedException();
         }
 
 
@@ -62,11 +59,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private List<IPageType> GetSelectablePageTypes()
         {
-            if (selectablePageTypes == null)
+            if (_selectablePageTypes == null)
             {
                 if (this.EntityToken is PageElementProviderEntityToken)
                 {
-                    selectablePageTypes =
+                    _selectablePageTypes =
                         DataFacade.GetData<IPageType>().
                         Where(f => (f.Available == true) && (f.HomepageRelation != PageTypeHomepageRelation.OnlySubPages.ToString())).
                         OrderBy(f => f.Name).
@@ -76,41 +73,35 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 {
                     IPage page = this.GetDataItemFromEntityToken<IPage>();
 
-                    selectablePageTypes = page.GetChildPageSelectablePageTypes().ToList();
+                    _selectablePageTypes = page.GetChildPageSelectablePageTypes().ToList();
                 }
             }
 
-            return selectablePageTypes;
+            return _selectablePageTypes;
         }
 
 
 
-        private Guid GetDefaultPageTypeId(IEnumerable<IPageType> selectablePageTypes)
+        private Guid? GetDefaultPageTypeId(IEnumerable<IPageType> selectablePageTypes)
         {
-            if (this.EntityToken is PageElementProviderEntityToken)
+            if (!(this.EntityToken is PageElementProviderEntityToken))
             {
-                var pageType = selectablePageTypes.FirstOrDefault();
+                IPage parentPage = this.GetDataItemFromEntityToken<IPage>();
 
-                Verify.IsNotNull(pageType, "No page type selected");
+                IPageType parentPageType = DataFacade.GetData<IPageType>().Where(f => f.Id == parentPage.PageTypeId).FirstOrDefault();
 
-                return pageType.Id;
-            }
-            
-            IPage parentPage = this.GetDataItemFromEntityToken<IPage>();
-
-            IPageType parentPageType = DataFacade.GetData<IPageType>().Where(f => f.Id == parentPage.PageTypeId).Single();
-
-            if (parentPageType.DefaultChildPageType != Guid.Empty)
-            {
-                if (selectablePageTypes.Where(f => f.Id == parentPageType.DefaultChildPageType).Any() == true)
+                if (parentPageType != null && parentPageType.DefaultChildPageType != Guid.Empty)
                 {
-                    return parentPageType.DefaultChildPageType;
+                    if (selectablePageTypes.Where(f => f.Id == parentPageType.DefaultChildPageType).Any())
+                    {
+                        return parentPageType.DefaultChildPageType;
+                    }
                 }
             }
 
+            var pageType = selectablePageTypes.FirstOrDefault();
 
-            return selectablePageTypes.First().Id;
-            
+            return pageType != null ? pageType.Id : new Guid?();
         }
 
 
@@ -119,8 +110,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         {
             ShowMessage(
                 DialogType.Message,
-                StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingTemplateTitle"),
-                StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingTemplateMessage"));
+                GetText("PageElementProvider.MissingTemplateTitle"),
+                GetText("PageElementProvider.MissingTemplateMessage"));
         }
 
 
@@ -129,8 +120,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         {
             ShowMessage(
                 DialogType.Message,
-                StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingActiveLanguageTitle"),
-                StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingActiveLanguageMessage"));
+                GetText("PageElementProvider.MissingActiveLanguageTitle"),
+                GetText("PageElementProvider.MissingActiveLanguageMessage"));
         }
 
 
@@ -141,15 +132,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             {
                 ShowMessage(
                     DialogType.Message,
-                    StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingPageTypeTitle"),
-                    StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingPageTypeHomepageMessage"));
+                    GetText("PageElementProvider.MissingPageTypeTitle"),
+                    GetText("PageElementProvider.MissingPageTypeHomepageMessage"));
             }
             else
             {
                 ShowMessage(
                     DialogType.Message,
-                    StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingPageTypeTitle"),
-                    StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.MissingPageTypeSubpageMessage"));
+                    GetText("PageElementProvider.MissingPageTypeTitle"),
+                    GetText("PageElementProvider.MissingPageTypeSubpageMessage"));
             }
         }
 
@@ -159,11 +150,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         {
             ShowMessage(
                 DialogType.Message,
-                StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.RuleDontAllowPageAddTitle"),
-                StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.RuleDontAllowPageAddMessage"));
+                GetText("PageElementProvider.RuleDontAllowPageAddTitle"),
+                GetText("PageElementProvider.RuleDontAllowPageAddMessage"));
         }
 
-
+        private static string GetText(string key)
+        {
+            return StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", key);
+        }
 
         private void CheckTemplatesExists(object sender, ConditionalEventArgs e)
         {
@@ -179,7 +173,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
 
 
-        private void CheckPageTypesExists(object sender, ConditionalEventArgs e)
+        private void CheckPageTypeExists(object sender, ConditionalEventArgs e)
         {
 
             if (this.EntityToken is PageElementProviderEntityToken)
@@ -206,16 +200,23 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         }
 
 
+        private void CheckPageTypesExist(object sender, ConditionalEventArgs e)
+        {
+            e.Result = GetSelectablePageTypes().Any();
+
+            if (!e.Result)
+            {
+                ShowMessage(DialogType.Error,
+                    GetText("PageElementProvider.NoPageTypesAvailableTitle"),
+                    GetText("PageElementProvider.NoPageTypesAvailableMessage"));
+            }
+        }
+
 
         private void stepInitialize_codeActivity_ExecuteCode(object sender, EventArgs e)
         {
             Guid templateId;
             string cultureName;
-
-            List<KeyValuePair<Guid, string>> templates =
-                (from template in DataFacade.GetData<IPageTemplate>()
-                 orderby template.Title
-                 select new KeyValuePair<Guid, string>(template.Id, template.Title)).ToList();
 
             if (this.EntityToken is PageElementProviderEntityToken)
             {
@@ -236,11 +237,17 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
 
 
+            List<IPageType> selectablePageTypes = GetSelectablePageTypes();
+
+            Guid? pageTypeId = GetDefaultPageTypeId(selectablePageTypes);
+
+            Verify.That(pageTypeId.HasValue, "Failed to get a page type");
+
             Guid parentId = GetParentId();
 
             Dictionary<string, object> bindings = new Dictionary<string, object>();
 
-            List<IPageType> selectablePageTypes = GetSelectablePageTypes();
+
 
             List<KeyValuePair<Guid, string>> pageTypeOptions =
                 selectablePageTypes.
@@ -253,7 +260,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             IPage newPage = DataFacade.BuildNew<IPage>();
             newPage.Id = Guid.NewGuid();
             newPage.TemplateId = templateId;
-            newPage.PageTypeId = GetDefaultPageTypeId(selectablePageTypes);
+            newPage.PageTypeId = pageTypeId.Value;
             newPage.CultureName = cultureName;
             newPage.Title = "";
             newPage.MenuTitle = "";
