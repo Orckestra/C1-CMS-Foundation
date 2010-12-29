@@ -6,7 +6,6 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Xml.Linq;
-using Composite.Data;
 using Composite.Data.Types;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.WebClient;
@@ -28,11 +27,21 @@ namespace Composite.Data
         /// <summary>
         /// A main url by with a C1 page is accessed. F.e. "/Home/About.aspx"
         /// </summary>
+        Public = 1,
+        /// <summary>
+        /// A main url by with a C1 page is accessed. F.e. "/Home/About.aspx"
+        /// </summary>
+        [Obsolete("Use 'Public' instead")]
         Published = 1,
 
         /// <summary>
         /// Unpublihed reference to a page. F.e. "/Renderers/Page.aspx?id=7446ceda-df90-49f0-a183-4e02ed6f6eec"
         /// </summary>
+        Internal = 2,
+        /// <summary>
+        /// Unpublihed reference to a page. F.e. "/Renderers/Page.aspx?id=7446ceda-df90-49f0-a183-4e02ed6f6eec"
+        /// </summary>
+        [Obsolete("Use 'Internal' instead")]
         Unpublished = 2,
 
         /// <summary>
