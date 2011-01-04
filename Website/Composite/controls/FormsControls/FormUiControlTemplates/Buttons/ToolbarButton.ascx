@@ -34,7 +34,7 @@
             }
 
             if (string.IsNullOrEmpty(this.FormControlLaunchUrl) == false)
-                sb.AppendFormat("url='{0}' ", this.FormControlLaunchUrl);
+                sb.AppendFormat("url='{0}' ",  HttpUtility.HtmlAttributeEncode(this.FormControlLaunchUrl));
 
             if (string.IsNullOrEmpty(this.FormControlIconHandle) == false)
                 sb.AppendFormat("image='${{icon:{0}}}' ", this.FormControlIconHandle);
