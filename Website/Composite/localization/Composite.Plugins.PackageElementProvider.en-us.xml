@@ -24,19 +24,22 @@
   <string key="ClearServerCacheToolTip" value="Clear cache to get the newest packages" />
   <string key="ViewAvailableInformation.FieldGroupLabel" value="Package Info" />
   <string key="ViewAvailableInformation.NameTextLabel" value="Name" />
-  <string key="ViewAvailableInformation.NameTextHelp" value="The name of the package" />
-  <string key="ViewAvailableInformation.VersionTextLabel" value="Version" />
-  <string key="ViewAvailableInformation.VersionTextHelp" value="The version of the package" />
   <string key="ViewAvailableInformation.DescriptionTextLabel" value="Description" />
-  <string key="ViewAvailableInformation.DescriptionTextHelp" value="The description of the package" />
-  <string key="ViewAvailableInformation.TechicalDescriptionTextLabel" value="Technical Description" />
-  <string key="ViewAvailableInformation.TechicalDescriptionTextHelp" value="The technical description of the package" />
   <string key="ViewAvailableInformation.AuthorTextLabel" value="Author" />
-  <string key="ViewAvailableInformation.AuthorTextHelp" value="The name of the package author" />
+
+  <string key="ViewAvailableInformation.TrialInfoFieldGroupLabel" value="Free Trial Info" />
+  <string key="ViewAvailableInformation.TrialInformationLabel" value="Trial information" />
+  <string key="ViewAvailableInformation.TrialInformationText" value="This is a commercial package, available for free in the trial period. When the trial period has expired functionality may be degraded, unless you choose to purchase a license." />
+  <string key="ViewAvailableInformation.TrialDaysLabel" value="Free trial period (days)" />
+
+
+  <string key="ViewAvailableInformation.InstallationInfoFieldGroupLabel" value="Free Trial Info" />
+  <string key="ViewAvailableInformation.VersionTextLabel" value="Version" />
+  <string key="ViewAvailableInformation.TechicalDescriptionTextLabel" value="Technical Description" />
+  <string key="ViewAvailableInformation.AddOnSourceTextLabel" value="Source" />
+
+
   <string key="ViewAvailableInformation.PriceTextLabel" value="Price (EUR)" />
-  <string key="ViewAvailableInformation.PriceTextHelp" value="The price of the package" />
-  <string key="ViewAvailableInformation.AddOnSourceTextLabel" value="AddOnSource" />
-  <string key="ViewAvailableInformation.AddOnSourceTextHelp" value="The source of the package" />
   <string key="ViewAvailableInformation.Toolbar.InstallLabel" value="Install" />
   <string key="ViewAvailableInformation.Toolbar.ReadMoreLabel" value="Read more" />
   <string key="ViewAvailableInformation.ShowError.MessageTitle" value="Already installed" />
@@ -49,7 +52,13 @@
   <string key="ViewInstalledInformation.UserTextLabel" value="Installed by" />
   <string key="ViewInstalledInformation.AuthorTextLabel" value="Author" />
   <string key="ViewInstalledInformation.VersionTextLabel" value="Version" />
+  <string key="ViewInstalledInformation.TrialInfoFieldGroupLabel" value="Trial info" />
+  <string key="ViewInstalledInformation.TrialInformationLabel" value="Trial information" />
+  <string key="ViewInstalledInformation.TrialInformationText" value="This is a commercial package, available for free in the trial period. When the trial period has expired functionality may be degraded, unless you choose to purchase a license." />
+  <string key="ViewInstalledInformation.TrialExpireLabel" value="Trial expiration date" />
+
   <string key="ViewInstalledInformation.Toolbar.UninstallLabel" value="Uninstall" />
+  <string key="ViewInstalledInformation.Toolbar.PurchaseLabel" value="Purchase this!" />
   <string key="ViewInstalledInformation.ShowError.MessageTitle" value="Already uninstalled" />
   <string key="ViewInstalledInformation.ShowError.MessageMessage" value="The package is already uninstalled, cannot uninstall the selected package." />
   <string key="InstallRemoteAddOn.Step1.LayoutLabel" value="Install package" />

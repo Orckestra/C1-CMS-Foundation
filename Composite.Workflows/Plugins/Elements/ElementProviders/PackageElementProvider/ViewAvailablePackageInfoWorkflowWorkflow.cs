@@ -45,6 +45,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
                 if (packageDescription != null)
                 {
+                    string name = packageDescription.Name;
+                    string documentTitle = (name.Contains('.') && !name.EndsWith(".") ?
+                        string.Format("{0} ({1})", name.Substring(name.LastIndexOf('.') + 1), name.Substring(0, name.LastIndexOf('.'))) :
+                        name);
+
+                    this.Bindings.Add("DocumentTitle", documentTitle);
                     this.Bindings.Add("AddOnServerSource", PackageSystemServices.GetPackageSourceNameByPackageId(packageDescription.Id, InstallationInformationFacade.InstallationId, UserSettings.CultureInfo));
                 }
             }

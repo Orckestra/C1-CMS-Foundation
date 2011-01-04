@@ -28,7 +28,7 @@ namespace Composite.C1Console.Elements
 
             int tt2 = System.Environment.TickCount;
 
-            Composite.Core.Logging.LoggingService.LogInformation("ElementHookRegistratorFacade", string.Format("Total time for: {0} ms", tt2 - tt1));
+            Composite.Core.Logging.LoggingService.LogVerbose("ElementHookRegistratorFacade", string.Format("Total time for: {0} ms", tt2 - tt1));
 
             return hooks;
         }

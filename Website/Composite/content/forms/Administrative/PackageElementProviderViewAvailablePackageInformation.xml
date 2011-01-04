@@ -1,62 +1,85 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:internal="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
-	<cms:bindings>    
-		<cms:binding name="PackageDescription" type="Composite.Core.PackageSystem.PackageDescription" />
-		<cms:binding name="AddOnServerSource" type="System.String" />
-	</cms:bindings>
-	<cms:layout iconhandle="package-view-availableinfo">
+  <cms:bindings>
+    <cms:binding name="DocumentTitle" type="System.String" />
+    <cms:binding name="PackageDescription" type="Composite.Core.PackageSystem.PackageDescription" />
+    <cms:binding name="AddOnServerSource" type="System.String" />
+  </cms:bindings>
+  <cms:layout iconhandle="package-view-availableinfo">
     <cms:layout.label>
-      <cms:read source="PackageDescription.Name" />
+      <cms:read source="DocumentTitle" />
     </cms:layout.label>
-		<FieldGroup Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.FieldGroupLabel}">
-			<TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.NameTextLabel}">
-			<!-- Help="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.NameTextHelp}" -->
-				<TextBox.Text>
-					<cms:read source="PackageDescription.Name" />
-				</TextBox.Text>
-			</TextBox>
 
-			<TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.VersionTextLabel}">
-			<!-- Help="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.VersionTextHelp}" -->
-				<TextBox.Text>
-					<cms:read source="PackageDescription.PackageVersion" />
-				</TextBox.Text>
-			</TextBox>
+    <PlaceHolder>
 
-			<TextArea Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.DescriptionTextLabel}">
-			<!-- Help="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.DescriptionTextHelp}" -->
-				<TextArea.Text>
-					<cms:read source="PackageDescription.Description" />
-				</TextArea.Text>
-			</TextArea>
+      <FieldGroup Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.FieldGroupLabel}">
+        <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.NameTextLabel}">
+          <TextBox.Text>
+            <cms:read source="PackageDescription.Name" />
+          </TextBox.Text>
+        </TextBox>
 
-			<TextArea Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.TechicalDescriptionTextLabel}">
-			<!-- Help="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.TechicalDescriptionTextHelp}" -->
-				<TextArea.Text>
-					<cms:read source="PackageDescription.TechicalDetails" />
-				</TextArea.Text>
-			</TextArea>
+        <TextArea Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.DescriptionTextLabel}">
+          <TextArea.Text>
+            <cms:read source="PackageDescription.Description" />
+          </TextArea.Text>
+        </TextArea>
 
-			<TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.AuthorTextLabel}">
-			<!-- Help="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.AuthorTextHelp}" -->
-				<TextBox.Text>
-					<cms:read source="PackageDescription.Vendor" />
-				</TextBox.Text>
-			</TextBox>
+        <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.AuthorTextLabel}">
+          <TextBox.Text>
+            <cms:read source="PackageDescription.Vendor" />
+          </TextBox.Text>
+        </TextBox>
+      </FieldGroup>
 
-			<TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.PriceTextLabel}">
-			<!-- Help="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.PriceTextHelp}" -->
-				<TextBox.Text>
-					<cms:read source="PackageDescription.PriceAmmount" />
-				</TextBox.Text>
-			</TextBox>
 
-			<TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.AddOnSourceTextLabel}">
-			<!-- Help="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.AddOnSourceTextHelp}" -->
-				<TextBox.Text>
-					<cms:read source="AddOnServerSource" />
-				</TextBox.Text>
-			</TextBox>
-		</FieldGroup>
-	</cms:layout>
+      <f:BooleanCheck>
+        <f:BooleanCheck.CheckValue>
+          <cms:read source="PackageDescription.IsTrial" />
+        </f:BooleanCheck.CheckValue>
+        <f:BooleanCheck.WhenTrue>
+          
+          <FieldGroup Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.TrialInfoFieldGroupLabel}">
+            <TextArea Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.TrialInformationLabel}" Text="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.TrialInformationText}" />
+            <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.TrialDaysLabel}">
+              <TextBox.Text>
+                <cms:read source="PackageDescription.TrialPeriodDays" />
+              </TextBox.Text>
+            </TextBox>
+
+            <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.PriceTextLabel}">
+              <TextBox.Text>
+                <cms:read source="PackageDescription.PriceAmmount" />
+              </TextBox.Text>
+            </TextBox>
+          </FieldGroup>
+        </f:BooleanCheck.WhenTrue>
+      </f:BooleanCheck>
+
+
+      <FieldGroup Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.InstallationInfoFieldGroupLabel}">
+
+        <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.VersionTextLabel}">
+          <TextBox.Text>
+            <cms:read source="PackageDescription.PackageVersion" />
+          </TextBox.Text>
+        </TextBox>
+
+        <TextArea Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.TechicalDescriptionTextLabel}">
+          <TextArea.Text>
+            <cms:read source="PackageDescription.TechicalDetails" />
+          </TextArea.Text>
+        </TextArea>
+
+        <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.AddOnSourceTextLabel}">
+          <TextBox.Text>
+            <cms:read source="AddOnServerSource" />
+          </TextBox.Text>
+        </TextBox>
+      </FieldGroup>
+
+    </PlaceHolder>
+
+
+  </cms:layout>
 </cms:formdefinition>

@@ -38,9 +38,9 @@ namespace Composite.Core.PackageSystem
                 InstallationId = (Guid)doc.Descendants("InstallationId").Single(),
                 ProductId = (Guid)doc.Descendants("ProductId").Single(),
                 Permanent = (bool)doc.Descendants("Permanent").Single(),
-                Expires = (DateTime)doc.Descendants("Expires").Single(),
+                Expires = (doc.Descendants("Expires").Any() ? (DateTime)doc.Descendants("Expires").Single() : DateTime.MaxValue),
                 LicenseKey = doc.Descendants("LicenseKey").Single().Value,
-                PurchaseUrl = doc.Descendants("PurchaseUrl").Single().Value
+                PurchaseUrl = (doc.Descendants("PurchaseUrl").Any() ? doc.Descendants("PurchaseUrl").Single().Value : "")
             };
 
             if (licenseDefinition.InstallationId != InstallationInformationFacade.InstallationId)

@@ -125,10 +125,12 @@ namespace Composite.Core.Implementation
 
         public virtual CultureInfo ResolveLocale(CultureInfo locale)
         {
-            CultureInfo localeToUse = locale;
+
+            CultureInfo localeToUse = locale ?? LocalizationScopeManager.CurrentLocalizationScope;
+
             if ((locale == null) || (locale == CultureInfo.InvariantCulture))
             {
-                localeToUse = Thread.CurrentThread.CurrentCulture;
+                localeToUse = DataLocalizationFacade.DefaultLocalizationCulture;
             }
 
             return localeToUse;

@@ -37,7 +37,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         private static ResourceHandle InstalledPackagesGroupClosedIcon = GetIconHandle("package-element-closed-installedgroup");
         private static ResourceHandle InstalledPackagesGroupOpenedIcon = GetIconHandle("package-element-opened-installedgroup");
         private static ResourceHandle AvailablePackageItemIcon = GetIconHandle("package-element-closed-availableitem");
+        private static ResourceHandle AvailableCommercialPackageItemIcon = GetIconHandle("package-element-item-commercial");
         private static ResourceHandle InstalledPackageItemIcon = GetIconHandle("package-element-closed-installeditem");
+        private static ResourceHandle InstalledCommercialPackageItemIcon = GetIconHandle("package-element-item-commercial");
 
         private static ResourceHandle ClearServerCacheIcon = GetIconHandle("package-clear-servercache");
         private static ResourceHandle ViewAvailableInformationIcon = GetIconHandle("package-view-availableinfo");
@@ -252,6 +254,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
             foreach (PackageDescription packageDescription in packageDescriptions)
             {
+                ResourceHandle packageIcon = (packageDescription.PriceAmmount > 0 ? AvailableCommercialPackageItemIcon : AvailablePackageItemIcon);
 
                 Element element = new Element(_context.CreateElementHandle(new PackageElementProviderAvailablePackagesItemEntityToken(
                     packageDescription.Id.ToString(),
@@ -261,7 +264,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                     Label = packageDescription.Name,
                     ToolTip = packageDescription.Name,
                     HasChildren = false,
-                    Icon = AvailablePackageItemIcon,
+                    Icon = packageIcon,
                 };
 
                 element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.ViewAvailablePackageInfoWorkflowWorkflow"), new PermissionType[] { PermissionType.Administrate })))
@@ -410,12 +413,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                     installedAddOnInformation.GroupName,
                     installedAddOnInformation.IsLocalInstalled,
                     installedAddOnInformation.CanBeUninstalled)));
+
                 element.VisualData = new ElementVisualizedData
                 {
                     Label = installedAddOnInformation.Name,
                     ToolTip = installedAddOnInformation.Name,
                     HasChildren = false,
-                    Icon = InstalledPackageItemIcon,
+                    Icon = GetIconForPackageItem(installedAddOnInformation.Id),
                 };
 
                 element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.ViewInstalledPackageInfoWorkflow"), new PermissionType[] { PermissionType.Administrate })))
@@ -441,6 +445,17 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
             }
         }
 
+        private ResourceHandle GetIconForPackageItem(Guid packageId)
+        {
+
+            ResourceHandle icon = InstalledPackageItemIcon;
+            PackageLicenseDefinition licenseDef = PackageLicenseHelper.GetLicenseDefinition(packageId);
+            if (licenseDef != null && !licenseDef.Permanent)
+            {
+                icon = InstalledCommercialPackageItemIcon;
+            }
+            return icon;
+        }
 
 
         private IEnumerable<Element> GetInstalledAddOnGroupFolderChildren(string groupName, SearchToken seachToken)
@@ -459,12 +474,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                     installedAddOnInformation.GroupName,
                     installedAddOnInformation.IsLocalInstalled,
                     installedAddOnInformation.CanBeUninstalled)));
+
                 element.VisualData = new ElementVisualizedData
                 {
                     Label = installedAddOnInformation.Name,
                     ToolTip = installedAddOnInformation.Name,
                     HasChildren = false,
-                    Icon = InstalledPackageItemIcon,
+                    Icon = GetIconForPackageItem(installedAddOnInformation.Id),
                 };
 
                 element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.ViewInstalledPackageInfoWorkflow"), new PermissionType[] { PermissionType.Administrate })))

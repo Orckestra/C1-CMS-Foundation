@@ -1,36 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:internal="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
   <cms:bindings>
+    <cms:binding name="DocumentTitle" type="System.String" />
     <cms:binding name="InstalledPackageInformation" type="Composite.Core.PackageSystem.InstalledPackageInformation" />
     <cms:binding name="InstallDate" type="System.String" />
+    <cms:binding name="IsTrial" type="System.Boolean" />
+    <cms:binding name="TrialExpire" type="System.String" optional="true" />
   </cms:bindings>
   <cms:layout iconhandle="package-view-installedinfo">
-    <FieldGroup Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.FieldGroupLabel}">
-      <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.NameTextLabel}">
-        <TextBox.Text>
-          <cms:read source="InstalledPackageInformation.Name" />
-        </TextBox.Text>
-      </TextBox>
-      <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.VersionTextLabel}">
-        <TextBox.Text>
-          <cms:read source="InstalledPackageInformation.Version" />
-        </TextBox.Text>
-      </TextBox>
-      <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.AuthorTextLabel}">
-        <TextBox.Text>
-          <cms:read source="InstalledPackageInformation.Author" />
-        </TextBox.Text>
-      </TextBox>
-      <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.DateTextLabel}">
-        <TextBox.Text>
-          <cms:read source="InstallDate" />
-        </TextBox.Text>
-      </TextBox>
-      <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.UserTextLabel}">
-        <TextBox.Text>
-          <cms:read source="InstalledPackageInformation.InstalledBy" />
-        </TextBox.Text>
-      </TextBox>
-    </FieldGroup>    
+    <cms:layout.label>
+      <cms:read source="DocumentTitle" />
+    </cms:layout.label>
+    <PlaceHolder>
+
+
+      <FieldGroup Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.FieldGroupLabel}">
+        <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.NameTextLabel}">
+          <TextBox.Text>
+            <cms:read source="InstalledPackageInformation.Name" />
+          </TextBox.Text>
+        </TextBox>
+        <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.VersionTextLabel}">
+          <TextBox.Text>
+            <cms:read source="InstalledPackageInformation.Version" />
+          </TextBox.Text>
+        </TextBox>
+        <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.AuthorTextLabel}">
+          <TextBox.Text>
+            <cms:read source="InstalledPackageInformation.Author" />
+          </TextBox.Text>
+        </TextBox>
+        <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.DateTextLabel}">
+          <TextBox.Text>
+            <cms:read source="InstallDate" />
+          </TextBox.Text>
+        </TextBox>
+        <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.UserTextLabel}">
+          <TextBox.Text>
+            <cms:read source="InstalledPackageInformation.InstalledBy" />
+          </TextBox.Text>
+        </TextBox>
+      </FieldGroup>
+      
+      
+      <f:BooleanCheck>
+        <f:BooleanCheck.CheckValue>
+          <cms:read source="IsTrial" />
+        </f:BooleanCheck.CheckValue>
+        <f:BooleanCheck.WhenTrue>
+
+          <FieldGroup Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.TrialInfoFieldGroupLabel}">
+            <TextArea Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.TrialInformationLabel}" Text="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.TrialInformationText}" />
+            <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.TrialExpireLabel}">
+              <TextBox.Text>
+                <cms:read source="TrialExpire" />
+              </TextBox.Text>
+            </TextBox>
+          </FieldGroup>
+        </f:BooleanCheck.WhenTrue>
+      </f:BooleanCheck>
+
+    </PlaceHolder>
   </cms:layout>
 </cms:formdefinition>

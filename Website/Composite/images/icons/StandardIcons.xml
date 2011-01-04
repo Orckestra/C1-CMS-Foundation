@@ -2745,7 +2745,12 @@
 		<IconFile size="large" path="harmony\composite\addon_24.png" />
 		<IconFile size="xlarge" path="harmony\composite\addon_32.png" />
 	</Icon>
-	<Icon name="package-element-closed-installeditem">
+  <Icon name="package-element-item-commercial">
+    <IconFile size="normal" path="harmony\composite\addoncommercial_16.png" />
+    <IconFile size="large" path="harmony\composite\addoncommercial_24.png" />
+    <IconFile size="xlarge" path="harmony\composite\addoncommercial_32.png" />
+  </Icon>
+  <Icon name="package-element-closed-installeditem">
 		<IconFile size="normal" path="harmony\multimedia\encoding_16x16.png" />
 		<IconFile size="large" path="harmony\multimedia\encoding_24x24.png" />
 		<IconFile size="xlarge" path="harmony\multimedia\encoding_32x32.png" />

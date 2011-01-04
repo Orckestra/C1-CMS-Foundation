@@ -1,8 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0">
 	<cms:bindings>
 		<cms:binding name="CustomEvent01Handler" type="System.EventHandler" />
-	</cms:bindings>
+    <cms:binding name="ShowPurchaseThisButton" type="System.Boolean" />
+    <cms:binding name="TrialPurchaseUrl" type="System.String" optional="true" />
+  </cms:bindings>
 	<cms:layout>
 		<PlaceHolder>
 			<ToolbarButton Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.Toolbar.UninstallLabel}" IconHandle="package-installer-uninstall">
@@ -10,6 +12,20 @@
 					<cms:read source="CustomEvent01Handler" />
 				</ToolbarButton.ClickEventHandler>
 			</ToolbarButton>
-		</PlaceHolder>
+
+      <f:BooleanCheck>
+        <f:BooleanCheck.CheckValue>
+          <cms:read source="ShowPurchaseThisButton"/>
+        </f:BooleanCheck.CheckValue>
+        <f:BooleanCheck.WhenTrue>
+          <ToolbarButton Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.Toolbar.PurchaseLabel}" IconHandle="package-installer-readmore">
+            <ToolbarButton.LaunchUrl>
+              <cms:read source="TrialPurchaseUrl" />
+            </ToolbarButton.LaunchUrl>
+          </ToolbarButton>
+        </f:BooleanCheck.WhenTrue>
+      </f:BooleanCheck>
+
+    </PlaceHolder>
 	</cms:layout>
 </cms:formdefinition>

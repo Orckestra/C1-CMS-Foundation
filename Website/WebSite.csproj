@@ -463,6 +463,13 @@
     <Content Include="Composite\skins\dynamicskin.css" />
     <Content Include="Composite\templates\sourcecodeeditor\csharp.txt" />
     <Content Include="Composite\templates\sourcecodeeditor\js.txt" />
+    <Content Include="Frontend\Config\VisualEditor\common.xml" />
+    <Content Include="Frontend\Config\VisualEditor\Images\bold.png" />
+    <Content Include="Frontend\Config\VisualEditor\Images\italic.png" />
+    <Content Include="Frontend\Config\VisualEditor\Images\left.png" />
+    <Content Include="Frontend\Config\VisualEditor\Images\right.png" />
+    <Content Include="Frontend\Config\VisualEditor\Styles\common.css" />
+    <Content Include="Frontend\Config\VisualEditor\Styles\core.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -5620,7 +5627,7 @@
           <UseIIS>False</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>7913</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <DevelopmentServerVPath>/MySite</DevelopmentServerVPath>
           <IISUrl>http://localhost/Test</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
           <IISAppRootUrl>http://localhost/</IISAppRootUrl>
