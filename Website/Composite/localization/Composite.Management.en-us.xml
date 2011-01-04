@@ -387,6 +387,7 @@
   <string key="Website.FlowUICompleted.ExecutionEndedMessage" value="The action executed in this window has ended." />
   <string key="Website.ServerError.ServerErrorTitle" value="Server Error" />
   <string key="Website.ServerError.ServerErrorMessage" value="An unfortunate error has occurred." />
+  <string key="Website.ServerError.ServerErrorDetails" value="Details" />
   <string key="Website.LicenseViolation.LicenseViolationTitle" value="License Violation" />
   <string key="Website.LicenseViolation.LicenseViolationMessage" value="The requested action is in violates with your current license." />
   <string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelFlashOptions" value="Flash options" />
