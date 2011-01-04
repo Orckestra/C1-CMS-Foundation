@@ -64,24 +64,37 @@ namespace Composite.Core.WebClient.Setup
 
             try
             {
+                Log.LogVerbose("RGB(255, 55, 85)SetupServiceFacade", "Setting up the system for the first time");
+
                 CultureInfo locale = new CultureInfo(language);
 
                 ApplicationLevelEventHandlers.ApplicationStartInitialize();
 
+                Log.LogVerbose("RGB(255, 55, 85)SetupServiceFacade", "Creating first user: " + username);
                 AdministratorAutoCreator.AutoCreatedAdministrator(username, password, false);
                 UserValidationFacade.FormValidateUser(username, password);
 
+                Log.LogVerbose("RGB(255, 55, 85)SetupServiceFacade", "Creating first locale: " + language);
                 LocalizationFacade.AddLocale(locale, "", true, false);
                 LocalizationFacade.SetDefaultLocale(locale);
 
                 XElement setupDescription = XElement.Parse(setupDescriptionXml);
 
+                Log.LogVerbose("RGB(255, 55, 85)SetupServiceFacade", "Packages to install:");
                 foreach (string packageUrl in GetPackageUrls(setupDescription))
                 {
+                    Log.LogVerbose("RGB(255, 55, 85)SetupServiceFacade", "Package: " + packageUrl);
+                }
+
+                foreach (string packageUrl in GetPackageUrls(setupDescription))
+                {
+                    Log.LogVerbose("RGB(255, 55, 85)SetupServiceFacade", "Installing package: " + packageUrl);
                     InstallPackage(packageUrl);
                 }
 
                 RegisterSetup(setupDescriptionXml, "");
+
+                Log.LogVerbose("RGB(255, 55, 85)SetupServiceFacade", "Done settingup the system for the first time! Enjoy!");
             }
             catch (Exception ex)
             {
