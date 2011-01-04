@@ -28,21 +28,22 @@ var config = {
  * Load configuration.
  */
 var conf = "common";
-var path = window.location.toString ();
-if ( path.indexOf ( "config=" ) >-1 ) {
-	conf = path.split ( "config=" )[ 1 ];
+var editorpath = window.location.toString ();
+if (editorpath.indexOf("config=") > -1) {
+    conf = editorpath.split("config=")[1];
 }
-var url = "/Frontend/Config/VisualEditor/" + conf + ".xml";
+var sitepath = editorpath.substring(0, editorpath.toLowerCase().indexOf("/composite/content/"));
+var relconfigpath = "/Frontend/Config/VisualEditor/" + conf + ".xml";
+var url = sitepath + relconfigpath;
+
 var request = DOMUtil.getXMLHTTPRequest ();
 request.open ( "get", url, false );
 request.send ( null );
 
 var doc = request.responseXML;
 if ( doc == null ) {
-	var cry = "File not found: " + url;
-	if ( Application.isDeveloperMode ) {
-		alert ( cry );
-	}
+    var cry = "File not found: ~" + relconfigpath;
+	alert ( cry );
 	throw cry;
 }
 
