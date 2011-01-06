@@ -917,7 +917,7 @@ namespace Composite.C1Console.Workflow
             {
                 LoggingService.LogVerbose(
                     "WorkflowFacade",
-                    string.Format("Workflow aborted, Id = {0}", args.WorkflowInstance.InstanceId));
+                    string.Format("Workflow aborted, Activity = {0}, Id = {1}", args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId));
             };
 
             //_workflowRuntime.WorkflowCompleted += delegate(object sender, WorkflowCompletedEventArgs args)
@@ -931,7 +931,7 @@ namespace Composite.C1Console.Workflow
             {
                 LoggingService.LogVerbose(
                     "WorkflowFacade",
-                    string.Format("Workflow created, Id = {0}, Type = {1}", args.WorkflowInstance.InstanceId, args.WorkflowInstance.GetWorkflowDefinition().GetType()));
+                    string.Format("Workflow created, Activity = {1}, Id = {0}", args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId));
             };
 
             //_workflowRuntime.WorkflowIdled += delegate(object sender, WorkflowEventArgs args)
@@ -952,7 +952,7 @@ namespace Composite.C1Console.Workflow
             {
                 LoggingService.LogVerbose(
                     "WorkflowFacade",
-                    string.Format("Workflow persisted, Id = {0}", args.WorkflowInstance.InstanceId));
+                    string.Format("Workflow persisted, Activity = {0}, Id = {1}", args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId));
             };
 
             //_workflowRuntime.WorkflowResumed += delegate(object sender, WorkflowEventArgs args)

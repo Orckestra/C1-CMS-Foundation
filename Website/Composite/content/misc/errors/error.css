@@ -3,7 +3,7 @@
 
 div#layout {
 	width: 146px;
-	height: 230px;
+	height: 270px;
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -42,9 +42,9 @@ pre#errordetailshead {
 }
 ui|dialogpage div#box {
 	position: relative;
-	height: 230px;
+	height: 290px;
 }
 ui|dialogpage div#layout {
 	top: 0;
-	margin-top: 0;
+	margin-top: 10px;
 }
