@@ -945,7 +945,7 @@ namespace Composite.C1Console.Workflow
             {
                 LoggingService.LogVerbose(
                     "WorkflowFacade",
-                    string.Format("Workflow loaded, Id = {0}", args.WorkflowInstance.InstanceId));
+                    string.Format("Workflow loaded, Activity = {0}, Id = {1}", args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId));
             };
 
             _workflowRuntime.WorkflowPersisted += delegate(object sender, WorkflowEventArgs args)
