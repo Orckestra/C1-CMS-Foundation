@@ -4,7 +4,11 @@ using System.Collections.Generic;
 
 namespace Composite.Core.Collections.Generic
 {
-	internal class Hashset<T>
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public class Hashset<T>
 	{
         private readonly Hashtable _table = new Hashtable();
 
