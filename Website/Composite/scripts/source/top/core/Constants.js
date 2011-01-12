@@ -22,7 +22,7 @@ _Constants.prototype = {
 	DUMMY_LINK					: "javascript:void(false);",
 	
 	APPROOT     				: temproot,
-	CONFIGROOT					: temproot.replace ( "Composite", "Frontend" ) + "/Config/VisualEditor/",
+	CONFIGROOT                  : temproot.toLowerCase().replace("composite", "Frontend") + "/Config/VisualEditor/",
 	TEMPLATESROOT     			: temproot + "/templates",
 	SKINROOT     				: temproot + "/skins/system", // TODO: unhardcode this!
 	TINYMCEROOT					: temproot + "/content/misc/editors/wysiwygeditor/tiny_mce", // TODO: deprecate this!
