@@ -10,6 +10,11 @@ del ..\..\app_offline.htm /F
 rd Packages /S /Q
 md Packages
 rd Cache\Assemblies /S /Q
+md Cache\Assemblies
+rd Cache\Temp /S /Q
+md Cache\Temp
+rd Cache\ResourceCache /S /Q
+md Cache\ResourceCache
 rd DynamicTypeForms /S /Q
 md DynamicTypeForms
 rd ..\Xslt /S /Q
@@ -27,6 +32,8 @@ md ApplicationState\SerializedConsoleMessages
 rd ApplicationState\SerializedWorkflows /S /Q
 md ApplicationState\SerializedWorkflows
 rd ..\..\Composite\InstalledPackages /S /Q
+rd Azure /S /Q
+md Azure
 
 
 copy TreeDefinitions\PageType.xml TreeDefinitions\PageType.xml.backup /y

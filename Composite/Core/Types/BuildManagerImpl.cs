@@ -72,7 +72,7 @@ namespace Composite.Core.Types
 
         private ICollection<BuildManagerCompileUnit> GetCompileUnits()
         {
-            lock(_lock)
+            lock (_lock)
             {
                 return _buildManagerCompileUnits.GetValues();
             }
@@ -103,7 +103,7 @@ namespace Composite.Core.Types
         {
             Verify.ArgumentNotNull(assembly, "assembly");
 
-            
+
             if (assembly.IsDynamicBuild() == false) return true;
 
             int hashedId = assembly.GetAssemblyId().GetHashCode();
@@ -263,9 +263,9 @@ namespace Composite.Core.Types
                     string sourceBaseFilename = CreatedFilenameParser.CreateFilename(buildManagerCompileUnit, "cs");
                     sourceFilename = Path.Combine(_tempAssemblyDirectory, sourceBaseFilename);
 
-                    using (C1FileStream file = C1File.Create(sourceFilename))
+                    using (FileStream file = File.Create(sourceFilename))
                     {
-                        using (var sw = new C1StreamWriter(file))
+                        using (var sw = new StreamWriter(file))
                         {
                             compiler.GenerateCodeFromCompileUnit(codeCompileUnit, sw, new CodeGeneratorOptions());
                             sw.Close();
@@ -273,19 +273,16 @@ namespace Composite.Core.Types
                         file.Close();
                     }
 
-                    IEnumerable<string> lines =
-                        C1File.ReadAllLines(sourceFilename).SkipWhile(f => f.StartsWith("namespace") == false);
+                    IEnumerable<string> lines = File.ReadAllLines(sourceFilename).SkipWhile(f => f.StartsWith("namespace") == false);
 
                     if (buildManagerCompileUnit.AllowCrossReferences)
                     {
-                        C1File.WriteAllLines(sourceFilename,
-                                           GetAliasesDefinitionCode(false, buildManagerCompileUnit).Concat(lines));
+                        File.WriteAllLines(sourceFilename, GetAliasesDefinitionCode(false, buildManagerCompileUnit).Concat(lines));
 
                         if (aliasToPackageFileExists)
                         {
                             string tempSourceFileName = sourceFilename + "temp";
-                            C1File.WriteAllLines(tempSourceFileName,
-                                               GetAliasesDefinitionCode(true, buildManagerCompileUnit).Concat(lines));
+                            File.WriteAllLines(tempSourceFileName, GetAliasesDefinitionCode(true, buildManagerCompileUnit).Concat(lines));
 
                             sourceFilename = tempSourceFileName;
                             temporaryFiles.Add(tempSourceFileName);
@@ -293,7 +290,7 @@ namespace Composite.Core.Types
                     }
                     else
                     {
-                        C1File.WriteAllLines(sourceFilename, lines.ToArray());
+                        File.WriteAllLines(sourceFilename, lines.ToArray());
                     }
                     lines = null;
                 }
@@ -304,8 +301,8 @@ namespace Composite.Core.Types
 #if DEBUG_MODE
     //////////////////////////////////
     // #warning REMARK THIS SHIT
-            C1FileStream file = C1File.Create(string.Format("{0}.cs", filename));
-            Composite.Core.IO.StreamWriter sw = new Composite.Core.IO.StreamWriter(file);
+            FileStream file = File.Create(string.Format("{0}.cs", filename));
+            StreamWriter sw = new StreamWriter(file);
             compiler.GenerateCodeFromCompileUnit(compileUnit.CodeCompileUnit, sw, new CodeGeneratorOptions());
             sw.Close();
             file.Close();
@@ -395,7 +392,7 @@ namespace Composite.Core.Types
                 {
                     try
                     {
-                        C1File.Delete(tempFile);
+                        File.Delete(tempFile);
                     }
                     catch
                     {
@@ -412,7 +409,7 @@ namespace Composite.Core.Types
         private string GetAssemblyVersionFile(BuildManagerCompileUnit buildManagerCompileUnit)
         {
             string filename = Path.Combine(_tempAssemblyDirectory, "main.cstemp");
-            C1File.WriteAllLines(filename, new[] { string.Format(@"[assembly: {0}(""{1}"", true)]",
+            File.WriteAllLines(filename, new[] { string.Format(@"[assembly: {0}(""{1}"", true)]",
                                                                        typeof (BuildManagerCompileUnitAssemblyAttribute)
                                                                            .FullName, buildManagerCompileUnit.Id),
                                                      });
@@ -524,7 +521,7 @@ namespace Composite.Core.Types
             }
             finally
             {
-                C1File.Delete(tempDllFilePath);
+                File.Delete(tempDllFilePath);
             }
         }
 
@@ -560,19 +557,18 @@ namespace Composite.Core.Types
 
             try
             {
-                using (C1FileStream file = C1File.Create(tempCsFilePath))
+                using (FileStream file = File.Create(tempCsFilePath))
                 {
-                    using (var sw = new C1StreamWriter(file))
+                    using (var sw = new StreamWriter(file))
                     {
-                        new CSharpCodeProvider().GenerateCodeFromCompileUnit(compileUnit, sw,
-                                                                             new CodeGeneratorOptions());
+                        new CSharpCodeProvider().GenerateCodeFromCompileUnit(compileUnit, sw, new CodeGeneratorOptions());
                         sw.Close();
                     }
                     file.Close();
                 }
 
-                string[] lines = C1File.ReadAllLines(tempCsFilePath).SkipWhile(f => f.StartsWith("namespace") == false).ToArray();
-                C1File.WriteAllLines(tempCsFilePath, lines);
+                string[] lines = File.ReadAllLines(tempCsFilePath).SkipWhile(f => f.StartsWith("namespace") == false).ToArray();
+                File.WriteAllLines(tempCsFilePath, lines);
 
                 Guid immutableTypeId = GetImmutableTypeId(lines);
                 Verify.That(immutableTypeId != Guid.Empty, "Failed to find 'ImmutableTypeId' class attribute.");
@@ -596,10 +592,12 @@ namespace Composite.Core.Types
             }
             finally
             {
-                C1File.Delete(tempCsFilePath);
-                C1File.Delete(tempDllFilePath);
+                File.Delete(tempCsFilePath);
+                File.Delete(tempDllFilePath);
             }
         }
+
+
 
         private void AddBuildManagerAttributes(BuildManagerCompileUnit buildManagerCompileUnit, CodeCompileUnit codeCompileUnit)
         {
@@ -658,7 +656,7 @@ namespace Composite.Core.Types
                         // Skipping dynamicly loaded assemblies
                     }
 
-                    if(!location.IsNullOrEmpty() && !asm.GetName().Name.StartsWith("App_Code."))
+                    if (!location.IsNullOrEmpty() && !asm.GetName().Name.StartsWith("App_Code."))
                     {
                         assemblyReferences.Add(location);
                     }
@@ -768,8 +766,8 @@ namespace Composite.Core.Types
                 {
                     string currentUsedLocation = locations[locationKey];
 
-                    DateTime currentlyUsedLastWrite = C1File.GetLastWriteTime(currentUsedLocation);
-                    DateTime locationCandidateLastWrite = C1File.GetLastWriteTime(locationCandidate);
+                    DateTime currentlyUsedLastWrite = File.GetLastWriteTime(currentUsedLocation);
+                    DateTime locationCandidateLastWrite = File.GetLastWriteTime(locationCandidate);
 
                     if (locationCandidateLastWrite > currentlyUsedLastWrite)
                     {
@@ -784,7 +782,7 @@ namespace Composite.Core.Types
                 }
             }
 
-            foreach (string binFilename in C1Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "*.dll"))
+            foreach (string binFilename in Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "*.dll"))
             {
                 string filename = Path.GetFileName(binFilename).ToLower();
 
@@ -800,14 +798,14 @@ namespace Composite.Core.Types
 
         public bool RemoveCompiledType(Guid immutableTypeId)
         {
-            lock(_lock)
+            lock (_lock)
             {
                 List<int> keys = new List<int>(_buildManagerCompileUnits.GetKeys());
 
-                foreach(int key in keys)
+                foreach (int key in keys)
                 {
                     var compileUnit = _buildManagerCompileUnits[key];
-                    if(compileUnit.Fingerprint.Contains(immutableTypeId.ToString()))
+                    if (compileUnit.Fingerprint.Contains(immutableTypeId.ToString()))
                     {
                         _buildManagerCompileUnits.Remove(key);
                     }
@@ -818,7 +816,7 @@ namespace Composite.Core.Types
             var filesToBeDeleted = new List<string>();
             foreach (var filePath in GetSourcesToCompile())
             {
-                string[] codeLines = C1File.ReadAllLines(filePath);
+                string[] codeLines = File.ReadAllLines(filePath);
                 for (int i = 0; i < 50 && i < codeLines.Length; i++)
                 {
                     string line = codeLines[i];
@@ -832,7 +830,7 @@ namespace Composite.Core.Types
                         break;
                     }
 
-                    if(line.Contains(typeof(BuildManagerFingerprintAttribute).FullName) 
+                    if (line.Contains(typeof(BuildManagerFingerprintAttribute).FullName)
                         && line.Contains(immutableTypeId.ToString()))
                     {
                         filesToBeDeleted.Add(filePath);
@@ -845,7 +843,7 @@ namespace Composite.Core.Types
             {
                 foreach (string fileName in filesToBeDeleted)
                 {
-                    C1File.Delete(fileName);
+                    File.Delete(fileName);
                 }
 
                 return true;
@@ -898,19 +896,19 @@ namespace Composite.Core.Types
                 }
                 else
                 {
-                    foreach (string filename in C1Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "*.dll"))
+                    foreach (string filename in Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "*.dll"))
                     {
                         CreatedFilenameParser createdFilenameParser = CreatedFilenameParser.Create(filename);
                         if (createdFilenameParser != null)
                         {
-                            C1File.Delete(filename);
+                            File.Delete(filename);
                             result = true;
                         }
                     }
                 }
             }
 
-            foreach (string filename in C1Directory.GetFiles(_tempAssemblyDirectory, "*.cs"))
+            foreach (string filename in Directory.GetFiles(_tempAssemblyDirectory, "*.cs"))
             {
                 if (!interfaceSources.Contains(filename))
                 {
@@ -929,11 +927,11 @@ namespace Composite.Core.Types
             // Deleting all the files
             foreach (var filePath in GetSourcesToCompile())
             {
-                C1File.Delete(filePath);
+                File.Delete(filePath);
             }
 
             // Compiling all the units
-            foreach(var compileUnit in buildManagerCompileUnits)
+            foreach (var compileUnit in buildManagerCompileUnits)
             {
                 Compile(compileUnit);
             }
@@ -1051,15 +1049,15 @@ namespace Composite.Core.Types
         private static string[] GetAppCodeFiles()
         {
             var folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, GlobalSettingsFacade.AppCodeDirectory);
-            if (!C1Directory.Exists(folderPath))
+            if (!Directory.Exists(folderPath))
                 return new string[0];
 
-            return C1Directory.GetFiles(folderPath, "*.cs", SearchOption.AllDirectories);
+            return Directory.GetFiles(folderPath, "*.cs", SearchOption.AllDirectories);
         }
 
 
         /// <summary>
-        /// Generates a package dll.
+        /// Generates a package dll AND validation dlls (tmpdll)
         /// </summary>
         /// <param name="targetFileName">The output file's path.</param>        
         /// <param name="filenames">C# files to be compiled</param>
@@ -1108,7 +1106,10 @@ namespace Composite.Core.Types
 
             CompilerResults result = compiler.CompileAssemblyFromFile(compilerParameters, filenames.ToArray());
 
-            C1File.Touch(targetFileName);
+            if (targetFileName.EndsWith(_assemblyPackFilename))
+            {
+                C1File.Touch(targetFileName); // This ensures that the Composite.Genereted.dll is uploaded to the blob on azure
+            }
 
             return result;
         }
@@ -1128,7 +1129,7 @@ namespace Composite.Core.Types
                 string interfaceLine = null;
 
                 bool containsInterface = false;
-                string[] codeLines = C1File.ReadAllLines(fileName);
+                string[] codeLines = File.ReadAllLines(fileName);
                 for (int i = 0; i < 50 && i < codeLines.Length; i++)
                 {
                     if (codeLines[i].Contains("public interface"))
@@ -1155,7 +1156,7 @@ namespace Composite.Core.Types
                                                                interfaceLine.IndexOf(" : ", nameOffset) - nameOffset);
                 interfaceName = codeLines[0] + interfaceName; // First line contains namespace definition
 
-                DateTime creationTime = C1File.GetCreationTime(fileName);
+                DateTime creationTime = File.GetCreationTime(fileName);
 
                 if (!dictionary.ContainsKey(interfaceName))
                 {
@@ -1197,7 +1198,7 @@ namespace Composite.Core.Types
                     string targetFilename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), Path.GetFileName(filename));
 
                     LoggingService.LogVerbose("BuildManager", "Copying '{0}' to '{1}'".FormatWith(filename, targetFilename));
-                    C1File.Copy(filename, targetFilename, true);
+                    File.Copy(filename, targetFilename, true);
                 }
                 return;
             }
@@ -1208,8 +1209,8 @@ namespace Composite.Core.Types
                 return;
             }
 
-            DateTime lastCodeFileUpdate = sourcesToCompile.Select(f => C1File.GetLastWriteTime(f)).Max();
-            DateTime lastAssemblyPackGeneration = C1File.GetLastWriteTime(GetAssemblyPackFilename());
+            DateTime lastCodeFileUpdate = sourcesToCompile.Select(f => File.GetLastWriteTime(f)).Max();
+            DateTime lastAssemblyPackGeneration = File.GetLastWriteTime(GetAssemblyPackFilename());
 
             if (lastCodeFileUpdate <= lastAssemblyPackGeneration)
             {
@@ -1217,20 +1218,20 @@ namespace Composite.Core.Types
             }
 
             string mainFilename = Path.Combine(_tempAssemblyDirectory, "main.cs");
-            C1File.WriteAllLines(mainFilename, new[] 
+            File.WriteAllLines(mainFilename, new[] 
             { 
                 string.Format(@"[assembly: {0}(""{1}"", true)]", 
                 typeof (BuildManagerCompileUnitAssemblyAttribute) .FullName, 
                 _assemblyPackFilename),
             });
 
-                    
+
             IEnumerable<string> filesnames = sourcesToCompile.Concat(new[] { mainFilename });
 
             string assemblyPackFilename = GetAssemblyPackFilename();
             CompilerResults compileResult = GeneratePackageDll(assemblyPackFilename, filesnames, null);
 
-            C1File.Touch(assemblyPackFilename);
+            C1File.Touch(assemblyPackFilename); // This ensures that the Composite.Genereted.dll is uploaded to the blob on azure
 
             if (compileResult == null)
             {
@@ -1253,7 +1254,7 @@ namespace Composite.Core.Types
 
 
             Dictionary<int, KeyValuePair<Assembly, string>> assembliesToCopy = new Dictionary<int, KeyValuePair<Assembly, string>>();
-            foreach (string filename in C1Directory.GetFiles(_tempAssemblyDirectory, "*.dll"))
+            foreach (string filename in Directory.GetFiles(_tempAssemblyDirectory, "*.dll"))
             {
                 Assembly assembly =
                     (from asm in assemblies
@@ -1297,7 +1298,7 @@ namespace Composite.Core.Types
 
                 string assemblyName = filename.Remove(idx);
 
-                if (C1File.Exists(fullFilename) == true)
+                if (File.Exists(fullFilename) == true)
                 {
                     Assembly.Load(assemblyName);
                 }
@@ -1368,14 +1369,14 @@ namespace Composite.Core.Types
         {
             try
             {
-                foreach (string filename in C1Directory.GetFiles(_tempAssemblyDirectory, "*.dll"))
+                foreach (string filename in Directory.GetFiles(_tempAssemblyDirectory, "*.dll"))
                 {
-                    C1File.Delete(filename);
+                    File.Delete(filename);
                 }
 
-                foreach (string filename in C1Directory.GetFiles(_tempAssemblyDirectory, "*.cstemp"))
+                foreach (string filename in Directory.GetFiles(_tempAssemblyDirectory, "*.cstemp"))
                 {
-                    C1File.Delete(filename);
+                    File.Delete(filename);
                 }
             }
             catch (UnauthorizedAccessException)
@@ -1389,9 +1390,9 @@ namespace Composite.Core.Types
         {
             if (_useAssemblyPacking == true)
             {
-                if (C1File.Exists(GetAssemblyPackFilename()) == false)
+                if (File.Exists(GetAssemblyPackFilename()) == false)
                 {
-                    foreach (string filename in C1Directory.GetFiles(_tempAssemblyDirectory, "*.cs"))
+                    foreach (string filename in Directory.GetFiles(_tempAssemblyDirectory, "*.cs"))
                     {
                         DeleteFileWithRetries(filename, 10, false);
                     }
@@ -1410,7 +1411,7 @@ namespace Composite.Core.Types
             {
                 try
                 {
-                    C1File.Delete(filename);
+                    File.Delete(filename);
                     deleted = true;
                     count = i;
                     break;
@@ -1601,10 +1602,10 @@ namespace Composite.Core.Types
 
             _tempAssemblyDirectory = PathUtil.Resolve(generatedAssembliesDir);
 
-            if (C1Directory.Exists(_tempAssemblyDirectory) == false)
+            if (Directory.Exists(_tempAssemblyDirectory) == false)
             {
                 LoggingService.LogInformation("BuildManager", string.Format("Creating directory '{0}' for storing generated assemblies", _tempAssemblyDirectory));
-                C1Directory.CreateDirectory(_tempAssemblyDirectory);
+                Directory.CreateDirectory(_tempAssemblyDirectory);
             }
         }
     }

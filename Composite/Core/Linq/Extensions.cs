@@ -66,7 +66,7 @@ namespace Composite.Core.Linq
         /// <param name="query"></param>
         /// <param name="exceptionOnEmpty">Exception format for not a single row found</param>
         /// <param name="exceptionOnMultipleResults">Exception format for multiple rows found</param>
-        /// <param name="formatOptions"></param>
+        /// <param name="formatArgs"></param>
         /// <returns></returns>
         public static T SingleOrException<T>(this IQueryable<T> query, string exceptionOnEmpty, string exceptionOnMultipleResults, params object[] formatArgs) 
         {

@@ -124,7 +124,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         private List<AssemblyInfo> GetCachedAssemblyInfo()
         {
             var result = new List<AssemblyInfo>();
-            if (!C1File.Exists(TempFilePath))
+            if (!File.Exists(TempFilePath))
             {
                 return result;
             }
@@ -132,7 +132,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             SubscribedTypesCache cached;
             try
             {
-                using (var fileStream = C1File.Open(TempFilePath, FileMode.Open))
+                using (var fileStream = File.Open(TempFilePath, FileMode.Open))
                 {
                     cached = GetSerializer().Deserialize(fileStream) as SubscribedTypesCache;
                 }
@@ -265,7 +265,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             {
                 if(root == null)
                 {
-                    C1File.Delete(TempFilePath);
+                    File.Delete(TempFilePath);
                 }
                 else
                 {
@@ -274,8 +274,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
                         C1Directory.CreateDirectory(TempDirectoryPath);
                     }
 
-                    using (var fileStream = C1File.Open(TempFilePath, FileMode.Create))
-               //     using (var fileStream = File.Open(TempFilePath, FileMode.Create))
+                    using (var fileStream = File.Open(TempFilePath, FileMode.Create))
                     {
                         GetSerializer().Serialize(fileStream, root);
                     }
