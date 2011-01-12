@@ -122,10 +122,10 @@ namespace Composite.C1Console.Trees
             bool localizationEndabled = (this.ShowForeignItems == true) && (UserSettings.ActiveLocaleCultureInfo.Equals(UserSettings.ForeignLocaleCultureInfo) == false);
 
             keys = datas.Item2;
-            if (localizationEndabled == true)
+            if (localizationEndabled && UserSettings.ForeignLocaleCultureInfo != null)
             {
                 Tuple<IEnumerable<IData>, IEnumerable<object>> foreignDatas;
-                using (DataScope localeScope = new DataScope(UserSettings.ForeignLocaleCultureInfo))
+                using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                 {
                     foreignDatas = GetDatas(dynamicContext);
                 }
