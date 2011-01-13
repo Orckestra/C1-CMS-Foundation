@@ -77,29 +77,36 @@ namespace Composite.Data.Foundation
 
         protected override Expression VisitMethodCall(MethodCallExpression m)
         {
-
-            if (m.Method.DeclaringType == typeof(DataFacade))
-            {
-                if ((m.Method.IsGenericMethod == true) &&
-                    (m.Method.GetGenericMethodDefinition() == _genericGetDataMethodInfo))
-                {
-                    object result = m.Method.Invoke(null, null);
-
-                    IQueryable queryable = HandleMultibleSourceQueryable(result);
-
-                    return Expression.Constant(queryable);
-                }
-                else
-                {
-                    throw new NotImplementedException("This is fixable");
-                }
-            }
-            else
+            if (m.Method.DeclaringType != typeof (DataFacade))
             {
                 return base.VisitMethodCall(m);
             }
-        }
 
+            
+            if ((m.Method.IsGenericMethod == true) &&
+                (m.Method.GetGenericMethodDefinition() == _genericGetDataMethodInfo))
+            {
+                object result = m.Method.Invoke(null, null);
+
+                IQueryable queryable = HandleMultibleSourceQueryable(result);
+
+                return Expression.Constant(queryable);
+            }
+
+            // Handling some of the overloads of GetData()
+            if (m.Method.Name == _genericGetDataMethodInfo.Name && m.Arguments.All(arg => (arg as ConstantExpression) != null))
+            {
+                object[] parameters = m.Arguments.Select(arg => (arg as ConstantExpression).Value).ToArray();
+
+                object result = m.Method.Invoke(null, parameters);
+
+                IQueryable queryable = HandleMultibleSourceQueryable(result);
+
+                return Expression.Constant(queryable);
+            }
+            
+            throw new NotImplementedException("This is fixable");
+        }
 
 
         public IQueryable Queryable
