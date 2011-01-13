@@ -4,7 +4,7 @@ using Composite.Core.IO.Plugins.IOProvider;
 
 namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 {
-    public class LocalC1FileStream : IC1FileStream
+    internal class LocalC1FileStream : IC1FileStream
     {
         private FileStream _fileStream;
 

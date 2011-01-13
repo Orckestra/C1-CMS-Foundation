@@ -171,7 +171,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
             Exception exception = null;
             try
             {
-                packageServerUrl = PackageSystemServices.GetPackageSourceNameByPackageId(packageDescription.Id, InstallationInformationFacade.InstallationId, UserSettings.CultureInfo);                
+                packageServerUrl = PackageSystemServices.GetPackageSourceNameByPackageId(packageDescription.Id, InstallationInformationFacade.InstallationId, UserSettings.CultureInfo);
 
                 List<PackageFragmentValidationResult> installResult = packageManagerInstallProcess.Install();
                 if (installResult.Count > 0)
@@ -248,6 +248,23 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
             SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
             specificTreeRefresher.PostRefreshMesseges(new PackageElementProviderRootEntityToken());
+
+            if (this.GetBinding<bool>("ReloadConsoleOnCompletion") == false)
+            {
+
+                PackageElementProviderAvailablePackagesItemEntityToken castedEntityToken = (PackageElementProviderAvailablePackagesItemEntityToken)this.EntityToken;
+
+                InstalledPackageInformation installedPackage = PackageManager.GetInstalledPackages().FirstOrDefault(f => f.Id == castedEntityToken.AddOnId);
+
+                var installedPackageEntityToken = new PackageElementProviderInstalledPackageItemEntityToken(
+                    installedPackage.Id,
+                    installedPackage.GroupName,
+                    installedPackage.IsLocalInstalled,
+                    installedPackage.CanBeUninstalled);
+
+                ExecuteWorklow(installedPackageEntityToken, WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.ViewInstalledPackageInfoWorkflow"));
+            }
+
         }
     }
 }

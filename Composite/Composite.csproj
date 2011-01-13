@@ -85,6 +85,26 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\bin\Microsoft.Practices.ObjectBuilder.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.SqlServer.BatchParser, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Bin\Microsoft.SqlServer.BatchParser.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Bin\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Bin\Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Smo, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Bin\Microsoft.SqlServer.Smo.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.SqlEnum, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Bin\Microsoft.SqlServer.SqlEnum.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Configuration.Install" />
@@ -447,6 +467,31 @@
     <Compile Include="Functions\Inline\InlineFunctionHelper.cs" />
     <Compile Include="Functions\Inline\InlineFunction.cs" />
     <Compile Include="Plugins\Application\ApplicationStartupHandlers\AttributeBasedApplicationStartupHandler\AttributeBasedApplicationStartupHandler.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\CodeGeneration\Foundation\DataContextBase.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\CodeGeneration\Foundation\DataContextClassGenerator.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\CodeGeneration\Foundation\DataIdClassGenerator.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\CodeGeneration\Foundation\EntityClassGenerator.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\CodeGeneration\Foundation\EntityCodeGeneratorHelper.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\CodeGeneration\Foundation\IEntity.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\CodeGeneration\Foundation\ISqlDataContext.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\CodeGeneration\Foundation\ISqlDataProviderHelperMethods.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\CodeGeneration\Foundation\SqlDataContextHelperClass.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\CodeGeneration\Foundation\SqlDataProviderHelperMethodsGenerator.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\CodeGeneration\SqlDataProviderCodeGenerator.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\CodeGeneration\SqlDataProviderCodeGeneratorResult.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\CodeGeneration\SqlDataProviderCodeGeneratorTable.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\CodeGeneration\SqlDataProviderCodeGeneratorTableResult.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\Foundation\DynamicTypesCommon.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\Foundation\InterfaceConfigurationManipulator.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\Foundation\SqlDataProviderStoreManipulator.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\Foundation\SqlLoggerTextWriter.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\SqlDataProvider.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\Sql\ISqlTableInformation.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\Sql\ISqlTableInformationStore.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\Sql\SqlColumnInformation.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\Sql\SqlTableInformation.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\Sql\SqlTableInformationStore.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\Sql\SqlTableInformationStoreImpl.cs" />
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\CodeGeneration\Foundation\DataProviderHelperBase.cs" />
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\Foundation\TransactionRollbackHandler.cs" />
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\Foundation\ValidationHelper.cs" />

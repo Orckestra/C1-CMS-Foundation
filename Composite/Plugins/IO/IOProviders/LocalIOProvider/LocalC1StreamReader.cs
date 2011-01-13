@@ -5,7 +5,7 @@ using Composite.Core.IO.Plugins.IOProvider;
 
 namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 {
-    public class LocalC1StreamReader : IC1StreamReader
+    internal class LocalC1StreamReader : IC1StreamReader
     {
         private StreamReader _streamReader;
 

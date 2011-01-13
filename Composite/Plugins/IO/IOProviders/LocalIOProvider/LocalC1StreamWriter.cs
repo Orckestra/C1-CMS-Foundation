@@ -6,7 +6,7 @@ using Composite.Core.IO.Plugins.IOProvider;
 
 namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 {
-    public class LocalC1StreamWriter : IC1StreamWriter
+    internal class LocalC1StreamWriter : IC1StreamWriter
     {
         private StreamWriter _streamWriter;
 

@@ -4,7 +4,7 @@ using Composite.Core.IO.Plugins.IOProvider;
 
 namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 {
-    public class LocalC1Configuration : IC1Configuration
+    internal class LocalC1Configuration : IC1Configuration
     {
         private Configuration _configuration;
 

@@ -5,7 +5,7 @@ using Composite.Core.IO.Plugins.IOProvider;
 
 namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 {
-    public class LocalC1Directory : IC1Directory
+    internal class LocalC1Directory : IC1Directory
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
         public DirectoryInfo CreateDirectory(string path)
