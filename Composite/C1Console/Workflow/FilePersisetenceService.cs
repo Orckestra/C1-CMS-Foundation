@@ -20,7 +20,7 @@ namespace Composite.C1Console.Workflow
         private string _baseDirectory;
         private Guid[] _abortedWorkflows;
         private readonly object _syncRoot = new object();
-   
+
 
         public FileWorkFlowPersisetenceService(string baseDirectory)
         {
@@ -40,15 +40,15 @@ namespace Composite.C1Console.Workflow
         public IEnumerable<Guid> GetPersistedWorkflows()
         {
             foreach (string filePath in C1Directory.GetFiles(_baseDirectory, "*.bin"))
-            {                
+            {
                 string guidString = Path.GetFileNameWithoutExtension(filePath);
 
                 Guid guid = Guid.Empty;
                 try
                 {
-                    guid = new Guid(guidString);                    
+                    guid = new Guid(guidString);
                 }
-                catch {}
+                catch { }
 
                 if (guid.Equals(Guid.Empty) == false)
                 {
@@ -92,21 +92,32 @@ namespace Composite.C1Console.Workflow
 
         protected override Activity LoadWorkflowInstanceState(Guid instanceId)
         {
-            try
+            string filename = GetFileName(instanceId);
+            bool deleteFile = false;
+
+            if (C1File.Exists(filename))
             {
-                object obj = DeserializeActivity(null, instanceId);
-                return (Activity)obj;
+                try
+                {
+                    object obj = DeserializeActivity(null, instanceId);
+                    return (Activity)obj;
+                }
+                catch (Exception ex)
+                {
+                    LoggingService.LogCritical(LogTitle, ex);
+                    deleteFile = true;
+                }
             }
-            catch (Exception ex)
+
+            if (deleteFile)
             {
-                string filename = GetFileName(instanceId);
-                LoggingService.LogCritical(LogTitle, ex);
                 LoggingService.LogWarning(LogTitle, string.Format("Failed to load workflow with id '{0}'. Deleting file.", filename));
                 C1File.Delete(filename);
 
-                MarkWorkflowAsAborted(instanceId);
-                return null;
+                MarkWorkflowAsAborted(instanceId);                
             }
+
+            return null;
         }
 
 
@@ -197,7 +208,7 @@ namespace Composite.C1Console.Workflow
 
         private void MarkWorkflowAsAborted(Guid id)
         {
-            lock(_syncRoot)
+            lock (_syncRoot)
             {
                 List<Guid> newList = new List<Guid>(_abortedWorkflows ?? new Guid[0]);
                 newList.Add(id);

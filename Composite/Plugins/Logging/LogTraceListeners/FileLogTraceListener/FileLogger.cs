@@ -8,8 +8,9 @@ using System.Text;
 using System.Threading;
 using System.Web.Hosting;
 using Composite.Core.Extensions;
-using Composite.Core.IO;
+//using Composite.Core.IO;
 using Composite.Core.Logging;
+using Composite.Core.IO;
 
 
 namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
@@ -17,24 +18,28 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
     /// <summary>
     /// File logger
     /// </summary>
-	internal class FileLogger: IDisposable
-	{
+    internal class FileLogger : IDisposable
+    {
         private readonly string _logDirectoryPath;
         private readonly bool _flushImmediately;
 
         public static event ThreadStart OnReset;
 
 
-	    private LogFileInfo _fileConnection;
+        private LogFileInfo _fileConnection;
         private readonly object _syncRoot = new object();
+        private DateTime _lastLogFileTouch = DateTime.MinValue;
+
 
         public FileLogger(string logDirectoryPath, bool flushImmediately)
         {
             Verify.ArgumentNotNull(logDirectoryPath, "logDirectoryPath");
 
-            _logDirectoryPath = Path.Combine(HostingEnvironment.ApplicationPhysicalPath, logDirectoryPath); 
+            _logDirectoryPath = Path.Combine(HostingEnvironment.ApplicationPhysicalPath, logDirectoryPath);
             _flushImmediately = flushImmediately;
         }
+
+
 
         public DateTime StartupTime
         {
@@ -51,6 +56,8 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             }
         }
 
+
+
         public void WriteEntry(LogEntry entry)
         {
             string logLine = entry.ToString();
@@ -59,14 +66,14 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
             EnsureInitialize();
 
-            lock(_syncRoot)
+            lock (_syncRoot)
             {
                 _fileConnection.NewEntries.Add(entry);
 
                 // Checking whether we should change the file after midnight
                 int dayNumber = entry.TimeStamp.Day;
-                            
-                if(dayNumber != _fileConnection.CreationDate.Day 
+
+                if (dayNumber != _fileConnection.CreationDate.Day
                    && dayNumber == DateTime.Now.Day)
                 {
                     ResetInitialization();
@@ -98,9 +105,11 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             }
         }
 
+
+
         public LogFileReader[] GetLogFiles()
         {
-            string[] filePathes = C1Directory.GetFiles(_logDirectoryPath);
+            string[] filePathes = Directory.GetFiles(_logDirectoryPath);
 
             string currentlyOpenedFileName = null;
 
@@ -153,13 +162,15 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             return result.ToArray();
         }
 
+
+
         [DebuggerStepThrough]
-        private static C1FileStream TryOpenFile(string filePath, out Exception e)
+        private static FileStream TryOpenFile(string filePath, out Exception e)
         {
             e = null;
             try
             {
-                return C1File.Open(filePath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
+                return File.Open(filePath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
             }
             catch (Exception ex)
             {
@@ -169,8 +180,10 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             }
         }
 
+
+
         [DebuggerStepThrough]
-        private static bool TryReadAndOpen(string filePath, out string[] content, out C1FileStream stream, out Exception exception)
+        private static bool TryReadAndOpen(string filePath, out string[] content, out FileStream stream, out Exception exception)
         {
             content = null;
             stream = null;
@@ -179,9 +192,9 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             try
             {
                 // TODO: It should open file only once, not twice
-                content = C1File.ReadAllLines(filePath);
+                content = File.ReadAllLines(filePath);
 
-                stream = C1File.Open(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
+                stream = File.Open(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
                 stream.Seek(stream.Length, SeekOrigin.Begin);
             }
             catch (Exception e)
@@ -193,56 +206,59 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             return true;
         }
 
+
         private void EnsureInitialize()
-	    {
-	        if (_fileConnection != null) return;
+        {
+            TouchLogFiles();
 
-	        lock (_syncRoot)
-	        {
-	            if (_fileConnection != null) return;
+            if (_fileConnection != null) return;
 
-                if (!C1Directory.Exists(_logDirectoryPath))
-	            {
-                    C1Directory.CreateDirectory(_logDirectoryPath);
-	            }
+            lock (_syncRoot)
+            {
+                if (_fileConnection != null) return;
 
-	            DateTime creationDate = DateTime.Now;
+                if (!Directory.Exists(_logDirectoryPath))
+                {
+                    Directory.CreateDirectory(_logDirectoryPath);
+                }
+
+                DateTime creationDate = DateTime.Now;
 
                 string fileNamePrefix = creationDate.ToString("yyyyMMdd");
-	            string fileName;
-	            C1FileStream stream = null;
+                string fileName;
+                FileStream stream = null;
                 Exception ex;
 
-	            for (int i = 0; i < 10; i++)
-	            {
-	                fileName = fileNamePrefix + (i > 0 ? "_" + i : string.Empty) + ".txt";
+                for (int i = 0; i < 10; i++)
+                {
+                    fileName = fileNamePrefix + (i > 0 ? "_" + i : string.Empty) + ".txt";
                     string filePath = Path.Combine(_logDirectoryPath, fileName);
 
-                    if (!C1File.Exists(filePath))
-	                {
-	                    stream = TryOpenFile(filePath, out ex);
+                    if (!File.Exists(filePath))
+                    {
+                        stream = TryOpenFile(filePath, out ex);
 
-                        if(stream == null)
-	                    {
-	                        // Ignoring this exception if the file has already created
-                            if (C1File.Exists(filePath)) continue;
+                        if (stream == null)
+                        {
+                            // Ignoring this exception if the file has already created
+                            if (File.Exists(filePath)) continue;
 
-	                        throw new Exception("Failed to create file '{0}'".FormatWith(filePath), ex);
-	                    }
+                            throw new Exception("Failed to create file '{0}'".FormatWith(filePath), ex);
+                        }
 
-	                    _fileConnection = new LogFileInfo
-	                                          {
+                        _fileConnection = new LogFileInfo
+                                              {
                                                   CreationDate = creationDate.Date,
                                                   StartupTime = creationDate,
                                                   FileName = fileName,
                                                   FilePath = filePath,
-	                                              FileStream = stream,
-	                                              OldEntries = new string[0]
-	                                          };
+                                                  FileStream = stream,
+                                                  OldEntries = new string[0]
+                                              };
 
                         WriteUTF8EncodingHeader(stream);
-	                    return;
-	                }
+                        return;
+                    }
 
                     string[] alreadyWritten;
 
@@ -251,28 +267,58 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                         // Trying another file name, since the file may be in use by another process
                         continue;
                     }
-	                
-	                _fileConnection = new LogFileInfo
-	                                      {
+
+                    _fileConnection = new LogFileInfo
+                                          {
                                               CreationDate = creationDate.Date,
                                               StartupTime = creationDate,
                                               FileName = fileName,
-	                                          FilePath = filePath,
-	                                          FileStream = stream,
-	                                          OldEntries = alreadyWritten
-	                                      };
-	                return;
-	            }
-	            throw new InvalidOperationException("Failed to open/create a log file");
-	        }
+                                              FilePath = filePath,
+                                              FileStream = stream,
+                                              OldEntries = alreadyWritten
+                                          };
+                    return;
+                }
+                throw new InvalidOperationException("Failed to open/create a log file");
+            }
 
-	    }
+        }
+
+
+
+        /// <summary>
+        /// Due to the nature of this logger. Keeping files open all the time. It works very badly with Azure blob syncronization.
+        /// So this class dont uses the C1 IO classes. But logfiles are nice to have synced to the blob, so old logfiles are touched.
+        /// </summary>
+        private void TouchLogFiles()
+        {
+            if (DateTime.Now - _lastLogFileTouch > TimeSpan.FromHours(12))
+            {
+                lock (_syncRoot)
+                {
+                    _lastLogFileTouch = DateTime.Now;
+
+                    DateTime creationDate = DateTime.Now;
+                    string fileNamePrefix = creationDate.ToString("yyyyMMdd");
+
+                    foreach (string filepath in Directory.GetFiles(_logDirectoryPath))
+                    {
+                        if (!Path.GetFileName(filepath).StartsWith(fileNamePrefix))
+                        {
+                            C1File.Touch(filepath);
+                        }
+                    }
+                }
+            }
+        }
+
+
 
         private void ResetInitialization()
         {
-            lock(_syncRoot)
+            lock (_syncRoot)
             {
-                if(_fileConnection != null)
+                if (_fileConnection != null)
                 {
                     _fileConnection.Dispose();
                     _fileConnection = null;
@@ -308,9 +354,9 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             public abstract IEnumerable<LogEntry> GetLogEntries(DateTime timeFrom, DateTime timeFromTo);
         }
 
-        private class PlainFileReader: LogFileReader
+        private class PlainFileReader : LogFileReader
         {
-            private C1FileStream _file;
+            private FileStream _file;
             private string _filePath;
             private int? _entriesCount;
 
@@ -325,9 +371,9 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             {
                 try
                 {
-                    _file = C1File.OpenRead(_filePath);
+                    _file = File.OpenRead(_filePath);
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     return false;
                 }
@@ -348,7 +394,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                 StringBuilder sb = new StringBuilder();
 
                 LogEntry previousEntry = null;
-                using (var reader = new C1StreamReader(_file, Encoding.UTF8))
+                using (var reader = new StreamReader(_file, Encoding.UTF8))
                 {
                     while (reader.Peek() >= 0)
                     {
@@ -359,7 +405,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                         {
                             if (previousEntry != null)
                             {
-                                if(sb.Length > 0)
+                                if (sb.Length > 0)
                                 {
                                     previousEntry.Message = sb.ToString();
                                     sb.Clear();
@@ -373,7 +419,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                         {
                             if (previousEntry != null)
                             {
-                                if(sb.Length == 0)
+                                if (sb.Length == 0)
                                 {
                                     sb.Append(previousEntry.Message);
                                 }
@@ -383,7 +429,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                         }
                     }
                 }
-                if(previousEntry != null)
+                if (previousEntry != null)
                 {
                     if (sb.Length > 0)
                     {
@@ -399,7 +445,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             {
                 get
                 {
-                    if(_entriesCount == null)
+                    if (_entriesCount == null)
                     {
                         try
                         {
@@ -412,7 +458,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                             Close();
                         }
                     }
-                    
+
                     return (int)_entriesCount;
                 }
             }
@@ -421,7 +467,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             {
                 try
                 {
-                    C1File.Delete(_filePath);
+                    File.Delete(_filePath);
                     return true;
                 }
                 catch
@@ -466,7 +512,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             {
                 get
                 {
-                    lock(_fileLogger._syncRoot)
+                    lock (_fileLogger._syncRoot)
                     {
                         return _fileLogger._fileConnection.OldEntries.Length +
                                _fileLogger._fileConnection.NewEntries.Count;
@@ -512,18 +558,18 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             }
         }
 
-        private class LogFileInfo: IDisposable
+        private class LogFileInfo : IDisposable
         {
             public string FileName;
             public string FilePath;
-            public C1FileStream FileStream;
+            public FileStream FileStream;
             public string[] OldEntries;
             public List<LogEntry> NewEntries = new List<LogEntry>();
             public DateTime CreationDate;
             public DateTime StartupTime;
 
             private bool disposed = false;
-            
+
             public void Dispose()
             {
                 if (!disposed)
@@ -543,7 +589,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
         public void Dispose()
         {
-            if(_fileConnection != null)
+            if (_fileConnection != null)
             {
                 _fileConnection.Dispose();
             }

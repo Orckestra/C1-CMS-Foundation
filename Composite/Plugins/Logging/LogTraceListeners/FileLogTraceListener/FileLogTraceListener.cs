@@ -4,6 +4,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Logging.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Logging.TraceListeners;
 
+
 namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 {
     [ConfigurationElementType(typeof(CustomTraceListenerData))]

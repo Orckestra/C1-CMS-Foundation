@@ -24,6 +24,7 @@ using Composite.Core.Threading;
 using Composite.Core.Types;
 using Composite.Core.Xml;
 using Composite.Data;
+using System.Diagnostics;
 
 
 namespace Composite.C1Console.Workflow
@@ -910,15 +911,49 @@ namespace Composite.C1Console.Workflow
         }
 
 
-
-        private void AddWorkflowLoggingEvents()
+#warning MRJ: Cleanup here
+        [DebuggerStepThrough]
+        private void Hans(object sender, WorkflowEventArgs args)
         {
-            _workflowRuntime.WorkflowAborted += delegate(object sender, WorkflowEventArgs args)
+            try
             {
                 LoggingService.LogVerbose(
                     "WorkflowFacade",
+                    string.Format("Workflow persisted, Activity = {0}, Id = {1}", args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId));
+            }
+            catch (Exception)
+            {
+                LoggingService.LogVerbose(
+                    "WorkflowFacade",
+                    string.Format("Workflow persisted, Id = {0}", args.WorkflowInstance.InstanceId));
+            }                
+        }
+
+
+
+        [DebuggerStepThrough]
+        private void HandleWorkflowAbortedEvent(object sender, WorkflowEventArgs args)
+        {
+            try
+            {                
+                LoggingService.LogVerbose(
+                    "WorkflowFacade",
                     string.Format("Workflow aborted, Activity = {0}, Id = {1}", args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId));
-            };
+            }
+            catch (Exception)
+            {
+                LoggingService.LogVerbose(
+                    "WorkflowFacade",
+                    string.Format("Workflow aborted Id = {0}", args.WorkflowInstance.InstanceId));
+            }
+        }
+        
+
+
+        private void AddWorkflowLoggingEvents()
+        {
+            _workflowRuntime.WorkflowAborted += HandleWorkflowAbortedEvent;
+            
 
             //_workflowRuntime.WorkflowCompleted += delegate(object sender, WorkflowCompletedEventArgs args)
             //{
@@ -948,12 +983,24 @@ namespace Composite.C1Console.Workflow
                     string.Format("Workflow loaded, Activity = {0}, Id = {1}", args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId));
             };
 
-            _workflowRuntime.WorkflowPersisted += delegate(object sender, WorkflowEventArgs args)
-            {
-                LoggingService.LogVerbose(
-                    "WorkflowFacade",
-                    string.Format("Workflow persisted, Activity = {0}, Id = {1}", args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId));
-            };
+
+            _workflowRuntime.WorkflowPersisted += Hans;
+
+          /*  _workflowRuntime.WorkflowPersisted += delegate(object sender, WorkflowEventArgs args)
+            {                
+                //try
+                //{
+                //    LoggingService.LogVerbose(
+                //        "WorkflowFacade",
+                //        string.Format("Workflow persisted, Activity = {0}, Id = {1}", args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId));
+                //}
+                //catch (Exception)
+                //{
+                //    LoggingService.LogVerbose(
+                //        "WorkflowFacade",
+                //        string.Format("Workflow persisted, Id = {0}", args.WorkflowInstance.InstanceId));
+                //}                
+            };*/
 
             //_workflowRuntime.WorkflowResumed += delegate(object sender, WorkflowEventArgs args)
             //{
@@ -1104,6 +1151,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        [DebuggerStepThrough]
         private void PersistExistingWorkflows()
         {
             _fileWorkFlowPersisetenceService.PersistAll = true;
@@ -1123,8 +1171,15 @@ namespace Composite.C1Console.Workflow
 
                 if (workflowPersistingType != WorkflowPersistingType.Never)
                 {
-                    WorkflowInstance workflowInstance = WorkflowRuntime.GetWorkflow(instanceId);
-                    workflowInstance.Unload();
+                    try
+                    {
+                        WorkflowInstance workflowInstance = WorkflowRuntime.GetWorkflow(instanceId);
+                        workflowInstance.Unload();
+                    }
+                    catch (Exception)
+                    {
+                        // Ignore, the workflow is already dead
+                    }
                 }
             }
 
