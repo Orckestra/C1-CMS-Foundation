@@ -2,7 +2,8 @@
 
 namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration.Foundation
 {
-    internal interface IEntity
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public interface IEntity
     {
         void Commit();
     }

@@ -11,7 +11,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
     /// <summary>
     /// Provides an api to work with generated tables of a DataContext object.
     /// </summary>
-    internal class SqlDataContextHelperClass
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public class SqlDataContextHelperClass
     {
         readonly DataContext _dataContext;
 

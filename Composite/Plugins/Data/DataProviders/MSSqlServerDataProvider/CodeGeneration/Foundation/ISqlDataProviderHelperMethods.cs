@@ -7,7 +7,8 @@ using Composite.Data;
 
 namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration.Foundation
 {
-    internal interface ISqlDataProviderHelperMethods
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public interface ISqlDataProviderHelperMethods
     {
         IData GetDataById(IQueryable queryable, IDataId dataId, DataProviderContext dataProviderContext);
         IData AddData(ISqlDataContext dataContext, IData dataToAdd, DataProviderContext dataProviderContext);

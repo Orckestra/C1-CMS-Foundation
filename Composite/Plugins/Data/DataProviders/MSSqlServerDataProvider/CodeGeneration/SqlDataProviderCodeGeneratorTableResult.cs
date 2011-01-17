@@ -11,7 +11,8 @@ using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneratio
 
 namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration
 {
-    internal sealed class SqlDataProviderCodeGeneratorTableResult
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public sealed class SqlDataProviderCodeGeneratorTableResult
     {
         private SqlDataProviderCodeGeneratorResult _sqlDataProviderCodeGeneratorResult;
         private Type _interfaceType;
@@ -119,11 +120,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
 
 
-        internal sealed class StoreInformation
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public sealed class StoreInformation
         {
-            internal FieldInfo DataContextQueryableFieldInfo { get; set; }
-            internal ISqlDataProviderHelperMethods SqlDataProviderHelperMethods { get; set; }
-            internal Type DataIdType { get; set; }
+            public FieldInfo DataContextQueryableFieldInfo { get; set; }
+            public ISqlDataProviderHelperMethods SqlDataProviderHelperMethods { get; set; }
+            public Type DataIdType { get; set; }
         }              
     }
 }
