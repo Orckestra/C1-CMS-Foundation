@@ -5,15 +5,16 @@ using System.Reflection;
 using System.Workflow.Activities;
 using System.Workflow.Runtime;
 using Composite.C1Console.Actions;
+using Composite.C1Console.Forms.Flows;
+using Composite.C1Console.Workflow;
+using Composite.Core.Extensions;
+using Composite.Core.ResourceSystem;
+using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Core.Extensions;
-using Composite.C1Console.Forms.Flows;
-using Composite.Core.ResourceSystem;
-using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
-using Composite.Core.Types;
-using Composite.C1Console.Workflow;
 using Composite.Functions;
+using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
+
 
 
 namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
@@ -64,16 +65,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
                 ShowFieldMessage("NewMethodBasedFunction.Type", errorMessage);
                 e.Result = false;
                 return;
-            }
-
-
-            if (type.IsAbstract == true)
-            {
-                string errorMessage = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "AddFunction.TypeIsAbstractOrStatic");
-                ShowFieldMessage("NewMethodBasedFunction.Type", errorMessage);
-                e.Result = false;
-                return;
-            }
+            }          
 
 
             List<string> methodNames =
@@ -120,7 +112,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
 
             function.MethodName = methodName;
             function.UserMethodName = methodName;
-            function.Namespace = type.Namespace;
+            function.Namespace = type.Namespace + "." + type.Name;
         }
 
 
