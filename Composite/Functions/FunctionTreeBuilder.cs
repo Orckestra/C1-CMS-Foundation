@@ -213,7 +213,7 @@ namespace Composite.Functions
             else
             {
                 if (element.Elements().Count() > 1)
-                    throw new InvalidProgramException(string.Format("Wrong xml format in parameter '{0}' - contains multiple elements.", nameAttribute.Value));
+                    throw new InvalidProgramException(string.Format("Wrong xml format in parameter '{0}' - contains multiple elements", nameAttribute.Value));
 
                 throw new InvalidProgramException(string.Format("Wrong xml format in parameter '{0}'", nameAttribute.Value));
 
