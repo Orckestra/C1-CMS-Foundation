@@ -67,10 +67,9 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
                 {
                     types = GetSubscribedTypes(filePath, cachedTypesInfo, ref cacheHasBeenUpdated);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    var logEx = new InvalidOperationException("Failed to load types from file '{0}'".FormatWith(filePath), e);
-                    LoggingService.LogError(typeof(AttributeBasedApplicationStartupHandler).Name, logEx);
+                    LogAssemblyLoadException(filePath, e);
                 }
 
                 if(types != null)
@@ -90,6 +89,8 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
                 SaveTypesCache(cachedTypesInfo);
             }
         }
+
+
 
         private void Subscribe(Type[] types)
         {
@@ -358,6 +359,32 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
                 methodInfo.Invoke(null, null);
             }
         }
+
+        
+
+        private static void LogAssemblyLoadException(string filePath, Exception e)
+        {
+            var logEx = new InvalidOperationException("Failed to load types from file '{0}'".FormatWith(filePath), e);
+            LoggingService.LogError(typeof(AttributeBasedApplicationStartupHandler).Name, logEx);
+
+            Exception toExamine = e;
+            while (toExamine != null)
+            {
+                ReflectionTypeLoadException reflectionTypeLoadException = toExamine as ReflectionTypeLoadException;
+                if (reflectionTypeLoadException != null)
+                {
+                    Exception[] loaderExceptions = reflectionTypeLoadException.LoaderExceptions;
+                    foreach (Exception loaderException in loaderExceptions)
+                    {
+                        LoggingService.LogError(typeof(AttributeBasedApplicationStartupHandler).Name + " | LOADEREXCEPTION", loaderException.Message);
+                    }
+                }
+
+                toExamine = toExamine.InnerException;
+            }
+        }
+
+
 
         [Serializable]
         public class SubscribedTypesCache
