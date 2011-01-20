@@ -9,6 +9,7 @@ using Composite.Core.Xml;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Streams;
+using System.IO;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
@@ -21,11 +22,19 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             public string ElementName;
 
             public RecordSet RecordSet;
-            
+
             public IEnumerable<XElement> ReadOnlyElementsList;
             public DateTime LastModified;
             public DateTime FileModificationDate;
             public bool Dirty = false; // Determines whether the inner XElement list is dirty
+
+            public string TempFileName
+            {
+                get
+                {
+                    return FileName + ".tmp";
+                }
+            }
         }
 
         internal class RecordSet
@@ -45,12 +54,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             filename = filename.ToLower();
 
-            if(_watchedFiles.Contains(filename))
+            if (_watchedFiles.Contains(filename))
             {
                 return;
             }
 
-            lock(_cacheSyncRoot)
+            lock (_cacheSyncRoot)
             {
                 if (_watchedFiles.Contains(filename))
                 {
@@ -70,25 +79,25 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             var fileRecord = _cache[filePath];
 
             // Ignoring this notification since it's probably caused by XmlDataProvider itself
-            if(fileRecord == null
+            if (fileRecord == null
                 || DateTime.Now - fileRecord.LastModified < AcceptableNotificationDelay)
             {
                 return;
             }
 
-            lock(_documentEditingSyncRoot)
+            lock (_documentEditingSyncRoot)
             {
-                lock(_cacheSyncRoot)
+                lock (_cacheSyncRoot)
                 {
                     fileRecord = _cache[filePath];
 
                     if (fileRecord == null) return;
 
                     // Ignoring this notification since it's probably caused by XmlDataProvider itself
-                    if(DateTime.Now - fileRecord.LastModified < AcceptableNotificationDelay) return;
+                    if (DateTime.Now - fileRecord.LastModified < AcceptableNotificationDelay) return;
 
                     // Checking if the date has changed
-                    if(C1File.GetLastWriteTime(filePath) == fileRecord.FileModificationDate)
+                    if (C1File.GetLastWriteTime(filePath) == fileRecord.FileModificationDate)
                     {
                         return;
                     }
@@ -117,14 +126,24 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                     if (cachedData == null)
                     {
+                        // Restore broken save
+                        if (File.Exists(filename + ".tmp"))
+                        {
+                            if (File.Exists(filename))
+                            {
+                                File.Delete(filename);
+                            }
+                            File.Move(filename + ".tmp", filename);
+                        }
+
                         XDocument xDoc = XDocumentUtils.Load(filename);
                         List<XElement> elements = ExtractElements(xDoc);
 
                         var index = new Hashtable<IDataId, XElement>();
-                        foreach(var element in elements)
+                        foreach (var element in elements)
                         {
                             IDataId id = keyGetter(element);
-                            if(!index.ContainsKey(id))
+                            if (!index.ContainsKey(id))
                             {
                                 index.Add(id, element);
                             }
@@ -133,12 +152,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                                 // TODO: handle the dublicated id behaviour
                             }
                         }
-                        
+
                         cachedData = new FileRecord
                         {
                             FileName = filename,
                             ElementName = elementName,
-                            RecordSet = new RecordSet { /* Elements = elements,*/ Index = index},
+                            RecordSet = new RecordSet { /* Elements = elements,*/ Index = index },
                             ReadOnlyElementsList = new ReadOnlyList<XElement>(new List<XElement>(elements)),
                             LastModified = DateTime.Now,
                             FileModificationDate = C1File.GetLastWriteTime(filename)
@@ -158,7 +177,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             Verify.ArgumentNotNullOrEmpty(filename, "filename");
             Verify.ArgumentNotNullOrEmpty(elementName, "elementName");
 
-            return GetFileRecord(filename, elementName, helper.CreateDataId).ReadOnlyElementsList; 
+            return GetFileRecord(filename, elementName, helper.CreateDataId).ReadOnlyElementsList;
         }
 
         private static void SaveChanges(FileRecord fileRecord)
@@ -181,17 +200,24 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             try
             {
             }
-            finally 
+            finally
             {
                 try
                 {
+                    // Saving to temp file and file move to prevent broken saves
                     XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
                     xmlWriterSettings.CheckCharacters = false;
                     xmlWriterSettings.Indent = true;
-                    using (XmlWriter xmlWriter = XmlWriterUtils.Create(fileRecord.FileName, xmlWriterSettings))
+                    using (XmlWriter xmlWriter = XmlWriterUtils.Create(fileRecord.TempFileName, xmlWriterSettings))
                     {
                         xDocument.Save(xmlWriter);
                     }
+
+                    if (File.Exists(fileRecord.FileName))
+                    {
+                        File.Delete(fileRecord.FileName);
+                    }
+                    File.Move(fileRecord.TempFileName, fileRecord.FileName);
                 }
                 catch (Exception exception)
                 {
@@ -229,11 +255,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
         public static void UndoUncommitedChanges()
         {
-            lock(_cacheSyncRoot)
+            lock (_cacheSyncRoot)
             {
                 foreach (string filename in _cache.GetKeys())
                 {
-                    if(_cache[filename].Dirty)
+                    if (_cache[filename].Dirty)
                     {
                         _cache.Remove(filename);
                     }
@@ -273,7 +299,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             {
                 UndoUncommitedChanges();
 
-                if(_entered)
+                if (_entered)
                 {
                     Monitor.Exit(SyncRoot);
                 }
