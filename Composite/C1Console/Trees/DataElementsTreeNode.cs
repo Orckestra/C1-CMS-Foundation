@@ -14,6 +14,7 @@ using Composite.C1Console.Trees.Foundation;
 using Composite.Core.Types;
 using Composite.C1Console.Users;
 using Composite.C1Console.Workflow;
+using Composite.Core;
 
 
 namespace Composite.C1Console.Trees
@@ -80,6 +81,8 @@ namespace Composite.C1Console.Trees
             DataEntityToken dataEntityToken = (DataEntityToken)ownEntityToken;
             IData data = dataEntityToken.Data;
 
+            if (data == null) throw new ArgumentException("ownEntityToken.Data is null");
+
             object parentFieldValue = helper.ParentReferencedPropertyInfo.GetValue(data, null);
 
             ParameterExpression parameterExpression = Expression.Parameter(helper.ParentIdFilterNode.ParentFilterType, "data");
@@ -140,6 +143,11 @@ namespace Composite.C1Console.Trees
 
                 foreach (IData data in datas.Item1)
                 {
+                    if (data == null)
+                    {
+                        throw new InvalidOperationException(string.Format("Fetching data for data interface '{0}' with expression '{1}' yielded an null element", this.InterfaceType, orderByExpression));
+                    }
+
                     object keyValue = this.KeyPropertyInfo.GetValue(data, null);
                     itemKeys.Add(keyValue);
                 }
@@ -174,6 +182,11 @@ namespace Composite.C1Console.Trees
             foreach (IData data in dataItems)
             {
                 replaceContext.CurrentDataItem = data;
+
+                if (data == null)
+                {
+                    throw new InvalidOperationException(string.Format("Fetching data for data interface '{0}' yielded an null element", this.InterfaceType));
+                }
 
                 object keyValue = this.KeyPropertyInfo.GetValue(data, null);
 
