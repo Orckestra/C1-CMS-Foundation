@@ -47,6 +47,8 @@ del TreeDefinitions\PageType.xml.backup
 :: Blog cleanup
 del ..\..\BlogRssFeed.ashx
 del ..\..\Bin\Composite.Community.Blog.dll
+del ..\..\Bin\CookComputing.XmlRpcV2.dll
+del ..\..\BlogMetaWeblog.ashx
 del TreeDefinitions\Composite.Community.Blog.xml
 del TreeDefinitions\Composite.Community.Blog.Settings.xml
 del TreeDefinitions\Composite.Community.Blog.Entries.xml

@@ -50,30 +50,33 @@ namespace Composite.C1Console.Trees
         {
             using (_resourceLocker.Locker)
             {
-                DataEventSystemFacade.SubscribeToDataAfterAdd<IDataItemTreeAttachmentPoint>(OnUpdateTreeAttachmentPoints, true);
-                DataEventSystemFacade.SubscribeToDataDeleted<IDataItemTreeAttachmentPoint>(OnUpdateTreeAttachmentPoints, true);
+                if (GlobalInitializerFacade.SystemCoreInitialized)
+                {
+                    DataEventSystemFacade.SubscribeToDataAfterAdd<IDataItemTreeAttachmentPoint>(OnUpdateTreeAttachmentPoints, true);
+                    DataEventSystemFacade.SubscribeToDataDeleted<IDataItemTreeAttachmentPoint>(OnUpdateTreeAttachmentPoints, true);
 
-                GeneratedTypesFacade.SubscribeToUpdateTypeEvent(OnDataTypeChanged);
+                    GeneratedTypesFacade.SubscribeToUpdateTypeEvent(OnDataTypeChanged);
 
-                TreeAuxiliaryAncestorProvider treeAuxiliaryAncestorProvider = new C1Console.Trees.TreeAuxiliaryAncestorProvider();
-                AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreeSimpleElementEntityToken>(treeAuxiliaryAncestorProvider);
-                AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreeFunctionElementGeneratorEntityToken>(treeAuxiliaryAncestorProvider);
-                AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreeDataFieldGroupingElementEntityToken>(treeAuxiliaryAncestorProvider);
-                AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<DataEntityToken>(treeAuxiliaryAncestorProvider);
+                    TreeAuxiliaryAncestorProvider treeAuxiliaryAncestorProvider = new C1Console.Trees.TreeAuxiliaryAncestorProvider();
+                    AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreeSimpleElementEntityToken>(treeAuxiliaryAncestorProvider);
+                    AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreeFunctionElementGeneratorEntityToken>(treeAuxiliaryAncestorProvider);
+                    AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreeDataFieldGroupingElementEntityToken>(treeAuxiliaryAncestorProvider);
+                    AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<DataEntityToken>(treeAuxiliaryAncestorProvider);
 
-                _resourceLocker.Resources.PersistentAttachmentPoints = new Dictionary<string, List<IAttachmentPoint>>();
+                    _resourceLocker.Resources.PersistentAttachmentPoints = new Dictionary<string, List<IAttachmentPoint>>();
 
-                LoadAllTrees();
-                InitializeTreeAttachmentPoints();
+                    LoadAllTrees();
+                    InitializeTreeAttachmentPoints();
 
-                _resourceLocker.Resources.FileSystemWatcher = new C1FileSystemWatcher(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), "*.xml");
-                _resourceLocker.Resources.FileSystemWatcher.Created += OnReloadTrees;
-                _resourceLocker.Resources.FileSystemWatcher.Deleted += OnReloadTrees;
-                _resourceLocker.Resources.FileSystemWatcher.Changed += OnReloadTrees;
-                _resourceLocker.Resources.FileSystemWatcher.Renamed += OnReloadTrees;
-                _resourceLocker.Resources.FileSystemWatcher.EnableRaisingEvents = true;
+                    _resourceLocker.Resources.FileSystemWatcher = new C1FileSystemWatcher(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), "*.xml");
+                    _resourceLocker.Resources.FileSystemWatcher.Created += OnReloadTrees;
+                    _resourceLocker.Resources.FileSystemWatcher.Deleted += OnReloadTrees;
+                    _resourceLocker.Resources.FileSystemWatcher.Changed += OnReloadTrees;
+                    _resourceLocker.Resources.FileSystemWatcher.Renamed += OnReloadTrees;
+                    _resourceLocker.Resources.FileSystemWatcher.EnableRaisingEvents = true;
 
-                _resourceLocker.Resources.RootEntityToken = ElementFacade.GetRootsWithNoSecurity().First().ElementHandle.EntityToken;
+                    _resourceLocker.Resources.RootEntityToken = ElementFacade.GetRootsWithNoSecurity().First().ElementHandle.EntityToken;
+                }
             }
         }
 

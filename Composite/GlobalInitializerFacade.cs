@@ -62,6 +62,8 @@ namespace Composite
             }
         }
 
+
+
         private class TimeMeasurement : IDisposable
         {
             private string _message;
@@ -87,10 +89,13 @@ namespace Composite
         }
 
 
+
         static GlobalInitializerFacade()
         {
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
         }
+
+
 
         /// <summary>
         /// This method will initialize the system (if it has not been initialized).
@@ -99,6 +104,8 @@ namespace Composite
         {
             InitializeTheSystem();
         }
+
+
 
         /// <summary>
         /// This method will initialize the system (if it has not been initialized).
@@ -231,10 +238,13 @@ namespace Composite
             ReinitializeTheSystem(delegate() { _fatalErrorFlushCount++; GlobalEventSystemFacade.FlushTheSystem(); });
         }
 
+
+
         public static void ReinitializeTheSystem(RunInWriterLockScopeDelegage runInWriterLockScopeDelegage)
         {
             ReinitializeTheSystem(runInWriterLockScopeDelegage, false);
         }
+
 
 
         internal static void ReinitializeTheSystem(RunInWriterLockScopeDelegage runInWriterLockScopeDelegage, bool initializeHooksInTheSameThread)
@@ -251,6 +261,8 @@ namespace Composite
 
             using (GlobalInitializerFacade.CoreLockScope)
             {
+                IsReinitializingTheSystem = true;
+
                 runInWriterLockScopeDelegage();
 
                 _coreInitialized = false;
@@ -273,6 +285,8 @@ namespace Composite
                     _hookingFacadeThread = new Thread(EnsureHookingFacade);
                     _hookingFacadeThread.Start(new KeyValuePair<TimeSpan, StackTrace>(TimeSpan.FromSeconds(1), new StackTrace()));
                 }
+
+                IsReinitializingTheSystem = false;
             }
         }
 
@@ -321,10 +335,16 @@ namespace Composite
         public static bool DynamicTypesGenerated { get; private set; }
         public static bool SystemCoreInitialized { get { return _coreInitialized; } }
 
+        /// <summary>
+        /// This is true durring a total flush of the system (re-initialize).
+        /// </summary>
+        public static bool IsReinitializingTheSystem { get; private set; }
 
 
         private static void DoAutoInstallPackages()
         {
+            if (IsReinitializingTheSystem == true) return;
+
             try
             {
                 // This is not so good, unittests run and normal runs should have same semantic behavior.
@@ -336,12 +356,12 @@ namespace Composite
                 string directory = PathUtil.Resolve(GlobalSettingsFacade.AutoPackageInstallDirectory);
                 if (C1Directory.Exists(directory) == true)
                 {
-                    LoggingService.LogVerbose("GlobalInitializerFacade", string.Format("Installing packages from: {0}", directory));
+                    LoggingService.LogVerbose(LogTitle, string.Format("Installing packages from: {0}", directory));
                     zipFilenames.AddRange(C1Directory.GetFiles(directory, "*.zip").Select(f => new KeyValuePair<bool, string>(true, f)));
                 }
                 else
                 {
-                    LoggingService.LogVerbose("GlobalInitializerFacade", string.Format("Auto install directory not found: {0}", directory));
+                    LoggingService.LogVerbose(LogTitle, string.Format("Auto install directory not found: {0}", directory));
                 }
 
                 if (RuntimeInformation.IsDebugBuild == true)
@@ -349,7 +369,7 @@ namespace Composite
                     string workflowTestDir = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.AutoPackageInstallDirectory), "WorkflowTesting");
                     if (C1Directory.Exists(workflowTestDir))
                     {
-                        LoggingService.LogVerbose("GlobalInitializerFacade", string.Format("Installing packages from: {0}", workflowTestDir));
+                        LoggingService.LogVerbose(LogTitle, string.Format("Installing packages from: {0}", workflowTestDir));
                         zipFilenames.AddRange(C1Directory.GetFiles(workflowTestDir, "*.zip").OrderBy(f => f).Select(f => new KeyValuePair<bool, string>(false, f)));                        
                     }                    
                 }
@@ -361,6 +381,8 @@ namespace Composite
                     {
                         using (Stream zipFileStream = C1File.OpenRead(kvp.Value))
                         {
+                            LoggingService.LogVerbose(LogTitle, "Installing package: " + kvp.Value);
+
                             // TODO: Log validation messages
                             PackageManagerInstallProcess packageManagerInstallProcess = PackageManager.Install(zipFileStream, true);
 
