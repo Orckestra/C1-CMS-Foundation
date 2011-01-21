@@ -150,8 +150,6 @@ namespace Composite.Core.Linq
 
         public static IEnumerable<object> ToEnumerableOfObjects(this IEnumerable enumerable)
         {
-            var result = new List<object>();
-
             foreach (object o in enumerable)
             {
                 yield return o;

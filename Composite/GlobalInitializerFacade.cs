@@ -333,6 +333,7 @@ namespace Composite
 
 
         public static bool DynamicTypesGenerated { get; private set; }
+        public static bool SystemCoreInitializing { get { return _initializing; } }
         public static bool SystemCoreInitialized { get { return _coreInitialized; } }
 
         /// <summary>

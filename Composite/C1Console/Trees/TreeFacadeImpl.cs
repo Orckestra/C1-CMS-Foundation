@@ -44,13 +44,13 @@ namespace Composite.C1Console.Trees
         private const string XslFilename = "Tree.xsl";
 
         private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize, false);
-        
+
 
         public void Initialize()
         {
             using (_resourceLocker.Locker)
             {
-                if (GlobalInitializerFacade.SystemCoreInitialized)
+                if (!GlobalInitializerFacade.IsReinitializingTheSystem)
                 {
                     DataEventSystemFacade.SubscribeToDataAfterAdd<IDataItemTreeAttachmentPoint>(OnUpdateTreeAttachmentPoints, true);
                     DataEventSystemFacade.SubscribeToDataDeleted<IDataItemTreeAttachmentPoint>(OnUpdateTreeAttachmentPoints, true);
@@ -102,7 +102,7 @@ namespace Composite.C1Console.Trees
             {
                 using (_resourceLocker.ReadLocker)
                 {
-                    return _resourceLocker.Resources.Trees.Values.Evaluate();                    
+                    return _resourceLocker.Resources.Trees.Values.Evaluate();
                 }
             }
         }
@@ -160,7 +160,7 @@ namespace Composite.C1Console.Trees
             return tree.RootTreeNode.GetElements(parentEntityToken, dynamicContext);
         }
 
-        
+
 
         public Tree LoadTreeFromDom(string treeId, XDocument document)
         {
@@ -343,7 +343,7 @@ namespace Composite.C1Console.Trees
         private Tree LoadTreeFromFile(string treeId)
         {
             string filename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), treeId);
-                        
+
             for (int i = 0; i < 10; i++)
             {
                 try
@@ -358,7 +358,7 @@ namespace Composite.C1Console.Trees
             }
 
             throw new InvalidOperationException("Could not load tree " + treeId);
-        }        
+        }
 
 
 
@@ -597,9 +597,9 @@ namespace Composite.C1Console.Trees
             DataFacade.Delete<IDataItemTreeAttachmentPoint>(attachmentPoints);
         }
 
-        #endregion  
-        
-      
+        #endregion
+
+
 
         private sealed class Resources
         {
