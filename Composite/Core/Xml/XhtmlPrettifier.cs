@@ -135,7 +135,7 @@ namespace Composite.Core.Xml
                     }
 
                     bool isSelfClosingAndEmpty = false;
-                    if ((node.IsSelfClosingElement() == true) && (node.ChildNodes.Where(f => f.NodeType == XmlNodeType.Element).Any() == false))
+                    if ((node.IsSelfClosingElement() == true) && (node.ChildNodes.Where(f => f.NodeType == XmlNodeType.Element).Any() == false) && (node.ChildNodes.Where(f => f.NodeType == XmlNodeType.Text).Any() == false))
                     {
                         isSelfClosingAndEmpty = true;
                     }
