@@ -45,7 +45,7 @@
           
 				</FieldGroup>
 				<FieldGroup Label="${Composite.Plugins.PageElementProvider, PublicationSettings.FieldGroupLabel}">
-					<KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.Plugins.PageElementProvider, EditPage.LabelPublicationState}" Help="${Composite.Plugins.PageElementProvider, EditPage.HelpPublicationState}">
+					<KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.Plugins.PageElementProvider, EditPage.LabelPublicationState}" Help="${Composite.Plugins.PageElementProvider, EditPage.HelpPublicationState}" Required="true">
 						<KeySelector.Selected>
 							<cms:bind source="SelectedPage.PublicationStatus" />
 						</KeySelector.Selected>
