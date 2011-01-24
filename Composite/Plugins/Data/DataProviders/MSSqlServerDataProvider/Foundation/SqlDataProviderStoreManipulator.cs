@@ -456,6 +456,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
                 foreach (string fieldName in fieldNames)
                 {
+                    if (primaryKeyIndex.IndexedColumns[fieldName] != null) continue;
+
                     primaryKeyIndex.IndexedColumns.Add(new IndexedColumn(primaryKeyIndex, fieldName));
                 }
 
