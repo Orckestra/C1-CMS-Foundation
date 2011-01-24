@@ -250,6 +250,13 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                  where dfd.GroupByPriority == groupEntityToken.GroupingValues.Count + 1
                  select dfd).SingleOrDefault();
 
+            if ((groupingDataFieldDescriptor != null) && (propertyInfoValueCollection.PropertyValues.Where(f => f.Key.Name == groupingDataFieldDescriptor.Name).Any()))
+            {
+                // Grouping ordering has ben changed, at the moment the best thing we can do its to return no elements
+                // TODO: This class and the whole attach element provider stuff should be redone
+                return new Element[] { };
+            }
+
             using (DataScope dataScope = new DataScope(this.OnGetDataScopeIdentifier(interfaceType)))
             {
                 if (groupingDataFieldDescriptor != null)

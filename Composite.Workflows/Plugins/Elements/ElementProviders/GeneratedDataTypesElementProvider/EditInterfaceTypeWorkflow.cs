@@ -144,7 +144,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             SetSaveStatus(true);
 
             ParentTreeRefresher parentTreeRefresher = this.CreateParentTreeRefresher();
-            parentTreeRefresher.PostRefreshMesseges(this.EntityToken, 3);
+            parentTreeRefresher.PostRefreshMesseges(this.EntityToken, 1);
         }
     }
 }
