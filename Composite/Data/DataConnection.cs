@@ -383,6 +383,30 @@ namespace Composite.Data
 
 
         /// <summary>
+        /// Create a new <typeparamref name="TData"/> that can be added using <see cref="Composite.Data.DataConnection.Add"/>.
+        /// This method triggers the event OnNew for the return value of the method.
+        /// </summary>
+        /// Here is an example of how to create a new IData instance and add it to the C1 storage.
+        /// <code>
+        /// using (DataConnection connection = new DataConnection())
+        /// {
+        ///    IMyDataType myDataType = connection.CreateNew&lt;IMyDataType&gt;();
+        ///    myDataType.Name = "John Doe";
+        ///    connection.Add&lt;IMyDataType&gt;(myDataType);        
+        /// }
+        /// </code>
+        /// </example>
+        /// <typeparam name="TData">An IData interface</typeparam>
+        /// <returns>Returns a new instance of the <typeparamref name="TData"/></returns>
+        public TData CreateNew<TData>()
+            where TData : class, IData
+        {
+            return ImplementationFactory.CurrentFactory.StatelessDataConnection.New<TData>();
+        }
+
+
+
+        /// <summary>
         /// The current publication scope.
         /// </summary>
         public PublicationScope CurrentPublicationScope
