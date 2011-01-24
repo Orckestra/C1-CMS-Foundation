@@ -18,6 +18,8 @@ using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Composite.Data.Validation.ClientValidationRules;
 using System.Text.RegularExpressions;
 using Composite.C1Console.Trees;
+using Composite.Data.DynamicTypes;
+using Composite.Data.GeneratedTypes;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
@@ -360,6 +362,17 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 {
                     e.Result = true;
                 }
+            }
+
+            DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(typeof(IPage));
+            if ((newPage.UrlTitle.Length > dataTypeDescriptor.Fields["UrlTitle"].StoreType.MaximumLength) ||
+                (newPage.MenuTitle.Length > dataTypeDescriptor.Fields["MenuTitle"].StoreType.MaximumLength))
+            {
+                newPage.UrlTitle = "";
+                newPage.MenuTitle = "";
+
+                this.ShowFieldMessage("NewPage.Title", "${Composite.Plugins.PageElementProvider, UrlTitleTooLong}");
+                e.Result = false;
             }
         }
 

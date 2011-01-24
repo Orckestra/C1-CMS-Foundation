@@ -51,6 +51,7 @@
   <string key="DeletePageStep2.Text" value="Delete page '{0}'?" />
   <string key="UrlTitleNotUniqueError" value="Another page is using the specified URL title. URL titles must be unique among pages with the same parent." />
   <string key="UrlTitleNotValidError" value="The specified URL title contains invalid characters. Since this field is used to build the web address for the page, certain special characters (like space, question mark, slash and dot) are not allowed. You can use letters, digits and dash." />
+  <string key="UrlTitleTooLong" value="The specified URL title is too long. Make it shorter and try again" />
   <string key="FriendlyUrlNotUniqueError" value="Another page is using the specified Friendly URL. Friendly URL's must be unique." />
   <string key="TitleMissingError" value="The title can not be empty." />
   <string key="PageSaveValidationFailedTitle" value="Page not saved" />
