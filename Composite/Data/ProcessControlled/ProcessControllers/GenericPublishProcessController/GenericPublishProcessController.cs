@@ -44,7 +44,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         private IDictionary<string, IList<string>> _transitions;
         private IDictionary<string, IList<string>> _visualTransitions;
         private IDictionary<string, string> _transitionNames = new Dictionary<string, string>();
-        private IDictionary<string, ElementAction> _visualTransitionsActions = new Dictionary<string, ElementAction>();  // Using visual transition names as key
+        private IDictionary<string, Func<ElementAction>> _visualTransitionsActions = new Dictionary<string, Func<ElementAction>>();  // Using visual transition names as key
 
 
         public static ResourceHandle SendForwardForApproval { get { return GetIconHandle("item-send-forward-for-approval"); } }
@@ -86,7 +86,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             _transitionNames.Add(AwaitingPublication, "Awaiting Publication");
             _transitionNames.Add(Published, "Published");
 
-            ElementAction sendBackToDraftAction = new ElementAction(new ActionHandle(new DraftActionToken()))
+            Func<ElementAction> sendBackToDraftAction = () => new ElementAction(new ActionHandle(new DraftActionToken()))
             {
                 VisualData = new ActionVisualizedData()
                 {
@@ -104,7 +104,8 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 }
             };
 
-            ElementAction sendForwardToAwaitingApprovalAction = new ElementAction(new ActionHandle(new AwaitingApprovalActionToken()))
+
+            Func<ElementAction> sendForwardToAwaitingApprovalAction = () => new ElementAction(new ActionHandle(new AwaitingApprovalActionToken()))
             {
                 VisualData = new ActionVisualizedData()
                 {
@@ -122,7 +123,8 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 }
             };
 
-            ElementAction sendForwardToAwaitingPublicationAction = new ElementAction(new ActionHandle(new AwaitingPublicationActionToken()))
+
+            Func<ElementAction> sendForwardToAwaitingPublicationAction = () => new ElementAction(new ActionHandle(new AwaitingPublicationActionToken()))
             {
                 VisualData = new ActionVisualizedData()
                 {
@@ -140,7 +142,8 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 }
             };
 
-            ElementAction publishAction = new ElementAction(new ActionHandle(new PublishActionToken()))
+
+            Func<ElementAction> publishAction = () => new ElementAction(new ActionHandle(new PublishActionToken()))
             {
                 VisualData = new ActionVisualizedData()
                 {
@@ -158,32 +161,123 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 }
             };
 
+
             // "arrow pointing left when state change is going backwards" actions
-            ElementAction sendBackToAwaitingApprovalAction = new ElementAction(sendForwardToAwaitingApprovalAction.ActionHandle) { VisualData = new ActionVisualizedData(sendForwardToAwaitingApprovalAction.VisualData) };
-            sendBackToAwaitingApprovalAction.VisualData.Icon = GenericPublishProcessController.SendBackForApproval;
+            Func<ElementAction> sendBackToAwaitingApprovalAction = () => new ElementAction(new ActionHandle(new AwaitingApprovalActionToken()))
+            {
+                VisualData = new ActionVisualizedData()
+                {
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForApproval"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForApprovalToolTip"),
+                    Icon = GenericPublishProcessController.SendBackForApproval,
+                    Disabled = false,
+                    ActionLocation = new ActionLocation
+                    {
+                        ActionType = ActionType.Other,
+                        IsInFolder = false,
+                        IsInToolbar = true,
+                        ActionGroup = WorkflowActionGroup
+                    }
+                }
+            };
 
-            ElementAction sendBackToAwaitingPublicationAction = new ElementAction(sendForwardToAwaitingPublicationAction.ActionHandle) { VisualData = new ActionVisualizedData(sendForwardToAwaitingPublicationAction.VisualData) };
-            sendBackToAwaitingPublicationAction.VisualData.Icon = GenericPublishProcessController.SendBackForPublication;
 
+            Func<ElementAction> sendBackToAwaitingPublicationAction = () => new ElementAction(new ActionHandle(new AwaitingPublicationActionToken()))
+            {
+                VisualData = new ActionVisualizedData()
+                {
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForPublication"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForPublicationToolTip"),
+                    Icon = GenericPublishProcessController.SendBackForPublication,
+                    Disabled = false,
+                    ActionLocation = new ActionLocation
+                    {
+                        ActionType = ActionType.Other,
+                        IsInFolder = false,
+                        IsInToolbar = true,
+                        ActionGroup = WorkflowActionGroup
+                    }
+                }
+            };
 
 
             // disabled actions 
-            ElementAction draftActionDisabled = new ElementAction(new ActionHandle(new DisabledActionToken())) { VisualData = new ActionVisualizedData(sendBackToDraftAction.VisualData) };
-            draftActionDisabled.VisualData.Disabled = true;
-            draftActionDisabled.VisualData.Icon = GenericPublishProcessController.SendToDraftDisabled;
+            Func<ElementAction> draftActionDisabled = () => new ElementAction(new ActionHandle(new DraftActionToken()))
+            {
+                VisualData = new ActionVisualizedData()
+                {
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendToDraft"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendToDraftToolTip"),
+                    Icon = GenericPublishProcessController.SendToDraftDisabled,
+                    Disabled = true,
+                    ActionLocation = new ActionLocation
+                    {
+                        ActionType = ActionType.Other,
+                        IsInFolder = false,
+                        IsInToolbar = true,
+                        ActionGroup = WorkflowActionGroup
+                    }
+                }
+            };
 
-            ElementAction awaitingApprovalActionDisabled = new ElementAction(new ActionHandle(new DisabledActionToken())) { VisualData = new ActionVisualizedData(sendForwardToAwaitingApprovalAction.VisualData) };
-            awaitingApprovalActionDisabled.VisualData.Disabled = true;
-            awaitingApprovalActionDisabled.VisualData.Icon = GenericPublishProcessController.SendForApprovalDisabled;
 
-            ElementAction awaitingPublicationActionDisabled = new ElementAction(new ActionHandle(new DisabledActionToken())) { VisualData = new ActionVisualizedData(sendForwardToAwaitingPublicationAction.VisualData) };
-            awaitingPublicationActionDisabled.VisualData.Disabled = true;
-            awaitingPublicationActionDisabled.VisualData.Icon = GenericPublishProcessController.SendForPublicationDisabled;
+            Func<ElementAction> awaitingApprovalActionDisabled = () => new ElementAction(new ActionHandle(new AwaitingApprovalActionToken()))
+            {
+                VisualData = new ActionVisualizedData()
+                {
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForApproval"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForApprovalToolTip"),
+                    Icon = GenericPublishProcessController.SendForApprovalDisabled,
+                    Disabled = true,
+                    ActionLocation = new ActionLocation
+                    {
+                        ActionType = ActionType.Other,
+                        IsInFolder = false,
+                        IsInToolbar = true,
+                        ActionGroup = WorkflowActionGroup
+                    }
+                }
+            };
+                               
 
-            ElementAction publishActionDisabled = new ElementAction(new ActionHandle(new DisabledActionToken())) { VisualData = new ActionVisualizedData(publishAction.VisualData) };
-            publishActionDisabled.VisualData.Disabled = true;
-            publishActionDisabled.VisualData.Icon = GenericPublishProcessController.PublishDisabled;
-
+            Func<ElementAction> awaitingPublicationActionDisabled = () => new ElementAction(new ActionHandle(new AwaitingPublicationActionToken()))
+            {
+                VisualData = new ActionVisualizedData()
+                {
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForPublication"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForPublicationToolTip"),
+                    Icon = GenericPublishProcessController.SendForPublicationDisabled,
+                    Disabled = true,
+                    ActionLocation = new ActionLocation
+                    {
+                        ActionType = ActionType.Other,
+                        IsInFolder = false,
+                        IsInToolbar = true,
+                        ActionGroup = WorkflowActionGroup
+                    }
+                }
+            };
+                
+                
+            Func<ElementAction> publishActionDisabled = () => new ElementAction(new ActionHandle(new DisabledActionToken())) 
+            {
+                VisualData = new ActionVisualizedData()
+                {
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "Publish"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "PublishToolTip"),
+                    Icon = GenericPublishProcessController.PublishDisabled,
+                    Disabled = true,
+                    ActionLocation = new ActionLocation
+                    {
+                        ActionType = ActionType.Other,
+                        IsInFolder = false,
+                        IsInToolbar = true,
+                        ActionGroup = WorkflowActionGroup
+                    }
+                }
+            };
+                
+                
             _visualTransitionsActions.Add(Draft, sendBackToDraftAction);
             _visualTransitionsActions.Add(_backToAwaitingApproval, sendBackToAwaitingApprovalAction);
             _visualTransitionsActions.Add(_backToAwaitingPublication, sendBackToAwaitingPublicationAction);
@@ -222,7 +316,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
             foreach (string newState in visualTrans)
             {
-                clientActions.Add(_visualTransitionsActions[newState]);
+                clientActions.Add(_visualTransitionsActions[newState]());
             }
 
 
