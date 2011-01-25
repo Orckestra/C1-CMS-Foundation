@@ -11,6 +11,7 @@ using Composite.Data.Plugins.DataProvider.Runtime;
 using Composite.C1Console.Events;
 using Composite.Core.Instrumentation;
 using Composite.Core.Logging;
+using Composite.Data.Types;
 
 
 namespace Composite.Data.Foundation.PluginFacades
@@ -157,6 +158,21 @@ namespace Composite.Data.Foundation.PluginFacades
             }
         }
 
+
+
+        public static bool ValidatePath<TFile>(TFile file, string providerName, out string errorMessage)
+            where TFile : IFile
+        {
+            Verify.ArgumentNotNull(file, "dataSourceIds");
+
+            string message = null;
+            bool result = false;
+            SyncronizedCall<IFileSystemDataProvider>(providerName, provider => result = provider.ValidatePath<TFile>(file, out message));
+
+            errorMessage = message;
+
+            return result;
+        }
 
 
         public static void CreateStore(string providerName, DataTypeDescriptor typeDescriptor)

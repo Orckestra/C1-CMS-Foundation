@@ -17,6 +17,7 @@
   <string key="AddNewPageTemplateStep1.LabelCopyFromHelp" value="You can copy the markup from another Layout Template by selecting it in this list." />
   <string key="AddNewPageTemplateStep1.LabelCopyFromEmptyOption" value="(New template)" />
   <string key="AddNewPageTemplateStep1.TitleInUseTitle" value="Title already used" />
+  <string key="AddNewPageTemplateStep1.TitleTooLong" value="Title is too long (used as part of the xml filename)." />
 
   <string key="EditPageTemplate.LabelMarkUpCode" value="Markup code" />
   <string key="EditPageTemplate.LabelTemplateIdentification" value="Template info" />

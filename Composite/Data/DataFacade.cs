@@ -12,6 +12,7 @@ using Composite.C1Console.Events;
 using Composite.Data.Transactions;
 using Composite.Core.Types;
 using Composite.Core.Logging;
+using Composite.Data.Types;
 
 
 namespace Composite.Data
@@ -1445,6 +1446,26 @@ namespace Composite.Data
 
         #endregion
 
+
+        #region ValidatePath methods
+
+        // Overload
+        public static bool ValidatePath<TFile>(TFile file, string providerName)
+            where TFile : IFile
+        {
+            string errorMessage;
+
+            return ValidatePath(file, providerName, out errorMessage);
+        }
+
+
+        public static bool ValidatePath<TFile>(TFile file, string providerName, out string errorMessage) 
+            where TFile : IFile
+        {
+            return _dataFacade.ValidatePath(file, providerName, out errorMessage);
+        }
+
+        #endregion
 
 
         #region GetDataProviderNames method (Only helpers)

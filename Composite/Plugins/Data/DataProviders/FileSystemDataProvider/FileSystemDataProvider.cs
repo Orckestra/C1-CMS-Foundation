@@ -20,7 +20,7 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
 {
     [ConfigurationElementType(typeof(FileSystemDataProviderData))]
-    internal class FileSystemDataProvider : IWritableDataProvider
+    internal class FileSystemDataProvider : IWritableDataProvider, IFileSystemDataProvider
     {
         private DataProviderContext _context;
 
@@ -175,6 +175,31 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
 
                 C1File.Delete(dataId.FullPath);
             }
+        }
+
+
+
+        public bool ValidatePath<TFile>(TFile file, out string errorMessage) 
+            where TFile: IFile
+        {
+            string filename = CreateSystemPath(Path.Combine(file.FolderPath, file.FileName));
+
+            try
+            {
+                FileStream fileStream = new FileStream(filename, FileMode.Open);                
+            }
+            catch (PathTooLongException ex)
+            {
+                errorMessage = ex.Message;
+                return false;
+            }
+            catch (Exception)
+            {
+                // Ignore
+            }
+
+            errorMessage = null;
+            return true;
         }
 
 

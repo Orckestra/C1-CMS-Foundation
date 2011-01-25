@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Composite.Data.Types;
 
 
 namespace Composite.Data
@@ -40,5 +41,16 @@ namespace Composite.Data
         DataMoveResult Move<T>(T data, DataScopeIdentifier targetDataScopeIdentifier, bool allowCascadeMove) where T : class, IData;
 
         bool ExistsInAnyLocale<T>(IEnumerable<CultureInfo> excludedCultureInfoes) where T : class, IData;
+
+
+        /// <summary>
+        /// See <see cref="Composite.Data.Plugins.DataProvider.IFileSystemDataProvider"/>
+        /// </summary>
+        /// <typeparam name="TFile"></typeparam>
+        /// <param name="file"></param>
+        /// <param name="providerName"></param>
+        /// <param name="errorMessage"></param>
+        /// <returns></returns>
+        bool ValidatePath<TFile>(TFile file, string providerName, out string errorMessage) where TFile : IFile;
     }
 }

@@ -2,15 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Composite.C1Console.Security;
+using Composite.Core.Linq;
+using Composite.Core.Logging;
+using Composite.Core.Threading;
+using Composite.Core.Types;
 using Composite.Data.Caching;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
 using Composite.Data.Foundation.PluginFacades;
-using Composite.Core.Linq;
-using Composite.Core.Logging;
-using Composite.C1Console.Security;
-using Composite.Core.Threading;
-using Composite.Core.Types;
+using Composite.Data.Types;
 using Composite.Data.Validation;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
 
@@ -548,6 +549,14 @@ namespace Composite.Data
 
 
 
+        public bool ValidatePath<TFile>(TFile file, string providerName, out string errorMessage) 
+            where TFile : IFile
+        {
+            return DataProviderPluginFacade.ValidatePath<TFile>(file, providerName, out errorMessage);
+        }
+
+
+
         private static void OnDataChanged(object sender, DataEventArgs dataEventArgs)
         {
             _dataBySourceIdCache.Remove(dataEventArgs.Data.DataSourceId.ToString());
@@ -574,6 +583,6 @@ namespace Composite.Data
                     // silent
                 }
             }
-        }
+        }        
     }
 }

@@ -16,6 +16,8 @@ using Composite.Data.Transactions;
 using Composite.Data.Types;
 using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
 using Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvider;
+using Microsoft.Practices.EnterpriseLibrary.Validation;
+using Composite.Data.Validation;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider
@@ -138,7 +140,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                 this.ShowFieldMessage("NewXslt.Namespace", GetText("AddNewXsltFunctionWorkflow.NamespaceEmpty"));
                 return;
             }
-            
+
             if (!function.Namespace.IsCorrectNamespace('.'))
             {
                 this.ShowFieldMessage("NewXslt.Namespace", GetText("AddNewXsltFunctionWorkflow.InvalidNamespace"));
@@ -147,14 +149,39 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
 
             string functionName = function.Name;
             string functionNamespace = function.Namespace;
-            bool nameIsReserved  = DataFacade.GetData<IXsltFunction>()
+            bool nameIsReserved = DataFacade.GetData<IXsltFunction>()
                 .Where(func => string.Compare(func.Name, functionName, true) == 0
                             && string.Compare(func.Namespace, functionNamespace, true) == 0)
                 .Any();
 
-            if(nameIsReserved)
+            if (nameIsReserved)
             {
-                this.ShowFieldMessage("NewXslt.Name",  GetText("AddNewXsltFunctionWorkflow.DuplicateName"));
+                this.ShowFieldMessage("NewXslt.Name", GetText("AddNewXsltFunctionWorkflow.DuplicateName"));
+                return;
+            }
+
+            function.XslFilePath = CreateXslFilePath(function);
+
+            ValidationResults validationResults = ValidationFacade.Validate<IXsltFunction>(function);
+            if (!validationResults.IsValid)
+            {
+                foreach (ValidationResult result in validationResults)
+                {
+                    this.ShowFieldMessage(string.Format("{0}.{1}", "NewXslt", result.Key), result.Message);
+                }
+
+                return;
+            }
+
+
+
+            IXsltFile xsltfile = DataFacade.BuildNew<IXsltFile>();
+            xsltfile.FolderPath = System.IO.Path.GetDirectoryName(function.XslFilePath);
+            xsltfile.FileName = System.IO.Path.GetFileName(function.XslFilePath);
+
+            if (!DataFacade.ValidatePath(xsltfile, "XslFileProvider"))
+            {
+                this.ShowFieldMessage("NewXslt.Name", GetText("AddNewXsltFunctionWorkflow.TotalNameTooLang"));
                 return;
             }
 

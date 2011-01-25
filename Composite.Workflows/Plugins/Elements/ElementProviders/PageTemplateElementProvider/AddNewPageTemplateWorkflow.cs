@@ -109,7 +109,27 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         {
             IPageTemplate newPageTemplate = this.GetBinding<IPageTemplate>("NewPageTemplate");
 
-            e.Result = DataFacade.GetData<IPageTemplate>(f => f.Title.Equals(newPageTemplate.Title,StringComparison.InvariantCultureIgnoreCase)).Any();
+            e.Result = DataFacade.GetData<IPageTemplate>(f => f.Title.Equals(newPageTemplate.Title, StringComparison.InvariantCultureIgnoreCase)).Any();
+        }
+
+
+
+        private void ValidateFilePath(object sender, ConditionalEventArgs e)
+        {
+            IPageTemplate newPageTemplate = this.GetBinding<IPageTemplate>("NewPageTemplate");
+
+            IPageTemplateFile pageTemplateFile = DataFacade.BuildNew<IPageTemplateFile>();
+            pageTemplateFile.FolderPath = "/";
+            pageTemplateFile.FileName = string.Format("{0}.xml", PathUtil.CleanFileName(newPageTemplate.Title) ?? newPageTemplate.Id.ToString());
+
+            if (!DataFacade.ValidatePath<IPageTemplateFile>(pageTemplateFile, "PageTemplateFileProvider"))
+            {
+                ShowFieldMessage("NewPageTemplate.Title", StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "AddNewPageTemplateStep1.TitleTooLong"));
+                e.Result = false;
+                return;
+            }
+
+            e.Result = true;
         }
 
 
@@ -117,6 +137,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         private void showFieldErrorCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
             ShowFieldMessage("NewPageTemplate.Title", StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "AddNewPageTemplateStep1.TitleInUseTitle"));
-        }
+        }        
     }
 }

@@ -1,5 +1,6 @@
 using Composite.Data.Types.Foundation;
 using Composite.Core.Serialization;
+using Composite.Data.DynamicTypes;
 
 
 namespace Composite.Data.Types
@@ -21,6 +22,35 @@ namespace Composite.Data.Types
         [ImmutableFieldId("{4FD98564-6077-4c6d-86E1-9C7F44B65E50}")]
         [StoreFieldType(PhysicalStoreFieldType.String, 128)]
         string FileName { get; set; }
+    }
 
+
+
+
+    public static class IFileUtils
+    {
+        public static bool ValidateValueLengths(this IFile file)
+        {
+            if ((file.FolderPath != null) && (file.FolderPath.Length > DataTypeDescriptor.Fields["FolderPath"].StoreType.MaximumLength)) return false;
+            if ((file.FileName != null) && (file.FileName.Length > DataTypeDescriptor.Fields["FileName"].StoreType.MaximumLength)) return false;
+
+            return true;
+        }
+
+
+
+        private static DataTypeDescriptor _dataTypeDescriptor = null;
+        private static DataTypeDescriptor DataTypeDescriptor
+        {
+            get
+            {
+                if (_dataTypeDescriptor == null)
+                {
+                    _dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(typeof(IFile));
+                }
+
+                return _dataTypeDescriptor;
+            }
+        }
     }
 }
