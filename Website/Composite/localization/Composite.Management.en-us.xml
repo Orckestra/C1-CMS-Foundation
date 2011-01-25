@@ -513,8 +513,10 @@
   <string key="Website.Forms.Administrative.AddZipMediaFile.LabelRecreateStructureCheckBox" value="Extract folders from Zip file" />
   <string key="Website.Forms.Administrative.AddZipMediaFile.LabelOverwriteExsisting" value="Overwrite existing" />
   <string key="Website.Forms.Administrative.AddZipMediaFile.HelpOverwriteExsisting" value="Selecting this option will overwrite existing files in the media archive with matching file names" />
+  <string key="Website.Forms.Administrative.AddZipMediaFile.Error.Title" value="Error" />
   <string key="Website.Forms.Administrative.AddZipMediaFile.LabelOverwriteExsistingCheckBox" value="Overwrite existing files" />
   <string key="Website.Forms.Administrative.AddZipMediaFile.MissingUploadedFile.Message" value="Please select a file to upload" />
+  <string key="Website.Forms.Administrative.AddZipMediaFile.WrongUploadedFile.Message" value="The selected file was not a correct zip file" />
   <string key="Website.Forms.Administrative.AllFunctionsElementProviderSearchForm.LabelFunctionSearch" value="Function search" />
   <string key="Website.Forms.Administrative.AllFunctionsElementProviderSearchForm.LabelKeyword" value="Keyword" />
   <string key="Website.Forms.Administrative.AllFunctionsElementProviderSearchForm.LabelKeywordHelp" value="Write a keyword to search for." />

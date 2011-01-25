@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Linq;
+using System.Workflow.Activities;
 using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
 using Composite.C1Console.Forms.CoreUiControls;
 using Composite.C1Console.Workflow;
 using Composite.C1Console.Workflow.Activities;
 using Composite.Data;
 using Composite.Data.Types;
+using ICSharpCode.SharpZipLib.Zip;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
@@ -13,6 +16,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
     [AllowPersistingWorkflow(WorkflowPersistingType.Never)]
     public sealed partial class AddMediaZipFileWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
+        [NonSerialized]
+        bool _zipHasBeenUploaded = false;
+
         public AddMediaZipFileWorkflow()
         {
             InitializeComponent();
@@ -65,9 +71,30 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             {
                 using (System.IO.Stream readStream = uploadedFile.FileStream)
                 {
-                    ZipMediaFileExtractor.AddZip(providerName, parentFolderPath, readStream, recreateFolders, overwrite);
+                    try
+                    {
+                        ZipMediaFileExtractor.AddZip(providerName, parentFolderPath, readStream, recreateFolders, overwrite);
+                        _zipHasBeenUploaded = true;
+                    }
+                    catch (ZipException)
+                    {
+                    }
                 }
             }
+        }
+
+
+
+        private void ZipWasUploaded(object sender, ConditionalEventArgs e)
+        {
+            if (!_zipHasBeenUploaded)
+            {
+                //TODO: This does not work, client needs fix
+                //this.ShowFieldMessage("UploadedFile", "${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.WrongUploadedFile.Message}");
+                this.ShowMessage(DialogType.Error, "${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.Error.Title}", "${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.WrongUploadedFile.Message}");
+            }
+
+            e.Result = _zipHasBeenUploaded;
         }
 
 
@@ -87,8 +114,10 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             UploadedFile uploadedFile = this.GetBinding<UploadedFile>("UploadedFile");
 
             if (uploadedFile.HasFile == false)
-            {
-                this.ShowFieldMessage("UploadedFile", "${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.MissingUploadedFile.Message}");
+            {                
+                //TODO: This does not work, client needs fix
+                //this.ShowFieldMessage("UploadedFile", "${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.MissingUploadedFile.Message}");
+                this.ShowMessage(DialogType.Error, "${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.Error.Title}", "${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.MissingUploadedFile.Message}");
                 e.Result = false;
                 return;
             }
