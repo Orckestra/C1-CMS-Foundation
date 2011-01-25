@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Composite.Core.IO;
 using Composite.Core.Configuration;
@@ -44,19 +45,15 @@ namespace Composite.Core.Types
 
         public static Assembly GetAppCodeAssembly()
         {
-            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                if (assembly.FullName != null
-                    && assembly.FullName.StartsWith("App_Code."))
-                {
-                    return assembly;
-                }
-            }
-
-            return null;
+            return AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(IsAppCodeDll);
         }
 
 
+        public static bool IsAppCodeDll(Assembly assembly)
+        {
+            string fullName = assembly.FullName;
+            return fullName != null && (fullName.StartsWith("App_Code.") || fullName.StartsWith("App_Code,"));
+        }
 
         /// <summary>
         /// Gets assemblies from bin and app code assembly

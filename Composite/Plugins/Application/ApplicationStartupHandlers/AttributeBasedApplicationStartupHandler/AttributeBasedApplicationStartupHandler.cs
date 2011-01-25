@@ -304,9 +304,10 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             }
         }
 
+        [Obsolete("Use Composite.Core.Types.AsseblyFacade.IsAppCodeDll(assembly)")]
         public static bool IsAppCodeDll(Assembly assembly)
         {
-            return assembly.GetName().Name.StartsWith("App_Code.");
+            return AssemblyFacade.IsAppCodeDll(assembly);
         }
 
         public void OnBeforeInitialize()

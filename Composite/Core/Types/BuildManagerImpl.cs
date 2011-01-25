@@ -656,7 +656,7 @@ namespace Composite.Core.Types
                         // Skipping dynamicly loaded assemblies
                     }
 
-                    if (!location.IsNullOrEmpty() && !asm.GetName().Name.StartsWith("App_Code."))
+                    if (!AssemblyFacade.IsAppCodeDll(asm))
                     {
                         assemblyReferences.Add(location);
                     }
@@ -736,8 +736,8 @@ namespace Composite.Core.Types
         {
             try
             {
-                return a.ManifestModule.FullyQualifiedName != "<In Memory Module>" &&
-                       a.ManifestModule.Name != "<Unknown>" &&
+                return a.ManifestModule.Name != "<Unknown>" &&
+                       a.ManifestModule.FullyQualifiedName != "<In Memory Module>" &&
                        a.ManifestModule.ScopeName != "RefEmit_InMemoryManifestModule" &&
                        string.IsNullOrEmpty(a.Location) == false;
             }
