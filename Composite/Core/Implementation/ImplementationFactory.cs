@@ -128,7 +128,7 @@ namespace Composite.Core.Implementation
 
             CultureInfo localeToUse = locale ?? LocalizationScopeManager.CurrentLocalizationScope;
 
-            if ((locale == null) || (locale == CultureInfo.InvariantCulture))
+            if ((localeToUse == null) || (localeToUse == CultureInfo.InvariantCulture))
             {
                 localeToUse = DataLocalizationFacade.DefaultLocalizationCulture;
             }
