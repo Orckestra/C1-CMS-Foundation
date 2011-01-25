@@ -4,6 +4,7 @@ using System.Linq;
 using Composite.C1Console.Security.Foundation.PluginFacades;
 using Composite.C1Console.Security.Foundation;
 using Composite.Core.Logging;
+using Composite.Core.Linq;
 
 
 namespace Composite.C1Console.Security
@@ -533,7 +534,8 @@ namespace Composite.C1Console.Security
                 return cached;
             }
 
-            UserPermissionDefinition userPermissionDefinition = userPermissionDefinitions.Where(f => entityToken.Equals(f.EntityToken) == true).SingleOrDefault();
+            UserPermissionDefinition userPermissionDefinition = userPermissionDefinitions
+                .Where(f => entityToken.Equals(f.EntityToken) == true).SingleOrDefaultOrException("More then one UserPermissionDefinition for the same entity token");
 
             List<PermissionType> thisPermisstionTypes = new List<PermissionType>();
             if (userPermissionDefinition != null)

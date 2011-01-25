@@ -87,12 +87,12 @@ namespace Composite.Core.Linq
         /// <param name="exceptionOnMultipleResults">Exception format for multiple rows found</param>
         /// <param name="formatOptions">Format arguments</param>
         /// <returns></returns>
-        public static T SingleOrDefaultOrException<T>(this IQueryable<T> query, string exceptionOnMultipleResults, params object[] formatArgs) 
+        public static T SingleOrDefaultOrException<T>(this IEnumerable<T> query, string exceptionOnMultipleResults, params object[] formatArgs)
         {
             var result = query.ToList();
 
             if (result.Count == 0) return default(T);
-            
+
             if (result.Count == 1) return result[0];
 
             throw new InvalidOperationException(string.Format(exceptionOnMultipleResults, formatArgs));
