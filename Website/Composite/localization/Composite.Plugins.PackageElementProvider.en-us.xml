@@ -33,7 +33,7 @@
   <string key="ViewAvailableInformation.TrialDaysLabel" value="Free trial period (days)" />
 
 
-  <string key="ViewAvailableInformation.InstallationInfoFieldGroupLabel" value="Free Trial Info" />
+  <string key="ViewAvailableInformation.InstallationInfoFieldGroupLabel" value="Installation Info" />
   <string key="ViewAvailableInformation.VersionTextLabel" value="Version" />
   <string key="ViewAvailableInformation.TechicalDescriptionTextLabel" value="Technical Description" />
   <string key="ViewAvailableInformation.AddOnSourceTextLabel" value="Source" />
