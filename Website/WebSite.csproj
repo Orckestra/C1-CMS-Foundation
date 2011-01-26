@@ -463,6 +463,7 @@
     <Content Include="Composite\skins\dynamicskin.css" />
     <Content Include="Composite\templates\sourcecodeeditor\csharp.txt" />
     <Content Include="Composite\templates\sourcecodeeditor\js.txt" />
+    <Content Include="Composite\transformations\page_profiler.xslt" />
     <Content Include="Frontend\Config\VisualEditor\common.xml" />
     <Content Include="Frontend\Config\VisualEditor\Images\bold.png" />
     <Content Include="Frontend\Config\VisualEditor\Images\italic.png" />
