@@ -11,7 +11,7 @@ namespace Composite.Core.Threading
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ThreadDataManagerData: IDisposable
     {
-        private ThreadDataManagerData Parrent { get; set; }
+        public ThreadDataManagerData Parent { get; set; }
         private Hashtable<object, object> Data { get; set; }
         private bool _disposed = false;
 
@@ -27,7 +27,7 @@ namespace Composite.Core.Threading
 
         public ThreadDataManagerData(ThreadDataManagerData parentThreadData)
         {
-            this.Parrent = parentThreadData;
+            this.Parent = parentThreadData;
             this.Data = new Hashtable<object, object>();
         }
 
@@ -46,7 +46,7 @@ namespace Composite.Core.Threading
             ThreadDataManagerData current = this;
             while ((current != null) && (current.Data.ContainsKey(key) == false))
             {
-                current = current.Parrent;
+                current = current.Parent;
             }
 
             if (current == null)

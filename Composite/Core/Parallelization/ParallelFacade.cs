@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using Composite.Data;
 using Composite.Core.Parallelization.Foundation;
+using Composite.Core.Profiling;
 using Composite.Core.Threading;
 using Composite.Core.Extensions;
 using System.Threading.Tasks;
@@ -39,11 +40,14 @@ namespace Composite.Core.Parallelization
             if (ParallelizationProviderRegistry.Enabled 
                 && (parallelizationPointName.IsNullOrEmpty() || ParralelizationPointEnabled(parallelizationPointName)))
             {
-                ThreadDataManagerData parentData = ThreadDataManager.Current;
+                using (Profiler.Measure(GetPerformanceMeasureTitle(parallelizationPointName)))
+                {
+                    ThreadDataManagerData parentData = ThreadDataManager.Current;
 
-                var threadWrapper = new ThreadWrapper<int>(body, parentData);
+                    var threadWrapper = new ThreadWrapper<int>(body, parentData);
 
-                Parallel.For(fromInclusive, toExclusive, threadWrapper.WrapperAction);
+                    Parallel.For(fromInclusive, toExclusive, threadWrapper.WrapperAction);
+                }
             }
             else
             {
@@ -91,11 +95,14 @@ namespace Composite.Core.Parallelization
             if (ParallelizationProviderRegistry.Enabled  
                 && (string.IsNullOrEmpty(parallelizationPointName) || ParralelizationPointEnabled(parallelizationPointName)))
             {
-                ThreadDataManagerData parentData = ThreadDataManager.Current;
+                using (Profiler.Measure(GetPerformanceMeasureTitle(parallelizationPointName)))
+                {
+                    ThreadDataManagerData parentData = ThreadDataManager.Current;
 
-                var threadWrapper = new ThreadWrapper<TSource>(body, parentData);
+                    var threadWrapper = new ThreadWrapper<TSource>(body, parentData);
 
-                Parallel.ForEach(source, threadWrapper.WrapperAction);
+                    Parallel.ForEach(source, threadWrapper.WrapperAction);
+                }
             }
             else
             {
@@ -191,6 +198,11 @@ namespace Composite.Core.Parallelization
                     }
                 }
             }
+        }
+
+        private static string GetPerformanceMeasureTitle(string parallelizationPointName)
+        {
+            return (parallelizationPointName ?? "<unnamed node>") + " [parallelization point]";
         }
 	}
 

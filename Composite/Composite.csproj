@@ -208,6 +208,9 @@
     <Compile Include="Core\PackageSystem\PackageLicenseDefinition.cs" />
     <Compile Include="Core\PackageSystem\PackageLicenseHelper.cs" />
     <Compile Include="Core\PackageSystem\WebServiceClient\LicenseDefinitionServiceSoapClient.cs" />
+    <Compile Include="Core\Profiling\Measurement.cs" />
+    <Compile Include="Core\Profiling\Profiler.cs" />
+    <Compile Include="Core\Profiling\ProfilerReport.cs" />
     <Compile Include="Core\Sql\SqlConnectionManager.cs" />
     <Compile Include="Core\WebClient\ApplicationLevelEventHandlers.cs" />
     <Compile Include="Core\WebClient\Presentation\LessRequestHandler.cs" />

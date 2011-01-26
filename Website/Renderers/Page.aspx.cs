@@ -6,8 +6,11 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.UI;
+using System.Xml.Linq;
 using Composite.C1Console.Security;
 using Composite.Core;
+using Composite.Core.Extensions;
+using Composite.Core.Profiling;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.Renderings;
 using Composite.Core.WebClient.Renderings.Page;
@@ -17,7 +20,13 @@ using Composite.Data.Types;
 
 public partial class Renderers_Page : System.Web.UI.Page
 {
+    private static readonly string ProfilerXslPath = "/Composite/Transformations/page_profiler.xslt";
+
     private IDisposable _dataScope;
+
+    private bool _profilingEnabled = false;
+    private IDisposable _pagePerfMeasuring;
+    private IDisposable _pageEventsPageMeasuring;
 
     private PageUrl _url;
     private NameValueCollection _foreignQueryStringParameters;
@@ -28,6 +37,13 @@ public partial class Renderers_Page : System.Web.UI.Page
     public Renderers_Page()
     {
         string query = HttpContext.Current.Request.Url.OriginalString;
+
+        _profilingEnabled = query.Contains("c1mode=perf") && UserValidationFacade.IsLoggedIn();
+        if (_profilingEnabled)
+        {
+            Profiler.BeginProfiling();
+            _pagePerfMeasuring = Profiler.Measure("C1 Page");
+        }
 
         _url = PageUrl.Parse(query, out _foreignQueryStringParameters);
 
@@ -88,9 +104,20 @@ public partial class Renderers_Page : System.Web.UI.Page
         }
 
         IEnumerable<IPagePlaceholderContent> contents = PageManager.GetPlaceholderContent(page.Id);
-        Control renderedPage = PageRenderer.Render(page, contents);
-        this.Controls.Add(renderedPage);
+
+        Control renderedPage;
+        using (Profiler.Measure("Executing C1 functions"))
+        {
+            renderedPage = PageRenderer.Render(page, contents);
+        }
+        using (Profiler.Measure("ASP.NET controls: PageInit"))
+        {
+            this.Controls.Add(renderedPage);
+        }
+
         if (this.Form != null) this.Form.Action = Request.RawUrl;
+
+        _pageEventsPageMeasuring = Profiler.Measure("ASP.NET controls: PageLoad, Event handling, PreRender");
     }
 
 
@@ -118,6 +145,11 @@ public partial class Renderers_Page : System.Web.UI.Page
             return;
         }
 
+        if (_pageEventsPageMeasuring != null)
+        {
+            _pageEventsPageMeasuring.Dispose();
+        }
+
         ScriptManager scriptManager = ScriptManager.GetCurrent(this);
         bool isUpdatePanelPostback = scriptManager != null && scriptManager.IsInAsyncPostBack;
 
@@ -131,7 +163,10 @@ public partial class Renderers_Page : System.Web.UI.Page
         StringWriter sw = new StringWriter(markupBuilder);        
         try
         {
-            base.Render(new HtmlTextWriter(sw));
+            using (Profiler.Measure("ASP.NET controls: Render"))
+            {
+                base.Render(new HtmlTextWriter(sw));
+            }
         }
         catch (HttpException ex)
         {
@@ -151,18 +186,51 @@ public partial class Renderers_Page : System.Web.UI.Page
             throw;            
         }
 
-        string xhtml = PageUrlHelper.ChangeRenderingPageUrlsToPublic(markupBuilder.ToString());
+        string xhtml;
+
+        using (Profiler.Measure("Changing 'internal' page urls to 'public'"))
+        {
+            xhtml = PageUrlHelper.ChangeRenderingPageUrlsToPublic(markupBuilder.ToString());
+        }
 
         try
         {
-            xhtml = Composite.Core.Xml.XhtmlPrettifier.Prettify(xhtml);
+            using (Profiler.Measure("Formatting output XHTML with Composite.Core.Xml.XhtmlPrettifier"))
+            {
+                xhtml = Composite.Core.Xml.XhtmlPrettifier.Prettify(xhtml);
+            }
         }
         catch
         {
             Log.LogWarning("/Renderers/Page.aspx", "Failed to format output xhtml. Url: " + (_cacheUrl ?? string.Empty));
         }
 
+        // Inserting perfomance profiling information
+        if (_profilingEnabled)
+        {
+            _pagePerfMeasuring.Dispose();
+
+            xhtml = BuildProfilerReport(Profiler.EndProfiling());
+
+            Response.ContentType = "text/xml";
+        }
+
         writer.Write(xhtml);
+    }
+
+    private string BuildProfilerReport(Measurement measurement)
+    {
+        string xmlHeader = @"<?xml version=""1.0""?>
+                             <?xml-stylesheet type=""text/xsl"" href=""{0}""?>"
+                .FormatWith(ProfilerXslPath);
+
+        XElement reportXml = ProfilerReport.BuildReportXml(measurement);
+        var url = new UrlString(Context.Request.Url.ToString());
+        url["c1mode"] = null;
+
+        reportXml.Add(new XAttribute("description", "URL: " + url));
+
+        return xmlHeader + reportXml.ToString();
     }
 
     protected override void OnUnload(EventArgs e)

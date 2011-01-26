@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using Composite.Data;
 using Composite.Functions.Foundation;
 using Composite.Core.Instrumentation;
+using Composite.Core.Profiling;
 using Composite.Core.Extensions;
 
 
@@ -93,7 +94,24 @@ namespace Composite.Functions
                         parameters.AddConstantParameter(parameterProfile.Name, value, parameterProfile.Type, true);
                     }
 
-                    _cachedValue = _function.Execute(parameters, contextContainer);
+                    IDisposable measurement = null;
+                    try
+                    {
+                        string functionName = _function.CompositeName();
+                        if (functionName != "Composite.Utils.GetInputParameter")
+                        {
+                            measurement = Profiler.Measure(functionName ?? "<unknown function>");
+                        }
+
+                        _cachedValue = _function.Execute(parameters, contextContainer);
+                    }
+                    finally
+                    {
+                        if (measurement != null)
+                        {
+                            measurement.Dispose();
+                        }
+                    }
                     _cachedValueCalculated = true;
 
                     return _cachedValue;
