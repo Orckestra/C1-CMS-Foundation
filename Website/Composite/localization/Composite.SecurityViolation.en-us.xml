@@ -2,5 +2,5 @@
 <strings>
 	<string key="LayoutLabel" value="Security violation" />
 	<string key="Title" value="Not allowed" />
-	<string key="Description" value="You do not have permission to execute the action. Contant your adiministrator for more information." />
+	<string key="Description" value="You do not have permission to execute the action. Contact your administrator for more information." />
 </strings>
