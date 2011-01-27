@@ -35,12 +35,12 @@ using Composite.Data;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Transactions;
 using Composite.Data.Types;
+using Composite.Data.Validation;
 using Composite.Functions;
 using Composite.Functions.ManagedParameters;
 using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
 using Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvider;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
-using Composite.Data.Validation;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider
@@ -188,20 +188,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                 e.Result = false;
                 return;
             }
-            /////
 
-            string functionName = function.Name;
-            string functionNamespace = function.Namespace;
-            bool nameIsReserved = DataFacade.GetData<IXsltFunction>()
-                .Where(func => string.Compare(func.Name, functionName, true) == 0
-                            && string.Compare(func.Namespace, functionNamespace, true) == 0)
-                .Any();
-
-            if (nameIsReserved)
-            {
-                this.ShowFieldMessage("CurrentXslt.Name", GetString("EditXsltFunctionWorkflow.DuplicateName"));
-                return;
-            }
 
             function.XslFilePath = AddNewXsltFunctionWorkflow.CreateXslFilePath(function);
 
@@ -214,7 +201,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                 }
 
                 return;
-            }            
+            }
 
 
             IXsltFile xsltfile = DataFacade.BuildNew<IXsltFile>();
@@ -332,26 +319,26 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
 
                                try
                                {
-                                    using (ThreadDataManager.Initialize())
-                                    using (new DataScope(DataScopeIdentifier.Deserialize(dataScopeName), cultureInfo))
-                                    {
-                                        HttpContext.Current = httpContext;
+                                   using (ThreadDataManager.Initialize())
+                                   using (new DataScope(DataScopeIdentifier.Deserialize(dataScopeName), cultureInfo))
+                                   {
+                                       HttpContext.Current = httpContext;
 
-                                        var reader = transformationInput.InputDocument.CreateReader();
-                                        xslTransformer.Transform(reader, transformArgs, writer);
-                                    }
-                                }
-                                catch (ThreadAbortException ex)
-                                {
-                                    exception = ex;
-                                    Thread.ResetAbort();
-                                }
-                                catch (Exception ex)
-                                {
-                                    exception = ex;
-                                }
+                                       var reader = transformationInput.InputDocument.CreateReader();
+                                       xslTransformer.Transform(reader, transformArgs, writer);
+                                   }
+                               }
+                               catch (ThreadAbortException ex)
+                               {
+                                   exception = ex;
+                                   Thread.ResetAbort();
+                               }
+                               catch (Exception ex)
+                               {
+                                   exception = ex;
+                               }
 
-                                transformationStopwatch.Stop();
+                               transformationStopwatch.Stop();
 
                                millisecondsToken = transformationStopwatch.ElapsedMilliseconds;
                            });
@@ -406,7 +393,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                     Thread.CurrentThread.CurrentCulture = oldCurrentCulture;
                     Thread.CurrentThread.CurrentUICulture = oldCurrentUICulture;
                 }
-                
+
                 Page currentPage = HttpContext.Current.Handler as Page;
                 if (currentPage == null) throw new InvalidOperationException("The Current HttpContext Handler must be a System.Web.Ui.Page");
 
@@ -462,9 +449,10 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                 using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
                 {
                     // Renaming related file if necessary
-                    string newRelativePath = AddNewXsltFunctionWorkflow.CreateXslFilePath(xslt).Replace("/", "\\");
+                    string oldRelativePath = xslt.XslFilePath.Replace('\\', '/');
+                    string newRelativePath = AddNewXsltFunctionWorkflow.CreateXslFilePath(xslt).Replace('\\', '/');
 
-                    if (string.Compare(xslt.XslFilePath, newRelativePath, true) != 0)
+                    if (string.Compare(oldRelativePath, newRelativePath, true) != 0)
                     {
                         var xlsFile = IFileServices.GetFile<IXsltFile>(xslt.XslFilePath);
                         string systemPath = (xlsFile as FileSystemFileBase).SystemPath;
@@ -486,7 +474,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                         }
 
                         string directoryPath = Path.GetDirectoryName(newSystemPath);
-                        if(!C1Directory.Exists(directoryPath))
+                        if (!C1Directory.Exists(directoryPath))
                         {
                             C1Directory.CreateDirectory(directoryPath);
                         }
@@ -517,11 +505,11 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                 {
                     // This is a some what nasty hack. Due to the nature of the BaseFunctionProviderElementProvider, this hack is needed
                     BaseFunctionFolderElementEntityToken entityToken = new BaseFunctionFolderElementEntityToken("ROOT:XsltBasedFunctionProviderElementProvider");
-                    RefreshEntityToken(entityToken);                    
+                    RefreshEntityToken(entityToken);
                 }
-                
+
                 SetSaveStatus(true);
-                
+
             }
             catch (Exception ex)
             {
@@ -605,7 +593,9 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
 
             public Type[] AllowedResultTypes
             {
-                get { return new[] {
+                get
+                {
+                    return new[] {
                     typeof (XDocument), typeof (XElement), typeof (IEnumerable<XElement>),
                     typeof(bool), typeof(int), typeof(string), typeof(DateTime), typeof(Guid), typeof(CultureInfo),
                     typeof(IDataReference), typeof(IXsltExtensionDefinition)};
