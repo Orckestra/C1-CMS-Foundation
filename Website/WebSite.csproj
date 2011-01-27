@@ -97,6 +97,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Composite\C1Intermediate.aspx.cs">
+      <DependentUpon>C1Intermediate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Composite\C1Intermediate.aspx.designer.cs">
+      <DependentUpon>C1Intermediate.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Composite\content\misc\editors\functioncalleditor\functioncalleditor.aspx.designer.cs">
       <DependentUpon>functioncalleditor.aspx</DependentUpon>
     </Compile>
@@ -373,6 +380,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Composite\TreeDefinitions\PageType.xml" />
+    <Content Include="Composite\C1Intermediate.aspx" />
     <Content Include="Composite\content\forms\AdministrativeTemplates\EmptyDocument.xml" />
     <Content Include="Composite\content\forms\Administrative\AddMediaFileStep1.xml">
       <SubType>Designer</SubType>
