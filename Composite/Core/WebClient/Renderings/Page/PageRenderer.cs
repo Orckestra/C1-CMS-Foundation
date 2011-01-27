@@ -7,7 +7,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
 using Composite.Core.Caching;
-using Composite.Core.Collections.Generic;
+using Composite.Core.Profiling;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Functions;
@@ -16,7 +16,6 @@ using Composite.Core.Localization;
 using Composite.Core.Logging;
 using Composite.Core.Parallelization;
 using Composite.Core.WebClient.Renderings.Template;
-using Composite.Core.WebClient;
 using Composite.Core.Xml;
 using Composite.C1Console.Security;
 
@@ -29,8 +28,10 @@ namespace Composite.Core.WebClient.Renderings.Page
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class PageRenderer
     {
-        private static readonly XNamespace _aspNetControlReferenceNamespace = "#asp.net.control";
-        private static readonly XName _aspNetControlReference = _aspNetControlReferenceNamespace + "control";
+        private static readonly string LogTitle = typeof (PageRenderer).Name;
+
+        // private static readonly XNamespace _aspNetControlReferenceNamespace = "#asp.net.control";
+        // private static readonly XName _aspNetControlReference = _aspNetControlReferenceNamespace + "control";
 
         private static readonly NameBasedAttributeComparer _nameBasedAttributeComparer = new NameBasedAttributeComparer();
 
@@ -410,10 +411,13 @@ namespace Composite.Core.WebClient.Renderings.Page
                         }
                         catch (Exception ex)
                         {
-                            LoggingService.LogError("PageRenderer", ex);
+                            using (Profiler.Measure("PageRenderer. Logging an exception"))
+                            {
+                                LoggingService.LogError(LogTitle, ex);
 
-                            XElement errorDescriptionElement = GetErrorDescriptionHtmlElement(ex);
-                            functionResult = errorDescriptionElement;
+                                XElement errorDescriptionElement = GetErrorDescriptionHtmlElement(ex);
+                                functionResult = errorDescriptionElement;
+                            }
                         }
 
                         functionExecutionResults[i] = functionResult;
