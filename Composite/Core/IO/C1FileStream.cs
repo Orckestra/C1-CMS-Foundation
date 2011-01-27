@@ -267,7 +267,7 @@ namespace Composite.Core.IO
         /// </summary>
         public override void Close()
         {
-            _implementation.Implementation.Close();
+            base.Close();
         }
 
 
@@ -279,7 +279,7 @@ namespace Composite.Core.IO
         {
             Dispose(false);
         }
-
+      
 
 
         /// <summary>

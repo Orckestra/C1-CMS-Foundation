@@ -15,6 +15,7 @@ using Composite.Plugins.Data.DataProviders.FileSystemDataProvider.Foundation;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
+using System.Diagnostics;
 
 
 namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
@@ -179,6 +180,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
 
 
 
+        [DebuggerStepThrough]
         public bool ValidatePath<TFile>(TFile file, out string errorMessage) 
             where TFile: IFile
         {
@@ -186,7 +188,9 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
 
             try
             {
-                FileStream fileStream = new FileStream(filename, FileMode.Open);                
+                using (FileStream fileStream = new FileStream(filename, FileMode.Open))
+                {
+                }
             }
             catch (PathTooLongException ex)
             {

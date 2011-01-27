@@ -163,7 +163,10 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass")]
         public void Dispose()
         {
+            this.Close();
+
             _fileStream.Dispose();
+            _fileStream = null;
         }
     }
 }
