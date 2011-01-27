@@ -1,10 +1,10 @@
-using System.Collections.Generic;
-
-using Composite.C1Console.Forms.CoreUiControls;
-using Composite.C1Console.Forms.Foundation.PluginFacades;
-using Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompileTreeNodes;
-using Composite.C1Console.Forms.StandardProducerMediators.BuildinProducers;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Composite.C1Console.Forms.CoreUiControls;
+using Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompileTreeNodes;
+using Composite.C1Console.Forms.Foundation.PluginFacades;
+using Composite.C1Console.Forms.StandardProducerMediators.BuildinProducers;
 using Composite.Core.Types;
 
 
@@ -39,7 +39,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
 
 
 
-        public ElementCompileTreeNode Evaluate(ElementCompileTreeNode node, List<PropertyCompileTreeNode> newProperties)
+        public ElementCompileTreeNode Evaluate(ElementCompileTreeNode node, List<PropertyCompileTreeNode> newProperties, string defaultOverloadPropertyName = null)
         {
             Dictionary<ElementCompileTreeNode, List<PropertyCompileTreeNode>> replacedNodes = new Dictionary<ElementCompileTreeNode, List<PropertyCompileTreeNode>>();
 
@@ -51,7 +51,19 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
                 {
                     List<PropertyCompileTreeNode> newProps = new List<PropertyCompileTreeNode>();
 
-                    ElementCompileTreeNode resultNode = Evaluate(child, newProps);
+
+                    string childDefaultOverloadPropertyName = null;
+                    if (node.Producer != null)
+                    {
+                        ReadBindingControlValueOverload attribute = node.Producer.GetType().GetCustomAttributesRecursively<ReadBindingControlValueOverload>().SingleOrDefault();
+
+                        if (attribute != null)
+                        {
+                            childDefaultOverloadPropertyName = attribute.PropertyName;
+                        }
+                    }
+
+                    ElementCompileTreeNode resultNode = Evaluate(child, newProps, childDefaultOverloadPropertyName);
 
                     if ((null == resultNode) || (false == child.Equals(resultNode)))
                     {
@@ -82,12 +94,12 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
             }
 
 
-            return EvaluateElementCompileTreeNode(node, newProperties);
+            return EvaluateElementCompileTreeNode(node, newProperties, defaultOverloadPropertyName);
         }
 
 
 
-        public ElementCompileTreeNode EvaluateElementCompileTreeNode(ElementCompileTreeNode element, List<PropertyCompileTreeNode> newProperties)
+        public ElementCompileTreeNode EvaluateElementCompileTreeNode(ElementCompileTreeNode element, List<PropertyCompileTreeNode> newProperties, string defaultOverloadPropertyName)
         {
             if (true == CompilerGlobals.IsElementEmbeddedProperty(element))
             {
@@ -99,8 +111,9 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
                 {
                     return HandleIfProducerElement(element, newProperties);
                 }
-                else {
-                    return HandleProducerElement(element, newProperties);
+                else
+                {
+                    return HandleProducerElement(element, newProperties, defaultOverloadPropertyName);
                 }
             }
 
@@ -139,24 +152,24 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
 
             foreach (ElementCompileTreeNode child in element.Children)
             {
-                if ( CompilerGlobals.IsElementIfConditionTag(child) == true) conditionElement = child;                                   
-                if ( CompilerGlobals.IsElementIfWhenTrueTag(child) == true) whenTrueElement = child;
-                if ( CompilerGlobals.IsElementIfWhenFalseTag(child) == true) whenFalseElement = child;
+                if (CompilerGlobals.IsElementIfConditionTag(child) == true) conditionElement = child;
+                if (CompilerGlobals.IsElementIfWhenTrueTag(child) == true) whenTrueElement = child;
+                if (CompilerGlobals.IsElementIfWhenFalseTag(child) == true) whenFalseElement = child;
             }
 
             if (conditionElement == null) throw new FormCompileException(string.Format("Missing condition tag ({0})", CompilerGlobals.IfCondition_TagName), element.XmlSourceNodeInformation);
             if (whenTrueElement == null) throw new FormCompileException(string.Format("Missing when true tag ({0})", CompilerGlobals.IfWhenTrue_TagName), element.XmlSourceNodeInformation);
 
 
-            List<PropertyCompileTreeNode> newConditionProperties = new List<PropertyCompileTreeNode>();                       
+            List<PropertyCompileTreeNode> newConditionProperties = new List<PropertyCompileTreeNode>();
             Evaluate(conditionElement, newConditionProperties);
             IfConditionProducer conditionProducer = (IfConditionProducer)newConditionProperties[0].Value;
 
-          
+
             object value;
             if (conditionProducer.Condition == true)
             {
-                List<PropertyCompileTreeNode> newWhenTrueProperties = new List<PropertyCompileTreeNode>();                       
+                List<PropertyCompileTreeNode> newWhenTrueProperties = new List<PropertyCompileTreeNode>();
                 Evaluate(whenTrueElement, newWhenTrueProperties);
 
                 IfWhenTrueProducer whenTrueProducer = (IfWhenTrueProducer)newWhenTrueProperties[0].Value;
@@ -172,7 +185,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
             }
             else if (whenFalseElement != null)
             {
-                List<PropertyCompileTreeNode> newWhenFalseProperties = new List<PropertyCompileTreeNode>();                       
+                List<PropertyCompileTreeNode> newWhenFalseProperties = new List<PropertyCompileTreeNode>();
                 Evaluate(whenFalseElement, newWhenFalseProperties);
 
                 IfWhenFalseProducer whenFalseProducer = (IfWhenFalseProducer)newWhenFalseProperties[0].Value;
@@ -190,8 +203,8 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
             {
                 return null;
             }
-            
-  
+
+
 
             PropertyCompileTreeNode replacingProperty = new PropertyCompileTreeNode(CompilerGlobals.DefaultPropertyName, element.XmlSourceNodeInformation);
             replacingProperty.Value = value;
@@ -203,11 +216,17 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
 
 
 
-        private ElementCompileTreeNode HandleProducerElement(ElementCompileTreeNode element, List<PropertyCompileTreeNode> newProperties)
+        private ElementCompileTreeNode HandleProducerElement(ElementCompileTreeNode element, List<PropertyCompileTreeNode> newProperties, string defaultOverloadPropertyName)
         {
             PropertyAssigner.AssignPropertiesToProducer(element, _compileContext);
 
-            PropertyCompileTreeNode replacingProperty = new PropertyCompileTreeNode(CompilerGlobals.DefaultPropertyName, element.XmlSourceNodeInformation);
+            string replacingPropertyName = CompilerGlobals.DefaultPropertyName;
+            if (defaultOverloadPropertyName != null)
+            {
+                replacingPropertyName = defaultOverloadPropertyName;
+            }
+
+            PropertyCompileTreeNode replacingProperty = new PropertyCompileTreeNode(replacingPropertyName, element.XmlSourceNodeInformation);
             object result = ProducerMediatorPluginFacade.EvaluateProducer(element.XmlSourceNodeInformation.NamespaceURI, element.Producer);
 
             if (result is BindingProducer)

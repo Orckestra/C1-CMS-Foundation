@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Xml.Linq;
 using Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompileTreeNodes;
 using Composite.C1Console.Forms.StandardProducerMediators.BuildinProducers;
 using Composite.Core.Types;
 using Composite.Data.Validation;
 using Composite.Data.Validation.ClientValidationRules;
-using Composite.Core.Logging;
+using Composite.Functions;
+using Composite.Functions.Foundation;
 
 
 namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
@@ -172,6 +174,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
                         }
                     }
 
+
                     if ((null != property.Value) && (getMethodInfo.ReturnType.IsAssignableFrom(property.Value.GetType())))
                     {
                         if (typeof(IEnumerable).IsAssignableFrom(getMethodInfo.ReturnType) && getMethodInfo.ReturnType != typeof(string) && property.Value is string && ((string)property.Value).Length > 0)
@@ -182,6 +185,13 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
                         }
 
                         parm = property.Value;
+                    }
+                    else if ((property.Value != null) && ((property.Value is XElement)) && (((XElement)property.Value).Name.Namespace == FunctionTreeConfigurationNames.NamespaceName) && (element.XmlSourceNodeInformation.NamespaceURI != FunctionTreeConfigurationNames.NamespaceName))
+                    {
+                        // This is in the case that the value is a c1 function and the property is not a function (non-nested function).
+                        BaseRuntimeTreeNode node = FunctionFacade.BuildTree((XElement)property.Value);
+                        object value = node.GetValue();
+                        parm = value;
                     }
                     else
                     {
@@ -232,7 +242,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
                     return false;
                 });
 
-                if (null != node) throw new FormCompileException(string.Format("Duplicate '{0}' attributes is not allowed",propertyName), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation, foundNode);
+                if (null != node) throw new FormCompileException(string.Format("Duplicate '{0}' attributes is not allowed", propertyName), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation, foundNode);
             }
             else
             {

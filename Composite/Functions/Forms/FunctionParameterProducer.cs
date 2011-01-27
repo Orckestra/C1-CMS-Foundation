@@ -7,6 +7,7 @@ using Composite.Functions.Foundation;
 namespace Composite.Functions.Forms
 {
     [ControlValueProperty("Producers")]
+    [ReadBindingControlValueOverload("value")]
 	internal sealed class FunctionParameterProducer : IFunctionProducer 
 	{
         public FunctionParameterProducer()

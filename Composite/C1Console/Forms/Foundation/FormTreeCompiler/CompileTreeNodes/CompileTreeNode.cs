@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 
 
 namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompileTreeNodes
@@ -7,6 +8,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompileTreeNodes
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [DebuggerDisplay("Name {_xmlSourceNodeInformation.Name}")]
     public class CompileTreeNode
     {
         private static int _compilerIdCounter = 0;

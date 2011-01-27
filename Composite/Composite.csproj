@@ -155,6 +155,7 @@
     <Compile Include="C1Console\Actions\IElementInformationService.cs" />
     <Compile Include="C1Console\Actions\MessageBoxActionToken.cs" />
     <Compile Include="C1Console\Actions\UrlActionToken.cs" />
+    <Compile Include="C1Console\Forms\ReadBindingControlValueOverload.cs" />
     <Compile Include="Core\Configuration\C1Configuration.cs" />
     <Compile Include="Core\Configuration\Configuration.cs" />
     <Compile Include="Core\Configuration\FileConfigurationSource.cs" />

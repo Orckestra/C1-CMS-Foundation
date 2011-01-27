@@ -14,7 +14,44 @@ using Composite.Core.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
+using Composite.C1Console.Forms.Foundation;
+using Composite.Core;
+using Composite.Data;
+using Composite.Functions;
+using System.Xml.Linq;
 
+
+namespace Martin
+{
+    public static class DoubleKeySelectorDataMethods<T>
+        where T : class, IData
+    {
+        public static IEnumerable<T> GetOptions(/*string functionFilter*/)
+        {
+           /* Func<T,bool> filter = null;
+
+            if (!string.IsNullOrEmpty(functionFilter))
+            {
+                BaseRuntimeTreeNode node = FunctionFacade.BuildTree(XElement.Parse(functionFilter));
+
+                filter = node.GetValue<Func<T,bool>>();
+            }*/
+
+            using (DataConnection connection = new DataConnection())
+            {
+                return connection.Get<T>();
+               /* if (filter == null)
+                {
+                    return connection.Get<T>();
+                }
+                else
+                {
+                    return connection.Get<T>().Where(filter);
+                }*/
+            }
+        }
+    }
+}
 
 
 namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
@@ -22,7 +59,255 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public abstract class TemplatedDoubleKeySelectorUserControlBase : UserControl
+    {
+        private List<KeyLabelPair> _options = null;
+        
+
+
+        internal IEnumerable FirstOptionSet { get; set; }
+        internal string FirstOptionSetKeyField { get; set; }
+        internal IEnumerable SecondOptionSet { get; set; }
+        internal string SecondOptionSetKeyField { get; set; }
+
+
+        protected List<string> SelectedKeys { get; set; }
+
+
+        protected abstract void BindStateToProperties();
+        protected abstract void InitializeViewState();
+        public abstract string GetDataFieldClientName();
+
+
+        internal void InitializeWebViewState()
+        {
+            this.InitializeViewState();
+        }
+
+
+
+        internal void BindStateToControlProperties()
+        {
+            this.BindStateToProperties();
+
+            foreach (string key in this.SelectedKeys)
+            {
+                Log.LogInformation("MARTIN", key);
+            }
+        }
+
+
+
+        protected List<KeyLabelPair> GetOptions()
+        {
+            if (_options == null)
+            {
+                _options = new List<KeyLabelPair>();
+
+                IEnumerator firstOptionsEnumerator = this.FirstOptionSet.GetEnumerator();
+
+                while (firstOptionsEnumerator.MoveNext())
+                {
+                    // If this.FirstOptionSetKeyField is null/empty, use the element it self as key value
+                    Type elementType = firstOptionsEnumerator.Current.GetType();
+                    PropertyInfo keyPropertyInfo = elementType.GetPropertiesRecursively().Where(f => f.Name == this.FirstOptionSetKeyField).First();
+                    object keyValue = keyPropertyInfo.GetValue(firstOptionsEnumerator.Current, null);
+
+                    _options.Add(new KeyLabelPair(keyValue.ToString(), keyValue.ToString()));
+                }
+            }
+
+            return _options;
+           /* List<KeyLabelPair> list = new List<KeyLabelPair> { new KeyLabelPair("1", "111111"), new KeyLabelPair("2", "22222"), new KeyLabelPair("3", "33333") };
+
+            return list;*/
+            //InitializeSelectorElements();
+
+            //return _keyLabelPairList;
+        }
+
+
+
+        public class KeyLabelPair
+        {
+            public KeyLabelPair(string key, string label)
+            {
+                this.Key = key;
+                this.Label = label;
+            }
+
+            public string Key { get; set; }
+            public string Label { get; set; }
+        }
+    }
+
+
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public sealed class TemplatedDoubleKeySelectorUiControl : UiControl, IWebUiControl
+    {
+        private Type _userControlType;
+        private TemplatedDoubleKeySelectorUserControlBase _userControl;
+
+
+        [BindableProperty()]
+        [FormsProperty()]
+        public IEnumerable FirstOptionSet { get; set; }
+
+
+        [FormsProperty()]
+        public string FirstOptionSetKeyField { get; set; }
+
+
+        [BindableProperty()]
+        [FormsProperty()]
+        public IEnumerable SecondOptionSet { get; set; }
+
+
+        [FormsProperty()]        
+        public string SecondOptionSetKeyField { get; set; }
+
+
+        public Func<object, object, string> LabelFunction { get; set; }
+
+        /*[BindableProperty()]
+        [FormsProperty()]
+        public object Selected { get; set; }*/
+
+
+
+        public TemplatedDoubleKeySelectorUiControl(Type userControlType)
+        {
+            _userControlType = userControlType;
+        }
+
+
+        public override void BindStateToControlProperties()
+        {
+            _userControl.BindStateToControlProperties();
+
+            /*_userControl.BindStateToControlProperties();
+            if (_userControl.SelectedObjects.Any())
+            {
+                if (_userControl.SelectedObjects.Count() > 1) throw new InvalidOperationException("Multiple elements selected. This was not expedted.");
+                this.Selected = _userControl.SelectedObjects.First();
+            }
+            else
+            {
+                this.Selected = null;
+            }*/
+        }
+
+
+        public void InitializeViewState()
+        {
+            _userControl.InitializeWebViewState();
+        }
+
+
+        public Control BuildWebControl()
+        {
+            _userControl = _userControlType.ActivateAsUserControl<TemplatedDoubleKeySelectorUserControlBase>(this.UiControlID);
+
+            _userControl.FirstOptionSet = this.FirstOptionSet;
+            _userControl.FirstOptionSetKeyField = this.FirstOptionSetKeyField;
+            _userControl.SecondOptionSet = this.SecondOptionSet;
+            _userControl.SecondOptionSetKeyField = this.SecondOptionSetKeyField;
+
+            /*_userControl.FormControlLabel = this.Label;
+            _userControl.SelectedIndexChangedEventHandler += this.SelectedIndexChangedEventHandler;
+            _userControl.SelectedObjects = new List<object> { this.Selected };
+            _userControl.Options = this.Options;
+            _userControl.OptionsLabelField = this.OptionsLabelField;
+            _userControl.OptionsKeyField = this.OptionsKeyField;
+            _userControl.BindingType = this.BindingType;
+            _userControl.Required = this.Required;
+            _userControl.MultiSelector = false;*/
+
+            return _userControl;
+        }
+
+        public bool IsFullWidthControl { get { return false; } }
+
+        public string ClientName { get { return _userControl.GetDataFieldClientName(); } }
+    }
+
+
+
+
+    [ConfigurationElementType(typeof(TemplatedDoubleKeySelectorUiControlFactoryData))]
+    internal sealed class TemplatedDoubleKeySelectorUiControlFactory : Base.BaseTemplatedUiControlFactory
+    {
+        private TemplatedDoubleKeySelectorUiControlFactoryData _data;
+
+        public TemplatedDoubleKeySelectorUiControlFactory(TemplatedDoubleKeySelectorUiControlFactoryData data)
+            : base(data)
+        {
+            _data = data;
+        }
+
+        public override IUiControl CreateControl()
+        {
+            TemplatedDoubleKeySelectorUiControl control = new TemplatedDoubleKeySelectorUiControl(this.UserControlType);
+
+            return control;
+        }
+    }
+
+
+
+
+    [Assembler(typeof(TemplatedDoubleKeySelectorUiControlFactoryAssembler))]
+    internal sealed class TemplatedDoubleKeySelectorUiControlFactoryData : UiControlFactoryData, Base.ITemplatedUiControlFactoryData
+    {
+        private const string _userControlVirtualPathPropertyName = "userControlVirtualPath";
+        [ConfigurationProperty(_userControlVirtualPathPropertyName, IsRequired = true)]
+        public string UserControlVirtualPath
+        {
+            get { return (string)base[_userControlVirtualPathPropertyName]; }
+            set { base[_userControlVirtualPathPropertyName] = value; }
+        }
+
+
+
+        private const string _cacheCompiledUserControlTypePropertyName = "cacheCompiledUserControlType";
+        [ConfigurationProperty(_cacheCompiledUserControlTypePropertyName, IsRequired = false, DefaultValue = true)]
+        public bool CacheCompiledUserControlType
+        {
+            get { return (bool)base[_cacheCompiledUserControlTypePropertyName]; }
+            set { base[_cacheCompiledUserControlTypePropertyName] = value; }
+        }
+    }
+
+
+
+    internal sealed class TemplatedDoubleKeySelectorUiControlFactoryAssembler : IAssembler<IUiControlFactory, UiControlFactoryData>
+    {
+        public IUiControlFactory Assemble(IBuilderContext context, UiControlFactoryData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
+        {
+            return new TemplatedDoubleKeySelectorUiControlFactory(objectConfiguration as TemplatedDoubleKeySelectorUiControlFactoryData);
+        }
+    }
+
+
+
+
+
+
+
+
+    /////////////////////////////////
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public abstract class SelectorTemplateUserControlBase : UserControl
     {
         private Dictionary<string, object> _selectorObjects = null;
@@ -274,9 +559,9 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
                         object keyObject = keyPropertyInfo.GetValue(optionObject, null);
 
                         // TODO: ValueTypeConverter.Convert<string>(keyObject) should be used
-                        if(keyObject is Type)
+                        if (keyObject is Type)
                         {
-                            uniqueKey = TypeManager.SerializeType((Type) keyObject);
+                            uniqueKey = TypeManager.SerializeType((Type)keyObject);
                         }
                         else
                         {
@@ -431,7 +716,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             }
             else
             {
-                if (string.IsNullOrEmpty(this.SelectedAsString)==false)
+                if (string.IsNullOrEmpty(this.SelectedAsString) == false)
                 {
                     _userControl.SetSelectedObjectsFromStringList(this.SelectedAsString.Split(','));
                 }
