@@ -27,7 +27,7 @@ namespace Composite.Functions.Inline
 
 
 
-        public static MethodInfo Create(IInlineFunction function, string code = null, InlineFunctionCreateMethodErrorHandler createMethodErrorHandler = null)
+        public static MethodInfo Create(IInlineFunction function, string code = null, InlineFunctionCreateMethodErrorHandler createMethodErrorHandler = null, List<string> selectedAssemblies = null)
         {
             if (string.IsNullOrWhiteSpace(code))
             {
@@ -38,13 +38,23 @@ namespace Composite.Functions.Inline
             compilerParameters.GenerateExecutable = false;
             compilerParameters.GenerateInMemory = true;
 
-            IEnumerable<IInlineFunctionAssemblyReference> assemblyReferences =
-                DataFacade.GetData<IInlineFunctionAssemblyReference>(f => f.Function == function.Id).Evaluate();
-
-            foreach (IInlineFunctionAssemblyReference assemblyReference in assemblyReferences)
+            if (selectedAssemblies == null)
             {
-                string assemblyPath = GetAssemblyFullPath(assemblyReference.Name, assemblyReference.Location);
-                compilerParameters.ReferencedAssemblies.Add(assemblyPath);
+                IEnumerable<IInlineFunctionAssemblyReference> assemblyReferences =
+                    DataFacade.GetData<IInlineFunctionAssemblyReference>(f => f.Function == function.Id).Evaluate();
+
+                foreach (IInlineFunctionAssemblyReference assemblyReference in assemblyReferences)
+                {
+                    string assemblyPath = GetAssemblyFullPath(assemblyReference.Name, assemblyReference.Location);
+                    compilerParameters.ReferencedAssemblies.Add(assemblyPath);
+                }
+            }
+            else
+            {
+                foreach (string reference in selectedAssemblies)
+                {
+                    compilerParameters.ReferencedAssemblies.Add(reference);
+                }
             }
 
 

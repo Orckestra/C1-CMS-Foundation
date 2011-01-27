@@ -89,9 +89,11 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
 
             this.Bindings.Add("Assemblies", assemblies);
 
+
             List<string> selectedAssemblies =
                 DataFacade.GetData<IInlineFunctionAssemblyReference>().
                 Where(f => f.Function == functionInfo.Id).
+                OrderBy(f => f.Name).
                 Evaluate().
                 Select(f => InlineFunctionHelper.GetAssemblyFullPath(f.Name, f.Location).ToLower()).
                 ToList();
@@ -182,10 +184,11 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
         {
             IInlineFunction functionInfo = this.GetBinding<IInlineFunction>("Function");
             string code = this.GetBinding<string>("FunctionCode");
+            List<string> selectedAssemblies = this.GetBinding<List<string>>("SelectedAssemblies");
 
             StringInlineFunctionCreateMethodErrorHandler handler = new StringInlineFunctionCreateMethodErrorHandler();
 
-            MethodInfo methodInfo = InlineFunctionHelper.Create(functionInfo, code, handler);
+            MethodInfo methodInfo = InlineFunctionHelper.Create(functionInfo, code, handler, selectedAssemblies);
 
             FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
             IFormFlowWebRenderingService formFlowWebRenderingService = serviceContainer.GetService<IFormFlowWebRenderingService>();
