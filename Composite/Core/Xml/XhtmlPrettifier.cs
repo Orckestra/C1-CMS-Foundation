@@ -16,8 +16,11 @@ namespace Composite.Core.Xml
     public static class XhtmlPrettifier
     {
         private static string _ampersandWord = "C1AMPERSAND";
+        private static Regex _encodeCDataRegex = new Regex(@"<!\[CDATA\[((?:[^]]|\](?!\]>))*)\]\]>", RegexOptions.Compiled);
+        private static Regex _decodeCDataRegex = new Regex("C1CDATAREPLACE(?<counter>[0-9]*)", RegexOptions.Compiled);
         private static Regex _encodeRegex = new Regex(@"&(?<tag>[^\;]+;)", RegexOptions.Compiled);
         private static Regex _decodeRegex = new Regex(@"C1AMPERSAND(?<tag>[^\;]+;)", RegexOptions.Compiled);
+        
 
         private static char[] WhitespaceChars = new char[] { '\t', '\n', '\v', '\f', '\r', ' ', '\x0085', '\x00a0', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '​', '\u2028', '\u2029', '　', '﻿' };
 
@@ -101,12 +104,18 @@ namespace Composite.Core.Xml
 
         public static string Prettify(string xmlString, string indentString)
         {
-            IEnumerable<XmlNode> tree = BuildTree(xmlString);
+            CDataMatchHandler cdataMatchHandler;
+
+            IEnumerable<XmlNode> tree = BuildTree(xmlString, out cdataMatchHandler);
 
             StringBuilder sb = new StringBuilder();
             NodeTreeToString(tree, sb, indentString, false);
 
-            return sb.ToString();
+            string result = sb.ToString();
+
+            result = _decodeCDataRegex.Replace(result, cdataMatchHandler.Decode);
+
+            return result;
         }
 
 
@@ -355,16 +364,21 @@ namespace Composite.Core.Xml
 
 
 
-        private static IEnumerable<XmlNode> BuildTree(string xmlString)
+        private static IEnumerable<XmlNode> BuildTree(string xmlString, out CDataMatchHandler cdataMatchHandler)
         {
-            XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
-            xmlReaderSettings.DtdProcessing = DtdProcessing.Parse;
-            xmlReaderSettings.XmlResolver = null;
+            cdataMatchHandler = new CDataMatchHandler();
+
+            xmlString = _encodeCDataRegex.Replace(xmlString, cdataMatchHandler.Encode);
 
             xmlString = _encodeRegex.Replace(xmlString, delegate(Match match)
             {
                 return _ampersandWord + match.Groups["tag"].Value;
             });
+
+
+            XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
+            xmlReaderSettings.DtdProcessing = DtdProcessing.Parse;
+            xmlReaderSettings.XmlResolver = null;
 
             using (XmlReader xmlReader = XmlTextReader.Create(new StringReader(xmlString), xmlReaderSettings))
             {
@@ -614,6 +628,29 @@ namespace Composite.Core.Xml
             public override int GetHashCode()
             {
                 return this.Name.GetHashCode() ^ this.Namespace.GetHashCode();
+            }
+        }
+
+
+
+        private sealed class CDataMatchHandler
+        {
+            List<string> cDatas = new List<string>();
+
+            public string Encode(Match match)
+            {
+                string s = "C1CDATAREPLACE" + cDatas.Count.ToString();
+
+                cDatas.Add(match.Value);
+
+                return s;
+            }
+
+            public string Decode(Match match)
+            {
+                int index = int.Parse(match.Groups["counter"].Value);
+
+                return cDatas[index];
             }
         }
     }
