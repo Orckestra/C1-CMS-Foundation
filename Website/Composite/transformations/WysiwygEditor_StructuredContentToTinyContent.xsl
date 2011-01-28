@@ -112,7 +112,7 @@
 	</xsl:template>
 	
 	<!-- tilde root-URLS confuses TinyMCE and we fix it here -->
-  <xsl:template match="x:a/@href[starts-with(translate(.,'C','c'),'/composite/content/misc/editors/visualeditor/%7E')]">
+  <xsl:template match="x:a/@href[contains(.,'/misc/editors/visualeditor/%7E')]">
 		<xsl:attribute name="href">
 			<xsl:text>~</xsl:text>
 			<xsl:value-of select="substring-after(.,'%7E')"/>
