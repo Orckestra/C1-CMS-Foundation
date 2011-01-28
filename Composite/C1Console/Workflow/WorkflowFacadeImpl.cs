@@ -911,9 +911,9 @@ namespace Composite.C1Console.Workflow
         }
 
 
-#warning MRJ: Cleanup here
+
         [DebuggerStepThrough]
-        private void Hans(object sender, WorkflowEventArgs args)
+        private void HandleWorkflowPersistedEvent(object sender, WorkflowEventArgs args)
         {
             try
             {
@@ -984,7 +984,7 @@ namespace Composite.C1Console.Workflow
             };
 
 
-            _workflowRuntime.WorkflowPersisted += Hans;
+            _workflowRuntime.WorkflowPersisted += HandleWorkflowPersistedEvent;
 
           /*  _workflowRuntime.WorkflowPersisted += delegate(object sender, WorkflowEventArgs args)
             {                
