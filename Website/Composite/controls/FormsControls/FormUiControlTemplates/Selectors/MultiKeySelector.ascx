@@ -26,7 +26,10 @@
             foreach( string key in selectedKeys)
             {
                 var selectedOption = this.GetOptions().FirstOrDefault(f => f.Key == key);
-                selectedOptions.Add(selectedOption);
+                if (selectedOption != null)
+                {
+                    selectedOptions.Add(selectedOption);
+                }
             }
 
             var unselectedOptions = this.GetOptions().Where(o => selectedKeys.Contains(o.Key)==false);
