@@ -9016,7 +9016,7 @@ MenuItemBinding.CLASSNAME_CHECKBOX="checkboxindicator";
 MenuItemBinding.CLASSNAME_SUBMENU="submenuindicator";
 MenuItemBinding.CLASSNAME_HOVER="hover";
 MenuItemBinding.CHAR_CHECKBOX="V";
-MenuItemBinding.CHAR_SUBMENU="\xe2\u2013\xba";
+MenuItemBinding.CHAR_SUBMENU=String.fromCharCode(9658);
 MenuItemBinding.TIMEOUT=150;
 function MenuItemBinding(){
 this.logger=SystemLogger.getLogger("MenuItemBinding");
