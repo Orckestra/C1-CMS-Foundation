@@ -46,13 +46,10 @@ h1 {
 	font-weight: bold;
 	position: relative;
 	background: transparent url("${folder}/skins/system/dialogpages/error_32.png") no-repeat 0 0;
-	padding-bottom: 10px;
-	padding-top: 3px;
 	padding-left: 40px;
 }
 p {
 	color: #676767;
-	margin-top: 28px;
 	width: 200px;
 	line-height: 1.25em;
 }

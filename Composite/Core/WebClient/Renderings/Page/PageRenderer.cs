@@ -300,14 +300,27 @@ namespace Composite.Core.WebClient.Renderings.Page
             IEnumerable<XElement> xhtmlElements = xhtmlDocument.Descendants().Where(f => f.Name.Namespace == Namespaces.Xhtml);
             IEnumerable<XAttribute> pathAttributes = xhtmlElements.Attributes().Where(f => f.Name.LocalName == "src" || f.Name.LocalName == "href" || f.Name.LocalName == "action");
 
-            List<XAttribute> relativePathAttributes = pathAttributes.Where(f => f.Value.StartsWith("~/")).ToList();
-
             string applicationVirtualPath = UrlUtils.PublicRootPath;
+
+            List<XAttribute> relativePathAttributes = pathAttributes.Where(f => f.Value.StartsWith("~/") || f.Value.StartsWith("%7E/")).ToList();
 
             foreach (XAttribute relativePathAttribute in relativePathAttributes)
             {
-                relativePathAttribute.Value = applicationVirtualPath + relativePathAttribute.Value.Substring(1);
+                int tildePrefixLength = (relativePathAttribute.Value.StartsWith("~") ? 1 : 3);
+                relativePathAttribute.Value = applicationVirtualPath + relativePathAttribute.Value.Substring(tildePrefixLength);
             }
+
+            if (applicationVirtualPath.Length>1)
+            {
+                List<XAttribute> hardRootedPathAttributes = pathAttributes.Where(f => f.Value.StartsWith("/Renderers/")).ToList();
+
+                foreach (XAttribute hardRootedPathAttribute in hardRootedPathAttributes)
+                {
+                    hardRootedPathAttribute.Value = applicationVirtualPath + hardRootedPathAttribute.Value;
+                }
+            }
+
+
         }
 
 

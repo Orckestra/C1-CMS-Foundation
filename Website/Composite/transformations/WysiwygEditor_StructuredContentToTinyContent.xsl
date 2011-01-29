@@ -4,8 +4,10 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns="http://www.w3.org/1999/xhtml" 
 	xmlns:x="http://www.w3.org/1999/xhtml">
-	
-	<!-- TODO: an absolute pointer on this!!! -->
+
+  <xsl:param name="requestapppath" />
+
+  <!-- TODO: an absolute pointer on this!!! -->
 	<xsl:variable name="blankimageurl">../../../../images/blank.png</xsl:variable>
 	
 	<xsl:template match="@*|*|processing-instruction()|comment()">
@@ -111,6 +113,7 @@
 		</xsl:attribute>
 	</xsl:template>
 	
+  
 	<!-- tilde root-URLS confuses TinyMCE and we fix it here -->
   <xsl:template match="x:a/@href[contains(.,'/misc/editors/visualeditor/%7E')]">
 		<xsl:attribute name="href">
@@ -118,5 +121,26 @@
 			<xsl:value-of select="substring-after(.,'%7E')"/>
 		</xsl:attribute>
 	</xsl:template>
-	
+
+
+  <!-- img tags src reference fixing -->
+  <xsl:template match="x:a/@href[starts-with(.,'/Renderers/')]">
+    <xsl:attribute name="href">
+      <xsl:value-of select="concat($requestapppath,.)"/>
+    </xsl:attribute>
+  </xsl:template>
+
+  <!-- img tags src reference fixing -->
+  <xsl:template match="x:img/@src[starts-with(.,'/Renderers/')]">
+    <xsl:attribute name="src">
+      <xsl:value-of select="concat($requestapppath,.)"/>
+    </xsl:attribute>
+  </xsl:template>
+
+  <xsl:template match="x:img/@src[starts-with(.,'%7E')]">
+    <xsl:attribute name="src">
+      <xsl:value-of select="concat($requestapppath,substring-after(.,'%7E'))"/>
+    </xsl:attribute>
+  </xsl:template>
+
 </xsl:stylesheet>

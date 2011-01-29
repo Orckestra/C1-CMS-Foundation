@@ -16,6 +16,7 @@ using Composite.Data.DynamicTypes;
 using Composite.Functions;
 using Composite.Core.Logging;
 using Composite.Core.ResourceSystem;
+using Composite.Core.WebClient;
 using Composite.Core.WebClient.Services.WysiwygEditor;
 using Composite.Core.Xml;
 using Composite.Data;
@@ -91,6 +92,7 @@ namespace Composite.Services
                     xsltParameters.Add("requesthostname", HttpContext.Current.Request.Url.Host);
                     xsltParameters.Add("requestport", HttpContext.Current.Request.Url.Port.ToString());
                     xsltParameters.Add("requestscheme", HttpContext.Current.Request.Url.Scheme);
+                    xsltParameters.Add("requestapppath", UrlUtils.PublicRootPath);
 
                     structuredResult = MarkupTransformationServices.RepairXhtmlAndTransform(WrapInnerBody(htmlFragment), xsltPath, xsltParameters, out warnings);
                 }
@@ -225,7 +227,10 @@ namespace Composite.Services
                     referenceElement.ReplaceWith(GetImageTagForDynamicDataFieldReference(referenceElement));
                 }
 
-                XDocument structuredResult = MarkupTransformationServices.RepairXhtmlAndTransform(xml.ToString(), XhtmlPassSsltPath, null, out warnings);
+                Dictionary<string, string> xsltParameters = new Dictionary<string, string>();
+                xsltParameters.Add("requestapppath", UrlUtils.PublicRootPath);
+
+                XDocument structuredResult = MarkupTransformationServices.RepairXhtmlAndTransform(xml.ToString(), XhtmlPassSsltPath, xsltParameters, out warnings);
 
                 string bodyInnerXhtml = MarkupTransformationServices.OutputBodyDescendants(structuredResult);
 
