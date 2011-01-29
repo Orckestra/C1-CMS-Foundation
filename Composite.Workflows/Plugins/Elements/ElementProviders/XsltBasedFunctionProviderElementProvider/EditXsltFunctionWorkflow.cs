@@ -104,7 +104,10 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
 
             this.Bindings.Add("ParameterTypeOptions", FunctionFacade.FunctionSupportedTypes.Union(popularWidgetTypes).Union(FunctionFacade.WidgetFunctionSupportedTypes).ToList());
 
-            this.Bindings.Add("XslTemplate", file.ReadAllText());
+            string xsltDocumentString = file.ReadAllText();
+            this.Bindings.Add("XslTemplate", xsltDocumentString);
+            this.Bindings.Add("XslTemplateLastSaveHash", xsltDocumentString.GetHashCode());
+
             List<string> functionErrors;
             List<NamedFunctionCall> FunctionCalls = RenderHelper.GetValidFunctionCalls(xsltFunction.Id, out functionErrors).ToList();
 
@@ -229,7 +232,17 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
             try
             {
                 IXsltFunction xslt = this.GetBinding<IXsltFunction>("CurrentXslt");
+
                 string xslTemplate = this.GetBinding<string>("XslTemplate");
+
+                IFile persistemTemplateFile = IFileServices.GetFile<IXsltFile>(xslt.XslFilePath);
+                string persistemTemplate = persistemTemplateFile.ReadAllText();
+
+                if (this.GetBinding<int>("XslTemplateLastSaveHash") != persistemTemplate.GetHashCode())
+                {
+                    xslTemplate = persistemTemplate;
+                    ConsoleMessageQueueFacade.Enqueue(new LogEntryMessageQueueItem { Level = LogLevel.Fine, Message = "XSLT file on file system was used. It has been changed by another process.", Sender = this.GetType() }, this.GetCurrentConsoleId());
+                }
 
                 List<NamedFunctionCall> namedFunctions = this.GetBinding<IEnumerable<NamedFunctionCall>>("FunctionCalls").ToList();
 
@@ -441,7 +454,18 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                 IXsltFunction xslt = this.GetBinding<IXsltFunction>("CurrentXslt");
                 IXsltFunction previousXslt = DataFacade.GetData<IXsltFunction>(f => f.Id == xslt.Id).SingleOrDefault();
 
+                IFile persistemTemplateFile = IFileServices.GetFile<IXsltFile>(xslt.XslFilePath);
+                string persistemTemplate = persistemTemplateFile.ReadAllText();
+
+                if (this.GetBinding<int>("XslTemplateLastSaveHash") != persistemTemplate.GetHashCode())
+                {
+                    this.Bindings["XslTemplate"] = persistemTemplate;
+                    this.RerenderView();
+                    ConsoleMessageQueueFacade.Enqueue(new LogEntryMessageQueueItem { Level = LogLevel.Fine, Message = "XSLT file on file system has been changed by another process. In-browser editor updated to reflect file on file system.", Sender = this.GetType() }, this.GetCurrentConsoleId());
+                }
+
                 string xslTemplate = this.GetBinding<string>("XslTemplate");
+
                 var parameters = this.GetBinding<IEnumerable<ManagedParameterDefinition>>("Parameters");
 
                 IEnumerable<NamedFunctionCall> FunctionCalls = this.GetBinding<IEnumerable<NamedFunctionCall>>("FunctionCalls");
@@ -494,6 +518,9 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
 
                     DataFacade.Update(xslt);
                     DataFacade.Update(file);
+
+                    this.Bindings["XslTemplateLastSaveHash"] = xslTemplate.GetHashCode();
+
 
                     DataFacade.Delete<INamedFunctionCall>(f => f.XsltFunctionId == xslt.Id);
                     DataFacade.AddNew<INamedFunctionCall>(ConvertFunctionCalls(FunctionCalls, xslt.Id));
