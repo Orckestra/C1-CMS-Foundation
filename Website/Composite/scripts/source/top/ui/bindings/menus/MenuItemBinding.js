@@ -9,7 +9,7 @@ MenuItemBinding.CLASSNAME_CHECKBOX 	= "checkboxindicator";
 MenuItemBinding.CLASSNAME_SUBMENU 	= "submenuindicator";
 MenuItemBinding.CLASSNAME_HOVER 	= "hover";
 MenuItemBinding.CHAR_CHECKBOX 		= "V";
-MenuItemBinding.CHAR_SUBMENU 		= String.fromCharCode ( 9658 );
+MenuItemBinding.CHAR_SUBMENU 		= "►"; // String.fromCharCode ( 9658 );
 MenuItemBinding.TIMEOUT				= 150;
 
 /**
