@@ -86,7 +86,19 @@ namespace Composite
             get
             {
                 Assembly asm = typeof(RuntimeInformation).Assembly;
-                return ((AssemblyTitleAttribute)asm.GetCustomAttributes(typeof(AssemblyTitleAttribute), false)[0]).Title;
+                string assemblyTitle = ((AssemblyTitleAttribute)asm.GetCustomAttributes(typeof(AssemblyTitleAttribute), false)[0]).Title;
+
+                byte[] key = asm.GetName().GetPublicKey();
+                bool isSignedAsm = key.Length > 0;
+
+                if (isSignedAsm)
+                {
+                    return assemblyTitle;
+                }
+                else
+                {
+                    return string.Format("{0} compiled from open source.", assemblyTitle);
+                }
             }
         }
 

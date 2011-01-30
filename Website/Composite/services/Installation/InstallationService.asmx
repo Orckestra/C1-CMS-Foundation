@@ -66,23 +66,25 @@ namespace Composite.Services
 
             KeyValuePair pair = new KeyValuePair();
             pair.Key = "Core Development";
-            pair.Value = "Marcus Wendt;Martin Jensen;Dmitry Dzygin;Jesper Moth";
+            pair.Value = "Marcus Wendt;Martin Jensen;Dmitry Dzygin";
             list.Add(pair);
 
-            /*pair = new KeyValuePair();
-            pair.Key = "Package Development";
-            pair.Value = "";
+            pair = new KeyValuePair();
+            pair.Key = "QA, Packages & Documentaion";
+            pair.Value = "Volodymyr I. Muzyka;Taras V. Nakonehcnyy;Vitaly Vysotskyi;Inna V. Boitsun";
             list.Add(pair);
 
+            /*
             pair = new KeyValuePair();
             pair.Key = "Localization";
             pair.Value = "";
             list.Add(pair);
-
+            */
+            
             pair = new KeyValuePair();
             pair.Key = "Special Thanks To";
-            pair.Value = "";
-            list.Add(pair);*/
+            pair.Value = "Jesper Moth;@burningice;@azarnoush;you";
+            list.Add(pair);
 
             return list.ToArray();
         }
