@@ -22,8 +22,12 @@
 	<string key="Switch.PlainEdit.ToolTip" value="No syntax highlight, faster performance"/>
 	<string key="Switch.ColoredEdit.Label" value="Colored Edit"/>
 	<string key="Switch.ColoredEdit.ToolTip" value="Syntax highlight, slower performance"/>
-	
-	<!-- insert dropdown -->
+
+  <!-- toolbar menus -->
+  <string key="Toolbar.Insert.Label" value="Insert"/>
+  <string key="Toolbar.Format.Label" value="Format"/>
+
+  <!-- insert dropdown -->
 	<string key="Insert.PageURL.Label" value="Page URL"/>
 	<string key="Insert.ImageURL.Label" value="Image URL"/>
 	<string key="Insert.MediaURL.Label" value="Media URL"/>

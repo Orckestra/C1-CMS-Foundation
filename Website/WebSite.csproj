@@ -447,6 +447,41 @@
     <Content Include="Composite\content\forms\Administrative\TreeAddTreeDefinition.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Composite\content\misc\editors\bespineditor\bespin.css" />
+    <Content Include="Composite\content\misc\editors\bespineditor\bespin.html" />
+    <Content Include="Composite\content\misc\editors\bespineditor\bespin.js" />
+    <Content Include="Composite\content\misc\editors\bespineditor\bespineditor.aspx" />
+    <Content Include="Composite\content\misc\editors\bespineditor\bespineditor.css" />
+    <Content Include="Composite\content\misc\editors\bespineditor\bindings\SourceEditorFormatToolBarButtonBinding.js" />
+    <Content Include="Composite\content\misc\editors\bespineditor\bindings\SourceEditorInsertToolbarButtonBinding.js" />
+    <Content Include="Composite\content\misc\editors\bespineditor\bindings\SourceEditorPageBinding.js" />
+    <Content Include="Composite\content\misc\editors\bespineditor\bindings\SourceEditorToolBarBinding.js" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\BespinEmbedded.css" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\BespinEmbedded.js" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\BespinEmbedded.uncompressed.js" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\BespinMain.js" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\BespinMain.uncompressed.js" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\BespinWorker.js" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\BespinWorker.uncompressed.js" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\resources\screen_theme\images\bespin-s.png" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\resources\screen_theme\images\check-selected.png" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\resources\screen_theme\images\check-unselected.png" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\resources\screen_theme\images\lines.png" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\resources\screen_theme\images\radio-selected.png" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\resources\screen_theme\images\radio-unselected.png" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\resources\screen_theme\images\scroll-down.png" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\resources\screen_theme\images\scroll-left.png" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\resources\screen_theme\images\scroll-right.png" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\resources\screen_theme\images\scroll-up.png" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\samples\fields.html" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\samples\html.html" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\samples\jquery.html" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\samples\multi.html" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\samples\programmatic.html" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\samples\sample.html" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\samples\tags.html" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\samples\textarea.html" />
+    <Content Include="Composite\content\misc\editors\bespineditor\build\samples\wide.html" />
     <Content Include="Composite\content\misc\editors\functioncalleditor\bindings\ToolBarButtonDataBindingAddNew.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\bindings\ClassNameSelectorBinding.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\bindings\FormatSelectorBinding.js" />
@@ -522,7 +557,7 @@
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\compositeword\editor_plugin.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\compositeword\word.aspx" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\compositeword\word.css" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\compositeword\wordcontent.html" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\compositeword\wordcontent.aspx" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\compositeword\wordcontent.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\compositeword\WordDialogPageBinding.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\contextmenu\editor_plugin.js" />
@@ -6108,6 +6143,8 @@
     <Content Include="App_Data\Composite\Azure.Composite.config">
       <SubType>Designer</SubType>
     </Content>
+    <None Include="Composite\content\misc\editors\bespineditor\build\resources\screen_theme\theme.less" />
+    <None Include="Composite\content\misc\editors\bespineditor\build\resources\whitetheme\theme.less" />
     <None Include="Composite\content\misc\editors\visualeditor\includes\toolbaradvanced.inc" />
     <None Include="Composite\content\misc\editors\visualeditor\includes\toolbarsimple.inc" />
     <None Include="Composite\extensions\compositec1\chrome.manifest" />
@@ -6265,6 +6302,7 @@
     <Folder Include="App_Data\Composite\DynamicTypeForms\" />
     <Folder Include="Composite\audio\" />
     <Folder Include="Composite\content\dialogs\querytreeeditor\" />
+    <Folder Include="Composite\content\misc\editors\bespineditor\build\resources\completion\" />
     <Folder Include="Composite\controls\FormsControls\FormUiControlTemplates\ElementSelectors\" />
     <Folder Include="Composite\images\icons\republic\Zip files\" />
     <Folder Include="Composite\transformations\temp\masterfilterTEST.xsl\" />

@@ -294,7 +294,7 @@ var ViewDefinitions = {
 		position 	: Dialog.MODAL,
 		url 		: Dialog.URL_IMAGESELECTOR,
 		argument : {
-			label 				: "Select Image",
+		    label               : "${string:Composite.Management:Website.Image.SelectDialog.Title}",
 			image				: "${icon:image}",
 			selectionProperty 	: "ElementType",
 			selectionValue		: "image/jpeg image/gif image/png image/bmp image/tiff",
@@ -315,7 +315,7 @@ var ViewDefinitions = {
 		position 	: Dialog.MODAL,
 		url 		: Dialog.URL_TREESELECTOR,
 		argument : {
-			label 				: "Select Media",
+		    label               : "${string:Composite.Management:Website.Media.SelectDialog.Title}",
 			image				: "${icon:media}",
 			selectionProperty 	: "ElementType",
 			selectionValue		: null,
@@ -335,7 +335,7 @@ var ViewDefinitions = {
 		position 	: Dialog.MODAL,
 		url 		: Dialog.URL_TREESELECTOR,
 		argument : {
-			label 				: "Select Frontend File",
+		    label               : "${string:Composite.Management:Website.FrontendFile.SelectDialog.Title}",
 			image				: "${icon:media}",
 			selectionProperty 	: "ElementType",
 			selectionValue		: null,
@@ -354,8 +354,8 @@ var ViewDefinitions = {
 		position 	: Dialog.MODAL,
 		url 		: Dialog.URL_TREESELECTOR,
 		argument : {
-			label 				: "Select Page",
-			image				: "${icon:page}",
+		    label               : "${string:Composite.Management:Website.Page.SelectDialog.Title}",
+		    image               : "${icon:page}",
 			selectionProperty 	: "Uri",
 			selectionValue		: null, // MimeTypes.COMPOSITEPAGES
 			selectionResult		: "Uri",
@@ -374,11 +374,11 @@ var ViewDefinitions = {
         position: Dialog.MODAL,
         url: Dialog.URL_TREESELECTOR,
         argument: {
-            label: "Select Page",
-            image: "${icon:page}",
-            selectionProperty: "DataId",
-            selectionValue: null, // MimeTypes.COMPOSITEPAGES
-            selectionResult: "DataId",
+            label               : "${string:Composite.Management:Website.Page.SelectDialog.Title}",
+            image               : "${icon:page}",
+            selectionProperty   : "DataId",
+            selectionValue      : null, // MimeTypes.COMPOSITEPAGES
+            selectionResult     : "DataId",
             nodes: [{
                 key: "PageElementProvider"
             }]
@@ -393,8 +393,8 @@ var ViewDefinitions = {
 		position 	: Dialog.MODAL,
 		url 		: Dialog.URL_TREESELECTOR,
 		argument : {
-			label 				: "Select Page or File",
-			image				: "${icon:link}",
+		    label               : "${string:Composite.Management:Website.ContentLink.SelectDialog.Title}",
+		    image               : "${icon:link}",
 			selectionProperty 	: "Uri",
 			selectionValue		: null,
 			selectionResult		: "Uri",
@@ -413,7 +413,7 @@ var ViewDefinitions = {
 		position 	: Dialog.MODAL,
 		url 		: Dialog.URL_TREESELECTOR,
 		argument : {
-			label 				: "Select Page or File",
+		    label               : "${string:Composite.Management:Website.ContentLink.SelectDialog.Title}",
 			image				: "${icon:link}",
 			selectionProperty 	: "Uri",
 			selectionValue		: null,
@@ -433,7 +433,7 @@ var ViewDefinitions = {
 		position 	: Dialog.MODAL,
 		url 		: Dialog.URL_TREESELECTOR,
 		argument : {
-			label 				: "Select Function",
+		    label               : "${string:Composite.Management:Website.Function.SelectDialog.Title}",
 			image				: "${icon:functioncall}",
 			selectionProperty 	: "ElementType",
 			selectionValue		: MimeTypes.COMPOSITEFUNCTION,
@@ -452,8 +452,8 @@ var ViewDefinitions = {
 		position 	: Dialog.MODAL,
 		url 		: Dialog.URL_TREESELECTOR,
 		argument : {
-			label 				: "Select Widget",
-			image				: "${icon:functioncall}",
+		    label               : "${string:Composite.Management:Website.Widget.SelectDialog.Title}",
+		    image               : "${icon:functioncall}",
 			selectionProperty 	: "ElementType",
 			selectionValue		: MimeTypes.COMPOSITEFUNCTION,
 			selectionResult		: "ElementId",
@@ -471,7 +471,7 @@ var ViewDefinitions = {
 		position 	: Dialog.MODAL,
 		url 		: Dialog.URL_TREESELECTOR,
 		argument : {
-			label 				: "Select Function",
+			label 				: "${string:Composite.Management:Website.Function.SelectDialog.Title}",
 			image				: "${icon:functioncall}",
 			selectionProperty 	: "ElementType",
 			selectionValue		: MimeTypes.COMPOSITEFUNCTION,

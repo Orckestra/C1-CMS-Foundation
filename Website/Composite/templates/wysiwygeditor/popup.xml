@@ -16,10 +16,10 @@
 		<ui:menuitem cmd="compositeInsertRendering" val="update" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelRenderingProperties}" image="${icon:functioncall}" binding="EditorMenuItemBinding"/>
 	</ui:menugroup>
 	<ui:menugroup rel="field">
-		<ui:menuitem cmd="compositeInsertField" val="delete" label="Delete field" image="${icon:deletefield}" binding="EditorMenuItemBinding"/>
+		<ui:menuitem cmd="compositeInsertField" val="delete" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelFieldDelete}" image="${icon:deletefield}" binding="EditorMenuItemBinding"/>
 	</ui:menugroup>
 	<ui:menugroup rel="table">
-		<ui:menuitem label="Manage table" image="${skin}/wysiwygeditor/table.png" binding="EditorMenuItemBinding">
+		<ui:menuitem label="${string:Composite.Web.VisualEditor:ContextMenu.LabelTableManage}" image="${skin}/wysiwygeditor/table.png" binding="EditorMenuItemBinding">
 			<ui:menupopup>
 				<ui:menubody>
 					<ui:menugroup>

@@ -1,3 +1,4 @@
+<%@ Page Language="C#" %>
 <html>
 	<head>
 		<title>Word</title>
@@ -13,5 +14,5 @@
 		</style>
 		<script type="text/javascript" src="wordcontent.js"></script>
 	</head>
-	<body spellcheck="false">Paste Word content here. Then press OK.</body>
+	<body spellcheck="false"><%= Composite.Core.ResourceSystem.StringResourceSystemFacade.GetString("Composite.Web.VisualEditor","WordPaste.PasteHereContent") %></body>
 </html>

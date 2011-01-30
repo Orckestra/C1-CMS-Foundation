@@ -11,11 +11,11 @@
 	<body>
 		<ui:dialogpage id="page" 
 			binding="WordDialogPageBinding"
-			label="Paste from Word" 
+			label="${string:Composite.Web.VisualEditor:WordPaste.Label}" 
 			image="${skin}/wysiwygeditor/word.png" 
 			height="auto">
 			<ui:pagebody>
-				<ui:window id="wordwindow" url="wordcontent.html"/>
+				<ui:window id="wordwindow" url="wordcontent.aspx"/>
 			</ui:pagebody>
 			<ui:dialogtoolbar>
 				<ui:toolbarbody align="right" equalsize="true">

@@ -8,6 +8,7 @@ using Composite.Core.Types;
 using Composite.Core.WebClient.FunctionCallEditor;
 using Composite.Core.WebClient.State;
 using Composite.Core.Xml;
+using Composite.Core.ResourceSystem;
 
 
 namespace CompositeEditFunctionCall
@@ -94,7 +95,7 @@ namespace CompositeEditFunctionCall
         {
             get
             {
-                return Request.QueryString["dialoglabel"] ?? "Function Properties";
+                return Request.QueryString["dialoglabel"] ?? StringResourceSystemFacade.GetString("Composite.Web.FormControl.FunctionCallsDesigner", "DialogTitle");
             }
         }
 

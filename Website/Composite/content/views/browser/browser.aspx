@@ -22,12 +22,12 @@
 			<ui:popup id="contextmenu">
 				<ui:menubody>
 					<ui:menugroup>
-						<ui:menuitem cmd="back" label="Back" image="${icon:previous}" image-disabled="${icon:previous-disabled}" tooltip="${string:Website.Content.Views.Help.ToolTipBack}" observes="broadcasterHistoryBack"/>
-						<ui:menuitem cmd="forward" label="Forward" image="${icon:next}" image-disabled="${icon:next-disabled}" tooltip="${string:Website.Content.Views.Help.ToolTipForward}" observes="broadcasterHistoryForward"/>
-						<ui:menuitem cmd="refresh" label="Refresh" image="${icon:refresh}" tooltip="${string:Website.Content.Views.Help.ToolTipRefresh}"/>
+						<ui:menuitem cmd="back" label="${string:Composite.Web.PageBrowser:ContextMenu.Back}" image="${icon:previous}" image-disabled="${icon:previous-disabled}" tooltip="${string:Website.Content.Views.Help.ToolTipBack}" observes="broadcasterHistoryBack"/>
+						<ui:menuitem cmd="forward" label="${string:Composite.Web.PageBrowser:ContextMenu.Forward}" image="${icon:next}" image-disabled="${icon:next-disabled}" tooltip="${string:Website.Content.Views.Help.ToolTipForward}" observes="broadcasterHistoryForward"/>
+						<ui:menuitem cmd="refresh" label="${string:Composite.Web.PageBrowser:ContextMenu.Refresh}" image="${icon:refresh}" tooltip="${string:Website.Content.Views.Help.ToolTipRefresh}"/>
 					</ui:menugroup>
 					<ui:menugroup>
-						<ui:menuitem cmd="viewsource" label="View Page source" image="${icon:editor-sourceview}"/>
+						<ui:menuitem cmd="viewsource" label="${string:Composite.Web.PageBrowser:ContextMenu.ViewSource}" image="${icon:editor-sourceview}"/>
 					</ui:menugroup>
 				</ui:menubody>
 			</ui:popup>
@@ -39,7 +39,7 @@
 					<ui:menupopup>
 						<ui:menubody>
 							<ui:menugroup>
-								<ui:menuitem cmd="viewsource" label="Page source" image="${icon:editor-sourceview}"/>
+								<ui:menuitem cmd="viewsource" label="${string:Composite.Web.PageBrowser:Menu.ViewSource}" image="${icon:editor-sourceview}"/>
 							</ui:menugroup>
 						</ui:menubody>
 					</ui:menupopup>
@@ -57,7 +57,7 @@
 				<ui:toolbarbody align="right" class="max" style="overflow:hidden;">
 					<ui:toolbargroup>
 						<ui:datainput id="addressbar" name="addressbar" binding="BrowserAddressBarBinding" autoselect="true"/>
-						<ui:toolbarbutton id="go" image="${icon:input}" image-disabled="${icon:input-disabled}" isdisabled="true" tooltip="Go to the address in the location bar"/>
+						<ui:toolbarbutton id="go" image="${icon:input}" image-disabled="${icon:input-disabled}" isdisabled="true" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Go.ToolTip}"/>
 					</ui:toolbargroup>
 				</ui:toolbarbody>
 			</ui:toolbar>

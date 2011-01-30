@@ -87,7 +87,7 @@ var About = new function () {
 				var self = this;
 				var button = window.bindingMap.buttonCredits;
 				setTimeout ( function () {
-					button.setLabel ( "Back" ); 
+					button.setLabel ( "${string:Website.Dialogs.About.LabelBack}" ); 
 					button.setImage ( "${icon:back}" );
 					setTimeout ( function () {
 						document.getElementById ( "info" ).style.display = "none";

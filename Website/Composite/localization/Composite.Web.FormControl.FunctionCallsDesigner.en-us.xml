@@ -1,11 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
+  <string key="DialogTitle" value="Function Properties" />
   <string key="FunctionLocalNameGroupLabel" value="Function result local name" />
   <string key="FunctionLocalNameLabel" value="Local name" />
   <string key="FunctionLocalNameHelp" value="If you include a function multiple times this field can help you distinguish the individual results by their local name. " />
   <string key="ParameterValueLabel" value="Parameter Value" />
   <string key="AddNewFunctionDialogLabel" value="Select Function" />
   <string key="ComplexFunctionCallDialogLabel" value="Value for parameter '{0}'" />
+  <string key="ParameterTypeLabel" value="Parameter Type" />
+  <string key="ParameterNameLabel" value="Parameter Name" />
   <string key="ReturnTypeLabel" value="Return type" />
   <string key="ValidationFailedAlertTitle" value="Validation failed" />
   <string key="FunctionNotFound" value="Function '{0}' does not exist." />

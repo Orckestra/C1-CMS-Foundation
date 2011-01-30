@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<%@ Page Language="C#" %>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml" xmlns:control="http://www.composite.net/ns/uicontrol">
 	<control:httpheaders runat="server" />
 	<head>
@@ -10,7 +11,7 @@
 	</head>
 	<body>
 		<ui:dialogpage binding="TextDialogPageBinding"
-			label="Paste as Text" 
+			label="${string:Composite.Web.VisualEditor:TextPaste.Label}" 
 			image="${icon:page}" 
 			height="auto"
 			resizable="true">
@@ -18,7 +19,7 @@
 			<ui:pagebody style="height:150px;">
 				<ui:flexbox>
 					<ui:editortextbox id="text" autoselect="true">
-						<textarea>Paste content here. Then press OK.</textarea>
+						<textarea><%= Composite.Core.ResourceSystem.StringResourceSystemFacade.GetString("Composite.Web.VisualEditor","TextPaste.PasteHereContent") %></textarea>
 					</ui:editortextbox>
 				</ui:flexbox>
 			</ui:pagebody>

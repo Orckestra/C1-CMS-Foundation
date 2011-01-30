@@ -62,8 +62,8 @@
 				<asp:PlaceHolder ID="DetailsSplitPanelPlaceHolder" runat="server">
 					<ui:tabbox>
 						<ui:tabs>
-							<ui:tab label="Basic" />
-							<ui:tab label="Advanced" />
+							<ui:tab label="<%= GetString("BasicTabLabel") %>" />
+							<ui:tab label="<%= GetString("AdvancedTabLabel") %>" />
 						</ui:tabs>
 						<ui:tabpanels>
 							<ui:tabpanel>

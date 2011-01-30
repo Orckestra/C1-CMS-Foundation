@@ -173,7 +173,7 @@ new function () {
 			var def = ViewDefinitions [ "Composite.Management.PostBackDialog" ];
 			def.width = 880; //760;
 			def.height = 520;
-			def.label = "Function Properties";
+			def.label = "${string:Composite.Web.FormControl.FunctionCallsDesigner:DialogTitle}";
 			def.image = "${icon:parameter_overloaded}";
 			def.handler = dialogHandler;
 			def.argument = {

@@ -89,7 +89,7 @@
 								<ui:toolbargroup>
 									<ui:toolbarbutton 
 										id="insertbutton" 
-										label="${string:Composite.Web.VisualEditor:ContextMenu.LabelInsert}" 
+										label="${string:Composite.Web.SourceEditor:Toolbar.Insert.Label}" 
 										image="${icon:insert}" 
 										image-disabled="${icon:insert-disabled}" 
 										observes="broadcasterIsActive" 
@@ -99,7 +99,7 @@
 								<ui:toolbargroup id="xmltools" hidden="true">
 									<ui:toolbarbutton 
 										id="formatbutton" 
-										label="Format" 
+										label="${string:Composite.Web.SourceEditor:Toolbar.Format.Label}" 
 										tooltip="Format XML source"
 										image="${icon:editor-formatsource}" 
 										image-disabled="${icon:editor-formatsource-disabled}" 

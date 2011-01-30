@@ -36,7 +36,7 @@
 				<ui:toolbarbody equalsize="true">
 					<ui:toolbargroup>
 						<ui:clickbutton id="buttonAccept" label="${string:Website.Dialogs.LabelAccept}" response="accept" focusable="true" default="true"/>
-						<ui:clickbutton id="buttonCredits" label="Credits" focusable="true" oncommand="About.credits ()"/>
+						<ui:clickbutton id="buttonCredits" label="${string:Website.Dialogs.About.LabelCredits}" focusable="true" oncommand="About.credits ()"/>
 					</ui:toolbargroup>
 				</ui:toolbarbody>
 			</ui:dialogtoolbar>

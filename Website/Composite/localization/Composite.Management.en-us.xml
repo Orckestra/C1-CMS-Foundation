@@ -15,6 +15,16 @@
   <string key="DeleteUserWorkflow.CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
   <string key="DeleteUserWorkflow.DeleteSelfTitle" value="Cannot delete a user" />
   <string key="DeleteUserWorkflow.DeleteSelfErrorMessage" value="You can not delete an account you logged in as." />
+  
+  <string key="Website.Function.SelectDialog.Title" value="Select Function" />
+  <string key="Website.Widget.SelectDialog.Title" value="Select Widget" />
+  <string key="Website.ContentLink.SelectDialog.Title" value="Select Page or File" />
+  <string key="Website.Page.SelectDialog.Title" value="Select Page" />
+  <string key="Website.FrontendFile.SelectDialog.Title" value="Select Frontend File" />
+  <string key="Website.Media.SelectDialog.Title" value="Select Media" />
+  <string key="Website.Image.SelectDialog.Title" value="Select Image" />
+
+
   <string key="Website.Forms.Administrative.EditUserStep1.LabelFieldGroup" value="Edit user" />
   <string key="Website.Forms.Administrative.EditUserStep1.UserNameLabel" value="User name" />
   <string key="Website.Forms.Administrative.EditUserStep1.UserNameHelp" value="User names can not be changed. This is a 'read only' field." />
@@ -323,6 +333,9 @@
   <string key="Website.Dialogs.LabelCancel" value="Cancel" />
   <string key="Website.Dialogs.LabelDisclosure" value="More Info" />
   <string key="Website.Dialogs.About.Title" value="About Composite C1" />
+  <string key="Website.Dialogs.About.LabelCredits" value="Credits" />
+  <string key="Website.Dialogs.About.LabelBack" value="Back" />
+
   <string key="Website.Dialogs.NoAccessTitle" value="No access" />
   <string key="Website.Dialogs.NoAccessText" value="You have not been granted access rights to the system. Please contact your administrator." />
   <string key="Website.Dialogs.ImageEditor.ScaleImage.Unit" value="Unit" />
@@ -452,7 +465,12 @@
   <string key="Website.App.LabelViewSerialized" value="View Serialized" />
   <string key="Website.App.LabelClose" value="Close" />
   <string key="Website.App.LabelFile" value="File" />
+  <string key="Website.App.LabelFileClose" value="Close" />
+  <string key="Website.App.LabelFileCloseAll" value="Close All" />
+  <string key="Website.App.LabelFileSaveAll" value="Save All..." />
+  <string key="Website.App.LabelFileExit" value="Exit" />
   <string key="Website.App.LabelView" value="View" />
+  <string key="Website.App.LabelViewCompositeStart" value="Composite Start" />
   <string key="Website.App.LabelSystemLog" value="System Log" />
   <string key="Website.App.LabelDeveloperPanel" value="Developer Panel" />
   <string key="Website.App.LabelTools" value="Tools" />

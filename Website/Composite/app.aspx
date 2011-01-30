@@ -102,15 +102,15 @@
 				<ui:menupopup>
 					<ui:menubody>
 						<ui:menugroup>
-							<ui:menuitem label="Close" oncommand="Commands.close ()" observes="broadcasterCurrentIsEditor" tooltip="Save and close active editor"/>
-							<ui:menuitem label="Close All" oncommand="Commands.closeAll ()" observes="broadcasterHasOpenEditors" tooltip="Save and close all editors"/>
+							<ui:menuitem label="${string:Website.App.LabelFileClose}" oncommand="Commands.close ()" observes="broadcasterCurrentIsEditor" tooltip="Save and close active editor"/>
+							<ui:menuitem label="${string:Website.App.LabelFileCloseAll}" oncommand="Commands.closeAll ()" observes="broadcasterHasOpenEditors" tooltip="Save and close all editors"/>
 						</ui:menugroup>
 						<ui:menugroup>
-							<ui:menuitem label="Save" oncommand="Commands.save ()" observes="broadcasterCurrentTabDirty" tooltip="Save active editor"/>
-							<ui:menuitem label="Save All..." oncommand="Commands.saveAll ()" observes="broadcasterHasDirtyTabs" tooltip="Save all editors"/>
+							<ui:menuitem label="${string:Website.App.LabelSave}" oncommand="Commands.save ()" observes="broadcasterCurrentTabDirty" tooltip="Save active editor"/>
+							<ui:menuitem label="${string:Website.App.LabelFileSaveAll}" oncommand="Commands.saveAll ()" observes="broadcasterHasDirtyTabs" tooltip="Save all editors"/>
 						</ui:menugroup>
 						<ui:menugroup>
-							<ui:menuitem label="Exit" oncommand="Application.quit ();"/>
+							<ui:menuitem label="${string:Website.App.LabelFileExit}" oncommand="Application.quit ();"/>
 						</ui:menugroup>
 					</ui:menubody>
 				</ui:menupopup>
@@ -120,7 +120,7 @@
 					<ui:menubody>
 						<ui:menugroup id="translationsmenugroup"/>
 						<ui:menugroup>
-							<ui:menuitem binding="StartMenuItemBinding" label="Composite Start" image="${icon:composite}"/>	
+							<ui:menuitem binding="StartMenuItemBinding" label="${string:Website.App.LabelViewCompositeStart}" image="${icon:composite}"/>	
 						</ui:menugroup>
 					</ui:menubody>
 				</ui:menupopup>

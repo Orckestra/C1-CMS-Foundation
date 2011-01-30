@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <strings>
-	
-	<!-- buttons -->
+
+  <!-- menus -->
+  <string key="Menu.ViewSource" value="Page Source" />
+  <string key="ContextMenu.Back" value="Back" />
+  <string key="ContextMenu.Forward" value="Forward" />
+  <string key="ContextMenu.Refresh" value="Refresh" />
+  <string key="ContextMenu.ViewSource" value="View Page Source" />
+
+
+  <!-- buttons -->
 	<string key="ToolBarButton.Back.ToolTip" value="Go back one page" />
 	<string key="ToolBarButton.Forward.ToolTip" value="Go forward one page" />
 	<string key="ToolBarButton.Refresh.ToolTip" value="Refresh page" />
-	<string key="ToolBarButton.Home.ToolTip" value="Go to the Start page" /> <!-- TODO: Show URL instead! -->
+  <string key="ToolBarButton.Go.ToolTip" value="Go to the address in the location bar" />
+  <string key="ToolBarButton.Home.ToolTip" value="Go to the Start page" /> <!-- TODO: Show URL instead! -->
 	
 	<!-- URL errors -->
 	<string key="AddressBar.Invalid.DialogTitle.External" 		value="Access denied"/>

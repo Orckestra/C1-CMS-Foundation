@@ -110,7 +110,7 @@
 		                                     
 		                                          <ui:fieldgroup id="optionsfieldgroup">
 		                                              <ui:field>
-		                                                  <ui:fielddesc>Parameter Type</ui:fielddesc>
+		                                                  <ui:fielddesc><%= GetString("ParameterTypeLabel") %></ui:fielddesc>
 		                                                  <ui:fielddata id="optionsfielddata">
 		                                                      <aspui:Generic TagName="ui:fieldsbutton" runat="server" 
 		                                                          id="btnDefault" image="${icon:blank}" label="Default" 
@@ -144,7 +144,7 @@
 		                                                
 		                                             <ui:fieldgroup id="parameternamefieldgroup">
 		                                                 <ui:field>
-		            					                    <ui:fielddesc>Parameter Name</ui:fielddesc>
+		            					                    <ui:fielddesc><%= GetString("ParameterNameLabel") %></ui:fielddesc>
 		            					                    <ui:fieldhelp></ui:fieldhelp>
 		                					                    <ui:fielddata>
 		                                                             <aspui:Selector runat="server" EnableViewState="false" 
