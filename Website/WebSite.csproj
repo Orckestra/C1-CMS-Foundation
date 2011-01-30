@@ -6110,7 +6110,6 @@
     </Content>
     <None Include="Composite\content\misc\editors\visualeditor\includes\toolbaradvanced.inc" />
     <None Include="Composite\content\misc\editors\visualeditor\includes\toolbarsimple.inc" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\tiny_mce.zip" />
     <None Include="Composite\extensions\compositec1\chrome.manifest" />
     <None Include="Composite\extensions\compositec1\chrome\content\compositec1.xul" />
     <None Include="Composite\extensions\compositec1\compositec1.xpi" />
