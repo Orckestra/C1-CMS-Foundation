@@ -2,8 +2,13 @@
 using System.Linq;
 using System.Xml.Linq;
 
+
 namespace Composite.Core.Profiling
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ProfilerReport
     {
         public static XElement BuildReportXml(Measurement measurement)

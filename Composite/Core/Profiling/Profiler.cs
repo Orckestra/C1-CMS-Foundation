@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Composite.Core.Threading;
 
+
 namespace Composite.Core.Profiling
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class Profiler
     {
         private static readonly string ProfilerKey = typeof (Profiler).FullName;

@@ -46,6 +46,11 @@
         <Type Name="SitemapScope" Analyze="True" AnalyzeAllChildren="True" />
        </Types>
       </Namespace>
+      <Namespace Name="Composite.Data.Types" Analyze="False" AnalyzeAllChildren="False">
+       <Types AnalyzeAllChildren="False">
+        <Type Name="IPage" Analyze="True" AnalyzeAllChildren="True" />
+       </Types>
+      </Namespace>
       <Namespace Name="Composite.Functions" Analyze="False" AnalyzeAllChildren="False">
        <Types AnalyzeAllChildren="False">
         <Type Name="FunctionParameterDescriptionAttribute" Analyze="True" AnalyzeAllChildren="True" />

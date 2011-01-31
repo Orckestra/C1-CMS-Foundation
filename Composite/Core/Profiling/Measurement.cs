@@ -1,7 +1,12 @@
 ﻿using System.Collections.Generic;
 
+
 namespace Composite.Core.Profiling
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class Measurement
     {
         private List<Measurement> _nodes;
