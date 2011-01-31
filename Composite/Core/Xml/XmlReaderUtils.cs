@@ -8,7 +8,7 @@ namespace Composite.Core.Xml
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class XmlReaderUtils
     {
         /// <summary>
@@ -16,9 +16,7 @@ namespace Composite.Core.Xml
         /// </summary>
         public static XmlReader Create(string path)
         {
-            Stream stream = new C1FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-            
-            return XmlReader.Create(stream);
+            return Create(path, null);
         }
 
 
@@ -28,9 +26,23 @@ namespace Composite.Core.Xml
         /// </summary>
         public static XmlReader Create(string path, XmlReaderSettings settings)
         {
-            Stream stream = new C1FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            MemoryStream memoryStream = new MemoryStream();
 
-            return XmlReader.Create(stream, settings);
+            using (Stream stream = new C1FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                StreamUtils.CopyStream(stream, memoryStream);
+            }
+
+            memoryStream.Seek(0, SeekOrigin.Begin);
+
+            if (settings == null)
+            {
+                return XmlReader.Create(memoryStream);
+            }
+            else
+            {
+                return XmlReader.Create(memoryStream, settings);
+            }
         }
     }
 }

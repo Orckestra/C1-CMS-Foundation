@@ -198,6 +198,7 @@
     <Compile Include="Core\IO\Plugins\IOProvider\Runtime\IOProviderCustomFactory.cs" />
     <Compile Include="Core\IO\Plugins\IOProvider\Runtime\IOProviderFactory.cs" />
     <Compile Include="Core\IO\Plugins\IOProvider\Runtime\IOProviderSettings.cs" />
+    <Compile Include="Core\IO\StreamUtils.cs" />
     <Compile Include="Core\Log.cs" />
     <Compile Include="Core\PackageSystem\LicenseDefinitionManager.cs" />
     <Compile Include="Core\PackageSystem\LicenseDefinitionUtils.cs" />

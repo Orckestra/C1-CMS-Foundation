@@ -11,6 +11,7 @@ namespace Composite.Core.IO
     /// </summary>
     public class C1FileStream : Stream, IDisposable
     {
+        private bool _disposed = false;
         private ImplementationContainer<C1FileStreamImplementation> _implementation;
 
 
@@ -268,6 +269,7 @@ namespace Composite.Core.IO
         public override void Close()
         {
             base.Close();
+            Dispose(true);
         }
 
 
@@ -288,9 +290,10 @@ namespace Composite.Core.IO
         /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
+            if (disposing && !_disposed)
             {
-                _implementation.DisposeImplementation();
+                _disposed = true;
+                _implementation.DisposeImplementation();                
             }
         }
 
