@@ -11,6 +11,9 @@ using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneratio
 
 namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public sealed class SqlDataProviderCodeGeneratorTableResult
     {

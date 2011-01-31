@@ -21,39 +21,6 @@ using Composite.Functions;
 using System.Xml.Linq;
 
 
-namespace Martin
-{
-    public static class DoubleKeySelectorDataMethods<T>
-        where T : class, IData
-    {
-        public static IEnumerable<T> GetOptions(/*string functionFilter*/)
-        {
-           /* Func<T,bool> filter = null;
-
-            if (!string.IsNullOrEmpty(functionFilter))
-            {
-                BaseRuntimeTreeNode node = FunctionFacade.BuildTree(XElement.Parse(functionFilter));
-
-                filter = node.GetValue<Func<T,bool>>();
-            }*/
-
-            using (DataConnection connection = new DataConnection())
-            {
-                return connection.Get<T>();
-               /* if (filter == null)
-                {
-                    return connection.Get<T>();
-                }
-                else
-                {
-                    return connection.Get<T>().Where(filter);
-                }*/
-            }
-        }
-    }
-}
-
-
 namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 {
     /// <summary>    

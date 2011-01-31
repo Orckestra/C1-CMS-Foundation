@@ -8,9 +8,10 @@ using Composite.Core.Types;
 
 namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration.Foundation
 {
-    /// <summary>
+    /// <summary>    
     /// Provides an api to work with generated tables of a DataContext object.
     /// </summary>
+    /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class SqlDataContextHelperClass
     {

@@ -27,6 +27,10 @@ namespace Composite.Data.Types
 
 
 
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class IFileUtils
     {
         public static bool ValidateValueLengths(this IFile file)
