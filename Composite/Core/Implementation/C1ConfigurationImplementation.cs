@@ -179,10 +179,10 @@ namespace Composite.Core.Implementation
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        /// <param name="filename"></param>
-        public virtual void SaveAs(string filename)
+        /// <param name="fileName"></param>
+        public virtual void SaveAs(string fileName)
         {
-            _configuration.SaveAs(filename);
+            _configuration.SaveAs(fileName);
         }
 
 
@@ -190,11 +190,11 @@ namespace Composite.Core.Implementation
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        /// <param name="filename"></param>
+        /// <param name="fileName"></param>
         /// <param name="saveMode"></param>
-        public virtual void SaveAs(string filename, ConfigurationSaveMode saveMode)
+        public virtual void SaveAs(string fileName, ConfigurationSaveMode saveMode)
         {
-            _configuration.SaveAs(filename, saveMode);
+            _configuration.SaveAs(fileName, saveMode);
         }
 
 
@@ -202,12 +202,12 @@ namespace Composite.Core.Implementation
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        /// <param name="filename"></param>
+        /// <param name="fileName"></param>
         /// <param name="saveMode"></param>
         /// <param name="forceSaveAll"></param>
-        public virtual void SaveAs(string filename, ConfigurationSaveMode saveMode, bool forceSaveAll)
+        public virtual void SaveAs(string fileName, ConfigurationSaveMode saveMode, bool forceSaveAll)
         {
-            _configuration.SaveAs(filename, saveMode, forceSaveAll);
+            _configuration.SaveAs(fileName, saveMode, forceSaveAll);
         }
     }
 }

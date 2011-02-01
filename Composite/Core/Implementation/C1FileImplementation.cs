@@ -39,10 +39,10 @@ namespace Composite.Core.Implementation
         /// IOLayer - documentation pending
         /// </summary>
         /// <param name="sourceFileName"></param>
-        /// <param name="destFileName"></param>
-        public virtual void Copy(string sourceFileName, string destFileName)
+        /// <param name="destinationFileName"></param>
+        public virtual void Copy(string sourceFileName, string destinationFileName)
         {
-            IOFacade.C1File.Copy(sourceFileName, destFileName);
+            IOFacade.C1File.Copy(sourceFileName, destinationFileName);
         }
 
 
@@ -51,11 +51,11 @@ namespace Composite.Core.Implementation
         /// IOLayer - documentation pending
         /// </summary>
         /// <param name="sourceFileName"></param>
-        /// <param name="destFileName"></param>
+        /// <param name="destinationFileName"></param>
         /// <param name="overwrite"></param>
-        public virtual void Copy(string sourceFileName, string destFileName, bool overwrite)
+        public virtual void Copy(string sourceFileName, string destinationFileName, bool overwrite)
         {
-            IOFacade.C1File.Copy(sourceFileName, destFileName, overwrite);
+            IOFacade.C1File.Copy(sourceFileName, destinationFileName, overwrite);
         }
 
 
@@ -64,10 +64,10 @@ namespace Composite.Core.Implementation
         /// IOLayer - documentation pending
         /// </summary>
         /// <param name="sourceFileName"></param>
-        /// <param name="destFileName"></param>
-        public virtual void Move(string sourceFileName, string destFileName)
+        /// <param name="destinationFileName"></param>
+        public virtual void Move(string sourceFileName, string destinationFileName)
         {
-            IOFacade.C1File.Move(sourceFileName, destFileName);
+            IOFacade.C1File.Move(sourceFileName, destinationFileName);
         }
 
 
@@ -393,6 +393,7 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <param name="bytes"></param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "bytes")]
         public virtual void WriteAllBytes(string path, byte[] bytes)
         {
             IOFacade.C1File.WriteAllBytes(path, bytes);

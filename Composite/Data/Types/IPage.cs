@@ -1,4 +1,5 @@
 ﻿using System;
+using Composite.Core.WebClient.Renderings.Data;
 using Composite.Data.Hierarchy;
 using Composite.Data.Hierarchy.DataAncestorProviders;
 using Composite.Data.ProcessControlled;
@@ -6,7 +7,6 @@ using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessC
 using Composite.Data.Types.Foundation;
 using Composite.Data.Visualization;
 using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
-using Composite.Core.WebClient.Renderings.Data;
 
 
 namespace Composite.Data.Types
@@ -66,11 +66,13 @@ namespace Composite.Data.Types
         [ImmutableFieldId("{C9A81ADE-DAD5-4740-A891-DF1CE2FAB498}")]
         [NotNullValidator()]
         [Composite.Data.Validation.Validators.RegexValidator(@"^[-\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Pc}\p{Lm}]*$")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings", Justification = "We want a string here")]
         string UrlTitle { get; set; }
 
 
         [StoreFieldType(PhysicalStoreFieldType.String, 192, IsNullable = true)]
         [ImmutableFieldId("{22787AD0-349A-432f-89C7-3D532B613BB7}")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings", Justification = "We want a string here")]
         string FriendlyUrl { get; set; }
 
 

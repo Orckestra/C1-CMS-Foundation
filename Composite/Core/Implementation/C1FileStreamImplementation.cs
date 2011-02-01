@@ -92,7 +92,7 @@ namespace Composite.Core.Implementation
         /// <param name="offset"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public virtual int Read([In, Out] byte[] array, int offset, int count)
+        public virtual int Read(byte[] array, int offset, int count)
         {
             return _fileStream.Read(array, offset, count);
         }

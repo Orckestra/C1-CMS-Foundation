@@ -164,6 +164,7 @@ namespace Composite.Core.Implementation
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Error")]
         public virtual event ErrorEventHandler Error
         {
             add

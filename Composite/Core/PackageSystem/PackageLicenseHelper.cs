@@ -39,7 +39,7 @@ namespace Composite.Core.PackageSystem
         /// <param name="productId">Package id to which the license definition is to be removed</param>
         public static void RemoveLicenseDefintion(Guid productId)
         {
-            ImplementationFactory.CurrentFactory.StatelessPackageLicenseHelper.RemoveLicenseDefintion(productId);
+            ImplementationFactory.CurrentFactory.StatelessPackageLicenseHelper.RemoveLicenseDefinition(productId);
         }
 
 

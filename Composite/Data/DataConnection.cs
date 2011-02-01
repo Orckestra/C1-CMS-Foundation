@@ -83,7 +83,7 @@ namespace Composite.Data
             CreateImplementation();
 
             //_pageDataConnection = new ImplementationContainer<PageDataConnection>(() => new PageDataConnection(scope));
-            _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this));            
+            _sitemapNavigator = new ImplementationContainer<SitemapNavigator>(() => new SitemapNavigator(this));
         }
 
 
@@ -398,6 +398,7 @@ namespace Composite.Data
         /// </example>
         /// <typeparam name="TData">An IData interface</typeparam>
         /// <returns>Returns a new instance of the <typeparamref name="TData"/></returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "This is want we want")]
         public TData CreateNew<TData>()
             where TData : class, IData
         {
@@ -416,7 +417,7 @@ namespace Composite.Data
                 return this.Implementation.CurrentPublicationScope;
             }
         }
-        
+
 
 
         /// <summary>
@@ -470,8 +471,8 @@ namespace Composite.Data
         /// <summary>
         /// A SitemapNavigator instance. See <see cref="Composite.Data.SitemapNavigator"/>
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Sitemap")] 
-        public SitemapNavigator SitemapNavigator 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Sitemap")]
+        public SitemapNavigator SitemapNavigator
         {
             get
             {

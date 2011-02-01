@@ -62,7 +62,7 @@ namespace Composite.Core.Implementation
         /// <param name="index"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public virtual int Read([In, Out] char[] buffer, int index, int count)
+        public virtual int Read(char[] buffer, int index, int count)
         {
             return _streamReader.Read(buffer, index, count);
         }
@@ -171,6 +171,7 @@ namespace Composite.Core.Implementation
         public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
 

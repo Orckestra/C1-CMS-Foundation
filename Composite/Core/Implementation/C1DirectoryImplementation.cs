@@ -26,10 +26,10 @@ namespace Composite.Core.Implementation
         /// IOLayer - documentation pending
         /// </summary>
         /// <param name="sourceDirName"></param>
-        /// <param name="destDirName"></param>        
-        public virtual void Move(string sourceDirName, string destDirName)
+        /// <param name="destinationDirName"></param>        
+        public virtual void Move(string sourceDirName, string destinationDirName)
         {
-            IOFacade.C1Directory.Move(sourceDirName, destDirName);
+            IOFacade.C1Directory.Move(sourceDirName, destinationDirName);
         }
 
 
@@ -73,6 +73,7 @@ namespace Composite.Core.Implementation
         /// IOLayer - documentation pending
         /// </summary>
         /// <returns></returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public virtual string GetCurrentDirectory()
         {
             return IOFacade.C1Directory.GetCurrentDirectory();

@@ -37,7 +37,7 @@ namespace Composite.Core.Implementation
         /// <see cref="Composite.Core.PackageSystem.PackageLicenseHelper"/>
         /// </summary>
         /// <param name="productId"></param>
-        public virtual void RemoveLicenseDefintion(Guid productId)
+        public virtual void RemoveLicenseDefinition(Guid productId)
         {
             LicenseDefinitionManager.RemoveLicenseDefintion(productId);
         }
