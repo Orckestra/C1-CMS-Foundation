@@ -7,7 +7,7 @@ using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Fou
 namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Configuration
 {
     internal sealed class AppSettingsValueFunction : StandardFunctionBase
-	{
+    {
         public AppSettingsValueFunction(EntityTokenFactory entityTokenFactory)
             : base("AppSettingsValue", "Composite.Utils.Configuration", typeof(string), entityTokenFactory)
         {
@@ -16,7 +16,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationManagerClass:DoNotUseConfigurationManagerClass", "This works for now, but might have to be fixed")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationManagerClass:DoNotUseConfigurationManagerClass", Justification = "This works for now, but might have to be fixed")]
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
             string keyName = parameters.GetParameter<string>("KeyName");
@@ -31,7 +31,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             get
             {
                 yield return new StandardFunctionParameterProfile(
-                    "KeyName", typeof(string), true, new NoValueValueProvider(), StandardWidgetFunctions.TextBoxWidget );
+                    "KeyName", typeof(string), true, new NoValueValueProvider(), StandardWidgetFunctions.TextBoxWidget);
             }
         }
     }

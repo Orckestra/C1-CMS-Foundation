@@ -177,6 +177,7 @@
     <Compile Include="Core\Implementation\SitemapNavigatorImplementation.cs" />
     <Compile Include="Core\IO\C1Directory.cs" />
     <Compile Include="Core\IO\C1File.cs" />
+    <Compile Include="Core\IO\C1FileInfo.cs" />
     <Compile Include="Core\IO\C1FileStream.cs" />
     <Compile Include="Core\IO\C1FileSystemWatcher.cs" />
     <Compile Include="Core\IO\C1StreamReader.cs" />
