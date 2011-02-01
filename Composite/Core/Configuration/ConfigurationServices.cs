@@ -16,7 +16,7 @@ namespace Composite.Core.Configuration
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public class ConfigurationServices
     {
         private static IConfigurationSource _configurationSource = null;
@@ -26,6 +26,7 @@ namespace Composite.Core.Configuration
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The configuration is needed to boot the IO layer, so we cant use it here")]
         static ConfigurationServices()
         {
             if (RuntimeInformation.IsUnittest)
@@ -33,7 +34,7 @@ namespace Composite.Core.Configuration
                 _configurationSource = ConfigurationSourceFactory.Create();
                 return;
             }
-            
+
             _fileConfigurationSourcePath = GetFileConfigurationSourcePath();
 
             Verify.IsNotNull(_fileConfigurationSourcePath, "Configuration file is not defined");

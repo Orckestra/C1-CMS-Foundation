@@ -29,6 +29,7 @@ namespace Composite.Core.Configuration
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The configuration is needed to boot the IO layer, so we cant use it here")]
 		public FileConfigurationSource(string configurationFilepath)
         {
             if (string.IsNullOrEmpty(configurationFilepath)) throw new ArgumentNullException("configurationFilepath");

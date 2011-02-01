@@ -122,6 +122,9 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             return C1Directory.GetFiles(binDirectory, "*.dll");
         }
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is a temp file, do not go through IO layer")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "This is a temp file, do not go through IO layer")]
         private List<AssemblyInfo> GetCachedAssemblyInfo()
         {
             var result = new List<AssemblyInfo>();
@@ -253,6 +256,9 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             return result.ToArray();
         }
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is a temp file, do not go through IO layer")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "This is a temp file, do not go through IO layer")]
         private void SaveTypesCache(List<AssemblyInfo> cachedTypesInfo)
         {
             SubscribedTypesCache root = null;

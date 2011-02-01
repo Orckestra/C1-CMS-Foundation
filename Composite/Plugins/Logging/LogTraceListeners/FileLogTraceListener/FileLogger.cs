@@ -107,6 +107,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "This is what we want, touch is used later on")]
         public LogFileReader[] GetLogFiles()
         {
             string[] filePathes = Directory.GetFiles(_logDirectoryPath);
@@ -165,6 +166,8 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
 
         [DebuggerStepThrough]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "This is what we want, touch is used later on")]
         private static FileStream TryOpenFile(string filePath, out Exception e)
         {
             e = null;
@@ -183,6 +186,8 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
 
         [DebuggerStepThrough]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "This is what we want, touch is used later on")]
         private static bool TryReadAndOpen(string filePath, out string[] content, out FileStream stream, out Exception exception)
         {
             content = null;
@@ -207,6 +212,10 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         }
 
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "This is what we want, touch is used later on")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "This is what we want, touch is used later on")]
         private void EnsureInitialize()
         {
             TouchLogFiles();
@@ -290,6 +299,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         /// Due to the nature of this logger. Keeping files open all the time. It works very badly with Azure blob syncronization.
         /// So this class dont uses the C1 IO classes. But logfiles are nice to have synced to the blob, so old logfiles are touched.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "This is what we want, touch is used later on")]
         private void TouchLogFiles()
         {
             if (DateTime.Now - _lastLogFileTouch > TimeSpan.FromHours(12))
@@ -367,6 +377,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             }
 
             [DebuggerStepThrough]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
             public override bool Open()
             {
                 try
@@ -441,6 +452,8 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                 }
             }
 
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
             public override int EntriesCount
             {
                 get
@@ -463,6 +476,8 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                 }
             }
 
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
             public override bool Delete()
             {
                 try

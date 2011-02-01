@@ -14,7 +14,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         }
 
 
-        
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationManagerClass:DoNotUseConfigurationManagerClass", "This works for now, but might have to be fixed")]
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
             string keyName = parameters.GetParameter<string>("KeyName");

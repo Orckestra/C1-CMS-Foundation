@@ -181,6 +181,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
 
 
         [DebuggerStepThrough]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "This is what we want, touch is used later on")]
         public bool ValidatePath<TFile>(TFile file, out string errorMessage) 
             where TFile: IFile
         {

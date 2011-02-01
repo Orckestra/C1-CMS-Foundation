@@ -112,6 +112,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             get { return _documentEditingSyncRoot; }
         }
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, handle broken saves")]
         public static FileRecord GetFileRecord(string filename, string elementName, Func<XElement, IDataId> keyGetter)
         {
             string cacheKey = filename.ToLower();
@@ -180,6 +182,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             return GetFileRecord(filename, elementName, helper.CreateDataId).ReadOnlyElementsList;
         }
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, handle broken saves")]
         private static void SaveChanges(FileRecord fileRecord)
         {
             XDocument xDocument = new XDocument();

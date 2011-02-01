@@ -198,6 +198,9 @@ namespace Composite.Core.Types
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "This is what we want, touch is used later on")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass", Justification = "This is what we want, touch is used later on")]
         private void Compile(BuildManagerCompileUnit buildManagerCompileUnit)
         {
             if (!buildManagerCompileUnit.IsCacheble && buildManagerCompileUnit.AllowCrossReferences)
@@ -401,11 +404,14 @@ namespace Composite.Core.Types
             }
         }
 
+
+
         /// <summary>
         /// Generates a cs file that has an instance of [BuildManagerCompileUnitAssemblyAttribute] attrubute.
         /// </summary>
         /// <param name="buildManagerCompileUnit"></param>
         /// <returns></returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
         private string GetAssemblyVersionFile(BuildManagerCompileUnit buildManagerCompileUnit)
         {
             string filename = Path.Combine(_tempAssemblyDirectory, "main.cstemp");
@@ -415,6 +421,8 @@ namespace Composite.Core.Types
                                                      });
             return filename;
         }
+
+
 
         private bool InsertAliasToPackageFile(CompilerParameters compilerParameters)
         {
@@ -484,6 +492,7 @@ namespace Composite.Core.Types
         /// Checks whether removing a type with specified id will cause exceptions while building sources from 'App_Code' folder.
         /// </summary>
         /// <param name="immutableTypeId">The type id.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
         public CompatibilityCheckResult CheckIfAppCodeDependsOnInterface(Guid immutableTypeId)
         {
 
@@ -531,6 +540,9 @@ namespace Composite.Core.Types
         /// </summary>
         /// <param name="buildManagerCompileUnit">The compile unit.</param>
         /// <returns></returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "This is what we want, touch is used later on")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass", Justification = "This is what we want, touch is used later on")]        
         public CompatibilityCheckResult CheckAppCodeCompatibility(BuildManagerCompileUnit buildManagerCompileUnit)
         {
             Verify.ArgumentNotNull(buildManagerCompileUnit, "buildManagerCompileUnit");
@@ -796,6 +808,8 @@ namespace Composite.Core.Types
             }
         }
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
         public bool RemoveCompiledType(Guid immutableTypeId)
         {
             lock (_lock)
@@ -876,6 +890,8 @@ namespace Composite.Core.Types
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "This is what we want, touch is used later on")]
         public bool ClearCache(bool alsoBinFiles)
         {
             List<string> interfaceSources = GetInterfaceSourcesToCompile().ToList();
@@ -920,6 +936,8 @@ namespace Composite.Core.Types
         }
 
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
         public void RebuildCache(BuildManagerCompileUnit[] buildManagerCompileUnits)
         {
             _buildManagerCompileUnits.Clear();
@@ -1046,6 +1064,7 @@ namespace Composite.Core.Types
         /// Returns a collection of *.cs files that are located under /App_Code folder
         /// </summary>
         /// <returns></returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "This is what we want, touch is used later on")]
         private static string[] GetAppCodeFiles()
         {
             var folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, GlobalSettingsFacade.AppCodeDirectory);
@@ -1119,6 +1138,8 @@ namespace Composite.Core.Types
             return GetInterfaceSourcesToCompile(Guid.Empty);
         }
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
         private IEnumerable<string> GetInterfaceSourcesToCompile(Guid typeIdToSkip)
         {
             //                             interface,    file,   creationDate
@@ -1181,6 +1202,8 @@ namespace Composite.Core.Types
             return CreatedFilenameParser.GetParsers(_tempAssemblyDirectory, "cs").Select(f => f.Filename).Evaluate();
         }
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
         private void CopyTempAssembliesToBin()
         {
             if (!CachingEnabled)
@@ -1245,6 +1268,7 @@ namespace Composite.Core.Types
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "This is what we want, touch is used later on")]
         private IEnumerable<string> GetAssembliesToCopy()
         {
             IEnumerable<Assembly> assemblies =
@@ -1287,6 +1311,7 @@ namespace Composite.Core.Types
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
         private void ForceCachedAssemblyLoading()
         {
             if (_useAssemblyPacking == true)
@@ -1364,7 +1389,10 @@ namespace Composite.Core.Types
         }
 
 
+
         [DebuggerStepThrough]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "This is what we want, touch is used later on")]
         private void DeleteTempAssemblies()
         {
             try
@@ -1386,6 +1414,8 @@ namespace Composite.Core.Types
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "This is what we want, touch is used later on")]
         private void DeleteCachedSourceFiles()
         {
             if (_useAssemblyPacking == true)
@@ -1402,6 +1432,7 @@ namespace Composite.Core.Types
 
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
         private int DeleteFileWithRetries(string filename, int retries, bool failOnError)
         {
             bool deleted = false;
@@ -1596,6 +1627,8 @@ namespace Composite.Core.Types
         }
 
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "This is what we want, touch is used later on")]
         private void ResolveBaseWorkingDirectory()
         {
             string generatedAssembliesDir = GlobalSettingsFacade.GeneratedAssembliesDirectory;
