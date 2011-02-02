@@ -71,7 +71,8 @@ namespace Composite.Services
 
             pair = new KeyValuePair();
             pair.Key = "QA, Packages & Documentaion";
-            pair.Value = "Volodymyr I. Muzyka;Taras V. Nakonehcnyy;Vitaly Vysotskyi;Inna V. Boitsun";
+            pair.Value = "Volodymyr Muzyka;Taras Nakonechnyi;Vitaly Vysotskyi;Inna Boitsun";
+
             list.Add(pair);
 
             /*
