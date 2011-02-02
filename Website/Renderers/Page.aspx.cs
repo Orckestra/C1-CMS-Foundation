@@ -20,7 +20,7 @@ using Composite.Data.Types;
 
 public partial class Renderers_Page : System.Web.UI.Page
 {
-    private static readonly string ProfilerXslPath = "/Composite/Transformations/page_profiler.xslt";
+    private static readonly string ProfilerXslPath = UrlUtils.PublicRootPath + "/Composite/Transformations/page_profiler.xslt";
 
     private IDisposable _dataScope;
 
