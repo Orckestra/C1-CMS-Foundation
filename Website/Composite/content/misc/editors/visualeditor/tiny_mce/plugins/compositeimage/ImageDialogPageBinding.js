@@ -81,7 +81,10 @@ ImageDialogPageBinding.prototype._populateDataBindingsFromDOM = function () {
 	var manager	= this.bindingWindow.DataManager;
 	
 	if ( src ) {
-		manager.getDataBinding ( "src" ).setValue ( src );
+	    if (src.indexOf("../../../../..") > -1) {
+	        src = "~" + src.substring(href.indexOf("../../../../..") + 14);
+	    }
+	    manager.getDataBinding("src").setValue(src);
 	}
 	if ( alt ) {
 		manager.getDataBinding ( "alt" ).setValue ( alt );

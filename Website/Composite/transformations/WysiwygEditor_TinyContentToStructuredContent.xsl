@@ -99,13 +99,16 @@
             <xsl:value-of select="substring-after(.,$uriEditor3)"/>
           </xsl:when>
           <xsl:when test="starts-with(.,$uriWithPort)">
-            <xsl:value-of select="concat('/',substring-after(.,$uriWithPort))" />
+            <xsl:value-of select="concat('~/',substring-after(.,$uriWithPort))" />
           </xsl:when>
           <xsl:when test="($requestport='80' or $requestport='443') and starts-with(.,$uriNoPort)">
-            <xsl:value-of select="concat('/',substring-after(.,$uriNoPort))" />
+            <xsl:value-of select="concat('~/',substring-after(.,$uriNoPort))" />
           </xsl:when>
           <xsl:when test="starts-with(.,'../../../../..')">
             <xsl:value-of select="concat('~', substring-after(.,'../../../../..'))" />
+          </xsl:when>
+          <xsl:when test="starts-with(.,'../../../..')">
+            <xsl:value-of select="concat('~/Composite', substring-after(.,'../../../..'))" />
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="." />

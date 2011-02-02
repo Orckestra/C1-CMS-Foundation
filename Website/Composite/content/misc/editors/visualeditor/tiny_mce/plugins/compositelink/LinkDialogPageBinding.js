@@ -61,7 +61,9 @@ LinkDialogPageBinding.prototype._populateDataBindingsFromDOM = function () {
 	if ( a.href ) {
 		var href = a.href;
 		if ( href.indexOf ( "tinymce.aspx" ) >-1 && href.indexOf ( "#" ) >-1 ) {
-			href = href.substring ( href.indexOf ( "#" ));
+		    href = href.substring(href.indexOf("#"));
+		} else if (href.indexOf( "%7E/") >-1 ) {
+		    href = "~" + href.substring(href.indexOf("%7E/")+3);
 		} else if ( href.indexOf ( "~" ) >-1 ) {
 			href = href.substring ( href.indexOf ( "~" ));
 		}

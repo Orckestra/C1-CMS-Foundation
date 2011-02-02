@@ -6207,7 +6207,7 @@
     <None Include="Composite\schemas\FormsControls\AspNetManagement__www_composite_net_ns_management_bindingforms_std_ui_controls_lib_1_0.xsd" />
     <None Include="Composite\schemas\FormsControls\bindingforms10.xsd" />
     <None Include="Composite\schemas\FormsControls\functions__www_composite_net_ns_management_bindingforms_std_function_lib_1_0.xsd" />
-    <Content Include="Composite\services\Icon\GetIcon.ashx" />
+    <Compile Include="Composite\services\Icon\GetIcon.ashx" />
     <Content Include="Composite\services\Media\ImageManipulator.ashx" />
     <Content Include="Composite\services\WysiwygEditor\FieldImage.ashx" />
     <Content Include="Composite\services\WysiwygEditor\YellowBox.ashx" />

@@ -152,17 +152,18 @@ namespace Composite.Services
 
                 List<string> pathAttributeNames = new List<string> { "src", "href" };
 
+                // 2011-02-02 block below disabled by maw to fix 3151
                 // Fix TinyMCE's fetish for turning absolute URLs into relative URLs
-                var dottedPathAttributes =
-                    from xhtmlAttribute in structuredResult.Descendants().Where(f => f.Name.Namespace == Namespaces.Xhtml).Attributes()
-                    where pathAttributeNames.Contains(xhtmlAttribute.Name.LocalName)
-                            && xhtmlAttribute.Value.StartsWith("../")
-                    select xhtmlAttribute;
+                //var dottedPathAttributes =
+                //    from xhtmlAttribute in structuredResult.Descendants().Where(f => f.Name.Namespace == Namespaces.Xhtml).Attributes()
+                //    where pathAttributeNames.Contains(xhtmlAttribute.Name.LocalName)
+                //            && xhtmlAttribute.Value.StartsWith("../")
+                //    select xhtmlAttribute;
 
-                foreach (XAttribute dottedAttribute in dottedPathAttributes)
-                {
-                    dottedAttribute.Value = string.Format("/{0}", dottedAttribute.Value.Replace("../", ""));
-                }
+                //foreach (XAttribute dottedAttribute in dottedPathAttributes)
+                //{
+                //    dottedAttribute.Value = string.Format("/{0}", dottedAttribute.Value.Replace("../", ""));
+                //}
 
                 FixTinyMceMalEncodingOfInternationalUrlHostNames(structuredResult);
 
