@@ -1,6 +1,7 @@
 using System.IO;
 using System.Text;
 using Composite.Core.Logging;
+using System.Collections.Generic;
 
 
 namespace Composite.Core.IO
@@ -120,6 +121,24 @@ namespace Composite.Core.IO
             foreach (string directory in C1Directory.GetDirectories(directoryPath))
             {
                 RemoveReadOnlyRecursively(directory);
+            }
+        }
+
+
+
+        public static IEnumerable<string> GetFilesRecursively(string path)
+        {
+            foreach (string filePath in Directory.GetFiles(path))
+            {
+                yield return filePath;
+            }
+
+            foreach (string subPath in Directory.GetDirectories(path))
+            {
+                foreach (string filePath in GetFilesRecursively(subPath))
+                {
+                    yield return filePath;
+                }
             }
         }
     }

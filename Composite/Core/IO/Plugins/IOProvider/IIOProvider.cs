@@ -19,6 +19,9 @@ namespace Composite.Core.IO.Plugins.IOProvider
         
         IC1File C1File { get; }
 
+        IC1FileInfo CreateFileInfo(string fileName);
+        IC1DirectoryInfo CreateDirectoryInfo(string path);
+
         IC1FileStream CreateFileStream(string path, FileMode mode, FileAccess access, FileShare share, int bufferSize, FileOptions options);
         
         IC1FileSystemWatcher CreateFileSystemWatcher(string path, string filter);

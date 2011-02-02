@@ -1,26 +1,26 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.Serialization;
-using Composite.Core.Implementation;
+using Composite.Core.IO;
+using Composite.Core.IO.Plugins.IOProvider;
 
 
-namespace Composite.Core.IO
+namespace Composite.Core.Implementation
 {
     /// <summary>
     /// IOLayer - documentation pending
     /// </summary>
-    public class C1FileInfo : C1FileSystemInfo
+    public class C1FileInfoImplementation
     {
-        private ImplementationContainer<C1FileInfoImplementation> _implementation;
+        private IC1FileInfo _fileInfo;
 
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        /// <param name="fileName"></param>
-        public C1FileInfo(string fileName)
+        /// <param name="path"></param>
+        public C1FileInfoImplementation(string path)
         {
-            _implementation = new ImplementationContainer<C1FileInfoImplementation>(() => ImplementationFactory.CurrentFactory.CreateC1FileInfo(fileName));
-            _implementation.CreateImplementation();
+            _fileInfo = IOFacade.CreateC1FileInfo(path);
         }
 
 
@@ -32,7 +32,7 @@ namespace Composite.Core.IO
         {
             get
             {
-                return _implementation.Implementation.DirectoryName;
+                return _fileInfo.DirectoryName;
             }
         }
 
@@ -45,7 +45,7 @@ namespace Composite.Core.IO
         {
             get
             {
-                return _implementation.Implementation.Directory;
+                return _fileInfo.Directory;
             }
         }
 
@@ -58,21 +58,7 @@ namespace Composite.Core.IO
         {
             get
             {
-                return _implementation.Implementation.Name;
-            }
-        }
-
-
-
-
-        /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
-        public override string FullName
-        {
-            get
-            {
-                return _implementation.Implementation.FullName;
+                return _fileInfo.Name;
             }
         }
 
@@ -81,11 +67,11 @@ namespace Composite.Core.IO
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        public override bool Exists
+        public string FullName
         {
             get
             {
-                return _implementation.Implementation.Exists;
+                return _fileInfo.FullName;
             }
         }
 
@@ -94,11 +80,24 @@ namespace Composite.Core.IO
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        public override string Extension
+        public bool Exists
         {
             get
             {
-                return _implementation.Implementation.Extension;
+                return _fileInfo.Exists;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public string Extension
+        {
+            get
+            {
+                return _fileInfo.Extension;
             }
         }
 
@@ -111,7 +110,11 @@ namespace Composite.Core.IO
         {
             get
             {
-                return _implementation.Implementation.IsReadOnly;
+                return _fileInfo.IsReadOnly;
+            }
+            set
+            {
+                _fileInfo.IsReadOnly = value;
             }
         }
 
@@ -124,7 +127,7 @@ namespace Composite.Core.IO
         {
             get
             {
-                return _implementation.Implementation.Length;
+                return _fileInfo.Length;
             }
         }
 
@@ -133,15 +136,15 @@ namespace Composite.Core.IO
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        public override FileAttributes Attributes
+        public FileAttributes Attributes
         {
             get
             {
-                return _implementation.Implementation.Attributes;
+                return _fileInfo.Attributes;
             }
             set
             {
-                _implementation.Implementation.Attributes = value;
+                _fileInfo.Attributes = value;
             }
         }
 
@@ -153,7 +156,7 @@ namespace Composite.Core.IO
         /// <returns></returns>
         public C1FileStream Create()
         {
-            return _implementation.Implementation.Create();
+            return _fileInfo.Create();
         }
 
 
@@ -164,7 +167,7 @@ namespace Composite.Core.IO
         /// <returns></returns>
         public C1StreamWriter CreateText()
         {
-            return _implementation.Implementation.CreateText();
+            return _fileInfo.CreateText();
         }
 
 
@@ -175,7 +178,7 @@ namespace Composite.Core.IO
         /// <returns></returns>
         public C1StreamWriter AppendText()
         {
-            return _implementation.Implementation.AppendText();
+            return _fileInfo.AppendText();
         }
 
 
@@ -187,7 +190,7 @@ namespace Composite.Core.IO
         /// <returns></returns>
         public C1FileStream Open(FileMode mode)
         {
-            return _implementation.Implementation.Open(mode);
+            return _fileInfo.Open(mode);
         }
 
 
@@ -200,7 +203,7 @@ namespace Composite.Core.IO
         /// <returns></returns>
         public C1FileStream Open(FileMode mode, FileAccess access)
         {
-            return _implementation.Implementation.Open(mode, access);
+            return _fileInfo.Open(mode, access);
         }
 
 
@@ -214,7 +217,7 @@ namespace Composite.Core.IO
         /// <returns></returns>
         public C1FileStream Open(FileMode mode, FileAccess access, FileShare share)
         {
-            return _implementation.Implementation.Open(mode, access, share);
+            return _fileInfo.Open(mode, access, share);
         }
 
 
@@ -225,7 +228,7 @@ namespace Composite.Core.IO
         /// <returns></returns>
         public C1FileStream OpenRead()
         {
-            return _implementation.Implementation.OpenRead();
+            return _fileInfo.OpenRead();
         }
 
 
@@ -236,7 +239,7 @@ namespace Composite.Core.IO
         /// <returns></returns>
         public C1StreamReader OpenText()
         {
-            return _implementation.Implementation.OpenText();
+            return _fileInfo.OpenText();
         }
 
 
@@ -247,7 +250,7 @@ namespace Composite.Core.IO
         /// <returns></returns>
         public C1FileStream OpenWrite()
         {
-            return _implementation.Implementation.OpenWrite();
+            return _fileInfo.OpenWrite();
         }
 
 
@@ -255,11 +258,11 @@ namespace Composite.Core.IO
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        /// <param name="destFileName"></param>
+        /// <param name="destinationFileName"></param>
         /// <returns></returns>
-        public C1FileInfo CopyTo(string destFileName)
+        public C1FileInfo CopyTo(string destinationFileName)
         {
-            return _implementation.Implementation.CopyTo(destFileName);
+            return _fileInfo.CopyTo(destinationFileName);
         }
 
 
@@ -267,12 +270,12 @@ namespace Composite.Core.IO
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        /// <param name="destFileName"></param>
+        /// <param name="destinationFileName"></param>
         /// <param name="overwrite"></param>
         /// <returns></returns>
-        public C1FileInfo CopyTo(string destFileName, bool overwrite)
+        public C1FileInfo CopyTo(string destinationFileName, bool overwrite)
         {
-            return _implementation.Implementation.CopyTo(destFileName, overwrite);
+            return _fileInfo.CopyTo(destinationFileName, overwrite);
         }
 
 
@@ -280,10 +283,10 @@ namespace Composite.Core.IO
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        /// <param name="destFileName"></param>
-        public void MoveTo(string destFileName)
+        /// <param name="destinationFileName"></param>
+        public void MoveTo(string destinationFileName)
         {
-            _implementation.Implementation.MoveTo(destFileName);
+            _fileInfo.MoveTo(destinationFileName);
         }
 
 
@@ -296,7 +299,7 @@ namespace Composite.Core.IO
         /// <returns></returns>
         public C1FileInfo Replace(string destinationFileName, string destinationBackupFileName)
         {
-            return _implementation.Implementation.Replace(destinationFileName, destinationBackupFileName);
+            return _fileInfo.Replace(destinationFileName, destinationBackupFileName);
         }
 
 
@@ -310,7 +313,7 @@ namespace Composite.Core.IO
         /// <returns></returns>
         public C1FileInfo Replace(string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors)
         {
-            return _implementation.Implementation.Replace(destinationFileName, destinationBackupFileName, ignoreMetadataErrors);
+            return _fileInfo.Replace(destinationFileName, destinationBackupFileName, ignoreMetadataErrors);
         }
 
 
@@ -318,9 +321,9 @@ namespace Composite.Core.IO
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        public override void Delete()
+        public void Delete()
         {
-            _implementation.Implementation.Delete();
+            _fileInfo.Delete();
         }
 
 
@@ -328,9 +331,9 @@ namespace Composite.Core.IO
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        public override void Refresh()
+        public void Refresh()
         {
-            _implementation.Implementation.Refresh();
+            _fileInfo.Refresh();
         }
 
 
@@ -340,9 +343,9 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            _implementation.Implementation.GetObjectData(info, context);
+            _fileInfo.GetObjectData(info, context);
         }
 
 
@@ -350,32 +353,15 @@ namespace Composite.Core.IO
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        public override DateTime CreationTime
+        public DateTime CreationTime
         {
             get
             {
-                return _implementation.Implementation.CreationTime;
+                return _fileInfo.CreationTime;
             }
             set
             {
-                _implementation.Implementation.CreationTime = value;
-            }
-        }
-
-
-
-        /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
-        public override DateTime CreationTimeUtc
-        {
-            get
-            {
-                return _implementation.Implementation.CreationTimeUtc;
-            }
-            set
-            {
-                _implementation.Implementation.CreationTimeUtc = value;
+                _fileInfo.CreationTime = value;
             }
         }
 
@@ -384,15 +370,15 @@ namespace Composite.Core.IO
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        public override DateTime LastAccessTime
+        public DateTime CreationTimeUtc
         {
             get
             {
-                return _implementation.Implementation.LastAccessTime;
+                return _fileInfo.CreationTimeUtc;
             }
             set
             {
-                _implementation.Implementation.LastAccessTime = value;
+                _fileInfo.CreationTimeUtc = value;
             }
         }
 
@@ -401,15 +387,15 @@ namespace Composite.Core.IO
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        public override DateTime LastAccessTimeUtc
+        public DateTime LastAccessTime
         {
             get
             {
-                return _implementation.Implementation.LastAccessTimeUtc;
+                return _fileInfo.LastAccessTime;
             }
             set
             {
-                _implementation.Implementation.LastAccessTimeUtc = value;
+                _fileInfo.LastAccessTime = value;
             }
         }
 
@@ -418,15 +404,15 @@ namespace Composite.Core.IO
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        public override DateTime LastWriteTime
+        public DateTime LastAccessTimeUtc
         {
             get
             {
-                return _implementation.Implementation.LastWriteTime;
+                return _fileInfo.LastAccessTimeUtc;
             }
             set
             {
-                _implementation.Implementation.LastWriteTime = value;
+                _fileInfo.LastAccessTimeUtc = value;
             }
         }
 
@@ -435,23 +421,33 @@ namespace Composite.Core.IO
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        public override DateTime LastWriteTimeUtc
+        public DateTime LastWriteTime
         {
             get
             {
-                return _implementation.Implementation.LastWriteTimeUtc;
+                return _fileInfo.LastWriteTime;
             }
             set
             {
-                _implementation.Implementation.LastWriteTimeUtc = value;
+                _fileInfo.LastWriteTime = value;
             }
         }
 
-        //public FileSecurity GetAccessControl();
-        //public FileSecurity GetAccessControl(AccessControlSections includeSections);
-        //public void SetAccessControl(FileSecurity fileSecurity);
 
-        //public void Decrypt();        
-        //public void Encrypt();
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public DateTime LastWriteTimeUtc
+        {
+            get
+            {
+                return _fileInfo.LastWriteTimeUtc;
+            }
+            set
+            {
+                _fileInfo.LastWriteTimeUtc = value;
+            }
+        }
     }
 }

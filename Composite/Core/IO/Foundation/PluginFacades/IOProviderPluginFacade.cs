@@ -47,6 +47,24 @@ namespace Composite.Core.IO.Foundation.PluginFacades
 
 
 
+        public static IC1FileInfo CreateFileInfo(string path)
+        {
+            IIOProvider ioProvider = GetIOProvider();
+
+            return ioProvider.CreateFileInfo(path);
+        }
+
+
+
+        public static IC1DirectoryInfo CreateDirectoryInfo(string path)
+        {
+            IIOProvider ioProvider = GetIOProvider();
+
+            return ioProvider.CreateDirectoryInfo(path);
+        }
+
+
+
         public static IC1FileStream CreateFileStream(string path, FileMode mode, FileAccess access, FileShare share, int bufferSize, FileOptions options)
         {
             IIOProvider ioProvider = GetIOProvider();

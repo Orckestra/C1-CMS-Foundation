@@ -15,7 +15,7 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public virtual DirectoryInfo CreateDirectory(string path)
+        public virtual C1DirectoryInfo CreateDirectory(string path)
         {
             return IOFacade.C1Directory.CreateDirectory(path);
         }
@@ -97,7 +97,7 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public virtual DirectoryInfo GetParent(string path)
+        public virtual C1DirectoryInfo GetParent(string path)
         {
             return IOFacade.C1Directory.GetParent(path);
         }

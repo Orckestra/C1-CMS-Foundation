@@ -29,6 +29,20 @@ namespace Composite.Core.IO
 
 
 
+        public static IC1FileInfo CreateC1FileInfo(string path)
+        {
+            return IOProviderPluginFacade.CreateFileInfo(path);
+        }
+
+
+
+        public static IC1DirectoryInfo CreateC1DirectoryInfo(string path)
+        {
+            return IOProviderPluginFacade.CreateDirectoryInfo(path);
+        }
+
+
+
         public static IC1FileStream CreateC1FileStream(string path, FileMode mode, FileAccess access, FileShare share, int bufferSize, FileOptions options)
         {
             return IOProviderPluginFacade.CreateFileStream(path, mode, access, share, bufferSize, options);

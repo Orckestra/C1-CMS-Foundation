@@ -29,6 +29,20 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
+        public IC1FileInfo CreateFileInfo(string fileName)
+        {
+            return new LocalC1FileInfo(fileName);
+        }
+
+
+
+        public IC1DirectoryInfo CreateDirectoryInfo(string path)
+        {
+            return new LocalC1DirectoryInfo(path);
+        }
+
+
+
         public IC1FileStream CreateFileStream(string path, FileMode mode, FileAccess access, FileShare share, int bufferSize, FileOptions options)
         {
             return new LocalC1FileStream(path, mode, access, share, bufferSize, options);
@@ -74,6 +88,6 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
         public IC1Configuration CreateConfiguration(string path)
         {
             return new LocalC1Configuration(path);
-        }
+        }        
     }
 }

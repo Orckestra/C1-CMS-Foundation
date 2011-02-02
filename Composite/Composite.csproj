@@ -162,7 +162,9 @@
     <Compile Include="Core\Configuration\FileConfigurationSourceImplementation.cs" />
     <Compile Include="Core\Implementation\C1ConfigurationImplementation.cs" />
     <Compile Include="Core\Implementation\C1DirectoryImplementation.cs" />
+    <Compile Include="Core\Implementation\C1DirectoryInfoImplementation.cs" />
     <Compile Include="Core\Implementation\C1FileImplementation.cs" />
+    <Compile Include="Core\Implementation\C1FileInfoImplementation.cs" />
     <Compile Include="Core\Implementation\C1FileStreamImplementation.cs" />
     <Compile Include="Core\Implementation\C1FileSystemWatcherImplementation.cs" />
     <Compile Include="Core\Implementation\C1StreamReaderImplementation.cs" />
@@ -176,9 +178,11 @@
     <Compile Include="Core\Implementation\PageDataConnectionImplementation.cs" />
     <Compile Include="Core\Implementation\SitemapNavigatorImplementation.cs" />
     <Compile Include="Core\IO\C1Directory.cs" />
+    <Compile Include="Core\IO\C1DirectoryInfo.cs" />
     <Compile Include="Core\IO\C1File.cs" />
     <Compile Include="Core\IO\C1FileInfo.cs" />
     <Compile Include="Core\IO\C1FileStream.cs" />
+    <Compile Include="Core\IO\C1FileSystemInfo.cs" />
     <Compile Include="Core\IO\C1FileSystemWatcher.cs" />
     <Compile Include="Core\IO\C1StreamReader.cs" />
     <Compile Include="Core\IO\C1StreamWriter.cs" />
@@ -187,7 +191,9 @@
     <Compile Include="Core\IO\IOFacade.cs" />
     <Compile Include="Core\IO\Plugins\IOProvider\IC1Configuration.cs" />
     <Compile Include="Core\IO\Plugins\IOProvider\IC1Directory.cs" />
+    <Compile Include="Core\IO\Plugins\IOProvider\IC1DirectoryInfo.cs" />
     <Compile Include="Core\IO\Plugins\IOProvider\IC1File.cs" />
+    <Compile Include="Core\IO\Plugins\IOProvider\IC1FileInfo.cs" />
     <Compile Include="Core\IO\Plugins\IOProvider\IC1FileStream.cs" />
     <Compile Include="Core\IO\Plugins\IOProvider\IC1FileSystemWatcher.cs" />
     <Compile Include="Core\IO\Plugins\IOProvider\IC1StreamReader.cs" />
@@ -625,7 +631,9 @@
     </Compile>
     <Compile Include="Plugins\IO\IOProviders\LocalIOProvider\LocalC1Configuration.cs" />
     <Compile Include="Plugins\IO\IOProviders\LocalIOProvider\LocalC1Directory.cs" />
+    <Compile Include="Plugins\IO\IOProviders\LocalIOProvider\LocalC1DirectoryInfo.cs" />
     <Compile Include="Plugins\IO\IOProviders\LocalIOProvider\LocalC1File.cs" />
+    <Compile Include="Plugins\IO\IOProviders\LocalIOProvider\LocalC1FileInfo.cs" />
     <Compile Include="Plugins\IO\IOProviders\LocalIOProvider\LocalC1FileStream.cs" />
     <Compile Include="Plugins\IO\IOProviders\LocalIOProvider\LocalC1FileSystemWatcher.cs" />
     <Compile Include="Plugins\IO\IOProviders\LocalIOProvider\LocalC1StreamReader.cs" />

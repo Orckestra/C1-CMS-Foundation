@@ -14,7 +14,7 @@ namespace Composite.Core.IO.Plugins.IOProvider
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        DirectoryInfo CreateDirectory(string path);
+        C1DirectoryInfo CreateDirectory(string path);
 
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Composite.Core.IO.Plugins.IOProvider
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        DirectoryInfo GetParent(string path);
+        C1DirectoryInfo GetParent(string path);
 
 
         /// <summary>

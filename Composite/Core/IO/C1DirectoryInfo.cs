@@ -6,47 +6,24 @@ using Composite.Core.Implementation;
 
 namespace Composite.Core.IO
 {
+
+
     /// <summary>
     /// IOLayer - documentation pending
     /// </summary>
-    public class C1FileInfo : C1FileSystemInfo
+    public class C1DirectoryInfo : C1FileSystemInfo
     {
-        private ImplementationContainer<C1FileInfoImplementation> _implementation;
+        private ImplementationContainer<C1DirectoryInfoImplementation> _implementation;
+
 
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        /// <param name="fileName"></param>
-        public C1FileInfo(string fileName)
+        /// <param name="path"></param>
+        public C1DirectoryInfo(string path)
         {
-            _implementation = new ImplementationContainer<C1FileInfoImplementation>(() => ImplementationFactory.CurrentFactory.CreateC1FileInfo(fileName));
+            _implementation = new ImplementationContainer<C1DirectoryInfoImplementation>(() => ImplementationFactory.CurrentFactory.CreateC1DirectoryInfo(path));
             _implementation.CreateImplementation();
-        }
-
-
-
-        /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
-        public string DirectoryName
-        {
-            get
-            {
-                return _implementation.Implementation.DirectoryName;
-            }
-        }
-
-
-
-        /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
-        public C1DirectoryInfo Directory
-        {
-            get
-            {
-                return _implementation.Implementation.Directory;
-            }
         }
 
 
@@ -64,7 +41,6 @@ namespace Composite.Core.IO
 
 
 
-
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
@@ -73,19 +49,6 @@ namespace Composite.Core.IO
             get
             {
                 return _implementation.Implementation.FullName;
-            }
-        }
-
-
-
-        /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
-        public override bool Exists
-        {
-            get
-            {
-                return _implementation.Implementation.Exists;
             }
         }
 
@@ -107,11 +70,11 @@ namespace Composite.Core.IO
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        public bool IsReadOnly
+        public override bool Exists
         {
             get
             {
-                return _implementation.Implementation.IsReadOnly;
+                return _implementation.Implementation.Exists;
             }
         }
 
@@ -120,11 +83,24 @@ namespace Composite.Core.IO
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        public long Length
+        public C1DirectoryInfo Root
         {
             get
             {
-                return _implementation.Implementation.Length;
+                return _implementation.Implementation.Root;
+            }
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public C1DirectoryInfo Parent
+        {
+            get
+            {
+                return _implementation.Implementation.Parent;
             }
         }
 
@@ -151,9 +127,34 @@ namespace Composite.Core.IO
         /// IOLayer - documentation pending
         /// </summary>
         /// <returns></returns>
-        public C1FileStream Create()
+        public C1DirectoryInfo[] GetDirectories()
         {
-            return _implementation.Implementation.Create();
+            return _implementation.Implementation.GetDirectories();
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="searchPattern"></param>
+        /// <returns></returns>
+        public C1DirectoryInfo[] GetDirectories(string searchPattern)
+        {
+            return _implementation.Implementation.GetDirectories(searchPattern);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="searchPattern"></param>
+        /// <param name="searchOption"></param>
+        /// <returns></returns>
+        public C1DirectoryInfo[] GetDirectories(string searchPattern, SearchOption searchOption)
+        {
+            return _implementation.Implementation.GetDirectories(searchPattern, searchOption);
         }
 
 
@@ -162,9 +163,9 @@ namespace Composite.Core.IO
         /// IOLayer - documentation pending
         /// </summary>
         /// <returns></returns>
-        public C1StreamWriter CreateText()
+        public C1FileInfo[] GetFiles()
         {
-            return _implementation.Implementation.CreateText();
+            return _implementation.Implementation.GetFiles();
         }
 
 
@@ -172,22 +173,23 @@ namespace Composite.Core.IO
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
+        /// <param name="searchPattern"></param>
         /// <returns></returns>
-        public C1StreamWriter AppendText()
+        public C1FileInfo[] GetFiles(string searchPattern)
         {
-            return _implementation.Implementation.AppendText();
+            return _implementation.Implementation.GetFiles(searchPattern);
         }
-
 
 
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        /// <param name="mode"></param>
+        /// <param name="searchPattern"></param>
+        /// <param name="searchOption"></param>
         /// <returns></returns>
-        public C1FileStream Open(FileMode mode)
+        public C1FileInfo[] GetFiles(string searchPattern, SearchOption searchOption)
         {
-            return _implementation.Implementation.Open(mode);
+            return _implementation.Implementation.GetFiles(searchPattern, searchOption);
         }
 
 
@@ -195,122 +197,40 @@ namespace Composite.Core.IO
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        /// <param name="mode"></param>
-        /// <param name="access"></param>
+        public void Create()
+        {
+            _implementation.Implementation.Create();
+        }
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
         /// <returns></returns>
-        public C1FileStream Open(FileMode mode, FileAccess access)
+        public C1DirectoryInfo CreateSubdirectory(string path)
         {
-            return _implementation.Implementation.Open(mode, access);
+            return _implementation.Implementation.CreateSubdirectory(path);
         }
-
 
 
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        /// <param name="mode"></param>
-        /// <param name="access"></param>
-        /// <param name="share"></param>
+        /// <param name="path"></param>
+        /// <param name="directorySecurity"></param>
         /// <returns></returns>
-        public C1FileStream Open(FileMode mode, FileAccess access, FileShare share)
-        {
-            return _implementation.Implementation.Open(mode, access, share);
-        }
+        //public C1DirectoryInfo CreateSubdirectory(string path, DirectorySecurity directorySecurity);
 
 
 
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        /// <returns></returns>
-        public C1FileStream OpenRead()
+        /// <param name="destDirName"></param>
+        public void MoveTo(string destDirName)
         {
-            return _implementation.Implementation.OpenRead();
-        }
-
-
-
-        /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
-        /// <returns></returns>
-        public C1StreamReader OpenText()
-        {
-            return _implementation.Implementation.OpenText();
-        }
-
-
-
-        /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
-        /// <returns></returns>
-        public C1FileStream OpenWrite()
-        {
-            return _implementation.Implementation.OpenWrite();
-        }
-
-
-
-        /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
-        /// <param name="destFileName"></param>
-        /// <returns></returns>
-        public C1FileInfo CopyTo(string destFileName)
-        {
-            return _implementation.Implementation.CopyTo(destFileName);
-        }
-
-
-
-        /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
-        /// <param name="destFileName"></param>
-        /// <param name="overwrite"></param>
-        /// <returns></returns>
-        public C1FileInfo CopyTo(string destFileName, bool overwrite)
-        {
-            return _implementation.Implementation.CopyTo(destFileName, overwrite);
-        }
-
-
-
-        /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
-        /// <param name="destFileName"></param>
-        public void MoveTo(string destFileName)
-        {
-            _implementation.Implementation.MoveTo(destFileName);
-        }
-
-
-
-        /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
-        /// <param name="destinationFileName"></param>
-        /// <param name="destinationBackupFileName"></param>
-        /// <returns></returns>
-        public C1FileInfo Replace(string destinationFileName, string destinationBackupFileName)
-        {
-            return _implementation.Implementation.Replace(destinationFileName, destinationBackupFileName);
-        }
-
-
-
-        /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
-        /// <param name="destinationFileName"></param>
-        /// <param name="destinationBackupFileName"></param>
-        /// <param name="ignoreMetadataErrors"></param>
-        /// <returns></returns>
-        public C1FileInfo Replace(string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors)
-        {
-            return _implementation.Implementation.Replace(destinationFileName, destinationBackupFileName, ignoreMetadataErrors);
+            _implementation.Implementation.MoveTo(destDirName);
         }
 
 
@@ -324,25 +244,13 @@ namespace Composite.Core.IO
         }
 
 
-
         /// <summary>
         /// IOLayer - documentation pending
         /// </summary>
-        public override void Refresh()
+        /// <param name="recursive"></param>
+        public void Delete(bool recursive)
         {
-            _implementation.Implementation.Refresh();
-        }
-
-
-
-        /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            _implementation.Implementation.GetObjectData(info, context);
+            _implementation.Implementation.Delete(recursive);
         }
 
 
@@ -447,11 +355,38 @@ namespace Composite.Core.IO
             }
         }
 
-        //public FileSecurity GetAccessControl();
-        //public FileSecurity GetAccessControl(AccessControlSections includeSections);
-        //public void SetAccessControl(FileSecurity fileSecurity);
 
-        //public void Decrypt();        
-        //public void Encrypt();
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            _implementation.Implementation.GetObjectData(info, context);
+        }
+
+
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        public override void Refresh()
+        {
+            _implementation.Implementation.Refresh();
+        }
+
+
+
+
+
+
+
+        // public C1DirectoryInfo CreateSubdirectory(string path, DirectorySecurity directorySecurity);
+        // public FileSystemInfo[] GetFileSystemInfos();
+        // public FileSystemInfo[] GetFileSystemInfos(string searchPattern);
+        // public void Create(DirectorySecurity directorySecurity);
+        // public DirectorySecurity GetAccessControl(AccessControlSections includeSections);
+        // public void SetAccessControl(DirectorySecurity directorySecurity);
+        // public DirectorySecurity GetAccessControl();
     }
 }

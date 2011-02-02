@@ -156,6 +156,20 @@ namespace Composite.Core.Implementation
                 return new C1FileImplementation();
             }
         }
+
+
+
+        public virtual C1FileInfoImplementation CreateC1FileInfo(string path)
+        {
+            return new C1FileInfoImplementation(path);
+        }
+
+
+
+        public virtual C1DirectoryInfoImplementation CreateC1DirectoryInfo(string path)
+        {
+            return new C1DirectoryInfoImplementation(path);
+        }
         
 
 

@@ -15,7 +15,7 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static DirectoryInfo CreateDirectory(string path)
+        public static C1DirectoryInfo CreateDirectory(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1Directory.CreateDirectory(path);
         }
@@ -96,7 +96,7 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static DirectoryInfo GetParent(string path)
+        public static C1DirectoryInfo GetParent(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1Directory.GetParent(path);
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Composite.Core.IO;
 using Composite.Core.IO.Plugins.IOProvider;
 
 
@@ -8,9 +9,10 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
     internal class LocalC1Directory : IC1Directory
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
-        public DirectoryInfo CreateDirectory(string path)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseFileSystemInfoClass:DotNotUseFileSystemInfoClass")]
+        public C1DirectoryInfo CreateDirectory(string path)
         {
-            return Directory.CreateDirectory(path);
+            return new C1DirectoryInfo(Directory.CreateDirectory(path).FullName);
         }
 
 
@@ -64,9 +66,10 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
-        public DirectoryInfo GetParent(string path)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseFileSystemInfoClass:DotNotUseFileSystemInfoClass")]
+        public C1DirectoryInfo GetParent(string path)
         {
-            return Directory.GetParent(path);
+            return new C1DirectoryInfo(Directory.GetParent(path).FullName);
         }
 
 
