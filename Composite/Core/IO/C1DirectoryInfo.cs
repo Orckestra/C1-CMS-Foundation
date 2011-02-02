@@ -212,15 +212,7 @@ namespace Composite.Core.IO
         {
             return _implementation.Implementation.CreateSubdirectory(path);
         }
-
-
-        /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
-        /// <param name="path"></param>
-        /// <param name="directorySecurity"></param>
-        /// <returns></returns>
-        //public C1DirectoryInfo CreateSubdirectory(string path, DirectorySecurity directorySecurity);
+              
 
 
 

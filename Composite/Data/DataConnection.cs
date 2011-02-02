@@ -387,6 +387,7 @@ namespace Composite.Data
         /// This method triggers the event OnNew for the return value of the method.
         /// </summary>
         /// Here is an example of how to create a new IData instance and add it to the C1 storage.
+        /// <example>
         /// <code>
         /// using (DataConnection connection = new DataConnection())
         /// {
