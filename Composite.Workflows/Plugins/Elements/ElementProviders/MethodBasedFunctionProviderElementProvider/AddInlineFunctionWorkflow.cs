@@ -118,6 +118,8 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
 
                 function = DataFacade.AddNew(function);
 
+                UserSettings.LastSpecifiedNamespace = function.Namespace;
+
                 transactionScope.Complete();
             }
 
