@@ -170,4 +170,5 @@ public class GetIcon : IHttpHandler
             _fileLock.ReleaseWriterLock();
         }
     }
+    
 }
