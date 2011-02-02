@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 
-namespace Composite.Core.Profiling
+namespace Composite.Core.Instrumentation
 {
     /// <summary>    
     /// </summary>

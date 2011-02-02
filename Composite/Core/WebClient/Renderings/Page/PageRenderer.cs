@@ -7,7 +7,6 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
 using Composite.Core.Caching;
-using Composite.Core.Profiling;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Functions;

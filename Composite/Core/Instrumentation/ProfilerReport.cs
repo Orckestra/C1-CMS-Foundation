@@ -3,7 +3,7 @@ using System.Linq;
 using System.Xml.Linq;
 
 
-namespace Composite.Core.Profiling
+namespace Composite.Core.Instrumentation
 {
     /// <summary>    
     /// </summary>

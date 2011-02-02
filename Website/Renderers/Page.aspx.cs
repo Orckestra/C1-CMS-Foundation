@@ -10,7 +10,7 @@ using System.Xml.Linq;
 using Composite.C1Console.Security;
 using Composite.Core;
 using Composite.Core.Extensions;
-using Composite.Core.Profiling;
+using Composite.Core.Instrumentation;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.Renderings;
 using Composite.Core.WebClient.Renderings.Page;
@@ -123,7 +123,7 @@ public partial class Renderers_Page : System.Web.UI.Page
 
     private void RewritePath()
     {
-        UrlBuilder structuredUrl = _url.Build(PageUrlType.Published);
+        UrlBuilder structuredUrl = _url.Build(PageUrlType.Public);
 
         if (structuredUrl == null)
         {

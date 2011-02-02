@@ -4,7 +4,7 @@ using System.Diagnostics;
 using Composite.Core.Threading;
 
 
-namespace Composite.Core.Profiling
+namespace Composite.Core.Instrumentation
 {
     /// <summary>    
     /// </summary>

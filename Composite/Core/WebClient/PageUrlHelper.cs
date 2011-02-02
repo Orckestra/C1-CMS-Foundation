@@ -450,7 +450,7 @@ namespace Composite.Core.WebClient
                         continue;
                     }
 
-                    UrlBuilder newUrl = pageUrl.Build(PageUrlType.Published);
+                    UrlBuilder newUrl = pageUrl.Build(PageUrlType.Public);
                     if (newUrl == null)
                     {
                         // We have this situation if page does not exist

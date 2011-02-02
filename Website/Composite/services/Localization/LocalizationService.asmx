@@ -115,7 +115,7 @@ namespace Composite.Services
 
                 PageUrl pageUrl2 = new PageUrl(pageUrl.PublicationScope, locale, pageUrl.PageId);
 
-                UrlBuilder newUrlBuilder = pageUrl2.Build(PageUrlType.Published) ?? pageUrl2.Build(PageUrlType.Unpublished);
+                UrlBuilder newUrlBuilder = pageUrl2.Build(PageUrlType.Public) ?? pageUrl2.Build(PageUrlType.Internal);
                 newUrlBuilder.ServerUrl = urlBuilder.ServerUrl;
 
                 pageLocale.Url = newUrlBuilder.ToString();

@@ -55,7 +55,7 @@ namespace Composite.Services
                 return string.Empty;
             }
 
-            return pageUrlOptions.Build(PageUrlType.Unpublished);
+            return pageUrlOptions.Build(PageUrlType.Internal);
         }
     }
 

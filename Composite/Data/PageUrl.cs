@@ -131,7 +131,7 @@ namespace Composite.Data
 
             string legasyScopeName = GetLegasyPublicationScopeIdentifier(PublicationScope);
 
-            if (urlType == PageUrlType.Published)
+            if (urlType == PageUrlType.Public)
             {
                 var lookupTable = PageStructureInfo.GetIdToUrlLookup(legasyScopeName, Locale);
 
@@ -149,7 +149,7 @@ namespace Composite.Data
                 return publicUrl;
             }
 
-            if (urlType == PageUrlType.Unpublished)
+            if (urlType == PageUrlType.Internal)
             {
                 string basePath = UrlUtils.ResolvePublicUrl("Renderers/Page.aspx");
                 UrlBuilder result = new UrlBuilder(basePath);
@@ -238,7 +238,7 @@ namespace Composite.Data
             notUsedQueryParameters = new NameValueCollection(urlBuilder.GetQueryParameters());
             notUsedQueryParameters.Remove("dataScope");
 
-            return new PageUrl(publicationScope, locale, pageId, PageUrlType.Published);
+            return new PageUrl(publicationScope, locale, pageId, PageUrlType.Public);
         }
 
         internal static CultureInfo GetCultureInfo(string requestPath, out string requestPathWithoutUrlMappingName)
@@ -333,7 +333,7 @@ namespace Composite.Data
                 notUsedQueryParameters.Add(key, queryString[key]);
             }
 
-            return new PageUrl(publicationScope, cultureInfo, pageId, PageUrlType.Unpublished);
+            return new PageUrl(publicationScope, cultureInfo, pageId, PageUrlType.Internal);
         }
 
 

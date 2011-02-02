@@ -19,7 +19,7 @@ public class FileNotFoundHandler : IHttpHandler
 
         if (Composite.Data.PageUrl.TryParseFriendlyUrl(path, out pageUrl))
         {
-            string redurectUrl = pageUrl.Build(PageUrlType.Published).ToString();
+            string redurectUrl = pageUrl.Build(PageUrlType.Public).ToString();
             Composite.Core.Log.LogVerbose("Friendly URL", redurectUrl);
             context.Response.Redirect(redurectUrl);
             return;

@@ -5,7 +5,6 @@ using System.Xml.Linq;
 using Composite.Data;
 using Composite.Functions.Foundation;
 using Composite.Core.Instrumentation;
-using Composite.Core.Profiling;
 using Composite.Core.Extensions;
 
 

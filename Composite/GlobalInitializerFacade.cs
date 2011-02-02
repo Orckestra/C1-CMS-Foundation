@@ -24,7 +24,6 @@ using Composite.Data.Foundation;
 using Composite.Data.GeneratedTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Functions.Foundation;
-using Composite.Core.Extensions;
 
 
 namespace Composite
