@@ -75,7 +75,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
                         if (result != null)
                         {
-                            result = EvaluateLazyResult(result);
+                            result = EvaluateLazyResult(result, context);
 
                             int secondsToCache = parameters.GetParameter<int>("SecondsToCache"); 
 
@@ -97,11 +97,16 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         }
 
 
-        private static object EvaluateLazyResult(object result)
+        private static object EvaluateLazyResult(object result, FunctionContextContainer context)
         {
             if(result is IEnumerable<XElement>)
             {
                 return (result as IEnumerable<XElement>).Evaluate();
+            }
+
+            if(result is XDocument)
+            {
+                PageRenderer.ExecuteEmbeddedFunctions((result as XDocument).Root, context);
             }
 
             return result;
