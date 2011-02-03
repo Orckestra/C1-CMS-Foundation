@@ -129,7 +129,51 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
             public string GetCacheKey()
             {
-                return ("APRFilter" +_pageId) + (_associationScope + _tableVersion);
+                return "APRFilter" + GetRootForSelectionScope() + _associationScope + _tableVersion;
+            }
+
+            private Guid GetRootForSelectionScope()
+            {
+                switch (_associationScope)
+                {
+                    case SitemapScope.All:
+                        return Guid.Empty;
+                    case SitemapScope.Parent:
+                        return PageManager.GetParentId(_pageId);
+                    case SitemapScope.Level1:
+                    case SitemapScope.Level1AndSiblings:
+                    case SitemapScope.Level1AndDescendants:
+                        return GetPageOnLevel(1);
+                    case SitemapScope.Level2:
+                    case SitemapScope.Level2AndSiblings:
+                    case SitemapScope.Level2AndDescendants:
+                        return GetPageOnLevel(2);
+                    case SitemapScope.Level3:
+                    case SitemapScope.Level3AndSiblings:
+                    case SitemapScope.Level3AndDescendants:
+                        return GetPageOnLevel(3);
+                    case SitemapScope.Level4:
+                    case SitemapScope.Level4AndSiblings:
+                    case SitemapScope.Level4AndDescendants:
+                        return GetPageOnLevel(4);
+                }
+                return _pageId;
+            }
+
+            private Guid GetPageOnLevel(int level)
+            {
+                var ancestorsChain = new List<Guid>();
+                Guid currentPage = _pageId;
+
+                while(currentPage != Guid.Empty && ancestorsChain.Count < 1000)
+                {
+                    ancestorsChain.Add(currentPage);
+                    currentPage = PageManager.GetParentId(currentPage);
+                }
+
+                if (level > ancestorsChain.Count) return Guid.Empty;
+
+                return ancestorsChain[ancestorsChain.Count - level];
             }
 
             public IEnumerator<Guid> GetEnumerator()
