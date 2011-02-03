@@ -215,31 +215,57 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
         #endregion
 
         private CodeActivity initializeAddNewfolderCodeActivity;
+
         private StateInitializationActivity stateInitializationActivity1;
+
         private StateActivity finalStateActivity;
+
         private StateActivity finalizeStateActivity;
+
         private StateActivity step1StateActivity;
+
         private StateInitializationActivity stateInitializationActivity3;
+
         private StateInitializationActivity stateInitializationActivity2;
+
         private SetStateActivity setStateActivity3;
-        private Composite.C1Console.Workflow.Activities.DataDialogFormActivity wizzardFormActivity1;
+
+        private C1Console.Workflow.Activities.DataDialogFormActivity wizzardFormActivity1;
+
         private SetStateActivity setStateActivity2;
+
         private SetStateActivity setStateActivity1;
-        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+
         private EventDrivenActivity step1EventDrivenActivity_Finish;
+
         private EventDrivenActivity cancelActivity;
+
         private SetStateActivity setStateActivity4;
-        private Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
+
+        private C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
+
         private CodeActivity finalizeCodeActivity;
+
         private SetStateActivity setStateActivity5;
-        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
+
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
+
         private EventDrivenActivity step1EventDrivenActivity_Cancel;
-        private Composite.C1Console.Workflow.Activities.CloseCurrentViewActivity closeCurrentViewActivity1;
+
+        private C1Console.Workflow.Activities.CloseCurrentViewActivity closeCurrentViewActivity1;
+
         private IfElseBranchActivity ifElseBranchActivity2;
+
         private IfElseBranchActivity step1IfElseBranchActivity_DoesFolderExist;
+
         private IfElseActivity ifElseActivity1;
+
         private SetStateActivity setStateActivity6;
+
         private StateActivity AddNewMediaFolderWorkflowInitialState;
+
 
 
 

@@ -413,25 +413,6 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
 
 
-
-        private string GetParentFolderPath(string path)
-        {
-            if (path == "/")
-            {
-                return path;
-            }
-
-            string parentPath = path.Substring(0, path.LastIndexOf("/"));
-            if (parentPath == "")
-            {
-                return "/";
-            }
-
-            return parentPath;
-        }
-
-
-
         private void DeleteMediaFile(Guid id)
         {
             string fullPath = Path.Combine(_workingDirectory, id.ToString());
@@ -524,9 +505,9 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
             {
                 throw new ArgumentException("Invalid folder name");
             }
-            if (!DoesFolderExists(GetParentFolderPath(mediaFolder.Path)))
+            if (!DoesFolderExists(mediaFolder.GetParentFolderPath()))
             {
-                throw new ArgumentException("Could not find any parents folders on path " + GetParentFolderPath(mediaFolder.Path));
+                throw new ArgumentException("Could not find any parents folders on path " + mediaFolder.GetParentFolderPath());
             }
             if (DoesFolderExists(mediaFolder.Path))
             {

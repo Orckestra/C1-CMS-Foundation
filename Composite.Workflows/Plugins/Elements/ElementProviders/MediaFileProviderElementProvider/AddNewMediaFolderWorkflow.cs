@@ -53,12 +53,12 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             workflow.Bindings.Add("FolderName", "");
             workflow.Bindings.Add("ProviderName", store.DataSourceId.ProviderName);
             workflow.Bindings.Add("ProvidesMetaData", false);
-            
+
             workflow.BindingsValidationRules.Add("FolderName", new List<ClientValidationRule> { new NotNullClientValidationRule() });
         }
 
 
-        private string CreateFolderPath(IMediaFileFolder folder)
+        /*private string CreateFolderPath(IMediaFileFolder folder)
         {
             string folderName = this.GetBinding<string>("FolderName");
 
@@ -73,8 +73,19 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 folderPath = folderPath + "/" + folderName;
             }
 
+            folderPath = folderPath.Replace('\\', '/');
+            while (folderPath.Contains("//"))
+            {
+                folderPath.Replace("//", "/");
+            }
+
+            if ((folderPath != "/") && (folderPath.StartsWith("/")))
+            {
+                folderPath.Remove(0, 1);
+            }
+
             return folderPath;
-        }
+        }*/
 
 
         private void finalizeCodeActivity_ExecuteCode(object sender, EventArgs e)
@@ -82,19 +93,22 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             AddNewTreeRefresher addNewTreeRefresher = this.CreateAddNewTreeRefresher(this.EntityToken);
 
             IMediaFileFolder folder = this.GetBinding<IMediaFileFolder>("NewFolder");
+            string folderName = this.GetBinding<string>("FolderName");
             string providerName = this.GetBinding<string>("ProviderName");
 
-            string folderPath = CreateFolderPath(folder);
+            string folderPath = folder.CreateFolderPath(folderName);
 
             folder.Path = folderPath;
 
             if (folder.Title == string.Empty)
             {
                 folder.Title = folderPath.GetFolderName('/');
-            }
+            }            
 
             FlowControllerServicesContainer flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
             var managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
+
+            CreateParentFolder(folder.GetParentFolderPath(), providerName);
 
             folder = DataFacade.AddNew<IMediaFileFolder>(folder, providerName);
 
@@ -103,12 +117,26 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
 
 
+        private void CreateParentFolder(string parentFolder, string providerName)
+        {
+            if (IMediaFileFolderUtils.DoesFolderExists(parentFolder)) return;
+
+            CreateParentFolder(IMediaFileFolderUtils.GetParentFolderPath(parentFolder), providerName);
+
+            IMediaFileFolder folder = DataFacade.BuildNew<IMediaFileFolder>();
+            folder.Path = parentFolder;
+
+            DataFacade.AddNew<IMediaFileFolder>(folder, providerName);
+        }
+
+
         private void ValidateInputs(object sender, ConditionalEventArgs e)
         {
             e.Result = true;
 
             IMediaFileFolder folder = this.GetBinding<IMediaFileFolder>("NewFolder");
-            string folderPath = CreateFolderPath(folder);
+            string folderName = this.GetBinding<string>("FolderName");
+            string folderPath = folder.CreateFolderPath(folderName);
 
             if (DataFacade.GetData<IMediaFileFolder>(f => f.Path == folderPath).Any() == true)
             {
@@ -121,6 +149,8 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 e.Result = false;
                 ShowFieldMessage("FolderName", StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.AddNewMediaFolder.FolderNameTooLong"));
             }
+
+            folderPath.IsCorrectFolderName('/');
         }
     }
 }

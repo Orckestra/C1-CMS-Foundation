@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Composite.Data.Hierarchy;
 using Composite.Data.Types;
 
@@ -62,5 +63,140 @@ namespace Composite.Data.Types
         [ImmutableFieldId("{FA03F9D5-C8AF-469c-BC02-F11118D21A0F}")]
         [StoreFieldType(PhysicalStoreFieldType.Boolean)]
         bool IsReadOnly { get; }
+    }
+
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class IMediaFileFolderUtils
+    {
+        /// <summary>
+        /// Creates a folder path given folder path and the name of the folder
+        /// </summary>
+        /// <param name="parentMediaFolder"></param>
+        /// <param name="folderName"></param>
+        /// <returns></returns>
+        public static string CreateFolderPath(this IMediaFileFolder parentMediaFolder, string folderName)
+        {
+            return CreateFolderPath(parentMediaFolder.Path, folderName);
+        }
+
+
+
+        /// <summary>
+        /// Creates a folder path given folder path and the name of the folder
+        /// </summary>
+        /// <param name="folderPath"></param>
+        /// <param name="parentFolderPath"></param>
+        /// <returns></returns>
+        public static string CreateFolderPath(string parentFolderPath, string folderName)
+        {
+            string folderPath;
+            if (parentFolderPath == "/")
+            {
+                folderPath = parentFolderPath + folderName;
+            }
+            else
+            {
+                folderPath = parentFolderPath + "/" + folderName;
+            }
+
+            folderPath = folderPath.Replace('\\', '/');
+            while (folderPath.Contains("//"))
+            {
+                folderPath = folderPath.Replace("//", "/");
+            }
+
+            if (!folderPath.StartsWith("/"))
+            {
+                folderPath = "/" + folderPath;
+            }
+
+            return folderPath;
+        }        
+
+
+
+        /// <summary>
+        /// Returns the parent folder for the given media folder
+        /// </summary>
+        /// <param name="mediaFileFolder"></param>
+        /// <returns></returns>
+        public static string GetParentFolderPath(this IMediaFileFolder mediaFileFolder)
+        {
+            return GetParentFolderPath(mediaFileFolder.Path);
+        }
+
+
+
+        /// <summary>
+        /// Returns the parent folder for the given media folder path
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string GetParentFolderPath(string path)
+        {
+            if (path == "/")
+            {
+                return path;
+            }
+
+            string parentPath = path.Substring(0, path.LastIndexOf("/"));
+            if (parentPath == "")
+            {
+                return "/";
+            }
+
+            return parentPath;
+        }
+
+
+
+        /// <summary>
+        /// Returns true if the given media folder exists
+        /// </summary>
+        /// <param name="mediaFileFolder"></param>
+        /// <returns></returns>
+        public static bool DoesFolderExists(this IMediaFileFolder mediaFileFolder)
+        {
+            return DoesFolderExists(mediaFileFolder.Path);
+        }
+
+
+
+        /// <summary>
+        /// Returns true if the given media folder path exists
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static bool DoesFolderExists(string path)
+        {
+            if (path == "/")
+            {
+                return true;
+            }
+
+            using (DataConnection dataConnection = new DataConnection())
+            {
+                return (from item in dataConnection.Get<IMediaFileFolder>()
+                              where item.Path == path
+                              select item).Any();
+            }
+        }
+
+
+
+        /// <summary>
+        /// Returns true if the given media folders parent folder exists
+        /// </summary>
+        /// <param name="mediaFileFolder"></param>
+        /// <returns></returns>
+        public static bool DoesParentFolderExists(this IMediaFileFolder mediaFileFolder)
+        {
+            return DoesFolderExists(mediaFileFolder.GetParentFolderPath());
+        }
     }
 }
