@@ -20,13 +20,33 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Core.Application
 {
-    /// <summary>
-    /// Use the attribute on a static class with the following two static methods:
+    /// <summary>    
+    /// Using this attribute on a class with the following two static methods,
+    /// will cause C1 to call those two methods in the initialization face of C1.
+    /// This can be used to register event handlers ans such.
+    /// The static class should have these two static methods:
+    /// <code>
+    /// /* This handler will be called before C1 initialization. The data layer cannot be used here. */
     /// public static void OnBeforeInitialize() {}
+    /// /* This handler will be called after initialization of C1 core. */
     /// public static void OnInitialized() {}
+    /// </code>
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    /// <example>
+    /// <code>
+    /// [ApplicationStartup]
+    /// public class MyAppStartupHandler
+    /// {
+    ///     public static void OnBeforeInitialize()
+    ///     {
+    ///     }
+    ///     
+    ///     public static void OnInitialized()
+    ///     {
+    ///     }
+    /// } 
+    /// </code>
+    /// </example>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public sealed class ApplicationStartupAttribute : Attribute
     {        
