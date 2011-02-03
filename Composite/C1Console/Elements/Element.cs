@@ -82,7 +82,8 @@ namespace Composite.C1Console.Elements
             if (elementHandle == null) throw new ArgumentNullException("elementHandle");
             if (movabilityInfo == null) throw new ArgumentNullException("movabilityInfo");
 
-            _elementHandle = elementHandle;            
+            _elementHandle = elementHandle;
+            this.MovabilityInfo = movabilityInfo;
         }
 
 
