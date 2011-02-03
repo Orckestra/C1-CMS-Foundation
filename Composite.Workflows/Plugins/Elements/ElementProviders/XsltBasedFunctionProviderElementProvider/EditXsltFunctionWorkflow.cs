@@ -465,7 +465,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                 IXsltFunction previousXslt = DataFacade.GetData<IXsltFunction>(f => f.Id == xslt.Id).SingleOrDefault();
 
                 IFile persistemTemplateFile = IFileServices.TryGetFile<IXsltFile>(xslt.XslFilePath);
-                if (persistemTemplateFile!=null)
+                if (persistemTemplateFile != null)
                 {
                     string persistemTemplate = (persistemTemplateFile != null ? persistemTemplateFile.ReadAllText() : "");
 
@@ -486,20 +486,19 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                 using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
                 {
                     // Renaming related file if necessary
-                    string oldRelativePath = xslt.XslFilePath.Replace('\\', '/');
+                    string oldRelativePath = previousXslt.XslFilePath.Replace('\\', '/'); // This replace takes care of old paths having \ in them
                     string newRelativePath = xslt.CreateXslFilePath();
 
                     if (string.Compare(oldRelativePath, newRelativePath, true) != 0)
                     {
-                        var xlsFile = IFileServices.GetFile<IXsltFile>(xslt.XslFilePath);
+                        var xlsFile = IFileServices.GetFile<IXsltFile>(previousXslt.XslFilePath);
                         string systemPath = (xlsFile as FileSystemFileBase).SystemPath;
                         // Implement it in another way?
-                        string xsltFilesRoot = systemPath.Substring(0, systemPath.Length - xslt.XslFilePath.Length);
+                        string xsltFilesRoot = systemPath.Substring(0, systemPath.Length - previousXslt.XslFilePath.Length);
 
-                        string newSystemPath = xsltFilesRoot + newRelativePath;
+                        string newSystemPath = (xsltFilesRoot + newRelativePath).Replace('\\', '/');
 
-                        if (string.Compare(systemPath, newSystemPath, true) != 0
-                            && C1File.Exists(newSystemPath))
+                        if ((string.Compare(systemPath, newSystemPath, true) != 0) && C1File.Exists(newSystemPath))
                         {
                             FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
                             var consoleMessageService = serviceContainer.GetService<IManagementConsoleMessageService>();
