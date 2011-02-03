@@ -22,6 +22,8 @@ using Composite.Data.Validation;
 
 namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider
 {
+
+
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class AddNewXsltFunctionWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
@@ -160,7 +162,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                 return;
             }
 
-            function.XslFilePath = CreateXslFilePath(function);
+            function.XslFilePath = function.CreateXslFilePath();
 
             ValidationResults validationResults = ValidationFacade.Validate<IXsltFunction>(function);
             if (!validationResults.IsValid)
@@ -173,6 +175,12 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                 return;
             }
 
+
+            if (!function.ValidateXslFilePath())
+            {
+                this.ShowFieldMessage("NewXslt.Name", GetText("AddNewXsltFunctionWorkflow.TotalNameTooLang"));
+                return;
+            }
 
 
             IXsltFile xsltfile = DataFacade.BuildNew<IXsltFile>();
@@ -196,7 +204,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
 
             IXsltFunction xslt = this.GetBinding<IXsltFunction>("NewXslt");
 
-            xslt.XslFilePath = CreateXslFilePath(xslt);
+            xslt.XslFilePath = xslt.CreateXslFilePath();
 
             IFile file = IFileServices.TryGetFile<IXsltFile>(xslt.XslFilePath);
 
@@ -232,9 +240,6 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
             return StringResourceSystemFacade.GetString("Composite.Plugins.XsltBasedFunction", key);
         }
 
-        internal static string CreateXslFilePath(IXsltFunction xsltFunction)
-        {
-            return string.Format("/{0}/{1}.xsl", xsltFunction.Namespace.Replace(".", "/"), xsltFunction.Name).Replace("//", "/");
-        }
+        
     }
 }

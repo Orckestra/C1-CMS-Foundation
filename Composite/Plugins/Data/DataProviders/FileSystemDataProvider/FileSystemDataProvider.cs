@@ -185,25 +185,12 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
         public bool ValidatePath<TFile>(TFile file, out string errorMessage) 
             where TFile: IFile
         {
+            errorMessage = "";
+
             string filename = CreateSystemPath(Path.Combine(file.FolderPath, file.FileName));
 
-            try
-            {
-                using (FileStream fileStream = new FileStream(filename, FileMode.Open))
-                {
-                }
-            }
-            catch (PathTooLongException ex)
-            {
-                errorMessage = ex.Message;
-                return false;
-            }
-            catch (Exception)
-            {
-                // Ignore
-            }
+            if (filename.Length > 250) return false;
 
-            errorMessage = null;
             return true;
         }
 

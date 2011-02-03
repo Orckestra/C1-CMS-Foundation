@@ -675,6 +675,7 @@
     <Compile Include="Plugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\AddNewXsltFunctionWorkflow.Designer.cs">
       <DependentUpon>AddNewXsltFunctionWorkflow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\Common.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\DeleteXsltFunctionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>

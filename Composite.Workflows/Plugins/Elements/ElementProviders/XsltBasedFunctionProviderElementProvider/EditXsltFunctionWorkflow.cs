@@ -193,7 +193,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
             }
 
 
-            function.XslFilePath = AddNewXsltFunctionWorkflow.CreateXslFilePath(function);
+            function.XslFilePath = function.CreateXslFilePath();
 
             ValidationResults validationResults = ValidationFacade.Validate<IXsltFunction>(function);
             if (!validationResults.IsValid)
@@ -203,6 +203,13 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                     this.ShowFieldMessage(string.Format("{0}.{1}", "CurrentXslt", result.Key), result.Message);
                 }
 
+                return;
+            }
+
+
+            if (!function.ValidateXslFilePath())
+            {
+                this.ShowFieldMessage("NewXslt.Name", GetString("AddNewXsltFunctionWorkflow.TotalNameTooLang"));
                 return;
             }
 
@@ -454,7 +461,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                 IXsltFunction xslt = this.GetBinding<IXsltFunction>("CurrentXslt");
                 IXsltFunction previousXslt = DataFacade.GetData<IXsltFunction>(f => f.Id == xslt.Id).SingleOrDefault();
 
-                IFile persistemTemplateFile = IFileServices.GetFile<IXsltFile>(xslt.XslFilePath);
+                IFile persistemTemplateFile = IFileServices.GetFile<IXsltFile>(previousXslt.XslFilePath);
                 string persistemTemplate = persistemTemplateFile.ReadAllText();
 
                 if (this.GetBinding<int>("XslTemplateLastSaveHash") != persistemTemplate.GetHashCode())
@@ -474,7 +481,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                 {
                     // Renaming related file if necessary
                     string oldRelativePath = xslt.XslFilePath.Replace('\\', '/');
-                    string newRelativePath = AddNewXsltFunctionWorkflow.CreateXslFilePath(xslt).Replace('\\', '/');
+                    string newRelativePath = xslt.CreateXslFilePath();
 
                     if (string.Compare(oldRelativePath, newRelativePath, true) != 0)
                     {
