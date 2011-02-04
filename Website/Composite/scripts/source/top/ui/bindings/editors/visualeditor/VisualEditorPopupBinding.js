@@ -136,9 +136,9 @@ VisualEditorPopupBinding.prototype._configureLinkGroupDetails = function () {
 	unlinkitem.setDisabled ( unlinkbutton.isDisabled );
 		
 	if ( unlinkitem.isDisabled ) {
-		linkitem.setLabel ( "Link" );
+	    linkitem.setLabel( "${string:Composite.Web.VisualEditor:ContextMenu.LabelLink}" );
 	} else {
-		linkitem.setLabel ( "Link properties" );
+    linkitem.setLabel( "${string:Composite.Web.VisualEditor:ContextMenu.LabelLinkProperties}" );
 	}
 }
 
