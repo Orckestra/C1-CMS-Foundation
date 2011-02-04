@@ -225,7 +225,7 @@ public partial class Renderers_Page : System.Web.UI.Page
                 .FormatWith(ProfilerXslPath);
 
         XElement reportXml = ProfilerReport.BuildReportXml(measurement);
-        var url = new UrlString(Context.Request.Url.ToString());
+        var url = new UrlBuilder(Context.Request.Url.ToString());
         url["c1mode"] = null;
 
         reportXml.Add(new XAttribute("description", "URL: " + url));
