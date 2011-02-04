@@ -311,6 +311,8 @@
   <string key="MediaFileProviderElementProvider.UploadZipFileToolTip" value="Upload Zip file" />
   <string key="MediaFileProviderElementProvider.MediaFileItemToolTip" value="Media Item" />
   <string key="MediaFileProviderElementProvider.OrganizedFilesAndFoldersToolTip" value="Organize folders and files" />
+  <string key="MediaFileProviderElementProvider.ErrorMessageTitle" value="Error" />
+  <string key="MediaFileProviderElementProvider.FileAlreadyExistsMessage" value="File '{0}' already exists in folder '{1}'" />
   <string key="UploadNewMediaFileWorkflow.UploadFailure" value="Failure" />
   <string key="UploadNewMediaFileWorkflow.UploadFailureMessage" value="The uploaded file must be of the same type as the original. The file you uploaded is of a different type." />
   <string key="RelationshipGraphActionExecutor.ShowGraph" value="Show Graph" />
