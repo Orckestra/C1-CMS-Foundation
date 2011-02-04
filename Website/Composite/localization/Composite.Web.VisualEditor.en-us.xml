@@ -40,6 +40,7 @@
   <string key="ContextMenu.LabelPaste" value="Paste" />
   <string key="ContextMenu.LabelLink" value="Link" />
   <string key="ContextMenu.LabelUnLink" value="Unlink" />
+  <string key="ContextMenu.LabelLinkProperties" value="Link Properties" />
   <string key="ContextMenu.LabelTable" value="Table…" />
   <string key="ContextMenu.LabelTableManage" value="Manage table" />
   <string key="ContextMenu.LabelImage" value="Image…" />
