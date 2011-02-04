@@ -311,11 +311,14 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                     DateTime creationDate = DateTime.Now;
                     string fileNamePrefix = creationDate.ToString("yyyyMMdd");
 
-                    foreach (string filepath in Directory.GetFiles(_logDirectoryPath))
+                    if (Directory.Exists(_logDirectoryPath))
                     {
-                        if (!Path.GetFileName(filepath).StartsWith(fileNamePrefix))
+                        foreach (string filepath in Directory.GetFiles(_logDirectoryPath))
                         {
-                            C1File.Touch(filepath);
+                            if (!Path.GetFileName(filepath).StartsWith(fileNamePrefix))
+                            {
+                                C1File.Touch(filepath);
+                            }
                         }
                     }
                 }
