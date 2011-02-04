@@ -21,7 +21,7 @@
 				id="bold" 
 				label="Strong" 
 				image=""
-				notes="Strong text"  
+				notes="${string:Composite.Web.VisualEditor:ToolBar.ToolTipStrong}"  
 				inline="strong">
 					<!-- 
 						Add button: you can overwrite the 
@@ -34,7 +34,7 @@
 				id="italic" 
 				label="Emphasis" 
 				image=""
-				notes="Emphasized text" 
+				notes="${string:Composite.Web.VisualEditor:ToolBar.ToolTipEmphasize}" 
 				inline="em">
 					<button image="Images/italic.png" label=""/>
 			</format>
@@ -108,7 +108,7 @@
 				id="alignleft" 
 				label="Left" 
 				image=""
-				notes="Align left" 
+				notes="${string:Composite.Web.VisualEditor:ToolBar.ToolTipAlignLeft}" 
 				classes="left" 
 				selector="img,table">
 					<button label="" image="images/left.png"/>
@@ -122,7 +122,7 @@
 				id="alignright" 
 				label="Right"  
 				image="" 
-				notes="Align right" 
+				notes="${string:Composite.Web.VisualEditor:ToolBar.ToolTipAlignRight}" 
 				classes="right" 
 				selector="img,table">
 					<button label="" image="images/right.png"/>
