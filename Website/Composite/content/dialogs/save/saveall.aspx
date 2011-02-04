@@ -9,12 +9,12 @@
 	</head>
 	<body>
 		<ui:dialogpage binding="SaveAllDialogPageBinding"
-			label="Save Resources?"
+			label="${string:Website.Dialogs.SaveAll.LabelSaveResources}"
 			image="${icon:question}" 
 			resizable="false">
 			<ui:pagebody>
 				<ui:fields id="fields">
-					<ui:fieldgroup label="Unsaved Resources" id="fieldgroup">
+					<ui:fieldgroup label="${string:Website.Dialogs.SaveAll.LabelUnsavedResources}" id="fieldgroup">
 						<!-- 
 						<ui:field>
 							<ui:fielddesc>Content</ui:fielddesc>
