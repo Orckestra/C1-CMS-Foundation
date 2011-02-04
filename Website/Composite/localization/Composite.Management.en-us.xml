@@ -400,6 +400,8 @@
   <string key="Website.Content.Views.Help.ToolTipBack" value="Go back one page" />
   <string key="Website.Content.Views.Help.ToolTipForward" value="Go forward one page" />
   <string key="Website.Content.Views.Help.ToolTipRefresh" value="Refresh page" />
+  <string key="Website.Content.Views.Help.LabelContents" value="Contents" />
+  <string key="Website.Content.Views.Help.ToolTipContents" value="Help contents" />
   <string key="Website.Content.Views.Search.Search.LabelNewSearch" value="New Search..." />
   <string key="Website.FlowUICompleted.ExecutionEndedTitle" value="Execution Ended" />
   <string key="Website.FlowUICompleted.ExecutionEndedMessage" value="The action executed in this window has ended." />
