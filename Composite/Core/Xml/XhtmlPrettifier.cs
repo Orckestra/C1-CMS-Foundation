@@ -335,7 +335,7 @@ namespace Composite.Core.Xml
         {
             StringBuilder sb = new StringBuilder();
 
-            value = value.Trim();
+            value = value.Trim(WhitespaceChars); /* Symbol #160 - the non-breaking space, shouldn't be trimmed */
 
             int index = 0;
             int oldIndex = 0;
