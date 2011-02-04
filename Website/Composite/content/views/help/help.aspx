@@ -50,7 +50,7 @@
 			<ui:toolbar id="statusbar" class="statusbar">
 				<ui:toolbarbody>
 					<ui:toolbargroup>
-						<ui:toolbarbutton id="contentsbutton" label="Contents" image="${icon:contents}" image-disabled="${icon:contents-disabled}" tooltip="Help contents"/>
+						<ui:toolbarbutton id="contentsbutton" label="${string:Website.Content.Views.Help.LabelContents}" image="${icon:contents}" image-disabled="${icon:contents-disabled}" tooltip="${string:Website.Content.Views.Help.ToolTipContents}"/>
 						<ui:toolbarbutton id="searchbutton" rel="developermode" label="Search" image="${icon:zoom}" image-disabled="${icon:zoom-disabled}" tooltip="Search Help"/>
 						<ui:toolbarbutton id="bookmarksbutton" rel="developermode" label="Bookmarks" image="${icon:bookmark}" image-disabled="${icon:bookmark-disabled}" tooltip="Your bookmarked pages"/>
 						<ui:toolbarbutton id="indexbutton" rel="developermode" label="Index" image="${icon:alphbeticindex}" image-disabled="${icon:alphbeticindex-disabled}" tooltip="Alphabetic index"/>
