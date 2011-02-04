@@ -139,7 +139,7 @@
 						<ui:toolbarbutton
 							id="savebutton" 
 							image="${icon:save}" 
-							tooltip="Save" 
+							tooltip="${string:Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBar.LabelSave}" 
 							image-disabled="${icon:save-disabled}" 
 							oncommand="this.dispatchAction(EditorPageBinding.ACTION_SAVE);"
 							observes="broadcasterCanUndo"/>
@@ -147,12 +147,12 @@
 					<ui:toolbargroup>
 						<ui:toolbarbutton 
 							id="scalebutton" 
-							tooltip="Scale image"
+							tooltip="${string:Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBar.LabelScale}"
 							oncommand="ImageEditorActions.scale ()"
 							image="${icon:scale}"/>
 						<ui:toolbarbutton 
 							id="cropbutton" 
-							tooltip="Crop image"
+							tooltip="${string:Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBar.LabelCrop}"
 							oncommand="ImageEditorActions.crop ()"
 							image="${icon:crop}" 
 							image-disabled="${icon:crop-disabled}"
@@ -161,13 +161,13 @@
 					<ui:toolbargroup>
 						<ui:toolbarbutton 
 							image="${icon:undo}" 
-							tooltip="Undo"
+							tooltip="${string:Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBar.LabelUndo}"
 							image-disabled="${icon:undo-disabled}"
 							observes="broadcasterCanUndo"
 							oncommand="ImageEditorActions.undo()"/>
 						<ui:toolbarbutton 
 							image="${icon:redo}" 
-							tooltip="Redo" 
+							tooltip="${string:Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBar.LabelRedo}" 
 							image-disabled="${icon:redo-disabled}" 
 							observes="broadcasterCanRedo"
 							oncommand="ImageEditorActions.redo()"/>
