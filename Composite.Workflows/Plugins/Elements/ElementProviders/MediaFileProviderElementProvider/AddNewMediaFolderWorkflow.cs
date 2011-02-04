@@ -138,6 +138,19 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             string folderName = this.GetBinding<string>("FolderName");
             string folderPath = folder.CreateFolderPath(folderName);
 
+            string tempFolderName = folderName.Replace('\\', '/').Trim();
+            while (tempFolderName.Contains("//"))
+            {
+                tempFolderName = tempFolderName.Replace("//", "/");
+            }
+
+            if (tempFolderName == "/") 
+            {
+                e.Result = false;
+                ShowFieldMessage("FolderName", StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.AddNewMediaFolder.FolderNotOnlySlash"));
+                return;
+            }
+
             if (DataFacade.GetData<IMediaFileFolder>(f => f.Path == folderPath).Any() == true)
             {
                 e.Result = false;
@@ -149,6 +162,8 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 e.Result = false;
                 ShowFieldMessage("FolderName", StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.AddNewMediaFolder.FolderNameTooLong"));
             }
+
+            
 
             folderPath.IsCorrectFolderName('/');
         }

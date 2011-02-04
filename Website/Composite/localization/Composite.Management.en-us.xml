@@ -524,6 +524,7 @@
   <string key="Website.Forms.Administrative.AddNewMediaFolder.HelpDescription" value="" />
   <string key="Website.Forms.Administrative.AddNewMediaFolder.FolderNameAlreadyUsed" value="The folder already exists" />
   <string key="Website.Forms.Administrative.AddNewMediaFolder.FolderNameTooLong" value="The total length of the folder name is too long" />
+  <string key="Website.Forms.Administrative.AddNewMediaFolder.FolderNotOnlySlash" value="The folder name can not only be '/' or '\'" />
   <string key="Website.Forms.Administrative.AddZipMediaFile.LabelDialog" value="Upload multiple files via a Zip File" />
   <string key="Website.Forms.Administrative.AddZipMediaFile.LabelFieldGroup" value="Select Zip file containing files to extract" />
   <string key="Website.Forms.Administrative.AddZipMediaFile.LabelFile" value="Zip file" />

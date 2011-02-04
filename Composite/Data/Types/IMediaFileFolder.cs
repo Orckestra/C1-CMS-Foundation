@@ -115,6 +115,11 @@ namespace Composite.Data.Types
                 folderPath = "/" + folderPath;
             }
 
+            if (folderPath.EndsWith("/"))
+            {
+                folderPath = folderPath.Remove(folderPath.Length - 1);
+            }
+
             return folderPath;
         }        
 
