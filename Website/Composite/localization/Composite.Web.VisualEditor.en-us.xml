@@ -7,6 +7,8 @@
   <string key="ToolBar.ToolTipEmphasize" value="Emphasize text" />
   <string key="ToolBar.ToolTipUnderline" value="Underline text" />
   <string key="ToolBar.ToolTipStrike" value="Strike text" />
+  <string key="ToolBar.ToolTipAlignLeft" value="Align left" />
+  <string key="ToolBar.ToolTipAlignRight" value="Align right" />
   <string key="ToolBar.ToolTipJustifyLeft" value="Justify left" />
   <string key="ToolBar.ToolTipJustifyRight" value="Justify right" />
   <string key="ToolBar.ToolTipJustifyCenter" value="Justify center" />
