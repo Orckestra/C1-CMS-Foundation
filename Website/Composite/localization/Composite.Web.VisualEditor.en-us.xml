@@ -83,6 +83,8 @@
   <string key="MozSecurityNote.LabelSecurityStuff" value="Clipboard disabled" />
   <string key="MozSecurityNote.TextSecurityStuff" value="For security reasons, access to the clipboard was blocked by your browser. Please use standard keyboard shortcuts. For a technical description of, how to configure your browser for use with Composite C1, press the &quot;More Info&quot; button." />
   <!-- link -->
+  <string key="Link.LabelInsertLink" value="Insert Link" />
+  <string key="Link.LabelLinkProperties" value="Link Properties" />
   <string key="Link.LinkDestination" value="URL" />
   <string key="Link.LinkRole" value="Role" />
   <string key="Link.TitleText" value="Title" />
