@@ -397,6 +397,11 @@
   <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelCrop" value="Crop Image" />
   <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBox.ToolTipSelect" value="Select" />
   <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBox.ToolTipZoom" value="Zoom" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBar.LabelSave" value="Save" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBar.LabelScale" value="Scale image" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBar.LabelCrop" value="Crop image" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBar.LabelUndo" value="Undo" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBar.LabelRedo" value="Redo" />  
   <string key="Website.Content.Views.Help.ToolTipBack" value="Go back one page" />
   <string key="Website.Content.Views.Help.ToolTipForward" value="Go forward one page" />
   <string key="Website.Content.Views.Help.ToolTipRefresh" value="Refresh page" />
