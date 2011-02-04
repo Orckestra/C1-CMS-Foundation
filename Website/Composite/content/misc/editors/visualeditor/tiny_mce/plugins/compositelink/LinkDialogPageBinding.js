@@ -28,7 +28,7 @@ LinkDialogPageBinding.prototype.toString = function () {
 LinkDialogPageBinding.prototype.setPageArgument = function ( arg ) {
 	
 	LinkDialogPageBinding.superclass.setPageArgument.call ( this, arg );
-	this.label = this._tinyAction == "update" ? "Link Properties" : "Insert Link";
+	this.label = this._tinyAction == "update" ? "${string:Composite.Web.VisualEditor:Link.LabelLinkProperties}" : "${string:Composite.Web.VisualEditor:Link.LabelInsertLink}";
 }
 
 /**
