@@ -402,6 +402,8 @@
   <string key="Website.Content.Views.Help.ToolTipRefresh" value="Refresh page" />
   <string key="Website.Content.Views.Help.LabelContents" value="Contents" />
   <string key="Website.Content.Views.Help.ToolTipContents" value="Help contents" />
+  <string key="Website.Content.Views.SystemView.ToolTipCollapseAll" value="Collapse All" />
+  <string key="Website.Content.Views.SystemView.ToolTipLinkWithEditor" value="Link with Editor" />
   <string key="Website.Content.Views.Search.Search.LabelNewSearch" value="New Search..." />
   <string key="Website.FlowUICompleted.ExecutionEndedTitle" value="Execution Ended" />
   <string key="Website.FlowUICompleted.ExecutionEndedMessage" value="The action executed in this window has ended." />
