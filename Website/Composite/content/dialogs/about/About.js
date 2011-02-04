@@ -184,7 +184,7 @@ var About = new function () {
 			
 			var button = window.bindingMap.buttonCredits;
 			if ( Binding.exists ( button )) {
-				button.setLabel ( "Credits" ); 
+			    button.setLabel( "${string:Website.Dialogs.About.LabelCredits2}" ); 
 				button.setImage ( false );
 			}
 		}
