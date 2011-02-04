@@ -331,13 +331,16 @@
   <string key="Website.Application.DialogReload.Text" value="Restart Composite C1? All unsaved changes will be lost." />
   <string key="WebSite.Application.DialogSaveResource.Title" value="Save resource?" />
   <string key="WebSite.Application.DialogSaveResource.Text" value="&quot;${resourcename}&quot; has been modified. Save changes?" />
+  <string key="Website.Dialogs.SaveAll.LabelSaveResources" value="Save resources?" />
+  <string key="Website.Dialogs.SaveAll.LabelUnsavedResources" value="Unsaved resources" />
   <string key="Website.Dialogs.LabelAccept" value="OK" />
   <string key="Website.Dialogs.LabelCancel" value="Cancel" />
   <string key="Website.Dialogs.LabelDisclosure" value="More Info" />
   <string key="Website.Dialogs.About.Title" value="About Composite C1" />
   <string key="Website.Dialogs.About.LabelCredits" value="Credits" />
   <string key="Website.Dialogs.About.LabelBack" value="Back" />
-
+  <string key="Website.Dialogs.About.LabelCredits2" value="Credits" />
+  
   <string key="Website.Dialogs.NoAccessTitle" value="No access" />
   <string key="Website.Dialogs.NoAccessText" value="You have not been granted access rights to the system. Please contact your administrator." />
   <string key="Website.Dialogs.ImageEditor.ScaleImage.Unit" value="Unit" />
