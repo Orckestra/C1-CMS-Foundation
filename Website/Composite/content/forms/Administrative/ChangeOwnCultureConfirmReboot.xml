@@ -3,7 +3,7 @@
   <cms:bindings>
     <cms:binding name="CultureName" type="System.String" />
   </cms:bindings>
-  <cms:layout iconhandle="users-changeownculture" label="Change application language">
+  <cms:layout iconhandle="users-changeownculture" label="${Composite.C1Console.Users, ChangeOwnCultureWorkflow.Dialog.Confirm.Title}">
     <Text Text="${Composite.C1Console.Users, ChangeOwnCultureWorkflow.Dialog.Confirm.Text}" />
   </cms:layout>
 </cms:formdefinition>
