@@ -149,6 +149,8 @@
   <string key="Image.TitleText" value="Title text" />
   <string key="Image.TitleTextToolTip" value="The title text is rendered as a tooltip when the mouse hovers over the image. An image that might be confusing for the viewer can be instantly clarified by a title." />
   <string key="Image.LabelImage" value="Image properties" />
+  <string key="Image.LabelInsertImage" value="Insert Image" />
+  <string key="Image.LabelImageProperties" value="Image Properties" />
   <!-- charmap -->
   <string key="CharMap.LabelSelectSpecialChar" value="Select Character" />
   <string key="CharMap.LabelGeneral" value="General" />
