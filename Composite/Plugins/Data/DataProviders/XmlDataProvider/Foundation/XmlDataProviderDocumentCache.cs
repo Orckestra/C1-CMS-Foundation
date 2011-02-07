@@ -4,6 +4,7 @@ using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
 using Composite.Core.Collections.Generic;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Xml;
 using Composite.Data;
@@ -128,14 +129,17 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                     if (cachedData == null)
                     {
-                        // Restore broken save
-                        if (File.Exists(filename + ".tmp"))
+                        if (!File.Exists(filename))
                         {
-                            if (File.Exists(filename))
+                            // Restore broken save
+                            if (File.Exists(filename + ".tmp"))
                             {
-                                File.Delete(filename);
+                                File.Move(filename + ".tmp", filename);
                             }
-                            File.Move(filename + ".tmp", filename);
+                            else
+                            {
+                                throw new InvalidOperationException("File '{0}' not found".FormatWith(filename));
+                            }
                         }
 
                         XDocument xDoc = XDocumentUtils.Load(filename);
