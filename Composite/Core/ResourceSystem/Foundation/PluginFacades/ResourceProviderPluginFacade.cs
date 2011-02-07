@@ -52,12 +52,17 @@ namespace Composite.Core.ResourceSystem.Foundation.PluginFacades
         #region IStringResourceProvider methods
         public static string GetStringValue(string providerName, string stringId)
         {
+            return GetStringValue(providerName, stringId, System.Threading.Thread.CurrentThread.CurrentCulture);
+        }
+
+        public static string GetStringValue(string providerName, string stringId, CultureInfo cultureInfo)
+        {
             Verify.ArgumentNotNullOrEmpty(providerName, "providerName");
             Verify.ArgumentNotNullOrEmpty(stringId, "stringId");
 
             var provider = GetResourceProvider<IStringResourceProvider>(providerName);
 
-            return provider.GetStringValue(stringId, UserSettings.CultureInfo);
+            return provider.GetStringValue(stringId, cultureInfo);
         }
 
 

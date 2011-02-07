@@ -50,9 +50,9 @@ namespace Composite.Core.ResourceSystem
                 Verify.ArgumentNotNullOrEmpty(stringName, "stringName");
             }
 
-            string cultureName = Thread.CurrentThread.CurrentCulture.Name;
+            var culture = Thread.CurrentThread.CurrentCulture;
 
-            string cacheKey = cultureName + providerName + stringName;
+            string cacheKey = culture.Name + providerName + stringName;
             ExtendedNullable<string> cachedValue = _resourceCache.Get(cacheKey);
             if (cachedValue != null)
             {
@@ -67,7 +67,7 @@ namespace Composite.Core.ResourceSystem
 
             if (ResourceProviderRegistry.StringResourceProviderNames.Contains(providerName) == true)
             {
-                string result = ResourceProviderPluginFacade.GetStringValue(providerName, stringName);
+                string result = ResourceProviderPluginFacade.GetStringValue(providerName, stringName, culture);
                 _resourceCache.Add(cacheKey, new ExtendedNullable<string> {Value = result});
 
                 return result;
