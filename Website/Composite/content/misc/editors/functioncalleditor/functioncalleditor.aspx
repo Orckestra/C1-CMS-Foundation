@@ -38,7 +38,7 @@
 			                            TagName="ui:toolbarbutton" 
 			                            id="btnAddFunction"
 			                            callbackid="btnAddFunction" 
-			                            label="Add New" 
+			                            label="${string:Composite.Web.FormControl.FunctionCallsDesigner:AddNewButtonLabel}" 
 			                            image="${icon:functioncall}" 
 			                            image-disabled="${icon:functioncall}" 
 			                            disabled="false" 
@@ -48,7 +48,7 @@
 			                            TagName="ui:toolbarbutton" 
 			                            id="btnDeleteFunction" 
 			                            callbackid="btnDeleteFunction" 
-			                            label="Delete" 
+			                            label="${string:Composite.Web.FormControl.FunctionCallsDesigner:DeleteButtonLabel}" 
 			                            image="${icon:delete}" 
 			                            image-disabled="${icon:delete-disabled()}" 
 			                            disabled="false"/>
@@ -69,7 +69,7 @@
 										callbackid="switchbutton"
 										callbackarg="source"
 									 	clientid="switchbutton"
-										label="Source" 
+										label="${string:Composite.Web.FormControl.FunctionCallsDesigner:ToolBar.LabelSource}" 
 										image="${icon:editor-sourceview}" 
 										image-disabled="${icon:editor-sourceview-disabled}"
 										flip="true"
@@ -113,20 +113,20 @@
 		                                                  <ui:fielddesc><%= GetString("ParameterTypeLabel") %></ui:fielddesc>
 		                                                  <ui:fielddata id="optionsfielddata">
 		                                                      <aspui:Generic TagName="ui:fieldsbutton" runat="server" 
-		                                                          id="btnDefault" image="${icon:blank}" label="Default" 
+		                                                          id="btnDefault" image="${icon:blank}" label="${string:Composite.Web.FormControl.FunctionCallsDesigner:ParameterTypeDefaultLabel}" 
 		                                                          callbackid="btnDefault"  />
 		                                                          
 		                                                      <aspui:Generic TagName="ui:fieldsbutton" runat="server" 
-		                                                           id="btnConstant" image="${icon:blank}" label="Constant" callbackid="btnConstant" />
+		                                                           id="btnConstant" image="${icon:blank}" label="${string:Composite.Web.FormControl.FunctionCallsDesigner:ParameterTypeConstantLabel}" callbackid="btnConstant" />
 		                                                           
 		                                                      <aspui:Generic TagName="ui:fieldsbutton" runat="server"
-		                                                           id="btnInputParameter" image="${icon:blank}" label="Input Parameter" callbackid="btnInputParameter" />
+		                                                           id="btnInputParameter" image="${icon:blank}" label="${string:Composite.Web.FormControl.FunctionCallsDesigner:ParameterTypeInputParameterLabel}" callbackid="btnInputParameter" />
 		                                                      
 	                                                             <aspui:PostBackDialog runat="server" 
 	                                                                   EnableViewState="false"
 	                                                                   ID="btnFunctionCall" 
 	                                                                   image="${icon:blank}" 
-	                                                                   label="Function" 
+	                                                                   label="${string:Composite.Web.FormControl.FunctionCallsDesigner:ParameterTypeFunctionLabel}" 
 	                                                                   callbackid="btnFunctionCall"
 	                                                                   handle="Composite.Management.FunctionSelectorDialog" 
 	                                                                   binding="ViewDefinitionPostBackDataDialogBinding"/>
