@@ -94,7 +94,7 @@ FunctionEditorPageBinding.prototype._buildSwitchButton = function ( editor ) {
 	
 	var button = ToolBarButtonBinding.newInstance ( doc );
 	button.isEditorControlBinding = false;
-	button.setLabel ( "Design" );
+	button.setLabel( "${string:Composite.Web.FormControl.FunctionCallsDesigner:ToolBar.LabelDesign}" );
 	button.flip ( true );
 	button.imageProfile = new ImageProfile ({
 		image : "${icon:editor-designview}",
