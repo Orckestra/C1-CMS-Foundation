@@ -33,7 +33,7 @@ ImageDialogPageBinding.prototype.toString = function () {
 ImageDialogPageBinding.prototype.setPageArgument = function ( arg ) {
 
 	this._tinyAction = arg.tinyAction;
-	this.label = this._tinyAction == "insert" ? "Insert Image" : "Image Properties";
+	this.label = this._tinyAction == "insert" ? "${string:Composite.Web.VisualEditor:Image.LabelInsertImage}" : "${string:Composite.Web.VisualEditor:Image.LabelImageProperties}";
 	
 	ImageDialogPageBinding.superclass.setPageArgument.call ( this, arg );
 }
