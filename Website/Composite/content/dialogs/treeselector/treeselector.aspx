@@ -32,8 +32,8 @@
 				</ui:toolbarbody>
 				<ui:toolbarbody align="right" equalsize="true" class="right">
 					<ui:toolbargroup>
-						<ui:clickbutton label="OK" id="buttonAccept" response="accept" isdisabled="true" focusable="true" default="true"/>
-						<ui:clickbutton label="Cancel" response="cancel" focusable="true"/>
+						<ui:clickbutton label="${string:Website.Dialogs.LabelAccept}" id="buttonAccept" response="accept" isdisabled="true" focusable="true" default="true"/>
+						<ui:clickbutton label="${string:Website.Dialogs.LabelCancel}" response="cancel" focusable="true"/>
 					</ui:toolbargroup>
 				</ui:toolbarbody>
 			</ui:dialogtoolbar>
