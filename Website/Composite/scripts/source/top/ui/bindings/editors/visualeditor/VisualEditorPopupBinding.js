@@ -158,7 +158,7 @@ VisualEditorPopupBinding.prototype._configureInsertGroup = function () {
 	}
 	
 	item = MenuItemBinding.newInstance ( doc );
-	item.setLabel ( "Field" );
+	item.setLabel( "${string:Composite.Web.VisualEditor:ContextMenu.LabelField}" );
 	item.image = "${icon:fields}";
 	item.imageDisabled = "${icon:fields-disabled}";
 	item.setProperty ( "cmd", "compositeInsertFieldParent" );
