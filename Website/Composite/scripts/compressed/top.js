@@ -26540,9 +26540,9 @@ var _fe5=this.editorBinding.getButtonForCommand("compositeInsertLink");
 var _fe6=this.editorBinding.getButtonForCommand("unlink");
 _fe4.setDisabled(_fe6.isDisabled);
 if(_fe4.isDisabled){
-_fe3.setLabel("Link");
+_fe3.setLabel("${string:Composite.Web.VisualEditor:ContextMenu.LabelLink}");
 }else{
-_fe3.setLabel("Link properties");
+_fe3.setLabel("${string:Composite.Web.VisualEditor:ContextMenu.LabelLinkProperties}");
 }
 };
 VisualEditorPopupBinding.prototype._configureInsertGroup=function(){
