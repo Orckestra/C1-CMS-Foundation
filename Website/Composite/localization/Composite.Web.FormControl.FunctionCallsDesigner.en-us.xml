@@ -14,4 +14,12 @@
   <string key="FunctionNotFound" value="Function '{0}' does not exist." />
   <string key="RequiredParameterNotDefined" value="Required parameter '{0}' has not been defined." />
   <string key="IncorrectTypeCast" value="Incorrect type cast. Parameter name: '{0}', function name: '{1}'." />
+  <string key="ParameterTypeDefaultLabel" value="Default" />
+  <string key="ParameterTypeConstantLabel" value="Constant" />
+  <string key="ParameterTypeInputParameterLabel" value="Input Parameter" />
+  <string key="ParameterTypeFunctionLabel" value="Function" />
+  <string key="AddNewButtonLabel" value="Add New" />
+  <string key="DeleteButtonLabel" value="Delete" />
+  <string key="ToolBar.LabelSource" value="Source" />
+  <string key="ToolBar.LabelDesign" value="Design" />
 </strings>
