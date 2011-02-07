@@ -18,7 +18,8 @@
 	<string key="ChangeOwnCultureWorkflow.Dialog.Label" value="Regional settings and language"/>
 	<string key="ChangeOwnCultureWorkflow.Dialog.CultureSelector.Label" value="Regional settings / Language"/>
 	<string key="ChangeOwnCultureWorkflow.Dialog.CultureSelector.Help" value="To change the way numbers, times, and dates are displayed, select an entry from the list. The right most language is the language of the UI."/>
-	<string key="ChangeOwnCultureWorkflow.Dialog.Confirm.Text" value="Are your sure you wish to change the settings? The application will restart and all your unsaved changes will be lost."/>
+  <string key="ChangeOwnCultureWorkflow.Dialog.Confirm.Title" value="Change application language"/>
+  <string key="ChangeOwnCultureWorkflow.Dialog.Confirm.Text" value="Are your sure you wish to change the settings? The application will restart and all your unsaved changes will be lost."/>
 	<string key="ChangeOwnCultureWorkflow.FieldGroup.Label" value="Regional settings"/>
 	<string key="AdministratorAutoCreator.DefaultGroupName" value="Administrators"/>
 
