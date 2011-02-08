@@ -27,9 +27,9 @@ xmlns:control="http://www.composite.net/ns/uicontrol">
             <ui:toolbarbody>
                 <ui:toolbargroup>
                     <ui:toolbarbutton oncommand="window.location.reload()" id="refreshbutton" image="${icon:refresh}"
-                        label="Refresh" />
+                        label="${string:FunctionDocumentation.LabelButtonRefresh}" />
                     <ui:toolbarbutton oncommand="print()" id="printbutton" image="${icon:print}"
-                        label="Print" />
+                        label="${string:FunctionDocumentation.LabelButtonPrint}" />
                 </ui:toolbargroup>
             </ui:toolbarbody>
         </ui:toolbar>

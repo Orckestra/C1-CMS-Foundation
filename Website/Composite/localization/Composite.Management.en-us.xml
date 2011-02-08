@@ -325,9 +325,6 @@
   <string key="RelationshipGraphActionExecutor.SearchToolTip" value="Search for elements" />
   <string key="RelationshipGraphActionExecutor.SearchElements" value="Search elements" />
   <string key="RelationshipGraphActionExecutor.SearchElementsToolTip" value="Search for elements" />
-  <string key="ServerLog.LabelTitle" value="Server log" />
-  <string key="ServerLog.LabelButtonDeleteOld" value="Delete old" />
-  <string key="ServerLog.LabelButtonRefresh" value="Refresh" />
   <!-- WEBSITE -->
   <string key="Website.General.LabelVersionNumber" value="Version No." />
   <string key="Website.Application.DialogReload.Title" value="Restart?" />
@@ -418,7 +415,12 @@
   <string key="Website.Content.Views.SystemView.ToolTipLinkWithEditor" value="Link with Editor" />
   <string key="Website.Content.Views.Search.Search.LabelNewSearch" value="New Search..." />
   <string key="Website.Content.Views.ViewSource.LabelFormatted" value="Formatted" />
-  <string key="Website.Content.Views.ViewSource.LabelRaw" value="Raw" />  
+  <string key="Website.Content.Views.ViewSource.LabelRaw" value="Raw" />
+  <string key="ServerLog.LabelTitle" value="Server log" />
+  <string key="ServerLog.LabelButtonDeleteOld" value="Delete old" />
+  <string key="ServerLog.LabelButtonRefresh" value="Refresh" />
+  <string key="FunctionDocumentation.LabelButtonRefresh" value="Refresh" />
+  <string key="FunctionDocumentation.LabelButtonPrint" value="Print" />
   <string key="Website.FlowUICompleted.ExecutionEndedTitle" value="Execution Ended" />
   <string key="Website.FlowUICompleted.ExecutionEndedMessage" value="The action executed in this window has ended." />
   <string key="Website.ServerError.ServerErrorTitle" value="Server Error" />
