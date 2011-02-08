@@ -325,6 +325,9 @@
   <string key="RelationshipGraphActionExecutor.SearchToolTip" value="Search for elements" />
   <string key="RelationshipGraphActionExecutor.SearchElements" value="Search elements" />
   <string key="RelationshipGraphActionExecutor.SearchElementsToolTip" value="Search for elements" />
+  <string key="ServerLog.LabelTitle" value="Server log" />
+  <string key="ServerLog.LabelButtonDeleteOld" value="Delete old" />
+  <string key="ServerLog.LabelButtonRefresh" value="Refresh" />
   <!-- WEBSITE -->
   <string key="Website.General.LabelVersionNumber" value="Version No." />
   <string key="Website.Application.DialogReload.Title" value="Restart?" />

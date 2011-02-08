@@ -13,13 +13,13 @@
 	</head>
 	<body>
 		<form id="Form1" runat="server">
-			<ui:page label="Server log" image="${icon:log-showlog}">
+			<ui:page label="${string:ServerLog.LabelTitle}" image="${icon:log-showlog}">
 				<ui:toolbar id="toolbar">
 					<ui:toolbarbody>
 						<ui:toolbargroup>
 							<aspui:Selector runat="server" ID="Pager" AutoPostBack="true" OnSelectedIndexChanged="LogContentChanged" />
-							<aspui:ToolBarButton ID="DeleteOlderButton" AutoPostBack="true" Text="Delete old" ImageUrl="${icon:package-installer-uninstall}" runat="server" OnClick="DeleteOldButton_Click" />
-							<aspui:ToolBarButton AutoPostBack="true" Text="Refresh" ImageUrl="${icon:refresh}" runat="server" OnClick="LogContentChanged" />
+							<aspui:ToolBarButton ID="DeleteOlderButton" AutoPostBack="true" Text="${string:ServerLog.LabelButtonDeleteOld}" ImageUrl="${icon:package-installer-uninstall}" runat="server" OnClick="DeleteOldButton_Click" />
+							<aspui:ToolBarButton AutoPostBack="true" Text="${string:ServerLog.LabelButtonRefresh}" ImageUrl="${icon:refresh}" runat="server" OnClick="LogContentChanged" />
 						</ui:toolbargroup>
 					</ui:toolbarbody>
 					<!-- 
