@@ -13,8 +13,8 @@
 			<ui:cover id="cover"/>
 			<ui:tabbox>
 				<ui:tabs>
-					<ui:tab label="Formatted"/>
-					<ui:tab label="Raw"/>
+					<ui:tab label="${string:Website.Content.Views.ViewSource.LabelFormatted}"/>
+					<ui:tab label="${string:Website.Content.Views.ViewSource.LabelRaw}"/>
 				</ui:tabs>
 				<ui:tabpanels>
 					<ui:tabpanel id="fancypanel">
