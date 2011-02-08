@@ -89,8 +89,8 @@ namespace Composite.Data.Types
         /// <summary>
         /// Creates a folder path given folder path and the name of the folder
         /// </summary>
-        /// <param name="folderPath"></param>
         /// <param name="parentFolderPath"></param>
+        /// <param name="folderName"></param>
         /// <returns></returns>
         public static string CreateFolderPath(string parentFolderPath, string folderName)
         {
