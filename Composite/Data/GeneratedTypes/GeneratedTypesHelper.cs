@@ -634,18 +634,30 @@ namespace Composite.Data.GeneratedTypes
 
 
 
-        public static void SetNewIdFieldValue(IData data)
+public static void SetNewIdFieldValue(IData data)
+{
+    if (data == null) throw new ArgumentNullException("data");
+
+    PropertyInfo propertyInfo = data.GetType().GetProperty(IdFieldName);
+    if (propertyInfo == null) throw new ArgumentException(string.Format("The type '{0}' does not have a property named '{1}'", data.GetType(), IdFieldName));
+
+    bool hasDefaultFieldValueAttribute = propertyInfo.GetCustomAttributesRecursively<DefaultFieldValueAttribute>().Any();
+    bool hasNewInstanceDefaultFieldValueAtteibute = propertyInfo.GetCustomAttributesRecursively<NewInstanceDefaultFieldValueAttribute>().Any();
+
+    if ((!hasDefaultFieldValueAttribute) && (!hasNewInstanceDefaultFieldValueAtteibute))
+    {
+        if (propertyInfo.PropertyType == typeof(Guid))
         {
-            if (data == null) throw new ArgumentNullException("data");
-
-            PropertyInfo propertyInfo = data.GetType().GetProperty(IdFieldName);
-            if (propertyInfo == null) throw new ArgumentException(string.Format("The type '{0}' does not have a property named '{1}'", data.GetType(), IdFieldName));
-
-            MethodInfo methodInfo = propertyInfo.GetSetMethod();
-            if (methodInfo == null) throw new ArgumentException(string.Format("The type '{0}' does not have a setter property named '{1}'", data.GetType(), IdFieldName));
-
-            methodInfo.Invoke(data, new object[] { Guid.NewGuid() });
+            // Assigning a guid key a value because its not part of the genereted UI
+            propertyInfo.SetValue(data, Guid.NewGuid(), null);
         }
+        else
+        {
+            // For now, do nothing. This would fix auto increament issue for int key properties
+            // throw new InvalidOperationException(string.Format("The property '{0}' on the data interface '{1}' does not a DefaultFieldValueAttribute or NewInstanceDefaultFieldValueAttribute and no default value could be created", propertyInfo.Name, data.GetType());
+        }
+    }
+}
 
 
 
