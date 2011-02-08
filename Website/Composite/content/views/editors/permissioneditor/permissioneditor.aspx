@@ -14,7 +14,7 @@
 	
 		<ui:page 
 			id="page"
-			label="Permissions" 
+			label="${string:Website.Content.Views.Editors.PermissionEditor.LabelTitle}" 
 			image="${icon:security-manage-permissions}"
 			binding="PermissionEditorPageBinding">
 			
@@ -39,7 +39,7 @@
 			 	<ui:toolbarbody>
 					<ui:toolbargroup>
 						<ui:toolbarbutton
-							label="Save" 
+							label="${string:Website.Content.Views.Editors.PermissionEditor.LabelButtonSave}" 
 							id="savebutton" 
 							image="${icon:save}" 
 							image-disabled="${icon:save-disabled}" 
@@ -50,8 +50,8 @@
 			</ui:toolbar>
 			<ui:tabbox>
 				<ui:tabs>
-					<ui:tab id="tab0" label="User Groups"/>
-					<ui:tab id="tab1" label="Users"/>
+					<ui:tab id="tab0" label="${string:Website.Content.Views.Editors.PermissionEditor.LabelTabUserGroups}"/>
+					<ui:tab id="tab1" label="${string:Website.Content.Views.Editors.PermissionEditor.LabelTabUsers}"/>
 				</ui:tabs>
 				<ui:tabpanels>
 					<ui:tabpanel id="tabpanel0">
