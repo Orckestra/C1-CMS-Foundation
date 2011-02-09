@@ -114,6 +114,11 @@ namespace Composite.Data
         }
 
 
+        public PublicationScope PublicationScope
+        {
+            get { return _dataScopeIdentifier.Name == DataScopeIdentifier.PublicName ? Data.PublicationScope.Published : Data.PublicationScope.Unpublished; }
+        }
+
 
         public CultureInfo LocaleScope
         {
