@@ -1874,14 +1874,6 @@
     <Compile Include="Data\Types\IPageTemplate.cs" />
     <Compile Include="Data\Types\IXhtmlEditorElementClassConfiguration.cs" />
     <Compile Include="Data\Types\PageServices.cs" />
-    <Compile Include="Data\Visualization\DataVisualizationFacade.cs" />
-    <Compile Include="Data\Visualization\DataVisualizerAttribute.cs" />
-    <Compile Include="Data\Visualization\Foundation\DataVisualizerCache.cs" />
-    <Compile Include="Data\Visualization\IDataVisualizer.cs" />
-    <Compile Include="Data\Visualization\IVisualizedData.cs" />
-    <Compile Include="Data\Visualization\MinimalVisualizer.cs" />
-    <Compile Include="Data\Visualization\PageVisualizer.cs" />
-    <Compile Include="Data\Visualization\TemplateVisualizer.cs" />
     <Compile Include="C1Console\Elements\ElementAction.cs" />
     <Compile Include="C1Console\Elements\ActionCategory.cs" />
     <Compile Include="C1Console\Elements\ActionHandle.cs" />

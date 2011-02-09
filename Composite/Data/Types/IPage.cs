@@ -5,7 +5,6 @@ using Composite.Data.Hierarchy.DataAncestorProviders;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types.Foundation;
-using Composite.Data.Visualization;
 using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 
 
@@ -21,7 +20,6 @@ namespace Composite.Data.Types
     [TypeVersion(4)]
     [ImmutableTypeId("{C046F704-D3E4-4b3d-8CB9-77564FB0B9E7}")]
     [KeyPropertyName("Id")]
-    [DataVisualizer(typeof(Composite.Data.Visualization.PageVisualizer))]
     [DataAncestorProvider(typeof(PageDataAncestorProvider))]
     [DataScope(DataScopeIdentifier.PublicName)]
     [DataScope(DataScopeIdentifier.AdministratedName)]

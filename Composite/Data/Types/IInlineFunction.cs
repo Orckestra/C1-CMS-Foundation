@@ -1,8 +1,6 @@
 ﻿using System;
 using Composite.Data.Hierarchy;
 using Composite.Data.Hierarchy.DataAncestorProviders;
-using Composite.Data.ProcessControlled;
-using Composite.Data.Visualization;
 using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 
 
