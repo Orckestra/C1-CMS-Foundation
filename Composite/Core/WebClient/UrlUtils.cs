@@ -33,8 +33,9 @@ namespace Composite.Core.WebClient
                 _applicationVirtualPath = "";
             }
         }
-        
 
+
+        /// <exclude />
         public static string ResolveAdminUrl(string adminRelativePath)
         {
             if (adminRelativePath == null) throw new ArgumentNullException("adminRelativePath");
@@ -47,6 +48,7 @@ namespace Composite.Core.WebClient
         }
 
 
+        /// <exclude />
         public static string ResolvePublicUrl(string publicRelativePath)
         {
             if (publicRelativePath == null) throw new ArgumentNullException("publicRelativePath");
@@ -65,6 +67,7 @@ namespace Composite.Core.WebClient
         }
 
 
+        /// <exclude />
         public static string PublicRootPath
         {
             get
@@ -74,6 +77,7 @@ namespace Composite.Core.WebClient
         }
 
 
+        /// <exclude />
         public static string AdminRootPath
         {
             get
@@ -83,6 +87,7 @@ namespace Composite.Core.WebClient
         }
 
 
+        /// <exclude />
         public static string Combine( string path1, string path2 )
         {
             return Path.Combine(path1,path2).Replace( Path.DirectorySeparatorChar, '/' );

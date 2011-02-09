@@ -47,9 +47,9 @@
     <CodeAnalysisRules>
     </CodeAnalysisRules>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <DocumentationFile>bin\Debug\Composite.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Composite.xml</DocumentationFile>
     <CodeAnalysisRuleSet>Composite.ruleset</CodeAnalysisRuleSet>
-    <NoWarn>1591 0419</NoWarn>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>

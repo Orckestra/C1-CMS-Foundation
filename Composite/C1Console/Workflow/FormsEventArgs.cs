@@ -17,18 +17,21 @@ namespace Composite.C1Console.Workflow
         [NonSerialized]
         private Dictionary<string, object> _bindings;
 
+        /// <exclude />
         public FormEventArgs(Guid instanceId, string workflowResult)
             : this(instanceId, workflowResult, null)
         {
         }
 
 
+        /// <exclude />
         public FormEventArgs(Guid instanceId, Dictionary<string, object> bindings)
             : this(instanceId, null, bindings)
         {
         }
 
 
+        /// <exclude />
         public FormEventArgs(Guid instanceId, string workflowResult, Dictionary<string, object> bindings)
             : base(instanceId)
         {
@@ -37,7 +40,7 @@ namespace Composite.C1Console.Workflow
         }
 
 
-
+        /// <exclude />
         public string WorkflowResult
         {
             get { return _workflowResult; }
@@ -45,7 +48,8 @@ namespace Composite.C1Console.Workflow
         }
 
 
-        
+
+        /// <exclude />
         public Dictionary<string, object> Bindings
         {
             get { return _bindings; }

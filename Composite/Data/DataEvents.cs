@@ -13,7 +13,7 @@ namespace Composite.Data
     {
         /// <summary>
         /// This event is fired just before a data item is added to the C1 store.
-        /// See <see cref="Composite.Data.DataConnection.Add"/>
+        /// See <see cref="Composite.Data.DataConnection.Add&lt;TData&gt;(TData)"/>
         /// </summary>
         /// <example>
         /// <code>
@@ -54,7 +54,7 @@ namespace Composite.Data
 
         /// <summary>
         /// This event is fired just after a data item has been added to the C1 store.
-        /// See <see cref="Composite.Data.DataConnection.Add"/>
+        /// See <see cref="Composite.Data.DataConnection.Add&lt;TData&gt;(TData)"/>
         /// </summary>
         /// <example>
         /// <code>
@@ -95,7 +95,7 @@ namespace Composite.Data
 
         /// <summary>
         /// This event is fired just before a data item is updated in the C1 store.
-        /// See <see cref="Composite.Data.DataConnection.Update"/>
+        /// See <see cref="Composite.Data.DataConnection.Update&lt;TData&gt;(TData)"/>
         /// </summary>
         /// <example>
         /// <code>
@@ -140,7 +140,7 @@ namespace Composite.Data
 
         /// <summary>
         /// This event is fired just after a data item has been added in the C1 store.
-        /// See <see cref="Composite.Data.DataConnection.Update"/>
+        /// See <see cref="Composite.Data.DataConnection.Update&lt;TData&gt;(TData)"/>
         /// </summary>
         /// <example>
         /// <code>
@@ -185,7 +185,7 @@ namespace Composite.Data
 
         /// <summary>
         /// This event is fired just before a data item is deleted from the C1 store.
-        /// See <see cref="Composite.Data.DataConnection.Delete"/>
+        /// See <see cref="Composite.Data.DataConnection.Delete&lt;TData&gt;(TData)"/>
         /// </summary>
         /// <example>
         /// <code>
@@ -228,7 +228,7 @@ namespace Composite.Data
 
         /// <summary>
         /// This event is fired just after a new data item is create. 
-        /// See <see cref="Composite.Data.DataConnection.New"/>
+        /// See <see cref="Composite.Data.DataConnection.New&lt;TData&gt;()"/>
         /// </summary>
         /// <example>
         /// <code>

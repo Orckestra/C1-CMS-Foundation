@@ -358,7 +358,7 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// Create a new <typeparamref name="TData"/> that can be added using <see cref="Composite.Data.DataConnection.Add"/>.
+        /// Create a new <typeparamref name="TData"/> that can be added using <see cref="Composite.Data.DataConnection.Add&lt;TData&gt;(TData)"/>.
         /// This method triggers the event OnNew for the return value of the method.
         /// </summary>
         /// <example>
@@ -383,7 +383,7 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// Create a new <typeparamref name="TData"/> that can be added using <see cref="Composite.Data.DataConnection.Add"/>.
+        /// Create a new <typeparamref name="TData"/> that can be added using <see cref="Composite.Data.DataConnection.Add&lt;TData&gt;(TData)"/>.
         /// This method triggers the event OnNew for the return value of the method.
         /// </summary>
         /// Here is an example of how to create a new IData instance and add it to the C1 storage.
