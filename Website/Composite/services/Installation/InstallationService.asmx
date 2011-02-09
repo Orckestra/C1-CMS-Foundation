@@ -66,12 +66,12 @@ namespace Composite.Services
 
             KeyValuePair pair = new KeyValuePair();
             pair.Key = "Core Development";
-            pair.Value = "Marcus Wendt;Martin Jensen;Dmitry Dzygin";
+            pair.Value = "Marcus Wendt;Martin Jensen;Dmitry Dzygin;Taras Nakonechnyi";
             list.Add(pair);
 
             pair = new KeyValuePair();
             pair.Key = "QA, Packages & Documentaion";
-            pair.Value = "Volodymyr Muzyka;Taras Nakonechnyi;Vitaly Vysotskyi;Inna Boitsun";
+            pair.Value = "Volodymyr Muzyka;Vitaly Vysotskyi;Inna Boitsun";
 
             list.Add(pair);
 
