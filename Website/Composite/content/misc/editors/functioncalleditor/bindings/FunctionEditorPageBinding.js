@@ -35,7 +35,7 @@ FunctionEditorPageBinding.prototype.onBeforePageInitialize = function () {
 	
 	FunctionEditorPageBinding.superclass.onBeforePageInitialize.call ( this );
 	this.addActionListener ( Binding.ACTION_DIRTY );
-	this.addActionListener ( BespinEditorBinding.ACTION_INITIALIZED ); 
+	this.addActionListener( CodeMirrorEditorBinding.ACTION_INITIALIZED ); 
 }
 
 /**
@@ -65,8 +65,8 @@ FunctionEditorPageBinding.prototype.handleAction = function ( action ) {
 				}
 			}
 			break;
-		
-		case BespinEditorBinding.ACTION_INITIALIZED :
+
+		case CodeMirrorEditorBinding.ACTION_INITIALIZED :
 			this.removeActionListener ( action.type );
 			this._buildSwitchButton ( action.target );
 			action.consume ();

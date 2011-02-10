@@ -39,7 +39,7 @@
 			<ui:popup id="tabsbuttonpopup" position="bottom"/>
 			<ui:popup id="moreactionspopup" position="bottom"/>
 			<ui:popup id="visualeditorpopup" binding="VisualEditorPopupBinding"/>
-			<ui:popup id="sourcecodeeditorpopup" binding="BespinEditorPopupBinding"/>
+			<ui:popup id="sourcecodeeditorpopup" binding="CodeMirrorEditorPopupBinding"/>
 			<ui:popup id="systemtreepopup" binding="SystemTreePopupBinding">
 				<ui:menubody>
 					<ui:menugroup rel="treeoperations">

@@ -63,7 +63,7 @@ var UserInterface = new function () {
 		"ui:popup" 						: PopupBinding,
 		"ui:shadow" 					: ShadowBinding,
 		"ui:matrix" 					: MatrixBinding,
-		"ui:sourceeditor"				: BespinEditorBinding,
+		"ui:sourceeditor"				: CodeMirrorEditorBinding,
 		"ui:visualeditor" 				: VisualEditorBinding,
 		"ui:visualmultieditor" 			: VisualMultiEditorBinding,
 		"ui:visualmultitemplateeditor" 	: VisualMultiTemplateEditorBinding,

@@ -1,0 +1,14 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+input#focusableinput { /* synchronize with wysiwygeditor.css */
+	background-color: transparent;
+	border: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: none;
+}
+ui|flexbox#codepressflexbox {
+	position: relative;
+}

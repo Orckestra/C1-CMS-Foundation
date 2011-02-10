@@ -492,7 +492,7 @@ EditorBinding.prototype.handleEvent = function ( e ) {
 		 */
 		case DOMEvents.KEYPRESS :
 			this.checkForDirty ();
-			if ( !this._isActivated ) {
+			if (!this._isActivated || this.isFocusable && !this.isFocused) {
 				this._activateEditor ( true );
 			}
 			break;
@@ -505,24 +505,24 @@ EditorBinding.prototype.handleEvent = function ( e ) {
 			/*
 			 * TODO: MOVE THIS!
 			 */
-			if ( this instanceof BespinEditorBinding ) {	
-				if ( target == this._bespinElement ) {
-					this.dispatchAction ( Binding.ACTION_ACTIVATED );
-					if ( !this._isActivated ) {
-						this._activateEditor ( true );
-					}
-					if ( DOMEvents.isRightButton ( e )) { // block contextmenu for now...	
-						DOMEvents.stopPropagation ( e );
-						DOMEvents.preventDefault ( e );
-					}
-				}
-			} else {
+//			if ( this instanceof BespinEditorBinding ) {	
+//				if ( target == this._bespinElement ) {
+//					this.dispatchAction ( Binding.ACTION_ACTIVATED );
+//					if ( !this._isActivated ) {
+//						this._activateEditor ( true );
+//					}
+//					if ( DOMEvents.isRightButton ( e )) { // block contextmenu for now...	
+//						DOMEvents.stopPropagation ( e );
+//						DOMEvents.preventDefault ( e );
+//					}
+//				}
+//			} else {
 				if ( target.ownerDocument == this.getEditorDocument ()) {
-					if ( !this._isActivated ) {
+					if (!this._isActivated || this.isFocusable && !this.isFocused) {
 						this._activateEditor ( true );
 					}
 				}
-			}
+//			}
 			break;
 		
 		/*
@@ -592,15 +592,15 @@ EditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 						}
 					} else {
 						target = DOMEvents.getTarget ( arg );
-						if ( this instanceof BespinEditorBinding ) {
-							if ( target == this._bespinElement ) {
-								isDeactivate = false;
-							}
-						} else {
+//						if ( this instanceof BespinEditorBinding ) {
+//							if ( target == this._bespinElement ) {
+//								isDeactivate = false;
+//							}
+//						} else {
 							if ( target && target.ownerDocument == this.getEditorDocument ()) {
 								isDeactivate = false;
 							}
-						}
+//						}
 					}
 					if ( isDeactivate ) {
 						if ( this._isActivated ) {

@@ -31,7 +31,7 @@ _BroadcastMessages.prototype = {
 	/*
 	 * Experimental
 	 */
-	BESPIN_LOADED						: "bespin loaded",
+	CODEMIRROR_LOADED					: "codemirror loaded",
 
 	/*
 	 * Mouse events

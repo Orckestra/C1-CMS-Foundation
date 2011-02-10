@@ -56,29 +56,33 @@ StandardEventHandler.prototype._addListeners = function () {
 	
 	var doc = this._contextDocument;
 	
-	/* 
-	 * Mousedown event consumed by Bespin unless we flip the capture flag. 
-	 * TODO: This may also be the case for other mouse events...
-	 */
-	var isBespin = this._contextWindow.bespin != undefined;
-	DOMEvents.addEventListener ( doc, DOMEvents.MOUSEDOWN, this, isBespin );
+
+//	/* 
+//	 * Mousedown event consumed by Bespin unless we flip the capture flag. 
+//	 * TODO: This may also be the case for other mouse events...
+//	 */
+//	var isBespin = this._contextWindow.bespin != undefined;
+//	DOMEvents.addEventListener ( doc, DOMEvents.MOUSEDOWN, this, isBespin );
+
+	DOMEvents.addEventListener( doc, DOMEvents.MOUSEDOWN, this);
 	DOMEvents.addEventListener ( doc, DOMEvents.MOUSEUP, this );
 	DOMEvents.addEventListener ( doc, DOMEvents.MOUSEMOVE, this );
-	
-	/*
-	 * Somewhat hacked, we disable the Mozilla SkyWriter contextmenu here. 
-	 * This may interfere with our own (future) contextmenu, so be aware!
-	 */
-	if ( isBespin ) {
-		DOMEvents.addEventListener ( doc, DOMEvents.CLICK, {
-			handleEvent : function ( e ) {
-				if ( DOMEvents.isRightButton ( e )) {
-					DOMEvents.stopPropagation ( e );
-					DOMEvents.preventDefault ( e );
-				}
-			}
-		}, true );
-	}
+
+	/* Rightclick is blocked In CodeMirror */
+	//	/*
+	//	 * Somewhat hacked, we disable the Mozilla SkyWriter contextmenu here. 
+	//	 * This may interfere with our own (future) contextmenu, so be aware!
+	//	 */
+//	if ( isBespin ) {
+//		DOMEvents.addEventListener ( doc, DOMEvents.CLICK, {
+//			handleEvent : function ( e ) {
+//				if ( DOMEvents.isRightButton ( e )) {
+//					DOMEvents.stopPropagation ( e );
+//					DOMEvents.preventDefault ( e );
+//				}
+//			}
+//		}, true );
+//	}
 	
 	/*
 	 * Disable F1 to launch OS help in IE.
@@ -312,16 +316,18 @@ StandardEventHandler.prototype._handleKeyDown = function ( e, isTabHandled ) {
 			case KeyEventCodes.VK_SPACE :
 			case KeyEventCodes.VK_PAGE_UP :
 			case KeyEventCodes.VK_PAGE_DOWN :
-				
-				/*
-				 * TODO: Investigate whether or not it is wise to EXCLUDE WebKit!
-				 * Problem is that the Visual Editor get's locked while it shouldn't.
-				 * Is something wrong with hasNativeKeys in WebKit?
-				 */
-				if ( !Client.isWebKit ) {
-					DOMEvents.preventDefault ( e );
-				}
-			 	break;
+
+
+				/* TODO: this code have conflict with Code mirror */
+//				/*
+//				 * TODO: Investigate whether or not it is wise to EXCLUDE WebKit!
+//				 * Problem is that the Visual Editor get's locked while it shouldn't.
+//				 * Is something wrong with hasNativeKeys in WebKit?
+//				 */
+//				if ( !Client.isWebKit ) {
+//					DOMEvents.preventDefault ( e );
+//				}
+//			 	break;
 		} 
 	}
 	

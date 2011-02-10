@@ -50,7 +50,7 @@ function VisualEditorPageBinding () {
 	this.isSourceMode = false;
 	
 	/**
-	 * @type {BespinEditorBinding}
+	 * @type {SourceEditorBinding}
 	 */
 	this._sourceEditor = null;
 	
@@ -84,7 +84,7 @@ VisualEditorPageBinding.prototype.toString = function () {
 VisualEditorPageBinding.prototype.onBindingAttach = function () {
 	
 	VisualEditorPageBinding.superclass.onBindingAttach.call ( this );
-	this.addActionListener ( BespinEditorBinding.ACTION_INITIALIZED );
+	this.addActionListener( CodeMirrorEditorBinding.ACTION_INITIALIZED );
 }
 
 /**
@@ -419,8 +419,8 @@ VisualEditorPageBinding.prototype.handleAction = function ( action ) {
 	var binding = action.target;
 	
 	switch ( action.type ) {
-		
-		case BespinEditorBinding.ACTION_INITIALIZED :
+
+		case CodeMirrorEditorBinding.ACTION_INITIALIZED:
 			
 			this._sourceEditor = binding;
 			this._buildSwitchButton ();
