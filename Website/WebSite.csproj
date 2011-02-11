@@ -439,41 +439,6 @@
     <Content Include="Composite\content\forms\Administrative\TreeAddTreeDefinition.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\bespin.css" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\bespin.html" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\bespin.js" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\bespineditor.aspx" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\bespineditor.css" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\bindings\SourceEditorFormatToolBarButtonBinding.js" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\bindings\SourceEditorInsertToolbarButtonBinding.js" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\bindings\SourceEditorPageBinding.js" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\bindings\SourceEditorToolBarBinding.js" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\BespinEmbedded.css" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\BespinEmbedded.js" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\BespinEmbedded.uncompressed.js" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\BespinMain.js" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\BespinMain.uncompressed.js" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\BespinWorker.js" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\BespinWorker.uncompressed.js" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\resources\screen_theme\images\bespin-s.png" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\resources\screen_theme\images\check-selected.png" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\resources\screen_theme\images\check-unselected.png" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\resources\screen_theme\images\lines.png" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\resources\screen_theme\images\radio-selected.png" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\resources\screen_theme\images\radio-unselected.png" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\resources\screen_theme\images\scroll-down.png" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\resources\screen_theme\images\scroll-left.png" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\resources\screen_theme\images\scroll-right.png" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\resources\screen_theme\images\scroll-up.png" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\samples\fields.html" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\samples\html.html" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\samples\jquery.html" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\samples\multi.html" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\samples\programmatic.html" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\samples\sample.html" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\samples\tags.html" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\samples\textarea.html" />
-    <Content Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\samples\wide.html" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\bindings\SourceEditorFormatToolBarButtonBinding.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\bindings\SourceEditorInsertToolbarButtonBinding.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\bindings\SourceEditorPageBinding.js" />
@@ -1102,8 +1067,6 @@
     <Content Include="Composite\scripts\source\top\ui\bindings\docks\DockTabPopupBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\docks\DockTabsBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\docks\DockTabsButtonBinding.js" />
-    <Content Include="Composite\scripts\source\top\ui\bindings\editors\bespineditor.DEPRECATED\BespinEditorBinding.js" />
-    <Content Include="Composite\scripts\source\top\ui\bindings\editors\bespineditor.DEPRECATED\BespinEditorPopupBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\editors\codemirroreditor\CodeMirrorEditorBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\editors\codemirroreditor\CodeMirrorEditorPopupBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\editors\EditorBinding.js" />
@@ -6241,8 +6204,6 @@
     <Content Include="App_Data\Composite\Azure.Composite.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\resources\screen_theme\theme.less" />
-    <None Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\resources\whitetheme\theme.less" />
     <None Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\contrib\freemarker\LICENSE" />
     <None Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\contrib\java\LICENSE" />
     <None Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\contrib\lua\LICENSE" />
@@ -6413,7 +6374,6 @@
     <Folder Include="App_Data\Composite\DynamicTypeForms\" />
     <Folder Include="Composite\audio\" />
     <Folder Include="Composite\content\dialogs\querytreeeditor\" />
-    <Folder Include="Composite\content\misc\editors\bespineditor.DEPRECATED\build\resources\completion\" />
     <Folder Include="Composite\controls\FormsControls\FormUiControlTemplates\ElementSelectors\" />
     <Folder Include="Composite\images\icons\republic\Zip files\" />
     <Folder Include="Composite\transformations\temp\masterfilterTEST.xsl\" />
