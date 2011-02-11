@@ -427,7 +427,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                             {
                                 LoggingService.LogError(LogTitle, ex);
 
-                                XElement errorDescriptionElement = GetErrorDescriptionHtmlElement(ex);
+                                XElement errorDescriptionElement = XhtmlErrorFormatter.GetErrorDescriptionHtmlElement(ex);
                                 functionResult = errorDescriptionElement;
                             }
                         }
@@ -450,30 +450,6 @@ namespace Composite.Core.WebClient.Renderings.Page
                     }
                 }
             }
-        }
-
-
-        private static XElement GetErrorDescriptionHtmlElement(Exception ex)
-        {
-            if (Composite.C1Console.Security.UserValidationFacade.IsLoggedIn() == true)
-            {
-                var errorMessage = new StringBuilder();
-                while(ex != null)
-                {
-                    errorMessage.Append(ex.Message).Append(" - ");
-                    ex = ex.InnerException;
-                }
-
-                return new XElement(Namespaces.Xhtml + "span",
-                    new XAttribute("class", "c1errordetails"),
-                    new XAttribute("style", "border: 2px solid red; padding: 2px 6px 2px 6px; cursor: pointer; font-weight: bold; background-color: InfoBackground; color: InfoText; -moz-border-radius: 4px; -moz-box-shadow: 1px 1px 3px 0 rgba(0,0,0,0.75);"),
-                    new XAttribute("onclick", "alert(this.title);"),
-                    new XAttribute("title", errorMessage),
-                    " Error in Function ");
-            }
-            return new XElement(Namespaces.Xhtml + "span",
-                new XAttribute("class", "c1error"),
-                "[ ERROR ]");
         }
 
 
