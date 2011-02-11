@@ -21914,6 +21914,9 @@ var _d57=new String("");
 this._actionProfile.each(function(_d58,list){
 list.each(function(_d5a){
 _d57+=_d5a.getHandle()+";";
+if(_d5a.isDisabled()){
+_d57+="isDisabled='true';";
+}
 });
 });
 return _d57;
