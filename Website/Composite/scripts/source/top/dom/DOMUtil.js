@@ -114,8 +114,14 @@ _DOMUtil.prototype = {
 				SystemDebug.stack ( arguments );
 			}
 		} else {
-			result = element.ownerDocument.defaultView
-				.getComputedStyle ( element, null ).getPropertyValue ( styleprop );
+			var computedStyle = element.ownerDocument.defaultView
+							.getComputedStyle(element, null);
+			if (computedStyle != null) {
+				result = computedStyle.getPropertyValue(styleprop);
+			} else {
+				this._logger.error("Could not compute style for element " + element.nodeName);
+				SystemDebug.stack(arguments);
+			}
 		}
 		return result;
 	},
