@@ -558,6 +558,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     // BUG: DropIndex isn't calculated in a right way, for the UI, it's an index for pages from the current language, and from foreign one
                     // but MoveTo method requires index for pages from all the languages
                     draggedPage.MoveTo(newParentPageId, dropIndex, false);
+                    
+                    DataFacade.Update(draggedPage);
 
                     EntityTokenCacheFacade.ClearCache(draggedPage.GetDataEntityToken());
 
