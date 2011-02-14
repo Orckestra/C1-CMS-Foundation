@@ -979,9 +979,6 @@
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\String\JoinTwo.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\MediaFileSelectorWidgetFunction.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\Type\DataTypeSelectorWidgetFunction.cs" />
-    <Compile Include="Plugins\Logging\LogTraceListeners\TcpLogTraceListener\TcpLogTraceListenerThread.cs" />
-    <Compile Include="Plugins\Logging\LogTraceListeners\TcpLogTraceListener\TcpLogTraceListenerThreadData.cs" />
-    <Compile Include="Plugins\Logging\LogTraceListeners\TcpLogTraceListener\TcpLogTraceListenerThreadDataQueueItem.cs" />
     <Compile Include="Plugins\ResourceSystem\PropertyResourceProvider\PropertyResourceProvider.cs" />
     <Compile Include="Core\Types\BuildManager.cs" />
     <Compile Include="Core\Types\Foundation\PluginFacades\ITypeManagerTypeHandlerPluginFacade.cs" />
@@ -1380,7 +1377,6 @@
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\Date\DateTimeSelectorWidgetFunction.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\String\VisualXhtmlEditorWidgetFuntion.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\DataLogTraceListener\DataLogTraceListener.cs" />
-    <Compile Include="Plugins\Logging\LogTraceListeners\TcpLogTraceListener\TcpLogTraceListener.cs" />
     <Compile Include="Plugins\Security\LoginProviderPlugins\DataBasedFormLoginProvider\DataBasedFormLoginProvider.cs" />
     <Compile Include="Plugins\Security\UserPermissionDefinitionProvider\ConfigBasedUserPermissionDefinitionProvider\ConfigBasedUserPermissionDefinitionProvider.cs" />
     <Compile Include="Plugins\Security\UserPermissionDefinitionProvider\DataBaseUserPermissionDefinitionProvider\DataBaseUserPermissionDefinitionProvider.cs" />

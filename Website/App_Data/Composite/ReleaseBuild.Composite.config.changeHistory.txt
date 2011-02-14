@@ -105,3 +105,4 @@ Changes since C1 1.2 SP2 Patch 3
       <add name="LocalIOProvider" type="Composite.Plugins.IO.IOProviders.LocalIOProvider.LocalIOProvider, Composite"/>
     </IOProviderPlugins>
   </Composite.Core.IO.Plugins.IOProviderConfiguration>
+- TcpCustomTraceListener removed from config
