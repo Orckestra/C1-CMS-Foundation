@@ -17,7 +17,7 @@ namespace Composite.Core.WebClient.Renderings.Page
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class PageStructureInfo
     {
         private class Version
@@ -37,7 +37,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         }
 
         private static readonly Hashtable<Pair<string, CultureInfo>, Map> _generatedMaps = new Hashtable<Pair<string, CultureInfo>, Map>();
-        private static readonly Hashtable<Pair<string, CultureInfo>, Version> _versions = new Hashtable<Pair<string, CultureInfo>, Version>(); 
+        private static readonly Hashtable<Pair<string, CultureInfo>, Version> _versions = new Hashtable<Pair<string, CultureInfo>, Version>();
         private static readonly object _updatingLock = new object();
         private static readonly object[] _buildingLock = new[] { new object(), new object() }; // Separated objects for 'Public' and 'Administrated' scopes
 
@@ -205,7 +205,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
         private static Map GetMap()
         {
-            if(System.Transactions.Transaction.Current != null)
+            if (System.Transactions.Transaction.Current != null)
             {
                 var exceptionToLog = new Exception("It is not safe to use PageStructureInfo/SiteMap functionality in transactional context. Method Composite.Data.PageManager can be used instead.");
                 LoggingService.LogWarning(typeof(PageStructureInfo).Name, exceptionToLog);
@@ -218,7 +218,7 @@ namespace Composite.Core.WebClient.Renderings.Page
             {
                 return map;
             }
-        
+
             // Using different sync roots for different datascopes
             object buildingLock = _buildingLock[scopeKey.First == DataScopeIdentifier.Public.Name ? 0 : 1];
 
@@ -232,7 +232,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                     return map;
                 }
 
-                
+
                 Version version = _versions[scopeKey];
                 if (version == null)
                 {
@@ -301,7 +301,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         /// <exclude />
         public static Dictionary<string, Guid> GetLowerCaseUrlToIdLookup()
         {
-           return GetMap().LowerCaseUrlToIdLookup;
+            return GetMap().LowerCaseUrlToIdLookup;
         }
 
 
@@ -328,7 +328,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             XElement match = associatedPageElement.AncestorsAndSelf(PageElementName).Reverse().Take(siteDepth).LastOrDefault();
 
-            if (match != null && match.Attribute("Depth").Value==siteDepth.ToString())
+            if (match != null && match.Attribute("Depth").Value == siteDepth.ToString())
             {
                 yield return match;
             }
@@ -476,7 +476,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                 var locale = LocalizationScopeManager.CurrentLocalizationScope;
                 var localeMappedName = DataLocalizationFacade.GetUrlMappingName(locale) ?? string.Empty;
                 string friendlyUrlPrefix = localeMappedName.IsNullOrEmpty() ? string.Empty : "/" + localeMappedName;
-                
+
                 var pageToToChildElementsTable = new Hashtable<Guid, List<PageTreeInfo>>();
                 foreach (IPage page in pagesData.Pages)
                 {
@@ -532,8 +532,8 @@ namespace Composite.Core.WebClient.Renderings.Page
                 foreach (KeyValuePair<string, Guid> keyValuePair in urlToIdLookup)
                 {
                     string loweredUrl = keyValuePair.Key.ToLower();
-                    
-                    if(lowerCaseUrlToIdLookup.ContainsKey(loweredUrl))
+
+                    if (lowerCaseUrlToIdLookup.ContainsKey(loweredUrl))
                     {
                         LoggingService.LogError(LogTitle, "Multiple pages share the same path '{0}'. Page ID: '{1}'. Duplicates are ignored.".FormatWith(loweredUrl, keyValuePair.Value));
                         continue;
@@ -554,7 +554,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
         private static void BuildXmlStructure(XElement root, Guid currentPageId, Hashtable<Guid, List<PageTreeInfo>> pageToChildElementsTable, int depth)
         {
-            if (depth == 0) return; 
+            if (depth == 0) return;
 
             List<PageTreeInfo> children = pageToChildElementsTable[currentPageId];
             if (children == null)
@@ -562,7 +562,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                 return;
             }
 
-            foreach(PageTreeInfo pageInfo in children.OrderBy(pageInfo => pageInfo.LocalOrdering))
+            foreach (PageTreeInfo pageInfo in children.OrderBy(pageInfo => pageInfo.LocalOrdering))
             {
                 root.Add(pageInfo.Element);
 
@@ -607,14 +607,14 @@ namespace Composite.Core.WebClient.Renderings.Page
                 // TODO: This attribute is to be removed
                 element.Add(new XAttribute("FolderPath", builder.FolderPaths[pageId]));
 
-                element.Add(new XAttribute("Depth", 1+ element.Ancestors(PageElementName).Count()));
+                element.Add(new XAttribute("Depth", 1 + element.Ancestors(PageElementName).Count()));
 
                 if (urlToIdLookup.ContainsKey(lookupUrl))
                 {
                     LoggingService.LogError(LogTitle, "Multiple pages share the same path '{0}', page ID: '{1}'. Duplicates are ignored.".FormatWith(pageUrl, pageId));
                     continue;
                 }
-                
+
                 urlToIdLookup.Add(lookupUrl, pageId);
 
                 BuildFolderPaths(pagesData, element.Elements(), urlToIdLookup, builder);
@@ -638,7 +638,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             string dataScopeName = dataScopeIdentifier.Name;
 
-            lock(_updatingLock)
+            lock (_updatingLock)
             {
                 var keysToUpdate = _versions.GetKeys().Where(key => key.First == dataScopeName).ToList();
 
@@ -798,9 +798,9 @@ namespace Composite.Core.WebClient.Renderings.Page
                     }
                     break;
                 case SitemapScope.Level1AndSiblings:
-                    foreach (XElement page in GetSiblingsCopyBySiteDepth(currentPageElement, 1))
+                    foreach (XElement page in PageStructureInfo.GetSiteMap())
                     {
-                        yield return page;
+                        yield return new XElement(page.Name, page.Attributes());
                     }
                     break;
                 case SitemapScope.Level2AndSiblings:
@@ -885,9 +885,13 @@ namespace Composite.Core.WebClient.Renderings.Page
 
             IEnumerable<XElement> elementsToCopy = null;
 
-            if (currentPageDepth >= siteDepth)
+            if (siteDepth == 1)
             {
-                elementsToCopy = associatedPageElement.AncestorsAndSelf(PageElementName).Where(f => f.Attribute("Depth").Value == (siteDepth-1).ToString()).Elements(PageElementName);
+                elementsToCopy = associatedPageElement.AncestorsAndSelf(PageElementName).Where(f => f.Attribute("Depth").Value == "1");
+            }
+            else if (currentPageDepth >= siteDepth)
+            {
+                elementsToCopy = associatedPageElement.AncestorsAndSelf(PageElementName).Where(f => f.Attribute("Depth").Value == (siteDepth - 1).ToString()).Elements(PageElementName);
             }
             else
             {
@@ -897,7 +901,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                 }
             }
 
-            if (elementsToCopy!=null)
+            if (elementsToCopy != null)
             {
                 foreach (XElement pageElement in elementsToCopy)
                 {
@@ -905,6 +909,5 @@ namespace Composite.Core.WebClient.Renderings.Page
                 }
             }
         }
-
     }
 }
