@@ -152,19 +152,6 @@ namespace Composite.Services
 
                 List<string> pathAttributeNames = new List<string> { "src", "href" };
 
-                // 2011-02-02 block below disabled by maw to fix 3151
-                // Fix TinyMCE's fetish for turning absolute URLs into relative URLs
-                //var dottedPathAttributes =
-                //    from xhtmlAttribute in structuredResult.Descendants().Where(f => f.Name.Namespace == Namespaces.Xhtml).Attributes()
-                //    where pathAttributeNames.Contains(xhtmlAttribute.Name.LocalName)
-                //            && xhtmlAttribute.Value.StartsWith("../")
-                //    select xhtmlAttribute;
-
-                //foreach (XAttribute dottedAttribute in dottedPathAttributes)
-                //{
-                //    dottedAttribute.Value = string.Format("/{0}", dottedAttribute.Value.Replace("../", ""));
-                //}
-
                 FixTinyMceMalEncodingOfInternationalUrlHostNames(structuredResult);
 
                 string bodyInnerXhtml = MarkupTransformationServices.OutputBodyDescendants(structuredResult);
@@ -323,12 +310,10 @@ namespace Composite.Services
 
         private XElement GetImageTagForFunctionCall(XElement functionElement)
         {
-            //Validate element - no dont - dead functions then throw exceptions :(
-            //        FunctionRuntimeTreeNode functionNode = (FunctionRuntimeTreeNode)FunctionFacade.BuildTree(functionElement);
-
-            string compactMarkup = functionElement.ToString(SaveOptions.DisableFormatting);
             string title;
             string description;
+            string compactMarkup = functionElement.ToString(SaveOptions.DisableFormatting);
+            
             try
             {
                 FunctionRuntimeTreeNode functionNode = (FunctionRuntimeTreeNode)FunctionFacade.BuildTree(functionElement);
@@ -375,7 +360,26 @@ namespace Composite.Services
                                             paramValue = dataReference.Data.GetLabel();
                                         }
                                     }
+                                    else
+                                    {
+                                        if (parameterProfile.Type == typeof(XhtmlDocument))
+                                        {
+                                            XhtmlDocument xhtmlDoc = setParam.GetValue<XhtmlDocument>();
+                                            if (xhtmlDoc.Body.Nodes().Count() == 0 && xhtmlDoc.Head.Nodes().Count() == 0)
+                                            {
+                                                paramValue = "(Empty HTML)";
+                                            }
+                                            else
+                                            {
+                                                string bodyText = xhtmlDoc.Body.Value.Trim();
+                                                paramValue = (bodyText.Length > 0 ? string.Format("HTML: {0}", bodyText) : "(HTML)");
+                                            }
+                                        }
+                                    }
                                 }
+                                
+                                
+                                
                             }
                             catch (Exception)
                             {
