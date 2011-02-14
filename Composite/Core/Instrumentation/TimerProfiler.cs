@@ -15,6 +15,7 @@ namespace Composite.Core.Instrumentation
 
 
 
+        /// <exclude />
         public abstract void Dispose();
     }
 }

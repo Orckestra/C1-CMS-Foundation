@@ -10,9 +10,16 @@ namespace Composite.Core.PackageSystem
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IPackageUninstaller
     {
+        /// <exclude />
         bool FlushOnCompletion { get; }
+
+        /// <exclude />
         bool ReloadConsoleOnCompletion { get; }
+
+        /// <exclude />
         IEnumerable<PackageFragmentValidationResult> Validate();
+
+        /// <exclude />
         PackageFragmentValidationResult Uninstall(SystemLockingType systemLockingType);        
     }
 }

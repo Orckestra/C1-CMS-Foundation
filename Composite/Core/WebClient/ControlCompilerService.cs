@@ -18,6 +18,7 @@ namespace Composite.Core.WebClient
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ControlCompilerService
     {
+        /// <exclude />
         public static IEnumerable<string> GetControlPaths()
         {
             UiControlFactorySettings uiControlFactorySettings = ConfigurationServices.ConfigurationSource.GetSection(UiControlFactorySettings.SectionName) as UiControlFactorySettings;
@@ -59,6 +60,7 @@ namespace Composite.Core.WebClient
 
 
 
+        /// <exclude />
         public static void CompileAll()
         {
             FieldInfo theBuildManagerFieldInfo = typeof(System.Web.Compilation.BuildManager).GetField("_theBuildManager", BindingFlags.NonPublic | BindingFlags.Static);

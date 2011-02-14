@@ -30,6 +30,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public IEnumerable<string> AllParameterNames
         {
             get
@@ -42,6 +43,8 @@ namespace Composite.Functions
         }
 
 
+
+        /// <exclude />
         public T GetParameter<T>(string parameterName)
         {
             object value = GetParameter(parameterName);
@@ -56,6 +59,8 @@ namespace Composite.Functions
             }
         }
 
+
+        /// <exclude />
 
         public bool TryGetParameter<T>(string parameterName, out T value)
         {
@@ -83,6 +88,8 @@ namespace Composite.Functions
         }
 
 
+
+        /// <exclude />
         public object GetParameter(string parameterName, Type targetType)
         {
             object value = GetParameter(parameterName);
@@ -96,6 +103,8 @@ namespace Composite.Functions
         }
 
 
+
+        /// <exclude />
         public object GetParameter(string parameterName)
         {
             object value;
@@ -131,6 +140,8 @@ namespace Composite.Functions
         }
 
 
+
+        /// <exclude />
         public bool TryGetParameter(string parameterName, out object value)
         {
             StoredParameterReturnValue storedParameterReturnValue;
@@ -163,6 +174,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public bool IsDefaultValue(string parameterName)
         {
             return _parameters[parameterName].IsDefaultValue;

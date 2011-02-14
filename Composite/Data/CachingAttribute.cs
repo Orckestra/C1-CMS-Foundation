@@ -9,12 +9,14 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
     public sealed class CachingAttribute : Attribute
 	{
+        /// <exclude />
         public CachingAttribute(CachingType cachingType)
         {
             this.CachingType = cachingType;
         }
 
 
+        /// <exclude />
         public CachingType CachingType
         {
             get;
@@ -30,7 +32,10 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum CachingType
     {
+        /// <exclude />
         Full,
+
+        /// <exclude />
         None
     }
 }

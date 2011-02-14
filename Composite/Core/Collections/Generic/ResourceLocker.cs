@@ -11,6 +11,7 @@ namespace Composite.Core.Collections.Generic
     public sealed class ResourceLocker<T>
         where T : class
     {
+        /// <exclude />
         public delegate void InitializerDelegate(T resources);
 
         private readonly T _resources;
@@ -22,6 +23,7 @@ namespace Composite.Core.Collections.Generic
         private readonly object _lock = new object();
 
 
+        /// <exclude />
         public ResourceLocker(T resources, InitializerDelegate initializerDelegate, bool requireCoreReaderLock)
         {
             _resources = resources;
@@ -29,11 +31,13 @@ namespace Composite.Core.Collections.Generic
             _requireCoreReaderLock = requireCoreReaderLock;
         }
 
+        /// <exclude />
         public ResourceLocker(T resources, InitializerDelegate initializerDelegate): this(resources, initializerDelegate, true)
         {
         }
 
 
+        /// <exclude />
         public T Resources
         {
             get
@@ -48,6 +52,7 @@ namespace Composite.Core.Collections.Generic
         }
 
 
+        /// <exclude />
         public bool IsInitialized
         {
             get
@@ -57,6 +62,7 @@ namespace Composite.Core.Collections.Generic
         }
 
 
+        /// <exclude />
         public void Initialize()
         {
             if (_initialized)
@@ -103,6 +109,7 @@ namespace Composite.Core.Collections.Generic
 		}
 
 
+        /// <exclude />
         public IDisposable Locker
         {
             get
@@ -112,6 +119,7 @@ namespace Composite.Core.Collections.Generic
         }
 
 
+        /// <exclude />
         public IDisposable ReadLocker
         {
             get
@@ -121,6 +129,7 @@ namespace Composite.Core.Collections.Generic
         }
 
 
+        /// <exclude />
         public void ResetInitialization()
         {
             lock (_lock)

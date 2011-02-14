@@ -7,6 +7,7 @@ namespace Composite.C1Console.Forms
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IFormChannelIdentifier
     {
+        /// <exclude />
         string ChannelName { get; }
     }
 }

@@ -11,6 +11,7 @@ namespace Composite.Functions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IFunction : IMetaFunction
 	{
+        /// <exclude />
         object Execute(ParameterList parameters, FunctionContextContainer context);
 	}
 

@@ -75,6 +75,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public IDataId DataId
         {
             get 
@@ -91,6 +92,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public string ProviderName
         {
             get { return _providerName; }
@@ -99,6 +101,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public Type InterfaceType
         {
             get { return _interfaceType; }
@@ -107,6 +110,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public DataScopeIdentifier DataScopeIdentifier
         {
             get { return _dataScopeIdentifier; }
@@ -114,12 +118,16 @@ namespace Composite.Data
         }
 
 
+
+        /// <exclude />
         public PublicationScope PublicationScope
         {
             get { return _dataScopeIdentifier.Name == DataScopeIdentifier.PublicName ? Data.PublicationScope.Published : Data.PublicationScope.Unpublished; }
         }
 
 
+
+        /// <exclude />
         public CultureInfo LocaleScope
         {
             get { return _localeScope;  }
@@ -128,6 +136,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public bool ExistsInStore
         {
             get;
@@ -136,6 +145,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public string Serialize()
         {
             IDataId dataId = EnsureDataIdType(_dataId);
@@ -165,6 +175,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static DataSourceId Deserialize(string serializedDataSourceId)
         {
             DataSourceId dataSourceId;
@@ -176,6 +187,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static bool TryDeserialize(string serializedDataSourceId, out DataSourceId dataSourceId)
         {
             return Deserialize(serializedDataSourceId, out dataSourceId, false);
@@ -250,9 +262,10 @@ namespace Composite.Data
 
             return true;
         }
-        
 
 
+
+        /// <exclude />
         public override string ToString()
         {
             return Serialize();
@@ -260,6 +273,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public bool EqualsModuloDataScope(DataSourceId dataSourceId)
         {            
             return 
@@ -271,6 +285,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public override bool Equals(object obj)
         {
             if (obj == null) return false;
@@ -282,6 +297,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public bool Equals(DataSourceId dataSourceId)
         {
             if (dataSourceId == null) return false;
@@ -291,6 +307,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public override int GetHashCode()
         {
             return ToString().GetHashCode();

@@ -10,6 +10,7 @@ namespace Composite.Data.Validation.ClientValidationRules
     [Serializable]
     public sealed class StringLengthClientValidationRule : ClientValidationRule
 	{
+        /// <exclude />
         public StringLengthClientValidationRule(int lowerBound, int upperBound)
         {
             this.LowerBound = lowerBound;
@@ -17,6 +18,7 @@ namespace Composite.Data.Validation.ClientValidationRules
         }
 
 
+        /// <exclude />
         public int LowerBound
         {
             get;
@@ -24,6 +26,7 @@ namespace Composite.Data.Validation.ClientValidationRules
         }
 
 
+        /// <exclude />
         public int UpperBound
         {
             get;

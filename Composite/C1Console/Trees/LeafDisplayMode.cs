@@ -10,8 +10,13 @@ namespace Composite.C1Console.Trees
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum LeafDisplayMode
     {
+        /// <exclude />
         Compact = 0,
+
+        /// <exclude />
         Lazy = 1,
+
+        /// <exclude />
         Auto = 2
     }
 
@@ -23,6 +28,7 @@ namespace Composite.C1Console.Trees
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class LeafDisplayModeHelper
     {
+        /// <exclude />
         public static LeafDisplayMode ParseDisplayMode(XAttribute attribute, Tree tree)
         {
             LeafDisplayMode displayMode = LeafDisplayMode.Lazy;

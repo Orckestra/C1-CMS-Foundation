@@ -28,13 +28,28 @@ namespace Composite.C1Console.Trees
         private readonly MethodInfo StringSubstringMethodInfo = typeof(String).GetMethods().Where(f => f.Name == "Substring").Skip(1).First();
         private readonly MethodInfo ToUpperCompareMethodInfo = typeof(string).GetMethods().Where(f => f.Name == "ToUpper").First();
 
+        /// <exclude />
         public Type InterfaceType { get; internal set; }            // Requried
+
+        /// <exclude />
         public ResourceHandle Icon { get; internal set; }           // Defaults to 'folder-disabled'
+
+        /// <exclude />
         public string FieldName { get; internal set; }              // Requried
+
+        /// <exclude />
         public string DateFormat { get; internal set; }             // Optional
+
+        /// <exclude />
         public string Range { get; internal set; }                  // Optional
+
+        /// <exclude />
         public bool FirstLetterOnly { get; internal set; }          // Optional
+
+        /// <exclude />
         public LeafDisplayMode Display { get; internal set; }       // Optional
+
+        /// <exclude />
         public bool ShowForeignItems { get; internal set; }         // Optional
 
 
@@ -57,9 +72,10 @@ namespace Composite.C1Console.Trees
         private bool IsTopFolderParent { get; set; }
         private DataElementsTreeNode ChildGeneratingDataElementsTreeNode { get; set; }
         private ParentIdFilterNode ChildGeneratingParentIdFilterNode { get; set; }
-        
 
 
+
+        /// <exclude />
         public override IEnumerable<EntityToken> GetEntityTokens(EntityToken childEntityToken, TreeNodeDynamicContext dynamicContext)
         {
             List<object> labels = GetObjects(dynamicContext, true);
@@ -120,6 +136,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public override AncestorResult GetParentEntityToken(EntityToken childEntityToken, Type parentInterfaceOfInterest, TreeNodeDynamicContext dynamicContext)
         {
             if ((this.ParentNode is DataFolderElementsTreeNode) == true)
@@ -147,6 +164,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         protected override IEnumerable<Element> OnGetElements(EntityToken parentEntityToken, TreeNodeDynamicContext dynamicContext)
         {
             object referenceValue = null;
@@ -795,6 +813,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         protected override void OnInitialize()
         {
             DataFolderElementsTreeNode parentNode = this.ParentNode as DataFolderElementsTreeNode;
@@ -1008,6 +1027,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public override string ToString()
         {
             return string.Format("DataFolderElementsTreeNode, Id = {0}, DataType = {1}, FieldName = {2}, {3}", this.Id, this.InterfaceType, this.FieldName, this.ParentString());

@@ -23,6 +23,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public GlobalPermissionsFormsHelper(string fieldLabel, string multiSelectLabel, string multiSelectHelp)
         {
             this.FieldLabel = fieldLabel;
@@ -32,6 +33,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public void UpdateWithNewBindings(Dictionary<string, object> bindings, IEnumerable<PermissionType> selectedPermissionTypes)
         {
             Dictionary<string, string> options = new Dictionary<string, string>();
@@ -64,12 +66,15 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public static string GetFieldBindingPath()
         {
             return MultiKeySelectorSelectedBindingName;
         }
 
 
+
+        /// <exclude />
         public static IEnumerable<PermissionType> GetSelectedPermissionTypes(Dictionary<string, object> bindings)
         {
             List<string> serializedPermissionTypes = (List<string>)bindings[MultiKeySelectorSelectedBindingName];
@@ -82,6 +87,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public IEnumerable<XElement> GetBindingsMarkup()
         {
             if (_bindingElements == null)
@@ -94,6 +100,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public XElement GetFormMarkup()
         {
             if (_fieldGroupElement == null)
@@ -106,6 +113,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public string FieldLabel
         {
             get;
@@ -114,6 +122,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public string MultiSelectLabel
         {
             get;
@@ -122,6 +131,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public string MultiSelectHelp
         {
             get;

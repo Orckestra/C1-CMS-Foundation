@@ -12,6 +12,7 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ElementExtensionMethods
     {
+        /// <exclude />
         public static ClientElement GetClientElement(this Element element)
         {
             if (element.VisualData.Icon == null || element.Actions.Where(a => a.VisualData.Icon == null).Any())
@@ -62,6 +63,7 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods
 
 
 
+        /// <exclude />
         public static List<ClientElement> ToClientElementList(this List<Element> elements)
         {
             List<ClientElement> list = new List<ClientElement>();
@@ -76,6 +78,7 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods
 
 
 
+        /// <exclude />
         public static List<KeyValuePair> ToClientPropertyBag(this Dictionary<string, string> propertyBag)
         {
             if (propertyBag == null || propertyBag.Count == 0) return null;

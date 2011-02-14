@@ -13,12 +13,14 @@ namespace Composite.C1Console.Security
         private Type _securityAncestorProviderType;
 
 
+        /// <exclude />
         public SecurityAncestorProviderAttribute(Type securityAncestorProviderType)
         {
             _securityAncestorProviderType = securityAncestorProviderType;
         }
 
 
+        /// <exclude />
         public Type SecurityAncestorProviderType
         {
             get { return _securityAncestorProviderType; }

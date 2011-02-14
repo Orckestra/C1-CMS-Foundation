@@ -13,12 +13,14 @@ namespace Composite.C1Console.Actions
         private Type _actionExecutorType;
 
 
+        /// <exclude />
         public ActionExecutorAttribute(Type actionExecutorType)
         {
             _actionExecutorType = actionExecutorType;
         }
 
 
+        /// <exclude />
         public Type ActionExecutorType
         {
             get { return _actionExecutorType; }

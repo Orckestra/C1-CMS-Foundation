@@ -12,9 +12,16 @@ namespace Composite.Core.WebClient.State
     [CustomFactory(typeof(SessionStateProviderCustomFactory))]
     public interface ISessionStateProvider 
     {
+        /// <exclude />
         void AddState<T>(Guid stateId, T value, DateTime exirationDate);
+
+        /// <exclude />
         bool TryGetState<T>(Guid stateId, out T state);
+
+        /// <exclude />
         void SetState<T>(Guid stateId, T value, DateTime exirationDate);
+
+        /// <exclude />
         void RemoveState(Guid stateId);
     }
 }

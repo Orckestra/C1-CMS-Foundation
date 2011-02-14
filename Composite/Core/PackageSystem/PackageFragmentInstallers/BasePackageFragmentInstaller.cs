@@ -12,6 +12,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class BasePackageFragmentInstaller : IPackageFragmentInstaller
 	{
+        /// <exclude />
         public void Initialize(PackageInstallerContext packageInstallerContex, IEnumerable<XElement> configuration, XElement configurationParent)
         {
             if (packageInstallerContex == null) throw new ArgumentNullException("packageInstallerContex");
@@ -24,12 +25,22 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         }
 
 
+        /// <exclude />
         public abstract IEnumerable<PackageFragmentValidationResult> Validate();
+
+        /// <exclude />
         public abstract IEnumerable<XElement> Install();
 
-        protected PackageInstallerContext InstallerContex { get; private set; }        
+
+        /// <exclude />
+        protected PackageInstallerContext InstallerContex { get; private set; }
+
+        /// <exclude />
         protected IEnumerable<XElement> Configuration { get; set; }
+
+        /// <exclude />
         protected XElement ConfigurationParent { get; set; }
+
 
         internal static string GetResourceString(string key)
         {

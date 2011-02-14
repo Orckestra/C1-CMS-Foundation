@@ -20,6 +20,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public ActionHandle(ActionToken actionToken)
         {
             _actionToken = actionToken;
@@ -27,6 +28,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public ActionToken ActionToken
         {
             get { return _actionToken; }
@@ -49,6 +51,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public override bool Equals(object obj)
         {
             return Equals(obj as ActionHandle);
@@ -56,6 +59,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public bool Equals(ActionHandle actionHandle)
         {
             if (actionHandle == null) return false;
@@ -65,6 +69,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public override int GetHashCode()
         {
             return this.SerializedActionToken.GetHashCode();

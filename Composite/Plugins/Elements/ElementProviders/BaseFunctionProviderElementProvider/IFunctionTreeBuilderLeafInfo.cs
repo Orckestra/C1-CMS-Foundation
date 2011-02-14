@@ -10,6 +10,7 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IFunctionTreeBuilderLeafInfo : INamespaceTreeBuilderLeafInfo
 	{
+        /// <exclude />
         EntityToken EntityToken { get; }
 	}
 }

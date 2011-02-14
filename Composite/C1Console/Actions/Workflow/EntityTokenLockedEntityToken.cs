@@ -17,6 +17,8 @@ namespace Composite.C1Console.Actions.Workflows
         private ActionToken _lockedActionToken = null;
         private EntityToken _lockedEntityToken = null;
 
+
+        /// <exclude />
         public EntityTokenLockedEntityToken(string lockedByUsername, string serializedLockedActionToken, string serializedLockedEntityToken)
         {
             _lockedByUsername = lockedByUsername;
@@ -24,11 +26,15 @@ namespace Composite.C1Console.Actions.Workflows
             _serializedLockedEntityToken = serializedLockedEntityToken;            
         }
 
+
+        /// <exclude />
         public string LockedByUsername
         {
             get { return _lockedByUsername; }
         }
 
+
+        /// <exclude />
         public ActionToken LockedActionToken
         {
             get
@@ -42,6 +48,8 @@ namespace Composite.C1Console.Actions.Workflows
             }
         }
 
+
+        /// <exclude />
         public EntityToken LockedEntityToken
         {
             get
@@ -55,26 +63,36 @@ namespace Composite.C1Console.Actions.Workflows
             }
         }
 
+
+        /// <exclude />
         public override string Type
         {
             get { return _lockedByUsername; }
         }
 
+
+        /// <exclude />
         public override string Source
         {
             get { return _serializedLockedActionToken; }
         }
 
+
+        /// <exclude />
         public override string Id
         {
             get { return _serializedLockedEntityToken; }
         }
 
+
+        /// <exclude />
         public override string Serialize()
         {
             return DoSerialize();
         }
 
+
+        /// <exclude />
         public static EntityToken Deserialize(string serializedEntityToken)
         {
             string type, source, id;

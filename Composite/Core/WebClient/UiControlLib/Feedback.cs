@@ -42,9 +42,16 @@ namespace Composite.Core.WebClient.UiControlLib
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
         public enum Status
         {
+            /// <exclude />
             Empty = 0,
-            Success = 1, 
+
+            /// <exclude />
+            Success = 1,
+
+            /// <exclude />
             Failure = 2,
+
+            /// <exclude />
             Ping = 3
         }
 
@@ -54,6 +61,7 @@ namespace Composite.Core.WebClient.UiControlLib
 
         private string _consoleId;
 
+        /// <exclude />
         public Feedback(string emptyParameter) : base("ui:feedbackset")
         {
             this.Attributes["clientid"] = "feedback";
@@ -83,17 +91,19 @@ namespace Composite.Core.WebClient.UiControlLib
             _requestTag.Controls.Add(_consoleIdField);
         }
 
+        /// <exclude />
         public string OnCommand
         {
             set { _requestTag.Attributes["OnCommand"] = value; }
         }
 
-
+        /// <exclude />
         public string ResponseStatus
         {
             set { _responseTag.Attributes["status"] = value; }
         }
 
+        /// <exclude />
         public void SetStatus(Status status)
         {
             switch (status)
@@ -116,16 +126,19 @@ namespace Composite.Core.WebClient.UiControlLib
             }
         }
 
+        /// <exclude />
         public void SetStatus(bool success)
         {
             SetStatus(success ? Status.Success : Status.Failure);
         }
 
+        /// <exclude />
         public string GetPostedMessage()
         {
             return this.Page.IsPostBack ? this.Page.Request.Form["__REQUEST"] : string.Empty; 
         }
 
+        /// <exclude />
         public override bool IsPosted
         {
             get 
@@ -134,6 +147,7 @@ namespace Composite.Core.WebClient.UiControlLib
             }
         }
 
+        /// <exclude />
         protected override void OnPreRender(EventArgs e)
         {
             // Setting default status value - "Ping"
@@ -154,6 +168,7 @@ namespace Composite.Core.WebClient.UiControlLib
             base.OnPreRender(e);
         }
 
+
         private static string GetConsoleId()
         {
             var httpContext = HttpContext.Current;
@@ -167,6 +182,7 @@ namespace Composite.Core.WebClient.UiControlLib
             return null;
         }
 
+        /// <exclude />
         public void MarkAsDirty()
         {
              this.Attributes["dirty"] = "true";

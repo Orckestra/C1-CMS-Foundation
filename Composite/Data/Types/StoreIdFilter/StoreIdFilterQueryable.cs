@@ -15,6 +15,7 @@ namespace Composite.Data.Types.StoreIdFilter
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IStorageFilter 
     {
+        /// <exclude />
         string StoreId { get; }
     }
 
@@ -34,6 +35,7 @@ namespace Composite.Data.Types.StoreIdFilter
 
 
 
+        /// <exclude />
         public StoreIdFilterQueryable(IQueryable<T> originalQueryable, string storeId)
         {
             _originalQueryable = originalQueryable;
@@ -43,6 +45,7 @@ namespace Composite.Data.Types.StoreIdFilter
 
 
 
+        /// <exclude />
         public StoreIdFilterQueryable(IQueryable<T> originalQueryable, string storeId, Expression currentExpression)
         {
             _originalQueryable = originalQueryable;
@@ -52,6 +55,7 @@ namespace Composite.Data.Types.StoreIdFilter
 
 
 
+        /// <exclude />
         public IQueryable<S> CreateQuery<S>(Expression expression)
         {
             StoreIdFilterQueryableSourceChanringExpressionVisitor visitor = new StoreIdFilterQueryableSourceChanringExpressionVisitor();
@@ -65,6 +69,7 @@ namespace Composite.Data.Types.StoreIdFilter
 
 
 
+        /// <exclude />
         public IQueryable CreateQuery(Expression expression)
         {
             if (_currentExpression == expression) return this;
@@ -76,6 +81,7 @@ namespace Composite.Data.Types.StoreIdFilter
 
 
 
+        /// <exclude />
         public S Execute<S>(Expression expression)
         {
             StoreIdFilterQueryableExpressionVisitor visitor = new StoreIdFilterQueryableExpressionVisitor();
@@ -104,6 +110,7 @@ namespace Composite.Data.Types.StoreIdFilter
 
 
 
+        /// <exclude />
         public object Execute(Expression expression)
         {
             MethodInfo methodInfo = StoreIdFilterQueryableCache.GetStoreIdFilterQueryableExecuteMethodInfo(typeof(T), expression.Type);
@@ -113,6 +120,7 @@ namespace Composite.Data.Types.StoreIdFilter
 
 
 
+        /// <exclude />
         public IEnumerator<T> GetEnumerator()
         {
             StoreIdFilterQueryableExpressionVisitor visitor = new StoreIdFilterQueryableExpressionVisitor();
@@ -135,6 +143,7 @@ namespace Composite.Data.Types.StoreIdFilter
 
 
 
+        /// <exclude />
         IEnumerator IEnumerable.GetEnumerator()
         {
             MethodInfo methodInfo = StoreIdFilterQueryableCache.GetStoreIdFilterQueryableGetEnumeratorMethodInfo(typeof(T));
@@ -144,6 +153,7 @@ namespace Composite.Data.Types.StoreIdFilter
 
 
 
+        /// <exclude />
         public Expression Expression
         {
             get { return _currentExpression; }
@@ -151,6 +161,7 @@ namespace Composite.Data.Types.StoreIdFilter
 
 
 
+        /// <exclude />
         public Type ElementType
         {
             get { return typeof(T); }
@@ -158,6 +169,7 @@ namespace Composite.Data.Types.StoreIdFilter
 
 
 
+        /// <exclude />
         public IQueryProvider Provider
         {
             get { return this; }
@@ -165,16 +177,17 @@ namespace Composite.Data.Types.StoreIdFilter
 
 
 
+        /// <exclude />
         public IQueryable Source
         {
             get { return _originalQueryable; }
         }
 
 
+        /// <exclude />
         public string StoreId
         {
             get { return _storeId; }
         }
-
     }
 }

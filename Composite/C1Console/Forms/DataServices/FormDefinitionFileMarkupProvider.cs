@@ -19,6 +19,7 @@ namespace Composite.C1Console.Forms.DataServices
         private string _formPath;
 
 
+        /// <exclude />
         public FormDefinitionFileMarkupProvider(string formPath)
         {
             if (string.IsNullOrEmpty(formPath) == true) throw new ArgumentException("Path can not be empty", formPath);
@@ -26,6 +27,7 @@ namespace Composite.C1Console.Forms.DataServices
         }
 
 
+        /// <exclude />
         public XmlReader GetReader()
         {
             string folderPath = Path.GetDirectoryName(_formPath);

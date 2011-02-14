@@ -12,6 +12,7 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
 	public sealed class AutoUpdatebleAttribute : Attribute
 	{
+        /// <exclude />
         public AutoUpdatebleAttribute()
         {
         }

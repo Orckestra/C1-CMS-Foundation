@@ -18,9 +18,14 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class TidyHtmlResult
     {
+        /// <exclude />
         public XDocument Output { get; set; }
+        
+        /// <exclude />
         public string ErrorSummary { get; set; }
     }
+
+
 
     /// <summary>
     /// Summary description for HtmlTidyServices
@@ -233,6 +238,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
         }
 
 
+        /// <exclude />
         public static string OutputBodyDescendants(XDocument source)
         {
             string bodyInnerXhtml = "";
@@ -483,9 +489,6 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             }
             return prefixToUri;
         }
-
-
-
 
     }
 }

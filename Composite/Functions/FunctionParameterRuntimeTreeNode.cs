@@ -20,6 +20,7 @@ namespace Composite.Functions
         private object _cachedValue;
 
 
+        /// <exclude />
         public FunctionParameterRuntimeTreeNode(string name, FunctionRuntimeTreeNode functionNode)
             : base(name)
         {
@@ -28,6 +29,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public FunctionRuntimeTreeNode GetHostedFunction()
         {
             return _functionNode;
@@ -35,6 +37,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public override bool ContainsNestedFunctions
         {
             get
@@ -44,6 +47,7 @@ namespace Composite.Functions
         }
 
 
+        /// <exclude />
         public override object GetValue(FunctionContextContainer contextContainer)
         {
             if (contextContainer == null) throw new ArgumentNullException("contextContainer");
@@ -55,7 +59,7 @@ namespace Composite.Functions
         }
 
 
-
+        /// <exclude />
         public override object GetCachedValue(FunctionContextContainer contextContainer)
         {
             if (contextContainer == null) throw new ArgumentNullException("contextContainer");
@@ -71,14 +75,14 @@ namespace Composite.Functions
         }
 
 
-
+        /// <exclude />
         public override IEnumerable<string> GetAllSubFunctionNames()
         {
             return _functionNode.GetAllSubFunctionNames();
         }
 
 
-
+        /// <exclude />
         public override XElement Serialize()
         {
             // ensure "f:function" naming:
@@ -90,6 +94,5 @@ namespace Composite.Functions
 
             return element;
         }
-
     }
 }

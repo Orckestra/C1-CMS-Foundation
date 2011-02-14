@@ -8,7 +8,10 @@ namespace Composite.Core.Configuration
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public interface ICachingSettings
 	{
+        /// <exclude />
         bool Enabled { get; }
+
+        /// <exclude />
         IEnumerable<ICacheSettings> Caches { get; }
 	}
 
@@ -20,8 +23,13 @@ namespace Composite.Core.Configuration
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface ICacheSettings
     {
+        /// <exclude />
         string Name { get; }
+
+        /// <exclude />
         bool Enabled { get; }
+
+        /// <exclude />
         int Size { get; }
     }
 }

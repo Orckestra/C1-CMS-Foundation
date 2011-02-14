@@ -18,7 +18,7 @@ namespace Composite.Functions.Plugins.WidgetFunctionProvider
 
 
 
-
+        /// <exclude />
         public void WidgetFunctionsUpdated()
         {
             MetaFunctionProviderRegistry.ReinitializeWidgetFunctionFromProvider(this.ProviderName);

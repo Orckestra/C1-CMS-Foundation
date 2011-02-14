@@ -16,6 +16,7 @@ namespace Composite.C1Console.Security
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class RelationshipOrientedGraphNodeExtensions
     {
+        /// <exclude />
         public static IEnumerable<IEnumerable<EntityToken>> GetAllPaths(this RelationshipOrientedGraphNode node)
         {
             List<List<EntityToken>> allPaths = new List<List<EntityToken>>();
@@ -81,6 +82,7 @@ namespace Composite.C1Console.Security
         private Action<RelationshipOrientedGraphNode> _expandAction;
 
 
+        /// <exclude />
         public RelationshipOrientedGraphNode(EntityToken entityToken, Action<RelationshipOrientedGraphNode> expandAction)
         {
             this.EntityToken = entityToken;
@@ -89,10 +91,12 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public EntityToken EntityToken { get; private set; }
 
 
 
+        /// <exclude />
         public IEnumerable<RelationshipOrientedGraphNode> Parents
         {
             get
@@ -129,6 +133,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public override int GetHashCode()
         {
             return this.EntityToken.GetHashCode();
@@ -136,6 +141,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public override bool Equals(object obj)
         {
             return Equals(obj as RelationshipOrientedGraphNode);
@@ -143,6 +149,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public bool Equals(RelationshipOrientedGraphNode node)
         {
             if (node == null) return false;
@@ -163,6 +170,7 @@ namespace Composite.C1Console.Security
         private List<RelationshipOrientedGraphNode> _nodes = new List<RelationshipOrientedGraphNode>();
 
 
+        /// <exclude />
         public RelationshipOrientedGraph(EntityToken sourceEntityToken)
         {
             RelationshipOrientedGraphNode node = CreateNewNode(sourceEntityToken);
@@ -172,6 +180,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public RelationshipOrientedGraphNode Root
         {
             get
@@ -253,9 +262,14 @@ namespace Composite.C1Console.Security
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum RelationshipGraphSearchOption
     {
-        Native,
-        Hooked,
-        Both
+        /// <exclude />
+        Native = 0,
+
+        /// <exclude />
+        Hooked = 1,
+
+        /// <exclude />
+        Both = 2
     }
 
 
@@ -272,12 +286,14 @@ namespace Composite.C1Console.Security
         private HashSet<EntityToken> _visitedEntityTokens = new HashSet<EntityToken>();
         private bool _moreLevelsToExpend;
 
+        /// <exclude />
         public RelationshipGraph(EntityToken sourceEntityToken, RelationshipGraphSearchOption searchOption)
             : this(sourceEntityToken, searchOption, false)
         {
         }
 
 
+        /// <exclude />
         public RelationshipGraph(EntityToken sourceEntityToken, RelationshipGraphSearchOption searchOption, bool lazyEvaluation)
         {
             if (sourceEntityToken == null) throw new ArgumentNullException("sourceEntityToken");
@@ -302,6 +318,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public IEnumerable<RelationshipGraphLevel> Levels
         {
             get
@@ -312,6 +329,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public IEnumerable<RelationshipGraphNode> TopNodes
         {
             get
@@ -331,6 +349,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public IEnumerable<RelationshipGraphNode> BottomNodes
         {
             get
@@ -350,6 +369,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

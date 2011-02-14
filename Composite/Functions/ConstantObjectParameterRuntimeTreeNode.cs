@@ -18,6 +18,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public ConstantObjectParameterRuntimeTreeNode(string name, object constantValue)
             : base(name)
         {
@@ -25,6 +26,7 @@ namespace Composite.Functions
         }
 
 
+        /// <exclude />
         public override object GetValue(FunctionContextContainer contextContainer)
         {
             if (contextContainer == null) throw new ArgumentNullException("contextContainer");
@@ -33,6 +35,7 @@ namespace Composite.Functions
         }
 
 
+        /// <exclude />
         public override object GetCachedValue(FunctionContextContainer contextContainer)
         {
             if (contextContainer == null) throw new ArgumentNullException("contextContainer");
@@ -41,13 +44,14 @@ namespace Composite.Functions
         }
 
 
+        /// <exclude />
         public override IEnumerable<string> GetAllSubFunctionNames()
         {
             return new string[] { };
         }
 
 
-
+        /// <exclude />
         public override bool ContainsNestedFunctions
         {
             get
@@ -57,6 +61,7 @@ namespace Composite.Functions
         }
 
 
+        /// <exclude />
         public override XElement Serialize()
         {
             if (_constantValue is IEnumerable && (_constantValue is string) == false)

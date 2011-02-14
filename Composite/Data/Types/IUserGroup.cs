@@ -18,11 +18,13 @@ namespace Composite.Data.Types
     [DataAncestorProvider(typeof(NoAncestorDataAncestorProvider))]
     public interface IUserGroup : IData
     {
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{93EA801A-AA0D-4cac-BE31-EDF9A8345D29}")]
         Guid Id { get; set; }
 
 
+        /// <exclude />
         [NotNullValidator()]
         [Composite.Data.Validation.Validators.StringSizeValidator(2, 64)]
         [StoreFieldType(PhysicalStoreFieldType.String, 64)]

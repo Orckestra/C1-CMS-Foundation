@@ -22,6 +22,7 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum PageUrlType
     {
+        /// <exclude />
         Undefined = 0,
 
         /// <summary>
@@ -50,6 +51,8 @@ namespace Composite.Data
         Friendly = 3
     }
 
+
+
     /// <summary>
     /// Represents a page url
     /// </summary>
@@ -57,11 +60,14 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class PageUrl
     {
+        /// <exclude />
         public PageUrl(PublicationScope publicationScope, CultureInfo locale, Guid pageId) :
             this(publicationScope, locale, pageId, PageUrlType.Undefined)
         {
         }
 
+
+        /// <exclude />
         public PageUrl(PublicationScope publicationScope, CultureInfo locale, Guid pageId, PageUrlType urlType)
         {
             Verify.ArgumentNotNull(locale, "locale");

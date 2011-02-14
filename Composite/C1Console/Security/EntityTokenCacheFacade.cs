@@ -67,9 +67,10 @@ namespace Composite.C1Console.Security
             Enabled = cachingSettings.Enabled;
             MaxSize = cachingSettings.GetSize(DefaultSize);
         }
-        
 
 
+
+        /// <exclude />
         public static void AddNativeCache(EntityToken entityToken, IEnumerable<EntityToken> parentEntityTokens)
         {
 #if DISABLE_ENTITYTOKEN_CACHE
@@ -96,6 +97,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static void AddHookingCache(EntityToken entityToken, IEnumerable<EntityToken> parentEntityTokens)
         {
 #if DISABLE_ENTITYTOKEN_CACHE
@@ -122,6 +124,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static bool GetCachedNativeParents(EntityToken entityToken, out IEnumerable<EntityToken> parentEntityTokens)
         {
 #if DISABLE_ENTITYTOKEN_CACHE
@@ -174,6 +177,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static bool GetCachedHookingParents(EntityToken entityToken, out IEnumerable<EntityToken> parentEntityTokens)
         {
 #if DISABLE_ENTITYTOKEN_CACHE
@@ -226,6 +230,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static void ClearCache(EntityToken entityToken)
         {
 #if DISABLE_ENTITYTOKEN_CACHE            
@@ -244,6 +249,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static void ClearCache(EntityToken entityToken, string userName)
         {
 #if DISABLE_ENTITYTOKEN_CACHE            
@@ -270,6 +276,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static void ClearCache()
         {
             _nativeCache = new ConcurrentDictionary<CacheKey, CacheEntry>();

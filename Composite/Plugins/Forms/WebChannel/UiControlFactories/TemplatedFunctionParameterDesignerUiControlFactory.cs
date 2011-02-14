@@ -19,10 +19,13 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class FunctionParameterDesignerTemplateUserControlBase : UserControl
     {
+        /// <exclude />
         public abstract string SessionStateProvider { get; set; }
 
+        /// <exclude />
         public abstract Guid SessionStateId { get; set; }
     }
+
 
 
     internal sealed class TemplatedFunctionParameterDesignerUiControl : FunctionParameterDesignerUiControl, IWebUiControl

@@ -22,6 +22,7 @@ namespace Composite.C1Console.Trees
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class AncestorResult
     {
+        /// <exclude />
         public AncestorResult(TreeNode treeNode, EntityToken entityToken)
         {
             this.TreeNode = treeNode;
@@ -29,7 +30,10 @@ namespace Composite.C1Console.Trees
         }
 
 
+        /// <exclude />
         public TreeNode TreeNode { get; set; }
+
+        /// <exclude />
         public EntityToken EntityToken { get; set; }
     }
 
@@ -42,22 +46,44 @@ namespace Composite.C1Console.Trees
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class TreeNode
-    {       
+    {
+        /// <exclude />
         protected List<TreeNode> _childNodes = new List<TreeNode>();
+
+        /// <exclude />
         protected List<ActionNode> _actionNodes = new List<ActionNode>();
+
+        /// <exclude />
         protected List<OrderByNode> _orderByNodes = new List<OrderByNode>();
+
+        /// <exclude />
         protected List<FilterNode> _filterNodes = new List<FilterNode>();
 
 
+        /// <exclude />
         public string XPath { get; internal set; }
+
+        /// <exclude />
         public string Id { get; internal set; }
 
+
+        /// <exclude />
         public Tree Tree { get; internal set; }
+
+        /// <exclude />
         public TreeNode ParentNode { get; internal set; }
 
+
+        /// <exclude />
         public IEnumerable<TreeNode> ChildNodes { get { return _childNodes; } }
+
+        /// <exclude />
         public IEnumerable<ActionNode> ActionNodes { get { return _actionNodes; } }
+
+        /// <exclude />
         public IEnumerable<OrderByNode> OrderByNodes { get { return _orderByNodes; } }
+
+        /// <exclude />
         public IEnumerable<FilterNode> FilterNodes { get { return _filterNodes; } }
 
         /// <summary>
@@ -115,6 +141,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public IEnumerable<Element> GetElements(EntityToken parentEntityToken, TreeNodeDynamicContext dynamicContext)
         {
             IEnumerable<Element> elements = OnGetElements(parentEntityToken, dynamicContext);
@@ -139,6 +166,7 @@ namespace Composite.C1Console.Trees
         protected virtual void OnInitialize() { }
 
 
+        /// <exclude />
         public void Initialize() 
         {
             this.OnInitialize();
@@ -231,6 +259,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         protected string ParentString()
         {
             if (this.ParentNode == null)

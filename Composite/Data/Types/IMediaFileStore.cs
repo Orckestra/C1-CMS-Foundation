@@ -8,22 +8,23 @@
     [DataScope(DataScopeIdentifier.PublicName)]
     public interface IMediaFileStore : IData
     {
+        /// <exclude />
         string Id { get; }
 
 
-
+        /// <exclude />
         string Title { get; }
 
 
-
+        /// <exclude />
         string Description { get; }
 
 
-
+        /// <exclude />
         bool IsReadOnly { get; }
 
 
-
+        /// <exclude />
         bool ProvidesMetadata { get; }
     }
 }

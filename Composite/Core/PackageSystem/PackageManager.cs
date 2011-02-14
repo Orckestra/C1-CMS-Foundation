@@ -21,6 +21,7 @@ namespace Composite.Core.PackageSystem
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class PackageManager
     {
+        /// <exclude />
         public static IEnumerable<InstalledPackageInformation> GetInstalledPackages()
         {
             string baseDirectory = PathUtil.Resolve(GlobalSettingsFacade.PackageDirectory);
@@ -117,6 +118,7 @@ namespace Composite.Core.PackageSystem
         }
 
 
+        /// <exclude />
         public static bool IsInstalled(Guid packageId)
         {
             InstalledPackageInformation installedPackageInformation =
@@ -129,6 +131,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public static string GetCurrentVersion(Guid packageId)
         {
             string currentVersion =
@@ -141,6 +144,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public static PackageManagerInstallProcess Install(Stream zipFileStream, bool isLocalInstall)
         {
             if (isLocalInstall == false) throw new ArgumentException("Non local install needs a packageServerAddress");
@@ -150,6 +154,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public static PackageManagerInstallProcess Install(Stream zipFileStream, bool isLocalInstall, string packageServerAddress)
         {
             if ((isLocalInstall == false) && (string.IsNullOrEmpty(packageServerAddress) == true)) throw new ArgumentException("Non local install needs a packageServerAddress");
@@ -235,6 +240,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public static PackageManagerUninstallProcess Uninstall(Guid id)
         {
             try

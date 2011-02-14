@@ -6,11 +6,22 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum ViewType
     {
+        /// <exclude />
         Main,
+
+        /// <exclude />
         ModalDialog,
+
+        /// <exclude />
         RightTop,
+
+        /// <exclude />
         RightBottom,
+
+        /// <exclude />
         BottomLeft,
+
+        /// <exclude />
         BottomRight
     }
 

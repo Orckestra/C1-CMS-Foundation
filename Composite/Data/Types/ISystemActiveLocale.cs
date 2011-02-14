@@ -19,11 +19,13 @@ namespace Composite.Data.Types
     [DataAncestorProvider(typeof(NoAncestorDataAncestorProvider))]
 	public interface ISystemActiveLocale : IData
 	{
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{ABFBC594-8EE2-4578-9414-34713F1E9A39}")]
         Guid Id { get; set; }
 
 
+        /// <exclude />
         [NotNullValidator()]
         [StringSizeValidator(2, 16)]
         [StoreFieldType(PhysicalStoreFieldType.String, 16)]
@@ -31,12 +33,14 @@ namespace Composite.Data.Types
         string CultureName { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 64)]
         [StringSizeValidator(0, 64)]
         [ImmutableFieldId("{85009F2B-EB00-4d9f-AC43-36D6BEB99181}")]
         string UrlMappingName { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Boolean)]
         [ImmutableFieldId("{3CF887A9-44FB-4193-A070-67E4324F9206}")]
         bool IsDefault { get; set; }

@@ -32,6 +32,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public string SourcePropertyName
         {
             get;
@@ -46,6 +47,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public Type TargetType
         {
             get;
@@ -53,6 +55,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public string TargetKeyPropertyName
         {
             get;
@@ -60,6 +63,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public bool AllowCascadeDeletes
         {
             get;
@@ -67,6 +71,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public object NullReferenceValue
         {
             get;
@@ -74,6 +79,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public Type NullReferenceValueType
         {
             get;
@@ -81,12 +87,15 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public bool IsNullReferenceValueSet
         {
             get;
             private set;
         }
 
+
+        /// <exclude />
         public bool IsNullableString
         {
             get;
@@ -94,10 +103,12 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public bool IsOptionalReference
         {
             get { return SourcePropertyInfo.PropertyType == typeof (Guid?); }
         }
+
 
         internal PropertyInfo TargetKeyPropertyInfo
         {

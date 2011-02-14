@@ -25,6 +25,7 @@ namespace Composite.C1Console.Drawing
         private Bitmap _currentBitmap;
 
 
+        /// <exclude />
         public ImageTemplatedBoxCreator(Bitmap templateBitmap, Point topLeftResize, Point bottomRightResize)
         {
             _topLeftResize = topLeftResize;
@@ -41,6 +42,7 @@ namespace Composite.C1Console.Drawing
 
 
         #region Simple properties
+        /// <exclude />
         public int MinWidth
         {
             get;
@@ -49,6 +51,7 @@ namespace Composite.C1Console.Drawing
 
 
 
+        /// <exclude />
         public int MaxWidth
         {
             get;
@@ -57,6 +60,7 @@ namespace Composite.C1Console.Drawing
 
 
 
+        /// <exclude />
         public int MinHeight
         {
             get;
@@ -64,6 +68,8 @@ namespace Composite.C1Console.Drawing
         }
 
 
+
+        /// <exclude />
         public int LinePadding
         {
             get;
@@ -72,6 +78,7 @@ namespace Composite.C1Console.Drawing
 
 
 
+        /// <exclude />
         public char SeparatorChar
         {
             get;
@@ -80,6 +87,7 @@ namespace Composite.C1Console.Drawing
         #endregion
 
 
+        /// <exclude />
         public void SetTitle(string title, Point topLeftPadding, Point bottomRightPadding, Color fontColor, string fontFamilyName, float fontSize, FontStyle fontStyle)
         {
             _titleItem = new TitleItem(title, topLeftPadding, bottomRightPadding, fontColor, fontFamilyName, fontSize, fontStyle);
@@ -87,6 +95,7 @@ namespace Composite.C1Console.Drawing
 
 
 
+        /// <exclude />
         public void SetWrappedText(string text, Point topLeftPadding, Point bottomRightPadding, Color fontColor, string fontFamilyName, float fontSize, FontStyle fontStyle)
         {
             _textLinesItem = null;
@@ -95,6 +104,7 @@ namespace Composite.C1Console.Drawing
 
 
 
+        /// <exclude />
         public void SetTextLines(IEnumerable<string> lines, Point topLeftPadding, Point bottomRightPadding, Color fontColor, string fontFamilyName, float fontSize, FontStyle fontStyle)
         {
             _wrappedTextItem = null;
@@ -103,6 +113,7 @@ namespace Composite.C1Console.Drawing
 
 
 
+        /// <exclude />
         public void SetIcon(Bitmap icon, Point topRightPadding, Point buttomLeftPadding)
         {
             _topRightIconItem = new TopRightIconItem(icon, topRightPadding, buttomLeftPadding);
@@ -110,6 +121,7 @@ namespace Composite.C1Console.Drawing
 
 
 
+        /// <exclude />
         public Bitmap CreateBitmap()
         {
             CalculateWidthAndHeight();
@@ -366,6 +378,7 @@ namespace Composite.C1Console.Drawing
 
 
 
+        /// <exclude />
         public int AdjustedWidth(int currentLineNumber, int width, int offsetY, int lineHeight)
         {
             if (_topRightIconItem == null) return width;

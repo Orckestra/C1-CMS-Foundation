@@ -7,6 +7,7 @@ namespace Composite.Core.WebClient.WCF
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ServiceHostFactoryHelper 
     {
+        /// <exclude />
         public static Uri[] GetFixedBaseAddresses(Uri[]  baseAddresses)
         {
             // Parsing url set like

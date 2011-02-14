@@ -27,6 +27,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public static void Initialize()
         {
             lock (_lock)
@@ -53,6 +54,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public static IEnumerable<Tree> AllTrees
         {
             get
@@ -63,6 +65,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public static bool HasAttachmentPoints(EntityToken parentEntityToken)
         {
             return _implementation.HasAttachmentPoints(parentEntityToken);
@@ -70,6 +73,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public static bool HasPossibleAttachmentPoints(EntityToken parentEntityToken)
         {
             return _implementation.HasPossibleAttachmentPoints(parentEntityToken);
@@ -77,6 +81,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public static IEnumerable<Tree> GetTreesByEntityToken(EntityToken parentEntityToken)
         {
             return _implementation.GetTreesByEntityToken(parentEntityToken);
@@ -99,6 +104,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public static bool RemovePersistedAttachmentPoint(string treeId, Type interfaceType, object keyValue)
         {
             return _implementation.RemovePersistedAttachmentPoint(treeId, interfaceType, keyValue);
@@ -119,10 +125,13 @@ namespace Composite.C1Console.Trees
         }
 
 
+
+        /// <exclude />
         public static Tree LoadTreeFromDom(string treeId, XDocument document)
         {
             return _implementation.LoadTreeFromDom(treeId, document);
         }
+
 
 
         private static void OnPostFlushEvent(PostFlushEventArgs args)

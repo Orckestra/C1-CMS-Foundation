@@ -12,31 +12,42 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 	{
         private string _providerName;
 
+        /// <exclude />
         public WebsiteFileElementProviderRootEntityToken(string providerName)
         {
             _providerName = providerName;
         }
 
+
+        /// <exclude />
         public override string Type
         {
             get { return ""; }
         }
 
+
+        /// <exclude />
         public override string Source
         {
             get { return _providerName; }
         }
 
+
+        /// <exclude />
         public override string Id
         {
             get { return ""; }
         }
 
+
+        /// <exclude />
         public override string Serialize()
         {
             return _providerName;
         }
 
+
+        /// <exclude />
         public static EntityToken Deserialize(string serializedData)
         {
             return new WebsiteFileElementProviderRootEntityToken(serializedData);

@@ -18,6 +18,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         private string _providerName;
 
 
+        /// <exclude />
         public GeneratedDataTypesElementProviderTypeEntityToken(string serializedTypeName, string providerName, string id)
         {
             _id = id;
@@ -26,12 +27,14 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         }
 
 
+        /// <exclude />
         public override string Type
         {
             get { return "GeneratedDataTypesElementProvider"; }
         }
 
 
+        /// <exclude />
         public override string Source
         {
             get { return _providerName; }
@@ -39,12 +42,14 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         }
 
 
+        /// <exclude />
         public override string Id
         {
             get { return _id; }
         }
 
 
+        /// <exclude />
         public string SerializedTypeName
         {
             get;
@@ -52,6 +57,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         }
 
 
+        /// <exclude />
         public override string Serialize()
         {
             StringBuilder sb = new StringBuilder();
@@ -64,6 +70,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         }
 
 
+        /// <exclude />
         public static EntityToken Deserialize(string serializedEntityToken)
         {
             string type, source, id;
@@ -82,6 +89,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         }
 
 
+        /// <exclude />
         public override bool Equals(object obj)
         {
             EntityToken entityToken = obj as GeneratedDataTypesElementProviderTypeEntityToken;
@@ -92,6 +100,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         }
 
 
+        /// <exclude />
         public bool Equals(GeneratedDataTypesElementProviderTypeEntityToken entityToken)
         {
             if (entityToken.GetHashCode() != GetHashCode()) return false;
@@ -103,6 +112,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         }
 
 
+        /// <exclude />
         public override int GetHashCode()
         {
             if (this.HashCode == 0)

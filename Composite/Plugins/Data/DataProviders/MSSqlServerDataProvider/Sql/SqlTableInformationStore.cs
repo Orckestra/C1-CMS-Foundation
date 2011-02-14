@@ -21,6 +21,7 @@ namespace Composite.Sql
 
 
 
+        /// <exclude />
         public static ISqlTableInformation GetTableInformation(string connectinoString, string tableName)
         {
             return _implementation.GetTableInformation(connectinoString, tableName);

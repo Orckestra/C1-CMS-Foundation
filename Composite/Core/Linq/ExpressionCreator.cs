@@ -12,6 +12,7 @@ namespace Composite.Core.Linq
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ExpressionCreator
     {
+        /// <exclude />
         public static Expression Select(Expression source, LambdaExpression selector)
         {
             Type type = TypeHelpers.FindElementType(source);
@@ -27,6 +28,7 @@ namespace Composite.Core.Linq
 
 
 
+        /// <exclude />
         public static Expression Where(Expression source, LambdaExpression predicate)
         {
             Type type = TypeHelpers.FindElementType(source);
@@ -42,6 +44,7 @@ namespace Composite.Core.Linq
 
 
 
+        /// <exclude />
         public static Expression Count(Expression source, LambdaExpression predicate)
         {
             Type type = TypeHelpers.FindElementType(source);
@@ -57,6 +60,7 @@ namespace Composite.Core.Linq
 
 
 
+        /// <exclude />
         public static Expression Distinct(Expression source)
         {
             Type type = TypeHelpers.FindElementType(source);
@@ -71,6 +75,7 @@ namespace Composite.Core.Linq
 
 
 
+        /// <exclude />
         public static Expression OrderBy(Expression source, LambdaExpression predicate)
         {
             Type type = TypeHelpers.FindElementType(source);
@@ -86,6 +91,7 @@ namespace Composite.Core.Linq
 
 
 
+        /// <exclude />
         public static Expression OrderByDescending(Expression source, LambdaExpression predicate)
         {
             Type type = TypeHelpers.FindElementType(source);            
@@ -101,6 +107,7 @@ namespace Composite.Core.Linq
 
 
 
+        /// <exclude />
         public static Expression ThenBy(Expression source, LambdaExpression predicate)
         {
             Type type = TypeHelpers.FindElementType(source);
@@ -116,6 +123,7 @@ namespace Composite.Core.Linq
 
 
 
+        /// <exclude />
         public static Expression ThenByDescending(Expression source, LambdaExpression predicate)
         {
             Type type = TypeHelpers.FindElementType(source);
@@ -131,6 +139,7 @@ namespace Composite.Core.Linq
 
 
 
+        /// <exclude />
         public static Expression Join(Expression outerSource, Expression innerSource, LambdaExpression outerKeySelector, LambdaExpression innerKeySelector, LambdaExpression resultSelector)
         {
             Type outerType = TypeHelpers.FindElementType(outerSource);

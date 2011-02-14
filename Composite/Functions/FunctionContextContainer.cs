@@ -16,12 +16,14 @@ namespace Composite.Functions
         private Dictionary<string, object> _parameterDictionary = null;
 
         #region constructors
+        /// <exclude />
         public FunctionContextContainer()
         {
         }
 
 
 
+        /// <exclude />
         public FunctionContextContainer(ParameterList parameterList)
         {
             _parameterList = parameterList;
@@ -29,6 +31,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public FunctionContextContainer(Dictionary<string, object> parameterDictionary)
         {
             _parameterDictionary = parameterDictionary;
@@ -36,6 +39,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public FunctionContextContainer(FunctionContextContainer inheritFromContainer, Dictionary<string, object> parameterDictionary)
         {
             _parameterDictionary = parameterDictionary;
@@ -45,10 +49,12 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public IFunctionResultToXEmbedableMapper XEmbedableMapper { get; set; }
 
 
 
+        /// <exclude />
         public object GetParameterValue(string parameterName, Type targetType)
         {
             Verify.ArgumentNotNullOrEmpty(parameterName, "parameterName");
@@ -77,7 +83,7 @@ namespace Composite.Functions
 
 
 
-
+        /// <exclude />
         public object MakeXEmbedable(object resultObject)
         {
             if (this.XEmbedableMapper != null)
@@ -96,6 +102,5 @@ namespace Composite.Functions
 
             return resultObject;
         }
-
     }
 }

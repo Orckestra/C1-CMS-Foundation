@@ -11,6 +11,7 @@ namespace Composite.Data.Hierarchy
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IDataAncestorProvider
     {
+        /// <exclude />
         IData GetParent(IData data);
     }
 }

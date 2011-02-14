@@ -16,7 +16,7 @@ namespace Composite.Data.Plugins.DataProvider.CodeGeneration
         private Dictionary<string, Property> _properties = new Dictionary<string, Property>();
 
 
-
+        /// <exclude />
         public PropertyList(Type interfaceType, Dictionary<string, Type> dataIdProperties, Dictionary<string, string> propertyNameMapping)
         {
             if (null == interfaceType) throw new ArgumentNullException("interfaceType");
@@ -35,7 +35,7 @@ namespace Composite.Data.Plugins.DataProvider.CodeGeneration
         }
 
 
-
+        /// <exclude />
         public IEnumerable<Property> Properties
         {
             get
@@ -48,7 +48,7 @@ namespace Composite.Data.Plugins.DataProvider.CodeGeneration
         }
 
 
-
+        /// <exclude />
         public IEnumerable<Property> InterfaceProperties
         {
             get
@@ -64,7 +64,7 @@ namespace Composite.Data.Plugins.DataProvider.CodeGeneration
         }
 
 
-
+        /// <exclude />
         public IEnumerable<Property> DataIdProperties
         {
             get

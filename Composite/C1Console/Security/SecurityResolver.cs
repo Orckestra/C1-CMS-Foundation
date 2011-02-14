@@ -12,6 +12,7 @@ namespace Composite.C1Console.Security
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class SecurityResolver
     {
+        /// <exclude />
         public static SecurityResult Resolve(UserToken userToken, ActionToken actionToken, EntityToken entityToken, IEnumerable<UserPermissionDefinition> userPermissionDefinitions, IEnumerable<UserGroupPermissionDefinition> userGroupPermissionDefinition)
         {
             if (userToken == null) throw new ArgumentNullException("userToken");
@@ -22,6 +23,7 @@ namespace Composite.C1Console.Security
         }
 
 
+        /// <exclude />
         public static SecurityResult Resolve(UserToken userToken, IEnumerable<PermissionType> requiredPermissions, EntityToken entityToken, IEnumerable<UserPermissionDefinition> userPermissionDefinitions, IEnumerable<UserGroupPermissionDefinition> userGroupPermissionDefinition)
         {
             if (userToken == null) throw new ArgumentNullException("userToken");
@@ -57,6 +59,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static SecurityResult Resolve(SecurityToken securityToken)
         {
             if (securityToken == null) throw new ArgumentNullException("securityToken");

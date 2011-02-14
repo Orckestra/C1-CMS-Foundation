@@ -10,6 +10,7 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class IDataIdExtensions
     {
+        /// <exclude />
         public static void FullCopyTo(this IDataId sourceDataId, IDataId targetDataId)
         {
             if (sourceDataId == null) throw new ArgumentNullException("sourceDataId");
@@ -27,12 +28,14 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static bool CompareTo(this IDataId sourceDataId, IDataId targetDataId)
         {
             return CompareTo(sourceDataId, targetDataId, false);
         }
 
 
+        /// <exclude />
         public static bool CompareTo(this IDataId sourceDataId, IDataId targetDataId, bool throwExceptionOnTypeMismathc)
         {
             if (sourceDataId == null) throw new ArgumentNullException("sourceDataId");

@@ -19,6 +19,7 @@ namespace Composite.Core.WebClient.Renderings.Page
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class XElementToAspNetExtensions
     {
+        /// <exclude />
         public static Control AsAspNetControl(this XhtmlDocument xhtmlDocument)
         {
             return xhtmlDocument.AsAspNetControl(NoMappingMapper.GetInstance());
@@ -26,6 +27,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
 
+        /// <exclude />
         public static Control AsAspNetControl(this XhtmlDocument xhtmlDocument, IXElementToControlMapper controlMapper)
         {
             using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
@@ -59,6 +61,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
 
+        /// <exclude />
         public static Control AsAspNetControl(this XNode xnode)
         {
             return xnode.AsAspNetControl(NoMappingMapper.GetInstance());
@@ -66,6 +69,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
 
+        /// <exclude />
         public static Control AsAspNetControl(this XNode xnode, IXElementToControlMapper controlMapper)
         {
             if (xnode is XElement) return ((XElement)xnode).AsAspNetControl(controlMapper);
@@ -79,6 +83,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
 
+        /// <exclude />
         public static Control AsAspNetControl(this XElement element)
         {
             return element.AsAspNetControl(NoMappingMapper.GetInstance());
@@ -86,6 +91,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
 
+        /// <exclude />
         public static Control AsAspNetControl(this XElement element, IXElementToControlMapper controlMapper)
         {
             Control control;
@@ -195,6 +201,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
 
+        /// <exclude />
         public static void CopyAttributes(this XElement source, HtmlControl target)
         {
             foreach (var attribute in source.Attributes())

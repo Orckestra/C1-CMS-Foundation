@@ -27,6 +27,7 @@ namespace Composite.C1Console.Security.Cryptography
 
 
 
+        /// <exclude />
         public static string Encrypt(this string data)
         {
             byte[] byteData = _encoding.GetBytes(data);
@@ -36,6 +37,7 @@ namespace Composite.C1Console.Security.Cryptography
 
 
 
+        /// <exclude />
         public static string Decrypt(this string data)
         {
             byte[] byteData = _encoding.GetBytes(data);
@@ -45,6 +47,7 @@ namespace Composite.C1Console.Security.Cryptography
 
 
 
+        /// <exclude />
         public static byte[] EncryptBytes(byte[] toEncrypt)
         {
             DESCryptoServiceProvider DES = new DESCryptoServiceProvider();
@@ -67,6 +70,7 @@ namespace Composite.C1Console.Security.Cryptography
 
 
 
+        /// <exclude />
         public static byte[] DecryptBytes(byte[] toDecrypt)
         {
             DESCryptoServiceProvider DES = new DESCryptoServiceProvider();
@@ -105,6 +109,7 @@ namespace Composite.C1Console.Security.Cryptography
                     }
                 }
             }
+
             return result;
         }
 	}

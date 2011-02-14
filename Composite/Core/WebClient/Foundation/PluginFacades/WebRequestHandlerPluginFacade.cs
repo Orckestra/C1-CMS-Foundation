@@ -17,7 +17,7 @@ namespace Composite.Core.WebClient.Foundation.PluginFacades
 
 
 
-
+        /// <exclude />
         static WebRequestHandlerPluginFacade()
         {
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
@@ -25,6 +25,7 @@ namespace Composite.Core.WebClient.Foundation.PluginFacades
 
 
 
+        /// <exclude />
         public static WebRequestHandlerData GetConfigurationForHandler(string name)
         {
             using (_resources.ReadLocker)
@@ -35,6 +36,7 @@ namespace Composite.Core.WebClient.Foundation.PluginFacades
 
 
 
+        /// <exclude />
         public static WebRequestHandler GetHandler(string name)
         {
             using (_resources.ReadLocker)

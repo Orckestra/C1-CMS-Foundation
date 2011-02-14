@@ -20,12 +20,14 @@ namespace Composite.C1Console.Tasks
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class FlowTaskManagerEvent : TaskManagerEvent
     {
+        /// <exclude />
         public FlowTaskManagerEvent(FlowToken flowToken)
         {
             this.FlowToken = flowToken;
         }
 
 
+        /// <exclude />
         public FlowToken FlowToken { get; private set; }
     }
 

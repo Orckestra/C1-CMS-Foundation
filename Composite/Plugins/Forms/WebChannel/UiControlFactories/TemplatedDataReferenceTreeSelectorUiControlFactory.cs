@@ -22,17 +22,27 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class DataReferenceTreeSelectorTemplateUserControlBase : UserControlBase
     {
+        /// <exclude />
         public string Selected { get; set; }
+
+        /// <exclude />
         public Type DataType { get; set; }
+
+        /// <exclude />
         public bool NullValueAllowed { get; set; }
 
         /// <summary>
         /// Defines which kind of dialog and data provider elements are to be shown
         /// </summary>
         public string Handle { get; set; }
+
+        /// <exclude />
         public string SearchToken { get; set; }
+
+        /// <exclude />
         public string RootEntityToken { get; set; }
 
+        /// <exclude />
         public List<ClientValidationRule> ClientValidationRules { get; set; }
     }
 

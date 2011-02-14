@@ -21,6 +21,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     {
         private string _formControlLabel;
 
+        /// <exclude />
         protected abstract void InitializeViewState();
 
         internal void InitializeWebViewState()
@@ -28,10 +29,16 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             this.InitializeViewState();
         }
 
+
+        /// <exclude />
         public string Title { get; set; }
 
+
+        /// <exclude />
         public string Description { get; set; }
 
+
+        /// <exclude />
         public string FormControlLabel
         {
             get { return _formControlLabel; }

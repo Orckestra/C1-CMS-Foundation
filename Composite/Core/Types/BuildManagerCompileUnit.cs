@@ -23,6 +23,8 @@ namespace Composite.Core.Types
         private List<Assembly> _referencedAssemblies = new List<Assembly>();
         private List<Type> _usedTypes = new List<Type>();
 
+
+        /// <exclude />
         public BuildManagerCompileUnit(string id, string fingerprint)
         {
             this.Id = id;
@@ -31,9 +33,16 @@ namespace Composite.Core.Types
             this.AllowSiloing = true;
         }
 
+
+        /// <exclude />
         public string Id { get; private set; }
+
+        /// <exclude />
         public int HashedId { get; private set; }
+
+        /// <exclude />
         public string Fingerprint { get; private set; }
+
         internal bool AllowSiloing { get; set; }
 
         /// <summary>
@@ -42,6 +51,7 @@ namespace Composite.Core.Types
         public bool AllowCrossReferences { get; set; }
 
 
+        /// <exclude />
         public bool IsCacheble
         {
             get
@@ -63,6 +73,7 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public IEnumerable<BuildManagerCompileType> Types
         {
             get
@@ -73,6 +84,7 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public Type GetGeneretedTypeByName(string name)
         {
             Type type = TryGetGeneretedTypeByName(name);
@@ -84,6 +96,7 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public Type TryGetGeneretedTypeByName(string name)
         {
             BuildManagerCompileType buildManagerCompileType = _compiledTypeByName[name];
@@ -95,6 +108,7 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public Type GetGeneretedTypeByFullName(string fullname)
         {
             Type type = TryGetGeneretedTypeByFullName(fullname);
@@ -106,6 +120,7 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public Type TryGetGeneretedTypeByFullName(string fullname)
         {
 
@@ -118,6 +133,7 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public void AddType(BuildManagerCompileType buildManagerCompileType)
         {
             if (buildManagerCompileType == null) throw new ArgumentNullException("buildManagerCompileType");
@@ -129,6 +145,7 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public void AddType(string codeNamespaceName, KeyValuePair<string, Func<CodeTypeDeclaration>> codeTypeDeclarationFunc)
         {
             AddType(new BuildManagerCompileType(codeNamespaceName, codeTypeDeclarationFunc));
@@ -136,6 +153,7 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public void AddTypes(string codeNamespaceName, IEnumerable<KeyValuePair<string, Func<CodeTypeDeclaration>>> codeTypeDeclarationFuncs)
         {
             foreach (KeyValuePair<string, Func<CodeTypeDeclaration>> codeTypeDeclarationFunc in codeTypeDeclarationFuncs)
@@ -146,6 +164,7 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public void AddAssemblyReference(Assembly assembly)
         {
             if (_referencedAssemblies.Contains(assembly) == false)
@@ -190,15 +209,21 @@ namespace Composite.Core.Types
         }
 
 
+
+        /// <exclude />
         public void RegisterUsedType(Type generatedType)
         {
             _usedTypes.Add(generatedType);
         }
 
+
+
         internal List<Type> UsedTypes
         {
             get { return _usedTypes; }
         }
+
+
 
         internal void CopyResultsFrom(BuildManagerCompileUnit buildManagerCompileUnit)
         {

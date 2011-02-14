@@ -14,6 +14,7 @@ namespace Composite.Core.IO
     {
         private static readonly string _appBasePath;
 
+        /// <exclude />
         static PathUtil()
         {
             if (!HostingEnvironment.IsHosted)
@@ -26,6 +27,8 @@ namespace Composite.Core.IO
             }
         }
 
+
+        /// <exclude />
         public static string BaseDirectory
         {
             get
@@ -66,6 +69,8 @@ namespace Composite.Core.IO
         }
 
 
+
+        /// <exclude />
         public static string CleanFileName(string s)
         {
             StringBuilder sb = new StringBuilder();
@@ -92,6 +97,7 @@ namespace Composite.Core.IO
 
 
 
+        /// <exclude />
         public static string GetWebsitePath(string path)
         {
             string s = path.Remove(0, BaseDirectory.Length);

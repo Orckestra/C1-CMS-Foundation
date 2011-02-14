@@ -7,6 +7,9 @@ using Composite.Data;
 
 namespace Composite.Core.Implementation
 {
+    /// <summary>
+    /// Documentation pending
+    /// </summary>
     public class DataConnectionImplementation : DataConnectionBase, IDisposable
     {
         private DataScope _dataScope;
@@ -22,6 +25,11 @@ namespace Composite.Core.Implementation
         }
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
+        /// <param name="scope"></param>
+        /// <param name="locale"></param>
         public DataConnectionImplementation(PublicationScope scope, CultureInfo locale)
         {
             InitializeScope(scope, locale);
@@ -31,6 +39,11 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
+        /// <typeparam name="TData"></typeparam>
+        /// <returns></returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Get", Justification = "This is what we want")]
         public virtual IQueryable<TData> Get<TData>()
             where TData : class, IData
@@ -43,6 +56,12 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
+        /// <typeparam name="TData"></typeparam>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public virtual TData Add<TData>(TData item)
             where TData : class, IData
         {
@@ -54,6 +73,12 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
+        /// <typeparam name="TData"></typeparam>
+        /// <param name="items"></param>
+        /// <returns></returns>
         public virtual IList<TData> Add<TData>(IEnumerable<TData> items)
             where TData : class, IData
         {
@@ -65,6 +90,11 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
+        /// <typeparam name="TData"></typeparam>
+        /// <param name="item"></param>
         public virtual void Update<TData>(TData item)
             where TData : class, IData
         {
@@ -76,6 +106,11 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
+        /// <typeparam name="TData"></typeparam>
+        /// <param name="items"></param>
         public virtual void Update<TData>(IEnumerable<TData> items)
             where TData : class, IData
         {
@@ -87,6 +122,11 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
+        /// <typeparam name="TData"></typeparam>
+        /// <param name="item"></param>
         public virtual void Delete<TData>(TData item)
             where TData : class, IData
         {
@@ -98,6 +138,11 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
+        /// <typeparam name="TData"></typeparam>
+        /// <param name="items"></param>
         public virtual void Delete<TData>(IEnumerable<TData> items)
             where TData : class, IData
         {
@@ -109,7 +154,11 @@ namespace Composite.Core.Implementation
 
 
 
-        // This is a static on the actual class, but non-static here to allow mocking
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
+        /// <typeparam name="TData"></typeparam>
+        /// <returns></returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "New", Justification = "This is what we want")]
         public virtual TData New<TData>()
             where TData : class, IData
@@ -119,6 +168,9 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
         public virtual PublicationScope CurrentPublicationScope
         {
             get
@@ -129,6 +181,9 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
         public virtual CultureInfo CurrentLocale
         {
             get
@@ -138,7 +193,9 @@ namespace Composite.Core.Implementation
         }
 
 
-        // This is a static on the actual class, but non-static here to allow mocking
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
         public virtual IEnumerable<CultureInfo> AllLocales
         {
             get
@@ -149,6 +206,9 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
@@ -157,6 +217,7 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <exclude />
         ~DataConnectionImplementation()
         {
             Dispose(false);
@@ -164,6 +225,10 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
+        /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)

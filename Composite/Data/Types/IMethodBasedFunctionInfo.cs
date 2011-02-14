@@ -18,27 +18,32 @@ namespace Composite.Data.Types
     [Caching(CachingType.Full)]
     public interface IMethodBasedFunctionInfo : IData
     {
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{131D6F2F-01A8-40b5-882B-CCC03AF8C986}")]
         Guid Id { get; set; }
 
 
+        /// <exclude />
         [NotNullValidator()]
         [StoreFieldType(PhysicalStoreFieldType.String, 512)]
         [ImmutableFieldId("{36460984-0281-485b-985B-D9686697D3D4}")]        
         string Type { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 64)]
         [ImmutableFieldId("{5CC73160-98FF-4d13-A5AB-FB20946C9064}")]
         string MethodName { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 512)]
         [ImmutableFieldId("{62C8BC67-B0A6-4cd6-9694-AD55460C5C90}")]
         string Namespace { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 64)]
         [ImmutableFieldId("{D8108EA4-0E3D-49d1-8687-1E1FFEB69029}")]
         string UserMethodName { get; set; }

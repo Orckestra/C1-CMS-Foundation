@@ -11,10 +11,12 @@ namespace Composite.Core.WebClient.UiControlLib
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class CheckBox : System.Web.UI.WebControls.CheckBox
     {
+        /// <exclude />
         public string ItemLabel { get; set; }
 
 
 
+        /// <exclude />
         protected override void Render(HtmlTextWriter writer)
         {
             writer.WriteBeginTag("ui:checkbox");
@@ -39,8 +41,5 @@ namespace Composite.Core.WebClient.UiControlLib
 
             writer.Write(HtmlTextWriter.SelfClosingTagEnd);
         }
-
-
-
     }
 }

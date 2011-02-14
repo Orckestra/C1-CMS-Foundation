@@ -9,12 +9,25 @@ namespace Composite.C1Console.Actions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class StandardUiContainerTypes
     {
+        /// <exclude />
         public static IFlowUiContainerType Document { get { return _document; } }
+
+        /// <exclude />
         public static IFlowUiContainerType EmptyDocument { get { return _emptyDocument; } }
+
+        /// <exclude />
         public static IFlowUiContainerType Wizard { get { return _wizard; } }
+
+        /// <exclude />
         public static IFlowUiContainerType DataDialog { get { return _dataDialog; } }
+
+        /// <exclude />
         public static IFlowUiContainerType ConfirmDialog { get { return _confirmDialog; } }
+
+        /// <exclude />
         public static IFlowUiContainerType WarningDialog { get { return _warningDialog; } }
+
+        /// <exclude />
         public static IFlowUiContainerType Null { get { return _null; } }
 
 

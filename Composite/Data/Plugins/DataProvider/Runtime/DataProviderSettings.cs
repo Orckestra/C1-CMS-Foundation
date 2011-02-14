@@ -11,9 +11,12 @@ namespace Composite.Data.Plugins.DataProvider.Runtime
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataProviderSettings : SerializableConfigurationSection
     {
+        /// <exclude />
         public const string SectionName = "Composite.Data.Plugins.DataProviderConfiguration";
 
+
         private const string _defaultDynamicTypeDataProviderNameProperty = "defaultDynamicTypeDataProviderName";
+        /// <exclude />
         [ConfigurationProperty(_defaultDynamicTypeDataProviderNameProperty, IsRequired = true)]
         public string DefaultDynamicTypeDataProviderName
         {
@@ -23,6 +26,7 @@ namespace Composite.Data.Plugins.DataProvider.Runtime
 
 
         private const string _dataProviderPluginsProperty = "DataProviderPlugins";
+        /// <exclude />
         [ConfigurationProperty(_dataProviderPluginsProperty)]
         public NameTypeManagerTypeConfigurationElementCollection<DataProviderData> DataProviderPlugins
         {

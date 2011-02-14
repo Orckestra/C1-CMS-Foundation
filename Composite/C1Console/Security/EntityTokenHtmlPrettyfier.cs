@@ -15,10 +15,14 @@ namespace Composite.C1Console.Security
     {
         private Dictionary<string, Action<string, object, EntityTokenHtmlPrettyfierHelper>> _customProperties = new Dictionary<string, Action<string, object, EntityTokenHtmlPrettyfierHelper>>();
 
+        /// <exclude />
         public EntityToken EntityToken { get; set; }
+
+        /// <exclude />
         public Dictionary<string, string> PiggyBag { get; set; }
 
 
+        /// <exclude />
         public EntityTokenHtmlPrettyfier(EntityToken entityToken, Dictionary<string, string> piggybag)
         {
             this.EntityToken = entityToken;
@@ -26,10 +30,19 @@ namespace Composite.C1Console.Security
         }
 
 
+        /// <exclude />
         public static Action<EntityToken, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteType = (token, helper) => helper.AddFullRow(new string[] { "<b>Type</b>", token.Type });
+
+        /// <exclude />
         public static Action<EntityToken, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteSource = (token, helper) => helper.AddFullRow(new string[] { "<b>Source</b>", token.Source });
+
+        /// <exclude />
         public static Action<EntityToken, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteId = (token, helper) => helper.AddFullRow(new string[] { "<b>Id</b>", token.Id });
+
+        /// <exclude />
         public static Action<string, object, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteCustomProperty = (name, value, helper) => helper.AddFullRow(new string[] { "<b>" + name + "</b>", value.ToString() });
+
+        /// <exclude />
         public static Action<string, string, EntityTokenHtmlPrettyfierHelper> DefaultOnPiggyBagEntry = (key, value, helper) =>
         {
             if (key.StartsWith("ParentEntityToken") == true)
@@ -43,34 +56,50 @@ namespace Composite.C1Console.Security
             }
         };
 
+        /// <exclude />
         public static Action<SecurityAncestorProviderAttribute, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteSecurityAncestorProvider = (attribute, helper) => helper.AddFullRow(new string[] { "<b>Type</b>", attribute.GetType().FullName });
+
+        /// <exclude />
         public static Action<IAuxiliarySecurityAncestorProvider, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteAuxiliarySecurityAncestorProvider = (provider, helper) => helper.AddFullRow(new string[] { "<b>Type</b>", provider.GetType().FullName });
 
 
+        /// <exclude />
         public Action<EntityToken, EntityTokenHtmlPrettyfierHelper> OnWriteType = DefaultOnWriteType;
+
+        /// <exclude />
         public Action<EntityToken, EntityTokenHtmlPrettyfierHelper> OnWriteSource = DefaultOnWriteSource;
+
+        /// <exclude />
         public Action<EntityToken, EntityTokenHtmlPrettyfierHelper> OnWriteId = DefaultOnWriteId;
+
+        /// <exclude />
         public static Action<string, object, EntityTokenHtmlPrettyfierHelper> OnWriteCustomProperty = DefaultOnWriteCustomProperty;
+
+        /// <exclude />
         public Action<string, string, EntityTokenHtmlPrettyfierHelper> OnPiggyBagEntry = DefaultOnPiggyBagEntry;
+
+        /// <exclude />
         public Action<SecurityAncestorProviderAttribute, EntityTokenHtmlPrettyfierHelper> OnWriteSecurityAncestorProvider = DefaultOnWriteSecurityAncestorProvider;
+
+        /// <exclude />
         public Action<IAuxiliarySecurityAncestorProvider, EntityTokenHtmlPrettyfierHelper> OnWriteAuxiliarySecurityAncestorProvider = DefaultOnWriteAuxiliarySecurityAncestorProvider;
 
 
-
+        /// <exclude />
         public void AddCustomSimpleProperty(string propertyName)
         {
             _customProperties.Add(propertyName, DefaultOnWriteCustomProperty);
         }
 
 
-
+        /// <exclude />
         public void AddCustomProperty(string propertyName, Action<string, object, EntityTokenHtmlPrettyfierHelper> onWriteAction)
         {
             _customProperties.Add(propertyName, onWriteAction);
         }
 
 
-
+        /// <exclude />
         public string GetResult()
         {
             EntityTokenHtmlPrettyfierHelper helper = new EntityTokenHtmlPrettyfierHelper();

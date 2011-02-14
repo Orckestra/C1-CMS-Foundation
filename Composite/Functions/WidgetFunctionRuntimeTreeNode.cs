@@ -19,29 +19,35 @@ namespace Composite.Functions
         private bool _cachedValueCalculated = false;
         private object _cachedValue;
 
+
+        /// <exclude />
         public WidgetFunctionRuntimeTreeNode(IWidgetFunction widgetFunction)
             : this(widgetFunction, "", new HelpDefinition(""), "", new List<BaseParameterRuntimeTreeNode>())
         {
         }
 
 
-
+        /// <exclude />
         public WidgetFunctionRuntimeTreeNode(IWidgetFunction widgetFunction, List<BaseParameterRuntimeTreeNode> parameters)
             : this(widgetFunction, "", new HelpDefinition(""), "", parameters)
         {
         }
 
 
-
+        /// <exclude />
         public WidgetFunctionRuntimeTreeNode(IWidgetFunction widgetFunction, string label, HelpDefinition helpDefinition, string bindingSourceName)
             : this(widgetFunction, label, helpDefinition, bindingSourceName, new List<BaseParameterRuntimeTreeNode>())
         {
         }
 
 
-
+        /// <exclude />
         public string Label { get; set; }
+
+        /// <exclude />
         public HelpDefinition HelpDefinition { get; set; }
+
+        /// <exclude />
         public string BindingSourceName { get; set; }
 
 
@@ -55,21 +61,21 @@ namespace Composite.Functions
         }
 
 
-
+        /// <exclude />
         protected override IMetaFunction HostedFunction
         {
             get { return _widgetFunction; }
         }
 
 
-
+        /// <exclude />
         public IWidgetFunction GetWidgetFunction()
         {
             return _widgetFunction;
         }
 
 
-
+        /// <exclude />
         public override object GetValue(FunctionContextContainer contextContainer)
         {
             if (contextContainer == null) throw new ArgumentNullException("contextContainer");
@@ -104,7 +110,7 @@ namespace Composite.Functions
         }
 
 
-
+        /// <exclude />
         public override object GetCachedValue(FunctionContextContainer contextContainer)
         {
             if ((_cachedValueCalculated == false))
@@ -118,7 +124,7 @@ namespace Composite.Functions
         }
 
 
-
+        /// <exclude />
         public override IEnumerable<string> GetAllSubFunctionNames()
         {
             List<string> names = new List<string>();
@@ -132,7 +138,7 @@ namespace Composite.Functions
         }
 
 
-
+        /// <exclude />
         public override bool ContainsNestedFunctions
         {
             get
@@ -150,8 +156,7 @@ namespace Composite.Functions
         }
 
 
-
-
+        /// <exclude />
         public override XElement Serialize()
         {
             XElement element = XElement.Parse(string.Format(@"<f:{0} xmlns:f=""{1}"" />", FunctionTreeConfigurationNames.WidgetFunctionTagName, FunctionTreeConfigurationNames.NamespaceName));

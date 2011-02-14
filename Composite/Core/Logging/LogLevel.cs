@@ -6,11 +6,22 @@ namespace Composite.Core.Logging
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum LogLevel
     {
+        /// <exclude />
         Info,
+
+        /// <exclude />
         Debug,
+
+        /// <exclude />
         Fine,
+
+        /// <exclude />
         Warning,
+
+        /// <exclude />
         Error,
+
+        /// <exclude />
         Fatal
     }
 }

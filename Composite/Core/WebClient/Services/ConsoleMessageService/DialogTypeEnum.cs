@@ -6,9 +6,16 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum DialogType
     {
+        /// <exclude />
         Message,
+
+        /// <exclude />
         Question,
+
+        /// <exclude />
         Warning,
+
+        /// <exclude />
         Error
     }
 }

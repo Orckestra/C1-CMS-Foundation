@@ -11,6 +11,7 @@ namespace Composite.Data.ProcessControlled
     [LocalizeProcessControllerType(typeof(GenericLocalizeProcessController))]
     public interface ILocalizedControlled : IProcessControlled
     {
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 16)]
         [ImmutableFieldId("{E271D3EB-A8EB-49ea-9BB5-E5A54F88298F}")]
         [NotNullValidator()]
@@ -18,6 +19,7 @@ namespace Composite.Data.ProcessControlled
         string CultureName { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 16)]
         [ImmutableFieldId("{0456EBB0-7FB1-46cd-9A23-4AE9AA3337FA}")]
         [NotNullValidator()]

@@ -29,9 +29,15 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
 
         private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
 
+        /// <exclude />
         public static ResourceHandle AddFunction { get { return GetIconHandle("xslt-based-function-add"); } }
+
+        /// <exclude />
         public static ResourceHandle EditFunction { get { return GetIconHandle("xslt-based-function-edit"); } }
+
+        /// <exclude />
         public static ResourceHandle DeleteFunction { get { return GetIconHandle("xslt-based-function-delete"); } }
+
 
         private static ResourceHandle GetIconHandle(string name)
         {
@@ -39,12 +45,14 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
         }
 
 
+        /// <exclude />
         public XsltBasedFunctionProviderElementProvider(string providerName)
         {
             _providerName = providerName;
         }
 
 
+        /// <exclude />
         protected override string RootFolderLabel
         {
             get
@@ -54,6 +62,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
         }
 
 
+        /// <exclude />
         protected override string RootFolderToolTip
         {
             get
@@ -63,7 +72,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
         }
 
 
-
+        /// <exclude />
         protected override IEnumerable<IFunctionTreeBuilderLeafInfo> OnGetFunctionInfos(SearchToken searchToken)
         {
             if (searchToken.IsValidKeyword() == false)
@@ -88,6 +97,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
 
 
 
+        /// <exclude />
         protected override IEnumerable<Type> OnGetEntityTokenTypes()
         {
             yield return typeof(DataEntityToken);
@@ -95,6 +105,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
 
 
 
+        /// <exclude />
         protected override IFunctionTreeBuilderLeafInfo OnIsEntityOwner(EntityToken entityToken)
         {
             DataEntityToken dataEntityToken = entityToken as DataEntityToken;
@@ -107,6 +118,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
 
 
 
+        /// <exclude />
         protected override IEnumerable<ElementAction> OnGetFolderActions()
         {
             return new ElementAction[]
@@ -134,6 +146,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
 
 
 
+        /// <exclude />
         protected override IEnumerable<ElementAction> OnGetFunctionActions(IFunctionTreeBuilderLeafInfo function)
         {
             return new ElementAction[] 

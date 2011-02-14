@@ -26,12 +26,14 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public void Add(string dataFieldName)
         {
             Add(dataFieldName, true);
         }
 
 
+        /// <exclude />
         public void Add(string dataFieldName, bool valideFieldMemberShip)
         {
             if (valideFieldMemberShip == true)
@@ -43,41 +45,49 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public void Remove(string dataFieldName)
         {
             _dataFieldNames.Remove(dataFieldName);
         }
 
 
+        /// <exclude />
         public void Clear()
         {
             _dataFieldNames.Clear();
         }
 
 
+        /// <exclude />
         public bool Contains(string fieldName)
         {
             return _dataFieldNames.Contains(fieldName);
         }
 
+
+        /// <exclude />
         public int Count
         {
             get { return _dataFieldNames.Count; }
         }
 
 
+        /// <exclude />
         public string this[int index]
         {
             get { return _dataFieldNames[index]; }
         }
 
 
+        /// <exclude />
         public IEnumerator<string> GetEnumerator()
         {
             return _dataFieldNames.GetEnumerator();
         }
 
 
+        /// <exclude />
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return _dataFieldNames.GetEnumerator();
@@ -100,6 +110,5 @@ namespace Composite.Data.DynamicTypes
             if (_allowNullableFields == false && dataFieldDescriptor.IsNullable) throw new ArgumentException("Can not add nullable fields to this list");
             if (dataFieldDescriptor.StoreType.PhysicalStoreType == PhysicalStoreFieldType.LargeString && _allowLargeStringFields == false) throw new ArgumentException("Can not add large string fields to this list");
         }
-
     }
 }

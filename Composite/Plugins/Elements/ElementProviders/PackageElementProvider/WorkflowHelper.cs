@@ -11,6 +11,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class WorkflowHelper
 	{
+        /// <exclude />
         public static object ValidationResultToBinding(List<PackageFragmentValidationResult> packageFragmentValidationResults)
         {
             List<List<string>> rows = new List<List<string>>();

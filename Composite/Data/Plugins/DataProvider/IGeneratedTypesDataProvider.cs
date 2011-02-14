@@ -10,6 +10,7 @@ namespace Composite.Data.Plugins.DataProvider
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IGeneratedTypesDataProvider : IDataProvider, IDynamicDataProvider, IWritableDataProvider
 	{
+        /// <exclude />
         IEnumerable<Type> GetGeneratedInterfaces();
 	}
 }

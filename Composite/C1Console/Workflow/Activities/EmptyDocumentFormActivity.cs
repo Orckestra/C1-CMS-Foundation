@@ -14,16 +14,21 @@ namespace Composite.C1Console.Workflow.Activities
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class EmptyDocumentFormActivity : Activity
     {
+        /// <exclude />
         public static readonly DependencyProperty ContainerLabelProperty = DependencyProperty.Register("ContainerLabel", typeof(string), typeof(EmptyDocumentFormActivity));
-        public static readonly DependencyProperty FormDefinitionFileNameProperty = DependencyProperty.Register("FormDefinitionFileName", typeof(string), typeof(EmptyDocumentFormActivity));
-        
 
+        /// <exclude />
+        public static readonly DependencyProperty FormDefinitionFileNameProperty = DependencyProperty.Register("FormDefinitionFileName", typeof(string), typeof(EmptyDocumentFormActivity));
+
+
+        /// <exclude />
         public EmptyDocumentFormActivity()
         {
         }
 
 
 
+        /// <exclude />
         public EmptyDocumentFormActivity(string name)
             : base(name)
         {
@@ -31,6 +36,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         public string ContainerLabel
         {
             get { return (string)GetValue(ContainerLabelProperty); }
@@ -39,14 +45,16 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         public string FormDefinitionFileName
         {
             get { return (string)GetValue(FormDefinitionFileNameProperty); }
             set { SetValue(FormDefinitionFileNameProperty, value); }
-        }        
+        }
 
 
 
+        /// <exclude />
         protected sealed override ActivityExecutionStatus Execute(ActivityExecutionContext executionContext)
         {
             FormsWorkflow formsWorkflow = this.GetRoot<FormsWorkflow>();

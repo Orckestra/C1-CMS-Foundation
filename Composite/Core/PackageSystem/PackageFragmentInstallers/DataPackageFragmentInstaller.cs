@@ -27,6 +27,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
 
+        /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
             _validationResult = new List<PackageFragmentValidationResult>();
@@ -65,6 +66,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
 
+        /// <exclude />
         public override IEnumerable<XElement> Install()
         {
             if (_dataTypes == null) throw new InvalidOperationException("DataPackageFragmentInstaller has not been validated");

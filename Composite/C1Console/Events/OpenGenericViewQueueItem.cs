@@ -14,6 +14,7 @@ namespace Composite.C1Console.Events
     [Serializable]
     public class OpenGenericViewQueueItem : IConsoleMessageQueueItem
     {
+        /// <exclude />
         public OpenGenericViewQueueItem(EntityToken entityToken)
             : this(entityToken, Guid.NewGuid().ToString())
         {
@@ -21,20 +22,33 @@ namespace Composite.C1Console.Events
 
 
 
+        /// <exclude />
         public OpenGenericViewQueueItem(EntityToken entityToken, string viewId)
         {
             this.EntityToken = EntityTokenSerializer.Serialize(entityToken);
             this.ViewId = viewId;
         }
 
+
+        /// <exclude />
         public string ViewId { get; set; }
-        public string EntityToken { get; set; }        
 
+        /// <exclude />
+        public string EntityToken { get; set; }
+
+        /// <exclude />
         public string Label { get; set; }
-        public string ToolTip { get; set; }
-        public ResourceHandle IconResourceHandle { get; set; }        
 
+        /// <exclude />
+        public string ToolTip { get; set; }
+
+        /// <exclude />
+        public ResourceHandle IconResourceHandle { get; set; }
+
+        /// <exclude />
         public string Url { get; set; }
+
+        /// <exclude />
         public Dictionary<string, string> UrlPostArguments { get; set; }
     }
 }

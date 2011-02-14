@@ -14,16 +14,21 @@ namespace Composite.C1Console.Workflow.Activities
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ConfirmDialogFormActivity : Activity
     {
+        /// <exclude />
         public static readonly DependencyProperty ContainerLabelProperty = DependencyProperty.Register("ContainerLabel", typeof(string), typeof(ConfirmDialogFormActivity));
+
+        /// <exclude />
         public static readonly DependencyProperty FormDefinitionFileNameProperty = DependencyProperty.Register("FormDefinitionFileName", typeof(string), typeof(ConfirmDialogFormActivity));
 
 
+        /// <exclude />
         public ConfirmDialogFormActivity()
         {
         }
 
 
 
+        /// <exclude />
         public ConfirmDialogFormActivity(string name)
             : base(name)
         {
@@ -31,6 +36,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         public string ContainerLabel
         {
             get { return (string)GetValue(ContainerLabelProperty); }
@@ -39,6 +45,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         public string FormDefinitionFileName
         {
             get { return (string)GetValue(FormDefinitionFileNameProperty); }
@@ -47,6 +54,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected sealed override ActivityExecutionStatus Execute(ActivityExecutionContext executionContext)
         {
             FormsWorkflow formsWorkflow = this.GetRoot<FormsWorkflow>();

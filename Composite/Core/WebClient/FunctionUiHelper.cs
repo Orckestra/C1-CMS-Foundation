@@ -17,6 +17,7 @@ namespace Composite.Core.WebClient
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class FunctionUiHelper
 	{
+        /// <exclude />
         public static FormTreeCompiler AttachAndCompileParameterWidgets(Control attachmentControl, IEnumerable<ParameterProfile> parameterProfiles, Dictionary<string, object> bindings, string uniqueName, string panelLabel, IFormChannelIdentifier channelIdentifier, bool reset)
         {
             FormTreeCompiler compiler = FunctionUiHelper.BuildWidgetForParameters(parameterProfiles, bindings, uniqueName, panelLabel, channelIdentifier);
@@ -33,6 +34,7 @@ namespace Composite.Core.WebClient
         }
 
 
+        /// <exclude />
         public static FormTreeCompiler BuildWidgetForParameters(IEnumerable<ParameterProfile> parameterProfiles, Dictionary<string, object> bindings, string uniqueName, string panelLabel, IFormChannelIdentifier channelIdentifier)
         {
             XNamespace stdControlLibSpace = Namespaces.BindingFormsStdUiControls10;
@@ -123,10 +125,5 @@ namespace Composite.Core.WebClient
 
             return new FormDefinition(formMarkup.CreateReader(), bindings);
         }
-
-
-
 	}
-
-
 }

@@ -15,6 +15,7 @@ namespace Composite.Data.Validation
         internal static IClientValidationRuleFacade Implementation { get { return _implementation; } set { _implementation = value; } }
 
 
+        /// <exclude />
         public static List<ClientValidationRule> GetClientValidationRules(object objectForValidation, string propertyName)
         {
             return _implementation.GetClientValidationRules(objectForValidation, propertyName);

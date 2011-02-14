@@ -12,6 +12,7 @@ namespace Composite.Data
     {
         private static IDataIdKeyFacade _implementation = new DataIdKeyFacadeImpl();
 
+        /// <exclude />
         static DataIdKeyFacade()
         {
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
@@ -20,6 +21,7 @@ namespace Composite.Data
 
               
         // Overload
+        /// <exclude />
         public static T GetKeyValue<T>(this DataSourceId dataSourceId, string keyName = null)
         {           
             return (T)_implementation.GetKeyValue(dataSourceId.DataId, keyName);
@@ -28,6 +30,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static T GetKeyValue<T>(IDataId dataId, string keyName = null)
         {
             return (T)_implementation.GetKeyValue(dataId, keyName);
@@ -36,6 +39,7 @@ namespace Composite.Data
 
        
         // Overload
+        /// <exclude />
         public static object GetKeyValue(this DataSourceId dataSourceId, string keyName = null)
         {           
             return _implementation.GetKeyValue(dataSourceId.DataId, keyName);
@@ -43,6 +47,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static object GetKeyValue(IDataId dataId, string keyName = null)
         {
             return _implementation.GetKeyValue(dataId, keyName);
@@ -52,6 +57,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static string GetDefaultKeyName(IDataId dataId)
         {
             return _implementation.GetDefaultKeyName(dataId.GetType());
@@ -59,7 +65,7 @@ namespace Composite.Data
 
 
 
-
+        /// <exclude />
         public static string GetDefaultKeyName(Type dataIdType)
         {
             return _implementation.GetDefaultKeyName(dataIdType);

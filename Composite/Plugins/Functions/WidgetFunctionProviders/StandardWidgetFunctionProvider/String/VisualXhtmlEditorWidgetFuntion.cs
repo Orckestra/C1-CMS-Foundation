@@ -12,11 +12,15 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
 	public sealed class VisualXhtmlEditorFuntion : CompositeWidgetFunctionBase
     {
         private const string _functionName = "VisualXhtmlEditor";
+
+        /// <exclude />
         public const string CompositeName = CompositeWidgetFunctionBase.CommonNamespace + ".String." +_functionName;
 
+        /// <exclude />
         public const string ClassConfigurationNameParameterName = "ClassConfigurationName";
 
 
+        /// <exclude />
         public VisualXhtmlEditorFuntion(EntityTokenFactory entityTokenFactory)
             : base(CompositeName, typeof(string), entityTokenFactory)
         {
@@ -26,6 +30,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
 
 
 
+        /// <exclude />
         public override XElement GetWidgetMarkup(ParameterList parameters, string label, HelpDefinition help, string bindingSourceName)
         {
             XElement element = base.BuildBasicWidgetMarkup("InlineXhtmlEditor", "Xhtml", label, help, bindingSourceName);

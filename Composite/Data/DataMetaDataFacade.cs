@@ -111,6 +111,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static IEnumerable<DataTypeDescriptor> AllDataTypeDescriptors
         {
             get
@@ -123,6 +124,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static IEnumerable<DataTypeDescriptor> GeneratedTypeDataTypeDescriptors
         {
             get
@@ -139,6 +141,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static DataTypeDescriptor GetDataTypeDescriptor(Guid id)
         {
             Initialize();
@@ -152,6 +155,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static void PersistMetaData(DataTypeDescriptor dataTypeDescriptor)
         {
             lock (_lock)
@@ -177,6 +181,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static void DeleteMetaData(Guid dataTypeId)
         {
             lock (_lock)

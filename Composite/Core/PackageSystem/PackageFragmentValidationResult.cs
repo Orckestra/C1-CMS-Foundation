@@ -17,6 +17,7 @@ namespace Composite.Core.PackageSystem
     [DebuggerDisplay("ValidationResult = {ValidationResult}, Message = {Message}")]
 	public sealed class PackageFragmentValidationResult
 	{
+        /// <exclude />
         public PackageFragmentValidationResult(PackageFragmentValidationResultType validationResult, Exception exception)
         {
             if (exception == null) throw new ArgumentNullException("exception");
@@ -33,6 +34,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public PackageFragmentValidationResult(PackageFragmentValidationResultType validationResult, string message)
             : this(validationResult, message, null)
         {
@@ -40,6 +42,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public PackageFragmentValidationResult(PackageFragmentValidationResultType validationResult, string message, XObject configurationObject)
         {
             if (string.IsNullOrEmpty(message) == true) throw new ArgumentNullException("message");
@@ -56,11 +59,19 @@ namespace Composite.Core.PackageSystem
         }
 
 
+        /// <exclude />
         public PackageFragmentValidationResultType ValidationResult { get; private set; }
+
+        /// <exclude />
         public string Message { get; private set; }
+
+        /// <exclude />
         public Exception Exception { get; private set; }
+
+        /// <exclude />
         public string XPath { get; private set; }
 
+        /// <exclude />
         public IEnumerable<PackageFragmentValidationResult> InnerResult { get; set; }
 	}
 }

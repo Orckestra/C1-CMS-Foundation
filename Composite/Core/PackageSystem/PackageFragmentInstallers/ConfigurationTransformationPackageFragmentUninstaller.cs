@@ -17,6 +17,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         private const string _uninstallElementName = "Uninstall";
         private const string _xsltFilePathAttributeName = "xsltFilePath";
 
+        /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
             List<PackageFragmentValidationResult> validationResults = new List<PackageFragmentValidationResult>();
@@ -33,6 +34,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             return validationResults;
         }
 
+
+        /// <exclude />
         public override void Uninstall()
         {
             using (Stream xsltFileStream = this.UninstallerContex.ZipFileSystem.GetFileStream(this.UninstallXsltFilePath))
@@ -56,6 +59,5 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 return this.UninstallElement.GetAttributeValue(_xsltFilePathAttributeName);
             }
         }
-
     }
 }

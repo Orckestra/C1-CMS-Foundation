@@ -9,6 +9,7 @@ namespace Composite.C1Console.Events.Foundation
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ConsoleMessageQueueElement
     {
+        /// <exclude />
         public string ReceiverConsoleId
         {
             get;
@@ -17,6 +18,7 @@ namespace Composite.C1Console.Events.Foundation
 
 
 
+        /// <exclude />
         public int QueueItemNumber 
         { 
             get;
@@ -25,6 +27,7 @@ namespace Composite.C1Console.Events.Foundation
 
 
 
+        /// <exclude />
         public DateTime EnqueueTime 
         { 
             get;
@@ -33,6 +36,7 @@ namespace Composite.C1Console.Events.Foundation
 
 
 
+        /// <exclude />
         public IConsoleMessageQueueItem QueueItem
         {
             get;

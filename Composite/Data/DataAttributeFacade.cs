@@ -30,6 +30,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static bool IsAutoUpdateble(this IData data)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -39,6 +40,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static bool IsAutoUpdateble(this Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -57,6 +59,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static bool IsGenerated(this Type interfaceType)
         {
             Verify.ArgumentNotNull(interfaceType, "interfaceType");
@@ -87,6 +90,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static Guid GetImmutableTypeId(this IData data)
         {
             return GetImmutableTypeId(data.DataSourceId.InterfaceType);
@@ -94,6 +98,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static Guid GetImmutableTypeId(this Type interfaceType)
         {
 			Verify.ArgumentNotNull(interfaceType, "interfaceType");
@@ -108,6 +113,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static bool TryGetImmutableTypeId(this Type interfaceType, out Guid immutableTypeId)
         {
 			Verify.ArgumentNotNull(interfaceType, "interfaceType");
@@ -138,6 +144,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static bool IsNotReferenceable(this IData data)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -147,6 +154,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static bool IsNotReferenceable(this Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -165,6 +173,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static string GetLabel(this IData data)
         {
             if (data == null)
@@ -174,9 +183,10 @@ namespace Composite.Data
 
             return data.GetLabel(true);
         }
-    
 
 
+
+        /// <exclude />
         public static string GetLabel(this IData data, bool useForeignLabel)
         {
             if (data == null)
@@ -280,6 +290,8 @@ namespace Composite.Data
             }
         }
 
+
+
         private static PropertyInfo GetLabelPropertyInfo(IData data)
         {
             return GetLabelPropertyInfo(data.DataSourceId.InterfaceType);
@@ -287,6 +299,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static PropertyInfo GetLabelPropertyInfo(this Type interfaceType)
         {
             List<LabelPropertyNameAttribute> list = interfaceType.GetCustomInterfaceAttributes<LabelPropertyNameAttribute>().ToList();
@@ -311,6 +324,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static CachingType GetCachingType(Type interfaceType)
         {
             CachingType cachingType;
@@ -339,6 +353,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static List<ForeignPropertyInfo> GetDataReferencePropertyInfoes(Type interfaceType)
         {
             List<ForeignPropertyInfo> foreignKeyProperyInfos;
@@ -401,6 +416,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static List<string> GetKeyPropertyNames(this Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -428,6 +444,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static List<PropertyInfo> GetKeyPropertyInfoes(this IData data)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -437,6 +454,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static List<PropertyInfo> GetKeyPropertyInfoes(this Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -473,6 +491,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static string GetTypeTitle(this IData data)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -482,6 +501,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static string GetTypeTitle(this Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");

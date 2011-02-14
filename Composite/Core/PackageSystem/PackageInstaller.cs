@@ -35,6 +35,8 @@ namespace Composite.Core.PackageSystem
         private string TempDirectory { get; set; }
         private PackageInformation PackageInformation { get; set; }
 
+
+        /// <exclude />
         public PackageInstaller(IPackageInstallerUninstallerFactory packageInstallerUninstallerFactory, string zipFilename, string packageInstallDirectory, string tempDirectory, PackageInformation packageInformation)
         {
             if (packageInstallerUninstallerFactory == null) throw new ArgumentNullException("packageInstallerUninstallerFactory");
@@ -51,11 +53,18 @@ namespace Composite.Core.PackageSystem
         }
 
 
+
+        /// <exclude />
         public bool CanBeUninstalled { get { return this.PackageInformation.CanBeUninstalled; } }
+
+        /// <exclude />
         public bool FlushOnCompletion { get { return this.PackageInformation.FlushOnCompletion; } }
+
+        /// <exclude />
         public bool ReloadConsoleOnCompletion { get { return this.PackageInformation.ReloadConsoleOnCompletion; } }
 
 
+        /// <exclude />
         public IEnumerable<PackageFragmentValidationResult> Validate()
         {
             List<PackageFragmentValidationResult> validationResult = Initialize().ToList();
@@ -87,6 +96,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public PackageFragmentValidationResult Install(SystemLockingType systemLockingType)
         {
             try

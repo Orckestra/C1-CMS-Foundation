@@ -18,6 +18,7 @@ namespace Composite.Core.Threading
         private static ThreadDataManagerData _threadDataManagerData = null;
 
 
+        /// <exclude />
         public static ThreadDataManagerData Current
         {
             get
@@ -75,6 +76,9 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
             return current;
         }
 
+
+
+        /// <exclude />
         public static ThreadDataManagerData CreateNew()
         {
             var current = Current;
@@ -88,6 +92,7 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
 
 
 
+        /// <exclude />
         public static IDisposable Initialize()
         {
             return new ThreadDataManagerScope(new ThreadDataManagerData(), true);
@@ -95,6 +100,7 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
 
 
 
+        /// <exclude />
         public static IDisposable Initialize(ThreadDataManagerData parentThreadData)
         {
             if(parentThreadData != null)
@@ -105,6 +111,9 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
             return new ThreadDataManagerScope(new ThreadDataManagerData(parentThreadData), true);
         }
 
+
+
+        /// <exclude />
         public static IDisposable EnsureInitialize()
         {
             if (Current != null) return new EmptyDisposableObj();
@@ -113,12 +122,14 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
         }
 
 
+        /// <exclude />
         public static void InitializeThroughHttpContext()
         {
             InitializeThroughHttpContext(false);
         }
 
 
+        /// <exclude />
         public static void InitializeThroughHttpContext(bool forceUserValidation)
         {
             var httpContext = HttpContext.Current;
@@ -142,6 +153,8 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
             }
         }
 
+
+        
         /// <summary>
         /// To be used only in Global.asax
         /// </summary>

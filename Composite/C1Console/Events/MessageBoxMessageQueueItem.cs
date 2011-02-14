@@ -9,8 +9,13 @@ namespace Composite.C1Console.Events
     [Serializable]
     public sealed class MessageBoxMessageQueueItem : IConsoleMessageQueueItem
     {
+        /// <exclude />
         public string Title { get; set; }
+
+        /// <exclude />
         public string Message { get; set; }
+
+        /// <exclude />
         public DialogType DialogType { get; set; }
     }
 }

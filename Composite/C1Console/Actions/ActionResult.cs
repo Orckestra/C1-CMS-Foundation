@@ -6,7 +6,10 @@ namespace Composite.C1Console.Actions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ActionResult
     {
+        /// <exclude />
         public ActionResultResponseType ResponseType { get; set; }
+
+        /// <exclude />
         public string Url { get; set; }
     }
 
@@ -18,8 +21,13 @@ namespace Composite.C1Console.Actions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum ActionResultResponseType
     {
+        /// <exclude />
         None,
+
+        /// <exclude />
         OpenDocument,
+
+        /// <exclude />
         OpenModalDialog
     }
 }

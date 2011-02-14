@@ -50,9 +50,16 @@ namespace Composite.C1Console.Events
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class GlobalEventSystemFacade
     {
+        /// <exclude />
         public delegate void FlushEventDelegate(FlushEventArgs args);
+
+        /// <exclude />
         public delegate void PostFlushEventDelegate(PostFlushEventArgs args);
+
+        /// <exclude />
         public delegate void ShutDownEventDelegate(ShutDownEventArgs args);
+
+        /// <exclude />
         public delegate void PrepareForShutDownEventDelegate(PrepareForShutDownEventArgs args);
       
 
@@ -73,22 +80,27 @@ namespace Composite.C1Console.Events
         }
 
 
+        /// <exclude />
         public static void SubscribeToPostFlushEvent(PostFlushEventDelegate eventDelegate)
         {
             _postFlushEvent += eventDelegate;
         }
 
 
+        /// <exclude />
         public static void UnsubscribeFromFlushEvent(FlushEventDelegate eventDelegate)
         {
             _flushEvent -= eventDelegate;
-        }        
+        }
 
 
+        /// <exclude />
         public static void FlushTheSystem()
         {
             FlushTheSystem(false);
         }
+
+
 
         internal static void FlushTheSystem(bool waitForHooksInitialization)
         {
@@ -120,6 +132,7 @@ namespace Composite.C1Console.Events
             }
         }
 
+
         private static void FirePostFlushEvent()
         {
             if (_postFlushEvent != null)
@@ -137,28 +150,35 @@ namespace Composite.C1Console.Events
         }
 
 
+        /// <exclude />
         public static void SubscribeToPrepareForShutDownEvent(PrepareForShutDownEventDelegate eventDelegate)
         {
             _prepareForShutDownEvent += eventDelegate;
         }
 
 
+        /// <exclude />
         public static void SubscribeToShutDownEvent(ShutDownEventDelegate eventDelegate)
         {
             _shutDownEvent += eventDelegate;
         }
 
+
+        /// <exclude />
         public static void UnsubscribeFromPrepareForShutDownEvent(PrepareForShutDownEventDelegate eventDelegate)
         {
             _prepareForShutDownEvent -= eventDelegate;
         }
 
+
+        /// <exclude />
         public static void UnsubscribeFromShutDownEvent(ShutDownEventDelegate eventDelegate)
         {
             _shutDownEvent -= eventDelegate;
         }
 
 
+        /// <exclude />
         public static void PrepareForShutDown()
         {
             if(_prepareForShutDownEvent != null)
@@ -168,6 +188,7 @@ namespace Composite.C1Console.Events
         }
 
 
+        /// <exclude />
         public static void ShutDownTheSystem()
         {
             GlobalInitializerFacade.UninitializeTheSystem(FireShutDownEvent);

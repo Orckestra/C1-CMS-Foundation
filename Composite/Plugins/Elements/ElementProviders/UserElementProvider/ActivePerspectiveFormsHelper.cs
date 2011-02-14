@@ -22,9 +22,10 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
         private static readonly string MultiKeySelectorOptionsBindingName = "ActivePerspectiveFormsHelper_Options";
         private static readonly string MultiKeySelectorSelectedBindingName = "ActivePerspectiveFormsHelper_Selected";
-        
 
 
+
+        /// <exclude />
         public ActivePerspectiveFormsHelper(string fieldLabel, string multiSelectLabel, string multiSelectHelp)
         {
             this.FieldLabel = fieldLabel;
@@ -36,6 +37,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public void UpdateWithNewBindings(Dictionary<string, object> bindings, IEnumerable<string> selectedSerializedEntityTokens)
         {
             Dictionary<string, string> options = new Dictionary<string, string>();
@@ -68,6 +70,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public static IEnumerable<string> GetSelectedSerializedEntityTokens(Dictionary<string, object> bindings)
         {
             List<string> serializedEntityTokens = (List<string>)bindings[MultiKeySelectorSelectedBindingName];
@@ -80,6 +83,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public IEnumerable<XElement> GetBindingsMarkup()
         {
             if (_bindingElements == null)
@@ -92,6 +96,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public XElement GetFormMarkup()
         {
             if (_fieldGroupElement == null)
@@ -104,6 +109,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public string FieldLabel
         {
             get;
@@ -112,6 +118,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public string MultiSelectLabel
         {
             get;
@@ -120,6 +127,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public string MultiSelectHelp
         {
             get;

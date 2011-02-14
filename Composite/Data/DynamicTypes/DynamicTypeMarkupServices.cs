@@ -19,13 +19,14 @@ namespace Composite.Data.DynamicTypes
         private static readonly XName _fieldReferenceFieldAttributeName = "fieldname";
 
 
+        /// <exclude />
         public static XElement GetReferenceElement(this DataFieldDescriptor fieldToReference, DataTypeDescriptor ownerTypeDescriptor)
         {
             return GetReferenceElement(fieldToReference.Name,ownerTypeDescriptor.TypeManagerTypeName);
         }
 
 
-
+        /// <exclude />
         public static XElement GetReferenceElement(string fieldName, string typeManagerName)
         {
             // ensure "data:" prefix in markup:
@@ -39,7 +40,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-
+        /// <exclude />
         public static bool TryGetDescriptors(XElement fieldReferenceElement, out DataTypeDescriptor typeDescriptor, out DataFieldDescriptor fieldDescriptor)
         {
             typeDescriptor = null;
@@ -83,6 +84,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
 	    public static IEnumerable<FieldReferenceDefinition> GetFieldReferenceDefinitions(XContainer container, string typeManagerName)
         {
             var typeReferenceElements = container.Descendants(_fieldReferenceElementName).Where(f=>f.Attribute(_fieldReferenceTypeAttributeName).Value==typeManagerName);
@@ -95,11 +97,14 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public class FieldReferenceDefinition
         {
+            /// <exclude />
             public string FieldName { get; set; }
+
+            /// <exclude />
             public XElement FieldReferenceElement { get; set; }
         }
-
 	}
 }

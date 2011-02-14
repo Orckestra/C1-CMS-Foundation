@@ -23,6 +23,7 @@ namespace Composite.Core.IO.Plugins.IOProvider
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class NonConfigurableIOProviderAssembler : IAssembler<IIOProvider, IOProviderData>
     {
+        /// <exclude />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         public IIOProvider Assemble(IBuilderContext context, IOProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {

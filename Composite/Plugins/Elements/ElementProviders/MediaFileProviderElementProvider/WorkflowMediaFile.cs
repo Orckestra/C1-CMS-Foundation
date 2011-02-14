@@ -14,6 +14,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
     [FileStreamManager(typeof(FileSystemFileStreamManager))]
     public sealed class WorkflowMediaFile : FileSystemFileBase, IMediaFile
     {
+        /// <exclude />
         public WorkflowMediaFile()
         {
             Title = string.Empty;
@@ -24,6 +25,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
 
 
+        /// <exclude />
         public WorkflowMediaFile(IMediaFile file)
         {
             Id = file.Id;
@@ -43,16 +45,23 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
 
 
+        /// <exclude />
         public Guid Id
         {
             get; internal set;
         }
 
+
+
+        /// <exclude />
         public string KeyPath
         {
             get { return this.GetKeyPath(); }
         }
 
+
+
+        /// <exclude />
         public string CompositePath
         {
             get { return this.GetCompositePath(); }
@@ -61,6 +70,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
 
 
+        /// <exclude />
         public string StoreId
         {
             get;
@@ -69,6 +79,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
 
 
+        /// <exclude />
         public string Title
         {
             get;
@@ -77,6 +88,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
 
 
+        /// <exclude />
         public string Description
         {
             get;
@@ -85,6 +97,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
 
 
+        /// <exclude />
         public string Culture
         {
             get;
@@ -93,6 +106,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
 
 
+        /// <exclude />
         public string MimeType
         {
             get;
@@ -101,14 +115,16 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
 
 
+        /// <exclude />
         public int? Length
         {
             get;
             set;
         }
 
-        
-        
+
+
+        /// <exclude />
         public DateTime? CreationTime
         {
             get;
@@ -117,6 +133,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
 
 
+        /// <exclude />
         public DateTime? LastWriteTime
         {
             get;
@@ -125,6 +142,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
 
 
+        /// <exclude />
         public bool IsReadOnly
         {
             get;
@@ -133,6 +151,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
 
 
+        /// <exclude />
         public string FolderPath
         {
             get;
@@ -141,6 +160,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
 
 
+        /// <exclude />
         public string FileName
         {
             get;
@@ -149,6 +169,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
 
 
+        /// <exclude />
         public DataSourceId DataSourceId
         {
             get;

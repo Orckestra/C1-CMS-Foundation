@@ -10,14 +10,16 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true, Inherited = true)]    
     public sealed class DataAssociationAttribute : Attribute
 	{
+        /// <exclude />
         public DataAssociationAttribute(Type associatedInterfaceType, string foreignKeyPropertyName, DataAssociationType dataAssociationType)
         {
             this.AssociatedInterfaceType = associatedInterfaceType;
             this.ForeignKeyPropertyName = foreignKeyPropertyName;
             this.AssociationType = dataAssociationType;
         }
-        
 
+
+        /// <exclude />
         public Type AssociatedInterfaceType
         {
             get;
@@ -25,6 +27,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public string ForeignKeyPropertyName
         {
             get;
@@ -32,6 +35,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public DataAssociationType AssociationType
         {
             get;
@@ -47,8 +51,13 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum DataAssociationType
     {
-        None,
-        Aggregation,
-        Composition
+        /// <exclude />
+        None = 0,
+
+        /// <exclude />
+        Aggregation = 1,
+
+        /// <exclude />
+        Composition = 2
     }
 }

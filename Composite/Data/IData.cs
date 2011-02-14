@@ -10,6 +10,7 @@ namespace Composite.Data
     [SerializerHandler(typeof(DataSerializerHandler))]
     public interface IData
     {
+        /// <exclude />
         DataSourceId DataSourceId { get; }
     }
 }

@@ -22,10 +22,16 @@ namespace Composite.C1Console.Trees
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class GenericAddDataActionNode : ActionNode
 	{
+        /// <exclude />
         public static string InterfaceTypeWorkflowPayloadKeyName = "_InterfaceType_";
+
+        /// <exclude />
         public static string CustomFormMarkupPathWorkflowPayloadKeyName = "_CustomFormMarkupPath_";
 
+        /// <exclude />
         public Type InterfaceType { get; internal set; }            // Requried
+
+        /// <exclude />
         public string CustomFormMarkupPath { get; internal set; }   // Optional
 
 
@@ -33,6 +39,7 @@ namespace Composite.C1Console.Trees
         private List<ParentIdEntry> ParentIdEntrys { get; set; }
 
 
+        /// <exclude />
         protected override void OnAddAction(Action<ElementAction> actionAdder, EntityToken entityToken, TreeNodeDynamicContext dynamicContext, DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext)
         {
             StringBuilder payload = new StringBuilder();
@@ -69,6 +76,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         protected override void OnInitialize()
         {
             if ((this.InterfaceType != null) && (typeof(IData).IsAssignableFrom(this.InterfaceType) == false))
@@ -134,6 +142,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public override string ToString()
         {
             return string.Format("GenericAddDataActionNode, InterfaceType = {0}, Label = {1}", this.InterfaceType, this.Label);

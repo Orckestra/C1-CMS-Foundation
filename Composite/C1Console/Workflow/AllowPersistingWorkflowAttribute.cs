@@ -32,12 +32,14 @@ namespace Composite.C1Console.Workflow
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public sealed class AllowPersistingWorkflowAttribute : Attribute
     {
+        /// <exclude />
         public AllowPersistingWorkflowAttribute(WorkflowPersistingType workflowPersistingType)
         {
             this.WorkflowPersistingType = workflowPersistingType;
         }
 
 
+        /// <exclude />
         public WorkflowPersistingType WorkflowPersistingType
         {
             get;

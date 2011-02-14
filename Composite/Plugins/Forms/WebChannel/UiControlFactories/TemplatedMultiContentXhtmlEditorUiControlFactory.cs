@@ -21,10 +21,13 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class MultiContentXhtmlEditorTemplateUserControlBase : UserControl
     {
+        /// <exclude />
         protected abstract void BindStateToProperties();
 
+        /// <exclude />
         protected abstract void InitializeViewState();
 
+        /// <exclude />
         public abstract string GetDataFieldClientName();
 
         internal void BindStateToControlProperties()
@@ -37,16 +40,22 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             this.InitializeViewState();
         }
 
+        /// <exclude />
         public string DefaultPlaceholderId { get; set; }
 
+        /// <exclude />
         public Dictionary<string, string> PlaceholderDefinitions { get; set; }
 
+        /// <exclude />
         public Dictionary<string,string> NamedXhtmlFragments { get; set; }
 
+        /// <exclude />
         public string FormControlLabel { get; set; }
 
+        /// <exclude />
         public IEnumerable<Type> EmbedableFieldsTypes { get; set; }
 
+        /// <exclude />
         public string ClassConfigurationName { get; set; }
     }
 

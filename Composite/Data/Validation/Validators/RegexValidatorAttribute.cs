@@ -13,12 +13,14 @@ namespace Composite.Data.Validation.Validators
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Parameter, AllowMultiple = true, Inherited = false)]
     public sealed class RegexValidatorAttribute : Microsoft.Practices.EnterpriseLibrary.Validation.Validators.ValueValidatorAttribute
     {
+        /// <exclude />
         public RegexValidatorAttribute(string pattern)
         {
             this.Pattern = pattern;
         }
 
 
+        /// <exclude />
         public string Pattern
         {
             get;
@@ -26,6 +28,8 @@ namespace Composite.Data.Validation.Validators
         }
 
 
+
+        /// <exclude />
         protected override Microsoft.Practices.EnterpriseLibrary.Validation.Validator DoCreateValidator(Type targetType)
         {
             return new Microsoft.Practices.EnterpriseLibrary.Validation.Validators.RegexValidator(

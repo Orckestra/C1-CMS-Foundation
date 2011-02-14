@@ -53,6 +53,7 @@ namespace Composite.Core.Xml
 
 
 
+        /// <exclude />
         public static string GetDocumentAsString(this XDocument document)
         {
             if (document == null) throw new ArgumentNullException("document");

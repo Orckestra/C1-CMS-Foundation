@@ -9,6 +9,7 @@
         private TaskContainer TaskContainer { get; set; }
 
 
+        /// <exclude />
         public TaskManagerFlowControllerService(TaskContainer taskContainer)
         {
             Verify.IsNotNull(taskContainer, "taskContainer");
@@ -17,6 +18,7 @@
         }
 
 
+        /// <exclude />
         public void OnStatus(TaskManagerEvent taskManagerEvent)
         {
             this.TaskContainer.OnStatus(taskManagerEvent);

@@ -17,6 +17,7 @@ namespace Composite.Core.Types
         private WeakReference _codeTypeDeclaration;
         private string _fullname = null;
 
+        /// <exclude />
         public BuildManagerCompileType(string codeNamespaceName, KeyValuePair<string, Func<CodeTypeDeclaration>> codeTypeDeclarationFunc)
         {
             if (string.IsNullOrEmpty(codeNamespaceName) == true) throw new ArgumentNullException("codeNamespaceName");
@@ -36,9 +37,12 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public string CodeNamespaceName { get; private set; }
-        
-        
+
+
+
+        /// <exclude />
         public CodeTypeDeclaration CodeTypeDeclaration 
         {
             get
@@ -73,9 +77,11 @@ namespace Composite.Core.Types
         }
 
 
+        /// <exclude />
         public Type ResultType { get; internal set; }
 
 
+        /// <exclude />
         public string Namespace
         {
             get
@@ -92,7 +98,7 @@ namespace Composite.Core.Types
         }
 
 
-
+        /// <exclude />
         public string Name
         {
             get
@@ -109,7 +115,7 @@ namespace Composite.Core.Types
         }
 
 
-
+        /// <exclude />
         public string Fullname
         {
             get
@@ -124,7 +130,7 @@ namespace Composite.Core.Types
         }
 
 
-
+        /// <exclude />
         public bool IsCompiled
         {
             get
@@ -134,14 +140,14 @@ namespace Composite.Core.Types
         }
 
 
-
+        /// <exclude />
         public override bool Equals(object obj)
         {
             return Equals(obj as BuildManagerCompileType);
         }
 
 
-
+        /// <exclude />
         public bool Equals(BuildManagerCompileType buildManagerCompileType)
         {
             if (buildManagerCompileType == null) return false;
@@ -150,14 +156,14 @@ namespace Composite.Core.Types
         }
 
 
-
+        /// <exclude />
         public override int GetHashCode()
         {
             return this.Namespace.GetHashCode() ^ this.Name.GetHashCode();
         }
 
 
-
+        /// <exclude />
         public override string ToString()
         {
             return this.Fullname;

@@ -15,6 +15,7 @@ namespace Composite.C1Console.Security
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class PermissionTypeFacade
     {
+        /// <exclude />
         public static IEnumerable<PermissionType> GetLocallyDefinedUserPermissionTypes(UserToken userToken, EntityToken entityToken)
         {
             if (userToken == null) throw new ArgumentNullException("userToken");
@@ -38,6 +39,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static IEnumerable<PermissionType> GetLocallyDefinedUserGroupPermissionTypes(Guid userGroupId, EntityToken entityToken)
         {
             if (userGroupId == Guid.Empty) throw new ArgumentNullException("userGroupId");
@@ -61,6 +63,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static IEnumerable<PermissionType> GetLocallyDefinedUserGroupPermissionTypes(string username, EntityToken entityToken)
         {
             List<Guid> userGroupIds = UserGroupFacade.GetUserGroupIds(username);
@@ -293,6 +296,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static IEnumerable<PermissionType> GetInheritedGroupPermissionsTypes(Guid userGroupId, EntityToken entityToken)
         {
             IEnumerable<UserGroupPermissionDefinition> userGroupPermissionDefinitions = GetUserGroupPermissionDefinitions(userGroupId);
@@ -310,6 +314,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static IEnumerable<UserPermissionDefinition> GetUserPermissionDefinitions(string username)
         {
             if (string.IsNullOrEmpty(username) == true) throw new ArgumentNullException("username");
@@ -340,6 +345,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static IEnumerable<UserGroupPermissionDefinition> GetUserGroupPermissionDefinitions(string username)
         {
             List<Guid> userGroupIds = UserGroupFacade.GetUserGroupIds(username);
@@ -355,6 +361,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static IEnumerable<UserGroupPermissionDefinition> GetUserGroupPermissionDefinitions(Guid userGroupId)
         {
             if (userGroupId == Guid.Empty) throw new ArgumentNullException("userGroupId");
@@ -382,6 +389,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static bool CanAlterDefinitions
         {
             get
@@ -392,6 +400,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static void SetUserPermissionDefinition(UserPermissionDefinition userPermissionDefinition)
         {
             if (userPermissionDefinition == null) throw new ArgumentNullException("userPermissionDefinition");
@@ -413,6 +422,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static void RemoveUserPermissionDefinition(UserToken userToken, EntityToken entityToken)
         {
             if (userToken == null) throw new ArgumentNullException("userToken");
@@ -431,6 +441,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static void SetUserGroupPermissionDefinition(UserGroupPermissionDefinition userGroupPermissionDefinition)
         {
             if (userGroupPermissionDefinition == null) throw new ArgumentNullException("userGroupPermissionDefinition");
@@ -452,6 +463,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static void RemoveUserPermissionDefinition(Guid userGroupId, EntityToken entityToken)
         {
             if (entityToken == null) throw new ArgumentNullException("entityToken");
@@ -469,6 +481,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static IEnumerable<PermissionType> AllPermissionTypes
         {
             get
@@ -484,6 +497,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static IEnumerable<PermissionType> GrantingPermissionTypes
         {
             get
@@ -500,6 +514,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static IEnumerable<PermissionDescriptor> AllPermissionDescriptors
         {
             get
@@ -513,6 +528,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static IEnumerable<PermissionDescriptor> GrantingPermissionDescriptors
         {
             get

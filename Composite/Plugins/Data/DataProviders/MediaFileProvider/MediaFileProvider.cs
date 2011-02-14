@@ -69,6 +69,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
         }
 
 
+        /// <exclude />
         public DataProviderContext Context
         {
             set { _context = value; }
@@ -76,6 +77,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
 
 
+        /// <exclude />
         public void Update(IEnumerable<IData> datas)
         {
             foreach (IData data in datas)
@@ -163,6 +165,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
 
 
+        /// <exclude />
         public List<T> AddNew<T>(IEnumerable<T> datas) where T : class, IData
         {
             List<T> result = new List<T>();
@@ -225,6 +228,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
 
 
+        /// <exclude />
         public void Delete(IEnumerable<DataSourceId> dataSourceIds)
         {
             if (dataSourceIds.Any(f => f == null)) throw new ArgumentException("DataSourceIds must be non-null");
@@ -259,6 +263,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
 
 
+        /// <exclude />
         public IEnumerable<Type> GetSupportedInterfaces()
         {
             return new List<Type>() { typeof(IMediaFile), typeof(IMediaFileFolder), typeof(IMediaFileStore) };
@@ -266,6 +271,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
 
 
+        /// <exclude />
         public IQueryable<T> GetData<T>() where T : class, IData
         {
             CheckInterface(typeof(T));
@@ -334,6 +340,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
 
 
+        /// <exclude />
         public T GetData<T>(IDataId dataId) where T : class, IData
         {
             if (dataId == null)
@@ -523,7 +530,10 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public sealed class MediaDataId : IDataId
         {
+            /// <exclude />
             public int MediaType { get; set; }
+
+            /// <exclude />
             public Guid Id { get; set; }
         }
 

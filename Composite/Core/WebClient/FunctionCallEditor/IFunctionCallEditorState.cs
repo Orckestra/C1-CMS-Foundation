@@ -10,9 +10,11 @@ namespace Composite.Core.WebClient.FunctionCallEditor
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IParameterEditorState
     {
+        /// <exclude />
         [XmlIgnore]
         List<ManagedParameterDefinition> Parameters { get; set; }
 
+        /// <exclude />
         [XmlIgnore]
         List<Type> ParameterTypeOptions { get; set; }
     }
@@ -21,17 +23,29 @@ namespace Composite.Core.WebClient.FunctionCallEditor
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IFunctionCallEditorState : IParameterEditorState
     {
+        /// <exclude />
         [XmlIgnore]
         List<NamedFunctionCall> FunctionCalls { get; set; }
 
+        /// <exclude />
         bool ShowLocalFunctionNames { get; } // Check if this setting is used
-        bool WidgetFunctionSelection { get; } 
+
+        /// <exclude />
+        bool WidgetFunctionSelection { get; }
+
+        /// <exclude />
         bool AllowLocalFunctionNameEditing { get; }
+
+        /// <exclude />
         bool AllowSelectingInputParameters { get; }
 
+        /// <exclude />
         Type[] AllowedResultTypes { get; }
+
+        /// <exclude />
         int MaxFunctionAllowed { get; }
 
+        /// <exclude />
         string ConsoleId { get; }
     }
 }

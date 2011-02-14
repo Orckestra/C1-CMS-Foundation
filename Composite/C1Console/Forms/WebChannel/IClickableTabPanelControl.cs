@@ -9,7 +9,10 @@ namespace Composite.C1Console.Forms.WebChannel
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IClickableTabPanelControl
     {
+        /// <exclude />
         string CustomTabId { get; }
+
+        /// <exclude />
         Control EventControl { get; }
     }
 }

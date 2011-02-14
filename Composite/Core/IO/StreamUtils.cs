@@ -9,6 +9,7 @@ namespace Composite.Core.IO
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class StreamUtils
     {
+        /// <exclude />
         public static void CopyStream(Stream input, Stream output)
         {
             byte[] buffer = new byte[8192];

@@ -23,10 +23,12 @@ namespace Composite.Functions.Inline
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class InlineFunctionHelper
     {
+        /// <exclude />
         public static string MethodClassContainerName { get { return "InlineMethodFunction"; } }
 
 
 
+        /// <exclude />
         public static MethodInfo Create(IInlineFunction function, string code = null, InlineFunctionCreateMethodErrorHandler createMethodErrorHandler = null, List<string> selectedAssemblies = null)
         {
             if (string.IsNullOrWhiteSpace(code))
@@ -140,6 +142,7 @@ namespace Composite.Functions.Inline
 
 
 
+        /// <exclude />
         public static IEnumerable<string> DefaultAssemblies
         {
             get
@@ -163,6 +166,7 @@ namespace Composite.Functions.Inline
 
 
 
+        /// <exclude />
         public static string GetFunctionCode(this IInlineFunction function)
         {
             string filepath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory), function.CodePath);
@@ -172,6 +176,7 @@ namespace Composite.Functions.Inline
 
 
 
+        /// <exclude />
         public static void DeleteFunctionCode(this IInlineFunction function)
         {
             string filepath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory), function.CodePath);
@@ -184,6 +189,7 @@ namespace Composite.Functions.Inline
 
 
 
+        /// <exclude />
         public static void SetFunctinoCode(this IInlineFunction function, string content)
         {
             string directoryPath = PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory);
@@ -199,6 +205,7 @@ namespace Composite.Functions.Inline
 
 
 
+        /// <exclude />
         public static void FunctionRenamed(IInlineFunction newFunction, IInlineFunction oldFunction)
         {
             newFunction.UpdateCodePath();
@@ -213,6 +220,7 @@ namespace Composite.Functions.Inline
 
 
 
+        /// <exclude />
         public static void UpdateCodePath(this IInlineFunction function)
         {
             function.CodePath = function.Namespace;
@@ -226,6 +234,7 @@ namespace Composite.Functions.Inline
 
 
 
+        /// <exclude />
         public static IEnumerable<string> GetReferencableAssemblies()
         {
             string path = Path.GetDirectoryName(typeof(String).Assembly.Location);
@@ -242,6 +251,7 @@ namespace Composite.Functions.Inline
 
 
 
+        /// <exclude />
         public static string GetAssemblyLocation(string fullPath)
         {
             string systemPath = Path.GetDirectoryName(typeof(String).Assembly.Location).ToLower();
@@ -262,6 +272,7 @@ namespace Composite.Functions.Inline
 
 
 
+        /// <exclude />
         public static string GetAssemblyFullPath(string filename, string location)
         {
             location = location.ToLower();

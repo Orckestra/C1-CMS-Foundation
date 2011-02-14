@@ -15,8 +15,9 @@ namespace Composite.C1Console.Actions
         private RelationshipGraph _beforeGraph;
         private FlowControllerServicesContainer _flowControllerServicesContainer;
         private bool _postRefreshMessegesCalled = false;
-        
 
+
+        /// <exclude />
         public DeleteTreeRefresher(EntityToken beforeDeleteEntityToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
             if (beforeDeleteEntityToken == null) throw new ArgumentNullException("beforeDeleteEntityToken");
@@ -28,6 +29,7 @@ namespace Composite.C1Console.Actions
 
 
 
+        /// <exclude />
         public void PostRefreshMesseges()
         {
             PostRefreshMesseges(false);
@@ -35,6 +37,7 @@ namespace Composite.C1Console.Actions
 
 
 
+        /// <exclude />
         public void PostRefreshMesseges(bool skipBeforeDeleteEntityToken)
         {
             if (_postRefreshMessegesCalled == true)

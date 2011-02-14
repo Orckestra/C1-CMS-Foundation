@@ -16,6 +16,7 @@ namespace Composite.C1Console.Workflow.Activities
     [ActivityValidator(typeof(HandleExternalEventActivityValidator))]
     public sealed class PreviewHandleExternalEventActivity : HandleExternalEventActivity
     {
+        /// <exclude />
         public PreviewHandleExternalEventActivity()
             : base()
         {
@@ -23,6 +24,7 @@ namespace Composite.C1Console.Workflow.Activities
         }
 
 
+        /// <exclude />
         public PreviewHandleExternalEventActivity(string name)
             : base(name)
         {
@@ -30,6 +32,8 @@ namespace Composite.C1Console.Workflow.Activities
         }
 
 
+
+        /// <exclude />
         [Browsable(false)]
         public override string EventName
         {
@@ -37,6 +41,9 @@ namespace Composite.C1Console.Workflow.Activities
             set { base.EventName = value; }
         }
 
+
+
+        /// <exclude />
         [Browsable(false)]
         public override Type InterfaceType
         {

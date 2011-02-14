@@ -15,6 +15,7 @@ namespace Composite.C1Console.Elements
         private string _serializedData = null;
 
 
+        /// <exclude />
         public ElementProviderHandle(string providerName)
         {
             if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
@@ -24,6 +25,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public string ProviderName
         {
             get;
@@ -32,6 +34,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public string Serialize()
         {
             return ToString();
@@ -39,6 +42,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public static ElementProviderHandle Deserialize(string serializedElementHandle)
         {
             Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(serializedElementHandle);
@@ -55,6 +59,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public override string ToString()
         {
             if (_serializedData == null)

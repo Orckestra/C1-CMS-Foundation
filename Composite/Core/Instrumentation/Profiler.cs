@@ -15,6 +15,8 @@ namespace Composite.Core.Instrumentation
         private static readonly string ProfilerKey = typeof (Profiler).FullName;
         // private static readonly IEnumerable<Measurement> EmptyReport = new Measurement[0];
 
+
+        /// <exclude />
         public static void BeginProfiling()
         {
             if (Disabled) return;
@@ -28,6 +30,8 @@ namespace Composite.Core.Instrumentation
             threadData.SetValue(ProfilerKey,  stack);
         }
 
+
+        /// <exclude />
         public static Measurement EndProfiling()
         {
             var threadData = ThreadDataManager.GetCurrentNotNull();
@@ -41,6 +45,8 @@ namespace Composite.Core.Instrumentation
             return stack.Pop();
         }
 
+
+        /// <exclude />
         public static IDisposable Measure(string name)
         {
             if (Disabled) return EmptyDisposable.Instance;

@@ -24,6 +24,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
         private static readonly string MultiKeySelectorSelectedBindingName = "UserGroupsFormsHelper_Selected";
 
 
+        /// <exclude />
         public UserGroupsFormsHelper(string fieldLabel, string multiSelectHelp)
         {
             this.FieldLabel = fieldLabel;
@@ -32,6 +33,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public void UpdateWithNewBindings(Dictionary<string, object> bindings, IEnumerable<Guid> selectedUserGroups)
         {
             Dictionary<Guid, string> options = new Dictionary<Guid, string>();
@@ -64,6 +66,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public static List<Guid> GetSelectedUserGroupIds(Dictionary<string, object> bindings)
         {
             return (List<Guid>)bindings[MultiKeySelectorSelectedBindingName];
@@ -71,6 +74,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public IEnumerable<XElement> GetBindingsMarkup()
         {
             if (_bindingElements == null)
@@ -83,6 +87,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public XElement GetFormMarkup()
         {
             if (_fieldGroupElement == null)
@@ -95,6 +100,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public string FieldLabel
         {
             get;
@@ -103,6 +109,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public string MultiSelectLabel
         {
             get;
@@ -111,11 +118,13 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public string MultiSelectHelp
         {
             get;
             set;
         }
+
 
 
         private void CreateMarkup()

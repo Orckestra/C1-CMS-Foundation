@@ -12,6 +12,7 @@ namespace Composite.C1Console.Trees
         private List<ValidationError> _validationError = new List<ValidationError>();
 
 
+        /// <exclude />
         public void AddValidationError(ValidationError validationError)
         {
             Verify.IsNotNull(validationError, "validationError");
@@ -21,6 +22,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public IEnumerable<ValidationError> ValidationErrors 
         {
             get

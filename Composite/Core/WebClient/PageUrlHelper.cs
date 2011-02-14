@@ -21,11 +21,15 @@ namespace Composite.Core.WebClient
     [Obsolete("Use 'Composite.Data' namespace instead")]
     public sealed class PageUrlOptions
     {
+        /// <exclude />
         public PageUrlOptions(string dataScopeIdentifierName, CultureInfo locale, Guid pageId) :
             this(dataScopeIdentifierName, locale, pageId, UrlType.Undefined)
         {
         }
 
+
+
+        /// <exclude />
         public PageUrlOptions(string dataScopeIdentifierName, CultureInfo locale, Guid pageId, UrlType urlType)
         {
             Verify.ArgumentNotNullOrEmpty(dataScopeIdentifierName, "dataScopeIdentifierName");
@@ -38,16 +42,28 @@ namespace Composite.Core.WebClient
             UrlType = urlType;
         }
 
+
+        /// <exclude />
         public UrlType UrlType { get; private set; }
+
+        /// <exclude />
         public string DataScopeIdentifierName { get; private set; }
+
+        /// <exclude />
         public CultureInfo Locale { get; private set; }
+
+        /// <exclude />
         public Guid PageId { get; private set; }
 
+
+        /// <exclude />
         public DataScopeIdentifier DataScopeIdentifier
         {
             get { return DataScopeIdentifier.Deserialize(DataScopeIdentifierName); }
         }
 
+
+        /// <exclude />
         public IPage GetPage()
         {
             var dataScope = DataScopeIdentifier.Deserialize(DataScopeIdentifierName);
@@ -58,16 +74,29 @@ namespace Composite.Core.WebClient
         }
     }
 
+
+
+
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Obsolete("Use 'Composite.Data' namespace instead")]
     public enum UrlType
     {
+        /// <exclude />
         Undefined = 0,
-        Public,
-        Internal,
-        Friendly
+
+        /// <exclude />
+        Public = 1,
+
+        /// <exclude />
+        Internal = 2,
+
+        /// <exclude />
+        Friendly = 3
     }
+
+
+
 
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
@@ -84,8 +113,9 @@ namespace Composite.Core.WebClient
         }
 
         private static readonly string InternalUrlPrefix = UrlUtils.PublicRootPath + "/Renderers/Page.aspx";
-       
 
+
+        /// <exclude />
         [Obsolete("Use Composite.Data.PageUrl instead")]
         public static PageUrlOptions ParseUrl(string url)
         {
@@ -93,6 +123,8 @@ namespace Composite.Core.WebClient
             return IsPublicUrl(urlString) ? ParsePublicUrl(url) : ParseInternalUrl(url);
         }
 
+
+        /// <exclude />
         [Obsolete("Use Composite.Data.PageUrl instead")]
         public static PageUrlOptions ParseUrl(string url, out NameValueCollection notUsedQueryStringParameters)
         {
@@ -101,6 +133,8 @@ namespace Composite.Core.WebClient
                 : ParseInternalUrl(url, out notUsedQueryStringParameters);
         }
 
+
+        /// <exclude />
         [Obsolete("Use Composite.Data.PageUrl instead")]
         public static PageUrlOptions ParseInternalUrl(string url)
         {
@@ -108,6 +142,8 @@ namespace Composite.Core.WebClient
             return ParseInternalUrl(url, out notUsedQueryStringParameters);
         }
 
+
+        /// <exclude />
         [Obsolete("Use Composite.Data.PageUrl instead")]
         public static PageUrlOptions ParseInternalUrl(string url, out NameValueCollection notUsedQueryStringParameters)
         {
@@ -116,6 +152,8 @@ namespace Composite.Core.WebClient
             return ParseQueryString(urlString.GetQueryParameters(), out notUsedQueryStringParameters);
         }
 
+
+        /// <exclude />
         [Obsolete("Use Composite.Data.PageUrl instead")]
         public static PageUrlOptions ParsePublicUrl(string url)
         {
@@ -124,6 +162,8 @@ namespace Composite.Core.WebClient
         }
 
 
+
+        /// <exclude />
         [Obsolete("Use Composite.Data.PageUrl instead")]
         public static PageUrlOptions ParsePublicUrl(string url, out NameValueCollection notUsedQueryParameters)
         {
@@ -179,6 +219,7 @@ namespace Composite.Core.WebClient
         }
 
 
+        /// <exclude />
         [Obsolete("To be removed")]
         public static CultureInfo GetCultureInfo(string requestPath)
         {
@@ -188,12 +229,15 @@ namespace Composite.Core.WebClient
         }
 
 
+        /// <exclude />
         [Obsolete("To be removed")]
         public static CultureInfo GetCultureInfo(string requestPath, out string requestPathWithoutUrlMappingName)
         {
             return PageUrl.GetCultureInfo(requestPath, out requestPathWithoutUrlMappingName);
         }
 
+
+        /// <exclude />
         [Obsolete("To be removed")]
         public static bool IsPublicUrl(string relativePath)
         {
@@ -204,17 +248,23 @@ namespace Composite.Core.WebClient
                    && !IsAdminPath(relativePath);
         }
 
+
+        /// <exclude />
         [Obsolete("To be removed")]
         public static bool IsPublicUrl(UrlString url)
         {
             return IsPublicUrl(url.FilePath);
         }
 
+
+        /// <exclude />
         public static bool IsInternalUrl(string url)
         {
             return IsInternalUrl(new UrlBuilder(url));
         }
 
+
+        /// <exclude />
         [Obsolete("To be removed")]
         public static bool IsInternalUrl(UrlString url)
         {
@@ -226,6 +276,8 @@ namespace Composite.Core.WebClient
             return url.FilePath.EndsWith("Renderers/Page.aspx", true);
         }
 
+
+        /// <exclude />
         [Obsolete("Use Composite.Data.PageUrl.Build() instead")]
         public static UrlString BuildUrl(PageUrlOptions options)
         {
@@ -235,6 +287,8 @@ namespace Composite.Core.WebClient
             return BuildUrl(options.UrlType, options);
         }
 
+
+        /// <exclude />
         [Obsolete("To be removed")]
         public static bool IsAdminPath(string relativeUrl)
         {
@@ -242,6 +296,8 @@ namespace Composite.Core.WebClient
                    || relativeUrl.StartsWith(UrlUtils.AdminRootPath + "/", true);
         }
 
+
+        /// <exclude />
         [Obsolete("Use Composite.Data.PageUrl.Build() instead")]
         public static UrlString BuildUrl(UrlType urlType, PageUrlOptions options)
         {
@@ -282,6 +338,8 @@ namespace Composite.Core.WebClient
             throw new NotImplementedException("BuildUrl function suppors only 'Public' and 'Unternal' urls.");
         }
 
+
+        /// <exclude />
         [Obsolete("To be removed, use Composite.Data.PageUrl.TryParseFriendlyUrl(...) instead")]
         public static bool TryParseFriendlyUrl(string relativeUrl, out PageUrlOptions urlOptions)
         {
@@ -378,6 +436,8 @@ namespace Composite.Core.WebClient
             return new PageUrlOptions(dataScopeName, cultureInfo, pageId, UrlType.Internal);
         }
 
+
+        /// <exclude />
         public static string ChangeRenderingPageUrlsToPublic(string html)
         {
             StringBuilder result = null;

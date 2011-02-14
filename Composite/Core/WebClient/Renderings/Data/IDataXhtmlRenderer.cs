@@ -10,6 +10,7 @@ namespace Composite.Core.WebClient.Renderings.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IDataXhtmlRenderer
     {
+        /// <exclude />
         XhtmlDocument Render(IDataReference dataToRender);
     }
 }

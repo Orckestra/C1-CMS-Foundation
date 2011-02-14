@@ -11,6 +11,7 @@ namespace Composite.C1Console.Workflow
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public sealed class EntityTokenLockAttribute : Attribute
     {
+        /// <exclude />
         public EntityTokenLockAttribute()
         {
         }

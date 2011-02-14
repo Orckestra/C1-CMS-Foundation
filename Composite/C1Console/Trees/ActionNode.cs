@@ -20,26 +20,44 @@ namespace Composite.C1Console.Trees
         private static string ActionNodeIdSerializedKeyName = "_ActionNodeId_";
 
 
+        /// <exclude />
         public string XPath { get; internal set; }
+
+        /// <exclude />
         public int Id { get; internal set; }
 
+
+        /// <exclude />
         public string Label { get; set; }                                   // Requried
+
+        /// <exclude />
         public string ToolTip { get; set; }                                 // Defaults to Label
+
+        /// <exclude />
         public ResourceHandle Icon { get; internal set; }                   // Requried
+
+        /// <exclude />
         public ActionLocation Location { get; internal set; }               // Optional
+
+        /// <exclude />
         public List<PermissionType> PermissionTypes { get; internal set; }  // Optional
 
+        /// <exclude />
         public TreeNode OwnerNode { get; internal set; }
 
         // Cached values
         private DynamicValuesHelper LabelDynamicValuesHelper { get; set; }
-        private DynamicValuesHelper ToolTipDynamicValuesHelper { get; set; }        
+        private DynamicValuesHelper ToolTipDynamicValuesHelper { get; set; }
 
 
+        /// <exclude />
         protected abstract void OnAddAction(Action<ElementAction> actionAdder, EntityToken parentEntityToken, TreeNodeDynamicContext dynamicContext, DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext);
+
+        /// <exclude />
         protected virtual void OnInitialize() { }
 
 
+        /// <exclude />
         protected ActionVisualizedData CreateActionVisualizedData(DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext)
         {
             return new ActionVisualizedData
@@ -70,6 +88,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public void AddAction(Action<ElementAction> actionAdder, EntityToken entityToken, TreeNodeDynamicContext dynamicContext)
         {
             IData dataItem = null;
@@ -89,6 +108,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public string Serialize()
         {
             StringBuilder sb = new StringBuilder();
@@ -98,6 +118,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public void Serialize(StringBuilder sb)
         {
             StringConversionServices.SerializeKeyValuePair(sb, TreeIdSerializedKeyName, this.OwnerNode.Tree.TreeId);
@@ -106,6 +127,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public static ActionNode Deserialize(string serializedString)
         {
             Dictionary<string, string> serializedValueCollection = StringConversionServices.ParseKeyValueCollection(serializedString);
@@ -115,6 +137,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public static ActionNode Deserialize(Dictionary<string, string> serializedValueCollection, bool removeEntiresFromCollection = false)
         {
             string treeId = StringConversionServices.DeserializeValueString(serializedValueCollection[TreeIdSerializedKeyName]);
@@ -135,6 +158,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         protected void AddValidationError(ValidationError validationError)
         {
             
@@ -143,6 +167,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         protected void AddValidationError(string stringName, params object[] args)
         {
             this.OwnerNode.Tree.BuildResult.AddValidationError(ValidationError.Create(this.XPath, stringName, args));

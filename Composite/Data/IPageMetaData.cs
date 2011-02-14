@@ -14,6 +14,7 @@ namespace Composite.Data
     [DataAssociationAttribute(typeof(Composite.Data.Types.IPage), "PageId", DataAssociationType.Composition)]
     public interface IPageMetaData : IPageData, IPublishControlled, ILocalizedControlled
     {
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 128)]
         [ImmutableFieldId("{B2A5EE23-848D-4D0B-A801-FDF68F9F899E}")]
         string FieldName { get; set; }

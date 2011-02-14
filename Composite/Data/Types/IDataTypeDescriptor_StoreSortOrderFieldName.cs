@@ -17,14 +17,19 @@ namespace Composite.Data.Types
     [NotReferenceableAttribute]
     public interface IDataTypeDescriptor_StoreSortOrderFieldName : IData
 	{
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{A675F96F-D452-4f86-B11C-388A4ED870C8}")]
         Guid TypeDescriptorId { get; set; }
 
+
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 255)]
         [ImmutableFieldId("{C63ADD60-2DE2-4bb1-A90E-4E01221C2578}")]
         string FieldName { get; set; }
 
+
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Integer)]
         [ImmutableFieldId("{AB1746B5-7F46-4e9b-AE92-70BE8079A6FA}")]
         int SortOrder { get; set; }

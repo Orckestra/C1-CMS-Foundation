@@ -10,6 +10,7 @@ namespace Composite.Core.Extensions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class StringExtensionMethods
     {
+        /// <exclude />
         public static string FormatWith(this string format, params object[] args)
         {
             Verify.ArgumentNotNull(format, "format");
@@ -17,22 +18,29 @@ namespace Composite.Core.Extensions
             return string.Format(format, args);
         }
 
+
+        /// <exclude />
         public static bool IsNullOrEmpty(this string str)
         {
             return string.IsNullOrEmpty(str);
         }
 
+
+        /// <exclude />
         public static bool StartsWith(this string str, string value, bool ignoreCase)
         {
             return str.StartsWith(value, ignoreCase, CultureInfo.InvariantCulture);
         }
 
+
+        /// <exclude />
         public static bool EndsWith(this string str, string value, bool ignoreCase)
         {
             return str.EndsWith(value, ignoreCase, CultureInfo.InvariantCulture);
         }
 
 
+        /// <exclude />
         public static bool IsCorrectNamespace(this string s, char separator)
         {
             if (s == null) return false;
@@ -50,6 +58,7 @@ namespace Composite.Core.Extensions
 
 
 
+        /// <exclude />
         public static string CreateNamespace(string namespaceName, string name, char separator)
         {
             if (string.IsNullOrEmpty(namespaceName) == true)
@@ -76,6 +85,7 @@ namespace Composite.Core.Extensions
 
 
 
+        /// <exclude />
         public static string GetNameFromNamespace(this string s)
         {
             int index = s.LastIndexOf(".");
@@ -86,6 +96,9 @@ namespace Composite.Core.Extensions
             return s.Substring(index + 1);
         }
 
+
+
+        /// <exclude />
         public static string GetNamespace(this string s)
         {
             int index = s.LastIndexOf(".");
@@ -105,6 +118,7 @@ namespace Composite.Core.Extensions
 
 
 
+        /// <exclude />
         public static bool IsCorrectFolderName(this string s, char separator)
         {
             if (s == null) return false;
@@ -124,6 +138,7 @@ namespace Composite.Core.Extensions
 
 
 
+        /// <exclude />
         public static bool IsDirectChildOf(this string s, string possibleParentPath, char separator)
         {
             if (possibleParentPath.Length > s.Length)
@@ -163,6 +178,7 @@ namespace Composite.Core.Extensions
 
 
 
+        /// <exclude />
         public static bool IsParentOf(this string s, string possibleChild, char separator)
         {
             return possibleChild.IsDirectChildOf(s, separator);
@@ -170,6 +186,7 @@ namespace Composite.Core.Extensions
 
 
 
+        /// <exclude />
         public static string GetFolderName(this string s, char separator)
         {
             if (s == separator.ToString())
@@ -203,6 +220,7 @@ namespace Composite.Core.Extensions
 
 
 
+        /// <exclude />
         public static string GetNameWithoutExtension(this string s)
         {
             string name = Path.GetFileName(s);
@@ -216,6 +234,7 @@ namespace Composite.Core.Extensions
 
 
 
+        /// <exclude />
         public static string GetDirectory(this string s, char separator)
         {
             int lastIndex = s.LastIndexOf(separator);
@@ -243,6 +262,7 @@ namespace Composite.Core.Extensions
 
 
 
+        /// <exclude />
         public static string Combine(this string path, string otherPath, char separator)
         {
             string childPath = otherPath;

@@ -15,6 +15,7 @@ namespace Composite.Data.Plugins.DataProvider
 
 
 
+        /// <exclude />
         public DataProviderContext(string providerName)
         {
             if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
@@ -23,6 +24,8 @@ namespace Composite.Data.Plugins.DataProvider
         }
 
 
+
+        /// <exclude />
         public string ProviderName
         {
             get { return _providerName; }
@@ -30,6 +33,7 @@ namespace Composite.Data.Plugins.DataProvider
 
 
 
+        /// <exclude />
         public DataSourceId CreateDataSourceId(IDataId dataId, Type interfaceType)
         {
             if (dataId == null) throw new ArgumentNullException("dataId");
@@ -51,7 +55,8 @@ namespace Composite.Data.Plugins.DataProvider
         }
 
 
-        
+
+        /// <exclude />
         public void UpdateDataSourceId(IData data, IDataId dataId, Type interfaceType)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -75,6 +80,7 @@ namespace Composite.Data.Plugins.DataProvider
 
 
 
+        /// <exclude />
         public void UpdateDataSourceIdDataScope(IData data)
         {
             if (data == null) throw new ArgumentNullException("data");

@@ -19,20 +19,28 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class ToolbarButtonTemplateUserControlBase : UserControl
     {
+        /// <exclude />
         public EventHandler FormControlClickEventHandler { get; set; }
 
+        /// <exclude />
         public string FormControlLabel { get; set; }
 
+        /// <exclude />
         public string FormControlHelp { get; set; }
 
+        /// <exclude />
         public string FormControlIconHandle { get; set; }
 
+        /// <exclude />
         public string FormControlDisabledIconHandle { get; set; }
 
+        /// <exclude />
         public string FormControlLaunchUrl { get; set; }
 
+        /// <exclude />
         public bool FormControlIsDisabled { get; set; }
 
+        /// <exclude />
         public bool FormControlSaveBehaviour { get; set; }
     }
 

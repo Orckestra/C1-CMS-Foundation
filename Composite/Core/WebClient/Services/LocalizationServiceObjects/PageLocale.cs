@@ -12,10 +12,19 @@ namespace Composite.Core.WebClient.Services.LocalizationServiceObjects
     [DebuggerDisplay("Culture = {Name}, IsCurrent = {IsCurrent}, Url = {Url}")]
 	public sealed class PageLocale
 	{
+        /// <exclude />
         public string Name { get; set; }
+
+        /// <exclude />
         public string IsoName { get; set; }
+
+        /// <exclude />
         public string UrlMappingName { get; set; }
+
+        /// <exclude />
         public string Url { get; set; }
+
+        /// <exclude />
         public bool IsCurrent { get; set; }
 	}
 }

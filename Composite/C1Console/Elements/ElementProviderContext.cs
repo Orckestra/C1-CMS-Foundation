@@ -13,13 +13,15 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public ElementProviderContext(string providerName)
         {
             _providerName = providerName;
-        } 
+        }
 
 
 
+        /// <exclude />
         public ElementHandle CreateElementHandle(EntityToken entityToken)
         {
             return new ElementHandle(_providerName, entityToken);
@@ -27,6 +29,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public string ProviderName
         {
             get { return _providerName; }

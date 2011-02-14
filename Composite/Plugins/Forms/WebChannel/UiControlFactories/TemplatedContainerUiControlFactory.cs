@@ -30,15 +30,25 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
         internal List<LazyLoadedContainerInfo> LazyLoadedChildControlIDs { get; set; }
 
+
+        /// <exclude />
         public string Label { get; set; }
+
+        /// <exclude />
         public string Help { get; set; }
+
+        /// <exclude />
         public int PreSelectedIndex { get; set; }
+
+        /// <exclude />
         public Dictionary<string, object> Settings { get { return _settings; } }
 
+        /// <exclude />
         public List<FormControlDefinition> FormControlDefinitions
         {
             get { return _formControlDefinitions; }
         }
+
 
         internal void AddFormControlDefinition(string label, Control formControl, string help, bool isFullWidthControl)
         {
@@ -52,7 +62,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         }
 
 
-
+        /// <exclude />
         protected void RegisterLazyChildControl(int childIndex, string postBackName)
         {
             if (this.LazyLoadedChildControlIDs == null)
@@ -67,6 +77,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
 
         #region support classes
+        /// <exclude />
         public class FormControlDefinition
         {
             private string _label;
@@ -84,26 +95,31 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
                 _isFullWidthControl = isFullWidthControl;
             }
 
+            /// <exclude />
             public bool IsFullWidthControl
             {
                 get { return _isFullWidthControl; }
             }
 
+            /// <exclude />
             public string Help
             {
                 get { return _help; }
             }
 
+            /// <exclude />
             public string ToolTip
             {
                 get { return _toolTip; }
             }
 
+            /// <exclude />
             public string Label
             {
                 get { return _label; }
             }
 
+            /// <exclude />
             public Control FormControl
             {
                 get { return _formControl; }

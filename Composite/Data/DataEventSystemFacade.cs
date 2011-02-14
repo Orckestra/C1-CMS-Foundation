@@ -23,6 +23,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public DataScopeIdentifier TargetDataScopeIdentifier
         {
             get;
@@ -56,10 +57,12 @@ namespace Composite.Data
         private static readonly object _collectionAccesslock = new object();
 
 
+        /// <exclude />
         static DataEventSystemFacade()
         {
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
         }
+
 
         private static void Add(this Subscriptions collection, Type dataType, Delegate callback, bool flushPersistent)
         {
@@ -67,6 +70,7 @@ namespace Composite.Data
 
             Add(collection, dataType, new Subscription(callback, flushPersistent));
         }
+
 
         private static void Add(this Subscriptions collection, Type dataType, Subscription subscription)
         {
@@ -156,23 +160,28 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public static void SubscribeToDataBeforeAdd<T>(DataEventHandler dataBeforeAddDelegate, bool flushPersistent)
             where T : IData
         {
             SubscribeToDataBeforeAdd(typeof(T), dataBeforeAddDelegate, flushPersistent);
-        }        
-        
+        }
+
+        /// <exclude />
         public static void SubscribeToDataBeforeAdd<T>(DataEventHandler dataBeforeAddDelegate)
             where T : IData
         {
             SubscribeToDataBeforeAdd(typeof(T), dataBeforeAddDelegate);
-        }        
-        
+        }
+
+
+        /// <exclude />
         public static void SubscribeToDataBeforeAdd(Type dataType, DataEventHandler dataBeforeAddDelegate) {
             SubscribeToDataBeforeAdd(dataType, dataBeforeAddDelegate, false);
         }
 
 
+        /// <exclude />
         public static void SubscribeToDataBeforeAdd(Type dataType, DataEventHandler dataBeforeAddDelegate, bool flushPersistent)
         {
             Verify.ArgumentNotNull(dataType, "dataType");
@@ -182,6 +191,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public static void UnsubscribeToDataBeforeAdd(Type dataType, DataEventHandler dataBeforeAddDelegate)
         {
             Verify.ArgumentNotNull(dataType, "dataType");
@@ -190,6 +200,8 @@ namespace Composite.Data
             _dataBeforeAddEventDictionary.Remove(dataType, dataBeforeAddDelegate);
         }
 
+
+        /// <exclude />
         public static void SubscribeToDataAfterAdd(Type dataType, DataEventHandler dataAfterAddDelegate, bool flushPersistent)
         {
             Verify.ArgumentNotNull(dataType, "dataType");
@@ -198,18 +210,22 @@ namespace Composite.Data
             _dataAfterAddEventDictionary.Add(dataType, dataAfterAddDelegate, flushPersistent);
         }
 
+
+        /// <exclude />
         public static void SubscribeToDataAfterAdd(Type dataType, DataEventHandler dataAfterAddDelegate)
         {
             SubscribeToDataAfterAdd(dataType, dataAfterAddDelegate, false);
         }
 
 
+        /// <exclude />
         public static void SubscribeToDataAfterAdd<T>(DataEventHandler dataAfterAddDelegate, bool flushPersistent)
         {
             SubscribeToDataAfterAdd(typeof(T), dataAfterAddDelegate, flushPersistent);
         }
 
 
+        /// <exclude />
         public static void SubscribeToDataAfterAdd<T>(DataEventHandler dataAfterAddDelegate)
             where T : IData
         {
@@ -217,7 +233,7 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         public static void UnsubscribeToDataAfterAdd(Type dataType, DataEventHandler dataAfterAddDelegate)
         {
             if (dataType == null) throw new ArgumentNullException("dataType");
@@ -226,24 +242,30 @@ namespace Composite.Data
             _dataAfterAddEventDictionary.Remove(dataType, dataAfterAddDelegate);
         }
 
+
+        /// <exclude />
         public static void SubscribeToDataBeforeUpdate(Type dataType, DataEventHandler dataBeforeUpdateDelegate)
         {
             SubscribeToDataBeforeUpdate(dataType, dataBeforeUpdateDelegate, false);
         }
 
+
+        /// <exclude />
         public static void SubscribeToDataBeforeUpdate(Type dataType, DataEventHandler dataBeforeUpdateDelegate, bool flushPersistent)
         {
             _dataBeforeUpdateEventDictionary.Add(dataType, dataBeforeUpdateDelegate, flushPersistent);
         }
 
 
-
+        /// <exclude />
         public static void SubscribeToDataBeforeUpdate<T>(DataEventHandler dataBeforeUpdateDelegate)
             where T : IData
         {
             SubscribeToDataBeforeUpdate(typeof(T), dataBeforeUpdateDelegate);
         }
 
+
+        /// <exclude />
         public static void SubscribeToDataBeforeUpdate<T>(DataEventHandler dataBeforeUpdateDelegate, bool flushPersistent)
             where T : IData
         {
@@ -251,24 +273,28 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         public static void UnsubscribeToDataBeforeUpdate(Type dataType, DataEventHandler dataBeforeUpdateDelegate)
         {
             _dataBeforeUpdateEventDictionary.Remove(dataType, dataBeforeUpdateDelegate);
         }
 
 
-
+        /// <exclude />
         public static void SubscribeToDataAfterUpdate(Type dataType, DataEventHandler dataAfterUpdateDelegate)
         {
             SubscribeToDataAfterUpdate(dataType, dataAfterUpdateDelegate, false);
         }
 
+
+        /// <exclude />
         public static void SubscribeToDataAfterUpdate(Type dataType, DataEventHandler dataAfterUpdateDelegate, bool flushPersistent)
         {
             _dataAfterUpdateEventDictionary.Add(dataType, dataAfterUpdateDelegate, flushPersistent);
         }
 
+
+        /// <exclude />
         public static void SubscribeToDataAfterUpdate<T>(DataEventHandler dataAfterUpdateDelegate)
             where T : IData
         {
@@ -276,6 +302,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public static void SubscribeToDataAfterUpdate<T>(DataEventHandler dataAfterUpdateDelegate, bool flushPersistent)
             where T : IData
         {
@@ -283,32 +310,36 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         public static void UnsubscribeToDataAfterUpdate(Type dataType, DataEventHandler dataAfterUpdateDelegate)
         {
             _dataAfterUpdateEventDictionary.Remove(dataType, dataAfterUpdateDelegate);
         }
 
 
-
+        /// <exclude />
         public static void SubscribeToDataDeleted(Type dataType, DataEventHandler dataDeletedDelegate)
         {
             SubscribeToDataDeleted(dataType, dataDeletedDelegate, false);
         }
 
+
+        /// <exclude />
         public static void SubscribeToDataDeleted(Type dataType, DataEventHandler dataDeletedDelegate, bool flushPersistent)
         {
             _dataDeletedEventDictionary.Add(dataType, dataDeletedDelegate, flushPersistent);
         }
 
 
-
+        /// <exclude />
         public static void SubscribeToDataDeleted<T>(DataEventHandler dataDeletedDelegate)
             where T : IData
         {
             SubscribeToDataDeleted(typeof(T), dataDeletedDelegate);
         }
 
+
+        /// <exclude />
         public static void SubscribeToDataDeleted<T>(DataEventHandler dataDeletedDelegate, bool flushPersistent)
             where T : IData
         {
@@ -316,25 +347,28 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         public static void UnsubscribeToDataDeleted(Type dataType, DataEventHandler dataDeletedDelegate)
         {
             _dataDeletedEventDictionary.Remove(dataType, dataDeletedDelegate);
         }
 
 
+        /// <exclude />
         public static void SubscribeToDataAfterBuildNew(Type dataType, DataEventHandler dataAfterBuildNewDelegate)
         {
             SubscribeToDataAfterBuildNew(dataType, dataAfterBuildNewDelegate, false);
         }
 
+
+        /// <exclude />
         public static void SubscribeToDataAfterBuildNew(Type dataType, DataEventHandler dataAfterBuildNewDelegate, bool flushPersistent)
         {
             _dataAfterBuildNewEventDictionary.Add(dataType, dataAfterBuildNewDelegate, flushPersistent);
         }
 
 
-
+        /// <exclude />
         public static void SubscribeToDataAfterBuildNew<T>(DataEventHandler dataAfterBuildNewDelegate)
             where T : IData
         {
@@ -342,7 +376,7 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         public static void UnsubscribeToDataAfterBuildNew(Type dataType, DataEventHandler dataAfterBuildNewDelegate)
         {
             _dataAfterBuildNewEventDictionary.Remove(dataType, dataAfterBuildNewDelegate);
@@ -596,6 +630,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public static IDisposable SuppressEvents
         {
             get

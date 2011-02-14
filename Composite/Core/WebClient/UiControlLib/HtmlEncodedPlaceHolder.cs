@@ -11,6 +11,7 @@ namespace Composite.Core.WebClient.UiControlLib
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public class HtmlEncodedPlaceHolder : PlaceHolder
 	{
+        /// <exclude />
         protected override void Render(HtmlTextWriter writer)
         {
             StringBuilder markupBuilder = new StringBuilder();

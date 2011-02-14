@@ -14,10 +14,13 @@ namespace Composite.Core.WebClient.UiControlLib.Foundation
     {
         private string _clientID;
 
+        /// <exclude />
         public BaseControl(string tagName) : base(tagName)
         {
         }
 
+
+        /// <exclude />
         protected override void OnInit(EventArgs e)
         {
             string clientID = this.Attributes["ClientID"];
@@ -35,6 +38,8 @@ namespace Composite.Core.WebClient.UiControlLib.Foundation
             base.OnInit(e);
         }
 
+
+        /// <exclude />
         public override string  ClientID
         {
         	get 

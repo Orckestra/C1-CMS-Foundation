@@ -10,6 +10,7 @@ namespace Composite.Functions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class BaseParameterRuntimeTreeNode : BaseRuntimeTreeNode
     {
+        /// <exclude />
         protected BaseParameterRuntimeTreeNode(string name)
         {
             if (string.IsNullOrEmpty(name) == true) throw new ArgumentNullException("name");
@@ -18,6 +19,7 @@ namespace Composite.Functions
         }
 
 
+        /// <exclude />
         public string Name
         {
             get;

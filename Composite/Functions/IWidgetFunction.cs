@@ -11,6 +11,7 @@ namespace Composite.Functions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public interface IWidgetFunction : IMetaFunction
 	{
+        /// <exclude />
         XElement GetWidgetMarkup(ParameterList parameters, string label, HelpDefinition helpDefinition, string bindingSourceName); 
 	}
 }

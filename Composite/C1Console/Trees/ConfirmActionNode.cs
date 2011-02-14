@@ -16,18 +16,31 @@ namespace Composite.C1Console.Trees
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ConfirmActionNode : ActionNode
     {
+        /// <exclude />
         public string ConfirmTitle { get; internal set; }                           // Requried
+
+        /// <exclude />
         public string ConfirmMessage { get; internal set; }                         // Requried
+
+        /// <exclude />
         public XElement FunctionMarkup { get; internal set; }                       // Requried
+
+        /// <exclude />
         public bool RefreshTree { get; internal set; }                              // Optional
 
+
         // Cached values
+        /// <exclude />
         public DynamicValuesHelper ConfirmTitleDynamicValuesHelper { get; set; }
+
+        /// <exclude />
         public DynamicValuesHelper ConfirmMessageDynamicValuesHelper { get; set; }
 
+        /// <exclude />
         public AttributeDynamicValuesHelper FunctionMarkupDynamicValuesHelper { get; private set; }
 
 
+        /// <exclude />
         protected override void OnAddAction(Action<ElementAction> actionAdder, EntityToken entityToken, TreeNodeDynamicContext dynamicContext, DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext)
         {
             
@@ -49,6 +62,7 @@ namespace Composite.C1Console.Trees
         }
 
 
+        /// <exclude />
         protected override void OnInitialize()
         {
             BaseRuntimeTreeNode baseRuntimeTreeNode = null;

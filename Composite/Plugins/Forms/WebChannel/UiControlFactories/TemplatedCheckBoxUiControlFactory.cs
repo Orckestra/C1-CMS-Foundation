@@ -22,10 +22,13 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         private string _formControlLabel;
         private bool _checked;
 
+        /// <exclude />
         protected abstract void BindStateToProperties();
 
+        /// <exclude />
         protected abstract void InitializeViewState();
 
+        /// <exclude />
         public abstract string GetDataFieldClientName();
 
         internal void BindStateToControlProperties()
@@ -38,19 +41,21 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             this.InitializeViewState();
         }
 
+        /// <exclude />
         public bool Checked
         {
             get { return _checked; }
             set { _checked = value; }
         }
 
+        /// <exclude />
         public string FormControlLabel
         {
             get { return _formControlLabel; }
             set { _formControlLabel = value; }
         }
 
-
+        /// <exclude />
         public string ItemLabel { get; set; }
     }
 

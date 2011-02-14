@@ -18,16 +18,19 @@ namespace Composite.Data.Types
     [Caching(CachingType.Full)]
     public interface IInlineFunctionAssemblyReference : IData
     {
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{9F7C1C30-E115-479D-9471-AEB83A9AAF63}")]
         Guid Id { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{E08E79F6-ED40-447D-A2B6-592704FE7B96}")]
         Guid Function { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 128)]
         [ImmutableFieldId("{30DA8550-252A-4EBB-A9D4-78DA26784E4B}")]
         [NotNullValidator()]

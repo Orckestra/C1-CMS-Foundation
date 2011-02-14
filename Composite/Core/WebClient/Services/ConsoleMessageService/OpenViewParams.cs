@@ -8,12 +8,25 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class OpenViewParams
     {
+        /// <exclude />
         public string ViewId { get; set; }
+
+        /// <exclude />
         public string EntityToken { get; set; }
+
+        /// <exclude />
         public string FlowHandle { get; set; }
+
+        /// <exclude />
         public string Handle { get; set; }
+
+        /// <exclude />
         public string Url { get; set; }
-        public List<KeyValuePair> Argument { get; set; }  
+
+        /// <exclude />
+        public List<KeyValuePair> Argument { get; set; }
+
+        /// <exclude />
         public ViewType ViewType { get; set; }
 
         /// <summary>

@@ -45,8 +45,13 @@ namespace Composite.Data.GeneratedTypes
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class GeneratedTypesFacade
     {
+        /// <exclude />
         public delegate void GenerateNewTypeDelegate(GenerateNewTypeEventArgs args);
+
+        /// <exclude />
         public delegate void UpdateTypeDelegate(UpdateTypeEventArgs args);
+
+        /// <exclude />
         public delegate void DeleteTypeDelegate(DeleteTypeEventArgs args);
 
 
@@ -63,6 +68,7 @@ namespace Composite.Data.GeneratedTypes
 
 
         // Overload
+        /// <exclude />
         public static void GenerateNewType(DataTypeDescriptor dataTypeDescriptor)
         {
             GenerateNewType(DataProviderRegistry.DefaultDynamicTypeDataProviderName, dataTypeDescriptor, true);
@@ -71,6 +77,7 @@ namespace Composite.Data.GeneratedTypes
 
 
         // Overload
+        /// <exclude />
         public static void GenerateNewType(DataTypeDescriptor dataTypeDescriptor, bool makeAFlush)
         {
             GenerateNewType(DataProviderRegistry.DefaultDynamicTypeDataProviderName, dataTypeDescriptor, makeAFlush);
@@ -78,6 +85,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public static void GenerateNewType(string providerName, DataTypeDescriptor dataTypeDescriptor, bool makeAFlush)
         {
             using (GlobalInitializerFacade.CoreLockScope)
@@ -92,12 +100,16 @@ namespace Composite.Data.GeneratedTypes
             }
         }
 
+
+
+        /// <exclude />
         public static bool CanDeleteType(DataTypeDescriptor dataTypeDescriptor, out string errorMessage)
         {
             return _generatedTypesFacade.CanDeleteType(dataTypeDescriptor, out errorMessage);
         }
 
 
+        /// <exclude />
         public static void DeleteType(DataTypeDescriptor dataTypeDescriptor)
         {
             DeleteType(DataProviderRegistry.DefaultDynamicTypeDataProviderName, dataTypeDescriptor, true);
@@ -112,6 +124,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public static void DeleteType(string providerName, DataTypeDescriptor dataTypeDescriptor)
         {
             DeleteType(providerName, dataTypeDescriptor, true);
@@ -138,6 +151,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public static void UpdateType(DataTypeDescriptor oldDataTypeDescriptor, DataTypeDescriptor newDataTypeDescriptor, bool originalTypeHasData)
         {
             UpdateType(DataProviderRegistry.DefaultDynamicTypeDataProviderName, oldDataTypeDescriptor, newDataTypeDescriptor, originalTypeHasData);
@@ -145,6 +159,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public static void UpdateType(DataTypeDescriptor oldDataTypeDescriptor, DataTypeDescriptor newDataTypeDescriptor)
         {
             UpdateType(DataProviderRegistry.DefaultDynamicTypeDataProviderName, oldDataTypeDescriptor, newDataTypeDescriptor, true);
@@ -152,6 +167,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public static void UpdateType(string providerName, DataTypeDescriptor oldDataTypeDescriptor, DataTypeDescriptor newDataTypeDescriptor, bool originalTypeHasData)
         {
             using (GlobalInitializerFacade.CoreLockScope)
@@ -168,6 +184,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public static void SubscribeToGenerateNewTypeEvent(GenerateNewTypeDelegate eventDelegate)
         {
             _generateNewTypeDelegate += eventDelegate;
@@ -175,6 +192,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public static void SubscribeToUpdateTypeEvent(UpdateTypeDelegate eventDelegate)
         {
             _updateTypeDelegate += eventDelegate;
@@ -182,6 +200,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public static void SubscribeToDeleteTypeEvent(DeleteTypeDelegate eventDelegate)
         {
             _deleteTypeDelegate += eventDelegate;
@@ -189,6 +208,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public static void UnsubscribeToGenerateNewTypeEvent(GenerateNewTypeDelegate eventDelegate)
         {
             _generateNewTypeDelegate -= eventDelegate;
@@ -196,6 +216,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public static void UnsubscribeToUpdateTypeEvent(UpdateTypeDelegate eventDelegate)
         {
             _updateTypeDelegate -= eventDelegate;
@@ -203,6 +224,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public static void UnsubscribeToDeleteTypeEvent(DeleteTypeDelegate eventDelegate)
         {
             _deleteTypeDelegate -= eventDelegate;

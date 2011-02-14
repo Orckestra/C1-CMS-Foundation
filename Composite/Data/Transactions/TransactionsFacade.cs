@@ -10,20 +10,28 @@ namespace Composite.Data.Transactions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class TransactionsFacade
 	{
+        /// <exclude />
         public static TimeSpan DefaultTransactionTimeout { get { return TimeSpan.FromMinutes(3); } }
+
+        /// <exclude />
         public static IsolationLevel DefaultTransactionIsolationLevel { get { return IsolationLevel.RepeatableRead; } }
 
 
+        /// <exclude />
         public static TransactionScope CreateNewScope()
         {
             return Create(false, DefaultTransactionTimeout);
         }
 
+
+        /// <exclude />
         public static TransactionScope Create(bool requiresNew)
         {
             return Create(requiresNew, DefaultTransactionTimeout);
         }
 
+
+        /// <exclude />
         public static TransactionScope Create(bool requiresNew, TimeSpan timeSpan)
         {
             IsolationLevel isolationLevel = (Transaction.Current != null ? Transaction.Current.IsolationLevel : DefaultTransactionIsolationLevel);
@@ -40,6 +48,7 @@ namespace Composite.Data.Transactions
 
 
 
+        /// <exclude />
         public static TransactionScope CreateNewScope(TimeSpan timeSpan)
         {
             return Create(false, timeSpan);
@@ -47,6 +56,7 @@ namespace Composite.Data.Transactions
 
 
 
+        /// <exclude />
         public static TransactionScope SuppressTransactionScope()
         {
             return new TransactionScope(TransactionScopeOption.Suppress);

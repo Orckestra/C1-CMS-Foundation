@@ -217,6 +217,7 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <exclude />
         public void Dispose()
         {
             Dispose(true);
@@ -225,6 +226,7 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <exclude />
         ~C1FileStreamImplementation()
         {
             Dispose(false);
@@ -232,6 +234,7 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <exclude />
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)

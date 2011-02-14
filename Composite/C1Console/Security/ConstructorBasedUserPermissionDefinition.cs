@@ -13,6 +13,7 @@ namespace Composite.C1Console.Security
         private IEnumerable<PermissionType> _permissionTypes;
         private string _serializedEntityToken;
 
+        /// <exclude />
         public ConstructorBasedUserPermissionDefinition(string username, IEnumerable<PermissionType> permissionTypes, string serializedEntityToken)
         {
             _username = username;
@@ -20,16 +21,22 @@ namespace Composite.C1Console.Security
             _serializedEntityToken = serializedEntityToken;
         }
 
+
+        /// <exclude />
         public override string Username
         {
             get { return _username; }
         }
 
+
+        /// <exclude />
         public override IEnumerable<PermissionType> PermissionTypes
         {
             get { return _permissionTypes; }
         }
 
+
+        /// <exclude />
         public override string SerializedEntityToken
         {
             get { return _serializedEntityToken; }

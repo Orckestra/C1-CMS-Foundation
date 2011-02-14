@@ -29,6 +29,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
     [SecurityAncestorProvider(typeof(AddOnElementProviderInstalledAddOnItemEntityTokenAncestorProvider))]
     public sealed class PackageElementProviderInstalledPackageItemEntityToken : EntityToken
     {
+        /// <exclude />
         public PackageElementProviderInstalledPackageItemEntityToken(Guid packageId, string groupName, bool isLocalInstalled, bool canBeUninstalled)
         {
             this.AddOnId = packageId;
@@ -38,30 +39,41 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         }
 
 
+        /// <exclude />
         public Guid AddOnId { get; private set; }
+
+        /// <exclude />
         public string GroupName { get; private set; }
+
+        /// <exclude />
         public bool IsLocalInstalled { get; private set; }
+
+        /// <exclude />
         public bool CanBeUninstalled { get; private set; }
 
 
+        /// <exclude />
         public override string Type
         {
             get { return ""; }
         }
 
 
+        /// <exclude />
         public override string Source
         {
             get { return ""; }
         }
 
 
+        /// <exclude />
         public override string Id
         {
             get { return this.AddOnId.ToString(); }
         }
 
 
+        /// <exclude />
         public override string Serialize()
         {
             StringBuilder sb = new StringBuilder();
@@ -76,6 +88,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         }
 
 
+        /// <exclude />
         public static EntityToken Deserialize(string serializedEntityToken)
         {
             string type, source, id;
@@ -93,6 +106,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         }
 
 
+        /// <exclude />
         public override int GetHashCode()
         {
             return base.GetHashCode() ^ this.GroupName.GetHashCode() ^ this.CanBeUninstalled.GetHashCode();

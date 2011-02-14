@@ -31,9 +31,13 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum OutputXmlSubType
     {
-        XHTML,
-        XML
+        /// <exclude />
+        XHTML = 0,
+
+        /// <exclude />
+        XML = 1
     }
+
 
 
     /// <summary>    
@@ -46,6 +50,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
         private FunctionNotifier _functionNotifier;
 
 
+        /// <exclude />
         public XsltBasedFunctionProvider()
         {
             DataEventSystemFacade.SubscribeToDataAfterAdd<IXsltFunction>(OnDataChanged);
@@ -55,6 +60,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
 
 
 
+        /// <exclude />
         public FunctionNotifier FunctionNotifier
         {
             set { _functionNotifier = value; }
@@ -62,6 +68,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
 
 
 
+        /// <exclude />
         public IEnumerable<IFunction> DynamicTypeDependentFunctions
         {
             get
@@ -72,6 +79,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
             }
         }
 
+
+
+        /// <exclude />
         public IEnumerable<IFunction> Functions
         {
             get
@@ -88,6 +98,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
         }
 
 
+
+        /// <exclude />
         public static void ResolveImportIncludePaths(XContainer doc)
         {
             IEnumerable<XElement> imports = doc.Descendants().Where(f => f.Name == Namespaces.Xsl + "import" || f.Name == Namespaces.Xsl + "include").ToList();

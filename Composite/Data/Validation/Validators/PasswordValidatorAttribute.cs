@@ -10,11 +10,13 @@ namespace Composite.Data.Validation.Validators
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Parameter, AllowMultiple = true, Inherited = false)]
     public sealed class PasswordValidatorAttribute : Microsoft.Practices.EnterpriseLibrary.Validation.Validators.ValueValidatorAttribute
 	{
+        /// <exclude />
         public PasswordValidatorAttribute()
         {
         }
 
 
+        /// <exclude />
         protected override Microsoft.Practices.EnterpriseLibrary.Validation.Validator DoCreateValidator(Type targetType)
         {
             return new PasswordValidator();

@@ -11,6 +11,7 @@ namespace Composite.Data.Validation.Validators
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Parameter, AllowMultiple = true, Inherited = false)]
     public sealed class StringLengthValidatorAttribute : Microsoft.Practices.EnterpriseLibrary.Validation.Validators.ValueValidatorAttribute
 	{
+        /// <exclude />
         public StringLengthValidatorAttribute(int lowerBound, int upperBound)
         {
             this.LowerBound = lowerBound;
@@ -18,6 +19,7 @@ namespace Composite.Data.Validation.Validators
         }
 
 
+        /// <exclude />
         public int LowerBound
         {
             get;
@@ -25,6 +27,7 @@ namespace Composite.Data.Validation.Validators
         }
 
 
+        /// <exclude />
         public int UpperBound
         {
             get;
@@ -32,6 +35,7 @@ namespace Composite.Data.Validation.Validators
         }
 
 
+        /// <exclude />
         protected override Microsoft.Practices.EnterpriseLibrary.Validation.Validator DoCreateValidator(Type targetType)
         {
             return new Microsoft.Practices.EnterpriseLibrary.Validation.Validators.StringLengthValidator(

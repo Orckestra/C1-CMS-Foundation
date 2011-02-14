@@ -17,16 +17,25 @@ namespace Composite.C1Console.Trees
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public sealed class ReportFunctionActionNode : ActionNode
-	{        
+	{
+        /// <exclude />
         public XElement FunctionMarkup { get; set; }                            // Required
+        
+        /// <exclude />
         public string DocumentLabel { get; set; }                               // Optional, defaults to Label
+
+        /// <exclude />
         public ResourceHandle DocumentIcon { get; set; }                        // Optional, defaults to Icon
 
-        
+
+        /// <exclude />
         public AttributeDynamicValuesHelper FunctionMarkupDynamicValuesHelper { get; private set; }
+
+        /// <exclude />
         public DynamicValuesHelper DocumentLabelDynamicValueHelper { get; private set; }
 
 
+        /// <exclude />
         protected override void OnAddAction(Action<ElementAction> actionAdder, EntityToken entityToken, TreeNodeDynamicContext dynamicContext, DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext)
         {
             StringBuilder payload = new StringBuilder();
@@ -51,6 +60,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         protected override void OnInitialize()
         {
             BaseRuntimeTreeNode baseRuntimeTreeNode = null;
@@ -81,6 +91,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public override string ToString()
         {
             return string.Format("ReportFunctionActionNode, Label = {0}", this.Label);

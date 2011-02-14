@@ -20,17 +20,20 @@ namespace Composite.Data.Types
     [CachingAttribute(CachingType.Full)]
     public interface IPageTypeTreeLink : IData
     {
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{AAD20063-DB23-4F54-93FA-C3E4092DF54A}")]
         Guid Id { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{FAB31A74-D71F-4C30-8FF9-8D053682E8E4}")]
         [ForeignKey(typeof(IPageType), "Id", AllowCascadeDeletes = true)]
         Guid PageTypeId { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 2048)]
         [ImmutableFieldId("{A343ED1C-0298-4119-A56B-174F45106CFC}")]
         string TreeId { get; set; }
@@ -47,6 +50,7 @@ namespace Composite.Data.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class IPageTypeTreeLinkExtensionMethods
     {
+        /// <exclude />
         public static IEnumerable<IPageTypeTreeLink> RemoveDeadLinks(this IEnumerable<IPageTypeTreeLink> pageTypeTreeLinks)
         {
             foreach (IPageTypeTreeLink pageTypeTreeLink in pageTypeTreeLinks)

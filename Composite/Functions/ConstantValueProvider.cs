@@ -13,12 +13,14 @@ namespace Composite.Functions
         private object _value;
 
 
+        /// <exclude />
         public ConstantValueProvider(object value)
         {
             _value = value;
         }
 
 
+        /// <exclude />
         public override object GetValue(FunctionContextContainer contextContainer)
         {
             return _value;
@@ -26,6 +28,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public override XObject Serialize()
         {
             if (_value != null)

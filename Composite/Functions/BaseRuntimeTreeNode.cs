@@ -14,20 +14,27 @@ namespace Composite.Functions
     {
         internal BaseRuntimeTreeNode() { }
 
+        /// <exclude />
         public object GetValue()
         {
             FunctionContextContainer internalContextContainer = new FunctionContextContainer();
             return GetValue(internalContextContainer);
         }
 
+
+        /// <exclude />
         public abstract object GetValue(FunctionContextContainer contextContainer);
 
+
+        /// <exclude />
         public T GetValue<T>()
         {
             FunctionContextContainer internalContextContainer = new FunctionContextContainer();
             return GetValue<T>(internalContextContainer);
         }
 
+
+        /// <exclude />
         public virtual T GetValue<T>(FunctionContextContainer contextContainer)
         {
             if (contextContainer == null) throw new ArgumentNullException("contextContainer");
@@ -44,16 +51,25 @@ namespace Composite.Functions
             }
         }
 
+
+        /// <exclude />
         public object GetCachedValue()
         {
             FunctionContextContainer internalContextContainer = new FunctionContextContainer();
             return GetValue(internalContextContainer);
         }
 
+
+        /// <exclude />
         public abstract object GetCachedValue(FunctionContextContainer contextContainer);
+
+        /// <exclude />
         public abstract IEnumerable<string> GetAllSubFunctionNames();
+
+        /// <exclude />
         public abstract bool ContainsNestedFunctions { get; }
 
+        /// <exclude />
         public abstract XElement Serialize();
     }
 }

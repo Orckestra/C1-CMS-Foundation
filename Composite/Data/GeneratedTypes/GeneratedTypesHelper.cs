@@ -56,12 +56,14 @@ namespace Composite.Data.GeneratedTypes
         private static readonly string CompositionDescriptionFieldName = "FieldName";
 
 
+        /// <exclude />
         public GeneratedTypesHelper()
         {
         }
 
 
 
+        /// <exclude />
         public GeneratedTypesHelper(Type oldType)
         {
             if (oldType == null) throw new ArgumentNullException("oldType");
@@ -74,6 +76,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public GeneratedTypesHelper(DataTypeDescriptor oldDataTypeDescriptor)
         {
             if (oldDataTypeDescriptor == null) throw new ArgumentNullException("oldDataTypeDescriptor");
@@ -86,6 +89,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public bool AllowForiegnKeyEditing
         {
             get;
@@ -94,6 +98,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public IEnumerable<DataFieldDescriptor> EditableDataFieldDescriptors
         {
             get
@@ -112,6 +117,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public IEnumerable<string> NotEditableDataFieldDescriptorNames
         {
             get
@@ -130,6 +136,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public bool IsCachable
         {
             get
@@ -142,6 +149,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public bool IsPublishControlled
         {
             get
@@ -154,6 +162,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public bool IsLocalizedControlled
         {
             get
@@ -166,6 +175,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public bool IsEditProcessControlledAllowed
         {
             get
@@ -176,6 +186,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public bool ValidateNewTypeName(string typeName, out string message)
         {
             if (string.IsNullOrEmpty(typeName) == true) throw new ArgumentNullException("typeName");
@@ -185,6 +196,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public bool ValidateNewTypeNamespace(string typeNamespace, out string message)
         {
             if (string.IsNullOrEmpty(typeNamespace) == true) throw new ArgumentNullException("typeNamespace");
@@ -194,6 +206,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public bool ValidateNewTypeFullName(string typeName, string typeNamespace, out string message)
         {
             if (string.IsNullOrEmpty(typeName) == true) throw new ArgumentNullException("typeName");
@@ -261,6 +274,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public bool ValidateByCompile(out string errorMessage)
         {
             var dataTypeDescriptor = _oldDataTypeDescriptor == null ? CreateNewDataTypeDescriptor() : CreateUpdatedDataTypeDescriptor();
@@ -331,6 +345,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public bool ValidateNewFieldDescriptors(IEnumerable<DataFieldDescriptor> newDataFieldDescriptors, out string message)
         {
             Verify.ArgumentNotNull(newDataFieldDescriptors, "newDataFieldDescriptors");
@@ -367,6 +382,8 @@ namespace Composite.Data.GeneratedTypes
             return true;
         }
 
+
+
         private static string GetString(string key)
         {
             return StringResourceSystemFacade.GetString("Composite.GeneratedTypes", key);
@@ -374,6 +391,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public static string GetCompositionDescriptionPropertyName(Type compositionType)
         {
             return CompositionDescriptionFieldName;
@@ -381,6 +399,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public static PropertyInfo GetCompositionDescriptionPropertyInfo(Type compositionType)
         {
             return compositionType.GetPropertiesRecursively().Where(f => f.Name == CompositionDescriptionFieldName).Single();
@@ -388,6 +407,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public static PropertyInfo GetPageReferencePropertyInfo(Type compositionType)
         {
             return compositionType.GetPropertiesRecursively().Where(f => f.Name == PageReferenceFieldName).Single();
@@ -395,6 +415,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public void SetNewTypeFullName(string typeName, string typeNamespace)
         {
             if (string.IsNullOrEmpty(typeName) == true) throw new ArgumentNullException("typeName");
@@ -406,6 +427,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public void SetNewTypeTitle(string typeTitle)
         {
             if (string.IsNullOrEmpty(typeTitle) == true) throw new ArgumentNullException("typeTitle");
@@ -415,6 +437,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public void SetCachable(bool cachable)
         {
             if (this.IsEditProcessControlledAllowed == false) throw new InvalidOperationException("Not allowed to change this value");
@@ -424,6 +447,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public void SetPublishControlled(bool isPublishControlled)
         {
             if (this.IsEditProcessControlledAllowed == false) throw new InvalidOperationException("Not allowed to change this value");
@@ -432,6 +456,8 @@ namespace Composite.Data.GeneratedTypes
         }
 
 
+
+        /// <exclude />
         public void SetLocalizedControlled(bool isLocalizedControlled)
         {
             if (this.IsEditProcessControlledAllowed == false) throw new InvalidOperationException("Not allowed to change this value");
@@ -441,6 +467,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public void SetNewFieldDescriptors(IEnumerable<DataFieldDescriptor> newDataFieldDescriptors, string labelFieldName)
         {
             if (newDataFieldDescriptors == null) throw new ArgumentNullException("newDataFieldDescriptors");
@@ -456,6 +483,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public void SetForeignKeyReference(Type targetDataType, DataAssociationType dataAssociationType)
         {
             if (dataAssociationType == DataAssociationType.None) throw new ArgumentException("dataAssociationType");
@@ -467,6 +495,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public void SetForeignKeyReference(DataTypeDescriptor targetDataTypeDescriptor, DataAssociationType dataAssociationType)
         {
             if (dataAssociationType == DataAssociationType.None) throw new ArgumentException("dataAssociationType");
@@ -504,6 +533,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public bool TryValidateUpdate(bool originalTypeDataExists, out string errorMessage)
         {
             if (_oldDataTypeDescriptor != null)
@@ -530,6 +560,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public void CreateType(bool originalTypeHasData)
         {
             if (_typeCreated == true) throw new InvalidOperationException("The type can only be created once");
@@ -570,6 +601,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         public Type InterfaceType
         {
             get
@@ -582,6 +614,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         [Obsolete]
         public PropertyInfo GetAssociationForiegnKeyPropertyInfo()
         {
@@ -596,6 +629,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         [Obsolete]
         public PropertyInfo GetCompositionDescriptionForiegnKeyPropertyInfo()
         {
@@ -615,6 +649,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
+        /// <exclude />
         [Obsolete]
         public PropertyInfo GetAggregationDescriptionForiegnKeyPropertyInfo()
         {
@@ -634,30 +669,31 @@ namespace Composite.Data.GeneratedTypes
 
 
 
-public static void SetNewIdFieldValue(IData data)
-{
-    if (data == null) throw new ArgumentNullException("data");
-
-    PropertyInfo propertyInfo = data.GetType().GetProperty(IdFieldName);
-    if (propertyInfo == null) throw new ArgumentException(string.Format("The type '{0}' does not have a property named '{1}'", data.GetType(), IdFieldName));
-
-    bool hasDefaultFieldValueAttribute = propertyInfo.GetCustomAttributesRecursively<DefaultFieldValueAttribute>().Any();
-    bool hasNewInstanceDefaultFieldValueAtteibute = propertyInfo.GetCustomAttributesRecursively<NewInstanceDefaultFieldValueAttribute>().Any();
-
-    if ((!hasDefaultFieldValueAttribute) && (!hasNewInstanceDefaultFieldValueAtteibute))
-    {
-        if (propertyInfo.PropertyType == typeof(Guid))
+        /// <exclude />
+        public static void SetNewIdFieldValue(IData data)
         {
-            // Assigning a guid key a value because its not part of the genereted UI
-            propertyInfo.SetValue(data, Guid.NewGuid(), null);
+            if (data == null) throw new ArgumentNullException("data");
+
+            PropertyInfo propertyInfo = data.GetType().GetProperty(IdFieldName);
+            if (propertyInfo == null) throw new ArgumentException(string.Format("The type '{0}' does not have a property named '{1}'", data.GetType(), IdFieldName));
+
+            bool hasDefaultFieldValueAttribute = propertyInfo.GetCustomAttributesRecursively<DefaultFieldValueAttribute>().Any();
+            bool hasNewInstanceDefaultFieldValueAtteibute = propertyInfo.GetCustomAttributesRecursively<NewInstanceDefaultFieldValueAttribute>().Any();
+
+            if ((!hasDefaultFieldValueAttribute) && (!hasNewInstanceDefaultFieldValueAtteibute))
+            {
+                if (propertyInfo.PropertyType == typeof(Guid))
+                {
+                    // Assigning a guid key a value because its not part of the genereted UI
+                    propertyInfo.SetValue(data, Guid.NewGuid(), null);
+                }
+                else
+                {
+                    // For now, do nothing. This would fix auto increament issue for int key properties
+                    // throw new InvalidOperationException(string.Format("The property '{0}' on the data interface '{1}' does not a DefaultFieldValueAttribute or NewInstanceDefaultFieldValueAttribute and no default value could be created", propertyInfo.Name, data.GetType());
+                }
+            }
         }
-        else
-        {
-            // For now, do nothing. This would fix auto increament issue for int key properties
-            // throw new InvalidOperationException(string.Format("The property '{0}' on the data interface '{1}' does not a DefaultFieldValueAttribute or NewInstanceDefaultFieldValueAttribute and no default value could be created", propertyInfo.Name, data.GetType());
-        }
-    }
-}
 
 
 
@@ -907,7 +943,7 @@ public static void SetNewIdFieldValue(IData data)
                     dataTypeDescriptor.DataAssociations.Add(dataTypeAssociationDescriptor);
                 }
             }
-            
+
 
             return dataTypeDescriptor;
         }
@@ -920,7 +956,7 @@ public static void SetNewIdFieldValue(IData data)
 
             dataTypeDescriptor.DataScopes.Add(DataScopeIdentifier.Public);
 
-            dataTypeDescriptor.Cachable = _cachable;            
+            dataTypeDescriptor.Cachable = _cachable;
 
             if ((_publishControlled == true) && (_dataAssociationType != DataAssociationType.Composition))
             {
@@ -979,7 +1015,7 @@ public static void SetNewIdFieldValue(IData data)
                 {
                     dataTypeDescriptor.Fields.Add(_foreignKeyDataFieldDescriptor);
                 }
-            }            
+            }
 
             return dataTypeDescriptor;
         }

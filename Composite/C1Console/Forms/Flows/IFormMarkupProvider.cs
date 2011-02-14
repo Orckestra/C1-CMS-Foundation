@@ -9,6 +9,7 @@ namespace Composite.C1Console.Forms.Flows
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IFormMarkupProvider
     {
+        /// <exclude />
         XmlReader GetReader();
     }
 }

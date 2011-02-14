@@ -13,6 +13,7 @@ namespace Composite.Core.Xml
     [XhtmlDocumentConverter()]
 	public sealed class XhtmlDocument : XDocument
 	{
+        /// <exclude />
         public XhtmlDocument()
             : base( new XElement( Namespaces.Xhtml + "html",
                 new XElement(Namespaces.Xhtml + "head"),
@@ -21,14 +22,16 @@ namespace Composite.Core.Xml
 
 
 
+        /// <exclude />
         public XhtmlDocument(XElement htmlElement)
             : base(htmlElement)
         {
             this.Validate();
         }
 
-        
-        
+
+
+        /// <exclude />
         public XhtmlDocument(XDocument other)
             : base(other)
         {
@@ -37,6 +40,7 @@ namespace Composite.Core.Xml
 
 
 
+        /// <exclude />
         public XElement Head
         {
             get
@@ -46,6 +50,7 @@ namespace Composite.Core.Xml
         }
 
 
+        /// <exclude />
         public XElement Body
         {
             get
@@ -55,6 +60,7 @@ namespace Composite.Core.Xml
         }
 
 
+        /// <exclude />
         public new static XhtmlDocument Parse(string xhtml)
         {
             return new XhtmlDocument(XDocument.Parse(xhtml));

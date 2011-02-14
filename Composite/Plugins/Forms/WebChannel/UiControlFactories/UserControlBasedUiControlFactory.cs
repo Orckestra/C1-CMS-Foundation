@@ -21,20 +21,31 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     {
         private string _uiControlId = "IdNotSet";
 
+
+        /// <exclude />
         public virtual Control BuildWebControl()
         {
             return this;
         }
 
+
+        /// <exclude />
         public abstract void InitializeViewState();
 
+
+        /// <exclude />
         public abstract void BindStateToControlProperties();
 
 
+        /// <exclude />
         public string ClientName { get; set; }
 
+
+        /// <exclude />
         public bool IsFullWidthControl { get; set; }
 
+
+        /// <exclude />
         public string UiControlID 
         {
             get
@@ -48,14 +59,20 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             }
         }
 
+
+        /// <exclude />
         public IFormChannelIdentifier UiControlChannel { get; set; }
 
+        /// <exclude />
         public string Label { get; set; }
 
+        /// <exclude />
         public string Help { get; set; }
 
+        /// <exclude />
         public List<ClientValidationRule> ClientValidationRules { get; set; }
 
+        /// <exclude />
         public List<string> SourceBindingPaths { get; set; }
     }
 

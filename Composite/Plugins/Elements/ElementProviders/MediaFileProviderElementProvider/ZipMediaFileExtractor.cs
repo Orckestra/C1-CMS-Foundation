@@ -21,6 +21,8 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
     {
         private static readonly TimeSpan extrationTimeout = TimeSpan.FromMinutes(15);
 
+
+        /// <exclude />
         public static void AddZip(string providerName, string parentPath, Stream compressedStream, bool recreateDirStructure, bool overwrite)
         {
             if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");

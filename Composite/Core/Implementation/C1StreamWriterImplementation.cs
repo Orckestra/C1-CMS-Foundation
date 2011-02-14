@@ -549,6 +549,7 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <exclude />
         ~C1StreamWriterImplementation()
         {
             Dispose(false);

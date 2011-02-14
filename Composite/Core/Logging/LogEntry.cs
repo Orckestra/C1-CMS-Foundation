@@ -16,14 +16,29 @@ namespace Composite.Core.Logging
         const char NonBreakingSpace = (char)160;
         private static readonly string DateTimeFormat = "yyyyMMdd" + NonBreakingSpace + "HH:mm:ss.ffff";
 
+        /// <exclude />
         public DateTime TimeStamp { get; set; }
+
+        /// <exclude />
         public int ApplicationDomainId { get; set; }
+
+        /// <exclude />
         public int ThreadId { get; set; }
+
+        /// <exclude />
         public string Severity { get; set; }
+
+        /// <exclude />
         public string Title { get; set; }
+
+        /// <exclude />
         public string DisplayOptions { get; set; }
+
+        /// <exclude />
         public string Message { get; set; }
 
+
+        /// <exclude />
         public override string ToString()
         {
             int applicationDomainId = AppDomain.CurrentDomain.Id;
@@ -43,6 +58,7 @@ namespace Composite.Core.Logging
 
 
 
+        /// <exclude />
         [DebuggerStepThrough]
         public static LogEntry Parse(string serializedLogEntry)
         {

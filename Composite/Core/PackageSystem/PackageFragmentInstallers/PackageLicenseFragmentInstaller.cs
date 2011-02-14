@@ -17,6 +17,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         private string publicKey;
 
 
+        /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
             List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
@@ -43,6 +44,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
 
+        /// <exclude />
         public override IEnumerable<XElement> Install()
         {
             LicenseDefinitionDescriptor descriptor = LicenseServerFacade.GetTrialLicenseDefinition(InstallationInformationFacade.InstallationId, this.InstallerContex.PackageInformation.Id, publicKey);

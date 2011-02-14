@@ -12,6 +12,7 @@ namespace Composite.Core.WebClient.UiControlLib
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class TextBox : System.Web.UI.WebControls.TextBox
     {
+        /// <exclude />
         protected override void Render(HtmlTextWriter writer)
         {
             this.RenderBeginTag(writer);

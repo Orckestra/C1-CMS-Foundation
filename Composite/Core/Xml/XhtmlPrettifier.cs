@@ -95,6 +95,7 @@ namespace Composite.Core.Xml
 
 
 
+        /// <exclude />
         public static string Prettify(string xmlString)
         {
             return Prettify(xmlString, "\t");
@@ -102,6 +103,7 @@ namespace Composite.Core.Xml
 
 
 
+        /// <exclude />
         public static string Prettify(string xmlString, string indentString)
         {
             CDataMatchHandler cdataMatchHandler;
@@ -331,6 +333,7 @@ namespace Composite.Core.Xml
 
 
 
+        /// <exclude />
         public static string SuperTrim(string value)
         {
             StringBuilder sb = new StringBuilder();

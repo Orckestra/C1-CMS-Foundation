@@ -11,8 +11,10 @@ namespace Composite.C1Console.Elements
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class SearchToken
     {
+        /// <exclude />
         public string Keyword { get; set; }
 
+        /// <exclude />
         public string Serialize()
         {
             string serializedSearchToken = SerializationFacade.Serialize(this);
@@ -24,6 +26,7 @@ namespace Composite.C1Console.Elements
         }
 
 
+        /// <exclude />
         public static SearchToken Deserialize( string serializedSearchToken )
         {
             if (string.IsNullOrEmpty(serializedSearchToken)) throw new ArgumentNullException();

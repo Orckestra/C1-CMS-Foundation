@@ -12,6 +12,7 @@ namespace Composite.Core.Instrumentation
         private List<Measurement> _nodes;
         private List<Measurement> _parallelNodes;
 
+        /// <exclude />
         public Measurement(string name)
         {
             Name = name;
@@ -22,7 +23,10 @@ namespace Composite.Core.Instrumentation
         /// </summary>
         public long TotalTime;
 
+        /// <exclude />
         public string Name { get; set; }
+
+        /// <exclude />
         public List<Measurement> Nodes 
         { 
             get
@@ -36,8 +40,10 @@ namespace Composite.Core.Instrumentation
             }
         }
 
+        /// <exclude />
         public object SyncRoot { get { return this; } }
 
+        /// <exclude />
         public List<Measurement> ParallelNodes
         {
             get

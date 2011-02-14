@@ -35,6 +35,7 @@ namespace Composite.Core.Application
 
 
 
+        /// <exclude />
         public static void TurnApplicationOffline(bool softTurnOff, bool clearGeneratedAssemblies)
         {
             _applicationOnlineHandlerFacade.TurnApplicationOffline(softTurnOff, clearGeneratedAssemblies);
@@ -42,6 +43,7 @@ namespace Composite.Core.Application
 
 
 
+        /// <exclude />
         public static void TurnApplicationOnline()
         {
             _applicationOnlineHandlerFacade.TurnApplicationOnline();
@@ -49,6 +51,7 @@ namespace Composite.Core.Application
 
 
 
+        /// <exclude />
         public static IDisposable TurnOffScope(bool softTurnOff)
         {
             TurnApplicationOffline(softTurnOff);
@@ -56,6 +59,7 @@ namespace Composite.Core.Application
         }
 
 
+        /// <exclude />
         public static bool IsApplicationOnline
         {
             get

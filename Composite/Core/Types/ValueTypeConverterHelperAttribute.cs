@@ -12,6 +12,7 @@ namespace Composite.Core.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public abstract class ValueTypeConverterHelperAttribute : Attribute
 	{
+        /// <exclude />
         public abstract bool TryConvert(object sourcevalue, Type targetType, out object targetValue);
 
 	}

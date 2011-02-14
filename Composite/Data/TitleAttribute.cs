@@ -10,12 +10,14 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
 	public sealed class TitleAttribute : Attribute
 	{
+        /// <exclude />
         public TitleAttribute(string title)
         {
             this.Title = title;
         }
 
 
+        /// <exclude />
         public string Title
         {
             get;

@@ -13,17 +13,24 @@ namespace Composite.C1Console.Workflow.Activities
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ConditionalSetStateActivity : Activity
     {
+        /// <exclude />
         public static readonly DependencyProperty ConditionProperty = DependencyProperty.Register("Condition", typeof(ActivityCondition), typeof(ConditionalSetStateActivity), new PropertyMetadata(DependencyPropertyOptions.Metadata));
 
+        /// <exclude />
         public static readonly DependencyProperty TrueTargetStateNameProperty = DependencyProperty.Register("TrueTargetStateName", typeof(string), typeof(ConditionalSetStateActivity), new PropertyMetadata("", DependencyPropertyOptions.Metadata, new Attribute[] { new ValidationOptionAttribute(ValidationOption.Optional) }));
+
+        /// <exclude />
         public static readonly DependencyProperty FalseTargetStateNameProperty = DependencyProperty.Register("FalseTargetStateName", typeof(string), typeof(ConditionalSetStateActivity), new PropertyMetadata("", DependencyPropertyOptions.Metadata, new Attribute[] { new ValidationOptionAttribute(ValidationOption.Optional) }));
 
 
 
+        /// <exclude />
         public ConditionalSetStateActivity()
         {
         }
 
+
+        /// <exclude />
         public ConditionalSetStateActivity(string name) 
             : base(name)
         {
@@ -31,6 +38,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected override ActivityExecutionStatus Execute(ActivityExecutionContext executionContext)
         {
             StateMachineWorkflowInstance instance = WorkflowFacade.GetStateMachineWorkflowInstance(this.WorkflowInstanceId);
@@ -54,6 +62,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         [Browsable(true)]
         public ActivityCondition Condition
         {
@@ -62,6 +71,7 @@ namespace Composite.C1Console.Workflow.Activities
         }
 
 
+        /// <exclude />
         [DefaultValue((string)null)]
         public string TrueTargetStateName
         {
@@ -70,6 +80,7 @@ namespace Composite.C1Console.Workflow.Activities
         }
 
 
+        /// <exclude />
         [DefaultValue((string)null)]
         public string FalseTargetStateName
         {

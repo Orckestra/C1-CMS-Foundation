@@ -11,6 +11,7 @@ namespace Composite.C1Console.Events
     [Serializable]
     public sealed class OpenHandledViewMessageQueueItem : IConsoleMessageQueueItem
     {
+        /// <exclude />
         public OpenHandledViewMessageQueueItem(string entityToken, string handle)
         {
             this.EntityToken = entityToken;
@@ -18,6 +19,7 @@ namespace Composite.C1Console.Events
             this.Arguments = new Dictionary<string, string>();
         }
 
+        /// <exclude />
         public OpenHandledViewMessageQueueItem(string entityToken, string handle, Dictionary<string, string> arguments)
         {
             this.EntityToken = entityToken;
@@ -25,8 +27,13 @@ namespace Composite.C1Console.Events
             this.Arguments = arguments;
         }
 
+        /// <exclude />
         public string EntityToken { get; set; }
+
+        /// <exclude />
         public string Handle { get; set; }
+
+        /// <exclude />
         public Dictionary<string, string> Arguments { get; set; }
     }
 }

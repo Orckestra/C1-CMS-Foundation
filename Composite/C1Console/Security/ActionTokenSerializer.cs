@@ -15,13 +15,15 @@ namespace Composite.C1Console.Security
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ActionTokenSerializer
     {
+        /// <exclude />
         public static string Serialize(ActionToken actionToken)
         {
             return Serialize(actionToken, false);
         }
-       
 
 
+
+        /// <exclude />
         public static string Serialize(ActionToken actionToken, bool includeHashValue)
         {
             StringBuilder sb = new StringBuilder();
@@ -41,6 +43,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static ActionToken Deserialize(string serialziedActionToken)
         {
             return Deserialize(serialziedActionToken, false);
@@ -48,6 +51,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static ActionToken Deserialize(string serialziedActionToken, bool includeHashValue)
         {
             if (string.IsNullOrEmpty(serialziedActionToken) == true) throw new ArgumentNullException("serialziedActionToken");
@@ -104,6 +108,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static T Deserialize<T>(string serialziedActionToken)
             where T : ActionToken
         {

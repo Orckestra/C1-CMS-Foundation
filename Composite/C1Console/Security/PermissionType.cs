@@ -11,13 +11,28 @@ namespace Composite.C1Console.Security
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum PermissionType
     {
+        /// <exclude />
         Read,
+
+        /// <exclude />
         Edit,
+
+        /// <exclude />
         Add,
+
+        /// <exclude />
         Delete,
+
+        /// <exclude />
         Approve,
+
+        /// <exclude />
         Publish,
+
+        /// <exclude />
         Administrate,
+
+        /// <exclude />
         ClearPermissions
     }
 

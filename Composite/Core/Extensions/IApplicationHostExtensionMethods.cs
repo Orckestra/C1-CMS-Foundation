@@ -12,6 +12,7 @@ namespace Composite.Core.Extensions
     {
         static readonly PropertyInfo _shutdownInitiatedPropertyInfo = typeof(HostingEnvironment).GetProperty("ShutdownInitiated", BindingFlags.NonPublic | BindingFlags.Static);
 
+        /// <exclude />
         public static bool ShutdownInitiated(this IApplicationHost host)
         {
             return (bool)_shutdownInitiatedPropertyInfo.GetValue(null, new object[0]);

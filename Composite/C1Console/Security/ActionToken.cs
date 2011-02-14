@@ -12,8 +12,13 @@ namespace Composite.C1Console.Security
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class ActionToken
     {
+        /// <exclude />
         public abstract IEnumerable<PermissionType> PermissionTypes { get; }
+
+        /// <exclude />
         public virtual string Serialize() { return ""; }
+
+        /// <exclude />
         public virtual bool IgnoreEntityTokenLocking { get { return false; } }
     }
 

@@ -22,6 +22,8 @@ namespace Composite.Core.WebClient
         private string _filePath;
         private List<KeyValuePair<string, string>> _queryParameters;
 
+
+        /// <exclude />
         public UrlString(string url)
         {
             _queryParameters = new List<KeyValuePair<string, string>>();
@@ -68,6 +70,8 @@ namespace Composite.Core.WebClient
             }
         }
 
+
+
         private void ExtractPathInfo(string relativePath, out string filePath, out string pathInfo)
         {
             int aspxExtOffset = relativePath.IndexOf(".aspx");
@@ -81,6 +85,9 @@ namespace Composite.Core.WebClient
             pathInfo = relativePath.Substring(aspxExtOffset + 5);
         }
 
+
+
+        /// <exclude />
         public override string ToString()
         {
             // NOTE: StringBuilder shouldn't be used - it is to slow
@@ -100,6 +107,9 @@ namespace Composite.Core.WebClient
             return result; // _filePath + _pathInfo + "?" + queryString
         }
 
+
+
+        /// <exclude />
         public void AddQueryParameters(NameValueCollection parameters)
         {
             foreach (string key in parameters)
@@ -108,6 +118,9 @@ namespace Composite.Core.WebClient
             }
         }
 
+
+
+        /// <exclude />
         public NameValueCollection GetQueryParameters()
         {
             var result = new NameValueCollection();
@@ -118,6 +131,9 @@ namespace Composite.Core.WebClient
             return result;
         }
 
+
+
+        /// <exclude />
         public string this[string key]
         {
             get
@@ -151,6 +167,9 @@ namespace Composite.Core.WebClient
             }
         }
 
+
+
+        /// <exclude />
         public string PathInfo
         {
             get
@@ -163,6 +182,9 @@ namespace Composite.Core.WebClient
             }
         }
 
+
+
+        /// <exclude />
         public string FilePath
         {
             get
@@ -176,6 +198,9 @@ namespace Composite.Core.WebClient
             }
         }
 
+
+
+        /// <exclude />
         public string ServerUrl
         {
             get
@@ -216,6 +241,9 @@ namespace Composite.Core.WebClient
             }
         }
 
+
+
+        /// <exclude />
         public string QueryString
         {
             get

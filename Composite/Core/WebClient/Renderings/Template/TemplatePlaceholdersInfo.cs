@@ -12,7 +12,10 @@ namespace Composite.Core.WebClient.Renderings.Template
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public class TemplatePlaceholdersInfo
 	{
+        /// <exclude />
         public IEnumerable<KeyValuePair> Placeholders { get; set; }
+
+        /// <exclude />
         public string DefaultPlaceholderId { get; set; }
 	}
 }

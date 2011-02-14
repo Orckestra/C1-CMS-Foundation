@@ -14,11 +14,13 @@ namespace Composite.Data.Types
     [DataScope(DataScopeIdentifier.PublicName)]
 	public interface ICompositionContainer : IData
 	{
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{B9E34D3F-C8C0-4692-8EE4-31B174C96477}")]
         Guid Id { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 256)]
         [ImmutableFieldId("{572769B5-89CA-4ee8-9CD1-DE9D61702CA0}")]
         string Label { get; set; }

@@ -12,11 +12,14 @@ namespace Composite.Core.Logging
 	public static class LogManager
 	{
         private static readonly string VerboseSeverity = "Verbose";
+
+        /// <exclude />
         public static int LogLinesRequestLimit = 5000;
 
         private static FileLogger.LogFileReader[] _logFiles;
         private static readonly object _syncRoot = new object();
 
+        /// <exclude />
         static LogManager()
         {
             FileLogger.OnReset += () => _logFiles = null;
@@ -50,6 +53,8 @@ namespace Composite.Core.Logging
             }
         }
 
+
+        /// <exclude />
         public static bool DeleteLogFile(DateTime date)
         {
             date = date.Date;
@@ -73,21 +78,29 @@ namespace Composite.Core.Logging
             return updated;
         }
 
+
+        /// <exclude />
         public static DateTime GetLastStartupTime()
         {
             return FileLogger.StartupTime;
         }
 
+
+        /// <exclude />
         public static DateTime[] GetLoggingDates()
         {
             return LogFiles.Select(entry => entry.Date).Distinct().OrderBy(date => date).ToArray();
         }
 
+
+        /// <exclude />
         public static int GetLogEntriesCount(DateTime timeFrom, DateTime timeTo, bool includeVerbose)
         {
             throw new NotImplementedException();
         }
 
+
+        /// <exclude />
         public static int GetLogEntriesCountByDate(DateTime date, bool includeVerbose)
         {
             date = date.Date;
@@ -101,6 +114,8 @@ namespace Composite.Core.Logging
             return result;
         }
 
+
+        /// <exclude />
         public static LogEntry[] GetLogEntries(DateTime timeFrom, DateTime timeTo, bool includeVerbose, int maximumAmount)
         {
             if (maximumAmount == 0)

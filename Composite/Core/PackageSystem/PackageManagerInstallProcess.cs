@@ -55,6 +55,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public bool CanBeUninstalled
         {
             get
@@ -66,6 +67,7 @@ namespace Composite.Core.PackageSystem
         }
 
 
+        /// <exclude />
         public bool FlushOnCompletion
         {
             get
@@ -77,6 +79,7 @@ namespace Composite.Core.PackageSystem
         }
 
 
+        /// <exclude />
         public bool ReloadConsoleOnCompletion
         {
             get
@@ -88,6 +91,7 @@ namespace Composite.Core.PackageSystem
         }
 
 
+        /// <exclude />
         public List<PackageFragmentValidationResult> PreInstallValidationResult
         {
             get
@@ -98,6 +102,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public List<PackageFragmentValidationResult> Validate()
         {
             if (_packageInstaller == null) throw new InvalidOperationException("Pre installation did not validate");
@@ -115,6 +120,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public List<PackageFragmentValidationResult> Install()
         {
             if (_packageInstaller == null) throw new InvalidOperationException("Pre installation did not validate");
@@ -142,6 +148,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public void CancelInstallation()
         {
             if ((_zipFilename != null) && (C1File.Exists(_zipFilename))) C1File.Delete(_zipFilename);

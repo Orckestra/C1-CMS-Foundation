@@ -37,18 +37,26 @@ namespace Composite.C1Console.Security
     {
         private bool _entityTokenUniquenessValidated;
 
+        /// <exclude />
         public abstract string Type { get; }
+
+        /// <exclude />
         public abstract string Source { get; }
+
+        /// <exclude />
         public abstract string Id { get; }
 
 
+        /// <exclude />
         public virtual bool IsValid() { return true; }
 
 
+        /// <exclude />
         public abstract string Serialize();
 
 
 
+        /// <exclude />
         protected void DoSerialize(StringBuilder stringBuilder)
         {
             StringConversionServices.SerializeKeyValuePair(stringBuilder, "_EntityToken_Type_", Type);
@@ -58,6 +66,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         protected string DoSerialize()
         {
             StringBuilder sb = new StringBuilder();
@@ -69,6 +78,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         protected static void DoDeserialize(string serializedEntityToken, out string type, out string source, out string id)
         {
             Dictionary<string, string> dic;
@@ -77,6 +87,8 @@ namespace Composite.C1Console.Security
         }
 
 
+
+        /// <exclude />
         protected static void DoDeserialize(string serializedEntityToken, out string type, out string source, out string id, out Dictionary<string, string> dic)
         {
             dic = StringConversionServices.ParseKeyValueCollection(serializedEntityToken);
@@ -95,10 +107,12 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         protected int HashCode { get; set; }
 
 
 
+        /// <exclude />
         public virtual string GetPrettyHtml(Dictionary<string, string> piggybag)
         {
             EntityTokenHtmlPrettyfier entityTokenHtmlPrettyfier = new EntityTokenHtmlPrettyfier(this, piggybag);
@@ -110,15 +124,25 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public virtual string OnGetTypePrettyHtml() { return this.Type; }
+
+        /// <exclude />
         public virtual string OnGetSourcePrettyHtml() { return this.Source; }
+
+        /// <exclude />
         public virtual string OnGetIdPrettyHtml() { return this.Id; }
+
+        /// <exclude />
         public virtual string OnGetExtraPrettyHtml() { return null; }
 
+
+        /// <exclude />
         public virtual void OnGetPrettyHtml(EntityTokenHtmlPrettyfier entityTokenHtmlPrettyfier) { }
 
 
 
+        /// <exclude />
         public override bool Equals(object obj)
         {
             EntityToken entityToken = obj as EntityToken;
@@ -130,6 +154,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public bool Equals(EntityToken entityToken)
         {
             if (entityToken == null) return false;
@@ -145,6 +170,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public override int GetHashCode()
         {
             if (this.HashCode == 0)
@@ -158,6 +184,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public override string ToString()
         {
             return string.Format("Source = {0}, Type = {1}, Id = {2}", this.Source, this.Type, this.Id);

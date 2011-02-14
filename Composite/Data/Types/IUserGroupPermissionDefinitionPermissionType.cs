@@ -19,17 +19,20 @@ namespace Composite.Data.Types
     [DataAncestorProvider(typeof(NoAncestorDataAncestorProvider))]
     public interface IUserGroupPermissionDefinitionPermissionType : IData
     {
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{DCEDF510-8742-431b-B10C-66ADCCC6A71F}")]
         Guid Id { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{32D99BCA-1DD2-4b52-9887-5089B5EAA055}")]
         [ForeignKey(typeof(IUserGroupPermissionDefinition), "Id", AllowCascadeDeletes = true)]
         Guid UserGroupPermissionDefinitionId { get; set; }
 
 
+        /// <exclude />
         [NotNullValidator()]
         [StoreFieldType(PhysicalStoreFieldType.String, 64)]
         [ImmutableFieldId("{63A05B43-EF86-4e8c-801B-A80D4D0202AA}")]

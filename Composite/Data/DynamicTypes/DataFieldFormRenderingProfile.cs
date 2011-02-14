@@ -10,8 +10,13 @@ namespace Composite.Data.DynamicTypes
     [Serializable()]
     public class DataFieldFormRenderingProfile
     {
+        /// <exclude />
         public virtual string Label { get; set; }
+
+        /// <exclude />
         public virtual string HelpText { get; set; }
+
+        /// <exclude />
         public virtual string WidgetFunctionMarkup { get; set; }
     }
 

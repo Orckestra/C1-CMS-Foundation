@@ -40,6 +40,7 @@ namespace Composite.Data.Types
         int SortOrder { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{1DCF94D4-F1A7-411c-8EFD-8C010CB6A8EE}")]
         [ForeignKey(typeof(ICompositionContainer), "Id", AllowCascadeDeletes = true)]

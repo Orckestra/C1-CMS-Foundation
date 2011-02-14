@@ -12,14 +12,17 @@ namespace Composite.Core.WebClient.UiControlLib
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class FieldMessage : Label
     {
+        /// <exclude />
         public FieldMessage(string targetName, string text)
         {
             this.TargetName = targetName;
             this.Text = text;
         }
 
+        /// <exclude />
         public virtual string TargetName { get; set; }
 
+        /// <exclude />
         protected override void Render(HtmlTextWriter writer)
         {
             writer.WriteBeginTag("ui:errorset");

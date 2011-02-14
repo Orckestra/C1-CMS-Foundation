@@ -21,17 +21,20 @@ namespace Composite.Data.Types
     [CachingAttribute(CachingType.Full)]
     public interface IPageTypeMetaDataTypeLink : IData
     {
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{B186C166-9EA7-489A-BEFE-E576FE7E3FF9}")]
         Guid Id { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{6F0FD511-FA79-486E-A371-AFC7A3E6C614}")]
         [ForeignKey(typeof(IPageType), "Id", AllowCascadeDeletes = true)]
         Guid PageTypeId { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{BCD3927D-D166-431D-936F-1B6843B91E82}")]
         Guid DataTypeId { get; set; }
@@ -57,6 +60,7 @@ namespace Composite.Data.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class IPageTypeMetaDataTypeLinkExtensionMethods
     {
+        /// <exclude />
         public static IEnumerable<IPageTypeMetaDataTypeLink> RemoveDeadLinks(this IEnumerable<IPageTypeMetaDataTypeLink> pageTypeMetaDataTypeLinks)
         {
             foreach (IPageTypeMetaDataTypeLink pageTypeMetaDataTypeLink in pageTypeMetaDataTypeLinks)

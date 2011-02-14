@@ -23,11 +23,15 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
         private static readonly object _typeResolvingSyncRoot = new object();
 
+
+        /// <exclude />
         public SqlDataContextHelperClass(DataContext dataContext)
         {
             _dataContext = dataContext;
         }
 
+
+        /// <exclude />
         public void Add(object entity, string tableName)
         {
             EnsureTableInitialized(tableName);
@@ -36,6 +40,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
         }
 
 
+        /// <exclude />
         public void Remove(object entity, string tableName)
         {
             EnsureTableInitialized(tableName);
@@ -45,6 +50,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
             table.Attach(entity);
             table.DeleteOnSubmit(entity);
         }
+
 
         private void EnsureTableInitialized(string tableName)
         {
@@ -74,6 +80,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
             }
         }
 
+
+        /// <exclude />
         public static ITable GetTable(DataContext _dataContext, SqlDataProviderCodeGeneratorTableResult.StoreInformation storeInformation)
         {
             FieldInfo fi = storeInformation.DataContextQueryableFieldInfo;

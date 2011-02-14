@@ -11,23 +11,34 @@ namespace Composite.Core.WebClient.UiControlLib
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class ClickButton : LinkButton
     {
+        /// <exclude />
         public ClickButton()
         {
             this.AutoPostBack = true;
         }
 
+
+        /// <exclude />
         [Category("Appearance"), DefaultValue(""), Description("The id the ui client should see")]
         public virtual string CustomClientId { get; set; }
 
+
+        /// <exclude />
         [Category("Appearance"), DefaultValue(""), Description("Client sceipt that ensure post back should be appended to CustomClientScript. Default is true.")]
         public virtual bool AutoPostBack { get; set; }
-        
+
+
+        /// <exclude />
         [Category("Appearance"), DefaultValue(""), Description("Image to show in the buttom")]
         public virtual string ImageUrl { get; set; }
 
+
+        /// <exclude />
         [Category("Appearance"), DefaultValue(""), Description("Image to show in the buttom when the button is disabled")]
         public virtual string ImageUrlWhenDisabled { get; set; }
 
+
+        /// <exclude />
         protected override void Render(HtmlTextWriter writer)
         {
             writer.WriteBeginTag("ui:clickbutton");

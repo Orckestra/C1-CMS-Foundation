@@ -13,6 +13,7 @@ namespace Composite.Core.WebClient
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ErrorServices
     {
+        /// <exclude />
         public static void DocumentAdministrativeError(Exception exception)
         {
 
@@ -40,6 +41,7 @@ namespace Composite.Core.WebClient
 
 
 
+        /// <exclude />
         public static void RedirectUserToErrorPage(string uiContainerName, Exception exception)
         {
             if (HttpContext.Current == null)

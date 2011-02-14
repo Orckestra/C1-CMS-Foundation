@@ -5,8 +5,14 @@ using Composite.Data;
 
 namespace Composite.Core.Implementation
 {
+    /// <summary>
+    /// Documentation pending
+    /// </summary>
     public class DataConnectionBase
     {
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
         protected void InitializeScope()
         {
             this.PublicationScope = Data.PublicationScope.Unpublished;
@@ -15,6 +21,11 @@ namespace Composite.Core.Implementation
         }
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
+        /// <param name="scope"></param>
+        /// <param name="locale"></param>
         protected void InitializeScope(PublicationScope scope, CultureInfo locale)
         {
             this.PublicationScope = scope;
@@ -23,10 +34,19 @@ namespace Composite.Core.Implementation
         }
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
         protected PublicationScope PublicationScope { get; private set; }
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
         protected DataScopeIdentifier DataScopeIdentifier { get; private set; }
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
         protected CultureInfo Locale { get; private set; }
 
 

@@ -42,6 +42,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
 
 
+        /// <exclude />
         public Type DataIdType
         {
             get
@@ -52,6 +53,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
 
 
+        /// <exclude />
         public IQueryable GetQueryable()
         {
             // TODO: Think about caching
@@ -82,10 +84,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
             }
 
             return queryable;
-        }        
+        }
 
 
 
+        /// <exclude />
         public IData GetDataByDataId(IDataId dataId, DataProviderContext dataProivderContext)
         {
             var storage = GetStorage();
@@ -96,15 +99,21 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
         }
 
 
+
+        /// <exclude />
         public IData AddNew(IData dataToAdd, DataProviderContext dataProivderContext, DataContext dataContext)
         {
             return GetStorage().SqlDataProviderHelperMethods.AddData((ISqlDataContext)dataContext, dataToAdd, dataProivderContext);
         }
 
+
+        /// <exclude />
         public void RemoveData(IData dataToRemove, DataContext dataContext)
         {
             GetStorage().SqlDataProviderHelperMethods.RemoveData((ISqlDataContext)dataContext, dataToRemove);
         }
+
+
 
         private StoreInformation GetStorage()
         {
@@ -113,6 +122,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
             return Stores[storeName];
         }
+
+
 
         private static string GetStorageName(Type interfaceType)
         {
@@ -123,11 +134,17 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
 
 
+        /// <exclude />
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public sealed class StoreInformation
         {
+            /// <exclude />
             public FieldInfo DataContextQueryableFieldInfo { get; set; }
+
+            /// <exclude />
             public ISqlDataProviderHelperMethods SqlDataProviderHelperMethods { get; set; }
+
+            /// <exclude />
             public Type DataIdType { get; set; }
         }              
     }

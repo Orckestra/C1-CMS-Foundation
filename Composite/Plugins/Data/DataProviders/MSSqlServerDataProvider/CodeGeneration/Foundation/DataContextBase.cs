@@ -12,12 +12,14 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public class DataContextBase : DataContext
 	{
+        /// <exclude />
         [DebuggerNonUserCode]
         public DataContextBase(IDbConnection connection)
             : base(connection)
         {
         }
 
+        /// <exclude />
         [Function(Name = "NEWID", IsComposable = true)]
         public Guid NewId()
         {

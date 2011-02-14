@@ -10,7 +10,10 @@ namespace Composite.Core.WebClient
 
     public class FlowPage: Page
     {
+        /// <exclude />
         public bool SaveStepSucceded { get; set; }
+
+        /// <exclude />
         public EventHandler OnSave { get; set; }
     }
 }

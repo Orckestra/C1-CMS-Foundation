@@ -23,10 +23,13 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     {
         private string _formControlLabel;
 
+        /// <exclude />
         protected abstract void BindStateToProperties();
 
+        /// <exclude />
         protected abstract void InitializeViewState();
 
+        /// <exclude />
         public abstract string GetDataFieldClientName();
 
         internal void BindStateToControlProperties()
@@ -39,10 +42,16 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             this.InitializeViewState();
         }
 
+        /// <exclude />
         public IEnumerable<KeyValuePair<string, Guid>> Queries { get; set; }
+
+        /// <exclude />
         public ILookup<string, KeyValuePair<string, string>> Parameters { get; set; }
+
+        /// <exclude />
         public string UserProvidedPreviewXml { get; set; }
 
+        /// <exclude />
         public string FormControlLabel
         {
             get { return _formControlLabel; }

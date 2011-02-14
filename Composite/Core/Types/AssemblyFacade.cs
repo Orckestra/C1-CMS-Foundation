@@ -14,6 +14,7 @@ namespace Composite.Core.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class AssemblyFacade
 	{
+        /// <exclude />
         public static IEnumerable<Assembly> GetAssembliesFromBin()
         {
             string binDirectory = PathUtil.Resolve(GlobalSettingsFacade.BinDirectory).ToLower().Replace('\\', '/');
@@ -43,12 +44,15 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public static Assembly GetAppCodeAssembly()
         {
             return AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(IsAppCodeDll);
         }
 
 
+
+        /// <exclude />
         public static bool IsAppCodeDll(Assembly assembly)
         {
             string fullName = assembly.FullName;

@@ -17,6 +17,7 @@ namespace Composite.Data.Types
     [DataScope(DataScopeIdentifier.PublicName)]
     public interface IPageMetaDataDefinition : IData
     {
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [DefaultFieldNewGuidValue()]
         [ImmutableFieldId("{C30E50F4-64BF-46A8-B8C9-A8F8CA62C74D}")]
@@ -34,23 +35,26 @@ namespace Composite.Data.Types
         Guid DefiningItemId { get; set; }
 
 
-
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 128)]
         [ImmutableFieldId("{8B421E9F-F0B5-4D27-B1E9-87D6814EAC0F}")]
         string Name { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 256)]
         [ImmutableFieldId("{3838006A-88D1-485F-8ED6-46E14E6A738B}")]
         string Label { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{9EA6FEA8-B2E7-4F44-A5F5-0169123CEC77}")]
         [ForeignKey(typeof(ICompositionContainer), "Id", AllowCascadeDeletes = true)]
         Guid MetaDataContainerId { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{1AD2B5F6-F5AE-496A-B9FA-47BF5E90F5F2}")]
         Guid MetaDataTypeId { get; set; }
@@ -83,11 +87,14 @@ namespace Composite.Data.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class PageMetaDataDefinitionEqualityComparer : IEqualityComparer<IPageMetaDataDefinition>
     {
+        /// <exclude />
         public bool Equals(IPageMetaDataDefinition x, IPageMetaDataDefinition y)
         {
             return x.Name == y.Name && x.MetaDataTypeId == y.MetaDataTypeId;
         }
 
+
+        /// <exclude />
         public int GetHashCode(IPageMetaDataDefinition obj)
         {
             return obj.Name.GetHashCode() ^ obj.MetaDataTypeId.GetHashCode();

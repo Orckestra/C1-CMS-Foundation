@@ -13,7 +13,10 @@ namespace Composite.Functions.Plugins.FunctionProvider
     [ConfigurationNameMapper(typeof(FunctionProviderDefaultNameRetriever))]
 	public interface IFunctionProvider
 	{
+        /// <exclude />
         FunctionNotifier FunctionNotifier { set; }
+
+        /// <exclude />
         IEnumerable<IFunction> Functions { get; }
 	}
 }

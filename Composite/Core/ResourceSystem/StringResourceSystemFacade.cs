@@ -27,6 +27,7 @@ namespace Composite.Core.ResourceSystem
         private static Cache<string, ExtendedNullable<string>> _resourceCache = new Cache<string, ExtendedNullable<string>>("Resource strings", ResourceCacheSize);
 
 
+        /// <exclude />
         public static void Initialize()
         {
             // touch the plug-in facade
@@ -35,6 +36,7 @@ namespace Composite.Core.ResourceSystem
 
 
 
+        /// <exclude />
         public static string GetString(string providerName, string stringName)
         {
             return GetString(providerName, stringName, true);
@@ -42,6 +44,7 @@ namespace Composite.Core.ResourceSystem
 
 
 
+        /// <exclude />
         public static string GetString(string providerName, string stringName, bool throwOnError = true)
         {
             if (throwOnError == true)
@@ -87,6 +90,7 @@ namespace Composite.Core.ResourceSystem
 
 
 
+        /// <exclude />
         public static bool TryGetString(string providerName, string stringName, out string resultString)
         {
             resultString = GetString(providerName, stringName, false);
@@ -96,6 +100,7 @@ namespace Composite.Core.ResourceSystem
 
 
 
+        /// <exclude />
         public static List<KeyValuePair> GetLocalization(string providerName)
         {
             if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
@@ -125,6 +130,8 @@ namespace Composite.Core.ResourceSystem
         }
 
 
+
+        /// <exclude />
         public static IEnumerable<CultureInfo> GetSupportedCultures()
         {
             return ResourceProviderPluginFacade.GetSupportedStringCultures();
@@ -132,6 +139,7 @@ namespace Composite.Core.ResourceSystem
 
 
 
+        /// <exclude />
         public static CultureInfo GetDefaultStringCulture()
         {
             return CultureInfo.CreateSpecificCulture("en-US");
@@ -219,6 +227,8 @@ namespace Composite.Core.ResourceSystem
         }
 
 
+
+        /// <exclude />
         public static IEnumerable<string> SplitParseableStrings(string stringToSplit, char separator)
         {
             if (string.IsNullOrEmpty(stringToSplit) == true)

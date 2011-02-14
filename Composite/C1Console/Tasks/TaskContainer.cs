@@ -28,6 +28,7 @@ namespace Composite.C1Console.Tasks
 
 
 
+        /// <exclude />
         public void UpdateTasksWithFlowToken(FlowToken flowToken)
         {
             foreach (Task task in _tasks)
@@ -38,6 +39,7 @@ namespace Composite.C1Console.Tasks
 
 
 
+        /// <exclude />
         public void OnStatus(TaskManagerEvent taskManagerEvent)
         {
             foreach (Task task in _tasks)
@@ -48,14 +50,17 @@ namespace Composite.C1Console.Tasks
 
 
 
+        /// <exclude />
         public void SetOnIdleTaskManagerEvent(TaskManagerEvent taskManagerEvent)
         {
             _onIdleTaskManagerEvent = taskManagerEvent;
         }
 
+
         private TaskManagerEvent _onIdleTaskManagerEvent;
 
 
+        /// <exclude />
         ~TaskContainer()
         {
             Dispose();
@@ -63,6 +68,7 @@ namespace Composite.C1Console.Tasks
 
 
 
+        /// <exclude />
         public void Dispose()
         {
             if (_disposed == false)

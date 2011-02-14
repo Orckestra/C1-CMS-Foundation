@@ -18,6 +18,7 @@ namespace Composite.Data.Validation
 
 
 
+        /// <exclude />
         static ValidationFacade()
         {
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
@@ -25,6 +26,7 @@ namespace Composite.Data.Validation
 
 
 
+        /// <exclude />
         public static ValidationResults Validate<T>(T data)
             where T : class, IData
         {
@@ -34,6 +36,7 @@ namespace Composite.Data.Validation
 
 
         // Overload
+        /// <exclude />
         public static ValidationResults Validate(IData data)
         {
             return Validate(data.DataSourceId.InterfaceType, data);
@@ -41,6 +44,7 @@ namespace Composite.Data.Validation
 
 
 
+        /// <exclude />
         public static ValidationResults Validate(Type interfaceType, IData data)
         {
             return _implementation.Validate(interfaceType, data);

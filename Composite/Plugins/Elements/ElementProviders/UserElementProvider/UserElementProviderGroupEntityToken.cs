@@ -12,31 +12,37 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 	{
         private string _id;
 
+        /// <exclude />
         public UserElementProviderGroupEntityToken(string id)
         {
             _id = id;
         }
 
+        /// <exclude />
         public override string Type
         {
             get { return ""; }
         }
 
+        /// <exclude />
         public override string Source
         {
             get { return ""; }
         }
 
+        /// <exclude />
         public override string Id
         {
             get { return _id; }
         }
 
+        /// <exclude />
         public override string Serialize()
         {
             return _id;
         }
 
+        /// <exclude />
         public static EntityToken Deserialize(string serializedData)
         {
             return new UserElementProviderGroupEntityToken(serializedData);

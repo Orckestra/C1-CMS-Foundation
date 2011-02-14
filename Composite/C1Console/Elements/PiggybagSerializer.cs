@@ -11,6 +11,7 @@ namespace Composite.C1Console.Elements
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class PiggybagSerializer
 	{
+        /// <exclude />
         public static string Serialize(Dictionary<string, string> piggybag)
         {
             var sb = new StringBuilder();
@@ -25,6 +26,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public static Dictionary<string, string> Deserialize(string serializedPiggybag)
         {
             Dictionary<string, string> piggyback = new Dictionary<string, string>();

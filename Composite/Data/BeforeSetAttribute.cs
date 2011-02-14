@@ -9,12 +9,14 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = true)]
 	public sealed class BeforeSetAttribute : Attribute
 	{
+        /// <exclude />
         public BeforeSetAttribute(Type beforeSetHandlerType)
         {
             this.BeforeSetHandlerType = beforeSetHandlerType;
         }
 
 
+        /// <exclude />
         public Type BeforeSetHandlerType
         {
             get;

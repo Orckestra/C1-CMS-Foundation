@@ -8,6 +8,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public interface IEntity
     {
+        /// <exclude />
         void Commit();
     }
 }

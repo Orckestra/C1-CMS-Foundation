@@ -12,7 +12,10 @@ namespace Composite.Core.Configuration
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class CachingSettings
     {
+        /// <exclude />
         public const int DefaultCacheSize = -1;
+
+        /// <exclude />
         public const int NoCacheSize = 0;
 
 
@@ -23,6 +26,7 @@ namespace Composite.Core.Configuration
         }
 
 
+        /// <exclude />
         public bool Enabled { get; private set; }
 
 
@@ -64,6 +68,7 @@ namespace Composite.Core.Configuration
         internal static IGlobalSettingsFacade Implementation { get { return _globalSettingsFacade; } set { _globalSettingsFacade = value; } }
 
 
+        /// <exclude />
         public static string ApplicationName
         {
             get
@@ -74,6 +79,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static CultureInfo DefaultCultureInfo
         {
             get
@@ -84,6 +90,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static string DefaultCultureName
         {
             get
@@ -94,6 +101,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         [Obsolete("Dont use any more. This is pending deletion")]
         public static CultureInfo DefaultLocalizationCultureInfo
         {
@@ -105,6 +113,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static string ConfigurationDirectory
         {
             get
@@ -115,6 +124,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static string GeneratedAssembliesDirectory
         {
             get
@@ -125,6 +135,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static string SerializedWorkflowsDirectory
         {
             get
@@ -135,6 +146,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static string SerializedConsoleMessagesDirectory
         {
             get
@@ -143,6 +155,9 @@ namespace Composite.Core.Configuration
             }
         }
 
+
+
+        /// <exclude />
         public static string AppCodeDirectory
         {
             get
@@ -151,6 +166,9 @@ namespace Composite.Core.Configuration
             }
         }
 
+
+
+        /// <exclude />
         public static string BinDirectory
         {
             get
@@ -161,6 +179,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static string TempDirectory
         {
             get
@@ -171,6 +190,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static string PackageDirectory
         {
             get
@@ -181,6 +201,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static string AutoPackageInstallDirectory
         {
             get
@@ -191,6 +212,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static string TreeDefinitionsDirectory
         {
             get
@@ -201,6 +223,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static string DataMetaDataDirectory
         {
             get
@@ -211,6 +234,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static string InlineCSharpFunctionDirectory
         {
             get
@@ -221,6 +245,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static string PackageLicenseDirectory
         {
             get
@@ -229,8 +254,9 @@ namespace Composite.Core.Configuration
             }
         }
 
-        
 
+
+        /// <exclude />
         public static IResourceCacheSettings ResourceCacheSettings
         {
             get
@@ -241,6 +267,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static IEnumerable<string> NonProbableAssemblyNames
         {
             get
@@ -251,6 +278,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static void AddNonProbableAssemblyName(string assemblyNamePatern)
         {
             _globalSettingsFacade.AddNonProbableAssemblyName(assemblyNamePatern);
@@ -258,6 +286,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static void RemoveNonProbableAssemblyName(string assemblyNamePatern)
         {
             _globalSettingsFacade.RemoveNonProbableAssemblyName(assemblyNamePatern);
@@ -265,6 +294,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static IEnumerable<CultureInfo> ApplicationCultures
         {
             get
@@ -275,6 +305,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static int ConsoleMessageQueueItemSecondToLive
         {
             get
@@ -284,6 +315,8 @@ namespace Composite.Core.Configuration
         }
 
 
+
+        /// <exclude />
         public static bool EnableDataTypesAutoUpdate
         {
             get
@@ -293,6 +326,8 @@ namespace Composite.Core.Configuration
         }
 
 
+
+        /// <exclude />
         public static bool BroadcastConsoleElementChanges
         {
             get
@@ -302,6 +337,8 @@ namespace Composite.Core.Configuration
         }
 
 
+
+        /// <exclude />
         public static string AutoCreatedAdministratorUserName
         {
             get
@@ -312,6 +349,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static TimeSpan WorkflowTimeout
         {
             get
@@ -322,6 +360,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static TimeSpan ConsoleTimeout
         {
             get
@@ -331,6 +370,8 @@ namespace Composite.Core.Configuration
         }
 
 
+
+        /// <exclude />
         public static TimeSpan DefaultReaderLockWaitTimeout
         {
             get
@@ -340,6 +381,7 @@ namespace Composite.Core.Configuration
         }
 
 
+        /// <exclude />
         public static TimeSpan DefaultWriterLockWaitTimeout
         {
             get
@@ -350,6 +392,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static ICachingSettings Caching
         {
             get
@@ -375,6 +418,7 @@ namespace Composite.Core.Configuration
 
 
         // Overload
+        /// <exclude />
         public static CachingSettings GetNamedCaching(string name)
         {
             ICacheSettings cacheSettings = Caching.Caches.Where(f => f.Name == name).FirstOrDefault();

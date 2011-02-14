@@ -15,6 +15,8 @@ namespace Composite.C1Console.Security
 	{
         private List<EntityToken> _hooks = new List<EntityToken>();
 
+
+        /// <exclude />
         public EntityTokenHook(EntityToken hooker)
         {
             Verify.ArgumentNotNull(hooker, "hooker");
@@ -24,6 +26,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public EntityToken Hooker
         {
             get;
@@ -32,6 +35,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public IEnumerable<EntityToken> Hookies
         {
             get
@@ -42,6 +46,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public void AddHookie(EntityToken hook)
         {
             Verify.ArgumentNotNull(hook, "hook");
@@ -51,6 +56,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public void AddHookies(IEnumerable<EntityToken> hooks)
         {
             Verify.ArgumentNotNull(hooks, "hooks");

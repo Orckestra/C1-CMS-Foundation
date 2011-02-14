@@ -4,10 +4,19 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ClientActionCategory
     {
+        /// <exclude />
         public string GroupId { get; set; }
+
+        /// <exclude />
         public string Name { get; set; }
+
+        /// <exclude />
         public bool IsInToolbar { get; set; }
+
+        /// <exclude />
         public bool IsInFolder { get; set; }
+
+        /// <exclude />
         public string FolderName { get; set; }
     }
 }

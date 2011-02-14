@@ -19,17 +19,20 @@ namespace Composite.Data.Types
     [DataAncestorProvider(typeof(NoAncestorDataAncestorProvider))]
 	public interface IUserActiveLocale : IData
 	{
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{65638F6C-0610-4563-8552-EF26FDCC7FF3}")]
         Guid Id { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 64)]
         [ImmutableFieldId("{DA8843CA-C550-4b73-93F8-5CB8C40C086C}")]
         [ForeignKey(typeof(IUserSettings), "Username")]
         string Username { get; set; }
 
 
+        /// <exclude />
         [NotNullValidator()]
         [StringSizeValidator(2, 16)]
         [StoreFieldType(PhysicalStoreFieldType.String, 16)]

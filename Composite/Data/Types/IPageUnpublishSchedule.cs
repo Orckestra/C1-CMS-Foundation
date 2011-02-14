@@ -15,26 +15,31 @@ namespace Composite.Data.Types
     [DataScope(DataScopeIdentifier.AdministratedName)]
 	public interface IPageUnpublishSchedule : IData
 	{
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{247BD023-54DC-44ab-BB2A-3044FE94A75B}")]
         Guid Id { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{43E1F55C-7CBE-4000-BDA7-B91EDEE9093A}")]
         Guid PageId { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{D8E2C07B-F8F3-4312-8630-68DEBAA0D2B7}")]
         Guid WorkflowInstanceId { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.DateTime)]
         [ImmutableFieldId("{B6091456-8BAC-4caf-B692-C5F14E5C10DB}")]
         DateTime UnpublishDate { get; set; }
 
 
+        /// <exclude />
         [NotNullValidator()]
         [StringSizeValidator(2, 16)]
         [StoreFieldType(PhysicalStoreFieldType.String, 16)]

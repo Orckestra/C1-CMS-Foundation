@@ -36,6 +36,7 @@ namespace Composite.Core.Serialization
 
 
         #region DateTime
+        /// <exclude />
         public static void SerializeKeyValuePair<PT>(StringBuilder builder, string propertyName, DateTime propertyValue)
         {
             builder.Append(propertyName);
@@ -48,12 +49,14 @@ namespace Composite.Core.Serialization
         }
 
 
+        /// <exclude />
         public static void SerializeKeyValuePair(StringBuilder builder, string propertyName, DateTime propertyValue)
         {
             SerializeKeyValuePair<DateTime>(builder, propertyName, propertyValue);
         }
 
 
+        /// <exclude />
         public static DateTime DeserializeValue<PT>(string stringRepresentation, DateTime deserializationTarget)
         {
             if (stringRepresentation == null)
@@ -66,13 +69,16 @@ namespace Composite.Core.Serialization
         }
 
 
+        /// <exclude />
         public static DateTime DeserializeValueDateTime(string stringRepresentation)
         {
             return DeserializeValue<DateTime>(stringRepresentation, DateTime.Now);
         }
         #endregion
 
+
         #region int
+        /// <exclude />
         public static void SerializeKeyValuePair<PT>(StringBuilder builder, string propertyName, int propertyValue)
         {
             builder.Append(propertyName);
@@ -81,13 +87,15 @@ namespace Composite.Core.Serialization
             builder.Append(_unencodedValueMarker);
         }
 
-        
+
+        /// <exclude />
         public static void SerializeKeyValuePair(StringBuilder builder, string propertyName, int propertyValue)
         {
             SerializeKeyValuePair<int>(builder, propertyName, propertyValue);
         }
 
 
+        /// <exclude />
         public static int DeserializeValue<PT>(string stringRepresentation, int deserializationTarget)
         {
             if (stringRepresentation == null)
@@ -99,6 +107,7 @@ namespace Composite.Core.Serialization
         }
 
 
+        /// <exclude />
         public static int DeserializeValueInt(string stringRepresentation)
         {
             return DeserializeValue<int>(stringRepresentation, default(int));
@@ -106,6 +115,7 @@ namespace Composite.Core.Serialization
         #endregion
 
         #region long
+        /// <exclude />
         public static void SerializeKeyValuePair<PT>(StringBuilder builder, string propertyName, long propertyValue)
         {
             builder.Append(propertyName);
@@ -115,12 +125,14 @@ namespace Composite.Core.Serialization
         }
 
 
+        /// <exclude />
         public static void SerializeKeyValuePair(StringBuilder builder, string propertyName, long propertyValue)
         {
             SerializeKeyValuePair<long>(builder, propertyName, propertyValue);
         }
 
 
+        /// <exclude />
         public static long DeserializeValue<PT>(string stringRepresentation, long deserializationTarget)
         {
             if (stringRepresentation == null)
@@ -132,6 +144,7 @@ namespace Composite.Core.Serialization
         }
 
 
+        /// <exclude />
         public static long DeserializeValueLong(string stringRepresentation)
         {
             return DeserializeValue<long>(stringRepresentation, default(long));
@@ -139,6 +152,7 @@ namespace Composite.Core.Serialization
         #endregion
         
         #region decimal
+        /// <exclude />
         public static void SerializeKeyValuePair<PT>(StringBuilder builder, string propertyName, decimal propertyValue)
         {
             builder.Append(propertyName);
@@ -148,12 +162,14 @@ namespace Composite.Core.Serialization
         }
 
 
+        /// <exclude />
         public static void SerializeKeyValuePair(StringBuilder builder, string propertyName, decimal propertyValue)
         {
             SerializeKeyValuePair<decimal>(builder, propertyName, propertyValue);
         }
 
 
+        /// <exclude />
         public static decimal DeserializeValue<PT>(string stringRepresentation, decimal deserializationTarget)
         {
             if (stringRepresentation == null)
@@ -165,6 +181,7 @@ namespace Composite.Core.Serialization
         }
 
 
+        /// <exclude />
         public static decimal DeserializeValueDecimal(string stringRepresentation)
         {
             return DeserializeValue<decimal>(stringRepresentation, default(decimal));
@@ -172,6 +189,7 @@ namespace Composite.Core.Serialization
         #endregion
         
         #region bool
+        /// <exclude />
         public static void SerializeKeyValuePair<PT>(StringBuilder builder, string propertyName, bool propertyValue)
         {
             builder.Append(propertyName);
@@ -181,12 +199,14 @@ namespace Composite.Core.Serialization
         }
 
 
+        /// <exclude />
         public static void SerializeKeyValuePair(StringBuilder builder, string propertyName, bool propertyValue)
         {
             SerializeKeyValuePair<bool>(builder, propertyName, propertyValue);
         }
 
 
+        /// <exclude />
         public static bool DeserializeValue<PT>(string stringRepresentation, bool deserializationTarget)
         {
             if (stringRepresentation == null)
@@ -198,6 +218,7 @@ namespace Composite.Core.Serialization
         }
 
 
+        /// <exclude />
         public static bool DeserializeValueBool(string stringRepresentation)
         {
             return DeserializeValue<bool>(stringRepresentation, default(bool));
@@ -205,6 +226,7 @@ namespace Composite.Core.Serialization
         #endregion
 
         #region Guid
+        /// <exclude />
         public static void SerializeKeyValuePair<PT>(StringBuilder builder, string propertyName, Guid propertyValue)
         {
             builder.Append(propertyName);
@@ -214,12 +236,14 @@ namespace Composite.Core.Serialization
         }
 
 
+        /// <exclude />
         public static void SerializeKeyValuePair(StringBuilder builder, string propertyName, Guid propertyValue)
         {
             SerializeKeyValuePair<Guid>(builder, propertyName, propertyValue);
         }
 
 
+        /// <exclude />
         public static Guid DeserializeValue<PT>(string stringRepresentation, Guid deserializationTarget)
         {
             if (stringRepresentation == null)
@@ -231,6 +255,7 @@ namespace Composite.Core.Serialization
         }
 
 
+        /// <exclude />
         public static Guid DeserializeValueGuid(string stringRepresentation)
         {
             return DeserializeValue<Guid>(stringRepresentation, Guid.Empty);
@@ -238,6 +263,7 @@ namespace Composite.Core.Serialization
         #endregion
 
         #region Type
+        /// <exclude />
         public static void SerializeKeyValuePair<PT>(StringBuilder builder, string propertyName, Type propertyValue)
         {
             if (null == propertyValue)
@@ -257,12 +283,14 @@ namespace Composite.Core.Serialization
         }
 
 
+        /// <exclude />
         public static void SerializeKeyValuePair(StringBuilder builder, string propertyName, Type propertyValue)
         {
             SerializeKeyValuePair<Type>(builder, propertyName, propertyValue);
         }
 
 
+        /// <exclude />
         public static Type DeserializeValue<PT>(string stringRepresentation, Type deserializationTarget)
         {
             if (stringRepresentation == null)
@@ -274,6 +302,7 @@ namespace Composite.Core.Serialization
         }
 
 
+        /// <exclude />
         public static Type DeserializeValueType(string stringRepresentation)
         {
             return DeserializeValue<Type>(stringRepresentation, default(Type));
@@ -281,6 +310,7 @@ namespace Composite.Core.Serialization
         #endregion
 
         #region string
+        /// <exclude />
         public static void SerializeKeyValuePair<PT>(StringBuilder builder, string propertyName, string propertyValue)
         {
             if (null == propertyValue)
@@ -298,12 +328,14 @@ namespace Composite.Core.Serialization
         }
 
 
+        /// <exclude />
         public static void SerializeKeyValuePair(StringBuilder builder, string propertyName, string propertyValue)
         {
             SerializeKeyValuePair<string>(builder, propertyName, propertyValue);
         }
 
 
+        /// <exclude />
         public static string DeserializeValue<PT>(string stringRepresentation, string deserializationTarget)
         {
             if (stringRepresentation == null)
@@ -315,6 +347,7 @@ namespace Composite.Core.Serialization
         }
 
 
+        /// <exclude />
         public static string DeserializeValueString(string stringRepresentation)
         {
             return DeserializeValue<string>(stringRepresentation, "");
@@ -322,6 +355,7 @@ namespace Composite.Core.Serialization
         #endregion
 
         #region Generic type
+        /// <exclude />
         public static void SerializeKeyValuePair<PT>(StringBuilder builder, string propertyName, PT propertyValue)
         {
             if (null == propertyValue)
@@ -341,6 +375,7 @@ namespace Composite.Core.Serialization
         }
 
 
+        /// <exclude />
         public static PT DeserializeValue<PT>(string stringRepresentation, PT deserializationTarget)
         {
             if (stringRepresentation == null)
@@ -353,6 +388,7 @@ namespace Composite.Core.Serialization
         }
 
 
+        /// <exclude />
         public static PT DeserializeValue<PT>(string stringRepresentation)
             where PT : class
         {
@@ -362,6 +398,7 @@ namespace Composite.Core.Serialization
 
 
         #region array ([])
+        /// <exclude />
         public static void SerializeKeyValueArrayPair<PT>(StringBuilder builder, string propertyName, PT[] propertyValue)
         {
             if (null != propertyValue)
@@ -407,6 +444,7 @@ namespace Composite.Core.Serialization
         }
 
 
+        /// <exclude />
         public static PT[] DeserializeValueArray<PT>(string stringRepresentation, PT[] deserializationTarget)
         {
             if (stringRepresentation != null)
@@ -435,13 +473,15 @@ namespace Composite.Core.Serialization
         }
 
 
+        /// <exclude />
         public static PT[] DeserializeValueArray<PT>(string stringRepresentation)
         {
             return DeserializeValueArray<PT>(stringRepresentation, (PT[])null);
         }
         #endregion
-        
 
+
+        /// <exclude />
         public static void SerializeKeyValuePair(StringBuilder builder, string propertyName, object propertyValue, Type propertyType)
         {
             Func<Type, MethodInfo> factory = f =>
@@ -466,6 +506,7 @@ namespace Composite.Core.Serialization
 
 
 
+        /// <exclude />
         public static object DeserializeValue(string stringRepresentation, Type propertyType)
         {
             Func<Type, MethodInfo> factory = f =>
@@ -502,6 +543,7 @@ namespace Composite.Core.Serialization
 
 
 
+        /// <exclude />
         public static Dictionary<string, string> ParseKeyValueCollection(string keyValueCollectionString)
         {
             Dictionary<string, string> parsed = new Dictionary<string, string>();

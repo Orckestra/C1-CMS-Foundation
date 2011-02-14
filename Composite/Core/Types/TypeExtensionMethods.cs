@@ -19,11 +19,14 @@ namespace Composite.Core.Types
     {
         private static Dictionary<PropertyInfo, List<Attribute>> _propertyAttributeCache = new Dictionary<PropertyInfo, List<Attribute>>();
 
+        /// <exclude />
         static TypeExtensionMethods()
         {
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
         }
 
+
+        /// <exclude />
         public static string GetVersionNeutralName(this Type type)
         {
             if (type.IsGenericType == false)
@@ -60,6 +63,7 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public static List<PropertyInfo> GetPropertiesRecursively(this Type type)
         {
             return GetPropertiesRecursively(type, null);
@@ -67,6 +71,7 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public static List<PropertyInfo> GetPropertiesRecursively(this Type type, Func<PropertyInfo, bool> predicate)
         {
             List<PropertyInfo> properties = new List<PropertyInfo>();
@@ -98,6 +103,7 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public static List<Type> GetInterfacesRecursively(this Type type)
         {
             List<Type> interfaces = new List<Type>();
@@ -109,6 +115,7 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public static List<Type> GetInterfacesRecursively(this Type type, Func<Type, bool> predicate)
         {
             List<Type> interfaces = new List<Type>();
@@ -138,6 +145,7 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public static string SerializeValue(this Type sourceType, object valueToSerialize)
         {
             if (valueToSerialize == null) return null;
@@ -151,6 +159,7 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public static object DeserializeValue(this Type targetType, string serializedValue)
         {
             if (serializedValue == null) return null;
@@ -166,6 +175,8 @@ namespace Composite.Core.Types
         private static Hashtable<Type, List<Attribute>> _interfaceAttributeCache = new Hashtable<Type, List<Attribute>>();
         private static object _lock = new object();
 
+
+        /// <exclude />
         public static IEnumerable<T> GetCustomInterfaceAttributes<T>(this Type type) where T : Attribute
         {
             List<Attribute> attributeList;
@@ -192,6 +203,8 @@ namespace Composite.Core.Types
 
         private static Dictionary<Type, List<Attribute>> _typeAttributeCache = new Dictionary<Type, List<Attribute>>();
 
+
+        /// <exclude />
         public static IEnumerable<T> GetCustomAttributesRecursively<T>(this Type type)
             where T : Attribute
         {
@@ -211,8 +224,9 @@ namespace Composite.Core.Types
             return attributeList.OfType<T>();
         }
 
-        
 
+
+        /// <exclude />
         public static IEnumerable<T> GetCustomAttributesRecursively<T>(this PropertyInfo propertyInfo)
             where T : Attribute
         {
@@ -289,6 +303,7 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public static string GetShortLabel(this Type type)
         {
             if (type.IsGenericType == true)

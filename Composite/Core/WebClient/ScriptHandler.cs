@@ -14,9 +14,14 @@ namespace Composite.Core.WebClient
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum CompositeScriptMode
     {
-        OPERATE,
-        DEVELOP,
-        COMPILE,
+        /// <exclude />
+        OPERATE = 0,
+
+        /// <exclude />
+        DEVELOP = 1,
+
+        /// <exclude />
+        COMPILE = 2,
     };
 
 
@@ -28,6 +33,7 @@ namespace Composite.Core.WebClient
 
 
 
+        /// <exclude />
         public static string MergeScripts(string type, IEnumerable<string> scriptFilenames, string folderPath, string targetPath)
         {
             string sourcesFilename = targetPath + "\\" + type + "-uncompressed.js";
@@ -56,6 +62,7 @@ namespace Composite.Core.WebClient
 
 
 
+        /// <exclude />
         public static string BuildTopLevelClassNames(IEnumerable<string> scriptFilenames, string folderPath, string targetPath)
         {
             StringBuilder classes = new StringBuilder();
@@ -100,6 +107,7 @@ namespace Composite.Core.WebClient
 
 
 
+        /// <exclude />
         public static IEnumerable<string> GetTopScripts(CompositeScriptMode scriptMode, string folderPath)
         {
             IEnumerable<string> result = GetStrings("top", scriptMode.ToString().ToLower(), folderPath);
@@ -109,6 +117,7 @@ namespace Composite.Core.WebClient
 
 
 
+        /// <exclude />
         public static IEnumerable<string> GetSubScripts(CompositeScriptMode scriptMode, string folderPath)
         {
             IEnumerable<string> result = GetStrings("sub", scriptMode.ToString().ToLower(), folderPath);

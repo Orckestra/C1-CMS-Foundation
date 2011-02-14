@@ -27,39 +27,42 @@ namespace Composite.C1Console.Forms
         private string _iconHandle;
 
 
+        /// <exclude />
         public void Compile(XmlReader reader, IFormChannelIdentifier channel, Dictionary<string, object> bindingObjects)
         {
             Compile(reader, channel, bindingObjects, false, "", null);
         }
 
 
+        /// <exclude />
         public void Compile(XmlReader reader, IFormChannelIdentifier channel, Dictionary<string, object> bindingObjects, Dictionary<string, List<ClientValidationRule>> bindingsValidationRules)
         {
             Compile(reader, channel, bindingObjects, false, "", bindingsValidationRules);
         }
 
 
+        /// <exclude />
         public void Compile(XmlReader reader, IFormChannelIdentifier channel, Dictionary<string, object> bindingObjects, bool withDebug)
         {
             Compile(reader, channel, bindingObjects, withDebug, "", null);
         }
 
 
-
+        /// <exclude />
         public void Compile(XmlReader reader, IFormChannelIdentifier channel, Dictionary<string, object> bindingObjects, bool withDebug, Dictionary<string, List<ClientValidationRule>> bindingsValidationRules)
         {
             Compile(reader, channel, bindingObjects, withDebug, "", bindingsValidationRules);
         }
 
 
-
+        /// <exclude />
         public void Compile(XmlReader reader, IFormChannelIdentifier channel, Dictionary<string, object> bindingObjects, bool withDebug, string customControlIdPrefix)
         {
             Compile(reader, channel, bindingObjects, withDebug, customControlIdPrefix, null);
         }
 
 
-
+        /// <exclude />
         public void Compile(XmlReader reader, IFormChannelIdentifier channel, Dictionary<string, object> bindingObjects, bool withDebug, string customControlIdPrefix, Dictionary<string, List<ClientValidationRule>> bindingsValidationRules)
         {
             _bindingObjects = bindingObjects;
@@ -85,10 +88,10 @@ namespace Composite.C1Console.Forms
             ExtractUiArtifactsPhase extractUiArtifacts = new ExtractUiArtifactsPhase();
 
             extractUiArtifacts.ExtractUiArtifacts(_rootCompilerNode, out _uiControl, out _label, out _iconHandle);
-        }        
+        }
 
 
-
+        /// <exclude />
         public void SaveControlProperties()
         {
             _uiControl.BindStateToControlProperties();
@@ -100,14 +103,14 @@ namespace Composite.C1Console.Forms
         }
 
 
-
+        /// <exclude />
         public IUiControl UiControl
         {
             get { return _uiControl; }
         }
 
 
-
+        /// <exclude />
         public string Label
         {
             get 
@@ -124,7 +127,7 @@ namespace Composite.C1Console.Forms
         }
 
 
-
+        /// <exclude />
         public ResourceHandle Icon
         {
             get
@@ -151,7 +154,7 @@ namespace Composite.C1Console.Forms
         }
 
 
-
+        /// <exclude />
         public CompileTreeNode RootCompileTreeNode
         {
             get { return _rootCompilerNode; }

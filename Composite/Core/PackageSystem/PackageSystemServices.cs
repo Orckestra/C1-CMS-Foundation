@@ -18,6 +18,7 @@ namespace Composite.Core.PackageSystem
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class PackageSystemServices
     {
+        /// <exclude />
         public static IEnumerable<PackageDescription> GetFilteredAllAvailablePackages()
         {
             List<InstalledPackageInformation> installedPackageInformation = PackageManager.GetInstalledPackages().ToList();
@@ -63,6 +64,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public static string GetPackageSourceNameByPackageId(Guid id, Guid installationId, CultureInfo userCulture)
         {
             List<IPackageServerSource> packageServerSources = DataFacade.GetData<IPackageServerSource>().ToList();
@@ -85,6 +87,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public static string GetEulaText(PackageDescription packageDescription)
         {
             string packageSource = PackageSystemServices.GetPackageSourceNameByPackageId(packageDescription.Id, InstallationInformationFacade.InstallationId, UserSettings.CultureInfo);
@@ -96,6 +99,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public static PackageInformation GetPackageInformationFromZipfile(string zipFilename)
         {
             XElement installContent;

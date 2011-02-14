@@ -7,11 +7,22 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum LogLevel
     {
+        /// <exclude />
         Fine,
+
+        /// <exclude />
         Info,
+
+        /// <exclude />
         Debug,
+
+        /// <exclude />
         Warn,
+
+        /// <exclude />
         Error,
+
+        /// <exclude />
         Fatal
     }
 

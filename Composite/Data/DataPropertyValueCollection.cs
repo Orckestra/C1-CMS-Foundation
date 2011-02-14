@@ -15,6 +15,8 @@ namespace Composite.Data
 	{
         private Dictionary<PropertyInfo, object> _propertyValues = new Dictionary<PropertyInfo, object>();
 
+
+        /// <exclude />
         public void AddKeyProperty(PropertyInfo propertyInfo, object value)
         {
             if (propertyInfo == null) throw new ArgumentNullException("keyPropertyName");
@@ -27,6 +29,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public IEnumerable<KeyValuePair<PropertyInfo, object>> PropertyValues
         {
             get

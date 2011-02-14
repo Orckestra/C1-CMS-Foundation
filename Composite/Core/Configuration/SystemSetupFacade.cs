@@ -19,11 +19,13 @@ namespace Composite.Core.Configuration
         private static bool _isSystemFirstTimeInitializedInitialized = false;
         private static bool _isSystemFirstTimeInitializedValue = false;
 
+        /// <exclude />
         static SystemSetupFacade()
         {
         }
 
 
+        /// <exclude />
         public static bool IsSystemFirstTimeInitialized
         {
             get

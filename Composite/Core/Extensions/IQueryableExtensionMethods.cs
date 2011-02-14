@@ -17,6 +17,8 @@ namespace Composite.Core.Extensions
 	         where methodInfo.Name == "Any" && methodInfo.GetParameters().Length == 1
 	         select methodInfo).First();
 
+
+        /// <exclude />
         public static IQueryable<T> Random<T>(this IQueryable<T> source) where T : class, IData
         {
             Verify.ArgumentNotNull(source, "source");
@@ -24,11 +26,15 @@ namespace Composite.Core.Extensions
             return source.OrderBy(element => Guid.NewGuid());
         }
 
+
+        /// <exclude />
         public static IQueryable<T> TakeRandom<T>(this IQueryable<T> source, int elementsToTake) where T : class, IData
         {
             return source.Random().Take(elementsToTake);
         }
 
+
+        /// <exclude />
         public static bool IsEnumerableQuery<T>(this IQueryable<T> query)
         {
             if(query == null) return false;
@@ -41,6 +47,8 @@ namespace Composite.Core.Extensions
             return query.GetType().GetGenericTypeDefinition().FullName.StartsWith("System.Linq.EnumerableQuery");
         }
 
+
+        /// <exclude />
         public static bool Any(this IQueryable queryable)
         {
             var type = queryable.GetType();
@@ -65,6 +73,7 @@ namespace Composite.Core.Extensions
             }
             return false;
         }
+
 
         #region Obsolete
 

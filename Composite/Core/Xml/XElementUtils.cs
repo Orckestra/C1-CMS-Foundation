@@ -44,6 +44,7 @@ namespace Composite.Core.Xml
 
 
 
+        /// <exclude />
         public static bool HasSameSiblings(this XElement element)
         {
             if (element == null) throw new ArgumentNullException("element");
@@ -55,6 +56,7 @@ namespace Composite.Core.Xml
 
 
 
+        /// <exclude />
         public static int GetSameSiblingsBeforeCount(this XElement element)
         {
             if (element == null) throw new ArgumentNullException("element");

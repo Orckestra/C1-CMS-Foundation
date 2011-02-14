@@ -110,6 +110,7 @@ namespace Composite.Core.IO
 
 
 
+        /// <exclude />
         public static void RemoveReadOnlyRecursively(string directoryPath)
         {
             foreach (string file in C1Directory.GetFiles(directoryPath))
@@ -126,6 +127,7 @@ namespace Composite.Core.IO
 
 
 
+        /// <exclude />
         public static IEnumerable<string> GetFilesRecursively(string path)
         {
             foreach (string filePath in Directory.GetFiles(path))

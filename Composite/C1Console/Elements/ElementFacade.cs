@@ -22,6 +22,7 @@ namespace Composite.C1Console.Elements
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ElementFacade
     {
+        /// <exclude />
         public static IEnumerable<Element> GetRoots(SearchToken searchToken)
         {
             return GetRoots(ElementProviderRegistry.RootElementProviderName, searchToken, true, false);
@@ -29,6 +30,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public static IEnumerable<Element> GetRoots(ElementProviderHandle elementProviderHandle, SearchToken searchToken)
         {
             if (elementProviderHandle == null) throw new ArgumentNullException("elementProviderHandle");
@@ -38,6 +40,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public static IEnumerable<Element> GetChildren(ElementHandle elementHandle, SearchToken searchToken)
         {
             if (elementHandle == null) throw new ArgumentNullException("elementHandle");
@@ -47,6 +50,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public static IEnumerable<LabeledProperty> GetLabeledProperties(ElementHandle elementHandle)
         {
             if (elementHandle == null) throw new ArgumentNullException("elementHandle");
@@ -56,6 +60,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public static bool ContainsLocalizedData(ElementProviderHandle elementProviderHandle)
         {
             if (elementProviderHandle == null) throw new ArgumentNullException("elementProviderHandle");
@@ -67,6 +72,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public static IEnumerable<Element> GetForeignRoots(SearchToken searchToken)
         {
             return GetRoots(ElementProviderRegistry.RootElementProviderName, searchToken, true, true);
@@ -74,6 +80,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public static IEnumerable<Element> GetForeignRoots(ElementProviderHandle elementProviderHandle, SearchToken searchToken)
         {
             if (elementProviderHandle == null) throw new ArgumentNullException("elementProviderHandle");
@@ -83,6 +90,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public static IEnumerable<Element> GetForeignChildren(ElementHandle elementHandle, SearchToken searchToken)
         {
             if (elementHandle == null) throw new ArgumentNullException("elementHandle");
@@ -92,6 +100,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public static IEnumerable<LabeledProperty> GetForeignLabeledProperties(ElementHandle elementHandle)
         {
             if (elementHandle == null) throw new ArgumentNullException("elementHandle");
@@ -109,6 +118,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public static object GetData(ElementProviderHandle elementProviderHandle, string dataName)
         {
             if (elementProviderHandle == null) throw new ArgumentNullException("elementProviderHandle");
@@ -119,6 +129,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public static bool ExecuteElementDraggedAndDropped(ElementHandle draggedElementHandle, ElementHandle newParentElementHandle, int dropIndex, bool isCopy, FlowControllerServicesContainer draggedElementFlowControllerServicesContainer)
         {
             if (draggedElementHandle == null) throw new ArgumentNullException("draggedElementHandle");
@@ -142,6 +153,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public static SearchToken GetNewSearchToken(ElementHandle elementHandle)
         {
             if (elementHandle == null) throw new ArgumentNullException("elementHandle");
@@ -160,6 +172,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public static XmlReader GetSearchFormMarkup(ElementHandle elementHandle)
         {
             if (elementHandle == null) throw new ArgumentNullException("elementHandle");
@@ -178,6 +191,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public static Dictionary<string, object> GetSearchFormBindings(ElementHandle elementHandle)
         {
             if (elementHandle == null) throw new ArgumentNullException("elementHandle");
@@ -194,6 +208,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public static IEnumerable<Element> GetRootsWithNoSecurity()
         {
             return GetRoots(ElementProviderRegistry.RootElementProviderName, null, false, false);
@@ -201,6 +216,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public static IEnumerable<Element> GetRootsWithNoSecurity(ElementProviderHandle elementProviderHandle, SearchToken searchToken)
         {
             if (elementProviderHandle == null) throw new ArgumentNullException("elementProviderHandle");
@@ -210,6 +226,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public static IEnumerable<Element> GetPerspectiveElements(SearchToken searchToken, bool performceSecurityCheck)
         {
             IEnumerable<ElementHandle> rootElementHandles = GetRoots(ElementProviderRegistry.RootElementProviderName, null, performceSecurityCheck, false).Select(f => f.ElementHandle);
@@ -227,6 +244,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public static IEnumerable<Element> GetPerspectiveElementsWithNoSecurity(SearchToken searchToken)
         {
             return GetPerspectiveElements(searchToken, false);

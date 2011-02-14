@@ -11,13 +11,14 @@ namespace Composite.Core.ResourceSystem
     [Serializable]
     public sealed class ResourceHandle
     {
+        /// <exclude />
         public static ResourceHandle Build(string resourceNamespace, string resourceName)
         {
             return new ResourceHandle(resourceNamespace, resourceName);
         }
 
 
-
+        /// <exclude />
         public static ResourceHandle BuildIconFromDefaultProvider(string resourceName)
         {
             return new ResourceHandle(BuildInIconProviderName.ProviderName, resourceName);
@@ -26,10 +27,11 @@ namespace Composite.Core.ResourceSystem
 
         /// <summary>
         /// DO NOT USE! For serializing only!
-        /// </summary>
-        public ResourceHandle() { }       
+        /// </summary>        
+        public ResourceHandle() { }
 
 
+        /// <exclude />
         public ResourceHandle(string resourceNamespace, string resourceName)
         {
             this.ResourceName = resourceName;
@@ -37,9 +39,11 @@ namespace Composite.Core.ResourceSystem
         }
 
 
+        /// <exclude />
         public string ResourceNamespace { get; set; }
 
 
+        /// <exclude />
         public string ResourceName{ get; set; }
     }
 }

@@ -14,6 +14,7 @@ namespace Composite.C1Console.Security
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class UserPerspectiveFacade
 	{
+        /// <exclude />
         public static IEnumerable<string> GetSerializedEntityTokens(string username)
         {
             return
@@ -22,8 +23,9 @@ namespace Composite.C1Console.Security
                 select activePerspective.SerializedEntityToken;
         }
 
-        
-        
+
+
+        /// <exclude />
         public static IEnumerable<EntityToken> GetEntityTokens(string username )
         {
             return
@@ -32,6 +34,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static void SetEntityTokens(string username, IEnumerable<EntityToken> entityTokens)
         {
             SetSerializedEntityTokens(username, entityTokens.Select(f => EntityTokenSerializer.Serialize(f)));
@@ -39,6 +42,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static void SetSerializedEntityTokens(string username, IEnumerable<string> serializedEntityTokens)
         {
             DataFacade.Delete<IUserActivePerspective>(f => f.Username == username);
@@ -57,6 +61,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static void DeleteAll(string username)
         {
             DataFacade.Delete<IUserActivePerspective>(f => f.Username == username);

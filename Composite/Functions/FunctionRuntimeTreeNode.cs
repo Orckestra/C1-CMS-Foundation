@@ -22,12 +22,14 @@ namespace Composite.Functions
         private object _cachedValue;
 
 
+        /// <exclude />
         protected override IMetaFunction HostedFunction
         {
             get { return _function; }
         }
 
 
+        /// <exclude />
         public FunctionRuntimeTreeNode(IFunction function)
         {
             _function = function;
@@ -44,7 +46,7 @@ namespace Composite.Functions
 
 
 
-
+        /// <exclude />
         public override object GetValue(FunctionContextContainer contextContainer)
         {
             using (TimerProfilerFacade.CreateTimerProfiler(this.GetNamespace() + "." + this.GetName()))
@@ -124,6 +126,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public override object GetCachedValue(FunctionContextContainer contextContainer)
         {
             if (contextContainer == null) throw new ArgumentNullException("contextContainer");
@@ -140,6 +143,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public override IEnumerable<string> GetAllSubFunctionNames()
         {
             List<string> names = new List<string>();
@@ -156,6 +160,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public override XElement Serialize()
         {
             // ensure "f:function" naming:

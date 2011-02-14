@@ -43,6 +43,7 @@ namespace Composite.Data.DynamicTypes
         private static readonly XElement _cmsLayoutElementTemplate;
 
 
+        /// <exclude />
         static DataTypeDescriptorFormsHelper()
         {
             _cmsFormElementTemplate = XElement.Parse(string.Format(@"<cms:{0} xmlns:cms=""{1}"" xmlns=""{2}"" xmlns:f=""{3}"" />", FormKeyTagNames.FormDefinition, Namespaces.BindingForms10, Namespaces.BindingFormsStdUiControls10, Namespaces.BindingFormsStdFuncLib10));
@@ -50,23 +51,29 @@ namespace Composite.Data.DynamicTypes
             _cmsLayoutElementTemplate = new XElement(Namespaces.BindingForms10 + FormKeyTagNames.Layout);
         }
 
+
+        /// <exclude />
         public DataTypeDescriptorFormsHelper(DataTypeDescriptor dataTypeDescriptor, bool showPublicationStatusSelector, EntityToken entityToken)
             : this(dataTypeDescriptor, null, showPublicationStatusSelector, entityToken)
         {
         }
 
+
+        /// <exclude />
         public DataTypeDescriptorFormsHelper(DataTypeDescriptor dataTypeDescriptor)
             : this(dataTypeDescriptor, null, false, null)
         {
         }
 
 
+        /// <exclude />
         public DataTypeDescriptorFormsHelper(DataTypeDescriptor dataTypeDescriptor, string bindingNamesPrefix)
             : this(dataTypeDescriptor, bindingNamesPrefix, false, null)
         {
         }
 
 
+        /// <exclude />
         public DataTypeDescriptorFormsHelper(DataTypeDescriptor dataTypeDescriptor, string bindingNamesPrefix, bool showPublicationStatusSelector, EntityToken entityToken)
         {
             if (dataTypeDescriptor == null) throw new ArgumentNullException("dataTypeDescriptor");
@@ -79,6 +86,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public DataTypeDescriptor DataTypeDescriptor
         {
             get
@@ -88,7 +96,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-
+        /// <exclude />
         public string AlternateFormDefinition
         {
             get
@@ -112,6 +120,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public void AddReadOnlyField(string fieldName)
         {
             _readOnlyFields.Add(fieldName);
@@ -119,6 +128,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public void AddReadOnlyFields(IEnumerable<string> fieldNames)
         {
             _readOnlyFields.AddRange(fieldNames);
@@ -126,6 +136,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public string GetForm()
         {
             if (_generatedForm == null)
@@ -138,6 +149,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public XElement BindingXml
         {
             get
@@ -153,6 +165,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public XElement PanelXml
         {
             get
@@ -168,6 +181,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public string BindingNamesPrefix
         {
             get
@@ -178,6 +192,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public void UpdateWithNewBindings(Dictionary<string, object> bindings)
         {
             Dictionary<string, object> newBindigns = GetNewBindings();
@@ -197,6 +212,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public Dictionary<string, object> GetNewBindings()
         {
             Dictionary<string, object> newBindings = new Dictionary<string, object>();
@@ -260,6 +276,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public void UpdateWithBindings(IData dataObject, Dictionary<string, object> bindings)
         {
             Dictionary<string, object> newBindigns = GetBindings(dataObject);
@@ -279,6 +296,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public Dictionary<string, object> GetBindings(IData dataObject)
         {
             return GetBindings(dataObject, false);
@@ -286,6 +304,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public Dictionary<string, object> GetBindings(IData dataObject, bool allowMandatoryNonDefaultingProperties)
         {
             if (dataObject == null) throw new ArgumentNullException("dataObject");
@@ -378,6 +397,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public Dictionary<string, List<ClientValidationRule>> GetBindingsValidationRules(IData data)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -400,6 +420,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public Dictionary<string, string> BindingsToObject(Dictionary<string, object> bindings, IData dataObject)
         {
             Dictionary<string, string> errorMessages = new Dictionary<string, string>();
@@ -459,6 +480,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public Dictionary<string, string> ObjectToBindings(IData dataObject, Dictionary<string, object> bindings)
         {
             Dictionary<string, string> errorMessages = new Dictionary<string, string>();
@@ -519,6 +541,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public string LayoutIconHandle
         {
             get;
@@ -527,6 +550,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public static XNamespace MainNamespace
         {
             get { return Namespaces.BindingFormsStdUiControls10; }
@@ -534,18 +558,23 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public static XNamespace CmsNamespace
         {
             get { return Namespaces.BindingForms10; }
         }
 
 
+
+        /// <exclude />
         public static XNamespace FunctionNamespace
         {
             get { return Namespaces.BindingFormsStdFuncLib10; }
         }
 
 
+
+        /// <exclude />
         public string FieldGroupLabel
         {
             get;
@@ -553,6 +582,8 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+
+        /// <exclude />
         public string LayoutLabel
         {
             get;
@@ -750,6 +781,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public static string GetBindingName(string prefix, string bindingName)
         {
             return string.Format("{0}{1}", prefix, bindingName).Replace('.', '_');

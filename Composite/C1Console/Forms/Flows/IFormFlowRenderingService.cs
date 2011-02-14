@@ -8,11 +8,19 @@ namespace Composite.C1Console.Forms.Flows
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IFormFlowRenderingService : IFlowControllerService
     {
+        /// <exclude />
         void RerenderView();
+
+        /// <exclude />
         bool RerenderViewRequested { get; }
+
+        /// <exclude />
         bool HasFieldMessages { get; }
 
+        /// <exclude />
         void ShowFieldMessage(string fieldBindingPath, string message);
+
+        /// <exclude />
         void SetSaveStatus(bool succeeded);
     }
 }

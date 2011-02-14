@@ -10,7 +10,10 @@ namespace Composite.Core.Serialization.CodeGeneration.Foundation
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface ISerializer
     {
+        /// <exclude />
         void Serialize(object propertyClass, StringBuilder serializedValues);
+
+        /// <exclude />
         object Deserialize(Dictionary<string, string> objectState);
     }
 }

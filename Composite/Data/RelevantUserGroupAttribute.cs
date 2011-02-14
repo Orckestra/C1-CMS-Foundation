@@ -11,6 +11,7 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true, Inherited = true)]
     public sealed class RelevantToUserTypeAttribute : Attribute
     {
+        /// <exclude />
         public RelevantToUserTypeAttribute(UserType relevantToUserType)
         {
             this.UserType = relevantToUserType;
@@ -18,6 +19,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public RelevantToUserTypeAttribute(string relevantToUserTypeString)
         {
             this.UserType = (UserType)Enum.Parse( typeof(UserType), relevantToUserTypeString );
@@ -25,6 +27,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public UserType UserType
         {
             get;

@@ -16,12 +16,15 @@ namespace Composite.C1Console.Security
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class EntityTokenSerializer
     {
+        /// <exclude />
         public static string Serialize(EntityToken entityToken)
         {
             return Serialize(entityToken, false);
         }
 
 
+
+        /// <exclude />
         public static string Serialize(EntityToken entityToken, bool includeHashValue)
         {
             Verify.ArgumentNotNull(entityToken, "entityToken");
@@ -49,6 +52,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static EntityToken Deserialize(string serialziedEntityToken)
         {
             return Deserialize(serialziedEntityToken, false);
@@ -56,6 +60,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static EntityToken Deserialize(string serialziedEntityToken, bool includeHashValue)
         {
             if (string.IsNullOrEmpty(serialziedEntityToken) == true) throw new ArgumentNullException("serialziedEntityToken");
@@ -112,6 +117,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static T Deserialize<T>(string serialziedEntityToken)
             where T : EntityToken
         {

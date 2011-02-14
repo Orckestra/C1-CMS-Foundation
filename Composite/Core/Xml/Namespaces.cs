@@ -31,22 +31,43 @@ namespace Composite.Core.Xml
         }
 
 
+        /// <exclude />
         public static XNamespace BindingForms10 { get; private set; }
+
+        /// <exclude />
         public static XNamespace BindingFormsStdUiControls10 { get; private set; }
+
+        /// <exclude />
         public static XNamespace BindingFormsStdFuncLib10 { get; private set; }
+
+        /// <exclude />
         public static XNamespace Function10 { get; private set; }
+
+        /// <exclude />
         public static XNamespace Rendering10 { get; private set; }
+
+        /// <exclude />
         public static XNamespace AspNetControls { get; private set; }
+
+        /// <exclude />
         public static XNamespace Data { get; private set; }
+
+        /// <exclude />
         public static XNamespace DynamicData10 { get; private set; }
 
-
+        /// <exclude />
         public static XNamespace XmlNs { get; private set; }
 
+        /// <exclude />
         public static XNamespace Xhtml { get; private set; }
-        public static XNamespace Xsl { get; private set; }
-        public static XNamespace Xsi { get; private set; }
-        public static XNamespace Xsd { get; private set; }
 
+        /// <exclude />
+        public static XNamespace Xsl { get; private set; }
+
+        /// <exclude />
+        public static XNamespace Xsi { get; private set; }
+
+        /// <exclude />
+        public static XNamespace Xsd { get; private set; }
 	}
 }

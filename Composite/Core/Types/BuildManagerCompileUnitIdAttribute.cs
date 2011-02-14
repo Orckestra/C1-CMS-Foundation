@@ -10,6 +10,7 @@ namespace Composite.Core.Types
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
     public sealed class BuildManagerCompileUnitIdAttribute : Attribute
 	{
+        /// <exclude />
         public BuildManagerCompileUnitIdAttribute(string id)
         {
             this.Id = id;
@@ -17,6 +18,7 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public string Id
         {
             get;

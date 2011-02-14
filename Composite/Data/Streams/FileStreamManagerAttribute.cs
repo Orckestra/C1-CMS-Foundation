@@ -13,6 +13,7 @@ namespace Composite.Data.Streams
         private Type _fileStreamManagerType;
 
 
+        /// <exclude />
         public FileStreamManagerAttribute(Type fileStreamManagerType)
         {
             _fileStreamManagerType = fileStreamManagerType;

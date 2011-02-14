@@ -8,6 +8,7 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public interface IChangeHistory: IData
 	{
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.DateTime)]
         [ImmutableFieldId("{59E10FE8-EC55-4b10-B17A-FDE3EB4690F0}")]
         [DefaultFieldNowDateTimeValue()]
@@ -15,6 +16,7 @@ namespace Composite.Data
         DateTime ChangeDate { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 64, IsNullable = true)]
         [ImmutableFieldId("{617E34B5-E035-4107-9109-DB0B33078B2A}")]
         [DefaultFieldStringValue("")]

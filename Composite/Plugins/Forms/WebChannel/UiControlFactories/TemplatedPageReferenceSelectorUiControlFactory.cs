@@ -26,14 +26,18 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     {
         private DataReference<IPage> _selected;
 
+        /// <exclude />
         public DataReference<IPage> Selected
         {
             get { return _selected; }
             set { _selected = value; }
         }
 
+        /// <exclude />
         public List<ClientValidationRule> ClientValidationRules { get; set; }
     }
+
+
 
     internal sealed class TemplatedPageReferenceSelectorUiControl : PageReferenceSelectorUiControl, IWebUiControl
     {
@@ -117,6 +121,4 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             return new TemplatedPageReferenceSelectorUiControlFactory(objectConfiguration as TemplatedPageReferenceSelectorUiControlFactoryData);
         }
     }
-
-
 }

@@ -10,11 +10,13 @@ namespace Composite.C1Console.Events
     [Serializable]
     public sealed class DownloadFileMessageQueueItem : IConsoleMessageQueueItem
     {
+        /// <exclude />
         public DownloadFileMessageQueueItem(string urlToDownload)
         {
             this.Url = urlToDownload;
         }
 
+        /// <exclude />
         public string Url { get; set; }
     }
 }

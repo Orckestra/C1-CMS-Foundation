@@ -20,8 +20,13 @@ namespace Composite.Data.Plugins.DataProvider
         /// <returns></returns>
         IEnumerable<Type> GetKnownInterfaces();
 
+        /// <exclude />
         void CreateStore(DataTypeDescriptor typeDescriptor);
+
+        /// <exclude />
         void AlterStore(DataTypeChangeDescriptor changeDescriptor);
+
+        /// <exclude />
         void DropStore(DataTypeDescriptor typeDescriptor);
     }
 }

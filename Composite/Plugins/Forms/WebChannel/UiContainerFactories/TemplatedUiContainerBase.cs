@@ -15,16 +15,27 @@ namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
     public abstract class TemplatedUiContainerBase : UserControl
     {
         private IWebUiControl _webUiControl;
+
+        /// <exclude />
         public abstract Control GetFormPlaceHolder();
+        
+        /// <exclude />
         public abstract Control GetMessagePlaceHolder();
+
+        /// <exclude />
         public abstract void SetContainerTitle(string title);
+
+        /// <exclude />
         public abstract void SetContainerIcon(ResourceHandle icon);
+
 
         internal void SetWebUiControlRef(IWebUiControl webUiControl)
         {
             _webUiControl = webUiControl;
         }
 
+
+        /// <exclude />
         protected override void OnInit(System.EventArgs e)
         {
             base.OnInit(e);
@@ -46,6 +57,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
             }
         }
 
+        /// <exclude />
         public abstract void ShowFieldMessages(Dictionary<string, string> clientIDPathedMessages);
     }
 }

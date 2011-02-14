@@ -13,14 +13,17 @@ namespace Composite.Plugins.WebClient.SessionStateProviders.DefaultSessionStateP
     [Caching(CachingType.Full)]
     public interface ISessionStateEntry : IData
     {
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{8e0f00dc-a364-4bdc-bed4-0fa771cce148}")]
         Guid Id { get; set; }
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.DateTime)]
         [ImmutableFieldId("{f2ba2a81-cd6a-4e48-8f12-a4446a1df046}")]
         DateTime ExpirationDate { get; set; }
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.LargeString)]
         [ImmutableFieldId("{174b9f86-c45b-434a-a3a1-083f78fcfa93}")]
         string SerializedValue { get; set; }

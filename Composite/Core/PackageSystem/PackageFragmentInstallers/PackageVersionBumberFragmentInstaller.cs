@@ -23,6 +23,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         private Dictionary<Guid, string> _installedPackages = null;
 
 
+        /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
             List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
@@ -86,6 +87,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
 
+        /// <exclude />
         public override IEnumerable<XElement> Install()
         {
             if (_packagesToBumb == null) throw new InvalidOperationException("PackageVersionBumberFragmentInstaller has not been validated");

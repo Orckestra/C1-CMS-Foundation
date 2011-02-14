@@ -11,8 +11,10 @@ namespace Composite.Functions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class BaseFunctionRuntimeTreeNode : BaseRuntimeTreeNode
     {
+        /// <exclude />
         protected List<BaseParameterRuntimeTreeNode> Parameters { get; set; }
 
+        /// <exclude />
         public void SetParameter(BaseParameterRuntimeTreeNode parameterRuntimeTreeNode)
         {
             if (parameterRuntimeTreeNode == null) throw new ArgumentNullException("parameterRuntimeTreeNode");
@@ -29,6 +31,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public void RemoveParameter(string parameterName)
         {
             if (string.IsNullOrEmpty(parameterName)) throw new ArgumentException("parameterName can not be null or an empty string");
@@ -52,7 +55,7 @@ namespace Composite.Functions
 
 
 
-
+        /// <exclude />
         public override bool ContainsNestedFunctions
         {
             get
@@ -71,7 +74,7 @@ namespace Composite.Functions
         }
 
 
-
+        /// <exclude />
         abstract protected IMetaFunction HostedFunction { get; }
 
 
@@ -120,6 +123,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         protected void ValidateNotSelfCalling()
         {
             var function = HostedFunction;

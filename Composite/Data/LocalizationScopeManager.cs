@@ -11,6 +11,7 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class LocalizationScopeManager
     {
+        /// <exclude />
         public static CultureInfo CurrentLocalizationScope
         {
             get
@@ -28,6 +29,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static CultureInfo MapByType(Type type)
         {
             if (DataLocalizationFacade.IsLocalized(type) == true)
@@ -69,6 +71,7 @@ namespace Composite.Data
 
 
         // Using thread statis because the request life time cache does not work if a non-asp.net is the invoker /MRJ
+        /// <exclude />
         [ThreadStatic]
         public static Stack<CultureInfo> _localizationScopeStack = null;
 

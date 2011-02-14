@@ -10,6 +10,7 @@ namespace Composite.Core.Types
         private bool _hasValue = false;
 
 
+        /// <exclude />
         public static implicit operator ExtendedNullable<T>(T value)
         {
             ExtendedNullable<T> extendedNullable = new ExtendedNullable<T>();
@@ -20,6 +21,7 @@ namespace Composite.Core.Types
         }
 
 
+        /// <exclude />
         public bool HasValue
         {
             get
@@ -29,6 +31,7 @@ namespace Composite.Core.Types
         }
 
 
+        /// <exclude />
         public T Value
         {
             get

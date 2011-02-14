@@ -5,7 +5,8 @@
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public enum PackageFragmentValidationResultType
-	{       
+	{
+        /// <exclude />
         Fatal 
 	}
 }

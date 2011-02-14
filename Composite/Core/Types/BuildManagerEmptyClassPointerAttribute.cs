@@ -10,6 +10,7 @@ namespace Composite.Core.Types
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
 	public sealed class BuildManagerEmptyClassPointerAttribute : Attribute
 	{
+        /// <exclude />
         public BuildManagerEmptyClassPointerAttribute(string interfaceNamespaceName, string interfaceTypeName)
         {
             this.InterfaceNamespaceName = interfaceNamespaceName;
@@ -17,6 +18,7 @@ namespace Composite.Core.Types
         }
 
 
+        /// <exclude />
         public string InterfaceNamespaceName
         {
             get;
@@ -24,6 +26,7 @@ namespace Composite.Core.Types
         }
 
 
+        /// <exclude />
         public string InterfaceTypeName
         {
             get;

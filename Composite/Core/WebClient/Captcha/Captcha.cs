@@ -26,6 +26,7 @@ namespace Composite.Core.WebClient.Captcha
         private static readonly Hashtable<int, Hashset<string>> _alreadyUsedRecords = new Hashtable<int, Hashset<string>>();
 
 
+        /// <exclude />
         public static string CreateEncryptedValue()
         {
             DateTime now = DateTime.Now;
@@ -35,6 +36,8 @@ namespace Composite.Core.WebClient.Captcha
             return Encryption.Encrypt(value);
         }
 
+
+        /// <exclude />
         public static bool IsValid(string encryptedValue)
         {
             string value;
@@ -48,6 +51,8 @@ namespace Composite.Core.WebClient.Captcha
                    && !IsAlreadyUsed(encryptedValue);
         }
 
+
+        /// <exclude />
         public static bool IsValid(string value, string encryptedValue)
         {
             string correctValue;
@@ -61,6 +66,8 @@ namespace Composite.Core.WebClient.Captcha
                    && !IsAlreadyUsed(encryptedValue);
         }
 
+
+        /// <exclude />
         public static void RegisterUsage(string encryptedValue)
         {
             string value;
@@ -111,6 +118,8 @@ namespace Composite.Core.WebClient.Captcha
             }
         }
 
+
+        /// <exclude />
         public static bool IsAlreadyUsed(string encryptedValue)
         {
             string value;
@@ -124,11 +133,14 @@ namespace Composite.Core.WebClient.Captcha
             return records != null && records.Contains(encryptedValue);
         }
 
+
         private static int GetMinute(DateTime dateTime)
         {
             return dateTime.Hour * 60 + dateTime.Minute;
         }
 
+
+        /// <exclude />
         public static bool Decrypt(string encryptedValue, out DateTime timestamp, out string value)
         {
             timestamp = DateTime.MinValue;
@@ -157,6 +169,7 @@ namespace Composite.Core.WebClient.Captcha
             value = captchaPart;
             return true;
         }
+
 
         private static string GenerateText()
         {

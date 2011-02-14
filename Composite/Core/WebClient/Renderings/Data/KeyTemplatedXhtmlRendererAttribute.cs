@@ -36,12 +36,16 @@ namespace Composite.Core.WebClient.Renderings.Data
             _supportedRenderingType = renderingType;
         }
 
+
+        /// <exclude />
         public string FormatedTemplate
         {
             get;
             private set;
         }
 
+
+        /// <exclude />
         public override IDataXhtmlRenderer BuildRenderer()
         {
             if (_renderer == null)
@@ -51,6 +55,8 @@ namespace Composite.Core.WebClient.Renderings.Data
             return _renderer;
         }
 
+
+        /// <exclude />
         public override XhtmlRenderingType SupportedRenderingType
         {
             get
@@ -215,7 +221,5 @@ namespace Composite.Core.WebClient.Renderings.Data
                 return xhtmlDocument;
             }
         }
-
     }
-
 }

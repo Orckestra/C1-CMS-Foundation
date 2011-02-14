@@ -23,6 +23,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.VisualFunctionProvider
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class RenderingHelper
     {
+        /// <exclude />
         public static XhtmlDocument RenderCompleteDataList(IVisualFunction function, XhtmlDocument xhtmlDocument, DataTypeDescriptor typeDescriptor, FunctionContextContainer functionContextContainer)
         {
             Type typeofClassWithGenericStaticMethod = typeof(RenderingHelper);
@@ -51,7 +52,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.VisualFunctionProvider
 
 
 
-
+        /// <exclude />
         public static XhtmlDocument RenderDataList<T>(IVisualFunction function, XhtmlDocument xhtmlDocument, DataTypeDescriptor typeDescriptor, FunctionContextContainer functionContextContainer, Expression<Func<T, bool>> filter)
             where T : class, IData
         {

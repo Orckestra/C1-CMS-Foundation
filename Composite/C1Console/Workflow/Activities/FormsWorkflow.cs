@@ -57,6 +57,7 @@ namespace Composite.C1Console.Workflow.Activities
         private EventHandler<WorkflowEventArgs> _onWorkflowIdledEventHandler;
 
 
+        /// <exclude />
         public FormsWorkflow()
         {
             this.BindingsValidationRules = new Dictionary<string, List<ClientValidationRule>>();
@@ -64,6 +65,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected override void Initialize(IServiceProvider provider)
         {
             _onWorkflowIdledEventHandler = new EventHandler<WorkflowEventArgs>(OnWorkflowIdled);
@@ -78,7 +80,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
-
+        /// <exclude />
         protected override void OnClosed(IServiceProvider provider)
         {
             // Ensure that "CloseCurrentView" has been called when we close (when available)
@@ -101,7 +103,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
-
+        /// <exclude />
         protected override void Uninitialize(IServiceProvider provider)
         {
             if (this.DesignMode == false)
@@ -119,6 +121,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string SerializedEntityToken
         {
@@ -128,6 +131,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string SerializedActionToken
         {
@@ -137,6 +141,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Guid ParentWorkflowInstanceId
         {
@@ -169,6 +174,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public EntityToken EntityToken
         {
@@ -185,6 +191,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ActionToken ActionToken
         {
@@ -201,6 +208,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Dictionary<string, object> Bindings
         {
@@ -237,11 +245,13 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Dictionary<string, List<ClientValidationRule>> BindingsValidationRules { get; set; }
 
 
 
+        /// <exclude />
         public T GetBinding<T>(string name)
         {
             object obj;
@@ -255,6 +265,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         public bool TryGetBinding<T>(string name, out T binding)
         {
             object obj;
@@ -272,6 +283,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         public void UpdateBinding(string name, object value)
         {
             if (BindingExist(name) == false)
@@ -286,6 +298,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         public void UpdateBindings(Dictionary<string, object> bindings)
         {
             foreach (var kvp in bindings)
@@ -303,6 +316,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         public bool BindingExist(string name)
         {
             return this.Bindings.ContainsKey(name);
@@ -310,6 +324,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         public T GetDataItemFromEntityToken<T>()
             where T : IData
         {
@@ -320,6 +335,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         public string Payload
         {
             get
@@ -342,6 +358,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         public string ExtraPayload
         {
             get
@@ -372,6 +389,9 @@ namespace Composite.C1Console.Workflow.Activities
             }
         }
 
+
+
+        /// <exclude />
         protected void ReportException(Exception ex)
         {
             if (ex == null) throw new ArgumentNullException("ex");
@@ -387,6 +407,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected void LogMessage(LogLevel logLevel, string message)
         {
             FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
@@ -416,6 +437,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected void ShowMessage(DialogType dislogType, string title, string message)
         {
             FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
@@ -434,6 +456,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected void RebootConsole()
         {
             FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
@@ -445,6 +468,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected void ShowFieldMessage(string fieldBindingPath, string message)
         {
             FlowControllerServicesContainer flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
@@ -455,22 +479,33 @@ namespace Composite.C1Console.Workflow.Activities
         }
 
 
+
+        /// <exclude />
         protected void SetSaveStatus(bool succeeded)
         {
             SetSaveStatus(succeeded, (string)null);
         }
 
+
+
+        /// <exclude />
         protected void SetSaveStatus(bool succeeded, IData data)
         {
             SetSaveStatus(succeeded, data.GetDataEntityToken());
         }
 
+
+
+        /// <exclude />
         protected void SetSaveStatus(bool succeeded, EntityToken entityToken)
         {
             string serializedEntityToken = EntityTokenSerializer.Serialize(entityToken, true);
             SetSaveStatus(succeeded, serializedEntityToken);
         }
 
+
+
+        /// <exclude />
         protected void SetSaveStatus(bool succeeded, string serializedEntityToken)
         {
             SaveWorklowTaskManagerEvent saveWorklowTaskManagerEvent = new SaveWorklowTaskManagerEvent
@@ -502,6 +537,8 @@ namespace Composite.C1Console.Workflow.Activities
         }
 
 
+
+        /// <exclude />
         protected void CloseCurrentView()
         {
             FlowControllerServicesContainer flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
@@ -516,6 +553,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected void LockTheSystem()
         {
             FlowControllerServicesContainer flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
@@ -526,6 +564,8 @@ namespace Composite.C1Console.Workflow.Activities
         }
 
 
+
+        /// <exclude />
         protected void RerenderView()
         {
             FlowControllerServicesContainer flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
@@ -535,6 +575,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected void CollapseAndRefresh()
         {
             FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
@@ -544,6 +585,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected string GetCurrentConsoleId()
         {
             FlowControllerServicesContainer flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
@@ -554,6 +596,8 @@ namespace Composite.C1Console.Workflow.Activities
         }
 
 
+
+        /// <exclude />
         protected void ExecuteAction(EntityToken entityToken, ActionToken actionToken)
         {
             FlowControllerServicesContainer flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
@@ -566,6 +610,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected void ExecuteWorklow(EntityToken entityToken, Type workflowType)
         {
             ExecuteAction(entityToken, new WorkflowActionToken(workflowType));
@@ -573,6 +618,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected void DeliverFormData(string containerLabel, IFlowUiContainerType containerType, string formDefinition, Dictionary<string, object> bindings, Dictionary<string, List<ClientValidationRule>> bindingsValidationRules)
         {
             ExternalDataExchangeService externalDataExchangeService = WorkflowFacade.WorkflowRuntime.GetService<ExternalDataExchangeService>();
@@ -584,6 +630,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected void DeliverFormData(string containerLabel, IFlowUiContainerType containerType, IFormMarkupProvider formMarkupProvider, Dictionary<string, object> bindings, Dictionary<string, List<ClientValidationRule>> bindingsValidationRules)
         {
             ExternalDataExchangeService externalDataExchangeService = WorkflowFacade.WorkflowRuntime.GetService<ExternalDataExchangeService>();
@@ -619,12 +666,16 @@ namespace Composite.C1Console.Workflow.Activities
         }
 
 
+
+        /// <exclude />
         protected AddNewTreeRefresher CreateAddNewTreeRefresher(EntityToken parentEntityToken)
         {
             return new AddNewTreeRefresher(parentEntityToken, WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId));
         }
 
 
+
+        /// <exclude />
         protected UpdateTreeRefresher CreateUpdateTreeRefresher(EntityToken beforeUpdateEntityToken)
         {
             return new UpdateTreeRefresher(beforeUpdateEntityToken, WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId));
@@ -632,6 +683,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected DeleteTreeRefresher CreateDeleteTreeRefresher(EntityToken beforeDeleteEntityToken)
         {
             return new DeleteTreeRefresher(beforeDeleteEntityToken, WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId));
@@ -639,6 +691,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected ParentTreeRefresher CreateParentTreeRefresher()
         {
             return new ParentTreeRefresher(WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId));
@@ -646,6 +699,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected SpecificTreeRefresher CreateSpecificTreeRefresher()
         {
             return new SpecificTreeRefresher(WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId));
@@ -653,6 +707,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected void RefreshEntityToken(EntityToken entityToken)
         {
             SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
@@ -661,6 +716,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected void RefreshCurrentEntityToken()
         {
             SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
@@ -669,6 +725,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected void RefreshParentEntityToken()
         {
             ParentTreeRefresher parentTreeRefresher = this.CreateParentTreeRefresher();
@@ -677,6 +734,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected void RefreshRootEntityToken()
         {
             SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
@@ -685,6 +743,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected void AcquireLock(EntityToken entityToken)
         {
             ActionLockingFacade.AcquireLock(entityToken, this.WorkflowInstanceId);
@@ -692,10 +751,12 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         public DynamicValuesHelperReplaceContext CreateDynamicValuesHelperReplaceContext()
         {
             return CreateDynamicValuesHelperReplaceContext(this.ExtraPayload);
         }
+
 
 
         internal DynamicValuesHelperReplaceContext CreateDynamicValuesHelperReplaceContext(string serializedPiggybag)
@@ -704,6 +765,7 @@ namespace Composite.C1Console.Workflow.Activities
 
             return CreateDynamicValuesHelperReplaceContext(piggybag);
         }
+
 
 
         internal DynamicValuesHelperReplaceContext CreateDynamicValuesHelperReplaceContext(Dictionary<string, string> piggybag)
@@ -725,6 +787,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected override ActivityExecutionStatus Execute(ActivityExecutionContext executionContext)
         {
             _instanceId = WorkflowEnvironment.WorkflowInstanceId;

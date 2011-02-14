@@ -15,11 +15,14 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider.Foundation
     {
         private DataSourceId _dataSourceId;
 
+
+        /// <exclude />
         public FileSystemFile()
         {
         }
 
 
+        /// <exclude />
         public DataSourceId DataSourceId
         {
             get { return _dataSourceId; }
@@ -41,9 +44,11 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider.Foundation
         }
 
 
+        /// <exclude />
         public string FolderPath { get; set; }
 
 
+        /// <exclude />
         public string FileName { get; set; }
     }
 }

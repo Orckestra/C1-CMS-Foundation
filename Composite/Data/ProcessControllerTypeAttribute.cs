@@ -9,12 +9,14 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class ProcessControllerTypeAttribute : Attribute
     {
+        /// <exclude />
         protected ProcessControllerTypeAttribute(Type processControllerType)
         {
             this.ProcessControllerType = processControllerType;
         }
 
 
+        /// <exclude />
         public Type ProcessControllerType
         {
             get;
@@ -31,6 +33,7 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true, Inherited = true)]
     public sealed class PublishProcessControllerTypeAttribute : ProcessControllerTypeAttribute
     {
+        /// <exclude />
         public PublishProcessControllerTypeAttribute(Type processControllerType)
             : base(processControllerType)
         {
@@ -46,6 +49,7 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true, Inherited = true)]
     public sealed class LocalizeProcessControllerTypeAttribute : ProcessControllerTypeAttribute
     {
+        /// <exclude />
         public LocalizeProcessControllerTypeAttribute(Type processControllerType)
             : base(processControllerType)
         {
@@ -62,6 +66,7 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true, Inherited = true)]
     public sealed class VersionProcessControllerTypeAttribute : ProcessControllerTypeAttribute
     {
+        /// <exclude />
         public VersionProcessControllerTypeAttribute(Type processControllerType)
             : base(processControllerType)
         {

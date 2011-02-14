@@ -13,6 +13,7 @@ namespace Composite.Functions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class FunctionTreeBuilder
     {
+        /// <exclude />
         public static BaseRuntimeTreeNode Build(XElement element)
         {
             if (element == null) throw new ArgumentNullException("element");
@@ -40,6 +41,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static FunctionRuntimeTreeNode BuildFunction(string functionName, Dictionary<string, string> parameters)
         {
             var functionParams = new List<BaseParameterRuntimeTreeNode>();
@@ -55,6 +57,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static WidgetFunctionRuntimeTreeNode BuildWidgetFunction(string widgetFunctionName, string label, HelpDefinition helpDefinition, string bindingSourceName)
         {
             IWidgetFunction widgetFunction = FunctionFacade.GetWidgetFunction(widgetFunctionName);

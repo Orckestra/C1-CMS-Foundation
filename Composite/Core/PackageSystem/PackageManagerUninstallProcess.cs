@@ -45,6 +45,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public bool FlushOnCompletion
         {
             get
@@ -57,6 +58,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public bool ReloadConsoleOnCompletion
         {
             get
@@ -69,6 +71,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public List<PackageFragmentValidationResult> PreUninstallValidationResult
         {
             get
@@ -79,6 +82,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public List<PackageFragmentValidationResult> Validate()
         {
             if (_packageUninstaller == null) throw new InvalidOperationException("Pre uninstallation did not validate");
@@ -91,6 +95,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public List<PackageFragmentValidationResult> Uninstall()
         {
             if (_packageUninstaller == null) throw new InvalidOperationException("Pre installation did not validate");

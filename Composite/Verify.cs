@@ -166,22 +166,26 @@ namespace Composite
             throw new ArgumentException(message, parameterName);
         }
 
+        /// <exclude />
         public static T ResultNotNull<T>(T value) where T: class
         {
             return ResultNotNull<T>(value, "Result value should not be null");
         }
 
+        /// <exclude />
         public static T ResultNotNull<T>(T value, string errorMessageOnNull, params object[] formattingArgs) where T : class
         {
             if (value == null) ThrowInvalidOperationException(errorMessageOnNull.FormatWith(formattingArgs));
             return value;
         }
 
+        /// <exclude />
         public static string StringNotIsNullOrWhiteSpace(string value) 
         {
             return StringNotIsNullOrWhiteSpace(value, "Result string should not be null or empty");
         }
 
+        /// <exclude />
         public static string StringNotIsNullOrWhiteSpace(string value, string errorMessageOnNull, params object[] formattingArgs) 
         {
             if (String.IsNullOrWhiteSpace(value)) ThrowInvalidOperationException(errorMessageOnNull.FormatWith(formattingArgs));

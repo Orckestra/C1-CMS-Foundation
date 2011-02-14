@@ -21,18 +21,36 @@ namespace Composite.C1Console.Workflow.Foundation
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class FormData
     {
+        /// <exclude />
         public string ContainerLabel { get; set; }
+
+        /// <exclude />
         public string FormDefinition { get; set; }
+
+        /// <exclude />
         public string CustomToolbarDefinition { get; set; }
 
+
+        /// <exclude />
         public IFormMarkupProvider CustomToolbarMarkupProvider { get; set; }
+
+        /// <exclude />
         public IFormMarkupProvider FormMarkupProvider { get; set; }
+
+        /// <exclude />
         public Dictionary<string, object> Bindings { get; set; }
+
+        /// <exclude />
         public Dictionary<string, List<ClientValidationRule>> BindingsValidationRules { get; set; }
+
+        /// <exclude />
         public IFlowUiContainerType ContainerType { get; set; }
+
+        /// <exclude />
         public Type EventHandleFilterType { get; set; }
 
 
+        /// <exclude />
         public XElement Serialize()
         {
             IXmlSerializer xmlSerializer = new XmlSerializer(new IValueXmlSerializer[] {
@@ -121,6 +139,7 @@ namespace Composite.C1Console.Workflow.Foundation
 
 
 
+        /// <exclude />
         public static FormData Deserialize(XElement serializedData)
         {
             IXmlSerializer xmlSerializer = new XmlSerializer(new IValueXmlSerializer[] {

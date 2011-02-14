@@ -13,6 +13,7 @@ namespace Composite.Core.WebClient.UiControlLib
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class Selector : DropDownList
     {
+        /// <exclude />
         public Selector()
             : base()
         {
@@ -20,21 +21,33 @@ namespace Composite.Core.WebClient.UiControlLib
             this.SimpleSelectorMode = false; // isInternetExplorer;
         }
 
+
+        /// <exclude />
         public bool SelectionRequired { get; set; }
+
+        /// <exclude />
         public string SelectionRequiredLabel { get; set; }
+
+        /// <exclude />
         public bool SimpleSelectorMode { get; set; }
 
+
+        /// <exclude />
         protected override HtmlTextWriterTag TagKey
         {
             get { return HtmlTextWriterTag.Unknown; }
         }
 
+
+        /// <exclude />
         protected override string TagName
         {
             get { return this.SimpleSelectorMode ? "ui:simpleselector" : "ui:selector"; }
             
         }
 
+
+        /// <exclude />
         protected override void AddAttributesToRender(HtmlTextWriter writer)
         {
             
@@ -58,6 +71,7 @@ namespace Composite.Core.WebClient.UiControlLib
         }
 
 
+        /// <exclude />
         protected override void RenderContents(HtmlTextWriter writer)
         {
             for (int i = 0; i < this.Items.Count; i++)
@@ -114,6 +128,7 @@ namespace Composite.Core.WebClient.UiControlLib
         }
 
 
+        /// <exclude />
         public override void RenderBeginTag(HtmlTextWriter writer)
         {
             base.RenderBeginTag(writer);
@@ -124,6 +139,9 @@ namespace Composite.Core.WebClient.UiControlLib
             }
         }
 
+
+
+        /// <exclude />
         public override void RenderEndTag(HtmlTextWriter writer)
         {
         
@@ -134,10 +152,5 @@ namespace Composite.Core.WebClient.UiControlLib
 
             base.RenderEndTag(writer);
         }
-
-
-
-
-
     }
 }

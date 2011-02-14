@@ -13,6 +13,7 @@ namespace Composite.C1Console.Forms.Flows
     {
         private string Document { get; set; }
 
+        /// <exclude />
         public StringBasedFormMarkupProvider(string document)
         {
             if (document == null) throw new ArgumentNullException("document");
@@ -21,7 +22,7 @@ namespace Composite.C1Console.Forms.Flows
         }
 
 
-
+        /// <exclude />
         public XmlReader GetReader()
         {
             return new XmlTextReader(new StringReader(this.Document));

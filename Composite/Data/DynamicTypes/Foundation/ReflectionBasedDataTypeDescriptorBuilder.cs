@@ -14,6 +14,7 @@ namespace Composite.Data.DynamicTypes.Foundation
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class ReflectionBasedDescriptorBuilder
     {
+        /// <exclude />
         public static DataTypeDescriptor Build(Type type)
         {
             if (type == null) throw new ArgumentNullException("type");

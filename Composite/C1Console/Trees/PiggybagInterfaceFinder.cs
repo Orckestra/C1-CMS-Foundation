@@ -21,6 +21,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public PiggybagDataFinder(Dictionary<string, string> piggybag, EntityToken currentEntityToken)
         {
             _piggybag = piggybag;
@@ -29,6 +30,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public Dictionary<string, string> Piggybag
         {
             get
@@ -39,6 +41,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public IData GetData(Type interfaceType, IData currentData = null)
         {
             if ((currentData != null) && (currentData.DataSourceId.InterfaceType == interfaceType)) return currentData;
@@ -50,6 +53,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public IData TryGetData(Type interfaceType, IData currentData = null)
         {
             if ((currentData != null) && (currentData.DataSourceId.InterfaceType == interfaceType)) return currentData;

@@ -6,8 +6,13 @@ namespace Composite.C1Console.Security
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum SecurityResult
     {
+        /// <exclude />
         Disallowed,
+
+        /// <exclude />
         Allowed,
+
+        /// <exclude />
         Unspecified
     }
 }

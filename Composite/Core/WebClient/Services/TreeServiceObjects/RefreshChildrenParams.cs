@@ -4,8 +4,13 @@
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public sealed class RefreshChildrenParams
 	{
+        /// <exclude />
         public string ProviderName { get; set; }
-        public string EntityToken { get; set; }  
+
+        /// <exclude />
+        public string EntityToken { get; set; }
+
+        /// <exclude />
         public string Piggybag { get; set; }
 	}
 }

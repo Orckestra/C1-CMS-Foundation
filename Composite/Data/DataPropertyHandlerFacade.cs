@@ -23,6 +23,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static void HandleSet<T>(IData data, object value)
             where T : ISetPropertyHandler
         {
@@ -31,6 +32,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static void HandleSet(Type setPropertyHandlerType, IData data, object value)
         {
             if (setPropertyHandlerType == null) throw new ArgumentNullException("setPropertyHandler");

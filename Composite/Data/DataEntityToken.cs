@@ -46,6 +46,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public override string Type
         {
             get
@@ -61,6 +62,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public override string Source
         {
             get
@@ -71,6 +73,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public override string Id
         {
             get { return this.SerializedDataId; }
@@ -78,6 +81,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public override bool IsValid()
         {
             return this.Data != null;
@@ -85,6 +89,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public Type InterfaceType
         {
             get
@@ -107,6 +112,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public DataSourceId DataSourceId
         {
             get
@@ -122,6 +128,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public override string Serialize()
         {
             return this.SerializedDataSourceId;
@@ -129,6 +136,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static EntityToken Deserialize(string serializedData)
         {
             return new DataEntityToken(serializedData);
@@ -136,6 +144,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public IData Data
         {
             get
@@ -164,6 +173,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public override void OnGetPrettyHtml(EntityTokenHtmlPrettyfier prettyfier)
         {
             prettyfier.OnWriteId = (token, helper) =>

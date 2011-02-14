@@ -25,6 +25,8 @@ namespace Composite.Core.WebClient.WCF
 
         private static readonly Hashtable<string, Hashtable<string, string>> _urlResolvingTable = new Hashtable<string, Hashtable<string, string>>();
 
+
+        /// <exclude />
         public MultipleHostnameHandler(string serviceFolderPath, string serviceFileName, string mappedServiceFolderPath)
         {
             _serviceFolderPath = serviceFolderPath;
@@ -33,14 +35,20 @@ namespace Composite.Core.WebClient.WCF
             _mappedServiceFolderPath = mappedServiceFolderPath;
         }
 
+
+        /// <exclude />
         public void Dispose()
         {
         }
 
+
+        /// <exclude />
         public void Init(HttpApplication context)
         {
             context.BeginRequest += OnBeginRequest;
         }
+
+
 
         private void OnBeginRequest(object sender, EventArgs e)
         {
@@ -76,6 +84,8 @@ namespace Composite.Core.WebClient.WCF
 
             httpContext.ApplicationInstance.CompleteRequest();
         }
+
+
 
         private string GetMappedServicePath(HttpContext httpContext, string servicePath)
         {

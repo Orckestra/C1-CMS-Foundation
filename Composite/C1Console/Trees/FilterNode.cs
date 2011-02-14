@@ -10,8 +10,13 @@ namespace Composite.C1Console.Trees
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class FilterNode
     {
+        /// <exclude />
         public string XPath { get; internal set; }
+
+        /// <exclude />
         public int Id { get; internal set; }
+
+        /// <exclude />
         public DataElementsTreeNode OwnerNode { get; internal set; }
 
 
@@ -42,6 +47,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public void SetOwnerNode(TreeNode treeNode)
         {
             this.OwnerNode = (DataElementsTreeNode)treeNode;
@@ -49,6 +55,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         protected void AddValidationError(ValidationError validationError)
         {
             this.OwnerNode.Tree.BuildResult.AddValidationError(validationError);
@@ -56,6 +63,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         protected void AddValidationError(string stringName, params object[] args)
         {
             this.OwnerNode.Tree.BuildResult.AddValidationError(ValidationError.Create(this.XPath, stringName, args));

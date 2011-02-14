@@ -24,9 +24,14 @@ namespace Composite.Core.WebClient
         private static bool _systemIsInitialized = false;
 
 
+        /// <exclude />
         public static bool LogRequestDetails { get; set; }
+
+        /// <exclude />
         public static bool LogApplicationLevelErrors { get; set; }
 
+
+        /// <exclude />
         public static void Application_Start(object sender, EventArgs e)
         {
             SystemSetupFacade.SetFirstTimeStart();
@@ -58,6 +63,7 @@ namespace Composite.Core.WebClient
 
 
 
+        /// <exclude />
         public static void Application_End(object sender, EventArgs e)
         {
             if (Composite.Core.Configuration.SystemSetupFacade.IsSystemFirstTimeInitialized == false)
@@ -126,6 +132,7 @@ namespace Composite.Core.WebClient
         }
 
 
+        /// <exclude />
         public static void Application_BeginRequest(object sender, EventArgs e)
         {
             ThreadDataManager.InitializeThroughHttpContext(true);
@@ -138,6 +145,7 @@ namespace Composite.Core.WebClient
         }
 
 
+        /// <exclude />
         public static void Application_EndRequest(object sender, EventArgs e)
         {
             try
@@ -157,6 +165,7 @@ namespace Composite.Core.WebClient
 
 
 
+        /// <exclude />
         public static void Application_Error(object sender, EventArgs e)
         {
             if (LogApplicationLevelErrors)
@@ -189,6 +198,7 @@ namespace Composite.Core.WebClient
         }
 
 
+        /// <exclude />
         public static string GetVaryByCustomString(HttpContext context, string custom)
         {
             if (custom == "C1Page_ChangeDate")
@@ -262,6 +272,5 @@ namespace Composite.Core.WebClient
                                          shutDownMessage.Replace("\n", "   \n"),
                                          shutDownStack));
         }
-
     }
 }

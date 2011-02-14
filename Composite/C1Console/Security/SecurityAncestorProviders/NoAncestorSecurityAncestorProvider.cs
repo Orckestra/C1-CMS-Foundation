@@ -10,6 +10,7 @@ namespace Composite.C1Console.Security.SecurityAncestorProviders
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class NoAncestorSecurityAncestorProvider : ISecurityAncestorProvider
 	{
+        /// <exclude />
         public IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {
             if (entityToken == null) throw new ArgumentNullException("entityToken");

@@ -22,8 +22,10 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         private string _formControlLabel;
         private string _text;
 
+        /// <exclude />
         protected abstract void BindStateToProperties();
 
+        /// <exclude />
         protected abstract void InitializeViewState();
 
         internal void BindStateToControlProperties()
@@ -36,12 +38,14 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             this.InitializeViewState();
         }
 
+        /// <exclude />
         public string Text
         {
             get { return _text; }
             set { _text = value; }
         }
 
+        /// <exclude />
         public string FormControlLabel
         {
             get { return _formControlLabel; }

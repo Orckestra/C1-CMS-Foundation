@@ -12,12 +12,14 @@ namespace Composite.C1Console.Workflow.Activities
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class CloseCurrentViewActivity : Activity
     {
+        /// <exclude />
         public CloseCurrentViewActivity()
         {
         }
 
 
 
+        /// <exclude />
         public CloseCurrentViewActivity(string name)
             : base(name)
         {
@@ -25,6 +27,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected sealed override ActivityExecutionStatus Execute(ActivityExecutionContext executionContext)
         {
             FormsWorkflow formsWorkflow = this.GetRoot<FormsWorkflow>();

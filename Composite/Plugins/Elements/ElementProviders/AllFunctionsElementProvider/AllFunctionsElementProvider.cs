@@ -432,6 +432,7 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class AllFunctionsElementProviderSearchToken : SearchToken
     {
+        /// <exclude />
         public static AllFunctionsElementProviderSearchToken Build(Type[] functionReturnValueAccetableTypes)
         {
             var token = new AllFunctionsElementProviderSearchToken();
@@ -451,6 +452,7 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
             return token;
         }
 
+        /// <exclude />
         public string AcceptableTypes { get; set; }
     }
 

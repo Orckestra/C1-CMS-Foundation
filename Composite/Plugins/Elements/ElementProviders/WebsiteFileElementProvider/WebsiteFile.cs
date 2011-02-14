@@ -15,12 +15,15 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         private string _mimeTypeInfo = null;
         private bool? isReadOnly = null;
 
+
+        /// <exclude />
         public WebsiteFile(string fullPath)
             : base(fullPath, false)
         {
         }
 
 
+        /// <exclude />
         public string FileName
         {
             get
@@ -35,6 +38,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         }
 
 
+        /// <exclude />
         public string MimeType
         {
             get 
@@ -50,6 +54,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
 
 
+        /// <exclude />
         public string ReadAllText()
         {
             return C1File.ReadAllText(this.FullPath);
@@ -57,6 +62,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
 
 
+        /// <exclude />
         public bool IsReadOnly
         {
             get 
@@ -72,6 +78,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
 
 
+        /// <exclude />
         public void WriteAllText(string content)
         {
             // Default encode is Composite.Core.IO.StreamWriter.UTF8NoBOM, which is UTF8 without encoding signature

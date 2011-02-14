@@ -14,19 +14,29 @@ namespace Composite.Core.WebClient.UiControlLib
     {
         private static readonly string ReservedKey = "___reserved value";
 
+        /// <exclude />
         public bool SelectionRequired { get; set; }
+
+        /// <exclude />
         public string SelectionRequiredLabel { get; set; }
 
+
+
+        /// <exclude />
         protected override HtmlTextWriterTag TagKey
         {
             get { return HtmlTextWriterTag.Unknown; }
         }
 
+
+        /// <exclude />
         protected override string TagName
         {
             get { return "ui:datainputselector"; }
         }
 
+
+        /// <exclude />
         protected override void AddAttributesToRender(HtmlTextWriter writer)
         {
             writer.AddAttribute("name", this.UniqueID);
@@ -52,6 +62,8 @@ namespace Composite.Core.WebClient.UiControlLib
             this.AddClientAttributes(writer);
         }
 
+
+        /// <exclude />
         public override string SelectedValue
         {
             get
@@ -69,6 +81,7 @@ namespace Composite.Core.WebClient.UiControlLib
         }
 
 
+        /// <exclude />
         protected override void RenderContents(HtmlTextWriter writer)
         {
             for (int i = 0; i < this.Items.Count; i++)
@@ -109,6 +122,8 @@ namespace Composite.Core.WebClient.UiControlLib
             }
         }
 
+
+        /// <exclude />
         protected override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
         {
             string postedValue = postCollection[postDataKey];

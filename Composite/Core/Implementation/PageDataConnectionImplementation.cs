@@ -12,6 +12,7 @@ namespace Composite.Core.Implementation
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class PageDataConnectionImplementation : DataConnectionBase, IDisposable
     {
+        /// <exclude />
         public PageDataConnectionImplementation()
         {
             InitializeScope();
@@ -19,6 +20,7 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <exclude />
         public PageDataConnectionImplementation(PublicationScope scope, CultureInfo locale)
         {
             InitializeScope(scope, locale);
@@ -82,6 +84,7 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <exclude />
         public void Dispose()
         {
             Dispose(true);
@@ -90,6 +93,7 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <exclude />
         ~PageDataConnectionImplementation()
         {
             Dispose(false);
@@ -97,6 +101,7 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <exclude />
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)

@@ -12,6 +12,7 @@ namespace Composite.Data.DynamicTypes
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class NameValidation
     {
+        /// <exclude />
         public static string ValidateNamespace(string namespaceString)
         {
             string errorMessage;
@@ -25,6 +26,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public static bool TryValidateNamespace(string namespaceString)
         {
             string errorMessage;
@@ -34,6 +36,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public static bool TryValidateNamespace(string namespaceString, out string errorMessage)
         {
             errorMessage = "";
@@ -86,6 +89,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public static bool TryValidateName(string name)
         {
             string errorMessage;
@@ -95,6 +99,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public static bool TryValidateName(string name, out string errorMessage)
         {
             errorMessage = "";

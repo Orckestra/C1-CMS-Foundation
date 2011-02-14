@@ -71,17 +71,19 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
     {
         private static PermissionType[] _permissionTypes = new PermissionType[] { PermissionType.Administrate };
 
+        /// <exclude />
         public override IEnumerable<PermissionType> PermissionTypes
         {
             get { return _permissionTypes; }
         }
 
+        /// <exclude />
         public override string Serialize()
         {
             return "DataTypeDescriptorToXml";
         }
 
-
+        /// <exclude />
         public static ActionToken Deserialize(string serializedData)
         {
             return new DataTypeDescriptorToXmlActionToken();
@@ -99,27 +101,58 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         private DataGroupingProviderHelper _dataGroupingProviderHelper;
 
 
+        /// <exclude />
         public static ResourceHandle RootOpen { get { return GetIconHandle("generated-root-open"); } }
+
+        /// <exclude />
         public static ResourceHandle RootClosed { get { return GetIconHandle("generated-root-closed"); } }
+
+        /// <exclude />
         public static ResourceHandle InterfaceOpen { get { return GetIconHandle("generated-interface-open"); } }
+
+        /// <exclude />
         public static ResourceHandle InterfaceClosed { get { return GetIconHandle("generated-interface-closed"); } }
 
+        /// <exclude />
         public static ResourceHandle AddDataTypeIcon { get { return GetIconHandle("generated-type-add"); } }
+
+        /// <exclude />
         public static ResourceHandle EditDataTypeIcon { get { return GetIconHandle("generated-type-edit"); } }
+
+        /// <exclude />
         public static ResourceHandle DeleteDataTypeIcon { get { return GetIconHandle("generated-type-delete"); } }
+
+        /// <exclude />
         public static ResourceHandle LocalizeDataTypeIcon { get { return GetIconHandle("generated-type-localize"); } }
+
+        /// <exclude />
         public static ResourceHandle DelocalizeDataTypeIcon { get { return GetIconHandle("generated-type-delocalize"); } }
+
+        /// <exclude />
         public static ResourceHandle AddDataIcon { get { return GetIconHandle("generated-type-data-add"); } }
+
+        /// <exclude />
         public static ResourceHandle EditDataIcon { get { return GetIconHandle("generated-type-data-edit"); } }
+
+        /// <exclude />
         public static ResourceHandle DeleteDataIcon { get { return GetIconHandle("generated-type-data-delete"); } }
+        
+        /// <exclude />
         public static ResourceHandle LocalizeDataIcon { get { return GetIconHandle("generated-type-data-localize"); } }
+
+        /// <exclude />
         public static ResourceHandle ListUnpublishedItemsIcon = GetIconHandle("generated-type-list-unpublished-items");
+
+        /// <exclude />
         public static ResourceHandle ShowincontentareaIcon = GetIconHandle("generated-type-showincontentarea");
 
+        /// <exclude />
         public static ResourceHandle EditFormMarkupIcon { get { return GetIconHandle("generated-type-form-markup-edit"); } }
 
+        /// <exclude />
         public static ResourceHandle ToXmlIcon { get { return GetIconHandle("generated-type-to-xml"); } }
 
+        /// <exclude />
         public static readonly Dictionary<string, ResourceHandle> DataIconLookup;
 
         private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
@@ -138,6 +171,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
 
 
+        /// <exclude />
         static GeneratedDataTypesElementProvider()
         {
             DataIconLookup = new Dictionary<string, ResourceHandle>();
@@ -149,6 +183,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
 
 
+        /// <exclude />
         public GeneratedDataTypesElementProvider(bool onlyShowGlobalDatas)
         {
             _onlyShowGlobalDatas = onlyShowGlobalDatas;
@@ -156,6 +191,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
 
 
+        /// <exclude />
         public ElementProviderContext Context
         {
             set
@@ -191,6 +227,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
 
 
+        /// <exclude />
         public bool ContainsLocalizedData
         {
             get
@@ -209,6 +246,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
 
 
+        /// <exclude />
         public IEnumerable<Element> GetRoots(SearchToken seachToken)
         {
             List<Element> roots = new List<Element>();                     
@@ -368,6 +406,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
 
 
+        /// <exclude />
         public IEnumerable<Element> GetForeignRoots(SearchToken searchToken)
         {
             return GetRoots(searchToken);
@@ -375,6 +414,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
 
 
+        /// <exclude />
         public IEnumerable<Element> GetChildren(EntityToken entityToken, SearchToken searchToken)
         {
             return GetChildren(entityToken, searchToken, false);
@@ -382,6 +422,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
 
 
+        /// <exclude />
         public IEnumerable<Element> GetForeignChildren(EntityToken entityToken, SearchToken searchToken)
         {
             return GetChildren(entityToken, searchToken, true);
@@ -1141,6 +1182,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
     internal sealed class GeneratedDataTypesElementProviderData : HooklessElementProviderData
     {
         private const string _onlyShowGlobalDatasPropertyName = "onlyShowGlobalDatas";
+        /// <exclude />
         [ConfigurationProperty(_onlyShowGlobalDatasPropertyName, IsRequired = false, DefaultValue = false)]
         public bool OnlyShowGlobalDatas
         {

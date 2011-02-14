@@ -21,8 +21,10 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     {
         private string _html;
 
+        /// <exclude />
         protected abstract void BindStateToProperties();
 
+        /// <exclude />
         protected abstract void InitializeViewState();
 
         internal void BindStateToControlProperties()
@@ -35,6 +37,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             this.InitializeViewState();
         }
 
+        /// <exclude />
         public string Html
         {
             get { return _html; }

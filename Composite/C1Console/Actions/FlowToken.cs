@@ -6,6 +6,7 @@ namespace Composite.C1Console.Actions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class FlowToken
     {
+        /// <exclude />
         public virtual string Serialize() { return ""; }
     }
 }

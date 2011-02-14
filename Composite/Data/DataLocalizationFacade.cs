@@ -18,6 +18,7 @@ namespace Composite.Data
         internal static IDataLocalizationFacade Implementation { get { return _dataLocalizationFacade; } set { _dataLocalizationFacade = value; } }
 
 
+        /// <exclude />
         public static bool UseLocalization 
         {
             get
@@ -27,7 +28,7 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         public static IEnumerable<CultureInfo> WhiteListedLocales
         {
             get
@@ -37,7 +38,7 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         public static CultureInfo DefaultUrlMappingCulture
         {
             get
@@ -46,6 +47,8 @@ namespace Composite.Data
             }
         }
 
+
+        /// <exclude />
         public static CultureInfo DefaultLocalizationCulture
         {
             get
@@ -59,8 +62,8 @@ namespace Composite.Data
         }
 
 
-
         // Overload to ActiveLocalizationNames
+        /// <exclude />
         public static IEnumerable<CultureInfo> ActiveLocalizationCultures
         {
             get
@@ -73,7 +76,7 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         public static IEnumerable<string> ActiveLocalizationNames
         {
             get
@@ -83,21 +86,21 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         public static string GetUrlMappingName(CultureInfo cultureInfo)
         {
             return _dataLocalizationFacade.GetUrlMappingName(cultureInfo);
         }
 
 
-
+        /// <exclude />
         public static CultureInfo GetCultureInfoByUrlMappingName(string urlMappingName)
         {
             return _dataLocalizationFacade.GetCultureInfoByUrlMappingName(urlMappingName);
         }
 
 
-
+        /// <exclude />
         public static IEnumerable<string> UrlMappingNames
         {
             get
@@ -166,7 +169,7 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         public static IEnumerable<ReferenceFailingPropertyInfo> GetReferencingLocalizeFailingProperties(ILocalizedControlled data)
         {
             return _dataLocalizationFacade.GetReferencingLocalizeFailingProperties(data);

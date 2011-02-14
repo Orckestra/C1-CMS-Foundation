@@ -27,6 +27,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.VisualFunctionElem
         private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
 
 
+        /// <exclude />
         public static IEnumerable<RenderingFunctionNames> GetRenderingFunctions(Type interfaceType)
         {
             string serializedType = TypeManager.SerializeType(interfaceType);
@@ -50,6 +51,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.VisualFunctionElem
 
 
 
+        /// <exclude />
         public static IVisualFunction GetVisualFunction(RenderingFunctionNames renderingFunctionNames)
         {
             IVisualFunction function =
@@ -63,6 +65,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.VisualFunctionElem
 
 
 
+        /// <exclude />
         public void AttachElementActions(IEnumerable<Element> elements)
         {
             foreach (Element element in elements)

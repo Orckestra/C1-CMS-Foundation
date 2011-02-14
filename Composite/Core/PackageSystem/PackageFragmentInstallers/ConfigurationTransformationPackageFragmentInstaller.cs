@@ -24,6 +24,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         private const string _xsltFilePathAttributeName = "xsltFilePath";
 
 
+        /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
             List<PackageFragmentValidationResult> validationResults = new List<PackageFragmentValidationResult>();
@@ -58,6 +59,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
 
+        /// <exclude />
         public override IEnumerable<XElement> Install()
         {
             using (Stream xsltFileStream = this.InstallerContex.ZipFileSystem.GetFileStream(this.InstallXsltFilePath))

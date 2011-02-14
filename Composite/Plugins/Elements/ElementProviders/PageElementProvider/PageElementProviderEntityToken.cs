@@ -13,31 +13,37 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 	{
         private string _source;
 
+        /// <exclude />
         public PageElementProviderEntityToken(string source)
         {
             _source = source;
         }
 
+        /// <exclude />
         public override string Type
         {
             get { return ""; }
         }
 
+        /// <exclude />
         public override string Source
         {
             get { return _source; }
         }
 
+        /// <exclude />
         public override string Id
         {
             get { return ""; }
         }
 
+        /// <exclude />
         public override string Serialize()
         {
             return DoSerialize();
         }
 
+        /// <exclude />
         public static EntityToken Deserialize(string serializedData)
         {
             string type, source, id;

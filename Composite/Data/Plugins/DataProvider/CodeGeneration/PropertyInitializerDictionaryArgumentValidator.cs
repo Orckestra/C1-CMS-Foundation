@@ -10,6 +10,7 @@ namespace Composite.Data.Plugins.DataProvider.CodeGeneration
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class PropertyInitializerDictionaryArgumentValidator
     {
+        /// <exclude />
         public static void Validate(Dictionary<string, Type> propertyInitializers)
         {
             foreach (KeyValuePair<string, Type> kvp in propertyInitializers)
@@ -38,6 +39,7 @@ namespace Composite.Data.Plugins.DataProvider.CodeGeneration
 
 
 
+        /// <exclude />
         public static void ValidateVsPropertyList(Dictionary<string, Type> propertyInitializers, PropertyList propertyList)
         {
             ValidateVsPropertyList(propertyInitializers, propertyList, new List<string>());
@@ -45,6 +47,7 @@ namespace Composite.Data.Plugins.DataProvider.CodeGeneration
 
 
 
+        /// <exclude />
         public static void ValidateVsPropertyList(Dictionary<string, Type> propertyInitializers, PropertyList propertyList, List<string> exceptionList)
         {
             foreach (Property property in propertyList.Properties)

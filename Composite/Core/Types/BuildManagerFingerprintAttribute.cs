@@ -10,6 +10,7 @@ namespace Composite.Core.Types
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
     public sealed class BuildManagerFingerprintAttribute : Attribute
 	{
+        /// <exclude />
         public BuildManagerFingerprintAttribute(string fingerprint)
         {
             this.Fingerprint = fingerprint;
@@ -17,6 +18,7 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public string Fingerprint
         {
             get;

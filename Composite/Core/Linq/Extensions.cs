@@ -12,6 +12,7 @@ namespace Composite.Core.Linq
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class DictionaryExtensions
     {
+        /// <exclude />
         public static int GetContentHashCode(this IDictionary dictionary)
         {
             int hash = 0;
@@ -49,6 +50,7 @@ namespace Composite.Core.Linq
 
 
 
+        /// <exclude />
         public static IEnumerable<T> EvaluateOrNull<T>(this IEnumerable<T> enumerable)
         {
             if (enumerable == null) return null;
@@ -122,6 +124,7 @@ namespace Composite.Core.Linq
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ListExtensions
     {
+        /// <exclude />
         public static List<U> ToList<T, U>(this IEnumerable<T> source, Func<T, U> convertor)
         {
             List<U> result = new List<U>();
@@ -134,6 +137,9 @@ namespace Composite.Core.Linq
             return result;
         }
 
+
+
+        /// <exclude />
         public static List<object> ToListOfObjects(this IEnumerable enumerable)
         {
             var result = new List<object>();
@@ -147,6 +153,8 @@ namespace Composite.Core.Linq
         }
 
 
+
+        /// <exclude />
         public static IEnumerable<object> ToEnumerableOfObjects(this IEnumerable enumerable)
         {
             foreach (object o in enumerable)

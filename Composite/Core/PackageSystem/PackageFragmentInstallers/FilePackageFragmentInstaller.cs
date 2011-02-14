@@ -22,6 +22,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         private List<string> _directoriesToDelete = null;
 
 
+        /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
             List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
@@ -255,6 +256,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
 
+        /// <exclude />
         public override IEnumerable<XElement> Install()
         {
             if (_filesToCopy == null) throw new InvalidOperationException("FilePackageFragmentInstaller has not been validated");

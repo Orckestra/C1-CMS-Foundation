@@ -12,6 +12,7 @@ namespace Composite.Functions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class IMetaFunctionExtensionMethods
 	{
+        /// <exclude />
         public static string CompositeName(this IMetaFunction metaFunction)
         {
             return CompositeName(metaFunction.Namespace, metaFunction.Name);
@@ -19,6 +20,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static string CompositeName(string namespaceName, string name)
         {
             return StringExtensionMethods.CreateNamespace(namespaceName, name, '.');
@@ -26,6 +28,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static bool IsNamespaceCorrectFormat(this IMetaFunction metaFunction)
         {
             if (metaFunction.Namespace == "") return true;
@@ -44,6 +47,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static bool ValidateParameterProfiles(this IMetaFunction metaFunction)
         {
             List<string> names = new List<string>();
@@ -65,7 +69,7 @@ namespace Composite.Functions
 
 
 
-
+        /// <exclude />
         public static string DescriptionLocalized(this IMetaFunction function)
         {
             if (function.Description.Contains("${"))

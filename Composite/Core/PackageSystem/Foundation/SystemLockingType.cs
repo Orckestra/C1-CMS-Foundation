@@ -9,8 +9,13 @@ namespace Composite.Core.PackageSystem.Foundation
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum SystemLockingType
     {
+        /// <exclude />
         None,
+
+        /// <exclude />
         Soft,
+
+        /// <exclude />
         Hard
     }
 

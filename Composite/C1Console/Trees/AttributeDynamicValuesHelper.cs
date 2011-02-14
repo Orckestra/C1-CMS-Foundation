@@ -12,9 +12,11 @@ namespace Composite.C1Console.Trees
     {
         private Dictionary<string, DynamicValuesHelper> _dynamicValuesHelpers = new Dictionary<string, DynamicValuesHelper>();
 
+        /// <exclude />
         public XElement Element { get; private set; }
 
 
+        /// <exclude />
         public AttributeDynamicValuesHelper(XElement element)
         {
             this.Element = element;
@@ -22,6 +24,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public XElement ReplaceValues(DynamicValuesHelperReplaceContext context)
         {
             XElement result = new XElement(this.Element);
@@ -40,6 +43,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public void Initialize(TreeNode ownerTreeNode)
         {
             foreach (XAttribute attribute in GetAttributes(this.Element))

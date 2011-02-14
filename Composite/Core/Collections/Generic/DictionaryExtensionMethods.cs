@@ -10,6 +10,7 @@ namespace Composite.Core.Collections.Generic
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class DictionaryExtensionMethods
 	{
+        /// <exclude />
         public static void AddDictionary<TKey, TValue>(this Dictionary<TKey, TValue> targetDictionary, Dictionary<TKey, TValue> sourceDictionary)
         {
             if (targetDictionary == null) throw new ArgumentNullException("targetDictionary");
@@ -21,6 +22,8 @@ namespace Composite.Core.Collections.Generic
             }
         }
 
+
+        /// <exclude />
         public static TValue EnsureValue<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, Func<TValue> createValue)
         {
             // TODO: Syncronization logic here???
@@ -34,6 +37,8 @@ namespace Composite.Core.Collections.Generic
             return value;
         }
 
+
+        /// <exclude />
         public static TValue EnsureValue<TKey, TValue>(this Hashtable<TKey, TValue> dictionary, TKey key, Func<TValue> createValue)
         {
             TValue value;

@@ -13,6 +13,7 @@ namespace Composite.Core.Configuration
     public sealed class SimpleNameTypeConfigurationElement : ConfigurationElement
     {
         private const string _namePropertyName = "name";
+        /// <exclude />
         [ConfigurationProperty(_namePropertyName, IsRequired=true)]
         public string Name
         {
@@ -22,6 +23,7 @@ namespace Composite.Core.Configuration
 
 
         private const string _typePropertyName = "type";
+        /// <exclude />
         [ConfigurationProperty(_typePropertyName, IsRequired=true)]
         [TypeConverter(typeof(AssemblyQualifiedTypeNameConverter))]		
         public Type Type

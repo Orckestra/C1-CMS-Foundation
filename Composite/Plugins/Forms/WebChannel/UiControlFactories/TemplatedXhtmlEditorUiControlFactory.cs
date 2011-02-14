@@ -23,10 +23,13 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         private string _formControlLabel;
         private string _xhtml;
 
+        /// <exclude />
         protected abstract void BindStateToProperties();
 
+        /// <exclude />
         protected abstract void InitializeViewState();
 
+        /// <exclude />
         public abstract string GetDataFieldClientName();
 
         internal void BindStateToControlProperties()
@@ -39,20 +42,24 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             this.InitializeViewState();
         }
 
+        /// <exclude />
         public string Xhtml
         {
             get { return _xhtml; }
             set { _xhtml = value; }
         }
 
+        /// <exclude />
         public string FormControlLabel
         {
             get { return _formControlLabel; }
             set { _formControlLabel = value; }
         }
 
+        /// <exclude />
         public IEnumerable<Type> EmbedableFieldsTypes { get; set; }
 
+        /// <exclude />
         public string ClassConfigurationName { get; set; }
 
 

@@ -19,12 +19,14 @@ namespace Composite.C1Console.Workflow
         private IEnumerable<PermissionType> _permissionTypes;
 
 
+        /// <exclude />
         public WorkflowActionToken(Type workflowType)
             : this(workflowType, null)
         {
         }
 
 
+        /// <exclude />
         public WorkflowActionToken(Type workflowType, IEnumerable<PermissionType> permissionType)
         {
             if (workflowType == null) throw new ArgumentNullException("workflowType");
@@ -46,6 +48,7 @@ namespace Composite.C1Console.Workflow
         }
 
 
+        /// <exclude />
         public Type WorkflowType
         {
             get;
@@ -53,7 +56,7 @@ namespace Composite.C1Console.Workflow
         }
 
 
-
+        /// <exclude />
         public Guid ParentWorkflowInstanceId
         {
             get;
@@ -62,6 +65,7 @@ namespace Composite.C1Console.Workflow
 
 
         // User defined data to the workflow
+        /// <exclude />
         public string Payload
         {
             get;
@@ -69,7 +73,9 @@ namespace Composite.C1Console.Workflow
         }
 
 
+
         // User defined data to the workflow
+        /// <exclude />
         public string ExtraPayload
         {
             get;
@@ -77,6 +83,7 @@ namespace Composite.C1Console.Workflow
         }
 
 
+        /// <exclude />
         public bool DoIgnoreEntityTokenLocking
         {
             get;
@@ -84,6 +91,7 @@ namespace Composite.C1Console.Workflow
         }
 
 
+        /// <exclude />
         public Type EventHandleFilterType
         {
             get;
@@ -91,12 +99,14 @@ namespace Composite.C1Console.Workflow
         }
 
 
+        /// <exclude />
         public override bool IgnoreEntityTokenLocking
         {
             get { return this.DoIgnoreEntityTokenLocking; }
         }
 
 
+        /// <exclude />
         public override IEnumerable<PermissionType> PermissionTypes
         {
             get
@@ -106,6 +116,7 @@ namespace Composite.C1Console.Workflow
         }
 
 
+        /// <exclude />
         public override string Serialize()
         {
             StringBuilder stringBuilder = new StringBuilder();
@@ -125,6 +136,7 @@ namespace Composite.C1Console.Workflow
         }
 
 
+        /// <exclude />
         public static ActionToken Deserialize(string serialiedWorkflowActionToken)
         {
             Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(serialiedWorkflowActionToken);

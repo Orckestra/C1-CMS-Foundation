@@ -22,6 +22,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     {
         private List<DataTypeDescriptor> _dataTypeDescriptors = null;
 
+
+        /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
             List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
@@ -112,6 +114,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
 
+        /// <exclude />
         public override IEnumerable<XElement> Install()
         {
             if (_dataTypeDescriptors == null) throw new InvalidOperationException("DynamicDataTypePackageFragmentInstaller has not been validated");

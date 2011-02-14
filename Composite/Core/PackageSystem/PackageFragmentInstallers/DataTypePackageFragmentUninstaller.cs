@@ -24,6 +24,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         private List<PackageFragmentValidationResult> _validationResult = null;
 
 
+        /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {            
             _validationResult = new List<PackageFragmentValidationResult>();
@@ -80,6 +81,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
 
+        /// <exclude />
         public override void Uninstall()
         {
             if (_dataTypeDescriptorsToDelete == null) throw new InvalidOperationException("DataTypePackageFragmentUninstaller has not been validated");

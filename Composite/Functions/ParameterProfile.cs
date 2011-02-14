@@ -15,6 +15,7 @@ namespace Composite.Functions
         private WidgetFunctionProvider _widgetFuntionProvider;
         private Dictionary<string, object> _widgetFunctionRuntimeParameters = new Dictionary<string,object>();
 
+        /// <exclude />
         public ParameterProfile(string name, Type type, bool isRequired, BaseValueProvider fallbackValueProvider, WidgetFunctionProvider widgetFunctionProvider, string label, HelpDefinition helpDefinition)
         {
             if (string.IsNullOrEmpty(name) == true) throw new ArgumentNullException("name");
@@ -33,6 +34,7 @@ namespace Composite.Functions
         }
 
 
+        /// <exclude />
         public ParameterProfile(
             string name, Type type, bool isRequired, BaseValueProvider fallbackValueProvider, WidgetFunctionProvider widgetFunctionProvider, 
             Dictionary<string,object> widgetFunctionRuntimeParameters, string label, HelpDefinition helpDefinition)
@@ -41,12 +43,22 @@ namespace Composite.Functions
             _widgetFunctionRuntimeParameters = widgetFunctionRuntimeParameters;
         }
 
+
+        /// <exclude />
         public string Name { get; private set; }
+
+        /// <exclude />
         public Type Type { get; private set; }
 
+
+        /// <exclude />
         public bool IsRequired { get; private set; }
+
+        /// <exclude />
         public BaseValueProvider FallbackValueProvider { get; private set; }
 
+
+        /// <exclude />
         public IWidgetFunction WidgetFunction 
         {
             get
@@ -57,6 +69,7 @@ namespace Composite.Functions
         }
 
 
+        /// <exclude />
         public IEnumerable<BaseParameterRuntimeTreeNode> WidgetFunctionParameters
         {
             get
@@ -85,10 +98,14 @@ namespace Composite.Functions
 //            }
 //        }
 
+        /// <exclude />
         public string Label{ get; private set; }
+
+        /// <exclude />
         public HelpDefinition HelpDefinition { get; private set; }
 
 
+        /// <exclude />
         public string LabelLocalized
         {
             get

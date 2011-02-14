@@ -19,6 +19,7 @@ namespace Composite.Data.Types
     [DataAncestorProvider(typeof(NoAncestorDataAncestorProvider))]
     public interface IUserSettings : IData
     {
+        /// <exclude />
         [NotNullValidator()]
         [StringSizeValidator(2, 64)]
         [StoreFieldType(PhysicalStoreFieldType.String, 64)]
@@ -26,6 +27,7 @@ namespace Composite.Data.Types
         string Username { get; set; }
 
 
+        /// <exclude />
         [NotNullValidator()]
         [StringSizeValidator(2, 16)]
         [StoreFieldType(PhysicalStoreFieldType.String, 16)]
@@ -33,11 +35,13 @@ namespace Composite.Data.Types
         string CultureName { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 16, IsNullable = true)]
         [ImmutableFieldId("{931130A1-5CDD-487a-B51F-76A0396D3216}")]
         string CurrentActiveLocaleCultureName { get; set; }
 
-        
+
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 16, IsNullable = true)]
         [ImmutableFieldId("{0D354A92-461D-4ff8-B797-F2897119CD3B}")]
         string ForeignLocaleCultureName { get; set; }

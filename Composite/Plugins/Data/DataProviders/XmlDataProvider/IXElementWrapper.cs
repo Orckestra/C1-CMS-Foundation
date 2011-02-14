@@ -9,6 +9,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IXElementWrapper
     {
+        /// <exclude />
         void CommitData(XElement element);
     }
 }

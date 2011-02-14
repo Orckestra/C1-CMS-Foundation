@@ -13,16 +13,24 @@ namespace Composite.C1Console.Workflow.Activities
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ShowConsoleMessageBoxActivity : Activity
     {
+        /// <exclude />
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(ShowConsoleMessageBoxActivity));
+
+        /// <exclude />
         public static readonly DependencyProperty MessageProperty = DependencyProperty.Register("Message", typeof(string), typeof(ShowConsoleMessageBoxActivity));
+
+        /// <exclude />
         public static readonly DependencyProperty DialogTypeProperty = DependencyProperty.Register("DialogType", typeof(DialogType), typeof(ShowConsoleMessageBoxActivity));
 
+
+        /// <exclude />
         public ShowConsoleMessageBoxActivity()
         {
         }
 
 
 
+        /// <exclude />
         public ShowConsoleMessageBoxActivity(string name)
             : base(name)
         {
@@ -30,6 +38,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         public DialogType DialogType
         {
             get { return (DialogType)GetValue(DialogTypeProperty); }
@@ -38,6 +47,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         public string Title
         {
             get { return (string)GetValue(TitleProperty); }
@@ -46,6 +56,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         public string Message
         {
             get { return (string)GetValue(MessageProperty); }
@@ -54,8 +65,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
-
-
+        /// <exclude />
         protected sealed override ActivityExecutionStatus Execute(ActivityExecutionContext executionContext)
         {
             FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);

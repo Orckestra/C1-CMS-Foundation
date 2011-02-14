@@ -15,6 +15,7 @@ namespace Composite.Functions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class XslExtensionsManager
 	{
+        /// <exclude />
         public static void Register(XsltArgumentList argumentList)
         {
             foreach(string providerName in XslExtensionsProviderRegistry.XslExtensionsProviderNames)

@@ -11,6 +11,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class RebootingConsoleFragmentInstaller : BasePackageFragmentInstaller
     {
+        /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
             return new PackageFragmentValidationResult[0];
@@ -18,6 +19,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
 
+        /// <exclude />
         public override IEnumerable<XElement> Install()
         {
             ConsoleMessageQueueFacade.Enqueue(new RebootConsoleMessageQueueItem(), null);

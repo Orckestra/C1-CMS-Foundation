@@ -9,8 +9,13 @@ namespace Composite.Data.Plugins.DataProvider
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IWritableDataProvider : IDataProvider
     {
-        void Update(IEnumerable<IData> datas);       
+        /// <exclude />
+        void Update(IEnumerable<IData> datas);
+
+        /// <exclude />
         List<T> AddNew<T>(IEnumerable<T> datas) where T : class, IData;
+
+        /// <exclude />
         void Delete(IEnumerable<DataSourceId> dataSourceIds);
     }
 }

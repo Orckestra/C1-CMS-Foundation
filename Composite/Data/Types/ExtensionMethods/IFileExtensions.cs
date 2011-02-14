@@ -12,6 +12,7 @@ namespace Composite.Data.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class IFileExtensions
     {
+        /// <exclude />
         public static Stream GetReadStream(this IFile file)
         {
             IFileStreamManager manager = FileStreamManagerLocator.GetFileStreamManager(file.GetType());
@@ -21,6 +22,7 @@ namespace Composite.Data.Types
 
 
 
+        /// <exclude />
         public static Stream GetNewWriteStream(this IFile file)
         {
             IFileStreamManager manager = FileStreamManagerLocator.GetFileStreamManager(file.GetType());
@@ -28,6 +30,9 @@ namespace Composite.Data.Types
             return manager.GetNewWriteStream(file);
         }
 
+
+
+        /// <exclude />
         public static void SubscribeOnChanged(this IFile file, OnFileChangedDelegate handler)
         {
             IFileStreamManager manager = FileStreamManagerLocator.GetFileStreamManager(file.GetType());

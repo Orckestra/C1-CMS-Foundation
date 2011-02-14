@@ -98,6 +98,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
 
+        /// <exclude />
         public static IEnumerable<XElement> GetSiteMap()
         {
             return GetMap().RootPagesLookup;
@@ -105,6 +106,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
 
+        /// <exclude />
         public static IEnumerable<XElement> GetSiteMapWithActivePageAnnotations()
         {
             Guid pageId = PageRenderer.CurrentPageId;
@@ -114,6 +116,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
 
+        /// <exclude />
         public static IEnumerable<XElement> GetSiteMapWithActivePageAnnotations(Guid pageId)
         {
             return GetSitemapByScope(SitemapScope.All, pageId);
@@ -140,11 +143,16 @@ namespace Composite.Core.WebClient.Renderings.Page
         }
 
 
+
+        /// <exclude />
         public static IEnumerable<Guid> GetAssociatedPageIds(Guid pageId, SitemapScope associationScope)
         {
             return GetAssociatedPageIds(pageId, associationScope, PageStructureInfo.GetSiteMap());
         }
 
+
+
+        /// <exclude />
         public static IEnumerable<Guid> GetAssociatedPageIds(Guid pageId, SitemapScope associationScope, IEnumerable<XElement> sitemaps)
         {
             switch (associationScope)
@@ -257,11 +265,17 @@ namespace Composite.Core.WebClient.Renderings.Page
             }
         }
 
+
+
+        /// <exclude />
         public static bool TryGetPageUrl(Guid guid, out string pageUrl)
         {
             return GetMap().IdToUrlLookup.TryGetValue(guid, out pageUrl);
         }
 
+
+
+        /// <exclude />
         [Obsolete("Use Composite.Core.WebClient.UrlPageHelper class")]
         public static bool TryGetPageUrlByFriendlyUrl(string friendlyUrl, out string pageUrl)
         {
@@ -276,22 +290,31 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
 
+        /// <exclude />
         public static Dictionary<string, Guid> GetUrlToIdLookup()
         {
             return GetMap().UrlToIdLookup;
         }
 
+
+
+        /// <exclude />
         public static Dictionary<string, Guid> GetLowerCaseUrlToIdLookup()
         {
            return GetMap().LowerCaseUrlToIdLookup;
         }
 
 
+
+        /// <exclude />
         public static Dictionary<Guid, string> GetIdToUrlLookup()
         {
             return GetIdToUrlLookup(DataScopeManager.CurrentDataScope.Name, LocalizationScopeManager.CurrentLocalizationScope);
         }
 
+
+
+        /// <exclude />
         public static Dictionary<Guid, string> GetIdToUrlLookup(string dataScopeIdentifier, CultureInfo culture)
         {
             using (new DataScope(DataScopeIdentifier.Deserialize(dataScopeIdentifier), culture))

@@ -46,11 +46,15 @@ namespace Composite.Data
 
         #region Public methods
 
+
+        /// <exclude />
         public static IPage GetPageById(Guid id)
         {
             return GetPageById(id, false);
         }
 
+
+        /// <exclude />
         public static IPage GetPageById(Guid id, bool readonlyValue)
         {
             IPage result;
@@ -79,18 +83,24 @@ namespace Composite.Data
             return readonlyValue ? result : CreateWrapper(result);
         }
 
+
+        /// <exclude />
         [Obsolete("Use GetParentId(..)")]
         public static Guid GetParentID(Guid pageId)
         {
             return GetParentId(pageId);
         }
 
+
+        /// <exclude />
         public static Guid GetParentId(Guid pageId)
         {
             PageStructureRecord pageStructure = GetPageStructureRecord(pageId);
             return pageStructure != null ? pageStructure.ParentId : Guid.Empty;
         }
 
+
+        /// <exclude />
         public static int GetLocalOrdering(Guid pageId)
         {
             PageStructureRecord pageStructure = GetPageStructureRecord(pageId);
@@ -128,6 +138,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static ReadOnlyCollection<IPagePlaceholderContent> GetPlaceholderContent(Guid pageId)
         {
             string cacheKey = GetCacheKey<IPagePlaceholderContent>(pageId);

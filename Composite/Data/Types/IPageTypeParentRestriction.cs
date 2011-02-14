@@ -20,17 +20,20 @@ namespace Composite.Data.Types
     [CachingAttribute(CachingType.Full)]
     public interface IPageTypeParentRestriction : IData
     {
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{E0595ABC-1207-49D2-BA53-8055E8F4D851}")]
         Guid Id { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{42E5C8E5-9528-4C6F-94BD-DFA77F8D5FB7}")]
         [ForeignKey(typeof(IPageType), "Id", AllowCascadeDeletes = true)]
         Guid PageTypeId { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{4668D87F-245D-4DBB-BFD0-2F09DDB7CD64}")]
         [ForeignKey(typeof(IPageType), "Id", AllowCascadeDeletes=true)]

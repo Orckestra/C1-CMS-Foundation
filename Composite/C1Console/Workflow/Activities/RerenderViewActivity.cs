@@ -12,12 +12,14 @@ namespace Composite.C1Console.Workflow.Activities
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class RerenderViewActivity : Activity
     {
+        /// <exclude />
         public RerenderViewActivity()
         {
         }
 
 
 
+        /// <exclude />
         public RerenderViewActivity(string name)
             : base(name)
         {
@@ -25,6 +27,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected sealed override ActivityExecutionStatus Execute(ActivityExecutionContext executionContext)
         {
             FlowControllerServicesContainer flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);

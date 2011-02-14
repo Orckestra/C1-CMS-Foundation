@@ -21,11 +21,13 @@ namespace Composite.Data.Types
     [DataAncestorProvider(typeof(NoAncestorDataAncestorProvider))]
     public interface IUser : IData
     {
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{480CF63A-A2E9-43e7-8034-778E55A0B6ED}")]
         Guid Id { get; set; }
 
 
+        /// <exclude />
         [NotNullValidator()]
         [StringSizeValidator(2, 64)]
         [StoreFieldType(PhysicalStoreFieldType.String, 64)]
@@ -33,6 +35,7 @@ namespace Composite.Data.Types
         string Username { get; set; }
 
 
+        /// <exclude />
         [NotNullValidator()]
         [Composite.Data.Validation.Validators.PasswordValidator()]
         [StoreFieldType(PhysicalStoreFieldType.String, 256)]
@@ -40,13 +43,14 @@ namespace Composite.Data.Types
         string EncryptedPassword { get; set; }
 
 
-
+        /// <exclude />
         // Field added in [C1 1.2 SP2 Patch 1]
         [StoreFieldType(PhysicalStoreFieldType.String, 128, IsNullable = true)]
         [ImmutableFieldId("{C0929E14-3FB8-4CE5-8374-997A7508DF80}")]
         string Email { get; set; }
 
 
+        /// <exclude />
         [NotNullValidator()]
         [StringSizeValidator(1, 64)]
         [StoreFieldType(PhysicalStoreFieldType.String, 64)]

@@ -11,6 +11,7 @@ namespace Composite.Data.DynamicTypes
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public sealed class DataTypeAssociationDescriptor
 	{
+        /// <exclude />
         public DataTypeAssociationDescriptor(Type associatedInterfaceType, string foreignKeyPropertyName, DataAssociationType dataAssociationType)
         {
             this.AssociatedInterfaceType = associatedInterfaceType;
@@ -19,6 +20,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public Type AssociatedInterfaceType
         {
             get;
@@ -26,6 +28,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public string ForeignKeyPropertyName
         {
             get;
@@ -33,6 +36,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public DataAssociationType AssociationType
         {
             get;
@@ -41,6 +45,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public XElement ToXml()
         {
             XElement element = new XElement("DataTypeAssociationDescriptor");
@@ -54,6 +59,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public static DataTypeAssociationDescriptor FromXml(XElement element)
         {
             if (element.Name != "DataTypeAssociationDescriptor") throw new ArgumentException("The xml is not correctly formattet");
@@ -73,12 +79,15 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public override bool Equals(object obj)
         {
             return Equals(obj as DataTypeAssociationDescriptor);
         }
 
 
+
+        /// <exclude />
         public bool Equals(DataTypeAssociationDescriptor dataTypeAssociationDescriptor)
         {
             if (dataTypeAssociationDescriptor == null) return false;
@@ -90,6 +99,8 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+
+        /// <exclude />
         public override int GetHashCode()
         {
             return

@@ -200,6 +200,7 @@ namespace Composite
 
 
 
+        /// <exclude />
         public static void WaitUntilAllIsInitialized()
         {
             using (CoreIsInitializedScope)
@@ -230,6 +231,7 @@ namespace Composite
 
 
 
+        /// <exclude />
         public static void FatalResetTheSytem()
         {
             LoggingService.LogWarning(LogTitle, "Unhandled error occured, reinitializing the system!");
@@ -239,6 +241,7 @@ namespace Composite
 
 
 
+        /// <exclude />
         public static void ReinitializeTheSystem(RunInWriterLockScopeDelegage runInWriterLockScopeDelegage)
         {
             ReinitializeTheSystem(runInWriterLockScopeDelegage, false);
@@ -291,6 +294,7 @@ namespace Composite
 
 
 
+        /// <exclude />
         public static void UninitializeTheSystem(RunInWriterLockScopeDelegage runInWriterLockScopeDelegage)
         {
             using (GlobalInitializerFacade.CoreLockScope)
@@ -308,7 +312,10 @@ namespace Composite
 
 
 
+        /// <exclude />
         public delegate void RunInWriterLockScopeDelegage();
+
+        /// <exclude />
         public static void RunInWriterLockScope(RunInWriterLockScopeDelegage runInWriterLockScopeDelegage)
         {
             using (GlobalInitializerFacade.CoreLockScope)
@@ -319,6 +326,7 @@ namespace Composite
 
 
 
+        /// <exclude />
         public static void ValidateIsOnlyCalledFromGlobalInitializerFacade(StackTrace stackTrace)
         {
             MethodBase methodInfo = stackTrace.GetFrame(1).GetMethod();
@@ -331,8 +339,13 @@ namespace Composite
 
 
 
+        /// <exclude />
         public static bool DynamicTypesGenerated { get; private set; }
+
+        /// <exclude />
         public static bool SystemCoreInitializing { get { return _initializing; } }
+
+        /// <exclude />
         public static bool SystemCoreInitialized { get { return _coreInitialized; } }
 
         /// <summary>

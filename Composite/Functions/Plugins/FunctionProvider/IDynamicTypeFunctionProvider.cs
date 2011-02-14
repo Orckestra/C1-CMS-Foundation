@@ -9,6 +9,7 @@ namespace Composite.Functions.Plugins.FunctionProvider
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IDynamicTypeFunctionProvider : IFunctionProvider
 	{
+        /// <exclude />
         IEnumerable<IFunction> DynamicTypeDependentFunctions { get; }
 	}
 }

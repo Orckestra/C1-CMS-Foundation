@@ -17,12 +17,14 @@ namespace Composite.C1Console.Trees.Foundation.AttachmentPoints
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DynamicDataItemAttachmentPoint : BaseAttachmentPoint, IDataItemAttachmentPoint
     {
+        /// <exclude />
         public Type InterfaceType { get; set; }
+
+        /// <exclude />
         public object KeyValue { get; set; }
 
 
-
-
+        /// <exclude />
         public override bool IsAttachmentPoint(EntityToken parentEntityToken)
         {
             DataEntityToken dataEntityToken = parentEntityToken as DataEntityToken;
@@ -39,7 +41,7 @@ namespace Composite.C1Console.Trees.Foundation.AttachmentPoints
         }
 
 
-
+        /// <exclude />
         public override IEnumerable<EntityToken> GetEntityTokens(EntityToken childEntityToken, TreeNodeDynamicContext dynamicContext)
         {
             if (typeof(ILocalizedControlled).IsAssignableFrom(this.InterfaceType))
@@ -73,7 +75,7 @@ namespace Composite.C1Console.Trees.Foundation.AttachmentPoints
         }
 
 
-
+        /// <exclude />
         public override void Log(string title, string indention = "")
         {
             LoggingService.LogVerbose(title, string.Format("{0}DynamicDataType: Position = {1}, Type = {2}, KeyValue = {3}", indention, this.Position, this.InterfaceType, this.KeyValue));

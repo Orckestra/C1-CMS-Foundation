@@ -8,15 +8,31 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ClientAction
     {
+        /// <exclude />
         public string ActionToken { get; set; }
+
+        /// <exclude />
         public string Label { get; set; }
+
+        /// <exclude />
         public string ToolTip { get; set; }
+
+        /// <exclude />
         public bool Disabled { get; set; }
+
+        /// <exclude />
         public ResourceHandle Icon { get; set; }
+
+        /// <exclude />
         public ClientActionCategory ActionCategory { get; set; }
+
+        /// <exclude />
         public string CheckboxStatus { get; set; }
+
+        /// <exclude />
         public string TagValue { get; set; }
 
+        /// <exclude />
         public string ActionKey 
         {
             get

@@ -15,6 +15,7 @@ namespace Composite.Data.Types
     {
         private static readonly object _lock = new object();
 
+        /// <exclude />
         public static Guid GetParentId(this IPage page)
         {
             Verify.ArgumentNotNull(page, "page");
@@ -23,6 +24,8 @@ namespace Composite.Data.Types
             return PageManager.GetParentId(page.Id);
         }
 
+
+        /// <exclude />
         public static int GetLocalOrdering(this IPage page)
         {
             Verify.ArgumentNotNull(page, "page");
@@ -34,6 +37,8 @@ namespace Composite.Data.Types
             }
         }
 
+
+        /// <exclude />
         public static IQueryable<IPage> GetChildren(this IPage page)
         {
             Verify.ArgumentNotNull(page, "page");
@@ -42,6 +47,8 @@ namespace Composite.Data.Types
             return GetChildren(page.Id);
         }
 
+
+        /// <exclude />
         public static IQueryable<IPage> GetChildren(Guid parentId)
         {
             var pageIDs = PageManager.GetChildrenIDs(parentId);
@@ -61,7 +68,7 @@ namespace Composite.Data.Types
         }
 
 
-
+        /// <exclude />
         public static int GetChildrenCount(Guid parentId)
         {
             using (new DataScope(DataScopeIdentifier.Administrated))
@@ -70,6 +77,8 @@ namespace Composite.Data.Types
             }
         }
 
+
+        /// <exclude />
         public static bool IsChildrenAlphabeticOrdered(Guid parentId)
         {
             lock (_lock)
@@ -101,7 +110,7 @@ namespace Composite.Data.Types
         }
 
 
-
+        /// <exclude />
         public static IPage GetPageFromLocalOrder(Guid parentId, int localOrder)
         {
             Guid pageId;
@@ -124,6 +133,7 @@ namespace Composite.Data.Types
 
 
 
+        /// <exclude />
         public static IPage AddPageAtTop(this IPage newPage, Guid parentId)
         {
             return AddPageAtTop(newPage, parentId, true);
@@ -131,6 +141,7 @@ namespace Composite.Data.Types
 
 
 
+        /// <exclude />
         public static IPage AddPageAtTop(this IPage newPage, Guid parentId, bool addNewPage)
         {
             return newPage.InsertIntoPosition(parentId, 0, addNewPage);
@@ -138,6 +149,7 @@ namespace Composite.Data.Types
 
 
 
+        /// <exclude />
         public static IPage AddPageAtBottom(this IPage newPage, Guid parentId)
         {
             return AddPageAtBottom(newPage, parentId, true);
@@ -145,6 +157,7 @@ namespace Composite.Data.Types
 
 
 
+        /// <exclude />
         public static IPage AddPageAtBottom(this IPage newPage, Guid parentId, bool addNewPage)
         {
             if (newPage == null) throw new ArgumentNullException("newPage");
@@ -168,6 +181,7 @@ namespace Composite.Data.Types
 
 
 
+        /// <exclude />
         public static IPage AddPageAlphabetic(this IPage newPage, Guid parentId)
         {
             if (newPage == null) throw new ArgumentNullException("newPage");
@@ -230,11 +244,15 @@ namespace Composite.Data.Types
 
 
 
+        /// <exclude />
         public static IPage AddPageAfter(this IPage newPage, Guid parentId, Guid existingPageId)
         {
             return AddPageAfter(newPage, parentId, existingPageId, true);
         }
 
+
+
+        /// <exclude />
         public static IPage MoveTo(this IPage page, Guid parentId, int localOrder, bool addNewPage)
         {
             Verify.ArgumentNotNull(page, "page");
@@ -265,6 +283,8 @@ namespace Composite.Data.Types
         }
 
 
+
+        /// <exclude />
         public static IPage InsertIntoPosition(this IPage newPage, Guid parentId, int localOrder, bool addNewPage)
         {
             Verify.ArgumentNotNull(newPage, "newPage");
@@ -307,6 +327,8 @@ namespace Composite.Data.Types
         }
 
 
+
+        /// <exclude />
         public static IPage AddPageAfter(this IPage newPage, Guid parentId, Guid existingPageId, bool addNewPage)
         {
             if (newPage == null) throw new ArgumentNullException("newPage");
@@ -356,6 +378,7 @@ namespace Composite.Data.Types
 
 
 
+        /// <exclude />
         public static IEnumerable<IPage> GetSubChildren(this IPage parentPage)
         {
             if (parentPage == null) throw new ArgumentNullException("parentPage");

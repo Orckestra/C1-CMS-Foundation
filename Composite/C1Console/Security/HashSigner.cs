@@ -8,6 +8,7 @@
 	{
         private const int _privateKey = 180226750;
 
+        /// <exclude />
         public static HashValue GetSignedHash(string content)
         {
             int hashCode = content.GetHashCode();
@@ -17,6 +18,7 @@
 
 
 
+        /// <exclude />
         public static bool ValidateSignedHash(string content, HashValue hashValue)
         {
             HashValue newHashValue = GetSignedHash(content);

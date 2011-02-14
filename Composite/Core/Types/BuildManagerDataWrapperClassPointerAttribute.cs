@@ -9,6 +9,7 @@ namespace Composite.Core.Types
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
 	public sealed class BuildManagerDataWrapperClassPointerAttribute : Attribute
 	{
+        /// <exclude />
         public BuildManagerDataWrapperClassPointerAttribute(string interfaceNamespaceName, string interfaceTypeName)
         {
             this.InterfaceNamespaceName = interfaceNamespaceName;
@@ -16,6 +17,7 @@ namespace Composite.Core.Types
         }
 
 
+        /// <exclude />
         public string InterfaceNamespaceName
         {
             get;
@@ -23,6 +25,7 @@ namespace Composite.Core.Types
         }
 
 
+        /// <exclude />
         public string InterfaceTypeName
         {
             get;

@@ -9,6 +9,7 @@ namespace Composite.C1Console.Workflow
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ActivityExtensionMethods
     {
+        /// <exclude />
         public static Activity GetRoot(this Activity activity)
         {
             if (activity.Parent == null)
@@ -23,6 +24,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static T GetRoot<T>(this Activity activity)
             where T : Activity
         {

@@ -20,6 +20,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 	{
         private List<DataTypeDescriptor> _typesToInstall = null;
 
+
+
+        /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
             List<PackageFragmentValidationResult>  validationResult = new List<PackageFragmentValidationResult>();
@@ -92,6 +95,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
 
+        /// <exclude />
         public override IEnumerable<XElement> Install()
         {
             if (_typesToInstall == null) throw new InvalidOperationException("DataTypePackageFragmentInstaller has not been validated");

@@ -25,20 +25,24 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         private string _formControlLabel;
         private EventHandler _clickEventHandler;
 
+        /// <exclude />
         public EventHandler FormControlClickEventHandler
         {
             get { return _clickEventHandler; }
             set { _clickEventHandler = value; }
         }
 
+        /// <exclude />
         public string FormControlLabel
         {
             get { return _formControlLabel; }
             set { _formControlLabel = value; }
         }
 
+        /// <exclude />
         public string CustomTabId { get; set; }
 
+        /// <exclude />
         public Control EventControl  { get; set; }
     }
 

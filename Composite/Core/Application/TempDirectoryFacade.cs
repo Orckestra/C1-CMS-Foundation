@@ -12,6 +12,7 @@ namespace Composite.Core.Application
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class TempDirectoryFacade
     {
+        /// <exclude />
         public static string CreateTempDirectory()
         {
             string directory = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), Guid.NewGuid().ToString());
@@ -22,6 +23,7 @@ namespace Composite.Core.Application
         }
 
 
+        /// <exclude />
         public static void OnApplicationStart()
         {
             string tempDirectoryName = PathUtil.Resolve(GlobalSettingsFacade.TempDirectory);
@@ -33,6 +35,7 @@ namespace Composite.Core.Application
         }
 
 
+        /// <exclude />
         public static void OnApplicationEnd()
         {
             string tempDirectoryName = PathUtil.Resolve(GlobalSettingsFacade.TempDirectory);

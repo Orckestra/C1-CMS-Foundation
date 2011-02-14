@@ -37,11 +37,17 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public IZipFileSystem ZipFileSystem { get; private set; }
+
+        /// <exclude />
         public string TempDirectory { get; private set; }
 
+        /// <exclude />
         [Obsolete("Use PackageInformation")]
         public PackageInformation AddOnInformation { get; private set; }
+
+        /// <exclude />
         public PackageInformation PackageInformation { get; private set; }
 
 
@@ -81,6 +87,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public void AddPendingDataType(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -93,6 +100,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public bool IsDataTypePending(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -102,6 +110,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public void AddPendingLocale(CultureInfo locale)
         {
             if (locale == null) throw new ArgumentNullException("locale");
@@ -111,6 +120,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public bool IsLocalePending(CultureInfo locale)
         {
             if (locale == null) throw new ArgumentNullException("locale");

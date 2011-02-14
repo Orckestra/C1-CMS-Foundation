@@ -14,6 +14,7 @@ namespace Composite.Functions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class FunctionFacade
     {
+        /// <exclude />
         public static List<string> FunctionNames
         {
             get
@@ -24,6 +25,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static List<string> WidgetFunctionNames
         {
             get
@@ -34,6 +36,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static IFunction GetFunction(string name)
         {
             return MetaFunctionProviderRegistry.GetFunction(name);
@@ -41,6 +44,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static bool TryGetFunction(out IMetaFunction foundFunction, string name, Type functionType)
         {
             if (functionType == typeof(IFunction))
@@ -79,6 +83,8 @@ namespace Composite.Functions
         }
 
 
+
+        /// <exclude />
         public static bool TryGetFunction(out IFunction foundFunction, string name)
         {
             if (MetaFunctionProviderRegistry.FunctionNames.Contains(name))
@@ -94,6 +100,8 @@ namespace Composite.Functions
         }
 
 
+
+        /// <exclude />
         public static bool TryGetWidgetFunction(out IWidgetFunction foundFunction, string name)
         {
             if (MetaFunctionProviderRegistry.WidgetFunctionNames.Contains(name))
@@ -109,6 +117,8 @@ namespace Composite.Functions
         }
 
 
+
+        /// <exclude />
         public static IWidgetFunction GetWidgetFunction(string name)
         {
             return MetaFunctionProviderRegistry.GetWidgetFunction(name);
@@ -116,6 +126,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static IEnumerable<IFunction> GetFunctionsByProvider(string providerName)
         {
             foreach (string functionName in MetaFunctionProviderRegistry.FunctionNamesByProviderName(providerName))
@@ -126,6 +137,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static IEnumerable<string> GetFunctionNamesByProvider(string providerName)
         {
             return MetaFunctionProviderRegistry.FunctionNamesByProviderName(providerName);
@@ -133,6 +145,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static IEnumerable<string> GetFunctionNamesByType(Type supportedType)
         {
             return MetaFunctionProviderRegistry.GetFunctionNamesByType(supportedType);
@@ -140,6 +153,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static IEnumerable<string> GetWidgetFunctionNamesByType(Type supportedType)
         {
             return MetaFunctionProviderRegistry.GetWidgetFunctionNamesByType(supportedType);
@@ -147,6 +161,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static IEnumerable<Type> FunctionSupportedTypes
         {
             get
@@ -156,6 +171,8 @@ namespace Composite.Functions
         }
 
 
+
+        /// <exclude />
         public static IEnumerable<Type> WidgetFunctionSupportedTypes
         {
             get
@@ -166,6 +183,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static bool FunctionExists(string namespaceName, string name)
         {
             IFunction fun;
@@ -177,6 +195,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static BaseRuntimeTreeNode BuildTree(IFunction function, IDictionary<string, object> paramters)
         {
             List<BaseParameterRuntimeTreeNode> parameterNodes = new List<BaseParameterRuntimeTreeNode>();
@@ -194,6 +213,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static BaseRuntimeTreeNode BuildTree(XElement element)
         {
             return FunctionTreeBuilder.Build(element);
@@ -201,6 +221,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static T Execute<T>(IFunction function, IDictionary<string, object> parameters, FunctionContextContainer functionContextContainer)
         {
             BaseRuntimeTreeNode node = BuildTree(function, parameters);
@@ -210,6 +231,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static T Execute<T>(IFunction function)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
@@ -218,6 +240,7 @@ namespace Composite.Functions
         }
 
 
+        /// <exclude />
         public static T Execute<T>(IFunction function, System.Collections.Specialized.NameValueCollection parameterValues)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
@@ -254,6 +277,8 @@ namespace Composite.Functions
         //}
 
 
+
+        /// <exclude />
         public static XElement GetWidgetMarkup(IWidgetFunction widgetFunction, Type targetType, IEnumerable<BaseParameterRuntimeTreeNode> parameters, string label, HelpDefinition helpDefinition, string bindingSourceName, FunctionContextContainer functionContextContainer)
         {
             List<BaseParameterRuntimeTreeNode> parameterNodes = new List<BaseParameterRuntimeTreeNode>();
@@ -272,6 +297,8 @@ namespace Composite.Functions
         }
 
 
+
+        /// <exclude />
         public static string BuildUniqueFunctionName(string functionNamespace, string nameStem)
         {
             string nameCandidate = nameStem;
@@ -287,6 +314,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static string GetFunctionCompositionName(string functionNamespace, string name)
         {
             return StringExtensionMethods.CreateNamespace(functionNamespace, name);

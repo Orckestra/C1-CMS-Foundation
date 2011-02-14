@@ -15,6 +15,7 @@ namespace Composite.Core.WebClient.Renderings
 
 
 
+        /// <exclude />
         public static RenderingResponseHandlerResult GetDataResponseHandling(DataEntityToken requestedItemEntityToken)
         {
             return _implementation.GetDataResponseHandling(requestedItemEntityToken);

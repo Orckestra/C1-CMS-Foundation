@@ -12,15 +12,21 @@ namespace Composite.C1Console.Workflow.Activities
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ShowFieldMessageActivity : Activity
     {
+        /// <exclude />
         public static readonly DependencyProperty FieldBindingPathProperty = DependencyProperty.Register("FieldBindingPath", typeof(string), typeof(ShowFieldMessageActivity));
+
+        /// <exclude />
         public static readonly DependencyProperty MessageProperty = DependencyProperty.Register("Message", typeof(string), typeof(ShowFieldMessageActivity));
-        
+
+
+        /// <exclude />
         public ShowFieldMessageActivity()
         {
         }
 
 
 
+        /// <exclude />
         public ShowFieldMessageActivity(string name)
             : base(name)
         {
@@ -28,6 +34,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         public string FieldBindingPath
         {
             get { return (string)GetValue(FieldBindingPathProperty); }
@@ -36,6 +43,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         public string Message
         {
             get { return (string)GetValue(MessageProperty); }
@@ -44,8 +52,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
-
-
+        /// <exclude />
         protected sealed override ActivityExecutionStatus Execute(ActivityExecutionContext executionContext)
         {
             FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);

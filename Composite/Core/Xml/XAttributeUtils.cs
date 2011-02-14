@@ -10,6 +10,7 @@ namespace Composite.Core.Xml
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class XAttributeUtils
 	{
+        /// <exclude />
         public static string GetValueOrDefault(this XAttribute attribute, string defaultValue)
         {
             if (attribute == null) return defaultValue;
@@ -19,6 +20,7 @@ namespace Composite.Core.Xml
 
 
 
+        /// <exclude />
         public static bool TryGetIntValue(this XAttribute attribute, out int value)
         {
             if (attribute == null) throw new ArgumentNullException("attribute");
@@ -38,6 +40,7 @@ namespace Composite.Core.Xml
 
 
 
+        /// <exclude />
         public static bool TryGetBoolValue(this XAttribute attribute, out bool value)
         {
             if (attribute == null) throw new ArgumentNullException("attribute");
@@ -57,6 +60,7 @@ namespace Composite.Core.Xml
 
 
 
+        /// <exclude />
         public static bool TryGetGuidValue(this XAttribute attribute, out Guid value)
         {
             if (attribute == null) throw new ArgumentNullException("attribute");

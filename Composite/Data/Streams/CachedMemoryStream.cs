@@ -13,6 +13,7 @@ namespace Composite.Data.Streams
 
 
 
+        /// <exclude />
         public byte[] Data
         {
             get { return _data; }
@@ -20,6 +21,7 @@ namespace Composite.Data.Streams
 
 
 
+        /// <exclude />
         public override void Close()
         {
             SaveData();
@@ -29,6 +31,7 @@ namespace Composite.Data.Streams
 
 
 
+        /// <exclude />
         protected override void Dispose(bool disposing)
         {
             SaveData();

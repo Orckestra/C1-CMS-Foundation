@@ -14,6 +14,7 @@ namespace Composite.C1Console.Forms.Foundation
         private string _help = "";
 
 
+        /// <exclude />
         public UiControl()
         {
             this.SourceBindingPaths = new List<string>();
@@ -49,6 +50,8 @@ namespace Composite.C1Console.Forms.Foundation
             set { _help = value; }
         }
 
+
+        /// <exclude />
         public List<ClientValidationRule> ClientValidationRules
         {
             get;

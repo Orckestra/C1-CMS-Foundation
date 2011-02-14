@@ -33,6 +33,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static List<Guid> GetUserGroupIds(string username)
         {
             List<Guid> userGroupIds;

@@ -11,11 +11,13 @@ namespace Composite.Core.Threading
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ThreadDataManagerData: IDisposable
     {
+        /// <exclude />
         public ThreadDataManagerData Parent { get; set; }
         private Hashtable<object, object> Data { get; set; }
         private bool _disposed = false;
 
 
+        /// <exclude />
         public ThreadDataManagerData()
             : this(null)
         {
@@ -23,8 +25,10 @@ namespace Composite.Core.Threading
 
         internal delegate void OnThreadDataDisposedDelegate();
 
+        /// <exclude />
         public event ThreadStart OnDispose;
 
+        /// <exclude />
         public ThreadDataManagerData(ThreadDataManagerData parentThreadData)
         {
             this.Parent = parentThreadData;
@@ -60,7 +64,7 @@ namespace Composite.Core.Threading
         }
 
 
-
+        /// <exclude />
         public void SetValue(object key, object value)
         {
             CheckNotDisposed();
@@ -75,6 +79,7 @@ namespace Composite.Core.Threading
             }
         }
 
+        /// <exclude />
         public object GetValue(object key)
         {
             CheckNotDisposed();
@@ -82,6 +87,7 @@ namespace Composite.Core.Threading
             return Data[key];
         }
 
+        /// <exclude />
         public bool HasValue(object key)
         {
             CheckNotDisposed();
@@ -89,11 +95,13 @@ namespace Composite.Core.Threading
             return this.Data.ContainsKey(key);
         }
 
+        /// <exclude />
         public object this[object key]
         {
             get { return GetValue(key); }
         }
 
+        /// <exclude />
         public void CheckNotDisposed()
         {
             if(_disposed) throw new ObjectDisposedException("TheadDataManagerData");
@@ -101,6 +109,8 @@ namespace Composite.Core.Threading
 
         #region IDisposable Members
 
+
+        /// <exclude />
         public void Dispose()
         {
             if (OnDispose != null)

@@ -21,18 +21,22 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         { }
 
 
+
+        /// <exclude />
         public WebEmbeddedFormUiControl(IFormChannelIdentifier channel)
         {
             this.UiControlChannel = channel;
         }
 
 
+        /// <exclude />
         public void InitializeViewState()
         {
             ((IWebUiControl)this.CompiledUiControl).InitializeViewState();
         }
 
 
+        /// <exclude />
         public Control BuildWebControl()
         {
             Control _formControl = ((IWebUiControl)this.CompiledUiControl).BuildWebControl();
@@ -43,8 +47,12 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             return _formControl;
         }
 
+
+        /// <exclude />
         public bool IsFullWidthControl { get { return false; } }
 
+
+        /// <exclude />
         public string ClientName { get { return null; } }
     }
 

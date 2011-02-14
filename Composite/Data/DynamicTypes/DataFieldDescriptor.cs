@@ -23,6 +23,7 @@ namespace Composite.Data.DynamicTypes
         private Guid _id;
 
 
+        /// <exclude />
         public DataFieldDescriptor(Guid id, string name, StoreFieldType storeType, Type instanceType)
             : this(id, name, storeType, instanceType, false)
         {
@@ -34,6 +35,8 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+
+        /// <exclude />
         public DataFieldDescriptor(Guid id, string name, StoreFieldType storeType, Type instanceType, bool inherited)
         {
             _id = id;
@@ -45,10 +48,15 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public int Position { get; set; }
 
+
+        /// <exclude />
         public int GroupByPriority { get; set; }
 
+
+        /// <exclude />
         public DataFieldFormRenderingProfile FormRenderingProfile { get; set; }
 
 
@@ -57,9 +65,12 @@ namespace Composite.Data.DynamicTypes
         /// </summary>
         public string ForeignKeyReferenceTypeName { get; set; }
 
+
+        /// <exclude />
         public Type InstanceType { get; set; }
 
 
+        /// <exclude />
         public string Name
         {
             get { return _name; }
@@ -67,12 +78,14 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public Guid Id
         {
             get { return _id; }
         }
 
 
+        /// <exclude />
         public StoreFieldType StoreType
         {
             get { return _storeType; }
@@ -85,6 +98,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public DefaultValue DefaultValue
         {
             get
@@ -100,6 +114,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public bool IsNullable
         {
             get { return _isNullable; }
@@ -121,6 +136,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public bool Inherited
         {
             get;
@@ -129,6 +145,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public List<string> ValidationFunctionMarkup
         {
             get;
@@ -137,6 +154,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public string NewInstanceDefaultFieldValue
         {
             get;
@@ -145,6 +163,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public DataFieldDescriptor Clone()
         {
             DataFieldDescriptor dataFieldDescriptor = new DataFieldDescriptor(this.Id, this.Name, this.StoreType, this.InstanceType);
@@ -167,6 +186,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public XElement ToXml()
         {
             XElement element = new XElement("DataFieldDescriptor");
@@ -229,6 +249,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public static DataFieldDescriptor FromXml(XElement element)
         {
             if (element.Name != "DataFieldDescriptor") throw new ArgumentException("The xml is not correctly formattet");
@@ -326,12 +347,14 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public override bool Equals(object obj)
         {
             return Equals(obj as DataFieldDescriptor);
         }
 
 
+        /// <exclude />
         public bool Equals(DataFieldDescriptor dataFieldDescriptor)
         {
             if (dataFieldDescriptor == null) return false;
@@ -340,6 +363,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public override int GetHashCode()
         {
             return this.Id.GetHashCode();

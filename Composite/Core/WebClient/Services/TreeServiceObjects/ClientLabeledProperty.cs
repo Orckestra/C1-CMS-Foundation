@@ -6,9 +6,11 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public class ClientLabeledProperty
 	{
+        /// <exclude />
         public ClientLabeledProperty()
         { }
 
+        /// <exclude />
         public ClientLabeledProperty(LabeledProperty labeledProperty)
         {
             this.Name = labeledProperty.Name;

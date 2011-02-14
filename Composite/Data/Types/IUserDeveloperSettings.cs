@@ -19,6 +19,7 @@ namespace Composite.Data.Types
     [DataAncestorProvider(typeof(NoAncestorDataAncestorProvider))]
 	public interface IUserDeveloperSettings : IData
 	{
+        /// <exclude />
         [NotNullValidator()]
         [StringSizeValidator(2, 64)]
         [StoreFieldType(PhysicalStoreFieldType.String, 64)]
@@ -26,6 +27,7 @@ namespace Composite.Data.Types
         string Username { get; set; }
 
 
+        /// <exclude />
         [NotNullValidator()]
         [StoreFieldType(PhysicalStoreFieldType.String, 256)]
         [ImmutableFieldId("{303F58C7-5F51-4b53-BDEF-ED8025E6EA1A}")]

@@ -104,6 +104,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static bool HasFolderData(this IPage page, Type pageFolderType)
         {
             //TODO: Consider caching here            
@@ -361,6 +362,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static PropertyInfo GetDefinitionPageReferencePropertyInfo(Type pageFolderType)
         {
             return pageFolderType.GetPropertiesRecursively().Where(f => f.Name == PageFolderType_PageReferenceFieldName).Single();

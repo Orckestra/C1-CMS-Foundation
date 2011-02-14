@@ -25,11 +25,15 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
         private TemplatedEnumSelectorUiControl _typeOptionsProxy;
 
+        /// <exclude />
         protected abstract void BindStateToProperties();
 
+        /// <exclude />
         protected abstract void InitializeViewState();
 
+        /// <exclude />
         public abstract string GetDataFieldClientName();
+
 
         internal void BindStateToControlProperties()
         {
@@ -46,18 +50,21 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _typeOptionsProxy = proxy;
         }
 
+        /// <exclude />
         public string Selected
         {
             get { return _selected; }
             set { _selected = value; }
         }
 
+        /// <exclude />
         public string FormControlLabel
         {
             get { return _formControlLabel; }
             set { _formControlLabel = value; }
         }
 
+        /// <exclude />
         public IEnumerable<string> Options
         {
             get
@@ -67,6 +74,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         }
 
     }
+
 
     internal sealed class TemplatedEnumSelectorUiControl : EnumSelectorUiControl, IWebUiControl
     {

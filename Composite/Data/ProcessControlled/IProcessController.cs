@@ -11,6 +11,7 @@ namespace Composite.Data.ProcessControlled
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public interface IProcessController
 	{
+        /// <exclude />
         List<ElementAction> GetActions(IData data, Type elementProviderType);
 	}
 }

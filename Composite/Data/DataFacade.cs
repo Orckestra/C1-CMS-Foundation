@@ -23,9 +23,14 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum CascadeDeleteType
     {
-        Allow, // Cascade delete are performed if the references allows it, if referees dont allow it and exception is thrown
-        Disallow, // Cascade deletes are not performed and if referees exists an exception is thrown
-        Disable // No check on existens of referees is done. This might result in foreign key violation
+        /// <exclude />
+        Allow = 0, // Cascade delete are performed if the references allows it, if referees dont allow it and exception is thrown
+
+        /// <exclude />
+        Disallow = 1, // Cascade deletes are not performed and if referees exists an exception is thrown
+
+        /// <exclude />
+        Disable = 2// No check on existens of referees is done. This might result in foreign key violation
     }
 
 
@@ -42,12 +47,16 @@ namespace Composite.Data
             this.MovedRefereeDatas = movedRefereeDatas;
         }
 
+
+        /// <exclude />
         public IData MovedData
         {
             get;
             private set;
         }
 
+
+        /// <exclude />
         public IEnumerable<IData> MovedRefereeDatas
         {
             get;
@@ -87,6 +96,7 @@ namespace Composite.Data
 
         #region Data interception methods
 
+        /// <exclude />
         public static void SetDataInterceptor<T>(DataInterceptor dataInterceptor)
             where T : class, IData
         {
@@ -96,6 +106,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static void SetDataInterceptor(Type interfaceType, DataInterceptor dataInterceptor)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -107,6 +118,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static bool HasDataInterceptor<T>()
             where T : class, IData
         {
@@ -116,6 +128,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static void HasDataInterceptor(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -127,6 +140,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static void ClearDataInterceptor<T>()
             where T : class, IData
         {
@@ -136,6 +150,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static void ClearDataInterceptor(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -151,12 +166,14 @@ namespace Composite.Data
 
         #region GetData methods
 
+        /// <exclude />
         public static IQueryable<T> GetData<T>(bool useCaching, IEnumerable<string> providerNames)
             where T : class, IData
         {
             return _dataFacade.GetData<T>(useCaching, providerNames);
         }
 
+        /// <exclude />
         public static IQueryable<T> GetData<T>(bool useCaching)
             where T : class, IData
         {
@@ -165,6 +182,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static IQueryable<T> GetData<T>()
             where T : class, IData
         {
@@ -174,6 +192,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static IQueryable<T> GetData<T>(Expression<Func<T, bool>> predicate)
             where T : class, IData
         {
@@ -192,6 +211,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static IQueryable<T> GetData<T>(Expression<Func<T, bool>> predicate, bool useCaching)
             where T : class, IData
         {
@@ -210,6 +230,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static IQueryable GetData(Type interfaceType)
         {
             return GetData(interfaceType, true);
@@ -217,6 +238,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static IQueryable GetData(Type interfaceType, bool useCaching)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -229,6 +251,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static IQueryable GetData(Type interfaceType, string providerName)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -245,6 +268,7 @@ namespace Composite.Data
 
         #region GetDataFromDataSourceId methods
 
+        /// <exclude />
         public static T GetDataFromDataSourceId<T>(DataSourceId dataSourceId, bool useCaching)
             where T : class, IData
         {
@@ -255,6 +279,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static T GetDataFromDataSourceId<T>(DataSourceId dataSourceId)
             where T : class, IData
         {
@@ -266,6 +291,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static IData GetDataFromDataSourceId(DataSourceId dataSourceId)
         {
             if (null == dataSourceId) throw new ArgumentNullException("dataSourceId");
@@ -280,6 +306,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static IData GetDataFromDataSourceId(DataSourceId dataSourceId, bool useCaching)
         {
             if (null == dataSourceId) throw new ArgumentNullException("dataSourceId");
@@ -297,6 +324,7 @@ namespace Composite.Data
 
         #region GetDataFromOtherScope methods (Only helpers)
 
+        /// <exclude />
         public static IQueryable<T> GetDataFromOtherScope<T>(T data, DataScopeIdentifier dataScopeIdentifier)
             where T : class, IData
         {
@@ -311,6 +339,7 @@ namespace Composite.Data
             }
         }
 
+        /// <exclude />
         public static IQueryable<T> GetDataFromOtherLocale<T>(T data, CultureInfo cultureInfo)
             where T : class, IData
         {
@@ -323,11 +352,13 @@ namespace Composite.Data
             }
         }
 
+        /// <exclude />
         public static IEnumerable<IData> GetDataFromOtherScope(IData data, DataScopeIdentifier dataScopeIdentifier)
         {
             return GetDataFromOtherScope(data, dataScopeIdentifier, false);
         }
 
+        /// <exclude />
         public static IEnumerable<IData> GetDataFromOtherScope(IData data, DataScopeIdentifier dataScopeIdentifier, bool useCaching)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -374,6 +405,7 @@ namespace Composite.Data
 
         #region GetPredicateExpressionByUniqueKey methods (Only helpers)
 
+        /// <exclude />
         public static Expression<Func<T, bool>> GetPredicateExpressionByUniqueKey<T>(DataKeyPropertyCollection dataKeyPropertyCollection)
             where T : class, IData
         {
@@ -393,6 +425,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static Expression<Func<T, bool>> GetPredicateExpressionByUniqueKey<T>(object dataKeyValue)
             where T : class, IData
         {
@@ -406,6 +439,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static LambdaExpression GetPredicateExpressionByUniqueKey(Type interfaceType, DataKeyPropertyCollection dataKeyPropertyCollection)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -427,6 +461,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static LambdaExpression GetPredicateExpressionByUniqueKey(Type interfaceType, object dataKeyValue)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -477,6 +512,7 @@ namespace Composite.Data
         #region GetDataByUniqueKey methods (Only helpers)
 
         // Overload
+        /// <exclude />
         public static T TryGetDataByUniqueKey<T>(object dataKeyValue)
             where T : class, IData
         {
@@ -490,6 +526,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static T TryGetDataByUniqueKey<T>(DataKeyPropertyCollection dataKeyPropertyCollection)
             where T : class, IData
         {
@@ -503,6 +540,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static T GetDataByUniqueKey<T>(object dataKeyValue)
             where T : class, IData
         {
@@ -515,6 +553,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static IData TryGetDataByUniqueKey(Type interfaceType, object dataKeyValue)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -529,6 +568,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static IData TryGetDataByUniqueKey(Type interfaceType, DataKeyPropertyCollection dataKeyPropertyCollection)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -548,6 +588,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static IData GetDataByUniqueKey(Type interfaceType, object dataKeyValue)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -567,6 +608,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static IData GetDataByUniqueKey(Type interfaceType, DataKeyPropertyCollection dataKeyPropertyCollection)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -585,6 +627,7 @@ namespace Composite.Data
         #region GetDataOrderedBy methods (Only helpers)
 
         // Overload
+        /// <exclude />
         public static IEnumerable<IData> GetDataOrderedBy(Type interfaceType, PropertyInfo propertyInfo)
         {
             return GetDataOrderedByQueryable(interfaceType, propertyInfo).ToDataEnumerable();
@@ -592,6 +635,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static IQueryable GetDataOrderedByQueryable(Type interfaceType, PropertyInfo propertyInfo)
         {
             IQueryable source = DataFacade.GetData(interfaceType);
@@ -617,6 +661,7 @@ namespace Composite.Data
 
         #region GetPredicateExpression methods (Only helpers)
 
+        /// <exclude />
         public static LambdaExpression GetPredicateExpression(Type interfaceType, DataPropertyValueCollection dataPropertyValueCollection)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -665,6 +710,7 @@ namespace Composite.Data
 
         #region WillUpdateSucceed methods (Only helpers)
 
+        /// <exclude />
         public static bool WillUpdateSucceed(IData data)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -673,7 +719,7 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         public static bool WillUpdateSucceed(IEnumerable<IData> datas)
         {
             if (null == datas) throw new ArgumentNullException("datas");
@@ -695,6 +741,7 @@ namespace Composite.Data
         #region Update methods
 
         // Overload
+        /// <exclude />
         public static void Update(IData data)
         {
             if (null == data) throw new ArgumentNullException("data");
@@ -703,6 +750,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public static void Update(IData data, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performeValidation)
         {
             if (null == data) throw new ArgumentNullException("data");
@@ -711,7 +759,7 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         public static void Update(IEnumerable<IData> dataset)
         {
             Verify.ArgumentNotNull(dataset, "dataset");
@@ -720,6 +768,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public static void Update(IEnumerable<IData> dataset, bool suppressEventing, bool performForeignKeyIntegrityCheck)
         {
             Verify.ArgumentNotNull(dataset, "dataset");
@@ -728,7 +777,7 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         public static void Update(IEnumerable<IData> dataset, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performeValidation)
         {
             Verify.ArgumentNotNull(dataset, "dataset");
@@ -743,6 +792,7 @@ namespace Composite.Data
         #region BuildNew methods (Only helpers)
 
         // Overload
+        /// <exclude />
         public static T BuildNew<T>()
             where T : class, IData
         {
@@ -751,7 +801,7 @@ namespace Composite.Data
 
 
 
-
+        /// <exclude />
         public static T BuildNew<T>(bool suppressEventing)
             where T : class, IData
         {
@@ -772,6 +822,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static IData BuildNew(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -781,6 +832,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static IData BuildNew(Type interfaceType, bool suppressEventling)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -837,6 +889,7 @@ namespace Composite.Data
 
         #region WillAddNewSucceed (Only helpers)
 
+        /// <exclude />
         public static bool WillAddNewSucceed(IData data)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -845,7 +898,7 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         public static bool WillAddNewSucceed<T>(T data)
             where T : class, IData
         {
@@ -855,7 +908,7 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         public static bool WillAddNewSucceed<T>(IEnumerable<T> datas)
             where T : class, IData
         {
@@ -878,6 +931,7 @@ namespace Composite.Data
         #region AddNew methods
 
         // Overload
+        /// <exclude />
         public static T AddNew<T>(T data)
             where T : class, IData
         {
@@ -891,6 +945,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static T AddNew<T>(T data, string providerName)
             where T : class, IData
         {
@@ -905,6 +960,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static List<T> AddNew<T>(IEnumerable<T> datas)
             where T : class, IData
         {
@@ -916,6 +972,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static List<T> AddNew<T>(IEnumerable<T> datas, string providerName)
             where T : class, IData
         {
@@ -991,6 +1048,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static IData AddNew(IData data)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -1156,6 +1214,7 @@ namespace Composite.Data
 
         #region WillDeleteSucceed methods (Only helpers)
 
+        /// <exclude />
         public static bool WillDeleteSucceed<T>(T data)
             where T : class, IData
         {
@@ -1166,6 +1225,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static bool WillDeleteSucceed(IEnumerable<IData> datas)
         {
             if (datas == null) throw new ArgumentNullException("datas");
@@ -1175,6 +1235,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static bool WillDeleteSucceed(IData data)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -1184,6 +1245,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static bool WillDeleteSucceed<T>(IEnumerable<T> datas)
             where T : class, IData
         {
@@ -1209,6 +1271,7 @@ namespace Composite.Data
         #region Delete methods
 
         // Overload
+        /// <exclude />
         public static void Delete<T>(T data)
             where T : class, IData
         {
@@ -1261,6 +1324,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static void Delete<T>(IEnumerable<T> datas)
             where T : class, IData
         {
@@ -1307,6 +1371,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static void Delete<T>(Expression<Func<T, bool>> predicate)
             where T : class, IData
         {
@@ -1323,6 +1388,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static void Delete(IEnumerable<IData> datas)
         {
             if (datas == null) throw new ArgumentNullException("datas");
@@ -1412,6 +1478,7 @@ namespace Composite.Data
         #region Move methods
 
         // Overlaod
+        /// <exclude />
         public static DataMoveResult Move<T>(T data, DataScopeIdentifier targetDataScopeIdentifier)
             where T : class, IData
         {
@@ -1424,6 +1491,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static DataMoveResult Move(IData data, DataScopeIdentifier targetDataScopeIdentifier)
         {
             MethodInfo methodInfo = GetMoveMethodInfo(data.DataSourceId.InterfaceType);
@@ -1450,6 +1518,7 @@ namespace Composite.Data
         #region ValidatePath methods
 
         // Overload
+        /// <exclude />
         public static bool ValidatePath<TFile>(TFile file, string providerName)
             where TFile : IFile
         {
@@ -1459,6 +1528,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public static bool ValidatePath<TFile>(TFile file, string providerName, out string errorMessage) 
             where TFile : IFile
         {
@@ -1470,6 +1540,7 @@ namespace Composite.Data
 
         #region GetDataProviderNames method (Only helpers)
 
+        /// <exclude />
         public static IEnumerable<string> GetDataProviderNames()
         {
             return DataProviderRegistry.DataProviderNames;
@@ -1477,6 +1548,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static IEnumerable<string> GetDynamicDataProviderNames()
         {
             return DataProviderRegistry.DynamicDataProviderNames;
@@ -1488,6 +1560,7 @@ namespace Composite.Data
 
         #region GetInterfaces methods (Only helpers)
 
+        /// <exclude />
         public static List<Type> GetAllInterfaces()
         {
             return DataProviderRegistry.AllInterfaces.ToList();
@@ -1495,6 +1568,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static List<Type> GetAllInterfaces(UserType relevantToUserType)
         {
             return (from dataInterface in DataProviderRegistry.AllInterfaces
@@ -1504,6 +1578,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static List<Type> GetAllKnownInterfaces()
         {
             return DataProviderRegistry.AllKnownInterfaces.ToList();
@@ -1511,6 +1586,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static List<Type> GetAllKnownInterfaces(UserType relevantToUserType)
         {
             return (from dataInterface in DataProviderRegistry.AllKnownInterfaces
@@ -1520,6 +1596,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static List<Type> GetGeneratedInterfaces()
         {
             return DataProviderRegistry.GeneratedInterfaces.ToList();
@@ -1532,6 +1609,7 @@ namespace Composite.Data
         #region DataTag methods (Only helpers)
 
         // Overload
+        /// <exclude />
         public static void SetDataTag(IData data, string id, object value)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -1542,6 +1620,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static void SetDataTag(DataSourceId dataSourceId, string id, object value)
         {
             if (dataSourceId == null) throw new ArgumentNullException("dataSourceId");
@@ -1553,6 +1632,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static bool TryGetDataTag<T>(IData data, string id, out T tag)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -1563,6 +1643,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static bool TryGetDataTag<T>(DataSourceId dataSourceId, string id, out T tag)
         {
             if (dataSourceId == null) throw new ArgumentNullException("dataSourceId");
@@ -1586,6 +1667,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static T GetDataTag<T>(IData data, string id)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -1596,6 +1678,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static T GetDataTag<T>(DataSourceId dataSourceId, string id)
         {
             if (dataSourceId == null) throw new ArgumentNullException("dataSourceId");
@@ -1613,6 +1696,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static void RemoveDataTag(IData data, string id)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -1623,6 +1707,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static void RemoveDataTag(DataSourceId dataSourceId, string id)
         {
             if (dataSourceId == null) throw new ArgumentNullException("dataSourceId");
@@ -1637,6 +1722,7 @@ namespace Composite.Data
 
         #region Mics methods (Only helpers)
 
+        /// <exclude />
         public static IEnumerable<DataScopeIdentifier> GetSupportedDataScopes(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -1653,6 +1739,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static bool HasDataInAnyScope(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -1675,6 +1762,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static bool ExistsInAnyLocale<T>(IEnumerable<CultureInfo> excludedCultureInfoes)
             where T : class, IData
         {
@@ -1684,6 +1772,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static bool ExistsInAnyLocale<T>(CultureInfo excludedCultureInfo)
             where T : class, IData
         {
@@ -1693,6 +1782,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static bool ExistsInAnyLocale<T>()
             where T : class, IData
         {
@@ -1700,6 +1790,8 @@ namespace Composite.Data
         }
 
 
+
+        /// <exclude />
         public static bool ExistsInAnyLocale(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -1714,6 +1806,7 @@ namespace Composite.Data
 
 
         // Overload
+        /// <exclude />
         public static bool ExistsInAnyLocale(Type interfaceType, CultureInfo excludedCultureInfo)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -1731,6 +1824,7 @@ namespace Composite.Data
 
         #region GetXXXMethodInfo methods (Only helpers)
 
+        /// <exclude />
         public static MethodInfo GetSetDataInterceptorMethodInfo(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -1759,6 +1853,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static MethodInfo GetHasDataInterceptorMethodInfo(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -1787,6 +1882,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static MethodInfo GetClearDataInterceptorMethodInfo(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -1815,6 +1911,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static MethodInfo GetGetDataMethodInfo(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -1843,6 +1940,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static MethodInfo GetGetDataFromDataSourceIdMethodInfo(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -1871,6 +1969,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static MethodInfo GetGetDataWithPredicatMethodInfo(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -1901,6 +2000,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static MethodInfo GetAddNewMethodInfo(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -1928,6 +2028,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static MethodInfo GetMoveMethodInfo(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -1955,6 +2056,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static MethodInfo GetExistsInAnyLocaleMethodInfo(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -1982,6 +2084,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static MethodInfo GetExistsInAnyLocaleWithParamMethodInfo(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");

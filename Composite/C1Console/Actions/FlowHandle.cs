@@ -19,21 +19,21 @@ namespace Composite.C1Console.Actions
         private string _serializedData = null;
 
 
-
+        /// <exclude />
         public FlowHandle(FlowToken FlowToken)
         {
             _flowToken = FlowToken;
         }
 
 
-
+        /// <exclude />
         public FlowToken FlowToken
         {
             get { return _flowToken; }
         }
 
 
-
+        /// <exclude />
         public static FlowHandle Deserialize(string serializedFlowHandle)
         {
             Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(serializedFlowHandle);
@@ -75,14 +75,14 @@ namespace Composite.C1Console.Actions
         }
 
 
-
+        /// <exclude />
         public string Serialize()
         {
             return ToString();
         }
 
 
-
+        /// <exclude />
         public override string ToString()
         {
             if (_serializedData == null)

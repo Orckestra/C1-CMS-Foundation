@@ -24,6 +24,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public ActiveLocalesFormsHelper(string fieldLabel, string multiSelectLabel, string multiSelectHelp)
         {
             this.FieldLabel = fieldLabel;
@@ -33,6 +34,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public void UpdateWithNewBindings(Dictionary<string, object> bindings, IEnumerable<CultureInfo> userActiveLocales)
         {
             Dictionary<string, string> options = new Dictionary<string, string>();
@@ -65,12 +67,15 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public static string GetFieldBindingPath()
         {
             return MultiKeySelectorSelectedBindingName;
         }
 
 
+
+        /// <exclude />
         public static IEnumerable<CultureInfo> GetSelectedLocalesTypes(Dictionary<string, object> bindings)
         {
             List<string> cultureNames = (List<string>)bindings[MultiKeySelectorSelectedBindingName];
@@ -83,6 +88,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public IEnumerable<XElement> GetBindingsMarkup()
         {
             if (_bindingElements == null)
@@ -95,6 +101,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public XElement GetFormMarkup()
         {
             if (_fieldGroupElement == null)
@@ -107,6 +114,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public string FieldLabel
         {
             get;
@@ -115,6 +123,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public string MultiSelectLabel
         {
             get;
@@ -123,6 +132,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
+        /// <exclude />
         public string MultiSelectHelp
         {
             get;

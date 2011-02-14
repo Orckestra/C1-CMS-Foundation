@@ -24,7 +24,7 @@ namespace Composite.C1Console.Security
 
 
 
-
+        /// <exclude />
         public static IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {
             return _implementation.GetParents(entityToken);                                 
@@ -58,6 +58,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static IEnumerable<IAuxiliarySecurityAncestorProvider> GetAuxiliaryAncestorProviders(Type entityTokenType)
         {
             return _implementation.GetAuxiliaryAncestorProviders(entityTokenType);

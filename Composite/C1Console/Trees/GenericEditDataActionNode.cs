@@ -15,9 +15,11 @@ namespace Composite.C1Console.Trees
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public sealed class GenericEditDataActionNode : ActionNode
 	{
+        /// <exclude />
         public string CustomFormMarkupPath { get; internal set; }   // Optional
 
 
+        /// <exclude />
         protected override void OnAddAction(Action<ElementAction> actionAdder, EntityToken entityToken, TreeNodeDynamicContext dynamicContext, DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext)
         {
             string payload = this.Serialize();            
@@ -29,7 +31,7 @@ namespace Composite.C1Console.Trees
         }
 
 
-
+        /// <exclude />
         protected override void OnInitialize()
         {
             if ((this.OwnerNode is DataElementsTreeNode) == false)
@@ -60,7 +62,7 @@ namespace Composite.C1Console.Trees
 
 
 
-
+        /// <exclude />
         public override string ToString()
         {
             return string.Format("GenericEditDataActionNode, Label = {0}", this.Label);

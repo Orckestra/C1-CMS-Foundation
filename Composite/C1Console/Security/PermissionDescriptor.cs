@@ -11,12 +11,14 @@ namespace Composite.C1Console.Security
     [DebuggerDisplay("PermissionType = {PermissionType}")]
 	public sealed class PermissionDescriptor
 	{
+        /// <exclude />
         public PermissionDescriptor(PermissionType permissionType)
         {
             this.PermissionType = permissionType;
         }
 
 
+        /// <exclude />
         public PermissionType PermissionType
         {
             get;
@@ -24,6 +26,7 @@ namespace Composite.C1Console.Security
         }
 
 
+        /// <exclude />
         public string Label
         {
             get

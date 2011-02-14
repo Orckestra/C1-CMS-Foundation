@@ -21,10 +21,11 @@ namespace Composite.C1Console.Tasks
         {
             GlobalEventSystemFacade.SubscribeToShutDownEvent(OnShutDown);
         }
-        
 
 
 
+
+        /// <exclude />
         public static void AttachTaskCreator(Func<EntityToken, ActionToken, Task> taskCreator)
         {
             _implementation.AttachTaskCreator(taskCreator);
@@ -39,6 +40,7 @@ namespace Composite.C1Console.Tasks
 
 
 
+        /// <exclude />
         public static TaskContainer RuntTasks(FlowToken flowToken, TaskManagerEvent taskManagerEvent)
         {
             return _implementation.RuntTasks(flowToken, taskManagerEvent);

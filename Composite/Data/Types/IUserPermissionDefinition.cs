@@ -19,17 +19,20 @@ namespace Composite.Data.Types
     [DataAncestorProvider(typeof(NoAncestorDataAncestorProvider))]    
 	public interface IUserPermissionDefinition : IData
 	{
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{95D7C9BF-F9E0-41aa-8EEB-8B3336390856}")]
         Guid Id { get; set; }
 
 
+        /// <exclude />
         [NotNullValidator()]
         [StoreFieldType(PhysicalStoreFieldType.String, 64)]
         [ImmutableFieldId("{8BBE4B23-1B04-452b-B9A3-83EA3B2E52DB}")]
         string Username { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.LargeString)]
         [ImmutableFieldId("{15D09268-1119-47d6-A004-99DEABFEF886}")]
         string SerializedEntityToken { get; set; }

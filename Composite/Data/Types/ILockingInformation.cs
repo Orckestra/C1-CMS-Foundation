@@ -18,22 +18,27 @@ namespace Composite.Data.Types
     [DataScope(DataScopeIdentifier.PublicName)]    
     public interface ILockingInformation : IData
     {
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{C0A019A4-33BE-46a3-B27C-ED7AF010976C}")]
         Guid Id { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.LargeString)]
         [ImmutableFieldId("{34BD5C80-C5FD-4932-A1E6-3459E2D7802D}")]
         [NotNullValidator()]
         string SerializedEntityToken { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.LargeString)]
         [ImmutableFieldId("{9B13A361-9CCD-4dfc-97E5-8D9CA3C54660}")]
         [NotNullValidator()]
         string SerializedOwnerId { get; set; }
 
+
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 64)]
         [ImmutableFieldId("{CADF7240-45C0-43a6-A6A1-D60887CC2D51}")]
         [NotNullValidator()]

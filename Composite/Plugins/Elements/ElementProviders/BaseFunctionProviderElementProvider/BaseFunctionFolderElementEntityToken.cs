@@ -17,31 +17,37 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
 	{
         private string _id;
 
+        /// <exclude />
         public BaseFunctionFolderElementEntityToken(string id)
         {
             _id = id;
         }
 
+        /// <exclude />
         public override string Type
         {
             get { return ""; }
         }
 
+        /// <exclude />
         public override string Source
         {
             get { return ""; }
         }
 
+        /// <exclude />
         public override string Id
         {
             get { return _id; }
         }
 
+        /// <exclude />
         public override string Serialize()
         {
             return DoSerialize();
         }
 
+        /// <exclude />
         public static EntityToken Deserialize(string serializedData)
         {
             string type, source, id;

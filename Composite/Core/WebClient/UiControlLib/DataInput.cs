@@ -11,41 +11,62 @@ namespace Composite.Core.WebClient.UiControlLib
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum DataInputType
     {
+        /// <exclude />
         Default,
+
+        /// <exclude />
         Integer,
+
+        /// <exclude />
         Decimal,
+
+        /// <exclude />
         Password,
+
+        /// <exclude />
         ProgrammingIdentifier,
+
+        /// <exclude />
         ProgrammingNamespace,
+
+        /// <exclude />
         ReadOnly
     }
+
+
 
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class DataInput : TextBox
     {
+        /// <exclude />
         public DataInput()
             : base()
         {
             this.InputType = DataInputType.Default;
         }
 
+        /// <exclude />
         [Category("Appearance"), DefaultValue(""), Description("The type of data expected in this field")]
         public virtual DataInputType InputType { get; set; }
 
+        /// <exclude />
         [Category("Appearance"), DefaultValue(0), Description("The required minimum length of this field. Default is 0 (no minimum).")]
         public virtual int MinLength { get; set; }
 
+        /// <exclude />
         protected override HtmlTextWriterTag TagKey
         {
             get { return HtmlTextWriterTag.Unknown; }
         }
 
+        /// <exclude />
         protected override string TagName
         {
             get { return "ui:datainput"; }
         }
 
+        /// <exclude />
         protected override void AddAttributesToRender(HtmlTextWriter writer)
         {
             writer.AddAttribute("value", this.Text);
@@ -96,7 +117,5 @@ namespace Composite.Core.WebClient.UiControlLib
 
             this.AddClientAttributes(writer);
         }
-
-
     }
 }

@@ -24,13 +24,26 @@ namespace Composite.C1Console.Trees
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class DataElementsTreeNode : DataFilteringTreeNode
-    {             
+    {
+        /// <exclude />
         public Type InterfaceType { get; internal set; }        // Requried        
+
+        /// <exclude />
         public string Label { get; internal set; }              // Optional
+
+        /// <exclude />
         public string ToolTip { get; internal set; }            // Optional
+
+        /// <exclude />
         public ResourceHandle Icon { get; internal set; }       // Defaults to C1 standard data icons
+
+        /// <exclude />
         public ResourceHandle OpenedIcon { get; internal set; } // Defaults to C1 standard data icons or Icon if it is setted
+
+        /// <exclude />
         public LeafDisplayMode Display { get; internal set; }   // Optional
+
+        /// <exclude />
         public bool ShowForeignItems { get; internal set; }     // Optional
 
 
@@ -53,6 +66,7 @@ namespace Composite.C1Console.Trees
         private static readonly PermissionType[] LocalizeDataPermissionTypes = new PermissionType[] { PermissionType.Add };
 
 
+        /// <exclude />
         public override IEnumerable<EntityToken> GetEntityTokens(EntityToken childEntityToken, TreeNodeDynamicContext dynamicContext)
         {
             IEnumerable<IData> datas = GetDatas(dynamicContext).Item1;
@@ -62,6 +76,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public override AncestorResult GetParentEntityToken(EntityToken ownEntityToken, Type parentInterfaceOfInterest, TreeNodeDynamicContext dynamicContext)
         {
             if (this.ParentFilteringHelpers == null)
@@ -114,6 +129,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         protected override IEnumerable<Element> OnGetElements(EntityToken parentEntityToken, TreeNodeDynamicContext dynamicContext)
         {
             IEnumerable<IData> dataItems;
@@ -328,6 +344,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         protected override void OnInitialize()
         {
             if (typeof(IData).IsAssignableFrom(this.InterfaceType) == false)
@@ -617,6 +634,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public override string ToString()
         {
             return string.Format("DataElementsTreeNode, Id = {0}, DataType = {1}, Display = {2}, {3}", this.Id, this.InterfaceType, this.Display, this.ParentString());

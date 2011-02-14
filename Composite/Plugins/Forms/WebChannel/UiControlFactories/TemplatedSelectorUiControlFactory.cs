@@ -39,11 +39,17 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         internal string SecondOptionSetKeyField { get; set; }
 
 
+        /// <exclude />
         protected List<string> SelectedKeys { get; set; }
 
 
+        /// <exclude />
         protected abstract void BindStateToProperties();
+
+        /// <exclude />
         protected abstract void InitializeViewState();
+
+        /// <exclude />
         public abstract string GetDataFieldClientName();
 
 
@@ -66,6 +72,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
 
 
+        /// <exclude />
         protected List<KeyLabelPair> GetOptions()
         {
             if (_options == null)
@@ -96,15 +103,20 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
 
 
+        /// <exclude />
         public class KeyLabelPair
         {
+            /// <exclude />
             public KeyLabelPair(string key, string label)
             {
                 this.Key = key;
                 this.Label = label;
             }
 
+            /// <exclude />
             public string Key { get; set; }
+
+            /// <exclude />
             public string Label { get; set; }
         }
     }
@@ -122,24 +134,29 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         private TemplatedDoubleKeySelectorUserControlBase _userControl;
 
 
+        /// <exclude />
         [BindableProperty()]
         [FormsProperty()]
         public IEnumerable FirstOptionSet { get; set; }
 
 
+        /// <exclude />
         [FormsProperty()]
         public string FirstOptionSetKeyField { get; set; }
 
 
+        /// <exclude />
         [BindableProperty()]
         [FormsProperty()]
         public IEnumerable SecondOptionSet { get; set; }
 
 
+        /// <exclude />
         [FormsProperty()]        
         public string SecondOptionSetKeyField { get; set; }
 
 
+        /// <exclude />
         public Func<object, object, string> LabelFunction { get; set; }
 
         /*[BindableProperty()]
@@ -148,12 +165,14 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
 
 
+        /// <exclude />
         public TemplatedDoubleKeySelectorUiControl(Type userControlType)
         {
             _userControlType = userControlType;
         }
 
 
+        /// <exclude />
         public override void BindStateToControlProperties()
         {
             _userControl.BindStateToControlProperties();
@@ -171,12 +190,14 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         }
 
 
+        /// <exclude />
         public void InitializeViewState()
         {
             _userControl.InitializeWebViewState();
         }
 
 
+        /// <exclude />
         public Control BuildWebControl()
         {
             _userControl = _userControlType.ActivateAsUserControl<TemplatedDoubleKeySelectorUserControlBase>(this.UiControlID);
@@ -199,8 +220,12 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             return _userControl;
         }
 
+
+        /// <exclude />
         public bool IsFullWidthControl { get { return false; } }
 
+
+        /// <exclude />
         public string ClientName { get { return _userControl.GetDataFieldClientName(); } }
     }
 
@@ -285,15 +310,29 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
         private const string _noneSelectionKey = "***C1.NONE***";
 
+        /// <exclude />
         protected abstract void BindStateToProperties();
+
+        /// <exclude />
         protected abstract void InitializeViewState();
 
+        
+        /// <exclude />
         public abstract string GetDataFieldClientName();
 
+
+        /// <exclude />
         public string FormControlLabel { get; set; }
+
+        /// <exclude />
         public bool Required { get; set; }
+
+        /// <exclude />
         public bool MultiSelector { get; set; }
+
+        /// <exclude />
         public bool CompactMode { get; set; }
+
 
         internal string OptionsKeyField { get; set; }
         internal string OptionsLabelField { get; set; }
@@ -301,6 +340,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         internal SelectorBindingType BindingType { get; set; }
 
 
+        /// <exclude />
         public EventHandler SelectedIndexChangedEventHandler
         {
             get { return _changeEventHandler; }
@@ -391,6 +431,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
 
 
+        /// <exclude />
         public IEnumerable<string> SelectedKeys
         {
             get
@@ -462,6 +503,8 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             }
         }
 
+
+        /// <exclude />
         protected List<KeyLabelPair> GetOptions()
         {
             InitializeSelectorElements();
@@ -544,15 +587,21 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             }
         }
 
+
+        /// <exclude />
         public class KeyLabelPair
         {
+            /// <exclude />
             public KeyLabelPair(string key, string label)
             {
                 this.Key = key;
                 this.Label = label;
             }
 
+            /// <exclude />
             public string Key { get; set; }
+
+            /// <exclude />
             public string Label { get; set; }
         }
     }

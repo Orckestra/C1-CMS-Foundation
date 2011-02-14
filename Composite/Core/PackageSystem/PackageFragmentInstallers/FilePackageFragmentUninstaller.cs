@@ -17,6 +17,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         private List<string> _filesToDelete;
 
 
+        /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
             List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
@@ -163,10 +164,14 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             return validationResult;
         }
 
+
+
         private static string ReplaceFolder(string filePath, string oldFolderPath, string newFolderPath)
         {
             return newFolderPath + filePath.Substring(oldFolderPath.Length);
         }
+
+
 
         private static string ReducePath(string path) 
         {
@@ -176,6 +181,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             return path.Substring(0, offset + 1);
         }
 
+
+
+        /// <exclude />
         public override void Uninstall()
         {
             if (_filesToDelete == null) throw new InvalidOperationException("FilePackageFragmentUninstaller has not been validated");

@@ -19,6 +19,7 @@ namespace Composite.C1Console.Security
         }
 
 
+        /// <exclude />
         public int Level
         {
             get;
@@ -26,6 +27,7 @@ namespace Composite.C1Console.Security
         }
 
 
+        /// <exclude />
         public IEnumerable<EntityToken> Entities
         {
             get
@@ -38,6 +40,7 @@ namespace Composite.C1Console.Security
         }
 
 
+        /// <exclude />
         public IEnumerable<EntityToken> HookedEntities
         {
             get
@@ -50,6 +53,7 @@ namespace Composite.C1Console.Security
         }
 
 
+        /// <exclude />
         public IEnumerable<EntityToken> AllEntities
         {
             get

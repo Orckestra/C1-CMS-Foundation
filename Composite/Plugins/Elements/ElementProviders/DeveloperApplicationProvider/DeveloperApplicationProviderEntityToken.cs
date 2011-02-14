@@ -16,18 +16,23 @@ namespace Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvid
     {        
         private string _id;
         private string _source;
-        
 
+
+        /// <exclude />
         public const string TreeRootFolderId = "TreeFolder";
+
+        /// <exclude />
         public const string TreeDefinitionId = "TreeDefinition";
 
 
+        /// <exclude />
         public DeveloperApplicationProviderEntityToken(string id)
             :this(id, "")
         {                        
         }
 
 
+        /// <exclude />
         public DeveloperApplicationProviderEntityToken(string id, string source)
         {
             _id = id;
@@ -35,6 +40,7 @@ namespace Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvid
         }
 
 
+        /// <exclude />
         public override string Type
         {
             get { return ""; }
@@ -42,7 +48,7 @@ namespace Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvid
 
 
 
-
+        /// <exclude />
         public override string Source
         {
             get { return _source; }
@@ -50,7 +56,7 @@ namespace Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvid
 
 
 
-
+        /// <exclude />
         public override string Id
         {
             get { return _id; }
@@ -58,14 +64,14 @@ namespace Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvid
 
 
 
-
+        /// <exclude />
         public string Filename
         {
             get { return this.Source; }
         }
 
 
-
+        /// <exclude />
         public string FullTreePath
         {
             get
@@ -75,13 +81,14 @@ namespace Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvid
         }
 
 
+        /// <exclude />
         public override string Serialize()
         {
             return DoSerialize();
         }
 
 
-
+        /// <exclude />
         public static EntityToken Deserialize(string serializedEntityToken)
         {
             string type, source, id;

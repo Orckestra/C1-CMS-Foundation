@@ -6,6 +6,7 @@ namespace Composite.Data.Hierarchy.DataAncestorProviders
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public sealed class NoAncestorDataAncestorProvider : IDataAncestorProvider
 	{
+        /// <exclude />
         public IData GetParent(IData data)
         {
             Verify.ArgumentNotNull(data, "data");

@@ -11,6 +11,7 @@ namespace Composite.Core.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class AssemblyExtensionMethods
     {
+        /// <exclude />
         public static IEnumerable<Type> GetTypes(this IEnumerable<Assembly> assemblies)
         {
             foreach (Assembly assembly in assemblies)

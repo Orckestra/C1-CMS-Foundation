@@ -13,8 +13,13 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public interface ISqlDataProviderHelperMethods
     {
+        /// <exclude />
         IData GetDataById(IQueryable queryable, IDataId dataId, DataProviderContext dataProviderContext);
+
+        /// <exclude />
         IData AddData(ISqlDataContext dataContext, IData dataToAdd, DataProviderContext dataProviderContext);
+
+        /// <exclude />
         void RemoveData(ISqlDataContext dataContext, IData dataToRemove);
     }
 }

@@ -32,17 +32,22 @@ namespace Composite.Data.Types
         private CachedMemoryStream _currentWriteStream;
         private Type _interfaceType;
 
+        /// <exclude />
         public IFileEmptyDataClassBase()
         {
             _interfaceType = typeof(IFile);
         }
 
+
+        /// <exclude />
         public CachedMemoryStream CurrentWriteStream
         {
             get { return _currentWriteStream; }
             set { _currentWriteStream = value; }
         }
 
+
+        /// <exclude />
         protected override Type _InterfaceType
         {
             get { return _interfaceType; }
@@ -58,6 +63,7 @@ namespace Composite.Data.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class IFileEmptyDataClassFileStreamManager : IFileStreamManager
     {
+        /// <exclude />
         public Stream GetReadStream(IFile file)
         {
             IFileEmptyDataClassBase castedFile = (IFileEmptyDataClassBase)file;
@@ -72,6 +78,8 @@ namespace Composite.Data.Types
             }
         }
 
+
+        /// <exclude />
         public Stream GetNewWriteStream(IFile file)
         {
             IFileEmptyDataClassBase castedFile = (IFileEmptyDataClassBase)file;
@@ -81,6 +89,8 @@ namespace Composite.Data.Types
             return castedFile.CurrentWriteStream;
         }
 
+
+        /// <exclude />
         public void SubscribeOnFileChanged(IFile file, OnFileChangedDelegate handler)
         {
             // Do nothing...

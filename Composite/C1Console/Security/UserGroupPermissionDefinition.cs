@@ -12,10 +12,16 @@ namespace Composite.C1Console.Security
 	{
         private EntityToken _entityToken = null;
 
+        /// <exclude />
         public abstract Guid UserGroupId { get; }
-        public abstract IEnumerable<PermissionType> PermissionTypes { get; }        
+
+        /// <exclude />
+        public abstract IEnumerable<PermissionType> PermissionTypes { get; }
+
+        /// <exclude />
         public abstract string SerializedEntityToken { get; }
 
+        /// <exclude />
         public EntityToken EntityToken
         {
             get

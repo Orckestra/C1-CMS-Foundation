@@ -14,10 +14,16 @@ namespace Composite.C1Console.Security
         private EntityToken _entityToken = null;
         private bool _entityTokenInitialized = false;
 
+        /// <exclude />
         public abstract string Username { get; }
-        public abstract IEnumerable<PermissionType> PermissionTypes { get; }        
+
+        /// <exclude />
+        public abstract IEnumerable<PermissionType> PermissionTypes { get; }
+
+        /// <exclude />
         public abstract string SerializedEntityToken { get; }
 
+        /// <exclude />
         public EntityToken EntityToken
         {
             get

@@ -13,6 +13,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider.Foundation
         private string _fullPath = null;
 
 
+        /// <exclude />
         public FileSystemFileDataId() {}
 
 
@@ -22,6 +23,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider.Foundation
         }
 
 
+        /// <exclude />
         public string FullPath
         {
             get 

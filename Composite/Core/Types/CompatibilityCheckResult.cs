@@ -22,10 +22,16 @@ namespace Composite.Core.Types
             CompilerResults = compilerResults;
         }
 
+
+        /// <exclude />
         public bool Successful { get; private set; }
 
+
+        /// <exclude />
         public CompilerResults CompilerResults { get; private set; }
 
+
+        /// <exclude />
 	    public string ErrorMessage
 	    {
 	        get

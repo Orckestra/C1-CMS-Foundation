@@ -11,6 +11,7 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class DataScopeManager
     {
+        /// <exclude />
         public static DataScopeIdentifier CurrentDataScope
         {
             get
@@ -28,6 +29,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static DataScopeIdentifier MapByType(IData data)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -37,6 +39,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static DataScopeIdentifier MapByType(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");

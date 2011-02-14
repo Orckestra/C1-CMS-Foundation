@@ -12,14 +12,29 @@ namespace Composite.C1Console.Forms.CoreUiControls
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum TextBoxType
     {
-        String,
-        Integer,
-        Decimal,
-        Password,
-        ProgrammingIdentifier,
-        ProgrammingNamespace,
-        ReadOnly,
-        Guid
+        /// <exclude />
+        String = 0,
+
+        /// <exclude />
+        Integer = 1,
+
+        /// <exclude />
+        Decimal = 2,
+
+        /// <exclude />
+        Password = 3,
+
+        /// <exclude />
+        ProgrammingIdentifier = 4,
+        
+        /// <exclude />
+        ProgrammingNamespace = 5,
+
+        /// <exclude />
+        ReadOnly = 6,
+
+        /// <exclude />
+        Guid = 7
     }
 
 

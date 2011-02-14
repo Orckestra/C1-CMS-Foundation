@@ -20,6 +20,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     {
         List<Tuple<CultureInfo, string, bool>> _localesToInstall = null;
 
+
+        /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
             List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
@@ -121,6 +123,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
 
+        /// <exclude />
         public override IEnumerable<XElement> Install()
         {
             if (_localesToInstall == null) throw new InvalidOperationException("LocalePackageFragmentInstaller has not been validated");

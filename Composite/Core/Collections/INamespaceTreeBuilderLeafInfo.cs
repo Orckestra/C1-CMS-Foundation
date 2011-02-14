@@ -6,7 +6,10 @@ namespace Composite.Core.Collections
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface INamespaceTreeBuilderLeafInfo
     {
+        /// <exclude />
         string Name { get; }
+
+        /// <exclude />
         string Namespace { get; }
     }
 }

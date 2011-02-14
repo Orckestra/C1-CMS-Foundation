@@ -9,6 +9,7 @@ namespace Composite.C1Console.Tasks
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface ITaskManagerFlowControllerService : IFlowControllerService
 	{
+        /// <exclude />
         void OnStatus(TaskManagerEvent taskManagerEvent);
 	}
 }

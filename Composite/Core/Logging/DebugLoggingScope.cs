@@ -15,6 +15,7 @@ namespace Composite.Core.Logging
 	{
         private static IDisposable _noActionDisposable = new NoActionDisposable();
 
+        /// <exclude />
         public static IDisposable CompletionTime( Type callingType, string actionInfo )
         {
             if (RuntimeInformation.IsDebugBuild == true)
@@ -28,6 +29,7 @@ namespace Composite.Core.Logging
         }
 
 
+        /// <exclude />
         public static IDisposable CompletionTime(Type callingType, string actionInfo, TimeSpan loggingThreshold)
         {
             if (RuntimeInformation.IsDebugBuild == true)
@@ -41,6 +43,7 @@ namespace Composite.Core.Logging
         }
 
 
+        /// <exclude />
         public static IDisposable MethodInfoScope
         {
             get
@@ -80,6 +83,7 @@ namespace Composite.Core.Logging
         }
 
 
+        /// <exclude />
         public void Dispose()
         {
             int endTickCount = Environment.TickCount;

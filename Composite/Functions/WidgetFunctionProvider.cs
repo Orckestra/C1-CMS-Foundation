@@ -12,6 +12,7 @@ namespace Composite.Functions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public sealed class WidgetFunctionProvider
 	{
+        /// <exclude />
         public static WidgetFunctionProvider BuildNoWidgetProvider()
         {
             return new WidgetFunctionProvider();
@@ -49,6 +50,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public WidgetFunctionProvider(IWidgetFunction widgetFunction)
         {
             if (widgetFunction == null) throw new ArgumentNullException("widgetFunction");
@@ -58,6 +60,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public WidgetFunctionProvider(XElement serializedWidgetFunction)
         {
             _serializedWidgetFunction = serializedWidgetFunction;
@@ -65,6 +68,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public string WidgetFunctionCompositeName
         {
             get
@@ -87,6 +91,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public IWidgetFunction WidgetFunction
         {
             get
@@ -108,6 +113,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public IEnumerable<BaseParameterRuntimeTreeNode> WidgetFunctionParameters
         {
             get
@@ -127,6 +133,8 @@ namespace Composite.Functions
         }
 
 
+
+        /// <exclude />
         public XElement SerializedWidgetFunction
         {
             get 

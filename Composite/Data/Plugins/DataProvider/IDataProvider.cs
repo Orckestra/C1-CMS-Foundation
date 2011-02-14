@@ -20,8 +20,10 @@ namespace Composite.Data.Plugins.DataProvider
         /// </summary>
         DataProviderContext Context { set; }
 
+        /// <exclude />
         IEnumerable<Type> GetSupportedInterfaces();
 
+        /// <exclude />
         IQueryable<T> GetData<T>() where T : class, IData;
 
         /// <summary>

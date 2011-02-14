@@ -12,6 +12,7 @@ namespace Composite.Data.Plugins.DataProvider.Streams
         private CachedMemoryStream _currentWriteStream;
         private string _systemPath;
 
+        /// <exclude />
         public CachedMemoryStream CurrentWriteStream
         {
             get { return _currentWriteStream; }
@@ -19,6 +20,7 @@ namespace Composite.Data.Plugins.DataProvider.Streams
         }
 
 
+        /// <exclude />
         public virtual string SystemPath
         {
             get { return _systemPath; }

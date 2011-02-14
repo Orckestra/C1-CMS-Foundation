@@ -41,20 +41,50 @@
         /// All ancenstor pages
         /// </summary>
         Ancestors = 3,
+
+        /// <exclude />
         AncestorsAndCurrent = 4,
+
+        /// <exclude />
         Parent = 5,
+
+        /// <exclude />
         Level1 = 6,
+
+        /// <exclude />
         Level1AndSiblings = 16,
+
+        /// <exclude />
         Level1AndDescendants = 10,
+
+        /// <exclude />
         Level2 = 7,
+
+        /// <exclude />
         Level2AndSiblings = 17,
+
+        /// <exclude />
         Level2AndDescendants = 11,
+
+        /// <exclude />
         Level3 = 8,
+
+        /// <exclude />
         Level3AndSiblings = 18,
+
+        /// <exclude />
         Level3AndDescendants = 12,
+
+        /// <exclude />
         Level4 = 9,
+
+        /// <exclude />
         Level4AndSiblings = 19,
+
+        /// <exclude />
         Level4AndDescendants = 13,
+
+        /// <exclude />
         All = 14
     }
 }

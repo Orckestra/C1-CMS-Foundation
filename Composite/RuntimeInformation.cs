@@ -16,6 +16,7 @@ namespace Composite
         private static string _uniqueInstanceName = null;
         private static string _uniqueInstanceNameSafe = null;
 
+        /// <exclude />
         public static bool IsDebugBuild
         {
             get
@@ -28,6 +29,8 @@ namespace Composite
             }
         }
 
+
+        /// <exclude />
 	    public static bool AppDomainLockingDisabled
 	    {
             get
@@ -36,6 +39,8 @@ namespace Composite
             }
 	    }
 
+
+        /// <exclude />
         public static bool IsUnittest
         {
             get
@@ -71,6 +76,7 @@ namespace Composite
 
 
 
+        /// <exclude />
         public static Version ProductVersion
         {
             get
@@ -81,6 +87,7 @@ namespace Composite
 
 
 
+        /// <exclude />
         public static string ProductTitle
         {
             get
@@ -94,6 +101,7 @@ namespace Composite
 
 
 
+        /// <exclude />
         public static string UniqueInstanceName
         {
             get
@@ -110,6 +118,7 @@ namespace Composite
 
 
 
+        /// <exclude />
         public static string UniqueInstanceNameSafe
         {
             get

@@ -14,31 +14,48 @@ namespace Composite.Core.WebClient.FunctionCallEditor
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]  
     public static class TreeHelper
     {
+        /// <exclude />
         public static readonly string PathSeparator = "/";
+
+
         private static readonly XName ParameterNodeName = Namespaces.Function10 + "param";
         private static readonly XName FunctionNodeName = Namespaces.Function10 + "function";
         private static readonly XName WidgetFunctionNodeName = Namespaces.Function10 + "widgetfunction";
 
+
+        /// <exclude />
         public static string GetRootFunctionPath(int functionIndex)
         {
             return string.Format("/function[{0}]", functionIndex);
         }
 
+
+
+        /// <exclude />
         public static string GetParameterPath(string parentFunctionPath, string parameterName)
         {
             return string.Format("{0}/@{1}", parentFunctionPath, parameterName);
         }
 
+
+
+        /// <exclude />
         public static string GetFunctionCallPath(string parameterNodePath)
         {
             return string.Format("{0}/function", parameterNodePath);
         }
 
+
+
+        /// <exclude />
         public static Dictionary<XElement, string> GetElementToPathMap(XDocument functionMarkup)
         {
             return GetElementToPathMap(functionMarkup.Root);
         }
 
+
+
+        /// <exclude />
         public static Dictionary<XElement, string> GetElementToPathMap(XElement root)
         {
             var functionToPathMap = new Dictionary<XElement, string>();
@@ -69,6 +86,9 @@ namespace Composite.Core.WebClient.FunctionCallEditor
             return functionToPathMap;
         }
 
+
+
+        /// <exclude />
         public static Dictionary<XElement, string> GetElementToIdMap(XDocument functionMarkup, Dictionary<string, string> pathToIDmap)
         {
             Dictionary<XElement, string> functionToPathMap = GetElementToPathMap(functionMarkup);
@@ -93,6 +113,9 @@ namespace Composite.Core.WebClient.FunctionCallEditor
             return result;
         }
 
+
+
+        /// <exclude />
         public static Dictionary<string, string> BuildTreePathToIdDictionary(XDocument functionMarkup)
         {
             // Populating path->id dictionary
@@ -121,6 +144,9 @@ namespace Composite.Core.WebClient.FunctionCallEditor
             return treePathToIdMapping;
         }
 
+
+
+        /// <exclude />
         public static XElement GetParameterNode(XElement functionNode, string parameterName)
         {
             return (from parameter in functionNode.Elements()
@@ -129,11 +155,17 @@ namespace Composite.Core.WebClient.FunctionCallEditor
                     select parameter).FirstOrDefault();
         }
 
+
+
+        /// <exclude />
         public static string GetNewId()
         {
             return Guid.NewGuid().ToString();
         }
 
+
+
+        /// <exclude />
         public static XElement FindByPath(XElement root, string path)
         {
             string parentId;
@@ -193,6 +225,9 @@ namespace Composite.Core.WebClient.FunctionCallEditor
             return null;
         }
 
+
+
+        /// <exclude />
         public static string[] GetUndefinedParameterNames(XElement functionXElement)
         {
             var result = new List<string>();
@@ -207,6 +242,9 @@ namespace Composite.Core.WebClient.FunctionCallEditor
             return result.ToArray();
         }
 
+
+
+        /// <exclude />
         public static string[] GetParameterNames(XElement functionXElement)
         {
             if (functionXElement.Name != FunctionNodeName && functionXElement.Name != WidgetFunctionNodeName)
@@ -222,11 +260,16 @@ namespace Composite.Core.WebClient.FunctionCallEditor
             return function.ParameterProfiles.Select(parameter => parameter.Name).ToArray();
         }
 
+
+
         private static bool FunctionHasParameterDefined(XElement functionXElement, string parameterName)
         {
             return functionXElement.Elements(ParameterNodeName).Any(node => node.Attribute("name").Value == parameterName);
         }
 
+
+
+        /// <exclude />
         public static IMetaFunction GetFunction(XElement functionNode)
         {
             string functionName = functionNode.Attribute("name").Value;
@@ -239,6 +282,8 @@ namespace Composite.Core.WebClient.FunctionCallEditor
             return FunctionFacade.GetFunction(functionName);
         }
 
+
+        /// <exclude />
         public static IEnumerable<XElement> GetFunctionsAndWidgetFunctions(this IEnumerable<XElement> elements)
         {
             return elements.Where(element => element.Name ==  FunctionNodeName || element.Name == WidgetFunctionNodeName);

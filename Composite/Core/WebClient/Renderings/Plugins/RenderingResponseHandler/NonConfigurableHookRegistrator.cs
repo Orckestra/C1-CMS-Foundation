@@ -23,6 +23,7 @@ namespace Composite.Core.WebClient.Renderings.Plugins.RenderingResponseHandler
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class NonConfigurableRenderingResponseHandlerAssembler : IAssembler<IRenderingResponseHandler, RenderingResponseHandlerData>
 	{
+        /// <exclude />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         public IRenderingResponseHandler Assemble(IBuilderContext context, RenderingResponseHandlerData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {

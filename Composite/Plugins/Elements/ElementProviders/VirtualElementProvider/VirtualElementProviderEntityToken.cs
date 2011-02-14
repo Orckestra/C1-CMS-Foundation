@@ -17,14 +17,14 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
         private string _type;
 
 
-
+        /// <exclude />
         public VirtualElementProviderEntityToken()
         {
             _type = TypeManager.SerializeType(this.GetType());
         }
 
 
-
+        /// <exclude />
         public VirtualElementProviderEntityToken(string source, string id)
             :this()
         {
@@ -33,35 +33,35 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
         }
 
 
-
+        /// <exclude />
         public override string Type
         {
             get { return _type; }
         }
 
 
-
+        /// <exclude />
         public override string Source
         {
             get { return _source; }
         }
 
 
-
+        /// <exclude />
         public override string Id
         {
             get { return _id; }
         }
 
 
-
+        /// <exclude />
         public override string Serialize()
         {
             return DoSerialize();
         }
 
 
-
+        /// <exclude />
         public static EntityToken Deserialize(string serializedEntityToken)
         {
             string type, source, id;

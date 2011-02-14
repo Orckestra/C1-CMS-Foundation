@@ -9,7 +9,10 @@ namespace Composite.C1Console.Events
     [Serializable]
     public sealed class SaveStatusConsoleMessageQueueItem : IConsoleMessageQueueItem
 	{
+        /// <exclude />
         public string ViewId { get; set; }
+
+        /// <exclude />
         public bool Succeeded { get; set; }
 	}
 }

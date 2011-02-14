@@ -42,6 +42,8 @@ namespace Composite.Core.PackageSystem.WebServiceClient
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string PurchaseUrlField;
 
+
+        /// <exclude />
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData
         {
@@ -55,6 +57,8 @@ namespace Composite.Core.PackageSystem.WebServiceClient
             }
         }
 
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired = true)]
         public System.Guid InstallationId
         {
@@ -72,6 +76,8 @@ namespace Composite.Core.PackageSystem.WebServiceClient
             }
         }
 
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired = true)]
         public System.Guid ProductId
         {
@@ -89,6 +95,8 @@ namespace Composite.Core.PackageSystem.WebServiceClient
             }
         }
 
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired = true, Order = 2)]
         public bool Permanent
         {
@@ -107,6 +115,7 @@ namespace Composite.Core.PackageSystem.WebServiceClient
         }
 
 
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired = true, Order = 3)]
         public System.DateTime Expires
         {
@@ -124,6 +133,8 @@ namespace Composite.Core.PackageSystem.WebServiceClient
             }
         }
 
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 4)]
         public string LicenseKey
         {
@@ -141,6 +152,8 @@ namespace Composite.Core.PackageSystem.WebServiceClient
             }
         }
 
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 5)]
         public string PurchaseUrl
         {
@@ -158,8 +171,12 @@ namespace Composite.Core.PackageSystem.WebServiceClient
             }
         }
 
+
+        /// <exclude />
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
+
+        /// <exclude />
         protected void RaisePropertyChanged(string propertyName)
         {
             System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
@@ -182,10 +199,12 @@ namespace Composite.Core.PackageSystem.WebServiceClient
     {
 
         // CODEGEN: Generating message contract since element name publicKeyXml from namespace http://www.composite.net/ns/managemen is not marked nillable
+        /// <exclude />
         [System.ServiceModel.OperationContractAttribute(Action = "http://www.composite.net/ns/managemen/ValidateTrialLicenseDefinitionRequest", ReplyAction = "*")]
         Composite.Core.PackageSystem.WebServiceClient.ValidateTrialLicenseDefinitionRequestResponse ValidateTrialLicenseDefinitionRequest(Composite.Core.PackageSystem.WebServiceClient.ValidateTrialLicenseDefinitionRequestRequest request);
 
         // CODEGEN: Generating message contract since element name publicKeyXml from namespace http://www.composite.net/ns/managemen is not marked nillable
+        /// <exclude />
         [System.ServiceModel.OperationContractAttribute(Action = "http://www.composite.net/ns/managemen/GetTrialLicenseDefinition", ReplyAction = "*")]
         Composite.Core.PackageSystem.WebServiceClient.GetTrialLicenseDefinitionResponse GetTrialLicenseDefinition(Composite.Core.PackageSystem.WebServiceClient.GetTrialLicenseDefinitionRequest request);
     }
@@ -200,14 +219,18 @@ namespace Composite.Core.PackageSystem.WebServiceClient
     [System.ServiceModel.MessageContractAttribute(IsWrapped = false)]
     public partial class ValidateTrialLicenseDefinitionRequestRequest
     {
-
+        /// <exclude />
         [System.ServiceModel.MessageBodyMemberAttribute(Name = "ValidateTrialLicenseDefinitionRequest", Namespace = "http://www.composite.net/ns/managemen", Order = 0)]
         public Composite.Core.PackageSystem.WebServiceClient.ValidateTrialLicenseDefinitionRequestRequestBody Body;
 
+
+        /// <exclude />
         public ValidateTrialLicenseDefinitionRequestRequest()
         {
         }
 
+
+        /// <exclude />
         public ValidateTrialLicenseDefinitionRequestRequest(Composite.Core.PackageSystem.WebServiceClient.ValidateTrialLicenseDefinitionRequestRequestBody Body)
         {
             this.Body = Body;
@@ -225,20 +248,28 @@ namespace Composite.Core.PackageSystem.WebServiceClient
     [System.Runtime.Serialization.DataContractAttribute(Namespace = "http://www.composite.net/ns/managemen")]
     public partial class ValidateTrialLicenseDefinitionRequestRequestBody
     {
-
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(Order = 0)]
         public System.Guid installationId;
 
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(Order = 1)]
         public System.Guid productId;
 
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 2)]
         public string publicKeyXml;
 
+
+        /// <exclude />
         public ValidateTrialLicenseDefinitionRequestRequestBody()
         {
         }
 
+
+        /// <exclude />
         public ValidateTrialLicenseDefinitionRequestRequestBody(System.Guid installationId, System.Guid productId, string publicKeyXml)
         {
             this.installationId = installationId;
@@ -257,14 +288,18 @@ namespace Composite.Core.PackageSystem.WebServiceClient
     [System.ServiceModel.MessageContractAttribute(IsWrapped = false)]
     public partial class ValidateTrialLicenseDefinitionRequestResponse
     {
-
+        /// <exclude />
         [System.ServiceModel.MessageBodyMemberAttribute(Name = "ValidateTrialLicenseDefinitionRequestResponse", Namespace = "http://www.composite.net/ns/managemen", Order = 0)]
         public Composite.Core.PackageSystem.WebServiceClient.ValidateTrialLicenseDefinitionRequestResponseBody Body;
 
+
+        /// <exclude />
         public ValidateTrialLicenseDefinitionRequestResponse()
         {
         }
 
+
+        /// <exclude />
         public ValidateTrialLicenseDefinitionRequestResponse(Composite.Core.PackageSystem.WebServiceClient.ValidateTrialLicenseDefinitionRequestResponseBody Body)
         {
             this.Body = Body;
@@ -281,14 +316,18 @@ namespace Composite.Core.PackageSystem.WebServiceClient
     [System.Runtime.Serialization.DataContractAttribute(Namespace = "http://www.composite.net/ns/managemen")]
     public partial class ValidateTrialLicenseDefinitionRequestResponseBody
     {
-
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 0)]
         public string ValidateTrialLicenseDefinitionRequestResult;
 
+
+        /// <exclude />
         public ValidateTrialLicenseDefinitionRequestResponseBody()
         {
         }
 
+
+        /// <exclude />
         public ValidateTrialLicenseDefinitionRequestResponseBody(string ValidateTrialLicenseDefinitionRequestResult)
         {
             this.ValidateTrialLicenseDefinitionRequestResult = ValidateTrialLicenseDefinitionRequestResult;
@@ -307,14 +346,18 @@ namespace Composite.Core.PackageSystem.WebServiceClient
     [System.ServiceModel.MessageContractAttribute(IsWrapped = false)]
     public partial class GetTrialLicenseDefinitionRequest
     {
-
+        /// <exclude />
         [System.ServiceModel.MessageBodyMemberAttribute(Name = "GetTrialLicenseDefinition", Namespace = "http://www.composite.net/ns/managemen", Order = 0)]
         public Composite.Core.PackageSystem.WebServiceClient.GetTrialLicenseDefinitionRequestBody Body;
 
+
+        /// <exclude />
         public GetTrialLicenseDefinitionRequest()
         {
         }
 
+
+        /// <exclude />
         public GetTrialLicenseDefinitionRequest(Composite.Core.PackageSystem.WebServiceClient.GetTrialLicenseDefinitionRequestBody Body)
         {
             this.Body = Body;
@@ -334,20 +377,28 @@ namespace Composite.Core.PackageSystem.WebServiceClient
     [System.Runtime.Serialization.DataContractAttribute(Namespace = "http://www.composite.net/ns/managemen")]
     public partial class GetTrialLicenseDefinitionRequestBody
     {
-
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(Order = 0)]
         public System.Guid installationId;
 
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(Order = 1)]
         public System.Guid productId;
 
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 2)]
         public string publicKeyXml;
 
+
+        /// <exclude />
         public GetTrialLicenseDefinitionRequestBody()
         {
         }
 
+
+        /// <exclude />
         public GetTrialLicenseDefinitionRequestBody(System.Guid installationId, System.Guid productId, string publicKeyXml)
         {
             this.installationId = installationId;
@@ -368,14 +419,18 @@ namespace Composite.Core.PackageSystem.WebServiceClient
     [System.ServiceModel.MessageContractAttribute(IsWrapped = false)]
     public partial class GetTrialLicenseDefinitionResponse
     {
-
+        /// <exclude />
         [System.ServiceModel.MessageBodyMemberAttribute(Name = "GetTrialLicenseDefinitionResponse", Namespace = "http://www.composite.net/ns/managemen", Order = 0)]
         public Composite.Core.PackageSystem.WebServiceClient.GetTrialLicenseDefinitionResponseBody Body;
 
+
+        /// <exclude />
         public GetTrialLicenseDefinitionResponse()
         {
         }
 
+
+        /// <exclude />
         public GetTrialLicenseDefinitionResponse(Composite.Core.PackageSystem.WebServiceClient.GetTrialLicenseDefinitionResponseBody Body)
         {
             this.Body = Body;
@@ -393,14 +448,18 @@ namespace Composite.Core.PackageSystem.WebServiceClient
     [System.Runtime.Serialization.DataContractAttribute(Namespace = "http://www.composite.net/ns/managemen")]
     public partial class GetTrialLicenseDefinitionResponseBody
     {
-
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 0)]
         public Composite.Core.PackageSystem.WebServiceClient.LicenseDefinitionDescriptor GetTrialLicenseDefinitionResult;
 
+
+        /// <exclude />
         public GetTrialLicenseDefinitionResponseBody()
         {
         }
 
+
+        /// <exclude />
         public GetTrialLicenseDefinitionResponseBody(Composite.Core.PackageSystem.WebServiceClient.LicenseDefinitionDescriptor GetTrialLicenseDefinitionResult)
         {
             this.GetTrialLicenseDefinitionResult = GetTrialLicenseDefinitionResult;
@@ -428,37 +487,49 @@ namespace Composite.Core.PackageSystem.WebServiceClient
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public partial class LicenseDefinitionServiceSoapClient : System.ServiceModel.ClientBase<Composite.Core.PackageSystem.WebServiceClient.LicenseDefinitionServiceSoap>, Composite.Core.PackageSystem.WebServiceClient.LicenseDefinitionServiceSoap
     {
-
+        /// <exclude />
         public LicenseDefinitionServiceSoapClient()
         {
         }
 
+
+        /// <exclude />
         public LicenseDefinitionServiceSoapClient(string endpointConfigurationName) :
             base(endpointConfigurationName)
         {
         }
 
+
+        /// <exclude />
         public LicenseDefinitionServiceSoapClient(string endpointConfigurationName, string remoteAddress) :
             base(endpointConfigurationName, remoteAddress)
         {
         }
 
+
+        /// <exclude />
         public LicenseDefinitionServiceSoapClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) :
             base(endpointConfigurationName, remoteAddress)
         {
         }
 
+
+        /// <exclude />
         public LicenseDefinitionServiceSoapClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) :
             base(binding, remoteAddress)
         {
         }
 
+
+        /// <exclude />
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Composite.Core.PackageSystem.WebServiceClient.ValidateTrialLicenseDefinitionRequestResponse Composite.Core.PackageSystem.WebServiceClient.LicenseDefinitionServiceSoap.ValidateTrialLicenseDefinitionRequest(Composite.Core.PackageSystem.WebServiceClient.ValidateTrialLicenseDefinitionRequestRequest request)
         {
             return base.Channel.ValidateTrialLicenseDefinitionRequest(request);
         }
 
+
+        /// <exclude />
         public string ValidateTrialLicenseDefinitionRequest(System.Guid installationId, System.Guid productId, string publicKeyXml)
         {
             Composite.Core.PackageSystem.WebServiceClient.ValidateTrialLicenseDefinitionRequestRequest inValue = new Composite.Core.PackageSystem.WebServiceClient.ValidateTrialLicenseDefinitionRequestRequest();
@@ -470,12 +541,16 @@ namespace Composite.Core.PackageSystem.WebServiceClient
             return retVal.Body.ValidateTrialLicenseDefinitionRequestResult;
         }
 
+
+        /// <exclude />
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Composite.Core.PackageSystem.WebServiceClient.GetTrialLicenseDefinitionResponse Composite.Core.PackageSystem.WebServiceClient.LicenseDefinitionServiceSoap.GetTrialLicenseDefinition(Composite.Core.PackageSystem.WebServiceClient.GetTrialLicenseDefinitionRequest request)
         {
             return base.Channel.GetTrialLicenseDefinition(request);
         }
 
+
+        /// <exclude />
         public Composite.Core.PackageSystem.WebServiceClient.LicenseDefinitionDescriptor GetTrialLicenseDefinition(System.Guid installationId, System.Guid productId, string publicKeyXml)
         {
             Composite.Core.PackageSystem.WebServiceClient.GetTrialLicenseDefinitionRequest inValue = new Composite.Core.PackageSystem.WebServiceClient.GetTrialLicenseDefinitionRequest();

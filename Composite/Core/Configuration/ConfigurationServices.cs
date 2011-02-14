@@ -25,7 +25,7 @@ namespace Composite.Core.Configuration
         private static readonly object _lock = new object();
 
 
-
+        /// <exclude />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "The configuration is needed to boot the IO layer, so we cant use it here")]
         static ConfigurationServices()
         {
@@ -50,6 +50,7 @@ namespace Composite.Core.Configuration
         }
 
 
+        /// <exclude />
         public static IConfigurationSource ConfigurationSource
         {
             get
@@ -104,6 +105,7 @@ namespace Composite.Core.Configuration
         }
 
 
+        /// <exclude />
         public static void SaveConfigurationSection(string sectionName, ConfigurationSection configurationSection)
         {
             using (GlobalInitializerFacade.CoreLockScope)
@@ -170,6 +172,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static void TransformConfiguration(Func<XDocument, bool> transformer)
         {
             using (GlobalInitializerFacade.CoreLockScope)

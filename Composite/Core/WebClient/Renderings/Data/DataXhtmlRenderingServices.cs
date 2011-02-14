@@ -14,6 +14,7 @@ namespace Composite.Core.WebClient.Renderings.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class DataXhtmlRenderingServices
 	{
+        /// <exclude />
         public static bool CanRender(Type dataTypeToRender, XhtmlRenderingType renderingType)
         {
             IEnumerable<XhtmlRendererProviderAttribute> rendererAttributes = dataTypeToRender.GetCustomInterfaceAttributes<XhtmlRendererProviderAttribute>();
@@ -21,6 +22,7 @@ namespace Composite.Core.WebClient.Renderings.Data
         }
 
 
+        /// <exclude />
         public static XhtmlDocument Render(IDataReference dataToRender, XhtmlRenderingType renderingType)
         {
             Type dataTypeToRender = dataToRender.ReferencedType;

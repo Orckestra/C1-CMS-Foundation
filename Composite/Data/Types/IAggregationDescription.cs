@@ -16,6 +16,7 @@ namespace Composite.Data.Types
     [DataScope(DataScopeIdentifier.PublicName)]
     public interface IAggregationDescription : IAssociationDescription
     {
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{1E9D171A-3256-427e-8A83-8EDDC8895140}")]
         Guid Id { get; set; }

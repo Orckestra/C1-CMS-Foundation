@@ -30,18 +30,23 @@ namespace Composite.C1Console.Events
 
 
 
+        /// <exclude />
         public static IEnumerable<ConsoleMessageQueueElement> GetQueueElements(int currentConsoleCounter, string consoleId)
         {
             return _messageQeueue.GetQueueElements(currentConsoleCounter, consoleId);
         }
 
 
+
+        /// <exclude />
         public static int GetLatestMessageNumber(string consoleId)
         {
             return _messageQeueue.GetLatestMessageNumber(consoleId);
         }
 
 
+
+        /// <exclude />
         public static int CurrentChangeNumber
         {
             get
@@ -51,6 +56,8 @@ namespace Composite.C1Console.Events
         }
 
 
+
+        /// <exclude />
         public static void DoDebugSerializationToFileSystem()
         {
             _messageQeueue.DoDebugSerializationToFileSystem();

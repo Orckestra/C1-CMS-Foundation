@@ -280,6 +280,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static IEnumerable<IData> ToDataEnumerable(this IQueryable queryable)
         {
             if (queryable == null) throw new ArgumentNullException("queryable");
@@ -362,6 +363,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static PropertyInfo GetDataPropertyRecursivly(this Type dataType, string propertyName)
         {
             if (dataType == null) throw new ArgumentNullException("dataType");
@@ -413,6 +415,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static void SetValues(this IData data, Dictionary<string, string> values)
         {
             if (data == null) throw new ArgumentNullException("data");

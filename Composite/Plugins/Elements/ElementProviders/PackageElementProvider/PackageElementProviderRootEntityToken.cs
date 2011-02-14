@@ -11,26 +11,31 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
     public sealed class PackageElementProviderRootEntityToken : EntityToken
 	{
+        /// <exclude />
         public override string Type
         {
             get { return ""; }
         }
 
+        /// <exclude />
         public override string Source
         {
             get { return ""; }
         }
 
+        /// <exclude />
         public override string Id
         {
             get { return "PackageElementProviderRootEntityToken"; }
         }
 
+        /// <exclude />
         public override string Serialize()
         {
             return DoSerialize();
         }
 
+        /// <exclude />
         public static EntityToken Deserialize(string serializedEntityToken)
         {
             return new PackageElementProviderRootEntityToken();

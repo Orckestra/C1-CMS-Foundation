@@ -16,16 +16,19 @@ namespace Composite.Data.Types
     [DataAncestorProvider(typeof(NoAncestorDataAncestorProvider))]
     public interface IUserActivePerspective : IData
     {
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{9BB04474-DB50-4df1-8EF1-562DE7F58B1A}")]
         Guid Id { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 128)]
         [ImmutableFieldId("{2D5BC444-377A-4337-9486-8210630E6E09}")]
         string Username { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.LargeString)]
         [ImmutableFieldId("{5AC5A7E4-4A75-4926-AB53-1A736732A9D4}")]
         string SerializedEntityToken { get; set; }

@@ -18,11 +18,13 @@ namespace Composite.Data.Types
     [DataScope(DataScopeIdentifier.AdministratedName)]
     public interface IFolderWhiteList : IData
     {
+        /// <exclude />
         [ImmutableFieldId("{cb0bb5a7-c1fe-47a1-bfb4-6565bc9ffd4d}")]
         [StoreFieldType(PhysicalStoreFieldType.String, 128)]
         string KeyName { get; set; }
 
 
+        /// <exclude />
         [ImmutableFieldId("{d03415bd-ec41-4a57-8072-59e0a761f113}")]
         [StoreFieldType(PhysicalStoreFieldType.String, 512)]
         string TildeBasedPath { get; set; }
@@ -37,6 +39,7 @@ namespace Composite.Data.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class IFolderWhiteListExtensions
     {
+        /// <exclude />
         public static string GetTildePath(string fullPath)
         {
             try
@@ -60,7 +63,8 @@ namespace Composite.Data.Types
             }
         }
 
-        
+
+        /// <exclude />
         public static string GetFullPath(this IFolderWhiteList folderWhiteList)
         {
             return PathUtil.Resolve(folderWhiteList.TildeBasedPath);

@@ -12,6 +12,7 @@ namespace Composite.Data
 	{
         internal DefaultFieldValueAttribute() { }
 
+        /// <exclude />
         public abstract DefaultValue GetDefaultValue();        
 	}
 
@@ -26,12 +27,16 @@ namespace Composite.Data
     {
         private string _defaultValue;
 
+
+        /// <exclude />
         public DefaultFieldStringValueAttribute(string defaultValue)
         {
             if (defaultValue == null) throw new ArgumentNullException("defaultValue");
             _defaultValue = defaultValue;
         }
 
+
+        /// <exclude />
         public override DefaultValue GetDefaultValue()
         {
             return DefaultValue.String(_defaultValue);
@@ -49,11 +54,15 @@ namespace Composite.Data
     {
         private int _defaultValue;
 
+
+        /// <exclude />
         public DefaultFieldIntValueAttribute(int defaultValue)
         {
             _defaultValue = defaultValue;
         }
 
+
+        /// <exclude />
         public override DefaultValue GetDefaultValue()
         {
             return DefaultValue.Integer(_defaultValue);
@@ -81,6 +90,8 @@ namespace Composite.Data
             _defaultValue = defaultValue;
         }
 
+
+        /// <exclude />
         public override DefaultValue GetDefaultValue()
         {
             return DefaultValue.Decimal(_defaultValue);
@@ -98,11 +109,15 @@ namespace Composite.Data
     {
         private bool _defaultValue;
 
+
+        /// <exclude />
         public DefaultFieldBoolValueAttribute(bool defaultValue)
         {
             _defaultValue = defaultValue;
         }
 
+
+        /// <exclude />
         public override DefaultValue GetDefaultValue()
         {
             return DefaultValue.Boolean(_defaultValue);
@@ -120,11 +135,15 @@ namespace Composite.Data
     {
         private Guid _defaultValue;
 
+
+        /// <exclude />
         public DefaultFieldGuidValueAttribute(string guidString)
         {
             _defaultValue = new Guid(guidString);
         }
 
+
+        /// <exclude />
         public override DefaultValue GetDefaultValue()
         {
             return DefaultValue.Guid(_defaultValue);
@@ -140,10 +159,13 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldNewGuidValueAttribute : DefaultFieldValueAttribute
     {
+        /// <exclude />
         public DefaultFieldNewGuidValueAttribute()
         {
         }
 
+
+        /// <exclude />
         public override DefaultValue GetDefaultValue()
         {
             return DefaultValue.NewGuid;
@@ -159,10 +181,13 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldNowDateTimeValueAttribute : DefaultFieldValueAttribute
     {
+        /// <exclude />
         public DefaultFieldNowDateTimeValueAttribute()
         {
         }
 
+
+        /// <exclude />
         public override DefaultValue GetDefaultValue()
         {
             return DefaultValue.Now;

@@ -18,12 +18,14 @@ namespace Composite.C1Console.Events
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class ConsoleClosedEventArgs : EventArgs
     {
+        /// <exclude />
         public ConsoleClosedEventArgs(string consoleId)
         {
             this.ConsoleId = consoleId;
         }
 
 
+        /// <exclude />
         public string ConsoleId
         {
             get;
@@ -39,6 +41,7 @@ namespace Composite.C1Console.Events
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ConsoleFacade
     {
+        /// <exclude />
         public delegate void ConsoleClosedEventDelegate(ConsoleClosedEventArgs args);
 
         private static TimeSpan? _timeout = null; 
@@ -47,7 +50,7 @@ namespace Composite.C1Console.Events
         private static event ConsoleClosedEventDelegate _consoleClosedEvent;
 
 
-
+        /// <exclude />
         public static void Initialize()
         {
             lock (_lock)
@@ -77,22 +80,21 @@ namespace Composite.C1Console.Events
         }
 
 
-
+        /// <exclude />
         public static void UnsubscribeFromConsoleClosedEvent(ConsoleClosedEventDelegate eventDelegate)
         {
             _consoleClosedEvent -= eventDelegate;
         }
 
 
-
-
+        /// <exclude />
         public static void CloseConsole(string consoleId)
         {
             UnregisterConsole(UserSettings.Username, consoleId);            
         }
 
 
-
+        /// <exclude />
         public static IEnumerable<string> GetConsoleIdsByUsername(string username)
         {
             List<string> consoleIds =
@@ -156,7 +158,7 @@ namespace Composite.C1Console.Events
         }
 
 
-
+        /// <exclude />
         public static void Scavenge()
         {
             LoggingService.LogVerbose("ConsoleFacade", "Starting scavenger run");

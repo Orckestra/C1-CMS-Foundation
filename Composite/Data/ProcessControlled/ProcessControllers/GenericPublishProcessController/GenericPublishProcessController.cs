@@ -26,9 +26,16 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
     {
         private static readonly string _oldPublishedStatusTag = "OldPublishedStatus";
 
+        /// <exclude />
         public const string Draft = "draft";
+
+        /// <exclude />
         public const string AwaitingApproval = "awaitingApproval";
+
+        /// <exclude />
         public const string AwaitingPublication = "awaitingPublication";
+
+        /// <exclude />
         public const string Published = "published";
 
         private static readonly string _backToAwaitingApproval = "awaitingApprovalBack";
@@ -47,26 +54,49 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         private IDictionary<string, Func<ElementAction>> _visualTransitionsActions = new Dictionary<string, Func<ElementAction>>();  // Using visual transition names as key
 
 
+        /// <exclude />
         public static ResourceHandle SendForwardForApproval { get { return GetIconHandle("item-send-forward-for-approval"); } }
+
+        /// <exclude />
         public static ResourceHandle SendForwardForPublication { get { return GetIconHandle("item-send-forward-for-publication"); } }
+
+        /// <exclude />
         public static ResourceHandle Publish { get { return GetIconHandle("item-publish"); } }
+
+        /// <exclude />
         public static ResourceHandle Unpublish { get { return GetIconHandle("item-unpublish"); } }
+
+        /// <exclude />
         public static ResourceHandle UndoUnpublishedChanges { get { return GetIconHandle("item-undo-unpublished-changes"); } }
 
+        /// <exclude />
         public static ResourceHandle SendBackToDraft { get { return GetIconHandle("item-send-back-to-draft"); } }
+
+        /// <exclude />
         public static ResourceHandle SendBackForApproval { get { return GetIconHandle("item-send-back-for-approval"); } }
+
+        /// <exclude />
         public static ResourceHandle SendBackForPublication { get { return GetIconHandle("item-send-back-for-publication"); } }
 
+        /// <exclude />
         public static ResourceHandle SendToDraftDisabled { get { return GetIconHandle("item-send-to-draft-disabled"); } }
+
+        /// <exclude />
         public static ResourceHandle SendForApprovalDisabled { get { return GetIconHandle("item-send-for-approval-disabled"); } }
+
+        /// <exclude />
         public static ResourceHandle SendForPublicationDisabled { get { return GetIconHandle("item-send-for-publication-disabled"); } }
+
+        /// <exclude />
         public static ResourceHandle PublishDisabled { get { return GetIconHandle("item-publish-disabled"); } }
 
+        /// <exclude />
         public static readonly ActionGroup WorkflowActionGroup = new ActionGroup("Workflow", ActionGroupPriority.PrimaryMedium);
 
+        /// <exclude />
         public static readonly IEnumerable<PermissionType> AwaitingPublicationActionPermissionType = new PermissionType[] { PermissionType.Approve };
 
-
+        /// <exclude />
         public GenericPublishProcessController()
         {
             _transitions = new Dictionary<string, IList<string>>();
@@ -291,10 +321,10 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             _visualTransitionsActions.Add(_awaitingPublicationDisabled, awaitingPublicationActionDisabled);
             _visualTransitionsActions.Add(_publishedDisabled, publishActionDisabled);
         }
-        
 
 
 
+        /// <exclude />
         public List<ElementAction> GetActions(IData data, Type elementProviderType)
         {
             if ((data is IPublishControlled == false) ||
@@ -389,6 +419,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
 
 
+        /// <exclude />
         public void SetStartStatus(IData data)
         {
             if ((data is IPublishControlled == false) ||
@@ -403,6 +434,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
 
 
+        /// <exclude />
         public IDictionary<string, string> GetValidTransitions(IData data)
         {
             if ((data is IPublishControlled == false) ||
@@ -416,6 +448,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
 
 
+        /// <exclude />
         public bool OnAfterBuildNew(IData data)
         {
             IPublishControlled publishControlled = (IPublishControlled)data;
@@ -427,6 +460,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
 
 
+        /// <exclude />
         public bool OnAfterDataUpdated(IData data)
         {
             DataFacade.RemoveDataTag(data, _oldPublishedStatusTag);
@@ -460,6 +494,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
 
 
+        /// <exclude />
         public void ValidateTransition(IData data, string status)
         {
             IPublishControlled publishControlled = (IPublishControlled)data;

@@ -9,6 +9,7 @@ namespace Composite.C1Console.Events
     [Serializable]
     public sealed class CloseAllViewsMessageQueueItem : IConsoleMessageQueueItem    
 	{
+        /// <exclude />
         public string Reason { get; set; }
 	}
 }

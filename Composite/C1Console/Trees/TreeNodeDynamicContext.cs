@@ -11,7 +11,10 @@ namespace Composite.C1Console.Trees
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum TreeNodeDynamicContextDirection
     {
+        /// <exclude />
         Down, // Creating elements
+
+        /// <exclude />
         Up // Creating entity tokens
     }
 
@@ -27,17 +30,23 @@ namespace Composite.C1Console.Trees
         private Dictionary<string, int> _fieldFolderRangeValues;
 
 
+        /// <exclude />
         public TreeNodeDynamicContext(TreeNodeDynamicContextDirection treeNodeDynamicContextDirection)
         {
             this.Direction = treeNodeDynamicContextDirection;
             this.CustomData = new Dictionary<string, object>();
         }
 
+
+        /// <exclude />
         public string ElementProviderName { get; set; }
 
+
+        /// <exclude />
         public TreeNodeDynamicContextDirection Direction { get; internal set; }
 
 
+        /// <exclude />
         public Dictionary<string, object> FieldGroupingValues
         {
             get
@@ -56,6 +65,7 @@ namespace Composite.C1Console.Trees
         }
 
 
+        /// <exclude />
         public Dictionary<string, int> FieldFolderRangeValues
         {
             get
@@ -74,9 +84,14 @@ namespace Composite.C1Console.Trees
         }
 
 
+        /// <exclude />
         public Dictionary<string, string> Piggybag { get; set; }
 
+
+        /// <exclude />
         public EntityToken CurrentEntityToken { get; set; }
+
+        /// <exclude />
         public TreeNode CurrentTreeNode { get; set; }
 
 

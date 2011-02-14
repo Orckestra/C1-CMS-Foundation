@@ -11,9 +11,13 @@ namespace Composite.C1Console.Elements
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface ILocaleAwareElementProvider : IHooklessElementProvider
     {
+        /// <exclude />
         bool ContainsLocalizedData { get; }
 
+        /// <exclude />
         IEnumerable<Element> GetForeignRoots(SearchToken searchToken);
+
+        /// <exclude />
         IEnumerable<Element> GetForeignChildren(EntityToken entityToken, SearchToken searchToken);
     }
 }

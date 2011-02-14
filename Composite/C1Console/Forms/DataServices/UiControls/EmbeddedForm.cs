@@ -15,13 +15,20 @@ namespace Composite.C1Console.Forms.DataServices.UiControls
     {
         private FormTreeCompiler _compiler;
 
+        /// <exclude />
         [RequiredValue()]
         public string FormPath { get; set; }
 
+
+        /// <exclude />
         public bool Debug { get; set; }
 
+
+        /// <exclude />
         public Dictionary<string, object> Bindings { get; set; }
 
+
+        /// <exclude />
         public override string Label
         {
             get
@@ -40,6 +47,7 @@ namespace Composite.C1Console.Forms.DataServices.UiControls
         }
 
 
+        /// <exclude />
         public EmbeddedFormUiControl()
         {
             base.Label = null;
@@ -47,12 +55,14 @@ namespace Composite.C1Console.Forms.DataServices.UiControls
         }
 
 
+        /// <exclude />
         public override void BindStateToControlProperties()
         {
             _compiler.SaveControlProperties();
         }
 
 
+        /// <exclude />
         protected internal IUiControl CompiledUiControl
         {
             get

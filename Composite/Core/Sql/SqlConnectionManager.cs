@@ -9,6 +9,7 @@ namespace Composite.Core.Sql
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class SqlConnectionManager
 	{
+        /// <exclude />
         public static SqlConnection GetConnection(string connectionString)
         {
             string threadDataKey = "SqlDataContext" + connectionString + "_SqlConnection";

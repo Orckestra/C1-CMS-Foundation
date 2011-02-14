@@ -15,9 +15,23 @@ namespace Composite.C1Console.Security
     {
         private static object _lock = new object();
 
-        public enum ValidationType { None, Form, Windows };
+
+        /// <exclude />
+        public enum ValidationType 
+        {
+            /// <exclude />
+            None = 0,
+
+            /// <exclude />
+            Form = 1,
+
+            /// <exclude />
+            Windows = 2
+        };
 
 
+
+        /// <exclude />
         public static ValidationType GetValidationType()
         {
             if (LoginProviderPluginFacade.CheckType<IFormLoginProvider>())
@@ -34,6 +48,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static IEnumerable<string> AllUsernames
         {
             get
@@ -43,6 +58,7 @@ namespace Composite.C1Console.Security
         }
 
 
+        /// <exclude />
         public static bool CanSetUserPassword
         {
             get
@@ -95,6 +111,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static bool FormValidateUserWithoutLogin(string userName, string password)
         {
             return LoginProviderPluginFacade.FormValidateUser(userName, password);
@@ -102,6 +119,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static void FormSetUserPassword(string userName, string password)
         {
             LoginProviderPluginFacade.FormSetUserPassword(userName, password);
@@ -138,6 +156,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static bool IsLoggedIn()
         {
             return (string.IsNullOrEmpty(LoginSessionStorePluginFacade.StoredUsername) == false);
@@ -145,6 +164,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static UserToken GetUserToken()
         {
             if (IsLoggedIn() == false) throw new InvalidOperationException("No user has been logged in");
@@ -154,6 +174,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static string GetUsername()
         {
             if (IsLoggedIn() == false) throw new InvalidOperationException("No user has been logged in");

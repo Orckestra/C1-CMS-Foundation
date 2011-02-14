@@ -31,6 +31,7 @@ namespace Composite.C1Console.Elements.Plugins.ElementAttachingProvider
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ElementAttachingProviderResult
     {
+        /// <exclude />
         public ElementAttachingProviderResult()
         {
             this.Position = ElementAttachingProviderPosition.Bottom;
@@ -42,6 +43,7 @@ namespace Composite.C1Console.Elements.Plugins.ElementAttachingProvider
         public IEnumerable<Element> Elements { get; set; }
 
 
+        /// <exclude />
         public ElementAttachingProviderPosition Position { get; set; }
 
 
@@ -69,7 +71,6 @@ namespace Composite.C1Console.Elements.Plugins.ElementAttachingProvider
         ElementProviderContext Context { set; }
 
 
-
         /// <summary>
         /// This is only called when rendering root nodes. Used to switch HasChildren from false to true.
         /// </summary>
@@ -88,7 +89,7 @@ namespace Composite.C1Console.Elements.Plugins.ElementAttachingProvider
         ElementAttachingProviderResult GetAlternateElementList(EntityToken parentEntityToken, Dictionary<string, string> piggybag);
 
 
-
+        /// <exclude />
         IEnumerable<Element> GetChildren(EntityToken parentEntityToken, Dictionary<string, string> piggybag);
 	}
 }

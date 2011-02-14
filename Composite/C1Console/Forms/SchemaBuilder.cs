@@ -15,10 +15,14 @@ namespace Composite.C1Console.Forms
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class SchemaInfo
     {
+        /// <exclude />
         public enum FormSchemaType
 	    {
-            Uicontrols,
-            Functions
+            /// <exclude />
+            Uicontrols = 0,
+
+            /// <exclude />
+            Functions = 1
 	    }
 
         internal SchemaInfo(IFormChannelIdentifier channelIdentifier, XNamespace namespaceObj, XDocument schema)
@@ -36,9 +40,17 @@ namespace Composite.C1Console.Forms
             this.SchemaType = FormSchemaType.Functions;
         }
 
+
+        /// <exclude />
         public IFormChannelIdentifier ChannelIdentifier { get; private set; }
+
+        /// <exclude />
         public XNamespace Namespace { get; private set; }
+
+        /// <exclude />
         public XDocument Schema { get; private set; }
+
+        /// <exclude />
         public FormSchemaType SchemaType { get; private set; }
     }
 
@@ -50,6 +62,7 @@ namespace Composite.C1Console.Forms
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class SchemaBuilder
     {
+        /// <exclude />
         public static IEnumerable<SchemaInfo> GenerateAllDynamicSchemas()
         {
             List<SchemaInfo> generatedSchemas = new List<SchemaInfo>();
@@ -91,6 +104,7 @@ namespace Composite.C1Console.Forms
 
 
 
+        /// <exclude />
         public static XDocument GenerateUiControlSchema(IFormChannelIdentifier channelIdentifier, XNamespace controlNamespace)
         {
             Dictionary<XNamespace, XDocument> schemas = new Dictionary<XNamespace, XDocument>();

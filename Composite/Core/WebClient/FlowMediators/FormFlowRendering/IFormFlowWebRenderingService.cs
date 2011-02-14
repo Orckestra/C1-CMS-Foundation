@@ -10,9 +10,16 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IFormFlowWebRenderingService : IFlowControllerService
     {
+        /// <exclude />
         void SetNewPageOutput(Control pageOutput);
+
+        /// <exclude />
         void SetNewPageMimeType(string mimyType);
+
+        /// <exclude />
         Control NewPageOutput { get; }
+
+        /// <exclude />
         string NewPageMimeType { get; }
     }
 }

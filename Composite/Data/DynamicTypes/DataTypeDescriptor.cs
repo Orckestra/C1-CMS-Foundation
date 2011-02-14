@@ -30,6 +30,7 @@ namespace Composite.Data.DynamicTypes
         private List<DataTypeAssociationDescriptor> _dataTypeAssociationDescriptors = new List<DataTypeAssociationDescriptor>();
 
 
+        /// <exclude />
         public DataTypeDescriptor()
         {
             this.Fields = new DataFieldDescriptorCollection(this);
@@ -40,6 +41,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public DataTypeDescriptor(Guid dataTypeId, string dataTypeNamespace, string dataTypeName, bool isCodeGenerated)
             : this()
         {
@@ -51,6 +53,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public DataTypeDescriptor(Guid dataTypeId, string dataTypeNamespace, string dataTypeName, string typeManagerTypeName)
             : this()
         {
@@ -63,6 +66,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public DataTypeDescriptor(Guid dataTypeId, string dataTypeNamespace, string dataTypeName, string typeManagerTypeName, bool isCodeGenerated)
             : this()
         {
@@ -75,6 +79,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public Guid DataTypeId
         {
             get
@@ -90,9 +95,11 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public DataFieldNameCollection KeyPropertyNames { get; set; }
 
 
+        /// <exclude />
         public Type GetInterfaceType()
         {
             if (this.TypeManagerTypeName == null)
@@ -103,6 +110,8 @@ namespace Composite.Data.DynamicTypes
             return TypeManager.GetType(this.TypeManagerTypeName);
         }
 
+
+        /// <exclude />
         public string TypeManagerTypeName { get; set; }
 
         /// <summary>
@@ -123,6 +132,8 @@ namespace Composite.Data.DynamicTypes
             set { _name = NameValidation.ValidateName(value); }
         }
 
+
+        /// <exclude />
         public string Namespace
         {
             get
@@ -136,9 +147,12 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-
+        /// <exclude />
         public string Title { get; set; }
 
+
+
+        /// <exclude />
         public string LabelFieldName
         {
             get
@@ -151,11 +165,18 @@ namespace Composite.Data.DynamicTypes
             }
         }
 
+
+        /// <exclude />
         public int Version { get; internal set; }
 
+
+        /// <exclude />
         public bool IsCodeGenerated { get; private set; }
+
+        /// <exclude />
         public bool Cachable { get; internal set; }
 
+        /// <exclude />
         public bool HasCustomPhysicalSortOrder
         {
             get
@@ -170,8 +191,12 @@ namespace Composite.Data.DynamicTypes
             }
         }
 
+
+        /// <exclude />
         public List<DataScopeIdentifier> DataScopes { get; set; }
 
+
+        /// <exclude />
         public bool Localizeable
         {
             get
@@ -180,6 +205,8 @@ namespace Composite.Data.DynamicTypes
             }
         }
 
+
+        /// <exclude />
         public void AddSuperInterface(Type interfaceType)
         {
             if ((_superInterfaces.Contains(interfaceType) == false) && (interfaceType != typeof(IData)))
@@ -217,6 +244,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public void RemoveSuperInterface(Type interfaceType)
         {
             if (interfaceType == typeof (IData))
@@ -263,6 +291,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public IEnumerable<Type> SuperInterfaces
         {
             get
@@ -273,6 +302,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public List<DataTypeAssociationDescriptor> DataAssociations
         {
             get
@@ -288,6 +318,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public bool IsPageFolderDataType
         {
             get
@@ -300,6 +331,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public bool IsPageMetaDataType
         {
             get
@@ -381,6 +413,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public DataTypeDescriptor Clone()
         {
             DataTypeDescriptor dataTypeDescriptor = new DataTypeDescriptor(this.DataTypeId, this.Namespace, this.Name, this.TypeManagerTypeName, this.IsCodeGenerated);
@@ -429,6 +462,8 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+
+        /// <exclude />
         public XElement ToXml()
         {
             XElement element = new XElement("DataTypeDescriptor");
@@ -493,6 +528,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public static DataTypeDescriptor FromXml(XElement element)
         {
             if (element == null) throw new ArgumentNullException("element");
@@ -622,6 +658,8 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+
+        /// <exclude />
         public override int GetHashCode()
         {
             return this.DataTypeId.GetHashCode() ^ this.Version.GetHashCode();
@@ -629,6 +667,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public override bool Equals(object obj)
         {
             return Equals(obj as DataTypeDescriptor);
@@ -636,6 +675,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public bool Equals(DataTypeDescriptor dataTypeDescriptor)
         {
             if (dataTypeDescriptor == null) return false;
@@ -647,6 +687,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public override string ToString()
         {
             if (this.Namespace == "")

@@ -10,11 +10,13 @@ namespace Composite.Core.WebClient.Renderings.Data
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true, Inherited = true)]
     public abstract class XhtmlRendererProviderAttribute : Attribute
     {
+        /// <exclude />
         public abstract XhtmlRenderingType SupportedRenderingType
         {
             get;
         }
 
+        /// <exclude />
         public abstract IDataXhtmlRenderer BuildRenderer();
     }
 }

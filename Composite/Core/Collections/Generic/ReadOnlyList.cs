@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace Composite.Core.Collections.Generic
 {
+#warning MRJ: GO KILL THIS CLASS!!!! And use the one in system
     /// <summary>    
     /// </summary>
     /// <exclude />
@@ -13,6 +14,8 @@ namespace Composite.Core.Collections.Generic
     {
         private List<T> _list;
 
+
+        /// <exclude />
         public ReadOnlyList(List<T> list)
         {
             if (list == null) throw new ArgumentNullException("list");
@@ -20,21 +23,29 @@ namespace Composite.Core.Collections.Generic
             _list = list;
         }
 
+
+        /// <exclude />
         public int IndexOf(T item)
         {
             return _list.IndexOf(item);
         }
 
+
+        /// <exclude />
         public void Insert(int index, T item)
         {
             throw new InvalidOperationException("This is not allowed on a ReadOnlyList");
         }
 
+
+        /// <exclude />
         public void RemoveAt(int index)
         {
             throw new InvalidOperationException("This is not allowed on a ReadOnlyList");
         }
 
+
+        /// <exclude />
         public T this[int index]
         {
             get
@@ -47,46 +58,64 @@ namespace Composite.Core.Collections.Generic
             }
         }
 
+
+        /// <exclude />
         public void Add(T item)
         {
             throw new InvalidOperationException("This is not allowed on a ReadOnlyList");
         }
 
+
+        /// <exclude />
         public void Clear()
         {
             throw new InvalidOperationException("This is not allowed on a ReadOnlyList");
         }
 
+
+        /// <exclude />
         public bool Contains(T item)
         {
             return _list.Contains(item);
         }
 
+
+        /// <exclude />
         public void CopyTo(T[] array, int arrayIndex)
         {
             _list.CopyTo(array, arrayIndex);
         }
 
+
+        /// <exclude />
         public int Count
         {
             get { return _list.Count; }
         }
 
+
+        /// <exclude />
         public bool IsReadOnly
         {
             get { return true; }
         }
 
+
+        /// <exclude />
         public bool Remove(T item)
         {
             throw new InvalidOperationException("This is not allowed on a ReadOnlyList");
         }
 
+
+        /// <exclude />
         public IEnumerator<T> GetEnumerator()
         {
             return _list.GetEnumerator();
         }
 
+
+        /// <exclude />
         IEnumerator IEnumerable.GetEnumerator()
         {
             return ((IEnumerable)_list).GetEnumerator();

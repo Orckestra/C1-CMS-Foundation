@@ -10,15 +10,28 @@ namespace Composite.Data.DynamicTypes
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public interface IDynamicTypeManager
 	{
+        /// <exclude />
         DataTypeDescriptor BuildNewDataTypeDescriptor(Type typeToDescript);
+
+        /// <exclude />
         bool TryGetDataTypeDescriptor(Guid immuteableTypeId, out DataTypeDescriptor dataTypeDescriptor);
+
+        /// <exclude />
         void UpdateDataTypeDescriptor(DataTypeDescriptor dataTypeDescriptor, bool flushTheSystem);
-        
+
+        /// <exclude />
         void CreateStore(string providerName, DataTypeDescriptor typeDescriptor, bool doFlush);
+
+        /// <exclude />
         void AlterStore(string providerName, DataTypeChangeDescriptor changeDescriptor, bool makeAFlush);
+
+        /// <exclude />
         void DropStore(string providerName, DataTypeDescriptor typeDescriptor, bool makeAFlush);
 
-        void AddLocale(string providerName, CultureInfo cultureInfo, bool doFlush); 
+        /// <exclude />
+        void AddLocale(string providerName, CultureInfo cultureInfo, bool doFlush);
+
+        /// <exclude />
         void RemoveLocale(string providerName, CultureInfo cultureInfo, bool doFlush);
 	}
 }

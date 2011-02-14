@@ -14,6 +14,7 @@ namespace Composite.Data.Plugins.DataProvider
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class DataInterfaceValidator
     {
+        /// <exclude />
         public static bool TryValidate(Type interfaceType, out IEnumerable<string> errorMessages)
         {
             List<string> errors = new List<string>();
@@ -51,6 +52,7 @@ namespace Composite.Data.Plugins.DataProvider
 
 
 
+        /// <exclude />
         public static bool TryValidate(Type interfaceType)
         {
             IEnumerable<string> errorMessages;
@@ -60,6 +62,7 @@ namespace Composite.Data.Plugins.DataProvider
 
 
 
+        /// <exclude />
         public static bool TryValidate<T>(out IEnumerable<string> errorMessages)
             where T : class, IData
         {
@@ -68,6 +71,7 @@ namespace Composite.Data.Plugins.DataProvider
 
 
 
+        /// <exclude />
         public static bool TryValidate<T>()
             where T : class, IData
         {
@@ -78,6 +82,7 @@ namespace Composite.Data.Plugins.DataProvider
 
 
 
+        /// <exclude />
         public static void Validate(Type interfaceType)
         {
             IEnumerable<string> errors;
@@ -101,6 +106,7 @@ namespace Composite.Data.Plugins.DataProvider
 
 
 
+        /// <exclude />
         public static void Validate<T>()
             where T : class, IData
         {

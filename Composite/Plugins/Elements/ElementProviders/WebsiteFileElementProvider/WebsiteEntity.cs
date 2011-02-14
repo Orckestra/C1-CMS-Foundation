@@ -6,6 +6,7 @@
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public abstract class WebsiteEntity
 	{
+        /// <exclude />
         public WebsiteEntity(string fullPath, bool isFolder)
         {
             this.FullPath = fullPath;
@@ -13,18 +14,21 @@
             this.IsFolder = isFolder;
         }
 
+        /// <exclude />
         public bool IsFile
         {
             get;
             private set;
         }
 
+        /// <exclude />
         public bool IsFolder
         {
             get;
             private set;
         }
 
+        /// <exclude />
         public string FullPath
         {
             get;

@@ -22,6 +22,8 @@ namespace Composite.Core
         private string _anchor;
         private List<KeyValuePair<string, string>> _queryParameters;
 
+
+        /// <exclude />
         public UrlBuilder(string url)
         {
             _queryParameters = new List<KeyValuePair<string, string>>();
@@ -90,6 +92,9 @@ namespace Composite.Core
             pathInfo = relativePath.Substring(aspxExtOffset + 5);
         }
 
+
+
+        /// <exclude />
         public override string ToString()
         {
             // NOTE: StringBuilder shouldn't be used here - it is to slow
@@ -114,6 +119,9 @@ namespace Composite.Core
             return result; // _filePath + _pathInfo + "?" + queryString + ("#" + _anchor)"
         }
 
+
+
+        /// <exclude />
         public void AddQueryParameters(NameValueCollection parameters)
         {
             foreach (string key in parameters)
@@ -122,6 +130,9 @@ namespace Composite.Core
             }
         }
 
+
+
+        /// <exclude />
         public NameValueCollection GetQueryParameters()
         {
             var result = new NameValueCollection();
@@ -132,6 +143,9 @@ namespace Composite.Core
             return result;
         }
 
+
+
+        /// <exclude />
         public string this[string key]
         {
             get
@@ -165,6 +179,8 @@ namespace Composite.Core
             }
         }
 
+
+        /// <exclude />
         public string PathInfo
         {
             get
@@ -177,6 +193,8 @@ namespace Composite.Core
             }
         }
 
+
+        /// <exclude />
         public string FilePath
         {
             get
@@ -190,6 +208,8 @@ namespace Composite.Core
             }
         }
 
+
+        /// <exclude />
         public string ServerUrl
         {
             get
@@ -230,6 +250,8 @@ namespace Composite.Core
             }
         }
 
+
+        /// <exclude />
         public string QueryString
         {
             get
@@ -263,11 +285,15 @@ namespace Composite.Core
             }
         }
 
+
+        /// <exclude />
         public static implicit operator string(UrlBuilder builder)
         {
             return builder.ToString();
         }
 
+
+        /// <exclude />
         public string Anchor
         {
             get

@@ -20,6 +20,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         private List<CultureInfo> _culturesToUninstall = null;
         private CultureInfo _oldDefaultCultureInfo = null;
 
+
+        /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
             List<PackageFragmentValidationResult> validationResults = new List<PackageFragmentValidationResult>();
@@ -79,6 +81,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
 
+        /// <exclude />
         public override void Uninstall()
         {
             if (_oldDefaultCultureInfo != null)

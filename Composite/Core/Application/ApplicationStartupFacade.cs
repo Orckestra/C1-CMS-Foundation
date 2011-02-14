@@ -11,6 +11,7 @@ namespace Composite.Core.Application
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class ApplicationStartupFacade
 	{
+        /// <exclude />
         public static void FireBeforeSystemInitialize()
         {
             foreach (string hanlderName in ApplicationStartupHandlerRegistry.ApplicationStartupHandlerNames)
@@ -19,6 +20,8 @@ namespace Composite.Core.Application
             }
         }
 
+
+        /// <exclude />
         public static void FireSystemInitialized()
         {
             foreach (string hanlderName in ApplicationStartupHandlerRegistry.ApplicationStartupHandlerNames)

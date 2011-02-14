@@ -11,23 +11,34 @@ namespace Composite.Data
     [DebuggerDisplay("Name = {Name}")]
     public sealed class DataScopeIdentifier
     {
+        /// <exclude />
         public const string PublicName = "public";
+
+        /// <exclude />
         public const string AdministratedName = "administrated";
 
+        /// <exclude />
         [Obsolete("To be removed", false)]
         public const string VersionedName = "versioned";
 
+
+        /// <exclude />
         public static DataScopeIdentifier Public { get { return new DataScopeIdentifier(PublicName); } }
+
+        /// <exclude />
         public static DataScopeIdentifier Administrated { get { return new DataScopeIdentifier(AdministratedName); } }
 
+        /// <exclude />
         [Obsolete("To be removed", false)]
         public static DataScopeIdentifier Versioned { get { return new DataScopeIdentifier(VersionedName); } }
 
 
+        /// <exclude />
         public static DataScopeIdentifier GetDefault()
         {
             return DataScopeIdentifier.Public;
         }
+
 
         private DataScopeIdentifier(string dataScope)
         {
@@ -35,6 +46,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public string Name
         {
             get;
@@ -42,13 +54,14 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public string Serialize()
         {
             return this.Name;
         }
 
 
-
+        /// <exclude />
         public static DataScopeIdentifier Deserialize(string serializedData)
         {
             if (serializedData == null) throw new ArgumentNullException("serializedData");
@@ -66,16 +79,22 @@ namespace Composite.Data
             }
         }
 
+
+        /// <exclude />
         public PublicationScope ToPublicationScope()
         {
             return Name == "public" ? PublicationScope.Published : PublicationScope.Unpublished;
         }
 
+
+        /// <exclude />
         public static DataScopeIdentifier FromPublicationScope(PublicationScope publicationScope)
         {
             return publicationScope == PublicationScope.Published ? Public : Administrated;
         }
 
+
+        /// <exclude />
         public static bool IsLegasyDataScope(string name)
         {
             name = name.ToLower();
@@ -83,6 +102,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public override bool Equals(object obj)
         {
             if (obj == null) return false;
@@ -91,7 +111,7 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         public bool Equals(DataScopeIdentifier dataScope)
         {
             if (dataScope == null) return false;
@@ -100,14 +120,14 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         public override int GetHashCode()
         {
             return this.Name.GetHashCode();
         }
 
 
-
+        /// <exclude />
         public override string ToString()
         {
             return this.Serialize();

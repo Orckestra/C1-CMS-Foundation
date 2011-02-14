@@ -22,127 +22,153 @@ namespace Composite.Core.IO
         {
             return new ResourceHandle(BuildInIconProviderName.ProviderName, name);
         }
-              
+
+        /// <exclude />
         public static string Jpeg
         {
             get { return "image/jpeg";}
         }
 
+        /// <exclude />
         public static string Default
         {
             get { return "application/octet-stream"; }
         }
 
+        /// <exclude />
         public static string Gif
         {
             get { return "image/gif"; }
         }
 
+        /// <exclude />
         public static string Bmp
         {
             get { return "image/bmp"; }
         }
 
+        /// <exclude />
         public static string Png
         {
             get { return "image/png"; }
         }
 
+        /// <exclude />
         public static string Tiff
         {
             get { return "image/tiff"; }
         }
 
+        /// <exclude />
         public static string Css
         {
             get { return "text/css"; }
         }
 
+        /// <exclude />
         public static string Js
         {
             get { return "text/js"; }
         }
 
+        /// <exclude />
         public static string Xml
         {
             get { return "text/xml"; }
         }
 
+        /// <exclude />
         public static string Text
         {
             get { return "text/plain"; }
         }
 
+        /// <exclude />
         public static string Html
         {
             get { return "text/html"; }
         }
 
+        /// <exclude />
         public static string Flash
         {
             get { return "application/x-shockwave-flash"; }
         }
 
+        /// <exclude />
         public static string QuickTime
         {
             get { return "video/quicktime"; }
         }
 
+        /// <exclude />
         public static string Wmv
         {
             get { return "video/x-ms-wmv"; }
         }
 
+        /// <exclude />
         public static string Asf
         {
             get { return "video/x-ms-asf"; }
         }
 
+        /// <exclude />
         public static string Avi
         {
             get { return "video/x-msvideo"; }
         }
 
+        /// <exclude />
         public static string Flv
         {
             get { return "video/x-flv"; }
         }
 
+        /// <exclude />
         public static string Director
         {
             get { return "application/x-director"; }
         }
 
+        /// <exclude />
         public static string CSharp
         {
             get { return "text/x-csharp"; }
         }
 
+        /// <exclude />
         public static string Ascx
         {
             get { return "application/x-ascx"; }
         }
 
+        /// <exclude />
         public static string Aspx
         {
             get { return "application/x-aspx"; }
         }
 
+        /// <exclude />
         public static string Ashx
         {
             get { return "application/x-ashx"; }
         }
 
+        /// <exclude />
         public static string Resx
         {
             get { return "application/x-resx"; }
         }
 
+        /// <exclude />
         public static string MasterPage
         {
             get { return "application/x-master-page"; }
         }
 
+
+        /// <exclude />
         static MimeTypeInfo()
         {
             // jpeg
@@ -332,6 +358,7 @@ namespace Composite.Core.IO
 
 
 
+        /// <exclude />
         public static string GetCanonical(string mimeType)
         {
             if (mimeType == null)
@@ -351,6 +378,7 @@ namespace Composite.Core.IO
 
 
 
+        /// <exclude />
         public static ResourceHandle GetResourceHandleFromMimeType(string mimeType)
         {
             if (mimeType == null)
@@ -367,6 +395,7 @@ namespace Composite.Core.IO
 
 
 
+        /// <exclude />
         public static string GetCanonicalFromExtension(string extension)
         {
             if (extension == null)

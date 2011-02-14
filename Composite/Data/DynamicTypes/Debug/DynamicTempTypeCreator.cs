@@ -17,6 +17,8 @@ namespace Composite.Data.ExtendedDataType.Debug
         private string _namePrefix;
         private List<DataFieldDescriptor> _dataFieldDescriptors;
 
+
+        /// <exclude />
         public DynamicTempTypeCreator(string namePrefix)
         {
             _namePrefix = namePrefix;
@@ -26,6 +28,7 @@ namespace Composite.Data.ExtendedDataType.Debug
 
 
 
+        /// <exclude />
         public static bool UseTempTypeCreator
         {
             get
@@ -39,6 +42,8 @@ namespace Composite.Data.ExtendedDataType.Debug
         }
 
 
+
+        /// <exclude />
         public string TypeName
         {
             get;
@@ -46,6 +51,8 @@ namespace Composite.Data.ExtendedDataType.Debug
         }
 
 
+
+        /// <exclude />
         public string TypeTitle
         {
             get;
@@ -53,6 +60,8 @@ namespace Composite.Data.ExtendedDataType.Debug
         }
 
 
+
+        /// <exclude />
         public List<DataFieldDescriptor> DataFieldDescriptors
         {
             get

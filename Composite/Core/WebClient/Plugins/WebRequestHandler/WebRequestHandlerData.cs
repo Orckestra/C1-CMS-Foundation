@@ -11,6 +11,7 @@ namespace Composite.Core.WebClient.Plugins.WebRequestHandler
     public class WebRequestHandlerData : NameTypeManagerTypeConfigurationElement
     {
         private const string _templateControlFilePropertyName = "templateControlFile";
+        /// <exclude />
         [ConfigurationProperty(_templateControlFilePropertyName, IsRequired = true)]
         public string TemplateControlFile
         {
@@ -21,6 +22,7 @@ namespace Composite.Core.WebClient.Plugins.WebRequestHandler
 
 
         private const string _templateControlPlaceholderIdPropertyName = "templateControlPlaceholderId";
+        /// <exclude />
         [ConfigurationProperty(_templateControlPlaceholderIdPropertyName, IsRequired = true)]
         public string TemplateControlPlaceholderId
         {

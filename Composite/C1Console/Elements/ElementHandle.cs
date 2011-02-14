@@ -19,6 +19,7 @@ namespace Composite.C1Console.Elements
         Dictionary<string, string> _piggyback = null;
 
 
+        /// <exclude />
         public ElementHandle(string providerName, EntityToken entityToken)
             : this(providerName, entityToken, (string)null)
         {
@@ -26,6 +27,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public ElementHandle(string providerName, EntityToken entityToken, Dictionary<string, string> piggyback)
         {
             Verify.ArgumentNotNull(piggyback, "piggyback");
@@ -37,6 +39,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public ElementHandle(string providerName, EntityToken entityToken, string piggyback)
         {
             if (piggyback == null)
@@ -52,6 +55,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public string ProviderName
         {
             get { return _providerName; }
@@ -59,6 +63,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public EntityToken EntityToken
         {
             get { return _entityToken; }
@@ -66,6 +71,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public Dictionary<string, string> Piggyback
         {
             get
@@ -84,6 +90,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public string SerializedPiggyback
         {
             get
@@ -99,12 +106,15 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public override bool Equals(object obj)
         {
             return Equals(obj as ElementHandle);
         }
 
 
+
+        /// <exclude />
         public bool Equals(ElementHandle elementHandle)
         {
             if (elementHandle == null) return false;
@@ -125,6 +135,8 @@ namespace Composite.C1Console.Elements
         }
 
 
+
+        /// <exclude />
         public override int GetHashCode()
         {
             int hashCode = this._providerName.GetHashCode() ^ _entityToken.GetHashCode();

@@ -80,6 +80,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         protected Expression CreateAccumulatedOrderByExpression(Expression sourceExpression, ParameterExpression parameterExpression)
         {
             Expression resultExpression = sourceExpression;

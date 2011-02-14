@@ -16,11 +16,13 @@ namespace Composite.Data
     {
         private Dictionary<string, object> _keyProperties = new Dictionary<string, object>();
 
+        /// <exclude />
         public DataKeyPropertyCollection()
         {
         }
 
 
+        /// <exclude />
         public void AddKeyProperty(PropertyInfo propertyInfo, object value)
         {
             if (propertyInfo == null) throw new ArgumentNullException("propertyInfo");
@@ -31,6 +33,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public void AddKeyProperty(string keyPropertyName, object value)
         {
             if (keyPropertyName == null) throw new ArgumentNullException("keyPropertyName");
@@ -43,6 +46,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public bool TryGetKeyValue(string keyPropertyName, out object value)
         {
             return _keyProperties.TryGetValue(keyPropertyName, out value);
@@ -50,6 +54,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public IEnumerable<KeyValuePair<string, object>> KeyProperties
         {
             get
@@ -63,6 +68,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public int Count
         {
             get
@@ -72,6 +78,8 @@ namespace Composite.Data
         }
 
 
+
+        /// <exclude />
         public override bool Equals(object obj)
         {
             return Equals(obj as DataKeyPropertyCollection);
@@ -79,6 +87,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public bool Equals(DataKeyPropertyCollection dataKeyPropertyCollection)
         {
             if (dataKeyPropertyCollection == null) return false;
@@ -104,6 +113,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public override int GetHashCode()
         {
             int hashCode = 0;
@@ -119,6 +129,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

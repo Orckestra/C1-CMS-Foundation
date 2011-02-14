@@ -5,6 +5,9 @@ using System.Runtime.Serialization;
 
 namespace Composite.Core.IO
 {
+    /// <summary>
+    /// IOLayer - documentation pending
+    /// </summary>
     public abstract class C1FileSystemInfo
     {
         /// <summary>

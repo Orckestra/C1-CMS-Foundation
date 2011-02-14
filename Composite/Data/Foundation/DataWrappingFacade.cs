@@ -9,13 +9,16 @@ namespace Composite.Data.Foundation
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class DataWrappingFacade
 	{
+        /// <exclude />
 	    public static T Wrap<T>(T value) where T: class, IData
         {
             // TODO: Insert logic, so we will not have "wrapped" wrappers
             Type wrapperType = DataWrapperGenerator.CreateType(typeof (T));
             return (T)Activator.CreateInstance(wrapperType, new object[] { value });
         }
-	    
+
+
+        /// <exclude />
         public static T UnWrap<T>(T value) where T: class, IData
         {
             while (value is IDataWrapper)

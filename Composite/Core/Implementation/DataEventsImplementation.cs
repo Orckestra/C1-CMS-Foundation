@@ -4,9 +4,16 @@
 
 namespace Composite.Core.Implementation
 {
+    /// <summary>
+    /// Implementation pending
+    /// </summary>
+    /// <typeparam name="TData"></typeparam>
     public class DataEventsImplementation<TData>
         where TData : class, IData
     {
+        /// <summary>
+        /// Implementation pending
+        /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
         public virtual event DataEventHandler OnBeforeAdd 
         { 
@@ -22,6 +29,9 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Implementation pending
+        /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
         public virtual event DataEventHandler OnAfterAdd
         {
@@ -37,6 +47,9 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Implementation pending
+        /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
         public virtual event DataEventHandler OnBeforeUpdate
         {
@@ -52,6 +65,9 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Implementation pending
+        /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
         public virtual event DataEventHandler OnAfterUpdate
         {
@@ -67,6 +83,9 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Implementation pending
+        /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
         public virtual event DataEventHandler OnDeleted
         {
@@ -82,6 +101,9 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Implementation pending
+        /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
         public virtual event DataEventHandler OnNew
         {

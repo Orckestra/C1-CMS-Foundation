@@ -16,7 +16,7 @@ namespace Composite.C1Console.Users
         internal static IUserSettingsFacade Implementation { get { return _implementation; } set { _implementation = value; } }
 
 
-
+        /// <exclude />
         public static string Username
         {
             get
@@ -26,7 +26,7 @@ namespace Composite.C1Console.Users
         }
 
 
-
+        /// <exclude />
         public static CultureInfo CultureInfo
         {
             get
@@ -40,14 +40,14 @@ namespace Composite.C1Console.Users
         }
 
 
-
+        /// <exclude />
         public static CultureInfo GetUserCultureInfo(string username)
         {
             return _implementation.GetUserCultureInfo(username);
         }
 
 
-
+        /// <exclude />
         public static void SetUserCultureInfo(string username, CultureInfo cultureInfo)
         {
             _implementation.SetUserCultureInfo(username, cultureInfo);
@@ -74,14 +74,14 @@ namespace Composite.C1Console.Users
         }
 
 
-
+        /// <exclude />
         public static CultureInfo GetCurrentActiveLocaleCultureInfo(string username)
         {
             return _implementation.GetCurrentActiveLocaleCultureInfo(username);
         }
 
 
-
+        /// <exclude />
         public static void SetCurrentActiveLocaleCultureInfo(string username, CultureInfo cultureInfo)
         {
             _implementation.SetCurrentActiveLocaleCultureInfo(username, cultureInfo);
@@ -107,28 +107,28 @@ namespace Composite.C1Console.Users
         }
 
 
-
+        /// <exclude />
         public static CultureInfo GetForeignLocaleCultureInfo(string username)
         {
             return _implementation.GetForeignLocaleCultureInfo(username);
         }
 
 
-
+        /// <exclude />
         public static void SetForeignLocaleCultureInfo(string username, CultureInfo cultureInfo)
         {
             _implementation.SetForeignLocaleCultureInfo(username, cultureInfo);
         }
 
 
-
+        /// <exclude />
         public static void AddActiveLocaleCultureInfo(string username, CultureInfo cultureInfo)
         {
             _implementation.AddActiveLocaleCultureInfo(username, cultureInfo);
         }
 
 
-
+        /// <exclude />
         public static void RemoveActiveLocaleCultureInfo(string username, CultureInfo cultureInfo)
         {
             _implementation.RemoveActiveLocaleCultureInfo(username, cultureInfo);
@@ -150,14 +150,14 @@ namespace Composite.C1Console.Users
         }
 
 
-
+        /// <exclude />
         public static IEnumerable<CultureInfo> GetActiveLocaleCultureInfos(string username)
         {
             return _implementation.GetActiveLocaleCultureInfos(username);
         }
 
 
-
+        /// <exclude />
         public static string LastSpecifiedNamespace
         {
             get
@@ -171,7 +171,7 @@ namespace Composite.C1Console.Users
         }
 
 
-
+        /// <exclude />
         public static IPAddress UserIPAddress
         {
             get

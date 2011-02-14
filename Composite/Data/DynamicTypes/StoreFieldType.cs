@@ -25,17 +25,33 @@ namespace Composite.Data.DynamicTypes
         public static int NumericPrecisionMaximum { get { return 28; } }
 
 
+        /// <exclude />
         public static StoreFieldType String(int maximumLength) { return new StoreFieldType(PhysicalStoreFieldType.String, maximumLength); }
+
+        /// <exclude />
         public static StoreFieldType Integer { get { return new StoreFieldType(PhysicalStoreFieldType.Integer); } }
+
+        /// <exclude />
         public static StoreFieldType Long { get { return new StoreFieldType(PhysicalStoreFieldType.Long); } }
+
+        /// <exclude />
         public static StoreFieldType Decimal(int precision, int scale) { return new StoreFieldType(PhysicalStoreFieldType.Decimal, precision, scale); }
+
+        /// <exclude />        
         public static StoreFieldType DateTime { get { return new StoreFieldType(PhysicalStoreFieldType.DateTime); } }
+
+        /// <exclude />
         public static StoreFieldType LargeString { get { return new StoreFieldType(PhysicalStoreFieldType.LargeString); } }
+
+        /// <exclude />
         public static StoreFieldType Boolean { get { return new StoreFieldType(PhysicalStoreFieldType.Boolean); } }
+
+        /// <exclude />
         public static StoreFieldType Guid { get { return new StoreFieldType(PhysicalStoreFieldType.Guid); } }
 
 
 
+        /// <exclude />
         public PhysicalStoreFieldType PhysicalStoreType
         {
             get;
@@ -44,16 +60,29 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public bool IsString { get { return this.PhysicalStoreType == PhysicalStoreFieldType.String || this.PhysicalStoreType == PhysicalStoreFieldType.LargeString; } }
+
+        /// <exclude />
         public bool IsLargeString { get { return this.PhysicalStoreType == PhysicalStoreFieldType.LargeString; } }
+
+        /// <exclude />
         public bool IsDecimal { get { return this.PhysicalStoreType == PhysicalStoreFieldType.Decimal; } }
+
+        /// <exclude />
         public bool IsDateTime { get { return this.PhysicalStoreType == PhysicalStoreFieldType.DateTime; } }
+
+        /// <exclude />
         public bool IsGuid { get { return this.PhysicalStoreType == PhysicalStoreFieldType.Guid; } }
+
+        /// <exclude />
         public bool IsNumeric { get { return this.PhysicalStoreType == PhysicalStoreFieldType.Decimal || this.PhysicalStoreType == PhysicalStoreFieldType.Long || this.PhysicalStoreType == PhysicalStoreFieldType.Integer; } }
+
+        /// <exclude />
         public bool IsBoolean { get { return this.PhysicalStoreType == PhysicalStoreFieldType.Boolean; } }
 
 
-
+        /// <exclude />
         public int MaximumLength
         {
             get
@@ -74,7 +103,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-
+        /// <exclude />
         public int NumericPrecision
         {
             get
@@ -95,7 +124,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-
+        /// <exclude />
         public int NumericScale
         {
             get
@@ -114,9 +143,9 @@ namespace Composite.Data.DynamicTypes
                 _numericScale = value;
             }
         }
-        
 
 
+        /// <exclude />
         public bool IsConvertibleTo(StoreFieldType newStoreFieldType)
         {
             if (this.PhysicalStoreType == newStoreFieldType.PhysicalStoreType) return true;
@@ -133,7 +162,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-
+        /// <exclude />
         public override string ToString()
         {
             switch (this.PhysicalStoreType)
@@ -156,6 +185,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public string Serialize()
         {
             StringBuilder sb = new StringBuilder();
@@ -179,6 +209,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public static StoreFieldType Deserialize(string serializedData)
         {
             using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())

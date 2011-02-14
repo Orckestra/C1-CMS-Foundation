@@ -12,6 +12,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class BasePackageFragmentUninstaller : IPackageFragmentUninstaller
 	{
+        /// <exclude />
         public void Initialize(IEnumerable<XElement> configuration, PackageUninstallerContext packageUninstallerContex)
         {
             if (configuration == null) throw new ArgumentNullException("configuration");
@@ -25,12 +26,20 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         }
 
 
+        /// <exclude />
         public abstract IEnumerable<PackageFragmentValidationResult> Validate();
+
+        /// <exclude />
         public abstract void Uninstall();
 
+        /// <exclude />
         protected IEnumerable<XElement> Configuration { get; set; }
-        [Obsolete("Use PackageInformation")]
+
+        /// <exclude />
+        [Obsolete("Use PackageInformation")]        
         protected PackageUninstallerContext AddOnUninstallerContex { get; private set; }
+
+        /// <exclude />
         protected PackageUninstallerContext UninstallerContex { get; private set; }
 
         internal static string GetResourceString(string key)

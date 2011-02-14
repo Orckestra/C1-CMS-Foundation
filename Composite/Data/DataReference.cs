@@ -18,12 +18,14 @@ namespace Composite.Data
     [DataReferenceConverter()]
     public class NullableDataReference<T> : DataReference<T> where T : class, IData
     {
+        /// <exclude />
         public NullableDataReference()
             : base()
         {
         }
 
 
+        /// <exclude />
         public NullableDataReference(object keyValue)
             : base(keyValue)
         {
@@ -42,7 +44,7 @@ namespace Composite.Data
         private object _keyValue;
 
 
-
+        /// <exclude />
         public DataReference()
         {
             _keyValue = null;
@@ -50,7 +52,7 @@ namespace Composite.Data
 
 
 
-
+        /// <exclude />
         public DataReference(object keyValue)
         {
             if (keyValue != null)
@@ -72,6 +74,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public DataReference(T data)
         {
             if (data == null)
@@ -85,6 +88,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public Type ReferencedType
         {
             get
@@ -94,6 +98,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public bool IsSet
         {
             get 
@@ -106,7 +111,7 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         public object KeyValue
         {
             get
@@ -116,7 +121,7 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         IData IDataReference.Data
         {
             get
@@ -126,7 +131,7 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         public T Data
         {
             get
@@ -143,6 +148,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public Expression<Func<T, bool>> GetPredicateExpression()
         {
             if (this.IsSet == false)
@@ -155,6 +161,8 @@ namespace Composite.Data
             }
         }
 
+
+        /// <exclude />
         public string Serialize()
         {
             if (_keyValue == null) return "";
@@ -162,6 +170,8 @@ namespace Composite.Data
             return Composite.Core.Types.ValueTypeConverter.Convert<string>(_keyValue);
         }
 
+
+        /// <exclude />
         public override string ToString()
         {
             return this.Serialize();
@@ -177,6 +187,7 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataReferenceConverterAttribute : ValueTypeConverterHelperAttribute
     {
+        /// <exclude />
         public override bool TryConvert(object value, Type targetType, out object targetValue)
         {
             if (value == null) throw new ArgumentNullException("value");

@@ -23,6 +23,7 @@ namespace Composite.Core.Instrumentation
 
 
 
+        /// <exclude />
         public static void SystemStartupIncrement()
         {
             _implementation.SystemStartupIncrement();
@@ -30,6 +31,7 @@ namespace Composite.Core.Instrumentation
 
 
 
+        /// <exclude />
         public static IPerformanceCounterToken BeginElementCreation()
         {
             return _implementation.BeginElementCreation();
@@ -50,6 +52,7 @@ namespace Composite.Core.Instrumentation
 
 
 
+        /// <exclude />
         public static IPerformanceCounterToken BeginAspNetControlCompile()
         {
             return _implementation.BeginAspNetControlCompile();
@@ -57,6 +60,7 @@ namespace Composite.Core.Instrumentation
 
 
 
+        /// <exclude />
         public static void EndAspNetControlCompile(IPerformanceCounterToken performanceToken, int controlsCompiledCount)
         {
             _implementation.EndAspNetControlCompile(performanceToken, controlsCompiledCount);
@@ -64,6 +68,7 @@ namespace Composite.Core.Instrumentation
 
 
 
+        /// <exclude />
         public static IPerformanceCounterToken BeginPageHookCreation()
         {
             return _implementation.BeginPageHookCreation();
@@ -71,6 +76,7 @@ namespace Composite.Core.Instrumentation
 
 
 
+        /// <exclude />
         public static void EndPageHookCreation(IPerformanceCounterToken performanceToken, int controlsCompiledCount)
         {
             _implementation.EndPageHookCreation(performanceToken, controlsCompiledCount);
@@ -78,6 +84,7 @@ namespace Composite.Core.Instrumentation
 
 
 
+        /// <exclude />
         public static void EntityTokenParentCacheHitIncrement()
         {
             _implementation.EntityTokenParentCacheHitIncrement();
@@ -85,10 +92,12 @@ namespace Composite.Core.Instrumentation
 
 
 
+        /// <exclude />
         public static void EntityTokenParentCacheMissIncrement()
         {
             _implementation.EntityTokenParentCacheMissIncrement();
         }
+
 
 
         private static void OnFlushEvent(FlushEventArgs args)

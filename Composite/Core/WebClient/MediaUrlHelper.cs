@@ -20,17 +20,22 @@ namespace Composite.Core.WebClient
 	    private static readonly string DefaultMediaStore = "MediaArchive";
         private static readonly Regex GuidRegex = new Regex(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$");
 
+        /// <exclude />
         public static string GetUrl(IMediaFile file)
         {
             return GetUrl(file, true, false);
         }
 
 
+        /// <exclude />
         public static string GetUrl(IMediaFile file, bool isInternal)
         {
             return GetUrl(file, true, false);
         }
 
+
+
+        /// <exclude />
         public static string GetUrl(IMediaFile file, bool isInternal, bool downloadableMedia)
         {
             var urlBuilder = new UrlBuilder(UrlUtils.ResolvePublicUrl("Renderers/ShowMedia.ashx"));
@@ -58,6 +63,7 @@ namespace Composite.Core.WebClient
 
 
 
+        /// <exclude />
         public static IMediaFile GetFileFromQueryString(NameValueCollection queryParameters)
         {
             Verify.ArgumentNotNull(queryParameters, "queryParameters");
@@ -170,6 +176,9 @@ namespace Composite.Core.WebClient
             }
         }
 
+
+
+        /// <exclude />
         public static bool IsValidGuid(string value)
         {
             Verify.ArgumentNotNull(value, "value");

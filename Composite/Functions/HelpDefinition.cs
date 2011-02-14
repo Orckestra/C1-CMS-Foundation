@@ -12,6 +12,7 @@ namespace Composite.Functions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public sealed class HelpDefinition
 	{
+        /// <exclude />
         public HelpDefinition GetLocalized()
         {
             if (this.HelpText.StartsWith("${"))
@@ -24,12 +25,15 @@ namespace Composite.Functions
             }
         }
 
+
+        /// <exclude />
         public HelpDefinition(string helpText)
         {
             this.HelpText = helpText;
         }
 
 
+        /// <exclude />
         public string HelpText
         {
             get;
@@ -38,6 +42,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public XElement Serialize()
         {
             XElement element = XElement.Parse(string.Format(@"<f:{0} xmlns:f=""{1}"" />", FunctionTreeConfigurationNames.HelpDefinitionTagName, FunctionTreeConfigurationNames.NamespaceName));
@@ -48,6 +53,8 @@ namespace Composite.Functions
         }
 
 
+
+        /// <exclude />
         public static HelpDefinition Deserialize(XElement serializedHelpDefinition)
         {
             if (serializedHelpDefinition == null) throw new ArgumentNullException("serializedHelpDefinition");

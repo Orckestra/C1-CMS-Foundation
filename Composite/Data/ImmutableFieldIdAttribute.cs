@@ -12,11 +12,13 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class ImmutableFieldIdAttribute : Attribute
     {
+        /// <exclude />
         public ImmutableFieldIdAttribute(string immutableFieldId)
         {
             this.ImmutableFieldId = new Guid(immutableFieldId);
         }
 
+        /// <exclude />
         public Guid ImmutableFieldId { get; set; }
     }
 }

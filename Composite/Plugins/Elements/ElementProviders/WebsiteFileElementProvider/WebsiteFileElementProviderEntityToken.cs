@@ -15,6 +15,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
     {
         private string _providerName;
 
+        /// <exclude />
         public WebsiteFileElementProviderEntityToken(string providerName, string path, string rootPath)
         {
             this.Path = path;
@@ -22,24 +23,29 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             _providerName = providerName;
         }
 
+
+        /// <exclude />
         public override string Type
         {
             get { return ""; }
         }
 
 
+        /// <exclude />
         public override string Source
         {
             get { return _providerName; }
         }
 
 
+        /// <exclude />
         public override string Id
         {
             get { return this.Path; }
         }
 
 
+        /// <exclude />
         public override string Serialize()
         {
             StringBuilder sb = new StringBuilder();
@@ -52,6 +58,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         }
 
 
+        /// <exclude />
         public static EntityToken Deserialize(string serializedData)
         {
             Dictionary<string, string> dic;
@@ -65,6 +72,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         }
 
 
+        /// <exclude />
         public string Path
         {
             get;
@@ -85,6 +93,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         }
 
 
+        /// <exclude />
         public override bool Equals(object obj)
         {
             EntityToken entityToken = obj as WebsiteFileElementProviderEntityToken;
@@ -95,6 +104,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         }
 
 
+        /// <exclude />
         public bool Equals(WebsiteFileElementProviderEntityToken entityToken)
         {
             if (entityToken.GetHashCode() != GetHashCode()) return false;
@@ -107,6 +117,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         }
 
 
+        /// <exclude />
         public override int GetHashCode()
         {
             if (this.HashCode == 0)

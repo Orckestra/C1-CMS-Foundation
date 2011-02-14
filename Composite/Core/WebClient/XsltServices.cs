@@ -17,6 +17,7 @@ namespace Composite.Core.WebClient
         private static Dictionary<string, DateTime> _xsltFileTimestamps = new Dictionary<string, DateTime>();
         private static object _lock = new object();
 
+        /// <exclude />
         public static XslCompiledTransform GetCompiledXsltTransform(string stylesheetPath)
         {
             lock (_lock)
@@ -50,6 +51,7 @@ namespace Composite.Core.WebClient
 
 
 
+        /// <exclude />
         public static XDocument XslTransform(this XDocument sourceDocument, string xsltFilePath)
         {
             XDocument outputDocument = new XDocument();

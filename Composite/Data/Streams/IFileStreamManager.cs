@@ -10,10 +10,17 @@ namespace Composite.Data.Streams
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum FileChangeType
     {
+        /// <exclude />
         Undefined = 0,
-        Modified,
-        Renamed,
-        Deleted
+
+        /// <exclude />
+        Modified = 1,
+
+        /// <exclude />
+        Renamed = 2,
+
+        /// <exclude />
+        Deleted = 3
     }
 
 

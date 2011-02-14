@@ -13,10 +13,19 @@ namespace Composite.Core.WebClient.FunctionCallEditor
     [Serializable]
     public sealed class FunctionCallEditorStateSimple : IFunctionCallEditorState
     {
+        /// <exclude />
         public string FunctionCallsXml { get; set; }
+
+        /// <exclude />
         public bool ShowLocalFunctionNames { get; set; }
+
+        /// <exclude />
         public bool AllowLocalFunctionNameEditing { get; set; }
+
+        /// <exclude />
         public bool AllowSelectingInputParameters { get; set; }
+
+        /// <exclude />
         public string AllowedTypes { get; set; }
 
         [XmlIgnore]
@@ -81,6 +90,7 @@ namespace Composite.Core.WebClient.FunctionCallEditor
             }
         }
 
+        /// <exclude />
         [XmlIgnore]
         public List<Type> ParameterTypeOptions
         {
@@ -94,6 +104,7 @@ namespace Composite.Core.WebClient.FunctionCallEditor
             }
         }
 
+        /// <exclude />
         [XmlIgnore]
         public Type[] AllowedResultTypes
         {
@@ -115,6 +126,7 @@ namespace Composite.Core.WebClient.FunctionCallEditor
             }
         }
 
+        /// <exclude />
         public bool WidgetFunctionSelection
         {
             get; set;
@@ -135,6 +147,7 @@ namespace Composite.Core.WebClient.FunctionCallEditor
             get { return AllowSelectingInputParameters; }
         }
 
+        /// <exclude />
         public int MaxFunctionAllowed
         {
             get; set; 
@@ -145,6 +158,7 @@ namespace Composite.Core.WebClient.FunctionCallEditor
             get { return MaxFunctionAllowed; }
         }
 
+        /// <exclude />
         public string ConsoleId
         {
             get; set;

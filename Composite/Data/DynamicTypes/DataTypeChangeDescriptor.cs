@@ -17,6 +17,8 @@ namespace Composite.Data.DynamicTypes
         private DataTypeDescriptor _altered;
         private bool _originalTypeDataExists = true;
 
+
+        /// <exclude />
         public DataTypeChangeDescriptor(DataTypeDescriptor originalTypeDescriptor, DataTypeDescriptor alteredTypeDescriptor)
             : this(originalTypeDescriptor, alteredTypeDescriptor, true)
         {
@@ -35,6 +37,8 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+
+        /// <exclude />
         public bool AlteredTypeHasChanges
         {
             get
@@ -58,12 +62,15 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public DataTypeDescriptor OriginalType
         {
             get { return _original; }
         }
 
 
+
+        /// <exclude />
         public DataTypeDescriptor AlteredType
         {
             get { return _altered; }
@@ -256,6 +263,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public class ExistingFieldInfo
         {
             private DataFieldDescriptor _originalField;
@@ -267,18 +275,21 @@ namespace Composite.Data.DynamicTypes
                 _alteredField = alteredField;
             }
 
+            /// <exclude />
             public DataFieldDescriptor OriginalField
             {
                 get { return _originalField; }
             }
 
 
+            /// <exclude />
             public DataFieldDescriptor AlteredField
             {
                 get { return _alteredField; }
                 set { _alteredField = value; }
             }
 
+            /// <exclude />
             public bool AlteredFieldHasChanges
             {
                 get
@@ -297,7 +308,5 @@ namespace Composite.Data.DynamicTypes
                 }
             }
         }
-
-
     }
 }

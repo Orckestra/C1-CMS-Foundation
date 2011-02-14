@@ -11,19 +11,24 @@ namespace Composite.Core.WebClient.UiControlLib
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class ToolbarButton : LinkButton
     {
+        /// <exclude />
         [Category("Behavior"), DefaultValue(""), Description("The id as the ui client should see")]
         public virtual string CustomClientId { get; set; }
 
+        /// <exclude />
         [Category("Appearance"), DefaultValue(""), Description("Image to show in the buttom")]
         public virtual string ImageUrl { get; set; }
 
+        /// <exclude />
         [Category("Appearance"), DefaultValue(""), Description("Image to show in the buttom when the button is disabled")]
         public virtual string ImageUrlWhenDisabled { get; set; }
 
+        /// <exclude />
         [Category("Behavior"), DefaultValue(""), Description("ID of ui:broadcaster to observe")]
         public virtual string ObservesClientBroadcaster { get; set; }
 
 
+        /// <exclude />
         protected override void Render(HtmlTextWriter writer)
         {
             writer.WriteBeginTag("ui:toolbarbutton");

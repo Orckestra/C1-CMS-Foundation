@@ -24,6 +24,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
 
 
+        /// <exclude />
         public DataGroupingProviderHelperEntityToken(string type)
         {
             _type = type;
@@ -31,6 +32,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
 
 
+        /// <exclude />
         public override string Type
         {
             get { return _type; }
@@ -38,6 +40,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
 
 
+        /// <exclude />
         public override string Source
         {
             get { return ""; }
@@ -45,6 +48,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
 
 
+        /// <exclude />
         public override string Id
         {
             get { return ""; }
@@ -52,13 +56,16 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
 
 
-
+        /// <exclude />
         public Dictionary<string, object> GroupingValues
         {
             get;
             set;
         }
 
+
+
+        /// <exclude />
         [Obsolete("Use 'Type' property instead.")]
         public string SerializedTypeName
         {
@@ -68,6 +75,8 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
             }
         }
 
+
+        /// <exclude />
         public override string Serialize()
         {
             StringBuilder sb = new StringBuilder();
@@ -90,6 +99,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
 
 
+        /// <exclude />
         public static EntityToken Deserialize(string serializedEntityToken)
         {
             string type, source, id;
@@ -124,6 +134,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
 
 
+        /// <exclude />
         public override int GetHashCode()
         {
             int hashCode = this.Id.GetHashCode() ^ this.Type.GetHashCode() ^ this.Source.GetHashCode();

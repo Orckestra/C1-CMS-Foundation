@@ -9,12 +9,14 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class DataInterceptor
     {
+        /// <exclude />
         public DataInterceptor()
         {
         }
 
 
 
+        /// <exclude />
         public virtual IQueryable<T> InterceptGetData<T>(IQueryable<T> datas)
             where T : class, IData
         {
@@ -22,6 +24,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public virtual T InterceptGetDataFromDataSourceId<T>(T data)
             where T : class, IData
         {

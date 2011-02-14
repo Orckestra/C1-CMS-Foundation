@@ -33,6 +33,7 @@ namespace Composite.Core.WebClient.Captcha
         #endregion
 
         #region properties
+        /// <exclude />
         public string FontFamilyName
         {
             get
@@ -44,6 +45,8 @@ namespace Composite.Core.WebClient.Captcha
                 _FontFamilyName = value;
             }
         }
+
+        /// <exclude />
         public FontWarpFactor FontWarp
         {
             get
@@ -55,6 +58,8 @@ namespace Composite.Core.WebClient.Captcha
                 _FontWarp = value;
             }
         }
+
+        /// <exclude />
         public NoiseLevel Noise
         {
             get
@@ -66,6 +71,8 @@ namespace Composite.Core.WebClient.Captcha
                 _Noise = value;
             }
         }
+
+        /// <exclude />
         public LineNoiseLevel LineNoise
         {
             get
@@ -77,6 +84,8 @@ namespace Composite.Core.WebClient.Captcha
                 _LineNoise = value;
             }
         }
+
+        /// <exclude />
         public Color BackgroundColor
         {
             get
@@ -88,6 +97,8 @@ namespace Composite.Core.WebClient.Captcha
                 _BackgroundColor = value;
             }
         }
+
+        /// <exclude />
         public Color NoiseColor
         {
             get
@@ -99,6 +110,8 @@ namespace Composite.Core.WebClient.Captcha
                 _NoiseColor = value;
             }
         }
+
+        /// <exclude />
         public Color LineNoiseColor
         {
             get
@@ -110,6 +123,8 @@ namespace Composite.Core.WebClient.Captcha
                 _LineNoiseColor = value;
             }
         }
+
+        /// <exclude />
         public Color FontColor
         {
             get
@@ -145,6 +160,7 @@ namespace Composite.Core.WebClient.Captcha
         #endregion
 
         #region Public methods
+        /// <exclude />
         public Bitmap CreateImage(string text)
         {
             ImageText = text;
@@ -440,11 +456,20 @@ namespace Composite.Core.WebClient.Captcha
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public enum FontWarpFactor
     {
-        None,
-        Low,
-        Medium,
-        High,
-        Extreme
+        /// <exclude />
+        None = 0,
+
+        /// <exclude />
+        Low = 1,
+
+        /// <exclude />
+        Medium = 2,
+
+        /// <exclude />
+        High = 3,
+
+        /// <exclude />
+        Extreme = 4
     }
 
     /// <summary>
@@ -454,11 +479,20 @@ namespace Composite.Core.WebClient.Captcha
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public enum NoiseLevel
     {
-        None,
-        Low,
-        Medium,
-        High,
-        Extreme
+        /// <exclude />
+        None = 0,
+
+        /// <exclude />
+        Low = 1,
+
+        /// <exclude />
+        Medium = 2,
+
+        /// <exclude />
+        High = 3,
+
+        /// <exclude />
+        Extreme = 4
     }
 
     /// <summary>
@@ -468,10 +502,19 @@ namespace Composite.Core.WebClient.Captcha
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public enum LineNoiseLevel
     {
-        None,
-        Low,
-        Medium,
-        High,
-        Extreme
+        /// <exclude />
+        None = 0,
+
+        /// <exclude />
+        Low = 1,
+
+        /// <exclude />
+        Medium = 2,
+
+        /// <exclude />
+        High = 3,
+
+        /// <exclude />
+        Extreme = 4
     }
 }

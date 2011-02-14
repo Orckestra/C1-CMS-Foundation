@@ -13,9 +13,11 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public abstract class NewInstanceDefaultFieldValueAttribute : Attribute
     {
+        /// <exclude />
         public abstract bool HasValue { get; }
 
 
+        /// <exclude />
         public abstract object GetValue();
     }
 
@@ -28,21 +30,25 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class FunctionBasedNewInstanceDefaultFieldValueAttribute : NewInstanceDefaultFieldValueAttribute
     {
+        /// <exclude />
         public string FunctionDescription { get; private set; }
 
 
+        /// <exclude />
         public FunctionBasedNewInstanceDefaultFieldValueAttribute(string functionDescription)
         {
             this.FunctionDescription = functionDescription;
         }
 
 
+        /// <exclude />
         public override bool HasValue
         {
             get { return (string.IsNullOrEmpty(this.FunctionDescription) == false); }
         }
 
 
+        /// <exclude />
         public override object GetValue()
         {
             BaseRuntimeTreeNode node = FunctionFacade.BuildTree(XElement.Parse(this.FunctionDescription));

@@ -9,11 +9,13 @@ namespace Composite.Core.WebClient.UiControlLib
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class TextArea : BaseControl
     {
+        /// <exclude />
         public TextArea(string tagName): base("ui:textbox")
         {
             // TODO: refactor
         }
 
+        /// <exclude />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -25,6 +27,7 @@ namespace Composite.Core.WebClient.UiControlLib
             }
         }
 
+        /// <exclude />
         protected override void RenderChildren(HtmlTextWriter writer)
         {
             writer.WriteBeginTag("textarea");
@@ -37,6 +40,7 @@ namespace Composite.Core.WebClient.UiControlLib
             writer.WriteEndTag("textarea");
         }
 
+        /// <exclude />
         protected override void RenderAttributes(HtmlTextWriter writer)
         {
             Attributes["name"] = ClientID;
@@ -44,6 +48,7 @@ namespace Composite.Core.WebClient.UiControlLib
             base.RenderAttributes(writer);
         }
 
+        /// <exclude />
         public string Text
         {
             get; set;

@@ -59,47 +59,64 @@ namespace Composite.Sql
             _sqlDbType = sqlDbType;
         }
 
+
+        /// <exclude />
         public string ColumnName
         {
             get { return _columnName; }
         }
 
+
+        /// <exclude />
         public string TrimmedColumnName
         {
             get { return _trimmedColumnName; }
         }
 
+
+        /// <exclude />
         public bool IsPrimaryKey
         {
             get { return _isPrimaryKey; }
         }
-        
+
+
+        /// <exclude />
         public bool IsIdentity
         {
             get { return _isIdentity; }
         }
 
+
+        /// <exclude />
         public bool IsComputed
         {
             get { return _isComputed; }
         }
 
+
+        /// <exclude />
         public bool IsNullable
         {
             get { return _isNullable; }
         }
 
+
+        /// <exclude />
         public Type Type
         {
             get { return _type; }   
         }
-        
+
+
+        /// <exclude />
         public SqlDbType SqlDbType
         {
             get { return _sqlDbType; }
         }
 
 
+        /// <exclude />
         public override int GetHashCode()
         {
             if (false == _hasCode.HasValue)

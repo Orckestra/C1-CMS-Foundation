@@ -18,6 +18,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 	{
         private List<string> _areasToUninstall = null;
 
+        /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
             List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
@@ -59,6 +60,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
 
+        /// <exclude />
         public override void Uninstall()
         {
             if (_areasToUninstall == null) throw new InvalidOperationException("VirtualElementProviderNodePackageFragmentUninstaller has not been validated");

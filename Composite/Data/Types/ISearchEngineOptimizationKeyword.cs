@@ -18,6 +18,7 @@ namespace Composite.Data.Types
     [DataAncestorProvider(typeof(NoAncestorDataAncestorProvider))]
     public interface ISearchEngineOptimizationKeyword : IData
     {
+        /// <exclude />
         [NotNullValidator()]
         [StringSizeValidator(1, 128)]
         [StoreFieldType(PhysicalStoreFieldType.String, 128)]

@@ -11,9 +11,16 @@ namespace Composite.C1Console.Trees.Foundation.AttachmentPoints
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class BaseAttachmentPoint : IAttachmentPoint
     {
+        /// <exclude />
         public abstract bool IsAttachmentPoint(EntityToken parentEntityToken);
+
+        /// <exclude />
         public ElementAttachingProviderPosition Position { get; set; }
+
+        /// <exclude />
         public abstract IEnumerable<EntityToken> GetEntityTokens(EntityToken childEntityToken, TreeNodeDynamicContext dynamicContext);
+
+        /// <exclude />
         public abstract void Log(string title, string indention = "");
     }
 

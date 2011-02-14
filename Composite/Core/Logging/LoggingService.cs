@@ -19,10 +19,14 @@ namespace Composite.Core.Logging
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class LoggingService
     {
+        /// <exclude />
         [FlagsAttribute()]
         public enum Category
         {
+            /// <exclude />
             General = 0x1,
+
+            /// <exclude />
             Audit = 0x2,
         }
 
@@ -30,6 +34,7 @@ namespace Composite.Core.Logging
         private static readonly string BeginOfInnerExceptionMarker;
         private static readonly string EndOfInnerExceptionMarker;
 
+        /// <exclude />
         static LoggingService()
         {
             MethodInfo getRuntimeResourceStringMethodInfo = typeof(Environment)
@@ -44,7 +49,7 @@ namespace Composite.Core.Logging
         }
 
 
-
+        /// <exclude />
         static public void LogEntry(string title, string message, Category category, System.Diagnostics.TraceEventType severity, int priority, int eventid)
         {
             if (GetNoLoggingCounter() > 0)
@@ -75,11 +80,14 @@ namespace Composite.Core.Logging
         }
 
 
+        /// <exclude />
         static public void LogEntry(string title, string message, Category category, System.Diagnostics.TraceEventType severity, int priority)
         {
             LogEntry(title, message, category, severity, priority, 0);
         }
 
+
+        /// <exclude />
         static public void LogEntry(string title, string message, Category category, System.Diagnostics.TraceEventType severity)
         {
             LogEntry(title, message, category, severity, -1, 0);
@@ -87,27 +95,35 @@ namespace Composite.Core.Logging
 
 
 
-
+        /// <exclude />
         static public void LogError(string title, string message)
         {
             LogEntry(title, message, Category.General, System.Diagnostics.TraceEventType.Error);
         }
 
+
+        /// <exclude />
         static public void LogError(string title, string message, Category category)
         {
             LogEntry(title, message, category, System.Diagnostics.TraceEventType.Error);
         }
 
+
+        /// <exclude />
         static public void LogError(string title, string message, Category category, int priority)
         {
             LogEntry(title, message, category, System.Diagnostics.TraceEventType.Error, priority);
         }
 
+
+        /// <exclude />
         static public void LogError(string title, string message, Category category, int priority, int eventid)
         {
             LogEntry(title, message, category, System.Diagnostics.TraceEventType.Error, priority, eventid);
         }
 
+
+        /// <exclude />
         static public void LogError(string title, Exception e)
         {
             string serializedException = e.ToString();
@@ -127,26 +143,35 @@ namespace Composite.Core.Logging
 
 
 
+        /// <exclude />
         static public void LogCritical(string title, string message)
         {
             LogEntry(title, message, Category.General, System.Diagnostics.TraceEventType.Critical);
         }
 
+
+        /// <exclude />
         static public void LogCritical(string title, string message, Category category)
         {
             LogEntry(title, message, category, System.Diagnostics.TraceEventType.Critical);
         }
 
+
+        /// <exclude />
         static public void LogCritical(string title, string message, Category category, int priority)
         {
             LogEntry(title, message, category, System.Diagnostics.TraceEventType.Critical, priority);
         }
 
+
+        /// <exclude />
         static public void LogCritical(string title, string message, Category category, int priority, int eventid)
         {
             LogEntry(title, message, category, System.Diagnostics.TraceEventType.Critical, priority, eventid);
         }
 
+
+        /// <exclude />
         static public void LogCritical(string title, Exception e)
         {
             StringBuilder sb = new StringBuilder();
@@ -161,27 +186,37 @@ namespace Composite.Core.Logging
         }
 
 
+
+        /// <exclude />
         static public void LogInformation(string title, string message)
         {
             LogEntry(title, message, Category.General, System.Diagnostics.TraceEventType.Information);
         }
 
 
+
+        /// <exclude />
         static public void LogVerbose(string title, string message)
         {
             LogEntry(title, message, Category.General, System.Diagnostics.TraceEventType.Verbose);
         }
 
+
+        /// <exclude />
         static public void LogVerbose(string title, string message, Category category)
         {
             LogEntry(title, message, category, System.Diagnostics.TraceEventType.Verbose);
         }
 
+
+        /// <exclude />
         static public void LogVerbose(string title, string message, Category category, int priority)
         {
             LogEntry(title, message, category, System.Diagnostics.TraceEventType.Verbose, priority);
         }
 
+
+        /// <exclude />
         static public void LogVerbose(string title, string message, Category category, int priority, int eventid)
         {
             LogEntry(title, message, category, System.Diagnostics.TraceEventType.Verbose, priority, eventid);
@@ -190,26 +225,35 @@ namespace Composite.Core.Logging
 
 
 
+        /// <exclude />
         static public void LogWarning(string title, string message)
         {
             LogEntry(title, message, Category.General, System.Diagnostics.TraceEventType.Warning);
         }
 
+
+        /// <exclude />
         static public void LogWarning(string title, string message, Category category)
         {
             LogEntry(title, message, category, System.Diagnostics.TraceEventType.Warning);
         }
 
+
+        /// <exclude />
         static public void LogWarning(string title, string message, Category category, int priority)
         {
             LogEntry(title, message, category, System.Diagnostics.TraceEventType.Warning, priority);
         }
 
+
+        /// <exclude />
         static public void LogWarning(string title, string message, Category category, int priority, int eventid)
         {
             LogEntry(title, message, category, System.Diagnostics.TraceEventType.Warning, priority, eventid);
         }
 
+
+        /// <exclude />
         static public void LogWarning(string title, Exception e)
         {
             StringBuilder sb = new StringBuilder();
@@ -224,6 +268,7 @@ namespace Composite.Core.Logging
         }
 
 
+        /// <exclude />
         [Obsolete("Has effect only for DataLogTraceListener, which isn't used any more.")]
         public static IDisposable NoLogging
         {

@@ -11,8 +11,13 @@ namespace Composite.Core.ResourceSystem
     [TypeConverter(typeof(IconSizeConverter))]
     public enum IconSize
     {
+        /// <exclude />
         Normal = 16,
+
+        /// <exclude />
         Large = 24,
+
+        /// <exclude />
         XLarge = 32
     }
 

@@ -19,6 +19,7 @@ namespace Composite.Functions.ManagedParameters
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ManagedParameterManager
     {
+        /// <exclude />
         public static IEnumerable<ManagedParameterDefinition> Load(Guid ownerId)
         {
             return (from parameter in DataFacade.GetData<IParameter>().AsEnumerable()
@@ -28,6 +29,8 @@ namespace Composite.Functions.ManagedParameters
         }
 
 
+
+        /// <exclude />
         public static void Save(Guid ownerId, IEnumerable<ManagedParameterDefinition> parameterDefinitions)
         {
             var dataParams = new List<IParameter>();
@@ -55,6 +58,7 @@ namespace Composite.Functions.ManagedParameters
 
 
 
+        /// <exclude />
         public static IEnumerable<ParameterProfile> GetParameterProfiles(Guid ownerId)
         {
             return new ManagedParameterProfiles(ownerId);
@@ -62,6 +66,7 @@ namespace Composite.Functions.ManagedParameters
 
 
 
+        /// <exclude />
         public static IEnumerable<ParameterProfile> GetParameterProfiles(IEnumerable<ManagedParameterDefinition> parameterDefinitions)
         {
             var dataParams = new List<IParameter>();
@@ -78,6 +83,7 @@ namespace Composite.Functions.ManagedParameters
 
 
 
+        /// <exclude />
         public static ParameterList GetParametersListForTest(IEnumerable<ManagedParameterDefinition> parameterDefinitions)
         {
             ParameterList parameterList = new ParameterList(null);
@@ -246,12 +252,6 @@ namespace Composite.Functions.ManagedParameters
 
                 return new ParameterProfile(parameter.Name, parameterType, isRequired, defaultValueProvider, widgetFunctionProvider, parameter.Label, new HelpDefinition(parameter.HelpText));
             }
-
-
-
         }
-
-
-
     }
 }

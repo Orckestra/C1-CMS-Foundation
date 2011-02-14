@@ -9,8 +9,13 @@ namespace Composite.Data.Types
     [DataScope(DataScopeIdentifier.PublicName)]
     public interface IHostHeader
     {
+        /// <exclude />
         string IpAddress { get; set; }
+
+        /// <exclude />
         int? TcpPort { get; set; }
+
+        /// <exclude />
         string HostName { get; set; }
     }
 }

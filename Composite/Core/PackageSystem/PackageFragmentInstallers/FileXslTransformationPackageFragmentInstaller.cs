@@ -31,6 +31,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 		private List<XslToAdd> _xslToAdd;
 
+
+        /// <exclude />
 		public override IEnumerable<PackageFragmentValidationResult> Validate()
 		{
 			List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
@@ -154,6 +156,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 			return validationResult;
 		}
 
+
+
+        /// <exclude />
 		public override IEnumerable<XElement> Install()
 		{
             if (_xslToAdd == null) throw new InvalidOperationException("FileXslTransformationPackageFragmentInstaller has not been validated");

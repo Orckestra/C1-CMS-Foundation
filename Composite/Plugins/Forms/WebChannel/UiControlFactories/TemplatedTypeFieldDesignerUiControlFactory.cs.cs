@@ -21,10 +21,13 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class TypeFieldDesignerTemplateUserControlBase : UserControl
     {
+        /// <exclude />
         protected abstract void BindStateToProperties();
 
+        /// <exclude />
         protected abstract void InitializeViewState();
 
+        /// <exclude />
         public abstract string GetDataFieldClientName();
 
         internal void BindStateToControlProperties()
@@ -38,10 +41,13 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         }
 
 
+        /// <exclude />
         public IEnumerable<DataFieldDescriptor> Fields { get; set; }
+
+        /// <exclude />
         public string LabelFieldName { get; set; }
 
-
+        /// <exclude />
         public string FormControlLabel { get; set; }
     }
 

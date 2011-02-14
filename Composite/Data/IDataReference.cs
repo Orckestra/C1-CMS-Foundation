@@ -11,11 +11,19 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public interface IDataReference
 	{
+        /// <exclude />
         Type ReferencedType { get; }
+
+        /// <exclude />
         bool IsSet { get; }
+
+        /// <exclude />
         object KeyValue { get; }
+
+        /// <exclude />
         IData Data { get; }
 
+        /// <exclude />
         string Serialize();
     }
 }

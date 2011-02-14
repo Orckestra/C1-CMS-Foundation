@@ -6,6 +6,7 @@
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class NamedFunctionCall
     {
+        /// <exclude />
         public NamedFunctionCall(string name, BaseFunctionRuntimeTreeNode functionCall)
         {
             this.Name = name;
@@ -13,7 +14,10 @@
         }
 
 
+        /// <exclude />
         public string Name { get; set; }
+
+        /// <exclude />
         public BaseFunctionRuntimeTreeNode FunctionCall { get; set; }
     }
 }

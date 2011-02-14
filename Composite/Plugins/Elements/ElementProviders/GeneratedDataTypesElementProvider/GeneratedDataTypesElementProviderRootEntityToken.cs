@@ -14,33 +14,44 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         private string _source;
         private string _id;
 
+
+        /// <exclude />
         public GeneratedDataTypesElementProviderRootEntityToken(string providerName, string id)
         {
             _source = providerName;
             _id = id;
         }
 
+
+        /// <exclude />
         public override string Type
         {
             get { return ""; }
         }
 
+
+        /// <exclude />
         public override string Source
         {
             get { return _source; }
         }
 
+
+        /// <exclude />
         public override string Id
         {
             get { return _id; }
         }
 
+
+        /// <exclude />
         public override string Serialize()
         {
             return DoSerialize();
         }
 
 
+        /// <exclude />
         public static EntityToken Deserialize(string serializedData)
         {
             string type, source, id;
@@ -50,9 +61,13 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             return new GeneratedDataTypesElementProviderRootEntityToken(source, id);
         }
 
-
+        /// <exclude />
         public static string GlobalDataTypeFolderId { get { return "GlobalDataTypeFolder"; } }
+
+        /// <exclude />
         public static string PageDataFolderTypeFolderId { get { return "PageDataFolderTypeFolder"; } }
+
+        /// <exclude />
         public static string PageMetaDataTypeFolderId { get { return "PageMetaDataTypeFolder"; } }
     }
 }

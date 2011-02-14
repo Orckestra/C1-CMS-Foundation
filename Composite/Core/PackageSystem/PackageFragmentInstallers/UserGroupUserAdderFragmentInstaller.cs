@@ -16,6 +16,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     {
         private List<string> _names = new List<string>();
 
+
+        /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
             XElement usergroupNamesElement = this.Configuration.Where(f => f.Name == "UsergroupNames").FirstOrDefault();
@@ -34,6 +36,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
 
+        /// <exclude />
         public override IEnumerable<XElement> Install()
         {
             foreach (string usergroupName in _names)

@@ -13,6 +13,7 @@ namespace Composite.Data.DynamicTypes.Foundation
     public static class DynamicTypesAlternateFormFacade
     {
         // returns null if no alternate form exists
+        /// <exclude />
         public static string GetAlternateFormMarkup(DataTypeDescriptor dataTypeDescriptor)
         {
             string dynamicDataFormFolderPath = GetFolderPath(dataTypeDescriptor);
@@ -35,6 +36,7 @@ namespace Composite.Data.DynamicTypes.Foundation
 
 
 
+        /// <exclude />
         public static void SetAlternateForm(DataTypeDescriptor dataTypeDescriptor, string newFormMarkup)
         {
             string dynamicDataFormFolderPath = GetFolderPath(dataTypeDescriptor);

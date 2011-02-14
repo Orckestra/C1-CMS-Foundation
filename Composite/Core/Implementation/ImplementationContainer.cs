@@ -4,6 +4,11 @@ using Composite.Core.Collections.Generic;
 
 namespace Composite.Core.Implementation
 {
+    /// <summary>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class ImplementationContainer<T>
         where T : class
     {

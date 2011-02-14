@@ -10,8 +10,11 @@ namespace Composite.C1Console.Security
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum RelationshipGraphNodeType
     {
-        Entity,
-        Hooking
+        /// <exclude />
+        Entity = 0,
+        /// <exclude />
+
+        Hooking = 1
     }
 
 
@@ -34,6 +37,7 @@ namespace Composite.C1Console.Security
         }
 
 
+        /// <exclude />
         public EntityToken EntityToken
         {
             get;
@@ -41,6 +45,7 @@ namespace Composite.C1Console.Security
         }
 
 
+        /// <exclude />
         public int Level
         {
             get;
@@ -48,18 +53,24 @@ namespace Composite.C1Console.Security
         }
 
 
+        /// <exclude />
         public RelationshipGraphNodeType NodeType
         {
             get;
             private set;
         }
 
+
+
+        /// <exclude />
         public List<RelationshipGraphNode> ParentNodes
         {
             get;
             set;
         }
 
+
+        /// <exclude />
         public RelationshipGraphNode ChildNode
         {
             get;

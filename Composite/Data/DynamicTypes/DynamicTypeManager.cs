@@ -17,10 +17,12 @@ namespace Composite.Data.DynamicTypes
     {
         private static IDynamicTypeManager _dynamicTypeManager = new DynamicTypeManagerImpl();
 
+        /// <exclude />
         public static IDynamicTypeManager Implementation { get { return _dynamicTypeManager; } set { _dynamicTypeManager = value; } }
 
 
 
+        /// <exclude />
         public static DataTypeDescriptor BuildNewDataTypeDescriptor(Type typeToDescript)
         {
             return _dynamicTypeManager.BuildNewDataTypeDescriptor(typeToDescript);
@@ -29,6 +31,7 @@ namespace Composite.Data.DynamicTypes
 
 
         // Overload
+        /// <exclude />
         public static DataTypeDescriptor GetDataTypeDescriptor(Type typeToDescript)
         {
             DataTypeDescriptor dataTypeDescriptor;
@@ -44,6 +47,7 @@ namespace Composite.Data.DynamicTypes
 
 
         // Overload
+        /// <exclude />
         public static DataTypeDescriptor GetDataTypeDescriptor(Guid immuteableTypeId)
         {
             DataTypeDescriptor dataTypeDescriptor;
@@ -55,6 +59,7 @@ namespace Composite.Data.DynamicTypes
 
 
         // Overload
+        /// <exclude />
         public static bool TryGetDataTypeDescriptor(Type interfaceType, out DataTypeDescriptor dataTypeDescriptor)
         {
             return _dynamicTypeManager.TryGetDataTypeDescriptor(interfaceType.GetImmutableTypeId(), out dataTypeDescriptor);
@@ -62,6 +67,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public static bool TryGetDataTypeDescriptor(Guid immuteableTypeId, out DataTypeDescriptor dataTypeDescriptor)
         {
             return _dynamicTypeManager.TryGetDataTypeDescriptor(immuteableTypeId, out dataTypeDescriptor);
@@ -70,6 +76,7 @@ namespace Composite.Data.DynamicTypes
 
 
         // Overload
+        /// <exclude />
         public static void UpdateDataTypeDescriptor(DataTypeDescriptor dataTypeDescriptor)
         {
             UpdateDataTypeDescriptor(dataTypeDescriptor, true);
@@ -77,6 +84,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public static void UpdateDataTypeDescriptor(DataTypeDescriptor dataTypeDescriptor, bool flushTheSystem)
         {
             _dynamicTypeManager.UpdateDataTypeDescriptor(dataTypeDescriptor, flushTheSystem);
@@ -85,6 +93,7 @@ namespace Composite.Data.DynamicTypes
 
 
         // Overload
+        /// <exclude />
         public static void CreateStore(DataTypeDescriptor typeDescriptor)
         {
             CreateStore(DataProviderRegistry.DefaultDynamicTypeDataProviderName, typeDescriptor, true);
@@ -93,6 +102,7 @@ namespace Composite.Data.DynamicTypes
 
 
         // Overload
+        /// <exclude />
         public static void CreateStore(DataTypeDescriptor typeDescriptor, bool doFlush)
         {
             CreateStore(DataProviderRegistry.DefaultDynamicTypeDataProviderName, typeDescriptor, doFlush);
@@ -101,6 +111,7 @@ namespace Composite.Data.DynamicTypes
 
 
         // Overload
+        /// <exclude />
         public static void CreateStore(string providerName, DataTypeDescriptor typeDescriptor)
         {
             CreateStore(providerName, typeDescriptor, true);
@@ -108,6 +119,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public static void CreateStore(string providerName, DataTypeDescriptor typeDescriptor, bool doFlush)
         {
             _dynamicTypeManager.CreateStore(providerName, typeDescriptor, doFlush);
@@ -116,6 +128,7 @@ namespace Composite.Data.DynamicTypes
 
 
         // Overload
+        /// <exclude />
         public static void AlterStore(string providerName, DataTypeChangeDescriptor changeDescriptor)
         {
             AlterStore(providerName, changeDescriptor, true);
@@ -124,6 +137,7 @@ namespace Composite.Data.DynamicTypes
 
 
         // Overload
+        /// <exclude />
         public static void AlterStore(DataTypeChangeDescriptor changeDescriptor, bool makeAFlush)
         {
             _dynamicTypeManager.AlterStore(DataProviderRegistry.DefaultDynamicTypeDataProviderName, changeDescriptor, makeAFlush);
@@ -131,6 +145,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public static void AlterStore(string providerName, DataTypeChangeDescriptor changeDescriptor, bool makeAFlush)
         {
             _dynamicTypeManager.AlterStore(providerName, changeDescriptor, makeAFlush);
@@ -139,6 +154,7 @@ namespace Composite.Data.DynamicTypes
 
 
         // Overload
+        /// <exclude />
         public static void DropStore(DataTypeDescriptor typeDescriptor)
         {
             DropStore(null, typeDescriptor, true);
@@ -147,6 +163,7 @@ namespace Composite.Data.DynamicTypes
 
 
         // Overload
+        /// <exclude />
         public static void DropStore(string providerName, DataTypeDescriptor typeDescriptor)
         {
             DropStore(providerName, typeDescriptor, true);
@@ -167,6 +184,7 @@ namespace Composite.Data.DynamicTypes
 
 
         // Overload
+        /// <exclude />
         public static void AddLocale(CultureInfo cultureInfo)
         {
             AddLocale(DataProviderRegistry.DefaultDynamicTypeDataProviderName, cultureInfo, true);
@@ -175,6 +193,7 @@ namespace Composite.Data.DynamicTypes
 
 
         // Overload
+        /// <exclude />
         public static void AddLocale(CultureInfo cultureInfo, bool makeFlush)
         {
             AddLocale(DataProviderRegistry.DefaultDynamicTypeDataProviderName, cultureInfo, makeFlush);
@@ -182,6 +201,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public static void AddLocale(string providerName, CultureInfo cultureInfo, bool doFlush)
         {
             _dynamicTypeManager.AddLocale(providerName, cultureInfo, doFlush);
@@ -190,6 +210,7 @@ namespace Composite.Data.DynamicTypes
 
 
         // Overload
+        /// <exclude />
         public static void RemoveLocale(CultureInfo cultureInfo)
         {
             RemoveLocale(DataProviderRegistry.DefaultDynamicTypeDataProviderName, cultureInfo, true);
@@ -198,6 +219,7 @@ namespace Composite.Data.DynamicTypes
 
 
         // Overload
+        /// <exclude />
         public static void RemoveLocale(CultureInfo cultureInfo, bool makeFlush)
         {
             RemoveLocale(DataProviderRegistry.DefaultDynamicTypeDataProviderName, cultureInfo, makeFlush);
@@ -205,6 +227,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public static void RemoveLocale(string providerName, CultureInfo cultureInfo, bool doFlush)
         {
             _dynamicTypeManager.RemoveLocale(providerName, cultureInfo, doFlush);

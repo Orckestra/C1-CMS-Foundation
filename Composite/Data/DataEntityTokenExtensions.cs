@@ -10,6 +10,7 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class DataEntityTokenExtensions
     {
+        /// <exclude />
         public static DataEntityToken GetDataEntityToken(this IData data)
         {
             if (data == null) throw new ArgumentNullException("data");

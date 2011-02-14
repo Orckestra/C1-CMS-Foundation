@@ -15,6 +15,8 @@ namespace Composite.Core.Collections.Generic
         private static readonly object NullValue = new object(); // A value which represents "null" value
 	    private static readonly bool IsValueType = typeof (TValue).IsValueType;
 
+
+        /// <exclude />
         public void Add(TKey key, TValue value) 
         {
             if (!IsValueType && (value == null))
@@ -27,6 +29,8 @@ namespace Composite.Core.Collections.Generic
             }
         }
 
+
+        /// <exclude />
 	    public TValue this[TKey key]
 	    {
             get
@@ -44,6 +48,8 @@ namespace Composite.Core.Collections.Generic
             }
 	    }
 
+
+        /// <exclude />
         public bool TryGetValue(TKey key, out TValue value)
         {
             object result = _table[key];
@@ -63,21 +69,29 @@ namespace Composite.Core.Collections.Generic
             return true;
         }
 
+
+        /// <exclude />
         public bool ContainsKey(TKey key)
         {
             return _table.ContainsKey(key);
         }
 
+
+        /// <exclude />
         public void Remove(TKey key)
         {
             _table.Remove(key);
         }
 
+
+        /// <exclude />
         public void Clear()
         {
             _table.Clear();
         }
 
+
+        /// <exclude />
         public bool Any()
         {
             return _table.Count > 0;
@@ -98,6 +112,8 @@ namespace Composite.Core.Collections.Generic
             return result;
         }
 
+
+        /// <exclude />
         public ICollection<TValue> GetValues()
         {
             var result = new List<TValue>();
@@ -110,6 +126,8 @@ namespace Composite.Core.Collections.Generic
             return result;
         }
 
+
+        /// <exclude />
 	    public int Count
 	    {
             get { return _table.Count; }

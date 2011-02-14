@@ -24,6 +24,7 @@ namespace Composite.Data.Plugins.DataProvider
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class NonConfigurableDataProviderAssembler : IAssembler<IDataProvider, DataProviderData>
     {
+        /// <exclude />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         public IDataProvider Assemble(IBuilderContext context, DataProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {

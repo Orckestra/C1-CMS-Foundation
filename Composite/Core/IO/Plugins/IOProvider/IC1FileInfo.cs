@@ -21,6 +21,10 @@ namespace Composite.Core.IO.Plugins.IOProvider
         /// </summary>
         C1DirectoryInfo Directory { get; }
 
+
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
         string Name { get; }
 
 

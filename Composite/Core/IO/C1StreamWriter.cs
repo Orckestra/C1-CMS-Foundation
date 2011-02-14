@@ -595,6 +595,7 @@ namespace Composite.Core.IO
 
 
 
+        /// <exclude />
         ~C1StreamWriter()
         {
             Dispose(false);

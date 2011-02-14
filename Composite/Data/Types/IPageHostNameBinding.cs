@@ -15,11 +15,14 @@ namespace Composite.Data.Types
     [CachingAttribute(CachingType.Full)]
     public interface IPageHostNameBinding : IData
     {
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{81CD6406-1B47-47d7-9664-78C42A796A7C}")]
         [ForeignKey(typeof(IPage), "Id", AllowCascadeDeletes = true)]
         Guid PageId { get; set; }
 
+
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 255)]
         [ImmutableFieldId("{6A1C6FDB-7B1F-4e96-918B-32E8B1DE71EE}")]
         [NotNullValidator()]

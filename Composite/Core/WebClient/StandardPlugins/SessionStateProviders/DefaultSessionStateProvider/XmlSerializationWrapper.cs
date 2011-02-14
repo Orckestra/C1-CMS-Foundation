@@ -13,14 +13,22 @@ namespace Composite.Plugins.WebClient.SessionStateProviders.DefaultSessionStateP
     [XmlRootAttribute(ElementName = "root")]
     public sealed class XmlSerializationWrapper
     {
-        public string TypeName; 
-        public string AssebmlyName; 
+        /// <exclude />
+        public string TypeName;
+
+        /// <exclude />
+        public string AssebmlyName;
+
+        /// <exclude />
         public string Value;
 
+
         // For serialization purposes
+        /// <exclude />
         public XmlSerializationWrapper()
         {
         }
+
 
         internal XmlSerializationWrapper(object value)
         {
@@ -34,6 +42,7 @@ namespace Composite.Plugins.WebClient.SessionStateProviders.DefaultSessionStateP
             Value = SerializationUtil.SerializeInternal(type, value);
         }
 
+        /// <exclude />
         public object Deserialize()
         {
             Verify.IsNotNull(AssebmlyName, "'AssebmlyName' is null");

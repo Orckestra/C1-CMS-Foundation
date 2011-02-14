@@ -11,6 +11,7 @@ namespace Composite.Core.WebClient.State
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class SessionStateManager
     {
+        /// <exclude />
         public static readonly string DefaultProviderName = "Default"; 
 
         private static readonly ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
@@ -20,11 +21,13 @@ namespace Composite.Core.WebClient.State
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
         }
 
+        /// <exclude />
         public static ISessionStateProvider DefaultProvider
         {
             get { return GetProvider(DefaultProviderName); }
         }
 
+        /// <exclude />
         public static ISessionStateProvider GetProvider(string name)
         {
             var resources = _resourceLocker;

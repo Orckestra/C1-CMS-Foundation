@@ -20,24 +20,48 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
     {
         private ElementProviderContext _context;
 
+        /// <exclude />
         public static ResourceHandle Function { get { return GetIconHandle("base-function-function"); } }
 
+        /// <exclude />
         protected abstract IEnumerable<IFunctionTreeBuilderLeafInfo> OnGetFunctionInfos(SearchToken searchToken);
+
+        /// <exclude />
         protected abstract IEnumerable<Type> OnGetEntityTokenTypes();
+
+        /// <exclude />
         protected abstract IFunctionTreeBuilderLeafInfo OnIsEntityOwner(EntityToken entityToken);
 
+        /// <exclude />
         protected virtual string RootFolderLabel { get { return StringResourceSystemFacade.GetString("Composite.Management", "BaseFunctionProviderElementProvider.RootFunctionInfos"); } }
+
+        /// <exclude />
         protected virtual string RootFolderToolTip { get { return StringResourceSystemFacade.GetString("Composite.Management", "BaseFunctionProviderElementProvider.RootFunctionInfosToolTip"); } }
+
+        /// <exclude />
         protected virtual ResourceHandle FolderIcon { get { return CommonElementIcons.Folder; } }
+
+        /// <exclude />
         protected virtual ResourceHandle OpenFolderIcon { get { return CommonElementIcons.FolderOpen; } }
+
+        /// <exclude />
         protected virtual ResourceHandle EmptyFolderIcon { get { return CommonElementIcons.Folder; } }
+
+        /// <exclude />
         protected virtual ResourceHandle FunctionIcon { get { return CommonElementIcons.Data; } }
+
+        /// <exclude />
         protected virtual IEnumerable<ElementAction> OnGetFolderActions() { return null; }
+
+        /// <exclude />
         protected virtual IEnumerable<ElementAction> OnGetFunctionActions(IFunctionTreeBuilderLeafInfo function) { return null; }
+
+        /// <exclude />
         protected virtual TreeLockBehavior OnGetTreeLockBehavior() { return TreeLockBehavior.Normal; }
 
 
 
+        /// <exclude />
         public BaseFunctionProviderElementProvider()
         {            
             foreach (Type entityTokenType in OnGetEntityTokenTypes())
@@ -48,6 +72,7 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
 
 
 
+        /// <exclude />
         public ElementProviderContext Context
         {
             set { _context = value; }
@@ -55,13 +80,16 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
 
 
 
+        /// <exclude />
         protected ElementProviderContext GetContext()
         {
             return _context;
         }
 
 
+
         #region Element methods
+        /// <exclude />
         public IEnumerable<Element> GetRoots(SearchToken searchToken)
         {
             NamespaceTreeBuilder builder = new NamespaceTreeBuilder(OnGetFunctionInfos(searchToken).Cast<INamespaceTreeBuilderLeafInfo>());
@@ -95,6 +123,7 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
 
 
 
+        /// <exclude />
         public IEnumerable<Element> GetChildren(EntityToken entityToken, SearchToken searchToken)
         {
             BaseFunctionFolderElementEntityToken castedEntityToken = (BaseFunctionFolderElementEntityToken)entityToken;
@@ -277,6 +306,7 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
 
 
 
+        /// <exclude />
         public static string CreateId(NamespaceTreeBuilderFolder folderNode, string providerName)
         {
             if (folderNode.Namespace == "")
@@ -291,6 +321,7 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
 
 
 
+        /// <exclude />
         public static string CreateId(string namespaceName, string providerName)
         {
             if (namespaceName == "")
@@ -306,6 +337,7 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
 
 
 
+        /// <exclude />
         public Dictionary<EntityToken, IEnumerable<EntityToken>> GetParents(IEnumerable<EntityToken> entityTokens)
         {
             Dictionary<EntityToken, IEnumerable<EntityToken>> result = new Dictionary<EntityToken, IEnumerable<EntityToken>>();

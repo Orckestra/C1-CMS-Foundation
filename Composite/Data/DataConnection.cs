@@ -483,6 +483,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public void Dispose()
         {
             Dispose(true);
@@ -491,6 +492,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         ~DataConnection()
         {
             Dispose(false);
@@ -498,6 +500,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)

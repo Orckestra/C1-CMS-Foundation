@@ -18,6 +18,7 @@ namespace Composite.C1Console.Actions
         private bool _postRefreshMessegesCalled = false;
 
 
+        /// <exclude />
         public AddNewTreeRefresher(EntityToken parentEntityToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
             if (parentEntityToken == null) throw new ArgumentNullException("parentEntityToken");
@@ -29,6 +30,7 @@ namespace Composite.C1Console.Actions
 
 
 
+        /// <exclude />
         public void PostRefreshMesseges(EntityToken newChildEntityToken)
         {
             if (newChildEntityToken == null) throw new ArgumentNullException("newChildEntityToken");

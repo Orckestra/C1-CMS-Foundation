@@ -9,6 +9,10 @@ namespace Composite.Core.Configuration
     /// </summary>
     public class C1Configuration : ImplementationContainer<C1ConfigurationImplementation>
     {
+        /// <summary>
+        /// IOLayer - documentation pending
+        /// </summary>
+        /// <param name="path"></param>
         public C1Configuration(string path)
             : base(() => ImplementationFactory.CurrentFactory.CreateC1Configuration(path))
         {

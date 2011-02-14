@@ -15,7 +15,10 @@ namespace Composite.Functions.Plugins.WidgetFunctionProvider
     [ConfigurationNameMapper(typeof(WidgetFunctionProviderDefaultNameRetriever))]
 	public interface IWidgetFunctionProvider
 	{
+        /// <exclude />
         WidgetFunctionNotifier WidgetFunctionNotifier { set; }
+
+        /// <exclude />
         IEnumerable<IWidgetFunction> Functions { get; }
 	}
 }

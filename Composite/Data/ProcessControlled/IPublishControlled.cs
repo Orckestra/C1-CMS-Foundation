@@ -8,6 +8,7 @@
     [DataScope(DataScopeIdentifier.AdministratedName)]    
 	public interface IPublishControlled : IProcessControlled
 	{
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 64, IsNullable = false)]
         [ImmutableFieldId("{FAB1CF0C-66B0-11DC-A47E-CF6356D89593}")]
         [DefaultFieldStringValue("")]

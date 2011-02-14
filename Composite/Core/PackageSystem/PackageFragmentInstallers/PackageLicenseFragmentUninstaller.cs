@@ -9,6 +9,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class PackageLicenseFragmentUninstaller : BasePackageFragmentUninstaller
     {
+        /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
             return new PackageFragmentValidationResult[] { };
@@ -16,6 +17,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
 
+        /// <exclude />
         public override void Uninstall()
         {
             PackageLicenseDefinition licenseDefinition = LicenseDefinitionManager.GetLicenseDefinition(this.UninstallerContex.PackageInformation.Id);

@@ -22,12 +22,14 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public int Count
         {
             get { return _descriptors.Count; }
         }
 
 
+        /// <exclude />
         public void Add(DataFieldDescriptor descriptor)
         {
             if (descriptor == null) throw new ArgumentNullException("descriptor");
@@ -39,6 +41,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public void Insert(int index, DataFieldDescriptor descriptor)
         {
             if (descriptor == null) throw new ArgumentNullException("descriptor");
@@ -50,6 +53,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public void Remove(DataFieldDescriptor descriptor)
         {
             if (descriptor == null) throw new ArgumentNullException("descriptor");
@@ -61,6 +65,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public bool Contains(DataFieldDescriptor descriptor)
         {
             if (descriptor == null) throw new ArgumentNullException("descriptor");
@@ -69,24 +74,28 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public DataFieldDescriptor this[string name]
         {
             get { return _descriptors.SingleOrDefault(d => d.Name == name); }
         }
 
 
+        /// <exclude />
         public DataFieldDescriptor this[Guid id]
         {
             get { return _descriptors.SingleOrDefault(d => d.Id == id); }
         }
 
 
+        /// <exclude />
         public IEnumerator<DataFieldDescriptor> GetEnumerator()
         {
             return _descriptors.OrderBy(f=>f.Position).GetEnumerator();
         }
 
 
+        /// <exclude />
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _descriptors.OrderBy(f => f.Position).GetEnumerator();

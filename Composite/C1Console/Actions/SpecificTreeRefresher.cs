@@ -17,7 +17,7 @@ namespace Composite.C1Console.Actions
         private FlowControllerServicesContainer _flowControllerServicesContainer;
 
 
-
+        /// <exclude />
         public SpecificTreeRefresher(FlowControllerServicesContainer flowControllerServicesContainer)
         {
             if (flowControllerServicesContainer == null) throw new ArgumentNullException("flowControllerServicesContainer");
@@ -26,6 +26,7 @@ namespace Composite.C1Console.Actions
         }
 
 
+        /// <exclude />
         public void PostRefreshMesseges(EntityToken specificEntityToken)
         {
             if (specificEntityToken == null) throw new ArgumentNullException("specificEntityToken");

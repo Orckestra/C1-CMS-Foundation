@@ -13,14 +13,17 @@ namespace Composite.Functions
 	{
         internal BaseValueProvider() { }
 
+        /// <exclude />
         public object GetValue()
         {
             FunctionContextContainer internalContextContainer = new FunctionContextContainer();
             return GetValue(internalContextContainer);
         }
 
+        /// <exclude />
         public abstract object GetValue(FunctionContextContainer contextContainer);
 
+        /// <exclude />
         public virtual T GetValue<T>(FunctionContextContainer contextContainer)
         {
             object value = this.GetValue(contextContainer);
@@ -35,7 +38,7 @@ namespace Composite.Functions
             }
         }
 
-        
+        /// <exclude />
         public abstract XObject Serialize();
 	}
 }

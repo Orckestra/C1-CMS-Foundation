@@ -17,14 +17,19 @@ namespace Composite.Data.Types
     [CachingAttribute(CachingType.Full)]    
 	public interface IPageStructure : IData
 	{
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{CBB49E56-A05C-4a33-9F8B-9253C2EDB9C2}")]
         Guid Id { get; set; }
 
+
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{57AF0FDA-BA4F-4281-ACAF-A56C28FEF2E6}")]
         Guid ParentId { get; set; }
 
+
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Integer)]
         [ImmutableFieldId("{87BD6871-CF25-48f2-9ED5-BF41B272551F}")]
         int LocalOrdering { get; set; }

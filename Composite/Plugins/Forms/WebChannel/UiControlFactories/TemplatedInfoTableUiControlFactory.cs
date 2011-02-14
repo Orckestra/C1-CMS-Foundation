@@ -20,6 +20,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class InfoTableTemplateUserControlBase : UserControl
     {
+        /// <exclude />
         protected abstract void InitializeViewState();
 
         internal void InitializeWebViewState()
@@ -27,16 +28,25 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             this.InitializeViewState();
         }
 
+
+        /// <exclude />
         public List<string> Headers { get; set; }
 
+
+        /// <exclude />
         public List<List<string>> Rows { get; set; }
 
+
+        /// <exclude />
         public string Caption { get; set; }
 
+
+        /// <exclude />
         public bool Border { get; set; }
 
-        public string FormControlLabel { get; set; }
-        
+
+        /// <exclude />
+        public string FormControlLabel { get; set; }        
     }
 
     internal sealed class TemplatedInfoTableUiControl : InfoTableUiControl, IWebUiControl

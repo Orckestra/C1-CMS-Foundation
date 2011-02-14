@@ -9,6 +9,7 @@ namespace Composite.Plugins.Data.DataProviders.Common
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class PropertyNameMappingConfigurationElementCollection : ConfigurationElementCollection
     {
+        /// <exclude />
         public void Add(string propertyName, string sourcePropertyName)
         {
             PropertyNameMappingConfigurationElement element = new PropertyNameMappingConfigurationElement();
@@ -18,11 +19,15 @@ namespace Composite.Plugins.Data.DataProviders.Common
             BaseAdd(element);
         }
 
+
+        /// <exclude />
         protected override ConfigurationElement CreateNewElement()
         {                        
             return new PropertyNameMappingConfigurationElement();
         }
 
+
+        /// <exclude />
         protected override object GetElementKey(ConfigurationElement element)
         {
             return string.Format("{0}{1}", 

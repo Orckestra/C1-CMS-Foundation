@@ -104,6 +104,7 @@ namespace Composite.Data.ProcessControlled
 
 
 
+        /// <exclude />
         public static List<ElementAction> GetActions(IData data, Type elementProviderType)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -130,6 +131,7 @@ namespace Composite.Data.ProcessControlled
 
 
         #region IPublishControlled methods
+        /// <exclude />
         public static void SetStartStatus(IData data)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -143,6 +145,7 @@ namespace Composite.Data.ProcessControlled
 
 
 
+        /// <exclude />
         public static IDictionary<string, string> GetValidTransitions(IData data)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -156,6 +159,7 @@ namespace Composite.Data.ProcessControlled
 
 
 
+        /// <exclude />
         public static void ValidateTransition(IData data, string status)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -167,9 +171,10 @@ namespace Composite.Data.ProcessControlled
             controller.ValidateTransition(data, status);
         }
         #endregion
-       
 
 
+
+        /// <exclude />
         public static Type GetProcessControllerType<T>(IData data)
             where T : class, IProcessController
         {
@@ -184,6 +189,7 @@ namespace Composite.Data.ProcessControlled
 
 
 
+        /// <exclude />
         public static IDisposable NoProcessControllers
         {
             get

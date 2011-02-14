@@ -20,6 +20,7 @@ namespace Composite.Core.Collections
         }
 
 
+        /// <exclude />
         public string Name
         {
             get;
@@ -27,6 +28,7 @@ namespace Composite.Core.Collections
         }
 
 
+        /// <exclude />
         public string Namespace
         {
             get;
@@ -34,6 +36,7 @@ namespace Composite.Core.Collections
         }
 
 
+        /// <exclude />
         public List<INamespaceTreeBuilderLeafInfo> Leafs
         {
             get;
@@ -41,6 +44,7 @@ namespace Composite.Core.Collections
         }
 
 
+        /// <exclude />
         public List<NamespaceTreeBuilderFolder> SubFolders
         {
             get;

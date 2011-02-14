@@ -10,12 +10,14 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true, Inherited = true)]
     public sealed class KeyPropertyNameAttribute : Attribute
     {
+        /// <exclude />
         public KeyPropertyNameAttribute(string propertyName)
         {
             this.KeyPropertyName = propertyName;
         }
 
 
+        /// <exclude />
         public string KeyPropertyName
         {
             get;

@@ -16,12 +16,19 @@ namespace Composite.C1Console.Trees
     [DebuggerDisplay("{TreeId}")]
     public sealed class Tree
     {
+        /// <exclude />
         public string TreeId { get; private set; }
+
+        /// <exclude />
         public string AllowedAttachmentApplicationName { get; internal set; }
+
+        /// <exclude />
         public TreeNode RootTreeNode { get; internal set; }
 
 
         internal BuildProcessContext BuildProcessContext { get; set; }
+
+        /// <exclude />
         public BuildResult BuildResult { get; set; }
 
 
@@ -31,6 +38,7 @@ namespace Composite.C1Console.Trees
         internal List<IPossibleAttachmentPoint> PossibleAttachmentPoints { get; private set; }
 
 
+        /// <exclude />
         public Tree(string treeId)
         {
             this.TreeId = treeId;
@@ -39,6 +47,7 @@ namespace Composite.C1Console.Trees
         }
 
 
+        /// <exclude />
         public TreeNode GetTreeNode(string id)
         {
             TreeNode resultTreeNode = FindTreeNode(id, this.RootTreeNode);
@@ -52,6 +61,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public ActionNode GetActionNode(int id)
         {
             ActionNode resultActionNode = FindActionNode(id, this.RootTreeNode);
@@ -65,6 +75,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public bool HasAttachmentPoints(EntityToken parentEntityToken)
         {
             return this.AttachmentPoints.Where(f => f.IsAttachmentPoint(parentEntityToken) == true).Any();
@@ -72,6 +83,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public bool HasPossibleAttachmentPoints(EntityToken parentEntityToken)
         {
             return this.PossibleAttachmentPoints.Where(f => f.IsPossibleAttachmentPoint(parentEntityToken) == true).Any();
@@ -79,6 +91,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public IEnumerable<IAttachmentPoint> GetAttachmentPoints(EntityToken parentEntityToken)
         {
             return this.AttachmentPoints.Where(f => f.IsAttachmentPoint(parentEntityToken));
@@ -139,6 +152,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public void LogTree()
         {
             LoggingService.LogVerbose("TreeFacade", string.Format("{0} - Tree informations:", this.TreeId));

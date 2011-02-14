@@ -23,6 +23,7 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public static Type GetType(string fullName)
         {
             return _implementation.GetType(fullName);
@@ -41,6 +42,7 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public static string SerializeType(Type type)
         {
             return _implementation.SerializeType(type);
@@ -48,6 +50,7 @@ namespace Composite.Core.Types
 
 
 
+        /// <exclude />
         public static string TrySerializeType(Type type)
         {
             return _implementation.TrySerializeType(type);

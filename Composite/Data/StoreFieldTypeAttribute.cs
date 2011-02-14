@@ -17,7 +17,7 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         public StoreFieldTypeAttribute(PhysicalStoreFieldType physicalStoreFieldType)
             : this()
         {
@@ -47,7 +47,7 @@ namespace Composite.Data
         }
 
 
-
+        /// <exclude />
         public StoreFieldTypeAttribute(PhysicalStoreFieldType physicalStoreFieldType, int maxLength)
             : this()
         {
@@ -62,6 +62,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public StoreFieldTypeAttribute(PhysicalStoreFieldType physicalStoreFieldType, int numericPrecision, int numericScale)
             : this()
         {
@@ -76,6 +77,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public StoreFieldType StoreFieldType { get; private set; }
 
 

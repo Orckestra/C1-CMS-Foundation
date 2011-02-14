@@ -22,10 +22,13 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         private string _formControlLabel;
         private DateTime? _date;
 
+        /// <exclude />
         protected abstract void BindStateToProperties();
 
+        /// <exclude />
         protected abstract void InitializeViewState();
 
+        /// <exclude />
         public abstract string GetDataFieldClientName();
 
         internal void BindStateToControlProperties()
@@ -38,12 +41,14 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             this.InitializeViewState();
         }
 
+        /// <exclude />
         public DateTime? Date
         {
             get { return _date; }
             set { _date = value; }
         }
 
+        /// <exclude />
         public string FormControlLabel
         {
             get { return _formControlLabel; }

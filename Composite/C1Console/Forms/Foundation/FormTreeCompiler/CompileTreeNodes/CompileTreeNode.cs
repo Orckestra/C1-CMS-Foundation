@@ -18,6 +18,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompileTreeNodes
         private List<PropertyCompileTreeNode> _defaultProperties = new List<PropertyCompileTreeNode>();
         private Dictionary<string, List<PropertyCompileTreeNode>> _namedProperties = new Dictionary<string, List<PropertyCompileTreeNode>>();
 
+        /// <exclude />
         public CompileTreeNode(XmlSourceNodeInformation xmlSourceNodeInformation)
         {
             _compilerId = _compilerIdCounter++;
@@ -25,31 +26,43 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompileTreeNodes
             _xmlSourceNodeInformation = xmlSourceNodeInformation;
         }
 
+
+        /// <exclude />
         public XmlSourceNodeInformation XmlSourceNodeInformation
         {
             get { return _xmlSourceNodeInformation; }
         }
 
+
+        /// <exclude />
         public List<ElementCompileTreeNode> Children
         {
             get { return _childNodes; }
         }
 
+
+        /// <exclude />
         public List<PropertyCompileTreeNode> DefaultProperties
         {
             get { return _defaultProperties; }
         }
 
+
+        /// <exclude />
         public Dictionary<string, List<PropertyCompileTreeNode>> NamedProperties
         {
             get { return _namedProperties; }
         }
 
+
+        /// <exclude />
         public void AddNamedProperty(PropertyCompileTreeNode property)
         {
             AddNamedProperty(property.Name, property);
         }
 
+
+        /// <exclude />
         public void AddNamedProperty(string name, PropertyCompileTreeNode property)
         {
             if (false == _namedProperties.ContainsKey(name))
@@ -60,6 +73,8 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompileTreeNodes
             _namedProperties[name].Add(property);
         }
 
+
+        /// <exclude />
         public IEnumerable<PropertyCompileTreeNode> AllNamedProperties
         {
             get
@@ -71,6 +86,8 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompileTreeNodes
             }
         }
 
+
+        /// <exclude />
         public IEnumerable<CompileTreeNode> AllSubNodes
         {
             get
@@ -84,18 +101,24 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompileTreeNodes
 
                 foreach (CompileTreeNode defaultProperty in DefaultProperties) yield return defaultProperty;
             }
-        }        
+        }
 
+
+        /// <exclude />
         public int CompilerId
         {
             get { return _compilerId; }
         }
 
+
+        /// <exclude />
         public override int GetHashCode()
         {
             return _compilerId;
         }
 
+
+        /// <exclude />
         public override bool Equals(object obj)
         {
             if (null == obj) return false;
@@ -106,6 +129,8 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompileTreeNodes
             return node._compilerId == _compilerId;
         }
 
+
+        /// <exclude />
         public bool Equals(CompileTreeNode node)
         {
             if (null == node) return false;

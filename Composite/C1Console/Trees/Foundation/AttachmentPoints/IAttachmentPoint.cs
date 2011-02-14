@@ -11,8 +11,10 @@ namespace Composite.C1Console.Trees.Foundation.AttachmentPoints
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IBaseAttachmentPoint
     {
+        /// <exclude />
         ElementAttachingProviderPosition Position { get; set; }
 
+        /// <exclude />
         void Log(string title, string indention = "");
     }
 
@@ -25,8 +27,10 @@ namespace Composite.C1Console.Trees.Foundation.AttachmentPoints
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public interface IAttachmentPoint : IBaseAttachmentPoint
     {
-        bool IsAttachmentPoint(EntityToken parentEntityToken);                
-       
+        /// <exclude />
+        bool IsAttachmentPoint(EntityToken parentEntityToken);
+
+        /// <exclude />
         IEnumerable<EntityToken> GetEntityTokens(EntityToken childEntityToken, TreeNodeDynamicContext dynamicContext);
     }
 }

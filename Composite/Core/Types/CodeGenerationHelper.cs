@@ -8,11 +8,13 @@ namespace Composite.Core.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class CodeGenerationHelper
 	{
+        /// <exclude />
         public static string GetTypeAlias(Type type)
         {
             return GetTypeAlias(type.FullName);
         }
 
+        /// <exclude />
         public static string GetTypeAlias(string typeFullName)
         {
             return typeFullName.Replace(".", "_");

@@ -16,6 +16,7 @@ namespace Composite.Data.DynamicTypes
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DynamicTypeManagerImpl : IDynamicTypeManager
     {
+        /// <exclude />
         public DataTypeDescriptor BuildNewDataTypeDescriptor(Type typeToDescript)
         {
             if (typeToDescript == null) throw new ArgumentNullException("typeToDescript");
@@ -25,6 +26,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public bool TryGetDataTypeDescriptor(Guid immuteableTypeId, out DataTypeDescriptor dataTypeDescriptor)
         {
             dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(immuteableTypeId);
@@ -34,6 +36,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public void UpdateDataTypeDescriptor(DataTypeDescriptor dataTypeDescriptor, bool flushTheSystem)
         {
             dataTypeDescriptor.Validate();
@@ -45,9 +48,10 @@ namespace Composite.Data.DynamicTypes
                 GlobalEventSystemFacade.FlushTheSystem();
             }
         }
-       
 
 
+
+        /// <exclude />
         public void CreateStore(string providerName, DataTypeDescriptor typeDescriptor, bool doFlush)
         {
             if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
@@ -72,6 +76,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public void AlterStore(string providerName, DataTypeChangeDescriptor changeDescriptor, bool makeAFlush)
         {
             if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
@@ -99,6 +104,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public void DropStore(string providerName, DataTypeDescriptor typeDescriptor, bool makeAFlush)
         {
             if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
@@ -121,6 +127,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public void AddLocale(string providerName, CultureInfo cultureInfo, bool makeAFlush)
         {
             if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
@@ -140,6 +147,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public void RemoveLocale(string providerName, CultureInfo cultureInfo, bool makeAFlush)
         {
             if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");

@@ -15,6 +15,7 @@ namespace Composite.Core.Caching
         private static Dictionary<object, object> _unitTestCahce = new Dictionary<object,object>();
 
 
+        /// <exclude />
         public static void Add(object key, object value)
         {
             var httpContext = HttpContext.Current;
@@ -31,6 +32,7 @@ namespace Composite.Core.Caching
 
 
 
+        /// <exclude />
         public static bool HasKey(object key)
         {
             var httpContext = HttpContext.Current;
@@ -50,6 +52,7 @@ namespace Composite.Core.Caching
 
 
 
+        /// <exclude />
         public static object TryGet(object key)
         {
             var context = HttpContext.Current;
@@ -69,6 +72,7 @@ namespace Composite.Core.Caching
 
 
 
+        /// <exclude />
         public static T TryGet<T>(object key)
         {
             var context = HttpContext.Current;
@@ -96,6 +100,7 @@ namespace Composite.Core.Caching
 
 
 
+        /// <exclude />
         public static void ClearAll()
         {
             var httpContext = HttpContext.Current;

@@ -10,6 +10,7 @@ namespace Composite.Core.Types
     [AttributeUsage(AttributeTargets.Assembly)]
     public sealed class BuildManagerCompileUnitAssemblyAttribute : Attribute
 	{
+        /// <exclude />
         public BuildManagerCompileUnitAssemblyAttribute(string id, bool cacheble)
         {
             this.Id = id;
@@ -17,6 +18,7 @@ namespace Composite.Core.Types
         }
 
 
+        /// <exclude />
         public string Id
         {
             get;
@@ -24,6 +26,7 @@ namespace Composite.Core.Types
         }
 
 
+        /// <exclude />
         public bool Cacheble
         {
             get;

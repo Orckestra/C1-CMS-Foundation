@@ -6,6 +6,7 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class RefreshTreeParams
     {
+        /// <exclude />
         public string EntityToken { get; set; }
     }
 }

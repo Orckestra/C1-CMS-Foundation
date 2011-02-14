@@ -10,6 +10,7 @@ namespace Composite.Core.Instrumentation
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class TimerProfilerFacade
     {
+        /// <exclude />
         public static TimerProfiler CreateTimerProfiler()
         {
             if (RuntimeInformation.IsDebugBuild == true)
@@ -27,6 +28,7 @@ namespace Composite.Core.Instrumentation
         }
 
 
+        /// <exclude />
         public static TimerProfiler CreateTimerProfiler(string message)
         {
             if (RuntimeInformation.IsDebugBuild == true)

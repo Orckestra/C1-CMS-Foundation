@@ -12,31 +12,37 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 	{
         private string _id;
 
+        /// <exclude />
         public MediaRootFolderProviderEntityToken(string parentFolder)
         {
             _id = parentFolder;
         }
 
+        /// <exclude />
     	public override string  Type
         {
 	        get { return ""; }
         }
 
+        /// <exclude />
         public override string  Source
         {
 	        get { return ""; }
         }
 
+        /// <exclude />
         public override string  Id
         {
 	        get { return _id; }
         }
 
+        /// <exclude />
         public override string  Serialize()
         {
             return DoSerialize();
         }
 
+        /// <exclude />
         public static EntityToken Deserialize(string serializedData)
         {
             string type, source, id;

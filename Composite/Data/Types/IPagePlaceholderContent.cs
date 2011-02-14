@@ -26,16 +26,21 @@ namespace Composite.Data.Types
     [Title("C1 Page Content")]
     public interface IPagePlaceholderContent : IData, IChangeHistory, IPublishControlled, ILocalizedControlled
     {
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{19DFF302-F089-4900-8B64-35F88C82EC45}")]
         [ForeignKey(typeof(IPage), "Id", AllowCascadeDeletes = true)]
         Guid PageId { get; set; }
 
+
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 255)]
         [ImmutableFieldId("{D8243AA6-A02A-4383-9ED1-2A7C1A8841E2}")]
         [NotNullValidator()]
         string PlaceHolderId { get; set; }
 
+
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.LargeString)]
         [ImmutableFieldId("{DB0C7557-8C56-4924-A199-3A1E984BE2E8}")]
         string Content { get; set; }

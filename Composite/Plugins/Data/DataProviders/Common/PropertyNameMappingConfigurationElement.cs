@@ -10,6 +10,7 @@ namespace Composite.Plugins.Data.DataProviders.Common
     public sealed class PropertyNameMappingConfigurationElement : ConfigurationElement
     {
         private const string _propertyNamePropertyName = "propertyName";
+        /// <exclude />
         [ConfigurationProperty(_propertyNamePropertyName, IsRequired=true)]
         public string PropertyName
         {
@@ -19,6 +20,7 @@ namespace Composite.Plugins.Data.DataProviders.Common
 
 
         private const string _sourcePropertyNamePropertyName = "sourcePropertyName";
+        /// <exclude />
         [ConfigurationProperty(_sourcePropertyNamePropertyName, IsRequired=true)]
         public string SourcePropertyName
         {

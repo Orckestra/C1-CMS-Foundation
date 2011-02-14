@@ -35,6 +35,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         private static readonly NameBasedAttributeComparer _nameBasedAttributeComparer = new NameBasedAttributeComparer();
 
 
+        /// <exclude />
         public static FunctionContextContainer GetPageRenderFunctionContextContainer()
         {
             XEmbeddedControlMapper mapper = new XEmbeddedControlMapper();
@@ -47,6 +48,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
 
+        /// <exclude />
         public static Control Render(this IPage page, IEnumerable<IPagePlaceholderContent> placeholderContents, FunctionContextContainer functionContextContainer)
         {
             Verify.ArgumentNotNull(page, "page");
@@ -144,6 +146,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
 
+        /// <exclude />
         public static Control Render(this IPage page, IEnumerable<IPagePlaceholderContent> placeholderContents)
         {
             CurrentPage = page;
@@ -153,6 +156,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
 
+        /// <exclude />
         public static Guid CurrentPageId
         {
             get
@@ -167,6 +171,8 @@ namespace Composite.Core.WebClient.Renderings.Page
         }
 
 
+
+        /// <exclude />
         public static IPage CurrentPage
         {
             get
@@ -193,6 +199,8 @@ namespace Composite.Core.WebClient.Renderings.Page
         }
 
 
+
+        /// <exclude />
         public static CultureInfo CurrentPageCulture
         {
             get
@@ -209,6 +217,8 @@ namespace Composite.Core.WebClient.Renderings.Page
         }
 
 
+
+        /// <exclude />
         public static IEnumerable<IData> GetCurrentPageAssociatedData(Type type)
         {
             return PageRenderer.CurrentPage.GetReferees(type);
@@ -216,6 +226,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
 
+        /// <exclude />
         public static IEnumerable<IData> GetCurrentPageAssociatedData<T>() where T : IData
         {
             foreach (IData data in PageRenderer.CurrentPage.GetReferees(typeof(T)))
@@ -371,6 +382,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
 
+        /// <exclude />
         public static void ExecuteEmbeddedFunctions(XElement element, FunctionContextContainer contextContainer)
         {
             using (TimerProfilerFacade.CreateTimerProfiler())
@@ -556,6 +568,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
 
+        /// <exclude />
         public static bool DisableAspNetPostback(Control c)
         {
             bool formDisabled = false;

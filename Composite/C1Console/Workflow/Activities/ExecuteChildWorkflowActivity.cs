@@ -12,16 +12,21 @@ namespace Composite.C1Console.Workflow.Activities
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ExecuteChildWorkflowActivity : Activity
     {
+        /// <exclude />
         public static readonly DependencyProperty ChildWorkflowTypeProperty = DependencyProperty.Register("ChildWorkflowType", typeof(Type), typeof(ExecuteChildWorkflowActivity));
+
+        /// <exclude />
         public static readonly DependencyProperty ChildWorkflowPayloadProperty = DependencyProperty.Register("ChildWorkflowPayload", typeof(string), typeof(ExecuteChildWorkflowActivity));
 
 
+        /// <exclude />
         public ExecuteChildWorkflowActivity()
         {
         }
 
 
 
+        /// <exclude />
         public ExecuteChildWorkflowActivity(string name)
             : base(name)
         {
@@ -29,6 +34,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         public Type ChildWorkflowType
         {
             get { return (Type)GetValue(ChildWorkflowTypeProperty); }
@@ -37,6 +43,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         public string ChildWorkflowPayload
         {
             get { return (string)GetValue(ChildWorkflowPayloadProperty); }
@@ -45,6 +52,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
 
+        /// <exclude />
         protected sealed override ActivityExecutionStatus Execute(ActivityExecutionContext executionContext)
         {
             FormsWorkflow formsWorkflow = this.GetRoot<FormsWorkflow>();

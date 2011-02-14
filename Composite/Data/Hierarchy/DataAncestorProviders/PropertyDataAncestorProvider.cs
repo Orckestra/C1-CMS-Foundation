@@ -37,21 +37,28 @@ namespace Composite.Data.Hierarchy.DataAncestorProviders
         }
 
 
+        /// <exclude />
         public string IdPropertyName
         {
             get { return _idPropertyName; }
         }
 
+
+        /// <exclude />
         public string ParentIdPropertyName
         {
             get { return _parentIdPropertyName; }
         }
 
+
+        /// <exclude />
         public Type ParentDataType
         {
             get { return _parentDataType; }
         }
 
+
+        /// <exclude />
         public object NullValue
         {
             get { return _nullValue; }
@@ -71,7 +78,7 @@ namespace Composite.Data.Hierarchy.DataAncestorProviders
         private Dictionary<Type, Entry> _methodInfoCache = new Dictionary<Type, Entry>();
 
 
-
+        /// <exclude />
         public IData GetParent(IData data)
         {
             if (data == null) throw new ArgumentNullException("data");

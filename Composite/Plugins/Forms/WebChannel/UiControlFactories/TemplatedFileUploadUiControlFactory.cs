@@ -19,10 +19,13 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class FileUploadTemplateUserControlBase : UserControl
     {
+        /// <exclude />
         protected abstract void BindStateToProperties();
 
+        /// <exclude />
         protected abstract void InitializeViewState();
 
+        /// <exclude />
         public abstract string GetDataFieldClientName();
 
         internal void BindStateToControlProperties()
@@ -36,9 +39,11 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         }
 
 
+        /// <exclude />
         public UploadedFile UploadedFile { get; set; }
 
 
+        /// <exclude />
         public string FormControlLabel { get; set; }
     }
 
@@ -53,18 +58,23 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _userControlType = userControlType;
         }
 
+
+        /// <exclude />
         public override void BindStateToControlProperties()
         {
             _userControl.BindStateToControlProperties();
             this.UploadedFile = _userControl.UploadedFile;
         }
 
+
+        /// <exclude />
         public void InitializeViewState()
         {
             _userControl.InitializeWebViewState();
         }
 
 
+        /// <exclude />
         public Control BuildWebControl()
         {
             _userControl = _userControlType.ActivateAsUserControl<FileUploadTemplateUserControlBase>(this.UiControlID);
@@ -75,8 +85,12 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             return _userControl;
         }
 
+
+        /// <exclude />
         public bool IsFullWidthControl { get { return false; } }
 
+
+        /// <exclude />
         public string ClientName { get { return _userControl.GetDataFieldClientName(); } }
     }
 
@@ -126,6 +140,4 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             return new TemplatedFileUploadUiControlFactory(objectConfiguration as TemplatedFileUploadUiControlFactoryData);
         }
     }
-
-
 }

@@ -20,17 +20,33 @@ namespace Composite.Data.DynamicTypes
         private DefaultValueType _valueType;
 
 
+        /// <exclude />
         public static DefaultValue String(string defaultValue) { return new DefaultValue(defaultValue); }
+
+        /// <exclude />
         public static DefaultValue Integer(int defaultValue) { return new DefaultValue(defaultValue); }
+
+        /// <exclude />
         public static DefaultValue Decimal(decimal defaultValue) { return new DefaultValue(defaultValue); }
+
+        /// <exclude />
         public static DefaultValue Boolean(bool defaultValue) { return new DefaultValue(defaultValue); }
+
+        /// <exclude />
         public static DefaultValue DateTime(DateTime defaultValue) { return new DefaultValue(defaultValue); }
+
+        /// <exclude />
         public static DefaultValue Guid(Guid defaultValue) { return new DefaultValue(defaultValue); }
+
+        /// <exclude />
         public static DefaultValue Now { get { return new DefaultValue(DefaultValueType.DateTimeNow); } }
+
+        /// <exclude />
         public static DefaultValue NewGuid { get { return new DefaultValue(DefaultValueType.NewGuid); } }
 
 
 
+        /// <exclude />
         public object Value
         {
             get
@@ -50,10 +66,11 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
         public DefaultValueType ValueType { get { return _valueType; } }
 
 
-
+        /// <exclude />
         public DefaultValue Clone()
         {
             switch (_valueType)
@@ -88,7 +105,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-
+        /// <exclude />
         public string Serialize()
         {
             StringBuilder sb = new StringBuilder();
@@ -104,7 +121,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-
+        /// <exclude />
         public static DefaultValue Deserialize(string serializedData)
         {
             using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
@@ -169,6 +186,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public override string ToString()
         {
             return Serialize();
@@ -310,6 +328,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public int CompareTo(object obj)
         {
             if (obj == null) throw new ArgumentNullException();
@@ -358,13 +377,28 @@ namespace Composite.Data.DynamicTypes
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum DefaultValueType
     {
+        /// <exclude />
         DateTimeNow = 0,
+
+        /// <exclude />
         String = 1,
+
+        /// <exclude />
         Integer = 2,
+
+        /// <exclude />
         Decimal = 3,
+
+        /// <exclude />
         Boolean = 4,
+
+        /// <exclude />
         DateTime = 5,
+
+        /// <exclude />
         Guid = 6,
+
+        /// <exclude />
         NewGuid = 7
     }
 }

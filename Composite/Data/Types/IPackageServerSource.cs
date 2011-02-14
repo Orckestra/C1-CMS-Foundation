@@ -18,11 +18,13 @@ namespace Composite.Data.Types
     [DataAncestorProvider(typeof(NoAncestorDataAncestorProvider))]
 	public interface IPackageServerSource : IData
 	{
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{7B151CE0-F094-4610-BDF8-8EE4F07003E5}")]
         Guid Id { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.LargeString)]
         [ImmutableFieldId("{93E401CE-1AEE-4ba7-AE5B-C7FE0A872A1A}")]
         [NotNullValidator()]

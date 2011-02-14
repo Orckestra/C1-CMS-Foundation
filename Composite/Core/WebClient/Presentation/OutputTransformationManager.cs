@@ -18,6 +18,7 @@ namespace Composite.Core.WebClient.Presentation
     {
         private const string _contextItemKey = "AdministrativeOutputTransformationHttpModule.TransformationList";
 
+        /// <exclude />
         public static void Activate()
         {
             EnsureResponseFilter();
@@ -25,6 +26,7 @@ namespace Composite.Core.WebClient.Presentation
         }
 
 
+        /// <exclude />
         public static void RegisterTransformation(string transformationPath, int position)
         {
             HttpContext context = HttpContext.Current;

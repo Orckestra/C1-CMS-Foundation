@@ -22,10 +22,13 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         private string _formControlLabel;
         private bool _isTrue;
 
+        /// <exclude />
         protected abstract void BindStateToProperties();
 
+        /// <exclude />
         protected abstract void InitializeViewState();
 
+        /// <exclude />
         public abstract string GetDataFieldClientName();
 
         internal void BindStateToControlProperties()
@@ -38,12 +41,14 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             this.InitializeViewState();
         }
 
+        /// <exclude />
         public bool IsTrue
         {
             get { return _isTrue; }
             set { _isTrue = value; }
         }
 
+        /// <exclude />
         public string FormControlLabel
         {
             get { return _formControlLabel; }
@@ -51,7 +56,10 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         }
 
 
+        /// <exclude />
         public string TrueLabel { get; set; }
+
+        /// <exclude />
         public string FalseLabel { get; set; }
     }
 

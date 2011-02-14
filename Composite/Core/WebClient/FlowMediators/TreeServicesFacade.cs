@@ -25,6 +25,7 @@ namespace Composite.Core.WebClient.FlowMediators
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class TreeServicesFacade
     {
+        /// <exclude />
         public static ClientElement GetRoot()
         {
                 List<Element> roots = ElementFacade.GetRoots(null).ToList();
@@ -58,6 +59,7 @@ namespace Composite.Core.WebClient.FlowMediators
 
 
 
+        /// <exclude />
         public static List<ClientElement> GetRoots(string providerHandle, string serializedSearchToken)
         {
                 SearchToken searchToken = null;
@@ -81,6 +83,7 @@ namespace Composite.Core.WebClient.FlowMediators
 
 
 
+        /// <exclude />
         public static List<string> GetLocaleAwarePerspectiveElements(SearchToken searchToken)
         {
             IEnumerable<Element> elements = ElementFacade.GetPerspectiveElements(searchToken, true);
@@ -99,6 +102,7 @@ namespace Composite.Core.WebClient.FlowMediators
 
 
 
+        /// <exclude />
         public static List<ClientElement> GetPerspectiveElementsWithNoSecurity(SearchToken searchToken)
         {
             return ElementFacade.GetPerspectiveElementsWithNoSecurity(searchToken).ToList().ToClientElementList();
@@ -106,6 +110,7 @@ namespace Composite.Core.WebClient.FlowMediators
 
 
 
+        /// <exclude />
         public static List<ClientElement> GetChildren(string providerName, string serializedEntityToken, string piggybag, string serializedSearchToken)
         {
                 //LoggingService.LogVerbose("RGB(255, 0, 255)TreeServiceFacade", "----- Start -----------------------------------------------");
@@ -152,6 +157,7 @@ namespace Composite.Core.WebClient.FlowMediators
 
 
 
+        /// <exclude />
         public static List<RefreshChildrenInfo> GetMultipleChildren(List<RefreshChildrenParams> nodesToBeRefreshed)
         {
                 int t1 = Environment.TickCount;
@@ -199,6 +205,7 @@ namespace Composite.Core.WebClient.FlowMediators
 
 
 
+        /// <exclude />
         public static List<ClientLabeledProperty> GetLabeledProperties(string providerName, string serializedEntityToken, string piggybag)
         {
                 EntityToken elementEntityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
@@ -222,6 +229,7 @@ namespace Composite.Core.WebClient.FlowMediators
 
 
 
+        /// <exclude />
         public static void ExecuteElementAction(string providerName, string serializedEntityToken, string piggybag, string serializedActionToken, string consoleId)
         {
             using (DebugLoggingScope.MethodInfoScope)
@@ -244,6 +252,7 @@ namespace Composite.Core.WebClient.FlowMediators
 
 
 
+        /// <exclude />
         public static bool ExecuteElementDraggedAndDropped(string draggedElementProviderName, string draggedElementSerializedEntityToken, string draggedElementPiggybag, string newParentElementProviderName, string newParentElementSerializedEntityToken, string newParentElementPiggybag, int dropIndex, string consoleId, bool isCopy)
         {
             if (draggedElementProviderName != newParentElementProviderName)
@@ -260,6 +269,9 @@ namespace Composite.Core.WebClient.FlowMediators
             return ActionExecutionMediator.ExecuteElementDraggedAndDropped(draggedElementHandle, newParentdElementHandle, dropIndex, consoleId, isCopy);                            
         }
 
+
+
+        /// <exclude />
         public static List<RefreshChildrenInfo> FindEntityToken(string serializedParentEntityToken, string serializedEntityToken, List<RefreshChildrenParams> openedNodes)
         {
             Verify.ArgumentNotNullOrEmpty(serializedParentEntityToken, "serializedParentEntityToken");
@@ -364,11 +376,15 @@ namespace Composite.Core.WebClient.FlowMediators
             return true;
         }
 
+
+
         // TODO: Move logic to another place
         private static string GetElementKey(string providerName, string entityToken, string piggybag)
         {
             return providerName + entityToken + piggybag;
         }
+
+
 
         private static IEnumerable<List<EntityToken>> GetAncestorChains(EntityToken parentEnitityToken, EntityToken entityToken)
         {
@@ -380,6 +396,7 @@ namespace Composite.Core.WebClient.FlowMediators
                 }
             }
         }
+
 
 
         private static IEnumerable<List<EntityToken>> GetAncestorChains(EntityToken descendant, int deep)
@@ -406,6 +423,8 @@ namespace Composite.Core.WebClient.FlowMediators
                 }
             }
         }
+
+
 
         private static void ShowInvalidEntityMessage(string consoleId)
         {

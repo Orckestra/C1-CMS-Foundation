@@ -19,16 +19,19 @@ namespace Composite.Data.Types
     [NotReferenceable]
     public interface INamedFunctionCall : IData
     {
+        /// <exclude />
         [ImmutableFieldId("{f60e9cda-a461-4234-b225-5ea3eb51a1fb}")]
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         Guid XsltFunctionId { get; set; }
 
 
+        /// <exclude />
         [ImmutableFieldId("{4c042ad7-9bf5-4875-a369-3720c1b79380}")]
         [StoreFieldType(PhysicalStoreFieldType.String, 256)]
         string Name { get; set; }
 
 
+        /// <exclude />
         [ImmutableFieldId("{cfc67bfa-2252-4642-91dc-623ca9e1d027}")]
         [StoreFieldType(PhysicalStoreFieldType.LargeString)]
         string SerializedFunction { get; set; }

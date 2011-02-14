@@ -26,6 +26,7 @@ namespace Composite.C1Console.Actions
 
 
 
+        /// <exclude />
         public static void Initialize()
         {
             lock (_lock)
@@ -45,6 +46,7 @@ namespace Composite.C1Console.Actions
 
 
 
+        /// <exclude />
         public static IFlowUiDefinition GetCurrentUiDefinition(FlowToken flowToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
             if (flowToken == null) throw new ArgumentNullException("flowToken");
@@ -63,7 +65,7 @@ namespace Composite.C1Console.Actions
 
 
 
-
+        /// <exclude />
         public static void CancelFlow(FlowToken flowToken)
         {
             if (flowToken == null) throw new ArgumentNullException("flowToken");
@@ -75,6 +77,7 @@ namespace Composite.C1Console.Actions
 
 
 
+        /// <exclude />
         public static void CancelFlowsByConsoleId(string consoleId)
         {
             List<string> serializedFlowTokens =
@@ -92,6 +95,7 @@ namespace Composite.C1Console.Actions
 
 
 
+        /// <exclude />
         public static IEnumerable<FlowToken> GetFlowTokensByUsername(string username)
         {
             List<string> serializedFlowTokens =
@@ -109,6 +113,7 @@ namespace Composite.C1Console.Actions
 
 
 
+        /// <exclude />
         public static IEnumerable<string> GetConsoleIdsByUsername(string username)
         {
             List<string> consoleIds =
@@ -121,6 +126,7 @@ namespace Composite.C1Console.Actions
 
 
 
+        /// <exclude />
         public static void FlowComplete(FlowToken flowToken)
         {
             UnregisterFlowInformation(flowToken);
@@ -153,6 +159,7 @@ namespace Composite.C1Console.Actions
 
 
 
+        /// <exclude />
         public static void Scavenge()
         {
             LoggingService.LogVerbose("FlowControllerFacade", "Starting scavenger run");

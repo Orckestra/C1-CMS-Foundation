@@ -9,7 +9,10 @@ namespace Composite.C1Console.Events
     [Serializable]
     public sealed class BroadcastMessageQueueItem : IConsoleMessageQueueItem
 	{
+        /// <exclude />
         public string Name { get; set; }
+
+        /// <exclude />
         public string Value { get; set; }
 	}
 }

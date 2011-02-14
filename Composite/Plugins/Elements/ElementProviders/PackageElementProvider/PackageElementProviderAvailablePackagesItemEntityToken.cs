@@ -29,30 +29,38 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
     {
         private string _id;
 
+        /// <exclude />
         public PackageElementProviderAvailablePackagesItemEntityToken(string id, string groupName)
         {
             _id = id;
             this.GroupName = groupName;
         }
 
+        /// <exclude />
         public string GroupName { get; private set; }
+
+        /// <exclude />
         public Guid AddOnId { get { return new Guid(this.Id); } }
 
+        /// <exclude />
         public override string Type
         {
             get { return ""; }
         }
 
+        /// <exclude />
         public override string Source
         {
             get { return ""; }
         }
 
+        /// <exclude />
         public override string Id
         {
             get { return _id; }
         }
 
+        /// <exclude />
         public override string Serialize()
         {
             StringBuilder sb = new StringBuilder();
@@ -64,6 +72,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
             return sb.ToString();
         }
 
+        /// <exclude />
         public static EntityToken Deserialize(string serializedEntityToken)
         {
             string type, source, id;

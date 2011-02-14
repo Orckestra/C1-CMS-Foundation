@@ -14,6 +14,7 @@ namespace Composite.C1Console.Elements.Plugins.ElementActionProvider
     [ConfigurationNameMapper(typeof(ElementActionProviderDefaultNameRetriever))]
 	public interface IElementActionProvider
 	{
+        /// <exclude />
         IEnumerable<ElementAction> GetActions(EntityToken entityToken);
 	}
 }

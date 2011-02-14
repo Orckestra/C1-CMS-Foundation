@@ -18,6 +18,7 @@ namespace Composite.Data.Validation
         public abstract CodeAttributeDeclaration GetCodeAttributeDeclaration();
 
 
+        /// <exclude />
         public abstract Attribute GetAttribute();
 	}
 }

@@ -13,6 +13,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public HashValue(int value)
         {
             _value = value;
@@ -20,6 +21,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public string Serialize()
         {
             return _value.ToString();
@@ -27,6 +29,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static HashValue Deserialize(string serializedHashValue)
         {            
             int value;
@@ -41,6 +44,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public override bool Equals(object obj)
         {
             return Equals(obj as HashValue);
@@ -48,6 +52,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public bool Equals(HashValue hashValue)
         {
             if (hashValue == null) return false;
@@ -57,6 +62,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public override string ToString()
         {
             return _value.ToString();
@@ -64,6 +70,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public override int GetHashCode()
         {
             return _value.GetHashCode();

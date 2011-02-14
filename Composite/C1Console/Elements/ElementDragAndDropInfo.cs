@@ -20,6 +20,7 @@ namespace Composite.C1Console.Elements
         }
 
 
+        /// <exclude />
         public ElementDragAndDropInfo(Type movabilityType)
         {
             this.DragType = movabilityType;
@@ -39,18 +40,18 @@ namespace Composite.C1Console.Elements
         public string DragSubType { get; set; }
 
 
-
+        /// <exclude />
         public bool SupportsIndexedPosition { get; set; }
 
 
-
+        /// <exclude />
         public void AddDropType(Type acceptMovabilityType)
         {
             this.AddDropType(acceptMovabilityType, "");
         }
 
 
-
+        /// <exclude />
         public void AddDropType(Type acceptMovabilityType, string acceptMovabilitySubType)
         {
             if (_dropHashTypeIdentifiers == null) _dropHashTypeIdentifiers = new List<string>();

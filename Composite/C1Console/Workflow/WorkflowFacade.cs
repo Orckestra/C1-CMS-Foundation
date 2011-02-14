@@ -33,6 +33,7 @@ namespace Composite.C1Console.Workflow
         internal static IWorkflowFacade Implementation { get { return _workflowFacade; } set { _workflowFacade = value; } }
 
 
+        /// <exclude />
         public static void EnsureInitialization()
         {
             using (GlobalInitializerFacade.CoreIsInitializedScope)
@@ -43,6 +44,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static WorkflowRuntime WorkflowRuntime
         {
             get
@@ -53,6 +55,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static Type GetWorkflowType(string typeName)
         {
             Type type = null;
@@ -79,6 +82,7 @@ namespace Composite.C1Console.Workflow
 
 
         #region Workflow methods
+        /// <exclude />
         public static WorkflowInstance CreateNewWorkflow(Type workflowType)
         {
             return _workflowFacade.CreateNewWorkflow(workflowType);
@@ -86,6 +90,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static WorkflowInstance CreateNewWorkflow(Type workflowType, Dictionary<string, object> arguments)
         {
             return _workflowFacade.CreateNewWorkflow(workflowType, arguments);
@@ -93,6 +98,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static WorkflowFlowToken StartNewWorkflow(Type workflowType, FlowControllerServicesContainer flowControllerServicesContainer, EntityToken entityToken, ActionToken actionToken)
         {
             return _workflowFacade.StartNewWorkflow(workflowType, flowControllerServicesContainer, entityToken, actionToken);
@@ -100,6 +106,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static WorkflowInstance GetWorkflow(Guid instanceId)
         {
            return _workflowFacade.GetWorkflow(instanceId);
@@ -107,6 +114,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static StateMachineWorkflowInstance GetStateMachineWorkflowInstance(Guid instanceId)
         {
            return _workflowFacade.GetStateMachineWorkflowInstance(instanceId);
@@ -114,6 +122,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static void RunWorkflow(Guid instanceId)
         {
            _workflowFacade.RunWorkflow(instanceId);
@@ -121,6 +130,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static void RunWorkflow(WorkflowInstance workflowInstance)
         {
            _workflowFacade.RunWorkflow(workflowInstance);
@@ -128,13 +138,15 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static void AbortWorkflow(Guid instanceId)
         {
           _workflowFacade.AbortWorkflow(instanceId);
-        }        
+        }
 
 
 
+        /// <exclude />
         public static void AcquireLock(Guid isntanceId, EntityToken entityToken)
         {
            _workflowFacade.AcquireLock(isntanceId, entityToken);
@@ -144,6 +156,7 @@ namespace Composite.C1Console.Workflow
 
 
         #region FlowControllerServices methods
+        /// <exclude />
         public static void SetFlowControllerServicesContainer(Guid instanceId, FlowControllerServicesContainer flowControllerServicesContainer)
         {
             _workflowFacade.SetFlowControllerServicesContainer(instanceId, flowControllerServicesContainer);
@@ -151,6 +164,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static FlowControllerServicesContainer GetFlowControllerServicesContainer(Guid instanceId)
         {
             return _workflowFacade.GetFlowControllerServicesContainer(instanceId);
@@ -158,6 +172,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         private static void RemoveFlowControllerServicesContainer(Guid instanceId)
         {
             _workflowFacade.RemoveFlowControllerServicesContainer(instanceId);
@@ -167,6 +182,7 @@ namespace Composite.C1Console.Workflow
 
 
         #region Workflow status methods
+        /// <exclude />
         public static bool WorkflowExists(Guid instanceId)
         {
            return _workflowFacade.WorkflowExists(instanceId);
@@ -188,6 +204,7 @@ namespace Composite.C1Console.Workflow
 
 
         #region Form workflow methods
+        /// <exclude />
         public static void SetEventHandlerFilter(Guid instanceId, Type eventHandlerFilterType)
         {
             _workflowFacade.SetEventHandlerFilter(instanceId, eventHandlerFilterType);
@@ -195,6 +212,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static IEventHandleFilter GetEventHandleFilter(Guid instanceId)
         {
             return _workflowFacade.GetEventHandleFilter(instanceId);
@@ -202,6 +220,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static IEnumerable<string> GetCurrentFormEvents(Guid instanceId)
         {
             return _workflowFacade.GetCurrentFormEvents(instanceId);
@@ -209,6 +228,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static IEnumerable<string> GetCurrentFormEvents(WorkflowInstance workflowInstance)
         {
             return _workflowFacade.GetCurrentFormEvents(workflowInstance);
@@ -216,6 +236,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static void FireSaveEvent(Guid instanceId, Dictionary<string, object> bindings)
         {
             _workflowFacade.FireSaveEvent(instanceId, bindings);
@@ -223,6 +244,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static void FireNextEvent(Guid instanceId, Dictionary<string, object> bindings)
         {
             _workflowFacade.FireNextEvent(instanceId, bindings);
@@ -230,6 +252,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static void FirePreviousEvent(Guid instanceId, Dictionary<string, object> bindings)
         {
             _workflowFacade.FirePreviousEvent(instanceId, bindings);
@@ -237,6 +260,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static void FireFinishEvent(Guid instanceId, Dictionary<string, object> bindings)
         {
             _workflowFacade.FireFinishEvent(instanceId, bindings);
@@ -244,6 +268,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static void FireCancelEvent(Guid instanceId, Dictionary<string, object> bindings)
         {
             _workflowFacade.FireCancelEvent(instanceId, bindings);
@@ -251,6 +276,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static void FirePreviewEvent(Guid instanceId, Dictionary<string, object> bindings)
         {
             _workflowFacade.FirePreviewEvent(instanceId, bindings);
@@ -258,6 +284,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static void FireCustomEvent(int customEventNumber, Guid instanceId, Dictionary<string, object> bindings)
         {
             if (customEventNumber < 1 || customEventNumber > 5) throw new ArgumentException("Number must be between 1 and 5", "customEventNumber");
@@ -267,6 +294,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static void FireChildWorkflowDoneEvent(Guid parentInstanceId, string workflowResult)
         {
             _workflowFacade.FireChildWorkflowDoneEvent(parentInstanceId, workflowResult);
@@ -284,6 +312,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static bool TryGetFormData(Guid instanceId, out FormData formData)
         {
             return _workflowFacade.TryGetFormData(instanceId, out formData);
@@ -291,6 +320,7 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <exclude />
         public static FormData GetFormData(Guid instanceId)
         {
             return _workflowFacade.GetFormData(instanceId);

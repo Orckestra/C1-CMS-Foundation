@@ -10,12 +10,14 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
 	public sealed class GroupByPriorityAttribute : Attribute
 	{
+        /// <exclude />
         public GroupByPriorityAttribute(int priority)
         {
             this.Priority = priority;
         }
 
 
+        /// <exclude />
         public int Priority { get; set; }
 	}
 }

@@ -10,12 +10,14 @@ namespace Composite.Data.Validation.ClientValidationRules
     [Serializable]
     public sealed class RegexClientValidationRule : ClientValidationRule
 	{
+        /// <exclude />
         public RegexClientValidationRule(string expression)
         {
             this.Expression = expression;
         }
 
 
+        /// <exclude />
         public string Expression
         {
             get;

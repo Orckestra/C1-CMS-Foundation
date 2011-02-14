@@ -12,31 +12,37 @@ namespace Composite.Data.Caching
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class Cache<K, V>: Cache where V: class
     {
+        /// <exclude />
         public Cache(string name)
             : base(name)
         {
         }
 
+        /// <exclude />
         public Cache(string name, int maximumSize)
             : base(name, maximumSize)
         {
         }
 
+        /// <exclude />
         public V Get(K key)
         {
             return base.Get(key) as V;
         }
 
+        /// <exclude />
         public void Remove(K key)
         {
             base.Remove(key);
         }
 
+        /// <exclude />
         public void Add(K key, V value)
         {
             base.Add(key, value);
         }
 
+        /// <exclude />
         public IEnumerable<K> GetKeys()
         {
             lock(_syncRoot)
@@ -60,18 +66,24 @@ namespace Composite.Data.Caching
     {
         private static readonly int DefaultMaximumCacheSize = 1000;
 
+        /// <exclude />
         protected readonly Hashtable _table = new Hashtable();
+
+        /// <exclude />
         protected readonly object _syncRoot = new object();
+
         private bool _enabled = true;
         private bool _clearOnFlush = true;
         private int _maxSize;
         private int _defaultMaximumSize;
 
 
+        /// <exclude />
         public Cache(string name): this(name, DefaultMaximumCacheSize)
         {
         }
 
+        /// <exclude />
         public Cache(string name, int defaultMaximumSize)
         {
             Verify.ArgumentCondition(defaultMaximumSize >= 10, "maximumSize", "Maximum cache size should be at least 10 element.");
@@ -86,18 +98,26 @@ namespace Composite.Data.Caching
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnPostFlush);
         }
 
+
+        /// <exclude />
         public bool Enabled
         {
             get { return _enabled; }
         }
 
+
+        /// <exclude />
         public string Name { get; private set; }
 
+
+        /// <exclude />
         protected object Get(object key)
         {
             return _table[key];
         }
 
+
+        /// <exclude />
         protected void Add(object key, object value)
         {
             if(!_enabled)
@@ -121,6 +141,8 @@ namespace Composite.Data.Caching
             }
         }
 
+
+        /// <exclude />
         protected void Remove(object key)
         {
             if (!_enabled)
@@ -140,6 +162,8 @@ namespace Composite.Data.Caching
             }
         }
 
+
+        /// <exclude />
         public void Clear()
         {
             lock (_syncRoot)
@@ -161,11 +185,15 @@ namespace Composite.Data.Caching
             ReadConfiguration();
         }
 
+
+        /// <exclude />
         public bool ClearOnFlush
         {
             set { _clearOnFlush = value; }
         }
 
+
+        /// <exclude />
         protected void ReadConfiguration()
         {
             CachingSettings cachingSettings = GlobalSettingsFacade.GetNamedCaching(this.Name);

@@ -12,9 +12,14 @@ namespace Composite.C1Console.Elements
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Flags]
     public enum ElementExternalActionAdding
-    {        
+    {
+        /// <exclude />
         AllowGlobal = 1,
+
+        /// <exclude />
         AllowProcessConotroller = 2,
+
+        /// <exclude />
         AllowManageUserPermissions = 4 
     }
 
@@ -54,6 +59,8 @@ namespace Composite.C1Console.Elements
             this.TreeLockBehavior = TreeLockBehavior.Normal;
         }
 
+
+        /// <exclude />
         public Element(ElementHandle elementHandle)
             : this()
         {
@@ -63,6 +70,8 @@ namespace Composite.C1Console.Elements
         }
 
 
+
+        /// <exclude />
         public Element(ElementHandle elementHandle, ElementVisualizedData visualData)
             : this()
         {
@@ -76,6 +85,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public Element(ElementHandle elementHandle, ElementDragAndDropInfo movabilityInfo)
             : this()
         {
@@ -88,6 +98,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public Element(ElementHandle elementHandle, ElementVisualizedData visualData, ElementDragAndDropInfo movabilityInfo)
             : this()
         {
@@ -102,9 +113,8 @@ namespace Composite.C1Console.Elements
         }
 
 
-        
 
-
+        /// <exclude />
         public ElementHandle ElementHandle
         {
             get { return _elementHandle; }
@@ -112,27 +122,36 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public ElementVisualizedData VisualData { get; set; }
 
 
 
+        /// <exclude />
         public ElementDragAndDropInfo MovabilityInfo { get; private set; }
 
 
+        /// <exclude />
         public bool IsLocaleAware { get; set; }
 
 
+        /// <exclude />
         public Dictionary<string, string> PropertyBag
         {
             get { return _propertyBag; }
         }
 
+
+        /// <exclude />
         public string TagValue { get; set; }
 
 
+        /// <exclude />
         public TreeLockBehavior TreeLockBehavior { get; set; }
 
+
         #region Action methods
+        /// <exclude />
         public ElementExternalActionAdding ElementExternalActionAdding
         {
             get;
@@ -140,6 +159,7 @@ namespace Composite.C1Console.Elements
         }
 
 
+        /// <exclude />
         public int ActionCount
         {
             get
@@ -150,6 +170,7 @@ namespace Composite.C1Console.Elements
         }
 
 
+        /// <exclude />
         public void AddAction(ElementAction elementAction)
         {
             if (elementAction == null) throw new ArgumentNullException("elementAction");
@@ -166,6 +187,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public void AddAction(IEnumerable<ElementAction> elementActions)
         {
             if (elementActions == null) throw new ArgumentNullException("elementActions");
@@ -176,6 +198,9 @@ namespace Composite.C1Console.Elements
             }
         }
 
+
+
+        /// <exclude />
         public void RemoveAction(ElementAction elementAction)
         {
             if (elementAction == null) throw new ArgumentNullException("elementAction");
@@ -184,11 +209,15 @@ namespace Composite.C1Console.Elements
         }
 
 
+
         internal void RemoveMovabilityInfo()
         {
             MovabilityInfo = new ElementDragAndDropInfo();
         }
 
+
+
+        /// <exclude />
         public IEnumerable<ElementAction> Actions
         {
             get { return _elementActions; }
@@ -196,12 +225,14 @@ namespace Composite.C1Console.Elements
         #endregion
 
 
+        /// <exclude />
         public override bool Equals(object obj)
         {
             return Equals(obj as Element);
         }
 
 
+        /// <exclude />
         public bool Equals(Element element)
         {
             if (element == null) return false;
@@ -210,6 +241,7 @@ namespace Composite.C1Console.Elements
         }
 
 
+        /// <exclude />
         public override int GetHashCode()
         {
             return this.ElementHandle.EntityToken.GetHashCode();

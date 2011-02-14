@@ -10,6 +10,7 @@ namespace Composite.C1Console.Workflow
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public interface IEventHandleFilter
     {
+        /// <exclude />
         void Filter(Dictionary<IFormEventIdentifier, FormFlowEventHandler> eventHandlers);
     }
 }

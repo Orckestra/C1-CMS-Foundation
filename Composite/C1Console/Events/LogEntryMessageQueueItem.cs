@@ -12,8 +12,13 @@ namespace Composite.C1Console.Events
     [Serializable]
     public sealed class LogEntryMessageQueueItem : IConsoleMessageQueueItem
     {
+        /// <exclude />
         public Type Sender { get; set; }
+
+        /// <exclude />
         public LogLevel Level { get; set; }
+
+        /// <exclude />
         public string Message { get; set; }
     }
 }

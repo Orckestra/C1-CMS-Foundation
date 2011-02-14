@@ -12,16 +12,23 @@ namespace Composite.Core.WebClient.UiControlLib
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class TreeNode : LinkButton
     {
+        /// <exclude />
         [Category("Appearance"), DefaultValue(""), Description("Image to show as tree node bullet")]
         public virtual string ImageUrl { get; set; }
 
+
+        /// <exclude />
         public override void Focus()
         {
             this.Focused = true;
         }
 
+
+        /// <exclude />
         public virtual bool Focused { get; set; }
 
+
+        /// <exclude />
         protected override void Render(HtmlTextWriter writer)
         {
             writer.WriteBeginTag("ui:treenode");

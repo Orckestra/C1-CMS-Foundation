@@ -22,6 +22,8 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
         private int _hashCode = 0;
 
+
+        /// <exclude />
         public AssociatedDataElementProviderHelperEntityToken(string type, string providerName, string id, string payload)
         {
             _type = type;
@@ -31,21 +33,29 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             this.Payload = payload;
         }
 
+
+        /// <exclude />
         public override string Type
         {
             get { return _type; }
         }
 
+
+        /// <exclude />
         public override string Source
         {
             get { return _providerName; }
         }
 
+
+        /// <exclude />
         public override string Id
         {
             get { return _id; }
         }
-        
+
+
+        /// <exclude />
         public string Payload
         {
             get;
@@ -53,6 +63,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         }
 
 
+        /// <exclude />
         public Type GetInterfaceType()
         {
             Type type = TypeManager.GetType(this.Type);
@@ -61,6 +72,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         }
 
 
+        /// <exclude />
         public IData GetData()
         {
             Type type = TypeManager.GetType(this.Type);
@@ -73,6 +85,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         }
 
 
+        /// <exclude />
         public override string Serialize()
         {
             StringBuilder sb = new StringBuilder();
@@ -85,6 +98,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         }
 
 
+        /// <exclude />
         public static EntityToken Deserialize(string serializedEntityToken)
         {
             string type, source, id;
@@ -103,12 +117,14 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         }
 
 
+        /// <exclude />
         public override bool Equals(object obj)
         {
             return Equals(obj as AssociatedDataElementProviderHelperEntityToken);
         }
 
 
+        /// <exclude />
         public bool Equals(AssociatedDataElementProviderHelperEntityToken entityToken)
         {
             if (entityToken == null) return false;
@@ -120,6 +136,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         }
 
 
+        /// <exclude />
         public override int GetHashCode()
         {
             if (_hashCode == 0)

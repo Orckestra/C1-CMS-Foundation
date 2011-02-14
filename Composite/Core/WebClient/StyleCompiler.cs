@@ -9,6 +9,7 @@ namespace Composite.Core.WebClient
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class StyleCompiler
     {
+        /// <exclude />
         public static void Compile(string sourceFile, string targetFile)
         {
             using (var outputFile = C1File.Open(targetFile, FileMode.Create))

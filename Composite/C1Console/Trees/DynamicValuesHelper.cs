@@ -10,7 +10,10 @@ namespace Composite.C1Console.Trees
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DynamicValuesHelperReplaceContext
     {
+        /// <exclude />
         public PiggybagDataFinder PiggybagDataFinder { get; set; }
+
+        /// <exclude />
         public IData CurrentDataItem { get; set; }
     }
 
@@ -25,8 +28,11 @@ namespace Composite.C1Console.Trees
     {
         private DataFieldValueHelper DataFieldValueHelper { get; set; }
 
+        /// <exclude />
         public string Template { get; private set; }
 
+
+        /// <exclude />
 
         public DynamicValuesHelper(string template)
         {
@@ -36,9 +42,11 @@ namespace Composite.C1Console.Trees
         }
 
 
+        /// <exclude />
         public bool UseUrlEncode { get; set; }
 
 
+        /// <exclude />
         public string ReplaceValues(DynamicValuesHelperReplaceContext context)
         {
             string currentValue = this.Template;
@@ -63,6 +71,7 @@ namespace Composite.C1Console.Trees
         }
 
 
+        /// <exclude />
         public void Initialize(ActionNode ownerActionNode)
         {
             Initialize(ownerActionNode.OwnerNode);

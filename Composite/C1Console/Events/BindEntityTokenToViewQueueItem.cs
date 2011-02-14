@@ -9,7 +9,10 @@ namespace Composite.C1Console.Events
     [Serializable]
     public class BindEntityTokenToViewQueueItem : IConsoleMessageQueueItem
 	{
+        /// <exclude />
         public string ViewId { get; set; }
+
+        /// <exclude />
         public string EntityToken { get; set; }
 	}
 }

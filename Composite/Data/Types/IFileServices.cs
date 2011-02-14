@@ -11,6 +11,7 @@ namespace Composite.Data.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class IFileServices
     {
+        /// <exclude />
         public static T GetFile<T>(string filePath)
             where T : class, IFile
         {
@@ -30,6 +31,7 @@ namespace Composite.Data.Types
 
 
 
+        /// <exclude />
         public static T TryGetFile<T>(string filePath)
             where T : class, IFile
         {

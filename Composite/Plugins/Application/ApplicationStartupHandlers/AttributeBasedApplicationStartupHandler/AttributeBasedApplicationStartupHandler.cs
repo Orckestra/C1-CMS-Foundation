@@ -72,6 +72,8 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
 
         private string _tempFilePath;
 
+
+        /// <exclude />
         public AttributeBasedApplicationStartupHandler()
         {
             List<AssemblyInfo> cachedTypesInfo = GetCachedAssemblyInfo();
@@ -330,12 +332,16 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             }
         }
 
+
+        /// <exclude />
         [Obsolete("Use Composite.Core.Types.AsseblyFacade.IsAppCodeDll(assembly)")]
         public static bool IsAppCodeDll(Assembly assembly)
         {
             return AssemblyFacade.IsAppCodeDll(assembly);
         }
 
+
+        /// <exclude />
         public void OnBeforeInitialize()
         {
             foreach (MethodInfo methodInfo in _onBeforeInitializeMethods)
@@ -365,6 +371,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             }
         }
 
+
         private string TempFilePath
         {
             get
@@ -379,6 +386,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         }
 
 
+        /// <exclude />
         public void OnInitialized()
         {
             foreach (MethodInfo methodInfo in _onInitializedMethods)
@@ -413,17 +421,27 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
 
 
 
+        /// <exclude />
         [Serializable]
         public class SubscribedTypesCache
         {
+            /// <exclude />
             public AssemblyInfo[] Assemblies { get; set; }
         }
 
+
+
+        /// <exclude />
         [Serializable]
         public class AssemblyInfo
         {
+            /// <exclude />
             public string AssemblyName { get; set; }            // Assembly name
+
+            /// <exclude />
             public DateTime LastModified { get; set; }
+
+            /// <exclude />
             public string[] SubscribedTypes;
         }
     }

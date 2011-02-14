@@ -10,12 +10,14 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
     public sealed class StoreSortOrderAttribute : Attribute
     {
+        /// <exclude />
         public StoreSortOrderAttribute(params string[] sortOrder)
         {
             this.SortOrder = sortOrder;
         }
 
 
+        /// <exclude />
         public string[] SortOrder
         {
             get;

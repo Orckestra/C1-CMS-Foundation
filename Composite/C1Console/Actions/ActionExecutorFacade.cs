@@ -19,6 +19,7 @@ namespace Composite.C1Console.Actions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ActionExecutorFacade
     {
+        /// <exclude />
         public static FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
             return Execute(entityToken, actionToken, flowControllerServicesContainer, null);
@@ -26,6 +27,7 @@ namespace Composite.C1Console.Actions
 
 
 
+        /// <exclude />
         public static FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer, TaskManagerEvent taskManagerEvent)
         {
             if (entityToken == null) throw new ArgumentNullException("entityToken");
@@ -116,6 +118,7 @@ namespace Composite.C1Console.Actions
 
 
 
+        /// <exclude />
         public static FlowToken ExecuteEntityTokenLocked(ActionToken lockedActionToken, EntityToken lockedEntityToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
             EntityToken entityToken = new EntityTokenLockedEntityToken(
@@ -131,6 +134,7 @@ namespace Composite.C1Console.Actions
 
 
 
+        /// <exclude />
         public static FlowToken ExecuteSecurityViolation(ActionToken actionToken, EntityToken entityToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
             EntityToken newEntityToken = new SecurityViolationWorkflowEntityToken();

@@ -19,6 +19,7 @@ namespace Composite.Core.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ValueTypeConverter
     {
+        /// <exclude />
         public static object Convert(object value, Type targetType)
         {
             if (value == null)
@@ -185,7 +186,7 @@ namespace Composite.Core.Types
         }
 
 
-
+        /// <exclude />
         public static T Convert<T>(object value)
         {
             return (T)Convert(value, typeof(T));

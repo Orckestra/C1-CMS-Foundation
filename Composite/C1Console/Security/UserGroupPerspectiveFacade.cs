@@ -13,6 +13,7 @@ namespace Composite.C1Console.Security
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class UserGroupPerspectiveFacade
 	{
+        /// <exclude />
         public static IEnumerable<string> GetSerializedEntityTokens(string username)
         {
             foreach (Guid userGroupId in UserGroupFacade.GetUserGroupIds(username))
@@ -26,6 +27,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static IEnumerable<string> GetSerializedEntityTokens(Guid userGroupId)
         {
             return
@@ -36,6 +38,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static IEnumerable<EntityToken> GetEntityTokens(Guid userGroupId)
         {
             return
@@ -44,6 +47,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static void SetEntityTokens(Guid userGroupId, IEnumerable<EntityToken> entityTokens)
         {
             SetSerializedEntityTokens(userGroupId, entityTokens.Select(f => EntityTokenSerializer.Serialize(f)));
@@ -51,6 +55,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static void SetSerializedEntityTokens(Guid userGroupId, IEnumerable<string> serializedEntityTokens)
         {
             DataFacade.Delete<IUserGroupActivePerspective>(f => f.UserGroupId == userGroupId);
@@ -69,6 +74,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static void DeleteAll(Guid userGroupId)
         {
             DataFacade.Delete<IUserGroupActivePerspective>(f => f.UserGroupId == userGroupId);

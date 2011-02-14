@@ -21,10 +21,13 @@ namespace Composite.Plugins.Forms.WebChannel.CustomUiControls
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class PageContentEditorTemplateUserControlBase : UserControl
     {
+        /// <exclude />
         protected abstract void BindStateToProperties();
 
+        /// <exclude />
         protected abstract void InitializeViewState();
 
+        /// <exclude />
         public abstract string GetDataFieldClientName();
 
         internal void BindStateToControlProperties()
@@ -37,14 +40,19 @@ namespace Composite.Plugins.Forms.WebChannel.CustomUiControls
             this.InitializeViewState();
         }
 
+        /// <exclude />
         public Guid TemplateId { get; set; }
 
+        /// <exclude />
         public List<KeyValuePair<Guid, string>> SelectableTemplateIds { get; set; }
 
+        /// <exclude />
         public Dictionary<string, string> NamedXhtmlFragments { get; set; }
 
+        /// <exclude />
         public string FormControlLabel { get; set; }
 
+        /// <exclude />
         public string ClassConfigurationName { get; set; }
     }
 

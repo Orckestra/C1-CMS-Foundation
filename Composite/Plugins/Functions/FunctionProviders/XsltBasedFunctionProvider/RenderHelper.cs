@@ -24,7 +24,10 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class TransformationInputs
     {
+        /// <exclude />
         public XContainer InputDocument { get; set; }
+
+        /// <exclude />
         public List<IXsltExtensionDefinition> ExtensionDefinitions { get; set; }
     }
 
@@ -35,10 +38,12 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class RenderHelper
     {
+        /// <exclude />
         public static readonly XNamespace XsltInput10 = "http://www.composite.net/ns/transformation/input/1.0";
 
 
 
+        /// <exclude />
         public static TransformationInputs BuildInputDocument(IEnumerable<NamedFunctionCall> FunctionCalls, List<ManagedParameterDefinition> parameterDefinitions, bool addDetailedComments)
         {
             Dictionary<string, object> inputParameters = BuildTestParameterInput(parameterDefinitions);
@@ -47,6 +52,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
 
 
 
+        /// <exclude />
         public static TransformationInputs BuildInputDocument(IEnumerable<NamedFunctionCall> FunctionCalls, ParameterList parameterList, bool addDetailedComments)
         {
             Dictionary<string, object> inputParameters = new Dictionary<string, object>();
@@ -291,6 +297,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
             return result;
         }
 
+
+        /// <exclude />
         public static IEnumerable<NamedFunctionCall> GetValidFunctionCalls(Guid xsltFunctionId, out List<string> errors)
         {
             errors = null;

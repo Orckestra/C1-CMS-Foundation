@@ -24,6 +24,7 @@ namespace Composite.C1Console.Events
         }
 
 
+        /// <exclude />
         public string MethodName { get; private set; }
     }
 }

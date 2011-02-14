@@ -13,17 +13,21 @@ namespace Composite.C1Console.Actions
         private Dictionary<Type, List<object>> _services = new Dictionary<Type, List<object>>();
 
 
+        /// <exclude />
         public FlowControllerServicesContainer()
         { }
 
+
         // Creates a new service container and initialized it with the services from servicesContainerToClone.
+        /// <exclude />
         public FlowControllerServicesContainer(FlowControllerServicesContainer servicesContainerToClone)
         { 
            _services = new Dictionary<Type,List<object>>(servicesContainerToClone._services);
         }
 
-        
 
+
+        /// <exclude />
         public void AddService(IFlowControllerService flowControllerService)
         {
             Type type = flowControllerService.GetType();
@@ -45,6 +49,7 @@ namespace Composite.C1Console.Actions
 
 
 
+        /// <exclude />
         public void RemoveService(IFlowControllerService flowControllerService)
         {
             Type type = flowControllerService.GetType();
@@ -75,6 +80,7 @@ namespace Composite.C1Console.Actions
 
 
 
+        /// <exclude />
         public IFlowControllerService GetService(Type serviceType)
         {
             List<object> list;

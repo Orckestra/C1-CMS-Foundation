@@ -10,7 +10,10 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class GetMessagesResult
     {
+        /// <exclude />
         public int CurrentSequenceNumber { get; set; }
+
+        /// <exclude />
         public List<ConsoleAction> ConsoleActions { get; set; }
     }
 }

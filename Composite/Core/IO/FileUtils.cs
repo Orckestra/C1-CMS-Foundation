@@ -9,6 +9,7 @@ namespace Composite.Core.IO
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class FileUtils
     {
+        /// <exclude />
         public static bool RemoveReadOnly(string filePath)
         {
             if (C1File.Exists(filePath) == false) return false;
@@ -26,6 +27,7 @@ namespace Composite.Core.IO
 
 
 
+        /// <exclude />
         public static void Delete(string filePath)
         {
             if (C1File.Exists(filePath) == true)

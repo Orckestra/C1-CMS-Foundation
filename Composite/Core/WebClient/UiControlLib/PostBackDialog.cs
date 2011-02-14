@@ -14,13 +14,20 @@ namespace Composite.Core.WebClient.UiControlLib
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class PostBackDialog : BaseControl
     {
+        /// <exclude />
         protected const string DefaultSelectorTagName = "ui:postbackdialog";
+
+        /// <exclude />
         protected const string NullableSelectorTagName = "ui:nullpostbackdialog";
 
+
+        /// <exclude />
         public PostBackDialog(string emptyParameter) : base(DefaultSelectorTagName)
         {
         }
 
+
+        /// <exclude />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -55,8 +62,12 @@ namespace Composite.Core.WebClient.UiControlLib
             }
         }
 
+
+        /// <exclude />
         public string Value { get; set; }
 
+
+        /// <exclude />
         protected override void RenderAttributes(System.Web.UI.HtmlTextWriter writer)
         {
         	// added for error balloons to fixitup good

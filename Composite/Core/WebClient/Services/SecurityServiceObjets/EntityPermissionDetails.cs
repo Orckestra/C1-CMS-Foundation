@@ -7,7 +7,10 @@ namespace Composite.Core.WebClient.Services.SecurityServiceObjets
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public class EntityPermissionDetails
 	{
+        /// <exclude />
         public List<UserPermissions> InheritedUserPermissions { get; set; }
+
+        /// <exclude />
         public List<UserPermissions> EntityUserPermissions { get; set; }
 	}
 }

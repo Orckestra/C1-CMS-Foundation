@@ -34,6 +34,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.SqlFunctionProvider
         private object _lock = new object();
 
 
+        /// <exclude />
         public SqlFunction(ISqlFunctionInfo functionInfo, IEnumerable<ParameterProfile> parameterProfiles)
             : this(functionInfo)
         {
@@ -42,11 +43,13 @@ namespace Composite.Plugins.Functions.FunctionProviders.SqlFunctionProvider
 
 
 
+        /// <exclude />
         public SqlFunction(ISqlFunctionInfo functionInfo)
         {
             _functionInfo = functionInfo;
             Updated = true;
         }
+
 
 
         private bool Updated
@@ -62,6 +65,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.SqlFunctionProvider
             }
         }
 
+
+
+        /// <exclude />
         public object Execute(ParameterList parameters, FunctionContextContainer context)
         {
             EnsureUpdated();
@@ -94,6 +100,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.SqlFunctionProvider
 
 
 
+        /// <exclude />
         public string Name
         {
             get
@@ -104,6 +111,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.SqlFunctionProvider
 
 
 
+        /// <exclude />
         public string Namespace
         {
             get
@@ -113,9 +121,13 @@ namespace Composite.Plugins.Functions.FunctionProviders.SqlFunctionProvider
         }
 
 
+
+        /// <exclude />
         public string Description { get { return _functionInfo.Description; } }
 
 
+
+        /// <exclude />
         public Type ReturnType
         {
             get
@@ -126,6 +138,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.SqlFunctionProvider
 
 
 
+        /// <exclude />
         public IEnumerable<ParameterProfile> ParameterProfiles
         {
             get
@@ -372,6 +385,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.SqlFunctionProvider
             Updated = true;
         }
 
+        /// <exclude />
         public EntityToken EntityToken
         {
             get 

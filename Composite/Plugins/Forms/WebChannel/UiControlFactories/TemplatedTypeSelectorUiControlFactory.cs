@@ -24,10 +24,13 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         private Type _selectedType;
         private TemplatedTypeSelectorUiControl _typeOptionsProxy;
 
+        /// <exclude />
         protected abstract void BindStateToProperties();
 
+        /// <exclude />
         protected abstract void InitializeViewState();
 
+        /// <exclude />
         public abstract string GetDataFieldClientName();
 
         internal void BindStateToControlProperties()
@@ -45,18 +48,21 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _typeOptionsProxy = proxy;
         }
 
+        /// <exclude />
         public Type SelectedType
         {
             get { return _selectedType; }
             set { _selectedType = value; }
         }
 
+        /// <exclude />
         public string FormControlLabel
         {
             get { return _formControlLabel; }
             set { _formControlLabel = value; }
         }
 
+        /// <exclude />
         public IEnumerable<Type> TypeOptions 
         {
             get
@@ -66,6 +72,9 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         }
 
     }
+
+
+
 
     internal sealed class TemplatedTypeSelectorUiControl : TypeSelectorUiControl, IWebUiControl
     {
@@ -79,6 +88,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         }
 
 
+        /// <exclude />
         public override void BindStateToControlProperties()
         {
             _userControl.BindStateToControlProperties();
@@ -86,12 +96,14 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         }
 
 
+        /// <exclude />
         public void InitializeViewState()
         {
             _userControl.InitializeWebViewState();
         }
 
 
+        /// <exclude />
         public Control BuildWebControl()
         {
             _userControl = _userControlType.ActivateAsUserControl<TypeSelectorTemplateUserControlBase>(this.UiControlID);
@@ -109,8 +121,12 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             return base.GetTypeOptions();
         }
 
+
+        /// <exclude />
         public bool IsFullWidthControl { get { return false; } }
 
+
+        /// <exclude />
         public string ClientName { get { return _userControl.GetDataFieldClientName(); } }
     }
 
@@ -154,6 +170,8 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         }
     }
 
+
+
     internal sealed class TemplatedTypeSelectorUiControlFactoryAssembler : IAssembler<IUiControlFactory, UiControlFactoryData>
     {
         public IUiControlFactory Assemble(IBuilderContext context, UiControlFactoryData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
@@ -161,6 +179,4 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             return new TemplatedTypeSelectorUiControlFactory(objectConfiguration as TemplatedTypeSelectorUiControlFactoryData);
         }
     }
-
-
 }

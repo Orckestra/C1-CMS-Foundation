@@ -70,6 +70,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static IEnumerable<Tuple<Type, string>> GetDefinedMetaDataTypeAndNames(this IPage page)
         {
             Guid pageId = page.GetPageIdOrNull();
@@ -263,6 +264,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static IEnumerable<IData> GetMetaData(string definitionName, Type metaDataType)
         {
             //TODO: Consider caching here            
@@ -291,6 +293,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static IEnumerable<IData> GetMetaData(this IPage page)
         {
             return GetMetaData(page, DataScopeManager.CurrentDataScope);
@@ -298,6 +301,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static IEnumerable<IData> GetMetaData(this IPage page, DataScopeIdentifier dataScopeIdentifier)
         {
             using (new DataScope(dataScopeIdentifier))
@@ -316,6 +320,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static IData GetMetaData(this IPage page, string definitionName, Guid metaDataTypeId)
         {
             DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(metaDataTypeId);
@@ -325,12 +330,16 @@ namespace Composite.Data
         }
 
 
+
+        /// <exclude />
         public static IData GetMetaData(this IPage page, string definitionName, Type metaDataType)
         {
             return GetMetaData(page.Id, definitionName, metaDataType);
         }
 
 
+
+        /// <exclude />
         public static IData GetMetaData(Guid pageId, string definitionName, Type metaDataType)
         {
             //TODO: Consider caching here            
@@ -449,6 +458,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static IEnumerable<IPage> GetMetaDataAffectedPagesByPageTypeId(Guid definingPageTypeId)
         {
             return DataFacade.GetData<IPage>().Where(f => f.PageTypeId == definingPageTypeId);
@@ -465,7 +475,8 @@ namespace Composite.Data
         //}
 
 
-        
+
+        /// <exclude />
         public static bool IsDefinitionAllowed(Guid definingItemId, string name, string label, Guid metaDataTypeId)
         {
             IEnumerable<IPageMetaDataDefinition> pageMetaDataDefinitions = DataFacade.GetData<IPageMetaDataDefinition>().Where(f => f.Name == name).Evaluate();
@@ -490,6 +501,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static bool IsNewContainerIdAllowed(Guid definingItemId, string name, Guid newMetaDataContainerName)
         {
             IEnumerable<IPageMetaDataDefinition> pageMetaDataDefinitions = DataFacade.GetData<IPageMetaDataDefinition>().Where(f => f.Name == name).Evaluate();
@@ -590,6 +602,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static void AddNewMetaDataToExistingPage(this IPage page, string metaDataDefinitionName, Type metaDataType, IData newDataTemplate)
         {
             IData data = page.GetMetaData(metaDataDefinitionName, metaDataType);
@@ -842,6 +855,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static void RemoveAllDefinitions(Guid metaDataTypeId, bool deleteExistingMetaData = true)
         {
             IEnumerable<IPageMetaDataDefinition> pageMetaDataDefinitions =
@@ -878,6 +892,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static PropertyInfo GetDefinitionNamePropertyInfo(Type metaDataType)
         {
             return metaDataType.GetPropertiesRecursively().Where(f => f.Name == MetaDataType_MetaDataDefinitionFieldName).Single();
@@ -885,6 +900,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static PropertyInfo GetDefinitionPageReferencePropertyInfo(Type metaDataType)
         {
             return metaDataType.GetPropertiesRecursively().Where(f => f.Name == MetaDataType_PageReferenceFieldName).Single();
@@ -892,6 +908,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static Guid GetMetaDataReferencedPageId(IData metaData)
         {
             PropertyInfo propertyInfo = PageMetaDataFacade.GetDefinitionPageReferencePropertyInfo(metaData.DataSourceId.InterfaceType);
@@ -903,6 +920,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static IPage GetMetaDataReferencedPage(this IData metaData)
         {
             Guid pageId = GetMetaDataReferencedPageId(metaData);
@@ -923,6 +941,5 @@ namespace Composite.Data
                 return Guid.Empty;
             }
         }
-
     }
 }

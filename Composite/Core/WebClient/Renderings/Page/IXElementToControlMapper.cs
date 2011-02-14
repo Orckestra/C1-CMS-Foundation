@@ -11,6 +11,7 @@ namespace Composite.Core.WebClient.Renderings.Page
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public interface IXElementToControlMapper
 	{
+        /// <exclude />
         bool TryGetControlFromXElement(XElement element, out Control control);
 	}
 }

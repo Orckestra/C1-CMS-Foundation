@@ -11,6 +11,7 @@ namespace Composite.Core.Instrumentation
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ProfilerReport
     {
+        /// <exclude />
         public static XElement BuildReportXml(Measurement measurement)
         {
             int index = 0;

@@ -12,8 +12,10 @@ namespace Composite.Core.Linq.ExpressionVisitors
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class CacheKeyBuilderExpressionVisitor : ExpressionStringBuilder
     {
+        /// <exclude />
         public interface ICacheKeyProvider
         {
+            /// <exclude />
             string GetCacheKey();
         }
 
@@ -21,6 +23,8 @@ namespace Composite.Core.Linq.ExpressionVisitors
 
         private bool _cacheKeyCanBeCreated = true;
 
+
+        /// <exclude />
         protected CacheKeyBuilderExpressionVisitor()
         {
         }
@@ -33,6 +37,8 @@ namespace Composite.Core.Linq.ExpressionVisitors
             return builder.ToString();
         }
 
+
+        /// <exclude />
         public override Expression Visit(Expression node)
         {
             // Don't do anything if the expression is considered as not appropriate
@@ -44,6 +50,8 @@ namespace Composite.Core.Linq.ExpressionVisitors
             return base.Visit(node);
         }
 
+
+        /// <exclude />
         protected override Expression VisitMember(MemberExpression node)
         {
             // Replacing output like "value(SomeNamespace.Filters+<>c__DisplayClassa).SomeField" with its actual value
@@ -98,6 +106,8 @@ namespace Composite.Core.Linq.ExpressionVisitors
             return base.VisitMember(node);
         }
 
+
+        /// <exclude />
         protected override Expression VisitConstant(ConstantExpression node)
         {
             if(node.Value != null && !IsSimpleType(node.Type))
@@ -109,10 +119,14 @@ namespace Composite.Core.Linq.ExpressionVisitors
             return base.VisitConstant(node);
         }
 
+
+        /// <exclude />
         public override string ToString()
         {
             return _cacheKeyCanBeCreated ? base.ToString() : null;
         }
+
+
 
         private static bool IsSimpleType(Type type)
         {

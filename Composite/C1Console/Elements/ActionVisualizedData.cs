@@ -9,11 +9,13 @@ namespace Composite.C1Console.Elements
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ActionVisualizedData
     {
+        /// <exclude />
         public ActionVisualizedData() 
         {
             this.ActionCheckedStatus = ActionCheckedStatus.Uncheckable;
         }
 
+        /// <exclude />
         public ActionVisualizedData(ActionVisualizedData copy) 
         {
             this.ActionLocation = copy.ActionLocation;
@@ -25,11 +27,22 @@ namespace Composite.C1Console.Elements
         }
 
 
+        /// <exclude />
         public ActionCheckedStatus ActionCheckedStatus { get; set; }
+
+        /// <exclude />
         public string Label { get; set; }
+
+        /// <exclude />
         public bool Disabled { get; set; }
+
+        /// <exclude />
         public ResourceHandle Icon { get; set; }
+
+        /// <exclude />
         public string ToolTip { get; set; }
+
+        /// <exclude />
         public ActionLocation ActionLocation { get; set; }
     }
 }

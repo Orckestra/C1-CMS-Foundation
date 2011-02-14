@@ -22,6 +22,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 	{
         private List<XslTransformation> _xsls;
 
+        /// <exclude />
 		public override IEnumerable<PackageFragmentValidationResult> Validate()
 		{
 			List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
@@ -78,6 +79,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 			return validationResult;
 		}
 
+
+        /// <exclude />
 		public override void Uninstall()
 		{
             if (_xsls == null) throw new InvalidOperationException("FileXslTransformationPackageFragmentUninstaller has not been validated");

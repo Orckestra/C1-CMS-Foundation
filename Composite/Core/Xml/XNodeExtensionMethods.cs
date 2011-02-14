@@ -81,6 +81,7 @@ namespace Composite.Core.Xml
         }
 
 
+        /// <exclude />
         public static string[] InlineElements = new string[]
         {
             "a", 
@@ -119,6 +120,7 @@ namespace Composite.Core.Xml
 
 
 
+        /// <exclude />
         public static bool IsBlockElement(this XNode node)
         {
             if (node == null) return false;
@@ -137,6 +139,7 @@ namespace Composite.Core.Xml
 
 
 
+        /// <exclude />
         public static bool IsWhitespaceAware(this XNode node)
         {
             if (node == null) return false;

@@ -18,29 +18,34 @@ namespace Composite.Data.Types
     [CachingAttribute(CachingType.Full)]    
     public interface ITaskItem : IData
     {
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{EE312CF7-AB0A-4b4c-B524-4C92E475F08E}")]
-        Guid Id { get; set; }        
+        Guid Id { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 255)]
         [ImmutableFieldId("{C800E783-7C68-4b3d-B839-56685104DC65}")]
         [NotNullValidator()]
         string TaskId { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 2048)]
         [ImmutableFieldId("{28474560-8CE3-4f6f-A83D-C4F996228BF2}")]
         [NotNullValidator()]
         string TaskManagerType { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.LargeString)]
         [ImmutableFieldId("{F7B9A678-B0BD-4ba5-8805-C8C2B52921AB}")]
         [NotNullValidator()]
         string SerializedFlowToken { get; set; }
 
 
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.DateTime)]
         [ImmutableFieldId("{34E4FC09-6FFF-4fcc-BB40-59F437B2FAB6}")]
         DateTime StartTime { get; set; }

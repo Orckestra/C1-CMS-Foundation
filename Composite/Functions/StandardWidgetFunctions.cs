@@ -26,6 +26,7 @@ namespace Composite.Functions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class StandardWidgetFunctions
     {
+        /// <exclude />
         public static string GetDefaultWidgetFunctionNameByType(Type type)
         {
             WidgetFunctionProvider provider = GetDefaultWidgetFunctionProviderByType(type);
@@ -40,7 +41,8 @@ namespace Composite.Functions
             }
         }
 
-        
+
+        /// <exclude />
         public static WidgetFunctionProvider GetDefaultWidgetFunctionProviderByType(Type type)
         {
             if (type == typeof(string)) return StandardWidgetFunctions.TextBoxWidget;
@@ -70,6 +72,7 @@ namespace Composite.Functions
         }
 
 
+        /// <exclude />
         public static WidgetFunctionProvider DateSelectorWidget
         {
             get
@@ -79,6 +82,7 @@ namespace Composite.Functions
         }
 
 
+        /// <exclude />
         public static WidgetFunctionProvider DateTimeSelectorWidget
         {
             get
@@ -88,6 +92,7 @@ namespace Composite.Functions
         }
 
 
+        /// <exclude />
         public static WidgetFunctionProvider TextBoxWidget
         {
             get
@@ -97,6 +102,7 @@ namespace Composite.Functions
         }
 
 
+        /// <exclude />
         public static WidgetFunctionProvider GuidTextBoxWidget
         {
             get
@@ -106,6 +112,7 @@ namespace Composite.Functions
         }
 
 
+        /// <exclude />
         public static WidgetFunctionProvider DataTypeSelectorWidget
         {
             get
@@ -115,6 +122,7 @@ namespace Composite.Functions
         }
 
 
+        /// <exclude />
         public static WidgetFunctionProvider TextAreaWidget
         {
             get
@@ -124,6 +132,7 @@ namespace Composite.Functions
         }
 
 
+        /// <exclude />
         public static WidgetFunctionProvider VisualXhtmlDocumentEditorWidget
         {
             get
@@ -133,6 +142,7 @@ namespace Composite.Functions
         }
 
 
+        /// <exclude />
         public static WidgetFunctionProvider IntegerTextBoxWidget
         {
             get
@@ -142,6 +152,7 @@ namespace Composite.Functions
         }
 
 
+        /// <exclude />
         public static WidgetFunctionProvider DecimalTextBoxWidget
         {
             get
@@ -151,6 +162,7 @@ namespace Composite.Functions
         }
 
 
+        /// <exclude />
         public static WidgetFunctionProvider CheckBoxWidget
         {
             get
@@ -160,7 +172,7 @@ namespace Composite.Functions
         }
 
 
-
+        /// <exclude />
         public static WidgetFunctionProvider GetDataReferenceWidget(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -178,7 +190,7 @@ namespace Composite.Functions
         }
 
 
-
+        /// <exclude />
         public static WidgetFunctionProvider GetDataReferenceWidget<T>()
             where T : class, IData
         {
@@ -199,7 +211,7 @@ namespace Composite.Functions
         }
 
 
-
+        /// <exclude />
         public static WidgetFunctionProvider GetNullableDataReferenceWidget<T>()
             where T : class, IData
         {
@@ -221,7 +233,7 @@ namespace Composite.Functions
 
 
 
-
+        /// <exclude />
         public static WidgetFunctionProvider GetImageSelectorWidget(bool selectionRequired)
         {
             List<BaseParameterRuntimeTreeNode> widgetParams = new List<BaseParameterRuntimeTreeNode>();
@@ -231,7 +243,7 @@ namespace Composite.Functions
         }
 
 
-
+        /// <exclude />
         public static WidgetFunctionProvider GetMediaFileSelectorWidget(bool selectionRequired)
         {
             List<BaseParameterRuntimeTreeNode> widgetParams = new List<BaseParameterRuntimeTreeNode>();
@@ -241,13 +253,14 @@ namespace Composite.Functions
         }
 
 
-
+        /// <exclude />
         public static WidgetFunctionProvider GetBoolSelectorWidget(string trueLabel, string falseLabel)
         {
             return new WidgetFunctionProvider(new BoolSelectorWidgetFuntion(null, trueLabel, falseLabel));
         }
 
 
+        /// <exclude />
         public static XElement BuildBasicFormsMarkup(XNamespace uiControlNamespace, string uiControlName, string bindingPropertyName, string label, HelpDefinition help, string bindingSourceName)
         {
             XNamespace forms10Space = Namespaces.BindingForms10;
@@ -264,7 +277,7 @@ namespace Composite.Functions
         }
 
 
-
+        /// <exclude />
         public static XElement BuildStaticCallPopulatedSelectorFormsMarkup(ParameterList parameters, string label, HelpDefinition helpDefinition, string bindingSourceName, Type optionsGeneratingStaticType, string optionsGeneratingStaticMethodName, object optionsGeneratingStaticMethodParameterValue, string optionsObjectKeyPropertyName, string optionsObjectLabelPropertyName, bool multiSelect, bool compactMode, bool required, bool bindToString)
         {
             string tagName = (multiSelect==true? "MultiKeySelector": "KeySelector");
@@ -323,6 +336,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static WidgetFunctionProvider DropDownList(Type optionsGeneratingStaticType, string optionsGeneratingStaticMethodName, bool multiSelector, bool required)
         {
             return new WidgetFunctionProvider(
@@ -331,6 +345,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static WidgetFunctionProvider DropDownList(Type optionsGeneratingStaticType, string optionsGeneratingStaticMethodName, object optionsGeneratingStaticMethodParameterValue, string optionsObjectKeyPropertyName, string optionsObjectLabelPropertyName, bool multiSelector, bool required)
         {
             return new WidgetFunctionProvider(
@@ -339,6 +354,7 @@ namespace Composite.Functions
 
 
 
+        /// <exclude />
         public static WidgetFunctionProvider DropDownList(Type optionsGeneratingStaticType, string optionsGeneratingStaticMethodName, object optionsGeneratingStaticMethodParameterValue, bool multiSelector, bool compact, bool required)
         {
             return new WidgetFunctionProvider(

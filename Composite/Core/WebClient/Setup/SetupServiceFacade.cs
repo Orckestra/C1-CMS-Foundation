@@ -26,18 +26,30 @@ namespace Composite.Core.WebClient.Setup
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class SetupServiceFacade
     {
+        /// <exclude />
         public static XNamespace XmlNamespace = (XNamespace)"urn:Composte.C1.Setup";
+
+        /// <exclude />
         public static XName PackageElementName = XmlNamespace + "package";
+
+        /// <exclude />
         public static string UrlAttributeName = "url";
+
+        /// <exclude />
         public static string IdAttributeName = "id";
+
+        /// <exclude />
         public static string KeyAttributeName = "key";
 
+        /// <exclude />
         public static string PackageServicePingUrlFormat = "{0}/C1.asmx";
+
         private static string SetupServiceUrl = "{0}/Setup/Setup.asmx";
         private static string PackageUrlFormat = "{0}{1}";
 
 
         private static string _packageServerUrl = null;
+        /// <exclude />
         public static string PackageServerUrl
         {
             get
@@ -58,6 +70,7 @@ namespace Composite.Core.WebClient.Setup
 
 
 
+        /// <exclude />
         public static void SetUp(string setupDescriptionXml, string username, string password, string language)
         {
             ApplicationOnlineHandlerFacade.TurnApplicationOffline(false);
@@ -113,6 +126,7 @@ namespace Composite.Core.WebClient.Setup
 
 
 
+        /// <exclude />
         public static bool PingServer()
         {
             SetupSoapClient client = CreateClient();
@@ -122,7 +136,7 @@ namespace Composite.Core.WebClient.Setup
 
 
 
-
+        /// <exclude />
         public static XElement GetSetupDescription()
         {
             SetupSoapClient client = CreateClient();
@@ -134,6 +148,7 @@ namespace Composite.Core.WebClient.Setup
 
 
 
+        /// <exclude />
         public static XElement GetLanguages()
         {
             SetupSoapClient client = CreateClient();
@@ -145,6 +160,7 @@ namespace Composite.Core.WebClient.Setup
 
 
 
+        /// <exclude />
         public static XmlDocument GetGetLicense()
         {
             SetupSoapClient client = CreateClient();

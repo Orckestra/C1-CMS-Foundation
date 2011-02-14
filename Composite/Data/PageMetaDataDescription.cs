@@ -31,9 +31,16 @@ namespace Composite.Data
     [SerializerHandler(typeof(PageMetaDataDescriptionSerializerHandler))]
     public sealed class PageMetaDataDescription
     {
+        /// <exclude />
         public static PageMetaDataDescription OneToOne() { return new PageMetaDataDescription(PageMetaDataDescriptionType.OneToOne); }
+
+        /// <exclude />
         public static PageMetaDataDescription Branch() { return new PageMetaDataDescription(PageMetaDataDescriptionType.Branch, 0, 100000); }
+
+        /// <exclude />
         public static PageMetaDataDescription Branch(int startLevel) { return new PageMetaDataDescription(PageMetaDataDescriptionType.Branch, startLevel, int.MaxValue); }
+
+        /// <exclude />
         public static PageMetaDataDescription Branch(int startLevel, int levels) { return new PageMetaDataDescription(PageMetaDataDescriptionType.Branch, startLevel, levels); }
 
 
@@ -50,9 +57,10 @@ namespace Composite.Data
             this.PageMetaDataDescriptionType = dataAssociationVisabilityRuleType;
             this.StartLevel = startLevel;
             this.Levels = levels;            
-        }        
+        }
 
 
+        /// <exclude />
         public PageMetaDataDescriptionType PageMetaDataDescriptionType
         {
             get;
@@ -60,6 +68,7 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public int StartLevel
         {
             get;
@@ -67,14 +76,15 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
         public int Levels
         {
             get;
             private set;
         }
-      
 
 
+        /// <exclude />
         public string Serialize()
         {
             StringBuilder sb = new StringBuilder();
@@ -121,6 +131,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public override bool Equals(object obj)
         {
             return Equals(obj as PageMetaDataDescription);
@@ -128,6 +139,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public bool Equals(PageMetaDataDescription dataAssociationVisabilityRule)
         {
             if (dataAssociationVisabilityRule == null) return false;
@@ -140,6 +152,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public override int GetHashCode()
         {
             return
@@ -157,8 +170,13 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum PageMetaDataDescriptionType
     {
+        /// <exclude />
         OneToOne = 0,
+
+        /// <exclude />
         Branch = 1,
+
+        /// <exclude />
         PageType = 2
     }
 }

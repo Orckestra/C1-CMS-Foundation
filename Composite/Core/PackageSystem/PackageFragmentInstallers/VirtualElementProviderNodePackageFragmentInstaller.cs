@@ -22,6 +22,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         private List<Area> _areasToInstall = null;
 
 
+        /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
             List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
@@ -114,6 +115,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
 
+        /// <exclude />
         public override IEnumerable<XElement> Install()
         {
             if (_areasToInstall == null) throw new InvalidOperationException("VirtualElementProviderNodePackageFragmentInstaller has not been validated");

@@ -10,6 +10,7 @@ namespace Composite.Core.Types
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
     public sealed class BuildManagerCustomSerializerPointerAttribute : Attribute
 	{
+        /// <exclude />
         public BuildManagerCustomSerializerPointerAttribute(string propertyClassNamespaceName, string propertyClassTypeName)
         {
             this.PropertyClassNamespaceName = propertyClassNamespaceName;
@@ -17,6 +18,7 @@ namespace Composite.Core.Types
         }
 
 
+        /// <exclude />
         public string PropertyClassNamespaceName
         {
             get;
@@ -24,6 +26,7 @@ namespace Composite.Core.Types
         }
 
 
+        /// <exclude />
         public string PropertyClassTypeName
         {
             get;

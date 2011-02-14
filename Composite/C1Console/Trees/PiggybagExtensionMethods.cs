@@ -16,6 +16,7 @@ namespace Composite.C1Console.Trees
         private const string ParrentNodeIdPiggybagString = "ParentId";
 
 
+        /// <exclude />
         public static string GetParentIdFromPiggybag(this Dictionary<string, string> piggybag)
         {
             return GetParentIdFromPiggybag(piggybag, 1);
@@ -23,6 +24,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public static string GetParentIdFromPiggybag(this Dictionary<string, string> piggybag, int generation)
         {
             return piggybag[string.Format("{0}{1}", ParrentNodeIdPiggybagString, generation)];
@@ -30,6 +32,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public static Dictionary<string, string> PreparePiggybag(this Dictionary<string, string> piggybag, TreeNode parentNode, EntityToken parentEntityToken)
         {
             Dictionary<string, string> newPiggybag = new Dictionary<string, string>();
@@ -66,6 +69,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public static bool TryGetPiggybaggedEntityToken(this Dictionary<string, string> piggybag, out EntityToken entityToken)
         {
             return TryGetPiggybaggedEntityToken(piggybag, 1, out entityToken);
@@ -73,6 +77,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public static bool TryGetPiggybaggedEntityToken(this Dictionary<string, string> piggybag, int generation, out EntityToken entityToken)
         {
             string key = string.Format("{0}{1}", ParrentEntityTokenPiggybagString, generation);
@@ -90,6 +95,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public static IEnumerable<EntityToken> GetParentEntityTokens(this Dictionary<string, string> piggybag, EntityToken entityTokenToInclude = null)
         {
             if (entityTokenToInclude != null)
@@ -110,6 +116,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public static DataEntityToken FindDataEntityToken(this IEnumerable<EntityToken> entityTokens, Type interfaceType)
         {
             foreach (EntityToken entityToken in entityTokens)

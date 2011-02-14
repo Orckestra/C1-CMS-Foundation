@@ -19,10 +19,12 @@ namespace Composite.Core.WebClient.Renderings.Template
 	{
         private static readonly Cache<Guid, IPageTemplate> PageTemplateCache = new Cache<Guid, IPageTemplate>("Page templates", 100);
 
+        /// <exclude />
         static TemplateInfo() {
 	      DataEventSystemFacade.SubscribeToDataAfterUpdate<IPageTemplate>(PageTemplate_Changed, true);
           DataEventSystemFacade.SubscribeToDataDeleted<IPageTemplate>(PageTemplate_Changed);
 	    }
+
 
         private static void PageTemplate_Changed(object sender, DataEventArgs dataEventArgs)
 	    {
@@ -32,6 +34,7 @@ namespace Composite.Core.WebClient.Renderings.Template
 	    }
 
 
+        /// <exclude />
 	    public static TemplatePlaceholdersInfo GetRenderingPlaceHolders(Guid templateId)
         {
             XDocument document = GetTemplateDocument(templateId);
@@ -65,6 +68,7 @@ namespace Composite.Core.WebClient.Renderings.Template
 
 
 
+        /// <exclude />
         public static XDocument GetTemplateDocument(Guid templateId)
         {
             IPageTemplate template = GetTemplate(templateId);
@@ -83,6 +87,8 @@ namespace Composite.Core.WebClient.Renderings.Template
 
             return document;
         }
+
+
 
         private static IPageTemplate GetTemplate(Guid templateId)
         {
@@ -106,6 +112,8 @@ namespace Composite.Core.WebClient.Renderings.Template
             return result;
         }
 
+
+
         private static string GetPlaceHolderTitle(XElement placeHolder)
         {
             XAttribute titleAttribute = placeHolder.Attribute(RenderingElementNames.PlaceHolderTitleAttribute);
@@ -119,6 +127,7 @@ namespace Composite.Core.WebClient.Renderings.Template
                 return placeHolder.Attribute(RenderingElementNames.PlaceHolderIdAttribute).Value;
             }
         }
+
 
         /// <summary>
         /// In order to avoid memory leaks we have a separate object that represents loaded file content.

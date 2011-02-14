@@ -12,6 +12,7 @@ namespace Composite.Functions.Inline
     {
         bool _hasErrors;
 
+        /// <exclude />
         public StringInlineFunctionCreateMethodErrorHandler()
         {
             _hasErrors = false;
@@ -19,15 +20,24 @@ namespace Composite.Functions.Inline
         }
 
 
+        /// <exclude />
         public List<Tuple<int, string, string>> CompileErrors { get; set; }
+
+        /// <exclude />
         public string MissingContainerType { get; set; }
+
+        /// <exclude />
         public string NamespaceMismatch { get; set; }
+
+        /// <exclude />
         public string MissionMethod { get; set; }
 
 
+        /// <exclude />
         public override bool HasErrors { get { return _hasErrors; } }
 
 
+        /// <exclude />
         public override void OnCompileError(int line, string errorNumber, string message)
         {
             _hasErrors = true;
@@ -35,6 +45,7 @@ namespace Composite.Functions.Inline
         }
 
 
+        /// <exclude />
         public override void OnMissingContainerType(string message)
         {
             _hasErrors = true;
@@ -42,6 +53,7 @@ namespace Composite.Functions.Inline
         }
 
 
+        /// <exclude />
         public override void OnNamespaceMismatch(string message)
         {
             _hasErrors = true;
@@ -49,6 +61,7 @@ namespace Composite.Functions.Inline
         }
 
 
+        /// <exclude />
         public override void OnMissionMethod(string message)
         {
             _hasErrors = true;

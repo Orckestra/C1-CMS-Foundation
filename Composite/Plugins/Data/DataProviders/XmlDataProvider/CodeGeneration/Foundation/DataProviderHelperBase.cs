@@ -14,14 +14,23 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Fo
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class DataProviderHelperBase : IXmlDataProviderHelper
     {
+        /// <exclude />
         protected ConstructorInfo _idClassConstructor;
+
+        /// <exclude />
         protected ConstructorInfo _wrapperClassConstructor;
 
+        /// <exclude />
         protected Hashtable<Type, Hashtable<string, Delegate>> _selectFunctionCache = new Hashtable<Type, Hashtable<string, Delegate>>();
-        
+
+        /// <exclude />
         public abstract Type _InterfaceType { get; }
+
+        /// <exclude />
         public abstract Type _DataIdType { get; }
 
+
+        /// <exclude />
         public Func<XElement, T> CreateSelectFunction<T>(string providerName) where T : IData
         {
             Type type = typeof(T);
@@ -80,10 +89,16 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Fo
             return (Func<XElement, T>)result;
         }
 
+
+        /// <exclude />
         public abstract IDataId CreateDataId(XElement xElement);
 
+
+        /// <exclude />
         public abstract void ValidateDataType(IData data);
 
+
+        /// <exclude />
         public abstract T CreateNewElement<T>(IData data, out XElement newElement, string elementName, string providerName) where T : IData;
 
 

@@ -16,6 +16,7 @@ namespace Composite.Data.Types
     [Caching(CachingType.Full)]
 	public interface IGeneratedTypeWhiteList : IData
 	{
+        /// <exclude />
         [ImmutableFieldId("{60243CA2-7B4A-4982-A7CF-D7557FFE611E}")]
         [StoreFieldType(PhysicalStoreFieldType.String, 256)]
         string TypeManagerTypeName { get; set; }

@@ -10,6 +10,9 @@ using Composite.Data.Types;
 
 namespace Composite.Core.Implementation
 {
+    /// <summary>
+    /// Documentation pending
+    /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Sitemap", Justification = "We have decided to use Sitemap, not SiteMap")]
     public class SitemapNavigatorImplementation
     {
@@ -28,6 +31,10 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
+        /// <param name="connection"></param>
         public SitemapNavigatorImplementation(DataConnection connection)
         {
             using (DataConnection dataConnection = new DataConnection(connection.CurrentPublicationScope, connection.CurrentLocale))
@@ -39,6 +46,11 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public virtual PageNode GetPageNodeById(Guid id)
         {
             Verify.IsNotNull(_sitemap, "Missing sitemap. This class may have invalid state due to wrong construction.");
@@ -55,6 +67,9 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "HomePage")]
         public virtual IEnumerable<PageNode> HomePageNodes
         {
@@ -71,7 +86,9 @@ namespace Composite.Core.Implementation
 
 
 
-
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "HomePage")]
         public virtual IEnumerable<Guid> HomePageIds
         {
@@ -88,6 +105,9 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
         public virtual PageNode CurrentPageNode
         {
             get
@@ -100,6 +120,11 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
+        /// <param name="hostname"></param>
+        /// <returns></returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Hostname")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "hostname")]
         public virtual PageNode GetPageNodeByHostname(string hostname)
@@ -145,6 +170,9 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "HomePage")]    
         public virtual PageNode CurrentHomePageNode
         {
@@ -170,6 +198,9 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Sitemaps")]
         public virtual ReadOnlyCollection<XElement> AllSitemapsXml
         {
@@ -183,6 +214,9 @@ namespace Composite.Core.Implementation
 
 
 
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Sitemap")]
         public virtual XElement SitemapXml
         {
@@ -204,7 +238,9 @@ namespace Composite.Core.Implementation
 
 
 
-        // This is a static on the actual class, but non-static here to allow mocking
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
         public virtual Guid CurrentPageId
         {
             get
@@ -214,8 +250,10 @@ namespace Composite.Core.Implementation
         }
 
 
-
-        // This is a static on the actual class, but non-static here to allow mocking
+        
+        /// <summary>        
+        /// Documentation pending
+        /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "HomePage")]
         public virtual Guid CurrentHomePageId
         {

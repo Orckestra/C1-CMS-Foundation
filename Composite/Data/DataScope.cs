@@ -13,6 +13,8 @@ namespace Composite.Data
         private bool _dataScopePushed = false;
         private bool _cultureInfoPushed = false;
 
+
+        /// <exclude />
         public DataScope(DataScopeIdentifier dataScope)
             : this(dataScope, null)
         {
@@ -20,6 +22,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public DataScope(CultureInfo cultureInfo)
         {
             if (cultureInfo != null)
@@ -56,6 +59,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         ~DataScope()
         {
             Dispose();
@@ -63,6 +67,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public void Dispose()
         {
             if (_dataScopePushed == true)

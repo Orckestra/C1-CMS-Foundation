@@ -23,6 +23,8 @@ namespace Composite.Core.Application
         //private readonly FieldInfo _isFCNDisabledFieldInfo;
         //private readonly object _savedCallbackValue;
 
+
+        /// <exclude />
         public ShutdownGuard()
         {
             if (!HostingEnvironment.IsHosted)
@@ -70,8 +72,9 @@ namespace Composite.Core.Application
 
         }
 
-        #region IDisposable Members
 
+
+        /// <exclude />
         public void Dispose()
         {
             if (!HostingEnvironment.IsHosted)
@@ -85,7 +88,5 @@ namespace Composite.Core.Application
             //_callbackFieldInfo.SetValue(_fileChangesManager, _savedCallbackValue);
             //_isFCNDisabledFieldInfo.SetValue(_fileChangesManager, (Int32)0);
         }
-
-        #endregion
     }
 }

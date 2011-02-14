@@ -33,6 +33,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public TreeDataFieldGroupingElementEntityToken(string treeNodeId, string treeId, string dataType)
         {
             _treeNodeId = treeNodeId;
@@ -43,6 +44,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public TreeDataFieldGroupingElementEntityToken(string treeNodeId, string treeId, string dataType, Dictionary<string, string> deserializeDictionary)
             : this(treeNodeId, treeId, dataType)
         {
@@ -80,6 +82,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public string TreeNodeId
         {
             get
@@ -90,6 +93,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public Dictionary<string, object> GroupingValues
         {
             get
@@ -140,6 +144,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public Dictionary<string, object> DeserializedGroupingValues
         {
             get 
@@ -186,6 +191,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public Dictionary<string, int> FolderRangeValues
         {
             get
@@ -214,10 +220,12 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public object ChildGeneratingDataElementsReferenceValue { get; set; }
 
 
 
+        /// <exclude />
         public override int GetHashCode()
         {
             if (_hashCode == 0)
@@ -256,6 +264,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public override string Serialize()
         {
             StringBuilder sb = new StringBuilder();
@@ -290,6 +299,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public static EntityToken Deserialize(string serializedEntityToken)
         {
             string type, source, id;
@@ -310,6 +320,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public override string OnGetExtraPrettyHtml()
         {
             StringBuilder sb = new StringBuilder();
@@ -336,6 +347,7 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <exclude />
         public override void OnGetPrettyHtml(EntityTokenHtmlPrettyfier prettyfier)
         {
             prettyfier.AddCustomProperty("GroupingValues", (name, value, helper) =>

@@ -25,10 +25,14 @@ namespace Composite.Core.PackageSystem
         }
 
 
+        /// <exclude />
         public IZipFileSystem ZipFileSystem { get; private set; }
+
+        /// <exclude />
         public PackageInformation PackageInformation { get; private set; }
 
 
+        /// <exclude />
         public void AddPendingForDeletionData(Type interfaceType, DataScopeIdentifier dataScopeIdentifier, CultureInfo locale, DataKeyPropertyCollection dataKeyPropertyCollection)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -47,6 +51,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public bool IsPendingForDeletionData(IData data)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -58,6 +63,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public bool IsPendingForDeletionData(Type interfaceType, DataScopeIdentifier dataScopeIdentifier, CultureInfo locale, DataKeyPropertyCollection dataKeyPropertyCollection)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");

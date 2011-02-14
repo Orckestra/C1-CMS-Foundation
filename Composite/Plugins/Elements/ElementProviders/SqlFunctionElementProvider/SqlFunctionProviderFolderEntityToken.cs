@@ -26,6 +26,7 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
 
 
 
+        /// <exclude />
         public override string Type
         {
             get { return ""; }
@@ -33,6 +34,7 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
 
 
 
+        /// <exclude />
         public override string Source
         {
             get { return _source; }
@@ -40,12 +42,15 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
 
 
 
+        /// <exclude />
         public override string Id
         {
             get { return _id; }
         }
 
 
+
+        /// <exclude />
         public string ConnectionId
         {
             get { return _connectionId; }
@@ -53,6 +58,7 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
         }
 
 
+        /// <exclude />
         public override string Serialize()
         {
             StringBuilder builder = new StringBuilder();
@@ -66,6 +72,7 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
 
 
 
+        /// <exclude />
         public static EntityToken Deserialize(string serializedData)
         {
             IDictionary<string, string> result = StringConversionServices.ParseKeyValueCollection(serializedData);
@@ -78,6 +85,7 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
         }
 
 
+        /// <exclude />
         public override bool Equals(object obj)
         {
             EntityToken entityToken = obj as SqlFunctionProviderFolderEntityToken;
@@ -88,6 +96,7 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
         }
 
 
+        /// <exclude />
         public bool Equals(SqlFunctionProviderFolderEntityToken entityToken)
         {
             if (entityToken.GetHashCode() != GetHashCode()) return false;
@@ -99,6 +108,7 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
         }
 
 
+        /// <exclude />
         public override int GetHashCode()
         {
             if (this.HashCode == 0)

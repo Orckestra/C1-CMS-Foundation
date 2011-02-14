@@ -9,9 +9,10 @@ namespace Composite.C1Console.Elements
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ElementAction
     {
-        private ActionHandle _actionHandle;        
+        private ActionHandle _actionHandle;
 
 
+        /// <exclude />
         public ElementAction(ActionHandle actionHandle)
         {
             if (actionHandle == null) throw new ArgumentNullException("actionHandle");
@@ -21,6 +22,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public ActionHandle ActionHandle
         {
             get { return _actionHandle; }
@@ -28,12 +30,17 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public ActionVisualizedData VisualData { get; set; }
 
 
+
+        /// <exclude />
         public string TagValue { get; set; }
 
 
+
+        /// <exclude />
         public override bool Equals(object obj)
         {
             return base.Equals(obj);
@@ -41,6 +48,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public bool Equals(ElementAction elementAction)
         {
             if (elementAction == null) return false;
@@ -50,6 +58,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public override int GetHashCode()
         {
             return this.ActionHandle.GetHashCode();

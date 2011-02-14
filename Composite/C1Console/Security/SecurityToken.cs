@@ -11,6 +11,7 @@ namespace Composite.C1Console.Security
         private UserToken _userToken;
 
 
+        /// <exclude />
         public SecurityToken(EntityToken entityToken, ActionToken actionToken, UserToken userToken)
         {
             _entityToken = entityToken;
@@ -19,18 +20,21 @@ namespace Composite.C1Console.Security
         }
 
 
+        /// <exclude />
         public EntityToken EntityToken
         {
             get { return _entityToken; }
         }
 
 
+        /// <exclude />
         public ActionToken ActionToken
         {
             get { return _actionToken; }
         }
 
 
+        /// <exclude />
         public UserToken UserToken
         {
             get { return _userToken; }

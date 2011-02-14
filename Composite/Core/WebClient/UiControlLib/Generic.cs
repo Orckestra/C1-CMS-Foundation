@@ -19,12 +19,16 @@ namespace Composite.Core.WebClient.UiControlLib
         private string _methodName;
         private bool? _posted;
 
+
+        /// <exclude />
         public Generic(string tag)
             : base(tag)
         {
             base.EnableViewState = false;
         }
 
+
+        /// <exclude />
         public virtual bool IsPosted
         {
             get
@@ -34,6 +38,8 @@ namespace Composite.Core.WebClient.UiControlLib
             }
         }
 
+
+        /// <exclude />
         protected override void OnLoad(System.EventArgs e)
         {
             _posted = false;
@@ -67,6 +73,9 @@ namespace Composite.Core.WebClient.UiControlLib
             }
         }
 
+
+
+        /// <exclude />
         protected override void RenderAttributes(HtmlTextWriter writer)
         {
             string clientId = Attributes["clientid"];
@@ -94,14 +103,22 @@ namespace Composite.Core.WebClient.UiControlLib
             this.Attributes.Render(writer);
         }
 
+
+
+        /// <exclude />
         protected class PostBackEventHandler : IPostBackEventHandler
         {
             private Generic _control;
+
+
+            /// <exclude />
             public PostBackEventHandler(Generic control)
             {
                 _control = control;
             }
 
+
+            /// <exclude />
             public void RaisePostBackEvent(string eventArgument)
             {
                 string methodName = _control._methodName;
@@ -132,6 +149,7 @@ namespace Composite.Core.WebClient.UiControlLib
 
                 methodInfo.Invoke(controlThatHandlesEvent, new object[0]);
             }
+
 
             private static Control GetControlThatHandlesEvent(Generic generic)
             {

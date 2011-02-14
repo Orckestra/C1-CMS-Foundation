@@ -9,6 +9,7 @@ namespace Composite.Core.WebClient
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public abstract class XhtmlPage : Page
 	{
+        /// <exclude />
         protected override void Render(HtmlTextWriter writer)
         {
             Regex xmlScriptRegex = new Regex(@"(<script\stype=""text/javascript"">)(\s*<!--)((?:.|\n)*?)(\s*-->\s*)(</script>)");

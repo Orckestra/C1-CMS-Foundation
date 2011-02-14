@@ -16,9 +16,14 @@ namespace Composite.Core.PackageSystem
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum ServerUrlValidationResult
     {
-        Http,
-        Https,
-        Invalid
+        /// <exclude />
+        Http = 0,
+
+        /// <exclude />
+        Https = 1,
+
+        /// <exclude />
+        Invalid = 2
     }
 
 
@@ -32,6 +37,7 @@ namespace Composite.Core.PackageSystem
         private static IPackageServerFacade _packageServerFacade;
 
 
+        /// <exclude />
         static PackageServerFacade()
         {
             string testFilePath = Path.Combine(PathUtil.Resolve(PathUtil.BaseDirectory), "App_Data/Composite/AddOnDescriptions.xml");
@@ -82,6 +88,7 @@ namespace Composite.Core.PackageSystem
 
 
         // Overload
+        /// <exclude />
         public static IEnumerable<PackageDescription> GetAllPackageDescriptions(Guid installationId, CultureInfo userCulture)
         {
             List<IPackageServerSource> packageServerSources = DataFacade.GetData<IPackageServerSource>().ToList();
@@ -97,6 +104,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public static string GetEulaText(string packageServerUrl, Guid eulaId, CultureInfo userCulture)
         {
             return _packageServerFacade.GetEulaText(packageServerUrl, eulaId, userCulture);
@@ -104,6 +112,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public static Stream GetInstallFileStream(string packageFileDownloadUrl)
         {
             return _packageServerFacade.GetInstallFileStream(packageFileDownloadUrl);
@@ -111,6 +120,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public static bool RequestLicenseUpdate(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp)
         {
             return _packageServerFacade.RequestLicenseUpdate(packageServerUrl, installationId, packageId, localUserName, localUserIp);
@@ -118,6 +128,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public static void RegisterAddonInstallationCompletion(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp)
         {
             _packageServerFacade.RegisterAddonInstallationCompletion(packageServerUrl, installationId, packageId, localUserName, localUserIp);
@@ -125,6 +136,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public static void RegisterAddonInstallationFailure(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp, string exceptionString)
         {
             _packageServerFacade.RegisterAddonInstallationFailure(packageServerUrl, installationId, packageId, localUserName, localUserIp, exceptionString);
@@ -132,6 +144,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public static void RegisterAddOnUninstall(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp)
         {
             _packageServerFacade.RegisterAddOnUninstall(packageServerUrl, installationId, packageId, localUserName, localUserIp);
@@ -139,6 +152,7 @@ namespace Composite.Core.PackageSystem
 
 
 
+        /// <exclude />
         public static void ClearServerCache()
         {
             _packageServerFacade.ClearCache();

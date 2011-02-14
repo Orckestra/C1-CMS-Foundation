@@ -20,9 +20,11 @@ namespace Composite.Core.Linq.Disassembled
         private StringBuilder _out = new StringBuilder();
 
         // Methods
+        /// <exclude />
         protected ExpressionStringBuilder()
         {
         }
+
 
         private void AddLabel(LabelTarget label)
         {
@@ -37,6 +39,7 @@ namespace Composite.Core.Linq.Disassembled
             }
         }
 
+
         private void AddParam(ParameterExpression p)
         {
             if (this._ids == null)
@@ -50,12 +53,14 @@ namespace Composite.Core.Linq.Disassembled
             }
         }
 
+
         internal static string CatchBlockToString(CatchBlock node)
         {
             ExpressionStringBuilder builder = new ExpressionStringBuilder();
             builder.VisitCatchBlock(node);
             return builder.ToString();
         }
+
 
         private void DumpLabel(LabelTarget target)
         {
@@ -69,6 +74,7 @@ namespace Composite.Core.Linq.Disassembled
             }
         }
 
+
         internal static string ElementInitBindingToString(ElementInit node)
         {
             ExpressionStringBuilder builder = new ExpressionStringBuilder();
@@ -76,12 +82,14 @@ namespace Composite.Core.Linq.Disassembled
             return builder.ToString();
         }
 
+
         internal static string ExpressionToString(Expression node)
         {
             ExpressionStringBuilder builder = new ExpressionStringBuilder();
             builder.Visit(node);
             return builder.ToString();
         }
+
 
         private static string FormatBinder(CallSiteBinder binder)
         {
@@ -143,6 +151,7 @@ namespace Composite.Core.Linq.Disassembled
             return "CallSiteBinder";
         }
 
+
         private int GetLabelId(LabelTarget label)
         {
             int count;
@@ -159,6 +168,7 @@ namespace Composite.Core.Linq.Disassembled
             }
             return count;
         }
+
 
         private int GetParamId(ParameterExpression p)
         {
@@ -177,6 +187,7 @@ namespace Composite.Core.Linq.Disassembled
             return count;
         }
 
+
         internal static string MemberBindingToString(MemberBinding node)
         {
             ExpressionStringBuilder builder = new ExpressionStringBuilder();
@@ -184,15 +195,20 @@ namespace Composite.Core.Linq.Disassembled
             return builder.ToString();
         }
 
+
+        /// <exclude />
         protected void Out(char c)
         {
             this._out.Append(c);
         }
 
+
+        /// <exclude />
         protected void Out(string s)
         {
             this._out.Append(s);
         }
+
 
         private void OutMember(Expression instance, MemberInfo member)
         {
@@ -207,6 +223,7 @@ namespace Composite.Core.Linq.Disassembled
             }
         }
 
+
         internal static string SwitchCaseToString(SwitchCase node)
         {
             ExpressionStringBuilder builder = new ExpressionStringBuilder();
@@ -214,11 +231,15 @@ namespace Composite.Core.Linq.Disassembled
             return builder.ToString();
         }
 
+
+        /// <exclude />
         public override string ToString()
         {
             return this._out.ToString();
         }
 
+
+        /// <exclude />
         protected override Expression VisitBinary(BinaryExpression node)
         {
             string str;
@@ -424,6 +445,8 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitBlock(BlockExpression node)
         {
             this.Out("{");
@@ -437,6 +460,8 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override CatchBlock VisitCatchBlock(CatchBlock node)
         {
             this.Out("catch (" + node.Test.Name);
@@ -448,6 +473,8 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitConditional(ConditionalExpression node)
         {
             this.Out("IIF(");
@@ -460,6 +487,8 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitConstant(ConstantExpression node)
         {
             if (node.Value != null)
@@ -486,6 +515,8 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitDebugInfo(DebugInfoExpression node)
         {
             string s = string.Format(CultureInfo.CurrentCulture, "<DebugInfo({0}: {1}, {2}, {3}, {4})>", new object[] { node.Document.FileName, node.StartLine, node.StartColumn, node.EndLine, node.EndColumn });
@@ -493,6 +524,8 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitDefault(DefaultExpression node)
         {
             this.Out("default(");
@@ -501,6 +534,8 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitDynamic(DynamicExpression node)
         {
             this.Out(FormatBinder(node.Binder));
@@ -508,12 +543,15 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override ElementInit VisitElementInit(ElementInit initializer)
         {
             this.Out(initializer.AddMethod.ToString());
             this.VisitExpressions<Expression>('(', initializer.Arguments, ')');
             return initializer;
         }
+
 
         private void VisitExpressions<T>(char open, IList<T> expressions, char close) where T : Expression
         {
@@ -537,6 +575,8 @@ namespace Composite.Core.Linq.Disassembled
             this.Out(close);
         }
 
+
+        /// <exclude />
         protected override Expression VisitExtension(Expression node)
         {
             BindingFlags bindingAttr = BindingFlags.ExactBinding | BindingFlags.Public | BindingFlags.Instance;
@@ -558,6 +598,8 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitGoto(GotoExpression node)
         {
             this.Out(node.Kind.ToString().ToLower(CultureInfo.CurrentCulture));
@@ -571,6 +613,8 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitIndex(IndexExpression node)
         {
             if (node.Object != null)
@@ -590,6 +634,8 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitInvocation(InvocationExpression node)
         {
             this.Out("Invoke(");
@@ -606,6 +652,8 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitLabel(LabelExpression node)
         {
             this.Out("{ ... } ");
@@ -614,6 +662,8 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitLambda<T>(Expression<T> node)
         {
             if (node.Parameters.Count == 1)
@@ -629,6 +679,8 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitListInit(ListInitExpression node)
         {
             this.Visit(node.NewExpression);
@@ -648,18 +700,24 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitLoop(LoopExpression node)
         {
             this.Out("loop { ... }");
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitMember(MemberExpression node)
         {
             this.OutMember(node.Expression, node.Member);
             return node;
         }
 
+
+        /// <exclude />
         protected override MemberAssignment VisitMemberAssignment(MemberAssignment assignment)
         {
             this.Out(assignment.Member.Name);
@@ -668,6 +726,8 @@ namespace Composite.Core.Linq.Disassembled
             return assignment;
         }
 
+
+        /// <exclude />
         protected override Expression VisitMemberInit(MemberInitExpression node)
         {
             if ((node.NewExpression.Arguments.Count == 0) && node.NewExpression.Type.Name.Contains("<"))
@@ -695,6 +755,8 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override MemberListBinding VisitMemberListBinding(MemberListBinding binding)
         {
             this.Out(binding.Member.Name);
@@ -714,6 +776,8 @@ namespace Composite.Core.Linq.Disassembled
             return binding;
         }
 
+
+        /// <exclude />
         protected override MemberMemberBinding VisitMemberMemberBinding(MemberMemberBinding binding)
         {
             this.Out(binding.Member.Name);
@@ -733,6 +797,8 @@ namespace Composite.Core.Linq.Disassembled
             return binding;
         }
 
+
+        /// <exclude />
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
             int num = 0;
@@ -764,6 +830,8 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitNew(NewExpression node)
         {
             this.Out("new " + node.Type.Name);
@@ -785,6 +853,8 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitNewArray(NewArrayExpression node)
         {
             switch (node.NodeType)
@@ -802,6 +872,8 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitParameter(ParameterExpression node)
         {
             if (node.IsByRef)
@@ -817,12 +889,16 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitRuntimeVariables(RuntimeVariablesExpression node)
         {
             this.VisitExpressions<ParameterExpression>('(', node.Variables, ')');
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitSwitch(SwitchExpression node)
         {
             this.Out("switch ");
@@ -832,6 +908,8 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override SwitchCase VisitSwitchCase(SwitchCase node)
         {
             this.Out("case ");
@@ -840,12 +918,16 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitTry(TryExpression node)
         {
             this.Out("try { ... }");
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitTypeBinary(TypeBinaryExpression node)
         {
             this.Out("(");
@@ -866,6 +948,8 @@ namespace Composite.Core.Linq.Disassembled
             return node;
         }
 
+
+        /// <exclude />
         protected override Expression VisitUnary(UnaryExpression node)
         {
             switch (node.NodeType)

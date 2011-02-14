@@ -35,6 +35,7 @@ namespace Composite.Core.Configuration
 
 
 
+        /// <exclude />
         public static Guid InstallationId
         {
             get 

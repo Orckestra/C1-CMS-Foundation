@@ -19,6 +19,7 @@ namespace Composite.Core.Localization
         private static Regex _attributRegex = new Regex(@"\$\((?<type>[^:]+):(?<id>[^\)]+)\)");
 
 
+        /// <exclude />
         public static void Parse(XContainer container)
         {
             IEnumerable<XElement> elements = container.Descendants().ToList();

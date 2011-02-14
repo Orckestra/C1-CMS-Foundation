@@ -6,12 +6,14 @@
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class IMediaFileExtensions
 	{
+        /// <exclude />
         public static string GetKeyPath(this IMediaFile mediaFile)
         {
             return mediaFile.StoreId + ":" + mediaFile.Id;
         }
 
 
+        /// <exclude />
         public static string GetCompositePath(this IMediaFile mediaFile)
         {
             if (mediaFile.FolderPath != "/")
@@ -23,6 +25,7 @@
 
 
 
+        /// <exclude />
         public static string GetCompositePath(string storeId, string folderPath, string filename)
         {
             if (folderPath != "/")

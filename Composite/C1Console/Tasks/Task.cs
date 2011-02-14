@@ -11,6 +11,7 @@ namespace Composite.C1Console.Tasks
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class Task
     {
+        /// <exclude />
         public Task(string id, Type taskManagerType)
         {
             VerifyTaskManagerType(taskManagerType);
@@ -23,9 +24,13 @@ namespace Composite.C1Console.Tasks
         }
 
 
-
+        /// <exclude />
         public string Id { get; private set; }
+
+        /// <exclude />
         public Type TaskManagerType { get; private set; }
+
+        /// <exclude />
         public DateTime StartTime { get; internal set; }
 
         internal ITaskManager TaskManager { get; set; }

@@ -107,15 +107,25 @@ namespace Composite.C1Console.Forms.CoreUiControls
     [SerializerHandler(typeof(UploadedFileSerializerHandler))]
     public sealed class UploadedFile
     {
+        /// <exclude />
         public UploadedFile()
         {
             this.HasFile = false;
         }
 
+        /// <exclude />
         public bool HasFile { get; set; }
+
+        /// <exclude />
         public string FileName { get; set; }
+
+        /// <exclude />
         public string ContentType { get; set; }
+
+        /// <exclude />
         public int ContentLength { get; set; }
+
+        /// <exclude />
         public Stream FileStream { get; set; }
     }
 }

@@ -14,6 +14,7 @@ namespace Composite.Data.Foundation.CodeGeneration
         private DataSourceId _dataSourceId = null;
 
 
+        /// <exclude />
         public DataSourceId DataSourceId
         {
             get 
@@ -33,6 +34,7 @@ namespace Composite.Data.Foundation.CodeGeneration
 
 
 
+        /// <exclude />
         protected abstract Type _InterfaceType { get; }
     }
 }

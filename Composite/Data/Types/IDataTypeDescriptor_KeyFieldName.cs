@@ -17,10 +17,13 @@ namespace Composite.Data.Types
     [NotReferenceableAttribute]
     public interface IDataTypeDescriptor_KeyFieldName : IData
     {
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{FC540000-891F-4e47-BD1B-E315BEF1AB71}")]
         Guid TypeDescriptorId { get; set; }
 
+
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 255)]
         [ImmutableFieldId("{CEF5B674-A316-4bdc-BA90-B5F01274F89B}")]
         string Name { get; set; }

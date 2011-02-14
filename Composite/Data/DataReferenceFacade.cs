@@ -27,6 +27,7 @@ namespace Composite.Data
         private static object _lock = new object();
 
 
+        /// <exclude />
         public static List<Type> GetRefereeTypes(this Type referencedType)
         {
             if (referencedType == null) throw new ArgumentNullException("referencedType");
@@ -100,6 +101,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static bool TryValidateForeignKeyIntegrity(this IData refereeData)
         {
             if (refereeData == null) throw new ArgumentNullException("refereeData");
@@ -109,6 +111,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static bool TryValidateForeignKeyIntegrity(this IData refereeData, List<string> invalidForeignKeyPropertyNames)
         {
             if (refereeData == null) throw new ArgumentNullException("refereeData");
@@ -324,6 +327,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static List<IData> GetNotOptionalReferences<T>(T data) where T : IData
         {
             Verify.ArgumentNotNull(data, "data");
@@ -384,6 +388,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static bool TryGetReferenceType(this PropertyInfo propertyInfo, out Type typeBeingReferenced)
         {
             if (propertyInfo == null) throw new ArgumentNullException("propertyInfo");
@@ -408,6 +413,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static IDataReference BuildDataReference(Type referencedType, object keyValue)
         {
             if (keyValue == null) throw new ArgumentNullException("keyValue");
@@ -527,6 +533,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static List<IData> GetReferees(this IData referencedData)
         {
@@ -537,6 +544,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static List<IData> GetReferees(this IData referencedData, Type refereeType)
         {
@@ -547,6 +555,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static List<IData> GetReferees(this IData referencedData, bool allScopes)
         {
@@ -555,6 +564,9 @@ namespace Composite.Data
             return GetReferees(referencedData, false, null, null, allScopes);
         }
 
+
+
+        /// <exclude />
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
         public static List<IData> GetReferees(this IData referencedData, Type refereeType, IEnumerable<PropertyInfo> foreignKeyPropertys, bool allScopes)
         {
@@ -591,6 +603,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public static IData GetReferenced(this IData refereeData, string foreignKeyProrptyName)
         {
             if (refereeData == null) throw new ArgumentNullException("refereeData");
@@ -735,7 +748,7 @@ namespace Composite.Data
 
 
 
-
+        /// <exclude />
         public static string GetBrokenReferencesReport(List<IData> brokenReferences)
         {
             var sb = new StringBuilder();

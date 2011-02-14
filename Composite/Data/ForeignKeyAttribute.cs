@@ -26,6 +26,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public ForeignKeyAttribute(Type interfaceType, string keyPropertyName)
         {
             _interfaceType = interfaceType;
@@ -93,6 +94,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public bool IsNullReferenceValueSet
         {
             get { return _isNullReferenceValueSet; }
@@ -100,6 +102,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public Type InterfaceType
         {
             get
@@ -118,6 +121,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public bool IsValid
         {
             get
@@ -136,6 +140,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public string TypeManagerName
         {
             get
@@ -154,6 +159,7 @@ namespace Composite.Data
 
 
 
+        /// <exclude />
         public string KeyPropertyName
         {
             get

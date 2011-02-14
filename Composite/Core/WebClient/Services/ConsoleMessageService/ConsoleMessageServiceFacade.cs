@@ -17,13 +17,14 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ConsoleMessageServiceFacade
     {
+        /// <exclude />
         public static int CurrentChangeNumber
         {
             get { return ConsoleMessageQueueFacade.CurrentChangeNumber; }
         }
-        
 
 
+        /// <exclude />
         public static GetMessagesResult GetNewMessages(string consoleId, int lastKnownChangeNumber)
         {
             ConsoleFacade.RegisterConsole(UserSettings.Username, consoleId);

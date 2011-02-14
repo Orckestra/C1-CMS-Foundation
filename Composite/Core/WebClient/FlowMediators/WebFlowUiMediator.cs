@@ -15,6 +15,7 @@ namespace Composite.Core.WebClient.FlowMediators
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class WebFlowUiMediator
     {
+        /// <exclude />
         public static Control GetFlowUi(FlowHandle flowHandle, string elementProviderName, string consoleId, out string uiContainerName)
         {
             uiContainerName = null;

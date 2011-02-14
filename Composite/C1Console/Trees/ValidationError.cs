@@ -9,6 +9,7 @@ namespace Composite.C1Console.Trees
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ValidationError
     {
+        /// <exclude />
         public static ValidationError Create(string xPath, string stringName, params object[] args)
         {
             string resourceString;
@@ -25,6 +26,8 @@ namespace Composite.C1Console.Trees
             return new ValidationError(xPath, string.Format(resourceString, args));
         }
 
+
+        /// <exclude />
         public ValidationError(string xPath, string message)
         {
             this.XPath = xPath;
@@ -32,7 +35,10 @@ namespace Composite.C1Console.Trees
         }
 
 
+        /// <exclude />
         public string XPath { get; set; }
+
+        /// <exclude />
         public string Message { get; set; }
     }
 }

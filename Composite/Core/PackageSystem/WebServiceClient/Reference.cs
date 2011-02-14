@@ -82,7 +82,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string CultureField;
-        
+
+
+        /// <exclude />
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -92,7 +94,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 this.extensionDataField = value;
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         public System.Guid Id {
             get {
@@ -105,7 +109,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
         public string GroupName {
             get {
@@ -118,7 +124,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
         public string Name {
             get {
@@ -131,7 +139,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
         public string PackageVersion {
             get {
@@ -144,7 +154,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=4)]
         public string Author {
             get {
@@ -157,7 +169,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=5)]
         public string Description {
             get {
@@ -170,7 +184,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=6)]
         public string TechicalDetails {
             get {
@@ -183,7 +199,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=7)]
         public string ReadMoreUrl {
             get {
@@ -196,7 +214,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=8)]
         public bool IsTrial {
             get {
@@ -209,7 +229,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=9)]
         public int TrialPeriodDays {
             get {
@@ -222,7 +244,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=10)]
         public bool IsFree {
             get {
@@ -235,7 +259,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=11)]
         public bool InstallationRequireLicenseFileUpdate {
             get {
@@ -248,7 +274,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=12)]
         public decimal PriceAmmount {
             get {
@@ -261,7 +289,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=13)]
         public string PriceCurrency {
             get {
@@ -274,7 +304,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=14)]
         public bool UpgradeAgreementMandatory {
             get {
@@ -287,7 +319,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=15)]
         public string MinCompositeVersionSupported {
             get {
@@ -300,7 +334,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=16)]
         public string MaxCompositeVersionSupported {
             get {
@@ -313,7 +349,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=17)]
         public Composite.Core.PackageSystem.WebServiceClient.PackageReference[] RequiredPackages {
             get {
@@ -326,7 +364,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=18)]
         public System.Guid EulaId {
             get {
@@ -339,7 +379,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=19)]
         public string PackageFileDownloadUrl {
             get {
@@ -352,7 +394,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=20)]
         public System.Guid LicenseId {
             get {
@@ -365,7 +409,9 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=21)]
         public string Culture {
             get {
@@ -378,9 +424,13 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+
+        /// <exclude />
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
+
+
+        /// <exclude />
         protected void RaisePropertyChanged(string propertyName) {
             System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
             if ((propertyChanged != null)) {
@@ -407,7 +457,8 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NameField;
-        
+
+        /// <exclude />
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -417,7 +468,8 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 this.extensionDataField = value;
             }
         }
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         public System.Guid Id {
             get {
@@ -430,7 +482,8 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public string Name {
             get {
@@ -443,9 +496,11 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
                 }
             }
         }
-        
+
+        /// <exclude />
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
+
+        /// <exclude />
         protected void RaisePropertyChanged(string propertyName) {
             System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
             if ((propertyChanged != null)) {
@@ -461,30 +516,37 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(Namespace="http://package.composite.net/package.asmx", ConfigurationName="ServiceReference1.PackagesSoap")]
     public interface PackagesSoap {
-        
+
+        /// <exclude />
         // CODEGEN: Generating message contract since element name Culture from namespace http://package.composite.net/package.asmx is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://package.composite.net/package.asmx/GetPackageList", ReplyAction="*")]
         Composite.Core.PackageSystem.WebServiceClient.GetPackageListResponse GetPackageList(Composite.Core.PackageSystem.WebServiceClient.GetPackageListRequest request);
-        
+
+        /// <exclude />
         [System.ServiceModel.OperationContractAttribute(Action="http://package.composite.net/package.asmx/IsOperational", ReplyAction="*")]
         bool IsOperational();
-        
+
+        /// <exclude />
         // CODEGEN: Generating message contract since element name userCulture from namespace http://package.composite.net/package.asmx is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://package.composite.net/package.asmx/GetEulaText", ReplyAction="*")]
         Composite.Core.PackageSystem.WebServiceClient.GetEulaTextResponse GetEulaText(Composite.Core.PackageSystem.WebServiceClient.GetEulaTextRequest request);
-        
+
+        /// <exclude />
         // CODEGEN: Generating message contract since element name localUserName from namespace http://package.composite.net/package.asmx is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://package.composite.net/package.asmx/RegisterPackageUninstall", ReplyAction="*")]
         Composite.Core.PackageSystem.WebServiceClient.RegisterPackageUninstallResponse RegisterPackageUninstall(Composite.Core.PackageSystem.WebServiceClient.RegisterPackageUninstallRequest request);
-        
+
+        /// <exclude />
         // CODEGEN: Generating message contract since element name localUserName from namespace http://package.composite.net/package.asmx is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://package.composite.net/package.asmx/RequestLicenseUpdate", ReplyAction="*")]
         Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateResponse RequestLicenseUpdate(Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateRequest request);
-        
+
+        /// <exclude />
         // CODEGEN: Generating message contract since element name LocalUserName from namespace http://package.composite.net/package.asmx is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://package.composite.net/package.asmx/RegisterPackageInstallationCompletion", ReplyAction="*")]
         Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationCompletionResponse RegisterPackageInstallationCompletion(Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationCompletionRequest request);
-        
+
+        /// <exclude />
         // CODEGEN: Generating message contract since element name LocalUserName from namespace http://package.composite.net/package.asmx is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://package.composite.net/package.asmx/RegisterPackageInstallationFailure", ReplyAction="*")]
         Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationFailureResponse RegisterPackageInstallationFailure(Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationFailureRequest request);
@@ -499,13 +561,16 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetPackageListRequest {
-        
+
+        /// <exclude />
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetPackageList", Namespace="http://package.composite.net/package.asmx", Order=0)]
         public Composite.Core.PackageSystem.WebServiceClient.GetPackageListRequestBody Body;
-        
+
+        /// <exclude />
         public GetPackageListRequest() {
         }
-        
+
+        /// <exclude />
         public GetPackageListRequest(Composite.Core.PackageSystem.WebServiceClient.GetPackageListRequestBody Body) {
             this.Body = Body;
         }
@@ -520,16 +585,20 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://package.composite.net/package.asmx")]
     public partial class GetPackageListRequestBody {
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
         public System.Guid InstallationId;
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
         public string Culture;
-        
+
+        /// <exclude />
         public GetPackageListRequestBody() {
         }
-        
+
+        /// <exclude />
         public GetPackageListRequestBody(System.Guid InstallationId, string Culture) {
             this.InstallationId = InstallationId;
             this.Culture = Culture;
@@ -545,13 +614,16 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetPackageListResponse {
-        
+
+        /// <exclude />
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetPackageListResponse", Namespace="http://package.composite.net/package.asmx", Order=0)]
         public Composite.Core.PackageSystem.WebServiceClient.GetPackageListResponseBody Body;
-        
+
+        /// <exclude />
         public GetPackageListResponse() {
         }
-        
+
+        /// <exclude />
         public GetPackageListResponse(Composite.Core.PackageSystem.WebServiceClient.GetPackageListResponseBody Body) {
             this.Body = Body;
         }
@@ -566,13 +638,16 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://package.composite.net/package.asmx")]
     public partial class GetPackageListResponseBody {
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
         public Composite.Core.PackageSystem.WebServiceClient.PackageDescriptor[] GetPackageListResult;
-        
+
+        /// <exclude />
         public GetPackageListResponseBody() {
         }
-        
+
+        /// <exclude />
         public GetPackageListResponseBody(Composite.Core.PackageSystem.WebServiceClient.PackageDescriptor[] GetPackageListResult) {
             this.GetPackageListResult = GetPackageListResult;
         }
@@ -587,13 +662,16 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetEulaTextRequest {
-        
+
+        /// <exclude />
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetEulaText", Namespace="http://package.composite.net/package.asmx", Order=0)]
         public Composite.Core.PackageSystem.WebServiceClient.GetEulaTextRequestBody Body;
-        
+
+        /// <exclude />
         public GetEulaTextRequest() {
         }
-        
+
+        /// <exclude />
         public GetEulaTextRequest(Composite.Core.PackageSystem.WebServiceClient.GetEulaTextRequestBody Body) {
             this.Body = Body;
         }
@@ -608,16 +686,20 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://package.composite.net/package.asmx")]
     public partial class GetEulaTextRequestBody {
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
         public System.Guid eulaId;
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
         public string userCulture;
-        
+
+        /// <exclude />
         public GetEulaTextRequestBody() {
         }
-        
+
+        /// <exclude />
         public GetEulaTextRequestBody(System.Guid eulaId, string userCulture) {
             this.eulaId = eulaId;
             this.userCulture = userCulture;
@@ -633,13 +715,16 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetEulaTextResponse {
-        
+
+        /// <exclude />
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetEulaTextResponse", Namespace="http://package.composite.net/package.asmx", Order=0)]
         public Composite.Core.PackageSystem.WebServiceClient.GetEulaTextResponseBody Body;
-        
+
+        /// <exclude />
         public GetEulaTextResponse() {
         }
-        
+
+        /// <exclude />
         public GetEulaTextResponse(Composite.Core.PackageSystem.WebServiceClient.GetEulaTextResponseBody Body) {
             this.Body = Body;
         }
@@ -654,13 +739,16 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://package.composite.net/package.asmx")]
     public partial class GetEulaTextResponseBody {
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
         public string GetEulaTextResult;
-        
+
+        /// <exclude />
         public GetEulaTextResponseBody() {
         }
-        
+
+        /// <exclude />
         public GetEulaTextResponseBody(string GetEulaTextResult) {
             this.GetEulaTextResult = GetEulaTextResult;
         }
@@ -676,13 +764,16 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class RegisterPackageUninstallRequest {
-        
+
+        /// <exclude />
         [System.ServiceModel.MessageBodyMemberAttribute(Name="RegisterPackageUninstall", Namespace="http://package.composite.net/package.asmx", Order=0)]
         public Composite.Core.PackageSystem.WebServiceClient.RegisterPackageUninstallRequestBody Body;
-        
+
+        /// <exclude />
         public RegisterPackageUninstallRequest() {
         }
-        
+
+        /// <exclude />
         public RegisterPackageUninstallRequest(Composite.Core.PackageSystem.WebServiceClient.RegisterPackageUninstallRequestBody Body) {
             this.Body = Body;
         }
@@ -697,22 +788,28 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://package.composite.net/package.asmx")]
     public partial class RegisterPackageUninstallRequestBody {
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
         public System.Guid InstallationId;
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
         public System.Guid PackageId;
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
         public string localUserName;
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
         public string localUserIp;
-        
+
+        /// <exclude />
         public RegisterPackageUninstallRequestBody() {
         }
-        
+
+        /// <exclude />
         public RegisterPackageUninstallRequestBody(System.Guid InstallationId, System.Guid PackageId, string localUserName, string localUserIp) {
             this.InstallationId = InstallationId;
             this.PackageId = PackageId;
@@ -730,13 +827,16 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class RegisterPackageUninstallResponse {
-        
+
+        /// <exclude />
         [System.ServiceModel.MessageBodyMemberAttribute(Name="RegisterPackageUninstallResponse", Namespace="http://package.composite.net/package.asmx", Order=0)]
         public Composite.Core.PackageSystem.WebServiceClient.RegisterPackageUninstallResponseBody Body;
-        
+
+        /// <exclude />
         public RegisterPackageUninstallResponse() {
         }
-        
+
+        /// <exclude />
         public RegisterPackageUninstallResponse(Composite.Core.PackageSystem.WebServiceClient.RegisterPackageUninstallResponseBody Body) {
             this.Body = Body;
         }
@@ -751,7 +851,8 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute()]
     public partial class RegisterPackageUninstallResponseBody {
-        
+
+        /// <exclude />
         public RegisterPackageUninstallResponseBody() {
         }
     }
@@ -765,13 +866,16 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class RequestLicenseUpdateRequest {
-        
+
+        /// <exclude />
         [System.ServiceModel.MessageBodyMemberAttribute(Name="RequestLicenseUpdate", Namespace="http://package.composite.net/package.asmx", Order=0)]
         public Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateRequestBody Body;
-        
+
+        /// <exclude />
         public RequestLicenseUpdateRequest() {
         }
-        
+
+        /// <exclude />
         public RequestLicenseUpdateRequest(Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateRequestBody Body) {
             this.Body = Body;
         }
@@ -786,22 +890,28 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://package.composite.net/package.asmx")]
     public partial class RequestLicenseUpdateRequestBody {
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
         public System.Guid InstallationId;
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
         public System.Guid PackageId;
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
         public string localUserName;
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
         public string localUserIp;
-        
+
+        /// <exclude />
         public RequestLicenseUpdateRequestBody() {
         }
-        
+
+        /// <exclude />
         public RequestLicenseUpdateRequestBody(System.Guid InstallationId, System.Guid PackageId, string localUserName, string localUserIp) {
             this.InstallationId = InstallationId;
             this.PackageId = PackageId;
@@ -819,13 +929,16 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class RequestLicenseUpdateResponse {
-        
+
+        /// <exclude />
         [System.ServiceModel.MessageBodyMemberAttribute(Name="RequestLicenseUpdateResponse", Namespace="http://package.composite.net/package.asmx", Order=0)]
         public Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateResponseBody Body;
-        
+
+        /// <exclude />
         public RequestLicenseUpdateResponse() {
         }
-        
+
+        /// <exclude />
         public RequestLicenseUpdateResponse(Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateResponseBody Body) {
             this.Body = Body;
         }
@@ -840,13 +953,16 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://package.composite.net/package.asmx")]
     public partial class RequestLicenseUpdateResponseBody {
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
         public bool RequestLicenseUpdateResult;
-        
+
+        /// <exclude />
         public RequestLicenseUpdateResponseBody() {
         }
-        
+
+        /// <exclude />
         public RequestLicenseUpdateResponseBody(bool RequestLicenseUpdateResult) {
             this.RequestLicenseUpdateResult = RequestLicenseUpdateResult;
         }
@@ -861,13 +977,16 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class RegisterPackageInstallationCompletionRequest {
-        
+
+        /// <exclude />
         [System.ServiceModel.MessageBodyMemberAttribute(Name="RegisterPackageInstallationCompletion", Namespace="http://package.composite.net/package.asmx", Order=0)]
         public Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationCompletionRequestBody Body;
-        
+
+        /// <exclude />
         public RegisterPackageInstallationCompletionRequest() {
         }
-        
+
+        /// <exclude />
         public RegisterPackageInstallationCompletionRequest(Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationCompletionRequestBody Body) {
             this.Body = Body;
         }
@@ -882,22 +1001,28 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://package.composite.net/package.asmx")]
     public partial class RegisterPackageInstallationCompletionRequestBody {
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
         public System.Guid InstallationId;
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
         public System.Guid PackageId;
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
         public string LocalUserName;
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
         public string localUserIp;
-        
+
+        /// <exclude />
         public RegisterPackageInstallationCompletionRequestBody() {
         }
-        
+
+        /// <exclude />
         public RegisterPackageInstallationCompletionRequestBody(System.Guid InstallationId, System.Guid PackageId, string LocalUserName, string localUserIp) {
             this.InstallationId = InstallationId;
             this.PackageId = PackageId;
@@ -915,13 +1040,16 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class RegisterPackageInstallationCompletionResponse {
-        
+
+        /// <exclude />
         [System.ServiceModel.MessageBodyMemberAttribute(Name="RegisterPackageInstallationCompletionResponse", Namespace="http://package.composite.net/package.asmx", Order=0)]
         public Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationCompletionResponseBody Body;
-        
+
+        /// <exclude />
         public RegisterPackageInstallationCompletionResponse() {
         }
-        
+
+        /// <exclude />
         public RegisterPackageInstallationCompletionResponse(Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationCompletionResponseBody Body) {
             this.Body = Body;
         }
@@ -936,7 +1064,8 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute()]
     public partial class RegisterPackageInstallationCompletionResponseBody {
-        
+
+        /// <exclude />
         public RegisterPackageInstallationCompletionResponseBody() {
         }
     }
@@ -950,13 +1079,16 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class RegisterPackageInstallationFailureRequest {
-        
+
+        /// <exclude />
         [System.ServiceModel.MessageBodyMemberAttribute(Name="RegisterPackageInstallationFailure", Namespace="http://package.composite.net/package.asmx", Order=0)]
         public Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationFailureRequestBody Body;
-        
+
+        /// <exclude />
         public RegisterPackageInstallationFailureRequest() {
         }
-        
+
+        /// <exclude />
         public RegisterPackageInstallationFailureRequest(Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationFailureRequestBody Body) {
             this.Body = Body;
         }
@@ -971,25 +1103,32 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://package.composite.net/package.asmx")]
     public partial class RegisterPackageInstallationFailureRequestBody {
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
         public System.Guid InstallationId;
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
         public System.Guid PackageId;
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
         public string LocalUserName;
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
         public string localUserIp;
-        
+
+        /// <exclude />
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=4)]
         public string exceptionString;
-        
+
+        /// <exclude />
         public RegisterPackageInstallationFailureRequestBody() {
         }
-        
+
+        /// <exclude />
         public RegisterPackageInstallationFailureRequestBody(System.Guid InstallationId, System.Guid PackageId, string LocalUserName, string localUserIp, string exceptionString) {
             this.InstallationId = InstallationId;
             this.PackageId = PackageId;
@@ -1008,13 +1147,16 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class RegisterPackageInstallationFailureResponse {
-        
+
+        /// <exclude />
         [System.ServiceModel.MessageBodyMemberAttribute(Name="RegisterPackageInstallationFailureResponse", Namespace="http://package.composite.net/package.asmx", Order=0)]
         public Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationFailureResponseBody Body;
-        
+
+        /// <exclude />
         public RegisterPackageInstallationFailureResponse() {
         }
-        
+
+        /// <exclude />
         public RegisterPackageInstallationFailureResponse(Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationFailureResponseBody Body) {
             this.Body = Body;
         }
@@ -1029,7 +1171,8 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute()]
     public partial class RegisterPackageInstallationFailureResponseBody {
-        
+
+        /// <exclude />
         public RegisterPackageInstallationFailureResponseBody() {
         }
     }
@@ -1051,31 +1194,38 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     public partial class PackagesSoapClient : System.ServiceModel.ClientBase<Composite.Core.PackageSystem.WebServiceClient.PackagesSoap>, Composite.Core.PackageSystem.WebServiceClient.PackagesSoap {
-        
+
+        /// <exclude />
         public PackagesSoapClient() {
         }
-        
+
+        /// <exclude />
         public PackagesSoapClient(string endpointConfigurationName) : 
                 base(endpointConfigurationName) {
         }
-        
+
+        /// <exclude />
         public PackagesSoapClient(string endpointConfigurationName, string remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
-        
+
+        /// <exclude />
         public PackagesSoapClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
-        
+
+        /// <exclude />
         public PackagesSoapClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
-        
+
+        /// <exclude />
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Composite.Core.PackageSystem.WebServiceClient.GetPackageListResponse Composite.Core.PackageSystem.WebServiceClient.PackagesSoap.GetPackageList(Composite.Core.PackageSystem.WebServiceClient.GetPackageListRequest request) {
             return base.Channel.GetPackageList(request);
         }
-        
+
+        /// <exclude />
         public Composite.Core.PackageSystem.WebServiceClient.PackageDescriptor[] GetPackageList(System.Guid InstallationId, string Culture) {
             Composite.Core.PackageSystem.WebServiceClient.GetPackageListRequest inValue = new Composite.Core.PackageSystem.WebServiceClient.GetPackageListRequest();
             inValue.Body = new Composite.Core.PackageSystem.WebServiceClient.GetPackageListRequestBody();
@@ -1084,16 +1234,19 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
             Composite.Core.PackageSystem.WebServiceClient.GetPackageListResponse retVal = ((Composite.Core.PackageSystem.WebServiceClient.PackagesSoap)(this)).GetPackageList(inValue);
             return retVal.Body.GetPackageListResult;
         }
-        
+
+        /// <exclude />
         public bool IsOperational() {
             return base.Channel.IsOperational();
         }
-        
+
+        /// <exclude />
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Composite.Core.PackageSystem.WebServiceClient.GetEulaTextResponse Composite.Core.PackageSystem.WebServiceClient.PackagesSoap.GetEulaText(Composite.Core.PackageSystem.WebServiceClient.GetEulaTextRequest request) {
             return base.Channel.GetEulaText(request);
         }
-        
+
+        /// <exclude />
         public string GetEulaText(System.Guid eulaId, string userCulture) {
             Composite.Core.PackageSystem.WebServiceClient.GetEulaTextRequest inValue = new Composite.Core.PackageSystem.WebServiceClient.GetEulaTextRequest();
             inValue.Body = new Composite.Core.PackageSystem.WebServiceClient.GetEulaTextRequestBody();
@@ -1102,12 +1255,14 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
             Composite.Core.PackageSystem.WebServiceClient.GetEulaTextResponse retVal = ((Composite.Core.PackageSystem.WebServiceClient.PackagesSoap)(this)).GetEulaText(inValue);
             return retVal.Body.GetEulaTextResult;
         }
-        
+
+        /// <exclude />
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Composite.Core.PackageSystem.WebServiceClient.RegisterPackageUninstallResponse Composite.Core.PackageSystem.WebServiceClient.PackagesSoap.RegisterPackageUninstall(Composite.Core.PackageSystem.WebServiceClient.RegisterPackageUninstallRequest request) {
             return base.Channel.RegisterPackageUninstall(request);
         }
-        
+
+        /// <exclude />
         public void RegisterPackageUninstall(System.Guid InstallationId, System.Guid PackageId, string localUserName, string localUserIp) {
             Composite.Core.PackageSystem.WebServiceClient.RegisterPackageUninstallRequest inValue = new Composite.Core.PackageSystem.WebServiceClient.RegisterPackageUninstallRequest();
             inValue.Body = new Composite.Core.PackageSystem.WebServiceClient.RegisterPackageUninstallRequestBody();
@@ -1117,12 +1272,14 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
             inValue.Body.localUserIp = localUserIp;
             Composite.Core.PackageSystem.WebServiceClient.RegisterPackageUninstallResponse retVal = ((Composite.Core.PackageSystem.WebServiceClient.PackagesSoap)(this)).RegisterPackageUninstall(inValue);
         }
-        
+
+        /// <exclude />
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateResponse Composite.Core.PackageSystem.WebServiceClient.PackagesSoap.RequestLicenseUpdate(Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateRequest request) {
             return base.Channel.RequestLicenseUpdate(request);
         }
-        
+
+        /// <exclude />
         public bool RequestLicenseUpdate(System.Guid InstallationId, System.Guid PackageId, string localUserName, string localUserIp) {
             Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateRequest inValue = new Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateRequest();
             inValue.Body = new Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateRequestBody();
@@ -1133,12 +1290,14 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
             Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateResponse retVal = ((Composite.Core.PackageSystem.WebServiceClient.PackagesSoap)(this)).RequestLicenseUpdate(inValue);
             return retVal.Body.RequestLicenseUpdateResult;
         }
-        
+
+        /// <exclude />
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationCompletionResponse Composite.Core.PackageSystem.WebServiceClient.PackagesSoap.RegisterPackageInstallationCompletion(Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationCompletionRequest request) {
             return base.Channel.RegisterPackageInstallationCompletion(request);
         }
-        
+
+        /// <exclude />
         public void RegisterPackageInstallationCompletion(System.Guid InstallationId, System.Guid PackageId, string LocalUserName, string localUserIp) {
             Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationCompletionRequest inValue = new Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationCompletionRequest();
             inValue.Body = new Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationCompletionRequestBody();
@@ -1153,7 +1312,8 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
         Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationFailureResponse Composite.Core.PackageSystem.WebServiceClient.PackagesSoap.RegisterPackageInstallationFailure(Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationFailureRequest request) {
             return base.Channel.RegisterPackageInstallationFailure(request);
         }
-        
+
+        /// <exclude />
         public void RegisterPackageInstallationFailure(System.Guid InstallationId, System.Guid PackageId, string LocalUserName, string localUserIp, string exceptionString) {
             Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationFailureRequest inValue = new Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationFailureRequest();
             inValue.Body = new Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationFailureRequestBody();
