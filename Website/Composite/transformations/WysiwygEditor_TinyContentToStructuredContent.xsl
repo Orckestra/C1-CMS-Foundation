@@ -301,4 +301,14 @@
     <xsl:value-of select="translate(.,$newline,'')"/>
   </xsl:template>
 
+  <!-- Correcting Crappy Chrome Code -->
+  <!-- remove Chrome's fetish for "Apple-style-span" crap. Kill the element that has this class -->
+  <xsl:template match="*[@class='Apple-style-span']">
+    <xsl:apply-templates select="*|text()|processing-instruction()|comment()" />
+  </xsl:template>
+
+  <!-- remove Chrome's fetish for putting crappy styles on images that was copy/pasted in wysiwyg -->
+  <xsl:template match="x:img/@style[starts-with(.,'outline-width:') or starts-with(.,'border-top-width:') or contains(.,' initial') ]" />
+  
+
 </xsl:stylesheet>

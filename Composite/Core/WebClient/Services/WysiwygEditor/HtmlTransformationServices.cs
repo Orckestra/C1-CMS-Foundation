@@ -379,7 +379,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             t.Options.WrapLen = 0;
 
             t.Options.BreakBeforeBR = true;
-            t.Options.DropEmptyParas = false;
+            t.Options.DropEmptyParas = true;
             t.Options.Word2000 = true;
             t.Options.MakeClean = false;
             t.Options.Xhtml = true;

@@ -143,4 +143,10 @@
     </xsl:attribute>
   </xsl:template>
 
+  <xsl:template match="x:img/@src[starts-with(.,'~')]">
+    <xsl:attribute name="src">
+      <xsl:value-of select="concat($requestapppath,substring-after(.,'~'))"/>
+    </xsl:attribute>
+  </xsl:template>
+
 </xsl:stylesheet>
