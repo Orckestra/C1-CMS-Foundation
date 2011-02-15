@@ -41,7 +41,7 @@ namespace Composite.Services
 	        new KeyValuePair("currency", @"^[0-9]{1,3}(\" + groupSeparator + @"[0-9]{3})*(\" + decimalSeparator + @"[0-9]{1,2})?$"),
 	        new KeyValuePair("email", @"^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$"),
 	        new KeyValuePair("string", @"[a-å]|[A-Å]|[0-9]"),
-	        new KeyValuePair("url", @"^/|.:"),
+	        new KeyValuePair("url", @"^#|~/|/|.:"),
 	        new KeyValuePair("programmingidentifier", @"^[a-zA-Z][a-zA-Z0-9_]*$"),
 	        new KeyValuePair("programmingnamespace", @"^[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)*$"),
 	        new KeyValuePair("guid", @"^(\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\}{0,1})$")
