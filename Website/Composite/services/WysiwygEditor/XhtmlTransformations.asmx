@@ -101,7 +101,7 @@ namespace Composite.Services
                     throw new InvalidOperationException("Parse failed for \n" + htmlFragment, ex);
                 }
 
-                List<XElement> functionImages = structuredResult.Descendants(Namespaces.Xhtml + "img").Where(f => f.Attribute("class") != null && f.Attribute("class").Value == "compositeFunctionWysiwygRepresentation").ToList();
+                List<XElement> functionImages = structuredResult.Descendants(Namespaces.Xhtml + "img").Where(f => f.Attribute("class") != null && f.Attribute("class").Value.Contains("compositeFunctionWysiwygRepresentation")).ToList();
                 functionImages.AddRange(structuredResult.Descendants("img").Where(f => f.Attribute("alt") != null));
 
                 foreach (var functionImageElement in functionImages)
@@ -133,7 +133,7 @@ namespace Composite.Services
                 }
 
 
-                IEnumerable<XElement> dataFieldReferenceImages = structuredResult.Descendants(Namespaces.Xhtml + "img").Where(f => f.Attribute("class") != null && f.Attribute("class").Value == "compositeFieldReferenceWysiwygRepresentation");
+                IEnumerable<XElement> dataFieldReferenceImages = structuredResult.Descendants(Namespaces.Xhtml + "img").Where(f => f.Attribute("class") != null && f.Attribute("class").Value.Contains("compositeFieldReferenceWysiwygRepresentation"));
                 foreach (var referenceImageElement in dataFieldReferenceImages.ToList())
                 {
                     try
