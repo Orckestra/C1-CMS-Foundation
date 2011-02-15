@@ -82,7 +82,7 @@ ImageDialogPageBinding.prototype._populateDataBindingsFromDOM = function () {
 	
 	if ( src ) {
 	    if (src.indexOf("../../../../..") > -1) {
-	        src = "~" + src.substring(href.indexOf("../../../../..") + 14);
+	        src = "~" + src.substring(src.indexOf("../../../../..") + 14);
 	    }
 	    manager.getDataBinding("src").setValue(src);
 	}
