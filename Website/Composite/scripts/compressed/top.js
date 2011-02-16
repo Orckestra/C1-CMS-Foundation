@@ -1655,6 +1655,9 @@ doc=null;
 }
 }else{
 doc=DOMUtil.getDOMDocument();
+doc.setProperty("ProhibitDTD",false);
+doc.validateOnParse=false;
+doc.async=false;
 doc.loadXML(xml);
 if(doc.parseError.errorCode!=0){
 if(!_1a7){
