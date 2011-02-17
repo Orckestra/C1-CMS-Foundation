@@ -1258,7 +1258,7 @@ namespace Composite.Core.Types
 
             if (compileResult == null)
             {
-                LoggingService.LogInformation("BulidManager", string.Format("Cache file created: {0}", assemblyPackFilename));
+                LoggingService.LogVerbose("BulidManager", string.Format("Cache file created: {0}", assemblyPackFilename));
             }
             else if (compileResult.Errors.Count > 0)
             {
@@ -1637,7 +1637,7 @@ namespace Composite.Core.Types
 
             if (Directory.Exists(_tempAssemblyDirectory) == false)
             {
-                LoggingService.LogInformation("BuildManager", string.Format("Creating directory '{0}' for storing generated assemblies", _tempAssemblyDirectory));
+                LoggingService.LogVerbose("BuildManager", string.Format("Creating directory '{0}' for storing generated assemblies", _tempAssemblyDirectory));
                 Directory.CreateDirectory(_tempAssemblyDirectory);
             }
         }

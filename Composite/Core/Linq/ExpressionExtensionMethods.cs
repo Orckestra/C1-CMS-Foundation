@@ -38,11 +38,11 @@ namespace Composite.Core.Linq
             {
                 if (expression != null)
                 {
-                    Core.Logging.LoggingService.LogInformation(title, label + " = " + expression.ToString());
+                    Core.Logging.LoggingService.LogVerbose(title, label + " = " + expression.ToString());
                 }
                 else
                 {
-                    Core.Logging.LoggingService.LogInformation(title, label + " =  null");
+                    Core.Logging.LoggingService.LogVerbose(title, label + " =  null");
                 }
             }
         }

@@ -117,7 +117,7 @@ namespace Composite.C1Console.Tasks
                     if (type == null)
                     {
                         LoggingService.LogWarning("TaskManagerFacade", string.Format("Could not get the type '{0}'", taskItem.TaskManagerType));
-                        LoggingService.LogInformation("TaskManagerFacade", string.Format("Removing task item with id '{0}'. The Task Manager Type can not be found.", taskItem.TaskId));
+                        LoggingService.LogWarning("TaskManagerFacade", string.Format("Removing task item with id '{0}'. The Task Manager Type can not be found.", taskItem.TaskId));
                         DataFacade.Delete<ITaskItem>(taskItem);
                         continue;
                     }

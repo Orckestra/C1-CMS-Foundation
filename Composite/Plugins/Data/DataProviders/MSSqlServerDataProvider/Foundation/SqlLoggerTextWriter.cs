@@ -152,7 +152,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 value = sb.ToString();
             }
 
-            LoggingService.LogInformation("RGB(0, 128, 192)SqlQuery", value);
+            LoggingService.LogVerbose("RGB(0, 128, 192)SqlQuery", value);
         }
     }
 }

@@ -275,9 +275,10 @@ namespace Composite.Core.WebClient
                                                                        System.Reflection.BindingFlags.GetField,
                                                                        null, runtime, null);
 
-            LoggingService.LogInformation("ASP.NET Shut Down", String.Format("_shutDownMessage=\n{0}\n\n_shutDownStack=\n{1}",
+            LoggingService.LogVerbose("RGB(250,50,50)ASP.NET Shut Down", String.Format("_shutDownMessage=\n{0}\n\n_shutDownStack=\n{1}",
                                          shutDownMessage.Replace("\n", "   \n"),
                                          shutDownStack));
+
         }
     }
 }
