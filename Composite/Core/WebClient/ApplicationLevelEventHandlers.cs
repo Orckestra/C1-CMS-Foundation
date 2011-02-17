@@ -201,7 +201,7 @@ namespace Composite.Core.WebClient
         /// <exclude />
         public static string GetVaryByCustomString(HttpContext context, string custom)
         {
-            if (custom == "C1Page_ChangeDate")
+            if (custom == "C1Page")
             {
                 var pageUrl = context.Items[RequestInterceptorHttpModule.HttpContextItem_C1PageUrl] as PageUrl;
                 if (pageUrl != null)
@@ -209,7 +209,14 @@ namespace Composite.Core.WebClient
                     var page = pageUrl.GetPage();
                     if (page != null)
                     {
-                        return page.ChangeDate.ToString();
+                        string pageCacheKey = page.ChangeDate.ToString();
+
+                        if(context.Request.IsSecureConnection)
+                        {
+                            pageCacheKey += "https";
+                        }
+
+                        return pageCacheKey;
                     }
                 }
                 return string.Empty;

@@ -66,7 +66,7 @@ public partial class Renderers_Page : System.Web.UI.Page
 
     protected void Page_Init(object sender, EventArgs e)
     {
-        if (_url.PublicationScope != PublicationScope.Published)
+        if (_url.PublicationScope != PublicationScope.Published || Request.IsSecureConnection)
         {
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
         }
