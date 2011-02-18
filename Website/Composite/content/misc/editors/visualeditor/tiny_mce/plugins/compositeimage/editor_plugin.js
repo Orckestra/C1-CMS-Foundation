@@ -125,7 +125,7 @@ new function () {
 									html += makeAttrib('src', src);
 									html += makeAttrib('alt', result.get("alt"));
 									html += makeAttrib('title', result.get("title"));
-									html += '"/>';
+									html += '/>';
 
 									var inst = tinyMCE.selectedInstance;
 									inst.execCommand("mceInsertContent", false, html);
