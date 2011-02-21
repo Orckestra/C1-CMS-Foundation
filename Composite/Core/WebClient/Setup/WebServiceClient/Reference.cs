@@ -31,6 +31,10 @@ namespace Composite.Core.WebClient.Setup.WebServiceClient
         Composite.Core.WebClient.Setup.WebServiceClient.GetLanguagesResponse GetLanguages(Composite.Core.WebClient.Setup.WebServiceClient.GetLanguagesRequest request);
 
         // CODEGEN: Generating message contract since element name version from namespace http://www.composite.net/ns/management is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action = "http://www.composite.net/ns/management/GetLanguagePackages", ReplyAction = "*")]
+        Composite.Core.WebClient.Setup.WebServiceClient.GetLanguagePackagesResponse GetLanguagePackages(Composite.Core.WebClient.Setup.WebServiceClient.GetLanguagePackagesRequest request);
+
+        // CODEGEN: Generating message contract since element name version from namespace http://www.composite.net/ns/management is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action = "http://www.composite.net/ns/management/RegisterSetup", ReplyAction = "*")]
         Composite.Core.WebClient.Setup.WebServiceClient.RegisterSetupResponse RegisterSetup(Composite.Core.WebClient.Setup.WebServiceClient.RegisterSetupRequest request);
     }
@@ -287,6 +291,98 @@ namespace Composite.Core.WebClient.Setup.WebServiceClient
         }
     }
 
+
+
+
+
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped = false)]
+    internal partial class GetLanguagePackagesRequest
+    {
+
+        [System.ServiceModel.MessageBodyMemberAttribute(Name = "GetLanguagePackages", Namespace = "http://www.composite.net/ns/management", Order = 0)]
+        public Composite.Core.WebClient.Setup.WebServiceClient.GetLanguagePackagesRequestBody Body;
+
+        public GetLanguagePackagesRequest()
+        {
+        }
+
+        public GetLanguagePackagesRequest(Composite.Core.WebClient.Setup.WebServiceClient.GetLanguagePackagesRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace = "http://www.composite.net/ns/management")]
+    internal partial class GetLanguagePackagesRequestBody
+    {
+
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 0)]
+        public string version;
+
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 1)]
+        public string installationId;
+
+        public GetLanguagePackagesRequestBody()
+        {
+        }
+
+        public GetLanguagePackagesRequestBody(string version, string installationId)
+        {
+            this.version = version;
+            this.installationId = installationId;
+        }
+    }
+
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped = false)]
+    internal partial class GetLanguagePackagesResponse
+    {
+
+        [System.ServiceModel.MessageBodyMemberAttribute(Name = "GetLanguagePackagesResponse", Namespace = "http://www.composite.net/ns/management", Order = 0)]
+        public Composite.Core.WebClient.Setup.WebServiceClient.GetLanguagePackagesResponseBody Body;
+
+        public GetLanguagePackagesResponse()
+        {
+        }
+
+        public GetLanguagePackagesResponse(Composite.Core.WebClient.Setup.WebServiceClient.GetLanguagePackagesResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace = "http://www.composite.net/ns/management")]
+    internal partial class GetLanguagePackagesResponseBody
+    {
+
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 0)]
+        public System.Xml.Linq.XElement GetLanguagePackagesResult;
+
+        public GetLanguagePackagesResponseBody()
+        {
+        }
+
+        public GetLanguagePackagesResponseBody(System.Xml.Linq.XElement GetLanguagePackagesResult)
+        {
+            this.GetLanguagePackagesResult = GetLanguagePackagesResult;
+        }
+    }
+
+
+
+
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -465,6 +561,24 @@ namespace Composite.Core.WebClient.Setup.WebServiceClient
             Composite.Core.WebClient.Setup.WebServiceClient.GetLanguagesResponse retVal = ((Composite.Core.WebClient.Setup.WebServiceClient.SetupSoap)(this)).GetLanguages(inValue);
             return retVal.Body.GetLanguagesResult;
         }
+
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Composite.Core.WebClient.Setup.WebServiceClient.GetLanguagePackagesResponse Composite.Core.WebClient.Setup.WebServiceClient.SetupSoap.GetLanguagePackages(Composite.Core.WebClient.Setup.WebServiceClient.GetLanguagePackagesRequest request)
+        {
+            
+            return base.Channel.GetLanguagePackages(request);
+        }
+
+        public System.Xml.Linq.XElement GetLanguagePackages(string version, string installationId)
+        {
+            Composite.Core.WebClient.Setup.WebServiceClient.GetLanguagePackagesRequest inValue = new Composite.Core.WebClient.Setup.WebServiceClient.GetLanguagePackagesRequest();
+            inValue.Body = new Composite.Core.WebClient.Setup.WebServiceClient.GetLanguagePackagesRequestBody();
+            inValue.Body.version = version;
+            inValue.Body.installationId = installationId;
+            Composite.Core.WebClient.Setup.WebServiceClient.GetLanguagePackagesResponse retVal = ((Composite.Core.WebClient.Setup.WebServiceClient.SetupSoap)(this)).GetLanguagePackages(inValue);
+            return retVal.Body.GetLanguagePackagesResult;
+        }
+
 
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Composite.Core.WebClient.Setup.WebServiceClient.RegisterSetupResponse Composite.Core.WebClient.Setup.WebServiceClient.SetupSoap.RegisterSetup(Composite.Core.WebClient.Setup.WebServiceClient.RegisterSetupRequest request)

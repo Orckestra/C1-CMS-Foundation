@@ -16,6 +16,7 @@ using Composite.Core.Logging;
 using Composite.Core.PackageSystem;
 using Composite.Core.WebClient.Setup.WebServiceClient;
 using Composite.Core.Xml;
+using Composite.C1Console.Users;
 
 
 namespace Composite.Core.WebClient.Setup
@@ -71,7 +72,7 @@ namespace Composite.Core.WebClient.Setup
 
 
         /// <exclude />
-        public static void SetUp(string setupDescriptionXml, string username, string password, string language)
+        public static void SetUp(string setupDescriptionXml, string username, string password, string language, string consoleLanguage)
         {
             ApplicationOnlineHandlerFacade.TurnApplicationOffline(false);
 
@@ -80,6 +81,7 @@ namespace Composite.Core.WebClient.Setup
                 Log.LogVerbose("RGB(255, 55, 85)SetupServiceFacade", "Setting up the system for the first time");
 
                 CultureInfo locale = new CultureInfo(language);
+                CultureInfo userCulture = new CultureInfo(consoleLanguage);
 
                 ApplicationLevelEventHandlers.ApplicationStartInitialize();
 
@@ -90,6 +92,8 @@ namespace Composite.Core.WebClient.Setup
                 Log.LogVerbose("RGB(255, 55, 85)SetupServiceFacade", "Creating first locale: " + language);
                 LocalizationFacade.AddLocale(locale, "", true, false);
                 LocalizationFacade.SetDefaultLocale(locale);
+
+                UserSettings.SetUserCultureInfo(username, userCulture);                
 
                 XElement setupDescription = XElement.Parse(setupDescriptionXml);
 
@@ -105,6 +109,8 @@ namespace Composite.Core.WebClient.Setup
                     InstallPackage(packageUrl);
                 }
 
+                InstallLanguagePackage(userCulture);
+                
                 RegisterSetup(setupDescriptionXml, "");
 
                 Log.LogVerbose("RGB(255, 55, 85)SetupServiceFacade", "Done settingup the system for the first time! Enjoy!");
@@ -161,6 +167,17 @@ namespace Composite.Core.WebClient.Setup
 
 
         /// <exclude />
+        public static XElement GetLanguagePackages()
+        {
+            SetupSoapClient client = CreateClient();
+
+            XElement xml = client.GetLanguagePackages(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString());
+
+            return xml;
+        }
+
+
+        /// <exclude />
         public static XmlDocument GetGetLicense()
         {
             SetupSoapClient client = CreateClient();
@@ -183,6 +200,30 @@ namespace Composite.Core.WebClient.Setup
             SetupSoapClient client = CreateClient();
 
             client.RegisterSetup(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString(), setupDescriptionXml, exception);
+        }
+
+
+
+        private static void InstallLanguagePackage(CultureInfo userCulture)
+        {
+            string userCultureString = userCulture.Name;
+
+            XElement languagePackagesXml = GetLanguagePackages();
+
+            string url = languagePackagesXml.
+                Descendants("Language").
+                Where(f => f.Attribute("key") != null && f.Attribute("key").Value == userCultureString).
+                Select(f => f.Attribute("url").Value).
+                FirstOrDefault();
+
+
+            if (url != null)
+            {
+                string packageUrl = string.Format(PackageUrlFormat, PackageServerUrl, url);
+
+                Log.LogVerbose("RGB(255, 55, 85)SetupServiceFacade", "Installing package: " + packageUrl);
+                InstallPackage(packageUrl);
+            }
         }
 
 
@@ -247,6 +288,7 @@ namespace Composite.Core.WebClient.Setup
 
             return result;
         }
+        
 
 
 

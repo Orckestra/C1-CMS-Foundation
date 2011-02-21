@@ -135,9 +135,9 @@ namespace Composite.Core.WebClient.Setup
         {                        
             if (SystemSetupFacade.IsSystemFirstTimeInitialized == true) return true;
 
-            SystemSetupFacade.IsSystemFirstTimeInitialized = true;         
+            SystemSetupFacade.IsSystemFirstTimeInitialized = true;
 
-            SetupServiceFacade.SetUp(setupDescriptionXML, username, password, language);
+            SetupServiceFacade.SetUp(setupDescriptionXML, username, password, language, consolelanguage);
 
             return true;
         }
