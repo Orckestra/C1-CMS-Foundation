@@ -110,6 +110,12 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "This is what we want, touch is used later on")]
         public LogFileReader[] GetLogFiles()
         {
+            if (!Directory.Exists(_logDirectoryPath))
+            {
+                return new LogFileReader[] { };
+            }
+
+
             string[] filePathes = Directory.GetFiles(_logDirectoryPath);
 
             string currentlyOpenedFileName = null;
