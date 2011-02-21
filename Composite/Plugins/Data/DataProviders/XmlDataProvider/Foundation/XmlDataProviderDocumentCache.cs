@@ -11,6 +11,7 @@ using Composite.Data;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Streams;
 using System.IO;
+using Composite.Core.Logging;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
@@ -142,7 +143,19 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                             }
                         }
 
-                        XDocument xDoc = XDocumentUtils.Load(filename);
+                        XDocument xDoc;
+                        try
+                        {
+                            xDoc = XDocumentUtils.Load(filename);
+                        }
+                        catch (Exception ex)
+                        {
+                            LoggingService.LogCritical("XmlDataProvider", "Failed to load data from the file: " + filename);
+                            LoggingService.LogCritical("XmlDataProvider", ex);
+
+                            throw;
+                        }
+
                         List<XElement> elements = ExtractElements(xDoc);
 
                         var index = new Hashtable<IDataId, XElement>();
