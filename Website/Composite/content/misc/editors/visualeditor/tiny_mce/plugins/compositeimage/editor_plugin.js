@@ -94,7 +94,14 @@ new function () {
 					img = self.editor.selection.getNode();
 				}
 				if (img.nodeName.toLowerCase() != "img") {
-					img = null;
+					//Fix p->img
+					var imgs = img.getElementsByTagName("img");
+					if (imgs.length > 0) {
+						img = imgs[0];
+					}
+					else {
+						img = null;
+					}
 				}
 
 				this.editor.theme.enableDialogMode();
