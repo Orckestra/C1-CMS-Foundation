@@ -1,9 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Transactions;
-using System.Web;
 using System.Web.UI;
 using System.Workflow.Activities;
 using System.Workflow.Runtime;
@@ -22,7 +20,6 @@ using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
-using Composite.Core.WebClient;
 using Composite.Core.WebClient.FlowMediators.FormFlowRendering;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.Xml;
@@ -36,7 +33,6 @@ using Composite.Data.Types;
 using Composite.Data.Validation;
 using Composite.Data.Validation.ClientValidationRules;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
-
 
 namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
@@ -383,7 +379,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
 
                         foreach (IData data in dataToAdd.Values)
-                        {                            
+                        {
                             DataFacade.AddNew(data);
                         }
 
@@ -639,9 +635,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private void editPreviewCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
+            var serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+            var webRenderService = serviceContainer.GetService<IFormFlowWebRenderingService>();
+
             try
             {
-                IPage selectedPage = this.GetBinding<IPage>("SelectedPage");
+                var selectedPage = this.GetBinding<IPage>("SelectedPage");
 
                 List<IPagePlaceholderContent> contents = new List<IPagePlaceholderContent>();
                 Dictionary<string, string> namedXhtmlFragments = this.GetBinding<Dictionary<string, string>>("NamedXhtmlFragments");
@@ -654,22 +653,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     contents.Add(content);
                 }
 
-                Control renderedPage = PageRenderer.Render(selectedPage, contents);
-                PageRenderer.DisableAspNetPostback(renderedPage);
+                string pageHtml = PagePreviewBuilder.RenderPreview(selectedPage, contents);
 
-                var response = HttpContext.Current.Response;
-                response.Filter = new FixLinksFilter(response.Filter);
-
-                FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
-
-                var webRenderService = serviceContainer.GetService<IFormFlowWebRenderingService>();
-                webRenderService.SetNewPageOutput(renderedPage);
+                webRenderService.SetNewPageOutput(new LiteralControl(pageHtml));
             }
             catch (Exception ex)
             {
-                FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
-                Control errOutput = new LiteralControl("<pre>" + ex + "</pre>");
-                var webRenderService = serviceContainer.GetService<IFormFlowWebRenderingService>();
+                var errOutput = new LiteralControl("<pre>" + ex + "</pre>");
                 webRenderService.SetNewPageOutput(errOutput);
             }
         }
@@ -771,105 +761,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             return StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", key);
         }
 
-        private class FixLinksFilter : System.IO.Stream
-        {
-            private readonly System.IO.Stream _innerStream;
-            private System.IO.MemoryStream _ms = new System.IO.MemoryStream();
-
-            public FixLinksFilter(System.IO.Stream innerOuputStream)
-            {
-                _innerStream = innerOuputStream;
-            }
-
-            public override bool CanRead
-            {
-                get { return false; }
-            }
-
-            public override bool CanSeek
-            {
-                get { return false; }
-            }
-
-            public override bool CanWrite
-            {
-                get { return true; }
-            }
-
-            public override void Flush()
-            {
-                // DO NOTHING HERE
-            }
-
-            public override long Length
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            public override long Position
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public override int Read(byte[] buffer, int offset, int count)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override long Seek(long offset, System.IO.SeekOrigin origin)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override void SetLength(long value)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override void Write(byte[] buffer, int offset, int count)
-            {
-                if (!_ms.CanWrite)
-                {
-                    // Reopening stream if it was empty
-                    _ms = new System.IO.MemoryStream();
-                }
-                _ms.Write(buffer, offset, count);
-            }
-
-            public override void Close()
-            {
-                // Checking if the stream was already closed
-                if (!_ms.CanSeek)
-                {
-                    return;
-                }
-
-                _ms.Seek(0, System.IO.SeekOrigin.Begin);
-
-                var bytes = _ms.ToArray();
-
-                string html = Encoding.UTF8.GetString(bytes);
-
-                string newHtml = PageUrlHelper.ChangeRenderingPageUrlsToPublic(html);
-
-                if (html != newHtml)
-                {
-                    bytes = Encoding.UTF8.GetBytes(newHtml);
-                }
-
-                _innerStream.Write(bytes, 0, bytes.Length);
-
-                _innerStream.Close();
-                _ms.Close();
-            }
-        }
 
         private void PageStillExists(object sender, ConditionalEventArgs e)
         {
