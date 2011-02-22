@@ -213,13 +213,22 @@ namespace Composite.Functions
                 
                 return new ConstantParameterRuntimeTreeNode(nameAttribute.Value, strings);
             }
+            else if (element.Nodes().Where(f=>f.GetType() != typeof(XAttribute)).Count() > 1)
+            {
+                // ienumerable of inner elements
+                var innerElements = element.Nodes().Where(f => f.GetType() != typeof(XAttribute));
+                if (innerElements.All(f => f.GetType() == typeof(XElement)))
+                {
+                    return new ConstantObjectParameterRuntimeTreeNode(nameAttribute.Value, element.Elements());
+                }
+                else
+                {
+                    return new ConstantObjectParameterRuntimeTreeNode(nameAttribute.Value, element.Nodes());
+                }
+            }
             else
             {
-                if (element.Elements().Count() > 1)
-                    throw new InvalidProgramException(string.Format("Wrong xml format in parameter '{0}' - contains multiple elements", nameAttribute.Value));
-
                 throw new InvalidProgramException(string.Format("Wrong xml format in parameter '{0}'", nameAttribute.Value));
-
             }
         }
     }

@@ -82,6 +82,21 @@ namespace Composite.Core.Types
                     return targetValue;
                 }
 
+                // Haz item, wantz list of it.
+                if ((IsGenericEnumerable(value.GetType()) == false) &&
+                    (IsGenericEnumerable(targetType) == true))
+                {
+                    Type targetItemType = targetType.GetGenericArguments()[0];
+
+                    if (targetItemType.IsAssignableFrom(value.GetType()))
+                    {
+                        IList targetValue = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(new Type[] { targetItemType }));
+                        targetValue.Add(value);
+                        return targetValue;
+                    }
+                }
+
+
                 if (value.GetType() == typeof(string))
                 {
                     if (targetType == typeof(Type))
