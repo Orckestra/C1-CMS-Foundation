@@ -270,14 +270,13 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             if (string.IsNullOrEmpty(orderByField) == true)
             {
                 orderByField = propertyNames.FirstOrDefault(f => f.Contains(".") == false);
-                if (string.IsNullOrEmpty(orderByField) == false)
+                if (!randomized && !orderByField.IsNullOrEmpty())
                 {
                     orderByExpression = DataToXElements<T>.GetOrderByPropertyNameExpression(orderByField);
                 }
                 else
                 {
-                    Expression<Func<T, bool>> orderer = DataFacade.GetEmptyPredicate<T>();
-                    orderByExpression = orderer;
+                    orderByExpression = DataFacade.GetEmptyPredicate<T>();
                 }
             }
             else
@@ -676,7 +675,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                 {
                     // TODO: optimize for EnumerableQuery instances
                     IQueryable<T> randomizedItems = allDataItemsOrdered.TakeRandom(coreElementItemsPerPage);
-                    randomizedItems = (orderAscending ? randomizedItems.OrderBy(orderByCasted) : randomizedItems.OrderByDescending(orderByCasted));
+
+                    if (orderBy != DataFacade.GetEmptyPredicate<T>())
+                    {
+                        randomizedItems = (orderAscending ? randomizedItems.OrderBy(orderByCasted) : randomizedItems.OrderByDescending(orderByCasted));
+                    }
                     return randomizedItems;
                 }
 
