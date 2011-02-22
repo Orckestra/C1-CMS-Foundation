@@ -26,7 +26,8 @@
   <!-- toolbar menus -->
   <string key="Toolbar.Insert.Label" value="Insert"/>
   <string key="Toolbar.Format.Label" value="Format"/>
-
+  <string key="Toolbar.Format.ToolTip" value="Format XML source"/>
+  
   <!-- insert dropdown -->
 	<string key="Insert.PageURL.Label" value="Page URL"/>
 	<string key="Insert.ImageURL.Label" value="Image URL"/>
