@@ -63,7 +63,8 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         private static readonly PermissionType[] _changeWhiteListPermissionTypes = new PermissionType[] { PermissionType.Administrate };
 
         private static List<string> _editableMimeTypes = 
-            new List<string> { MimeTypeInfo.Css, MimeTypeInfo.Js, MimeTypeInfo.Xml, MimeTypeInfo.Text, MimeTypeInfo.Html, MimeTypeInfo.Ascx, MimeTypeInfo.Ashx, MimeTypeInfo.Aspx, MimeTypeInfo.CSharp, MimeTypeInfo.Resx, MimeTypeInfo.MasterPage };
+            new List<string> { MimeTypeInfo.Css, MimeTypeInfo.Js, MimeTypeInfo.Xml, MimeTypeInfo.Text, MimeTypeInfo.Html, MimeTypeInfo.Ascx, MimeTypeInfo.Ashx, 
+                               MimeTypeInfo.Aspx, MimeTypeInfo.CSharp, MimeTypeInfo.Resx, MimeTypeInfo.MasterPage, MimeTypeInfo.CsHtml };
 
 
         public WebsiteFileElementProvider(WebsiteFileElementProviderData objectConfiguration)

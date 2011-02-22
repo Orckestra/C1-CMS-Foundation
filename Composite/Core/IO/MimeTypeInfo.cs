@@ -138,6 +138,12 @@ namespace Composite.Core.IO
         }
 
         /// <exclude />
+        public static string CsHtml
+        {
+            get { return "application/x-cshtml"; }
+        }
+
+        /// <exclude />
         public static string Ascx
         {
             get { return "application/x-ascx"; }
@@ -344,6 +350,10 @@ namespace Composite.Core.IO
             _toCanonical.Add(MimeTypeInfo.Ascx, MimeTypeInfo.Ascx);
             _extensionToCanonical.Add("ascx", MimeTypeInfo.Ascx);
             _mimeTypeToResourceName.Add(MimeTypeInfo.Ascx, "mimetype-ascx");
+
+            _toCanonical.Add(MimeTypeInfo.CsHtml, MimeTypeInfo.CsHtml);
+            _extensionToCanonical.Add("cshtml", MimeTypeInfo.CsHtml);
+            _mimeTypeToResourceName.Add(MimeTypeInfo.CsHtml, "mimetype-cshtml");
 
             _toCanonical.Add(MimeTypeInfo.Aspx, MimeTypeInfo.Aspx);
             _extensionToCanonical.Add("aspx", MimeTypeInfo.Aspx);

@@ -1539,7 +1539,15 @@
 		<IconFile size="xlarge"
 			path="republic\republic_1002\1002_32px_Republic_32bit_PNG.png" />
 	</Icon>
-	<Icon name="mimetype-ascx">
+  <Icon name="mimetype-cshtml">
+    <IconFile size="normal"
+			path="republic\republic_1030\1030_16px_Republic_32bit_PNG.png" />
+    <IconFile size="large"
+			path="republic\republic_1030\1030_24px_Republic_32bit_PNG.png" />
+    <IconFile size="xlarge"
+			path="republic\republic_1030\1030_32px_Republic_32bit_PNG.png" />
+  </Icon>
+  <Icon name="mimetype-ascx">
 		<IconFile size="normal"
 			path="republic\republic_1003\1003_16px_Republic_32bit_PNG.png" />
 		<IconFile size="large"
