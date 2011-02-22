@@ -32,6 +32,7 @@ md ApplicationState\SerializedConsoleMessages
 rd ApplicationState\SerializedWorkflows /S /Q
 md ApplicationState\SerializedWorkflows
 rd ..\..\Composite\InstalledPackages /S /Q
+rd ..\..\Views /S /Q
 rd Azure /S /Q
 md Azure
 
