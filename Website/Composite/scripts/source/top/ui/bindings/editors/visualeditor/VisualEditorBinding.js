@@ -500,7 +500,6 @@ VisualEditorBinding.prototype.normalizeToDocument = function ( markup ) {
 	
 	var result = markup;
 	if ( !this._isNormalizedDocument ( markup )) {
-		markup = "\t\t" + markup.replace ( /\n/g, "\n\t\t" );
 		result = VisualEditorBinding.XHTML
 			.replace ( "${head}", this._getHeadSection ())
 			.replace ( "${body}", markup );
@@ -520,6 +519,13 @@ VisualEditorBinding.prototype._isNormalizedDocument = function ( markup ) {
 	if ( doc != null ) {
 		if ( doc.documentElement.nodeName == "html" ) {
 			result = true;
+		}
+	}
+	//When markup start with <!-- --> then parser return html document in chrome
+	//TODO: Investigate it to make function more niced
+	if (Client.isWebKit) {
+		if (markup.indexOf("<html") !== 0) {
+			result = false;
 		}
 	}
 	return result;
