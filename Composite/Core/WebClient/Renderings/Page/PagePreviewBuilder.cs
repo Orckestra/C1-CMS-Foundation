@@ -11,6 +11,8 @@ namespace Composite.Core.WebClient.Renderings.Page
     /// <summary>
     /// Allow previewing a page 'in mem' in a simulated GET request. Limited information is passed from original client to this request.
     /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public class PagePreviewBuilder
     {
         public static string RenderPreview(IPage selectedPage, List<IPagePlaceholderContent> contents)
