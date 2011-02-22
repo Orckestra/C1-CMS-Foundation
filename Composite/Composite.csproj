@@ -176,6 +176,7 @@
     <Compile Include="Core\Implementation\ImplementationFactory.cs" />
     <Compile Include="Core\Implementation\LogImplementation.cs" />
     <Compile Include="Core\Implementation\PackageLicenseHelperImplementation.cs" />
+    <Compile Include="Core\Implementation\PackageUtilsImplementation.cs" />
     <Compile Include="Core\Implementation\PageDataConnectionImplementation.cs" />
     <Compile Include="Core\Implementation\SitemapNavigatorImplementation.cs" />
     <Compile Include="Core\IO\C1Directory.cs" />
@@ -217,6 +218,7 @@
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\RebootingConsoleFragmentUninstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageLicenseDefinition.cs" />
     <Compile Include="Core\PackageSystem\PackageLicenseHelper.cs" />
+    <Compile Include="Core\PackageSystem\PackageUtils.cs" />
     <Compile Include="Core\PackageSystem\WebServiceClient\LicenseDefinitionServiceSoapClient.cs" />
     <Compile Include="Core\Instrumentation\Measurement.cs" />
     <Compile Include="Core\Instrumentation\Profiler.cs" />

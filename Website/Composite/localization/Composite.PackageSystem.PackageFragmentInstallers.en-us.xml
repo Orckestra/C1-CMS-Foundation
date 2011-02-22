@@ -86,4 +86,10 @@
   <string key="PackageVersionBumberFragmentUninstaller.PackageIdDuplicate" value="The package id duplicate: '{0}'" />
   <string key="PackageVersionBumberFragmentUninstaller.WrongAttributeVersionFormat" value="Wrong attribute value format, Version value expected (x.y.z)" />
   <string key="PackageLicenseFragmentInstaller.MissingPublicKeyElement" value="A public RSA key is missing in the package configuration" />
+
+  <string key="License.InvalidKeyTitle" value="Invalid license key" />
+  <string key="License.InvalidKeyMessage" value="The license key is invalid. You need to obtain a valid license key." />
+  <string key="License.ExpiredTitle" value="Trial period has expired" />
+  <string key="License.ExpiredMessage" value="The trial period of the package has expired. You need to obtain a valid license." />
+  <string key="License.Failed" value="Failed to get license information. ProductId: {0}" />
 </strings>

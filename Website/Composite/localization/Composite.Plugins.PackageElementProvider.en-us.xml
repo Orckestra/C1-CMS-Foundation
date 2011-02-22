@@ -135,4 +135,7 @@
   <string key="AddAddOnSource.Step2.HeadingWithHttpsDescription" value="Click Finish to add the source." />
   <string key="DeleteAddOnSource.Step1.LayoutLabel" value="Delete confirm" />
   <string key="DeleteAddOnSource.Step1.Text" value="Delete the selected server source" />
+
+  <string key="ConfirmLicense.ExpiredTitle" value="Trial period has expired" />
+  <string key="ConfirmLicense.ExpiredMessage" value="The trial period of the package has expired. You need to obtain a valid license." />
 </strings>

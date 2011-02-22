@@ -383,6 +383,7 @@
     <Content Include="Composite\content\forms\Administrative\InlineFunctionAddFunctionStep1.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Composite\content\forms\Administrative\PackageElementProviderConfirmLicense.xml" />
     <Content Include="Composite\content\forms\Administrative\SendMessageToConsoles_EnterMessage.xml" />
     <Content Include="Composite\content\forms\Administrative\EditMetaData_EditDefinition.xml">
       <SubType>Designer</SubType>

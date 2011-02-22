@@ -340,5 +340,19 @@ namespace Composite.Core.Implementation
                 return new PackageLicenseHelperImplementation();
             }
         }
+
+
+
+
+        /// <summary>
+        /// Documentation pending
+        /// </summary>
+        public virtual PackageUtilsImplementation StatelessPackageUtils
+        {
+            get
+            {
+                return new PackageUtilsImplementation();
+            }
+        }
     }
 }

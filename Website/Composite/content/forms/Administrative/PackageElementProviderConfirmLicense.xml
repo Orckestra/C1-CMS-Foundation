@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+
+  <cms:bindings>
+  </cms:bindings>
+
+  <cms:layout label="${Composite.Plugins.PackageElementProvider, ConfirmLicense.ExpiredTitle}">
+    <Text Text="${Composite.Plugins.PackageElementProvider, ConfirmLicense.ExpiredMessage}" />
+  </cms:layout>
+</cms:formdefinition>
