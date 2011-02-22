@@ -347,6 +347,7 @@ namespace Composite.Core.Implementation
         /// <summary>
         /// Documentation pending
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Utils")]
         public virtual PackageUtilsImplementation StatelessPackageUtils
         {
             get

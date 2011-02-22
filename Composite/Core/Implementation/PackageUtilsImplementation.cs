@@ -11,6 +11,7 @@ namespace Composite.Core.Implementation
     /// <summary>
     /// This is the default implementaion for PackageUtils <see cref="Composite.Core.PackageSystem.PackageUtils"/>
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Utils")]
     public class PackageUtilsImplementation
     {
         /// <summary>
