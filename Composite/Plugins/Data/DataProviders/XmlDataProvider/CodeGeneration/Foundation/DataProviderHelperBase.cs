@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using Composite.Core.Collections.Generic;
 using Composite.Data;
+using System.Threading;
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation
 {
@@ -132,6 +133,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Fo
                     }
                 }
             }
+
+            value = value.Replace(".", System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+
             return Decimal.Parse(value);
         }
     }
