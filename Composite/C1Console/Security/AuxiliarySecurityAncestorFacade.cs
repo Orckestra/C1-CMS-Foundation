@@ -46,6 +46,20 @@ namespace Composite.C1Console.Security
 
 
 
+        // Overload
+        /// <summary>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="auxiliarySecurityAncestorProvider"></param>
+        /// <param name="flushPersistent"></param>
+        public static void AddAuxiliaryAncestorProvider<T>(IAuxiliarySecurityAncestorProvider auxiliarySecurityAncestorProvider, bool flushPersistent)
+            where T : EntityToken
+        {
+            AddAuxiliaryAncestorProvider(typeof(T), auxiliarySecurityAncestorProvider, flushPersistent);
+        }
+
+
+
         /// <summary>
         /// Providers will get flushed on flushes
         /// </summary>
@@ -53,7 +67,20 @@ namespace Composite.C1Console.Security
         /// <param name="auxiliarySecurityAncestorProvider"></param>
         public static void AddAuxiliaryAncestorProvider(Type entityTokenType, IAuxiliarySecurityAncestorProvider auxiliarySecurityAncestorProvider)
         {
-            _implementation.AddAuxiliaryAncestorProvider(entityTokenType, auxiliarySecurityAncestorProvider);
+            _implementation.AddAuxiliaryAncestorProvider(entityTokenType, auxiliarySecurityAncestorProvider, false);
+        }
+
+
+
+        /// <summary>
+        /// Providers will get flushed on flushes
+        /// </summary>
+        /// <param name="entityTokenType"></param>
+        /// <param name="auxiliarySecurityAncestorProvider"></param>
+        /// <param name="flushPersistent"></param>
+        public static void AddAuxiliaryAncestorProvider(Type entityTokenType, IAuxiliarySecurityAncestorProvider auxiliarySecurityAncestorProvider, bool flushPersistent)
+        {
+            _implementation.AddAuxiliaryAncestorProvider(entityTokenType, auxiliarySecurityAncestorProvider, flushPersistent);
         }
 
 

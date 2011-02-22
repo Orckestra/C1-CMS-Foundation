@@ -57,12 +57,18 @@ namespace Composite.C1Console.Trees
 
                     GeneratedTypesFacade.SubscribeToUpdateTypeEvent(OnDataTypeChanged);
 
+                    // This f
                     TreeAuxiliaryAncestorProvider treeAuxiliaryAncestorProvider = new C1Console.Trees.TreeAuxiliaryAncestorProvider();
-                    AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreeSimpleElementEntityToken>(treeAuxiliaryAncestorProvider);
+                    AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreeSimpleElementEntityToken>(treeAuxiliaryAncestorProvider, true);
+                    AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreeFunctionElementGeneratorEntityToken>(treeAuxiliaryAncestorProvider, true);
+                    AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreeDataFieldGroupingElementEntityToken>(treeAuxiliaryAncestorProvider, true);
+                    AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<DataEntityToken>(treeAuxiliaryAncestorProvider, true);
+
+                   /* AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreeSimpleElementEntityToken>(treeAuxiliaryAncestorProvider);
                     AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreeFunctionElementGeneratorEntityToken>(treeAuxiliaryAncestorProvider);
                     AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreeDataFieldGroupingElementEntityToken>(treeAuxiliaryAncestorProvider);
                     AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<DataEntityToken>(treeAuxiliaryAncestorProvider);
-
+                    */
                     _resourceLocker.Resources.PersistentAttachmentPoints = new Dictionary<string, List<IAttachmentPoint>>();
 
                     LoadAllTrees();

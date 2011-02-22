@@ -8,6 +8,7 @@ namespace Composite.C1Console.Security
     internal sealed class AuxiliarySecurityAncestorFacadeImpl : IAuxiliarySecurityAncestorFacade
     {
         private Dictionary<Type, List<IAuxiliarySecurityAncestorProvider>> _auxiliarySecurityAncestorProviders = new Dictionary<Type, List<IAuxiliarySecurityAncestorProvider>>();
+        private Dictionary<Type, List<IAuxiliarySecurityAncestorProvider>> _flushPersistentAuxiliarySecurityAncestorProviders = new Dictionary<Type, List<IAuxiliarySecurityAncestorProvider>>();
 
 
         public IEnumerable<EntityToken> GetParents(EntityToken entityToken)
@@ -19,8 +20,12 @@ namespace Composite.C1Console.Security
 
             if (_auxiliarySecurityAncestorProviders.TryGetValue(entityToken.GetType(), out auxiliarySecurityAncestorProviders) == false)
             {
-                return null;
+                if (_flushPersistentAuxiliarySecurityAncestorProviders.TryGetValue(entityToken.GetType(), out auxiliarySecurityAncestorProviders) == false)
+                {
+                    return null;
+                }
             }
+
 
             IEnumerable<EntityToken> totalResult = null;
             foreach (IAuxiliarySecurityAncestorProvider auxiliarySecurityAncestorProvider in auxiliarySecurityAncestorProviders)
@@ -45,14 +50,24 @@ namespace Composite.C1Console.Security
 
 
 
-        public void AddAuxiliaryAncestorProvider(Type entityTokenType, IAuxiliarySecurityAncestorProvider auxiliarySecurityAncestorProvider)
+        public void AddAuxiliaryAncestorProvider(Type entityTokenType, IAuxiliarySecurityAncestorProvider auxiliarySecurityAncestorProvider, bool flushPersistent)
         {
+            Dictionary<Type, List<IAuxiliarySecurityAncestorProvider>> providers;
+            if (!flushPersistent)
+            {
+                providers = _auxiliarySecurityAncestorProviders;
+            }
+            else
+            {
+                providers = _flushPersistentAuxiliarySecurityAncestorProviders;
+            }
+
             List<IAuxiliarySecurityAncestorProvider> auxiliarySecurityAncestorProviders;
 
-            if (_auxiliarySecurityAncestorProviders.TryGetValue(entityTokenType, out auxiliarySecurityAncestorProviders) == false)
+            if (providers.TryGetValue(entityTokenType, out auxiliarySecurityAncestorProviders) == false)
             {
                 auxiliarySecurityAncestorProviders = new List<IAuxiliarySecurityAncestorProvider>();
-                _auxiliarySecurityAncestorProviders.Add(entityTokenType, auxiliarySecurityAncestorProviders);
+                providers.Add(entityTokenType, auxiliarySecurityAncestorProviders);
             }
 
             if (auxiliarySecurityAncestorProviders.Contains(auxiliarySecurityAncestorProvider) == true)
@@ -68,8 +83,13 @@ namespace Composite.C1Console.Security
         public void RemoveAuxiliaryAncestorProvider(Type entityTokenType, IAuxiliarySecurityAncestorProvider auxiliarySecurityAncestorProvider)
         {
             List<IAuxiliarySecurityAncestorProvider> auxiliarySecurityAncestorProviders;
-
+            
             if (_auxiliarySecurityAncestorProviders.TryGetValue(entityTokenType, out auxiliarySecurityAncestorProviders) == true)
+            {
+                auxiliarySecurityAncestorProviders.Remove(auxiliarySecurityAncestorProvider);
+            }
+            
+            if (_flushPersistentAuxiliarySecurityAncestorProviders.TryGetValue(entityTokenType, out auxiliarySecurityAncestorProviders) == true)
             {
                 auxiliarySecurityAncestorProviders.Remove(auxiliarySecurityAncestorProvider);
             }
@@ -82,6 +102,15 @@ namespace Composite.C1Console.Security
             List<IAuxiliarySecurityAncestorProvider> auxiliarySecurityAncestorProviders;
 
             if (_auxiliarySecurityAncestorProviders.TryGetValue(entityTokenType, out auxiliarySecurityAncestorProviders) == true)
+            {
+                foreach (IAuxiliarySecurityAncestorProvider auxiliarySecurityAncestorProvider in auxiliarySecurityAncestorProviders)
+                {
+                    yield return auxiliarySecurityAncestorProvider;
+                }
+            }
+
+
+            if (_flushPersistentAuxiliarySecurityAncestorProviders.TryGetValue(entityTokenType, out auxiliarySecurityAncestorProviders) == true)
             {
                 foreach (IAuxiliarySecurityAncestorProvider auxiliarySecurityAncestorProvider in auxiliarySecurityAncestorProviders)
                 {
