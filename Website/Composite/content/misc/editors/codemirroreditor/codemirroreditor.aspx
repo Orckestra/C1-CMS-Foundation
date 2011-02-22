@@ -86,7 +86,7 @@ xmlns:control="http://www.composite.net/ns/uicontrol">
 								popup="insertpopup" binding="SourceEditorInsertToolbarButtonBinding" />
 						</ui:toolbargroup>
 						<ui:toolbargroup id="xmltools" hidden="true">
-							<ui:toolbarbutton id="formatbutton" label="Format" tooltip="Format XML source" image="${icon:editor-formatsource}"
+							<ui:toolbarbutton id="formatbutton" label="${string:Composite.Web.SourceEditor:Toolbar.Format.Label}" tooltip="${string:Composite.Web.SourceEditor:Toolbar.Format.ToolTip}" image="${icon:editor-formatsource}"
 								image-disabled="${icon:editor-formatsource-disabled}" observes="broadcasterIsActive"
 								binding="SourceEditorFormatToolbarButtonBinding" />
 						</ui:toolbargroup>
