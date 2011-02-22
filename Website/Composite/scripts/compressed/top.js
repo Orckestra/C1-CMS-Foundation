@@ -26360,7 +26360,6 @@ return VisualEditorBinding.extractByIndex(html,1);
 VisualEditorBinding.prototype.normalizeToDocument=function(_fcd){
 var _fce=_fcd;
 if(!this._isNormalizedDocument(_fcd)){
-_fcd="\t\t"+_fcd.replace(/\n/g,"\n\t\t");
 _fce=VisualEditorBinding.XHTML.replace("${head}",this._getHeadSection()).replace("${body}",_fcd);
 }
 return _fce;
@@ -26371,6 +26370,11 @@ var doc=XMLParser.parse(_fcf,true);
 if(doc!=null){
 if(doc.documentElement.nodeName=="html"){
 _fd0=true;
+}
+}
+if(Client.isWebKit){
+if(_fcf.indexOf("<html")!==0){
+_fd0=false;
 }
 }
 return _fd0;
