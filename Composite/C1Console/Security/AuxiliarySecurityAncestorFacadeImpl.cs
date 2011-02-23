@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Composite.Core.Linq;
 
 
 namespace Composite.C1Console.Security
@@ -17,18 +18,18 @@ namespace Composite.C1Console.Security
 
 
             List<IAuxiliarySecurityAncestorProvider> auxiliarySecurityAncestorProviders;
+            List<IAuxiliarySecurityAncestorProvider> flushPersistentAuxiliarySecurityAncestorProviders;
 
-            if (_auxiliarySecurityAncestorProviders.TryGetValue(entityToken.GetType(), out auxiliarySecurityAncestorProviders) == false)
-            {
-                if (_flushPersistentAuxiliarySecurityAncestorProviders.TryGetValue(entityToken.GetType(), out auxiliarySecurityAncestorProviders) == false)
-                {
-                    return null;
-                }
-            }
+            _auxiliarySecurityAncestorProviders.TryGetValue(entityToken.GetType(), out auxiliarySecurityAncestorProviders);
+            _flushPersistentAuxiliarySecurityAncestorProviders.TryGetValue(entityToken.GetType(), out flushPersistentAuxiliarySecurityAncestorProviders);
+
+            IEnumerable<IAuxiliarySecurityAncestorProvider> resultSecurityAncestorProviders = auxiliarySecurityAncestorProviders.ConcatOrDefault(flushPersistentAuxiliarySecurityAncestorProviders);
+
+            if (resultSecurityAncestorProviders == null) return null;
 
 
             IEnumerable<EntityToken> totalResult = null;
-            foreach (IAuxiliarySecurityAncestorProvider auxiliarySecurityAncestorProvider in auxiliarySecurityAncestorProviders)
+            foreach (IAuxiliarySecurityAncestorProvider auxiliarySecurityAncestorProvider in resultSecurityAncestorProviders)
             {
                 Dictionary<EntityToken, IEnumerable<EntityToken>> result = auxiliarySecurityAncestorProvider.GetParents(new EntityToken[] { entityToken });
 
@@ -83,12 +84,12 @@ namespace Composite.C1Console.Security
         public void RemoveAuxiliaryAncestorProvider(Type entityTokenType, IAuxiliarySecurityAncestorProvider auxiliarySecurityAncestorProvider)
         {
             List<IAuxiliarySecurityAncestorProvider> auxiliarySecurityAncestorProviders;
-            
+
             if (_auxiliarySecurityAncestorProviders.TryGetValue(entityTokenType, out auxiliarySecurityAncestorProviders) == true)
             {
                 auxiliarySecurityAncestorProviders.Remove(auxiliarySecurityAncestorProvider);
             }
-            
+
             if (_flushPersistentAuxiliarySecurityAncestorProviders.TryGetValue(entityTokenType, out auxiliarySecurityAncestorProviders) == true)
             {
                 auxiliarySecurityAncestorProviders.Remove(auxiliarySecurityAncestorProvider);
