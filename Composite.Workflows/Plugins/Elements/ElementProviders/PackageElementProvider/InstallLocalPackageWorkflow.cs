@@ -38,6 +38,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
         private void initializeCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
+            this.UpdateBinding("LayoutLabel", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalAddOn.ShowError.LayoutLabel"));
+            this.UpdateBinding("TableCaption", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalAddOn.ShowError.InfoTableCaption"));
+
             this.Bindings.Add("UploadedFile", new UploadedFile());
         }
 
@@ -61,6 +64,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
                     if (validationResult.Count > 0)
                     {
+                        this.UpdateBinding("LayoutLabel", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalAddOn.ShowWarning.LayoutLabel"));
+                        this.UpdateBinding("TableCaption", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalAddOn.ShowWarning.InfoTableCaption"));
                         this.UpdateBinding("Errors", WorkflowHelper.ValidationResultToBinding(validationResult));
                     }
                     else

@@ -70,6 +70,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
         private void initializeStateCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
+            this.UpdateBinding("LayoutLabel", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallRemoteAddOn.ShowError.LayoutLabel"));
+            this.UpdateBinding("TableCaption", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallRemoteAddOn.ShowError.InfoTableCaption"));
+
             try
             {
                 _packageIsFree = GetAddOnDescription().IsFree;
@@ -134,6 +137,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
                     if (validationResult.Count > 0)
                     {
+                        this.UpdateBinding("LayoutLabel", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallRemoteAddOn.ShowWarning.LayoutLabel"));
+                        this.UpdateBinding("TableCaption", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallRemoteAddOn.ShowWarning.InfoTableCaption"));
                         this.UpdateBinding("Errors", WorkflowHelper.ValidationResultToBinding(validationResult));
                     }
                     else

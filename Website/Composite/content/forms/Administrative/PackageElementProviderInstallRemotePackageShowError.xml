@@ -3,10 +3,19 @@
   <cms:bindings>
     <cms:binding name="ErrorHeader" type="System.Object" />
     <cms:binding name="Errors" type="System.Object" />
+    <cms:binding name="LayoutLabel" type="System.String" />
+    <cms:binding name="TableCaption" type="System.String" />
   </cms:bindings>
-  <cms:layout iconhandle="package-install-package" label="${Composite.Plugins.PackageElementProvider, InstallRemoteAddOn.ShowError.LayoutLabel}">
-    <PlaceHolder>
-      <InfoBox Label="${Composite.Plugins.PackageElementProvider, InstallRemoteAddOn.ShowError.InfoTableCaption}">
+ 
+  <cms:layout iconhandle="package-install-package">
+    <cms:layout.label>
+      <cms:read source="LayoutLabel"/>
+    </cms:layout.label>
+    <PlaceHolder>      
+      <InfoBox>
+        <InfoBox.Label>
+          <cms:read source="TableCaption"/>
+        </InfoBox.Label>
         <InfoTable>
           <InfoTable.Headers>
             <cms:read source="ErrorHeader" />
