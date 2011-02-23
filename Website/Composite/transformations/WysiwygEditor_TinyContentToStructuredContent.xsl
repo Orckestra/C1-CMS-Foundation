@@ -45,12 +45,17 @@
   <xsl:template match="@class[contains(.,'mceVisualAid')]">
     <xsl:choose>
       <xsl:when test=".='mceVisualAid'" />
-      <xsl:otherwise>
-        <xsl:attribute name="class">
-          <xsl:value-of select="substring-before(.,' mceVisualAid')" />
+			<xsl:when test="contains(.,' mceVisualAid')">
+				<xsl:attribute name="class">
+					<xsl:value-of select="substring-before(.,' mceVisualAid')" />
 					<xsl:value-of select="substring-after(.,' mceVisualAid')" />
-        </xsl:attribute>
-      </xsl:otherwise>
+				</xsl:attribute>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:attribute name="class">
+					<xsl:value-of select="substring-after(.,'mceVisualAid ')" />
+				</xsl:attribute>
+			</xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
@@ -58,11 +63,16 @@
   <xsl:template match="@class[contains(.,'mceC1Focused')]">
     <xsl:choose>
       <xsl:when test=".='mceC1Focused'" />
-      <xsl:otherwise>
-        <xsl:attribute name="class">
-          <xsl:value-of select="substring-before(.,' mceC1Focused')" />
+			<xsl:when test="contains(.,' mceC1Focused')">
+				<xsl:attribute name="class">
+					<xsl:value-of select="substring-before(.,' mceC1Focused')" />
 					<xsl:value-of select="substring-after(.,' mceC1Focused')" />
-        </xsl:attribute>
+				</xsl:attribute>
+			</xsl:when>
+      <xsl:otherwise>
+				<xsl:attribute name="class">
+					<xsl:value-of select="substring-after(.,'mceC1Focused ')" />
+				</xsl:attribute>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -71,12 +81,17 @@
   <xsl:template match="@class[contains(.,'mceItemTable')]">
     <xsl:choose>
       <xsl:when test=".='mceItemTable'" />
-      <xsl:otherwise>
-        <xsl:attribute name="class">
-          <xsl:value-of select="substring-before(.,' mceItemTable')" />
+			<xsl:when test="contains(.,' mceItemTable')">
+				<xsl:attribute name="class">
+					<xsl:value-of select="substring-before(.,' mceItemTable')" />
 					<xsl:value-of select="substring-after(.,' mceItemTable')" />
-        </xsl:attribute>
-      </xsl:otherwise>
+				</xsl:attribute>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:attribute name="class">
+					<xsl:value-of select="substring-after(.,'mceItemTable ')" />
+				</xsl:attribute>
+			</xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
