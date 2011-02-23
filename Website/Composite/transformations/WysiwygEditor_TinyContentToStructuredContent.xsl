@@ -48,6 +48,7 @@
       <xsl:otherwise>
         <xsl:attribute name="class">
           <xsl:value-of select="substring-before(.,' mceVisualAid')" />
+					<xsl:value-of select="substring-after(.,' mceVisualAid')" />
         </xsl:attribute>
       </xsl:otherwise>
     </xsl:choose>
@@ -60,6 +61,7 @@
       <xsl:otherwise>
         <xsl:attribute name="class">
           <xsl:value-of select="substring-before(.,' mceC1Focused')" />
+					<xsl:value-of select="substring-after(.,' mceC1Focused')" />
         </xsl:attribute>
       </xsl:otherwise>
     </xsl:choose>
@@ -72,6 +74,7 @@
       <xsl:otherwise>
         <xsl:attribute name="class">
           <xsl:value-of select="substring-before(.,' mceItemTable')" />
+					<xsl:value-of select="substring-after(.,' mceItemTable')" />
         </xsl:attribute>
       </xsl:otherwise>
     </xsl:choose>
