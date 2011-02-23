@@ -44,21 +44,6 @@ namespace Composite.Core.Implementation
 
 
 
-        /// <summary>
-        /// <see cref="Composite.Core.PackageSystem.PackageLicenseHelper"/>
-        /// </summary>
-        /// <param name="publicKeyXml"></param>
-        /// <param name="installationId"></param>
-        /// <param name="productId"></param>
-        /// <param name="isPermanent"></param>
-        /// <param name="expiresTime"></param>
-        /// <returns></returns>
-        public virtual RSACryptoServiceProvider CreateSignatureVerifier(string publicKeyXml, Guid installationId, Guid productId, bool isPermanent, DateTime expiresTime)
-        {
-            return LicenseDefinitionUtils.CreateSignatureVerifier(publicKeyXml, installationId, productId, isPermanent, expiresTime);
-        }
-
-
 
         /// <summary>
         /// <see cref="Composite.Core.PackageSystem.PackageLicenseHelper"/>
@@ -84,32 +69,15 @@ namespace Composite.Core.Implementation
 
 
 
-        /// <summary>
-        /// <see cref="Composite.Core.PackageSystem.PackageLicenseHelper"/>
-        /// </summary>
-        /// <param name="installationId"></param>
-        /// <param name="productId"></param>
-        /// <param name="isPermanent"></param>
-        /// <param name="expiresTime"></param>
-        /// <returns></returns>
-        public virtual byte[] CreateSignature(Guid installationId, Guid productId, bool isPermanent, DateTime expiresTime)
-        {
-            return LicenseDefinitionUtils.CreateSignature(installationId, productId, isPermanent, expiresTime);
-        }
-
-
 
         /// <summary>
         /// <see cref="Composite.Core.PackageSystem.PackageLicenseHelper"/>
         /// </summary>
-        /// <param name="installationId"></param>
-        /// <param name="productId"></param>
-        /// <param name="isPermanent"></param>
-        /// <param name="expiresTime"></param>
+        /// <param name="signatureString"></param>
         /// <returns></returns>
-        public virtual string CreateSignatureString(Guid installationId, Guid productId, bool isPermanent, DateTime expiresTime)
+        public virtual byte[] CreateSignatureBytes(string signatureString)
         {
-            return LicenseDefinitionUtils.CreateSignatureString(installationId, productId, isPermanent, expiresTime);
+            return LicenseDefinitionUtils.CreateSignatureBytes(signatureString);
         }
     }
 }

@@ -7,6 +7,48 @@ namespace Composite.Core.PackageSystem
 {
     /// <summary>
     /// This class contains methods for handling package licenses
+    /// <example>
+    /// Here is an example of how a pacakge could validat if there is a valid license installed for the pacakge.
+    /// This code should be compiled into the pacakge itself to prevent spoofing.
+    /// <code>                
+    /// Guid productId = ...; // A package should have this compiled into its assembly.
+    /// string publicKeyXml = ...; // A package should have this compiled into its assembly.
+    /// 
+    /// PackageLicenseDefinition licenseDefinition = PackageLicenseHelper.GetLicenseDefinition(productId);
+    /// Guid installationId = licenseDefinition.InstallationId; 
+    /// bool isPermanent = licenseDefinition.Permanent;
+    /// DateTime expiresTime = licenseDefinition.Expires;
+    /// 
+    /// byte[] signedSignature = licenseDefinition.LicenseKeyBytes;
+    /// 
+    /// // Create the signature string
+    /// string signatureString;
+    /// if (isPermanent)
+    /// {
+    ///     signatureString = string.Format("{0}#{1}#{2}", installationId, productId, isPermanent);
+    /// }
+    /// else
+    /// {
+    ///     signatureString = string.Format("{0}#{1}#{2}#{3}", installationId, productId, isPermanent, new XAttribute("date", expiresTime).Value);
+    /// }
+    /// byte[] signature = PackageLicenseHelper.CreateSignatureBytes(signatureString);
+    /// 
+    /// // Create the provider to verify the signature string
+    /// RSACryptoServiceProvider provider = new RSACryptoServiceProvider();
+    /// provider.FromXmlString(publicKeyXml);
+    /// 
+    /// object hashAlgorithm = PackageLicenseHelper.CreateSignatureHashAlgorithm(publicKeyXml);
+    /// 
+    /// // isValidKey tells if the package license xml file has been tampered with
+    /// bool isValidKey = provider.VerifyData(signature, hashAlgorithm, signedSignature);
+    /// 
+    /// // isExpried tells if a trail license is expired, false if its a permanent license
+    /// bool isExpired = !isPermanent &lt; expiresTime &lt; DateTime.Now;
+    /// 
+    /// // isLicenseValid is a combination of isValidKey and isExpired and is only true if the package license xml file has not been tampered with and the license is not expired
+    /// bool isLicenseValid = isValidKey &amp; !isExpired;
+    /// </code>
+    /// </example>
     /// </summary>
     public static class PackageLicenseHelper
     {
@@ -45,53 +87,7 @@ namespace Composite.Core.PackageSystem
 
 
         /// <summary>
-        /// This method returns a RSACryptoServiceProvider that can be used to verify a license for a pacakge.
-        /// <example>
-        /// Here is an example of how a pacakge could validat if there is a valid license installed for the pacakge.
-        /// This code should be compiled into the pacakge itself to prevent spoofing.
-        /// <code>                
-        /// Guid productId = ...; // A package should have this compiled into its assembly.
-        /// string publicKeyXml = ...; // A package should have this compiled into its assembly.
-        /// 
-        /// PackageLicenseDefinition licenseDefinition = PackageLicenseHelper.GetLicenseDefinition(productId);
-        /// Guid installationId = licenseDefinition.InstallationId; 
-        /// bool isPermanent = licenseDefinition.Permanent;
-        /// DateTime expiresTime = licenseDefinition.Expires;
-        /// 
-        /// byte[] signedSignature = licenseDefinition.LicenseKeyBytes;
-        /// byte[] signature = PackageLicenseHelper.CreateSignature(installationId, productId, isPermanent, expiresTime);        
-        /// 
-        /// // Its important NOT to use var here! This should be 'strong' typed so no spoofing is possible.
-        /// System.Security.Cryptography.RSACryptoServiceProvider provider = PackageLicenseHelper.CreateSignatureVerifier(publicKeyXml, installationId, productId, isPermanent, expiresTime);
-        /// 
-        /// object hashAlgorithm = PackageLicenseHelper.CreateSignatureHashAlgorithm(publicKeyXml);
-        /// 
-        /// // isValidKey tells if the package license xml file has been tampered with
-        /// bool isValidKey = provider.VerifyData(signature, hashAlgorithm, signedSignature);
-        /// 
-        /// // isExpried tells if a trail license is expired, true if its a permanent license
-        /// bool isExpired = isPermanent || expiresTime &lt; DateTime.Now;
-        /// 
-        /// // isLicenseValid is a combination of isValidKey and isExpired and is only true if the package license xml file has not been tampered with and the license is not expired
-        /// bool isLicenseValid = isValidKey &amp; !isExpired;
-        /// </code>
-        /// </example>
-        /// </summary>
-        /// <param name="publicKeyXml">This is the public key to the private key used by the pacakge server to generate the license key</param>
-        /// <param name="installationId">The current C1 installation id</param>
-        /// <param name="productId">The id of the package</param>
-        /// <param name="isPermanent">True if the license is permanent, e.i not trail</param>
-        /// <param name="expiresTime">This is the time when the license expires</param>
-        /// <returns>Returns a RSACryptoServiceProvider object that can be used to verify the package license file</returns>
-        public static RSACryptoServiceProvider CreateSignatureVerifier(string publicKeyXml, Guid installationId, Guid productId, bool isPermanent, DateTime expiresTime)
-        {
-            return ImplementationFactory.CurrentFactory.StatelessPackageLicenseHelper.CreateSignatureVerifier(publicKeyXml, installationId, productId, isPermanent, expiresTime);
-        }
-
-
-
-        /// <summary>
-        /// This method returns a hash algorithm that can be used when validateting a package license definition. See <see cref="CreateSignatureVerifier"/>.
+        /// This method returns a hash algorithm that can be used when validateting a package license definition. 
         /// </summary>
         /// <param name="publicKeyXml">This is the public key to the private key used by the pacakge server to generate the license key</param>
         /// <returns>A hash algorithm object</returns>
@@ -103,31 +99,27 @@ namespace Composite.Core.PackageSystem
 
 
         /// <summary>
-        /// This method returns a byte array version of a non signed license key string
+        /// This method returns a byte representation of the <paramref name="signatureString"/>.
+        /// Here is an example of how to create an signature string:
+        /// <example>
+        /// <code>
+        /// string signatureString;
+        /// if (isPermanent)
+        /// {
+        ///     signatureString = string.Format("{0}#{1}#{2}", installationId, productId, isPermanent);
+        /// }
+        /// else
+        /// {
+        ///     signatureString = string.Format("{0}#{1}#{2}#{3}", installationId, productId, isPermanent, new XAttribute("date", expiresTime).Value);
+        /// }
+        /// </code>
+        /// </example>
         /// </summary>
-        /// <param name="installationId">The current C1 installation id</param>
-        /// <param name="productId">The id of the package</param>
-        /// <param name="isPermanent">True if the license is permanent, e.i not trail</param>
-        /// <param name="expiresTime">This is the time when the license expires</param>
-        /// <returns>Returns a byte array version of a non signed license key</returns>
-        public static byte[] CreateSignature(Guid installationId, Guid productId, bool isPermanent, DateTime expiresTime)
+        /// <param name="signatureString">A signature string</param>
+        /// <returns></returns>
+        public static byte[] CreateSignatureBytes(string signatureString)
         {
-            return ImplementationFactory.CurrentFactory.StatelessPackageLicenseHelper.CreateSignature(installationId, productId, isPermanent, expiresTime);
-        }
-
-
-
-        /// <summary>
-        /// This method returns a non signed license key string
-        /// </summary>
-        /// <param name="installationId">The current C1 installation id</param>
-        /// <param name="productId">The id of the package</param>
-        /// <param name="isPermanent">True if the license is permanent, e.i not trail</param>
-        /// <param name="expiresTime">This is the time when the license expires</param>
-        /// <returns>Returns a non signed license key string</returns>
-        public static string CreateSignatureString(Guid installationId, Guid productId, bool isPermanent, DateTime expiresTime)
-        {
-            return ImplementationFactory.CurrentFactory.StatelessPackageLicenseHelper.CreateSignatureString(installationId, productId, isPermanent, expiresTime);
+            return ImplementationFactory.CurrentFactory.StatelessPackageLicenseHelper.CreateSignatureBytes(signatureString);
         }
     }
 }
