@@ -77,10 +77,7 @@ namespace Composite.Core.Implementation
             {
                 Verify.IsNotNull(_sitemap, "Missing sitemap. This class may have invalid state due to wrong construction.");
 
-                foreach (XElement homepageElement in _sitemap.Elements())
-                {
-                    yield return new PageNode(homepageElement);
-                }
+                return _sitemap.Select(homepageElement => new PageNode(homepageElement));
             }
         }
 
@@ -96,10 +93,7 @@ namespace Composite.Core.Implementation
             {
                 Verify.IsNotNull(_sitemap, "Missing sitemap. This class may have invalid state due to wrong construction.");
 
-                foreach (XElement homepageElement in _sitemap.Elements())
-                {
-                    yield return Guid.Parse(homepageElement.Attribute("Id").Value);
-                }
+                return _sitemap.Select(homepageElement => Guid.Parse(homepageElement.Attribute("Id").Value));
             }
         }
 
