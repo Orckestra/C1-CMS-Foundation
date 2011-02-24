@@ -78,7 +78,24 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public override IEnumerable<EntityToken> GetEntityTokens(EntityToken childEntityToken, TreeNodeDynamicContext dynamicContext)
         {
-            List<object> labels = GetObjects(dynamicContext, true);
+            IEnumerable<object> labels;
+
+            if (this.LocalizationEndabled == false)
+            {
+                labels = GetObjects(dynamicContext, true);
+            }
+            else
+            {
+                List<object> orgLabels = GetObjects(dynamicContext, true);
+                using (DataScope localeScope = new DataScope(UserSettings.ForeignLocaleCultureInfo))
+                {
+                    List<object> foriegnLabels = GetObjects(dynamicContext, true);
+                    orgLabels.AddRange(foriegnLabels);
+                    orgLabels.Sort();
+                    labels = orgLabels.Distinct();
+                }
+            }
+
 
             object childGeneratingDataElementsReferenceValue = null;
 
