@@ -35,13 +35,15 @@ namespace Composite.C1Console.Security
 
                 if (result.Count > 0)
                 {
+                    var firstValue = result.Values.First();
+
                     if (totalResult == null)
                     {
-                        totalResult = result.Values.First();
+                        totalResult = firstValue;
                     }
                     else
                     {
-                        totalResult = totalResult.Concat(result.Values.First());
+                        totalResult = totalResult.Concat(firstValue);
                     }
                 }
             }
