@@ -280,7 +280,16 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
 
             try
             {
-                Guid pageId = this.GetBinding<Guid>("PageId");
+                Guid pageId;
+                if (this.GetBinding<object>("PageId") == null)
+                {
+                    pageId = Guid.Empty;
+
+                }
+                else
+                {
+                    pageId = this.GetBinding<Guid>("PageId");
+                }
                 string dataScopeName = this.GetBinding<string>("PageDataScopeName");
                 string cultureName = this.GetBinding<string>("ActiveCultureName");
                 CultureInfo cultureInfo = null;
