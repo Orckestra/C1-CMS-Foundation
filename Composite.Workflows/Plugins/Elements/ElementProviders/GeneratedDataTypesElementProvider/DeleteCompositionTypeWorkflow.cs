@@ -12,6 +12,8 @@ using Composite.Core.ResourceSystem;
 using Composite.Data.Transactions;
 using Composite.Core.Types;
 using Composite.C1Console.Workflow;
+using System.Workflow.Activities;
+using Composite.Data.Types;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
@@ -38,9 +40,29 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
 
 
-        private void DoesTypeExists(object sender, System.Workflow.Activities.ConditionalEventArgs e)
+        private void DoesTypeExists(object sender, ConditionalEventArgs e)
         {
             e.Result = GetDataTypeDescriptor() != null;
+        }
+
+
+
+        private void IsUsedByPageType(object sender, ConditionalEventArgs e)
+        {
+            DataTypeDescriptor dataTypeDescriptor = GetDataTypeDescriptor();
+
+            bool isUsed = DataFacade.GetData<IPageTypeMetaDataTypeLink>().Where(f => f.DataTypeId == dataTypeDescriptor.DataTypeId).Any();
+
+            if (isUsed == true)
+            {
+                Type interfaceType = GetDataTypeDescriptor().GetInterfaceType();
+
+                this.ShowMessage(DialogType.Warning,
+                                 GetLocalizedText("DeleteCompositionTypeWorkflow.ErrorTitle"),
+                                 GetLocalizedText("DeleteCompositionTypeWorkflow.IsUsedByPageType").FormatWith(interfaceType.FullName));
+            }
+
+            e.Result = isUsed;
         }
 
 
@@ -98,7 +120,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
             {
                 PageMetaDataFacade.RemoveAllDefinitions(dataTypeDescriptor.DataTypeId, false);
-                
+
                 transactionScope.Complete();
             }
 
@@ -108,5 +130,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
             specificTreeRefresher.PostRefreshMesseges(entityToken);
         }
+
+
     }
 }

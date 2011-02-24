@@ -80,9 +80,13 @@
   <string key="CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
   <string key="DeleteAggregationTypeWorkflow.LabelFieldGroup" value="Delete the datatype" />
   <string key="DeleteAggregationTypeWorkflow.Text" value="Delete the datatype" />
+  <string key="DeleteAggregationTypeWorkflow.ErrorTitle" value="Error" />
+  <string key="DeleteAggregationTypeWorkflow.IsUsedByPageType" value="Cannot delete type '{0}' since it is used by a page type." />  
   <string key="DeleteCompositionTypeWorkflow.LabelFieldGroup" value="Delete the datatype" />
   <string key="DeleteCompositionTypeWorkflow.Text" value="Delete the datatype" />
   <string key="DeleteCompositionTypeWorkflow.ErrorTitle" value="Error" />
+  <string key="DeleteCompositionTypeWorkflow.TypeIsReferenced" value="Cannot delete type '{0}' since there're types that referenced to it." />
+  <string key="DeleteCompositionTypeWorkflow.IsUsedByPageType" value="Cannot delete type '{0}' since it is used by a page type." />  
   <string key="ToXmlLabel" value="To Xml" />
   <string key="ToXmlToolTip" value="To Xml" />
   <string key="EnableTypeLocalizationWorkflow.Dialog.Label" value="Enable localization" />

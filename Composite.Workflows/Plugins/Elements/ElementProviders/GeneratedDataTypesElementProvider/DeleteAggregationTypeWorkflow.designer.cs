@@ -28,8 +28,13 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             this.CanModifyActivities = true;
             System.Workflow.Activities.CodeCondition codecondition1 = new System.Workflow.Activities.CodeCondition();
+            System.Workflow.Activities.CodeCondition codecondition2 = new System.Workflow.Activities.CodeCondition();
             this.setStateActivity4 = new System.Workflow.Activities.SetStateActivity();
             this.initializeStateCodeActivity_Initialize = new System.Workflow.Activities.CodeActivity();
+            this.setStateActivity7 = new System.Workflow.Activities.SetStateActivity();
+            this.ifElseBranchActivity4 = new System.Workflow.Activities.IfElseBranchActivity();
+            this.ifElseBranchActivity3 = new System.Workflow.Activities.IfElseBranchActivity();
+            this.ifElseActivity1 = new System.Workflow.Activities.IfElseActivity();
             this.setStateActivity6 = new System.Workflow.Activities.SetStateActivity();
             this.caShowMessageBox = new System.Workflow.Activities.CodeActivity();
             this.ifElseBranchActivity2 = new System.Workflow.Activities.IfElseBranchActivity();
@@ -66,6 +71,31 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             this.initializeStateCodeActivity_Initialize.Name = "initializeStateCodeActivity_Initialize";
             this.initializeStateCodeActivity_Initialize.ExecuteCode += new System.EventHandler(this.initializeStateCodeActivity_Initialize_ExecuteCode);
             // 
+            // setStateActivity7
+            // 
+            this.setStateActivity7.Name = "setStateActivity7";
+            this.setStateActivity7.TargetStateName = "finalStateActivity";
+            // 
+            // ifElseBranchActivity4
+            // 
+            this.ifElseBranchActivity4.Activities.Add(this.initializeStateCodeActivity_Initialize);
+            this.ifElseBranchActivity4.Activities.Add(this.setStateActivity4);
+            this.ifElseBranchActivity4.Name = "ifElseBranchActivity4";
+            // 
+            // ifElseBranchActivity3
+            // 
+            this.ifElseBranchActivity3.Activities.Add(this.setStateActivity7);
+            codecondition1.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.IsUsedByPageType);
+            this.ifElseBranchActivity3.Condition = codecondition1;
+            this.ifElseBranchActivity3.Description = "IsUsedByPageType";
+            this.ifElseBranchActivity3.Name = "ifElseBranchActivity3";
+            // 
+            // ifElseActivity1
+            // 
+            this.ifElseActivity1.Activities.Add(this.ifElseBranchActivity3);
+            this.ifElseActivity1.Activities.Add(this.ifElseBranchActivity4);
+            this.ifElseActivity1.Name = "ifElseActivity1";
+            // 
             // setStateActivity6
             // 
             this.setStateActivity6.Name = "setStateActivity6";
@@ -78,16 +108,15 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             // 
             // ifElseBranchActivity2
             // 
-            this.ifElseBranchActivity2.Activities.Add(this.initializeStateCodeActivity_Initialize);
-            this.ifElseBranchActivity2.Activities.Add(this.setStateActivity4);
+            this.ifElseBranchActivity2.Activities.Add(this.ifElseActivity1);
             this.ifElseBranchActivity2.Name = "ifElseBranchActivity2";
             // 
             // ifElseBranchActivity1
             // 
             this.ifElseBranchActivity1.Activities.Add(this.caShowMessageBox);
             this.ifElseBranchActivity1.Activities.Add(this.setStateActivity6);
-            codecondition1.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.TypeIsReferenced);
-            this.ifElseBranchActivity1.Condition = codecondition1;
+            codecondition2.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.TypeIsReferenced);
+            this.ifElseBranchActivity1.Condition = codecondition2;
             this.ifElseBranchActivity1.Name = "ifElseBranchActivity1";
             // 
             // setStateActivity5
@@ -222,33 +251,68 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         #endregion
 
-        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+
         private StateInitializationActivity initializeStateInitializationActivity;
+
         private SetStateActivity setStateActivity1;
+
         private StateActivity finalStateActivity;
+
         private StateActivity initializeStateActivity;
+
         private StateActivity finalizeStateActivity;
+
         private StateActivity step1StateActivity;
+
         private SetStateActivity setStateActivity2;
-        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
+
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
+
         private SetStateActivity setStateActivity3;
-        private Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
+
+        private C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
+
         private SetStateActivity setStateActivity4;
+
         private StateInitializationActivity finalizeStateInitializationActivity;
+
         private EventDrivenActivity step1EventDrivenActivity_Cancel;
+
         private EventDrivenActivity step1EventDrivenActivity_Finish;
+
         private StateInitializationActivity step1StateInitializationActivity;
+
         private CodeActivity initializeStateCodeActivity_Initialize;
+
         private SetStateActivity setStateActivity5;
+
         private CodeActivity finalizeStateCodeActivity_Finalize;
-        private Composite.C1Console.Workflow.Activities.ConfirmDialogFormActivity confirmDialogFormActivity1;
-        private Composite.C1Console.Workflow.Activities.CloseCurrentViewActivity closeCurrentViewActivity1;
+
+        private C1Console.Workflow.Activities.ConfirmDialogFormActivity confirmDialogFormActivity1;
+
+        private C1Console.Workflow.Activities.CloseCurrentViewActivity closeCurrentViewActivity1;
+
         private IfElseBranchActivity ifElseBranchActivity2;
+
         private IfElseBranchActivity ifElseBranchActivity1;
+
         private IfElseActivity ifTypeIsReferenced;
+
         private SetStateActivity setStateActivity6;
+
         private CodeActivity caShowMessageBox;
+
+        private SetStateActivity setStateActivity7;
+
+        private IfElseBranchActivity ifElseBranchActivity4;
+
+        private IfElseBranchActivity ifElseBranchActivity3;
+
+        private IfElseActivity ifElseActivity1;
+
         private EventDrivenActivity eventDrivenActivity_GlobalCancel;
+
 
 
 
