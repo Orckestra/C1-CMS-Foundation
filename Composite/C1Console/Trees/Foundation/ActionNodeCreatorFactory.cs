@@ -325,7 +325,14 @@ namespace Composite.C1Console.Trees.Foundation
             actionNode.ToolTip = toolTipAttribute.GetValueOrDefault(actionNode.Label);
             actionNode.Icon = FactoryHelper.GetIcon(iconAttribute.GetValueOrDefault(defaultIconName));
             actionNode.Location = GetActionLocation(element, tree, defaultActionLocation);
-            actionNode.PermissionTypes = GetPermissionTypes(element, tree);
+            if (defaultPermissionTypes != null)
+            {
+                actionNode.PermissionTypes = defaultPermissionTypes;
+            }
+            else
+            {
+                actionNode.PermissionTypes = GetPermissionTypes(element, tree);
+            }
         }
 
 
