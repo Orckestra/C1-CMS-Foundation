@@ -11,6 +11,8 @@ using Composite.Functions.Inline;
 using Composite.Functions.ManagedParameters;
 using System.Workflow.Activities;
 using Composite.Functions;
+using Microsoft.Practices.EnterpriseLibrary.Validation;
+using Composite.Data.Validation;
 
 
 namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
@@ -142,6 +144,18 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
                 string errorMessage = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "AddFunction.NameAlreadyUsed");
                 errorMessage = string.Format(errorMessage, FunctionFacade.GetFunctionCompositionName(function.Namespace, function.Name));
                 ShowFieldMessage("NewFunction.Name", errorMessage);
+                e.Result = false;
+                return;
+            }
+
+            ValidationResults validationResults = ValidationFacade.Validate<IInlineFunction>(function);
+            if (!validationResults.IsValid)
+            {
+                foreach (ValidationResult result in validationResults)
+                {
+                    this.ShowFieldMessage(string.Format("{0}.{1}", "NewFunction", result.Key), result.Message);
+                }
+
                 e.Result = false;
                 return;
             }

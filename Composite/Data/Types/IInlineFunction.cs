@@ -27,6 +27,7 @@ namespace Composite.Data.Types
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 128)]
         [ImmutableFieldId("{A3710B8F-BD8E-4A9A-BB7B-A796198C55B9}")]
+        [Composite.Data.Validation.Validators.StringSizeValidator(1, 128)]
         [NotNullValidator()]
         string Name { get; set; }
 
@@ -34,6 +35,7 @@ namespace Composite.Data.Types
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 128)]
         [ImmutableFieldId("{8C5BA3EE-FE14-4346-8CF2-8A0BEDAF94FB}")]
+        [Composite.Data.Validation.Validators.StringSizeValidator(1, 128)]
         string Namespace { get; set; }
 
 
