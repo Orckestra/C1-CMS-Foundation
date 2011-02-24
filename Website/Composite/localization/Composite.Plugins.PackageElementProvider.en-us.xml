@@ -83,8 +83,8 @@
   <string key="InstallRemoteAddOn.ShowError.LayoutLabel" value="Package installation failed" />
   <string key="InstallRemoteAddOn.ShowError.InfoTableCaption" value="Package installation failed" />
   <string key="InstallRemoteAddOn.ShowError.MessageTitle" value="Message" />
-  <string key="InstallRemoteAddOn.ShowWarning.LayoutLabel" value="The package did not validation" />
-  <string key="InstallRemoteAddOn.ShowWarning.InfoTableCaption" value="The package did not validation" />
+  <string key="InstallRemoteAddOn.ShowWarning.LayoutLabel" value="The package did not validate" />
+  <string key="InstallRemoteAddOn.ShowWarning.InfoTableCaption" value="The package did not validate" />
   <string key="InstallLocalAddOn.Step1.LayoutLabel" value="Install local package" />
   <string key="InstallLocalAddOn.Step1.FieldGroupLabel" value="Installed local package" />
   <string key="InstallLocalAddOn.Step1.FileUploadLabel" value="Package file" />
@@ -98,8 +98,8 @@
   <string key="InstallLocalAddOn.ShowError.LayoutLabel" value="Package installation failed" />
   <string key="InstallLocalAddOn.ShowError.InfoTableCaption" value="Package installation failed" />
   <string key="InstallLocalAddOn.ShowError.MessageTitle" value="Message" />
-  <string key="InstallLocalAddOn.ShowWarning.LayoutLabel" value="The package did not validation" />
-  <string key="InstallLocalAddOn.ShowWarning.InfoTableCaption" value="The package did not validation" />
+  <string key="InstallLocalAddOn.ShowWarning.LayoutLabel" value="The package did not validate" />
+  <string key="InstallLocalAddOn.ShowWarning.InfoTableCaption" value="The package did not validate" />
   <string key="UninstallRemoteAddOn.Step1.LayoutLabel" value="Uninstall package" />
   <string key="UninstallRemoteAddOn.Step1.HeadingTitle" value="Ready to check uninstallation process" />
   <string key="UninstallRemoteAddOn.Step1.HeadingDescription" value="Ready to check the uninstall process of the package. Click Next to continue." />

@@ -23,8 +23,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                 if (packageFragmentValidationResult.XPath != null)
                 {
                     sb.AppendLine(packageFragmentValidationResult.Message);
-                    sb.Append("XPath: ");
-                    sb.Append(packageFragmentValidationResult.XPath);
+                    //sb.Append("XPath: ");
+                    //sb.Append(packageFragmentValidationResult.XPath);
                 }
                 else
                 {
