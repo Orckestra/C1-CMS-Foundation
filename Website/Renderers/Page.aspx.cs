@@ -31,6 +31,8 @@ public partial class Renderers_Page : System.Web.UI.Page
     private IDisposable _pageEventsPageMeasuring;
 
     private bool _isInMemPreview;
+    private string _previewKey;
+
     private PageUrl _url;
     private NameValueCollection _foreignQueryStringParameters;
     private string _cacheUrl = null;
@@ -38,15 +40,16 @@ public partial class Renderers_Page : System.Web.UI.Page
 
     protected override void OnPreInit(EventArgs e)
     {
-        IPage currentPage;
+        IPage page;
 
-        _isInMemPreview = Context.Items.Contains("SelectedPage") && Context.Items.Contains("SelectedContents");
+        _previewKey = Request.QueryString["previewKey"];
+        _isInMemPreview = !String.IsNullOrEmpty(_previewKey);
 
         if (_isInMemPreview)
         {
-            currentPage = (IPage)Context.Items["SelectedPage"];
-            _url = new PageUrl(PublicationScope.Unpublished, CultureInfo.CreateSpecificCulture(currentPage.CultureName), currentPage.Id);
-            _dataScope = new DataScope(DataScopeIdentifier.FromPublicationScope(_url.PublicationScope), _url.Locale); // IDisposable, Disposed in OnUnload
+            page = (IPage)Cache.Get(_previewKey + "_SelectedPage");
+            _url = new PageUrl(PublicationScope.Unpublished, CultureInfo.CreateSpecificCulture(page.CultureName), page.Id);
+            _dataScope = new DataScope(DataScopeIdentifier.FromPublicationScope(_url.PublicationScope), _url.Locale);
         }
         else
         {
@@ -58,8 +61,8 @@ public partial class Renderers_Page : System.Web.UI.Page
             }
 
             _url = PageUrl.Parse(Context.Request.Url.OriginalString, out _foreignQueryStringParameters);
-            _dataScope = new DataScope(DataScopeIdentifier.FromPublicationScope(_url.PublicationScope), _url.Locale); // IDisposable, Disposed in OnUnload
-            currentPage = PageManager.GetPageById(_url.PageId);
+            _dataScope = new DataScope(DataScopeIdentifier.FromPublicationScope(_url.PublicationScope), _url.Locale);
+            page = PageManager.GetPageById(_url.PageId);
 
             _cacheUrl = Request.Url.PathAndQuery;
             RewritePath();
@@ -67,12 +70,12 @@ public partial class Renderers_Page : System.Web.UI.Page
 
         ValidateViewUnpublishedRequest();
 
-        if (currentPage == null)
+        if (page == null)
         {
             throw new HttpException((int)System.Net.HttpStatusCode.NotFound, "Page not found - either this page has not been published yet or it has been deleted.");
         }
 
-        PageRenderer.CurrentPage = currentPage;
+        PageRenderer.CurrentPage = page;
         InitializeCulture();
 
         base.OnPreInit(e);
@@ -89,7 +92,7 @@ public partial class Renderers_Page : System.Web.UI.Page
 
         if (!_isInMemPreview)
         {
-            var responseHandling = RenderingResponseHandlerFacade.GetDataResponseHandling(PageRenderer.CurrentPage.GetDataEntityToken());
+            RenderingResponseHandlerResult responseHandling = RenderingResponseHandlerFacade.GetDataResponseHandling(PageRenderer.CurrentPage.GetDataEntityToken());
             if (responseHandling != null)
             {
                 if (responseHandling.PreventPublicCaching == true)
@@ -112,7 +115,7 @@ public partial class Renderers_Page : System.Web.UI.Page
             }
         }
 
-        var contents = _isInMemPreview ? (IEnumerable<IPagePlaceholderContent>)Context.Items["SelectedContents"] : PageManager.GetPlaceholderContent(PageRenderer.CurrentPage.Id);
+        IEnumerable<IPagePlaceholderContent> contents = _isInMemPreview ? (IEnumerable<IPagePlaceholderContent>)Cache.Get(_previewKey + "_SelectedContents") : PageManager.GetPlaceholderContent(PageRenderer.CurrentPage.Id);
 
         Control renderedPage;
         using (Profiler.Measure("Executing C1 functions"))
@@ -163,8 +166,8 @@ public partial class Renderers_Page : System.Web.UI.Page
             return;
         }
 
-        StringBuilder markupBuilder = new StringBuilder();
-        StringWriter sw = new StringWriter(markupBuilder);
+        var markupBuilder = new StringBuilder();
+        var sw = new StringWriter(markupBuilder);
         try
         {
             using (Profiler.Measure("ASP.NET controls: Render"))
@@ -181,7 +184,6 @@ public partial class Renderers_Page : System.Web.UI.Page
             string multipleFormNotAllowedMessage = (string)setStringMethod.Invoke(null, new object[] { "Multiple_forms_not_allowed" });
 
             bool multipleAspFormTagsExists = ex.Message == multipleFormNotAllowedMessage;
-
             if (multipleAspFormTagsExists)
             {
                 throw new HttpException("Multiple <asp:form /> elements exists on this page. ASP.NET only support one form. To fix this, insert a <asp:form> ... </asp:form> section in your template that spans all controls.");
@@ -206,7 +208,7 @@ public partial class Renderers_Page : System.Web.UI.Page
         }
         catch
         {
-            Log.LogWarning("/Renderers/Page.aspx", "Failed to format output xhtml. Url: " + (_cacheUrl ?? string.Empty));
+            Log.LogWarning("/Renderers/Page.aspx", "Failed to format output xhtml. Url: " + (_cacheUrl ?? String.Empty));
         }
 
         // Inserting perfomance profiling information
@@ -229,11 +231,19 @@ public partial class Renderers_Page : System.Web.UI.Page
         base.OnUnload(e);
 
         if (_dataScope != null)
+        {
             _dataScope.Dispose();
+        }
 
         if (_requestCompleted)
         {
             return;
+        }
+
+        if (_isInMemPreview && !String.IsNullOrEmpty(_previewKey))
+        {
+            Cache.Remove(_previewKey + "_SelectedPage");
+            Cache.Remove(_previewKey + "_SelectedPage");
         }
 
         // Rewrite path to what it was when this page was constructed. This ensure full page caching can work.
@@ -247,7 +257,9 @@ public partial class Renderers_Page : System.Web.UI.Page
 
     private void ValidateViewUnpublishedRequest()
     {
-        if (_url != null && _url.PublicationScope != PublicationScope.Published && !UserValidationFacade.IsLoggedIn())
+        if (_url != null 
+            && _url.PublicationScope != PublicationScope.Published 
+            && !UserValidationFacade.IsLoggedIn())
         {
             Response.Redirect(String.Format("{0}/Composite/Login.aspx?ReturnUrl={1}", UrlUtils.PublicRootPath, HttpUtility.UrlEncodeUnicode(Request.Url.OriginalString)), true);
             Context.ApplicationInstance.CompleteRequest();
@@ -258,7 +270,7 @@ public partial class Renderers_Page : System.Web.UI.Page
     
     protected override void InitializeCulture()
     {
-        var page = PageRenderer.CurrentPage;
+        IPage page = PageRenderer.CurrentPage;
         if (page != null)
         {
             this.Culture = this.UICulture = page.CultureName;
@@ -271,7 +283,7 @@ public partial class Renderers_Page : System.Web.UI.Page
 
     private void RewritePath()
     {
-        var structuredUrl = _url.Build(PageUrlType.Public);
+        UrlBuilder structuredUrl = _url.Build(PageUrlType.Public);
         if (structuredUrl == null)
         {
             return;
@@ -315,7 +327,7 @@ public partial class Renderers_Page : System.Web.UI.Page
 
         foreach (Control c in current.Controls)
         {
-            var t = FindControlRecursive(c, controlID);
+            Control t = FindControlRecursive(c, controlID);
             if (t != null) return t;
         }
 

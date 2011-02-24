@@ -5,6 +5,8 @@ using System.Text;
 using System.Web;
 using System.Web.Hosting;
 using Composite.Data.Types;
+using System.Web.Caching;
+using Composite.C1Console.Security;
 
 namespace Composite.Core.WebClient.Renderings.Page
 {
@@ -15,16 +17,34 @@ namespace Composite.Core.WebClient.Renderings.Page
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public class PagePreviewBuilder
     {
-        public static string RenderPreview(IPage selectedPage, List<IPagePlaceholderContent> contents)
+        public static string RenderPreview(IPage selectedPage, IList<IPagePlaceholderContent> contents)
         {
-            var ctx = HttpContext.Current;
-            var sb = new StringBuilder();
+            HttpContext ctx = HttpContext.Current;
+            string key = string.Format("{0}/{1}/{2}", UserValidationFacade.GetUsername(), DateTime.Now.Ticks.ToString(), selectedPage.Id);
+            string query = string.Format("previewKey={0}", key);
 
-            var response = ctx.Response;
-            response.Filter = new FixLinksFilter(response.Filter);
+            ctx.Cache.Add(key + "_SelectedPage", selectedPage, null, Cache.NoAbsoluteExpiration, new TimeSpan(0, 20, 0), CacheItemPriority.NotRemovable, null);
+            ctx.Cache.Add(key + "_SelectedContents", contents, null, Cache.NoAbsoluteExpiration, new TimeSpan(0, 20, 0), CacheItemPriority.NotRemovable, null);
 
-            HttpRuntime.ProcessRequest(new PreviewWorkerRequest(selectedPage, contents, ctx, sb));
-            return sb.ToString();
+            if (HttpRuntime.UsingIntegratedPipeline)
+            {
+                ctx.Server.TransferRequest("~/Renderers/Page.aspx?"+ query, false, "GET", null);
+
+            }
+            else
+            {
+                var sb = new StringBuilder();
+                var writer = new StringWriter(sb);
+
+                var wr = new PreviewWorkerRequest(query, ctx, writer);
+
+                HttpRuntime.ProcessRequest(wr);
+
+                return sb.ToString();
+
+            }
+
+            return String.Empty;
         }
 
 
@@ -32,26 +52,14 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             private string _callingUA;
             private string _cookie;
-            private IPage _page;
-            private IList<IPagePlaceholderContent> _contents;
+            private TextWriter _outputTextWriter;
 
-            public PreviewWorkerRequest(IPage page, IList<IPagePlaceholderContent> contents, HttpContext callerContext, StringBuilder output)
-                : base(@"Renderers\Page.aspx", String.Empty, new StringWriter(output))
+            public PreviewWorkerRequest(string query, HttpContext callerContext, TextWriter output)
+                : base(@"Renderers\Page.aspx", query, output)
             {
-                _page = page;
-                _contents = contents;
                 _callingUA = callerContext.Request.Headers["User-Agent"];
                 _cookie = callerContext.Request.Headers["Cookie"];
-            }
-
-            public override string GetFilePath()
-            {
-                var itms = HttpContext.Current.Items;
-
-                itms.Add("SelectedPage", _page);
-                itms.Add("SelectedContents", _contents);
-
-                return base.GetFilePath();
+                _outputTextWriter = output;
             }
 
             public override string GetKnownRequestHeader(int index)
@@ -67,6 +75,11 @@ namespace Composite.Core.WebClient.Renderings.Page
                 }
 
                 return base.GetKnownRequestHeader(index);
+            }
+
+            public override void SendResponseFromMemory(byte[] data, int length)
+            {
+                _outputTextWriter.Write(Encoding.UTF8.GetString(data,0, length));
             }
         }
 

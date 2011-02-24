@@ -144,9 +144,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             XDocument formDocument = XDocument.Load(markupProvider.GetReader());
 
-            var bindingsXElement = formDocument.Root.Element(DataTypeDescriptorFormsHelper.CmsNamespace + FormKeyTagNames.Bindings);
-            var layoutXElement = formDocument.Root.Element(DataTypeDescriptorFormsHelper.CmsNamespace + FormKeyTagNames.Layout);
-            var tabPanelsXElement = layoutXElement.Element(DataTypeDescriptorFormsHelper.MainNamespace + "TabPanels");
+            XElement bindingsXElement = formDocument.Root.Element(DataTypeDescriptorFormsHelper.CmsNamespace + FormKeyTagNames.Bindings);
+            XElement layoutXElement = formDocument.Root.Element(DataTypeDescriptorFormsHelper.CmsNamespace + FormKeyTagNames.Layout);
+            XElement tabPanelsXElement = layoutXElement.Element(DataTypeDescriptorFormsHelper.MainNamespace + "TabPanels");
 
 
             IEnumerable<ICompositionContainer> compositionContainers = selectedPage.GetAllowedMetaDataContainers().Evaluate();
@@ -237,7 +237,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             List<IPagePlaceholderContent> contents = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == selectedPage.Id).ToList();
             Dictionary<string, string> namedXhtmlFragments = new Dictionary<string, string>();
-            foreach (var content in contents)
+            foreach (IPagePlaceholderContent content in contents)
             {
                 namedXhtmlFragments.Add(content.PlaceHolderId, content.Content ?? "");
             }
@@ -635,12 +635,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private void editPreviewCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            var serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
-            var webRenderService = serviceContainer.GetService<IFormFlowWebRenderingService>();
+            FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+            IFormFlowWebRenderingService webRenderService = serviceContainer.GetService<IFormFlowWebRenderingService>();
 
             try
             {
-                var selectedPage = this.GetBinding<IPage>("SelectedPage");
+                IPage selectedPage = this.GetBinding<IPage>("SelectedPage");
 
                 List<IPagePlaceholderContent> contents = new List<IPagePlaceholderContent>();
                 Dictionary<string, string> namedXhtmlFragments = this.GetBinding<Dictionary<string, string>>("NamedXhtmlFragments");
@@ -653,13 +653,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     contents.Add(content);
                 }
 
-                string pageHtml = PagePreviewBuilder.RenderPreview(selectedPage, contents);
-
-                webRenderService.SetNewPageOutput(new LiteralControl(pageHtml));
+                string output = PagePreviewBuilder.RenderPreview(selectedPage, contents);
+                webRenderService.SetNewPageOutput(new LiteralControl(output));
             }
             catch (Exception ex)
             {
-                var errOutput = new LiteralControl("<pre>" + ex + "</pre>");
+                Control errOutput = new LiteralControl("<pre>" + ex + "</pre>");
                 webRenderService.SetNewPageOutput(errOutput);
             }
         }
@@ -707,7 +706,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             e.Result = true;
 
-            var siblingPageUrlTitles =
+            List<string> siblingPageUrlTitles =
                 (from page in PageServices.GetChildren(selectedPage.GetParentId())
                  where page.Id != selectedPage.Id
                  select page.UrlTitle).ToList();
