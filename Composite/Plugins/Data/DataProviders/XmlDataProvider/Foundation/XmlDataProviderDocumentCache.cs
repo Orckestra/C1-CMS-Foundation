@@ -229,7 +229,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
                     xmlWriterSettings.CheckCharacters = false;
                     xmlWriterSettings.Indent = true;
-                    using (XmlWriter xmlWriter = XmlWriterUtils.Create(fileRecord.TempFileName, xmlWriterSettings))
+                    using (XmlWriter xmlWriter = XmlWriterUtils.Create(fileRecord.FileName, xmlWriterSettings))
                     {
                         xDocument.Save(xmlWriter);
                     }
