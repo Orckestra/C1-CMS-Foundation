@@ -263,7 +263,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     //    xDocument.Save(xmlWriter);
                     //}
 
-                    using (XmlWriter xmlWriter = XmlWriter.Create(fileRecord.TempFileName, xmlWriterSettings))
+                    using (XmlWriter xmlWriter = XmlWriterUtils.Create(fileRecord.TempFileName, xmlWriterSettings))
                     {
                         xDocument.Save(xmlWriter);
                     }
