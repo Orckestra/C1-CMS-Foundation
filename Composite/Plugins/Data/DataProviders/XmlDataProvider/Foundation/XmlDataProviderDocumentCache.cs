@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
+using Composite.Core.Logging;
 using Composite.Core.Xml;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Streams;
-using System.IO;
-using Composite.Core.Logging;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
@@ -229,7 +229,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
                     xmlWriterSettings.CheckCharacters = false;
                     xmlWriterSettings.Indent = true;
-                    using (XmlWriter xmlWriter = XmlWriterUtils.Create(fileRecord.TempFileName, xmlWriterSettings))
+                    using (XmlWriter xmlWriter = XmlWriter.Create(fileRecord.TempFileName, xmlWriterSettings))
                     {
                         xDocument.Save(xmlWriter);
                     }
@@ -238,7 +238,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     {
                         File.Delete(fileRecord.FileName);
                     }
-                    File.Move(fileRecord.TempFileName, fileRecord.FileName);
+
+                    C1File.Move(fileRecord.TempFileName, fileRecord.FileName);
                 }
                 catch (Exception exception)
                 {
