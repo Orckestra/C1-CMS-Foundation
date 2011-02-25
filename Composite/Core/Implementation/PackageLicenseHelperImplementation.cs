@@ -75,6 +75,7 @@ namespace Composite.Core.Implementation
         /// </summary>
         /// <param name="signatureString"></param>
         /// <returns></returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "string", Justification = "We want to call it signatureString")]
         public virtual byte[] CreateSignatureBytes(string signatureString)
         {
             return LicenseDefinitionUtils.CreateSignatureBytes(signatureString);
