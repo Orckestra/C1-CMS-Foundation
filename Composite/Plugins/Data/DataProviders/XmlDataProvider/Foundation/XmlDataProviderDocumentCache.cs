@@ -132,14 +132,43 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     {
                         if (!File.Exists(filename))
                         {
-                            // Restore broken save
-                            if (File.Exists(filename + ".tmp"))
+                            bool failed = true;
+                            bool fileNotFound = false;
+                            Exception lastException = null;
+                            for (int i = 0; i < 10; i++)
                             {
-                                File.Move(filename + ".tmp", filename);
+                                try
+                                {
+                                    // Restore broken save
+                                    if (File.Exists(filename + ".tmp"))
+                                    {
+                                        File.Move(filename + ".tmp", filename);
+                                        failed = false;
+                                    }
+                                    else
+                                    {                                        
+                                        fileNotFound = true;
+                                        break;
+                                    }
+
+                                    break;
+                                }
+                                catch (Exception ex)
+                                {
+                                    lastException = ex;
+                                    Thread.Sleep(10 * (i + 1));
+                                }
                             }
-                            else
+
+                            if (fileNotFound)
                             {
                                 throw new InvalidOperationException("File '{0}' not found".FormatWith(filename));
+                            }
+
+                            if (failed)
+                            {
+                                LoggingService.LogCritical("XmlDataProvider", "Failed moving file " + filename + " to file " + filename + ".tmp");
+                                throw lastException;
                             }
                         }
 
@@ -229,22 +258,41 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
                     xmlWriterSettings.CheckCharacters = false;
                     xmlWriterSettings.Indent = true;
-                    using (XmlWriter xmlWriter = XmlWriterUtils.Create(fileRecord.FileName, xmlWriterSettings))
-                    {
-                        xDocument.Save(xmlWriter);
-                    }
-
-                    //using (XmlWriter xmlWriter = XmlWriter.Create(fileRecord.TempFileName, xmlWriterSettings))
+                    //using (XmlWriter xmlWriter = XmlWriterUtils.Create(fileRecord.FileName, xmlWriterSettings))
                     //{
                     //    xDocument.Save(xmlWriter);
                     //}
 
-                    //if (File.Exists(fileRecord.FileName))
-                    //{
-                    //    File.Delete(fileRecord.FileName);
-                    //}
+                    using (XmlWriter xmlWriter = XmlWriter.Create(fileRecord.TempFileName, xmlWriterSettings))
+                    {
+                        xDocument.Save(xmlWriter);
+                    }
 
-                    //C1File.Move(fileRecord.TempFileName, fileRecord.FileName);
+                    bool failed = true;
+                    Exception lastException = null;
+                    for (int i = 0; i < 10; i++)
+                    {
+                        try
+                        {
+                            if (File.Exists(fileRecord.FileName))
+                            {
+                                File.Delete(fileRecord.FileName);
+                                failed = false;
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            Thread.Sleep(10 * (i + 1));
+                        }
+                    }
+
+                    if (failed)
+                    {
+                        LoggingService.LogCritical("XmlDataProvider", "Failed deleting the file: " + fileRecord.FileName);
+                        throw lastException;
+                    }
+
+                    C1File.Move(fileRecord.TempFileName, fileRecord.FileName);
                 }
                 catch (Exception exception)
                 {
