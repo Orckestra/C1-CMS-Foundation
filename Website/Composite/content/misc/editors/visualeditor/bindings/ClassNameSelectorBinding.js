@@ -103,7 +103,14 @@ ClassNameSelectorBinding.prototype.handleAction = function ( action ) {
 				}
 				return result;
 			}, this );
-			if ( this.getValue () != null ) {
+			if (this.getValue() != null) {
+				//Temporary Sulotion to fix bug in IE - error when no selections
+				//TODO: Try make generic stript
+				if (Client.isExplorer) {
+					if (this._tinyInstance.selection.getContent() == "") {
+						break;
+					}
+				}
 				this._isUpdating = true;
 				this._tinyInstance.formatter.apply ( this.getValue ());
 				this._isUpdating = false;
@@ -140,8 +147,19 @@ ClassNameSelectorBinding.prototype.handleNodeChange = function ( element ) {
 					));
 				}
 			}, this );
-			
-			if ( list.hasEntries ()) {
+
+			if (list.hasEntries()) {
+				//Temporary Sulotion to fix bug in IE - error when no selections
+				//TODO: Try make generic stript
+				if (Client.isExplorer) {
+					if (this._tinyInstance.selection.getContent() == "") {
+						this.clear();
+						this.disable();
+						return;
+					}
+				}
+
+
 				this.populateFromList ( list );
 				this._hack = true;
 				this.enable ();
