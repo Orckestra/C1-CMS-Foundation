@@ -229,20 +229,26 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
                     xmlWriterSettings.CheckCharacters = false;
                     xmlWriterSettings.Indent = true;
-                    using (XmlWriter xmlWriter = XmlWriter.Create(fileRecord.TempFileName, xmlWriterSettings))
+                    using (XmlWriter xmlWriter = XmlWriterUtils.Create(fileRecord.TempFileName, xmlWriterSettings))
                     {
                         xDocument.Save(xmlWriter);
                     }
 
-                    if (File.Exists(fileRecord.FileName))
-                    {
-                        File.Delete(fileRecord.FileName);
-                    }
+                    //using (XmlWriter xmlWriter = XmlWriter.Create(fileRecord.TempFileName, xmlWriterSettings))
+                    //{
+                    //    xDocument.Save(xmlWriter);
+                    //}
 
-                    C1File.Move(fileRecord.TempFileName, fileRecord.FileName);
+                    //if (File.Exists(fileRecord.FileName))
+                    //{
+                    //    File.Delete(fileRecord.FileName);
+                    //}
+
+                    //C1File.Move(fileRecord.TempFileName, fileRecord.FileName);
                 }
                 catch (Exception exception)
                 {
+                    LoggingService.LogCritical("XmlDataProvider", "Failed to write " + fileRecord.FileName);
                     thrownException = exception;
                 }
             }
