@@ -144,14 +144,13 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                                     {
                                         File.Move(filename + ".tmp", filename);
                                         failed = false;
+                                        break;
                                     }
                                     else
                                     {                                        
                                         fileNotFound = true;
                                         break;
                                     }
-
-                                    break;
                                 }
                                 catch (Exception ex)
                                 {
@@ -258,11 +257,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
                     xmlWriterSettings.CheckCharacters = false;
                     xmlWriterSettings.Indent = true;
-                    //using (XmlWriter xmlWriter = XmlWriterUtils.Create(fileRecord.FileName, xmlWriterSettings))
-                    //{
-                    //    xDocument.Save(xmlWriter);
-                    //}
-
+                    
                     using (XmlWriter xmlWriter = XmlWriterUtils.Create(fileRecord.TempFileName, xmlWriterSettings))
                     {
                         xDocument.Save(xmlWriter);
@@ -278,6 +273,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                             {
                                 File.Delete(fileRecord.FileName);
                                 failed = false;
+                                break;
                             }
                         }
                         catch (Exception)
