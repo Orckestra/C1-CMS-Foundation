@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using Composite.C1Console.Security;
 using Composite.C1Console.Security.Plugins.LoginProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
@@ -34,16 +35,16 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.ConfigBasedFormLoginPr
 
 
 
-        bool IFormLoginProvider.Validate(string username, string password)
+        LoginResult IFormLoginProvider.Validate(string username, string password)
         {
             if (_validLogins.Contains(username))
             {
                 ValidLoginConfigurationElement usernameMatch = _validLogins.Get(username);
 
-                return usernameMatch.Password == password;
+                return usernameMatch.Password == password ? LoginResult.Success : LoginResult.IncorrectPassword;
             }
 
-            return false;
+            return LoginResult.UserDoesNotExist;
         }
 
 

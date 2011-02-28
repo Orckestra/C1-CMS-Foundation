@@ -114,7 +114,7 @@ namespace Composite.Core.WebClient.Logging.WCF
 
             using (ThreadDataManager.Initialize())
             {
-                userIsValid = LoginProviderPluginFacade.FormValidateUser(login, password);
+                userIsValid = LoginProviderPluginFacade.FormValidateUser(login, password) == LoginResult.Success;
 
                 // Checking whether the user is an administrator
                 if(userIsValid)

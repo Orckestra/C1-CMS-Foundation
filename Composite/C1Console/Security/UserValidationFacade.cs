@@ -76,37 +76,45 @@ namespace Composite.C1Console.Security
         /// <returns>True if the user was validated</returns>
         public static bool FormValidateUser(string userName, string password)
         {
-            bool userIsValidated = LoginProviderPluginFacade.FormValidateUser(userName, password);
+            LoginResult loginResult = LoginProviderPluginFacade.FormValidateUser(userName, password);
 
-            if (userIsValidated == false)
+            if (loginResult == LoginResult.UserDoesNotExist)
             {
                 lock (_lock)
                 {
-                    userIsValidated = LoginProviderPluginFacade.FormValidateUser(userName, password);
+                    loginResult = LoginProviderPluginFacade.FormValidateUser(userName, password);
 
-                    if (userIsValidated == false)
+                    if (loginResult == LoginResult.UserDoesNotExist)
                     {
                         if (AdministratorAutoCreator.CanBeAutoCreated(userName) == true)
                         {
                             AdministratorAutoCreator.AutoCreatedAdministrator(userName, password);
 
-                            userIsValidated = LoginProviderPluginFacade.FormValidateUser(userName, password);
+                            loginResult = LoginProviderPluginFacade.FormValidateUser(userName, password);
                         }
                     }
                 }
             }
 
-            if (true == userIsValidated)
+            if (loginResult == LoginResult.Success)
             {
                 LoggingService.LogVerbose("UserValidation", String.Format("The user: [{0}], has been validated and accepted", userName), LoggingService.Category.Audit);
                 PersistUsernameInSessionDataProvider(userName);
             }
-            else
+            else if(loginResult == LoginResult.IncorrectPassword)
             {
-                LoggingService.LogWarning("UserValidation", String.Format("Invalid login using [{0}] as user name.", userName), LoggingService.Category.Audit);
+                LoggingService.LogWarning("UserValidation", String.Format("Login as [{0}] failed. Incorrect password.", userName), LoggingService.Category.Audit);
+            }
+            else if (loginResult == LoginResult.UserDoesNotExist)
+            {
+                LoggingService.LogWarning("UserValidation", String.Format("Login as [{0}] failed. User does not exist.", userName), LoggingService.Category.Audit);
+            }
+            else if (loginResult == LoginResult.PolicyViolated)
+            {
+                LoggingService.LogWarning("UserValidation", String.Format("Login as [{0}] failed. Login policy violated.", userName), LoggingService.Category.Audit);
             }
 
-            return userIsValidated;
+            return loginResult == LoginResult.Success;
         }
 
 
@@ -114,7 +122,7 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static bool FormValidateUserWithoutLogin(string userName, string password)
         {
-            return LoginProviderPluginFacade.FormValidateUser(userName, password);
+            return LoginProviderPluginFacade.FormValidateUser(userName, password) == LoginResult.Success;
         }
 
 

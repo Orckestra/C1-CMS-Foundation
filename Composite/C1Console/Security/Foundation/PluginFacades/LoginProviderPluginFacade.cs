@@ -58,7 +58,7 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
         }
 
 
-        public static bool FormValidateUser(string userName, string password)
+        public static LoginResult FormValidateUser(string userName, string password)
         {
             IFormLoginProvider validator = _resourceLocker.Resources.Plugin as IFormLoginProvider;
 
