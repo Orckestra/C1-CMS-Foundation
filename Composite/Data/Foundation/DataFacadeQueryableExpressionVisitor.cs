@@ -88,9 +88,7 @@ namespace Composite.Data.Foundation
             {
                 object result = m.Method.Invoke(null, null);
 
-                IQueryable queryable = HandleMultibleSourceQueryable(result);
-
-                return Expression.Constant(queryable);
+                return Expression.Constant(result is IDataFacadeQueryable ? HandleMultibleSourceQueryable(result) : result);
             }
 
             // Handling some of the overloads of GetData()
@@ -100,9 +98,7 @@ namespace Composite.Data.Foundation
 
                 object result = m.Method.Invoke(null, parameters);
 
-                IQueryable queryable = HandleMultibleSourceQueryable(result);
-
-                return Expression.Constant(queryable);
+                return Expression.Constant(result is IDataFacadeQueryable ? HandleMultibleSourceQueryable(result) : result);
             }
             
             throw new NotImplementedException("This is fixable");
