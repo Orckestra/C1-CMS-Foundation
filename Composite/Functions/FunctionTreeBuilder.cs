@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Composite.Core.Extensions;
 using Composite.Functions.Foundation;
 
 
@@ -162,27 +163,28 @@ namespace Composite.Functions
         private static BaseParameterRuntimeTreeNode BuildParameterFunctionRuntimeNode(XElement element)
         {
             XAttribute nameAttribute = element.Attribute(FunctionTreeConfigurationNames.NameAttributeName);
-            if (nameAttribute == null) throw new InvalidOperationException(string.Format("Missing attribute named '{0}'", FunctionTreeConfigurationNames.NameAttributeName));
+            Verify.IsNotNull(nameAttribute, "Missing attribute named '{0}'", FunctionTreeConfigurationNames.NameAttributeName);
+
+            string parameterName = nameAttribute.Value;
 
 
             XAttribute valueAttribute = element.Attribute(FunctionTreeConfigurationNames.ValueAttributeName);
-
             if (valueAttribute != null)
             {
-                return new ConstantParameterRuntimeTreeNode(nameAttribute.Value, valueAttribute.Value);
+                return new ConstantParameterRuntimeTreeNode(parameterName, valueAttribute.Value);
             }
-            else if (element.Elements().Count() == 0)
+
+            if (element.Elements().Count() == 0)
             {
                 if (string.IsNullOrEmpty(element.Value) || string.IsNullOrEmpty(element.Value.Trim()))
                 {
-                    return new ConstantParameterRuntimeTreeNode(nameAttribute.Value, (string)null);
+                    return new ConstantParameterRuntimeTreeNode(parameterName, (string)null);
                 }
-                else
-                {
-                    return new ConstantParameterRuntimeTreeNode(nameAttribute.Value, element.Value);
-                }
+
+                return new ConstantParameterRuntimeTreeNode(parameterName, element.Value);
             }
-            else if ((element.Elements().Count() == 1) &&
+
+            if ((element.Elements().Count() == 1) &&
                      (element.Elements().First().Name.LocalName == FunctionTreeConfigurationNames.FunctionTagName))
             {
                 XElement childElement = element.Elements().First();
@@ -191,45 +193,38 @@ namespace Composite.Functions
 
                 FunctionRuntimeTreeNode functionNode = BuildFunctionRuntimeNode(childElement);
 
-                return new FunctionParameterRuntimeTreeNode(nameAttribute.Value, functionNode);
+                return new FunctionParameterRuntimeTreeNode(parameterName, functionNode);
             }
-            else if ((element.Elements().Count() == 1) &&
+
+            if ((element.Elements().Count() == 1) &&
                      (element.Elements().First().Name.LocalName != FunctionTreeConfigurationNames.ParamElementTagName))
             {
-                return new XElementParameterRuntimeTreeNode(nameAttribute.Value, element.Elements().First());
+                return new XElementParameterRuntimeTreeNode(parameterName, element.Elements().First());
             }
-            else if (element.Elements().Where(f => f.Name.LocalName != FunctionTreeConfigurationNames.ParamElementTagName).Count() == 0)
-            {
-                int count =
-                    (from s in element.Elements()
-                     where s.Attribute(FunctionTreeConfigurationNames.ValueAttributeName) == null                            
-                     select s).Count();
 
-                if (count != 0) throw new InvalidOperationException(string.Format("One or more {0} are missing the attribute {1}", FunctionTreeConfigurationNames.ParamElementTagName, FunctionTreeConfigurationNames.ValueAttributeName));
+            if (element.Elements().All(f => f.Name.LocalName == FunctionTreeConfigurationNames.ParamElementTagName))
+            {
+                var strings = new List<string>();
 
-                IEnumerable<string> strings =
-                    (from elm in element.Elements()                     
-                     select elm.Attribute(FunctionTreeConfigurationNames.ValueAttributeName).Value).ToList();
-                
-                return new ConstantParameterRuntimeTreeNode(nameAttribute.Value, strings);
-            }
-            else if (element.Nodes().Where(f=>f.GetType() != typeof(XAttribute)).Count() > 1)
-            {
-                // ienumerable of inner elements
-                var innerElements = element.Nodes().Where(f => f.GetType() != typeof(XAttribute));
-                if (innerElements.All(f => f.GetType() == typeof(XElement)))
+                foreach(XElement elm in element.Elements())
                 {
-                    return new ConstantObjectParameterRuntimeTreeNode(nameAttribute.Value, element.Elements());
+                    XAttribute attr = elm.Attribute(FunctionTreeConfigurationNames.ValueAttributeName);
+                    Verify.IsNotNull(attr, "One or more {0} are missing the attribute {1}", FunctionTreeConfigurationNames.ParamElementTagName, FunctionTreeConfigurationNames.ValueAttributeName);
+
+                    strings.Add(attr.Value);
                 }
-                else
-                {
-                    return new ConstantObjectParameterRuntimeTreeNode(nameAttribute.Value, element.Nodes());
-                }
+
+                return new ConstantParameterRuntimeTreeNode(parameterName, strings);
             }
-            else
+
+            if (element.Nodes().Any())
             {
-                throw new InvalidProgramException(string.Format("Wrong xml format in parameter '{0}'", nameAttribute.Value));
+                object value = element.Nodes().All(f => f is XElement) ? element.Elements() : element.Nodes();
+
+                return new ConstantObjectParameterRuntimeTreeNode(parameterName, value);
             }
+
+            throw new InvalidProgramException("Wrong xml format in parameter '{0}'".FormatWith(parameterName));
         }
     }
 }
