@@ -114,6 +114,12 @@ ClassNameSelectorBinding.prototype.handleAction = function (action) {
                 this._tinyInstance.formatter.apply(this.getValue());
                 this._isUpdating = false;
             }
+
+            if (Client.isExplorer) {
+                this._tinyInstance.focus(); // make IE work
+                this._editorBinding.createBookmark();
+            }
+
             break;
     }
 }
