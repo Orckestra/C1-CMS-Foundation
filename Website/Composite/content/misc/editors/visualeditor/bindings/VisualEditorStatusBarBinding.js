@@ -141,25 +141,27 @@ VisualEditorStatusBarBinding.prototype.handleNodeChange = function ( element ) {
  * @overloads {Binding#handleAction}
  * @param {Action} action
  */
-VisualEditorStatusBarBinding.prototype.handleAction = function ( action ) {
+VisualEditorStatusBarBinding.prototype.handleAction = function (action) {
 
-	VisualEditorStatusBarBinding.superclass.handleAction.call ( this, action );
-	
-	switch ( action.type ) {
-		case ButtonBinding.ACTION_COMMAND :
-		
-			var button = action.target;
-			var depth = button.structuralDepth;
-			var self = this;
-			
-			setTimeout ( function () { // explorer needs a timeout
-				self._tinyInstance.execCommand ( "mceSelectNodeDepth", false, depth );
-				self._buildToolBar ( self._tinyInstance.selection.getNode ());
-			}, 0 );
-			
-			action.consume ();
-			break;
-	}
+    VisualEditorStatusBarBinding.superclass.handleAction.call(this, action);
+
+    switch (action.type) {
+        case ButtonBinding.ACTION_COMMAND:
+
+            var button = action.target;
+            var depth = button.structuralDepth;
+
+            var targetNode = this._tinyInstance.selection.getNode();
+            while (depth-- > 0) {
+                targetNode = targetNode.parentNode;
+            }
+
+            this._tinyInstance.selection.select(targetNode, true);
+            this._buildToolBar(targetNode);
+
+            action.consume();
+            break;
+    }
 }
 
 /**
