@@ -85,38 +85,37 @@ ClassNameSelectorBinding.prototype.initializeComponent = function ( editor, engi
  * @overloads {SelectorBinding#handleAction}
  * @param {Action} action
  */
-ClassNameSelectorBinding.prototype.handleAction = function ( action ) {
+ClassNameSelectorBinding.prototype.handleAction = function (action) {
 
-	ClassNameSelectorBinding.superclass.handleAction.call ( this, action );
-	
-	switch ( action.type ) {
-		case SelectorBinding.ACTION_SELECTIONCHANGED :
-			
-			var result = true;
-			this.selections.each ( function ( selection ){
-				var id = selection.value; 
-				if ( id != null ) {
-					if ( this._tinyInstance.queryCommandState ( id )) {
-						this._tinyInstance.formatter.remove ( id );
-						result = false;
-					}
-				}
-				return result;
-			}, this );
-			if (this.getValue() != null) {
-				//Temporary Sulotion to fix bug in IE - error when no selections
-				//TODO: Try make generic stript
-				if (Client.isExplorer) {
-					if (this._tinyInstance.selection.getContent() == "") {
-						break;
-					}
-				}
-				this._isUpdating = true;
-				this._tinyInstance.formatter.apply ( this.getValue ());
-				this._isUpdating = false;
-			}
-			break;
-	}	
+    ClassNameSelectorBinding.superclass.handleAction.call(this, action);
+
+    switch (action.type) {
+        case SelectorBinding.ACTION_SELECTIONCHANGED:
+
+            var result = true;
+
+            if (Client.isExplorer) {
+                this._tinyInstance.focus(); // make IE work
+                this._editorBinding.createBookmark();
+            }
+
+            this.selections.each(function (selection) {
+                var id = selection.value;
+                if (id != null) {
+                    if (this._tinyInstance.queryCommandState(id)) {
+                        this._tinyInstance.formatter.remove(id);
+                        result = false;
+                    }
+                }
+                return result;
+            }, this);
+            if (this.getValue() != null) {
+                this._isUpdating = true;
+                this._tinyInstance.formatter.apply(this.getValue());
+                this._isUpdating = false;
+            }
+            break;
+    }
 }
 
 /**
@@ -124,52 +123,42 @@ ClassNameSelectorBinding.prototype.handleAction = function ( action ) {
  * Implements {@link IWysiwygEditorNodeChangeHandler}
  * @param {DOMElement} element
  */
-ClassNameSelectorBinding.prototype.handleNodeChange = function ( element ) {
-	
-	if ( !this._isUpdating ) {
-	
-		if ( element != this._element || element.className != this._classname ) {
-		
-			this._element = element;
-			this._classname = element.className;
-			
-			// TODO: Add support for images here?
-			
-			var list = new List ();
-			this.priorities.each ( function ( format ) {
-				if ( this._tinyInstance.formatter.canApply ( format.id )) {
-					list.add ( new SelectorBindingSelection ( 
-					    format.select.label, 
+ClassNameSelectorBinding.prototype.handleNodeChange = function (element) {
+
+    if (!this._isUpdating) {
+
+        if (element != this._element || element.className != this._classname) {
+
+            this._element = element;
+            this._classname = element.className;
+
+            // TODO: Add support for images here?
+
+            var list = new List();
+            this.priorities.each(function (format) {
+                if (this._tinyInstance.formatter.canApply(format.id)) {
+                    list.add(new SelectorBindingSelection(
+					    format.select.label,
 					    format.id,
-					    this._tinyInstance.queryCommandState ( format.id ),
+					    this._tinyInstance.queryCommandState(format.id),
 					    null,
 					    format.notes
 					));
-				}
-			}, this );
+                }
+            }, this);
 
-			if (list.hasEntries()) {
-				//Temporary Sulotion to fix bug in IE - error when no selections
-				//TODO: Try make generic stript
-				if (Client.isExplorer) {
-					if (this._tinyInstance.selection.getContent() == "") {
-						this.clear();
-						this.disable();
-						return;
-					}
-				}
+            if (list.hasEntries()) {
+                this.populateFromList(list);
+                this._hack = true;
+                this.enable();
+                this._false = true;
 
-
-				this.populateFromList ( list );
-				this._hack = true;
-				this.enable ();
-				this._false = true;
-			} else {
-				this.clear ();
-				this.disable ();
-			}
-		}
-	}
+            } else {
+                this.clear();
+                this.disable();
+            }
+        }
+    }
 }
 
 /**
