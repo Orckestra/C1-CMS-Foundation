@@ -191,7 +191,7 @@ public partial class ScriptLoaderControl : System.Web.UI.UserControl
             XDocument loaded = null;
             System.Threading.Tasks.Task task = System.Threading.Tasks.Task.Factory.StartNew(() => loaded = System.Xml.Linq.XDocument.Load(uri));
 
-            task.Wait(500);
+            task.Wait(2500);
             if (task.IsCompleted)
             {
                 XElement titleElement = loaded.Descendants(Composite.Core.Xml.Namespaces.Xhtml + "title").FirstOrDefault();

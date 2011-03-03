@@ -23,7 +23,7 @@ div#backdrop { /* explorer bug when backdrop directly on div#updated */
 }
 div#updated {
 	position: absolute;
-	width: 254px;
+	width: 228px;
 	height: 150px;
 	left: 30px;
 	top: 40px;

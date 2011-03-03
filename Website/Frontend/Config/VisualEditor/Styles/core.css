@@ -1,3 +1,9 @@
+/*
+    Consider NOT changing this file.
+
+    This is fallback styling, ensuring the visual editor content look ok.
+    Consider editing the configuration (../common.xml) and include your own stylesheets, targeting content.
+*/
 html,
 body {
 	margin: 0;
@@ -12,7 +18,7 @@ body {
 }
 body,
 td {
-	font-family: Calibri, "Lucida Grande", Georgia, sans-serif;
+	font-family: sans-serif;
 	font-size: 15px;
 }
 h1,

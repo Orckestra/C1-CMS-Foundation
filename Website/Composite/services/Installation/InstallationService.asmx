@@ -84,7 +84,7 @@ namespace Composite.Services
             
             pair = new KeyValuePair();
             pair.Key = "Special Thanks To";
-            pair.Value = "Jesper Moth;@burningice;@azarnoush;you";
+            pair.Value = "Jesper Moth;@burningice;@azarnoush";
             list.Add(pair);
 
             return list.ToArray();

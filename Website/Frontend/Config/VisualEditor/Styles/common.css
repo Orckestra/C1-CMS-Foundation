@@ -1,16 +1,69 @@
+﻿
 *.left {
-	float: left;
-	margin: 0 22px 10px 0;	
+  float: left;
+  margin: 0 22px 10px 0;  
 }
 *.right {
-	float: right;
-	margin: 0 0 10px 22px;
+  float: right;
+  margin: 0 0 10px 22px;
 }
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	clear: both;	
+
+.textalignleft {
+    text-align: left;
+}
+
+.textaligncenter {
+    text-align: center;
+}
+
+.textalignright {
+    text-align: right;
+}
+
+img.framed {
+    border: 1px solid black;
+    padding: 3px;
+    margin: 3px;
+}
+
+table.heavy {
+	border: 3px solid black;
+	border-collapse: collapse;
+}
+
+table.heavy td {
+	border: 2px solid black;
+	padding: 5px;
+}
+
+table.heavy thead {
+    background-color: #ddd;
+}
+
+table.heavy tr.sum {
+    background-color: #933;
+}
+
+table.heavy tr.sum td.total {
+    background-color: #000;
+    color: #eee;
+}
+
+table tr.sum {
+    background-color: #eee;
+}
+
+table tr.sum td.total {
+    background-color: #fee;
+}
+
+
+
+
+p.note
+{
+  font-size: smaller;
+  padding: 10px;
+  background-color: #ffc;
+  border: 1px solid #884;
 }
