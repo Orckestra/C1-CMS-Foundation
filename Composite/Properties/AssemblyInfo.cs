@@ -36,3 +36,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("2.1.*")]
 
 [assembly: InternalsVisibleTo("UpgradePackage")]
+[assembly: InternalsVisibleTo("Composite.Workflows")]

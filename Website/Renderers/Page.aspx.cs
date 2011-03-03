@@ -30,7 +30,7 @@ public partial class Renderers_Page : System.Web.UI.Page
     private IDisposable _pagePerfMeasuring;
     private IDisposable _pageEventsPageMeasuring;
 
-    private bool _isInMemPreview;
+    private bool _isPreview;
     private string _previewKey;
 
     private PageUrl _url;
@@ -42,10 +42,17 @@ public partial class Renderers_Page : System.Web.UI.Page
     {
         IPage page;
 
-        _previewKey = Request.QueryString["previewKey"];
-        _isInMemPreview = !String.IsNullOrEmpty(_previewKey);
+        _profilingEnabled = UserValidationFacade.IsLoggedIn() && Request.Url.OriginalString.Contains("c1mode=perf");
+        if (_profilingEnabled)
+        {
+            Profiler.BeginProfiling();
+            _pagePerfMeasuring = Profiler.Measure("C1 Page");
+        }
 
-        if (_isInMemPreview)
+        _previewKey = Request.QueryString["previewKey"];
+        _isPreview = !_previewKey.IsNullOrEmpty();
+
+        if (_isPreview)
         {
             page = (IPage)Cache.Get(_previewKey + "_SelectedPage");
             _url = new PageUrl(PublicationScope.Unpublished, CultureInfo.CreateSpecificCulture(page.CultureName), page.Id);
@@ -53,13 +60,6 @@ public partial class Renderers_Page : System.Web.UI.Page
         }
         else
         {
-            _profilingEnabled = UserValidationFacade.IsLoggedIn() && Request.Url.OriginalString.Contains("c1mode=perf");
-            if (_profilingEnabled)
-            {
-                Profiler.BeginProfiling();
-                _pagePerfMeasuring = Profiler.Measure("C1 Page");
-            }
-
             _url = PageUrl.Parse(Context.Request.Url.OriginalString, out _foreignQueryStringParameters);
             _dataScope = new DataScope(DataScopeIdentifier.FromPublicationScope(_url.PublicationScope), _url.Locale);
             page = PageManager.GetPageById(_url.PageId);
@@ -72,7 +72,7 @@ public partial class Renderers_Page : System.Web.UI.Page
 
         if (page == null)
         {
-            throw new HttpException((int)System.Net.HttpStatusCode.NotFound, "Page not found - either this page has not been published yet or it has been deleted.");
+            throw new HttpException(404, "Page not found - either this page has not been published yet or it has been deleted.");
         }
 
         PageRenderer.CurrentPage = page;
@@ -90,7 +90,7 @@ public partial class Renderers_Page : System.Web.UI.Page
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
         }
 
-        if (!_isInMemPreview)
+        if (!_isPreview)
         {
             RenderingResponseHandlerResult responseHandling = RenderingResponseHandlerFacade.GetDataResponseHandling(PageRenderer.CurrentPage.GetDataEntityToken());
             if (responseHandling != null)
@@ -115,7 +115,9 @@ public partial class Renderers_Page : System.Web.UI.Page
             }
         }
 
-        IEnumerable<IPagePlaceholderContent> contents = _isInMemPreview ? (IEnumerable<IPagePlaceholderContent>)Cache.Get(_previewKey + "_SelectedContents") : PageManager.GetPlaceholderContent(PageRenderer.CurrentPage.Id);
+        IEnumerable<IPagePlaceholderContent> contents = _isPreview 
+            ? (IEnumerable<IPagePlaceholderContent>)Cache.Get(_previewKey + "_SelectedContents") 
+            : PageManager.GetPlaceholderContent(PageRenderer.CurrentPage.Id);
 
         Control renderedPage;
         using (Profiler.Measure("Executing C1 functions"))
@@ -123,7 +125,7 @@ public partial class Renderers_Page : System.Web.UI.Page
             renderedPage = PageRenderer.Render(PageRenderer.CurrentPage, contents);
         }
 
-        if (_isInMemPreview)
+        if (_isPreview)
         {
             PageRenderer.DisableAspNetPostback(renderedPage);
         }
@@ -240,10 +242,10 @@ public partial class Renderers_Page : System.Web.UI.Page
             return;
         }
 
-        if (_isInMemPreview && !String.IsNullOrEmpty(_previewKey))
+        if (_isPreview)
         {
             Cache.Remove(_previewKey + "_SelectedPage");
-            Cache.Remove(_previewKey + "_SelectedPage");
+            Cache.Remove(_previewKey + "_SelectedContents");
         }
 
         // Rewrite path to what it was when this page was constructed. This ensure full page caching can work.
