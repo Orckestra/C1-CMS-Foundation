@@ -1222,7 +1222,9 @@
     <Content Include="Composite\welcome.css" />
     <Content Include="Composite\Welcome.js" />
     <Content Include="Composite\welcome.xsl" />
-    <Content Include="Frontend\Config\VisualEditor\common.xml" />
+    <Content Include="Frontend\Config\VisualEditor\common.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Frontend\Config\VisualEditor\Images\bold.png" />
     <Content Include="Frontend\Config\VisualEditor\Images\italic.png" />
     <Content Include="Frontend\Config\VisualEditor\Images\left.png" />
