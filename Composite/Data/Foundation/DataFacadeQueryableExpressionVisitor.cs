@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Composite.Core.Extensions;
 using Composite.Core.Linq;
 
 
@@ -9,7 +10,8 @@ namespace Composite.Data.Foundation
 {
     internal sealed class DataFacadeQueryableExpressionVisitor : ExpressionVisitor
     {
-        private static readonly MethodInfo _genericGetDataMethodInfo = typeof(DataFacade).GetMethods().Where(x => x.Name == "GetData" && x.IsGenericMethod == true).First();
+        private static readonly MethodInfo _dataFacadeGetDataMethodInfo = typeof(DataFacade).GetMethods().Where(x => x.Name == "GetData" && x.IsGenericMethod).First();
+        private static readonly MethodInfo _dataConnectionGetDataMethodInfo = typeof(DataConnection).GetMethods().Where(x => x.Name == "Get" && x.IsGenericMethod).First();
 
         private bool _pullAllToMemory;
         private IQueryable _queryable = null;
@@ -77,33 +79,51 @@ namespace Composite.Data.Foundation
 
         protected override Expression VisitMethodCall(MethodCallExpression m)
         {
-            if (m.Method.DeclaringType != typeof (DataFacade))
+            if (m.Method.DeclaringType == typeof (DataFacade))
             {
-                return base.VisitMethodCall(m);
-            }
+                if ((m.Method.IsGenericMethod == true) &&
+                     (m.Method.GetGenericMethodDefinition() == _dataFacadeGetDataMethodInfo))
+                {
+                    object result = m.Method.Invoke(null, null);
 
+                    return Expression.Constant(result is IDataFacadeQueryable ? HandleMultibleSourceQueryable(result) : result);
+                }
+
+                // Handling some of the overloads of GetData()
+                if (m.Method.Name == _dataFacadeGetDataMethodInfo.Name && m.Arguments.All(arg => (arg as ConstantExpression) != null))
+                {
+                    object[] parameters = m.Arguments.Select(arg => (arg as ConstantExpression).Value).ToArray();
+
+                    object result = m.Method.Invoke(null, parameters);
+
+                    return Expression.Constant(result is IDataFacadeQueryable ? HandleMultibleSourceQueryable(result) : result);
+                }
             
-            if ((m.Method.IsGenericMethod == true) &&
-                (m.Method.GetGenericMethodDefinition() == _genericGetDataMethodInfo))
-            {
-                object result = m.Method.Invoke(null, null);
-
-                return Expression.Constant(result is IDataFacadeQueryable ? HandleMultibleSourceQueryable(result) : result);
+                throw new NotImplementedException("Supporing for DataFacade method '{0}' or one of it's overloads not yet implemented".FormatWith(m.Method.Name));
             }
 
-            // Handling some of the overloads of GetData()
-            if (m.Method.Name == _genericGetDataMethodInfo.Name && m.Arguments.All(arg => (arg as ConstantExpression) != null))
+            if (m.Method.DeclaringType == typeof (DataConnection))
             {
-                object[] parameters = m.Arguments.Select(arg => (arg as ConstantExpression).Value).ToArray();
+                if (m.Method.IsGenericMethod 
+                    && m.Method.GetGenericMethodDefinition() == _dataConnectionGetDataMethodInfo)
+                {
+                    var dataConnection = EvaluateExpression<DataConnection>(m.Object);
+                    object result = m.Method.Invoke(dataConnection, null);
 
-                object result = m.Method.Invoke(null, parameters);
+                    return Expression.Constant(result is IDataFacadeQueryable ? HandleMultibleSourceQueryable(result) : result);
+                }
 
-                return Expression.Constant(result is IDataFacadeQueryable ? HandleMultibleSourceQueryable(result) : result);
+                throw new NotImplementedException("Supporing for DataConnection method '{0}' or one of it's overloads not yet implemented".FormatWith(m.Method.Name));
             }
-            
-            throw new NotImplementedException("This is fixable");
+
+            return base.VisitMethodCall(m);
         }
 
+
+        private TResultType EvaluateExpression<TResultType>(Expression expression)
+        {
+            return Expression.Lambda<Func<TResultType>>(expression).Compile().Invoke();
+        }
 
         public IQueryable Queryable
         {
