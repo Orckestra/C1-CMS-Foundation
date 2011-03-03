@@ -454,7 +454,15 @@ namespace Composite.Core.WebClient.Renderings.Page
                     object functionCallResult = functionExecutionResults[i];
                     if(functionCallResult != null)
                     {
-                        functionCall.ReplaceWith(functionCallResult);
+                        if (functionCallResult is XAttribute && functionCall.Parent != null)
+                        {
+                            functionCall.Parent.Add(functionCallResult);
+                            functionCall.Remove();
+                        }
+                        else
+                        {
+                            functionCall.ReplaceWith(functionCallResult);
+                        }
                     }
                     else
                     {
