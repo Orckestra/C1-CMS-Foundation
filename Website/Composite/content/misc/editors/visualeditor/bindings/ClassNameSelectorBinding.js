@@ -142,7 +142,7 @@ ClassNameSelectorBinding.prototype.handleNodeChange = function (element) {
 
             var list = new List();
             this.priorities.each(function (format) {
-                if (this._tinyInstance.formatter.canApply(format.id)) {
+                if (this.canApplyDirect(format.id)) {
                     list.add(new SelectorBindingSelection(
 					    format.select.label,
 					    format.id,
@@ -166,6 +166,29 @@ ClassNameSelectorBinding.prototype.handleNodeChange = function (element) {
         }
     }
 }
+
+/**
+* Test is the named TinyMCE format can be applied directly to the current selection.
+* A specialization for the formatter.canApply(name) which also include parent elements
+* @param {string} formatName
+* @returns {boolean}
+*/
+ClassNameSelectorBinding.prototype.canApplyDirect = function (formatName) {
+
+    var formatList = this._tinyInstance.formatter.get(formatName), x, selector;
+
+    for (x = formatList.length - 1; x >= 0; x--) {
+        selector = formatList[x].selector;
+        if (!selector || this._tinyInstance.dom.is(this._tinyInstance.selection.getStart(), selector)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+
 
 /**
  * Only enable the selector when WE decide to.

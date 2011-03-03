@@ -150,7 +150,10 @@ FormatSelectorBinding.prototype.initializeComponent = function (editor, engine, 
 */
 FormatSelectorBinding.prototype.handleAction = function (action) {
 
-	FormatSelectorBinding.superclass.handleAction.call(this, action);
+    // Keeping selection on current block
+    this._editorBinding.createBookmark();
+
+    FormatSelectorBinding.superclass.handleAction.call(this, action);
 
 	switch (action.type) {
 		case SelectorBinding.ACTION_SELECTIONCHANGED:
