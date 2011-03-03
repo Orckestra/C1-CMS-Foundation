@@ -4,15 +4,19 @@ using Composite.C1Console.Security.SecurityAncestorProviders;
 
 namespace Composite.C1Console.Trees
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
-    internal sealed class TreeSimpleElementEntityToken : EntityToken, IEntityTokenContainingParentEntityToken
+    public sealed class TreeSimpleElementEntityToken : EntityToken, IEntityTokenContainingParentEntityToken
 	{
         private EntityToken _parentEntityToken;
-        private string _treeNodeId;
-        private string _treeId;
-        private string _serializedParentEntityToken;
+        private readonly string _treeNodeId;
+        private readonly string _treeId;
+        private readonly string _serializedParentEntityToken;
 
-
+        /// <exclude />
         public TreeSimpleElementEntityToken(string treeNodeId, string treeId, string serializedParentEntityToken)
         {
             _treeNodeId = treeNodeId;
@@ -38,7 +42,7 @@ namespace Composite.C1Console.Trees
             get { return _treeNodeId; }
         }
 
-
+        /// <exclude />
         public string TreeNodeId
         {
             get
@@ -47,7 +51,7 @@ namespace Composite.C1Console.Trees
             }
         }
 
-
+        /// <exclude />
         public string SerializedParentEntityToken
         {
             get
@@ -56,7 +60,7 @@ namespace Composite.C1Console.Trees
             }
         }
 
-
+        /// <exclude />
         public EntityToken ParentEntityToken
         {
             get
@@ -71,7 +75,7 @@ namespace Composite.C1Console.Trees
         }
 
 
-
+        /// <exclude />
         public EntityToken GetParentEntityToken()
         {
             return this.ParentEntityToken;
@@ -84,7 +88,7 @@ namespace Composite.C1Console.Trees
             return DoSerialize();
         }
 
-
+        /// <exclude />
         public static EntityToken Deserialize(string serializedEntityToken)
         {
             string type, source, id;
