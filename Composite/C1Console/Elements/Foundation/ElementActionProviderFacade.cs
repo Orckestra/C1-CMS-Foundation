@@ -8,6 +8,7 @@ using Composite.C1Console.Actions;
 using Composite.C1Console.Elements.Foundation.PluginFacades;
 using Composite.C1Console.Events;
 using Composite.C1Console.Security;
+using Composite.Core;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
 using Composite.Core.Logging;
@@ -306,7 +307,13 @@ namespace Composite.C1Console.Elements.Foundation
                 {
                     IEnumerable<string> elementActionProviderNames = ElementActionProviderRegistry.ElementActionProviderNames;
 
-                    Verify.IsNotNull(elementActionProviderNames, "Failed to load one of the element action providers");
+                    if(elementActionProviderNames == null)
+                    {
+                        const string message = "Failed to load one of the element action providers";
+                        Log.LogCritical("ElementActionProviderFacade", message);
+
+                        Verify.ThrowInvalidOperationException(message);
+                    }
 
                     foreach (string elementActionProviderName in ElementActionProviderRegistry.ElementActionProviderNames)
                     {
