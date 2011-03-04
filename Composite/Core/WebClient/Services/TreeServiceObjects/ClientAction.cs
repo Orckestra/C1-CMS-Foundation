@@ -50,7 +50,7 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects
                     this.ActionCategory.Name,
                     this.CheckboxStatus);
 
-                return this.ActionToken.GetHashCode() + "::" + secondaryValuesMashup.GetHashCode();
+                return (this.ActionToken + this.Label).GetHashCode() + "::" + secondaryValuesMashup.GetHashCode();
             }
             set
             {

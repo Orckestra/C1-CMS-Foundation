@@ -179,8 +179,8 @@ SystemToolBarBinding.prototype._getProfileKey = function () {
 
 	var result = new String ( "" );
 	this._actionProfile.each ( function ( groupid, list ) {
-		list.each ( function ( systemAction ) {
-			result += systemAction.getHandle() + ";";
+	    list.each( function (systemAction ) {
+	        result += systemAction.getHandle() + ";" + systemAction.getKey() + ";";			
 			//Make different profile key for toolbar with enabled/disabled actions
 			if (systemAction.isDisabled())
 				result += "isDisabled='true';";
