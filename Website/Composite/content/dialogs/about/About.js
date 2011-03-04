@@ -127,7 +127,6 @@ var About = new function () {
 			div.appendChild ( p );
 		});
 		
-		top.Application.logger.debug ( div.innerHTML );
 	}
 	
 	this.tick = function () {

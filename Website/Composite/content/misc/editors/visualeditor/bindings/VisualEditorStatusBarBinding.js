@@ -151,12 +151,14 @@ VisualEditorStatusBarBinding.prototype.handleAction = function (action) {
             var depth = button.structuralDepth;
 
             if (Client.isExplorer) {
+                // ie specific way to get through this.
                 var targetNode = this._tinyInstance.selection.getNode();
                 while (depth-- > 0)
                     targetNode = targetNode.parentNode;
 
-                this._tinyInstance.selection.select(targetNode, true);
                 this._buildToolBar(targetNode);
+                this._tinyInstance.selection.select(targetNode, true);
+                this._tinyInstance.nodeChanged();
             } else {
                 var self = this;
 

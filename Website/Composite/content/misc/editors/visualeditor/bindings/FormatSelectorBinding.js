@@ -151,20 +151,21 @@ FormatSelectorBinding.prototype.initializeComponent = function (editor, engine, 
 FormatSelectorBinding.prototype.handleAction = function (action) {
 
     // Keeping selection on current block
+    this._tinyInstance.focus();
     this._editorBinding.createBookmark();
 
     FormatSelectorBinding.superclass.handleAction.call(this, action);
 
-	switch (action.type) {
-		case SelectorBinding.ACTION_SELECTIONCHANGED:
-			var value = this.getValue();
-			if (this._formats.has(value)) { // (exluding "Unknown" selection)
-				var format = this._formats.get(value);
-				this._tinyInstance.execCommand('FormatBlock', false, format.id);
-				action.consume();
-			}
-			break;
-	}
+    switch (action.type) {
+        case SelectorBinding.ACTION_SELECTIONCHANGED:
+            var value = this.getValue();
+            if (this._formats.has(value)) { // (exluding "Unknown" selection)
+                var format = this._formats.get(value);
+                this._tinyInstance.execCommand('FormatBlock', false, format.id);
+                action.consume();
+            }
+            break;
+    }
 }
 
 /**

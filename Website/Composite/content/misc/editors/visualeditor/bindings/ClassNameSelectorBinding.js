@@ -61,7 +61,7 @@ ClassNameSelectorBinding.prototype.onBindingAttach = function () {
 /**
  * Register as node change handler when TinyMCE is initialized.
  * @implements {IWysiwygEditorComponent}
- * @param {WysiwygEditorBinding} editor
+ * @param {VisualEditorBinding} editor
  * @param {TinyMCE_Engine} engine
  * @param {TinyMCE_Control} instance
  * @param {TinyMCE_CompositeTheme} theme
@@ -132,17 +132,17 @@ ClassNameSelectorBinding.prototype.handleAction = function (action) {
 ClassNameSelectorBinding.prototype.handleNodeChange = function (element) {
 
     if (!this._isUpdating) {
-
         if (element != this._element || element.className != this._classname) {
 
-            this._element = element;
+            this._element = element; 
             this._classname = element.className;
 
             // TODO: Add support for images here?
 
             var list = new List();
             this.priorities.each(function (format) {
-                if (this.canApplyDirect(format.id)) {
+
+                if (this.canApplyDirect(format.id, element)) {
                     list.add(new SelectorBindingSelection(
 					    format.select.label,
 					    format.id,
@@ -173,17 +173,21 @@ ClassNameSelectorBinding.prototype.handleNodeChange = function (element) {
 * @param {string} formatName
 * @returns {boolean}
 */
-ClassNameSelectorBinding.prototype.canApplyDirect = function (formatName) {
+ClassNameSelectorBinding.prototype.canApplyDirect = function (formatName, element) {
 
     var formatList = this._tinyInstance.formatter.get(formatName), x, selector;
 
+    if (!Client.isExplorer) {
+        // explorer works best with the element we pass. Others 
+        element = this._tinyInstance.selection.getStart();
+    }
+
     for (x = formatList.length - 1; x >= 0; x--) {
         selector = formatList[x].selector;
-        if (!selector || this._tinyInstance.dom.is(this._tinyInstance.selection.getStart(), selector)) {
+        if (!selector || this._tinyInstance.dom.is(element, selector)) {
             return true;
         }
     }
-
     return false;
 }
 
