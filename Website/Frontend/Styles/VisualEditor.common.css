@@ -1,4 +1,34 @@
-﻿
+﻿/*
+ *  This is the default style sheet used in the content editor. 
+ *  Content editor has basic styling specified in "../Config/VisualEditor/Styles/core.css"
+ * 
+ *  You can change what stylesheets are loaded and what buttons, styles etc. are in the visual editor here:
+ *
+ *      ~/Frontend/Config/VisualEditor/common.xml
+ *
+ */
+ 
+body,
+td {
+	font-family: sans-serif;
+	font-size: 15px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-size: 20px;
+	line-height: 40px;
+	margin: 20px 0 0 0;
+	padding: 0;
+}
+h1 {
+	font-size: 30px;
+}
+ 
+ 
 *.left {
   float: left;
   margin: 0 22px 10px 0;  
@@ -23,6 +53,12 @@
 img.framed {
     border: 1px solid black;
     padding: 3px;
+    margin: 3px;
+}
+
+img.heavyframed {
+    border: 5px solid #444;
+    padding: 4px;
     margin: 3px;
 }
 
@@ -55,6 +91,17 @@ table tr.sum {
 
 table tr.sum td.total {
     background-color: #fee;
+}
+
+table.light {
+	border: 1px solid #ddd;
+	border-collapse: collapse;
+	padding: 5px;
+}
+
+table.light td {
+	border: 1px solid #eee;
+	padding: 5px;
 }
 
 

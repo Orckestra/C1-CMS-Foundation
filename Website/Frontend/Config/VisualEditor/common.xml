@@ -4,7 +4,7 @@
   <!-- stylesheets to import (tip: you can also use @import inside the CSS) -->
   <styles>
     <style file="styles/core.css" />
-    <style file="styles/common.css" />
+    <style file="../../styles/visualeditor.common.css" />
   </styles>
 
   <!-- 
@@ -87,7 +87,13 @@
       <format id="framed" label="Framed" image="" notes="" classes="framed" selector="img">
         <select />
       </format>
+      <format id="heavyframed" label="Framed (heavy)" image="" notes="" classes="heavyframed" selector="img">
+        <select />
+      </format>
       <format id="heavy" label="Heavy" image="" notes="" classes="heavy" selector="table">
+        <select />
+      </format>
+      <format id="light" label="Light" image="" notes="" classes="light" selector="table">
         <select />
       </format>
       <format id="sum" label="Sum row" image="" notes="" classes="sum" selector="tr">

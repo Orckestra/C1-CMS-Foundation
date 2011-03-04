@@ -1229,7 +1229,7 @@
     <Content Include="Frontend\Config\VisualEditor\Images\italic.png" />
     <Content Include="Frontend\Config\VisualEditor\Images\left.png" />
     <Content Include="Frontend\Config\VisualEditor\Images\right.png" />
-    <Content Include="Frontend\Config\VisualEditor\Styles\common.css" />
+    <Content Include="Frontend\Styles\VisualEditor.common.css" />
     <Content Include="Frontend\Config\VisualEditor\Styles\core.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1628,10 +1628,6 @@
     <Content Include="Composite\localization\Composite.Web.FormControl.TypeFieldDesigner.en-us.xml" />
     <Content Include="Composite\localization\Composite.Web.SEOAssistant.en-us.xml" />
     <Content Include="Composite\schemas\FormsControls\GenerateDynamicSchemas.aspx" />
-    <Content Include="Frontend\Styles\VisualEditor\ReleaseBuild.VisualEditor.Config.xml" />
-    <Content Include="Frontend\Styles\VisualEditor\VisualEditor.Config.css" />
-    <Content Include="Frontend\Styles\VisualEditor\VisualEditor.Config.xml" />
-    <Content Include="Frontend\Styles\VisualEditor\VisualEditor.Default.css" />
     <Content Include="Renderers\FileNotFoundHandler.ashx" />
     <Content Include="Renderers\ShowMedia.ashx" />
   </ItemGroup>

@@ -266,6 +266,14 @@
   <string key="Composite.Web.Client.EcmaScriptVersion.description" value="" />
   <string key="Composite.Web.Client.IsCrawler.description" value="True if the current request is identified as coming from a crawler (search engine)." />
   <string key="Composite.Web.Client.IsMobileDevice.description" value="True if the current request is identified as coming from a mobile device." />
+  <string key="Composite.Web.Html.Template.CommonMetaTags.description" value="Common HTML meta tags you probably want in yout html head" />
+  <string key="Composite.Web.Html.Template.CommonMetaTags.param.ContentType.label" value="Content-Type" />
+  <string key="Composite.Web.Html.Template.CommonMetaTags.param.ContentType.help" value="By default this is 'text/html; charset=utf-8'. If you serve something else you should overwrite this." />
+  <string key="Composite.Web.Html.Template.CommonMetaTags.param.Designer.label" value="Designer" />
+  <string key="Composite.Web.Html.Template.CommonMetaTags.param.Designer.help" value="Who designed this website? Show it in the 'Designer' meta tag. Default is not to emit the meta tag." />
+  <string key="Composite.Web.Html.Template.CommonMetaTags.param.ShowGenerator.label" value="Show generator" />
+  <string key="Composite.Web.Html.Template.CommonMetaTags.param.ShowGenerator.help" value="Show the world you support Composite C1 - free open source!" />
+  <string key="Composite.Web.Html.Template.LangAttribute.description" value="Appends a lang='(language code)' attribute the the parent element, reflecting the language of the current page. You can put this just below the &lt;html /&gt; tag." />  
   <string key="Composite.Web.Request.CookieValue.description" value="Gets a value from the current users cookie collection." />
   <string key="Composite.Web.Request.CookieValue.param.CookieName.help" value="" />
   <string key="Composite.Web.Request.CookieValue.param.CookieName.label" value="Cookie name" />

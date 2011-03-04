@@ -21,11 +21,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         private static string _defaultTemplateMarkup = string.Format(
 @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <html xmlns=""http://www.w3.org/1999/xhtml"" xmlns:f=""http://www.composite.net/ns/function/1.0"" xmlns:lang=""{0}"" xmlns:rendering=""http://www.composite.net/ns/rendering/1.0"" xmlns:asp=""http://www.composite.net/ns/asp.net/controls"">
+<f:function name=""Composite.Web.Html.Template.LangAttribute"" />
     <head>
         <title>
             <rendering:page.title />
         </title>
+        <f:function name=""Composite.Web.Html.Template.CommonMetaTags"" />
         <rendering:page.metatag.description />
+        <link rel=""stylesheet"" type=""text/css"" href=""~/Frontend/Styles/VisualEditor.common.css"" />
     </head>
     <body>
         <div style=""float:right; width:10em"">
