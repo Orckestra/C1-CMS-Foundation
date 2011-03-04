@@ -50,7 +50,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                     this.Bindings.Add("TrialExpire", licenseInfo.Expires.ToLocalTime().ToString());
                     if (!string.IsNullOrWhiteSpace(licenseInfo.PurchaseUrl))
                     {
-                        string url = string.Format("{0}{1}installationId={2}", licenseInfo.PurchaseUrl, (licenseInfo.PurchaseUrl.Contains('?') ? "&" : "?"), Composite.Core.Configuration.InstallationInformationFacade.InstallationId);
+                        //string url = string.Format("{0}{1}installationId={2}", licenseInfo.PurchaseUrl, (licenseInfo.PurchaseUrl.Contains('?') ? "&" : "?"), Composite.Core.Configuration.InstallationInformationFacade.InstallationId);
+                        string url = licenseInfo.PurchaseUrl;
                         this.Bindings.Add("TrialPurchaseUrl", url);
                     }
 
