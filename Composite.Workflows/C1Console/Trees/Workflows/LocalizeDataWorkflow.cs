@@ -143,7 +143,7 @@ namespace Composite.C1Console.Trees.Workflows
             }
 
             ParentTreeRefresher parentTreeRefresher = this.CreateParentTreeRefresher();
-            parentTreeRefresher.PostRefreshMesseges(newData.GetDataEntityToken());
+            parentTreeRefresher.PostRefreshMesseges(newData.GetDataEntityToken(), 2);
         }
 
 
