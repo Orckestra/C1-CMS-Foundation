@@ -21922,7 +21922,7 @@ SystemToolBarBinding.prototype._getProfileKey=function(){
 var _d58=new String("");
 this._actionProfile.each(function(_d59,list){
 list.each(function(_d5b){
-_d58+=_d5b.getHandle()+";";
+_d58+=_d5b.getHandle()+";"+_d5b.getKey()+";";
 if(_d5b.isDisabled()){
 _d58+="isDisabled='true';";
 }
