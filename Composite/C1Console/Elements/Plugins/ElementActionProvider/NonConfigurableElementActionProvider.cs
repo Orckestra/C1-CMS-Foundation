@@ -6,13 +6,22 @@ using Microsoft.Practices.ObjectBuilder;
 
 namespace Composite.C1Console.Elements.Plugins.ElementActionProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Assembler(typeof(NonConfigurableElementActionProviderAssembler))]
-    internal class NonConfigurableElementActionProvider : ElementActionProviderData
+    public class NonConfigurableElementActionProvider : ElementActionProviderData
     {
     }
 
-    internal sealed class NonConfigurableElementActionProviderAssembler : IAssembler<IElementActionProvider, ElementActionProviderData>
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class NonConfigurableElementActionProviderAssembler : IAssembler<IElementActionProvider, ElementActionProviderData>
     {
+        /// <exclude />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         public IElementActionProvider Assemble(IBuilderContext context, ElementActionProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {
