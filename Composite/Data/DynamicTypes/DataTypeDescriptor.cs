@@ -296,7 +296,7 @@ namespace Composite.Data.DynamicTypes
         {
             get
             {
-                return new ReadOnlyList<Type>(_superInterfaces);
+                return _superInterfaces;
             }
         }
 

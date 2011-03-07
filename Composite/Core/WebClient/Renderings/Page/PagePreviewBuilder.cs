@@ -17,6 +17,7 @@ namespace Composite.Core.WebClient.Renderings.Page
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public class PagePreviewBuilder
     {
+        /// <exclude />
         public static string RenderPreview(IPage selectedPage, IList<IPagePlaceholderContent> contents)
         {
             HttpContext ctx = HttpContext.Current;

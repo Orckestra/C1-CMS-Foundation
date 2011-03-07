@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace Composite.Core.Collections.Generic
 {
-#warning MRJ: GO KILL THIS CLASS!!!! And use the one in system
     /// <summary>    
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [Obsolete("Use standard System.Collections.ObjectModel.ReadOnlyCollection<T>")]
     public sealed class ReadOnlyList<T> : IList<T>
     {
         private List<T> _list;

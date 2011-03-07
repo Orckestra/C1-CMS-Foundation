@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Composite.Core.Collections.Generic;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.Data.Validation.Plugins.ClientValidationRuleTranslator;
 using Composite.Data.Validation.Validators;
@@ -13,7 +12,7 @@ namespace Composite.Plugins.Validation.ClientValidationRuleTranslators.StandardC
     [ConfigurationElementType(typeof(StandardClientValidationRuleTranslatorData))]
     internal sealed class StandardClientValidationRuleTranslator : IClientValidationRuleTranslator
     {
-        private List<Type> _supportedTypes = new List<Type>
+        private readonly List<Type> _supportedTypes = new List<Type>
             {
                 typeof(RegexValidatorAttribute),
 #pragma warning disable 0612
@@ -26,7 +25,7 @@ namespace Composite.Plugins.Validation.ClientValidationRuleTranslators.StandardC
 
         public IEnumerable<Type> GetSupportedAttributeTypes()
         {
-            return new ReadOnlyList<Type>(_supportedTypes);
+            return _supportedTypes;
         }
 
 

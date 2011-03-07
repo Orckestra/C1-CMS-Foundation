@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -19,7 +20,7 @@ namespace Composite.Data.Plugins.DataProvider.Streams
         private static int _counter;
 
         // We're holding only weak reference to subscriber objects, in order to avoid memory leaks
-        private static readonly Hashtable<string, ReadOnlyList<Pair<MethodInfo, WeakReference>>> _subscribers = new Hashtable<string, ReadOnlyList<Pair<MethodInfo, WeakReference>>>();
+        private static readonly Hashtable<string, ReadOnlyCollection<Pair<MethodInfo, WeakReference>>> _subscribers = new Hashtable<string, ReadOnlyCollection<Pair<MethodInfo, WeakReference>>>();
 
 
         private static void EnsureInitialization()
@@ -71,7 +72,7 @@ namespace Composite.Data.Plugins.DataProvider.Streams
         {
             filePath = filePath.ToLower();
 
-            ReadOnlyList<Pair<MethodInfo, WeakReference>> weakInvocationList;
+            ReadOnlyCollection<Pair<MethodInfo, WeakReference>> weakInvocationList;
 
             if (!_subscribers.TryGetValue(filePath.ToLower(), out weakInvocationList))
             {
@@ -138,16 +139,16 @@ namespace Composite.Data.Plugins.DataProvider.Streams
             {
                 if (_subscribers.ContainsKey(key))
                 {
-                    ReadOnlyList<Pair<MethodInfo, WeakReference>> oldList = _subscribers[key];
+                    ReadOnlyCollection<Pair<MethodInfo, WeakReference>> oldList = _subscribers[key];
 
-                    var newList = new ReadOnlyList<Pair<MethodInfo, WeakReference>>(
+                    var newList = new ReadOnlyCollection<Pair<MethodInfo, WeakReference>>(
                         new List<Pair<MethodInfo, WeakReference>>(oldList.Concat(weakInvocationList)));
 
                     _subscribers[key] = newList;
                 }
                 else
                 {
-                    _subscribers.Add(key, new ReadOnlyList<Pair<MethodInfo, WeakReference>>(weakInvocationList));
+                    _subscribers.Add(key, new ReadOnlyCollection<Pair<MethodInfo, WeakReference>>(weakInvocationList));
                 }
             }
         }
@@ -160,7 +161,7 @@ namespace Composite.Data.Plugins.DataProvider.Streams
 
                 foreach(string key in keys)
                 {
-                    ReadOnlyList<Pair<MethodInfo, WeakReference>> currentList = _subscribers[key];
+                    ReadOnlyCollection<Pair<MethodInfo, WeakReference>> currentList = _subscribers[key];
 
                     int countOfAlive = currentList.Count(pair => pair.Second == null || pair.Second.IsAlive);
                     if(countOfAlive == 0)
@@ -176,8 +177,8 @@ namespace Composite.Data.Plugins.DataProvider.Streams
 
                     var newList = new List<Pair<MethodInfo, WeakReference>>(
                         currentList.Where(pair => pair.Second == null || pair.Second.IsAlive));
-                    
-                    _subscribers[key] = new ReadOnlyList<Pair<MethodInfo, WeakReference>>(newList);
+
+                    _subscribers[key] = new ReadOnlyCollection<Pair<MethodInfo, WeakReference>>(newList);
                 }
             }
         }

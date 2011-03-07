@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using Composite.Core.Collections.Generic;
@@ -21,8 +22,8 @@ namespace Composite.Data
 
         private static readonly Cache<string, CultureInfo> _urlMappingCache = new Cache<string, CultureInfo>("UrlCultureMapping", 70);
         private static readonly Cache<string, string> _cultureUrlCache = new Cache<string, string>("CultureUrlMapping", 70);
-        private static ReadOnlyList<string> _urlMappings;
-        private static ReadOnlyList<string> _activeCultureNames;
+        private static ReadOnlyCollection<string> _urlMappings;
+        private static ReadOnlyCollection<string> _activeCultureNames;
         private static ExtendedNullable<CultureInfo> _defaultCulture;
         private static ExtendedNullable<CultureInfo> _defaultUrlMappingCulture;
         private static readonly object _syncRoot = new object();
@@ -204,7 +205,7 @@ namespace Composite.Data
         {
             get
             {
-                ReadOnlyList<string> _result = _activeCultureNames;
+                ReadOnlyCollection<string> _result = _activeCultureNames;
 
                 if (_result == null)
                 {
@@ -212,7 +213,7 @@ namespace Composite.Data
                     {
                         if (_activeCultureNames == null)
                         {
-                            _activeCultureNames = new ReadOnlyList<string>(
+                            _activeCultureNames = new ReadOnlyCollection<string>(
                                 (from d in DataFacade.GetData<ISystemActiveLocale>()
                                  select d.CultureName).ToList());
                         }
@@ -269,7 +270,7 @@ namespace Composite.Data
         {
             get
             {
-                ReadOnlyList<string> _result = _urlMappings;
+                ReadOnlyCollection<string> _result = _urlMappings;
 
                 if (_result == null)
                 {
@@ -290,7 +291,7 @@ namespace Composite.Data
                                 }
                             }
 
-                            _urlMappings = new ReadOnlyList<string>(mappings);
+                            _urlMappings = new ReadOnlyCollection<string>(mappings);
                         }
                         _result = _urlMappings;
                     }

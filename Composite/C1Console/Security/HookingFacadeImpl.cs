@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
 using System.Linq;
-using Composite.Core.Collections.Generic;
 using Composite.Core.Logging;
 using Composite.C1Console.Security.Foundation;
 using Composite.C1Console.Security.Foundation.PluginFacades;
@@ -125,7 +124,7 @@ namespace Composite.C1Console.Security
                     return null;
                 }
 
-                return new ReadOnlyList<EntityToken>(hooks);
+                return hooks;
             }
         }
 

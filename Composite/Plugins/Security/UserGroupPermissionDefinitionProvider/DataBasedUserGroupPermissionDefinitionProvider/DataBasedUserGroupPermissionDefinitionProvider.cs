@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Transactions;
 using Composite.Core.Collections.Generic;
@@ -18,7 +19,7 @@ namespace Composite.Plugins.Security.UserGroupPermissionDefinitionProvider.DataB
     class DataBasedUserGroupPermissionDefinitionProvider : IUserGroupPermissionDefinitionProvider
 	{
         private static readonly int PermissionCacheSize = 50;
-        private static readonly Cache<Guid, ReadOnlyList<UserGroupPermissionDefinition>> _permissionCache = new Cache<Guid, ReadOnlyList<UserGroupPermissionDefinition>>("DataBasedUserGroupPermissionDefinitionProvider", PermissionCacheSize);
+        private static readonly Cache<Guid, ReadOnlyCollection<UserGroupPermissionDefinition>> _permissionCache = new Cache<Guid, ReadOnlyCollection<UserGroupPermissionDefinition>>("DataBasedUserGroupPermissionDefinitionProvider", PermissionCacheSize);
 
         static DataBasedUserGroupPermissionDefinitionProvider()
         {
@@ -51,7 +52,7 @@ namespace Composite.Plugins.Security.UserGroupPermissionDefinitionProvider.DataB
 
         public IEnumerable<UserGroupPermissionDefinition> GetPermissionsByUserGroup(Guid userGroupId)
         {
-            ReadOnlyList<UserGroupPermissionDefinition> cachedUserGroupPermissionDefinitions = _permissionCache.Get(userGroupId);
+            ReadOnlyCollection<UserGroupPermissionDefinition> cachedUserGroupPermissionDefinitions = _permissionCache.Get(userGroupId);
             if (cachedUserGroupPermissionDefinitions != null)
             {
                 return cachedUserGroupPermissionDefinitions;
@@ -62,7 +63,7 @@ namespace Composite.Plugins.Security.UserGroupPermissionDefinitionProvider.DataB
                  where urd.UserGroupId == userGroupId
                  select (UserGroupPermissionDefinition)new DataUserGroupPermissionDefinition(urd)).ToList();
 
-            _permissionCache.Add(userGroupId, new ReadOnlyList<UserGroupPermissionDefinition>(userGroupPermissionDefinitions));
+            _permissionCache.Add(userGroupId, new ReadOnlyCollection<UserGroupPermissionDefinition>(userGroupPermissionDefinitions));
 
             return userGroupPermissionDefinitions;
         }

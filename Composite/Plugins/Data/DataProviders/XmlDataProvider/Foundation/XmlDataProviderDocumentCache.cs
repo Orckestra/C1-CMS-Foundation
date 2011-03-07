@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading;
 using System.Xml;
@@ -205,7 +206,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                             FileName = filename,
                             ElementName = elementName,
                             RecordSet = new RecordSet { /* Elements = elements,*/ Index = index },
-                            ReadOnlyElementsList = new ReadOnlyList<XElement>(new List<XElement>(elements)),
+                            ReadOnlyElementsList = new List<XElement>(elements),
                             LastModified = DateTime.Now,
                             FileModificationDate = C1File.GetLastWriteTime(filename)
                         };
@@ -306,7 +307,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             fileRecord.FileModificationDate = C1File.GetLastWriteTime(fileRecord.FileName);
 
             // Atomic operation
-            fileRecord.ReadOnlyElementsList = new ReadOnlyList<XElement>(new List<XElement>(elements));
+            fileRecord.ReadOnlyElementsList = new List<XElement>(elements);
             fileRecord.Dirty = false;
         }
 

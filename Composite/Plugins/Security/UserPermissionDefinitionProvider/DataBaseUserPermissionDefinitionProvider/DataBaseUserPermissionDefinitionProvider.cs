@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Transactions;
 using Composite.Core.Collections.Generic;
@@ -20,7 +21,7 @@ namespace Composite.Plugins.Security.UserPermissionDefinitionProvider.DataBaseUs
     {
         private static readonly int PermissionCacheSize = 50;
 
-        private static readonly Cache<string, ReadOnlyList<UserPermissionDefinition>> _permissionCache = new Cache<string, ReadOnlyList<UserPermissionDefinition>>("Security permissions", PermissionCacheSize);
+        private static readonly Cache<string, ReadOnlyCollection<UserPermissionDefinition>> _permissionCache = new Cache<string, ReadOnlyCollection<UserPermissionDefinition>>("Security permissions", PermissionCacheSize);
 
 
 
@@ -143,7 +144,7 @@ namespace Composite.Plugins.Security.UserPermissionDefinitionProvider.DataBaseUs
                               select (UserPermissionDefinition) new DataUserPermissionDefinition(urd)).ToList();
 
 
-            _permissionCache.Add(userName, new ReadOnlyList<UserPermissionDefinition>(permissions));
+            _permissionCache.Add(userName, new ReadOnlyCollection<UserPermissionDefinition>(permissions));
             return permissions;
         }
 

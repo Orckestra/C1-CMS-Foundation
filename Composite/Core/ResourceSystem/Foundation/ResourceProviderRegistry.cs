@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Composite.Core.Configuration;
 using Composite.C1Console.Events;
 using Composite.Core.ResourceSystem.Foundation.PluginFacades;
@@ -30,7 +31,7 @@ namespace Composite.Core.ResourceSystem.Foundation
             {
                 using (_resourceLocker.ReadLocker)
                 {
-                    return new ReadOnlyList<string>(_resourceLocker.Resources.IconResourceProviders);
+                    return _resourceLocker.Resources.IconResourceProviders;
                 }
             }
         }
@@ -43,7 +44,7 @@ namespace Composite.Core.ResourceSystem.Foundation
             {
                 using (_resourceLocker.ReadLocker)
                 {
-                    return new ReadOnlyList<string>(_resourceLocker.Resources.StringResourceProviders);
+                    return _resourceLocker.Resources.StringResourceProviders;
                 }
             }
         }
