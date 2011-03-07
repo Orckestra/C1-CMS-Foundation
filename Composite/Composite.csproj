@@ -592,6 +592,7 @@
     <Compile Include="Core\Types\AssemblyExtensionMethods.cs" />
     <Compile Include="Core\UrlBuilder.cs" />
     <Compile Include="Core\WebClient\Captcha\Captcha.cs" />
+    <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\SelectorWidgetFunction.cs" />
     <Compile Include="Plugins\Functions\XslExtensionsProviders\CaptchaXslExtension.cs" />
     <Compile Include="Core\WebClient\Captcha\Encryption.cs" />
     <Compile Include="Core\WebClient\Captcha\ImageCreator.cs" />

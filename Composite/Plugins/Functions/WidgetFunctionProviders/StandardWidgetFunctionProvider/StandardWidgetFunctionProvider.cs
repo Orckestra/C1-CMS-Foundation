@@ -94,6 +94,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
             _widgetStaticTypeFunctions.Add(new DateTimeSelectorWidgetFunction(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new MediaFileFolderSelectorWidget(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new MediaFileSelectorWidgetFunction(_entityTokenFactory));
+            _widgetStaticTypeFunctions.Add(new SelectorWidgetFunction(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new ImageSelectorWidgetFunction(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new IntegerTextBoxWidgetFuntion(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new DecimalTextBoxWidgetFuntion(_entityTokenFactory));

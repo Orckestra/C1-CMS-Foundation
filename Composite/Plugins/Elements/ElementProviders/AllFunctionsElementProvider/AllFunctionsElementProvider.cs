@@ -158,6 +158,14 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
                             shouldBeIncluded = true;
                             break;
                         }
+
+
+                        if (metaFunction is IWidgetFunction
+                                && metaFunction.ReturnType.IsAssignableFrom(type))
+                        {
+                            shouldBeIncluded = true;
+                            break;
+                        }
                     }
                 }
 
