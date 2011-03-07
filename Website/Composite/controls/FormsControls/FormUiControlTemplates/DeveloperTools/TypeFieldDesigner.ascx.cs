@@ -180,6 +180,7 @@ namespace CompositeTypeFieldDesigner
             TypeDetailsSelector.Items.Clear();
 
             TypeDetailsPlaceHolder.Visible = true;
+            TypeDetailsOptionalPlaceHolder.Visible = true;
 
             switch (this.TypeSelector.SelectedValue)
             {
@@ -224,6 +225,10 @@ namespace CompositeTypeFieldDesigner
                         TypeDetailsSelector.DataBind();
                     }
                     catch (Exception) { }
+                    break;
+                case "System.Boolean":
+                    TypeDetailsOptionalPlaceHolder.Visible = false;
+                    TypeDetailsPlaceHolder.Visible = false;
                     break;
                 default:
                     TypeDetailsPlaceHolder.Visible = false;
@@ -351,7 +356,6 @@ namespace CompositeTypeFieldDesigner
                 if (notOptional == true)
                 {
                     UpdateDetailsSplitPanel(true);
-                    Baloon(this.OptionalSelector, GetString("NotAnOptionalTypeError"));
                 }
                 else
                 {

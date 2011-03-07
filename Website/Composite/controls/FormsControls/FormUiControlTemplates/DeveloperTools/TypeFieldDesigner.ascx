@@ -1,24 +1,23 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CompositeTypeFieldDesigner.TypeFieldDesigner" CodeFile="TypeFieldDesigner.ascx.cs" %> 
+<%@ Control Language="C#" AutoEventWireup="true" Inherits="CompositeTypeFieldDesigner.TypeFieldDesigner"
+    CodeFile="TypeFieldDesigner.ascx.cs" %>
 <%@ Register TagPrefix="asphtml" Namespace="System.Web.UI.HtmlControls" Assembly="System.Web" %>
-<%@ Register TagPrefix="aspui" Namespace="Composite.Core.WebClient.UiControlLib" Assembly="Composite" %> 
-<%@ Import Namespace="Composite.Data.DynamicTypes" %> 
-<%@ Import Namespace="Composite.Functions.ManagedParameters" %>  
-<%@ Import Namespace="System.Linq" %> 
+<%@ Register TagPrefix="aspui" Namespace="Composite.Core.WebClient.UiControlLib"
+    Assembly="Composite" %>
+<%@ Import Namespace="Composite.Data.DynamicTypes" %>
+<%@ Import Namespace="Composite.Functions.ManagedParameters" %>
+<%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="Composite.Core.ResourceSystem" %>
-
-<formscontrol:styleloader adminrelativepath="controls/FormsControls/FormUiControlTemplates/DeveloperTools/TypeFieldDesigner.css.aspx" runat="server" />
-
+<formscontrol:styleloader adminrelativepath="controls/FormsControls/FormUiControlTemplates/DeveloperTools/TypeFieldDesigner.css.aspx"
+    runat="server" />
 <ui:broadcasterset>
     <ui:broadcaster id="broadcasterInputFieldHasSelection" isdisabled="<%= (this.CurrentlySelectedFieldId == Guid.Empty).ToString().ToLower() %>" />
 </ui:broadcasterset>
-
 <div style="display: none" id="clientmessages">
-			<asp:PlaceHolder ID="BaloonPlaceHolder" runat="server" />
-			<asp:PlaceHolder ID="MakeDirtyEventPlaceHolder" runat="server" Visible="false">
-				<ui:binding onattach="this.dispatchAction(Binding.ACTION_DIRTY);" />
-			</asp:PlaceHolder>
+    <asp:PlaceHolder ID="BaloonPlaceHolder" runat="server" />
+    <asp:PlaceHolder ID="MakeDirtyEventPlaceHolder" runat="server" Visible="false">
+        <ui:binding onattach="this.dispatchAction(Binding.ACTION_DIRTY);" />
+    </asp:PlaceHolder>
 </div>
-
 <ui:splitbox layout="1:3" orient="horizontal">
 
 	<ui:splitpanel id="typefielddesignerleft">
@@ -122,29 +121,31 @@
 														</ui:fielddata>
 													</ui:field>
 	
-														<asp:PlaceHolder ID="TypeDetailsPlaceHolder" runat="server">
-															<ui:field>
-																<ui:fielddesc>
-																	<asp:Label id="TypeDetailsLabel" runat="server" />
-																</ui:fielddesc>
-																<ui:fieldhelp><%= GetString("TypeDetailsHelp") %></ui:fieldhelp>
-																<ui:fielddata>
-																	<aspui:Selector ID="TypeDetailsSelector" runat="server" OnSelectedIndexChanged="TypeDetailsSelector_Reference_SelectedIndexChanged">
-																	</aspui:Selector>
-																</ui:fielddata>
-															</ui:field>
-														</asp:PlaceHolder>
+													<asp:PlaceHolder ID="TypeDetailsPlaceHolder" runat="server">
+														<ui:field>
+															<ui:fielddesc>
+																<asp:Label id="TypeDetailsLabel" runat="server" />
+															</ui:fielddesc>
+															<ui:fieldhelp><%= GetString("TypeDetailsHelp") %></ui:fieldhelp>
+															<ui:fielddata>
+																<aspui:Selector ID="TypeDetailsSelector" runat="server" OnSelectedIndexChanged="TypeDetailsSelector_Reference_SelectedIndexChanged">
+																</aspui:Selector>
+															</ui:fielddata>
+														</ui:field>
+													</asp:PlaceHolder>
 	
-													<ui:field>
-														<ui:fielddesc><%= GetString("Optional") %></ui:fielddesc>
-														<ui:fieldhelp><%= GetString("OptionalHelp") %></ui:fieldhelp>
-														<ui:fielddata>
-															<aspui:Selector ID="OptionalSelector" runat="server" AutoPostBack="true" OnSelectedIndexChanged="OptionalSelector_SelectedIndexChanged">
-																<asp:ListItem value="false" Text="${Composite.Web.FormControl.TypeFieldDesigner, OptionalFalseLabel}" />
-																<asp:ListItem value="true" Text="${Composite.Web.FormControl.TypeFieldDesigner, OptionalTrueLabel}" />
-															</aspui:Selector>
-														</ui:fielddata>
-													</ui:field>
+													<asp:PlaceHolder ID="TypeDetailsOptionalPlaceHolder" runat="server">
+													    <ui:field>
+														    <ui:fielddesc><%= GetString("Optional") %></ui:fielddesc>
+														    <ui:fieldhelp><%= GetString("OptionalHelp") %></ui:fieldhelp>
+														    <ui:fielddata>
+															    <aspui:Selector ID="OptionalSelector" runat="server" AutoPostBack="true" OnSelectedIndexChanged="OptionalSelector_SelectedIndexChanged">
+																    <asp:ListItem value="false" Text="${Composite.Web.FormControl.TypeFieldDesigner, OptionalFalseLabel}" />
+																    <asp:ListItem value="true" Text="${Composite.Web.FormControl.TypeFieldDesigner, OptionalTrueLabel}" />
+															    </aspui:Selector>
+														    </ui:fielddata>
+													    </ui:field>
+                                                    </asp:PlaceHolder>
 	
 											</ui:fieldgroup>
 									</ui:fields>
