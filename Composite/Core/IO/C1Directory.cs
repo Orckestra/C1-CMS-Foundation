@@ -6,15 +6,18 @@ using Composite.Core.Implementation;
 namespace Composite.Core.IO
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// This class is a almost one to one version of System.IO.Directory. Using this implementation instead 
+    /// of System.IO.Directory, will ensure that your code will work both on Standard Windows deployment 
+    /// and Windows Azure deployment.
+    /// See System.IO.Directory for more documentation on the methods of this class.
     /// </summary>
     public static class C1Directory
     {
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a directory.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to directory to create.</param>
+        /// <returns>Returns a C1DirectoryInfo to the specified path.</returns>
         public static C1DirectoryInfo CreateDirectory(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1Directory.CreateDirectory(path);
@@ -23,10 +26,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Moves a file or directory from the given source path to the given destination path.
         /// </summary>
-        /// <param name="sourceDirName"></param>
-        /// <param name="destDirName"></param>
+        /// <param name="sourceDirName">Path of file or directory to move.</param>
+        /// <param name="destDirName">Target path of file or directory to be moved to.</param>
         public static void Move(string sourceDirName, string destDirName)
         {
             ImplementationFactory.CurrentFactory.StatelessC1Directory.Move(sourceDirName, destDirName);
@@ -35,9 +38,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Deletes an empty directory on the given path.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path of empty directory to delete.</param>
         public static void Delete(string path)
         {
             ImplementationFactory.CurrentFactory.StatelessC1Directory.Delete(path);
@@ -46,10 +49,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Deletes the directory and if specified subdirectories and file on the given path.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="recursive"></param>
+        /// <param name="path">Path of directory to delete.</param>
+        /// <param name="recursive">Include subdirectories and files.</param>
         public static void Delete(string path, bool recursive)
         {
             ImplementationFactory.CurrentFactory.StatelessC1Directory.Delete(path, recursive);
@@ -58,9 +61,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Determines if the directory in the given path exists or not.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path to directory to test.</param>
         /// <returns></returns>
         public static bool Exists(string path)
         {
@@ -70,9 +73,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the current directory.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The current directory.</returns>
         public static string GetCurrentDirectory()
         {
             return ImplementationFactory.CurrentFactory.StatelessC1Directory.GetCurrentDirectory();
@@ -81,9 +84,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Sets the current directory
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path to new current directory.</param>
         public static void SetCurrentDirectory(string path)
         {
             ImplementationFactory.CurrentFactory.StatelessC1Directory.SetCurrentDirectory(path);
@@ -92,10 +95,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets the parent of the given directory.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path of directory to get parent of.</param>
+        /// <returns>The parent of the given directory.</returns>
         public static C1DirectoryInfo GetParent(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1Directory.GetParent(path);
@@ -104,10 +107,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns volume and/or root information of the given directory.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path of directory to get root information of.</param>
+        /// <returns>Volume and/or root information.</returns>
         public static string GetDirectoryRoot(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1Directory.GetDirectoryRoot(path);
@@ -116,10 +119,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets the subdirectories of the given directory.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to directory to get subdirectories.</param>
+        /// <returns>Subdirectories of the given directory.</returns>
         public static string[] GetDirectories(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1Directory.GetDirectories(path);
@@ -128,11 +131,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets the subdirectories of the given directory with the given search pattern.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="searchPattern"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to directory to get subdirectories.</param>
+        /// <param name="searchPattern">Search pattern to use.</param>
+        /// <returns>Subdirectories of the given directory with the given search parrern.</returns>
         public static string[] GetDirectories(string path, string searchPattern)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1Directory.GetDirectories(path, searchPattern);
@@ -141,12 +144,12 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets the subdirectories of the given directory with the given search pattern and options.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="searchPattern"></param>
-        /// <param name="searchOption"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to directory to get subdirectories.</param>
+        /// <param name="searchPattern">Search pattern to use.</param>
+        /// <param name="searchOption">Search options to use.</param>
+        /// <returns>Subdirectories of the given directory with the given search parrern and options.</returns>
         public static string[] GetDirectories(string path, string searchPattern, SearchOption searchOption)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1Directory.GetDirectories(path, searchPattern, searchOption);
@@ -155,10 +158,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets the files in the given directory.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to directory go get files from.</param>
+        /// <returns>Files in the given directory.</returns>
         public static string[] GetFiles(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1Directory.GetFiles(path);
@@ -167,11 +170,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets the files in the given directory with the given search pattern.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="searchPattern"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to directory go get files from.</param>
+        /// <param name="searchPattern">Search pattern to use.</param>
+        /// <returns>Files in the given directory with the given search pattern.</returns>
         public static string[] GetFiles(string path, string searchPattern)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1Directory.GetFiles(path, searchPattern);
@@ -180,12 +183,12 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets the files in the given directory with the given search pattern and options.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="searchPattern"></param>
-        /// <param name="searchOption"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to directory go get files from.</param>
+        /// <param name="searchPattern">Search pattern to use.</param>
+        /// <param name="searchOption">Search options to use.</param>
+        /// <returns>Files in the given directory with the given search pattern and options.</returns>
         public static string[] GetFiles(string path, string searchPattern, SearchOption searchOption)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1Directory.GetFiles(path, searchPattern, searchOption);
@@ -194,10 +197,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the creation date and time of the given directory.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path of directory.</param>
+        /// <returns>Creation date and time of the given directory.</returns>
         public static DateTime GetCreationTime(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1Directory.GetCreationTime(path);
@@ -206,10 +209,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the creation date and utc time of the given directory.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path of directory.</param>
+        /// <returns>Creation date and time of the given directory.</returns>
         public static DateTime GetCreationTimeUtc(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1Directory.GetCreationTimeUtc(path);
