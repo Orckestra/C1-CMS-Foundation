@@ -24,19 +24,21 @@ namespace Composite.C1Console.Trees
             _serializedParentEntityToken = serializedParentEntityToken;
         }
 
-
+        /// <exclude />
         public override string Type
         {
             get { return _serializedParentEntityToken; }
         }
 
 
+        /// <exclude />
         public override string Source
         {
             get { return _treeId; }
         }
 
 
+        /// <exclude />
         public override string Id
         {
             get { return _treeNodeId; }
@@ -82,7 +84,7 @@ namespace Composite.C1Console.Trees
         }
 
 
-
+        /// <exclude />
         public override string Serialize()
         {
             return DoSerialize();
@@ -98,7 +100,7 @@ namespace Composite.C1Console.Trees
             return new TreeSimpleElementEntityToken(id, source, type);
         }
 
-
+        /// <exclude />
         public override void OnGetPrettyHtml(EntityTokenHtmlPrettyfier prettyfier)
         {
             EntityToken parentEntityToken = this.ParentEntityToken;
@@ -107,6 +109,7 @@ namespace Composite.C1Console.Trees
         }
 
 
+        /// <exclude />
         public override string OnGetTypePrettyHtml()
         {
             EntityToken parentEntityToken = this.ParentEntityToken;
