@@ -11,13 +11,20 @@ using Composite.C1Console.Security;
 namespace Composite.Core.WebClient.Renderings.Page
 {
     /// <summary>
-    /// Allow previewing a page 'in mem' in a simulated GET request. Limited information is passed from original client to this request.
+    /// Allow previewing a page 'in mem' in a simulated GET request. Limited information is passed from original client to this request when 
+    /// running in 'classic mode'. In pipeline mode the original context is available for the preview rendering.
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public class PagePreviewBuilder
     {
-        /// <exclude />
+        /// <summary>
+        /// Execute an 'im mem' preview request of the provided page and content. The execution depends on the hosting environment.
+        /// Then running in pipeline mode the current HttpContext is 
+        /// </summary>
+        /// <param name="selectedPage">Page to render. Functionality reading the rendered page ID will get the ID from this object.</param>
+        /// <param name="contents">Content to render on the page</param>
+        /// <returns>The page html as a string when running in classic mode. In Pipeline mode the content is written directly to the HttpContext and an empty string is returned.</returns>
         public static string RenderPreview(IPage selectedPage, IList<IPagePlaceholderContent> contents)
         {
             HttpContext ctx = HttpContext.Current;
