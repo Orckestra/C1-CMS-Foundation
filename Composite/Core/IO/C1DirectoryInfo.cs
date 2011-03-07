@@ -9,7 +9,10 @@ namespace Composite.Core.IO
 
 
     /// <summary>
-    /// IOLayer - documentation pending
+    /// This class is a almost one to one version of System.IO.DirectoryInfo. Using this implementation instead 
+    /// of System.IO.Directory, will ensure that your code will work both on Standard Windows deployment 
+    /// and Windows Azure deployment.
+    /// See System.IO.DirectoryInfo for more documentation on the methods of this class.
     /// </summary>
     public class C1DirectoryInfo : C1FileSystemInfo
     {
@@ -17,9 +20,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates and initialize a new C1DirectoryInfo.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path to use.</param>
         public C1DirectoryInfo(string path)
         {
             _implementation = new ImplementationContainer<C1DirectoryInfoImplementation>(() => ImplementationFactory.CurrentFactory.CreateC1DirectoryInfo(path));
@@ -29,7 +32,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// The name of the directory.
         /// </summary>
         public string Name
         {
@@ -42,7 +45,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Full path of the directory.
         /// </summary>
         public override string FullName
         {
@@ -55,7 +58,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// The extension of the directory.
         /// </summary>
         public override string Extension
         {
@@ -68,7 +71,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Tells if the directory exists or not.
         /// </summary>
         public override bool Exists
         {
@@ -81,7 +84,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// The root directory of the directory.
         /// </summary>
         public C1DirectoryInfo Root
         {
@@ -94,7 +97,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// The parent directory of the directory.
         /// </summary>
         public C1DirectoryInfo Parent
         {
@@ -107,7 +110,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// File attributes of the directory.
         /// </summary>
         public override FileAttributes Attributes
         {
@@ -124,9 +127,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the subdirectories of the directory.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Subdirectories of the directory.</returns>
         public C1DirectoryInfo[] GetDirectories()
         {
             return _implementation.Implementation.GetDirectories();
@@ -135,10 +138,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the subdirectores of the directory given the search pattern.
         /// </summary>
-        /// <param name="searchPattern"></param>
-        /// <returns></returns>
+        /// <param name="searchPattern">Search pattern to use.</param>
+        /// <returns>Subdirectories of the directory.</returns>
         public C1DirectoryInfo[] GetDirectories(string searchPattern)
         {
             return _implementation.Implementation.GetDirectories(searchPattern);
@@ -147,11 +150,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the subdirectores of the directory given the search pattern and options.
         /// </summary>
-        /// <param name="searchPattern"></param>
-        /// <param name="searchOption"></param>
-        /// <returns></returns>
+        /// <param name="searchPattern">The search pattern to use.</param>
+        /// <param name="searchOption">The search options to use.</param>
+        /// <returns>Subdirectories of the directory.</returns>
         public C1DirectoryInfo[] GetDirectories(string searchPattern, SearchOption searchOption)
         {
             return _implementation.Implementation.GetDirectories(searchPattern, searchOption);
@@ -160,9 +163,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the files in the directory.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Files in the directory.</returns>
         public C1FileInfo[] GetFiles()
         {
             return _implementation.Implementation.GetFiles();
@@ -171,10 +174,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the files in the directory given the search pattern.
         /// </summary>
-        /// <param name="searchPattern"></param>
-        /// <returns></returns>
+        /// <param name="searchPattern">The search pattern to use.</param>
+        /// <returns>Files in the directory given the search pattern.</returns>
         public C1FileInfo[] GetFiles(string searchPattern)
         {
             return _implementation.Implementation.GetFiles(searchPattern);
@@ -182,11 +185,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the files in the directory given the search pattern and options.
         /// </summary>
-        /// <param name="searchPattern"></param>
-        /// <param name="searchOption"></param>
-        /// <returns></returns>
+        /// <param name="searchPattern">The search pattern to use.</param>
+        /// <param name="searchOption">The search options to use.</param>
+        /// <returns>Files in the directory given the search pattern and options.</returns>
         public C1FileInfo[] GetFiles(string searchPattern, SearchOption searchOption)
         {
             return _implementation.Implementation.GetFiles(searchPattern, searchOption);
@@ -195,7 +198,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates the directory.
         /// </summary>
         public void Create()
         {
@@ -204,7 +207,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a subdirectory.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -217,9 +220,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Moves the directory to the given path.
         /// </summary>
-        /// <param name="destDirName"></param>
+        /// <param name="destDirName">Destination directory name.</param>
         public void MoveTo(string destDirName)
         {
             _implementation.Implementation.MoveTo(destDirName);
@@ -228,7 +231,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Deletes the directory if empty.
         /// </summary>
         public override void Delete()
         {
@@ -237,9 +240,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Deletes the directory, files and subdirectories if specified.
         /// </summary>
-        /// <param name="recursive"></param>
+        /// <param name="recursive">If true, a recursive delete will be performced.</param>
         public void Delete(bool recursive)
         {
             _implementation.Implementation.Delete(recursive);
@@ -248,7 +251,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// The creation time of the directory.
         /// </summary>
         public override DateTime CreationTime
         {
@@ -265,7 +268,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// The creation utc time of the directory.
         /// </summary>
         public override DateTime CreationTimeUtc
         {
@@ -282,7 +285,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Last access time of the directory.
         /// </summary>
         public override DateTime LastAccessTime
         {
@@ -299,7 +302,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Last access utc time of the directory.
         /// </summary>
         public override DateTime LastAccessTimeUtc
         {
@@ -316,7 +319,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Last write time of the directory.
         /// </summary>
         public override DateTime LastWriteTime
         {
@@ -333,7 +336,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Last write utc time of the directory.
         /// </summary>
         public override DateTime LastWriteTimeUtc
         {
@@ -350,7 +353,6 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
         /// </summary>
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
@@ -360,7 +362,6 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
         /// </summary>
         public override void Refresh()
         {
