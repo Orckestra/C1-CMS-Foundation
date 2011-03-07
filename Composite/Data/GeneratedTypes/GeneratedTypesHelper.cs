@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Transactions;
 using System.Xml.Linq;
+using Composite.Core.Extensions;
+using Composite.Core.ResourceSystem;
+using Composite.Core.Types;
 using Composite.Data.DynamicTypes;
 using Composite.Data.GeneratedTypes.Foundation;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.Data.Types;
-using Composite.Core.Extensions;
-using Composite.Functions;
-using Composite.Core.ResourceSystem;
 using Composite.Data.Transactions;
-using Composite.Core.Types;
+using Composite.Data.Types;
+using Composite.Functions;
 using Microsoft.CSharp;
 
 
@@ -779,32 +780,38 @@ namespace Composite.Data.GeneratedTypes
                         GeneratedTypesFacade.UpdateType(_oldDataTypeDescriptor, _newDataTypeDescriptor, originalTypeDataExists);
                         Type newInterfaceType = _newDataTypeDescriptor.GetInterfaceType();
 
-                        IEnumerable<IData> datas;
-                        using (DataScope dataScope = new DataScope(DataScopeIdentifier.Public))
+                        foreach (CultureInfo locale in DataLocalizationFacade.ActiveLocalizationCultures)
                         {
-                            datas = DataFacade.GetData(newInterfaceType).ToDataList();
-
-                            foreach (IData data in datas)
+                            using (new DataScope(locale))
                             {
-                                IPublishControlled publishControlled = data as IPublishControlled;
-                                publishControlled.PublicationStatus = GenericPublishProcessController.Published;
-                            }
+                                IEnumerable<IData> datas;
+                                using (DataScope dataScope = new DataScope(DataScopeIdentifier.Public))
+                                {
+                                    datas = DataFacade.GetData(newInterfaceType).ToDataList();
 
-                            DataFacade.Update(datas, true, false, false);
-                        }
+                                    foreach (IData data in datas)
+                                    {
+                                        IPublishControlled publishControlled = data as IPublishControlled;
+                                        publishControlled.PublicationStatus = GenericPublishProcessController.Published;
+                                    }
 
-                        using (DataScope dataScope = new DataScope(DataScopeIdentifier.Administrated))
-                        {
-                            foreach (IData data in datas)
-                            {
-                                IData newData = DataFacade.BuildNew(newInterfaceType);
+                                    DataFacade.Update(datas, true, false, false);
+                                }
 
-                                data.ProjectedCopyTo(newData);
+                                using (DataScope dataScope = new DataScope(DataScopeIdentifier.Administrated))
+                                {
+                                    foreach (IData data in datas)
+                                    {
+                                        IData newData = DataFacade.BuildNew(newInterfaceType);
 
-                                IPublishControlled publishControlled = newData as IPublishControlled;
-                                publishControlled.PublicationStatus = GenericPublishProcessController.Published;
+                                        data.ProjectedCopyTo(newData);
 
-                                DataFacade.AddNew(newData, true, false, false);
+                                        IPublishControlled publishControlled = newData as IPublishControlled;
+                                        publishControlled.PublicationStatus = GenericPublishProcessController.Published;
+
+                                        DataFacade.AddNew(newData, true, false, false);
+                                    }
+                                }
                             }
                         }
 
@@ -817,29 +824,32 @@ namespace Composite.Data.GeneratedTypes
                     // Publishable -> Unpublishable
                     using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
                     {
-                        IEnumerable<IData> datas;
-                        using (DataScope dataScope = new DataScope(DataScopeIdentifier.Administrated))
+                        foreach (CultureInfo locale in DataLocalizationFacade.ActiveLocalizationCultures)
                         {
-                            datas = DataFacade.GetData(_oldType).ToDataList();
-                        }
-
-                        using (DataScope dataScope = new DataScope(DataScopeIdentifier.Public))
-                        {
-                            DataFacade.Delete(DataFacade.GetData(_oldType).ToDataEnumerable(), true, CascadeDeleteType.Disable);
-
-                            foreach (IData data in datas)
+                            IEnumerable<IData> datas;
+                            using (DataScope dataScope = new DataScope(DataScopeIdentifier.Administrated))
                             {
-                                IData newData = DataFacade.BuildNew(_oldType);
+                                datas = DataFacade.GetData(_oldType).ToDataList();
+                            }
 
-                                data.ProjectedCopyTo(newData);
+                            using (DataScope dataScope = new DataScope(DataScopeIdentifier.Public))
+                            {
+                                DataFacade.Delete(DataFacade.GetData(_oldType).ToDataEnumerable(), true, CascadeDeleteType.Disable);
 
-                                IPublishControlled publishControlled = newData as IPublishControlled;
-                                if (publishControlled != null)
+                                foreach (IData data in datas)
                                 {
-                                    publishControlled.PublicationStatus = GenericPublishProcessController.Draft;
-                                }
+                                    IData newData = DataFacade.BuildNew(_oldType);
 
-                                DataFacade.AddNew(newData, true, false, false);
+                                    data.ProjectedCopyTo(newData);
+
+                                    IPublishControlled publishControlled = newData as IPublishControlled;
+                                    if (publishControlled != null)
+                                    {
+                                        publishControlled.PublicationStatus = GenericPublishProcessController.Draft;
+                                    }
+
+                                    DataFacade.AddNew(newData, true, false, false);
+                                }
                             }
                         }
 
