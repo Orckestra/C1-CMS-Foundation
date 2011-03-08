@@ -1477,8 +1477,9 @@ namespace Composite.Data
 
         #region Move methods
 
-        // Overlaod
+        // Overload
         /// <exclude />
+        [Obsolete("This method isn't used any more")]
         public static DataMoveResult Move<T>(T data, DataScopeIdentifier targetDataScopeIdentifier)
             where T : class, IData
         {

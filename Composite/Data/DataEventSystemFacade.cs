@@ -44,7 +44,9 @@ namespace Composite.Data
         //public delegate void StorageEventHandler(DataEventArgs dataEventArgs);
         //public delegate void StorageEventHandler(DataEventArgs dataEventArgs);
         //public delegate void StorageEventHandler(DataEventArgs dataEventArgs);
-        internal delegate void DataAfterMoveDelegate(object sender, DataMoveEventArgs dataMoveEventArgs);
+
+        /// <exclude />
+        public delegate void DataAfterMoveDelegate(object sender, DataMoveEventArgs dataMoveEventArgs);
 
         private static readonly Subscriptions _dataBeforeAddEventDictionary = new Subscriptions();
         private static readonly Subscriptions _dataAfterAddEventDictionary = new Subscriptions();
@@ -383,23 +385,26 @@ namespace Composite.Data
         }
 
 
-
-        internal static void SubscribeToDataAfterMove(Type dataType, DataAfterMoveDelegate dataAfterMoveDelegate)
+        /// <exclude />
+        [Obsolete("This method isn't used any more")]
+        public static void SubscribeToDataAfterMove(Type dataType, DataAfterMoveDelegate dataAfterMoveDelegate)
         {
             _dataAfterMoveEventDictionary.Add(dataType, dataAfterMoveDelegate, false);
         }
 
 
-
-        internal static void SubscribeToDataAfterMove<T>(DataAfterMoveDelegate dataAfterMoveDelegate)
+        /// <exclude />
+        [Obsolete("This method isn't used any more")]
+        public static void SubscribeToDataAfterMove<T>(DataAfterMoveDelegate dataAfterMoveDelegate)
             where T : IData
         {
             SubscribeToDataAfterMove(typeof(T), dataAfterMoveDelegate);
         }
 
 
-
-        internal static void UnsubscribeToDataAfterMove(Type dataType, DataAfterMoveDelegate dataAfterMoveDelegate)
+        /// <exclude />
+        [Obsolete("This method isn't used any more")]
+        public static void UnsubscribeToDataAfterMove(Type dataType, DataAfterMoveDelegate dataAfterMoveDelegate)
         {
             _dataAfterMoveEventDictionary.Remove(dataType, dataAfterMoveDelegate);
         }
@@ -502,7 +507,6 @@ namespace Composite.Data
         {
             FireDataAfterMoveEvent(typeof(T), data, targetDataScopeIdentifier);
         }
-
 
 
         internal static void FireDataAfterMoveEvent(Type dataType, IData data, DataScopeIdentifier targetDataScopeIdentifier)

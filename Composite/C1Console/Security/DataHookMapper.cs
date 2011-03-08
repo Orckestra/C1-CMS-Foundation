@@ -18,7 +18,6 @@ namespace Composite.C1Console.Security
             if (parentEntityToken == null) throw new ArgumentNullException("parentEntityToken");
 
             DataEventSystemFacade.SubscribeToDataAfterAdd<T>(OnDataAddedOrDeleted);
-            DataEventSystemFacade.SubscribeToDataAfterMove<T>(OnDataAddedOrDeleted);
             DataEventSystemFacade.SubscribeToDataDeleted<T>(OnDataAddedOrDeleted);
 
             this.ParentEntityToken = parentEntityToken;
