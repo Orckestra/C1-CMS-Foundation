@@ -13770,6 +13770,9 @@ _943.add(_947);
 return _943;
 };
 MultiSelectorBinding.prototype._getElements=function(){
+if(!this.shadowTree.box){
+return new List();
+}
 return new List(DOMUtil.getElementsByTagName(this.shadowTree.box,"div"));
 };
 MultiSelectorBinding.prototype._getSelectionsList=SelectorBinding.prototype._getSelectionsList;
