@@ -509,9 +509,12 @@ MultiSelectorBinding.prototype.toSelectionList = function () {
  */
 MultiSelectorBinding.prototype._getElements = function () {
 
-	return new List ( 
-		DOMUtil.getElementsByTagName ( 
-			this.shadowTree.box, "div" 
+    if (!this.shadowTree.box) {
+        return new List(); // IE work around - on close this gets called, this.shadowTree.box is null. No side effect here.
+    }
+    return new List(
+		DOMUtil.getElementsByTagName(
+			this.shadowTree.box, "div"
 		)
 	);
 }
