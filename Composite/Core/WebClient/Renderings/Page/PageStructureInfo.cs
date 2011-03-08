@@ -20,6 +20,10 @@ namespace Composite.Core.WebClient.Renderings.Page
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class PageStructureInfo
     {
+        /// <exclude />
+        [Obsolete("Now sitemap generates xml that belongs to empty namespace, so this constant shouldn't be used", true)]
+        public const string SitemapNamespaceString = "";
+
         private class Version
         {
             public int VersionNumber;
