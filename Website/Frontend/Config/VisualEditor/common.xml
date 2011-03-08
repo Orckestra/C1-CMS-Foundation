@@ -23,9 +23,11 @@
       <format id="italic" label="Emphasis" image="" notes="Emphasized text" inline="em">
         <button image="Images/italic.png" label="" />
       </format>
+      <!-- example: Button to surround selection with u - note this isn't propper xhtml. Consider using a class for this 
       <format id="underline" label="Underline" image="" notes="Underlined text" inline="u">
         <button image="Images/underline.png" label="" />
       </format>
+      -->
       <!-- example: Button to surround selection with span.myclass
         <format id="example" label="Example" image="" notes="" inline="span" classes="myclass">
           <button label=":)"/>
@@ -81,6 +83,7 @@
     </radiogroup>
 
     <radiogroup>
+      <!-- Sample classes that show up in the visual editor style selector -->
       <format id="note" label="Note" image="" notes="" classes="note" selector="p">
         <select />
       </format>
@@ -102,7 +105,6 @@
       <format id="total" label="Total" image="" notes="" classes="total" selector="tr.sum td">
         <select />
       </format>
-
     </radiogroup>
     
   </formats>
