@@ -102,7 +102,12 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
             List<Type> popularTypes = DataFacade.GetAllInterfaces(UserType.Developer);
             var popularWidgetTypes = FunctionFacade.WidgetFunctionSupportedTypes.Where(f => f.GetGenericArguments().Any(g => popularTypes.Any(h => h.IsAssignableFrom(g))));
 
-            this.Bindings.Add("ParameterTypeOptions", FunctionFacade.FunctionSupportedTypes.Union(popularWidgetTypes).Union(FunctionFacade.WidgetFunctionSupportedTypes).ToList());
+            IEnumerable<Type> parameterTypeOptions = FunctionFacade.FunctionSupportedTypes.Union(popularWidgetTypes).Union(FunctionFacade.WidgetFunctionSupportedTypes);
+
+            // At the moment we don't have functions that return IEnumerable<XNode>, so we're hardcoding this type for now
+            parameterTypeOptions = parameterTypeOptions.Union(new [] { typeof (IEnumerable<XNode>) });
+
+            this.Bindings.Add("ParameterTypeOptions", parameterTypeOptions.ToList());
 
             string xsltDocumentString = file.ReadAllText();
             this.Bindings.Add("XslTemplate", xsltDocumentString);
