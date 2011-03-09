@@ -259,10 +259,12 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
                 {
                     Baloon(btnWidgetFunctionMarkup.ClientID, GetString("SpecifyWidgetTip"));
                 }
-                else
-                {
-                    Baloon(btnWidgetFunctionMarkup.ClientID, GetString("NoWidgetsTip"));
-                }
+                // This a too annoying: 
+                // "No widgets are available for the specified type. Users must use a function call to specify this parameter."
+                //else
+                //{
+                //    Baloon(btnWidgetFunctionMarkup.ClientID, GetString("NoWidgetsTip"));
+                //}
             }
         }
 

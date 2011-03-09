@@ -40,7 +40,6 @@
   <string key="PositionHelp" value="The position of the parameter. This controls the order of the parameters." />
 
   <string key="SpecifyWidgetTip" value="Remember to specify a widget..." />
-  <string key="NoWidgetsTip" value="No widgets are available for the specified type. Users must use a function call to specify this parameter." />
 
   <string key="FieldNameSyntaxInvalid" value="The specified name is not valid." />
   <string key="CannotSave" value="Can not save... Another parameter has the same name. Please change the name." />
