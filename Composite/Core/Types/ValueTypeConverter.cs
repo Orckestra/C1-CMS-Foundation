@@ -123,6 +123,19 @@ namespace Composite.Core.Types
                         return XElement.Parse((string)value);
                     }
 
+                    if (targetType == typeof(IEnumerable<XNode>))
+                    {
+                        try
+                        {
+                            XElement wrapper = XElement.Parse(string.Format("<wrapper>{0}</wrapper>", value));
+                            return wrapper.Nodes();
+                        }
+                        catch
+                        {
+                            throw new InvalidCastException(string.Format("Ubanle to convert string '{0}' to a list of XNodes.", value));
+                        }
+                    }
+
                     if (targetType == typeof(XNamespace))
                     {
                         return XNamespace.Get((string)value);
