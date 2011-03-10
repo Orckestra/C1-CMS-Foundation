@@ -1747,8 +1747,6 @@
     <Content Include="Composite\images\blank.png" />
     <Content Include="Composite\images\box.png" />
     <Content Include="Composite\images\fieldbox.png" />
-    <Content Include="Composite\images\originals\freja-hvid.png" />
-    <Content Include="Composite\images\originals\freja.png" />
     <Content Include="Composite\images\functionbox.png" />
     <Content Include="Composite\images\icons\branding\16x16CompositeS.png" />
     <Content Include="Composite\images\icons\branding\24x24CompositeS.png" />
