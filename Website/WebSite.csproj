@@ -5982,7 +5982,6 @@
     <Content Include="Composite\skins\system\splash\clickbutton-hover-se.png" />
     <Content Include="Composite\skins\system\splash\clickbutton-hover-sw.png" />
     <Content Include="Composite\skins\system\splash\clickbutton-hover.png" />
-    <Content Include="Composite\skins\system\splash\splash.png" />
     <Content Include="Composite\skins\system\tabboxes.css" />
     <Content Include="Composite\skins\system\tabboxes\backdrop.png" />
     <Content Include="Composite\skins\system\tabboxes\boxedpanelbackdrop.png" />
