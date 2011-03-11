@@ -8,7 +8,7 @@ using Composite.Core.IO.Plugins.IOProvider;
 namespace Composite.Core.Implementation
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// Implementation of <see cref="Composite.Core.IO.C1StreamWriter"/>.
     /// </summary>
     public class C1StreamWriterImplementation : IDisposable
     {
@@ -17,7 +17,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="append"></param>
@@ -31,7 +31,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="stream"></param>
         /// <param name="encoding"></param>
@@ -44,7 +44,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void Write(string value)
@@ -55,7 +55,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="format"></param>
         /// <param name="arg0"></param>
@@ -67,7 +67,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="format"></param>
         /// <param name="arg0"></param>
@@ -80,7 +80,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="format"></param>
         /// <param name="arg0"></param>
@@ -94,7 +94,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="format"></param>
         /// <param name="arg"></param>
@@ -106,7 +106,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void Write(char value)
@@ -117,7 +117,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="buffer"></param>
         public virtual void Write(char[] buffer)
@@ -128,7 +128,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="buffer"></param>
         /// <param name="index"></param>
@@ -141,7 +141,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void Write(bool value)
@@ -152,7 +152,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void Write(int value)
@@ -163,7 +163,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void Write(uint value)
@@ -174,7 +174,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void Write(long value)
@@ -185,7 +185,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void Write(ulong value)
@@ -196,7 +196,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void Write(float value)
@@ -207,7 +207,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void Write(double value)
@@ -218,7 +218,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void Write(decimal value)
@@ -229,7 +229,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void Write(object value)
@@ -240,7 +240,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         public virtual void WriteLine()
         {
@@ -250,7 +250,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void WriteLine(string value)
@@ -261,7 +261,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="format"></param>
         /// <param name="arg0"></param>
@@ -273,7 +273,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="format"></param>
         /// <param name="arg0"></param>
@@ -286,7 +286,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="format"></param>
         /// <param name="arg0"></param>
@@ -300,7 +300,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="format"></param>
         /// <param name="arg"></param>
@@ -312,7 +312,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void WriteLine(char value)
@@ -323,7 +323,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="buffer"></param>
         public virtual void WriteLine(char[] buffer)
@@ -334,7 +334,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="buffer"></param>
         /// <param name="index"></param>
@@ -347,7 +347,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void WriteLine(bool value)
@@ -358,7 +358,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void WriteLine(int value)
@@ -369,7 +369,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void WriteLine(uint value)
@@ -380,7 +380,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void WriteLine(long value)
@@ -391,7 +391,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void WriteLine(ulong value)
@@ -402,7 +402,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void WriteLine(float value)
@@ -413,7 +413,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void WriteLine(double value)
@@ -424,7 +424,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void WriteLine(decimal value)
@@ -435,7 +435,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void WriteLine(object value)
@@ -446,7 +446,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         public virtual string NewLine
         {
@@ -463,7 +463,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         public virtual IFormatProvider FormatProvider
         {
@@ -476,7 +476,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         public virtual void Flush()
         {
@@ -486,7 +486,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         public virtual bool AutoFlush
         {
@@ -503,7 +503,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         public virtual void Close()
         {
@@ -513,7 +513,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         public virtual Stream BaseStream
         {
@@ -526,7 +526,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         public virtual Encoding Encoding
         {
@@ -539,7 +539,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         public void Dispose()
         {
@@ -558,7 +558,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamWriter"/>.
         /// </summary>
         /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)

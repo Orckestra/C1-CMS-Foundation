@@ -8,7 +8,7 @@ using Composite.Core.IO.Plugins.IOProvider;
 namespace Composite.Core.Implementation
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// Implementation of <see cref="Composite.Core.IO.C1FileStream"/>.
     /// </summary>
     public class C1FileStreamImplementation : IDisposable
     {
@@ -16,7 +16,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileStream"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="mode"></param>
@@ -32,7 +32,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileStream"/>.
         /// </summary>
         public virtual string Name
         {
@@ -45,7 +45,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileStream"/>.
         /// </summary>
         public virtual long Length
         {
@@ -58,7 +58,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileStream"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void SetLength(long value)
@@ -69,7 +69,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileStream"/>.
         /// </summary>
         public virtual long Position
         {
@@ -86,7 +86,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileStream"/>.
         /// </summary>
         /// <param name="array"></param>
         /// <param name="offset"></param>
@@ -100,7 +100,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileStream"/>.
         /// </summary>
         /// <returns></returns>
         public virtual int ReadByte()
@@ -111,7 +111,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileStream"/>.
         /// </summary>
         /// <param name="array"></param>
         /// <param name="offset"></param>
@@ -124,7 +124,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileStream"/>.
         /// </summary>
         /// <param name="value"></param>
         public virtual void WriteByte(byte value)
@@ -135,7 +135,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileStream"/>.
         /// </summary>
         /// <param name="offset"></param>
         /// <param name="origin"></param>
@@ -148,7 +148,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileStream"/>.
         /// </summary>
         public virtual bool CanRead
         {
@@ -161,7 +161,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileStream"/>.
         /// </summary>
         public virtual bool CanSeek
         {
@@ -174,7 +174,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileStream"/>.
         /// </summary>
         public virtual bool CanWrite
         {
@@ -187,7 +187,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileStream"/>.
         /// </summary>
         public virtual void Flush()
         {
@@ -197,7 +197,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileStream"/>.
         /// </summary>
         /// <param name="flushToDisk"></param>
         public virtual void Flush(bool flushToDisk)
@@ -208,7 +208,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileStream"/>.
         /// </summary>
         public virtual void Close()
         {

@@ -7,7 +7,11 @@ using Composite.Core.Implementation;
 namespace Composite.Core.IO
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// This class is a almost one to one version of System.IO.FileStream. Using this implementation instead 
+    /// of System.IO.FileStream, will ensure that your code will work both on Standard Windows deployment 
+    /// and Windows Azure deployment.
+    /// See System.IO.FileStream for more documentation on the methods of this class.
+    /// See <see cref="Composite.Core.IO.Plugins.IOProvider.IC1FileStream"/>. 
     /// </summary>
     public class C1FileStream : Stream, IDisposable
     {
@@ -17,10 +21,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a new C1FileStream.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="mode"></param>
+        /// <param name="path">Path to file.</param>
+        /// <param name="mode">File mode to use.</param>
         public C1FileStream(string path, FileMode mode)
             : this(path, mode, (mode == FileMode.Append) ? FileAccess.Write : FileAccess.ReadWrite, FileShare.Read, 4096, FileOptions.None)
         {
@@ -29,11 +33,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a new C1FileStream.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="mode"></param>
-        /// <param name="access"></param>
+        /// <param name="path">Path to file.</param>
+        /// <param name="mode">File mode to use.</param>
+        /// <param name="access">File access to use.</param>
         public C1FileStream(string path, FileMode mode, FileAccess access)
             : this(path, mode, access, FileShare.Read, 4096, FileOptions.None)
         {
@@ -42,12 +46,12 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a new C1FileStream.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="mode"></param>
-        /// <param name="access"></param>
-        /// <param name="share"></param>
+        /// <param name="path">Path to file.</param>
+        /// <param name="mode">File mode to use.</param>
+        /// <param name="access">File access to use.</param>
+        /// <param name="share">File share to use.</param>
         public C1FileStream(string path, FileMode mode, FileAccess access, FileShare share)
             : this(path, mode, access, share, 4096, FileOptions.None)
         {
@@ -56,13 +60,13 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a new C1FileStream.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="mode"></param>
-        /// <param name="access"></param>
-        /// <param name="share"></param>
-        /// <param name="bufferSize"></param>
+        /// <param name="path">Path to file.</param>
+        /// <param name="mode">File mode to use.</param>
+        /// <param name="access">File access to use.</param>
+        /// <param name="share">File share to use.</param>
+        /// <param name="bufferSize">Buffer size to use.</param>
         public C1FileStream(string path, FileMode mode, FileAccess access, FileShare share, int bufferSize)
             : this(path, mode, access, share, bufferSize, FileOptions.None)
         {
@@ -71,14 +75,14 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a new C1FileStream.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="mode"></param>
-        /// <param name="access"></param>
-        /// <param name="share"></param>
-        /// <param name="bufferSize"></param>
-        /// <param name="options"></param>
+        /// <param name="path">Path to file.</param>
+        /// <param name="mode">File mode to use.</param>
+        /// <param name="access">File access to use.</param>
+        /// <param name="share">File share to use.</param>
+        /// <param name="bufferSize">Buffer size to use.</param>
+        /// <param name="options">File options to use.</param>
         public C1FileStream(string path, FileMode mode, FileAccess access, FileShare share, int bufferSize, FileOptions options)
         {
             _implementation = new ImplementationContainer<C1FileStreamImplementation>(() => ImplementationFactory.CurrentFactory.CreateC1FileStream(path, mode, access, share, bufferSize, options));
@@ -88,7 +92,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Name of the file.
         /// </summary>
         public string Name
         {
@@ -101,7 +105,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Size of the file in bytes.
         /// </summary>
         public override long Length
         {
@@ -114,9 +118,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Sets the length of the file in bytes.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">New length of file stream.</param>
         public override void SetLength(long value)
         {
             _implementation.Implementation.SetLength(value);
@@ -125,7 +129,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the current read/write position in the file stream.
         /// </summary>
         public override long Position
         {
@@ -142,13 +146,13 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Reads a block of bytes from the file stream.
         /// </summary>
-        /// <param name="array"></param>
-        /// <param name="offset"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        public override int Read([In, Out] byte[] array, int offset, int count)
+        /// <param name="array">Target buffer of read bytes.</param>
+        /// <param name="offset">Offset in the buffer to put read bytes.</param>
+        /// <param name="count">Number of bytes to read.</param>
+        /// <returns>Number of bytes read.</returns>
+        public override int Read(byte[] array, int offset, int count)
         {
             return _implementation.Implementation.Read(array, offset, count);
         }
@@ -156,9 +160,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Reads a byte form the file stream.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The read byte value.</returns>
         public override int ReadByte()
         {
             return _implementation.Implementation.ReadByte();
@@ -167,11 +171,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a block of bytes to the file stream.
         /// </summary>
-        /// <param name="array"></param>
-        /// <param name="offset"></param>
-        /// <param name="count"></param>
+        /// <param name="array">Bytes to write to the file.</param>
+        /// <param name="offset">Offset in buffer to write from.</param>
+        /// <param name="count">Number of bytes to write.</param>
         public override void Write(byte[] array, int offset, int count)
         {
             _implementation.Implementation.Write(array, offset, count);
@@ -180,9 +184,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a byte to the file stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Byte value to write.</param>
         public override void WriteByte(byte value)
         {
             _implementation.Implementation.WriteByte(value);
@@ -191,11 +195,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Seeks to a position in the file stream.
         /// </summary>
-        /// <param name="offset"></param>
-        /// <param name="origin"></param>
-        /// <returns></returns>
+        /// <param name="offset">Offset to seek.</param>
+        /// <param name="origin">Origin to seek from.</param>
+        /// <returns>The new position in the stream.</returns>
         public override long Seek(long offset, SeekOrigin origin)
         {
             return _implementation.Implementation.Seek(offset, origin);
@@ -204,7 +208,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns true if its possible to read from the stream.
         /// </summary>
         public override bool CanRead
         {
@@ -217,7 +221,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns true if its possible to seek in the stream.
         /// </summary>
         public override bool CanSeek
         {
@@ -230,7 +234,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns true if its possible to write to the stream.
         /// </summary>
         public override bool CanWrite
         {
@@ -243,7 +247,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Flushes the buffered bytes to the file.
         /// </summary>
         public override void Flush()
         {
@@ -253,7 +257,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Flushes the buffered bytes to the file.
         /// </summary>
         /// <param name="flushToDisk"></param>
         public virtual void Flush(bool flushToDisk)
@@ -264,7 +268,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Closes the file stream.
         /// </summary>
         public override void Close()
         {
@@ -275,7 +279,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Destructor.
         /// </summary>
         ~C1FileStream()
         {
@@ -285,7 +289,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Disposes the file stream.
         /// </summary>
         /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)

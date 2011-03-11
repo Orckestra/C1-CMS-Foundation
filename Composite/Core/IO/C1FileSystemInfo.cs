@@ -6,96 +6,97 @@ using System.Runtime.Serialization;
 namespace Composite.Core.IO
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// This class is a almost one to one version of System.IO.FileSystemInfo. Using this implementation instead 
+    /// of System.IO.FileSystemInfo, will ensure that your code will work both on Standard Windows deployment 
+    /// and Windows Azure deployment.
+    /// See System.IO.FileSystemInfo for more documentation on the methods of this class.
     /// </summary>
     public abstract class C1FileSystemInfo
     {
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Full path name.
         /// </summary>
         public abstract string FullName { get; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Extension.
         /// </summary>
         public abstract string Extension { get; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns true if the file system item exitst.
         /// </summary>
         public abstract bool Exists { get; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// File attributes of the file system item.
         /// </summary>
         public abstract FileAttributes Attributes { get; set; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Deletes the file system item.
         /// </summary>
         public abstract void Delete();
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the creation time of the file system item.
         /// </summary>
         public abstract DateTime CreationTime { get; set; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the creation utc time of the file system item.
         /// </summary>
         public abstract DateTime CreationTimeUtc { get; set; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the last access time of the file system item.
         /// </summary>
         public abstract DateTime LastAccessTime { get; set; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the last access utc time of the file system item.
         /// </summary>
         public abstract DateTime LastAccessTimeUtc { get; set; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the last write time of the file system item.
         /// </summary>
         public abstract DateTime LastWriteTime { get; set; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the last write utc time of the file system item.
         /// </summary>
         public abstract DateTime LastWriteTimeUtc { get; set; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
         /// </summary>
         public abstract void GetObjectData(SerializationInfo info, StreamingContext context);
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
         /// </summary>
         public abstract void Refresh();
     }

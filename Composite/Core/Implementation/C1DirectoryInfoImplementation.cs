@@ -8,7 +8,7 @@ using Composite.Core.IO.Plugins.IOProvider;
 namespace Composite.Core.Implementation
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// Implementation of <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
     /// </summary>
     public class C1DirectoryInfoImplementation
     {
@@ -16,7 +16,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         /// <param name="path"></param>
         public C1DirectoryInfoImplementation(string path)
@@ -27,7 +27,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         public string Name
         {
@@ -40,7 +40,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         public string FullName
         {
@@ -53,7 +53,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         public string Extension
         {
@@ -66,7 +66,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         public bool Exists
         {
@@ -79,7 +79,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         public C1DirectoryInfo Root
         {
@@ -92,7 +92,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         public C1DirectoryInfo Parent
         {
@@ -105,7 +105,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         public FileAttributes Attributes
         {
@@ -122,7 +122,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         /// <returns></returns>
         public C1DirectoryInfo[] GetDirectories()
@@ -133,7 +133,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         /// <param name="searchPattern"></param>
         /// <returns></returns>
@@ -145,7 +145,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         /// <param name="searchPattern"></param>
         /// <param name="searchOption"></param>
@@ -158,7 +158,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         /// <returns></returns>
         public C1FileInfo[] GetFiles()
@@ -169,7 +169,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         /// <param name="searchPattern"></param>
         /// <returns></returns>
@@ -180,7 +180,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         /// <param name="searchPattern"></param>
         /// <param name="searchOption"></param>
@@ -193,7 +193,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         public void Create()
         {
@@ -203,7 +203,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -215,7 +215,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         /// <param name="destinationDirName"></param>
         public void MoveTo(string destinationDirName)
@@ -226,7 +226,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         public void Delete()
         {
@@ -235,7 +235,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         /// <param name="recursive"></param>
         public void Delete(bool recursive)
@@ -246,7 +246,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         public DateTime CreationTime
         {
@@ -263,7 +263,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         public DateTime CreationTimeUtc
         {
@@ -280,7 +280,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         public DateTime LastAccessTime 
             {
@@ -297,7 +297,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         public DateTime LastAccessTimeUtc 
             {
@@ -314,7 +314,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         public DateTime LastWriteTime 
             {
@@ -331,7 +331,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         public DateTime LastWriteTimeUtc 
             {
@@ -348,7 +348,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
@@ -358,7 +358,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
         /// </summary>
         public void Refresh()
         {

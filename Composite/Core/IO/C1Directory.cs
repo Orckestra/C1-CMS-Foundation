@@ -10,6 +10,7 @@ namespace Composite.Core.IO
     /// of System.IO.Directory, will ensure that your code will work both on Standard Windows deployment 
     /// and Windows Azure deployment.
     /// See System.IO.Directory for more documentation on the methods of this class.
+    /// See <see cref="Composite.Core.IO.Plugins.IOProvider.IC1Directory"/>.
     /// </summary>
     public static class C1Directory
     {

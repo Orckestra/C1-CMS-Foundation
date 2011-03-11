@@ -6,310 +6,312 @@ using System.Text;
 namespace Composite.Core.IO.Plugins.IOProvider
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// Implementations of this interface is used by C1 through <see cref="IIOProvider"/> 
+    /// to provide the behavior of <see cref="Composite.Core.IO.C1StreamWriter"/>.
+    /// See <see cref="Composite.Core.IO.C1StreamWriter"/> for more information.
     /// </summary>
     public interface IC1StreamWriter : IDisposable
     {
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a string to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">String to write.</param>
         void Write(string value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a formatted string to the stream.
         /// </summary>
-        /// <param name="format"></param>
-        /// <param name="arg"></param>
+        /// <param name="format">String with formatting to write.</param>
+        /// <param name="arg">String format arguments.</param>
         void Write(string format, params object[] arg);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a formatted string to the stream.
         /// </summary>
-        /// <param name="format"></param>
-        /// <param name="arg0"></param>
+        /// <param name="format">String with formatting to write.</param>
+        /// <param name="arg0">String format argument.</param>
         void Write(string format, object arg0);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a formatted string to the stream.
         /// </summary>
-        /// <param name="format"></param>
-        /// <param name="arg0"></param>
-        /// <param name="arg1"></param>
+        /// <param name="format">String with formatting to write.</param>
+        /// <param name="arg0">String format argument.</param>
+        /// <param name="arg1">String format argument.</param>
         void Write(string format, object arg0, object arg1);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a formatted string to the stream.
         /// </summary>
-        /// <param name="format"></param>
-        /// <param name="arg0"></param>
-        /// <param name="arg1"></param>
-        /// <param name="arg2"></param>
+        /// <param name="format">String with formatting to write.</param>
+        /// <param name="arg0">String format argument.</param>
+        /// <param name="arg1">String format argument.</param>
+        /// <param name="arg2">String format argument.</param>
         void Write(string format, object arg0, object arg1, object arg2);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a char to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">The char value to write.</param>
         void Write(char value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a char array to the stream.
         /// </summary>
-        /// <param name="buffer"></param>
+        /// <param name="buffer">Char array to write.</param>
         void Write(char[] buffer);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a char array to the stream.
         /// </summary>
-        /// <param name="buffer"></param>
-        /// <param name="index"></param>
-        /// <param name="count"></param>
+        /// <param name="buffer">Char array to write.</param>
+        /// <param name="index">Start index in the buffer to start writing from.</param>
+        /// <param name="count">Number of chars to write.</param>
         void Write(char[] buffer, int index, int count);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a boolean to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Boolean value to write.</param>
         void Write(bool value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes an integer to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Integer value to write.</param>
         void Write(int value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes an unsigned integer to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Unsigned integer value to write</param>
         void Write(uint value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a long to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Long value to write.</param>
         void Write(long value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a unsigned long to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Unsigned long value to write.</param>
         void Write(ulong value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a float to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Float value to write.</param>
         void Write(float value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a double to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Double value to write.</param>
         void Write(double value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a decimal to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Decimal value to write.</param>
         void Write(decimal value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Write an object to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Object value to write.</param>
         void Write(object value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a line break to the stream.
         /// </summary>
         void WriteLine();
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a string with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">String value to write.</param>
         void WriteLine(string value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a string with a line break to the stream.
         /// </summary>
-        /// <param name="format"></param>
-        /// <param name="arg0"></param>
+        /// <param name="format">String with formatting to write.</param>
+        /// <param name="arg0">String format argument.</param>
         void WriteLine(string format, object arg0);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a string with a line break to the stream.
         /// </summary>
-        /// <param name="format"></param>
-        /// <param name="arg0"></param>
-        /// <param name="arg1"></param>
+        /// <param name="format">String with formatting to write.</param>
+        /// <param name="arg0">String format argument.</param>
+        /// <param name="arg1">String format argument.</param>
         void WriteLine(string format, object arg0, object arg1);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a string with a line break to the stream.
         /// </summary>
-        /// <param name="format"></param>
-        /// <param name="arg0"></param>
-        /// <param name="arg1"></param>
-        /// <param name="arg2"></param>
+        /// <param name="format">String with formatting to write.</param>
+        /// <param name="arg0">String format argument.</param>
+        /// <param name="arg1">String format argument.</param>
+        /// <param name="arg2">String format argument.</param>
         void WriteLine(string format, object arg0, object arg1, object arg2);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a string with a line break to the stream.
         /// </summary>
-        /// <param name="format"></param>
-        /// <param name="arg"></param>
+        /// <param name="format">String with formatting to write.</param>
+        /// <param name="arg">String format arguments.</param>
         void WriteLine(string format, params object[] arg);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a char with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Char value to write.</param>
         void WriteLine(char value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a char array with a line break to the stream.
         /// </summary>
-        /// <param name="buffer"></param>
+        /// <param name="buffer">Char array to write.</param>
         void WriteLine(char[] buffer);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a char array with a line break to the stream.
         /// </summary>
-        /// <param name="buffer"></param>
-        /// <param name="index"></param>
-        /// <param name="count"></param>
+        /// <param name="buffer">Char array to write.</param>
+        /// <param name="index">Index in the char array to start writing from.</param>
+        /// <param name="count">Number of chars to write.</param>
         void WriteLine(char[] buffer, int index, int count);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a bool with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Bool value to write.</param>
         void WriteLine(bool value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a integer with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Integer value to write.</param>
         void WriteLine(int value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a unsigned integer with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Unsigned integer to write.</param>
         void WriteLine(uint value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a long with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Long value to write.</param>
         void WriteLine(long value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a unsigned long with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Unsigned long value to write.</param>
         void WriteLine(ulong value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a float with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Float value to write.</param>
         void WriteLine(float value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a double with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Double value to write.</param>
         void WriteLine(double value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a decimal with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Decimal value to write.</param>
         void WriteLine(decimal value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes an object with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Object value to write.</param>
         void WriteLine(object value);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the line break value.
         /// </summary>
         string NewLine { get; set; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets the format provider used.
         /// </summary>
         IFormatProvider FormatProvider { get; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets whether the stream is auto flushed or not
         /// </summary>
         bool AutoFlush { get; set; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Flushes the stream.
         /// </summary>
         void Flush();
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Closes the stream.
         /// </summary>
         void Close();
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// The base streawm.
         /// </summary>
         Stream BaseStream { get; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets the encoding used.
         /// </summary>
         Encoding Encoding { get; }
     }

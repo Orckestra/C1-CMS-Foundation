@@ -6,229 +6,229 @@ using System.Runtime.Serialization;
 namespace Composite.Core.IO.Plugins.IOProvider
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// Implementations of this interface is used by C1 through <see cref="IIOProvider"/> 
+    /// to provide the behavior of <see cref="Composite.Core.IO.C1FileInfo"/>.
+    /// See <see cref="Composite.Core.IO.C1FileInfo"/> for more information.
     /// </summary>
     public interface IC1FileInfo
     {
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the directory name of the file.
         /// </summary>
         string DirectoryName { get; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns a <see cref="C1DirectoryInfo"/> of the file.
         /// </summary>
         C1DirectoryInfo Directory { get; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the name of the file.
         /// </summary>
         string Name { get; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the full path and name of the file.
         /// </summary>
         string FullName { get; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns true if the file exists. Otherwise false.
         /// </summary>
         bool Exists { get; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the extension of the file.
         /// </summary>
         string Extension { get; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns true if and only if the file is read only.
         /// </summary>
         bool IsReadOnly { get; set; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the size of the file in bytes.
         /// </summary>
         long Length { get; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the file attributes on the file.
         /// </summary>
         FileAttributes Attributes { get; set; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a file stream <see cref="C1FileStream"/>.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a newly created <see cref="C1FileStream"/>.</returns>
         C1FileStream Create();
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a file stream <see cref="C1StreamWriter"/>.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a newly created <see cref="C1StreamWriter"/>.</returns>
         C1StreamWriter CreateText();
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a file stream <see cref="C1StreamWriter"/> for appending.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a newly created <see cref="C1StreamWriter"/> for appending.</returns>
         C1StreamWriter AppendText();
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a file stream <see cref="C1FileStream"/>.
         /// </summary>
-        /// <param name="mode"></param>
-        /// <returns></returns>
+        /// <param name="mode">File mode to use.</param>
+        /// <returns>Returns a newly created <see cref="C1FileStream"/>.</returns>
         C1FileStream Open(FileMode mode);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a file stream <see cref="C1FileStream"/>.
         /// </summary>
-        /// <param name="mode"></param>
-        /// <param name="access"></param>
-        /// <returns></returns>
+        /// <param name="mode">File mode to use.</param>
+        /// <param name="access">File access to use.</param>
+        /// <returns>Returns a newly created <see cref="C1FileStream"/>.</returns>
         C1FileStream Open(FileMode mode, FileAccess access);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a file stream <see cref="C1FileStream"/>.
         /// </summary>
-        /// <param name="mode"></param>
-        /// <param name="access"></param>
-        /// <param name="share"></param>
-        /// <returns></returns>
+        /// <param name="mode">File mode to use.</param>
+        /// <param name="access">File access to use.</param>
+        /// <param name="share">File share to use.</param>
+        /// <returns>Returns a newly created <see cref="C1FileStream"/>.</returns>
         C1FileStream Open(FileMode mode, FileAccess access, FileShare share);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a file stream <see cref="C1FileStream"/>.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a newly created <see cref="C1FileStream"/> for reading.</returns>
         C1FileStream OpenRead();
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a file stream <see cref="C1StreamReader"/>.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a newly created <see cref="C1StreamReader"/>.</returns>
         C1StreamReader OpenText();
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a file stream <see cref="C1FileStream"/>.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a newly created <see cref="C1FileStream"/> for writing.</returns>
         C1FileStream OpenWrite();
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Copies the file to the given path.
         /// </summary>
-        /// <param name="destFileName"></param>
-        /// <returns></returns>
+        /// <param name="destFileName">Destination path.</param>
+        /// <returns>A new <see cref="C1FileInfo"/> for the destination file.</returns>
         C1FileInfo CopyTo(string destFileName);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Copies the file to the given path and overwrites any existing file if specified.
         /// </summary>
-        /// <param name="destFileName"></param>
-        /// <param name="overwrite"></param>
-        /// <returns></returns>
+        /// <param name="destFileName">Destination path.</param>
+        /// <param name="overwrite">If true, any existing file will be overwritten.</param>
+        /// <returns>A new <see cref="C1FileInfo"/> for the destination file.</returns>
         C1FileInfo CopyTo(string destFileName, bool overwrite);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Moves the file to the given path.
         /// </summary>
-        /// <param name="destFileName"></param>
+        /// <param name="destFileName">Destination path.</param>
         void MoveTo(string destFileName);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Replaces the given file with this one.
         /// </summary>
-        /// <param name="destinationFileName"></param>
-        /// <param name="destinationBackupFileName"></param>
-        /// <returns></returns>
+        /// <param name="destinationFileName">Destination path to file to replace.</param>
+        /// <param name="destinationBackupFileName">Path to backup file.</param>
+        /// <returns>A new <see cref="C1FileInfo"/> for the destination file.</returns>
         C1FileInfo Replace(string destinationFileName, string destinationBackupFileName);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Replaces the given file with this one.
         /// </summary>
-        /// <param name="destinationFileName"></param>
-        /// <param name="destinationBackupFileName"></param>
+        /// <param name="destinationFileName">Destination path to file to replace.</param>
+        /// <param name="destinationBackupFileName">Path to backup file.</param>
         /// <param name="ignoreMetadataErrors"></param>
-        /// <returns></returns>
+        /// <returns>A new <see cref="C1FileInfo"/> for the destination file.</returns>
         C1FileInfo Replace(string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Deletes the file.
         /// </summary>
         void Delete();
 
 
         /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
-        void Refresh();
-
-
-        /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        void GetObjectData(SerializationInfo info, StreamingContext context);
-
-
-        /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the creation time of the file.
         /// </summary>
         DateTime CreationTime { get; set; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the creation utc time of the file.
         /// </summary>
         DateTime CreationTimeUtc { get; set; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the last access time of the file.
         /// </summary>
         DateTime LastAccessTime { get; set; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the last access utc time of the file.
         /// </summary>
         DateTime LastAccessTimeUtc { get; set; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the last write time of the file.
         /// </summary>
         DateTime LastWriteTime { get; set; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the last write utc time of the file.
         /// </summary>
         DateTime LastWriteTimeUtc { get; set; }
+
+
+        /// <summary>
+        /// </summary>
+        void Refresh();
+
+
+        /// <summary>
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
+        void GetObjectData(SerializationInfo info, StreamingContext context);
     }
 }

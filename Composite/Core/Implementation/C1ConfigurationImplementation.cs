@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
-using System.Configuration;
-using Composite.Core.IO.Plugins.IOProvider;
 using Composite.Core.IO;
+using Composite.Core.IO.Plugins.IOProvider;
+
 
 namespace Composite.Core.Implementation
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// Implementation of <see cref="Composite.Core.Configuration.C1Configuration"/>.
     /// </summary>
     public class C1ConfigurationImplementation
     {
         private IC1Configuration _configuration;
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.Configuration.C1Configuration"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -29,7 +30,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.Configuration.C1Configuration"/>.
         /// </summary>
         public virtual string FilePath
         {
@@ -42,7 +43,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.Configuration.C1Configuration"/>.
         /// </summary>
         public virtual bool HasFile
         {
@@ -55,7 +56,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.Configuration.C1Configuration"/>.
         /// </summary>
         public virtual AppSettingsSection AppSettings
         {
@@ -68,7 +69,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.Configuration.C1Configuration"/>.
         /// </summary>
         public virtual ConnectionStringsSection ConnectionStrings
         {
@@ -81,7 +82,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.Configuration.C1Configuration"/>.
         /// </summary>
         public virtual ConfigurationSectionCollection Sections
         {
@@ -94,7 +95,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.Configuration.C1Configuration"/>.
         /// </summary>
         public virtual ConfigurationSectionGroup RootSectionGroup
         {
@@ -107,7 +108,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.Configuration.C1Configuration"/>.
         /// </summary>
         public virtual ConfigurationSectionGroupCollection SectionGroups
         {
@@ -120,7 +121,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.Configuration.C1Configuration"/>.
         /// </summary>
         /// <param name="sectionName"></param>
         /// <returns></returns>
@@ -132,7 +133,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.Configuration.C1Configuration"/>.
         /// </summary>
         /// <param name="sectionGroupName"></param>
         /// <returns></returns>
@@ -144,7 +145,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.Configuration.C1Configuration"/>.
         /// </summary>
         public virtual void Save()
         {
@@ -154,7 +155,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.Configuration.C1Configuration"/>.
         /// </summary>
         /// <param name="saveMode"></param>
         public virtual void Save(ConfigurationSaveMode saveMode)
@@ -165,7 +166,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.Configuration.C1Configuration"/>.
         /// </summary>
         /// <param name="saveMode"></param>
         /// <param name="forceSaveAll"></param>
@@ -177,7 +178,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.Configuration.C1Configuration"/>.
         /// </summary>
         /// <param name="fileName"></param>
         public virtual void SaveAs(string fileName)
@@ -188,7 +189,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.Configuration.C1Configuration"/>.
         /// </summary>
         /// <param name="fileName"></param>
         /// <param name="saveMode"></param>
@@ -200,7 +201,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.Configuration.C1Configuration"/>.
         /// </summary>
         /// <param name="fileName"></param>
         /// <param name="saveMode"></param>

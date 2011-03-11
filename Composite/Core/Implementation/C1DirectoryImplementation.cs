@@ -6,12 +6,12 @@ using Composite.Core.IO;
 namespace Composite.Core.Implementation
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// Implementation of <see cref="Composite.Core.IO.C1Directory"/>.
     /// </summary>
     public class C1DirectoryImplementation
     {
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1Directory"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -23,7 +23,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1Directory"/>.
         /// </summary>
         /// <param name="sourceDirName"></param>
         /// <param name="destinationDirName"></param>        
@@ -35,7 +35,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1Directory"/>.
         /// </summary>
         /// <param name="path"></param>
         public virtual void Delete(string path)
@@ -46,7 +46,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1Directory"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="recursive"></param>
@@ -58,7 +58,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1Directory"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -70,7 +70,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1Directory"/>.
         /// </summary>
         /// <returns></returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
@@ -82,7 +82,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1Directory"/>.
         /// </summary>
         /// <param name="path"></param>
         public virtual void SetCurrentDirectory(string path)
@@ -93,7 +93,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1Directory"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -105,7 +105,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1Directory"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -117,7 +117,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1Directory"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -129,7 +129,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1Directory"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="searchPattern"></param>
@@ -142,7 +142,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1Directory"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="searchPattern"></param>
@@ -156,7 +156,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1Directory"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -168,7 +168,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1Directory"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="searchPattern"></param>
@@ -181,7 +181,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1Directory"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="searchPattern"></param>
@@ -195,7 +195,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1Directory"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -207,7 +207,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1Directory"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>

@@ -5,7 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.Core.IO.Plugins.IOProvider
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// Use this to make custom configuration of an <see cref="IIOProvider"/> implementation.
     /// </summary>
     [ConfigurationElementType(typeof(NonConfigurableIOProvider))]
     public class IOProviderData: NameTypeManagerTypeConfigurationElement

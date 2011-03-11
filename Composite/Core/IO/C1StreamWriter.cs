@@ -7,7 +7,11 @@ using Composite.Core.Implementation;
 namespace Composite.Core.IO
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// This class is a almost one to one version of System.IO.StreamWriter. Using this implementation instead 
+    /// of System.IO.StreamWriter, will ensure that your code will work both on Standard Windows deployment 
+    /// and Windows Azure deployment.
+    /// See System.IO.StreamWriter for more documentation on the methods of this class.
+    /// See <see cref="Composite.Core.IO.Plugins.IOProvider.IC1StreamWriter"/>.
     /// </summary>
     public class C1StreamWriter : TextWriter, IDisposable
     {
@@ -15,9 +19,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a C1StreamWriter.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path to file.</param>
         public C1StreamWriter(string path)
             : this(path, false, Encoding.UTF8, 1024)
         {
@@ -26,10 +30,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a C1StreamWriter.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="append"></param>
+        /// <param name="path">Path to file.</param>
+        /// <param name="append">If this is true, any writing will be appended to the file.</param>
         public C1StreamWriter(string path, bool append)
             : this(path, append, Encoding.UTF8, 1024)
         {
@@ -38,11 +42,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a C1StreamWriter.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="append"></param>
-        /// <param name="encoding"></param>
+        /// <param name="path">Path to file.</param>
+        /// <param name="append">If this is true, any writing will be appended to the file.</param>
+        /// <param name="encoding">Encoding to use.</param>
         public C1StreamWriter(string path, bool append, Encoding encoding)
             : this(path, append, encoding, 1024)
         {
@@ -51,12 +55,12 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a C1StreamWriter.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="append"></param>
-        /// <param name="encoding"></param>
-        /// <param name="bufferSize"></param>
+        /// <param name="path">Path to file.</param>
+        /// <param name="append">If this is true, any writing will be appended to the file.</param>
+        /// <param name="encoding">Encoding to use.</param>
+        /// <param name="bufferSize">Buffer size to use.</param>
         public C1StreamWriter(string path, bool append, Encoding encoding, int bufferSize)
         {
             _implementation = new ImplementationContainer<C1StreamWriterImplementation>(() => ImplementationFactory.CurrentFactory.CreateC1StreamWriter(path, append, encoding, bufferSize));
@@ -65,9 +69,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a C1StreamWriter.
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Stream to use.</param>
         public C1StreamWriter(Stream stream)
             : this(stream, Encoding.UTF8, 1024)
         {
@@ -76,10 +80,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a C1StreamWriter.
         /// </summary>
-        /// <param name="stream"></param>
-        /// <param name="encoding"></param>
+        /// <param name="stream">Stream to use.</param>
+        /// <param name="encoding">Encoding to use.</param>
         public C1StreamWriter(Stream stream, Encoding encoding)
             : this(stream, encoding, 1024)
         {
@@ -88,11 +92,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a C1StreamWriter.
         /// </summary>
-        /// <param name="stream"></param>
-        /// <param name="encoding"></param>
-        /// <param name="bufferSize"></param>
+        /// <param name="stream">Stream to use.</param>
+        /// <param name="encoding">Encoding to use.</param>
+        /// <param name="bufferSize">Buffer size to use.</param>
         public C1StreamWriter(Stream stream, Encoding encoding, int bufferSize)
         {
             _implementation = new ImplementationContainer<C1StreamWriterImplementation>(() => ImplementationFactory.CurrentFactory.CreateC1StreamWriter(stream, encoding, bufferSize));
@@ -101,9 +105,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a string to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">String to write.</param>
         public override void Write(string value)
         {
             _implementation.Implementation.Write(value);
@@ -112,10 +116,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a formatted string to the stream.
         /// </summary>
-        /// <param name="format"></param>
-        /// <param name="arg0"></param>
+        /// <param name="format">String with formatting to write.</param>
+        /// <param name="arg0">String format argument.</param>
         public override void Write(string format, object arg0)
         {
             _implementation.Implementation.Write(format, arg0);
@@ -124,11 +128,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a formatted string to the stream.
         /// </summary>
-        /// <param name="format"></param>
-        /// <param name="arg0"></param>
-        /// <param name="arg1"></param>
+        /// <param name="format">String with formatting to write.</param>
+        /// <param name="arg0">String format argument.</param>
+        /// <param name="arg1">String format argument.</param>
         public override void Write(string format, object arg0, object arg1)
         {
             _implementation.Implementation.Write(format, arg0, arg1);
@@ -137,12 +141,12 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a formatted string to the stream.
         /// </summary>
-        /// <param name="format"></param>
-        /// <param name="arg0"></param>
-        /// <param name="arg1"></param>
-        /// <param name="arg2"></param>
+        /// <param name="format">String with formatting to write.</param>
+        /// <param name="arg0">String format argument.</param>
+        /// <param name="arg1">String format argument.</param>
+        /// <param name="arg2">String format argument.</param>
         public override void Write(string format, object arg0, object arg1, object arg2)
         {
             _implementation.Implementation.Write(format, arg0, arg1, arg2);
@@ -151,10 +155,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a formatted string to the stream.
         /// </summary>
-        /// <param name="format"></param>
-        /// <param name="arg"></param>
+        /// <param name="format">String with formatting to write.</param>
+        /// <param name="arg">String format arguments.</param>
         public override void Write(string format, params object[] arg)
         {
             _implementation.Implementation.Write(format, arg);
@@ -163,9 +167,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a char to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">The char value to write.</param>
         public override void Write(char value)
         {
             _implementation.Implementation.Write(value);
@@ -174,9 +178,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a char array to the stream.
         /// </summary>
-        /// <param name="buffer"></param>
+        /// <param name="buffer">Char array to write.</param>
         public override void Write(char[] buffer)
         {
             _implementation.Implementation.Write(buffer);
@@ -185,11 +189,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a char array to the stream.
         /// </summary>
-        /// <param name="buffer"></param>
-        /// <param name="index"></param>
-        /// <param name="count"></param>
+        /// <param name="buffer">Char array to write.</param>
+        /// <param name="index">Start index in the buffer to start writing from.</param>
+        /// <param name="count">Number of chars to write.</param>
         public override void Write(char[] buffer, int index, int count)
         {
             _implementation.Implementation.Write(buffer, index, count);
@@ -198,9 +202,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a boolean to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Boolean value to write.</param>
         public override void Write(bool value)
         {
             _implementation.Implementation.Write(value);
@@ -209,9 +213,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes an integer to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Integer value to write.</param>
         public override void Write(int value)
         {
             _implementation.Implementation.Write(value);
@@ -220,9 +224,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes an unsigned integer to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Unsigned integer value to write</param>
         public override void Write(uint value)
         {
             _implementation.Implementation.Write(value);
@@ -231,9 +235,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a long to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Long value to write.</param>
         public override void Write(long value)
         {
             _implementation.Implementation.Write(value);
@@ -242,9 +246,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a unsigned long to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Unsigned long value to write.</param>
         public override void Write(ulong value)
         {
             _implementation.Implementation.Write(value);
@@ -253,9 +257,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a float to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Float value to write.</param>
         public override void Write(float value)
         {
             _implementation.Implementation.Write(value);
@@ -264,9 +268,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a double to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Double value to write.</param>
         public override void Write(double value)
         {
             _implementation.Implementation.Write(value);
@@ -275,9 +279,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a decimal to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Decimal value to write.</param>
         public override void Write(decimal value)
         {
             _implementation.Implementation.Write(value);
@@ -286,9 +290,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Write an object to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Object value to write.</param>
         public override void Write(object value)
         {
             _implementation.Implementation.Write(value);
@@ -297,7 +301,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a line break to the stream.
         /// </summary>
         public override void WriteLine()
         {
@@ -307,9 +311,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a string with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">String value to write.</param>
         public override void WriteLine(string value)
         {
             _implementation.Implementation.WriteLine(value);
@@ -318,10 +322,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a string with a line break to the stream.
         /// </summary>
-        /// <param name="format"></param>
-        /// <param name="arg0"></param>
+        /// <param name="format">String with formatting to write.</param>
+        /// <param name="arg0">String format argument.</param>
         public override void WriteLine(string format, object arg0)
         {
             _implementation.Implementation.WriteLine(format, arg0);
@@ -330,11 +334,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a string with a line break to the stream.
         /// </summary>
-        /// <param name="format"></param>
-        /// <param name="arg0"></param>
-        /// <param name="arg1"></param>
+        /// <param name="format">String with formatting to write.</param>
+        /// <param name="arg0">String format argument.</param>
+        /// <param name="arg1">String format argument.</param>
         public override void WriteLine(string format, object arg0, object arg1)
         {
             _implementation.Implementation.WriteLine(format, arg0, arg1);
@@ -343,12 +347,12 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a string with a line break to the stream.
         /// </summary>
-        /// <param name="format"></param>
-        /// <param name="arg0"></param>
-        /// <param name="arg1"></param>
-        /// <param name="arg2"></param>
+        /// <param name="format">String with formatting to write.</param>
+        /// <param name="arg0">String format argument.</param>
+        /// <param name="arg1">String format argument.</param>
+        /// <param name="arg2">String format argument.</param>
         public override void WriteLine(string format, object arg0, object arg1, object arg2)
         {
             _implementation.Implementation.WriteLine(format, arg0, arg1, arg2);
@@ -357,10 +361,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a string with a line break to the stream.
         /// </summary>
-        /// <param name="format"></param>
-        /// <param name="arg"></param>
+        /// <param name="format">String with formatting to write.</param>
+        /// <param name="arg">String format arguments.</param>
         public override void WriteLine(string format, params object[] arg)
         {
             _implementation.Implementation.WriteLine(format, arg);
@@ -369,9 +373,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a char with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Char value to write.</param>
         public override void WriteLine(char value)
         {
             _implementation.Implementation.WriteLine(value);
@@ -380,9 +384,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a char array with a line break to the stream.
         /// </summary>
-        /// <param name="buffer"></param>
+        /// <param name="buffer">Char array to write.</param>
         public override void WriteLine(char[] buffer)
         {
             _implementation.Implementation.WriteLine(buffer);
@@ -391,11 +395,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a char array with a line break to the stream.
         /// </summary>
-        /// <param name="buffer"></param>
-        /// <param name="index"></param>
-        /// <param name="count"></param>
+        /// <param name="buffer">Char array to write.</param>
+        /// <param name="index">Index in the char array to start writing from.</param>
+        /// <param name="count">Number of chars to write.</param>
         public override void WriteLine(char[] buffer, int index, int count)
         {
             _implementation.Implementation.WriteLine(buffer, index, count);
@@ -404,9 +408,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a bool with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Bool value to write.</param>
         public override void WriteLine(bool value)
         {
             _implementation.Implementation.WriteLine(value);
@@ -415,9 +419,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a integer with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Integer value to write.</param>
         public override void WriteLine(int value)
         {
             _implementation.Implementation.WriteLine(value);
@@ -426,9 +430,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a unsigned integer with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Unsigned integer to write.</param>
         public override void WriteLine(uint value)
         {
             _implementation.Implementation.WriteLine(value);
@@ -437,9 +441,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a long with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Long value to write.</param>
         public override void WriteLine(long value)
         {
             _implementation.Implementation.WriteLine(value);
@@ -448,9 +452,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a unsigned long with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Unsigned long value to write.</param>
         public override void WriteLine(ulong value)
         {
             _implementation.Implementation.WriteLine(value);
@@ -459,9 +463,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a float with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Float value to write.</param>
         public override void WriteLine(float value)
         {
             _implementation.Implementation.WriteLine(value);
@@ -470,9 +474,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a double with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Double value to write.</param>
         public override void WriteLine(double value)
         {
             _implementation.Implementation.WriteLine(value);
@@ -481,9 +485,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes a decimal with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Decimal value to write.</param>
         public override void WriteLine(decimal value)
         {
             _implementation.Implementation.WriteLine(value);
@@ -492,9 +496,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes an object with a line break to the stream.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Object value to write.</param>
         public override void WriteLine(object value)
         {
             _implementation.Implementation.WriteLine(value);
@@ -503,7 +507,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the line break value.
         /// </summary>
         public override string NewLine
         {
@@ -520,7 +524,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets the format provider used.
         /// </summary>
         public override IFormatProvider FormatProvider
         {
@@ -533,7 +537,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Flushes the stream.
         /// </summary>
         public override void Flush()
         {
@@ -543,7 +547,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets whether the stream is auto flushed or not
         /// </summary>
         public virtual bool AutoFlush
         {
@@ -560,7 +564,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Closes the stream.
         /// </summary>
         public override void Close()
         {
@@ -570,7 +574,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// The base streawm.
         /// </summary>
         public virtual Stream BaseStream
         {
@@ -583,7 +587,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets the encoding used.
         /// </summary>
         public override Encoding Encoding
         {
@@ -595,7 +599,9 @@ namespace Composite.Core.IO
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Desctructor.
+        /// </summary>
         ~C1StreamWriter()
         {
             Dispose(false);
@@ -604,9 +610,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Disposes the stream.
         /// </summary>
-        /// <param name="disposing"></param>
+        /// <param name="disposing">True if the stream is disposing.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)

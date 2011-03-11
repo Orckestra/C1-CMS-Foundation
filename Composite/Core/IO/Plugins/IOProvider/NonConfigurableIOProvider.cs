@@ -7,9 +7,8 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.Core.IO.Plugins.IOProvider
 {
     /// <summary>    
+    /// This is a default non configurable version of <see cref="IOProviderData"/>
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Assembler(typeof(NonConfigurableIOProviderAssembler))]
     public class NonConfigurableIOProvider : IOProviderData
     {
@@ -18,9 +17,8 @@ namespace Composite.Core.IO.Plugins.IOProvider
 
 
     /// <summary>    
+    /// This is a default non configurable assembler version of <see cref="IOProviderData"/>
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class NonConfigurableIOProviderAssembler : IAssembler<IIOProvider, IOProviderData>
     {
         /// <exclude />

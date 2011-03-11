@@ -7,16 +7,20 @@ using Composite.Core.Implementation;
 namespace Composite.Core.IO
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// This class is a almost one to one version of System.IO.FileInfo. Using this implementation instead 
+    /// of System.IO.FileInfo, will ensure that your code will work both on Standard Windows deployment 
+    /// and Windows Azure deployment.
+    /// See System.IO.FileInfo for more documentation on the methods of this class.
+    /// See <see cref="Composite.Core.IO.Plugins.IOProvider.IC1FileInfo"/>. 
     /// </summary>
     public class C1FileInfo : C1FileSystemInfo
     {
         private ImplementationContainer<C1FileInfoImplementation> _implementation;
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a C1FileInfo.
         /// </summary>
-        /// <param name="fileName"></param>
+        /// <param name="fileName">Path to file.</param>
         public C1FileInfo(string fileName)
         {
             _implementation = new ImplementationContainer<C1FileInfoImplementation>(() => ImplementationFactory.CurrentFactory.CreateC1FileInfo(fileName));
@@ -26,7 +30,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the directory name of the file.
         /// </summary>
         public string DirectoryName
         {
@@ -39,7 +43,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns a <see cref="C1DirectoryInfo"/> of the file.
         /// </summary>
         public C1DirectoryInfo Directory
         {
@@ -52,7 +56,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the name of the file.
         /// </summary>
         public string Name
         {
@@ -66,7 +70,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the full path and name of the file.
         /// </summary>
         public override string FullName
         {
@@ -79,7 +83,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns true if the file exists. Otherwise false.
         /// </summary>
         public override bool Exists
         {
@@ -92,7 +96,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the extension of the file.
         /// </summary>
         public override string Extension
         {
@@ -105,7 +109,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns true if and only if the file is read only.
         /// </summary>
         public bool IsReadOnly
         {
@@ -118,7 +122,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the size of the file in bytes.
         /// </summary>
         public long Length
         {
@@ -131,7 +135,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the file attributes on the file.
         /// </summary>
         public override FileAttributes Attributes
         {
@@ -148,9 +152,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a file stream <see cref="C1FileStream"/>.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a newly created <see cref="C1FileStream"/>.</returns>
         public C1FileStream Create()
         {
             return _implementation.Implementation.Create();
@@ -159,9 +163,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a file stream <see cref="C1StreamWriter"/>.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a newly created <see cref="C1StreamWriter"/>.</returns>
         public C1StreamWriter CreateText()
         {
             return _implementation.Implementation.CreateText();
@@ -170,9 +174,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a file stream <see cref="C1StreamWriter"/> for appending.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a newly created <see cref="C1StreamWriter"/> for appending.</returns>
         public C1StreamWriter AppendText()
         {
             return _implementation.Implementation.AppendText();
@@ -181,10 +185,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a file stream <see cref="C1FileStream"/>.
         /// </summary>
-        /// <param name="mode"></param>
-        /// <returns></returns>
+        /// <param name="mode">File mode to use.</param>
+        /// <returns>Returns a newly created <see cref="C1FileStream"/>.</returns>
         public C1FileStream Open(FileMode mode)
         {
             return _implementation.Implementation.Open(mode);
@@ -193,11 +197,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a file stream <see cref="C1FileStream"/>.
         /// </summary>
-        /// <param name="mode"></param>
-        /// <param name="access"></param>
-        /// <returns></returns>
+        /// <param name="mode">File mode to use.</param>
+        /// <param name="access">File access to use.</param>
+        /// <returns>Returns a newly created <see cref="C1FileStream"/>.</returns>
         public C1FileStream Open(FileMode mode, FileAccess access)
         {
             return _implementation.Implementation.Open(mode, access);
@@ -206,12 +210,12 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a file stream <see cref="C1FileStream"/>.
         /// </summary>
-        /// <param name="mode"></param>
-        /// <param name="access"></param>
-        /// <param name="share"></param>
-        /// <returns></returns>
+        /// <param name="mode">File mode to use.</param>
+        /// <param name="access">File access to use.</param>
+        /// <param name="share">File share to use.</param>
+        /// <returns>Returns a newly created <see cref="C1FileStream"/>.</returns>
         public C1FileStream Open(FileMode mode, FileAccess access, FileShare share)
         {
             return _implementation.Implementation.Open(mode, access, share);
@@ -220,9 +224,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a file stream <see cref="C1FileStream"/>.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a newly created <see cref="C1FileStream"/> for reading.</returns>
         public C1FileStream OpenRead()
         {
             return _implementation.Implementation.OpenRead();
@@ -231,9 +235,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a file stream <see cref="C1StreamReader"/>.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a newly created <see cref="C1StreamReader"/>.</returns>
         public C1StreamReader OpenText()
         {
             return _implementation.Implementation.OpenText();
@@ -242,9 +246,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a file stream <see cref="C1FileStream"/>.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a newly created <see cref="C1FileStream"/> for writing.</returns>
         public C1FileStream OpenWrite()
         {
             return _implementation.Implementation.OpenWrite();
@@ -253,10 +257,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Copies the file to the given path.
         /// </summary>
-        /// <param name="destFileName"></param>
-        /// <returns></returns>
+        /// <param name="destFileName">Destination path.</param>
+        /// <returns>A new <see cref="C1FileInfo"/> for the destination file.</returns>
         public C1FileInfo CopyTo(string destFileName)
         {
             return _implementation.Implementation.CopyTo(destFileName);
@@ -265,11 +269,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Copies the file to the given path and overwrites any existing file if specified.
         /// </summary>
-        /// <param name="destFileName"></param>
-        /// <param name="overwrite"></param>
-        /// <returns></returns>
+        /// <param name="destFileName">Destination path.</param>
+        /// <param name="overwrite">If true, any existing file will be overwritten.</param>
+        /// <returns>A new <see cref="C1FileInfo"/> for the destination file.</returns>
         public C1FileInfo CopyTo(string destFileName, bool overwrite)
         {
             return _implementation.Implementation.CopyTo(destFileName, overwrite);
@@ -278,9 +282,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Moves the file to the given path.
         /// </summary>
-        /// <param name="destFileName"></param>
+        /// <param name="destFileName">Destination path.</param>
         public void MoveTo(string destFileName)
         {
             _implementation.Implementation.MoveTo(destFileName);
@@ -289,11 +293,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Replaces the given file with this one.
         /// </summary>
-        /// <param name="destinationFileName"></param>
-        /// <param name="destinationBackupFileName"></param>
-        /// <returns></returns>
+        /// <param name="destinationFileName">Destination path to file to replace.</param>
+        /// <param name="destinationBackupFileName">Path to backup file.</param>
+        /// <returns>A new <see cref="C1FileInfo"/> for the destination file.</returns>
         public C1FileInfo Replace(string destinationFileName, string destinationBackupFileName)
         {
             return _implementation.Implementation.Replace(destinationFileName, destinationBackupFileName);
@@ -302,12 +306,12 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Replaces the given file with this one.
         /// </summary>
-        /// <param name="destinationFileName"></param>
-        /// <param name="destinationBackupFileName"></param>
+        /// <param name="destinationFileName">Destination path to file to replace.</param>
+        /// <param name="destinationBackupFileName">Path to backup file.</param>
         /// <param name="ignoreMetadataErrors"></param>
-        /// <returns></returns>
+        /// <returns>A new <see cref="C1FileInfo"/> for the destination file.</returns>
         public C1FileInfo Replace(string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors)
         {
             return _implementation.Implementation.Replace(destinationFileName, destinationBackupFileName, ignoreMetadataErrors);
@@ -316,39 +320,17 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Deletes the file.
         /// </summary>
         public override void Delete()
         {
             _implementation.Implementation.Delete();
-        }
+        }        
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
-        public override void Refresh()
-        {
-            _implementation.Implementation.Refresh();
-        }
-
-
-
-        /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            _implementation.Implementation.GetObjectData(info, context);
-        }
-
-
-
-        /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the creation time of the file.
         /// </summary>
         public override DateTime CreationTime
         {
@@ -365,7 +347,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the creation utc time of the file.
         /// </summary>
         public override DateTime CreationTimeUtc
         {
@@ -382,7 +364,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the last access time of the file.
         /// </summary>
         public override DateTime LastAccessTime
         {
@@ -399,7 +381,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the last access utc time of the file.
         /// </summary>
         public override DateTime LastAccessTimeUtc
         {
@@ -416,7 +398,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the last write time of the file.
         /// </summary>
         public override DateTime LastWriteTime
         {
@@ -433,7 +415,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the last write utc time of the file.
         /// </summary>
         public override DateTime LastWriteTimeUtc
         {
@@ -446,6 +428,27 @@ namespace Composite.Core.IO
                 _implementation.Implementation.LastWriteTimeUtc = value;
             }
         }
+
+
+
+        /// <summary>
+        /// </summary>
+        public override void Refresh()
+        {
+            _implementation.Implementation.Refresh();
+        }
+
+
+
+        /// <summary>
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            _implementation.Implementation.GetObjectData(info, context);
+        }
+
 
         //public FileSecurity GetAccessControl();
         //public FileSecurity GetAccessControl(AccessControlSections includeSections);

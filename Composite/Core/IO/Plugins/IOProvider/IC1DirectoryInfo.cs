@@ -6,202 +6,202 @@ using System.Runtime.Serialization;
 namespace Composite.Core.IO.Plugins.IOProvider
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// Implementations of this interface is used by C1 through <see cref="IIOProvider"/> 
+    /// to provide the behavior of <see cref="Composite.Core.IO.C1DirectoryInfo"/>.
+    /// See <see cref="Composite.Core.IO.C1DirectoryInfo"/> for more information.
     /// </summary>
     public interface IC1DirectoryInfo
     {
         /// <summary>
-        /// IOLayer - documentation pending
+        /// The name of the directory.
         /// </summary>
         string Name { get; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Full path of the directory.
         /// </summary>
         string FullName { get; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// The extension of the directory.
         /// </summary>
         string Extension { get; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Tells if the directory exists or not.
         /// </summary>
         bool Exists { get; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// The root directory of the directory.
         /// </summary>
         C1DirectoryInfo Root { get; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// The parent directory of the directory.
         /// </summary>
         C1DirectoryInfo Parent { get; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// File attributes of the directory.
         /// </summary>
         FileAttributes Attributes { get; set; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the subdirectories of the directory.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Subdirectories of the directory.</returns>
         C1DirectoryInfo[] GetDirectories();
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the subdirectores of the directory given the search pattern.
         /// </summary>
-        /// <param name="searchPattern"></param>
-        /// <returns></returns>
+        /// <param name="searchPattern">Search pattern to use.</param>
+        /// <returns>Subdirectories of the directory.</returns>
         C1DirectoryInfo[] GetDirectories(string searchPattern);
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the subdirectores of the directory given the search pattern and options.
         /// </summary>
-        /// <param name="searchPattern"></param>
-        /// <param name="searchOption"></param>
-        /// <returns></returns>
+        /// <param name="searchPattern">The search pattern to use.</param>
+        /// <param name="searchOption">The search options to use.</param>
+        /// <returns>Subdirectories of the directory.</returns>
         C1DirectoryInfo[] GetDirectories(string searchPattern, SearchOption searchOption);
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the files in the directory.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Files in the directory.</returns>
         C1FileInfo[] GetFiles();
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the files in the directory given the search pattern.
         /// </summary>
-        /// <param name="searchPattern"></param>
-        /// <returns></returns>
+        /// <param name="searchPattern">The search pattern to use.</param>
+        /// <returns>Files in the directory given the search pattern.</returns>
         C1FileInfo[] GetFiles(string searchPattern);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the files in the directory given the search pattern and options.
         /// </summary>
-        /// <param name="searchPattern"></param>
-        /// <param name="searchOption"></param>
-        /// <returns></returns>
+        /// <param name="searchPattern">The search pattern to use.</param>
+        /// <param name="searchOption">The search options to use.</param>
+        /// <returns>Files in the directory given the search pattern and options.</returns>
         C1FileInfo[] GetFiles(string searchPattern, SearchOption searchOption);
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates the directory.
         /// </summary>
         void Create();
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a subdirectory.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path to directory to create.</param>
         /// <returns></returns>
-        C1DirectoryInfo CreateSubdirectory(string path);     
+        C1DirectoryInfo CreateSubdirectory(string path);
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Moves the directory to the given path.
         /// </summary>
-        /// <param name="destDirName"></param>
+        /// <param name="destDirName">Destination directory name.</param>
         void MoveTo(string destDirName);
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Deletes the directory if empty.
         /// </summary>
         void Delete();
 
 
+
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Deletes the directory, files and subdirectories if specified.
         /// </summary>
-        /// <param name="recursive"></param>
-        void Delete(bool recursive);
+        /// <param name="recursive">If true, a recursive delete will be performced.</param>
+        void Delete(bool recursive);        
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
-        void GetObjectData(SerializationInfo info, StreamingContext context);
-
-
-
-        /// <summary>
-        /// IOLayer - documentation pending
-        /// </summary>
-        void Refresh();
-
-
-
-
-        /// <summary>
-        /// IOLayer - documentation pending
+        /// The creation time of the directory.
         /// </summary>
         DateTime CreationTime { get; set; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// The creation utc time of the directory.
         /// </summary>
         DateTime CreationTimeUtc { get; set; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Last access time of the directory.
         /// </summary>
         DateTime LastAccessTime { get; set; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Last access utc time of the directory.
         /// </summary>
         DateTime LastAccessTimeUtc { get; set; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Last write time of the directory.
         /// </summary>
         DateTime LastWriteTime { get; set; }
 
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Last write utc time of the directory.
         /// </summary>
-        DateTime LastWriteTimeUtc { get; set; }       
+        DateTime LastWriteTimeUtc { get; set; }
+
+
+
+        /// <summary>
+        /// </summary>
+        void GetObjectData(SerializationInfo info, StreamingContext context);
+
+
+
+        /// <summary>
+        /// </summary>
+        void Refresh();
     }
 }

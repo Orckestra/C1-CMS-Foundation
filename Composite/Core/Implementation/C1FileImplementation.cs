@@ -8,12 +8,12 @@ using Composite.Core.IO;
 namespace Composite.Core.Implementation
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// Implementation of <see cref="Composite.Core.IO.C1File"/>.
     /// </summary>
     public class C1FileImplementation
     {
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -25,7 +25,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         public virtual void Touch(string path)
@@ -36,7 +36,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="sourceFileName"></param>
         /// <param name="destinationFileName"></param>
@@ -48,7 +48,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="sourceFileName"></param>
         /// <param name="destinationFileName"></param>
@@ -61,7 +61,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="sourceFileName"></param>
         /// <param name="destinationFileName"></param>
@@ -73,7 +73,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="sourceFileName"></param>
         /// <param name="destinationFileName"></param>
@@ -86,7 +86,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="sourceFileName"></param>
         /// <param name="destinationFileName"></param>
@@ -100,7 +100,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         public virtual void Delete(string path)
@@ -111,7 +111,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -123,7 +123,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="bufferSize"></param>
@@ -136,7 +136,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="bufferSize"></param>
@@ -150,7 +150,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -162,7 +162,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -174,7 +174,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="contents"></param>
@@ -186,7 +186,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="contents"></param>
@@ -199,7 +199,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="contents"></param>
@@ -211,7 +211,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="contents"></param>
@@ -224,7 +224,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="mode"></param>
@@ -237,7 +237,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="mode"></param>
@@ -251,7 +251,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="mode"></param>
@@ -266,7 +266,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -278,7 +278,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -290,7 +290,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -302,7 +302,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -314,7 +314,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -326,7 +326,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="encoding"></param>
@@ -339,7 +339,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -351,7 +351,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="encoding"></param>
@@ -364,7 +364,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -376,7 +376,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="encoding"></param>
@@ -389,7 +389,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="bytes"></param>
@@ -402,7 +402,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="contents"></param>
@@ -414,7 +414,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="contents"></param>
@@ -426,7 +426,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="contents"></param>
@@ -439,7 +439,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="contents"></param>
@@ -452,7 +452,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="contents"></param>
@@ -464,7 +464,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="contents"></param>
@@ -477,7 +477,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -489,7 +489,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="fileAttributes"></param>
@@ -501,7 +501,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -513,7 +513,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -525,7 +525,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="creationTime"></param>
@@ -537,7 +537,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="creationTimeUtc"></param>
@@ -549,7 +549,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -561,7 +561,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -573,7 +573,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="lastAccessTime"></param>
@@ -585,7 +585,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="lastAccessTimeUtc"></param>
@@ -597,7 +597,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -609,7 +609,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -621,7 +621,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="lastWriteTime"></param>
@@ -633,7 +633,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1File"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="lastWriteTimeUtc"></param>

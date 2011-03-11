@@ -5,14 +5,18 @@ using Composite.Core.Implementation;
 namespace Composite.Core.IO
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// This class is a almost one to one version of System.IO.FileSystemWatcher. Using this implementation instead 
+    /// of System.IO.FileSystemWatcher, will ensure that your code will work both on Standard Windows deployment 
+    /// and Windows Azure deployment.
+    /// See System.IO.FileSystemWatcher for more documentation on the methods of this class.
+    /// See <see cref="Composite.Core.IO.Plugins.IOProvider.IC1FileStream"/>.
     /// </summary>
     public class C1FileSystemWatcher : ImplementationContainer<C1FileSystemWatcherImplementation>
     {
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a new file system watcher given the path.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path to watch.</param>
         public C1FileSystemWatcher(string path)
             : this(path, null)
         {
@@ -21,10 +25,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a new file system watcher given the path.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="filter"></param>
+        /// <param name="path">Path to watch.</param>
+        /// <param name="filter">Filter to use.</param>
         public C1FileSystemWatcher(string path, string filter)
             : base(() => ImplementationFactory.CurrentFactory.CreateC1FileSystemWatcher(path, filter))
         {
@@ -33,7 +37,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets if events should be raised or not.
         /// </summary>
         public bool EnableRaisingEvents
         {
@@ -50,7 +54,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Path to watch.
         /// </summary>
         public string Path
         {
@@ -67,7 +71,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Filter to use.
         /// </summary>
         public string Filter
         {
@@ -84,7 +88,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets of subdirectories should also be watched.
         /// </summary>
         public bool IncludeSubdirectories
         {
@@ -101,7 +105,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Adds or removes an event handler when new items are created.
         /// </summary>
         public event FileSystemEventHandler Created
         {
@@ -118,7 +122,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Adds or removes an event handler when new items changed.
         /// </summary>
         public event FileSystemEventHandler Changed
         {
@@ -135,7 +139,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Adds or removes an event handler when new items are renamed.
         /// </summary>
         public event RenamedEventHandler Renamed
         {
@@ -152,7 +156,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Adds or removes an event handler when new items are deleted.
         /// </summary>
         public event FileSystemEventHandler Deleted
         {
@@ -169,7 +173,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Adds or removes an event handler when an error occure.
         /// </summary>
         public event ErrorEventHandler Error
         {
@@ -186,7 +190,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the notify filter.
         /// </summary>
         public NotifyFilters NotifyFilter
         {
@@ -203,7 +207,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Begins the initialization.
         /// </summary>
         public void BeginInit()
         {
@@ -213,7 +217,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Ends the initialization.
         /// </summary>
         public void EndInit()
         {
@@ -223,7 +227,6 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
         /// </summary>
         /// <param name="changeType"></param>
         /// <returns></returns>
@@ -235,7 +238,6 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
         /// </summary>
         /// <param name="changeType"></param>
         /// <param name="timeout"></param>

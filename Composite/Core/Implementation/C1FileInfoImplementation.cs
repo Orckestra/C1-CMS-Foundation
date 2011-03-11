@@ -8,14 +8,14 @@ using Composite.Core.IO.Plugins.IOProvider;
 namespace Composite.Core.Implementation
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// Implementation of <see cref="Composite.Core.IO.C1FileInfo"/>.
     /// </summary>
     public class C1FileInfoImplementation
     {
         private IC1FileInfo _fileInfo;
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         /// <param name="path"></param>
         public C1FileInfoImplementation(string path)
@@ -26,7 +26,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         public string DirectoryName
         {
@@ -39,7 +39,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         public C1DirectoryInfo Directory
         {
@@ -52,7 +52,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         public string Name
         {
@@ -65,7 +65,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         public string FullName
         {
@@ -78,7 +78,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         public bool Exists
         {
@@ -91,7 +91,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         public string Extension
         {
@@ -104,7 +104,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         public bool IsReadOnly
         {
@@ -121,7 +121,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         public long Length
         {
@@ -134,7 +134,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         public FileAttributes Attributes
         {
@@ -151,7 +151,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         /// <returns></returns>
         public C1FileStream Create()
@@ -162,7 +162,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         /// <returns></returns>
         public C1StreamWriter CreateText()
@@ -173,7 +173,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         /// <returns></returns>
         public C1StreamWriter AppendText()
@@ -184,7 +184,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         /// <param name="mode"></param>
         /// <returns></returns>
@@ -196,7 +196,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         /// <param name="mode"></param>
         /// <param name="access"></param>
@@ -209,7 +209,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         /// <param name="mode"></param>
         /// <param name="access"></param>
@@ -223,7 +223,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         /// <returns></returns>
         public C1FileStream OpenRead()
@@ -234,7 +234,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         /// <returns></returns>
         public C1StreamReader OpenText()
@@ -245,7 +245,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         /// <returns></returns>
         public C1FileStream OpenWrite()
@@ -256,7 +256,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         /// <param name="destinationFileName"></param>
         /// <returns></returns>
@@ -268,7 +268,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         /// <param name="destinationFileName"></param>
         /// <param name="overwrite"></param>
@@ -281,7 +281,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         /// <param name="destinationFileName"></param>
         public void MoveTo(string destinationFileName)
@@ -292,7 +292,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         /// <param name="destinationFileName"></param>
         /// <param name="destinationBackupFileName"></param>
@@ -305,7 +305,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         /// <param name="destinationFileName"></param>
         /// <param name="destinationBackupFileName"></param>
@@ -319,7 +319,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         public void Delete()
         {
@@ -329,7 +329,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         public void Refresh()
         {
@@ -339,7 +339,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
@@ -351,7 +351,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         public DateTime CreationTime
         {
@@ -368,7 +368,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         public DateTime CreationTimeUtc
         {
@@ -385,7 +385,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         public DateTime LastAccessTime
         {
@@ -402,7 +402,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         public DateTime LastAccessTimeUtc
         {
@@ -419,7 +419,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         public DateTime LastWriteTime
         {
@@ -436,7 +436,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileInfo"/>.
         /// </summary>
         public DateTime LastWriteTimeUtc
         {

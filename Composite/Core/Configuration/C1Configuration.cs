@@ -5,14 +5,18 @@ using Composite.Core.Implementation;
 namespace Composite.Core.Configuration
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// This class is a almost one to one version of System.Configuration.Configuration. Using this implementation instead 
+    /// of System.Configuration.Configuration, will ensure that your code will work both on Standard Windows deployment 
+    /// and Windows Azure deployment.
+    /// See System.Configuration.Configuration for more documentation on the methods of this class.
+    /// See <see cref="Composite.Core.IO.Plugins.IOProvider.IC1Configuration"/>.
     /// </summary>
     public class C1Configuration : ImplementationContainer<C1ConfigurationImplementation>
     {
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a C1Configuration
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path to configuration file.</param>
         public C1Configuration(string path)
             : base(() => ImplementationFactory.CurrentFactory.CreateC1Configuration(path))
         {
@@ -21,7 +25,7 @@ namespace Composite.Core.Configuration
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets the path to the configuration file.
         /// </summary>
         public string FilePath
         {
@@ -34,7 +38,7 @@ namespace Composite.Core.Configuration
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns true if the configuration file exists.
         /// </summary>
         public bool HasFile
         {
@@ -47,7 +51,7 @@ namespace Composite.Core.Configuration
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the app setttings section.
         /// </summary>
         public AppSettingsSection AppSettings
         {
@@ -60,7 +64,7 @@ namespace Composite.Core.Configuration
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the connection string section.
         /// </summary>
         public ConnectionStringsSection ConnectionStrings
         {
@@ -73,7 +77,7 @@ namespace Composite.Core.Configuration
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the configuration sections.
         /// </summary>
         public ConfigurationSectionCollection Sections
         {
@@ -86,7 +90,7 @@ namespace Composite.Core.Configuration
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the configuration section group.
         /// </summary>
         public ConfigurationSectionGroup RootSectionGroup
         {
@@ -99,7 +103,7 @@ namespace Composite.Core.Configuration
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the configuration slection groups.
         /// </summary>
         public ConfigurationSectionGroupCollection SectionGroups
         {
@@ -112,10 +116,10 @@ namespace Composite.Core.Configuration
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets a named configuration section.
         /// </summary>
-        /// <param name="sectionName"></param>
-        /// <returns></returns>
+        /// <param name="sectionName">Name of section to get.</param>
+        /// <returns>Returns the configuration section.</returns>
         public ConfigurationSection GetSection(string sectionName)
         {
             return this.Implementation.GetSection(sectionName);
@@ -124,10 +128,10 @@ namespace Composite.Core.Configuration
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets a named configuration section group.
         /// </summary>
-        /// <param name="sectionGroupName"></param>
-        /// <returns></returns>
+        /// <param name="sectionGroupName">Name of configuration section group to get.</param>
+        /// <returns>Returns the configuration section group.</returns>
         public ConfigurationSectionGroup GetSectionGroup(string sectionGroupName)
         {
             return this.Implementation.GetSectionGroup(sectionGroupName);
@@ -136,7 +140,7 @@ namespace Composite.Core.Configuration
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Saves the configuration.
         /// </summary>
         public void Save()
         {
@@ -146,9 +150,9 @@ namespace Composite.Core.Configuration
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Saves the configuration.
         /// </summary>
-        /// <param name="saveMode"></param>
+        /// <param name="saveMode">Save mode to use when saving the configuration.</param>
         public void Save(ConfigurationSaveMode saveMode)
         {
             this.Implementation.Save(saveMode);
@@ -157,10 +161,10 @@ namespace Composite.Core.Configuration
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Saves the configuration.
         /// </summary>
-        /// <param name="saveMode"></param>
-        /// <param name="forceSaveAll"></param>
+        /// <param name="saveMode">Save mode to use when saving the configuration.</param>
+        /// <param name="forceSaveAll">Saves all sections, even non touched.</param>
         public void Save(ConfigurationSaveMode saveMode, bool forceSaveAll)
         {
             this.Implementation.Save(saveMode, forceSaveAll);
@@ -169,9 +173,9 @@ namespace Composite.Core.Configuration
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Saves the configuration to a new file.
         /// </summary>
-        /// <param name="filename"></param>
+        /// <param name="filename">Path to new configuration filename.</param>
         public void SaveAs(string filename)
         {
             this.Implementation.SaveAs(filename);
@@ -180,10 +184,10 @@ namespace Composite.Core.Configuration
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Saves the configuration to a new file.
         /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="saveMode"></param>
+        /// <param name="filename">Path to new configuration filename.</param>
+        /// <param name="saveMode">Save mode to use when saving the configuration.</param>
         public void SaveAs(string filename, ConfigurationSaveMode saveMode)
         {
             this.Implementation.SaveAs(filename, saveMode);
@@ -192,11 +196,11 @@ namespace Composite.Core.Configuration
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Saves the configuration to a new file.
         /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="saveMode"></param>
-        /// <param name="forceSaveAll"></param>
+        /// <param name="filename">Path to new configuration filename.</param>
+        /// <param name="saveMode">Save mode to use when saving the configuration.</param>
+        /// <param name="forceSaveAll">Saves all sections, even non touched.</param>
         public void SaveAs(string filename, ConfigurationSaveMode saveMode, bool forceSaveAll)
         {
             this.Implementation.SaveAs(filename, saveMode, forceSaveAll);

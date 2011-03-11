@@ -4,84 +4,85 @@
 namespace Composite.Core.IO.Plugins.IOProvider
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// Implementations of this interface is used by C1 through <see cref="IIOProvider"/> 
+    /// to provide the behavior of <see cref="Composite.Core.IO.C1FileSystemWatcher"/>.
+    /// See <see cref="Composite.Core.IO.C1FileSystemWatcher"/> for more information.
     /// </summary>
     public interface IC1FileSystemWatcher
     {
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets if events should be raised or not.
         /// </summary>
         bool EnableRaisingEvents { get; set; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Path to watch.
         /// </summary>
         string Path { get; set; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Filter to use.
         /// </summary>
         string Filter { get; set; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets of subdirectories should also be watched.
         /// </summary>
         bool IncludeSubdirectories { get; set; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Adds or removes an event handler when new items are created.
         /// </summary>
         event FileSystemEventHandler Created;
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Adds or removes an event handler when new items changed.
         /// </summary>
         event FileSystemEventHandler Changed;
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Adds or removes an event handler when new items are renamed.
         /// </summary>
         event RenamedEventHandler Renamed;
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Adds or removes an event handler when new items are deleted.
         /// </summary>
         event FileSystemEventHandler Deleted;
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Adds or removes an event handler when an error occure.
         /// </summary>
         event ErrorEventHandler Error;
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets or sets the notify filter.
         /// </summary>        
         NotifyFilters NotifyFilter { get; set; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Begins the initialization.
         /// </summary>
         void BeginInit();
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Ends the initialization.
         /// </summary>
         void EndInit();
 
 
         /// <summary>
-        /// IOLayer - documentation pending
         /// </summary>
         /// <param name="changeType"></param>
         /// <returns></returns>
@@ -89,7 +90,6 @@ namespace Composite.Core.IO.Plugins.IOProvider
 
 
         /// <summary>
-        /// IOLayer - documentation pending
         /// </summary>
         /// <param name="changeType"></param>
         /// <param name="timeout"></param>

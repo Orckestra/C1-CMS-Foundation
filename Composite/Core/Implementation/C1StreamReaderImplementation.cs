@@ -9,7 +9,7 @@ using Composite.Core.IO.Plugins.IOProvider;
 namespace Composite.Core.Implementation
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// Implementation of <see cref="Composite.Core.IO.C1StreamReader"/>.
     /// </summary>
     public class C1StreamReaderImplementation : IDisposable
     {
@@ -17,7 +17,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamReader"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="encoding"></param>
@@ -31,7 +31,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamReader"/>.
         /// </summary>
         /// <param name="stream"></param>
         /// <param name="encoding"></param>
@@ -45,7 +45,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamReader"/>.
         /// </summary>
         /// <returns></returns>
         public virtual int Read()
@@ -56,7 +56,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamReader"/>.
         /// </summary>
         /// <param name="buffer"></param>
         /// <param name="index"></param>
@@ -70,7 +70,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamReader"/>.
         /// </summary>
         /// <returns></returns>
         public virtual string ReadLine()
@@ -81,7 +81,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamReader"/>.
         /// </summary>
         /// <returns></returns>
         public virtual string ReadToEnd()
@@ -92,7 +92,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamReader"/>.
         /// </summary>
         /// <param name="buffer"></param>
         /// <param name="index"></param>
@@ -106,7 +106,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamReader"/>.
         /// </summary>
         /// <returns></returns>
         public virtual int Peek()
@@ -117,7 +117,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamReader"/>.
         /// </summary>
         public virtual bool EndOfStream
         {
@@ -130,7 +130,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamReader"/>.
         /// </summary>
         public virtual void Close()
         {
@@ -140,7 +140,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamReader"/>.
         /// </summary>
         public virtual Stream BaseStream
         {
@@ -153,7 +153,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamReader"/>.
         /// </summary>
         public virtual Encoding CurrentEncoding
         {
@@ -166,7 +166,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamReader"/>.
         /// </summary>
         public void Dispose()
         {
@@ -177,7 +177,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamReader"/>.
         /// </summary>
         ~C1StreamReaderImplementation()
         {
@@ -187,7 +187,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1StreamReader"/>.
         /// </summary>
         /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)

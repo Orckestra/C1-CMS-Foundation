@@ -6,7 +6,7 @@ using Composite.Core.IO.Plugins.IOProvider;
 namespace Composite.Core.Implementation
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// Implementation of <see cref="Composite.Core.IO.C1FileSystemWatcher"/>.
     /// </summary>
     public class C1FileSystemWatcherImplementation
     {
@@ -14,7 +14,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileSystemWatcher"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="filter"></param>
@@ -26,7 +26,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileSystemWatcher"/>.
         /// </summary>
         public virtual bool EnableRaisingEvents
         {
@@ -43,7 +43,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileSystemWatcher"/>.
         /// </summary>
         public virtual string Path
         {
@@ -60,7 +60,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileSystemWatcher"/>.
         /// </summary>
         public virtual string Filter
         {
@@ -77,7 +77,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileSystemWatcher"/>.
         /// </summary>
         public virtual bool IncludeSubdirectories
         {
@@ -94,7 +94,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileSystemWatcher"/>.
         /// </summary>
         public virtual event FileSystemEventHandler Created
         {
@@ -111,7 +111,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileSystemWatcher"/>.
         /// </summary>
         public virtual event FileSystemEventHandler Changed
         {
@@ -128,7 +128,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileSystemWatcher"/>.
         /// </summary>
         public virtual event RenamedEventHandler Renamed
         {
@@ -145,7 +145,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileSystemWatcher"/>.
         /// </summary>
         public virtual event FileSystemEventHandler Deleted
         {
@@ -162,7 +162,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileSystemWatcher"/>.
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Error")]
         public virtual event ErrorEventHandler Error
@@ -180,7 +180,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileSystemWatcher"/>.
         /// </summary>
         public virtual NotifyFilters NotifyFilter
         {
@@ -197,7 +197,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileSystemWatcher"/>.
         /// </summary>
         public virtual void BeginInit()
         {
@@ -207,7 +207,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileSystemWatcher"/>.
         /// </summary>
         public virtual void EndInit()
         {
@@ -217,7 +217,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileSystemWatcher"/>.
         /// </summary>
         /// <param name="changeType"></param>
         /// <returns></returns>
@@ -229,7 +229,7 @@ namespace Composite.Core.Implementation
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// See <see cref="Composite.Core.IO.C1FileSystemWatcher"/>.
         /// </summary>
         /// <param name="changeType"></param>
         /// <param name="timeout"></param>

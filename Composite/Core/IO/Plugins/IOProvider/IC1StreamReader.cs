@@ -6,78 +6,80 @@ using System.Text;
 namespace Composite.Core.IO.Plugins.IOProvider
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// Implementations of this interface is used by C1 through <see cref="IIOProvider"/> 
+    /// to provide the behavior of <see cref="Composite.Core.IO.C1StreamReader"/>.
+    /// See <see cref="Composite.Core.IO.C1StreamReader"/> for more information.
     /// </summary>
     public interface IC1StreamReader : IDisposable
     {
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Reads a byte from the stream.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns the read byte.</returns>
         int Read();
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Reads a block from the file.
         /// </summary>
-        /// <param name="buffer"></param>
-        /// <param name="index"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
+        /// <param name="buffer">Buffer to read into.</param>
+        /// <param name="index">Index in buffer to start storing bytes.</param>
+        /// <param name="count">Number of bytes to read.</param>
+        /// <returns>Returns the number read bytes.</returns>
         int Read(char[] buffer, int index, int count);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Read a line from the file.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns the read line.</returns>
         string ReadLine();
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Read all the content of the file into a strng.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The content of the file.</returns>
         string ReadToEnd();
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Reads a block from the file.
         /// </summary>
-        /// <param name="buffer"></param>
-        /// <param name="index"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
+        /// <param name="buffer">Buffer to store read chars.</param>
+        /// <param name="index">Index in buffer to start storing chars.</param>
+        /// <param name="count">Number of chars to read.</param>
+        /// <returns>Returns the number of read chars.</returns>
         int ReadBlock(char[] buffer, int index, int count);
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Peeks the current byte.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The current byte.</returns>
         int Peek();
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns true if the stream is at the end of stream.
         /// </summary>
         bool EndOfStream { get; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Closes the stream.
         /// </summary>
         void Close();
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the base stream.
         /// </summary>
         Stream BaseStream { get; }
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Returns the current encoding of the stream.
         /// </summary>
         Encoding CurrentEncoding { get; }
     }
