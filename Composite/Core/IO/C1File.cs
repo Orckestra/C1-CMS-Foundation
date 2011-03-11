@@ -8,15 +8,19 @@ using Composite.Core.Implementation;
 namespace Composite.Core.IO
 {
     /// <summary>
-    /// IOLayer - documentation pending
+    /// This class is a almost one to one version of System.IO.File. Using this implementation instead 
+    /// of System.IO.File, will ensure that your code will work both on Standard Windows deployment 
+    /// and Windows Azure deployment.
+    /// See System.IO.File for more documentation on the methods of this class.
+    /// See <see cref="Composite.Core.IO.Plugins.IOProvider.IC1File"/>. 
     /// </summary>
     public static class C1File
     {
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Determins if the given file exists or not.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to the file.</param>
+        /// <returns>Returns true if the file exists, false if not.</returns>
         public static bool Exists(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.Exists(path);
@@ -25,10 +29,12 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
-        /// This is not a port of the System.IO.File
+        /// This is not a port of the System.IO.File. This method can be used to 'touch' an
+        /// existing file. This is a way of telling the C1 IO system that the file has been 
+        /// touched and C1 uses this to handle other than standard Windows deployments, like
+        /// Windows Azure.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path to file to touch.</param>
         public static void Touch(string path)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.Touch(path);
@@ -36,10 +42,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Copies a file.
         /// </summary>
-        /// <param name="sourceFileName"></param>
-        /// <param name="destFileName"></param>
+        /// <param name="sourceFileName">Source path of file to copy.</param>
+        /// <param name="destFileName">Target path of the file to be copied to.</param>
         public static void Copy(string sourceFileName, string destFileName)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.Copy(sourceFileName, destFileName);
@@ -48,11 +54,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Copies a file.
         /// </summary>
-        /// <param name="sourceFileName"></param>
-        /// <param name="destFileName"></param>
-        /// <param name="overwrite"></param>
+        /// <param name="sourceFileName">Source path of file to copy.</param>
+        /// <param name="destFileName">Target path of the file to be copied to.</param>
+        /// <param name="overwrite">If this is true and the target path exists, it will be overwritten without any exceptions.</param>
         public static void Copy(string sourceFileName, string destFileName, bool overwrite)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.Copy(sourceFileName, destFileName, overwrite);
@@ -61,10 +67,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Moves a file.
         /// </summary>
-        /// <param name="sourceFileName"></param>
-        /// <param name="destFileName"></param>
+        /// <param name="sourceFileName">Path of file to move.</param>
+        /// <param name="destFileName">Destination path to move the file to.</param>
         public static void Move(string sourceFileName, string destFileName)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.Move(sourceFileName, destFileName);
@@ -73,10 +79,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Replace a file with another file.
         /// </summary>
-        /// <param name="sourceFileName"></param>
-        /// <param name="destinationFileName"></param>
+        /// <param name="sourceFileName">Path to source file.</param>
+        /// <param name="destinationFileName">Path to file to replace.</param>
         /// <param name="destinationBackupFileName"></param>
         public static void Replace(string sourceFileName, string destinationFileName, string destinationBackupFileName)
         {
@@ -86,10 +92,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Replace a file with another file.
         /// </summary>
-        /// <param name="sourceFileName"></param>
-        /// <param name="destinationFileName"></param>
+        /// <param name="sourceFileName">Path to source file.</param>
+        /// <param name="destinationFileName">Path to file to replace.</param>
         /// <param name="destinationBackupFileName"></param>
         /// <param name="ignoreMetadataErrors"></param>
         public static void Replace(string sourceFileName, string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors)
@@ -100,9 +106,9 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Deletes the given file.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path to file to delete.</param>
         public static void Delete(string path)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.Delete(path);
@@ -111,10 +117,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a new file and returns a file stream to it <see cref="C1FileStream"/>.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file to create.</param>
+        /// <returns>Returns the newly created <see cref="C1FileStream"/> stream.</returns>
         public static C1FileStream Create(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.Create(path);
@@ -123,11 +129,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a new file and returns a file stream to it <see cref="C1FileStream"/>.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="bufferSize"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file to create.</param>
+        /// <param name="bufferSize">Buffer size of returned stream.</param>
+        /// <returns>Returns the newly created <see cref="C1FileStream"/> stream.</returns>
         public static C1FileStream Create(string path, int bufferSize)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.Create(path, bufferSize);
@@ -136,12 +142,12 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a new file and returns a file stream to it <see cref="C1FileStream"/>.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="bufferSize"></param>
-        /// <param name="options"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file to create.</param>
+        /// <param name="bufferSize">Buffer size of returned stream.</param>
+        /// <param name="options">File options of returned stream.</param>
+        /// <returns>Returns the newly created <see cref="C1FileStream"/> stream.</returns>
         public static C1FileStream Create(string path, int bufferSize, FileOptions options)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.Create(path, bufferSize, options);
@@ -150,10 +156,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Creates a new file and returns a stream writer to it <see cref="C1StreamWriter"/>.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file to create.</param>
+        /// <returns>Returns the newly created <see cref="C1StreamWriter"/>.</returns>
         public static C1StreamWriter CreateText(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.CreateText(path);
@@ -162,10 +168,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Opens a <see cref="C1StreamWriter"/> for appending.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file to append to.</param>
+        /// <returns>Returns the newly opned <see cref="C1StreamWriter"/>.</returns>
         public static C1StreamWriter AppendText(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.AppendText(path);
@@ -174,10 +180,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Appends content to a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="contents"></param>
+        /// <param name="path">Path to file to append to.</param>
+        /// <param name="contents">Content to append to file.</param>        
         public static void AppendAllText(string path, string contents)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.AppendAllText(path, contents);
@@ -186,11 +192,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Appends content to a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="contents"></param>
-        /// <param name="encoding"></param>
+        /// <param name="path">Path to file to append to.</param>
+        /// <param name="contents">Content to append to file.</param>        
+        /// <param name="encoding">Encoding to use when appending.</param>
         public static void AppendAllText(string path, string contents, Encoding encoding)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.AppendAllText(path, contents, encoding);
@@ -199,10 +205,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Appends content to a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="contents"></param>
+        /// <param name="path">Path to file to append to.</param>
+        /// <param name="contents">Content to append to file.</param>
         public static void AppendAllLines(string path, IEnumerable<string> contents)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.AppendAllLines(path, contents);
@@ -211,11 +217,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Appends content to a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="contents"></param>
-        /// <param name="encoding"></param>
+        /// <param name="path">Path to file to append to.</param>
+        /// <param name="contents">Content to append to file.</param>        
+        /// <param name="encoding">Encoding to use when appending.</param>
         public static void AppendAllLines(string path, IEnumerable<string> contents, Encoding encoding)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.AppendAllLines(path, contents, encoding);
@@ -224,11 +230,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Opens a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="mode"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file to open.</param>
+        /// <param name="mode">File mode to use.</param>
+        /// <returns>Returns the newly opened <see cref="C1FileStream"/>.</returns>
         public static C1FileStream Open(string path, FileMode mode)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.Open(path, mode);
@@ -237,12 +243,12 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Opens a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="mode"></param>
-        /// <param name="access"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file to open.</param>
+        /// <param name="mode">File mode to use.</param>
+        /// <param name="access">File access to use.</param>
+        /// <returns>Returns the newly opened <see cref="C1FileStream"/>.</returns>
         public static C1FileStream Open(string path, FileMode mode, FileAccess access)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.Open(path, mode, access);
@@ -251,13 +257,13 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Opens a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="mode"></param>
-        /// <param name="access"></param>
-        /// <param name="share"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file to open.</param>
+        /// <param name="mode">File mode to use.</param>
+        /// <param name="access">File access to use.</param>
+        /// <param name="share">File share to use.</param>
+        /// <returns>Returns the newly opened <see cref="C1FileStream"/>.</returns>
         public static C1FileStream Open(string path, FileMode mode, FileAccess access, FileShare share)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.Open(path, mode, access, share);
@@ -266,10 +272,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Opens a file for reading.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file to open.</param>
+        /// <returns>Returns the newly opened <see cref="C1FileStream"/>.</returns>
         public static C1FileStream OpenRead(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.OpenRead(path);
@@ -278,10 +284,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Opens a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file to open.</param>
+        /// <returns>Returns the newly opened <see cref="C1StreamReader"/>.</returns>
         public static C1StreamReader OpenText(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.OpenText(path);
@@ -290,10 +296,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Opens a file for writing.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file to open.</param>
+        /// <returns>Returns the newly opened <see cref="C1FileStream"/>.</returns>
         public static C1FileStream OpenWrite(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.OpenWrite(path);
@@ -302,10 +308,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Read all bytes from a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file to read from.</param>
+        /// <returns>Returns read bytes.</returns>
         public static byte[] ReadAllBytes(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.ReadAllBytes(path);
@@ -314,10 +320,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Read all lines from a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file to read from.</param>
+        /// <returns>Returns read lines.</returns>
         public static string[] ReadAllLines(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.ReadAllLines(path);
@@ -326,11 +332,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Read all lines from a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="encoding"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file to read from.</param>
+        /// <param name="encoding">Encoding to use when reading.</param>
+        /// <returns>Returns read lines.</returns>
         public static string[] ReadAllLines(string path, Encoding encoding)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.ReadAllLines(path, encoding);
@@ -339,10 +345,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Read all text from a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file to read from.</param>
+        /// <returns>The content of the file.</returns>
         public static string ReadAllText(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.ReadAllText(path);
@@ -351,11 +357,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Read all text from a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="encoding"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file to read from.</param>
+        /// <param name="encoding">Encoding to use when reading.</param>
+        /// <returns>The content of the file.</returns>
         public static string ReadAllText(string path, Encoding encoding)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.ReadAllText(path, encoding);
@@ -364,10 +370,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Read all lines from a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file to read from.</param>
+        /// <returns>Returns all read lines.</returns>
         public static IEnumerable<string> ReadLines(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.ReadLines(path);
@@ -376,11 +382,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Read all lines from a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="encoding"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file to read from.</param>
+        /// <param name="encoding">Encoding to use when reading.</param>
+        /// <returns>Returns all read lines.</returns>
         public static IEnumerable<string> ReadLines(string path, Encoding encoding)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.ReadLines(path, encoding);
@@ -389,10 +395,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes bytes to a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="bytes"></param>
+        /// <param name="path">Path to file to write to.</param>
+        /// <param name="bytes">Bytes to write.</param>
         public static void WriteAllBytes(string path, byte[] bytes)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.WriteAllBytes(path, bytes);
@@ -401,10 +407,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes lines to a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="contents"></param>
+        /// <param name="path">Path to file to write to.</param>
+        /// <param name="contents">Lines to write.</param>
         public static void WriteAllLines(string path, IEnumerable<string> contents)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.WriteAllLines(path, contents);
@@ -413,10 +419,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes lines to a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="contents"></param>
+        /// <param name="path">Path to file to write to.</param>
+        /// <param name="contents">Lines to write.</param>
         public static void WriteAllLines(string path, string[] contents)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.WriteAllLines(path, contents);
@@ -425,11 +431,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes lines to a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="contents"></param>
-        /// <param name="encoding"></param>
+        /// <param name="path">Path to file to write to.</param>
+        /// <param name="contents">Lines to write.</param>
+        /// <param name="encoding">Encoding to use when writing.</param>
         public static void WriteAllLines(string path, IEnumerable<string> contents, Encoding encoding)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.WriteAllLines(path, contents, encoding);
@@ -438,11 +444,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes lines to a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="contents"></param>
-        /// <param name="encoding"></param>
+        /// <param name="path">Path to file to write to.</param>
+        /// <param name="contents">Lines to write.</param>
+        /// <param name="encoding">Encoding to use when writing.</param>
         public static void WriteAllLines(string path, string[] contents, Encoding encoding)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.WriteAllLines(path, contents, encoding);
@@ -451,10 +457,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes text to a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="contents"></param>
+        /// <param name="path">Path to file to write to.</param>
+        /// <param name="contents">Text to write.</param>
         public static void WriteAllText(string path, string contents)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.WriteAllText(path, contents);
@@ -463,11 +469,11 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Writes text to a file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="contents"></param>
-        /// <param name="encoding"></param>
+        /// <param name="path">Path to file to write to.</param>
+        /// <param name="contents">Text to write.</param>
+        /// <param name="encoding">Encoding to use when writing.</param>
         public static void WriteAllText(string path, string contents, Encoding encoding)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.WriteAllText(path, contents, encoding);
@@ -476,10 +482,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets the file attributes.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file to get attributes from.</param>
+        /// <returns>Returns the file attributes. See System.IO.FileAttributes</returns>
         public static FileAttributes GetAttributes(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.GetAttributes(path);
@@ -488,10 +494,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Sets the file attributes.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="fileAttributes"></param>
+        /// <param name="path">Path to file to set attributes on.</param>
+        /// <param name="fileAttributes">File attributes to set.</param>
         public static void SetAttributes(string path, FileAttributes fileAttributes)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.SetAttributes(path, fileAttributes);
@@ -500,10 +506,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets the creation time of the file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file.</param>
+        /// <returns>Returns the creation time of the given file.</returns>
         public static DateTime GetCreationTime(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.GetCreationTime(path);
@@ -512,10 +518,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets the creation utc time of the file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file.</param>
+        /// <returns>Returns the creation utc time of the given file.</returns>
         public static DateTime GetCreationTimeUtc(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.GetCreationTimeUtc(path);
@@ -524,10 +530,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Sets the creation time of the file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="creationTime"></param>
+        /// <param name="path">Path to file.</param>
+        /// <param name="creationTime">New creation time.</param>
         public static void SetCreationTime(string path, DateTime creationTime)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.SetCreationTime(path, creationTime);
@@ -536,10 +542,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Sets the creation utc time of the file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="creationTimeUtc"></param>
+        /// <param name="path">Path to file.</param>
+        /// <param name="creationTimeUtc">New creation utc time.</param>
         public static void SetCreationTimeUtc(string path, DateTime creationTimeUtc)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.SetCreationTimeUtc(path, creationTimeUtc);
@@ -548,10 +554,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets the last access time.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file.</param>
+        /// <returns>Returns the last access time of the file.</returns>
         public static DateTime GetLastAccessTime(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.GetLastAccessTime(path);
@@ -560,10 +566,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Gets the last access utc time.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file.</param>
+        /// <returns>Returns the last access utc time of the file.</returns>
         public static DateTime GetLastAccessTimeUtc(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.GetLastAccessTimeUtc(path);
@@ -572,10 +578,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Sets the last access time of the file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="lastAccessTime"></param>
+        /// <param name="path">Path to file.</param>
+        /// <param name="lastAccessTime">New last access time.</param>
         public static void SetLastAccessTime(string path, DateTime lastAccessTime)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.SetLastAccessTime(path, lastAccessTime);
@@ -584,10 +590,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Sets the last access utc time of the file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="lastAccessTimeUtc"></param>
+        /// <param name="path">Path to file.</param>
+        /// <param name="lastAccessTimeUtc">New last access utc time.</param>
         public static void SetLastAccessTimeUtc(string path, DateTime lastAccessTimeUtc)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.SetLastAccessTimeUtc(path, lastAccessTimeUtc);
@@ -596,10 +602,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Get last write time of the file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file.</param>
+        /// <returns>Returns the last write time of the file.</returns>
         public static DateTime GetLastWriteTime(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.GetLastWriteTime(path);
@@ -608,10 +614,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Get last write utc time of the file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to file.</param>
+        /// <returns>Returns the last write utc time of the file.</returns>
         public static DateTime GetLastWriteTimeUtc(string path)
         {
             return ImplementationFactory.CurrentFactory.StatelessC1File.GetLastWriteTimeUtc(path);
@@ -620,10 +626,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Sets the last write time of the file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="lastWriteTime"></param>
+        /// <param name="path">Path to file.</param>
+        /// <param name="lastWriteTime">New last write time.</param>
         public static void SetLastWriteTime(string path, DateTime lastWriteTime)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.SetLastWriteTime(path, lastWriteTime);
@@ -632,10 +638,10 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// IOLayer - documentation pending
+        /// Sets the last write utc time of the file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="lastWriteTimeUtc"></param>
+        /// <param name="path">Path to file.</param>
+        /// <param name="lastWriteTimeUtc">New last write utc time.</param>
         public static void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc)
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.SetLastWriteTimeUtc(path, lastWriteTimeUtc);

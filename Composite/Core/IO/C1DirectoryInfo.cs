@@ -10,9 +10,10 @@ namespace Composite.Core.IO
 
     /// <summary>
     /// This class is a almost one to one version of System.IO.DirectoryInfo. Using this implementation instead 
-    /// of System.IO.Directory, will ensure that your code will work both on Standard Windows deployment 
+    /// of System.IO.DirectoryInfo, will ensure that your code will work both on Standard Windows deployment 
     /// and Windows Azure deployment.
     /// See System.IO.DirectoryInfo for more documentation on the methods of this class.
+    /// See <see cref="Composite.Core.IO.Plugins.IOProvider.IC1DirectoryInfo"/>. 
     /// </summary>
     public class C1DirectoryInfo : C1FileSystemInfo
     {
@@ -209,7 +210,7 @@ namespace Composite.Core.IO
         /// <summary>
         /// Creates a subdirectory.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path to directory to create.</param>
         /// <returns></returns>
         public C1DirectoryInfo CreateSubdirectory(string path)
         {
