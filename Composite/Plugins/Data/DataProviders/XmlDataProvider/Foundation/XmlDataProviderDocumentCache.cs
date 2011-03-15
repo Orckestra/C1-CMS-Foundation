@@ -19,6 +19,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 {
     internal static class XmlDataProviderDocumentCache
     {
+        private static readonly string LogTitle = "XmlDataProvider";
+
         internal class FileRecord
         {
             public string FileName;
@@ -229,7 +231,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         }
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, handle broken saves")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, to handle broken saves")]
         private static void SaveChanges(FileRecord fileRecord)
         {
             XDocument xDocument = new XDocument();
@@ -264,36 +266,50 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                         xDocument.Save(xmlWriter);
                     }
 
-                    bool failed = true;
-                    Exception lastException = null;
-                    for (int i = 0; i < 10; i++)
+                    if (File.Exists(fileRecord.FileName))
                     {
-                        try
+                        bool failed = true;
+                        Exception lastException = null;
+                        for (int i = 0; i < 10; i++)
                         {
-                            if (File.Exists(fileRecord.FileName))
+                            try
                             {
-                                File.Delete(fileRecord.FileName);
+                                if (File.Exists(fileRecord.FileName))
+                                {
+                                    File.Delete(fileRecord.FileName);
+                                }
                                 failed = false;
                                 break;
                             }
+                            catch (Exception ex)
+                            {
+                                lastException = ex;
+                                Thread.Sleep(10*(i + 1));
+                            }
                         }
-                        catch (Exception)
+
+                        if (failed)
                         {
-                            Thread.Sleep(10 * (i + 1));
+                            LoggingService.LogCritical(LogTitle, "Failed deleting the file: " + fileRecord.FileName);
+                            if (lastException != null) throw lastException;
+
+                            throw new InvalidOperationException("Failed to delete a file, this code shouldn't be reacheable");
                         }
                     }
 
-                    if (failed)
+                    try
                     {
-                        LoggingService.LogCritical("XmlDataProvider", "Failed deleting the file: " + fileRecord.FileName);
-                        throw lastException;
+                        C1File.Move(fileRecord.TempFileName, fileRecord.FileName);
                     }
-
-                    C1File.Move(fileRecord.TempFileName, fileRecord.FileName);
+                    catch(Exception)
+                    {
+                        LoggingService.LogCritical(LogTitle, "Failed to move file: " + fileRecord.TempFileName);
+                        throw;
+                    }
                 }
                 catch (Exception exception)
                 {
-                    LoggingService.LogCritical("XmlDataProvider", "Failed to write " + fileRecord.FileName);
+                    LoggingService.LogCritical(LogTitle, "Failed to write file:" + fileRecord.FileName);
                     thrownException = exception;
                 }
             }
