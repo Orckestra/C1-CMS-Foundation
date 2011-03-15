@@ -115,6 +115,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                 return new LogFileReader[] { };
             }
 
+            EnsureInitialize();
 
             string[] filePathes = Directory.GetFiles(_logDirectoryPath);
 
