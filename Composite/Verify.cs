@@ -97,7 +97,7 @@ namespace Composite
         {
             if (!condition)
             {
-                ThrowInvalidOperationException(string.Format(message, formatArgs));
+                ThrowInvalidOperationException(message, formatArgs);
             }
         }
 
@@ -134,7 +134,7 @@ namespace Composite
         public static void IsNotNull(object value, string message, params object[] formattingArgs)
         {
             if (value == null)
-                ThrowInvalidOperationException(message.FormatWith(formattingArgs));
+                ThrowInvalidOperationException(message, formattingArgs);
         }
 
         #region Exception throwing
@@ -143,6 +143,11 @@ namespace Composite
         public static void ThrowInvalidOperationException(string message)
         {
             throw new InvalidOperationException(message);
+        }
+
+        private static void ThrowInvalidOperationException(string message, object[] formatArguments)
+        {
+            throw new InvalidOperationException(formatArguments.Length > 0 ? string.Format(message, formatArguments) : message);
         }
 
         /// <summary>
