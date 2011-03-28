@@ -5,6 +5,7 @@ using System.Security;
 using System.Text;
 using Composite.Core.Serialization;
 using Composite.Core.Types;
+using Composite.Core;
 
 
 namespace Composite.C1Console.Security
@@ -84,6 +85,7 @@ namespace Composite.C1Console.Security
             MethodInfo methodInfo = actionType.GetMethod("Deserialize", BindingFlags.Public | BindingFlags.Static);
             if (methodInfo == null)
             {
+                Log.LogWarning("ActionTokenSerializer", string.Format("The action token {0} is missing a public static Deserialize method taking a string as parameter and returning an {1}", actionType, typeof(ActionToken)));
                 throw new InvalidOperationException(string.Format("The action token {0} is missing a public static Deserialize method taking a string as parameter and returning an {1}", actionType, typeof(ActionToken)));
             }
 
@@ -95,11 +97,16 @@ namespace Composite.C1Console.Security
             }
             catch (Exception ex)
             {
+                Log.LogWarning("ActionTokenSerializer", string.Format("The action token {0} is missing a public static Deserialize method taking a string as parameter and returning an {1}", actionType, typeof(ActionToken)));
+                Log.LogWarning("ActionTokenSerializer", ex);
+
                 throw new InvalidOperationException(string.Format("The action token {0} is missing a public static Deserialize method taking a string as parameter and returning an {1}", actionType, typeof(ActionToken)), ex);
             }
 
             if (actionToken == null)
             {
+                Log.LogWarning("ActionTokenSerializer", string.Format("public static Deserialize method taking a string as parameter and returning an {1} on the action token {0} did not return an object", actionType, typeof(ActionToken)));
+
                 throw new InvalidOperationException(string.Format("public static Deserialize method taking a string as parameter and returning an {1} on the action token {0} did not return an object", actionType, typeof(ActionToken)));
             }
 

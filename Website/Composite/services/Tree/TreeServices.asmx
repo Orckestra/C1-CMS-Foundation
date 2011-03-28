@@ -12,6 +12,7 @@ using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
+using Composite.Core;
 using Composite.Core.IO;
 using Composite.Core.Xml;
 using Composite.Core.Types;
@@ -47,22 +48,31 @@ namespace Composite.Services
         [WebMethod]
         public List<ClientElement> GetActivePerspectiveElements(string dummy)
         {
-            string username = UserValidationFacade.GetUsername();
-
-            List<Element> allPerspectives = ElementFacade.GetPerspectiveElementsWithNoSecurity(null).ToList();
-            List<string> activePerspectiveEntityTokens = UserPerspectiveFacade.GetSerializedEntityTokens(username).ToList();
-            activePerspectiveEntityTokens.AddRange(UserGroupPerspectiveFacade.GetSerializedEntityTokens(username));
-            activePerspectiveEntityTokens = activePerspectiveEntityTokens.Distinct().ToList();
-
-            List<ClientElement> activePerspectives = allPerspectives.Where(f => activePerspectiveEntityTokens.Contains(EntityTokenSerializer.Serialize(f.ElementHandle.EntityToken))).ToList().ToClientElementList();
-
-            foreach (ClientElement clientElement in activePerspectives)
+            try
             {
-                clientElement.Actions.Clear();
-                clientElement.ActionKeys.Clear();
-            }
+                string username = UserValidationFacade.GetUsername();
 
-            return activePerspectives;
+                List<Element> allPerspectives = ElementFacade.GetPerspectiveElementsWithNoSecurity(null).ToList();
+                List<string> activePerspectiveEntityTokens = UserPerspectiveFacade.GetSerializedEntityTokens(username).ToList();
+                activePerspectiveEntityTokens.AddRange(UserGroupPerspectiveFacade.GetSerializedEntityTokens(username));
+                activePerspectiveEntityTokens = activePerspectiveEntityTokens.Distinct().ToList();
+
+                List<ClientElement> activePerspectives = allPerspectives.Where(f => activePerspectiveEntityTokens.Contains(EntityTokenSerializer.Serialize(f.ElementHandle.EntityToken))).ToList().ToClientElementList();
+
+                foreach (ClientElement clientElement in activePerspectives)
+                {
+                    clientElement.Actions.Clear();
+                    clientElement.ActionKeys.Clear();
+                }
+
+                return activePerspectives;
+            }
+            catch (Exception ex)
+            {
+                Log.LogCritical("TreeService", "Unable to get any perspectives, console will not work!");
+                Log.LogCritical("TreeService", ex);
+                return new List<ClientElement>();
+            }
         }
 
 
