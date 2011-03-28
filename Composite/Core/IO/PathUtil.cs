@@ -27,7 +27,10 @@ namespace Composite.Core.IO
             }
         }
 
-
+        
+        /// <summary>
+        /// Root directory of website 
+        /// </summary>
         /// <exclude />
         public static string BaseDirectory
         {
