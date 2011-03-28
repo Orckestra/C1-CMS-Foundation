@@ -10,7 +10,6 @@ using Composite.C1Console.Workflow;
 
 namespace Composite.C1Console.Users.Workflows
 {
-    [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class ChangeOwnCultureWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
