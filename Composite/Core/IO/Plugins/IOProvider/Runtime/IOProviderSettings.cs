@@ -5,13 +5,19 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Core.IO.Plugins.IOProvider.Runtime
 {
-    internal sealed class IOProviderSettings : SerializableConfigurationSection
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class IOProviderSettings : SerializableConfigurationSection
     {
         public const string SectionName = "Composite.Core.IO.Plugins.IOProviderConfiguration";
 
-
+        
         private const string _defaultIOProviderProviderProperty = "defaultIOProvider";
-        [ConfigurationProperty(_defaultIOProviderProviderProperty, IsRequired = true)]
+        /// <summary>
+        /// </summary>
+        [ConfigurationProperty(_defaultIOProviderProviderProperty, IsRequired = true)]        
         public string DefaultIOProvider
         {
             get { return (string)base[_defaultIOProviderProviderProperty]; }
@@ -21,6 +27,8 @@ namespace Composite.Core.IO.Plugins.IOProvider.Runtime
 
 
         private const string _ioProviderPluginsProperty = "IOProviderPlugins";
+        /// <summary>
+        /// </summary>
         [ConfigurationProperty(_ioProviderPluginsProperty)]
         public NameTypeManagerTypeConfigurationElementCollection<IOProviderData> IOProviderPlugins
         {
