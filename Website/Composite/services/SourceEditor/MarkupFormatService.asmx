@@ -13,6 +13,7 @@ using System.Web.Services.Protocols;
 using System.Xml;
 using System.Xml.Linq;
 using Composite.Core.Xml;
+using Composite.Core.WebClient.Services.WysiwygEditor;
 using TidyNet;
 
 
@@ -91,7 +92,8 @@ namespace Composite.Services
             {
                 using (MemoryStream outputStream = new MemoryStream())
                 {
-                    Tidy tidy = GetXhtmlConfiguredTidy();
+                    Tidy tidy = GetXhtml5ConfiguredTidy();
+                    
                     TidyMessageCollection tidyMessages = new TidyMessageCollection();
 
                     tidy.Parse(inputStream, outputStream, tidyMessages);
@@ -147,7 +149,7 @@ namespace Composite.Services
         //}
 
 
-        private static Tidy GetXhtmlConfiguredTidy()
+        private static Tidy GetXhtml5ConfiguredTidy()
         {
             Tidy t = new Tidy();
 
@@ -173,6 +175,14 @@ namespace Composite.Services
             t.Options.QuoteNbsp = false;
             t.Options.NumEntities = true;
 
+            // Feed tidy the html5 specific tags...
+            List<string> html5specificElementNames = new List<string> { "article", "aside", "audio", "canvas", "command", "datalist", "details", "embed", "figcaption", "figure", "footer", "header", "hgroup", "keygen", "mark", "meter", "nav", "output", "progress", "rp", "rt", "ruby", "section", "source", "summary", "time", "video", "wbr" };
+            foreach (string elementName in html5specificElementNames)
+            {
+                t.Options.AddTag(elementName.ToLower());
+            }
+
+            
             return t;
         }
 

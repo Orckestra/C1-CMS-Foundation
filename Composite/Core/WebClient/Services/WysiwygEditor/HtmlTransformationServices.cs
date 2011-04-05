@@ -117,6 +117,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             Dictionary<string, string> namespacePrefixToUri = LocateNamespacePrefixToUriDeclarations(htmlMarkup);
             List<string> badNamespacePrefixedElementNames = namespacePrefixedElementNames.Where(s => namespacePrefixToUri.Where(d => s.StartsWith(d.Key)).Any() == false).ToList();
             AllowNamespacePrefixedElementNames(tidy, namespacePrefixedElementNames);
+            AllowHtml5ElementNames(tidy);
 
             TidyMessageCollection tidyMessages = new TidyMessageCollection();
             string xhtml = "";
@@ -206,6 +207,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
 
             List<string> namespacePrefixedElementNames = LocateNamespacePrefixedElementNames(xmlMarkup);
             AllowNamespacePrefixedElementNames(tidy, namespacePrefixedElementNames);
+            AllowHtml5ElementNames(tidy);
 
             TidyMessageCollection tidyMessages = new TidyMessageCollection();
             string xml = "";
@@ -413,6 +415,16 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             return t;
         }
 
+
+        private static void AllowHtml5ElementNames(Tidy tidy)
+        {
+            List<string> html5specificElementNames = new List<string> { "article", "aside", "audio", "canvas", "command", "datalist", "details", "embed", "figcaption", "figure", "footer", "header", "hgroup", "keygen", "mark", "meter", "nav", "output", "progress", "rp", "rt", "ruby", "section", "source", "summary", "time", "video", "wbr" };
+
+            foreach (string elementName in html5specificElementNames)
+            {
+                tidy.Options.AddTag(elementName.ToLower());
+            }
+        }
 
 
         private static void AllowNamespacePrefixedElementNames(Tidy tidy, List<string> elementNames)
