@@ -118,7 +118,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                             continue;
                         }
 
-                        if (((C1File.GetAttributes(targetFilename) & FileAttributes.ReadOnly) > 0) && (onlyUpdate == false))
+                        if (((C1File.GetAttributes(targetFilename) & FileAttributes.ReadOnly) > 0) && (allowOverwrite == false))
                         {
                             validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.FileReadOnly"), targetFilename), targetFilenameAttribute));
                             continue;                            
@@ -275,6 +275,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 if (Directory.Exists(targetDirectory) == false)
                 {
                     Directory.CreateDirectory(targetDirectory);
+                }
+
+                if ((C1File.Exists(fileToCopy.TargetFilePath) && ((C1File.GetAttributes(fileToCopy.TargetFilePath) & FileAttributes.ReadOnly) > 0) && (fileToCopy.AllowOverwrite)))
+                {
+                    FileUtils.RemoveReadOnly(fileToCopy.TargetFilePath);
                 }
 
                 this.InstallerContex.ZipFileSystem.WriteFileToDisk(fileToCopy.SourceFilename, fileToCopy.TargetFilePath);
