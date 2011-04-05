@@ -43,7 +43,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             string serializedEntityToken = EntityTokenSerializer.Serialize(entityToken);
 
             string url = string.Format("{0}?TypeName={1}", UrlUtils.ResolveAdminUrl("content/views/datatypedescriptor/ToXml.aspx"), System.Web.HttpUtility.UrlEncode(castedEntityToken.SerializedTypeName));
-            
+
             ConsoleMessageQueueFacade.Enqueue(
                 new OpenViewMessageQueueItem
                 {
@@ -65,7 +65,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     [ActionExecutor(typeof(DataTypeDescriptorToXmlActionExecutor))]
     public sealed class DataTypeDescriptorToXmlActionToken : ActionToken
     {
@@ -136,7 +136,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         /// <exclude />
         public static ResourceHandle DeleteDataIcon { get { return GetIconHandle("generated-type-data-delete"); } }
-        
+
         /// <exclude />
         public static ResourceHandle LocalizeDataIcon { get { return GetIconHandle("generated-type-data-localize"); } }
 
@@ -249,7 +249,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         /// <exclude />
         public IEnumerable<Element> GetRoots(SearchToken seachToken)
         {
-            List<Element> roots = new List<Element>();                     
+            List<Element> roots = new List<Element>();
 
             Element globalDataElement;
             if (_onlyShowGlobalDatas == true)
@@ -322,9 +322,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     }
                 });
 
-            
+
             roots.Add(globalDataElement);
-            
+
 
             if (_onlyShowGlobalDatas == false)
             {
@@ -365,6 +365,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
 
                 bool pageMetaDataHasChildren = PageMetaDataFacade.GetAllMetaDataTypes().Count() > 0;
+
 
                 Element pageMetaDataElement = new Element(_providerContext.CreateElementHandle(new GeneratedDataTypesElementProviderRootEntityToken(_providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.PageMetaDataTypeFolderId)))
                 {
@@ -484,7 +485,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             if (entityToken.Id == GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId)
             {
-                return GetGlobalDataTypesElements(searchToken).OrderBy(f=>f.VisualData.Label).ToList();
+                return GetGlobalDataTypesElements(searchToken).OrderBy(f => f.VisualData.Label).ToList();
             }
             else if (entityToken.Id == GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId)
             {
@@ -637,8 +638,12 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private void AddNonShowOnlyGlobalActions(Type type, string typeName, Element element)
         {
+            DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(type.GetImmutableTypeId());
+            bool isEditable = dataTypeDescriptor.IsCodeGenerated;
+
             if (DataLocalizationFacade.UseLocalization == true)
             {
+
                 if (DataLocalizationFacade.IsLocalized(type) == false)
                 {
                     element.AddAction(
@@ -649,7 +654,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                                 Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EnableLocalization"),
                                 ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EnableLocalizationToolTip"),
                                 Icon = GeneratedDataTypesElementProvider.LocalizeDataTypeIcon,
-                                Disabled = DataLocalizationFacade.ActiveLocalizationCultures.Any() == false,
+                                Disabled = DataLocalizationFacade.ActiveLocalizationCultures.Any() == false || !isEditable,
                                 ActionLocation = new ActionLocation
                                 {
                                     ActionType = ActionType.Other,
@@ -670,7 +675,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                                 Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DisableLocalization"),
                                 ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DisableLocalizationToolTip"),
                                 Icon = GeneratedDataTypesElementProvider.DelocalizeDataTypeIcon,
-                                Disabled = false,
+                                Disabled = !isEditable,
                                 ActionLocation = new ActionLocation
                                 {
                                     ActionType = ActionType.Other,
@@ -681,7 +686,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                             }
                         });
                 }
+
             }
+
 
             element.AddAction(
                 new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditInterfaceTypeWorkflow"), _editInterfaceTypePermissionTypes) { Payload = _providerContext.ProviderName }))
@@ -691,7 +698,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                         Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "Edit"),
                         ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditToolTip"),
                         Icon = GeneratedDataTypesElementProvider.EditDataTypeIcon,
-                        Disabled = false,
+                        Disabled = !isEditable,
                         ActionLocation = new ActionLocation
                         {
                             ActionType = ActionType.Edit,
@@ -710,7 +717,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                         Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "Delete"),
                         ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DeleteToolTip"),
                         Icon = GeneratedDataTypesElementProvider.DeleteDataTypeIcon,
-                        Disabled = false,
+                        Disabled = !isEditable,
                         ActionLocation = new ActionLocation
                         {
                             ActionType = ActionType.Delete,
@@ -784,6 +791,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             foreach (Type type in types)
             {
+                DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(type.GetImmutableTypeId());
+                bool isEditable = dataTypeDescriptor.IsCodeGenerated;
+
                 string typeName = TypeManager.SerializeType(type);
 
                 bool hasChildren = false;
@@ -846,46 +856,45 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     }
                 }
 
-                if (type.IsGenerated() == true)
-                {
-                    element.AddAction(
-                        new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditAggregationTypeWorkflow"), _editInterfaceTypePermissionTypes) { Payload = typeName }))
-                        {
-                            VisualData = new ActionVisualizedData
-                            {
-                                Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditDataFolderTypeLabel"),
-                                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditDataFolderTypeToolTip"),
-                                Icon = GeneratedDataTypesElementProvider.EditDataTypeIcon,
-                                Disabled = false,
-                                ActionLocation = new ActionLocation
-                                {
-                                    ActionType = ActionType.Edit,
-                                    IsInFolder = false,
-                                    IsInToolbar = true,
-                                    ActionGroup = PrimaryActionGroup
-                                }
-                            }
-                        });
 
-                    element.AddAction(
-                        new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.DeleteAggregationTypeWorkflow"), _deleteInterfaceTypePermissionTypes) { Payload = typeName }))
+                element.AddAction(
+                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditAggregationTypeWorkflow"), _editInterfaceTypePermissionTypes) { Payload = typeName }))
+                    {
+                        VisualData = new ActionVisualizedData
                         {
-                            VisualData = new ActionVisualizedData
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditDataFolderTypeLabel"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditDataFolderTypeToolTip"),
+                            Icon = GeneratedDataTypesElementProvider.EditDataTypeIcon,
+                            Disabled = !isEditable,
+                            ActionLocation = new ActionLocation
                             {
-                                Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DeleteDataFolderTypeLabel"),
-                                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DeleteDataFolderTypeToolTip"),
-                                Icon = GeneratedDataTypesElementProvider.DeleteDataTypeIcon,
-                                Disabled = false,
-                                ActionLocation = new ActionLocation
-                                {
-                                    ActionType = ActionType.Delete,
-                                    IsInFolder = false,
-                                    IsInToolbar = true,
-                                    ActionGroup = PrimaryActionGroup
-                                }
+                                ActionType = ActionType.Edit,
+                                IsInFolder = false,
+                                IsInToolbar = true,
+                                ActionGroup = PrimaryActionGroup
                             }
-                        });
-                }
+                        }
+                    });
+
+                element.AddAction(
+                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.DeleteAggregationTypeWorkflow"), _deleteInterfaceTypePermissionTypes) { Payload = typeName }))
+                    {
+                        VisualData = new ActionVisualizedData
+                        {
+                            Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DeleteDataFolderTypeLabel"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DeleteDataFolderTypeToolTip"),
+                            Icon = GeneratedDataTypesElementProvider.DeleteDataTypeIcon,
+                            Disabled = !isEditable,
+                            ActionLocation = new ActionLocation
+                            {
+                                ActionType = ActionType.Delete,
+                                IsInFolder = false,
+                                IsInToolbar = true,
+                                ActionGroup = PrimaryActionGroup
+                            }
+                        }
+                    });
+
 
                 element.AddAction(
                     new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditFormWorkflow"), _editFormMarkupPermissionTypes) { Payload = _providerContext.ProviderName, DoIgnoreEntityTokenLocking = true }))
@@ -927,6 +936,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             foreach (Type type in types)
             {
+                DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(type.GetImmutableTypeId());
+                bool isEditable = dataTypeDescriptor.IsCodeGenerated;
+
                 string typeName = TypeManager.SerializeType(type);
 
                 bool hasChildren = false;
@@ -943,6 +955,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     }
                 };
 
+
                 element.AddAction(
                     new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditCompositionTypeWorkflow"), _editInterfaceTypePermissionTypes) { Payload = typeName }))
                     {
@@ -951,7 +964,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                             Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditMetaDataTypeLabel"),
                             ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditMetaDataTypeToolTip"),
                             Icon = GeneratedDataTypesElementProvider.EditDataTypeIcon,
-                            Disabled = false,
+                            Disabled = !isEditable,
                             ActionLocation = new ActionLocation
                             {
                                 ActionType = ActionType.Edit,
@@ -970,7 +983,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                             Label = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DeleteMetaDataTypeLabel"),
                             ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DeleteMetaDataTypeToolTip"),
                             Icon = GeneratedDataTypesElementProvider.DeleteDataTypeIcon,
-                            Disabled = false,
+                            Disabled = !isEditable,
                             ActionLocation = new ActionLocation
                             {
                                 ActionType = ActionType.Delete,
@@ -1027,7 +1040,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
 
 
-            if ( PageMetaDataFacade.GetAllMetaDataTypes().Contains(type) == false)
+            if (PageMetaDataFacade.GetAllMetaDataTypes().Contains(type) == false)
             {
                 element.AddAction(
                     new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditDataWorkflow"), _editDataPermissionTypes)))
