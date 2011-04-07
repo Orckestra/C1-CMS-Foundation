@@ -1125,7 +1125,7 @@ namespace Composite.Core.Types
 
             CompilerResults result = compiler.CompileAssemblyFromFile(compilerParameters, filenames.ToArray());
 
-            if (targetFileName.EndsWith(_assemblyPackFilename))
+            if (targetFileName.IndexOf(_assemblyPackFilename, StringComparison.OrdinalIgnoreCase) > -1)
             {
                 C1File.Touch(targetFileName); // This ensures that the Composite.Genereted.dll is uploaded to the blob on azure
             }
