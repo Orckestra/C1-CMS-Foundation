@@ -1,19 +1,21 @@
-﻿using System.Xml;
+﻿using System.IO;
+using System.Xml;
 using Composite.Core.IO;
-using System.IO;
 
 
 namespace Composite.Core.Xml
 {
-    /// <summary>    
+    /// <summary>   
+    /// This class contains Composite IO versions of System.Xml.XmlWriter/System.Xml.XmlTextWriter Create.
+    /// These method should be used instead of the ones in System.Xml.XmlWriter/System.Xml.XmlTextWriter.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    internal static class XmlWriterUtils
+    public static class XmlWriterUtils
     {
         /// <summary>
-        /// This should be a part of the I/O layer
+        /// Creates a new XmlWriter
         /// </summary>
+        /// <param name="path">Path to file</param>
+        /// <returns>Returns the newly created XmlWriter</returns>
         public static XmlWriter Create(string path)
         {
             Stream stream = new C1FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read);
@@ -27,8 +29,11 @@ namespace Composite.Core.Xml
 
 
         /// <summary>
-        /// This should be a part of the I/O layer
+        /// Creates a new XmlWriter
         /// </summary>
+        /// <param name="path">Path to file</param>
+        /// <param name="settings">An instance to XmlWriterSettings</param>
+        /// <returns>Returns the newly created XmlWriter</returns>
         public static XmlWriter Create(string path, XmlWriterSettings settings)
         {
             Stream stream = new C1FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read);
