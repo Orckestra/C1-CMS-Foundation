@@ -150,7 +150,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                                         break;
                                     }
                                     else
-                                    {                                        
+                                    {
                                         fileNotFound = true;
                                         break;
                                     }
@@ -170,7 +170,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                             if (failed)
                             {
                                 LoggingService.LogCritical("XmlDataProvider", "Failed moving file " + filename + " to file " + filename + ".tmp");
-                                throw lastException;
+                                if (lastException != null)
+                                {
+                                    LoggingService.LogCritical(LogTitle, lastException);
+                                    throw lastException;
+                                }
                             }
                         }
 
@@ -260,7 +264,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
                     xmlWriterSettings.CheckCharacters = false;
                     xmlWriterSettings.Indent = true;
-                    
+
                     using (XmlWriter xmlWriter = XmlWriterUtils.Create(fileRecord.TempFileName, xmlWriterSettings))
                     {
                         xDocument.Save(xmlWriter);
@@ -284,7 +288,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                             catch (Exception ex)
                             {
                                 lastException = ex;
-                                Thread.Sleep(10*(i + 1));
+                                Thread.Sleep(10 * (i + 1));
                             }
                         }
 
@@ -301,7 +305,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     {
                         C1File.Move(fileRecord.TempFileName, fileRecord.FileName);
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                         LoggingService.LogCritical(LogTitle, "Failed to move file: " + fileRecord.TempFileName);
                         throw;
@@ -309,7 +313,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 }
                 catch (Exception exception)
                 {
-                    LoggingService.LogCritical(LogTitle, "Failed to write file:" + fileRecord.FileName);
+                    LoggingService.LogCritical(LogTitle, "Failed to save data to the file file:" + fileRecord.FileName);
+                    LoggingService.LogCritical(LogTitle, exception);
                     thrownException = exception;
                 }
             }
