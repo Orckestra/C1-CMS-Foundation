@@ -265,7 +265,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     xmlWriterSettings.CheckCharacters = false;
                     xmlWriterSettings.Indent = true;
 
-                    using (XmlWriter xmlWriter = XmlWriterUtils.Create(fileRecord.TempFileName, xmlWriterSettings))
+                    using (XmlWriter xmlWriter = XmlWriter.Create(fileRecord.TempFileName, xmlWriterSettings))
                     {
                         xDocument.Save(xmlWriter);
                     }
@@ -303,7 +303,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                     try
                     {
-                        C1File.Move(fileRecord.TempFileName, fileRecord.FileName);
+                        File.Move(fileRecord.TempFileName, fileRecord.FileName);
+                        C1File.Touch(fileRecord.FileName);
                     }
                     catch (Exception)
                     {
