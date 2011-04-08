@@ -169,7 +169,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                             if (failed)
                             {
-                                Martin.Log.AddEntry("XmlDataProvider: " + "Failed moving file " + filename + " to file " + filename + ".tmp");
                                 LoggingService.LogCritical("XmlDataProvider", "Failed moving file " + filename + " to file " + filename + ".tmp");
                                 if (lastException != null)
                                 {
@@ -186,9 +185,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                         }
                         catch (Exception ex)
                         {
-                            Martin.Log.AddEntry("XmlDataProvider: " + "Failed to load data from the file: " + filename);
-                            Martin.Log.AddEntry("XmlDataProvider: " + ex.ToString());
-
                             LoggingService.LogCritical("XmlDataProvider", "Failed to load data from the file: " + filename);
                             LoggingService.LogCritical("XmlDataProvider", ex);
 
@@ -299,7 +295,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                         if (failed)
                         {
-                            Martin.Log.AddEntry("XmlDataProvider: " + "Failed deleting the file: " + fileRecord.FileName);
                             LoggingService.LogCritical(LogTitle, "Failed deleting the file: " + fileRecord.FileName);
                             if (lastException != null) throw lastException;
 
@@ -314,16 +309,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     }
                     catch (Exception)
                     {
-                        Martin.Log.AddEntry("XmlDataProvider: " + "Failed to move file: " + fileRecord.TempFileName);
                         LoggingService.LogCritical(LogTitle, "Failed to move file: " + fileRecord.TempFileName);
                         throw;
                     }
                 }
                 catch (Exception exception)
                 {
-                    Martin.Log.AddEntry("XmlDataProvider: " + "Failed to save data to the file file:" + fileRecord.FileName);
-                    Martin.Log.AddEntry("XmlDataProvider: " + exception.ToString());
-
                     LoggingService.LogCritical(LogTitle, "Failed to save data to the file file:" + fileRecord.FileName);
                     LoggingService.LogCritical(LogTitle, exception);
                     thrownException = exception;
