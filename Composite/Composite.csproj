@@ -422,7 +422,6 @@
     <Compile Include="Core\Instrumentation\Plugin\Runtime\PerformanceCounterProviderDefaultNameRetriever.cs" />
     <Compile Include="Core\Instrumentation\Plugin\Runtime\PerformanceCounterProviderFactory.cs" />
     <Compile Include="Core\Instrumentation\Plugin\Runtime\PerformanceCounterProviderSettings.cs" />
-    <Compile Include="Core\Linq\Disassembled\ExpressionStringBuilder.cs" />
     <Compile Include="Core\Linq\ExpressionExtensionMethods.cs" />
     <Compile Include="Core\Linq\ExpressionVisitors\CacheKeyBuilderExpressionVisitor.cs" />
     <Compile Include="Core\Linq\IEnumerableExtensionMethod.cs" />

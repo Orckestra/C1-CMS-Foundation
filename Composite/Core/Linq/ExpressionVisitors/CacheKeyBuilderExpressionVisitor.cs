@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using Composite.Core.Linq.Disassembled;
 using Composite.Core.WebClient.Renderings.Page;
 
 namespace Composite.Core.Linq.ExpressionVisitors
@@ -10,8 +9,10 @@ namespace Composite.Core.Linq.ExpressionVisitors
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    public class CacheKeyBuilderExpressionVisitor : ExpressionStringBuilder
+    public class CacheKeyBuilderExpressionVisitor : ExpressionVisitor
     {
+        private static readonly MethodInfo ConstantWrapperMethod = typeof (CacheKeyBuilderExpressionVisitor).GetMethod("A", BindingFlags.Static | BindingFlags.NonPublic);
+
         /// <exclude />
         public interface ICacheKeyProvider
         {
@@ -29,12 +30,12 @@ namespace Composite.Core.Linq.ExpressionVisitors
         {
         }
 
-        internal static new string ExpressionToString(Expression node)
+        internal static string ExpressionToString(Expression expression)
         {
             CacheKeyBuilderExpressionVisitor builder = new CacheKeyBuilderExpressionVisitor();
-            builder.Visit(node);
+            Expression cachableExpression = builder.Visit(expression);
 
-            return builder.ToString();
+            return (builder._cacheKeyCanBeCreated ? cachableExpression : expression).ToString();
         }
 
 
@@ -63,14 +64,12 @@ namespace Composite.Core.Linq.ExpressionVisitors
 
                 if(IsSimpleType(node.Type))
                 {
-                    Out(value == null ? "null" : value.ToString());
-                    return node;
+                    return Expression.Constant(value);
                 }
 
                 if (value != null && value is ICacheKeyProvider)
                 {
-                    Out((value as ICacheKeyProvider).GetCacheKey());
-                    return node;
+                    return Out((value as ICacheKeyProvider).GetCacheKey(), node.Type);
                 }
             }
 
@@ -88,9 +87,7 @@ namespace Composite.Core.Linq.ExpressionVisitors
                     object containerValue = (innerExpression.Member as FieldInfo).GetValue(obj);
                     object value = (node.Member as PropertyInfo).GetValue(containerValue, EmptyObjectArray);
 
-                    Out(value == null ? "null" : value.ToString());
-
-                    return node;
+                    return Expression.Constant(value);
                 }
             }
 
@@ -99,8 +96,7 @@ namespace Composite.Core.Linq.ExpressionVisitors
                 && node.Member.DeclaringType == typeof(PageRenderer)
                 && node.Member.Name == "CurrentPageId")
             {
-                Out(PageRenderer.CurrentPageId.ToString());
-                return node;
+                return Expression.Constant(PageRenderer.CurrentPageId);
             }
 
             return base.VisitMember(node);
@@ -126,8 +122,6 @@ namespace Composite.Core.Linq.ExpressionVisitors
             return _cacheKeyCanBeCreated ? base.ToString() : null;
         }
 
-
-
         private static bool IsSimpleType(Type type)
         {
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
@@ -139,6 +133,22 @@ namespace Composite.Core.Linq.ExpressionVisitors
                    || type == typeof(DateTime) || type == typeof(byte)
                    || type == typeof(Int32) || type == typeof(Int64)
                    || type == typeof(Double);
+        }
+
+        /// <summary>  
+        /// Used for creating cache keys for LINQ expressions, it has a short name to keep the keys short  
+        /// </summary>
+        // DO NOT REMOVE, used by "Out" method via reflection
+        private static T A<T>(string cacheKeyPart)
+        {
+            throw new InvalidOperationException("This method is not supposed to be called, used only for building a cache key via ExpressionStringBuilder");
+        }
+
+        private static Expression Out(string value, Type type)
+        {
+            // TODO: check whether it has sense to cache MakeGenericMethod call
+            var methodInfo = ConstantWrapperMethod.MakeGenericMethod(type);
+            return Expression.Call(methodInfo, Expression.Constant(value));
         }
     }
 }
