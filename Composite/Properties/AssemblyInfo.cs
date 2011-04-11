@@ -6,7 +6,13 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
+
+#if !InternalBuild
 [assembly: AssemblyTitle("Composite C1 2.1.1")]
+#else
+[assembly: AssemblyTitle("Composite C1 2.1.1 (Internal build)")]
+#endif
+
 [assembly: AssemblyDescription("Composite C1 Core classes")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Composite A/S")]
