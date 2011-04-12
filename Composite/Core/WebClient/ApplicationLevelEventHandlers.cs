@@ -7,7 +7,6 @@ using Composite.Core.Instrumentation;
 using Composite.Core.Logging;
 using Composite.Core.Threading;
 using Composite.Core.Types;
-using Composite.Core.WebClient.Renderings;
 using Composite.Data;
 
 
@@ -203,7 +202,8 @@ namespace Composite.Core.WebClient
         {
             if (custom == "C1Page")
             {
-                var pageUrl = context.Items[RequestInterceptorHttpModule.HttpContextItem_C1PageUrl] as PageUrl;
+                var pageUrl = PageUrl.Parse(context.Request.RawUrl);
+
                 if (pageUrl != null)
                 {
                     var page = pageUrl.GetPage();
@@ -241,6 +241,8 @@ namespace Composite.Core.WebClient
 
             TempDirectoryFacade.OnApplicationStart();
             BuildManager.InitializeCachingSytem();
+
+            Routing.Routes.Register();
 
             ApplicationStartupFacade.FireSystemInitialized();
 

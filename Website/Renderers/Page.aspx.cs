@@ -60,12 +60,16 @@ public partial class Renderers_Page : System.Web.UI.Page
         }
         else
         {
-            _url = PageUrl.Parse(Context.Request.Url.OriginalString, out _foreignQueryStringParameters);
+            _url = RouteData.Values["PageUrl"] as PageUrl;
+            if(_url == null)
+            {
+                _url = PageUrl.Parse(Context.Request.Url.OriginalString, out _foreignQueryStringParameters);
+            }
+            
             _dataScope = new DataScope(DataScopeIdentifier.FromPublicationScope(_url.PublicationScope), _url.Locale);
             page = PageManager.GetPageById(_url.PageId);
 
             _cacheUrl = Request.Url.PathAndQuery;
-            RewritePath();
         }
 
         ValidateViewUnpublishedRequest();
@@ -247,12 +251,6 @@ public partial class Renderers_Page : System.Web.UI.Page
             Cache.Remove(_previewKey + "_SelectedPage");
             Cache.Remove(_previewKey + "_SelectedContents");
         }
-
-        // Rewrite path to what it was when this page was constructed. This ensure full page caching can work.
-        if (_cacheUrl != null)
-        {
-            Context.RewritePath(_cacheUrl.Replace("%20", " "));
-        }
     }
 
 
@@ -280,24 +278,6 @@ public partial class Renderers_Page : System.Web.UI.Page
 
         base.InitializeCulture();
     }
-
-
-
-    private void RewritePath()
-    {
-        UrlBuilder structuredUrl = _url.Build(PageUrlType.Public);
-        if (structuredUrl == null)
-        {
-            return;
-        }
-
-        structuredUrl.AddQueryParameters(_foreignQueryStringParameters);
-
-        string pathInfo = new UrlBuilder(_cacheUrl).PathInfo;
-        Context.RewritePath(structuredUrl.FilePath, pathInfo, structuredUrl.QueryString);
-    }
-
-
 
 
     private string BuildProfilerReport(Measurement measurement)

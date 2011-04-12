@@ -228,6 +228,9 @@
     <Compile Include="Core\WebClient\ApplicationLevelEventHandlers.cs" />
     <Compile Include="Core\WebClient\Presentation\LessRequestHandler.cs" />
     <Compile Include="Core\WebClient\Renderings\Page\PagePreviewBuilder.cs" />
+    <Compile Include="Core\WebClient\Routing\C1PageRoute.cs" />
+    <Compile Include="Core\WebClient\Routing\C1PageRouteHander.cs" />
+    <Compile Include="Core\WebClient\Routing\Routes.cs" />
     <Compile Include="Core\Xml\XhtmlErrorFormatter.cs" />
     <Compile Include="Core\Xml\UriResolver.cs" />
     <Compile Include="Core\Xml\XDocumentUtils.cs" />
