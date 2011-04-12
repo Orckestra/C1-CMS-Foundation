@@ -626,4 +626,8 @@
   <string key="AspNetUiControl.Selector.SelectValueLabel" value="Select a value..." />
   <string key="AspNetUiControl.Selector.BrokenReference" value="&lt; broken reference &gt;..." />
   <string key="AspNetUiControl.Selector.NoSelection" value="(no selection)" />
+
+	<string key="Validation.Decimal.SymbolsAfterPointAllowed" value="Only {0} digit(s) after decimal point allowed" />
+	<string key="Validation.Decimal.SymbolsBeforePointAllowed" value="Only {0} digit(s) before decimal point allowed" />
+
 </strings>
