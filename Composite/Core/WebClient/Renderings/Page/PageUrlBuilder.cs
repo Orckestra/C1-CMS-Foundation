@@ -3,7 +3,6 @@ using System.Globalization;
 using Composite.Core.Collections.Generic;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Core.WebClient;
 
 namespace Composite.Core.WebClient.Renderings.Page
 {
@@ -15,19 +14,16 @@ namespace Composite.Core.WebClient.Renderings.Page
         /// To be used for recursive building of page url-s.
         /// </summary>
         /// <param name="page"></param>
-        /// <param name="dataScopeIdentifier"></param>
-        /// <param name="cultureInfo"></param>
         /// <param name="parentPageId"></param>
         /// <param name="lookupUrl"></param>
         /// <param name="url"></param>
         /// <returns></returns>
-        public void BuildUrlInternal(IPage page, DataScopeIdentifier dataScopeIdentifier, CultureInfo cultureInfo, Guid parentPageId, out string url, out string lookupUrl)
+        public void BuildUrlInternal(IPage page, Guid parentPageId, out string url, out string lookupUrl)
         {
             Verify.ArgumentNotNull(page, "page");
-            Verify.ArgumentNotNull(dataScopeIdentifier, "dataScopeIdentifier");
-            Verify.ArgumentNotNull(cultureInfo, "cultureInfo");
 
-            string argsAppend = string.Empty;
+            DataScopeIdentifier dataScopeIdentifier = page.DataSourceId.DataScopeIdentifier;
+            CultureInfo cultureInfo = page.DataSourceId.LocaleScope;
 
             string parentPath;
             if (parentPageId == Guid.Empty)
@@ -46,7 +42,7 @@ namespace Composite.Core.WebClient.Renderings.Page
             FolderPaths.Add(page.Id, folderPath);
 
             string baseUrl;
-            string urlMappingName = DataLocalizationFacade.GetUrlMappingName(LocalizationScopeManager.CurrentLocalizationScope);
+            string urlMappingName = DataLocalizationFacade.GetUrlMappingName(cultureInfo);
             if (urlMappingName != "")
             {
                 baseUrl = string.Format("{0}/{1}{2}", UrlUtils.PublicRootPath, urlMappingName, folderPath);
@@ -56,7 +52,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                 baseUrl = UrlUtils.PublicRootPath + folderPath;
             }
 
-            lookupUrl = string.Format("{0}.aspx{1}", baseUrl, argsAppend);
+            lookupUrl = baseUrl + ".aspx"; 
 
 
             url = lookupUrl;

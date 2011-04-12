@@ -601,8 +601,6 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                 string pageUrl, lookupUrl;
                 builder.BuildUrlInternal(page,
-                    DataScopeManager.CurrentDataScope,
-                    LocalizationScopeManager.CurrentLocalizationScope,
                     parentId,
                     out pageUrl, out lookupUrl);
 
