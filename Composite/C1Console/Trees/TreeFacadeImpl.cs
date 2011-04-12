@@ -166,7 +166,10 @@ namespace Composite.C1Console.Trees
         {
             string xslFilename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), XslFilename);
 
-            if (C1File.Exists(xslFilename) == true)
+            var fileInfo = new FileInfo(xslFilename);
+
+            // The default xslt transformation does no changes and it's xsl file has size of 358 bytes, skipping this file saves up to 0.5 second on site startup
+            if (fileInfo.Exists && fileInfo.Length != 358)
             {
                 try
                 {

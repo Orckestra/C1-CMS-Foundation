@@ -746,6 +746,11 @@ namespace Composite.Core.Types
         [DebuggerStepThrough]
         private static bool AssemblyHasLocation(Assembly a)
         {
+            if(a.GetType().FullName == "System.Reflection.Emit.InternalAssemblyBuilder")
+            {
+                return false;
+            }
+
             try
             {
                 return a.ManifestModule.Name != "<Unknown>" &&
