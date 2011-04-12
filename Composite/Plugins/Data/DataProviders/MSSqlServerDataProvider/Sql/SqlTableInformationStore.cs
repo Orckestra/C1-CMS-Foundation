@@ -22,9 +22,9 @@ namespace Composite.Sql
 
 
         /// <exclude />
-        public static ISqlTableInformation GetTableInformation(string connectinoString, string tableName)
+        public static ISqlTableInformation GetTableInformation(string connectionString, string tableName)
         {
-            return _implementation.GetTableInformation(connectinoString, tableName);
+            return _implementation.GetTableInformation(connectionString, tableName);
         }
 
 

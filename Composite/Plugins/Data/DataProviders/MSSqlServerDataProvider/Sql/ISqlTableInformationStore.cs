@@ -2,7 +2,7 @@
 {
 	internal interface ISqlTableInformationStore
 	{
-        ISqlTableInformation GetTableInformation(string connectinoString, string tableName);
+        ISqlTableInformation GetTableInformation(string connectionString, string tableName);
         void OnFlush();
 	}
 }

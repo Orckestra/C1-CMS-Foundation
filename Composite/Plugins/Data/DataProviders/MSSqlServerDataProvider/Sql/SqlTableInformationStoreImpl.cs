@@ -37,8 +37,6 @@ namespace Composite.Sql
             _tableInformationCache = new Dictionary<string, ISqlTableInformation>();
         }
 
-
-
         private static SqlTableInformation CreateSqlTableInformation(string connectionString, string tableName)
         {
             var connection = SqlConnectionManager.GetConnection(connectionString);
@@ -62,7 +60,7 @@ namespace Composite.Sql
                   WHERE obj.name = '{0}'
                   ORDER BY col.colorder", tableName);
 
-            var columns = new List<dynamic>();
+            var columns = new List<ColumnInfo>();
 
             using(var command = new SqlCommand(queryString, connection))
             {
@@ -70,13 +68,14 @@ namespace Composite.Sql
                 {
                     foreach(DbDataRecord record in reader)
                     {
-                        columns.Add( new {
+                        columns.Add(new ColumnInfo
+                        {
                                 Name = record.GetString(0),
                                 IsPrimaryKey = record.GetInt32(1) == 1,
                                 IsIdentity = record.GetInt32(2) == 1,
                                 IsComputed = record.GetInt32(3) == 1,
                                 IsNullable = record.GetInt32(4) == 1
-                            });
+                        });
                     }
                 }
             }
@@ -168,6 +167,15 @@ namespace Composite.Sql
             //if (type == typeof(SqlXml)) return SqlDbType.Xml;
 
             throw new NotImplementedException(string.Format("The sql type {0} not supported", type.FullName));
+        }
+
+        private class ColumnInfo
+        {
+            public string Name;
+            public bool IsPrimaryKey;
+            public bool IsIdentity;
+            public bool IsComputed;
+            public bool IsNullable;
         }
     }
 }
