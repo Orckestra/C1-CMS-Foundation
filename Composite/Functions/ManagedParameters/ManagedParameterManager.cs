@@ -165,9 +165,18 @@ namespace Composite.Functions.ManagedParameters
 
         private class ManagedParameterProfiles : IEnumerable<ParameterProfile>
         {
-            private Guid _ownerId;
+            private readonly Guid _ownerId;
             private List<ParameterProfile> _parameterProfiles = null;
 
+            private static readonly object _syncRoot = new object();
+            private static List<IParameter> _parameterCache;
+
+            static ManagedParameterProfiles()
+            {
+                DataEventSystemFacade.SubscribeToDataAfterAdd<IParameter>((a, b) => ClearParametersCache());
+                DataEventSystemFacade.SubscribeToDataAfterUpdate<IParameter>((a, b) => ClearParametersCache());
+                DataEventSystemFacade.SubscribeToDataDeleted<IParameter>((a, b) => ClearParametersCache());
+            }
 
             public ManagedParameterProfiles(Guid ownerId)
             {
@@ -207,13 +216,13 @@ namespace Composite.Functions.ManagedParameters
                 if (_parameterProfiles == null)
                 {
                     _parameterProfiles = new List<ParameterProfile>();
+                    
 
-                    // NOTE: It would be nice to cache parameters collection instance in order to improve start-up time
                     var parameters =
-                        (from parameter in DataFacade.GetData<IParameter>().AsEnumerable()
+                         from parameter in GetParametersCached()
                          where parameter.OwnerId == _ownerId
                          orderby parameter.Position
-                         select parameter).ToList();
+                         select parameter;
 
                     foreach (var parameter in parameters)
                     {
@@ -222,6 +231,32 @@ namespace Composite.Functions.ManagedParameters
                 }
             }
 
+            private static void ClearParametersCache()
+            {
+                lock(_syncRoot)
+                {
+                    _parameterCache = null;
+                }
+            }
+
+            private static IEnumerable<IParameter> GetParametersCached()
+            {
+                var parameters = _parameterCache;
+
+                if (parameters != null) return parameters;
+
+                lock(_syncRoot)
+                {
+                    if (_parameterCache == null)
+                    {
+                        _parameterCache = DataFacade.GetData<IParameter>().ToList();
+                    }
+
+                    parameters = _parameterCache;
+                }
+
+                return parameters;
+            }
 
 
             private ParameterProfile BuildParameterProfile(IParameter parameter)

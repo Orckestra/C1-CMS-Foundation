@@ -34,7 +34,6 @@ public partial class Renderers_Page : System.Web.UI.Page
     private string _previewKey;
 
     private PageUrl _url;
-    private NameValueCollection _foreignQueryStringParameters;
     private string _cacheUrl = null;
     private bool _requestCompleted = false;
 
@@ -63,7 +62,8 @@ public partial class Renderers_Page : System.Web.UI.Page
             _url = RouteData.Values["PageUrl"] as PageUrl;
             if(_url == null)
             {
-                _url = PageUrl.Parse(Context.Request.Url.OriginalString, out _foreignQueryStringParameters);
+                NameValueCollection foreignQueryStringParameters;
+                _url = PageUrl.Parse(Context.Request.Url.OriginalString, out foreignQueryStringParameters);
             }
             
             _dataScope = new DataScope(DataScopeIdentifier.FromPublicationScope(_url.PublicationScope), _url.Locale);

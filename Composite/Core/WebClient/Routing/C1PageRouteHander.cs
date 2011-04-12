@@ -8,7 +8,7 @@ namespace Composite.Core.WebClient.Routing
     {
         public IHttpHandler GetHttpHandler(RequestContext requestContext)
         {
-            return System.Web.Compilation.BuildManager.CreateInstanceFromVirtualPath("/Renderers/Page.aspx", typeof(Page)) as Page;
+            return System.Web.Compilation.BuildManager.CreateInstanceFromVirtualPath("~/Renderers/Page.aspx", typeof(Page)) as Page;
         }
     }
 }

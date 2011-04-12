@@ -132,7 +132,7 @@ namespace Composite.Core.WebClient.Routing
 
         public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
         {
-            return new VirtualPathData(this, "/Renderers/Page.aspx");
+            return new VirtualPathData(this, "~/Renderers/Page.aspx");
         }
     }
 }
