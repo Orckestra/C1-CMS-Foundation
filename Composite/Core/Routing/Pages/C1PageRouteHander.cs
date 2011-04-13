@@ -2,7 +2,7 @@
 using System.Web.Routing;
 using System.Web.UI;
 
-namespace Composite.Core.WebClient.Routing
+namespace Composite.Core.Routing.Pages
 {
     internal class C1PageRouteHandler : IRouteHandler
     {

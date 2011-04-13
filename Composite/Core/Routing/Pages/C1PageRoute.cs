@@ -2,11 +2,12 @@
 using System.Collections.Specialized;
 using System.Web;
 using System.Web.Routing;
+using Composite.Core.WebClient;
 using Composite.Data;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 
-namespace Composite.Core.WebClient.Routing
+namespace Composite.Core.Routing.Pages
 {
     internal class C1PageRoute : RouteBase
     {

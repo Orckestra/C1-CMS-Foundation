@@ -1,6 +1,7 @@
 ﻿using System.Web.Routing;
+using Composite.Core.Routing.Pages;
 
-namespace Composite.Core.WebClient.Routing
+namespace Composite.Core.Routing
 {
     internal static class Routes
     {
