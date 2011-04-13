@@ -215,7 +215,16 @@ VisualEditorSimpleToolBarBinding.prototype.handleNodeChange = function ( element
 		}, this )
 		
 		var tiny = this._tinyInstance;
-		
+
+		//skip rendering functions objects
+		if (element.nodeName == "IMG" && this._isReservedClassName(element.className)) {
+			this._buttons.each(function (key, button) {
+				if (!button.isDisabled) {
+						button.disable();
+				}
+			})
+		} 
+		else
 		// disable more buttons
 		this._buttons.each ( function ( key, button ) {
 			if ( !button.isDisabled ) {
