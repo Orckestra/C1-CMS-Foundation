@@ -154,14 +154,18 @@ namespace Composite.Core.Types
 
         #region CompiledTypes methods
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
         public void GetCompiledTypes(BuildManagerCompileUnit buildManagerCompileUnit)
         {
             if (buildManagerCompileUnit == null) throw new ArgumentNullException("buildManagerCompileUnit");
 
             BuildManagerCompileUnit exsitingBuildManagerCompileUnit = null;
 
+
             int t1 = System.Environment.TickCount;
             bool makeCompile = false;
+            bool makeDryRun = false;
             lock (_lock)
             {
                 _buildManagerCompileUnits.TryGetValue(buildManagerCompileUnit.HashedId, out exsitingBuildManagerCompileUnit);
@@ -176,6 +180,26 @@ namespace Composite.Core.Types
                 else if (exsitingBuildManagerCompileUnit.Fingerprint == buildManagerCompileUnit.Fingerprint)
                 {
                     buildManagerCompileUnit.CopyResultsFrom(exsitingBuildManagerCompileUnit);
+                    buildManagerCompileUnit.AssemblyVersion = exsitingBuildManagerCompileUnit.AssemblyVersion;
+
+
+                    bool csFileFound = false;
+                    foreach (string filePath in Directory.GetFiles(_tempAssemblyDirectory, "*.cs"))
+                    {
+                        CreatedFilenameParser parser = CreatedFilenameParser.Create(filePath);
+
+                        if ((parser != null) &&
+                        (parser.HashedId == exsitingBuildManagerCompileUnit.HashedId) &&
+                        (parser.HashedFingerprint == exsitingBuildManagerCompileUnit.Fingerprint.GetHashCode()) &&
+                        (parser.AssemblyVersion == exsitingBuildManagerCompileUnit.AssemblyVersion))
+                        {
+                            csFileFound = true;
+                            break;
+                        }
+
+                    }
+
+                    makeDryRun = !csFileFound;
                 }
                 else
                 {
@@ -183,11 +207,15 @@ namespace Composite.Core.Types
                     _buildManagerCompileUnits[buildManagerCompileUnit.HashedId] = buildManagerCompileUnit;
 
                     makeCompile = true;
-
                 }
             }
 
-            if (makeCompile == true)
+            if (makeDryRun)
+            {
+                CreateCsFileOnly(buildManagerCompileUnit);
+            }
+
+            if (makeCompile)
             {
                 Compile(buildManagerCompileUnit);
             }
@@ -195,6 +223,81 @@ namespace Composite.Core.Types
 
             LoggingService.LogVerbose("DynamicBuildManager", string.Format("Compile unit with id '{0}' compiled ({1} ms)", buildManagerCompileUnit.Id, t2 - t1));
         }
+
+
+
+
+
+        /// <summary>
+        /// This is for most parts a copy of the Compile method.
+        /// If and when we refactor this class, this should be made better, so its not a copy of the Compile method.
+        /// </summary>
+        /// <param name="buildManagerCompileUnit"></param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "This is what we want, touch is used later on")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass", Justification = "This is what we want, touch is used later on")]
+        private void CreateCsFileOnly(BuildManagerCompileUnit buildManagerCompileUnit)
+        {
+            if (!buildManagerCompileUnit.IsCacheble && buildManagerCompileUnit.AllowCrossReferences)
+            {
+                throw new NotImplementedException("Not cacheable compile units are not supported.");
+            }
+
+            if (buildManagerCompileUnit.IsCacheble == false) return;
+
+
+            CompilerParameters compilerParameters = new CompilerParameters();
+            foreach (Assembly assembly in buildManagerCompileUnit.ReferencedAssemblies)
+            {
+                if (compilerParameters.ReferencedAssemblies.Contains(assembly.Location) == false)
+                {
+                    compilerParameters.ReferencedAssemblies.Add(assembly.Location);
+                }
+            }           
+
+            AddReferencedAssembliesLocations(compilerParameters.ReferencedAssemblies);
+
+            RemoveReferencesToTempAssemblies(compilerParameters.ReferencedAssemblies);
+
+
+            CodeCompileUnit codeCompileUnit = new CodeCompileUnit();
+
+            CopyTypes(buildManagerCompileUnit, codeCompileUnit);
+
+            if (buildManagerCompileUnit.AllowSiloing)
+            {
+                BuildManagerSiloHelper.SiloEmbedClasses(codeCompileUnit, buildManagerCompileUnit.ReferencedAssemblies, compilerParameters);
+            }
+
+            AddBuildManagerAttributes(buildManagerCompileUnit, codeCompileUnit);
+
+            CSharpCodeProvider compiler = new CSharpCodeProvider();
+
+            string sourceBaseFilename = CreatedFilenameParser.CreateFilename(buildManagerCompileUnit, "cs");
+            string sourceFilename = Path.Combine(_tempAssemblyDirectory, sourceBaseFilename);
+
+            using (FileStream file = File.Create(sourceFilename))
+            {
+                using (var sw = new StreamWriter(file))
+                {
+                    compiler.GenerateCodeFromCompileUnit(codeCompileUnit, sw, new CodeGeneratorOptions());
+                    sw.Close();
+                }
+                file.Close();
+            }
+
+            IEnumerable<string> lines = File.ReadAllLines(sourceFilename).SkipWhile(f => f.StartsWith("namespace") == false);
+
+            if (buildManagerCompileUnit.AllowCrossReferences)
+            {
+                File.WriteAllLines(sourceFilename, GetAliasesDefinitionCode(false, buildManagerCompileUnit).Concat(lines));
+            }
+            else
+            {
+                File.WriteAllLines(sourceFilename, lines.ToArray());
+            }
+        }
+
 
 
 
@@ -300,17 +403,6 @@ namespace Composite.Core.Types
 
 
 
-
-#if DEBUG_MODE
-    //////////////////////////////////
-    // #warning REMARK THIS SHIT
-            FileStream file = File.Create(string.Format("{0}.cs", filename));
-            StreamWriter sw = new StreamWriter(file);
-            compiler.GenerateCodeFromCompileUnit(compileUnit.CodeCompileUnit, sw, new CodeGeneratorOptions());
-            sw.Close();
-            file.Close();
-                //////////////////////////////////
-#endif
                 CompilerResults compileResult = null;
                 int retries = 0;
                 while (true)
@@ -327,15 +419,7 @@ namespace Composite.Core.Types
                         compileResult = compiler.CompileAssemblyFromDom(compilerParameters, codeCompileUnit);
                     }
 
-#if DEBUG_MODE
-    //////////////////////////////////
-    // #warning REMARK THIS SHIT
-            foreach (CompilerError error in compileResult.Errors)
-            {
-                Console.WriteLine("{0} : {1}", error.Line, error.ErrorText);
-            }
-                    //////////////////////////////////
-#endif
+
                     if (compileResult.Errors.Count == 0)
                     {
                         break;
@@ -542,7 +626,7 @@ namespace Composite.Core.Types
         /// <returns></returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "This is what we want, touch is used later on")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass", Justification = "This is what we want, touch is used later on")]        
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass", Justification = "This is what we want, touch is used later on")]
         public CompatibilityCheckResult CheckAppCodeCompatibility(BuildManagerCompileUnit buildManagerCompileUnit)
         {
             Verify.ArgumentNotNull(buildManagerCompileUnit, "buildManagerCompileUnit");

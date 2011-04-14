@@ -20,9 +20,14 @@ namespace Composite.Core.Types
         }
 
 
-        public static CreatedFilenameParser Create(string filename)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path">Path to the file</param>
+        /// <returns></returns>
+        public static CreatedFilenameParser Create(string path)
         {
-            return Create(filename, "dll");
+            return Create(path, "dll");
         }
 
 
@@ -30,12 +35,12 @@ namespace Composite.Core.Types
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="filename"></param>
+        /// <param name="path">Path to the file</param>
         /// <param name="extension">Ex: dll</param>
         /// <returns></returns>
-        public static CreatedFilenameParser Create(string filename, string extension)
+        public static CreatedFilenameParser Create(string path, string extension)
         {
-            string fn = Path.GetFileName(filename);
+            string fn = Path.GetFileName(path);
 
             int idx = fn.LastIndexOf(string.Format(".{0}", extension));
             if (idx >= 0)
@@ -52,11 +57,14 @@ namespace Composite.Core.Types
             int hashedId;
             if (Int32.TryParse(s[1], NumberStyles.HexNumber, null, out hashedId) == false) return null;
 
+            int hashedFingerpint;
+            if (Int32.TryParse(s[2], NumberStyles.HexNumber, null, out hashedFingerpint) == false) return null;
+
             string versionNumber = s[3].Substring(VersionString.Length, VersionStringMask.Length);
             int version;
             if (Int32.TryParse(versionNumber, out version) == false) return null;
 
-            return new CreatedFilenameParser { Filename = filename, HashedId = hashedId, AssemblyVersion = version };
+            return new CreatedFilenameParser { Filename = path, HashedId = hashedId, HashedFingerprint = hashedFingerpint, AssemblyVersion = version };
         }
 
 
@@ -119,5 +127,6 @@ namespace Composite.Core.Types
         public string Filename { get; private set; }
         public int HashedId { get; private set; }
         public int AssemblyVersion { get; private set; }
+        public int HashedFingerprint { get; private set; }
     }
 }
