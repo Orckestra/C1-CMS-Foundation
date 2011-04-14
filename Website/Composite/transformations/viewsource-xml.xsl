@@ -42,7 +42,15 @@
 
 	<xsl:template match="@*">
 		<xsl:call-template name="space" />
-		<xsl:value-of select="name(.)" />
+		<!-- Fix for FF4 -->
+		<xsl:choose>
+			<xsl:when test="namespace-uri(.) = ''">
+				<xsl:value-of select="local-name()" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="name()" />
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:text>=</xsl:text>
 		<span class="attval">
 			<xsl:text>"</xsl:text>
