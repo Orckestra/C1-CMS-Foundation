@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using System.Diagnostics;
 using System.Linq;
 using Composite.Core.Logging;
+using Composite.Core.ResourceSystem;
 
 
 public partial class Composite_content_views_log_log : System.Web.UI.Page
@@ -70,10 +71,10 @@ public partial class Composite_content_views_log_log : System.Web.UI.Page
             XElement tableHeader = new XElement("tr");
             tableHeader.Add(
                     new XElement("th", " "),
-                    new XElement("th", "Date"),
-                    new XElement("th", "Message"),
-                    new XElement("th", "Title"),
-                    new XElement("th", "EventType")
+                    new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.DateLabel")),
+                    new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.MessageLabel")),
+                    new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.TitleLabel")),
+                    new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.EventTypeLabel"))
                     //new XElement("th", "URL"),
                     //new XElement("th", "Referer")
                 );

@@ -334,6 +334,8 @@
   <string key="WebSite.Application.DialogSaveResource.Text" value="&quot;${resourcename}&quot; has been modified. Save changes?" />
   <string key="Website.Dialogs.SaveAll.LabelSaveResources" value="Save resources?" />
   <string key="Website.Dialogs.SaveAll.LabelUnsavedResources" value="Unsaved resources" />
+  <string key="Website.Dialogs.LabelYes" value="Yes" />
+  <string key="Website.Dialogs.LabelNo" value="No" />
   <string key="Website.Dialogs.LabelAccept" value="OK" />
   <string key="Website.Dialogs.LabelCancel" value="Cancel" />
   <string key="Website.Dialogs.LabelDisclosure" value="More Info" />
@@ -420,6 +422,11 @@
   <string key="ServerLog.LabelTitle" value="Server log" />
   <string key="ServerLog.LabelButtonDeleteOld" value="Delete old" />
   <string key="ServerLog.LabelButtonRefresh" value="Refresh" />
+  <string key="ServerLog.EmptyLabel" value="No log data available..." />
+  <string key="ServerLog.LogEntry.DateLabel" value="Date" />
+  <string key="ServerLog.LogEntry.MessageLabel" value="Message" />
+  <string key="ServerLog.LogEntry.TitleLabel" value="Title" />
+  <string key="ServerLog.LogEntry.EventTypeLabel" value="EventType" />
   <string key="FunctionDocumentation.LabelButtonRefresh" value="Refresh" />
   <string key="FunctionDocumentation.LabelButtonPrint" value="Print" />
   <string key="Website.FlowUICompleted.ExecutionEndedTitle" value="Execution Ended" />
@@ -627,7 +634,7 @@
   <string key="AspNetUiControl.Selector.BrokenReference" value="&lt; broken reference &gt;..." />
   <string key="AspNetUiControl.Selector.NoSelection" value="(no selection)" />
 
-	<string key="Validation.Decimal.SymbolsAfterPointAllowed" value="Only {0} digit(s) after decimal point allowed" />
-	<string key="Validation.Decimal.SymbolsBeforePointAllowed" value="Only {0} digit(s) before decimal point allowed" />
+  <string key="Validation.Decimal.SymbolsAfterPointAllowed" value="Only {0} digit(s) after decimal point allowed" />
+  <string key="Validation.Decimal.SymbolsBeforePointAllowed" value="Only {0} digit(s) before decimal point allowed" />
 
 </strings>

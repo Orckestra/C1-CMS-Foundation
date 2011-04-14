@@ -264,7 +264,7 @@ var ViewDefinitions = {
 	 * Help.
 	 */
 	"Composite.Management.Help" : new HostedViewDefinition ({
-		label		: "Help",
+		label		: "${string:Website.App.LabelHelp}",
 		image		: "${icon:help}", // ${root}/images/icons/republic/republic_0534/0534_16px_Republic_32bit_PNG.png
 		handle 		: "Composite.Management.Help",
 		position	:  DockBinding.ABSRIGHTTOP,

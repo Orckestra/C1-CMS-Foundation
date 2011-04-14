@@ -15,6 +15,7 @@ using Composite.C1Console.Security;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.Services.SecurityServiceObjets;
 using Composite.C1Console.Events;
+using Composite.Core.ResourceSystem;
 
 namespace Composite.Services
 {
@@ -176,7 +177,7 @@ namespace Composite.Services
         {
             get
             {
-                return "This operation would remove your administrative permissions from this entity. You can not remove your own administrative permissions.";
+                return StringResourceSystemFacade.GetString("Composite.Permissions","AdminLockoutMessage");
             }
         }
 

@@ -32,7 +32,7 @@
 				<ui:scrollbox id="scrollbox">
 					<asp:PlaceHolder ID="LogHolder" runat="server" />
 					<asp:PlaceHolder runat="server" ID="EmptyLabelPlaheHolder" Visible="false">
-						<div id="emptylabel">No log data available...</div>
+						<div id="emptylabel"><ui:text label="${string:ServerLog.EmptyLabel}"/></div>
 					</asp:PlaceHolder>
 				</ui:scrollbox>
 			</ui:page>

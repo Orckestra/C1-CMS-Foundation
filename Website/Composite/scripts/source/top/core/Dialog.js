@@ -2,8 +2,6 @@
  * @class
  */
 function _Dialog () {
-	
-	this._construct ();
 }
 
 _Dialog.prototype = {
@@ -67,19 +65,23 @@ _Dialog.prototype = {
 		"error" 	: "${icon:error}",
 		"question" 	: "${icon:question}"
 	},
-	 
+
 	/**
-	 * Construction builds dialog buttons. 
-	 */
-	_construct : function () {
-		
-		this._dialogButtons = {
-		
-			"yes" 		: new DialogButton ({ label : "Yes", 	response : this.RESPONSE_YES }),
-			"no" 		: new DialogButton ({ label : "No", 	response : this.RESPONSE_NO }),
-			"accept" 	: new DialogButton ({ label : "OK", 	response : this.RESPONSE_ACCEPT }),
-			"cancel" 	: new DialogButton ({ label : "Cancel", response : this.RESPONSE_CANCEL })
+	* Build dialog button.
+	* @param {entry} entry
+	* @return {DialogButton}
+	*/
+	dialogButton: function (entry) {
+		if (this._dialogButtons == undefined) {
+			this._dialogButtons = {
+
+				"yes": new DialogButton({ label: StringBundle.getString("ui", "Website.Dialogs.LabelYes"), response: this.RESPONSE_YES }),
+				"no": new DialogButton({ label: StringBundle.getString("ui", "Website.Dialogs.LabelNo"), response: this.RESPONSE_NO }),
+				"accept": new DialogButton({ label: StringBundle.getString("ui", "Website.Dialogs.LabelAccept"), response: this.RESPONSE_ACCEPT }),
+				"cancel": new DialogButton({ label: StringBundle.getString("ui", "Website.Dialogs.LabelCancel"), response: this.RESPONSE_CANCEL })
+			}
 		}
+		return Dialog._dialogButtons[entry];
 	},
 	
 	/**
@@ -220,7 +222,7 @@ _Dialog.prototype = {
 								entry = entry.split ( ":" )[ 0 ];
 								isDefault = true;
 							}
-							config = Dialog._dialogButtons [ entry ];
+							config = Dialog.dialogButton(entry);
 							if ( isDefault ) {
 								config.isDefault = true;
 							}
