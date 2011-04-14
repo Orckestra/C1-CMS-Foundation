@@ -23,6 +23,10 @@
   <string key="EditXsltFunctionWorkflow.InvalidName" value="Invalid function name" />
   <string key="EditXsltFunctionWorkflow.CannotRenameFileExists" value="Cannot rename the function, file '{0}' already exists." />
   <string key="EditXsltFunctionWorkflow.TotalNameTooLang" value="The total length of the name and the namespace is too long (used to name the XSL file)." />
+
+  <string key="EditXsltFunctionWorkflow.SameLocalFunctionNameClashTitle" value="Duplicate local function names" />
+  <string key="EditXsltFunctionWorkflow.SameLocalFunctionNameClashMessage" value="Two or more function calls has the same local name. Change the names so that all are different." />
+  
   <string key="XsltBasedFunctionProviderElementProvider.Add" value="Add XSLT function" />
   <string key="XsltBasedFunctionProviderElementProvider.AddToolTip" value="Add new XSLT function" />
   <string key="XsltBasedFunctionProviderElementProvider.Edit" value="Edit" />

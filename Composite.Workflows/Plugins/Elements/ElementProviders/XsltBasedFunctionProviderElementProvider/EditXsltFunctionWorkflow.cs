@@ -450,15 +450,8 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
 
         private IEnumerable<INamedFunctionCall> ConvertFunctionCalls(IEnumerable<NamedFunctionCall> FunctionCalls, Guid xsltId)
         {
-            var alreadyUsedNames = new HashSet<string>();
-
             foreach (NamedFunctionCall namedFunctionCall in FunctionCalls)
             {
-                string loweredName = namedFunctionCall.Name.ToLower();
-
-                Verify.That(!alreadyUsedNames.Contains(loweredName), "Local name '{0}' is used more than one time", loweredName);
-                alreadyUsedNames.Add(loweredName);
-
                 INamedFunctionCall newNamedFunctionCall = DataFacade.BuildNew<INamedFunctionCall>();
                 newNamedFunctionCall.XsltFunctionId = xsltId;
                 newNamedFunctionCall.Name = namedFunctionCall.Name;
@@ -494,6 +487,15 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                 var parameters = this.GetBinding<IEnumerable<ManagedParameterDefinition>>("Parameters");
 
                 IEnumerable<NamedFunctionCall> FunctionCalls = this.GetBinding<IEnumerable<NamedFunctionCall>>("FunctionCalls");
+                
+                if (FunctionCalls.Select(f => f.Name).Distinct().Count() != FunctionCalls.Count())
+                {                    
+                    ShowMessage(DialogType.Error,
+                        GetString("EditXsltFunctionWorkflow.SameLocalFunctionNameClashTitle"),
+                        GetString("EditXsltFunctionWorkflow.SameLocalFunctionNameClashMessage"));
+                    return;
+                }
+
 
                 using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
                 {
