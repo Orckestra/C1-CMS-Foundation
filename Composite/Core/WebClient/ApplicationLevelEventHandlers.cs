@@ -5,6 +5,7 @@ using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
 using Composite.Core.Logging;
+using Composite.Core.Routing;
 using Composite.Core.Threading;
 using Composite.Core.Types;
 using Composite.Data;
@@ -202,11 +203,11 @@ namespace Composite.Core.WebClient
         {
             if (custom == "C1Page")
             {
-                var pageUrl = PageUrl.Parse(context.Request.RawUrl);
+                var pageUrl = PageUrls.UrlProvider.ParseUrl(context.Request.RawUrl, new UrlSpace(context));
 
                 if (pageUrl != null)
                 {
-                    var page = pageUrl.GetPage();
+                    var page = pageUrl.Data;
                     if (page != null)
                     {
                         string pageCacheKey = page.ChangeDate.ToString();

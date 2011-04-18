@@ -14,6 +14,7 @@ using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
 using Composite.Core;
 using Composite.Core.IO;
+using Composite.Core.Routing;
 using Composite.Core.Xml;
 using Composite.Core.Types;
 using Composite.Core.WebClient;
@@ -171,16 +172,20 @@ namespace Composite.Services
         [WebMethod]
         public string GetEntityTokenByPageUrl(string pageUrl)
         {
-            PageUrl pageUrlOptions = PageUrl.Parse(pageUrl);
-            if (pageUrlOptions == null) return string.Empty;
+            UrlData<IPage> pageUrlData = PageUrls.ParseUrl(pageUrl, new UrlSpace(HttpContext.Current));
+            if (pageUrlData == null) return string.Empty;
 
-            if (pageUrlOptions.PublicationScope == PublicationScope.Published)
+            IPage page = pageUrlData.Data;
+
+            if (page.DataSourceId.PublicationScope == PublicationScope.Published)
             {
-                pageUrlOptions = new PageUrl(PublicationScope.Unpublished, pageUrlOptions.Locale, pageUrlOptions.PageId);
+                using(new DataScope(PublicationScope.Unpublished, page.DataSourceId.LocaleScope))
+                {
+                    page = PageManager.GetPageById(page.Id);
+                }
+                
+                if (page == null) return string.Empty;
             }
-
-            IPage page = pageUrlOptions.GetPage();
-            if (page == null) return string.Empty;
 
             return EntityTokenSerializer.Serialize(page.GetDataEntityToken(), true);
         }

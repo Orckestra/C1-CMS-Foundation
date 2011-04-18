@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -12,12 +11,12 @@ using Composite.C1Console.Security;
 using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
+using Composite.Core.Routing;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.Renderings;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Data;
 using Composite.Data.Types;
-using System.Globalization;
 
 
 public partial class Renderers_Page : System.Web.UI.Page
@@ -33,7 +32,7 @@ public partial class Renderers_Page : System.Web.UI.Page
     private bool _isPreview;
     private string _previewKey;
 
-    private PageUrl _url;
+    private UrlData<IPage> _url;
     private string _cacheUrl = null;
     private bool _requestCompleted = false;
 
@@ -54,21 +53,20 @@ public partial class Renderers_Page : System.Web.UI.Page
         if (_isPreview)
         {
             page = (IPage)Cache.Get(_previewKey + "_SelectedPage");
-            _url = new PageUrl(PublicationScope.Unpublished, CultureInfo.CreateSpecificCulture(page.CultureName), page.Id);
-            _dataScope = new DataScope(DataScopeIdentifier.FromPublicationScope(_url.PublicationScope), _url.Locale);
+            _url = new UrlData<IPage> { Data = page };
+            _dataScope = new DataScope(DataScopeIdentifier.FromPublicationScope(page.DataSourceId.PublicationScope), page.DataSourceId.LocaleScope);
         }
         else
         {
-            _url = RouteData.Values["PageUrl"] as PageUrl;
+            _url = RouteData.Values["C1Page"] as UrlData<IPage>;
             if(_url == null)
             {
-                NameValueCollection foreignQueryStringParameters;
-                _url = PageUrl.Parse(Context.Request.Url.OriginalString, out foreignQueryStringParameters);
+                _url = PageUrls.UrlProvider.ParseInternalUrl(Context.Request.Url.OriginalString);
             }
-            
-            _dataScope = new DataScope(DataScopeIdentifier.FromPublicationScope(_url.PublicationScope), _url.Locale);
-            page = PageManager.GetPageById(_url.PageId);
 
+            page = _url.Data;
+
+            _dataScope = new DataScope(DataScopeIdentifier.FromPublicationScope(page.DataSourceId.PublicationScope), page.DataSourceId.LocaleScope);
             _cacheUrl = Request.Url.PathAndQuery;
         }
 
@@ -89,7 +87,7 @@ public partial class Renderers_Page : System.Web.UI.Page
 
     protected override void OnInit(EventArgs e)
     {
-        if (_url == null || _url.PublicationScope != PublicationScope.Published || Request.IsSecureConnection)
+        if (_url == null || _url.Data.DataSourceId.PublicationScope != PublicationScope.Published || Request.IsSecureConnection)
         {
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
         }
@@ -258,7 +256,7 @@ public partial class Renderers_Page : System.Web.UI.Page
     private void ValidateViewUnpublishedRequest()
     {
         if (_url != null 
-            && _url.PublicationScope != PublicationScope.Published 
+            && _url.Data.DataSourceId.PublicationScope != PublicationScope.Published 
             && !UserValidationFacade.IsLoggedIn())
         {
             Response.Redirect(String.Format("{0}/Composite/Login.aspx?ReturnUrl={1}", UrlUtils.PublicRootPath, HttpUtility.UrlEncodeUnicode(Request.Url.OriginalString)), true);

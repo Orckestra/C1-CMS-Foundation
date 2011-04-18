@@ -32,7 +32,7 @@ namespace Composite.Data
         /// <summary>
         /// A main url by with a C1 page is accessed. F.e. "/Home/About.aspx"
         /// </summary>
-        [Obsolete("Use 'Public' instead")]
+        [Obsolete("Use 'Public' instead", true)]
         Published = 1,
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Composite.Data
         /// <summary>
         /// Unpublihed reference to a page. F.e. "/Renderers/Page.aspx?id=7446ceda-df90-49f0-a183-4e02ed6f6eec"
         /// </summary>
-        [Obsolete("Use 'Internal' instead")]
+        [Obsolete("Use 'Internal' instead", true)]
         Unpublished = 2,
 
         /// <summary>
@@ -58,6 +58,7 @@ namespace Composite.Data
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [Obsolete("Use Composite.Core.Routing.PageUrls")]
     public sealed class PageUrl
     {
         /// <exclude />
@@ -109,7 +110,7 @@ namespace Composite.Data
         /// <returns></returns>
         public IPage GetPage()
         {
-            using(DataConnection connection = new DataConnection(PublicationScope, Locale))
+            using(new DataConnection(PublicationScope, Locale))
             {
                 return Data.PageManager.GetPageById(PageId);
             }
@@ -135,11 +136,11 @@ namespace Composite.Data
         {
             Verify.ArgumentCondition(urlType != PageUrlType.Undefined, "urlType", "Url type is undefined");
 
-            string legasyScopeName = GetLegasyPublicationScopeIdentifier(PublicationScope);
+            string legacyScopeName = GetLegacyPublicationScopeIdentifier(PublicationScope);
 
             if (urlType == PageUrlType.Public)
             {
-                var lookupTable = PageStructureInfo.GetIdToUrlLookup(legasyScopeName, Locale);
+                var lookupTable = PageStructureInfo.GetIdToUrlLookup(legacyScopeName, Locale);
 
                 if (!lookupTable.ContainsKey(PageId))
                 {
@@ -149,7 +150,7 @@ namespace Composite.Data
                 var publicUrl = new UrlBuilder(lookupTable[PageId]);
                 if (PublicationScope != PublicationScope.Published)
                 {
-                    publicUrl["dataScope"] = GetLegasyPublicationScopeIdentifier(PublicationScope);
+                    publicUrl["dataScope"] = GetLegacyPublicationScopeIdentifier(PublicationScope);
                 }
 
                 return publicUrl;
@@ -162,7 +163,7 @@ namespace Composite.Data
 
                 result["pageId"] = PageId.ToString();
                 result["cultureInfo"] = Locale.ToString();
-                result["dataScope"] = GetLegasyPublicationScopeIdentifier(PublicationScope);
+                result["dataScope"] = GetLegacyPublicationScopeIdentifier(PublicationScope);
 
                 return result;
             }
@@ -403,7 +404,7 @@ namespace Composite.Data
             return url.FilePath.EndsWith("Renderers/Page.aspx", true);
         }
 
-        private static string GetLegasyPublicationScopeIdentifier(PublicationScope publicationScope)
+        private static string GetLegacyPublicationScopeIdentifier(PublicationScope publicationScope)
         {
             return publicationScope == PublicationScope.Published ? "public" : "administrated";
         }

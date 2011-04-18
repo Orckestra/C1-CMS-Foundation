@@ -7,6 +7,7 @@ using System.Text;
 using System.Web;
 using System.Xml.Linq;
 using Composite.Core.Logging;
+using Composite.Core.Routing;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Core.WebClient.Renderings.Page;
@@ -480,6 +481,8 @@ namespace Composite.Core.WebClient
 
             internalUrls.Reverse();
 
+            UrlSpace urlSpace = HttpContext.Current != null ? new UrlSpace(HttpContext.Current) : new UrlSpace();
+
             var resolvedUrls = new Dictionary<string, string>();
             foreach (Match pageUrlMatch in internalUrls)
             {
@@ -488,14 +491,13 @@ namespace Composite.Core.WebClient
 
                 if (!resolvedUrls.TryGetValue(internalPageUrl, out publicPageUrl))
                 {
-                    NameValueCollection notUsedQueryStringParameters;
-                    PageUrl pageUrl;
+                    UrlData<IPage> pageUrlData;
                     UrlBuilder urlBuilderInternalUrl;
 
                     try
                     {
                         urlBuilderInternalUrl = new UrlBuilder(internalPageUrl);
-                        pageUrl = PageUrl.ParseInternalUrl(urlBuilderInternalUrl, out notUsedQueryStringParameters);
+                        pageUrlData = PageUrls.UrlProvider.ParseInternalUrl(internalPageUrl);
                     }
                     catch
                     {
@@ -504,29 +506,24 @@ namespace Composite.Core.WebClient
                         continue;
                     }
 
-                    if (pageUrl == null)
+                    if (pageUrlData == null)
                     {
                         resolvedUrls.Add(internalPageUrl, null); 
                         continue;
                     }
 
-                    UrlBuilder newUrl = pageUrl.Build(PageUrlType.Public);
-                    if (newUrl == null)
+                    publicPageUrl = PageUrls.BuildUrl(pageUrlData, UrlKind.Public, urlSpace);
+                    if (publicPageUrl == null)
                     {
                         // We have this situation if page does not exist
                         resolvedUrls.Add(internalPageUrl, null); 
                         continue;
                     }
 
-                    if (notUsedQueryStringParameters != null)
+                    if (!urlBuilderInternalUrl.Anchor.IsNullOrEmpty())
                     {
-                        newUrl.AddQueryParameters(notUsedQueryStringParameters);
+                        publicPageUrl += "#" + urlBuilderInternalUrl.Anchor;
                     }
-
-                    newUrl.Anchor = urlBuilderInternalUrl.Anchor;
-                    newUrl.PathInfo = urlBuilderInternalUrl.PathInfo;
-
-                    publicPageUrl = newUrl.ToString();
 
                     // Encoding xml attribute value
                     publicPageUrl = publicPageUrl.Replace("&", "&amp;");

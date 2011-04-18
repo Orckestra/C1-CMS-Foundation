@@ -20,6 +20,11 @@ namespace Composite.Data
         {
         }
 
+        /// <exclude />
+        public DataScope(PublicationScope publicationScope)
+            : this(DataScopeIdentifier.FromPublicationScope(publicationScope), null)
+        {
+        }
 
 
         /// <exclude />
@@ -58,6 +63,15 @@ namespace Composite.Data
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="publicationScope">Publication scope</param>
+        /// <param name="cultureInfo">null for default culture</param>
+        public DataScope(PublicationScope publicationScope, CultureInfo cultureInfo)
+            : this(DataScopeIdentifier.FromPublicationScope(publicationScope), cultureInfo)
+        {
+        }
 
         /// <exclude />
         ~DataScope()

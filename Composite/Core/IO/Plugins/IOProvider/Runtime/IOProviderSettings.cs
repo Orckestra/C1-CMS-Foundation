@@ -11,6 +11,7 @@ namespace Composite.Core.IO.Plugins.IOProvider.Runtime
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class IOProviderSettings : SerializableConfigurationSection
     {
+        /// <exclude />
         public const string SectionName = "Composite.Core.IO.Plugins.IOProviderConfiguration";
 
         

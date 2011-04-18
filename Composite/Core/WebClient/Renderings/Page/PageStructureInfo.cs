@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
 using Composite.Core.Collections.Generic;
+using Composite.Core.Routing;
+using Composite.Core.Routing.Plugins.PageUrlsProviders;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Core.Logging;
@@ -38,6 +40,7 @@ namespace Composite.Core.WebClient.Renderings.Page
             public Dictionary<string, Guid> UrlToIdLookup;
             public Dictionary<string, Guid> LowerCaseUrlToIdLookup;
             public Dictionary<Guid, string> IdToUrlLookup;
+            public IPageUrlBuilder PageUrlBuilder;
         }
 
         private static readonly Hashtable<Pair<string, CultureInfo>, Map> _generatedMaps = new Hashtable<Pair<string, CultureInfo>, Map>();
@@ -207,6 +210,15 @@ namespace Composite.Core.WebClient.Renderings.Page
         }
 
 
+        private static Map GetMap(PublicationScope publicationScope, CultureInfo localizationScope)
+        {
+            // TODO: refactor
+            using(new DataScope(DataScopeIdentifier.FromPublicationScope(publicationScope), localizationScope))
+            {
+                return GetMap();
+            }
+        }
+
         private static Map GetMap()
         {
             if (System.Transactions.Transaction.Current != null)
@@ -295,6 +307,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
         /// <exclude />
+        [Obsolete("Use Composite.Core.Routing namespace to work with URLs")]
         public static Dictionary<string, Guid> GetUrlToIdLookup()
         {
             return GetMap().UrlToIdLookup;
@@ -303,11 +316,17 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
         /// <exclude />
+        [Obsolete("Use Composite.Core.Routing namespace to work with URLs")]
         public static Dictionary<string, Guid> GetLowerCaseUrlToIdLookup()
         {
             return GetMap().LowerCaseUrlToIdLookup;
         }
 
+        /// <exclude />
+        public static IPageUrlBuilder GetPageUrlBuilder(PublicationScope publicationScope, CultureInfo localizationScope)
+        {
+            return GetMap(publicationScope, localizationScope).PageUrlBuilder;
+        }
 
 
         /// <exclude />
@@ -524,7 +543,9 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                 BuildXmlStructure(root, Guid.Empty, pageToToChildElementsTable, 100);
 
-                BuildFolderPaths(pagesData, root.Elements(), urlToIdLookup);
+                // TODO: pass the server url
+                var pageUrlBuilder = PageUrls.CreatePageUrlBuilder(new UrlSpace { Hostname = string.Empty });
+                BuildFolderPaths(pagesData, root.Elements(), pageUrlBuilder, urlToIdLookup);
 
                 foreach (var urlLookupEntry in urlToIdLookup)
                 {
@@ -552,6 +573,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                                UrlToIdLookup = urlToIdLookup,
                                LowerCaseUrlToIdLookup = lowerCaseUrlToIdLookup,
                                RootPagesLookup = root.Elements(),
+                               PageUrlBuilder = pageUrlBuilder
                            };
             }
         }
@@ -579,12 +601,12 @@ namespace Composite.Core.WebClient.Renderings.Page
             return url.StartsWith("/") ? url : "/" + url;
         }
 
-        private static void BuildFolderPaths(SitemapBuildingData pagesData, IEnumerable<XElement> roots, IDictionary<string, Guid> urlToIdLookup)
+        private static void BuildFolderPaths(SitemapBuildingData pagesData, IEnumerable<XElement> roots, IPageUrlBuilder pageUrlBuilder, IDictionary<string, Guid> urlToIdLookup)
         {
-            BuildFolderPaths(pagesData, roots, urlToIdLookup, new PageUrlBuilder());
+            BuildFolderPaths(pagesData, roots, urlToIdLookup, pageUrlBuilder);
         }
 
-        private static void BuildFolderPaths(SitemapBuildingData pagesData, IEnumerable<XElement> elements, IDictionary<string, Guid> urlToIdLookup, PageUrlBuilder builder)
+        private static void BuildFolderPaths(SitemapBuildingData pagesData, IEnumerable<XElement> elements, IDictionary<string, Guid> urlToIdLookup, IPageUrlBuilder builder)
         {
             foreach (XElement element in elements)
             {
@@ -599,25 +621,27 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                 Guid parentId = pageStructure.ParentId;
 
-                string pageUrl, lookupUrl;
-                builder.BuildUrlInternal(page,
-                    parentId,
-                    out pageUrl, out lookupUrl);
+                PageUrlSet pageUrls = builder.BuildUrlSet(page, parentId);
 
-                element.Add(new XAttribute("URL", pageUrl));
+                element.Add(new XAttribute("URL", pageUrls.PublicUrl));
+
+                //--------------------------------------------------
+                // TODO: do something about this one
+                string lookupUrl = pageUrls.PublicUrl;
 
                 // TODO: This attribute is to be removed
-                element.Add(new XAttribute("FolderPath", builder.FolderPaths[pageId]));
+                //element.Add(new XAttribute("FolderPath", builder.FolderPaths[pageId]));
 
                 element.Add(new XAttribute("Depth", 1 + element.Ancestors(PageElementName).Count()));
 
                 if (urlToIdLookup.ContainsKey(lookupUrl))
                 {
-                    LoggingService.LogError(LogTitle, "Multiple pages share the same path '{0}', page ID: '{1}'. Duplicates are ignored.".FormatWith(pageUrl, pageId));
+                    LoggingService.LogError(LogTitle, "Multiple pages share the same path '{0}', page ID: '{1}'. Duplicates are ignored.".FormatWith(pageUrls.PublicUrl, pageId));
                     continue;
                 }
 
                 urlToIdLookup.Add(lookupUrl, pageId);
+                //--------------------------------------------------
 
                 BuildFolderPaths(pagesData, element.Elements(), urlToIdLookup, builder);
             }

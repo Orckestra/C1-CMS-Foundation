@@ -12,6 +12,7 @@ namespace Composite.Core.WebClient
 	public static class UrlUtils
 	{
         private const string _adminFolderName = "Composite";
+        private const string _renderersFolderName = "Renderers";
         private static readonly string _applicationVirtualPath;
 
 
@@ -86,6 +87,15 @@ namespace Composite.Core.WebClient
             }
         }
 
+
+        /// <exclude />
+        public static string RenderersRootPath
+        {
+            get
+            {
+                return string.Format("{0}/{1}", _applicationVirtualPath, _renderersFolderName);
+            }
+        }
 
         /// <exclude />
         public static string Combine( string path1, string path2 )

@@ -9,6 +9,7 @@ using Composite.C1Console.Elements.Plugins.ElementProvider;
 using Composite.C1Console.Events;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
+using Composite.Core.Routing;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
@@ -984,12 +985,18 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             }
 
-            var pageUrl = new PageUrl(publicationScope, page.DataSourceId.LocaleScope, page.Id);
+            IPage previewPage;
+            using(new DataScope(publicationScope, page.DataSourceId.LocaleScope))
+            {
+                previewPage = PageManager.GetPageById(page.Id);
+            }
 
-            string url = pageUrl.Build(PageUrlType.Public) ?? pageUrl.Build(PageUrlType.Internal); 
+            UrlData<IPage> pageUrlData = new UrlData<IPage> { Data = previewPage };
 
-            var arguments = new Dictionary<string, string>();
-            arguments.Add("URL", url);
+            string url = PageUrls.BuildUrl(pageUrlData, UrlKind.Public, new UrlSpace())
+                      ?? PageUrls.BuildUrl(pageUrlData, UrlKind.Internal, new UrlSpace()); 
+
+            var arguments = new Dictionary<string, string> {{"URL", url}};
             IManagementConsoleMessageService consoleServices = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
             ConsoleMessageQueueFacade.Enqueue(new OpenHandledViewMessageQueueItem(EntityTokenSerializer.Serialize(entityToken, true), "Composite.Management.Browser", arguments), consoleServices.CurrentConsoleId);
 

@@ -224,6 +224,22 @@
     <Compile Include="Core\Instrumentation\Measurement.cs" />
     <Compile Include="Core\Instrumentation\Profiler.cs" />
     <Compile Include="Core\Instrumentation\ProfilerReport.cs" />
+    <Compile Include="Core\Routing\UrlKind.cs" />
+    <Compile Include="Core\Routing\UrlData.cs" />
+    <Compile Include="Core\Routing\IUrlProvider.cs" />
+    <Compile Include="Core\Routing\Plugins\PageUrlsProviders\Runtime\PageUrlProviderCustomFactory.cs" />
+    <Compile Include="Core\Routing\Plugins\PageUrlsProviders\Runtime\PageUrlProviderFactory.cs" />
+    <Compile Include="Core\Routing\Plugins\PathInfoHandlers\IPathInfoHandler.cs" />
+    <Compile Include="Core\Routing\Plugins\PathInfoHandlers\Runtime\NonConfigurablePathInfoHandler.cs" />
+    <Compile Include="Core\Routing\Plugins\PathInfoHandlers\Runtime\PathInfoHandlerData.cs" />
+    <Compile Include="Core\Routing\Plugins\PageUrlsProviders\IPageUrlBuilder.cs" />
+    <Compile Include="Core\Routing\Plugins\PageUrlsProviders\IPageUrlProvider.cs" />
+    <Compile Include="Core\Routing\Plugins\PageUrlsProviders\PageUrlSet.cs" />
+    <Compile Include="Core\Routing\Plugins\PageUrlsProviders\Runtime\NonConfigurablePageUrlProvider.cs" />
+    <Compile Include="Core\Routing\Plugins\Runtime\RoutingConfiguration.cs" />
+    <Compile Include="Core\Routing\Plugins\PageUrlsProviders\Runtime\PageUrlProviderData.cs" />
+    <Compile Include="Core\Routing\PageUrls.cs" />
+    <Compile Include="Core\Routing\UrlSpace.cs" />
     <Compile Include="Core\Sql\SqlConnectionManager.cs" />
     <Compile Include="Core\WebClient\ApplicationLevelEventHandlers.cs" />
     <Compile Include="Core\WebClient\Presentation\LessRequestHandler.cs" />
@@ -450,7 +466,7 @@
     <Compile Include="Core\WebClient\Renderings\Foundation\RenderingResponseHandlerRegistry.cs" />
     <Compile Include="Core\WebClient\Renderings\Foundation\RenderingResponseHandlerRegistryImpl.cs" />
     <Compile Include="Core\WebClient\Renderings\IRenderingResponseHandlerFacade.cs" />
-    <Compile Include="Core\WebClient\Renderings\Page\PageUrlBuilder.cs" />
+    <Compile Include="Plugins\Routing\Pages\PageUrlBuilder.cs" />
     <Compile Include="Core\WebClient\Renderings\Plugins\RenderingResponseHandler\IDataRenderingResponseHandler.cs" />
     <Compile Include="Core\WebClient\Renderings\Plugins\RenderingResponseHandler\IRenderingResponseHandler.cs" />
     <Compile Include="Core\WebClient\Renderings\Plugins\RenderingResponseHandler\NonConfigurableHookRegistrator.cs" />
@@ -653,6 +669,7 @@
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\FileLogger.cs" />
     <Compile Include="Core\Logging\LogEntry.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\FileLogTraceListener.cs" />
+    <Compile Include="Plugins\Routing\Pages\DefaultPageUrlProvider.cs" />
     <Compile Include="Plugins\Security\UserGroupPermissionDefinitionProvider\DataBasedUserGroupPermissionDefinitionProvider\DataBasedUserGroupPermissionDefinitionProvider.cs" />
     <Compile Include="C1Console\Tasks\BaseTaskManager.cs" />
     <Compile Include="C1Console\Tasks\ITaskManager.cs" />
@@ -2185,6 +2202,7 @@
     <Folder Include="Functions\Types\" />
     <Folder Include="Plugins\Elements\Design\" />
     <Folder Include="Plugins\Functions\FunctionProviders\XsltBasedFunctionProvider\XsltExtensions\" />
+    <Folder Include="Plugins\Routing\PageUrlProviders\" />
     <Folder Include="Plugins\WebClient\SessionStateProviders\DefaultSessionStateProvider\" />
     <Folder Include="Plugins\WebClient\WebRequestHandlers\LoginWebRequestHandler\Resources\" />
   </ItemGroup>
