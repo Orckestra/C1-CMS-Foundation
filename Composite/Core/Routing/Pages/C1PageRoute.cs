@@ -41,7 +41,7 @@ namespace Composite.Core.Routing.Pages
             }
 
             // Redirecting friendly urls to public urls
-            if (urlData.UrlKind == UrlKind.Redirect || urlData.UrlKind == UrlKind.Redirect)
+            if (urlData.UrlKind == UrlKind.Friendly || urlData.UrlKind == UrlKind.Redirect)
             {
                 string publicUrl = urlProvider.BuildUrl(urlData, UrlKind.Public, urlSpace);
                 if(publicUrl == null)

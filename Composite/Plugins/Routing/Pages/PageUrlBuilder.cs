@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using Composite.Core.Collections.Generic;
+using Composite.Core.Extensions;
+using Composite.Core.Routing;
 using Composite.Core.Routing.Plugins.PageUrlsProviders;
 using Composite.Core.WebClient;
 using Composite.Data;
@@ -14,11 +16,28 @@ namespace Composite.Plugins.Routing.Pages
 
         public Hashtable<string, Guid> UrlToIdLookup = new Hashtable<string, Guid>();
         public Hashtable<string, Guid> UrlToIdLookupLowerCased = new Hashtable<string, Guid>();
+        public Hashtable<string, Guid> FriendlyUrlToIdLookup = new Hashtable<string, Guid>();
         public Hashtable<Guid, string> IdToUrlLookup = new Hashtable<Guid, string>();
+
+        private PublicationScope _publicationScope;
+        private CultureInfo _localizationScope;
+
+        private string _friendlyUrlPrefix;
+
+        public PageUrlBuilder(PublicationScope publicationScope, CultureInfo localizationScope, UrlSpace urlSpace)
+        {
+            _publicationScope = publicationScope;
+            _localizationScope = localizationScope;
+
+            var localeMappedName = DataLocalizationFacade.GetUrlMappingName(localizationScope) ?? string.Empty;
+            _friendlyUrlPrefix = localeMappedName.IsNullOrEmpty() ? string.Empty : "/" + localeMappedName;
+        }
 
         public PageUrlSet BuildUrlSet(IPage page, Guid parentPageId)
         {
             Verify.ArgumentNotNull(page, "page");
+            Verify.ArgumentCondition(page.DataSourceId.PublicationScope == _publicationScope, "page", "Page belongs to a wrong publication scope");
+            Verify.ArgumentCondition(page.DataSourceId.LocaleScope.Name == _localizationScope.Name, "page", "Page belongs to a wrong localization scope");
 
             DataScopeIdentifier dataScopeIdentifier = page.DataSourceId.DataScopeIdentifier;
             CultureInfo cultureInfo = page.DataSourceId.LocaleScope;
@@ -61,11 +80,26 @@ namespace Composite.Plugins.Routing.Pages
                 url += "?dataScope=" + dataScopeIdentifier.Name;
             }
 
-            var pageUrls = new PageUrlSet();
-            pageUrls.PublicUrl = url;
+            var pageUrls = new PageUrlSet { PublicUrl = url };
 
-            // TODO: friendly urls & redirect urls
+            if(!string.IsNullOrEmpty(page.FriendlyUrl))
+            {
+                string friendlyUrl = _friendlyUrlPrefix + MakeRelativeUrl(page.FriendlyUrl);
+                string lowerCasedFriendlyUrl = friendlyUrl.ToLowerInvariant();
+
+                if(!FriendlyUrlToIdLookup.ContainsKey(lowerCasedFriendlyUrl))
+                {
+                    pageUrls.FriendlyUrl = friendlyUrl;
+                    FriendlyUrlToIdLookup.Add(lowerCasedFriendlyUrl, page.Id);
+                }
+            }
+            
             return pageUrls;
+        }
+
+        private static string MakeRelativeUrl(string url)
+        {
+            return url.StartsWith("/") ? url : "/" + url;
         }
     }
 }

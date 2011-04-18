@@ -489,16 +489,15 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             using (DebugLoggingScope.MethodInfoScope)
             {
-                LoggingService.LogVerbose(LogTitle, string.Format("Building page structure in the data scope '{0}' with the localization scope '{1}'", DataScopeManager.CurrentDataScope, LocalizationScopeManager.CurrentLocalizationScope));
+                var publicationScope = DataScopeManager.CurrentDataScope.ToPublicationScope();
+                var localizationScope = LocalizationScopeManager.CurrentLocalizationScope;
+
+                LoggingService.LogVerbose(LogTitle, string.Format("Building page structure in the publication scope '{0}' with the localization scope '{1}'", publicationScope, localizationScope));
 
                 Dictionary<string, Guid> urlToIdLookup = new Dictionary<string, Guid>();
                 Dictionary<Guid, string> idToUrlLookup = new Dictionary<Guid, string>();
 
                 var pagesData = new SitemapBuildingData();
-
-                var locale = LocalizationScopeManager.CurrentLocalizationScope;
-                var localeMappedName = DataLocalizationFacade.GetUrlMappingName(locale) ?? string.Empty;
-                string friendlyUrlPrefix = localeMappedName.IsNullOrEmpty() ? string.Empty : "/" + localeMappedName;
 
                 var pageToToChildElementsTable = new Hashtable<Guid, List<PageTreeInfo>>();
                 foreach (IPage page in pagesData.Pages)
@@ -518,7 +517,6 @@ namespace Composite.Core.WebClient.Renderings.Page
                          new XAttribute("Title", page.Title),
                          (string.IsNullOrEmpty(page.MenuTitle) ? null : new XAttribute("MenuTitle", page.MenuTitle)),
                          new XAttribute("UrlTitle", page.UrlTitle),
-                         (string.IsNullOrEmpty(page.FriendlyUrl) ? null : new XAttribute("FriendlyUrl", friendlyUrlPrefix + MakeRelativeUrl(page.FriendlyUrl))),
                          new XAttribute("Description", page.Description),
                          new XAttribute("ChangedDate", page.ChangeDate),
                          new XAttribute("ChangedBy", page.ChangedBy ?? string.Empty));
@@ -544,7 +542,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                 BuildXmlStructure(root, Guid.Empty, pageToToChildElementsTable, 100);
 
                 // TODO: pass the server url
-                var pageUrlBuilder = PageUrls.CreatePageUrlBuilder(new UrlSpace { Hostname = string.Empty });
+                var pageUrlBuilder = PageUrls.CreatePageUrlBuilder(publicationScope, localizationScope, new UrlSpace { Hostname = string.Empty });
                 BuildFolderPaths(pagesData, root.Elements(), pageUrlBuilder, urlToIdLookup);
 
                 foreach (var urlLookupEntry in urlToIdLookup)
@@ -596,11 +594,6 @@ namespace Composite.Core.WebClient.Renderings.Page
             }
         }
 
-        private static string MakeRelativeUrl(string url)
-        {
-            return url.StartsWith("/") ? url : "/" + url;
-        }
-
         private static void BuildFolderPaths(SitemapBuildingData pagesData, IEnumerable<XElement> roots, IPageUrlBuilder pageUrlBuilder, IDictionary<string, Guid> urlToIdLookup)
         {
             BuildFolderPaths(pagesData, roots, urlToIdLookup, pageUrlBuilder);
@@ -625,15 +618,19 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                 element.Add(new XAttribute("URL", pageUrls.PublicUrl));
 
-                //--------------------------------------------------
-                // TODO: do something about this one
                 string lookupUrl = pageUrls.PublicUrl;
 
-                // TODO: This attribute is to be removed
+                if(pageUrls.FriendlyUrl != null)
+                {
+                    element.Add(new XAttribute("FriendlyUrl", pageUrls.FriendlyUrl));
+                }
+
+                //// FolderPath isn't used any more
                 //element.Add(new XAttribute("FolderPath", builder.FolderPaths[pageId]));
 
                 element.Add(new XAttribute("Depth", 1 + element.Ancestors(PageElementName).Count()));
 
+                // NOTE: urlToIdLookup is obsolete, but old API needs it
                 if (urlToIdLookup.ContainsKey(lookupUrl))
                 {
                     LoggingService.LogError(LogTitle, "Multiple pages share the same path '{0}', page ID: '{1}'. Duplicates are ignored.".FormatWith(pageUrls.PublicUrl, pageId));
@@ -641,7 +638,6 @@ namespace Composite.Core.WebClient.Renderings.Page
                 }
 
                 urlToIdLookup.Add(lookupUrl, pageId);
-                //--------------------------------------------------
 
                 BuildFolderPaths(pagesData, element.Elements(), urlToIdLookup, builder);
             }

@@ -1,9 +1,11 @@
-﻿using Composite.C1Console.Events;
+﻿using System.Globalization;
+using Composite.C1Console.Events;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Configuration;
 using Composite.Core.Routing.Plugins.PageUrlsProviders;
 using Composite.Core.Routing.Plugins.PageUrlsProviders.Runtime;
 using Composite.Core.Routing.Plugins.Runtime;
+using Composite.Data;
 using Composite.Data.Types;
 
 namespace Composite.Core.Routing
@@ -22,9 +24,9 @@ namespace Composite.Core.Routing
         }
 
         /// <exclude />
-        public static IPageUrlBuilder CreatePageUrlBuilder(UrlSpace urlSpace)
+        public static IPageUrlBuilder CreatePageUrlBuilder(PublicationScope publicationScope, CultureInfo localizationScope, UrlSpace urlSpace)
         {
-            return GetDefaultProvider().CreateUrlBuilder(urlSpace);
+            return GetDefaultProvider().CreateUrlBuilder(publicationScope, localizationScope, urlSpace);
         }
 
 
