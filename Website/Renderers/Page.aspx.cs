@@ -54,7 +54,7 @@ public partial class Renderers_Page : System.Web.UI.Page
         {
             page = (IPage)Cache.Get(_previewKey + "_SelectedPage");
             _url = new UrlData<IPage> { Data = page };
-            _dataScope = new DataScope(DataScopeIdentifier.FromPublicationScope(page.DataSourceId.PublicationScope), page.DataSourceId.LocaleScope);
+            _dataScope = new DataScope(page.DataSourceId.PublicationScope, page.DataSourceId.LocaleScope);
         }
         else
         {
@@ -66,7 +66,7 @@ public partial class Renderers_Page : System.Web.UI.Page
 
             page = _url.Data;
 
-            _dataScope = new DataScope(DataScopeIdentifier.FromPublicationScope(page.DataSourceId.PublicationScope), page.DataSourceId.LocaleScope);
+            _dataScope = new DataScope(page.DataSourceId.PublicationScope, page.DataSourceId.LocaleScope);
             _cacheUrl = Request.Url.PathAndQuery;
         }
 

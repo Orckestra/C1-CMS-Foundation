@@ -213,7 +213,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         private static Map GetMap(PublicationScope publicationScope, CultureInfo localizationScope)
         {
             // TODO: refactor
-            using(new DataScope(DataScopeIdentifier.FromPublicationScope(publicationScope), localizationScope))
+            using(new DataScope(publicationScope, localizationScope))
             {
                 return GetMap();
             }

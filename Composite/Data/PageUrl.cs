@@ -234,7 +234,7 @@ namespace Composite.Data
             }
 
             Guid pageId = Guid.Empty;
-            using (new DataScope(DataScopeIdentifier.FromPublicationScope(publicationScope), locale))
+            using (new DataScope(publicationScope, locale))
             {
                 if (PageStructureInfo.GetLowerCaseUrlToIdLookup().TryGetValue(requestPath.ToLower(), out pageId) == false)
                 {
