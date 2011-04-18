@@ -201,7 +201,7 @@ namespace Composite.Services
 
                 string html = WrapInnerBody(htmlFragment);
 
-                XDocument xml = MarkupTransformationServices.TidyXml(html);
+                XDocument xml = MarkupTransformationServices.TidyHtml(html).Output;
 
                 IEnumerable<XElement> functionRoots = xml.Descendants(Namespaces.Function10 + "function").Where(f => f.Ancestors(Namespaces.Function10 + "function").Count() == 0);
                 foreach (var functionElement in functionRoots.ToList())

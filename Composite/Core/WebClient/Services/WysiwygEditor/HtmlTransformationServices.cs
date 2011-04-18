@@ -178,7 +178,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             }
             else
             {
-                outputResult = XDocument.Parse(xhtml);
+                outputResult = XDocument.Parse(xhtml, LoadOptions.PreserveWhitespace);
             }
 
             return new TidyHtmlResult { Output = outputResult, ErrorSummary = messageBuilder.ToString() };

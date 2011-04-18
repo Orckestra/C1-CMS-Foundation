@@ -345,6 +345,11 @@ VisualEditorPageBinding.prototype.getContent = function () {
 		if ( html.indexOf ( WEBKITBAD ) >-1 ) {
 			html = html.replace ( /\"=\"\">/g, ">" );
 		}
+		//Fix <br> in tag <pre> for FF < 4.0
+		if (html.indexOf("<br>") > -1) {
+			html = html.replace(/<br>/g, "\n");
+		}
+
 		result = this._editorBinding.normalizeToDocument ( 
 			VisualEditorBinding.getStructuredContent ( html )
 		);
