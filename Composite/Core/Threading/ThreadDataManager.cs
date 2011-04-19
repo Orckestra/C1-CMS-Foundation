@@ -6,19 +6,21 @@ using Composite.C1Console.Security.Foundation.PluginFacades;
 namespace Composite.Core.Threading
 {
     /// <summary>    
+    /// This class coordinates data connections and ensures that multiple requests to SQL Server will reuse the same sql connection, allowing transactions to run without the use of MSDTC
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ThreadDataManager
     {
-        private static readonly string LogTitle = "ThreadDataManager";
+        private static readonly string LogTitle = typeof(ThreadDataManager).Name;
         private const string c_HttpContextItemsId = "ThreadDataManager";
 
         [ThreadStatic]
         private static ThreadDataManagerData _threadDataManagerData = null;
 
-
+        /// <summary>
+        /// Gets <see cref="Composite.Core.Threading.ThreadDataManagerData" /> object for the current thread
+        /// </summary>
         /// <exclude />
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
         public static ThreadDataManagerData Current
         {
             get
@@ -57,9 +59,10 @@ namespace Composite.Core.Threading
         }
 
         /// <summary>
-        /// Gets the current thread data, in the case of ThreadDataManager not being initialized it'll throw an exception
+        /// Gets the current thread data, in the case of <see cref="Composite.Core.Threading.ThreadDataManager" /> not being initialized it'll throw an exception
         /// </summary>
-        /// <returns></returns>
+        /// <exclude />
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
         public static ThreadDataManagerData GetCurrentNotNull()
         {
             ThreadDataManagerData current = Current;
@@ -77,8 +80,11 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
         }
 
 
-
+        /// <summary>
+        /// Creates  a new instance of <see cref="Composite.Core.Threading.ThreadDataManagerData" /> object
+        /// </summary>
         /// <exclude />
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
         public static ThreadDataManagerData CreateNew()
         {
             var current = Current;
@@ -93,6 +99,7 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
 
 
         /// <exclude />
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
         public static IDisposable Initialize()
         {
             return new ThreadDataManagerScope(new ThreadDataManagerData(), true);
@@ -101,6 +108,7 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
 
 
         /// <exclude />
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
         public static IDisposable Initialize(ThreadDataManagerData parentThreadData)
         {
             if(parentThreadData != null)
@@ -113,7 +121,21 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Returns an <see cref="System.IDisposable" /> scope, checks that ThreadDataManager is initialized for the current thread, if not - does the initialization.
+        /// Should be called in all non ASP.NET threads, that are using C1 data API.
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// using (Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
+        /// using (var conn = new DataConnection(PublicationScope.Published, new CultureInfo("en-US")))
+        /// {
+        ///   var pages = conn.Get&lt;Composite.Data.Types.IPage&gt;();	
+        ///   // ...
+        /// }
+        /// </code>
+        /// </example>
+        /// <returns></returns>
         public static IDisposable EnsureInitialize()
         {
             if (Current != null) return new EmptyDisposableObj();
@@ -123,6 +145,7 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
 
 
         /// <exclude />
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
         public static void InitializeThroughHttpContext()
         {
             InitializeThroughHttpContext(false);
@@ -130,6 +153,7 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
 
 
         /// <exclude />
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
         public static void InitializeThroughHttpContext(bool forceUserValidation)
         {
             var httpContext = HttpContext.Current;
@@ -158,6 +182,8 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
         /// <summary>
         /// To be used only in Global.asax
         /// </summary>
+        /// <exclude />
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void FinalizeThroughHttpContext()
         {
             if(_threadDataManagerData != null)
