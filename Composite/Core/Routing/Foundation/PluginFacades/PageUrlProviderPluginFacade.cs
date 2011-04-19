@@ -33,8 +33,14 @@ namespace Composite.Core.Routing.Foundation.PluginFacades
             {
                 lock (resources.ProviderCache)
                 {
-                    provider = resources.Factory.Create(providerName);
-                    resources.ProviderCache.Add(providerName, provider);
+                    provider = resources.ProviderCache[providerName];
+                    if (provider == null)
+                    {
+                        provider = resources.Factory.Create(providerName);
+                        Verify.IsNotNull(provider, "Failed to build page url provider '{0}'", providerName);
+
+                        resources.ProviderCache.Add(providerName, provider);
+                    }
                 }
             }
 

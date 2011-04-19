@@ -693,6 +693,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         {
             IPage selectedPage = this.GetBinding<IPage>("SelectedPage");
 
+            selectedPage.MenuTitle = selectedPage.MenuTitle ?? string.Empty;
+            selectedPage.FriendlyUrl = selectedPage.FriendlyUrl ?? string.Empty;
+            
             TrimFieldValues(selectedPage);
 
             if (!FieldHasValidLength(selectedPage.Title, "Title", 255)
