@@ -12,7 +12,8 @@ window.onload = function () {
 							"parsedummy.js"],
 				stylesheet: ["CodeMirror/css/xmlcolors.css", "CodeMirror/css/csscolors.css", "CodeMirror/css/jscolors.css",
 							"contrib/csharp/css/csharpcolors.css",
-							"CodeMirror/contrib/sql/css/sqlcolors.css"
+							"CodeMirror/contrib/sql/css/sqlcolors.css",
+							"editor.css"
 							],
 				path: "CodeMirror/js/",
 				continuousScanning: 500,

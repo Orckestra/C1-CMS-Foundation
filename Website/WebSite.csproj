@@ -544,6 +544,7 @@
     <Content Include="Composite\content\misc\editors\codemirroreditor\contrib\csharp\index.html" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\contrib\csharp\js\parsecsharp.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\contrib\csharp\js\tokenizecsharp.js" />
+    <Content Include="Composite\content\misc\editors\codemirroreditor\editor.css" />
     <Content Include="Composite\content\misc\editors\functioncalleditor\bindings\ToolBarButtonDataBindingAddNew.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\bindings\ClassNameSelectorBinding.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\bindings\FormatSelectorBinding.js" />
