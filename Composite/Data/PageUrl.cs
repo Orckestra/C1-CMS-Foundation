@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Xml.Linq;
+using Composite.Core.Routing;
 using Composite.Data.Types;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.WebClient;
@@ -134,41 +135,30 @@ namespace Composite.Data
         /// <returns></returns>
         public UrlBuilder Build(PageUrlType urlType)
         {
-            Verify.ArgumentCondition(urlType != PageUrlType.Undefined, "urlType", "Url type is undefined");
-
-            string legacyScopeName = GetLegacyPublicationScopeIdentifier(PublicationScope);
-
-            if (urlType == PageUrlType.Public)
+            IPage page = GetPage();
+            if(page == null)
             {
-                var lookupTable = PageStructureInfo.GetIdToUrlLookup(legacyScopeName, Locale);
-
-                if (!lookupTable.ContainsKey(PageId))
-                {
-                    return null;
-                }
-
-                var publicUrl = new UrlBuilder(lookupTable[PageId]);
-                if (PublicationScope != PublicationScope.Published)
-                {
-                    publicUrl["dataScope"] = GetLegacyPublicationScopeIdentifier(PublicationScope);
-                }
-
-                return publicUrl;
+                return null;
             }
 
-            if (urlType == PageUrlType.Internal)
+            UrlData<IPage> urlData = new UrlData<IPage> {Data = page};
+
+            string url = PageUrls.BuildUrl(urlData, ToUrlKind(urlType), new UrlSpace());
+            return url != null ? new UrlBuilder(url) : null;
+        }
+
+        private static UrlKind ToUrlKind(PageUrlType pageUrlType)
+        {
+            switch (pageUrlType)
             {
-                string basePath = UrlUtils.ResolvePublicUrl("Renderers/Page.aspx");
-                UrlBuilder result = new UrlBuilder(basePath);
-
-                result["pageId"] = PageId.ToString();
-                result["cultureInfo"] = Locale.ToString();
-                result["dataScope"] = GetLegacyPublicationScopeIdentifier(PublicationScope);
-
-                return result;
+                case PageUrlType.Public:
+                    return UrlKind.Public;
+                case PageUrlType.Internal:
+                    return UrlKind.Internal;
+                case PageUrlType.Friendly:
+                    return UrlKind.Friendly;
             }
-
-            throw new NotImplementedException("Only 'Public' and 'Internal' url types are supported.");
+            return UrlKind.Undefined;
         }
 
         /// <summary>
@@ -203,49 +193,19 @@ namespace Composite.Data
 
         internal static PageUrl ParsePublicUrl(UrlBuilder urlBuilder, out NameValueCollection notUsedQueryParameters)
         {
-            notUsedQueryParameters = null;
+            UrlData<IPage> urlData = PageUrls.ParseUrl(urlBuilder.ToString(), new UrlSpace());
 
-            string requestPath;
-            Uri uri;
-
-            if (Uri.TryCreate(urlBuilder.FilePath, UriKind.Absolute, out uri))
+            if (urlData == null || urlData.UrlKind != UrlKind.Public)
             {
-                requestPath = HttpUtility.UrlDecode(uri.AbsolutePath).ToLower();
-            }
-            else
-            {
-                requestPath = urlBuilder.FilePath.ToLower();
-            }
-
-            string requestPathWithoutUrlMappingName;
-            CultureInfo locale = GetCultureInfo(requestPath, out requestPathWithoutUrlMappingName);
-
-            if (locale == null)
-            {
+                notUsedQueryParameters = null;
                 return null;
             }
 
-            PublicationScope publicationScope = PublicationScope.Published;
+            notUsedQueryParameters = urlData.QueryParameters;
 
-            string dataScopeName = urlBuilder["dataScope"];
-            if (!dataScopeName.IsNullOrEmpty() && string.Compare(dataScopeName, DataScopeIdentifier.AdministratedName, StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                publicationScope = PublicationScope.Unpublished;
-            }
+            IPage page = urlData.Data;
 
-            Guid pageId = Guid.Empty;
-            using (new DataScope(publicationScope, locale))
-            {
-                if (PageStructureInfo.GetLowerCaseUrlToIdLookup().TryGetValue(requestPath.ToLower(), out pageId) == false)
-                {
-                    return null;
-                }
-            }
-
-            notUsedQueryParameters = new NameValueCollection(urlBuilder.GetQueryParameters());
-            notUsedQueryParameters.Remove("dataScope");
-
-            return new PageUrl(publicationScope, locale, pageId, PageUrlType.Public);
+            return new PageUrl(page.DataSourceId.PublicationScope, page.DataSourceId.LocaleScope, page.Id, PageUrlType.Public);
         }
 
         internal static CultureInfo GetCultureInfo(string requestPath, out string requestPathWithoutUrlMappingName)
@@ -353,44 +313,17 @@ namespace Composite.Data
         /// <returns>True if a friendly URL match was found</returns>
         public static bool TryParseFriendlyUrl(string relativeUrl, out PageUrl pageUrl)
         {
-            string path;
-            CultureInfo cultureInfo = GetCultureInfo(relativeUrl, out path);
-            if (cultureInfo == null)
+            UrlData<IPage> urlData = PageUrls.ParseUrl(relativeUrl, new UrlSpace());
+
+            if (urlData == null || urlData.UrlKind != UrlKind.Friendly)
             {
                 pageUrl = null;
                 return false;
             }
 
-            var invariantCulture = CultureInfo.InvariantCulture;
+            IPage page = urlData.Data;
 
-            string loweredRelativeUrl = relativeUrl.ToLower(invariantCulture);
-
-            // Getting the site map
-            IEnumerable<XElement> siteMap;
-            DataScopeIdentifier dataScope = DataScopeIdentifier.GetDefault();
-            using (new DataScope(dataScope, cultureInfo))
-            {
-                siteMap = PageStructureInfo.GetSiteMap();
-            }
-
-            // TODO: Optimize
-            XAttribute matchingAttributeNode = siteMap.DescendantsAndSelf()
-                        .Attributes("FriendlyUrl")
-                        .Where(f => f.Value.ToLower(invariantCulture) == loweredRelativeUrl).FirstOrDefault();
-
-            if (matchingAttributeNode == null)
-            {
-                pageUrl = null;
-                return false;
-            }
-
-            XElement pageNode = matchingAttributeNode.Parent;
-
-            XAttribute pageIdAttr = pageNode.Attributes("Id").FirstOrDefault();
-            Verify.IsNotNull(pageIdAttr, "Failed to get 'Id' attribute from the site map");
-            Guid pageId = new Guid(pageIdAttr.Value);
-
-            pageUrl = new PageUrl(dataScope.ToPublicationScope(), cultureInfo, pageId, PageUrlType.Friendly);
+            pageUrl = new PageUrl(page.DataSourceId.PublicationScope, page.DataSourceId.LocaleScope, page.Id, PageUrlType.Friendly);
             return true;
         }
 
