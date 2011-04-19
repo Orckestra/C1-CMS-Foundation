@@ -224,6 +224,13 @@
     <Compile Include="Core\Instrumentation\Measurement.cs" />
     <Compile Include="Core\Instrumentation\Profiler.cs" />
     <Compile Include="Core\Instrumentation\ProfilerReport.cs" />
+    <Compile Include="Core\Routing\Foundation\PluginFacades\PageUrlProviderPluginFacade.cs" />
+    <Compile Include="Core\Routing\Plugins\UrlFormatters\IUrlFormatter.cs" />
+    <Compile Include="Core\Routing\Plugins\UrlFormatters\Runtime\NonConfigurableUrlFormatter.cs" />
+    <Compile Include="Core\Routing\Plugins\UrlFormatters\Runtime\UrlFormatterCustomFactory.cs" />
+    <Compile Include="Core\Routing\Plugins\UrlFormatters\Runtime\UrlFormatterData.cs" />
+    <Compile Include="Core\Routing\Plugins\UrlFormatters\Runtime\UrlFormatterFactory.cs" />
+    <Compile Include="Core\Routing\Foundation\PluginFacades\UrlFormatterPluginFacade.cs" />
     <Compile Include="Core\Routing\UrlKind.cs" />
     <Compile Include="Core\Routing\UrlData.cs" />
     <Compile Include="Core\Routing\IUrlProvider.cs" />
@@ -670,6 +677,7 @@
     <Compile Include="Core\Logging\LogEntry.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\FileLogTraceListener.cs" />
     <Compile Include="Plugins\Routing\Pages\DefaultPageUrlProvider.cs" />
+    <Compile Include="Plugins\Routing\UrlFormatters\ToLowerCaseUrlFormatter.cs" />
     <Compile Include="Plugins\Security\UserGroupPermissionDefinitionProvider\DataBasedUserGroupPermissionDefinitionProvider\DataBasedUserGroupPermissionDefinitionProvider.cs" />
     <Compile Include="C1Console\Tasks\BaseTaskManager.cs" />
     <Compile Include="C1Console\Tasks\ITaskManager.cs" />

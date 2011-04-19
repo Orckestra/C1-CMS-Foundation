@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Globalization;
+using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
 using Composite.Core.Routing;
+using Composite.Core.Routing.Foundation.PluginFacades;
 using Composite.Core.Routing.Plugins.PageUrlsProviders;
 using Composite.Core.WebClient;
 using Composite.Data;
@@ -12,6 +14,8 @@ namespace Composite.Plugins.Routing.Pages
 {
     internal class PageUrlBuilder: IPageUrlBuilder
     {
+        private static readonly string LogTitle = typeof (PageUrlBuilder).FullName;
+
         private readonly Hashtable<Guid, string> _folderPaths = new Hashtable<Guid, string>();
 
         public Hashtable<string, Guid> UrlToIdLookup = new Hashtable<string, Guid>();
@@ -19,10 +23,10 @@ namespace Composite.Plugins.Routing.Pages
         public Hashtable<string, Guid> FriendlyUrlToIdLookup = new Hashtable<string, Guid>();
         public Hashtable<Guid, string> IdToUrlLookup = new Hashtable<Guid, string>();
 
-        private PublicationScope _publicationScope;
-        private CultureInfo _localizationScope;
+        private readonly PublicationScope _publicationScope;
+        private readonly CultureInfo _localizationScope;
 
-        private string _friendlyUrlPrefix;
+        private readonly string _friendlyUrlPrefix;
 
         public PageUrlBuilder(PublicationScope publicationScope, CultureInfo localizationScope, UrlSpace urlSpace)
         {
@@ -68,10 +72,19 @@ namespace Composite.Plugins.Routing.Pages
                 baseUrl = UrlUtils.PublicRootPath + folderPath;
             }
 
-            string lookupUrl = baseUrl + ".aspx"; 
+            string lookupUrl = baseUrl + ".aspx";
+            lookupUrl = UrlFormatterPluginFacade.FormatUrl(lookupUrl);
 
+            string lookupUrlLowerCased = lookupUrl.ToLowerInvariant();
+
+            if (UrlToIdLookupLowerCased.ContainsKey(lookupUrlLowerCased))
+            {
+                Log.LogError(LogTitle, "Multiple pages share the same path '{0}', page ID: '{1}'. Duplicates are ignored.".FormatWith(lookupUrlLowerCased, page.Id));
+                return null;
+            }
+
+            UrlToIdLookupLowerCased.Add(lookupUrlLowerCased, page.Id);
             UrlToIdLookup.Add(lookupUrl, page.Id);
-            UrlToIdLookupLowerCased.Add(lookupUrl.ToLowerInvariant(), page.Id);
             IdToUrlLookup.Add(page.Id, lookupUrl);
 
             string url = lookupUrl;

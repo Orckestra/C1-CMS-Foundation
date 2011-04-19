@@ -2,6 +2,7 @@
 using Composite.Core.Configuration;
 using Composite.Core.Routing.Plugins.PageUrlsProviders.Runtime;
 using Composite.Core.Routing.Plugins.PathInfoHandlers.Runtime;
+using Composite.Core.Routing.Plugins.UrlFormatters.Runtime;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 
@@ -35,6 +36,17 @@ namespace Composite.Core.Routing.Plugins.Runtime
             get
             {
                 return (NameTypeManagerTypeConfigurationElementCollection<PageUrlProviderData>)base[_pageUrlProvidersProperty];
+            }
+        }
+
+        private const string _urlFormattersProperty = "UrlFormatters";
+        /// <exclude />
+        [ConfigurationProperty(_urlFormattersProperty)]
+        public NameTypeManagerTypeConfigurationElementCollection<UrlFormatterData> UrlFormatters
+        {
+            get
+            {
+                return (NameTypeManagerTypeConfigurationElementCollection<UrlFormatterData>)base[_urlFormattersProperty];
             }
         }
 

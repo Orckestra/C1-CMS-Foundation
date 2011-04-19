@@ -43,8 +43,8 @@ namespace Composite.Core.WebClient.Renderings.Page
             public IPageUrlBuilder PageUrlBuilder;
         }
 
-        private static readonly Hashtable<Pair<string, CultureInfo>, Map> _generatedMaps = new Hashtable<Pair<string, CultureInfo>, Map>();
-        private static readonly Hashtable<Pair<string, CultureInfo>, Version> _versions = new Hashtable<Pair<string, CultureInfo>, Version>();
+        private static readonly Hashtable<Pair<PublicationScope, string>, Map> _generatedMaps = new Hashtable<Pair<PublicationScope, string>, Map>();
+        private static readonly Hashtable<Pair<PublicationScope, string>, Version> _versions = new Hashtable<Pair<PublicationScope, string>, Version>();
         private static readonly object _updatingLock = new object();
         private static readonly object[] _buildingLock = new[] { new object(), new object() }; // Separated objects for 'Public' and 'Administrated' scopes
 
@@ -205,21 +205,17 @@ namespace Composite.Core.WebClient.Renderings.Page
                     }
                     break;
                 default:
-                    throw new NotImplementedException("Unhandled SitemapScope type: " + associationScope.ToString());
+                    throw new NotImplementedException("Unhandled SitemapScope type: " + associationScope);
             }
         }
 
-
-        private static Map GetMap(PublicationScope publicationScope, CultureInfo localizationScope)
-        {
-            // TODO: refactor
-            using(new DataScope(publicationScope, localizationScope))
-            {
-                return GetMap();
-            }
-        }
 
         private static Map GetMap()
+        {
+            return GetMap(DataScopeManager.CurrentDataScope.ToPublicationScope(), LocalizationScopeManager.CurrentLocalizationScope);
+        }
+
+        private static Map GetMap(PublicationScope publicationScope, CultureInfo localizationScope)
         {
             if (System.Transactions.Transaction.Current != null)
             {
@@ -227,7 +223,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                 LoggingService.LogWarning(typeof(PageStructureInfo).Name, exceptionToLog);
             }
 
-            var scopeKey = new Pair<string, CultureInfo>(DataScopeManager.CurrentDataScope.Name, LocalizationScopeManager.CurrentLocalizationScope);
+            var scopeKey = GetScopeKey(publicationScope, localizationScope);
             Map map = _generatedMaps[scopeKey];
 
             if (map != null)
@@ -236,7 +232,7 @@ namespace Composite.Core.WebClient.Renderings.Page
             }
 
             // Using different sync roots for different datascopes
-            object buildingLock = _buildingLock[scopeKey.First == DataScopeIdentifier.Public.Name ? 0 : 1];
+            //object buildingLock = _buildingLock[scopeKey.First == DataScopeIdentifier.Public.Name ? 0 : 1];
 
             // NOTE: Do not using a lock because it could because GetAssociatedPageIds is used inside transactions on some sites and it causes deadlocks 
 
@@ -266,7 +262,10 @@ namespace Composite.Core.WebClient.Renderings.Page
                 int currentVersion = version.VersionNumber;
                 Thread.MemoryBarrier();
 
-                map = BuildMap();
+                using(new DataScope(publicationScope, localizationScope))
+                {
+                    map = BuildMap();
+                }
 
                 lock (_updatingLock)
                 {
@@ -281,7 +280,10 @@ namespace Composite.Core.WebClient.Renderings.Page
             }
         }
 
-
+        private static Pair<PublicationScope, string> GetScopeKey(PublicationScope publicationScope, CultureInfo cultureInfo)
+        {
+            return new Pair<PublicationScope, string>(publicationScope, cultureInfo.Name);
+        }
 
         /// <exclude />
         public static bool TryGetPageUrl(Guid guid, out string pageUrl)
@@ -542,7 +544,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                 BuildXmlStructure(root, Guid.Empty, pageToToChildElementsTable, 100);
 
                 // TODO: pass the server url
-                var pageUrlBuilder = PageUrls.CreatePageUrlBuilder(publicationScope, localizationScope, new UrlSpace { Hostname = string.Empty });
+                var pageUrlBuilder = PageUrls.UrlProvider.CreateUrlBuilder(publicationScope, localizationScope, new UrlSpace { Hostname = string.Empty });
                 BuildFolderPaths(pagesData, root.Elements(), pageUrlBuilder, urlToIdLookup);
 
                 foreach (var urlLookupEntry in urlToIdLookup)
@@ -615,6 +617,10 @@ namespace Composite.Core.WebClient.Renderings.Page
                 Guid parentId = pageStructure.ParentId;
 
                 PageUrlSet pageUrls = builder.BuildUrlSet(page, parentId);
+                if(pageUrls == null)
+                {
+                    continue;
+                }
 
                 element.Add(new XAttribute("URL", pageUrls.PublicUrl));
 
@@ -658,11 +664,11 @@ namespace Composite.Core.WebClient.Renderings.Page
 
         private static void IncrementVersion(DataScopeIdentifier dataScopeIdentifier)
         {
-            string dataScopeName = dataScopeIdentifier.Name;
+            var publicationScope = dataScopeIdentifier.ToPublicationScope();
 
             lock (_updatingLock)
             {
-                var keysToUpdate = _versions.GetKeys().Where(key => key.First == dataScopeName).ToList();
+                var keysToUpdate = _versions.GetKeys().Where(key => key.First == publicationScope).ToList();
 
                 // Updating versions
                 foreach (var key in keysToUpdate)
@@ -691,7 +697,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
             lock (_updatingLock)
             {
-                var keysToUpdate = _versions.GetKeys().Where(key => key.Second.Name == cultureInfo.Name).ToList();
+                var keysToUpdate = _versions.GetKeys().Where(key => key.Second == cultureInfo.Name).ToList();
 
                 // Updating versions
                 foreach (var key in keysToUpdate)

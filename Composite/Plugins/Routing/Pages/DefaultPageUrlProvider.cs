@@ -97,6 +97,11 @@ namespace Composite.Plugins.Routing.Pages
                 page = PageManager.GetPageById(pageId, true);
             }
 
+            if(page == null)
+            {
+                return null;
+            }
+
             return new UrlData<IPage>
                        {
                            Data = page, 
