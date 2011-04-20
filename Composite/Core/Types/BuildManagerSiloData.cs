@@ -3,11 +3,8 @@ using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using Composite.Core.Extensions;
-using Composite.Core.Logging;
 
 
 namespace Composite.Core.Types
@@ -260,41 +257,17 @@ namespace Composite.Core.Types
         }
 
 
-
-        private Type FindType(string fullname)
+        private static Type FindType(string fullname)
         {
-            foreach (string assemblyFileName in this.CompilerParameters.ReferencedAssemblies)
+            // Searches in "bin" directory & "App_Code"
+            Type type = System.Web.Compilation.BuildManager.GetType(fullname, true, true);
+
+            if(AssemblyFacade.IsAppCodeDll(type.Assembly))
             {
-                // This is for handling the NotImplementedException("The invoked member is not supported in a dynamic assembly.")
-                Assembly assembly =
-                    (from a in AppDomain.CurrentDomain.GetAssemblies()
-                     where a.GetType().Name != "InternalAssemblyBuilder" &&
-                           a.CodeBase.ToLower().EndsWith(Path.GetFileName(assemblyFileName).ToLower()) == true
-                     select a).FirstOrDefault();
-
-                if (assembly != null)
-                {
-                    Type type = null;
-                    try
-                    {
-                        type =
-                            (from t in assembly.GetTypes()
-                             where t.FullName == fullname
-                             select t).SingleOrDefault();
-                    }
-                    catch (ReflectionTypeLoadException)
-                    {
-                        LoggingService.LogWarning("BuildManager", string.Format("Failed to load assembly '{0}'. Typical reason is version mismatch. Assembly is ignored.", assemblyFileName));
-                    }
-
-                    if (type != null)
-                    {
-                        return type;
-                    }
-                }
+                throw new NotSupportedException("Cannot use type '{0}' as a validation attribute, since it is defined in '/App_Code' folder, and it is not possible for Composite.Generated.dll to reference classes from '/App_Code' files".FormatWith(fullname));    
             }
 
-            throw new NotImplementedException(string.Format("The type '{0}' could not be located", fullname));
+            return type;
         }
     }
 }

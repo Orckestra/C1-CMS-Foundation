@@ -12,17 +12,20 @@ namespace Composite.Plugins.Types.TypeManagerTypeHandler.SystemTypeManagerTypeHa
     {
         public Type GetType(string fullName)
         {
-            Type type = null;
+            if(fullName.Contains(":"))
+            {
+                return null;
+            }
+
             try
             {
-                type = Type.GetType(fullName);
+                return Type.GetType(fullName);
             }
             catch (Exception)
             {
                 // Suppress all exceptions
+                return null;
             }
-
-            return type;
         }
 
 
