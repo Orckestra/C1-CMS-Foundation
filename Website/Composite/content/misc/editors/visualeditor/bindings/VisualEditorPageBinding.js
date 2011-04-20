@@ -150,8 +150,10 @@ VisualEditorPageBinding.prototype.initializeComponent = function ( editor, engin
 	 * Register content change handler to support undo-redo.
 	 */
 	theme.registerContentChangeHandler ({
-		handleContentChange : function () {	
-			self.updateUndoBroadcasters ();
+		handleContentChange: function () {
+			setTimeout(function () {
+				self.updateUndoBroadcasters();
+			}, 0);
 		}
 	});
 	
