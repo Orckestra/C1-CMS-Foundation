@@ -25,6 +25,7 @@ namespace Composite.Data.Types
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 128)]
         [ImmutableFieldId("{2D5BC444-377A-4337-9486-8210630E6E09}")]
+        [ForeignKey(typeof(IUserSettings), "Username", AllowCascadeDeletes = true)]
         string Username { get; set; }
 
 
