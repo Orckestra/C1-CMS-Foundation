@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using System.Web;
-using System.Xml.Linq;
 using Composite.Core.Routing;
 using Composite.Data.Types;
-using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.WebClient;
 using Composite.Core.Extensions;
 using Composite.Core;
@@ -20,7 +16,8 @@ namespace Composite.Data
     /// Page url type
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    [Obsolete("Use Composite.Core.Routing namespace for working with page urls")]
     public enum PageUrlType
     {
         /// <exclude />
@@ -33,7 +30,7 @@ namespace Composite.Data
         /// <summary>
         /// A main url by with a C1 page is accessed. F.e. "/Home/About.aspx"
         /// </summary>
-        [Obsolete("Use 'Public' instead", true)]
+        [Obsolete("Use 'Public' instead")]
         Published = 1,
 
         /// <summary>
@@ -43,7 +40,7 @@ namespace Composite.Data
         /// <summary>
         /// Unpublihed reference to a page. F.e. "/Renderers/Page.aspx?id=7446ceda-df90-49f0-a183-4e02ed6f6eec"
         /// </summary>
-        [Obsolete("Use 'Internal' instead", true)]
+        [Obsolete("Use 'Internal' instead")]
         Unpublished = 2,
 
         /// <summary>
@@ -335,11 +332,6 @@ namespace Composite.Data
         internal static bool IsInternalUrl(UrlBuilder url)
         {
             return url.FilePath.EndsWith("Renderers/Page.aspx", true);
-        }
-
-        private static string GetLegacyPublicationScopeIdentifier(PublicationScope publicationScope)
-        {
-            return publicationScope == PublicationScope.Published ? "public" : "administrated";
         }
     }
 }
