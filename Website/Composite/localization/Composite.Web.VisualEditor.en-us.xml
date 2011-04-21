@@ -67,6 +67,10 @@
   <string key="ContextMenu.LabelMergeTableCells" value="Merge Table Cells" />
   <string key="ContextMenu.LabelSplitMergedCells" value="Split Merged Cells" />
   <string key="ContextMenu.LabelDeleteTable" value="Delete Table" />
+  <string key="ContextMenu.LabelAlignImage" value="Align Image" />
+  <string key="ContextMenu.LabelAlignImageRight" value="Right" />
+  <string key="ContextMenu.LabelAlignImageLeft" value="Left" />
+  <string key="ContextMenu.LabelAlignImageNone" value="None" />
   <!-- error dialog -->
   <string key="ContentError.DialogTitle" value="Source code error" />
   <string key="ContentError.DialogText" value="Error in source code:" />

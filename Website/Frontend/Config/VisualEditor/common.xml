@@ -73,14 +73,14 @@
       </format>
     </radiogroup>
 
-    <radiogroup>
+    <!--<radiogroup>
       <format id="alignleft" label="Left" image="" notes="Align left" classes="left" selector="img,table">
         <button label="" image="images/left.png" />
       </format>
       <format id="alignright" label="Right" image="" notes="Align right" classes="right" selector="img,table">
         <button label="" image="images/right.png" />
       </format>
-    </radiogroup>
+    </radiogroup>-->
 
     <radiogroup>
       <!-- Sample classes that show up in the visual editor style selector -->

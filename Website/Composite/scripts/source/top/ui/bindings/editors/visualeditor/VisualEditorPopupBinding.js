@@ -268,10 +268,7 @@ VisualEditorPopupBinding.prototype._configureImageGroup = function () {
  */
 VisualEditorPopupBinding.prototype._isImage = function () {
 	
-	var result = false;
-	if ( !this.hasSelection ) {
-		result = this.tinyElement && this.tinyElement.nodeName == "IMG";
-	}
+	result = this.tinyElement && this.tinyElement.nodeName == "IMG";
 	return result;
 }
 

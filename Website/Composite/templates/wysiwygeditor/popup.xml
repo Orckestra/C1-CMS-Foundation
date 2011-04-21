@@ -11,6 +11,17 @@
 	</ui:menugroup>
 	<ui:menugroup rel="image">
 		<ui:menuitem cmd="compositeInsertImage" val="update" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelImageProperties}" image="${icon:image}" binding="EditorMenuItemBinding"/>
+		<ui:menuitem label="${string:Composite.Web.VisualEditor:ContextMenu.LabelAlignImage}" image="${skin}/wysiwygeditor/left.png" binding="EditorMenuItemBinding">
+			<ui:menupopup>
+				<ui:menubody>
+					<ui:menugroup>
+						<ui:menuitem cmd="JustifyLeft" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelAlignImageLeft}" image="${skin}/wysiwygeditor/left.png" binding="EditorMenuItemBinding"/>
+						<ui:menuitem cmd="JustifyRight" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelAlignImageRight}" image="${skin}/wysiwygeditor/right.png" binding="EditorMenuItemBinding"/>
+						<ui:menuitem cmd="RemoveFormat" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelAlignImageNone}" image="${icon:blank}" binding="EditorMenuItemBinding"/>
+					</ui:menugroup>
+				</ui:menubody>
+			</ui:menupopup>
+		</ui:menuitem>
 	</ui:menugroup>
 	<ui:menugroup rel="rendering">
 		<ui:menuitem cmd="compositeInsertRendering" val="update" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelRenderingProperties}" image="${icon:functioncall}" binding="EditorMenuItemBinding"/>
