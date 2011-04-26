@@ -244,6 +244,12 @@ namespace Composite.Plugins.Routing.Pages
                     publicUrl["dataScope"] = legacyScopeName;
                 }
 
+                publicUrl.PathInfo = urlData.PathInfo;
+                if (urlData.QueryParameters != null)
+                {
+                    publicUrl.AddQueryParameters(urlData.QueryParameters);
+                }
+
                 return publicUrl;
             }
 
@@ -255,6 +261,12 @@ namespace Composite.Plugins.Routing.Pages
                 result["pageId"] = page.Id.ToString();
                 result["cultureInfo"] = cultureInfo.ToString();
                 result["dataScope"] = legacyScopeName;
+
+                result.PathInfo = urlData.PathInfo;
+                if (urlData.QueryParameters != null)
+                {
+                    result.AddQueryParameters(urlData.QueryParameters);
+                }
 
                 return result;
             }
