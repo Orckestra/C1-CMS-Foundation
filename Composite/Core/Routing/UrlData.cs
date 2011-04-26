@@ -9,8 +9,25 @@ namespace Composite.Core.Routing
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class UrlData<T> where T : IData
     {
+        protected T _data;
+
         /// <exclude />
-        public virtual T Data { get; set; }
+        public UrlData()
+        {
+        }
+
+        /// <exclude />
+        public UrlData(T data)
+        {
+            _data = data;
+        }
+
+        /// <exclude />
+        public virtual T Data
+        {
+            get { return _data; }
+            set { _data = value;}
+        }
 
         /// <exclude />
         public virtual string PathInfo { get; set; }

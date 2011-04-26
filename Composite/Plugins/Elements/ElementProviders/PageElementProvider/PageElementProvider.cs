@@ -991,7 +991,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 previewPage = PageManager.GetPageById(page.Id);
             }
 
-            UrlData<IPage> pageUrlData = new UrlData<IPage> { Data = previewPage };
+            UrlData<IPage> pageUrlData = new UrlData<IPage>(previewPage);
 
             string url = PageUrls.BuildUrl(pageUrlData, UrlKind.Public, new UrlSpace())
                       ?? PageUrls.BuildUrl(pageUrlData, UrlKind.Internal, new UrlSpace()); 

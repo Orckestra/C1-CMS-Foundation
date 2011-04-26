@@ -138,7 +138,7 @@ namespace Composite.Data
                 return null;
             }
 
-            UrlData<IPage> urlData = new UrlData<IPage> {Data = page};
+            UrlData<IPage> urlData = new UrlData<IPage>(page);
 
             string url = PageUrls.BuildUrl(urlData, ToUrlKind(urlType), new UrlSpace());
             return url != null ? new UrlBuilder(url) : null;

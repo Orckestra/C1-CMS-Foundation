@@ -53,7 +53,7 @@ public partial class Renderers_Page : System.Web.UI.Page
         if (_isPreview)
         {
             page = (IPage)Cache.Get(_previewKey + "_SelectedPage");
-            _url = new UrlData<IPage> { Data = page };
+            _url = new UrlData<IPage>(page);
             _dataScope = new DataScope(page.DataSourceId.PublicationScope, page.DataSourceId.LocaleScope);
         }
         else
@@ -61,7 +61,7 @@ public partial class Renderers_Page : System.Web.UI.Page
             _url = RouteData.Values["C1Page"] as UrlData<IPage>;
             if(_url == null)
             {
-                _url = PageUrls.UrlProvider.ParseInternalUrl(Context.Request.Url.OriginalString);
+                _url = PageUrls.UrlProvider.ParseInternalUrl(Context.Request.Url.OriginalString); 
             }
 
             page = _url.Data;
