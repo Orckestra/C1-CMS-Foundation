@@ -132,7 +132,7 @@ SourceEditorPageBinding.prototype.setContent = function (string) {
 		// TODO: probably on server...
 		string = string.replace(/\"%7E/g, "\"~");
 
-		this._codemirrorEditor.setCode(string);
+		this._codemirrorEditor.setValue(string);
 	}
 }
 
@@ -146,7 +146,7 @@ SourceEditorPageBinding.prototype.getContent = function (string) {
 	if (this.isPlainView) {
 		result = this._editorTextBox.getValue();
 	} else {
-		result = this._codemirrorEditor.getCode();
+		result = this._codemirrorEditor.getValue();
 	}
 	return result;
 }
@@ -244,10 +244,10 @@ SourceEditorPageBinding.prototype._fit = function () {
 
 		}
 		if (this._codemirrorEditor != null) {
-			var wrapper = this._codemirrorEditor.wrapping;
+			var wrapper = this._codemirrorEditor.getWrapperElement();
 			if (wrapper != null) {
 				var dim = win.boxObject.getDimension();
-				wrapper.style.width = (dim.w-35) + "px";
+				wrapper.style.width = (dim.w) + "px";
 				wrapper.style.height = (dim.h) + "px";
 			}
 		}
@@ -263,7 +263,7 @@ SourceEditorPageBinding.prototype.getCheckSum = function () {
 	if (this.isPlainView) {
 		result = this._editorTextBox.getValue();
 	} else {
-		result = this._codemirrorEditor.getCode();
+		result = this._codemirrorEditor.getValue();
 	}
 	return result;
 }

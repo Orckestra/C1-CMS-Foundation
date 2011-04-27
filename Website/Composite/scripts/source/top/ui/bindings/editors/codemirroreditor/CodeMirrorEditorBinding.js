@@ -59,14 +59,9 @@ function CodeMirrorEditorBinding() {
 	this._codemirrorEditor = null;
 
 	/**
-	* @type {WHAT?}
+	* @type {codemirrorWrapperElement}
 	*/
-	this._codemirrorEnvelope = null;
-
-	/**
-	* @type {HTMLCanvasElement}
-	*/
-	this._codemirrorElement = null;
+	this._codemirrorWrapperElement = null;
 
 	/**
 	* Syntax defaults to plain text.
@@ -233,47 +228,65 @@ CodeMirrorEditorBinding.prototype.handleBroadcast = function (broadcast, arg) {
 
 				if (arg.broadcastWindow == contentWindow) {
 
-					//this.logger.debug ( DOMSerializer.serialize ( contentWindow.document.documentElement, true ));
 
 					// identification
-					this._codemirrorWindow = arg.codemirrorEditor.win;
+					this._codemirrorWindow = contentWindow;
 					this._codemirrorEditor = arg.codemirrorEditor;
+					this._codemirrorWrapperElement = arg.codemirrorEditor.getWrapperElement();
 
 					// syntax
-					// TODO: Move this somewhere...
 					switch (this.syntax) {
 						case CodeMirrorEditorBinding.syntax.XML:
-							this._codemirrorEditor.setParser("XMLParser");
+							this._codemirrorEditor.setOption("mode", "xml");
 							break;
 						case CodeMirrorEditorBinding.syntax.XSL:
 						case CodeMirrorEditorBinding.syntax.HTML:
-							this._codemirrorEditor.setParser("HTMLMixedParser");
+							this._codemirrorEditor.setOption("mode", "htmlmixed");
 							break;
 						case CodeMirrorEditorBinding.syntax.CSS:
-							this._codemirrorEditor.setParser("CSSParser");
+							this._codemirrorEditor.setOption("mode", "css");
+
 							break;
 						case CodeMirrorEditorBinding.syntax.CSHARP:
-							this._codemirrorEditor.setParser("CSharpParser");
+							this._codemirrorEditor.setOption("mode", "clike");
 							break;
 						case CodeMirrorEditorBinding.syntax.JAVASCRIPT:
-							this._codemirrorEditor.setParser("JSParser");
+							this._codemirrorEditor.setOption("mode", "javascript");
 							break;
 						case CodeMirrorEditorBinding.syntax.SQL:
-							this._codemirrorEditor.setParser("SqlParser");
+							this._codemirrorEditor.setOption("mode", "");
 						case CodeMirrorEditorBinding.syntax.TEXT:
-							this._codemirrorEditor.setParser("DummyParser");
+							this._codemirrorEditor.setOption("mode", "");
 							break;
 					}
+
 
 					// init components 
 					this.initializeEditorComponents(windowBinding);
 
+					
+
+
 					// dirtyfication
 					var self = this;
 
-					this._codemirrorEditor.editor.history.onChange = function (e) {
-						self.checkForDirty();
-					}
+					this._codemirrorEditor.setOption("onChange",
+						function (e) {
+							self.checkForDirty();
+						}
+					);
+
+					this._codemirrorEditor.setOption("onFocus",
+						function (e) {
+							self._activateEditor(true);
+						}
+					);
+
+//					this._codemirrorEditor.setOption("onBlur",
+//						function (e) {
+//							self._activateEditor(false);
+//						}
+//					);
 
 					/*
 					* We have the editor but do we have the page? 
@@ -383,15 +396,6 @@ CodeMirrorEditorBinding.prototype._activateEditor = function (isActivate) {
 CodeMirrorEditorBinding.prototype.handleCommand = function (cmd, gui, val) {
 
 	var isCommandHandled = CodeMirrorEditorBinding.superclass.handleCommand.call(this, cmd, val);
-	/*
-	* THIS IS NOT YET SUPPORTED BY GUI!
-	*
-	switch ( cmd ) {
-	case "Paste" :
-	this._codePressFrame.syntaxHighlight ( "generic" );
-	break;
-	}
-	*/
 
 	return isCommandHandled;
 }
@@ -466,8 +470,8 @@ CodeMirrorEditorBinding.prototype.getEditorWindow = function () {
 */
 CodeMirrorEditorBinding.prototype.getEditorDocument = function () {
 
-	if (this._codemirrorWindow != null)
-		return this._codemirrorWindow.document;
+	if (this._codemirrorWrapperElement != null)
+		return this._codemirrorWrapperElement.ownerDocument;
 	return null;
 }
 
