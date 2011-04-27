@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Text;
 using System.Web;
 using System.Web.UI;
-using System.Xml;
-using Composite.Core.WebClient;
 using System.Xml.Linq;
 using System.Linq;
+
+using Composite.Core.WebClient;
 
 
 public partial class ScriptLoaderControl : System.Web.UI.UserControl
@@ -181,7 +181,7 @@ public partial class ScriptLoaderControl : System.Web.UI.UserControl
      * Attempt remote connection. We stress-test the connection by 
      * looking for the exact document title "Start" in the response. 
      */
-    private bool _HasServerToServerConnection()
+    private static bool _HasServerToServerConnection()
     {
         bool result = false;
         try
@@ -189,10 +189,10 @@ public partial class ScriptLoaderControl : System.Web.UI.UserControl
             string uri = ConfigurationManager.AppSettings["Composite.StartPage.Url"];
 
             XDocument loaded = null;
-            System.Threading.Tasks.Task task = System.Threading.Tasks.Task.Factory.StartNew(() => loaded = System.Xml.Linq.XDocument.Load(uri));
+            System.Threading.Tasks.Task task = System.Threading.Tasks.Task.Factory.StartNew(() => loaded = TryLoad(uri));
 
             task.Wait(2500);
-            if (task.IsCompleted)
+            if (task.IsCompleted && loaded != null)
             {
                 XElement titleElement = loaded.Descendants(Composite.Core.Xml.Namespaces.Xhtml + "title").FirstOrDefault();
                 result = (titleElement != null && titleElement.Value == "Start");
@@ -201,4 +201,19 @@ public partial class ScriptLoaderControl : System.Web.UI.UserControl
         catch (Exception) { }
         return result;
     }
+
+    [DebuggerStepThrough]
+    private static XDocument TryLoad(string uri)
+    {
+        try
+        {
+            return XDocument.Load(uri);
+        }
+        catch
+        {
+            /* silent */
+            return null;
+        }
+    }
+
 }
