@@ -45,15 +45,20 @@ namespace Composite.Core.Serialization.CodeGeneration
         {
             Type serializerType;
 
-            using (_resourceLocker.Locker)
+            var cache = _resourceLocker.Resources.SerializersTypesCache;
+
+            if (!cache.TryGetValue(propertyClassType, out serializerType))
             {
-                if (_resourceLocker.Resources.SerializersTypesCache.TryGetValue(propertyClassType, out serializerType) == false)
+                lock (cache)
                 {
-                    _resourceLocker.Resources.SerializersTypesCache.RemoveOldVersion(propertyClassType);
+                    if (!cache.TryGetValue(propertyClassType, out serializerType) )
+                    {
+                        cache.RemoveOldVersion(propertyClassType);
 
-                    serializerType = GenerateType(propertyClassType);
+                        serializerType = GenerateType(propertyClassType);
 
-                    _resourceLocker.Resources.SerializersTypesCache.Add(propertyClassType, serializerType);
+                        cache.Add(propertyClassType, serializerType);
+                    }
                 }
             }
 
@@ -64,17 +69,21 @@ namespace Composite.Core.Serialization.CodeGeneration
 
         internal static void AddSerializerType(Type propertyClassType, Type serializerType)
         {
-            using (_resourceLocker.Locker)
-            {
-                if (_resourceLocker.Resources.SerializersTypesCache.ContainsKey(propertyClassType) == false)
-                {
-                    _resourceLocker.Resources.SerializersTypesCache.RemoveOldVersion(propertyClassType);
+            var cache = _resourceLocker.Resources.SerializersTypesCache;
 
-                    _resourceLocker.Resources.SerializersTypesCache.Add(propertyClassType, serializerType);
+            if (!cache.ContainsKey(propertyClassType))
+            {
+                lock (cache)
+                {
+                    if (!cache.ContainsKey(propertyClassType))
+                    {
+                        cache.RemoveOldVersion(propertyClassType);
+
+                        cache.Add(propertyClassType, serializerType);
+                    }
                 }
             }
         }
-
 
 
         private static Type GenerateType(Type propertyClassType)
@@ -465,11 +474,11 @@ namespace Composite.Core.Serialization.CodeGeneration
 
         private sealed class Resources
         {
-            public DynamicBuildManagetTypeCache<Type> SerializersTypesCache;
+            public DynamicBuildManagerTypeCache<Type> SerializersTypesCache;
 
             public static void Initialize(Resources resources)
             {
-                resources.SerializersTypesCache = new DynamicBuildManagetTypeCache<Type>();
+                resources.SerializersTypesCache = new DynamicBuildManagerTypeCache<Type>();
             }
         }
     }

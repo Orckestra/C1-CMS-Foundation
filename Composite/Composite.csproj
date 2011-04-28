@@ -1429,7 +1429,7 @@
     <Compile Include="Core\Types\Foundation\BuildManagerSiloHelper.cs" />
     <Compile Include="Core\Types\Foundation\CompileUnitBaseTypeProber.cs" />
     <Compile Include="Core\Types\BuildManagerFingerprintAttribute.cs" />
-    <Compile Include="Core\Types\DynamicBuildManagetTypeCache.cs" />
+    <Compile Include="Core\Types\DynamicBuildManagerTypeCache.cs" />
     <Compile Include="Core\Collections\Generic\ReadOnlyDictionary.cs" />
     <Compile Include="Core\Collections\Generic\ReadOnlyList.cs" />
     <Compile Include="Core\Collections\INamespaceTreeBuilderLeafInfo.cs" />

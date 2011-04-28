@@ -5,7 +5,7 @@ using Composite.Core.Collections.Generic;
 
 namespace Composite.Core.Types
 {
-    internal sealed class DynamicBuildManagetTypeCache<TValue>
+    internal sealed class DynamicBuildManagerTypeCache<TValue>
     {
         private readonly Hashtable<string, CacheItem> _cache = new Hashtable<string, CacheItem>();
 
