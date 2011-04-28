@@ -730,16 +730,16 @@ namespace Composite.Core.Types
 
 
 
-        [DebuggerStepThrough()]
-        private IEnumerable<string> GetLoadedAssemblyLocationsWithoutAppCodeDll()
+        [DebuggerStepThrough]
+        private static IEnumerable<string> GetLoadedAssemblyLocationsWithoutAppCodeDll()
         {
             var assemblyReferences = new List<string>();
             foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
             {
                 if (asm.GlobalAssemblyCache ||
-                    ((asm.FullName.StartsWith("Anonymously Hosted DynamicMethods Assembly") == false) &&
-                     (asm.GetCustomAttributes(typeof(BuildManagerCompileUnitAssemblyAttribute), true).Any() == false) &&
-                     (asm.ManifestModule.FullyQualifiedName != "RefEmit_InMemoryManifestModule")))
+                    ((asm.FullName.StartsWith("Anonymously Hosted DynamicMethods Assembly") == false)
+                     && !AssemblyFacade.IsInMemoryAssembly(asm)
+                     && (asm.GetCustomAttributes(typeof(BuildManagerCompileUnitAssemblyAttribute), true).Any() == false)))
                 {
                     string location = null;
 

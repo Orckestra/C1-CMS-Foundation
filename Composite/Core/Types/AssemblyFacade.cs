@@ -14,6 +14,8 @@ namespace Composite.Core.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class AssemblyFacade
 	{
+        private static readonly Type RuntimeModuleType = typeof(System.Reflection.Module).Assembly.GetType("System.Reflection.RuntimeModule");
+
         /// <exclude />
         public static IEnumerable<Assembly> GetAssembliesFromBin()
         {
@@ -50,6 +52,18 @@ namespace Composite.Core.Types
             return AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(IsAppCodeDll);
         }
 
+
+        /// <exclude />
+        public static bool IsInMemoryAssembly(Assembly asm)
+        {
+            // Checking 
+            // (asm.ManifestModule as System.Reflection.RuntimeModule).GetFullyQualifiedName() == "<In Memory Module>"
+
+            if (!RuntimeModuleType.IsAssignableFrom(asm.ManifestModule.GetType())) return false;
+
+            var method = RuntimeModuleType.GetMethod("GetFullyQualifiedName", BindingFlags.NonPublic | BindingFlags.Instance);
+            return (method.Invoke(asm.ManifestModule, new object[0]) as string) == "<In Memory Module>";
+        }
 
 
         /// <exclude />

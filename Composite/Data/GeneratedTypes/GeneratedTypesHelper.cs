@@ -749,15 +749,21 @@ namespace Composite.Data.GeneratedTypes
         }
 
 
+        private static CultureInfo[] GetLocalizationScopes(DataTypeDescriptor dataTypeDescriptor)
+        {
+            return dataTypeDescriptor.Localizeable 
+                ? DataLocalizationFacade.ActiveLocalizationCultures.ToArray() 
+                : new [] { CultureInfo.InvariantCulture } ;
+        }
+
         private bool UpdateOldType(bool validateOnly, bool originalTypeDataExists, out string errorMessage)
         {
             errorMessage = "";
             _newDataTypeDescriptor = CreateUpdatedDataTypeDescriptor();
 
-            DataTypeChangeDescriptor dataTypeChangeDescriptor;
             try
             {
-                dataTypeChangeDescriptor = new DataTypeChangeDescriptor(_oldDataTypeDescriptor, _newDataTypeDescriptor, originalTypeDataExists);
+                new DataTypeChangeDescriptor(_oldDataTypeDescriptor, _newDataTypeDescriptor, originalTypeDataExists);
             }
             catch (Exception ex)
             {
@@ -765,74 +771,81 @@ namespace Composite.Data.GeneratedTypes
                 return false;
             }
 
-            if (validateOnly == false)
+            if (validateOnly)
             {
-                // Unpublishable -> Publishble: Change type, copy data from public to admin WITHOUT: Eventing, Cascade and validation
-                // Publishble -> Unpublishable: Copy data from admin to public WITHOUT: Eventing, Cascade and validation
+                return true;
+            }
 
-                if ((_oldDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == false) &&
-                    (_newDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == true))
+            // Unpublishable -> Publishble: Change type, copy data from public to admin WITHOUT: Eventing, Cascade and validation
+            // Publishble -> Unpublishable: Copy data from admin to public WITHOUT: Eventing, Cascade and validation
+
+            if ((_oldDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == false) &&
+                (_newDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == true))
+            {
+                // Unpublishable -> Publishable
+
+                using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
                 {
-                    // Unpublishable -> Publishable
+                    GeneratedTypesFacade.UpdateType(_oldDataTypeDescriptor, _newDataTypeDescriptor, originalTypeDataExists);
+                    Type newInterfaceType = _newDataTypeDescriptor.GetInterfaceType();
 
-                    using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+                    foreach (CultureInfo locale in GetLocalizationScopes(_newDataTypeDescriptor))
                     {
-                        GeneratedTypesFacade.UpdateType(_oldDataTypeDescriptor, _newDataTypeDescriptor, originalTypeDataExists);
-                        Type newInterfaceType = _newDataTypeDescriptor.GetInterfaceType();
-
-                        foreach (CultureInfo locale in DataLocalizationFacade.ActiveLocalizationCultures)
+                        using (new DataScope(locale))
                         {
-                            using (new DataScope(locale))
+                            IEnumerable<IData> dataset;
+                            using (new DataScope(DataScopeIdentifier.Public))
                             {
-                                IEnumerable<IData> datas;
-                                using (DataScope dataScope = new DataScope(DataScopeIdentifier.Public))
+                                dataset = DataFacade.GetData(newInterfaceType).ToDataList();
+
+                                foreach (IData data in dataset)
                                 {
-                                    datas = DataFacade.GetData(newInterfaceType).ToDataList();
-
-                                    foreach (IData data in datas)
-                                    {
-                                        IPublishControlled publishControlled = data as IPublishControlled;
-                                        publishControlled.PublicationStatus = GenericPublishProcessController.Published;
-                                    }
-
-                                    DataFacade.Update(datas, true, false, false);
+                                    IPublishControlled publishControlled = data as IPublishControlled;
+                                    publishControlled.PublicationStatus = GenericPublishProcessController.Published;
                                 }
 
-                                using (DataScope dataScope = new DataScope(DataScopeIdentifier.Administrated))
+                                DataFacade.Update(dataset, true, false, false);
+                            }
+
+                            using (new DataScope(DataScopeIdentifier.Administrated))
+                            {
+                                foreach (IData data in dataset)
                                 {
-                                    foreach (IData data in datas)
-                                    {
-                                        IData newData = DataFacade.BuildNew(newInterfaceType);
+                                    IData newData = DataFacade.BuildNew(newInterfaceType);
 
-                                        data.ProjectedCopyTo(newData);
+                                    data.ProjectedCopyTo(newData);
 
-                                        IPublishControlled publishControlled = newData as IPublishControlled;
-                                        publishControlled.PublicationStatus = GenericPublishProcessController.Published;
+                                    IPublishControlled publishControlled = newData as IPublishControlled;
+                                    publishControlled.PublicationStatus = GenericPublishProcessController.Published;
 
-                                        DataFacade.AddNew(newData, true, false, false);
-                                    }
+                                    DataFacade.AddNew(newData, true, false, false);
                                 }
                             }
                         }
-
-                        transactionScope.Complete();
                     }
+
+                    transactionScope.Complete();
                 }
-                else if ((_oldDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == true) &&
-                    (_newDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == false))
+                return true;
+            }
+
+            if ((_oldDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == true) &&
+                (_newDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == false))
+            {
+                // Publishable -> Unpublishable
+                using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
                 {
-                    // Publishable -> Unpublishable
-                    using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+                    foreach (CultureInfo locale in GetLocalizationScopes(_newDataTypeDescriptor))
                     {
-                        foreach (CultureInfo locale in DataLocalizationFacade.ActiveLocalizationCultures)
+                        using (new DataScope(locale))
                         {
                             IEnumerable<IData> datas;
-                            using (DataScope dataScope = new DataScope(DataScopeIdentifier.Administrated))
+                            using (new DataScope(DataScopeIdentifier.Administrated))
                             {
                                 datas = DataFacade.GetData(_oldType).ToDataList();
                             }
 
-                            using (DataScope dataScope = new DataScope(DataScopeIdentifier.Public))
+                            using (new DataScope(DataScopeIdentifier.Public))
                             {
                                 DataFacade.Delete(DataFacade.GetData(_oldType).ToDataEnumerable(), true, CascadeDeleteType.Disable);
 
@@ -852,18 +865,15 @@ namespace Composite.Data.GeneratedTypes
                                 }
                             }
                         }
-
-                        transactionScope.Complete();
                     }
+                    transactionScope.Complete();
+                }
 
-                    GeneratedTypesFacade.UpdateType(_oldDataTypeDescriptor, _newDataTypeDescriptor, originalTypeDataExists);
-                }
-                else
-                {
-                    GeneratedTypesFacade.UpdateType(_oldDataTypeDescriptor, _newDataTypeDescriptor, originalTypeDataExists);
-                }
+                GeneratedTypesFacade.UpdateType(_oldDataTypeDescriptor, _newDataTypeDescriptor, originalTypeDataExists);
+                return true;
             }
-
+            
+            GeneratedTypesFacade.UpdateType(_oldDataTypeDescriptor, _newDataTypeDescriptor, originalTypeDataExists);
             return true;
         }
 
