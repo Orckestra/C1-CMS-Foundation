@@ -24,7 +24,7 @@ namespace Composite.Data.Types
         [StringSizeValidator(2, 64)]
         [StoreFieldType(PhysicalStoreFieldType.String, 64)]
         [ImmutableFieldId("{F2425F85-5B41-4f73-8F9A-54CAAAE266FC}")]
-        [ForeignKey(typeof(IUserSettings), "Username", AllowCascadeDeletes = true)]
+        [ForeignKey(typeof(IUser), "Username", AllowCascadeDeletes = true)]
         string Username { get; set; }
 
 

@@ -18,7 +18,9 @@ namespace Composite.Core.WebClient.Setup
     [WebService(Namespace = "http://www.composite.net/ns/management")]
     [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
     public class SetupService : System.Web.Services.WebService
-    {                        
+    {
+        private static readonly string LogTitle = typeof (SetupService).FullName;
+        
         [WebMethod]
         public CheckResult[] CheckRequirements(bool dummy)
         {
@@ -137,7 +139,15 @@ namespace Composite.Core.WebClient.Setup
 
             SystemSetupFacade.IsSystemFirstTimeInitialized = true;
 
-            SetupServiceFacade.SetUp(setupDescriptionXML, username, password, language, consolelanguage);
+            try
+            {
+                SetupServiceFacade.SetUp(setupDescriptionXML, username, password, language, consolelanguage);
+            }
+            catch(Exception ex)
+            {
+                Log.LogError(LogTitle, ex);
+                throw;
+            }
 
             return true;
         }
