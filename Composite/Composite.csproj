@@ -677,6 +677,7 @@
     <Compile Include="Core\Logging\LogEntry.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\FileLogTraceListener.cs" />
     <Compile Include="Plugins\Routing\Pages\DefaultPageUrlProvider.cs" />
+    <Compile Include="Plugins\Routing\UrlFormatters\StringReplaceUrlFormatter.cs" />
     <Compile Include="Plugins\Routing\UrlFormatters\ToLowerCaseUrlFormatter.cs" />
     <Compile Include="Plugins\Security\UserGroupPermissionDefinitionProvider\DataBasedUserGroupPermissionDefinitionProvider\DataBasedUserGroupPermissionDefinitionProvider.cs" />
     <Compile Include="C1Console\Tasks\BaseTaskManager.cs" />
