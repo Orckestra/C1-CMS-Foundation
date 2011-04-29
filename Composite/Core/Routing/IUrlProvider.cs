@@ -9,13 +9,13 @@ namespace Composite.Core.Routing
     public interface IUrlProvider<T> where T : IData
     {
         /// <exclude />
-        bool IsInternalUrl(string url);
+        bool IsInternalUrl(string relativeUrl);
 
         /// <exclude />
-        UrlData<T> ParseInternalUrl(string url);
+        UrlData<T> ParseInternalUrl(string relativeUrl);
 
         /// <exclude />
-        UrlData<T> ParseUrl(string url, UrlSpace urlSpace);
+        UrlData<T> ParseUrl(string relativeUrl, UrlSpace urlSpace);
 
         /// <exclude />
         string BuildUrl(UrlData<T> urlData, UrlKind urlKind, UrlSpace urlSpace);

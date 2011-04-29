@@ -588,7 +588,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             public string FileName;
             public string FilePath;
             public FileStream FileStream;
-            public string[] OldEntries;
+            public string[] OldEntries; // Keeping old log entries in memory isn't a good idea, easely can eat up 10-20 megabytes of memory
             public List<LogEntry> NewEntries = new List<LogEntry>();
             public DateTime CreationDate;
             public DateTime StartupTime;
