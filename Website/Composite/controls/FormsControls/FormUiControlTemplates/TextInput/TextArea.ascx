@@ -1,5 +1,5 @@
 <%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.TextInputTemplateUserControlBase"  %>
-<%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
+<%@ Import Namespace="Composite.Data.Validation.ClientValidationRules" %>
 
 <script runat="server">
     private string _currentStringValue = null;
@@ -27,6 +27,11 @@
         return this.ClientID.Replace("_", "$");
     }
     
+    private string IsRequired()
+    {
+        return ClientValidationRules.Any(rule => rule is NotNullClientValidationRule) ? "true" : "false";
+    }
+    
      private string TypeParam()
     {
         switch (this.Type)
@@ -39,6 +44,6 @@
     }
 </script>
 
-<ui:textbox required="false" name="<%= this.UniqueID  %>" <%= TypeParam() %>>
+<ui:textbox required="<%= IsRequired() %>" name="<%= this.UniqueID  %>" <%= TypeParam() %>>
     <textarea><%= Server.HtmlEncode(_currentStringValue) %></textarea>
 </ui:textbox>
