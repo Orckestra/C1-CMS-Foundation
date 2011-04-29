@@ -52,7 +52,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
 
             XslCompiledTransform xslt = XsltServices.GetCompiledXsltTransform(xsltPath);
 
-            using (XmlWriter writer = outputDocument.CreateWriter())
+            using (XmlWriter writer = outputDocument.CreateXhtmlWriter())
             {
                 using (XmlReader reader = tidiedXhtml.CreateReader())
                 {

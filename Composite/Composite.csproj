@@ -258,6 +258,7 @@
     <Compile Include="Core\Xml\UriResolver.cs" />
     <Compile Include="Core\Xml\XDocumentUtils.cs" />
     <Compile Include="Core\Xml\XElementUtils.cs" />
+    <Compile Include="Core\Xml\XhtmlWriter.cs" />
     <Compile Include="Core\Xml\XmlDocumentUtil.cs" />
     <Compile Include="Core\Xml\XmlReaderUtils.cs" />
     <Compile Include="Core\Xml\XmlSchemaSetUtils.cs" />
