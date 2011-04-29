@@ -210,8 +210,9 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         if(!IsPostBack)
         {
             InitializeTreeView();
-            return;
         }
+
+
         
         _xElementTreeNodeIDs = TreeHelper.GetElementToIdMap(FunctionMarkup, TreePathToIdMapping);
 
@@ -303,6 +304,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         {
             InputParameterNodeIDs = CalculateGetInputParamaterFunctionCalls(FunctionMarkup, TreePathToIdMapping);
         }
+
     }
 
     public void OnMessage()
@@ -558,12 +560,19 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
     private void Page_PreRender(object sender, EventArgs args)
     {
+		//Select first parameter if not selected
+		//TODO: refactor this
+		if (SelectedNode.IsNullOrEmpty() && TreePathToIdMapping.Count > 1)
+		{
+			SelectedNode = TreePathToIdMapping.Keys.Skip(1).FirstOrDefault();
+		}
+
         // Building tree 
         XDocument functionMarkup = Clone(FunctionMarkup);
         XElement updatedTreeView =  UpdateTreeView(functionMarkup.Root);
 
         // Building an editing panel
-        if (IsPostBack)
+		if (!SelectedNode.IsNullOrEmpty())
         {
             UpdateEditingPanel(updatedTreeView, SelectedNode);
         }
