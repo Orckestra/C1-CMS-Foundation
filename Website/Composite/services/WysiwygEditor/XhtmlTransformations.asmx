@@ -9,9 +9,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Services;
 using System.Web.Services.Protocols;
-using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Xsl;
 using Composite.Data.DynamicTypes;
 using Composite.Functions;
 using Composite.Core.Logging;
@@ -21,7 +19,6 @@ using Composite.Core.WebClient.Services.WysiwygEditor;
 using Composite.Core.Xml;
 using Composite.Data;
 using Composite.Core.Types;
-using Composite.Core.IO;
 
 namespace Composite.Services
 {
@@ -45,9 +42,6 @@ namespace Composite.Services
     [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
     public class XhtmlTransformations : System.Web.Services.WebService
     {
-        private const string _nbsp = "&nbsp;";
-        private const string _nbspNumeric = "&#160;";
-
         [WebMethod]
         public XhtmlTransformationResult MsWordContentToTinyContent(string htmlFragment)
         {
@@ -62,11 +56,11 @@ namespace Composite.Services
 
                 string bodyInnerXhtml = MarkupTransformationServices.OutputBodyDescendants(structuredResult);
 
-                XhtmlTransformationResult result = new XhtmlTransformationResult();
-                result.Warnings = warnings;
-                result.XhtmlFragment = bodyInnerXhtml.Replace("\xA0", _nbspNumeric).Replace(_nbsp, _nbspNumeric);
-
-                return result;
+                return new XhtmlTransformationResult
+                {
+                    Warnings = warnings,
+                    XhtmlFragment = FixXhtmlFragment(bodyInnerXhtml)
+                };
             }
             catch (Exception ex)
             {
@@ -150,17 +144,15 @@ namespace Composite.Services
                     }
                 }
 
-                List<string> pathAttributeNames = new List<string> { "src", "href" };
-
                 FixTinyMceMalEncodingOfInternationalUrlHostNames(structuredResult);
 
                 string bodyInnerXhtml = MarkupTransformationServices.OutputBodyDescendants(structuredResult);
 
-                XhtmlTransformationResult result = new XhtmlTransformationResult();
-                result.Warnings = warnings;
-                result.XhtmlFragment = bodyInnerXhtml.Replace("\xA0", _nbspNumeric).Replace(_nbsp, _nbspNumeric);
-
-                return result;
+                return new XhtmlTransformationResult
+                {
+                    Warnings = warnings,
+                    XhtmlFragment = FixXhtmlFragment(bodyInnerXhtml)
+                };
             }
             catch (Exception ex)
             {
@@ -170,7 +162,10 @@ namespace Composite.Services
             }
         }
 
-
+        private static string FixXhtmlFragment(string xhtmlFragment)
+        {
+            return xhtmlFragment.Replace("\xA0", "&#160;").Replace("&nbsp;", "&#160;");
+        }
 
         // Fixing issue where tiny 
         private void FixTinyMceMalEncodingOfInternationalUrlHostNames(XDocument xhtmlDoc)
@@ -222,11 +217,11 @@ namespace Composite.Services
 
                 string bodyInnerXhtml = MarkupTransformationServices.OutputBodyDescendants(structuredResult);
 
-                XhtmlTransformationResult result = new XhtmlTransformationResult();
-                result.Warnings = warnings;
-                result.XhtmlFragment = bodyInnerXhtml.Replace("\xA0", _nbspNumeric).Replace(_nbsp, _nbspNumeric);
-
-                return result;
+                return new XhtmlTransformationResult
+                {
+                    Warnings = warnings,
+                    XhtmlFragment = FixXhtmlFragment(bodyInnerXhtml)
+                };
             }
             catch (Exception ex)
             {
