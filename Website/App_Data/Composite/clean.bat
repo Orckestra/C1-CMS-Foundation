@@ -35,6 +35,8 @@ rd ..\..\Composite\InstalledPackages /S /Q
 rd ..\..\Views /S /Q
 rd Azure /S /Q
 md Azure
+rd InlineCSharpFunctions /S /Q
+md InlineCSharpFunctions
 
 
 copy TreeDefinitions\PageType.xml TreeDefinitions\PageType.xml.backup /y
@@ -43,6 +45,19 @@ copy TreeDefinitions\PageType.xml.backup TreeDefinitions\PageType.xml /y
 del TreeDefinitions\PageType.xml.backup
 
 :: copy ..\..\..\AutoInstallPackages\Develop\BaseConfigurationDkUs.zip AutoInstallPackages /y
+
+
+:: Basic cleanup
+rd ..\..\Frontend\Composite  /S /Q
+
+:: Starter site cleanup 
+del ..\..\Frontend\Styles\1140.css
+del ..\..\Frontend\Styles\ie.css
+del ..\..\Frontend\Styles\layout.css
+del ..\..\Frontend\Styles\mobile.css
+del ..\..\Frontend\Styles\smallerscreen.css
+del ..\..\Frontend\Styles\typeimg.css
+del ..\..\favicon.ico
 
 
 :: Blog cleanup
