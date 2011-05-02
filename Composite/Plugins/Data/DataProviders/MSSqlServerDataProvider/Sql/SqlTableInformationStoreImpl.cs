@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
+using System.Linq;
 using Composite.Core.Extensions;
 using Composite.Core.Sql;
 
@@ -13,7 +14,8 @@ namespace Composite.Sql
     internal class SqlTableInformationStoreImpl : ISqlTableInformationStore
     {
         private static Dictionary<string, ISqlTableInformation> _tableInformationCache = new Dictionary<string, ISqlTableInformation>();
-
+        private static IEnumerable<ColumnInfo> _columnsInformationCache;
+        
         public ISqlTableInformation GetTableInformation(string connectionString, string tableName)
         {
             Verify.ArgumentNotNullOrEmpty(connectionString, "connectionString");
@@ -35,14 +37,19 @@ namespace Composite.Sql
         public void OnFlush()
         {
             _tableInformationCache = new Dictionary<string, ISqlTableInformation>();
+            _columnsInformationCache = null;
         }
 
-        private static SqlTableInformation CreateSqlTableInformation(string connectionString, string tableName)
+        private static List<ColumnInfo> GetColumnsInfo(SqlConnection connection, string tableName)
         {
-            var connection = SqlConnectionManager.GetConnection(connectionString);
+            IEnumerable<ColumnInfo> columnsCache = _columnsInformationCache;
+            if(columnsCache == null)
+            {
+                var columns = new List<ColumnInfo>();
 
-            string queryString = string.Format(
-                @"SELECT columnName = col.name,
+                const string queryString = 
+                @"SELECT tableName = obj.name,
+                       columnName = col.name,
                        isPrimaryKey = CASE WHEN tc.constraint_type = 'PRIMARY KEY' THEN 1 ELSE 0 END,
                        isIdentity = CASE WHEN col.status & 0x80 = 0 THEN 0 ELSE 1 END,
                        isComputed = col.iscomputed,
@@ -57,28 +64,39 @@ namespace Composite.Sql
                             information_schema.table_constraints tc
   	                 ON tc.table_name = kcu.table_name AND tc.constraint_name = kcu.constraint_name AND tc.constraint_type = 'PRIMARY KEY')
                   ON obj.name = kcu.table_name AND col.name = kcu.column_name
-                  WHERE obj.name = '{0}'
-                  ORDER BY col.colorder", tableName);
+                  ORDER BY col.colorder";
 
-            var columns = new List<ColumnInfo>();
-
-            using(var command = new SqlCommand(queryString, connection))
-            {
-                using (var reader = command.ExecuteReader())
+                using (var command = new SqlCommand(queryString, connection))
                 {
-                    foreach(DbDataRecord record in reader)
+                    using (var reader = command.ExecuteReader())
                     {
-                        columns.Add(new ColumnInfo
+                        foreach (DbDataRecord record in reader)
                         {
-                                Name = record.GetString(0),
-                                IsPrimaryKey = record.GetInt32(1) == 1,
-                                IsIdentity = record.GetInt32(2) == 1,
-                                IsComputed = record.GetInt32(3) == 1,
-                                IsNullable = record.GetInt32(4) == 1
-                        });
+                            columns.Add(new ColumnInfo
+                            {
+                                TableName = record.GetString(0),
+                                Name = record.GetString(1),
+                                IsPrimaryKey = record.GetInt32(2) == 1,
+                                IsIdentity = record.GetInt32(3) == 1,
+                                IsComputed = record.GetInt32(4) == 1,
+                                IsNullable = record.GetInt32(5) == 1
+                            });
+                        }
                     }
                 }
+
+                _columnsInformationCache = columnsCache = columns;
             }
+
+            return columnsCache.Where(c => string.Compare(c.TableName, tableName, true) == 0).ToList();
+        }
+
+
+        private static SqlTableInformation CreateSqlTableInformation(string connectionString, string tableName)
+        {
+            var connection = SqlConnectionManager.GetConnection(connectionString);
+
+            var columns = GetColumnsInfo(connection, tableName);
 
             // Checking if the necessary table exists
             if(columns.Count == 0)
@@ -87,8 +105,7 @@ namespace Composite.Sql
             }
 
             // Performing a query with will get no rows but provide us with columns' types information
-            queryString = "SELECT * FROM {0} WHERE 1 = 2".FormatWith(tableName);
-
+            string queryString = "SELECT * FROM {0} WHERE 1 = 2".FormatWith(tableName);
 
             Dictionary<string, Type> columnTypes;
             using (var command = new SqlCommand(queryString, connection))
@@ -171,6 +188,7 @@ namespace Composite.Sql
 
         private class ColumnInfo
         {
+            public string TableName;
             public string Name;
             public bool IsPrimaryKey;
             public bool IsIdentity;

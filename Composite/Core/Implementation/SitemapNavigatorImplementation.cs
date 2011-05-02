@@ -2,10 +2,12 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Xml.Linq;
-using Composite.Data;
-using Composite.Core.WebClient.Renderings.Page;
 using System.Collections.Generic;
+
+using Composite.Data;
 using Composite.Data.Types;
+using Composite.Core.Extensions;
+using Composite.Core.WebClient.Renderings.Page;
 
 
 namespace Composite.Core.Implementation
@@ -37,7 +39,7 @@ namespace Composite.Core.Implementation
         /// <param name="connection"></param>
         public SitemapNavigatorImplementation(DataConnection connection)
         {
-            using (DataConnection dataConnection = new DataConnection(connection.CurrentPublicationScope, connection.CurrentLocale))
+            using (new DataScope(connection.CurrentPublicationScope, connection.CurrentLocale))
             {
                 _sitemap = PageStructureInfo.GetSiteMap().ToList();
             }
@@ -128,9 +130,8 @@ namespace Composite.Core.Implementation
             hostname = hostname.ToLower();
 
             IEnumerable<IPageHostNameBinding> hostNameMatches =
-                from binding in _connection.Get<IPageHostNameBinding>()
-                where binding.HostName != null
-                        && binding.HostName != string.Empty
+                from binding in _connection.Get<IPageHostNameBinding>() as IEnumerable<IPageHostNameBinding>
+                where !binding.HostName.IsNullOrEmpty()
                 orderby binding.HostName.Length descending
                 select binding;
 

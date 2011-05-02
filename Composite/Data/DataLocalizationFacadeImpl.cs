@@ -234,7 +234,7 @@ namespace Composite.Data
             if (urlMappingName == null)
             {
                 urlMappingName =
-                (from sal in DataFacade.GetData<ISystemActiveLocale>()
+                (from sal in DataFacade.GetData<ISystemActiveLocale>() as IEnumerable<ISystemActiveLocale>
                  where sal.CultureName == cultureInfo.Name
                  select sal.UrlMappingName).SingleOrDefault();
 

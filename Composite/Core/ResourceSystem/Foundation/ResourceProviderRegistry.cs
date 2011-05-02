@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Composite.Core.Configuration;
-using Composite.C1Console.Events;
 using Composite.Core.ResourceSystem.Foundation.PluginFacades;
 using Composite.Core.ResourceSystem.Plugins.ResourceProvider;
 using Composite.Core.ResourceSystem.Plugins.ResourceProvider.Runtime;
 using Composite.Core.Collections.Generic;
-using Composite.Core.Logging;
-
+using Composite.C1Console.Events;
 
 namespace Composite.Core.ResourceSystem.Foundation
 {
@@ -20,7 +17,7 @@ namespace Composite.Core.ResourceSystem.Foundation
 
         static ResourceProviderRegistry()
         {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
+            GlobalEventSystemFacade.SubscribeToFlushEvent((a) => Flush());
         }
 
 
@@ -55,14 +52,6 @@ namespace Composite.Core.ResourceSystem.Foundation
         {
             _resourceLocker.ResetInitialization();
         }
-
-
-
-        private static void OnFlushEvent(FlushEventArgs args)
-        {
-            Flush();
-        }
-
 
 
         private sealed class Resources

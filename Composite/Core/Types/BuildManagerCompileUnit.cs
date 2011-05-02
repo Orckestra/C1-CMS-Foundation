@@ -16,9 +16,9 @@ namespace Composite.Core.Types
     public sealed class BuildManagerCompileUnit
     {
         private bool? _isCacheble;
-        private List<BuildManagerCompileType> _buildManagerCompileTypes = new List<BuildManagerCompileType>();
-        private Hashtable<string, BuildManagerCompileType> _compiledTypeByName = new Hashtable<string, BuildManagerCompileType>();
-        private Hashtable<string, BuildManagerCompileType> _compiledTypeByFullName = new Hashtable<string, BuildManagerCompileType>();
+        private readonly List<BuildManagerCompileType> _buildManagerCompileTypes = new List<BuildManagerCompileType>();
+        private readonly Hashtable<string, BuildManagerCompileType> _compiledTypeByName = new Hashtable<string, BuildManagerCompileType>();
+        private readonly Hashtable<string, BuildManagerCompileType> _compiledTypeByFullName = new Hashtable<string, BuildManagerCompileType>();
 
         private List<Assembly> _referencedAssemblies = new List<Assembly>();
         private List<Type> _usedTypes = new List<Type>();
@@ -224,16 +224,19 @@ namespace Composite.Core.Types
         }
 
 
-
         internal void CopyResultsFrom(BuildManagerCompileUnit buildManagerCompileUnit)
         {
+            var table = new Hashtable<BuildManagerCompileType, BuildManagerCompileType>();
+            foreach (var buildManagerCompileType in buildManagerCompileUnit._buildManagerCompileTypes)
+            {
+                table.Add(buildManagerCompileType, buildManagerCompileType);
+            }
+
             foreach (BuildManagerCompileType buildManagerCompileType in _buildManagerCompileTypes)
             {
-                int index = buildManagerCompileUnit._buildManagerCompileTypes.IndexOf(buildManagerCompileType);
+                Verify.That(table.ContainsKey(buildManagerCompileType), "Failed to find a type in a compiling unit.");
 
-                Verify.That(index >= 0, "Failed to find a type in a compiling unit.");
-
-                buildManagerCompileType.ResultType = buildManagerCompileUnit._buildManagerCompileTypes[index].ResultType;
+                buildManagerCompileType.ResultType = table[buildManagerCompileType].ResultType;
             }
         }
     }
