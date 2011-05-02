@@ -14,7 +14,7 @@ namespace Composite.Sql
     internal class SqlTableInformationStoreImpl : ISqlTableInformationStore
     {
         private static Dictionary<string, ISqlTableInformation> _tableInformationCache = new Dictionary<string, ISqlTableInformation>();
-        private static IEnumerable<ColumnInfo> _columnsInformationCache;
+        private static Dictionary<string, List<ColumnInfo>> _columnsInformationCache;
         
         public ISqlTableInformation GetTableInformation(string connectionString, string tableName)
         {
@@ -42,12 +42,12 @@ namespace Composite.Sql
 
         private static List<ColumnInfo> GetColumnsInfo(SqlConnection connection, string tableName)
         {
-            IEnumerable<ColumnInfo> columnsCache = _columnsInformationCache;
+            Dictionary<string, List<ColumnInfo>> columnsCache = _columnsInformationCache;
             if(columnsCache == null)
             {
-                var columns = new List<ColumnInfo>();
+                columnsCache = new Dictionary<string, List<ColumnInfo>>();
 
-                const string queryString = 
+                const string queryString =
                 @"SELECT tableName = obj.name,
                        columnName = col.name,
                        isPrimaryKey = CASE WHEN tc.constraint_type = 'PRIMARY KEY' THEN 1 ELSE 0 END,
@@ -64,6 +64,7 @@ namespace Composite.Sql
                             information_schema.table_constraints tc
   	                 ON tc.table_name = kcu.table_name AND tc.constraint_name = kcu.constraint_name AND tc.constraint_type = 'PRIMARY KEY')
                   ON obj.name = kcu.table_name AND col.name = kcu.column_name
+                  where obj.xtype = 'U'
                   ORDER BY col.colorder";
 
                 using (var command = new SqlCommand(queryString, connection))
@@ -72,9 +73,16 @@ namespace Composite.Sql
                     {
                         foreach (DbDataRecord record in reader)
                         {
-                            columns.Add(new ColumnInfo
+                            string tblName = record.GetString(0);
+
+                            if (!columnsCache.ContainsKey(tblName))
                             {
-                                TableName = record.GetString(0),
+                                columnsCache.Add(tblName, new List<ColumnInfo>());
+                            }
+
+                            columnsCache[tblName].Add(new ColumnInfo
+                            {
+                                TableName = tblName,
                                 Name = record.GetString(1),
                                 IsPrimaryKey = record.GetInt32(2) == 1,
                                 IsIdentity = record.GetInt32(3) == 1,
@@ -85,10 +93,10 @@ namespace Composite.Sql
                     }
                 }
 
-                _columnsInformationCache = columnsCache = columns;
+                _columnsInformationCache = columnsCache;
             }
 
-            return columnsCache.Where(c => string.Compare(c.TableName, tableName, true) == 0).ToList();
+            return columnsCache[tableName];
         }
 
 
