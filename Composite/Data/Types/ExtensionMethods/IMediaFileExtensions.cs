@@ -16,13 +16,8 @@
         /// <exclude />
         public static string GetCompositePath(this IMediaFile mediaFile)
         {
-            if (mediaFile.FolderPath != "/")
-            {
-                return string.Format("{0}:{1}/{2}", mediaFile.StoreId, mediaFile.FolderPath, mediaFile.FileName);
-            }
-            return string.Format("{0}:/{1}", mediaFile.StoreId, mediaFile.FileName);
+            return GetCompositePath(mediaFile.StoreId, mediaFile.FolderPath, mediaFile.FileName);
         }
-
 
 
         /// <exclude />
@@ -30,9 +25,9 @@
         {
             if (folderPath != "/")
             {
-                return string.Format("{0}:{1}/{2}", storeId, folderPath, filename);
+                return storeId + ":/" + folderPath + "/" + filename;
             }
-            return string.Format("{0}:/{1}", storeId, filename);
+            return storeId + ":/" + filename;
         }
 	}
 }

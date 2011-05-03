@@ -121,7 +121,6 @@ namespace Composite.Core.Xml
         }
 
 
-
         private static void NodeTreeToString(IEnumerable<XmlNode> nodes, StringBuilder stringBuilder, string indentString, bool keepWhiteSpaces)
         {
             foreach (XmlNode node in nodes)
@@ -444,6 +443,8 @@ namespace Composite.Core.Xml
             private XmlNode _firstNode = null;
             private XmlNode _lastNode = null;
             private List<XmlAttribute> _attributes = new List<XmlAttribute>();
+            private bool? _containsBlockElements;
+            private bool? _isBlockElement;
 
             public XmlNodeType NodeType { get; internal set; }
             public string Name { get; internal set; }
@@ -528,14 +529,12 @@ namespace Composite.Core.Xml
             {
                 get
                 {
-                    foreach (XmlNode childNode in this.ChildNodes)
+                    if(_containsBlockElements == null)
                     {
-                        if (childNode.IsBlockElement() == true) return true;
-
-                        if (childNode.ContainsBlockElements == true) return true;
+                        _containsBlockElements = ChildNodes.Any(node => node.IsBlockElement() || node.ContainsBlockElements);
                     }
 
-                    return false;
+                    return _containsBlockElements.Value;
                 }
             }
 
@@ -557,11 +556,13 @@ namespace Composite.Core.Xml
 
             public bool IsBlockElement()
             {
-                if (this.NodeType != XmlNodeType.Element) return false;
+                if(_isBlockElement == null)
+                {
+                    _isBlockElement = this.NodeType == XmlNodeType.Element
+                                      && !InlineElements.Contains(new NamespaceName { Name = this.Name.ToLower(), Namespace = GetNamespace() });
+                }
 
-                if (InlineElements.Contains(new NamespaceName { Name = this.Name.ToLower(), Namespace = GetNamespace() }) == true) return false;
-
-                return true;
+                return _isBlockElement.Value;
             }
 
 

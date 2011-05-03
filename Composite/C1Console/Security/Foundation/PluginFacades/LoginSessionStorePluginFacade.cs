@@ -19,7 +19,7 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
 
         static LoginSessionStorePluginFacade()
         {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
+            GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
         }
 
 
@@ -67,10 +67,7 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
         {
             get
             {
-                using (_resourceLocker.ReadLocker)
-                {
-                    return _resourceLocker.Resources.Provider.StoredUsername;
-                }
+                 return _resourceLocker.Resources.Provider.StoredUsername;
             }
         }
 
@@ -94,12 +91,6 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
             _resourceLocker.ResetInitialization();
         }
 
-
-
-        private static void OnFlushEvent(FlushEventArgs args)
-        {
-            Flush();
-        }
 
 
         private static void HandleConfigurationError(Exception ex)
