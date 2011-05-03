@@ -58,23 +58,18 @@ namespace Composite.C1Console.Workflow
         /// <exclude />
         public static Type GetWorkflowType(string typeName)
         {
-            Type type = null;
-
-            type = TypeManager.TryGetType(typeName);
+            Type type = TypeManager.TryGetType(typeName);
             if (type != null) return type;
 
-            string fullname;
+            string fullname = typeName;
+
             if (typeName.Contains(",") == false)
             {
                 fullname = typeName + ", Composite.Workflows";
-            }
-            else
-            {
-                fullname = typeName;
-            }
 
-            type = TypeManager.TryGetType(fullname);
-            if (type != null) return type;
+                type = TypeManager.TryGetType(fullname);
+                if (type != null) return type;
+            }
 
             throw new InvalidOperationException(string.Format("Could not find the workflow type: {0}", fullname));
         }

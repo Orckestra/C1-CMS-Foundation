@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Text;
 using Composite.Core.Extensions;
 
 
@@ -49,13 +48,13 @@ namespace Composite.Data.DynamicTypes
                 //                alteredTypeHasChanges |= (this.AlteredType.Title != this.OriginalType.Title);
                 alteredTypeHasChanges |= (this.AlteredType.Namespace != this.OriginalType.Namespace);
                 alteredTypeHasChanges |= (this.AlteredType.TypeManagerTypeName != this.OriginalType.TypeManagerTypeName);
-                alteredTypeHasChanges |= this.AddedFields.Count() > 0;
-                alteredTypeHasChanges |= this.DeletedFields.Count() > 0;
-                alteredTypeHasChanges |= this.AddedKeyFields.Count() > 0;
-                alteredTypeHasChanges |= this.DeletedKeyFields.Count() > 0;
-                alteredTypeHasChanges |= this.ExistingFields.Where(f => f.AlteredFieldHasChanges == true).Count() > 0;
-                alteredTypeHasChanges |= this.AddedDataScopes.Count() > 0;
-                alteredTypeHasChanges |= this.DeletedDataScopes.Count() > 0;
+                alteredTypeHasChanges |= this.AddedFields.Any();
+                alteredTypeHasChanges |= this.DeletedFields.Any();
+                alteredTypeHasChanges |= this.AddedKeyFields.Any();
+                alteredTypeHasChanges |= this.DeletedKeyFields.Any();
+                alteredTypeHasChanges |= this.ExistingFields.Where(f => f.AlteredFieldHasChanges == true).Any();
+                alteredTypeHasChanges |= this.AddedDataScopes.Any();
+                alteredTypeHasChanges |= this.DeletedDataScopes.Any();
                 return alteredTypeHasChanges;
             }
         }

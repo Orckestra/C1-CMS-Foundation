@@ -160,57 +160,46 @@ namespace Composite.Core.Types
         {
             if (buildManagerCompileUnit == null) throw new ArgumentNullException("buildManagerCompileUnit");
 
-            BuildManagerCompileUnit exsitingBuildManagerCompileUnit = null;
+            BuildManagerCompileUnit exsitingBuildManagerCompileUnit;
 
 
-            int t1 = System.Environment.TickCount;
+            int t1 = Environment.TickCount;
             bool makeCompile = false;
-            bool makeDryRun = false;
-            lock (_lock)
+            bool generateCsFile = false;
+
+            if (_buildManagerCompileUnits.TryGetValue(buildManagerCompileUnit.HashedId, out exsitingBuildManagerCompileUnit)
+                && exsitingBuildManagerCompileUnit.Fingerprint == buildManagerCompileUnit.Fingerprint)
             {
-                _buildManagerCompileUnits.TryGetValue(buildManagerCompileUnit.HashedId, out exsitingBuildManagerCompileUnit);
-
-                if (exsitingBuildManagerCompileUnit == null)
+                generateCsFile = CheckWhetherSourcesShouldBeRegenerated(buildManagerCompileUnit, exsitingBuildManagerCompileUnit);
+            }
+            else
+            {
+                lock (_lock)
                 {
-                    buildManagerCompileUnit.AssemblyVersion = 1;
-                    _buildManagerCompileUnits.Add(buildManagerCompileUnit.HashedId, buildManagerCompileUnit);
+                    _buildManagerCompileUnits.TryGetValue(buildManagerCompileUnit.HashedId, out exsitingBuildManagerCompileUnit);
 
-                    makeCompile = true;
-                }
-                else if (exsitingBuildManagerCompileUnit.Fingerprint == buildManagerCompileUnit.Fingerprint)
-                {
-                    buildManagerCompileUnit.CopyResultsFrom(exsitingBuildManagerCompileUnit);
-                    buildManagerCompileUnit.AssemblyVersion = exsitingBuildManagerCompileUnit.AssemblyVersion;
-
-
-                    bool csFileFound = false;
-                    foreach (string filePath in Directory.GetFiles(_tempAssemblyDirectory, "*.cs"))
+                    if (exsitingBuildManagerCompileUnit == null)
                     {
-                        CreatedFilenameParser parser = CreatedFilenameParser.Create(filePath);
+                        buildManagerCompileUnit.AssemblyVersion = 1;
+                        _buildManagerCompileUnits.Add(buildManagerCompileUnit.HashedId, buildManagerCompileUnit);
 
-                        if ((parser != null) &&
-                        (parser.HashedId == exsitingBuildManagerCompileUnit.HashedId) &&
-                        (parser.HashedFingerprint == exsitingBuildManagerCompileUnit.Fingerprint.GetHashCode()) &&
-                        (parser.AssemblyVersion == exsitingBuildManagerCompileUnit.AssemblyVersion))
-                        {
-                            csFileFound = true;
-                            break;
-                        }
-
+                        makeCompile = true;
                     }
+                    else if (exsitingBuildManagerCompileUnit.Fingerprint == buildManagerCompileUnit.Fingerprint)
+                    {
+                        generateCsFile = CheckWhetherSourcesShouldBeRegenerated(buildManagerCompileUnit, exsitingBuildManagerCompileUnit);
+                    }
+                    else
+                    {
+                        buildManagerCompileUnit.AssemblyVersion = exsitingBuildManagerCompileUnit.AssemblyVersion + 1;
+                        _buildManagerCompileUnits[buildManagerCompileUnit.HashedId] = buildManagerCompileUnit;
 
-                    makeDryRun = !csFileFound;
-                }
-                else
-                {
-                    buildManagerCompileUnit.AssemblyVersion = exsitingBuildManagerCompileUnit.AssemblyVersion + 1;
-                    _buildManagerCompileUnits[buildManagerCompileUnit.HashedId] = buildManagerCompileUnit;
-
-                    makeCompile = true;
+                        makeCompile = true;
+                    }
                 }
             }
-
-            if (makeDryRun)
+            
+            if (generateCsFile)
             {
                 CreateCsFileOnly(buildManagerCompileUnit);
             }
@@ -219,13 +208,35 @@ namespace Composite.Core.Types
             {
                 Compile(buildManagerCompileUnit);
             }
-            int t2 = System.Environment.TickCount;
+            int t2 = Environment.TickCount;
 
             LoggingService.LogVerbose("DynamicBuildManager", string.Format("Compile unit with id '{0}' compiled ({1} ms)", buildManagerCompileUnit.Id, t2 - t1));
         }
 
+        private bool CheckWhetherSourcesShouldBeRegenerated(BuildManagerCompileUnit buildManagerCompileUnit, BuildManagerCompileUnit exsitingBuildManagerCompileUnit)
+        {
+            buildManagerCompileUnit.CopyResultsFrom(exsitingBuildManagerCompileUnit);
+            buildManagerCompileUnit.AssemblyVersion = exsitingBuildManagerCompileUnit.AssemblyVersion;
 
 
+            bool csFileFound = false;
+            foreach (string filePath in Directory.GetFiles(_tempAssemblyDirectory, "*.cs"))
+            {
+                CreatedFilenameParser parser = CreatedFilenameParser.Create(filePath);
+
+                if ((parser != null) &&
+                    (parser.HashedId == exsitingBuildManagerCompileUnit.HashedId) &&
+                    (parser.HashedFingerprint == exsitingBuildManagerCompileUnit.Fingerprint.GetHashCode()) &&
+                    (parser.AssemblyVersion == exsitingBuildManagerCompileUnit.AssemblyVersion))
+                {
+                    csFileFound = true;
+                    break;
+                }
+
+            }
+
+            return !csFileFound;
+        }
 
 
         /// <summary>

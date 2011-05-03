@@ -16,17 +16,19 @@ namespace Composite.Plugins.Types.TypeManagerTypeHandler.AspNetBuildManagerTypeM
 
         public Type GetType(string fullName)
         {
-            if (fullName.StartsWith(_typeNamePrefix) == true)
-            {
-                string name = fullName.Remove(0, _typeNamePrefix.Length);
+            string name = fullName;
 
-                return BuildManager.GetType(name, false, true);
-            }
-            else
+            if (name.StartsWith(_typeNamePrefix) == true)
             {
-                return BuildManager.GetType(fullName, false, true);
+                name = name.Remove(0, _typeNamePrefix.Length);
             }
-            
+
+            if(name.Contains(":"))
+            {
+                return null;
+            }
+
+            return BuildManager.GetType(name, false, true);
         }
 
 
