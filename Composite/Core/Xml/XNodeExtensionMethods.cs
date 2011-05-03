@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -118,7 +119,7 @@ namespace Composite.Core.Xml
             "var"
         };
 
-
+        private static readonly HashSet<string> InlineElementsLookup = new HashSet<string>(InlineElements);
 
         /// <exclude />
         public static bool IsBlockElement(this XNode node)
@@ -128,9 +129,9 @@ namespace Composite.Core.Xml
             XElement element = node as XElement;
             if (element == null) return false;
 
-            if (element.Name.Namespace==Namespaces.Xhtml)
+            if (element.Name.Namespace == Namespaces.Xhtml)
             {
-                if (InlineElements.Contains(element.Name.LocalName.ToLower()) == true) 
+                if (InlineElementsLookup.Contains(element.Name.LocalName.ToLower())) 
                     return false;
             }
 

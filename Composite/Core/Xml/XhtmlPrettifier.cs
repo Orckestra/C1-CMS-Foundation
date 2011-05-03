@@ -22,11 +22,11 @@ namespace Composite.Core.Xml
         private static Regex _decodeRegex = new Regex(@"C1AMPERSAND(?<tag>[^\;]+;)", RegexOptions.Compiled);
         
 
-        private static char[] WhitespaceChars = new char[] { '\t', '\n', '\v', '\f', '\r', ' ', '\x0085', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '​', '\u2028', '\u2029', '　', '﻿' };
+        private static readonly char[] WhitespaceChars = new char[] { '\t', '\n', '\v', '\f', '\r', ' ', '\x0085', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '​', '\u2028', '\u2029', '　', '﻿' };
+        private static readonly HashSet<char> WhitespaceCharsLookup = new HashSet<char>(WhitespaceChars);
 
 
-
-        private static NamespaceName[] InlineElements = new NamespaceName[]
+        private static readonly HashSet<NamespaceName> InlineElements = new HashSet<NamespaceName>(new []
         {
             new NamespaceName { Name = "a", Namespace = "" }, 
             new NamespaceName { Name = "abbr", Namespace = "" }, 
@@ -63,22 +63,22 @@ namespace Composite.Core.Xml
             new NamespaceName { Name = "fieldreference", Namespace = Namespaces.DynamicData10.NamespaceName },
             new NamespaceName { Name = "page.title", Namespace = Namespaces.Rendering10.NamespaceName },
             new NamespaceName { Name = "page.description", Namespace = Namespaces.Rendering10.NamespaceName },
-        };
+        });
 
 
 
-        private static NamespaceName[] WhitespaceAwareElements = new NamespaceName[]
+        private static readonly HashSet<NamespaceName> WhitespaceAwareElements = new HashSet<NamespaceName>(new[]
             {
                 new NamespaceName { Name = "style", Namespace = "" }, 
                 new NamespaceName { Name = "script", Namespace = "" }, 
                 new NamespaceName { Name = "pre", Namespace = "" }, 
                 new NamespaceName { Name = "textarea", Namespace = "" },
                 new NamespaceName { Name = "variable", Namespace = "http://www.w3.org/1999/xsl/transform" }
-            };
+            });
 
 
 
-        private static NamespaceName[] SelfClosingElements = new NamespaceName[]
+        private static readonly HashSet<NamespaceName> SelfClosingElements = new HashSet<NamespaceName>(new []
             {
                 new NamespaceName { Name = "br", Namespace = "" }, 
                 new NamespaceName { Name = "hr", Namespace = "" }, 
@@ -91,7 +91,7 @@ namespace Composite.Core.Xml
                 new NamespaceName { Name = "base", Namespace = "" }, 
                 new NamespaceName { Name = "basefont", Namespace = "" }, 
                 new NamespaceName { Name = "param", Namespace = "" }
-            };
+            });
 
 
 
@@ -183,8 +183,8 @@ namespace Composite.Core.Xml
 
                     if (!keepWhiteSpaces)
                     {
-                        bool startsWithWhitespace = WhitespaceChars.Contains(node.Value[0]);
-                        bool endsWithWhitespace = WhitespaceChars.Contains(node.Value[node.Value.Length - 1]);
+                        bool startsWithWhitespace = WhitespaceCharsLookup.Contains(node.Value[0]);
+                        bool endsWithWhitespace = WhitespaceCharsLookup.Contains(node.Value[node.Value.Length - 1]);
 
                         value = SuperTrim(node.Value);
 
@@ -344,12 +344,12 @@ namespace Composite.Core.Xml
             int oldIndex = 0;
             while (index < value.Length)
             {
-                if (WhitespaceChars.Contains(value[index]) == true)
+                if (WhitespaceCharsLookup.Contains(value[index]) == true)
                 {
                     sb.Append(value.Substring(oldIndex, index - oldIndex));
                     sb.Append(" ");
 
-                    while (WhitespaceChars.Contains(value[index]) == true)
+                    while (WhitespaceCharsLookup.Contains(value[index]) == true)
                     {
                         ++index;
                     }
