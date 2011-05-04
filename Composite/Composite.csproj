@@ -48,7 +48,7 @@
     </CodeAnalysisRules>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <DocumentationFile>bin\Debug\Composite.xml</DocumentationFile>
-    <CodeAnalysisRuleSet>Composite.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>
     </NoWarn>
   </PropertyGroup>
