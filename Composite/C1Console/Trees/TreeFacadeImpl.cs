@@ -221,11 +221,11 @@ namespace Composite.C1Console.Trees
             {
                 return;
             }
-            else
-            {
-                Thread.CurrentThread.CurrentCulture = UserSettings.CultureInfo;
-            }
+            
+            Thread.CurrentThread.CurrentCulture = UserSettings.CultureInfo;
+            
 
+            using (GlobalInitializerFacade.CoreIsInitializedScope)
             using (_resourceLocker.Locker)
             {
                 TimeSpan timeSpan = DateTime.Now - _resourceLocker.Resources.LastFileChange;
