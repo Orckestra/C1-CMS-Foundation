@@ -219,8 +219,11 @@ VisualEditorSimpleToolBarBinding.prototype.handleNodeChange = function ( element
 		//skip rendering functions objects
 		if (element.nodeName == "IMG" && this._isReservedClassName(element.className)) {
 			this._buttons.each(function (key, button) {
-				if (!button.isDisabled) {
+				var format = button.format;
+				if (format != null) {
+					if (!button.isDisabled) {
 						button.disable();
+					}
 				}
 			})
 		} 
