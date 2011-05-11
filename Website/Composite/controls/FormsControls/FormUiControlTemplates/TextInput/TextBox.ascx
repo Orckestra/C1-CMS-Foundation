@@ -1,7 +1,7 @@
-<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.TextInputTemplateUserControlBase"  %>
-<%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
-<%@ Import Namespace="Composite.C1Console.Forms.CoreUiControls" %>
+﻿<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.TextInputTemplateUserControlBase"  %>
 <%@ Import Namespace="Composite.Data.Validation.ClientValidationRules" %>
+<%@ Import Namespace="System.Xml" %>
+<%@ Import Namespace="System.IO" %>
 
 <script runat="server">
     private string _currentStringValue = null;
@@ -95,5 +95,12 @@
 
         return paramsBuilder.ToString();
     }
+
+    public string FilterCharactersAndEncode(string text)
+    {
+        // Filtering '\0' character, browsers' xml readers cannot parse neither '\0' nor "&#x0;"
+        return Server.HtmlEncode(text.Replace('\0', ' '));
+    }
+    
 </script>
-<ui:datainput name="<%= this.UniqueID  %>" value="<%= Server.HtmlEncode(_currentStringValue) %>" <%= ValidationParams() %> <%= TypeParam() %> />
+<ui:datainput name="<%= this.UniqueID  %>" value="<%= FilterCharactersAndEncode(_currentStringValue) %>" <%= ValidationParams() %> <%= TypeParam() %> />

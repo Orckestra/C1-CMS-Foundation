@@ -42,8 +42,14 @@
                 return "";
         }        
     }
+
+     public string FilterCharactersAndHtmlEncode(string text)
+     {
+         // Filtering '\0' character, browsers' xml readers cannot parse neither '\0' nor "&#x0;"
+         return Server.HtmlEncode(text.Replace('\0', ' '));
+     }    
 </script>
 
 <ui:textbox required="<%= IsRequired() %>" name="<%= this.UniqueID  %>" <%= TypeParam() %>>
-    <textarea><%= Server.HtmlEncode(_currentStringValue) %></textarea>
+    <textarea><%= FilterCharactersAndHtmlEncode(_currentStringValue) %></textarea>
 </ui:textbox>

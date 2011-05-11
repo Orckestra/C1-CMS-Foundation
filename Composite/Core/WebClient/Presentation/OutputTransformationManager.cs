@@ -111,6 +111,7 @@ namespace Composite.Core.WebClient.Presentation
                 XmlReaderSettings readerSettings = new XmlReaderSettings();
                 readerSettings.XmlResolver = null;
                 readerSettings.DtdProcessing = DtdProcessing.Parse;
+                readerSettings.CheckCharacters = false;
 
                 List<string> xsltFilePaths = OutputTransformationManager.GetTransformationsInPriority().ToList();
 
@@ -175,7 +176,9 @@ namespace Composite.Core.WebClient.Presentation
                     }
                     argList.AddParam("version", "", RuntimeInformation.ProductVersion.ToString());
 
-                    transformer.Transform(XmlReader.Create(inputStream, readerSettings), argList, XmlWriter.Create(outputStream));
+                    var xmlWriterSettings = new XmlWriterSettings {CheckCharacters = false};
+
+                    transformer.Transform(XmlReader.Create(inputStream, readerSettings), argList, XmlWriter.Create(outputStream, xmlWriterSettings));
                 }
 
                 Verify.That(outputStream != null, "NullRef");
