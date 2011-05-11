@@ -30,7 +30,7 @@ namespace Composite.Core.WebClient
         /// <exclude />
         public static string GetUrl(IMediaFile file, bool isInternal)
         {
-            return GetUrl(file, true, false);
+            return GetUrl(file, isInternal, false);
         }
 
 
