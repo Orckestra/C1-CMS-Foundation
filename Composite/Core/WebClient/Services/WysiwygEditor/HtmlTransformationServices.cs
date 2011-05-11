@@ -441,7 +441,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
         {
             List<string> prefixedElementNames = new List<string>();
 
-            Regex namespacePrefixedElement = new Regex(@"<([a-zA-Z0-9\._]*?):([a-zA-Z0-9\._]*)(.*?)(/?)>");
+            Regex namespacePrefixedElement = new Regex(@"<([a-zA-Z0-9\._]*?):([a-zA-Z0-9\._]*)([^>]*?)(/?)>", RegexOptions.Multiline);
             MatchCollection matches = namespacePrefixedElement.Matches(htmlMarkup);
 
             foreach (Match match in matches)
