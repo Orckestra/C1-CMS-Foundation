@@ -46,7 +46,7 @@
      public string FilterCharactersAndHtmlEncode(string text)
      {
          // Filtering '\0' character, browsers' xml readers cannot parse neither '\0' nor "&#x0;"
-         return Server.HtmlEncode(text.Replace('\0', ' '));
+         return Server.HtmlEncode((text ?? string.Empty).Replace('\0', ' '));
      }    
 </script>
 
