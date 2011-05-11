@@ -29,7 +29,7 @@
     
     private string IsRequired()
     {
-        return ClientValidationRules.Any(rule => rule is NotNullClientValidationRule) ? "true" : "false";
+        return ClientValidationRules != null && ClientValidationRules.Any(rule => rule is NotNullClientValidationRule) ? "true" : "false";
     }
     
      private string TypeParam()
