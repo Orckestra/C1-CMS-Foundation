@@ -593,7 +593,7 @@
   <string key="Website.Forms.Administrative.EditMediaFolder.LabelFolderName" value="Folder Name" />
   <string key="Website.Forms.Administrative.EditMediaFolder.HelpFolderName" value="" />
   <string key="Website.Forms.Administrative.EditMediaFolder.LabelTitle" value="Title" />
-  <string key="Website.Forms.Administrative.EditMediaFolder.HelpTitle" value="Use this field for an image title" />
+  <string key="Website.Forms.Administrative.EditMediaFolder.HelpTitle" value="Use this field for a folder title" />
   <string key="Website.Forms.Administrative.EditMediaFolder.LabelDescription" value="Description" />
   <string key="Website.Forms.Administrative.EditMediaFolder.HelpDescription" value="" />
   <string key="Website.Forms.Administrative.EditMediaFolder.TotalFilenameToLong.Message" value="The folder contains a file where the total length of the filename and the new folder name is too long" />
