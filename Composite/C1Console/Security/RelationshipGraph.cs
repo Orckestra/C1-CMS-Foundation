@@ -504,6 +504,11 @@ namespace Composite.C1Console.Security
 
             foreach (EntityToken parent in parents)
             {
+                if(parent == null)
+                {
+                    continue;
+                }
+
                 if (_visitedEntityTokens.Contains(parent)) continue; // We have already visisted this entity token, no new information here
                 _visitedEntityTokens.Add(parent);
 
