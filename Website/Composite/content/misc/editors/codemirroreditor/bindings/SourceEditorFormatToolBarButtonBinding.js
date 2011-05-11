@@ -80,8 +80,8 @@ SourceEditorFormatToolbarButtonBinding.prototype.oncommand = function () {
  * @return
  */
 SourceEditorFormatToolbarButtonBinding.prototype._doIt = function () {
-	
-	var markup = this._codemirrorEditor.getCode();
+
+	var markup = bindingMap.editorpage.getContent();
 	var dom = XMLParser.parse ( markup, true );
 	
 	if ( dom != null ) {
