@@ -13,22 +13,27 @@ namespace Composite.Core.Routing.Foundation.PluginFacades
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    public static class UrlFormatterPluginFacade
+    public static class UrlFormattersPluginFacade
     {
-        private static readonly string LogTitle = typeof(UrlFormatterPluginFacade).FullName;
+        private static readonly string LogTitle = typeof(UrlFormattersPluginFacade).FullName;
         private static readonly ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
 
-        static UrlFormatterPluginFacade()
+        static UrlFormattersPluginFacade()
         {
             GlobalEventSystemFacade.SubscribeToFlushEvent(args => _resourceLocker.ResetInitialization());
         }
 
-        public static string FormatUrl(string url)
+        /// <exclude />
+        public static string FormatUrl(string url, bool onlyMandatory)
         {
-            IEnumerable<IUrlFormatter> urlFormatters = _resourceLocker.Resources.UrlFormatters;
+            IEnumerable<Tuple<IUrlFormatter, bool>> urlFormatters = _resourceLocker.Resources.UrlFormatters;
+
             foreach(var urlFormatter in urlFormatters)
             {
-                url = urlFormatter.FormatUrl(url);
+                if (!onlyMandatory || urlFormatter.Item2)
+                {
+                    url = urlFormatter.Item1.FormatUrl(url);
+                }
             }
 
             return url;
@@ -36,7 +41,7 @@ namespace Composite.Core.Routing.Foundation.PluginFacades
 
         private sealed class Resources
         {
-            public IEnumerable<IUrlFormatter> UrlFormatters { get; private set; }
+            public IEnumerable<Tuple<IUrlFormatter, bool>> UrlFormatters { get; private set; }
 
             public static void Initialize(Resources resources)
             {
@@ -46,7 +51,7 @@ namespace Composite.Core.Routing.Foundation.PluginFacades
 
                 var factory = new UrlFormatterFactory();
 
-                var formatters = new List<IUrlFormatter>();
+                var formatters = new List<Tuple<IUrlFormatter, bool>>();
 
                 var urlFormattersConfigNode = routingConfiguration.UrlFormatters;
                 if (urlFormattersConfigNode != null)
@@ -57,7 +62,7 @@ namespace Composite.Core.Routing.Foundation.PluginFacades
 
                         try
                         {
-                            formatters.Add(factory.Create(name));
+                            formatters.Add(new Tuple<IUrlFormatter, bool>(factory.Create(name), urlFormatterData.Mandatory));
                         }
                         catch(Exception ex)
                         {

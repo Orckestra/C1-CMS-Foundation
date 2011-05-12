@@ -57,7 +57,13 @@ namespace Composite.Plugins.Routing.Pages
                 parentPath = _folderPaths[parentPageId];
             }
 
-            string folderPath = string.Format("{0}/{1}", parentPath, page.UrlTitle);
+            string urlTitle = page.UrlTitle;
+
+#if URLDEBUG
+            urlTitle = UrlFormattersPluginFacade.FormatUrl(urlTitle, true);
+#endif 
+
+            string folderPath = string.Format("{0}/{1}", parentPath, urlTitle);
 
             _folderPaths.Add(page.Id, folderPath);
 
@@ -73,7 +79,6 @@ namespace Composite.Plugins.Routing.Pages
             }
 
             string lookupUrl = baseUrl + ".aspx";
-            lookupUrl = UrlFormatterPluginFacade.FormatUrl(lookupUrl);
 
             string lookupUrlLowerCased = lookupUrl.ToLowerInvariant();
 

@@ -9,6 +9,7 @@ namespace Composite.Core.Routing
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class UrlData<T> where T : IData
     {
+        /// <exclude />
         protected T _data;
 
         /// <exclude />

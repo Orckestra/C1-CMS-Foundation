@@ -19,6 +19,7 @@ using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Core.ResourceSystem;
+using Composite.Core.Routing.Foundation.PluginFacades;
 using Composite.Core.Types;
 using Composite.Core.WebClient.FlowMediators.FormFlowRendering;
 using Composite.Core.WebClient.Renderings.Page;
@@ -708,6 +709,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
 
             e.Result = true;
+
+            string processedUrlTitle = UrlFormattersPluginFacade.FormatUrl(selectedPage.UrlTitle, true);
+            if (selectedPage.UrlTitle != processedUrlTitle)
+            {
+                this.ShowFieldMessage("SelectedPage.UrlTitle", (GetText("EditPage.UrlTitleDoesNotMeetRules") ?? string.Empty).FormatWith(processedUrlTitle));
+                e.Result = false;
+            }
 
             List<string> siblingPageUrlTitles =
                 (from page in PageServices.GetChildren(selectedPage.GetParentId())

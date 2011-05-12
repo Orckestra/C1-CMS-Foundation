@@ -5,6 +5,7 @@ using System.Text;
 using System.Workflow.Activities;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
+using Composite.Core.Routing.Foundation.PluginFacades;
 using Composite.Data;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
@@ -547,7 +548,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private string GenerateUrlTitleFromTitle(string title)
         {
-            title = title.Trim().Replace(" ", "-");
+            title = UrlFormattersPluginFacade.FormatUrl(title.Trim(), false);
 
             RegexClientValidationRule regexClientValidationRule = ClientValidationRuleFacade.GetClientValidationRules(this.GetBinding<IPage>("NewPage"), "UrlTitle").OfType<RegexClientValidationRule>().Single();
 

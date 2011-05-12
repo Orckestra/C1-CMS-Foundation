@@ -106,3 +106,6 @@ Changes since C1 1.2 SP2 Patch 3
     </IOProviderPlugins>
   </Composite.Core.IO.Plugins.IOProviderConfiguration>
 - TcpCustomTraceListener removed from config
+
+Changes in 2.1.2 
+  Section <Composite.Core.Routing> added

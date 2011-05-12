@@ -230,7 +230,7 @@
     <Compile Include="Core\Routing\Plugins\UrlFormatters\Runtime\UrlFormatterCustomFactory.cs" />
     <Compile Include="Core\Routing\Plugins\UrlFormatters\Runtime\UrlFormatterData.cs" />
     <Compile Include="Core\Routing\Plugins\UrlFormatters\Runtime\UrlFormatterFactory.cs" />
-    <Compile Include="Core\Routing\Foundation\PluginFacades\UrlFormatterPluginFacade.cs" />
+    <Compile Include="Core\Routing\Foundation\PluginFacades\UrlFormattersPluginFacade.cs" />
     <Compile Include="Core\Routing\UrlKind.cs" />
     <Compile Include="Core\Routing\UrlData.cs" />
     <Compile Include="Core\Routing\IUrlProvider.cs" />

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -13,6 +11,7 @@ namespace Composite.Core.Xml
 	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 	public static class XhtmlWriterExtensions
 	{
+        /// <exclude />
 		public static XmlWriter CreateXhtmlWriter(this XContainer container)
 		{
 			return new XhtmlWriter(container.CreateWriter());
