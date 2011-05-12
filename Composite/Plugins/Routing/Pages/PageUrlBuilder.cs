@@ -73,6 +73,7 @@ namespace Composite.Plugins.Routing.Pages
             }
 
             string lookupUrl = baseUrl + ".aspx";
+            lookupUrl = UrlFormatterPluginFacade.FormatUrl(lookupUrl);
 
             string lookupUrlLowerCased = lookupUrl.ToLowerInvariant();
 
