@@ -13240,6 +13240,9 @@ this.ondialogcancel();
 PostBackDataDialogBinding.prototype.getURL=function(){
 var url=this.getProperty("url");
 var suf=this.getValue();
+if(suf==null){
+suf=this.getProperty("defaultValue");
+}
 return new String(url+suf);
 };
 PostBackDataDialogBinding.prototype.manifest=function(){
