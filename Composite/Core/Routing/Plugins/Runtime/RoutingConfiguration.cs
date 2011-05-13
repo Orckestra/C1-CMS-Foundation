@@ -1,7 +1,6 @@
 ﻿using System.Configuration;
 using Composite.Core.Configuration;
 using Composite.Core.Routing.Plugins.PageUrlsProviders.Runtime;
-using Composite.Core.Routing.Plugins.PathInfoHandlers.Runtime;
 using Composite.Core.Routing.Plugins.UrlFormatters.Runtime;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
@@ -49,17 +48,5 @@ namespace Composite.Core.Routing.Plugins.Runtime
                 return (NameTypeManagerTypeConfigurationElementCollection<UrlFormatterData>)base[_urlFormattersProperty];
             }
         }
-
-        // TODO: implement
-        //private const string _pathInfoHandlersProperty = "PathInfoHandlers";
-        ///// <exclude />
-        //[ConfigurationProperty(_pathInfoHandlersProperty)]
-        //public NameTypeManagerTypeConfigurationElementCollection<PathInfoHandlerData> PathInfoHandlers
-        //{
-        //    get
-        //    {
-        //        return (NameTypeManagerTypeConfigurationElementCollection<PathInfoHandlerData>)base[_pathInfoHandlersProperty];
-        //    }
-        //}
     }
 }
