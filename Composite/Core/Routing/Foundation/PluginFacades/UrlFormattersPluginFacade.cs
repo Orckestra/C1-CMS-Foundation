@@ -45,8 +45,8 @@ namespace Composite.Core.Routing.Foundation.PluginFacades
 
             public static void Initialize(Resources resources)
             {
-                const string sectionName = RoutingConfiguration.SectionName;
-                var routingConfiguration = ConfigurationServices.ConfigurationSource.GetSection(sectionName) as RoutingConfiguration;
+                const string sectionName = UrlsConfiguration.SectionName;
+                var routingConfiguration = ConfigurationServices.ConfigurationSource.GetSection(sectionName) as UrlsConfiguration;
                 Verify.IsNotNull(routingConfiguration, "Config section '{0}' is missing", sectionName);
 
                 var factory = new UrlFormatterFactory();

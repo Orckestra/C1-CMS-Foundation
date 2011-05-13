@@ -11,10 +11,10 @@ namespace Composite.Core.Routing.Plugins.Runtime
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    public sealed class RoutingConfiguration : SerializableConfigurationSection
+    public sealed class UrlsConfiguration : SerializableConfigurationSection
     {
         /// <exclude />
-        public const string SectionName = "Composite.Core.Routing";
+        public const string SectionName = "Composite.Core.Urls";
 
 
         private const string _defaultPageUrlProviderNameProperty = "defaultPageUrlProviderName";

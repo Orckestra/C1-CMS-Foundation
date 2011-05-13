@@ -46,7 +46,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRules>
     </CodeAnalysisRules>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
     <DocumentationFile>bin\Debug\Composite.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>
@@ -236,14 +236,11 @@
     <Compile Include="Core\Routing\IUrlProvider.cs" />
     <Compile Include="Core\Routing\Plugins\PageUrlsProviders\Runtime\PageUrlProviderCustomFactory.cs" />
     <Compile Include="Core\Routing\Plugins\PageUrlsProviders\Runtime\PageUrlProviderFactory.cs" />
-    <Compile Include="Core\Routing\Plugins\PathInfoHandlers\IPathInfoHandler.cs" />
-    <Compile Include="Core\Routing\Plugins\PathInfoHandlers\Runtime\NonConfigurablePathInfoHandler.cs" />
-    <Compile Include="Core\Routing\Plugins\PathInfoHandlers\Runtime\PathInfoHandlerData.cs" />
     <Compile Include="Core\Routing\Plugins\PageUrlsProviders\IPageUrlBuilder.cs" />
     <Compile Include="Core\Routing\Plugins\PageUrlsProviders\IPageUrlProvider.cs" />
     <Compile Include="Core\Routing\Plugins\PageUrlsProviders\PageUrlSet.cs" />
     <Compile Include="Core\Routing\Plugins\PageUrlsProviders\Runtime\NonConfigurablePageUrlProvider.cs" />
-    <Compile Include="Core\Routing\Plugins\Runtime\RoutingConfiguration.cs" />
+    <Compile Include="Core\Routing\Plugins\Runtime\UrlsConfiguration.cs" />
     <Compile Include="Core\Routing\Plugins\PageUrlsProviders\Runtime\PageUrlProviderData.cs" />
     <Compile Include="Core\Routing\PageUrls.cs" />
     <Compile Include="Core\Routing\UrlSpace.cs" />

@@ -6153,6 +6153,7 @@
     <Content Include="App_Data\Composite\Azure.Composite.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="App_Data\Composite\Configuration\Urls.config" />
     <None Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\LICENSE" />
     <None Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\README.md" />
     <None Include="Composite\content\misc\editors\visualeditor\includes\toolbaradvanced.inc" />

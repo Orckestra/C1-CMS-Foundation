@@ -65,8 +65,8 @@ namespace Composite.Core.Routing.Foundation.PluginFacades
                 {
                     if (_defaultPageUrlProviderName == null)
                     {
-                        string sectionName = RoutingConfiguration.SectionName;
-                        var routingConfiguration = ConfigurationServices.ConfigurationSource.GetSection(sectionName) as RoutingConfiguration;
+                        string sectionName = UrlsConfiguration.SectionName;
+                        var routingConfiguration = ConfigurationServices.ConfigurationSource.GetSection(sectionName) as UrlsConfiguration;
 
                         Verify.IsNotNull(routingConfiguration, "Missing configuration section '{0}'", sectionName);
 

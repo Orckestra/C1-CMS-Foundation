@@ -11,8 +11,8 @@ namespace Composite.Core.Routing.Plugins.PageUrlsProviders.Runtime
     {
         protected override PageUrlProviderData GetConfiguration(string name, IConfigurationSource configurationSource)
         {
-            string section = RoutingConfiguration.SectionName;
-            var settings = configurationSource.GetSection(section) as RoutingConfiguration;
+            string section = UrlsConfiguration.SectionName;
+            var settings = configurationSource.GetSection(section) as UrlsConfiguration;
 
             if (null == settings)
             {
