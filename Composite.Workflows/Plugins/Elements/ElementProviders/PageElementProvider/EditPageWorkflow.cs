@@ -182,8 +182,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 {
                     data = DataFacade.BuildNew(metaDataType);
 
-                    GeneratedTypesHelper generatedTypesHelper = new GeneratedTypesHelper(metaDataType);
-
                     PageMetaDataFacade.AssignMetaDataSpecificValues(data, pageMetaDataDefinition.Name, selectedPage);
 
                     ILocalizedControlled localizedData = data as ILocalizedControlled;
