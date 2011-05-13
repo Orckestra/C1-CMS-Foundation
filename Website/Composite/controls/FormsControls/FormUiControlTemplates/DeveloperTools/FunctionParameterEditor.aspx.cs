@@ -147,6 +147,8 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
         {
             if(CurrentlySelectedFieldId != Guid.Empty)
             {
+                var defaultFunction = StandardFunctions.GetDefaultFunctionByType(this.CurrentlySelectedType);
+
                 btnDefaultValueFunctionMarkup.Attributes["label"] = GetString(btnDefaultValueFunctionMarkup.Value.IsNullOrEmpty() ? "DefaultValueSpecify" : "DefaultValueEdit");
                 btnDefaultValueFunctionMarkup.Attributes["url"] =
                     "${root}/content/dialogs/functions/editFunctionCall.aspx?type=" + this.CurrentlySelectedType.FullName +
@@ -162,6 +164,19 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
                 btnWidgetFunctionMarkup.Attributes["url"] =
                     "${root}/content/dialogs/functions/editFunctionCall.aspx?functiontype=widget&type=" + this.CurrentlySelectedWidgetReturnType.FullName +
                     "&dialoglabel=" + HttpUtility.UrlEncodeUnicode(GetString("WidgetDialogLabel")) + "&multimode=false&functionmarkup=";
+
+                if (defaultFunction != null)
+                {
+                    btnDefaultValueFunctionMarkup.Attributes["defaultValue"] =
+                        new FunctionRuntimeTreeNode(defaultFunction).Serialize().ToString();
+                    btnTestValueFunctionMarkup.Attributes["defaultValue"] =
+                        new FunctionRuntimeTreeNode(defaultFunction).Serialize().ToString();
+                }
+                else
+                {
+                    btnDefaultValueFunctionMarkup.Attributes["defaultValue"] = null;
+                    btnTestValueFunctionMarkup.Attributes["defaultValue"] = null;
+                }
             }
 
             btnDelete.Attributes["isdisabled"] = CurrentlySelectedFieldId == Guid.Empty ? "true" : "false";

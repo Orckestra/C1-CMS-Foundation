@@ -77,7 +77,9 @@ PostBackDataDialogBinding.prototype._onDialogCancel = function () {
 PostBackDataDialogBinding.prototype.getURL = function () {
 
 	var url = this.getProperty ( "url" );
-	var suf = this.getValue (); // encodeURIComponent now on server!
+	var suf = this.getValue(); // encodeURIComponent now on server!
+	if (suf == null)
+		suf = this.getProperty("defaultValue");
 	return new String ( url + suf );
 }
 
