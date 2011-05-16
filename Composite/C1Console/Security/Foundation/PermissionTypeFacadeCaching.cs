@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Composite.Core.Caching;
 
 
@@ -104,6 +105,10 @@ namespace Composite.C1Console.Security.Foundation
             if (entityTokenPermissionTypes.ContainsKey(entityToken) == false)
             {
                 entityTokenPermissionTypes.Add(entityToken, permissionTypes);
+            }
+            else
+            {
+                entityTokenPermissionTypes[entityToken] = entityTokenPermissionTypes[entityToken].Concat(permissionTypes).Distinct().ToList();
             }
         }
 
