@@ -47,7 +47,7 @@
 										<a code="60" entity="lt" text="Less-than" href="javascript:void(false);">&lt;</a>
 										<a code="62" entity="gt" text="Greater-than" href="javascript:void(false);">&gt;</a>
 										<a code="8805" entity="ge" text="Greater-than or equal to" href="javascript:void(false);">≥</a>
-										<a code="8221" entity="ndash" text="En dash" href="javascript:void(false);">—</a>
+										<a code="8211" entity="ndash" text="En dash" href="javascript:void(false);">—</a>
 										<a code="8212" entity="mdash" text="Em dash" href="javascript:void(false);">¯</a>
 										<a code="175" entity="macr" text="Macron" href="javascript:void(false);">¯</a>
 										<a code="8254" entity="oline" text="Overline" href="javascript:void(false);">‾</a>
