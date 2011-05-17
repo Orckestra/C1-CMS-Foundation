@@ -366,7 +366,16 @@ SystemTreeNodeBinding.prototype._insertTreeNodesRegulated = function ( children 
 		);
 		this.add ( treenode );
 		treenode.attach ();
-		count ++;
+		count++;
+
+		// Auto expand tree folders in selection dialogs, when only one folder can be expanded.
+		if (!children.hasEntries() && count == 1)
+			if (treenode.isContainer && !treenode.isOpen) {
+				var self = treenode;
+				setTimeout(function () {
+					self.open();
+				}, 0);
+			}
 	}
 	if ( children.hasEntries ()) {
 		this._insertBufferTreeNode ( children );

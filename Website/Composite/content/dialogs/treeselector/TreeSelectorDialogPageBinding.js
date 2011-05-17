@@ -192,13 +192,24 @@ TreeSelectorDialogPageBinding.prototype._injectTreeNodes = function ( list ) {
 		} else {
 			nodes = System.getNamedRoots ( key );
 		}
+		var count = 0;
 		while ( nodes.hasNext ()) {
 			var node = SystemTreeNodeBinding.newInstance ( 
 				nodes.getNext (), 
 				this.bindingDocument 
 			)
-			this._treeBinding.add ( node ); 
-			node.attach ();
+			this._treeBinding.add ( node );
+			node.attach();
+
+			// Auto expand tree folders in selection dialogs, when only one folder can be expanded.
+			count++;
+			if (!nodes.hasNext() && count == 1)
+				if (node.isContainer && !node.isOpen) {
+					var self = node;
+					setTimeout(function () {
+						self.open();
+					}, 0);
+				}
 		}
 	}
 }
