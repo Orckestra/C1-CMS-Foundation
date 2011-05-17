@@ -7,8 +7,21 @@ namespace Composite.Core.Routing
     {
         public static void Register()
         {
-            // Inserting to the first position, so it is executed before MVC route
-            RouteTable.Routes.Insert(0, new C1PageRoute());
+            var c1pageRoute = new C1PageRoute();
+
+            if(RouteTable.Routes.Count > 2)
+            {
+                // The default routes are
+                // 1. Composite/{*pathInfo}
+                // 2. {resource}.axd/{*pathInfo}
+                // Inserting to the third position, so it is executed before MVC route
+
+                RouteTable.Routes.Insert(2, c1pageRoute);
+            }
+            else
+            {
+                RouteTable.Routes.Add("c1 page route", c1pageRoute);
+            }
         }
     }
 }
