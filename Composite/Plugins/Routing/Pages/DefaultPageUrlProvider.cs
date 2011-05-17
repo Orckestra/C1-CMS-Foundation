@@ -123,13 +123,15 @@ namespace Composite.Plugins.Routing.Pages
             string requestPath;
             Uri uri;
 
-            if (Uri.TryCreate(urlBuilder.FilePath, UriKind.Absolute, out uri))
+            string filePathAndPathInfo = urlBuilder.FilePath + (urlBuilder.PathInfo ?? string.Empty);
+
+            if (Uri.TryCreate(filePathAndPathInfo, UriKind.Absolute, out uri))
             {
                 requestPath = HttpUtility.UrlDecode(uri.AbsolutePath).ToLower();
             }
             else
             {
-                requestPath = urlBuilder.FilePath.ToLower();
+                requestPath = filePathAndPathInfo.ToLower();
             }
 
             string requestPathWithoutUrlMappingName;
@@ -149,17 +151,38 @@ namespace Composite.Plugins.Routing.Pages
             }
 
             var pageUrlBuilder = PageStructureInfo.GetPageUrlBuilder(publicationScope, locale) as PageUrlBuilder;    
+            Verify.IsNotNull(pageUrlBuilder, "Failed to get instance of PageUrlBuilder");
 
             Guid pageId = Guid.Empty;
             var urlKind = UrlKind.Public;
 
-            if (!pageUrlBuilder.UrlToIdLookupLowerCased.TryGetValue(requestPath.ToLower(), out pageId))
+            string loweredRequestPath = requestPath.ToLower();
+            string pagePath = loweredRequestPath;
+
+            while (pagePath != null)
             {
-                if (!pageUrlBuilder.FriendlyUrlToIdLookup.TryGetValue(requestPath.ToLower(), out pageId))
+                if(!string.IsNullOrEmpty(pageUrlBuilder.UrlSuffix)
+                    && !pagePath.Contains(pageUrlBuilder.UrlSuffix))
+                {
+                    break;
+                }
+
+                if (pageUrlBuilder.UrlToIdLookupLowerCased.TryGetValue(pagePath, out pageId))
+                {
+                    break;
+                }
+
+                pagePath = ReducePath(pagePath);
+            }
+
+            if(pageId == Guid.Empty)
+            {
+                if (!pageUrlBuilder.FriendlyUrlToIdLookup.TryGetValue(loweredRequestPath, out pageId))
                 {
                     return null;
                 }
 
+                pagePath = loweredRequestPath;
                 urlKind = UrlKind.Friendly;
             }
 
@@ -172,10 +195,12 @@ namespace Composite.Plugins.Routing.Pages
             var queryParameters = urlBuilder.GetQueryParameters();
             queryParameters.Remove("dataScope");
 
+            string pathInfo = (pagePath.Length < requestPath.Length) ? requestPath.Substring(pagePath.Length) : null;
+
             return new UrlData<IPage>
             {
                 Data = page,
-                PathInfo = null, // TODO: path info
+                PathInfo = pathInfo, 
                 QueryParameters = queryParameters,
                 UrlKind = urlKind
             };
@@ -277,6 +302,21 @@ namespace Composite.Plugins.Routing.Pages
         private static string GetLegacyPublicationScopeIdentifier(PublicationScope publicationScope)
         {
             return publicationScope == PublicationScope.Published ? "public" : "administrated";
+        }
+
+        private static string ReducePath(string path)
+        {
+            // /A/B/ -> /A/B
+            // /A/B -> /A
+			// /A -> null
+            if(path.Length < 3)
+            {
+                return null;
+            }
+
+            int offset = path.LastIndexOf('/', path.Length - 2);
+            if (offset < 1) return null;
+            return path.Substring(0, offset);
         }
     }
 }

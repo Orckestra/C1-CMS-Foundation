@@ -67,7 +67,7 @@ namespace Composite.Core.Routing.Pages
                 return SeoFriendlyRedirect(context, correctUrl);
             }
 
-            // Disabling chaching if there's a logged in user
+            // Disabling caching if there's a logged in user
             if (Composite.C1Console.Security.UserValidationFacade.IsLoggedIn())
             {
                 // Disabling ASP.NET cache if there's a logged-in user

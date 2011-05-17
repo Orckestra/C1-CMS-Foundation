@@ -28,6 +28,15 @@ namespace Composite.Plugins.Routing.Pages
 
         private readonly string _friendlyUrlPrefix;
 
+        public string UrlSuffix
+        {
+            get
+            {
+                // With the current implementation shouldn't contain any upper-case characters
+                return ".aspx" /* string.Empty */;
+            }
+        }
+
         public PageUrlBuilder(PublicationScope publicationScope, CultureInfo localizationScope, UrlSpace urlSpace)
         {
             _publicationScope = publicationScope;
@@ -78,7 +87,7 @@ namespace Composite.Plugins.Routing.Pages
                 baseUrl = UrlUtils.PublicRootPath + folderPath;
             }
 
-            string lookupUrl = baseUrl + ".aspx";
+            string lookupUrl = baseUrl + UrlSuffix;
 
             string lookupUrlLowerCased = lookupUrl.ToLowerInvariant();
 
