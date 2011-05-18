@@ -711,8 +711,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             string processedUrlTitle = UrlFormattersPluginFacade.FormatUrl(selectedPage.UrlTitle, true);
             if (selectedPage.UrlTitle != processedUrlTitle)
             {
-                this.ShowFieldMessage("SelectedPage.UrlTitle", (GetText("EditPage.UrlTitleDoesNotMeetRules") ?? string.Empty).FormatWith(processedUrlTitle));
-                e.Result = false;
+                this.RerenderView();
+                selectedPage.UrlTitle = processedUrlTitle;
+                this.ShowMessage(DialogType.Message,
+                    GetText("EditPage.UrlTitleFormattedTitle"),
+                    (GetText("EditPage.UrlTitleFormattedMessage") ?? string.Empty).FormatWith(processedUrlTitle));
             }
 
             List<string> siblingPageUrlTitles =

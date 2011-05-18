@@ -372,6 +372,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Composite\Configuration\UrlFormatting.xml" />
     <Content Include="App_Data\Composite\TreeDefinitions\PageType.xml" />
     <Content Include="Composite\content\forms\AdministrativeTemplates\EmptyDocument.xml" />
     <Content Include="Composite\content\forms\Administrative\AddMediaFileStep1.xml">
@@ -6153,7 +6154,6 @@
     <Content Include="App_Data\Composite\Azure.Composite.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Composite\Configuration\Urls.config" />
     <None Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\LICENSE" />
     <None Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\README.md" />
     <None Include="Composite\content\misc\editors\visualeditor\includes\toolbaradvanced.inc" />
