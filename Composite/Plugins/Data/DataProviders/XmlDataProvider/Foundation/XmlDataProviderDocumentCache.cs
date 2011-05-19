@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading;
 using System.Xml;
@@ -19,6 +18,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 {
     internal static class XmlDataProviderDocumentCache
     {
+        private const int NumberOfRetries = 30;
         private static readonly string LogTitle = "XmlDataProvider";
 
         internal class FileRecord
@@ -138,7 +138,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                             bool failed = true;
                             bool fileNotFound = false;
                             Exception lastException = null;
-                            for (int i = 0; i < 10; i++)
+                            for (int i = 0; i < NumberOfRetries; i++)
                             {
                                 try
                                 {
@@ -275,7 +275,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     {
                         bool failed = true;
                         Exception lastException = null;
-                        for (int i = 0; i < 10; i++)
+                        for (int i = 0; i < NumberOfRetries; i++)
                         {
                             try
                             {
