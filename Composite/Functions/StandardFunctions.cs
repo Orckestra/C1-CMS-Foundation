@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Constant;
+using Composite.Core.Xml;
+using Composite.Data;
+using Composite.Core.Extensions;
 
 namespace Composite.Functions
 {
@@ -17,12 +20,35 @@ namespace Composite.Functions
 		/// <exclude />
 		public static IFunction GetDefaultFunctionByType(Type type)
 		{
-			if (type == typeof(string)) return StandardFunctions.StringFunction;
-			if (type == typeof(int) || type == typeof(int?)) return StandardFunctions.IntegerFunction;
-			if (type == typeof(Decimal) || type == typeof(Decimal?)) return StandardFunctions.DecimalFunction;
-			if (type == typeof(DateTime) || type == typeof(DateTime?)) return StandardFunctions.DateTimeFunction;
-			if (type == typeof(Guid) || type == typeof(Guid?)) return StandardFunctions.GuidFunction;
-			if (type == typeof(bool) || type == typeof(bool?)) return StandardFunctions.BooleanFunction;
+			if (type == typeof (string)) return StandardFunctions.StringFunction;
+			if (type == typeof (int) || type == typeof (int?)) return StandardFunctions.IntegerFunction;
+			if (type == typeof (Decimal) || type == typeof (Decimal?)) return StandardFunctions.DecimalFunction;
+			if (type == typeof (DateTime) || type == typeof (DateTime?)) return StandardFunctions.DateTimeFunction;
+			if (type == typeof (Guid) || type == typeof (Guid?)) return StandardFunctions.GuidFunction;
+			if (type == typeof (bool) || type == typeof (bool?)) return StandardFunctions.BooleanFunction;
+
+			if (type == typeof (XhtmlDocument)) return StandardFunctions.XhtmlDocumentFunction;
+
+			if (type.IsGenericType)
+			{
+				if (type.GetGenericTypeDefinition() == typeof (NullableDataReference<>))
+				{
+					var referenceType = type.GetGenericArguments().First();
+					var functionName = StringExtensionMethods.CreateNamespace(referenceType.FullName, "GetNullableDataReference");
+					IFunction function;
+					if (FunctionFacade.TryGetFunction(out function, functionName))
+						return function;
+				}
+				else if (type.GetGenericTypeDefinition() == typeof (DataReference<>))
+				{
+					var referenceType = type.GetGenericArguments().First();
+					var functionName = StringExtensionMethods.CreateNamespace(referenceType.FullName, "GetDataReference");
+					IFunction function;
+					if (FunctionFacade.TryGetFunction(out function, functionName))
+						return function;
+				}
+			}
+
 			return null;
 		}
 
@@ -30,7 +56,7 @@ namespace Composite.Functions
 		public static IFunction StringFunction { get { return FunctionFacade.GetFunction("Composite.Constant.String"); } }
 
 		/// <exclude />
-		public static IFunction DateTimeFunction { get { return FunctionFacade.GetFunction("Composite.Constant.DateTime"); } }
+		public static IFunction DateTimeFunction { get { return FunctionFacade.GetFunction("Composite.Utils.Date.Now"); } }
 
 		/// <exclude />
 		public static IFunction BooleanFunction { get { return FunctionFacade.GetFunction("Composite.Constant.Boolean"); } }
@@ -45,6 +71,6 @@ namespace Composite.Functions
 		public static IFunction GuidFunction { get { return FunctionFacade.GetFunction("Composite.Constant.Guid"); } }
 
 		/// <exclude />
-		public static IFunction XhtmlDocumentFunction { get { return FunctionFacade.GetFunction("Composite.Constant.XhtmlDocumentFunction"); } }
+		public static IFunction XhtmlDocumentFunction { get { return FunctionFacade.GetFunction("Composite.Constant.XhtmlDocument"); } }
 	}
 }
