@@ -38,6 +38,11 @@ function SystemTreeNodeBinding () {
 	 * @type {SystemNode}
 	 */
 	this.node = null;
+
+	/**
+	* @type {boolean}
+	*/
+	this.autoExpand = false;
 }
 
 /**
@@ -352,6 +357,7 @@ SystemTreeNodeBinding.prototype._refreshChildren = function () {
 SystemTreeNodeBinding.prototype._insertTreeNodesRegulated = function ( children ) {
 
 	var count = 0;
+	var expandNodes = new List([]);
 		
 	/*
 	 * Constantly shortening the children list while 
@@ -362,24 +368,34 @@ SystemTreeNodeBinding.prototype._insertTreeNodesRegulated = function ( children 
 	while ( children.hasEntries () && count <= SystemTreeNodeBinding.MAX_CHILD_IMPORT ) {
 		var treenode = SystemTreeNodeBinding.newInstance ( 
 			children.extractFirst (), 
-			this.bindingDocument 
+			this.bindingDocument
 		);
+		treenode.autoExpand = this.autoExpand;
 		this.add ( treenode );
 		treenode.attach ();
 		count++;
 
 		// Auto expand tree folders in selection dialogs, when only one folder can be expanded.
-		if (!children.hasEntries() && count == 1)
-			if (treenode.isContainer && !treenode.isOpen) {
-				var self = treenode;
-				setTimeout(function () {
-					self.open();
-				}, 0);
+		// Expand last opened nodes
+		if (this.autoExpand) {
+			if (count == 1 && !children.hasEntries() || LastOpenedSystemNodes.isOpen(treenode)) {
+				expandNodes.add(treenode);
 			}
+		}
 	}
+
 	if ( children.hasEntries ()) {
 		this._insertBufferTreeNode ( children );
 	}
+
+	expandNodes.each(function (node) {
+		if (node.isContainer && !node.isOpen) {
+			var self = node;
+			setTimeout(function () {
+				self.open();
+			}, 0);
+		}
+	});
 }
 
 /**

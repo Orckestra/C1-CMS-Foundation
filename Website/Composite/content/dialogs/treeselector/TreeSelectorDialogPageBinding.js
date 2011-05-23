@@ -165,52 +165,61 @@ TreeSelectorDialogPageBinding.prototype.onBeforePageInitialize = function () {
  * Inject root nodes in tree.
  * @param {List<object>}
  */
-TreeSelectorDialogPageBinding.prototype._injectTreeNodes = function ( list ) {
-	
-	while ( list.hasNext ()) {
-	
+TreeSelectorDialogPageBinding.prototype._injectTreeNodes = function (list) {
+
+	while (list.hasNext()) {
+
 		/*
-		 * Fetch key and search.
-		 */
-		var object = list.getNext ();
+		* Fetch key and search.
+		*/
+		var object = list.getNext();
 		var key = object.key;
 		var search = object.search;
-		
+
 		/*
-		 * Search could be both a searchtoken *or* a searchtoken key.
-		 */
-		if ( search != null && SearchTokens.hasToken ( search )) {
-			search = SearchTokens.getToken ( search );
+		* Search could be both a searchtoken *or* a searchtoken key.
+		*/
+		if (search != null && SearchTokens.hasToken(search)) {
+			search = SearchTokens.getToken(search);
 		}
-		
+
 		/*
-		 * Build treenodes.
-		 */
+		* Build treenodes.
+		*/
 		var nodes = null;
-		if ( search != null ) {
-			nodes = System.getNamedRootsBySearchToken ( key, search );
+		if (search != null) {
+			nodes = System.getNamedRootsBySearchToken(key, search);
 		} else {
-			nodes = System.getNamedRoots ( key );
+			nodes = System.getNamedRoots(key);
 		}
 		var count = 0;
-		while ( nodes.hasNext ()) {
-			var node = SystemTreeNodeBinding.newInstance ( 
-				nodes.getNext (), 
-				this.bindingDocument 
+		var expandNodes = new List([]);
+
+		while (nodes.hasNext()) {
+			var node = SystemTreeNodeBinding.newInstance(
+				nodes.getNext(),
+				this.bindingDocument
 			)
-			this._treeBinding.add ( node );
+			node.autoExpand = true;
+			this._treeBinding.add(node);
 			node.attach();
 
 			// Auto expand tree folders in selection dialogs, when only one folder can be expanded.
+			// Expand last opened nodes
 			count++;
-			if (!nodes.hasNext() && count == 1)
-				if (node.isContainer && !node.isOpen) {
-					var self = node;
-					setTimeout(function () {
-						self.open();
-					}, 0);
-				}
+			if (!nodes.hasNext() && count == 1 || LastOpenedSystemNodes.isOpen(node)) {
+				expandNodes.add(node);
+			}
 		}
+		expandNodes.each(function (node) {
+			if (node.isContainer && !node.isOpen) {
+				var self = node;
+				setTimeout(function () {
+					self.open();
+				}, 0);
+			}
+		});
+
 	}
 }
 
@@ -231,7 +240,12 @@ TreeSelectorDialogPageBinding.prototype.onAfterPageInitialize = function () {
  * @param {Action} action
  */
 TreeSelectorDialogPageBinding.prototype.handleAction = function ( action ) {
-	
+	if (action.type == ButtonBinding.ACTION_COMMAND) {
+		if (action.target && action.target.response == Dialog.RESPONSE_ACCEPT) {
+			this._saveOpenedSystemNodes();
+		}
+	}
+
 	TreeSelectorDialogPageBinding.superclass.handleAction.call ( this, action );
 	
 	if ( window.TreeSelectorDialogPageBinding && window.TreeBinding ) {  // huh?
@@ -247,6 +261,19 @@ TreeSelectorDialogPageBinding.prototype.handleAction = function ( action ) {
 		
 		TreeSelectorDialogPageBinding.superclass.handleAction.call ( this, action );
 	}
+}
+
+/**
+* Save last opened system nodes Update selections display and store result.
+*/
+TreeSelectorDialogPageBinding.prototype._saveOpenedSystemNodes = function () {
+	LastOpenedSystemNodes.clear();
+	var treenodes = this._treeBinding.getOpenSystemNodes();
+	treenodes.each(
+		function (treenode) {
+			LastOpenedSystemNodes.add(treenode)
+		}
+	);
 }
 
 /**
