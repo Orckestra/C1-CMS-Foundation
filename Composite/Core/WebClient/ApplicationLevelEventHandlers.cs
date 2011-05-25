@@ -245,6 +245,8 @@ namespace Composite.Core.WebClient
 
             Routing.Routes.Register();
 
+            HostnameBindingsFacade.Initialize();
+
             ApplicationStartupFacade.FireSystemInitialized();
 
             ThreadDataManager.FinalizeThroughHttpContext();

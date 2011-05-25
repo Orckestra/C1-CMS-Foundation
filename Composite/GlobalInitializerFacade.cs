@@ -554,9 +554,6 @@ namespace Composite
             }
 
 
-            HostnameBindingsFacade.Initialize();
-
-
             using (new TimeMeasurement("Initializing tree system"))
             {
                 TreeFacade.Initialize();
