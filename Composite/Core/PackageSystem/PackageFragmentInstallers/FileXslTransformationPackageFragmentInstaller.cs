@@ -19,6 +19,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public class FileXslTransformationPackageFragmentInstaller : BasePackageFragmentInstaller
 	{
+        private const string _loggerSenderText = "XsltPackageFragmentInstaller";
+
         internal static readonly string TargetXmlAttributeName = "pathXml";
         internal static readonly string InputXmlAttributeName = "inputXml";
         internal static readonly string OutputXmlAttributeName = "outputXml";
@@ -28,6 +30,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         internal static readonly string UninstallXslAttributeName = "uninstallXsl";
 
         internal static readonly string SkipIfNotExistAttributeName = "skipIfNotExist";
+        internal static readonly string OverrideReadOnlyAttributeName = "overrideReadOnly";
 
 		private List<XslToAdd> _xslToAdd;
 
@@ -59,6 +62,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     XAttribute pathXSLAttribute = fileElement.Attribute(TargetXslAttributeName);
                     XAttribute installXSLAttribute = fileElement.Attribute(InstallXslAttributeName);
                     XAttribute uninstallXSLAttribute = fileElement.Attribute(UninstallXslAttributeName);
+                    XAttribute overrideReadOnlyAttribute = fileElement.Attribute(OverrideReadOnlyAttributeName);
 
                     XAttribute skipIfNotExistAttribute = fileElement.Attribute(SkipIfNotExistAttributeName);
                     bool skipIfNotExist = skipIfNotExistAttribute != null && skipIfNotExistAttribute.Value.ToLower() == "true";
@@ -134,10 +138,18 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     string outputXmlFullPath = PathUtil.Resolve(xslFile.OutputXmlPath);
                     if (C1File.Exists(outputXmlFullPath) && (C1File.GetAttributes(outputXmlFullPath) & FileAttributes.ReadOnly) > 0)
                     {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
-                                GetResourceString("FileAddOnFragmentInstaller.FileReadOnly").FormatWith(xslFile.OutputXmlPath),
-                                fileElement));
-                        continue;
+                        if (overrideReadOnlyAttribute == null || overrideReadOnlyAttribute.Value != "true")
+                        {
+                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
+                                    GetResourceString("FileXslTransformationPackageFragmentInstaller.FileReadOnly").FormatWith(xslFile.OutputXmlPath),
+                                    fileElement));
+                            continue;
+                        }
+                        else
+                        {
+                            FileUtils.RemoveReadOnly(outputXmlFullPath);
+                            LoggingService.LogWarning(_loggerSenderText, GetResourceString("FileXslTransformationPackageFragmentInstaller.FileReadOnlyOverride").FormatWith(xslFile.OutputXmlPath));
+                        }
                     }
 
 
@@ -170,7 +182,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 					"Performing XSL-transformation. xml-file: '{1}'; xsl-file: '{0}'"
 					: "Performing XSL-transformation. xsl-file: '{0}'; input xml file: '{1}'; output xml file: '{2}'";
 
-				LoggingService.LogVerbose("XsltPackageFragmentInstaller", string.Format(messageFormat, xslfile.XslPath, xslfile.InputXmlPath, xslfile.OutputXmlPath));
+                LoggingService.LogVerbose(_loggerSenderText, string.Format(messageFormat, xslfile.XslPath, xslfile.InputXmlPath, xslfile.OutputXmlPath));
 
                 string inputXml = PathUtil.Resolve(xslfile.InputXmlPath);
                 string outputXml = PathUtil.Resolve(xslfile.OutputXmlPath);
@@ -191,7 +203,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     resultDocument.SaveToFile(outputXml);
 
-					LoggingService.LogVerbose("XsltTransformationResult", resultDocument.ToString());
+                    LoggingService.LogVerbose(_loggerSenderText, resultDocument.ToString());
 				}
 			}
 

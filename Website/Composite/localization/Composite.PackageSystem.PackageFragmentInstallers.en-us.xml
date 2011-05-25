@@ -75,6 +75,9 @@
   <string key="VirtualElementProviderNodeAddOnFragmentUninstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
   <string key="FileXslTransformationPackageFragmentInstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
   <string key="FileXslTransformationPackageFragmentInstaller.FileNotFound" value="File '{0}' not found" />
+  <string key="FileXslTransformationPackageFragmentInstaller.FileReadOnly" value="File '{0}' marked as 'Read Only' and therefore cannot be overwritten." />
+  <string key="FileXslTransformationPackageFragmentInstaller.FileReadOnlyOverride" value="File '{0}' was marked as 'Read Only'. This file attribute was explicitly removed and the file was updated normally." />
+
   <string key="PackageVersionBumberFragmentInstaller.OnlyOneElement" value="Only one 'PackageVersions' element allowed" />
   <string key="PackageVersionBumberFragmentInstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
   <string key="PackageVersionBumberFragmentInstaller.WrongAttributeGuidFormat" value="Wrong attribute value format, Guid value expected" />
