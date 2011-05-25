@@ -1,0 +1,55 @@
+﻿<cms:formdefinition xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0" xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0">
+	<cms:bindings>
+		<cms:binding name="Id" type="System.Guid" optional="true" />
+		<cms:binding name="Hostname" type="System.String" optional="true" />
+		<cms:binding name="HomePageId" type="System.Guid" optional="true" />
+		<cms:binding name="Culture" type="System.String" optional="true" />
+		<cms:binding name="IncludeHomePageInUrl" type="System.Boolean" optional="true" />
+		<cms:binding name="IncludeCultureInUrl" type="System.Boolean" optional="true" />
+		<cms:binding name="PageNotFoundUrl" type="System.String" optional="true" />
+		<cms:binding name="Aliases" type="System.String" optional="true" />
+	</cms:bindings>
+	<cms:layout>
+		<cms:layout.label>
+			<cms:read source="Hostname" />
+		</cms:layout.label>
+		<FieldGroup>
+			<TextBox Label="Hostname">
+				<TextBox.Text>
+					<cms:bind source="Hostname" />
+				</TextBox.Text>
+			</TextBox>
+			<DoubleKeySelector Label="Page" Help="This is an auto-generated field." Required="true">
+				<DoubleKeySelector.FirstKey>
+					<cms:bind source="HomePageId" />
+				</DoubleKeySelector.FirstKey>
+				<DoubleKeySelector.SecondKey>
+					<cms:bind source="Culture" />
+				</DoubleKeySelector.SecondKey>
+				<DoubleKeySelector.Options>
+					<f:StaticMethodCall Type="Composite.Plugins.Routing.Hostnames.FormFunctions" Method="GetRootPages" />
+				</DoubleKeySelector.Options>
+			</DoubleKeySelector>
+			<CheckBox Label="URL" ItemLabel="Include homepage URL Title">
+				<CheckBox.Checked>
+					<cms:bind source="IncludeHomePageInUrl" />
+				</CheckBox.Checked>
+			</CheckBox>
+			<CheckBox Label="" ItemLabel="Include Language Url mapping">
+				<CheckBox.Checked>
+					<cms:bind source="IncludeCultureInUrl" />
+				</CheckBox.Checked>
+			</CheckBox>
+			<TextBox Label="Custom 404 Page" Help="">
+				<TextBox.Text>
+					<cms:bind source="PageNotFoundUrl" />
+				</TextBox.Text>
+			</TextBox>
+			<TextArea Label="Alias hostnames" Help="">
+				<TextArea.Text>
+					<cms:bind source="Aliases" />
+				</TextArea.Text>
+			</TextArea>
+		</FieldGroup>
+	</cms:layout>
+</cms:formdefinition>

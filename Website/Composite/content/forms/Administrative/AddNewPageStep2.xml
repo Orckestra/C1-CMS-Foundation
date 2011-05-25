@@ -4,11 +4,15 @@
     <cms:binding name="NewPage" type="Composite.Data.Types.IPage" />
     <cms:binding name="ExistingPages" type="System.Collections.IList" optional="true" />
     <cms:binding name="RelativeSelectedPageId" type="System.Guid" optional="true" />
+    <cms:binding name="UrlTitleIsRequired" type="System.Boolean"/>
   </cms:bindings>
   <cms:layout>
     <PlaceHolder>
       <FieldGroup Label="${Composite.Plugins.PageElementProvider, AddNewPageStep2.LabelFieldGroup}">
         <TextBox Label="${Composite.Plugins.PageElementProvider, AddNewPageStep2.LabelUrlTitle}" Help="${Composite.Plugins.PageElementProvider, AddNewPageStep2.HelpUrlTitle}">
+		  <TextBox.Required>
+		    <cms:bind source="UrlTitleIsRequired" />
+		  </TextBox.Required>
           <TextBox.Text>
             <cms:bind source="NewPage.UrlTitle" />
           </TextBox.Text>

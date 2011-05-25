@@ -2,14 +2,15 @@
 <cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:internal="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
 	<cms:bindings>
 		<cms:binding name="SelectedPage" type="Composite.Data.Types.IPage" />
-    <cms:binding name="SelectablePageTypeIds" type="System.Collections.IEnumerable" />
-    <cms:binding name="SelectableTemplateIds" type="System.Collections.IEnumerable" />    
-    <cms:binding name="PublishDate" type="System.Object" optional="true" />
-		<cms:binding name="UnpublishDate" type="System.Object" optional="true" />		
+		<cms:binding name="SelectablePageTypeIds" type="System.Collections.IEnumerable" />
+		<cms:binding name="SelectableTemplateIds" type="System.Collections.IEnumerable" />
+		<cms:binding name="PublishDate" type="System.Object" optional="true" />
+		<cms:binding name="UnpublishDate" type="System.Object" optional="true" />
 		<cms:binding name="StateOptions" type="System.Object" />
 		<cms:binding name="NamedXhtmlFragments" type="System.Object" />
-    <cms:binding name="PreviewEventHandler" type="System.EventHandler" optional="true" />
-    <cms:binding name="CustomEvent01Handler" type="System.EventHandler" />
+		<cms:binding name="PreviewEventHandler" type="System.EventHandler" optional="true" />
+		<cms:binding name="CustomEvent01Handler" type="System.EventHandler" />
+		<cms:binding name="UrlTitleIsRequired" type="System.Boolean"/>
 	</cms:bindings>
 	<cms:layout iconhandle="page-edit-page">
 		<TabPanels PreSelectedIndex="1">
@@ -67,6 +68,9 @@
 						</TextBox.Text>
 					</TextBox>
 					<TextBox Label="${Composite.Plugins.PageElementProvider, EditPage.LabelUrlTitle}" Help="${Composite.Plugins.PageElementProvider, EditPage.HelpUrlTitle}">
+						<TextBox.Required>
+							<cms:bind source="UrlTitleIsRequired" />
+						</TextBox.Required>
 						<TextBox.Text>
 							<cms:bind source="SelectedPage.UrlTitle" />
 						</TextBox.Text>

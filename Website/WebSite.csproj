@@ -373,6 +373,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Composite\Configuration\UrlFormatting.xml" />
+    <Content Include="App_Data\Composite\DynamicTypeForms\HostnamesConfiguration.xml" />
+    <Content Include="App_Data\Composite\DynamicTypeForms\Hostnames.xml" />
+    <Content Include="App_Data\Composite\TreeDefinitions\Hostnames.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\Composite\TreeDefinitions\PageType.xml" />
     <Content Include="Composite\content\forms\AdministrativeTemplates\EmptyDocument.xml" />
     <Content Include="Composite\content\forms\Administrative\AddMediaFileStep1.xml">
@@ -797,6 +802,7 @@
     <Content Include="Composite\controls\FormsControls\FormUiContainerTemplates\EmptyDocumentExecutionContainer.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionParameterEditor.aspx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\ComboBox.ascx" />
+    <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\DoubleSelector.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\PageSelector.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\DataReferenceTreeSelector.ascx" />
     <Compile Include="Composite\top.aspx.cs">

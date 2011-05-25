@@ -65,6 +65,8 @@
         int minLength = 0;
         bool hasLengthRule = false;
         string regexValidationRule = null;
+
+        required = this.Required;
         
         foreach (var rule in this.ClientValidationRules)
         {
@@ -88,6 +90,7 @@
             }
         }
 
+        
         StringBuilder paramsBuilder = new StringBuilder();
 
         if (required == true) paramsBuilder.Append(@" required=""true""");

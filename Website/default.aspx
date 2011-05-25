@@ -24,6 +24,8 @@
 
                 if (homePageNode != null)
                 {
+                    // TODO: check that absense of  intergrated IIS mode causes self redirect here
+
                     Response.AddHeader("Location", homePageNode.Url);
                     Response.StatusCode = 301; //  "Moved Permanently"
                     ApplicationInstance.CompleteRequest();
