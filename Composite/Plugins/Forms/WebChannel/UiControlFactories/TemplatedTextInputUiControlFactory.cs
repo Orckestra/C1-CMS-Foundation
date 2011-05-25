@@ -57,6 +57,11 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             set { _formControlLabel = value; }
         }
 
+        public bool Required
+        {
+            get; set;
+        }
+
         /// <exclude />
         public List<ClientValidationRule> ClientValidationRules { get; set; }
 
@@ -98,6 +103,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _userControl.Text = this.Text;
             _userControl.ClientValidationRules = this.ClientValidationRules;
             _userControl.Type = this.Type;
+            _userControl.Required = this.Required;
 
             return _userControl;
         }

@@ -12,6 +12,8 @@ namespace Composite.Core.Routing.Pages
     internal class C1PageRoute : RouteBase
     {
         public static readonly string RouteDate_PageUrl = "C1Page";
+
+        internal static readonly string HttpContextItem_Hostname = "C1PageRoute_Hostname";
         internal static readonly string HttpContextItem_C1PageUrl = "C1_PageUrl";
 
         public override RouteData GetRouteData(HttpContextBase context)
@@ -30,7 +32,9 @@ namespace Composite.Core.Routing.Pages
                 return null;
             }
 
-            var urlSpace = new UrlSpace(context);
+            var urlSpace = context.Items.Contains(HttpContextItem_Hostname) 
+                ? new UrlSpace(context.Items[HttpContextItem_Hostname] as string)
+                : new UrlSpace(context);
 
             string currentUrl = context.Request.Url.OriginalString;
 

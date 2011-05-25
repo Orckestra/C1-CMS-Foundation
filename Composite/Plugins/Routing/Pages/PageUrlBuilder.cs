@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
 using Composite.Core.Routing;
-using Composite.Core.Routing.Foundation.PluginFacades;
 using Composite.Core.Routing.Plugins.PageUrlsProviders;
 using Composite.Core.WebClient;
 using Composite.Data;
@@ -14,29 +15,33 @@ namespace Composite.Plugins.Routing.Pages
 {
     internal class PageUrlBuilder: IPageUrlBuilder
     {
+        private static readonly string DefaultPageUrlSuffix = ".aspx";
+
         private static readonly string LogTitle = typeof (PageUrlBuilder).FullName;
 
         private readonly Hashtable<Guid, string> _folderPaths = new Hashtable<Guid, string>();
+        private readonly Hashtable<Guid, string> _redirectFolderPaths = new Hashtable<Guid, string>();
 
         public Hashtable<string, Guid> UrlToIdLookup = new Hashtable<string, Guid>();
         public Hashtable<string, Guid> UrlToIdLookupLowerCased = new Hashtable<string, Guid>();
+        public Hashtable<string, Guid> RedirectUrlToIdLookupLowerCased = new Hashtable<string, Guid>();
         public Hashtable<string, Guid> FriendlyUrlToIdLookup = new Hashtable<string, Guid>();
         public Hashtable<Guid, string> IdToUrlLookup = new Hashtable<Guid, string>();
+
+        private UrlSpace _urlSpace = null;
+
+        // public Hashtable<Guid, IHostnameBinding> HostnameBindings = new Hashtable<Guid, IHostnameBinding>();
+        private List<IHostnameBinding> _hostnameBindings = new List<IHostnameBinding>();
+
+        private IHostnameBinding _hostnameBinding;
 
         private readonly PublicationScope _publicationScope;
         private readonly CultureInfo _localizationScope;
 
         private readonly string _friendlyUrlPrefix;
 
-        public string UrlSuffix
-        {
-            get
-            {
-                // With the current implementation shouldn't contain any upper-case characters
-                return ".aspx" /* string.Empty */;
-            }
-        }
-
+        public string UrlSuffix { get; private set;}
+        
         public PageUrlBuilder(PublicationScope publicationScope, CultureInfo localizationScope, UrlSpace urlSpace)
         {
             _publicationScope = publicationScope;
@@ -44,6 +49,24 @@ namespace Composite.Plugins.Routing.Pages
 
             var localeMappedName = DataLocalizationFacade.GetUrlMappingName(localizationScope) ?? string.Empty;
             _friendlyUrlPrefix = localeMappedName.IsNullOrEmpty() ? string.Empty : "/" + localeMappedName;
+
+            if (urlSpace != null && urlSpace.Hostname != null)
+            {
+                List<IHostnameBinding> hostnameBindings = DataFacade.GetData<IHostnameBinding>().ToList();
+
+                _hostnameBinding = hostnameBindings.FirstOrDefault(b => b.Hostname == urlSpace.Hostname);
+
+                bool knownHostname = _hostnameBinding != null;
+                 
+                if(knownHostname)
+                {
+                    _hostnameBindings = hostnameBindings;
+
+                    _urlSpace = urlSpace;
+                }
+            }
+
+            UrlSuffix = DataFacade.GetData<IHostnameConfiguration>().Select(c => c.PageUrlSuffix).FirstOrDefault() ?? DefaultPageUrlSuffix;
         }
 
         public PageUrlSet BuildUrlSet(IPage page, Guid parentPageId)
@@ -56,9 +79,13 @@ namespace Composite.Plugins.Routing.Pages
             CultureInfo cultureInfo = page.DataSourceId.LocaleScope;
 
             string parentPath;
+
+            IHostnameBinding appliedHostnameBinding = null;
+
+            // Checking if it is a root-level page
             if (parentPageId == Guid.Empty)
             {
-                parentPath = string.Empty;
+                parentPath = GetRootPageBaseUrl(page.Id, cultureInfo, out appliedHostnameBinding);
             }
             else
             {
@@ -66,28 +93,33 @@ namespace Composite.Plugins.Routing.Pages
                 parentPath = _folderPaths[parentPageId];
             }
 
-            string urlTitle = page.UrlTitle;
+            // Building folderPath & lookup url
+            string parentPathWithSlash = parentPath + (parentPath.EndsWith("/") ? "" : "/");
 
-#if URLDEBUG
-            urlTitle = UrlFormattersPluginFacade.FormatUrl(urlTitle, true);
-#endif 
-
-            string folderPath = string.Format("{0}/{1}", parentPath, urlTitle);
-
-            _folderPaths.Add(page.Id, folderPath);
-
-            string baseUrl;
-            string urlMappingName = DataLocalizationFacade.GetUrlMappingName(cultureInfo);
-            if (urlMappingName != "")
+            string lookupUrl, folderPath;
+            
+            if (page.UrlTitle == string.Empty 
+                || (appliedHostnameBinding != null
+                    && !appliedHostnameBinding.IncludeHomePageInUrl
+                    && appliedHostnameBinding.HomePageId == page.Id))
             {
-                baseUrl = string.Format("{0}/{1}{2}", UrlUtils.PublicRootPath, urlMappingName, folderPath);
+                // Extensionless root url
+                lookupUrl = folderPath = parentPathWithSlash;
             }
             else
             {
-                baseUrl = UrlUtils.PublicRootPath + folderPath;
+                string urlTitle = page.UrlTitle;
+
+#if URLDEBUG
+                urlTitle = UrlFormattersPluginFacade.FormatUrl(urlTitle, true);
+#endif 
+
+                folderPath = parentPathWithSlash + urlTitle;
+                lookupUrl = folderPath + UrlSuffix;
             }
 
-            string lookupUrl = baseUrl + UrlSuffix;
+
+            _folderPaths.Add(page.Id, folderPath);
 
             string lookupUrlLowerCased = lookupUrl.ToLowerInvariant();
 
@@ -100,6 +132,43 @@ namespace Composite.Plugins.Routing.Pages
             UrlToIdLookupLowerCased.Add(lookupUrlLowerCased, page.Id);
             UrlToIdLookup.Add(lookupUrl, page.Id);
             IdToUrlLookup.Add(page.Id, lookupUrl);
+
+
+            // Building redirect folder path & url
+
+            string redirectParentPath = (parentPageId == Guid.Empty)
+                                            ? GetRedirectBaseUrl(cultureInfo) 
+                                            : _redirectFolderPaths[parentPageId];
+
+            if (redirectParentPath != null)
+            {
+                string redirectLookupUrl;
+                string redirectFolderPath;
+
+                if (!page.UrlTitle.IsNullOrEmpty())
+                {
+                    redirectFolderPath = redirectParentPath + (redirectParentPath.EndsWith("/") ? "" : "/") + page.UrlTitle;
+                    redirectLookupUrl = redirectFolderPath + UrlSuffix;
+                }
+                else
+                {
+                    redirectLookupUrl = redirectFolderPath = redirectParentPath;
+                }
+
+                if (redirectLookupUrl != lookupUrl)
+                {
+                    _redirectFolderPaths.Add(page.Id, redirectFolderPath);
+
+                    redirectLookupUrl = redirectLookupUrl.ToLower();
+
+                    RedirectUrlToIdLookupLowerCased.Add(redirectLookupUrl, page.Id);
+                    if(UrlSuffix == string.Empty)
+                    {
+                        RedirectUrlToIdLookupLowerCased.Add(redirectLookupUrl + ".aspx", page.Id);
+                    }
+                }
+            }
+
 
             string url = lookupUrl;
             if (dataScopeIdentifier.Name != DataScopeIdentifier.GetDefault().Name)
@@ -122,6 +191,71 @@ namespace Composite.Plugins.Routing.Pages
             }
             
             return pageUrls;
+        }
+
+        private string GetRedirectBaseUrl(CultureInfo cultureInfo)
+        {
+            string cultureUrlMapping = DataLocalizationFacade.GetUrlMappingName(cultureInfo);
+
+            if (cultureUrlMapping != "")
+            {
+                return UrlUtils.PublicRootPath + "/" + cultureUrlMapping;
+            }
+
+            return UrlUtils.PublicRootPath;
+        }
+
+        private string GetRootPageBaseUrl(Guid pageId, CultureInfo cultureInfo, out IHostnameBinding appliedHostnameBinding)
+        {
+            string cultureUrlMapping = DataLocalizationFacade.GetUrlMappingName(cultureInfo);
+
+            if (_hostnameBindings.Any())
+            {
+                IHostnameBinding match = _hostnameBindings.FirstOrDefault(b => b.HomePageId == pageId && b.Culture == cultureInfo.Name);
+
+                if(match == null)
+                {
+                    match = _hostnameBindings.FirstOrDefault(b => b.HomePageId == pageId);
+                }
+
+                if(match != null)
+                {
+                    string result = string.Empty;
+
+                    if (match.Hostname != _urlSpace.Hostname)
+                    {
+                        result = "http://" + match.Hostname;
+                    }
+
+                    result += UrlUtils.PublicRootPath;
+
+                    if (match.IncludeCultureInUrl || match.Culture != cultureInfo.Name)
+                    {
+                        if (cultureUrlMapping != string.Empty)
+                        {
+                            result += "/" + cultureUrlMapping;
+                        }
+                    }
+
+                    appliedHostnameBinding = match;
+
+                    return result;
+                }
+            }
+
+            appliedHostnameBinding = _hostnameBinding;
+
+            if (cultureUrlMapping != ""
+                && (_hostnameBinding == null
+                    || _hostnameBinding.IncludeCultureInUrl
+                    || _hostnameBinding.Culture != cultureInfo.Name))
+            {
+                appliedHostnameBinding = _hostnameBinding;
+
+                return UrlUtils.PublicRootPath + "/" + cultureUrlMapping;
+            }
+
+            return UrlUtils.PublicRootPath;
         }
 
         private static string MakeRelativeUrl(string url)

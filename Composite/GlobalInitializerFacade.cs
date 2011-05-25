@@ -18,6 +18,7 @@ using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Logging;
 using Composite.Core.PackageSystem;
+using Composite.Core.Routing;
 using Composite.Core.Threading;
 using Composite.Data.Caching;
 using Composite.Data.Foundation;
@@ -119,10 +120,8 @@ namespace Composite
                     LoggingService.LogCritical("GlobalInitializerFacade", "Exception recorded:" + timeSpan.ToString() + " ago");
                     throw _exceptionThrownDurringInitialization;
                 }
-                else
-                {
-                    _exceptionThrownDurringInitialization = null;
-                }
+
+                _exceptionThrownDurringInitialization = null;
             }
 
             if (!SystemSetupFacade.IsSystemFirstTimeInitialized && RuntimeInformation.IsDebugBuild)
@@ -553,6 +552,9 @@ namespace Composite
                     ConsoleFacade.Initialize();
                 }
             }
+
+
+            HostnameBindingsFacade.Initialize();
 
 
             using (new TimeMeasurement("Initializing tree system"))

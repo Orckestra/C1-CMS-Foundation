@@ -46,15 +46,20 @@ namespace Composite.C1Console.Forms.CoreUiControls
         {
             this.Text = "";
             this.Type = TextBoxType.String;
+            this.Required = false;
         }
 
-        [BindableProperty()]
-        [FormsProperty()]
+        [BindableProperty]
+        [FormsProperty]
         public string Text { get; set; }
 
 
-        [FormsProperty()]
+        [FormsProperty]
         public TextBoxType Type { get; set; }
+
+        [BindableProperty]
+        [FormsProperty]
+        public bool Required { get; set; }
     }
 
 }

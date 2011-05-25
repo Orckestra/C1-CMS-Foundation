@@ -156,6 +156,7 @@
     <Compile Include="C1Console\Actions\IElementInformationService.cs" />
     <Compile Include="C1Console\Actions\MessageBoxActionToken.cs" />
     <Compile Include="C1Console\Actions\UrlActionToken.cs" />
+    <Compile Include="C1Console\Forms\CoreUiControls\DoubleSelectorUiControl.cs" />
     <Compile Include="C1Console\Forms\ReadBindingControlValueOverload.cs" />
     <Compile Include="C1Console\Security\LoginResult.cs" />
     <Compile Include="Core\Configuration\C1Configuration.cs" />
@@ -225,6 +226,7 @@
     <Compile Include="Core\Instrumentation\Profiler.cs" />
     <Compile Include="Core\Instrumentation\ProfilerReport.cs" />
     <Compile Include="Core\Routing\Foundation\PluginFacades\PageUrlProviderPluginFacade.cs" />
+    <Compile Include="Core\Routing\HostnameBindingsFacade.cs" />
     <Compile Include="Core\Routing\Plugins\UrlFormatters\IUrlFormatter.cs" />
     <Compile Include="Core\Routing\Plugins\UrlFormatters\Runtime\NonConfigurableUrlFormatter.cs" />
     <Compile Include="Core\Routing\Plugins\UrlFormatters\Runtime\UrlFormatterCustomFactory.cs" />
@@ -246,6 +248,7 @@
     <Compile Include="Core\Routing\UrlSpace.cs" />
     <Compile Include="Core\Sql\SqlConnectionManager.cs" />
     <Compile Include="Core\WebClient\ApplicationLevelEventHandlers.cs" />
+    <Compile Include="Core\WebClient\HttpModules\PreviewRequestHttpModule.cs" />
     <Compile Include="Core\WebClient\HttpModules\Utf8StringTransformationStream.cs" />
     <Compile Include="Core\WebClient\Presentation\LessRequestHandler.cs" />
     <Compile Include="Core\WebClient\Renderings\Page\PagePreviewBuilder.cs" />
@@ -331,6 +334,8 @@
     <Compile Include="Data\Streams\IFileStreamManager.cs" />
     <Compile Include="Data\IPageData.cs" />
     <Compile Include="Data\IPageFolderData.cs" />
+    <Compile Include="Data\Types\IHostnameConfiguration.cs" />
+    <Compile Include="Data\Types\IHostnameBinding.cs" />
     <Compile Include="Data\Types\IInlineFunctionAssemblyReference.cs" />
     <Compile Include="Data\Types\IInlineFunction.cs" />
     <Compile Include="Data\Types\IPageFolderDefinition.cs" />
@@ -473,6 +478,10 @@
     <Compile Include="Core\WebClient\Renderings\Foundation\RenderingResponseHandlerRegistry.cs" />
     <Compile Include="Core\WebClient\Renderings\Foundation\RenderingResponseHandlerRegistryImpl.cs" />
     <Compile Include="Core\WebClient\Renderings\IRenderingResponseHandlerFacade.cs" />
+    <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedDoubleSelectorUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Plugins\Routing\Hostnames\FormFunctions.cs" />
     <Compile Include="Plugins\Routing\Pages\PageUrlBuilder.cs" />
     <Compile Include="Core\WebClient\Renderings\Plugins\RenderingResponseHandler\IDataRenderingResponseHandler.cs" />
     <Compile Include="Core\WebClient\Renderings\Plugins\RenderingResponseHandler\IRenderingResponseHandler.cs" />
@@ -1902,7 +1911,6 @@
     <Compile Include="Data\Types\IFile.cs" />
     <Compile Include="Data\Types\ExtensionMethods\IFileExtensions.cs" />
     <Compile Include="Data\Types\IFileServices.cs" />
-    <Compile Include="Data\Types\IHostHeaderBinding.cs" />
     <Compile Include="Data\Types\IPage.cs" />
     <Compile Include="Data\Types\IPageTemplate.cs" />
     <Compile Include="Data\Types\IXhtmlEditorElementClassConfiguration.cs" />

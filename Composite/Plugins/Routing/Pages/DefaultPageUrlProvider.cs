@@ -150,7 +150,7 @@ namespace Composite.Plugins.Routing.Pages
                 publicationScope = PublicationScope.Unpublished;
             }
 
-            var pageUrlBuilder = PageStructureInfo.GetPageUrlBuilder(publicationScope, locale) as PageUrlBuilder;    
+            var pageUrlBuilder = PageStructureInfo.GetPageUrlBuilder(publicationScope, locale, urlSpace) as PageUrlBuilder;    
             Verify.IsNotNull(pageUrlBuilder, "Failed to get instance of PageUrlBuilder");
 
             Guid pageId = Guid.Empty;
@@ -161,29 +161,37 @@ namespace Composite.Plugins.Routing.Pages
 
             while (pagePath != null)
             {
-                if(!string.IsNullOrEmpty(pageUrlBuilder.UrlSuffix)
-                    && !pagePath.Contains(pageUrlBuilder.UrlSuffix))
-                {
-                    break;
-                }
-
                 if (pageUrlBuilder.UrlToIdLookupLowerCased.TryGetValue(pagePath, out pageId))
                 {
                     break;
                 }
 
                 pagePath = ReducePath(pagePath);
+
+                if (pagePath != null 
+                    && !string.IsNullOrEmpty(pageUrlBuilder.UrlSuffix)
+                    && !pagePath.Contains(pageUrlBuilder.UrlSuffix))
+                {
+                    break;
+                }
             }
 
             if(pageId == Guid.Empty)
             {
-                if (!pageUrlBuilder.FriendlyUrlToIdLookup.TryGetValue(loweredRequestPath, out pageId))
+                if(pageUrlBuilder.RedirectUrlToIdLookupLowerCased.TryGetValue(loweredRequestPath, out pageId))
+                {
+                    pagePath = loweredRequestPath;
+                    urlKind = UrlKind.Redirect;
+                }
+                else if (!pageUrlBuilder.FriendlyUrlToIdLookup.TryGetValue(loweredRequestPath, out pageId))
                 {
                     return null;
                 }
-
-                pagePath = loweredRequestPath;
-                urlKind = UrlKind.Friendly;
+                else
+                {
+                    pagePath = loweredRequestPath;
+                    urlKind = UrlKind.Friendly;
+                }
             }
 
             IPage page;
@@ -254,7 +262,7 @@ namespace Composite.Plugins.Routing.Pages
 
             if (urlKind == UrlKind.Public)
             {
-                var pageUrlBuilder = PageStructureInfo.GetPageUrlBuilder(publicationScope, cultureInfo) as PageUrlBuilder;
+                var pageUrlBuilder = PageStructureInfo.GetPageUrlBuilder(publicationScope, cultureInfo, urlSpace) as PageUrlBuilder;
 
                 var lookupTable = pageUrlBuilder.IdToUrlLookup;
 

@@ -215,6 +215,21 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
         }
 
+        private bool ThereAreOtherPages()
+        {
+            foreach(var cultureInfo in DataLocalizationFacade.ActiveLocalizationCultures)
+            {
+                using(new DataScope(PublicationScope.Unpublished, cultureInfo))
+                {
+                    if(DataFacade.GetData<IPageStructure>().Any())
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
 
         private void stepInitialize_codeActivity_ExecuteCode(object sender, EventArgs e)
         {
@@ -273,23 +288,23 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             bindings.Add("NewPage", newPage);
 
-
+            bindings.Add("UrlTitleIsRequired", true /* ThereAreOtherPages()*/);
 
             int existingPagesCount = PageServices.GetChildrenCount(parentId);
             Dictionary<string, string> sortOrder = new Dictionary<string, string>();
-            sortOrder.Add("Bottom", StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "AddNewPageStep1.LabelAddToBottom"));
+            sortOrder.Add("Bottom", GetText("AddNewPageStep1.LabelAddToBottom"));
             if (existingPagesCount > 0)
             {
-                sortOrder.Add("Top", StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "AddNewPageStep1.LabelAddToTop"));
+                sortOrder.Add("Top", GetText("AddNewPageStep1.LabelAddToTop"));
                 if (existingPagesCount > 1)
                 {
-                    sortOrder.Add("Relative", StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "AddNewPageStep1.LabelAddBelowOtherPage"));
+                    sortOrder.Add("Relative", GetText("AddNewPageStep1.LabelAddBelowOtherPage"));
                 }
 
                 bool isAlpabeticOrdered = PageServices.IsChildrenAlphabeticOrdered(parentId);
                 if (isAlpabeticOrdered == true)
                 {
-                    sortOrder.Add("Alphabetic", StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "AddNewPageStep1.LabelAddAlphabetic"));
+                    sortOrder.Add("Alphabetic", GetText("AddNewPageStep1.LabelAddAlphabetic"));
                 }
             }
             bindings.Add("SortOrder", sortOrder);
@@ -387,14 +402,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 (from page in PageServices.GetChildren(GetParentId())
                  select page.UrlTitle).ToList();
 
-            if (string.IsNullOrEmpty(newPage.UrlTitle))
+            if (string.IsNullOrEmpty(newPage.UrlTitle) && ThereAreOtherPages())
             {
                 newPage.UrlTitle = GenerateUrlTitleFromTitle(newPage.Title);
-            }
 
-            if (string.IsNullOrEmpty(newPage.UrlTitle))
-            {
-                return false;
+                if (string.IsNullOrEmpty(newPage.UrlTitle))
+                {
+                    return false;
+                }
             }
 
             foreach (string siblingUrlTitle in siblingPageUrlTitles)

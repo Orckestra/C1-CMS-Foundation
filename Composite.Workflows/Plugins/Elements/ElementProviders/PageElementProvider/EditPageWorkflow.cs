@@ -140,6 +140,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 selectedPage = this.GetBinding<IPage>("SelectedPage");
             }
 
+            if (!this.BindingExist("UrlTitleIsRequired"))
+            {
+                bool isRootPage = PageManager.GetParentId(selectedPage.Id) == Guid.Empty;
+                this.Bindings.Add("UrlTitleIsRequired", !isRootPage);
+            }
 
             IFormMarkupProvider markupProvider = new FormDefinitionFileMarkupProvider(@"\Administrative\EditPage.xml");
 

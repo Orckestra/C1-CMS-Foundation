@@ -3,10 +3,14 @@
 
 namespace Composite.C1Console.Forms.CoreUiControls
 {
-    internal class SelectorUiControl : BaseSelectorUiControl
+    internal class DoubleSelectorUiControl : BaseSelectorUiControl
     {
         [BindableProperty()]
         [FormsProperty()]
-        public object Selected { get; set; }        
+        public object FirstKey { get; set; }
+
+        [BindableProperty()]
+        [FormsProperty()]
+        public object SecondKey { get; set; }        
     }
 }

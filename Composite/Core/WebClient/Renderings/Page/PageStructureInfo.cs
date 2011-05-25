@@ -10,9 +10,9 @@ using Composite.Core.Routing.Plugins.PageUrlsProviders;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Core.Logging;
-using Composite.Core.Types;
 using Composite.Core.Extensions;
 
+using MapKey = System.Tuple<Composite.Data.PublicationScope, string, string>;
 
 namespace Composite.Core.WebClient.Renderings.Page
 {
@@ -43,8 +43,8 @@ namespace Composite.Core.WebClient.Renderings.Page
             public IPageUrlBuilder PageUrlBuilder;
         }
 
-        private static readonly Hashtable<Pair<PublicationScope, string>, Map> _generatedMaps = new Hashtable<Pair<PublicationScope, string>, Map>();
-        private static readonly Hashtable<Pair<PublicationScope, string>, Version> _versions = new Hashtable<Pair<PublicationScope, string>, Version>();
+        private static readonly Hashtable<MapKey, Map> _generatedMaps = new Hashtable<MapKey, Map>();
+        private static readonly Hashtable<MapKey, Version> _versions = new Hashtable<MapKey, Version>();
         private static readonly object _updatingLock = new object();
         private static readonly object[] _buildingLock = new[] { new object(), new object() }; // Separated objects for 'Public' and 'Administrated' scopes
 
@@ -63,6 +63,9 @@ namespace Composite.Core.WebClient.Renderings.Page
             DataEventSystemFacade.SubscribeToDataAfterAdd<ISystemActiveLocale>(OnLocaleChanged, true);
             DataEventSystemFacade.SubscribeToDataDeleted<ISystemActiveLocale>(OnLocaleChanged, true);
             DataEventSystemFacade.SubscribeToDataAfterUpdate<ISystemActiveLocale>(OnLocaleChanged, true);
+
+            DataEventSystemFacade.SubscribeToDataAfterUpdate<IHostnameBinding>((a, b) => ClearCachedData(), true);
+            DataEventSystemFacade.SubscribeToDataAfterUpdate<IHostnameConfiguration>((a, b) => ClearCachedData(), true);
         }
 
 
@@ -217,13 +220,18 @@ namespace Composite.Core.WebClient.Renderings.Page
 
         private static Map GetMap(PublicationScope publicationScope, CultureInfo localizationScope)
         {
+            return GetMap(publicationScope, localizationScope, new UrlSpace());
+        }
+
+        private static Map GetMap(PublicationScope publicationScope, CultureInfo localizationScope, UrlSpace urlSpace)
+        {
             if (System.Transactions.Transaction.Current != null)
             {
                 var exceptionToLog = new Exception("It is not safe to use PageStructureInfo/SiteMap functionality in transactional context. Method Composite.Data.PageManager can be used instead.");
                 LoggingService.LogWarning(typeof(PageStructureInfo).Name, exceptionToLog);
             }
 
-            var scopeKey = GetScopeKey(publicationScope, localizationScope);
+            var scopeKey = GetScopeKey(publicationScope, localizationScope, urlSpace);
             Map map = _generatedMaps[scopeKey];
 
             if (map != null)
@@ -264,7 +272,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                 using(new DataScope(publicationScope, localizationScope))
                 {
-                    map = BuildMap();
+                    map = BuildMap(urlSpace);
                 }
 
                 lock (_updatingLock)
@@ -280,9 +288,9 @@ namespace Composite.Core.WebClient.Renderings.Page
             }
         }
 
-        private static Pair<PublicationScope, string> GetScopeKey(PublicationScope publicationScope, CultureInfo cultureInfo)
+        private static Tuple<PublicationScope, string, string> GetScopeKey(PublicationScope publicationScope, CultureInfo cultureInfo, UrlSpace urlSpace)
         {
-            return new Pair<PublicationScope, string>(publicationScope, cultureInfo.Name);
+            return new Tuple<PublicationScope, string, string>(publicationScope, cultureInfo.Name, urlSpace.Hostname);
         }
 
         /// <exclude />
@@ -325,9 +333,9 @@ namespace Composite.Core.WebClient.Renderings.Page
         }
 
         /// <exclude />
-        public static IPageUrlBuilder GetPageUrlBuilder(PublicationScope publicationScope, CultureInfo localizationScope)
+        public static IPageUrlBuilder GetPageUrlBuilder(PublicationScope publicationScope, CultureInfo localizationScope, UrlSpace urlSpace)
         {
-            return GetMap(publicationScope, localizationScope).PageUrlBuilder;
+            return GetMap(publicationScope, localizationScope, urlSpace).PageUrlBuilder;
         }
 
 
@@ -487,7 +495,7 @@ namespace Composite.Core.WebClient.Renderings.Page
             public Hashtable<Guid, IPageStructure> StructureById { get; private set; }
         }
 
-        private static Map BuildMap()
+        private static Map BuildMap(UrlSpace urlSpace)
         {
             using (DebugLoggingScope.MethodInfoScope)
             {
@@ -543,8 +551,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                 BuildXmlStructure(root, Guid.Empty, pageToToChildElementsTable, 100);
 
-                // TODO: pass the server url
-                var pageUrlBuilder = PageUrls.UrlProvider.CreateUrlBuilder(publicationScope, localizationScope, new UrlSpace { Hostname = string.Empty });
+                var pageUrlBuilder = PageUrls.UrlProvider.CreateUrlBuilder(publicationScope, localizationScope, urlSpace);
                 BuildFolderPaths(pagesData, root.Elements(), pageUrlBuilder, urlToIdLookup);
 
                 foreach (var urlLookupEntry in urlToIdLookup)
@@ -666,22 +673,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             var publicationScope = dataScopeIdentifier.ToPublicationScope();
 
-            lock (_updatingLock)
-            {
-                var keysToUpdate = _versions.GetKeys().Where(key => key.First == publicationScope).ToList();
-
-                // Updating versions
-                foreach (var key in keysToUpdate)
-                {
-                    Interlocked.Increment(ref _versions[key].VersionNumber);
-                }
-
-                // Clearing cached data
-                foreach (var key in keysToUpdate)
-                {
-                    _generatedMaps.Remove(key);
-                }
-            }
+            ClearCachedData(key => key.Item1 == publicationScope);
         }
 
         private static void OnLocaleChanged(object sender, DataEventArgs args)
@@ -695,19 +687,26 @@ namespace Composite.Core.WebClient.Renderings.Page
 
             CultureInfo cultureInfo = new CultureInfo(localeInfo.CultureName);
 
+            ClearCachedData(key => key.Item2 == cultureInfo.Name);
+        }
+
+         private static void ClearCachedData()
+         {
+             ClearCachedData(c => true);
+         }
+
+        private static void ClearCachedData(Func<MapKey, bool> condition)
+        {
             lock (_updatingLock)
             {
-                var keysToUpdate = _versions.GetKeys().Where(key => key.Second == cultureInfo.Name).ToList();
+                var keysToUpdate = _versions.GetKeys().Where(condition).ToList();
 
-                // Updating versions
                 foreach (var key in keysToUpdate)
                 {
+                    // Updating versions
                     Interlocked.Increment(ref _versions[key].VersionNumber);
-                }
 
-                // Clearing cached data
-                foreach (var key in keysToUpdate)
-                {
+                    // Clearing cached data
                     _generatedMaps.Remove(key);
                 }
             }

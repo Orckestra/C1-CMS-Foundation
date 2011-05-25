@@ -22,6 +22,12 @@ namespace Composite.Core.Routing
         }
 
         /// <exclude />
+        public static UrlData<IPage> ParseUrl(string url)
+        {
+            return UrlProvider.ParseUrl(url, new UrlSpace());
+        }
+
+        /// <exclude />
         public static UrlData<IPage> ParseUrl(string url, UrlSpace urlSpace) 
         {
             return UrlProvider.ParseUrl(url, urlSpace);
