@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
 using System.Web.Routing;
-
+using System.Web.UI;
 using Composite.Core.WebClient;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
@@ -9,13 +9,54 @@ using Composite.Data.Types;
 
 namespace Composite.Core.Routing.Pages
 {
-    internal class C1PageRoute : RouteBase
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]  
+    public class C1PageRoute : RouteBase
     {
+        /// <exclude />
         public static readonly string RouteDate_PageUrl = "C1Page";
 
         internal static readonly string HttpContextItem_Hostname = "C1PageRoute_Hostname";
         internal static readonly string HttpContextItem_C1PageUrl = "C1_PageUrl";
+        private static readonly string HttpContextItem_PathInfoHandled = "C1PageRoute_PathInfoHandled";
 
+        /// <exclude />
+        public static UrlData<IPage> UrlData
+        {
+            get
+            {
+                var httpContext = HttpContext.Current;
+                return httpContext != null ? httpContext.Items[HttpContextItem_C1PageUrl] as UrlData<IPage> : null;
+            }
+        }
+
+        /// <exclude />
+        public static string GetPathInfo()
+        {
+            var urlData = UrlData;
+            return urlData != null ? UrlData.PathInfo : null;
+        }
+
+        /// <exclude />
+        public static void RegisterPathInfoUsage()
+        {
+            var httpContext = HttpContext.Current;
+
+            if(!httpContext.Items.Contains(HttpContextItem_PathInfoHandled))
+            {
+                httpContext.Items.Add(HttpContextItem_PathInfoHandled, true);
+            }
+        }
+
+        /// <exclude />
+        public static bool PathInfoHasBeenUsed()
+        {
+            var httpContext = HttpContext.Current;
+
+            return httpContext != null && httpContext.Items.Contains(HttpContextItem_PathInfoHandled);
+        }
+
+        /// <exclude />
         public override RouteData GetRouteData(HttpContextBase context)
         {
             if (!SystemSetupFacade.IsSystemFirstTimeInitialized)
@@ -86,20 +127,12 @@ namespace Composite.Core.Routing.Pages
             return data;
         }
 
-        public static UrlData<IPage> UrlData
-        {
-            get
-            {
-                var httpContext = HttpContext.Current;
-                return httpContext != null ? httpContext.Items[HttpContextItem_C1PageUrl] as UrlData<IPage> : null;
-            }
-        }
-
         private RouteData GetRouteData()
         {
             return new RouteData(this, new C1PageRouteHandler());
         }
 
+        /// <exclude />
         public void Dispose()
         {
         }
@@ -124,6 +157,7 @@ namespace Composite.Core.Routing.Pages
             return GetRouteData(); // returning route so other routers will not be executed
         }
 
+        /// <exclude />
         public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
         {
             return new VirtualPathData(this, "~/Renderers/Page.aspx");

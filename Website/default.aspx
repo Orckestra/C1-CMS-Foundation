@@ -24,7 +24,12 @@
 
                 if (homePageNode != null)
                 {
-                    // TODO: check that absense of  intergrated IIS mode causes self redirect here
+                    if(homePageNode.Url == Request.RawUrl)
+                    {
+                        Response.Write("Home page is mapped to '/' path, for this to work IIS 7.x integrated pipeline mode should be enabled. <br/>");
+                        Response.StatusCode = 500; //  "Error"
+                        Response.End();
+                    }
 
                     Response.AddHeader("Location", homePageNode.Url);
                     Response.StatusCode = 301; //  "Moved Permanently"
