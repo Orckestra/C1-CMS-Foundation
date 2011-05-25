@@ -86,6 +86,15 @@ namespace Composite.Core.Routing.Pages
             return data;
         }
 
+        public static UrlData<IPage> UrlData
+        {
+            get
+            {
+                var httpContext = HttpContext.Current;
+                return httpContext != null ? httpContext.Items[HttpContextItem_C1PageUrl] as UrlData<IPage> : null;
+            }
+        }
+
         private RouteData GetRouteData()
         {
             return new RouteData(this, new C1PageRouteHandler());

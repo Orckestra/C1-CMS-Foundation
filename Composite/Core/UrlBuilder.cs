@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using Composite.Core.Extensions;
+using Composite.Core.Routing.Pages;
 
 
 namespace Composite.Core
@@ -39,11 +40,11 @@ namespace Composite.Core
             int questionMarkIndex = url.IndexOf("?");
             if (questionMarkIndex < 0)
             {
-                ExtractPathInfo(url, out _filePath, out _pathInfo);
+                ExtractPathInfo(url, url, out _filePath, out _pathInfo);
                 return;
             }
 
-            ExtractPathInfo(url.Substring(0, questionMarkIndex), out _filePath, out _pathInfo);
+            ExtractPathInfo(url, url.Substring(0, questionMarkIndex), out _filePath, out _pathInfo);
 
             if (questionMarkIndex + 1 == url.Length)
             {
@@ -79,8 +80,21 @@ namespace Composite.Core
             }
         }
 
-        private static void ExtractPathInfo(string relativePath, out string filePath, out string pathInfo)
+        private static void ExtractPathInfo(string originalUrl, string relativePath, out string filePath, out string pathInfo)
         {
+            // Checking if pageInfo has already been extracted by C1PageRoute. It enables backward compatibility with some modules
+            var httpContext = HttpContext.Current;
+            if(httpContext != null 
+               && originalUrl == httpContext.Request.RawUrl
+               && C1PageRoute.UrlData != null)
+            {
+                pathInfo = C1PageRoute.UrlData.PathInfo;
+
+                int pathInfoLength = (pathInfo ?? string.Empty).Length;
+                filePath = relativePath.Substring(0, relativePath.Length - pathInfoLength);
+                return;
+            }
+
             int aspxExtOffset = relativePath.IndexOf(".aspx");
             if (aspxExtOffset < 0 || aspxExtOffset == relativePath.Length - 5)
             {
