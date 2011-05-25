@@ -108,4 +108,8 @@ Changes since C1 1.2 SP2 Patch 3
 - TcpCustomTraceListener removed from config
 
 Changes in 2.1.2 
-  Section <Composite.Core.Routing> added
+  - Section <Composite.Core.Routing> added
+
+Changes in 2.1.3
+  - Added DoubleKeySelector 
+  <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/Selectors/DoubleKeySelector.ascx" cacheCompiledUserControlType="false" type="Composite.Plugins.Forms.WebChannel.UiControlFactories.TemplatedDoubleKeySelectorUiControlFactory, Composite" name="DoubleKeySelector" /> 

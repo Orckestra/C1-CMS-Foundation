@@ -802,7 +802,7 @@
     <Content Include="Composite\controls\FormsControls\FormUiContainerTemplates\EmptyDocumentExecutionContainer.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionParameterEditor.aspx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\ComboBox.ascx" />
-    <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\DoubleSelector.ascx" />
+    <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\DoubleKeySelector.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\PageSelector.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\DataReferenceTreeSelector.ascx" />
     <Compile Include="Composite\top.aspx.cs">
@@ -6317,7 +6317,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\Composite\DynamicTypeForms\" />
     <Folder Include="Composite\audio\" />
     <Folder Include="Composite\content\dialogs\querytreeeditor\" />
     <Folder Include="Composite\controls\FormsControls\FormUiControlTemplates\ElementSelectors\" />
