@@ -3,12 +3,12 @@
 	<!-- Element tree -->
 	<string key="Tree.ConfigurationElementLabel" value="Hostname and URL Configuration" />
 	<string key="Tree.AddHostnameLabel" value="Add Hostname" />
-	<string key="Tree.GlobalSettingsLabel" value="Global Settings" />
+	<string key="Tree.UrlConfigurationLabel" value="UrlConfiguration" />
 
-	<!-- Global settings -->
-	<string key="GlobalSettings.Title" value="Url Configuration" />
-	<string key="GlobalSettings.PageUrlSuffix.Label" value="Page URL Suffix" />
-	<string key="GlobalSettings.PageUrlSuffix.Help" value="A string that will be appended to all page urls. F.e. '.aspx' or '.html', leaving this field empty will produce extensionless urls" />
+	<!-- Url configuration -->
+	<string key="UrlConfiguration.Title" value="Url Configuration" />
+	<string key="UrlConfiguration.PageUrlSuffix.Label" value="Page URL Suffix" />
+	<string key="UrlConfiguration.PageUrlSuffix.Help" value="A string that will be appended to all page urls. F.e. '.aspx' or '.html', leaving this field empty will produce extensionless urls" />
 
 	<!-- Hostname binding editing -->
 	<string key="HostnameBinding.Hostname.Label" value="Hostname" />
