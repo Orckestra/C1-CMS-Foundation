@@ -161,16 +161,20 @@ namespace Composite.Plugins.Routing.Pages
                     redirectLookupUrl = redirectFolderPath = redirectParentPath;
                 }
 
-                if (redirectLookupUrl != lookupUrl)
+                if (redirectLookupUrl != lookupUrl || UrlSuffix == string.Empty)
                 {
                     _redirectFolderPaths.Add(page.Id, redirectFolderPath);
 
-                    redirectLookupUrl = redirectLookupUrl.ToLower();
+                    string redirectLookupUrlLowerCased = redirectLookupUrl.ToLower();
 
-                    RedirectUrlToIdLookupLowerCased.Add(redirectLookupUrl, page.Id);
+                    if (redirectLookupUrlLowerCased != lookupUrlLowerCased)
+                    {
+                        RedirectUrlToIdLookupLowerCased.Add(redirectLookupUrlLowerCased, page.Id);
+                    }
+                    
                     if(UrlSuffix == string.Empty)
                     {
-                        RedirectUrlToIdLookupLowerCased.Add(redirectLookupUrl + ".aspx", page.Id);
+                        RedirectUrlToIdLookupLowerCased.Add(redirectLookupUrlLowerCased + ".aspx", page.Id);
                     }
                 }
             }
