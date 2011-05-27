@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Workflow.Activities;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
@@ -402,7 +403,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 (from page in PageServices.GetChildren(GetParentId())
                  select page.UrlTitle).ToList();
 
-            if (string.IsNullOrEmpty(newPage.UrlTitle) && ThereAreOtherPages())
+            if (string.IsNullOrEmpty(newPage.UrlTitle) && (ThereAreOtherPages() || !HttpRuntime.UsingIntegratedPipeline))
             {
                 newPage.UrlTitle = GenerateUrlTitleFromTitle(newPage.Title);
 

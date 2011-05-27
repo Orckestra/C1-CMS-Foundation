@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Web;
 using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
@@ -67,6 +68,11 @@ namespace Composite.Plugins.Routing.Pages
             }
 
             UrlSuffix = DataFacade.GetData<IHostnameConfiguration>().Select(c => c.PageUrlSuffix).FirstOrDefault() ?? DefaultPageUrlSuffix;
+
+            if(UrlSuffix == string.Empty && !HttpRuntime.UsingIntegratedPipeline)
+            {
+                UrlSuffix = DefaultPageUrlSuffix;
+            }
         }
 
         public PageUrlSet BuildUrlSet(IPage page, Guid parentPageId)

@@ -24,7 +24,7 @@
 
                 if (homePageNode != null)
                 {
-                    if(homePageNode.Url == Request.RawUrl)
+                    if(homePageNode.Url == Request.RawUrl && !HttpRuntime.UsingIntegratedPipeline)
                     {
                         Response.Write("Home page is mapped to '/' path, for this to work IIS 7.x integrated pipeline mode should be enabled. <br/>");
                         Response.StatusCode = 500; //  "Error"
