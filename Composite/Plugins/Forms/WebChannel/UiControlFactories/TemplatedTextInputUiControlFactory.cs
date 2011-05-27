@@ -57,6 +57,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             set { _formControlLabel = value; }
         }
 
+        /// <exclude />
         public bool Required
         {
             get; set;

@@ -166,6 +166,12 @@ namespace Composite.Plugins.Routing.Pages
                     break;
                 }
 
+                if (pageUrlBuilder.RedirectUrlToIdLookupLowerCased.TryGetValue(pagePath, out pageId))
+                {
+                    urlKind = UrlKind.Redirect;
+                    break;
+                }
+
                 pagePath = ReducePath(pagePath);
 
                 if (pagePath != null 
@@ -178,20 +184,13 @@ namespace Composite.Plugins.Routing.Pages
 
             if(pageId == Guid.Empty)
             {
-                if(pageUrlBuilder.RedirectUrlToIdLookupLowerCased.TryGetValue(loweredRequestPath, out pageId))
-                {
-                    pagePath = loweredRequestPath;
-                    urlKind = UrlKind.Redirect;
-                }
-                else if (!pageUrlBuilder.FriendlyUrlToIdLookup.TryGetValue(loweredRequestPath, out pageId))
+                if (!pageUrlBuilder.FriendlyUrlToIdLookup.TryGetValue(loweredRequestPath, out pageId))
                 {
                     return null;
                 }
-                else
-                {
-                    pagePath = loweredRequestPath;
-                    urlKind = UrlKind.Friendly;
-                }
+                
+                pagePath = loweredRequestPath;
+                urlKind = UrlKind.Friendly;
             }
 
             IPage page;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web;
+using System.Web.UI;
 using Composite.Core.Routing.Pages;
 using Composite.Core.Threading;
 using Composite.Core.Configuration;
@@ -40,16 +41,33 @@ namespace Composite.Core.WebClient.Renderings
             if(page != null 
                && !string.IsNullOrEmpty(C1PageRoute.GetPathInfo()))
             {
-                page.PreRender += (a, b) =>
-                {
-                    if(!C1PageRoute.PathInfoHasBeenUsed())
-                    {
-                        // Setting 404 response if PathInfo url part hasn't been used
-                        page.Response.StatusCode = 404;
-                        page.Response.End();
-                    }
-                };
+                page.PreRender += (a, b) => CheckThatPathInfoHasBeenUsed(httpContext, page);
             }
+        }
+
+        private static void CheckThatPathInfoHasBeenUsed(HttpContext httpContext, System.Web.UI.Page page)
+        {
+            if (C1PageRoute.PathInfoHasBeenUsed())
+            {
+                return;
+            }
+
+            // Redirecting to PageNotFoundUrl or setting 404 response code if PathInfo url part hasn't been used
+
+            string hostname = httpContext.Request.Url.Host;
+            IHostnameBinding hostnameBinding = DataFacade.GetData<IHostnameBinding>().AsEnumerable()
+                .FirstOrDefault(binding => binding.Hostname == hostname);
+
+            if(hostnameBinding != null 
+                && hostnameBinding.PageNotFoundUrl != null
+                && hostnameBinding.PageNotFoundUrl.Trim().Length > 0)
+            {
+                page.Response.Redirect(hostnameBinding.PageNotFoundUrl, true);
+                return;
+            }
+            
+            page.Response.StatusCode = 404;
+            page.Response.End();
         }
 
 
