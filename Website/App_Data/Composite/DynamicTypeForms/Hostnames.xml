@@ -14,12 +14,12 @@
 			<cms:read source="Hostname" />
 		</cms:layout.label>
 		<FieldGroup>
-			<TextBox Label="Hostname">
+			<TextBox Label="${Composite.Web.UrlConfiguration, HostnameBinding.Hostname.Label}" Help="${Composite.Web.UrlConfiguration, HostnameBinding.Hostname.Help}">
 				<TextBox.Text>
 					<cms:bind source="Hostname" />
 				</TextBox.Text>
 			</TextBox>
-			<DoubleKeySelector Label="Page" Help="This is an auto-generated field." Required="true">
+			<DoubleKeySelector Label="${Composite.Web.UrlConfiguration, HostnameBinding.Page.Label}" Help="${Composite.Web.UrlConfiguration, HostnameBinding.Page.Help}" Required="true">
 				<DoubleKeySelector.FirstKey>
 					<cms:bind source="HomePageId" />
 				</DoubleKeySelector.FirstKey>
@@ -30,22 +30,22 @@
 					<f:StaticMethodCall Type="Composite.Plugins.Routing.Hostnames.FormFunctions" Method="GetRootPages" />
 				</DoubleKeySelector.Options>
 			</DoubleKeySelector>
-			<CheckBox Label="URL" ItemLabel="Include homepage URL Title">
+			<CheckBox Label="${Composite.Web.UrlConfiguration, HostnameBinding.IncludeHomepageUrlTitle.Label}" ItemLabel="${Composite.Web.UrlConfiguration, HostnameBinding.IncludeHomepageUrlTitle.ItemLabel}" Help="${Composite.Web.UrlConfiguration, HostnameBinding.IncludeHomepageUrlTitle.Help}">
 				<CheckBox.Checked>
 					<cms:bind source="IncludeHomePageInUrl" />
 				</CheckBox.Checked>
 			</CheckBox>
-			<CheckBox Label="" ItemLabel="Include Language Url mapping">
+			<CheckBox Label="" ItemLabel="${Composite.Web.UrlConfiguration, HostnameBinding.IncludeLanguageUrlMapping.ItemLabel}" Help="${Composite.Web.UrlConfiguration, HostnameBinding.IncludeLanguageUrlMapping.Help}">
 				<CheckBox.Checked>
 					<cms:bind source="IncludeCultureInUrl" />
 				</CheckBox.Checked>
 			</CheckBox>
-			<TextBox Label="Custom 404 Page" Help="">
+			<TextBox Label="${Composite.Web.UrlConfiguration, HostnameBinding.Custom404Page.Label}" Help="${Composite.Web.UrlConfiguration, HostnameBinding.Custom404Page.Help}">
 				<TextBox.Text>
 					<cms:bind source="PageNotFoundUrl" />
 				</TextBox.Text>
 			</TextBox>
-			<TextArea Label="Alias hostnames" Help="">
+			<TextArea Label="${Composite.Web.UrlConfiguration, HostnameBinding.Aliases.Label}" Help="${Composite.Web.UrlConfiguration, HostnameBinding.Aliases.Help}">
 				<TextArea.Text>
 					<cms:bind source="Aliases" />
 				</TextArea.Text>

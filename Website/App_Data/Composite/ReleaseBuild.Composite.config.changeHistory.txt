@@ -113,3 +113,9 @@ Changes in 2.1.2
 Changes in 2.1.3
   - Added DoubleKeySelector 
   <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/Selectors/DoubleKeySelector.ascx" cacheCompiledUserControlType="false" type="Composite.Plugins.Forms.WebChannel.UiControlFactories.TemplatedDoubleKeySelectorUiControlFactory, Composite" name="DoubleKeySelector" /> 
+  - Added localization provider for UrlConfiguration
+  <add name="Composite.Web.UrlConfiguration" defaultCultureName="en-US" type="Composite.Plugins.ResourceSystem.XmlStringResourceProvider.XmlStringResourceProvider, Composite">
+	<Cultures>
+	  <add cultureName="en-US" xmlFile="~/Composite/localization/Composite.Web.UrlConfiguration.en-us.xml" monitorFileChanges="true" />
+	 </Cultures>
+   </add>

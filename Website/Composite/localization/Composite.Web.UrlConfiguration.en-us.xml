@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<strings>
+	<!-- Element tree -->
+	<string key="Tree.ConfigurationElementLabel" value="Hostname and URL Configuration" />
+	<string key="Tree.AddHostnameLabel" value="Add Hostname" />
+	<string key="Tree.GlobalSettingsLabel" value="Global Settings" />
+
+	<!-- Global settings -->
+	<string key="GlobalSettings.Title" value="Url Configuration" />
+	<string key="GlobalSettings.PageUrlSuffix.Label" value="Page URL Suffix" />
+	<string key="GlobalSettings.PageUrlSuffix.Help" value="A string that will be appended to all page urls. F.e. '.aspx' or '.html', leaving this field empty will produce extensionless urls" />
+
+	<!-- Hostname binding editing -->
+	<string key="HostnameBinding.Hostname.Label" value="Hostname" />
+	<string key="HostnameBinding.Hostname.Help" value="Hostname to which current url building rules will be applied" />
+	<string key="HostnameBinding.Page.Label" value="Page" />
+	<string key="HostnameBinding.Page.Help" value="Root page that will be the default page for the current hostname" />
+	<string key="HostnameBinding.IncludeHomepageUrlTitle.Label" value="URL" />
+	<string key="HostnameBinding.IncludeHomepageUrlTitle.ItemLabel" value="Include homepage URL Title" />
+	<string key="HostnameBinding.IncludeHomepageUrlTitle.Help" value="Determines whether root page's title should be a part of url. Not having it checked produces shorter urls" />
+	<string key="HostnameBinding.IncludeLanguageUrlMapping.ItemLabel" value="Include language URL mapping" />
+	<string key="HostnameBinding.IncludeLanguageUrlMapping.Help" value="Determines whether language code should be a part of a url" />
+	<string key="HostnameBinding.Custom404Page.Label" value="Custom 404 Page" />
+	<string key="HostnameBinding.Custom404Page.Help" value="Url to which request will be redirected in the case there's a request to non-existent c1 page" />
+	<string key="HostnameBinding.Aliases.Label" value="Alias hostnames" />
+	<string key="HostnameBinding.Aliases.Help" value="Hostnames from which all requests will be redirected to the current hostname" />
+</strings>

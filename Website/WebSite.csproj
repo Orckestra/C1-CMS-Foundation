@@ -818,6 +818,7 @@
     <Content Include="Composite\localization\Composite.Plugins.PageTypeElementProvider.en-us.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Composite\localization\Composite.Web.UrlConfiguration.en-us.xml" />
     <Content Include="Composite\scripts\source\folder-info-readme.txt" />
     <Content Include="Composite\scripts\source\page\data\DataManager.js" />
     <Content Include="Composite\scripts\source\page\document\DocumentCrawler.js" />

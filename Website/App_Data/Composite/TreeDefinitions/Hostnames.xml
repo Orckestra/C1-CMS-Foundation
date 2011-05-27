@@ -7,10 +7,10 @@
 
 	<ElementRoot>
 		<Children>
-			<DataElements Type="Composite.Data.Types.IHostnameConfiguration, Composite" Label="Hostname and URL configuration">
+			<DataElements Type="Composite.Data.Types.IHostnameConfiguration, Composite" Label="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementLabel}">
 				<Actions>
-					<AddDataAction Type="Composite.Data.Types.IHostnameBinding" CustomFormMarkupPath="~/App_Data/Composite/DynamicTypeForms/Hostnames.xml" Label="Add hostname"/>
-					<EditDataAction CustomFormMarkupPath="~/App_Data/Composite/DynamicTypeForms/HostnamesConfiguration.xml" Label="Global settings"/>
+					<AddDataAction Type="Composite.Data.Types.IHostnameBinding" CustomFormMarkupPath="~/App_Data/Composite/DynamicTypeForms/Hostnames.xml" Label="${Composite.Web.UrlConfiguration, Tree.AddHostnameLabel}"/>
+					<EditDataAction CustomFormMarkupPath="~/App_Data/Composite/DynamicTypeForms/HostnamesConfiguration.xml" Label="${Composite.Web.UrlConfiguration, Tree.GlobalSettingsLabel}"/>
 				</Actions>
 
 				<Children>
