@@ -418,6 +418,10 @@ namespace Composite.Core.Types
                 int retries = 0;
                 while (true)
                 {
+                    // Resetting temp files collection, so compilation don't fail on the second time with exception like
+                    // "The file '{$WinRoot}\TEMP\XXXXXXXXX.out' already exists."
+                    compilerParameters.TempFiles = new TempFileCollection(); 
+
                     if (buildManagerCompileUnit.AllowCrossReferences)
                     {
                         string assemlblyVersionFile = GetAssemblyVersionFile(buildManagerCompileUnit);
