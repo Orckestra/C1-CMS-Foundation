@@ -2,29 +2,29 @@
 <ElementStructure xmlns="http://www.composite.net/ns/management/trees/treemarkup/1.0" xmlns:f="http://www.composite.net/ns/function/1.0">
 
 	<ElementStructure.AutoAttachments>
-		<NamedParent Name="System" Position="Top" />
+		<NamedParent Name="System" Position="Bottom" />
 	</ElementStructure.AutoAttachments>
 
 	<ElementRoot>
 		<Children>
 			<DataElements Type="Composite.Data.Types.IHostnameConfiguration, Composite" Label="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementLabel}" Icon="folder" OpenedIcon="folder-open">
 				<Actions>
-					<EditDataAction CustomFormMarkupPath="~/App_Data/Composite/DynamicTypeForms/UrlConfiguration.xml" Label="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementEditLabel}"/>
+					<EditDataAction CustomFormMarkupPath="~/Composite/content/forms/Administrative/UrlConfiguration.xml" Label="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementEditLabel}"/>
 				</Actions>
 
 				<Children>
 					<Element Id="Hostnames" Label="${Composite.Web.UrlConfiguration, Tree.HostnamesFolderLabel}">
 						<Actions>
-							<AddDataAction Type="Composite.Data.Types.IHostnameBinding" CustomFormMarkupPath="~/App_Data/Composite/DynamicTypeForms/Hostnames.xml" Label="${Composite.Web.UrlConfiguration, Tree.AddHostnameLabel}"/>
+							<AddDataAction Type="Composite.Data.Types.IHostnameBinding" CustomFormMarkupPath="~/Composite/content/forms/Administrative/Hostnames.xml" Label="${Composite.Web.UrlConfiguration, Tree.AddHostnameLabel}"/>
 						</Actions>
 						<Children>
 
-							<DataElements Type="Composite.Data.Types.IHostnameBinding, Composite">
+							<DataElements Type="Composite.Data.Types.IHostnameBinding, Composite" Icon="home">
 								<OrderBy>
 									<Field FieldName="Hostname" Direction="ascending"/>
 								</OrderBy>
 								<Actions>
-									<EditDataAction CustomFormMarkupPath="~/App_Data/Composite/DynamicTypeForms/Hostnames.xml" />
+									<EditDataAction CustomFormMarkupPath="~/Composite/content/forms/Administrative/Hostnames.xml" />
 									<DeleteDataAction />
 								</Actions>
 							</DataElements>

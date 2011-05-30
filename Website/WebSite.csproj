@@ -373,8 +373,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Composite\Configuration\UrlFormatting.xml" />
-    <Content Include="App_Data\Composite\DynamicTypeForms\UrlConfiguration.xml" />
-    <Content Include="App_Data\Composite\DynamicTypeForms\Hostnames.xml" />
+    <Content Include="Composite\content\forms\Administrative\UrlConfiguration.xml" />
+    <Content Include="Composite\content\forms\Administrative\Hostnames.xml" />
     <Content Include="App_Data\Composite\TreeDefinitions\UrlConfiguration.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -6318,6 +6318,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\Composite\DynamicTypeForms\" />
     <Folder Include="Composite\audio\" />
     <Folder Include="Composite\content\dialogs\querytreeeditor\" />
     <Folder Include="Composite\controls\FormsControls\FormUiControlTemplates\ElementSelectors\" />
