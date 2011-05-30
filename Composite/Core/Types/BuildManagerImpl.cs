@@ -416,21 +416,30 @@ namespace Composite.Core.Types
 
                 CompilerResults compileResult = null;
                 int retries = 0;
+                string assemlblyVersionFile = null;
                 while (true)
                 {
-                    // Resetting temp files collection, so compilation don't fail on the second time with exception like
+                    // Resetting temp files collection, so compilation won't fail on the second time with exception like
                     // "The file '{$WinRoot}\TEMP\XXXXXXXXX.out' already exists."
                     compilerParameters.TempFiles = new TempFileCollection(); 
 
                     if (buildManagerCompileUnit.AllowCrossReferences)
                     {
-                        string assemlblyVersionFile = GetAssemblyVersionFile(buildManagerCompileUnit);
-                        temporaryFiles.Add(assemlblyVersionFile);
+                        if(retries == 0)
+                        {
+                            assemlblyVersionFile = GetAssemblyVersionFile(buildManagerCompileUnit);
+                            temporaryFiles.Add(assemlblyVersionFile);
+                        }
+                        
                         compileResult = compiler.CompileAssemblyFromFile(compilerParameters, sourceFilename, assemlblyVersionFile);
                     }
                     else
                     {
-                        compilerParameters.ReferencedAssemblies.Add(typeof(EditorBrowsableAttribute).Assembly.Location); // This is a small hach /MRJ                        
+                        if(retries == 0)
+                        {
+                            compilerParameters.ReferencedAssemblies.Add(typeof(EditorBrowsableAttribute).Assembly.Location); // This is a small hach /MRJ                        
+                        }
+                        
                         compileResult = compiler.CompileAssemblyFromDom(compilerParameters, codeCompileUnit);
                     }
 

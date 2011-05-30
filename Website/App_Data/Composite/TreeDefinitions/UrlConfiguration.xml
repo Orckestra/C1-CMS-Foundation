@@ -7,7 +7,7 @@
 
 	<ElementRoot>
 		<Children>
-			<DataElements Type="Composite.Data.Types.IHostnameConfiguration, Composite" Label="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementLabel}">
+			<DataElements Type="Composite.Data.Types.IHostnameConfiguration, Composite" Label="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementLabel}" Icon="folder" OpenedIcon="folder-open">
 				<Actions>
 					<EditDataAction CustomFormMarkupPath="~/App_Data/Composite/DynamicTypeForms/UrlConfiguration.xml" Label="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementEditLabel}"/>
 				</Actions>
