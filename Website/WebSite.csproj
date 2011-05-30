@@ -375,7 +375,7 @@
     <Content Include="App_Data\Composite\Configuration\UrlFormatting.xml" />
     <Content Include="App_Data\Composite\DynamicTypeForms\UrlConfiguration.xml" />
     <Content Include="App_Data\Composite\DynamicTypeForms\Hostnames.xml" />
-    <Content Include="App_Data\Composite\TreeDefinitions\Hostnames.xml">
+    <Content Include="App_Data\Composite\TreeDefinitions\UrlConfiguration.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Data\Composite\TreeDefinitions\PageType.xml" />
