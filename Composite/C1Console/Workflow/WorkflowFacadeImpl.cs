@@ -912,20 +912,20 @@ namespace Composite.C1Console.Workflow
 
 
 
-        [DebuggerStepThrough]
+        [DebuggerHidden]
         private void HandleWorkflowPersistedEvent(object sender, WorkflowEventArgs args)
         {
+            var instance = args.WorkflowInstance;
+
             try
             {
                 LoggingService.LogVerbose(
                     "WorkflowFacade",
-                    string.Format("Workflow persisted, Activity = {0}, Id = {1}", args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId));
+                    string.Format("Workflow persisted, Activity = {0}, Id = {1}", instance.GetWorkflowDefinition().GetType(), instance.InstanceId));
             }
             catch (Exception)
             {
-                LoggingService.LogVerbose(
-                    "WorkflowFacade",
-                    string.Format("Workflow persisted, Id = {0}", args.WorkflowInstance.InstanceId));
+                LoggingService.LogVerbose("WorkflowFacade", "Workflow persisted, Id = {0}" + instance.InstanceId);
             }                
         }
 
@@ -1151,7 +1151,6 @@ namespace Composite.C1Console.Workflow
 
 
 
-        [DebuggerStepThrough]
         private void PersistExistingWorkflows()
         {
             _fileWorkFlowPersisetenceService.PersistAll = true;
@@ -1165,27 +1164,31 @@ namespace Composite.C1Console.Workflow
                     continue;
                 }
 
-                WorkflowPersistingType workflowPersistingType = WorkflowPersistingType.Never;
+                WorkflowPersistingType workflowPersistingType;
 
-                _resourceLocker.Resources.WorkflowPersistingTypeDictionary.TryGetValue(instanceId, out workflowPersistingType);
-
-                if (workflowPersistingType != WorkflowPersistingType.Never)
+                if (_resourceLocker.Resources.WorkflowPersistingTypeDictionary.TryGetValue(instanceId, out workflowPersistingType)
+                    && workflowPersistingType != WorkflowPersistingType.Never)
                 {
-                    try
-                    {
-                        WorkflowInstance workflowInstance = WorkflowRuntime.GetWorkflow(instanceId);
-                        workflowInstance.Unload();
-                    }
-                    catch (Exception)
-                    {
-                        // Ignore, the workflow is already dead
-                    }
+                    UnloadSilent(instanceId);
                 }
             }
 
             _fileWorkFlowPersisetenceService.PersistAll = false;
         }
 
+        [DebuggerHidden]
+        private void UnloadSilent(Guid instanceId)
+        {
+            try
+            {
+                WorkflowInstance workflowInstance = WorkflowRuntime.GetWorkflow(instanceId);
+                workflowInstance.Unload();
+            }
+            catch (Exception)
+            {
+                // Ignore, the workflow is already dead
+            }
+        }
 
 
         private void PersistFormDatas()

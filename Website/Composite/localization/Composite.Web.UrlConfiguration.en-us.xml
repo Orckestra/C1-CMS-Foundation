@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
 	<!-- Element tree -->
-	<string key="Tree.ConfigurationElementLabel" value="Hostname and URL Configuration" />
+	<string key="Tree.ConfigurationElementLabel" value="URL Configuration" />
+	<string key="Tree.ConfigurationElementEditLabel" value="Edit URL Configuration" />
+	<string key="Tree.HostnamesFolderLabel" value="Hostnames" />
 	<string key="Tree.AddHostnameLabel" value="Add Hostname" />
 	<string key="Tree.UrlConfigurationLabel" value="UrlConfiguration" />
 
