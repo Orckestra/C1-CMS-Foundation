@@ -931,20 +931,20 @@ namespace Composite.C1Console.Workflow
 
 
 
-        [DebuggerStepThrough]
+        [DebuggerHidden]
         private void HandleWorkflowAbortedEvent(object sender, WorkflowEventArgs args)
         {
+            var instance = args.WorkflowInstance;
+
             try
             {                
                 LoggingService.LogVerbose(
                     "WorkflowFacade",
-                    string.Format("Workflow aborted, Activity = {0}, Id = {1}", args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId));
+                    string.Format("Workflow aborted, Activity = {0}, Id = {1}", instance.GetWorkflowDefinition().GetType(), instance.InstanceId));
             }
             catch (Exception)
             {
-                LoggingService.LogVerbose(
-                    "WorkflowFacade",
-                    string.Format("Workflow aborted Id = {0}", args.WorkflowInstance.InstanceId));
+                LoggingService.LogVerbose("WorkflowFacade", "Workflow aborted Id = "+ instance.InstanceId);
             }
         }
         
