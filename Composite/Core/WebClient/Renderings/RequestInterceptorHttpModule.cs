@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web;
-using System.Web.UI;
+using Composite.Core.Routing;
 using Composite.Core.Routing.Pages;
 using Composite.Core.Threading;
 using Composite.Core.Configuration;
@@ -31,6 +31,8 @@ namespace Composite.Core.WebClient.Renderings
             {
                 return;
             }
+
+            HandleRootRequestInClassicMode(httpContext);
         }
 
         void context_PreRequestHandlerExecute(object sender, EventArgs e)
@@ -42,6 +44,35 @@ namespace Composite.Core.WebClient.Renderings
                && !string.IsNullOrEmpty(C1PageRoute.GetPathInfo()))
             {
                 page.PreRender += (a, b) => CheckThatPathInfoHasBeenUsed(httpContext, page);
+            }
+        }
+
+        private static void HandleRootRequestInClassicMode(HttpContext httpContext)
+        {
+            if (HttpRuntime.UsingIntegratedPipeline)
+            {
+                return;
+            }
+
+            // Resolving root path "/" for classic mode
+            string rawUrl = httpContext.Request.RawUrl;
+
+            string rootPath = UrlUtils.PublicRootPath
+                                + (UrlUtils.PublicRootPath.EndsWith("/") ? "" : "/");
+
+            string defaultAspxPath = rootPath + "default.aspx";
+
+            if (rawUrl.StartsWith(defaultAspxPath, StringComparison.InvariantCultureIgnoreCase))
+            {
+                string query = rawUrl.Substring(defaultAspxPath.Length);
+
+                string shorterQuery = rootPath + query;
+
+                // Checking that there's a related page)
+                if (PageUrls.ParseUrl(shorterQuery) != null)
+                {
+                    httpContext.RewritePath(shorterQuery);
+                }
             }
         }
 

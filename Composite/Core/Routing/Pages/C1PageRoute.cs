@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Web;
 using System.Web.Routing;
-using System.Web.UI;
 using Composite.Core.WebClient;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
@@ -9,8 +8,9 @@ using Composite.Data.Types;
 
 namespace Composite.Core.Routing.Pages
 {
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]  
+    /// <summary>
+    /// Implements C1 page route for ASP.NET routing
+    /// </summary>
     public class C1PageRoute : RouteBase
     {
         /// <exclude />
@@ -30,11 +30,14 @@ namespace Composite.Core.Routing.Pages
             }
         }
 
-        /// <exclude />
+        /// <summary>
+        /// Get the additional information that was passed in URL along with page url
+        /// </summary>
+        /// <returns>The PathInfo url part.</returns>
         public static string GetPathInfo()
         {
             var urlData = UrlData;
-            return urlData != null ? UrlData.PathInfo : null;
+            return urlData != null ? urlData.PathInfo : null;
         }
 
         /// <exclude />
@@ -48,7 +51,10 @@ namespace Composite.Core.Routing.Pages
             }
         }
 
-        /// <exclude />
+        /// <summary>
+        /// This method has to be called to notify the system that PathInfo was used, and the request will not be redirected to "Page not found" page
+        /// </summary>
+        /// <returns>The PathInfo url part.</returns>
         public static bool PathInfoHasBeenUsed()
         {
             var httpContext = HttpContext.Current;
