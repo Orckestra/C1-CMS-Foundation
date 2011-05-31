@@ -137,6 +137,9 @@
 		<IconFile size="normal" path="harmony\basic\home-del_16.png" />
 		<IconFile size="large" path="harmony\basic\home-del_24.png" />
 	</Icon>
+	<Icon name="housefolder">
+		<IconFile size="normal" path="harmony\composite\housefolder_16.png" />
+	</Icon>
 	<Icon name="refresh-disabled">
 		<IconFile size="normal" path="harmony\basic\x-ref_16.png" />
 		<IconFile size="large" path="harmony\basic\x-ref_24.png" />

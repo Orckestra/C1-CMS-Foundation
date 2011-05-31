@@ -13,7 +13,7 @@
 				</Actions>
 
 				<Children>
-					<Element Id="Hostnames" Label="${Composite.Web.UrlConfiguration, Tree.HostnamesFolderLabel}" ToolTip="${Composite.Web.UrlConfiguration, Tree.HostnamesFolderToolTip}">
+					<Element Id="Hostnames" Label="${Composite.Web.UrlConfiguration, Tree.HostnamesFolderLabel}" ToolTip="${Composite.Web.UrlConfiguration, Tree.HostnamesFolderToolTip}" Icon="housefolder">
 						<Actions>
 							<AddDataAction Type="Composite.Data.Types.IHostnameBinding" CustomFormMarkupPath="~/Composite/content/forms/Administrative/Hostnames.xml" Label="${Composite.Web.UrlConfiguration, Tree.AddHostnameLabel}" Icon="home-add"/>
 						</Actions>
