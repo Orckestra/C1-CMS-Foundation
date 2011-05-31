@@ -67,7 +67,7 @@ namespace Composite.Plugins.Routing.Pages
                 }
             }
 
-            UrlSuffix = DataFacade.GetData<IHostnameConfiguration>().Select(c => c.PageUrlSuffix).FirstOrDefault() ?? DefaultPageUrlSuffix;
+            UrlSuffix = DataFacade.GetData<IUrlConfiguration>().Select(c => c.PageUrlSuffix).FirstOrDefault() ?? DefaultPageUrlSuffix;
 
             if(UrlSuffix == string.Empty && !HttpRuntime.UsingIntegratedPipeline)
             {

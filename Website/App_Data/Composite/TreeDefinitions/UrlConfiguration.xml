@@ -7,7 +7,7 @@
 
 	<ElementRoot>
 		<Children>
-			<DataElements Type="Composite.Data.Types.IHostnameConfiguration, Composite" Label="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementLabel}" Icon="folder" OpenedIcon="folder-open" ToolTip="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementToolTip}">
+			<DataElements Type="Composite.Data.Types.IUrlConfiguration, Composite" Label="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementLabel}" Icon="folder" OpenedIcon="folder-open" ToolTip="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementToolTip}">
 				<Actions>
 					<EditDataAction CustomFormMarkupPath="~/Composite/content/forms/Administrative/UrlConfiguration.xml" Label="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementEditLabel}" Icon="media-edit-media-folder"/>
 				</Actions>

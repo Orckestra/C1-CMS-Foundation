@@ -334,7 +334,7 @@
     <Compile Include="Data\Streams\IFileStreamManager.cs" />
     <Compile Include="Data\IPageData.cs" />
     <Compile Include="Data\IPageFolderData.cs" />
-    <Compile Include="Data\Types\IHostnameConfiguration.cs" />
+    <Compile Include="Data\Types\IUrlConfiguration.cs" />
     <Compile Include="Data\Types\IHostnameBinding.cs" />
     <Compile Include="Data\Types\IInlineFunctionAssemblyReference.cs" />
     <Compile Include="Data\Types\IInlineFunction.cs" />

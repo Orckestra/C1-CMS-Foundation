@@ -65,7 +65,7 @@ namespace Composite.Core.WebClient.Renderings.Page
             DataEventSystemFacade.SubscribeToDataAfterUpdate<ISystemActiveLocale>(OnLocaleChanged, true);
 
             DataEventSystemFacade.SubscribeToDataAfterUpdate<IHostnameBinding>((a, b) => ClearCachedData(), true);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<IHostnameConfiguration>((a, b) => ClearCachedData(), true);
+            DataEventSystemFacade.SubscribeToDataAfterUpdate<IUrlConfiguration>((a, b) => ClearCachedData(), true);
         }
 
 

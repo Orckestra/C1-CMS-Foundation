@@ -28,13 +28,14 @@ namespace Composite.Data.Types
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 255, IsNullable = false)]
         [ImmutableFieldId("{36E7E803-178A-4453-9B5B-BF7148BA077B}")]
-        [NotNullValidator()]
+        [RegexValidator(@"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$")]
+        [NotNullValidator]
         string Hostname { get; set; }
 
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 64, IsNullable = false)]
         [ImmutableFieldId("{A9C79722-D62A-481A-B1DE-CFB37A68EB9A}")]
-        [NotNullValidator()]
+        [NotNullValidator]
         string Culture { get; set; }
 
         /// <exclude />

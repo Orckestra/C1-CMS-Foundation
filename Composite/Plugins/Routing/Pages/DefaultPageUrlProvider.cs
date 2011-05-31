@@ -215,7 +215,6 @@ namespace Composite.Plugins.Routing.Pages
 
         internal static CultureInfo GetCultureInfo(string requestPath, UrlSpace urlSpace, out string requestPathWithoutUrlMappingName)
         {
-            // TODO: make pluggable, so it's possible to implement hostname dependency
             requestPathWithoutUrlMappingName = requestPath;
 
             int startIndex = requestPath.IndexOf('/', UrlUtils.PublicRootPath.Length) + 1;
@@ -242,6 +241,15 @@ namespace Composite.Plugins.Routing.Pages
                         return null;
                     }
                 }
+            }
+
+            string host = urlSpace.Hostname;
+            var hostnameBinding = DataFacade.GetData<IHostnameBinding>().AsEnumerable().FirstOrDefault(b => b.Hostname == host);
+
+            if(hostnameBinding != null 
+                && !hostnameBinding.IncludeCultureInUrl)
+            {
+                return new CultureInfo(hostnameBinding.Culture);
             }
 
             return DataLocalizationFacade.DefaultUrlMappingCulture;

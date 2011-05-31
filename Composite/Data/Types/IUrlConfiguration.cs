@@ -11,22 +11,23 @@ namespace Composite.Data.Types
     [Title("Hostname configuration")]
     [AutoUpdateble]
     [TypeVersion(1)]
-    [ImmutableTypeId("{C1E6BDA9-D325-7128-95D9-4723A8EAEAD6}")]
+    [ImmutableTypeId("{5552C35A-A72A-55F1-9630-ACC66FE44BBE}")]
     [DataScope(DataScopeIdentifier.PublicName)]
     [KeyPropertyName("Id")]
     [RelevantToUserType(UserType.Developer)]
     [CachingAttribute(CachingType.Full)]
     [DataAncestorProvider(typeof(NoAncestorDataAncestorProvider))]
-    public interface IHostnameConfiguration : IData
+    public interface IUrlConfiguration : IData
     {
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
-        [ImmutableFieldId("{1E04A275-B62D-25E0-7EC7-2D010E02DE34}")]
+        [ImmutableFieldId("{D0C48D08-1318-7441-D2C0-425D31894C1F}")]
         Guid Id { get; set; }
         
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 255, IsNullable = false)]
-        [ImmutableFieldId("{B5953D03-E9B9-616D-CBE9-6E9A69AE8A20}")]
+        [ImmutableFieldId("{C0504E0C-B487-3951-AA18-DBF28DD681B5}")]
+        [RegexValidator(@"^((\.([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9]))*)$")]
         string PageUrlSuffix { get; set; }
     } 
 }
