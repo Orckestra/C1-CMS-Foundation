@@ -125,6 +125,18 @@
 		<IconFile size="large" path="harmony\basic\home_24.png" />
 		<IconFile size="xlarge" path="harmony\basic\home_32.png" />
 	</Icon>
+	<Icon name="home-add">
+		<IconFile size="normal" path="harmony\basic\home-add_16.png" />
+		<IconFile size="large" path="harmony\basic\home-add_24.png" />
+	</Icon>
+	<Icon name="home-edit">
+		<IconFile size="normal" path="harmony\basic\home-edit_16.png" />
+		<IconFile size="large" path="harmony\basic\home-edit_24.png" />
+	</Icon>
+	<Icon name="home-delete">
+		<IconFile size="normal" path="harmony\basic\home-del_16.png" />
+		<IconFile size="large" path="harmony\basic\home-del_24.png" />
+	</Icon>
 	<Icon name="refresh-disabled">
 		<IconFile size="normal" path="harmony\basic\x-ref_16.png" />
 		<IconFile size="large" path="harmony\basic\x-ref_24.png" />

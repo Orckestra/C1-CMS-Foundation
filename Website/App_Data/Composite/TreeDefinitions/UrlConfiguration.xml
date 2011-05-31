@@ -7,15 +7,15 @@
 
 	<ElementRoot>
 		<Children>
-			<DataElements Type="Composite.Data.Types.IHostnameConfiguration, Composite" Label="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementLabel}" Icon="folder" OpenedIcon="folder-open">
+			<DataElements Type="Composite.Data.Types.IHostnameConfiguration, Composite" Label="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementLabel}" Icon="folder" OpenedIcon="folder-open" ToolTip="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementToolTip}">
 				<Actions>
-					<EditDataAction CustomFormMarkupPath="~/Composite/content/forms/Administrative/UrlConfiguration.xml" Label="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementEditLabel}"/>
+					<EditDataAction CustomFormMarkupPath="~/Composite/content/forms/Administrative/UrlConfiguration.xml" Label="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementEditLabel}" Icon="media-edit-media-folder"/>
 				</Actions>
 
 				<Children>
-					<Element Id="Hostnames" Label="${Composite.Web.UrlConfiguration, Tree.HostnamesFolderLabel}">
+					<Element Id="Hostnames" Label="${Composite.Web.UrlConfiguration, Tree.HostnamesFolderLabel}" ToolTip="${Composite.Web.UrlConfiguration, Tree.HostnamesFolderToolTip}">
 						<Actions>
-							<AddDataAction Type="Composite.Data.Types.IHostnameBinding" CustomFormMarkupPath="~/Composite/content/forms/Administrative/Hostnames.xml" Label="${Composite.Web.UrlConfiguration, Tree.AddHostnameLabel}"/>
+							<AddDataAction Type="Composite.Data.Types.IHostnameBinding" CustomFormMarkupPath="~/Composite/content/forms/Administrative/Hostnames.xml" Label="${Composite.Web.UrlConfiguration, Tree.AddHostnameLabel}" Icon="home-add"/>
 						</Actions>
 						<Children>
 
@@ -24,8 +24,8 @@
 									<Field FieldName="Hostname" Direction="ascending"/>
 								</OrderBy>
 								<Actions>
-									<EditDataAction CustomFormMarkupPath="~/Composite/content/forms/Administrative/Hostnames.xml" />
-									<DeleteDataAction />
+									<EditDataAction CustomFormMarkupPath="~/Composite/content/forms/Administrative/Hostnames.xml" Icon="home-edit"/>
+									<DeleteDataAction Icon="home-delete"/>
 								</Actions>
 							</DataElements>
 						</Children>

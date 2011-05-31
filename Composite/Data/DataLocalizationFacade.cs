@@ -55,7 +55,7 @@ namespace Composite.Data
             {
                 return _dataLocalizationFacade.DefaultLocalizationCulture;
             }
-            set
+            internal set
             {
                 _dataLocalizationFacade.DefaultLocalizationCulture = value;
             }

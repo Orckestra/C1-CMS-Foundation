@@ -3,7 +3,9 @@
 	<!-- Element tree -->
 	<string key="Tree.ConfigurationElementLabel" value="URL Configuration" />
 	<string key="Tree.ConfigurationElementEditLabel" value="Edit URL Configuration" />
+	<string key="Tree.ConfigurationElementToolTip" value="This section allows configuring shorter and friendlier urls" />
 	<string key="Tree.HostnamesFolderLabel" value="Hostnames" />
+	<string key="Tree.HostnamesFolderToolTip" value="Here you can map a hostname to a site" />
 	<string key="Tree.AddHostnameLabel" value="Add Hostname" />
 	<string key="Tree.UrlConfigurationLabel" value="UrlConfiguration" />
 
