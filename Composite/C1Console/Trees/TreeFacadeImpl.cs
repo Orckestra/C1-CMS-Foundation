@@ -247,12 +247,16 @@ namespace Composite.C1Console.Trees
 
                 LoggingService.LogVerbose("TreeFacade", string.Format("Loading all tree definitions from {0}", PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory)));
 
-                foreach (string filename in C1Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), "*.xml"))
+                foreach (string filename in C1Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), "*.xml"))                
                 {
                     string treeId = Path.GetFileName(filename);
 
                     try
-                    {
+                    {                        
+                        LoggingService.LogVerbose("TreeFacade", "Loading tree from file: " + filename);
+
+                        int t1 = Environment.TickCount;
+
                         Tree tree = LoadTreeFromFile(treeId);
 
                         if (tree.BuildResult.ValidationErrors.Count() > 0)
@@ -275,6 +279,10 @@ namespace Composite.C1Console.Trees
                         {
                             _resourceLocker.Resources.Trees.Add(treeId, tree);
                         }
+
+                        int t2 = Environment.TickCount;
+
+                        LoggingService.LogVerbose("TreeFacade", "Time spend on loading the tree: " + (t2 - t1) + "ms, file: " + filename);
                     }
                     catch (Exception ex)
                     {
