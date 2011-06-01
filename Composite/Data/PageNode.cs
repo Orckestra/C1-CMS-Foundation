@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Xml.Linq;
 using Composite.Core.WebClient.Renderings.Page;
 
@@ -55,12 +54,21 @@ namespace Composite.Data
         {
             get
             {
-                if (_pageElement.Attribute("MenuTitle") != null)
-                {
-                    return _pageElement.Attribute("MenuTitle").Value;
-                }
+                XAttribute menuTitle = _pageElement.Attribute("MenuTitle");
 
-                return null;
+                return menuTitle != null ? menuTitle.Value : null;
+            }
+        }
+
+
+        /// <summary>
+        /// The time the page was changed last
+        /// </summary>
+        public DateTime ChangeDate
+        {
+            get
+            {
+                return (DateTime)_pageElement.Attribute("ChangedDate");
             }
         }
 
