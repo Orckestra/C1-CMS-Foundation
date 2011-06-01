@@ -15,6 +15,7 @@
 	<string key="UrlConfiguration.PageUrlSuffix.Help" value="A string that will be appended to all page urls. F.e. '.aspx' or '.html', leaving this field empty will produce extensionless urls" />
 
 	<!-- Hostname binding editing -->
+	<string key="HostnameBinding.AddNewHostnameTitle" value="New hostname" />
 	<string key="HostnameBinding.Hostname.Label" value="Hostname" />
 	<string key="HostnameBinding.Hostname.Help" value="Hostname to which current url building rules will be applied" />
 	<string key="HostnameBinding.Page.Label" value="Page" />

@@ -11,8 +11,19 @@
 	</cms:bindings>
 	<cms:layout>
 		<cms:layout.label>
-			<cms:read source="Hostname" />
+			<f:NullCheck>
+				<f:NullCheck.CheckValue>
+					<cms:read source="Aliases" />
+				</f:NullCheck.CheckValue>
+				<f:NullCheck.WhenNull>
+					${Composite.Web.UrlConfiguration, HostnameBinding.AddNewHostnameTitle}
+				</f:NullCheck.WhenNull>
+				<f:NullCheck.WhenNotNull>
+					<cms:read source="Hostname" />
+				</f:NullCheck.WhenNotNull>
+			</f:NullCheck>
 		</cms:layout.label>
+
 		<FieldGroup>
 			<TextBox Label="${Composite.Web.UrlConfiguration, HostnameBinding.Hostname.Label}" Help="${Composite.Web.UrlConfiguration, HostnameBinding.Hostname.Help}">
 				<TextBox.Text>
