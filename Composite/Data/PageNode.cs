@@ -64,7 +64,7 @@ namespace Composite.Data
         /// <summary>
         /// The time the page was changed last
         /// </summary>
-        public DateTime ChangeDate
+        public DateTime ChangedDate
         {
             get
             {
