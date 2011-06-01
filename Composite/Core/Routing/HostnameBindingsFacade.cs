@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web;
 using Composite.Core.Threading;
+using Composite.Core.WebClient;
 using Composite.Data;
 using Composite.Data.Types;
 
@@ -32,6 +33,7 @@ namespace Composite.Core.Routing
 
             // Trimming and lowercasing hostname
             hostnameBinding.Hostname = hostnameBinding.Hostname.Trim().ToLowerInvariant();
+            hostnameBinding.PageNotFoundUrl = hostnameBinding.PageNotFoundUrl.Trim();
         }
 
 
@@ -55,6 +57,34 @@ namespace Composite.Core.Routing
                     DataFacade.AddNew(configurationData);
                 }
             }
+        }
+
+        internal static IHostnameBinding GetBindingForCurrentRequest()
+        {
+            var httpContext = HttpContext.Current;
+            if(httpContext == null)
+            {
+                return null;
+            }
+
+
+            string host = HttpContext.Current.Request.Url.Host;
+
+            // TODO: optimize?
+            return DataFacade.GetData<IHostnameBinding>().AsEnumerable().FirstOrDefault(b => b.Hostname == host);
+        }
+
+        internal static string GetCustomPageNotFoundUrl()
+        {
+            var binding = GetBindingForCurrentRequest();
+            if(binding == null || string.IsNullOrEmpty(binding.PageNotFoundUrl))
+            {
+                return null;
+            }
+
+            string url = binding.PageNotFoundUrl;
+
+            return url.StartsWith("~") ? UrlUtils.PublicRootPath + url.Substring(1) : url;
         }
     }
 }

@@ -40,10 +40,20 @@ namespace Composite.Core.WebClient.Renderings
             var httpContext = (sender as HttpApplication).Context;
 
             var page = httpContext.Handler as System.Web.UI.Page;
-            if(page != null 
-               && !string.IsNullOrEmpty(C1PageRoute.GetPathInfo()))
+            if(page == null)
+            {
+                return;
+            }
+
+            if(!string.IsNullOrEmpty(C1PageRoute.GetPathInfo()))
             {
                 page.PreRender += (a, b) => CheckThatPathInfoHasBeenUsed(httpContext, page);
+            }
+
+            // Setting 404 response code if it is a request to a custom "Page not found" page
+            if(httpContext.Request.RawUrl == HostnameBindingsFacade.GetCustomPageNotFoundUrl())
+            {
+                page.PreRender += (a, b) => httpContext.Response.StatusCode = 404;
             }
         }
 

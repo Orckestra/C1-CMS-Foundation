@@ -227,6 +227,7 @@
     <Compile Include="Core\Instrumentation\ProfilerReport.cs" />
     <Compile Include="Core\Routing\Foundation\PluginFacades\PageUrlProviderPluginFacade.cs" />
     <Compile Include="Core\Routing\HostnameBindingsFacade.cs" />
+    <Compile Include="Core\Routing\PageNotFoundRoute.cs" />
     <Compile Include="Core\Routing\Plugins\UrlFormatters\IUrlFormatter.cs" />
     <Compile Include="Core\Routing\Plugins\UrlFormatters\Runtime\NonConfigurableUrlFormatter.cs" />
     <Compile Include="Core\Routing\Plugins\UrlFormatters\Runtime\UrlFormatterCustomFactory.cs" />
