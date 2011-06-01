@@ -1,12 +1,29 @@
 ﻿using System;
 using System.Web;
 using System.Web.Routing;
-using Composite.Core.WebClient;
-using Composite.Data.Types;
 using Composite.Core.Extensions;
 
 namespace Composite.Core.Routing
 {
+    internal class PageNotFoundRoute : Route
+    {
+        public PageNotFoundRoute()
+            : base("{*url}", new PageNotFoundRouteHandler())
+        {
+        }
+
+        public override RouteData GetRouteData(HttpContextBase httpContext)
+        {
+            // Skipping the route is there's no associated "Page not found" url
+            if(string.IsNullOrEmpty(HostnameBindingsFacade.GetCustomPageNotFoundUrl()))
+            {
+                return null;
+            }
+
+            return base.GetRouteData(httpContext);
+        }
+    }
+
     internal class PageNotFoundRouteHandler: IRouteHandler
     {
         public IHttpHandler GetHttpHandler(RequestContext requestContext)
@@ -15,17 +32,6 @@ namespace Composite.Core.Routing
             string rawUrl = httpContext.Request.RawUrl;
 
             string customPageNotFoundUrl = HostnameBindingsFacade.GetCustomPageNotFoundUrl();
-
-            if (string.IsNullOrEmpty(customPageNotFoundUrl))
-            {
-                string redirectUrl = UrlUtils.RenderersRootPath  
-                                     + "/FileNotFoundHandler.ashx?aspxerrorpath="
-                                     + HttpUtility.UrlEncode(rawUrl);
-
-                httpContext.Response.Redirect(redirectUrl, true);
-
-                throw new InvalidOperationException("This line shouldn't be reachable");
-            }
 
             if (rawUrl == customPageNotFoundUrl)
             {

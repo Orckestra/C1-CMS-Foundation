@@ -168,20 +168,33 @@ namespace Composite.Core.WebClient
         /// <exclude />
         public static void Application_Error(object sender, EventArgs e)
         {
-            if (LogApplicationLevelErrors)
+            var httpContext = (sender as HttpApplication).Context;
+            Exception exception = httpContext.Server.GetLastError();
+
+            if (exception is HttpException && ((HttpException)exception).GetHttpCode() == 404)
             {
+                string rawUrl = httpContext.Request.RawUrl;
 
-                Exception exception = HttpContext.Current.Server.GetLastError();
+                string customPageNotFoundUrl = HostnameBindingsFacade.GetCustomPageNotFoundUrl();
 
-                System.Diagnostics.TraceEventType eventType = System.Diagnostics.TraceEventType.Critical;
-
-                if (exception is HttpException && ((HttpException)exception).GetHttpCode() == 404)
+                if (rawUrl == customPageNotFoundUrl)
                 {
-                    LoggingService.LogWarning("Application Error", exception.Message);
-                    return;
+                    throw new HttpException(500, "'Page not found' url isn't handled. Url: '{0}'".FormatWith(rawUrl));
                 }
 
-                var request = HttpContext.Current.Request;
+                httpContext.Server.ClearError();
+                httpContext.Response.Clear();
+
+                httpContext.Response.Redirect(customPageNotFoundUrl, true);
+
+                return;
+            }
+
+            if (LogApplicationLevelErrors)
+            {
+                System.Diagnostics.TraceEventType eventType = System.Diagnostics.TraceEventType.Critical;
+
+                var request = httpContext.Request;
                 if (request != null)
                 {
                     string origianalUrl = request.RawUrl;

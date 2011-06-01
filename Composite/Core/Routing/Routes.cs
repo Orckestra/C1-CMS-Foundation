@@ -28,7 +28,7 @@ namespace Composite.Core.Routing
 
             routes.Ignore("Renderers/{*pathInfo}");
             // Adding 404 handler as the last one
-            routes.Add("c1 404 route", new Route("{*url}", new PageNotFoundRouteHandler()));
+            routes.Add("c1 404 route", new PageNotFoundRoute());
         }
     }
 }
