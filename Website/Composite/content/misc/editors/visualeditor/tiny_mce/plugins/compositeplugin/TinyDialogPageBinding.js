@@ -76,26 +76,28 @@ TinyDialogPageBinding.prototype.setPageArgument = function ( arg ) {
  * Populate the classname selector.
  * @param {string} elementName Optional
  */
-TinyDialogPageBinding.prototype._populateClassNameSelector = function ( elementName ) {
-	
+TinyDialogPageBinding.prototype._populateClassNameSelector = function (elementName) {
+
 	var groups = this._tinyTheme.formatGroups;
 	var classSelector = this.bindingWindow.bindingMap.classnameselector;
-	
-	if ( classSelector != null ) {
-		
-		var list = new List ();
-		groups.reverse ().each ( function ( group ) {
-			group.each ( function ( format ) {
-				if ( format.select != null ) {
-					if ( format.props.block == null && format.props.inline == null ) {
-						list.add ({
-							value : format.props.classes
-						});
+
+	if (classSelector != null) {
+
+		var list = new List();
+		groups.reverse().each(function (group) {
+			group.each(function (format) {
+				if (format.select != null) {
+					if (format.props.block == null && format.props.inline == null) {
+						if (this.canApplyDirect(format.id)) {
+							list.add({
+								value: format.props.classes
+							});
+						}
 					}
 				}
-			}, this );
-		}, this );
-		classSelector.populateFromList ( list );
+			}, this);
+		}, this);
+		classSelector.populateFromList(list);
 	}
 }
 
@@ -118,4 +120,25 @@ TinyDialogPageBinding.prototype._populateDataBindingsFromDOM = function () {
 	if ( element.id ) {
 		manager.getDataBinding ( "id" ).setValue ( element.id );
 	}
+}
+
+
+/**
+* Test is the named TinyMCE format can be applied directly to the current selection.
+* A specialization for the formatter.canApply(name) which also include parent elements
+* @param {string} formatName
+* @returns {boolean}
+*/
+TinyDialogPageBinding.prototype.canApplyDirect = function (formatName) {
+
+	var formatList = this._tinyInstance.formatter.get(formatName), x, selector;
+	var element = this._tinyElement;
+
+	for (x = formatList.length - 1; x >= 0; x--) {
+		selector = formatList[x].selector;
+		if (!selector || this._tinyInstance.dom.is(element, selector)) {
+			return true;
+		}
+	}
+	return false;
 }
