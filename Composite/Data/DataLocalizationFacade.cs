@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Composite.Core.ResourceSystem;
 using Composite.Data.ProcessControlled;
 
 
@@ -173,6 +174,13 @@ namespace Composite.Data
         public static IEnumerable<ReferenceFailingPropertyInfo> GetReferencingLocalizeFailingProperties(ILocalizedControlled data)
         {
             return _dataLocalizationFacade.GetReferencingLocalizeFailingProperties(data);
+        }
+
+
+        /// <exclude />
+        public static string GetCultureTitle(CultureInfo culture)
+        {
+            return _dataLocalizationFacade.GetCultureTitle(culture);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Composite.Data;
 using Composite.Data.Types;
@@ -101,8 +102,6 @@ namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvide
             {
                 bool isDefault = LocalizationFacade.IsDefaultLocale(locale.CultureName);
 
-                // TODO: check why label is not used
-                //string lable = StringResourceSystemFacade.GetString("Composite.Cultures", locale.CultureName);
                 ResourceHandle iconHandle = LocaleItemIcon;
                 if (isDefault)
                 {
@@ -113,8 +112,8 @@ namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvide
                 Element element = new Element(_context.CreateElementHandle(locale.GetDataEntityToken()));
                 element.VisualData = new ElementVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.Cultures", locale.CultureName),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.Cultures", locale.CultureName),
+                    Label = DataLocalizationFacade.GetCultureTitle(new CultureInfo(locale.CultureName)),
+                    ToolTip = DataLocalizationFacade.GetCultureTitle(new CultureInfo(locale.CultureName)),
                     HasChildren = false,
                     Icon = iconHandle
                 };

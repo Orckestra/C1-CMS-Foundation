@@ -632,7 +632,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             string urlMappingName = null;
             if (UserSettings.ForeignLocaleCultureInfo != null)
             {
-                urlMappingName = StringResourceSystemFacade.GetString("Composite.Cultures", UserSettings.ForeignLocaleCultureInfo.Name);
+                urlMappingName = DataLocalizationFacade.GetCultureTitle(UserSettings.ForeignLocaleCultureInfo);
             }
 
             Element[] elements = new Element[pages.Count];

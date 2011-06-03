@@ -62,7 +62,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private void step1CodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
-            Dictionary<string, string> culturesDictionary = DataLocalizationFacade.ActiveLocalizationCultures.ToDictionary(f => f.Name, f => StringResourceSystemFacade.GetString("Composite.Cultures", f.Name));
+            Dictionary<string, string> culturesDictionary = DataLocalizationFacade.ActiveLocalizationCultures.ToDictionary(f => f.Name, DataLocalizationFacade.GetCultureTitle);
 
             this.UpdateBinding("CultureName", UserSettings.ForeignLocaleCultureInfo.Name);
             this.UpdateBinding("CultureNameList", culturesDictionary);

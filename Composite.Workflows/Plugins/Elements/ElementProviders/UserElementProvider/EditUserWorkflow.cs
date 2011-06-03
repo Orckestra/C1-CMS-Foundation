@@ -69,7 +69,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             if ((UserSettings.GetActiveLocaleCultureInfos(user.Username).Count() > 0) && (user.Username != UserSettings.Username))
             {
                 this.Bindings.Add("ActiveLocaleName", UserSettings.GetCurrentActiveLocaleCultureInfo(user.Username).Name);
-                this.Bindings.Add("ActiveLocaleList", DataLocalizationFacade.ActiveLocalizationCultures.ToDictionary(f => f.Name, f => StringResourceSystemFacade.GetString("Composite.Cultures", f.Name)));
+                this.Bindings.Add("ActiveLocaleList", DataLocalizationFacade.ActiveLocalizationCultures.ToDictionary(f => f.Name, DataLocalizationFacade.GetCultureTitle));
             }
 
             Dictionary<string, List<ClientValidationRule>> clientValidationRules = new Dictionary<string, List<ClientValidationRule>>();

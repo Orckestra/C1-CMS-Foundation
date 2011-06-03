@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using Composite.Core.Collections.Generic;
+using Composite.Core.ResourceSystem;
 using Composite.Data.Caching;
 using Composite.Data.ProcessControlled;
 using Composite.Data.Types;
@@ -68,14 +68,7 @@ namespace Composite.Data
         {
             get
             {
-                IEnumerable<string> whiteListedLocaleNames =
-                    (from d in DataFacade.GetData<IWhiteListedLocale>()
-                     select d.CultureName).ToList();
-
-                foreach (string whiteListedLocaleName in whiteListedLocaleNames)
-                {
-                    yield return CultureInfo.CreateSpecificCulture(whiteListedLocaleName);
-                }
+                return CultureInfo.GetCultures(CultureTypes.SpecificCultures);
             }
         }
 
@@ -377,7 +370,18 @@ namespace Composite.Data
 
                 yield return referenceFailingPropertyInfo;
             }
-        }     
+        }
+
+        public string GetCultureTitle(CultureInfo culture)
+        {
+            string localizedLanguageTitle;
+            if(StringResourceSystemFacade.TryGetString("Composite.Cultures", culture.Name, out localizedLanguageTitle))
+            {
+                return localizedLanguageTitle;
+            }
+
+            return culture.NativeName + " (" + culture.Name + ")";
+        }
     }
 
 

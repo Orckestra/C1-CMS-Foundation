@@ -29,5 +29,7 @@ namespace Composite.Data
         bool IsLocalizable(Type type);
 
         IEnumerable<ReferenceFailingPropertyInfo> GetReferencingLocalizeFailingProperties(ILocalizedControlled data);
+
+	    string GetCultureTitle(CultureInfo culture);
 	}
 }

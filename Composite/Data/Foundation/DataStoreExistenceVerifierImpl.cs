@@ -66,7 +66,6 @@ namespace Composite.Data.Foundation
                     typeof(ISystemActiveLocale),
                     typeof(IFlowInformation), 
                     typeof(IUserConsoleInformation),
-                    typeof(IWhiteListedLocale),
                     typeof(ITaskItem),
                     typeof(ISearchEngineOptimizationKeyword),
                     typeof(IDataItemTreeAttachmentPoint),

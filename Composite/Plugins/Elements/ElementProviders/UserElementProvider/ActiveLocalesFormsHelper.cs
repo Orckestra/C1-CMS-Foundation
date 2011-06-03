@@ -42,7 +42,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             {
                 options.Add(
                     cultureInfo.Name,
-                    StringResourceSystemFacade.GetString("Composite.Cultures", cultureInfo.Name)
+                    DataLocalizationFacade.GetCultureTitle(cultureInfo)
                 );
             }
 

@@ -65,7 +65,7 @@ namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvide
                 orderby cul.DisplayName
                 select cul;
 
-            Dictionary<string, string> culturesDictionary = cultures.ToDictionary(f => f.Name, f => StringResourceSystemFacade.GetString("Composite.Cultures", f.Name));
+            Dictionary<string, string> culturesDictionary = cultures.ToDictionary(f => f.Name, DataLocalizationFacade.GetCultureTitle);
 
             string urlMappingName = GetDefaultUrlMappingNameFromCultureName(culturesDictionary.First().Key);
             if (DataLocalizationFacade.ActiveLocalizationCultures.Count() == 0)

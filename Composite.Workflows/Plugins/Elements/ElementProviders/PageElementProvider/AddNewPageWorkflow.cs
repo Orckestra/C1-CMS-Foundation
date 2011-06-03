@@ -2,26 +2,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Workflow.Activities;
+
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.Core.Routing.Foundation.PluginFacades;
 using Composite.Data;
+using Composite.Data.DynamicTypes;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
+using Composite.Data.Validation;
+using Composite.Data.Validation.ClientValidationRules;
+using Composite.Core.Linq;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Extensions;
 using Composite.C1Console.Users;
-using Composite.Data.Validation;
-using Composite.C1Console.Workflow;
-using Composite.Core.Linq;
-using Microsoft.Practices.EnterpriseLibrary.Validation;
-using Composite.Data.Validation.ClientValidationRules;
-using System.Text.RegularExpressions;
 using Composite.C1Console.Trees;
-using Composite.Data.DynamicTypes;
-using Composite.Data.GeneratedTypes;
+using Composite.C1Console.Workflow;
+
+using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
@@ -314,7 +315,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             if (parentId == Guid.Empty)
             {
                 bindings.Add("ShowCulture", true);
-                bindings.Add("Cultures", DataFacade.GetData<IWhiteListedLocale>().ToList().Select(f => new KeyValuePair<string, string>(f.CultureName, StringResourceSystemFacade.GetString("Composite.Cultures", f.CultureName))).ToList());
+                bindings.Add("Cultures", DataLocalizationFacade.WhiteListedLocales
+                                         .Select(f => new KeyValuePair<string, string>(f.Name, DataLocalizationFacade.GetCultureTitle(f))).ToList());
             }
             else
             {

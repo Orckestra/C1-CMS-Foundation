@@ -95,7 +95,8 @@ namespace Composite.Core.ResourceSystem
         {
             resultString = GetString(providerName, stringName, false);
 
-            return resultString != null;
+            // TODO: refactor, so we don't have starts hardcoded
+            return resultString != null && !(resultString.StartsWith("*** ") && resultString.EndsWith(" ***"));
         }
 
 

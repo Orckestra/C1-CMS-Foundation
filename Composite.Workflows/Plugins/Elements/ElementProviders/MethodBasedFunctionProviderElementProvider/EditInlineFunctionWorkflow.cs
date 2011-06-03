@@ -66,7 +66,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
 
             if (UserSettings.ActiveLocaleCultureInfo != null)
             {
-                List<KeyValuePair<string, string>> activeCulturesDictionary = UserSettings.ActiveLocaleCultureInfos.Select(f => new KeyValuePair<string, string>(f.Name, StringResourceSystemFacade.GetString("Composite.Cultures", f.Name))).ToList();
+                List<KeyValuePair<string, string>> activeCulturesDictionary = UserSettings.ActiveLocaleCultureInfos.Select(f => new KeyValuePair<string, string>(f.Name, DataLocalizationFacade.GetCultureTitle(f))).ToList();
                 this.Bindings.Add("ActiveCultureName", UserSettings.ActiveLocaleCultureInfo.Name);
                 this.Bindings.Add("ActiveCulturesList", activeCulturesDictionary);
             }

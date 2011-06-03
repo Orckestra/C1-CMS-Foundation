@@ -92,7 +92,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 }
             }
 
-            Dictionary<string, string> culturesDictionary = culturesWithData.ToDictionary(f => f.Name, f => StringResourceSystemFacade.GetString("Composite.Cultures", f.Name));
+            Dictionary<string, string> culturesDictionary = culturesWithData.ToDictionary(f => f.Name, DataLocalizationFacade.GetCultureTitle);
 
             this.Bindings.Add("CultureName", culturesDictionary.First().Key);
             this.Bindings.Add("CultureNameList", culturesDictionary);

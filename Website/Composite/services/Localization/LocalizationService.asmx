@@ -41,8 +41,8 @@ namespace Composite.Services
 
             if (UserSettings.ActiveLocaleCultureInfos.Count() >= 2)
             {
-                if (UserSettings.ActiveLocaleCultureInfo != null) clientLocales.ActiveLocaleName = StringResourceSystemFacade.GetString("Composite.Cultures", UserSettings.ActiveLocaleCultureInfo.Name);
-                if (UserSettings.ForeignLocaleCultureInfo != null) clientLocales.ForeignLocaleName = StringResourceSystemFacade.GetString("Composite.Cultures", UserSettings.ForeignLocaleCultureInfo.Name);
+                if (UserSettings.ActiveLocaleCultureInfo != null) clientLocales.ActiveLocaleName = DataLocalizationFacade.GetCultureTitle(UserSettings.ActiveLocaleCultureInfo);
+                if (UserSettings.ForeignLocaleCultureInfo != null) clientLocales.ForeignLocaleName = DataLocalizationFacade.GetCultureTitle(UserSettings.ForeignLocaleCultureInfo);
             }
 
             return clientLocales;
@@ -59,7 +59,7 @@ namespace Composite.Services
             {
                 ClientLocale clientLocale = new ClientLocale();
 
-                clientLocale.Name = StringResourceSystemFacade.GetString("Composite.Cultures", cultureInfo.Name);
+                clientLocale.Name = DataLocalizationFacade.GetCultureTitle(cultureInfo);
                 clientLocale.IsoName = cultureInfo.Name;
                 clientLocale.UrlMappingName = DataLocalizationFacade.GetUrlMappingName(cultureInfo);
                 clientLocale.IsCurrent = cultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo);
@@ -108,7 +108,7 @@ namespace Composite.Services
 
                 PageLocale pageLocale = new PageLocale();
 
-                pageLocale.Name = StringResourceSystemFacade.GetString("Composite.Cultures", locale.Name);
+                pageLocale.Name = DataLocalizationFacade.GetCultureTitle(locale);
                 pageLocale.IsoName = locale.Name;
                 pageLocale.UrlMappingName = DataLocalizationFacade.GetUrlMappingName(locale);
                 pageLocale.IsCurrent = locale.Equals(pageUrl.Locale);

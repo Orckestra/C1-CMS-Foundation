@@ -1091,7 +1091,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             Type type = data.DataSourceId.InterfaceType;
 
-            string label = string.Format("{0} ({1})", data.GetLabel(true), StringResourceSystemFacade.GetString("Composite.Cultures", UserSettings.ForeignLocaleCultureInfo.Name));
+            string label = string.Format("{0} ({1})", data.GetLabel(true), DataLocalizationFacade.GetCultureTitle(UserSettings.ForeignLocaleCultureInfo));
 
             Element element = new Element(_providerContext.CreateElementHandle(data.GetDataEntityToken()))
             {
@@ -1132,7 +1132,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             Type type = data.DataSourceId.InterfaceType;
 
-            string label = string.Format("{0} ({1})", data.GetLabel(true), StringResourceSystemFacade.GetString("Composite.Cultures", UserSettings.ForeignLocaleCultureInfo.Name));
+            string label = string.Format("{0} ({1})", data.GetLabel(true), DataLocalizationFacade.GetCultureTitle(UserSettings.ForeignLocaleCultureInfo));
 
             Element element = new Element(_providerContext.CreateElementHandle(data.GetDataEntityToken()))
             {

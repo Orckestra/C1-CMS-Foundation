@@ -287,7 +287,7 @@ namespace Composite.C1Console.Trees
 
                 if (itemLocalizationEnabledAndForeign == true)
                 {
-                    label = string.Format("{0} ({1})", label, StringResourceSystemFacade.GetString("Composite.Cultures", UserSettings.ForeignLocaleCultureInfo.Name));
+                    label = string.Format("{0} ({1})", label, DataLocalizationFacade.GetCultureTitle(UserSettings.ForeignLocaleCultureInfo));
 
                     if (data.IsLocaleDisabled() == true)
                     {
@@ -295,7 +295,7 @@ namespace Composite.C1Console.Trees
                     }
                     else
                     {
-                        toolTip = string.Format("{0} ({1})", toolTip, StringResourceSystemFacade.GetString("Composite.Cultures", UserSettings.ForeignLocaleCultureInfo.Name));
+                        toolTip = string.Format("{0} ({1})", toolTip, DataLocalizationFacade.GetCultureTitle(UserSettings.ForeignLocaleCultureInfo));
                     }
                 }
 

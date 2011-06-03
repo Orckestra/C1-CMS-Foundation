@@ -341,7 +341,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
                         if (exists == false)
                         {
-                            string label = string.Format("{0} ({1})", foreignData.GetLabel(true), StringResourceSystemFacade.GetString("Composite.Cultures", UserSettings.ForeignLocaleCultureInfo.Name));
+                            string label = string.Format("{0} ({1})", foreignData.GetLabel(true), DataLocalizationFacade.GetCultureTitle(UserSettings.ForeignLocaleCultureInfo));
 
                             if (enabled == true)
                             {
