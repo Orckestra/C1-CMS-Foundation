@@ -2,6 +2,7 @@
 using System.Web;
 using System.Web.Routing;
 using Composite.Core.Extensions;
+using Composite.Core.WebClient;
 
 namespace Composite.Core.Routing
 {
@@ -16,6 +17,12 @@ namespace Composite.Core.Routing
         {
             // Skipping the route is there's no associated "Page not found" url
             if(string.IsNullOrEmpty(HostnameBindingsFacade.GetCustomPageNotFoundUrl()))
+            {
+                return null;
+            }
+
+            // Skipping root request
+            if(httpContext.Request.RawUrl.Length == UrlUtils.PublicRootPath.Length + 1)
             {
                 return null;
             }
