@@ -380,7 +380,7 @@ namespace Composite.Data
                 return localizedLanguageTitle;
             }
 
-            return culture.NativeName + " (" + culture.Name + ")";
+            return culture.DisplayName;
         }
     }
 
