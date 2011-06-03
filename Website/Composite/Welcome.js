@@ -141,6 +141,7 @@ var Welcome = new function () {
 			case "login" :
 				var form = document.getElementById ( "loginform" );
 				prepareForm ( "loginform" );
+                setConsoleLanguage();
 				break;
 		}
 		
@@ -159,6 +160,10 @@ var Welcome = new function () {
 		});
 		relax ( false );
 	}
+
+    function setConsoleLanguage() {
+		document.getElementById("consolelanguage").value = document.getElementById("websitelanguage").value;
+    }
 	
 	function getLanguages () {
 		
