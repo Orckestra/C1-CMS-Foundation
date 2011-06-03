@@ -812,6 +812,7 @@
     <Content Include="Composite\default.js" />
     <Content Include="Composite\flash\CompositeManagementAudio.swf" />
     <Content Include="Composite\flash\CompositeManagementLocalstore.swf" />
+    <Content Include="Composite\images\htmlbox.png" />
     <Content Include="Composite\images\icons\harmony\basic\home-add_16.png" />
     <Content Include="Composite\images\icons\harmony\basic\home-add_24.png" />
     <Content Include="Composite\images\icons\harmony\basic\home-del_16.png" />

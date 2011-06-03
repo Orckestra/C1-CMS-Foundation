@@ -19,8 +19,12 @@ public class YellowBox : IHttpHandler
         try
         {
             string title = context.Request["title"];
-            if (string.IsNullOrEmpty(title) == true) throw new ArgumentException("Missing query atring argument 'title'");
+            if (string.IsNullOrEmpty(title) == true) throw new ArgumentException("Missing query string argument 'title'");
 
+            string boxtype = context.Request["type"];
+            if (string.IsNullOrEmpty(boxtype) == true) throw new ArgumentException("Missing query string argument 'boxtype'");
+            if (boxtype != "html" && boxtype != "function") throw new ArgumentException("Query string argument 'boxtype' expected to be 'html' or 'function'");            
+            
             List<string> lines = new List<string>();
             if (string.IsNullOrEmpty(context.Request["description"]) == false)
             {
@@ -50,16 +54,20 @@ public class YellowBox : IHttpHandler
                 }
             }
                 
-            string filePath = context.Server.MapPath(UrlUtils.ResolveAdminUrl("images/functionbox.png"));
+            string filePath = context.Server.MapPath(UrlUtils.ResolveAdminUrl(string.Format("images/{0}box.png",boxtype)));
+            
+            
 
             Bitmap bitmap = (Bitmap)Bitmap.FromFile(filePath);
 
             ImageTemplatedBoxCreator imageCreator = new ImageTemplatedBoxCreator(bitmap, new Point(55, 40), new Point(176, 78));
 
             imageCreator.MinHeight = 50;
-           
-            imageCreator.SetTitle(title, new Point(30, 9), new Point(70, 15), Color.Black, "Tahoma", 8.0f, FontStyle.Bold);
-            imageCreator.SetTextLines(lines, new Point(30, 0), new Point(100, 80), Color.Black, "Tahoma", 8.0f, FontStyle.Regular);
+
+            int textLeftPadding = (boxtype == "function" ? 30 : 36);
+
+            imageCreator.SetTitle(title, new Point(textLeftPadding, 9), new Point(70, 15), Color.Black, "Tahoma", 8.0f, FontStyle.Bold);
+            imageCreator.SetTextLines(lines, new Point(textLeftPadding, 0), new Point(100, 80), Color.Black, "Tahoma", 8.0f, FontStyle.Regular);
 
             context.Response.ContentType = "image/png";
 

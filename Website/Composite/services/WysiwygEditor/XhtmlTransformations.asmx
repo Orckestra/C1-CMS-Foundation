@@ -95,6 +95,38 @@ namespace Composite.Services
                     throw new InvalidOperationException("Parse failed for \n" + htmlFragment, ex);
                 }
 
+                List<XElement> htmlWysiwygImages = structuredResult.Descendants(Namespaces.Xhtml + "img").Where(f => f.Attribute("class") != null && f.Attribute("class").Value.Contains("htmlWysiwygRepresentation")).ToList();
+
+                foreach (var htmlWysiwygImageElement in htmlWysiwygImages)
+                {
+                    try
+                    {
+                        string html = HttpUtility.UrlDecode(htmlWysiwygImageElement.Attribute("alt").Value);
+                        XElement functionElement = XElement.Parse(html);
+
+                        bool functionAloneInParagraph =
+                            htmlWysiwygImageElement.ElementsBeforeSelf().Any() == false &&
+                            htmlWysiwygImageElement.ElementsAfterSelf().Any() == false &&
+                            htmlWysiwygImageElement.Parent.Name == Namespaces.Xhtml + "p" &&
+                            htmlWysiwygImageElement.Parent.Value.Replace("&#160;", "").Trim() == "";
+
+                        if (functionAloneInParagraph == true)
+                        {
+                            htmlWysiwygImageElement.Parent.ReplaceWith(functionElement);
+                        }
+                        else
+                        {
+                            htmlWysiwygImageElement.ReplaceWith(functionElement);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        htmlWysiwygImageElement.ReplaceWith(new XText("HTML PARSE FAILED: " + ex.Message));
+                    }
+                }
+
+
+
                 List<XElement> functionImages = structuredResult.Descendants(Namespaces.Xhtml + "img").Where(f => f.Attribute("class") != null && f.Attribute("class").Value.Contains("compositeFunctionWysiwygRepresentation")).ToList();
                 functionImages.AddRange(structuredResult.Descendants("img").Where(f => f.Attribute("alt") != null));
 
@@ -210,6 +242,14 @@ namespace Composite.Services
                     referenceElement.ReplaceWith(GetImageTagForDynamicDataFieldReference(referenceElement));
                 }
 
+
+                IEnumerable<XElement> nonVisualhtmlElements = xml.Descendants(Namespaces.Xhtml + "script");
+                foreach (var nonVisualhtmlElement in nonVisualhtmlElements.ToList())
+                {
+                    nonVisualhtmlElement.ReplaceWith(GetImageTagForHtmlElement(nonVisualhtmlElement));
+                }
+
+
                 Dictionary<string, string> xsltParameters = new Dictionary<string, string>();
                 xsltParameters.Add("requestapppath", UrlUtils.PublicRootPath);
 
@@ -283,6 +323,30 @@ namespace Composite.Services
         }
 
 
+        private XElement GetImageTagForHtmlElement(XElement element)
+        {
+            string description = element.ToString().Replace(" xmlns=\"http://www.w3.org/1999/xhtml\"", "");
+            string title = "HTML block";
+
+            var descriptionLines = description.Split('\n');
+            if (descriptionLines.Count() > 6)
+            {
+                description = string.Format("{0}\n{1}\n{2}\n...\n{3}", descriptionLines[0], descriptionLines[1],
+                                            descriptionLines[2], descriptionLines.Last());
+            }
+
+            string imageUrl = string.Format("services/WysiwygEditor/YellowBox.ashx?type=html&title={0}&description={1}", HttpUtility.UrlEncodeUnicode(title), HttpUtility.UrlEncodeUnicode(description));
+
+            return new XElement(Namespaces.Xhtml + "img",
+                new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
+                new XAttribute("class", "htmlWysiwygRepresentation"),
+                new XAttribute("alt", HttpUtility.UrlEncodeUnicode(element.ToString()))
+                );
+        }
+
+
+
+
         private XElement GetImageTagForDynamicDataFieldReference(DataFieldDescriptor dataField, DataTypeDescriptor dataTypeDescriptor)
         {
             string fieldLabel = dataField.Name;
@@ -308,7 +372,7 @@ namespace Composite.Services
             string title;
             string description;
             string compactMarkup = functionElement.ToString(SaveOptions.DisableFormatting);
-            
+
             try
             {
                 FunctionRuntimeTreeNode functionNode = (FunctionRuntimeTreeNode)FunctionFacade.BuildTree(functionElement);
@@ -372,9 +436,9 @@ namespace Composite.Services
                                         }
                                     }
                                 }
-                                
-                                
-                                
+
+
+
                             }
                             catch (Exception)
                             {
@@ -398,7 +462,7 @@ namespace Composite.Services
                 description = string.Format("Failed to parse the function markup.\n{0}", ex.Message);
             }
 
-            string tmpUrl = string.Format("services/WysiwygEditor/YellowBox.ashx?title={0}&description={1}", HttpUtility.UrlEncodeUnicode(title), HttpUtility.UrlEncodeUnicode(description));
+            string tmpUrl = string.Format("services/WysiwygEditor/YellowBox.ashx?type=function&title={0}&description={1}", HttpUtility.UrlEncodeUnicode(title), HttpUtility.UrlEncodeUnicode(description));
 
             string yellowBoxUrl = Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(tmpUrl);
 
