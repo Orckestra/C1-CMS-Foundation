@@ -161,6 +161,11 @@ namespace Composite
                         }
                     }
                 }
+
+                using (new TimeMeasurement("Initializing tree system"))
+                {
+                    TreeFacade.Initialize();
+                }
             }
         }
 
@@ -554,12 +559,6 @@ namespace Composite
             }
 
 
-            using (new TimeMeasurement("Initializing tree system"))
-            {
-                TreeFacade.Initialize();
-            }
-
-
             using (new TimeMeasurement("Auto installing packages"))
             {
                 DoAutoInstallPackages();
@@ -679,7 +678,7 @@ namespace Composite
 
         private static void AcquireReaderLock()
         {
-            _readerWriterLock.AcquireReaderLock(GlobalSettingsFacade.DefaultReaderLockWaitTimeout);
+             _readerWriterLock.AcquireReaderLock(GlobalSettingsFacade.DefaultReaderLockWaitTimeout);
         }
 
 
