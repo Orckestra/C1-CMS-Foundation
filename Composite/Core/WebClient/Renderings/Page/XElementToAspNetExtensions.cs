@@ -209,23 +209,25 @@ namespace Composite.Core.WebClient.Renderings.Page
                 if (attribute.Name.LocalName == "id")
                 {
                     target.ID = attribute.Value;
+                    continue;
                 }
-                else
+                
+                if (attribute.Name.Namespace == Namespaces.XmlNs)
                 {
-                    if (attribute.Name.Namespace == Namespaces.XmlNs)
+                    string namespaceName = attribute.Value;
+
+                    if (namespaceName != "http://www.w3.org/1999/xhtml" 
+                        && !namespaceName.StartsWith("http://www.composite.net/ns"))
                     {
-                        if (attribute.Value.StartsWith("http://www.composite.net/ns") == false)
-                        {
-                            target.Attributes.Add(string.Format("xmlns:{0}", attribute.Name.LocalName), attribute.Value);
-                        }
+                        target.Attributes.Add(string.Format("xmlns:{0}", attribute.Name.LocalName), attribute.Value);
                     }
-                    else
-                    {
-                        if (attribute.Name.LocalName != "xmlns" || (source.Parent == null || source.Name.Namespace != source.Parent.Name.Namespace))
-                        {
-                            target.Attributes.Add(attribute.Name.LocalName, attribute.Value);
-                        }
-                    }
+
+                    continue;
+                }
+
+                if (attribute.Name.LocalName != "xmlns" || (source.Parent == null || source.Name.Namespace != source.Parent.Name.Namespace))
+                {
+                    target.Attributes.Add(attribute.Name.LocalName, attribute.Value);
                 }
             }
         }
