@@ -69,7 +69,10 @@ namespace Composite.Data.Foundation
                     typeof(ITaskItem),
                     typeof(ISearchEngineOptimizationKeyword),
                     typeof(IDataItemTreeAttachmentPoint),
-                    typeof(IGeneratedTypeWhiteList)
+                    typeof(IGeneratedTypeWhiteList),
+#pragma warning disable 0618
+                    typeof(IWhiteListedLocale) // TODO: to be removed
+#pragma warning restore 0618
                 };        
 
 
