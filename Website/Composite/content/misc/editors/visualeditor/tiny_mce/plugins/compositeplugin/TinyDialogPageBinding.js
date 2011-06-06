@@ -83,15 +83,17 @@ TinyDialogPageBinding.prototype._populateClassNameSelector = function (elementNa
 
 	if (classSelector != null) {
 
+
 		var list = new List();
 		groups.reverse().each(function (group) {
 			group.each(function (format) {
 				if (format.select != null) {
 					if (format.props.block == null && format.props.inline == null) {
-						if (this.canApplyDirect(format.id)) {
+						if (this.canApplyDirect(format.id, elementName)) {
 							list.add({
 								value: format.props.classes
 							});
+							
 						}
 					}
 				}
@@ -127,17 +129,33 @@ TinyDialogPageBinding.prototype._populateDataBindingsFromDOM = function () {
 * Test is the named TinyMCE format can be applied directly to the current selection.
 * A specialization for the formatter.canApply(name) which also include parent elements
 * @param {string} formatName
+* @param {string} elementName
 * @returns {boolean}
 */
-TinyDialogPageBinding.prototype.canApplyDirect = function (formatName) {
+TinyDialogPageBinding.prototype.canApplyDirect = function (formatName, elementName) {
 
 	var formatList = this._tinyInstance.formatter.get(formatName), x, selector;
 	var element = this._tinyElement;
 
-	for (x = formatList.length - 1; x >= 0; x--) {
-		selector = formatList[x].selector;
-		if (!selector || this._tinyInstance.dom.is(element, selector)) {
+
+
+	if (elementName == null) {
+		if (element == null)
 			return true;
+
+		for (x = formatList.length - 1; x >= 0; x--) {
+			selector = formatList[x].selector;
+			if (!selector || this._tinyInstance.dom.is(element, selector)) {
+				return true;
+			}
+		}
+	}
+	else {
+		for (x = formatList.length - 1; x >= 0; x--) {
+			selector = formatList[x].selector;
+			if (!selector || selector == elementName) {
+				return true;
+			}
 		}
 	}
 	return false;

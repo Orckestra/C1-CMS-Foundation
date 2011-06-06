@@ -32,8 +32,8 @@ TableDialogPageBinding.prototype.toString = function () {
 TableDialogPageBinding.prototype.onBeforePageInitialize = function () {
 	
 	this._tinyAction = this.pageArgument.tinyAction;
-	this._populateClassNameSelector ();
-	//this._populateClassNameSelector ( "table" );
+	//this._populateClassNameSelector ();
+	this._populateClassNameSelector ( "table" );
 	this._invokeInsertVersusUpdateLayout ();
 	
 	TableDialogPageBinding.superclass.onBeforePageInitialize.call ( this );
