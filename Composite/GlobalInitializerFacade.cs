@@ -690,8 +690,6 @@ namespace Composite
 
             using (_resourceLocker.Locker)
             {
-                AppDomainLocker.EnsureLock(GlobalSettingsFacade.DefaultWriterLockWaitTimeout);
-
                 if (_readerWriterLock.IsReaderLockHeld == true)
                 {
                     LockCookie lockCookie = _readerWriterLock.UpgradeToWriterLock(GlobalSettingsFacade.DefaultWriterLockWaitTimeout);
@@ -746,7 +744,6 @@ namespace Composite
 
                 if (_resourceLocker.Resources.WriterLocksPerThreadId[threadId] == 0)
                 {
-                    AppDomainLocker.ReleaseAnyLock();
                     _resourceLocker.Resources.WriterLocksPerThreadId.Remove(threadId);
                 }
             }

@@ -20,7 +20,6 @@ namespace Composite.Core.WebClient
     public static class ApplicationLevelEventHandlers
     {
         readonly static object _syncRoot = new object();
-        private static bool _systemIsFinalized = false;
         private static bool _systemIsInitialized = false;
 
 
@@ -51,6 +50,8 @@ namespace Composite.Core.WebClient
                 throw new InvalidOperationException("Windows limitation problem detected! You have installed the website at a place where the total path length of the file with the longest filename exceeds the maximum allowed in Windows. See http://msdn.microsoft.com/en-us/library/aa365247%28VS.85%29.aspx#paths");
             }
 
+            AppDomainLocker.EnsureLock(GlobalSettingsFacade.DefaultWriterLockWaitTimeout);
+
             lock (_syncRoot)
             {
                 if (_systemIsInitialized == true) return;
@@ -72,61 +73,52 @@ namespace Composite.Core.WebClient
             }
 
 
-            if (_systemIsFinalized == true) return;
-
-
-            lock (_syncRoot)
+            using (ThreadDataManager.Initialize())
             {
-                if (_systemIsFinalized == true) return;
-
-                using (ThreadDataManager.Initialize())
+                try
                 {
+                    Composite.C1Console.Events.GlobalEventSystemFacade.PrepareForShutDown();
+                    if (Composite.RuntimeInformation.IsDebugBuild)
+                    {
+                        LogShutDownReason();
+                    }
+                    Composite.C1Console.Events.GlobalEventSystemFacade.ShutDownTheSystem();
+
+                    // Checking if another app domain holds the lock
+                    bool haveLock = true;
                     try
                     {
-                        Composite.C1Console.Events.GlobalEventSystemFacade.PrepareForShutDown();
-                        if (Composite.RuntimeInformation.IsDebugBuild)
-                        {
-                            LogShutDownReason();
-                        }
-                        Composite.C1Console.Events.GlobalEventSystemFacade.ShutDownTheSystem();
-
-                        // Checking if another app domain holds the lock
-                        bool haveLock = true;
-                        try
-                        {
-                            AppDomainLocker.EnsureLock(TimeSpan.FromMilliseconds(1));
-                        }
-                        catch (Exception)
-                        {
-                            haveLock = false;
-                            LoggingService.LogWarning("Global.asax", "Failed to obtain the lock for updating Composite.Generated.dll");
-                        }
-
-                        if (haveLock)
-                        {
-                            Composite.Core.Types.BuildManager.FinalizeCachingSytem();
-                            TempDirectoryFacade.OnApplicationEnd();
-                        }
-
-                        LoggingService.LogVerbose("Global.asax",
-                                                  string.Format("--- Web Application End, {0} Id = {1}---",
-                                                                DateTime.Now.ToLongTimeString(),
-                                                                AppDomain.CurrentDomain.Id));
+                        AppDomainLocker.EnsureLock(TimeSpan.FromMilliseconds(1));
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-                        if (RuntimeInformation.IsDebugBuild)
-                        {
-                            LoggingService.LogCritical("Global.asax", ex);
-                        }
+                        haveLock = false;
+                        LoggingService.LogWarning("Global.asax", "Failed to obtain the lock for updating Composite.Generated.dll");
+                    }
 
-                        throw;
-                    }
-                    finally
+                    if (haveLock)
                     {
-                        AppDomainLocker.ReleaseAnyLock();
-                        _systemIsFinalized = true;
+                        Composite.Core.Types.BuildManager.FinalizeCachingSytem();
+                        TempDirectoryFacade.OnApplicationEnd();
                     }
+
+                    LoggingService.LogVerbose("Global.asax",
+                                                string.Format("--- Web Application End, {0} Id = {1}---",
+                                                            DateTime.Now.ToLongTimeString(),
+                                                            AppDomain.CurrentDomain.Id));
+                }
+                catch (Exception ex)
+                {
+                    if (RuntimeInformation.IsDebugBuild)
+                    {
+                        LoggingService.LogCritical("Global.asax", ex);
+                    }
+
+                    throw;
+                }
+                finally
+                {
+                    AppDomainLocker.ReleaseAnyLock();
                 }
             }
         }
