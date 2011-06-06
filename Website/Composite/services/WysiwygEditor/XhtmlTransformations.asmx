@@ -95,7 +95,7 @@ namespace Composite.Services
                     throw new InvalidOperationException("Parse failed for \n" + htmlFragment, ex);
                 }
 
-                List<XElement> htmlWysiwygImages = structuredResult.Descendants(Namespaces.Xhtml + "img").Where(f => f.Attribute("class") != null && f.Attribute("class").Value.Contains("htmlWysiwygRepresentation")).ToList();
+                List<XElement> htmlWysiwygImages = structuredResult.Descendants(Namespaces.Xhtml + "img").Where(f => f.Attribute("class") != null && f.Attribute("class").Value.Contains("compositeHtmlWysiwygRepresentation")).ToList();
 
                 foreach (var htmlWysiwygImageElement in htmlWysiwygImages)
                 {
@@ -242,13 +242,22 @@ namespace Composite.Services
                     referenceElement.ReplaceWith(GetImageTagForDynamicDataFieldReference(referenceElement));
                 }
 
-
-                IEnumerable<XElement> nonVisualhtmlElements = xml.Descendants(Namespaces.Xhtml + "script");
-                foreach (var nonVisualhtmlElement in nonVisualhtmlElements.ToList())
+                var unHandledHtmlElementNames = new List<XName>
+                                                    {
+                                                        Namespaces.Xhtml + "area",
+                                                        Namespaces.Xhtml + "audio",
+                                                        Namespaces.Xhtml + "canvas",
+                                                        Namespaces.Xhtml + "embed",
+                                                        Namespaces.Xhtml + "iframe",
+                                                        Namespaces.Xhtml + "object",
+                                                        Namespaces.Xhtml + "script",
+                                                        Namespaces.Xhtml + "video"
+                                                    };
+                IEnumerable<XElement> unHandledHtmlElements = xml.Descendants().Where(f => unHandledHtmlElementNames.Contains(f.Name));
+                foreach (var unHandledHtmlElement in unHandledHtmlElements.ToList())
                 {
-                    nonVisualhtmlElement.ReplaceWith(GetImageTagForHtmlElement(nonVisualhtmlElement));
+                    unHandledHtmlElement.ReplaceWith(GetImageTagForHtmlElement(unHandledHtmlElement));
                 }
-
 
                 Dictionary<string, string> xsltParameters = new Dictionary<string, string>();
                 xsltParameters.Add("requestapppath", UrlUtils.PublicRootPath);
@@ -339,7 +348,7 @@ namespace Composite.Services
 
             return new XElement(Namespaces.Xhtml + "img",
                 new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
-                new XAttribute("class", "htmlWysiwygRepresentation"),
+                new XAttribute("class", "compositeHtmlWysiwygRepresentation"),
                 new XAttribute("alt", HttpUtility.UrlEncodeUnicode(element.ToString()))
                 );
         }
