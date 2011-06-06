@@ -60,9 +60,17 @@
         
         void Redirect(string url)
         {
-            if (url == Request.RawUrl && !HttpRuntime.UsingIntegratedPipeline)
+            if (url == Request.RawUrl)
             {
-                Response.Write("Home page is mapped to '/' path, for this to work IIS 7.x integrated pipeline mode should be enabled. <br/>");
+                if(!HttpRuntime.UsingIntegratedPipeline)
+                {
+                    Response.Write("Home page is mapped to '/' path, for this to work IIS 7.x integrated pipeline mode should be enabled. <br/>");
+                }
+                else
+                {
+                    Response.Write("Cyclic redirection, there could be a problem with hostnames. <br/>");
+                }
+                
                 Response.StatusCode = 500; //  "Error"
                 Response.End();
             }

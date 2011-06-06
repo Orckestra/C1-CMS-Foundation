@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Web;
 using Composite.Core.Routing.Pages;
-using Composite.Core.Threading;
 using Composite.C1Console.Security;
 using Composite.Data;
 using Composite.Data.Types;
@@ -15,6 +13,7 @@ namespace Composite.Core.WebClient.HttpModules
     internal class PreviewRequestHttpModule : IHttpModule
     {
         private static readonly string PreviewUrlPrefix = UrlUtils.AdminRootPath + "/preview.ashx";
+        private static readonly string PreviewUrlMarker = "shx";
 
         public void Init(HttpApplication context)
         {
@@ -24,6 +23,12 @@ namespace Composite.Core.WebClient.HttpModules
         private static void HandlePreviewRequest(object sender, EventArgs e)
         {
             var httpContext = HttpContext.Current;
+
+            // For better performance, doing a quick check first
+            if(!httpContext.Request.RawUrl.Contains(PreviewUrlMarker))
+            {
+                return;
+            }
 
             string pathAndQuery = httpContext.Request.Url.PathAndQuery;
 
