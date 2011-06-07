@@ -165,21 +165,24 @@ namespace Composite.Core.WebClient
 
             if (exception is HttpException && ((HttpException)exception).GetHttpCode() == 404)
             {
-                string rawUrl = httpContext.Request.RawUrl;
-
                 string customPageNotFoundUrl = HostnameBindingsFacade.GetCustomPageNotFoundUrl();
 
-                if (rawUrl == customPageNotFoundUrl)
+                if (customPageNotFoundUrl != null)
                 {
-                    throw new HttpException(500, "'Page not found' url isn't handled. Url: '{0}'".FormatWith(rawUrl));
+                    string rawUrl = httpContext.Request.RawUrl;
+
+                    if (rawUrl == customPageNotFoundUrl)
+                    {
+                        throw new HttpException(500, "'Page not found' url isn't handled. Url: '{0}'".FormatWith(rawUrl));
+                    }
+
+                    httpContext.Server.ClearError();
+                    httpContext.Response.Clear();
+
+                    httpContext.Response.Redirect(customPageNotFoundUrl, true);
+
+                    return;
                 }
-
-                httpContext.Server.ClearError();
-                httpContext.Response.Clear();
-
-                httpContext.Response.Redirect(customPageNotFoundUrl, true);
-
-                return;
             }
 
             if (LogApplicationLevelErrors)
