@@ -63,24 +63,15 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         protected override void OnInitialize()
         {
-            BaseRuntimeTreeNode baseRuntimeTreeNode = null;
-
             try
             {
-                baseRuntimeTreeNode = FunctionTreeBuilder.Build(this.FunctionMarkup);
+                FunctionTreeBuilder.Build(this.FunctionMarkup);
             }
             catch
             {
                 AddValidationError("TreeValidationError.Common.WrongFunctionMarkup");
                 return;
-            }
-
-            XDocument document = baseRuntimeTreeNode.GetValue() as XDocument;
-            if (document == null)
-            {
-                AddValidationError("TreeValidationError.ReportFunctionAction.WrongReturnValue", "XDocument");
-                return;
-            }
+            }            
 
             this.FunctionMarkupDynamicValuesHelper = new AttributeDynamicValuesHelper(this.FunctionMarkup);
             this.FunctionMarkupDynamicValuesHelper.Initialize(this.OwnerNode);

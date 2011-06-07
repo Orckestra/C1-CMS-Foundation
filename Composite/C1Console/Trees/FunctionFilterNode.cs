@@ -1,7 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Xml.Linq;
 using Composite.Functions;
+using Composite.Core;
+using Composite.Core.ResourceSystem;
 
 
 namespace Composite.C1Console.Trees
@@ -24,14 +27,14 @@ namespace Composite.C1Console.Trees
             XElement markup = this.FunctionMarkupDynamicValuesHelper.ReplaceValues(dynamicValuesHelperReplaceContext);
 
             BaseRuntimeTreeNode baseRuntimeTreeNode = FunctionTreeBuilder.Build(markup);
-            LambdaExpression expression = (LambdaExpression)baseRuntimeTreeNode.GetValue();            
+            LambdaExpression expression = GetLambdaExpression(baseRuntimeTreeNode);
 
             ParameterChangerExpressionVisitor expressionVisitor = new ParameterChangerExpressionVisitor(parameterExpression);
 
             Expression resultExpression = expressionVisitor.Visit(expression.Body);
 
             return resultExpression;
-        }
+        }        
 
 
 
@@ -45,7 +48,7 @@ namespace Composite.C1Console.Trees
             XElement markup = this.FunctionMarkupDynamicValuesHelper.ReplaceValues(dynamicValuesHelperReplaceContext);
 
             BaseRuntimeTreeNode baseRuntimeTreeNode = FunctionTreeBuilder.Build(markup);
-            LambdaExpression expression = (LambdaExpression)baseRuntimeTreeNode.GetValue();
+            LambdaExpression expression = GetLambdaExpression(baseRuntimeTreeNode);
 
             ParameterChangerExpressionVisitor expressionVisitor = new ParameterChangerExpressionVisitor(parameterExpression);
 
@@ -58,46 +61,70 @@ namespace Composite.C1Console.Trees
 
         internal override void Initialize()
         {
-            BaseRuntimeTreeNode baseRuntimeTreeNode = null;
-
             try
             {
-                baseRuntimeTreeNode = FunctionTreeBuilder.Build(this.FunctionMarkup);
+                FunctionTreeBuilder.Build(this.FunctionMarkup);
             }
             catch 
             {
                 AddValidationError("TreeValidationError.FunctionFilter.WrongFunctionMarkup");
                 return;
             }
+                       
 
-            LambdaExpression expression = baseRuntimeTreeNode.GetValue() as LambdaExpression;
+            this.FunctionMarkupDynamicValuesHelper = new AttributeDynamicValuesHelper(this.FunctionMarkup);
+            this.FunctionMarkupDynamicValuesHelper.Initialize(this.OwnerNode);
+        }
+
+
+
+        private LambdaExpression GetLambdaExpression(BaseRuntimeTreeNode baseRuntimeTreeNode)
+        {
+            LambdaExpression expression = (LambdaExpression)baseRuntimeTreeNode.GetValue();
+
             if (expression == null)
             {
-                AddValidationError("TreeValidationError.FunctionFilter.WrongReturnValue", string.Format("Expression<Func<{0}, bool>>", this.OwnerNode.InterfaceType));
-                return;
+                string message = string.Format(StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "TreeValidationError.FunctionFilter.WrongReturnValue"), string.Format("Expression<Func<{0}, bool>>", this.OwnerNode.InterfaceType));
+
+                Log.LogError("TreeFacade", message);
+                Log.LogError("TreeFacade", "In tree " + this.OwnerNode.Tree.TreeId + " in function " + this.XPath);
+
+                throw new InvalidOperationException(message);
             }
+
 
             if (expression.ReturnType != typeof(bool))
             {
-                AddValidationError("TreeValidationError.FunctionFilter.WrongFunctionReturnType", expression.ReturnType, typeof(bool));
-                return;
+                string message = string.Format(StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "TreeValidationError.FunctionFilter.WrongFunctionReturnType"), expression.ReturnType, typeof(bool));
+                
+                Log.LogError("TreeFacade", message);
+                Log.LogError("TreeFacade", "In tree " + this.OwnerNode.Tree.TreeId + " in function " + this.XPath);
+                
+                throw new InvalidOperationException(message);
             }
 
             if (expression.Parameters.Count() != 1)
             {
-                AddValidationError("TreeValidationError.FunctionFilter.WrongFunctionParameterCount", expression.Parameters.Count());
-                return;
+                string message = string.Format(StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "TreeValidationError.FunctionFilter.WrongFunctionParameterCount"), expression.Parameters.Count());
+                
+                Log.LogError("TreeFacade", message);
+                Log.LogError("TreeFacade", "In tree " + this.OwnerNode.Tree.TreeId + " in function " + this.XPath);
+
+                throw new InvalidOperationException(message);
             }
 
             ParameterExpression parameterExpression = expression.Parameters.Single();
             if (this.OwnerNode.InterfaceType.IsAssignableFrom(parameterExpression.Type) == false)
             {
-                AddValidationError("TreeValidationError.FunctionFilter.WrongFunctionParameterType", parameterExpression.Type, this.OwnerNode.InterfaceType);
-                return;
+                string message = string.Format(StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "TreeValidationError.FunctionFilter.WrongFunctionParameterType"), parameterExpression.Type, this.OwnerNode.InterfaceType);
+                
+                Log.LogError("TreeFacade", message);
+                Log.LogError("TreeFacade", "In tree " + this.OwnerNode.Tree.TreeId + " in function " + this.XPath);
+
+                throw new InvalidOperationException(message);
             }
 
-            this.FunctionMarkupDynamicValuesHelper = new AttributeDynamicValuesHelper(this.FunctionMarkup);
-            this.FunctionMarkupDynamicValuesHelper.Initialize(this.OwnerNode);
+            return expression;
         }
 
 

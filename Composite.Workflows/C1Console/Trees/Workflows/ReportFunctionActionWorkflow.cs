@@ -6,6 +6,8 @@ using Composite.Functions;
 using Composite.Core.Serialization;
 using Composite.C1Console.Trees;
 using Composite.C1Console.Workflow;
+using Composite.Core.ResourceSystem;
+using Composite.Core;
 
 
 namespace Composite.C1Console.Trees.Workflows
@@ -36,7 +38,16 @@ namespace Composite.C1Console.Trees.Workflows
             XElement markup = reportFunctionActionNode.FunctionMarkupDynamicValuesHelper.ReplaceValues(dynamicValuesHelperReplaceContext);                       
 
             BaseRuntimeTreeNode baseRuntimeTreeNode = FunctionTreeBuilder.Build(markup);
-            XDocument result = (XDocument)baseRuntimeTreeNode.GetValue();
+            XDocument result = baseRuntimeTreeNode.GetValue() as XDocument;
+
+            if (result == null)
+            {
+                string message = string.Format(StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "TreeValidationError.ReportFunctionAction.WrongReturnValue"), "XDocument");
+                
+                Log.LogError("TreeFacade", message);
+
+                throw new InvalidOperationException(message);
+            }
             
             this.Bindings.Add("Label", reportFunctionActionNode.DocumentLabelDynamicValueHelper.ReplaceValues(dynamicValuesHelperReplaceContext));
             this.Bindings.Add("Icon", reportFunctionActionNode.DocumentIcon.ResourceName);
