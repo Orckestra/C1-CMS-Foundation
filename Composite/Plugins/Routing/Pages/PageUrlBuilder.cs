@@ -151,14 +151,16 @@ namespace Composite.Plugins.Routing.Pages
                 string redirectLookupUrl;
                 string redirectFolderPath;
 
+                string parentPathWithTrailingSlash = redirectParentPath + (redirectParentPath.EndsWith("/") ? "" : "/");
+
                 if (!page.UrlTitle.IsNullOrEmpty())
                 {
-                    redirectFolderPath = redirectParentPath + (redirectParentPath.EndsWith("/") ? "" : "/") + page.UrlTitle;
+                    redirectFolderPath = parentPathWithTrailingSlash + page.UrlTitle;
                     redirectLookupUrl = redirectFolderPath + UrlSuffix;
                 }
                 else
                 {
-                    redirectLookupUrl = redirectFolderPath = redirectParentPath;
+                    redirectLookupUrl = redirectFolderPath = parentPathWithTrailingSlash;
                 }
 
                 if (redirectLookupUrl != lookupUrl || UrlSuffix == string.Empty)
