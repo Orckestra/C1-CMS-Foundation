@@ -104,7 +104,7 @@ namespace Composite.Core.Routing
                 throw new HttpException(404, "'Page not found' wasn't handled. Url: '{0}'".FormatWith(rawUrl));
             }
 
-            if (customPageNotFoundUrl.StartsWith("/"))
+            if (HttpRuntime.UsingIntegratedPipeline && customPageNotFoundUrl.StartsWith("/"))
             {
                 httpContext.Server.TransferRequest(customPageNotFoundUrl);
                 return true;
