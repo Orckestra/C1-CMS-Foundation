@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Web;
 using System.Web.Routing;
-using Composite.Core.Extensions;
 using Composite.Core.WebClient;
 
 namespace Composite.Core.Routing
@@ -36,18 +35,12 @@ namespace Composite.Core.Routing
         public IHttpHandler GetHttpHandler(RequestContext requestContext)
         {
             var httpContext = HttpContext.Current;
-            string rawUrl = httpContext.Request.RawUrl;
-
-            string customPageNotFoundUrl = HostnameBindingsFacade.GetCustomPageNotFoundUrl();
-
-            if (rawUrl == customPageNotFoundUrl)
+            if (!HostnameBindingsFacade.RedirectCustomPageNotFoundUrl(httpContext))
             {
-                throw new HttpException(404, "'Page not found' wasn't handled. Url: '{0}'".FormatWith(rawUrl));
+                throw new InvalidOperationException("Failed to redirect to 'page not found' url");
             }
 
-            httpContext.Response.Redirect(customPageNotFoundUrl, true);
-
-            throw new InvalidOperationException("This line shouldn't be reachable");
+            return null;
         }
     }
 }

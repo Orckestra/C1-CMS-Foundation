@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web;
+using Composite.Core.Extensions;
 using Composite.Core.Routing;
 using Composite.Core.Routing.Pages;
 using Composite.Core.Threading;
@@ -51,7 +52,11 @@ namespace Composite.Core.WebClient.Renderings
             }
 
             // Setting 404 response code if it is a request to a custom "Page not found" page
-            if(httpContext.Request.RawUrl == HostnameBindingsFacade.GetCustomPageNotFoundUrl())
+            string customPageNotFoundUrl = HostnameBindingsFacade.GetCustomPageNotFoundUrl();
+            if (!customPageNotFoundUrl.IsNullOrEmpty() 
+                && customPageNotFoundUrl.StartsWith("/")
+                && (httpContext.Request.RawUrl == customPageNotFoundUrl
+                    || httpContext.Request.Url.PathAndQuery == customPageNotFoundUrl))
             {
                 page.PreRender += (a, b) => httpContext.Response.StatusCode = 404;
             }
@@ -94,21 +99,11 @@ namespace Composite.Core.WebClient.Renderings
             }
 
             // Redirecting to PageNotFoundUrl or setting 404 response code if PathInfo url part hasn't been used
-
-            string hostname = httpContext.Request.Url.Host;
-            IHostnameBinding hostnameBinding = DataFacade.GetData<IHostnameBinding>().AsEnumerable()
-                .FirstOrDefault(binding => binding.Hostname == hostname);
-
-            if(hostnameBinding != null 
-                && hostnameBinding.PageNotFoundUrl != null
-                && hostnameBinding.PageNotFoundUrl.Trim().Length > 0)
+            if (!HostnameBindingsFacade.RedirectCustomPageNotFoundUrl(httpContext))
             {
-                page.Response.Redirect(hostnameBinding.PageNotFoundUrl, true);
-                return;
+                page.Response.StatusCode = 404;
+                page.Response.End();
             }
-            
-            page.Response.StatusCode = 404;
-            page.Response.End();
         }
 
 

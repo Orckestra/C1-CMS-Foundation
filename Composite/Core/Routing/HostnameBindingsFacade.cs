@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web;
+using Composite.Core.Extensions;
 using Composite.Core.Threading;
 using Composite.Core.WebClient;
 using Composite.Data;
@@ -85,6 +86,33 @@ namespace Composite.Core.Routing
             string url = binding.PageNotFoundUrl;
 
             return url.StartsWith("~") ? UrlUtils.PublicRootPath + url.Substring(1) : url;
+        }
+
+        internal static bool RedirectCustomPageNotFoundUrl(HttpContext httpContext)
+        {
+            string rawUrl = httpContext.Request.RawUrl;
+
+            string customPageNotFoundUrl = HostnameBindingsFacade.GetCustomPageNotFoundUrl();
+
+            if (string.IsNullOrEmpty(customPageNotFoundUrl))
+            {
+                return false;
+            }
+            
+            if (rawUrl == customPageNotFoundUrl || httpContext.Request.Url.PathAndQuery == customPageNotFoundUrl)
+            {
+                throw new HttpException(404, "'Page not found' wasn't handled. Url: '{0}'".FormatWith(rawUrl));
+            }
+
+            if (customPageNotFoundUrl.StartsWith("/"))
+            {
+                httpContext.Server.TransferRequest(customPageNotFoundUrl);
+                return true;
+            }
+
+            httpContext.Response.Redirect(customPageNotFoundUrl, true);
+
+            throw new IndexOutOfRangeException("This code should not be reachable");
         }
     }
 }
