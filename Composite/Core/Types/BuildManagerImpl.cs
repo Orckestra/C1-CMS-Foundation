@@ -756,32 +756,11 @@ namespace Composite.Core.Types
         [DebuggerStepThrough]
         private static IEnumerable<string> GetLoadedAssemblyLocationsWithoutAppCodeDll()
         {
-            var assemblyReferences = new List<string>();
-            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                if (asm.GlobalAssemblyCache ||
-                    ((asm.FullName.StartsWith("Anonymously Hosted DynamicMethods Assembly") == false)
-                     && !AssemblyFacade.IsInMemoryAssembly(asm)
-                     && (asm.GetCustomAttributes(typeof(BuildManagerCompileUnitAssemblyAttribute), true).Any() == false)))
-                {
-                    string location = null;
-
-                    try
-                    {
-                        location = asm.Location;
-                    }
-                    catch (NotSupportedException)
-                    {
-                        // Skipping dynamicly loaded assemblies
-                    }
-
-                    if (!AssemblyFacade.IsAppCodeDll(asm))
-                    {
-                        assemblyReferences.Add(location);
-                    }
-                }
-            }
-            return assemblyReferences;
+            return (from asm in AppDomain.CurrentDomain.GetAssemblies()
+                    where AssemblyHasLocation(asm)
+                          && !asm.GetCustomAttributes(typeof (BuildManagerCompileUnitAssemblyAttribute), true).Any()
+                          && !AssemblyFacade.IsAppCodeDll(asm)
+                    select asm.Location).ToList();
         }
 
 
@@ -856,6 +835,11 @@ namespace Composite.Core.Types
             if(a.GetType().FullName == "System.Reflection.Emit.InternalAssemblyBuilder")
             {
                 return false;
+            }
+
+            if(a.GlobalAssemblyCache)
+            {
+                return true;
             }
 
             try
@@ -1345,50 +1329,6 @@ namespace Composite.Core.Types
                 LoggingService.LogError("BulidManager", string.Format("Compilation returned error ({0}: {1}", compileResult.Errors[0].Line, compileResult.Errors[0].ErrorText));
             }
         }
-
-
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "This is what we want, touch is used later on")]
-        private IEnumerable<string> GetAssembliesToCopy()
-        {
-            IEnumerable<Assembly> assemblies =
-                from ass in AppDomain.CurrentDomain.GetAssemblies()
-                where ass.GetCustomAttributes(typeof(BuildManagerCompileUnitAssemblyAttribute), true).Length > 0
-                select ass;
-
-
-            Dictionary<int, KeyValuePair<Assembly, string>> assembliesToCopy = new Dictionary<int, KeyValuePair<Assembly, string>>();
-            foreach (string filename in Directory.GetFiles(_tempAssemblyDirectory, "*.dll"))
-            {
-                Assembly assembly =
-                    (from asm in assemblies
-                     where Path.GetFullPath(asm.Location) == Path.GetFullPath(filename)
-                     select asm).SingleOrDefault();
-
-                if ((assembly != null) && (assembly.IsCacheble() == true))
-                {
-                    int hashedId = assembly.GetAssemblyId().GetHashCode();
-
-                    if (assembliesToCopy.ContainsKey(hashedId) == true)
-                    {
-                        int existingAssemblyVersion = assembliesToCopy[hashedId].Key.GetTypes()[0].GetAssemblyVersionNumber();
-                        int newAssemblyVersion = assembly.GetTypes()[0].GetAssemblyVersionNumber();
-
-                        if (existingAssemblyVersion < newAssemblyVersion)
-                        {
-                            assembliesToCopy[hashedId] = new KeyValuePair<Assembly, string>(assembly, filename);
-                        }
-                    }
-                    else
-                    {
-                        assembliesToCopy.Add(hashedId, new KeyValuePair<Assembly, string>(assembly, filename));
-                    }
-                }
-            }
-
-            return assembliesToCopy.Values.Select(f => f.Value);
-        }
-
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
