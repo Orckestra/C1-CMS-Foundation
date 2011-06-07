@@ -29,7 +29,6 @@ namespace Composite.Core.Types
         private bool _initializeAppDomainLoadedAssembliesHasRun = false;
         private string _tempAssemblyDirectory = null;
         private Hashtable<int, BuildManagerCompileUnit> _buildManagerCompileUnits = new Hashtable<int, BuildManagerCompileUnit>();
-        private bool _useAssemblyPacking = true;
         private string _assemblyPackFilename = "Composite.Generated";
         private readonly string PackageFileAlias = "CompositePackageFile";
         private AssemblyFilenameCollection _loadedAssemblyFilenames = new AssemblyFilenameCollection();
@@ -1012,29 +1011,14 @@ namespace Composite.Core.Types
             bool result = false;
             if (alsoBinFiles == true)
             {
-                if (_useAssemblyPacking == true)
-                {
-                    string fullFilename = GetAssemblyPackFilename();
+                string fullFilename = GetAssemblyPackFilename();
 
-                    // Recreating Composite.Generated dll, so it will contain only interfaces. 
-                    // It's done in order to avoid compilation errors for App_Code folder
+                // Recreating Composite.Generated dll, so it will contain only interfaces. 
+                // It's done in order to avoid compilation errors for App_Code folder
 
-                    GeneratePackageDll(fullFilename, interfaceSources, new string[0]);
+                GeneratePackageDll(fullFilename, interfaceSources, new string[0]);
 
-                    result = true;
-                }
-                else
-                {
-                    foreach (string filename in Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "*.dll"))
-                    {
-                        CreatedFilenameParser createdFilenameParser = CreatedFilenameParser.Create(filename);
-                        if (createdFilenameParser != null)
-                        {
-                            File.Delete(filename);
-                            result = true;
-                        }
-                    }
-                }
+                result = true;
             }
 
             foreach (string filename in Directory.GetFiles(_tempAssemblyDirectory, "*.cs"))
@@ -1083,8 +1067,7 @@ namespace Composite.Core.Types
 
             IEnumerable<Assembly> dynamicGeneratedAssemblies =
                 from a in AppDomain.CurrentDomain.GetAssemblies()
-                where (!_useAssemblyPacking && a.GetCustomAttributes(typeof(BuildManagerCompileUnitAssemblyAttribute), true).Length > 0) ||
-                      (_useAssemblyPacking && a.FullName.StartsWith(_assemblyPackFilename))
+                where a.FullName.StartsWith(_assemblyPackFilename)
                 select a;
 
 
@@ -1138,7 +1121,6 @@ namespace Composite.Core.Types
             LoggingService.LogVerbose(LogTitle, "----------========== Finalizing the type caching system! ==========----------");
 
             CopyTempAssembliesToBin();
-            DeleteAssemblyVersionsFromBin();
 
             int endTime = Environment.TickCount;
             LoggingService.LogVerbose(LogTitle, string.Format("----------========== Done finalizing the type caching system ({0} ms ) ==========----------", endTime - startTime));
@@ -1149,7 +1131,7 @@ namespace Composite.Core.Types
             IEnumerable<Assembly> dynamicGeneratedAssemblies =
                 from a in AppDomain.CurrentDomain.GetAssemblies()
                 where (a.GetCustomAttributes(typeof(BuildManagerCompileUnitAssemblyAttribute), true).Length > 0) ||
-                      ((_useAssemblyPacking == true) && (a.FullName.StartsWith(_assemblyPackFilename)))
+                      a.FullName.StartsWith(_assemblyPackFilename)
                 select a;
 
 
@@ -1197,7 +1179,7 @@ namespace Composite.Core.Types
         /// <returns>Null value, if no package has been generated, or compiler results otherwise.</returns>
         private CompilerResults GeneratePackageDll(string targetFileName, IEnumerable<string> filenames, string[] assemblyReferences)
         {
-            if (!CachingEnabled || !_useAssemblyPacking)
+            if (!CachingEnabled)
             {
                 return null;
             }
@@ -1324,21 +1306,6 @@ namespace Composite.Core.Types
                 return;
             }
 
-
-            if (_useAssemblyPacking == false)
-            {
-                LoggingService.LogVerbose("BuildManager", "Copying temp assemblies to bin");
-
-                foreach (string filename in GetAssembliesToCopy())
-                {
-                    string targetFilename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), Path.GetFileName(filename));
-
-                    LoggingService.LogVerbose("BuildManager", "Copying '{0}' to '{1}'".FormatWith(filename, targetFilename));
-                    File.Copy(filename, targetFilename, true);
-                }
-                return;
-            }
-
             IEnumerable<string> sourcesToCompile = GetSourcesToCompile();
             if (!sourcesToCompile.Any())
             {
@@ -1427,43 +1394,16 @@ namespace Composite.Core.Types
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
         private void ForceCachedAssemblyLoading()
         {
-            if (_useAssemblyPacking == true)
+            string fullFilename = GetAssemblyPackFilename();
+            string filename = Path.GetFileName(fullFilename);
+
+            int idx = filename.IndexOf(Path.GetExtension(filename));
+
+            string assemblyName = filename.Remove(idx);
+
+            if (File.Exists(fullFilename) == true)
             {
-                string fullFilename = GetAssemblyPackFilename();
-                string filename = Path.GetFileName(fullFilename);
-
-                int idx = filename.IndexOf(Path.GetExtension(filename));
-
-                string assemblyName = filename.Remove(idx);
-
-                if (File.Exists(fullFilename) == true)
-                {
-                    Assembly.Load(assemblyName);
-                }
-            }
-            else
-            {
-                IEnumerable<CreatedFilenameParser> createdFilenameParsers = CreatedFilenameParser.GetParsers(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory));
-                foreach (CreatedFilenameParser createdFilenameParser in createdFilenameParsers)
-                {
-                    string filename = Path.GetFileName(createdFilenameParser.Filename);
-
-                    int idx = filename.IndexOf(Path.GetExtension(filename));
-
-                    string assemblyName = Path.GetFileName(filename).Remove(idx);
-
-                    Assembly.Load(assemblyName);
-                }
-            }
-        }
-
-
-
-        private void DeleteAssemblyVersionsFromBin()
-        {
-            if (_useAssemblyPacking == false)
-            {
-                DeleteAssemblyVersions(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "dll");
+                Assembly.Load(assemblyName);
             }
         }
 
@@ -1531,14 +1471,11 @@ namespace Composite.Core.Types
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "This is what we want, touch is used later on")]
         private void DeleteCachedSourceFiles()
         {
-            if (_useAssemblyPacking == true)
+            if (File.Exists(GetAssemblyPackFilename()) == false)
             {
-                if (File.Exists(GetAssemblyPackFilename()) == false)
+                foreach (string filename in Directory.GetFiles(_tempAssemblyDirectory, "*.cs"))
                 {
-                    foreach (string filename in Directory.GetFiles(_tempAssemblyDirectory, "*.cs"))
-                    {
-                        DeleteFileWithRetries(filename, 10, false);
-                    }
+                    DeleteFileWithRetries(filename, 10, false);
                 }
             }
         }
@@ -1715,15 +1652,12 @@ namespace Composite.Core.Types
         {
             var result = new List<string>();
 
+            Assembly packageFileAssembly = null;
+
             if (packageFileIsReferenced)
             {
                 result.Add("extern alias {0};".FormatWith(PackageFileAlias));
-            }
 
-            Assembly packageFileAssembly = null;
-
-            if (_useAssemblyPacking && packageFileIsReferenced)
-            {
                 packageFileAssembly = (from a in AppDomain.CurrentDomain.GetAssemblies()
                                        where a.FullName.StartsWith(_assemblyPackFilename)
                                        select a).FirstOrDefault();
