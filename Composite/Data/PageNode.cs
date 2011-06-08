@@ -86,7 +86,7 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// Url to this page. The Url is relative.
+        /// Url to this page.
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings")]
         public string Url
