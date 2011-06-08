@@ -21,27 +21,36 @@ namespace Composite.Functions
         {
             XElement resultRoot = new XElement(_element);
 
-            IEnumerable<XElement> nestedFunctionCalls = resultRoot.Descendants(Namespaces.Function10 + FunctionTreeConfigurationNames.FunctionTagName).Where(f => f.Ancestors(Namespaces.Function10 + FunctionTreeConfigurationNames.FunctionTagName).Count() == 0);
-
-            var evaluatedListOfInnerFunctions = nestedFunctionCalls.ToList();
-            var functionCallResults = new object[evaluatedListOfInnerFunctions.Count];
-
-            ParallelFacade.For("Functions. Executing nested function calls",
-                0, evaluatedListOfInnerFunctions.Count, i =>
+            while (true)
             {
-                XElement functionCallDefinition = evaluatedListOfInnerFunctions[i];
+                XName functionXName = Namespaces.Function10 + FunctionTreeConfigurationNames.FunctionTagName;
+                IEnumerable<XElement> nestedFunctionCalls = resultRoot.Descendants(functionXName).Where(f => !f.Ancestors(functionXName).Any());
+                var evaluatedListOfInnerFunctions = nestedFunctionCalls.ToList();
 
-                BaseRuntimeTreeNode runtimeTreeNode = FunctionTreeBuilder.Build(functionCallDefinition);
+                if (!evaluatedListOfInnerFunctions.Any())
+                {
+                    break;
+                }
 
-                functionCallResults[i] = runtimeTreeNode.GetValue(contextContainer);
-            });
+                var functionCallResults = new object[evaluatedListOfInnerFunctions.Count];
 
-            for (int i = 0; i < evaluatedListOfInnerFunctions.Count; i++)
-            {
-                object embedableResult = contextContainer.MakeXEmbedable(functionCallResults[i]);
+                ParallelFacade.For("Functions. Executing nested function calls",
+                    0, evaluatedListOfInnerFunctions.Count, i =>
+                    {
+                        XElement functionCallDefinition = evaluatedListOfInnerFunctions[i];
 
-                // To MAW: PageRenderer supports also XAttribute here
-                evaluatedListOfInnerFunctions[i].ReplaceWith(embedableResult);
+                        BaseRuntimeTreeNode runtimeTreeNode = FunctionTreeBuilder.Build(functionCallDefinition);
+
+                        functionCallResults[i] = runtimeTreeNode.GetValue(contextContainer);
+                    });
+
+                for (int i = 0; i < evaluatedListOfInnerFunctions.Count; i++)
+                {
+                    object embedableResult = contextContainer.MakeXEmbedable(functionCallResults[i]);
+
+                    // To MAW: PageRenderer supports also XAttribute here
+                    evaluatedListOfInnerFunctions[i].ReplaceWith(embedableResult);
+                }
             }
 
             return resultRoot;
