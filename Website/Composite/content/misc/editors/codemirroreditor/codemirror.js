@@ -8,9 +8,7 @@ window.onload = function () {
 
 		var editor = CodeMirror.fromTextArea(div, {
 			mode: "text/html",
-			indentUnit: 8,
-			indentWithTabs: true,
-			tabMode: "classic",
+			tabMode: "shift",
 			lineNumbers: true
 		});
 
