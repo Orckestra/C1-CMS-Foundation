@@ -100,8 +100,6 @@ namespace Composite.Plugins.Routing.Pages
             }
 
             // Building folderPath & lookup url
-            string parentPathWithSlash = parentPath + (parentPath.EndsWith("/") ? "" : "/");
-
             string lookupUrl, folderPath;
             
             if (page.UrlTitle == string.Empty 
@@ -110,10 +108,12 @@ namespace Composite.Plugins.Routing.Pages
                     && appliedHostnameBinding.HomePageId == page.Id))
             {
                 // Extensionless root url
-                lookupUrl = folderPath = parentPathWithSlash;
+                lookupUrl = folderPath = (parentPath == "" ? "/" : parentPath);
             }
             else
             {
+                string parentPathWithSlash = parentPath + (parentPath.EndsWith("/") ? "" : "/");
+
                 string urlTitle = page.UrlTitle;
 
 #if URLDEBUG
@@ -151,16 +151,17 @@ namespace Composite.Plugins.Routing.Pages
                 string redirectLookupUrl;
                 string redirectFolderPath;
 
-                string parentPathWithTrailingSlash = redirectParentPath + (redirectParentPath.EndsWith("/") ? "" : "/");
+                
 
                 if (!page.UrlTitle.IsNullOrEmpty())
                 {
+                    string parentPathWithTrailingSlash = redirectParentPath + (redirectParentPath.EndsWith("/") ? "" : "/");
                     redirectFolderPath = parentPathWithTrailingSlash + page.UrlTitle;
                     redirectLookupUrl = redirectFolderPath + UrlSuffix;
                 }
                 else
                 {
-                    redirectLookupUrl = redirectFolderPath = parentPathWithTrailingSlash;
+                    redirectLookupUrl = redirectFolderPath = redirectParentPath;
                 }
 
                 if (redirectLookupUrl != lookupUrl || UrlSuffix == string.Empty)

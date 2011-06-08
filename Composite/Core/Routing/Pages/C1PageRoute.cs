@@ -94,6 +94,11 @@ namespace Composite.Core.Routing.Pages
             // Redirecting friendly urls to public urls
             if (urlData.UrlKind == UrlKind.Friendly || urlData.UrlKind == UrlKind.Redirect)
             {
+                if(urlData.PathInfo == "/")
+                {
+                    urlData.PathInfo = null;
+                }
+
                 string publicUrl = urlProvider.BuildUrl(urlData, UrlKind.Public, urlSpace);
                 if(publicUrl == null)
                 {
@@ -104,6 +109,13 @@ namespace Composite.Core.Routing.Pages
             }
 
             Verify.That(urlData.UrlKind == UrlKind.Public, "Unexpected url kind '{0}", urlData.UrlKind);
+
+            // If url ends with a trailing slash - doing a redirect. F.e. http://localhost/a/ -> http://localhost/a
+            if(urlData.PathInfo == "/")
+            {
+                urlData.PathInfo = null;
+                return SeoFriendlyRedirect(context, urlProvider.BuildUrl(urlData, UrlKind.Public, urlSpace));
+            }
 
             // Checking casing in url, so the same page will appear as a few pages by a crawler
             string correctUrl = urlProvider.BuildUrl(urlData, UrlKind.Public, urlSpace);

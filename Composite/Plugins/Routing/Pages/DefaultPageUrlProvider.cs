@@ -221,7 +221,12 @@ namespace Composite.Plugins.Routing.Pages
             if (startIndex >= 0 && requestPath.Length > startIndex)
             {
                 int endIndex = requestPath.IndexOf('/', startIndex + 1) - 1;
-                if (endIndex >= 0)
+                if(endIndex < 0)
+                {
+                    endIndex = requestPath.Length - 1;
+                }
+                
+                if (endIndex > startIndex)
                 {
                     string urlMappingName = requestPath.Substring(startIndex, endIndex - startIndex + 1);
 
@@ -284,7 +289,15 @@ namespace Composite.Plugins.Routing.Pages
                     publicUrl["dataScope"] = legacyScopeName;
                 }
 
-                publicUrl.PathInfo = urlData.PathInfo;
+                string pathInfo = urlData.PathInfo;
+                if(pathInfo != null 
+                    && pathInfo.StartsWith("/") 
+                    && publicUrl.FilePath.EndsWith("/"))
+                {
+                    pathInfo = pathInfo.Substring(1);
+                }
+
+                publicUrl.PathInfo = pathInfo;
                 if (urlData.QueryParameters != null)
                 {
                     publicUrl.AddQueryParameters(urlData.QueryParameters);
@@ -329,7 +342,7 @@ namespace Composite.Plugins.Routing.Pages
                 return null;
             }
 
-            int offset = path.LastIndexOf('/', path.Length - 2);
+            int offset = path.LastIndexOf('/');
             if (offset < 1) return null;
             return path.Substring(0, offset);
         }
