@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading;
 using System.Web;
 using System.Xml.Linq;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace Composite.Functions
         private XElement ExecuteInnerFunctions(FunctionContextContainer contextContainer)
         {
             XElement resultRoot = new XElement(_element);
+            int loopCount = 0;
 
             while (true)
             {
@@ -30,6 +32,11 @@ namespace Composite.Functions
                 if (!evaluatedListOfInnerFunctions.Any())
                 {
                     break;
+                }
+
+                if (loopCount++ > 1000)
+                {
+                    throw new InvalidOperationException("One or more function seems to be returning markup generating endless recursion. The following markup seems to generate the problem: " + evaluatedListOfInnerFunctions.First().ToString());
                 }
 
                 var functionCallResults = new object[evaluatedListOfInnerFunctions.Count];
@@ -49,7 +56,15 @@ namespace Composite.Functions
                     object embedableResult = contextContainer.MakeXEmbedable(functionCallResults[i]);
 
                     // To MAW: PageRenderer supports also XAttribute here
-                    evaluatedListOfInnerFunctions[i].ReplaceWith(embedableResult);
+                    if (embedableResult != null && embedableResult is XAttribute)
+                    {
+                        evaluatedListOfInnerFunctions[i].Parent.Add(embedableResult);
+                        evaluatedListOfInnerFunctions[i].Remove();
+                    }
+                    else
+                    {
+                        evaluatedListOfInnerFunctions[i].ReplaceWith(embedableResult);
+                    }
                 }
             }
 
