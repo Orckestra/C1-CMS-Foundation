@@ -68,11 +68,6 @@ namespace Composite.Plugins.Routing.Pages
             }
 
             UrlSuffix = DataFacade.GetData<IUrlConfiguration>().Select(c => c.PageUrlSuffix).FirstOrDefault() ?? DefaultPageUrlSuffix;
-
-            if(UrlSuffix == string.Empty && !HttpRuntime.UsingIntegratedPipeline)
-            {
-                UrlSuffix = DefaultPageUrlSuffix;
-            }
         }
 
         public PageUrlSet BuildUrlSet(IPage page, Guid parentPageId)
