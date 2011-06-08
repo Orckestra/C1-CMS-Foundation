@@ -8,7 +8,9 @@ window.onload = function () {
 
 		var editor = CodeMirror.fromTextArea(div, {
 			mode: "text/html",
-			tabMode: "shift",
+			indentUnit: 8,
+			indentWithTabs: true,
+			tabMode: "classic",
 			lineNumbers: true
 		});
 
@@ -20,8 +22,5 @@ window.onload = function () {
 				codemirrorEditor: editor
 			});
 		}
-		// } catch (exception) {
-		//        alert(exception)
-		//}
 	}, 0);
 }
