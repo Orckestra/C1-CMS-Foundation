@@ -4,6 +4,8 @@ VisualEditorBinding.superclass = EditorBinding.prototype;
 
 VisualEditorBinding.FUNCTION_CLASSNAME = "compositeFunctionWysiwygRepresentation";
 VisualEditorBinding.FIELD_CLASSNAME = "compositeFieldReferenceWysiwygRepresentation";
+VisualEditorBinding.HTML_CLASSNAME = "compositeHtmlWysiwygRepresentation";
+
 VisualEditorBinding.ACTION_INITIALIZED = "visualeditor initialized";
 VisualEditorBinding.DEFAULT_CONTENT = "<p><br/></p>";
 VisualEditorBinding.URL_DIALOG_CONTENTERROR = "${root}/content/dialogs/wysiwygeditor/errors/contenterror.aspx";
@@ -175,6 +177,87 @@ VisualEditorBinding.extractByIndex = function ( html, index ) {
 		result = new String( "" );
 	}
 	return result;
+}
+
+
+
+/**
+ * Is image?
+ * @param {DOMElement} element
+ * @return {boolean}
+ */
+VisualEditorBinding.isImage = function (element) {
+
+	result = element && element.nodeName == "IMG";
+	return result;
+}
+
+/**
+* Is image and not rendering?
+* @param {DOMElement} element
+* @return {boolean}
+*/
+VisualEditorBinding.isImageElement = function (element) {
+	return VisualEditorBinding.isImage(element) && !VisualEditorBinding.isReservedElement(element);
+}
+
+/**
+ * Is internal image element?
+ * @param {DOMElement} element
+ * @return {boolean}
+ */
+VisualEditorBinding.isReservedElement = function (element) {
+	if (VisualEditorBinding.isFunctionElement(element))
+		return true;
+	if (VisualEditorBinding.isFieldElement(element))
+		return true;
+	if (VisualEditorBinding.isHtmlElement(element))
+		return true;
+	return false; 
+}
+
+
+/**
+ * Is function element?
+ * @param {DOMElement} element
+ * @return {boolean}
+ */
+VisualEditorBinding.isFunctionElement = function (element) {
+
+	return VisualEditorBinding.isImage(element) &&
+		CSSUtil.hasClassName (
+			element,
+			VisualEditorBinding.FUNCTION_CLASSNAME
+		);
+}
+
+
+/**
+ * Is field element?
+ * @param {DOMElement} element
+ * @return {boolean}
+ */
+VisualEditorBinding.isFieldElement = function (element) {
+
+	return VisualEditorBinding.isImage(element) &&
+		CSSUtil.hasClassName (
+			element,
+			VisualEditorBinding.FIELD_CLASSNAME
+		);
+}
+
+/**
+ * Is html element?
+ * @param {DOMElement} element
+ * @return {boolean}
+ */
+VisualEditorBinding.isHtmlElement = function (element) {
+
+	return VisualEditorBinding.isImage(element) &&
+		CSSUtil.hasClassName (
+			element,
+			VisualEditorBinding.HTML_CLASSNAME
+		);
 }
 
 

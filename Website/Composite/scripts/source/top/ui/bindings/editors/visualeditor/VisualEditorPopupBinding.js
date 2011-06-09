@@ -36,11 +36,7 @@ function VisualEditorPopupBinding () {
 	 * @type {boolean}
 	 */
 	this.hasSelection = false;
-	
-	/**
-	 * @type {boolean}
-	 */
-	this._isRenderingSelected = false;
+
 }
 
 /**
@@ -222,28 +218,23 @@ VisualEditorPopupBinding.prototype._configureTableGroup = function () {
  * Configures and displays the rendering group.
  */
 VisualEditorPopupBinding.prototype._configureRenderingGroup = function () {
-	
- 	var isRendering = this._isRendering ();
-	if ( isRendering ) {
+
+	if ( VisualEditorBinding.isFunctionElement(this.tinyElement) ) {
 		this._showMenuGroups ( "rendering" );
 	} else {
 		this._hideMenuGroups ( "rendering" );
 	}
-	this._isRenderingSelected = isRendering;
 }
 
 /**
  * Configures and displays the field group.
  */
 VisualEditorPopupBinding.prototype._configureFieldGroup = function () {
-
-	var isField = this._isField ();
-	if ( isField ) {
+	if ( VisualEditorBinding.isFieldElement(this.tinyElement) ) {
 		this._showMenuGroups ( "field" );
 	} else {
 		this._hideMenuGroups ( "field" );
 	}
-	this._isFieldSelected = isField;
 }
 
 /**
@@ -252,48 +243,9 @@ VisualEditorPopupBinding.prototype._configureFieldGroup = function () {
  */
 VisualEditorPopupBinding.prototype._configureImageGroup = function () {
 
-	if ( this._isImage () && 
-		!this._isRenderingSelected && 
-		!this._isFieldSelected ) {
+	if (VisualEditorBinding.isImageElement(this.tinyElement)) {
 		this._showMenuGroups ( "image" );
 	} else {
 		this._hideMenuGroups ( "image" );
 	}
-}
-
-/**
- * Is image? Will return FALSE if editor has selection!
- * This will in turn affect _isRendering and _isField
- * @return {boolean}
- */
-VisualEditorPopupBinding.prototype._isImage = function () {
-	
-	result = this.tinyElement && this.tinyElement.nodeName == "IMG";
-	return result;
-}
-
-/**
- * Is rendering?
- * @return {boolean}
- */
-VisualEditorPopupBinding.prototype._isRendering = function () {
-	
-	return this._isImage () && 
-		CSSUtil.hasClassName ( 
-			this.tinyElement, 
-			VisualEditorBinding.FUNCTION_CLASSNAME 
-		);
-}
-
-/**
- * Is field?
- * @return {boolean}
- */
-VisualEditorPopupBinding.prototype._isField = function () {
-	
-	return this._isImage () && 
-		CSSUtil.hasClassName ( 
-			this.tinyElement, 
-			VisualEditorBinding.FIELD_CLASSNAME 
-		);
 }

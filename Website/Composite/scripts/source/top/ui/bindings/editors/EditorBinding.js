@@ -727,7 +727,7 @@ EditorBinding.prototype.hasSelection = function () {
 						 * class check will at least prevent the Link button 
 						 * from being enabled when a Function is selected.
 						 */
-						if ( !CSSUtil.hasClassName ( img, VisualEditorBinding.FUNCTION_CLASSNAME )) {
+						if (!VisualEditorBinding.isReservedElement(img)) {
 							result = true;
 						} 
 					}

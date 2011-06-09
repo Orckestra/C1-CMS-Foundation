@@ -42,21 +42,10 @@ new function () {
 			if ( Client.isMozilla ) {
 				var self = this;
 				ed.onDblClick.add ( function ( editor, e ) {
-					if ( e.target.nodeName.toLowerCase () == "img" ) {
-						if ( CSSUtil.hasClassName ( e.target, VisualEditorBinding.FUNCTION_CLASSNAME )) {
-							self._img = e.target;
-							self.execCommand ( "compositeInsertRendering", true, "update" );
-							self._img = null;
-						}
-						/*
-						switch ( e.target.className ) {
-							case VisualEditorBinding.FUNCTION_CLASSNAME :
-								self._img = e.target;
-								self.execCommand ( "compositeInsertRendering", true, "update" );
-								self._img = null;
-								break;
-						}
-						*/
+					if (VisualEditorBinding.isFunctionElement(e.target)) {
+						self._img = e.target;
+						self.execCommand ( "compositeInsertRendering", true, "update" );
+						self._img = null;
 					}
 				});
 			}

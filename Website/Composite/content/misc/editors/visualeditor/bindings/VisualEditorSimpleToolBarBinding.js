@@ -217,7 +217,7 @@ VisualEditorSimpleToolBarBinding.prototype.handleNodeChange = function ( element
 		var tiny = this._tinyInstance;
 
 		//skip rendering functions objects
-		if (element.nodeName == "IMG" && this._isReservedClassName(element.className)) {
+		if (VisualEditorBinding.isReservedElement(element)) {
 			this._buttons.each(function (key, button) {
 				var format = button.format;
 				if (format != null) {
@@ -516,25 +516,6 @@ VisualEditorSimpleToolBarBinding.prototype._disableAlignment = function ( isDisa
 		);
 		this._isAlignmentDisabled = isDisable;
 	}
-}
-
-/**
- * Is internal classname?
- * @param {string} classname
- * @return {boolean}
- */
-VisualEditorSimpleToolBarBinding.prototype._isReservedClassName = function ( classname ) {
-
-	var result = false;
-	if ( classname != null && classname != "" ) {
-		if ( 
-			classname.indexOf ( VisualEditorBinding.FUNCTION_CLASSNAME ) >-1 ||
-			classname.indexOf ( VisualEditorBinding.FIELD_CLASSNAME ) >-1 ) 
-		{
-			result = true;
-		}
-	}
-	return result;
 }
 
 /** 

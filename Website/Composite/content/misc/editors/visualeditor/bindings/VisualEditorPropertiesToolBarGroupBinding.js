@@ -154,8 +154,8 @@ VisualEditorPropertiesToolBarGroupBinding.prototype.handleNodeChange = function 
 	
 	this._tinyElement = element;
 	var classname = VisualEditorPropertiesToolBarGroupBinding.CLASSNAME_FOCUSED;
-	
-	if ( this._isImage ()) {
+
+	if (VisualEditorBinding.isImage(this._tinyElement)) {
 		
 		if ( this._focusedImage != null ) {
 			CSSUtil.detachClassName ( this._focusedImage, classname );
@@ -164,22 +164,21 @@ VisualEditorPropertiesToolBarGroupBinding.prototype.handleNodeChange = function 
 		this._focusedImage = element;
 		
 		var command = null;
-		if ( this._isRendering ()) {
+		if (VisualEditorBinding.isFunctionElement(this._tinyElement)) {
 			command = "compositeInsertRendering";
-		} else if ( !this._isField ()) {
+		} else if (VisualEditorBinding.isImageElement(this._tinyElement)) {
 			command = "compositeInsertImage";	
 		}
-		if ( command ) {
-			this._buttons.each ( function ( cmd, button ) {
-				if ( cmd == command ) {
-					button.show ();
-				} else {
-					button.hide ();
-				}
-			});
-			if ( !this.isVisible ) {
-				this.show ();
+		
+		this._buttons.each ( function ( cmd, button ) {
+			if ( cmd == command ) {
+				button.show ();
+			} else {
+				button.hide ();
 			}
+		});
+		if ( !this.isVisible ) {
+			this.show ();
 		}
 	} else {
 		
@@ -217,44 +216,6 @@ VisualEditorPropertiesToolBarGroupBinding.prototype.handleAction = function ( ac
 			);
 			break;
 	}
-}
-
-/**
- * TODO: COMBINE WITH POPUP!
- * Is image?
- * @return {boolean}
- */
-VisualEditorPropertiesToolBarGroupBinding.prototype._isImage = function () {
-	
-	return this._tinyElement && this._tinyElement.nodeName == "IMG";
-}
-
-/**
- * TODO: COMBINE WITH POPUP!
- * Is rendering?
- * @return {boolean}
- */
-VisualEditorPropertiesToolBarGroupBinding.prototype._isRendering = function () {
-	
-	return this._isImage () && 
-		CSSUtil.hasClassName ( 
-			this._tinyElement, 
-			VisualEditorBinding.FUNCTION_CLASSNAME 
-		);
-}
-
-/**
- * TODO: COMBINE WITH POPUP!
- * Is field?
- * @return {boolean}
- */
-VisualEditorPropertiesToolBarGroupBinding.prototype._isField = function () {
-	
-	return this._isImage () && 
-		CSSUtil.hasClassName ( 
-			this._tinyElement, 
-			VisualEditorBinding.FIELD_CLASSNAME 
-		);
 }
 
 /**

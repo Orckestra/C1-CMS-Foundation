@@ -4,6 +4,7 @@ VisualEditorStatusBarBinding.superclass = ToolBarBinding.prototype;
 
 VisualEditorStatusBarBinding.NAME_RENDERING 	= "[function]";
 VisualEditorStatusBarBinding.NAME_FIELD 		= "[field]";
+VisualEditorStatusBarBinding.NAME_HTML			= "[html]";
 
 // TODO: THESE ARE NOT USED NO MORE!
 VisualEditorStatusBarBinding.NAME_FLASH 		= "[flash]";
@@ -267,15 +268,13 @@ VisualEditorStatusBarBinding.prototype._getButtonBinding = function ( element, s
 	var nodeData = "";
 	
 	switch ( nodeName ) {
-		case "img" :
-			var classname = element.className;
-			if ( classname != "" ) {
-				if ( classname.indexOf ( VisualEditorBinding.FUNCTION_CLASSNAME ) >-1 ) {
-					nodeName = VisualEditorStatusBarBinding.NAME_RENDERING;
-				} else if ( classname.indexOf ( VisualEditorBinding.FIELD_CLASSNAME ) >-1 ) {
-					nodeName = VisualEditorStatusBarBinding.NAME_FIELD;
-				}
-			}
+		case "img":
+			if (VisualEditorBinding.isFunctionElement(element))
+				nodeName = VisualEditorStatusBarBinding.NAME_RENDERING; ;
+			if (VisualEditorBinding.isFieldElement(element))
+				nodeName = VisualEditorStatusBarBinding.NAME_FIELD;
+			if (VisualEditorBinding.isHtmlElement(element))
+				nodeName = VisualEditorStatusBarBinding.NAME_HTML;
 			break;
 		case "b" :
 			nodeName = "strong";
@@ -295,9 +294,7 @@ VisualEditorStatusBarBinding.prototype._getButtonBinding = function ( element, s
 		nodeData += "id=\"" + id + "\" ";
 		nodeName += "#" + id;
 	}
-	if ( classname != "" &&
-			classname.indexOf ( VisualEditorBinding.FIELD_CLASSNAME ) == -1 && 
-			classname.indexOf ( VisualEditorBinding.FUNCTION_CLASSNAME ) == -1  
+	if ( classname != "" && !VisualEditorBinding.isReservedElement(element)
 		) { 
 		classname = VisualEditorBinding.getTinyLessClassName ( classname );
 		if ( classname != "" ) {
