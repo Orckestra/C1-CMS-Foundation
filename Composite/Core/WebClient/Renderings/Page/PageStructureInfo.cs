@@ -889,23 +889,18 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             XElement match = associatedPageElement.AncestorsAndSelf(PageElementName).SingleOrDefault(f => f.Attribute("Depth").Value == siteDepth.ToString());
 
-            if (match != null)
-            {
-                if (shallow == true)
-                {
-                    return new XElement(match.Name, match.Attributes());
-                }
-                else
-                {
-                    return new XElement(match);
-                }
-            }
-            else
+            if (match == null)
             {
                 return null;
             }
-        }
 
+            if (shallow)
+            {
+                return new XElement(match.Name, match.Attributes());
+            }
+
+            return new XElement(match);
+        }
 
 
         private static IEnumerable<XElement> GetSiblingsCopyBySiteDepth(XElement associatedPageElement, int siteDepth)

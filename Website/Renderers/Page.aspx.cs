@@ -40,9 +40,17 @@ public partial class Renderers_Page : System.Web.UI.Page
     {
         IPage page;
 
-        _profilingEnabled = UserValidationFacade.IsLoggedIn() && Request.Url.OriginalString.Contains("c1mode=perf");
+        _profilingEnabled = Request.Url.OriginalString.Contains("c1mode=perf");
         if (_profilingEnabled)
         {
+            if (!UserValidationFacade.IsLoggedIn())
+            {
+                string loginUrl = UrlUtils.AdminRootPath + "/Login.aspx?ReturnUrl=" + HttpUtility.UrlEncode(Context.Request.RawUrl);
+                Response.Write(@"You must be logged into <a href=""" + loginUrl + @""">C1 console</a> to have the performance view enabled");
+                Response.End();
+                return;
+            }
+
             Profiler.BeginProfiling();
             _pagePerfMeasuring = Profiler.Measure("C1 Page");
         }
