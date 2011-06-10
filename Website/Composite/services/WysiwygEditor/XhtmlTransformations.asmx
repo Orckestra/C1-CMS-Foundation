@@ -196,6 +196,7 @@ namespace Composite.Services
 
         private static string FixXhtmlFragment(string xhtmlFragment)
         {
+            xhtmlFragment = Regex.Replace(xhtmlFragment, @"(\s)\r\n</script>", "$1</script>", RegexOptions.Multiline); 
             return xhtmlFragment.Replace("\xA0", "&#160;").Replace("&nbsp;", "&#160;");
         }
 
