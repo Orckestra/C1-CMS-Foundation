@@ -166,9 +166,11 @@
 	  // --> ]]>	
 			</script>
 
-			<xsl:if test="count(@description) > 0">
+			<xsl:if test="count(@url) > 0">
 				<div>
-					<xsl:value-of select="@description"/>
+					URL: <a href="{@url}" target="_blank">
+						<xsl:value-of select="@url"/>
+					</a>
 					
 				</div>
 				

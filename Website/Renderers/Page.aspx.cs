@@ -296,9 +296,9 @@ public partial class Renderers_Page : System.Web.UI.Page
         var url = new UrlBuilder(Context.Request.Url.ToString());
         url["c1mode"] = null;
 
-        reportXml.Add(new XAttribute("description", "URL: " + url));
+        reportXml.Add(new XAttribute("url", url));
 
-        return xmlHeader + reportXml.ToString();
+        return xmlHeader + reportXml;
     }
 
 
