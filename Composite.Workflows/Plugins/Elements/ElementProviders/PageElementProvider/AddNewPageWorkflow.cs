@@ -405,7 +405,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 (from page in PageServices.GetChildren(GetParentId())
                  select page.UrlTitle).ToList();
 
-            if (string.IsNullOrEmpty(newPage.UrlTitle) && (ThereAreOtherPages() || !HttpRuntime.UsingIntegratedPipeline))
+            if (string.IsNullOrEmpty(newPage.UrlTitle) && ThereAreOtherPages())
             {
                 newPage.UrlTitle = GenerateUrlTitleFromTitle(newPage.Title);
 

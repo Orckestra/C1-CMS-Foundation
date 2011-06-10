@@ -53,7 +53,8 @@ namespace Composite.Core.Routing
                     configurationData.Id = new Guid("c7bd886b-7208-4257-b641-df2571a4872b");
 
                     // By default - extensionless for IIS7+integraded and ".aspx" for IIS6/IIS7+classic mode
-                    configurationData.PageUrlSuffix = HttpRuntime.UsingIntegratedPipeline ? string.Empty : ".aspx";
+                    // configurationData.PageUrlSuffix = HttpRuntime.UsingIntegratedPipeline ? string.Empty : ".aspx";
+                    configurationData.PageUrlSuffix = string.Empty;
 
                     DataFacade.AddNew(configurationData);
                 }
