@@ -292,7 +292,9 @@ namespace Composite.Core.WebClient.Renderings.Page
 
         private static Tuple<PublicationScope, string, string> GetScopeKey(PublicationScope publicationScope, CultureInfo cultureInfo, UrlSpace urlSpace)
         {
-            return new Tuple<PublicationScope, string, string>(publicationScope, cultureInfo.Name, urlSpace.Hostname);
+            string hostnameScopeKey = urlSpace.ForceRelativeUrls ? "relative urls" : urlSpace.Hostname;
+
+            return new Tuple<PublicationScope, string, string>(publicationScope, cultureInfo.Name, hostnameScopeKey);
         }
 
         /// <exclude />

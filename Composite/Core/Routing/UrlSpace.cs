@@ -49,7 +49,7 @@ namespace Composite.Core.Routing
 
         private void Initialize(string hostname, string relativeUrl)
         {
-            ForceRelativeUrls = relativeUrl.Contains(PageUrlBuilder.RelativeUrlModeMarker);
+            ForceRelativeUrls = relativeUrl.Contains(PageUrlBuilder.UrlMarker_RelativeUrl);
 
             if (!ForceRelativeUrls)
             {

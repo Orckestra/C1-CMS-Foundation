@@ -125,9 +125,7 @@ namespace Composite.Plugins.Routing.Pages
             string requestPath;
             Uri uri;
 
-            // bool isUnpublished = false;
-
-            urlBuilder.FilePath = RemoveMarkings(urlBuilder.FilePath, urlSpace/*, out isUnpublished*/);
+            urlBuilder.FilePath = RemoveUrlMarkers(urlBuilder.FilePath, urlSpace);
            
             
             string filePathAndPathInfo = urlBuilder.FilePath + (urlBuilder.PathInfo ?? string.Empty);
@@ -150,9 +148,7 @@ namespace Composite.Plugins.Routing.Pages
 
             PublicationScope publicationScope = PublicationScope.Published;
 
-            string dataScopeName = urlBuilder["dataScope"];
-            if (!dataScopeName.IsNullOrEmpty() 
-                && string.Compare(dataScopeName, DataScopeIdentifier.AdministratedName, StringComparison.OrdinalIgnoreCase) == 0)
+            if (filePathAndPathInfo.Contains(PageUrlBuilder.UrlMarker_Unpublished))
             {
                 publicationScope = PublicationScope.Unpublished;
             }
@@ -162,6 +158,15 @@ namespace Composite.Plugins.Routing.Pages
 
             Guid pageId = Guid.Empty;
             var urlKind = UrlKind.Public;
+
+            if(publicationScope == PublicationScope.Unpublished)
+            {
+                requestPath = requestPath.Replace(PageUrlBuilder.UrlMarker_Unpublished, string.Empty);
+                if(requestPath == string.Empty)
+                {
+                    requestPath = "/";
+                }
+            }
 
             string loweredRequestPath = requestPath.ToLower();
             string pagePath = loweredRequestPath;
@@ -207,7 +212,6 @@ namespace Composite.Plugins.Routing.Pages
             }
 
             var queryParameters = urlBuilder.GetQueryParameters();
-            queryParameters.Remove("dataScope");
 
             string pathInfo = (pagePath.Length < requestPath.Length) ? requestPath.Substring(pagePath.Length) : null;
 
@@ -220,15 +224,16 @@ namespace Composite.Plugins.Routing.Pages
             };
         }
 
-        private static string RemoveMarkings(string filePath, UrlSpace urlSpace)
+        private static string RemoveUrlMarkers(string filePath, UrlSpace urlSpace)
         {
-            if (urlSpace.ForceRelativeUrls && filePath.Contains(PageUrlBuilder.RelativeUrlModeMarker))
+            if (urlSpace.ForceRelativeUrls && filePath.Contains(PageUrlBuilder.UrlMarker_RelativeUrl))
             {
-                filePath = filePath.Replace(PageUrlBuilder.RelativeUrlModeMarker, string.Empty);
-                if (filePath == string.Empty)
-                {
-                    filePath = "/";
-                }
+                filePath = filePath.Replace(PageUrlBuilder.UrlMarker_RelativeUrl, string.Empty);
+            }
+
+            if (filePath == string.Empty)
+            {
+                filePath = "/";
             }
 
             return filePath;
@@ -310,14 +315,14 @@ namespace Composite.Plugins.Routing.Pages
                 }
 
                 var publicUrl = new UrlBuilder(lookupTable[page.Id]);
-                if (publicationScope != PublicationScope.Published)
+                if (publicationScope == PublicationScope.Unpublished)
                 {
-                    publicUrl["dataScope"] = legacyScopeName;
+                    publicUrl.FilePath = UrlUtils.Combine(publicUrl.FilePath, PageUrlBuilder.UrlMarker_Unpublished);
                 }
 
                 if(urlSpace.ForceRelativeUrls)
                 {
-                    publicUrl.FilePath += PageUrlBuilder.RelativeUrlModeMarker;
+                    publicUrl.FilePath = UrlUtils.Combine(publicUrl.FilePath, PageUrlBuilder.UrlMarker_RelativeUrl);
                 }
 
                 string pathInfo = urlData.PathInfo;

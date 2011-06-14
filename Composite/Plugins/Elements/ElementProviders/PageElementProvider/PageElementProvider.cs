@@ -993,8 +993,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             UrlData<IPage> pageUrlData = new UrlData<IPage>(previewPage);
 
-            string url = PageUrls.BuildUrl(pageUrlData, UrlKind.Public, new UrlSpace())
-                      ?? PageUrls.BuildUrl(pageUrlData, UrlKind.Internal, new UrlSpace()); 
+            var urlSpace = new UrlSpace();
+            if(HostnameBindingsFacade.GetBindingForCurrentRequest() != null)
+            {
+                urlSpace.ForceRelativeUrls = true;
+            }
+
+            string url = PageUrls.BuildUrl(pageUrlData, UrlKind.Public, urlSpace)
+                      ?? PageUrls.BuildUrl(pageUrlData, UrlKind.Internal, urlSpace); 
 
             var arguments = new Dictionary<string, string> {{"URL", url}};
             IManagementConsoleMessageService consoleServices = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();

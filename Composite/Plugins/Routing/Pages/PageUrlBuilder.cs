@@ -15,7 +15,8 @@ namespace Composite.Plugins.Routing.Pages
 {
     internal class PageUrlBuilder: IPageUrlBuilder
     {
-        public static readonly string RelativeUrlModeMarker = "/c1mode(relative)";
+        public static readonly string UrlMarker_RelativeUrl = "/c1mode(relative)";
+        public static readonly string UrlMarker_Unpublished = "/c1mode(unpublished)";
         private static readonly string DefaultPageUrlSuffix = ".aspx";
 
         private static readonly string LogTitle = typeof (PageUrlBuilder).FullName;
@@ -52,7 +53,11 @@ namespace Composite.Plugins.Routing.Pages
             var localeMappedName = DataLocalizationFacade.GetUrlMappingName(localizationScope) ?? string.Empty;
             _friendlyUrlPrefix = localeMappedName.IsNullOrEmpty() ? string.Empty : "/" + localeMappedName;
 
-            if (urlSpace != null && urlSpace.Hostname != null)
+            _forceRelativeUrls = urlSpace != null && urlSpace.ForceRelativeUrls;
+
+            if (!_forceRelativeUrls
+                && urlSpace != null 
+                && urlSpace.Hostname != null)
             {
                 List<IHostnameBinding> hostnameBindings = DataFacade.GetData<IHostnameBinding>().ToList();
 
@@ -67,8 +72,6 @@ namespace Composite.Plugins.Routing.Pages
                     _urlSpace = urlSpace;
                 }
             }
-
-            _forceRelativeUrls = urlSpace != null && urlSpace.ForceRelativeUrls;
 
             UrlSuffix = DataFacade.GetData<IUrlConfiguration>().Select(c => c.PageUrlSuffix).FirstOrDefault() ?? DefaultPageUrlSuffix;
         }
@@ -185,12 +188,12 @@ namespace Composite.Plugins.Routing.Pages
 
             if(_forceRelativeUrls)
             {
-                url += RelativeUrlModeMarker;
+                url = UrlUtils.Combine(url, UrlMarker_RelativeUrl);
             }
 
-            if (dataScopeIdentifier.Name != DataScopeIdentifier.GetDefault().Name)
+            if (dataScopeIdentifier.Name == DataScopeIdentifier.AdministratedName)
             {
-                url += "?dataScope=" + dataScopeIdentifier.Name;
+                url = UrlUtils.Combine(url, UrlMarker_Unpublished);
             }
 
             var pageUrls = new PageUrlSet { PublicUrl = url };

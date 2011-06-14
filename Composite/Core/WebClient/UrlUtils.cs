@@ -100,7 +100,23 @@ namespace Composite.Core.WebClient
         /// <exclude />
         public static string Combine( string path1, string path2 )
         {
-            return Path.Combine(path1,path2).Replace( Path.DirectorySeparatorChar, '/' );
+            if (string.IsNullOrEmpty(path1)) return path2;
+            if (string.IsNullOrEmpty(path1)) return path2;
+
+            bool path1EndsWithSlash = path1.EndsWith("/");
+            bool path2StartsWithSlash = path2.StartsWith("/");
+
+            if (path1EndsWithSlash != path2StartsWithSlash)
+            {
+                return path1 + path2;
+            }
+
+            if (path1EndsWithSlash)
+            {
+                return path1 + path2.Substring(1);
+            }
+
+            return path1 + "/" + path2;
         }
     }
 }
