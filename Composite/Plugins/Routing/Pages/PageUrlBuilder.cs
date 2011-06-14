@@ -17,7 +17,6 @@ namespace Composite.Plugins.Routing.Pages
     {
         public static readonly string UrlMarker_RelativeUrl = "/c1mode(relative)";
         public static readonly string UrlMarker_Unpublished = "/c1mode(unpublished)";
-        private static readonly string DefaultPageUrlSuffix = ".aspx";
 
         private static readonly string LogTitle = typeof (PageUrlBuilder).FullName;
 
@@ -73,7 +72,7 @@ namespace Composite.Plugins.Routing.Pages
                 }
             }
 
-            UrlSuffix = DataFacade.GetData<IUrlConfiguration>().Select(c => c.PageUrlSuffix).FirstOrDefault() ?? DefaultPageUrlSuffix;
+            UrlSuffix = DataFacade.GetData<IUrlConfiguration>().Select(c => c.PageUrlSuffix).FirstOrDefault() ?? string.Empty;
         }
 
         public PageUrlSet BuildUrlSet(IPage page, Guid parentPageId)

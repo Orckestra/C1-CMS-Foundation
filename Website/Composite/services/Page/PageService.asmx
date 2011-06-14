@@ -1,13 +1,13 @@
 ﻿<%@ WebService Language="C#" Class="Composite.Services.PageService" %>
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Services;
 using System.Web.Services.Protocols;
 
 using Composite;
 using Composite.C1Console.Users;
+using Composite.Core.Routing;
 using Composite.Core.WebClient;
 using Composite.Data;
 using Composite.Data.Types;
@@ -27,14 +27,12 @@ namespace Composite.Services
                 SitemapNavigator sitemapNavigator = new SitemapNavigator(dataConnection);
                 PageNode homePageNode = sitemapNavigator.GetPageNodeByHostname(this.Context.Request.Url.Host);
 
-                if (homePageNode != null)
-                {
-                    return homePageNode.Url;
-                }
-                else
+                if (homePageNode == null)
                 {
                     return "/";
                 }
+
+                return homePageNode.Url;
             }
         }
 
@@ -57,6 +55,34 @@ namespace Composite.Services
 
             return pageUrlOptions.Build(PageUrlType.Internal);
         }
-    }
+        
+        [WebMethod]
+        public string ConvertRelativePageUrlToAbsolute(string pageUrl)
+        {
+            var urlData = PageUrls.ParseUrl(pageUrl);
+            if(urlData == null)
+            {
+                return pageUrl;
+            }
 
+            return PageUrls.BuildUrl(urlData, UrlKind.Public, new UrlSpace()) ?? pageUrl; 
+        }
+
+        [WebMethod]
+        public string ConvertAbsolutePageUrlToRelative(string pageUrl)
+        {
+            if(!DataFacade.GetData<IHostnameBinding>().AsEnumerable().Any())
+            {
+                return pageUrl;
+            }
+
+            var urlData = PageUrls.ParseUrl(pageUrl);
+            if (urlData == null)
+            {
+                return pageUrl;
+            }
+
+            return PageUrls.BuildUrl(urlData, UrlKind.Public, new UrlSpace { ForceRelativeUrls = true }) ?? pageUrl;
+        }        
+    }
 }
