@@ -1,4 +1,5 @@
 ﻿using System.Web;
+using Composite.Plugins.Routing.Pages;
 
 namespace Composite.Core.Routing
 {
@@ -11,6 +12,7 @@ namespace Composite.Core.Routing
         internal UrlSpace(string hostname)
         {
             Hostname = hostname;
+            ForceRelativeUrls = false;
         }
 
         /// <exclude />
@@ -20,24 +22,47 @@ namespace Composite.Core.Routing
 
             if(httpContext != null)
             {
-                Hostname = httpContext.Request.Url.Host;
+                InitializeThroughHttpContext(httpContext);
             }
-        }
-
-        /// <exclude />
-        public UrlSpace(HttpContextBase httpContext)
-        {
-            Hostname = httpContext.Request.Url.Host;
         }
 
         /// <exclude />
         public UrlSpace(HttpContext httpContext)
         {
-            Hostname = httpContext.Request.Url.Host;
+            Verify.ArgumentNotNull(httpContext, "httpContext");
+
+            InitializeThroughHttpContext(httpContext);
         }
 
+        /// <exclude />
+        public UrlSpace(HttpContextBase httpContextBase)
+        {
+            Verify.ArgumentNotNull(httpContextBase, "httpContextBase");
+
+            Initialize(httpContextBase.Request.Url.Host, httpContextBase.Request.RawUrl);
+        }
+
+        private void InitializeThroughHttpContext(HttpContext httpContext)
+        {
+            Initialize(httpContext.Request.Url.Host, httpContext.Request.RawUrl);
+        }
+
+        private void Initialize(string hostname, string relativeUrl)
+        {
+            ForceRelativeUrls = relativeUrl.Contains(PageUrlBuilder.RelativeUrlModeMarker);
+
+            if (!ForceRelativeUrls)
+            {
+                Hostname = hostname;
+            }
+        }
 
         /// <exclude />
         public string Hostname { get; set; }
+
+        /// <summary>
+        /// Disables hostname bindings, so all output urls will be relative. Is used in in-console preview.
+        /// </summary>
+        public bool ForceRelativeUrls { get; set; }
     }
 }

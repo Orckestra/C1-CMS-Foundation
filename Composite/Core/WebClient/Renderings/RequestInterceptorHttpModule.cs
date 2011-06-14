@@ -115,8 +115,7 @@ namespace Composite.Core.WebClient.Renderings
         {
             string hostname = httpContext.Request.Url.Host.ToLower();
 
-            // TODO: caching
-            foreach (var hostnameBinding in DataFacade.GetData<IHostnameBinding>(true))
+            foreach (var hostnameBinding in DataFacade.GetData<IHostnameBinding>(true).AsEnumerable())
             {
                 string[] aliases = hostnameBinding.Aliases.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
 

@@ -113,6 +113,8 @@ namespace Composite.Plugins.Routing.Pages
 
         public UrlData<IPage> ParseUrl(string url, UrlSpace urlSpace)
         {
+            
+
             var urlBuilder = new UrlBuilder(url);
 
             if (IsPageRendererRequest(urlBuilder.FilePath))
@@ -123,6 +125,11 @@ namespace Composite.Plugins.Routing.Pages
             string requestPath;
             Uri uri;
 
+            // bool isUnpublished = false;
+
+            urlBuilder.FilePath = RemoveMarkings(urlBuilder.FilePath, urlSpace/*, out isUnpublished*/);
+           
+            
             string filePathAndPathInfo = urlBuilder.FilePath + (urlBuilder.PathInfo ?? string.Empty);
 
             if (Uri.TryCreate(filePathAndPathInfo, UriKind.Absolute, out uri))
@@ -213,11 +220,27 @@ namespace Composite.Plugins.Routing.Pages
             };
         }
 
+        private static string RemoveMarkings(string filePath, UrlSpace urlSpace)
+        {
+            if (urlSpace.ForceRelativeUrls && filePath.Contains(PageUrlBuilder.RelativeUrlModeMarker))
+            {
+                filePath = filePath.Replace(PageUrlBuilder.RelativeUrlModeMarker, string.Empty);
+                if (filePath == string.Empty)
+                {
+                    filePath = "/";
+                }
+            }
+
+            return filePath;
+        }
+
         internal static CultureInfo GetCultureInfo(string requestPath, UrlSpace urlSpace, out string requestPathWithoutUrlMappingName)
         {
             requestPathWithoutUrlMappingName = requestPath;
 
             int startIndex = requestPath.IndexOf('/', UrlUtils.PublicRootPath.Length) + 1;
+
+            // TODO: fix condition (startIndex >= 0) is always true
             if (startIndex >= 0 && requestPath.Length > startIndex)
             {
                 int endIndex = requestPath.IndexOf('/', startIndex + 1) - 1;
@@ -230,7 +253,7 @@ namespace Composite.Plugins.Routing.Pages
                 {
                     string urlMappingName = requestPath.Substring(startIndex, endIndex - startIndex + 1);
 
-                    if (DataLocalizationFacade.UrlMappingNames.Contains(urlMappingName) == true)
+                    if (DataLocalizationFacade.UrlMappingNames.Contains(urlMappingName))
                     {
                         CultureInfo cultureInfo = DataLocalizationFacade.GetCultureInfoByUrlMappingName(urlMappingName);
 
@@ -248,13 +271,16 @@ namespace Composite.Plugins.Routing.Pages
                 }
             }
 
-            string host = urlSpace.Hostname;
-            var hostnameBinding = DataFacade.GetData<IHostnameBinding>().AsEnumerable().FirstOrDefault(b => b.Hostname == host);
-
-            if(hostnameBinding != null 
-                && !hostnameBinding.IncludeCultureInUrl)
+            if (!urlSpace.ForceRelativeUrls)
             {
-                return new CultureInfo(hostnameBinding.Culture);
+                string host = urlSpace.Hostname;
+                var hostnameBinding = DataFacade.GetData<IHostnameBinding>().AsEnumerable().FirstOrDefault(b => b.Hostname == host);
+
+                if (hostnameBinding != null
+                    && !hostnameBinding.IncludeCultureInUrl)
+                {
+                    return new CultureInfo(hostnameBinding.Culture);
+                }
             }
 
             return DataLocalizationFacade.DefaultUrlMappingCulture;
@@ -287,6 +313,11 @@ namespace Composite.Plugins.Routing.Pages
                 if (publicationScope != PublicationScope.Published)
                 {
                     publicUrl["dataScope"] = legacyScopeName;
+                }
+
+                if(urlSpace.ForceRelativeUrls)
+                {
+                    publicUrl.FilePath += PageUrlBuilder.RelativeUrlModeMarker;
                 }
 
                 string pathInfo = urlData.PathInfo;

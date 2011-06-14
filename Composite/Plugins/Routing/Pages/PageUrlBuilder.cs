@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Web;
 using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
@@ -16,6 +15,7 @@ namespace Composite.Plugins.Routing.Pages
 {
     internal class PageUrlBuilder: IPageUrlBuilder
     {
+        public static readonly string RelativeUrlModeMarker = "/c1mode(relative)";
         private static readonly string DefaultPageUrlSuffix = ".aspx";
 
         private static readonly string LogTitle = typeof (PageUrlBuilder).FullName;
@@ -29,7 +29,8 @@ namespace Composite.Plugins.Routing.Pages
         public Hashtable<string, Guid> FriendlyUrlToIdLookup = new Hashtable<string, Guid>();
         public Hashtable<Guid, string> IdToUrlLookup = new Hashtable<Guid, string>();
 
-        private UrlSpace _urlSpace = null;
+        private UrlSpace _urlSpace;
+        private bool _forceRelativeUrls;
 
         // public Hashtable<Guid, IHostnameBinding> HostnameBindings = new Hashtable<Guid, IHostnameBinding>();
         private List<IHostnameBinding> _hostnameBindings = new List<IHostnameBinding>();
@@ -66,6 +67,8 @@ namespace Composite.Plugins.Routing.Pages
                     _urlSpace = urlSpace;
                 }
             }
+
+            _forceRelativeUrls = urlSpace != null && urlSpace.ForceRelativeUrls;
 
             UrlSuffix = DataFacade.GetData<IUrlConfiguration>().Select(c => c.PageUrlSuffix).FirstOrDefault() ?? DefaultPageUrlSuffix;
         }
@@ -179,6 +182,12 @@ namespace Composite.Plugins.Routing.Pages
 
 
             string url = lookupUrl;
+
+            if(_forceRelativeUrls)
+            {
+                url += RelativeUrlModeMarker;
+            }
+
             if (dataScopeIdentifier.Name != DataScopeIdentifier.GetDefault().Name)
             {
                 url += "?dataScope=" + dataScopeIdentifier.Name;
@@ -217,7 +226,7 @@ namespace Composite.Plugins.Routing.Pages
         {
             string cultureUrlMapping = DataLocalizationFacade.GetUrlMappingName(cultureInfo);
 
-            if (_hostnameBindings.Any())
+            if (!_forceRelativeUrls && _hostnameBindings.Any())
             {
                 IHostnameBinding match = _hostnameBindings.FirstOrDefault(b => b.HomePageId == pageId && b.Culture == cultureInfo.Name);
 

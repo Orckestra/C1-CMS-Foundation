@@ -241,7 +241,6 @@
     <Compile Include="Core\Routing\UrlSpace.cs" />
     <Compile Include="Core\Sql\SqlConnectionManager.cs" />
     <Compile Include="Core\WebClient\ApplicationLevelEventHandlers.cs" />
-    <Compile Include="Core\WebClient\HttpModules\PreviewRequestHttpModule.cs" />
     <Compile Include="Core\WebClient\HttpModules\Utf8StringTransformationStream.cs" />
     <Compile Include="Core\WebClient\Presentation\LessRequestHandler.cs" />
     <Compile Include="Core\WebClient\Renderings\Page\PagePreviewBuilder.cs" />
