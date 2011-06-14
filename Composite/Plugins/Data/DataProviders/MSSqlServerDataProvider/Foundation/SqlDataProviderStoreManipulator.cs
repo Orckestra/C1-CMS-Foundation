@@ -284,8 +284,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 				ImplementFieldChanges(alteredTableName, changeDescriptor.ExistingFields);
 				AppendFields(alteredTableName, changeDescriptor.OriginalType.Fields, changeDescriptor.AddedFields);
 
-				string sql = SetPrimaryKey(alteredTableName, changeDescriptor.AlteredType.KeyPropertyNames, (changeDescriptor.AlteredType.HasCustomPhysicalSortOrder == false));
-				ExecuteNonQuery(sql);
+				//string sql = SetPrimaryKey(alteredTableName, changeDescriptor.AlteredType.KeyPropertyNames, (changeDescriptor.AlteredType.HasCustomPhysicalSortOrder == false));
+				//ExecuteNonQuery(sql);
 			}
 			catch (Exception ex)
 			{
@@ -399,7 +399,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 			}
 		}
 
-		private void DropAllConstraints(string tableName)
+		private IEnumerable<string> GetConstraints(string tableName, string constraintType = null)
 		{
 			/*
 				This is the list of all possible values for this column (xtype):
@@ -416,30 +416,38 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 				UQ = UNIQUE constraint (type is K) 
 				V = View 
 				X = Extended stored procedure
-			 */
+			*/
+			string type = string.IsNullOrEmpty(constraintType) ? string.Empty : string.Format(" AND s.xtype = '{0}'", constraintType);
+
 			string commandText = string.Format(@"
 				SELECT * FROM sysobjects s
 				INNER JOIN sysobjects t ON s.parent_obj = t.id
-				WHERE t.name = '{0}'", tableName);
+				WHERE t.name = '{0}'{1}", tableName, type);
 
 			var dt = ExecuteReader(commandText);
-			var sql = new StringBuilder();
-
 			var constraints = (from DataRow dr in dt.Rows select dr["Name"].ToString()).ToList();
+
+			return constraints;
+		}
+
+		private void DropAllConstraints(string tableName)
+		{
+			var sql = new StringBuilder();
+			var constraints = GetConstraints(tableName);
 
 			foreach (var constraint in constraints)
 			{
+				if(constraint != SqlSafeName("PK", tableName))
 				sql.AppendFormat("ALTER TABLE {0} DROP CONSTRAINT {1};", tableName, constraint);
 			}
 
 			ExecuteNonQuery(sql.ToString());
 		}
 
-		private string SetPrimaryKey(string tableName, IEnumerable<string> fieldNames, bool createAsClustered)
+		internal string SetPrimaryKey(string tableName, IEnumerable<string> fieldNames, bool createAsClustered)
 		{
 			if (fieldNames.Any())
 			{
-				//IndexKeyType.DriPrimaryKey ??
 				string primaryKeyIndexName = SqlSafeName("PK", tableName);
 
 				return string.Format("ALTER TABLE {0} ADD CONSTRAINT {1} PRIMARY KEY{2}({3});", tableName, primaryKeyIndexName, createAsClustered ? " CLUSTERED " : string.Empty, string.Join(",", fieldNames.Distinct()));
