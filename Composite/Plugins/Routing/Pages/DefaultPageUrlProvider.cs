@@ -132,15 +132,14 @@ namespace Composite.Plugins.Routing.Pages
 
             if (Uri.TryCreate(filePathAndPathInfo, UriKind.Absolute, out uri))
             {
-                requestPath = HttpUtility.UrlDecode(uri.AbsolutePath).ToLower();
+                requestPath = HttpUtility.UrlDecode(uri.AbsolutePath);
             }
             else
             {
-                requestPath = filePathAndPathInfo.ToLower();
+                requestPath = filePathAndPathInfo;
             }
 
-            string requestPathWithoutUrlMappingName;
-            CultureInfo locale = GetCultureInfo(requestPath, urlSpace, out requestPathWithoutUrlMappingName);
+            CultureInfo locale = GetCultureInfo(requestPath, urlSpace);
             if (locale == null)
             {
                 return null;
@@ -239,10 +238,8 @@ namespace Composite.Plugins.Routing.Pages
             return filePath;
         }
 
-        internal static CultureInfo GetCultureInfo(string requestPath, UrlSpace urlSpace, out string requestPathWithoutUrlMappingName)
+        internal static CultureInfo GetCultureInfo(string requestPath, UrlSpace urlSpace)
         {
-            requestPathWithoutUrlMappingName = requestPath;
-
             int startIndex = requestPath.IndexOf('/', UrlUtils.PublicRootPath.Length) + 1;
 
             // TODO: fix condition (startIndex >= 0) is always true
@@ -266,8 +263,6 @@ namespace Composite.Plugins.Routing.Pages
 
                         if (exists)
                         {
-                            requestPathWithoutUrlMappingName = requestPath.Remove(startIndex - 1, endIndex - startIndex + 2);
-
                             return cultureInfo;
                         }
 
