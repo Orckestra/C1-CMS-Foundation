@@ -143,10 +143,8 @@ namespace Composite.Core.Types
                 string[] typeNameParts = fullName.Split(',');
                 return typeNameParts[0];
             }
-            else
-            {
-                return fullName;
-            }
+
+            return fullName;
         }
         #endregion
 
@@ -1009,7 +1007,7 @@ namespace Composite.Core.Types
             {
                 if (!interfaceSources.Contains(filename))
                 {
-                    DeleteFileWithRetries(filename, 10, false);
+                    DeleteFileSilent(filename);
                 }
             }
 
@@ -1375,7 +1373,7 @@ namespace Composite.Core.Types
 
                     foreach (string filename in filenamesToDelete)
                     {
-                        DeleteFileWithRetries(filename, 1, false);
+                        DeleteFileSilent(filename);
                     }
                 }
             }
@@ -1415,7 +1413,7 @@ namespace Composite.Core.Types
             {
                 foreach (string filename in Directory.GetFiles(_tempAssemblyDirectory, "*.cs"))
                 {
-                    DeleteFileWithRetries(filename, 10, false);
+                    DeleteFileSilent(filename);
                 }
             }
         }
@@ -1423,44 +1421,19 @@ namespace Composite.Core.Types
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
-        private int DeleteFileWithRetries(string filename, int retries, bool failOnError)
+        private void DeleteFileSilent(string filename)
         {
-            bool deleted = false;
-
-            int count = 0;
-            for (int i = 0; i < retries; i++)
+            try
             {
-                try
-                {
-                    File.Delete(filename);
-                    deleted = true;
-                    count = i;
-                    break;
-                }
-                catch (UnauthorizedAccessException ex)
-                {
-                    LoggingService.LogVerbose("BuildManager", string.Format("Failed to delete '{0}' ('{1}'). Atempt {2} of {3}.", filename, ex.Message, i + 1, retries));
-                    Thread.Sleep(1000);
-                }
+                File.Delete(filename);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                LoggingService.LogVerbose("BuildManager", "UnauthorizedAccessException while trying to delete file '{0}'".FormatWith(filename));
+                return;
             }
 
-            if (deleted == false)
-            {
-                if (failOnError == true)
-                {
-                    throw new InvalidOperationException(string.Format("The temp assembly file '{0}' could not be deleted", filename));
-                }
-                else
-                {
-                    LoggingService.LogWarning("BuildManager", string.Format("Failed to delete '{0}'. File is obsolete.", filename));
-                }
-            }
-            else
-            {
-                LoggingService.LogVerbose("BuildManager", string.Format("Successfully deleted '{0}'.", filename));
-            }
-
-            return count;
+            LoggingService.LogVerbose("BuildManager", "Successfully deleted '{0}'.".FormatWith(filename));
         }
 
 
