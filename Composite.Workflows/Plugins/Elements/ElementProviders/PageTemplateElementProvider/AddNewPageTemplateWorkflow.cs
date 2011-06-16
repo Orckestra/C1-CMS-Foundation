@@ -92,7 +92,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
             IPageTemplateFile pageTemplateFile = DataFacade.BuildNew<IPageTemplateFile>();
             pageTemplateFile.FolderPath = "/";
-            pageTemplateFile.FileName = string.Format("{0}.xml", PathUtil.CleanFileName(newPageTemplate.Title) ?? newPageTemplate.Id.ToString());
+            pageTemplateFile.FileName = string.Format("{0}.xml", PathUtil.CleanFileName(newPageTemplate.Title, true) ?? newPageTemplate.Id.ToString());
             //if (FileNameAlreadyUsed(pageTemplateFile) == true) pageTemplateFile.FileName = newPageTemplate.Id.ToString() + pageTemplateFile.FileName;
             pageTemplateFile.SetNewContent(newPageTemplateMarkup);
 
@@ -123,7 +123,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
             IPageTemplateFile pageTemplateFile = DataFacade.BuildNew<IPageTemplateFile>();
             pageTemplateFile.FolderPath = "/";
-            pageTemplateFile.FileName = string.Format("{0}.xml", PathUtil.CleanFileName(newPageTemplate.Title) ?? newPageTemplate.Id.ToString());
+            pageTemplateFile.FileName = string.Format("{0}.xml", PathUtil.CleanFileName(newPageTemplate.Title, true) ?? newPageTemplate.Id.ToString());
 
             if (!DataFacade.ValidatePath<IPageTemplateFile>(pageTemplateFile, "PageTemplateFileProvider"))
             {

@@ -71,34 +71,29 @@ namespace Composite.Core.IO
             return path.Replace('/', '\\');
         }
 
-
-
         /// <exclude />
         public static string CleanFileName(string s)
         {
-            StringBuilder sb = new StringBuilder();
+            return CleanFileName(s, false);
+        }
+
+
+        /// <exclude />
+        public static string CleanFileName(string s, bool allowUnicodeLetters)
+        {
+            var sb = new StringBuilder();
 
             foreach (var c in s)
             {
-                if ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ -_.1234567890".IndexOf(c) > -1)
+                if ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ -_.1234567890".IndexOf(c) > -1
+                    || (allowUnicodeLetters && char.IsLetter(c)))
                 {
                     sb.Append(c);
                 }
             }
 
-            string result = sb.ToString();
-
-            if (string.IsNullOrEmpty(result) == true)
-            {
-                return null;
-            }
-            else
-            {
-                return result;
-            }
+            return sb.Length > 0 ? sb.ToString() : null;
         }
-
-
 
         /// <exclude />
         public static string GetWebsitePath(string path)
