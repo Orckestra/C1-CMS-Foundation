@@ -797,6 +797,7 @@
     <Content Include="Composite\content\misc\editors\visualeditor\visualeditor.aspx" />
     <Content Include="Composite\content\misc\editors\visualeditor\visualeditor.css" />
     <Content Include="Composite\content\misc\editors\visualeditor\visualeditor.js" />
+    <Content Include="Composite\content\views\browser\BrowserAddressBarBinding.js" />
     <Content Include="Composite\content\views\dev\flushadmin\Default.aspx" />
     <Content Include="Composite\content\views\relationshipgraph\ShowRelationshipOrientedGraph.aspx" />
     <Content Include="Composite\controls\FormsControls\FormUiContainerTemplates\EmptyDocumentExecutionContainer.ascx" />

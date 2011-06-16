@@ -112,11 +112,23 @@ BrowserAddressBarBinding.prototype.handleAction = function ( action ) {
  * @overloads {DataInputBinding#setValue}
  * @param {string} value
  */
-BrowserAddressBarBinding.prototype.setValue = function ( value ) {
-	
+BrowserAddressBarBinding.prototype.setValue = function (value) {
+
+	value = PageService.ConvertRelativePageUrlToAbsolute(value);
+
 	BrowserAddressBarBinding.superclass.setValue.call ( this, value );
 	this._goButton.disable ();
 	this.isDirty = false;
+}
+
+/**
+* @overloads {DataInputBinding#getValue}
+* @param {string} value
+*/
+BrowserAddressBarBinding.prototype.getValue = function () {
+
+	var value = BrowserAddressBarBinding.superclass.getValue.call(this);
+	return PageService.ConvertAbsolutePageUrlToRelative(value);
 }
 
 /**
