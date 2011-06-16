@@ -973,17 +973,6 @@ namespace Composite.Core.Types
         public bool CachingEnabled { get; set; }
 
 
-
-        /// <summary>
-        /// This method will create Composite.Genereated.dll assemlby
-        /// </summary>
-        public void CreateCompositeGeneretedAssembly()
-        {
-            CopyTempAssembliesToBin();
-        }
-
-
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "This is what we want, touch is used later on")]
         public bool ClearCache(bool alsoBinFiles)
@@ -1100,12 +1089,12 @@ namespace Composite.Core.Types
         public void FinalizeCachingSytem()
         {
             int startTime = Environment.TickCount;
-            LoggingService.LogVerbose(LogTitle, "----------========== Finalizing the type caching system! ==========----------");
+            Log.LogVerbose(LogTitle, "----------========== Finalizing the type caching system! ==========----------");
 
-            CopyTempAssembliesToBin();
+            CreateCompositeGeneretedAssembly();
 
             int endTime = Environment.TickCount;
-            LoggingService.LogVerbose(LogTitle, string.Format("----------========== Done finalizing the type caching system ({0} ms ) ==========----------", endTime - startTime));
+            Log.LogVerbose(LogTitle, string.Format("----------========== Done finalizing the type caching system ({0} ms ) ==========----------", endTime - startTime));
         }
 
         private void UpdateSiloPointers()
@@ -1280,8 +1269,11 @@ namespace Composite.Core.Types
         }
 
 
+        /// <summary>
+        /// This method will create Composite.Genereated.dll assemlby
+        /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
-        private void CopyTempAssembliesToBin()
+        public void CreateCompositeGeneretedAssembly()
         {
             if (!CachingEnabled)
             {
@@ -1320,11 +1312,11 @@ namespace Composite.Core.Types
 
             if (compileResult == null)
             {
-                LoggingService.LogVerbose("BulidManager", string.Format("Cache file created: {0}", assemblyPackFilename));
+                Log.LogVerbose("BulidManager", string.Format("Cache file created: {0}", assemblyPackFilename));
             }
             else if (compileResult.Errors.Count > 0)
             {
-                LoggingService.LogError("BulidManager", string.Format("Compilation returned error ({0}: {1}", compileResult.Errors[0].Line, compileResult.Errors[0].ErrorText));
+                Log.LogError("BulidManager", string.Format("Compilation returned error ({0}: {1}", compileResult.Errors[0].Line, compileResult.Errors[0].ErrorText));
             }
         }
 
