@@ -358,6 +358,12 @@ namespace Composite
         public static bool IsReinitializingTheSystem { get; private set; }
 
 
+        private class AutoInstallPackageInfo
+        {
+            public bool ToBeDeleted { get; set; }
+            public string FilePath { get; set; }
+        }
+
         private static void DoAutoInstallPackages()
         {
             if (IsReinitializingTheSystem == true) return;
@@ -368,13 +374,14 @@ namespace Composite
                 // But if this is not here, some unittests will start failing. /MRJ
                 if (RuntimeInformation.IsUnittest == true) return;
 
-                List<KeyValuePair<bool, string>> zipFilenames = new List<KeyValuePair<bool, string>>();
+                var zipFiles = new List<AutoInstallPackageInfo>();
 
                 string directory = PathUtil.Resolve(GlobalSettingsFacade.AutoPackageInstallDirectory);
                 if (C1Directory.Exists(directory) == true)
                 {
                     LoggingService.LogVerbose(LogTitle, string.Format("Installing packages from: {0}", directory));
-                    zipFilenames.AddRange(C1Directory.GetFiles(directory, "*.zip").Select(f => new KeyValuePair<bool, string>(true, f)));
+                    zipFiles.AddRange(C1Directory.GetFiles(directory, "*.zip")
+                                      .Select(f => new AutoInstallPackageInfo { FilePath = f, ToBeDeleted = true }));
                 }
                 else
                 {
@@ -387,18 +394,20 @@ namespace Composite
                     if (C1Directory.Exists(workflowTestDir))
                     {
                         LoggingService.LogVerbose(LogTitle, string.Format("Installing packages from: {0}", workflowTestDir));
-                        zipFilenames.AddRange(C1Directory.GetFiles(workflowTestDir, "*.zip").OrderBy(f => f).Select(f => new KeyValuePair<bool, string>(false, f)));                        
+                        zipFiles.AddRange(C1Directory.GetFiles(workflowTestDir, "*.zip")
+                                          .OrderBy(f => f)
+                                          .Select(f => new AutoInstallPackageInfo { FilePath = f, ToBeDeleted = false }));                        
                     }                    
                 }
 
 
-                foreach (var kvp in zipFilenames)
+                foreach (var zipFile in zipFiles)
                 {
                     try
                     {
-                        using (Stream zipFileStream = C1File.OpenRead(kvp.Value))
+                        using (Stream zipFileStream = C1File.OpenRead(zipFile.FilePath))
                         {
-                            LoggingService.LogVerbose(LogTitle, "Installing package: " + kvp.Value);
+                            LoggingService.LogVerbose(LogTitle, "Installing package: " + zipFile.FilePath);
 
                             // TODO: Log validation messages
                             PackageManagerInstallProcess packageManagerInstallProcess = PackageManager.Install(zipFileStream, true);
@@ -463,9 +472,9 @@ namespace Composite
                         LoggingService.LogWarning("GlobalInitializerFacade", ex);
                     }
 
-                    if (kvp.Key == true)
+                    if (zipFile.ToBeDeleted == true)
                     {
-                        FileUtils.Delete(kvp.Value);
+                        FileUtils.Delete(zipFile.FilePath);
                     }
                 }
             }
