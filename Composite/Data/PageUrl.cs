@@ -190,7 +190,7 @@ namespace Composite.Data
 
         internal static PageUrl ParsePublicUrl(UrlBuilder urlBuilder, out NameValueCollection notUsedQueryParameters)
         {
-            UrlData<IPage> urlData = PageUrls.ParseUrl(urlBuilder.ToString(), new UrlSpace());
+            UrlData<IPage> urlData = PageUrls.ParseUrl(urlBuilder.ToString());
 
             if (urlData == null || urlData.UrlKind != UrlKind.Public)
             {
