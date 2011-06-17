@@ -157,7 +157,9 @@ TreeSelectorDialogPageBinding.prototype.onBeforePageInitialize = function () {
 		node.attach ();
 	}
 	*/
-	
+
+	ExplorerBinding.bindingInstance.setSelectedTree(this.bindingWindow.bindingMap.selectiontree);
+
 	TreeSelectorDialogPageBinding.superclass.onBeforePageInitialize.call ( this );
 }
 

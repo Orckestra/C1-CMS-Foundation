@@ -32,8 +32,16 @@ ExplorerBinding.getFocusedTreeNodeBindings = function () {
 	var selectedDeck = ExplorerBinding.bindingInstance.getSelectedDeckBinding ();
 	var selectedView = selectedDeck.getAssociatedView ();
 	var selectedTree = selectedView.getContentWindow ().bindingMap.tree;
-	return selectedTree.getFocusedTreeNodeBindings ();
+	var focusedTreeNodeBinding = selectedTree.getFocusedTreeNodeBindings();
+
+	//TODO: Refactor this
+	//if nothing selected in tabs try find in dialog tree
+	if (!focusedTreeNodeBinding.hasEntries() && ExplorerBinding.bindingInstance._selectiontree)
+		focusedTreeNodeBinding = ExplorerBinding.bindingInstance._selectiontree.getFocusedTreeNodeBindings();
+
+	return focusedTreeNodeBinding;
 }
+
 
 /**
  * @class
@@ -72,8 +80,13 @@ function ExplorerBinding () {
 	
 	/**
 	 * @type {int}
-	 */	
+	 */
 	this._dragHeight = 0;
+
+	/**
+	* @type {SystemTreeBinding}
+	*/
+	this._selectiontree = null;
 	
 	/*
 	 * Returnable.
@@ -170,6 +183,15 @@ ExplorerBinding.prototype.setSelectionByHandle = function ( handle ) {
 ExplorerBinding.prototype.setSelectionDefault = function () {
 	
 	this._menuBinding.setSelectionDefault ();
+}
+
+/**
+* Set selected tree.
+* @param {SystemTreeBinding}} tree
+*/
+ExplorerBinding.prototype.setSelectedTree = function (tree) {
+
+	this._selectiontree = tree;
 }
 
 /**

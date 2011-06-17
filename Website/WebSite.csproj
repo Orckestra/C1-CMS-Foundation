@@ -373,6 +373,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Composite\Configuration\UrlFormatting.xml" />
+    <Content Include="Composite\content\dialogs\treeselector\TreeSelectorToolBarBinding.js" />
     <Content Include="Composite\content\forms\Administrative\UrlConfiguration.xml" />
     <Content Include="Composite\content\forms\Administrative\Hostnames.xml" />
     <Content Include="App_Data\Composite\TreeDefinitions\UrlConfiguration.xml">

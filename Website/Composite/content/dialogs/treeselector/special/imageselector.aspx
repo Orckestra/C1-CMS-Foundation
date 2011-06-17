@@ -6,20 +6,31 @@
 		<control:styleloader runat="server"/>
 		<control:scriptloader type="sub" runat="server"/>
 		<script type="text/javascript" src="../TreeSelectorDialogPageBinding.js"></script>
+		<script type="text/javascript" src="../TreeSelectorToolBarBinding.js"></script>
 		<script type="text/javascript" src="ImageSelectorDialogPageBinding.js"></script>
 		<link rel="stylesheet" type="text/css" href="../treeselector.css.aspx"/>
 		<link rel="stylesheet" type="text/css" href="imageselector.css.aspx"/>
 	</head>
 	<body>
+		<ui:popupset id="masterpopupset">
+			<ui:popup id="moreactionspopup" position="bottom" />
+		</ui:popupset>
 		<ui:dialogpage binding="ImageSelectorDialogPageBinding"
 			label="(title supplied as page argument!)"
 			width="505" 
 			height="400"
 			resizable="false">
-			
+			<ui:toolbar id="toolbar" binding="TreeSelectorToolBarBinding" imagesize="large">
+				<ui:toolbarbody />
+				<ui:toolbarbody id="moreactionstoolbargroup">
+					<ui:toolbargroup>
+						<ui:toolbarbutton id="moreactionsbutton" label="More б" popup="moreactionspopup" />
+					</ui:toolbargroup>
+				</ui:toolbarbody>
+			</ui:toolbar>
 			<ui:pagebody>
 				<ui:box id="treebox">
-					<ui:tree id="selectiontree" binding="SystemTreeBinding" selectiontype="single" actionaware="false" locktoeditor="false">
+					<ui:tree id="selectiontree" binding="SystemTreeBinding" selectiontype="single" actionaware="tree" locktoeditor="false">
 						<ui:treebody/>
 					</ui:tree>
 				</ui:box>
