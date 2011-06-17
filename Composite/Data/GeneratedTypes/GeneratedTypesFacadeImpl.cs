@@ -1,15 +1,13 @@
 using System;
-using System.Linq;
 using System.Transactions;
+using Composite.Core;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation.PluginFacades;
 using Composite.Data.GeneratedTypes.Foundation;
 using Composite.Data.Plugins.DataProvider.Runtime;
-using Composite.Data.Types;
 using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
 using Composite.Core.Linq;
-using Composite.Core.Logging;
 using Composite.Data.Transactions;
 using Composite.Core.Types;
 
@@ -32,8 +30,14 @@ namespace Composite.Data.GeneratedTypes
             dataTypeDescriptor.Version = 1;
 
             DynamicTypeManager.CreateStore(providerName, dataTypeDescriptor, makeAFlush);
-        }
 
+            if (makeAFlush && dataTypeDescriptor.IsCodeGenerated)
+            {
+                // Updating Composite.Generated.dll, so the new interface will pop-up in Visual Studio's Intellisense
+                Log.LogVerbose("GeneratedTypesFacade", "Recreating Composite.Genereted.dll");
+                BuildManager.CreateCompositeGeneretedAssembly();
+            }
+        }
 
 
         public void DeleteType(string providerName, DataTypeDescriptor dataTypeDescriptor, bool makeAFlush)
@@ -95,8 +99,8 @@ namespace Composite.Data.GeneratedTypes
             {
                 // Re create Composite.Genereted.dll to ensure that App_Code, compiled assemblies that is referring the 
                 // the genereted type is referring the newst version - the newest version might only be in a temp assembly at this point
-                LoggingService.LogVerbose("GeneratedTypesFacade", "Recreating Composite.Genereted.dll");
-                Composite.Core.Types.BuildManager.CreateCompositeGeneretedAssembly();
+                Log.LogVerbose("GeneratedTypesFacade", "Recreating Composite.Genereted.dll");
+                BuildManager.CreateCompositeGeneretedAssembly();
             }
         }
 
@@ -106,7 +110,7 @@ namespace Composite.Data.GeneratedTypes
         {
             if (!DataProviderPluginFacade.HasConfiguration())
             {
-                LoggingService.LogError("GeneratedTypesFacade", "Failed to load the configuration section '{0}' from the configuration".FormatWith(DataProviderSettings.SectionName));
+                Log.LogError("GeneratedTypesFacade", "Failed to load the configuration section '{0}' from the configuration".FormatWith(DataProviderSettings.SectionName));
                 return;
             }
             
@@ -120,7 +124,7 @@ namespace Composite.Data.GeneratedTypes
 
                     Type type = InterfaceCodeGenerator.CreateType(dataTypeDescriptor);
 
-                    LoggingService.LogVerbose("GeneratedTypesFacade", "Type generated: {0}, serialized: {1}".FormatWith(type.FullName, TypeManager.SerializeType(type)));
+                    Log.LogVerbose("GeneratedTypesFacade", "Type generated: {0}, serialized: {1}".FormatWith(type.FullName, TypeManager.SerializeType(type)));
                 }
             }
         }
@@ -145,7 +149,7 @@ namespace Composite.Data.GeneratedTypes
                 return;
             }
 
-            LoggingService.LogVerbose("GeneratedTypesFacade", string.Format("Removing the property {0} on the type {1}.{2}", dataFieldDescriptor.Name, dataTypeDescriptor.Namespace, dataTypeDescriptor.Name));
+            Log.LogVerbose("GeneratedTypesFacade", string.Format("Removing the property {0} on the type {1}.{2}", dataFieldDescriptor.Name, dataTypeDescriptor.Namespace, dataTypeDescriptor.Name));
 
             if(!dataStoreExists)
             {
@@ -180,7 +184,7 @@ namespace Composite.Data.GeneratedTypes
                     
                     DynamicTypeManager.UpdateDataTypeDescriptor(dataTypeDescriptor, false);
 
-                    LoggingService.LogVerbose("GeneratedTypesFacade", string.Format("Removing foreign on the property {0} on the type {1}.{2}", dataFieldDescriptor.Name, dataTypeDescriptor.Namespace, dataTypeDescriptor.Name));
+                    Log.LogVerbose("GeneratedTypesFacade", string.Format("Removing foreign on the property {0} on the type {1}.{2}", dataFieldDescriptor.Name, dataTypeDescriptor.Namespace, dataTypeDescriptor.Name));
                 }
             }
         }
