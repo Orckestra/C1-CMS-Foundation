@@ -111,10 +111,22 @@ namespace Composite.Plugins.Routing.Pages
                        };
         }
 
+        public UrlData<IPage> ParseUrl(string absoluteUrl)
+        {
+            Verify.ArgumentNotNullOrEmpty(absoluteUrl, "absoluteUrl");
+
+            Uri uri = new Uri(absoluteUrl);
+
+            string hostname = uri.DnsSafeHost;
+            string relativeUrl = uri.PathAndQuery;
+
+            var urlSpace = new UrlSpace(hostname, relativeUrl);
+
+            return ParseUrl(relativeUrl, urlSpace);
+        }
+
         public UrlData<IPage> ParseUrl(string url, UrlSpace urlSpace)
         {
-            
-
             var urlBuilder = new UrlBuilder(url);
 
             if (IsPageRendererRequest(urlBuilder.FilePath))
@@ -125,10 +137,10 @@ namespace Composite.Plugins.Routing.Pages
             string requestPath;
             Uri uri;
 
-            urlBuilder.FilePath = RemoveUrlMarkers(urlBuilder.FilePath, urlSpace);
-           
-            
+
             string filePathAndPathInfo = urlBuilder.FilePath + (urlBuilder.PathInfo ?? string.Empty);
+            filePathAndPathInfo = RemoveUrlMarkers(filePathAndPathInfo, urlSpace);
+            
 
             if (Uri.TryCreate(filePathAndPathInfo, UriKind.Absolute, out uri))
             {

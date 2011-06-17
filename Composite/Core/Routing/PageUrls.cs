@@ -24,6 +24,11 @@ namespace Composite.Core.Routing
         /// <exclude />
         public static UrlData<IPage> ParseUrl(string url)
         {
+            if (url.StartsWith("http") && url.Contains("://"))
+            {
+                return UrlProvider.ParseUrl(url);
+            }
+
             return UrlProvider.ParseUrl(url, new UrlSpace());
         }
 

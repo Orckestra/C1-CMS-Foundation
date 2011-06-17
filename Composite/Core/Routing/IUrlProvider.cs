@@ -18,6 +18,9 @@ namespace Composite.Core.Routing
         UrlData<T> ParseUrl(string relativeUrl, UrlSpace urlSpace);
 
         /// <exclude />
+        UrlData<T> ParseUrl(string absoluteUrl);
+
+        /// <exclude />
         string BuildUrl(UrlData<T> urlData, UrlKind urlKind, UrlSpace urlSpace);
     }
 }

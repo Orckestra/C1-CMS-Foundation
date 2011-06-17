@@ -59,18 +59,26 @@ namespace Composite.Services
         [WebMethod]
         public string ConvertRelativePageUrlToAbsolute(string pageUrl)
         {
+            if (pageUrl == string.Empty) return string.Empty;
+            
             var urlData = PageUrls.ParseUrl(pageUrl);
             if(urlData == null)
             {
                 return pageUrl;
             }
 
-            return PageUrls.BuildUrl(urlData, UrlKind.Public, new UrlSpace()) ?? pageUrl; 
+            string publicUrl = PageUrls.BuildUrl(urlData, UrlKind.Public, new UrlSpace());
+
+            if (publicUrl == null) return pageUrl;
+
+            return AddServerUrl(publicUrl); 
         }
 
         [WebMethod]
         public string ConvertAbsolutePageUrlToRelative(string pageUrl)
         {
+            if (pageUrl == string.Empty) return string.Empty;
+            
             if(!DataFacade.GetData<IHostnameBinding>().AsEnumerable().Any())
             {
                 return pageUrl;
@@ -82,7 +90,24 @@ namespace Composite.Services
                 return pageUrl;
             }
 
-            return PageUrls.BuildUrl(urlData, UrlKind.Public, new UrlSpace { ForceRelativeUrls = true }) ?? pageUrl;
+            string relativeRul = PageUrls.BuildUrl(urlData, UrlKind.Public, new UrlSpace {ForceRelativeUrls = true});
+            
+            if(relativeRul == null) return pageUrl;
+            
+            return AddServerUrl(relativeRul);
         }        
+        
+        private static string AddServerUrl(string url)
+        {
+            if(url.StartsWith("http"))
+            {
+                return url;
+            }
+            
+            Uri requestUri = System.Web.HttpContext.Current.Request.Url;
+            string serverLink = requestUri.AbsoluteUri.Substring(0, requestUri.AbsoluteUri.Length - requestUri.AbsolutePath.Length);
+            
+            return serverLink + url;
+        }
     }
 }

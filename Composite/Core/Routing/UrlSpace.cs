@@ -15,6 +15,11 @@ namespace Composite.Core.Routing
             ForceRelativeUrls = false;
         }
 
+        internal UrlSpace(string hostname, string relativeUrl)
+        {
+            Initialize(hostname, relativeUrl);
+        }
+
         /// <exclude />
         public UrlSpace()
         {
@@ -39,12 +44,12 @@ namespace Composite.Core.Routing
         {
             Verify.ArgumentNotNull(httpContextBase, "httpContextBase");
 
-            Initialize(httpContextBase.Request.Url.Host, httpContextBase.Request.RawUrl);
+            Initialize(httpContextBase.Request.Url.Host, httpContextBase.Request.Url.LocalPath);
         }
 
         private void InitializeThroughHttpContext(HttpContext httpContext)
         {
-            Initialize(httpContext.Request.Url.Host, httpContext.Request.RawUrl);
+            Initialize(httpContext.Request.Url.Host, httpContext.Request.Url.LocalPath);
         }
 
         private void Initialize(string hostname, string relativeUrl)
