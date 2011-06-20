@@ -401,7 +401,7 @@ namespace Composite.Services
 
                 IEnumerable<ParameterProfile> parameterProfiles = FunctionFacade.GetFunction(functionName).ParameterProfiles;
 
-                foreach (var setParam in setParams)
+                foreach (var setParam in setParams.Take(10))
                 {
                     if (setParam.ContainsNestedFunctions == true || setParam is FunctionParameterRuntimeTreeNode)
                     {
@@ -464,6 +464,10 @@ namespace Composite.Services
                             description += string.Format("\n{0} = {1}", setParam.Name, "....");
                         }
                     }
+                }
+                if(setParams.Count > 10)
+                {
+                    description += string.Format("\n....");
                 }
             }
             catch (Exception ex)
