@@ -5,9 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Security;
 using System.Web.Hosting;
 using System.Xml;
 using System.Xml.Serialization;
+using Composite.Core;
 using Composite.Core.Application;
 using Composite.Core.Application.Plugins.ApplicationStartupHandler;
 using Composite.Core.Configuration;
@@ -63,6 +65,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
     [ConfigurationElementType(typeof(NonConfigurableApplicationStartupHandler))]
     public sealed class AttributeBasedApplicationStartupHandler : IApplicationStartupHandler
     {
+        private static readonly string LogTitle = typeof (AttributeBasedApplicationStartupHandler).Name;
         private static readonly string TempFileName = "StartupHandlersCache.xml";
 
         private List<MethodInfo> _onBeforeInitializeMethods = new List<MethodInfo>();
@@ -121,7 +124,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
                 MethodInfo onBeforeInitializeMethod = type.GetMethod("OnBeforeInitialize", BindingFlags.Public | BindingFlags.Static);
                 if (onBeforeInitializeMethod == null)
                 {
-                    LoggingService.LogWarning("AttributeBasedApplicationStartupHandler", string.Format("The type '{0}' is missing public static methods named 'OnBeforeInitialize' and 'OnInitialized' taking no arguments", type));
+                    Log.LogWarning(LogTitle, string.Format("The type '{0}' is missing public static methods named 'OnBeforeInitialize' and 'OnInitialized' taking no arguments", type));
                     continue;
                 }
 
@@ -129,7 +132,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
                 MethodInfo onInitializedMethod = type.GetMethod("OnInitialized", BindingFlags.Public | BindingFlags.Static);
                 if (onInitializedMethod == null)
                 {
-                    LoggingService.LogWarning("AttributeBasedApplicationStartupHandler", string.Format("The type '{0}' is missing public static methods named 'OnBeforeInitialize' and 'OnInitialized' taking no arguments", type));
+                    Log.LogWarning(LogTitle, string.Format("The type '{0}' is missing public static methods named 'OnBeforeInitialize' and 'OnInitialized' taking no arguments", type));
                     continue;
                 }
 
@@ -165,22 +168,22 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             }
             catch (IOException)
             {
-                LoggingService.LogWarning(typeof(AttributeBasedApplicationStartupHandler).FullName, "Failed to open file '{0}'".FormatWith(TempFilePath));
+                Log.LogWarning(LogTitle, "Failed to open file '{0}'".FormatWith(TempFilePath));
                 return result;
             }
             catch (UnauthorizedAccessException)
             {
-                LoggingService.LogWarning(typeof(AttributeBasedApplicationStartupHandler).FullName, "Failed to open file '{0}'".FormatWith(TempFilePath));
+                Log.LogWarning(LogTitle, "Failed to open file '{0}'".FormatWith(TempFilePath));
                 return result;
             }
             catch (XmlException)
             {
-                LoggingService.LogWarning(typeof(AttributeBasedApplicationStartupHandler).FullName, "Failed to deserialize file '{0}'".FormatWith(TempFilePath));
+                Log.LogWarning(LogTitle, "Failed to deserialize file '{0}'".FormatWith(TempFilePath));
                 return result;
             }
             catch(SerializationException)
             {
-                LoggingService.LogWarning(typeof(AttributeBasedApplicationStartupHandler).FullName, "Failed to deserialize file '{0}'".FormatWith(TempFilePath));
+                Log.LogWarning(LogTitle, "Failed to deserialize file '{0}'".FormatWith(TempFilePath));
                 return result;
             }
 
@@ -268,11 +271,18 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             List<Type> result = new List<Type>();
             foreach (Type type in types)
             {
-                bool hasAttribute = type.GetCustomAttributes(false).Where(f => f.GetType() == typeof(ApplicationStartupAttribute)).Any();
-
-                if (hasAttribute)
+                try
                 {
-                    result.Add(type);
+                    bool hasAttribute = type.GetCustomAttributes(false).Where(f => f.GetType() == typeof(ApplicationStartupAttribute)).Any();
+
+                    if (hasAttribute)
+                    {
+                        result.Add(type);
+                    }
+                }
+                catch(SecurityException)
+                {
+                    // While running under "medium trust" getting attributes may throw SecurityException while getting attributes for some classes
                 }
             }
             return result.ToArray();
@@ -311,7 +321,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             }
             catch (UnauthorizedAccessException)
             {
-                LoggingService.LogWarning(typeof(AttributeBasedApplicationStartupHandler).FullName, "Failed to open file '{0}'".FormatWith(TempFilePath));
+                Log.LogWarning(LogTitle, "Failed to open file '{0}'".FormatWith(TempFilePath));
             }
         }
 
@@ -325,8 +335,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             }
             catch (TypeLoadException exception)
             {
-                LoggingService.LogError(typeof(AttributeBasedApplicationStartupHandler).Name, 
-                    new Exception("Failed to load assebmly '{0}'".FormatWith(assembly.FullName), exception));
+                Log.LogError(LogTitle, new Exception("Failed to load assebmly '{0}'".FormatWith(assembly.FullName), exception));
                 types = null;
                 return false;
             }
@@ -400,7 +409,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         private static void LogAssemblyLoadException(string filePath, Exception e)
         {
             var logEx = new InvalidOperationException("Failed to load types from file '{0}'".FormatWith(filePath), e);
-            LoggingService.LogError(typeof(AttributeBasedApplicationStartupHandler).Name, logEx);
+            Log.LogError(LogTitle, logEx);
 
             Exception toExamine = e;
             while (toExamine != null)
@@ -411,7 +420,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
                     Exception[] loaderExceptions = reflectionTypeLoadException.LoaderExceptions;
                     foreach (Exception loaderException in loaderExceptions)
                     {
-                        LoggingService.LogError(typeof(AttributeBasedApplicationStartupHandler).Name + " | LOADEREXCEPTION", loaderException.Message);
+                        Log.LogError(LogTitle + " | LOADEREXCEPTION", loaderException.Message);
                     }
                 }
 
