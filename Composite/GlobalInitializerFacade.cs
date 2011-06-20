@@ -11,14 +11,13 @@ using Composite.C1Console.Events;
 using Composite.C1Console.Security;
 using Composite.C1Console.Trees;
 using Composite.C1Console.Workflow;
-using Composite.Core.Application;
+using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Logging;
 using Composite.Core.PackageSystem;
-using Composite.Core.Routing;
 using Composite.Core.Threading;
 using Composite.Data.Caching;
 using Composite.Data.Foundation;
@@ -36,6 +35,7 @@ namespace Composite
     public static class GlobalInitializerFacade
     {
         private static readonly string LogTitle = "RGB(194, 252, 131)GlobalInitializerFacade";
+        private static readonly string LogTitleNormal = "GlobalInitializerFacade";
 
         private static bool _coreInitialized = false;
         private static bool _initializing = false;
@@ -379,13 +379,13 @@ namespace Composite
                 string directory = PathUtil.Resolve(GlobalSettingsFacade.AutoPackageInstallDirectory);
                 if (C1Directory.Exists(directory) == true)
                 {
-                    LoggingService.LogVerbose(LogTitle, string.Format("Installing packages from: {0}", directory));
+                    Log.LogVerbose(LogTitle, string.Format("Installing packages from: {0}", directory));
                     zipFiles.AddRange(C1Directory.GetFiles(directory, "*.zip")
                                       .Select(f => new AutoInstallPackageInfo { FilePath = f, ToBeDeleted = true }));
                 }
                 else
                 {
-                    LoggingService.LogVerbose(LogTitle, string.Format("Auto install directory not found: {0}", directory));
+                    Log.LogVerbose(LogTitle, string.Format("Auto install directory not found: {0}", directory));
                 }
 
                 if (RuntimeInformation.IsDebugBuild == true)
@@ -393,7 +393,7 @@ namespace Composite
                     string workflowTestDir = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.AutoPackageInstallDirectory), "WorkflowTesting");
                     if (C1Directory.Exists(workflowTestDir))
                     {
-                        LoggingService.LogVerbose(LogTitle, string.Format("Installing packages from: {0}", workflowTestDir));
+                        Log.LogVerbose(LogTitle, string.Format("Installing packages from: {0}", workflowTestDir));
                         zipFiles.AddRange(C1Directory.GetFiles(workflowTestDir, "*.zip")
                                           .OrderBy(f => f)
                                           .Select(f => new AutoInstallPackageInfo { FilePath = f, ToBeDeleted = false }));                        
@@ -407,25 +407,15 @@ namespace Composite
                     {
                         using (Stream zipFileStream = C1File.OpenRead(zipFile.FilePath))
                         {
-                            LoggingService.LogVerbose(LogTitle, "Installing package: " + zipFile.FilePath);
+                            Log.LogVerbose(LogTitle, "Installing package: " + zipFile.FilePath);
 
-                            // TODO: Log validation messages
                             PackageManagerInstallProcess packageManagerInstallProcess = PackageManager.Install(zipFileStream, true);
-
 
                             if (packageManagerInstallProcess.PreInstallValidationResult.Count > 0)
                             {
-                                LoggingService.LogError("GlobalInitializerFacade", "Package installation failed!");
+                                Log.LogError(LogTitleNormal, "Package installation failed! (Pre install validation error)");
+                                LogErrors(packageManagerInstallProcess.PreInstallValidationResult);
 
-                                foreach (PackageFragmentValidationResult preValidationResult in packageManagerInstallProcess.PreInstallValidationResult)
-                                {
-                                    LoggingService.LogError("GlobalInitializerFacade", preValidationResult.Message);
-                                    if (preValidationResult.Exception != null)
-                                    {
-                                        LoggingService.LogError("GlobalInitializerFacade", "With following exception:");
-                                        LoggingService.LogError("GlobalInitializerFacade", preValidationResult.Exception);
-                                    }
-                                }
                                 continue;
                             }
 
@@ -433,17 +423,9 @@ namespace Composite
                             List<PackageFragmentValidationResult> validationResults = packageManagerInstallProcess.Validate();
                             if (validationResults.Count > 0)
                             {
-                                LoggingService.LogError("GlobalInitializerFacade", "Package installation failed!");
+                                Log.LogError(LogTitleNormal, "Package installation failed! (Validation error)");
+                                LogErrors(validationResults);
 
-                                foreach (PackageFragmentValidationResult validationResult in validationResults)
-                                {
-                                    LoggingService.LogError("GlobalInitializerFacade", validationResult.Message);
-                                    if (validationResult.Exception != null)
-                                    {
-                                        LoggingService.LogError("GlobalInitializerFacade", "With following exception:");
-                                        LoggingService.LogError("GlobalInitializerFacade", validationResult.Exception);
-                                    }
-                                }
                                 continue;
                             }
 
@@ -451,17 +433,8 @@ namespace Composite
                             List<PackageFragmentValidationResult> installResult = packageManagerInstallProcess.Install();
                             if (installResult.Count > 0)
                             {
-                                LoggingService.LogError("GlobalInitializerFacade", "Package installation failed!");
-
-                                foreach (PackageFragmentValidationResult packageFragmentValidationResult in installResult)
-                                {
-                                    LoggingService.LogError("GlobalInitializerFacade", packageFragmentValidationResult.Message);
-                                    if (packageFragmentValidationResult.Exception != null)
-                                    {
-                                        LoggingService.LogError("GlobalInitializerFacade", "With following exception:");
-                                        LoggingService.LogError("GlobalInitializerFacade", packageFragmentValidationResult.Exception);
-                                    }
-                                }
+                                Log.LogError(LogTitleNormal, "Package installation failed! (Installation error)");
+                                LogErrors(installResult);
 
                                 continue;
                             }                            
@@ -469,7 +442,7 @@ namespace Composite
                     }
                     catch (Exception ex)
                     {
-                        LoggingService.LogWarning("GlobalInitializerFacade", ex);
+                        Log.LogWarning(LogTitleNormal, ex);
                     }
 
                     if (zipFile.ToBeDeleted == true)
@@ -480,11 +453,22 @@ namespace Composite
             }
             catch (Exception ex)
             {
-                LoggingService.LogError("GlobalInitializerFacade", ex);
+                Log.LogError(LogTitleNormal, ex);
             }
         }
 
-
+        private static void LogErrors(IEnumerable<PackageFragmentValidationResult> packageErrors)
+        {
+            foreach (PackageFragmentValidationResult packageFragmentValidationResult in packageErrors)
+            {
+                Log.LogError(LogTitleNormal, packageFragmentValidationResult.Message);
+                if (packageFragmentValidationResult.Exception != null)
+                {
+                    Log.LogError(LogTitleNormal, "With following exception:");
+                    Log.LogError(LogTitleNormal, packageFragmentValidationResult.Exception);
+                }
+            }
+        }
 
         private static void DoInitialize()
         {
