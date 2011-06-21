@@ -13,6 +13,7 @@ namespace Composite.Data.Types
     [KeyPropertyName("HostName")]
     [DataScope(DataScopeIdentifier.PublicName)]
     [CachingAttribute(CachingType.Full)]
+    [Obsolete]
     public interface IPageHostNameBinding : IData
     {
         /// <exclude />

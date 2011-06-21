@@ -45,16 +45,6 @@
                         }
                     }
                 }
-                
-                
-                var sitemapNavigator = new SitemapNavigator(conn);
-                PageNode homePageNode = sitemapNavigator.GetPageNodeByHostname(Request.Url.Host);
-
-                if (homePageNode != null)
-                {
-                    Redirect(homePageNode.Url);
-                    return;
-                }
             }
         }
         

@@ -659,29 +659,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 if (kvp.Key == PageLocaleState.Own)
                 {
                     // Normal actions
-
-                    if (page.GetParentId() == Guid.Empty)
-                    {
-                        PermissionType[] managerPermissionTypes = new PermissionType[] { PermissionType.Administrate };
-                        element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.ManageHostNameBindingsWorkflow"), managerPermissionTypes)))
-                        {
-                            VisualData = new ActionVisualizedData
-                            {
-                                Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.ManageHostNames"),
-                                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.ManageHostNamesToolTip"),
-                                Icon = PageElementProvider.ManageHostNames,
-                                Disabled = false,
-                                ActionLocation = new ActionLocation
-                                {
-                                    ActionType = ActionType.Other,
-                                    IsInFolder = false,
-                                    IsInToolbar = false,
-                                    ActionGroup = AppendedActionGroup
-                                }
-                            }
-                        });
-                    }
-
                     element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.EditPageWorkflow"), EditPermissionTypes)))
                     {
                         VisualData = new ActionVisualizedData

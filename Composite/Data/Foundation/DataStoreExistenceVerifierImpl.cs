@@ -20,7 +20,6 @@ namespace Composite.Data.Foundation
                     typeof(ICompositionContainer),
                     typeof(IPage),                    
                     typeof(IPageStructure),
-                    typeof(IPageHostNameBinding),                    
                     typeof(IPagePlaceholderContent),                    
                     typeof(IPageFolderDefinition),
                     typeof(IPageMetaDataDefinition),

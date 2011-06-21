@@ -123,25 +123,24 @@ namespace Composite.Core.Implementation
         /// <returns></returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Hostname")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "hostname")]
+        [Obsolete("Isn't used any more")]
         public virtual PageNode GetPageNodeByHostname(string hostname)
         {
             XElement homepageElement = null;
             Guid pageId = Guid.Empty;
             hostname = hostname.ToLower();
 
-            IEnumerable<IPageHostNameBinding> hostNameMatches =
-                from binding in _connection.Get<IPageHostNameBinding>() as IEnumerable<IPageHostNameBinding>
-                where !binding.HostName.IsNullOrEmpty()
-                orderby binding.HostName.Length descending
-                select binding;
+            // Getting the longest not-empty hostname that matches the right part of the current hostname
+            List<IHostnameBinding> hostNameMatches =
+                (from binding in _connection.Get<IHostnameBinding>() as IEnumerable<IHostnameBinding>
+                 where !binding.Hostname.IsNullOrEmpty()
+                       && hostname.EndsWith(binding.Hostname.ToLower())
+                 orderby binding.Hostname.Length descending
+                 select binding).Take(1).ToList();
 
-            foreach (var binding in hostNameMatches)
+            if (hostNameMatches.Count > 0)
             {
-                if (hostname.EndsWith(binding.HostName.ToLower()))
-                {
-                    pageId = binding.PageId;
-                    break;
-                }
+                pageId = hostNameMatches[0].HomePageId;
             }
 
             if (pageId == Guid.Empty)
@@ -157,10 +156,8 @@ namespace Composite.Core.Implementation
             {
                 return null;
             }
-            else
-            {
-                return new PageNode( homepageElement );
-            }
+            
+            return new PageNode( homepageElement );
         }
 
 

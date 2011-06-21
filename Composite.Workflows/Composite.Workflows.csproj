@@ -409,12 +409,6 @@
     <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\LocalizePageWorkflow.designer.cs">
       <DependentUpon>LocalizePageWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\ManageHostNameBindingsWorkflow.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\ManageHostNameBindingsWorkflow.designer.cs">
-      <DependentUpon>ManageHostNameBindingsWorkflow.cs</DependentUpon>
-    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PagePublishSchedulerWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>

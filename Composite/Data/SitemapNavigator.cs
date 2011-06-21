@@ -103,6 +103,7 @@ namespace Composite.Data
         /// <returns>The homepage <see cref="PageNode"/> element matching the specified hostname or the default homepage.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Hostname")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "hostname")]
+        [Obsolete("Isn't used any more")]
         public PageNode GetPageNodeByHostname(string hostname)
         {
             return this.Implementation.GetPageNodeByHostname(hostname);
