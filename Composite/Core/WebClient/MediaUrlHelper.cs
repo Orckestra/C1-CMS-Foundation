@@ -38,19 +38,22 @@ namespace Composite.Core.WebClient
         /// <exclude />
         public static string GetUrl(IMediaFile file, bool isInternal, bool downloadableMedia)
         {
-            var urlBuilder = new UrlBuilder(UrlUtils.ResolvePublicUrl("Renderers/ShowMedia.ashx"));
+            UrlBuilder urlBuilder;
 
             if(!isInternal)
             {
+                urlBuilder = new UrlBuilder(UrlUtils.ResolvePublicUrl("Renderers/ShowMedia.ashx"));
+
                 urlBuilder["i"] = file.CompositePath;
             }
             else
             {
+                urlBuilder = new UrlBuilder("~/media(" + file.Id + ")");
+
                 if(file.StoreId != DefaultMediaStore)
                 {
                     urlBuilder["store"] = file.StoreId;
                 }
-                urlBuilder["id"] = file.Id.ToString();
             }
 
             if (downloadableMedia == true)

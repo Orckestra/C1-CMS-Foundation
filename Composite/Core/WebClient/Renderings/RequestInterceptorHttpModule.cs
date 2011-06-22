@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
 using Composite.Core.Extensions;
@@ -14,6 +15,9 @@ namespace Composite.Core.WebClient.Renderings
 {
     internal class RequestInterceptorHttpModule : IHttpModule
     {
+        private static readonly string MediaUrl_InternalPrefix = UrlUtils.PublicRootPath + "/media(";
+        private static readonly string MediaUrl_PublicPrefix = UrlUtils.PublicRootPath + "/media/";
+
         public void Init(HttpApplication context)
         {
             context.BeginRequest += context_BeginRequest;
@@ -33,7 +37,68 @@ namespace Composite.Core.WebClient.Renderings
                 return;
             }
 
+            if (HandleMediaRequest(httpContext))
+            {
+                return;
+            }
+
             HandleRootRequestInClassicMode(httpContext);
+        }
+
+        static bool HandleMediaRequest(HttpContext httpContext)
+        {
+            string rawUrl = httpContext.Request.RawUrl;
+
+            if(rawUrl.StartsWith(MediaUrl_InternalPrefix))
+            {
+                int endBracketOffset = rawUrl.IndexOf(")");
+                if(endBracketOffset < 0) return false;
+
+                Guid mediaId;
+                if(!Guid.TryParse(rawUrl.Substring(MediaUrl_InternalPrefix.Length, endBracketOffset - MediaUrl_InternalPrefix.Length), out mediaId))
+                {
+                    return false;
+                }
+
+                NameValueCollection queryParams = new UrlBuilder(rawUrl).GetQueryParameters();
+                queryParams.Add("id", mediaId.ToString());
+
+                var newUrl = new UrlBuilder(UrlUtils.PublicRootPath + "/Renderers/ShowMedia.ashx");
+                newUrl.AddQueryParameters(queryParams);
+
+                httpContext.RewritePath(newUrl);
+
+                return true;
+            }
+
+
+            int minimumLengthOfPublicMediaUrl = MediaUrl_PublicPrefix.Length + 36; /* 36 - length of a guid */
+            if (rawUrl.Length >= minimumLengthOfPublicMediaUrl
+                && rawUrl.StartsWith(MediaUrl_PublicPrefix))
+            {
+                Guid mediaId;
+                if (!Guid.TryParse(rawUrl.Substring(MediaUrl_PublicPrefix.Length, 36), out mediaId))
+                {
+                    return false;
+                }
+
+                var parsedRawUrl = new UrlBuilder(rawUrl);
+
+                NameValueCollection queryParams = new UrlBuilder(rawUrl).GetQueryParameters();
+                queryParams.Add("id", mediaId.ToString());
+
+                string pathInfo = parsedRawUrl.FullPath.Substring(minimumLengthOfPublicMediaUrl);
+
+                var newUrl = new UrlBuilder(UrlUtils.PublicRootPath + "/Renderers/ShowMedia.ashx");
+                newUrl.AddQueryParameters(queryParams);
+                newUrl.PathInfo = pathInfo;
+
+                httpContext.RewritePath(newUrl);
+
+                return true;
+            }
+
+            return false;
         }
 
         void context_PreRequestHandlerExecute(object sender, EventArgs e)
