@@ -45,6 +45,15 @@
                         }
                     }
                 }
+
+                var sitemapNavigator = new SitemapNavigator(conn);
+                PageNode homePageNode = sitemapNavigator.HomePageNodes.FirstOrDefault(); 
+
+                if (homePageNode != null)
+                {
+                    Redirect(homePageNode.Url);
+                    return;
+                }
             }
         }
         
