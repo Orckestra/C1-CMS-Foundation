@@ -37,9 +37,7 @@ TreeSelectorToolBarBinding.prototype.toString = function () {
  */
 TreeSelectorToolBarBinding.prototype._containAllButtons = function () {
 	
-	//var tools = this.bindingWindow.bindingMap.toolsbutton;
 	var mores = this.bindingWindow.bindingMap.moreactionstoolbargroup;
-	//var avail = tools.bindingElement.offsetLeft - this._moreActionsWidth;
 	var avail = this.bindingWindow.bindingMap.toolbar.boxObject.getDimension().w - this._moreActionsWidth - 6;
 	var total = 0;
 	var hides = new List ();

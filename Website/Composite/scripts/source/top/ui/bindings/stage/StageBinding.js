@@ -24,6 +24,13 @@ StageBinding.perspectiveNode = null;
 StageBinding.entityToken = null;
 
 /**
+* The current tree selector binding
+* @type {SystemTreeBinding}
+*/
+StageBinding.treeSelector = null;
+
+
+/**
  * Hide OR show a ViewDefinition on stage (dependant on its current status).
  * @param {string} handle
  */

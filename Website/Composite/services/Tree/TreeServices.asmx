@@ -276,5 +276,21 @@ namespace Composite.Services
                 throw new System.Security.SecurityException("Data has been tampered");
             }
         }
+
+
+		[WebMethod]
+		public List<string> GetAllParents(string serializedEntityToken)
+		{
+			var entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
+			var graph = new RelationshipGraph(entityToken, RelationshipGraphSearchOption.Both, true);
+			var tokens = new HashSet<EntityToken>();
+
+			foreach (var level in graph.Levels)
+			{
+				tokens.UnionWith(level.AllEntities);
+			}
+
+			return tokens.Select(d => EntityTokenSerializer.Serialize(d,true)).ToList();
+		}
     }
 }

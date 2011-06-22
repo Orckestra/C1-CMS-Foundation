@@ -52,6 +52,12 @@ function SystemTreeBinding () {
 	 * @type {boolean}
 	 */
 	this._isActionProfileAware = true;
+
+	/**
+	* Is tree selector? 
+	* @type {boolean}
+	*/
+	this._isTreeSelector = false;
 	
 	/**
 	 * This can be deprecated if we implement serverside treenode selection.
@@ -160,7 +166,13 @@ SystemTreeBinding.prototype.onBindingRegister = function () {
 	} else {
 		this.setContextMenu ( top.app.bindingMap.systemtreepopup );
 	}
-	
+
+
+	if (this.getProperty("treeselector") == true) {
+		this._isTreeSelector = true;
+	}
+
+
 	/*
 	 * Setup lock-to-editor.
 	 */
@@ -445,15 +457,17 @@ SystemTreeBinding.prototype._updateRefreshingTrees = function ( key ) {
  * Enable contextmenu cut and paste?
  */
 SystemTreeBinding.prototype._computeClipboardSetup = function () {
-	
+
 	var isCutAllowed = false;
-	var focusedBindings = this.getFocusedTreeNodeBindings ();
-	
-	if ( focusedBindings.hasEntries ()) {
+	var focusedBindings = this.getFocusedTreeNodeBindings();
+	if (this._isTreeSelector) {
+		isCutAllowed = false;
+	}
+	else if (focusedBindings.hasEntries()) {
 		isCutAllowed = true;
-		while ( isCutAllowed && focusedBindings.hasNext ()) {
-			var binding = focusedBindings.getNext ();
-			if ( !binding.isDraggable ) {
+		while (isCutAllowed && focusedBindings.hasNext()) {
+			var binding = focusedBindings.getNext();
+			if (!binding.isDraggable) {
 				isCutAllowed = false;
 			}
 		}
@@ -1012,6 +1026,29 @@ SystemTreeBinding.prototype.focusSingleTreeNodeBinding = function ( binding ) {
 };
 
 /**
+* Is popup tree system action?
+* @param {SystemAction} systemAction;
+* @return {boolean}
+*/
+SystemTreeBinding.prototype.isTreeSelectorAction = function (systemAction) {
+	//TODO make filtering by information from server
+	var handle = systemAction.getHandle();
+	if (handle.indexOf("AddNewMediaFolderWorkflow") != -1)
+		return true;
+	if (handle.indexOf("AddNewMediaFileWorkflow") != -1)
+		return true;
+	if (handle.indexOf("AddMediaZipFileWorkflow") != -1)
+		return true;
+	if (handle.indexOf("DeleteMediaFileWorkflow") != -1)
+		return true;
+	if (handle.indexOf("DeleteMediaFolderWorkflow") != -1)
+		return true;
+
+	return false;
+}
+
+
+/**
  * Compile actionprofile based on the individual actionprofile of all focused treenodes.
  * In case of multiple focused treenodes, only SystemActions relevant for *all* focused 
  * treenodes will be included in the result.
@@ -1023,7 +1060,27 @@ SystemTreeBinding.prototype.getCompiledActionProfile = function () {
 	var result = new Map ();
 	
 	var focusedBindings = this.getFocusedTreeNodeBindings ();
-	result = focusedBindings.getFirst ().node.getActionProfile ();
+
+	result = focusedBindings.getFirst().node.getActionProfile();
+
+	if (this._isTreeSelector) {
+		var actionProfile = result;
+		result = new Map();
+		var self = this;
+		actionProfile.each(
+			function (groupid, list) {
+				var newList = new List();
+				list.each(function (systemAction) {
+					if (self.isTreeSelectorAction(systemAction)) {
+						newList.add(systemAction);
+					}
+				});
+				if (newList.hasEntries()) {
+					result.set(groupid, newList);
+				}
+			}
+		);
+	}
 	
 	// THIS FAILS SOMEHOW!
 	

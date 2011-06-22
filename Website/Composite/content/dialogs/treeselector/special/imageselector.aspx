@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml">
 	<control:httpheaders runat="server"/>
 	<head>
@@ -24,13 +24,13 @@
 				<ui:toolbarbody />
 				<ui:toolbarbody id="moreactionstoolbargroup">
 					<ui:toolbargroup>
-						<ui:toolbarbutton id="moreactionsbutton" label="More б" popup="moreactionspopup" />
+						<ui:toolbarbutton id="moreactionsbutton" label="More" popup="moreactionspopup" />
 					</ui:toolbargroup>
 				</ui:toolbarbody>
 			</ui:toolbar>
 			<ui:pagebody>
 				<ui:box id="treebox">
-					<ui:tree id="selectiontree" binding="SystemTreeBinding" selectiontype="single" actionaware="tree" locktoeditor="false">
+					<ui:tree id="selectiontree" binding="SystemTreeBinding" selectiontype="single" actionaware="true" treeselector="true" locktoeditor="false">
 						<ui:treebody/>
 					</ui:tree>
 				</ui:box>

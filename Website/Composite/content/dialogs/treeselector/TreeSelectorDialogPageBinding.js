@@ -76,6 +76,12 @@ function TreeSelectorDialogPageBinding () {
 	 * @type {Array<Object>}
 	 */
 	this._nodes = null;
+
+	/**
+	 * List of parents of root nodes. Used for handle tree refreshing
+	 * @type {List}
+	 */
+	this._parents = null;
 }
 
 /**
@@ -91,30 +97,58 @@ TreeSelectorDialogPageBinding.prototype.toString = function () {
  * @overloads {PageBinding#setPageArgument}
  * @param {object} arg
  */
-TreeSelectorDialogPageBinding.prototype.setPageArgument = function ( arg ) {
-	
-	TreeSelectorDialogPageBinding.superclass.setPageArgument.call ( this, arg );
-	
-	this.label				= arg.label;
-	this.image				= arg.image;
-	this._key 				= arg.key;
+TreeSelectorDialogPageBinding.prototype.setPageArgument = function (arg) {
+
+	TreeSelectorDialogPageBinding.superclass.setPageArgument.call(this, arg);
+
+	this.label = arg.label;
+	this.image = arg.image;
+	this._key = arg.key;
 	this._selectionProperty = arg.selectionProperty;
-	this._selectionValue 	= arg.selectionValue;
-	this._selectionResult	= arg.selectionResult
-	this._nodes				= arg.nodes;
-	
+	this._selectionValue = arg.selectionValue;
+	this._selectionResult = arg.selectionResult
+	this._nodes = arg.nodes;
+	this._parents = new List();
+
+}
+
+/**
+ * @overloads {SystemTreeBinding#onBindingRegister}
+ */
+TreeSelectorDialogPageBinding.prototype.onBindingRegister = function () {
+
+	TreeSelectorDialogPageBinding.superclass.onBindingRegister.call(this);
+
 	/*
-	 * This could be a searchtoken *or* a searchtoken key.
-	 *
-	var search = arg.selectionSearch;
-	
-	if ( search ) {
-		if ( SearchTokens.hasToken ( search )) {
-			search = SearchTokens.getToken ( search );
-		}
-		this._selectionSearch = search;
-	}
+	* File subscriptions.
 	*/
+	this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESH);
+}
+
+/**
+ * Implements {IBroadcastListener}
+ * @param {string} broadcast
+ * @param {object} arg
+ */
+TreeSelectorDialogPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
+
+	/**
+	* Doublecheck that this tree is actually focused. Although if 
+	* the server transmits a refresh signal, this is not required.
+	*/
+	switch (broadcast) {
+
+		case BroadcastMessages.SYSTEMTREEBINDING_REFRESH:
+			if (arg != null || this.isFocused) { // arg is only provided when server is refreshing!
+				if (this._parents.has(arg)) {
+					this._treeBinding._handleCommandBroadcast(broadcast);
+					return;
+				}
+			}
+			break;
+	}
+
+	TreeSelectorDialogPageBinding.superclass.handleBroadcast.call(this, broadcast, arg);
 }
 
 /**
@@ -135,33 +169,13 @@ TreeSelectorDialogPageBinding.prototype.onBeforePageInitialize = function () {
 	this._injectTreeNodes ( 
 		new List ( this._nodes )
 	);
-	
-	/*
-	this._treeBinding.searchToken = this._selectionSearch;
-	
-	var nodes = null;
-	
-	if ( this._treeBinding.searchToken ) {
-		nodes = System.getNamedRootsBySearchToken ( 
-			this._key, this._treeBinding.searchToken 
-		);
-	} else {
-		nodes = System.getNamedRoots ( this._key );
-	}
-	while ( nodes.hasNext ()) {
-		var node = SystemTreeNodeBinding.newInstance ( 
-			nodes.getNext (), 
-			this.bindingDocument 
-		)
-		this._treeBinding.add ( node ); 
-		node.attach ();
-	}
-	*/
 
-	ExplorerBinding.bindingInstance.setSelectedTree(this.bindingWindow.bindingMap.selectiontree);
+	StageBinding.treeSelector = this._treeBinding;
 
 	TreeSelectorDialogPageBinding.superclass.onBeforePageInitialize.call ( this );
 }
+
+
 
 /**
  * Inject root nodes in tree.
@@ -188,16 +202,13 @@ TreeSelectorDialogPageBinding.prototype._injectTreeNodes = function (list) {
 		/*
 		* Build treenodes.
 		*/
-		var nodes = null;
-		if (search != null) {
-			nodes = System.getNamedRootsBySearchToken(key, search);
-		} else {
-			nodes = System.getNamedRoots(key);
-		}
+		var nodes = System.getNamedRootsBySearchToken(key, search);
+
 		var count = 0;
 		var expandNodes = new List([]);
 
 		while (nodes.hasNext()) {
+
 			var node = SystemTreeNodeBinding.newInstance(
 				nodes.getNext(),
 				this.bindingDocument
@@ -212,6 +223,15 @@ TreeSelectorDialogPageBinding.prototype._injectTreeNodes = function (list) {
 			if (!nodes.hasNext() && count == 1 || LastOpenedSystemNodes.isOpen(node)) {
 				expandNodes.add(node);
 			}
+
+			// Fill list of parents, used for handle refreshed tree
+			var self = this;
+			var parents = TreeService.GetAllParents(node.node.getEntityToken());
+			new List(parents).each(
+				function (parent) {
+					self._parents.add(parent);
+				}
+			);
 		}
 		expandNodes.each(function (node) {
 			if (node.isContainer && !node.isOpen) {
@@ -221,6 +241,8 @@ TreeSelectorDialogPageBinding.prototype._injectTreeNodes = function (list) {
 				}, 0);
 			}
 		});
+
+
 
 	}
 }
@@ -324,4 +346,15 @@ TreeSelectorDialogPageBinding.prototype._clearDisplayAndResult = function () {
 	
 	dataInput.setValue ( "" );
 	this.result = null;
+}
+
+
+/**
+ * @overloads {DialogPageBinding#onDialogResponse}
+*/
+TreeSelectorDialogPageBinding.prototype.onDialogResponse = function () {
+
+	TreeSelectorDialogPageBinding.superclass.onDialogResponse.call(this);
+
+	StageBinding.treeSelector = null;
 }
