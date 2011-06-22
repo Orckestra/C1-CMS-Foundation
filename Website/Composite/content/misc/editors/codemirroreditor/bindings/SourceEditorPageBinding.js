@@ -131,6 +131,8 @@ SourceEditorPageBinding.prototype.setContent = function (string) {
 		// Fixing the title char
 		// TODO: probably on server...
 		string = string.replace(/\"%7E/g, "\"~");
+		string = string.replace(/%28/g, "(");
+		string = string.replace(/%29/g, ")");
 
 		this._codemirrorEditor.setValue(string);
 	}

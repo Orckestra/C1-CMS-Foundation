@@ -650,9 +650,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                 Element element = new Element(_context.CreateElementHandle(entityToken), MakeVisualData(page, kvp.Key, urlMappingName), dragAndDropInfo);
 
-                // TODO: url building has to be moved to PageUrlHelper class
-                string publicUri = UrlUtils.ResolvePublicUrl(string.Format("Renderers/Page.aspx?pageId={0}", page.Id));
-                element.PropertyBag.Add("Uri", publicUri);
+                element.PropertyBag.Add("Uri", "~/page({0})".FormatWith(page.Id));
                 element.PropertyBag.Add("ElementType", "application/x-composite-page");
                 element.PropertyBag.Add("DataId", page.Id.ToString());
 

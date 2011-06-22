@@ -222,6 +222,17 @@ namespace Composite.Core
             }
         }
 
+        /// <summary>
+        /// Returns FilePath + PathInfo 
+        /// </summary>
+        /// <exclude />
+        internal string FullPath
+        {
+            get
+            {
+                return (_filePath ?? string.Empty) + (_pathInfo ?? string.Empty);
+            }
+        }
 
         /// <exclude />
         public string ServerUrl

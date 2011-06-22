@@ -113,7 +113,8 @@ namespace Composite.Core.WebClient
             public string Value;
         }
 
-        private static readonly string InternalUrlPrefix = UrlUtils.PublicRootPath + "/Renderers/Page.aspx";
+        private static readonly string RendererUrlPrefix = UrlUtils.PublicRootPath + "/Renderers/Page.aspx";
+        private static readonly string InternalUrlPrefix = UrlUtils.PublicRootPath + "/page";
 
 
         /// <exclude />
@@ -395,7 +396,7 @@ namespace Composite.Core.WebClient
         /// <param name="queryString">Query string.</param>
         /// <param name="notUsedQueryParameters">Query string parameters that were not used.</param>
         /// <returns></returns>
-        [Obsolete("To be removed. Use Composite.Data.PageLink instead.")]
+        [Obsolete("To be removed. Use Composite.Core.Routings.PageUrls instead.")]
         public static PageUrlOptions ParseQueryString(NameValueCollection queryString, out NameValueCollection notUsedQueryParameters)
         {
             if (string.IsNullOrEmpty(queryString["pageId"])) throw new InvalidOperationException("Illigal query string. Expected param 'pageId' with guid.");
@@ -445,41 +446,48 @@ namespace Composite.Core.WebClient
 
             var internalUrls = new List<Match>();
 
-            int startIndex = 0;
+            
 
-            // We assume that url starts with "{virtual folder path}/Renderers/Page.aspx" and ends with 
-            // double quote, single quote, or &#39; which is single quote mark (') encoded in xml attribute 
+            // We assume that url starts with either 
+            // "{virtual folder path}/Renderers/Page.aspx"  or "~/page("
+            // and ends with one of the following characters: 
+            // double quote, single quote, or "&#39;" which is single quote mark (') encoded in xml attribute 
 
-            while(true)
+            foreach (string prefix in new [] { RendererUrlPrefix, InternalUrlPrefix })
             {
-                int urlOffset = html.IndexOf(InternalUrlPrefix, startIndex, StringComparison.OrdinalIgnoreCase);
-                if(urlOffset < 0) break;
+                int startIndex = 0;
 
-                int prefixEndOffset = urlOffset + InternalUrlPrefix.Length;
-
-                int endOffset = html.IndexOf('\"', prefixEndOffset);
-                if (endOffset < 0) break;
-
-                int singleQuoteIndex = html.IndexOf('\'', prefixEndOffset, endOffset - prefixEndOffset);
-                if (singleQuoteIndex > 0)
+                while (true)
                 {
-                    endOffset = singleQuoteIndex;
+                    int urlOffset = html.IndexOf(prefix, startIndex, StringComparison.OrdinalIgnoreCase);
+                    if (urlOffset < 0) break;
+
+                    int prefixEndOffset = urlOffset + prefix.Length;
+
+                    int endOffset = html.IndexOf('\"', prefixEndOffset);
+                    if (endOffset < 0) break;
+
+                    int singleQuoteIndex = html.IndexOf('\'', prefixEndOffset, endOffset - prefixEndOffset);
+                    if (singleQuoteIndex > 0)
+                    {
+                        endOffset = singleQuoteIndex;
+                    }
+
+                    int encodedSingleQuoteIndex = html.IndexOf("&#39;", prefixEndOffset, endOffset - prefixEndOffset);
+                    if (encodedSingleQuoteIndex > 0) endOffset = encodedSingleQuoteIndex;
+
+                    internalUrls.Add(new Match
+                                         {
+                                             Index = urlOffset,
+                                             Value = html.Substring(urlOffset, endOffset - urlOffset)
+                                         });
+
+                    startIndex = endOffset;
                 }
-
-                int encodedSingleQuoteIndex = html.IndexOf("&#39;", prefixEndOffset, endOffset - prefixEndOffset);
-                if (encodedSingleQuoteIndex > 0) endOffset = encodedSingleQuoteIndex;
-
-                internalUrls.Add(new Match
-                                     {
-                                         Index = urlOffset,
-                                         Value = html.Substring(urlOffset, endOffset - urlOffset)
-                                     });
-
-                startIndex = endOffset;
             }
 
-
-            internalUrls.Reverse();
+            // Sorting the offsets by descending, so we can replace urls in that order by not affecting offsets of not yet processed urls
+            internalUrls.Sort((a, b) => -a.Index.CompareTo(b.Index));
 
             UrlSpace urlSpace = HttpContext.Current != null ? new UrlSpace(HttpContext.Current) : new UrlSpace();
 
@@ -492,12 +500,13 @@ namespace Composite.Core.WebClient
                 if (!resolvedUrls.TryGetValue(internalPageUrl, out publicPageUrl))
                 {
                     UrlData<IPage> pageUrlData;
-                    UrlBuilder urlBuilderInternalUrl;
+                    string decodedInternalUrl = internalPageUrl.Replace("%28", "(").Replace("%29", ")");
+                    string anchor;
 
                     try
                     {
-                        urlBuilderInternalUrl = new UrlBuilder(internalPageUrl);
-                        pageUrlData = PageUrls.UrlProvider.ParseInternalUrl(internalPageUrl);
+                        anchor = new UrlBuilder(internalPageUrl).Anchor;
+                        pageUrlData = PageUrls.UrlProvider.ParseInternalUrl(decodedInternalUrl);
                     }
                     catch
                     {
@@ -520,9 +529,9 @@ namespace Composite.Core.WebClient
                         continue;
                     }
 
-                    if (!urlBuilderInternalUrl.Anchor.IsNullOrEmpty())
+                    if (!anchor.IsNullOrEmpty())
                     {
-                        publicPageUrl += "#" + urlBuilderInternalUrl.Anchor;
+                        publicPageUrl += "#" + anchor;
                     }
 
                     // Encoding xml attribute value

@@ -16,7 +16,6 @@ namespace Composite.Core.Routing.Pages
         /// <exclude />
         public static readonly string RouteDate_PageUrl = "C1Page";
 
-        internal static readonly string HttpContextItem_Hostname = "C1PageRoute_Hostname";
         internal static readonly string HttpContextItem_C1PageUrl = "C1_PageUrl";
         private static readonly string HttpContextItem_PathInfoHandled = "C1PageRoute_PathInfoHandled";
 
@@ -74,25 +73,23 @@ namespace Composite.Core.Routing.Pages
 
             var urlProvider = PageUrls.UrlProvider;
 
-            if (IsAdminPath(localPath) || IsRenderersPath(localPath) || urlProvider.IsInternalUrl(localPath))
+            if (IsAdminPath(localPath) || IsRenderersPath(localPath))
             {
                 return null;
             }
-
-            var urlSpace = context.Items.Contains(HttpContextItem_Hostname) 
-                ? new UrlSpace(context.Items[HttpContextItem_Hostname] as string)
-                : new UrlSpace(context);
 
             string currentUrl = context.Request.Url.OriginalString;
 
-            UrlData<IPage> urlData = urlProvider.ParseUrl(currentUrl, urlSpace);
-            if(urlData == null || urlData.UrlKind == UrlKind.Internal)
+            UrlData<IPage> urlData = urlProvider.ParseUrl(currentUrl);
+            if(urlData == null || urlData.UrlKind == UrlKind.Renderer)
             {
                 return null;
             }
 
+            var urlSpace = new UrlSpace(context);
+
             // Redirecting friendly urls to public urls
-            if (urlData.UrlKind == UrlKind.Friendly || urlData.UrlKind == UrlKind.Redirect)
+            if (urlData.UrlKind == UrlKind.Friendly || urlData.UrlKind == UrlKind.Redirect || urlData.UrlKind == UrlKind.Internal)
             {
                 if(urlData.PathInfo == "/")
                 {
@@ -102,10 +99,16 @@ namespace Composite.Core.Routing.Pages
                 string publicUrl = urlProvider.BuildUrl(urlData, UrlKind.Public, urlSpace);
                 if(publicUrl == null)
                 {
-                    return null;
+                    if (urlData.UrlKind != UrlKind.Internal)
+                    {
+                        return null;
+                    }
+                    // Rendering internal url if public url is missing
                 }
-
-                return SeoFriendlyRedirect(context, publicUrl);
+                else
+                {
+                    return SeoFriendlyRedirect(context, publicUrl);
+                }
             }
 
             Verify.That(urlData.UrlKind == UrlKind.Public, "Unexpected url kind '{0}", urlData.UrlKind);
@@ -130,10 +133,9 @@ namespace Composite.Core.Routing.Pages
                 return SeoFriendlyRedirect(context, correctUrl);
             }
 
-            // Disabling caching if there's a logged in user
+            // Disabling ASP.NET cache if there's a logged-in user
             if (Composite.C1Console.Security.UserValidationFacade.IsLoggedIn())
             {
-                // Disabling ASP.NET cache if there's a logged-in user
                 context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
             }
 

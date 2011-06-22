@@ -67,6 +67,8 @@ LinkDialogPageBinding.prototype._populateDataBindingsFromDOM = function () {
 		} else if ( href.indexOf ( "~" ) >-1 ) {
 			href = href.substring ( href.indexOf ( "~" ));
 		}
+        href = href.replace(/%28/g, "(").replace(/%29/g, ")");
+
 		manager.getDataBinding ( "href" ).setValue ( href );
 	}
 	if ( a.rel ) {

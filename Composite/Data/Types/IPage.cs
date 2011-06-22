@@ -28,7 +28,7 @@ namespace Composite.Data.Types
     [CachingAttribute(CachingType.Full)]
     [PublishControlledAuxiliary(typeof(PagePublishControlledAuxiliary))]
     [PublishProcessControllerTypeAttribute(typeof(GenericPublishProcessController))]
-    [KeyTemplatedXhtmlRenderer(XhtmlRenderingType.Embedable, "<a href='~/Renderers/Page.aspx?pageId={id}'>{label}</a>")]
+    [KeyTemplatedXhtmlRenderer(XhtmlRenderingType.Embedable, "<a href='~/page({id})'>{label}</a>")]
     public interface IPage : IData, IChangeHistory, IPublishControlled, ILocalizedControlled
     {
         /// <exclude />

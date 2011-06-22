@@ -20,15 +20,19 @@ namespace Composite.Plugins.Routing.Pages
     [ConfigurationElementType(typeof(NonConfigurablePageUrlProvider))]
     internal sealed class DefaultPageUrlProvider: IPageUrlProvider
     {
+        private static readonly string InternalUrlPrefix = "~/page(";
+        private static readonly string InternalUrlPrefixResolved = UrlUtils.PublicRootPath + "/page(";
 
         public IPageUrlBuilder CreateUrlBuilder(PublicationScope publicationScope, CultureInfo localizationScope, UrlSpace urlSpace)
         {
             return new PageUrlBuilder(publicationScope, localizationScope, urlSpace);
         }
 
-        public bool IsInternalUrl(string url)
+        public bool IsInternalUrl(string relativeUrl)
         {
-            return IsPageRendererRequest(new UrlBuilder(url).FilePath);
+            return IsPageRendererRequest(new UrlBuilder(relativeUrl).FilePath)
+                || relativeUrl.StartsWith(InternalUrlPrefix, true)
+                || relativeUrl.StartsWith(InternalUrlPrefixResolved, true);
         }
 
         internal static bool IsPageRendererRequest(string filePath)
@@ -36,12 +40,88 @@ namespace Composite.Plugins.Routing.Pages
             return filePath.EndsWith("Renderers/Page.aspx", true);
         }
 
-        public UrlData<IPage> ParseInternalUrl(string url)
+        public UrlData<IPage> ParseInternalUrl(string relativeUrl)
         {
-            var urlBuilder = new UrlBuilder(url);
+            var urlBuilder = new UrlBuilder(relativeUrl);
 
-            if (!IsPageRendererRequest(urlBuilder.FilePath)) return null;
+            if (IsPageRendererRequest(urlBuilder.FilePath))
+            {
+                return ParseRendererUrl(urlBuilder);
+            }
 
+            string prefix = InternalUrlPrefix;
+
+            if (!relativeUrl.StartsWith(prefix, true))
+            {
+                prefix = InternalUrlPrefixResolved;
+                if (!relativeUrl.StartsWith(prefix, true))
+                {
+                    return null;
+                }
+            }
+
+            int closingBracketOffset = relativeUrl.IndexOf(")");
+            if (closingBracketOffset < 0)
+            {
+                return null;
+            }
+
+            Guid pageId;
+            if (!Guid.TryParse(relativeUrl.Substring(prefix.Length, closingBracketOffset - prefix.Length), out pageId))
+            {
+                return null;
+            }
+
+            string pathInfo = urlBuilder.FilePath.Substring(closingBracketOffset + 1);
+
+            bool isUnpublished = relativeUrl.Contains(PageUrlBuilder.UrlMarker_Unpublished);
+            if (isUnpublished)
+            {
+                pathInfo = pathInfo.Replace(PageUrlBuilder.UrlMarker_Unpublished, string.Empty);
+            }
+
+            NameValueCollection queryString = urlBuilder.GetQueryParameters();
+            string cultureInfoStr = queryString["cultureInfo"];
+
+            CultureInfo cultureInfo;
+            if (!cultureInfoStr.IsNullOrEmpty())
+            {
+                cultureInfo = new CultureInfo(cultureInfoStr);
+            }
+            else
+            {
+                cultureInfo = LocalizationScopeManager.CurrentLocalizationScope;
+                if (cultureInfo == CultureInfo.InvariantCulture)
+                {
+                    cultureInfo = DataLocalizationFacade.DefaultLocalizationCulture;
+                }
+            }
+
+            queryString.Remove("cultureInfo");
+
+            IPage page;
+
+            using (new DataScope(isUnpublished ? PublicationScope.Unpublished : PublicationScope.Published, cultureInfo))
+            {
+                page = PageManager.GetPageById(pageId, true);
+            }
+
+            if (page == null)
+            {
+                return null;
+            }
+
+            return new UrlData<IPage>
+            {
+                Data = page,
+                PathInfo = pathInfo,
+                QueryParameters = queryString,
+                UrlKind = UrlKind.Internal
+            };
+        }
+
+        private static UrlData<IPage> ParseRendererUrl(UrlBuilder urlBuilder)
+        {
             NameValueCollection queryString = urlBuilder.GetQueryParameters();
 
             Verify.That(!string.IsNullOrEmpty(queryString["pageId"]), "Illigal query string. Expected param 'pageId' with guid.");
@@ -92,23 +172,23 @@ namespace Composite.Plugins.Routing.Pages
 
             IPage page;
 
-            using(new DataScope(publicationScope, cultureInfo))
+            using (new DataScope(publicationScope, cultureInfo))
             {
                 page = PageManager.GetPageById(pageId, true);
             }
 
-            if(page == null)
+            if (page == null)
             {
                 return null;
             }
 
             return new UrlData<IPage>
-                       {
-                           Data = page, 
-                           PathInfo = urlBuilder.PathInfo, 
-                           QueryParameters = queryParameters, 
-                           UrlKind = UrlKind.Internal
-                       };
+            {
+                Data = page,
+                PathInfo = urlBuilder.PathInfo,
+                QueryParameters = queryParameters,
+                UrlKind = UrlKind.Renderer
+            };
         }
 
         public UrlData<IPage> ParseUrl(string absoluteUrl)
@@ -125,13 +205,13 @@ namespace Composite.Plugins.Routing.Pages
             return ParseUrl(relativeUrl, urlSpace);
         }
 
-        public UrlData<IPage> ParseUrl(string url, UrlSpace urlSpace)
+        public UrlData<IPage> ParseUrl(string relativeUrl, UrlSpace urlSpace)
         {
-            var urlBuilder = new UrlBuilder(url);
+            var urlBuilder = new UrlBuilder(relativeUrl);
 
-            if (IsPageRendererRequest(urlBuilder.FilePath))
+            if (IsInternalUrl(urlBuilder.FilePath))
             {
-                return ParseInternalUrl(url);
+                return ParseInternalUrl(relativeUrl);
             }
 
             string requestPath;
@@ -349,7 +429,7 @@ namespace Composite.Plugins.Routing.Pages
                 return publicUrl;
             }
 
-            if (urlKind == UrlKind.Internal)
+            if (urlKind == UrlKind.Renderer)
             {
                 string basePath = UrlUtils.ResolvePublicUrl("Renderers/Page.aspx");
                 UrlBuilder result = new UrlBuilder(basePath);
@@ -359,6 +439,34 @@ namespace Composite.Plugins.Routing.Pages
                 result["dataScope"] = legacyScopeName;
 
                 result.PathInfo = urlData.PathInfo;
+                if (urlData.QueryParameters != null)
+                {
+                    result.AddQueryParameters(urlData.QueryParameters);
+                }
+
+                return result;
+            }
+
+            if (urlKind == UrlKind.Internal)
+            {
+                UrlBuilder result = new UrlBuilder("~/page(" + page.Id + ")");
+
+                string pathInfo = string.Empty;
+
+                if (publicationScope == PublicationScope.Unpublished)
+                {
+                    pathInfo = PageUrlBuilder.UrlMarker_Unpublished;
+                }
+
+                if(!urlData.PathInfo.IsNullOrEmpty())
+                {
+                    pathInfo += urlData.PathInfo;
+                }
+                result.PathInfo = pathInfo;
+
+
+                result["cultureInfo"] = cultureInfo.ToString();
+               
                 if (urlData.QueryParameters != null)
                 {
                     result.AddQueryParameters(urlData.QueryParameters);
