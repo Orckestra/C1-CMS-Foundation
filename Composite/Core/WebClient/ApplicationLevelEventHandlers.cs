@@ -225,6 +225,11 @@ namespace Composite.Core.WebClient
                             pageCacheKey += "https";
                         }
 
+                        if(!string.IsNullOrEmpty(pageUrl.PathInfo))
+                        {
+                            pageCacheKey += pageUrl.PathInfo;
+                        }
+
                         return pageCacheKey;
                     }
                 }
