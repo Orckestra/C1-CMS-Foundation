@@ -211,6 +211,11 @@ public partial class Renderers_Page : System.Web.UI.Page
             xhtml = PageUrlHelper.ChangeRenderingPageUrlsToPublic(markupBuilder.ToString());
         }
 
+        using (Profiler.Measure("Changing 'internal' media urls to 'public'"))
+        {
+            xhtml = MediaUrlHelper.ChangeInternalMediaUrlsToPublic(xhtml);
+        }
+
         try
         {
             using (Profiler.Measure("Formatting output XHTML with Composite.Core.Xml.XhtmlPrettifier"))
