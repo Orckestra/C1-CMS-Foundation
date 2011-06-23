@@ -84,7 +84,8 @@ namespace Composite.Core
         {
             // Checking if pageInfo has already been extracted by C1PageRoute. It enables backward compatibility with some modules
             var httpContext = HttpContext.Current;
-            if(httpContext != null 
+            if(httpContext != null
+               && httpContext.RequestIsAvaliable()
                && originalUrl == httpContext.Request.RawUrl
                && C1PageRoute.UrlData != null)
             {
