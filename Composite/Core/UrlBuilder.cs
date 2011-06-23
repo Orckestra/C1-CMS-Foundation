@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Web;
+using System.Web.Util;
 using Composite.Core.Extensions;
 using Composite.Core.Routing.Pages;
 
@@ -63,11 +65,11 @@ namespace Composite.Core
                     string encodedKey = parts[0];
                     string encodedValue = parts[1];
 
-                    string key = HttpUtility.UrlDecode(encodedKey);
-                    string value = HttpUtility.UrlDecode(encodedValue);
+                    string key = DefaultHttpEncoder.UrlDecode(encodedKey);
+                    string value = DefaultHttpEncoder.UrlDecode(encodedValue);
 
-                    badUrl = HttpUtility.UrlEncode(key) != encodedKey
-                             || HttpUtility.UrlEncode(value) != encodedValue;
+                    badUrl = DefaultHttpEncoder.UrlEncode(key) != encodedKey
+                             || DefaultHttpEncoder.UrlEncode(value) != encodedValue;
 
                     if (!badUrl)
                     {
@@ -79,6 +81,49 @@ namespace Composite.Core
                 _queryParameters.Add(new KeyValuePair<string, string>(queryParam, IncorrectValueParam));
             }
         }
+
+        private class DefaultHttpEncoder
+        {
+            public static string UrlDecode(string urlPart)
+            {
+                var currentContext = HttpContext.Current;
+                if(currentContext != null)
+                {
+                    HttpContext.Current = null;
+                }
+
+                string result = HttpUtility.UrlDecode(urlPart);
+
+                if(currentContext != null)
+                {
+                    HttpContext.Current = currentContext;
+                }
+
+                return result;
+            }
+
+            public static string UrlEncode(string urlPart)
+            {
+                var currentContext = HttpContext.Current;
+                if (currentContext != null)
+                {
+                    HttpContext.Current = null;
+                }
+
+                string result = HttpUtility.UrlEncode(urlPart);
+
+                if (currentContext != null)
+                {
+                    HttpContext.Current = currentContext;
+                }
+
+                return result;
+            }
+        }
+
+        
+
+        
 
         private static void ExtractPathInfo(string originalUrl, string relativePath, out string filePath, out string pathInfo)
         {
@@ -301,9 +346,9 @@ namespace Composite.Core
                     }
                     else
                     {
-                        sb.Append(HttpUtility.UrlEncode(_queryParameters[i].Key));
+                        sb.Append(DefaultHttpEncoder.UrlEncode(_queryParameters[i].Key));
                         sb.Append('=');
-                        sb.Append(HttpUtility.UrlEncode(_queryParameters[i].Value));
+                        sb.Append(DefaultHttpEncoder.UrlEncode(_queryParameters[i].Value));
                     }
                 }
 
