@@ -13,6 +13,7 @@ namespace Composite.C1Console.Elements
         public ActionVisualizedData() 
         {
             this.ActionCheckedStatus = ActionCheckedStatus.Uncheckable;
+            ActivePositions = ElementActionActivePosition.NavigatorTree;
         }
 
         /// <exclude />
@@ -24,6 +25,7 @@ namespace Composite.C1Console.Elements
             this.Label = copy.Label;
             this.ToolTip = copy.ToolTip;
             this.ActionCheckedStatus = copy.ActionCheckedStatus;
+            this.ActivePositions = copy.ActivePositions;
         }
 
 
@@ -44,5 +46,9 @@ namespace Composite.C1Console.Elements
 
         /// <exclude />
         public ActionLocation ActionLocation { get; set; }
+
+        /// <exclude />
+        /// Default is: NavigatorTree
+        public ElementActionActivePosition ActivePositions { get; set; }
     }
 }

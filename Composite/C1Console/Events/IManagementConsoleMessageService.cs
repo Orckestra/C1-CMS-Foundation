@@ -56,5 +56,8 @@ namespace Composite.C1Console.Events
 
         /// <exclude />
         void BindEntityTokenToView(string entityToken);
+
+        /// <exclude />
+        void SelectElement(string entityToken);
     }
 }

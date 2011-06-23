@@ -22,7 +22,8 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods
                           Disabled = action.VisualData.Disabled,
                           Icon = action.VisualData.Icon,
                           CheckboxStatus = GetCheckboxStatusString(action.VisualData.ActionCheckedStatus),
-                          TagValue = action.TagValue,
+                          ActivePositions = (int)action.VisualData.ActivePositions,
+                          TagValue = action.TagValue,                          
                           ActionCategory = new ClientActionCategory
                                {
                                    GroupId = CalculateActionCategoryGroupId(action.VisualData.ActionLocation),

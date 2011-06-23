@@ -147,7 +147,10 @@
     <Compile Include="C1Console\Actions\FlowTokenSerializer.cs" />
     <Compile Include="C1Console\Actions\IElementInformationService.cs" />
     <Compile Include="C1Console\Actions\MessageBoxActionToken.cs" />
+    <Compile Include="C1Console\Actions\InlineScriptActionFacade.cs" />
     <Compile Include="C1Console\Actions\UrlActionToken.cs" />
+    <Compile Include="C1Console\Elements\ElementActionActivePosition.cs" />
+    <Compile Include="C1Console\Events\SelectElementQueueItem.cs" />
     <Compile Include="C1Console\Forms\CoreUiControls\DoubleSelectorUiControl.cs" />
     <Compile Include="C1Console\Forms\ReadBindingControlValueOverload.cs" />
     <Compile Include="C1Console\Security\LoginResult.cs" />
@@ -247,6 +250,7 @@
     <Compile Include="Core\Routing\Pages\C1PageRoute.cs" />
     <Compile Include="Core\Routing\Pages\C1PageRouteHander.cs" />
     <Compile Include="Core\Routing\Routes.cs" />
+    <Compile Include="Core\WebClient\Services\ConsoleMessageService\SelectElementParams.cs" />
     <Compile Include="Core\Xml\XhtmlErrorFormatter.cs" />
     <Compile Include="Core\Xml\UriResolver.cs" />
     <Compile Include="Core\Xml\XDocumentUtils.cs" />

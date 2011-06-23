@@ -234,6 +234,8 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 IMediaFile addedFile = DataFacade.AddNew<IMediaFile>(mediaFile, store.DataSourceId.ProviderName);
 
                 addNewTreeRefresher.PostRefreshMesseges(addedFile.GetDataEntityToken());
+
+                SelectElement(addedFile.GetDataEntityToken());
             }
             else
             {
@@ -257,6 +259,8 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 DataFacade.Update(fileData);
 
                 addNewTreeRefresher.PostRefreshMesseges(existingFile.GetDataEntityToken());
+
+                SelectElement(existingFile.GetDataEntityToken());
             }
         }        
     }

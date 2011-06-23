@@ -135,12 +135,13 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                          ToolTip = GetResourceString("MediaFileProviderElementProvider.AddMediaFileToolTip"),
                          Icon = MediaFileProviderElementProvider.AddMediaFile,
                          Disabled = false,
+                         ActivePositions = ElementActionActivePosition.NavigatorTree | ElementActionActivePosition.SelectorTree,
                          ActionLocation = new ActionLocation
                          {
                              ActionType = ActionType.Add,
                              IsInFolder = false,
                              IsInToolbar = true,
-                             ActionGroup = PrimaryFileActionGroup
+                             ActionGroup = PrimaryFileActionGroup                             
                          }
                      }
                  });

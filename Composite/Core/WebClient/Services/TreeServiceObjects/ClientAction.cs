@@ -33,6 +33,9 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects
         public string TagValue { get; set; }
 
         /// <exclude />
+        public int ActivePositions { get; set; }
+
+        /// <exclude />
         public string ActionKey 
         {
             get

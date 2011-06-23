@@ -9,7 +9,7 @@ namespace Composite.C1Console.Elements
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ElementAction
     {
-        private ActionHandle _actionHandle;
+        private readonly ActionHandle _actionHandle;
 
 
         /// <exclude />
@@ -17,7 +17,7 @@ namespace Composite.C1Console.Elements
         {
             if (actionHandle == null) throw new ArgumentNullException("actionHandle");
 
-            _actionHandle = actionHandle;
+            _actionHandle = actionHandle;            
         }
 
 
@@ -38,7 +38,7 @@ namespace Composite.C1Console.Elements
         /// <exclude />
         public string TagValue { get; set; }
 
-
+        
 
         /// <exclude />
         public override bool Equals(object obj)

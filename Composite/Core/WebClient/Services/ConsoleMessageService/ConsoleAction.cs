@@ -58,5 +58,8 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
 
         /// <exclude />
         public BindEntityTokenToViewParams BindEntityTokenToViewParams { get; set; }
+
+        /// <exclude />
+        public BindEntityTokenToViewParams SelectElementParams { get; set; }        
     }
 }

@@ -457,6 +457,18 @@ namespace Composite.C1Console.Workflow.Activities
 
 
         /// <exclude />
+        protected void SelectElement(EntityToken entityToken)
+        {
+            FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+
+            IManagementConsoleMessageService service = container.GetService<IManagementConsoleMessageService>();
+            
+            service.SelectElement(EntityTokenSerializer.Serialize(entityToken, true));
+        }
+
+
+
+        /// <exclude />
         protected void RebootConsole()
         {
             FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);

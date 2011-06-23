@@ -52,6 +52,9 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
         BindEntityTokenToView,
 
         /// <exclude />
-        ExpandTreeNode
+        ExpandTreeNode,
+
+        /// <exclude />
+        SelectElement
     }
 }

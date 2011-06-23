@@ -71,6 +71,8 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             DataFacade.Update(mediaFile);
 
             SetSaveStatus(true);
+
+            SelectElement(mediaFile.GetDataEntityToken());
         }
 
 

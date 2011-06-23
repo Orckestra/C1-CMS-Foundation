@@ -351,6 +351,19 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
                 });
             }
 
+            // BindEntityToken
+            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem.GetType() == typeof(SelectElementQueueItem)))
+            {
+                var selectElementQueueItem = (SelectElementQueueItem)queueElement.QueueItem;
+
+                newMessages.Add(new ConsoleAction
+                {
+                    SequenceNumber = queueElement.QueueItemNumber,
+                    ActionType = ActionType.SelectElement,
+                    BindEntityTokenToViewParams = new BindEntityTokenToViewParams { EntityToken = selectElementQueueItem.EntityToken }
+                });
+            }
+
             result.ConsoleActions = newMessages.OrderBy(f => f.SequenceNumber).ToList();
 
             return result;

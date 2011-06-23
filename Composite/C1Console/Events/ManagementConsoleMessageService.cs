@@ -151,5 +151,10 @@ namespace Composite.C1Console.Events
         {
             ConsoleMessageQueueFacade.Enqueue(new BindEntityTokenToViewQueueItem { ViewId = ViewId, EntityToken = entityToken }, this.ConsoleId);
         }
+
+        public void SelectElement(string entityToken)
+        {
+            ConsoleMessageQueueFacade.Enqueue(new SelectElementQueueItem { EntityToken = entityToken }, this.ConsoleId);
+        }
     }
 }
