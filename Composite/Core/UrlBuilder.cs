@@ -82,42 +82,49 @@ namespace Composite.Core
             }
         }
 
-        private class DefaultHttpEncoder
+        private static class DefaultHttpEncoder
         {
-            public static string UrlDecode(string urlPart)
-            {
-                var currentContext = HttpContext.Current;
-                if(currentContext != null)
-                {
-                    HttpContext.Current = null;
-                }
-
-                string result = HttpUtility.UrlDecode(urlPart);
-
-                if(currentContext != null)
-                {
-                    HttpContext.Current = currentContext;
-                }
-
-                return result;
-            }
-
             public static string UrlEncode(string urlPart)
             {
-                var currentContext = HttpContext.Current;
-                if (currentContext != null)
+                using (new DefaultHttpEncoderContext())
                 {
-                    HttpContext.Current = null;
+                    return HttpUtility.UrlEncode(urlPart);
+                }
+            }
+
+            public static string UrlDecode(string urlPart)
+            {
+                using (new DefaultHttpEncoderContext())
+                {
+                    return HttpUtility.UrlEncode(urlPart);
+                }
+            }
+
+            private class DefaultHttpEncoderContext : IDisposable
+            {
+                private readonly HttpContext _context;
+                private readonly bool _customHttpEncoderDisabled;
+                private readonly PropertyInfo _pi = typeof(HttpContext).GetProperty("DisableCustomHttpEncoder", BindingFlags.NonPublic | BindingFlags.Instance);
+                private readonly object[] _emptyParametersList = new object[0];
+
+                public DefaultHttpEncoderContext()
+                {
+                    _context = HttpContext.Current;
+
+                    if (_context == null) return;
+
+                    _customHttpEncoderDisabled = (bool)_pi.GetValue(_context, _emptyParametersList);
+
+                    if (!_customHttpEncoderDisabled) _pi.SetValue(_context, true, _emptyParametersList);
                 }
 
-                string result = HttpUtility.UrlEncode(urlPart);
-
-                if (currentContext != null)
+                public void Dispose()
                 {
-                    HttpContext.Current = currentContext;
+                    if (_context != null && !_customHttpEncoderDisabled)
+                    {
+                        _pi.SetValue(_context, false, _emptyParametersList);
+                    }
                 }
-
-                return result;
             }
         }
 
