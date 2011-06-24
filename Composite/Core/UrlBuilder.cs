@@ -86,20 +86,30 @@ namespace Composite.Core
         {
             public static string UrlEncode(string urlPart)
             {
-                using (new DefaultHttpEncoderContext())
+                return typeof(System.Net.WebClient)
+                        .InvokeMember("UrlEncode", 
+                                      BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.InvokeMethod, null, null,
+                                      new[] { urlPart }) as string;
+                /*using (new DefaultHttpEncoderContext())
                 {
                     return HttpUtility.UrlEncode(urlPart);
-                }
+                }*/
             }
 
             public static string UrlDecode(string urlPart)
             {
-                using (new DefaultHttpEncoderContext())
+                return typeof(System.Net.WebClient)
+                       .Assembly
+                       .GetType("System.Net.HttpListenerRequest+Helpers")
+                       .InvokeMember("UrlDecodeStringFromStringInternal",
+                                     BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.InvokeMethod, null, null,
+                                     new object[] { urlPart, Encoding.UTF8 }) as string;
+                /*using (new DefaultHttpEncoderContext())
                 {
                     return HttpUtility.UrlEncode(urlPart);
-                }
+                }*/
             }
-
+/*
             private class DefaultHttpEncoderContext : IDisposable
             {
                 private readonly HttpContext _context;
@@ -125,7 +135,7 @@ namespace Composite.Core
                         _pi.SetValue(_context, false, _emptyParametersList);
                     }
                 }
-            }
+            }*/
         }
 
         
