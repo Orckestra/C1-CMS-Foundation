@@ -144,6 +144,13 @@ namespace Composite.Core.Routing.Pages
             var data = GetRouteData();
             data.Values.Add(RouteDate_PageUrl, urlData);
 
+            // Doing url rewriting so ASP.NET will get correct FilePath/PathInfo properties
+            if(!urlData.PathInfo.IsNullOrEmpty())
+            {
+                string filePath = localPath.Substring(0, localPath.Length - urlData.PathInfo.Length);
+                context.RewritePath(filePath, urlData.PathInfo, context.Request.Url.Query);
+            }
+
             return data;
         }
 
