@@ -86,61 +86,36 @@ namespace Composite.Core
         {
             public static string UrlEncode(string urlPart)
             {
-                return typeof(System.Net.WebClient)
-                        .InvokeMember("UrlEncode", 
-                                      BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.InvokeMethod, null, null,
-                                      new[] { urlPart }) as string;
-                /*using (new DefaultHttpEncoderContext())
+                using (new NoHttpContext())
                 {
                     return HttpUtility.UrlEncode(urlPart);
-                }*/
+                }
             }
 
             public static string UrlDecode(string urlPart)
             {
-                return typeof(System.Net.WebClient)
-                       .Assembly
-                       .GetType("System.Net.HttpListenerRequest+Helpers")
-                       .InvokeMember("UrlDecodeStringFromStringInternal",
-                                     BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.InvokeMethod, null, null,
-                                     new object[] { urlPart, Encoding.UTF8 }) as string;
-                /*using (new DefaultHttpEncoderContext())
+                using (new NoHttpContext())
                 {
-                    return HttpUtility.UrlEncode(urlPart);
-                }*/
+                    return HttpUtility.UrlDecode(urlPart);
+                }
             }
-/*
-            private class DefaultHttpEncoderContext : IDisposable
+
+            private class NoHttpContext : IDisposable
             {
                 private readonly HttpContext _context;
-                private readonly bool _customHttpEncoderDisabled;
-                private readonly PropertyInfo _pi = typeof(HttpContext).GetProperty("DisableCustomHttpEncoder", BindingFlags.NonPublic | BindingFlags.Instance);
-                private readonly object[] _emptyParametersList = new object[0];
 
-                public DefaultHttpEncoderContext()
+                public NoHttpContext()
                 {
                     _context = HttpContext.Current;
-
-                    if (_context == null) return;
-
-                    _customHttpEncoderDisabled = (bool)_pi.GetValue(_context, _emptyParametersList);
-
-                    if (!_customHttpEncoderDisabled) _pi.SetValue(_context, true, _emptyParametersList);
+                    HttpContext.Current = null;
                 }
 
                 public void Dispose()
                 {
-                    if (_context != null && !_customHttpEncoderDisabled)
-                    {
-                        _pi.SetValue(_context, false, _emptyParametersList);
-                    }
+                    HttpContext.Current = _context;
                 }
-            }*/
+            }
         }
-
-        
-
-        
 
         private static void ExtractPathInfo(string originalUrl, string relativePath, out string filePath, out string pathInfo)
         {
