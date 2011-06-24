@@ -7,8 +7,12 @@ using System;
 
 namespace Composite.C1Console.Forms.Plugins.FunctionFactory
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Assembler(typeof(NonConfigurableFunctionFactoryAssembler))]
-    internal sealed class NonConfigurableFunctionFactory : FunctionFactoryData
+    public sealed class NonConfigurableFunctionFactory : FunctionFactoryData
     {
     }
 
