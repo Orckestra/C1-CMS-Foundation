@@ -526,9 +526,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
 
             IPage oldParent = null;
-            if (draggedPage.GetParentId() != Guid.Empty)
+            Guid oldParentId = draggedPage.GetParentId();
+            if (oldParentId != Guid.Empty)
             {
-                oldParent = DataFacade.GetData<IPage>(f => f.Id == draggedPage.GetParentId()).Single();
+                oldParent = DataFacade.GetData<IPage>(f => f.Id == oldParentId).Single();
             }
 
             if (dragAndDropType == DragAndDropType.Move)
@@ -541,8 +542,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     while (true)
                     {
                         bool urlTitleClashe =
-                            (from p in PageServices.GetChildren(newParentPageId)
-                             where p.UrlTitle == urlTitle
+                            (from p in PageServices.GetChildren(newParentPageId).AsEnumerable()
+                             where p.UrlTitle == urlTitle && p.Id != draggedPage.Id
                              select p).Any();
 
 
