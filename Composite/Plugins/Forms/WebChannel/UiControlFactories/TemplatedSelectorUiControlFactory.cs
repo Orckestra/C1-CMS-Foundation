@@ -9,6 +9,7 @@ using Composite.C1Console.Forms;
 using Composite.C1Console.Forms.CoreUiControls;
 using Composite.C1Console.Forms.Plugins.UiControlFactory;
 using Composite.C1Console.Forms.WebChannel;
+using Composite.Core.Extensions;
 using Composite.Plugins.Forms.WebChannel.Foundation;
 using Composite.Core.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
@@ -328,6 +329,8 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
                             uniqueKey = keyObject.ToString();
                         }
                     }
+
+                    Verify.IsFalse(_selectorObjects.ContainsKey(uniqueKey), "Key '{0}' appears more than one time".FormatWith(uniqueKey ?? string.Empty));
 
                     _selectorObjects.Add(uniqueKey, optionObject);
                     _keyLabelPairList.Add(new KeyLabelPair(uniqueKey, label));
