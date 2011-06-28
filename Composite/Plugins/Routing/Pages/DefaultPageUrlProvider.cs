@@ -198,7 +198,9 @@ namespace Composite.Plugins.Routing.Pages
             Uri uri = new Uri(absoluteUrl);
 
             string hostname = uri.DnsSafeHost;
-            string relativeUrl = uri.PathAndQuery;
+
+            string serverUrl = new UrlBuilder(absoluteUrl).ServerUrl;
+            string relativeUrl = absoluteUrl.Substring(serverUrl.Length - 1);
 
             var urlSpace = new UrlSpace(hostname, relativeUrl);
 
