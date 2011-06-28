@@ -16,15 +16,21 @@ using Composite.C1Console.Elements;
 namespace Composite.C1Console.Actions
 {
 #warning  MRJ: Part of API?
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class InlineScriptActionFacade
     {
+        /// <exclude />
         public static string GetInlineElementActionScriptCode(EntityToken entityToken, ActionToken actionToken)
         {
             return GetInlineElementActionScriptCode(entityToken, actionToken, new Dictionary<string, string>());
         }
-       
 
 
+        /// <exclude />
         public static string GetInlineElementActionScriptCode(EntityToken entityToken, ActionToken actionToken, Dictionary<string, string> piggyBag)
         {
             StringBuilder sb = new StringBuilder();
@@ -39,7 +45,7 @@ namespace Composite.C1Console.Actions
         }
 
 
-
+        /// <exclude />
         public static void ExecuteElementScriptAction(string serializedScriptAction, string consoleId)
         {
             string scriptAction = Encoding.UTF8.GetString(Convert.FromBase64String(serializedScriptAction));

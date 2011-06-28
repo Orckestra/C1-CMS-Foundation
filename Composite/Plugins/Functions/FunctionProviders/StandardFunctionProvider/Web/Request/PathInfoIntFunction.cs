@@ -25,7 +25,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                     "Segment", typeof(int), true, new ConstantValueProvider(0), segmentDropDown);
 
                 yield return new StandardFunctionParameterProfile(
-                    "AutoApprove", typeof(bool), false, new ConstantValueProvider(true), StandardWidgetFunctions.TextBoxWidget);
+                    "AutoApprove", typeof(bool), false, new ConstantValueProvider(true), StandardWidgetFunctions.CheckBoxWidget);
             }
         }
 
