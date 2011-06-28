@@ -1,21 +1,21 @@
 using System;
-using System.Xml.Linq;
-using System.Linq;
 using System.Collections.Generic;
-using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider;
-using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Date;
-using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.String;
-using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Integer;
-using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Decimal;
-using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Bool;
+using System.Linq;
 using System.Reflection;
+using System.Xml.Linq;
+using Composite.Core.Types;
 using Composite.Core.Xml;
 using Composite.Data;
+using Composite.Data.Types;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Bool;
 using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.DataReference;
 using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.DataType;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Date;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Decimal;
 using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Guid;
-using Composite.Core.Types;
-using Composite.Data.Types;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Integer;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.String;
 
 
 namespace Composite.Functions
@@ -365,13 +365,14 @@ namespace Composite.Functions
 
         private class AdHocDropDownListWidgetFunction : IWidgetFunction
         {
-            private Type _type;
-            private string _methodName;
-            private string _keyPropertyName;
-            private string _labelPropertyName;
-            private object _parameterValue;
-            private bool _multiSelector;
-            private bool _compact;
+            private readonly Type _type;
+            private readonly string _methodName;
+            private readonly string _keyPropertyName;
+            private readonly string _labelPropertyName;
+            private readonly object _parameterValue;
+            private readonly bool _multiSelector;
+            private readonly bool _compact;
+            private readonly bool _required;
 
             public AdHocDropDownListWidgetFunction(Type optionsGeneratingStaticType, string optionsGeneratingStaticMethodName, string optionsObjectKeyPropertyName, string optionsObjectLabelPropertyName, bool multiSelector, bool compact, bool required)
             {
@@ -381,6 +382,7 @@ namespace Composite.Functions
                 _labelPropertyName = optionsObjectLabelPropertyName;
                 _multiSelector = multiSelector;
                 _compact = compact;
+                _required = required;
             }
 
 
@@ -408,7 +410,7 @@ namespace Composite.Functions
                     _labelPropertyName,
                     _multiSelector,
                     _compact,
-                    false,
+                    _required,
                     false);
             }
 

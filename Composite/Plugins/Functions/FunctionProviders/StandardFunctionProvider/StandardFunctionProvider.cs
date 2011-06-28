@@ -100,18 +100,26 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             _standardStaticTypeFunctions.Add(new Web.Html.Template.LangAttributeFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Request.CookieValueFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Request.SessionVariableFunction(_entityTokenFactory));
+
             _standardStaticTypeFunctions.Add(new Web.Request.FormPostValueFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Request.FormPostBoolValueFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Request.FormPostDecimalValueFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Request.FormPostGuidValueFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Request.FormPostIntegerValueFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Request.FormPostXmlFormattedDateTimeValueFunction(_entityTokenFactory));
+
             _standardStaticTypeFunctions.Add(new Web.Request.QueryStringValueFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Request.QueryStringBoolValueFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Request.QueryStringDecimalValueFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Request.QueryStringGuidValueFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Request.QueryStringIntegerValueFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Request.QueryStringXmlFormattedDateTimeValueFunction(_entityTokenFactory));
+
+            _standardStaticTypeFunctions.Add(new Web.Request.PathInfoFunction(_entityTokenFactory));
+            _standardStaticTypeFunctions.Add(new Web.Request.PathInfoIntFunction(_entityTokenFactory));
+            _standardStaticTypeFunctions.Add(new Web.Request.PathInfoGuidFunction(_entityTokenFactory));
+            _standardStaticTypeFunctions.Add(new Web.Request.RegisterPathInfoUsageFunction(_entityTokenFactory));
+
             _standardStaticTypeFunctions.Add(new Web.Response.RedirectFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Response.SetCookieValueFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Response.SetServerPageCacheDuration(_entityTokenFactory));

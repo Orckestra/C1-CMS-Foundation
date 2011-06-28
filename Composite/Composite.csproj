@@ -477,6 +477,10 @@
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedDoubleSelectorUiControlFactory.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\PathInfoGuidFunction.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\PathInfoIntFunction.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\RegisterPathInfoUsageFunction.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\PathInfoFunction.cs" />
     <Compile Include="Plugins\Routing\Hostnames\FormFunctions.cs" />
     <Compile Include="Plugins\Routing\Pages\PageUrlBuilder.cs" />
     <Compile Include="Core\WebClient\Renderings\Plugins\RenderingResponseHandler\IDataRenderingResponseHandler.cs" />
