@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-
-using Composite.Functions;
+using Composite.Core.Extensions;
 using Composite.Core.Routing.Pages;
+using Composite.Functions;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 
 namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Request
@@ -35,24 +35,26 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             int segment = (int)parameters.GetParameter("Segment");
             bool autoApprove = (bool)parameters.GetParameter("AutoApprove");
 
-            if (autoApprove)
+            string result = GetPathInfoSegment(segment);
+
+            if (autoApprove && !result.IsNullOrEmpty())
             {
                 C1PageRoute.RegisterPathInfoUsage();
             }
 
-            return GetPathInfoSegment(segment);
+            return result;
         }
 
         public static IEnumerable<KeyValuePair<int, int>> SegmentSelectorOptions()
         {
             return new[]
                        {
-                           new KeyValuePair<int, int>(0, 1),
-                           new KeyValuePair<int, int>(1, 2),
-                           new KeyValuePair<int, int>(2, 3),
-                           new KeyValuePair<int, int>(3, 4),
-                           new KeyValuePair<int, int>(4, 5),
-                           new KeyValuePair<int, int>(5, 6)
+                           new KeyValuePair<int, int>(0, 0),
+                           new KeyValuePair<int, int>(1, 1),
+                           new KeyValuePair<int, int>(2, 2),
+                           new KeyValuePair<int, int>(3, 3),
+                           new KeyValuePair<int, int>(4, 4),
+                           new KeyValuePair<int, int>(5, 5)
                        };
         }
 

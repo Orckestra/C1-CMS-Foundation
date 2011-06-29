@@ -340,17 +340,17 @@
 	<string key="Composite.Web.Request.QueryStringXmlFormattedDateTimeValue.param.ParameterName.help" value="" />
 	<string key="Composite.Web.Request.QueryStringXmlFormattedDateTimeValue.param.ParameterName.label" value="Parameter name" />
 	<string key="Composite.Web.Request.PathInfo.description" value="Returns additional information passed in a URL along with the page link." />
-	<string key="Composite.Web.Request.PathInfo.param.Segment.help" value="The segment of the path info to retrieve, using the format '/(1)/(2)/(3)/...'. Specify -1 to get the entire string." />
+	<string key="Composite.Web.Request.PathInfo.param.Segment.help" value="The segment of the path info to retrieve, using the format '/(0)/(1)/(2)/...'. Specify -1 to get the entire string." />
 	<string key="Composite.Web.Request.PathInfo.param.Segment.label" value="Segment" />
 	<string key="Composite.Web.Request.PathInfo.param.AutoApprove.help" value="When true, Composite C1 will be instructed to accept any path info string. Default is true." />
 	<string key="Composite.Web.Request.PathInfo.param.AutoApprove.label" value="AutoApprove" />
 	<string key="Composite.Web.Request.PathInfoInt.description" value="Extracts an integer value from a PathInfo segment." />
-	<string key="Composite.Web.Request.PathInfoInt.param.Segment.help" value="The segment of the path info to retrieve, using the format '/(1)/(2)/(3)/...'." />
+	<string key="Composite.Web.Request.PathInfoInt.param.Segment.help" value="The segment of the path info to retrieve, using the format '/(0)/(1)/(2)/...'." />
 	<string key="Composite.Web.Request.PathInfoInt.param.Segment.label" value="Segment" />
 	<string key="Composite.Web.Request.PathInfoInt.param.AutoApprove.help" value="When true, Composite C1 will be instructed to accept any path info string. Default is true." />
 	<string key="Composite.Web.Request.PathInfoInt.param.AutoApprove.label" value="AutoApprove" />
 	<string key="Composite.Web.Request.PathInfoGuid.description" value="Extracts a GUID from a PathInfo segment." />
-	<string key="Composite.Web.Request.PathInfoGuid.param.Segment.help" value="The segment of the path info to retrieve, using the format '/(1)/(2)/(3)/...'. " />
+	<string key="Composite.Web.Request.PathInfoGuid.param.Segment.help" value="The segment of the path info to retrieve, using the format '/(0)/(1)/(2)/...'. " />
 	<string key="Composite.Web.Request.PathInfoGuid.param.Segment.label" value="Segment" />
 	<string key="Composite.Web.Request.PathInfoGuid.param.AutoApprove.help" value="When true, Composite C1 will be instructed to accept any path info string. Default is true." />
 	<string key="Composite.Web.Request.PathInfoGuid.param.AutoApprove.label" value="AutoApprove" />
