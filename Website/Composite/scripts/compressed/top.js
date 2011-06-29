@@ -427,7 +427,7 @@ this._map[key]=null;
 };
 function _BroadcastMessages(){
 }
-_BroadcastMessages.prototype={APPLICATION_STARTUP:"application startup",APPLICATION_LOGIN:"application login",APPLICATION_LOGOUT:"application logout",APPLICATION_OPERATIONAL:"application operational",APPLICATION_ONSHUTDOWN:"application onshutdown",APPLICATION_SHUTDOWN:"application shutdown",APPLICATION_ERROR:"application error",APPLICATION_BLURRED:"application blurred",APPLICATION_FOCUSED:"application focused",APPLICATION_KICKSTART:"application kickstart",CODEMIRROR_LOADED:"codemirror loaded",MOUSEEVENT_MOUSEDOWN:"mouseevent mousedown",MOUSEEVENT_MOUSEUP:"mouseevent mouseup",MOUSEEVENT_MOUSEMOVE:"mouseevent mousemove",$WINKEY_LOADED:"${windowkey} loaded",$WINKEY_UNLOADED:"${windowkey} unloaded",$WINKEY_EVALUATED:"${windowkey} evaluated",$WINKEY_RESIZED:"${windowkey} resized",$WINKEY_HRESIZED:"${windowkey} horizontally resized",$WINKEY_VRESIZED:"${windowkey} vertically resized",LOADED_NAVIGATOR:"navigator loaded",LOADED_MAINSTAGE:"mainstage loaded",LOCALSTORE_INITIALIZED:"localstore initialized",PERSISTANCE_INITIALIZED:"persistance initialized",AUDIO_INITIALIZED:"audio initialized",STAGE_INITIALIZED:"stage initialized",KEY_SHIFT_DOWN:"shiftkeydown",KEY_SHIFT_UP:"shiftkeyup",KEY_CONTROL_DOWN:"controlkeydown",KEY_CONTROL_UP:"controlkeyup",KEY_ARROW:"arrowkey",KEY_ENTER:"enterkeydown",KEY_ESCAPE:"escapekeydown",KEY_SPACE:"spacekeydown",KEY_TAB:"tabkeydown",KEY_ALT:"altkeydown",KEY_CONTROLTAB:"controltabkeysdown",TYPEDRAG_START:"typedrag start",TYPEDRAG_STOP:"typedrag stop",TYPEDRAG_PAUSE:"typedrag pause",DOCK_MAXIMIZED:"dockmaximized",DOCK_MINIMIZED:"dockminimized",DOCK_NORMALIZED:"docknormalized",DOCKTABBINDING_SELECT:"docktab select",SYSTEMTREEBINDING_REFRESH:"systemtree refresh",SYSTEMTREEBINDING_REFRESHALL:"systemtree refresh all",SYSTEMTREEBINDING_REFRESHING:"systemtree refreshing",SYSTEMTREEBINDING_REFRESHED:"systemtree refreshed",SYSTEMTREEBINDING_CUT:"systemtree cut",SYSTEMTREEBINDING_COPY:"systemtree copy",SYSTEMTREEBINDING_PASTE:"systemtree paste",SYSTEMTREEBINDING_COLLAPSEALL:"systemtree collapse all",SYSTEMTREENODEBINDING_FOCUS:"systemtreenode focus",SYSTEMTREEBINDING_LOCKTOEDITOR:"systemtreenode lock to editor",SYSTEMTREENODEBINDING_FORCE_OPEN:"systemtreenode force open",SYSTEMTREENODEBINDING_FORCING_OPEN:"systemtreenode forcing open",SYSTEMTREENODEBINDING_FORCED_OPEN:"systemtreenode forced open",START_COMPOSITE:"startcomposite",STOP_COMPOSITE:"stopcomposite",COMPOSITE_START:"compositestart",COMPOSITE_STOP:"compositestop",VIEW_OPENING:"view opening",VIEW_OPENED:"view opened",VIEW_COMPLETED:"view completed",CLOSE_VIEW:"close view",CLOSE_VIEWS:"close views",VIEW_CLOSED:"view closed",TINYMCE_INITIALIZED:"tinymce initialized",CODEPRESS_INITIALIZED:"codepress initialized",VISUALEDITOR_FOCUSED:"visualeditor focused",VISUALEDITOR_BLURRED:"visualditor blurred",VISUALEDITOR_HACKED:"visualeditor hacked",PERSPECTIVE_CHANGED:"perspective changed",PERSPECTIVES_NONE:"no perspectives",SYSTEMLOG_OPENED:"systemlog opened",SYSTEMLOG_CLOSED:"systemlog closed",SYSTEMACTION_INVOKE:"systemaction invoke",SYSTEMACTION_INVOKED:"systemaction invoked",SYSTEM_ACTIONPROFILE_PUBLISHED:"system actionprofile published",NAVIGATOR_TREENODE_SELECTED:"navigator treenode selected",MODAL_DIALOG_OPENED:"modal dialog invoked",MODAL_DIALOG_CLOSED:"modal dialog closed",COVERBINDING_MOUSEDOWN:"userinterfacecoverbinding mousedown",SERVER_OFFLINE:"server offline",SERVER_ONLINE:"server online",OFFLINE_FLASH_INITIALIZED:"offline flash initialized",CLOSE_CURRENT:"close current",CLOSE_ALL:"close all",CLOSE_ALL_DONE:"close all done",SAVE_CURRENT:"save current",CURRENT_SAVED:"current saved",SAVE_ALL:"save all",SAVE_ALL_DONE:"save all done",DOCKTAB_DIRTY:"docktab dirty",DOCKTAB_CLEAN:"docktab clean",BINDING_RELATE:"binding relate",LOCALIZATION_CHANGED:"localization changed",XHTML_MARKUP_ON:"xhtml markup on",XHTML_MARKUP_OFF:"xhtml markup off",XHTML_MARKUP_ACTIVATE:"xhtml markup activate",XHTML_MARKUP_DEACTIVATE:"xhtml markup deactivate",HIGHLIGHT_KEYWORDS:"highlight keywords",BIND_TOKEN_TO_VIEW:"bind entitytoken to view",STAGEDIALOG_OPENED:"stage dialog opened",INVOKE_DEFAULT_ACTION:"invoke default action",LANGUAGES_UPDATED:"LocalesUpdated",FROMLANGUAGE_UPDATED:"ForeignLocaleChanged",TOLANGUAGE_UPDATED:"ActiveLocaleChanged",MESSAGEQUEUE_REQUESTED:"messagequeue requested",MESSAGEQUEUE_EVALUATED:"messagequeue evaluated",UPDATE_LANGUAGES:"update languages"};
+_BroadcastMessages.prototype={APPLICATION_STARTUP:"application startup",APPLICATION_LOGIN:"application login",APPLICATION_LOGOUT:"application logout",APPLICATION_OPERATIONAL:"application operational",APPLICATION_ONSHUTDOWN:"application onshutdown",APPLICATION_SHUTDOWN:"application shutdown",APPLICATION_ERROR:"application error",APPLICATION_BLURRED:"application blurred",APPLICATION_FOCUSED:"application focused",APPLICATION_KICKSTART:"application kickstart",CODEMIRROR_LOADED:"codemirror loaded",MOUSEEVENT_MOUSEDOWN:"mouseevent mousedown",MOUSEEVENT_MOUSEUP:"mouseevent mouseup",MOUSEEVENT_MOUSEMOVE:"mouseevent mousemove",$WINKEY_LOADED:"${windowkey} loaded",$WINKEY_UNLOADED:"${windowkey} unloaded",$WINKEY_EVALUATED:"${windowkey} evaluated",$WINKEY_RESIZED:"${windowkey} resized",$WINKEY_HRESIZED:"${windowkey} horizontally resized",$WINKEY_VRESIZED:"${windowkey} vertically resized",LOADED_NAVIGATOR:"navigator loaded",LOADED_MAINSTAGE:"mainstage loaded",LOCALSTORE_INITIALIZED:"localstore initialized",PERSISTANCE_INITIALIZED:"persistance initialized",AUDIO_INITIALIZED:"audio initialized",STAGE_INITIALIZED:"stage initialized",KEY_SHIFT_DOWN:"shiftkeydown",KEY_SHIFT_UP:"shiftkeyup",KEY_CONTROL_DOWN:"controlkeydown",KEY_CONTROL_UP:"controlkeyup",KEY_ARROW:"arrowkey",KEY_ENTER:"enterkeydown",KEY_ESCAPE:"escapekeydown",KEY_SPACE:"spacekeydown",KEY_TAB:"tabkeydown",KEY_ALT:"altkeydown",KEY_CONTROLTAB:"controltabkeysdown",TYPEDRAG_START:"typedrag start",TYPEDRAG_STOP:"typedrag stop",TYPEDRAG_PAUSE:"typedrag pause",DOCK_MAXIMIZED:"dockmaximized",DOCK_MINIMIZED:"dockminimized",DOCK_NORMALIZED:"docknormalized",DOCKTABBINDING_SELECT:"docktab select",SYSTEMTREEBINDING_REFRESH:"systemtree refresh",SYSTEMTREEBINDING_REFRESHALL:"systemtree refresh all",SYSTEMTREEBINDING_REFRESHING:"systemtree refreshing",SYSTEMTREEBINDING_REFRESHED:"systemtree refreshed",SYSTEMTREEBINDING_FOCUS:"systemtree focus",SYSTEMTREEBINDING_CUT:"systemtree cut",SYSTEMTREEBINDING_COPY:"systemtree copy",SYSTEMTREEBINDING_PASTE:"systemtree paste",SYSTEMTREEBINDING_COLLAPSEALL:"systemtree collapse all",SYSTEMTREENODEBINDING_FOCUS:"systemtreenode focus",SYSTEMTREEBINDING_LOCKTOEDITOR:"systemtreenode lock to editor",SYSTEMTREENODEBINDING_FORCE_OPEN:"systemtreenode force open",SYSTEMTREENODEBINDING_FORCING_OPEN:"systemtreenode forcing open",SYSTEMTREENODEBINDING_FORCED_OPEN:"systemtreenode forced open",START_COMPOSITE:"startcomposite",STOP_COMPOSITE:"stopcomposite",COMPOSITE_START:"compositestart",COMPOSITE_STOP:"compositestop",VIEW_OPENING:"view opening",VIEW_OPENED:"view opened",VIEW_COMPLETED:"view completed",CLOSE_VIEW:"close view",CLOSE_VIEWS:"close views",VIEW_CLOSED:"view closed",TINYMCE_INITIALIZED:"tinymce initialized",CODEPRESS_INITIALIZED:"codepress initialized",VISUALEDITOR_FOCUSED:"visualeditor focused",VISUALEDITOR_BLURRED:"visualditor blurred",VISUALEDITOR_HACKED:"visualeditor hacked",PERSPECTIVE_CHANGED:"perspective changed",PERSPECTIVES_NONE:"no perspectives",SYSTEMLOG_OPENED:"systemlog opened",SYSTEMLOG_CLOSED:"systemlog closed",SYSTEMACTION_INVOKE:"systemaction invoke",SYSTEMACTION_INVOKED:"systemaction invoked",SYSTEM_ACTIONPROFILE_PUBLISHED:"system actionprofile published",NAVIGATOR_TREENODE_SELECTED:"navigator treenode selected",MODAL_DIALOG_OPENED:"modal dialog invoked",MODAL_DIALOG_CLOSED:"modal dialog closed",COVERBINDING_MOUSEDOWN:"userinterfacecoverbinding mousedown",SERVER_OFFLINE:"server offline",SERVER_ONLINE:"server online",OFFLINE_FLASH_INITIALIZED:"offline flash initialized",CLOSE_CURRENT:"close current",CLOSE_ALL:"close all",CLOSE_ALL_DONE:"close all done",SAVE_CURRENT:"save current",CURRENT_SAVED:"current saved",SAVE_ALL:"save all",SAVE_ALL_DONE:"save all done",DOCKTAB_DIRTY:"docktab dirty",DOCKTAB_CLEAN:"docktab clean",BINDING_RELATE:"binding relate",LOCALIZATION_CHANGED:"localization changed",XHTML_MARKUP_ON:"xhtml markup on",XHTML_MARKUP_OFF:"xhtml markup off",XHTML_MARKUP_ACTIVATE:"xhtml markup activate",XHTML_MARKUP_DEACTIVATE:"xhtml markup deactivate",HIGHLIGHT_KEYWORDS:"highlight keywords",BIND_TOKEN_TO_VIEW:"bind entitytoken to view",STAGEDIALOG_OPENED:"stage dialog opened",INVOKE_DEFAULT_ACTION:"invoke default action",LANGUAGES_UPDATED:"LocalesUpdated",FROMLANGUAGE_UPDATED:"ForeignLocaleChanged",TOLANGUAGE_UPDATED:"ActiveLocaleChanged",MESSAGEQUEUE_REQUESTED:"messagequeue requested",MESSAGEQUEUE_EVALUATED:"messagequeue evaluated",UPDATE_LANGUAGES:"update languages"};
 var BroadcastMessages=new _BroadcastMessages();
 function _EventBroadcaster(){
 }
@@ -2210,6 +2210,7 @@ SystemAction.OPEN_DOCUMENT="OpenDocument";
 SystemAction.OPEN_MODAL_DIALOG="OpenModalDialog";
 SystemAction.TAG_CHANGEFROMLANGUAGE="ChangeFromLocale";
 SystemAction.categories={Edit:"Edit",Add:"Add",Delete:"Delete",Other:"Other",DeveloperMode:"DeveloperMode"};
+SystemAction.activePositions={NavigatorTree:1,SelectorTree:2};
 SystemAction.taggedActions=new Map();
 SystemAction.actionMap=new Map();
 SystemAction.invoke=function(_23d,arg){
@@ -2267,6 +2268,9 @@ return this._data.ActionCategory.Name;
 };
 SystemAction.prototype.getGroupID=function(){
 return this._data.ActionCategory.GroupId;
+};
+SystemAction.prototype.getActivePositions=function(){
+return this._data.ActivePositions;
 };
 SystemAction.prototype.isInToolBar=function(){
 return this._data.ActionCategory.IsInToolbar;
@@ -22092,7 +22096,7 @@ this.logger=SystemLogger.getLogger("SystemTreeBinding");
 this.perspectiveNode=null;
 this._defaultTreeNode=null;
 this._isActionProfileAware=true;
-this._isTreeSelector=false;
+this._activePosition=SystemAction.activePositions.NavigatorTree;
 this._backupfocushandle=null;
 this._tempSelectedNode=null;
 this._tempSelectionTimeout=false;
@@ -22110,6 +22114,7 @@ SystemTreeBinding.prototype.onBindingRegister=function(){
 SystemTreeBinding.superclass.onBindingRegister.call(this);
 this.perspectiveNode=StageBinding.perspectiveNode;
 this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESH);
+this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_FOCUS);
 this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_CUT);
 this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_COPY);
 this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_PASTE);
@@ -22126,7 +22131,7 @@ this._isActionProfileAware=false;
 this.setContextMenu(top.app.bindingMap.systemtreepopup);
 }
 if(this.getProperty("treeselector")==true){
-this._isTreeSelector=true;
+this._activePosition=SystemAction.activePositions.SelectorTree;
 }
 if(this.getProperty("locktoeditor")!=null){
 this.isLockedToEditor=this.getProperty("locktoeditor");
@@ -22320,64 +22325,72 @@ this.blurSelectedTreeNodes();
 EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED,null);
 }
 break;
+case BroadcastMessages.SYSTEMTREEBINDING_FOCUS:
+var self=this,_d9c=arg;
+setTimeout(function(){
+if(_d9c!=null){
+self._focusTreeNodeByEntityToken(_d9c);
+}
+},250);
+break;
 }
 };
 SystemTreeBinding.prototype._handleDockTabSelect=function(tab){
-var _d9c=tab.perspectiveNode==null;
-if(!_d9c){
-_d9c=tab.perspectiveNode==this.perspectiveNode;
+var _d9e=tab.perspectiveNode==null;
+if(!_d9e){
+_d9e=tab.perspectiveNode==this.perspectiveNode;
 }
-if(_d9c){
-var self=this,_d9e=tab.getEntityToken();
+if(_d9e){
+var self=this,_da0=tab.getEntityToken();
 setTimeout(function(){
-if(_d9e==null){
+if(_da0==null){
 self.blurSelectedTreeNodes();
 }else{
-self._focusTreeNodeByEntityToken(_d9e);
+self._focusTreeNodeByEntityToken(_da0);
 }
 },250);
 }
 };
-SystemTreeBinding.prototype._focusTreeNodeByEntityToken=function(_d9f,_da0){
+SystemTreeBinding.prototype._focusTreeNodeByEntityToken=function(_da1,_da2){
 this.isLockFeatureFocus=true;
-var _da1=null;
-if(this._entityTokenRegistry.has(_d9f)){
-var list=this._entityTokenRegistry.get(_d9f);
+var _da3=null;
+if(this._entityTokenRegistry.has(_da1)){
+var list=this._entityTokenRegistry.get(_da1);
 list.each(function(tn){
-var _da4=true;
+var _da6=true;
 if(tn.node.isTreeLockEnabled()){
-_da1=tn;
-_da4=false;
+_da3=tn;
+_da6=false;
 }
-return _da4;
+return _da6;
 });
-if(_da1!=null){
-if(!_da1.isFocused){
-this.focusSingleTreeNodeBinding(_da1,true);
+if(_da3!=null){
+if(!_da3.isFocused){
+this.focusSingleTreeNodeBinding(_da3,true);
 }else{
-_da1.dispatchAction(TreeNodeBinding.ACTION_FOCUSED);
+_da3.dispatchAction(TreeNodeBinding.ACTION_FOCUSED);
 }
 }
 }
 this.isLockFeatureFocus=false;
-if(_da1==null&&_da0!=true){
+if(_da3==null&&_da2!=true){
 Application.lock(this);
 StatusBar.busy();
 var self=this;
 setTimeout(function(){
 if(Binding.exists(self)){
-self._fetchTreeForEntityToken(_d9f);
-self._focusTreeNodeByEntityToken(_d9f,true);
+self._fetchTreeForEntityToken(_da1);
+self._focusTreeNodeByEntityToken(_da1,true);
 }
 Application.unlock(self);
 StatusBar.clear();
 },0);
 }
 };
-SystemTreeBinding.prototype._fetchTreeForEntityToken=function(_da6){
-var _da7=StageBinding.perspectiveNode.getEntityToken();
-var _da8=this.getOpenSystemNodes();
-var map=System.getInvisibleBranch(_da7,_da6,_da8);
+SystemTreeBinding.prototype._fetchTreeForEntityToken=function(_da8){
+var _da9=StageBinding.perspectiveNode.getEntityToken();
+var _daa=this.getOpenSystemNodes();
+var map=System.getInvisibleBranch(_da9,_da8,_daa);
 if(map==null){
 this.isLockedToEditor=false;
 if(Application.isDeveloperMode){
@@ -22386,31 +22399,31 @@ Dialog.warning("Ouch!","Because the web service failed, tree has disabled the lo
 }else{
 if(map.hasEntries()){
 var self=this;
-var _dab=this._treeNodeBindings;
-var _dac=new Map();
-function fix(_dad,list){
-if(!_dad.hasBeenOpened){
+var _dad=this._treeNodeBindings;
+var _dae=new Map();
+function fix(_daf,list){
+if(!_daf.hasBeenOpened){
 if(list.hasEntries()){
 list.each(function(node){
-if(!_dab.has(node.getHandle())){
-var _db0=SystemTreeNodeBinding.newInstance(node,self.bindingDocument);
-_dac.set(node.getHandle(),_db0);
-_dad.add(_db0);
+if(!_dad.has(node.getHandle())){
+var _db2=SystemTreeNodeBinding.newInstance(node,self.bindingDocument);
+_dae.set(node.getHandle(),_db2);
+_daf.add(_db2);
 }
 });
-_dad.attachRecursive();
+_daf.attachRecursive();
 }
 }
-_dad.open(true);
+_daf.open(true);
 }
-map.each(function(_db1,list){
-if(_dab.has(_db1)){
-var _db3=_dab.get(_db1);
-fix(_db3,list);
+map.each(function(_db3,list){
+if(_dad.has(_db3)){
+var _db5=_dad.get(_db3);
+fix(_db5,list);
 }else{
-if(_dac.has(_db1)){
-var _db4=_dac.get(_db1);
-fix(_db4,list);
+if(_dae.has(_db3)){
+var _db6=_dae.get(_db3);
+fix(_db6,list);
 }else{
 }
 }
@@ -22418,12 +22431,12 @@ fix(_db4,list);
 }
 }
 };
-SystemTreeBinding.prototype._handleCommandBroadcast=function(_db5,arg){
-switch(_db5){
+SystemTreeBinding.prototype._handleCommandBroadcast=function(_db7,arg){
+switch(_db7){
 case BroadcastMessages.SYSTEMTREEBINDING_REFRESH:
-var _db7=arg;
-if(_db7!=null){
-this._invokeServerRefresh(_db7);
+var _db9=arg;
+if(_db9!=null){
+this._invokeServerRefresh(_db9);
 }else{
 this._invokeManualRefresh();
 }
@@ -22432,66 +22445,66 @@ case BroadcastMessages.SYSTEMTREEBINDING_CUT:
 if(SystemTreeBinding.clipboard!=null){
 SystemTreeBinding.clipboard.hideDrag();
 }
-var _db8=this.getFocusedTreeNodeBindings().getFirst();
+var _dba=this.getFocusedTreeNodeBindings().getFirst();
 SystemTreeBinding.clipboardOperation=SystemTreePopupBinding.CMD_CUT;
-SystemTreeBinding.clipboard=_db8;
-_db8.showDrag();
+SystemTreeBinding.clipboard=_dba;
+_dba.showDrag();
 break;
 case BroadcastMessages.SYSTEMTREEBINDING_COPY:
-var _db8=this.getFocusedTreeNodeBindings().getFirst();
+var _dba=this.getFocusedTreeNodeBindings().getFirst();
 SystemTreeBinding.clipboardOperation=SystemTreePopupBinding.CMD_COPY;
-SystemTreeBinding.clipboard=_db8;
+SystemTreeBinding.clipboard=_dba;
 break;
 case BroadcastMessages.SYSTEMTREEBINDING_PASTE:
 this._handlePaste();
 break;
 }
 };
-SystemTreeBinding.prototype._invokeServerRefresh=function(_db9){
-if(_db9!=null&&_db9=="null"){
+SystemTreeBinding.prototype._invokeServerRefresh=function(_dbb){
+if(_dbb!=null&&_dbb=="null"){
 if(Application.isDeveloperMode){
 alert("Saa har vi balladen.");
 }
 }
-if(this._entityTokenRegistry.has(_db9)){
-var list=this._entityTokenRegistry.get(_db9).reset();
-this._refreshToken=_db9;
+if(this._entityTokenRegistry.has(_dbb)){
+var list=this._entityTokenRegistry.get(_dbb).reset();
+this._refreshToken=_dbb;
 EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,this._refreshToken);
 while(list.hasNext()){
-var _dbb=list.getNext();
-this._refreshingTreeNodes.set(_dbb.key,true);
+var _dbd=list.getNext();
+this._refreshingTreeNodes.set(_dbd.key,true);
 setTimeout(function(){
-_dbb.refresh(true);
+_dbd.refresh(true);
 },0);
 }
 }
 };
 SystemTreeBinding.prototype._invokeManualRefresh=function(){
-var _dbc=this.getFocusedTreeNodeBindings().getFirst();
-if(_dbc){
-var _dbd=_dbc.getLabel();
-var _dbe=_dbc.getAncestorBindingByLocalName("treenode");
+var _dbe=this.getFocusedTreeNodeBindings().getFirst();
 if(_dbe){
-_dbc=_dbe;
+var _dbf=_dbe.getLabel();
+var _dc0=_dbe.getAncestorBindingByLocalName("treenode");
+if(_dc0){
+_dbe=_dc0;
 }
 this._refreshToken=null;
-this._refreshingTreeNodes.set(_dbc.key,true);
+this._refreshingTreeNodes.set(_dbe.key,true);
 EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,null);
 if(!StatusBar.state){
-var _dbf=StringBundle.getString("ui","Website.App.StatusBar.Refreshing");
-StatusBar.busy(_dbf,[_dbd]);
+var _dc1=StringBundle.getString("ui","Website.App.StatusBar.Refreshing");
+StatusBar.busy(_dc1,[_dbf]);
 }
-_dbc.refresh();
+_dbe.refresh();
 }
 };
 SystemTreeBinding.prototype._handlePaste=function(){
-var _dc0=SystemTreeBinding.clipboard;
-if(_dc0){
-var type=_dc0.dragType;
-var _dc2=this.getFocusedTreeNodeBindings().getFirst();
-if(_dc2.dragAccept){
-if(_dc2.acceptor.isAccepting(type)){
-this._performPaste(_dc2);
+var _dc2=SystemTreeBinding.clipboard;
+if(_dc2){
+var type=_dc2.dragType;
+var _dc4=this.getFocusedTreeNodeBindings().getFirst();
+if(_dc4.dragAccept){
+if(_dc4.acceptor.isAccepting(type)){
+this._performPaste(_dc4);
 }else{
 Dialog.message(StringBundle.getString("ui","Website.Misc.Trees.DialogTitle.PasteTypeNotAllowed"),StringBundle.getString("ui","Website.Misc.Trees.DialogText.PasteTypeNotAllowed"));
 }
@@ -22500,25 +22513,25 @@ Dialog.message(StringBundle.getString("ui","Website.Misc.Trees.DialogTitle.Paste
 }
 }
 };
-SystemTreeBinding.prototype._performPaste=function(_dc3){
+SystemTreeBinding.prototype._performPaste=function(_dc5){
 var self=this;
 function update(){
 MessageQueue.update();
 Application.unlock(self);
 }
-if(_dc3.node.hasDetailedDropSupport()){
-if(_dc3.node.hasChildren()){
-var _dc5=_dc3.node.getChildren();
-Dialog.invokeModal(SystemTreeBinding.URL_DIALOG_DETAILEDPASTE,{handleDialogResponse:function(_dc6,_dc7){
-if(_dc6==Dialog.RESPONSE_ACCEPT){
+if(_dc5.node.hasDetailedDropSupport()){
+if(_dc5.node.hasChildren()){
+var _dc7=_dc5.node.getChildren();
+Dialog.invokeModal(SystemTreeBinding.URL_DIALOG_DETAILEDPASTE,{handleDialogResponse:function(_dc8,_dc9){
+if(_dc8==Dialog.RESPONSE_ACCEPT){
 Application.lock(self);
-var _dc8=_dc7.get("switch");
-var _dc9=_dc7.get("sibling");
-if(_dc8=="after"){
-_dc9++;
+var _dca=_dc9.get("switch");
+var _dcb=_dc9.get("sibling");
+if(_dca=="after"){
+_dcb++;
 }
-var _dca=_dc3.accept(SystemTreeBinding.clipboard,_dc9);
-if(_dca){
+var _dcc=_dc5.accept(SystemTreeBinding.clipboard,_dcb);
+if(_dcc){
 SystemTreeBinding.clipboard=null;
 SystemTreeBinding.clipboardOperation=null;
 setTimeout(update,0);
@@ -22526,11 +22539,11 @@ setTimeout(update,0);
 update();
 }
 }
-}},_dc5);
+}},_dc7);
 }else{
 Application.lock(self);
-var _dcb=_dc3.accept(SystemTreeBinding.clipboard,0);
-if(_dcb){
+var _dcd=_dc5.accept(SystemTreeBinding.clipboard,0);
+if(_dcd){
 SystemTreeBinding.clipboard=null;
 SystemTreeBinding.clipboardOperation=null;
 setTimeout(update,0);
@@ -22540,8 +22553,8 @@ update();
 }
 }else{
 Application.lock(self);
-var _dcb=_dc3.accept(SystemTreeBinding.clipboard,0);
-if(_dcb){
+var _dcd=_dc5.accept(SystemTreeBinding.clipboard,0);
+if(_dcd){
 SystemTreeBinding.clipboard=null;
 SystemTreeBinding.clipboardOperation=null;
 }
@@ -22554,79 +22567,57 @@ this._defaultTreeNode.focus();
 this._defaultTreeNode=null;
 }
 };
-SystemTreeBinding.prototype.collapse=function(_dcc){
+SystemTreeBinding.prototype.collapse=function(_dce){
 EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED,null);
-if(_dcc){
+if(_dce){
 this.blurSelectedTreeNodes();
-var _dcd=this.getRootTreeNodeBindings();
-_dcd.each(function(_dce){
-if(_dce.isContainer&&_dce.isOpen){
-_dce.close();
-_dce.hasBeenOpened=false;
-_dce.empty();
+var _dcf=this.getRootTreeNodeBindings();
+_dcf.each(function(_dd0){
+if(_dd0.isContainer&&_dd0.isOpen){
+_dd0.close();
+_dd0.hasBeenOpened=false;
+_dd0.empty();
 }
 });
 }else{
 SystemTreeBinding.superclass.collapse.call(this);
 }
 };
-SystemTreeBinding.prototype.setLockToEditor=function(_dcf){
-if(_dcf!=this.isLockedToEditor){
-this.isLockedToEditor=_dcf;
-if(_dcf){
+SystemTreeBinding.prototype.setLockToEditor=function(_dd1){
+if(_dd1!=this.isLockedToEditor){
+this.isLockedToEditor=_dd1;
+if(_dd1){
 EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_LOCKTOEDITOR);
 }
 }
 };
 SystemTreeBinding.prototype.getOpenSystemNodes=function(){
 var list=new List([StageBinding.perspectiveNode]);
-var _dd1=this.getRootTreeNodeBindings();
-_dd1.each(function(_dd2){
-var _dd3=_dd2.getOpenSystemNodes();
-if(_dd3!=null&&_dd3.hasEntries()){
-list.merge(_dd3);
+var _dd3=this.getRootTreeNodeBindings();
+_dd3.each(function(_dd4){
+var _dd5=_dd4.getOpenSystemNodes();
+if(_dd5!=null&&_dd5.hasEntries()){
+list.merge(_dd5);
 }
 });
 return list;
 };
-SystemTreeBinding.prototype.focusSingleTreeNodeBinding=function(_dd4){
-SystemTreeBinding.superclass.focusSingleTreeNodeBinding.call(this,_dd4);
-if(_dd4!=null){
+SystemTreeBinding.prototype.focusSingleTreeNodeBinding=function(_dd6){
+SystemTreeBinding.superclass.focusSingleTreeNodeBinding.call(this,_dd6);
+if(_dd6!=null){
 this._handleSystemTreeFocus();
 }
-};
-SystemTreeBinding.prototype.isTreeSelectorAction=function(_dd5){
-var _dd6=_dd5.getHandle();
-if(_dd6.indexOf("AddNewMediaFolderWorkflow")!=-1){
-return true;
-}
-if(_dd6.indexOf("AddNewMediaFileWorkflow")!=-1){
-return true;
-}
-if(_dd6.indexOf("AddMediaZipFileWorkflow")!=-1){
-return true;
-}
-if(_dd6.indexOf("DeleteMediaFileWorkflow")!=-1){
-return true;
-}
-if(_dd6.indexOf("DeleteMediaFolderWorkflow")!=-1){
-return true;
-}
-return false;
 };
 SystemTreeBinding.prototype.getCompiledActionProfile=function(){
 var temp={};
 var _dd8=new Map();
 var _dd9=this.getFocusedTreeNodeBindings();
-_dd8=_dd9.getFirst().node.getActionProfile();
-if(this._isTreeSelector){
-var _dda=_dd8;
-_dd8=new Map();
+var _dda=_dd9.getFirst().node.getActionProfile();
 var self=this;
 _dda.each(function(_ddc,list){
 var _dde=new List();
 list.each(function(_ddf){
-if(self.isTreeSelectorAction(_ddf)){
+if(_ddf.getActivePositions()&self._activePosition){
 _dde.add(_ddf);
 }
 });
@@ -22634,7 +22625,6 @@ if(_dde.hasEntries()){
 _dd8.set(_ddc,_dde);
 }
 });
-}
 return _dd8;
 };
 SystemTreePopupBinding.prototype=new PopupBinding;
@@ -29323,6 +29313,10 @@ EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,this
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED,this);
 this._nextAction();
 }
+break;
+case "SelectElement":
+EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_FOCUS,_1207.BindEntityTokenToViewParams.EntityToken);
+this._nextAction();
 break;
 case "MessageBox":
 openMessageBox(_1207.MessageBoxParams);
