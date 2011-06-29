@@ -10,7 +10,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
     internal sealed class PathInfoGuidFunction : StandardFunctionBase
     {
         public PathInfoGuidFunction(EntityTokenFactory entityTokenFactory)
-            : base("PathInfoGuid", "Composite.Web.Request", typeof(string), entityTokenFactory)
+            : base("PathInfoGuid", "Composite.Web.Request", typeof(Guid), entityTokenFactory)
         {
         }
 
@@ -26,6 +26,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
                 yield return new StandardFunctionParameterProfile(
                     "AutoApprove", typeof(bool), false, new ConstantValueProvider(true), StandardWidgetFunctions.CheckBoxWidget);
+
+                yield return new StandardFunctionParameterProfile(
+                    "FallbackValue", typeof(Guid), false, new ConstantValueProvider(Guid.Empty), StandardWidgetFunctions.TextBoxWidget);
             }
         }
 
@@ -40,7 +43,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             Guid guidValue;
             if (string.IsNullOrEmpty(value) || !Guid.TryParse(value, out guidValue))
             {
-                return null;
+                return parameters.GetParameter<Guid>("FallbackValue");
             }
 
             if (autoApprove)

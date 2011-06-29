@@ -26,6 +26,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
                 yield return new StandardFunctionParameterProfile(
                     "AutoApprove", typeof(bool), false, new ConstantValueProvider(true), StandardWidgetFunctions.CheckBoxWidget);
+
+                yield return new StandardFunctionParameterProfile(
+                    "FallbackValue", typeof(int), false, new ConstantValueProvider(0), StandardWidgetFunctions.IntegerTextBoxWidget);
             }
         }
 
@@ -40,7 +43,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             int intValue;
             if(string.IsNullOrEmpty(value) || !int.TryParse(value, out intValue))
             {
-                return null;
+                return parameters.GetParameter<int>("FallbackValue");
             }
 
             if (autoApprove)

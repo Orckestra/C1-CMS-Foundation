@@ -26,6 +26,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
                 yield return new StandardFunctionParameterProfile(
                     "AutoApprove", typeof(bool), false, new ConstantValueProvider(true), StandardWidgetFunctions.CheckBoxWidget);
+
+                yield return new StandardFunctionParameterProfile(
+                    "FallbackValue", typeof(string), false, new ConstantValueProvider(""), StandardWidgetFunctions.TextBoxWidget);
             }
         }
 
@@ -42,25 +45,25 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                 C1PageRoute.RegisterPathInfoUsage();
             }
 
-            return result;
+            return result ?? parameters.GetParameter<string>("FallbackValue");
         }
 
-        public static IEnumerable<KeyValuePair<int, int>> SegmentSelectorOptions()
+        public static IEnumerable<KeyValuePair<int, string>> SegmentSelectorOptions()
         {
             return new[]
                        {
-                           new KeyValuePair<int, int>(0, 0),
-                           new KeyValuePair<int, int>(1, 1),
-                           new KeyValuePair<int, int>(2, 2),
-                           new KeyValuePair<int, int>(3, 3),
-                           new KeyValuePair<int, int>(4, 4),
-                           new KeyValuePair<int, int>(5, 5)
+                           new KeyValuePair<int, string>(0, "0 "), // Additional space is intentional 
+                           new KeyValuePair<int, string>(1, "1"),
+                           new KeyValuePair<int, string>(2, "2"),
+                           new KeyValuePair<int, string>(3, "3"),
+                           new KeyValuePair<int, string>(4, "4"),
+                           new KeyValuePair<int, string>(5, "5")
                        };
         }
 
-        public static IEnumerable<KeyValuePair<int, int>> SegmentSelectorOptionsFull()
+        public static IEnumerable<KeyValuePair<int, string>> SegmentSelectorOptionsFull()
         {
-            yield return new KeyValuePair<int, int>(-1, -1);
+            yield return new KeyValuePair<int, string>(-1, "-1");
             foreach (var option in SegmentSelectorOptions())
             {
                 yield return option;
@@ -79,7 +82,6 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
             if (segments.Length > segment)
             {
-
                 return segments[segment];
             }
 

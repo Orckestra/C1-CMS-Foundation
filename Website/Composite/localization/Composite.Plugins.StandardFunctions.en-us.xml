@@ -344,16 +344,22 @@
 	<string key="Composite.Web.Request.PathInfo.param.Segment.label" value="Segment" />
 	<string key="Composite.Web.Request.PathInfo.param.AutoApprove.help" value="When true, Composite C1 will be instructed to accept any path info string. Default is true." />
 	<string key="Composite.Web.Request.PathInfo.param.AutoApprove.label" value="AutoApprove" />
+	<string key="Composite.Web.Request.PathInfo.param.FallbackValue.help" value="" />
+	<string key="Composite.Web.Request.PathInfo.param.FallbackValue.label" value="Fallback value" />
 	<string key="Composite.Web.Request.PathInfoInt.description" value="Extracts an integer value from a PathInfo segment." />
 	<string key="Composite.Web.Request.PathInfoInt.param.Segment.help" value="The segment of the path info to retrieve, using the format '/(0)/(1)/(2)/...'." />
 	<string key="Composite.Web.Request.PathInfoInt.param.Segment.label" value="Segment" />
 	<string key="Composite.Web.Request.PathInfoInt.param.AutoApprove.help" value="When true, Composite C1 will be instructed to accept any path info string. Default is true." />
 	<string key="Composite.Web.Request.PathInfoInt.param.AutoApprove.label" value="AutoApprove" />
+	<string key="Composite.Web.Request.PathInfoInt.param.FallbackValue.help" value="" />
+	<string key="Composite.Web.Request.PathInfoInt.param.FallbackValue.label" value="Fallback value" />
 	<string key="Composite.Web.Request.PathInfoGuid.description" value="Extracts a GUID from a PathInfo segment." />
 	<string key="Composite.Web.Request.PathInfoGuid.param.Segment.help" value="The segment of the path info to retrieve, using the format '/(0)/(1)/(2)/...'. " />
 	<string key="Composite.Web.Request.PathInfoGuid.param.Segment.label" value="Segment" />
 	<string key="Composite.Web.Request.PathInfoGuid.param.AutoApprove.help" value="When true, Composite C1 will be instructed to accept any path info string. Default is true." />
 	<string key="Composite.Web.Request.PathInfoGuid.param.AutoApprove.label" value="AutoApprove" />
+	<string key="Composite.Web.Request.PathInfoGuid.param.FallbackValue.help" value="" />
+	<string key="Composite.Web.Request.PathInfoGuid.param.FallbackValue.label" value="Fallback value" />
 	<string key="Composite.Web.Request.RegisterPathInfoUsage.description" value="Notifies the system of PathInfo being used, so that the request is not redirected to the 'Page not found' page." />
 	<string key="Composite.Web.Request.SessionVariable.description" value="Retrieves a variable from the current users session as a string." />
 	<string key="Composite.Web.Request.SessionVariable.param.FallbackValue.help" value="The value to use if the session variable was not found" />
