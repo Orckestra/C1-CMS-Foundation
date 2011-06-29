@@ -97,6 +97,7 @@ _BroadcastMessages.prototype = {
 	SYSTEMTREEBINDING_REFRESHALL		: "systemtree refresh all",
 	SYSTEMTREEBINDING_REFRESHING		: "systemtree refreshing",
 	SYSTEMTREEBINDING_REFRESHED			: "systemtree refreshed",
+	SYSTEMTREEBINDING_FOCUS				: "systemtree focus",
 	SYSTEMTREEBINDING_CUT  				: "systemtree cut",
 	SYSTEMTREEBINDING_COPY				: "systemtree copy",
 	SYSTEMTREEBINDING_PASTE 			: "systemtree paste",

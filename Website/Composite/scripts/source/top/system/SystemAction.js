@@ -23,6 +23,12 @@ SystemAction.categories = {
 }
 
 /**
+* Determines active positions to display in navgation and selector (ElementActionActive)
+* @type {Enum}
+*/
+SystemAction.activePositions = { NavigatorTree: 1, SelectorTree: 2 }
+
+/**
  * Tagged actions go here.
  * @type {Map<string><SystemAction>}
  */
@@ -244,6 +250,17 @@ SystemAction.prototype.getCategory = function () {
 SystemAction.prototype.getGroupID = function () {
 	
 	return this._data.ActionCategory.GroupId;
+}
+
+
+
+/**
+* Get active positions.
+* @return {string}
+*/
+SystemAction.prototype.getActivePositions = function () {
+
+	return this._data.ActivePositions;
 }
 
 /**

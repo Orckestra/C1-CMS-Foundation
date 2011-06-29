@@ -54,10 +54,10 @@ function SystemTreeBinding () {
 	this._isActionProfileAware = true;
 
 	/**
-	* Is tree selector? 
-	* @type {boolean}
+	* Tree position 
+	* @type {int}
 	*/
-	this._isTreeSelector = false;
+	this._activePosition = SystemAction.activePositions.NavigatorTree;
 	
 	/**
 	 * This can be deprecated if we implement serverside treenode selection.
@@ -119,6 +119,8 @@ function SystemTreeBinding () {
 	this._restorableFocusHandle = null;
 }
 
+
+
 /**
  * Identifies binding.
  */
@@ -142,7 +144,8 @@ SystemTreeBinding.prototype.onBindingRegister = function () {
 	/*
 	 * File subscriptions.
 	 */
-	this.subscribe ( BroadcastMessages.SYSTEMTREEBINDING_REFRESH );
+	this.subscribe ( BroadcastMessages.SYSTEMTREEBINDING_REFRESH);
+	this.subscribe ( BroadcastMessages.SYSTEMTREEBINDING_FOCUS);
 	this.subscribe ( BroadcastMessages.SYSTEMTREEBINDING_CUT );
 	this.subscribe ( BroadcastMessages.SYSTEMTREEBINDING_COPY );
 	this.subscribe ( BroadcastMessages.SYSTEMTREEBINDING_PASTE );
@@ -169,7 +172,7 @@ SystemTreeBinding.prototype.onBindingRegister = function () {
 
 
 	if (this.getProperty("treeselector") == true) {
-		this._isTreeSelector = true;
+		this._activePosition = SystemAction.activePositions.SelectorTree;
 	}
 
 
@@ -490,49 +493,57 @@ SystemTreeBinding.prototype._computeRefreshSetup = function () {
  * @param {string} broadcast
  * @param {object} arg
  */
-SystemTreeBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
-	
-	SystemTreeBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
-	
+SystemTreeBinding.prototype.handleBroadcast = function (broadcast, arg) {
+
+	SystemTreeBinding.superclass.handleBroadcast.call(this, broadcast, arg);
+
 	/**
-	 * Doublecheck that this tree is actually focused. Although if 
-	 * the server transmits a refresh signal, this is not required.
-	 */
-	switch ( broadcast ) {
-		
-		case BroadcastMessages.SYSTEMTREEBINDING_REFRESH :
-			if ( arg != null || this.isFocused ) { // arg is only provided when server is refreshing!
-				this._handleCommandBroadcast ( broadcast, arg );
+	* Doublecheck that this tree is actually focused. Although if 
+	* the server transmits a refresh signal, this is not required.
+	*/
+	switch (broadcast) {
+
+		case BroadcastMessages.SYSTEMTREEBINDING_REFRESH:
+			if (arg != null || this.isFocused) { // arg is only provided when server is refreshing!
+				this._handleCommandBroadcast(broadcast, arg);
 			}
 			break;
-			
-		case BroadcastMessages.SYSTEMTREEBINDING_CUT :
-		case BroadcastMessages.SYSTEMTREEBINDING_COPY :
-		case BroadcastMessages.SYSTEMTREEBINDING_PASTE :
-			if ( this.isFocused ) {
-				this._handleCommandBroadcast ( broadcast );
+
+		case BroadcastMessages.SYSTEMTREEBINDING_CUT:
+		case BroadcastMessages.SYSTEMTREEBINDING_COPY:
+		case BroadcastMessages.SYSTEMTREEBINDING_PASTE:
+			if (this.isFocused) {
+				this._handleCommandBroadcast(broadcast);
 			}
 			break;
-			
-		case BroadcastMessages.SYSTEMTREEBINDING_COLLAPSEALL :
-			this.collapse ( true );
+
+		case BroadcastMessages.SYSTEMTREEBINDING_COLLAPSEALL:
+			this.collapse(true);
 			break;
-			
-		case BroadcastMessages.DOCKTABBINDING_SELECT :
-			if ( this.isLockedToEditor ) {
+
+		case BroadcastMessages.DOCKTABBINDING_SELECT:
+			if (this.isLockedToEditor) {
 				var tab = arg;
-				if ( tab.getHandle () != "Composite.Management.Explorer" ) { // the tree dock!
-					this._handleDockTabSelect ( tab );
+				if (tab.getHandle() != "Composite.Management.Explorer") { // the tree dock!
+					this._handleDockTabSelect(tab);
 				}
 				// TODO: Othwise attempt restore focus!!!!!!!!!!!!!!!!!!!!!
 			}
 			break;
-			
-		case BroadcastMessages.STAGEDIALOG_OPENED :
-			if ( this.isLockedToEditor ) {
-				this.blurSelectedTreeNodes ();
-				EventBroadcaster.broadcast ( BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED, null );
+
+		case BroadcastMessages.STAGEDIALOG_OPENED:
+			if (this.isLockedToEditor) {
+				this.blurSelectedTreeNodes();
+				EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED, null);
 			}
+			break;
+		case BroadcastMessages.SYSTEMTREEBINDING_FOCUS:
+			var self = this, token = arg;
+			setTimeout(function () { // timeout to minimize freezing sensation
+				if (token != null) {
+					self._focusTreeNodeByEntityToken(token);
+				}
+			}, 250); // zero not always enough...
 			break;
 	}
 }
@@ -1026,29 +1037,6 @@ SystemTreeBinding.prototype.focusSingleTreeNodeBinding = function ( binding ) {
 };
 
 /**
-* Is popup tree system action?
-* @param {SystemAction} systemAction;
-* @return {boolean}
-*/
-SystemTreeBinding.prototype.isTreeSelectorAction = function (systemAction) {
-	//TODO make filtering by information from server
-	var handle = systemAction.getHandle();
-	if (handle.indexOf("AddNewMediaFolderWorkflow") != -1)
-		return true;
-	if (handle.indexOf("AddNewMediaFileWorkflow") != -1)
-		return true;
-	if (handle.indexOf("AddMediaZipFileWorkflow") != -1)
-		return true;
-	if (handle.indexOf("DeleteMediaFileWorkflow") != -1)
-		return true;
-	if (handle.indexOf("DeleteMediaFolderWorkflow") != -1)
-		return true;
-
-	return false;
-}
-
-
-/**
  * Compile actionprofile based on the individual actionprofile of all focused treenodes.
  * In case of multiple focused treenodes, only SystemActions relevant for *all* focused 
  * treenodes will be included in the result.
@@ -1057,80 +1045,77 @@ SystemTreeBinding.prototype.isTreeSelectorAction = function (systemAction) {
 SystemTreeBinding.prototype.getCompiledActionProfile = function () {
 
 	var temp = {};
-	var result = new Map ();
-	
-	var focusedBindings = this.getFocusedTreeNodeBindings ();
+	var result = new Map();
 
-	result = focusedBindings.getFirst().node.getActionProfile();
+	var focusedBindings = this.getFocusedTreeNodeBindings();
 
-	if (this._isTreeSelector) {
-		var actionProfile = result;
-		result = new Map();
-		var self = this;
-		actionProfile.each(
-			function (groupid, list) {
-				var newList = new List();
-				list.each(function (systemAction) {
-					if (self.isTreeSelectorAction(systemAction)) {
-						newList.add(systemAction);
-					}
-				});
-				if (newList.hasEntries()) {
-					result.set(groupid, newList);
+	var actionProfile = focusedBindings.getFirst().node.getActionProfile();
+
+	var self = this;
+	actionProfile.each(
+		function (groupid, list) {
+			var newList = new List();
+			list.each(function (systemAction) {
+				if (systemAction.getActivePositions() & self._activePosition) {
+					newList.add(systemAction);
 				}
-			}
-		);
-	}
-	
-	// THIS FAILS SOMEHOW!
-	
-	/*
-	 * Build a temporary list of SystemAction keys.
-	 *
-	focusedBindings.each ( 
-		function ( binding ) {
-			var actionProfile = binding.node.getActionProfile ();	
-			actionProfile.each ( function ( groupid, list ) {
-				list.each ( function ( systemAction ) {
-					var key = systemAction.getHandle ();
-					if ( !temp [ key ]) {
-						temp [ key ] = new List ();
-					}
-					temp [ key ].add ({
-						groupid : groupid,
-						systemAction : systemAction
-					});
-				});
 			});
+			if (newList.hasEntries()) {
+				result.set(groupid, newList);
+			}
 		}
+	);
+
+
+	// THIS FAILS SOMEHOW!
+
+	/*
+	* Build a temporary list of SystemAction keys.
+	*
+	focusedBindings.each ( 
+	function ( binding ) {
+	var actionProfile = binding.node.getActionProfile ();	
+	actionProfile.each ( function ( groupid, list ) {
+	list.each ( function ( systemAction ) {
+	var key = systemAction.getHandle ();
+	if ( !temp [ key ]) {
+	temp [ key ] = new List ();
+	}
+	temp [ key ].add ({
+	groupid : groupid,
+	systemAction : systemAction
+	});
+	});
+	});
+	}
 	);
 	
 	/* 
-	 * Delete entries that doesn't apply to *all* focused treenodes
-	 *
+	* Delete entries that doesn't apply to *all* focused treenodes
+	*
 	for ( var key in temp ) {
-		var list = temp [ key ];
-		if ( list.getLength () != focusedBindings.getLength ()) {
-			delete temp [ key ];
-		}
+	var list = temp [ key ];
+	if ( list.getLength () != focusedBindings.getLength ()) {
+	delete temp [ key ];
+	}
 	}
 	
 	/*
-	 * Build resulting actionprofile. The result should be comparable to a 
-	 * single actionprofile as computed by {@link SystemNode#getActionProfile}
-	 *
+	* Build resulting actionprofile. The result should be comparable to a 
+	* single actionprofile as computed by {@link SystemNode#getActionProfile}
+	*
 	for ( var key in temp ) {
-		var list = temp [ key ];
-		var entry = list.getFirst ();
-		if ( !result.has ( entry.groupid )) {
-			result.set ( 
-				entry.groupid, 
-				new List ()
-			);
-		}
-		result.get ( entry.groupid ).add ( entry.systemAction );
+	var list = temp [ key ];
+	var entry = list.getFirst ();
+	if ( !result.has ( entry.groupid )) {
+	result.set ( 
+	entry.groupid, 
+	new List ()
+	);
+	}
+	result.get ( entry.groupid ).add ( entry.systemAction );
 	}
 	*/
-	
+
 	return result;
 }

@@ -292,7 +292,15 @@ window.MessageQueue = new function () {
 						this._nextAction ();
 					}
 					break;
-					
+
+				case "SelectElement":
+					EventBroadcaster.broadcast(
+						BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
+						action.BindEntityTokenToViewParams.EntityToken
+					);
+					this._nextAction();
+					break;
+
 				case "MessageBox" :
 					openMessageBox ( action.MessageBoxParams );
 					break;
