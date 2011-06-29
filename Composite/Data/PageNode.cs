@@ -93,7 +93,8 @@ namespace Composite.Data
         {
             get
             {
-                return _pageElement.Attribute("URL").Value;
+                var attr = _pageElement.Attribute("URL");
+                return attr != null ? attr.Value : null;
             }
         }
 
