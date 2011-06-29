@@ -5,6 +5,7 @@ using System.Web.Compilation;
 using System.Web.Configuration;
 using System.Web.Routing;
 using System.Web.UI;
+using System.Xml.Linq;
 
 namespace Composite.Core.Routing.Pages
 {
@@ -14,17 +15,23 @@ namespace Composite.Core.Routing.Pages
 
         static C1PageRouteHandler()
         {
-            string sectionName = HttpRuntime.UsingIntegratedPipeline ? "system.webServer/handlers" : "system.web/httpHandlers";
-            var section = (HttpHandlersSection)WebConfigurationManager.GetWebApplicationSection(sectionName);
+            bool isIntegratedPipeline = HttpRuntime.UsingIntegratedPipeline;
+            string sectionName = isIntegratedPipeline ? "system.webServer" : "system.web";
 
-            if(section != null)
+            var config = WebConfigurationManager.OpenWebConfiguration("/").GetSection(sectionName);
+            if (config != null)
             {
-                var item = section.Handlers.Cast<HttpHandlerAction>().SingleOrDefault(a => String.Equals(a.Path, "Renderers/Page.aspx", StringComparison.OrdinalIgnoreCase));
-                if (item != null)
+                string handlersSectionName = isIntegratedPipeline ? "handlers" : "httpHandlers";
+
+                var handlers = XElement.Parse(config.SectionInformation.GetRawXml()).Element(handlersSectionName);
+                var handler = handlers.Elements("add").SingleOrDefault(e => e.Attribute("path").Value.Equals("Renderers/Page.aspx", StringComparison.OrdinalIgnoreCase));
+
+                if (handler != null)
                 {
-                    _handlerType = Type.GetType(item.Type);
+                    _handlerType = Type.GetType(handler.Attribute("type").Value);
                 }
             }
+
         }
 
 
