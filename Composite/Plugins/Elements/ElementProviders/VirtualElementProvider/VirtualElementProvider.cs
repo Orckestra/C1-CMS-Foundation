@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Web.Hosting;
 using Composite.C1Console.Actions;
 using Composite.Core.Application;
 using Composite.C1Console.Events;
@@ -11,8 +12,12 @@ using Composite.C1Console.Elements.Plugins.ElementProvider;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 using Composite.C1Console.Security;
+using Composite.Core.Types;
 using Composite.Core.WebClient;
 using Composite.C1Console.Workflow;
+using Composite.Data;
+using Composite.Data.DynamicTypes;
+using Composite.Data.GeneratedTypes.Foundation;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
@@ -223,6 +228,25 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
                     Label = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.ViewSystemLogLabel"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.ViewSystemLogTooltip"),
                     Icon = VirtualElementProvider.ShowLogIcon,
+                    Disabled = false,
+                    ActionLocation = new ActionLocation
+                    {
+                        ActionType = ActionType.Other,
+                        IsInFolder = false,
+                        IsInToolbar = false,
+                        ActionGroup = PrimaryActionGroup
+                    }
+                }
+            });
+
+
+            element.AddAction(new ElementAction(new ActionHandle(new RebuildAssemblyCacheActionToken()))
+            {
+                VisualData = new ActionVisualizedData
+                {
+                    Label = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.RebuildAssemblyCacheLabel"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.RebuildAssemblyCacheTooltip"),
+                    Icon = VirtualElementProvider.RestartApplicationIcon, // TODO: change icon
                     Disabled = false,
                     ActionLocation = new ActionLocation
                     {
@@ -748,8 +772,28 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
     }
 
 
+    
+    [ActionExecutor(typeof(RebuildAssemblyCacheActionExecutor))]
+    internal sealed class RebuildAssemblyCacheActionToken : ActionToken
+    {
+        private static readonly IEnumerable<PermissionType> _permissionType = new [] { PermissionType.Administrate };
+
+        public override IEnumerable<PermissionType> PermissionTypes
+        {
+            get { return _permissionType; }
+        }
+
+        public override string Serialize()
+        {
+            return "RebuildAssemblyCacheActionToken";
+        }
 
 
+        public static ActionToken Deserialize(string serializedData)
+        {
+            return new RebuildAssemblyCacheActionToken();
+        }
+    }
 
 
 
@@ -776,6 +820,36 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
         public static ActionToken Deserialize(string serializedData)
         {
             return new RestartApplicationActionToken();
+        }
+    }
+
+
+
+    internal sealed class RebuildAssemblyCacheActionExecutor : IActionExecutor
+    {
+        public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
+        {
+            var interfaceCompilationUnits = new List<BuildManagerCompileUnit>();
+
+            foreach(var type in DataFacade.GetAllInterfaces())
+            {
+                Guid typeId;
+                DataTypeDescriptor dataTypeDescriptor;
+                if(!DataAttributeFacade.TryGetImmutableTypeId(type, out typeId)
+                   || !DynamicTypeManager.TryGetDataTypeDescriptor(typeId, out dataTypeDescriptor)
+                   || !dataTypeDescriptor.IsCodeGenerated)
+                {
+                    continue;
+                }
+
+                interfaceCompilationUnits.Add(InterfaceCodeGenerator.GenerateCompilationUnit(dataTypeDescriptor));
+            }
+
+            BuildManager.RebuildCache(interfaceCompilationUnits.ToArray());
+
+            HostingEnvironment.InitiateShutdown();
+
+            return null;
         }
     }
 

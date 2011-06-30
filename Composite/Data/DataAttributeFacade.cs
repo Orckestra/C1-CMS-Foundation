@@ -118,7 +118,9 @@ namespace Composite.Data
         {
 			Verify.ArgumentNotNull(interfaceType, "interfaceType");
 
-			if (_resourceLocker.Resources.InterfaceToImmutableTypeIdCache.TryGetValue(interfaceType, out immutableTypeId))
+            var interfaceToImmutableTypeIdCache = _resourceLocker.Resources.InterfaceToImmutableTypeIdCache;
+
+            if (interfaceToImmutableTypeIdCache.TryGetValue(interfaceType, out immutableTypeId))
 			{
 				return true;
 			}
@@ -134,9 +136,9 @@ namespace Composite.Data
 
 			immutableTypeId = attributes[0].ImmutableTypeId;
 
-            using (_resourceLocker.Locker)
+            lock (interfaceToImmutableTypeIdCache)
             {
-                _resourceLocker.Resources.InterfaceToImmutableTypeIdCache.Add(interfaceType, immutableTypeId);
+                interfaceToImmutableTypeIdCache.Add(interfaceType, immutableTypeId);
             }
 
 			return true;
@@ -557,9 +559,9 @@ namespace Composite.Data
             public string UndefinedDataLableValue { get; set; }
             public Dictionary<Type, bool> InterfaceToAutoUpdatebleCache { get; set; }
             public Dictionary<Type, bool> InterfaceToGeneratedCache { get; set; }
-            public Dictionary<Type, Guid> InterfaceToImmutableTypeIdCache { get; set; }
+            public Hashtable<Type, Guid> InterfaceToImmutableTypeIdCache { get; set; }
             public Dictionary<Type, bool> InterfaceToNotReferenceableCache { get; set; }
-            public Dictionary<Type, KeyValuePair<MethodInfo, string>> InterfaceTypeToLabelMethodInfoCache { get; set; } 
+            public Dictionary<Type, KeyValuePair<MethodInfo, string>> InterfaceTypeToLabelMethodInfoCache { get; set; }
             public Dictionary<Type, CachingType> InterfaceTypeToCachingTypeCache { get; set; }
             public Dictionary<Type, List<ForeignPropertyInfo>> InterfaceTypeToDataReferencePropertyInfoes { get; set; }
             public Dictionary<Type, List<PropertyInfo>> InterfaceTypeToKeyProeprtyInfoes { get; set; }
@@ -571,7 +573,7 @@ namespace Composite.Data
                 resources.UndefinedDataLableValue = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "UndefinedDataLavelTemplate");
                 resources.InterfaceToAutoUpdatebleCache = new Dictionary<Type, bool>();
                 resources.InterfaceToGeneratedCache = new Dictionary<Type, bool>();
-                resources.InterfaceToImmutableTypeIdCache = new Dictionary<Type, Guid>();
+                resources.InterfaceToImmutableTypeIdCache = new Hashtable<Type, Guid>();
                 resources.InterfaceToNotReferenceableCache = new Dictionary<Type, bool>();
                 resources.InterfaceTypeToLabelMethodInfoCache = new Dictionary<Type, KeyValuePair<MethodInfo, string>>();
                 resources.InterfaceTypeToCachingTypeCache = new Dictionary<Type, CachingType>();
