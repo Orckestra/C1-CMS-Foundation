@@ -26,7 +26,7 @@
 					<ui:cover id="infocover" busy="false" hidden="true"/>
 					<div id="prettyversion">${pretty}</div>
 					<div id="version">Build no. ${version}</div>
-					<div id="copyright">© 2010 Composite A/S</div>
+					<div id="copyright">© <%=DateTime.Now.Year%> Composite A/S</div>
 					<br/>
 					<div>Installation ID:<span id="id" title="Installation ID">${id}</span></div>
 				</div>

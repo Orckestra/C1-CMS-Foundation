@@ -112,6 +112,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                            ToolTip = GetResourceString("MediaFileProviderElementProvider.AddMediaFolderToolTip"),
                            Icon = MediaFileProviderElementProvider.AddMediaFolder,
                            Disabled = false,
+                           ActivePositions = ElementActionActivePosition.NavigatorTree | ElementActionActivePosition.SelectorTree,
                            ActionLocation = new ActionLocation
                            {
                                ActionType = ActionType.Add,
@@ -774,6 +775,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                      ToolTip = GetResourceString("MediaFileProviderElementProvider.DeleteMediaFileToolTip"),
                      Icon = DeleteMediaFile,
                      Disabled = file.IsReadOnly,
+                     ActivePositions = ElementActionActivePosition.NavigatorTree | ElementActionActivePosition.SelectorTree,
                      ActionLocation = new ActionLocation
                      {
                          ActionType = ActionType.Delete,
@@ -924,6 +926,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                             ToolTip = GetResourceString("MediaFileProviderElementProvider.AddMediaFolderToolTip"),
                             Icon = MediaFileProviderElementProvider.AddMediaFolder,
                             Disabled = false,
+                            ActivePositions = ElementActionActivePosition.NavigatorTree | ElementActionActivePosition.SelectorTree,
                             ActionLocation = new ActionLocation
                             {
                                 ActionType = ActionType.Add,
@@ -947,6 +950,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                             ToolTip = GetResourceString("MediaFileProviderElementProvider.DeleteMediaFolderToolTip"),
                             Icon = DeleteMediaFolder,
                             Disabled = false,
+                            ActivePositions = ElementActionActivePosition.NavigatorTree | ElementActionActivePosition.SelectorTree,
                             ActionLocation = new ActionLocation
                             {
                                 ActionType = ActionType.Delete,
@@ -993,6 +997,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                             ToolTip = GetResourceString("MediaFileProviderElementProvider.AddMediaFileToolTip"),
                             Icon = MediaFileProviderElementProvider.AddMediaFile,
                             Disabled = false,
+                            ActivePositions = ElementActionActivePosition.NavigatorTree | ElementActionActivePosition.SelectorTree,
                             ActionLocation = new ActionLocation
                             {
                                 ActionType = ActionType.Add,

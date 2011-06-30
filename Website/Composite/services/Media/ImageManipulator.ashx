@@ -511,6 +511,11 @@ public class ImageManipulator : IHttpHandler
         public void ExpandTreeNode(EntityToken entityToken)
         {
         }
+
+
+        public void SelectElement(string entityToken)
+        {
+        }
     }
 
     #endregion
