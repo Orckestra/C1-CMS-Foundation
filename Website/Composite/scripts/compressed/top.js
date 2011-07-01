@@ -21863,6 +21863,7 @@ this._actionFolderNames={};
 this._actionProfile=null;
 this._moreActionsWidth=0;
 this._moreActions=null;
+this._activePosition=SystemAction.activePositions.NavigatorTree;
 return this;
 }
 SystemToolBarBinding.prototype.toString=function(){
@@ -21903,7 +21904,7 @@ SystemToolBarBinding.superclass.handleBroadcast.call(this,_d58,arg);
 switch(_d58){
 case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
 var self=this;
-if(arg!=null){
+if(arg!=null&&arg.activePosition==this.getActivePosition()){
 this._actionProfile=arg;
 var key=this._getProfileKey();
 if(key!=this._currentProfileKey){
@@ -22079,6 +22080,9 @@ var _d81=this.getDescendantBindingByLocalName("toolbarbutton");
 if(_d81!=null){
 _d81.fireCommand();
 }
+};
+SystemToolBarBinding.prototype.getActivePosition=function(){
+return this._activePosition;
 };
 SystemToolBarBinding.newInstance=function(_d82){
 var _d83=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbar",_d82);
@@ -22625,6 +22629,7 @@ if(_dde.hasEntries()){
 _dd8.set(_ddc,_dde);
 }
 });
+_dd8.activePosition=this._activePosition;
 return _dd8;
 };
 SystemTreePopupBinding.prototype=new PopupBinding;
