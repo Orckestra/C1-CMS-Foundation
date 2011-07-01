@@ -499,7 +499,7 @@ namespace Composite.Core.WebClient
 
                 if (!resolvedUrls.TryGetValue(internalPageUrl, out publicPageUrl))
                 {
-                    UrlData<IPage> pageUrlData;
+                    PageUrlData pageUrlData;
                     string decodedInternalUrl = internalPageUrl.Replace("%28", "(").Replace("%29", ")");
                     string anchor;
 

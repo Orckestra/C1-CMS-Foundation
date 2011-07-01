@@ -1,10 +1,8 @@
-﻿using System;
-using System.Web;
+﻿using System.Web;
 using System.Web.Routing;
 using Composite.Core.WebClient;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
-using Composite.Data.Types;
 
 namespace Composite.Core.Routing.Pages
 {
@@ -20,12 +18,12 @@ namespace Composite.Core.Routing.Pages
         private static readonly string HttpContextItem_PathInfoHandled = "C1PageRoute_PathInfoHandled";
 
         /// <exclude />
-        public static UrlData<IPage> UrlData
+        public static PageUrlData PageUrlData
         {
             get
             {
                 var httpContext = HttpContext.Current;
-                return httpContext != null ? httpContext.Items[HttpContextItem_C1PageUrl] as UrlData<IPage> : null;
+                return httpContext != null ? httpContext.Items[HttpContextItem_C1PageUrl] as PageUrlData : null;
             }
         }
 
@@ -35,7 +33,7 @@ namespace Composite.Core.Routing.Pages
         /// <returns>The PathInfo url part.</returns>
         public static string GetPathInfo()
         {
-            var urlData = UrlData;
+            var urlData = PageUrlData;
             return urlData != null ? urlData.PathInfo : null;
         }
 
@@ -80,8 +78,10 @@ namespace Composite.Core.Routing.Pages
 
             string currentUrl = context.Request.Url.OriginalString;
 
-            UrlData<IPage> urlData = urlProvider.ParseUrl(currentUrl);
-            if(urlData == null || urlData.UrlKind == UrlKind.Renderer)
+            UrlKind urlKind;
+
+            PageUrlData pageUrlData = urlProvider.ParseUrl(currentUrl, out urlKind);
+            if (pageUrlData == null || urlKind == UrlKind.Renderer)
             {
                 return null;
             }
@@ -89,17 +89,17 @@ namespace Composite.Core.Routing.Pages
             var urlSpace = new UrlSpace(context);
 
             // Redirecting friendly urls to public urls
-            if (urlData.UrlKind == UrlKind.Friendly || urlData.UrlKind == UrlKind.Redirect || urlData.UrlKind == UrlKind.Internal)
+            if (urlKind == UrlKind.Friendly || urlKind == UrlKind.Redirect || urlKind == UrlKind.Internal)
             {
-                if(urlData.PathInfo == "/")
+                if(pageUrlData.PathInfo == "/")
                 {
-                    urlData.PathInfo = null;
+                    pageUrlData.PathInfo = null;
                 }
 
-                string publicUrl = urlProvider.BuildUrl(urlData, UrlKind.Public, urlSpace);
+                string publicUrl = urlProvider.BuildUrl(pageUrlData, UrlKind.Public, urlSpace);
                 if(publicUrl == null)
                 {
-                    if (urlData.UrlKind != UrlKind.Internal)
+                    if (urlKind != UrlKind.Internal)
                     {
                         return null;
                     }
@@ -111,17 +111,17 @@ namespace Composite.Core.Routing.Pages
                 }
             }
 
-            Verify.That(urlData.UrlKind == UrlKind.Public, "Unexpected url kind '{0}", urlData.UrlKind);
+            Verify.That(urlKind == UrlKind.Public, "Unexpected url kind '{0}", urlKind);
 
             // If url ends with a trailing slash - doing a redirect. F.e. http://localhost/a/ -> http://localhost/a
-            if(urlData.PathInfo == "/")
+            if(pageUrlData.PathInfo == "/")
             {
-                urlData.PathInfo = null;
-                return SeoFriendlyRedirect(context, urlProvider.BuildUrl(urlData, UrlKind.Public, urlSpace));
+                pageUrlData.PathInfo = null;
+                return SeoFriendlyRedirect(context, urlProvider.BuildUrl(pageUrlData, UrlKind.Public, urlSpace));
             }
 
             // Checking casing in url, so the same page will appear as a few pages by a crawler
-            string correctUrl = urlProvider.BuildUrl(urlData, UrlKind.Public, urlSpace);
+            string correctUrl = urlProvider.BuildUrl(pageUrlData, UrlKind.Public, urlSpace);
 
             string originalFilePath = new UrlBuilder(currentUrl).FilePath;
             string correctFilePath = new UrlBuilder(correctUrl).FilePath;
@@ -139,16 +139,16 @@ namespace Composite.Core.Routing.Pages
                 context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
             }
 
-            context.Items.Add(HttpContextItem_C1PageUrl, urlData);
+            context.Items.Add(HttpContextItem_C1PageUrl, pageUrlData);
 
             var data = GetRouteData();
-            data.Values.Add(RouteDate_PageUrl, urlData);
+            data.Values.Add(RouteDate_PageUrl, pageUrlData);
 
             // Doing url rewriting so ASP.NET will get correct FilePath/PathInfo properties
-            if(!urlData.PathInfo.IsNullOrEmpty())
+            if(!pageUrlData.PathInfo.IsNullOrEmpty())
             {
-                string filePath = localPath.Substring(0, localPath.Length - urlData.PathInfo.Length);
-                context.RewritePath(filePath, urlData.PathInfo, context.Request.Url.Query);
+                string filePath = localPath.Substring(0, localPath.Length - pageUrlData.PathInfo.Length);
+                context.RewritePath(filePath, pageUrlData.PathInfo, context.Request.Url.Query);
             }
 
             return data;

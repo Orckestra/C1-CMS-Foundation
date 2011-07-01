@@ -124,9 +124,9 @@ namespace Composite.Core
             if(httpContext != null
                && httpContext.RequestIsAvaliable()
                && originalUrl == httpContext.Request.RawUrl
-               && C1PageRoute.UrlData != null)
+               && C1PageRoute.PageUrlData != null)
             {
-                pathInfo = C1PageRoute.UrlData.PathInfo;
+                pathInfo = C1PageRoute.PageUrlData.PathInfo;
 
                 int pathInfoLength = (pathInfo ?? string.Empty).Length;
                 filePath = relativePath.Substring(0, relativePath.Length - pathInfoLength);

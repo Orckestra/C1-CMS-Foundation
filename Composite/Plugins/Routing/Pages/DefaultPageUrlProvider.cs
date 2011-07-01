@@ -40,14 +40,23 @@ namespace Composite.Plugins.Routing.Pages
             return filePath.EndsWith("Renderers/Page.aspx", true);
         }
 
-        public UrlData<IPage> ParseInternalUrl(string relativeUrl)
+        public PageUrlData ParseInternalUrl(string relativeUrl)
+        {
+            UrlKind urlKind;
+            return ParseInternalUrl(relativeUrl, out urlKind);
+        }
+
+        private PageUrlData ParseInternalUrl(string relativeUrl, out UrlKind urlKind)
         {
             var urlBuilder = new UrlBuilder(relativeUrl);
 
             if (IsPageRendererRequest(urlBuilder.FilePath))
             {
+                urlKind = UrlKind.Renderer;
                 return ParseRendererUrl(urlBuilder);
             }
+
+            urlKind = UrlKind.Undefined;
 
             string prefix = InternalUrlPrefix;
 
@@ -99,28 +108,16 @@ namespace Composite.Plugins.Routing.Pages
 
             queryString.Remove("cultureInfo");
 
-            IPage page;
+            urlKind = UrlKind.Internal;
 
-            using (new DataScope(isUnpublished ? PublicationScope.Unpublished : PublicationScope.Published, cultureInfo))
+            return new PageUrlData(pageId, isUnpublished ? PublicationScope.Unpublished : PublicationScope.Published, cultureInfo)
             {
-                page = PageManager.GetPageById(pageId, true);
-            }
-
-            if (page == null)
-            {
-                return null;
-            }
-
-            return new UrlData<IPage>
-            {
-                Data = page,
                 PathInfo = pathInfo,
-                QueryParameters = queryString,
-                UrlKind = UrlKind.Internal
+                QueryParameters = queryString
             };
         }
 
-        private static UrlData<IPage> ParseRendererUrl(UrlBuilder urlBuilder)
+        private static PageUrlData ParseRendererUrl(UrlBuilder urlBuilder)
         {
             NameValueCollection queryString = urlBuilder.GetQueryParameters();
 
@@ -170,30 +167,22 @@ namespace Composite.Plugins.Routing.Pages
                 queryParameters.Add(key, queryString[key]);
             }
 
-            IPage page;
-
-            using (new DataScope(publicationScope, cultureInfo))
+            return new PageUrlData(pageId, publicationScope, cultureInfo)
             {
-                page = PageManager.GetPageById(pageId, true);
-            }
-
-            if (page == null)
-            {
-                return null;
-            }
-
-            return new UrlData<IPage>
-            {
-                Data = page,
                 PathInfo = urlBuilder.PathInfo,
                 QueryParameters = queryParameters,
-                UrlKind = UrlKind.Renderer
             };
         }
 
-        public UrlData<IPage> ParseUrl(string absoluteUrl)
+        public PageUrlData ParseUrl(string absoluteUrl, out UrlKind urlKind)
         {
             Verify.ArgumentNotNullOrEmpty(absoluteUrl, "absoluteUrl");
+
+            // Converting links like "http://localhost" to "http://localhost/"
+            if((absoluteUrl.Count(c => c == '/') == 2) && absoluteUrl.Contains("//"))
+            {
+                absoluteUrl += "/";
+            }
 
             Uri uri = new Uri(absoluteUrl);
 
@@ -204,16 +193,16 @@ namespace Composite.Plugins.Routing.Pages
 
             var urlSpace = new UrlSpace(hostname, relativeUrl);
 
-            return ParseUrl(relativeUrl, urlSpace);
+            return ParseUrl(relativeUrl, urlSpace, out urlKind);
         }
 
-        public UrlData<IPage> ParseUrl(string relativeUrl, UrlSpace urlSpace)
+        public PageUrlData ParseUrl(string relativeUrl, UrlSpace urlSpace, out UrlKind urlKind)
         {
             var urlBuilder = new UrlBuilder(relativeUrl);
 
             if (IsInternalUrl(urlBuilder.FilePath))
             {
-                return ParseInternalUrl(relativeUrl);
+                return ParseInternalUrl(relativeUrl, out urlKind);
             }
 
             string requestPath;
@@ -236,6 +225,7 @@ namespace Composite.Plugins.Routing.Pages
             CultureInfo locale = GetCultureInfo(requestPath, urlSpace);
             if (locale == null)
             {
+                urlKind = UrlKind.Undefined;
                 return null;
             }
 
@@ -250,7 +240,7 @@ namespace Composite.Plugins.Routing.Pages
             Verify.IsNotNull(pageUrlBuilder, "Failed to get instance of PageUrlBuilder");
 
             Guid pageId = Guid.Empty;
-            var urlKind = UrlKind.Public;
+            urlKind = UrlKind.Public;
 
             if(publicationScope == PublicationScope.Unpublished)
             {
@@ -291,6 +281,7 @@ namespace Composite.Plugins.Routing.Pages
             {
                 if (!pageUrlBuilder.FriendlyUrlToIdLookup.TryGetValue(loweredRequestPath, out pageId))
                 {
+                    urlKind = UrlKind.Undefined;
                     return null;
                 }
                 
@@ -298,22 +289,14 @@ namespace Composite.Plugins.Routing.Pages
                 urlKind = UrlKind.Friendly;
             }
 
-            IPage page;
-            using (new DataScope(publicationScope, locale))
-            {
-                page = PageManager.GetPageById(pageId, true);
-            }
-
             var queryParameters = urlBuilder.GetQueryParameters();
 
             string pathInfo = (pagePath.Length < requestPath.Length) ? requestPath.Substring(pagePath.Length) : null;
 
-            return new UrlData<IPage>
+            return new PageUrlData(pageId, publicationScope, locale)
             {
-                Data = page,
                 PathInfo = pathInfo, 
                 QueryParameters = queryParameters,
-                UrlKind = urlKind
             };
         }
 
@@ -380,17 +363,17 @@ namespace Composite.Plugins.Routing.Pages
             return DataLocalizationFacade.DefaultUrlMappingCulture;
         }
 
-        public string BuildUrl(UrlData<IPage> urlData, UrlKind urlKind, UrlSpace urlSpace)
+        public string BuildUrl(PageUrlData pageUrlData, UrlKind urlKind, UrlSpace urlSpace)
         {
             Verify.ArgumentCondition(urlKind != UrlKind.Undefined, "urlKind", "Url kind is undefined");
 
-            var page = urlData.Data;
-            Verify.ArgumentCondition(page != null, "urlData", "Failed to get page from UrlData<IPage>");
+            /*var page = pageUrlData.Data;
+            Verify.ArgumentCondition(page != null, "urlData", "Failed to get page from UrlData<IPage>");*/
 
-            var cultureInfo = page.DataSourceId.LocaleScope;
-            var publicationScope = page.DataSourceId.PublicationScope;
+            var cultureInfo = pageUrlData.LocalizationScope;
+            var publicationScope = pageUrlData.PublicationScope;
 
-            string legacyScopeName = GetLegacyPublicationScopeIdentifier(page.DataSourceId.PublicationScope);
+            string legacyScopeName = GetLegacyPublicationScopeIdentifier(pageUrlData.PublicationScope);
 
             if (urlKind == UrlKind.Public)
             {
@@ -398,12 +381,12 @@ namespace Composite.Plugins.Routing.Pages
 
                 var lookupTable = pageUrlBuilder.IdToUrlLookup;
 
-                if (!lookupTable.ContainsKey(page.Id))
+                if (!lookupTable.ContainsKey(pageUrlData.PageId))
                 {
                     return null;
                 }
 
-                var publicUrl = new UrlBuilder(lookupTable[page.Id]);
+                var publicUrl = new UrlBuilder(lookupTable[pageUrlData.PageId]);
                 if (publicationScope == PublicationScope.Unpublished)
                 {
                     publicUrl.FilePath = UrlUtils.Combine(publicUrl.FilePath, PageUrlBuilder.UrlMarker_Unpublished);
@@ -414,7 +397,7 @@ namespace Composite.Plugins.Routing.Pages
                     publicUrl.FilePath = UrlUtils.Combine(publicUrl.FilePath, PageUrlBuilder.UrlMarker_RelativeUrl);
                 }
 
-                string pathInfo = urlData.PathInfo;
+                string pathInfo = pageUrlData.PathInfo;
                 if(pathInfo != null 
                     && pathInfo.StartsWith("/") 
                     && publicUrl.FilePath.EndsWith("/"))
@@ -423,9 +406,9 @@ namespace Composite.Plugins.Routing.Pages
                 }
 
                 publicUrl.PathInfo = pathInfo;
-                if (urlData.QueryParameters != null)
+                if (pageUrlData.QueryParameters != null)
                 {
-                    publicUrl.AddQueryParameters(urlData.QueryParameters);
+                    publicUrl.AddQueryParameters(pageUrlData.QueryParameters);
                 }
 
                 return publicUrl;
@@ -436,14 +419,14 @@ namespace Composite.Plugins.Routing.Pages
                 string basePath = UrlUtils.ResolvePublicUrl("Renderers/Page.aspx");
                 UrlBuilder result = new UrlBuilder(basePath);
 
-                result["pageId"] = page.Id.ToString();
+                result["pageId"] = pageUrlData.PageId.ToString();
                 result["cultureInfo"] = cultureInfo.ToString();
                 result["dataScope"] = legacyScopeName;
 
-                result.PathInfo = urlData.PathInfo;
-                if (urlData.QueryParameters != null)
+                result.PathInfo = pageUrlData.PathInfo;
+                if (pageUrlData.QueryParameters != null)
                 {
-                    result.AddQueryParameters(urlData.QueryParameters);
+                    result.AddQueryParameters(pageUrlData.QueryParameters);
                 }
 
                 return result;
@@ -451,7 +434,7 @@ namespace Composite.Plugins.Routing.Pages
 
             if (urlKind == UrlKind.Internal)
             {
-                UrlBuilder result = new UrlBuilder("~/page(" + page.Id + ")");
+                UrlBuilder result = new UrlBuilder("~/page(" + pageUrlData.PageId + ")");
 
                 string pathInfo = string.Empty;
 
@@ -460,18 +443,18 @@ namespace Composite.Plugins.Routing.Pages
                     pathInfo = PageUrlBuilder.UrlMarker_Unpublished;
                 }
 
-                if(!urlData.PathInfo.IsNullOrEmpty())
+                if(!pageUrlData.PathInfo.IsNullOrEmpty())
                 {
-                    pathInfo += urlData.PathInfo;
+                    pathInfo += pageUrlData.PathInfo;
                 }
                 result.PathInfo = pathInfo;
 
 
                 result["cultureInfo"] = cultureInfo.ToString();
                
-                if (urlData.QueryParameters != null)
+                if (pageUrlData.QueryParameters != null)
                 {
-                    result.AddQueryParameters(urlData.QueryParameters);
+                    result.AddQueryParameters(pageUrlData.QueryParameters);
                 }
 
                 return result;

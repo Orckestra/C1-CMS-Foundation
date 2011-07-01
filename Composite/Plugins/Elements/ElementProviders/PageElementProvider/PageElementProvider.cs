@@ -20,12 +20,10 @@ using Composite.Core.ResourceSystem.Icons;
 using Composite.C1Console.Security;
 using Composite.Data.Transactions;
 using Composite.C1Console.Users;
-using Composite.Core.WebClient;
 using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
-//using PageManager = Composite.Data.PageManager;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
@@ -967,7 +965,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 previewPage = PageManager.GetPageById(page.Id);
             }
 
-            UrlData<IPage> pageUrlData = new UrlData<IPage>(previewPage);
+            PageUrlData pageUrlData = new PageUrlData(previewPage);
 
             var urlSpace = new UrlSpace();
             if(HostnameBindingsFacade.GetBindingForCurrentRequest() != null)

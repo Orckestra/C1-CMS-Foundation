@@ -7,17 +7,16 @@ using System.Web;
 using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Xml.Linq;
-using Composite;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
 using Composite.Core;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Routing;
 using Composite.Core.Xml;
 using Composite.Core.Types;
-using Composite.Core.WebClient;
 using Composite.Core.WebClient.Services.TreeServiceObjects;
 using Composite.Core.WebClient.FlowMediators;
 using Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods;
@@ -172,20 +171,16 @@ namespace Composite.Services
         [WebMethod]
         public string GetEntityTokenByPageUrl(string pageUrl)
         {
-            UrlData<IPage> pageUrlData = PageUrls.ParseUrl(pageUrl, new UrlSpace(HttpContext.Current));
+            PageUrlData pageUrlData = PageUrls.ParseUrl(pageUrl, new UrlSpace(HttpContext.Current));
             if (pageUrlData == null) return string.Empty;
 
-            IPage page = pageUrlData.Data;
-
-            if (page.DataSourceId.PublicationScope == PublicationScope.Published)
+            if (pageUrlData.PublicationScope == PublicationScope.Published)
             {
-                using(new DataScope(PublicationScope.Unpublished, page.DataSourceId.LocaleScope))
-                {
-                    page = PageManager.GetPageById(page.Id);
-                }
-                
-                if (page == null) return string.Empty;
+                pageUrlData.PublicationScope = PublicationScope.Unpublished;
             }
+
+            IPage page = pageUrlData.GetPage();
+            if (page == null) return string.Empty;
 
             return EntityTokenSerializer.Serialize(page.GetDataEntityToken(), true);
         }

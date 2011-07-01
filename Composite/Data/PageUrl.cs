@@ -138,9 +138,9 @@ namespace Composite.Data
                 return null;
             }
 
-            UrlData<IPage> urlData = new UrlData<IPage>(page);
+            PageUrlData pageUrlData = new PageUrlData(page);
 
-            string url = PageUrls.BuildUrl(urlData, ToUrlKind(urlType), new UrlSpace());
+            string url = PageUrls.BuildUrl(pageUrlData, ToUrlKind(urlType), new UrlSpace());
             return url != null ? new UrlBuilder(url) : null;
         }
 
@@ -190,19 +190,18 @@ namespace Composite.Data
 
         internal static PageUrl ParsePublicUrl(UrlBuilder urlBuilder, out NameValueCollection notUsedQueryParameters)
         {
-            UrlData<IPage> urlData = PageUrls.ParseUrl(urlBuilder.ToString());
+            UrlKind urlKind;
+            PageUrlData pageUrlData = PageUrls.ParseUrl(urlBuilder.ToString(), out urlKind);
 
-            if (urlData == null || urlData.UrlKind != UrlKind.Public)
+            if (pageUrlData == null || urlKind != UrlKind.Public)
             {
                 notUsedQueryParameters = null;
                 return null;
             }
 
-            notUsedQueryParameters = urlData.QueryParameters;
+            notUsedQueryParameters = pageUrlData.QueryParameters;
 
-            IPage page = urlData.Data;
-
-            return new PageUrl(page.DataSourceId.PublicationScope, page.DataSourceId.LocaleScope, page.Id, PageUrlType.Public);
+            return new PageUrl(pageUrlData.PublicationScope, pageUrlData.LocalizationScope, pageUrlData.PageId, PageUrlType.Public);
         }
 
         internal static CultureInfo GetCultureInfo(string requestPath, out string requestPathWithoutUrlMappingName)
@@ -310,17 +309,16 @@ namespace Composite.Data
         /// <returns>True if a friendly URL match was found</returns>
         public static bool TryParseFriendlyUrl(string relativeUrl, out PageUrl pageUrl)
         {
-            UrlData<IPage> urlData = PageUrls.ParseUrl(relativeUrl, new UrlSpace());
+            UrlKind urlKind;
+            PageUrlData pageUrlData = PageUrls.ParseUrl(relativeUrl, new UrlSpace(), out urlKind);
 
-            if (urlData == null || urlData.UrlKind != UrlKind.Friendly)
+            if (pageUrlData == null || urlKind != UrlKind.Friendly)
             {
                 pageUrl = null;
                 return false;
             }
 
-            IPage page = urlData.Data;
-
-            pageUrl = new PageUrl(page.DataSourceId.PublicationScope, page.DataSourceId.LocaleScope, page.Id, PageUrlType.Friendly);
+            pageUrl = new PageUrl(pageUrlData.PublicationScope, pageUrlData.LocalizationScope, pageUrlData.PageId, PageUrlType.Friendly);
             return true;
         }
 

@@ -1,6 +1,5 @@
 ﻿using Composite.Core.Routing.Foundation.PluginFacades;
 using Composite.Core.Routing.Plugins.PageUrlsProviders;
-using Composite.Data.Types;
 
 namespace Composite.Core.Routing
 {
@@ -22,26 +21,33 @@ namespace Composite.Core.Routing
         }
 
         /// <exclude />
-        public static UrlData<IPage> ParseUrl(string url)
+        public static PageUrlData ParseUrl(string url)
+        {
+            UrlKind urlKind;
+            return ParseUrl(url, out urlKind);
+        }
+
+        /// <exclude />
+        public static PageUrlData ParseUrl(string url, out UrlKind urlKind)
         {
             if (url.StartsWith("http") && url.Contains("://"))
             {
-                return UrlProvider.ParseUrl(url);
+                return UrlProvider.ParseUrl(url, out urlKind);
             }
 
-            return UrlProvider.ParseUrl(url, new UrlSpace());
+            return UrlProvider.ParseUrl(url, new UrlSpace(), out urlKind);
         }
 
         /// <exclude />
-        public static UrlData<IPage> ParseUrl(string url, UrlSpace urlSpace) 
+        public static PageUrlData ParseUrl(string url, UrlSpace urlSpace, out UrlKind urlKind) 
         {
-            return UrlProvider.ParseUrl(url, urlSpace);
+            return UrlProvider.ParseUrl(url, urlSpace, out urlKind);
         }
 
         /// <exclude />
-        public static string BuildUrl(UrlData<IPage> urlData, UrlKind urlKind, UrlSpace urlSpace) 
+        public static string BuildUrl(PageUrlData pageUrlData, UrlKind urlKind, UrlSpace urlSpace) 
         {
-            return UrlProvider.BuildUrl(urlData, urlKind, urlSpace);
+            return UrlProvider.BuildUrl(pageUrlData, urlKind, urlSpace);
         }
     }
 }

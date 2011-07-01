@@ -158,6 +158,7 @@
     <Compile Include="Core\Configuration\Configuration.cs" />
     <Compile Include="Core\Configuration\FileConfigurationSource.cs" />
     <Compile Include="Core\Configuration\FileConfigurationSourceImplementation.cs" />
+    <Compile Include="Core\Extensions\PageUrlDataExtensionMethods.cs" />
     <Compile Include="Core\Implementation\C1ConfigurationImplementation.cs" />
     <Compile Include="Core\Implementation\C1DirectoryImplementation.cs" />
     <Compile Include="Core\Implementation\C1DirectoryInfoImplementation.cs" />
@@ -230,8 +231,7 @@
     <Compile Include="Core\Routing\Plugins\UrlFormatters\Runtime\UrlFormatterFactory.cs" />
     <Compile Include="Core\Routing\Foundation\PluginFacades\UrlFormattersPluginFacade.cs" />
     <Compile Include="Core\Routing\UrlKind.cs" />
-    <Compile Include="Core\Routing\UrlData.cs" />
-    <Compile Include="Core\Routing\IUrlProvider.cs" />
+    <Compile Include="Core\Routing\PageUrlData.cs" />
     <Compile Include="Core\Routing\Plugins\PageUrlsProviders\Runtime\PageUrlProviderCustomFactory.cs" />
     <Compile Include="Core\Routing\Plugins\PageUrlsProviders\Runtime\PageUrlProviderFactory.cs" />
     <Compile Include="Core\Routing\Plugins\PageUrlsProviders\IPageUrlBuilder.cs" />

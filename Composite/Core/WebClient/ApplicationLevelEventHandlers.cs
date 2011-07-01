@@ -8,7 +8,6 @@ using Composite.Core.Logging;
 using Composite.Core.Routing;
 using Composite.Core.Threading;
 using Composite.Core.Types;
-using Composite.Data;
 
 
 namespace Composite.Core.WebClient
@@ -211,11 +210,12 @@ namespace Composite.Core.WebClient
         {
             if (custom == "C1Page")
             {
-                var pageUrl = PageUrls.UrlProvider.ParseUrl(context.Request.RawUrl, new UrlSpace(context));
+                UrlKind urlKind;
+                var pageUrl = PageUrls.UrlProvider.ParseUrl(context.Request.RawUrl, new UrlSpace(context), out urlKind);
 
                 if (pageUrl != null)
                 {
-                    var page = pageUrl.Data;
+                    var page = pageUrl.GetPage();
                     if (page != null)
                     {
                         string pageCacheKey = page.ChangeDate.ToString();
