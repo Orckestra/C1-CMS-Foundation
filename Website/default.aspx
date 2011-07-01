@@ -36,7 +36,7 @@
                     
                     if(page != null)
                     {
-                        string url = PageUrls.BuildUrl(new UrlData<IPage>(page), UrlKind.Public, new UrlSpace());
+                        string url = PageUrls.BuildUrl(new PageUrlData(page), UrlKind.Public, new UrlSpace());
 
                         if (url != null)
                         {
