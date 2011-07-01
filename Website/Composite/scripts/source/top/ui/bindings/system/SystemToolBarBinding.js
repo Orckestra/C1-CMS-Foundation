@@ -38,6 +38,12 @@ function SystemToolBarBinding () {
 	 * @type {List<SystemAction>}
 	 */
 	this._moreActions = null;
+
+	/**
+	* Tree position 
+	* @type {int}
+	*/
+	this._activePosition = SystemAction.activePositions.NavigatorTree;
 	
 	/*
 	 * Returnable.
@@ -123,8 +129,8 @@ SystemToolBarBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 		case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED :
 		
 			var self = this;
-		
-			if ( arg != null ) {
+
+			if (arg != null && arg.activePosition == this.getActivePosition()) {
 				this._actionProfile = arg;
 				var key = this._getProfileKey ();
 				if ( key != this._currentProfileKey ) {
@@ -415,6 +421,14 @@ SystemToolBarBinding.prototype._invokeDefaultAction = function () {
 	if ( button != null ) {
 		button.fireCommand ();
 	}
+};
+
+/**
+* get activePosition.
+* @return {int}
+*/
+SystemToolBarBinding.prototype.getActivePosition = function () {
+	return this._activePosition;
 };
 
 /**

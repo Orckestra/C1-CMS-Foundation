@@ -13,7 +13,12 @@ function TreeSelectorToolBarBinding () {
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "TreeSelectorToolBarBinding" );
-	
+
+	/**
+	* Tree position 
+	* @type {int}
+	*/
+	this._activePosition = SystemAction.activePositions.SelectorTree;
 
 	/*
 	 * Returnable.
@@ -28,8 +33,6 @@ TreeSelectorToolBarBinding.prototype.toString = function () {
 
 	return "[TreeSelectorToolBarBinding]";
 }
-
-
 
 /**
  * Contain all buttons. Overflowing buttons are moved to a popup. 

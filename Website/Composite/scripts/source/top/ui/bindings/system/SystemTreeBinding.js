@@ -1066,6 +1066,7 @@ SystemTreeBinding.prototype.getCompiledActionProfile = function () {
 		}
 	);
 
+	result.activePosition = this._activePosition;
 
 	// THIS FAILS SOMEHOW!
 
