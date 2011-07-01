@@ -36,7 +36,7 @@
   <string key="EditPage.UrlTitleFormattedMessage" value="According to the current URL replacement rules, URL title was changed to '{0}'" />
   <string key="EditPage.HelpUrlTitle" value="The entry specified in this field is shown in the browser address bar as a part of the URL address. The field is used by search engines" />
   <string key="EditPage.LabelFriendlyUrl" value="Friendly URL" />
-  <string key="EditPage.HelpFriendlyUrl" value="The entry specified in this field is shown in the browser address bar and replaces system generated URL´s. Note that the server has to be configured to support this feature" />
+  <string key="EditPage.HelpFriendlyUrl" value="The entry specified in this field is a shorter version of the actual page URL and redirects to it, when entered in the browser address bar. Note that some servers may have to be configured to support this feature." />
   <string key="EditPage.LabelAbstract" value="Description" />
   <string key="EditPage.LabelAbstractHelp" value="Use this field for at short description of the page" />
   <string key="EditPage.LabelPublishDate" value="Publish date" />
