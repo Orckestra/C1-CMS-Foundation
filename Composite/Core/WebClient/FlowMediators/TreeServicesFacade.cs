@@ -390,9 +390,12 @@ namespace Composite.Core.WebClient.FlowMediators
         {
             foreach (List<EntityToken> ancestorChain in GetAncestorChains(entityToken, 20))
             {
-                if (ancestorChain.Count > 1 && ancestorChain[0].Equals(parentEnitityToken))
+                if (ancestorChain.Count > 1)
                 {
-                    yield return ancestorChain;
+                    int index = ancestorChain.IndexOf(parentEnitityToken);
+                    if(index < 0) continue;
+
+                    yield return (index == 0) ? ancestorChain : ancestorChain.GetRange(index, ancestorChain.Count - index);
                 }
             }
         }
