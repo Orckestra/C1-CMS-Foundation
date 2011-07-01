@@ -302,21 +302,5 @@ namespace Composite.Services
 
 			return tokens.Select(d => EntityTokenSerializer.Serialize(d,true)).ToList();
 		}
-
-
-
-        /// <summary>
-        /// Returns the serialized entity token for the first parent of the first named root 
-        /// given the providerName to get the first named root.
-        /// </summary>
-        /// <param name="providerName"></param>
-        /// <returns></returns>
-        [WebMethod]        
-        public string GetFirstParentOfFirstNamedRoot(string providerName)
-        {
-            ClientElement firstNamedRoot = GetNamedRootsBySearchToken(providerName, null).First();
-
-            return GetAllParents(firstNamedRoot.EntityToken).First();
-        }
     }
 }
