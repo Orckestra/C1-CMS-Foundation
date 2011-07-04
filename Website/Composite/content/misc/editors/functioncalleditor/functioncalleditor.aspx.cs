@@ -235,7 +235,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             bool isValid = true;
 
             // If node is changed, updating changed parameter's value
-            if(SelectedNode != null)
+            if(!SelectedNode.IsNullOrEmpty())
             {
                 if (WidgetIsShown)
                 {
@@ -868,7 +868,9 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
             SaveChanges();
 
-            SelectedNode = string.Empty; // Or something else
+            SelectedNode = null; // Or something else
+
+            UpdateEditingPanel(null, string.Empty);
         }
     }
 
@@ -1202,7 +1204,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         FunctionMarkup = newMarkup;
 
         InitializeTreeView();
-        SelectedNode = "";
+        SelectedNode = null;
 
         SaveChanges();
 
