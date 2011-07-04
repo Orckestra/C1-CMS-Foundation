@@ -22279,7 +22279,7 @@ this._attemptRestorableFocus();
 SystemTreeBinding.prototype._computeClipboardSetup=function(){
 var _d95=false;
 var _d96=this.getFocusedTreeNodeBindings();
-if(this._isTreeSelector){
+if(this._activePosition==SystemAction.activePositions.SelectorTree){
 _d95=false;
 }else{
 if(_d96.hasEntries()){
@@ -22393,6 +22393,9 @@ StatusBar.clear();
 };
 SystemTreeBinding.prototype._fetchTreeForEntityToken=function(_da8){
 var _da9=StageBinding.perspectiveNode.getEntityToken();
+if(this._activePosition==SystemAction.activePositions.SelectorTree){
+var _da9=this.getRootTreeNodeBindings().getFirst().node.getEntityToken();
+}
 var _daa=this.getOpenSystemNodes();
 var map=System.getInvisibleBranch(_da9,_da8,_daa);
 if(map==null){
@@ -22597,6 +22600,9 @@ EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_LOCKTOEDITOR);
 };
 SystemTreeBinding.prototype.getOpenSystemNodes=function(){
 var list=new List([StageBinding.perspectiveNode]);
+if(this._activePosition==SystemAction.activePositions.SelectorTree){
+list=new List();
+}
 var _dd3=this.getRootTreeNodeBindings();
 _dd3.each(function(_dd4){
 var _dd5=_dd4.getOpenSystemNodes();
@@ -23058,6 +23064,10 @@ _e2d=new List([this.node]);
 list.each(function(_e2f){
 _e2d.add(_e2f.node);
 });
+}else{
+if(this.isOpen){
+_e2d=new List([this.node]);
+}
 }
 return _e2d;
 };
