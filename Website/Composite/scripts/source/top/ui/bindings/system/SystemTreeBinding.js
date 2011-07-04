@@ -463,7 +463,7 @@ SystemTreeBinding.prototype._computeClipboardSetup = function () {
 
 	var isCutAllowed = false;
 	var focusedBindings = this.getFocusedTreeNodeBindings();
-	if (this._isTreeSelector) {
+	if (this._activePosition == SystemAction.activePositions.SelectorTree) {
 		isCutAllowed = false;
 	}
 	else if (focusedBindings.hasEntries()) {
@@ -654,84 +654,87 @@ SystemTreeBinding.prototype._focusTreeNodeByEntityToken = function ( entityToken
  * Query the TreeService for a structure that exposes a given entityToken.
  * @param {string} entityToken
  */
-SystemTreeBinding.prototype._fetchTreeForEntityToken = function ( entityToken ) {
-	
+SystemTreeBinding.prototype._fetchTreeForEntityToken = function (entityToken) {
+
 	/*
-	 * Summon fresh nodes from server. 
-	 */
-	var perspectiveEntityToken = StageBinding.perspectiveNode.getEntityToken ();
-	var openSystemNodes = this.getOpenSystemNodes (); 
-	var map = System.getInvisibleBranch ( 
+	* Summon fresh nodes from server. 
+	*/
+	var perspectiveEntityToken = StageBinding.perspectiveNode.getEntityToken();
+	if (this._activePosition == SystemAction.activePositions.SelectorTree) {
+		var perspectiveEntityToken = this.getRootTreeNodeBindings().getFirst().node.getEntityToken();
+	}
+	var openSystemNodes = this.getOpenSystemNodes();
+	var map = System.getInvisibleBranch(
 		perspectiveEntityToken,
 		entityToken,
 		openSystemNodes
 	);
-	
+
 	/*
-	 * If server goofed up, we quickly disable the lock-tree-to-editor feature.
-	 */
-	if ( map == null ) {
+	* If server goofed up, we quickly disable the lock-tree-to-editor feature.
+	*/
+	if (map == null) {
 		this.isLockedToEditor = false;
-		if ( Application.isDeveloperMode ) {
-			Dialog.warning ( "Ouch!", 
+		if (Application.isDeveloperMode) {
+			Dialog.warning("Ouch!",
 				"Because the web service failed, tree has disabled the lock-tree-to-editor " +
 				"feature. Otherwise, re-focus would fire the error indefinitely. Please try again."
 			);
 		}
 	}
-	
+
 	/*
-	 * Controversially, the TreeService exposes no nested tree   
-	 * structure, so the parsing code can get a little complicated.
-	 */
-	else if ( map.hasEntries ()) {
-		
+	* Controversially, the TreeService exposes no nested tree   
+	* structure, so the parsing code can get a little complicated.
+	*/
+	else if (map.hasEntries()) {
+
 		var self = this;
 		var oldnodes = this._treeNodeBindings;
-		var newnodes = new Map ();
-		
+		var newnodes = new Map();
+
 		/* 
-		 * Handy treenodebuilder function.
-		 * @param {TreeNodeBinding} treenode
-		 * @param {List<SystemNode>} list
-		 */
-		function fix ( treenode, list ) {
-			
-			if ( !treenode.hasBeenOpened ) { // true when a refresh is needed, even for old nodes...
-				if ( list.hasEntries ()) {
-					
+		* Handy treenodebuilder function.
+		* @param {TreeNodeBinding} treenode
+		* @param {List<SystemNode>} list
+		*/
+		function fix(treenode, list) {
+
+			if (!treenode.hasBeenOpened) { // true when a refresh is needed, even for old nodes...
+				if (list.hasEntries()) {
+
 					/*
-					 * TODO: Since the oldnodes check is needed here, 
-					 * do we risk fogging up the display order of nodes?
-					 */
-					list.each ( function ( node ) {
-						if ( !oldnodes.has ( node.getHandle ())) {
-							var newnode = SystemTreeNodeBinding.newInstance ( node, self.bindingDocument );
-							newnodes.set ( node.getHandle (), newnode );
-							treenode.add ( newnode );
+					* TODO: Since the oldnodes check is needed here, 
+					* do we risk fogging up the display order of nodes?
+					*/
+					list.each(function (node) {
+						if (!oldnodes.has(node.getHandle())) {
+							var newnode = SystemTreeNodeBinding.newInstance(node, self.bindingDocument);
+							newnodes.set(node.getHandle(), newnode);
+							treenode.add(newnode);
 						}
 					});
-					treenode.attachRecursive ();
+					treenode.attachRecursive();
 				}
 			}
-			treenode.open ( true ); // open node (without causing a new refresh!)
+			treenode.open(true); // open node (without causing a new refresh!)
 		}
-		
+
 		/*
-		 * Iterate map, building treenodes. Fortunately, 
-		 * each sequential entry in the map lists nodes that  
-		 * must be appended to a *previously* build node... 
-		 */
-		map.each ( function ( handle, list ) {
-			if ( oldnodes.has ( handle )) {
-				var oldnode = oldnodes.get ( handle );
-				fix ( oldnode, list );
+		* Iterate map, building treenodes. Fortunately, 
+		* each sequential entry in the map lists nodes that  
+		* must be appended to a *previously* build node... 
+		*/
+		map.each(function (handle, list) {
+			if (oldnodes.has(handle)) {
+				var oldnode = oldnodes.get(handle);
+				fix(oldnode, list);
 			} else {
-				if ( newnodes.has ( handle )) {
-					var newnode = newnodes.get ( handle );
-					fix ( newnode, list );
+				if (newnodes.has(handle)) {
+					var newnode = newnodes.get(handle);
+					fix(newnode, list);
 				} else {
-					 // we seem to have encountered a strange hole in the structure
+					// we seem to have encountered a strange hole in the structure
 				}
 			}
 		});
@@ -1003,24 +1006,28 @@ SystemTreeBinding.prototype.setLockToEditor = function ( isLocked ) {
  * @list {List<SystemNode>}
  */
 SystemTreeBinding.prototype.getOpenSystemNodes = function () {
-	
+
 	/*
-	 * Add perspective node, ie. this tree (since the 
-	 * perspective corresponds to this tree in the hierarchy).
-	 */
-	var list = new List ([ StageBinding.perspectiveNode ]);
-	
+	* Add perspective node, ie. this tree (since the 
+	* perspective corresponds to this tree in the hierarchy).
+	*/
+	var list = new List([StageBinding.perspectiveNode]);
+
+	if (this._activePosition == SystemAction.activePositions.SelectorTree) {
+		list = new List();
+	}
+
 	/*
-	 * Add open treenodes.
-	 */
-	var treenodes = this.getRootTreeNodeBindings ();
-	treenodes.each ( function ( treenode ) {
-		var opennodes = treenode.getOpenSystemNodes ();
-		if ( opennodes != null && opennodes.hasEntries ()) {
-			list.merge ( opennodes );
+	* Add open treenodes.
+	*/
+	var treenodes = this.getRootTreeNodeBindings();
+	treenodes.each(function (treenode) {
+		var opennodes = treenode.getOpenSystemNodes();
+		if (opennodes != null && opennodes.hasEntries()) {
+			list.merge(opennodes);
 		}
 	});
-	
+
 	return list;
 };
 
