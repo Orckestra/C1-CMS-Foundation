@@ -135,7 +135,7 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
         /// }
         /// </code>
         /// </example>
-        /// <returns></returns>
+        /// <returns>An <see cref="System.IDisposable" /> scope</returns>
         public static IDisposable EnsureInitialize()
         {
             if (Current != null) return new EmptyDisposableObj();
