@@ -552,7 +552,11 @@ namespace Composite.Core.WebClient.Renderings.Page
         private static void NormalizeXhtmlDocument(XhtmlDocument rootDocument)
         {
             var headNodeFilter = new HeadNodeFilter();
-            
+
+            List<XNode> filteredHeadNodes = headNodeFilter.Filter(rootDocument.Head.Nodes()).ToList();
+            rootDocument.Head.Nodes().Remove();
+
+            filteredHeadNodes.ForEach(node => rootDocument.Head.Add(node));
 
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
