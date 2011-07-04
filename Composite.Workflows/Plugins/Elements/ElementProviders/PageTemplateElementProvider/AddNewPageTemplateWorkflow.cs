@@ -36,7 +36,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         </div>
         <h1><rendering:page.title /></h1>
         <h2><rendering:page.description /></h2>
-        <div id=""content"">
+        <div id=""main"">
             <rendering:placeholder id=""content"" title=""Content"" default=""true"" />
         </div>
     </body>
