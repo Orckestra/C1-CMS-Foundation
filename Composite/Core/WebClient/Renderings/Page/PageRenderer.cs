@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
@@ -247,23 +246,21 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                 NormalizeAspNetForms(document);
 
-                if (document.Root.Name == Namespaces.Xhtml + "html")
-                {
-                    XhtmlDocument xhtmlDocument = new XhtmlDocument(document);
-                    NormalizeXhtmlDocument(xhtmlDocument);
-
-                    ResolveRelativePaths(xhtmlDocument);
-
-                    AppendC1MetaTags(page, xhtmlDocument);
-
-                    LocalizationParser.Parse(xhtmlDocument);
-
-                    return xhtmlDocument.AsAspNetControl(mapper);
-                }
-                else
+                if (document.Root.Name != Namespaces.Xhtml + "html")
                 {
                     return new LiteralControl(document.ToString());
                 }
+                
+                XhtmlDocument xhtmlDocument = new XhtmlDocument(document);
+                NormalizeXhtmlDocument(xhtmlDocument);
+
+                ResolveRelativePaths(xhtmlDocument);
+
+                AppendC1MetaTags(page, xhtmlDocument);
+
+                LocalizationParser.Parse(xhtmlDocument);
+
+                return xhtmlDocument.AsAspNetControl(mapper);
             }
         }
 
@@ -304,8 +301,8 @@ namespace Composite.Core.WebClient.Renderings.Page
         }
 
 
-
-        private static void ResolveRelativePaths(XhtmlDocument xhtmlDocument)
+        /// <exclude />
+        public static void ResolveRelativePaths(XhtmlDocument xhtmlDocument)
         {
             IEnumerable<XElement> xhtmlElements = xhtmlDocument.Descendants().Where(f => f.Name.Namespace == Namespaces.Xhtml);
             IEnumerable<XAttribute> pathAttributes = xhtmlElements.Attributes().Where(f => f.Name.LocalName == "src" || f.Name.LocalName == "href" || f.Name.LocalName == "action");
@@ -549,7 +546,8 @@ namespace Composite.Core.WebClient.Renderings.Page
             }
         }
 
-        private static void NormalizeXhtmlDocument(XhtmlDocument rootDocument)
+        /// <exclude />
+        public static void NormalizeXhtmlDocument(XhtmlDocument rootDocument)
         {
             var headNodeFilter = new HeadNodeFilter();
 
