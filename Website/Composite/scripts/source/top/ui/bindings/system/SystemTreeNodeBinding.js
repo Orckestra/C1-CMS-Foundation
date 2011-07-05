@@ -496,10 +496,6 @@ SystemTreeNodeBinding.prototype.getOpenSystemNodes = function () {
 			result.add ( treenode.node );
 		});
 	}
-	else if(this.isOpen)
-	{
-		result = new List([this.node]); // only myself!
-	}
 
 	return result;
 }

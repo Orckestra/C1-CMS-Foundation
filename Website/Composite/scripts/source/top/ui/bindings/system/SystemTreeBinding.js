@@ -1026,6 +1026,10 @@ SystemTreeBinding.prototype.getOpenSystemNodes = function () {
 		if (opennodes != null && opennodes.hasEntries()) {
 			list.merge(opennodes);
 		}
+		else if (treenode.isOpen) {
+			list.add(treenode.node);
+		}
+
 	});
 
 	return list;

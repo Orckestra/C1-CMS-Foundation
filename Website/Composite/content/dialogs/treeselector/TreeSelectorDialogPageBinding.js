@@ -119,6 +119,8 @@ TreeSelectorDialogPageBinding.prototype.onBindingRegister = function () {
 
 	TreeSelectorDialogPageBinding.superclass.onBindingRegister.call(this);
 
+	//Subscribe to double click action
+	this.addActionListener(TreeNodeBinding.ACTION_COMMAND);
 	/*
 	* File subscriptions.
 	*/
@@ -145,6 +147,7 @@ TreeSelectorDialogPageBinding.prototype.handleBroadcast = function (broadcast, a
 					return;
 				}
 			}
+
 			break;
 	}
 
@@ -158,10 +161,14 @@ TreeSelectorDialogPageBinding.prototype.onBeforePageInitialize = function () {
 	
 	this._treeBinding = this.bindingWindow.bindingMap.selectiontree;
 	this._treeBinding.addActionListener ( TreeBinding.ACTION_SELECTIONCHANGED, this );
-	this._treeBinding.addActionListener ( TreeBinding.ACTION_NOSELECTION, this );
+	this._treeBinding.addActionListener(TreeBinding.ACTION_NOSELECTION, this);
+	
 	this._treeBinding.setSelectable ( true );
 	this._treeBinding.setSelectionProperty ( this._selectionProperty );
-	this._treeBinding.setSelectionValue ( this._selectionValue );
+	this._treeBinding.setSelectionValue(this._selectionValue);
+
+	//Remove default double click action
+	this._treeBinding.removeActionListener(TreeNodeBinding.ACTION_COMMAND); 
 	
 	/*
 	 * Build root nodes.
@@ -263,18 +270,23 @@ TreeSelectorDialogPageBinding.prototype.onAfterPageInitialize = function () {
  * @overloads {DialogPageBinding#handleAction}
  * @param {Action} action
  */
-TreeSelectorDialogPageBinding.prototype.handleAction = function ( action ) {
-	if (action.type == ButtonBinding.ACTION_COMMAND) {
-		if (action.target && action.target.response == Dialog.RESPONSE_ACCEPT) {
-			this._saveOpenedSystemNodes();
-		}
-	}
+TreeSelectorDialogPageBinding.prototype.handleAction = function (action) {
+	
 
-	TreeSelectorDialogPageBinding.superclass.handleAction.call ( this, action );
-	
+
+
 	if ( window.TreeSelectorDialogPageBinding && window.TreeBinding ) {  // huh?
-	
-		switch ( action.type ) {
+
+		switch (action.type) {
+			case ButtonBinding.ACTION_COMMAND:
+				if (action.target && action.target.response == Dialog.RESPONSE_ACCEPT) {
+					this._saveOpenedSystemNodes();
+				}
+				break;
+			case TreeNodeBinding.ACTION_COMMAND:
+				bindingMap.buttonAccept.fireCommand();
+				break;
+
 			case TreeBinding.ACTION_SELECTIONCHANGED :
 				this._updateDisplayAndResult ();
 				break;
