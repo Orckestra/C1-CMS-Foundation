@@ -109,7 +109,7 @@ namespace Composite.Core.Implementation
         {
             add
             {
-                DataEventSystemFacade.SubscribeToDataAfterBuildNew<TData>(value);
+                DataEventSystemFacade.SubscribeToDataAfterBuildNew<TData>(value, true);
             }
             remove
             {

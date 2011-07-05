@@ -22,7 +22,7 @@ namespace Composite.Core.WebClient.Renderings.Template
         /// <exclude />
         static TemplateInfo() {
 	      DataEventSystemFacade.SubscribeToDataAfterUpdate<IPageTemplate>(PageTemplate_Changed, true);
-          DataEventSystemFacade.SubscribeToDataDeleted<IPageTemplate>(PageTemplate_Changed);
+          DataEventSystemFacade.SubscribeToDataDeleted<IPageTemplate>(PageTemplate_Changed, true);
 	    }
 
 

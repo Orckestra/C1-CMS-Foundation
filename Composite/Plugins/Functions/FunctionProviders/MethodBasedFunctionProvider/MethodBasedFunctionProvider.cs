@@ -112,11 +112,10 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
             private ChangeEventsSingleton()
             {
-                DataEventSystemFacade.SubscribeToDataAfterAdd<IMethodBasedFunctionInfo>(OnDataChanged);
-                DataEventSystemFacade.SubscribeToDataDeleted<IMethodBasedFunctionInfo>(OnDataChanged);
-                DataEventSystemFacade.SubscribeToDataAfterUpdate<IMethodBasedFunctionInfo>(OnDataChanged);
-
-                DataEventSystemFacade.SubscribeToDataDeleted<IInlineFunction>(OnDataChanged);
+                DataEventSystemFacade.SubscribeToDataAfterAdd<IMethodBasedFunctionInfo>(OnDataChanged, false);
+                DataEventSystemFacade.SubscribeToDataDeleted<IMethodBasedFunctionInfo>(OnDataChanged, false);
+                DataEventSystemFacade.SubscribeToDataAfterUpdate<IMethodBasedFunctionInfo>(OnDataChanged, false);
+                DataEventSystemFacade.SubscribeToDataDeleted<IInlineFunction>(OnDataChanged, false);
 
                 string folderToWatch = PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory);
 

@@ -18,9 +18,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.SqlFunctionProvider
 
         public SqlFunctionProvider()
         {
-            DataEventSystemFacade.SubscribeToDataAfterAdd<ISqlFunctionInfo>(OnDataChanged);
-            DataEventSystemFacade.SubscribeToDataDeleted<ISqlFunctionInfo>(OnDataChanged);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<ISqlFunctionInfo>(OnDataChanged);
+            DataEventSystemFacade.SubscribeToDataAfterAdd<ISqlFunctionInfo>(OnDataChanged, false);
+            DataEventSystemFacade.SubscribeToDataDeleted<ISqlFunctionInfo>(OnDataChanged, false);
+            DataEventSystemFacade.SubscribeToDataAfterUpdate<ISqlFunctionInfo>(OnDataChanged, false);
         }
 
 

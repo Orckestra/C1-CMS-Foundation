@@ -225,7 +225,7 @@ namespace Composite.Data.Foundation
 
                         _associatedTypes.Add(attribute.AssociatedInterfaceType, associatedTypes);
 
-                        DataEventSystemFacade.SubscribeToDataAfterUpdate(attribute.AssociatedInterfaceType, OnAfterDataUpdated);
+                        DataEventSystemFacade.SubscribeToDataAfterUpdate(attribute.AssociatedInterfaceType, OnAfterDataUpdated, false);
                     }
 
                     associatedTypes.Add(interfaceType);

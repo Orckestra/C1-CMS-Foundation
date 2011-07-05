@@ -24,9 +24,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.VisualFunctionProvider
 
         public VisualFunctionProvider()
         {
-            DataEventSystemFacade.SubscribeToDataAfterAdd<IVisualFunction>(OnDataChanged);
-            DataEventSystemFacade.SubscribeToDataDeleted<IVisualFunction>(OnDataChanged);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<IVisualFunction>(OnDataChanged);
+            DataEventSystemFacade.SubscribeToDataAfterAdd<IVisualFunction>(OnDataChanged, false);
+            DataEventSystemFacade.SubscribeToDataDeleted<IVisualFunction>(OnDataChanged, false);
+            DataEventSystemFacade.SubscribeToDataAfterUpdate<IVisualFunction>(OnDataChanged, false);
         }
 
 

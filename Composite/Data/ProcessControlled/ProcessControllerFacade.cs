@@ -373,8 +373,8 @@ namespace Composite.Data.ProcessControlled
                 }
             }
 
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<IProcessControlled>(OnAfterDataUpdated);
-            DataEventSystemFacade.SubscribeToDataAfterBuildNew<IProcessControlled>(OnDataBuildNew);
+            DataEventSystemFacade.SubscribeToDataAfterUpdate<IProcessControlled>(OnAfterDataUpdated, false);
+            DataEventSystemFacade.SubscribeToDataAfterBuildNew<IProcessControlled>(OnDataBuildNew, false);
         }
 
 

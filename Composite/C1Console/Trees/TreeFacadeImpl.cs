@@ -561,7 +561,7 @@ namespace Composite.C1Console.Trees
 
                 tree.AttachmentPoints.Add(dataItemTreeAttachmentPoint);
 
-                DataEventSystemFacade.SubscribeToDataDeleted(interfaceType, OnDataItemDeleted);
+                DataEventSystemFacade.SubscribeToDataDeleted(interfaceType, OnDataItemDeleted, false);
             }
 
 

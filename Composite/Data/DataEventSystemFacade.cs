@@ -170,6 +170,7 @@ namespace Composite.Data
         }
 
         /// <exclude />
+        [Obsolete("Use overload")]
         public static void SubscribeToDataBeforeAdd<T>(DataEventHandler dataBeforeAddDelegate)
             where T : IData
         {
@@ -178,6 +179,7 @@ namespace Composite.Data
 
 
         /// <exclude />
+        [Obsolete("Use overload")]
         public static void SubscribeToDataBeforeAdd(Type dataType, DataEventHandler dataBeforeAddDelegate) {
             SubscribeToDataBeforeAdd(dataType, dataBeforeAddDelegate, false);
         }
@@ -214,6 +216,7 @@ namespace Composite.Data
 
 
         /// <exclude />
+        [Obsolete("Use overload")]
         public static void SubscribeToDataAfterAdd(Type dataType, DataEventHandler dataAfterAddDelegate)
         {
             SubscribeToDataAfterAdd(dataType, dataAfterAddDelegate, false);
@@ -228,6 +231,7 @@ namespace Composite.Data
 
 
         /// <exclude />
+        [Obsolete("Use overload")]
         public static void SubscribeToDataAfterAdd<T>(DataEventHandler dataAfterAddDelegate)
             where T : IData
         {
@@ -246,6 +250,7 @@ namespace Composite.Data
 
 
         /// <exclude />
+        [Obsolete("Use overload")]
         public static void SubscribeToDataBeforeUpdate(Type dataType, DataEventHandler dataBeforeUpdateDelegate)
         {
             SubscribeToDataBeforeUpdate(dataType, dataBeforeUpdateDelegate, false);
@@ -260,6 +265,7 @@ namespace Composite.Data
 
 
         /// <exclude />
+        [Obsolete("Use overload")]
         public static void SubscribeToDataBeforeUpdate<T>(DataEventHandler dataBeforeUpdateDelegate)
             where T : IData
         {
@@ -283,6 +289,7 @@ namespace Composite.Data
 
 
         /// <exclude />
+        [Obsolete("Use overload")]
         public static void SubscribeToDataAfterUpdate(Type dataType, DataEventHandler dataAfterUpdateDelegate)
         {
             SubscribeToDataAfterUpdate(dataType, dataAfterUpdateDelegate, false);
@@ -297,6 +304,7 @@ namespace Composite.Data
 
 
         /// <exclude />
+        [Obsolete("Use overload")]
         public static void SubscribeToDataAfterUpdate<T>(DataEventHandler dataAfterUpdateDelegate)
             where T : IData
         {
@@ -320,6 +328,7 @@ namespace Composite.Data
 
 
         /// <exclude />
+        [Obsolete("Use overload")]
         public static void SubscribeToDataDeleted(Type dataType, DataEventHandler dataDeletedDelegate)
         {
             SubscribeToDataDeleted(dataType, dataDeletedDelegate, false);
@@ -334,6 +343,7 @@ namespace Composite.Data
 
 
         /// <exclude />
+        [Obsolete("Use overload")]
         public static void SubscribeToDataDeleted<T>(DataEventHandler dataDeletedDelegate)
             where T : IData
         {
@@ -357,6 +367,7 @@ namespace Composite.Data
 
 
         /// <exclude />
+        [Obsolete("Use overload")]
         public static void SubscribeToDataAfterBuildNew(Type dataType, DataEventHandler dataAfterBuildNewDelegate)
         {
             SubscribeToDataAfterBuildNew(dataType, dataAfterBuildNewDelegate, false);
@@ -371,10 +382,18 @@ namespace Composite.Data
 
 
         /// <exclude />
+        [Obsolete("Use overload")]
         public static void SubscribeToDataAfterBuildNew<T>(DataEventHandler dataAfterBuildNewDelegate)
             where T : IData
         {
             SubscribeToDataAfterBuildNew(typeof(T), dataAfterBuildNewDelegate);
+        }
+
+        /// <exclude />
+        public static void SubscribeToDataAfterBuildNew<T>(DataEventHandler dataAfterBuildNewDelegate, bool flushPersistent)
+            where T : IData
+        {
+            SubscribeToDataAfterBuildNew(typeof(T), dataAfterBuildNewDelegate, flushPersistent);
         }
 
 
@@ -386,7 +405,7 @@ namespace Composite.Data
 
 
         /// <exclude />
-        [Obsolete("This method isn't used any more")]
+        [Obsolete("This event isn't used any more")]
         public static void SubscribeToDataAfterMove(Type dataType, DataAfterMoveDelegate dataAfterMoveDelegate)
         {
             _dataAfterMoveEventDictionary.Add(dataType, dataAfterMoveDelegate, false);
@@ -394,7 +413,7 @@ namespace Composite.Data
 
 
         /// <exclude />
-        [Obsolete("This method isn't used any more")]
+        [Obsolete("This event isn't used any more")]
         public static void SubscribeToDataAfterMove<T>(DataAfterMoveDelegate dataAfterMoveDelegate)
             where T : IData
         {
@@ -403,7 +422,7 @@ namespace Composite.Data
 
 
         /// <exclude />
-        [Obsolete("This method isn't used any more")]
+        [Obsolete("This event isn't used any more")]
         public static void UnsubscribeToDataAfterMove(Type dataType, DataAfterMoveDelegate dataAfterMoveDelegate)
         {
             _dataAfterMoveEventDictionary.Remove(dataType, dataAfterMoveDelegate);

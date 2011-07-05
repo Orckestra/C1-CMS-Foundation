@@ -14,21 +14,21 @@ namespace Composite.C1Console.Security
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class UserGroupFacade
 	{
-        private static Hashtable<string, List<Guid>> _cache = new Hashtable<string, List<Guid>>();
-        private static object _lock = new object();
+        private static readonly Hashtable<string, List<Guid>> _cache = new Hashtable<string, List<Guid>>();
+        private static readonly object _lock = new object();
 
 
         static UserGroupFacade()
         {
-            DataEventSystemFacade.SubscribeToDataAfterAdd<IUser>(OnDataChanged);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<IUser>(OnDataChanged);
-            DataEventSystemFacade.SubscribeToDataDeleted<IUser>(OnDataChanged);
-            DataEventSystemFacade.SubscribeToDataAfterAdd<IUserGroup>(OnDataChanged);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<IUserGroup>(OnDataChanged);
-            DataEventSystemFacade.SubscribeToDataDeleted<IUserGroup>(OnDataChanged);
-            DataEventSystemFacade.SubscribeToDataAfterAdd<IUserUserGroupRelation>(OnDataChanged);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<IUserUserGroupRelation>(OnDataChanged);
-            DataEventSystemFacade.SubscribeToDataDeleted<IUserUserGroupRelation>(OnDataChanged);
+            DataEventSystemFacade.SubscribeToDataAfterAdd<IUser>(OnDataChanged, true);
+            DataEventSystemFacade.SubscribeToDataAfterUpdate<IUser>(OnDataChanged, true);
+            DataEventSystemFacade.SubscribeToDataDeleted<IUser>(OnDataChanged, true);
+            DataEventSystemFacade.SubscribeToDataAfterAdd<IUserGroup>(OnDataChanged, true);
+            DataEventSystemFacade.SubscribeToDataAfterUpdate<IUserGroup>(OnDataChanged, true);
+            DataEventSystemFacade.SubscribeToDataDeleted<IUserGroup>(OnDataChanged, true);
+            DataEventSystemFacade.SubscribeToDataAfterAdd<IUserUserGroupRelation>(OnDataChanged, true);
+            DataEventSystemFacade.SubscribeToDataAfterUpdate<IUserUserGroupRelation>(OnDataChanged, true);
+            DataEventSystemFacade.SubscribeToDataDeleted<IUserUserGroupRelation>(OnDataChanged, true);
         }
 
 
