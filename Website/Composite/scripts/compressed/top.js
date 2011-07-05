@@ -22608,6 +22608,10 @@ _dd3.each(function(_dd4){
 var _dd5=_dd4.getOpenSystemNodes();
 if(_dd5!=null&&_dd5.hasEntries()){
 list.merge(_dd5);
+}else{
+if(_dd4.isOpen){
+list.add(_dd4.node);
+}
 }
 });
 return list;
@@ -23064,10 +23068,6 @@ _e2d=new List([this.node]);
 list.each(function(_e2f){
 _e2d.add(_e2f.node);
 });
-}else{
-if(this.isOpen){
-_e2d=new List([this.node]);
-}
 }
 return _e2d;
 };
