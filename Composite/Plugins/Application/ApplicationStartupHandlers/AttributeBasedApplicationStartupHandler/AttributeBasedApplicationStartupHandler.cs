@@ -166,25 +166,29 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
                     cached = GetSerializer().Deserialize(fileStream) as SubscribedTypesCache;
                 }
             }
-            catch (IOException)
+            catch (Exception ex)
             {
-                Log.LogWarning(LogTitle, "Failed to open file '{0}'".FormatWith(TempFilePath));
-                return result;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                Log.LogWarning(LogTitle, "Failed to open file '{0}'".FormatWith(TempFilePath));
-                return result;
-            }
-            catch (XmlException)
-            {
-                Log.LogWarning(LogTitle, "Failed to deserialize file '{0}'".FormatWith(TempFilePath));
-                return result;
-            }
-            catch(SerializationException)
-            {
-                Log.LogWarning(LogTitle, "Failed to deserialize file '{0}'".FormatWith(TempFilePath));
-                return result;
+                if(ex is IOException || ex is UnauthorizedAccessException)
+                {
+                    Log.LogWarning(LogTitle, "Failed to open file '{0}'".FormatWith(TempFilePath));
+                    Log.LogError(LogTitle, ex);
+                    return result;
+                }
+
+                Exception innerEx = ex;
+                if(ex is InvalidOperationException && ex.InnerException != null)
+                {
+                    innerEx = ex.InnerException;
+                }
+
+                if(innerEx is XmlException || innerEx is SerializationException)
+                {
+                    Log.LogWarning(LogTitle, "Failed to deserialize file '{0}'".FormatWith(TempFilePath));
+                    Log.LogError(LogTitle, ex);
+                    return result;
+                }
+
+                throw;
             }
 
             if(cached != null 
