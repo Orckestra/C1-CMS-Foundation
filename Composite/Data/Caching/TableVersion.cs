@@ -11,7 +11,7 @@ namespace Composite.Data.Caching
     internal static class TableVersion
     {
         private static readonly Hashtable<string, ExtendedNullable<int>> _versionNumbers = new Hashtable<string, ExtendedNullable<int>>();
-        private static readonly Hashset<Type> _subscribedTo = new Hashset<Type>();
+        private static Hashset<Type> _subscribedTo = new Hashset<Type>();
         private static int _flushCounter;
 
         static TableVersion()
@@ -85,6 +85,7 @@ namespace Composite.Data.Caching
         private static void OnFlushEvent(FlushEventArgs args)
         {
             Interlocked.Increment(ref _flushCounter);
+            _subscribedTo = new Hashset<Type>();
         }
     }
 }

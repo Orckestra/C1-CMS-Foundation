@@ -1,5 +1,6 @@
 ﻿using System;
 using Composite.Core;
+using Composite.Core.WebClient;
 using Composite.Core.WebClient.Captcha;
 using Composite.Plugins.Functions.XslExtensionsProviders.ConfigBasedXslExtensionsProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
@@ -25,7 +26,7 @@ namespace Composite.Plugins.Functions.XslExtensionsProviders
 
         public string GetImageUrl(string encryptedCaptchaValue)
         {
-            var url = new UrlBuilder("/Renderers/Captcha.ashx");
+            var url = new UrlBuilder(UrlUtils.PublicRootPath + "/Renderers/Captcha.ashx");
             url["value"] = encryptedCaptchaValue;
             return url.ToString();
         }
