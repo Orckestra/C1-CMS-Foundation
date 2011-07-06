@@ -5,6 +5,7 @@ using Composite.Data.DynamicTypes;
 namespace Composite.Data
 {
     /// <summary>    
+    /// Is used by data providers when a new column is added to a table.
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]     

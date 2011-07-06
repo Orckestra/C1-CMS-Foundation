@@ -21,24 +21,40 @@
         if(IsPostBack && !_loaded)
         {
             _value = ctlSelectorDialog.Value;
-            if(!_value.IsNullOrEmpty())
+            Guid mediaId;
+            
+            if(!_value.IsNullOrEmpty()
+                && IsMediaReference() 
+                && TryExtractMediaId(_value, out mediaId))
             {
-                if (IsMediaReference() && _value.Contains("="))
+                IMediaFile media = DataFacade.GetData<IMediaFile>(file => file.Id == mediaId).FirstOrDefault();
+                if (media != null)
                 {
-                    Guid imageId;
-                    if (Guid.TryParse(_value.Substring(_value.LastIndexOf("=") + 1), out imageId))
-                    {
-                        IMediaFile image = DataFacade.GetData<IMediaFile>(file => file.Id == imageId).FirstOrDefault();
-                        if (image != null)
-                        {
-                            _value = new DataReference<IMediaFile>(image).ToString();
-                        }
-                    }
+                    _value = new DataReference<IMediaFile>(media).ToString();
                 }
             }
             
+            
             _loaded = true;
         }
+    }
+    
+    static bool TryExtractMediaId(string value, out Guid mediaId)
+    {
+        if(value.Contains("="))
+        {
+            return Guid.TryParse(value.Substring(value.LastIndexOf("=") + 1), out mediaId);
+        }
+        
+        if(value.StartsWith("~/media(") && value.EndsWith(")"))
+        {
+            int openingBracketOffset = value.IndexOf("(");
+            int closingBracketOffset = value.IndexOf(")");
+            string guidStr = value.Substring(openingBracketOffset + 1, closingBracketOffset - openingBracketOffset - 1);
+            return Guid.TryParse(guidStr, out mediaId);
+        }
+        mediaId = Guid.Empty;
+        return false;
     }
     
     protected override void InitializeViewState()
