@@ -345,7 +345,9 @@ BrowserPageBinding.prototype._handleTabBoxUpdate = function () {
 BrowserPageBinding.prototype._handleDocumentLoad = function ( binding ) {
 		
 	var url = new String ( binding.getContentDocument ().location );
-	
+
+	url = PageService.ConvertRelativePageUrlToAbsolute(url);
+
 	/*
 	 * Update stuff.
 	 */
@@ -398,7 +400,7 @@ BrowserPageBinding.prototype._handleDocumentLoad = function ( binding ) {
 BrowserPageBinding.prototype._updateAddressBar = function ( url ) {
 	
 	var bar = this.bindingWindow.bindingMap.addressbar;
-	if ( bar != null ) {
+	if (bar != null) {
 		bar.setValue ( url );
 	}
 }

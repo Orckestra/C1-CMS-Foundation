@@ -114,47 +114,38 @@ BrowserAddressBarBinding.prototype.handleAction = function ( action ) {
  */
 BrowserAddressBarBinding.prototype.setValue = function (value) {
 
-	value = PageService.ConvertRelativePageUrlToAbsolute(value);
-
 	BrowserAddressBarBinding.superclass.setValue.call ( this, value );
 	this._goButton.disable ();
 	this.isDirty = false;
 }
 
 /**
-* @overloads {DataInputBinding#getValue}
-* @param {string} value
-*/
-BrowserAddressBarBinding.prototype.getValue = function () {
-
-	var value = BrowserAddressBarBinding.superclass.getValue.call(this);
-	return PageService.ConvertAbsolutePageUrlToRelative(value);
-}
-
-/**
  * Load URL in addressbar.
  */
 BrowserAddressBarBinding.prototype.go = function () {
-	
-	var url = this.getValue ().replace( /\s/g, "" ); // kill whitespace
-	
-	if ( url.length > 0 ) {
-		
-		url = this._cleanupURL ( url );
-		this.setValue ( url );
-		this.blur ();
-		Application.lock ( this );
-		
+
+	var url = this.getValue().replace(/\s/g, ""); // kill whitespace
+
+		if (url.length > 0) {
+
+		url = this._cleanupURL(url);
+		this.setValue(url);
+		this.blur();
+		Application.lock(this);
+
 		var self = this;
-		setTimeout ( function () {
-			var status = self._getRequestStatus ( url );
-			if ( status == 200 ) {	
-				self.bindingWindow.bindingMap.browserpage.setURL ( url );
+		setTimeout(function () {
+
+			url = PageService.ConvertAbsolutePageUrlToRelative(url);
+
+			var status = self._getRequestStatus(url);
+			if (status == 200) {
+				self.bindingWindow.bindingMap.browserpage.setURL(url);
 			} else {
-				self._showWarning ( status );
+				self._showWarning(status);
 			}
-			Application.unlock ( self );
-		}, 0 );
+			Application.unlock(self);
+		}, 0);
 	}
 }
 
