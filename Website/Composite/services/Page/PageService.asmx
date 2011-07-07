@@ -61,7 +61,7 @@ namespace Composite.Services
         {
             if (pageUrl == string.Empty) return string.Empty;
             
-            var urlData = PageUrls.ParseUrl(pageUrl);
+            PageUrlData urlData = PageUrls.ParseUrl(pageUrl);
             if(urlData == null)
             {
                 return pageUrl;
@@ -84,7 +84,7 @@ namespace Composite.Services
                 return pageUrl;
             }
 
-            var urlData = PageUrls.ParseUrl(pageUrl);
+            PageUrlData urlData = PageUrls.ParseUrl(pageUrl);
             if (urlData == null)
             {
                 return pageUrl;
