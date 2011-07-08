@@ -346,8 +346,6 @@ BrowserPageBinding.prototype._handleDocumentLoad = function ( binding ) {
 		
 	var url = new String ( binding.getContentDocument ().location );
 
-	url = PageService.ConvertRelativePageUrlToAbsolute(url);
-
 	/*
 	 * Update stuff.
 	 */
@@ -401,6 +399,7 @@ BrowserPageBinding.prototype._updateAddressBar = function ( url ) {
 	
 	var bar = this.bindingWindow.bindingMap.addressbar;
 	if (bar != null) {
+		url = PageService.ConvertRelativePageUrlToAbsolute(url);
 		bar.setValue ( url );
 	}
 }
