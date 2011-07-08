@@ -186,7 +186,7 @@ namespace Composite.Plugins.Routing.Pages
                 int questionMarkIndex = absoluteUrl.IndexOf("?");
                 if(questionMarkIndex > 0)
                 {
-                    absoluteUrl.Insert(questionMarkIndex, "/");
+                    absoluteUrl = absoluteUrl.Insert(questionMarkIndex, "/");
                 }
                 else
                 {
