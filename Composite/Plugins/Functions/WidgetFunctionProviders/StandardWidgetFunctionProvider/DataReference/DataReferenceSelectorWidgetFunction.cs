@@ -1,32 +1,29 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Collections;
 using System.Xml.Linq;
+using Composite.Core.Types;
 using Composite.Data;
-using Composite.Data.DynamicTypes;
-using Composite.C1Console.Events;
 using Composite.Functions;
 using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
-using Composite.Core.Types;
-using Composite.Core.Logging;
-using Composite.Data.Types;
-using Composite.Core.WebClient.Renderings.Page;
 
 
 namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.DataReference
 {
-    internal sealed class DataReferenceSelectorWidgetFunction<T> : CompositeWidgetFunctionBase
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class DataReferenceSelectorWidgetFunction<T> : CompositeWidgetFunctionBase
          where T : class, IData
     {
-        public static IEnumerable GetOptions(string typeManagerName)
+        private const string _compositeNameBase = CompositeWidgetFunctionBase.CommonNamespace + ".DataReference.";
+
+        /// <exclude />
+        public DataReferenceSelectorWidgetFunction(EntityTokenFactory entityTokenFactory)
+            : base(CompositeName, typeof(DataReference<T>), entityTokenFactory)
         {
-            return GetOptionsCommon.GetOptions(typeManagerName);
         }
 
-
-        public static string CompositeName
+        internal static string CompositeName
         {
             get
             {
@@ -34,14 +31,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
             }
         }
 
-
-        private const string _compositeNameBase = CompositeWidgetFunctionBase.CommonNamespace + ".DataReference.";
-
-        public DataReferenceSelectorWidgetFunction(EntityTokenFactory entityTokenFactory)
-            : base(CompositeName, typeof(DataReference<T>), entityTokenFactory)
-        {
-        }
-
+        /// <exclude />
         public override XElement GetWidgetMarkup(ParameterList parameters, string label, HelpDefinition helpDefinition, string bindingSourceName)
         {
             return StandardWidgetFunctions.BuildStaticCallPopulatedSelectorFormsMarkup(
@@ -58,6 +48,15 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
                     true,
                     true,
                     false);
+        }
+
+        /// <summary>
+        /// To be called through reflection
+        /// </summary>
+        /// <exclude />
+        public static IEnumerable GetOptions(string typeManagerName)
+        {
+            return GetOptionsCommon.GetOptions(typeManagerName);
         }
     }
 }

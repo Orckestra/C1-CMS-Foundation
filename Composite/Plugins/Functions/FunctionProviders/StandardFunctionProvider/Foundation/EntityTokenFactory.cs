@@ -4,11 +4,16 @@ using Composite.Core.Extensions;
 
 namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation
 {
-	internal sealed class EntityTokenFactory
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	public sealed class EntityTokenFactory
 	{
-        private string _providerName;
+        private readonly string _providerName;
 
-        internal EntityTokenFactory(string providerName)
+        /// <exclude />
+        public EntityTokenFactory(string providerName)
         {
             _providerName = providerName;
         }
