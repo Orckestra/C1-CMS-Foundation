@@ -178,10 +178,20 @@ namespace Composite.Plugins.Routing.Pages
         {
             Verify.ArgumentNotNullOrEmpty(absoluteUrl, "absoluteUrl");
 
-            // Converting links like "http://localhost" to "http://localhost/"
+            // Converting links 
+            // "http://localhost" to "http://localhost/"
+            // "http://localhost?..." to "http://localhost/?..."
             if((absoluteUrl.Count(c => c == '/') == 2) && absoluteUrl.Contains("//"))
             {
-                absoluteUrl += "/";
+                int questionMarkIndex = absoluteUrl.IndexOf("?");
+                if(questionMarkIndex > 0)
+                {
+                    absoluteUrl.Insert(questionMarkIndex, "/");
+                }
+                else
+                {
+                    absoluteUrl += "/";
+                }
             }
 
             Uri uri = new Uri(absoluteUrl);
