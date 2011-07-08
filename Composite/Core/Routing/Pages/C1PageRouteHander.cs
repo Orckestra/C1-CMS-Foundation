@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Compilation;
 using System.Web.Configuration;
+using System.Web.Hosting;
 using System.Web.Routing;
 using System.Web.UI;
 using System.Xml.Linq;
@@ -18,7 +19,7 @@ namespace Composite.Core.Routing.Pages
             bool isIntegratedPipeline = HttpRuntime.UsingIntegratedPipeline;
             string sectionName = isIntegratedPipeline ? "system.webServer" : "system.web";
 
-            var config = WebConfigurationManager.OpenWebConfiguration("/").GetSection(sectionName);
+            var config = WebConfigurationManager.OpenWebConfiguration(HostingEnvironment.ApplicationVirtualPath).GetSection(sectionName);
             if (config != null)
             {
                 string handlersSectionName = isIntegratedPipeline ? "handlers" : "httpHandlers";
