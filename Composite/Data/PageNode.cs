@@ -106,7 +106,9 @@ namespace Composite.Data
         {
             get
             {
-                return Int32.Parse(_pageElement.Attribute("Depth").Value);
+                var depthAttr = _pageElement.Attribute("Depth");
+                // Attribute can be null if a page isn't accessable, f.e. in a case of url collision
+                return depthAttr != null ? Int32.Parse(depthAttr.Value) : -1;
             }
         }
 
