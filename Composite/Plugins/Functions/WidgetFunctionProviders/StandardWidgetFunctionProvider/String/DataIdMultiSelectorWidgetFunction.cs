@@ -20,6 +20,10 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
         private const string _functionName = "DataIdMultiSelector";
         internal const string CompositeName = CompositeWidgetFunctionBase.CommonNamespace + ".String." + _functionName;
 
+        /// <summary> 
+        /// Is called through reflection   
+        /// </summary>
+        /// <exclude />
         public static IEnumerable GetOptions(string typeManagerName)
         {
             return GetOptionsCommon.GetOptions(typeManagerName);
