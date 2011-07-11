@@ -11,19 +11,21 @@ using Composite.Core.Xml;
 
 namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.String
 {
-    internal sealed class DataIdMultiSelectorWidgetFunction : CompositeWidgetFunctionBase
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class DataIdMultiSelectorWidgetFunction : CompositeWidgetFunctionBase
     {
         private const string _functionName = "DataIdMultiSelector";
-        public const string CompositeName = CompositeWidgetFunctionBase.CommonNamespace + ".String." + _functionName;
+        internal const string CompositeName = CompositeWidgetFunctionBase.CommonNamespace + ".String." + _functionName;
 
         public static IEnumerable GetOptions(string typeManagerName)
         {
             return GetOptionsCommon.GetOptions(typeManagerName);
         }
 
-
-        private const string _compositeNameBase = CompositeWidgetFunctionBase.CommonNamespace + ".DataReference.";
-
+        /// <exclude />
         public DataIdMultiSelectorWidgetFunction(EntityTokenFactory entityTokenFactory)
             : base(CompositeName, typeof(string), entityTokenFactory)
         {
@@ -56,7 +58,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
             base.AddParameterProfile(compactModePP);
         }
 
-
+        /// <exclude />
         public override XElement GetWidgetMarkup(ParameterList parameters, string label, HelpDefinition helpDefinition, string bindingSourceName)
         {
             Type optionsType = parameters.GetParameter<Type>("OptionsType");
@@ -76,7 +78,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
         }
 
 
-        private XElement BuildStaticCallPopulatedSelectorFormsMarkup(ParameterList parameters, string label, HelpDefinition helpDefinition, string bindingSourceName, Type optionsGeneratingStaticType, string optionsGeneratingStaticMethodName, object optionsGeneratingStaticMethodParameterValue, string optionsObjectKeyPropertyName, string optionsObjectLabelPropertyName, bool required, bool compactMode)
+        private static XElement BuildStaticCallPopulatedSelectorFormsMarkup(ParameterList parameters, string label, HelpDefinition helpDefinition, string bindingSourceName, Type optionsGeneratingStaticType, string optionsGeneratingStaticMethodName, object optionsGeneratingStaticMethodParameterValue, string optionsObjectKeyPropertyName, string optionsObjectLabelPropertyName, bool required, bool compactMode)
         {
             string tagName = "MultiKeySelector";
 
@@ -98,6 +100,5 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
 
             return selector;
         }
-
     }
 }
