@@ -615,8 +615,11 @@ namespace Composite.Data
             PageMetaDataFacade.AssignMetaDataSpecificValues(newData, metaDataDefinitionName, page);
 
             ILocalizedControlled localizedData = newData as ILocalizedControlled;
-            localizedData.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
-            localizedData.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
+            if (localizedData != null)
+            {
+                localizedData.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
+                localizedData.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
+            }
 
             newData = (IPublishControlled)DataFacade.AddNew((IData)newData); // Cast is needed for the DataFacade to work correctly
 
@@ -664,8 +667,11 @@ namespace Composite.Data
                 DataFacade.AddNew(newData);
 
                 ILocalizedControlled localizedData = newData as ILocalizedControlled;
-                localizedData.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
-                localizedData.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
+                if(localizedData != null)
+                {
+                    localizedData.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
+                    localizedData.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
+                }
 
                 newData = DataFacade.AddNew(newData);
 

@@ -50,6 +50,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             this.Bindings.Add(this.HasPublishingBindingName, typeof(IPublishControlled).IsAssignableFrom(targetType));
 
+            this.Bindings.Add("HasLocalization", false);
+            this.Bindings.Add("ShowLocalization", DataLocalizationFacade.UseLocalization);
+
             this.BindingsValidationRules.Add(this.NewTypeNameBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });
             this.BindingsValidationRules.Add(this.NewTypeNamespaceBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });
             this.BindingsValidationRules.Add(this.NewTypeTitleBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });
@@ -76,6 +79,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 string typeTitle = this.GetBinding<string>(this.NewTypeTitleBindingName);
                 bool hasCaching = this.GetBinding<bool>(this.HasCachingNameBindingName);
                 bool hasPublishing = this.GetBinding<bool>(this.HasPublishingBindingName);
+                bool hasLocalization = this.GetBinding<bool>("HasLocalization");
                 string labelFieldName = this.GetBinding<string>(this.LabelFieldNameBindingName);
                 List<DataFieldDescriptor> dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>(this.DataFieldDescriptorsBindingName);
 
@@ -125,7 +129,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {
                     helper.SetCachable(hasCaching);
                     helper.SetPublishControlled(hasPublishing);
-                    helper.SetLocalizedControlled(true);
+                    helper.SetLocalizedControlled(hasLocalization);
                 }
 
                 helper.SetNewTypeFullName(typeName, typeNamespace);

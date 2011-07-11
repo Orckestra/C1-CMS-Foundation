@@ -922,7 +922,7 @@ namespace Composite.Data.GeneratedTypes
                 dataTypeDescriptor.AddSuperInterface(typeof(IPublishControlled));
             }
 
-            if ((localizedControlled == true) && (_dataAssociationType != DataAssociationType.Composition))
+            if (localizedControlled)
             {
                 dataTypeDescriptor.AddSuperInterface(typeof(ILocalizedControlled));
             }

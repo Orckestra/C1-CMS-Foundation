@@ -302,14 +302,6 @@ namespace Composite.Data
             if (type == typeof(IPage)) return true;
             if (type == typeof(IPagePlaceholderContent)) return true;
 
-            if (type.IsGenerated() == true)
-            {
-                if (PageMetaDataFacade.GetAllMetaDataTypes().Contains(type) == true)
-                {
-                    return true;
-                }
-            }
-
             return typeof(ILocalizedControlled).IsAssignableFrom(type);
         }
 

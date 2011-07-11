@@ -4,6 +4,8 @@ using System.Globalization;
 using System.Linq;
 using System.Transactions;
 using Composite.C1Console.Actions;
+using Composite.Core;
+using Composite.Core.Extensions;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
@@ -92,7 +94,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                     foreach (IData metaData in metaDatas)
                     {
-                        IEnumerable<ReferenceFailingPropertyInfo> referenceFailingPropertyInfos = DataLocalizationFacade.GetReferencingLocalizeFailingProperties((ILocalizedControlled)metaData).Evaluate();
+                        ILocalizedControlled localizedData = metaData as ILocalizedControlled;
+
+                        if(localizedData == null)
+                        {
+                            continue;
+                        }
+
+                        IEnumerable<ReferenceFailingPropertyInfo> referenceFailingPropertyInfos = DataLocalizationFacade.GetReferencingLocalizeFailingProperties(localizedData).Evaluate();
 
                         if (referenceFailingPropertyInfos.Any() == false)
                         {
@@ -112,7 +121,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         {
                             foreach (ReferenceFailingPropertyInfo referenceFailingPropertyInfo in referenceFailingPropertyInfos)
                             {
-                                LoggingService.LogVerbose("LocalizePageWorkflow", string.Format("Meta data of type '{0}' is not localized because the field '{1}' is referring some not yet localzed data", metaData.DataSourceId.InterfaceType, referenceFailingPropertyInfo.DataFieldDescriptor.Name));
+                                Log.LogVerbose("LocalizePageWorkflow", 
+                                                "Meta data of type '{0}' is not localized because the field '{1}' is referring some not yet localzed data"
+                                                .FormatWith(metaData.DataSourceId.InterfaceType, referenceFailingPropertyInfo.DataFieldDescriptor.Name));
                             }
                         }
                     }

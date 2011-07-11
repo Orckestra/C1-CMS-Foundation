@@ -12,7 +12,7 @@ namespace Composite.Data
     [DataScope(DataScopeIdentifier.AdministratedName)]
     [PublishProcessControllerType(typeof(GenericPublishProcessController))]
     [DataAssociationAttribute(typeof(Composite.Data.Types.IPage), "PageId", DataAssociationType.Composition)]
-    public interface IPageMetaData : IPageData, IPublishControlled, ILocalizedControlled
+    public interface IPageMetaData : IPageData, IPublishControlled 
     {
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 128)]
