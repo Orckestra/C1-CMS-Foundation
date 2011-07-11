@@ -182,33 +182,36 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                 DataTypeDescriptorFormsHelper helper = CreateDataTypeDescriptorFormsHelper(pageMetaDataDefinition, dataTypeDescriptor);
 
-                IData data = selectedPage.GetMetaData(pageMetaDataDefinition.Name, metaDataType);
-                if (data == null)
+                IData metaData = selectedPage.GetMetaData(pageMetaDataDefinition.Name, metaDataType);
+                if (metaData == null)
                 {
-                    data = DataFacade.BuildNew(metaDataType);
+                    metaData = DataFacade.BuildNew(metaDataType);
 
-                    PageMetaDataFacade.AssignMetaDataSpecificValues(data, pageMetaDataDefinition.Name, selectedPage);
+                    PageMetaDataFacade.AssignMetaDataSpecificValues(metaData, pageMetaDataDefinition.Name, selectedPage);
 
-                    ILocalizedControlled localizedData = data as ILocalizedControlled;
-                    localizedData.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
-                    localizedData.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
+                    ILocalizedControlled localizedData = metaData as ILocalizedControlled;
+                    if(localizedData != null)
+                    {
+                        localizedData.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
+                        localizedData.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
+                    }
 
-                    IPublishControlled publishControlled = data as IPublishControlled;
+                    IPublishControlled publishControlled = metaData as IPublishControlled;
                     publishControlled.PublicationStatus = GenericPublishProcessController.Draft;
 
                     helper.UpdateWithNewBindings(this.Bindings);
-                    helper.ObjectToBindings(data, this.Bindings);
+                    helper.ObjectToBindings(metaData, this.Bindings);
                 }
                 else
                 {
-                    helper.UpdateWithBindings(data, this.Bindings);
+                    helper.UpdateWithBindings(metaData, this.Bindings);
                 }
 
 
                 bindingsXElement.Add(helper.BindingXml.Elements());
                 compositionTabs[pageMetaDataDefinition.MetaDataContainerId].Add(helper.PanelXml);
 
-                clientValidationRules.AddDictionary(helper.GetBindingsValidationRules(data));
+                clientValidationRules.AddDictionary(helper.GetBindingsValidationRules(metaData));
             }
 
 
@@ -493,18 +496,21 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                 DataTypeDescriptorFormsHelper helper = CreateDataTypeDescriptorFormsHelper(pageMetaDataDefinition, dataTypeDescriptor);
 
-                IData data = selectedPage.GetMetaData(pageMetaDataDefinition.Name, metaDataType);
-                if (data == null)
+                IData metaData = selectedPage.GetMetaData(pageMetaDataDefinition.Name, metaDataType);
+                if (metaData == null)
                 {
                     IData newData = DataFacade.BuildNew(metaDataType);
 
-                    GeneratedTypesHelper generatedTypesHelper = new GeneratedTypesHelper(metaDataType);
+                    // GeneratedTypesHelper generatedTypesHelper = new GeneratedTypesHelper(metaDataType);
 
                     PageMetaDataFacade.AssignMetaDataSpecificValues(newData, pageMetaDataDefinition.Name, selectedPage);
 
                     ILocalizedControlled localizedData = newData as ILocalizedControlled;
-                    localizedData.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
-                    localizedData.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
+                    if (localizedData != null)
+                    {
+                        localizedData.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
+                        localizedData.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
+                    }
 
                     Dictionary<string, string> msg = helper.BindingsToObject(this.Bindings, newData);
                     if (msg != null)
@@ -516,13 +522,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
                 else
                 {
-                    Dictionary<string, string> msg = helper.BindingsToObject(this.Bindings, data);
+                    Dictionary<string, string> msg = helper.BindingsToObject(this.Bindings, metaData);
                     if (msg != null)
                     {
                         errorMessages.AddDictionary(msg);
                     }
 
-                    dataToUpdate.Add(helper.BindingNamesPrefix, data);
+                    dataToUpdate.Add(helper.BindingNamesPrefix, metaData);
                 }
             }
 
