@@ -251,8 +251,8 @@ namespace Composite.Core.Xml
                         stringBuilder.AppendLine();
                         stringBuilder.Append(GetIndent(node.Level, indentString));
                     }
-                    
-                    stringBuilder.Append("<!--" + node.Value + "-->");
+
+                    stringBuilder.Append("<!--" + RemoveC1EncodedAmpersands(node.Value) + "-->");
                     if ((node.ParentNode != null) && (node.ParentNode.IsBlockElement() == false))
                     {
                         stringBuilder.AppendLine();
@@ -308,12 +308,7 @@ namespace Composite.Core.Xml
         {
             value = value.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\"", "&quot;");
 
-            value = _decodeRegex.Replace(value, delegate(Match match)
-            {
-                return "&" + match.Groups["tag"].Value;
-            });
-
-            return value;
+            return RemoveC1EncodedAmpersands(value);
         }
 
 
@@ -322,14 +317,14 @@ namespace Composite.Core.Xml
         {
             value = value.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;");
 
-            value = _decodeRegex.Replace(value, delegate(Match match)
-            {
-                return "&" + match.Groups["tag"].Value;
-            });
-
-            return value;
+            return RemoveC1EncodedAmpersands(value);
         }
 
+
+        private static string RemoveC1EncodedAmpersands(string value)
+        {
+            return _decodeRegex.Replace(value, match => "&" + match.Groups["tag"].Value);
+        }
 
 
         /// <exclude />
