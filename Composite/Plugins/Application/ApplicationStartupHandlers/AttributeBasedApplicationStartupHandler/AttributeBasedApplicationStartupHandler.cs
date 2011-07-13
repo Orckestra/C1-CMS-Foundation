@@ -115,24 +115,15 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             }
         }
 
-
-
         private void Subscribe(Type[] types)
         {
             foreach (Type type in types)
             {
-                MethodInfo onBeforeInitializeMethod = type.GetMethod("OnBeforeInitialize", BindingFlags.Public | BindingFlags.Static);
-                if (onBeforeInitializeMethod == null)
+                MethodInfo onBeforeInitializeMethod, onInitializedMethod;
+                
+                if(!TryGetPulicStaticMethod(type, "OnBeforeInitialize", out onBeforeInitializeMethod)
+                   || !TryGetPulicStaticMethod(type, "OnInitialized", out onInitializedMethod))
                 {
-                    Log.LogWarning(LogTitle, string.Format("The type '{0}' is missing public static methods named 'OnBeforeInitialize' and 'OnInitialized' taking no arguments", type));
-                    continue;
-                }
-
-
-                MethodInfo onInitializedMethod = type.GetMethod("OnInitialized", BindingFlags.Public | BindingFlags.Static);
-                if (onInitializedMethod == null)
-                {
-                    Log.LogWarning(LogTitle, string.Format("The type '{0}' is missing public static methods named 'OnBeforeInitialize' and 'OnInitialized' taking no arguments", type));
                     continue;
                 }
 
@@ -141,7 +132,25 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             }
         }
 
-        private string[] GetDllFilesFromBin()
+        private static bool TryGetPulicStaticMethod(Type type, string methodName, out MethodInfo methodInfo)
+        {
+            methodInfo = type.GetMethods().FirstOrDefault(m => m.Name == methodName);
+            if (methodInfo == null)
+            {
+                Log.LogError(LogTitle, "The type '{0}' is a missing public static method named '{1}', taking no arguments".FormatWith(type, methodName));
+                return false;
+            }
+
+            if(!methodInfo.IsStatic)
+            {
+                Log.LogError(LogTitle, "Method '{1}' in type '{0}' should be static".FormatWith(type, methodName));
+                return false;
+            }
+
+            return true;
+        }
+
+        private static string[] GetDllFilesFromBin()
         {
             string binDirectory = PathUtil.Resolve(GlobalSettingsFacade.BinDirectory).ToLower().Replace('/', '\\');
             return C1Directory.GetFiles(binDirectory, "*.dll");
