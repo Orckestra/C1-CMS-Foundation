@@ -40,7 +40,32 @@ namespace Composite.Core.Routing
                 throw new InvalidOperationException("Failed to redirect to 'page not found' url");
             }
 
-            return null;
+            return EmptyHttpHandler.Instance;
+        }
+
+        private class EmptyHttpHandler : IHttpHandler
+        {
+            private EmptyHttpHandler()
+            {
+            }
+
+            static EmptyHttpHandler()
+            {
+                Instance = new EmptyHttpHandler();
+            }
+
+            public static EmptyHttpHandler Instance { get; private set; }
+            
+
+            public bool IsReusable
+            {
+                get { return true; }
+            }
+
+            public void ProcessRequest(HttpContext context)
+            {
+                throw new InvalidOperationException("This code should not be reachable");
+            }
         }
     }
 }
