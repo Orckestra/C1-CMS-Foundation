@@ -10,15 +10,14 @@ using Composite.Data.Hierarchy;
 using Composite.Data.Hierarchy.DataAncestorProviders;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.Data.ProcessControlled.ProcessControllers.GenericVersionProcessController;
 using Composite.C1Console.Events;
 using Composite.Functions;
 using Composite.Core.Types;
 using Composite.Data.Validation;
 using Composite.Data.Validation.Validators;
 using System.Text;
-using Composite.Core.Logging;
 using Composite.Core.WebClient.Renderings.Data;
+using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 
 
 namespace Composite.Data.GeneratedTypes.Foundation
@@ -28,7 +27,7 @@ namespace Composite.Data.GeneratedTypes.Foundation
         private const string _compileUnitId = "Composite.Data.GeneratedInterfaces";
 
 
-        private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
+        private static readonly ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
 
 
 
@@ -467,7 +466,9 @@ namespace Composite.Data.GeneratedTypes.Foundation
 
             if (dataFieldDescriptor.StoreType.PhysicalStoreType == PhysicalStoreFieldType.Integer)
             {
-                CodeAttributeDeclaration integerRangeValidatorAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(IntegerRangeValidatorAttribute)));
+                Type validatorAttributeType = dataFieldDescriptor.IsNullable ? typeof(NullIntegerRangeValidatorAttribute) : typeof(IntegerRangeValidatorAttribute);
+
+                CodeAttributeDeclaration integerRangeValidatorAttribute = new CodeAttributeDeclaration(new CodeTypeReference(validatorAttributeType));
                 integerRangeValidatorAttribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(Int32.MinValue)));
                 integerRangeValidatorAttribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(Int32.MaxValue)));
 

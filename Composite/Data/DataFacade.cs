@@ -744,7 +744,10 @@ namespace Composite.Data
         /// <exclude />
         public static void Update(IData data)
         {
-            if (null == data) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
+            Verify.ArgumentCondition(data.DataSourceId != null, "data", "DataSourceId isn't defined");
+            Verify.ArgumentCondition(data.DataSourceId.ProviderName != null, "data", 
+                "Data provider isn't defined. Use method AddNew() for instances created with BuildNew()");
 
             Update(new[] { data });
         }
