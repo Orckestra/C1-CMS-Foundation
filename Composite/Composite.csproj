@@ -145,6 +145,8 @@
     <Compile Include="C1Console\Actions\ActionLockingFacade.cs" />
     <Compile Include="C1Console\Actions\AddNewTreeRefresher.cs" />
     <Compile Include="C1Console\Actions\FlowTokenSerializer.cs" />
+    <Compile Include="C1Console\Forms\Flows\BindingValidationService.cs" />
+    <Compile Include="C1Console\Forms\Flows\IBindingValidationService.cs" />
     <Compile Include="C1Console\Actions\IElementInformationService.cs" />
     <Compile Include="C1Console\Actions\MessageBoxActionToken.cs" />
     <Compile Include="C1Console\Actions\InlineScriptActionFacade.cs" />
@@ -413,6 +415,7 @@
     <Compile Include="C1Console\Forms\CoreUiControls\HtmlBlobUiControl.cs" />
     <Compile Include="C1Console\Forms\CoreUiControls\MultiContentXhtmlEditorUiControl.cs" />
     <Compile Include="C1Console\Forms\StandardProducerMediators\BuildinProducers\EvalFuncProducer.cs" />
+    <Compile Include="Data\Validation\Validators\NullIntegerRangeValidatorAttribute.cs" />
     <Compile Include="Functions\Forms\FunctionProducerMediator.cs" />
     <Compile Include="Functions\Forms\FunctionParameterProducer.cs" />
     <Compile Include="Functions\Forms\FunctionProducer.cs" />
