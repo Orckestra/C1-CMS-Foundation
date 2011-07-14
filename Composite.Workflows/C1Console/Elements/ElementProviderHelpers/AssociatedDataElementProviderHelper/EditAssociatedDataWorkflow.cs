@@ -108,16 +108,29 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                 this.ShowFieldMessage(result.Key, result.Message);
             }
 
-            if (errorMessages != null)
+            bool isValid = true;
+
+            if (errorMessages != null && errorMessages.Count > 0)
             {
                 foreach (var kvp in errorMessages)
                 {
                     this.ShowFieldMessage(kvp.Key, kvp.Value);
                 }
+
+                isValid = false;
             }
 
+            if (BindingErrors.Count > 0)
+            {
+                foreach (var pair in BindingErrors)
+                {
+                    this.ShowFieldMessage(pair.Key, pair.Value.Message);
+                }
 
-            if ((validationResults.IsValid == true) && (errorMessages == null))
+                isValid = false;
+            }
+
+            if (isValid && validationResults.IsValid)
             {
                 DataFacade.Update(data);
 

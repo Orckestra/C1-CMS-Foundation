@@ -64,7 +64,10 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
                         Dictionary<string, object> activeInnerFormBindings = CurrentInnerFormBindings;
 
                         FormFlowEventHandler handler = eventHandlers[localScopeEventIdentifier];
-                        activeFormTreeCompiler.SaveControlProperties();
+                        Dictionary<string, Exception> bindingErrors = activeFormTreeCompiler.SaveControlProperties();
+
+                        formServicesContainer.AddService(new BindingValidationService(bindingErrors));
+
                         handler.Invoke(flowToken, activeInnerFormBindings, formServicesContainer);
 
                         if (formServicesContainer.GetService<IManagementConsoleMessageService>().CloseCurrentViewRequested == true)

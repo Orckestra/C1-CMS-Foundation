@@ -9,6 +9,7 @@ using System.Workflow.ComponentModel.Compiler;
 using System.Workflow.Runtime;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
+using Composite.Core;
 using Composite.Data;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Forms.Flows;
@@ -190,7 +191,6 @@ namespace Composite.C1Console.Workflow.Activities
         }
 
 
-
         /// <exclude />
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ActionToken ActionToken
@@ -243,6 +243,24 @@ namespace Composite.C1Console.Workflow.Activities
             }
         }
 
+
+        /// <exclude />
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Dictionary<string, Exception> BindingErrors
+        {
+            get
+            {
+                FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+                var bindingValidationService = container.GetService<IBindingValidationService>();
+
+                if (bindingValidationService == null)
+                {
+                    return new Dictionary<string, Exception>();
+                }
+
+                return bindingValidationService.BindingErrors;
+            }
+        }
 
 
         /// <exclude />
@@ -398,7 +416,7 @@ namespace Composite.C1Console.Workflow.Activities
 
             this.ShowMessage(DialogType.Error, "An error occured", string.Format("Sorry, but an error has occured, preventing the opperation from completing as expected. The error has been documented in details so a technican may follow up on this issue.\n\nThe error message is: {0}", ex.Message));
 
-            Composite.Core.Logging.LoggingService.LogCritical(this.GetType().Name, ex);
+            Log.LogCritical(this.GetType().Name, ex);
 
             FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
             IManagementConsoleMessageService service = container.GetService<IManagementConsoleMessageService>();

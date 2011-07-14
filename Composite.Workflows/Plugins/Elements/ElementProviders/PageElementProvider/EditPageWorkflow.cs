@@ -776,6 +776,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             }
 
+            if (BindingErrors.Count > 0)
+            {
+                foreach (var pair in BindingErrors)
+                {
+                    this.ShowFieldMessage(pair.Key, pair.Value.Message);
+                }
+
+                e.Result = false;
+            }
         }
 
         private static string GetText(string key)

@@ -106,9 +106,20 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 }
             }
 
+            bool isValid = true;
+
+            if (BindingErrors.Count > 0)
+            {
+                foreach (var pair in BindingErrors)
+                {
+                    this.ShowFieldMessage(pair.Key, pair.Value.Message);
+                }
+
+                isValid = false;
+            }
+
             ValidationResults validationResults = ValidationFacade.Validate(data.DataSourceId.InterfaceType, data);
 
-            bool isValid = true;
             if (validationResults.IsValid == false)
             {
                 foreach (ValidationResult result in validationResults)

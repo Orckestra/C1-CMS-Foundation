@@ -92,14 +92,18 @@ namespace Composite.C1Console.Forms
 
 
         /// <exclude />
-        public void SaveControlProperties()
+        public Dictionary<string, Exception> SaveControlProperties()
         {
             _uiControl.BindStateToControlProperties();
 
+            var bindingErrors = new Dictionary<string, Exception>();
+
             foreach (CompileContext.IRebinding rd in _context.Rebindings)
             {
-                rd.Rebind(_bindingObjects);
+                rd.Rebind(_bindingObjects, bindingErrors);
             }
+
+            return bindingErrors;
         }
 
 

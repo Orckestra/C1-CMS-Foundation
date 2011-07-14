@@ -172,8 +172,8 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
 
 
         internal interface IRebinding
-        {            
-            void Rebind(Dictionary<string, object> bindingObjects);
+        {
+            void Rebind(Dictionary<string, object> bindingObjects, Dictionary<string, Exception> conversionErrors);
 
             string BindingObjectName { get; }
             string PropertyName { get; }
@@ -200,12 +200,18 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
             }
 
 
-            public void Rebind(Dictionary<string, object> bindingObjects)
+            public void Rebind(Dictionary<string, object> bindingObjects, Dictionary<string, Exception> conversionErrors)
             {
                 object value = _sourceProducerGetProperty.Invoke(_sourceProducer, null);
 
-                bindingObjects[_bindSourceName] = ValueTypeConverter.Convert(value, _destinationObjectType);
-            }
+                Exception conversionError;
+                bindingObjects[_bindSourceName] = ValueTypeConverter.TryConvert(value, _destinationObjectType, out conversionError);
+
+                if(conversionError != null)
+                {
+                    conversionErrors.Add(_bindSourceName, conversionError);
+                }
+            } 
 
 
             public string BindingObjectName
@@ -254,11 +260,11 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
 
                 _bindingObjectName = bindingObjectName;
                 _propertyName = propertyName;
-            }            
+            }
 
 
 
-            public void Rebind(Dictionary<string, object> bindingObjects)
+            public void Rebind(Dictionary<string, object> bindingObjects, Dictionary<string, Exception> conversionErrors)
             {
                 object value = _sourceProducerGetProperty.Invoke(_sourceProducer, null);
 
