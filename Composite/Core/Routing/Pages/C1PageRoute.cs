@@ -148,7 +148,13 @@ namespace Composite.Core.Routing.Pages
             if(!pageUrlData.PathInfo.IsNullOrEmpty())
             {
                 string filePath = localPath.Substring(0, localPath.Length - pageUrlData.PathInfo.Length);
-                context.RewritePath(filePath, pageUrlData.PathInfo, context.Request.Url.Query);
+
+                string queryString = context.Request.Url.Query;
+                if(queryString.StartsWith("?"))
+                {
+                    queryString = queryString.Substring(1);
+                }
+                context.RewritePath(filePath, pageUrlData.PathInfo, queryString);
             }
 
             return data;
