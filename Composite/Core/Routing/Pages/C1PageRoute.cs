@@ -111,26 +111,32 @@ namespace Composite.Core.Routing.Pages
                 }
             }
 
-            Verify.That(urlKind == UrlKind.Public, "Unexpected url kind '{0}", urlKind);
+            Verify.That(urlKind == UrlKind.Public || urlKind == UrlKind.Internal, "Unexpected url kind '{0}", urlKind);
 
-            // If url ends with a trailing slash - doing a redirect. F.e. http://localhost/a/ -> http://localhost/a
-            if(pageUrlData.PathInfo == "/")
+            bool isPublicUrl = urlKind == UrlKind.Public;
+
+
+            if (isPublicUrl)
             {
-                pageUrlData.PathInfo = null;
-                return SeoFriendlyRedirect(context, urlProvider.BuildUrl(pageUrlData, UrlKind.Public, urlSpace));
-            }
+                // If url ends with a trailing slash - doing a redirect. F.e. http://localhost/a/ -> http://localhost/a
+                if (pageUrlData.PathInfo == "/")
+                {
+                    pageUrlData.PathInfo = null;
+                    return SeoFriendlyRedirect(context, urlProvider.BuildUrl(pageUrlData, UrlKind.Public, urlSpace));
+                }
 
-            // Checking casing in url, so the same page will appear as a few pages by a crawler
-            string correctUrl = urlProvider.BuildUrl(pageUrlData, UrlKind.Public, urlSpace);
+                // Checking casing in url, so the same page will appear as a few pages by a crawler
+                string correctUrl = urlProvider.BuildUrl(pageUrlData, UrlKind.Public, urlSpace);
 
-            string originalFilePath = new UrlBuilder(currentUrl).FilePath;
-            string correctFilePath = new UrlBuilder(correctUrl).FilePath;
+                string originalFilePath = new UrlBuilder(currentUrl).FilePath;
+                string correctFilePath = new UrlBuilder(correctUrl).FilePath;
 
-            if (string.Compare(originalFilePath, correctFilePath, false) != 0 &&
-                string.Compare(originalFilePath, correctFilePath, true) == 0)
-            {
-                // redirect to a url with right casing
-                return SeoFriendlyRedirect(context, correctUrl);
+                if (string.Compare(originalFilePath, correctFilePath, false) != 0 &&
+                    string.Compare(originalFilePath, correctFilePath, true) == 0)
+                {
+                    // redirect to a url with right casing
+                    return SeoFriendlyRedirect(context, correctUrl);
+                }
             }
 
             // Disabling ASP.NET cache if there's a logged-in user
