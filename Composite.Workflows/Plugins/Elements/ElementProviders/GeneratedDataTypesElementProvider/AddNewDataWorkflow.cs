@@ -183,6 +183,16 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 }
             }
 
+            if(BindingErrors.Count > 0)
+            {
+                isValid = false;
+
+                foreach (var kvp in BindingErrors)
+                {
+                    this.ShowFieldMessage(kvp.Key, kvp.Value.Message);
+                }
+            }
+
             bool justAdded = false;
 
             if (isValid == true)
