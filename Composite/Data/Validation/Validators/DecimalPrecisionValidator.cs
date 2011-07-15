@@ -25,6 +25,12 @@ namespace Composite.Data.Validation.Validators
 
         protected override void DoValidate(object objectToValidate, object currentTarget, string key, ValidationResults validationResults)
         {
+            if(objectToValidate == null)
+            {
+                // Skipping valudation if optional decimal is a null
+                return;
+            }
+
             decimal number = (decimal)objectToValidate;
 
             List<DecimalPrecisionValidatorAttribute> attributes = currentTarget.GetType().GetProperty(key).GetCustomAttributesRecursively<DecimalPrecisionValidatorAttribute>().ToList();

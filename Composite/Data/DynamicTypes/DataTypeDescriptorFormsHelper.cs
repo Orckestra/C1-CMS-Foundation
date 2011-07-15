@@ -662,9 +662,10 @@ namespace Composite.Data.DynamicTypes
 
                 fieldNameToBindingNameMapper.Add(fieldDescriptor.Name, bindingName);
 
-                // Nullable<T> handling, Nullable<Guid> and Nullable<int> are allowed types
+                // Nullable<T> handling. Allowed types: Nullable<Guid>, Nullable<int>, Nullable<decimal>
                 if (bindingType != typeof(Guid?)
                     && bindingType != typeof(int?)
+                    && bindingType != typeof(decimal?)
                     && bindingType.IsGenericType && bindingType.GetGenericTypeDefinition() == typeof(Nullable<>))
                 {
                     bindingType = bindingType.GetGenericArguments()[0];
