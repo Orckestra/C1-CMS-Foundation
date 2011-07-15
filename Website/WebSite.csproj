@@ -6247,6 +6247,7 @@
     <None Include="Composite\images\originals\winxpskin\winxp-throbber_X.xcf" />
     <None Include="Composite\images\originals\winxpskin\winxp-toolbarbutton-on.xcf" />
     <None Include="Composite\images\originals\winxpskin\winxp-toolbarbutton.xcf" />
+    <Content Include="Composite\ping.ashx" />
     <None Include="Composite\schemas\FormsControls\AspNetManagement__www_composite_net_ns_management_bindingforms_internal_ui_controls_lib_1_0.xsd" />
     <None Include="Composite\schemas\FormsControls\AspNetManagement__www_composite_net_ns_management_bindingforms_std_ui_controls_lib_1_0.xsd" />
     <None Include="Composite\schemas\FormsControls\bindingforms10.xsd" />
