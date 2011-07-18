@@ -1,8 +1,8 @@
 using System;
 using System.Globalization;
 using Composite.C1Console.Events;
-using Composite.Core.ResourceSystem;
 using Composite.C1Console.Workflow;
+using Composite.Core.ResourceSystem;
 
 
 namespace Composite.C1Console.Users.Workflows
@@ -27,7 +27,8 @@ namespace Composite.C1Console.Users.Workflows
             UserSettings.ActiveLocaleCultureInfo = cultureInfo;
 
             string currentConsoleId = GetCurrentConsoleId();
-            foreach (string consoleId in ConsoleFacade.GetConsoleIdsByUsername(UserSettings.Username))
+
+            foreach (string consoleId in GetConsoleIdsOpenedByCurrentUser())
             {
                 if (consoleId != currentConsoleId)
                 {

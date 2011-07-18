@@ -348,7 +348,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
                 if (reloadUsersConsoles == true)
                 {
-                    foreach (string consoleId in ConsoleFacade.GetConsoleIdsByUsername(user.Username))
+                    foreach (string consoleId in GetConsoleIdsOpenedByCurrentUser())
                     {
                         ConsoleMessageQueueFacade.Enqueue(new RebootConsoleMessageQueueItem(), consoleId);
                     }

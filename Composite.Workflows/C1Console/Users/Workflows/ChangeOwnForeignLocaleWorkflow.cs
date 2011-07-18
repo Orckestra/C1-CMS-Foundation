@@ -57,7 +57,7 @@ namespace Composite.C1Console.Users.Workflows
 
             UserSettings.ForeignLocaleCultureInfo = foreignCultureInfo;
 
-            foreach (string consoleId in ConsoleFacade.GetConsoleIdsByUsername(UserSettings.Username))
+            foreach (string consoleId in GetConsoleIdsOpenedByCurrentUser())
             {
                 ConsoleMessageQueueFacade.Enqueue(new BroadcastMessageQueueItem { Name = "ForeignLocaleChanged", Value = "" }, consoleId);
             }

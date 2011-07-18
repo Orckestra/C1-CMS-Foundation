@@ -9,6 +9,7 @@ using System.Workflow.ComponentModel.Compiler;
 using System.Workflow.Runtime;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
+using Composite.C1Console.Users;
 using Composite.Core;
 using Composite.Data;
 using Composite.C1Console.Elements;
@@ -625,6 +626,12 @@ namespace Composite.C1Console.Workflow.Activities
             return managementConsoleMessageService.CurrentConsoleId;
         }
 
+        protected IEnumerable<string> GetConsoleIdsOpenedByCurrentUser()
+        {
+            string currentConsoleId = GetCurrentConsoleId();
+
+            return ConsoleFacade.GetConsoleIdsByUsername(UserSettings.Username).Union(new[] { currentConsoleId });
+        }
 
 
         /// <exclude />
