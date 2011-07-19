@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Web.Hosting;
 using Composite.C1Console.Security;
 using Composite.Core;
 using Composite.Core.Extensions;
@@ -40,7 +41,12 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
             if (type == null)
             {
                 string errorMessage = "Could not find the type '{0}'".FormatWith(info.Type);
-                Log.LogError(LogTitle, errorMessage);
+
+                // Skipping error log while package installation, the type/method may be available after restart
+                if(!HostingEnvironment.ApplicationHost.ShutdownInitiated())
+                {
+                    Log.LogError(LogTitle, errorMessage);
+                }
 
                 return new NotLoadedMethodBasedFunction(info, errorMessage);
             }
@@ -53,7 +59,12 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
             if (methodInfo == null)
             {
                 string errorMessage = "Could not find the method '{0}' on the the type '{1}'".FormatWith(info.MethodName, info.Type);
-                Log.LogError(LogTitle, errorMessage);
+
+                // Skipping error log while package installation, the type/method may be available after restart
+                if (!HostingEnvironment.ApplicationHost.ShutdownInitiated())
+                {
+                    Log.LogError(LogTitle, errorMessage);
+                }
 
                 return new NotLoadedMethodBasedFunction(info, errorMessage);
             }

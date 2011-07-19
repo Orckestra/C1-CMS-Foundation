@@ -7,12 +7,12 @@ using System.Reflection;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
 using Composite.Core.Linq;
-using Composite.Core.Logging;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.Types;
 using Microsoft.CSharp;
+using Composite.Core;
 
 
 namespace Composite.Functions.Inline
@@ -23,6 +23,8 @@ namespace Composite.Functions.Inline
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class InlineFunctionHelper
     {
+        private static readonly string LogTitle = typeof (InlineFunctionHelper).Name;
+
         /// <exclude />
         public static string MethodClassContainerName { get { return "InlineMethodFunction"; } }
 
@@ -79,7 +81,7 @@ namespace Composite.Functions.Inline
                     }
                     else
                     {
-                        LoggingService.LogWarning("MethodBasedFunctionProvider", string.Format("{0}.{1} : {2}", function.Namespace, function.Name, error.ErrorText));
+                        Log.LogWarning(LogTitle, string.Format("{0}.{1} : {2}", function.Namespace, function.Name, error.ErrorText));
                     }
                 }
 
@@ -98,7 +100,7 @@ namespace Composite.Functions.Inline
                 }
                 else
                 {
-                    LoggingService.LogWarning("MethodBasedFunctionProvider", string.Format("{0}.{1} : {2}", function.Namespace, function.Name, message));
+                    Log.LogWarning(LogTitle, string.Format("{0}.{1} : {2}", function.Namespace, function.Name, message));
                 }
 
                 return null;
@@ -114,7 +116,7 @@ namespace Composite.Functions.Inline
                 }
                 else
                 {
-                    LoggingService.LogWarning("MethodBasedFunctionProvider", string.Format("{0}.{1} : {2}", function.Namespace, function.Name, message));
+                    Log.LogWarning(LogTitle, string.Format("{0}.{1} : {2}", function.Namespace, function.Name, message));
                 }
 
                 return null;
@@ -131,7 +133,7 @@ namespace Composite.Functions.Inline
                 }
                 else
                 {
-                    LoggingService.LogWarning("MethodBasedFunctionProvider", string.Format("{0}.{1} : {2}", function.Namespace, function.Name, message));
+                    Log.LogWarning(LogTitle, string.Format("{0}.{1} : {2}", function.Namespace, function.Name, message));
                 }
 
                 return null;
