@@ -178,6 +178,10 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
             }
 
             SetSaveStatus(true);
+
+            UpdateTreeRefresher updateTreeRefresher = this.CreateUpdateTreeRefresher(this.EntityToken);
+
+            updateTreeRefresher.PostRefreshMesseges(function.GetDataEntityToken());
         }
 
 

@@ -626,6 +626,8 @@ namespace Composite.C1Console.Workflow.Activities
             return managementConsoleMessageService.CurrentConsoleId;
         }
 
+
+        /// <exclude />
         protected IEnumerable<string> GetConsoleIdsOpenedByCurrentUser()
         {
             string currentConsoleId = GetCurrentConsoleId();

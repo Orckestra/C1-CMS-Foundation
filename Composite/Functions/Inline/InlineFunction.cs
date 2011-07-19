@@ -29,11 +29,11 @@ namespace Composite.Functions.Inline
 
 
 
-        public static InlineFunction Create(IInlineFunction info)
+        public static IFunction Create(IInlineFunction info)
         {
             MethodInfo methodInfo = InlineFunctionHelper.Create(info);
 
-            if (methodInfo == null) return null;
+            if (methodInfo == null) return new NotLoadedInlineFunction(info, "Function weren't loaded correctly, check log for details");
 
             return new InlineFunction(info, methodInfo);
         }

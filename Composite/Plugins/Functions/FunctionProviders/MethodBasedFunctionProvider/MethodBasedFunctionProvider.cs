@@ -67,7 +67,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
                 foreach (IInlineFunction info in editableMethodBasedFunctionInfos)
                 {
-                    InlineFunction inlineFunction = InlineFunction.Create(info);
+                    IFunction inlineFunction = InlineFunction.Create(info);
 
                     if (inlineFunction == null) continue;
 
