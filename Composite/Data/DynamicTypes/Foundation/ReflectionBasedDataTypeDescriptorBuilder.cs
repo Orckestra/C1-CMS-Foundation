@@ -29,7 +29,7 @@ namespace Composite.Data.DynamicTypes.Foundation
             List<Type> superInterfacesTypes = type.GetInterfacesRecursively(t => typeof(IData).IsAssignableFrom(t) && t != typeof(IData));
 
             typeDescriptor.SetSuperInterfaces(superInterfacesTypes);
-            typeDescriptor.Title = DynamicTypeReflectionFacade.GetLabelPropertyName(type);
+            typeDescriptor.Title = DynamicTypeReflectionFacade.GetTitle(type);
             typeDescriptor.LabelFieldName = DynamicTypeReflectionFacade.GetLabelPropertyName(type);
             typeDescriptor.DataAssociations = DynamicTypeReflectionFacade.GetDataTypeAssociationDescriptors(type);
             typeDescriptor.Version = (int)DynamicTypeReflectionFacade.GetVersion(type);
