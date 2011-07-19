@@ -423,6 +423,7 @@
     <Compile Include="Functions\Foundation\PluginFacades\XslExtensionsProviderPluginFacade.cs" />
     <Compile Include="Functions\Foundation\XslExtensionsProviderRegistry.cs" />
     <Compile Include="Functions\ICompoundFunction.cs" />
+    <Compile Include="Functions\IFunctionInitializationInfo.cs" />
     <Compile Include="Functions\Inline\InlineFunctionCreateMethodErrorHandler.cs" />
     <Compile Include="Functions\Inline\StringInlineFunctionCreateMethodErrorHandler.cs" />
     <Compile Include="Functions\Plugins\XslExtensionsProvider\Runtime\XslExtensionsProviderCustomFactory.cs" />

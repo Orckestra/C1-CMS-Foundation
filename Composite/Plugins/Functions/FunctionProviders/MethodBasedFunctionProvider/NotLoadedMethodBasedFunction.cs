@@ -5,7 +5,7 @@ using Composite.Functions;
 
 namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvider
 {
-    internal class NotLoadedMethodBasedFunction : MethodBasedFunction, IFunction
+    internal class NotLoadedMethodBasedFunction : MethodBasedFunction, IFunction, IFunctionInitializationInfo
     {
         private readonly string _errorMessage;
 
@@ -31,6 +31,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
             {
                 return new ParameterProfile[0];
             }
+        }
+
+        bool IFunctionInitializationInfo.FunctionInitializedCorrectly
+        {
+            get { return false; }
         }
     }
 }

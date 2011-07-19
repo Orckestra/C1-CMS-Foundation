@@ -8,6 +8,7 @@ using Composite.Functions;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 using Composite.C1Console.Security;
+using Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvider;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider
@@ -22,6 +23,9 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
 
         /// <exclude />
         public static ResourceHandle Function { get { return GetIconHandle("base-function-function"); } }
+
+        /// <exclude />
+        public static ResourceHandle FunctionError { get { return GetIconHandle("error"); } }
 
         /// <exclude />
         protected abstract IEnumerable<IFunctionTreeBuilderLeafInfo> OnGetFunctionInfos(SearchToken searchToken);
@@ -279,6 +283,9 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
 
             string functionTooltip = (functionDetails == null || string.IsNullOrEmpty(functionDetails.Description) ? function.Name : StringResourceSystemFacade.ParseString(functionDetails.Description));
 
+            var intitializationInfo = functionDetails as IFunctionInitializationInfo;
+            bool functionWerentLoadedCorrectly = intitializationInfo != null && !intitializationInfo.FunctionInitializedCorrectly;
+
             Element element = new Element(_context.CreateElementHandle(function.EntityToken))
             {
                 VisualData = new ElementVisualizedData()
@@ -286,7 +293,7 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
                     Label = function.Name,
                     ToolTip = functionTooltip,
                     HasChildren = false,
-                    Icon = BaseFunctionProviderElementProvider.Function
+                    Icon = functionWerentLoadedCorrectly ? BaseFunctionProviderElementProvider.FunctionError : BaseFunctionProviderElementProvider.Function
                 }
             };
 

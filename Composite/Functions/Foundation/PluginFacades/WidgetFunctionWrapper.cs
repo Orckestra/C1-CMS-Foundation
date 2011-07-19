@@ -9,7 +9,7 @@ namespace Composite.Functions.Foundation.PluginFacades
     /// <summary>
     /// This class is used for caching exceptions from plugins and hadling them correcty
     /// </summary>
-    internal sealed class WidgetFunctionWrapper : IWidgetFunction
+    internal sealed class WidgetFunctionWrapper : IWidgetFunction, IFunctionInitializationInfo
     {
         private IWidgetFunction _widgetFunctionToWrap;
 
@@ -61,10 +61,8 @@ namespace Composite.Functions.Foundation.PluginFacades
                 {
                     return _widgetFunctionToWrap.ParameterProfiles;
                 }
-                else
-                {
-                    return new ParameterProfile[] { };
-                }
+
+                return new ParameterProfile[] { };
             }
         }
 
@@ -82,6 +80,19 @@ namespace Composite.Functions.Foundation.PluginFacades
             get
             {
                 return _widgetFunctionToWrap.EntityToken;
+            }
+        }
+
+
+        bool IFunctionInitializationInfo.FunctionInitializedCorrectly
+        {
+            get
+            {
+                if (!(_widgetFunctionToWrap is IFunctionInitializationInfo))
+                {
+                    return true;
+                }
+                return ((IFunctionInitializationInfo)_widgetFunctionToWrap).FunctionInitializedCorrectly;
             }
         }
     }
