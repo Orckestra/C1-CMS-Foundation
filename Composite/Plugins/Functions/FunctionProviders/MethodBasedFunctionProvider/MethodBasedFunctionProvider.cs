@@ -53,7 +53,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
                 foreach (IMethodBasedFunctionInfo info in methodBasedFunctionInfos)
                 {
-                    MethodBasedFunction methodBasedFunction = MethodBasedFunction.Create(info);
+                    IFunction methodBasedFunction = MethodBasedFunction.Create(info);
 
                     if (methodBasedFunction == null) continue;
 
@@ -112,10 +112,10 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
             private ChangeEventsSingleton()
             {
-                DataEventSystemFacade.SubscribeToDataAfterAdd<IMethodBasedFunctionInfo>(OnDataChanged, false);
-                DataEventSystemFacade.SubscribeToDataDeleted<IMethodBasedFunctionInfo>(OnDataChanged, false);
-                DataEventSystemFacade.SubscribeToDataAfterUpdate<IMethodBasedFunctionInfo>(OnDataChanged, false);
-                DataEventSystemFacade.SubscribeToDataDeleted<IInlineFunction>(OnDataChanged, false);
+                DataEventSystemFacade.SubscribeToDataAfterAdd<IMethodBasedFunctionInfo>(OnDataChanged, true);
+                DataEventSystemFacade.SubscribeToDataDeleted<IMethodBasedFunctionInfo>(OnDataChanged, true);
+                DataEventSystemFacade.SubscribeToDataAfterUpdate<IMethodBasedFunctionInfo>(OnDataChanged, true);
+                DataEventSystemFacade.SubscribeToDataDeleted<IInlineFunction>(OnDataChanged, true);
 
                 string folderToWatch = PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory);
 

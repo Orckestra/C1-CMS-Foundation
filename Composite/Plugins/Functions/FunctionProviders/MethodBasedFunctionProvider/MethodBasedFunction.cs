@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Composite.C1Console.Security;
-using Composite.Core.Logging;
+using Composite.Core;
+using Composite.Core.Extensions;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.Types;
@@ -12,16 +13,18 @@ using Composite.Functions;
 
 namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvider
 {
-    internal sealed class MethodBasedFunction : IFunction
+    internal class MethodBasedFunction : IFunction
     {
-        private IMethodBasedFunctionInfo _methodBasedFunctionInfo;
-        private Type _type;
-        private MethodInfo _methodInfo;
+        private static readonly string LogTitle = typeof (MethodBasedFunction).Name;
+
+        private readonly IMethodBasedFunctionInfo _methodBasedFunctionInfo;
+        private readonly Type _type;
+        private readonly MethodInfo _methodInfo;
         private IList<ParameterProfile> _parameterProfile;
         private object _object;
 
 
-        private MethodBasedFunction(IMethodBasedFunctionInfo info, Type type, MethodInfo methodInfo)
+        protected MethodBasedFunction(IMethodBasedFunctionInfo info, Type type, MethodInfo methodInfo)
         {
             _methodBasedFunctionInfo = info;
             _type = type;
@@ -36,8 +39,10 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
             if (type == null)
             {
-                LoggingService.LogError("MethodBasedFunctionProvider", string.Format("Could not find the type '{0}'", info.Type));
-                return null;
+                string errorMessage = "Could not find the type '{0}'".FormatWith(info.Type);
+                Log.LogError(LogTitle, errorMessage);
+
+                return new NotLoadedMethodBasedFunction(info, errorMessage);
             }
 
             MethodInfo methodInfo =
@@ -47,13 +52,14 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
             if (methodInfo == null)
             {
-                LoggingService.LogError("MethodBasedFunctionProvider", string.Format("Could not find the method '{0}' on the the type '{1}'", info.MethodName, info.Type));
-                return null;
+                string errorMessage = "Could not find the method '{0}' on the the type '{1}'".FormatWith(info.MethodName, info.Type);
+                Log.LogError(LogTitle, errorMessage);
+
+                return new NotLoadedMethodBasedFunction(info, errorMessage);
             }
 
             return new MethodBasedFunction(info, type, methodInfo);
         }
-
 
 
         public object Execute(ParameterList parameters, FunctionContextContainer context)

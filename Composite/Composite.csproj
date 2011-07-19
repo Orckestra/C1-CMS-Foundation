@@ -480,6 +480,7 @@
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedDoubleSelectorUiControlFactory.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Plugins\Functions\FunctionProviders\MethodBasedFunctionProvider\NotLoadedMethodBasedFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\PathInfoGuidFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\PathInfoIntFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\RegisterPathInfoUsageFunction.cs" />
