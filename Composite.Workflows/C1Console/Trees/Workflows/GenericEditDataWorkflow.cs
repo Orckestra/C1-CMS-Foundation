@@ -9,8 +9,6 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.GeneratedTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.Data.Validation;
-using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 
 namespace Composite.C1Console.Trees.Workflows
@@ -125,7 +123,11 @@ namespace Composite.C1Console.Trees.Workflows
 
             IData data = ((DataEntityToken)this.EntityToken).Data;
 
-            Dictionary<string, string> errorMessages = this.FormsHelper.BindingsToObject(this.Bindings, data);
+            bool isValid = ValidateBindings();
+            if(!BindAndValidate(this.FormsHelper, data))
+            {
+                isValid = false;
+            }
 
             if (data is IPublishControlled)
             {
@@ -133,29 +135,6 @@ namespace Composite.C1Console.Trees.Workflows
                 if (publishControlledData.PublicationStatus == GenericPublishProcessController.Published)
                 {
                     publishControlledData.PublicationStatus = GenericPublishProcessController.Draft;
-                }
-            }
-
-            ValidationResults validationResults = ValidationFacade.Validate(data.DataSourceId.InterfaceType, data);
-
-            bool isValid = true;
-            if (validationResults.IsValid == false)
-            {
-                foreach (ValidationResult result in validationResults)
-                {
-                    this.ShowFieldMessage(result.Key, result.Message);
-
-                    isValid = false;
-                }
-            }
-
-            if (errorMessages != null)
-            {
-                isValid = false;
-
-                foreach (var kvp in errorMessages)
-                {
-                    this.ShowFieldMessage(kvp.Key, kvp.Value);
                 }
             }
 

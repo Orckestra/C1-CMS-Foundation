@@ -154,48 +154,21 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private void finalizeCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
+            bool isValid = ValidateBindings();
+
             DataTypeDescriptorFormsHelper helper = GetDataTypeDescriptorFormsHelper();
 
             IData newData = this.GetBinding<IData>("NewData");
 
-            Dictionary<string, string> errorMessages = helper.BindingsToObject(this.Bindings, newData);
-
-            ValidationResults validationResults = ValidationFacade.Validate(newData.DataSourceId.InterfaceType, newData);
-
-            bool isValid = true;
-            if (validationResults.IsValid == false)
-            {
-                foreach (ValidationResult result in validationResults)
-                {
-                    this.ShowFieldMessage(result.Key, result.Message);
-
-                    isValid = false;
-                }
-            }
-
-            if (errorMessages != null)
+            if(!BindAndValidate(helper, newData))
             {
                 isValid = false;
-
-                foreach (var kvp in errorMessages)
-                {
-                    this.ShowFieldMessage(kvp.Key, kvp.Value);
-                }
             }
 
-            if(BindingErrors.Count > 0)
-            {
-                isValid = false;
-
-                foreach (var kvp in BindingErrors)
-                {
-                    this.ShowFieldMessage(kvp.Key, kvp.Value.Message);
-                }
-            }
 
             bool justAdded = false;
 
-            if (isValid == true)
+            if (isValid)
             {
                 if (this.BindingExist("DataAdded") == false)
                 {

@@ -2,20 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Workflow.Activities;
 using Composite.C1Console.Actions;
+using Composite.C1Console.Users;
+using Composite.C1Console.Workflow;
+using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
-using Composite.Data.Foundation;
 using Composite.Data.GeneratedTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.Core.Types;
-using Composite.C1Console.Users;
-using Composite.Data.Validation;
-using Composite.C1Console.Workflow;
-using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Composite.Data.Types;
 
 
@@ -195,8 +191,6 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         {
             DataTypeDescriptor dataTypeDescriptor = this.GetBinding<DataTypeDescriptor>("DataTypeDescriptor");
 
-            Type type = TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName);
-
             IData newData = this.GetBinding<IData>("NewData");
 
             DataTypeDescriptorFormsHelper helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor);
@@ -204,26 +198,16 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             GeneratedTypesHelper generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor);
             helper.AddReadOnlyFields(generatedTypesHelper.NotEditableDataFieldDescriptorNames);
 
-            Dictionary<string, string> errorMessages = helper.BindingsToObject(this.Bindings, newData);
 
-            ValidationResults validationResults = ValidationFacade.Validate(newData);
+            bool isValid = ValidateBindings();
 
-            foreach (ValidationResult result in validationResults)
+            if(!BindAndValidate(helper, newData))
             {
-                this.ShowFieldMessage(result.Key, result.Message);
+                isValid = false;
             }
-
-            if (errorMessages != null)
-            {
-                foreach (var kvp in errorMessages)
-                {
-                    this.ShowFieldMessage(kvp.Key, kvp.Value);
-                }
-            }
-
 
             bool justAdded = false;
-            if ((validationResults.IsValid == true) && (errorMessages == null))
+            if (isValid)
             {
                 if (this.BindingExist("DataAdded") == false)
                 {

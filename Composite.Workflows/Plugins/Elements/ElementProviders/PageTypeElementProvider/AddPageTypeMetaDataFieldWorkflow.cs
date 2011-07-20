@@ -1,25 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Transactions;
 using System.Workflow.Activities;
 using Composite.C1Console.Actions;
-using Composite.Data;
-using Composite.Data.DynamicTypes;
-using Composite.Data.Foundation;
-using Composite.Data.GeneratedTypes;
-using Composite.Data.Types;
 using Composite.C1Console.Elements;
+using Composite.C1Console.Trees;
+using Composite.C1Console.Workflow;
 using Composite.Core.Linq;
 using Composite.Core.ResourceSystem;
-using Composite.Data.Transactions;
-using Composite.C1Console.Trees;
 using Composite.Core.Types;
+using Composite.Data;
+using Composite.Data.DynamicTypes;
+using Composite.Data.GeneratedTypes;
+using Composite.Data.Transactions;
+using Composite.Data.Types;
 using Composite.Data.Validation.ClientValidationRules;
-using Composite.C1Console.Workflow;
-using Composite.Data.ProcessControlled;
-using Composite.C1Console.Users;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
@@ -134,8 +130,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
             }
 
             DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(pageTypeMetaDataTypeLink.DataTypeId);
-            Type metaDataType = TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName);
-
 
             string metaDataDefinitionName = this.GetBinding<string>("CompositionDescriptionName");
             pageTypeMetaDataTypeLink.Name = metaDataDefinitionName;

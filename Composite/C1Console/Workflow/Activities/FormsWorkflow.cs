@@ -18,9 +18,12 @@ using Composite.Core.Logging;
 using Composite.Core.ResourceSystem;
 using Composite.C1Console.Security;
 using Composite.C1Console.Tasks;
+using Composite.Data.DynamicTypes;
+using Composite.Data.Validation;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.C1Console.Workflow.Activities.Foundation;
 using Composite.C1Console.Trees;
+using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 
 namespace Composite.C1Console.Workflow.Activities
@@ -851,6 +854,62 @@ namespace Composite.C1Console.Workflow.Activities
                     FormsWorkflowBindingCache.Bindings[_instanceId] = this.Bindings;
                 }
             }
+        }
+
+        /// <summary>
+        /// Shows validation messages for fields that weren't binded correctly. 
+        /// </summary>
+        /// <returns>True if all the bindings were processed correctly</returns>
+        protected bool ValidateBindings()
+        {
+            if (BindingErrors.Count == 0)
+            {
+                return true;
+            }
+
+            foreach (var pair in BindingErrors)
+            {
+                ShowFieldMessage(pair.Key, pair.Value.Message);
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Binds form values to a data item and sends messages to client to display validation messages. 
+        /// </summary>
+        /// <param name="helper">Form binding helper</param>
+        /// <param name="data">An IData instance</param>
+        /// <returns>True, if there were no binding/validation errors</returns>
+        protected bool BindAndValidate(DataTypeDescriptorFormsHelper helper, IData data)
+        {
+            Dictionary<string, string> errorMessages = helper.BindingsToObject(this.Bindings, data);
+
+            ValidationResults validationResults = ValidationFacade.Validate(data.DataSourceId.InterfaceType, data);
+
+            bool isValid = true;
+
+            if (validationResults.IsValid == false)
+            {
+                foreach (ValidationResult result in validationResults)
+                {
+                    this.ShowFieldMessage(result.Key, result.Message);
+
+                    isValid = false;
+                }
+            }
+
+            if (errorMessages != null)
+            {
+                isValid = false;
+
+                foreach (var kvp in errorMessages)
+                {
+                    this.ShowFieldMessage(kvp.Key, kvp.Value);
+                }
+            }
+
+            return isValid;
         }
     }
 }

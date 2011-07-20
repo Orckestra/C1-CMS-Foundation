@@ -1,15 +1,11 @@
 using System;
-using System.Collections.Generic;
 using Composite.C1Console.Actions;
+using Composite.C1Console.Workflow;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
-using Composite.Data.Foundation;
 using Composite.Data.GeneratedTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.Data.Validation;
-using Composite.C1Console.Workflow;
-using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 
 namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper
@@ -83,13 +79,18 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
         private void saveDataCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
+            bool isValid = ValidateBindings();
+
             UpdateTreeRefresher updateTreeRefresher = this.CreateUpdateTreeRefresher(this.EntityToken);
 
             DataTypeDescriptorFormsHelper helper = GetDataTypeDescriptorFormsHelper();
 
             IData data = ((DataEntityToken)this.EntityToken).Data;
 
-            Dictionary<string, string> errorMessages = helper.BindingsToObject(this.Bindings, data);
+            if(!BindAndValidate(helper, data))
+            {
+                isValid = false;
+            }
 
             // published data stayed as published data - change to draft if status is published
             if (data is IPublishControlled)
@@ -101,36 +102,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                 }
             }
 
-            ValidationResults validationResults = ValidationFacade.Validate(data.DataSourceId.InterfaceType, data);
-
-            foreach (ValidationResult result in validationResults)
-            {
-                this.ShowFieldMessage(result.Key, result.Message);
-            }
-
-            bool isValid = true;
-
-            if (errorMessages != null && errorMessages.Count > 0)
-            {
-                foreach (var kvp in errorMessages)
-                {
-                    this.ShowFieldMessage(kvp.Key, kvp.Value);
-                }
-
-                isValid = false;
-            }
-
-            if (BindingErrors.Count > 0)
-            {
-                foreach (var pair in BindingErrors)
-                {
-                    this.ShowFieldMessage(pair.Key, pair.Value.Message);
-                }
-
-                isValid = false;
-            }
-
-            if (isValid && validationResults.IsValid)
+            if (isValid)
             {
                 DataFacade.Update(data);
 

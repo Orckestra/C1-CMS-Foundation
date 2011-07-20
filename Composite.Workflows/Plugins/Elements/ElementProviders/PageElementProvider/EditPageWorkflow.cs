@@ -15,6 +15,7 @@ using Composite.C1Console.Security;
 using Composite.C1Console.Trees;
 using Composite.C1Console.Users;
 using Composite.C1Console.Workflow;
+using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
@@ -317,7 +318,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             Dictionary<string, IData> dataToAdd = new Dictionary<string, IData>();
             Dictionary<string, IData> dataToUpdate = new Dictionary<string, IData>();
-            Dictionary<string, string> errorMessages = new Dictionary<string, string>();
 
             bool _dataValidated = true;
 
@@ -328,7 +328,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             {
                 using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
                 {
-                    _dataValidated = PrepareAddUpdateMetaData(selectedPage, dataToAdd, dataToUpdate, errorMessages);
+                    _dataValidated = PrepareAddUpdateMetaData(selectedPage, dataToAdd, dataToUpdate);
 
 
                     if (_dataValidated == true)
@@ -473,7 +473,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 Exception mostSpecificException = ex;
                 while (mostSpecificException.InnerException != null) mostSpecificException = mostSpecificException.InnerException;
                 this.ShowMessage(DialogType.Error, "Save failed", string.Format("Save failed: {0}", mostSpecificException.Message));
-                Composite.Core.Logging.LoggingService.LogError("Page save", ex);
+                Log.LogError("Page save", ex);
             }
             finally
             {
@@ -483,9 +483,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
 
 
-        private bool PrepareAddUpdateMetaData(IPage selectedPage, Dictionary<string, IData> dataToAdd, Dictionary<string, IData> dataToUpdate, Dictionary<string, string> errorMessages)
+        private bool PrepareAddUpdateMetaData(IPage selectedPage, Dictionary<string, IData> dataToAdd, Dictionary<string, IData> dataToUpdate)
         {
-            bool dataValidated = true;
+            bool isValid = ValidateBindings();
 
             IEnumerable<IPageMetaDataDefinition> pageMetaDataDefinitions = selectedPage.GetAllowedMetaDataDefinitions().Evaluate();
 
@@ -501,8 +501,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 {
                     IData newData = DataFacade.BuildNew(metaDataType);
 
-                    // GeneratedTypesHelper generatedTypesHelper = new GeneratedTypesHelper(metaDataType);
-
                     PageMetaDataFacade.AssignMetaDataSpecificValues(newData, pageMetaDataDefinition.Name, selectedPage);
 
                     ILocalizedControlled localizedData = newData as ILocalizedControlled;
@@ -512,20 +510,18 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         localizedData.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
                     }
 
-                    Dictionary<string, string> msg = helper.BindingsToObject(this.Bindings, newData);
-                    if (msg != null)
+                    if (!BindAndValidate(helper, newData))
                     {
-                        errorMessages.AddDictionary(msg);
+                        isValid = false;
                     }
 
                     dataToAdd.Add(helper.BindingNamesPrefix, newData);
                 }
                 else
                 {
-                    Dictionary<string, string> msg = helper.BindingsToObject(this.Bindings, metaData);
-                    if (msg != null)
+                    if(!BindAndValidate(helper, metaData))
                     {
-                        errorMessages.AddDictionary(msg);
+                        isValid = false;
                     }
 
                     dataToUpdate.Add(helper.BindingNamesPrefix, metaData);
@@ -535,9 +531,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             ValidationResults pageValidationResults = ValidationFacade.Validate<IPage>(selectedPage);
 
-            if ((pageValidationResults.IsValid == false) || (errorMessages.Count > 0))
+            if (pageValidationResults.IsValid == false)
             {
-                dataValidated = false;
+                isValid = false;
             }
 
 
@@ -547,7 +543,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                 if (validationResults.IsValid == false)
                 {
-                    dataValidated = false;
+                    isValid = false;
 
                     foreach (ValidationResult result in validationResults)
                     {
@@ -556,13 +552,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             }
 
-
-            foreach (var kvp in errorMessages)
-            {
-                this.ShowFieldMessage(kvp.Key, kvp.Value);
-            }
-
-            return dataValidated;
+            return isValid;
         }
 
 
@@ -776,13 +766,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             }
 
-            if (BindingErrors.Count > 0)
+            if(!ValidateBindings())
             {
-                foreach (var pair in BindingErrors)
-                {
-                    this.ShowFieldMessage(pair.Key, pair.Value.Message);
-                }
-
                 e.Result = false;
             }
         }

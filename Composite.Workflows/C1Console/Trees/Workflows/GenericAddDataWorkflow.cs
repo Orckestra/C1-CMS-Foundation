@@ -13,8 +13,6 @@ using Composite.Data.GeneratedTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
-using Composite.Data.Validation;
-using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 
 
@@ -190,31 +188,13 @@ namespace Composite.C1Console.Trees.Workflows
         {
             Initialize();
 
+            bool isValid = ValidateBindings();
+
             IData newData = this.GetBinding<IData>("NewData");
 
-            Dictionary<string, string> errorMessages = this.FormsHelper.BindingsToObject(this.Bindings, newData);
-
-            ValidationResults validationResults = ValidationFacade.Validate(newData.DataSourceId.InterfaceType, newData);
-
-            bool isValid = true;
-            if (validationResults.IsValid == false)
-            {
-                foreach (ValidationResult result in validationResults)
-                {
-                    this.ShowFieldMessage(result.Key, result.Message);
-
-                    isValid = false;
-                }
-            }
-
-            if (errorMessages != null)
+            if(!BindAndValidate(FormsHelper, newData))
             {
                 isValid = false;
-
-                foreach (var kvp in errorMessages)
-                {
-                    this.ShowFieldMessage(kvp.Key, kvp.Value);
-                }
             }
 
             if (isValid == false)

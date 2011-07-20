@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using Composite.C1Console.Actions;
+using Composite.C1Console.Workflow;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
-using Composite.Data.Foundation;
 using Composite.Data.GeneratedTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.Data.Validation;
-using Composite.C1Console.Workflow;
-using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
@@ -94,7 +90,11 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             IData data = ((DataEntityToken)this.EntityToken).Data;
 
-            Dictionary<string, string> errorMessages = helper.BindingsToObject(this.Bindings, data);
+            bool isValid = ValidateBindings();
+            if (!BindAndValidate(helper, data))
+            {
+                isValid = false;
+            }
 
             // published data stayed as published data - change to draft if status is published
             if (data is IPublishControlled)
@@ -103,40 +103,6 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 if (publishControlledData.PublicationStatus == GenericPublishProcessController.Published)
                 {
                     publishControlledData.PublicationStatus = GenericPublishProcessController.Draft;
-                }
-            }
-
-            bool isValid = true;
-
-            if (BindingErrors.Count > 0)
-            {
-                foreach (var pair in BindingErrors)
-                {
-                    this.ShowFieldMessage(pair.Key, pair.Value.Message);
-                }
-
-                isValid = false;
-            }
-
-            ValidationResults validationResults = ValidationFacade.Validate(data.DataSourceId.InterfaceType, data);
-
-            if (validationResults.IsValid == false)
-            {
-                foreach (ValidationResult result in validationResults)
-                {
-                    this.ShowFieldMessage(result.Key, result.Message);
-
-                    isValid = false;
-                }
-            }
-
-            if (errorMessages != null)
-            {
-                isValid = false;
-
-                foreach (var kvp in errorMessages)
-                {
-                    this.ShowFieldMessage(kvp.Key, kvp.Value);
                 }
             }
 

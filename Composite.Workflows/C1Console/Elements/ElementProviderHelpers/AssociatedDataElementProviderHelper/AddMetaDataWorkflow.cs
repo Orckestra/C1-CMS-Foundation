@@ -1,25 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Transactions;
 using System.Workflow.Activities;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
+using Composite.C1Console.Workflow;
+using Composite.Core.ResourceSystem;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
-using Composite.Data.Foundation;
 using Composite.Data.GeneratedTypes;
-using Composite.Data.ProcessControlled;
-using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.Core.ResourceSystem;
 using Composite.Data.Transactions;
-using Composite.Core.Types;
-using Composite.C1Console.Users;
-using Composite.Data.Validation;
-using Composite.C1Console.Workflow;
 using Composite.Data.Types;
-using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 
 namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper
@@ -290,6 +282,8 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
         private void MetaDataValid(object sender, ConditionalEventArgs e)
         {
+            bool valid = ValidateBindings();
+
             Type selectedMetaDataType = this.GetBinding<Type>(SelectedTypeBindingName);
             DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(selectedMetaDataType.GetImmutableTypeId());
 
@@ -299,20 +293,10 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             helper.AddReadOnlyFields(generatedTypesHelper.NotEditableDataFieldDescriptorNames);
 
             IData newDataTemplate = DataFacade.BuildNew(selectedMetaDataType);
-            helper.BindingsToObject(this.Bindings, newDataTemplate);
 
-            var validationResults = ValidationFacade.Validate(newDataTemplate);
-
-            bool valid = true;
-
-            foreach (ValidationResult result in validationResults)
+            if(!BindAndValidate(helper, newDataTemplate))
             {
-                string fieldName = result.Key;
-                if (!generatedTypesHelper.NotEditableDataFieldDescriptorNames.Contains(fieldName))
-                {
-                    this.ShowFieldMessage(result.Key, result.Message);
-                    valid = false;
-                }
+                valid = false;
             }
 
             if (valid)

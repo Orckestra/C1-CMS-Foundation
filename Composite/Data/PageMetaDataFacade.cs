@@ -834,6 +834,11 @@ namespace Composite.Data
             foreach (IData data in dataToDelete)
             {
                 IPage page = data.GetMetaDataReferencedPage();
+                if(page == null)
+                {
+                    continue;
+                }
+
                 bool existsINOtherScope = ExistInOtherScope(page, otherPageMetaDataDefintions);
                 if (existsINOtherScope == true)
                 {
