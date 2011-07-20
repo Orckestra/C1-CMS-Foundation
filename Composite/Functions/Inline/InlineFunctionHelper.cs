@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Web.Hosting;
 using Composite.Core.Configuration;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Linq;
 using Composite.Core.ResourceSystem;
@@ -81,7 +83,10 @@ namespace Composite.Functions.Inline
                     }
                     else
                     {
-                        Log.LogWarning(LogTitle, string.Format("{0}.{1} : {2}", function.Namespace, function.Name, error.ErrorText));
+                        if(!HostingEnvironment.ApplicationHost.ShutdownInitiated())
+                        {
+                            Log.LogWarning(LogTitle, string.Format("{0}.{1} : {2}", function.Namespace, function.Name, error.ErrorText));
+                        }
                     }
                 }
 
@@ -100,7 +105,10 @@ namespace Composite.Functions.Inline
                 }
                 else
                 {
-                    Log.LogWarning(LogTitle, string.Format("{0}.{1} : {2}", function.Namespace, function.Name, message));
+                    if (!HostingEnvironment.ApplicationHost.ShutdownInitiated())
+                    {
+                        Log.LogWarning(LogTitle, string.Format("{0}.{1} : {2}", function.Namespace, function.Name, message));
+                    }
                 }
 
                 return null;
@@ -116,7 +124,10 @@ namespace Composite.Functions.Inline
                 }
                 else
                 {
-                    Log.LogWarning(LogTitle, string.Format("{0}.{1} : {2}", function.Namespace, function.Name, message));
+                    if (!HostingEnvironment.ApplicationHost.ShutdownInitiated())
+                    {
+                        Log.LogWarning(LogTitle, string.Format("{0}.{1} : {2}", function.Namespace, function.Name, message));
+                    }
                 }
 
                 return null;
@@ -133,7 +144,10 @@ namespace Composite.Functions.Inline
                 }
                 else
                 {
-                    Log.LogWarning(LogTitle, string.Format("{0}.{1} : {2}", function.Namespace, function.Name, message));
+                    if (!HostingEnvironment.ApplicationHost.ShutdownInitiated())
+                    {
+                        Log.LogWarning(LogTitle, string.Format("{0}.{1} : {2}", function.Namespace, function.Name, message));
+                    }
                 }
 
                 return null;
