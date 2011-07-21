@@ -20,8 +20,6 @@ namespace Composite.Core.WebClient.FlowMediators
 
             IFlowUiDefinition uiDefinition = FlowControllerFacade.GetCurrentUiDefinition(flowToken, flowServicesContainer);
 
-            ActionResult result = new ActionResult();
-
             if (typeof(FlowUiDefinitionBase).IsAssignableFrom(uiDefinition.GetType()) == true)
             {
                 string serializedEntityToken = EntityTokenSerializer.Serialize(elementHandle.EntityToken, true);

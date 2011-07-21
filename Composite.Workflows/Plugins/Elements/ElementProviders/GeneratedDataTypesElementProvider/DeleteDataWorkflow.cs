@@ -35,8 +35,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             var references = DataReferenceFacade.GetNotOptionalReferences(data);
             foreach (var reference in references)
             {
-                DataSourceId dataSourceId = reference.DataSourceId;
-                if (brokenReferences.Any(brokenRef => brokenRef.DataSourceId == dataSourceId))
+                DataSourceId referenceDataSourceId = reference.DataSourceId;
+                if (brokenReferences.Any(brokenRef => brokenRef.DataSourceId == referenceDataSourceId))
                 {
                     continue;
                 }

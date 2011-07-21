@@ -393,13 +393,27 @@ namespace Composite.Data
         }
 
 
-
         public void Delete<T>(IEnumerable<T> dataset, bool suppressEventing, CascadeDeleteType cascadeDeleteType, bool referencesFromAllScopes)
+            where T : class, IData
+        {
+            Delete(dataset, suppressEventing, cascadeDeleteType, referencesFromAllScopes, new HashSet<DataSourceId>());
+        }
+
+        private void Delete<T>(IEnumerable<T> dataset, bool suppressEventing, CascadeDeleteType cascadeDeleteType, bool referencesFromAllScopes, HashSet<DataSourceId> dataPendingDeletion)
             where T : class, IData
         {
             Verify.ArgumentNotNull(dataset, "dataset");
 
             dataset = dataset.Evaluate();
+
+            foreach(var data in dataset)
+            {
+                var dataSourceId = data.DataSourceId;
+                if(!dataPendingDeletion.Contains(dataSourceId))
+                {
+                    dataPendingDeletion.Add(dataSourceId);
+                }
+            }
 
             if (cascadeDeleteType != CascadeDeleteType.Disable)
             {
@@ -418,7 +432,7 @@ namespace Composite.Data
                         {
                             // For some wierd reason, this line does not work.... /MRJ
                             // IEnumerable<IData> referees = dataset.GetRefereesRecursively();
-                            referees = element.GetReferees(referencesFromAllScopes);
+                            referees = element.GetReferees(referencesFromAllScopes).Where(reference => !dataPendingDeletion.Contains(reference.DataSourceId));
                         }
 
                         foreach (IData referee in referees)

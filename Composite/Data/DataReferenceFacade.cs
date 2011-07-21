@@ -347,9 +347,15 @@ namespace Composite.Data
                         continue;
                     }
 
-                    result.AddRange(data.GetReferees(referencedType, new[] { foregnKeyProperty.SourcePropertyInfo }, false));
+                    IEnumerable<IData> references = data.GetReferees(referencedType, new[] {foregnKeyProperty.SourcePropertyInfo}, false);
+
+                    result.AddRange(references);
                 }
             }
+
+            // IData may contain a self-reference field, so we're removing references to original IData item from the result set
+            result.RemoveAll(reference => reference.DataSourceId == data.DataSourceId);
+
             return result;
         }
 
