@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 
 
 namespace Composite.Data.Validation.Validators
@@ -9,7 +10,7 @@ namespace Composite.Data.Validation.Validators
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Obsolete]
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Parameter, AllowMultiple = true, Inherited = false)]
-    public sealed class StringLengthValidatorAttribute : Microsoft.Practices.EnterpriseLibrary.Validation.Validators.ValueValidatorAttribute
+    public sealed class StringLengthValidatorAttribute : ValueValidatorAttribute
 	{
         /// <exclude />
         public StringLengthValidatorAttribute(int lowerBound, int upperBound)
@@ -38,11 +39,12 @@ namespace Composite.Data.Validation.Validators
         /// <exclude />
         protected override Microsoft.Practices.EnterpriseLibrary.Validation.Validator DoCreateValidator(Type targetType)
         {
-            return new Microsoft.Practices.EnterpriseLibrary.Validation.Validators.StringLengthValidator(
-                this.LowerBound,
-                Microsoft.Practices.EnterpriseLibrary.Validation.Validators.RangeBoundaryType.Inclusive,
-				this.UpperBound,
-                Microsoft.Practices.EnterpriseLibrary.Validation.Validators.RangeBoundaryType.Inclusive,
+            int lowerBound = Math.Min(LowerBound, UpperBound);
+            int upperBound = Math.Max(LowerBound, UpperBound);
+
+            return new StringLengthValidator(
+                lowerBound, RangeBoundaryType.Inclusive,
+                upperBound, RangeBoundaryType.Inclusive,
 				Negated);
         }
     }

@@ -744,7 +744,7 @@
     <Compile Include="Core\Types\CodeGenerationHelper.cs" />
     <Compile Include="Core\Types\CompatibilityCheckResult.cs" />
     <Compile Include="C1Console\Users\UserSettingsMock.cs" />
-    <Compile Include="Data\Validation\Validators\SizeLengthValidatorAttribute.cs" />
+    <Compile Include="Data\Validation\Validators\StringSizeValidatorAttribute.cs" />
     <Compile Include="Verify.cs" />
     <Compile Include="C1Console\Events\BroadcastMessageQueueItem.cs" />
     <Compile Include="C1Console\Events\CollapseAndRefreshConsoleMessageQueueItem.cs" />
