@@ -276,13 +276,38 @@ namespace Composite.Data.Types
                         }
                     }
                     DataFacade.Delete(pageStructure);
+
+                    if(pageStructure.ParentId != parentId)
+                    {
+                        FixOrder(pageStructure.ParentId);
+                    }
                 }
 
                 return InsertIntoPosition(page, parentId, localOrder, addNewPage);
             }
         }
 
+        private static void FixOrder(Guid parentId)
+        {
+            List<IPageStructure> pageStructures = DataFacade.GetData<IPageStructure>(ps => ps.ParentId == parentId).ToList();
 
+            pageStructures.OrderBy(ps => ps.LocalOrdering);
+
+            for (int i = pageStructures.Count - 1; i >= 0; i--)
+            {
+                if(pageStructures[i].LocalOrdering == i) // If order is correct, skipping the page structure object
+                {
+                    pageStructures.RemoveAt(i);
+                    continue;
+                }
+
+                pageStructures[i].LocalOrdering = i;
+            }
+
+            if(pageStructures.Count == 0) return;
+
+            DataFacade.Update(pageStructures);
+        }
 
         /// <exclude />
         public static IPage InsertIntoPosition(this IPage newPage, Guid parentId, int localOrder, bool addNewPage)
