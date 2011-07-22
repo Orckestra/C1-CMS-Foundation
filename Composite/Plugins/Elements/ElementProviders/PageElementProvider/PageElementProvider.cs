@@ -555,9 +555,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                     draggedPage.UrlTitle = urlTitle;
 
-                    // BUG: DropIndex isn't calculated in a right way, for the UI, it's an index for pages from the current language, and from foreign one
-                    // but MoveTo method requires index for pages from all the languages
-                    draggedPage.MoveTo(newParentPageId, dropIndex, false);
+                    // Real drop index takes in accound pages from other locales
+                    int realDropIndex = GetRealDropIndex(draggedPage, newParentPageId, dropIndex);
+
+                    draggedPage.MoveTo(newParentPageId, realDropIndex, false);
                     
                     DataFacade.Update(draggedPage);
 
@@ -589,6 +590,31 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             return true;
         }
 
+
+        private static int GetRealDropIndex(IPage draggedPage, Guid newParentPageId, int dropIndex)
+        {
+            if (dropIndex == 0)
+            {
+                return 0;
+            }
+
+            List<Guid> childPageIDs = PageManager.GetChildrenIDs(newParentPageId).ToList();
+
+            // Removing pages that does not belong to the same locale
+            using (new DataScope(draggedPage.DataSourceId.PublicationScope, draggedPage.DataSourceId.LocaleScope))
+            {
+                childPageIDs.RemoveAll(pageId => PageManager.GetPageById(pageId) == null);
+            }
+
+            if (childPageIDs.Count == 0)
+            {
+                return 0;
+            }
+
+            childPageIDs.OrderBy(PageManager.GetLocalOrdering);
+
+            return PageManager.GetLocalOrdering(childPageIDs[Math.Min(childPageIDs.Count - 1, dropIndex - 1)]) + 1;
+        }
 
 
         private enum PageLocaleState
