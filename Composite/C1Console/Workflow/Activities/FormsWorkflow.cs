@@ -254,6 +254,18 @@ namespace Composite.C1Console.Workflow.Activities
         {
             get
             {
+#warning MRJ: This should be fixed by DDZ in a better way.
+                Guid workflowId;
+                try
+                {
+                    workflowId = WorkflowEnvironment.WorkflowInstanceId;
+                }
+                catch(Exception)
+                {
+                    Log.LogWarning("FormsWorkflow", "Trying to get BindingsErrors when the workflow is terminated/cancled");
+                    return new Dictionary<string, Exception>();
+                }
+
                 FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
                 var bindingValidationService = container.GetService<IBindingValidationService>();
 
