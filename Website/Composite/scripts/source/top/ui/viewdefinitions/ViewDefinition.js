@@ -9,23 +9,23 @@ ViewDefinition.DEFAULT_URL = "${root}/blank.aspx";
  * @param {String} newhandle
  * @return {ViewDefinition}
  */
-ViewDefinition.clone = function ( handle, newhandle ) {
-	
+ViewDefinition.clone = function (handle, newhandle) {
+
 	var result = null;
-	var proto = ViewDefinitions [ handle ];
-	
-	if ( proto.isMutable ) {
-		
+	var proto = ViewDefinitions[handle];
+
+	if (proto.isMutable) {
+
 		var impl = null;
-		if ( proto instanceof DialogViewDefinition ) {
+		if (proto instanceof DialogViewDefinition) {
 			impl = DialogViewDefinition;
 		} else {
 			impl = HostedViewDefinition;
 		}
-		if ( newhandle != null && impl != null ) {
-			var def = new impl ();
-			for ( var prop in proto ) {
-				def [ prop ] = proto [ prop ];
+		if (newhandle != null && impl != null) {
+			var def = new impl();
+			for (var prop in proto) {
+				def[prop] = ViewDefinition.cloneProperty(proto[prop]);
 			}
 			def.handle = newhandle;
 			result = def;
@@ -37,6 +37,25 @@ ViewDefinition.clone = function ( handle, newhandle ) {
 	}
 	return result;
 }
+
+/**
+* Clone .
+* @param {Object} propertye
+* @return {Object
+*/
+ViewDefinition.cloneProperty = function (object) {
+	if (null == object) return object;
+
+	if (typeof object === 'object') {
+		var result = (object.constructor === Array)?[]:{};
+		for (var prop in object) {
+			result[prop] = ViewDefinition.cloneProperty(object[prop]);
+		}
+		return result;
+	}
+	return object;
+}
+
 
 /**
  * @class

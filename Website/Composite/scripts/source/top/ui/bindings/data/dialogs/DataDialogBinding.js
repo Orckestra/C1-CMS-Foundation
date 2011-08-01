@@ -202,10 +202,10 @@ DataDialogBinding.prototype.fireCommand = function ( def ) {
 	var definition = null;
 	
 	if ( handle != null || def != null ) {
-		if ( handle != null ) {
-			definition = ViewDefinitions [ handle ];
-		} else {
+		if (def != null) {
 			definition = def;
+		} else {
+			definition = ViewDefinitions[handle];
 		}
 		if ( definition instanceof DialogViewDefinition ) {
 			definition.handler = this._handler;
