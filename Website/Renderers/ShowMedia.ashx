@@ -6,20 +6,20 @@ using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-using Composite.Core.IO;
-using Composite.Core.Xml;
 using System.Web;
 using System.Web.Caching;
 using System.Web.SessionState;
 using System.Xml.Linq;
 using Composite;
-using Composite.Data;
-using Composite.Data.Plugins.DataProvider.Streams;
+using Composite.Core.IO;
+using Composite.Core.Xml;
 using Composite.Core.Extensions;
-using Composite.Data.Types;
 using Composite.Core.Logging;
 using Composite.Core.WebClient.Renderings;
 using Composite.Core.WebClient;
+using Composite.Data;
+using Composite.Data.Types;
+using Composite.Data.Plugins.DataProvider.Streams;
 
 
 public class ShowMedia : IHttpHandler, IReadOnlySessionState
@@ -81,7 +81,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
             }
         }
 
-        context.Response.ContentType = file.MimeType;
+        context.Response.ContentType = GetMimeType(file);
 
         string encodedFileName = file.FileName.Replace("\"", "_");
         if (context.Request.Browser != null && context.Request.Browser.IsBrowser("ie"))
@@ -153,8 +153,20 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         }
     }
 
+    private static string GetMimeType(IMediaFile file)
+    {
+        string mimeType = file.MimeType;
 
-    private bool IsWebFormatImage(IMediaFile file)
+        if (mimeType == MimeTypeInfo.Default)
+        {
+            mimeType = MimeTypeInfo.GetCanonicalFromExtension(Path.GetExtension(file.FileName.ToLower()));
+        }
+
+        return mimeType;
+    }
+
+
+    private static bool IsWebFormatImage(IMediaFile file)
     {
         switch (file.MimeType)
         {

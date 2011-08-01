@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Reflection;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 
@@ -14,9 +13,12 @@ namespace Composite.Core.IO
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class MimeTypeInfo
 	{
-        private static IDictionary<string, string> _toCanonical = new Dictionary<string, string>();
-        private static IDictionary<string, string> _extensionToCanonical = new Dictionary<string, string>();
-        private static IDictionary<string, string> _mimeTypeToResourceName = new Dictionary<string, string>();
+        private static readonly IDictionary<string, string> _toCanonical = new Dictionary<string, string>();
+        private static readonly IDictionary<string, string> _extensionToCanonical = new Dictionary<string, string>();
+        private static readonly IDictionary<string, string> _mimeTypeToResourceName = new Dictionary<string, string>();
+
+        private static readonly MethodInfo _getMimeMappingMethodInfo = typeof(System.Web.HttpUtility).Assembly
+            .GetType("System.Web.MimeMapping").GetMethod("GetMimeMapping", BindingFlags.Static | BindingFlags.NonPublic);
 
         private static ResourceHandle GetIconHandle(string name)
         {
@@ -364,6 +366,14 @@ namespace Composite.Core.IO
 
             _toCanonical.Add(MimeTypeInfo.MasterPage, MimeTypeInfo.MasterPage);
             _extensionToCanonical.Add("master", MimeTypeInfo.MasterPage);
+
+            _extensionToCanonical.Add("mp4", "video/mp4");
+            _extensionToCanonical.Add("ogg", "audio/ogg");
+            _extensionToCanonical.Add("ogv", "video/ogg");
+            _extensionToCanonical.Add("webm", "video/webm");
+            _extensionToCanonical.Add("svg", "image/svg+xml");
+            _extensionToCanonical.Add("svgz", "mage/svg+xml");
+            _extensionToCanonical.Add("flv4", "video/mp4");
         }
 
 
@@ -425,7 +435,8 @@ namespace Composite.Core.IO
                 return _extensionToCanonical[extension];
             }
 
-            return MimeTypeInfo.Default;
+            string fileName = "filename." + extension;
+            return _getMimeMappingMethodInfo.Invoke(null, new object[] { fileName }) as string;
         }
 	}
 }
