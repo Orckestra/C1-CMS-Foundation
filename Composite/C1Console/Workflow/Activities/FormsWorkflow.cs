@@ -248,34 +248,19 @@ namespace Composite.C1Console.Workflow.Activities
         }
 
 
-        /// <exclude />
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Dictionary<string, Exception> BindingErrors
+        internal Dictionary<string, Exception> GetBindingErrors()
         {
-            get
+            Guid workflowId = WorkflowEnvironment.WorkflowInstanceId;;
+
+            FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(workflowId);
+            var bindingValidationService = container.GetService<IBindingValidationService>();
+
+            if (bindingValidationService == null)
             {
-#warning MRJ: This should be fixed by DDZ in a better way.
-                Guid workflowId;
-                try
-                {
-                    workflowId = WorkflowEnvironment.WorkflowInstanceId;
-                }
-                catch(Exception)
-                {
-                    Log.LogWarning("FormsWorkflow", "Trying to get BindingsErrors when the workflow is terminated/cancled");
-                    return new Dictionary<string, Exception>();
-                }
-
-                FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
-                var bindingValidationService = container.GetService<IBindingValidationService>();
-
-                if (bindingValidationService == null)
-                {
-                    return new Dictionary<string, Exception>();
-                }
-
-                return bindingValidationService.BindingErrors;
+                return new Dictionary<string, Exception>();
             }
+
+            return bindingValidationService.BindingErrors;
         }
 
 
@@ -874,12 +859,13 @@ namespace Composite.C1Console.Workflow.Activities
         /// <returns>True if all the bindings were processed correctly</returns>
         protected bool ValidateBindings()
         {
-            if (BindingErrors.Count == 0)
+            Dictionary<string, Exception> bindingErrors = GetBindingErrors();
+            if (bindingErrors.Count == 0)
             {
                 return true;
             }
 
-            foreach (var pair in BindingErrors)
+            foreach (var pair in bindingErrors)
             {
                 ShowFieldMessage(pair.Key, pair.Value.Message);
             }
