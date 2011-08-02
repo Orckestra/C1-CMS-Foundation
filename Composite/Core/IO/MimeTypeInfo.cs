@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Reflection;
+using System.Web.Configuration;
+using System.Xml.Linq;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
+using System.Web.Hosting;
 
 
 namespace Composite.Core.IO
@@ -374,9 +378,55 @@ namespace Composite.Core.IO
             _extensionToCanonical.Add("svg", "image/svg+xml");
             _extensionToCanonical.Add("svgz", "mage/svg+xml");
             _extensionToCanonical.Add("flv4", "video/mp4");
+
+            LoadFromWebConfig();
         }
 
+        private static void LoadFromWebConfig()
+	    {
+            ConfigurationSection config;
+            try
+            {
+                config = WebConfigurationManager.OpenWebConfiguration(HostingEnvironment.ApplicationVirtualPath).GetSection("system.webServer");
+            }
+            catch
+	        {
+                // Silent
+                return;
+	        }
 
+            if(config == null)
+            {
+                return;
+            }
+
+            XElement webServerConfig = XElement.Parse(config.SectionInformation.GetRawXml());
+            XElement staticContentConfig = webServerConfig.Element("staticContent");
+            if(staticContentConfig == null)
+            {
+                return;
+            }
+
+            foreach(XElement mimeMapping in staticContentConfig.Elements("mimeMap"))
+            {
+                string extension = mimeMapping.Attribute("fileExtension").Value.ToLower();
+                string mimeType = mimeMapping.Attribute("mimeType").Value;
+
+                if(extension.StartsWith("."))
+                {
+                    extension = extension.Substring(1);
+                }
+
+                if(!_extensionToCanonical.ContainsKey(extension))
+                {
+                    _extensionToCanonical.Add(extension, mimeType);
+                }
+                else
+                {
+                    Log.LogWarning(typeof(MimeTypeInfo).Name, "MimeType for extension '{0}' has already been defined", extension);
+                }
+            }
+	    }
 
         /// <exclude />
         public static string GetCanonical(string mimeType)
