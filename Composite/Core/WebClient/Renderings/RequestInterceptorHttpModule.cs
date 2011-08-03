@@ -82,19 +82,13 @@ namespace Composite.Core.WebClient.Renderings
                     return false;
                 }
 
-                var parsedRawUrl = new UrlBuilder(rawUrl);
-
                 NameValueCollection queryParams = new UrlBuilder(rawUrl).GetQueryParameters();
                 queryParams.Add("id", mediaId.ToString());
 
-                string pathInfo = parsedRawUrl.FullPath.Substring(minimumLengthOfPublicMediaUrl);
-
                 var newUrl = new UrlBuilder(UrlUtils.PublicRootPath + "/Renderers/ShowMedia.ashx");
                 newUrl.AddQueryParameters(queryParams);
-                newUrl.PathInfo = pathInfo;
 
                 httpContext.RewritePath(newUrl);
-
                 return true;
             }
 
