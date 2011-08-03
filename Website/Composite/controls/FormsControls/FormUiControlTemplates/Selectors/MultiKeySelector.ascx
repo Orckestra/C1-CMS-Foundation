@@ -98,12 +98,9 @@
     private void EnsurePostDataLoaded(Control control)
     {
         var form = System.Web.HttpContext.Current.Request.Form;
-        if (form[control.UniqueID] != null)
-        {
-            (control as IPostBackDataHandler).LoadPostData(control.UniqueID, form);
-        }
+        (control as IPostBackDataHandler).LoadPostData(control.UniqueID, form);
     }
-    
+
 
     public override string GetDataFieldClientName()
     {
@@ -111,17 +108,13 @@
         {
             return this.ClientID;
         }
-        else
+
+        if (CheckBoxRepeater.Items.Count > 0)
         {
-            if (CheckBoxRepeater.Items.Count > 0)
-            {
-                return CheckBoxRepeater.Items[0].ClientID.Replace("_", "$") + "$CheckBox";
-            }
-            else
-            {
-                return null;
-            }
+            return CheckBoxRepeater.Items[0].ClientID.Replace("_", "$") + "$CheckBox";
         }
+
+        return null;
     }
 
 
