@@ -2,11 +2,7 @@
 
 using System;
 using System.Web;
-using System.Globalization;
 using Composite.Data;
-using Composite.Core.WebClient.Renderings;
-using Composite.Core.WebClient.Renderings.Page;
-using Composite.Core.WebClient;
 
 
 public class FileNotFoundHandler : IHttpHandler
@@ -15,14 +11,21 @@ public class FileNotFoundHandler : IHttpHandler
     {
         string path = GetRequestedPath(context);
 
-        PageUrl pageUrl;
-
-        if (Composite.Data.PageUrl.TryParseFriendlyUrl(path, out pageUrl))
+        try
         {
-            string redurectUrl = pageUrl.Build(PageUrlType.Public).ToString();
-            Composite.Core.Log.LogVerbose("Friendly URL", redurectUrl);
-            context.Response.Redirect(redurectUrl);
-            return;
+            PageUrl pageUrl;
+           
+            if (Composite.Data.PageUrl.TryParseFriendlyUrl(path, out pageUrl))
+            {
+                string redurectUrl = pageUrl.Build(PageUrlType.Public).ToString();
+                Composite.Core.Log.LogVerbose("Friendly URL", redurectUrl);
+                context.Response.Redirect(redurectUrl);
+                return;
+            }
+        }
+        catch
+        {
+            // Silent, muting exceptions if we cannot parse the url
         }
             
         context.Response.StatusCode = 404;
