@@ -28,7 +28,7 @@ namespace Composite.Data.Types
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 255, IsNullable = false)]
         [ImmutableFieldId("{36E7E803-178A-4453-9B5B-BF7148BA077B}")]
-        [RegexValidator(@"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$")]
+        [RegexValidator(@"^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$")]
         [NotNullValidator]
         string Hostname { get; set; }
 
