@@ -378,6 +378,7 @@ namespace Composite.Core.IO
             _extensionToCanonical.Add("svg", "image/svg+xml");
             _extensionToCanonical.Add("svgz", "mage/svg+xml");
             _extensionToCanonical.Add("flv4", "video/mp4");
+            _extensionToCanonical.Add("eot", "application/vnd.ms-fontobject");
 
             LoadFromWebConfig();
         }
