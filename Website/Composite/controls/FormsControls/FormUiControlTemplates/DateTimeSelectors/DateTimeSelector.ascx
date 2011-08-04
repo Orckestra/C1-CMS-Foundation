@@ -1,110 +1,68 @@
 <%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.DateTimeSelectorTemplateUserControlBase" %>
-<%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
 <%@ Import Namespace="System.Globalization" %>
-<%@ Import Namespace="Composite.Core.Extensions" %>
 <script runat="server">
-    bool _dateLoaded;
-    private DateTime? _currentlySelectedDate;
-    
-    bool _timeLoaded;    
-    private DateTime? _currentlySelectedTime;
-
-
     private DateTime? CurrentlySelectedDate
     {
-        get { return _currentlySelectedDate; }
+        get
+        {
+            string serializedValue = fldState_Date.Value;
+            if (string.IsNullOrEmpty(serializedValue))
+            {
+                return null;
+            }
+            return DateTime.Parse(serializedValue, CultureInfo.InvariantCulture);
+        }
         set
         {
-            _currentlySelectedDate = value;
-            _dateLoaded = true;
+            fldState_Date.Value = value == null ? string.Empty : value.Value.ToString(CultureInfo.InvariantCulture);
         }
     }
 
     private DateTime? CurrentlySelectedTime
     {
-        get { return _currentlySelectedTime; }
+        get
+        {
+            string serializedValue = fldState_Time.Value;
+            if (string.IsNullOrEmpty(serializedValue))
+            {
+                return null;
+            }
+            return DateTime.Parse(serializedValue, CultureInfo.InvariantCulture);
+        }
         set
         {
-            _currentlySelectedTime = value;
-            _timeLoaded = true;
+            fldState_Time.Value = value == null ? string.Empty : value.Value.ToString(CultureInfo.InvariantCulture);
         }
-    }        
-    
-
+    }
 
     private DateTime? CurrentlySelectedDateTime
     {
         get
         {
-            if (!CurrentlySelectedDate.HasValue || CurrentlySelectedDate.Value == DateTime.MinValue)
+            if (CurrentlySelectedDate.HasValue == true && CurrentlySelectedDate.Value > DateTime.MinValue)
+            {
+                if (CurrentlySelectedTime.HasValue == true)
+                {
+                    return CurrentlySelectedDate.Value.Add(CurrentlySelectedTime.Value.TimeOfDay);
+                }
+                else
+                {
+                    return CurrentlySelectedDate;
+                }
+            }
+            else
             {
                 return null;
             }
-            
-            if (CurrentlySelectedTime.HasValue == false)
-            {
-                return CurrentlySelectedDate;
-            }
-
-            return CurrentlySelectedDate.Value.Add(CurrentlySelectedTime.Value.TimeOfDay);
         }
     }
 
 
-    private void LoadState()
+    protected void Page_Load()
     {
-        if (!_dateLoaded)
+        if (this.IsPostBack == false)
         {
-            string serializedValue = Request.Form[fldState_Date.UniqueID];
-
-            _currentlySelectedDate = serializedValue.IsNullOrEmpty()
-                                         ? (DateTime?) null
-                                         : DateTime.Parse(serializedValue, CultureInfo.InvariantCulture);
-
-            _dateLoaded = true;
-        }
-
-        if (!_timeLoaded)
-        {
-            string serializedValue = Request.Form[fldState_Time.UniqueID];
-
-            _currentlySelectedTime = serializedValue.IsNullOrEmpty()
-                                         ? (DateTime?)null
-                                         : DateTime.Parse(serializedValue, CultureInfo.InvariantCulture);
-
-            _timeLoaded = true;
-        }
-        
-    }
-
-    private void SaveState()
-    {
-        fldState_Date.Value = _currentlySelectedDate == null ? string.Empty : _currentlySelectedDate.Value.ToString(CultureInfo.InvariantCulture);
-        fldState_Time.Value = _currentlySelectedTime == null ? string.Empty : _currentlySelectedTime.Value.ToString(CultureInfo.InvariantCulture);
-    }    
-
-
-    protected void Page_Init()
-    {
-        SetTimeOptions();
-
-        LoadState();        
-        
-        string eventTarget = Request.Form["__EVENTTARGET"];
-        if (eventTarget == DateActionSelector.UniqueID)
-        {
-            DateActionSelector_Changed(Request.Form[DateActionSelector.UniqueID]);
-        }
-        else if (eventTarget == DateSelector.UniqueID)
-        {
-            // Loading selector's state
-            (DateSelector as IPostBackEventHandler).RaisePostBackEvent(Request.Form["__EVENTARGUMENT"]);
-
-            DateSelector_SelectionChanged();
-        }        
-        else if(eventTarget == TimeSelector.UniqueID)
-        {
-            TimeSelector_SelectionChanged();
+            SetTimeOptions();
         }
     }
 
@@ -112,37 +70,36 @@
     {
         InsertSelectedDate();
 
-        DateActionSelector.Items.FindByValue("selecttime").Enabled = CurrentlySelectedDateTime.HasValue;
-
-        SaveState();        
+        if (this.CurrentlySelectedDateTime.HasValue == false)
+        {
+            DateActionSelector.Items.FindByValue("selecttime").Enabled = false;
+        }
+        else
+        {
+            DateActionSelector.Items.FindByValue("selecttime").Enabled = true;
+        }
     }
 
     private void InsertSelectedDate()
     {
-        DateTime? dateTime = CurrentlySelectedDateTime;
-
-        if (dateTime == null)
+        if (CurrentlySelectedDateTime != null)
         {
-            return;
+            string dateTimeString = string.Format("{0} {1}", this.CurrentlySelectedDateTime.Value.ToShortDateString(), this.CurrentlySelectedDateTime.Value.ToShortTimeString());
+            ListItem dateItem = DateActionSelector.Items.FindByValue("date");
+            if (dateItem == null)
+            {
+                DateActionSelector.Items.Insert(0, new ListItem(dateTimeString, "date"));
+            }
+            else
+            {
+                dateItem.Text = dateTimeString;
+            }
         }
-
-        string dateTimeString = string.Format("{0} {1}", dateTime.Value.ToShortDateString(), dateTime.Value.ToShortTimeString());
-        ListItem dateItem = DateActionSelector.Items.FindByValue("date");
-        if (dateItem == null)
-        {
-            DateActionSelector.Items.Insert(0, new ListItem(dateTimeString, "date"));
-        }
-        else
-        {
-            dateItem.Text = dateTimeString;
-        }
-
-        DateActionSelector.SelectedIndex = 0;
     }
 
-    void DateActionSelector_Changed(string value)
+    void DateActionSelector_Change(object sender, EventArgs e)
     {
-        switch (value)
+        switch (DateActionSelector.SelectedValue)
         {
             case "none":
                 CalendarPlaceHolder.Visible = false;
@@ -168,15 +125,13 @@
                 break;
             case "selecttime":
                 TimeSelectorPlaceHolder.Visible = true;
-                if (CurrentlySelectedTime != null)
+                if (CurrentlySelectedDate != null)
                 {
-                    string timeStr = CurrentlySelectedTime.Value.ToShortTimeString();
-                    
-                    if (TimeSelector.Items.FindByValue(timeStr) == null)
+                    if (TimeSelector.Items.FindByValue(CurrentlySelectedTime.Value.ToShortTimeString()) == null)
                     {
-                        TimeSelector.Items.Add(timeStr);
+                        TimeSelector.Items.Add(CurrentlySelectedTime.Value.ToShortTimeString());
                     }
-                    TimeSelector.SelectedValue = timeStr;
+                    TimeSelector.SelectedValue = CurrentlySelectedTime.Value.ToShortTimeString();
                 }
                 break;
             default:
@@ -187,24 +142,20 @@
     }
 
 
-    void TimeSelector_SelectionChanged()
+    void TimeSelector_SelectionChanged(object sender, EventArgs e)
     {
-        CurrentlySelectedTime = DateTime.Parse(Request.Form[TimeSelector.UniqueID]);
+        CurrentlySelectedTime = DateTime.Parse(TimeSelector.SelectedValue);
+        InsertSelectedDate();
         DateActionSelector.SelectedValue = "date";
         CalendarPlaceHolder.Visible = false;
         TimeSelectorPlaceHolder.Visible = false;
     }
 
 
-    void DateSelector_SelectionChanged()
+    void DateSelector_SelectionChanged(object sender, EventArgs e)
     {
-        if (DateSelector.SelectedDate == DateTime.MinValue)
-        {
-            CalendarPlaceHolder.Visible = true;
-            return;
-        }        
-        
         CurrentlySelectedDate = DateSelector.SelectedDate;
+        InsertSelectedDate();
         if (CurrentlySelectedTime.HasValue == false) CurrentlySelectedTime = DateTime.MinValue;
         DateActionSelector.SelectedValue = "date";
         CalendarPlaceHolder.Visible = false;
@@ -213,7 +164,7 @@
 
     void SetTimeOptions()
     {
-        const int minuteInterval = 15;
+        int minuteInterval = 15;
         DateTime counter = DateTime.MinValue;
 
         for (int i = 0; i < (24 * (60 / minuteInterval)); i++)
@@ -233,26 +184,37 @@
 
     protected override void InitializeViewState()
     {
-        if (this.Date.HasValue == false)
+        if (this.Date.HasValue == true)
+        {
+            DateSelector.SelectedDate = this.Date.Value - this.Date.Value.TimeOfDay;
+            DateSelector.VisibleDate = DateSelector.SelectedDate;
+            CurrentlySelectedDate = DateSelector.SelectedDate;
+            CurrentlySelectedTime = DateTime.MinValue.Add(this.Date.Value.TimeOfDay);
+        }
+        else
         {
             DateSelector.VisibleDate = DateTime.Now;
             CurrentlySelectedDate = null;
-            return;
         }
-        
-        DateSelector.SelectedDate = this.Date.Value - this.Date.Value.TimeOfDay;
-        DateSelector.VisibleDate = DateSelector.SelectedDate;
-        CurrentlySelectedDate = DateSelector.SelectedDate;
-        CurrentlySelectedTime = DateTime.MinValue.Add(this.Date.Value.TimeOfDay);
     }
 
     public override string GetDataFieldClientName()
     {
-        return DateActionSelector.UniqueID;
+        return DateActionSelector.ClientID.Replace('_', '$');
+    }
+
+    public void CalendarYearBackClick(object sender, EventArgs e)
+    {
+        this.DateSelector.VisibleDate = this.DateSelector.VisibleDate.AddYears(-1);
+    }
+
+    public void CalendarYearForwardClick(object sender, EventArgs e)
+    {
+        this.DateSelector.VisibleDate = this.DateSelector.VisibleDate.AddYears(1);
     }
     
 </script>
-<aspui:Selector ID="DateActionSelector" runat="server" AutoPostBack="true">
+<aspui:Selector ID="DateActionSelector" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DateActionSelector_Change">
     <asp:ListItem Value="none" Text="(no date selected)" />
     <asp:ListItem Value="select" Text="Select date" />
     <asp:ListItem Value="selecttime" Text="Select time" />
@@ -260,13 +222,16 @@
 <asp:HiddenField runat="server" ID="fldState_Date" />
 <asp:HiddenField runat="server" ID="fldState_Time" />
 <div id="updatezone<%= this.UniqueID %>">
-	<asp:PlaceHolder ID="CalendarPlaceHolder" Visible="false" runat="server" EnableViewState="false">
+	<asp:PlaceHolder ID="CalendarPlaceHolder" Visible="false" runat="server">
 	    <div class="calendar">
-	        <asp:Calendar ID="DateSelector" runat="server" ShowDayHeader="false"/>
+	        <asp:Calendar ID="DateSelector" runat="server" OnSelectionChanged="DateSelector_SelectionChanged" ShowDayHeader="false"/>
+            <!-- masterfilter.xslt will make the links below show up inside the calendar -->
+            <asp:LinkButton ID="LinkButton1" CssClass="calendaryearback" OnClick="CalendarYearBackClick" runat="server">back</asp:LinkButton>
+            <asp:LinkButton ID="LinkButton2" CssClass="calendaryearforward" OnClick="CalendarYearForwardClick" runat="server">forward</asp:LinkButton>
 	    </div>
 	</asp:PlaceHolder>
 </div>
-<asp:PlaceHolder ID="TimeSelectorPlaceHolder" Visible="false" runat="server" EnableViewState="false">
-    <aspui:Selector ID="TimeSelector" runat="server" AutoPostBack="true">
+<asp:PlaceHolder ID="TimeSelectorPlaceHolder" Visible="false" runat="server">
+    <aspui:Selector ID="TimeSelector" runat="server" AutoPostBack="true" OnSelectedIndexChanged="TimeSelector_SelectionChanged">
     </aspui:Selector>
 </asp:PlaceHolder>
