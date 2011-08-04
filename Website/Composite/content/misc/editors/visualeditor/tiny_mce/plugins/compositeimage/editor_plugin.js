@@ -104,6 +104,23 @@ new function () {
 								src = "../../../../.." + src.substring(1);
 							}
 
+							var mediaUrl = new MediaUrl(src);
+
+							if (mediaUrl.isMedia) {
+								var maxwidth = 0;
+								var maxheight = 0;
+								if (result.has("maxwidth"))
+									maxwidth = parseInt(result.get("maxwidth"));
+								if (result.has("maxheight"))
+									maxheight = parseInt(result.get("maxheight"));
+								if(maxwidth > 0)
+									mediaUrl.setParam("mw", maxwidth);
+								if(maxheight > 0)
+									mediaUrl.setParam("mh", maxheight);
+
+								
+								src = mediaUrl.toString();
+							}
 
 							switch (value) {
 

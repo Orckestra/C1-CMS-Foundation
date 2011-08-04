@@ -155,7 +155,12 @@
   <string key="Image.LabelImage" value="Image properties" />
   <string key="Image.LabelInsertImage" value="Insert Image" />
   <string key="Image.LabelImageProperties" value="Image Properties" />
-  <!-- charmap -->
+  <string key="Image.MaxWidth" value="Maximim Width" />
+  <string key="Image.MaxWidthToolTip" value="If the width of the image is bigger that the specified value, it will be downsized to the specified value." />
+  <string key="Image.MaxHeight" value="Maximim Height" />
+  <string key="Image.MaxHeightToolTip" value="If the height of the image is bigger that the specified value, it will be downsized to the specified value." />
+
+	<!-- charmap -->
   <string key="CharMap.LabelSelectSpecialChar" value="Select Character" />
   <string key="CharMap.LabelGeneral" value="General" />
   <string key="CharMap.LabelAlphabetical" value="Alphabetical" />

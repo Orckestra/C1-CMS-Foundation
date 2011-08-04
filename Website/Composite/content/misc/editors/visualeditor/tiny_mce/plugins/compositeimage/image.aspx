@@ -29,7 +29,7 @@
 									<ui:field>
 										<ui:fielddesc label="${string:Composite.Web.VisualEditor:Image.Source}"/>
 										<ui:fielddata>
-											<ui:datainputdialog handle="Composite.Management.ImageSelectorDialog" name="src" required="true"/>
+											<ui:imageinputdialog name="src" required="true"/>
 										</ui:fielddata>
 									</ui:field>
 									<ui:field>
@@ -64,6 +64,20 @@
 										<ui:fieldhelp label="${string:Composite.Web.VisualEditor:HelpId}"/>
 										<ui:fielddata>
 											<ui:datainput name="id"/>
+										</ui:fielddata>
+									</ui:field>
+									<ui:field>
+										<ui:fielddesc label="${string:Composite.Web.VisualEditor:Image.MaxWidth}"/>
+										<ui:fieldhelp label="${string:Composite.Web.VisualEditor:Image.MaxWidthToolTip}"/>
+										<ui:fielddata>
+											<ui:datainput name="maxwidth" type="integer"/>
+										</ui:fielddata>
+									</ui:field>
+									<ui:field>
+										<ui:fielddesc label="${string:Composite.Web.VisualEditor:Image.MaxHeight}"/>
+										<ui:fieldhelp label="${string:Composite.Web.VisualEditor:Image.MaxHeightToolTip}"/>
+										<ui:fielddata>
+											<ui:datainput name="maxheight" type="integer"/>
 										</ui:fielddata>
 									</ui:field>
 								</ui:fieldgroup>
