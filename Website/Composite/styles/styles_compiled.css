@@ -2061,11 +2061,11 @@ color: $(color:highlighttext);
 div.calendar tr.month td {
 border-bottom: 1px solid $(color:threedshadow);	
 }
-div.calendar td.monthbrowse {
+div.calendar .monthbrowse {
 font-family: "Courier New", monospace;
 cursor: pointer;	
 }
-div.calendar td.monthbrowse:hover {
+div.calendar .monthbrowse:hover {
 color: $(color:highlight);	
 }
 
