@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using Composite.Core.Extensions;
@@ -43,7 +44,21 @@ namespace Composite.Core.WebClient.Renderings
                 return;
             }
 
+            SetCultureByHostname();
+
             HandleRootRequestInClassicMode(httpContext);
+        }
+
+        static void SetCultureByHostname()
+        {
+            IHostnameBinding hostnameBinding = HostnameBindingsFacade.GetBindingForCurrentRequest();
+            if(hostnameBinding != null && !hostnameBinding.Culture.IsNullOrEmpty())
+            {
+                CultureInfo cultureInfo = new CultureInfo(hostnameBinding.Culture);
+                var thread = System.Threading.Thread.CurrentThread;
+                thread.CurrentCulture = cultureInfo;
+                thread.CurrentUICulture = cultureInfo;
+            }
         }
 
         static bool HandleMediaRequest(HttpContext httpContext)
