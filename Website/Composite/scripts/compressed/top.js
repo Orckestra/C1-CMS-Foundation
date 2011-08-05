@@ -5749,7 +5749,7 @@ this._logger.warn("Prism methods should only be invoked in Prism! ("+type+")");
 }};
 var Prism=new _Prism();
 function MediaUrl(url){
-var _513=/^(~?\/|(\.\.\/)+)media(\(|%28)[\w\d-]+(\)|%29)/;
+var _513=/^(~?\/|(\.\.\/)+|https?:\/\/[\w\d\.:]*\/)media(\(|%28)[\w\d-]+(\)|%29)/;
 if(_513.test(url)){
 var _514={};
 url.replace(/^[^\?]*/g,"").replace(/([^?=&]+)(=([^&]*))?/g,function($0,$1,$2,$3){
