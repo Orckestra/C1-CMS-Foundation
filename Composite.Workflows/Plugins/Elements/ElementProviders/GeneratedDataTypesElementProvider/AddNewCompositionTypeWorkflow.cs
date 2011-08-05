@@ -50,7 +50,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             this.Bindings.Add(this.HasPublishingBindingName, typeof(IPublishControlled).IsAssignableFrom(targetType));
 
-            this.Bindings.Add("HasLocalization", false);
+            this.Bindings.Add("HasLocalization", true);
             this.Bindings.Add("ShowLocalization", DataLocalizationFacade.UseLocalization);
 
             this.BindingsValidationRules.Add(this.NewTypeNameBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });
