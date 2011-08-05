@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
+using System.Xml;
 using System.Xml.Linq;
 using Composite.C1Console.Users;
+using Composite.Core.ResourceSystem;
 using Composite.Core.Xml;
-using System.Xml;
 using Composite.Data;
-using System.Globalization;
 
 
 namespace Composite.Core.Types
@@ -226,6 +227,11 @@ namespace Composite.Core.Types
                 try
                 {
                     intResult = Int32.Parse((string)value);
+                }
+                catch(OverflowException)
+                {
+                    string message = StringResourceSystemFacade.GetString("Composite.Management", "Validation.Int32.Overflow");
+                    conversionError = new InvalidOperationException(message);
                 }
                 catch (Exception ex)
                 {
