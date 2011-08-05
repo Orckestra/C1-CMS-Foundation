@@ -2,7 +2,6 @@
 using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
-using Composite.Core.Extensions;
 using Composite.Core.Routing;
 using Composite.Core.Routing.Pages;
 using Composite.Core.Threading;
@@ -21,7 +20,6 @@ namespace Composite.Core.WebClient.Renderings
         public void Init(HttpApplication context)
         {
             context.BeginRequest += context_BeginRequest;
-            context.PreRequestHandlerExecute += context_PreRequestHandlerExecute;
         }
 
         void context_BeginRequest(object sender, EventArgs e)
@@ -93,32 +91,6 @@ namespace Composite.Core.WebClient.Renderings
             }
 
             return false;
-        }
-
-        void context_PreRequestHandlerExecute(object sender, EventArgs e)
-        {
-            var httpContext = (sender as HttpApplication).Context;
-
-            var page = httpContext.Handler as System.Web.UI.Page;
-            if(page == null)
-            {
-                return;
-            }
-
-            if(!string.IsNullOrEmpty(C1PageRoute.GetPathInfo()))
-            {
-                page.PreRender += (a, b) => CheckThatPathInfoHasBeenUsed(httpContext, page);
-            }
-
-            // Setting 404 response code if it is a request to a custom "Page not found" page
-            string customPageNotFoundUrl = HostnameBindingsFacade.GetCustomPageNotFoundUrl();
-            if (!customPageNotFoundUrl.IsNullOrEmpty() 
-                && customPageNotFoundUrl.StartsWith("/")
-                && (httpContext.Request.RawUrl == customPageNotFoundUrl
-                    || httpContext.Request.Url.PathAndQuery == customPageNotFoundUrl))
-            {
-                page.PreRender += (a, b) => httpContext.Response.StatusCode = 404;
-            }
         }
 
         private static void HandleRootRequestInClassicMode(HttpContext httpContext)

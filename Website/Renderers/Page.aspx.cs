@@ -5,128 +5,34 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.UI;
-using System.Xml.Linq;
 
-using Composite.C1Console.Security;
-using Composite.Core;
-using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
-using Composite.Core.Routing;
-using Composite.Core.WebClient;
 using Composite.Core.WebClient.Renderings;
 using Composite.Core.WebClient.Renderings.Page;
-using Composite.Data;
 using Composite.Data.Types;
 
 
 public partial class Renderers_Page : System.Web.UI.Page
 {
-    private static readonly string ProfilerXslPath = UrlUtils.PublicRootPath + "/Composite/Transformations/page_profiler.xslt";
-
-    private IDisposable _dataScope;
-
-    private bool _profilingEnabled = false;
-    private IDisposable _pagePerfMeasuring;
     private IDisposable _pageEventsPageMeasuring;
 
-    private bool _isPreview;
-    private string _previewKey;
-
-    private PageUrlData _pageUrl;
-    private string _cacheUrl = null;
     private bool _requestCompleted = false;
 
-    protected override void OnPreInit(EventArgs e)
-    {
-        IPage page;
-
-        _profilingEnabled = Request.Url.OriginalString.Contains("c1mode=perf");
-        if (_profilingEnabled)
-        {
-            if (!UserValidationFacade.IsLoggedIn())
-            {
-                string loginUrl = UrlUtils.AdminRootPath + "/Login.aspx?ReturnUrl=" + HttpUtility.UrlEncode(Context.Request.RawUrl);
-                Response.Write(@"You must be logged into <a href=""" + loginUrl + @""">C1 console</a> to have the performance view enabled");
-                Response.End();
-                return;
-            }
-
-            Profiler.BeginProfiling();
-            _pagePerfMeasuring = Profiler.Measure("C1 Page");
-        }
-
-        _previewKey = Request.QueryString["previewKey"];
-        _isPreview = !_previewKey.IsNullOrEmpty();
-
-        if (_isPreview)
-        {
-            page = (IPage)Cache.Get(_previewKey + "_SelectedPage");
-            _pageUrl = new PageUrlData(page);
-        }
-        else
-        {
-            _pageUrl = RouteData.Values["C1Page"] as PageUrlData;
-            if(_pageUrl == null)
-            {
-                _pageUrl = PageUrls.UrlProvider.ParseInternalUrl(Context.Request.Url.OriginalString); 
-            }
-
-            page = _pageUrl.GetPage();
-            _cacheUrl = Request.Url.PathAndQuery;
-        }
-
-        _dataScope = new DataScope(_pageUrl.PublicationScope, _pageUrl.LocalizationScope);
-
-        ValidateViewUnpublishedRequest();
-
-        if (page == null)
-        {
-            throw new HttpException(404, "Page not found - either this page has not been published yet or it has been deleted.");
-        }
-
-        PageRenderer.CurrentPage = page;
-        InitializeCulture();
-
-        base.OnPreInit(e);
-    }
-
-
+    RenderingContext _renderingContext;
 
     protected override void OnInit(EventArgs e)
     {
-        if (_pageUrl == null || _pageUrl.PublicationScope != PublicationScope.Published || Request.IsSecureConnection)
+        _renderingContext = RenderingContext.InitializeFromHttpContext();
+
+        InitializeCulture();
+
+        if(_renderingContext.RunResponseHandlers())
         {
-            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            _requestCompleted = true;
+            return;
         }
 
-        if (!_isPreview)
-        {
-            RenderingResponseHandlerResult responseHandling = RenderingResponseHandlerFacade.GetDataResponseHandling(PageRenderer.CurrentPage.GetDataEntityToken());
-            if (responseHandling != null)
-            {
-                if (responseHandling.PreventPublicCaching == true)
-                {
-                    Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                }
-
-                if (responseHandling.EndRequest || responseHandling.RedirectRequesterTo != null)
-                {
-                    if (responseHandling.RedirectRequesterTo != null)
-                    {
-                        Response.Redirect(responseHandling.RedirectRequesterTo.AbsoluteUri, false);
-                    }
-
-                    Context.ApplicationInstance.CompleteRequest();
-                    _requestCompleted = true;
-
-                    return;
-                }
-            }
-        }
-
-        IEnumerable<IPagePlaceholderContent> contents = _isPreview 
-            ? (IEnumerable<IPagePlaceholderContent>)Cache.Get(_previewKey + "_SelectedContents") 
-            : PageManager.GetPlaceholderContent(PageRenderer.CurrentPage.Id);
+        IEnumerable<IPagePlaceholderContent> contents = _renderingContext.GetPagePlaceholderContents();
 
         Control renderedPage;
         using (Profiler.Measure("Executing C1 functions"))
@@ -134,7 +40,7 @@ public partial class Renderers_Page : System.Web.UI.Page
             renderedPage = PageRenderer.Render(PageRenderer.CurrentPage, contents);
         }
 
-        if (_isPreview)
+        if (_renderingContext.PreviewMode)
         {
             PageRenderer.DisableAspNetPostback(renderedPage);
         }
@@ -177,6 +83,8 @@ public partial class Renderers_Page : System.Web.UI.Page
             return;
         }
 
+        _renderingContext.PreRenderRedirectCheck();
+
         var markupBuilder = new StringBuilder();
         var sw = new StringWriter(markupBuilder);
         try
@@ -188,51 +96,18 @@ public partial class Renderers_Page : System.Web.UI.Page
         }
         catch (HttpException ex)
         {
-            MethodInfo setStringMethod = typeof(HttpContext).Assembly /* System.Web */
-                .GetType("System.Web.SR")
-                .GetMethod("GetString", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(string) }, null);
-
-            string multipleFormNotAllowedMessage = (string)setStringMethod.Invoke(null, new object[] { "Multiple_forms_not_allowed" });
-
-            bool multipleAspFormTagsExists = ex.Message == multipleFormNotAllowedMessage;
-            if (multipleAspFormTagsExists)
-            {
-                throw new HttpException("Multiple <asp:form /> elements exists on this page. ASP.NET only support one form. To fix this, insert a <asp:form> ... </asp:form> section in your template that spans all controls.");
-            }
-
+            CheckForMultipleAspNetFormsException(ex);
             throw;
         }
 
-        string xhtml;
+        string xhtml = _renderingContext.ConvertInternalLinks(markupBuilder.ToString());
 
-        using (Profiler.Measure("Changing 'internal' page urls to 'public'"))
-        {
-            xhtml = PageUrlHelper.ChangeRenderingPageUrlsToPublic(markupBuilder.ToString());
-        }
-
-        using (Profiler.Measure("Changing 'internal' media urls to 'public'"))
-        {
-            xhtml = MediaUrlHelper.ChangeInternalMediaUrlsToPublic(xhtml);
-        }
-
-        try
-        {
-            using (Profiler.Measure("Formatting output XHTML with Composite.Core.Xml.XhtmlPrettifier"))
-            {
-                xhtml = Composite.Core.Xml.XhtmlPrettifier.Prettify(xhtml);
-            }
-        }
-        catch
-        {
-            Log.LogWarning("/Renderers/Page.aspx", "Failed to format output xhtml. Url: " + (_cacheUrl ?? String.Empty));
-        }
+        xhtml = _renderingContext.FormatXhtml(xhtml);
 
         // Inserting perfomance profiling information
-        if (_profilingEnabled)
+        if (_renderingContext.ProfilingEnabled)
         {
-            _pagePerfMeasuring.Dispose();
-
-            xhtml = BuildProfilerReport(Profiler.EndProfiling());
+            xhtml = _renderingContext.BuildProfilerReport();
 
             Response.ContentType = "text/xml";
         }
@@ -241,88 +116,39 @@ public partial class Renderers_Page : System.Web.UI.Page
     }
 
 
+    private static void CheckForMultipleAspNetFormsException(HttpException ex)
+    {
+        MethodInfo setStringMethod = typeof(HttpContext).Assembly /* System.Web */
+                .GetType("System.Web.SR")
+                .GetMethod("GetString", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(string) }, null);
+
+        string multipleFormNotAllowedMessage = (string)setStringMethod.Invoke(null, new object[] { "Multiple_forms_not_allowed" });
+
+        bool multipleAspFormTagsExists = ex.Message == multipleFormNotAllowedMessage;
+        if (multipleAspFormTagsExists)
+        {
+            throw new HttpException("Multiple <asp:form /> elements exists on this page. ASP.NET only support one form. To fix this, insert a <asp:form> ... </asp:form> section in your template that spans all controls.");
+        }
+    }
 
     protected override void OnUnload(EventArgs e)
     {
         base.OnUnload(e);
 
-        if (_dataScope != null)
+        if (_renderingContext != null)
         {
-            _dataScope.Dispose();
-        }
-
-        if (_requestCompleted)
-        {
-            return;
-        }
-
-        if (_isPreview)
-        {
-            Cache.Remove(_previewKey + "_SelectedPage");
-            Cache.Remove(_previewKey + "_SelectedContents");
+            _renderingContext.Dispose();
         }
     }
 
 
-
-    private void ValidateViewUnpublishedRequest()
-    {
-        if (_pageUrl != null 
-            && _pageUrl.PublicationScope != PublicationScope.Published 
-            && !UserValidationFacade.IsLoggedIn())
-        {
-            Response.Redirect(String.Format("{0}/Composite/Login.aspx?ReturnUrl={1}", UrlUtils.PublicRootPath, HttpUtility.UrlEncodeUnicode(Request.Url.OriginalString)), true);
-            Context.ApplicationInstance.CompleteRequest();
-        }
-    }
-
-    
-    
     protected override void InitializeCulture()
     {
-        IPage page = PageRenderer.CurrentPage;
-        if (page != null)
+        if (_renderingContext != null)
         {
-            this.Culture = this.UICulture = page.CultureName;
+            this.Culture = this.UICulture = _renderingContext.Page.DataSourceId.LocaleScope.Name;
         }
 
         base.InitializeCulture();
-    }
-
-
-    private string BuildProfilerReport(Measurement measurement)
-    {
-        string xmlHeader = @"<?xml version=""1.0""?>
-                             <?xml-stylesheet type=""text/xsl"" href=""{0}""?>"
-                .FormatWith(ProfilerXslPath);
-
-        XElement reportXml = ProfilerReport.BuildReportXml(measurement);
-        var url = new UrlBuilder(Context.Request.Url.ToString());
-        url["c1mode"] = null;
-
-        reportXml.Add(new XAttribute("url", url));
-
-        return xmlHeader + reportXml;
-    }
-
-
-    
-    public static Control FindControlRecursive(Control current, string controlID)
-    {
-        if (current == null) throw new ArgumentNullException("current");
-        if (controlID == null) throw new ArgumentNullException("controlID");
-
-        if (current.ID == controlID)
-        {
-            return current;
-        }
-
-        foreach (Control c in current.Controls)
-        {
-            Control t = FindControlRecursive(c, controlID);
-            if (t != null) return t;
-        }
-
-        return null;
     }
 }
