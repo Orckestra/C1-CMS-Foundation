@@ -1,7 +1,9 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
+using Composite.Core.Extensions;
 using Composite.Core.Routing;
 using Composite.Core.Routing.Pages;
 using Composite.Core.Threading;
@@ -20,6 +22,7 @@ namespace Composite.Core.WebClient.Renderings
         public void Init(HttpApplication context)
         {
             context.BeginRequest += context_BeginRequest;
+            context.PreRequestHandlerExecute += context_PreRequestHandlerExecute;
         }
 
         void context_BeginRequest(object sender, EventArgs e)
@@ -30,7 +33,7 @@ namespace Composite.Core.WebClient.Renderings
 
             var httpContext = (sender as HttpApplication).Context;
 
-            if(CheckForHostnameAliasRedirect(httpContext))
+            if (CheckForHostnameAliasRedirect(httpContext))
             {
                 return;
             }
@@ -47,13 +50,13 @@ namespace Composite.Core.WebClient.Renderings
         {
             string rawUrl = httpContext.Request.RawUrl;
 
-            if(rawUrl.StartsWith(MediaUrl_InternalPrefix))
+            if (rawUrl.StartsWith(MediaUrl_InternalPrefix))
             {
                 int endBracketOffset = rawUrl.IndexOf(")");
-                if(endBracketOffset < 0) return false;
+                if (endBracketOffset < 0) return false;
 
                 Guid mediaId;
-                if(!Guid.TryParse(rawUrl.Substring(MediaUrl_InternalPrefix.Length, endBracketOffset - MediaUrl_InternalPrefix.Length), out mediaId))
+                if (!Guid.TryParse(rawUrl.Substring(MediaUrl_InternalPrefix.Length, endBracketOffset - MediaUrl_InternalPrefix.Length), out mediaId))
                 {
                     return false;
                 }
@@ -91,6 +94,35 @@ namespace Composite.Core.WebClient.Renderings
             }
 
             return false;
+        }
+
+        void context_PreRequestHandlerExecute(object sender, EventArgs e)
+        {
+            // Left for backward compatibility with Contrib master pages support, to be removed 
+            // when support for master pages is implemented in C1
+            // RenderingContext.PreRenderRedirectCheck() does the same logic
+            var httpContext = (sender as HttpApplication).Context;
+
+            var page = httpContext.Handler as System.Web.UI.Page;
+            if (page == null)
+            {
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(C1PageRoute.GetPathInfo()))
+            {
+                page.PreRender += (a, b) => CheckThatPathInfoHasBeenUsed(httpContext, page);
+            }
+
+            // Setting 404 response code if it is a request to a custom "Page not found" page
+            string customPageNotFoundUrl = HostnameBindingsFacade.GetCustomPageNotFoundUrl();
+            if (!customPageNotFoundUrl.IsNullOrEmpty()
+                && customPageNotFoundUrl.StartsWith("/")
+                && (httpContext.Request.RawUrl == customPageNotFoundUrl
+                    || httpContext.Request.Url.PathAndQuery == customPageNotFoundUrl))
+            {
+                page.PreRender += (a, b) => httpContext.Response.StatusCode = 404;
+            }
         }
 
         private static void HandleRootRequestInClassicMode(HttpContext httpContext)
