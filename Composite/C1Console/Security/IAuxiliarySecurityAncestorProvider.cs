@@ -4,6 +4,8 @@
 namespace Composite.C1Console.Security
 {
     /// <summary>    
+    /// To add a see <see cref="Composite.C1Console.Security.AuxiliarySecurityAncestorFacade"/>.
+    /// Typically added from a element provider
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
