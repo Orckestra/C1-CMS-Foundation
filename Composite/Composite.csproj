@@ -480,6 +480,8 @@
     <Compile Include="Core\WebClient\Renderings\Foundation\RenderingResponseHandlerRegistry.cs" />
     <Compile Include="Core\WebClient\Renderings\Foundation\RenderingResponseHandlerRegistryImpl.cs" />
     <Compile Include="Core\WebClient\Renderings\IRenderingResponseHandlerFacade.cs" />
+    <Compile Include="Plugins\Elements\ElementProviders\AllFunctionsElementProvider\FunctionInfoActionExecutor.cs" />
+    <Compile Include="Plugins\Elements\ElementProviders\AllFunctionsElementProvider\FunctionInfoActionToken.cs" />
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedDoubleSelectorUiControlFactory.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

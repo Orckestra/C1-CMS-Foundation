@@ -42,7 +42,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
             DoDeserialize(serializedEntityToken, out type, out source, out id);
 
-            return new StandardFunctionProviderEntityToken(id, source );
+            return new StandardFunctionProviderEntityToken(source, id);
         }
     }
 }

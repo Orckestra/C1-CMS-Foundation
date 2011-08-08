@@ -221,6 +221,35 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
 
 
 
+        protected override IEnumerable<ElementAction> OnGetFunctionActions(IFunctionTreeBuilderLeafInfo function)
+        {
+            string functionName = function.Namespace + "." + function.Name;
+
+            IMetaFunction metaFunction = GetMetaFunction(functionName);
+
+            bool isWidget = !(metaFunction is IFunction);
+
+            yield return new ElementAction(new ActionHandle(new FunctionInfoActionToken(functionName, isWidget)))
+            {
+                VisualData = new ActionVisualizedData
+                {
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "AllFunctionsElementProvider.ViewFunctionInformation"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "AllFunctionsElementProvider.ViewFunctionInformationTooltip"),
+                    Disabled = false,
+                    Icon = CommonElementIcons.Search,
+                    ActionLocation = new ActionLocation
+                    {
+                        ActionType = ActionType.Other,
+                        ActionGroup = PrimaryActionGroup,
+                        IsInFolder = false,
+                        IsInToolbar = true
+                    }
+                }
+            };
+        }
+
+
+
         protected override TreeLockBehavior OnGetTreeLockBehavior()
         {
             return TreeLockBehavior.None;

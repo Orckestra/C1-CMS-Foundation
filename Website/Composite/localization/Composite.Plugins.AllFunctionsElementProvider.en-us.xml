@@ -6,4 +6,6 @@
 	<string key="Plugins.AllFunctionsElementProvider.WidgetFunctionRootFolderToolTip" value="All widget functions" />
 	<string key="AllFunctionsElementProvider.GenerateDocumentation" value="Generate Documentation" />
 	<string key="AllFunctionsElementProvider.GenerateDocumentationTooltip" value="Generate documentation for all functions below this folder" />
+  <string key="AllFunctionsElementProvider.ViewFunctionInformation" value="Information" />
+  <string key="AllFunctionsElementProvider.ViewFunctionInformationTooltip" value="View function information" />
 </strings>
