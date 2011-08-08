@@ -73,7 +73,7 @@ namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvide
                 urlMappingName = "";
             }
 
-            this.Bindings.Add("CultureName", culturesDictionary.First().Key);
+            this.Bindings.Add("CultureName", "");
             this.Bindings.Add("RegionLanguageList", culturesDictionary);
             this.Bindings.Add("UrlMappingName", urlMappingName);
             this.Bindings.Add("AccessToAllUsers", true);
