@@ -682,7 +682,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
             element.PropertyBag.Add("ElementId", file.StoreId + ":" + file.FolderPath.Combine(file.FileName, '/'));
 
-            element.PropertyBag.Add("Uri", GetMediaUrl(file, false));
+            element.PropertyBag.Add("Uri", GetMediaUrl(file, true, false));
             element.PropertyBag.Add("ElementType", file.MimeType);
 
 
@@ -695,9 +695,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
 
 
-        internal static string GetMediaUrl(IMediaFile file, bool downloadable)
+        internal static string GetMediaUrl(IMediaFile file, bool isInternal, bool downloadable)
         {
-            return MediaUrlHelper.GetUrl(file, true, downloadable);
+            return MediaUrlHelper.GetUrl(file, isInternal, downloadable);
         }
 
 
@@ -1089,7 +1089,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
             string currentConsoleId = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>().CurrentConsoleId;
 
-            string url = MediaFileProviderElementProvider.GetMediaUrl(mediaFile, true);
+            string url = MediaFileProviderElementProvider.GetMediaUrl(mediaFile, false, true);
 
             ConsoleMessageQueueFacade.Enqueue(new DownloadFileMessageQueueItem(url), currentConsoleId);
 
