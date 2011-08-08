@@ -230,7 +230,7 @@ namespace Composite.Core.Types
                 }
                 catch(OverflowException)
                 {
-                    string message = LocalizationFiles.Composite_Management.Validation_Int32_Overflow;
+                    string message = StringResourceSystemFacade.GetString("Composite.Management", "Validation.Int32.Overflow");
                     conversionError = new InvalidOperationException(message);
                 }
                 catch (Exception ex)
