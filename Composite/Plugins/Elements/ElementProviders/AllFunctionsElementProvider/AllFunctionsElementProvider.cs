@@ -5,17 +5,18 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using Composite.Core.Collections;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Elements.Plugins.ElementProvider;
 using Composite.C1Console.Forms.DataServices;
 using Composite.C1Console.Forms.Flows;
-using Composite.Functions;
+using Composite.C1Console.Security;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
-using Composite.C1Console.Security;
-using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
 using Composite.Core.Types;
+using Composite.Functions;
+using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
@@ -26,51 +27,61 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     [ConfigurationElementType(typeof(AllFunctionsElementProviderData))]
 #pragma warning disable 612
-    internal sealed class AllFunctionsElementProvider : BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider, ICustomSearchElementProvider, IElementProvider
+    internal sealed class AllFunctionsElementProvider : BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider, ICustomSearchElementProvider
 #pragma warning restore 612
     {
         private List<EntityTokenHook> _currentEntityTokenHooks = null;
 
-        private const string _functionsProviderType = "functions";
-        private const string _widgetFunctionsProviderType = "widgetFunctions";
+        private const string FunctionsProviderType = "functions";
+        private const string WidgetFunctionsProviderType = "widgetFunctions";
 
         public static ResourceHandle DocumentFunctionsIcon { get { return GetIconHandle("all-functions-generatedocumentation"); } }
         private static ResourceHandle GetIconHandle(string name) { return new ResourceHandle(BuildInIconProviderName.ProviderName, name); }
 
         private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
 
-        private string _providerType;
+        private readonly string _providerType;
+
 
 
         public AllFunctionsElementProvider(string providerType)
         {
             _providerType = providerType;
 
-            if ((_providerType != "functions") && (_providerType != "widgetFunctions"))
+            if ((_providerType != FunctionsProviderType) && (_providerType != WidgetFunctionsProviderType))
             {
                 throw new ArgumentException(string.Format("The provider type should be 'functions' or 'widgetFunctions'"), providerType);
             }
-
-            FunctionEventSystemFacade.SubscribeToFunctionsAddedEvent(OnFunctionsAdded);
-            FunctionEventSystemFacade.SubscribeToFunctionsRemovedEvent(OnFunctionsRemoved);
-            FunctionEventSystemFacade.SubscribeToWidgetFunctionsAddedEvent(OnWidgetFunctionsAdded);
-            FunctionEventSystemFacade.SubscribeToWidgetFunctionsRemovedEvent(OnWidgetFunctionsRemoved);
         }
 
+
+        protected override void OnContexSetted()
+        {
+            string providerName = GetContext().ProviderName;
+
+            if (_providerType == FunctionsProviderType)
+            {
+                AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider(typeof(StandardFunctionProviderEntityToken), new StandardFunctionAuxiliarySecurityAncestorProvider(providerName));
+            }
+            else
+            {
+                AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider(typeof(StandardWidgetFunctionProviderEntityToken), new StandardFunctionAuxiliarySecurityAncestorProvider(providerName));
+            }
+        }
 
 
         protected override string RootFolderLabel
         {
             get
             {
-                if (_providerType == _functionsProviderType)
+                if (_providerType == FunctionsProviderType)
                 {
                     return StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "Plugins.AllFunctionsElementProvider.FunctionRootFolderLabel");
                 }
-                else if (_providerType == _widgetFunctionsProviderType)
+                else if (_providerType == WidgetFunctionsProviderType)
                 {
                     return StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "Plugins.AllFunctionsElementProvider.WidgetFunctionRootFolderLabel");
                 }
@@ -86,11 +97,11 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
         {
             get
             {
-                if (_providerType == _functionsProviderType)
+                if (_providerType == FunctionsProviderType)
                 {
                     return StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "Plugins.AllFunctionsElementProvider.FunctionRootFolderToolTip");
                 }
-                if (_providerType == _widgetFunctionsProviderType)
+                if (_providerType == WidgetFunctionsProviderType)
                 {
                     return StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "Plugins.AllFunctionsElementProvider.WidgetFunctionRootFolderToolTip");
                 }
@@ -104,7 +115,7 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
             var castedSearchToken = (AllFunctionsElementProviderSearchToken)searchToken;
 
             string loweredKeyword = null;
-            if(searchToken != null)
+            if (searchToken != null)
             {
                 loweredKeyword = (searchToken.Keyword ?? string.Empty).ToLower();
             }
@@ -184,42 +195,6 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
 
 
 
-        protected override IEnumerable<Type> OnGetEntityTokenTypes()
-        {
-            yield break; // See GetHooks() /MRJ
-        }
-
-
-
-        protected override IFunctionTreeBuilderLeafInfo OnIsEntityOwner(EntityToken entityToken)
-        {
-            return null; // See GetHooks() /MRJ
-        }
-
-
-
-        protected override IEnumerable<ElementAction> OnGetFolderActions()
-        {
-            yield return new ElementAction(new ActionHandle(new DocumentFunctionsActionToken()))
-            {
-                VisualData = new ActionVisualizedData
-                {
-                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "AllFunctionsElementProvider.GenerateDocumentation"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "AllFunctionsElementProvider.GenerateDocumentationTooltip"),
-                    Icon = AllFunctionsElementProvider.DocumentFunctionsIcon,
-                    Disabled = false,
-                    ActionLocation = new ActionLocation
-                    {
-                        ActionType = ActionType.Other,
-                        IsInFolder = false,
-                        IsInToolbar = true,
-                        ActionGroup = PrimaryActionGroup
-                    }
-                }
-            };
-        }
-
-
 
         protected override IEnumerable<ElementAction> OnGetFunctionActions(IFunctionTreeBuilderLeafInfo function)
         {
@@ -243,6 +218,43 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
                         ActionGroup = PrimaryActionGroup,
                         IsInFolder = false,
                         IsInToolbar = true
+                    }
+                }
+            };            
+        }
+
+
+
+        protected override IEnumerable<Type> OnGetEntityTokenTypes()
+        {
+            yield break;
+        }
+
+
+
+        protected override IFunctionTreeBuilderLeafInfo OnIsEntityOwner(EntityToken entityToken)
+        {
+            return null; 
+        }
+
+
+
+        protected override IEnumerable<ElementAction> OnGetFolderActions()
+        {
+            yield return new ElementAction(new ActionHandle(new DocumentFunctionsActionToken()))
+            {
+                VisualData = new ActionVisualizedData
+                {
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "AllFunctionsElementProvider.GenerateDocumentation"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "AllFunctionsElementProvider.GenerateDocumentationTooltip"),
+                    Icon = AllFunctionsElementProvider.DocumentFunctionsIcon,
+                    Disabled = false,
+                    ActionLocation = new ActionLocation
+                    {
+                        ActionType = ActionType.Other,
+                        IsInFolder = false,
+                        IsInToolbar = true,
+                        ActionGroup = PrimaryActionGroup
                     }
                 }
             };
@@ -322,10 +334,10 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
             {
                 switch (_providerType)
                 {
-                    case _functionsProviderType:
+                    case FunctionsProviderType:
                         return FunctionFacade.FunctionNames;
 
-                    case _widgetFunctionsProviderType:
+                    case WidgetFunctionsProviderType:
                         return FunctionFacade.WidgetFunctionNames;
 
                     default:
@@ -340,10 +352,10 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
         {
             switch (_providerType)
             {
-                case _functionsProviderType:
+                case FunctionsProviderType:
                     return FunctionFacade.GetFunction(metaFunctionName);
 
-                case _widgetFunctionsProviderType:
+                case WidgetFunctionsProviderType:
                     return FunctionFacade.GetWidgetFunction(metaFunctionName);
 
                 default:
@@ -359,106 +371,17 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
             {
                 switch (_providerType)
                 {
-                    case _functionsProviderType:
+                    case FunctionsProviderType:
                         return FunctionFacade.FunctionSupportedTypes;
 
-                    case _widgetFunctionsProviderType:
+                    case WidgetFunctionsProviderType:
                         return FunctionFacade.WidgetFunctionSupportedTypes;
 
                     default:
                         throw new NotImplementedException();
                 }
             }
-        }
-
-        #region Hook methods
-        public List<EntityTokenHook> GetHooks()
-        {
-            return this.CurrentEntityTokenHooks;
-        }
-
-
-
-        private List<EntityTokenHook> CurrentEntityTokenHooks
-        {
-            get
-            {
-                if (_currentEntityTokenHooks == null)
-                {
-                    _currentEntityTokenHooks = CreateHooks();
-                }
-
-                return _currentEntityTokenHooks;
-            }
-        }
-
-
-
-        private List<EntityTokenHook> CreateHooks()
-        {
-            NamespaceTreeBuilder builder = new NamespaceTreeBuilder(OnGetFunctionInfos(null).Cast<INamespaceTreeBuilderLeafInfo>());
-
-            List<EntityTokenHook> hooks = new List<EntityTokenHook>();
-
-            FindHooks(builder.RootFolder, hooks);
-
-            return hooks;
-        }
-
-
-
-        private void FindHooks(NamespaceTreeBuilderFolder node, List<EntityTokenHook> hooks)
-        {
-            EntityTokenHook hook = new EntityTokenHook(new BaseFunctionFolderElementEntityToken(CreateId(node, this.GetContext().ProviderName)));
-
-            foreach (IFunctionTreeBuilderLeafInfo functionInfo in node.Leafs)
-            {
-                hook.AddHookie(functionInfo.EntityToken);
-            }
-
-            if (node.Leafs.Count > 0)
-            {
-                hooks.Add(hook);
-            }
-
-            foreach (NamespaceTreeBuilderFolder childNode in node.SubFolders)
-            {
-                FindHooks(childNode, hooks);
-            }
-        }
-
-
-
-        private void UpdateHooks()
-        {
-            HookingFacade.RemoveHooks(this.CurrentEntityTokenHooks);
-
-            _currentEntityTokenHooks = CreateHooks();
-
-            HookingFacade.AddHooks(this.CurrentEntityTokenHooks);
-        }
-
-
-        private void OnFunctionsAdded(FunctionsAddedEventArgs eventArgs)
-        {
-            UpdateHooks();
-        }
-
-        private void OnFunctionsRemoved(FunctionsRemovedEventArgs eventArgs)
-        {
-            UpdateHooks();
-        }
-
-        private void OnWidgetFunctionsAdded(WidgetFunctionsAddedEventArgs eventArgs)
-        {
-            UpdateHooks();
-        }
-
-        private void OnWidgetFunctionsRemoved(WidgetFunctionsRemovedEventArgs eventArgs)
-        {
-            UpdateHooks();
-        }
-        #endregion
+        }       
     }
 
 
@@ -466,7 +389,7 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public sealed class AllFunctionsElementProviderSearchToken : SearchToken
     {
         /// <exclude />
@@ -475,10 +398,10 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
             var token = new AllFunctionsElementProviderSearchToken();
 
             var sb = new StringBuilder();
-            for (int i = 0; i < functionReturnValueAccetableTypes.Length; i++ )
+            for (int i = 0; i < functionReturnValueAccetableTypes.Length; i++)
             {
                 Type type = functionReturnValueAccetableTypes[i];
-                if(i > 0)
+                if (i > 0)
                 {
                     sb.Append(";");
                 }
@@ -498,7 +421,7 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
 
     [Assembler(typeof(AllFunctionsElementProviderAssembler))]
 #pragma warning disable 612
-    internal sealed class AllFunctionsElementProviderData : ElementProviderData
+    internal sealed class AllFunctionsElementProviderData : HooklessElementProviderData
 #pragma warning restore 612
     {
         private const string _providerTypePropertyName = "providerType";
@@ -513,9 +436,9 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
 
 
 #pragma warning disable 612
-    internal sealed class AllFunctionsElementProviderAssembler : IAssembler<IElementProvider, ElementProviderData>
+    internal sealed class AllFunctionsElementProviderAssembler : IAssembler<IHooklessElementProvider, HooklessElementProviderData>
     {
-        public IElementProvider Assemble(IBuilderContext context, ElementProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
+        public IHooklessElementProvider Assemble(IBuilderContext context, HooklessElementProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {
 #pragma warning restore 612
             AllFunctionsElementProviderData data = (AllFunctionsElementProviderData)objectConfiguration;

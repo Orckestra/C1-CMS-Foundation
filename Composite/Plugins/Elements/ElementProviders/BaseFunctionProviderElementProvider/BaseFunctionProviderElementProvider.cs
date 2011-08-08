@@ -16,7 +16,7 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public abstract class BaseFunctionProviderElementProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
     {
         private ElementProviderContext _context;
@@ -26,6 +26,9 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
 
         /// <exclude />
         public static ResourceHandle FunctionError { get { return GetIconHandle("error"); } }
+
+        /// <exclude />
+        protected virtual void OnContexSetted() { }
 
         /// <exclude />
         protected abstract IEnumerable<IFunctionTreeBuilderLeafInfo> OnGetFunctionInfos(SearchToken searchToken);
@@ -67,7 +70,7 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
 
         /// <exclude />
         public BaseFunctionProviderElementProvider()
-        {            
+        {
             foreach (Type entityTokenType in OnGetEntityTokenTypes())
             {
                 AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider(entityTokenType, this);
@@ -79,7 +82,12 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
         /// <exclude />
         public ElementProviderContext Context
         {
-            set { _context = value; }
+            set
+            {
+                _context = value;
+
+                OnContexSetted();
+            }
         }
 
 
