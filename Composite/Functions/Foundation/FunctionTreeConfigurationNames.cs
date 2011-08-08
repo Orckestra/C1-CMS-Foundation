@@ -1,6 +1,13 @@
+using System.ComponentModel;
+
+
 namespace Composite.Functions.Foundation
 {
-    internal static class FunctionTreeConfigurationNames
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [EditorBrowsable(EditorBrowsableState.Never)] 
+    public static class FunctionTreeConfigurationNames
 	{
         public static string NamespaceName { get { return "http://www.composite.net/ns/function/1.0"; } }
         public static string ParamTagName { get { return "param"; } }
