@@ -184,10 +184,11 @@
     </xsl:choose>
   </xsl:template>
 
-  <!-- the shocking ASP.NET calendar control -->
+  <!-- the shocking ASP.NET calendar control - lets make it usable! -->
 
-  <!-- strip crappy attributes -->
+  <!-- strip crappy attributes - note we carry on td@class in the template below -->
   <xsl:template match="x:div[@class='calendar']/table//*/@*"/>
+
 
   <!-- kill links -->
   <xsl:template match="x:div[@class='calendar']//x:td">
@@ -196,7 +197,7 @@
         <xsl:attribute name="onclick">
           <xsl:value-of select="substring-after(x:a/@href,'javascript:')"/>
         </xsl:attribute>
-        <xsl:attribute name="class">active</xsl:attribute>
+        <xsl:attribute name="class">active <xsl:value-of select="@class"/> </xsl:attribute>
       </xsl:if>
       <xsl:apply-templates select="*|text()"/>
     </td>

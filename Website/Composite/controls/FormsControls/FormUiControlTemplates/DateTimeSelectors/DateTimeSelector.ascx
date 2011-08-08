@@ -60,6 +60,11 @@
 
     protected void Page_Load()
     {
+        if (DateSelector.VisibleDate == DateTime.MinValue)
+        {
+            DateSelector.VisibleDate = DateTime.Today;
+        }
+        
         if (this.IsPostBack == false)
         {
             SetTimeOptions();
@@ -224,7 +229,7 @@
 <div id="updatezone<%= this.UniqueID %>">
 	<asp:PlaceHolder ID="CalendarPlaceHolder" Visible="false" runat="server">
 	    <div class="calendar">
-	        <asp:Calendar ID="DateSelector" runat="server" OnSelectionChanged="DateSelector_SelectionChanged" ShowDayHeader="false"/>
+	        <asp:Calendar ID="DateSelector" runat="server" OnSelectionChanged="DateSelector_SelectionChanged" ShowDayHeader="true" OtherMonthDayStyle-CssClass="othermonth" SelectedDayStyle-CssClass="selectedday" />
             <!-- masterfilter.xslt will make the links below show up inside the calendar -->
             <asp:LinkButton ID="LinkButton1" CssClass="calendaryearback" OnClick="CalendarYearBackClick" runat="server">back</asp:LinkButton>
             <asp:LinkButton ID="LinkButton2" CssClass="calendaryearforward" OnClick="CalendarYearForwardClick" runat="server">forward</asp:LinkButton>

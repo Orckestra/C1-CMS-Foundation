@@ -91,11 +91,10 @@
     <asp:ListItem Value="none" Text="(no date selected)" />
     <asp:ListItem Value="select" Text="Select date" />
 </aspui:Selector>
-<asp:HiddenField runat="server" ID="fldState" />
 <div id="updatezone<%= this.UniqueID %>">
 	<asp:PlaceHolder ID="CalendarPlaceHolder" Visible="false" runat="server">
 	    <div class="calendar">
-	        <asp:Calendar ID="DateTimeSelector" runat="server" ShowDayHeader="false" OnSelectionChanged="CalendarSelectionChange"/>
+	        <asp:Calendar ID="DateTimeSelector" runat="server" ShowDayHeader="true" OnSelectionChanged="CalendarSelectionChange" OtherMonthDayStyle-CssClass="othermonth" SelectedDayStyle-CssClass="selectedday" />
             <!-- masterfilter.xslt will make the links below show up inside the calendar -->
             <asp:LinkButton ID="LinkButton1" CssClass="calendaryearback" OnClick="CalendarYearBackClick" runat="server">back</asp:LinkButton>
             <asp:LinkButton ID="LinkButton2" CssClass="calendaryearforward" OnClick="CalendarYearForwardClick" runat="server">forward</asp:LinkButton>
