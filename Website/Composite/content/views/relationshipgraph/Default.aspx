@@ -13,7 +13,7 @@
     <control:scriptloader ID="Scriptloader1" type="sub" runat="server" />
 </head>
 <body>
-    <ui:page label="Relationship Graph" image="${skin}/dialogpages/message16.png">
+    <ui:page label="Relationship Graph" image="${icon:nodes}">
         <ui:scrollbox>
             <asp:PlaceHolder ID="RelationshipGraphHolder" runat="server" />
         </ui:scrollbox>

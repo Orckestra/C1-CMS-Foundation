@@ -13,7 +13,7 @@
     <control:scriptloader ID="Scriptloader1" type="sub" runat="server" />
 </head>
 <body>
-    <ui:page label="Element Information" image="${skin}/dialogpages/message16.png">
+    <ui:page label="Element Information" image="${icon:zoom}">
         <ui:scrollbox>
             <asp:PlaceHolder ID="ElementInformationPlaceHolder" runat="server" />
         </ui:scrollbox>

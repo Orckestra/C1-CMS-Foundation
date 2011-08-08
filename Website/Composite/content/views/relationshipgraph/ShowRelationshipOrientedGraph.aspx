@@ -14,7 +14,7 @@
     <control:scriptloader ID="Scriptloader1" type="sub" runat="server" />
 </head>
 <body>
-    <ui:page >
+    <ui:page image="${icon:nodes}">
         <ui:scrollbox>
             <asp:PlaceHolder ID="RelationshipOrientedGraphPlaceHolder" runat="server" />
         </ui:scrollbox>
