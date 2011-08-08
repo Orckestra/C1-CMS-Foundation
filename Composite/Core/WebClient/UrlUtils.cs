@@ -45,6 +45,13 @@ namespace Composite.Core.WebClient
                 throw new ArgumentException("The relative URL may not be rooted or contain '~'");
             }
 
+            string[] split = adminRelativePath.Split('?');
+            string checkForBackSlashes = split[0];
+            if (checkForBackSlashes.Contains(@"\"))
+            {
+                Log.LogWarning("ResolveAdminUrl", string.Format(@"The url '{0}' contains '\' which is not allowed.", checkForBackSlashes));
+            }
+
             return string.Format("{0}/{1}/{2}", _applicationVirtualPath, _adminFolderName, adminRelativePath);
         }
 
