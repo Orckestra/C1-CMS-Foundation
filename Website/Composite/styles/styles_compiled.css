@@ -2058,6 +2058,12 @@ div.calendar td.active:hover {
 background-color: $(color:highlight);
 color: $(color:highlighttext);
 }
+div.calendar td.othermonth {
+color: #bbb;	
+}
+div.calendar td.selectedday {
+background-color: #eee;
+}
 div.calendar tr.month td {
 border-bottom: 1px solid $(color:threedshadow);	
 }
