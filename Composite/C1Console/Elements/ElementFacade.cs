@@ -227,13 +227,13 @@ namespace Composite.C1Console.Elements
 
 
         /// <exclude />
-        public static IEnumerable<Element> GetPerspectiveElements(SearchToken searchToken, bool performceSecurityCheck)
+        public static IEnumerable<Element> GetPerspectiveElements(SearchToken searchToken, bool performSecurityCheck)
         {
-            IEnumerable<ElementHandle> rootElementHandles = GetRoots(ElementProviderRegistry.RootElementProviderName, null, performceSecurityCheck, false).Select(f => f.ElementHandle);
+            IEnumerable<ElementHandle> rootElementHandles = GetRoots(ElementProviderRegistry.RootElementProviderName, null, performSecurityCheck, false).Select(f => f.ElementHandle);
 
             foreach (ElementHandle rootElementHandle in rootElementHandles)
             {
-                IEnumerable<Element> perspectiveElements = GetChildren(rootElementHandle, null, performceSecurityCheck, false);
+                IEnumerable<Element> perspectiveElements = GetChildren(rootElementHandle, null, performSecurityCheck, false);
 
                 foreach (Element perspectiveElement in perspectiveElements)
                 {
@@ -261,7 +261,7 @@ namespace Composite.C1Console.Elements
 
 
 
-        private static IEnumerable<Element> GetRoots(string providerName, SearchToken searchToken, bool performceSecurityCheck, bool useForeign)
+        private static IEnumerable<Element> GetRoots(string providerName, SearchToken searchToken, bool performSecurityCheck, bool useForeign)
         {
             if (providerName == null) throw new ArgumentNullException("providerName");
             
@@ -277,7 +277,7 @@ namespace Composite.C1Console.Elements
 
             ElementActionProviderFacade.AddActions(roots, providerName);
 
-            if (performceSecurityCheck == true)
+            if (performSecurityCheck == true)
             {
                 return roots.FilterActions();
             }
@@ -289,7 +289,7 @@ namespace Composite.C1Console.Elements
 
 
 
-        private static IEnumerable<Element> GetChildren(ElementHandle elementHandle, SearchToken searchToken, bool performceSecurityCheck, bool useForeign)
+        private static IEnumerable<Element> GetChildren(ElementHandle elementHandle, SearchToken searchToken, bool performSecurityCheck, bool useForeign)
         {
             if (elementHandle == null) throw new ArgumentNullException("elementHandle");
 
@@ -330,7 +330,7 @@ namespace Composite.C1Console.Elements
 
             ElementActionProviderFacade.AddActions(children, elementHandle.ProviderName);
 
-            if (performceSecurityCheck == true)
+            if (performSecurityCheck == true)
             {
                 children = children.FilterActions().Evaluate();
             }

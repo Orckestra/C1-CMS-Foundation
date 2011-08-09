@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using Composite.Data;
@@ -48,14 +47,14 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
         public Func<IData, Element> OnCreateDisabledLeafElement { get; set; }
         public Func<Type, DataScopeIdentifier> OnGetDataScopeIdentifier { get; set; }
         public Func<Type, bool> OnOwnsType { get; set; }
-        public Func<Type, EntityToken> OnGetRootParentEntityToken { get; set; }
+        public Func<Type, EntityToken, EntityToken> OnGetRootParentEntityToken { get; set; }
         public Func<Element, PropertyInfoValueCollection, Element> OnAddActions { get; set; }
-
-
+        public Func<EntityToken, Func<IData, bool>> OnGetLeafsFilter { get; set; }
+        public Func<EntityToken, string> OnGetPayload { get; set; }
 
         public Dictionary<EntityToken, IEnumerable<EntityToken>> GetParents(IEnumerable<EntityToken> entityTokens)
         {
-            Dictionary<EntityToken, IEnumerable<EntityToken>> result = new Dictionary<EntityToken, IEnumerable<EntityToken>>();
+            var result = new Dictionary<EntityToken, IEnumerable<EntityToken>>();
 
             foreach (EntityToken entityToken in entityTokens)
             {
@@ -66,12 +65,17 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
                     if (groupingEntityToken.GroupingValues.Count == 1)
                     {
-                        EntityToken parentEntityToken = OnGetRootParentEntityToken(type);
-                        result.Add(entityToken, new EntityToken[] { parentEntityToken });
+                        EntityToken parentEntityToken = OnGetRootParentEntityToken(type, entityToken);
+                        if(parentEntityToken != null)
+                        {
+                            result.Add(entityToken, new EntityToken[] { parentEntityToken });
+                        }
+
                         continue;
                     }
 
                     DataGroupingProviderHelperEntityToken newGroupingParentEntityToken = new DataGroupingProviderHelperEntityToken(groupingEntityToken.Type);
+                    newGroupingParentEntityToken.Payload = this.OnGetPayload(groupingEntityToken);
                     newGroupingParentEntityToken.GroupingValues = new Dictionary<string, object>();
                     foreach (var kvp in groupingEntityToken.GroupingValues.Take(groupingEntityToken.GroupingValues.Count - 1))
                     {
@@ -99,7 +103,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
                     if (groupingDataFieldDescriptors.Count() == 0)
                     {
-                        EntityToken parentEntityToken = OnGetRootParentEntityToken(interfaceType);
+                        EntityToken parentEntityToken = OnGetRootParentEntityToken(interfaceType, dataEntityToken);
                         result.Add(entityToken, new EntityToken[] { parentEntityToken });
                         continue;
                     }
@@ -107,6 +111,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                     IData data = dataEntityToken.Data;
 
                     DataGroupingProviderHelperEntityToken parentToken = new DataGroupingProviderHelperEntityToken(dataEntityToken.Type);
+                    parentToken.Payload = this.OnGetPayload(dataEntityToken);
                     parentToken.GroupingValues = new Dictionary<string, object>();
                     foreach (DataFieldDescriptor dfd in groupingDataFieldDescriptors)
                     {
@@ -166,13 +171,20 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                 }
                 else
                 {
-                    List<Element> elements = GetRootGroupFoldersFoldersLeafs(interfaceType, false).ToList();
+                    Func<IData, bool> filter = null;
+
+                    if (this.OnGetLeafsFilter != null)
+                    {
+                        filter = this.OnGetLeafsFilter(parentEntityToken);
+                    }
+
+                    List<Element> elements = GetRootGroupFoldersFoldersLeafs(interfaceType, filter, false).ToList();
 
                     if (includeForeignFolders == true)
                     {
                         using (DataScope localeScope = new DataScope(UserSettings.ForeignLocaleCultureInfo))
                         {
-                            elements.AddRange(GetRootGroupFoldersFoldersLeafs(interfaceType, true));
+                            elements.AddRange(GetRootGroupFoldersFoldersLeafs(interfaceType, filter, true));
                         }
                     }
 
@@ -186,6 +198,20 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
         private IEnumerable<Element> GetRootGroupFoldersFoldersFolders(Type interfaceType, EntityToken parentEntityToken, DataFieldDescriptor firstDataFieldDescriptor, PropertyInfo propertyInfo)
         {
             IQueryable queryable = DataFacade.GetData(interfaceType);
+
+            if (this.OnGetLeafsFilter != null)
+            {
+                Func<IData, bool> filter = null;
+                filter = this.OnGetLeafsFilter(parentEntityToken);
+
+                IQueryable<IData> dataQueryable = (queryable as IQueryable<IData>).Where(filter).AsQueryable();
+
+                queryable = typeof (DataGroupingProviderHelper)
+                    .GetMethod("Cast", BindingFlags.NonPublic | BindingFlags.Static)
+                    .MakeGenericMethod(new [] {interfaceType})
+                    .Invoke(null, new object[] { dataQueryable }) as IQueryable;
+            }
+
             ExpressionBuilder expressionBuilder = new ExpressionBuilder(interfaceType, queryable);
 
             IQueryable resultQueryable = expressionBuilder.
@@ -196,15 +222,18 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
             PropertyInfoValueCollection propertyInfoValueCollection = new PropertyInfoValueCollection();
 
-            foreach (Element element in CreateGroupFolderElements(interfaceType, firstDataFieldDescriptor, resultQueryable, parentEntityToken, propertyInfoValueCollection))
-            {
-                yield return element;
-            }
+            return CreateGroupFolderElements(interfaceType, firstDataFieldDescriptor, resultQueryable, parentEntityToken, propertyInfoValueCollection);
         }
 
+        /// <summary>
+        /// Called through reflection
+        /// </summary>
+        private static IQueryable Cast<T>(IQueryable<IData> queryable)
+        {
+            return queryable.Cast<T>();
+        }
 
-
-        private IEnumerable<Element> GetRootGroupFoldersFoldersLeafs(Type interfaceType, bool isForeign)
+        private IEnumerable<Element> GetRootGroupFoldersFoldersLeafs(Type interfaceType, Func<IData, bool> filter, bool isForeign)
         {
             Func<IData, Element> func = OnCreateLeafElement;
             if (isForeign == true)
@@ -213,6 +242,11 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
             }
 
             List<IData> datas = DataFacade.GetData(interfaceType).ToDataList();
+            if (filter != null)
+            {
+                datas = datas.Where(filter).ToList();
+            }
+
             foreach (IData data in datas)
             {
                 Element element = GetDataFromCorrectScope(data, func, OnCreateDisabledLeafElement, isForeign);
@@ -350,29 +384,19 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
         {
             IPublishControlled publishControlled = data as IPublishControlled;
 
-            if ((isForeign == true) && (publishControlled != null))
+            if (isForeign 
+                && publishControlled != null
+                && (publishControlled.PublicationStatus == GenericPublishProcessController.Draft 
+                    || publishControlled.PublicationStatus == GenericPublishProcessController.AwaitingApproval))
             {
-                if ((publishControlled.PublicationStatus == GenericPublishProcessController.Draft) || (publishControlled.PublicationStatus == GenericPublishProcessController.AwaitingApproval))
+                IData publicData = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public).SingleOrDefault();
+                if (publicData != null)
                 {
-                    IData publicData = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public).SingleOrDefault();
-                    if (publicData != null)
-                    {
-                        return createElementFunc(publicData);
-                    }
-                    else
-                    {
-                        return createDisabledElementFunc(data);
-                    }
+                    return createElementFunc(publicData);
                 }
-                else
-                {
-                    return createElementFunc(data);
-                }
+                return createDisabledElementFunc(data);
             }
-            else
-            {
-                return createElementFunc(data);
-            }
+            return createElementFunc(data);
         }
 
 
@@ -392,6 +416,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
             foreach (object obj in queryable)
             {
                 DataGroupingProviderHelperEntityToken entityToken = new DataGroupingProviderHelperEntityToken(TypeManager.SerializeType(interfaceType));
+                entityToken.Payload = this.OnGetPayload(parentEntityToken);
                 entityToken.GroupingValues = new Dictionary<string, object>();
 
                 foreach (var kvp in propertyInfoValueCollection.PropertyValues)

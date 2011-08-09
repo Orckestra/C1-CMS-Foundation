@@ -4,26 +4,26 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using Composite.C1Console.Actions;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProviderHelper;
+using Composite.C1Console.Elements.Plugins.ElementProvider;
 using Composite.C1Console.Events;
+using Composite.C1Console.Security;
+using Composite.C1Console.Users;
+using Composite.C1Console.Workflow;
+using Composite.Core;
+using Composite.Core.Extensions;
+using Composite.Core.Linq;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.Core.Serialization;
+using Composite.Core.Types;
+using Composite.Core.WebClient;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
-using Composite.C1Console.Elements;
-using Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProviderHelper;
-using Composite.C1Console.Elements.Plugins.ElementProvider;
-using Composite.Core.Extensions;
-using Composite.Core.Linq;
-using Composite.Core.Logging;
-using Composite.Core.ResourceSystem;
-using Composite.Core.ResourceSystem.Icons;
-using Composite.C1Console.Security;
-using Composite.Core.Serialization;
-using Composite.Core.Types;
-using Composite.C1Console.Users;
-using Composite.Core.WebClient;
-using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
@@ -202,7 +202,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 _dataGroupingProviderHelper.OnCreateGhostedLeafElement = data => { return GetGhostedElementFromData(data); };
                 _dataGroupingProviderHelper.OnCreateDisabledLeafElement = data => { return GetDisabledElementFromData(data); };
                 _dataGroupingProviderHelper.OnAddActions = (element, propertyValues) => { return AddGroupFolderActions(element, propertyValues); };
-                _dataGroupingProviderHelper.OnGetRootParentEntityToken = type => { return new GeneratedDataTypesElementProviderTypeEntityToken(TypeManager.SerializeType(type), _providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId); };
+                _dataGroupingProviderHelper.OnGetRootParentEntityToken = 
+                    (type, entityToken) => { return new GeneratedDataTypesElementProviderTypeEntityToken(TypeManager.SerializeType(type), _providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId); };
                 _dataGroupingProviderHelper.OnOwnsType = type =>
                 {
                     if (type.IsGenerated() == false) return false;
@@ -219,6 +220,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                     return true;
                 };
+                _dataGroupingProviderHelper.OnGetPayload = token => null;
 
             }
         }
@@ -447,7 +449,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 if (type != null)
                 {
                     // These are never shown in the tree
-                    if (PageMetaDataFacade.GetAllMetaDataTypes().Contains(type) == true)
+                    if (typeof(IPageMetaData).IsAssignableFrom(type))
                     {
                         return new List<Element>();
                     }
@@ -457,7 +459,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     return elements.OrderBy(f => f.VisualData.Label).ToList();
                 }
 
-                LoggingService.LogWarning("GeneratedDataTypesElementProvider", "Can not get children for unknown type '{0}'".FormatWith(typeManagerName));
+                Log.LogWarning("GeneratedDataTypesElementProvider", "Can not get children for unknown type '{0}'".FormatWith(typeManagerName));
 
                 return null;
             }

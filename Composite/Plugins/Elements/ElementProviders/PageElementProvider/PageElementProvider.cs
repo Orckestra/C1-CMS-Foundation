@@ -5,6 +5,7 @@ using System.Transactions;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper;
+using Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProviderHelper;
 using Composite.C1Console.Elements.Plugins.ElementProvider;
 using Composite.C1Console.Events;
 using Composite.Core.Extensions;
@@ -268,6 +269,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 return _pageAccociatedHelper.GetChildren((AssociatedDataElementProviderHelperEntityToken)entityToken, false);
             }
 
+            if (entityToken is DataGroupingProviderHelperEntityToken)
+            {
+                return _pageAccociatedHelper.GetChildren((DataGroupingProviderHelperEntityToken)entityToken, false);
+            }
+
             using (DataScope dataScope = new DataScope(DataScopeIdentifier.Administrated))
             {
                 var allChildPages = GetChildrenPages(entityToken, searchToken);
@@ -295,6 +301,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             if (entityToken is AssociatedDataElementProviderHelperEntityToken)
             {
                 return _pageAccociatedHelper.GetChildren((AssociatedDataElementProviderHelperEntityToken)entityToken, true);
+            }
+
+            if (entityToken is DataGroupingProviderHelperEntityToken)
+            {
+                return _pageAccociatedHelper.GetChildren((DataGroupingProviderHelperEntityToken)entityToken, true);
             }
 
             Dictionary<Guid, IPage> pages;
@@ -414,7 +425,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
 
 
-        private Guid? GetParentPageId(EntityToken entityToken)
+        private static Guid? GetParentPageId(EntityToken entityToken)
         {
             if (entityToken is PageElementProviderEntityToken)
             {
@@ -429,6 +440,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                 return parentPage.Id;
             }
+
             throw new NotImplementedException();
         }
 

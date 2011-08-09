@@ -64,7 +64,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             Dictionary<string, string> culturesDictionary = DataLocalizationFacade.ActiveLocalizationCultures.ToDictionary(f => f.Name, DataLocalizationFacade.GetCultureTitle);
 
-            this.UpdateBinding("CultureName", UserSettings.ForeignLocaleCultureInfo.Name);
+            this.UpdateBinding("CultureName", (UserSettings.ForeignLocaleCultureInfo ?? UserSettings.ActiveLocaleCultureInfo).Name);
             this.UpdateBinding("CultureNameList", culturesDictionary);
         }
 

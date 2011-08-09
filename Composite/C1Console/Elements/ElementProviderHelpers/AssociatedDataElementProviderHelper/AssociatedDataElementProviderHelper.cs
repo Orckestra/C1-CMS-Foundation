@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProviderHelper;
+using Composite.C1Console.Security;
+using Composite.C1Console.Users;
+using Composite.C1Console.Workflow;
+using Composite.Core.Extensions;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.Core.ResourceSystem;
-using Composite.Core.ResourceSystem.Icons;
-using Composite.C1Console.Security;
-using Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider;
-using Composite.Core.Types;
-using Composite.C1Console.Users;
-using Composite.C1Console.Workflow;
-using Composite.Core.Parallelization;
 using Composite.Data.Types;
+using Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider;
 
 
 namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper
@@ -59,6 +59,8 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
 
 
+        private readonly DataGroupingProviderHelper.DataGroupingProviderHelper _dataGroupingProviderHelper;
+
 
         static AssociatedDataElementProviderHelper()
         {
@@ -80,10 +82,74 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             _rootEntityToken = rootEntityToken;
             _addVisualFunctionActions = addVisualFunctionActions;
 
+            _dataGroupingProviderHelper = new DataGroupingProviderHelper.DataGroupingProviderHelper(elementProviderContext);
+            _dataGroupingProviderHelper.OnOwnsType = type => typeof (IPageFolderData).IsAssignableFrom(type);
+            _dataGroupingProviderHelper.OnCreateLeafElement = this.CreateElement;
+            _dataGroupingProviderHelper.OnCreateDisabledLeafElement = data => ShowForeignElement(data, false);
+            _dataGroupingProviderHelper.OnCreateGhostedLeafElement = data => ShowForeignElement(data, true);
+            _dataGroupingProviderHelper.OnGetRootParentEntityToken = this.GetParentEntityToken;
+            _dataGroupingProviderHelper.OnGetLeafsFilter = this.GetLeafsFilter;
+            _dataGroupingProviderHelper.OnGetPayload = this.GetPayload;
+
             AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<DataEntityToken>(this);
         }
 
+        private string GetPayload(EntityToken entityToken)
+        {
+            return GetPageId(entityToken).ToString();
+        }
 
+        private Func<IData, bool> GetLeafsFilter(EntityToken parentEntityToken)
+        {
+            Guid pageId = GetPageId(parentEntityToken);
+            return data => (data as IPageFolderData).PageId == pageId;
+        }
+
+        private Guid GetPageId(EntityToken entityToken)
+        {
+            var dataGroupingEntityToken = entityToken as DataGroupingProviderHelperEntityToken;
+            if (dataGroupingEntityToken != null)
+            {
+                if(dataGroupingEntityToken.Payload.IsNullOrEmpty())
+                {
+                    return Guid.Empty;
+                }
+
+                return new Guid(dataGroupingEntityToken.Payload);
+            }
+
+            var pageFolderElementEntityToken = entityToken as AssociatedDataElementProviderHelperEntityToken;
+            if( pageFolderElementEntityToken != null)
+            {
+                return new Guid(pageFolderElementEntityToken.Id);
+            }
+
+            var dataEntityToken = entityToken as DataEntityToken;
+            if(dataEntityToken != null)
+            {
+                return (dataEntityToken.Data as IPageFolderData).PageId;
+            }
+
+            throw new InvalidOperationException("Unexpected entity token type '{0}'".FormatWith(entityToken.GetType().FullName));
+        }
+
+        private EntityToken GetParentEntityToken(Type interfaceType, EntityToken entityToken)
+        {
+            Verify.ArgumentNotNull(entityToken, "entityToken");
+
+            Guid pageId = GetPageId(entityToken);
+
+            if(pageId == Guid.Empty)
+            {
+                return null;
+            }
+
+            return new AssociatedDataElementProviderHelperEntityToken(
+                TypeManager.SerializeType(typeof (IPage)),
+                _elementProviderContext.ProviderName,
+                pageId.ToString(),
+                TypeManager.SerializeType(interfaceType));
+        }
 
 
         /// <summary>
@@ -245,9 +311,15 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             if (data == null) return new List<Element>();
             if (interfaceType == null) return new List<Element>();
 
-            return GetAggregationDataTypeFolderChildren(entityToken.GetData(), interfaceType, includeForeignFolders);
+
+            return _dataGroupingProviderHelper.GetRootGroupFolders(interfaceType, entityToken, includeForeignFolders).ToList();
         }
 
+
+        public List<Element> GetChildren(DataGroupingProviderHelperEntityToken entityToken, bool includeForeignFolders)
+        {
+            return _dataGroupingProviderHelper.GetGroupChildren(entityToken, includeForeignFolders).ToList();
+        }
 
 
         public Dictionary<EntityToken, IEnumerable<EntityToken>> GetParents(IEnumerable<EntityToken> entityTokens)
@@ -282,167 +354,82 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         }
 
 
-
-        private List<Element> GetAggregationDataTypeFolderChildren(IData data, Type assiciationType, bool includeForeignFolders)
+        private Element CreateElement(IData data)
         {
-            IPage page = (IPage)data;
+            string label = data.GetLabel();
 
-            List<Element> elements = new List<Element>();
-
-            IEnumerable<IData> childDatas = null;
-
-            if (page.GetDefinedFolderTypes().Contains(assiciationType) == true)
+            Element element = new Element(_elementProviderContext.CreateElementHandle(data.GetDataEntityToken()))
             {
-                childDatas = page.GetFolderData(assiciationType);
-            }
-            else
+                VisualData = new ElementVisualizedData
+                {
+                    Label = label,
+                    ToolTip = label,
+                    HasChildren = false,
+                    Icon = (data is IPublishControlled 
+                    ? DataIconLookup[((IPublishControlled)data).PublicationStatus] 
+                    : DataIconFacade.DataPublishedIcon)
+                }
+            };
+
+            AddEditAssociatedDataAction(element);
+            AddDeleteAssociatedDataAction(element);
+
+            return element;
+        }
+
+        private Element ShowForeignElement(IData data, bool enabled)
+        {
+            string label = string.Format("{0} ({1})", data.GetLabel(true), DataLocalizationFacade.GetCultureTitle(UserSettings.ForeignLocaleCultureInfo));
+
+            EntityToken entityToken = data.GetDataEntityToken();
+
+            if (enabled)
             {
-                childDatas = new List<IData>();
-            }
-
-            childDatas = childDatas.ToList().OrderBy(d => d.GetLabel());
-
-            foreach (IData childData in childDatas)
-            {
-                string label = childData.GetLabel();
-
-                Element element = new Element(_elementProviderContext.CreateElementHandle(childData.GetDataEntityToken()))
+                Element element = new Element(_elementProviderContext.CreateElementHandle(entityToken))
                 {
                     VisualData = new ElementVisualizedData
                     {
                         Label = label,
                         ToolTip = label,
                         HasChildren = false,
-                        Icon = (childData is IPublishControlled ? DataIconLookup[((IPublishControlled)childData).PublicationStatus] : DataIconFacade.DataPublishedIcon)
+                        Icon = DataIconFacade.DataGhostedIcon,
+                        IsDisabled = false
                     }
                 };
 
-                AddEditAssociatedDataAction(element);
-                AddDeleteAssociatedDataAction(element);
-
-                elements.Add(element);
-            }
-
-
-            if (includeForeignFolders == true)
-            {
-                using (DataScope localeScope = new DataScope(UserSettings.ForeignLocaleCultureInfo))
+                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.LocalizeDataWorkflow"), _localizeDataPermissionTypes) { Payload = "Pagefolder" }))
                 {
-                    childDatas = page.GetFolderData(assiciationType);
-
-                    foreach (IData childData in childDatas)
+                    VisualData = new ActionVisualizedData
                     {
-                        IData foreignData;
-                        bool enabled = GetDataFromCorrectScope(childData, out foreignData);
-
-                        EntityToken entityToken = foreignData.GetDataEntityToken();
-
-                        bool exists = elements.Where(f => f.ElementHandle.EntityToken.Equals(entityToken) == true).Any();
-
-                        if (exists == false)
+                        Label = StringResourceSystemFacade.GetString("Composite.Management", "AssociatedDataElementProviderHelper.LocalizeData"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Management", "AssociatedDataElementProviderHelper.LocalizeDataToolTip"),
+                        Icon = GeneratedDataTypesElementProvider.LocalizeDataIcon,
+                        Disabled = false,
+                        ActionLocation = new ActionLocation
                         {
-                            string label = string.Format("{0} ({1})", foreignData.GetLabel(true), DataLocalizationFacade.GetCultureTitle(UserSettings.ForeignLocaleCultureInfo));
-
-                            if (enabled == true)
-                            {
-                                Element element = new Element(_elementProviderContext.CreateElementHandle(entityToken))
-                                {
-                                    VisualData = new ElementVisualizedData
-                                    {
-                                        Label = label,
-                                        ToolTip = label,
-                                        HasChildren = false,
-                                        Icon = DataIconFacade.DataGhostedIcon,
-                                        IsDisabled = false
-                                    }
-                                };
-
-                                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.LocalizeDataWorkflow"), _localizeDataPermissionTypes) { Payload = "Pagefolder" }))
-                                {
-                                    VisualData = new ActionVisualizedData
-                                    {
-                                        Label = StringResourceSystemFacade.GetString("Composite.Management", "AssociatedDataElementProviderHelper.LocalizeData"),
-                                        ToolTip = StringResourceSystemFacade.GetString("Composite.Management", "AssociatedDataElementProviderHelper.LocalizeDataToolTip"),
-                                        Icon = GeneratedDataTypesElementProvider.LocalizeDataIcon,
-                                        Disabled = false,
-                                        ActionLocation = new ActionLocation
-                                        {
-                                            ActionType = ActionType.Add,
-                                            IsInFolder = false,
-                                            IsInToolbar = true,
-                                            ActionGroup = PrimaryActionGroup
-                                        }
-                                    }
-                                });
-
-                                elements.Add(element);
-                            }
-                            else
-                            {
-                                Element element = new Element(_elementProviderContext.CreateElementHandle(entityToken))
-                                {
-                                    VisualData = new ElementVisualizedData
-                                    {
-                                        Label = label,
-                                        ToolTip = StringResourceSystemFacade.GetString("Composite.Management", "AssociatedDataElementProviderHelper.DisabledData"),
-                                        HasChildren = false,
-                                        Icon = DataIconFacade.DataDisabledIcon,
-                                        IsDisabled = true
-                                    }
-                                };
-
-                                elements.Add(element);
-                            }
+                            ActionType = ActionType.Add,
+                            IsInFolder = false,
+                            IsInToolbar = true,
+                            ActionGroup = PrimaryActionGroup
                         }
                     }
-                }
+                });
+
+                return element;
             }
-
-            return elements;
-        }
-
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="foreignData"></param>
-        /// <returns>Returns true if the element should be enabled</returns>
-        private bool GetDataFromCorrectScope(IData data, out IData foreignData)
-        {
-            foreignData = null;
-            IPublishControlled publishControlled = data as IPublishControlled;
-            if (publishControlled != null)
+            
+            return new Element(_elementProviderContext.CreateElementHandle(entityToken))
             {
-                if ((publishControlled.PublicationStatus == GenericPublishProcessController.Draft) || (publishControlled.PublicationStatus == GenericPublishProcessController.AwaitingApproval))
+                VisualData = new ElementVisualizedData
                 {
-                    IData publicData = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public).SingleOrDefault();
-                    if (publicData != null)
-                    {
-                        foreignData = publicData;
-                        return true;
-                    }
-                    else
-                    {
-                        // Disabled
-                        foreignData = data;
-                        return false;
-                    }
+                    Label = label,
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Management", "AssociatedDataElementProviderHelper.DisabledData"),
+                    HasChildren = false,
+                    Icon = DataIconFacade.DataDisabledIcon,
+                    IsDisabled = true
                 }
-                else
-                {
-                    foreignData = data;
-                    return true;
-                }
-            }
-            else
-            {
-                foreignData = data;
-                return true;
-            }
+            };
         }
-
 
 
         #region Action methods

@@ -7,6 +7,7 @@ using Composite.C1Console.Security;
 using Composite.C1Console.Security.SecurityAncestorProviders;
 using Composite.Core.Serialization;
 using Composite.Core.Types;
+using Composite.Core.Extensions;
 
 
 
@@ -21,7 +22,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
     {
         private const string _magicNullValue = "·NULL·";
         private string _type;
-
+        private string _payload;
 
 
         /// <exclude />
@@ -29,8 +30,6 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
         {
             _type = type;
         }
-
-
 
         /// <exclude />
         public override string Type
@@ -63,6 +62,13 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
             set;
         }
 
+        /// <exclude />
+        public string Payload
+        {
+            get { return _payload; }
+            set { _payload = value; }
+        }
+
 
 
         /// <exclude />
@@ -81,6 +87,11 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
         {
             StringBuilder sb = new StringBuilder();
             DoSerialize(sb);
+
+            if (!_payload.IsNullOrEmpty())
+            {
+                StringConversionServices.SerializeKeyValuePair(sb, "Payload", _payload, typeof(string));
+            }
 
             foreach (var kvp in this.GroupingValues)
             {
@@ -107,7 +118,13 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
             DoDeserialize(serializedEntityToken, out type, out source, out id, out dic);
 
-            DataGroupingProviderHelperEntityToken entityToken = new DataGroupingProviderHelperEntityToken(type);
+            var entityToken = new DataGroupingProviderHelperEntityToken(type);
+
+            if (dic.ContainsKey("Payload"))
+            {
+                entityToken._payload = dic["Payload"];
+            }            
+
             entityToken.GroupingValues = new Dictionary<string, object>();
 
             Type dataType = TypeManager.GetType(type);
