@@ -29,7 +29,6 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         private string HasCachingBindingName { get { return "HasCaching"; } }
         private string HasPublishingBindingName { get { return "HasPublishing"; } }
         private string HasLocalizationBindingName { get { return "HasLocalization"; } }
-        private string ShowLocalizationBindingName { get { return "ShowLocalization"; } }
         
 
         public AddNewAggregationTypeWorkflow()
@@ -50,7 +49,6 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             this.Bindings.Add(this.HasCachingBindingName, false);
             this.Bindings.Add(this.HasPublishingBindingName, false);
             this.Bindings.Add(this.HasLocalizationBindingName, false);
-            this.Bindings.Add(this.ShowLocalizationBindingName, DataLocalizationFacade.UseLocalization);
 
             this.BindingsValidationRules.Add(this.NewTypeNameBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });
             this.BindingsValidationRules.Add(this.NewTypeNamespaceBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });

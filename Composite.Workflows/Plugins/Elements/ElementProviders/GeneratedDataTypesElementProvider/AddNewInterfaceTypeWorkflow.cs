@@ -39,7 +39,6 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             bindings.Add("HasCaching", false);
             bindings.Add("HasPublishing", false);
             bindings.Add("HasLocalization", false);
-            bindings.Add("ShowLocalization", DataLocalizationFacade.UseLocalization);
             bindings.Add("LabelFieldName", "");
 
             this.Bindings = bindings;

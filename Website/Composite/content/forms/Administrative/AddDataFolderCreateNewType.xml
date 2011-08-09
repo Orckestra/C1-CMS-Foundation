@@ -8,7 +8,6 @@
     <cms:binding name="LabelFieldName" type="System.String" optional="true" />
     <cms:binding name="HasPublishing" type="System.Boolean" />
     <cms:binding name="HasLocalization" type="System.Boolean" />
-    <cms:binding name="ShowLocalization" type="System.Boolean" />
   </cms:bindings>
   <cms:layout>
     
@@ -32,19 +31,12 @@
             </CheckBox.Checked>
           </CheckBox>
 
-          <f:BooleanCheck>
-            <f:BooleanCheck.CheckValue>
-              <cms:read source="ShowLocalization" />
-            </f:BooleanCheck.CheckValue>
-            <f:BooleanCheck.WhenTrue>
-              <CheckBox Label="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HasLocalization}" ItemLabel="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HasLocalization}">
-                <CheckBox.Checked>
-                  <cms:bind source="HasLocalization" />
-                </CheckBox.Checked>
-              </CheckBox>
-            </f:BooleanCheck.WhenTrue>
-          </f:BooleanCheck>
-        </PlaceHolder>
+			<CheckBox Label="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HasLocalization}" ItemLabel="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HasLocalization}">
+				<CheckBox.Checked>
+					<cms:bind source="HasLocalization" />
+				</CheckBox.Checked>
+			</CheckBox>
+		</PlaceHolder>
       </FieldGroup>
       <internal:TypeFieldDesigner Label="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.LabelFields}">
         <internal:TypeFieldDesigner.Fields>

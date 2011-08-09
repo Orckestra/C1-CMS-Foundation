@@ -8,7 +8,6 @@
 		<cms:binding name="LabelFieldName" type="System.String" optional="true" />
 		<cms:binding name="HasCaching" type="System.Boolean" />
 		<cms:binding name="HasLocalization" type="System.Boolean" />
-		<cms:binding name="ShowLocalization" type="System.Boolean" />
 	</cms:bindings>
 	<cms:layout>
 		<TabPanels Label="${Composite.Plugins.GeneratedDataTypesElementProvider, AddNewCompositionTypeWorkflow.DocumentTitle}">
@@ -36,18 +35,11 @@
 								<cms:bind source="HasCaching" />
 							</CheckBox.Checked>
 						</CheckBox>
-						<f:BooleanCheck>
-							<f:BooleanCheck.CheckValue>
-								<cms:read source="ShowLocalization" />
-							</f:BooleanCheck.CheckValue>
-							<f:BooleanCheck.WhenTrue>
-								<CheckBox Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.HasLocalization}" ItemLabel="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.HasLocalization}">
-									<CheckBox.Checked>
-										<cms:bind source="HasLocalization" />
-									</CheckBox.Checked>
-								</CheckBox>
-							</f:BooleanCheck.WhenTrue>
-						</f:BooleanCheck>
+						<CheckBox Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.HasLocalization}" ItemLabel="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.HasLocalization}">
+							<CheckBox.Checked>
+								<cms:bind source="HasLocalization" />
+							</CheckBox.Checked>
+						</CheckBox>
 					</PlaceHolder>
 				</FieldGroup>
 			</PlaceHolder>

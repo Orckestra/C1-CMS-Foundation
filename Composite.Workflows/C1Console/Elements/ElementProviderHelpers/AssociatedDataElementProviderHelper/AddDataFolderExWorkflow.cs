@@ -32,7 +32,6 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         private string HasRecycleBinBindingName { get { return "HasRecycleBin"; } }
         private string HasPublishingBindingName { get { return "HasPublishing"; } }
         private string HasLocalizationBindingName { get { return "HasLocalization"; } }
-        private string ShowLocalizationBindingName { get { return "ShowLocalization"; } }
 
 
         public AddDataFolderExWorkflow()
@@ -117,7 +116,6 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                 this.Bindings.Add(this.HasRecycleBinBindingName, false);
                 this.Bindings.Add(this.HasPublishingBindingName, false);
                 this.Bindings.Add(this.HasLocalizationBindingName, false);
-                this.Bindings.Add(this.ShowLocalizationBindingName, DataLocalizationFacade.UseLocalization);
 
                 this.BindingsValidationRules.Add(this.NewTypeNameBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });
                 this.BindingsValidationRules.Add(this.NewTypeNamespaceBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });
