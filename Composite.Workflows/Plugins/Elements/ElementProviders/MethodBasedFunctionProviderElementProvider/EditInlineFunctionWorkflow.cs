@@ -30,6 +30,7 @@ using Composite.Data.Types;
 using Composite.Functions;
 using Composite.Functions.Inline;
 using Composite.Functions.ManagedParameters;
+using Composite.Core.Serialization;
 
 
 namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
@@ -315,7 +316,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
 
                     object result = methodInfo.Invoke(null, parameterValues.ToArray());
 
-                    Control output = new LiteralControl("<pre>" + HttpUtility.HtmlEncode(PrettyPrintResult(result)) + "</pre>");
+                    Control output = new LiteralControl("<pre>" + HttpUtility.HtmlEncode(PrettyPrinter.Print(result)) + "</pre>");
                     formFlowWebRenderingService.SetNewPageOutput(output);
 
                     Thread.CurrentThread.CurrentCulture = oldCurrentCulture;
@@ -332,183 +333,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
                 Thread.CurrentThread.CurrentCulture = oldCurrentCulture;
                 Thread.CurrentThread.CurrentUICulture = oldCurrentUICulture;
             }
-        }
-
-
-
-        private string PrettyPrintResult(object result)
-        {
-            StringBuilder sb = new StringBuilder();
-            PrettyPrintResult(result, sb, 0);
-            return sb.ToString();
-        }
-
-
-
-        private void PrettyPrintResult(object result, StringBuilder sb, int indentLevel, bool includeLineFeed = true)
-        {
-            if (result == null)
-            {
-                sb.AppendLine("(null)");
-            }
-            else if ((result is IEnumerable) && (result.GetType() != typeof(string)))
-            {
-                IEnumerable enumerable = result as IEnumerable;
-                List<object> values = enumerable.ToListOfObjects();
-
-                sb.AppendLine();
-
-                int counter = 0;
-                foreach (object value in values)
-                {
-                    PrettyPrintIndent(sb, indentLevel);
-                    sb.Append("result[" + counter.ToString() + "] : ");
-                    PrettyPrintResult(value, sb, indentLevel + 1);
-
-                    counter++;
-                }
-            }
-            else if (result is IData)
-            {
-                IData dataItem = result as IData;
-
-                DataTypeDescriptor dataTypeDescriptor = Composite.Data.DynamicTypes.DynamicTypeManager.GetDataTypeDescriptor(dataItem.GetImmutableTypeId());
-
-                sb.AppendLine(dataItem.GetType().ToString());
-                PrettyPrintIndent(sb, indentLevel);
-                sb.AppendLine("{");
-                foreach (DataFieldDescriptor dataFieldDescriptor in dataTypeDescriptor.Fields)
-                {
-                    PropertyInfo propertyInfo = dataItem.GetType().GetPropertiesRecursively().Where(f => f.Name == dataFieldDescriptor.Name).First();
-
-                    object value = propertyInfo.GetValue(dataItem, null);
-
-                    PrettyPrintIndent(sb, indentLevel + 1);
-
-                    sb.Append(dataFieldDescriptor.Name + " : ");
-
-                    if (value != null) sb.Append(value.ToString());
-                    else sb.Append("(null)");
-
-                    sb.AppendLine(", ");
-                }
-                PrettyPrintIndent(sb, indentLevel);
-                sb.AppendLine("{");
-            }
-            else if ((result.GetType().IsGenericType) && (result.GetType().GetGenericTypeDefinition() == typeof(KeyValuePair<,>)))
-            {
-                PropertyInfo keyPropertyInfo = result.GetType().GetProperty("Key");
-                PropertyInfo valuePropertyInfo = result.GetType().GetProperty("Value");
-
-                object keyValue = keyPropertyInfo.GetValue(result, null);
-                object valueValue = valuePropertyInfo.GetValue(result, null);
-                sb.Append("(");
-                PrettyPrintResult(keyValue, sb, indentLevel + 1, false);
-                sb.Append(", ");
-                PrettyPrintResult(valueValue, sb, indentLevel + 1, false);
-                sb.AppendLine(")");
-            }
-            else if ((result.GetType().IsGenericType) && (result.GetType().GetGenericTypeDefinition() == typeof(Tuple<,>)))
-            {
-                PropertyInfo item1PropertyInfo = result.GetType().GetProperty("Item1");
-                PropertyInfo item2PropertyInfo = result.GetType().GetProperty("Item2");
-
-                object item1Value = item1PropertyInfo.GetValue(result, null);
-                object item2Value = item2PropertyInfo.GetValue(result, null);
-                sb.Append("(");
-                PrettyPrintResult(item1Value, sb, indentLevel + 1, false);
-                sb.Append(", ");
-                PrettyPrintResult(item2Value, sb, indentLevel + 1, false);
-                sb.AppendLine(")");
-            }
-            else if ((result.GetType().IsGenericType) && (result.GetType().GetGenericTypeDefinition() == typeof(Tuple<,,>)))
-            {
-                PropertyInfo item1PropertyInfo = result.GetType().GetProperty("Item1");
-                PropertyInfo item2PropertyInfo = result.GetType().GetProperty("Item2");
-                PropertyInfo item3PropertyInfo = result.GetType().GetProperty("Item3");
-
-                object item1Value = item1PropertyInfo.GetValue(result, null);
-                object item2Value = item2PropertyInfo.GetValue(result, null);
-                object item3Value = item3PropertyInfo.GetValue(result, null);
-
-                sb.Append("(");
-                PrettyPrintResult(item1Value, sb, indentLevel + 1, false);
-                sb.Append(", ");
-                PrettyPrintResult(item2Value, sb, indentLevel + 1, false);
-                sb.Append(", ");
-                PrettyPrintResult(item3Value, sb, indentLevel + 1, false);
-                sb.AppendLine(")");
-            }
-            else if ((result.GetType().IsGenericType) && (result.GetType().GetGenericTypeDefinition() == typeof(Tuple<,,,>)))
-            {
-                PropertyInfo item1PropertyInfo = result.GetType().GetProperty("Item1");
-                PropertyInfo item2PropertyInfo = result.GetType().GetProperty("Item2");
-                PropertyInfo item3PropertyInfo = result.GetType().GetProperty("Item3");
-                PropertyInfo item4PropertyInfo = result.GetType().GetProperty("Item4");
-
-                object item1Value = item1PropertyInfo.GetValue(result, null);
-                object item2Value = item2PropertyInfo.GetValue(result, null);
-                object item3Value = item3PropertyInfo.GetValue(result, null);
-                object item4Value = item4PropertyInfo.GetValue(result, null);
-
-                sb.Append("(");
-                PrettyPrintResult(item1Value, sb, indentLevel + 1, false);
-                sb.Append(", ");
-                PrettyPrintResult(item2Value, sb, indentLevel + 1, false);
-                sb.Append(", ");
-                PrettyPrintResult(item3Value, sb, indentLevel + 1, false);
-                sb.Append(", ");
-                PrettyPrintResult(item4Value, sb, indentLevel + 1, false);
-                sb.AppendLine(")");
-            }
-            else if ((result.GetType().IsGenericType) && (result.GetType().GetGenericTypeDefinition() == typeof(Tuple<,,,,>)))
-            {
-                PropertyInfo item1PropertyInfo = result.GetType().GetProperty("Item1");
-                PropertyInfo item2PropertyInfo = result.GetType().GetProperty("Item2");
-                PropertyInfo item3PropertyInfo = result.GetType().GetProperty("Item3");
-                PropertyInfo item4PropertyInfo = result.GetType().GetProperty("Item4");
-                PropertyInfo item5PropertyInfo = result.GetType().GetProperty("Item5");
-
-                object item1Value = item1PropertyInfo.GetValue(result, null);
-                object item2Value = item2PropertyInfo.GetValue(result, null);
-                object item3Value = item3PropertyInfo.GetValue(result, null);
-                object item4Value = item4PropertyInfo.GetValue(result, null);
-                object item5Value = item5PropertyInfo.GetValue(result, null);
-
-                sb.Append("(");
-                PrettyPrintResult(item1Value, sb, indentLevel + 1, false);
-                sb.Append(", ");
-                PrettyPrintResult(item2Value, sb, indentLevel + 1, false);
-                sb.Append(", ");
-                PrettyPrintResult(item3Value, sb, indentLevel + 1, false);
-                sb.Append(", ");
-                PrettyPrintResult(item4Value, sb, indentLevel + 1, false);
-                sb.Append(", ");
-                PrettyPrintResult(item5Value, sb, indentLevel + 1, false);
-                sb.AppendLine(")");
-            }
-            else
-            {
-                if (includeLineFeed)
-                {
-                    sb.AppendLine(result.ToString());
-                }
-                else
-                {
-                    sb.Append(result.ToString());
-                }
-            }
-        }
-
-
-
-        private void PrettyPrintIndent(StringBuilder sb, int indentLevel)
-        {
-            for (int i = 0; i < indentLevel; i++)
-            {
-                sb.Append("  ");
-            }
-        }
+        }      
     }
 
 

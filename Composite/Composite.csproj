@@ -244,6 +244,7 @@
     <Compile Include="Core\Routing\Plugins\PageUrlsProviders\Runtime\PageUrlProviderData.cs" />
     <Compile Include="Core\Routing\PageUrls.cs" />
     <Compile Include="Core\Routing\UrlSpace.cs" />
+    <Compile Include="Core\Serialization\PrettyPrinter.cs" />
     <Compile Include="Core\Sql\SqlConnectionManager.cs" />
     <Compile Include="Core\WebClient\ApplicationLevelEventHandlers.cs" />
     <Compile Include="Core\WebClient\HttpModules\Utf8StringTransformationStream.cs" />
