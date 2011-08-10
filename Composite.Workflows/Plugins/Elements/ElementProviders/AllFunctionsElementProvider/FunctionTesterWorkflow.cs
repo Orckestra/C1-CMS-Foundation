@@ -66,7 +66,16 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.AllFunctionsElem
             {
                 output.AppendLine(namedFunctionCall.FunctionCall.GetCompositeName() + " result:");
 
-                object functionResult = namedFunctionCall.FunctionCall.GetValue();
+                object functionResult;
+                try
+                {
+                    functionResult = namedFunctionCall.FunctionCall.GetValue();
+                }
+                catch(Exception ex)
+                {
+                    functionResult = ex.Message;
+                }
+                
                 output.AppendLine(PrettyPrinter.Print(functionResult));
 
                 output.AppendLine();
