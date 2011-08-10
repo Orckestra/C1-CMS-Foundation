@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Composite.C1Console.Events;
 using Composite.Core.Configuration;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Xml;
 using Composite.Data.DynamicTypes;
@@ -216,10 +217,16 @@ namespace Composite.Data
             {
                 return new Guid(tmp);
             }
-            else
+
+            Guid result;
+            string guidStr = tmp.Substring(index + 1);
+
+            if(!Guid.TryParse(guidStr, out result))
             {
-                return new Guid(tmp.Substring(index + 1));
+                throw new InvalidOperationException("Failed to extract ID from file '{0}'".FormatWith(filepath));
             }
+
+            return result;
         }
 
 
