@@ -381,6 +381,7 @@
   <ItemGroup>
     <Content Include="App_Data\Composite\Configuration\UrlFormatting.xml" />
     <Content Include="Composite\content\dialogs\treeselector\TreeSelectorToolBarBinding.js" />
+    <Content Include="Composite\content\forms\Administrative\FunctionTesterEditFunction.xml" />
     <Content Include="Composite\content\forms\Administrative\UrlConfiguration.xml" />
     <Content Include="Composite\content\forms\Administrative\Hostnames.xml" />
     <Content Include="App_Data\Composite\TreeDefinitions\UrlConfiguration.xml">
@@ -808,6 +809,7 @@
     <Content Include="Composite\content\views\browser\BrowserAddressBarBinding.js" />
     <Content Include="Composite\content\views\dev\flushadmin\Default.aspx" />
     <Content Include="Composite\content\views\functioninfo\ShowFunctionInfo.aspx" />
+    <Content Include="Composite\content\views\functioninfo\ShowFunctionInfo.css" />
     <Content Include="Composite\content\views\relationshipgraph\ShowRelationshipOrientedGraph.aspx" />
     <Content Include="Composite\controls\FormsControls\FormUiContainerTemplates\EmptyDocumentExecutionContainer.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionParameterEditor.aspx" />

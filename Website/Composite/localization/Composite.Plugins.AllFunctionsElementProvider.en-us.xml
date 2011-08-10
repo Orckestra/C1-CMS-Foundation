@@ -8,4 +8,11 @@
 	<string key="AllFunctionsElementProvider.GenerateDocumentationTooltip" value="Generate documentation for all functions below this folder" />
   <string key="AllFunctionsElementProvider.ViewFunctionInformation" value="Information" />
   <string key="AllFunctionsElementProvider.ViewFunctionInformationTooltip" value="View function information" />
+
+  <string key="FunctionTesterWorkflow.Layout.Label" value="Function Tester" />
+  <string key="FunctionTesterWorkflow.FunctionCalls.Label" value="Functions" />
+  <string key="FunctionTesterWorkflow.Preview.Label" value="Results" />
+
+  <string key="AllFunctionsElementProvider.FunctionTester.Label" value="Test function" />
+  <string key="AllFunctionsElementProvider.FunctionTester.ToolTip" value="Test function" />
 </strings>

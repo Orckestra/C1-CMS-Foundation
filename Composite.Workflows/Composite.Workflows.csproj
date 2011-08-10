@@ -205,6 +205,12 @@
     <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\EditMetaDataWorkflow.designer.cs">
       <DependentUpon>EditMetaDataWorkflow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\AllFunctionsElementProvider\FunctionTesterWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\AllFunctionsElementProvider\FunctionTesterWorkflow.designer.cs">
+      <DependentUpon>FunctionTesterWorkflow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddTypeToWhiteListWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -904,6 +910,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\EditMetaDataWorkflow.layout">
       <DependentUpon>EditMetaDataWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\AllFunctionsElementProvider\FunctionTesterWorkflow.layout">
+      <DependentUpon>FunctionTesterWorkflow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddTypeToWhiteListWorkflow.layout">
       <DependentUpon>AddTypeToWhiteListWorkflow.cs</DependentUpon>

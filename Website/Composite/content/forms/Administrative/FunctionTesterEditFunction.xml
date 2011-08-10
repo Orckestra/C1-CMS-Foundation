@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0" xmlns:internal="http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0">
+  <cms:bindings>
+    <cms:binding name="FunctionMarkup" type="System.String" />
+
+    <cms:binding name="PreviewEventHandler" type="System.EventHandler" optional="true" />
+    
+    <cms:binding name="SessionStateProvider" type="System.String" />
+    <cms:binding name="SessionStateId" type="System.Guid" />
+  </cms:bindings>
+  <cms:layout label="${Composite.Plugins.AllFunctionsElementProvider, FunctionTesterWorkflow.Layout.Label}">
+
+    <TabPanels PreSelectedIndex="0">
+
+      <internal:FunctionCallsDesigner Label="${Composite.Plugins.AllFunctionsElementProvider, FunctionTesterWorkflow.FunctionCalls.Label}">
+        <internal:FunctionCallsDesigner.SessionStateProvider>          
+          <cms:read source="SessionStateProvider"/>
+        </internal:FunctionCallsDesigner.SessionStateProvider>
+        <internal:FunctionCallsDesigner.SessionStateId>
+          <cms:read source="SessionStateId"/>
+        </internal:FunctionCallsDesigner.SessionStateId>
+      </internal:FunctionCallsDesigner>
+
+      <internal:PreviewPanel Label="${Composite.Plugins.AllFunctionsElementProvider, FunctionTesterWorkflow.Preview.Label}">
+        <internal:PreviewPanel.ClickEventHandler>
+          <cms:read source="PreviewEventHandler" />
+        </internal:PreviewPanel.ClickEventHandler>
+      </internal:PreviewPanel>
+          
+    </TabPanels>
+  </cms:layout>
+</cms:formdefinition>

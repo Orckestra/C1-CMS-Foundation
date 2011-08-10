@@ -10,6 +10,7 @@ using Composite.C1Console.Elements.Plugins.ElementProvider;
 using Composite.C1Console.Forms.DataServices;
 using Composite.C1Console.Forms.Flows;
 using Composite.C1Console.Security;
+using Composite.C1Console.Workflow;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 using Composite.Core.Types;
@@ -241,6 +242,26 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
 
         protected override IEnumerable<ElementAction> OnGetFolderActions()
         {
+            yield return new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Workflows.Plugins.Elements.ElementProviders.AllFunctionsElementProvider.FunctionTesterWorkflow"))))
+            {
+                VisualData = new ActionVisualizedData
+                {
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "AllFunctionsElementProvider.FunctionTester.Label"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "AllFunctionsElementProvider.FunctionTester.ToolTip"),
+                    Icon = AllFunctionsElementProvider.DocumentFunctionsIcon,
+                    Disabled = false,
+                    ActionLocation = new ActionLocation
+                    {
+                        ActionType = ActionType.Other,
+                        IsInFolder = false,
+                        IsInToolbar = true,
+                        ActionGroup = PrimaryActionGroup
+                    }
+                }
+            };
+
+
+
             yield return new ElementAction(new ActionHandle(new DocumentFunctionsActionToken()))
             {
                 VisualData = new ActionVisualizedData
