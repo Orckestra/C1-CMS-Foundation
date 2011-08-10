@@ -478,7 +478,7 @@ var ViewDefinitions = {
 			selectionResult		: "ElementId",
 			nodes : [{
 				key : "AllFunctionsElementProvider",
-				search : "AllFunctionsElementProvider.XhtmlDocument"
+				search : "AllFunctionsElementProvider.VisualEditorFunctions"
 			}]
 		}
 	})

@@ -16,7 +16,7 @@ window.SearchTokens = new function () {
 		// searching flash, quicktime, director and windows media files.
 		"MediaFileElementProvider.EmbeddableMedia" : null,
 		// searching functions that return XhtmlDocument (suitable for rendering) 
-		"AllFunctionsElementProvider.XhtmlDocument": null,
+		"AllFunctionsElementProvider.VisualEditorFunctions": null,
 		// searching functions that are sutable for Xslt function's function call section
 		"AllFunctionsElementProvider.XsltFunctionCall": null
 	}

@@ -253,8 +253,8 @@ namespace Composite.Services
             imageMediaFileSearchToken.MimeTypes = new string[] { MimeTypeInfo.Gif, MimeTypeInfo.Jpeg, MimeTypeInfo.Png, MimeTypeInfo.Bmp };
             tokens.Add(new KeyValuePair("MediaFileElementProvider.WebImages", imageMediaFileSearchToken.Serialize()));
 
-            var xhtmlDocumentFunctionsSearchToken = AllFunctionsElementProviderSearchToken.Build(new[] { typeof(XhtmlDocument) });
-            tokens.Add(new KeyValuePair("AllFunctionsElementProvider.XhtmlDocument", xhtmlDocumentFunctionsSearchToken.Serialize()));
+            var xhtmlDocumentFunctionsSearchToken = AllFunctionsElementProviderSearchToken.Build(new[] { typeof(XhtmlDocument), typeof(System.Web.UI.Control) });
+            tokens.Add(new KeyValuePair("AllFunctionsElementProvider.VisualEditorFunctions", xhtmlDocumentFunctionsSearchToken.Serialize()));
 
             var xstlFunctionCallsSearchToken = AllFunctionsElementProviderSearchToken.Build(new[] { typeof(XhtmlDocument), typeof(IEnumerable<XElement>), typeof(XElement) });
             tokens.Add(new KeyValuePair("AllFunctionsElementProvider.XsltFunctionCall", xstlFunctionCallsSearchToken.Serialize()));
