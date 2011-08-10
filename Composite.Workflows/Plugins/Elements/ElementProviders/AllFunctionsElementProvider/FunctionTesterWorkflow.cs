@@ -19,6 +19,7 @@ using Composite.Functions.ManagedParameters;
 
 namespace Composite.Workflows.Plugins.Elements.ElementProviders.AllFunctionsElementProvider
 {
+    [AllowPersistingWorkflow(WorkflowPersistingType.Shutdown)]
     public sealed partial class FunctionTesterWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public FunctionTesterWorkflow()
@@ -73,7 +74,14 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.AllFunctionsElem
                 }
                 catch(Exception ex)
                 {
-                    functionResult = ex.Message;
+                    StringBuilder sb = new StringBuilder();
+                    while (ex != null)
+                    {
+                        sb.AppendLine(ex.Message);
+                        ex = ex.InnerException;
+                    }
+
+                    functionResult = sb.ToString();
                 }
                 
                 output.AppendLine(PrettyPrinter.Print(functionResult));
