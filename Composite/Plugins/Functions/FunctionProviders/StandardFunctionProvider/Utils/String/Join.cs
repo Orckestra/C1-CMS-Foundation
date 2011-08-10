@@ -36,7 +36,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                     "Strings", typeof(IEnumerable<string>), true, new NoValueValueProvider(),null);
 
                 yield return new StandardFunctionParameterProfile(
-                    "Separator", typeof(string), false, new ConstantValueProvider(","), textboxWidget);
+                    "Separator", typeof(string), false, new ConstantValueProvider(""), textboxWidget);
             }
         }
 	}
