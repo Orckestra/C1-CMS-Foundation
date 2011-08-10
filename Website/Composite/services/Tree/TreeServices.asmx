@@ -3,6 +3,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Services;
 using System.Web.Services.Protocols;
@@ -297,6 +298,23 @@ namespace Composite.Services
 			}
 
 			return tokens.Select(d => EntityTokenSerializer.Serialize(d,true)).ToList();
+		}
+		
+		
+		[WebMethod]
+		public string GetMediaLabel(string path)
+		{
+			var result = path;
+			var re = new Regex(@"media(\(|\/|%28)([\d-abcdef]{36})");
+			var match = re.Match(path);
+			Guid id;
+			if (match.Success && Guid.TryParse(match.Groups[2].Value, out id))
+			{
+				result = DataFacade.GetData<IMediaFile>(d => d.Id == id)
+				         	.Select(d => d.GetLabel())
+				         	.FirstOrDefault() ?? path;
+			}
+			return result;
 		}
     }
 }

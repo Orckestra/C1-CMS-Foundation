@@ -31,6 +31,12 @@ function ImageInputDialogBinding() {
 	* @type {boolean}
 	*/
 	this._isButtonClicked = false;
+
+	/**
+	* Used for saving value in readonly mode.
+	* @type {string}
+	*/
+	this.value = null;
 }
 
 /**
@@ -49,6 +55,14 @@ ImageInputDialogBinding.prototype._buildDOMContent = function () {
 
 	DataInputSelectorBinding.superclass._buildDOMContent.call(this);
 	this.buildButton();
+
+	var self = this;
+	DOMEvents.addEventListener(this, DOMEvents.DOUBLECLICK, {
+		handleEvent: function (e) {
+			self.setReadOnly(false);
+			self.focus();
+		}
+	});
 }
 
 /**
@@ -102,6 +116,7 @@ ImageInputDialogBinding.prototype.buildButton = function () {
 			self._isButtonClicked = true;
 		}
 	});
+
 	this._dialogButtonBinding = button;
 };
 
@@ -115,6 +130,16 @@ ImageInputDialogBinding.prototype.oncommand = function () {
 		button.oncommand();
 	}
 };
+
+/**
+* OnBlur event
+* @overloads {DataInputBinding#onblur}
+*/
+ImageInputDialogBinding.prototype.onblur = function () {
+
+	ImageInputDialogBinding.superclass.onblur.call(this);
+	this.dispatchAction(ImageInputDialogBinding.IMAGE_SELECTED);
+}
 
 /**
 * Hack to circumvent validation while dialog is handled.
@@ -131,3 +156,51 @@ ImageInputDialogBinding.prototype.validate = function (arg) {
 	}
 	return result;
 };
+
+
+/**
+* Set value.
+* @param {String} value
+* @overloads {DataInputBinding#setValue}
+*/
+ImageInputDialogBinding.prototype.setValue = function (value) {
+
+	if (this.isReadOnly) {
+		this.value = value;
+		this.shadowTree.input.value = TreeService.GetMediaLabel(value);
+	} else {
+		ImageInputDialogBinding.superclass.setValue.call(this, value);
+	}
+}
+
+/**
+* Get value.
+* @overloads {DataInputBinding#getValue}
+* @return {string}
+*/
+ImageInputDialogBinding.prototype.getValue = function () {
+
+	if (this.isReadOnly) {
+		result = this.value;
+	} else {
+		result = ImageInputDialogBinding.superclass.getValue.call(this);
+	}
+	return result;
+}
+
+/**
+* @param {boolean} isReadOnly
+* @overloads {DataInputBinding#setReadOnly}
+*/
+ImageInputDialogBinding.prototype.setReadOnly = function (isReadOnly) {
+	var oldIsReadOnly = this.isReadOnly;
+	ImageInputDialogBinding.superclass.setReadOnly.call(this, isReadOnly);
+
+	if (oldIsReadOnly == true && isReadOnly == false) {
+		ImageInputDialogBinding.superclass.setValue.call(this, this.value);
+	}
+	if (oldIsReadOnly == false && isReadOnly == true) {
+		this.value = ImageInputDialogBinding.superclass.getValue.call(this)
+		this.shadowTree.input.value = TreeService.GetMediaLabel(this.value);
+	}
+}
