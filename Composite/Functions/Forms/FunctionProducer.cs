@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Xml.Linq;
 using Composite.C1Console.Forms;
-using Composite.Functions.Foundation;
 
 
 namespace Composite.Functions.Forms
@@ -11,7 +9,7 @@ namespace Composite.Functions.Forms
     {
         public FunctionProducer()
         {
-            this.Producers = new List<XElement>();
+            this.Producers = new List<BaseParameterRuntimeTreeNode>();
         }
 
 
@@ -20,23 +18,17 @@ namespace Composite.Functions.Forms
 
 
         [FormsProperty()]
-        public List<XElement> Producers { get; private set; }
+        public List<BaseParameterRuntimeTreeNode> Producers { get; private set; }
 
 
 
-        public XElement GetResult()
-        {
-            XElement element = new XElement(
-                    (XNamespace)FunctionTreeConfigurationNames.NamespaceName + FunctionTreeConfigurationNames.FunctionTagName,
-                    new XAttribute(FunctionTreeConfigurationNames.NameAttributeName, this.name)
-                );
+        public object GetResult()
+        {            
+            IFunction function = FunctionFacade.GetFunction(this.name);
 
-            foreach (XElement childElement in this.Producers)
-            {
-                element.Add(childElement);
-            }
+            FunctionRuntimeTreeNode functionNode = new FunctionRuntimeTreeNode(function, this.Producers);
 
-            return element;
+            return functionNode;    
         }
     }
 }

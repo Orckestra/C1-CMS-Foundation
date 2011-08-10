@@ -453,4 +453,20 @@
 	<string key="Composite.Data.Types.IMediaFile.MediaFolderFilter.param.MediaFolder.help" value="A reference to a media folder" />
 	<string key="Composite.Data.Types.IMediaFile.MediaFolderFilter.param.IncludeSubfolders.label" value="Include Subfolders" />
 	<string key="Composite.Data.Types.IMediaFile.MediaFolderFilter.param.IncludeSubfolders.help" value="Determines whether media files from subfolders should be included." />
+
+  <string key="Composite.Utils.Dictionary.XElementsToDictionary.description" value="Converts an enumerable of XElements to a Dictionary using named attributes for keys and values." />
+  <string key="Composite.Utils.Dictionary.XElementsToDictionary.param.XElements.label" value="XElements" />
+  <string key="Composite.Utils.Dictionary.XElementsToDictionary.param.XElements.help" value="An enumerable of XElements that will be used to create a dictionary from." />
+  <string key="Composite.Utils.Dictionary.XElementsToDictionary.param.KeyAttributeName.label" value="Key Attribute Name" />
+  <string key="Composite.Utils.Dictionary.XElementsToDictionary.param.KeyAttributeName.help" value="The name of the attribute on each XElement which value will be used for keys in the dictionary." />
+  <string key="Composite.Utils.Dictionary.XElementsToDictionary.param.ValueAttributeName.label" value="Value Attribute Name" />
+  <string key="Composite.Utils.Dictionary.XElementsToDictionary.param.ValueAttributeName.help" value="The name of the attribute on each XElement which value will be used for values in the dictionary." />
+
+  <string key="Composite.Utils.Dictionary.EnumerableToDictionary.description" value="Converts an enumerable of objects to a Dictionary using named property names for keys and values." />
+  <string key="Composite.Utils.Dictionary.EnumerableToDictionary.param.Elements.label" value="Objects" />
+  <string key="Composite.Utils.Dictionary.EnumerableToDictionary.param.Elements.help" value="An enumerable of objects that will be used to create a dictionary from." />
+  <string key="Composite.Utils.Dictionary.EnumerableToDictionary.param.KeyPropertyName.label" value="Key Property Name" />
+  <string key="Composite.Utils.Dictionary.EnumerableToDictionary.param.KeyPropertyName.help" value="The name of the property on each object which value will be used for keys in the dictionary." />
+  <string key="Composite.Utils.Dictionary.EnumerableToDictionary.param.ValuePropertyName.label" value="Value Property Name" />
+  <string key="Composite.Utils.Dictionary.EnumerableToDictionary.param.ValuePropertyName.help" value="The name of the property on each object which value will be used for values in the dictionary." />
 </strings>

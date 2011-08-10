@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
-using Composite.C1Console.Forms.Plugins.ProducerMediator;
 using Composite.C1Console.Forms;
+using Composite.C1Console.Forms.Plugins.ProducerMediator;
+using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 
 namespace Composite.Functions.Forms
@@ -21,6 +18,9 @@ namespace Composite.Functions.Forms
 
                 case "param":
                     return new FunctionParameterProducer();
+
+                case "paramelement":
+                    return new FunctionParameterElementProducer();
 
                 default:
                     throw new NotImplementedException();

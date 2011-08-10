@@ -418,6 +418,7 @@
     <Compile Include="C1Console\Forms\CoreUiControls\MultiContentXhtmlEditorUiControl.cs" />
     <Compile Include="C1Console\Forms\StandardProducerMediators\BuildinProducers\EvalFuncProducer.cs" />
     <Compile Include="Data\Validation\Validators\NullIntegerRangeValidatorAttribute.cs" />
+    <Compile Include="Functions\Forms\FunctionParameterElementProducer.cs" />
     <Compile Include="Functions\Forms\FunctionProducerMediator.cs" />
     <Compile Include="Functions\Forms\FunctionParameterProducer.cs" />
     <Compile Include="Functions\Forms\FunctionProducer.cs" />
@@ -488,6 +489,8 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Plugins\Functions\FunctionProviders\MethodBasedFunctionProvider\NotLoadedMethodBasedFunction.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Dictionary\EnumerableToDictionary.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Dictionary\XElementsToDictionaryFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\PathInfoGuidFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\PathInfoIntFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\RegisterPathInfoUsageFunction.cs" />

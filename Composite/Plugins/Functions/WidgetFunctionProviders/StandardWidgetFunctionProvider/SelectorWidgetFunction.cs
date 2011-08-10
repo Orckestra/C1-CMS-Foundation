@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Composite.Functions;
-using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.DataReference;
-using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
-using Composite.Core.Types;
 using Composite.Core.Xml;
-using Composite.Core.Logging;
-using System.Collections.Generic;
+using Composite.Functions;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
 
 
 namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider
@@ -79,7 +76,6 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
         }
 
 
-        private const string _compositeNameBase = CompositeWidgetFunctionBase.CommonNamespace;
 
         public SelectorWidgetFunction(EntityTokenFactory entityTokenFactory)
             : base(CompositeName, typeof(object), entityTokenFactory)
@@ -151,45 +147,48 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
         {
             BaseRuntimeTreeNode runtimeTreeNode = null;
 
+#warning MRJ: C1FinM: Create a f(IEnumerable, keyPropName, valuePropName) -> IDic
+#warning MRJ: C1FinM: Create a f(XElement, keyAttrName, valueAttrName) -> IDic
+
             if (parameters.TryGetParameterRuntimeTreeNode("Options", out runtimeTreeNode))
             {
-                string keyFieldName = parameters.GetParameter<string>("KeyFieldName");
-                string labelFieldName = parameters.GetParameter<string>("LabelFieldName");
-                //bool multiple = parameters.GetParameter<bool>("Multiple");
+                const string selectorName = "KeySelector";
+
                 bool required = parameters.GetParameter<bool>("Required");
-                //bool compact = parameters.GetParameter<bool>("Compact");
 
-                XElement optionsDescriptor = new XElement("SelectorOptionsSource",
-                    new XAttribute("KeyFieldName", parameters.GetParameter<string>("KeyFieldName") ?? ""),
-                    new XAttribute("LabelFieldName", parameters.GetParameter<string>("LabelFieldName") ?? ""),
-                    new XElement("TreeNode",
-                        runtimeTreeNode.Serialize()));
 
-                return StandardWidgetFunctions.BuildStaticCallPopulatedSelectorFormsMarkup(
-                            parameters,
-                            label,
-                            helpDefinition,
-                            bindingSourceName,
-                            this.GetType(),
-                            "GetOptions",
-                            optionsDescriptor.ToString(),
-                            "Key",
-                            "Label",
-                            false,
-                            true,
-                            required,
-                            true);
+                IEnumerable options = runtimeTreeNode.GetValue<IEnumerable>();
+                IDictionary dictionaryOptions = options as IDictionary;
+
+                XElement treeNodeElement = runtimeTreeNode.Serialize().Elements().First();
+
+                XElement functionMarkup = treeNodeElement;
+               
+
+                XElement selector = StandardWidgetFunctions.BuildBasicFormsMarkup(
+                    Namespaces.BindingFormsStdUiControls10,
+                    selectorName,
+                    "Selected",
+                    label,
+                    helpDefinition,
+                    bindingSourceName);
+
+                if (dictionaryOptions != null)
+                {
+                    selector.Add(new XAttribute("OptionsKeyField", "Key"));
+                    selector.Add(new XAttribute("OptionsLabelField", "Value"));
+                }
+                
+                selector.Add(new XAttribute("Required", required));
+
+                selector.Add(new XElement(selector.Name.Namespace + (selectorName + ".Options"), functionMarkup));
+
+                return selector;
             }
             else
             {
                 throw new InvalidOperationException("Could not get BaseRuntimeTreeNode for parameter 'Options'.");
             }
         }
-
-
-
-
-
-
     }
 }

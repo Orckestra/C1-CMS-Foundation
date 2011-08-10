@@ -228,6 +228,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             _standardStaticTypeFunctions.Add(new Utils.Predicates.NullableIntegerEqualsPredicateFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Utils.Predicates.NullableIntegerNoValuePredicateFunction(_entityTokenFactory));
             
+            // Utils.Dictionary
+            _standardStaticTypeFunctions.Add(new Utils.Dictionary.XElementsToDictionaryFunction(_entityTokenFactory));
+            _standardStaticTypeFunctions.Add(new Utils.Dictionary.EnumerableToDictionary(_entityTokenFactory));
         }
 
 

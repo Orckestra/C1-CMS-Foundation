@@ -12,6 +12,7 @@ using Composite.Data.Validation;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.Functions;
 using Composite.Functions.Foundation;
+using Composite.Functions.Forms;
 
 
 namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
@@ -59,12 +60,22 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
 
         private static void SetPropertyOnProducer(ElementCompileTreeNode element, string propertyName, PropertyCompileTreeNode property, CompileContext compileContext)
         {
+            if (property.XmlSourceNodeInformation.TagName.Contains(":"))
+            {
+                
+            }
+
             if ((property.InclosingProducerName != "") && (element.XmlSourceNodeInformation.Name != property.InclosingProducerName)) throw new FormCompileException(string.Format("The inclosing tag does not match the embedded property tag name {0}", propertyName), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
 
             Type producerType = element.Producer.GetType();
 
             PropertyInfo propertyInfo = producerType.GetProperty(propertyName);
-            if (null == propertyInfo) throw new FormCompileException(string.Format("The producer {0} does not have property named {1}", producerType.ToString(), propertyName), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
+            if (null == propertyInfo) 
+            {
+                if (property.IsNamespaceDeclaration) return; // Ignore it
+                
+                throw new FormCompileException(string.Format("The producer {0} does not have property named {1}", producerType.ToString(), propertyName), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
+            }
 
             MethodInfo getMethodInfo = propertyInfo.GetGetMethod();
             if (null == getMethodInfo) throw new FormCompileException(string.Format("The producer {0} does not have a public get for the property named {1}", producerType.ToString(), propertyName), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
@@ -186,13 +197,22 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
 
                         parm = property.Value;
                     }
-                    else if ((property.Value != null) && ((property.Value is XElement)) && (((XElement)property.Value).Name.Namespace == FunctionTreeConfigurationNames.NamespaceName) && (element.XmlSourceNodeInformation.NamespaceURI != FunctionTreeConfigurationNames.NamespaceName))
+                    else if ((property.Value != null) && (property.Value is BaseRuntimeTreeNode))
                     {
-                        // This is in the case that the value is a c1 function and the property is not a function (non-nested function).
-                        BaseRuntimeTreeNode node = FunctionFacade.BuildTree((XElement)property.Value);
-                        object value = node.GetValue();
-                        parm = value;
-                    }
+                        if (!(element.Producer is IFunctionProducer))
+                        {
+                            // Handles C1 function in forms markup
+                            BaseRuntimeTreeNode baseRuntimeTreeNode = property.Value as BaseRuntimeTreeNode;
+
+                            object value = baseRuntimeTreeNode.GetValue();
+
+                            parm = value;
+                        }
+                        else
+                        {
+                            parm = property.Value;
+                        }
+                    }                    
                     else
                     {
                         parm = ValueTypeConverter.Convert(property.Value, getMethodInfo.ReturnType);

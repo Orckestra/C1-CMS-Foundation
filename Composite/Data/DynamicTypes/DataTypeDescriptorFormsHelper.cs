@@ -14,6 +14,7 @@ using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessC
 using Composite.Data.Validation;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.Functions;
+using Composite.Functions.Foundation;
 
 
 namespace Composite.Data.DynamicTypes
@@ -46,7 +47,7 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         static DataTypeDescriptorFormsHelper()
         {
-            _cmsFormElementTemplate = XElement.Parse(string.Format(@"<cms:{0} xmlns:cms=""{1}"" xmlns=""{2}"" xmlns:f=""{3}"" />", FormKeyTagNames.FormDefinition, Namespaces.BindingForms10, Namespaces.BindingFormsStdUiControls10, Namespaces.BindingFormsStdFuncLib10));
+            _cmsFormElementTemplate = XElement.Parse(string.Format(@"<cms:{0} xmlns:cms=""{1}"" xmlns=""{2}"" xmlns:ff=""{3}"" xmlns:f=""{4}"" />", FormKeyTagNames.FormDefinition, Namespaces.BindingForms10, Namespaces.BindingFormsStdUiControls10, Namespaces.BindingFormsStdFuncLib10, FunctionTreeConfigurationNames.NamespaceName));
             _cmsBindingsElementTemplate = new XElement(Namespaces.BindingForms10 + FormKeyTagNames.Bindings);
             _cmsLayoutElementTemplate = new XElement(Namespaces.BindingForms10 + FormKeyTagNames.Layout);
         }

@@ -1,18 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Xml.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Composite.C1Console.Forms;
-using Composite.Functions.Foundation;
 
 
 namespace Composite.Functions.Forms
 {
     [ControlValueProperty("Producers")]
-    [ReadBindingControlValueOverload("value")]
 	internal sealed class FunctionParameterProducer : IFunctionProducer 
 	{
         public FunctionParameterProducer()
         {
-            this.Producers = new List<XElement>();
+            this.Producers = new List<BaseRuntimeTreeNode>();
         }
 
 
@@ -20,32 +19,45 @@ namespace Composite.Functions.Forms
         public string name { get; set; }
 
         
-        public string value { get; set; }
+        public object value { get; set; }
 
 
         [FormsProperty()]
-        public List<XElement> Producers { get; private set; }
+        public List<BaseRuntimeTreeNode> Producers { get; private set; }
 
 
 
-        public XElement GetResult()
+        public object GetResult()
         {
-            XElement element = new XElement(
-                    (XNamespace)FunctionTreeConfigurationNames.NamespaceName + FunctionTreeConfigurationNames.ParamTagName,
-                    new XAttribute(FunctionTreeConfigurationNames.NameAttributeName, this.name)
-                );
-
             if (this.value != null)
             {
-                element.Add(new XAttribute(FunctionTreeConfigurationNames.ValueAttributeName, this.value));
+                if (this.value is FunctionRuntimeTreeNode)
+                {
+                    return new FunctionParameterRuntimeTreeNode(this.name, this.value as FunctionRuntimeTreeNode);
+                }
+                else if (this.value is string)
+                {
+                    return new ConstantParameterRuntimeTreeNode(this.name, this.value as string);
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
             }
-
-            foreach (XElement childElement in this.Producers)
+            else if ((Producers.Count == 1) && (Producers[0] is FunctionRuntimeTreeNode))
             {
-                element.Add(childElement);
+                return new FunctionParameterRuntimeTreeNode(this.name, Producers[0] as FunctionRuntimeTreeNode);
             }
+            else if (Producers.OfType<ConstantParameterRuntimeTreeNode>().Count() == Producers.Count)
+            {
+                IEnumerable<string> values = Producers.OfType<ConstantParameterRuntimeTreeNode>().Select(f => (string)f.GetValue());
 
-            return element;
+                return new ConstantParameterRuntimeTreeNode(this.name, values);                
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }            
         }
 	}
 }
