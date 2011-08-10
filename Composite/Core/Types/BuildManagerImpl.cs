@@ -25,7 +25,8 @@ namespace Composite.Core.Types
 {
     internal sealed class BuildManagerImpl : IBuildManager
     {
-        private static readonly string LogTitle = "RGB(194, 252, 131)BuildManager";
+        private static readonly string LogTitle = "BuildManager";
+        private static readonly string LogTitleColored = "RGB(194, 252, 131)BuildManager";
         private bool _initializeAppDomainLoadedAssembliesHasRun = false;
         private string _tempAssemblyDirectory = null;
         private Hashtable<int, BuildManagerCompileUnit> _buildManagerCompileUnits = new Hashtable<int, BuildManagerCompileUnit>();
@@ -581,12 +582,12 @@ namespace Composite.Core.Types
                         }
                         catch (Exception)
                         {
-                            LoggingService.LogWarning(LogTitle, logWarning);
+                            Log.LogWarning(LogTitleColored, logWarning);
                         }
 
                         break;
                     }
-                    LoggingService.LogWarning(LogTitle, logWarning);
+                    Log.LogWarning(LogTitleColored, logWarning);
                     break;
                 }
             }
@@ -879,11 +880,11 @@ namespace Composite.Core.Types
                     {
                         locations.Remove(locationKey);
                         locations.Add(locationKey, locationCandidate);
-                        LoggingService.LogWarning(LogTitle, string.Format("Assembly '{0}' was found in multiple locations, '{1}' and '{2}' - last one not loaded.", locationKey, currentUsedLocation, locationCandidate));
+                        Log.LogWarning(LogTitleColored, string.Format("Assembly '{0}' was found in multiple locations, '{1}' and '{2}' - last one not loaded.", locationKey, currentUsedLocation, locationCandidate));
                     }
                     else
                     {
-                        LoggingService.LogWarning(LogTitle, string.Format("Assembly '{0}' was found in multiple locations, '{1}' and '{2}' - first one not loaded.", locationKey, currentUsedLocation, locationCandidate));
+                        Log.LogWarning(LogTitleColored, string.Format("Assembly '{0}' was found in multiple locations, '{1}' and '{2}' - first one not loaded.", locationKey, currentUsedLocation, locationCandidate));
                     }
                 }
             }
@@ -959,7 +960,7 @@ namespace Composite.Core.Types
             catch (Exception e)
             {
                 Exception exceptionToLog = new InvalidOperationException("Failed to delete sources of a compiled type", e);
-                LoggingService.LogError(LogTitle, exceptionToLog);
+                Log.LogError(LogTitleColored, exceptionToLog);
                 return false;
             }
         }
@@ -1030,7 +1031,7 @@ namespace Composite.Core.Types
             _initializeAppDomainLoadedAssembliesHasRun = true;
 
             int startTime = Environment.TickCount;
-            LoggingService.LogVerbose(LogTitle, "----------========== Initializing the type caching system! ==========----------");
+            Log.LogVerbose(LogTitleColored, "----------========== Initializing the type caching system! ==========----------");
 
             DeleteTempAssemblies();
             DeleteCachedSourceFiles();
@@ -1075,26 +1076,26 @@ namespace Composite.Core.Types
                 }
                 catch (ReflectionTypeLoadException)
                 {
-                    LoggingService.LogWarning("BuildManager", string.Format("Could not load '{0}', probably due to changes in one of the referenced assemblies, cached types not loaded (will be recompiled)", assembly));
+                    Log.LogWarning(LogTitle, string.Format("Could not load '{0}', probably due to changes in one of the referenced assemblies, cached types not loaded (will be recompiled)", assembly));
                 }
             }
 
             UpdateSiloPointers();
 
             int endTime = Environment.TickCount;
-            LoggingService.LogVerbose(LogTitle, string.Format("----------========== Done initializing the type caching system ({0} ms ) ==========----------", endTime - startTime));
+            Log.LogVerbose(LogTitleColored, string.Format("----------========== Done initializing the type caching system ({0} ms ) ==========----------", endTime - startTime));
         }
 
 
         public void FinalizeCachingSytem()
         {
             int startTime = Environment.TickCount;
-            Log.LogVerbose(LogTitle, "----------========== Finalizing the type caching system! ==========----------");
+            Log.LogVerbose(LogTitleColored, "----------========== Finalizing the type caching system! ==========----------");
 
             CreateCompositeGeneretedAssembly();
 
             int endTime = Environment.TickCount;
-            Log.LogVerbose(LogTitle, string.Format("----------========== Done finalizing the type caching system ({0} ms ) ==========----------", endTime - startTime));
+            Log.LogVerbose(LogTitleColored, string.Format("----------========== Done finalizing the type caching system ({0} ms ) ==========----------", endTime - startTime));
         }
 
         private void UpdateSiloPointers()
@@ -1121,7 +1122,7 @@ namespace Composite.Core.Types
                 }
                 catch (ReflectionTypeLoadException)
                 {
-                    LoggingService.LogWarning("BuildManager", string.Format("Could not load '{0}', probably due to changes in one of the referenced assemblies, cached types not loaded (will be recompiled)", assembly));
+                    Log.LogWarning(LogTitle, string.Format("Could not load '{0}', probably due to changes in one of the referenced assemblies, cached types not loaded (will be recompiled)", assembly));
                 }
             }
         }
@@ -1312,11 +1313,11 @@ namespace Composite.Core.Types
 
             if (compileResult == null)
             {
-                Log.LogVerbose("BulidManager", string.Format("Cache file created: {0}", assemblyPackFilename));
+                Log.LogVerbose(LogTitle, string.Format("Cache file created: {0}", assemblyPackFilename));
             }
             else if (compileResult.Errors.Count > 0)
             {
-                Log.LogError("BulidManager", string.Format("Compilation returned error ({0}: {1}", compileResult.Errors[0].Line, compileResult.Errors[0].ErrorText));
+                Log.LogError(LogTitle, string.Format("Compilation returned error ({0}: {1}", compileResult.Errors[0].Line, compileResult.Errors[0].ErrorText));
             }
         }
 
@@ -1421,11 +1422,11 @@ namespace Composite.Core.Types
             }
             catch (UnauthorizedAccessException)
             {
-                LoggingService.LogVerbose("BuildManager", "UnauthorizedAccessException while trying to delete file '{0}'".FormatWith(filename));
+                Log.LogVerbose(LogTitle, "UnauthorizedAccessException while trying to delete file '{0}'".FormatWith(filename));
                 return;
             }
 
-            LoggingService.LogVerbose("BuildManager", "Successfully deleted '{0}'.".FormatWith(filename));
+            Log.LogVerbose(LogTitle, "Successfully deleted '{0}'.".FormatWith(filename));
         }
 
 
@@ -1589,7 +1590,7 @@ namespace Composite.Core.Types
 
             if (Directory.Exists(_tempAssemblyDirectory) == false)
             {
-                LoggingService.LogVerbose("BuildManager", string.Format("Creating directory '{0}' for storing generated assemblies", _tempAssemblyDirectory));
+                Log.LogVerbose(LogTitle, string.Format("Creating directory '{0}' for storing generated assemblies", _tempAssemblyDirectory));
                 Directory.CreateDirectory(_tempAssemblyDirectory);
             }
         }
