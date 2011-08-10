@@ -39,8 +39,10 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
         private const string FunctionsProviderType = "functions";
         private const string WidgetFunctionsProviderType = "widgetFunctions";
 
-        public static ResourceHandle DocumentFunctionsIcon { get { return GetIconHandle("all-functions-generatedocumentation"); } }
+        public static ResourceHandle DocumentFunctionsIcon = GetIconHandle("all-functions-generatedocumentation"); 
+        private static ResourceHandle TestFunctionIcon = GetIconHandle("base-function-function");
         private static ResourceHandle GetIconHandle(string name) { return new ResourceHandle(BuildInIconProviderName.ProviderName, name); }
+        
 
         private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
 
@@ -205,6 +207,10 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
 
             bool isWidget = !(metaFunction is IFunction);
 
+
+            yield return CreateFunctionTesterAction(functionName);
+
+
             yield return new ElementAction(new ActionHandle(new FunctionInfoActionToken(functionName, isWidget)))
             {
                 VisualData = new ActionVisualizedData
@@ -222,44 +228,13 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
                     }
                 }
             };            
-        }
-
-
-
-        protected override IEnumerable<Type> OnGetEntityTokenTypes()
-        {
-            yield break;
-        }
-
-
-
-        protected override IFunctionTreeBuilderLeafInfo OnIsEntityOwner(EntityToken entityToken)
-        {
-            return null; 
-        }
-
+        }        
+        
 
 
         protected override IEnumerable<ElementAction> OnGetFolderActions()
         {
-            yield return new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Workflows.Plugins.Elements.ElementProviders.AllFunctionsElementProvider.FunctionTesterWorkflow"))))
-            {
-                VisualData = new ActionVisualizedData
-                {
-                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "AllFunctionsElementProvider.FunctionTester.Label"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "AllFunctionsElementProvider.FunctionTester.ToolTip"),
-                    Icon = AllFunctionsElementProvider.DocumentFunctionsIcon,
-                    Disabled = false,
-                    ActionLocation = new ActionLocation
-                    {
-                        ActionType = ActionType.Other,
-                        IsInFolder = false,
-                        IsInToolbar = true,
-                        ActionGroup = PrimaryActionGroup
-                    }
-                }
-            };
-
+            yield return CreateFunctionTesterAction();
 
 
             yield return new ElementAction(new ActionHandle(new DocumentFunctionsActionToken()))
@@ -279,6 +254,48 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
                     }
                 }
             };
+        }
+
+
+
+        private static ElementAction CreateFunctionTesterAction(string functionName = "")
+        {
+            WorkflowActionToken actionToken = new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Workflows.Plugins.Elements.ElementProviders.AllFunctionsElementProvider.FunctionTesterWorkflow"))
+            {
+                Payload = functionName
+            };
+
+            return new ElementAction(new ActionHandle(actionToken))
+            {
+                VisualData = new ActionVisualizedData
+                {
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "AllFunctionsElementProvider.FunctionTester.Label"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "AllFunctionsElementProvider.FunctionTester.ToolTip"),
+                    Icon = TestFunctionIcon,
+                    Disabled = false,
+                    ActionLocation = new ActionLocation
+                    {
+                        ActionType = ActionType.Other,
+                        IsInFolder = false,
+                        IsInToolbar = true,
+                        ActionGroup = PrimaryActionGroup
+                    }
+                }
+            };
+        }
+
+
+
+        protected override IEnumerable<Type> OnGetEntityTokenTypes()
+        {
+            yield break;
+        }
+
+
+
+        protected override IFunctionTreeBuilderLeafInfo OnIsEntityOwner(EntityToken entityToken)
+        {
+            return null;
         }
 
 

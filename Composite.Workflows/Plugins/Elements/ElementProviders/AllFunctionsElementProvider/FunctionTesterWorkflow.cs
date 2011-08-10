@@ -30,9 +30,20 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.AllFunctionsElem
 
         private void initalizeStateCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
-            this.Bindings.Add("FunctionMarkup", "");
+            List<NamedFunctionCall> namedFunctionCalls = new List<NamedFunctionCall>();
 
-            this.Bindings.Add("FunctionCalls", new List<NamedFunctionCall>());
+            if (Payload != "")
+            {
+                IFunction function = FunctionFacade.GetFunction(Payload);
+
+                BaseRuntimeTreeNode baseRuntimeTreeNode = FunctionFacade.BuildTree(function, new Dictionary<string, object>());
+
+                NamedFunctionCall namedFunctionCall = new NamedFunctionCall("", (BaseFunctionRuntimeTreeNode)baseRuntimeTreeNode);
+
+                namedFunctionCalls.Add(namedFunctionCall);
+            }
+
+            this.Bindings.Add("FunctionCalls", namedFunctionCalls);
             this.Bindings.Add("Parameters", new List<ManagedParameterDefinition>());
 
 
