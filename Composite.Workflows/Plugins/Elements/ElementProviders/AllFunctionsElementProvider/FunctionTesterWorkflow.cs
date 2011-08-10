@@ -15,6 +15,13 @@ using Composite.Core.WebClient.FunctionCallEditor;
 using Composite.Core.WebClient.State;
 using Composite.Functions;
 using Composite.Functions.ManagedParameters;
+using Composite.Core.WebClient.Renderings.Page;
+using Composite.C1Console.Users;
+using Composite.Data;
+using Composite.Core.ResourceSystem;
+using System.Globalization;
+using System.Threading;
+using Composite.Data.Types;
 
 
 namespace Composite.Workflows.Plugins.Elements.ElementProviders.AllFunctionsElementProvider
@@ -48,6 +55,34 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.AllFunctionsElem
             this.Bindings.Add("Parameters", new List<ManagedParameterDefinition>());
 
 
+            List<KeyValuePair<Guid, string>> pages = PageStructureInfo.PageListInDocumentOrder().ToList();
+            if (pages.Count > 0)
+            {
+                this.Bindings.Add("PageId", pages.First().Key);
+            }
+            else
+            {
+                this.Bindings.Add("PageId", Guid.Empty);
+            }
+
+            this.Bindings.Add("PageList", pages);
+
+
+            if (UserSettings.ActiveLocaleCultureInfo != null)
+            {
+                List<KeyValuePair<string, string>> activeCulturesDictionary = UserSettings.ActiveLocaleCultureInfos.Select(f => new KeyValuePair<string, string>(f.Name, DataLocalizationFacade.GetCultureTitle(f))).ToList();
+                this.Bindings.Add("ActiveCultureName", UserSettings.ActiveLocaleCultureInfo.Name);
+                this.Bindings.Add("ActiveCulturesList", activeCulturesDictionary);
+            }
+
+            this.Bindings.Add("PageDataScopeName", DataScopeIdentifier.AdministratedName);
+            this.Bindings.Add("PageDataScopeList", new Dictionary<string, string> 
+            { 
+                { DataScopeIdentifier.AdministratedName, StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "FunctionTesterWorkflow.AdminitrativeScope.Label") }, 
+                { DataScopeIdentifier.PublicName, StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "FunctionTesterWorkflow.PublicScope.Label") } 
+            });
+
+
             Guid stateId = Guid.NewGuid();
             var state = new FunctionCallDesignerState { WorkflowId = WorkflowInstanceId, ConsoleIdInternal = GetCurrentConsoleId() };
             SessionStateManager.DefaultProvider.AddState<IFunctionCallEditorState>(stateId, state, DateTime.Now.AddDays(7.0));
@@ -60,6 +95,31 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.AllFunctionsElem
 
         private void editCodeActivity_Preview_ExecuteCode(object sender, EventArgs e)
         {
+            Guid pageId;
+            if (this.GetBinding<object>("PageId") == null) pageId = Guid.Empty;
+            else pageId = this.GetBinding<Guid>("PageId");
+
+            string dataScopeName = this.GetBinding<string>("PageDataScopeName");
+            string cultureName = this.GetBinding<string>("ActiveCultureName");            
+            
+
+            // Setting debug page
+            IPage oldPage = PageRenderer.CurrentPage;            
+            IPage page = DataFacade.GetData<IPage>(f => f.Id == pageId).FirstOrDefault();
+            if (page != null) PageRenderer.CurrentPage = page;
+
+
+            // Setting debug culture
+            CultureInfo oldCurrentCulture = Thread.CurrentThread.CurrentCulture;
+            CultureInfo oldCurrentUICulture = Thread.CurrentThread.CurrentUICulture;
+            CultureInfo cultureInfo = null;
+            if (cultureName != null) cultureInfo = CultureInfo.CreateSpecificCulture(cultureName);
+            if (cultureInfo != null)
+            {
+                Thread.CurrentThread.CurrentCulture = cultureInfo;
+                Thread.CurrentThread.CurrentUICulture = cultureInfo;
+            }
+
             List<NamedFunctionCall> namedFunctionCalls = GetBinding<List<NamedFunctionCall>>("FunctionCalls");
 
             StringBuilder output = new StringBuilder();
@@ -70,7 +130,11 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.AllFunctionsElem
                 object functionResult;
                 try
                 {
-                    functionResult = namedFunctionCall.FunctionCall.GetValue();
+                    // Setting debug data scope
+                    using (new DataScope(DataScopeIdentifier.Deserialize(dataScopeName), cultureInfo))
+                    {
+                        functionResult = namedFunctionCall.FunctionCall.GetValue();
+                    }
                 }
                 catch(Exception ex)
                 {
@@ -83,11 +147,18 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.AllFunctionsElem
 
                     functionResult = sb.ToString();
                 }
+               
                 
                 output.AppendLine(PrettyPrinter.Print(functionResult));
 
                 output.AppendLine();
             }
+
+            // Restore culture
+            Thread.CurrentThread.CurrentCulture = oldCurrentCulture;
+            Thread.CurrentThread.CurrentUICulture = oldCurrentUICulture;            
+
+            // Page should not be restored
 
             FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
             IFormFlowWebRenderingService formFlowWebRenderingService = serviceContainer.GetService<IFormFlowWebRenderingService>();

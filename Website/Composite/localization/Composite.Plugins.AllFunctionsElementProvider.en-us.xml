@@ -10,8 +10,19 @@
   <string key="AllFunctionsElementProvider.ViewFunctionInformationTooltip" value="View function information" />
 
   <string key="FunctionTesterWorkflow.Layout.Label" value="Function Tester" />
-  <string key="FunctionTesterWorkflow.FunctionCalls.Label" value="Functions" />
+  <string key="FunctionTesterWorkflow.FunctionCalls.Label" value="Functions" />  
   <string key="FunctionTesterWorkflow.Preview.Label" value="Results" />
+  <string key="FunctionTesterWorkflow.Runtime.FieldGroup.Label" value="Runtime" />
+  <string key="FunctionTesterWorkflow.DebugFieldGroup.Label" value="Settings" />
+  <string key="FunctionTesterWorkflow.DebugPage.Label" value="Page" />
+  <string key="FunctionTesterWorkflow.DebugPage.Help" value="When executing the function, this page is used as current page" />
+  <string key="FunctionTesterWorkflow.DebugPageDataScope.Label" value="Data scope" />
+  <string key="FunctionTesterWorkflow.DebugPageDataScope.Help" value="When executing the function, this is used as current data scope" />
+  <string key="FunctionTesterWorkflow.DebugActiveLocale.Label" value="Language" />
+  <string key="FunctionTesterWorkflow.DebugActiveLocale.Help" value="When executing the function, this is used as the current language" />
+  <string key="FunctionTesterWorkflow.AdminitrativeScope.Label" value="Administrative" />
+  <string key="FunctionTesterWorkflow.PublicScope.Label" value="Public" />
+  
 
   <string key="AllFunctionsElementProvider.FunctionTester.Label" value="Test function" />
   <string key="AllFunctionsElementProvider.FunctionTester.ToolTip" value="Test function" />
