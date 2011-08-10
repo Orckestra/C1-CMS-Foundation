@@ -218,7 +218,7 @@ namespace {0}
 ·{{
 ··public static XElement {2}()
 ··{{            
-···using (DataConnection connection = new DataConnection(PublicationScope.Unpublished))
+···using (DataConnection connection = new DataConnection())
 ···{{
 ····XElement element = new XElement(""Pages"");    
 
