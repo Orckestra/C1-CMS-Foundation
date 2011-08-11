@@ -20,12 +20,17 @@ public partial class Renderers_Page : System.Web.UI.Page
 
     RenderingContext _renderingContext;
 
-    protected override void OnInit(EventArgs e)
+    protected override void OnPreInit(EventArgs e)
     {
+        base.OnPreInit(e);
+
         _renderingContext = RenderingContext.InitializeFromHttpContext();
 
         InitializeCulture();
+    }
 
+    protected override void OnInit(EventArgs e)
+    {
         if(_renderingContext.RunResponseHandlers())
         {
             _requestCompleted = true;
@@ -48,11 +53,6 @@ public partial class Renderers_Page : System.Web.UI.Page
         using (Profiler.Measure("ASP.NET controls: PageInit"))
         {
             Controls.Add(renderedPage);
-        }
-
-        if (Form != null)
-        {
-            Form.Action = Request.RawUrl;
         }
 
         _pageEventsPageMeasuring = Profiler.Measure("ASP.NET controls: PageLoad, Event handling, PreRender");
