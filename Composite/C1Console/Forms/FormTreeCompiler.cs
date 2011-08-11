@@ -90,9 +90,13 @@ namespace Composite.C1Console.Forms
             extractUiArtifacts.ExtractUiArtifacts(_rootCompilerNode, out _uiControl, out _label, out _iconHandle);
         }
 
-
         /// <exclude />
-        public Dictionary<string, Exception> SaveControlProperties()
+        public void SaveControlProperties()
+        {
+            SaveAndValidateControlProperties();
+        }
+
+        internal Dictionary<string, Exception> SaveAndValidateControlProperties()
         {
             _uiControl.BindStateToControlProperties();
 

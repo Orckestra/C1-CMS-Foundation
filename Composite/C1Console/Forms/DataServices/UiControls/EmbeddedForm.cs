@@ -58,7 +58,7 @@ namespace Composite.C1Console.Forms.DataServices.UiControls
         /// <exclude />
         public override void BindStateToControlProperties()
         {
-            _compiler.SaveControlProperties();
+            _compiler.SaveAndValidateControlProperties();
         }
 
 

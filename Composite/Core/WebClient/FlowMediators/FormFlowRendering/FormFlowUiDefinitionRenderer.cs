@@ -64,7 +64,7 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
                         Dictionary<string, object> activeInnerFormBindings = CurrentInnerFormBindings;
 
                         FormFlowEventHandler handler = eventHandlers[localScopeEventIdentifier];
-                        Dictionary<string, Exception> bindingErrors = activeFormTreeCompiler.SaveControlProperties();
+                        Dictionary<string, Exception> bindingErrors = activeFormTreeCompiler.SaveAndValidateControlProperties();
 
                         formServicesContainer.AddService(new BindingValidationService(bindingErrors));
 
