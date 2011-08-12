@@ -195,11 +195,5 @@ namespace Composite.Core.Routing.Pages
 
             return GetRouteData(); // returning route so other routers will not be executed
         }
-
-        /// <exclude />
-        public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
-        {
-            return new VirtualPathData(this, "~/Renderers/Page.aspx");
-        }
     }
 }
