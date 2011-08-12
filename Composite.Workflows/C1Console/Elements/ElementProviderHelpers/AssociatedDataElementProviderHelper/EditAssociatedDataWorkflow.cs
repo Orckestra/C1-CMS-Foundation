@@ -1,5 +1,6 @@
 using System;
 using Composite.C1Console.Actions;
+using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
@@ -105,6 +106,8 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             if (isValid)
             {
                 DataFacade.Update(data);
+
+                EntityTokenCacheFacade.ClearCache(data.GetDataEntityToken());
 
                 updateTreeRefresher.PostRefreshMesseges(this.EntityToken);
 

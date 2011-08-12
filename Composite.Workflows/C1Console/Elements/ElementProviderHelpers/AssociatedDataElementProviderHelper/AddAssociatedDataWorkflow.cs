@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Workflow.Activities;
 using Composite.C1Console.Actions;
+using Composite.C1Console.Security;
 using Composite.C1Console.Users;
 using Composite.C1Console.Workflow;
 using Composite.Core.Types;
@@ -232,6 +233,8 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                     }
 
                     DataFacade.Update(newData);
+
+                    EntityTokenCacheFacade.ClearCache(newData.GetDataEntityToken());
                 }
 
                 ParentTreeRefresher specificTreeRefresher = this.CreateParentTreeRefresher();
