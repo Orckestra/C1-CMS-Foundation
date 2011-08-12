@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Composite.C1Console.Actions;
+using Composite.C1Console.Security;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
@@ -79,19 +80,6 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             return _helper;
         }
-
-
-
-        private DataTypeDescriptor GetDataTypeDescriptor()
-        {
-            GeneratedDataTypesElementProviderTypeEntityToken entityToken = (GeneratedDataTypesElementProviderTypeEntityToken)this.EntityToken;
-            Type type = TypeManager.GetType(entityToken.SerializedTypeName);
-
-            Guid guid = type.GetImmutableTypeId();
-
-            return DataMetaDataFacade.GetDataTypeDescriptor(guid);
-        }
-
 
 
         private void initialCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
@@ -179,14 +167,23 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                     this.UpdateBinding("NewData", newData);
                     this.Bindings.Add("DataAdded", true);
+
+                    /*var providerRootEntityToken = new GeneratedDataTypesElementProviderRootEntityToken(
+                        this.EntityToken.Source,
+                        GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId);*/
+
+                    ParentTreeRefresher specificTreeRefresher = this.CreateParentTreeRefresher();
+                    specificTreeRefresher.PostRefreshMesseges(this.EntityToken);
                 }
                 else
                 {
+                    UpdateTreeRefresher updateTreeRefresher = this.CreateUpdateTreeRefresher(this.EntityToken);
+                    
                     DataFacade.Update(newData);
-                }
+                    EntityTokenCacheFacade.ClearCache(newData.GetDataEntityToken());
 
-                SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
-                specificTreeRefresher.PostRefreshMesseges(new GeneratedDataTypesElementProviderRootEntityToken(this.EntityToken.Source, GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId));
+                    updateTreeRefresher.PostRefreshMesseges(this.EntityToken);
+                }
             }
 
             if (justAdded)

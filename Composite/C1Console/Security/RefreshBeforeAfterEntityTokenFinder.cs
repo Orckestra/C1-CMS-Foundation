@@ -1,9 +1,6 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using Composite.Core.Logging;
-using Composite.Core.Types;
-
 
 namespace Composite.C1Console.Security
 {
@@ -63,38 +60,36 @@ namespace Composite.C1Console.Security
         }
 
 
-
         private static RelationshipGraphNode FindNode(RelationshipGraphNode leftNode, RelationshipGraphNode rightNode, RelationshipGraphNode lastLeftNode)
         {
+            // Searched for the first node in "leftNode" chain which isn't present in "rightNode" chain
+            // leftNode  -> A -> B -> C -> D -> ....
+            // rightNode -> A -> B -> C -> E -> ....
+            // Result: D;
+
+            // leftNode  -> A -> B -> C -> D
+            // rightNode -> A -> B -> C -> D -> ....
+            // Result: D;
+
+            // leftNode  -> A -> B -> C -> D -> ....
+            // rightNode -> A -> B -> C -> D 
+            // Result: D;
+
+            // leftNode  -> A -> B -> C -> D
+            // rightNode -> A -> B -> C -> D 
+            // Result: D;
+
             if (leftNode.EntityToken.GetHashCode() != rightNode.EntityToken.GetHashCode())
             {
-                if (lastLeftNode != null)
-                {
-                    return lastLeftNode;
-                }
-                else
-                {
-                    return null;
-                }
+                return lastLeftNode; 
             }
-            else
+            
+            if ((leftNode.ChildNode != null) && (rightNode.ChildNode != null))
             {
-                if ((leftNode.ChildNode != null) && (rightNode.ChildNode != null))
-                {
-                    return FindNode(leftNode.ChildNode, rightNode.ChildNode, leftNode);
-                }
-                else
-                {
-                    if (lastLeftNode != null)
-                    {
-                        return lastLeftNode;
-                    }
-                    else
-                    {
-                        return leftNode;
-                    }
-                }
+                return FindNode(leftNode.ChildNode, rightNode.ChildNode, leftNode);
             }
+
+            return leftNode;
         }
 
 

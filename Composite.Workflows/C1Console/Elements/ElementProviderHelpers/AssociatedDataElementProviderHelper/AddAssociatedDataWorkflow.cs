@@ -63,15 +63,6 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         }
 
 
-
-
-        private void IsDataAddedTest(object sender, ConditionalEventArgs e)
-        {
-            e.Result = false;
-        }
-
-
-
         private void initialCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
             AssociatedDataElementProviderHelperEntityToken entityToken = this.EntityToken as AssociatedDataElementProviderHelperEntityToken;
@@ -92,8 +83,6 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
         private void selectTypeCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            Type interfaceType = GetInterfaceType();
-
             List<Type> types = PageFolderFacade.GetAllFolderTypes().ToList();
 
             this.Bindings.Add("Types", types);

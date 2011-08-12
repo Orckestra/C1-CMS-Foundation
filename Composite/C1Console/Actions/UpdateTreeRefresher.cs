@@ -36,19 +36,17 @@ namespace Composite.C1Console.Actions
             {
                 throw new InvalidOperationException("Only one PostRefreshMesseges call is allowed");
             }
-            else
+            
+            _postRefreshMessegesCalled = true;
+
+            _afterGraph = new RelationshipGraph(afterUpdateEntityToken, RelationshipGraphSearchOption.Both);
+
+            IManagementConsoleMessageService messageService = _flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
+
+            foreach (EntityToken entityToken in RefreshBeforeAfterEntityTokenFinder.FindEntityTokens(_beforeGraph, _afterGraph))
             {
-                _postRefreshMessegesCalled = true;
-
-                _afterGraph = new RelationshipGraph(afterUpdateEntityToken, RelationshipGraphSearchOption.Both);
-
-                IManagementConsoleMessageService messageService = _flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
-
-                foreach (EntityToken entityToken in RefreshBeforeAfterEntityTokenFinder.FindEntityTokens(_beforeGraph, _afterGraph))
-                {
-                    messageService.RefreshTreeSection(entityToken);
-                    LoggingService.LogVerbose("UpdateTreeRefresher", string.Format("Refreshing EntityToken: Type = {0}, Source = {1}, Id = {2}, EntityTokenType = {3}", entityToken.Type, entityToken.Source, entityToken.Id, entityToken.GetType()));
-                }
+                messageService.RefreshTreeSection(entityToken);
+                LoggingService.LogVerbose("UpdateTreeRefresher", string.Format("Refreshing EntityToken: Type = {0}, Source = {1}, Id = {2}, EntityTokenType = {3}", entityToken.Type, entityToken.Source, entityToken.Id, entityToken.GetType()));
             }
         }
     }
