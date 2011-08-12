@@ -7,6 +7,8 @@ using System.Web.Hosting;
 using Composite.Data.Types;
 using System.Web.Caching;
 using Composite.C1Console.Security;
+using System.Web.SessionState;
+using System.Reflection;
 
 namespace Composite.Core.WebClient.Renderings.Page
 {
@@ -46,15 +48,48 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                 var wr = new PreviewWorkerRequest(query, ctx, writer);
 
+                AllowChildRequestSessionAccess(ctx);
                 HttpRuntime.ProcessRequest(wr);
 
                 return sb.ToString();
-
             }
 
             return String.Empty;
         }
 
+
+        /// <summary>
+        /// sigh - this fixes a fucked up issue, where previewing pages containing code writing to Session, 
+        /// will breake all subsequent page previews regardless of content. Should you obtain the wisdom as
+        /// to what exactly is the trick here, I'd love to now. I will leave it as "well, this fix the issue 
+        /// and pass testing. Hurray for Harry Potter and magic!". Oh how I loathe doing that :(
+        /// </summary>
+        /// <param name="ctx">the Http context that will be shared between master and child process</param>
+        private static void AllowChildRequestSessionAccess(HttpContext ctx)
+        {
+            System.Web.SessionState.SessionIDManager manager = new System.Web.SessionState.SessionIDManager();
+            string oldId = manager.GetSessionID(ctx);
+            string newId = manager.GetSessionID(ctx);
+            bool isAdd = false, isRedir = false;
+            manager.SaveSessionID(ctx, newId, out isRedir, out isAdd);
+            HttpApplication ctx2 = (HttpApplication)HttpContext.Current.ApplicationInstance;
+            HttpModuleCollection mods = ctx2.Modules;
+            System.Web.SessionState.SessionStateModule ssm = (SessionStateModule)mods.Get("Session");
+            System.Reflection.FieldInfo[] fields = ssm.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
+            SessionStateStoreProviderBase store = null;
+            System.Reflection.FieldInfo rqIdField = null, rqLockIdField = null, rqStateNotFoundField = null;
+            foreach (System.Reflection.FieldInfo field in fields)
+            {
+                if (field.Name.Equals("_store")) store = (SessionStateStoreProviderBase)field.GetValue(ssm);
+                if (field.Name.Equals("_rqId")) rqIdField = field;
+                if (field.Name.Equals("_rqLockId")) rqLockIdField = field;
+                if (field.Name.Equals("_rqSessionStateNotFound")) rqStateNotFoundField = field;
+            }
+            object lockId = rqLockIdField.GetValue(ssm);
+            if ((lockId != null) && (oldId != null)) store.ReleaseItemExclusive(ctx, oldId, lockId);
+            rqStateNotFoundField.SetValue(ssm, true);
+            rqIdField.SetValue(ssm, newId);
+        }
 
         private class PreviewWorkerRequest : SimpleWorkerRequest
         {
