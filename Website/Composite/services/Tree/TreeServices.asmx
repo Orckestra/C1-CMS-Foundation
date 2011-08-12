@@ -53,7 +53,7 @@ namespace Composite.Services
             {
                 string username = UserValidationFacade.GetUsername();
 
-                List<Element> allPerspectives = ElementFacade.GetPerspectiveElementsWithNoSecurity(null).ToList();
+                List<Element> allPerspectives = ElementFacade.GetPerspectiveElementsWithNoSecurity().ToList();
                 List<string> activePerspectiveEntityTokens = UserPerspectiveFacade.GetSerializedEntityTokens(username).ToList();
                 activePerspectiveEntityTokens.AddRange(UserGroupPerspectiveFacade.GetSerializedEntityTokens(username));
                 activePerspectiveEntityTokens = activePerspectiveEntityTokens.Distinct().ToList();
