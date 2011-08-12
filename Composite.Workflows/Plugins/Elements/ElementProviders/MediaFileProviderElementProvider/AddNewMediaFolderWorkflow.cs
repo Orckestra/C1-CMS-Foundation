@@ -105,9 +105,6 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 folder.Title = folderPath.GetFolderName('/');
             }            
 
-            FlowControllerServicesContainer flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
-            var managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
-
             CreateParentFolder(folder.GetParentFolderPath(), providerName);
 
             folder = DataFacade.AddNew<IMediaFileFolder>(folder, providerName);
@@ -151,7 +148,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 return;
             }
 
-            if (DataFacade.GetData<IMediaFileFolder>(f => f.Path == folderPath).Any() == true)
+            if (DataFacade.GetData<IMediaFileFolder>().Any(f => string.Compare(f.Path, folderPath, StringComparison.InvariantCultureIgnoreCase) == 0))
             {
                 e.Result = false;
                 ShowFieldMessage("FolderName", StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.AddNewMediaFolder.FolderNameAlreadyUsed"));

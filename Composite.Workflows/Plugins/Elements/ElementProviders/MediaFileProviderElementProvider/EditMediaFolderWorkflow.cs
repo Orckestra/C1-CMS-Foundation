@@ -82,7 +82,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
             if (oldFolderPath != folderPath)                 
             {
-                if (DataFacade.GetData<IMediaFileFolder>(f => f.Path == folderPath).Any() == true)
+                if (DataFacade.GetData<IMediaFileFolder>().Any(f => string.Compare(f.Path, folderPath, StringComparison.InvariantCultureIgnoreCase) == 0))
                 {
                     ShowFieldMessage("FolderName", StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.AddNewMediaFolder.FolderNameAlreadyUsed"));
                     e.Result = false;
