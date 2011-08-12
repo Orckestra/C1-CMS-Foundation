@@ -87,6 +87,8 @@ ImageDialogPageBinding.prototype._populateDataBindingsFromDOM = function () {
 			src = "~" + src.substring(src.indexOf("../../../../..") + 14);
 		}
 
+		src = src.replace(/%28/g, "(").replace(/%29/g, ")");
+
 		var mediaUrl = new MediaUrl(src);
 		if (mediaUrl.isMedia) {
 			if (mediaUrl.hasParam("mw"))

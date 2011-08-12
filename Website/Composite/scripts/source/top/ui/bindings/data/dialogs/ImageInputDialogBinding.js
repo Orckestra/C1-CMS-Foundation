@@ -57,7 +57,7 @@ ImageInputDialogBinding.prototype._buildDOMContent = function () {
 	this.buildButton();
 
 	var self = this;
-	DOMEvents.addEventListener(this, DOMEvents.DOUBLECLICK, {
+	DOMEvents.addEventListener(this.shadowTree.input, DOMEvents.DOUBLECLICK, {
 		handleEvent: function (e) {
 			self.setReadOnly(false);
 			self.focus();
