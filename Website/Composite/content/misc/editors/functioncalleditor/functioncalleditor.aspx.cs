@@ -452,7 +452,11 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             BaseFunctionRuntimeTreeNode functionRuntime = localNamedFunctionCall.FunctionCall;
 
             XElement function = functionRuntime.Serialize();
-            function.Add(new XAttribute("localname", localNamedFunctionCall.Name));
+            if(_state.AllowLocalFunctionNameEditing)
+            {
+                function.Add(new XAttribute("localname", localNamedFunctionCall.Name));
+            }
+            
             function.Add(new XAttribute("handle", handle));
 
             functionsNode.Add(function);
