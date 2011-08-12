@@ -1,28 +1,27 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvider
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-	internal sealed class MethodBasedDefaultValueAttribute : Attribute
-	{
+	public sealed class MethodBasedDefaultValueAttribute : Attribute
+    {
+        /// <exclude />
         public MethodBasedDefaultValueAttribute(string parameterName, object defaultValue)
         {
             this.ParameterName = parameterName;
             this.DefaultValue = defaultValue;
         }
 
-
-
+        /// <exclude />
         public string ParameterName
         {
             get;
             private set;
         }
 
-
+        /// <exclude />
         public object DefaultValue
         {
             get;
