@@ -1,17 +1,14 @@
 ﻿<%@ WebService Language="C#" Class="Composite.Services.LocalizationService" %>
 
-using System;
 using System.Linq;
 using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Collections.Generic;
 using System.Globalization;
-using Composite;
 using Composite.Data;
 using Composite.Core;
 using Composite.Core.WebClient.Services.LocalizationServiceObjects;
 using Composite.C1Console.Users;
-using Composite.Core.ResourceSystem;
 using Composite.Core.WebClient.FlowMediators;
 using Composite.C1Console.Workflow;
 using Composite.C1Console.Security;
@@ -78,7 +75,7 @@ namespace Composite.Services
         [WebMethod]
         public List<string> GetLocaleAwarePerspectiveElements(bool dummy)
         {
-            return TreeServicesFacade.GetLocaleAwarePerspectiveElements(null);
+            return TreeServicesFacade.GetLocaleAwarePerspectiveElements();
         }
 
 

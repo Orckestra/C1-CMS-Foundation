@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -32,7 +31,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             this.MultiSelectLabel = multiSelectLabel;
             this.MultiSelectHelp = multiSelectHelp;
 
-            _perspectiveElements = ElementFacade.GetPerspectiveElementsWithNoSecurity(null).ToList();
+            _perspectiveElements = ElementFacade.GetPerspectiveElementsWithNoSecurity().ToList();
         }
 
 

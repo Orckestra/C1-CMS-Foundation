@@ -435,6 +435,7 @@
     <Compile Include="Functions\Plugins\XslExtensionsProvider\Runtime\XslExtensionsProviderFactory.cs" />
     <Compile Include="Functions\Plugins\XslExtensionsProvider\IXslExtensionsProvider.cs" />
     <Compile Include="Functions\Plugins\XslExtensionsProvider\Runtime\XslExtensionsProviderSettings.cs" />
+    <Compile Include="Functions\StandardFunctionSecurityAncestorProvider.cs" />
     <Compile Include="Functions\StandardFunctions.cs" />
     <Compile Include="Functions\XslExtensionsManager.cs" />
     <Compile Include="Core\Configuration\BuildinPlugins\GlobalSettingsProvider\BuildinCacheSettings.cs" />

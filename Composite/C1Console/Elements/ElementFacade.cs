@@ -227,7 +227,7 @@ namespace Composite.C1Console.Elements
 
 
         /// <exclude />
-        public static IEnumerable<Element> GetPerspectiveElements(SearchToken searchToken, bool performSecurityCheck)
+        public static IEnumerable<Element> GetPerspectiveElements(bool performSecurityCheck)
         {
             IEnumerable<ElementHandle> rootElementHandles = GetRoots(ElementProviderRegistry.RootElementProviderName, null, performSecurityCheck, false).Select(f => f.ElementHandle);
 
@@ -245,9 +245,9 @@ namespace Composite.C1Console.Elements
 
 
         /// <exclude />
-        public static IEnumerable<Element> GetPerspectiveElementsWithNoSecurity(SearchToken searchToken)
+        public static IEnumerable<Element> GetPerspectiveElementsWithNoSecurity()
         {
-            return GetPerspectiveElements(searchToken, false);
+            return GetPerspectiveElements(false);
         }
 
 

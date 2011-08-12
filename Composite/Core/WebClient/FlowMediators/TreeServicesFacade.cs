@@ -84,9 +84,9 @@ namespace Composite.Core.WebClient.FlowMediators
 
 
         /// <exclude />
-        public static List<string> GetLocaleAwarePerspectiveElements(SearchToken searchToken)
+        public static List<string> GetLocaleAwarePerspectiveElements()
         {
-            IEnumerable<Element> elements = ElementFacade.GetPerspectiveElements(searchToken, true);
+            IEnumerable<Element> elements = ElementFacade.GetPerspectiveElements(true);
 
             List<string> clientElementKeys = new List<string>();
             foreach (Element element in elements)
@@ -103,9 +103,9 @@ namespace Composite.Core.WebClient.FlowMediators
 
 
         /// <exclude />
-        public static List<ClientElement> GetPerspectiveElementsWithNoSecurity(SearchToken searchToken)
+        public static List<ClientElement> GetPerspectiveElementsWithNoSecurity()
         {
-            return ElementFacade.GetPerspectiveElementsWithNoSecurity(searchToken).ToList().ToClientElementList();
+            return ElementFacade.GetPerspectiveElementsWithNoSecurity().ToList().ToClientElementList();
         }
 
 

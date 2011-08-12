@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Text;
-using Composite.C1Console.Security.Foundation.PluginFacades;
-using Composite.Core.Configuration;
-using Microsoft.Practices.EnterpriseLibrary.Validation;
-using Composite.Data.Validation.Validators;
 using Composite.C1Console.Elements;
+using Composite.C1Console.Security.Foundation.PluginFacades;
+using Composite.C1Console.Users;
+using Composite.Core.Configuration;
 using Composite.Core.Logging;
 using Composite.Core.ResourceSystem;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.C1Console.Users;
-using System.Globalization;
-using Composite.Data.DynamicTypes;
 
 
 namespace Composite.C1Console.Security
@@ -109,7 +105,7 @@ namespace Composite.C1Console.Security
                 }
 
                 LoggingService.LogVerbose("AdministratorAutoCreator", string.Format("Activating all known perspectives for user '{0}'", userName));
-                IEnumerable<EntityToken> perspectiveEntityTokens = ElementFacade.GetPerspectiveElementsWithNoSecurity(null).Select(f => f.ElementHandle.EntityToken);
+                IEnumerable<EntityToken> perspectiveEntityTokens = ElementFacade.GetPerspectiveElementsWithNoSecurity().Select(f => f.ElementHandle.EntityToken);
                 UserPerspectiveFacade.SetEntityTokens(userName, perspectiveEntityTokens);
             }
 
