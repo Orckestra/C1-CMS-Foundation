@@ -20,6 +20,7 @@ namespace Composite.Core.WebClient
 	public static class MediaUrlHelper
 	{
 	    private static readonly string DefaultMediaStore = "MediaArchive";
+        private static readonly string DefaultMediaStorePrefix = DefaultMediaStore + ":";
         private static readonly Regex GuidRegex = new Regex(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$");
         private static readonly string LogTitle = typeof(MediaUrlHelper).Name;
         private static readonly string InternalMediaUrlPrefix = UrlUtils.PublicRootPath + "/media(";
@@ -198,53 +199,15 @@ namespace Composite.Core.WebClient
         {
             StringBuilder result = null;
 
-            var internalUrls = new List<Match>();
-
-            // We assume that url starts with "{Site root}/media({MediaId}[?{Query}]" and ends with 
-            // double quote, single quote, or &#39; which is single quote mark (') encoded in xml attribute 
-            
-            int startIndex = 0;
-
-            while (true)
-            {
-                int urlOffset = content.IndexOf(InternalMediaUrlPrefix, startIndex, StringComparison.OrdinalIgnoreCase);
-                if (urlOffset < 0) break;
-
-                int prefixEndOffset = urlOffset + InternalMediaUrlPrefix.Length;
-
-                int endOffset = content.IndexOf('\"', prefixEndOffset);
-                if (endOffset < 0) break;
-
-                int singleQuoteIndex = content.IndexOf('\'', prefixEndOffset, endOffset - prefixEndOffset);
-                if (singleQuoteIndex > 0)
-                {
-                    endOffset = singleQuoteIndex;
-                }
-
-                int encodedSingleQuoteIndex = content.IndexOf("&#39;", prefixEndOffset, endOffset - prefixEndOffset);
-                if (encodedSingleQuoteIndex > 0) endOffset = encodedSingleQuoteIndex;
-
-                int hashSignIndex = content.IndexOf('#', prefixEndOffset, endOffset - prefixEndOffset);
-                if (hashSignIndex > 0)
-                {
-                    endOffset = hashSignIndex;
-                }
-
-                internalUrls.Add(new Match
-                {
-                    Index = urlOffset,
-                    Value = content.Substring(urlOffset, endOffset - urlOffset)
-                });
-
-                startIndex = endOffset;
-            }
+            // We assume that url starts with "{Site root}/media({MediaId})[?{Query}]" 
+            List<UrlUtils.UrlMatch> internalUrls = UrlUtils.FindUrlsInHtml(content, InternalMediaUrlPrefix);
 
             // Sorting the offsets by descending, so we can replace urls in that order by not affecting offsets of not yet processed urls
             internalUrls.Reverse();
 
 
             var converionCache = new Dictionary<string, string>();
-            foreach (Match mediaUrlMatch in internalUrls)
+            foreach (UrlUtils.UrlMatch mediaUrlMatch in internalUrls)
             {
                 string internalMediaUrl = mediaUrlMatch.Value;
                 string publicMediaUrl;
@@ -260,7 +223,14 @@ namespace Composite.Core.WebClient
 
                     Guid mediaId;
                     int prefixLength = InternalMediaUrlPrefix.Length;
-                    if (!Guid.TryParse(internalMediaUrl.Substring(prefixLength, closingBracketOffset - prefixLength), out mediaId))
+
+                    string mediaIdStr = internalMediaUrl.Substring(prefixLength, closingBracketOffset - prefixLength);
+                    if (mediaIdStr.StartsWith(DefaultMediaStorePrefix, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        mediaIdStr = mediaIdStr.Substring(DefaultMediaStorePrefix.Length);
+                    }
+
+                    if (!Guid.TryParse(mediaIdStr, out mediaId))
                     {
                         continue;
                     }
@@ -332,12 +302,6 @@ namespace Composite.Core.WebClient
             }
 
             return result != null ? result.ToString() : content;
-        }
-
-        private class Match
-        {
-            public int Index;
-            public string Value;
         }
 	}
 }

@@ -70,8 +70,16 @@ namespace Composite.Core.WebClient.Renderings
                 int endBracketOffset = rawUrl.IndexOf(")");
                 if (endBracketOffset < 0) return false;
 
+                string mediaIdStr = rawUrl.Substring(MediaUrl_InternalPrefix.Length, endBracketOffset - MediaUrl_InternalPrefix.Length);
+
+                const string defaultMediaStorePrefix = "MediaArchive:";
+                if(mediaIdStr.StartsWith(defaultMediaStorePrefix, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    mediaIdStr = mediaIdStr.Substring(defaultMediaStorePrefix.Length);
+                }
+
                 Guid mediaId;
-                if (!Guid.TryParse(rawUrl.Substring(MediaUrl_InternalPrefix.Length, endBracketOffset - MediaUrl_InternalPrefix.Length), out mediaId))
+                if (!Guid.TryParse(mediaIdStr, out mediaId))
                 {
                     return false;
                 }

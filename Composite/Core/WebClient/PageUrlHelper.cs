@@ -12,7 +12,6 @@ using Composite.Data;
 using Composite.Data.Types;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.Extensions;
-//using PageManager = Composite.Data.PageManager;
 
 
 namespace Composite.Core.WebClient
@@ -106,12 +105,6 @@ namespace Composite.Core.WebClient
         private static readonly string LogTitle = "PageUrlHelper";
         // private static readonly string RenredingLinkRegExPattern = string.Format(@"{0}/Renderers/Page.aspx([^\""']*)", UrlUtils.PublicRootPath);
         // private static readonly Regex RenredingLinkRegex = new Regex(RenredingLinkRegExPattern + "");
-
-        private class Match
-        {
-            public int Index;
-            public string Value;
-        }
 
         private static readonly string RendererUrlPrefix = UrlUtils.PublicRootPath + "/Renderers/Page.aspx";
         private static readonly string InternalUrlPrefix = UrlUtils.PublicRootPath + "/page";
@@ -444,47 +437,15 @@ namespace Composite.Core.WebClient
         {
             StringBuilder result = null;
 
-            var internalUrls = new List<Match>();
-
-            
+            List<UrlUtils.UrlMatch> internalUrls;
 
             // We assume that url starts with either 
             // "{virtual folder path}/Renderers/Page.aspx"  or "~/page("
             // and ends with one of the following characters: 
             // double quote, single quote, or "&#39;" which is single quote mark (') encoded in xml attribute 
 
-            foreach (string prefix in new [] { RendererUrlPrefix, InternalUrlPrefix })
-            {
-                int startIndex = 0;
-
-                while (true)
-                {
-                    int urlOffset = html.IndexOf(prefix, startIndex, StringComparison.OrdinalIgnoreCase);
-                    if (urlOffset < 0) break;
-
-                    int prefixEndOffset = urlOffset + prefix.Length;
-
-                    int endOffset = html.IndexOf('\"', prefixEndOffset);
-                    if (endOffset < 0) break;
-
-                    int singleQuoteIndex = html.IndexOf('\'', prefixEndOffset, endOffset - prefixEndOffset);
-                    if (singleQuoteIndex > 0)
-                    {
-                        endOffset = singleQuoteIndex;
-                    }
-
-                    int encodedSingleQuoteIndex = html.IndexOf("&#39;", prefixEndOffset, endOffset - prefixEndOffset);
-                    if (encodedSingleQuoteIndex > 0) endOffset = encodedSingleQuoteIndex;
-
-                    internalUrls.Add(new Match
-                                         {
-                                             Index = urlOffset,
-                                             Value = html.Substring(urlOffset, endOffset - urlOffset)
-                                         });
-
-                    startIndex = endOffset;
-                }
-            }
+            internalUrls = UrlUtils.FindUrlsInHtml(html, RendererUrlPrefix);
+            internalUrls.AddRange(UrlUtils.FindUrlsInHtml(html, InternalUrlPrefix));
 
             // Sorting the offsets by descending, so we can replace urls in that order by not affecting offsets of not yet processed urls
             internalUrls.Sort((a, b) => -a.Index.CompareTo(b.Index));
@@ -492,7 +453,7 @@ namespace Composite.Core.WebClient
             UrlSpace urlSpace = HttpContext.Current != null ? new UrlSpace(HttpContext.Current) : new UrlSpace();
 
             var resolvedUrls = new Dictionary<string, string>();
-            foreach (Match pageUrlMatch in internalUrls)
+            foreach (UrlUtils.UrlMatch pageUrlMatch in internalUrls)
             {
                 string internalPageUrl = pageUrlMatch.Value;
                 string publicPageUrl;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Web.Hosting;
+using System.Collections.Generic;
 
 
 namespace Composite.Core.WebClient
@@ -11,8 +12,8 @@ namespace Composite.Core.WebClient
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class UrlUtils
 	{
-        private const string _adminFolderName = "Composite";
-        private const string _renderersFolderName = "Renderers";
+        private static readonly string _adminFolderName = "Composite";
+        private static readonly string _renderersFolderName = "Renderers";
         private static readonly string _applicationVirtualPath;
 
 
@@ -124,6 +125,68 @@ namespace Composite.Core.WebClient
             }
 
             return path1 + "/" + path2;
+        }
+
+        internal class UrlMatch
+        {
+            public int Index;
+            public string Value;
+        }
+
+        /// <summary>
+        /// Finds all the urls that start with <paramref name="urlPrefix"/>.
+        /// We assume that each url ends before one of the following strings:
+        /// double quote, single quote, or &#39; which is single quote mark (') encoded in xml attribute 
+        /// </summary>
+        /// <param name="html">The html content.</param>
+        /// <param name="urlPrefix">The url prefix</param>
+        /// <returns>List of urls, sorted by the order they appear</returns>
+        internal static List<UrlMatch> FindUrlsInHtml(string html, string urlPrefix)
+        {
+            var result = new List<UrlMatch>();
+
+            int startIndex = 0;
+
+            while (true)
+            {
+                int urlOffset = html.IndexOf(urlPrefix, startIndex, StringComparison.OrdinalIgnoreCase);
+                if (urlOffset < 0) break;
+
+                int prefixEndOffset = urlOffset + urlPrefix.Length;
+
+                int endOffset = html.IndexOf('\"', prefixEndOffset);
+
+                int singleQuoteIndex =
+                    (endOffset == -1)
+                    ? html.IndexOf('\'')
+                    : html.IndexOf('\'', prefixEndOffset, endOffset - prefixEndOffset);
+
+                if (singleQuoteIndex > 0)
+                {
+                    endOffset = singleQuoteIndex;
+                }
+
+                if (endOffset < 0) break;
+
+                int encodedSingleQuoteIndex = html.IndexOf("&#39;", prefixEndOffset, endOffset - prefixEndOffset);
+                if (encodedSingleQuoteIndex > 0) endOffset = encodedSingleQuoteIndex;
+
+                int hashSignIndex = html.IndexOf('#', prefixEndOffset, endOffset - prefixEndOffset);
+                if (hashSignIndex > 0)
+                {
+                    endOffset = hashSignIndex;
+                }
+
+                result.Add(new UrlMatch
+                {
+                    Index = urlOffset,
+                    Value = html.Substring(urlOffset, endOffset - urlOffset)
+                });
+
+                startIndex = endOffset;
+            }
+
+            return result;
         }
     }
 }
