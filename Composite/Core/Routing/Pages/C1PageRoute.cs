@@ -195,5 +195,10 @@ namespace Composite.Core.Routing.Pages
 
             return GetRouteData(); // returning route so other routers will not be executed
         }
+
+        public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
