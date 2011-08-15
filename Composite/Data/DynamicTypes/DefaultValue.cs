@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
-using Composite.Core.Serialization;
-using Composite.Core.Instrumentation;
 using System.CodeDom;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Text;
+using Composite.Core.Instrumentation;
+using Composite.Core.Serialization;
 
 
 namespace Composite.Data.DynamicTypes
@@ -114,17 +114,51 @@ namespace Composite.Data.DynamicTypes
 
             if (this.Value != null)
             {
-                StringConversionServices.SerializeKeyValuePair(sb, "Value", this.Value.ToString());
+                StringConversionServices.SerializeKeyValuePair(sb, "Value", SerializeDefaultValue(ValueType, this.Value));
             }
 
             return sb.ToString();
         }
 
 
+        private static string SerializeDefaultValue(DefaultValueType type, object value)
+        {
+            Verify.ArgumentNotNull(value, "value");
+
+            switch (type)
+                {
+                    case DefaultValueType.Boolean:
+                        return ((bool)value).ToString(CultureInfo.InvariantCulture);
+
+                    case DefaultValueType.DateTime:
+                        return ((DateTime)value).ToString(CultureInfo.InvariantCulture);
+
+                    case DefaultValueType.Decimal:
+                        return ((Decimal)value).ToString(CultureInfo.InvariantCulture);
+
+                    case DefaultValueType.Guid:
+                        return value.ToString();
+
+                    case DefaultValueType.Integer:
+                        return ((Int32)value).ToString(CultureInfo.InvariantCulture);
+
+                    case DefaultValueType.String:
+                        return (string)value;
+
+                    case DefaultValueType.NewGuid:
+                    case DefaultValueType.DateTimeNow:
+                        return string.Empty;
+
+                    default:
+                        throw new NotImplementedException("DefaultValueType = " + type);
+                }
+        }
+
+
         /// <exclude />
         public static DefaultValue Deserialize(string serializedData)
         {
-            using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
+            using (TimerProfilerFacade.CreateTimerProfiler())
             {
                 if (string.IsNullOrEmpty(serializedData) == true) throw new ArgumentNullException("serializedData");
 
@@ -179,7 +213,7 @@ namespace Composite.Data.DynamicTypes
                         return DefaultValue.String(stringValue);
 
                     default:
-                        throw new NotImplementedException();
+                        throw new NotImplementedException("DefaultValueType = " + valueType);
                 }
             }                    
         }
