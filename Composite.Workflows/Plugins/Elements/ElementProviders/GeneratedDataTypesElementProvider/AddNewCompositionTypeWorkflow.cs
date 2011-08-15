@@ -126,11 +126,11 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 if (helper.IsEditProcessControlledAllowed == true)
                 {
-                    helper.SetCachable(hasCaching);
                     helper.SetPublishControlled(hasPublishing);
                     helper.SetLocalizedControlled(hasLocalization);
                 }
 
+                helper.SetCachable(hasCaching);
                 helper.SetNewTypeFullName(typeName, typeNamespace);
                 helper.SetNewTypeTitle(typeTitle);
                 helper.SetNewFieldDescriptors(dataFieldDescriptors, labelFieldName);

@@ -121,10 +121,10 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 helper.SetNewTypeFullName(typeName, typeNamespace);
                 helper.SetNewTypeTitle(typeTitle);
                 helper.SetNewFieldDescriptors(dataFieldDescriptors, labelFieldName);
+                helper.SetCachable(hasCaching);
 
                 if (helper.IsEditProcessControlledAllowed == true)
                 {
-                    helper.SetCachable(hasCaching);
                     helper.SetPublishControlled(hasPublishing);
                 }
 

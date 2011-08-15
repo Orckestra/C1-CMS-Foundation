@@ -441,8 +441,6 @@ namespace Composite.Data.GeneratedTypes
         /// <exclude />
         public void SetCachable(bool cachable)
         {
-            if (this.IsEditProcessControlledAllowed == false) throw new InvalidOperationException("Not allowed to change this value");
-
             _cachable = cachable;
         }
 
