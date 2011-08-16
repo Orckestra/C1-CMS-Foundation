@@ -228,35 +228,6 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
 
         private void ResetWidgetSelector()
         {
-            //IWidgetFunction widgetFunction = null;
-            //string widgetFunctionMarkup = "";
-            //string widgetFunctionName = StandardWidgetFunctions.GetDefaultWidgetFunctionNameByType(this.CurrentlySelectedWidgetReturnType);
-
-            //if (string.IsNullOrEmpty(widgetFunctionName) == false)
-            //{
-            //    widgetFunction = FunctionFacade.GetWidgetFunction(widgetFunctionName);
-            //}
-
-            //if (widgetFunction == null)
-            //{
-            //    IEnumerable<string> functionNames = FunctionFacade.GetWidgetFunctionNamesByType(this.CurrentlySelectedWidgetReturnType);
-
-            //    foreach (string functionName in functionNames)
-            //    {
-            //        widgetFunction = FunctionFacade.GetWidgetFunction(functionName);
-
-            //        if (widgetFunction.ParameterProfiles.Where(p => p.IsRequired == true).Any() == false)
-            //        {
-            //            break;
-            //        }
-            //    }
-            //}
-
-            //if (widgetFunction != null)
-            //{
-            //    WidgetFunctionRuntimeTreeNode widgetTreeNode = new WidgetFunctionRuntimeTreeNode(widgetFunction);
-            //    widgetFunctionMarkup = widgetTreeNode.Serialize().ToString(SaveOptions.DisableFormatting);
-            //}
             string widgetFunctionMarkup = "";
 
             WidgetFunctionProvider widgetFunctionProvider = StandardWidgetFunctions.GetDefaultWidgetFunctionProviderByType(this.CurrentlySelectedWidgetReturnType);
@@ -266,7 +237,6 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
             } 
 
             btnWidgetFunctionMarkup.Value = widgetFunctionMarkup;
-            // this.WidgetSelectorUpdatePanel.Update();
 
             if (widgetFunctionMarkup == "")
             {
@@ -274,12 +244,6 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
                 {
                     Baloon(btnWidgetFunctionMarkup.ClientID, GetString("SpecifyWidgetTip"));
                 }
-                // This a too annoying: 
-                // "No widgets are available for the specified type. Users must use a function call to specify this parameter."
-                //else
-                //{
-                //    Baloon(btnWidgetFunctionMarkup.ClientID, GetString("NoWidgetsTip"));
-                //}
             }
         }
 
@@ -527,29 +491,6 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
                 return selectedType;
             }
         }
-
-
-
-        //private Dictionary<string, string> GetBindingValuesAsStrings(Dictionary<string, object> source)
-        //{
-        //    var result = new Dictionary<string, string>();
-        //    foreach (var sourceParam in source)
-        //    {
-        //        if (sourceParam.Value != null)
-        //        {
-        //            if (sourceParam.Value.GetType() == typeof(string))
-        //            {
-        //                result.Add(sourceParam.Key, (string)sourceParam.Value);
-        //            }
-        //            else
-        //            {
-        //                string value = Composite.Core.Types.ValueTypeConverter.Convert<string>(sourceParam.Value);
-        //                result.Add(sourceParam.Key, value);
-        //            }
-        //        }
-        //    }
-        //    return result;
-        //}
 
 
 
@@ -845,29 +786,6 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
             return new FormDefinition(formMarkup.CreateReader(), bindings);
         }
 
-
-        protected void NameFieldChanged(object sender, EventArgs e)
-        {
-            //if (this.LabelField.Text == "")
-            //{
-            //    this.LabelField.Text = this.NameField.Text;
-            //    LabelFieldUpdatePanel.Update();
-            //}
-            bool refreshTree = false;
-            if (this.CurrentlySelectedFieldId != Guid.Empty)
-            {
-                string existingName = this.CurrentFields.Where(f => f.Id == this.CurrentlySelectedFieldId).Single().Name;
-
-                refreshTree = (existingName != this.NameField.Text);
-            }
-
-            FieldSettingsChanged(sender, e);
-
-            if (refreshTree == true)
-            {
-                UpdateFieldsPanel();
-            }
-        }
 
         // one of the "post backing" fields has been changed on the client
         protected void FieldSettingsChanged(object sender, EventArgs e)
