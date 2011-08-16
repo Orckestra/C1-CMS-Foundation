@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Composite.C1Console.Security;
+using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Core.Logging;
 using Composite.Core.Threading;
@@ -219,21 +220,9 @@ namespace Composite.Data
 
             foreach (IData data in dataset)
             {
-                if (performeValidation == true)
+                if (performeValidation)
                 {
-                    ValidationResults validationResults = ValidationFacade.Validate(data);
-
-                    if (validationResults.IsValid == false)
-                    {
-                        System.Text.StringBuilder sb = new System.Text.StringBuilder();
-
-                        foreach (ValidationResult result in validationResults)
-                        {
-                            sb.AppendLine(result.Message);
-                        }
-
-                        throw new InvalidOperationException(string.Format("The data of type '{0}' did not validate, with the following errors: {1}", data.DataSourceId.InterfaceType, sb.ToString()));
-                    }
+                    CheckValidationResult(ValidationFacade.Validate(data), data.DataSourceId.InterfaceType);
                 }
 
                 if (performForeignKeyIntegrityCheck)
@@ -313,8 +302,6 @@ namespace Composite.Data
             throw new InvalidOperationException(string.Format("{0} writeable data providers exists for data '{1}'.", writeableProviders.Count, typeof(T)));
         }
 
-
-
         private static List<T> AddNew_AddingMethod<T>(string providerName, IEnumerable<T> datas, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performeValidation)
              where T : class, IData
         {
@@ -343,19 +330,7 @@ namespace Composite.Data
             {
                 if (performeValidation == true)
                 {
-                    ValidationResults validationResults = ValidationFacade.Validate<T>(data);
-
-                    if (validationResults.IsValid == false)
-                    {
-                        System.Text.StringBuilder sb = new System.Text.StringBuilder();
-
-                        foreach (ValidationResult result in validationResults)
-                        {
-                            sb.AppendLine(result.Message);
-                        }
-
-                        throw new InvalidOperationException(string.Format("The data of type '{0}' did not validate, with the following errors: {1}", typeof(T), sb.ToString()));
-                    }
+                    CheckValidationResult(ValidationFacade.Validate<T>(data), typeof (T));
                 }
 
                 if (performForeignKeyIntegrityCheck == true)
@@ -569,6 +544,24 @@ namespace Composite.Data
             return DataProviderPluginFacade.ValidatePath<TFile>(file, providerName, out errorMessage);
         }
 
+
+        private static void CheckValidationResult(ValidationResults validationResults, Type interfaceType)
+        {
+            if (validationResults.IsValid)
+            {
+                return;
+            }
+
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+            foreach (ValidationResult result in validationResults)
+            {
+                sb.AppendLine("Field: '{0}' Error: {1}".FormatWith(result.Key, result.Message));
+            }
+
+            string msg = "The data of type '{0}' did not validate, with the following errors:\r\n{1}".FormatWith(interfaceType, sb);
+            throw new InvalidOperationException(msg);
+        }
 
 
         private static void OnDataChanged(object sender, DataEventArgs dataEventArgs)
